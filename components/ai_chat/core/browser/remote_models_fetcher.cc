@@ -12,16 +12,17 @@
 #include "base/task/sequenced_task_runner.h"
 #include "base/time/time.h"
 #include "brave/components/ai_chat/core/browser/remote_models_serialization.h"
-#include "brave/components/ai_chat/core/common/features.h"
+#include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
-#include "url/gurl.h"
 
 namespace ai_chat {
 
 namespace {
+
+constexpr char kModelsPath[] = "v1/models";
 
 constexpr size_t kMaxResponseSize = 5 * 1024 * 1024;  // 5MB
 
@@ -66,12 +67,12 @@ RemoteModelsFetcher::RemoteModelsFetcher(
           std::make_unique<api_request_helper::APIRequestHelper>(
               kTrafficAnnotation,
               url_loader_factory)),
-      endpoint_url_(features::kRemoteModelsEndpoint.Get()) {}
+      endpoint_url_(GetEndpointUrl(/*premium=*/false, kModelsPath)) {}
 
 RemoteModelsFetcher::~RemoteModelsFetcher() = default;
 
 void RemoteModelsFetcher::FetchModels(FetchModelsCallback callback) {
-  if (!endpoint_url_.is_valid() || !endpoint_url_.SchemeIs(url::kHttpsScheme)) {
+  if (!endpoint_url_.is_valid()) {
     base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
         FROM_HERE,
         base::BindOnce(std::move(callback), std::vector<mojom::ModelPtr>{}));

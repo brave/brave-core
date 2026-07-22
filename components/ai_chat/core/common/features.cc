@@ -53,8 +53,6 @@ const base::FeatureParam<bool> kShouldIndentPageContentBlocks{
 // Enable remote model fetching from server endpoint
 BASE_FEATURE(kAIChatRemoteModelsConfig, base::FEATURE_DISABLED_BY_DEFAULT);
 
-const base::FeatureParam<std::string> kRemoteModelsEndpoint{
-    &kAIChatRemoteModelsConfig, "endpoint_url", ""};
 const base::FeatureParam<base::TimeDelta> kRemoteModelsCacheTTL{
     &kAIChatRemoteModelsConfig, "cache_ttl", base::Days(1)};
 

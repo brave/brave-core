@@ -13,6 +13,7 @@
 
 #include "base/check.h"
 #include "base/containers/fixed_flat_map.h"
+#include "base/containers/map_util.h"
 #include "base/logging.h"
 #include "base/numerics/safe_conversions.h"
 #include "base/values.h"
@@ -54,25 +55,6 @@ constexpr auto kCapabilityToStringMap =
         {mojom::ConversationCapability::SUMMARY, "summary"},
     });
 
-std::optional<mojom::ModelAccess> ParseAccess(const std::string& access_str) {
-  auto it = kStringToAccessMap.find(access_str);
-  if (it == kStringToAccessMap.end()) {
-    DVLOG(1) << "Unknown model access: " << access_str;
-    return std::nullopt;
-  }
-  return it->second;
-}
-
-std::optional<mojom::ConversationCapability> ParseCapability(
-    const std::string& capability_str) {
-  auto it = kStringToCapabilityMap.find(capability_str);
-  if (it == kStringToCapabilityMap.end()) {
-    DVLOG(1) << "Unknown conversation capability: " << capability_str;
-    return std::nullopt;
-  }
-  return it->second;
-}
-
 struct ParsedCapabilities {
   std::vector<mojom::ConversationCapability> capabilities;
   mojom::ModelCategory category;
@@ -95,7 +77,8 @@ std::optional<ParsedCapabilities> ParseCapabilities(
     if (!capability_value.is_string()) {
       continue;
     }
-    if (auto capability = ParseCapability(capability_value.GetString())) {
+    if (const auto* capability = base::FindOrNull(
+            kStringToCapabilityMap, capability_value.GetString())) {
       capabilities.push_back(*capability);
     }
   }
@@ -147,9 +130,9 @@ mojom::ModelPtr ParseModel(const base::DictValue& model_dict) {
   }
 
   const std::string* access = options_dict->FindString(kAccessField);
-  std::optional<mojom::ModelAccess> parsed_access =
-      access ? ParseAccess(*access) : std::nullopt;
-  if (!parsed_access.has_value()) {
+  const mojom::ModelAccess* parsed_access =
+      access ? base::FindOrNull(kStringToAccessMap, *access) : nullptr;
+  if (!parsed_access) {
     return nullptr;
   }
 
@@ -239,17 +222,12 @@ base::DictValue ModelToDict(const mojom::Model& model) {
 }  // namespace
 
 std::vector<mojom::ModelPtr> ParseModelsFromJSON(const base::Value& json) {
-  if (!json.is_dict()) {
-    return {};
-  }
-
-  const base::ListValue* models_list = json.GetDict().FindList(kModelsKey);
-  if (!models_list) {
+  if (!json.is_list()) {
     return {};
   }
 
   std::vector<mojom::ModelPtr> models;
-  for (const auto& model_value : *models_list) {
+  for (const auto& model_value : json.GetList()) {
     if (!model_value.is_dict()) {
       continue;
     }

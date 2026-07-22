@@ -52,7 +52,7 @@ std::optional<std::vector<mojom::ModelPtr>> ReadAndParseFromFile(
     return std::nullopt;
   }
 
-  auto parsed = base::JSONReader::ReadDict(content, base::JSON_PARSE_RFC);
+  auto parsed = base::JSONReader::ReadList(content, base::JSON_PARSE_RFC);
   if (!parsed) {
     DVLOG(1) << "RemoteModelsDiskCache: failed to parse cache JSON";
     return std::nullopt;
@@ -69,9 +69,7 @@ std::optional<std::vector<mojom::ModelPtr>> ReadAndParseFromFile(
 }
 
 std::string SerializeCache(const std::vector<mojom::ModelPtr>& models) {
-  base::DictValue root;
-  root.Set(kModelsKey, SerializeModels(models));
-  return base::WriteJson(root).value_or("");
+  return base::WriteJson(SerializeModels(models)).value_or("");
 }
 
 }  // namespace

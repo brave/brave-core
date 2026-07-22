@@ -17,7 +17,6 @@ namespace ai_chat {
 // JSON field names shared between the server response, the disk cache, and the
 // serializer. Both ParseModelsFromJSON and SerializeModels must use the same
 // keys so that serialized models can be re-parsed without modification.
-inline constexpr char kModelsKey[] = "models";
 inline constexpr char kKeyField[] = "key";
 inline constexpr char kDisplayNameField[] = "display_name";
 inline constexpr char kCapabilitiesField[] = "capabilities";
@@ -33,8 +32,9 @@ inline constexpr char kMaxAssociatedContentLengthField[] =
 inline constexpr char kLongConversationWarningCharacterLimitField[] =
     "long_conversation_warning_character_limit";
 
-// Parses a JSON dict with a "models" key and returns the successfully parsed
-// models. Entries that fail field validation are silently skipped.
+// Parses a JSON array of model objects, matching the AI chat server's
+// response format, and returns the successfully parsed models. Entries that
+// fail field validation are silently skipped.
 std::vector<mojom::ModelPtr> ParseModelsFromJSON(const base::Value& json);
 
 // Serializes |models| to a JSON list value using the server JSON format, so

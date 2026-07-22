@@ -11,16 +11,15 @@
 #include <utility>
 #include <vector>
 
+#include "base/command_line.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/json/json_writer.h"
 #include "base/test/run_until.h"
-#include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/browser/remote_models_serialization.h"
-#include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "components/prefs/testing_pref_service.h"
@@ -33,7 +32,8 @@ namespace ai_chat {
 
 namespace {
 
-constexpr char kTestEndpoint[] = "https://models.example.com/models.json";
+constexpr char kTestServerUrl[] = "https://models.example.com";
+constexpr char kTestEndpoint[] = "https://models.example.com/v1/models";
 constexpr base::TimeDelta kTestTTL = base::Hours(24);
 
 mojom::ModelPtr MakeTestModel(const std::string& key) {
@@ -58,9 +58,7 @@ mojom::ModelPtr MakeTestModel(const std::string& key) {
 
 // Builds a server-format JSON response containing |models|.
 std::string MakeModelsResponse(const std::vector<mojom::ModelPtr>& models) {
-  base::DictValue root;
-  root.Set(kModelsKey, SerializeModels(models));
-  return base::WriteJson(root).value_or("");
+  return base::WriteJson(SerializeModels(models)).value_or("");
 }
 
 }  // namespace
@@ -70,8 +68,8 @@ class RemoteModelsProviderTest : public testing::Test {
   void SetUp() override {
     ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
     prefs::RegisterProfilePrefs(pref_service_.registry());
-    scoped_feature_list_.InitAndEnableFeatureWithParameters(
-        features::kAIChatRemoteModelsConfig, {{"endpoint_url", kTestEndpoint}});
+    base::CommandLine::ForCurrentProcess()->AppendSwitchASCII(
+        "ai-chat-server-url", kTestServerUrl);
   }
 
   std::unique_ptr<RemoteModelsProvider> MakeProvider() {
@@ -98,7 +96,6 @@ class RemoteModelsProviderTest : public testing::Test {
 
   base::test::TaskEnvironment task_environment_{
       base::test::TaskEnvironment::TimeSource::MOCK_TIME};
-  base::test::ScopedFeatureList scoped_feature_list_;
   base::ScopedTempDir temp_dir_;
   TestingPrefServiceSimple pref_service_;
   network::TestURLLoaderFactory url_loader_factory_;

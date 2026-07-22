@@ -9,12 +9,11 @@
 #include <string>
 #include <vector>
 
+#include "base/command_line.h"
 #include "base/strings/string_util.h"
 #include "base/test/bind.h"
-#include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
-#include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
@@ -25,10 +24,10 @@ namespace ai_chat {
 
 namespace {
 
-constexpr char kTestEndpoint[] = "https://example.com/models";
+constexpr char kTestServerUrl[] = "https://example.com";
+constexpr char kTestEndpoint[] = "https://example.com/v1/models";
 
-constexpr char kValidModelsJSON[] = R"({
-  "models": [
+constexpr char kValidModelsJSON[] = R"([
     {
       "key": "test-model-1",
       "display_name": "Test Model 1",
@@ -74,13 +73,11 @@ constexpr char kValidModelsJSON[] = R"({
         "long_conversation_warning_character_limit": 200000
       }
     }
-  ]
-})";
+  ])";
 
 constexpr char kInvalidJSON[] = "{ invalid json";
 
-constexpr char kMissingKeyJSON[] = R"({
-  "models": [
+constexpr char kMissingKeyJSON[] = R"([
     {
       "display_name": "Test Model",
       "is_suggested_model": false,
@@ -93,11 +90,9 @@ constexpr char kMissingKeyJSON[] = R"({
         "long_conversation_warning_character_limit": 200000
       }
     }
-  ]
-})";
+  ])";
 
-constexpr char kMissingDisplayNameJSON[] = R"({
-  "models": [
+constexpr char kMissingDisplayNameJSON[] = R"([
     {
       "key": "test-model",
       "is_suggested_model": false,
@@ -110,11 +105,9 @@ constexpr char kMissingDisplayNameJSON[] = R"({
         "long_conversation_warning_character_limit": 200000
       }
     }
-  ]
-})";
+  ])";
 
-constexpr char kMissingOptionsJSON[] = R"({
-  "models": [
+constexpr char kMissingOptionsJSON[] = R"([
     {
       "key": "test-model",
       "display_name": "Test Model",
@@ -122,11 +115,9 @@ constexpr char kMissingOptionsJSON[] = R"({
       "is_near_model": false,
       "capabilities": ["chat", "files"]
     }
-  ]
-})";
+  ])";
 
-constexpr char kMissingNameJSON[] = R"({
-  "models": [
+constexpr char kMissingNameJSON[] = R"([
     {
       "key": "test-model",
       "display_name": "Test Model",
@@ -139,11 +130,9 @@ constexpr char kMissingNameJSON[] = R"({
         "long_conversation_warning_character_limit": 200000
       }
     }
-  ]
-})";
+  ])";
 
-constexpr char kMissingAccessJSON[] = R"({
-  "models": [
+constexpr char kMissingAccessJSON[] = R"([
     {
       "key": "test-model",
       "display_name": "Test Model",
@@ -156,8 +145,7 @@ constexpr char kMissingAccessJSON[] = R"({
         "long_conversation_warning_character_limit": 200000
       }
     }
-  ]
-})";
+  ])";
 
 }  // namespace
 
@@ -169,8 +157,8 @@ class RemoteModelsFetcherTest : public testing::Test {
                 &test_url_loader_factory_)) {}
 
   void SetUp() override {
-    scoped_feature_list_.InitAndEnableFeatureWithParameters(
-        features::kAIChatRemoteModelsConfig, {{"endpoint_url", kTestEndpoint}});
+    base::CommandLine::ForCurrentProcess()->AppendSwitchASCII(
+        "ai-chat-server-url", kTestServerUrl);
     fetcher_ =
         std::make_unique<RemoteModelsFetcher>(shared_url_loader_factory_);
   }
@@ -228,7 +216,6 @@ class RemoteModelsFetcherTest : public testing::Test {
   }
 
   base::test::TaskEnvironment task_environment_;
-  base::test::ScopedFeatureList scoped_feature_list_;
   network::TestURLLoaderFactory test_url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   std::unique_ptr<RemoteModelsFetcher> fetcher_;
@@ -321,8 +308,7 @@ TEST_F(RemoteModelsFetcherTest, InvalidJSON) {
 }
 
 TEST_F(RemoteModelsFetcherTest, ValidModelsReturnedWhenSomeFail) {
-  constexpr char kMixedModelsJSON[] = R"({
-    "models": [
+  constexpr char kMixedModelsJSON[] = R"([
       {
         "key": "valid-model",
         "display_name": "Valid Model",
@@ -349,8 +335,7 @@ TEST_F(RemoteModelsFetcherTest, ValidModelsReturnedWhenSomeFail) {
           "long_conversation_warning_character_limit": 200000
         }
       }
-    ]
-  })";
+    ])";
 
   SimulateSuccessfulFetch(kMixedModelsJSON);
 
@@ -381,8 +366,7 @@ TEST_F(RemoteModelsFetcherTest, RequiredFieldsRejected) {
 }
 
 TEST_F(RemoteModelsFetcherTest, MissingCapabilities) {
-  ExpectEmptyResult(R"({
-    "models": [
+  ExpectEmptyResult(R"([
       {
         "key": "test-model",
         "display_name": "Test Model",
@@ -395,13 +379,11 @@ TEST_F(RemoteModelsFetcherTest, MissingCapabilities) {
           "long_conversation_warning_character_limit": 200000
         }
       }
-    ]
-  })");
+    ])");
 }
 
 TEST_F(RemoteModelsFetcherTest, NoCategoryCapability) {
-  ExpectEmptyResult(R"({
-    "models": [
+  ExpectEmptyResult(R"([
       {
         "key": "test-model",
         "display_name": "Test Model",
@@ -415,63 +397,11 @@ TEST_F(RemoteModelsFetcherTest, NoCategoryCapability) {
           "long_conversation_warning_character_limit": 200000
         }
       }
-    ]
-  })");
-}
-
-TEST_F(RemoteModelsFetcherTest, RejectsHTTPEndpoint) {
-  base::test::ScopedFeatureList feature_list;
-  feature_list.InitAndEnableFeatureWithParameters(
-      features::kAIChatRemoteModelsConfig,
-      {{"endpoint_url", "http://example.com/models"}});
-  auto fetcher =
-      std::make_unique<RemoteModelsFetcher>(shared_url_loader_factory_);
-
-  base::test::TestFuture<std::vector<mojom::ModelPtr>> future;
-  fetcher->FetchModels(future.GetCallback());
-  EXPECT_TRUE(future.Get().empty());
-}
-
-TEST_F(RemoteModelsFetcherTest, RejectsHTTPForLocalhost) {
-  base::test::ScopedFeatureList feature_list;
-  feature_list.InitAndEnableFeatureWithParameters(
-      features::kAIChatRemoteModelsConfig,
-      {{"endpoint_url", "http://localhost:8080/models"}});
-  auto fetcher =
-      std::make_unique<RemoteModelsFetcher>(shared_url_loader_factory_);
-
-  base::test::TestFuture<std::vector<mojom::ModelPtr>> future;
-  fetcher->FetchModels(future.GetCallback());
-  EXPECT_TRUE(future.Get().empty());
-}
-
-TEST_F(RemoteModelsFetcherTest, RejectsInvalidURL) {
-  base::test::ScopedFeatureList feature_list;
-  feature_list.InitAndEnableFeatureWithParameters(
-      features::kAIChatRemoteModelsConfig,
-      {{"endpoint_url", "not-a-valid-url"}});
-  auto fetcher =
-      std::make_unique<RemoteModelsFetcher>(shared_url_loader_factory_);
-
-  base::test::TestFuture<std::vector<mojom::ModelPtr>> future;
-  fetcher->FetchModels(future.GetCallback());
-  EXPECT_TRUE(future.Get().empty());
-}
-
-TEST_F(RemoteModelsFetcherTest, RejectsEmptyEndpoint) {
-  base::test::ScopedFeatureList feature_list;
-  feature_list.InitAndEnableFeatureWithParameters(
-      features::kAIChatRemoteModelsConfig, {{"endpoint_url", ""}});
-  auto fetcher =
-      std::make_unique<RemoteModelsFetcher>(shared_url_loader_factory_);
-
-  base::test::TestFuture<std::vector<mojom::ModelPtr>> future;
-  fetcher->FetchModels(future.GetCallback());
-  EXPECT_TRUE(future.Get().empty());
+    ])");
 }
 
 TEST_F(RemoteModelsFetcherTest, EmptyResponse) {
-  SimulateSuccessfulFetch(R"({"models": []})");
+  SimulateSuccessfulFetch("[]");
 
   base::test::TestFuture<std::vector<mojom::ModelPtr>> future;
   fetcher_->FetchModels(future.GetCallback());
@@ -479,8 +409,7 @@ TEST_F(RemoteModelsFetcherTest, EmptyResponse) {
 }
 
 TEST_F(RemoteModelsFetcherTest, RejectsUnrecognizedAccessLevel) {
-  ExpectEmptyResult(R"({
-    "models": [
+  ExpectEmptyResult(R"([
       {
         "key": "unknown-access-model",
         "display_name": "Unknown Access Model",
@@ -495,13 +424,11 @@ TEST_F(RemoteModelsFetcherTest, RejectsUnrecognizedAccessLevel) {
           "long_conversation_warning_character_limit": 200000
         }
       }
-    ]
-  })");
+    ])");
 }
 
 TEST_F(RemoteModelsFetcherTest, RejectsMissingMaxContentLength) {
-  ExpectEmptyResult(R"({
-    "models": [
+  ExpectEmptyResult(R"([
       {
         "key": "basic-model",
         "display_name": "Basic Model",
@@ -515,13 +442,11 @@ TEST_F(RemoteModelsFetcherTest, RejectsMissingMaxContentLength) {
           "long_conversation_warning_character_limit": 200000
         }
       }
-    ]
-  })");
+    ])");
 }
 
 TEST_F(RemoteModelsFetcherTest, RejectsMissingWarningLimit) {
-  ExpectEmptyResult(R"({
-    "models": [
+  ExpectEmptyResult(R"([
       {
         "key": "basic-model",
         "display_name": "Basic Model",
@@ -535,13 +460,11 @@ TEST_F(RemoteModelsFetcherTest, RejectsMissingWarningLimit) {
           "max_associated_content_length": 100000
         }
       }
-    ]
-  })");
+    ])");
 }
 
 TEST_F(RemoteModelsFetcherTest, SkipsUnknownCapabilities) {
-  constexpr char kUnknownCapabilityJSON[] = R"({
-    "models": [
+  constexpr char kUnknownCapabilityJSON[] = R"([
       {
         "key": "test-model",
         "display_name": "Test Model",
@@ -556,8 +479,7 @@ TEST_F(RemoteModelsFetcherTest, SkipsUnknownCapabilities) {
           "long_conversation_warning_character_limit": 200000
         }
       }
-    ]
-  })";
+    ])";
 
   SimulateSuccessfulFetch(kUnknownCapabilityJSON);
 
@@ -572,8 +494,7 @@ TEST_F(RemoteModelsFetcherTest, SkipsUnknownCapabilities) {
 }
 
 TEST_F(RemoteModelsFetcherTest, RejectsNegativeMaxContentLength) {
-  ExpectEmptyResult(R"({
-    "models": [
+  ExpectEmptyResult(R"([
       {
         "key": "bad-model",
         "display_name": "Bad Model",
@@ -588,13 +509,11 @@ TEST_F(RemoteModelsFetcherTest, RejectsNegativeMaxContentLength) {
           "long_conversation_warning_character_limit": 200000
         }
       }
-    ]
-  })");
+    ])");
 }
 
 TEST_F(RemoteModelsFetcherTest, RejectsNegativeWarningLimit) {
-  ExpectEmptyResult(R"({
-    "models": [
+  ExpectEmptyResult(R"([
       {
         "key": "bad-model",
         "display_name": "Bad Model",
@@ -609,8 +528,7 @@ TEST_F(RemoteModelsFetcherTest, RejectsNegativeWarningLimit) {
           "long_conversation_warning_character_limit": -1
         }
       }
-    ]
-  })");
+    ])");
 }
 
 }  // namespace ai_chat

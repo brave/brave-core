@@ -40,11 +40,10 @@ class RemoteModelsFetcher {
   RemoteModelsFetcher(const RemoteModelsFetcher&) = delete;
   RemoteModelsFetcher& operator=(const RemoteModelsFetcher&) = delete;
 
-  // Fetches and parses models from the endpoint configured via
-  // features::kRemoteModelsEndpoint at construction time, then invokes
-  // |callback| with the results. If the configured endpoint is empty,
-  // malformed, or not HTTPS, or on network/parse failure, the callback is
-  // invoked with an empty vector.
+  // Fetches and parses models from the AI chat models endpoint resolved at
+  // construction time, then invokes |callback| with the results. On
+  // network or parse failure, the callback is invoked with an empty
+  // vector.
   void FetchModels(FetchModelsCallback callback);
 
  private:

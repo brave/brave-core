@@ -105,7 +105,7 @@ TEST_F(RemoteModelsDiskCacheTest, LoadCorruptJSON) {
 
 TEST_F(RemoteModelsDiskCacheTest, LoadMissingCachedAtPref) {
   // File exists but no timestamp in prefs — treated as expired.
-  ASSERT_TRUE(base::WriteFile(CachePath(), R"({"models": []})"));
+  ASSERT_TRUE(base::WriteFile(CachePath(), "[]"));
   auto cache = MakeCache();
   EXPECT_FALSE(RunLoad(cache).has_value());
 }
