@@ -1129,6 +1129,7 @@ test("brave_browser_tests") {
     "//chrome/browser/sync",
     "//chrome/browser/tab_list",
     "//chrome/browser/ui",
+    "//chrome/browser/ui:session_crashed_bubble",
     "//chrome/browser/ui/browser_window:create_browser_window",
     "//chrome/browser/ui/color:color_headers",
     "//chrome/browser/ui/color:mixers",
