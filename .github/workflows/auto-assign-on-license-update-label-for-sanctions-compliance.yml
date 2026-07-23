@@ -9,7 +9,7 @@ permissions:
 
 jobs:
   assign-user:
-    runs-on: ubuntu-latest
+        runs-on: ubuntu-slim
     if: github.event.label.name == 'license-update'
     steps:
       - name: Auto Assign on license-update labels for Sanctions Compliance
