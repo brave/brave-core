@@ -578,12 +578,6 @@ New bookmarks can’t be saved in your account until you delete some. If you sig
         </message>
       </if>
       <!-- Sharing messages -->
-      <message name="IDS_BROWSER_SHARING_CLICK_TO_CALL_DIALOG_HELP_TEXT_NO_DEVICES" desc="The label to be shown as a help text of the dialog when user click on a phone number, if there are no phones to choose from.">
-        To send a number from here to your Android phone, sign in to Brave on both devices.
-      </message>
-      <message name="IDS_BROWSER_SHARING_CLICK_TO_CALL_DIALOG_HELP_TEXT_NO_DEVICES_ORIGIN" desc="The label to be shown as a help text of the dialog when user click on a phone number, if there are no phones to choose from.">
-        To send a number from <ph name="ORIGIN">$1<ex>www.google.com</ex></ph> to your Android phone, sign in to Brave on both devices.
-      </message>
       <message name="IDS_BROWSER_SHARING_ERROR_DIALOG_TEXT_DEVICE_NOT_FOUND" desc="The text to be shown on the dialog when an error occurred because the device is not synced.">
         Make sure you are signed in to Brave on your <ph name="TARGET_DEVICE_NAME">$1<ex>Pixel XL</ex></ph> and then try sending again.
       </message>
@@ -611,13 +605,13 @@ New bookmarks can’t be saved in your account until you delete some. If you sig
           Set Brave as your default browser
         </message>
         <message name="IDS_DEFAULT_BROWSER_VISUAL_GUIDED_SETTER_HEADER_TITLE" desc="Header text of the default browser visual guided setter.">
-          Use Brave recommended browser settings
+          Set Brave as your default browser
         </message>
         <message name="IDS_DEFAULT_BROWSER_VISUAL_GUIDED_SETTER_CONTENT_TITLE" desc="Content title of the default browser visual guided setter.">
           Set Brave as your default browser
         </message>
         <message name="IDS_DEFAULT_BROWSER_VISUAL_GUIDED_SETTER_CONTENT_DESCRIPTION" desc="Body text of the default browser visual guided setter.">
-          Get easy access to the features you know, love, and trust by setting Brave as your default browser.
+          Keep your passwords, bookmarks, and history perfectly synced across devices by setting Brave as your default browser.
         </message>
         <message name="IDS_DEFAULT_BROWSER_VISUAL_GUIDED_SETTER_INSTRUCTION_STEP_2" desc="Instruction step 2 of the default browser visual guided setter. $1 is the bold button name.">
           Click <ph name="BEGIN_BOLD">&lt;strong&gt;</ph>Yes<ph name="END_BOLD">&lt;/strong&gt;</ph> in the Windows notification to pin Brave to your taskbar for quick access.
@@ -1845,24 +1839,7 @@ Brave is unable to recover your settings.
 
       <!-- Runtime permission strings -->
       <if expr="is_android">
-        <message name="IDS_INFOBAR_MISSING_AR_CAMERA_PERMISSION_TEXT" desc="Text shown in an infobar when a website has requested access to augmented reality capabilities, but Brave is missing the Android camera permission.">
-          Brave needs permission to access your camera to create a 3D map of your surroundings
-        </message>
-        <message name="IDS_INFOBAR_MISSING_CAMERA_PERMISSION_TEXT" desc="Text shown in an infobar when a website has requested access to the camera capabilities, but Brave is missing the Android camera permission.">
-          Brave needs permission to access your camera for this site
-        </message>
-        <message name="IDS_INFOBAR_MISSING_HAND_TRACKING_PERMISSION_TEXT" desc="Text shown in an infobar when a website has requested access to hand tracking capabilities, but Brave is missing the Android hand tracking permission.">
-          Brave needs permission to track your hands
-        </message>
-        <message name="IDS_INFOBAR_MISSING_MICROPHONE_PERMISSION_TEXT" desc="Text shown in an infobar when a website has requested access to the microphone capabilities, but Brave is missing the Android microphone permission.">
-          Brave needs permission to access your microphone for this site
-        </message>
-        <message name="IDS_INFOBAR_MISSING_MICROPHONE_CAMERA_PERMISSIONS_TEXT" desc="Text shown in an infobar when a website has requested access to the microphone and camera capabilities, but Brave is missing the Android microphone and camera permissions.">
-          Brave needs permission to access your camera and microphone for this site
-        </message>
-        <message name="IDS_INFOBAR_MISSING_LOCATION_PERMISSION_TEXT" desc="Text shown in an infobar when a website has requested access to the location capabilities, but Brave is missing the Android location permission.">
-          Brave needs access to your location to share your location with this site
-        </message>
+
         <message name="IDS_MISSING_STORAGE_PERMISSION_DOWNLOAD_EDUCATION_TEXT" desc="Text shown educating the user that Brave is missing the Android storage permission, which is required to download files.">
           Brave needs storage access to download files
         </message>
@@ -2117,21 +2094,6 @@ Brave is unable to recover your settings.
           Search with Image Search
         </message>
 
-        <message name="IDS_LENS_OVERLAY_ENTRYPOINT_LABEL_ALT1" desc="Label for the Lens overlay command, through which the user can ask questions about the page.">
-          Ask about this page
-        </message>
-        <message name="IDS_LENS_OVERLAY_ENTRYPOINT_LABEL_ALT2" desc="Label for the Lens overlay command, through which the user can ask the Image Search service questions about the page.">
-          Ask Image Search about this page
-        </message>
-        <message name="IDS_LENS_OVERLAY_ENTRYPOINT_LABEL_ALT3" desc="Label for the Lens overlay command, through which the page will be searched using the Image Search service.">
-          Search this page with Image Search
-        </message>
-        <message name="IDS_LENS_OVERLAY_IMAGE_ENTRYPOINT_LABEL_ALT1" desc="Label for the Lens overlay command, through which the user can ask questions about the image.">
-          Ask about this image
-        </message>
-        <message name="IDS_LENS_OVERLAY_IMAGE_ENTRYPOINT_LABEL_ALT2" desc="Label for the Lens overlay command, through which the user can ask the Image Search service questions about the image.">
-          Ask Image Search about this image
-        </message>
         <message name="IDS_LENS_OVERLAY_IMAGE_ENTRYPOINT_LABEL_ALT3" desc="Label for the Lens overlay command, through which the image will be searched using the Image Search service.">
           Search this image with Image Search
         </message>
@@ -2141,20 +2103,10 @@ Brave is unable to recover your settings.
         <message name="IDS_LENS_OVERLAY_TAB_ENTRYPOINT_LABEL_V2" desc="Label for the Lens overlay command, through which the current tab will be searched using the Image Search service.">
           Search with Image Search
         </message>
-        <message name="IDS_LENS_OVERLAY_VIDEO_ENTRYPOINT_LABEL_ALT1" desc="Label for the Lens overlay command, through which the user can ask questions about the video.">
-          Ask about this video
-        </message>
-        <message name="IDS_LENS_OVERLAY_VIDEO_ENTRYPOINT_LABEL_ALT2" desc="Label for the Lens overlay command, through which the user can ask the Image Search service questions about the video.">
-          Ask Image Search about this video
-        </message>
         <message name="IDS_LENS_OVERLAY_VIDEO_ENTRYPOINT_LABEL_ALT3" desc="Label for the Lens overlay command, through which the video will be searched using the Image Search service.">
           Search this video with Image Search
         </message>
       </if>
-
-      <message name="IDS_AI_MODE_ENTRYPOINT_LABEL" desc="The label of the AI mode entrypoint in the omnibox" formatter_data="android_java">
-        AI Mode
-      </message>
 
       <if expr="not is_android">
         <!-- Lens Side Panel Error Page -->
@@ -2255,17 +2207,6 @@ Brave is unable to recover your settings.
         <message name="IDS_AI_MODE_NEW_SEARCH" desc="Header in the Lens side panel indicating a new AI Mode search session.">
           New search
         </message>
-
-        <if expr="use_titlecase">
-          <message name="IDS_CONTEXT_MENU_SHOW_AI_MODE_OMNIBOX_BUTTON" desc="In Title Case: The text label of the omnibox context menu option to enable showing 'AI Mode'">
-            Always Show AI Mode
-          </message>
-        </if>
-        <if expr="not use_titlecase">
-        <message name="IDS_CONTEXT_MENU_SHOW_AI_MODE_OMNIBOX_BUTTON" desc="The text label of the omnibox context menu option to enable showing 'AI Mode'">
-          Always show AI Mode
-        </message>
-        </if>
       </if>
 
       <!-- OOBE -->
@@ -2413,30 +2354,6 @@ Brave is unable to recover your settings.
         <message name="IDS_EXTENSION_PERMISSIONS_BLOCKED_BY_PARENT_PROMPT_MESSAGE" desc="Text for the dialog indicating that a parent has blocked extensions and apps.">
          Your parent has turned off "Permissions for sites, apps and extensions" for Brave
         </message>
-
-        <message name="IDS_EXTENSION_EXTERNAL_INSTALL_PROMPT_TITLE_APP" desc="Titlebar of the prompt window for an externally installed app">
-          Another program on your computer added an app that may change the way Brave works.
-
-<ph name="EXTENSION_NAME">$1<ex>Babylon Toolbar</ex></ph>
-        </message>
-        <message name="IDS_EXTENSION_EXTERNAL_INSTALL_PROMPT_TITLE_EXTENSION" desc="Titlebar of the prompt window for an externally installed extension">
-          Another program on your computer added an extension that may change the way Brave works.
-
-<ph name="EXTENSION_NAME">$1<ex>Babylon Toolbar</ex></ph>
-        </message>
-        <message name="IDS_EXTENSION_EXTERNAL_INSTALL_PROMPT_TITLE_THEME" desc="Titlebar of the prompt window for an externally installed theme">
-          Another program on your computer added a theme that may change the way Brave works.
-
-<ph name="EXTENSION_NAME">$1<ex>Babylon Toolbar</ex></ph>
-        </message>
-        <message name="IDS_EXTENSION_EXTERNAL_INITIAL_INSTALL_PROMPT_TITLE_EXTENSION" desc="">
-          <ph name="PARTNER_NAME">$1<ex>Brave</ex></ph> has added an extension that may change the way Brave works.
-
-<ph name="EXTENSION_NAME">$2<ex>Babylon Toolbar</ex></ph>
-        </message>
-        <message name="IDS_EXTENSION_EXTERNAL_INSTALL_PROMPT_ABORT_BUTTON" desc="Button on the external install prompt to remove an extension installed by a third party.">
-          Remove from Brave
-        </message>
       </if>
 
       <if expr="not is_chromeos and not is_android">
@@ -2549,9 +2466,23 @@ Brave is unable to recover your settings.
         <message name="IDS_FEATURE_SHOWCASE_LENS_OVERLAY_DISCLOSURE" desc="This is a technical disclosure for the Lens Overlay. It specifies that PDFs are also part of the shared data. The tone should be informative.">
           When you use Image Search on desktop, the page title, URL, and content, including PDFs, are sent to the server
         </message>
+        <!-- Feature Showcase - Gemini -->
+        <!-- TODO(crbug.com/506845213): Update strings with hyperlinks. -->
+        <message name="IDS_FEATURE_SHOWCASE_GEMINI_TITLE" desc="" translateable="false">
+          Get help with your tabs and tasks with Gemini in Brave
+        </message>
+        <message name="IDS_FEATURE_SHOWCASE_GEMINI_DISCLOSURE_1" desc="" translateable="false">
+          Brave uses the content and URL of shared tabs. Your current tab is shared in new chats. You can change this setting anytime.
+        </message>
+        <message name="IDS_FEATURE_SHOWCASE_GEMINI_DISCLOSURE_2" desc="" translateable="false">
+          Neither your conversations with Gemini nor your Brave Workspace data will be reviewed or used to improve generative AI models. Gemini is AI and can make mistakes. Some content may not be suitable for everyone.
+        </message>
+        <message name="IDS_FEATURE_SHOWCASE_GEMINI_DISCLOSURE_3" desc="" translateable="false">
+          Brave Terms and the Gemini Apps Privacy Notice apply
+        </message>
       </if>
 
-      <!-- Feature Showcase - Lens Overlay -->
+      <!-- Feature Showcase - Themes -->
       <message name="IDS_FEATURE_SHOWCASE_THEMES_TITLE" desc="This is the headline for a customization onboarding screen. It focuses on personalization and user choice. (CHAR LIMIT = 30)">
         Make Brave yours
       </message>
@@ -2998,13 +2929,13 @@ Brave is unable to recover your settings.
           Show Gemini in Brave in system tray and turn on keyboard shortcut
         </message>
       </if>
-      <message name="IDS_SETTINGS_GLIC_OS_WIDGET_TOGGLE_SUBLABEL" desc="Sublabel of the toggle that controls whether the Gemini icon is shown in the menu bar (on Mac) / system tray (on Windows and Linux).">
+      <message name="IDS_SETTINGS_GLIC_OS_WIDGET_TOGGLE_SUBLABEL" desc="Sublabel of the toggle that controls whether the Gemini icon is shown in the menu bar (on Mac) / system tray (on Windows and Linux)." formatter_data="android_java">
         Easy access to use Gemini in Brave across your device, even if Brave is minimized.
       </message>
-      <message name="IDS_SETTINGS_GLIC_KEYBOARD_SHORTCUT_SUBLABEL" desc="Sublabel describing the keyboard shortcut that's used to globally invoke Gemini.">
+      <message name="IDS_SETTINGS_GLIC_KEYBOARD_SHORTCUT_SUBLABEL" desc="Sublabel describing the keyboard shortcut that's used to globally invoke Gemini." formatter_data="android_java">
         Open Gemini in Brave with a keyboard shortcut.
       </message>
-      <message name="IDS_SETTINGS_GLIC_NAVIGATION_SHORTCUT_SUBLABEL" desc="Sublabel describing the keyboard shortcut navigate between Brave and Gemini.">
+      <message name="IDS_SETTINGS_GLIC_NAVIGATION_SHORTCUT_SUBLABEL" desc="Sublabel describing the keyboard shortcut navigate between Brave and Gemini." formatter_data="android_java">
         To leave or return to Gemini in Brave, use keyboard shortcut.
       </message>
       <message name="IDS_SETTINGS_GLIC_KEEP_SIDEPANEL_OPEN_ON_NEW_TABS_SUBLABEL" desc="Sublabel describing the setting to keep side panel open when new tabs are opened.">
@@ -3087,17 +3018,8 @@ Brave is unable to recover your settings.
         <message name="IDS_DICTATION_ONBOARDING_BULLET_MICROPHONE" desc="The first paragraph in the onboarding dialog describing how the microphone is used." translateable="false">
           Brave will use your microphone to capture your voice and fill in text fields with cleaned up text.
         </message>
-        <message name="IDS_DICTATION_ONBOARDING_BULLET_DATA_SHARING" desc="The second paragraph in the onboarding dialog describing data sharing with Brave servers." translateable="false">
-          Your spoken audio, the transcribed text, and the content and URL of the page you're interacting with will be sent to Brave.
-        </message>
         <message name="IDS_DICTATION_ONBOARDING_BULLET_DISCLAIMER" desc="The disclaimer text in the onboarding dialog describing the use of AI and potential for mistakes and providing a link for more details." translateable="false">
           Dictation uses AI and can make mistakes. <ph name="LEARN_MORE_LINK">$1<ex>Learn more</ex></ph>
-        </message>
-        <message name="IDS_DICTATION_ONBOARDING_BUTTON_ACCEPT" desc="Button label on the onboarding dialog to confirm the provided information and use the feature." translateable="false">
-          Ok, got it
-        </message>
-        <message name="IDS_DICTATION_BUTTON_START" desc="Button label on the dictation UI that turns on the microphone to start dictating text." translateable="false">
-          Start
         </message>
       </if>
 

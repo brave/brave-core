@@ -536,8 +536,8 @@
   <message name="IDS_EXTENSIONS_SIDEBAR_DISCOVER_MORE" desc="The text displayed in the sidebar of the chrome://extensions page to open the Web Store to get more extensions.">
     Discover more extensions and themes on the <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Web Store<ph name="END_LINK">&lt;/a&gt; <ex>&lt;/a&gt;</ex> </ph>
   </message>
-  <message name="IDS_EXTENSIONS_WHATS_NEW_SIDEBAR_PROMO" desc="The text displayed in the sidebar of the chrome://extensions page to promote the extension documenation, for when the user is in developer mode.">
-    Developing extensions? Stay up to date on <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>What's New<ph name="END_LINK">&lt;/a&gt;</ph> with Google Extension developer documentation.
+  <message name="IDS_EXTENSIONS_MODERN_WEB_GUIDANCE_PROMO" desc="The promotional text displayed in the sidebar of the chrome://extensions page when Developer Mode is enabled. It encourages developers to download the Brave Extensions and Web Store skill for their AI coding agents to get latest API updates and best practices.">
+    Using AI coding agents to build extensions? Install the <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph><ph name="CHROME_EXTENSIONS">Brave Extensions<ex>Brave Extensions</ex></ph> and <ph name="WEB_STORE_SKILL">Web Store skill<ex>Web Store skill</ex></ph><ph name="END_LINK">&lt;/a&gt;</ph> to teach your coding agent the latest API updates and best practices.
   </message>
   <message name="IDS_EXTENSIONS_SIDEBAR_KEYBOARD_SHORTCUTS" desc="The text for the link to manage keyboard shortcuts for extensions.">
     Keyboard shortcuts
@@ -568,6 +568,9 @@
   </message>
   <message name="IDS_EXTENSIONS_SECTION_HEADER" desc="The label for the extensions section in chrome://extensions.">
     All Extensions
+  </message>
+  <message name="IDS_EXTENSIONS_PIN_NEW_EXTENSIONS" desc="The label for the toggle to pin new extensions in chrome://extensions.">
+    Pin new extensions
   </message>
   <!-- Extension Safety Check Review Panel strings -->
   <message name="IDS_EXTENSIONS_SAFETY_HUB_HEADER" desc="Name of a section in chrome://extensions that gives users an overview over their safety status and where users can take action to improve their safety.">

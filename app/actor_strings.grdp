@@ -22,7 +22,7 @@
       =1 {Check your task}
       other {Check your tasks}}
   </message>
-  <message name="IDS_ACTOR_TASK_NUDGE_TASK_COMPLETE_LABEL" desc="Text shown in a tab strip nudge informing the user that their task is done.">
+  <message name="IDS_ACTOR_TASK_NUDGE_TASK_COMPLETE_LABEL" desc="Text shown in a tab strip nudge informing the user that their task is done." formatter_data="android_java">
     {NUM_TASKS, plural,
       =1 {Task done}
       other {Tasks done}}
@@ -57,11 +57,20 @@
   <message name="IDS_TOOLTIP_TAB_ALERT_STATE_ACTOR_ACCESSING" desc="Extra tool tip text, when the tab's context is being shared with Gemini">
     Gemini is working on your task...
   </message>
-  <message name="IDS_TAB_AX_LABEL_ACTOR_ACCESSING" is_accessibility_with_no_ui="true" desc="Accessibility label text, when the Gemini is working on tab" formatter_data="android_java">
-    <ph name="WINDOW_TITLE">
-      $1<ex>Wikipedia</ex>
-    </ph> - Gemini is working on your task...
-  </message>
+  <if expr="is_android">
+    <message name="IDS_TAB_AX_LABEL_ACTOR_ACCESSING" is_accessibility_with_no_ui="true" desc="Accessibility label text, when the Gemini is working on tab" formatter_data="android_java">
+      <ph name="WINDOW_TITLE">
+        %1$s<ex>Wikipedia</ex>
+      </ph> - Gemini is working on your task...
+    </message>
+  </if>
+  <if expr="not is_android">
+    <message name="IDS_TAB_AX_LABEL_ACTOR_ACCESSING" is_accessibility_with_no_ui="true" desc="Accessibility label text, when the Gemini is working on tab">
+      <ph name="WINDOW_TITLE">
+        $1<ex>Wikipedia</ex>
+      </ph> - Gemini is working on your task...
+    </message>
+  </if>
   <message name="IDS_ACTOR_PIP_WORKING_STATUS" desc="Status text shown in Picture-in-Picture when the actor is actively performing a task." formatter_data="android_java">
     Working on your task…
   </message>
@@ -136,6 +145,13 @@
   </message>
   <message name="IDS_ACTOR_NOTIFICATION_BODY_WILL_STOP_TASK_NO_RESPONSE" desc="Notification body text when the actor will stop the task because the user has not responded." formatter_data="android_java">
     <ph name="TASK_TITLE">%s<ex>My Task</ex></ph>: If you don't respond soon, Gemini will stop working on this task to conserve battery
+  </message>
+  <!-- TODO(crbug.com/533082119): Enable translation when UX is finalized. -->
+  <message name="IDS_ACTOR_NOTIFICATION_TITLE_TASK_STARTS_SOON" desc="Notification title when the actor task will start soon." formatter_data="android_java" translateable="false">
+    Task will start soon.
+  </message>
+  <message name="IDS_ACTOR_NOTIFICATION_BODY_TASK_STARTS_SOON" desc="Notification body text when the actor task will start soon." formatter_data="android_java" translateable="false">
+    Your task will start soon.
   </message>
 
     <!-- Glic Peek View UI State Strings -->
