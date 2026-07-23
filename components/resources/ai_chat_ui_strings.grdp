@@ -768,6 +768,15 @@
   <message name="IDS_CHAT_UI_FULL_PAGE_SCREENSHOT_TITLE" desc="Title for full page screenshot attachment" formatter_data="webui=AiChat">
     Full page screenshot
   </message>
+  <message name="IDS_CHAT_UI_IMAGE_LIGHTBOX_PREVIEW_BUTTON_LABEL" desc="Accessible label for opening an attached image in a lightbox preview" formatter_data="webui=AiChat">
+    Preview image
+  </message>
+  <message name="IDS_CHAT_UI_IMAGE_LIGHTBOX_COPY_BUTTON_LABEL" desc="Button label to copy an attached image to the clipboard from the lightbox" formatter_data="webui=AiChat">
+    Copy image
+  </message>
+  <message name="IDS_CHAT_UI_IMAGE_LIGHTBOX_DOWNLOAD_BUTTON_LABEL" desc="Button label to download an attached image from the lightbox" formatter_data="webui=AiChat">
+    Download image
+  </message>
   <message name="IDS_AI_CHAT_CURRENT_TAB_CONTENTS_BUTTON_LABEL" desc="The button label for current tab contents" formatter_data="webui=AiChat">
     Current tab contents
   </message>

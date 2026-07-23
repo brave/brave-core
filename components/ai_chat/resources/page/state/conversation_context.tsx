@@ -611,6 +611,9 @@ export function useProvideConversationContext(props: ConversationContextProps) {
   // the conversation is deleted on the backend.
   // const isDeleted = api.useCurrentOnConversationDeleted().hasEmitted
 
+  const [previewUploadedFile, setPreviewUploadedFile] =
+    React.useState<Mojom.UploadedFile | null>(null)
+
   // Listen for showSkillDialog requests from the child frame
   aiChat.api.useShowSkillDialog((prompt) => {
     aiChat.setSkillDialog({
@@ -621,6 +624,11 @@ export function useProvideConversationContext(props: ConversationContextProps) {
       createdTime: { internalValue: BigInt(0) },
       lastUsed: { internalValue: BigInt(0) },
     })
+  })
+
+  // Listen for showImageLightbox requests from the child frame
+  aiChat.api.useShowImageLightbox((file) => {
+    setPreviewUploadedFile(file)
   })
 
   // Listen for handleResetError requests from the child frame
@@ -692,6 +700,8 @@ export function useProvideConversationContext(props: ConversationContextProps) {
     isToolsMenuOpen,
     setIsToolsMenuOpen,
 
+    previewUploadedFile,
+    setPreviewUploadedFile,
     disassociateContent,
     setToolsAttached,
     associateDefaultContent,

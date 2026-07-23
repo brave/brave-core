@@ -133,6 +133,7 @@ export function createMockParentUIFrame(
     dragStart: () => {},
     regenerateAnswerMenuIsOpen: () => {},
     showSkillDialog: () => {},
+    showImageLightbox: () => {},
     showPremiumSuggestionForRegenerate: () => {},
     requestNewConversation: () => {},
     handleResetError: () => {},
