@@ -26,10 +26,13 @@
 #include "base/system/sys_info.h"
 #include "base/time/time.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/common.mojom-shared.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/sync/protocol/ai_chat_specifics.pb.h"
 #include "components/sync/protocol/entity_data.h"
 #include "components/sync/protocol/entity_specifics.pb.h"
+#include "mojo/public/cpp/bindings/enum_utils.h"
+#include "third_party/protobuf/src/google/protobuf/repeated_ptr_field.h"
 #include "third_party/zlib/google/compression_utils.h"
 #include "url/gurl.h"
 
@@ -340,16 +343,6 @@ std::vector<std::string> ReadCompressibleStrings(
   return out;
 }
 
-// Coerces a serialized integer enum value to a known mojom enumerator, falling
-// back to the default enumerator when the sender used a value this client does
-// not recognize (forward-compat or corrupt remote data). Keeps an out-of-range
-// value from reaching a mojo pipe, where it would fail validation.
-template <typename Enum>
-Enum ToKnownEnumValue(int value) {
-  const auto enum_value = static_cast<Enum>(value);
-  return mojom::IsKnownEnumValue(enum_value) ? enum_value : Enum();
-}
-
 mojom::WebSourcePtr ProtoToWebSource(const sync_pb::AIChatWebSource& proto) {
   auto source = mojom::WebSource::New();
   source->title = proto.title();
@@ -467,7 +460,8 @@ mojom::AssociatedContentPtr ProtoToAssociatedContent(
     content->url = GURL(proto.url());
   }
   content->content_type =
-      ToKnownEnumValue<mojom::ContentType>(proto.content_type());
+      mojo::ConvertIntToMojoEnum<mojom::ContentType>(proto.content_type())
+          .value_or(mojom::ContentType::PageContent);
   content->content_used_percentage = proto.content_used_percentage();
   content->conversation_turn_uuid = entry_uuid;
   return content;
@@ -480,7 +474,8 @@ mojom::UploadedFilePtr ProtoToUploadedFile(
     file->filename = proto.filename();
   }
   file->filesize = proto.filesize();
-  file->type = ToKnownEnumValue<mojom::UploadedFileType>(proto.type());
+  file->type = mojo::ConvertIntToMojoEnum<mojom::UploadedFileType>(proto.type())
+                   .value_or(mojom::UploadedFileType::kText);
   // Only populate bytes when the sender actually shipped them. When the sender
   // omitted them (the oneof holds omitted_data_hash instead), leave |data|
   // empty so the caller can restore any existing local bytes.
@@ -616,8 +611,11 @@ mojom::ConversationTurnPtr SpecificsToEntry(
     entry->prompt = proto.prompt();
   }
   entry->character_type =
-      ToKnownEnumValue<mojom::CharacterType>(proto.character_type());
-  entry->action_type = ToKnownEnumValue<mojom::ActionType>(proto.action_type());
+      mojo::ConvertIntToMojoEnum<mojom::CharacterType>(proto.character_type())
+          .value_or(mojom::CharacterType::HUMAN);
+  entry->action_type =
+      mojo::ConvertIntToMojoEnum<mojom::ActionType>(proto.action_type())
+          .value_or(mojom::ActionType::UNSPECIFIED);
   if (proto.has_selected_text()) {
     entry->selected_text = proto.selected_text();
   }
