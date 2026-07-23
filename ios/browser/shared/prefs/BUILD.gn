@@ -42,10 +42,12 @@ source_set("prefs") {
     "//brave/components/skus/browser",
     "//brave/ios/browser/brave_stats",
     "//brave/ios/browser/youtube",
+    "//components/metrics",
     "//components/omnibox/browser",
     "//components/pref_registry",
     "//components/prefs",
     "//ios/chrome/browser/shared/model/prefs",
+    "//ios/chrome/common",
   ]
   if (enable_brave_vpn) {
     deps += [ "//brave/components/brave_vpn/common" ]

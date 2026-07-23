@@ -20,7 +20,9 @@
 #include "base/i18n/icu_util.h"
 #include "base/logging.h"
 #include "base/logging/log_severity.h"
+#include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
+#include "base/no_destructor.h"
 #include "base/path_service.h"
 #include "base/strings/sys_string_conversions.h"
 #include "base/threading/thread_restrictions.h"
@@ -43,7 +45,11 @@
 #include "brave/ios/components/prefs/pref_service_bridge_impl.h"
 #import "build/blink_buildflags.h"
 #include "components/component_updater/component_updater_paths.h"
+#include "components/metrics/metrics_pref_names.h"
+#include "components/prefs/pref_change_registrar.h"
+#include "components/prefs/pref_service.h"
 #include "ios/chrome/app/startup/provider_registration.h"
+#include "ios/chrome/browser/crash_report/model/crash_helper.h"
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
 #include "ios/chrome/browser/shared/model/paths/paths.h"
 #include "ios/chrome/browser/shared/model/prefs/pref_names.h"
@@ -74,8 +80,10 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
   std::unique_ptr<BraveWebClient> _webClient;
   std::unique_ptr<BraveMainDelegate> _delegate;
   std::unique_ptr<web::WebMain> _webMain;
+  raw_ptr<base::AtExitManager> _exitManager;
   scoped_refptr<p3a::P3AService> _p3a_service;
   scoped_refptr<p3a::HistogramsBraveizer> _histogram_braveizer;
+  PrefChangeRegistrar _localStatePrefChangeRegistrar;
 }
 @property(nonatomic) BraveProfileController* profileController;
 @property(nonatomic) BraveP3AUtils* p3aUtils;
@@ -93,6 +101,11 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
 - (instancetype)initWithAdditionalSwitches:
     (NSArray<BraveCoreSwitch*>*)additionalSwitches {
   if ((self = [super init])) {
+    _exitManager = new base::AtExitManager();
+    @autoreleasepool {
+      crash_helper::Start();
+    }
+
     [[NSNotificationCenter defaultCenter]
         addObserver:self
            selector:@selector(onAppEnterBackground:)
@@ -139,6 +152,10 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
     // Start Main ([ChromeMainStarter startChromeMain])
     web::WebMainParams params(_delegate.get());
 
+    // We create a `base::AtExitManager` already so we can enable the crash
+    // reporter early so prevent WebMainRunner from registering a second one.
+    params.register_exit_manager = false;
+
     // Parse Switches, Features, Arguments (Command-Line Arguments)
     NSMutableArray* arguments =
         [[[NSProcessInfo processInfo] arguments] mutableCopy];
@@ -178,6 +195,22 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
         GetApplicationContext()->GetComponentUpdateService();
 
     _adblockService = [[AdblockService alloc] initWithComponentUpdater:cus];
+
+    // Applies the persisted crash reporting consent as soon as local state is
+    // available, and keeps it in sync with the pref for the rest of the
+    // process lifetime (e.g. when changed from Settings).
+    PrefService* localState = GetApplicationContext()->GetLocalState();
+    _localStatePrefChangeRegistrar.Init(localState);
+    _localStatePrefChangeRegistrar.Add(
+        metrics::prefs::kMetricsReportingEnabled,
+        base::BindRepeating(
+            [](PrefService* prefService) {
+              crash_helper::SetEnabled(prefService->GetBoolean(
+                  metrics::prefs::kMetricsReportingEnabled));
+            },
+            localState));
+    crash_helper::SetEnabled(
+        localState->GetBoolean(metrics::prefs::kMetricsReportingEnabled));
   }
   return self;
 }
@@ -188,6 +221,8 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
   _webMain.reset();
   _delegate.reset();
   _webClient.reset();
+
+  _exitManager.ClearAndDelete();
 }
 
 - (void)onAppEnterBackground:(NSNotification*)notification {
@@ -205,6 +240,8 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
   if (context) {
     context->OnAppEnterForeground();
   }
+  // This is a no-op if reporst are already uploading
+  crash_helper::UploadCrashReports();
 }
 
 - (void)onAppWillTerminate:(NSNotification*)notification {
@@ -234,6 +271,9 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
   // Make sure the system url request getter is called at least once during
   // startup in case cleanup is done early before first network request
   GetApplicationContext()->GetSystemURLRequestContext();
+
+  // Upload any pending crash reports if crash reporting is allowed
+  crash_helper::UploadCrashReports();
 }
 
 + (void)setLogHandler:(BraveCoreLogHandler)logHandler {

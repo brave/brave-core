@@ -3,6 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+#include "base/notreached.h"
+#include "base/version_info/channel.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
@@ -35,7 +37,9 @@
 #include "brave/ios/browser/brave_stats/brave_stats_prefs.h"
 #include "brave/ios/browser/shared/prefs/pref_names.h"
 #include "brave/ios/browser/youtube/pref_names.h"
+#include "components/metrics/metrics_pref_names.h"
 #include "components/pref_registry/pref_registry_syncable.h"
+#include "ios/chrome/common/channel_info.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/components/brave_vpn/common/pref_names.h"
@@ -51,6 +55,26 @@
 #endif
 
 namespace brave {
+
+namespace {
+
+bool GetDefaultPrefValueForMetricsReporting() {
+  auto channel = GetChannel();
+  switch (channel) {
+    case version_info::Channel::STABLE:
+      return false;
+    case version_info::Channel::BETA:  // fall through
+    case version_info::Channel::DEV:   // fall through
+    case version_info::Channel::CANARY:
+      return true;
+    case version_info::Channel::UNKNOWN:
+      return false;
+  }
+  NOTREACHED() << "Unexpected value for channel: "
+               << std::to_underlying(channel);
+}
+
+}  // namespace
 
 void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
   brave_ads::RegisterProfilePrefs(registry);
@@ -135,6 +159,11 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
                                 true);
   registry->RegisterBooleanPref(brave_shields::prefs::kLinkedInEmbedControlType,
                                 false);
+
+  // Override the default value for crash reporting
+  registry->SetDefaultPrefValue(
+      metrics::prefs::kMetricsReportingEnabled,
+      base::Value(GetDefaultPrefValueForMetricsReporting()));
 }
 
 void MigrateObsoleteProfilePrefs(PrefService* prefs) {
