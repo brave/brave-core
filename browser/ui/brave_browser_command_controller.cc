@@ -331,8 +331,6 @@ void BraveBrowserCommandController::InitBraveCommandState() {
   UpdateCommandEnabled(IDC_SHOW_APPS_PAGE,
                        !browser_->GetProfile()->IsPrimaryOTRProfile());
 
-  UpdateCommandEnabled(IDC_BRAVE_BOOKMARK_BAR_SUBMENU, true);
-
   UpdateCommandEnabled(IDC_TOGGLE_VERTICAL_TABS, true);
   UpdateCommandEnabled(IDC_TOGGLE_VERTICAL_TABS_WINDOW_TITLE, true);
   UpdateCommandEnabled(IDC_TOGGLE_VERTICAL_TABS_EXPANDED, true);

@@ -4,17 +4,6 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 substitutions:
-  - description: |
-      Persist "Always show bookmarks bar on NTP" across incognito.
-
-      It's the counterpart to kShowBookmarkBar, already on this list, so it
-      should persist the same way.
-    regex:
-      re_pattern: '(const char\* const kPersistentPrefNames\[\] = \{)'
-      replace: |-
-        \1
-            bookmarks::prefs::kAlwaysShowBookmarkBarOnNTP,
-
   - description: 'Extend the persistent prefs allowlist with Brave prefs.'
     after_function_impl:
       function_name: GetIncognitoPersistentPrefsAllowlist

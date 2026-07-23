@@ -1,5 +1,5 @@
 diff --git a/components/search/ntp_features.cc b/components/search/ntp_features.cc
-index 25de20c479a9253a2bb098c344ea02d7b5473b85..7acc65daf193a966427175bffdd23f8e2dbfe188 100644
+index 25de20c479a9253a2bb098c344ea02d7b5473b85..626dbe64ca50e7abc7dc4561950b33570203f53a 100644
 --- a/components/search/ntp_features.cc
 +++ b/components/search/ntp_features.cc
 @@ -24,17 +24,14 @@ BASE_FEATURE(kConfirmSuggestionRemovals,
@@ -79,3 +79,13 @@ index 25de20c479a9253a2bb098c344ea02d7b5473b85..7acc65daf193a966427175bffdd23f8e
  BASE_FEATURE(kNtpModulesMaxColumnCount, base::FEATURE_DISABLED_BY_DEFAULT);
  
  // Dummy feature to set param "NtpModulesLoadedWithOtherModulesMaxInstanceCount"
+@@ -335,7 +324,8 @@ BASE_FEATURE(kNtpShortcutsRedesign, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ // If enabled, the bookmark bar may be auto-removed on the NTP and new
+ // visibility settings are added.
+-BASE_FEATURE(kNtpSimplificationBookmarkBar, base::FEATURE_DISABLED_BY_DEFAULT);
++// kNtpSimplificationBookmarkBar feature state is enforced via plaster rewrite.
++BASE_FEATURE(kNtpSimplificationBookmarkBar, base::FEATURE_ENABLED_BY_DEFAULT);
+ 
+ // If enabled, the bookmark bar time interval and number of times it's shown on
+ // the NTP before auto-hiding is decreased for testing.
