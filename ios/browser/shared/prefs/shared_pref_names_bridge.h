@@ -12,6 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 OBJC_EXPORT NSString* const kMediaBackgroundingEnabled;
 OBJC_EXPORT NSString* const kBlockAllCookiesEnabled;
+OBJC_EXPORT NSString* const kMetricsReportingEnabled;
 
 NS_ASSUME_NONNULL_END
 
