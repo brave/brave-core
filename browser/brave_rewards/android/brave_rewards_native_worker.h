@@ -29,6 +29,10 @@ namespace brave_rewards {
 class RewardsService;
 }
 
+namespace brave_adaptive_captcha {
+class BraveAdaptiveCaptchaService;
+}
+
 namespace chrome {
 namespace android {
 
@@ -94,14 +98,18 @@ class BraveRewardsNativeWorker
 
   base::android::ScopedJavaLocalRef<jstring> GetPublisherName(JNIEnv* env,
                                                               uint64_t tabId);
-  base::android::ScopedJavaLocalRef<jstring> GetCaptchaSolutionURL(
-      JNIEnv* env,
-      const base::android::JavaRef<jstring>& paymentId,
-      const base::android::JavaRef<jstring>& captchaId);
-  base::android::ScopedJavaLocalRef<jstring> GetAttestationURL(JNIEnv* env);
-  base::android::ScopedJavaLocalRef<jstring> GetAttestationURLWithPaymentId(
-      JNIEnv* env,
-      const base::android::JavaRef<jstring>& paymentId);
+  // Starts the device-attestation flow to solve a scheduled captcha. The Play
+  // Integrity token is fetched on the Java side, which then calls back into
+  // AttestPaymentId().
+  void StartAttestation(JNIEnv* env,
+                        const base::android::JavaRef<jstring>& captcha_id,
+                        const base::android::JavaRef<jstring>& payment_id);
+  void AttestPaymentId(JNIEnv* env,
+                       const base::android::JavaRef<jstring>& captcha_id,
+                       const base::android::JavaRef<jstring>& payment_id,
+                       const base::android::JavaRef<jstring>& integrity_token,
+                       const base::android::JavaRef<jstring>& unique_value,
+                       const base::android::JavaRef<jstring>& package_name);
 
   base::android::ScopedJavaLocalRef<jstring> GetPublisherId(JNIEnv* env,
                                                             uint64_t tabId);
@@ -241,6 +249,11 @@ class BraveRewardsNativeWorker
                           const std::string& publisher_key);
 
  private:
+  void OnStartAttestation(const std::string& captcha_id,
+                          const std::string& payment_id,
+                          const std::string& unique_value);
+  void OnAttestResult(bool success);
+
   void OnGetUserType(const brave_rewards::mojom::UserType user_type);
 
   void OnBalance(brave_rewards::mojom::BalancePtr balance);
@@ -249,6 +262,8 @@ class BraveRewardsNativeWorker
 
   JavaObjectWeakGlobalRef weak_java_brave_rewards_native_worker_;
   raw_ptr<brave_rewards::RewardsService> brave_rewards_service_ = nullptr;
+  raw_ptr<brave_adaptive_captcha::BraveAdaptiveCaptchaService>
+      adaptive_captcha_service_ = nullptr;
   brave_rewards::mojom::RewardsParametersPtr parameters_;
   brave_rewards::mojom::Balance balance_;
   PublishersInfoMap map_publishers_info_;
