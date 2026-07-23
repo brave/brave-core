@@ -183,5 +183,69 @@ class WorkspaceTest(unittest.TestCase):
         self.assertEqual(getattr(module, '_brave_core_ref'), 'master')
 
 
+class ModulePropertiesTest(unittest.TestCase):
+    """The engine binds a module's PROPERTIES/ENV_PROPERTIES into its api.
+
+    Uses the `hello` module (which declares a PROPERTIES message) for the
+    end-to-end paths, and package_rust's compiled messages for the arg-order /
+    env path via `_module_property_args` directly.
+    """
+
+    @classmethod
+    def setUpClass(cls):
+        engine._ensure_protos()
+        # pylint: disable=import-outside-toplevel,import-error
+        from PB.recipes.brave.toolchains.rust.package_rust import (
+            EnvProperties, InputProperties)
+        cls.InputProperties = InputProperties
+        cls.EnvProperties = EnvProperties
+
+    def test_properties_bound_from_namespaced_block(self):
+        eng = engine._Engine()
+        eng._properties = {'$hello': {'target': 'Ada'}}
+        hello = eng._instantiate_module('hello', [])
+        self.assertEqual(hello._target, 'Ada')
+
+    def test_absent_block_yields_proto_defaults(self):
+        # No `$hello` block: the message defaults (empty target -> None).
+        hello = engine._Engine()._instantiate_module('hello', [])
+        self.assertIsNone(hello._target)
+
+    def test_top_level_props_do_not_leak_into_module(self):
+        # A non-namespaced top-level property is not a module property.
+        eng = engine._Engine()
+        eng._properties = {'target': 'Zed'}
+        hello = eng._instantiate_module('hello', [])
+        self.assertIsNone(hello._target)
+
+    def test_property_feeds_config_end_to_end(self):
+        eng = engine._Engine()
+        eng._properties = {'$hello': {'target': 'Ada'}}
+        hello = eng._instantiate_module('hello', [])
+        hello.set_config('default_tool')
+        self.assertEqual(hello.c.TARGET, 'Ada')
+
+    def test_arg_order_properties_then_env(self):
+        eng = engine._Engine()
+        eng._properties = {'$fake': {'chromium_ref': 'x'}}
+        eng._environ = {'git_cache': '/c'}  # lower-case: must be upper-cased
+        pkg = types.SimpleNamespace(PROPERTIES=self.InputProperties,
+                                    ENV_PROPERTIES=self.EnvProperties)
+        args = eng._module_property_args('fake', pkg)
+        self.assertEqual(len(args), 2)
+        self.assertEqual(args[0].chromium_ref, 'x')
+        self.assertEqual(args[1].GIT_CACHE, '/c')
+
+    def test_no_defs_means_no_args(self):
+        pkg = types.SimpleNamespace(DEPS=[])
+        self.assertEqual(engine._Engine()._module_property_args('fake', pkg),
+                         [])
+
+    def test_non_message_properties_raises(self):
+        pkg = types.SimpleNamespace(PROPERTIES=dict, DEPS=[])
+        with self.assertRaises(TypeError):
+            engine._Engine()._module_property_args('fake', pkg)
+
+
 if __name__ == '__main__':
     unittest.main()

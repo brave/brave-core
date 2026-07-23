@@ -84,8 +84,9 @@ def RunSteps(api, env_properties):               # ENV_PROPERTIES only
 
 `PROPERTIES` is populated by taking the input property JSON object (from
 `--properties`), removing all keys beginning with `$`, and decoding the rest as
-JSONPB into the `PROPERTIES` message. Keys beginning with `$` are reserved by
-the engine.
+JSONPB into the `PROPERTIES` message. Keys beginning with `$` are reserved: a
+`$<module>` key carries that module's own properties (see
+[Per-module properties](#per-module-properties)).
 
 `ENV_PROPERTIES` is populated by taking the current environment variables,
 capitalizing all keys (`key.upper()`), and decoding that into the
@@ -105,6 +106,77 @@ def GenTests(api):
 
 `api.properties` also accepts top-level keyword arguments as a shorthand, e.g.
 `api.properties(chromium_ref='151.0.7917.1', brave_subrevision=1)`.
+
+### Per-module properties
+
+A recipe _module_ can declare its own `PROPERTIES` (and optionally
+`ENV_PROPERTIES`) too, so it observes typed input without threading it through
+every recipe. Declare the messages in a sibling `.proto`, with the package set
+to the module's namespace (the file name is dropped -- the single-repo analogue
+of upstream's `$repo/module`):
+
+```proto
+// recipe_modules/hello/properties.proto
+syntax = "proto3";
+package recipe_modules.brave.hello;
+
+message InputProperties {
+  string target = 1;
+}
+```
+
+Assign the message as `PROPERTIES` in the module's `__init__.py` (next to
+`DEPS`) and accept it in the api's constructor:
+
+```python
+# recipe_modules/hello/__init__.py
+from PB.recipe_modules.brave.hello.properties import InputProperties
+
+DEPS = ['path', 'step']
+PROPERTIES = InputProperties
+```
+
+```python
+# recipe_modules/hello/api.py
+class HelloApi(RecipeApi):
+    def __init__(self, properties):
+        super().__init__()
+        # DEPS are NOT available yet in __init__ -- only stash the value here.
+        self._target = properties.target or None
+```
+
+The engine passes the bound message(s) positionally, in the same order
+`RunSteps` receives them:
+
+```python
+def __init__(self):                            # neither declared
+def __init__(self, properties):                # PROPERTIES only
+def __init__(self, properties, env_properties): # PROPERTIES and ENV_PROPERTIES
+def __init__(self, env_properties):            # ENV_PROPERTIES only
+```
+
+A module's `PROPERTIES` are **namespaced**: they are decoded from the
+`$<module_name>` block of the input property JSON, keeping per-module input
+separate from the recipe's own top-level properties. So to greet `anya` via the
+`hello` module above:
+
+```sh
+vpython3 tools/recipes/engine.py some/recipe \
+    --properties '{ "$hello": { "target": "anya" } }'
+```
+
+and in tests:
+
+```python
+api.properties(**{'$hello': {'target': 'anya'}})
+```
+
+`ENV_PROPERTIES` on a module works exactly as it does for a recipe (from the
+environment, keys upper-cased). Both decodes ignore unknown fields, and (as with
+recipes) there is no "required" enforcement -- a missing property takes its
+proto default. Per-module properties pair naturally with [Configs](#configs): a
+common pattern is for `get_config_defaults` to feed a property into the config
+schema (the `hello` module does this with `target` -> `TARGET`).
 
 ## Configs
 
