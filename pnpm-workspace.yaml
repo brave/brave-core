@@ -39,6 +39,7 @@ overrides:
   'elliptic': '6.6.1'
   'esbuild': '0.28.1'
   'http-proxy-middleware': '2.0.10'
+  'postcss': '8.5.12'
   'prismjs': '1.30.0'
   'protobufjs': '7.6.5'
   'tiny-secp256k1': '1.1.7'
