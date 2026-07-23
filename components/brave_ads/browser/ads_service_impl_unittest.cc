@@ -21,6 +21,7 @@
 #include "brave/components/brave_ads/browser/test/fake_ads_tooltips_delegate.h"
 #include "brave/components/brave_ads/browser/test/fake_bat_ads_service_factory.h"
 #include "brave/components/brave_ads/browser/test/fake_device_id.h"
+#include "brave/components/brave_ads/browser/test/fake_shutdown_monitor.h"
 #include "brave/components/brave_ads/browser/test/fake_virtual_pref_provider_delegate.h"
 #include "brave/components/brave_ads/browser/test/mock_resource_component.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
@@ -85,6 +86,9 @@ class BraveAdsAdsServiceImplTest : public testing::Test {
         std::make_unique<test::FakeBatAdsServiceFactory>();
     bat_ads_service_factory_ = bat_ads_service_factory.get();
 
+    auto shutdown_monitor = std::make_unique<test::FakeShutdownMonitor>();
+    shutdown_monitor_ = shutdown_monitor.get();
+
     ads_service_ = std::make_unique<AdsServiceImpl>(
         std::make_unique<test::FakeAdsServiceDelegate>(), prefs_, local_state_,
         std::make_unique<brave_policy::PolicyInitializationWaiter>(
@@ -94,7 +98,8 @@ class BraveAdsAdsServiceImplTest : public testing::Test {
         /*channel_name=*/"foo", profile_dir_.GetPath(),
         std::make_unique<test::FakeAdsTooltipsDelegate>(), std::move(device_id),
         std::move(bat_ads_service_factory),
-        std::make_unique<ApplicationStateMonitor>(), mock_resource_component_,
+        std::make_unique<ApplicationStateMonitor>(),
+        std::move(shutdown_monitor), mock_resource_component_,
         /*history_service=*/nullptr,
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
         &rewards_service_,
@@ -106,6 +111,7 @@ class BraveAdsAdsServiceImplTest : public testing::Test {
     // Null before reset to avoid `raw_ptr` dangling detection.
     device_id_ = nullptr;
     bat_ads_service_factory_ = nullptr;
+    shutdown_monitor_ = nullptr;
     ads_service_->Shutdown();
     ads_service_.reset();
   }
@@ -118,6 +124,10 @@ class BraveAdsAdsServiceImplTest : public testing::Test {
   }
 
   void Shutdown() { ads_service_->Shutdown(); }
+
+  void NotifyBrowserWillShutdown() {
+    shutdown_monitor_->NotifyAppTerminating();
+  }
 
   void SimulateIdleState(ui::IdleState idle_state, base::TimeDelta idle_time) {
     ads_service_->ProcessIdleState(idle_state, idle_time);
@@ -136,6 +146,8 @@ class BraveAdsAdsServiceImplTest : public testing::Test {
 
   raw_ptr<test::FakeBatAdsServiceFactory>
       bat_ads_service_factory_;  // Not owned.
+
+  raw_ptr<test::FakeShutdownMonitor> shutdown_monitor_;  // Not owned.
 
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   test::FakeRewardsService rewards_service_;
@@ -635,6 +647,37 @@ TEST_F(BraveAdsAdsServiceImplTest,
 
   // Act
   Shutdown();
+
+  // Assert
+  EXPECT_THAT(prefs_.GetList(prefs::kNotificationAds), testing::IsEmpty());
+}
+
+TEST_F(
+    BraveAdsAdsServiceImplTest,
+    DoesNotClearNotificationAdsPrefOnBrowserWillShutdownIfUserHasNotOptedInToNotificationAds) {
+  // Arrange
+  prefs_.SetList(prefs::kNotificationAds, base::ListValue().Append("foo"));
+
+  // Act
+  NotifyBrowserWillShutdown();
+
+  // Assert
+  EXPECT_THAT(prefs_.GetList(prefs::kNotificationAds),
+              testing::Not(testing::IsEmpty()));
+}
+
+TEST_F(
+    BraveAdsAdsServiceImplTest,
+    ClearsNotificationAdsPrefOnBrowserWillShutdownIfUserHasOptedInToNotificationAds) {
+  // Arrange: the browser can start quitting well before `Shutdown()` runs for
+  // this profile, so notification ads must be closed as soon as
+  // `OnBrowserWillShutdown()` fires rather than only at `Shutdown()`.
+  prefs_.SetBoolean(brave_rewards::prefs::kEnabled, true);
+  prefs_.SetBoolean(prefs::kOptedInToNotificationAds, true);
+  prefs_.SetList(prefs::kNotificationAds, base::ListValue().Append("foo"));
+
+  // Act
+  NotifyBrowserWillShutdown();
 
   // Assert
   EXPECT_THAT(prefs_.GetList(prefs::kNotificationAds), testing::IsEmpty());

@@ -150,6 +150,7 @@ AdsServiceImpl::AdsServiceImpl(
     std::unique_ptr<DeviceId> device_id,
     std::unique_ptr<BatAdsServiceFactory> bat_ads_service_factory,
     std::unique_ptr<ApplicationStateMonitor> application_state_monitor,
+    std::unique_ptr<ShutdownMonitor> shutdown_monitor,
     ResourceComponent& resource_component,
     history::HistoryService* history_service,
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
@@ -179,12 +180,22 @@ AdsServiceImpl::AdsServiceImpl(
       rewards_service_(rewards_service),
 #endif
       application_state_monitor_(std::move(application_state_monitor)),
+      shutdown_monitor_(std::move(shutdown_monitor)),
       policy_initialization_waiter_(std::move(policy_initialization_waiter)),
       bat_ads_client_associated_receiver_(this) {
   CHECK(device_id_);
   CHECK(bat_ads_service_factory_);
   CHECK(application_state_monitor_);
+  CHECK(shutdown_monitor_);
   CHECK(policy_initialization_waiter_);
+
+  // Chrome only ever notifies app termination once per process, so subscribe
+  // immediately rather than waiting for `InitializeBatAdsCallback`, otherwise
+  // a profile that finishes initializing after that single notification has
+  // already fired would never hear about it.
+  app_terminating_subscription_ = shutdown_monitor_->AddAppTerminatingCallback(
+      base::BindOnce(&AdsServiceImpl::OnBrowserWillShutdown,
+                     weak_ptr_factory_.GetWeakPtr()));
 
   if (!http_client_ || !history_service_ || !host_content_settings_map_) {
     CHECK_IS_TEST();
@@ -935,7 +946,6 @@ void AdsServiceImpl::CloseAllNotificationAds() {
   }
 
   const auto& list = prefs_->GetList(prefs::kNotificationAds);
-
   const base::circular_deque<NotificationAdInfo> ads =
       NotificationAdsFromList(list);
 
@@ -957,7 +967,10 @@ void AdsServiceImpl::MaybeOpenNewTabWithAd() {
 }
 
 void AdsServiceImpl::OpenNewTabWithAd(const std::string& placement_id) {
-  if (StopNotificationAdTimeOutTimer(placement_id)) {
+  // `CloseNotificationAd` already cancels the timeout for reminders, so only
+  // cancel it here for the branches that do not call it.
+  if (!IsReminder(placement_id) &&
+      StopNotificationAdTimeOutTimer(placement_id)) {
     VLOG(2) << "Canceled timeout for notification ad with placement id "
             << placement_id;
   }
@@ -1066,6 +1079,8 @@ void AdsServiceImpl::ShutdownAdsService() {
 #endif
 
   application_state_monitor_observation_.Reset();
+
+  app_terminating_subscription_ = {};
 
   CloseAllNotificationAds();
 
@@ -1480,6 +1495,8 @@ void AdsServiceImpl::ShowNotificationAd(
 }
 
 void AdsServiceImpl::CloseNotificationAd(const std::string& placement_id) {
+  StopNotificationAdTimeOutTimer(placement_id);
+
   delegate_->CloseNotificationAd(placement_id);
 }
 
@@ -1694,6 +1711,12 @@ void AdsServiceImpl::OnBrowserDidResignActive() {
 #endif  // BUILDFLAG(IS_ANDROID)
     bat_ads_client_notifier_remote_->NotifyBrowserDidEnterBackground();
   }
+}
+
+void AdsServiceImpl::OnBrowserWillShutdown() {
+  // Runs before `ShutdownAdsService()`'s call, closing the ad as soon as
+  // quitting starts instead of leaving it clickable until profile teardown.
+  CloseAllNotificationAds();
 }
 
 void AdsServiceImpl::OnResourceComponentDidChange(

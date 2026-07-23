@@ -44,6 +44,8 @@ source_set("impl") {
     "application_state/notification_helper/notification_helper.h",
     "application_state/notification_helper/notification_helper_impl.cc",
     "application_state/notification_helper/notification_helper_impl.h",
+    "application_state/shutdown_monitor_impl.cc",
+    "application_state/shutdown_monitor_impl.h",
     "virtual_pref_provider_delegate.cc",
   ]
 
@@ -67,6 +69,8 @@ source_set("impl") {
     "//chrome/browser:primitives",
     "//chrome/browser/content_settings:content_settings_factory",
     "//chrome/browser/history",
+    "//chrome/browser/lifetime",
+    "//chrome/browser/lifetime:termination_notification",
     "//chrome/browser/notifications",
     "//chrome/browser/profiles:profile",
     "//chrome/browser/profiles:profile_manager",
@@ -150,6 +154,7 @@ source_set("browser_tests") {
   testonly = true
 
   sources = [
+    "ads_service_delegate_browsertest.cc",
     "ads_service_waiter.cc",
     "ads_service_waiter.h",
     "analytics/p3a/brave_stats_helper_browsertest.cc",
@@ -161,6 +166,7 @@ source_set("browser_tests") {
     ":brave_ads",
     ":impl",
     "//chrome/browser",
+    "//chrome/browser/lifetime",
     "//chrome/test:test_support",
   ]
 
