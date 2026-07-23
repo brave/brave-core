@@ -9,6 +9,7 @@
 #include <memory>
 
 #include "base/memory/raw_ptr.h"
+#include "base/scoped_observation.h"
 #include "ui/views/view_observer.h"
 
 class AIChatMovableSidePanelWebView;
@@ -65,7 +66,7 @@ class AIChatSidePanelTabTransferBridge : public views::ViewObserver {
   // view is destroyed. The reverse move uses it to reach the panel's contents.
   void SetActiveChatView(AIChatMovableSidePanelWebView* view);
   AIChatMovableSidePanelWebView* active_chat_view() {
-    return active_chat_view_;
+    return chat_view_observation_.GetSource();
   }
 
   // Reverse (side panel -> tab). Moves the live AI Chat `side_panel_contents`
@@ -92,10 +93,13 @@ class AIChatSidePanelTabTransferBridge : public views::ViewObserver {
   // factory via `TakePendingContents`.
   std::unique_ptr<content::WebContents> pending_web_contents_;
 
-  // The live movable AI Chat side panel view for this window, or null when AI
-  // Chat is not (movably) hosted in the side panel. Observed for destruction so
-  // this back-pointer never dangles.
-  raw_ptr<AIChatMovableSidePanelWebView> active_chat_view_ = nullptr;
+  // Tracks the live movable AI Chat side panel view for this window (null when
+  // AI Chat is not movably hosted in the side panel). The scoped observation is
+  // the single source of truth for the active view: it holds the back-pointer
+  // and stops observing when the view is destroyed, so the pointer can never
+  // dangle and the bridge needs no manual teardown.
+  base::ScopedObservation<AIChatMovableSidePanelWebView, views::ViewObserver>
+      chat_view_observation_{this};
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_SIDE_PANEL_AI_CHAT_AI_CHAT_SIDE_PANEL_TAB_TRANSFER_BRIDGE_H_

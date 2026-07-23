@@ -44,10 +44,7 @@ AIChatSidePanelTabTransferBridge::AIChatSidePanelTabTransferBridge(
   CHECK(browser_);
 }
 
-AIChatSidePanelTabTransferBridge::~AIChatSidePanelTabTransferBridge() {
-  // Stop observing the active view (if any) before this bridge goes away.
-  SetActiveChatView(nullptr);
-}
+AIChatSidePanelTabTransferBridge::~AIChatSidePanelTabTransferBridge() = default;
 
 void AIChatSidePanelTabTransferBridge::TransferFullPageContentsToSidePanel(
     std::unique_ptr<content::WebContents> web_contents,
@@ -122,15 +119,14 @@ void AIChatSidePanelTabTransferBridge::ClearChatEntryCache() {
 
 void AIChatSidePanelTabTransferBridge::SetActiveChatView(
     AIChatMovableSidePanelWebView* view) {
-  if (active_chat_view_ == view) {
+  if (chat_view_observation_.GetSource() == view) {
     return;
   }
-  if (active_chat_view_) {
-    active_chat_view_->RemoveObserver(this);
-  }
-  active_chat_view_ = view;
-  if (active_chat_view_) {
-    active_chat_view_->AddObserver(this);
+  // `Observe()` requires no current source, so reset first when switching
+  // views.
+  chat_view_observation_.Reset();
+  if (view) {
+    chat_view_observation_.Observe(view);
   }
 }
 
@@ -139,8 +135,8 @@ bool AIChatSidePanelTabTransferBridge::MoveSidePanelContentsToTab(
   // Only the live conversation currently hosted in the side panel can be moved.
   // If there is no active movable chat view, or the caller is some other
   // contents, there is nothing to move.
-  if (!active_chat_view_ ||
-      active_chat_view_->web_contents() != side_panel_contents) {
+  AIChatMovableSidePanelWebView* chat_view = active_chat_view();
+  if (!chat_view || chat_view->web_contents() != side_panel_contents) {
     return false;
   }
 
@@ -159,7 +155,7 @@ bool AIChatSidePanelTabTransferBridge::MoveSidePanelContentsToTab(
 
   // Take the live contents out of the view (not destroyed, not reloaded).
   std::unique_ptr<content::WebContents> web_contents =
-      active_chat_view_->ReleaseWebContents();
+      chat_view->ReleaseWebContents();
   CHECK(web_contents);
 
   // Restore the associations the contents needs as a tab, mirroring
@@ -192,7 +188,8 @@ bool AIChatSidePanelTabTransferBridge::MoveSidePanelContentsToTab(
 
 void AIChatSidePanelTabTransferBridge::OnViewIsDeleting(
     views::View* observed_view) {
-  if (observed_view == active_chat_view_) {
-    SetActiveChatView(nullptr);
-  }
+  // The active chat view is the only view observed, so stop observing it before
+  // it is destroyed (the observation holds the back-pointer to it).
+  CHECK(observed_view == active_chat_view());
+  chat_view_observation_.Reset();
 }

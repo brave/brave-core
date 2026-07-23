@@ -169,7 +169,8 @@ bool MaybeMoveSidePanelChatToTab(content::WebContents* ai_chat_web_contents) {
   AIChatSidePanelTabTransferBridge* transfer_bridge =
       browser->GetFeatures().ai_chat_side_panel_tab_transfer_bridge();
   if (!transfer_bridge) {
-    // Flag off, or a window type that has no bridge.
+    // The feature is enabled (checked above), so this is a window type that has
+    // no bridge (e.g. not a normal browser window).
     return false;
   }
 
