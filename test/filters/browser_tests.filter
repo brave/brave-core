@@ -1650,6 +1650,7 @@
 
 # These tests fail because we disable Isolated Web Apps
 -All/IsolatedWebApp*.*/*
+-All/IwaDevHandlerAppTypeBrowserTest.*/*
 -All/SubAppsAdminPolicyTest.InstallPolicyMatrix/*
 -BrowserNavigatorIwaNewTabTest.*
 -BrowserNavigatorIwaTest.*
@@ -1677,6 +1678,8 @@
 -InstallIsolatedWebApp*.*
 -IsolatedWebApp*.*
 -IsolatedWebApp*.*/*
+-IwaDevHandlerBrowserTest.*
+-IwaDevHandlerObserverBrowserTest.*
 -IwaPermissionsPolicyCacheBrowserTest.*
 -ProtocolHandlerLaunchDialogIwaTest.LaunchIwaShowsVersionLabel
 -ProtocolHandlerLaunchDialogIwaTest.LaunchSubAppShowsParentAppNameLabel
@@ -2141,6 +2144,7 @@
 -All/WebUIAppMenuButtonStateTest.VerifyState/*
 -All/WebUIToolbarWebViewPermissionBrowserTest.PermissionChipE2E/*
 -WebUIAppMenuBrowserTest.AppMenuState
+-WebUIAppMenuBrowserTest.AppMenuStateWithSeverity
 -WebUIAppMenuBrowserTest.CheckAppMenuFocusSync
 -WebUIAppMenuBrowserTest.CheckAppMenuShowingStateSync
 -WebUIAvatarButtonBrowserTest.AvatarButtonIPHPromo
