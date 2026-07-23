@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_signed_transfer_task.h"
 
 #include "base/containers/to_vector.h"
+#include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_substrate_rpc.h"
@@ -101,11 +102,10 @@ void PolkadotSignedTransferTask::OnGetMetadataForSigning(
 void PolkadotSignedTransferTask::OnGetAccountNonce(
     mojom::PolkadotAccountInfoPtr account_info,
     const std::optional<std::string>& error_string) {
-  if (error_string) {
-    return StopWithError(*error_string);
+  if (error_string || !account_info) {
+    return StopWithError(error_string.value_or(WalletInternalErrorMessage()));
   }
 
-  CHECK(account_info);
   account_info_ = std::move(account_info);
 
   MaybeFinalizeSignTransaction();
@@ -114,15 +114,14 @@ void PolkadotSignedTransferTask::OnGetAccountNonce(
 void PolkadotSignedTransferTask::OnGetChainHeader(
     std::optional<PolkadotBlockHeader> header,
     std::optional<std::string> error_string) {
-  if (error_string) {
-    return StopWithError(*error_string);
-  }
-
   // Current behavior of the RPC layer seems to be returning an error when
   // there's no parent hash, so we always fetch it in our case vs polkadot-js
   // which seems to assume very young chains where the parent hash doesn't
   // necessarily exist.
-  CHECK(header);
+  if (error_string || !header.has_value()) {
+    return StopWithError(error_string.value_or(WalletInternalErrorMessage()));
+  }
+
   GetPolkadotRpc()->GetBlockHeader(
       chain_id_, header->parent_hash,
       base::BindOnce(&PolkadotSignedTransferTask::OnGetParentHeader,
@@ -132,11 +131,10 @@ void PolkadotSignedTransferTask::OnGetChainHeader(
 void PolkadotSignedTransferTask::OnGetParentHeader(
     std::optional<PolkadotBlockHeader> header,
     std::optional<std::string> error_string) {
-  if (error_string) {
-    return StopWithError(*error_string);
+  if (error_string || !header.has_value()) {
+    return StopWithError(error_string.value_or(WalletInternalErrorMessage()));
   }
 
-  CHECK(header);
   chain_header_ = std::move(header);
   UpdateSigningHeader();
 }
@@ -144,11 +142,10 @@ void PolkadotSignedTransferTask::OnGetParentHeader(
 void PolkadotSignedTransferTask::OnGetFinalizedHead(
     std::optional<std::array<uint8_t, kPolkadotBlockHashSize>> finalized_hash,
     std::optional<std::string> error_string) {
-  if (error_string) {
-    return StopWithError(*error_string);
+  if (error_string || !finalized_hash.has_value()) {
+    return StopWithError(error_string.value_or(WalletInternalErrorMessage()));
   }
 
-  CHECK(finalized_hash);
   GetPolkadotRpc()->GetBlockHeader(
       chain_id_, *finalized_hash,
       base::BindOnce(&PolkadotSignedTransferTask::OnGetFinalizedBlockHeader,
@@ -158,11 +155,10 @@ void PolkadotSignedTransferTask::OnGetFinalizedHead(
 void PolkadotSignedTransferTask::OnGetFinalizedBlockHeader(
     std::optional<PolkadotBlockHeader> header,
     std::optional<std::string> error_string) {
-  if (error_string) {
-    return StopWithError(*error_string);
+  if (error_string || !header.has_value()) {
+    return StopWithError(error_string.value_or(WalletInternalErrorMessage()));
   }
 
-  CHECK(header);
   finalized_header_ = std::move(header);
   UpdateSigningHeader();
 }
@@ -209,11 +205,10 @@ void PolkadotSignedTransferTask::UpdateSigningHeader() {
 void PolkadotSignedTransferTask::OnGetGenesisHash(
     std::optional<std::array<uint8_t, kPolkadotBlockHashSize>> genesis_hash,
     std::optional<std::string> error_string) {
-  if (error_string) {
-    return StopWithError(*error_string);
+  if (error_string || !genesis_hash.has_value()) {
+    return StopWithError(error_string.value_or(WalletInternalErrorMessage()));
   }
 
-  CHECK(genesis_hash);
   genesis_hash_ = genesis_hash;
   MaybeFinalizeSignTransaction();
 }
@@ -221,11 +216,9 @@ void PolkadotSignedTransferTask::OnGetGenesisHash(
 void PolkadotSignedTransferTask::OnGetRuntimeVersion(
     std::optional<PolkadotRuntimeVersion> runtime_version,
     std::optional<std::string> error_string) {
-  if (error_string) {
-    return StopWithError(*error_string);
+  if (error_string || !runtime_version.has_value()) {
+    return StopWithError(error_string.value_or(WalletInternalErrorMessage()));
   }
-
-  CHECK(runtime_version);
 
   runtime_version_ = runtime_version;
   MaybeFinalizeSignTransaction();
