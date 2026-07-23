@@ -1,0 +1,29 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# The LiteRT GPU execution engine for EmbeddingGemma (Metal / WebGPU, or CPU).
+# Deliberately independent of //services/passage_embeddings: upstream's
+# PassageEmbedderImpl wraps this in a PassageEmbedderExecutor adapter, so this
+# target must not depend back on it (that would be a dependency cycle).
+source_set("litert_model_runner") {
+  sources = [
+    "litert_model_runner.cc",
+    "litert_model_runner.h",
+  ]
+
+  # Exposed as public_deps because the public header includes litert's
+  # CompiledModel/Environment (whose internal includes need litert's config).
+  public_deps = [
+    "//base",
+    "//third_party/litert",
+  ]
+
+  deps = [
+    # LiteRT's runtime is built with use_litert_tflite=false, so it references
+    # TFLite's op resolver and C API without linking them.
+    "//third_party/tflite",
+    "//third_party/tflite:tflite_builtin_op_resolver",
+  ]
+}
