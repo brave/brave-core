@@ -11,7 +11,9 @@ import Combine
 import Data
 import Foundation
 import Growth
+import LocalAuthentication
 import Preferences
+import Strings
 import Web
 import os
 
@@ -147,6 +149,12 @@ import os
     }
   }
 
+  @Published var isDeveloperModeEnabled: Bool = false {
+    didSet {
+      setDeveloperMode(enabled: isDeveloperModeEnabled)
+    }
+  }
+
   /// If we should write Shields setting changes to content settings.
   private var shouldWriteToContentSettings: Bool {
     // If Shields content settings feature flag is enabled, we should always
@@ -218,6 +226,7 @@ import os
     self.shredHistoryItems = Preferences.Shields.shredHistoryItems.value
     self.webcompatReporterHandler = webcompatReporterHandler
     self.isSurveyPanelistEnabled = rewards?.ads.isSurveyPanelistEnabled ?? false
+    self.isDeveloperModeEnabled = prefs.boolean(forPath: kAdBlockDeveloperMode)
 
     blockMobileAnnoyances = FilterListStorage.shared.isEnabled(
       for: AdblockFilterListCatalogEntry.mobileAnnoyancesComponentID
@@ -297,6 +306,29 @@ import os
     registerSubscriptions()
     Task { @MainActor in
       self.isSaveContactInfoEnabled = await webcompatReporterHandler?.browserParams().1 ?? false
+    }
+  }
+
+  func setDeveloperMode(enabled: Bool) {
+    let context = LAContext()
+    var error: NSError?
+    if enabled {
+      guard context.canEvaluatePolicy(.deviceOwnerAuthentication, error: &error) else {
+        prefs.set(true, forPath: kAdBlockDeveloperMode)
+        return
+      }
+      context.evaluatePolicy(
+        .deviceOwnerAuthentication,
+        localizedReason: Strings.Shields.developerModeBiometricsAuthReason
+      ) { success, error in
+        DispatchQueue.main.async { [self] in
+          if success {
+            prefs.set(true, forPath: kAdBlockDeveloperMode)
+          }
+        }
+      }
+    } else {
+      prefs.set(false, forPath: kAdBlockDeveloperMode)
     }
   }
 

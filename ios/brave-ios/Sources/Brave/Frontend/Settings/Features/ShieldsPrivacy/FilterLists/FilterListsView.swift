@@ -6,6 +6,7 @@
 import BraveCore
 import BraveShields
 import BraveUI
+import CredentialProviderUI
 import Data
 import DesignSystem
 import Strings
@@ -64,6 +65,7 @@ struct FilterListsView: View {
     }
   }
 
+  @ObservedObject var settings: AdvancedShieldsSettings
   @ObservedObject private var filterListStorage = FilterListStorage.shared
   @ObservedObject private var customFilterListStorage = CustomFilterListStorage.shared
   @Environment(\.editMode) private var editMode
@@ -103,6 +105,23 @@ struct FilterListsView: View {
           title: Strings.Shields.externalFilterLists,
           description: Strings.Shields.addCustomFilterListDescription
         )
+      }
+
+      Section {
+        HStack {
+          Toggle(
+            isOn: $settings.isDeveloperModeEnabled
+          ) {
+            VStack(alignment: .leading) {
+              Text(Strings.Shields.developerModeTitle)
+              Text(Strings.Shields.developerModeDescription)
+                .font(.caption)
+                .foregroundColor(.secondary)
+            }
+          }
+        }
+      } header: {
+        Text(Strings.Shields.developerModeTitle)
       }
 
       if searchText.isEmpty {
@@ -200,6 +219,7 @@ struct FilterListsView: View {
         .multilineTextAlignment(.leading)
         .font(.system(size: 14, weight: .regular, design: .monospaced))
         .frame(maxWidth: .infinity, alignment: .leading)
+        .foregroundStyle(settings.isDeveloperModeEnabled ? .primary : .tertiary)
     } else if let error = rulesError {
       Text(error.localizedDescription)
         .foregroundStyle(Color(UIColor(braveSystemName: .systemfeedbackErrorText)))
@@ -214,6 +234,7 @@ struct FilterListsView: View {
           ? Strings.Shields.editCustomFiltersLabel : Strings.Shields.customFiltersPlaceholder
       )
     }
+    .disabled(!settings.isDeveloperModeEnabled)
   }
 
   @ViewBuilder private var defaultFilterListRows: some View {
@@ -380,16 +401,16 @@ struct FilterListsView: View {
   }
 }
 
-#if DEBUG
-struct FilterListsView_Previews: PreviewProvider {
-  static var previews: some View {
-    Group {
-      FilterListsView()
-    }
-    .previewLayout(.sizeThatFits)
-  }
-}
-#endif
+//#if DEBUG
+//struct FilterListsView_Previews: PreviewProvider {
+//  static var previews: some View {
+//    Group {
+//      FilterListsView()
+//    }
+//    .previewLayout(.sizeThatFits)
+//  }
+//}
+//#endif
 
 extension FilterList {
   fileprivate func satisfies(searchText: String) -> Bool {

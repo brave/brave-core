@@ -738,6 +738,30 @@ extension Strings.Shields {
     comment:
       "This is a label on a button that updates filter lists which signifies that lists have been updated"
   )
+  public static let developerModeTitle = NSLocalizedString(
+    "developerModeTitle",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Developer Mode",
+    comment:
+      "This is a label beside a toggle that enables developer mode"
+  )
+  public static let developerModeDescription = NSLocalizedString(
+    "developerModeDescription",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Allow adding custom filters",
+    comment:
+      "This is a label beside a toggle that enables developer mode"
+  )
+  public static let developerModeBiometricsAuthReason = NSLocalizedString(
+    "developerModeBiometricsAuthReason",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Authenticate to enable developer mode",
+    comment:
+      "This is a label beside a toggle that enables developer mode"
+  )
 }
 
 // MARK: - Create custom filters

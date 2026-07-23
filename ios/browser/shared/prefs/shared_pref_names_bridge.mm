@@ -6,6 +6,7 @@
 #include "brave/ios/browser/shared/prefs/shared_pref_names_bridge.h"
 
 #include "base/strings/sys_string_conversions.h"
+#include "brave/components/brave_shields/core/common/pref_names.h"
 #include "brave/ios/browser/shared/prefs/pref_names.h"
 
 NSString* const kMediaBackgroundingEnabled =
@@ -13,3 +14,6 @@ NSString* const kMediaBackgroundingEnabled =
 
 NSString* const kBlockAllCookiesEnabled =
     base::SysUTF8ToNSString(prefs::kBlockAllCookiesEnabled);
+
+NSString* const kAdBlockDeveloperMode =
+    base::SysUTF8ToNSString(brave_shields::prefs::kAdBlockDeveloperMode);
