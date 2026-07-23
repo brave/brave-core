@@ -9,6 +9,7 @@
 #include <string>
 #include <vector>
 
+#include "base/command_line.h"
 #include "base/strings/string_util.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
@@ -23,10 +24,10 @@ namespace ai_chat {
 
 namespace {
 
-constexpr char kTestEndpoint[] = "https://example.com/models";
+constexpr char kTestServerUrl[] = "https://example.com";
+constexpr char kTestEndpoint[] = "https://example.com/v1/models";
 
-constexpr char kValidModelsJSON[] = R"({
-  "models": [
+constexpr char kValidModelsJSON[] = R"([
     {
       "key": "test-model-1",
       "display_name": "Test Model 1",
@@ -34,7 +35,6 @@ constexpr char kValidModelsJSON[] = R"({
       "is_near_model": false,
       "capabilities": ["chat", "files"],
       "options": {
-        "type": "leo",
         "name": "test-model-1-api",
         "display_maker": "Test Provider",
         "description": "A basic test model",
@@ -50,7 +50,6 @@ constexpr char kValidModelsJSON[] = R"({
       "is_near_model": false,
       "capabilities": ["chat", "files", "content_agent"],
       "options": {
-        "type": "leo",
         "name": "test-model-2-api",
         "display_maker": "Test Provider",
         "description": "A premium test model",
@@ -66,7 +65,6 @@ constexpr char kValidModelsJSON[] = R"({
       "is_near_model": false,
       "capabilities": ["summary", "files"],
       "options": {
-        "type": "leo",
         "name": "test-model-3-api",
         "display_maker": "Test Provider",
         "description": "A summary model",
@@ -75,49 +73,41 @@ constexpr char kValidModelsJSON[] = R"({
         "long_conversation_warning_character_limit": 200000
       }
     }
-  ]
-})";
+  ])";
 
 constexpr char kInvalidJSON[] = "{ invalid json";
 
-constexpr char kMissingKeyJSON[] = R"({
-  "models": [
+constexpr char kMissingKeyJSON[] = R"([
     {
       "display_name": "Test Model",
       "is_suggested_model": false,
       "is_near_model": false,
       "capabilities": ["chat", "files"],
       "options": {
-        "type": "leo",
         "name": "test-model-api",
         "access": "basic",
         "max_associated_content_length": 100000,
         "long_conversation_warning_character_limit": 200000
       }
     }
-  ]
-})";
+  ])";
 
-constexpr char kMissingDisplayNameJSON[] = R"({
-  "models": [
+constexpr char kMissingDisplayNameJSON[] = R"([
     {
       "key": "test-model",
       "is_suggested_model": false,
       "is_near_model": false,
       "capabilities": ["chat", "files"],
       "options": {
-        "type": "leo",
         "name": "test-model-api",
         "access": "basic",
         "max_associated_content_length": 100000,
         "long_conversation_warning_character_limit": 200000
       }
     }
-  ]
-})";
+  ])";
 
-constexpr char kMissingOptionsJSON[] = R"({
-  "models": [
+constexpr char kMissingOptionsJSON[] = R"([
     {
       "key": "test-model",
       "display_name": "Test Model",
@@ -125,11 +115,9 @@ constexpr char kMissingOptionsJSON[] = R"({
       "is_near_model": false,
       "capabilities": ["chat", "files"]
     }
-  ]
-})";
+  ])";
 
-constexpr char kMissingNameJSON[] = R"({
-  "models": [
+constexpr char kMissingNameJSON[] = R"([
     {
       "key": "test-model",
       "display_name": "Test Model",
@@ -137,17 +125,14 @@ constexpr char kMissingNameJSON[] = R"({
       "is_near_model": false,
       "capabilities": ["chat", "files"],
       "options": {
-        "type": "leo",
         "access": "basic",
         "max_associated_content_length": 100000,
         "long_conversation_warning_character_limit": 200000
       }
     }
-  ]
-})";
+  ])";
 
-constexpr char kMissingAccessJSON[] = R"({
-  "models": [
+constexpr char kMissingAccessJSON[] = R"([
     {
       "key": "test-model",
       "display_name": "Test Model",
@@ -155,33 +140,12 @@ constexpr char kMissingAccessJSON[] = R"({
       "is_near_model": false,
       "capabilities": ["chat", "files"],
       "options": {
-        "type": "leo",
         "name": "test-model-api",
         "max_associated_content_length": 100000,
         "long_conversation_warning_character_limit": 200000
       }
     }
-  ]
-})";
-
-constexpr char kInvalidTypeJSON[] = R"({
-  "models": [
-    {
-      "key": "invalid-type-model",
-      "display_name": "Invalid Type Model",
-      "is_suggested_model": true,
-      "is_near_model": false,
-      "capabilities": ["chat", "files"],
-      "options": {
-        "type": "custom",
-        "name": "invalid-type-model",
-        "access": "basic",
-        "max_associated_content_length": 100000,
-        "long_conversation_warning_character_limit": 200000
-      }
-    }
-  ]
-})";
+  ])";
 
 }  // namespace
 
@@ -193,6 +157,8 @@ class RemoteModelsFetcherTest : public testing::Test {
                 &test_url_loader_factory_)) {}
 
   void SetUp() override {
+    base::CommandLine::ForCurrentProcess()->AppendSwitchASCII(
+        "ai-chat-server-url", kTestServerUrl);
     fetcher_ =
         std::make_unique<RemoteModelsFetcher>(shared_url_loader_factory_);
   }
@@ -245,7 +211,7 @@ class RemoteModelsFetcherTest : public testing::Test {
   void ExpectEmptyResult(const std::string& json) {
     SimulateSuccessfulFetch(json);
     base::test::TestFuture<std::vector<mojom::ModelPtr>> future;
-    fetcher_->FetchModels(kTestEndpoint, future.GetCallback());
+    fetcher_->FetchModels(future.GetCallback());
     EXPECT_TRUE(future.Get().empty());
   }
 
@@ -259,7 +225,7 @@ TEST_F(RemoteModelsFetcherTest, SuccessfulFetch) {
   SimulateSuccessfulFetch(kValidModelsJSON);
 
   base::test::TestFuture<std::vector<mojom::ModelPtr>> future;
-  fetcher_->FetchModels(kTestEndpoint, future.GetCallback());
+  fetcher_->FetchModels(future.GetCallback());
   const auto& fetched_models = future.Get();
 
   ASSERT_EQ(3u, fetched_models.size());
@@ -321,7 +287,7 @@ TEST_F(RemoteModelsFetcherTest, HTTPError500) {
   SimulateHTTPError(500);
 
   base::test::TestFuture<std::vector<mojom::ModelPtr>> future;
-  fetcher_->FetchModels(kTestEndpoint, future.GetCallback());
+  fetcher_->FetchModels(future.GetCallback());
   EXPECT_TRUE(future.Get().empty());
 }
 
@@ -329,7 +295,7 @@ TEST_F(RemoteModelsFetcherTest, NetworkError) {
   SimulateNetworkError();
 
   base::test::TestFuture<std::vector<mojom::ModelPtr>> future;
-  fetcher_->FetchModels(kTestEndpoint, future.GetCallback());
+  fetcher_->FetchModels(future.GetCallback());
   EXPECT_TRUE(future.Get().empty());
 }
 
@@ -337,13 +303,12 @@ TEST_F(RemoteModelsFetcherTest, InvalidJSON) {
   SimulateSuccessfulFetch(kInvalidJSON);
 
   base::test::TestFuture<std::vector<mojom::ModelPtr>> future;
-  fetcher_->FetchModels(kTestEndpoint, future.GetCallback());
+  fetcher_->FetchModels(future.GetCallback());
   EXPECT_TRUE(future.Get().empty());
 }
 
 TEST_F(RemoteModelsFetcherTest, ValidModelsReturnedWhenSomeFail) {
-  constexpr char kMixedModelsJSON[] = R"({
-    "models": [
+  constexpr char kMixedModelsJSON[] = R"([
       {
         "key": "valid-model",
         "display_name": "Valid Model",
@@ -351,7 +316,6 @@ TEST_F(RemoteModelsFetcherTest, ValidModelsReturnedWhenSomeFail) {
         "is_near_model": false,
         "capabilities": ["chat", "files"],
         "options": {
-          "type": "leo",
           "name": "valid-model-api",
           "display_maker": "Test Provider",
           "access": "basic",
@@ -365,20 +329,18 @@ TEST_F(RemoteModelsFetcherTest, ValidModelsReturnedWhenSomeFail) {
         "is_near_model": false,
         "capabilities": ["chat", "files"],
         "options": {
-          "type": "leo",
           "name": "invalid-model-api",
           "access": "basic",
           "max_associated_content_length": 100000,
           "long_conversation_warning_character_limit": 200000
         }
       }
-    ]
-  })";
+    ])";
 
   SimulateSuccessfulFetch(kMixedModelsJSON);
 
   base::test::TestFuture<std::vector<mojom::ModelPtr>> future;
-  fetcher_->FetchModels(kTestEndpoint, future.GetCallback());
+  fetcher_->FetchModels(future.GetCallback());
   const auto& fetched_models = future.Get();
 
   ASSERT_EQ(1u, fetched_models.size());
@@ -404,28 +366,24 @@ TEST_F(RemoteModelsFetcherTest, RequiredFieldsRejected) {
 }
 
 TEST_F(RemoteModelsFetcherTest, MissingCapabilities) {
-  ExpectEmptyResult(R"({
-    "models": [
+  ExpectEmptyResult(R"([
       {
         "key": "test-model",
         "display_name": "Test Model",
         "is_suggested_model": false,
         "is_near_model": false,
         "options": {
-          "type": "leo",
           "name": "test-model-api",
           "access": "basic",
           "max_associated_content_length": 100000,
           "long_conversation_warning_character_limit": 200000
         }
       }
-    ]
-  })");
+    ])");
 }
 
 TEST_F(RemoteModelsFetcherTest, NoCategoryCapability) {
-  ExpectEmptyResult(R"({
-    "models": [
+  ExpectEmptyResult(R"([
       {
         "key": "test-model",
         "display_name": "Test Model",
@@ -433,50 +391,25 @@ TEST_F(RemoteModelsFetcherTest, NoCategoryCapability) {
         "is_near_model": false,
         "capabilities": ["files"],
         "options": {
-          "type": "leo",
           "name": "test-model-api",
           "access": "basic",
           "max_associated_content_length": 100000,
           "long_conversation_warning_character_limit": 200000
         }
       }
-    ]
-  })");
-}
-
-TEST_F(RemoteModelsFetcherTest, InvalidModelType) {
-  ExpectEmptyResult(kInvalidTypeJSON);
-}
-
-TEST_F(RemoteModelsFetcherTest, RejectsHTTPEndpoint) {
-  base::test::TestFuture<std::vector<mojom::ModelPtr>> future;
-  fetcher_->FetchModels("http://example.com/models", future.GetCallback());
-  EXPECT_TRUE(future.Get().empty());
-}
-
-TEST_F(RemoteModelsFetcherTest, RejectsHTTPForLocalhost) {
-  base::test::TestFuture<std::vector<mojom::ModelPtr>> future;
-  fetcher_->FetchModels("http://localhost:8080/models", future.GetCallback());
-  EXPECT_TRUE(future.Get().empty());
-}
-
-TEST_F(RemoteModelsFetcherTest, RejectsInvalidURL) {
-  base::test::TestFuture<std::vector<mojom::ModelPtr>> future;
-  fetcher_->FetchModels("not-a-valid-url", future.GetCallback());
-  EXPECT_TRUE(future.Get().empty());
+    ])");
 }
 
 TEST_F(RemoteModelsFetcherTest, EmptyResponse) {
-  SimulateSuccessfulFetch(R"({"models": []})");
+  SimulateSuccessfulFetch("[]");
 
   base::test::TestFuture<std::vector<mojom::ModelPtr>> future;
-  fetcher_->FetchModels(kTestEndpoint, future.GetCallback());
+  fetcher_->FetchModels(future.GetCallback());
   EXPECT_TRUE(future.Get().empty());
 }
 
 TEST_F(RemoteModelsFetcherTest, RejectsUnrecognizedAccessLevel) {
-  ExpectEmptyResult(R"({
-    "models": [
+  ExpectEmptyResult(R"([
       {
         "key": "unknown-access-model",
         "display_name": "Unknown Access Model",
@@ -484,7 +417,6 @@ TEST_F(RemoteModelsFetcherTest, RejectsUnrecognizedAccessLevel) {
         "is_near_model": false,
         "capabilities": ["chat", "files"],
         "options": {
-          "type": "leo",
           "name": "unknown-access-api",
           "display_maker": "Test Provider",
           "access": "enterprise",
@@ -492,13 +424,11 @@ TEST_F(RemoteModelsFetcherTest, RejectsUnrecognizedAccessLevel) {
           "long_conversation_warning_character_limit": 200000
         }
       }
-    ]
-  })");
+    ])");
 }
 
-TEST_F(RemoteModelsFetcherTest, MissingNumericFieldsGetTierDefaults) {
-  constexpr char kMissingNumericFieldsJSON[] = R"({
-    "models": [
+TEST_F(RemoteModelsFetcherTest, RejectsMissingMaxContentLength) {
+  ExpectEmptyResult(R"([
       {
         "key": "basic-model",
         "display_name": "Basic Model",
@@ -506,81 +436,35 @@ TEST_F(RemoteModelsFetcherTest, MissingNumericFieldsGetTierDefaults) {
         "is_near_model": false,
         "capabilities": ["chat", "files"],
         "options": {
-          "type": "leo",
           "name": "basic-model-api",
           "display_maker": "Test Provider",
-          "access": "basic"
+          "access": "basic",
+          "long_conversation_warning_character_limit": 200000
         }
-      },
+      }
+    ])");
+}
+
+TEST_F(RemoteModelsFetcherTest, RejectsMissingWarningLimit) {
+  ExpectEmptyResult(R"([
       {
-        "key": "premium-model",
-        "display_name": "Premium Model",
+        "key": "basic-model",
+        "display_name": "Basic Model",
         "is_suggested_model": false,
         "is_near_model": false,
         "capabilities": ["chat", "files"],
         "options": {
-          "type": "leo",
-          "name": "premium-model-api",
+          "name": "basic-model-api",
           "display_maker": "Test Provider",
-          "access": "premium"
+          "access": "basic",
+          "max_associated_content_length": 100000
         }
       }
-    ]
-  })";
-
-  SimulateSuccessfulFetch(kMissingNumericFieldsJSON);
-
-  base::test::TestFuture<std::vector<mojom::ModelPtr>> future;
-  fetcher_->FetchModels(kTestEndpoint, future.GetCallback());
-  const auto& fetched_models = future.Get();
-
-  ASSERT_EQ(2u, fetched_models.size());
-
-  ASSERT_TRUE(fetched_models[0]->options->is_leo_model_options());
-  auto& basic_opts = fetched_models[0]->options->get_leo_model_options();
-  EXPECT_EQ(basic_opts->max_associated_content_length, 32000u);
-  EXPECT_EQ(basic_opts->long_conversation_warning_character_limit, 51200u);
-
-  ASSERT_TRUE(fetched_models[1]->options->is_leo_model_options());
-  auto& premium_opts = fetched_models[1]->options->get_leo_model_options();
-  EXPECT_EQ(premium_opts->max_associated_content_length, 90000u);
-  EXPECT_EQ(premium_opts->long_conversation_warning_character_limit, 160000u);
-}
-
-TEST_F(RemoteModelsFetcherTest, ParsesBareListResponse) {
-  constexpr char kBareListJSON[] = R"([
-    {
-      "key": "test-model-1",
-      "display_name": "Test Model 1",
-      "is_suggested_model": true,
-      "is_near_model": false,
-      "capabilities": ["chat", "files"],
-      "options": {
-        "type": "leo",
-        "name": "test-model-1-api",
-        "display_maker": "Test Provider",
-        "description": "A basic test model",
-        "access": "basic",
-        "max_associated_content_length": 100000,
-        "long_conversation_warning_character_limit": 200000
-      }
-    }
-  ])";
-
-  SimulateSuccessfulFetch(kBareListJSON);
-
-  base::test::TestFuture<std::vector<mojom::ModelPtr>> future;
-  fetcher_->FetchModels(kTestEndpoint, future.GetCallback());
-  const auto& fetched_models = future.Get();
-
-  ASSERT_EQ(1u, fetched_models.size());
-  EXPECT_EQ("test-model-1", fetched_models[0]->key);
-  EXPECT_EQ("Test Model 1", fetched_models[0]->display_name);
+    ])");
 }
 
 TEST_F(RemoteModelsFetcherTest, SkipsUnknownCapabilities) {
-  constexpr char kUnknownCapabilityJSON[] = R"({
-    "models": [
+  constexpr char kUnknownCapabilityJSON[] = R"([
       {
         "key": "test-model",
         "display_name": "Test Model",
@@ -588,7 +472,6 @@ TEST_F(RemoteModelsFetcherTest, SkipsUnknownCapabilities) {
         "is_near_model": false,
         "capabilities": ["chat", "unknown_capability"],
         "options": {
-          "type": "leo",
           "name": "test-model-api",
           "display_maker": "Test Provider",
           "access": "basic",
@@ -596,13 +479,12 @@ TEST_F(RemoteModelsFetcherTest, SkipsUnknownCapabilities) {
           "long_conversation_warning_character_limit": 200000
         }
       }
-    ]
-  })";
+    ])";
 
   SimulateSuccessfulFetch(kUnknownCapabilityJSON);
 
   base::test::TestFuture<std::vector<mojom::ModelPtr>> future;
-  fetcher_->FetchModels(kTestEndpoint, future.GetCallback());
+  fetcher_->FetchModels(future.GetCallback());
   const auto& fetched_models = future.Get();
 
   ASSERT_EQ(1u, fetched_models.size());
@@ -612,8 +494,7 @@ TEST_F(RemoteModelsFetcherTest, SkipsUnknownCapabilities) {
 }
 
 TEST_F(RemoteModelsFetcherTest, RejectsNegativeMaxContentLength) {
-  ExpectEmptyResult(R"({
-    "models": [
+  ExpectEmptyResult(R"([
       {
         "key": "bad-model",
         "display_name": "Bad Model",
@@ -621,7 +502,6 @@ TEST_F(RemoteModelsFetcherTest, RejectsNegativeMaxContentLength) {
         "is_near_model": false,
         "capabilities": ["chat", "files"],
         "options": {
-          "type": "leo",
           "name": "bad-model-api",
           "display_maker": "Test Provider",
           "access": "basic",
@@ -629,13 +509,11 @@ TEST_F(RemoteModelsFetcherTest, RejectsNegativeMaxContentLength) {
           "long_conversation_warning_character_limit": 200000
         }
       }
-    ]
-  })");
+    ])");
 }
 
 TEST_F(RemoteModelsFetcherTest, RejectsNegativeWarningLimit) {
-  ExpectEmptyResult(R"({
-    "models": [
+  ExpectEmptyResult(R"([
       {
         "key": "bad-model",
         "display_name": "Bad Model",
@@ -643,7 +521,6 @@ TEST_F(RemoteModelsFetcherTest, RejectsNegativeWarningLimit) {
         "is_near_model": false,
         "capabilities": ["chat", "files"],
         "options": {
-          "type": "leo",
           "name": "bad-model-api",
           "display_maker": "Test Provider",
           "access": "basic",
@@ -651,8 +528,7 @@ TEST_F(RemoteModelsFetcherTest, RejectsNegativeWarningLimit) {
           "long_conversation_warning_character_limit": -1
         }
       }
-    ]
-  })");
+    ])");
 }
 
 }  // namespace ai_chat
