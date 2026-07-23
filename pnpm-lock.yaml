@@ -260,8 +260,8 @@ importers:
         specifier: 1.8.5
         version: 1.8.5
       '@types/redux-logger':
-        specifier: 3.0.9
-        version: 3.0.9
+        specifier: 3.0.13
+        version: 3.0.13
       '@types/trusted-types':
         specifier: 2.0.7
         version: 2.0.7
@@ -2490,8 +2490,8 @@ packages:
   '@types/react@19.2.17':
     resolution: {integrity: sha512-MXfmqaVPEVgkBT/aY0aGCkRWWtByiYQXo3xdQ8r5RzuFrPiRn8Gar2tQdXSUQ2GKV3bkXckek89V8wQBY2Q/Aw==}
 
-  '@types/redux-logger@3.0.9':
-    resolution: {integrity: sha512-cwYhVbYNgH01aepeMwhd0ABX6fhVB2rcQ9m80u8Fl50ZODhsZ8RhQArnLTkE7/Zrfq4Sz/taNoF7DQy9pCZSKg==}
+  '@types/redux-logger@3.0.13':
+    resolution: {integrity: sha512-jylqZXQfMxahkuPcO8J12AKSSCQngdEWQrw7UiLUJzMBcv1r4Qg77P6mjGLjM27e5gFQDPD8vwUMJ9AyVxFSsg==}
 
   '@types/resolve@1.20.6':
     resolution: {integrity: sha512-A4STmOXPhMUtHH+S6ymgE2GiBSMqf4oTvcQZMcHzokuTLVYzXTB8ttjcgxOVaAp2lGwEdzZ0J+cRbbeevQj1UQ==}
@@ -6457,6 +6457,9 @@ packages:
 
   redux@4.2.1:
     resolution: {integrity: sha512-LAUYz4lc+Do8/g7aeRa8JkyDErK6ekstQaqWQrNRW//MY1TvCEpMtpTWvlQ+FPbWCx+Xixu/6SHt5N0HR+SB4w==}
+
+  redux@5.0.1:
+    resolution: {integrity: sha512-M9/ELqF6fy8FwmkpnF0S3YKOqMyoWJ4+CS5Efg2ct3oY9daQvd/Pc71FpGZsVsbl3Cpb+IIcjBDUnnyBdQbq4w==}
 
   reflect-metadata@0.2.2:
     resolution: {integrity: sha512-urBwgfrvVP/eAyXx4hluJivBKzuEbSQs9rKWCrCkbSxNv8mxPcUZKeuoF3Uy4mJl3Lwprp6yy5/39VWigZ4K6Q==}
@@ -10564,9 +10567,9 @@ snapshots:
     dependencies:
       csstype: 3.2.3
 
-  '@types/redux-logger@3.0.9':
+  '@types/redux-logger@3.0.13':
     dependencies:
-      redux: 4.2.1
+      redux: 5.0.1
 
   '@types/resolve@1.20.6': {}
 
@@ -15361,6 +15364,8 @@ snapshots:
   redux@4.2.1:
     dependencies:
       '@babel/runtime': 7.27.0
+
+  redux@5.0.1: {}
 
   reflect-metadata@0.2.2: {}
 
