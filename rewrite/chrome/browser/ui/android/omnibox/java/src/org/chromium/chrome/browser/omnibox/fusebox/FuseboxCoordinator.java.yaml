@@ -1,0 +1,23 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Do not update Fusebox's default-search-engine state when
+      TemplateUrlService has no native object.
+
+      Android can recreate an activity while this Java object remains after
+      native code clears its pointer. Return before calling JNI.
+    count: 1
+    regex:
+      re_pattern:
+        '(    @Override\n    public void onTemplateURLServiceChanged\(\)
+        \{\n)(        boolean isDseGoogle =
+        mTemplateUrlService\.isDefaultSearchEngineGoogle\(\);)'
+      replace: |-
+        \1        if (!mTemplateUrlService.hasNativeService()) {
+                    return;
+                }
+        \2

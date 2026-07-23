@@ -1,0 +1,23 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Do not calculate the location header for the default search engine when
+      TemplateUrlService has no native object.
+
+      Android can recreate an activity while this Java object remains after
+      native code clears its pointer. Return UNSUITABLE_URL before calling JNI.
+    count: 1
+    regex:
+      re_pattern:
+        '(    private static @HeaderState int
+        geoHeaderStateForDse\(\n            Profile profile, TemplateUrlService
+        templateService\) \{\n)(        return geoHeaderStateForUrl\()'
+      replace: |-
+        \1        if (!templateService.hasNativeService()) {
+                    return HeaderState.UNSUITABLE_URL;
+                }
+        \2

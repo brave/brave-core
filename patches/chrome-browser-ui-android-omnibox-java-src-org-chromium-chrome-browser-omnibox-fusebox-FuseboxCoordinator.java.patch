@@ -1,0 +1,14 @@
+diff --git a/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/fusebox/FuseboxCoordinator.java b/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/fusebox/FuseboxCoordinator.java
+index 9c071d2c00570bdac3359b9f561af32bbe0082e1..6b11119f8970f8c645a7a11e862ffff23b9a1dd4 100644
+--- a/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/fusebox/FuseboxCoordinator.java
++++ b/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/fusebox/FuseboxCoordinator.java
+@@ -457,6 +457,9 @@ public class FuseboxCoordinator implements TemplateUrlServiceObserver {
+     // TemplateUrlServiceObserver
+     @Override
+     public void onTemplateURLServiceChanged() {
++        if (!mTemplateUrlService.hasNativeService()) {
++            return;
++        }
+         boolean isDseGoogle = mTemplateUrlService.isDefaultSearchEngineGoogle();
+         if (isDseGoogle == mDefaultSearchEngineIsGoogle) return;
+         mDefaultSearchEngineIsGoogle = isDseGoogle;
