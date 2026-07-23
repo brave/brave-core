@@ -108,6 +108,7 @@ def _load_config_ctx(module_name: str):
     config_path = RECIPES_ROOT / MODULES_PKG / module_name / 'config.py'
     if not config_path.exists():
         return None
+    _ensure_protos()
     from config import ConfigContext  # pylint: disable=import-outside-toplevel
     config_module = importlib.import_module(f'{MODULES_PKG}.{module_name}'
                                             '.config')
@@ -152,8 +153,63 @@ class _Engine:
         # brave-core ref the checkout modules clone. Defaults to `master`;
         # overridable (mainly for testing against a non-master ref).
         self._brave_core_ref: str = brave_core_ref
+        # The run's input property JSON and environment, seeded by
+        # `run_loaded_recipe` before any module is instantiated. A module's
+        # `PROPERTIES`/`ENV_PROPERTIES` are bound from these (see
+        # `_module_property_args`). Empty defaults let tests instantiate a
+        # module directly (without a recipe) -- a module then just sees its
+        # proto defaults.
+        self._properties: dict[str, object] = {}
+        self._environ: Mapping[str, str] = {}
         # module name -> instantiated RecipeApi (one instance per run).
         self._cache: dict[str, RecipeApi] = {}
+
+    def _module_property_args(self, name: str,
+                              package: types.ModuleType) -> list[object]:
+        """Bind a module's declared `PROPERTIES`/`ENV_PROPERTIES` messages.
+
+        Mirrors the recipe-level binding in `_run_steps`, but for a recipe
+        module. A module opts in by declaring `PROPERTIES` and/or
+        `ENV_PROPERTIES` (protobuf message classes) in its `__init__.py`; the
+        engine passes the bound messages positionally to the module's
+        `RecipeApi.__init__`, in the same order `RunSteps` receives them:
+
+            neither                 -> API()
+            PROPERTIES              -> API(properties)
+            PROPERTIES + ENV_PROPS  -> API(properties, env_properties)
+            ENV_PROPERTIES          -> API(env_properties)
+
+        A module's `PROPERTIES` are namespaced: they are read from the
+        `$<module_name>` block of the input property JSON (the single-repo
+        analogue of upstream's `$<repo>/<module>` key), so per-module input is
+        kept separate from the recipe's own top-level properties. `ENV_PROPERTIES`
+        are read from the environment with keys upper-cased. Both decode with
+        unknown fields ignored.
+        """
+        properties_def = getattr(package, 'PROPERTIES', None)
+        env_properties_def = getattr(package, 'ENV_PROPERTIES', None)
+
+        args: list[object] = []
+        if properties_def is not None:
+            if not proto_support.is_message_class(properties_def):
+                raise TypeError(
+                    f"module '{name}' PROPERTIES must be a protobuf message "
+                    f'class; got {properties_def!r}')
+            block = self._properties.get(f'${name}', {})
+            args.append(
+                jsonpb.ParseDict(block,
+                                 properties_def(),
+                                 ignore_unknown_fields=True))
+        if env_properties_def is not None:
+            args.append(
+                jsonpb.ParseDict(
+                    {
+                        k.upper(): v
+                        for k, v in self._environ.items()
+                    },
+                    env_properties_def(),
+                    ignore_unknown_fields=True))
+        return args
 
     def _instantiate_module(self, name: str, chain: list[str]) -> RecipeApi:
         if name in self._cache:
@@ -162,12 +218,15 @@ class _Engine:
             cycle = ' -> '.join(chain + [name])
             raise RuntimeError(f'cyclical DEPS detected: {cycle}')
 
+        # A module's __init__.py/api.py may import its typed PROPERTIES message
+        # from `PB`, so the proto package must exist before we import it.
+        _ensure_protos()
         package = importlib.import_module(f'{MODULES_PKG}.{name}')
         deps = list(getattr(package, 'DEPS', []))
         api_module = importlib.import_module(f'{MODULES_PKG}.{name}.api')
         api_class = _find_api_class(api_module, name)
 
-        inst = api_class()
+        inst = api_class(*self._module_property_args(name, package))
         # Seed engine-provided values (workspace, brave-core ref, and the
         # module's name and config context) so modules can use them. setattr
         # keeps the engine out of the instance's protected members directly.
@@ -207,6 +266,13 @@ class _Engine:
         Splits the import from the run so the test runner can import a recipe
         once (from either `recipes/` or a module's `examples/`) and drive it.
         """
+        # Seed the run's input before instantiating any module, so a module's
+        # PROPERTIES/ENV_PROPERTIES can be bound from it (see
+        # `_module_property_args`). In test mode ENV_PROPERTIES is sourced from
+        # the simulated environment so expectations don't depend on host env.
+        self._properties = properties or {}
+        self._environ = self._test.env if self._test is not None else os.environ
+
         api = RecipeScriptApi()
         for dep_name in getattr(recipe, 'DEPS', []):
             setattr(api, dep_name, self._instantiate_module(dep_name, []))
@@ -215,10 +281,7 @@ class _Engine:
         if run_steps is None:
             raise RuntimeError(f"recipe '{recipe_name}' is missing RunSteps")
 
-        # In test mode, source ENV_PROPERTIES from the simulated environment so
-        # expectations don't depend on the host's env vars.
-        environ = self._test.env if self._test is not None else os.environ
-        return _run_steps(run_steps, api, properties or {}, environ,
+        return _run_steps(run_steps, api, self._properties, self._environ,
                           getattr(recipe, 'PROPERTIES', None),
                           getattr(recipe, 'ENV_PROPERTIES', None))
 
