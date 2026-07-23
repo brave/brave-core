@@ -325,6 +325,31 @@ void WriteEntryFields(const mojom::ConversationTurn& entry,
 
 // --- Download helpers: sync proto → mojom ---
 
+// Decodes a repeated AIChatCompressibleString field into strings, skipping any
+// entry with no usable value (omitted-for-sync, empty, or undecodable).
+std::vector<std::string> ReadCompressibleStrings(
+    const google::protobuf::RepeatedPtrField<sync_pb::AIChatCompressibleString>&
+        strings) {
+  std::vector<std::string> out;
+  out.reserve(strings.size());
+  for (const auto& string : strings) {
+    if (auto decoded = ReadCompressibleString(string)) {
+      out.push_back(std::move(*decoded));
+    }
+  }
+  return out;
+}
+
+// Coerces a serialized integer enum value to a known mojom enumerator, falling
+// back to the default enumerator when the sender used a value this client does
+// not recognize (forward-compat or corrupt remote data). Keeps an out-of-range
+// value from reaching a mojo pipe, where it would fail validation.
+template <typename Enum>
+Enum ToKnownEnumValue(int value) {
+  const auto enum_value = static_cast<Enum>(value);
+  return mojom::IsKnownEnumValue(enum_value) ? enum_value : Enum();
+}
+
 mojom::WebSourcePtr ProtoToWebSource(const sync_pb::AIChatWebSource& proto) {
   auto source = mojom::WebSource::New();
   source->title = proto.title();
@@ -334,12 +359,8 @@ mojom::WebSourcePtr ProtoToWebSource(const sync_pb::AIChatWebSource& proto) {
   if (proto.has_favicon_url()) {
     source->favicon_url = GURL(proto.favicon_url());
   }
-  if (proto.has_page_content()) {
-    if (auto pc = ReadCompressibleString(proto.page_content())) {
-      source->page_content = std::move(*pc);
-    }
-  }
-  if (proto.extra_snippets_size() > 0) {
+  source->page_content = ReadCompressibleString(proto.page_content());
+  if (!proto.extra_snippets().empty()) {
     source->extra_snippets = base::ToVector(proto.extra_snippets());
   }
   return source;
@@ -349,13 +370,8 @@ mojom::WebSourcesContentBlockPtr ProtoToWebSourcesContentBlock(
     const sync_pb::AIChatWebSourcesContentBlock& proto) {
   auto block = mojom::WebSourcesContentBlock::New();
   block->sources = base::ToVector(proto.sources(), &ProtoToWebSource);
-  block->queries.append_range(proto.queries());
-  block->rich_results.reserve(proto.rich_results_size());
-  for (const auto& rr : proto.rich_results()) {
-    if (auto value = ReadCompressibleString(rr)) {
-      block->rich_results.push_back(std::move(*value));
-    }
-  }
+  block->queries = base::ToVector(proto.queries());
+  block->rich_results = ReadCompressibleStrings(proto.rich_results());
   return block;
 }
 
@@ -364,46 +380,45 @@ mojom::ToolUseEventPtr ProtoToToolUse(
   auto tool_use = mojom::ToolUseEvent::New();
   tool_use->tool_name = proto.tool_name();
   tool_use->id = proto.id();
-  if (proto.has_arguments_json()) {
-    if (auto args = ReadCompressibleString(proto.arguments_json())) {
-      tool_use->arguments_json = std::move(*args);
-    }
-  }
+  tool_use->arguments_json =
+      ReadCompressibleString(proto.arguments_json()).value_or(std::string());
   tool_use->is_server_result = proto.is_server_result();
-  if (proto.output_size() > 0) {
+  if (!proto.output().empty()) {
     std::vector<mojom::ContentBlockPtr> blocks;
     blocks.reserve(proto.output_size());
+    // No default case: adding a new content-block variant must be an explicit
+    // decision here rather than silently dropping it.
     for (const auto& block_proto : proto.output()) {
-      mojom::ContentBlockPtr block;
-      if (block_proto.has_text_content_block()) {
-        auto text = mojom::TextContentBlock::New();
-        if (auto value = ReadCompressibleString(
-                block_proto.text_content_block().text())) {
-          text->text = std::move(*value);
-        }
-        block = mojom::ContentBlock::NewTextContentBlock(std::move(text));
-      } else if (block_proto.has_image_content_block()) {
-        auto image = mojom::ImageContentBlock::New();
-        image->image_url = GURL(block_proto.image_content_block().image_url());
-        block = mojom::ContentBlock::NewImageContentBlock(std::move(image));
-      } else if (block_proto.has_web_sources_content_block()) {
-        block = mojom::ContentBlock::NewWebSourcesContentBlock(
-            ProtoToWebSourcesContentBlock(
-                block_proto.web_sources_content_block()));
-      } else {
-        continue;
+      switch (block_proto.content_case()) {
+        case sync_pb::AIChatContentBlock::kTextContentBlock:
+          blocks.push_back(mojom::ContentBlock::NewTextContentBlock(
+              mojom::TextContentBlock::New(
+                  ReadCompressibleString(
+                      block_proto.text_content_block().text())
+                      .value_or(std::string()))));
+          break;
+        case sync_pb::AIChatContentBlock::kImageContentBlock:
+          blocks.push_back(mojom::ContentBlock::NewImageContentBlock(
+              mojom::ImageContentBlock::New(
+                  GURL(block_proto.image_content_block().image_url()))));
+          break;
+        case sync_pb::AIChatContentBlock::kWebSourcesContentBlock:
+          blocks.push_back(mojom::ContentBlock::NewWebSourcesContentBlock(
+              ProtoToWebSourcesContentBlock(
+                  block_proto.web_sources_content_block())));
+          break;
+        case sync_pb::AIChatContentBlock::CONTENT_NOT_SET:
+          break;
       }
-      blocks.push_back(std::move(block));
     }
     tool_use->output = std::move(blocks);
   }
-  if (proto.artifacts_size() > 0) {
+  if (!proto.artifacts().empty()) {
     tool_use->artifacts = base::ToVector(proto.artifacts(), [](const auto& a) {
       auto artifact = mojom::ToolArtifact::New();
       artifact->type = a.type();
-      if (auto value = ReadCompressibleString(a.content_json())) {
-        artifact->content_json = std::move(*value);
-      }
+      artifact->content_json =
+          ReadCompressibleString(a.content_json()).value_or(std::string());
       return artifact;
     });
   }
@@ -413,40 +428,27 @@ mojom::ToolUseEventPtr ProtoToToolUse(
 mojom::ConversationEntryEventPtr ProtoToEntryEvent(
     const sync_pb::AIChatEntryEventProto& proto) {
   if (proto.has_completion()) {
-    auto completion = mojom::CompletionEvent::New();
-    if (auto value = ReadCompressibleString(proto.completion())) {
-      completion->completion = std::move(*value);
-    }
     return mojom::ConversationEntryEvent::NewCompletionEvent(
-        std::move(completion));
+        mojom::CompletionEvent::New(ReadCompressibleString(proto.completion())
+                                        .value_or(std::string())));
   }
   if (proto.has_search_queries()) {
-    auto event = mojom::SearchQueriesEvent::New();
-    event->search_queries.append_range(proto.search_queries().queries());
     return mojom::ConversationEntryEvent::NewSearchQueriesEvent(
-        std::move(event));
+        mojom::SearchQueriesEvent::New(
+            base::ToVector(proto.search_queries().queries())));
   }
   if (proto.has_web_sources()) {
-    auto event = mojom::WebSourcesEvent::New();
-    event->sources =
-        base::ToVector(proto.web_sources().sources(), &ProtoToWebSource);
-    event->rich_results.reserve(proto.web_sources().rich_results_size());
-    for (const auto& rr : proto.web_sources().rich_results()) {
-      if (auto value = ReadCompressibleString(rr)) {
-        event->rich_results.push_back(std::move(*value));
-      }
-    }
-    return mojom::ConversationEntryEvent::NewSourcesEvent(std::move(event));
+    return mojom::ConversationEntryEvent::NewSourcesEvent(
+        mojom::WebSourcesEvent::New(
+            base::ToVector(proto.web_sources().sources(), &ProtoToWebSource),
+            ReadCompressibleStrings(proto.web_sources().rich_results())));
   }
   if (proto.has_inline_search()) {
-    auto event = mojom::InlineSearchEvent::New();
-    event->query = proto.inline_search().query();
-    if (auto value =
-            ReadCompressibleString(proto.inline_search().results_json())) {
-      event->results_json = std::move(*value);
-    }
     return mojom::ConversationEntryEvent::NewInlineSearchEvent(
-        std::move(event));
+        mojom::InlineSearchEvent::New(
+            proto.inline_search().query(),
+            ReadCompressibleString(proto.inline_search().results_json())
+                .value_or(std::string())));
   }
   if (proto.has_tool_use()) {
     return mojom::ConversationEntryEvent::NewToolUseEvent(
@@ -464,7 +466,8 @@ mojom::AssociatedContentPtr ProtoToAssociatedContent(
   if (proto.has_url()) {
     content->url = GURL(proto.url());
   }
-  content->content_type = static_cast<mojom::ContentType>(proto.content_type());
+  content->content_type =
+      ToKnownEnumValue<mojom::ContentType>(proto.content_type());
   content->content_used_percentage = proto.content_used_percentage();
   content->conversation_turn_uuid = entry_uuid;
   return content;
@@ -477,18 +480,14 @@ mojom::UploadedFilePtr ProtoToUploadedFile(
     file->filename = proto.filename();
   }
   file->filesize = proto.filesize();
-  file->type = static_cast<mojom::UploadedFileType>(proto.type());
+  file->type = ToKnownEnumValue<mojom::UploadedFileType>(proto.type());
   // Only populate bytes when the sender actually shipped them. When the sender
   // omitted them (the oneof holds omitted_data_hash instead), leave |data|
   // empty so the caller can restore any existing local bytes.
   if (proto.has_data()) {
     file->data = base::ToVector(base::as_byte_span(proto.data()));
   }
-  if (proto.has_extracted_text()) {
-    if (auto value = ReadCompressibleString(proto.extracted_text())) {
-      file->extracted_text = std::move(*value);
-    }
-  }
+  file->extracted_text = ReadCompressibleString(proto.extracted_text());
   return file;
 }
 
@@ -617,8 +616,8 @@ mojom::ConversationTurnPtr SpecificsToEntry(
     entry->prompt = proto.prompt();
   }
   entry->character_type =
-      static_cast<mojom::CharacterType>(proto.character_type());
-  entry->action_type = static_cast<mojom::ActionType>(proto.action_type());
+      ToKnownEnumValue<mojom::CharacterType>(proto.character_type());
+  entry->action_type = ToKnownEnumValue<mojom::ActionType>(proto.action_type());
   if (proto.has_selected_text()) {
     entry->selected_text = proto.selected_text();
   }
@@ -626,12 +625,11 @@ mojom::ConversationTurnPtr SpecificsToEntry(
     entry->model_key = proto.model_key();
   }
 
-  if (proto.events_size() > 0) {
+  if (!proto.events().empty()) {
     std::vector<mojom::ConversationEntryEventPtr> events;
     events.reserve(proto.events_size());
     for (const auto& event_proto : proto.events()) {
-      auto event = ProtoToEntryEvent(event_proto);
-      if (event) {
+      if (auto event = ProtoToEntryEvent(event_proto)) {
         events.push_back(std::move(event));
       }
     }
@@ -641,7 +639,7 @@ mojom::ConversationTurnPtr SpecificsToEntry(
   ReadAssociatedContentFromEntry(proto, associated_content,
                                  associated_content_texts);
 
-  if (proto.uploaded_files_size() > 0) {
+  if (!proto.uploaded_files().empty()) {
     entry->uploaded_files =
         base::ToVector(proto.uploaded_files(), &ProtoToUploadedFile);
   }
