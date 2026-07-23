@@ -7,16 +7,25 @@ Brave's local embedder for history embeddings (semantic history search).
 Upstream Chromium's history embeddings uses `OptimizationGuide` to deliver
 TFLite model files to `ChromePassageEmbeddingsServiceController`, which binds
 its `service_remote_` to a `PassageEmbeddingsService`
-(`services/passage_embeddings/`) running in a separate utility process. The
+(`services/passage_embeddings/`) running in a sandboxed utility process. The
 upstream-owned `SchedulingEmbedder` drives the job queue and calls into that
 service.
 
-Brave replaces only the transport: `BravePassageEmbeddingsServiceController`
-subclasses `PassageEmbeddingsServiceController` and swaps in an in-process
-`BravePassageEmbeddingsService` that hosts a WASM EmbeddingGemma worker inside a
-background WebContents on the guest OTR profile. The upstream
-`SchedulingEmbedder` (priority re-sort, partial-progress resumption,
-performance-scenario awareness) is unchanged.
+Brave keeps that sandboxed-utility architecture but swaps the model and the
+executor: `BravePassageEmbeddingsServiceController` subclasses
+`PassageEmbeddingsServiceController` and launches the real utility via its
+`LitertServiceLauncher`. Inside the utility, a chromium_src override of
+`PassageEmbedderImpl::BuildExecutionTask` runs EmbeddingGemma natively through
+LiteRT's `CompiledModel`
+([`//brave/services/passage_embeddings:litert_model_runner`](../../services/passage_embeddings/))
+instead of upstream's TFLite executor. The upstream `SchedulingEmbedder`
+(priority re-sort, partial-progress resumption, performance-scenario awareness)
+is unchanged.
+
+The EmbeddingGemma model (`embeddinggemma-300M_seq512_mixed-precision.tflite`
+plus its SentencePiece tokenizer) is delivered by the local AI component updater
+and resolved from the component's `litert/` subdir; Brave does not use the
+`optimization_guide` TFLite model.
 
 The upstream extraction pipeline is enabled by chromium_src overrides of
 `OptimizationGuideKeyedServiceFactory`, `PageContentAnnotationsServiceFactory`,
@@ -33,92 +42,45 @@ Two prefs gate the feature, via the `IsHistoryEmbeddings*` overrides in
 - **`kBraveHistoryEmbeddingsEnabled`** — per-profile brave://history toggle;
   gates `IsHistoryEmbeddingsEnabledForProfile()`.
 
-The "Tool: On-Device AI" renderer launches only when an embedding service feeds
-the controller. Both such services (`PageEmbeddingsService`,
-`HistoryEmbeddingsService`) refuse to build without
-`PassageEmbedderModelObserverFactory`, so
+The embedder is built only when an embedding service feeds the controller. Both
+such services (`PageEmbeddingsService`, `HistoryEmbeddingsService`) refuse to
+build without `PassageEmbedderModelObserverFactory`, so
 [`chromium_src/.../passage_embedder_model_observer_factory.cc`](../../chromium_src/chrome/browser/passage_embeddings/passage_embedder_model_observer_factory.cc)
 gates that one shared dependency on `IsHistoryEmbeddingsEnabledForProfile()` —
-toggle off ⇒ neither service is built ⇒ no renderer. (Its other upstream gates,
+toggle off ⇒ neither service is built ⇒ no embedder. (Its other upstream gates,
 `kPassageEmbedder`/`kPermissionsAIv4`, are disabled in Brave.) Applied at
 service creation, so changes take effect on restart.
 
-## Why `BindPassageEmbedder` instead of mojo `LoadModels`
-
-Upstream's `mojom::PassageEmbeddingsService::LoadModels` is shaped for
-upstream's embedder: two `ReadOnlyFile` fields (tflite model + sentencepiece
-tokenizer) and a `PassageEmbedderParams` of tflite-specific knobs (thread counts
-per priority, cache size, GPU flag). EmbeddingGemma needs five files (`weights`,
-`weights_dense1`, `weights_dense2`, `tokenizer`, `config`) with different
-semantics, and none of the `PassageEmbedderParams` tuning applies to our WASM
-renderer. There's no clean way to map our inputs onto the upstream struct short
-of patching the mojom.
-
-The mojom also exists to cross a sandbox boundary — upstream runs its
-`PassageEmbeddingsService` in a utility process. `BravePassageEmbeddingsService`
-lives in the browser process, same process as the controller, so the mojo pipe
-adds serialization cost without any isolation benefit.
-
-The only useful piece `LoadModels` would carry for us is the
-`PendingReceiver<PassageEmbedder>` that hooks the controller's
-`embedder_remote_` up to the service. `BindPassageEmbedder(receiver, callback)`
-carries exactly that and nothing more. The renderer's model files are delivered
-separately through `PassageEmbedderFactory::Init` as
-`local_ai::mojom::ModelFiles` (five `BigBuffer` fields), read from the
-component-updater install directory surfaced by `LocalModelsUpdaterState`.
-
-`BravePassageEmbeddingsService` still implements the upstream mojom for
-completeness (its `LoadModels` override forwards to `BindPassageEmbedder` after
-discarding the unused params), but the controller calls `BindPassageEmbedder`
-directly. The base class's `service_remote_` is left unbound; the
-`embedder_remote_` idle handler tears the whole service down so the WASM
-renderer is freed.
-
-## Why fire `EmbedderMetadataUpdated` from the constructor
+## Model delivery + `EmbedderMetadataUpdated`
 
 `SchedulingEmbedder` waits for `EmbedderMetadataUpdated` before it dispatches
-any work. Upstream fires it from `MaybeUpdateModelInfo()` when
-`optimization_guide` delivers model files. Brave has no dynamic model info — our
-metadata is static (`version=1`, `output_size=768`, `threshold=0.45`) and always
-valid — so the controller fires the notification once in its constructor. The
-`chromium_src` include shim declares `BravePassageEmbeddingsServiceController`
-as a `friend class` on the base so we can reach `observer_list_` and
-`embedder_remote_` without touching the upstream header (see
+any work, and the base controller opens the model files the paths point at.
+Brave's model is delivered by the local AI component updater, so the controller
+observes `LocalModelsUpdaterState`: when the EmbeddingGemma component is
+installed, `OnLocalModelsReady` resolves
+`embeddings_model_path_`/`sp_model_path_` from the component's `litert/` subdir
+and fires `EmbedderMetadataUpdated`; `IsModelAvailable()` is true once those
+paths are set. The metadata is otherwise static (`version=2`, `output_size=768`,
+`threshold=0.45`); the version differs from the previous WASM embedder's so
+`SqlDatabase` re-embeds stored history rather than mixing vector spaces.
+
+The `chromium_src` include shim declares
+`BravePassageEmbeddingsServiceController` as a `friend class` on the base so we
+can set the model paths/metadata and reach `observer_list_` without touching the
+upstream header (see
 [`chromium_src/.../passage_embeddings_service_controller.h`](../../chromium_src/components/passage_embeddings/core/passage_embeddings_service_controller.h)).
 
 ## Key Files
 
-- **`brave_passage_embeddings_service.{h,cc}`** — In-process implementation of
-  `passage_embeddings::mojom::PassageEmbeddingsService`. Exposes a direct
-  `BindPassageEmbedder(receiver, model_files, cb)` entry point used by the
-  controller; constructs a `BraveBatchPassageEmbedder` around the supplied
-  files. Also exposes `BindLocalAIReceiver(...)` which the controller forwards
-  to from `UntrustedLocalAIUI::BindInterface` so the WASM page can register its
-  `PassageEmbedderFactory`.
-
-- **`brave_batch_passage_embedder.{h,cc}`** — In-process implementation of
-  `passage_embeddings::mojom::PassageEmbedder` and
-  `local_ai::mojom::LocalAIService`. Owns the full renderer-side lifecycle for a
-  single load: the guest-OTR background WebContents that hosts the WASM worker,
-  the `LocalAIService` receiver set the WASM page uses to register its
-  `PassageEmbedderFactory`, and the `factory->Init` + `factory->Bind` handshake.
-  Initialization is gated on an explicit `LoadPhase`
-  (`kCreatingContents → kAwaitingFactory → kInitializing → kReady`); the model
-  files arrive via the ctor, and Init runs as soon as the renderer registers its
-  factory. Translates upstream's batch mojom to the renderer's
-  one-passage-at-a-time interface, processing passages sequentially so callbacks
-  resolve with embeddings in order.
-
 - **`brave_passage_embeddings_service_controller.{h,cc}`** — Singleton subclass
-  of `PassageEmbeddingsServiceController`. Observes `LocalModelsUpdaterState` so
-  it knows when the EmbeddingGemma component is installed; `IsModelAvailable()`
-  returns true iff the component is present, and `OnLocalModelsReady` fires
-  `EmbedderMetadataUpdated` on observer*list* so SchedulingEmbedder retries.
-  Overrides `MaybeLaunchService()`/`ResetServiceRemote()` to construct/destroy
-  the in-process service, and `GetEmbeddings()` to short-circuit with
-  `kModelUnavailable` when not ready, otherwise post the disk read for the five
-  EmbeddingGemma files and hand them to `service_->BindPassageEmbedder()` once
-  loaded.
+  of `PassageEmbeddingsServiceController`. Provides `LitertServiceLauncher`,
+  which launches the real sandboxed Passage Embeddings utility process. Observes
+  `LocalModelsUpdaterState` and resolves the model paths from the component's
+  `litert/` subdir in `OnLocalModelsReady`, publishes the LiteRT metadata, and
+  swallows `optimization_guide` model updates (`MaybeUpdateModelInfo`) since
+  Brave doesn't use that model. `GetEmbeddings` is the base implementation: the
+  upstream launch + `LoadModels` flow opens the model files and drives the
+  embedder in the utility.
 
 - **`open_tab_search.{h,cc}`** — Standalone util, unrelated to the embedder
   above: it powers on-device "search my open tabs by content".
@@ -127,6 +89,18 @@ as a `friend class` on the base so we can reach `observer_list_` and
   with `HistoryEmbeddingsSearch::Search`. Shared by the tab_search WebUI page
   handler and the semantic tab search chat tool. Builds regardless of
   `enable_local_ai` since it only wraps upstream Chromium APIs.
+
+## The LiteRT embedder
+
+The native embedder lives in
+[`//brave/services/passage_embeddings`](../../services/passage_embeddings/) and
+runs inside the sandboxed utility, wired in by
+[`chromium_src/services/passage_embeddings/passage_embedder_impl.cc`](../../chromium_src/services/passage_embeddings/passage_embedder_impl.cc):
+its `BuildExecutionTask` override builds a `LitertModelRunner` from the loaded
+`.tflite` and wraps it in upstream's `PassageEmbedderExecutor` interface.
+`LitertModelRunner` runs EmbeddingGemma on LiteRT's CPU backend via
+`litert::CompiledModel`. The browser opens the model files and sends them to the
+utility through the standard `LoadModels` mojo call.
 
 ## Related Files
 
@@ -147,10 +121,17 @@ as a `friend class` on the base so we can reach `observer_list_` and
 
 - **`chromium_src/components/passage_embeddings/core/passage_embeddings_service_controller.h`**
   — Chromium_src include shim. Adds `virtual` to
-  `IsModelAvailable`/`GetEmbedderMetadata`/`GetEmbeddings` via `#define`s, and
-  declares `friend class BravePassageEmbeddingsServiceController` by
-  macro-injecting it through the `EmbedderRunning` anchor (same idiom as
+  `IsModelAvailable`/`GetEmbedderMetadata`/`MaybeUpdateModelInfo` via
+  `#define`s, and declares
+  `friend class BravePassageEmbeddingsServiceController` by macro-injecting it
+  through the `EmbedderRunning` anchor (same idiom as
   `chromium_src/ui/android/view_android.h`).
+
+- **`chromium_src/services/passage_embeddings/passage_embedder_impl.cc`** —
+  Injects the LiteRT runner at the top of
+  `PassageEmbedderImpl::BuildExecutionTask` (via a
+  `BRAVE_PASSAGE_EMBEDDER_IMPL_BUILD_EXECUTION_TASK` macro), so the sandboxed
+  utility runs EmbeddingGemma on LiteRT instead of upstream's TFLite executor.
 
 - **`chromium_src/chrome/browser/page_content_annotations/`** — Factory
   overrides for `PageContentAnnotationsService`, `PageContentExtractionService`,
@@ -169,18 +150,14 @@ PageContentAnnotationsWebContentsObserver (upstream)
     → PageContentExtractionService::OnPageContentExtracted
       → PageEmbeddingsService (chunks text into passages)
         → SchedulingEmbedder (upstream; queues, reorders by priority)
-          → BravePassageEmbeddingsServiceController::GetEmbeddings
+          → PassageEmbeddingsServiceController::GetEmbeddings (base)
             → !IsModelAvailable() → kModelUnavailable (SchedulingEmbedder
               retries on the next EmbedderMetadataUpdated)
-            → PostTask: read five EmbeddingGemma files from disk
-              → service_->BindPassageEmbedder(receiver, model_files, cb)
-                → BraveBatchPassageEmbedder created with files in hand;
-                  creates background WebContents and waits for factory
-                  registration
-                  → PassageEmbedderFactory::Init (loads WASM model)
-                    → renderer-side PassageEmbedder bound; embedder_remote_
-                      ready
-            → embedder_remote_->GenerateEmbeddings (subsequent batches)
-              → WASM renderer (EmbeddingGemma, one passage at a time)
-                → HistoryEmbeddingsService (stores passages + embeddings)
+            → LitertServiceLauncher launches the sandboxed utility
+            → LoadModels (browser opens the .tflite + SentencePiece files and
+              sends them to the utility)
+              → PassageEmbedderImpl::BuildExecutionTask (chromium_src override)
+                → LitertModelRunner (EmbeddingGemma on LiteRT's CompiledModel)
+            → GenerateEmbeddings (per batch)
+              → HistoryEmbeddingsService (stores passages + embeddings)
 ```
