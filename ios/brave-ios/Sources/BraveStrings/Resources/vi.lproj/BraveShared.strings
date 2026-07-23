@@ -79,6 +79,9 @@
 /* Label for account when indicating that a domain has multiple accounts */
 "autofill.managePassword.multipleAccounts" = "Tài khoản";
 
+/* The reason string shown in the biometric/passcode authentication prompt when the user tries to access autofill management. */
+"autofill.managePasswords.authenticationReason" = "Vui lòng xác thực để quản lý mật khẩu của bạn.";
+
 /* Alert message warning the user that deleting non-synced passwords will permanently remove them */
 "autofill.managePasswords.deleteCredentialConfirmMessage" = "Thao tác này sẽ xóa (các) mật khẩu đã lưu cho %@ khỏi chuỗi đồng bộ và thiết bị của bạn.";
 
@@ -99,6 +102,12 @@
 
 /* Display text for the option to offer to save passwords */
 "autofill.managePasswords.offerToSavePasswords" = "Đề nghị lưu mật khẩu";
+
+/* Placeholder for the password field when adding or editing a login */
+"autofill.managePasswords.passwordDetail.inputPasswordPlaceholder" = "Nhập mật khẩu";
+
+/* Reveal password label */
+"autofill.managePasswords.passwordDetail.revealPassword" = "Hiển thị";
 
 /* Prompt that is diplayed in the search bar of the Manage Passwords list screen */
 "autofill.managePasswords.searchWebsitesPrompt" = "Tìm kiếm trang web";
@@ -1561,12 +1570,6 @@
 /* Title for the Playlist Settings Option for long press gesture */
 "playlist.playlistLongPressSettingsOptionTitle" = "Bật Nhấn và giữ";
 
-/* Text for Playlist Media & Offline Data Toggle while clearing the offline data storage in settings */
-"playlist.playlistMediaAndOfflineDataToggleOption" = "Tệp đa phương tiện & Dữ liệu ngoại tuyến của Danh sách phát";
-
-/* Text for Playlist Offline Data Toggle while clearing the offline data storage in settings */
-"playlist.playlistOfflineDataToggleOption" = "Dữ liệu ngoại tuyến của Danh sách phát";
-
 /* Title of a button displayed when first adding some media to Playlist. Its shown next to the name of a folder that the item is recently added to to imply that you are changing the folder it was saved to */
 "playlist.playlistPopoverChangeFoldersButtonTitle" = "Thay đổi";
 
@@ -2065,21 +2068,6 @@
 /* Restore Tabs Prompt Title */
 "RestoreTabOnCrashAlertTitle" = "Brave đóng đột ngột.";
 
-/* Body for Brave Talk rewards opt-in screen */
-"rewards.braveTalkRewardsOptInBody" = "Với Phần thưởng Brave, bạn có thể xem quảng cáo với cam kết bảo vệ quyền riêng tư từ mạng lưới Quảng cáo Brave. Không có trình theo dõi. Không làm giảm tốc độ. Và dữ liệu của bạn được bảo mật hoàn toàn.";
-
-/* Title for Brave Talk rewards opt-in screen button */
-"rewards.braveTalkRewardsOptInButtonTitle" = "Bật Phần thưởng";
-
-/* Body for successful Brave Talk rewards opt-in */
-"rewards.braveTalkRewardsOptInSuccessBody" = "Nhấp vào bất cứ đâu trên màn hình để tiếp tục đến Trò chuyện Brave.";
-
-/* Title for successful Brave Talk rewards opt-in */
-"rewards.braveTalkRewardsOptInSuccessTitle" = "Giờ đây bạn có thể bắt đầu một cuộc gọi miễn phí";
-
-/* Title for Brave Talk rewards opt-in screen */
-"rewards.braveTalkRewardsOptInTitle" = "Để bắt đầu một cuộc gọi miễn phí, hãy bật Phần thưởng Brave";
-
 /* Displayed when Brave Rewards is disabled */
 "rewards.disabledBody" = "Bật để góp phần hỗ trợ Brave và cộng đồng BAT.";
 
@@ -2091,9 +2079,6 @@
 
 /* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
 "rewards.enabledStatusBody" = "Cảm ơn bạn vì đã góp phần hỗ trợ Brave và cộng đồng BAT!";
-
-/* The placeholders say 'Terms of Service' and 'Privacy Policy'. So full sentence goes like: 'By clicking, you agree to the Terms of Service and Privacy Policy...' */
-"rewards.optInDisclaimer" = "Khi bấm, bạn đồng ý với %1$@ và %2$@. Tắt bất kỳ lúc nào trong Cài đặt.";
 
 /* No comment provided by engineer. */
 "rewards.settingsToggleMessage" = "Góp phần hỗ trợ Brave và cộng đồng BAT bằng cách bật Phần thưởng Brave và xem Quảng cáo Brave.";

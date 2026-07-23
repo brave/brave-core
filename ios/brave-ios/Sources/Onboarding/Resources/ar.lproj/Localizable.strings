@@ -47,10 +47,16 @@
 "playlistInfoFeaturePointSubtitleTwo" = "مواصلة البث: يمكنك إضافة مقاطع فيديو أثناء التصفح، ومشاهدتها لاحقًا.";
 
 /* A list of features in Playlist */
+"playlistInfoFeaturePointTitleOne" = "أضف مقاطع فيديو إلى قائمة التشغيل لدى Brave.";
+
+/* A list of features in Playlist */
 "playlistInfoFeaturePointTitleThree" = "التشغيل أفضل في قائمة التشغيل";
 
 /* A list of features in Playlist */
 "playlistInfoFeaturePointTitleTwo" = "ما عليك سوى الضغط على الزر لإضافة مقاطع الفيديو إلى قائمة تشغيل";
+
+/* A body of text explaining the feature that will be displayed under a title reading 'Introducing Brave Playlist' */
+"playlistOnboardingDescription" = "أنشئ قوائم تشغيل بالمحتوى الذي تحبه. أضف وسائط من أي صفحة.";
 
 /* %@ will be replaced by the text 'Add to Playlist' and an icon. Guides the user to tap an icon just above to add some content to the playlist feature */
 "userActionPrompt" = "انقر فوق %@ لإضافة العنصر الأول";

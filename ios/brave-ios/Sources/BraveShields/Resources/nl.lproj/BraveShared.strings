@@ -28,6 +28,9 @@
 /* A picker title for selecting a automatic shred setting option */
 "AutoShred" = "Automatische versnippering";
 
+/* The description for shredding when the app is closed */
+"AutoShredSectionTitle" = "Browsegegevens automatisch versnipperen";
+
 /* The option the user can select to do aggressive ad and tracker blocking */
 "BlockAdsAndTrackingAggressive" = "Agressief";
 
@@ -205,11 +208,20 @@
 /* An option setting for never automatically shreding site data */
 "ShredNever" = "Nooit";
 
+/* The description for never automatically shreding site data */
+"ShredNeverDescription" = "Browsegegevens worden nooit automatisch versnipperd";
+
 /* An option setting for automatically shredding only when the app is closed */
 "ShredOnAppClose" = "App gesloten";
 
+/* The description for shredding when the app is closed */
+"ShredOnAppCloseDescription" = "Browsegegevens worden automatisch versnipperd wanneer de Brave-app wordt gesloten / opnieuw wordt opgestart";
+
 /* An option setting for automatically shredding when the site is closed */
 "ShredOnSiteTabsClosed" = "Tabbladen van site gesloten";
+
+/* The description for shredding when the site is closed */
+"ShredOnSiteTabsClosedDescription" = "Browsegegevens worden automatisch versnipperd wanneer alle geopende tabbladen naar een site zijn gesloten";
 
 /* A message for a confirmation window that appears when a user clicks on 'Shred All Tabs'. */
 "ShredSiteAllTabsConfirmationMessage" = "Door de versnippering worden alle tabbladen gesloten en worden alle sitegegevens verwijderd. Deze actie kun je niet ongedaan maken.";
