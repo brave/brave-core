@@ -16,6 +16,10 @@ namespace gfx {
 class Rect;
 }  // namespace gfx
 
+namespace views {
+class View;
+}  // namespace views
+
 class Tab;
 class TabStripLayoutHelper;
 class TabWidthConstraints;
@@ -47,9 +51,26 @@ std::pair<std::vector<gfx::Rect>, LayoutDomain> CalculateVerticalTabBounds(
     std::optional<int> width,
     bool should_layout_pinned_tabs_in_grid);
 
+// Core layout for a vertical-tabs drag pile, given the already-resolved drag
+// area width and floating state. Exposed separately from the TabStrip*
+// overload below so it can be unit tested without a live TabStrip.
+std::vector<gfx::Rect> CalculateBoundsForVerticalDraggedViews(
+    const std::vector<TabSlotView*>& views,
+    int drag_area_width,
+    bool is_vertical_tabs_floating);
+
 std::vector<gfx::Rect> CalculateBoundsForVerticalDraggedViews(
     const std::vector<TabSlotView*>& views,
     TabStrip* tab_strip);
+
+// `views` must already be children of `parent`. Reorders them so that
+// `views[0]` ends up painted on top of the rest of the pile and each
+// subsequent entry stacks progressively behind the previous one, matching
+// the compact overlapping pile CalculateBoundsForVerticalDraggedViews
+// computes bounds for. Pinned tabs are left untouched since they fan out
+// horizontally instead of stacking.
+void ReorderDraggedViewsForStacking(views::View* parent,
+                                    const std::vector<TabSlotView*>& views);
 
 void UpdateInsertionIndexForVerticalTabs(
     const gfx::Rect& dragged_bounds,
