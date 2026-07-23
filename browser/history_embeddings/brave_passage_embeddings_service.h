@@ -36,6 +36,13 @@ class BravePassageEmbeddingsService : public mojom::PassageEmbeddingsService {
   using BackgroundWebContentsFactory =
       BraveBatchPassageEmbedder::BackgroundWebContentsFactory;
 
+  // Whether the native LiteRT embedder is selected (the
+  // kBraveHistoryEmbeddingsLitert feature is enabled and a model path is
+  // provided). The controller uses this to report a distinct embedder
+  // model_version so switching to/from the LiteRT embedder re-embeds stored
+  // history instead of mixing vector spaces.
+  static bool ShouldUseLitertEmbedder();
+
   explicit BravePassageEmbeddingsService(
       BackgroundWebContentsFactory background_web_contents_factory);
   ~BravePassageEmbeddingsService() override;

@@ -11,9 +11,15 @@
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/logging.h"
+#include "brave/browser/history_embeddings/features.h"
 #include "components/history_embeddings/core/history_embeddings_features.h"
 
 namespace passage_embeddings {
+
+// static
+bool BravePassageEmbeddingsService::ShouldUseLitertEmbedder() {
+  return base::FeatureList::IsEnabled(kBraveHistoryEmbeddingsLitert);
+}
 
 BravePassageEmbeddingsService::BravePassageEmbeddingsService(
     BackgroundWebContentsFactory background_web_contents_factory)
@@ -36,6 +42,7 @@ void BravePassageEmbeddingsService::BindPassageEmbedder(
     local_ai::mojom::ModelFilesPtr model_files,
     base::OnceCallback<void(bool)> callback) {
   CHECK(model_files);
+
   // Upstream's controller binds one embedder at a time — the base class
   // gates on `!embedder_remote_`. If we see a second Bind while a load
   // is in flight or an embedder is already active, fail the extra
