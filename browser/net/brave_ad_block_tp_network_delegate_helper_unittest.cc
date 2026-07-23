@@ -205,10 +205,14 @@ class BraveAdBlockTPNetworkDelegateHelperTest : public testing::Test {
 using PtrStrategies = testing::Types<SharedPtrStrategy, WeakPtrStrategy>;
 TYPED_TEST_SUITE(BraveAdBlockTPNetworkDelegateHelperTest, PtrStrategies);
 
-TYPED_TEST(BraveAdBlockTPNetworkDelegateHelperTest, NoInitiatorURL) {
-  const GURL url("https://bradhatesprimes.brave.com/composite_numbers_ftw");
+// Browser-initiated requests omit request_initiator and must not be checked.
+TYPED_TEST(BraveAdBlockTPNetworkDelegateHelperTest, NoInitiator) {
+  this->ResetAdblockInstance("||brave.com/test.txt");
+
+  const GURL url("https://brave.com/test.txt");
   auto request_info = this->MakeRequest(url);
   request_info->set_resource_type(blink::mojom::ResourceType::kScript);
+  ASSERT_EQ(request_info->request_initiator(), std::nullopt);
 
   EXPECT_FALSE(this->CheckRequest(request_info));
   EXPECT_EQ(request_info->blocked_by(), brave::kNotBlocked);
@@ -268,6 +272,39 @@ TYPED_TEST(BraveAdBlockTPNetworkDelegateHelperTest, SimpleBlocking) {
   // It's unclear whether or not this is a Tor request, so no DNS queries are
   // made (`browser_context` is `nullptr`).
   EXPECT_EQ(0ULL, this->host_resolver_->num_resolve());
+}
+
+// Opaque initiators (e.g. sandboxed iframe / about:srcdoc) are present and must
+// still be checked. The requests from opaque origins are always treated as
+// third-party.
+TYPED_TEST(BraveAdBlockTPNetworkDelegateHelperTest, OpaqueInitiator) {
+  const GURL url("https://brave.com/test.txt");
+  const url::Origin opaque_initiator =
+      url::Origin::Create(GURL("https://brave.com")).DeriveNewOpaqueOrigin();
+  ASSERT_TRUE(opaque_initiator.opaque());
+
+  {
+    this->ResetAdblockInstance("||brave.com/test.txt");
+
+    auto request_info = this->MakeRequest(url);
+    request_info->set_resource_type(blink::mojom::ResourceType::kScript);
+    request_info->set_request_initiator(opaque_initiator);
+
+    EXPECT_TRUE(this->CheckRequest(request_info));
+    EXPECT_EQ(request_info->blocked_by(), brave::kAdBlocked);
+  }
+
+  {
+    // Apply only to first-party requests.
+    this->ResetAdblockInstance("||brave.com/test.txt$~third-party");
+
+    auto request_info = this->MakeRequest(url);
+    request_info->set_resource_type(blink::mojom::ResourceType::kScript);
+    request_info->set_request_initiator(opaque_initiator);
+
+    EXPECT_TRUE(this->CheckRequest(request_info));
+    EXPECT_EQ(request_info->blocked_by(), brave::kNotBlocked);
+  }
 }
 
 TYPED_TEST(BraveAdBlockTPNetworkDelegateHelperTest, Default1pException) {
