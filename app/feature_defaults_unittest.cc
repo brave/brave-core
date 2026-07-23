@@ -293,6 +293,7 @@ TEST(FeatureDefaultsTest, EnabledFeatures) {
       &history::kHistoryMoreSearchResults,
       &media::kEnableTabMuting,
       &net::features::kPartitionConnectionsByNetworkIsolationKey,
+      &ntp_features::kNtpSimplificationBookmarkBar,
 #if !BUILDFLAG(IS_ANDROID)
       &sharing_hub::kDesktopScreenshots,
 #endif
