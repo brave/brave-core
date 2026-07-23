@@ -155,6 +155,28 @@ def _resolve_vpython3(src: Path) -> Path:
     return src / 'third_party' / 'depot_tools' / name
 
 
+# TODO(https://brave.dev/b/57477): this `npm_wrapper` special-casing exists
+# only while `build/npm_wrapper` sits ahead of our shims on `$PATH` in CI. That
+# wrapper translates `npm` to `pnpm` and otherwise defers to the next `npm` on
+# `$PATH` (our shim). If our `npm` fallback resolved a binary back out of the
+# wrapper dir, the wrapper would call our shim, which would fall back to the
+# wrapper again, ping-ponging forever. The wrapper dir is recognised by a
+# sentinel file it is guaranteed to contain. Delete this constant and
+# `_is_wrapper_dir`, and the guarded block in `_resolve_system_binary`, once
+# `build/npm_wrapper` is gone.
+_WRAPPER_SENTINELS: tuple[str, ...] = ('npm_wrapper.py', )
+
+
+def _is_wrapper_dir(directory: Path) -> bool:
+    """Whether `directory` is the `npm_wrapper` routing dir.
+
+    TODO(https://brave.dev/b/57477): remove with the rest of the `npm_wrapper`
+    special-casing once `build/npm_wrapper` is gone.
+    """
+    return any(
+        (directory / sentinel).is_file() for sentinel in _WRAPPER_SENTINELS)
+
+
 def _resolve_system_binary(tool: str,
                            exclude_dir: Path | None = None) -> str | None:
     """Locate `tool` on `$PATH`, minus the shim dir.
@@ -163,10 +185,20 @@ def _resolve_system_binary(tool: str,
     and recurse; drop it (this file's dir by default) before searching.
     """
     here = (exclude_dir or Path(__file__).parent).resolve()
-    entries = [
-        entry for entry in os.environ.get('PATH', '').split(os.pathsep)
-        if entry and Path(entry).resolve() != here
-    ]
+    entries = []
+    for entry in os.environ.get('PATH', '').split(os.pathsep):
+        if not entry:
+            continue
+        resolved = Path(entry).resolve()
+        if resolved == here:
+            continue
+        # TODO(https://brave.dev/b/57477): the `npm` fallback alone must skip a
+        # `build/npm_wrapper` dir present on `$PATH` (the wrapper shadows `npm`
+        # only); resolving into it would ping-pong between the wrapper and our
+        # shim. Remove once `build/npm_wrapper` is gone.
+        if tool == 'npm' and _is_wrapper_dir(resolved):
+            continue
+        entries.append(entry)
     return shutil.which(tool, path=os.pathsep.join(entries))
 
 

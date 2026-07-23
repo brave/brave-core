@@ -22,6 +22,33 @@ import bootstrap
 import launcher
 
 
+def _make_executable(directory: Path, name: str) -> Path:
+    """Create an executable file `name` under `directory` (POSIX exec bits)."""
+    directory.mkdir(parents=True, exist_ok=True)
+    exe = directory / name
+    exe.write_text('#!/bin/sh\n', encoding='utf-8', newline='')
+    exe.chmod(exe.stat().st_mode | stat.S_IEXEC | stat.S_IXGRP | stat.S_IXOTH)
+    return exe
+
+
+def _make_wrapper_dir(directory: Path, *tools: str) -> Path:
+    """Create a routing-wrapper dir: the `npm_wrapper.py` sentinel plus `tools`.
+
+    Mirrors `build/npm_wrapper`, whose presence on `$PATH` ahead of our shims
+    would loop a naive `npm` fallback back into itself.
+
+    TODO(https://brave.dev/b/57477): remove with the rest of the `npm_wrapper`
+    special-casing once `build/npm_wrapper` is gone.
+    """
+    directory.mkdir(parents=True, exist_ok=True)
+    (directory / 'npm_wrapper.py').write_text('#',
+                                              encoding='utf-8',
+                                              newline='')
+    for tool in tools:
+        _make_executable(directory, tool)
+    return directory
+
+
 class PosixBlockTest(unittest.TestCase):
     """Exercises the bash/zsh managed-block helpers."""
 
@@ -287,6 +314,195 @@ class ResolveSystemBinaryTest(unittest.TestCase):
                     launcher._resolve_system_binary('definitely-not-a-tool'))
             finally:
                 os.environ['PATH'] = old_path
+
+
+class IsWrapperDirTest(unittest.TestCase):
+    """Exercises `launcher._is_wrapper_dir` sentinel detection.
+
+    TODO(https://brave.dev/b/57477): remove with the rest of the `npm_wrapper`
+    special-casing once `build/npm_wrapper` is gone.
+    """
+
+    def test_true_when_sentinel_present(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            wrapper = _make_wrapper_dir(Path(tmp) / 'npm_wrapper')
+            self.assertTrue(launcher._is_wrapper_dir(wrapper))
+
+    def test_false_for_plain_dir(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            self.assertFalse(launcher._is_wrapper_dir(Path(tmp)))
+
+    def test_false_for_missing_dir(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            self.assertFalse(launcher._is_wrapper_dir(Path(tmp) / 'nope'))
+
+    def test_recognizes_every_declared_sentinel(self):
+        # Contract guard: each declared sentinel marks a dir as a wrapper.
+        self.assertTrue(launcher._WRAPPER_SENTINELS)
+        for sentinel in launcher._WRAPPER_SENTINELS:
+            with tempfile.TemporaryDirectory() as tmp:
+                (Path(tmp) / sentinel).write_text('#',
+                                                  encoding='utf-8',
+                                                  newline='')
+                self.assertTrue(launcher._is_wrapper_dir(Path(tmp)), sentinel)
+
+
+@unittest.skipIf(platform.system() == 'Windows',
+                 'POSIX exec-bit lookup; Windows uses PATHEXT')
+class SystemBinarySkipsWrapperTest(unittest.TestCase):
+    """`_resolve_system_binary` must never fall back into a routing wrapper.
+
+    In CI the `$PATH` layout is [npm_wrapper, our shims, system] -- npm_wrapper
+    first. When our `npm` shim finds no checkout-local binary and falls back, it
+    must resolve the real system `npm` and skip npm_wrapper; otherwise the
+    wrapper would re-invoke our shim, which would fall back to the wrapper
+    again, ping-ponging forever. The special-casing is `npm`-only (the wrapper
+    shadows `npm` alone).
+
+    TODO(https://brave.dev/b/57477): remove with the rest of the `npm_wrapper`
+    special-casing once `build/npm_wrapper` is gone.
+    """
+
+    def setUp(self):
+        self._saved_path = os.environ.get('PATH', '')
+
+    def tearDown(self):
+        os.environ['PATH'] = self._saved_path
+
+    def _set_path(self, *dirs: Path) -> None:
+        os.environ['PATH'] = os.pathsep.join(str(d) for d in dirs)
+
+    def test_skips_wrapper_and_finds_real_binary(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            shim = root / 'shim'
+            shim.mkdir()
+            wrapper = _make_wrapper_dir(root / 'wrapper', 'npm')
+            real = _make_executable(root / 'system', 'npm')
+            self._set_path(shim, wrapper, root / 'system')
+            resolved = launcher._resolve_system_binary('npm', exclude_dir=shim)
+            self.assertEqual(Path(resolved).resolve(), real.resolve())
+
+    def test_returns_none_when_only_wrapper_has_it(self):
+        # The tool exists only in the wrapper: refuse to loop -> resolve to
+        # nothing so the caller reports no system binary and stops.
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            shim = root / 'shim'
+            shim.mkdir()
+            wrapper = _make_wrapper_dir(root / 'wrapper', 'npm')
+            self._set_path(shim, wrapper)
+            self.assertIsNone(
+                launcher._resolve_system_binary('npm', exclude_dir=shim))
+
+    def test_skips_both_shim_and_wrapper(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            shim = root / 'shim'
+            _make_executable(shim, 'npm')  # our own shim, excluded by dir
+            wrapper = _make_wrapper_dir(root / 'wrapper', 'npm')
+            real = _make_executable(root / 'system', 'npm')
+            self._set_path(shim, wrapper, root / 'system')
+            resolved = launcher._resolve_system_binary('npm', exclude_dir=shim)
+            self.assertEqual(Path(resolved).resolve(), real.resolve())
+
+    def test_plain_dir_with_tool_is_not_skipped(self):
+        # Only wrapper dirs are excluded; a normal dir that merely holds `npm`
+        # (no sentinel) is used as usual.
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            shim = root / 'shim'
+            shim.mkdir()
+            plain = _make_executable(root / 'plain', 'npm')
+            self._set_path(shim, root / 'plain')
+            resolved = launcher._resolve_system_binary('npm', exclude_dir=shim)
+            self.assertEqual(Path(resolved).resolve(), plain.resolve())
+
+    def test_non_npm_tool_does_not_skip_wrapper(self):
+        # The special-casing is npm-only. A non-npm tool (here pnpm) is resolved
+        # normally, even out of a wrapper dir -- proving the guard's scope. In
+        # practice npm_wrapper only ever shadows `npm`, so this never bites; the
+        # test pins the scope so the guard can't silently widen.
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            shim = root / 'shim'
+            shim.mkdir()
+            wrapper = _make_wrapper_dir(root / 'wrapper', 'pnpm')
+            self._set_path(shim, wrapper)
+            resolved = launcher._resolve_system_binary('pnpm',
+                                                       exclude_dir=shim)
+            self.assertEqual(
+                Path(resolved).resolve(), (wrapper / 'pnpm').resolve())
+
+    def test_wrapper_before_and_after_shim_both_skipped(self):
+        # Defensive: a wrapper dir anywhere on $PATH is skipped, not just first.
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            shim = root / 'shim'
+            shim.mkdir()
+            first = _make_wrapper_dir(root / 'w1', 'npm')
+            second = _make_wrapper_dir(root / 'w2', 'npm')
+            real = _make_executable(root / 'system', 'npm')
+            self._set_path(first, shim, second, root / 'system')
+            resolved = launcher._resolve_system_binary('npm', exclude_dir=shim)
+            self.assertEqual(Path(resolved).resolve(), real.resolve())
+
+
+@unittest.skipIf(platform.system() == 'Windows',
+                 'POSIX exec-bit lookup; Windows uses PATHEXT')
+class ResolveInvocationWrapperFallbackTest(unittest.TestCase):
+    """End-to-end: with npm_wrapper ahead of our shims on `$PATH`, an `npm`
+    fallback from `resolve_invocation` lands on the real system binary, never
+    the wrapper -- so our shims can coexist with a higher-priority npm_wrapper
+    without ping-ponging.
+
+    TODO(https://brave.dev/b/57477): remove with the rest of the `npm_wrapper`
+    special-casing once `build/npm_wrapper` is gone.
+    """
+
+    def setUp(self):
+        self._saved_path = os.environ.get('PATH', '')
+
+    def tearDown(self):
+        os.environ['PATH'] = self._saved_path
+
+    def _own_shim_dir(self) -> Path:
+        # resolve_invocation's fallback excludes launcher.py's own directory;
+        # the CI layout puts that real shim dir between wrapper and system.
+        return Path(launcher.__file__).parent.resolve()
+
+    def _ci_layout(self, root: Path, *, real_npm: bool = True):
+        # [npm_wrapper, our real shim dir, system] -- npm_wrapper highest.
+        wrapper = _make_wrapper_dir(root / 'npm_wrapper', 'npm')
+        system = root / 'system'
+        system.mkdir(parents=True, exist_ok=True)
+        real = _make_executable(system, 'npm') if real_npm else None
+        os.environ['PATH'] = os.pathsep.join(
+            [str(wrapper),
+             str(self._own_shim_dir()),
+             str(system)])
+        return real
+
+    def test_npm_fallback_resolves_real_npm_not_wrapper(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            real = self._ci_layout(root)
+            # A checkout with no local npm target forces the fallback path.
+            checkout = root / 'src' / 'brave'
+            invocation = launcher.resolve_invocation('npm', checkout, True)
+            self.assertIsNotNone(invocation)
+            self.assertEqual(
+                Path(invocation.argv[0]).resolve(), real.resolve())
+            self.assertIsNone(invocation.path_prepend)
+
+    def test_npm_fallback_none_when_only_wrapper(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            self._ci_layout(root, real_npm=False)
+            checkout = root / 'src' / 'brave'
+            # No real npm anywhere but the wrapper -> refuse to loop -> None.
+            self.assertIsNone(
+                launcher.resolve_invocation('npm', checkout, True))
 
 
 class FindShimTargetTest(unittest.TestCase):
