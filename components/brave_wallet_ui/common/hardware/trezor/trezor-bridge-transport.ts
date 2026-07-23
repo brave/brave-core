@@ -77,6 +77,7 @@ export async function createTrezorBridge(
   let element = document.createElement('iframe')
   element.id = crypto.randomUUID()
   element.style.display = 'none'
+  element.src = bridgeFrameUrl
 
   await new Promise<void>((resolve, reject) => {
     element.onload = () => {
@@ -89,7 +90,6 @@ export async function createTrezorBridge(
     }
 
     document.body.appendChild(element)
-    element.src = bridgeFrameUrl
   })
 
   return element
