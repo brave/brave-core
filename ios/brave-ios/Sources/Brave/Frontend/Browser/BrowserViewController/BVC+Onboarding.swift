@@ -235,14 +235,17 @@ extension BrowserViewController {
     if !isDefault {
       steps.insert(.defaultBrowsing, at: 0)
     }
-    if !braveCore.p3aUtils.isP3APreferenceManaged {
+    if !braveCore.p3aUtils.isP3APreferenceManaged
+      || !braveCore.localState.isManagedPreference(forPath: kMetricsReportingEnabled)
+    {
       steps.append(.metricsOptIn)
     }
 
     let controller = OnboardingController(
       environment: .init(
         p3aUtils: braveCore.p3aUtils,
-        attributionManager: attributionManager
+        attributionManager: attributionManager,
+        localState: braveCore.localState
       ),
       steps: steps,
       onCompletion: {

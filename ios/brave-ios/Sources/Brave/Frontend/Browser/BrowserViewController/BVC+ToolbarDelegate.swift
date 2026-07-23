@@ -555,6 +555,7 @@ extension BrowserViewController: TopToolbarDelegate, SearchContainerViewControll
           ),
           braveCore: profileController,
           p3aUtils: braveCore.p3aUtils,
+          localState: braveCore.localState,
           rewards: rewards,
           braveStats: profileController.braveStats,
           webcompatReporterHandler: WebcompatReporter.ServiceFactory.get(privateMode: false),

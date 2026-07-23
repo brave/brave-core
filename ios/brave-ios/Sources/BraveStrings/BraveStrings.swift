@@ -241,6 +241,34 @@ extension Strings {
     value: "Unfortunately, Brave crashed or did not close properly.\nRestore your tabs?",
     comment: "Restore Tabs Prompt Description"
   )
+  public static let enableCrashReporterAlertTitle = NSLocalizedString(
+    "EnableCrashReporterAlertTitle",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Enable automatic crash reports",
+    comment: "The title on an alert presented to the user after the app crashes"
+  )
+  public static let enableCrashReporterAlertMessage = NSLocalizedString(
+    "EnableCrashReporterAlertMessage",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "If you experience a crash or freeze, Brave can automatically send anonymous diagnostic reports to fix the issue. You can always turn this off in Settings later.",
+    comment: "The message on an alert presented to the user after the app crashes"
+  )
+  public static let enableCrashReporterConfirmButtonTitle = NSLocalizedString(
+    "EnableCrashReporterConfirmButtonTitle",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Enable",
+    comment: "The confirmation button title on an alert presented to the user after the app crashes which will enable crash reporting"
+  )
+  public static let enableCrashReporterDenyButtonTitle = NSLocalizedString(
+    "EnableCrashReporterDenyButtonTitle",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Not Now",
+    comment: "The button title on an alert presented to the user after the app crashes that ignores the alert"
+  )
   public static let restoreTabNegativeButtonTitle = NSLocalizedString(
     "RestoreTabNegativeButtonTitle",
     tableName: "BraveShared",
@@ -2344,6 +2372,24 @@ extension Strings {
         bundle: .module,
         value: "This private ping lets Brave estimate active users.",
         comment: "Description to explain the daily usage ping toggle"
+      )
+
+    public static let sendCrashReportsTitle =
+      NSLocalizedString(
+        "settings.sendCrashReportsTitle",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "Send crash reports",
+        comment: "Title to explain the send crash reports toggle"
+      )
+
+    public static let sendCrashReportsDescription =
+      NSLocalizedString(
+        "settings.sendCrashReportsDescription",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "Send anonymous diagnostic reports if you experience a crash or freeze.",
+        comment: "Description to explain the send crash reports toggle"
       )
 
     public static let surveyPanelistTitle =
