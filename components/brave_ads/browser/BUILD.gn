@@ -102,6 +102,8 @@ source_set("test_support") {
     "test/fake_bat_ads_service_factory.h",
     "test/fake_device_id.cc",
     "test/fake_device_id.h",
+    "test/fake_shutdown_monitor.cc",
+    "test/fake_shutdown_monitor.h",
     "test/fake_virtual_pref_provider_delegate.cc",
     "test/fake_virtual_pref_provider_delegate.h",
   ]
