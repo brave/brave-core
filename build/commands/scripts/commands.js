@@ -471,7 +471,7 @@ program
   .option('--target_arch <target_arch>', 'target architecture')
   .allowUnknownOption(true)
   .allowExcessArguments(true)
-  .description('Call npm run perf_tests -- --more-help for detailed help')
+  .description('Call pnpm run perf_tests --more-help for detailed help')
   .action(perfTests.runPerfTests.bind(null, parsedArgs.unknown))
 
 program

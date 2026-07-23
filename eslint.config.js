@@ -22,7 +22,7 @@ import globals from 'globals'
 //     in one section.
 //   - Each section should have a comment stating its purpose and which files
 //     it targets.
-// Verify changes with: npm run eslint (about 1 min).
+// Verify changes with: pnpm run eslint (about 1 min).
 export default defineConfig([
   // Setup project-wide language options.
   {

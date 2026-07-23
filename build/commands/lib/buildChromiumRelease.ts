@@ -6,7 +6,7 @@
 // A script to build and pack a Chromium release build from scratch
 // Reuses the same /src folder
 // Designed to be used on CI, but should work locally too.
-// The script includes syncing; there is no need to run npm run sync before.
+// The script includes syncing; there is no need to run pnpm run sync before.
 
 import config from './config.ts'
 import util from './util.js'
@@ -144,7 +144,7 @@ function getChromiumGnArgs(): Record<string, any> {
       'xcode_binaries',
     )
     if (!fs.existsSync(hermeticSdkPath)) {
-      throw new Error('mac sdk is not found, run `npm run sync` to fix')
+      throw new Error('mac sdk is not found, run `pnpm run sync` to fix')
     }
     args.use_system_xcode = false
   }

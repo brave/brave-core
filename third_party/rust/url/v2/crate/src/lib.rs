@@ -261,7 +261,7 @@ impl AsRef<str> for Url {
 
 // Tests from original url crate
 // To build tests run
-// `npm run build -- --target=brave/third_party/rust/url/v0_2:lib_url_v0_2_unittests`
+// `pnpm run build --target=brave/third_party/rust/url/v0_2:lib_url_v0_2_unittests`
 // and then run `out_dir/lib_url_v0_2_unittests`
 #[test]
 fn test_relative() {

@@ -2,7 +2,7 @@ This folder contains the contents of what used to be in the brave-ios repo.
 
 ## Building the Brave iOS app:
 
-Unlike brave-core, the code inside this folder does not build using GN and `npm run build` commands.
+Unlike brave-core, the code inside this folder does not build using GN and `pnpm run build` commands.
 
 1. Ensure you have brave-core fully set up already including running an `init` with the `--target_os=ios` argument supplied.
 2. Open the `Client.xcodeproj` file in Xcode found in `ios/brave-ios/App`
