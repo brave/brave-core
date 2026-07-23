@@ -20,7 +20,7 @@
     "description": "Partial string for the phrase `shields is up *for this site*`"
   },
   "enabledMessage": {
-    "message": "Wird die Seite falsch dargestellt? Deaktiviere Shhields und versuche es erneut.",
+    "message": "Wird die Seite falsch dargestellt? Deaktiviere Shields und versuche es erneut.",
     "description": "Message telling the user to disable shields if a site appears broken"
   },
   "disabledMessage": {
