@@ -612,8 +612,8 @@ TEST(AIChatSyncConversionsTest, EntryRoundTripBasic) {
   entry->model_key = "claude-opus";
 
   std::vector<mojom::AssociatedContentPtr> rebuilt_content;
-  auto rebuilt = SpecificsToEntry(EntryToSpecifics("conv-1", *entry, {}),
-                                  &rebuilt_content);
+  auto rebuilt =
+      SpecificsToEntry(EntryToSpecifics("conv-1", *entry, {}), rebuilt_content);
   ASSERT_TRUE(rebuilt);
   ExpectConversationEntryEquals(FROM_HERE, rebuilt, entry);
   EXPECT_TRUE(rebuilt_content.empty());
@@ -721,7 +721,7 @@ TEST(AIChatSyncConversionsTest, EntryRoundTripAllFields) {
   base::flat_map<std::string, std::string> rebuilt_texts;
   auto rebuilt = SpecificsToEntry(
       EntryToSpecifics("conv-all", *entry, associated_content, texts),
-      &rebuilt_content, &rebuilt_texts);
+      rebuilt_content, &rebuilt_texts);
   ASSERT_TRUE(rebuilt);
   ExpectConversationEntryEquals(FROM_HERE, rebuilt, entry);
   ExpectAssociatedContentEquals(FROM_HERE, rebuilt_content, associated_content,
@@ -746,8 +746,8 @@ TEST(AIChatSyncConversionsTest, EntryRoundTripCompletionEvent) {
   entry->events = std::move(events);
 
   std::vector<mojom::AssociatedContentPtr> rebuilt_content;
-  auto rebuilt = SpecificsToEntry(EntryToSpecifics("conv-1", *entry, {}),
-                                  &rebuilt_content);
+  auto rebuilt =
+      SpecificsToEntry(EntryToSpecifics("conv-1", *entry, {}), rebuilt_content);
   ASSERT_TRUE(rebuilt);
   ExpectConversationEntryEquals(FROM_HERE, rebuilt, entry);
 }
@@ -767,8 +767,8 @@ TEST(AIChatSyncConversionsTest, EntryRoundTripSearchQueriesEvent) {
   entry->events = std::move(events);
 
   std::vector<mojom::AssociatedContentPtr> rebuilt_content;
-  auto rebuilt = SpecificsToEntry(EntryToSpecifics("conv-1", *entry, {}),
-                                  &rebuilt_content);
+  auto rebuilt =
+      SpecificsToEntry(EntryToSpecifics("conv-1", *entry, {}), rebuilt_content);
   ASSERT_TRUE(rebuilt);
   ExpectConversationEntryEquals(FROM_HERE, rebuilt, entry);
 }
@@ -797,8 +797,8 @@ TEST(AIChatSyncConversionsTest, EntryRoundTripWebSourcesEvent) {
   entry->events = std::move(events);
 
   std::vector<mojom::AssociatedContentPtr> rebuilt_content;
-  auto rebuilt = SpecificsToEntry(EntryToSpecifics("conv-1", *entry, {}),
-                                  &rebuilt_content);
+  auto rebuilt =
+      SpecificsToEntry(EntryToSpecifics("conv-1", *entry, {}), rebuilt_content);
   ASSERT_TRUE(rebuilt);
   ExpectConversationEntryEquals(FROM_HERE, rebuilt, entry);
 }
@@ -828,8 +828,8 @@ TEST(AIChatSyncConversionsTest, EntryRoundTripToolUseEvent) {
   entry->events = std::move(events);
 
   std::vector<mojom::AssociatedContentPtr> rebuilt_content;
-  auto rebuilt = SpecificsToEntry(EntryToSpecifics("conv-1", *entry, {}),
-                                  &rebuilt_content);
+  auto rebuilt =
+      SpecificsToEntry(EntryToSpecifics("conv-1", *entry, {}), rebuilt_content);
   ASSERT_TRUE(rebuilt);
   ExpectConversationEntryEquals(FROM_HERE, rebuilt, entry);
 }
@@ -858,8 +858,8 @@ TEST(AIChatSyncConversionsTest, EntryRoundTripToolUseArtifacts) {
   entry->events = std::move(events);
 
   std::vector<mojom::AssociatedContentPtr> rebuilt_content;
-  auto rebuilt = SpecificsToEntry(EntryToSpecifics("conv-1", *entry, {}),
-                                  &rebuilt_content);
+  auto rebuilt =
+      SpecificsToEntry(EntryToSpecifics("conv-1", *entry, {}), rebuilt_content);
   ASSERT_TRUE(rebuilt);
   ExpectConversationEntryEquals(FROM_HERE, rebuilt, entry);
 }
@@ -888,8 +888,8 @@ TEST(AIChatSyncConversionsTest, EntryRoundTripImageContentBlock) {
   entry->events = std::move(events);
 
   std::vector<mojom::AssociatedContentPtr> rebuilt_content;
-  auto rebuilt = SpecificsToEntry(EntryToSpecifics("conv-1", *entry, {}),
-                                  &rebuilt_content);
+  auto rebuilt =
+      SpecificsToEntry(EntryToSpecifics("conv-1", *entry, {}), rebuilt_content);
   ASSERT_TRUE(rebuilt);
   ExpectConversationEntryEquals(FROM_HERE, rebuilt, entry);
 }
@@ -910,8 +910,8 @@ TEST(AIChatSyncConversionsTest, EntryRoundTripInlineSearchEvent) {
   entry->events = std::move(events);
 
   std::vector<mojom::AssociatedContentPtr> rebuilt_content;
-  auto rebuilt = SpecificsToEntry(EntryToSpecifics("conv-1", *entry, {}),
-                                  &rebuilt_content);
+  auto rebuilt =
+      SpecificsToEntry(EntryToSpecifics("conv-1", *entry, {}), rebuilt_content);
   ASSERT_TRUE(rebuilt);
   ExpectConversationEntryEquals(FROM_HERE, rebuilt, entry);
 }
@@ -950,7 +950,7 @@ TEST(AIChatSyncConversionsTest,
 
   std::vector<mojom::AssociatedContentPtr> rebuilt_content;
   auto rebuilt = SpecificsToEntry(
-      EntryToSpecifics("conv-1", *entry, all_content), &rebuilt_content);
+      EntryToSpecifics("conv-1", *entry, all_content), rebuilt_content);
   ASSERT_TRUE(rebuilt);
   ExpectConversationEntryEquals(FROM_HERE, rebuilt, entry);
   ExpectAssociatedContentEquals(FROM_HERE, rebuilt_content, expected_content,
@@ -968,7 +968,7 @@ TEST(AIChatSyncConversionsTest, SpecificsToEntryReturnsNullForWrongKind) {
   sync_pb::AIChatConversationSpecifics specifics;
   specifics.mutable_conversation()->set_uuid("c1");
   std::vector<mojom::AssociatedContentPtr> content;
-  EXPECT_FALSE(SpecificsToEntry(specifics, &content));
+  EXPECT_FALSE(SpecificsToEntry(specifics, content));
 }
 
 TEST(AIChatSyncConversionsTest, EntryRoundTripUploadedFiles) {
@@ -1005,7 +1005,7 @@ TEST(AIChatSyncConversionsTest, EntryRoundTripUploadedFiles) {
       specifics.entry().uploaded_files(1).extracted_text().has_gzipped());
 
   std::vector<mojom::AssociatedContentPtr> rebuilt_content;
-  auto rebuilt = SpecificsToEntry(specifics, &rebuilt_content);
+  auto rebuilt = SpecificsToEntry(specifics, rebuilt_content);
   ASSERT_TRUE(rebuilt);
   ExpectConversationEntryEquals(FROM_HERE, rebuilt, entry);
 }
@@ -1050,7 +1050,7 @@ TEST(AIChatSyncConversionsTest, EntryRoundTripWebSourcesContentBlock) {
                   .has_web_sources_content_block());
 
   std::vector<mojom::AssociatedContentPtr> rebuilt_content;
-  auto rebuilt = SpecificsToEntry(specifics, &rebuilt_content);
+  auto rebuilt = SpecificsToEntry(specifics, rebuilt_content);
   ASSERT_TRUE(rebuilt);
   ExpectConversationEntryEquals(FROM_HERE, rebuilt, entry);
 }
@@ -1088,7 +1088,7 @@ TEST(AIChatSyncConversionsTest, EntryRoundTripAssociatedContentText) {
 
   std::vector<mojom::AssociatedContentPtr> rebuilt_content;
   base::flat_map<std::string, std::string> rebuilt_texts;
-  auto rebuilt = SpecificsToEntry(specifics, &rebuilt_content, &rebuilt_texts);
+  auto rebuilt = SpecificsToEntry(specifics, rebuilt_content, &rebuilt_texts);
   ASSERT_TRUE(rebuilt);
   ExpectConversationEntryEquals(FROM_HERE, rebuilt, entry);
   ExpectAssociatedContentEquals(FROM_HERE, rebuilt_content, expected_content,
@@ -1107,8 +1107,8 @@ TEST(AIChatSyncConversionsTest, EntryRoundTripSkillAndNearVerification) {
   entry->near_verification_status = mojom::NEARVerificationStatus::New(true);
 
   std::vector<mojom::AssociatedContentPtr> rebuilt_content;
-  auto rebuilt = SpecificsToEntry(EntryToSpecifics("conv-1", *entry, {}),
-                                  &rebuilt_content);
+  auto rebuilt =
+      SpecificsToEntry(EntryToSpecifics("conv-1", *entry, {}), rebuilt_content);
   ASSERT_TRUE(rebuilt);
   ExpectConversationEntryEquals(FROM_HERE, rebuilt, entry);
 }
@@ -1121,8 +1121,8 @@ TEST(AIChatSyncConversionsTest, EntryRoundTripWithoutSkillOrNear) {
   entry->action_type = mojom::ActionType::QUERY;
 
   std::vector<mojom::AssociatedContentPtr> rebuilt_content;
-  auto rebuilt = SpecificsToEntry(EntryToSpecifics("conv-1", *entry, {}),
-                                  &rebuilt_content);
+  auto rebuilt =
+      SpecificsToEntry(EntryToSpecifics("conv-1", *entry, {}), rebuilt_content);
   ASSERT_TRUE(rebuilt);
   ExpectConversationEntryEquals(FROM_HERE, rebuilt, entry);
   EXPECT_FALSE(rebuilt->skill);

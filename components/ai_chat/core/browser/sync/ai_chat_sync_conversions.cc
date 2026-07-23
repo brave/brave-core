@@ -15,6 +15,8 @@
 
 #include "base/containers/flat_map.h"
 #include "base/containers/map_util.h"
+#include "base/containers/span.h"
+#include "base/containers/to_vector.h"
 #include "base/hash/hash.h"
 #include "base/logging.h"
 #include "base/notreached.h"
@@ -138,9 +140,8 @@ void WriteWebSource(const mojom::WebSource& source,
                             proto->mutable_page_content());
   }
   if (source.extra_snippets) {
-    for (const auto& snippet : *source.extra_snippets) {
-      proto->add_extra_snippets(snippet);
-    }
+    proto->mutable_extra_snippets()->Assign(source.extra_snippets->begin(),
+                                            source.extra_snippets->end());
   }
 }
 
@@ -149,9 +150,7 @@ void WriteWebSourcesContentBlock(const mojom::WebSourcesContentBlock& block,
   for (const auto& source : block.sources) {
     WriteWebSource(*source, proto->add_sources());
   }
-  for (const auto& q : block.queries) {
-    proto->add_queries(q);
-  }
+  proto->mutable_queries()->Assign(block.queries.begin(), block.queries.end());
   for (const auto& rr : block.rich_results) {
     WriteCompressibleString(rr, proto->add_rich_results());
   }
@@ -240,11 +239,12 @@ void WriteEvent(const mojom::ConversationEntryEvent& event,
       WriteCompressibleString(event.get_completion_event()->completion,
                               proto->mutable_completion());
       break;
-    case mojom::ConversationEntryEvent::Tag::kSearchQueriesEvent:
-      for (const auto& q : event.get_search_queries_event()->search_queries) {
-        proto->mutable_search_queries()->add_queries(q);
-      }
+    case mojom::ConversationEntryEvent::Tag::kSearchQueriesEvent: {
+      const auto& queries = event.get_search_queries_event()->search_queries;
+      proto->mutable_search_queries()->mutable_queries()->Assign(
+          queries.begin(), queries.end());
       break;
+    }
     case mojom::ConversationEntryEvent::Tag::kSourcesEvent: {
       auto* ws = proto->mutable_web_sources();
       const auto& sources_event = event.get_sources_event();
@@ -340,12 +340,7 @@ mojom::WebSourcePtr ProtoToWebSource(const sync_pb::AIChatWebSource& proto) {
     }
   }
   if (proto.extra_snippets_size() > 0) {
-    std::vector<std::string> snippets;
-    snippets.reserve(proto.extra_snippets_size());
-    for (const auto& snippet : proto.extra_snippets()) {
-      snippets.push_back(snippet);
-    }
-    source->extra_snippets = std::move(snippets);
+    source->extra_snippets = base::ToVector(proto.extra_snippets());
   }
   return source;
 }
@@ -353,12 +348,9 @@ mojom::WebSourcePtr ProtoToWebSource(const sync_pb::AIChatWebSource& proto) {
 mojom::WebSourcesContentBlockPtr ProtoToWebSourcesContentBlock(
     const sync_pb::AIChatWebSourcesContentBlock& proto) {
   auto block = mojom::WebSourcesContentBlock::New();
-  for (const auto& source : proto.sources()) {
-    block->sources.push_back(ProtoToWebSource(source));
-  }
-  for (const auto& q : proto.queries()) {
-    block->queries.push_back(q);
-  }
+  block->sources = base::ToVector(proto.sources(), &ProtoToWebSource);
+  block->queries.append_range(proto.queries());
+  block->rich_results.reserve(proto.rich_results_size());
   for (const auto& rr : proto.rich_results()) {
     if (auto value = ReadCompressibleString(rr)) {
       block->rich_results.push_back(std::move(*value));
@@ -406,17 +398,14 @@ mojom::ToolUseEventPtr ProtoToToolUse(
     tool_use->output = std::move(blocks);
   }
   if (proto.artifacts_size() > 0) {
-    std::vector<mojom::ToolArtifactPtr> artifacts;
-    artifacts.reserve(proto.artifacts_size());
-    for (const auto& a : proto.artifacts()) {
+    tool_use->artifacts = base::ToVector(proto.artifacts(), [](const auto& a) {
       auto artifact = mojom::ToolArtifact::New();
       artifact->type = a.type();
       if (auto value = ReadCompressibleString(a.content_json())) {
         artifact->content_json = std::move(*value);
       }
-      artifacts.push_back(std::move(artifact));
-    }
-    tool_use->artifacts = std::move(artifacts);
+      return artifact;
+    });
   }
   return tool_use;
 }
@@ -433,17 +422,15 @@ mojom::ConversationEntryEventPtr ProtoToEntryEvent(
   }
   if (proto.has_search_queries()) {
     auto event = mojom::SearchQueriesEvent::New();
-    for (const auto& q : proto.search_queries().queries()) {
-      event->search_queries.push_back(q);
-    }
+    event->search_queries.append_range(proto.search_queries().queries());
     return mojom::ConversationEntryEvent::NewSearchQueriesEvent(
         std::move(event));
   }
   if (proto.has_web_sources()) {
     auto event = mojom::WebSourcesEvent::New();
-    for (const auto& source : proto.web_sources().sources()) {
-      event->sources.push_back(ProtoToWebSource(source));
-    }
+    event->sources =
+        base::ToVector(proto.web_sources().sources(), &ProtoToWebSource);
+    event->rich_results.reserve(proto.web_sources().rich_results_size());
     for (const auto& rr : proto.web_sources().rich_results()) {
       if (auto value = ReadCompressibleString(rr)) {
         event->rich_results.push_back(std::move(*value));
@@ -495,8 +482,7 @@ mojom::UploadedFilePtr ProtoToUploadedFile(
   // omitted them (the oneof holds omitted_data_hash instead), leave |data|
   // empty so the caller can restore any existing local bytes.
   if (proto.has_data()) {
-    const std::string& bytes = proto.data();
-    file->data.assign(bytes.begin(), bytes.end());
+    file->data = base::ToVector(base::as_byte_span(proto.data()));
   }
   if (proto.has_extracted_text()) {
     if (auto value = ReadCompressibleString(proto.extracted_text())) {
@@ -513,13 +499,10 @@ mojom::UploadedFilePtr ProtoToUploadedFile(
 // caller preserves any existing local text.
 void ReadAssociatedContentFromEntry(
     const sync_pb::AIChatConversationSpecifics_Entry& proto,
-    std::vector<mojom::AssociatedContentPtr>* associated_content,
+    std::vector<mojom::AssociatedContentPtr>& associated_content,
     base::flat_map<std::string, std::string>* associated_content_texts) {
-  if (!associated_content) {
-    return;
-  }
   for (const auto& content_proto : proto.associated_content()) {
-    associated_content->push_back(
+    associated_content.push_back(
         ProtoToAssociatedContent(content_proto, proto.uuid()));
     if (associated_content_texts && content_proto.has_last_contents()) {
       if (auto value = ReadCompressibleString(content_proto.last_contents())) {
@@ -619,7 +602,7 @@ mojom::ConversationPtr SpecificsToConversationMetadata(
 
 mojom::ConversationTurnPtr SpecificsToEntry(
     const sync_pb::AIChatConversationSpecifics& specifics,
-    std::vector<mojom::AssociatedContentPtr>* associated_content,
+    std::vector<mojom::AssociatedContentPtr>& associated_content,
     base::flat_map<std::string, std::string>* associated_content_texts) {
   if (!specifics.has_entry()) {
     return nullptr;
@@ -659,12 +642,8 @@ mojom::ConversationTurnPtr SpecificsToEntry(
                                  associated_content_texts);
 
   if (proto.uploaded_files_size() > 0) {
-    std::vector<mojom::UploadedFilePtr> files;
-    files.reserve(proto.uploaded_files_size());
-    for (const auto& file_proto : proto.uploaded_files()) {
-      files.push_back(ProtoToUploadedFile(file_proto));
-    }
-    entry->uploaded_files = std::move(files);
+    entry->uploaded_files =
+        base::ToVector(proto.uploaded_files(), &ProtoToUploadedFile);
   }
 
   if (proto.has_skill()) {

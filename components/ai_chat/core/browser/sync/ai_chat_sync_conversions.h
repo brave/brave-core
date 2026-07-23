@@ -106,7 +106,7 @@ mojom::ConversationPtr SpecificsToConversationMetadata(
 // local text (forward-compat or truncated-for-sync).
 mojom::ConversationTurnPtr SpecificsToEntry(
     const sync_pb::AIChatConversationSpecifics& specifics,
-    std::vector<mojom::AssociatedContentPtr>* associated_content,
+    std::vector<mojom::AssociatedContentPtr>& associated_content,
     base::flat_map<std::string, std::string>* associated_content_texts =
         nullptr);
 
