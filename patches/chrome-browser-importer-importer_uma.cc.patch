@@ -1,0 +1,19 @@
+diff --git a/chrome/browser/importer/importer_uma.cc b/chrome/browser/importer/importer_uma.cc
+index d50675a79eb60f86b0278934884add02407a725a..61a0397c8ac0fc72d5b3c74a7b187d14b9f0becf 100644
+--- a/chrome/browser/importer/importer_uma.cc
++++ b/chrome/browser/importer/importer_uma.cc
+@@ -37,6 +37,14 @@ void LogImporterUseToMetrics(const std::string& metric_postfix,
+                              user_data_importer::ImporterType type) {
+   ImporterTypeMetrics metrics_type = IMPORTER_METRICS_UNKNOWN;
+   switch (type) {
++    case user_data_importer::TYPE_CHROME:
++    case user_data_importer::TYPE_EDGE_CHROMIUM:
++    case user_data_importer::TYPE_VIVALDI:
++    case user_data_importer::TYPE_OPERA:
++    case user_data_importer::TYPE_YANDEX:
++    case user_data_importer::TYPE_WHALE:
++    case user_data_importer::TYPE_BRAVE:
++      break;
+     case user_data_importer::TYPE_UNKNOWN:
+       metrics_type = IMPORTER_METRICS_UNKNOWN;
+       break;

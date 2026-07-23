@@ -1,0 +1,44 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Make NotifyImportEnded overridable.
+
+      BraveExternalProcessImporterHost overrides NotifyImportEnded() to run
+      Brave-specific bookkeeping when an import finishes.
+    make_virtual:
+      class_name: ExternalProcessImporterHost
+      method_name: NotifyImportEnded
+
+  - description: |-
+      Befriend BraveExternalProcessImporterHost.
+
+      The Brave subclass drives the import through the base's private members,
+      so it needs friend access to them.
+    add_friend:
+      class_name: ExternalProcessImporterHost
+      friend_type: class BraveExternalProcessImporterHost
+
+  - description: |-
+      Add a parent-view accessor to the public interface.
+
+      Brave shows the importer lock dialog from a NativeView context, so the
+      host must carry a NativeView parent to hand to ShowImportLockDialog.
+    add_to_public:
+      class_name: ExternalProcessImporterHost
+      code: |-
+        void set_parent_view(gfx::NativeView parent_view) {
+          parent_view_ = parent_view;
+        }
+
+  - description: |-
+      Add the parent-view backing field.
+
+      Stores the NativeView parent exposed by set_parent_view() above.
+    add_to_protected:
+      class_name: ExternalProcessImporterHost
+      code: |-
+        gfx::NativeView parent_view_ = gfx::NativeView();
