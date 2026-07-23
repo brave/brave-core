@@ -1,0 +1,50 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/local_ai/buildflags/buildflags.gni")
+
+assert(enable_local_ai)
+
+static_library("speech") {
+  sources = [
+    "on_device_speech_recognition_controller.cc",
+    "on_device_speech_recognition_controller.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/app:brave_generated_resources_grit",
+    "//brave/browser/local_ai",
+    "//brave/components/local_ai/core",
+    "//brave/components/local_ai/core:speech_recognition_mojom",
+    "//chrome/browser/profiles:profile",
+    "//mojo/public/cpp/base",
+    "//mojo/public/cpp/bindings",
+    "//services/network/public/mojom",
+    "//services/on_device_model/public/mojom",
+    "//url",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "on_device_speech_recognition_controller_unittest.cc" ]
+
+  deps = [
+    ":speech",
+    "//base",
+    "//base/test:test_support",
+    "//brave/components/local_ai/core",
+    "//brave/components/local_ai/core:speech_recognition_mojom",
+    "//chrome/browser/profiles:profile",
+    "//chrome/test:test_support",
+    "//content/test:test_support",
+    "//mojo/public/cpp/bindings",
+    "//services/on_device_model/public/mojom",
+    "//testing/gtest",
+    "//url",
+  ]
+}
