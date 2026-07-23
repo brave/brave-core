@@ -8,19 +8,6 @@ import("//mojo/public/tools/bindings/mojom.gni")
 
 assert(enable_local_ai)
 
-mojom_component("mojom") {
-  output_prefix = "local_ai_mojom"
-  macro_prefix = "LOCAL_AI_MOJOM"
-
-  generate_java = true
-  generate_legacy_js_bindings = true
-  webui_module_path = "/"
-
-  sources = [ "local_ai.mojom" ]
-
-  public_deps = [ "//mojo/public/mojom/base" ]
-}
-
 mojom_component("speech_recognition_mojom") {
   output_prefix = "on_device_speech_recognition_mojom"
   macro_prefix = "ON_DEVICE_SPEECH_RECOGNITION_MOJOM"
@@ -52,17 +39,14 @@ static_library("core") {
   friend = [ ":unit_tests" ]
 
   public = [
-    "background_web_contents.h",
     "local_models_updater.h",
     "on_device_speech_models_component_installer.h",
     "on_device_speech_models_state.h",
     "pref_names.h",
     "url_constants.h",
-    "utils.h",
   ]
 
   sources = [
-    "background_web_contents.h",
     "local_models_updater.cc",
     "local_models_updater.h",
     "on_device_speech_models_component_installer.cc",
@@ -71,13 +55,10 @@ static_library("core") {
     "on_device_speech_models_state.h",
     "pref_names.cc",
     "pref_names.h",
-    "utils.cc",
-    "utils.h",
   ]
 
   public_deps = [
     ":features",
-    ":mojom",
     "//base",
     "//mojo/public/cpp/base",
   ]
