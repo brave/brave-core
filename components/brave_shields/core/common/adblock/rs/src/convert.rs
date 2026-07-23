@@ -6,8 +6,8 @@
 use std::time::Duration;
 
 use crate::ffi::{
-    AddedFiltersRecord, BlockerResult, DebugInfo, FilterListMetadata, OptionalString, OptionalU16,
-    RegexDebugEntry, RegexManagerDiscardPolicy, SourceInfo,
+    AddedFiltersRecord, BlockerResult, DebugInfo, FilterListMetadata, FilterRuleInfo,
+    OptionalString, OptionalU16, RegexDebugEntry, RegexManagerDiscardPolicy, SourceInfo,
 };
 use adblock::blocker::BlockerResult as InnerBlockerResult;
 use adblock::engine::{EngineDebugInfo as InnerEngineDebugInfo, SourceInfo as InnerSourceInfo};
@@ -20,6 +20,8 @@ use adblock::regex_manager::{
     RegexDebugEntry as InnerRegexDebugEntry,
     RegexManagerDiscardPolicy as InnerRegexManagerDiscardPolicy,
 };
+use adblock::sourcemap::FilterRuleDebugInfo as InnerFilterRuleDebugInfo;
+use cxx::UniquePtr;
 
 impl From<Option<String>> for OptionalString {
     fn from(value: Option<String>) -> Self {
@@ -74,12 +76,40 @@ impl From<InnerEngineDebugInfo> for DebugInfo {
     }
 }
 
+// Converts `Option<FilterRuleDebugInfo>` into a `UniquePtr<FilterRuleInfo>`.
+// Null unless debug mode was enabled *and* the matched rule actually carries
+// usable debug info.
+//
+// Note that `raw_line` is `Some("")` (not `None`) whenever debug mode is on,
+// even for filters that were fused together by the optimizer and therefore
+// have no meaningful source info (see `FlatNetworkFilter::raw_line` in
+// adblock-rust), so it isn't enough to check `Option::is_some()` here.
+fn to_filter_rule_info(info: Option<InnerFilterRuleDebugInfo>) -> UniquePtr<FilterRuleInfo> {
+    let Some(info) = info else {
+        return UniquePtr::null();
+    };
+    let has_raw_line = info.raw_line.as_deref().is_some_and(|line| !line.is_empty());
+    if !has_raw_line && info.source_location.is_none() {
+        return UniquePtr::null();
+    }
+    let source_location = info.source_location.unwrap_or_default();
+    UniquePtr::new(FilterRuleInfo {
+        raw_line: info.raw_line.unwrap_or_default(),
+        source_index: source_location.source_index,
+        line_number: source_location.line_number,
+    })
+}
+
 impl From<InnerBlockerResult> for BlockerResult {
     fn from(result: InnerBlockerResult) -> Self {
+        let matched = result.should_block();
+        let has_exception = result.exception.is_some();
         Self {
-            matched: result.should_block(),
+            matched,
             important: result.important,
-            has_exception: result.exception.is_some(),
+            has_exception,
+            filter: to_filter_rule_info(result.filter),
+            exception: to_filter_rule_info(result.exception),
             redirect: result.redirect.into(),
             rewritten_url: result.rewritten_url.into(),
         }
