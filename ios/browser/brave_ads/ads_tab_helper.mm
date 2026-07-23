@@ -45,7 +45,7 @@ bool IsNewNavigation(web::NavigationContext* navigation_context) {
       navigation_context->GetPageTransition());
 }
 
-bool IsErrorPage(int http_status_code) {
+bool IsHttpErrorStatusCode(int http_status_code) {
   const int http_status_code_class = http_status_code / 100;
   return http_status_code_class == kHttpClientErrorResponseStatusCodeClass ||
          http_status_code_class == kHttpServerErrorResponseStatusCodeClass;
@@ -201,7 +201,7 @@ bool AdsTabHelper::ShouldNotifyTabContentDidChange() const {
   // be `std::nullopt` if the navigation never finishes which can occur if the
   // user constantly refreshes the page.
   return !was_restored_ && is_new_navigation_ && !redirect_chain_.empty() &&
-         http_status_code_ && !IsErrorPage(*http_status_code_);
+         http_status_code_ && !IsHttpErrorStatusCode(*http_status_code_);
 }
 
 void AdsTabHelper::MaybeNotifyTabTextContentDidChange() {
