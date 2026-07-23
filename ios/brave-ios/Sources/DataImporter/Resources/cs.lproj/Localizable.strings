@@ -20,7 +20,7 @@
 "importDataFileSelectorMessage" = "Přeneste své záložky, historii a další data prohlížeče do služby Brave.";
 
 /* The title of the main screen that lets the user import data. The title is shown in the navigation bar. */
-"importDataFileSelectorNavigationTitle" = "Importovat údaje o procházení";
+"importDataFileSelectorNavigationTitle" = "Importovat data procházení";
 
 /* The title of a Text on screen that explains to the user what type of data can be imported. */
 "importDataFileSelectorTitle" = "Importovat záložky a další";

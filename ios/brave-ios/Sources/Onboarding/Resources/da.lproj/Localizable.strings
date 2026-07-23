@@ -47,10 +47,16 @@
 "playlistInfoFeaturePointSubtitleTwo" = "Behold dit fokus: Tilføj videoer, mens you browser, og se dem senere.";
 
 /* A list of features in Playlist */
+"playlistInfoFeaturePointTitleOne" = "Føj videoer til Brave Playlist.";
+
+/* A list of features in Playlist */
 "playlistInfoFeaturePointTitleThree" = "Afspilning er bedre i en spilleliste";
 
 /* A list of features in Playlist */
 "playlistInfoFeaturePointTitleTwo" = "Tryk på knappen for at tilføje videoer til en spilleliste";
+
+/* A body of text explaining the feature that will be displayed under a title reading 'Introducing Brave Playlist' */
+"playlistOnboardingDescription" = "Opret afspilningslister med indhold, du elsker. Tilføj medier fra enhver side.";
 
 /* %@ will be replaced by the text 'Add to Playlist' and an icon. Guides the user to tap an icon just above to add some content to the playlist feature */
 "userActionPrompt" = "Tryk på %@ for at tilføje dit første element";

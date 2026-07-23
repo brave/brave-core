@@ -28,6 +28,9 @@
 /* A picker title for selecting a automatic shred setting option */
 "AutoShred" = "Automatisch schreddern";
 
+/* The description for shredding when the app is closed */
+"AutoShredSectionTitle" = "Browserdaten automatisch vernichten";
+
 /* The option the user can select to do aggressive ad and tracker blocking */
 "BlockAdsAndTrackingAggressive" = "Aggressiv";
 
@@ -205,11 +208,20 @@
 /* An option setting for never automatically shreding site data */
 "ShredNever" = "Nie";
 
+/* The description for never automatically shreding site data */
+"ShredNeverDescription" = "Browserdaten werden niemals automatisch geschreddert";
+
 /* An option setting for automatically shredding only when the app is closed */
 "ShredOnAppClose" = "Bei geschlossener App";
 
+/* The description for shredding when the app is closed */
+"ShredOnAppCloseDescription" = "Browserdaten werden automatisch geschreddert, wenn die Brave-App geschlossen/neu gestartet wird";
+
 /* An option setting for automatically shredding when the site is closed */
 "ShredOnSiteTabsClosed" = "Registerkarten der Website geschlossen";
+
+/* The description for shredding when the site is closed */
+"ShredOnSiteTabsClosedDescription" = "Browserdaten werden automatisch geschreddert, wenn alle für eine Website geöffneten Tabs geschlossen werden";
 
 /* A message for a confirmation window that appears when a user clicks on 'Shred All Tabs'. */
 "ShredSiteAllTabsConfirmationMessage" = "Beim Schreddern werden alle Registerkarten geschlossen und alle Website-Daten gelöscht. Dies kann nicht rückgängig gemacht werden.";

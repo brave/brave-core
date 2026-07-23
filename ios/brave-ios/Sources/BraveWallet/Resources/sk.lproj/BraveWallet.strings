@@ -713,10 +713,10 @@
 "wallet.editVisibleAssetsButtonTitle" = "Upraviť viditeľné aktíva";
 
 /* Title on the button that users can click to enable Brave to resolve the ENS domain they entered. */
-"wallet.ensDomainInterstitialPageButtonProceed" = "Pokračovať pomocou servera Infura";
+"wallet.ensDomainInterstitialPageButtonProceed" = "Pokračovať pomocou servera Chainstack";
 
-/* Description displayed when users chose Brave to ask them if they want the ENS to be resolved every time they enter one. The first '%@' will be replaced with a link to Infura's terms of use page. The second '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The third '%@' will be replaced with a link to Infura's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'. */
-"wallet.ensDomainInterstitialPageDescription" = "Brave bude používať Infura na riešenie názvov domén .eth, ktoré sú na Ethereum Name Service (ENS). Brave skrýva vašu IP adresu. Ak to povolíte, Infura uvidí, že sa niekto pokúša navštíviť tieto domény .eth, ale nič iné. Pozri Infura <a href=%1$@>%2$@</a> a <a href=%3$@>%4$@</a>.";
+/* Description displayed when users chose Brave to ask them if they want the ENS to be resolved every time they enter one. The first '%@' will be replaced with a link to Chainstack's terms of use page. The second '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The third '%@' will be replaced with a link to Chainstack's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'. */
+"wallet.ensDomainInterstitialPageDescription" = "Brave sa bude spoliehať na nakonfigurovanú službu Ethereum Mainnet RPC, ktorou je predvolene Chainstack, na riešenie názvov domén .eth, ktoré sú na Ethereum Name Service (ENS). Brave skrýva vašu IP adresu. Ak to povolíte, Chainstack uvidí, že sa niekto pokúša navštíviť tieto domény .eth, ale nič iné. Pozri <a href=%1$@>%2$@</a> a <a href=%3$@>%4$@</a> služby Chainstack.";
 
 /* Title displayed when users chose Brave to ask them if they want the ENS domain to be resolved every time they enter one. */
 "wallet.ensDomainInterstitialPageTitle" = "Povoliť podporu Ethereum Name Service (ENS) v Brave?";
@@ -2176,8 +2176,8 @@
 /* The title for the button. User would tap on this button to view the transaction status in the `Activity` tab. */
 "wallet.txStatusViewInActivity" = "Zobraziť v aktivite";
 
-/* Description displayed when users chose Brave to ask them if they want the Unstoppable Domains to be resolved every time they enter one. The first '%@' will be replaced with a list of supported TLDs like '.x' or '.bitcoin'. The second '%@' be replaced with a link to Infura's terms of use page. The third '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The fourth '%@' will be replaced with a link to Infura's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'. */
-"wallet.udDomainInterstitialPageDescription" = "Brave bude používať Infura na vyriešenie domén s názvom .crypto (a tiež %1$@), ktoré sú na Nezastaviteľných doménach. Brave skrýva vašu IP adresu. Ak to povolíte, Infura uvidí, že sa niekto pokúša navštíviť tieto domény, ale nič iné. Pozri Infura <a href=%2$@>%3$@</a> a <a href=%4$@>%5$@</a>.";
+/* Description displayed when users chose Brave to ask them if they want the Unstoppable Domains to be resolved every time they enter one. The first '%@' will be replaced with a list of supported TLDs like '.x' or '.bitcoin'. The second '%@' be replaced with a link to Chainstack's terms of use page. The third '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The fourth '%@' will be replaced with a link to Chainstack's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'. */
+"wallet.udDomainInterstitialPageDescription" = "Brave bude nakonfigurovaná služba Ethereum RPC, ktorá predvolene používa Chainstack na riešenie názvov domén .crypto (a tiež %1$@), ktoré sú na Unstoppable Domains. Brave skrýva vašu IP adresu. Ak to povolíte, Chainstack uvidí, že sa niekto pokúša navštíviť tieto domény, ale nič iné. Pozri <a href=%2$@>%3$@</a> a <a href=%4$@>%5$@</a> služby Chainstack.";
 
 /* Title displayed when users chose Brave to ask them if they want the Unstoppable Domains domain to be resolved every time they enter one. */
 "wallet.udDomainInterstitialPageTitle" = "Povoliť podporu nezastaviteľných domén v prehliadači Brave?";

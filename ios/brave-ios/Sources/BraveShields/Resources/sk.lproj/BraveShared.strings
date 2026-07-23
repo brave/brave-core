@@ -28,6 +28,9 @@
 /* A picker title for selecting a automatic shred setting option */
 "AutoShred" = "Automaticky zničiť";
 
+/* The description for shredding when the app is closed */
+"AutoShredSectionTitle" = "Automaticky vymazať údaje prehliadania";
+
 /* The option the user can select to do aggressive ad and tracker blocking */
 "BlockAdsAndTrackingAggressive" = "Agresívne";
 
@@ -205,11 +208,20 @@
 /* An option setting for never automatically shreding site data */
 "ShredNever" = "Nikdy";
 
+/* The description for never automatically shreding site data */
+"ShredNeverDescription" = "Údaje prehliadania sa nikdy neskartujú automaticky";
+
 /* An option setting for automatically shredding only when the app is closed */
 "ShredOnAppClose" = "Zatvoriť aplikáciu";
 
+/* The description for shredding when the app is closed */
+"ShredOnAppCloseDescription" = "Údaje prehliadania sa automaticky skartujú, keď sa aplikácia Brave zatvorí / reštartuje";
+
 /* An option setting for automatically shredding when the site is closed */
 "ShredOnSiteTabsClosed" = "Karty stránky zatvorené";
+
+/* The description for shredding when the site is closed */
+"ShredOnSiteTabsClosedDescription" = "Údaje prehliadania sa automaticky skartujú, keď sa zatvoria všetky karty otvorené pre danú lokalitu";
 
 /* A message for a confirmation window that appears when a user clicks on 'Shred All Tabs'. */
 "ShredSiteAllTabsConfirmationMessage" = "Zničením dôjde k zatvorenie všetkých kariet, a vymazaniu všetkých údajov stránky. Tento krok nemožno zvrátiť.";
