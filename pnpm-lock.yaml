@@ -218,8 +218,8 @@ importers:
         specifier: 7.0.1
         version: 7.0.1
       '@types/dom-navigation':
-        specifier: 1.0.3
-        version: 1.0.3
+        specifier: 1.0.7
+        version: 1.0.7
       '@types/hast':
         specifier: 3.0.5
         version: 3.0.5
@@ -2344,8 +2344,8 @@ packages:
   '@types/doctrine@0.0.9':
     resolution: {integrity: sha512-eOIHzCUSH7SMfonMG1LsC2f8vxBFtho6NGBznK41R84YzPuvSBzrhEps33IsQiOW9+VL6NQ9DbjQJznk/S4uRA==}
 
-  '@types/dom-navigation@1.0.3':
-    resolution: {integrity: sha512-nbkhQ2o6UUBn1uLwSrA//rFkqs8XRk5d7cE6jzzTl8MAIUs/nFMtFqVESwiYY1HGZxflzbFlXsZ8NNzTaoFs1Q==}
+  '@types/dom-navigation@1.0.7':
+    resolution: {integrity: sha512-Di4W+i2faYquHUnyWUg3bBQp5pTNvjDDA7mIYfD/1WlLgan6sKkeVjGbdL78K0CuNEk5Pfc/c0rfelwkz10mnQ==}
 
   '@types/eslint-scope@3.7.7':
     resolution: {integrity: sha512-MzMFlSLBqNF2gcHWO0G1vP/YQyfvrxZ0bF+u7mzUdZ1/xK4A4sru+nraZz5i3iEIk1l1uyicaDVTB4QbbEkAYg==}
@@ -10397,7 +10397,7 @@ snapshots:
 
   '@types/doctrine@0.0.9': {}
 
-  '@types/dom-navigation@1.0.3': {}
+  '@types/dom-navigation@1.0.7': {}
 
   '@types/eslint-scope@3.7.7':
     dependencies:
