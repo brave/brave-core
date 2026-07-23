@@ -205,9 +205,6 @@ ShouldBlockRequestResult ShouldBlockRequestOnTaskRunner(
   ShouldBlockRequestResult result;
   result.engine_flags = previous_result;
 
-  // Can be empty if the request initiator is opaque.
-  const std::string source_host = std::string(input.request_initiator.host());
-
   GURL url_to_check;
   if (canonical_url.has_value()) {
     url_to_check = *canonical_url;
@@ -256,6 +253,9 @@ ShouldBlockRequestResult ShouldBlockRequestOnTaskRunner(
       (result.blocked_by == kAdBlocked || previous_result.did_match_exception);
 
   if (should_report_to_devtools) {
+    // Can be empty if the request initiator is opaque.
+    const std::string source_host = std::string(input.request_initiator.host());
+
     content::devtools_instrumentation::AdblockInfo info;
     info.request_url = input.request_url;
     info.checked_url = url_to_check;
