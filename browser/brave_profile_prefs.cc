@@ -64,6 +64,7 @@
 #include "chrome/browser/prefs/session_startup_pref.h"
 #include "chrome/browser/preloading/preloading_prefs.h"
 #include "chrome/common/pref_names.h"
+#include "components/bookmarks/common/bookmark_pref_names.h"
 #include "components/content_settings/core/common/pref_names.h"
 #include "components/embedder_support/pref_names.h"
 #include "components/gcm_driver/gcm_buildflags.h"
@@ -408,6 +409,12 @@ void RegisterProfilePrefsForMigration(
 
   // Added 2026-06
   registry->RegisterBooleanPref(kTabsSearchShow, false);
+
+  // Added 2026-07
+#if !BUILDFLAG(IS_ANDROID)
+  registry->RegisterBooleanPref(::bookmarks::prefs::kAlwaysShowBookmarkBarOnNTP,
+                                true);
+#endif
 }
 
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
