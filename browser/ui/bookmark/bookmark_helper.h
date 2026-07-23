@@ -18,6 +18,7 @@ enum class BookmarkBarState { kAlways, kNever, kNtp };
 
 BookmarkBarState GetBookmarkBarState(PrefService* prefs);
 void SetBookmarkState(BookmarkBarState state, PrefService* prefs);
+void MigrateBookmarkState(PrefService* prefs);
 
 }  // namespace brave
 

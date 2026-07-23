@@ -1,0 +1,116 @@
+/* Copyright (c) 2026 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#include "base/files/file_path.h"
+#include "brave/browser/ui/bookmark/bookmark_helper.h"
+#include "brave/components/constants/pref_names.h"
+#include "build/build_config.h"
+#include "chrome/browser/browser_process.h"
+#include "chrome/browser/prefs/browser_prefs.h"
+#include "chrome/browser/profiles/chrome_browser_main_extra_parts_profiles.h"
+#include "chrome/browser/profiles/pref_service_builder_utils.h"
+#include "chrome/common/pref_names.h"
+#include "components/bookmarks/common/bookmark_bar_visibility_state.h"
+#include "components/bookmarks/common/bookmark_pref_names.h"
+#include "components/prefs/pref_service.h"
+#include "components/sync_preferences/testing_pref_service_syncable.h"
+#include "content/public/test/browser_task_environment.h"
+#include "testing/gtest/include/gtest/gtest.h"
+
+namespace {
+
+class BraveBrowserPrefsTest : public testing::Test {
+ protected:
+  BraveBrowserPrefsTest() {
+    // Some migration code relies on prefs registered by keyed service
+    // factories, so build them before registering profile prefs. Mirrors
+    // upstream chrome/browser/prefs/browser_prefs_unittest.cc.
+    ChromeBrowserMainExtraPartsProfiles::
+        EnsureBrowserContextKeyedServiceFactoriesBuilt();
+    RegisterProfilePrefs(/*is_signin_profile=*/false,
+                         g_browser_process->GetApplicationLocale(),
+                         prefs_.registry());
+  }
+
+  void MigrateObsoletePrefs() {
+    MigrateObsoleteProfilePrefs(&prefs_, base::FilePath());
+  }
+
+  // The task environment is needed because some keyed services CHECK for
+  // things like content::BrowserThread::CurrentlyOn(BrowserThread::UI).
+  content::BrowserTaskEnvironment task_environment_;
+  sync_preferences::TestingPrefServiceSyncable prefs_;
+};
+
+#if !BUILDFLAG(IS_ANDROID)
+
+// When the deprecated `kAlwaysShowBookmarkBarOnNTP` was never set by the user,
+// the migration must leave the upstream `kBookmarkBarVisibilityState` at its
+// default (`kOnlyShowOnNtp`).
+TEST_F(BraveBrowserPrefsTest, BookmarkBarState_Untouched_KeepsUpstreamDefault) {
+  ASSERT_TRUE(
+      prefs_.FindPreference(bookmarks::prefs::kAlwaysShowBookmarkBarOnNTP)
+          ->IsDefaultValue());
+
+  MigrateObsoletePrefs();
+
+  EXPECT_EQ(
+      prefs_.GetInteger(bookmarks::prefs::kBookmarkBarVisibilityState),
+      static_cast<int>(bookmarks::BookmarkBarVisibilityState::kOnlyShowOnNtp));
+  EXPECT_TRUE(
+      prefs_.FindPreference(bookmarks::prefs::kAlwaysShowBookmarkBarOnNTP)
+          ->IsDefaultValue());
+}
+
+// The deprecated "always show" state maps to `kAlwaysShow`. The upstream
+// `kShowBookmarkBar` is intentionally left intact (kept in sync), while the
+// deprecated `kAlwaysShowBookmarkBarOnNTP` is cleared.
+TEST_F(BraveBrowserPrefsTest, BookmarkBarState_Always_Migrates) {
+  brave::SetBookmarkState(brave::BookmarkBarState::kAlways, &prefs_);
+
+  MigrateObsoletePrefs();
+
+  EXPECT_EQ(
+      prefs_.GetInteger(bookmarks::prefs::kBookmarkBarVisibilityState),
+      static_cast<int>(bookmarks::BookmarkBarVisibilityState::kAlwaysShow));
+  EXPECT_TRUE(prefs_.GetBoolean(bookmarks::prefs::kShowBookmarkBar));
+  EXPECT_TRUE(
+      prefs_.FindPreference(bookmarks::prefs::kAlwaysShowBookmarkBarOnNTP)
+          ->IsDefaultValue());
+}
+
+// The deprecated "NTP only" state maps to `kOnlyShowOnNtp`.
+TEST_F(BraveBrowserPrefsTest, BookmarkBarState_Ntp_Migrates) {
+  brave::SetBookmarkState(brave::BookmarkBarState::kNtp, &prefs_);
+
+  MigrateObsoletePrefs();
+
+  EXPECT_EQ(
+      prefs_.GetInteger(bookmarks::prefs::kBookmarkBarVisibilityState),
+      static_cast<int>(bookmarks::BookmarkBarVisibilityState::kOnlyShowOnNtp));
+  EXPECT_FALSE(prefs_.GetBoolean(bookmarks::prefs::kShowBookmarkBar));
+  EXPECT_TRUE(
+      prefs_.FindPreference(bookmarks::prefs::kAlwaysShowBookmarkBarOnNTP)
+          ->IsDefaultValue());
+}
+
+// The deprecated "never show" state maps to `kAlwaysHide`.
+TEST_F(BraveBrowserPrefsTest, BookmarkBarState_Never_Migrates) {
+  brave::SetBookmarkState(brave::BookmarkBarState::kNever, &prefs_);
+
+  MigrateObsoletePrefs();
+
+  EXPECT_EQ(
+      prefs_.GetInteger(bookmarks::prefs::kBookmarkBarVisibilityState),
+      static_cast<int>(bookmarks::BookmarkBarVisibilityState::kAlwaysHide));
+  EXPECT_FALSE(prefs_.GetBoolean(bookmarks::prefs::kShowBookmarkBar));
+  EXPECT_TRUE(
+      prefs_.FindPreference(bookmarks::prefs::kAlwaysShowBookmarkBarOnNTP)
+          ->IsDefaultValue());
+}
+
+#endif
+
+}  // namespace
