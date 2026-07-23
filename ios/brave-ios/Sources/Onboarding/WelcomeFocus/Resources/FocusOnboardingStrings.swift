@@ -52,9 +52,9 @@ extension Strings {
       "focusOnboarding.p3aToggleTitle",
       tableName: "FocusOnboarding",
       bundle: .module,
-      value: "Share **private & anonymous** product insights.",
+      value: "Private product insights",
       comment:
-        "The title of the toggle for enable / disable the privacy preserving analytics. This uses standard markdown syntax. The \"private & anonymous\" snippet should be bold in all languages"
+        "The title of the toggle that allows the user to enable/disable the privacy preserving analytics."
     )
 
     public static let p3aToggleDescription = NSLocalizedString(
@@ -62,9 +62,24 @@ extension Strings {
       tableName: "FocusOnboarding",
       bundle: .module,
       value:
-        "You can opt-out any time in Settings under **Shields and Privacy**. [Learn more](#p3a-learn-more) about our Privacy Preserving Product Analytics.",
-      comment:
-        "The description shown below the toggle for enabling privacy preserving analytics. This uses standard markdown syntax. The Learn More is a link and #p3a-learn-more is a URL fragment"
+        "Share completely private and anonymous product insights about what features are being used by Brave's users.",
+      comment: "The description shown below the toggle for enabling privacy preserving analytics."
+    )
+
+    public static let sendCrashReportsToggleTitle = NSLocalizedString(
+      "focusOnboarding.sendCrashReportsToggleTitle",
+      tableName: "FocusOnboarding",
+      bundle: .module,
+      value: "Send crash reports",
+      comment: "The title of the toggle that allows the user to enable/disable crash reporting."
+    )
+
+    public static let sendCrashReportsToggleDescription = NSLocalizedString(
+      "focusOnboarding.sendCrashReportsToggleDescription",
+      tableName: "FocusOnboarding",
+      bundle: .module,
+      value: "Send anonymous diagnostic reports if you experience a crash or freeze.",
+      comment: "The description shown below the toggle for enabling crash reporting."
     )
 
     public static let defaultBrowserScreenTitle = NSLocalizedString(

@@ -1281,32 +1281,61 @@ public class BrowserViewController: UIViewController {
 
   private func checkCrashRestorationOrSetupTabs() {
     if crashedLastSession {
+      // Make sure there's at least one real tab open
+      let canRestoreTabs = !SessionTab.all().compactMap({ $0.url }).isEmpty
+      if !canRestoreTabs {
+        tabManager.addTabAndSelect(isPrivate: self.privateBrowsingManager.isPrivateBrowsing)
+        presentCrashReporterCalloutIfNeeded()
+        return
+      }
       showRestoreTabsAlert()
     } else {
       setupTabs()
     }
   }
 
-  fileprivate func showRestoreTabsAlert() {
-    guard canRestoreTabs() else {
-      self.tabManager.addTabAndSelect(isPrivate: self.privateBrowsingManager.isPrivateBrowsing)
+  private func presentCrashReporterCalloutIfNeeded() {
+    if braveCore.localState.boolean(forPath: kMetricsReportingEnabled)
+      || Preferences.General.crashReportingOptInShown.value
+    {
+      // Dont need to display the alert if the user already has crash reporting enabled or they've
+      // seen this alert already.
       return
     }
+    Preferences.General.crashReportingOptInShown.value = true
+    let alert = UIAlertController(
+      title: Strings.enableCrashReporterAlertTitle,
+      message: Strings.enableCrashReporterAlertMessage,
+      preferredStyle: .alert
+    )
+    let enableAction = UIAlertAction(
+      title: Strings.enableCrashReporterConfirmButtonTitle,
+      style: .default,
+      handler: { [unowned self] _ in
+        braveCore.localState.set(true, forPath: kMetricsReportingEnabled)
+      }
+    )
+    alert.addAction(
+      .init(title: Strings.enableCrashReporterDenyButtonTitle, style: .cancel, handler: nil)
+    )
+    alert.addAction(enableAction)
+    alert.preferredAction = enableAction
+    present(alert, animated: true)
+  }
+
+  fileprivate func showRestoreTabsAlert() {
     let alert = UIAlertController.restoreTabsAlert(
       okayCallback: { _ in
         self.setupTabs()
+        self.presentCrashReporterCalloutIfNeeded()
       },
       noCallback: { _ in
         SessionTab.deleteAll()
         self.tabManager.addTabAndSelect(isPrivate: self.privateBrowsingManager.isPrivateBrowsing)
+        self.presentCrashReporterCalloutIfNeeded()
       }
     )
     self.present(alert, animated: true, completion: nil)
-  }
-
-  fileprivate func canRestoreTabs() -> Bool {
-    // Make sure there's at least one real tab open
-    return !SessionTab.all().compactMap({ $0.url }).isEmpty
   }
 
   override public func viewDidAppear(_ animated: Bool) {

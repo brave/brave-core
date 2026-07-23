@@ -146,6 +146,11 @@ extension Preferences {
       key: "general.open-link-in-quickview-mode",
       default: true
     )
+    /// Whether or not the crash reporting alert has been shown at least once
+    public static let crashReportingOptInShown: Option<Bool> = .init(
+      key: "general.crash-reporting-opt-in-shown",
+      default: false
+    )
   }
 
   final public class Search {
