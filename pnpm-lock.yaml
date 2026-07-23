@@ -236,8 +236,8 @@ importers:
         specifier: 25.0.3
         version: 25.0.3
       '@types/qr-image':
-        specifier: 3.2.5
-        version: 3.2.5
+        specifier: 3.2.11
+        version: 3.2.11
       '@types/react':
         specifier: 19.2.17
         version: 19.2.17
@@ -2455,8 +2455,8 @@ packages:
   '@types/postcss-modules-scope@3.0.4':
     resolution: {integrity: sha512-//ygSisVq9kVI0sqx3UPLzWIMCmtSVrzdljtuaAEJtGoGnpjBikZ2sXO5MpH9SnWX9HRfXxHifDAXcQjupWnIQ==}
 
-  '@types/qr-image@3.2.5':
-    resolution: {integrity: sha512-2UMrFxof0hjeuvwjpkyNulibhYXgTEqtKGtVyQW2PDdI6m6CFrSn8m9RnZFDkcv687NeFzfqXSVe+LaxOZVU9g==}
+  '@types/qr-image@3.2.11':
+    resolution: {integrity: sha512-gdVdzzXCv7BdraCpccCiZQorSimKuuBvAzOJFQcSnSda4tcLz/5gW2u4tNUPqIEBEPB+7H6bKx1W4OsSOFhRiQ==}
 
   '@types/qs@6.15.1':
     resolution: {integrity: sha512-GZHUBZR9hckSUhrxmp1nG6NwdpM9fCunJwyThLW1X3AyHgd9IlHb6VANpQQqDr2o/qQp6McZ3y/IA2rVzKzSbw==}
@@ -10521,7 +10521,7 @@ snapshots:
     dependencies:
       postcss: 8.5.12
 
-  '@types/qr-image@3.2.5':
+  '@types/qr-image@3.2.11':
     dependencies:
       '@types/node': 25.0.3
 
