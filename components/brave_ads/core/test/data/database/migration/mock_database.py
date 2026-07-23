@@ -5,23 +5,32 @@
 
 # This script is used to mock a SQLite database.
 
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 import argparse
 import os
+import re
 import secrets
 import sqlite3
 import string
 import sys
+import uuid
 
 DEFAULT_TEXT_COLUMN_LENGTH = 32
 DEFAULT_LONGVARCHAR_COLUMN_LENGTH = 64
 
 MILLISECONDS_IN_SECOND = 1000
 
-EXPECTED_ROW_COUNT = 4
+DEFAULT_DATE_RANGE_DAYS = 90
+DEFAULT_MIN_ROW_COUNT = 1
+DEFAULT_MAX_ROW_COUNT = 1
 
-# TODO(https://github.com/brave/brave-browser/issues/40017): Add foreign key
-# support.
+# Cycling patterns: (should_mock_column_nulls, should_use_random_test_data)
+_ROW_PATTERNS = [
+    (True, True),
+    (True, False),
+    (False, True),
+    (False, False),
+]
 
 # Valid values for columns that have a constrained set of values parsed via
 # strict enum converters (i.e. those that trigger NOTREACHED on unknown input).
@@ -52,7 +61,133 @@ COLUMN_VALID_VALUES = {
     ('ad_history', 'type'): [
         'ad_notification', 'new_tab_page_ad', 'search_result_ad'
     ],
+    # Segment taxonomy strings used in segments, ad_events, ad_history, and
+    # transactions tables.
+    (None, 'segment'): [
+        'arts & entertainment',
+        'automotive',
+        'business',
+        'careers',
+        'cell phones',
+        'crypto',
+        'education',
+        'family & parenting',
+        'fashion',
+        'food & drink',
+        'gaming',
+        'health & fitness',
+        'home',
+        'personal finance',
+        'pets',
+        'science',
+        'shopping',
+        'sports',
+        'technology & computing',
+        'travel',
+    ],
+    # ISO 3166-1 alpha-2 country codes used in geo_targets.
+    (None, 'geo_target'): [
+        'AU',
+        'CA',
+        'DE',
+        'FR',
+        'GB',
+        'JP',
+        'NL',
+        'NZ',
+        'US',
+    ],
+    # campaigns.metric_type: only 'confirmation' is a valid value.
+    ('campaigns', 'metric_type'): ['confirmation'],
 }
+
+# Column names that store UUIDs (parsed via base::Uuid::ParseLowercase in
+# production code). Applies to any table unless overridden by
+# COLUMN_UUID_TABLE_NAMES. Random alphanumeric strings would fail the parse,
+# so UUID columns always use uuid.uuid4() regardless of the row pattern.
+COLUMN_UUID_NAMES = {
+    'placement_id',
+    'campaign_id',
+    'creative_set_id',
+    'creative_instance_id',
+    'advertiser_id',
+    'transaction_id',
+}
+
+# (table_name, column_name) pairs whose `id` column is a UUID primary key.
+COLUMN_UUID_TABLE_NAMES = {
+    ('campaigns', 'id'),
+    ('transactions', 'id'),
+}
+
+# Maps column_name → entity pool key for FK columns that must draw from a pool.
+# Columns listed here will use an already-populated entity pool instead of
+# generating a new random UUID, ensuring cross-table UUID consistency.
+COLUMN_ENTITY_KEY = {
+    'campaign_id': 'campaign',
+    'creative_set_id': 'creative_set',
+    'creative_instance_id': 'creative_instance',
+    'advertiser_id': 'advertiser',
+    'transaction_id': 'transaction',
+    'placement_id': 'placement',
+}
+
+# Maps (table_name, column_name) → entity pool key for columns that are the
+# source of an entity pool. Values inserted here populate the pool so that
+# dependent tables can draw consistent UUIDs from it.
+COLUMN_ENTITY_SOURCE = {
+    ('campaigns', 'id'): 'campaign',
+    ('campaigns', 'advertiser_id'): 'advertiser',
+    ('creative_ads', 'creative_instance_id'): 'creative_instance',
+    ('creative_ads', 'creative_set_id'): 'creative_set',
+    ('transactions', 'id'): 'transaction',
+    ('ad_events', 'placement_id'): 'placement',
+}
+
+# Insertion order ensures entity-source tables are populated before tables that
+# draw from their pools. Tables not listed here are appended at the end.
+_TABLE_INSERTION_ORDER = [
+    'campaigns',
+    'creative_ads',
+    'confirmation_tokens',
+    'transactions',
+    'payment_tokens',
+    'confirmation_queue',
+    'dayparts',
+    'geo_targets',
+    'segments',
+    'deposits',
+    'creative_set_conversions',
+    'creative_ad_notifications',
+    'creative_new_tab_page_ads',
+    'ad_events',
+    'ad_history',
+]
+
+
+def get_column_is_uuid(table_name, column_name):
+    return (column_name in COLUMN_UUID_NAMES
+            or (table_name, column_name) in COLUMN_UUID_TABLE_NAMES)
+
+
+def _sort_tables_for_insertion(table_names):
+    ordered_set = {t: i for i, t in enumerate(_TABLE_INSERTION_ORDER)}
+
+    missing = {
+        table_name
+        for table_name, _ in COLUMN_ENTITY_SOURCE
+        if table_name not in ordered_set
+    }
+    if missing:
+        sys.exit(
+            f"ERROR: entity-source table(s) {sorted(missing)} are missing "
+            f"from _TABLE_INSERTION_ORDER; add them so their pools "
+            f"populate before dependent tables draw from them")
+
+    known = sorted([t for t in table_names if t in ordered_set],
+                   key=lambda t: ordered_set[t])
+    unknown = [t for t in table_names if t not in ordered_set]
+    return known + unknown
 
 
 def generate_mock_string(length):
@@ -65,18 +200,14 @@ def generate_mock_blob():
     return secrets.token_bytes(128)
 
 
-def generate_mock_chrome_webkit_timestamp():
-    start_date = datetime(1985, 10, 26)
-    end_date = datetime(2015, 10, 21)  # If my calculations are correct...
+def generate_mock_chrome_webkit_timestamp(days_ago=0):
+    now = datetime.now(timezone.utc)
+    day_start = now - timedelta(days=days_ago + 1)
+    random_seconds = secrets.randbelow(86400)
+    random_date = day_start + timedelta(seconds=random_seconds)
 
-    duration = end_date - start_date
-    duration_in_seconds = duration.total_seconds()
-    random_duration = secrets.randbelow(int(duration_in_seconds))
-
-    random_date = start_date + timedelta(seconds=random_duration)
-
-    chrome_webkit_epoch = datetime(
-        1601, 1, 1)  # To be, or not to be, that is the question.
+    # To be, or not to be, that is the question.
+    chrome_webkit_epoch = datetime(1601, 1, 1, tzinfo=timezone.utc)
     chrome_webkit_delta = random_date - chrome_webkit_epoch
     chrome_webkit_delta_in_seconds = int(chrome_webkit_delta.total_seconds())
 
@@ -90,8 +221,11 @@ def get_column_valid_values(table_name, column_name):
             or COLUMN_VALID_VALUES.get((None, column_name)))
 
 
-def generate_mock_column_with_random_test_data(connection, table_name,
-                                               column_name, column_type):
+def generate_mock_column_with_random_test_data(connection,
+                                               table_name,
+                                               column_name,
+                                               column_type,
+                                               days_ago=0):
     valid_values = get_column_valid_values(table_name, column_name)
     if valid_values:
         return secrets.choice(valid_values)
@@ -99,19 +233,22 @@ def generate_mock_column_with_random_test_data(connection, table_name,
     if column_type in ('INTEGER', 'INT', 'NUMERIC'):
         mock_column = secrets.randbelow(100)
     elif column_type == 'TEXT':
-        mock_column = generate_mock_string(DEFAULT_TEXT_COLUMN_LENGTH)
+        if get_column_is_uuid(table_name, column_name):
+            mock_column = str(uuid.uuid4())
+        else:
+            mock_column = generate_mock_string(DEFAULT_TEXT_COLUMN_LENGTH)
     elif column_type == 'LONGVARCHAR':
         longvarchar_length = get_longvarchar_length(connection, table_name,
                                                     column_name)
-        string_length = longvarchar_length[
-            0] if longvarchar_length else DEFAULT_LONGVARCHAR_COLUMN_LENGTH
+        string_length = (longvarchar_length if longvarchar_length else
+                         DEFAULT_LONGVARCHAR_COLUMN_LENGTH)
         mock_column = generate_mock_string(string_length)
     elif column_type in ('REAL', 'DOUBLE'):
         mock_column = round(secrets.SystemRandom().uniform(0.0, 1.0), 1)
     elif column_type == 'BLOB':
         mock_column = generate_mock_blob()
     elif column_type in ('DATE', 'TIMESTAMP'):
-        mock_column = generate_mock_chrome_webkit_timestamp()
+        mock_column = generate_mock_chrome_webkit_timestamp(days_ago)
     else:
         sys.exit(f"ERROR: Unsupported column type {column_type}")
 
@@ -135,8 +272,12 @@ def generate_mock_column_with_fixed_test_data(column_type):
     return mock_column
 
 
-def generate_mock_columns(connection, table_name, should_mock_column_nulls,
-                          should_use_random_test_data):
+def generate_mock_columns(connection,
+                          table_name,
+                          should_mock_column_nulls,
+                          should_use_random_test_data,
+                          days_ago=0,
+                          entity_registry=None):
     auto_increment_column_names = get_auto_increment_column_names(
         connection, table_name)
 
@@ -152,30 +293,65 @@ def generate_mock_columns(connection, table_name, should_mock_column_nulls,
 
         mock_column = None
 
-        if column_pk == 1:
+        is_uuid = get_column_is_uuid(table_name, column_name)
+        entity_fk_key = COLUMN_ENTITY_KEY.get(column_name)
+        entity_source_key = COLUMN_ENTITY_SOURCE.get((table_name, column_name))
+
+        if (entity_fk_key and not entity_source_key and entity_registry
+                and entity_registry.get(entity_fk_key)):
+            pool = entity_registry[entity_fk_key]
+            if column_pk == 1:
+                # PK column (including the leading column of a composite PK,
+                # e.g. dayparts' (campaign_id, days_of_week, start_minute,
+                # end_minute)): draw without replacement. This is stricter
+                # than the schema requires for composite keys, but the
+                # remaining composite-key columns can have a small domain
+                # (e.g. geo_targets.geo_target has 9 possible values), so
+                # letting this column repeat risks random ON CONFLICT
+                # REPLACE collisions that silently drop rows.
+                iter_key = f"_iter_{table_name}_{column_name}"
+                if iter_key not in entity_registry:
+                    pool_copy = list(pool)
+                    secrets.SystemRandom().shuffle(pool_copy)
+                    entity_registry[iter_key] = pool_copy
+                iterator = entity_registry[iter_key]
+                if not iterator:
+                    sys.exit(f"ERROR: {table_name}.{column_name} exhausted "
+                             f"the '{entity_fk_key}' entity pool; every table "
+                             f"must be mocked with the same row distribution "
+                             f"so pools never run dry (see `mock_tables`)")
+                mock_column = iterator.pop()
+            else:
+                mock_column = secrets.choice(pool)
+        elif column_pk == 1:
             # Always mock the column if the column is a primary key.
             mock_column = (
                 generate_mock_column_with_random_test_data(
-                    connection, table_name, column_name, column_type)
+                    connection, table_name, column_name, column_type, days_ago)
                 if is_column_unique(connection, table_name, column_name)
-                or should_use_random_test_data else
+                or should_use_random_test_data or is_uuid else
                 generate_mock_column_with_fixed_test_data(column_type))
         elif column_notnull == 1:
             # Always mock the column if the column has a NOT NULL constraint.
             mock_column = (
                 generate_mock_column_with_random_test_data(
-                    connection, table_name, column_name, column_type)
+                    connection, table_name, column_name, column_type, days_ago)
                 if is_column_unique(connection, table_name, column_name)
-                or should_use_random_test_data else
+                or should_use_random_test_data or is_uuid else
                 generate_mock_column_with_fixed_test_data(column_type))
         else:
             # Only mock the column if we should mock NULL columns.
             if should_mock_column_nulls:
                 mock_column = (
                     generate_mock_column_with_random_test_data(
-                        connection, table_name, column_name, column_type)
-                    if should_use_random_test_data else
+                        connection, table_name, column_name, column_type,
+                        days_ago)
+                    if should_use_random_test_data or is_uuid else
                     generate_mock_column_with_fixed_test_data(column_type))
+
+        if entity_source_key is not None and mock_column is not None:
+            entity_registry.setdefault(entity_source_key,
+                                       []).append(mock_column)
 
         mock_columns.append(mock_column)
 
@@ -302,10 +478,25 @@ def get_auto_increment_column_names(connection, table_name):
 
 
 def get_longvarchar_length(connection, table_name, column_name):
+    # Reading LENGTH(column) from existing rows would always come back empty,
+    # since mock_table deletes all rows before mocking new ones. Instead, read
+    # the declared length (e.g. `LONGVARCHAR(64)`) straight from the CREATE
+    # TABLE DDL, so a future column declared with an explicit length is still
+    # sized correctly.
     connection_cursor = connection.cursor()
     connection_cursor.execute(
-        f"SELECT LENGTH({column_name}) FROM {table_name};")
-    return connection_cursor.fetchall()
+        """
+        SELECT
+          sql
+        FROM
+          sqlite_master
+        WHERE type='table'
+          AND name=?;
+        """, (table_name, ))
+    create_table_sql = connection_cursor.fetchone()[0]
+    match = re.search(rf'\b{re.escape(column_name)}\s+\w+\((\d+)\)',
+                      create_table_sql)
+    return int(match.group(1)) if match else None
 
 
 def delete_table_rows(connection, table_name):
@@ -357,41 +548,30 @@ def insert_mock_table_row(connection, table_name, columns):
         raise
 
 
-def insert_mock_table_rows(connection, table_name):
-    # Generate and insert a table row with all columns populated, including
-    # those that can be NULL with random test data.
-    mock_columns = generate_mock_columns(connection,
-                                         table_name,
-                                         should_mock_column_nulls=True,
-                                         should_use_random_test_data=True)
-    insert_mock_table_row(connection, table_name, mock_columns)
-
-    # Generate and insert a table row with all columns populated, including
-    # those that can be NULL with fixed test data.
-    mock_columns = generate_mock_columns(connection,
-                                         table_name,
-                                         should_mock_column_nulls=True,
-                                         should_use_random_test_data=False)
-    insert_mock_table_row(connection, table_name, mock_columns)
-
-    # Generate and insert a table row with only non-NULL columns populated with
-    # random test data.
-    mock_columns = generate_mock_columns(connection,
-                                         table_name,
-                                         should_mock_column_nulls=False,
-                                         should_use_random_test_data=True)
-    insert_mock_table_row(connection, table_name, mock_columns)
-
-    # Generate and insert a table row with only non-NULL columns populated with
-    # fixed test data.
-    mock_columns = generate_mock_columns(connection,
-                                         table_name,
-                                         should_mock_column_nulls=False,
-                                         should_use_random_test_data=False)
-    insert_mock_table_row(connection, table_name, mock_columns)
+def _generate_row_distribution(days, min_row_count, max_row_count):
+    row_range = max_row_count - min_row_count + 1
+    return [secrets.randbelow(row_range) + min_row_count for _ in range(days)]
 
 
-def mock_table(connection, table_name):
+def insert_mock_table_rows(connection, table_name, distribution,
+                           entity_registry):
+    row_index = 0
+    for days_ago, row_count in enumerate(distribution):
+        for _ in range(row_count):
+            should_mock_column_nulls, should_use_random_test_data = (
+                _ROW_PATTERNS[row_index % len(_ROW_PATTERNS)])
+            mock_columns = generate_mock_columns(
+                connection,
+                table_name,
+                should_mock_column_nulls=should_mock_column_nulls,
+                should_use_random_test_data=should_use_random_test_data,
+                days_ago=days_ago,
+                entity_registry=entity_registry)
+            insert_mock_table_row(connection, table_name, mock_columns)
+            row_index += 1
+
+
+def mock_table(connection, table_name, distribution, entity_registry):
     print(f"Deleting {table_name} table rows")
     delete_table_rows(connection, table_name)
 
@@ -399,33 +579,40 @@ def mock_table(connection, table_name):
     delete_table_auto_increment_counter(connection, table_name)
 
     print(f"Mocking {table_name} table test data")
-    insert_mock_table_rows(connection, table_name)
+    insert_mock_table_rows(connection, table_name, distribution,
+                           entity_registry)
 
 
-def mock_tables(connection):
-    connection.execute("PRAGMA foreign_keys = OFF")
-
-    table_names = get_table_names(connection)
+def mock_tables(connection, distribution):
+    # Every table is mocked with the same `distribution`, so a table that draws
+    # from an entity pool always draws exactly as many times as the pool's
+    # source table populated it (see `COLUMN_ENTITY_SOURCE`). This is what
+    # keeps the pool-exhaustion fallback in `generate_mock_columns` from firing
+    # under normal CLI usage, since `--rows`/`--min-rows`/`--max-rows` apply
+    # uniformly across all tables.
+    table_names = _sort_tables_for_insertion(get_table_names(connection))
+    entity_registry = {}
     for table_name in table_names:
-        mock_table(connection, table_name)
-
-    connection.execute("PRAGMA foreign_keys = ON")
+        mock_table(connection, table_name, distribution, entity_registry)
 
     connection.commit()
 
 
-def verify_mock_tables(connection):
+def verify_mock_tables(connection, expected_row_count):
     table_names = get_table_names(connection)
     for table_name in table_names:
         connection_cursor = connection.cursor()
         connection_cursor.execute(f"SELECT count(*) FROM {table_name};")
-        row_count = connection_cursor.fetchone()[0]
-        if row_count != EXPECTED_ROW_COUNT:
-            sys.exit(f"ERROR: {table_name} table has {row_count} rows, "
-                     f"expected {EXPECTED_ROW_COUNT}")
+        actual_count = connection_cursor.fetchone()[0]
+        if actual_count != expected_row_count:
+            sys.exit(f"ERROR: {table_name} table has {actual_count} rows, "
+                     f"expected {expected_row_count}")
 
 
-def mock_database(database):
+def mock_database(database,
+                  days=DEFAULT_DATE_RANGE_DAYS,
+                  min_row_count=DEFAULT_MIN_ROW_COUNT,
+                  max_row_count=DEFAULT_MAX_ROW_COUNT):
     if not os.path.exists(database):
         sys.exit(f"ERROR: {database} does not exist")
 
@@ -433,10 +620,15 @@ def mock_database(database):
     if not connection:
         sys.exit("ERROR: Failed to connect to database")
 
-    print("Mocking database migration test data")
+    distribution = _generate_row_distribution(days, min_row_count,
+                                              max_row_count)
+    total_row_count = sum(distribution)
+    print(f"Mocking database migration test data "
+          f"({total_row_count} rows per table over {days} days, "
+          f"{min_row_count}–{max_row_count} per day)")
 
-    mock_tables(connection)
-    verify_mock_tables(connection)
+    mock_tables(connection, distribution)
+    verify_mock_tables(connection, total_row_count)
     vacuum(connection)
     close_connection(connection)
 
@@ -447,9 +639,41 @@ def main():
     argument_parser = argparse.ArgumentParser(
         description="Mock database migration test data.")
     argument_parser.add_argument('database', help="The SQLite database")
+    argument_parser.add_argument(
+        '--days',
+        type=int,
+        default=DEFAULT_DATE_RANGE_DAYS,
+        help=f"Spread timestamps over the past N days (default: "
+        f"{DEFAULT_DATE_RANGE_DAYS})")
+    argument_parser.add_argument(
+        '--rows',
+        type=int,
+        default=None,
+        help="Set both --min-rows and --max-rows to N (exact rows per day)")
+    argument_parser.add_argument(
+        '--min-rows',
+        type=int,
+        default=DEFAULT_MIN_ROW_COUNT,
+        help=f"Minimum rows per day (default: {DEFAULT_MIN_ROW_COUNT})")
+    argument_parser.add_argument(
+        '--max-rows',
+        type=int,
+        default=None,
+        help="Maximum rows per day (default: same as --min-rows)")
     args = argument_parser.parse_args()
 
-    mock_database(args.database)
+    min_row_count = args.rows if args.rows is not None else args.min_rows
+    max_row_count = (args.rows if args.rows is not None else (
+        args.max_rows if args.max_rows is not None else min_row_count))
+
+    if min_row_count < 1:
+        sys.exit(f"ERROR: --min-rows/--rows ({min_row_count}) must be >= 1")
+
+    if min_row_count > max_row_count:
+        sys.exit(f"ERROR: --min-rows ({min_row_count}) must be <= "
+                 f"--max-rows ({max_row_count})")
+
+    mock_database(args.database, args.days, min_row_count, max_row_count)
 
 
 if __name__ == "__main__":
