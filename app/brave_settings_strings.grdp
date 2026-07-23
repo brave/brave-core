@@ -583,6 +583,9 @@
   <message name="IDS_BRAVE_ADBLOCK_CUSTOM_SCRIPTLET_DIALOG_NAME_LABEL" desc="A label for the custom scriptlet name field">
     Name
   </message>
+  <message name="IDS_BRAVE_ADBLOCK_CUSTOM_SCRIPTLET_DIALOG_MIME_LABEL" desc="A label for the custom scriptlet MIME type field">
+    MIME type
+  </message>
   <message name="IDS_BRAVE_ADBLOCK_CUSTOM_SCRIPTLET_DIALOG_CONTENT_LABEL" desc="A label for the custom scriptlet content field">
     Content
   </message>

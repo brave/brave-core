@@ -5,11 +5,17 @@
 
 import { sendWithPromise, addWebUiListener } from 'chrome://resources/js/cr.js'
 
+export const DEFAULT_SCRIPTLET_MIME = 'application/javascript'
+
+export interface ScriptletKind {
+  mime: string
+}
+
 export class Scriptlet {
   name: string
 
-  kind: object = {
-    mime: 'application/javascript'
+  kind: ScriptletKind = {
+    mime: DEFAULT_SCRIPTLET_MIME
   }
 
   content: string
