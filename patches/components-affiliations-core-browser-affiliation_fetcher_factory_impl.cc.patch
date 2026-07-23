@@ -1,0 +1,22 @@
+diff --git a/components/affiliations/core/browser/affiliation_fetcher_factory_impl.cc b/components/affiliations/core/browser/affiliation_fetcher_factory_impl.cc
+index 3edf4469f9b9dc6aa800299111d24fe4bfabb2d1..59f045940dfffb76a5be06e5a08378d3974f0e65 100644
+--- a/components/affiliations/core/browser/affiliation_fetcher_factory_impl.cc
++++ b/components/affiliations/core/browser/affiliation_fetcher_factory_impl.cc
+@@ -15,14 +15,14 @@ AffiliationFetcherFactoryImpl::~AffiliationFetcherFactoryImpl() = default;
+ std::unique_ptr<AffiliationFetcherInterface>
+ AffiliationFetcherFactoryImpl::CreateInstance(
+     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory) {
+-  return HashAffiliationFetcher::IsFetchPossible()
+-             ? std::make_unique<HashAffiliationFetcher>(
++  return BraveHashAffiliationFetcher::IsFetchPossible()
++             ? std::make_unique<BraveHashAffiliationFetcher>(
+                    std::move(url_loader_factory))
+              : nullptr;
+ }
+ 
+ bool AffiliationFetcherFactoryImpl::CanCreateFetcher() const {
+-  return HashAffiliationFetcher::IsFetchPossible();
++  return BraveHashAffiliationFetcher::IsFetchPossible();
+ }
+ 
+ }  // namespace affiliations
