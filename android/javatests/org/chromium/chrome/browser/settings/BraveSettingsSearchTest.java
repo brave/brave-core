@@ -44,6 +44,7 @@ import org.chromium.base.test.util.Features.EnableFeatures;
 import org.chromium.brave.browser.customize_menu.CustomizeBraveMenu;
 import org.chromium.brave.browser.customize_menu.MenuItemData;
 import org.chromium.chrome.browser.flags.ChromeSwitches;
+import org.chromium.chrome.browser.tracing.settings.DeveloperSettings;
 import org.chromium.chrome.browser.widget.quickactionsearchandbookmark.utils.BraveSearchWidgetUtils;
 import org.chromium.chrome.test.ChromeJUnit4ClassRunner;
 import org.chromium.chrome.test.R;
@@ -199,9 +200,9 @@ public class BraveSettingsSearchTest {
         // assertSearchResult("Rate Brave");
 
         // About section
-
-        clearAndTypeIntoSearch("Developer options");
-        assertSearchResult("Developer options");
+        // "Developer options" visibility depends on channel/pref, so it is covered separately by
+        // testDeveloperOptionsSearchable_WhenEnabled and
+        // testDeveloperOptionsNotSearchable_WhenDisabled.
 
         clearAndTypeIntoSearch("About Brave");
         assertSearchResult("About Brave");
@@ -967,6 +968,10 @@ public class BraveSettingsSearchTest {
     @SmallTest
     @Feature({"Preferences"})
     public void testDeveloperOptionsSettingsAreSearchable() {
+        // Developer options are hidden by default on Beta/Stable channels (they must be unlocked by
+        // tapping the build number). Force them on so the sub-screen is indexed regardless of
+        // channel.
+        DeveloperSettings.setIsEnabledForTests(true);
         mSettingsActivityTestRule.startSettingsActivity();
 
         typeIntoSearch("Tracing");
@@ -983,6 +988,36 @@ public class BraveSettingsSearchTest {
 
         clearAndTypeIntoSearch("Show Safe Browsing errors");
         assertSearchResult("Show Safe Browsing errors");
+    }
+
+    /**
+     * Verifies that the main-settings "Developer options" entry is searchable when developer
+     * options are enabled (always the case on Dev/Nightly, and after unlocking on Beta/Stable).
+     */
+    @Test
+    @SmallTest
+    @Feature({"Preferences"})
+    public void testDeveloperOptionsSearchable_WhenEnabled() {
+        DeveloperSettings.setIsEnabledForTests(true);
+        mSettingsActivityTestRule.startSettingsActivity();
+
+        typeIntoSearch("Developer options");
+        assertSearchResult("Developer options");
+    }
+
+    /**
+     * Verifies the counterpart: when developer options are disabled (the default on Beta/Stable),
+     * the "Developer options" entry is not indexed and cannot be found in search.
+     */
+    @Test
+    @SmallTest
+    @Feature({"Preferences"})
+    public void testDeveloperOptionsNotSearchable_WhenDisabled() {
+        DeveloperSettings.setIsEnabledForTests(false);
+        mSettingsActivityTestRule.startSettingsActivity();
+
+        typeIntoSearch("Developer options");
+        assertSearchResultEmpty();
     }
 
     /**
