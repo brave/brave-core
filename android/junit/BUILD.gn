@@ -260,6 +260,16 @@ if (is_android) {
     ]
   }
 
+  robolectric_library(
+      "brave_junit_tests_org.chromium.chrome.browser.ui.messages.snackbar") {
+    sources = [ "src/org/chromium/chrome/browser/ui/messages/snackbar/BraveSnackbarManagerNewTabTakeoverTest.java" ]
+
+    deps = [
+      "//chrome/android:chrome_java",
+      "//chrome/android/junit:chrome_junit_tests_helper",
+    ]
+  }
+
   robolectric_library("brave_junit_tests_org.chromium.chrome.browser.media") {
     sources = [
       "src/org/chromium/chrome/browser/media/BraveFullscreenVideoPictureInPictureControllerTest.java",
