@@ -34,8 +34,8 @@ importers:
         specifier: github:brave/leo-sf-symbols#f601277fdcd837c3e6b7239b73537603c7539119
         version: https://codeload.github.com/brave/leo-sf-symbols/tar.gz/f601277fdcd837c3e6b7239b73537603c7539119
       '@brave/wallet-standard-brave':
-        specifier: 0.0.16
-        version: 0.0.16(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)
+        specifier: 0.0.17
+        version: 0.0.17(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)
       '@dnd-kit/core':
         specifier: 6.3.1
         version: 6.3.1(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
@@ -698,8 +698,8 @@ packages:
       typescript:
         optional: true
 
-  '@brave/wallet-standard-brave@0.0.16':
-    resolution: {integrity: sha512-RcifUneOjiYZSwSAcj5y3DKIHK895bimxXogmRUpQD6b0zOZzIDIkz74HxPfrKaSEO/nflBpWb1qR7NBPXkX8w==}
+  '@brave/wallet-standard-brave@0.0.17':
+    resolution: {integrity: sha512-sxeQyaBsx8MQ1PksgkN/IVI8rS5AGCHN0kuFXMGykw0/wmXF8Rq1R4B+Tjw+taEruJ37ZBfASqjtwBhiZw7EEg==}
     engines: {node: '>=16'}
 
   '@chainsafe/filsnap-types@2.1.2':
@@ -1878,6 +1878,9 @@ packages:
 
   '@solana/web3.js@1.98.2':
     resolution: {integrity: sha512-BqVwEG+TaG2yCkBMbD3C4hdpustR4FpuUFRPUmqRZYYlPI9Hg4XMWxHWOWRzHE9Lkc9NDjzXFX7lDXSgzC7R1A==}
+
+  '@solana/web3.js@1.98.4':
+    resolution: {integrity: sha512-vv9lfnvjUsRiq//+j5pBdXig0IQdtzA0BRZ3bXEP4KaIyF1CcaydWqgyzQgfZMNIsWNWmG+AUHwPy4AHOD6gpw==}
 
   '@sovpro/delimited-stream@1.1.0':
     resolution: {integrity: sha512-kQpk267uxB19X3X2T1mvNMjyvIEonpNSHrMlK5ZaBU6aZxw7wPbpgKJOjHN3+/GPVpXgAV9soVT2oyHpLkLtyw==}
@@ -4227,7 +4230,7 @@ packages:
     engines: {node: '>= 0.6'}
 
   ethereum-blockies@https://codeload.github.com/brave/blockies/tar.gz/0880fa9867b7da039e6d6f143b8f6c57b9f9eb3b:
-    resolution: {gitHosted: true, tarball: https://codeload.github.com/brave/blockies/tar.gz/0880fa9867b7da039e6d6f143b8f6c57b9f9eb3b}
+    resolution: {gitHosted: true, integrity: sha512-UcmAYEM1NeAjnfwxiKS2AaXdPwswJdSabvCG+6sPQLaVnWvEVeGh68UdBWMjz8erceBwqeaR+WT74Mg2tf20bQ==, tarball: https://codeload.github.com/brave/blockies/tar.gz/0880fa9867b7da039e6d6f143b8f6c57b9f9eb3b}
     version: 0.1.1
 
   ethereum-cryptography@0.1.3:
@@ -8020,10 +8023,10 @@ snapshots:
       - tsx
       - yaml
 
-  '@brave/wallet-standard-brave@0.0.16(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)':
+  '@brave/wallet-standard-brave@0.0.17(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)':
     dependencies:
       '@solana/wallet-standard-features': 1.3.0
-      '@solana/web3.js': 1.98.2(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)
+      '@solana/web3.js': 1.98.4(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)
       '@wallet-standard/base': 1.1.0
       '@wallet-standard/features': 1.1.0
       bs58: 6.0.0
@@ -9633,6 +9636,29 @@ snapshots:
       '@wallet-standard/features': 1.1.0
 
   '@solana/web3.js@1.98.2(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)':
+    dependencies:
+      '@babel/runtime': 7.27.0
+      '@noble/curves': 1.9.7
+      '@noble/hashes': 1.8.0
+      '@solana/buffer-layout': 4.0.1
+      '@solana/codecs-numbers': 2.3.0(typescript@5.9.3)
+      agentkeepalive: 4.5.0
+      bn.js: 5.2.3
+      borsh: 0.7.0
+      bs58: 4.0.1
+      buffer: 6.0.3
+      fast-stable-stringify: 1.0.0
+      jayson: 4.2.0(bufferutil@4.1.0)(utf-8-validate@5.0.10)
+      node-fetch: 2.7.0
+      rpc-websockets: 9.1.1
+      superstruct: 2.0.2
+    transitivePeerDependencies:
+      - bufferutil
+      - encoding
+      - typescript
+      - utf-8-validate
+
+  '@solana/web3.js@1.98.4(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)':
     dependencies:
       '@babel/runtime': 7.27.0
       '@noble/curves': 1.9.7
