@@ -1402,6 +1402,24 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, FrameSourceURL) {
   EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
 }
 
+// Sandboxed iframes by default have an opaque request_initiator.
+// Requests from them must still be checked by adblock.
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SandboxedIframeRequestsBlocked) {
+  UpdateAdBlockInstanceWithRules("adbanner.js");
+
+  NavigateToURL(embedded_test_server()->GetURL("a.com", kAdBlockTestPage));
+  ASSERT_EQ(true, EvalJs(web_contents(),
+                         "addFrame('/blocking.html', 'allow-scripts')"));
+
+  content::RenderFrameHost* frame = ChildFrameAt(web_contents(), 0);
+  ASSERT_TRUE(frame->GetLastCommittedOrigin().opaque());
+
+  EXPECT_EQ(true, EvalJs(frame,
+                         "setExpectations(0, 0, 0, 1);"
+                         "xhr('adbanner.js')"));
+  EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
+}
+
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
                        SocialMediaBlockingPrefsToggleLists) {
   // kTwitterEmbedListConstants UUID (enabled by default)
