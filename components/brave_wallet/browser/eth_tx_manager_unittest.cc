@@ -231,6 +231,11 @@ class EthTxManagerUnitTest : public testing::Test {
                     ]
                   }
                 })");
+          } else if (*method == "eth_simulateV1") {
+            url_loader_factory_.AddResponse(
+                request.url.spec(),
+                "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":[{\"calls\":[{"
+                "\"status\":\"0x1\",\"logs\":[]}]}]}");
           }
         }));
 
@@ -1507,6 +1512,11 @@ TEST_F(EthTxManagerUnitTest,
               "id": 1
             }
           )");
+        } else if (*header_value == "eth_simulateV1") {
+          url_loader_factory_.AddResponse(
+              request.url.spec(),
+              "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":[{\"calls\":[{"
+              "\"status\":\"0x1\",\"logs\":[]}]}]}");
         }
       }));
 
@@ -1570,6 +1580,11 @@ TEST_F(EthTxManagerUnitTest,
               "result": "0x00000000000009604",
               "id": 1
             })");
+        } else if (*header_value == "eth_simulateV1") {
+          url_loader_factory_.AddResponse(
+              request.url.spec(),
+              "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":[{\"calls\":[{"
+              "\"status\":\"0x1\",\"logs\":[]}]}]}");
         }
       }));
 
