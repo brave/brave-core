@@ -92,8 +92,8 @@ pnpm run init
 ```
 
 brave-core based android builds should use
-`pnpm run init --target_os=android --target_arch=arm` (or whichever CPU type
-you want to build for) brave-core based iOS builds should use
+`pnpm run init --target_os=android --target_arch=arm` (or whichever CPU type you
+want to build for) brave-core based iOS builds should use
 `pnpm run init --target_os=ios`
 
 You can also set the target_os and target_arch for init and build using:
@@ -180,12 +180,12 @@ commit local changes before running this**
 | ------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `[no flags]`                   | updates chromium if needed and re-applies patches. If the chromium version did not change, it will only re-apply patches that have changed. Will update child dependencies **only if any project needed updating during this script run**. <br> **Use this if you want the script to manage keeping you up to date instead of pulling or switching branches manually. **   |
 | `--force`                      | updates both _Chromium_ and _brave-core_ to the latest remote commit for the current brave-core branch and the _Chromium_ ref specified in brave-core/package.json (e.g. `master` or `74.0.0.103`). Will re-apply all patches. Will force update all child dependencies. <br> **Use this if you're having trouble and want to force the branches back to a known state. ** |
-| `--init`                       | force update both _Chromium_ and _brave-core_ to the versions specified in brave-core/package.json and force updates all dependent repos - same as `pnpm run init`                                                                                                                                                                                                          |
+| `--init`                       | force update both _Chromium_ and _brave-core_ to the versions specified in brave-core/package.json and force updates all dependent repos - same as `pnpm run init`                                                                                                                                                                                                         |
 | `--sync_chromium (true/false)` | Will force or skip the chromium version update when applicable. Useful if you want to avoid a minor update when not ready for the larger build time a chromium update may result in. A warning will be output about the current code state expecting a different chromium version. Your build may fail as a result.                                                        |
 | `-D, --delete_unused_deps`     | Will delete from the working copy any dependencies that have been removed since the last sync. Mimics `gclient sync -D`.                                                                                                                                                                                                                                                   |
 
-Run `pnpm run sync brave_core_ref` to checkout the specified _brave-core_ ref and
-update all dependent repos including chromium if needed.
+Run `pnpm run sync brave_core_ref` to checkout the specified _brave-core_ ref
+and update all dependent repos including chromium if needed.
 
 ## Scenarios
 
