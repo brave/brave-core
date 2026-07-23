@@ -92,104 +92,101 @@ struct ManageWebsiteDataView: View {
   }
 
   var body: some View {
-    NavigationView {
-      let visibleRecords = filteredRecords
-      List(selection: $selectedRecordDisplayNames) {
-        Section {
-          if isLoading {
-            HStack {
-              ProgressView()
-              Text(Strings.loadingWebsiteData)
-            }
-          } else {
-            ForEach(visibleRecords, id: \.displayName) { record in
-              VStack(alignment: .leading, spacing: 2) {
-                let types = Set(
-                  record.dataTypes.compactMap(localizedStringForDataRecordType)
-                ).sorted()
-                Text(record.displayName)
-                if !types.isEmpty {
-                  Text(ListFormatter.localizedString(byJoining: types))
-                    .font(.footnote)
-                }
-              }
-              .frame(maxWidth: .infinity, alignment: .leading)
-              .swipeActions(edge: .trailing) {
-                Button(role: .destructive) {
-                  removeRecords([record])
-                } label: {
-                  Label(Strings.removeDataRecord, systemImage: "trash")
-                }
+    let visibleRecords = filteredRecords
+    List(selection: $selectedRecordDisplayNames) {
+      Section {
+        if isLoading {
+          HStack {
+            ProgressView()
+            Text(Strings.loadingWebsiteData)
+          }
+        } else {
+          ForEach(visibleRecords, id: \.displayName) { record in
+            VStack(alignment: .leading, spacing: 2) {
+              let types = Set(
+                record.dataTypes.compactMap(localizedStringForDataRecordType)
+              ).sorted()
+              Text(record.displayName)
+              if !types.isEmpty {
+                Text(ListFormatter.localizedString(byJoining: types))
+                  .font(.footnote)
               }
             }
-            .onDelete { indexSet in
-              let recordsToDelete = indexSet.map { visibleRecords[$0] }
-              removeRecords(recordsToDelete)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .swipeActions(edge: .trailing) {
+              Button(role: .destructive) {
+                removeRecords([record])
+              } label: {
+                Label(Strings.removeDataRecord, systemImage: "trash")
+              }
             }
+          }
+          .onDelete { indexSet in
+            let recordsToDelete = indexSet.map { visibleRecords[$0] }
+            removeRecords(recordsToDelete)
           }
         }
       }
-      .listStyle(.plain)
-      .environment(\.editMode, $editMode)
-      .overlay(
-        Group {
-          if !isLoading && visibleRecords.isEmpty {
-            Text(Strings.noSavedWebsiteData)
-              .font(.headline)
-              .foregroundColor(.secondary)
-          }
-        }
-      )
-      .toolbar {
-        ToolbarItemGroup(placement: .confirmationAction) {
-          Button {
-            presentationMode.dismiss()
-          } label: {
-            Text(Strings.done)
-              .foregroundColor(Color(braveSystemName: .textInteractive))
-          }
-        }
-        ToolbarItemGroup(placement: .bottomBar) {
-          Button {
-            withAnimation {
-              editMode = editMode.isEditing ? .inactive : .active
-              if editMode == .inactive {
-                selectedRecordDisplayNames = []
-              }
-            }
-          } label: {
-            Text(editMode.isEditing ? Strings.done : Strings.edit)
-              .foregroundColor(
-                visibleRecords.isEmpty
-                  ? Color(braveSystemName: .neutral20) : Color(braveSystemName: .textInteractive)
-              )
-          }
-          .disabled(visibleRecords.isEmpty)
-          Spacer()
-          Button {
-            if isEditMode {
-              let recordsToRemove = visibleSelectedRecordDisplayNames(visibleRecords)
-              removeRecordsWithDisplayNames(Array(recordsToRemove))
-              selectedRecordDisplayNames = []
-            } else {
-              removeRecords(visibleRecords)
-            }
-          } label: {
-            Text(removeButtonTitle(visibleRecords: visibleRecords))
-              .foregroundColor(visibleRecords.isEmpty ? Color(braveSystemName: .neutral20) : .red)
-              .animation(nil, value: isEditMode)
-          }
-          .disabled(visibleRecords.isEmpty)
-        }
-      }
-      .searchable(
-        text: $filter,
-        placement: .navigationBarDrawer(displayMode: .always)
-      )
-      .navigationTitle(Strings.manageWebsiteDataTitle)
-      .navigationBarTitleDisplayMode(.inline)
     }
-    .navigationViewStyle(.stack)
+    .listStyle(.plain)
+    .environment(\.editMode, $editMode)
+    .overlay(
+      Group {
+        if !isLoading && visibleRecords.isEmpty {
+          Text(Strings.noSavedWebsiteData)
+            .font(.headline)
+            .foregroundColor(.secondary)
+        }
+      }
+    )
+    .toolbar {
+      ToolbarItemGroup(placement: .confirmationAction) {
+        Button {
+          presentationMode.dismiss()
+        } label: {
+          Text(Strings.done)
+            .foregroundColor(Color(braveSystemName: .textInteractive))
+        }
+      }
+      ToolbarItemGroup(placement: .bottomBar) {
+        Button {
+          withAnimation {
+            editMode = editMode.isEditing ? .inactive : .active
+            if editMode == .inactive {
+              selectedRecordDisplayNames = []
+            }
+          }
+        } label: {
+          Text(editMode.isEditing ? Strings.done : Strings.edit)
+            .foregroundColor(
+              visibleRecords.isEmpty
+                ? Color(braveSystemName: .neutral20) : Color(braveSystemName: .textInteractive)
+            )
+        }
+        .disabled(visibleRecords.isEmpty)
+        Spacer()
+        Button {
+          if isEditMode {
+            let recordsToRemove = visibleSelectedRecordDisplayNames(visibleRecords)
+            removeRecordsWithDisplayNames(Array(recordsToRemove))
+            selectedRecordDisplayNames = []
+          } else {
+            removeRecords(visibleRecords)
+          }
+        } label: {
+          Text(removeButtonTitle(visibleRecords: visibleRecords))
+            .foregroundColor(visibleRecords.isEmpty ? Color(braveSystemName: .neutral20) : .red)
+            .animation(nil, value: isEditMode)
+        }
+        .disabled(visibleRecords.isEmpty)
+      }
+    }
+    .searchable(
+      text: $filter,
+      placement: .navigationBarDrawer(displayMode: .always)
+    )
+    .navigationTitle(Strings.manageWebsiteDataTitle)
+    .navigationBarTitleDisplayMode(.inline)
     .onAppear(perform: loadRecords)
   }
 }
