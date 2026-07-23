@@ -10,6 +10,7 @@
 
 #include "base/check.h"
 #include "base/files/file_path.h"
+#include "base/files/file_util.h"
 #include "base/functional/bind.h"
 #include "base/logging.h"
 #include "base/no_destructor.h"
@@ -23,28 +24,36 @@
 #include "brave/components/local_ai/core/utils.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/profiles/profile.h"
-#include "components/passage_embeddings/core/passage_embeddings_features.h"
+#include "components/optimization_guide/proto/passage_embeddings_model_metadata.pb.h"
 #include "components/passage_embeddings/core/passage_embeddings_service_launcher.h"
 #include "components/passage_embeddings/core/passage_embeddings_types.h"
+#include "content/public/browser/service_process_host.h"
 #include "mojo/public/cpp/base/big_buffer.h"
-#include "mojo/public/cpp/bindings/callback_helpers.h"
 #include "url/gurl.h"
 
 namespace passage_embeddings {
 
 namespace {
 
-mojom::PassagePriority ToMojom(PassagePriority priority) {
-  switch (priority) {
-    case kUserInitiated:
-      return mojom::PassagePriority::kUserInitiated;
-    case kUrgent:
-      return mojom::PassagePriority::kUrgent;
-    case kPassive:
-    case kLatent:
-      return mojom::PassagePriority::kPassive;
-  }
-}
+// The LiteRT model files ship in the shared EmbeddingGemma component (the same
+// one the WASM embedder uses), under a litert/ subdir of its model dir.
+constexpr char kLitertModelSubdir[] = "litert";
+constexpr char kLitertModelName[] =
+    "embeddinggemma-300M_seq512_mixed-precision.tflite";
+constexpr char kSentencePieceModelName[] = "sentencepiece.model";
+// Matches the seq512 model's input window. The embedder itself derives the
+// actual window from the model's input tensor, so this only feeds the metadata
+// the controller reports; keep it in sync with the model above.
+constexpr uint32_t kLitertInputWindowSize = 512;
+constexpr int kLitertOutputSize = 768;
+constexpr double kLitertScoreThreshold = 0.45;
+constexpr int kLitertModelVersion = 2;
+
+// The three helpers immediately below (OnBackgroundWebContentsCreated,
+// CreateBackgroundWebContents, LoadLocalModelFilesFromDisk) and the controller
+// methods tagged "Dead WASM code" are no longer reached now that LiteRT is the
+// only embedder. They are kept to keep this change minimal and are removed,
+// along with the WASM embedder itself, in the follow-up.
 
 // Completion callback for local_ai::CreateBackgroundWebContents().
 //
@@ -108,23 +117,30 @@ local_ai::mojom::ModelFilesPtr LoadLocalModelFilesFromDisk(
   return model_files;
 }
 
-// `StubServiceLauncher` is provided to `PassageEmbeddingsServiceController`,
-// and is used to spin up a sandboxed process. We pass a stub because we manage
-// the embedding service in-process, and the launcher path is never taken.
-class StubServiceLauncher : public PassageEmbeddingsServiceLauncher {
+// Launches the real sandboxed Passage Embeddings utility process. Used for the
+// native LiteRT embedder, whose LoadModels is chromium_src-overridden to run
+// EmbeddingGemma on LiteRT's CompiledModel inside that process.
+class LitertServiceLauncher : public PassageEmbeddingsServiceLauncher {
  public:
   static PassageEmbeddingsServiceLauncher& Create() {
-    static base::NoDestructor<StubServiceLauncher> launcher;
+    static base::NoDestructor<LitertServiceLauncher> launcher;
     return *launcher;
   }
 
   void LaunchService(mojo::PendingReceiver<mojom::PassageEmbeddingsService>
                          receiver) override {
-    NOTREACHED();
+    content::ServiceProcessHost::Launch<mojom::PassageEmbeddingsService>(
+        std::move(receiver), content::ServiceProcessHost::Options()
+                                 .WithDisplayName("Passage Embeddings Service")
+                                 .Pass());
   }
-  void OnServiceDisconnected(bool is_idle) override { NOTREACHED(); }
-  bool AllowedToLaunch() const override { return false; }
+  void OnServiceDisconnected(bool is_idle) override {}
+  bool AllowedToLaunch() const override { return true; }
 };
+
+PassageEmbeddingsServiceLauncher& GetServiceLauncher() {
+  return LitertServiceLauncher::Create();
+}
 
 }  // namespace
 
@@ -137,10 +153,19 @@ BravePassageEmbeddingsServiceController::Get() {
 
 BravePassageEmbeddingsServiceController::
     BravePassageEmbeddingsServiceController()
-    : PassageEmbeddingsServiceController(StubServiceLauncher::Create()) {
-  // AddObserver re-fires OnLocalModelsReady synchronously if the
-  // component is already installed; our handler sets model_dir_ready_
-  // and notifies observer_list_ via EmbedderMetadataUpdated.
+    : PassageEmbeddingsServiceController(GetServiceLauncher()) {
+  // Report the LiteRT model's metadata; the model file paths are resolved
+  // from the component in OnLocalModelsReady once it is installed.
+  optimization_guide::proto::PassageEmbeddingsModelMetadata metadata;
+  metadata.set_input_window_size(kLitertInputWindowSize);
+  metadata.set_output_size(kLitertOutputSize);
+  metadata.set_score_threshold(kLitertScoreThreshold);
+  model_metadata_ = std::move(metadata);
+  model_version_ = kLitertModelVersion;
+
+  // AddObserver re-fires OnLocalModelsReady synchronously if the component is
+  // already installed; our handler sets the model paths / model_dir_ready_ and
+  // notifies observer_list_ via EmbedderMetadataUpdated.
   updater_state_observation_.Observe(
       local_ai::LocalModelsUpdaterState::GetInstance());
 }
@@ -154,6 +179,9 @@ bool BravePassageEmbeddingsServiceController::MaybeUpdateModelInfo(
   return false;
 }
 
+// Dead WASM code (MaybeLaunchService through OnProfileWillBeDestroyed): the
+// in-process WASM service lifecycle, unreached now that LiteRT is the only
+// embedder.
 void BravePassageEmbeddingsServiceController::MaybeLaunchService() {
   if (service_) {
     return;
@@ -202,24 +230,63 @@ void BravePassageEmbeddingsServiceController::OnProfileWillBeDestroyed(
 }
 
 bool BravePassageEmbeddingsServiceController::IsModelAvailable() {
-  // Mirrors upstream's "do we have a model path to load from?" check
-  // — true once LocalModelsUpdaterState reports the component is
-  // installed. SchedulingEmbedder retries on the
-  // EmbedderMetadataUpdated notification fired in OnLocalModelsReady.
-  return model_dir_ready_;
+  // The LiteRT model paths are resolved from the component in
+  // OnLocalModelsReady.
+  return !embeddings_model_path_.empty();
 }
 
 void BravePassageEmbeddingsServiceController::OnLocalModelsReady(
     const base::FilePath& install_dir) {
   model_dir_ready_ = !install_dir.empty();
   if (!model_dir_ready_) {
-    // Component uninstall (or test reset) cleared the dir. Tear the
-    // service down if any so it doesn't outlive the model files.
+    // Component uninstall (or test reset) cleared the dir. Drop the resolved
+    // model paths and tear the service down if any so it doesn't outlive the
+    // model files. (service_ is WASM/candle dead code and is never set now.)
+    embeddings_model_path_ = base::FilePath();
+    sp_model_path_ = base::FilePath();
     if (service_) {
       ResetServiceRemote();
     }
     return;
   }
+  // The LiteRT .tflite + SentencePiece model ship in the EmbeddingGemma
+  // component under a litert/ subdir. They may be absent (an older component,
+  // or the download withheld), so confirm both are on disk before reporting the
+  // model available -- the base-class LoadModels flow opens them
+  // unconditionally and would crash serializing a missing (null) file.
+  const base::FilePath litert_dir =
+      local_ai::LocalModelsUpdaterState::GetInstance()
+          ->GetEmbeddingGemmaModelDir()
+          .AppendASCII(kLitertModelSubdir);
+  const base::FilePath embeddings_model_path =
+      litert_dir.AppendASCII(kLitertModelName);
+  const base::FilePath sp_model_path =
+      litert_dir.AppendASCII(kSentencePieceModelName);
+  base::ThreadPool::PostTaskAndReplyWithResult(
+      FROM_HERE,
+      {base::MayBlock(), base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN},
+      base::BindOnce(
+          [](const base::FilePath& embeddings, const base::FilePath& sp) {
+            return base::PathExists(embeddings) && base::PathExists(sp);
+          },
+          embeddings_model_path, sp_model_path),
+      base::BindOnce(
+          &BravePassageEmbeddingsServiceController::OnLitertModelChecked,
+          base::Unretained(this), embeddings_model_path, sp_model_path));
+}
+
+void BravePassageEmbeddingsServiceController::OnLitertModelChecked(
+    const base::FilePath& embeddings_model_path,
+    const base::FilePath& sp_model_path,
+    bool models_exist) {
+  if (!models_exist) {
+    VLOG(1) << "LiteRT model files missing under "
+            << embeddings_model_path.DirName()
+            << "; passage embeddings disabled until the component ships them";
+    return;
+  }
+  embeddings_model_path_ = embeddings_model_path;
+  sp_model_path_ = sp_model_path;
   // SchedulingEmbedder is the only observer and SubmitWorkToEmbedder()
   // short-circuits if work is already in flight, so re-firing on
   // repeated component-updater notifications is harmless.
@@ -229,58 +296,29 @@ void BravePassageEmbeddingsServiceController::OnLocalModelsReady(
 
 EmbedderMetadata
 BravePassageEmbeddingsServiceController::GetEmbedderMetadata() {
-  return EmbedderMetadata(/*model_version=*/1,
-                          /*output_size=*/768,
-                          /*search_score_threshold=*/0.45);
+  // Report a model_version distinct from the previous WASM embedder's so that
+  // upstream drops the old embeddings rather than mixing vector spaces. On
+  // startup SqlDatabase::InitInternal()
+  // (//components/history_embeddings/core/sql_database.cc) compares this with
+  // the stored model_version and, on a mismatch, clears the embeddings table
+  // and re-embeds the retained passages.
+  return EmbedderMetadata(kLitertModelVersion,
+                          /*output_size=*/kLitertOutputSize,
+                          /*search_score_threshold=*/kLitertScoreThreshold);
 }
 
 void BravePassageEmbeddingsServiceController::GetEmbeddings(
     std::vector<std::string> passages,
     PassagePriority priority,
     GetEmbeddingsResultCallback callback) {
-  if (passages.empty()) {
-    std::move(callback).Run({}, ComputeEmbeddingsStatus::kSuccess);
-    return;
-  }
-
-  if (!IsModelAvailable()) {
-    DVLOG(1) << "GetEmbeddings called before model dir is ready";
-    std::move(callback).Run({}, ComputeEmbeddingsStatus::kModelUnavailable);
-    return;
-  }
-
-  if (!embedder_remote_) {
-    MaybeLaunchService();
-    auto receiver = embedder_remote_.BindNewPipeAndPassReceiver();
-    // When the embedder pipe goes idle or disconnects, tear the whole
-    // service down to free the WASM renderer.
-    embedder_remote_.set_disconnect_handler(base::BindOnce(
-        &BravePassageEmbeddingsServiceController::ResetServiceRemote,
-        base::Unretained(this)));
-    embedder_remote_.set_idle_handler(
-        kEmbedderTimeout.Get(),
-        base::BindRepeating(
-            &BravePassageEmbeddingsServiceController::ResetServiceRemote,
-            base::Unretained(this)));
-    DVLOG(3) << "GetEmbeddings: posting model-file load for new embedder";
-    LoadModelFilesAndBind(std::move(receiver));
-  }
-
-  embedder_remote_->GenerateEmbeddings(
-      std::move(passages), ToMojom(priority),
-      mojo::WrapCallbackWithDefaultInvokeIfNotRun(
-          base::BindOnce(
-              [](GetEmbeddingsResultCallback cb,
-                 std::vector<mojom::PassageEmbeddingsResultPtr> results) {
-                auto status = results.empty()
-                                  ? ComputeEmbeddingsStatus::kExecutionFailure
-                                  : ComputeEmbeddingsStatus::kSuccess;
-                std::move(cb).Run(std::move(results), status);
-              },
-              std::move(callback)),
-          std::vector<mojom::PassageEmbeddingsResultPtr>()));
+  // Reuse the upstream launch + LoadModels flow, which spins up the sandboxed
+  // Passage Embeddings utility process and drives the LiteRT embedder there.
+  PassageEmbeddingsServiceController::GetEmbeddings(
+      std::move(passages), priority, std::move(callback));
 }
 
+// Dead WASM code: LoadModelFilesAndBind + OnLocalModelFilesLoaded loaded model
+// files for the in-process WASM embedder.
 void BravePassageEmbeddingsServiceController::LoadModelFilesAndBind(
     mojo::PendingReceiver<mojom::PassageEmbedder> receiver) {
   auto* updater_state = local_ai::LocalModelsUpdaterState::GetInstance();
