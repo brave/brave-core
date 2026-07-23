@@ -374,7 +374,7 @@ struct TabGridView: View {
           isFocused: $viewModel.isSearching,
           scrollView: containerView.collectionView
         )
-        .frame(maxWidth: .infinity)
+        .frame(maxWidth: .infinity, minHeight: 44)
       } else if !viewModel.isSearching {
         Spacer()
       }
@@ -807,11 +807,9 @@ private struct TabGridModeSwitcher: UIViewRepresentable {
     uiView: UISegmentedControl,
     context: Context
   ) -> CGSize? {
-    .init(
-      width: min(
-        proposal.replacingUnspecifiedDimensions().width,
-        uiView.intrinsicContentSize.width
-      ),
+    let idealWidth = uiView.intrinsicContentSize.width + 44
+    return .init(
+      width: proposal.width.map { min($0, idealWidth) } ?? idealWidth,
       height: controlHeight
     )
   }
