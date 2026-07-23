@@ -1,7 +1,7 @@
 name: Trigger sync PR from fork
 
 on:
-  pull_request_review:
+  pull_request_review_target:
     types: [submitted]
   # Manual entrypoint for testing: supply the PR number / commit hash directly
   # instead of resolving them from a pull_request_review payload.
