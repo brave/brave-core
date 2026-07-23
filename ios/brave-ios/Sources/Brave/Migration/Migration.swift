@@ -32,6 +32,7 @@ public class BraveProfileMigrations {
     migrateMediaBackgroundingPreference()
     migrateBlockAllCookiesPreference()
     migrateDefaultWalletPreferences()
+    migrateDeveloperModeIfNeeded()
   }
 
   private func migrateDefaultUserAgentPreferences() {
@@ -78,6 +79,26 @@ public class BraveProfileMigrations {
     // migrate global / default settings first, then site-specific
     braveShieldsSettings.migrateGlobalSettings()
     braveShieldsSettings.migrateShieldsToContentSettings(for: domainsToMigrate)
+  }
+
+  /// Checks if the user has any custom filter rules saved, if they do then
+  /// Developer Mode will be enabled
+  func migrateDeveloperModeIfNeeded() {
+    guard !Preferences.Shields.Migration.developerModeMigrationCompleted.value else {
+      return
+    }
+    defer { Preferences.Shields.Migration.developerModeMigrationCompleted.value = true }
+    do {
+      // check if user has any custom filters (the file is deleted if rules are
+      // removed in CustomFilterListView)
+      guard try CustomFilterListStorage.shared.savedCustomRulesFileURL() != nil else {
+        return
+      }
+      // user has custom filter rules saved, align Developer Mode preference
+      profileController.profile.prefs.set(true, forPath: kAdBlockDeveloperMode)
+    } catch {
+
+    }
   }
 
   /// Migrate sync passwords default value to enabled.

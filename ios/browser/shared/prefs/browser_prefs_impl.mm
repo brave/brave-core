@@ -117,6 +117,8 @@ void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
       global_privacy_control::kGlobalPrivacyControlEnabled, true);
   registry->RegisterBooleanPref(prefs::kMediaBackgroundingEnabled, false);
   registry->RegisterBooleanPref(prefs::kBlockAllCookiesEnabled, false);
+  registry->RegisterBooleanPref(brave_shields::prefs::kAdBlockDeveloperMode,
+                                false);
 }
 
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
