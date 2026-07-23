@@ -10,7 +10,6 @@
 #include "base/check.h"
 #include "brave/browser/ui/views/side_panel/ai_chat/ai_chat_movable_side_panel_web_view.h"
 #include "brave/components/ai_chat/core/common/ai_chat_urls.h"
-#include "chrome/browser/ui/browser_element_identifiers.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/navigator/browser_navigator.h"
 #include "chrome/browser/ui/navigator/browser_navigator_params.h"
@@ -18,7 +17,8 @@
 #include "chrome/browser/ui/side_panel/side_panel_enums.h"
 #include "chrome/browser/ui/side_panel/side_panel_registry.h"
 #include "chrome/browser/ui/side_panel/side_panel_ui.h"
-#include "chrome/browser/ui/views/interaction/browser_elements_views.h"
+#include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/side_panel/side_panel.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_web_ui_view.h"
 #include "chrome/browser/ui/webui/webui_embedding_context.h"
 #include "components/tabs/public/tab_interface.h"
@@ -27,7 +27,6 @@
 #include "ui/base/page_transition_types.h"
 #include "ui/base/window_open_disposition.h"
 #include "ui/gfx/geometry/rect.h"
-#include "ui/views/view.h"
 #include "ui/views/view_utils.h"
 #include "ui/views/widget/widget.h"
 
@@ -124,25 +123,19 @@ void AIChatSidePanelTabTransferBridge::ClearChatEntryCache() {
 
 bool AIChatSidePanelTabTransferBridge::MoveSidePanelContentsToTab(
     content::WebContents* side_panel_contents) {
-  // Only the live conversation currently hosted in the side panel can be moved.
-  // Find the movable AI Chat view by its shared id: resolve the `SidePanel` via
-  // `BrowserElementsViews` (mirrors the private
-  // `SidePanelCoordinator::GetSidePanel()` lookup) to reach the window, then
-  // search from the window's root view. The root view (not the `SidePanel`
-  // subtree) is used because the flash-free forward animation (`ShowFrom`)
-  // transiently reparents the panel content to the browser view while it
-  // animates in; searching the root finds the view whether it is animating or
-  // settled. Returns null when AI Chat is not the side panel's live entry.
-  AIChatMovableSidePanelWebView* chat_view = nullptr;
-  BrowserElementsViews* elements = BrowserElementsViews::From(browser_);
-  views::View* side_panel =
-      elements ? elements->GetView(kSidePanelElementId) : nullptr;
-  views::Widget* widget = side_panel ? side_panel->GetWidget() : nullptr;
-  if (widget) {
+  BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser_);
+  // If the Side Panel is still animating in then it won't yet be parented to
+  // the SidePanel and we need to find it on the BrowserView instead.
+  AIChatMovableSidePanelWebView* chat_view =
+      views::AsViewClass<AIChatMovableSidePanelWebView>(
+          browser_view->GetSidePanelAnimationContent());
+
+  if (!chat_view) {
     chat_view = views::AsViewClass<AIChatMovableSidePanelWebView>(
-        widget->GetRootView()->GetViewByID(
+        browser_view->side_panel()->GetViewByID(
             SidePanelWebUIView::kSidePanelWebViewId));
   }
+
   // Bail if there is no live movable chat view, or it hosts some other
   // contents.
   if (!chat_view || chat_view->web_contents() != side_panel_contents) {
@@ -152,8 +145,8 @@ bool AIChatSidePanelTabTransferBridge::MoveSidePanelContentsToTab(
   // A tab-associated (contextual) conversation follows the active tab and
   // carries `/tab` semantics that don't belong in a standalone full-page tab;
   // leave it to the caller's fresh-tab path.
-  if (ai_chat::ConversationUUIDFromURL(
-          side_panel_contents->GetLastCommittedURL()) == "tab") {
+  if (ai_chat::TabAssociatedConversationUrl().EqualsIgnoringRef(
+          side_panel_contents->GetLastCommittedURL())) {
     return false;
   }
 
