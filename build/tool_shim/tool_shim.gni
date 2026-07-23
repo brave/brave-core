@@ -1,0 +1,106 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# Creates an executable shim in $root_out_dir that runs another binary with
+# args/env/cwd baked into a config and additional CLI arguments passed as is.
+#
+# Example:
+#
+#   import("//brave/build/tool_shim/tool_shim.gni")
+#   import("//brave/build/node_bin.gni")  # for platform-specific Node.js paths
+#
+#   tool_shim("brave_jest_tests") {
+#     executable = node_bin
+#     cwd = "//brave"
+#     args = [
+#       rebase_path("//brave/node_modules/jest/bin/jest.js", cwd),
+#       "--config",
+#       rebase_path("//brave/jest.config.ts", cwd),
+#     ]
+#     env = {
+#       SOME_ENV_VAR = "some value"
+#     }
+#   }
+#
+# Then: out/Default/brave_jest_tests --testNamePattern=auth
+
+template("tool_shim") {
+  assert(defined(invoker.executable),
+         "tool_shim(\"$target_name\") requires executable")
+
+  _exe_suffix = ""
+  if (is_win) {
+    _exe_suffix = ".exe"
+  }
+
+  _output_name = target_name
+  if (defined(invoker.output_name)) {
+    _output_name = invoker.output_name
+  }
+
+  _tool_shim_path = "$root_out_dir/tool_shim${_exe_suffix}"
+  _output_path = "$root_out_dir/${_output_name}${_exe_suffix}"
+  _config_path = "$root_out_dir/${_output_name}.json"
+
+  _config = {
+    executable = rebase_path(invoker.executable, root_out_dir)
+    if (defined(invoker.args)) {
+      args = invoker.args
+    }
+    if (defined(invoker.env)) {
+      env = invoker.env
+    }
+    if (defined(invoker.cwd)) {
+      cwd = rebase_path(invoker.cwd, root_out_dir)
+    }
+  }
+
+  generated_file("${target_name}__config") {
+    forward_variables_from(invoker,
+                           [
+                             "testonly",
+                             "visibility",
+                           ])
+    outputs = [ _config_path ]
+    contents = _config
+    output_conversion = "json"
+  }
+
+  copy("${target_name}__exe") {
+    forward_variables_from(invoker,
+                           [
+                             "testonly",
+                             "visibility",
+                           ])
+    sources = [ _tool_shim_path ]
+    outputs = [ _output_path ]
+    deps = [ "//brave/build/tool_shim" ]
+  }
+
+  group(target_name) {
+    forward_variables_from(invoker,
+                           [
+                             "data_deps",
+                             "testonly",
+                             "visibility",
+                           ])
+    deps = [
+      ":${target_name}__config",
+      ":${target_name}__exe",
+    ]
+    if (defined(invoker.deps)) {
+      deps += invoker.deps
+    }
+
+    data = [
+      _output_path,
+      _config_path,
+      invoker.executable,
+    ]
+    if (defined(invoker.data)) {
+      data += invoker.data
+    }
+  }
+}
