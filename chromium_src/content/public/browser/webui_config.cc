@@ -20,4 +20,8 @@ bool WebUIConfig::ShouldInterceptNavigationsWithServiceWorker() {
   return false;
 }
 
+bool WebUIConfig::ShouldHandleSubdomains() const {
+  return false;
+}
+
 }  // namespace content
