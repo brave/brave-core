@@ -83,7 +83,6 @@ the build environment.
 ```bash
 git clone git@github.com:brave/brave-core.git path-to-your-project-folder/src/brave
 cd path-to-your-project-folder/src/brave
-npm install
 
 # the Chromium source is downloaded, which has a large history (gigabytes of data)
 # this might take really long to finish depending on internet speed

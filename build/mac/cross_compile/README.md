@@ -9,7 +9,6 @@ DMG and PKG installers.
 Use the following commands to prepare the build:
 
 ```
-npm install
 pnpm run init --target_os=mac --target_arch=x64
 ```
 
