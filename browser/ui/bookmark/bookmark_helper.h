@@ -10,14 +10,17 @@ class PrefService;
 
 namespace brave {
 
+// Deprecated: we're using bookmarks::BookmarkBarVisibilityState
+// instead of ours.
+
 // Show bookmarks a drop down choice of three options:
 // - Always (default)
 // - Never
 // - Only on the new tab page
 enum class BookmarkBarState { kAlways, kNever, kNtp };
 
-BookmarkBarState GetBookmarkBarState(PrefService* prefs);
-void SetBookmarkState(BookmarkBarState state, PrefService* prefs);
+void SetBookmarkStateForTesting(BookmarkBarState state, PrefService* prefs);
+void MigrateBookmarkState(PrefService* prefs);
 
 }  // namespace brave
 
