@@ -36,21 +36,21 @@ action("generate_command_metadata") {
 source_set("command_ids") {
   sources = [ "brave_command_ids.h" ]
 
-  deps = [
-    "//base",
-    "//brave/components/resources:strings",
-    "//chrome/app:command_ids",
-    "//chrome/app:generated_resources",
-    "//components/strings:components_strings",
-    "//services/screen_ai/buildflags",
-    "//third_party/re2",
-    "//ui/strings:ui_strings",
-  ]
-
   if (!is_android) {
     sources +=
         [ "command_utils.h" ] + get_target_outputs(":generate_command_metadata")
-    deps += [ ":generate_command_metadata" ]
+    deps = [
+      ":generate_command_metadata",
+      "//base",
+      "//brave/components/resources:strings",
+      "//chrome/app:branded_strings",
+      "//chrome/app:command_ids",
+      "//chrome/app:generated_resources",
+      "//components/strings:components_strings",
+      "//services/screen_ai/buildflags",
+      "//third_party/re2",
+      "//ui/strings:ui_strings",
+    ]
   }
 }
 
