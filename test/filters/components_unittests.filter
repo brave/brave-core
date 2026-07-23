@@ -66,6 +66,14 @@
 -SyncServiceImplStartupWithDetermineAccountTypeTest.StartupWithConsumerAccount
 -SyncServiceImplStartupWithDetermineAccountTypeTest.StartupWithManagedAccount
 
+# These tests fail because we force a resolved (non-managed) consumer status in
+# SyncAuthManager::ActiveAccount::StartDeterminingAccountType, skipping
+# AccountManagedStatusFinder, since Brave Sync uses a fake account with no
+# refresh token. See brave/rewrite/components/sync/service/sync_auth_manager.cc.yaml.
+-SyncAuthManagerTest.AccountChangeWhileDeterminingAccountType
+-SyncAuthManagerTest.DeterminesAccountTypeAsynchronously
+-SyncAuthManagerTest.DeterminesAccountTypeSynchronously
+
 # This test fails because we use different search engine keywords.
 -SearchEngineChoiceEligibilityTest.ChoiceScreenConditions_SkipFor3p_Waffle
 
