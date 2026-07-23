@@ -1,0 +1,31 @@
+diff --git a/components/crash/core/app/crashpad_ios.mm b/components/crash/core/app/crashpad_ios.mm
+index 131d0d885eedd48dae532d9471255617cafb80fc..dbc28f83f31a95bd3ee9cf0ec3feb63314947da3 100644
+--- a/components/crash/core/app/crashpad_ios.mm
++++ b/components/crash/core/app/crashpad_ios.mm
+@@ -37,7 +37,7 @@ const std::map<std::string, std::string>& GetProcessSimpleAnnotations() {
+     std::map<std::string, std::string> process_annotations;
+     @autoreleasepool {
+       NSBundle* outer_bundle = base::apple::OuterBundle();
+-#if BUILDFLAG(GOOGLE_CHROME_BRANDING)
++#if defined(OFFICIAL_BUILD)
+       process_annotations["prod"] = "Chrome_iOS";
+ #else
+       NSString* product = base::apple::ObjCCast<NSString>(
+@@ -47,7 +47,7 @@ const std::map<std::string, std::string>& GetProcessSimpleAnnotations() {
+           base::SysNSStringToUTF8(product).append("_").append(kPlatformName);
+ #endif
+ 
+-#if BUILDFLAG(GOOGLE_CHROME_BRANDING)
++#if defined(OFFICIAL_BUILD)
+       // Empty means stable.
+       const bool allow_empty_channel = true;
+ #else
+@@ -65,7 +65,7 @@ const std::map<std::string, std::string>& GetProcessSimpleAnnotations() {
+       process_annotations["ver"] = base::SysNSStringToUTF8(version);
+       process_annotations["plat"] = kPlatformName;
+     }  // @autoreleasepool
+-    return process_annotations;
++    return GetProcessSimpleAnnotations_BraveImpl(process_annotations);
+   }
+   ();
+   return annotations;

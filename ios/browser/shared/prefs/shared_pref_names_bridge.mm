@@ -7,9 +7,16 @@
 
 #include "base/strings/sys_string_conversions.h"
 #include "brave/ios/browser/shared/prefs/pref_names.h"
+#include "components/metrics/metrics_pref_names.h"
 
 NSString* const kMediaBackgroundingEnabled =
     base::SysUTF8ToNSString(prefs::kMediaBackgroundingEnabled);
 
 NSString* const kBlockAllCookiesEnabled =
     base::SysUTF8ToNSString(prefs::kBlockAllCookiesEnabled);
+
+// Also used by `chrome://crashes` and `IOSChromeMainParts` to gate
+// `MetricsServicesManager` upload permissions; kept in sync with crash report
+// consent in `BraveCoreMain` rather than introducing a separate pref.
+NSString* const kMetricsReportingEnabled =
+    base::SysUTF8ToNSString(metrics::prefs::kMetricsReportingEnabled);
