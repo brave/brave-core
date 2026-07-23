@@ -1,6 +1,7 @@
 package org.chromium.chrome.browser.crypto_wallet.activities;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
 import android.widget.EditText;
@@ -15,9 +16,28 @@ import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletConstants;
 
 public class AdvanceTxSettingActivity extends BraveWalletBaseActivity {
-    private static final String TAG = AdvanceTxSettingActivity.class.getSimpleName();
+    private static final String TAG = "AdvanceTxSettingActivity";
     private EditText mEtCustomNonce;
     private String newNonce;
+
+    /**
+     * Creates an Intent object to open the advanced transaction settings activity.
+     *
+     * @param context Context used to create the Intent.
+     * @param txId Id of the transaction to edit.
+     * @param chainId Chain Id of the transaction to edit.
+     * @param nonce Current transaction nonce, in hexadecimal format.
+     * @return Intent object to open the advanced transaction settings activity.
+     */
+    public static Intent createIntent(
+            final Context context, final String txId, final String chainId, final String nonce) {
+        final Intent intent = new Intent(context, AdvanceTxSettingActivity.class);
+        intent.putExtra(WalletConstants.ADVANCE_TX_SETTING_INTENT_TX_ID, txId);
+        intent.putExtra(WalletConstants.ADVANCE_TX_SETTING_INTENT_TX_CHAIN_ID, chainId);
+        intent.putExtra(WalletConstants.ADVANCE_TX_SETTING_INTENT_TX_NONCE, nonce);
+
+        return intent;
+    }
 
     @Override
     protected void triggerLayoutInflation() {

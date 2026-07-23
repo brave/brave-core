@@ -141,16 +141,12 @@ public class TxFragment extends Fragment {
 
         advanceSettingContainer.setOnClickListener(
                 v -> {
-                    Intent toAdvanceTxSetting =
-                            new Intent(requireActivity(), AdvanceTxSettingActivity.class);
-                    String nonce = mParsedTx.getNonce();
-                    toAdvanceTxSetting
-                            .putExtra(WalletConstants.ADVANCE_TX_SETTING_INTENT_TX_ID, mTxInfo.id)
-                            .putExtra(
-                                    WalletConstants.ADVANCE_TX_SETTING_INTENT_TX_CHAIN_ID,
-                                    mTxInfo.chainId)
-                            .putExtra(WalletConstants.ADVANCE_TX_SETTING_INTENT_TX_NONCE, nonce);
-                    startActivityForResult(toAdvanceTxSetting, START_ADVANCE_SETTING_ACTIVITY_CODE);
+                    final Intent intent = AdvanceTxSettingActivity.createIntent(
+                            requireActivity(),
+                            mTxInfo.id,
+                            mTxInfo.chainId,
+                            mParsedTx.getNonce());
+                    assumeNonNull(mAdvanceTxSettingLauncher).launch(intent);
                 });
 
         TextView editGasFee = view.findViewById(R.id.edit_gas_fee);
