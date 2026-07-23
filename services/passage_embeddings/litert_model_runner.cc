@@ -12,10 +12,12 @@
 #include "base/base_paths.h"
 #include "base/feature_list.h"
 #include "base/files/file_util.h"
+#include "base/hash/hash.h"
 #include "base/logging.h"
 #include "base/memory/ptr_util.h"
 #include "base/native_library.h"
 #include "base/path_service.h"
+#include "base/strings/string_number_conversions.h"
 #include "build/build_config.h"
 #include "third_party/litert/src/litert/cc/litert_element_type.h"
 #include "third_party/litert/src/litert/cc/litert_environment_options.h"
@@ -69,6 +71,18 @@ bool AcceleratorPresent(const base::FilePath& dir) {
 #endif
 }
 
+// Writable directory for the serialized GPU program cache, keyed off the
+// macOS Metal / ML Drift compiler. Reachable by the sandboxed service only when
+// the passage-embeddings utility is launched with the user-dir access switch
+// (see LitertServiceLauncher and the sandbox_parameters_mac.mm patch).
+base::FilePath GetProgramCacheDir() {
+  base::FilePath temp_dir;
+  if (!base::GetTempDir(&temp_dir)) {
+    return base::FilePath();
+  }
+  return temp_dir.AppendASCII("brave_litert_gpu_cache");
+}
+
 }  // namespace
 
 LitertModelRunner::LitertModelRunner() = default;
@@ -120,6 +134,10 @@ bool LitertModelRunner::Init(base::span<const uint8_t> tflite_model,
   if (!compile_options) {
     return false;
   }
+  // Kept alive until CompiledModel::Create() below: the GPU options store the
+  // pointers without taking ownership.
+  std::string cache_dir;
+  std::string model_cache_key;
   if (use_gpu) {
     compile_options->SetHardwareAccelerators(litert::HwAccelerators::kGpu);
     auto gpu_options = compile_options->GetGpuOptions();
@@ -131,6 +149,19 @@ bool LitertModelRunner::Init(base::span<const uint8_t> tflite_model,
     gpu_options->EnableAllowSrcQuantizedFcConvOps(true);
     if (!gpu_options->SetPrecision(litert::GpuOptions::Precision::kFp32)) {
       return false;
+    }
+    // Persist the compiled program so the expensive shader compilation only
+    // happens on the first launch; a fresh process then loads it from disk
+    // instead of recompiling. Best effort: if the dir is not writable the
+    // delegate simply skips serialization and compiles as before.
+    const base::FilePath dir = GetProgramCacheDir();
+    if (!dir.empty() && base::CreateDirectory(dir)) {
+      cache_dir = dir.AsUTF8Unsafe();
+      model_cache_key = base::NumberToString(
+          static_cast<uint64_t>(base::FastHash(tflite_model_)));
+      gpu_options->SetSerializationDir(cache_dir.c_str());
+      gpu_options->SetModelCacheKey(model_cache_key.c_str());
+      gpu_options->SetSerializeProgramCache(true);
     }
   } else {
     compile_options->SetHardwareAccelerators(litert::HwAccelerators::kCpu);

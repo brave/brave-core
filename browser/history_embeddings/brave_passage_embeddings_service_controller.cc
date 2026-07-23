@@ -22,6 +22,7 @@
 #include "brave/components/local_ai/core/url_constants.h"
 #include "brave/components/local_ai/core/utils.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/optimization_guide/proto/passage_embeddings_model_metadata.pb.h"
 #include "components/passage_embeddings/core/passage_embeddings_features.h"
@@ -154,10 +155,18 @@ class LitertServiceLauncher : public PassageEmbeddingsServiceLauncher {
 
   void LaunchService(mojo::PendingReceiver<mojom::PassageEmbeddingsService>
                          receiver) override {
+    content::ServiceProcessHost::Options options;
+    options.WithDisplayName("Passage Embeddings Service");
+#if BUILDFLAG(IS_MAC)
+    // Scopes the ODME sandbox's user-dir write access to just this utility
+    // (not the on-device model service), so LiteRT's GPU program cache and the
+    // macOS Metal shader cache persist across launches. Read in content's
+    // SetupGpuSandboxParameters; keep the switch name in sync. macOS-only: the
+    // switch feeds a macOS sandbox parameter and is a no-op elsewhere.
+    options.WithExtraCommandLineSwitches({"passage-embeddings-gpu-cache"});
+#endif
     content::ServiceProcessHost::Launch<mojom::PassageEmbeddingsService>(
-        std::move(receiver), content::ServiceProcessHost::Options()
-                                 .WithDisplayName("Passage Embeddings Service")
-                                 .Pass());
+        std::move(receiver), options.Pass());
   }
   void OnServiceDisconnected(bool is_idle) override {}
   bool AllowedToLaunch() const override { return true; }
