@@ -290,7 +290,7 @@ fn append_extra(
                 Compact(0x00_u128).encode_to(buf); /* tip */
             }
             SignedExtension::CheckMetadataHash => {
-                // Disabled is the 0'th variant of the Mode type.
+                // Disabled is the 0'th variant of the Mode type. Enabled is index 1.
                 buf.extend_from_slice(&[0x00 /* mode */]);
             }
             SignedExtension::AuthorizeCall
@@ -340,10 +340,14 @@ fn append_implicit(
                 buf.extend_from_slice(genesis_hash);
             }
             SignedExtension::CheckMortality => {
+                // Our wallet currently only supports mortal transactions, so we have to attach
+                // a blockhash which denotes which block is the start of the mortality window.
                 buf.extend_from_slice(block_hash);
             }
             SignedExtension::CheckMetadataHash => {
-                // Disabled is the 0'th variant of the Mode type.
+                // Disabled is the 0'th variant of the Mode type. To enable the metadata
+                // checking, the Enabled variant is index 1 and we require a [u8;32] denoting
+                // the hash.
                 buf.extend_from_slice(&[0x00 /* mode */]);
             }
             SignedExtension::AuthorizeValueTransfer
