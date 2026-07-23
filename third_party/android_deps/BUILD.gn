@@ -27,7 +27,7 @@ android_aar_prebuilt("com_android_installreferrer_java") {
 }
 
 android_aar_prebuilt("com_android_billingclient_java") {
-  aar_path = "libs/com_android_billingclient/billing-7.0.0.aar"
+  aar_path = "libs/com_android_billingclient/billing-9.1.0.aar"
   info_path = "libs/com_android_billingclient/com_android_billingclient.info"
   deps = [
     "//third_party/android_deps:google_android_datatransport_transport_backend_cct_java",

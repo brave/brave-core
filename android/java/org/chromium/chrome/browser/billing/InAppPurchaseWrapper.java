@@ -23,6 +23,7 @@ import com.android.billingclient.api.BillingFlowParams;
 import com.android.billingclient.api.BillingResult;
 import com.android.billingclient.api.ConsumeParams;
 import com.android.billingclient.api.InAppMessageParams;
+import com.android.billingclient.api.PendingPurchasesParams;
 import com.android.billingclient.api.ProductDetails;
 import com.android.billingclient.api.Purchase;
 import com.android.billingclient.api.PurchasesUpdatedListener;
@@ -212,10 +213,12 @@ public class InAppPurchaseWrapper {
         // End existing connection if any before we start another connection
         endConnection();
 
-        mBillingClient = BillingClient.newBuilder(context)
-                                 .enablePendingPurchases()
-                                 .setListener(getPurchasesUpdatedListener(context))
-                                 .build();
+        mBillingClient =
+                BillingClient.newBuilder(context)
+                        .enablePendingPurchases(
+                                PendingPurchasesParams.newBuilder().enableOneTimeProducts().build())
+                        .setListener(getPurchasesUpdatedListener(context))
+                        .build();
         if (!mBillingClient.isReady()) {
             try {
                 mBillingClient.startConnection(
@@ -318,11 +321,12 @@ public class InAppPurchaseWrapper {
                     if (isConnected && mBillingClient != null) {
                         mBillingClient.queryProductDetailsAsync(
                                 queryProductDetailsParams,
-                                (billingResult, productDetailsList) -> {
+                                (billingResult, queryProductDetailsResult) -> {
                                     endConnection();
                                     if (billingResult.getResponseCode()
                                             == BillingClient.BillingResponseCode.OK) {
-                                        for (ProductDetails productDetail : productDetailsList) {
+                                        for (ProductDetails productDetail :
+                                                queryProductDetailsResult.getProductDetailsList()) {
                                             if (productDetail
                                                     .getProductId()
                                                     .equals(getOriginProductId())) {
@@ -412,13 +416,14 @@ public class InAppPurchaseWrapper {
                     if (isConnected && mBillingClient != null) {
                         mBillingClient.queryProductDetailsAsync(
                                 queryProductDetailsParams,
-                                (billingResult, productDetailsList) -> {
+                                (billingResult, queryProductDetailsResult) -> {
                                     // End connection after getting the product details
                                     endConnection();
 
                                     if (billingResult.getResponseCode()
                                             == BillingClient.BillingResponseCode.OK) {
-                                        for (ProductDetails productDetail : productDetailsList) {
+                                        for (ProductDetails productDetail :
+                                                queryProductDetailsResult.getProductDetailsList()) {
                                             productDetails.put(
                                                     productDetail.getProductId(), productDetail);
                                         }
@@ -835,7 +840,10 @@ public class InAppPurchaseWrapper {
 
                 mBillingClient =
                         BillingClient.newBuilder(context)
-                                .enablePendingPurchases()
+                                .enablePendingPurchases(
+                                        PendingPurchasesParams.newBuilder()
+                                                .enableOneTimeProducts()
+                                                .build())
                                 .setListener(getPurchasesUpdatedListener(context))
                                 .build();
 
