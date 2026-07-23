@@ -5,6 +5,8 @@
 
 package org.chromium.chrome.browser.crypto_wallet.fragments;
 
+import static org.chromium.build.NullUtil.assumeNonNull;
+
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
@@ -20,6 +22,8 @@ import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
 
 import org.chromium.base.Log;
@@ -33,6 +37,7 @@ import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.SolanaSendTransactionOptions;
 import org.chromium.brave_wallet.mojom.SolanaTxData;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
+import org.chromium.build.annotations.MonotonicNonNull;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
@@ -69,8 +74,9 @@ public class TxFragment extends Fragment {
     // using observers. We use observers on DApps related executions, but wallet screens
     // don't use them. It would be good to eventually migrate to observers everywhere.
     private final boolean mUpdateTxObjectManually;
-    public static final int START_ADVANCE_SETTING_ACTIVITY_CODE = 0;
     private final boolean mIsSolanaInstruction;
+
+    @MonotonicNonNull private ActivityResultLauncher<Intent> mAdvanceTxSettingLauncher;
 
     public static TxFragment newInstance(
             TransactionInfo txInfo,
@@ -123,6 +129,30 @@ public class TxFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mAdvanceTxSettingLauncher =
+                registerForActivityResult(
+                        new ActivityResultContracts.StartActivityForResult(),
+                        result -> {
+                            if (result.getResultCode() != Activity.RESULT_OK) {
+                                return;
+                            }
+                            Intent data = result.getData();
+                            if (data == null) {
+                                return;
+                            }
+                            String nonce =
+                                    data.getStringExtra(
+                                            WalletConstants.ADVANCE_TX_SETTING_INTENT_RESULT_NONCE);
+                            if (nonce == null) {
+                                return;
+                            }
+                            if (mParsedTx.getIsEIP1559Transaction()) {
+                                mTxInfo.txDataUnion.getEthTxData1559().baseData.nonce = nonce;
+                            } else {
+                                mTxInfo.txDataUnion.getEthTxData().nonce = nonce;
+                            }
+                        });
     }
 
     @Nullable
@@ -540,24 +570,6 @@ public class TxFragment extends Fragment {
                 String.format(
                         getResources().getString(R.string.crypto_wallet_amount_fiat),
                         new Amount(mParsedTx.getFiatTotal()).toStringFormat()));
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == START_ADVANCE_SETTING_ACTIVITY_CODE
-                && resultCode == Activity.RESULT_OK
-                && data != null) {
-            String nonce =
-                    data.getStringExtra(WalletConstants.ADVANCE_TX_SETTING_INTENT_RESULT_NONCE);
-            if (nonce != null) {
-                if (mParsedTx.getIsEIP1559Transaction()) {
-                    mTxInfo.txDataUnion.getEthTxData1559().baseData.nonce = nonce;
-                } else {
-                    mTxInfo.txDataUnion.getEthTxData().nonce = nonce;
-                }
-            }
-        }
     }
 
     private boolean isEditTxEnabled(NetworkInfo txNetwork) {
