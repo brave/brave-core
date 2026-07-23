@@ -530,7 +530,7 @@ INSTANTIATE_TEST_SUITE_P(
               sources.push_back(mojom::WebSource::New(
                   "Another Title", GURL("https://another.com/page"),
                   GURL("https://another.com/favicon.ico"), std::nullopt,
-                  std::nullopt));
+                  std::vector<std::string>()));
               std::vector<std::string> rich_results;
               rich_results.push_back(
                   R"({"type":"knowledge_graph","title":"Test Title"})");
@@ -567,7 +567,7 @@ INSTANTIATE_TEST_SUITE_P(
               sources.push_back(mojom::WebSource::New(
                   "Example Title", GURL("https://example.com/page"),
                   GURL("https://example.com/favicon.ico"), std::nullopt,
-                  std::nullopt));
+                  std::vector<std::string>()));
               return mojom::ContentBlock::NewWebSourcesContentBlock(
                   mojom::WebSourcesContentBlock::New(
                       std::move(sources),

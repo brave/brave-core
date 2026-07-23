@@ -34,7 +34,7 @@ std::vector<mojom::ContentBlockPtr> GetStrippedWebSources(
         stripped_sources.push_back(mojom::WebSource::New(
             source->title, source->url, source->favicon_url,
             /*page_content=*/std::nullopt,
-            /*extra_snippets=*/std::nullopt));
+            /*extra_snippets=*/std::vector<std::string>{}));
       }
       result.push_back(mojom::ContentBlock::NewWebSourcesContentBlock(
           mojom::WebSourcesContentBlock::New(std::move(stripped_sources),

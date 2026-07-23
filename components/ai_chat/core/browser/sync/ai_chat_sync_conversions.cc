@@ -139,10 +139,8 @@ void WriteWebSource(const mojom::WebSource& source,
     WriteCompressibleString(*source.page_content,
                             proto->mutable_page_content());
   }
-  if (source.extra_snippets) {
-    proto->mutable_extra_snippets()->Assign(source.extra_snippets->begin(),
-                                            source.extra_snippets->end());
-  }
+  proto->mutable_extra_snippets()->Assign(source.extra_snippets.begin(),
+                                          source.extra_snippets.end());
 }
 
 void WriteWebSourcesContentBlock(const mojom::WebSourcesContentBlock& block,

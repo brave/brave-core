@@ -12,6 +12,7 @@
 #include "base/json/json_writer.h"
 #include "base/notreached.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/strings/string_util.h"
 #include "base/strings/utf_ostream_operators.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
@@ -43,18 +44,9 @@ void PrintWebSourcesContentBlock(const WebSourcesContentBlock& ws,
         << ", page_content: "
         << ws.sources[i]->page_content.value_or("<nullopt>")
         << ", extra_snippets: ";
-    if (ws.sources[i]->extra_snippets.has_value()) {
-      *os << "[";
-      for (size_t j = 0; j < ws.sources[i]->extra_snippets->size(); ++j) {
-        if (j > 0) {
-          *os << ", ";
-        }
-        *os << ws.sources[i]->extra_snippets.value()[j];
-      }
-      *os << "]";
-    } else {
-      *os << "<nullopt>";
-    }
+    *os << "[";
+    *os << base::JoinString(ws.sources[i]->extra_snippets, ", ");
+    *os << "]";
     *os << "}";
   }
   *os << "], rich_results: [";

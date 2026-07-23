@@ -50,7 +50,7 @@ mojom::WebSourcesContentBlockPtr CreateWebSourcesContentBlock(
   std::vector<mojom::WebSourcePtr> sources;
   for (size_t i = 0; i < page_content_sizes.size(); ++i) {
     std::optional<std::string> page_content;
-    std::optional<std::vector<std::string>> extra_snippets;
+    std::vector<std::string> extra_snippets;
     if (page_content_sizes[i].has_value()) {
       page_content = std::string(*page_content_sizes[i], 'x');
       extra_snippets = std::vector<std::string>{"snippet0"};

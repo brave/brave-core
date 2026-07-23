@@ -257,7 +257,7 @@ struct WebSource {
   // populated in WebSourcesEvent, which we plan to retire and just utilize
   // WebSourcesContentBlock from tool outputs directly in frontend.
   string? page_content;
-  array<string>? extra_snippets;
+  array<string> extra_snippets;
 };
 
 // Content block for parsed web sources from search tool results.

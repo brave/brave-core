@@ -23,14 +23,16 @@ TEST(ProtoConversionTest, SerializeDeserializeWebSourcesEvent_ValidData) {
   // Create mojom WebSourcesEvent
   auto mojom_event = mojom::WebSourcesEvent::New();
 
-  auto source1 = mojom::WebSource::New(
-      "Test Title 1", GURL("https://example.com/page1"),
-      GURL("https://example.com/favicon1.ico"), std::nullopt, std::nullopt);
+  auto source1 =
+      mojom::WebSource::New("Test Title 1", GURL("https://example.com/page1"),
+                            GURL("https://example.com/favicon1.ico"),
+                            std::nullopt, std::vector<std::string>());
   mojom_event->sources.push_back(std::move(source1));
 
-  auto source2 = mojom::WebSource::New(
-      "Test Title 2", GURL("https://example.com/page2"),
-      GURL("https://example.com/favicon2.ico"), std::nullopt, std::nullopt);
+  auto source2 =
+      mojom::WebSource::New("Test Title 2", GURL("https://example.com/page2"),
+                            GURL("https://example.com/favicon2.ico"),
+                            std::nullopt, std::vector<std::string>());
   mojom_event->sources.push_back(std::move(source2));
 
   // Add rich_results
@@ -72,19 +74,21 @@ TEST(ProtoConversionTest, SerializeWebSourcesEvent_InvalidUrls) {
   // Create mojom WebSourcesEvent with invalid URLs
   auto mojom_event = mojom::WebSourcesEvent::New();
 
-  auto valid_source = mojom::WebSource::New(
-      "Valid Source", GURL("https://example.com/valid"),
-      GURL("https://example.com/valid.ico"), std::nullopt, std::nullopt);
+  auto valid_source =
+      mojom::WebSource::New("Valid Source", GURL("https://example.com/valid"),
+                            GURL("https://example.com/valid.ico"), std::nullopt,
+                            std::vector<std::string>());
   mojom_event->sources.push_back(std::move(valid_source));
 
-  auto invalid_url_source = mojom::WebSource::New(
-      "Invalid URL Source", GURL("invalid-url"),
-      GURL("https://example.com/valid.ico"), std::nullopt, std::nullopt);
+  auto invalid_url_source =
+      mojom::WebSource::New("Invalid URL Source", GURL("invalid-url"),
+                            GURL("https://example.com/valid.ico"), std::nullopt,
+                            std::vector<std::string>());
   mojom_event->sources.push_back(std::move(invalid_url_source));
 
   auto invalid_favicon_source = mojom::WebSource::New(
       "Invalid Favicon Source", GURL("https://example.com/valid"),
-      GURL("invalid-favicon-url"), std::nullopt, std::nullopt);
+      GURL("invalid-favicon-url"), std::nullopt, std::vector<std::string>());
   mojom_event->sources.push_back(std::move(invalid_favicon_source));
 
   // Serialize to proto
@@ -149,7 +153,7 @@ TEST(ProtoConversionTest, SerializeDeserializeWebSourcesEvent_RichResults) {
 
   auto source = mojom::WebSource::New("Example", GURL("https://example.com"),
                                       GURL("https://example.com/favicon.ico"),
-                                      std::nullopt, std::nullopt);
+                                      std::nullopt, std::vector<std::string>());
   mojom_event->sources.push_back(std::move(source));
 
   // Add complex nested JSON structures
@@ -185,7 +189,7 @@ TEST(ProtoConversionTest,
 
   auto source = mojom::WebSource::New("Example", GURL("https://example.com"),
                                       GURL("https://example.com/favicon.ico"),
-                                      std::nullopt, std::nullopt);
+                                      std::nullopt, std::vector<std::string>());
   mojom_event->sources.push_back(std::move(source));
 
   // Add valid and empty rich_results
@@ -395,14 +399,16 @@ TEST(ProtoConversionTest,
   auto web_sources_block = mojom::WebSourcesContentBlock::New();
   web_sources_block->queries = std::vector<std::string>{"weather in San Jose"};
 
-  auto source1 = mojom::WebSource::New(
-      "Weather.com", GURL("https://weather.com/sanjose"),
-      GURL("https://weather.com/favicon.ico"), std::nullopt, std::nullopt);
+  auto source1 =
+      mojom::WebSource::New("Weather.com", GURL("https://weather.com/sanjose"),
+                            GURL("https://weather.com/favicon.ico"),
+                            std::nullopt, std::vector<std::string>());
   web_sources_block->sources.push_back(std::move(source1));
 
   auto source2 = mojom::WebSource::New(
       "AccuWeather", GURL("https://accuweather.com/sanjose"),
-      GURL("https://accuweather.com/favicon.ico"), std::nullopt, std::nullopt);
+      GURL("https://accuweather.com/favicon.ico"), std::nullopt,
+      std::vector<std::string>());
   web_sources_block->sources.push_back(std::move(source2));
 
   web_sources_block->rich_results.push_back(
@@ -458,7 +464,7 @@ TEST(ProtoConversionTest,
 
   auto source = mojom::WebSource::New("Example", GURL("https://example.com"),
                                       GURL("https://example.com/favicon.ico"),
-                                      std::nullopt, std::nullopt);
+                                      std::nullopt, std::vector<std::string>());
   web_sources_block->sources.push_back(std::move(source));
 
   mojom_event->output->push_back(mojom::ContentBlock::NewWebSourcesContentBlock(
@@ -497,7 +503,7 @@ TEST(ProtoConversionTest, SerializeDeserializeToolUseEvent_MixedContentBlocks) {
   web_sources_block->queries = std::vector<std::string>{"test query"};
   auto source = mojom::WebSource::New("Test Site", GURL("https://test.com"),
                                       GURL("https://test.com/favicon.ico"),
-                                      std::nullopt, std::nullopt);
+                                      std::nullopt, std::vector<std::string>());
   web_sources_block->sources.push_back(std::move(source));
   mojom_event->output->push_back(mojom::ContentBlock::NewWebSourcesContentBlock(
       std::move(web_sources_block)));
@@ -536,19 +542,19 @@ TEST(ProtoConversionTest,
   // Valid source
   auto valid_source = mojom::WebSource::New(
       "Valid", GURL("https://valid.com"), GURL("https://valid.com/favicon.ico"),
-      std::nullopt, std::nullopt);
+      std::nullopt, std::vector<std::string>());
   web_sources_block->sources.push_back(std::move(valid_source));
 
   // Invalid URL source
   auto invalid_url_source = mojom::WebSource::New(
       "Invalid URL", GURL("invalid-url"), GURL("https://valid.com/favicon.ico"),
-      std::nullopt, std::nullopt);
+      std::nullopt, std::vector<std::string>());
   web_sources_block->sources.push_back(std::move(invalid_url_source));
 
   // Invalid favicon source
   auto invalid_favicon_source = mojom::WebSource::New(
       "Invalid Favicon", GURL("https://valid.com"), GURL("invalid-favicon"),
-      std::nullopt, std::nullopt);
+      std::nullopt, std::vector<std::string>());
   web_sources_block->sources.push_back(std::move(invalid_favicon_source));
 
   mojom_event->output->push_back(mojom::ContentBlock::NewWebSourcesContentBlock(
@@ -640,22 +646,23 @@ TEST(ProtoConversionTest,
       "Source One", GURL("https://source1.com"),
       GURL("https://source1.com/favicon.ico"),
       std::make_optional<std::string>("Full page text content..."),
-      std::make_optional<std::vector<std::string>>(
+      std::vector<std::string>(
           {"Relevant snippet 1", "Relevant snippet 2", "Relevant snippet 3"}));
   web_sources_block->sources.push_back(std::move(source1));
 
-  // Source 2: only page_content set, extra_snippets nullopt
+  // Source 2: only page_content set, extra_snippets empty
   auto source2 = mojom::WebSource::New(
       "Source Two", GURL("https://source2.com"),
       GURL("https://source2.com/favicon.ico"),
-      std::make_optional<std::string>("Another page content"), std::nullopt);
+      std::make_optional<std::string>("Another page content"),
+      std::vector<std::string>{});
   web_sources_block->sources.push_back(std::move(source2));
 
   // Source 3: page_content nullopt, only extra_snippets set
   auto source3 = mojom::WebSource::New(
       "Source Three", GURL("https://source3.com"),
       GURL("https://source3.com/favicon.ico"), std::nullopt,
-      std::make_optional<std::vector<std::string>>({"Single snippet"}));
+      std::vector<std::string>({"Single snippet"}));
   web_sources_block->sources.push_back(std::move(source3));
 
   mojom_event->output->push_back(mojom::ContentBlock::NewWebSourcesContentBlock(

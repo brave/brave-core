@@ -568,25 +568,25 @@ TEST(OaiParsingTest, ParseContentBlockFromDict_WebSourcesType) {
   EXPECT_EQ(web_sources->sources[0]->favicon_url.spec(),
             "https://imgs.search.brave.com/favicon1.png");
   EXPECT_EQ(web_sources->sources[0]->page_content, "page content");
-  ASSERT_TRUE(web_sources->sources[0]->extra_snippets.has_value());
-  EXPECT_EQ(web_sources->sources[0]->extra_snippets->size(), 2u);
-  EXPECT_EQ(web_sources->sources[0]->extra_snippets.value()[0], "snippet 1");
-  EXPECT_EQ(web_sources->sources[0]->extra_snippets.value()[1], "snippet 2");
+  ASSERT_FALSE(web_sources->sources[0]->extra_snippets.empty());
+  EXPECT_EQ(web_sources->sources[0]->extra_snippets.size(), 2u);
+  EXPECT_EQ(web_sources->sources[0]->extra_snippets[0], "snippet 1");
+  EXPECT_EQ(web_sources->sources[0]->extra_snippets[1], "snippet 2");
   // Site 2:
   //   - default favicon URL should be used when not passed
   //   - page_content and extra_snippets should be null when not passed
   EXPECT_EQ(web_sources->sources[1]->title, "Site 2");
   EXPECT_EQ(web_sources->sources[1]->favicon_url.spec(), kDefaultFaviconUrl);
   EXPECT_FALSE(web_sources->sources[1]->page_content.has_value());
-  EXPECT_FALSE(web_sources->sources[1]->extra_snippets.has_value());
+  EXPECT_TRUE(web_sources->sources[1]->extra_snippets.empty());
   // Site 3: wrong types for page_content and extra_snippets (int instead of
   // string) → nullopt for both
   EXPECT_EQ(web_sources->sources[2]->title, "Site 3");
   EXPECT_FALSE(web_sources->sources[2]->page_content.has_value());
-  EXPECT_FALSE(web_sources->sources[2]->extra_snippets.has_value());
+  EXPECT_TRUE(web_sources->sources[2]->extra_snippets.empty());
   // Site 4: wrong element types for extra_snippets array
   EXPECT_EQ(web_sources->sources[3]->title, "Site 4");
-  EXPECT_FALSE(web_sources->sources[3]->extra_snippets.has_value());
+  EXPECT_TRUE(web_sources->sources[3]->extra_snippets.empty());
 }
 
 TEST(OaiParsingTest, ParseContentBlockFromDict_WebSourcesInvalidFavicon) {
@@ -1491,7 +1491,7 @@ TEST(OaiParsingTest, ParseToolCallsFromOAIResponse_ToolResult) {
     sources.push_back(
         mojom::WebSource::New("Weather.com", GURL("https://weather.com"),
                               GURL("https://imgs.search.brave.com/weather.ico"),
-                              std::nullopt, std::nullopt));
+                              std::nullopt, std::vector<std::string>()));
     std::vector<mojom::ContentBlockPtr> output;
     output.push_back(mojom::ContentBlock::NewWebSourcesContentBlock(
         mojom::WebSourcesContentBlock::New(std::move(sources), expected_queries,
@@ -1508,7 +1508,7 @@ TEST(OaiParsingTest, ParseToolCallsFromOAIResponse_ToolResult) {
     expected_sources.push_back(
         mojom::WebSource::New("Weather.com", GURL("https://weather.com"),
                               GURL("https://imgs.search.brave.com/weather.ico"),
-                              std::nullopt, std::nullopt));
+                              std::nullopt, std::vector<std::string>()));
     auto expected_sources_event =
         mojom::ConversationEntryEvent::NewSourcesEvent(
             mojom::WebSourcesEvent::New(std::move(expected_sources),

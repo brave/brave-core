@@ -260,9 +260,9 @@ base::ListValue ConversationAPIClient::SerializeOAIMessages(
             if (source->page_content) {
               source_dict.Set("page_content", std::move(*source->page_content));
             }
-            if (source->extra_snippets) {
+            if (!source->extra_snippets.empty()) {
               base::ListValue snippets_list;
-              for (auto& snippet : source->extra_snippets.value()) {
+              for (auto& snippet : source->extra_snippets) {
                 snippets_list.Append(std::move(snippet));
               }
               source_dict.Set("extra_snippets", std::move(snippets_list));

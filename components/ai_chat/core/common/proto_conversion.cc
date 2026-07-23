@@ -8,6 +8,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/containers/to_vector.h"
 #include "base/logging.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
@@ -159,9 +160,8 @@ mojom::ToolUseEventPtr DeserializeToolUseEvent(
               mojom_source->page_content = proto_source.page_content();
             }
             if (proto_source.extra_snippets_size() > 0) {
-              mojom_source->extra_snippets.emplace(
-                  proto_source.extra_snippets().begin(),
-                  proto_source.extra_snippets().end());
+              mojom_source->extra_snippets =
+                  base::ToVector(proto_source.extra_snippets());
             }
             mojom_sources->sources.push_back(std::move(mojom_source));
           }
@@ -263,10 +263,10 @@ bool SerializeToolUseEvent(const mojom::ToolUseEventPtr& mojom_event,
               proto_source->set_page_content(
                   mojom_source->page_content.value());
             }
-            if (mojom_source->extra_snippets.has_value()) {
+            if (!mojom_source->extra_snippets.empty()) {
               proto_source->mutable_extra_snippets()->Assign(
-                  mojom_source->extra_snippets->begin(),
-                  mojom_source->extra_snippets->end());
+                  mojom_source->extra_snippets.begin(),
+                  mojom_source->extra_snippets.end());
             }
           }
           for (const auto& q : mojom_sources->queries) {

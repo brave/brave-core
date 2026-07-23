@@ -202,7 +202,7 @@ std::vector<mojom::WebSourcePtr> CreateWebSources(size_t num_sources) {
     sources.push_back(mojom::WebSource::New(
         "Source " + n, GURL("https://source" + n + ".com"),
         GURL("https://source" + n + ".com/favicon.ico"), std::nullopt,
-        std::nullopt));
+        std::vector<std::string>()));
   }
   return sources;
 }
