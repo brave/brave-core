@@ -9,6 +9,7 @@
 #include <memory>
 
 #include "components/web_modal/web_contents_modal_dialog_manager_delegate.h"
+#include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/views/controls/webview/unhandled_keyboard_event_handler.h"
 #include "ui/views/controls/webview/webview.h"
 #include "url/gurl.h"
@@ -48,6 +49,8 @@ class StatusBubbleViews;
 class AIChatMovableSidePanelWebView
     : public views::WebView,
       public web_modal::WebContentsModalDialogManagerDelegate {
+  METADATA_HEADER(AIChatMovableSidePanelWebView, views::WebView)
+
  public:
   // Factory used by `AIChatSidePanelWebView::CreateView` when the feature is
   // enabled. If `is_tab_associated` is true the panel tracks the active tab's

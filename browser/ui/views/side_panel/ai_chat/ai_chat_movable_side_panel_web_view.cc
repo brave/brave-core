@@ -33,6 +33,7 @@
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_delegate.h"
 #include "extensions/buildflags/buildflags.h"
+#include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/page_transition_types.h"
 #include "ui/base/window_open_disposition.h"
 #include "ui/compositor/layer.h"
@@ -105,12 +106,6 @@ std::unique_ptr<views::View> AIChatMovableSidePanelWebView::CreateView(
         CreateFreshAIChatContents(profile, is_tab_associated, scope));
   }
 
-  // Register as the window's live AI Chat side panel view so the reverse move
-  // (side panel -> tab) can find and release this view's contents. The bridge
-  // observes the view and clears the registration when it is destroyed.
-  if (transfer_bridge) {
-    transfer_bridge->SetActiveChatView(web_view.get());
-  }
   return web_view;
 }
 
@@ -301,3 +296,6 @@ void AIChatMovableSidePanelWebView::DetachWebContentsModalDialogManager(
     dialog_manager->SetDelegate(nullptr);
   }
 }
+
+BEGIN_METADATA(AIChatMovableSidePanelWebView)
+END_METADATA

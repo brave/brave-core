@@ -9,10 +9,7 @@
 #include <memory>
 
 #include "base/memory/raw_ptr.h"
-#include "base/scoped_observation.h"
-#include "ui/views/view_observer.h"
 
-class AIChatMovableSidePanelWebView;
 class BrowserWindowInterface;
 
 namespace content {
@@ -23,24 +20,20 @@ namespace gfx {
 class Rect;
 }  // namespace gfx
 
-namespace views {
-class View;
-}  // namespace views
-
 // Window-scoped controller (owned by `BrowserWindowFeatures`) that moves the
 // live AI Chat `WebContents` between a browser tab and the side panel when the
 // `kAIChatMoveFullPageToSidePanel` feature is enabled. It is intentionally
 // small: it does not own the steady-state side panel contents (the
 // `AIChatMovableSidePanelWebView` does) — only the transient hand-off used
 // while a transfer is in-flight.
-class AIChatSidePanelTabTransferBridge : public views::ViewObserver {
+class AIChatSidePanelTabTransferBridge {
  public:
   explicit AIChatSidePanelTabTransferBridge(BrowserWindowInterface* browser);
   AIChatSidePanelTabTransferBridge(const AIChatSidePanelTabTransferBridge&) =
       delete;
   AIChatSidePanelTabTransferBridge& operator=(
       const AIChatSidePanelTabTransferBridge&) = delete;
-  ~AIChatSidePanelTabTransferBridge() override;
+  ~AIChatSidePanelTabTransferBridge();
 
   // Forward (tab -> side panel). Takes ownership of the live AI Chat
   // `web_contents` (already detached from the tab strip by the caller) and
@@ -60,15 +53,6 @@ class AIChatSidePanelTabTransferBridge : public views::ViewObserver {
   // factory). Returns null when there is no pending transfer.
   std::unique_ptr<content::WebContents> TakePendingContents();
 
-  // Tracks the live movable AI Chat side panel view (self-registered by
-  // `AIChatMovableSidePanelWebView::CreateView`). Pass null to clear. The
-  // bridge observes the view and clears the registration automatically when the
-  // view is destroyed. The reverse move uses it to reach the panel's contents.
-  void SetActiveChatView(AIChatMovableSidePanelWebView* view);
-  AIChatMovableSidePanelWebView* active_chat_view() {
-    return chat_view_observation_.GetSource();
-  }
-
   // Reverse (side panel -> tab). Moves the live AI Chat `side_panel_contents`
   // out of the side panel and into a new full-page tab (preserving state), then
   // closes the panel. Returns true when it moved the contents; false (leaving
@@ -76,9 +60,6 @@ class AIChatSidePanelTabTransferBridge : public views::ViewObserver {
   // conversation or is a tab-associated (contextual) conversation, in which
   // case the caller opens a fresh full-page tab instead.
   bool MoveSidePanelContentsToTab(content::WebContents* side_panel_contents);
-
-  // views::ViewObserver:
-  void OnViewIsDeleting(views::View* observed_view) override;
 
  private:
   // Clears any cached AI Chat side panel view (in both the window-scoped and
@@ -92,14 +73,6 @@ class AIChatSidePanelTabTransferBridge : public views::ViewObserver {
   // `TransferFullPageContentsToSidePanel` and consumed by the side panel view
   // factory via `TakePendingContents`.
   std::unique_ptr<content::WebContents> pending_web_contents_;
-
-  // Tracks the live movable AI Chat side panel view for this window (null when
-  // AI Chat is not movably hosted in the side panel). The scoped observation is
-  // the single source of truth for the active view: it holds the back-pointer
-  // and stops observing when the view is destroyed, so the pointer can never
-  // dangle and the bridge needs no manual teardown.
-  base::ScopedObservation<AIChatMovableSidePanelWebView, views::ViewObserver>
-      chat_view_observation_{this};
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_SIDE_PANEL_AI_CHAT_AI_CHAT_SIDE_PANEL_TAB_TRANSFER_BRIDGE_H_

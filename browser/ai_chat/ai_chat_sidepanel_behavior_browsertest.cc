@@ -522,9 +522,10 @@ IN_PROC_BROWSER_TEST_P(AIChatGlobalSidePanelBrowserTest,
 // tab and the panel is left untouched.
 IN_PROC_BROWSER_TEST_P(AIChatGlobalSidePanelBrowserTest,
                        ReverseMovesSidePanelChatToFullPageTab) {
-  // Show the AI Chat side panel and read the *attached* contents. Avoid
-  // `GetWebContentsForTest`, which re-runs the entry factory and would register
-  // a throwaway (unattached) chat view as the active one.
+  // Show the AI Chat side panel and read the *attached* contents (the live
+  // panel conversation the reverse move operates on). Avoid
+  // `GetWebContentsForTest`, which re-runs the entry factory and returns a
+  // fresh, unattached contents rather than the one hosted in the panel.
   auto* coordinator = SidePanelCoordinator::From(browser());
   ASSERT_TRUE(coordinator);
   coordinator->Show(SidePanelEntry::Id::kChatUI);
