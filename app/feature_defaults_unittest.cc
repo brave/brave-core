@@ -324,6 +324,7 @@ TEST(FeatureDefaultsTest, EnabledFeatures) {
     BUILDFLAG(IS_WIN)
       &password_manager::features::kSkipUndecryptablePasswords,
 #endif
+      &ntp_features::kNtpSimplificationBookmarkBar,
 #if !BUILDFLAG(IS_ANDROID)
       &sharing_hub::kDesktopScreenshots,
 #endif
