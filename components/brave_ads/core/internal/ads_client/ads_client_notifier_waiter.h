@@ -42,6 +42,7 @@ class AdsClientNotifierWaiter final : public AdsClientNotifierObserver {
   void WaitForOnNotifyTabDidStopPlayingMedia();
   void WaitForOnNotifyTabDidChange();
   void WaitForOnNotifyTabDidLoad();
+  void WaitForOnNotifyTabDidFailToLoad();
   void WaitForOnNotifyDidCloseTab();
   void WaitForOnNotifyUserGestureEventTriggered();
   void WaitForOnNotifyUserDidBecomeIdle();
@@ -73,6 +74,7 @@ class AdsClientNotifierWaiter final : public AdsClientNotifierObserver {
                             bool is_restoring,
                             bool is_visible) override;
   void OnNotifyTabDidLoad(int32_t tab_id, int http_status_code) override;
+  void OnNotifyTabDidFailToLoad(int32_t tab_id) override;
   void OnNotifyDidCloseTab(int32_t tab_id) override;
   void OnNotifyUserGestureEventTriggered(
       ui::PageTransition page_transition) override;
@@ -95,6 +97,7 @@ class AdsClientNotifierWaiter final : public AdsClientNotifierObserver {
   base::RunLoop on_notify_tab_did_stop_playing_media_run_loop_;
   base::RunLoop on_notify_tab_did_change_run_loop_;
   base::RunLoop on_notify_tab_did_load_run_loop_;
+  base::RunLoop on_notify_tab_did_fail_to_load_run_loop_;
   base::RunLoop on_notify_did_close_tab_run_loop_;
   base::RunLoop on_notify_user_gesture_event_triggered_run_loop_;
   base::RunLoop on_notify_user_did_become_idle_run_loop_;

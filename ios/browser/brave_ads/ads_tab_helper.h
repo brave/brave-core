@@ -59,6 +59,7 @@ class AdsTabHelper : public web::WebStateUserData<AdsTabHelper>,
 
   void MaybeNotifyTabDidChange();
   void MaybeNotifyTabDidLoad();
+  void MaybeNotifyTabDidFailToLoad();
   void OnVisibilityChanged(bool is_visible);
   void MaybeNotifyTabTextContentDidChange();
   bool UserHasOptedInToNotificationAds() const;

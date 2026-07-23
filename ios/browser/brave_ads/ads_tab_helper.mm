@@ -182,6 +182,10 @@ void AdsTabHelper::MaybeNotifyTabDidLoad() {
   ads_service_->NotifyTabDidLoad(tab_id_, *http_status_code_);
 }
 
+void AdsTabHelper::MaybeNotifyTabDidFailToLoad() {
+  ads_service_->NotifyTabDidFailToLoad(tab_id_);
+}
+
 void AdsTabHelper::OnVisibilityChanged(bool is_visible) {
   const bool last_is_web_contents_visible = is_web_state_visible_;
   is_web_state_visible_ = is_visible;

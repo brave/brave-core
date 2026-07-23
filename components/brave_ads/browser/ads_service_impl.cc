@@ -1398,6 +1398,12 @@ void AdsServiceImpl::NotifyTabDidLoad(int32_t tab_id, int http_status_code) {
   }
 }
 
+void AdsServiceImpl::NotifyTabDidFailToLoad(int32_t tab_id) {
+  if (bat_ads_client_notifier_remote_.is_bound()) {
+    bat_ads_client_notifier_remote_->NotifyTabDidFailToLoad(tab_id);
+  }
+}
+
 void AdsServiceImpl::NotifyDidCloseTab(int32_t tab_id) {
   if (bat_ads_client_notifier_remote_.is_bound()) {
     bat_ads_client_notifier_remote_->NotifyDidCloseTab(tab_id);

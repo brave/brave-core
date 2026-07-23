@@ -59,6 +59,10 @@ void AdsClientNotifierWaiter::WaitForOnNotifyTabDidLoad() {
   on_notify_tab_did_load_run_loop_.Run();
 }
 
+void AdsClientNotifierWaiter::WaitForOnNotifyTabDidFailToLoad() {
+  on_notify_tab_did_fail_to_load_run_loop_.Run();
+}
+
 void AdsClientNotifierWaiter::WaitForOnNotifyDidCloseTab() {
   on_notify_did_close_tab_run_loop_.Run();
 }
@@ -152,6 +156,10 @@ void AdsClientNotifierWaiter::OnNotifyTabDidChange(
 void AdsClientNotifierWaiter::OnNotifyTabDidLoad(int32_t /*tab_id*/,
                                                  int /*http_status_code*/) {
   on_notify_tab_did_load_run_loop_.Quit();
+}
+
+void AdsClientNotifierWaiter::OnNotifyTabDidFailToLoad(int32_t /*tab_id*/) {
+  on_notify_tab_did_fail_to_load_run_loop_.Quit();
 }
 
 void AdsClientNotifierWaiter::OnNotifyDidCloseTab(int32_t /*tab_id*/) {

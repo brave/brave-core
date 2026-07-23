@@ -25,6 +25,9 @@ class TabManagerObserver : public base::CheckedObserver {
   // Invoked when the `tab` has loaded.
   virtual void OnTabDidLoad(const TabInfo& tab, int http_status_code) {}
 
+  // Invoked when the `tab` failed to load, e.g., due to a network error.
+  virtual void OnTabDidFailToLoad(const TabInfo& tab) {}
+
   // Invoked when the tab specfied by `tab_id` changes focus.
   virtual void OnTabDidChangeFocus(int32_t tab_id) {}
 

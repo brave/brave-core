@@ -77,6 +77,9 @@ class AdsClientNotifierObserver : public base::CheckedObserver {
   // the HTTP response code.
   virtual void OnNotifyTabDidLoad(int32_t tab_id, int http_status_code) {}
 
+  // Invoked when a browser tab failed to load, e.g., due to a network error.
+  virtual void OnNotifyTabDidFailToLoad(int32_t tab_id) {}
+
   // Invoked when a browser tab with the specified `tab_id` is closed.
   virtual void OnNotifyDidCloseTab(int32_t tab_id) {}
 
