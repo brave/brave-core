@@ -574,6 +574,12 @@
   <message name="IDS_BRAVE_ADBLOCK_ADD_CUSTOM_SCRIPTLET_BUTTON" desc="A label for the add custom scriptlet button">
     Add new scriptlet
   </message>
+  <message name="IDS_BRAVE_ADBLOCK_CUSTOM_SCRIPTLET_MOVE_UP_BUTTON" desc="A label for the button that moves a custom scriptlet higher in the list">
+    Move up
+  </message>
+  <message name="IDS_BRAVE_ADBLOCK_CUSTOM_SCRIPTLET_MOVE_DOWN_BUTTON" desc="A label for the button that moves a custom scriptlet lower in the list">
+    Move down
+  </message>
   <message name="IDS_BRAVE_ADBLOCK_ADD_CUSTOM_SCRIPTLET_DIALOG_TITLE" desc="A title for the add custom scriptlet dialog">
     Add new scriptlet
   </message>
