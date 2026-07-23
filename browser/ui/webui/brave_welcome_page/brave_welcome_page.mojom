@@ -43,4 +43,7 @@ interface WelcomePageHandler {
 
   // Sets whether crash reporting is enabled.
   SetCrashReportsEnabled(bool enabled) => ();
+
+  // Returns the URL to navigate to once onboarding is complete.
+  GetWelcomeCompleteURL() => (string url);
 };

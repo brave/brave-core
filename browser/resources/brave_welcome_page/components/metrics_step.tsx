@@ -44,7 +44,7 @@ export function MetricsStep(props: Props) {
   const [p3aEnabled, setP3AEnabled] = React.useState(true)
   const [crashReportingEnabled, setCrashReportingEnabled] = React.useState(true)
 
-  function saveAndContinue() {
+  async function saveAndContinue() {
     if (showWebDiscovery) {
       api.setWebDiscoveryEnabled([webDiscoveryEnabled])
     }
@@ -54,7 +54,8 @@ export function MetricsStep(props: Props) {
     if (showCrashReports) {
       api.setCrashReportsEnabled([crashReportingEnabled])
     }
-    props.onNext()
+    const url = await api.getWelcomeCompleteURL.fetch()
+    window.open(url || 'chrome://newtab', '_self', 'noopener')
   }
 
   return (

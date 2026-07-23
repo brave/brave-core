@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/brave_education/buildflags.gni")
 import("//mojo/public/tools/bindings/mojom.gni")
 
 assert(!is_android)
@@ -30,6 +31,7 @@ source_set("brave_welcome_page") {
     "//base",
     "//brave/browser/resources/brave_welcome_page:generated_resources",
     "//brave/browser/ui:brave_tab_prefs",
+    "//brave/components/brave_education:buildflags",
     "//brave/components/constants",
     "//brave/components/p3a",
     "//brave/components/resources:static_resources",
@@ -45,4 +47,11 @@ source_set("brave_welcome_page") {
     "//mojo/public/cpp/bindings",
     "//ui/webui",
   ]
+
+  if (enable_brave_education) {
+    deps += [
+      "//brave/browser/ui/webui/brave_education",
+      "//brave/components/brave_education",
+    ]
+  }
 }

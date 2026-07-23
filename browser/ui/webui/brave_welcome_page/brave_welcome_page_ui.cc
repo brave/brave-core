@@ -82,7 +82,8 @@ void BraveWelcomePageUI::BindInterface(
   auto* profile = Profile::FromWebUI(web_ui());
   page_handler_ = std::make_unique<brave_welcome_page::WelcomePageHandler>(
       std::move(receiver), ThemeServiceFactory::GetForProfile(profile),
-      profile->GetPrefs(), g_browser_process->local_state());
+      profile->GetPrefs(), g_browser_process->local_state(),
+      profile->GetURLLoaderFactory());
 }
 
 void BraveWelcomePageUI::BindInterface(

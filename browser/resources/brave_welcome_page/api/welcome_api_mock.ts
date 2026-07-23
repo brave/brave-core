@@ -99,6 +99,7 @@ export function createWelcomeApiMock(): WelcomeApi {
       setCrashReportsEnabled: async (enabled) => {},
       setP3AEnabled: async (enabled) => {},
       setWebDiscoveryEnabled: async (enabled) => {},
+      getWelcomeCompleteURL: async () => ({ url: 'chrome://newtab' }),
     },
     bindWelcomePageHandler: (page) => {},
     themeColorPickerHandler: {

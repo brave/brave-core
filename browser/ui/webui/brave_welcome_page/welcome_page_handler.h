@@ -7,8 +7,11 @@
 #define BRAVE_BROWSER_UI_WEBUI_BRAVE_WELCOME_PAGE_WELCOME_PAGE_HANDLER_H_
 
 #include "base/memory/raw_ref.h"
+#include "base/memory/scoped_refptr.h"
+#include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
 #include "brave/browser/ui/webui/brave_welcome_page/brave_welcome_page.mojom.h"
+#include "brave/components/brave_education/buildflags.h"
 #include "chrome/browser/themes/theme_service_observer.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
@@ -16,8 +19,16 @@
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
 
+#if BUILDFLAG(ENABLE_BRAVE_EDUCATION)
+#include "brave/browser/ui/webui/brave_education/brave_education_server_checker.h"
+#endif
+
 class PrefService;
 class ThemeService;
+
+namespace network {
+class SharedURLLoaderFactory;
+}  // namespace network
 
 namespace brave_welcome_page {
 
@@ -25,10 +36,12 @@ namespace brave_welcome_page {
 class WelcomePageHandler : public mojom::WelcomePageHandler,
                            public ThemeServiceObserver {
  public:
-  WelcomePageHandler(mojo::PendingReceiver<mojom::WelcomePageHandler> receiver,
-                     ThemeService* theme_service,
-                     PrefService* prefs,
-                     PrefService* local_state);
+  WelcomePageHandler(
+      mojo::PendingReceiver<mojom::WelcomePageHandler> receiver,
+      ThemeService* theme_service,
+      PrefService* prefs,
+      PrefService* local_state,
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
 
   WelcomePageHandler(const WelcomePageHandler&) = delete;
   WelcomePageHandler& operator=(const WelcomePageHandler&) = delete;
@@ -48,12 +61,18 @@ class WelcomePageHandler : public mojom::WelcomePageHandler,
   void SetP3AEnabled(bool enabled, SetP3AEnabledCallback callback) override;
   void SetCrashReportsEnabled(bool enabled,
                               SetCrashReportsEnabledCallback callback) override;
+  void GetWelcomeCompleteURL(GetWelcomeCompleteURLCallback callback) override;
 
   // ThemeServiceObserver:
   void OnThemeChanged() override;
 
  private:
   void OnVerticalTabsEnabledChanged();
+
+#if BUILDFLAG(ENABLE_BRAVE_EDUCATION)
+  void OnGettingStartedServerCheck(GetWelcomeCompleteURLCallback callback,
+                                   bool available);
+#endif
 
   mojo::Receiver<mojom::WelcomePageHandler> receiver_;
   mojo::Remote<mojom::WelcomePage> page_;
@@ -63,6 +82,12 @@ class WelcomePageHandler : public mojom::WelcomePageHandler,
 
   PrefChangeRegistrar pref_change_registrar_;
   raw_ref<PrefService> local_state_;
+
+#if BUILDFLAG(ENABLE_BRAVE_EDUCATION)
+  brave_education::BraveEducationServerChecker brave_education_server_checker_;
+#endif
+
+  base::WeakPtrFactory<WelcomePageHandler> weak_ptr_factory_{this};
 };
 
 }  // namespace brave_welcome_page
