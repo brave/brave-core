@@ -15,9 +15,9 @@
 #include "base/feature_list.h"
 #include "base/json/json_writer.h"
 #include "base/time/time.h"
+#include "brave/browser/brave_adaptive_captcha/brave_adaptive_captcha_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
-#include "brave/components/brave_adaptive_captcha/server_util.h"
 #include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/content/rewards_p3a.h"
 #include "brave/components/brave_rewards/content/rewards_service.h"
@@ -30,7 +30,6 @@
 #include "chrome/browser/profiles/profile_manager.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/url_data_source.h"
-#include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
 #include "brave/browser/brave_ads/ads_service_factory.h"
@@ -53,6 +52,11 @@ BraveRewardsNativeWorker::BraveRewardsNativeWorker(
 
   brave_rewards_service_ = brave_rewards::RewardsServiceFactory::GetForProfile(
       profile.GetOriginalProfile());
+  // Rewards (and therefore the adaptive captcha) is not available in
+  // OTR/incognito, so always use the original profile.
+  adaptive_captcha_service_ =
+      brave_adaptive_captcha::BraveAdaptiveCaptchaServiceFactory::GetForProfile(
+          profile.GetOriginalProfile());
   if (brave_rewards_service_) {
     rewards_service_observation_.Observe(brave_rewards_service_);
 
@@ -323,41 +327,81 @@ BraveRewardsNativeWorker::GetPublisherFavIconURL(JNIEnv* env, uint64_t tabId) {
   return res;
 }
 
-base::android::ScopedJavaLocalRef<jstring>
-BraveRewardsNativeWorker::GetCaptchaSolutionURL(
+void BraveRewardsNativeWorker::StartAttestation(
     JNIEnv* env,
-    const base::android::JavaRef<jstring>& paymentId,
-    const base::android::JavaRef<jstring>& captchaId) {
-  const std::string path =
-      absl::StrFormat("/v3/captcha/solution/%s/%s",
-                      base::android::ConvertJavaStringToUTF8(env, paymentId),
-                      base::android::ConvertJavaStringToUTF8(env, captchaId));
-  std::string captcha_solution_url =
-      brave_adaptive_captcha::ServerUtil::GetInstance()->GetServerUrl(path);
+    const base::android::JavaRef<jstring>& captcha_id,
+    const base::android::JavaRef<jstring>& payment_id) {
+  if (!adaptive_captcha_service_) {
+    return;
+  }
 
-  return base::android::ConvertUTF8ToJavaString(env, captcha_solution_url);
+  const std::string captcha_id_str =
+      base::android::ConvertJavaStringToUTF8(env, captcha_id);
+  const std::string payment_id_str =
+      base::android::ConvertJavaStringToUTF8(env, payment_id);
+  adaptive_captcha_service_->StartAttestation(
+      payment_id_str,
+      base::BindOnce(&BraveRewardsNativeWorker::OnStartAttestation,
+                     weak_factory_.GetWeakPtr(), captcha_id_str,
+                     payment_id_str));
 }
 
-base::android::ScopedJavaLocalRef<jstring>
-BraveRewardsNativeWorker::GetAttestationURL(JNIEnv* env) {
-  const std::string path = "/v1/attestations/android";
-  std::string captcha_solution_url =
-      brave_adaptive_captcha::ServerUtil::GetInstance()->GetServerUrl(path);
+void BraveRewardsNativeWorker::OnStartAttestation(
+    const std::string& captcha_id,
+    const std::string& payment_id,
+    const std::string& unique_value) {
+  if (unique_value.empty()) {
+    if (adaptive_captcha_service_) {
+      adaptive_captcha_service_->UpdateScheduledCaptchaResult(false);
+    }
+    return;
+  }
 
-  return base::android::ConvertUTF8ToJavaString(env, captcha_solution_url);
+  // The Play Integrity token must be obtained on the Java side using the
+  // server-issued nonce; Java then calls back into AttestPaymentId().
+  JNIEnv* env = base::android::AttachCurrentThread();
+  Java_BraveRewardsNativeWorker_onAttestationNeedsIntegrityToken(
+      env, weak_java_brave_rewards_native_worker_.get(env),
+      base::android::ConvertUTF8ToJavaString(env, captcha_id),
+      base::android::ConvertUTF8ToJavaString(env, payment_id),
+      base::android::ConvertUTF8ToJavaString(env, unique_value));
 }
 
-base::android::ScopedJavaLocalRef<jstring>
-BraveRewardsNativeWorker::GetAttestationURLWithPaymentId(
+void BraveRewardsNativeWorker::AttestPaymentId(
     JNIEnv* env,
-    const base::android::JavaRef<jstring>& paymentId) {
-  const std::string path =
-      base::StrCat({"/v1/attestations/android/",
-                    base::android::ConvertJavaStringToUTF8(env, paymentId)});
-  std::string captcha_solution_url =
-      brave_adaptive_captcha::ServerUtil::GetInstance()->GetServerUrl(path);
+    const base::android::JavaRef<jstring>& captcha_id,
+    const base::android::JavaRef<jstring>& payment_id,
+    const base::android::JavaRef<jstring>& integrity_token,
+    const base::android::JavaRef<jstring>& unique_value,
+    const base::android::JavaRef<jstring>& package_name) {
+  if (!adaptive_captcha_service_) {
+    return;
+  }
 
-  return base::android::ConvertUTF8ToJavaString(env, captcha_solution_url);
+  const std::string integrity_token_str =
+      base::android::ConvertJavaStringToUTF8(env, integrity_token);
+  // An empty token means the Java Play Integrity request failed.
+  if (integrity_token_str.empty()) {
+    adaptive_captcha_service_->UpdateScheduledCaptchaResult(false);
+    return;
+  }
+
+  adaptive_captcha_service_->AttestPaymentId(
+      base::android::ConvertJavaStringToUTF8(env, payment_id),
+      base::android::ConvertJavaStringToUTF8(env, captcha_id),
+      integrity_token_str,
+      base::android::ConvertJavaStringToUTF8(env, unique_value),
+      base::android::ConvertJavaStringToUTF8(env, package_name),
+      base::BindOnce(&BraveRewardsNativeWorker::OnAttestResult,
+                     weak_factory_.GetWeakPtr()));
+}
+
+void BraveRewardsNativeWorker::OnAttestResult(bool success) {
+  if (adaptive_captcha_service_) {
+    // UpdateScheduledCaptchaResult clears the scheduled captcha on success and
+    // records a failed attempt (pausing after the max) otherwise.
+    adaptive_captcha_service_->UpdateScheduledCaptchaResult(success);
+  }
 }
 
 base::android::ScopedJavaLocalRef<jstring>
