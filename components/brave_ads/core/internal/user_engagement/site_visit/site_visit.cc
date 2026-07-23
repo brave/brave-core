@@ -58,18 +58,27 @@ bool SiteVisit::IsLandingOnPage(int32_t tab_id) const {
   return page_lands_.contains(tab_id);
 }
 
-void SiteVisit::MaybeLandOnPage(const TabInfo& tab, int http_status_code) {
+std::optional<AdInfo> SiteVisit::MaybeGetLastClickedAdIfAllowedToLandOnPage() {
   if (!last_clicked_ad_) {
     // No ad interactions have occurred in the current browsing session.
-    return;
+    return std::nullopt;
   }
-  const AdInfo ad = *last_clicked_ad_;
+  AdInfo ad = *last_clicked_ad_;
 
   // Reset the last clicked ad to prevent multiple landings on the same ad.
   last_clicked_ad_.reset();
 
   if (!IsAllowedToLandOnPage(ad.type)) {
     // Not allowed to land on the page.
+    return std::nullopt;
+  }
+
+  return ad;
+}
+
+void SiteVisit::MaybeLandOnPage(const TabInfo& tab, int http_status_code) {
+  const std::optional<AdInfo> ad = MaybeGetLastClickedAdIfAllowedToLandOnPage();
+  if (!ad) {
     return;
   }
 
@@ -79,18 +88,18 @@ void SiteVisit::MaybeLandOnPage(const TabInfo& tab, int http_status_code) {
   }
 
   if (!IsSuccessfulHttpStatusCode(http_status_code)) {
-    if (DidSearchResultAdClickRedirectFail(tab, ad)) {
+    if (DidSearchResultAdClickRedirectFail(tab, *ad)) {
       return BLOG(1,
                   "Navigation to the search result ad redirect URL failed "
                   "without reaching the target page");
     }
 
     // If the page did not load successfully, immediately land on the page.
-    return LandedOnPage(tab.id, http_status_code, ad);
+    return LandedOnPage(tab.id, http_status_code, *ad);
   }
 
   // The page loaded successfully, so land on the page after a delay.
-  MaybeLandOnPageAfter(tab, http_status_code, ad, kPageLandAfter.Get());
+  MaybeLandOnPageAfter(tab, http_status_code, *ad, kPageLandAfter.Get());
 }
 
 void SiteVisit::MaybeLandOnPageAfter(const TabInfo& tab,
