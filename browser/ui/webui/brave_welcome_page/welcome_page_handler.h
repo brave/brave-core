@@ -6,14 +6,17 @@
 #ifndef BRAVE_BROWSER_UI_WEBUI_BRAVE_WELCOME_PAGE_WELCOME_PAGE_HANDLER_H_
 #define BRAVE_BROWSER_UI_WEBUI_BRAVE_WELCOME_PAGE_WELCOME_PAGE_HANDLER_H_
 
+#include <memory>
 #include <string_view>
 #include <vector>
 
 #include "base/containers/flat_map.h"
 #include "base/containers/flat_set.h"
 #include "base/memory/raw_ref.h"
+#include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
 #include "brave/browser/ui/webui/brave_welcome_page/brave_welcome_page.mojom.h"
+#include "brave/components/brave_education/buildflags.h"
 #include "chrome/browser/themes/theme_service_observer.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
@@ -23,6 +26,12 @@
 
 class PrefService;
 class ThemeService;
+
+#if BUILDFLAG(ENABLE_BRAVE_EDUCATION)
+namespace brave_education {
+class BraveEducationServerChecker;
+}  // namespace brave_education
+#endif
 
 namespace brave_welcome_page {
 
@@ -41,6 +50,11 @@ class WelcomePageHandler : public mojom::WelcomePageHandler,
 
   ~WelcomePageHandler() override;
 
+#if BUILDFLAG(ENABLE_BRAVE_EDUCATION)
+  void SetEducationServerChecker(
+      std::unique_ptr<brave_education::BraveEducationServerChecker> checker);
+#endif
+
   // mojom::WelcomePageHandler:
   void SetWelcomePage(mojo::PendingRemote<mojom::WelcomePage> page) override;
   void GetColorScheme(GetColorSchemeCallback callback) override;
@@ -58,6 +72,7 @@ class WelcomePageHandler : public mojom::WelcomePageHandler,
   void SetP3AEnabled(bool enabled, SetP3AEnabledCallback callback) override;
   void SetCrashReportsEnabled(bool enabled,
                               SetCrashReportsEnabledCallback callback) override;
+  void GetWelcomeCompleteURL(GetWelcomeCompleteURLCallback callback) override;
 
   // ThemeServiceObserver:
   void OnThemeChanged() override;
@@ -68,6 +83,11 @@ class WelcomePageHandler : public mojom::WelcomePageHandler,
 
   bool IsFeatureVisible(mojom::Feature feature) const;
 
+#if BUILDFLAG(ENABLE_BRAVE_EDUCATION)
+  void OnGettingStartedServerCheck(GetWelcomeCompleteURLCallback callback,
+                                   bool available);
+#endif
+
   mojo::Receiver<mojom::WelcomePageHandler> receiver_;
   mojo::Remote<mojom::WelcomePage> page_;
 
@@ -77,7 +97,14 @@ class WelcomePageHandler : public mojom::WelcomePageHandler,
   base::flat_map<mojom::Feature, std::vector<std::string_view>>
       feature_visibility_prefs_;
   PrefChangeRegistrar pref_change_registrar_;
+
+#if BUILDFLAG(ENABLE_BRAVE_EDUCATION)
+  std::unique_ptr<brave_education::BraveEducationServerChecker>
+      education_server_checker_;
+#endif
+
   const raw_ref<PrefService> local_state_;
+  base::WeakPtrFactory<WelcomePageHandler> weak_ptr_factory_{this};
 };
 
 }  // namespace brave_welcome_page
