@@ -1,0 +1,12 @@
+diff --git a/third_party/blink/renderer/core/frame/web_local_frame_impl.h b/third_party/blink/renderer/core/frame/web_local_frame_impl.h
+index d2eb823437518069d5060a513c204e9edcea059d..68a18764576e8c6bf654475db1df5bce870dfcb7 100644
+--- a/third_party/blink/renderer/core/frame/web_local_frame_impl.h
++++ b/third_party/blink/renderer/core/frame/web_local_frame_impl.h
+@@ -121,6 +121,7 @@ class CORE_EXPORT WebLocalFrameImpl final
+   bool IsLoading() const override;
+ 
+   // WebLocalFrame overrides:
++  void SetOriginForClearWindowNameCheck(const url::Origin&) override;
+   WebLocalFrameImpl* CreateLocalChild(
+       mojom::blink::TreeScopeType,
+       WebLocalFrameClient*,

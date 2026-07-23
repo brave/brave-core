@@ -101,6 +101,7 @@ class SearchPage implements PageInterface {
   onPermissionPromptChanged(isShowing: boolean, promptSize: Size): void {}
   setRestoredTabIds(tabIds: number[]): void { }
   setAimThreadRestoredTabs(tabs: TabInfo[]): void { }
+  updateSmartTabSharingActive(active: boolean): void { }
 }
 
 export const search = new SearchPage()
@@ -139,7 +140,7 @@ export function SearchContext(props: React.PropsWithChildren<{}>) {
   React.useEffect(() => {
     if (query) {
       const keywordQuery = `${searchEngine?.keyword} ${query}`
-      omniboxController.queryAutocomplete(activeQueryId++, keywordQuery, false, keywordQuery.length);
+      omniboxController.queryAutocomplete(activeQueryId++, keywordQuery, false, keywordQuery.length, false);
     } else {
       omniboxController.stopAutocomplete(true)
     }

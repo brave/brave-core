@@ -6,14 +6,8 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_BROWSING_DATA_CHROME_BROWSING_DATA_REMOVER_DELEGATE_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_BROWSING_DATA_CHROME_BROWSING_DATA_REMOVER_DELEGATE_H_
 
-#include "build/build_config.h"
-
-class BraveBrowsingDataRemoverDelegate;
-
-#define BRAVE_CHROME_BROWSING_DATA_REMOVER_DELEGATE_H \
-  friend class BraveBrowsingDataRemoverDelegate;
+class BraveBrowsingDataRemoverDelegate;  // NOLINT(build/forward_decl)
 
 #include <chrome/browser/browsing_data/chrome_browsing_data_remover_delegate.h>  // IWYU pragma: export
-#undef BRAVE_CHROME_BROWSING_DATA_REMOVER_DELEGATE_H
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_BROWSING_DATA_CHROME_BROWSING_DATA_REMOVER_DELEGATE_H_

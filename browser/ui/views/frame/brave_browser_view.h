@@ -25,6 +25,7 @@
 #include "brave/components/commands/browser/accelerator_pref_manager.h"
 #include "build/build_config.h"
 #include "chrome/browser/ui/tabs/tab_model.h"
+#include "chrome/browser/ui/unload_controller.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/contents_web_view.h"
 #include "components/prefs/pref_member.h"
@@ -92,6 +93,11 @@ class BraveBrowserView : public BrowserView,
 
   static BraveBrowserView* From(BrowserView* view);
   static const BraveBrowserView* From(const BrowserView* view);
+
+  // Same as BrowserView::GetBrowserViewForBrowser(), but returning our
+  // overrides.
+  static BraveBrowserView* GetBrowserViewForBrowser(
+      const BrowserWindowInterface* browser);
 
   // We use rounded corners even rounded corners setting is disabled.
   // Call this when we want to know
@@ -252,7 +258,7 @@ class BraveBrowserView : public BrowserView,
   views::CloseRequestResult OnWindowCloseRequested() override;
   void ConfirmBrowserCloseWithPendingDownloads(
       int download_count,
-      Browser::DownloadCloseType dialog_type,
+      UnloadController::DownloadCloseType dialog_type,
       base::OnceCallback<void(bool)> callback) override;
   bool MaybeUpdateDevtools(content::WebContents* web_contents) override;
   bool MaybeUpdateSplitView(content::WebContents* web_contents) override;

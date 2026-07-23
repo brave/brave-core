@@ -1,0 +1,11 @@
+diff --git a/ui/webui/resources/tools/eslint_ts.gni b/ui/webui/resources/tools/eslint_ts.gni
+index e6a414a0a88dcb603c783bcc9476b4259191574d..1f60e7850ede69b43c95e3bc299a8a1a56fe7332 100644
+--- a/ui/webui/resources/tools/eslint_ts.gni
++++ b/ui/webui/resources/tools/eslint_ts.gni
+@@ -71,5 +71,6 @@ template("eslint_ts") {
+     if (defined(enable_no_explicit_any) && enable_no_explicit_any) {
+       args += [ "--enable_no_explicit_any" ]
+     }
++    response_file_contents = args args = [] args = [ "--rsp", "{{response_file_name}}" ]
+   }
+ }

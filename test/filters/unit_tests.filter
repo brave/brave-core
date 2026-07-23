@@ -33,7 +33,7 @@
 -GlicMetricsTrustFirstOnboardingTest.*
 -GlicEnablingProfileReadyStateTestBase.*
 -MultistepFilterServiceFactoryTest.*
--SkillsUiTabControllerTest.InvokeSkill_*
+-SkillsUiTabController*Test.InvokeSkill_*
 -TabStripActionContainerTest.Glic*
 
 # These tests fail because we don't use kChromeUINewTabPageThirdPartyURL
@@ -321,11 +321,11 @@
 -All/ClientSideDetectionHostCreditCardFormReferringAppTest.*/*
 -All/ClientSideDetectionHostOnlyESBTest.TestPreClassificationCheckOnlyESBClassification/*
 -All/ClientSideDetectionHostSkipImageClassificationScoringTest.*/*
--All/ClientSideDetectionServiceOnlyESBTest.TestReceivingImageClassifierUpdatesAfterResubscription/*
 -All/ClientSideDetectionServiceTest.*/*
 -All/LastDownloadFinderTest.AddProfileAfterStarting/1
 -All/LastDownloadFinderTest.NonBinaryOnly/1
 -All/LastDownloadFinderTest.SimpleEndToEnd/1
+-All/SiteFamiliarityUtilsJsOptimizerParameterizedTest.DefaultBehavior/EsbFeatureEnabled_EsbUser
 -BundledSettingsMetricsProviderUnitTest.EnhancedBundle_SafeBrowsingMetrics
 -BundledSettingsMetricsProviderUnitTest.StandardBundle_SafeBrowsingMetrics
 -ChromeDownloadManagerDelegateTestWithSafeBrowsing.AutoCanceledReport_Sent
@@ -366,6 +366,8 @@
 -SafeBrowsingServiceTest.TestMinAllowedTimeForReferrerChains_EsbEnabledOnStartup
 -SafeBrowsingServiceTest.WhenUserIsInEPNormallyReturnsFalse
 -SafetyHubHandlerTest.HandleGetSafeBrowsingCardData_EnabledEnhanced
+-SiteFamiliarityProcessSelectionDeferringConditionTest.FamiliarityHeuristic_EsbConfigurable*
+-SiteFamiliarityUtilsJsOptimizerTest.IsV8OptimizerBlockingDryRun
 
 # These fail because we override IdentityManager::GetAccountsInCookieJar
 -SupervisedUserGoogleAuthNavigationThrottleTest.NavigationForPendingSignedInSupervisedUsers
@@ -474,6 +476,7 @@
 -StorageAccessAPIServiceImplTest.PermissionDenial_NotRenewed
 -StorageAccessAPIServiceImplTest.RenewPermissionGrant
 -StorageAccessGrantPermissionContextAPIWithFedCMConnectionTest.AutoResolveWithConnection/*
+-StorageAccessGrantPermissionContextAPIWithFirstPartySetsFeatureDisabledTest.*
 -StorageAccessGrantPermissionContextAPIWithFirstPartySetsTest.ImplicitGrant_AutograntedWithinFPS*
 -StorageAccessGrantPermissionContextAPIWithImplicitGrantsTest.*
 -StorageAccessGrantPermissionContextTest.*
@@ -695,6 +698,7 @@
 # These tests fail because brave.omnibox.history_suggestions_enabled is not
 # registered.
 -ContextualSearchboxHandlerTest.QueryAutocomplete_SetsLensInputs_InToolModes
+-OmniboxContextMenuControllerTest.*
 -OmniboxEditModelPopupTest.AiModeButtonClick*
 -OmniboxEditModelPopupTest.AimPopup*
 -OmniboxPopupHandlerTest.*
@@ -747,6 +751,8 @@
 -AccessCodeCastSinkServiceFactoryTest.PrefEnabledReturnsValidService
 -ActivityLogTest.LogPrerender
 -All/ChromeLabs*Test.*
+-All/ProfileResetterTestForSnapshots.CheckSnapshots*/*
+-All/ProfileResetterTestWithIgnoreSearchProviderOverrides.ResetDefaultSearchEngineNonOrganic/1
 -All/TabStripTest.TabCloseButtonVisibility/*
 -All/WebstorePrivateBeginInstallWithManifest3FrictionDialogTest.*
 -BookmarkBarViewTest.ManagedShowAppsShortcutInBookmarksBar
@@ -808,7 +814,6 @@
 -ProfileAttributesStorageTest.*
 -ProfileCustomizationBubbleSyncControllerTest.ShouldAbortIfCalledAgain
 -ProfileCustomizationBubbleSyncControllerTest.ShouldShowWhenSyncGetsDefaultTheme
--ProfileResetterTest.CheckSnapshots
 -ProfileResetterTest.ResetContentSettings
 -ProfileResetterTest.ResetStartPagePartially
 -RealThemeSyncableServiceTest.*

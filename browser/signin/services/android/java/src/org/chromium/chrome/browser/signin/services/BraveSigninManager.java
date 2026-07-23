@@ -48,6 +48,14 @@ public class BraveSigninManager implements SigninManager {
     }
 
     @Override
+    public void setUninstallAccountExtensionsOnSignout(boolean uninstall) {}
+
+    @Override
+    public boolean hasSignedInAccountExtensions() {
+        return false;
+    }
+
+    @Override
     public void signOut(@SignoutReason int signoutSource, Runnable signOutCallback) {}
 
     @Override

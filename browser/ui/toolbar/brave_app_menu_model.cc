@@ -121,7 +121,7 @@ void BraveAppMenuModel::Build() {
 
   if (const auto reading_list_submenu_index =
           bookmark_sub_menu_model()->GetIndexOfCommandId(
-              IDC_READING_LIST_MENU)) {
+              kReadingListMenuPlaceholder)) {
     auto* reading_list_submenu = bookmark_sub_menu_model()->GetSubmenuModelAt(
         *reading_list_submenu_index);
     CHECK(reading_list_submenu);
@@ -130,13 +130,13 @@ void BraveAppMenuModel::Build() {
 }
 
 void BraveAppMenuModel::BuildPasswordsAndAutofillSubmenu() {
-  if (!GetIndexOfCommandId(IDC_PASSWORDS_AND_AUTOFILL_MENU)) {
+  if (!GetIndexOfCommandId(kPasswordsAndAutofillMenuPlaceholder)) {
     return;
   }
 
   auto* autofill_menu_model =
       static_cast<ui::SimpleMenuModel*>(GetSubmenuModelAt(
-          GetIndexOfCommandId(IDC_PASSWORDS_AND_AUTOFILL_MENU).value()));
+          GetIndexOfCommandId(kPasswordsAndAutofillMenuPlaceholder).value()));
   CHECK(autofill_menu_model);
 
   if (IsCommandIdEnabled(IDC_SHOW_EMAIL_ALIASES)) {
@@ -253,7 +253,7 @@ void BraveAppMenuModel::BuildBrowserSection() {
   // Downloads
   // Extensions
   std::optional<size_t> bookmark_item_index =
-      GetIndexOfCommandId(IDC_BOOKMARKS_MENU);
+      GetIndexOfCommandId(kBookmarksMenuPlaceholder);
 
   // If bookmark is not used, we don't need to adjust download item.
   if (bookmark_item_index.has_value()) {
@@ -267,8 +267,8 @@ void BraveAppMenuModel::BuildBrowserSection() {
 
 void BraveAppMenuModel::BuildMoreToolsSubMenu() {
   ui::SimpleMenuModel* more_tools_menu_model =
-      static_cast<ui::SimpleMenuModel*>(
-          GetSubmenuModelAt(GetIndexOfCommandId(IDC_MORE_TOOLS_MENU).value()));
+      static_cast<ui::SimpleMenuModel*>(GetSubmenuModelAt(
+          GetIndexOfCommandId(kMoreToolsMenuPlaceholder).value()));
   DCHECK(more_tools_menu_model);
 
   size_t next_target_index = 0;
@@ -336,20 +336,21 @@ void BraveAppMenuModel::BuildHelpSubMenu() {
   // Put help sub menu above the settings menu.
   if (const auto index = GetIndexOfCommandId(IDC_OPTIONS)) {
     sub_menus().push_back(std::make_unique<BraveHelpMenuModel>(this));
-    InsertSubMenuWithStringIdAt(*index, IDC_HELP_MENU, IDS_HELP_MENU,
+    InsertSubMenuWithStringIdAt(*index, kHelpMenuPlaceholder, IDS_HELP_MENU,
                                 sub_menus().back().get());
   }
 }
 
 void BraveAppMenuModel::RemoveUpstreamMenus() {
-  ui::SimpleMenuModel* more_tools_model = static_cast<ui::SimpleMenuModel*>(
-      GetSubmenuModelAt(GetIndexOfCommandId(IDC_MORE_TOOLS_MENU).value()));
+  ui::SimpleMenuModel* more_tools_model =
+      static_cast<ui::SimpleMenuModel*>(GetSubmenuModelAt(
+          GetIndexOfCommandId(kMoreToolsMenuPlaceholder).value()));
   DCHECK(more_tools_model);
 
   {
     // Remove upstream's profile menu. "Add new profile" will be added into more
     // tools sub menu.
-    auto index = GetIndexOfCommandId(IDC_PROFILE_MENU_IN_APP_MENU);
+    auto index = GetIndexOfCommandId(kProfileMenuPlaceholder);
     CHECK(index);
     RemoveItemAt(*index);
 
@@ -370,7 +371,7 @@ void BraveAppMenuModel::RemoveUpstreamMenus() {
 
   // Remove upstream's "Tab groups" menu item, as this functionality is already
   // available in multiple other places
-  if (const auto index = GetIndexOfCommandId(IDC_SAVED_TAB_GROUPS_MENU)) {
+  if (const auto index = GetIndexOfCommandId(kSavedTabGroupsMenuPlaceholder)) {
     RemoveItemAt(*index);
   }
 

@@ -54,6 +54,14 @@ class TabHoverCardBubbleViewBrowserTest : public DialogBrowserTest,
     SimulateHoverTab(browser(), 0);
   }
 
+  // `ShowUi()` already waits synchronously (via `SimulateHoverTab` ->
+  // `WaitForHoverCardVisible`) for the hover card widget to become visible, so
+  // the base class’s macOS-only wait-for-visible poll in
+  // `TestBrowserDialog::VerifyUi()` is redundant here and can lead to a
+  // dangling pointer since it holds a raw `views::Widget*` across message loop
+  // pumps.
+  bool ShouldWaitForDialogBeforeVerify() override { return false; }
+
   bool VerifyUi() override {
     if (!DialogBrowserTest::VerifyUi())
       return false;
@@ -66,7 +74,7 @@ class TabHoverCardBubbleViewBrowserTest : public DialogBrowserTest,
       return false;
     }
 
-    TabHoverCardBubbleView* const hover_card = GetHoverCard(tab_strip);
+    TabHoverCardBubbleView* const hover_card = GetHoverCard(browser());
     if (!hover_card) {
       SCOPED_TRACE(testing::Message()
                    << "expected tab strip to have a hover card");

@@ -24,6 +24,10 @@
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "net/base/features.h"
 
+#if !BUILDFLAG(IS_ANDROID)
+#include "chrome/browser/ui/browser_manager_service_factory.h"
+#endif
+
 namespace {
 
 std::unique_ptr<ephemeral_storage::BrowsingHistoryCleaner>
@@ -63,6 +67,9 @@ EphemeralStorageServiceFactory::EphemeralStorageServiceFactory()
     : BrowserContextKeyedServiceFactory(
           "EphemeralStorageService",
           BrowserContextDependencyManager::GetInstance()) {
+#if !BUILDFLAG(IS_ANDROID)
+  DependsOn(BrowserManagerServiceFactory::GetInstance());
+#endif
   DependsOn(HostContentSettingsMapFactory::GetInstance());
   DependsOn(CookieSettingsFactory::GetInstance());
   DependsOn(BraveShieldsSettingsServiceFactory::GetInstance());

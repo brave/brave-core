@@ -78,7 +78,7 @@ void SharedPinnedTabServiceBrowserTest::Run() {
 void SharedPinnedTabServiceBrowserTest::TearDownOnMainThread() {
   for (auto& browser : browsers_) {
     if (browser) {
-      browser->window()->Close();
+      BrowserWindow::FromBrowser(browser.get())->Close();
     }
   }
 
@@ -165,7 +165,7 @@ IN_PROC_BROWSER_TEST_F(SharedPinnedTabServiceBrowserTest, PinAndUnpinTabs) {
       tab_strip_model_2->GetWebContentsAt(0)));
 
   // Test: Unpin the tab and see if it's synchronized
-  browser_1->window()->Show();
+  BrowserWindow::FromBrowser(browser_1)->Show();
   tab_strip_model_1->SetTabPinned(0, /* pinned= */ false);
   EXPECT_FALSE(tab_strip_model_1->IsTabPinned(0));
   WaitUntil(base::BindLambdaForTesting([&]() {
@@ -211,7 +211,7 @@ IN_PROC_BROWSER_TEST_F(SharedPinnedTabServiceBrowserTest, ActivatePinnedTab) {
 
   // Test: Activating a pinned tab in other browser(2) should bring the contents
   // from the browser(1).
-  browser_2->window()->Show();
+  BrowserWindow::FromBrowser(browser_2)->Show();
   ui::ListSelectionModel selection;
   selection.set_active(0);
   selection.SetSelectedIndex(0);
@@ -377,7 +377,7 @@ IN_PROC_BROWSER_TEST_F(SharedPinnedTabServiceBrowserTest, BringAllTabs) {
       [&]() { return tab_strip_model_2->count() > 1; }));
   ASSERT_TRUE(tab_strip_model_2->IsTabPinned(0));
   browser_2->ActivateContents(tab_strip_model_2->GetWebContentsAt(0));
-  browser_2->window()->Show();
+  BrowserWindow::FromBrowser(browser_2)->Show();
   WaitUntil(base::BindLambdaForTesting([&]() {
     return shared_pinned_tab_service->IsSharedContents(
         tab_strip_model_2->GetWebContentsAt(0));
@@ -392,7 +392,7 @@ IN_PROC_BROWSER_TEST_F(SharedPinnedTabServiceBrowserTest, BringAllTabs) {
   WaitUntil(base::BindLambdaForTesting([&]() {
     return GlobalBrowserCollection::GetInstance()->GetSize() == 1u;
   }));
-  browser_1->window()->Show();
+  BrowserWindow::FromBrowser(browser_1)->Show();
   WaitUntil(base::BindLambdaForTesting([&]() {
     return shared_pinned_tab_service->IsSharedContents(
         tab_strip_model_1->GetWebContentsAt(0));
@@ -410,7 +410,8 @@ IN_PROC_BROWSER_TEST_F(SharedPinnedTabServiceBrowserTest,
   EXPECT_EQ(browser->tab_strip_model()->SetTabPinned(1, true), 0);
   EXPECT_EQ(browser->tab_strip_model()->active_index(), 0);
 
-  auto* browser_view = static_cast<BrowserView*>(browser->window());
+  auto* browser_view =
+      static_cast<BrowserView*>(BrowserWindow::FromBrowser(browser));
 
   // When Command + w is pressed
   browser_view->AcceleratorPressed(

@@ -10,7 +10,7 @@ import { injectStyle } from '//resources/brave/lit_overriding.js'
 
 import '//resources/brave/leo.bundle.js';
 
-const leoIcons = (window as any).leoIcons as Set<string>
+const leoIcons = (window as unknown as {leoIcons: Set<string>}).leoIcons
 
 // Maps Chromium icons to their equivalent Brave icons.
 const iconMap: { [key: string]: string } = {
@@ -117,20 +117,24 @@ injectStyle(CrIconElement, css`:host {
   --leo-icon-color: var(--iron-icon-fill-color, currentColor);
  }`)
 
-const old = (CrIconElement.prototype as any).updateIcon_;
-(CrIconElement.prototype as any).updateIcon_ = function (...args: any) {
+interface CrIconInternals {
+    updateIcon_: (this: CrIconElement, ...args: unknown[]) => void;
+}
+const proto = CrIconElement.prototype as unknown as CrIconInternals;
+const old = proto.updateIcon_;
+proto.updateIcon_ = function (this: CrIconElement, ...args: unknown[]) {
     const removeAllOfType = (type: string) => {
-        for (const node of this.shadowRoot!.querySelectorAll(type)) node.remove()
+        for (const node of this.shadowRoot.querySelectorAll(type)) node.remove()
     }
 
     const name = iconMap[this.icon]
     if (name || leoIcons.has(this.icon)) {
         removeAllOfType('svg')
 
-        let leoIcon = this.shadowRoot!.querySelector('leo-icon')
+        let leoIcon = this.shadowRoot.querySelector('leo-icon')
         if (!leoIcon) {
             leoIcon = document.createElement('leo-icon')
-            this.shadowRoot!.append(leoIcon)
+            this.shadowRoot.append(leoIcon)
         }
         leoIcon.setAttribute('name', name ?? this.icon)
     } else {

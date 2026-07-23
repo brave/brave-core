@@ -1,19 +1,8 @@
 diff --git a/components/update_client/pipeline.cc b/components/update_client/pipeline.cc
-index 5c9966127109898bf2c057779f835ee0a925a42c..d713d5988ddde84b69f5f3a38ad37af85659c25e 100644
+index 1c56ea54c6bf21119a56ebdca2c0a65177ed4ff7..f7e7f21e4a57c8139f8d18ca9874c6a11d5a5a07 100644
 --- a/components/update_client/pipeline.cc
 +++ b/components/update_client/pipeline.cc
-@@ -78,9 +78,7 @@ constexpr CategorizedError kInvalidOperationAttributesError = CategorizedError(
- // completion callback will keep it alive).
- class Pipeline : public base::RefCountedThreadSafe<Pipeline> {
-  public:
--  Pipeline(
--      std::queue<Operation> operations,
--      scoped_refptr<Pipeline> fallback);
-+  Pipeline(std::queue<Operation> operations, scoped_refptr<Pipeline> fallback);
-   Pipeline(const Pipeline&) = delete;
-   Pipeline& operator=(const Pipeline&) = delete;
- 
-@@ -264,6 +262,7 @@ std::queue<Operation> MakeOperations(
+@@ -266,6 +266,7 @@ std::queue<Operation> MakeOperations(
    for (const ProtocolParser::Operation& operation : pipeline.operations) {
      if (operation.type == "download") {
        // expects: `urls` (list of url objects), `size`, and `out` (hash object)

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/bookmarks/bookmark_bubble_view.cc b/chrome/browser/ui/views/bookmarks/bookmark_bubble_view.cc
-index 7235362e1406a0449c657d1d6e57b93dd9ca13a0..0021ca24959fca0f7b7fa3c84b2ff6e4c715bc36 100644
+index f6310f9e56c63035c0d9bff35fb3356478757b61..45b49c8824aaf35db9935ff0ce50ed50c9c60a68 100644
 --- a/chrome/browser/ui/views/bookmarks/bookmark_bubble_view.cc
 +++ b/chrome/browser/ui/views/bookmarks/bookmark_bubble_view.cc
 @@ -550,6 +550,7 @@ void BookmarkBubbleView::ShowBubble(

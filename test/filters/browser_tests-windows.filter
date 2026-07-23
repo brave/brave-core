@@ -158,7 +158,6 @@
 -CRLSetInterceptionBrowserTest.*
 -ChromeMojoProxyResolverWinBrowserTest.*
 -ChromeSecurityExploitBrowserTest.*
--ChromeTracingDelegateBrowserTest.NewIncognitoSessionBlockingTraceFinalization
 -ContentAnalysisDialogPlainTests.*
 -CredentialProviderSigninDialogWinIntegrationDialogDisplayTest.*
 -DisallowCurrentProfile_CredProviderUsedDefaultProfile/ExistingWinBrowserProfilesSigninUtilTest.*

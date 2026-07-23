@@ -135,7 +135,7 @@ bool PromotionButtonController::ShouldShowSearchPromotionButton() {
 
   // In browser test, this happens on x64 macOS release build.
   // https://github.com/brave/brave-browser/issues/51026
-  if (!browser_->window()) {
+  if (!BrowserWindow::FromBrowser(&browser_.get())) {
     return false;
   }
 
@@ -143,7 +143,7 @@ bool PromotionButtonController::ShouldShowSearchPromotionButton() {
   // Promotion button will be shown for current search provider's
   // suggestion entries to make users search with brave search with that
   // suggestion.
-  if (!browser_->window()
+  if (!BrowserWindow::FromBrowser(&browser_.get())
            ->GetLocationBar()
            ->GetOmniboxController()
            ->IsPopupOpen()) {
@@ -151,7 +151,7 @@ bool PromotionButtonController::ShouldShowSearchPromotionButton() {
   }
 
   // Only show promotion for search query. Not url.
-  OmniboxEditModel* edit_model = browser_->window()
+  OmniboxEditModel* edit_model = BrowserWindow::FromBrowser(&browser_.get())
                                      ->GetLocationBar()
                                      ->GetOmniboxController()
                                      ->edit_model();

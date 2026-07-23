@@ -1,8 +1,8 @@
 diff --git a/components/sync/engine/syncer_proto_util.cc b/components/sync/engine/syncer_proto_util.cc
-index 5442290f53a3cb5b37c172dd9e3590c649f74aa1..81aae81049edbc655fd4d1f71e2eb00a19e4751c 100644
+index 3fa45a0f822a183b6afe982014f1446dfe080345..81c21b704faceceae4422973e4b4b71a378b3ac1 100644
 --- a/components/sync/engine/syncer_proto_util.cc
 +++ b/components/sync/engine/syncer_proto_util.cc
-@@ -267,6 +267,7 @@ SyncerError SyncerProtoUtil::HandleClientToServerMessageResponse(
+@@ -269,6 +269,7 @@ SyncerError SyncerProtoUtil::HandleClientToServerMessageResponse(
  
    SyncProtocolError sync_protocol_error =
        GetProtocolErrorFromResponse(response, cycle->context());

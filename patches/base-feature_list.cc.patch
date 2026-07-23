@@ -1,0 +1,51 @@
+diff --git a/base/feature_list.cc b/base/feature_list.cc
+index b322ba0d8d250696fdc6c427737beb2ff356df08..fb931935c4043b0114b457a6b692d5dd14d8a3df 100644
+--- a/base/feature_list.cc
++++ b/base/feature_list.cc
+@@ -634,7 +634,7 @@ FeatureList::GetControllingTrialInfoByFeatureName(
+   return ControllingTrialInfo();
+ }
+ 
+-bool FeatureList::IsFeatureOverridden(std::string_view feature_name) const {
++bool FeatureList::IsFeatureOverridden_ChromiumImpl(std::string_view feature_name) const {
+   return GetOverrideEntryByFeatureName(feature_name);
+ }
+ 
+@@ -741,8 +741,8 @@ bool FeatureList::IsEnabled(const Feature& feature) {
+     EarlyFeatureAccessTracker::GetInstance()->AccessedFeature(
+         feature, g_feature_list_instance &&
+                      g_feature_list_instance->IsEarlyAccessInstance());
+-    return feature.default_state == FEATURE_ENABLED_BY_DEFAULT ||
+-           feature.default_state == FEATURE_DISABLED_FOR_COUNTRIES;
++    return GetCompileTimeFeatureState(feature) == FEATURE_ENABLED_BY_DEFAULT ||
++           GetCompileTimeFeatureState(feature) == FEATURE_DISABLED_FOR_COUNTRIES;
+   }
+   return g_feature_list_instance->IsFeatureEnabled(feature);
+ }
+@@ -753,7 +753,7 @@ bool FeatureList::IsValidFeatureOrFieldTrialName(std::string_view name) {
+ }
+ 
+ // static
+-std::optional<bool> FeatureList::GetStateIfOverridden(const Feature& feature) {
++std::optional<bool> FeatureList::GetStateIfOverridden_ChromiumImpl(const Feature& feature) {
+   if (!g_feature_list_instance ||
+       !g_feature_list_instance->AllowFeatureAccess(feature)) {
+     EarlyFeatureAccessTracker::GetInstance()->AccessedFeature(
+@@ -1071,7 +1071,7 @@ bool FeatureList::IsFeatureEnabled(const Feature& feature) const {
+     return overridden_state == OVERRIDE_ENABLE_FEATURE;
+   }
+ 
+-  if (IsCountrySpecificFeatureState(feature.default_state)) [[unlikely]] {
++  if (IsCountrySpecificFeatureState(GetCompileTimeFeatureState(feature))) [[unlikely]] {
+     const auto& restricted_feature =
+         static_cast<const FeatureWithCountryRestriction&>(feature);
+     switch (restricted_feature.default_state) {
+@@ -1086,7 +1086,7 @@ bool FeatureList::IsFeatureEnabled(const Feature& feature) const {
+     }
+   }
+ 
+-  return feature.default_state == FEATURE_ENABLED_BY_DEFAULT;
++  return GetCompileTimeFeatureState(feature) == FEATURE_ENABLED_BY_DEFAULT;
+ }
+ 
+ std::optional<bool> FeatureList::IsFeatureEnabledIfOverridden(

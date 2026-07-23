@@ -54,8 +54,8 @@ PageActionIconParams& ModifyIconParamsForBrave(PageActionIconParams& params) {
       params.types_enabled.insert(
           std::ranges::find(
               params.types_enabled,
-              PageActionIconType::kCookieControls),  // The place where
-                                                     // kReaderMode was.
+              PageActionIconType::kFederation),  // The place where
+                                                 // kReaderMode was.
           brave::kSpeedreaderPageActionIconType);
     }
   }

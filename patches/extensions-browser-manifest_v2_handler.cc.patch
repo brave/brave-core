@@ -1,8 +1,8 @@
 diff --git a/extensions/browser/manifest_v2_handler.cc b/extensions/browser/manifest_v2_handler.cc
-index 9f7c55596044bccbb7e50237a9b46dd7047c1302..85a370360cfd9eac8a1829771d7ab063b753dd01 100644
+index 5841d3dfbc88884916629485c70b7c2671a6bc6b..2cc739a61715dfeaa2cd80f51d10158706296c4f 100644
 --- a/extensions/browser/manifest_v2_handler.cc
 +++ b/extensions/browser/manifest_v2_handler.cc
-@@ -108,6 +108,7 @@ bool ManifestV2HandlerFactory::ServiceIsCreatedWithBrowserContext() const {
+@@ -109,6 +109,7 @@ bool ManifestV2HandlerFactory::ServiceIsCreatedWithBrowserContext() const {
  
  // Returns true if legacy extensions should be disabled.
  bool ShouldDisableLegacyExtensions() {

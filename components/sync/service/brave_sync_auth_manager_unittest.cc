@@ -14,6 +14,7 @@
 #include "brave/components/brave_sync/network_time_helper.h"
 #include "brave/components/constants/brave_services_key.h"
 #include "brave/components/constants/network_constants.h"
+#include "components/signin/public/identity_manager/account_managed_status_finder_outcome.h"
 #include "components/signin/public/identity_manager/identity_test_environment.h"
 #include "components/sync/engine/sync_credentials.h"
 #include "services/network/test/test_url_loader_factory.h"
@@ -128,6 +129,30 @@ TEST_F(BraveSyncAuthManagerTest, Reset) {
   EXPECT_FALSE(auth_manager->GetActiveAccountInfo().is_sync_consented);
   EXPECT_TRUE(
       auth_manager->GetActiveAccountInfo().account_info.account_id.empty());
+}
+
+TEST_F(BraveSyncAuthManagerTest, ManagedStatusResolvedForFakeAccount) {
+  auto auth_manager = CreateAuthManager();
+
+  auth_manager->RegisterForAuthNotifications();
+  // Before any account exists, the managed status is unresolved.
+  EXPECT_TRUE(
+      auth_manager->GetActiveAccountInfo().account_info.account_id.empty());
+  EXPECT_EQ(auth_manager->GetActiveAccountInfo().managed_status,
+            signin::AccountManagedStatusFinderOutcome::kPending);
+
+  auth_manager->DeriveSigningKeys(kSyncCode);
+
+  // Brave's fake @brave.com account has no refresh token, so
+  // AccountManagedStatusFinder can never resolve it.
+  // StartDeterminingAccountType must therefore force a resolved (non-managed)
+  // consumer status; otherwise the status stays kPending and the
+  // SyncServiceImpl gates block sync startup forever (upstream removed
+  // kSyncDetermineAccountManagedStatus, crrev.com/c/8130725).
+  EXPECT_FALSE(
+      auth_manager->GetActiveAccountInfo().account_info.account_id.empty());
+  EXPECT_EQ(auth_manager->GetActiveAccountInfo().managed_status,
+            signin::AccountManagedStatusFinderOutcome::kConsumerNotWellKnown);
 }
 
 TEST_F(BraveSyncAuthManagerTest, MalformedSyncCode) {

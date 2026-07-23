@@ -57,13 +57,13 @@ void ShieldsPanelHandler::GetPosition(GetPositionCallback callback) {
     std::move(callback).Run(std::nullopt);
     return;
   }
-  auto const* browser = browser_window_interface->GetBrowserForMigrationOnly();
-  if (!browser || !browser->window()) {
+  auto* brave_browser_window =
+      BraveBrowserWindow::FromBrowser(browser_window_interface);
+  if (!brave_browser_window) {
     std::move(callback).Run(std::nullopt);
     return;
   }
-  auto* browser_window = BraveBrowserWindow::From(browser->window());
-  auto rect = browser_window->GetShieldsBubbleRect();
+  auto rect = brave_browser_window->GetShieldsBubbleRect();
   if (rect.IsEmpty()) {
     // If the browser cannot determine the location of the Shields bubble
     // (e.g. the WebUI is being displayed in the page info bubble), then use

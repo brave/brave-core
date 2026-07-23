@@ -36,30 +36,78 @@
   <message name="IDS_PERSONAL_CONTEXT_NOTICE_SECONDARY_BUTTON" desc="" formatter_data="android_java" translateable="false">
     Ipsum
   </message>
-  <message name="IDS_PERSONAL_CONTEXT_SETTINGS_TITLE" desc="" translateable="false">
-    Lorem ipsum dolor sit amet
-  </message>
-  <message name="IDS_PERSONAL_CONTEXT_SETTINGS_DESCRIPTION_DESKTOP" desc="" translateable="false">
-    Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.
-  </message>
 
-  <!-- Autofill Settings Personal Context preferences strings. -->
-  <message name="IDS_PERSONAL_CONTEXT_AUTOFILL_SETTINGS_TITLE_ANDROID" desc="" formatter_data="android_java" translateable="false">
-    Lorem ipsum
-  </message>
-  <message name="IDS_PERSONAL_CONTEXT_AUTOFILL_SETTINGS_SUMMARY_ANDROID" desc="" formatter_data="android_java" translateable="false">
-    Lorem ipsum dolor sit
-  </message>
-  <message name="IDS_PERSONAL_CONTEXT_AUTOFILL_SETTINGS_SWITCH_TITLE_ANDROID" desc="" formatter_data="android_java" translateable="false">
-    Lorem ipsum dolor sit
-  </message>
-  <message name="IDS_PERSONAL_CONTEXT_AUTOFILL_SETTINGS_SWITCH_SUMMARY_ANDROID" desc="" formatter_data="android_java" translateable="false">
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-  </message>
-  <message name="IDS_PERSONAL_CONTEXT_AUTOFILL_SETTINGS_MANAGE_CONNECTED_APPS_TITLE_ANDROID" desc="" formatter_data="android_java" translateable="false">
-    Lorem ipsum
-  </message>
-  <message name="IDS_PERSONAL_CONTEXT_AUTOFILL_SETTINGS_MANAGE_CONNECTED_APPS_SUMMARY_ANDROID" desc="" formatter_data="android_java" translateable="false">
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-  </message>
+  <!-- Android Autofill Settings Personal Context preferences strings. -->
+  <if expr="is_android">
+    <message name="IDS_PERSONAL_CONTEXT_AUTOFILL_SETTINGS_TITLE_ANDROID" desc="The title of the preference that opens the settings fragment containing controls to manage data sharing with connected applications." formatter_data="android_java">
+      Enhanced autofill
+    </message>
+    <message name="IDS_PERSONAL_CONTEXT_AUTOFILL_SETTINGS_SUMMARY_ANDROID" desc="Navigational text or description appearing under the 'Enhanced autofill' section in settings. It directs users to manage how the underlying AI model retrieves and fills data. 'Gemini' is a proper Brave product name and must remain unlocalized." formatter_data="android_java">
+      Manage finding and filling info with Gemini
+    </message>
+    <message name="IDS_PERSONAL_CONTEXT_AUTOFILL_SETTINGS_SWITCH_TITLE_ANDROID" desc="Section header or toggle label in Brave settings for enabling AI-driven autofill suggestions. 'Gemini' is a proper Brave product name and must remain unlocalized." formatter_data="android_java">
+      Find and fill with Gemini
+    </message>
+    <message name="IDS_PERSONAL_CONTEXT_AUTOFILL_SETTINGS_SWITCH_SUMMARY_ANDROID" desc="Description text under the 'Find and fill with Gemini' setting explaining the functionality and data sources. 'Gmail', 'Photos', and 'Personal Intelligence' are proper Brave product and feature names that must adhere to standard branding guidelines." formatter_data="android_java">
+      Autofill info from apps such as Gmail and Photos. Powered by Personal Intelligence.
+    </message>
+    <message name="IDS_PERSONAL_CONTEXT_AUTOFILL_SETTINGS_MANAGE_CONNECTED_APPS_TITLE_ANDROID" desc="Button label or link text in Brave settings. It navigates the user to a Gemini page where they can manage which third-party or Brave ecosystem applications are linked to the enhanced autofill feature." formatter_data="android_java">
+      Manage Connected Apps
+    </message>
+    <message name="IDS_PERSONAL_CONTEXT_AUTOFILL_SETTINGS_MANAGE_CONNECTED_APPS_SUMMARY_ANDROID" desc="Subtext or description beneath the 'Manage Connected Apps' entry point, explaining its purpose. 'Gemini' is a proper product name and must remain unlocalized." formatter_data="android_java">
+      Choose which apps Gemini connects to
+    </message>
+    <message name="IDS_PERSONAL_CONTEXT_AUTOFILL_SETTINGS_HELPING_IMPROVE_NOTICE_ANDROID" desc="Section header in Brave settings indicating that the user has opted in to sharing data to improve the feature." formatter_data="android_java">
+      You’re helping improve enhanced autofill
+    </message>
+    <message name="IDS_PERSONAL_CONTEXT_AUTOFILL_SETTINGS_HELPING_IMPROVE_NOTICE_ANDROID_SUMMARY" desc="Description text explaining what data is shared when the user interacts with the enhanced autofill feature." formatter_data="android_java">
+      When you make a request for enhanced autofill, your usage data, requests, and page details are shared with Brave to improve the autofill experience
+    </message>
+    <message name="IDS_PERSONAL_CONTEXT_AUTOFILL_SETTINGS_WHEN_USED_TITLE_ANDROID" desc="Subheading in the settings page describing the data logging behavior when the enhanced autofill feature is triggered by the user." formatter_data="android_java">
+      When used
+    </message>
+    <message name="IDS_PERSONAL_CONTEXT_AUTOFILL_SETTINGS_LOGS_NOTICE_ANDROID" desc="Bullet point text under 'When used' detailing what specific usage metrics are recorded." formatter_data="android_java">
+      Brave logs how you use the feature, such as your requests and your behavior when you accept or ignore suggestions
+    </message>
+    <message name="IDS_PERSONAL_CONTEXT_AUTOFILL_SETTINGS_ANALYZED_NOTICE_ANDROID" desc="Bullet point text under 'When used' explaining how system data is utilized to enhance the AI model." formatter_data="android_java">
+      System data, including form fields and feature performance, is analyzed to improve future suggestions
+    </message>
+    <message name="IDS_PERSONAL_CONTEXT_AUTOFILL_SETTINGS_THINGS_TO_CONSIDER_TITLE_ANDROID" desc="Subheading in the settings page listing privacy, operational details, or data review processes the user should know." formatter_data="android_java">
+      Things to consider
+    </message>
+    <message name="IDS_PERSONAL_CONTEXT_AUTOFILL_SETTINGS_HUMANS_NOTICE_ANDROID" desc="Bullet point text under 'Things to consider' detailing the privacy implications and human review process of the shared data." formatter_data="android_java">
+      Your requests, page titles, and URLs are sent to Brave and may be reviewed by humans
+    </message>
+    <message name="IDS_PERSONAL_CONTEXT_AUTOFILL_SETTINGS_NEVER_SEEN_NOTICE_ANDROID" desc="Bullet point text under 'Things to consider' reassuring the user about the privacy of the actual form data they populate." formatter_data="android_java">
+      The info you autofill is never seen by anyone
+    </message>
+    <message name="IDS_PERSONAL_CONTEXT_AUTOFILL_SETTINGS_FOOTER_NOTICE_ANDROID" desc="Disclaimer text shown only to Enterprise users. Note for translators: The {enterprise} tag is a conditional logic marker for developers and should not be translated or included in the final string output." formatter_data="android_java">
+      Your content will not be used to improve AI. Your organization may change these settings at any time.
+    </message>
+  </if>
+
+  <!-- Desktop Autofill Settings Personal Context preferences strings. -->
+  <if expr="not is_android and not is_ios">
+    <message name="IDS_PERSONAL_CONTEXT_AUTOFILL_SETTINGS_TITLE" desc="" translateable="false">
+      Enhanced autofill
+    </message>
+    <message name="IDS_PERSONAL_CONTEXT_AUTOFILL_SETTINGS_SUMMARY" desc="" translateable="false">
+      Powered by Personal Intelligence
+    </message>
+    <message name="IDS_PERSONAL_CONTEXT_AUTOFILL_SETTINGS_SUBPAGE_SUMMARY" desc="" translateable="false">
+      Manage finding and filling info with Gemini
+    </message>
+    <message name="IDS_PERSONAL_CONTEXT_AUTOFILL_SETTINGS_SWITCH_TITLE" desc="" translateable="false">
+      Find and fill with Gemini
+    </message>
+    <message name="IDS_PERSONAL_CONTEXT_AUTOFILL_SETTINGS_SWITCH_SUMMARY" desc="" translateable="false">
+      Autofill info from apps such as Gmail and Photos. Powered by Personal Intelligence.
+    </message>
+    <message name="IDS_PERSONAL_CONTEXT_AUTOFILL_SETTINGS_MANAGE_CONNECTED_APPS_TITLE" desc="" translateable="false">
+      Manage Connected Apps
+    </message>
+    <message name="IDS_PERSONAL_CONTEXT_AUTOFILL_SETTINGS_MANAGE_CONNECTED_APPS_SUMMARY" desc="" translateable="false">
+      Choose which apps Gemini connects to
+    </message>
+  </if>
 </grit-part>

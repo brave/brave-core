@@ -328,7 +328,7 @@ from gh_cli import GhCli
 from git_status import GitStatus
 from patchfile import Patchfile
 import plaster
-from plaster import PlasterFile, PlasterFileNeedsRegen
+from plaster import PlasterError, PlasterFile
 import rebase
 from rebase import DROP_COMMIT_MSG_PREFIX, REASSIGN_COMMIT_MSG_PREFIX
 import repository
@@ -537,10 +537,10 @@ class ApplyPatchesRecord:
             if patchfile.plaster.exists():
                 try:
                     PlasterFile(patchfile.plaster).apply(dry_run=True)
-                except PlasterFileNeedsRegen as e:
+                except PlasterError as e:
                     raise InvalidInputException(
                         'Plaster file has not been fixed and re-applied: '
-                        f'{patchfile.plaster}') from e
+                        f'{patchfile.plaster}\n{e}') from e
             else:
                 if (repository.brave.root / patchfile.path).exists():
                     raise InvalidInputException(
@@ -1114,6 +1114,12 @@ class Upgrade(Versioned):
                     broken_patches.append(patchfile)
                 elif status == Patchfile.ApplyStatus.DELETED:
                     patches_to_deleted_files.append(patchfile)
+                    # A patch whose source was deleted upstream leaves any
+                    # associated plaster orphaned (its target no longer exists).
+                    # Flag it as plaster-broken too, so the plaster must be
+                    # migrated or removed before continuing.
+                    if patchfile.has_plaster:
+                        plaster_broken_patches.append(patchfile)
                 elif status == Patchfile.ApplyStatus.PLASTER_FIXED:
                     plaster_fixed_patches.append(patchfile.path)
                 elif status == Patchfile.ApplyStatus.PLASTER_BROKEN:
@@ -1188,6 +1194,13 @@ class Upgrade(Versioned):
 
             for patchfile in plaster_broken_patches:
                 source = patchfile.source_from_brave()
+                if not source.exists():
+                    console.log(
+                        Padding(f'✘ {patchfile.plaster} [red bold](orphaned)',
+                                (0, 4)))
+                    vscode_files.append(patchfile.plaster)
+                    continue
+
                 console.log(
                     Padding(f'✘ {patchfile.plaster} ➜ {source}', (0, 4)))
                 vscode_files += [patchfile.plaster, source]

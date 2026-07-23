@@ -1,0 +1,18 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Disable HaTS surveys entirely
+
+      Every survey-show decision funnels through `RunCommonLaunchChecks()`: both
+      the public `CanShowSurvey()` and the internal launch path
+      (`ShowSurvey()` -> `RunLaunchChecks()` -> `RunCommonLaunchChecks()`) call
+      it. Returning a non-kNone error here aborts the launch before a dialog is
+      created and makes `CanShowSurvey()` return false.
+    preempt_function_impl:
+      function_name: HatsServiceDesktop::RunCommonLaunchChecks
+      code: |-
+        if ((true)) return LaunchError::kError;

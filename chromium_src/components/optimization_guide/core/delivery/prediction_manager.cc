@@ -72,7 +72,7 @@ PredictionManager::GetRegisteredOptimizationTargets() const {
 
 void PredictionManager::OverrideTargetModelForTesting(
     proto::OptimizationTarget optimization_target,
-    std::unique_ptr<ModelInfo> model_info) {}
+    std::optional<ModelInfo> model_info) {}
 
 void PredictionManager::OnModelReady(const base::FilePath& base_model_dir,
                                      const proto::PredictionModel& model) {}

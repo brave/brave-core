@@ -10,7 +10,7 @@
 #include <vector>
 
 #include "base/base64.h"
-#include "base/byte_count.h"
+#include "base/byte_size.h"
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/json/json_reader.h"
@@ -83,7 +83,7 @@ constexpr net::NetworkTrafficAnnotationTag kNetworkTrafficAnnotationTag =
       }
     )");
 
-constexpr base::ByteCount kMaxResponseSize = base::MiB(5);
+constexpr base::ByteSize kMaxResponseSize = base::MiBU(5);
 constexpr base::TimeDelta kTimeout = base::Seconds(5);
 constexpr base::TimeDelta kLoadAfterRestoreTimeout = base::Seconds(12);
 

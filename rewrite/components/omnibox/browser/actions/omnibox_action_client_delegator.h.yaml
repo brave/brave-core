@@ -1,0 +1,26 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Declare Brave's OmniboxAction::Client additions on the delegator
+
+      The delegator forwards Client to its delegate but omits Brave's injected
+      methods, leaving subclasses abstract. They are defined in the chromium_src
+      .cc override. Plaster is used instead of a #define because the header pulls
+      in the Brave-overridden omnibox_action.h, which undefs the macro names.
+    regex:
+      re_pattern: '(~OmniboxActionClientDelegator\(\) override;)'
+      replace: |-
+        \1
+
+        #if BUILDFLAG(ENABLE_COMMANDER)
+          commander::CommanderFrontendDelegate* GetCommanderDelegate() override;
+        #endif  // BUILDFLAG(ENABLE_COMMANDER)
+
+        #if BUILDFLAG(ENABLE_AI_CHAT)
+          void OpenLeo(const std::u16string& query) override;
+          bool IsLeoProviderEnabled() override;
+        #endif  // BUILDFLAG(ENABLE_AI_CHAT)

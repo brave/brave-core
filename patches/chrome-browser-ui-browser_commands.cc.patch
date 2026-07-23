@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/browser_commands.cc b/chrome/browser/ui/browser_commands.cc
-index 83efe1922093d916df033033654f010c06632777..33e7d5623802aff6185d838bc065141d5529860e 100644
+index 315465e889d2ffaa30e960bfae86fdd4269fbce3..9db93e4e871e1c7224d19dac7cbcf5b3f6e0acef 100644
 --- a/chrome/browser/ui/browser_commands.cc
 +++ b/chrome/browser/ui/browser_commands.cc
-@@ -1037,7 +1037,7 @@ void Reload(BrowserWindowInterface* browser,
+@@ -1067,7 +1067,7 @@ void Reload(BrowserWindowInterface* browser,
    ReloadInternal(browser, disposition, false);
  }
  
@@ -11,7 +11,7 @@ index 83efe1922093d916df033033654f010c06632777..33e7d5623802aff6185d838bc065141d
                            WindowOpenDisposition disposition) {
    base::RecordAction(UserMetricsAction("ReloadBypassingCache"));
    ReloadInternal(browser, disposition, true);
-@@ -1319,6 +1319,7 @@ void CloseTab(BrowserWindowInterface* browser) {
+@@ -1367,6 +1367,7 @@ void CloseTab(BrowserWindowInterface* browser) {
    }
  
    ToastController* toast_controller = browser->GetFeatures().toast_controller();
@@ -19,12 +19,12 @@ index 83efe1922093d916df033033654f010c06632777..33e7d5623802aff6185d838bc065141d
    if (!toast_controller) {
      CloseSelectedTabAndRecordTabCountMetric(browser);
      return;
-@@ -1621,7 +1622,7 @@ void NewSplitTab(BrowserWindowInterface* browser,
+@@ -1669,7 +1670,7 @@ void NewSplitTab(BrowserWindowInterface* browser,
    // the regular NTP which renders special content when in Incognito.
-   const GURL new_tab_url = browser->GetProfile()->IsIncognitoProfile()
-                                ? chrome::ChromeUINewTabURLAsGURL()
--                               : GURL(chrome::kChromeUISplitViewNewTabPageURL);
-+                               : GURL(chrome::kChromeUINewTabURL);
+   const GURL new_tab_url = !browser->GetProfile()->IsIncognitoProfile() &&
+                                    tab_strip_model->count() > 1
+-                               ? GURL(chrome::kChromeUISplitViewNewTabPageURL)
++                               ? GURL(chrome::kChromeUINewTabURL)
+                                : chrome::ChromeUINewTabURLAsGURL();
    tab_strip_model->delegate()->AddTabAt(
        new_tab_url, active_index + 1, true,
-       tab_strip_model->GetTabGroupForTab(active_index),

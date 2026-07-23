@@ -1,0 +1,16 @@
+diff --git a/base/feature_list.h b/base/feature_list.h
+index f4c249517a25906ae4878846a7187d47763a10fe..9e4c2239a174bcc5d438f5a24c7b656eff153fae 100644
+--- a/base/feature_list.h
++++ b/base/feature_list.h
+@@ -102,6 +102,11 @@ class BASE_EXPORT FeatureList {
+   FeatureList& operator=(const FeatureList&) = delete;
+   ~FeatureList();
+ 
++  bool IsFeatureOverridden_ChromiumImpl(std::string_view feature_name) const;
++  static std::optional<bool> GetStateIfOverridden_ChromiumImpl(
++      const Feature& feature);
++  static FeatureState GetCompileTimeFeatureState(const Feature& feature);
++
+   // Used by common test fixture classes to prevent abuse of ScopedFeatureList
+   // after multiple threads have started.
+   class BASE_EXPORT ScopedDisallowOverrides {

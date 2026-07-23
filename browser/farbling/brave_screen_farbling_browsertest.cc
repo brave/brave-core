@@ -144,9 +144,9 @@ class BraveScreenFarblingBrowserTest : public InProcessBrowserTest {
   virtual bool IsFlagDisabled() const = 0;
 
   gfx::Rect SetBounds(const gfx::Rect& bounds) {
-    browser()->window()->SetBounds(bounds);
+    BrowserWindow::FromBrowser(browser())->SetBounds(bounds);
     content::RunAllPendingInMessageLoop();
-    return browser()->window()->GetBounds();
+    return BrowserWindow::FromBrowser(browser())->GetBounds();
   }
 
   bool IsAllowedScreenSize(const int width, const int height) {
@@ -295,7 +295,7 @@ class BraveScreenFarblingBrowserTest : public InProcessBrowserTest {
         Browser* popup = OpenPopup(script, test_mode == TestMode::kIframe);
         auto* popup_contents = popup->tab_strip_model()->GetActiveWebContents();
         content::WaitForLoadStop(popup_contents);
-        gfx::Rect child_bounds = popup->window()->GetBounds();
+        gfx::Rect child_bounds = BrowserWindow::FromBrowser(popup)->GetBounds();
         if (!allow_fingerprinting && !IsFlagDisabled()) {
           EXPECT_GE(child_bounds.x(), parent_bounds.x());
           EXPECT_GE(child_bounds.y(), parent_bounds.y());
@@ -307,8 +307,8 @@ class BraveScreenFarblingBrowserTest : public InProcessBrowserTest {
         EXPECT_GE(EvalJs(host, "screen.height"), child_bounds.height());
         if (test_mode != TestMode::kIframe) {
           auto* widget = views::Widget::GetWidgetForNativeWindow(
-              popup->window()->GetNativeWindow());
-          auto bounds_before = popup->window()->GetBounds();
+              BrowserWindow::FromBrowser(popup)->GetNativeWindow());
+          auto bounds_before = BrowserWindow::FromBrowser(popup)->GetBounds();
           auto waiter = WidgetBoundsChangeWaiter(widget, 10);
           if (test_mode == TestMode::kWindowSize) {
             ASSERT_TRUE(ExecJs(popup_contents,
@@ -318,7 +318,7 @@ class BraveScreenFarblingBrowserTest : public InProcessBrowserTest {
                 ExecJs(popup_contents, "moveTo(screenX + 11, screenY + 12)"));
           }
           waiter.Wait();
-          auto bounds_after = popup->window()->GetBounds();
+          auto bounds_after = BrowserWindow::FromBrowser(popup)->GetBounds();
           // Allow for a 2px variance due to non-integer devicePixelRatio.
           if (test_mode == TestMode::kWindowSize) {
             EXPECT_NEAR(bounds_after.width() - bounds_before.width(), -13, 2);

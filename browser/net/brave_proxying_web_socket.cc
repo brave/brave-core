@@ -260,6 +260,7 @@ void BraveProxyingWebSocket<T>::OnHeadersReceived(
     OnHeadersReceivedCallback callback) {
   DCHECK(proxy_has_extra_headers());
 
+  ssl_info_ = ssl_info;
   on_headers_received_callback_ = std::move(callback);
   response_.headers = base::MakeRefCounted<net::HttpResponseHeaders>(headers);
 
@@ -418,7 +419,7 @@ void BraveProxyingWebSocket<T>::OnHeadersReceivedComplete(int error_code) {
 
   if (proxy_has_extra_headers()) {
     proxy_trusted_header_client_->OnHeadersReceived(
-        headers, remote_endpoint_, /*ssl_info=*/std::nullopt,
+        headers, remote_endpoint_, ssl_info_,
         base::BindOnce(
             &BraveProxyingWebSocket::OnHeadersReceivedCompleteFromProxy,
             weak_factory_.GetWeakPtr()));

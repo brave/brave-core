@@ -1,5 +1,5 @@
 diff --git a/ui/webui/resources/tools/build_webui.gni b/ui/webui/resources/tools/build_webui.gni
-index 8225e812d3ea4771287ba860b1061420b2b5d1a9..eeda64a1abde2c234e9ef2495fea5b4a2edd65f7 100644
+index 78ecdeb2e635cda67ce7564f9c854d2cca5daff8..a25d5d7bf99d18ae915ce1282ed882b3301ef495 100644
 --- a/ui/webui/resources/tools/build_webui.gni
 +++ b/ui/webui/resources/tools/build_webui.gni
 @@ -2,6 +2,7 @@
@@ -45,15 +45,15 @@ index 8225e812d3ea4771287ba860b1061420b2b5d1a9..eeda64a1abde2c234e9ef2495fea5b4a
        if (is_ash_webui) {
          enable_web_component_missing_deps = false
        }
-@@ -652,6 +665,7 @@ template("build_webui") {
-         "//ui/webui/resources/cr_elements",
+@@ -651,6 +664,7 @@ template("build_webui") {
+         "//chrome/browser/resources/tab_search",
          "//ui/webui/resources/js",
        ]
 +      no_explicit_any_exceptions += [ "//brave/ui/webui/resources" ]
  
        if (is_android) {
          no_explicit_any_exceptions +=
-@@ -875,7 +889,8 @@ template("build_webui") {
+@@ -874,7 +888,8 @@ template("build_webui") {
    }
  
    if (!generate_grdp) {

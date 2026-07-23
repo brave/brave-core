@@ -194,7 +194,7 @@ bool SidebarController::ActiveTabFromOtherBrowsersForHost(const GURL& url) {
 
         // Pick first tab for simplicity.
         browser->GetTabStripModel()->ActivateTabAt(all_index[0]);
-        browser->GetBrowserForMigrationOnly()->window()->Activate();
+        BrowserWindow::FromBrowser(browser)->Activate();
         found = true;
         return false;
       });

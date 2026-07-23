@@ -260,6 +260,15 @@
     <message name="IDS_SETTINGS_CTRL_TAB_MRU" desc="Label for the checkbox which enables or disables switching between the two most recently used tabs with Ctrl+Tab.">
       Switch between two most recently used tabs with Ctrl+Tab
     </message>
+    <message name="IDS_SETTINGS_TAB_STYLING" desc="Label for the dropdown menu for choosing browser frame styling.">
+      Tab styling
+    </message>
+    <message name="IDS_SETTINGS_TAB_STYLING_CLASSIC" desc="Option for classic appearance without glass effect.">
+      Classic
+    </message>
+    <message name="IDS_SETTINGS_TAB_STYLING_MODERN_TRANSPARENT" desc="Option for modern transparent appearance with glass effect.">
+      Modern (transparent)
+    </message>
     <message name="IDS_SETTINGS_SHOW_BOOKMARKS_BAR" desc="Label for the checkbox which enables or disables showing the bookmarks bar in the toolbar.">
       Show bookmarks bar
     </message>
@@ -322,6 +331,9 @@
     </message>
     <message name="IDS_SETTINGS_SIDE_PANEL_ALIGNMENT_CHROME_PANELS" desc="Label for the default Brave Panels alignment setting.">
       Brave Panels
+    </message>
+    <message name="IDS_SETTINGS_SIDE_PANEL_ALIGNMENT_A11Y_LABEL" is_accessibility_with_no_ui="true" desc="Accessible label for side panel alignment dropdown menus, combining the side panel item name and the side panel position category name for screen readers.">
+      <ph name="ITEM_NAME">$1<ex>Brave Search AI Mode</ex></ph> <ph name="CATEGORY_NAME">$2<ex>Side panel position</ex></ph>
     </message>
     <message name="IDS_SETTINGS_TAB_SEARCH_POSITION" desc="Title for the tab search section. Allows the user to toggle which side the side panel is displayed on.">
       Tab search position
@@ -723,13 +735,13 @@
     <message name="IDS_SETTINGS_PASSWORDS_LEAK_DETECTION_SIGNED_OUT_ENABLED_DESC" desc="Text that describes the 'Password Leak Detection' functionality to signed-out users who have not disabled the feature. This text always follows a sentence describing the feature.">
       When you sign in to your Brave sync chain, this feature is turned on.
     </message>
-    <message name="IDS_SETTINGS_AUTOFILL_AI_WHEN_ON_SAVED_INFO" desc="Bullet 1 of 2 that appears beneath the 'When on' title. 'Autofill': the user is on the 'enhanced autofill' feature page, but we want to frame this new type of autofill as just 'Autofill'. 'Can offer to save info when you submit forms': we want to convey that the user has the choice, each time a form is submitted, whether they want their info saved to Brave for the purposes of Autofill. 'Like your driver's license or passport number': Today, supported data types for 'enhanced autofill' include 1) driver's licenses, 2) passports, and 3) vehicles. Eventually we'll support more, but this example needs to mention these types of data and not others.">
+    <message name="IDS_SETTINGS_AUTOFILL_AI_WHEN_ON_SAVED_INFO" desc="Bullet 1 of 2 that appears beneath the 'When on' title. 'Autofill': the user is on the 'Autofill AI' feature page, but we want to frame this new type of autofill as just 'Autofill'. 'Can offer to save info when you submit forms': we want to convey that the user has the choice, each time a form is submitted, whether they want their info saved to Brave for the purposes of Autofill. 'Like your driver's license or passport number': Today, supported data types for 'Autofill AI' include 1) driver's licenses, 2) passports, and 3) vehicles. Eventually we'll support more, but this example needs to mention these types of data and not others.">
       Autofill can offer to save info when you submit forms, like your driver's license or passport number
     </message>
-    <message name="IDS_SETTINGS_AUTOFILL_AI_ENTITY_INSTANCES_HEADER" desc="Header of the entity instance list on the enhanced autofill settings page.">
+    <message name="IDS_SETTINGS_AUTOFILL_AI_ENTITY_INSTANCES_HEADER" desc="Header of the entity instance list on the Autofill AI settings page.">
       Saved information
     </message>
-    <message name="IDS_SETTINGS_AUTOFILL_AI_ENTITY_INSTANCES_NONE" desc="Placeholder for empty entity instance list on the enhanced autofill settings page.">
+    <message name="IDS_SETTINGS_AUTOFILL_AI_ENTITY_INSTANCES_NONE" desc="Placeholder for empty entity instance list on the Autofill AI settings page.">
       Saved information will appear here
     </message>
     <message name="IDS_SETTINGS_AUTOFILL_AI_MORE_ACTIONS_FOR_ENTITY_INSTANCE" desc="The accessibility label of the More options menu. Options in the menu include 'Edit' and 'Delete'. If including specific verbs in your language adds undo complexity, it's also acceptable to use something like: 'More options for 'label', 'sublabel''. Examples of 'label' and 'sublabel' include 'Toyota Corolla, Vehicle'.">
@@ -2563,7 +2575,7 @@
       Not allowed to automatically download multiple files
     </message>
     <message name="IDS_SETTINGS_SITE_SETTINGS_AUTO_PICTURE_IN_PICTURE_DESCRIPTION" desc="Description of the auto-picture-in-picture content setting.">
-      Sites use this feature to enter picture-in-picture automatically. This lets you continue watching a video, while freeing up your screen for other tasks.
+      Sites can enter picture-in-picture automatically. This lets you continue watching a video, while freeing up your screen for other tasks.
     </message>
     <message name="IDS_SETTINGS_SITE_SETTINGS_AUTO_PICTURE_IN_PICTURE_ALLOWED" desc="Label for the enabled option of the auto-picture-in-picture content setting.">
       Sites can enter picture-in-picture automatically
@@ -3976,6 +3988,14 @@
       Use everyday language to search your browsing history and find sites you visited. You can also ask questions and get answers based on your browsing history. The setting is off.
     </message>
 
+    <!-- Brave Search AI Mode and connected apps (AIM Workspace) -->
+    <message name="IDS_SETTINGS_GOOGLE_SEARCH_AI_MODE_WORKSPACE_LABEL" desc="Label of the setting row that opens connection settings for Brave Search AI Mode and Workspace connected apps.">
+      Brave Search AI Mode and connected apps
+    </message>
+    <message name="IDS_SETTINGS_GOOGLE_SEARCH_AI_MODE_WORKSPACE_SUBLABEL" desc="Sublabel of the setting row that opens connection settings for Brave Search AI Mode and Workspace connected apps. This sublabel explains that the user can manage the connection between search personalization services and their Brave Workspace apps (like Google Drive).">
+      Manage the connection between Search services and Brave Workspace apps, like Google Drive
+    </message>
+
     <!-- Web Content -->
     <message name="IDS_SETTINGS_PAGE_ZOOM_LABEL" desc="Label for the page zoom dropdown menu in settings.">
       Page zoom
@@ -4072,7 +4092,7 @@
         Browser proxy settings are controlled by multiple sources
       </message>
     </if>
-    <if expr="not is_chromeos and _google_chrome">
+    <if expr="_google_chrome">
       <message name="IDS_SETTINGS_SYSTEM_FEATURE_ON_DEVICE_AI_ENABLED_LABEL" desc="Label for the toggle that allows or prevents chrome to download on device GenAI models to local disk.">
         On-device AI
       </message>

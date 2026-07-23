@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class SolanaInstructionPresenter {
-    public List<SolanaInstructionAccountPresenter> mAccountDatas;
+    private final List<SolanaInstructionAccountPresenter> mAccountDatas;
     public boolean mIsUnknown;
     private boolean mIsDecodedDataPresent;
     private final SolanaInstruction mSolanaInstruction;
@@ -126,20 +126,19 @@ public class SolanaInstructionPresenter {
             for (SolanaAccountMeta solanaAccountMeta : getSolanaInstruction().accountMetas) {
                 var lookupTableIndex = solanaAccountMeta.addrTableLookupIndex;
                 if (lookupTableIndex != null) {
-                    twoLineItemDataSources.add(
-                            new TwoLineItemText(
-                                    resources.getString(
-                                            R.string
-                                                    .brave_wallet_solana_address_lookup_table_account),
-                                    null));
+                    var accountText =
+                            resources.getString(
+                                    R.string.brave_wallet_solana_address_lookup_table_account);
+                    twoLineItemDataSources.add(new TwoLineItemText(accountText, null));
                 }
                 twoLineItemDataSources.add(new TwoLineItemText(null, solanaAccountMeta.pubkey));
                 if (lookupTableIndex != null) {
+                    var indexText =
+                            resources.getString(
+                                    R.string.brave_wallet_solana_address_lookup_table_index);
                     twoLineItemDataSources.add(
                             new TwoLineItemText(
-                                    resources.getString(
-                                            R.string
-                                                    .brave_wallet_solana_address_lookup_table_index),
+                                    indexText,
                                     String.valueOf(Byte.toUnsignedInt(lookupTableIndex.val))));
                 }
             }
@@ -150,22 +149,24 @@ public class SolanaInstructionPresenter {
                                 accountPresenter.mLocalizeAccountHeader, accountPresenter.mPubKey);
                 twoLineItemDataSources.add(twoLineItemText);
                 if (!accountPresenter.mSolanaAccountMeta.isSigner) {
+                    var accountText =
+                            resources.getString(
+                                    R.string.brave_wallet_solana_address_lookup_table_account);
                     var prependedTableIndexSubTitle =
                             JavaUtils.concatStrings(
                                     System.getProperty(WalletConstants.LINE_SEPARATOR),
                                     accountPresenter.mLocalizeAccountHeader,
-                                    resources.getString(
-                                            R.string
-                                                    .brave_wallet_solana_address_lookup_table_account));
+                                    accountText);
                     twoLineItemText.setTitle(prependedTableIndexSubTitle);
                 }
                 if (!accountPresenter.mSolanaAccountMeta.isSigner
                         && accountPresenter.mSolanaAccountMeta.addrTableLookupIndex != null) {
+                    var indexText =
+                            resources.getString(
+                                    R.string.brave_wallet_solana_address_lookup_table_index);
                     twoLineItemDataSources.add(
                             new TwoLineItemText(
-                                    resources.getString(
-                                            R.string
-                                                    .brave_wallet_solana_address_lookup_table_index),
+                                    indexText,
                                     String.valueOf(
                                             Byte.toUnsignedInt(
                                                     accountPresenter

@@ -11,6 +11,7 @@ import org.chromium.base.Callback;
 import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
+import org.chromium.chrome.browser.tabwindow.TabWindowManager;
 import org.chromium.ui.modelutil.MVCListAdapter.ModelList;
 
 /**
@@ -20,16 +21,19 @@ import org.chromium.ui.modelutil.MVCListAdapter.ModelList;
 public class BottomTabSwitcherActionMenuCoordinator extends TabSwitcherActionMenuCoordinator {
     public BottomTabSwitcherActionMenuCoordinator(
             Profile profile,
-            MonotonicObservableSupplier<TabModelSelector> tabModelSelectorSupplier) {
-        super(profile, tabModelSelectorSupplier);
+            MonotonicObservableSupplier<TabModelSelector> tabModelSelectorSupplier,
+            TabWindowManager tabWindowManager) {
+        super(profile, tabModelSelectorSupplier, tabWindowManager);
     }
 
     public static OnLongClickListener createOnLongClickListener(
             Callback<Integer> onItemClicked,
             Profile profile,
-            MonotonicObservableSupplier<TabModelSelector> tabModelSelectorSupplier) {
+            MonotonicObservableSupplier<TabModelSelector> tabModelSelectorSupplier,
+            TabWindowManager tabWindowManager) {
         return createOnLongClickListener(
-                new BottomTabSwitcherActionMenuCoordinator(profile, tabModelSelectorSupplier),
+                new BottomTabSwitcherActionMenuCoordinator(
+                        profile, tabModelSelectorSupplier, tabWindowManager),
                 profile,
                 onItemClicked);
     }

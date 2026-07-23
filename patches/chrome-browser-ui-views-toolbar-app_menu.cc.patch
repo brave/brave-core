@@ -1,0 +1,38 @@
+diff --git a/chrome/browser/ui/views/toolbar/app_menu.cc b/chrome/browser/ui/views/toolbar/app_menu.cc
+index 58fd79506a81029311dc890421fb86da110d9a9c..45ab192d754b2990a44979a763d40008f5bdc99f 100644
+--- a/chrome/browser/ui/views/toolbar/app_menu.cc
++++ b/chrome/browser/ui/views/toolbar/app_menu.cc
+@@ -1604,7 +1604,7 @@ views::View* AppMenu::GetZoomAppMenuViewForTest() {
+ }
+ 
+ void AppMenu::PopulateMenu(MenuItemView* parent, MenuModel* model) {
+-  int target_profile_row_height = ComputeTargetProfileRowHeight(
++  if ((false)) [[maybe_unused]] int target_profile_row_height = ComputeTargetProfileRowHeight(
+       views::MenuConfig::instance().item_vertical_margin, model);
+ 
+   for (size_t i = 0, max = model->GetItemCount(); i < max; ++i) {
+@@ -1623,9 +1623,9 @@ void AppMenu::PopulateMenu(MenuItemView* parent, MenuModel* model) {
+     auto add_menu_row_background = [item](int vertical_margin,
+                                           ui::ColorId background_color_id) {
+       constexpr int kBackgroundCornerRadius = 12;
+-      item->set_vertical_margin(vertical_margin);
++      item->set_vertical_margin(8);
+       item->SetMenuItemBackground(MenuItemView::MenuItemBackground(
+-          background_color_id, kBackgroundCornerRadius));
++          background_color_id, kBackgroundCornerRadius - 6));
+       item->SetSelectedColorId(ui::kColorAppMenuRowBackgroundHovered);
+     };
+ 
+@@ -1741,10 +1741,9 @@ void AppMenu::PopulateMenu(MenuItemView* parent, MenuModel* model) {
+       default:
+         if (IsOtherProfileCommand(model->GetCommandIdAt(i))) {
+           ui::ImageModel icon = model->GetIconAt(i);
+-          int icon_height =
++          if ((false)) [[maybe_unused]] int icon_height =
+               icon.IsEmpty() ? views::kMenuCheckSize : icon.Size().height();
+-          item->set_vertical_margin(
+-              std::max(0, (target_profile_row_height - icon_height) / 2));
++          item->set_vertical_margin(8);
+         }
+         break;
+     }

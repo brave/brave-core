@@ -44,6 +44,16 @@ RegisterPolymerTemplateModifications({
       throw new Error('[Settings] Missing sync-setup link on people_page')
     }
 
+    // This row is the alternate to #sync-setup (shown instead of it when
+    // replaceSyncPromosWithSignInPromos_ is enabled) and links to Google
+    // sign-in services we don't support, so it must be removed too.
+    const googleServicesLink = templateContent.querySelector('#google-services')
+    if (googleServicesLink) {
+      googleServicesLink.remove()
+    } else {
+      throw new Error('[Settings] Missing google-services link on people_page')
+    }
+
     // The 'Manage profile' button is inside the "signin-allowed" conditional
     // template. We don't allow Google Sign-in, but we do allow local profile
     // editing, so we have to turn the template back on and remove the google

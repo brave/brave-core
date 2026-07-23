@@ -1,10 +1,10 @@
 diff --git a/components/sync/base/data_type.cc b/components/sync/base/data_type.cc
-index 11dd8058604743796dc2140a063bc6fcb06336bb..3de51b9a006d16f8dd2a6304fea3a465a95ea1ad 100644
+index 6ac45ae0ad07f012db8db5b0b5002d193e6d4468..d93b5fc00ef162795033242eafe622f4657b61a1 100644
 --- a/components/sync/base/data_type.cc
 +++ b/components/sync/base/data_type.cc
-@@ -1164,10 +1164,25 @@ constexpr std::array<DataTypeInfo, syncer::GetNumDataTypes()>
+@@ -1213,10 +1213,25 @@ constexpr std::array<DataTypeInfo, syncer::GetNumDataTypes()>
              .cross_user_sharing_policy = CrossUserSharingPolicy::kNone,
-             .local_sync_support_policy = LocalSyncSupportPolicy::kSupported,
+             .local_sync_support_policy = LocalSyncSupportPolicy::kUnsupported,
          },
 +        {
 +            .type = AI_CHAT_CONVERSATION,
@@ -24,14 +24,14 @@ index 11dd8058604743796dc2140a063bc6fcb06336bb..3de51b9a006d16f8dd2a6304fea3a465
      }};
  
  // LINT.IfChange(DataTypeHistogramSuffix)
--static_assert(GetNumDataTypes() == 63,
-+static_assert(GetNumDataTypes() == 63 + 1,
+-static_assert(GetNumDataTypes() == 66,
++static_assert(GetNumDataTypes() == 66 + 1,
                "When adding a new type, update kDataTypeInfoTable, update "
                "histograms.xml and follow the integration checklist in "
                "https://www.chromium.org/developers/design-documents/sync/"
-@@ -1384,6 +1399,9 @@ void AddDefaultFieldValue(DataType type, sync_pb::EntitySpecifics* specifics) {
-     case THEMES_ANDROID:
-       specifics->mutable_theme_android();
+@@ -1442,6 +1457,9 @@ void AddDefaultFieldValue(DataType type, sync_pb::EntitySpecifics* specifics) {
+     case NOTEBOOK:
+       specifics->mutable_notebook();
        break;
 +    case AI_CHAT_CONVERSATION:
 +      specifics->mutable_ai_chat_conversation();
@@ -39,10 +39,10 @@ index 11dd8058604743796dc2140a063bc6fcb06336bb..3de51b9a006d16f8dd2a6304fea3a465
    }
  }
  
-@@ -1745,6 +1763,8 @@ DataTypeForHistograms DataTypeHistogramValue(DataType data_type) {
-       return DataTypeForHistograms::kGeminiThread;
-     case THEMES_ANDROID:
+@@ -1782,6 +1800,8 @@ DataTypeForHistograms DataTypeHistogramValue(DataType data_type) {
        return DataTypeForHistograms::kThemesAndroid;
+     case NOTEBOOK:
+       return DataTypeForHistograms::kNotebook;
 +    case AI_CHAT_CONVERSATION:
 +      return DataTypeForHistograms::kAIChatConversation;
    }

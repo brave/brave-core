@@ -1,0 +1,29 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Force a resolved managed status for Brave's fake Sync account.
+
+      Brave Sync uses a fake @brave.com account derived from the sync code,
+      which has no real refresh token in IdentityManager, so
+      AccountManagedStatusFinder can never resolve its managed status and it
+      stays kPending forever. Upstream removed kSyncDetermineAccountManagedStatus
+      (crrev.com/c/8130725), so the SyncServiceImpl gates now unconditionally
+      block startup while the status is kPending. Resolve it synchronously to a
+      non-managed consumer value so Sync can start, matching the behavior we
+      previously got by disabling the feature.
+
+      Inserted before upstream's empty-account check, so the condition is
+      inverted; the empty-account case falls through to the untouched upstream
+      body.
+    preempt_function_impl:
+      function_name: SyncAuthManager::ActiveAccount::StartDeterminingAccountType
+      code: |-
+        if (!account_info_.account_info.account_id.empty()) {
+          account_info_.managed_status =
+              signin::AccountManagedStatusFinderOutcome::kConsumerNotWellKnown;
+          return;
+        }

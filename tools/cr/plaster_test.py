@@ -1533,6 +1533,29 @@ class RewriterFormsTest(unittest.TestCase):
             result, 'void FreeFunc(int x) {\n  if (!Enabled()) return;\n'
             '  Upstream(x);\n}\n')
 
+    def test_preempt_function_impl_templated_multiline_free_function(self):
+        # Reproduces CreateHorizontalTabStripRegionView: a free function whose
+        # templated return type sits on its own line, above the declarator.
+        source = ('std::unique_ptr<TabStripRegionView> '
+                  'CreateHorizontalTabStripRegionView(\n'
+                  '    BrowserView* browser_view) {\n'
+                  '  return std::make_unique<Old>(browser_view);\n}\n')
+        result = self._apply(
+            'multiline.cc', source, 'substitutions:\n'
+            '  - description: guard a templated multiline free function\n'
+            '    preempt_function_impl:\n'
+            '      function_name: CreateHorizontalTabStripRegionView\n'
+            '      code: |-\n'
+            '        if (!Enabled()) {\n'
+            '          return std::make_unique<Brave>(browser_view);\n'
+            '        }\n')
+        self.assertEqual(
+            result,
+            source.replace(
+                '{\n  return std::make_unique<Old>', '{\n  if (!Enabled()) {\n'
+                '    return std::make_unique<Brave>(browser_view);\n  }\n'
+                '  return std::make_unique<Old>'))
+
     def test_preempt_function_impl_ignores_forward_declaration(self):
         # A forward declaration is a bodyless `declaration`, not a
         # `function_definition`, so the matcher skips it (count stays 1) and the

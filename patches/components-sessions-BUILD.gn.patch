@@ -1,8 +1,8 @@
 diff --git a/components/sessions/BUILD.gn b/components/sessions/BUILD.gn
-index 9016b77a04f40121c91224698b641cdd7462c77f..1a149ac827d29c64b54bedd445a9b5426d1a3f0d 100644
+index ce6660a10524d573c77f8947fb68f9012419033b..c03ac8c0053a9eed00fc37dcb867d9d91c331756 100644
 --- a/components/sessions/BUILD.gn
 +++ b/components/sessions/BUILD.gn
-@@ -44,6 +44,7 @@ if (!is_ios) {
+@@ -47,6 +47,7 @@ if (use_blink && !(is_ios && target_platform == "iphoneos")) {
        "//ui/base",
        "//url",
      ]
@@ -10,7 +10,7 @@ index 9016b77a04f40121c91224698b641cdd7462c77f..1a149ac827d29c64b54bedd445a9b542
    }
  } else {
    source_set("sessions") {
-@@ -158,6 +159,7 @@ source_set("shared") {
+@@ -161,6 +162,7 @@ source_set("shared") {
      "//ui/gfx",
      "//url",
    ]

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/first_run/upgrade_util_win.cc b/chrome/browser/first_run/upgrade_util_win.cc
-index 22402345685edd96a4df10f1d20cb6a32da34777..e96fba74625655d3a8065c26583190d018a5c3e2 100644
+index 0b3f8eafceadf341e8bb2f881b613a8cb6f84275..4d33a359dab0409e329d043eaf239f165ef2b2c5 100644
 --- a/chrome/browser/first_run/upgrade_util_win.cc
 +++ b/chrome/browser/first_run/upgrade_util_win.cc
-@@ -62,7 +62,7 @@
+@@ -63,7 +63,7 @@
  #include "third_party/abseil-cpp/absl/cleanup/cleanup.h"
  #include "ui/base/ui_base_switches.h"
  
@@ -11,7 +11,7 @@ index 22402345685edd96a4df10f1d20cb6a32da34777..e96fba74625655d3a8065c26583190d0
  #include "chrome/updater/app/server/win/updater_legacy_idl.h"
  #endif
  
-@@ -75,7 +75,7 @@ bool GetNewerChromeFile(base::FilePath* path) {
+@@ -76,7 +76,7 @@ bool GetNewerChromeFile(base::FilePath* path) {
    return true;
  }
  
@@ -20,7 +20,7 @@ index 22402345685edd96a4df10f1d20cb6a32da34777..e96fba74625655d3a8065c26583190d0
  // Holds the result of the IPC to CoCreate `GoogleUpdate3Web`.
  struct CreateGoogleUpdate3WebResult
      : public base::RefCountedThreadSafe<CreateGoogleUpdate3WebResult> {
-@@ -216,7 +216,8 @@ Microsoft::WRL::ComPtr<IUnknown> CreateGoogleUpdate3Web() {
+@@ -217,7 +217,8 @@ Microsoft::WRL::ComPtr<IUnknown> CreateGoogleUpdate3Web() {
  #endif  // BUILDFLAG(GOOGLE_CHROME_BRANDING)
  
  bool InvokeGoogleUpdateForRename() {

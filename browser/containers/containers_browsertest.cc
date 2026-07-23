@@ -1436,24 +1436,25 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
       tab_in_container->small_accent_icon_view_for_test();
   ASSERT_TRUE(small_accent_view);
   EXPECT_TRUE(small_accent_view->GetVisible());
-  EXPECT_FALSE(browser()->window()->IsFullscreen());
+  EXPECT_FALSE(BrowserWindow::FromBrowser(browser())->IsFullscreen());
   EXPECT_TRUE(small_accent_view->layer());
 
   chrome::ToggleFullscreenMode(browser());
   ASSERT_TRUE(base::test::RunUntil(
-      [&]() { return browser()->window()->IsFullscreen(); }));
+      [&]() { return BrowserWindow::FromBrowser(browser())->IsFullscreen(); }));
   RunScheduledLayouts();
 
-  EXPECT_TRUE(browser()->window()->IsFullscreen());
+  EXPECT_TRUE(BrowserWindow::FromBrowser(browser())->IsFullscreen());
   EXPECT_TRUE(small_accent_view->GetVisible());
   EXPECT_FALSE(small_accent_view->layer());
 
   chrome::ToggleFullscreenMode(browser());
-  ASSERT_TRUE(base::test::RunUntil(
-      [&]() { return !browser()->window()->IsFullscreen(); }));
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    return !BrowserWindow::FromBrowser(browser())->IsFullscreen();
+  }));
   RunScheduledLayouts();
 
-  EXPECT_FALSE(browser()->window()->IsFullscreen());
+  EXPECT_FALSE(BrowserWindow::FromBrowser(browser())->IsFullscreen());
   EXPECT_TRUE(small_accent_view->GetVisible());
   EXPECT_TRUE(small_accent_view->layer());
 }
@@ -2289,7 +2290,7 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
           browser_view->tab_strip_view());
   ASSERT_TRUE(horizontal_tab_strip_region);
   auto* new_tab = views::AsViewClass<BraveNewTabButton>(
-      horizontal_tab_strip_region->new_tab_button_for_testing());
+      horizontal_tab_strip_region->new_tab_button());
   ASSERT_TRUE(new_tab);
 
   // MenuRunner::RunMenuAt blocks until the menu closes; skip it for the test
@@ -2399,7 +2400,7 @@ IN_PROC_BROWSER_TEST_F(
           browser_view->tab_strip_view());
   ASSERT_TRUE(horizontal_tab_strip_region);
   auto* new_tab = views::AsViewClass<BraveNewTabButton>(
-      horizontal_tab_strip_region->new_tab_button_for_testing());
+      horizontal_tab_strip_region->new_tab_button());
   ASSERT_TRUE(new_tab);
 
   new_tab->ShowContextMenuForViewImpl(new_tab, gfx::Point(0, 0),

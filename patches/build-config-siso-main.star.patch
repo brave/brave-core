@@ -1,5 +1,5 @@
 diff --git a/build/config/siso/main.star b/build/config/siso/main.star
-index 9376ce03a3d8e840695ff382e43444d118af426b..3359383ea6331e2014a2eac5b1b52e082e98bcef 100644
+index ca0bfb9eb0ab9ca7f447d61c1583446eab9202d6..18345311b7b913bb3e479ecbc27f478c7293546d 100644
 --- a/build/config/siso/main.star
 +++ b/build/config/siso/main.star
 @@ -23,6 +23,7 @@ load("./rust.star", "rust")
@@ -10,7 +10,7 @@ index 9376ce03a3d8e840695ff382e43444d118af426b..3359383ea6331e2014a2eac5b1b52e08
  
  def __disable_remote(ctx, step_config):
      gn_logs_data = gn_logs.read(ctx)
-@@ -106,6 +107,7 @@ def init(ctx):
+@@ -107,6 +108,7 @@ def init(ctx):
      handlers.update(reclient.handlers)
      handlers.update(typescript_all.handlers)
  

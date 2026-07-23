@@ -1,8 +1,8 @@
 diff --git a/content/browser/renderer_host/navigation_request.cc b/content/browser/renderer_host/navigation_request.cc
-index b803f0ac75e6d1af35e3eb0e4372a6354e1bffb7..ad7d3313b9bf1fd29ee674e752f5f1e7666658ea 100644
+index 6c50ae8045c67193d2d45f96731ff90303a63575..7b97ee19fbccb30675b435a73b91444a3c420f6c 100644
 --- a/content/browser/renderer_host/navigation_request.cc
 +++ b/content/browser/renderer_host/navigation_request.cc
-@@ -4033,6 +4033,9 @@ void NavigationRequest::OnRequestRedirected(
+@@ -4064,6 +4064,9 @@ void NavigationRequest::OnRequestRedirected(
    common_params_->url = redirect_info.new_url;
    common_params_->method = redirect_info.new_method;
    common_params_->referrer->url = GURL(redirect_info.new_referrer);
@@ -12,14 +12,14 @@ index b803f0ac75e6d1af35e3eb0e4372a6354e1bffb7..ad7d3313b9bf1fd29ee674e752f5f1e7
    common_params_->referrer = Referrer::SanitizeForRequest(
        common_params_->url, *common_params_->referrer);
  
-@@ -5998,6 +6001,10 @@ void NavigationRequest::OnStartChecksComplete(
-     begin_params_->headers = headers.ToString();
-   }
+@@ -6055,6 +6058,10 @@ void NavigationRequest::OnStartChecksComplete(
+   // TODO(clamy): Avoid cloning the navigation params and create the
+   // ResourceRequest directly here.
  
 +  GetContentClient()->browser()->MaybeHideReferrer(
 +      frame_tree_node_->navigator().controller().GetBrowserContext(),
 +      common_params_->url, GetTopDocumentGURL(frame_tree_node_),
 +      &common_params_->referrer);
-   // TODO(clamy): Avoid cloning the navigation params and create the
-   // ResourceRequest directly here.
- 
+   auto loader_type = NavigationURLLoader::LoaderType::kRegular;
+   network::mojom::URLResponseHeadPtr cached_response_head = nullptr;
+   if (IsServedFromBackForwardCache()) {

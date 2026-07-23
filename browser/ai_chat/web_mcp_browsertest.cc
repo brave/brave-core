@@ -38,7 +38,7 @@ namespace ai_chat {
 namespace {
 
 // Test pages served from test/data/leo/. The tool-registering page uses
-// navigator.modelContext, which is only available on secure contexts when
+// document.modelContext, which is only available on secure contexts when
 // blink::features::kWebMCPTesting is enabled (which implies kWebMCP).
 constexpr char kPageWithToolsPath[] = "/web_mcp_tools.html";
 // A basic existing page that registers no tools.
@@ -49,9 +49,9 @@ constexpr char kPageWithoutToolsPath[] = "/dummy.html";
 class WebMcpBrowserTest : public InProcessBrowserTest {
  public:
   WebMcpBrowserTest() : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
-    // navigator.modelContext is gated by kWebMCPTesting (which implies
-    // kWebMCP). The base::Feature flips on the runtime-enabled feature in
-    // every renderer the browser spawns during this test.
+    // document.modelContext is gated by kWebMCPTesting (which implies kWebMCP).
+    // The base::Feature flips on the runtime-enabled feature in every renderer
+    // the browser spawns during this test.
     scoped_feature_list_.InitWithFeatures(
         /*enabled_features=*/{blink::features::kWebMCPTesting},
         /*disabled_features=*/{});
@@ -73,10 +73,10 @@ class WebMcpBrowserTest : public InProcessBrowserTest {
   void SetUpCommandLine(base::CommandLine* command_line) override {
     InProcessBrowserTest::SetUpCommandLine(command_line);
     mock_cert_verifier_.SetUpCommandLine(command_line);
-    // The runtime-enabled feature gating navigator.modelContext is marked
+    // The runtime-enabled feature gating document.modelContext is marked
     // "experimental" in runtime_enabled_features.json5 so the base::Feature
-    // toggle alone isn't enough; the blink-feature switch turns it on in
-    // every renderer for the duration of this test.
+    // toggle alone isn't enough; the blink-feature switch turns it on in every
+    // renderer for the duration of this test.
     command_line->AppendSwitchASCII("enable-blink-features", "WebMCPTesting");
   }
 
@@ -118,7 +118,7 @@ class WebMcpBrowserTest : public InProcessBrowserTest {
   net::EmbeddedTestServer https_server_;
 };
 
-// Registering tools via navigator.modelContext on the active page should be
+// Registering tools via document.modelContext on the active page should be
 // observable through AssociatedContentManager::GetTools() once a generation
 // loop runs.
 // Diagnostic: confirms the renderer-side path returns script tools to brave's
@@ -127,9 +127,9 @@ IN_PROC_BROWSER_TEST_F(WebMcpBrowserTest,
                        AssociatedWebContentsContent_DirectFetch) {
   ASSERT_TRUE(ui_test_utils::NavigateToURL(
       browser(), https_server()->GetURL("a.com", kPageWithToolsPath)));
-  ASSERT_EQ(
-      2, content::EvalJs(GetActiveWebContents(),
-                         "navigator.modelContextTesting.listTools().length"));
+  ASSERT_EQ(2, content::EvalJs(
+                   GetActiveWebContents(),
+                   "document.modelContext.getTools().then(t => t.length)"));
 
   AssociatedContentDelegate* content = GetActiveContent();
   ASSERT_TRUE(content);
@@ -147,16 +147,15 @@ IN_PROC_BROWSER_TEST_F(WebMcpBrowserTest,
   // Make sure the WebMCP runtime feature is actually present in the renderer
   // and the page-side registration didn't throw; without this the rest of the
   // test would just see zero tools and the failure would be hard to diagnose.
-  EXPECT_EQ(true,
-            content::EvalJs(GetActiveWebContents(),
-                            "typeof navigator.modelContext === 'object'"));
+  EXPECT_EQ(true, content::EvalJs(GetActiveWebContents(),
+                                  "typeof document.modelContext === 'object'"));
   EXPECT_EQ("null", content::EvalJs(GetActiveWebContents(),
                                     "String(window.__webmcpRegisterError)"));
   // Sanity check directly with the renderer that the tools are registered on
-  // navigator.modelContext at the moment the manager will fetch them.
-  ASSERT_EQ(
-      2, content::EvalJs(GetActiveWebContents(),
-                         "navigator.modelContextTesting.listTools().length"));
+  // document.modelContext at the moment the manager will fetch them.
+  ASSERT_EQ(2, content::EvalJs(
+                   GetActiveWebContents(),
+                   "document.modelContext.getTools().then(t => t.length)"));
 
   AssociatedContentDelegate* content = GetActiveContent();
   ASSERT_TRUE(content);

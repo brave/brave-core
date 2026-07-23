@@ -18,13 +18,13 @@
 #define BRAVE_WALLET_WEBUI_HOSTS
 #endif
 
-#define kChromeUIAttributionInternalsHost                                 \
-  kChromeUIAttributionInternalsHost, kAdblockHost, kAdblockInternalsHost, \
-      kRewardsPageHost, kRewardsInternalsHost, kWelcomeHost,              \
-      BRAVE_WALLET_WEBUI_HOSTS kTorInternalsHost, kSkusInternalsHost,     \
-      kAdsInternalsHost, kNewTabTakeoverHost
+#define kChromeUIAutofillInternalsHost                                \
+  kAdblockHost, kAdblockInternalsHost, kRewardsPageHost,              \
+      kRewardsInternalsHost, kWelcomeHost,                            \
+      BRAVE_WALLET_WEBUI_HOSTS kTorInternalsHost, kSkusInternalsHost, \
+      kAdsInternalsHost, kNewTabTakeoverHost, kChromeUIAutofillInternalsHost
 
 #include <chrome/common/webui_url_constants.cc>
 
-#undef kChromeUIAttributionInternalsHost
+#undef kChromeUIAutofillInternalsHost
 #undef BRAVE_WALLET_WEBUI_HOSTS

@@ -36,6 +36,7 @@ class BraveBrowserWindow : public BrowserWindow {
   ~BraveBrowserWindow() override {}
 
   static BraveBrowserWindow* From(BrowserWindow*);
+  static BraveBrowserWindow* FromBrowser(BrowserWindowInterface* browser);
 
   virtual void StartTabCycling() {}
 

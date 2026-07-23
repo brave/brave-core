@@ -156,7 +156,6 @@ test("brave_unit_tests") {
     "//components/domain_reliability/test_util.h",
     "//components/sync/base/data_type_unittest.cc",
     "//components/sync/engine/sync_scheduler_impl_unittest.cc",
-    "//components/sync/service/sync_auth_manager_unittest.cc",
     "//components/sync_device_info/device_info_sync_bridge_unittest.cc",
   ]
 
@@ -781,15 +780,15 @@ static_library("browser_test_support") {
   deps = [
     "//chrome/browser",
     "//chrome/browser/ui",
-    "//chrome/test:chrome_test_launcher",
+    "//chrome/test/base:chrome_test_launcher",
   ]
 }
 
 static_library("browser_tests_runner") {
   testonly = true
   deps = [
-    "//chrome/test:chrome_test_launcher",
     "//chrome/test:test_support",
+    "//chrome/test/base:chrome_test_launcher",
     "//ui/compositor",
   ]
   if (is_win) {
@@ -818,9 +817,9 @@ if (!is_android) {
       "//brave/browser/ui/views/frame/vertical_tabs:interactive_ui_tests",
       "//chrome:packed_resources",
       "//chrome/browser",
-      "//chrome/test:chrome_test_launcher",
       "//chrome/test:test_support",
       "//chrome/test:test_support_ui",
+      "//chrome/test/base:chrome_test_launcher",
       "//ui/base/interaction",
       "//ui/compositor",
     ]
@@ -883,8 +882,8 @@ if (!is_android) {
       "//chrome/browser/search_engines",
       "//chrome/browser/ui",
       "//chrome/browser/ui/browser_window",
-      "//chrome/test:chrome_test_launcher",
       "//chrome/test:test_support_ui",
+      "//chrome/test/base:chrome_test_launcher",
       "//components/prefs",
       "//content/public/browser",
       "//content/test:test_support",
@@ -1039,6 +1038,8 @@ test("brave_browser_tests") {
     "//brave/components/brave_referrals/browser",
     "//brave/components/brave_rewards/core",
     "//brave/components/email_aliases/buildflags",
+    "//chrome/browser/new_tab_page/prefs",
+    "//chrome/browser/profiles/keep_alive:test_support",
     "//chrome/browser/ui:incognito_allowed_url",
     "//chrome/browser/ui/views/translate",
   ]
@@ -1127,6 +1128,7 @@ test("brave_browser_tests") {
     "//chrome/browser/sync",
     "//chrome/browser/tab_list",
     "//chrome/browser/ui",
+    "//chrome/browser/ui:session_crashed_bubble",
     "//chrome/browser/ui/browser_window:create_browser_window",
     "//chrome/browser/ui/color:color_headers",
     "//chrome/browser/ui/color:mixers",
@@ -1136,8 +1138,8 @@ test("brave_browser_tests") {
     "//chrome/browser/ui/startup",
     "//chrome/browser/ui/tabs:tabs_public",
     "//chrome/browser/web_applications",
-    "//chrome/test:chrome_test_launcher",
     "//chrome/test:test_support_ui",
+    "//chrome/test/base:chrome_test_launcher",
     "//components/bookmarks/browser",
     "//components/commerce/core:feature_list",
     "//components/content_settings/browser",
@@ -1594,6 +1596,12 @@ if (is_android) {
     variables += [
       "manifest_package=$brave_public_test_manifest_package",
       "min_sdk_version=19",
+
+      # Mirrors upstream's test manifest, which passes library_name for the
+      # unconditional android:zygotePreloadNativeLib reference in
+      # //chrome/android/java/AndroidManifest.xml. See
+      # chrome_public_apk_tmpl.gni's `library_name=chromefortest`.
+      "library_name=chromefortest",
     ]
   }
 
@@ -1613,8 +1621,8 @@ if (is_android) {
     sources = [
       "//brave/android/javatests/org/chromium/chrome/browser/BraveSafetyNetThreatsPrioritiesTest.java",
       "//brave/android/javatests/org/chromium/chrome/browser/BytecodeTest.java",
-      "//brave/android/javatests/org/chromium/chrome/browser/autofill/options/BraveAutofillOptionsFragmentTest.java",
       "//brave/android/javatests/org/chromium/chrome/browser/autofill/settings/BraveAutofillPaymentMethodsFragmentTest.java",
+      "//brave/android/javatests/org/chromium/chrome/browser/autofill/settings/options/BraveAutofillOptionsFragmentTest.java",
       "//brave/android/javatests/org/chromium/chrome/browser/homepage/settings/BraveHomepageSettingsTest.java",
       "//brave/android/javatests/org/chromium/chrome/browser/language/settings/BraveLanguageSettingsTest.java",
       "//brave/android/javatests/org/chromium/chrome/browser/ntp/BraveFreshNtpHelperTest.java",

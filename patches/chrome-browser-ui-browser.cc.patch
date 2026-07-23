@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/browser.cc b/chrome/browser/ui/browser.cc
-index 0777bf71430c810f7b6ae41a7708cdd069b6c5a4..f4b61896545455161d7029de69babb4becc88d65 100644
+index 91507541a5bb03a12ea62ee83c71550a8c07b9ab..70e5e88294e874f24e1bd5708fb147fba1f6c178 100644
 --- a/chrome/browser/ui/browser.cc
 +++ b/chrome/browser/ui/browser.cc
-@@ -490,7 +490,7 @@ Browser* Browser::Create(const CreateParams& params) {
+@@ -468,7 +468,7 @@ Browser* Browser::Create(const CreateParams& params) {
    // should handle this; see e.g. crbug.com/40154317 and crbug.com/40798999.
    CHECK_EQ(CreationStatus::kOk, GetCreationStatusForProfile(params.profile));
  
@@ -11,7 +11,7 @@ index 0777bf71430c810f7b6ae41a7708cdd069b6c5a4..f4b61896545455161d7029de69babb4b
    Browser* const browser_ptr = browser.get();
    BrowserManagerServiceFactory::GetForProfile(params.profile)
        ->AddBrowser(std::move(browser));
-@@ -506,7 +506,7 @@ std::unique_ptr<Browser> Browser::DeprecatedCreateOwnedForTesting(
+@@ -484,7 +484,7 @@ std::unique_ptr<Browser> Browser::DeprecatedCreateOwnedForTesting(
    // should handle this; see e.g. crbug.com/40154317 and crbug.com/40798999.
    CHECK_EQ(CreationStatus::kOk, GetCreationStatusForProfile(params.profile));
  
@@ -20,20 +20,14 @@ index 0777bf71430c810f7b6ae41a7708cdd069b6c5a4..f4b61896545455161d7029de69babb4b
    BrowserManagerServiceFactory::GetForProfile(params.profile)
        ->AddBrowserForTesting(browser.get());
    return browser;
-@@ -519,7 +519,7 @@ Browser::Browser(const CreateParams& params)
+@@ -495,8 +495,8 @@ Browser::Browser(const CreateParams& params)
+       profile_(params.profile),
        window_(nullptr),
        tab_strip_model_delegate_(
-           std::make_unique<chrome::BrowserTabStripModelDelegate>(this)),
+-          std::make_unique<chrome::BrowserTabStripModelDelegate>(this)),
 -      tab_strip_model_(std::make_unique<TabStripModel>(
++          std::make_unique<chrome::BraveTabStripModelDelegate>(this)),
 +      tab_strip_model_(std::make_unique<BraveTabStripModel>(
            tab_strip_model_delegate_.get(),
            params.profile,
            // Tab groups are disabled for app browsers.
-@@ -1015,6 +1015,7 @@ void Browser::OnWindowClosing() {
-   if (tab_restore_service && notify_restore_service) {
-     tab_restore_service->BrowserClosing(GetFeatures().live_tab_context());
-   }
-+  BRAVE_BROWSER_ON_WINDOW_CLOSING
- 
-   if (!tab_strip_model_->empty()) {
-     // Closing all the tabs results in eventually calling back to

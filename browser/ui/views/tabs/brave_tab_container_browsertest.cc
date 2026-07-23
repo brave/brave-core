@@ -49,7 +49,7 @@ class HorizontalScrollableTabStripBrowserTest : public InProcessBrowserTest {
   }
 
   BraveBrowserView* browser_view() {
-    return static_cast<BraveBrowserView*>(browser()->window());
+    return BraveBrowserView::GetBrowserViewForBrowser(browser());
   }
 
   void AppendTab() { chrome::AddTabAt(browser(), GURL(), -1, true); }
@@ -394,7 +394,7 @@ IN_PROC_BROWSER_TEST_F(HorizontalScrollableTabStripBrowserTest,
   ASSERT_TRUE(region->tab_scroll_next_for_testing());
   ASSERT_FALSE(region->tab_scroll_next_for_testing()->GetVisible());
 
-  views::View* ntb = region->new_tab_button_for_testing();
+  views::View* ntb = region->new_tab_button();
   ASSERT_TRUE(ntb);
 
   const int pad = GetLayoutConstant(LayoutConstant::kTabStripPadding);
@@ -425,7 +425,7 @@ IN_PROC_BROWSER_TEST_F(HorizontalScrollableTabStripBrowserTest,
   ASSERT_TRUE(next);
   ASSERT_TRUE(next->GetVisible());
 
-  views::View* ntb = region->new_tab_button_for_testing();
+  views::View* ntb = region->new_tab_button();
   ASSERT_TRUE(ntb);
 
   const int pad = GetLayoutConstant(LayoutConstant::kTabStripPadding);

@@ -33,6 +33,7 @@
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 #include "chrome/browser/ui/ui_features.h"
+#include "chrome/browser/ui/unload_controller.h"
 #include "chrome/browser/ui/webui/new_tab_page/new_tab_page_ui.h"
 #include "chrome/browser/ui/webui/new_tab_page_third_party/new_tab_page_third_party_ui.h"
 #include "chrome/browser/ui/webui/ntp/new_tab_ui.h"
@@ -69,7 +70,8 @@ BraveBrowser::BraveBrowser(const CreateParams& params) : Browser(params) {
     // ready yet. BraveBrowserView is instantiated by the ctor of Browser.
     // So, initializing sidebar controller/model here and then ask to initialize
     // sidebar UI. After that, UI will be updated for model's change.
-    sidebar_controller->SetSidebar(brave_window()->InitSidebar());
+    sidebar_controller->SetSidebar(
+        BraveBrowserWindow::FromBrowser(this)->InitSidebar());
   }
 
   if (webui_browser::IsWebUIBrowserEnabled() && is_type_normal()) {
@@ -82,7 +84,7 @@ BraveBrowser::BraveBrowser(const CreateParams& params) : Browser(params) {
   // is ready, it's difficult to know when browsr window can listen.
   // Notify exact timing to do it.
   CHECK(GetFeatures().exclusive_access_manager());
-  brave_window()->ReadyToListenFullscreenChanges();
+  BraveBrowserWindow::FromBrowser(this)->ReadyToListenFullscreenChanges();
 }
 
 BraveBrowser::~BraveBrowser() = default;
@@ -135,7 +137,8 @@ void BraveBrowser::OnTabClosing(tabs::TabInterface* tab,
                                // In this case, Shared pinned tabs will be moved
                                // to another window, so we don't have to warn
                                // users.
-                               browser->confirmed_to_close_ = true;
+                               UnloadController::From(browser.get())
+                                   ->set_confirmed_to_close(true);
                                chrome::CloseWindow(browser.get());
                              }
                            },
@@ -266,43 +269,15 @@ void BraveBrowser::OnTabStripModelChanged(
   }
 }
 
-void BraveBrowser::FinishWarnBeforeClosing(WarnBeforeClosingResult result) {
-  // Clear user's choice because user cancelled window closing by some
-  // warning(ex, download is in-progress).
-  if (result == WarnBeforeClosingResult::kDoNotClose) {
-    confirmed_to_close_ = false;
-  }
-  Browser::FinishWarnBeforeClosing(result);
-}
-
 void BraveBrowser::BeforeUnloadFired(content::WebContents* source,
                                      bool proceed,
                                      bool* proceed_to_fire_unload) {
   // Clear user's choice when user cancelled window closing by beforeunload
   // handler.
   if (!proceed) {
-    confirmed_to_close_ = false;
+    UnloadController::From(this)->set_confirmed_to_close(false);
   }
   Browser::BeforeUnloadFired(source, proceed, proceed_to_fire_unload);
-}
-
-bool BraveBrowser::TryToCloseWindow(
-    bool skip_beforeunload,
-    const base::RepeatingCallback<void(bool)>& on_close_confirmed) {
-  // Window closing could be asked directly to browser object by this method.
-  // For example, when user tries to delete profile, this method is called on
-  // all its browser object. After all handlers are done, its all browser window
-  // start to close. In this case, we should not ask to users about this
-  // closing. So, treats like user confirmed closing. If this try blocked by
-  // user, |confirmed_to_close_| is set to false by ResetTryToCloseWindow().
-  confirmed_to_close_ = true;
-  return Browser::TryToCloseWindow(skip_beforeunload,
-                                   std::move(on_close_confirmed));
-}
-
-void BraveBrowser::ResetTryToCloseWindow() {
-  confirmed_to_close_ = false;
-  Browser::ResetTryToCloseWindow();
 }
 
 void BraveBrowser::UpdateTargetURL(content::WebContents* source,
@@ -326,7 +301,7 @@ bool BraveBrowser::ShouldAskForBrowserClosingBeforeHandlers() {
     return false;
   }
 
-  if (confirmed_to_close_) {
+  if (UnloadController::From(this)->confirmed_to_close()) {
     return false;
   }
 
@@ -355,10 +330,6 @@ bool BraveBrowser::AreAllTabsSharedPinnedTabs() {
   return tab_strip_model()->count() > 0 &&
          tab_strip_model()->count() ==
              tab_strip_model()->IndexOfFirstNonPinnedTab();
-}
-
-BraveBrowserWindow* BraveBrowser::brave_window() {
-  return static_cast<BraveBrowserWindow*>(window_.get());
 }
 
 void BraveBrowser::SetTabsToIgnoreBeforeUnloadHandlers(

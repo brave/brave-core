@@ -473,7 +473,9 @@ source_set("ui") {
       "//chrome/browser/sync",
       "//chrome/browser/themes",
       "//chrome/browser/ui:browser_actions",
+      "//chrome/browser/ui:chrome_pages",
       "//chrome/browser/ui:layout_constants",
+      "//chrome/browser/ui:session_crashed_bubble",
       "//chrome/browser/ui:url_identity",
       "//chrome/browser/ui/content_settings",
       "//chrome/browser/ui/extensions",
@@ -732,6 +734,7 @@ source_set("ui") {
       "//chrome/browser/metrics",
       "//chrome/browser/sharing_hub",
       "//chrome/browser/ui:accelerator_table",
+      "//chrome/browser/ui:view_ids",
       "//chrome/browser/ui/download",
       "//chrome/browser/ui/exclusive_access",
       "//chrome/browser/ui/javascript_dialogs",
@@ -742,6 +745,7 @@ source_set("ui") {
       "//chrome/browser/ui/views/download",
       "//chrome/browser/ui/views/infobars",
       "//chrome/browser/ui/views/interaction",
+      "//chrome/browser/ui/views/overlay",
       "//chrome/browser/ui/views/tabs/shared",
       "//chrome/browser/ui/views/toolbar",
       "//components/bookmarks/browser",
@@ -776,6 +780,8 @@ source_set("ui") {
         "views/renderer_context_menu/brave_render_view_context_menu_views.cc",
         "views/renderer_context_menu/brave_render_view_context_menu_views.h",
       ]
+
+      deps += [ "//chrome/browser/ui/views/renderer_context_menu" ]
     }
 
     if (enable_sparkle) {

@@ -130,6 +130,7 @@ import java.util.List;
     ChromeFeatureList.GLIC,
     ChromeFeatureList.LENS_OVERLAY_ANDROID,
     ChromeFeatureList.SUBMENUS_IN_APP_MENU,
+    ChromeFeatureList.SUBMENUS_IN_APP_MENU_LFF,
     DomDistillerFeatures.READER_MODE_DISTILL_IN_APP,
     BraveFeatureList.BRAVE_SHRED,
 })
@@ -191,6 +192,7 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
     private final SettableMonotonicObservableSupplier<ReadAloudController>
             mReadAloudControllerSupplier = ObservableSuppliers.createMonotonic();
     private final ActivityTabProvider mActivityTabProvider = new ActivityTabProvider();
+    private SaveAndShareItemBuilder mSaveAndShareItemBuilder;
 
     private BraveTabbedAppMenuPropertiesDelegate mTabbedAppMenuPropertiesDelegate;
 
@@ -203,6 +205,8 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
 
     // Used to ensure all the combinations are tested.
     private final boolean[] mFlagCombinations = new boolean[1 << 5];
+
+    private final boolean mCanActivateTabLayoutToggleMenu = true;
 
     @Before
     public void setUp() {
@@ -290,10 +294,18 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
                         /* openInAppMenuItemProvider= */ null,
                         /* recentlyClosedEntriesManagerSupplier= */ () ->
                                 mRecentlyClosedEntriesManager,
-                        () -> mSideUiStateProvider);
+                        () -> mSideUiStateProvider,
+                        /* isXrFullSpaceModeSupplier= */ () -> false,
+                        /* canActivateTabLayoutToggleMenu= */ () ->
+                                mCanActivateTabLayoutToggleMenu);
         delegate.setIsJunitTesting(true);
         BaseRobolectricTestRule.runAllBackgroundAndUi();
         mTabbedAppMenuPropertiesDelegate = Mockito.spy(delegate);
+        mSaveAndShareItemBuilder =
+                Mockito.spy(
+                        mTabbedAppMenuPropertiesDelegate.getSaveAndShareItemBuilderForTesting());
+        mTabbedAppMenuPropertiesDelegate.setSaveAndShareItemBuilderForTesting(
+                mSaveAndShareItemBuilder);
 
         MultiWindowTestUtils.resetInstanceInfo();
 
@@ -676,8 +688,9 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
                 .when(mTabbedAppMenuPropertiesDelegate)
                 .shouldShowMoveToOtherWindow();
         doReturn(options.showPaintPreview())
-                .when(mTabbedAppMenuPropertiesDelegate)
+                .when(mSaveAndShareItemBuilder)
                 .shouldShowPaintPreview(anyBoolean(), any(Tab.class));
+
         when(mWebsitePreferenceBridgeJniMock.getContentSetting(any(), anyInt(), any(), any()))
                 .thenReturn(
                         options.isAutoDarkEnabled()

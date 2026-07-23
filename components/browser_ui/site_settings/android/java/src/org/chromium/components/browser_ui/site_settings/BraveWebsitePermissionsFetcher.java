@@ -9,14 +9,14 @@ import org.chromium.components.browser_ui.site_settings.WebsitePermissionsFetche
 import org.chromium.components.content_settings.ContentSettingsType;
 
 public class BraveWebsitePermissionsFetcher {
-    public static WebsitePermissionsType getPermissionsType(
+    public static @WebsitePermissionsType int getPermissionsType(
             @ContentSettingsType.EnumType int contentSettingsType) {
         switch (contentSettingsType) {
             case ContentSettingsType.AUTOPLAY:
             case ContentSettingsType.BRAVE_GOOGLE_SIGN_IN:
                 return WebsitePermissionsType.CONTENT_SETTING_EXCEPTION;
             case ContentSettingsType.STORAGE_ACCESS:
-                return null;
+                return WebsitePermissionsType.INVALID;
         }
         return WebsitePermissionsFetcher.getPermissionsType(contentSettingsType);
     }

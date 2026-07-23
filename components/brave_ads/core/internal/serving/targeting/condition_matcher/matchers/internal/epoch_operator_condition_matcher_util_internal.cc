@@ -52,7 +52,7 @@ bool IsUnixEpochTimestamp(int64_t timestamp) {
 }
 
 int64_t WindowsToUnixEpoch(int64_t timestamp) {
-  return (timestamp - base::Time::kTimeTToMicrosecondsOffset) /
+  return (timestamp - base::Time::kMicrosecondsFromWindowsToUnixEpoch) /
          base::Time::kMicrosecondsPerSecond;
 }
 

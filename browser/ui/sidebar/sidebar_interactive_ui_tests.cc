@@ -97,7 +97,7 @@ IN_PROC_BROWSER_TEST_F(SidebarInteractiveUITest, IterateBuiltInWebTypeTest) {
   browser2_controller->ActivateItemAt(browser2_wallet_item_index.value());
   activation_waiter.WaitForActivation();
 
-  EXPECT_TRUE(browser()->window()->IsActive());
+  EXPECT_TRUE(BrowserWindow::FromBrowser(browser())->IsActive());
   EXPECT_EQ(0, tab_model()->active_index());
 }
 #endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)

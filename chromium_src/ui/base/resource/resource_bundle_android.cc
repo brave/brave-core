@@ -3,6 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+#include "base/files/memory_mapped_file.h"
+
 #include <ui/base/resource/resource_bundle_android.cc>
 
 namespace ui {
@@ -22,6 +24,11 @@ void BraveLoadMainAndroidPackFile(const char* path_within_apk,
         base::File(g_brave_resources_pack_fd), g_brave_resources_pack_region,
         ui::kScaleFactorNone);
   }
+}
+
+int GetBraveResourcesPackFd(base::MemoryMappedFile::Region* out_region) {
+  *out_region = g_brave_resources_pack_region;
+  return g_brave_resources_pack_fd;
 }
 
 }  // namespace ui

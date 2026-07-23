@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/webui/BUILD.gn b/chrome/browser/ui/webui/BUILD.gn
-index 9ad30f708e9cb4ff2d2bc853513631464e268593..f3fe1f0c7fe43890aa0d0f5172420f8c7f218d95 100644
+index f0b77bd6c3970c74b728d8a6b8b49bd3c215b4e4..1bc4ebc0389f845e60ad29d7f86a97162b660659 100644
 --- a/chrome/browser/ui/webui/BUILD.gn
 +++ b/chrome/browser/ui/webui/BUILD.gn
-@@ -292,6 +292,8 @@ source_set("configs") {
+@@ -294,6 +294,8 @@ source_set("configs") {
    if (enable_webui_ntp) {
      deps += [ "//chrome/browser/ui/webui/ntp_microsoft_auth" ]
    }

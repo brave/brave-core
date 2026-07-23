@@ -46,6 +46,12 @@
 #define SavingBrowserHistoryDisabledPolicyChangeMidSession \
   DISABLED_SavingBrowserHistoryDisabledPolicyChangeMidSession
 
+// This test fails because Brave Sync uses its own keypair-based auth instead of
+// Google identity, so it never reports signed-in from
+// signin::MakeAccountAvailable() and SyncUserSettingsImpl::SetSelectedType()
+// then hits NOTREACHED for kNotSignedIn.
+#define OtherDevicesAvailability DISABLED_OtherDevicesAvailability
+
 // Disabling these tests because upstream code won't execute
 // IDC_SHOW_HISTORY_CLUSTERS_SIDE_PANEL command when history clusters aren't
 // enabled but the test doesn't check for it.
@@ -67,6 +73,7 @@
 
 #undef LogMenuMetricsForShowGroupedHistory
 #undef SavingBrowserHistoryDisabledPolicyChangeMidSession
+#undef OtherDevicesAvailability
 #undef RecentlyClosedGroupWithSplit
 #undef RecentlyClosedWindowWithSplitAndRegularTabs
 #undef RecentlyClosedWindowWithGroupsAndSplits

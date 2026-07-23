@@ -90,18 +90,18 @@ IN_PROC_BROWSER_TEST_F(BraveAppControllerCleanLinkFeatureDisabledBrowserTest,
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   EXPECT_EQ(1u, GlobalBrowserCollection::GetInstance()->GetSize());
 
-  BraveBrowserView* browser_view = static_cast<BraveBrowserView*>(
-      BraveBrowserView::GetBrowserViewForBrowser(browser()));
+  BraveBrowserView* browser_view =
+      BraveBrowserView::GetBrowserViewForBrowser(browser());
   OmniboxView* omnibox_view = browser_view->GetLocationBar()->GetOmniboxView();
   omnibox_view->SetFocus(true);
   omnibox_view->SelectAll(false);
   EXPECT_TRUE(omnibox_view->IsSelectAll());
-  EXPECT_TRUE(BraveBrowserWindow::From(browser()->window())->HasSelectedURL());
+  EXPECT_TRUE(BraveBrowserWindow::FromBrowser(browser())->HasSelectedURL());
 
   BraveAppController* ac = base::apple::ObjCCastStrict<BraveAppController>(
       [[NSApplication sharedApplication] delegate]);
   ASSERT_TRUE(ac);
-  NSMenu* edit_submenu = [[[NSApp mainMenu] itemWithTag:IDC_EDIT_MENU] submenu];
+  NSMenu* edit_submenu = [[[NSApp mainMenu] itemWithTag:kEditMenuId] submenu];
   NSMenuItem* copy_item = [edit_submenu itemWithTag:IDC_CONTENT_CONTEXT_COPY];
   NSMenuItem* clean_link_menu_item =
       [edit_submenu itemWithTag:IDC_COPY_CLEAN_LINK];
@@ -122,19 +122,19 @@ IN_PROC_BROWSER_TEST_F(BraveAppControllerBrowserTest, CopyLinkItemVisible) {
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   EXPECT_EQ(1u, GlobalBrowserCollection::GetInstance()->GetSize());
 
-  BraveBrowserView* browser_view = static_cast<BraveBrowserView*>(
-      BraveBrowserView::GetBrowserViewForBrowser(browser()));
+  BraveBrowserView* browser_view =
+      BraveBrowserView::GetBrowserViewForBrowser(browser());
   OmniboxView* omnibox_view = browser_view->GetLocationBar()->GetOmniboxView();
   omnibox_view->SetFocus(true);
   omnibox_view->SelectAll(false);
   EXPECT_TRUE(omnibox_view->IsSelectAll());
-  EXPECT_TRUE(BraveBrowserWindow::From(browser()->window())->HasSelectedURL());
+  EXPECT_TRUE(BraveBrowserWindow::FromBrowser(browser())->HasSelectedURL());
 
   BraveAppController* ac = base::apple::ObjCCastStrict<BraveAppController>(
       [[NSApplication sharedApplication] delegate]);
   ASSERT_TRUE(ac);
 
-  NSMenu* edit_submenu = [[[NSApp mainMenu] itemWithTag:IDC_EDIT_MENU] submenu];
+  NSMenu* edit_submenu = [[[NSApp mainMenu] itemWithTag:kEditMenuId] submenu];
   NSMenuItem* copy_item = [edit_submenu itemWithTag:IDC_CONTENT_CONTEXT_COPY];
   NSMenuItem* clean_link_menu_item =
       [edit_submenu itemWithTag:IDC_COPY_CLEAN_LINK];
@@ -154,7 +154,7 @@ IN_PROC_BROWSER_TEST_F(BraveAppControllerBrowserTest, CopyLinkItemVisible) {
 IN_PROC_BROWSER_TEST_F(BraveAppControllerBrowserTest, CopyLinkItemNotVisible) {
   EXPECT_EQ(1u, GlobalBrowserCollection::GetInstance()->GetSize());
   OmniboxView* omnibox_view =
-      browser()->window()->GetLocationBar()->GetOmniboxView();
+      BrowserWindow::FromBrowser(browser())->GetLocationBar()->GetOmniboxView();
   omnibox_view->SetUserText(u"any text");
   omnibox_view->SelectAll(false);
   EXPECT_TRUE(omnibox_view->IsSelectAll());
@@ -162,7 +162,7 @@ IN_PROC_BROWSER_TEST_F(BraveAppControllerBrowserTest, CopyLinkItemNotVisible) {
       [[NSApplication sharedApplication] delegate]);
   ASSERT_TRUE(ac);
 
-  NSMenu* edit_submenu = [[[NSApp mainMenu] itemWithTag:IDC_EDIT_MENU] submenu];
+  NSMenu* edit_submenu = [[[NSApp mainMenu] itemWithTag:kEditMenuId] submenu];
   NSMenuItem* copy_item = [edit_submenu itemWithTag:IDC_CONTENT_CONTEXT_COPY];
   NSMenuItem* clean_link_menu_item =
       [edit_submenu itemWithTag:IDC_COPY_CLEAN_LINK];
@@ -185,17 +185,17 @@ IN_PROC_BROWSER_TEST_F(BraveAppControllerBrowserTest,
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   EXPECT_EQ(1u, GlobalBrowserCollection::GetInstance()->GetSize());
 
-  BraveBrowserView* browser_view = static_cast<BraveBrowserView*>(
-      BraveBrowserView::GetBrowserViewForBrowser(browser()));
+  BraveBrowserView* browser_view =
+      BraveBrowserView::GetBrowserViewForBrowser(browser());
   OmniboxView* omnibox_view = browser_view->GetLocationBar()->GetOmniboxView();
   EXPECT_FALSE(omnibox_view->IsSelectAll());
-  EXPECT_FALSE(BraveBrowserWindow::From(browser()->window())->HasSelectedURL());
+  EXPECT_FALSE(BraveBrowserWindow::FromBrowser(browser())->HasSelectedURL());
 
   BraveAppController* ac = base::apple::ObjCCastStrict<BraveAppController>(
       [[NSApplication sharedApplication] delegate]);
   ASSERT_TRUE(ac);
 
-  NSMenu* edit_submenu = [[[NSApp mainMenu] itemWithTag:IDC_EDIT_MENU] submenu];
+  NSMenu* edit_submenu = [[[NSApp mainMenu] itemWithTag:kEditMenuId] submenu];
   NSMenuItem* clean_link_menu_item =
       [edit_submenu itemWithTag:IDC_COPY_CLEAN_LINK];
 
@@ -348,7 +348,7 @@ IN_PROC_BROWSER_TEST_F(BraveAppControllerBrowserTest, TorMenuItemExists) {
   [controller setLastProfile:browser()->profile()];
   [controller mainMenuCreated];
 
-  NSMenu* fileMenu = [[[NSApp mainMenu] itemWithTag:IDC_FILE_MENU] submenu];
+  NSMenu* fileMenu = [[[NSApp mainMenu] itemWithTag:kMacFileMenuId] submenu];
   ASSERT_TRUE(fileMenu);
 
   NSMenuItem* torMenuItem =
@@ -372,7 +372,7 @@ IN_PROC_BROWSER_TEST_F(BraveAppControllerBrowserTest,
 
   [controller mainMenuCreated];
 
-  NSMenu* fileMenu = [[[NSApp mainMenu] itemWithTag:IDC_FILE_MENU] submenu];
+  NSMenu* fileMenu = [[[NSApp mainMenu] itemWithTag:kMacFileMenuId] submenu];
   ASSERT_TRUE(fileMenu);
 
   NSMenuItem* torMenuItem =
@@ -407,7 +407,7 @@ IN_PROC_BROWSER_TEST_F(BraveAppControllerBrowserTest,
 
   [controller mainMenuCreated];
 
-  NSMenu* fileMenu = [[[NSApp mainMenu] itemWithTag:IDC_FILE_MENU] submenu];
+  NSMenu* fileMenu = [[[NSApp mainMenu] itemWithTag:kMacFileMenuId] submenu];
   ASSERT_TRUE(fileMenu);
 
   NSMenuItem* torMenuItem =

@@ -5,6 +5,7 @@
 
 #include "content/common/web_ui_loading_util.h"
 
+#include "base/byte_size.h"
 #include "services/network/public/mojom/url_loader.mojom.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
 
@@ -13,8 +14,10 @@ namespace {
 
 network::mojom::URLResponseHeadPtr UseContentLengthFromHeaders(
     network::mojom::URLResponseHeadPtr headers) {
+  // GetContentLength() now returns a base::ByteSize, which is always
+  // non-negative, so a positive check is all that's needed.
   if (auto content_length = headers->headers->GetContentLength();
-      content_length && !content_length->is_negative()) {
+      content_length) {
     headers->content_length = content_length->InBytes();
   }
   return headers;

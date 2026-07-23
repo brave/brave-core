@@ -72,7 +72,8 @@ class BraveMultiContentsView : public MultiContentsView {
 
   std::vector<ContentsContainerView*> contents_container_views_for_testing()
       const {
-    return contents_container_views_;
+    return std::vector<ContentsContainerView*>(
+        contents_container_views_.begin(), contents_container_views_.end());
   }
 
   int web_panel_width_ = 0;

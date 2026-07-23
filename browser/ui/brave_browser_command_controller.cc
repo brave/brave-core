@@ -202,14 +202,15 @@ bool BraveBrowserCommandController::IsCommandEnabled(int id) const {
                              : BrowserCommandController::IsCommandEnabled(id);
 }
 
-bool BraveBrowserCommandController::ExecuteCommandWithDisposition(
+bool BraveBrowserCommandController::ExecuteCommandWithDispositionImpl(
     int id,
     WindowOpenDisposition disposition,
-    base::TimeTicks time_stamp) {
+    base::TimeTicks time_stamp,
+    std::optional<actions::ActionInvocationContext> context) {
   return IsBraveCommands(id) || IsBraveOverrideCommands(id)
              ? ExecuteBraveCommandWithDisposition(id, disposition, time_stamp)
-             : BrowserCommandController::ExecuteCommandWithDisposition(
-                   id, disposition, time_stamp);
+             : BrowserCommandController::ExecuteCommandWithDispositionImpl(
+                   id, disposition, time_stamp, std::move(context));
 }
 
 void BraveBrowserCommandController::AddCommandObserver(
@@ -377,7 +378,6 @@ void BraveBrowserCommandController::InitBraveCommandState() {
 
   if (browser_->is_type_normal()) {
     // Delete these when upstream enables by default.
-    UpdateCommandEnabled(IDC_READING_LIST_MENU, true);
     UpdateCommandEnabled(IDC_READING_LIST_MENU_ADD_TAB, true);
     UpdateCommandEnabled(IDC_READING_LIST_MENU_SHOW_UI, true);
   }
@@ -605,16 +605,16 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
     case IDC_NEW_WINDOW:
       // Use chromium's action for non-Tor profiles.
       if (!browser_->profile()->IsTor()) {
-        return BrowserCommandController::ExecuteCommandWithDisposition(
-            id, disposition, time_stamp);
+        return BrowserCommandController::ExecuteCommandWithDispositionImpl(
+            id, disposition, time_stamp, std::nullopt);
       }
       NewEmptyWindow(browser_->profile()->GetOriginalProfile());
       break;
     case IDC_NEW_INCOGNITO_WINDOW:
       // Use chromium's action for non-Tor profiles.
       if (!browser_->profile()->IsTor()) {
-        return BrowserCommandController::ExecuteCommandWithDisposition(
-            id, disposition, time_stamp);
+        return BrowserCommandController::ExecuteCommandWithDispositionImpl(
+            id, disposition, time_stamp, std::nullopt);
       }
       NewIncognitoWindow(browser_->profile()->GetOriginalProfile());
       break;

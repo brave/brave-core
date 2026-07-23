@@ -1,12 +1,13 @@
 diff --git a/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate.cc b/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate.cc
-index 05fbc438c154607a0e7da039b3080d9021576627..6df2cf18150cc446f328c85f288198d27e27aab5 100644
+index 43697fcb28fcd0a6e5d9321cb25ec90d227fd7a9..d3f328474aed23a86d58e0258fed38a161dfc8fb 100644
 --- a/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate.cc
 +++ b/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate.cc
-@@ -1623,6 +1623,7 @@ const char* ChromeBrowsingDataRemoverDelegate::GetHistogramSuffix(
-       return "WebrtcVideoPerfHistory";
-     case TracingDataType::kMediaDeviceSalts:
-       return "MediaDeviceSalts";
-+    CHROME_BROWSING_DATA_REMOVER_DELEGATE_GET_HISTORY_SUFFIX
-   }
- }
- // LINT.ThenChange(//tools/metrics/histograms/metadata/history/histograms.xml:History.ClearBrowsingData.Duration.ChromeTask.Task)
+@@ -1598,6 +1598,8 @@ void ChromeBrowsingDataRemoverDelegate::OnTaskComplete(
+ const char* ChromeBrowsingDataRemoverDelegate::GetHistogramSuffix(
+     TracingDataType task) {
+   switch (task) {
++    case TracingDataType::kIPFSCache:
++      return "IPFSCache";
+     case TracingDataType::kSynchronous:
+       return "Synchronous";
+     case TracingDataType::kHistory:

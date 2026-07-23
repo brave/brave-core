@@ -7,19 +7,22 @@
 #include <string>
 #include <vector>
 
+#include "base/functional/bind.h"
 #include "base/json/json_writer.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/test_future.h"
 #include "base/values.h"
 #include "brave/browser/ai_chat/ai_chat_agent_profile_helper.h"
-#include "brave/browser/ai_chat/ai_chat_enterprise_policy_checker.h"
 #include "brave/browser/ai_chat/content_agent_tool_provider.h"
 #include "brave/browser/ai_chat/tools/target_test_util.h"
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/test_utils.h"
+#include "chrome/browser/actor/actor_keyed_service.h"
 #include "chrome/browser/actor/actor_keyed_service_factory.h"
+#include "chrome/browser/actor/actor_task.h"
+#include "chrome/browser/actor/execution_engine.h"
 #include "chrome/browser/actor/site_policy.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -27,7 +30,7 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/actor/core/actor_features.h"
-#include "components/origin_gating/core/origin_gating_cache.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "net/dns/mock_host_resolver.h"
@@ -63,6 +66,8 @@ class ContentAgentToolsTest : public InProcessBrowserTest {
     InProcessBrowserTest::SetUpOnMainThread();
 
     host_resolver()->AddRule("*", "127.0.0.1");
+    embedded_https_test_server().SetCertHostnames(
+        {"chromewebstore.google.com"});
     ASSERT_TRUE(embedded_test_server()->Start());
     ASSERT_TRUE(embedded_https_test_server().Start());
 
@@ -378,17 +383,50 @@ IN_PROC_BROWSER_TEST_F(ContentAgentToolsTest, BlockExtensionStore) {
   EXPECT_EQ(initial_url, final_url);
 
   // Also verify that other actions won't be able to execute against tabs
-  // already on an extension store URL.
-  base::test::TestFuture<actor::MayActOnUrlBlockReason> allowed;
+  // already on an extension store URL. Upstream moved the URL gating check into
+  // ExecutionEngine (crrev.com/c/8111120), so we exercise it directly. The
+  // extension-store URL is rejected by the BRAVE_MAY_ACT_ON_URL_INTERNAL hook
+  // in the execution_engine.cc override.
+  base::test::TestFuture<actor::MayActOnUrlBlockReason> block_reason;
   auto* actor_service =
       actor::ActorKeyedServiceFactory::GetActorKeyedService(agent_profile_);
-  ::actor::MayActOnUrl(
-      GURL("https://chromewebstore.google.com/example"), false, agent_profile_,
-      actor_service->GetJournal(), actor::TaskId(),
-      origin_gating::OriginGatingCache(/*use_site_not_origin=*/false),
-      *AIChatEnterprisePolicyChecker::NoEnterprisePolicyChecker(),
-      allowed.GetCallback());
-  EXPECT_NE(allowed.Take(), actor::MayActOnUrlBlockReason::kAllowed);
+  actor::ActorTask* task = actor_service->GetTask(tool_provider_->GetTaskId());
+  ASSERT_TRUE(task);
+  task->GetExecutionEngine().IsAcceptableNavigationDestination(
+      GURL("https://chromewebstore.google.com/example"),
+      block_reason.GetCallback());
+  EXPECT_NE(block_reason.Take(), actor::MayActOnUrlBlockReason::kAllowed);
+}
+
+// Companion to BlockExtensionStore that covers the page-action entry point
+// (MayActOnTab) rather than the navigation one. Both share the
+// BRAVE_MAY_ACT_ON_URL_INTERNAL hook in the execution_engine.cc override, but
+// they are separate call sites, so each is exercised on its own.
+IN_PROC_BROWSER_TEST_F(ContentAgentToolsTest, BlockExtensionStorePageAction) {
+  // Commit the task's tab on an extension store URL. host_resolver maps "*" to
+  // the test server (see SetUpOnMainThread), so the committed URL keeps the
+  // chromewebstore.google.com host that MayActOnTab reads and the hook checks.
+  content::WebContents* contents = web_contents();
+  const GURL webstore_url = embedded_https_test_server().GetURL(
+      "chromewebstore.google.com", "/actor/input.html");
+  ASSERT_TRUE(content::NavigateToURL(contents, webstore_url));
+
+  tabs::TabInterface* tab = tool_provider_->GetTaskTabHandleForTesting().Get();
+  ASSERT_TRUE(tab);
+
+  auto* actor_service =
+      actor::ActorKeyedServiceFactory::GetActorKeyedService(agent_profile_);
+  actor::ActorTask* task = actor_service->GetTask(tool_provider_->GetTaskId());
+  ASSERT_TRUE(task);
+
+  // A page action against a tab already on an extension store URL must be
+  // rejected by the page-action (MayActOnTab) BRAVE_MAY_ACT_ON_URL_INTERNAL
+  // hook in the execution_engine.cc override.
+  base::test::TestFuture<actor::MayActOnUrlBlockReason> block_reason;
+  task->GetExecutionEngine().MayActOnTab(*tab, actor_service->GetJournal(),
+                                         tool_provider_->GetTaskId(),
+                                         block_reason.GetCallback());
+  EXPECT_NE(block_reason.Take(), actor::MayActOnUrlBlockReason::kAllowed);
 }
 
 // Test drag and release tool with coordinates (since drag needs from/to)

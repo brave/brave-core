@@ -29,7 +29,10 @@ class MockContainersMenuModelDelegate
               (),
               (override const));
 
-  MOCK_METHOD(Browser*, GetBrowserToOpenSettings, (), (override));
+  MOCK_METHOD(BrowserWindowInterface*,
+              GetBrowserToOpenSettings,
+              (),
+              (override));
 
   MOCK_METHOD(float, GetScaleFactor, (), (override));
 };

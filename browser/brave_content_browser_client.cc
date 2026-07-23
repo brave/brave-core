@@ -309,7 +309,11 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #endif
 
 #if BUILDFLAG(IS_ANDROID)
+#include "base/files/memory_mapped_file.h"
 #include "brave/browser/ui/webui/new_tab_takeover/android/new_tab_takeover_ui.h"
+#include "chrome/common/chrome_descriptors_android.h"
+#include "content/public/browser/posix_file_descriptor_info.h"
+#include "ui/base/resource/resource_bundle_android.h"
 #endif  // BUILDFLAG(IS_ANDROID)
 
 #if !BUILDFLAG(IS_ANDROID)
@@ -1700,3 +1704,24 @@ bool BraveContentBrowserClient::IsJitDisabledForSite(
   return ChromeContentBrowserClient::IsJitDisabledForSite(browser_context,
                                                           site_url);
 }
+
+#if BUILDFLAG(IS_ANDROID)
+void BraveContentBrowserClient::GetAdditionalMappedFilesForChildProcess(
+    const base::CommandLine& command_line,
+    int child_process_id,
+    content::PosixFileDescriptorInfo* mappings) {
+  ChromeContentBrowserClient::GetAdditionalMappedFilesForChildProcess(
+      command_line, child_process_id, mappings);
+
+  // Share brave_resources.pak (opened by the browser via JNI) with child
+  // processes. Native-only (javaless) renderers have no JVM and cannot open the
+  // APK asset themselves; they load it from this descriptor. Mirrors how Chrome
+  // shares resources.pak (see ChromeContentBrowserClient with
+  // kAndroidUIResourcesPakDescriptor).
+  base::MemoryMappedFile::Region region;
+  int fd = ui::GetBraveResourcesPackFd(&region);
+  if (fd != -1) {
+    mappings->ShareWithRegion(kBraveResourcesPakDescriptor, fd, region);
+  }
+}
+#endif  // BUILDFLAG(IS_ANDROID)

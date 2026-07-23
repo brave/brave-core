@@ -275,7 +275,7 @@ public class BravePermissionAccountsListAdapter
                 }
             }
         } else {
-            mCheckedPositions.remove((Integer) holder.getBindingAdapterPosition());
+            mCheckedPositions.remove(/* element */ (Integer) holder.getBindingAdapterPosition());
         }
         if (mAccountChangeListener != null) {
             mAccountChangeListener.onAccountCheckChanged(accountInfo, checked);

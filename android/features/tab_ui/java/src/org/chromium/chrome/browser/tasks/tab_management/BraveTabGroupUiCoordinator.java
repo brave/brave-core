@@ -115,12 +115,17 @@ public class BraveTabGroupUiCoordinator extends TabGroupUiCoordinator {
         // TabModelSelector.getModel returns EmptyTabModel with null profile when the model is not
         // found.
         // Upstream does not have this issue because they don't use BottomControlsCoordinator
+        //
+        // Upstream removed TabModelSelectorObserver.onChange() (see the Chromium change below), so
+        // we now wait on the more specific onTabStateInitialized() event, which fires once the tab
+        // count and tab model states are reliable - exactly the readiness the guard below needs.
+        // https://chromium.googlesource.com/chromium/src/+/e8bb4c2d0dfadb240bb8a3f46d90da58510b9930
         if (mTabModelSelector.getModels().size() < 2
                 || mTabModelSelector.getModel(false).getProfile() == null) {
             mTabModelSelector.addObserver(
                     new TabModelSelectorObserver() {
                         @Override
-                        public void onChange() {
+                        public void onTabStateInitialized() {
                             if (mTabModelSelector.getModels().size() >= 2
                                     && mTabModelSelector.getModel(false).getProfile() != null) {
                                 callSuperInitializeWithNative(
