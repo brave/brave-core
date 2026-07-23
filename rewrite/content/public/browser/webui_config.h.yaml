@@ -1,0 +1,23 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# This is necessary because of the use of `CONTENT_EXPORT` in the class
+# declaration.
+blank_macros_for_ast_parsing: true
+
+substitutions:
+  - description: |
+      Declare `WebUIConfig::ShouldHandleSubdomains()`.
+
+      Brave serves some chrome-untrusted:// WebUIs from single-label subdomains
+      of their host, so that each instance gets its own origin (e.g.
+      chrome-untrusted://<id>.leo-workspaces). `WebUIConfigMap::GetConfig()`
+      asks the config registered for the parent host whether it handles its own
+      subdomains, so the opt-in stays with the config instead of living in a
+      separate registry. Defaults to false, and is only honored for
+      chrome-untrusted:// configs.
+    add_to_public:
+      class_name: WebUIConfig
+      code: 'virtual bool ShouldHandleSubdomains() const;'
