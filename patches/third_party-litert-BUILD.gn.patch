@@ -1,0 +1,39 @@
+diff --git a/third_party/litert/BUILD.gn b/third_party/litert/BUILD.gn
+index ad72a9d9a91fae0277d69a4da51f13055c1dcefe..06d49219ed5f01a8e0b18bd28b93eed9536df49e 100644
+--- a/third_party/litert/BUILD.gn
++++ b/third_party/litert/BUILD.gn
+@@ -66,13 +66,16 @@ config("litert_config") {
+     "src",
+   ]
+   defines = [
+-    "LITERT_DISABLE_METAL_SUPPORT",
+     "LITERT_DISABLE_OPENCL_SUPPORT",
+     "LITERT_DISABLE_OPENGL_SUPPORT",
+     "LITERT_HAS_OPENCL_SUPPORT=0",
+     "LITERT_WITH_EXTERNAL_WEIGHT_LOADER",
+   ]
+ 
++  if (!is_mac) {
++    defines += [ "LITERT_DISABLE_METAL_SUPPORT" ]
++  }
++
+   if (build_litert_with_xnnpack) {
+     defines += [ "LITERT_USE_XNNPACK" ]
+   } else {
+@@ -369,6 +372,7 @@ source_set("litert_headers") {
+     ":litert_core",
+     ":litert_runtime",
+     ":litert_runtime_accelerators",
++    "//brave/third_party/litert:litert_metal_info",
+   ]
+ }
+ 
+@@ -527,6 +531,8 @@ static_library("litert_runtime") {
+     ]
+   }
+   deps = [ ":litert_headers" ]
++  import("//brave/third_party/litert/sources.gni")
++  deps += brave_litert_runtime_deps
+   if (use_litert_tflite) {
+     deps += [
+       ":tflite",

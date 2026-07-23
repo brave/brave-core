@@ -6,16 +6,29 @@
 #include "brave/services/passage_embeddings/litert_model_runner.h"
 
 #include <algorithm>
+#include <string>
 #include <utility>
 
+#include "base/base_paths.h"
+#include "base/feature_list.h"
+#include "base/files/file_util.h"
 #include "base/logging.h"
 #include "base/memory/ptr_util.h"
+#include "base/native_library.h"
+#include "base/path_service.h"
+#include "build/build_config.h"
 #include "third_party/litert/src/litert/cc/litert_element_type.h"
 #include "third_party/litert/src/litert/cc/litert_environment_options.h"
 #include "third_party/litert/src/litert/cc/litert_layout.h"
 #include "third_party/litert/src/litert/cc/litert_options.h"
 #include "third_party/litert/src/litert/cc/litert_ranked_tensor_type.h"
 #include "third_party/litert/src/litert/cc/litert_tensor_buffer.h"
+#include "third_party/litert/src/litert/cc/options/litert_gpu_options.h"
+
+#if BUILDFLAG(IS_MAC)
+#include "base/apple/bundle_locations.h"
+#include "base/apple/foundation_util.h"
+#endif
 
 namespace brave_history_embeddings {
 
@@ -23,6 +36,38 @@ namespace {
 
 // [bos] + [eos] control tokens, matching upstream GemmaModelExecutor.
 constexpr size_t kControlTokensCount = 2;
+
+// Forces the CPU backend even when the GPU accelerator is bundled, so the CPU
+// path can be exercised on GPU-capable machines. Disabled by default.
+BASE_FEATURE(kBraveHistoryEmbeddingsLitertForceCpu,
+             "BraveHistoryEmbeddingsLitertForceCpu",
+             base::FEATURE_DISABLED_BY_DEFAULT);
+
+// Directory holding the prebuilt accelerator (see //brave/third_party/litert):
+// the framework's Libraries dir when bundled on macOS, else the module dir.
+base::FilePath GetAcceleratorLibraryDir() {
+#if BUILDFLAG(IS_MAC)
+  if (base::apple::AmIBundled()) {
+    return base::apple::FrameworkBundlePath().Append("Libraries");
+  }
+#endif
+  return base::PathService::CheckedGet(base::DIR_MODULE);
+}
+
+// The accelerator is Metal on macOS, WebGPU on Linux/Windows.
+bool AcceleratorPresent(const base::FilePath& dir) {
+#if BUILDFLAG(IS_MAC)
+  static constexpr char kAcceleratorName[] = "LiteRtMetalAccelerator";
+#elif BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_WIN)
+  static constexpr char kAcceleratorName[] = "LiteRtWebGpuAccelerator";
+#else
+  return false;
+#endif
+#if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_WIN)
+  return !dir.empty() && base::PathExists(dir.AppendASCII(
+                             base::GetNativeLibraryName(kAcceleratorName)));
+#endif
+}
 
 }  // namespace
 
@@ -33,6 +78,8 @@ LitertModelRunner::~LitertModelRunner() = default;
 // static
 std::unique_ptr<LitertModelRunner> LitertModelRunner::Create(
     base::span<const uint8_t> tflite_model,
+    bool use_gpu,
+    const base::FilePath& gpu_runtime_lib_dir,
     int bos_id,
     int eos_id,
     int pad_id) {
@@ -40,17 +87,25 @@ std::unique_ptr<LitertModelRunner> LitertModelRunner::Create(
   runner->bos_id_ = bos_id;
   runner->eos_id_ = eos_id;
   runner->pad_id_ = pad_id >= 0 ? pad_id : 0;
-  if (!runner->Init(tflite_model)) {
+  if (!runner->Init(tflite_model, use_gpu, gpu_runtime_lib_dir)) {
     return nullptr;
   }
   return runner;
 }
 
-bool LitertModelRunner::Init(base::span<const uint8_t> tflite_model) {
+bool LitertModelRunner::Init(base::span<const uint8_t> tflite_model,
+                             bool use_gpu,
+                             const base::FilePath& gpu_runtime_lib_dir) {
   // The runtime references the model bytes past compilation; keep our own copy.
   tflite_model_.assign(tflite_model.begin(), tflite_model.end());
 
   std::vector<litert::EnvironmentOptions::Option> env_options;
+  const std::string runtime_lib_dir = gpu_runtime_lib_dir.AsUTF8Unsafe();
+  if (use_gpu && !runtime_lib_dir.empty()) {
+    env_options.emplace_back(
+        litert::EnvironmentOptions::Tag::kRuntimeLibraryDir,
+        runtime_lib_dir.c_str());
+  }
   auto environment = litert::Environment::Create(litert::EnvironmentOptions(
       litert::Span<const litert::EnvironmentOptions::Option>(
           env_options.data(), env_options.size())));
@@ -65,7 +120,21 @@ bool LitertModelRunner::Init(base::span<const uint8_t> tflite_model) {
   if (!compile_options) {
     return false;
   }
-  compile_options->SetHardwareAccelerators(litert::HwAccelerators::kCpu);
+  if (use_gpu) {
+    compile_options->SetHardwareAccelerators(litert::HwAccelerators::kGpu);
+    auto gpu_options = compile_options->GetGpuOptions();
+    if (!gpu_options) {
+      return false;
+    }
+    // EmbeddingGemma is mixed-precision (quantized FC/Conv weights); both knobs
+    // are required for correct GPU output (fp16 collapses to zero).
+    gpu_options->EnableAllowSrcQuantizedFcConvOps(true);
+    if (!gpu_options->SetPrecision(litert::GpuOptions::Precision::kFp32)) {
+      return false;
+    }
+  } else {
+    compile_options->SetHardwareAccelerators(litert::HwAccelerators::kCpu);
+  }
 
   auto model = litert::CompiledModel::Create(
       *environment_,
@@ -171,9 +240,15 @@ std::unique_ptr<LitertModelRunner> MaybeCreateLitertModelRunner(
     int bos_id,
     int eos_id,
     int pad_id) {
-  // Runs the model on LiteRT's CPU backend. LiteRT is compiled from source on
-  // every platform, so it owns execution rather than falling back to upstream's
-  // tflite executor.
+  // Use the GPU accelerator when it is bundled for this platform/arch,
+  // otherwise run the same model on LiteRT's CPU backend. GPU is unavailable on
+  // arches with no accelerator prebuilt (x64 macOS, Windows arm64); the CPU
+  // backend is compiled from source everywhere, so LiteRT still owns execution
+  // rather than falling back to upstream's tflite executor.
+  const base::FilePath accelerator_dir = GetAcceleratorLibraryDir();
+  const bool use_gpu =
+      AcceleratorPresent(accelerator_dir) &&
+      !base::FeatureList::IsEnabled(kBraveHistoryEmbeddingsLitertForceCpu);
   const int64_t length = embeddings_model_file.GetLength();
   if (length <= 0) {
     return nullptr;
@@ -182,7 +257,8 @@ std::unique_ptr<LitertModelRunner> MaybeCreateLitertModelRunner(
   if (!embeddings_model_file.ReadAndCheck(0, bytes)) {
     return nullptr;
   }
-  return LitertModelRunner::Create(bytes, bos_id, eos_id, pad_id);
+  return LitertModelRunner::Create(bytes, use_gpu, accelerator_dir, bos_id,
+                                   eos_id, pad_id);
 }
 
 }  // namespace brave_history_embeddings

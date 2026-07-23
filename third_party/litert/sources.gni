@@ -1,0 +1,24 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/local_ai/buildflags/buildflags.gni")
+
+# Deps injected into //third_party/litert:litert_runtime. On macOS this pulls in
+# the Metal accelerator glue (litert_metal_info); empty elsewhere.
+if (is_mac) {
+  brave_litert_runtime_deps = [ "//brave/third_party/litert:litert_metal_info" ]
+} else {
+  brave_litert_runtime_deps = []
+}
+
+# Injected into the macOS chrome framework's bundle_deps. Ships the prebuilt
+# Metal accelerator so the sandboxed embedder can dlopen it. Empty when local AI
+# is compiled out (e.g. Brave Origin builds), which don't run the embedder.
+if (is_mac && target_cpu == "arm64" && enable_local_ai) {
+  brave_litert_chrome_framework_bundle_deps =
+      [ "//brave/third_party/litert:litert_metal_accelerator_bundle_data" ]
+} else {
+  brave_litert_chrome_framework_bundle_deps = []
+}

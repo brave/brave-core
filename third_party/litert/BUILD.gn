@@ -1,0 +1,77 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/local_ai/buildflags/buildflags.gni")
+
+# Ships the prebuilt LiteRT GPU accelerator next to the executable so the
+# sandboxed on-device-model utility process can dlopen it. Metal on macOS,
+# WebGPU on Linux/Windows; the DEPS hook materializes the binary from its LFS
+# pointer so it stays in lockstep with the pinned LiteRT source. Only built when
+# local AI is enabled; Brave Origin builds compile the embedder out and must not
+# ship the accelerator.
+# LiteRT ships a Metal accelerator only for arm64 macs; x64 macs fall back to
+# the CPU embedder and bundle nothing.
+if (is_mac && target_cpu == "arm64" && enable_local_ai) {
+  # macOS: bundle into the app's Libraries dir (Seatbelt only allows the
+  # bundle), mirroring optimization_guide_library. The embedder finds it via
+  # FrameworkBundlePath()/Libraries.
+  bundle_data("litert_metal_accelerator_bundle_data") {
+    sources = [ "//third_party/litert/src/litert/prebuilt/macos_arm64/libLiteRtMetalAccelerator.dylib" ]
+    outputs = [ "{{bundle_contents_dir}}/Libraries/{{source_file_part}}" ]
+  }
+}
+
+if ((is_linux || is_win) && enable_local_ai) {
+  # LiteRT ships a WebGPU accelerator for Linux (x64/arm64) and Windows x64
+  # only; Windows arm64 has no prebuilt and falls back to the CPU embedder.
+  _litert_accelerator = ""
+  if (is_win) {
+    if (target_cpu == "x64") {
+      _litert_accelerator = "//third_party/litert/src/litert/prebuilt/windows_x86_64/libLiteRtWebGpuAccelerator.dll"
+    }
+  } else if (target_cpu == "arm64") {
+    _litert_accelerator = "//third_party/litert/src/litert/prebuilt/linux_arm64/libLiteRtWebGpuAccelerator.so"
+  } else {
+    _litert_accelerator = "//third_party/litert/src/litert/prebuilt/linux_x86_64/libLiteRtWebGpuAccelerator.so"
+  }
+
+  # Linux/Windows have no app bundle: copy the accelerator into the output dir
+  # next to the executable, where the embedder finds it via DIR_MODULE.
+  if (_litert_accelerator != "") {
+    copy("litert_webgpu_accelerator") {
+      sources = [ _litert_accelerator ]
+      outputs = [ "$root_out_dir/{{source_file_part}}" ]
+    }
+  }
+}
+
+if (is_mac) {
+  # metal_info.cc is Objective-C++ (imports <Metal/Metal.h>, uses ARC) despite
+  # its .cc extension, so it needs its own target to force the ObjC++ language
+  # and link the Metal/Foundation frameworks. Only the Metal device handle lives
+  # here; the rest of the LiteRT runtime talks to it through metal_info.h's C
+  # ABI. Enabled by the Metal support patch to
+  # //third_party/litert:litert_config and injected into litert_runtime via
+  # sources.gni.
+  source_set("litert_metal_info") {
+    sources = [ "//third_party/litert/src/litert/runtime/metal_info.cc" ]
+    cflags = [
+      "-x",
+      "objective-c++",
+      "-fobjc-arc",
+    ]
+    frameworks = [
+      "Metal.framework",
+      "Foundation.framework",
+    ]
+    deps = [ "//third_party/litert:litert_headers" ]
+    configs -= [ "//build/config/compiler:chromium_code" ]
+    configs += [
+      "//build/config/compiler:no_chromium_code",
+      "//build/config/compiler:rtti",
+    ]
+    visibility = [ "//third_party/litert:*" ]
+  }
+}

@@ -54,8 +54,8 @@ MaybeCreateLitertExecutor(base::File& embeddings_model_file,
                           int bos_id,
                           int eos_id,
                           int pad_id) {
-  // The runner owns the CompiledModel + LiteRT environment, which are
-  // expensive to build (model compile). PassageEmbedderImpl
+  // The runner owns the CompiledModel + Metal/WebGPU environment, which are
+  // expensive to build (compile + accelerator dlopen). PassageEmbedderImpl
   // rebuilds its executor on every priority change, and a fresh instance is
   // created whenever the embedder is torn down and reloaded -- so build the
   // runner once per process and hand out lightweight, non-owning executors that
@@ -74,8 +74,8 @@ MaybeCreateLitertExecutor(base::File& embeddings_model_file,
 }  // namespace brave_history_embeddings
 
 // Injected at the top of PassageEmbedderImpl::BuildExecutionTask so
-// EmbeddingGemma runs through LiteRT's CompiledModel, falling through to the
-// upstream tflite executor otherwise.
+// EmbeddingGemma runs on the GPU via LiteRT when the accelerator is present,
+// falling through to the upstream tflite executor otherwise.
 #define BRAVE_PASSAGE_EMBEDDER_IMPL_BUILD_EXECUTION_TASK           \
   if (std::unique_ptr<PassageEmbedderExecutor> executor =          \
           brave_history_embeddings::MaybeCreateLitertExecutor(     \

@@ -224,6 +224,49 @@ hooks = [
                'src/brave/third_party/node/node-mac-arm64',
                'src/brave/third_party/node/node-win-x64']
   },
+  # Materialize the prebuilt LiteRT GPU accelerators from their Git LFS pointers
+  # so the bundled binary stays in lockstep with the pinned LiteRT source (the
+  # googlesource mirror strips the LFS content). Gated on the host OS, not the
+  # target CPU: gclient can't see the gn target_cpu at sync time and arm64 is
+  # cross-compiled on x64 hosts, so each OS fetches every arch it can build
+  # (Metal on macOS, WebGPU on Linux/Windows). The build bundles only the one
+  # matching target_cpu; extras just sit unused in the checkout.
+  {
+    'name': 'litert_accelerator_mac_arm64',
+    'pattern': '.',
+    'condition': 'checkout_mac',
+    'action': ['python3',
+               'build/litert/materialize_prebuilt_accelerator.py',
+               '--pointer',
+               '../third_party/litert/src/litert/prebuilt/macos_arm64/libLiteRtMetalAccelerator.dylib.lfs']
+  },
+  {
+    'name': 'litert_accelerator_linux_x64',
+    'pattern': '.',
+    'condition': 'checkout_linux',
+    'action': ['python3',
+               'build/litert/materialize_prebuilt_accelerator.py',
+               '--pointer',
+               '../third_party/litert/src/litert/prebuilt/linux_x86_64/libLiteRtWebGpuAccelerator.so.lfs']
+  },
+  {
+    'name': 'litert_accelerator_linux_arm64',
+    'pattern': '.',
+    'condition': 'checkout_linux',
+    'action': ['python3',
+               'build/litert/materialize_prebuilt_accelerator.py',
+               '--pointer',
+               '../third_party/litert/src/litert/prebuilt/linux_arm64/libLiteRtWebGpuAccelerator.so.lfs']
+  },
+  {
+    'name': 'litert_accelerator_win_x64',
+    'pattern': '.',
+    'condition': 'checkout_win',
+    'action': ['python3',
+               'build/litert/materialize_prebuilt_accelerator.py',
+               '--pointer',
+               '../third_party/litert/src/litert/prebuilt/windows_x86_64/libLiteRtWebGpuAccelerator.dll.lfs']
+  },
 ]
 
 include_rules = [
