@@ -216,7 +216,12 @@ describe('AttachmentUploadItems', () => {
       createMockFile('photo.jpg', Mojom.UploadedFileType.kImage),
     ]
 
-    render(<AttachmentUploadItems uploadedFiles={uploadedFiles} />)
+    render(
+      <AttachmentUploadItems
+        uploadedFiles={uploadedFiles}
+        onPreview={jest.fn()}
+      />,
+    )
 
     expect(screen.getByText('photo.jpg')).toBeInTheDocument()
   })
@@ -229,7 +234,12 @@ describe('AttachmentUploadItems', () => {
       ),
     ]
 
-    render(<AttachmentUploadItems uploadedFiles={uploadedFiles} />)
+    render(
+      <AttachmentUploadItems
+        uploadedFiles={uploadedFiles}
+        onPreview={jest.fn()}
+      />,
+    )
 
     expect(
       screen.getByText('CHAT_UI_FULL_PAGE_SCREENSHOT_TITLE'),
@@ -253,7 +263,10 @@ describe('AttachmentUploadItems', () => {
     ]
 
     const { container } = render(
-      <AttachmentUploadItems uploadedFiles={uploadedFiles} />,
+      <AttachmentUploadItems
+        uploadedFiles={uploadedFiles}
+        onPreview={jest.fn()}
+      />,
     )
 
     // Should only find one "CHAT_UI_FULL_PAGE_SCREENSHOT_TITLE" title
@@ -281,7 +294,12 @@ describe('AttachmentUploadItems', () => {
       createMockFile('document.pdf', Mojom.UploadedFileType.kPdf),
     ]
 
-    render(<AttachmentUploadItems uploadedFiles={uploadedFiles} />)
+    render(
+      <AttachmentUploadItems
+        uploadedFiles={uploadedFiles}
+        onPreview={jest.fn()}
+      />,
+    )
 
     expect(screen.getByText('photo.jpg')).toBeInTheDocument()
     expect(
@@ -319,6 +337,7 @@ describe('AttachmentUploadItems', () => {
       <AttachmentUploadItems
         uploadedFiles={uploadedFiles}
         remove={mockRemove}
+        onPreview={jest.fn()}
       />,
     )
 
@@ -356,6 +375,7 @@ describe('AttachmentUploadItems', () => {
       <AttachmentUploadItems
         uploadedFiles={uploadedFiles}
         remove={mockRemove}
+        onPreview={jest.fn()}
       />,
     )
 
@@ -383,7 +403,12 @@ describe('AttachmentUploadItems', () => {
       ),
     ]
 
-    render(<AttachmentUploadItems uploadedFiles={uploadedFiles} />)
+    render(
+      <AttachmentUploadItems
+        uploadedFiles={uploadedFiles}
+        onPreview={jest.fn()}
+      />,
+    )
 
     // Regular screenshot should show with its original filename
     expect(screen.getByText('regular_screenshot.png')).toBeInTheDocument()

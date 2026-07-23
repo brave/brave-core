@@ -150,7 +150,7 @@ function AttachmentChips(props: {
   isStandalone: boolean
   disassociateContent: (content: Mojom.AssociatedContent) => void
   removeFile: (index: number) => void
-  onPreviewFile?: (file: Mojom.UploadedFile) => void
+  onPreviewFile: (file: Mojom.UploadedFile) => void
 }) {
   const visibleUploadCount = getVisibleUploadCount(props.pendingMessageFiles)
   const spinnerCount = props.isUploadingFiles ? 1 : 0

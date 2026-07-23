@@ -59,12 +59,19 @@ export default function ImageLightbox(props: Props) {
     }
   }, [])
 
-  const dataUrl = React.useMemo(() => {
+  const imageBlob = React.useMemo(() => {
     if (!file) {
       return null
     }
-    return URL.createObjectURL(getImageBlob(file))
+    return getImageBlob(file)
   }, [file])
+
+  const dataUrl = React.useMemo(() => {
+    if (!imageBlob) {
+      return null
+    }
+    return URL.createObjectURL(imageBlob)
+  }, [imageBlob])
 
   React.useEffect(() => {
     setDialogWidth(null)
@@ -122,13 +129,12 @@ export default function ImageLightbox(props: Props) {
   }, [clearCopySuccessTimeout])
 
   const handleCopy = React.useCallback(async () => {
-    if (!file || isCopySuccess) {
+    if (!imageBlob || isCopySuccess) {
       return
     }
-    const blob = getImageBlob(file)
     try {
       await navigator.clipboard.write([
-        new ClipboardItem({ [blob.type]: blob }),
+        new ClipboardItem({ [imageBlob.type]: imageBlob }),
       ])
       showCopySuccess()
     } catch {
@@ -136,14 +142,14 @@ export default function ImageLightbox(props: Props) {
       // blob type is mismatched; retry with an explicit PNG type.
       try {
         await navigator.clipboard.write([
-          new ClipboardItem({ 'image/png': blob }),
+          new ClipboardItem({ 'image/png': imageBlob }),
         ])
         showCopySuccess()
       } catch {
         // Leave the button in its default state if copy fails.
       }
     }
-  }, [file, isCopySuccess, showCopySuccess])
+  }, [imageBlob, isCopySuccess, showCopySuccess])
 
   const handleDownload = React.useCallback(() => {
     if (!file || !dataUrl) {
@@ -152,7 +158,9 @@ export default function ImageLightbox(props: Props) {
     const link = document.createElement('a')
     link.href = dataUrl
     link.download = file.filename || 'image.png'
+    document.body.appendChild(link)
     link.click()
+    document.body.removeChild(link)
   }, [file, dataUrl])
 
   // Leo Dialog uses --leo-dialog-width as max-width (its own width is

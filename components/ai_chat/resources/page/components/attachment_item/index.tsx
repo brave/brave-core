@@ -170,7 +170,7 @@ function AttachmentUploadItem({
   file: Mojom.UploadedFile
   index: number
   remove?: (index: number) => void
-  onPreview?: (file: Mojom.UploadedFile) => void
+  onPreview: (file: Mojom.UploadedFile) => void
   className?: string
 }) {
   const isImage =
@@ -201,30 +201,23 @@ function AttachmentUploadItem({
   }, [file.filesize])
 
   if (isImage) {
-    const image = (
-      <img
-        className={styles.image}
-        src={dataUrl!}
-        alt=''
-      />
-    )
     return (
       <AttachmentItem
         icon={
-          onPreview ? (
-            <button
-              type='button'
-              className={styles.imageButton}
-              aria-label={getLocale(
-                S.CHAT_UI_IMAGE_LIGHTBOX_PREVIEW_BUTTON_LABEL,
-              )}
-              onClick={() => onPreview(file)}
-            >
-              {image}
-            </button>
-          ) : (
-            image
-          )
+          <button
+            type='button'
+            className={styles.imageButton}
+            aria-label={getLocale(
+              S.CHAT_UI_IMAGE_LIGHTBOX_PREVIEW_BUTTON_LABEL,
+            )}
+            onClick={() => onPreview(file)}
+          >
+            <img
+              className={styles.image}
+              src={dataUrl!}
+              alt=''
+            />
+          </button>
         }
         title={
           isFileFullPageScreenshot
@@ -254,7 +247,7 @@ function AttachmentUploadItem({
 export function AttachmentUploadItems(props: {
   uploadedFiles: Mojom.UploadedFile[]
   remove?: (index: number) => void
-  onPreview?: (file: Mojom.UploadedFile) => void
+  onPreview: (file: Mojom.UploadedFile) => void
   chipClassName?: string
 }) {
   // Calculate first full page screenshot index.

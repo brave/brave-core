@@ -22,7 +22,6 @@
 
 .imageContainer {
   // Width follows the dialog; height comes from the image aspect ratio.
-  line-height: 0;
   width: 100%;
 }
 
@@ -64,13 +63,13 @@
 }
 
 .actions {
+  --leo-icon-size: 20px;
+
   display: flex;
   flex-direction: row;
   align-items: center;
   gap: var(--leo-spacing-m);
   flex-shrink: 0;
-
-  --leo-icon-size: 20px;
 }
 
 .actionButton {
