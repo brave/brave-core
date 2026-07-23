@@ -5,11 +5,13 @@
 
 #include "brave/components/brave_wallet/browser/eth_tx_meta.h"
 
+#include <algorithm>
 #include <optional>
 #include <string>
 #include <vector>
 
 #include "base/check_op.h"
+#include "base/strings/string_util.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/eip1559_transaction.h"
@@ -128,6 +130,24 @@ mojom::TransactionInfoPtr EthTxMeta::ToTransactionInfo() const {
 
     if (!swap_info && swap_info_from_data) {
       swap_info = std::move(swap_info_from_data);
+    }
+  }
+
+  if (!authorization_findings_.empty()) {
+    auto approval_for_all_it = std::ranges::find_if(
+        authorization_findings_, [](const AuthorizationFinding& f) {
+          return f.kind == AuthorizationFinding::Kind::kApprovalForAll;
+        });
+    if (approval_for_all_it != authorization_findings_.end()) {
+      std::vector<std::string> operators;
+      for (const auto& f : authorization_findings_) {
+        if (f.kind == AuthorizationFinding::Kind::kApprovalForAll) {
+          operators.push_back(f.grantee);
+        }
+      }
+      tx_type = mojom::TransactionType::ERC721SetApprovalForAll;
+      tx_params = {"address", "bool"};
+      tx_args = {base::JoinString(operators, ","), "0x1"};
     }
   }
 

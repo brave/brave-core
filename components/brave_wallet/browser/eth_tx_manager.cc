@@ -318,6 +318,94 @@ void EthTxManager::ContinueAddUnapprovedTransaction(
   }
   tx->set_gas_limit(gas_limit);
 
+  if (tx->data().size() < 4) {
+    FinalizeAddUnapprovedTransaction(from, origin, std::move(tx),
+                                     std::move(callback), sign_only,
+                                     std::move(swap_info), {});
+    return;
+  }
+
+  pending_simulate_tx_ = std::make_unique<PendingSimulateTx>(
+      from.Clone(), origin, std::move(tx), std::move(callback), sign_only,
+      std::move(swap_info));
+
+  std::string chain_id =
+      Uint256ValueToHex(pending_simulate_tx_->tx->chain_id());
+  std::string from_address = from->address;
+  std::string to_address = pending_simulate_tx_->tx->GetToChecksumAddress();
+  std::string value_hex = Uint256ValueToHex(pending_simulate_tx_->tx->value());
+  std::string data_hex = ToHex(base::span(pending_simulate_tx_->tx->data()));
+
+  simulate_timer_.Start(
+      FROM_HERE, base::Milliseconds(500),
+      base::BindOnce(&EthTxManager::OnSimulateEvmTransactionForUnapproved,
+                     weak_factory_.GetWeakPtr(), true, false,
+                     std::vector<SimulatedCall>{}));
+
+  json_rpc_service_->SimulateEvmTransaction(
+      chain_id, from_address, to_address, value_hex, data_hex,
+      base::BindOnce(&EthTxManager::OnSimulateEvmTransactionForUnapproved,
+                     weak_factory_.GetWeakPtr(), false));
+}
+
+EthTxManager::PendingSimulateTx::PendingSimulateTx(
+    const mojom::AccountIdPtr& from,
+    const std::optional<url::Origin>& origin,
+    std::unique_ptr<EthTransaction> tx,
+    AddUnapprovedEvmTransactionCallback callback,
+    bool sign_only,
+    mojom::SwapInfoPtr swap_info)
+    : from(from.Clone()),
+      origin(origin),
+      tx(std::move(tx)),
+      callback(std::move(callback)),
+      sign_only(sign_only),
+      swap_info(std::move(swap_info)) {}
+
+EthTxManager::PendingSimulateTx::~PendingSimulateTx() = default;
+
+void EthTxManager::OnSimulateEvmTransactionForUnapproved(
+    bool timed_out,
+    bool ok,
+    std::vector<SimulatedCall> calls) {
+  if (!pending_simulate_tx_) {
+    return;
+  }
+  if (timed_out) {
+    if (simulate_timer_.IsRunning()) {
+      return;
+    }
+  } else {
+    simulate_timer_.Stop();
+  }
+
+  auto pending = std::move(pending_simulate_tx_);
+  std::vector<AuthorizationFinding> findings;
+  if (!timed_out && ok && !calls.empty()) {
+    findings = ScanAuthorizations(calls);
+  } else {
+    auto operators = FindSetApprovalForAllOperatorsByByteScan(
+        base::span(pending->tx->data()));
+    for (const auto& op : operators) {
+      findings.push_back(
+          {AuthorizationFinding::Kind::kApprovalForAll, "", "", op, ""});
+    }
+  }
+
+  FinalizeAddUnapprovedTransaction(
+      pending->from, pending->origin, std::move(pending->tx),
+      std::move(pending->callback), pending->sign_only,
+      std::move(pending->swap_info), std::move(findings));
+}
+
+void EthTxManager::FinalizeAddUnapprovedTransaction(
+    const mojom::AccountIdPtr& from,
+    const std::optional<url::Origin>& origin,
+    std::unique_ptr<EthTransaction> tx,
+    AddUnapprovedEvmTransactionCallback callback,
+    bool sign_only,
+    mojom::SwapInfoPtr swap_info,
+    std::vector<AuthorizationFinding> findings) {
   EthTxMeta meta(from, std::move(tx));
   DCHECK(!meta.chain_id().empty());
   meta.set_id(TxMeta::GenerateMetaID());
@@ -326,6 +414,7 @@ void EthTxManager::ContinueAddUnapprovedTransaction(
   meta.set_status(mojom::TransactionStatus::Unapproved);
   meta.set_sign_only(sign_only);
   meta.set_swap_info(swap_info.Clone());
+  meta.set_authorization_findings(std::move(findings));
   if (!tx_state_manager().AddOrUpdateTx(meta)) {
     std::move(callback).Run(
         false, "", l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
