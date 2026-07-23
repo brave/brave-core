@@ -23,11 +23,20 @@ filecoin-cxx = "1"
 brave-news-cxx = "1"
 brave_wallet = "1"
 adblock-cxx = { version = "1" }
+image_metadata_stripper_cxx = "1"
 constellation-cxx = "0.1"
 challenge-bypass-ristretto-cxx = "1"
 zcash = "1"
 anonymous-credentials = "0.1"
 document-extractor = "0.1"
+
+# Codec crates for Chromium's //third_party/rust/image (plastered to enable
+# jpeg/png/webp/tiff). Versions match image 0.25.x optional deps. png is
+# already vendored by Chromium as //third_party/rust/png/v0_18.
+image-webp = "0.2.0"
+tiff = "0.11.2"
+zune-core = { version = "0.5.0", default-features = false }
+zune-jpeg = "0.5.5"
 
 [patch.crates-io.idna_v1]
 path = "../idna/v1/crate"
@@ -76,6 +85,10 @@ package = "brave_wallet"
 [patch.crates-io.adblock-cxx_v1]
 path = "../../../components/brave_shields/core/common/adblock/rs"
 package = "adblock-cxx"
+
+[patch.crates-io.image_metadata_stripper_cxx_v1]
+path = "../../../components/image_metadata_stripper/rs"
+package = "image_metadata_stripper_cxx"
 
 [patch.crates-io.constellation-cxx_v0_1]
 path = "../../../components/p3a/constellation/rs/cxx"

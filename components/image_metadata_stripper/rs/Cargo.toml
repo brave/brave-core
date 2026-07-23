@@ -1,0 +1,13 @@
+[package]
+name = "image_metadata_stripper_cxx"
+version = "1.0.0"
+edition = "2021"
+license = "MPL-2.0"
+
+[dependencies]
+cxx = "1.0"
+image = { version = "0.25", default-features = false, features = ["bmp", "jpeg", "png", "tiff", "webp"] }
+
+[lib]
+name = "image_metadata_stripper_cxx"
+crate-type = ["rlib"]

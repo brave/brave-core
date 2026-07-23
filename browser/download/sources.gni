@@ -1,0 +1,17 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+brave_browser_download_sources = [
+  "//brave/browser/download/brave_download_manager_delegate.cc",
+  "//brave/browser/download/brave_download_manager_delegate.h",
+]
+
+brave_browser_download_deps = [
+  "//base",
+  "//brave/components/image_metadata_stripper",
+  "//chrome/browser/download",
+  "//chrome/browser/profiles:profile",
+  "//components/download/public/common:public",
+]

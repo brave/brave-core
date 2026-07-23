@@ -1,0 +1,29 @@
+diff --git a/third_party/rust/image/v0_25/BUILD.gn b/third_party/rust/image/v0_25/BUILD.gn
+index 2a02679960291dfb5d882231ca3d326c89b819fa..d97f04ee96e2d512dd99234df5c26b0f145d9cb4 100644
+--- a/third_party/rust/image/v0_25/BUILD.gn
++++ b/third_party/rust/image/v0_25/BUILD.gn
+@@ -102,12 +102,23 @@ cargo_crate("lib") {
+   allow_unsafe = true
+ 
+   deps = [
++    "//third_party/rust/image_webp/v0_2:lib",
++    "//third_party/rust/tiff/v0_11:lib",
++    "//third_party/rust/zune_core/v0_5:lib",
++    "//third_party/rust/zune_jpeg/v0_5:lib",
+     "//third_party/rust/bytemuck/v1:lib",
+     "//third_party/rust/byteorder_lite/v0_1:lib",
+     "//third_party/rust/moxcms/v0_8:lib",
+     "//third_party/rust/num_traits/v0_2:lib",
++    "//third_party/rust/png/v0_18:lib",
++  ]
++  features = [
++    "bmp",
++    "jpeg",
++    "png",
++    "tiff",
++    "webp",
+   ]
+-  features = [ "bmp" ]
+ 
+   #####################################################################
+   # Tweaking which GN `config`s apply to this target.
