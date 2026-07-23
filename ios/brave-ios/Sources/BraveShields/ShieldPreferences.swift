@@ -15,6 +15,11 @@ extension Preferences {
         key: "migration.shields-coredata-to-content-settings-completed",
         default: false
       )
+      /// If Developer Mode has been migrated (enabled if user has custom filter rules)
+      public static let developerModeMigrationCompleted = Preferences.Option<Bool>(
+        key: "migration.shields-developer-mode-migration-completed",
+        default: false
+      )
     }
     public static let allShields = [
       googleSafeBrowsing, blockScripts, fingerprintingProtection, blockImages,

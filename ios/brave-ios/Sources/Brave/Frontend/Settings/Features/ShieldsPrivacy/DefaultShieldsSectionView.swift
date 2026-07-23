@@ -105,7 +105,7 @@ struct DefaultShieldsSectionView: View {
       )
 
       NavigationLink {
-        FilterListsView()
+        FilterListsView(settings: settings)
       } label: {
         LabelView(
           title: Strings.Shields.contentFiltering,
