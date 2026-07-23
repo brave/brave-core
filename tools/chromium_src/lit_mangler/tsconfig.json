@@ -1,0 +1,15 @@
+{
+  "extends": "../../../build/tsconfig.json",
+  "include": [
+    "./lit_mangler.ts",
+    "./lit_mangler_cli.ts",
+    "../../../chromium_src/**/*.lit_mangler.ts",
+  ],
+  "compilerOptions": {
+    "baseUrl": "../../..",
+    "paths": {
+      "lit_mangler": ["./tools/chromium_src/lit_mangler/lit_mangler.ts"],
+    },
+    "lib": ["esnext", "dom"],
+  },
+}

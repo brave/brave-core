@@ -198,7 +198,6 @@
     "timers-browserify": "2.0.12",
     "ts-jest": "29.4.9",
     "ts-loader": "9.5.2",
-    "tsx": "4.19.2",
     "typesafe-actions": "2.2.0",
     "typescript": "5.9.3",
     "typescript-eslint": "8.54.0",
