@@ -28,7 +28,7 @@
 
 namespace brave_ads::database {
 
-void Create(ResultCallback callback) {
+void Create(RunDBTransactionCallback callback) {
   mojom::DBTransactionInfoPtr mojom_db_transaction =
       mojom::DBTransactionInfo::New();
 

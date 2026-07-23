@@ -61,19 +61,23 @@ class DatabaseManager final {
 
   // Create the database from scratch.
   void Create(ResultCallback callback);
-  void CreateCallback(ResultCallback callback, bool success);
+  void CreateCallback(
+      ResultCallback callback,
+      mojom::DBTransactionResultInfoPtr mojom_db_transaction_result);
 
   // Raze the database and create it from scratch.
   void RazeAndCreate(int from_version, ResultCallback callback);
-  void RazeAndCreateCallback(ResultCallback callback,
-                             int from_version,
-                             bool success);
+  void RazeAndCreateCallback(
+      int from_version,
+      ResultCallback callback,
+      mojom::DBTransactionResultInfoPtr mojom_db_transaction_result);
 
   // Migrate the database from `from_version` to the current version.
   void MaybeMigrate(int from_version, ResultCallback callback);
-  void MigrateFromVersionCallback(int from_version,
-                                  ResultCallback callback,
-                                  bool success);
+  void MigrateFromVersionCallback(
+      int from_version,
+      ResultCallback callback,
+      mojom::DBTransactionResultInfoPtr mojom_db_transaction_result);
 
   void NotifyWillCreateOrOpenDatabase();
   void NotifyDidCreateDatabase();

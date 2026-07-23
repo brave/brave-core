@@ -13,7 +13,7 @@
 
 namespace brave_ads::database {
 
-void Raze(ResultCallback callback) {
+void Raze(RunDBTransactionCallback callback) {
   mojom::DBTransactionInfoPtr mojom_db_transaction =
       mojom::DBTransactionInfo::New();
   Raze(mojom_db_transaction);
