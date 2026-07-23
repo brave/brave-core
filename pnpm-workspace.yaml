@@ -23,6 +23,9 @@ allowBuilds:
   usb: true
   utf-8-validate: true
 
+# HTTP fetch timeout in milliseconds (5 minutes).
+fetchTimeout: 300000
+
 # Minimum age (minutes) a published dependency version must have.
 minimumReleaseAge: 5040
 
