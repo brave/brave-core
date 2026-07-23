@@ -26,6 +26,15 @@ public class BraveSnackbarManager extends SnackbarManager {
 
     private @Nullable Runnable mPendingClickCallback;
 
+    // The single New Tab Takeover notice currently outstanding in this (window-scoped) manager, or
+    // null when none is showing or queued. Each NTP tab creates its own BraveNewTabTakeoverInfobar
+    // but they share this manager, so remembering the live notice here lets a later NTP detect it
+    // and avoid enqueueing a duplicate. It is released from the notice's SnackbarController on
+    // every
+    // dismissal path, and is naturally gone when this manager (and its activity) is destroyed, so
+    // unlike a static flag it cannot leak across sessions or get stuck set.
+    private @Nullable Snackbar mNewTabTakeoverInfobar;
+
     public BraveSnackbarManager(
             Activity activity,
             ViewGroup snackbarParentView,
@@ -45,6 +54,26 @@ public class BraveSnackbarManager extends SnackbarManager {
         super.showSnackbar(snackbar);
 
         tryMakeSnackbarClickable();
+    }
+
+    /** Returns whether a New Tab Takeover notice is currently outstanding (showing or queued). */
+    public boolean hasNewTabTakeoverInfobar() {
+        return mNewTabTakeoverInfobar != null;
+    }
+
+    /**
+     * Shows the given New Tab Takeover notice and remembers it as the single outstanding one (see
+     * {@link #hasNewTabTakeoverInfobar()}). The caller must release it via {@link
+     * #clearNewTabTakeoverInfobar()} from the notice's controller when it is dismissed.
+     */
+    public void showNewTabTakeoverInfobar(Snackbar snackbar) {
+        mNewTabTakeoverInfobar = snackbar;
+        showSnackbar(snackbar);
+    }
+
+    /** Releases the remembered New Tab Takeover notice once it has been dismissed. */
+    public void clearNewTabTakeoverInfobar() {
+        mNewTabTakeoverInfobar = null;
     }
 
     /**
