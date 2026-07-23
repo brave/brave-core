@@ -27,6 +27,9 @@
 # https://github.com/brave/brave-browser/issues/54960
 -PasswordStatusCheckServiceBaseTest.PrefInitialized
 
+# Flaky on our CI and upstream
+-IndigoToolbarTest.ExpandCollapseInteractions
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -EnterpriseReportingPrivateGetContextInfoOSFirewallTest.*
 -EnterpriseReportingPrivateGetPersistentSecretFunctionTest.GetSecret
