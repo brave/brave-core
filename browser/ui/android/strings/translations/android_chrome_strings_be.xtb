@@ -17,9 +17,11 @@
 <translation id="1052842760770519282">Некаторыя з вашых пароляў недаступныя</translation>
 <translation id="1057623954802068161">Прагартаць да верху старонкі</translation>
 <translation id="1066338698580889414">Апавяшчэнне з парадай адкрыта на ўсю вышыню</translation>
+<translation id="1067048845568873861">Створаны</translation>
 <translation id="1070689840697074178">Спампаваць файлы PDF можна тут</translation>
 <translation id="107147699690128016">Калі вы зменіце пашырэнне файла, ён можа адкрыцца ў іншай праграме, што можа быць небяспечным для вашай прылады.</translation>
 <translation id="1073328695547557412">Націсніце на значок Brave Аб’ектыва.</translation>
+<translation id="1075811647922107217">Памер старонкі</translation>
 <translation id="1080116354587839789">Дапасаваць да шырыні старонкі</translation>
 <translation id="1086486568852410168">Пошук праз Brave Аб’ектыў</translation>
 <translation id="1087799850623149508">Націсніце і ўтрымлівайце адрасны радок, каб перамясціць яго ў ніжнюю частку экрана</translation>
@@ -32,7 +34,6 @@
 <translation id="1108938384783527433">Сінхранізацыя гісторыі</translation>
 <translation id="1111673857033749125">Тут з’явяцца закладкі, захаваныя на вашых іншых прыладах.</translation>
 <translation id="1123537484474186311"><ph name="TAB_TITLE"/>, укладка "Відарыс у відарысе"</translation>
-<translation id="1124357650933674597">{NUM_WINDOWS,plural, =1{Аднавіць 1 акно}one{Аднавіць # акно}few{Аднавіць # вокны}many{Аднавіць # вокнаў}other{Аднавіць # акна}}</translation>
 <translation id="1126696498560056882">Кіраваць уліковымі запісамі на гэтай прыладзе</translation>
 <translation id="5809126106485463836">Інфармацыя пра вашы дзеянні ў рэжыме інкогніта недаступная іншым людзям, якія таксама выкарыстоўваюць вашу прыладу</translation>
 <translation id="9171525955914564119">Каб выкарыстоўваць свае закладкі і іншыя даныя на ўсіх сваіх прыладах, увайдзіце ў Brave як <ph name="EMAIL"/></translation>
@@ -77,14 +78,12 @@
 <translation id="1269129608791067105">Ваша гісторыя знаходзіцца тут</translation>
 <translation id="1273937721055267968">Заблакіраваць <ph name="DOMAIN"/></translation>
 <translation id="1280921956537356716">Уключыць апавяшчэнні з парадамі</translation>
-<translation id="1283039547216852943">Дакраніцеся, каб разгарнуць</translation>
 <translation id="1289129165308566697">Паглядзець гісторыю на іншых прыладах</translation>
 <translation id="129553762522093515">Нядаўна закрытыя</translation>
 <translation id="1298077576058087471">Чытайце сённяшнія навіны. Эканомце да 60% трафіка</translation>
 <translation id="1303507811548703290"><ph name="DOMAIN"/> – адпраўлена з прылады <ph name="DEVICE_NAME"/></translation>
 <translation id="1310482092992808703">Згрупаваць укладкі</translation>
 <translation id="1318262688555255786">Абагуліць спасылку на вэб-старонку "<ph name="PAGE_TITLE"/>". Крыніца: <ph name="PAGE_URL"/>.</translation>
-<translation id="1320912611264252795">Укладка захоўвання закладкі разгорнута на ўвесь экран</translation>
 <translation id="1327257854815634930">Гісторыя навігацыі адкрыта</translation>
 <translation id="6773423637732432200">Немагчыма абнавіць Brave. Дадатковыя параметры</translation>
 <translation id="3169981355900570544">Спалучэнні клавіш для функцый Brave</translation>
@@ -119,6 +118,7 @@
 <translation id="1435593198351412143">Адкрываць PDF аўтаматычна</translation>
 <translation id="1437543266176261764">Выконваецца ў <ph name="APP_NAME"/></translation>
 <translation id="1448440926884431741">Упарадкоўвайце тавары, за якімі сочыце, у Закладках</translation>
+<translation id="1452651021404174820">Выберыце прыладу</translation>
 <translation id="1455845192930279203">Усё роўна спампаваць файл "<ph name="FILE_NAME"/>" (<ph name="FILE_SIZE"/>) з дамена "<ph name="DOWNLOAD_DOMAIN"/>"?</translation>
 <translation id="1460751212339734034">Менш пішыце – эканомце час</translation>
 <translation id="146522654774760805">Паролі і аўтазапаўненне</translation>
@@ -126,6 +126,7 @@
 <translation id="1477626028522505441">Збой спампоўкі файла "<ph name="FILE_NAME"/>" з-за праблем на серверы.</translation>
 <translation id="147982357559798527">Зменена</translation>
 <translation id="5970766554644855317">Тут можа паказвацца не ўся гісторыя. Каб паглядзець усю гісторыю, адкрыйце поўную гісторыю Brave.</translation>
+<translation id="1483493594462132177">Адправіць</translation>
 <translation id="1495677929897281669">Вярнуцца на ўкладку</translation>
 <translation id="1496514951988037011">імя карыстальніка</translation>
 <translation id="1501480321619201731">Выдаліць групу</translation>
@@ -183,6 +184,7 @@
 <translation id="1792959175193046959">Стандартнае размяшчэнне спамповак можна змяніць у любы час</translation>
 <translation id="1796666869097395659">Згарнуць укладку, каб вярнуцца да яе пазней</translation>
 <translation id="7401204338724669842">Парады адносна Brave</translation>
+<translation id="1803799720926799756">Памер файла</translation>
 <translation id="1807246157184219062">Светлая</translation>
 <translation id="1807709131360304325">Адкрыць новае акно</translation>
 <translation id="1812027881030482584">Нельга выканаць уваход на сайце <ph name="SITE_ETLD_PLUS_ONE"/> з дапамогай сэрвісу "<ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/>"</translation>
@@ -261,6 +263,7 @@
 <translation id="2149968176347646218">Падключэнне не з’яўляецца бяспечным</translation>
 <translation id="2149973817440762519">Рэдагаваць закладку</translation>
 <translation id="526235294307144732">Каб захоўваць даныя Brave ва Уліковым запісе Brave і выкарыстоўваць іх, увядзіце фразу-пароль</translation>
+<translation id="2164015935042801524">Націсніце тут правай кнопкай мышы, каб паказваць укладкі вертыкальна</translation>
 <translation id="2166228530126694506">Версія <ph name="VERSION_NUMBER"/></translation>
 <translation id="2172688499998841696">Апісанні відарысаў выключаны</translation>
 <translation id="2172905120685242547">Закрыць акно?</translation>
@@ -303,6 +306,7 @@
 <translation id="2323763861024343754">Сховішча сайта</translation>
 <translation id="2327445548174191329">Крыніца: <ph name="DEVICE_NAME"/></translation>
 <translation id="2328474416100889417">Усе карыстальнікі адразу страцяць доступ да групы ўкладак "<ph name="GROUP_NAME"/>", а ўсе спасылкі з запрашэннем будуць адключаны</translation>
+<translation id="3096606216245789753">Сустракайце рэжым AI ў Brave</translation>
 <translation id="2330186936255788117">Іншыя закладкі</translation>
 <translation id="2332515770639153015">Палепшаны Бяспечны прагляд уключаны</translation>
 <translation id="233375395665273385">Выдаліць і выйсці</translation>
@@ -315,6 +319,7 @@
 <translation id="351551888962017708">Перадзагружаецца больш старонак. Перадзагрузка можа ажыццяўляцца праз серверы Brave па запыце іншых сайтаў ці праграм.</translation>
 <translation id="2366554533468315977">Гісторыя змянення цаны на гэты тавар у інтэрнэце</translation>
 <translation id="2367818124433749493">Спалучэнні клавіш для распрацоўшчыкаў</translation>
+<translation id="2369058545741334020">Адкрыць у рэжыме чытання</translation>
 <translation id="2385605401818128172">Вы можаце праглядзець сайты, які адпраўляюць зашмат апавяшчэнняў, і адклікаць дазвол на адпраўку новых апавяшчэнняў</translation>
 <translation id="2386938421315164605">Хавайце і рабіце бачнымі тэмы</translation>
 <translation id="2390510615457643724">Спампаваць файл "<ph name="FILE_NAME"/>" (<ph name="FILE_SIZE"/>) зноў?</translation>
@@ -325,6 +330,7 @@
 <translation id="2411239243988279592"><ph name="TAB_TITLE"/>, выбраная ўкладка з уключаным гукам</translation>
 <translation id="2413014528833954543">Не ўдаецца праверыць паролі на гэтай прыладзе</translation>
 <translation id="2414886740292270097">Цёмная</translation>
+<translation id="2415037988255164008">Аднавіць вокны?</translation>
 <translation id="2421705177906985956">Пакуль што сайтаў няма</translation>
 <translation id="2426805022920575512">Выбраць іншы ўліковы запіс</translation>
 <translation id="2427025860753516072">{FILE_COUNT,plural, =1{Відэа, 1 відэа ў спісе}one{Відэа, # відэа ў спісе}few{Відэа, # відэа ў спісе}many{Відэа, # відэа ў спісе}other{Відэа, # відэа ў спісе}}</translation>
@@ -518,7 +524,6 @@
 <translation id="3166827708714933426">Спалучэнні клавіш для працы з укладкамі і вокнамі</translation>
 <translation id="3167258285411721858">Вы можаце запытаць мабільную версію сайта <ph name="HOST_NAME"/></translation>
 <translation id="6726598689756214679"><ph name="TAB_TITLE"/>, замацаваная ўкладка ў рэжыме інкогніта з выключаным гукам, выбраная разам з іншымі ўкладкамі</translation>
-<translation id="3183941812169784232">Аднавіць усе вокны?</translation>
 <translation id="3187472288455401631">Вымярэнне паказчыкаў, звязаных з рэкламай</translation>
 <translation id="3189635831478931757">Група ўкладак "<ph name="GROUP_TITLE"/>"</translation>
 <translation id="3200536777393523575">Закрыць гэта акно?</translation>
@@ -567,6 +572,7 @@
 <translation id="4114256890962999877">Каб захаваць доступ да пароляў, экспартуйце іх, абнавіце сэрвісы Google Play і потым імпартуйце паролі назад у Менеджар пароляў Brave. <ph name="BEGIN_LINK"/>Глядзець поўныя інструкцыі<ph name="END_LINK"/>.</translation>
 <translation id="3435738964857648380">Бяспека</translation>
 <translation id="3435914367318771664">Дадаць укладку ў новую групу</translation>
+<translation id="3436118221454753036">Спытаць у рэжыме AI</translation>
 <translation id="3830890663494219270">Каб выкарыстоўваць свае паролі і іншыя даныя на ўсіх сваіх прыладах, увайдзіце ў Brave</translation>
 <translation id="3439276997620616816">Вашы нядаўнія ўкладкі знаходзяцца тут</translation>
 <translation id="3443221991560634068">Перазагрузіць бягучую старонку</translation>
@@ -594,6 +600,7 @@
 <translation id="3524334353996115845">Дазвольце сайту <ph name="ORIGIN"/> спраўдзіць вашу асобу</translation>
 <translation id="3527085408025491307">Папка</translation>
 <translation id="3542235761944717775">Даступна <ph name="KILOBYTES"/> КБ</translation>
+<translation id="3547933853190131743">Пошук у рэжыме AI</translation>
 <translation id="719175600387583059">Паколькі перадзагружаныя старонкі зашыфраваны, а сайт ці праграма, якія спасылаюцца на гэтыя старонкі, з’яўляюцца сайтам ці праграмай Brave, то пры перадзагрузцы гэтых старонак у прыватным рэжыме серверы Brave не атрымліваюць новай інфармацыі.</translation>
 <translation id="3549657413697417275">Пошук у сваёй гісторыі</translation>
 <translation id="3557336313807607643">Дадаць у кантакты</translation>
@@ -617,6 +624,7 @@
 <translation id="871233388178581868">Brave можа правяраць толькі захаваныя паролі</translation>
 <translation id="3636940436873918441">Прыярытэтныя мовы</translation>
 <translation id="7120697372526128040">Калі вы забылі фразу-пароль або хочаце змяніць гэту наладу, <ph name="BEGIN_LINK"/>выдаліце даныя Brave з уліковага запісу<ph name="END_LINK"/>.</translation>
+<translation id="3649090831059057090"><ph name="WINDOW_TITLE"/> – <ph name="TAB_COUNT"/></translation>
 <translation id="3653111872753786013"><ph name="WEBSITE_TITLE"/>: <ph name="WEBSITE_URL"/></translation>
 <translation id="5399378599142661690">Перайсці на галоўны экран праграмы Brave</translation>
 <translation id="368329460027487650">Выкананы выхад. Адкрываюцца параметры для ўваходу.</translation>
@@ -641,6 +649,8 @@
 <translation id="3739899004075612870">Закладка дададзена ў <ph name="PRODUCT_NAME"/></translation>
 <translation id="3740290940447881599">Упэўніцеся, што гэтаму сайту можна давяраць</translation>
 <translation id="3740525748616366977">Галасавы пошук недаступны на гэтай прыладзе</translation>
+<translation id="3749289110408117711">Назва файла</translation>
+<translation id="3756823472711156529">Аднавіць групу</translation>
 <translation id="7338686239886724619">Пры аплаце гэтай карткай будзе ўказвацца нумар віртуальнай карткі, каб абараніць вашы рэальныя даныя. Кіраваць гэтай наладай можна ў Brave Кашальку. <ph name="BEGIN_LINK1"/>Даведацца больш пра віртуальныя карткі<ph name="END_LINK1"/></translation>
 <translation id="376561056759077985">Некаторыя даныя яшчэ не захаваны</translation>
 <translation id="3770620323585347665">Дадаць назву акна</translation>
@@ -671,6 +681,7 @@
 <translation id="3870538285500327859"><ph name="TAB_TITLE"/>, выбраная ўкладка "Відарыс у відарысе"</translation>
 <translation id="3870908470613821006">Усе карыстальнікі адразу страцяць доступ да групы ўкладак "<ph name="GROUP_NAME"/>", і яна будзе выдалена з усіх прылад</translation>
 <translation id="3873174561423636563">Каб працягнуць, <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/> абагуліць з гэтым сайтам наступныя даныя: <ph name="FIELDS_STRING"/>. Азнаёмцеся з <ph name="BEGIN_LINK1"/>умовамі выкарыстання<ph name="END_LINK1"/> сайта.</translation>
+<translation id="3882323608730650973">Файл быў зменены</translation>
 <translation id="3892148308691398805">Скапіраваць тэкст</translation>
 <translation id="3893858854379998374">Каб захаваць закладкі ва ўліковым запісе, выдаліце тыя, якімі вы не карыстаецеся</translation>
 <translation id="3898498281932368596">Заблакіраваць і выйсці</translation>
@@ -701,6 +712,7 @@
 <translation id="399788104667917863">Замацаваць на панэлі інструментаў</translation>
 <translation id="4000212216660919741">Пазасеткавы рэжым</translation>
 <translation id="4694008025405984126">Наладжвайце браўзер Brave і кіруйце ім з дапамогай вылучанага элемента</translation>
+<translation id="4002066346123236978">Назва</translation>
 <translation id="5267293611589304570">{NUM_PASSWORDS,plural, =1{У вашым Уліковым запісе Brave 1 раскрыты пароль}one{У вашым Уліковым запісе Brave # раскрыты пароль}few{У вашым Уліковым запісе Brave # раскрытыя паролі}many{У вашым Уліковым запісе Brave # раскрытых пароляў}other{У вашым Уліковым запісе Brave # раскрытага пароля}}</translation>
 <translation id="7002462047122704254">Каб выкарыстоўваць свае закладкі і іншыя даныя на ўсіх сваіх прыладах, увайдзіце ў Brave</translation>
 <translation id="4024768890073681126">Браўзерам кіруюць бацькі</translation>
@@ -722,7 +734,6 @@
 <translation id="7268155614575494857">Укажыце сваё імя карыстальніка для гэтага сайта, каб захаваць у Менеджары пароляў Brave усе даныя для ўваходу</translation>
 <translation id="4095146165863963773">Выдаліць даныя праграмы?</translation>
 <translation id="4095483462103784441">Стварыць новую групу ўкладак</translation>
-<translation id="4096227151372679484">Укладка захоўвання закладкі разгорнута на палову экрана</translation>
 <translation id="1523634703470981382">Акно для абнаўлення Менеджара пароляў Brave адкрыта</translation>
 <translation id="4113030288477039509">Кіруецца адміністратарам</translation>
 <translation id="4116038641877404294">Спампуйце старонкі, каб праглядаць іх па-за сеткай</translation>
@@ -1103,7 +1114,6 @@
 <translation id="569536719314091526">Перакладзіце гэту старонку на любую мову з дапамогай кнопкі "Дадатковыя параметры"</translation>
 <translation id="2320748512701464301">Brave дапамагае прадухіляць праблемы, звязаныя з уцечкай даных, наведваннем небяспечных вэб-сайтаў і г. д.</translation>
 <translation id="5698878456427040674">Праверце, ці падтрымліваецца выбраны ўліковы запіс.</translation>
-<translation id="5700415746238689851">Адкрыць Gemini</translation>
 <translation id="5709213329446699338">Сайт <ph name="SITE"/> хоча падключыцца да паслядоўнага порта</translation>
 <translation id="5715150588940290235">Выдаліць захаваныя коды бяспекі?</translation>
 <translation id="572328651809341494">Нядаўнія ўкладкі</translation>
@@ -1163,7 +1173,6 @@
 <translation id="59577092665511740">Выберыце ўліковы запіс.</translation>
 <translation id="5958275228015807058">Знайсці файлы і старонкі можна ў раздзеле "Спампоўкі"</translation>
 <translation id="4262327329851675629">{NUM_REVOKED_PERMISSIONS,plural, =1{Браўзер Brave забараніў сайту, які вы даўно не наведвалі, адпраўляць вам апавяшчэнні}one{Браўзер Brave забараніў сайтам, якія вы даўно не наведвалі, адпраўляць вам апавяшчэнні}few{Браўзер Brave забараніў сайтам, якія вы даўно не наведвалі, адпраўляць вам апавяшчэнні}many{Браўзер Brave забараніў сайтам, якія вы даўно не наведвалі, адпраўляць вам апавяшчэнні}other{Браўзер Brave забараніў сайтам, якія вы даўно не наведвалі, адпраўляць вам апавяшчэнні}}</translation>
-<translation id="5962718611393537961">Каб згарнуць, націсніце тут</translation>
 <translation id="5964869237734432770">Не атр. апісанні відарысаў</translation>
 <translation id="5972844218283131174">Скасаваць выбар усіх укладак</translation>
 <translation id="5975083100439434680">Паменшыць</translation>
@@ -1275,6 +1284,7 @@
 <translation id="634208815998129842">Менеджар заданняў</translation>
 <translation id="6343495912647200061">{SHIPPING_ADDRESS,plural, =1{<ph name="SHIPPING_ADDRESS_PREVIEW"/>\u2026 і яшчэ <ph name="NUMBER_OF_ADDITIONAL_ADDRESSES"/>}one{<ph name="SHIPPING_ADDRESS_PREVIEW"/>\u2026 і яшчэ <ph name="NUMBER_OF_ADDITIONAL_ADDRESSES"/>}few{<ph name="SHIPPING_ADDRESS_PREVIEW"/>\u2026 і яшчэ <ph name="NUMBER_OF_ADDITIONAL_ADDRESSES"/>}many{<ph name="SHIPPING_ADDRESS_PREVIEW"/>\u2026 і яшчэ <ph name="NUMBER_OF_ADDITIONAL_ADDRESSES"/>}other{<ph name="SHIPPING_ADDRESS_PREVIEW"/>\u2026 і яшчэ <ph name="NUMBER_OF_ADDITIONAL_ADDRESSES"/>}}</translation>
 <translation id="6345878117466430440">Пазначыць як прачытанае</translation>
+<translation id="6350745006329795504">Кіраванне прыладамі</translation>
 <translation id="6356893102071098867">Упэўніцеся, што вы выбралі патрэбны ўліковы запіс</translation>
 <translation id="6364438453358674297">Выдаліць прапанову з гісторыі?</translation>
 <translation id="806493401838431801">Brave часцей перадзагружае старонкі, якія вы з вялікай імавернасцю наведаеце. Пры выкарыстанні гэтай налады можа павялічыцца расход трафіка.</translation>
@@ -1332,6 +1342,7 @@
 <translation id="6556501700899673703">Lexend</translation>
 <translation id="6560414384669816528">Пошук праз Sogou</translation>
 <translation id="656065428026159829">Яшчэ</translation>
+<translation id="6565781844089373403">Аднавіць вокны</translation>
 <translation id="6565959834589222080">Калі сетка Wi-Fi даступная, будзе выкарыстоўвацца яна</translation>
 <translation id="657177046675873214">Каб закладкі былі даступнымі на ўсіх вашых прыладах, уключыце ў наладах параметр "Закладкі"</translation>
 <translation id="6573096386450695060">Заўсёды дазваляць</translation>
@@ -1410,6 +1421,7 @@
 <translation id="6846298663435243399">Ідзе загрузка…</translation>
 <translation id="6850409657436465440">Спампоўка ўсё яшчэ працягваецца</translation>
 <translation id="6850830437481525139">Закрытыя ўкладкі (<ph name="TAB_COUNT"/>)</translation>
+<translation id="6852437757508328589">{NUM_RESULTS,plural, =1{Знойдзены 1 вынік}one{Знойдзены # вынік}few{Знойдзены # вынікі}many{Знойдзены # вынікаў}other{Знойдзены # выніку}}</translation>
 <translation id="685340923442249391">{FILE_COUNT,plural, =1{Аўдыяфайлы, 1 аўдыяфайл у спісе}one{Аўдыяфайлы, # аўдыяфайл у спісе}few{Аўдыяфайлы, # аўдыяфайлы ў спісе}many{Аўдыяфайлы, # аўдыяфайлаў у спісе}other{Аўдыяфайлы, # аўдыяфайла ў спісе}}</translation>
 <translation id="4046835482356054431">Рэкамендацыі ад Brave выключаны</translation>
 <translation id="6864459304226931083">Спампаваць відарыс</translation>
@@ -1446,6 +1458,7 @@
 <translation id="6937524809504266803">Персаналізацыя і звязванне</translation>
 <translation id="6937876069006524083">Псеўданім (неабавязкова)</translation>
 <translation id="6942665639005891494">Стандартнае размяшчэнне спамповак можна змяніць у наладах</translation>
+<translation id="6944854424004126054">Аднавіць акно</translation>
 <translation id="6945221475159498467">Выбраць</translation>
 <translation id="6955535239952325894">Гэта налада выключана ў браўзерах, якія знаходзяцца пад кіраваннем</translation>
 <translation id="6963766334940102469">Выдаліць закладкі</translation>
@@ -1956,12 +1969,14 @@
 <translation id="2656327481457116654">Адкрыць ва ўкладцы інкогніта</translation>
 <translation id="9010094279589497751">Хутка адкрывайце Gemini ў любы момант</translation>
 <translation id="9012585441087414258">Абараняе ад заведама небяспечных сайтаў, спамповак і пашырэнняў. Калі старонка выконвае падазроныя дзеянні, URL-адрасы разам з фрагментамі змесціва старонкі адпраўляюцца на сервер Brave Бяспечнага прагляду.</translation>
+<translation id="9014097371980259227">Некаторыя інструменты перамешчаны, каб вам было зручна выконваць пошук у рэжыме AI</translation>
 <translation id="9019199799064251516">Працягнуць без блакіроўкі профілю аўтамабіля?</translation>
 <translation id="9022774213089566801">Часта наведваюцца</translation>
 <translation id="9022871169049522985">Сайты і рэкламадаўцы могуць ажыццяўляць ацэнку эфектыўнасці сваіх рэкламных аб’яў</translation>
 <translation id="5687542525349822727">Зрабіць Brave стандартным браўзерам</translation>
 <translation id="9027728231343310283">Адрабіць для вэб-сайта <ph name="SITE"/></translation>
 <translation id="9035378196785279980">Перамясціць сюды:\u2026</translation>
+<translation id="904146253922032365">Націсніце і ўтрымлівайце, каб паказваць укладкі вертыкальна</translation>
 <translation id="9042893549633094279">Прыватнасць і бяспека</translation>
 <translation id="1612219807314383628">Хутка пачаць пошук у Brave</translation>
 <translation id="9050666287014529139">Фраза-пароль</translation>
@@ -1985,6 +2000,7 @@
 <translation id="7708077127614889658">Адкрыць у акне Brave</translation>
 <translation id="2324185818196590038">Каб павысіць якасць персаналізацыі, дадайце Brave да гісторыі дзеянняў у інтэрнэце і праграмах і звязаных сэрвісаў Brave</translation>
 <translation id="9099220545925418560">Выкарыстоўваюцца даныя гісторыі прагляду сайтаў. Гэта налада выключана.</translation>
+<translation id="9099674669267916096">Колькасць старонак</translation>
 <translation id="9100610230175265781">Патрабуецца фраза-пароль</translation>
 <translation id="9101137867221042551">Кіраванне</translation>
 <translation id="9102803872260866941">Укладка перадпрагляду адкрыта</translation>
@@ -2030,7 +2046,6 @@
 <translation id="939598580284253335">Увядзіце фразу-пароль</translation>
 <translation id="1888307590966923120"><ph name="TAB_TITLE"/>, замацаваная ўкладка "Відарыс у відарысе" ў рэжыме інкогніта</translation>
 <translation id="945522503751344254">Адправіць водгук</translation>
-<translation id="949667118776341807">Павярнуць</translation>
 <translation id="5406914950576900927">Для пошуку ў Кітаі Brave можа выкарыстоўваць <ph name="BEGIN_BOLD"/>Sogou<ph name="END_BOLD"/>. Гэта можна змяніць у <ph name="BEGIN_LINK"/>Наладах<ph name="END_LINK"/>.</translation>
 <translation id="961856697154696964">Выдаліць даныя пра работу ў браўзеры</translation>
 <translation id="963246339335003378">Адкрыць менеджар заданняў</translation>

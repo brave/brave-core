@@ -41,7 +41,7 @@
 <translation id="5197219128592971597">항상 Google AMP(Accelerated Mobile Page) 버전이 아닌 원본(비AMP) 페이지 URL을 방문하세요.</translation>
 <translation id="920638232916443453">추적 URL 자동 리디렉션</translation>
 <translation id="1118970888826017401">최상위 리디렉션 추적 URL 바이패싱 지원 활성화.</translation>
-<translation id="94154759592465111">스크립트 차단</translation>
+<translation id="4824468494729001999">스크립트 차단</translation>
 <translation id="7714773920987474116">자바스크립트 차단(사이트가 깨질 수 있음)</translation>
 <translation id="2233004324252915283">YouTube 추천 콘텐츠 차단</translation>
 <translation id="1005372663692637999">youtube.com의 다음 콘텐츠와 엔드 카드 요소를 차단합니다.</translation>
@@ -151,6 +151,33 @@
 <translation id="6975864539539353406">사이트를 닫을 때 쿠키와 다른 사이트 데이터 삭제</translation>
 <translation id="7740929262043547697">비공개 창 내 요소 차단 허용</translation>
 <translation id="1260864846935682371">비공개 창에서 쉴드 요소 차단 기능을 활성화합니다. 비공개 창에서 차단된 요소는 비공개가 아닌 창에서도 차단됩니다.</translation>
+<translation id="4021136205151368133">참고: 이로 인해 Brave의 개인정보 보호 기능이 저하될 수 있습니다.</translation>
+<translation id="2876155735620608356">이 사이트에 쉴드 적용됨</translation>
+<translation id="8605306630462821888">이 사이트에 쉴드 해제됨</translation>
+<translation id="1574700443447059851">트래커, 광고 등이 차단됨.</translation>
+<translation id="4039014515785210563">트래커와 광고를 처리하는 방법 선택</translation>
+<translation id="8423733350479881051">쿠키를 처리하는 방법 선택</translation>
+<translation id="9064628362799094520">사이트 데이터를 파쇄하시겠습니까</translation>
+<translation id="2862348905922940916">이 사이트를 쉴드 기본값으로 재설정</translation>
+<translation id="269939061709857874">사이트가 쉴드 기본값으로 재설정됨</translation>
+<translation id="3623708006387030755">쉴드 전역 설정</translation>
+<translation id="2387532482048804818">실드를 활성화했을 때 사이트가 제대로 작동하지 않으면 알려주세요.</translation>
+<translation id="5412004902081180614">보고</translation>
+<translation id="1209739344687072997">작동이 멈춘 사이트 보고</translation>
+<translation id="2606165159306988240">Brave 개발자에게 이 사이트가 이 사이트와 함께 제대로 작동하지 않는다는 것을 알리십시오.</translation>
+<translation id="6806248680442980382">모두를 위해 Brave 개선에 도움을 주셔서 감사합니다. 이 신고는 사이트 문제 해결에 필요한 정보만 포함합니다.</translation>
+<translation id="7549123865054511884">이 사이트에서 무엇이 작동하지 않나요?</translation>
+<translation id="9094461910562981998">연락 방법 (선택사항)</translation>
+<translation id="7645128170699559106">이메일, X 사용자 이름 등</translation>
+<translation id="446579367766109694">연락처 정보를 제공하면 향후 보고서를 위해 저장됩니다</translation>
+<translation id="2653659639078652383">제출</translation>
+<translation id="8459191579769999214">스크린샷 보기</translation>
+<translation id="4530541918195747729">보고서가 제출되었습니다. 감사합니다!</translation>
+<translation id="5528772406060281700">사이트 데이터 파쇄</translation>
+<translation id="6795622376590884449">자동 파쇄</translation>
+<translation id="3520341243738311408">사이트 탭이 닫힐 때</translation>
+<translation id="3559735673608367395">앱이 종료될 때</translation>
+<translation id="9140049656798805345">지금 사이트 데이터 파쇄</translation>
 <translation id="1680858055899097121">브라우징 세션 간에 탭을 유지하지 마십시오</translation>
 <translation id="7142548388914389999">프라이버시 보호 제품 분석(P3A) 허용</translation>
 <translation id="5254037869598726291">익명 P3A 정보는 Brave가 총체적인 사용 패턴을 평가하여 인기 기능을 개선하는 데 도움이 됩니다.</translation>
@@ -209,24 +236,12 @@
 <translation id="5109496672133133896">프라이빗 제품 인사이트</translation>
 <translation id="3545804467215833536">탭하여 Brave Shields 보기</translation>
 <translation id="1724327820822194498">모든 페이지에서 Brave가 Shields로 차단한 모든 나쁜 것들을 확인합니다.</translation>
-<translation id="5386259141409498372"><ph name="BIG_TECH"/> 포함, <ph name="TRACKER"/>개의 광고 및 트래커 차단됨</translation>
-<translation id="7256200875155794202"><ph name="BIG_TECH"/> 외 광고 및 트래커 차단됨</translation>
 <translation id="3092683655478890840"><ph name="TRACKER_COUNT"/>개의 광고 및 트래커 차단됨</translation>
 <translation id="8281886186245836920">건너뛰기</translation>
-<translation id="986879628471635371">온보딩 문제 해결</translation>
 <translation id="5806601733251372221">Brave Shields</translation>
-<translation id="8537217141725709400"><ph name="TOKEN"/> 적립</translation>
-<translation id="3333887201479867589">Brave 리워드</translation>
-<translation id="5870330605209713397">개인 정보 보호 광고를 보셔서 기본적으로 선호하는 사이트와 작성자를 지원하세요.</translation>
-<translation id="5302488867897327287">획득 &amp; 기부를 누름으로써 다음에 동의함:</translation>
 <translation id="4281844954008187215">서비스 약관</translation>
 <translation id="6871397658902960384">브라우징 시작</translation>
-<translation id="454386012157232640">광고를 보지 못했어요</translation>
-<translation id="1448877943847791441">Brave가 당신의 첫 광고를 다음에 표시합니다</translation>
-<translation id="4410793187232041318">이제 Brave Ads에서 토큰을 얻게 됩니다.</translation>
 <translation id="6511854390690723657">귀하의 첫 Brave 광고입니다. 탭해서 더 알아보세요.</translation>
-<translation id="2070991379950719711">획득 &amp; 기부</translation>
-<translation id="48520986898237073">월릿으로 계속</translation>
 <translation id="6213254277250932867">12단어 복구 문구가 있음</translation>
 <translation id="4225265925807365011">24단어 복구 문구가 있음</translation>
 <translation id="3570367516044491911">기본 브라우저로 설정</translation>
@@ -234,6 +249,7 @@
 <translation id="1545749641540134597">QR 코드 스캔</translation>
 <translation id="5317781812114905957">지침</translation>
 <translation id="8515319483805157233">QR 코드로 검색하려면 QR 코드를 프레임 중앙에 맞추세요.</translation>
+<translation id="3333887201479867589">Brave 리워드</translation>
 <translation id="7658239707568436148">취소</translation>
 <translation id="1201402288615127009">다음</translation>
 <translation id="8481779960444041069">프라이버시를 강화하려면 Brave를 기본 브라우저로</translation>
@@ -339,10 +355,11 @@
 <translation id="2803313416453193357">폴더 열기</translation>
 <translation id="8985635554450124959">동기화 설정할 수 없음</translation>
 <translation id="7173114856073700355">설정 열기</translation>
-<translation id="496896260395129787">다른 디바이스에서 이 Brave 동기화 계정이 삭제되었습니다. 동기화를 비활성화할 의도가 아니라면 <ph name="LINK_TEXT"/></translation>
-<translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>계정을 새로 만드세요.</translation>
+<translation id="674078455841038219">다른 디바이스에서 이 Brave 동기화 계정이 삭제되었습니다. 동기화를 비활성화할 의도가 아니라면 계정을 다시 만드세요.</translation>
+<translation id="8913415701676265311">다시 만들기</translation>
 <translation id="4094590686212463338">이 동기화 체인에 참여할 수 없습니다. 동기화 체인이 삭제되었습니다.</translation>
 <translation id="4908081302669157000">전화번호, 이메일, 주소</translation>
+<translation id="1571419474754278280">레오 AI 대화</translation>
 <translation id="1056898198331236512">경고</translation>
 <translation id="1426410128494586442">예</translation>
 <translation id="7811264919113243207">이러한 QR 코드를 생성하는 디바이스에 비밀번호 등, 귀하의 Brave 데이터가 공유됩니다.
@@ -366,10 +383,9 @@
 <translation id="1413177583895309156">Brave VPN은 Brave 브라우저 밖에서도 사용자의 모든 온라인 활동을 암호화하고 보호합니다.</translation>
 <translation id="3974348661685061050">7일 동안 무료로 사용해 보기</translation>
 <translation id="5789441016350810005">브라우저가 백그라운드에 있을 때 전송된 브레이브 광고</translation>
-<translation id="1486343603936278248">토큰</translation>
 <translation id="7781069478569868053">새 탭 페이지</translation>
 <translation id="5927196110206824867">스폰서 배경 이미지는 독립적인 사용자 중심 웹을 구축하려는 Brave의 사명을 뒷받침합니다. 또한 빅 테크와 달리 광고 성과를 익명으로 측정하여 사용자의 개인 정보를 보호합니다.</translation>
-<translation id="8748471354357836070">자세히 알아보기 / 옵트아웃 옵션</translation>
+<translation id="6165508094623778733">더 알아보기</translation>
 <translation id="3171669670217312786">배경 이미지</translation>
 <translation id="8522669544471808198">배경 이미지 표시</translation>
 <translation id="6258554626602400736">새 탭 페이지 광고 표시</translation>
@@ -400,7 +416,7 @@
 <translation id="7151914815476509258">트래커 및 광고 차단(표준)</translation>
 <translation id="7384778069178817075">모든 트래커 &amp; 광고 허용</translation>
 <translation id="1173312143376149085"><ph name="BEGIN_LINK_0"/>'모든 쿠키 차단' 옵션은 더 이상 사용되지 않습니다. 이 옵션을 강제 활성화하는 방법을 알아보려면 <ph name="END_LINK_0"/> <ph name="BEGIN_LINK_1"/>도움말 페이지<ph name="END_LINK_1"/>를 방문하세요.</translation>
-<translation id="3763681089644577874">쿠키 차단</translation>
+<translation id="8823559166155093873">쿠키 차단</translation>
 <translation id="614747795780742163">웹사이트가 이전 방문에 대한 정보를 저장하지 못하도록 합니다</translation>
 <translation id="6883611015375728278">모든 쿠키 차단</translation>
 <translation id="6196640612572343990">타사 쿠키 차단</translation>
@@ -411,7 +427,7 @@
 <translation id="1876882294512858963">항상 오프더레코드</translation>
 <translation id="554464532999080267">오프더레코드로 진행하기 전 묻기(기본)</translation>
 <translation id="926857659063503456">오프더레코드로 안 함</translation>
-<translation id="3895527457258986253">지문 차단</translation>
+<translation id="6531019308847917584">지문 차단</translation>
 <translation id="7854108565842971747">새 사이트에 적용되는 기본 Shields 설정이 있습니다. 설정을 변경해도 기존 사이트별 설정에는 영향을 주지 않습니다.</translation>
 <translation id="218587021686734263">언어 설정을 통한 핑거프린팅 방지</translation>
 <translation id="1706099589708266367">웹사이트가 브라우저의 언어 설정을 기반으로 이용자를 파악할 수 있는 범위를 줄입니다.</translation>
@@ -421,22 +437,12 @@
 <translation id="7445306466605902444">지문 차단됨 (엄격, 사이트가 작동하지 않을 수 있음)</translation>
 <translation id="5582686930349810484">지문 차단됨 (표준)</translation>
 <translation id="769702552748212954">모든 지문 인식 허용</translation>
-<translation id="876424292214881779">광고 및 기타 불쾌한 것 차단됨</translation>
-<translation id="6849027612978668678">사이트에는 종종 사용자와 사용자의 기기를 식별하는 쿠키 및 스크립트가 포함됩니다. 그들은 사용자가 누구인지 알아내고 모든 웹사이트에서 사용자가 하는 일을 웹을 통해 추적하기를 원합니다.\n\nBrave는 이러한 것들을 차단하여 사용자는 추적을 당하지 않고 탐색할 수 있습니다.</translation>
-<translation id="8553998445606452168">Brave 실드 정보</translation>
-<translation id="8912304686498704084">위</translation>
-<translation id="4963218453264888510">아래</translation>
-<translation id="7474113515179313724">Brave의 개인 정보 보호없이 이 사이트를 탐색하고 있습니다. 실드가 제대로 작동하지 않습니까?</translation>
 <translation id="4226543734057230801">이더리움 네트워크</translation>
 <translation id="3504157706952484145">Filecoin 네트워크</translation>
 <translation id="1561541094377237745">Solana 네트워크</translation>
 <translation id="7141438739990875547">비트코인 네트워크</translation>
 <translation id="9055546041146396417">이 사이트가 손상된 것 같으면 실드 다운을 시도합니다.</translation>
 <translation id="7898672232170410330">요소 차단</translation>
-<translation id="9064628362799094520">사이트 데이터를 파쇄하시겠습니까</translation>
-<translation id="8949611615512336262">자동 파쇄: <ph name="AUTO_SHRED_MODE_TEXT"/></translation>
-<translation id="9140049656798805345">지금 사이트 데이터 파쇄</translation>
-<translation id="6795622376590884449">자동 파쇄</translation>
 <translation id="7961015016161918242">사용하지 않음</translation>
 <translation id="3200744626782631683">브라우징 데이터는 절대 자동으로 파기되지 않습니다.</translation>
 <translation id="1991004083507807299">사이트 탭이 닫혔을 때</translation>
@@ -447,23 +453,11 @@
 <translation id="2997451887458851244">'자동 파기' 기능을 업데이트하고 파기할 데이터를 조정하세요</translation>
 <translation id="363903976200491771">브라우징 데이터를 자동으로 삭제합니다</translation>
 <translation id="1028873002018537235">브라우징 기록 삭제</translation>
-<translation id="1209739344687072997">작동이 멈춘 사이트 보고</translation>
-<translation id="8510478288840333677">Brave (브레이브) 개발자에게 이 사이트가 Shields (실드)와 함께 제대로 작동하지 않는다는 것을 알리십시오.</translation>
-<translation id="1653405824851871276">모두를 위해 Brave 개선에 도움을 주셔서 감사합니다. 이 신고는 사이트 문제 해결에 필요한 정보만 포함합니다. <ph name="LEARN_MORE"/></translation>
-<translation id="8759753423332885148">더 알아보기.</translation>
-<translation id="8740275226259417070">오류 페이지입니다. 깨진 사이트라고 신고할 수 없습니다.</translation>
 <translation id="721949491455392748">현재 페이지의 스크린샷 포함</translation>
-<translation id="8459191579769999214">스크린샷 보기</translation>
 <translation id="6476216365964140603">추가 세부정보(선택사항)</translation>
-<translation id="6145852496180774737">연락 방법: (선택사항)</translation>
-<translation id="6367576083705149078">연락처 정보를 제공하면 향후 보고서를 위해 저장됩니다.</translation>
-<translation id="7616645803364270729">이메일, Twitter 등</translation>
-<translation id="5299848999918506028">감사합니다!</translation>
-<translation id="76550953340008122">이 사이트에 문제가 있다는 것을 Brave (브레이브) 개발자에게 알려 주셔서 감사합니다. 최선을 다해 문제를 해결하겠습니다!</translation>
 <translation id="3037432377946455872">확인된 핵심 문제</translation>
 <translation id="8731661215617360873">택일</translation>
 <translation id="650318023204990401">고급 컨트롤</translation>
-<translation id="7205939464631857223">차단된 모든 요소 지우기</translation>
 <translation id="5370478469168390143">데이터 온라인 저장</translation>
 <translation id="1118508688433541158">Brave 사용으로 더 빠른 검색 및 광고 차단</translation>
 <translation id="7427391215172269363">매일 Brave로 웹 브라우징을 하여 데이터를 절약하고 있어요.</translation>
@@ -513,17 +507,17 @@
 <translation id="2718046830255553131">개인정보 보고서 데이터가 삭제되었습니다.</translation>
 <translation id="8376263745431603066">"야간 모드" 활성화 (시험용)</translation>
 <translation id="1383876407941801731">검색</translation>
-<translation id="6165508094623778733">자세히 알아보기</translation>
 <translation id="13296465911709339">텍스트가 클립보드에 복사되었습니다.</translation>
 <translation id="2735834606413553397">공개 주소가 클립보드에 복사되었습니다.</translation>
 <translation id="2977461003134694205">개인정보 통계</translation>
 <translation id="8804164990146287819">개인정보 보호 정책</translation>
 <translation id="5705882733397021510">돌아가기</translation>
+<translation id="8450375131309292971">당겨서 새로고침</translation>
+<translation id="880475987868032564">당겨서 새로고침 제스처를 활성화합니다. 페이지 상단에서 아래로 스와이프하면 페이지가 새로고침됩니다.</translation>
 <translation id="7889432931837317731">가능한 경우 자동으로 열림</translation>
 <translation id="1029304566263314007">다운로드 진행률 알림 표시</translation>
 <translation id="2977501775944575564">병렬 다운로딩</translation>
 <translation id="6224180438946945617">병렬 다운로딩을 황성화하여 다운로드 속도 높이기</translation>
-<translation id="8967385052772844086">전체 개인 정보 보호 보고서 보기</translation>
 <translation id="3479552764303398839">나중에</translation>
 <translation id="7138272885617540195">앱 링크가 Brave 외부 앱에서 열릴 수 있게 허용</translation>
 <translation id="4954512758656527938">기본 이더리움 월렛</translation>
@@ -787,7 +781,6 @@
 <translation id="2156993118928861787">올바르지 않은 주소</translation>
 <translation id="7791543448312431591">추가</translation>
 <translation id="6889920539620318793">활성으로 설정</translation>
-<translation id="2653659639078652383">제출</translation>
 <translation id="4945690646623486292">네트워크 선택</translation>
 <translation id="8006088103295786154">Brave 월렛에 액세스</translation>
 <translation id="5308380583665731573">연결</translation>
@@ -1108,7 +1101,6 @@
 <translation id="1336494649091412226">Brave를 종료하시겠습니까?</translation>
 <translation id="6061635824229591714">사이트 데이터를 파쇄하시겠습니까?</translation>
 <translation id="1265051174491933207">파쇄하면 '<ph name="SITE_NAME"/>'의 모든 탭이 닫히고 사이트 데이터가 삭제됩니다. 이 작업은 되돌릴 수 없습니다.</translation>
-<translation id="5528772406060281700">사이트 데이터 파쇄</translation>
 <translation id="4426990318287827331">데이터 파쇄</translation>
 <translation id="7942415993090181327">대화 기록</translation>
 <translation id="6859935199732075666">안전한 브라우징 오류 표시</translation>

@@ -87,6 +87,10 @@
 <translation id="3295805221342028003">在側邊欄開啟 Leo AI</translation>
 <translation id="7400808612454224939">管理 Leo AI 設定</translation>
 <translation id="5385064007245738696">關於 Leo AI</translation>
+<translation id="334252345105450327">擷取螢幕截圖</translation>
+<translation id="191886777375280620">擷取螢幕截圖</translation>
+<translation id="3114478090884951591">可見區域</translation>
+<translation id="2026367923222947564">整頁</translation>
 <translation id="4928988318462976765">網路擴充功能商店</translation>
 <translation id="9181207987584064303">在「網路擴充功能商店」檢視</translation>
 <translation id="3161744659507801211">警告：Brave 無法防止擴充功能記錄您的瀏覽歷程記錄。</translation>
@@ -346,6 +350,9 @@
 <translation id="3435896845095436175">啟用</translation>
 <translation id="9031526219709160683">Brave 可以幫助您優化此網站的隱私設定。您想要檢閱 Brave 的建議嗎?</translation>
 <translation id="5739953050957336013">檢閱建議</translation>
+<translation id="515462386448976244">隱私設定建議工具</translation>
+<translation id="6911328085206170823">不針對此網站顯示</translation>
+<translation id="6157507628047001360">停用隱私設定調整</translation>
 <translation id="9082792303833649978">此設定由您的管理員或其他 Brave 政策所管理。</translation>
 <translation id="1940221956626514677">自訂工具列</translation>
 <translation id="6501807887341963552">主題與顏色</translation>
@@ -353,6 +360,8 @@
 <translation id="3575561030014162610">若要將密碼匯入本裝置上的 <ph name="BRAND"/>，請選擇 CSV 檔案</translation>
 <translation id="8570228839666486945">裝置內AI</translation>
 <translation id="3456536577668402695">您的搜尋和頁面內容會在此裝置上處理。不會傳送至 Brave 或被人工審查員看到。</translation>
+<translation id="4751537843966994505">語意記錄搜尋</translation>
+<translation id="6175973371938222040">在本機為您造訪的頁面建立索引，讓您能依語意搜尋您的記錄。所有處理都保留在此裝置上。</translation>
 <translation id="9156965752763025780">你的變更將於下次重新啟動 Brave 時生效。</translation>
 <translation id="7179921470347911571">立刻重新啟動</translation>
 <translation id="1426410128494586442">是</translation>
@@ -415,6 +424,7 @@
 <translation id="2396127686705429331">顯示書籤按鈕</translation>
 <translation id="443318149139185498">在主菜單按鈕上使用輪廓標誌</translation>
 <translation id="2814998458708016836">使用寬網址列</translation>
+<translation id="536791223757510666">使用精簡模式</translation>
 <translation id="4749586705247636385">在主要內容區域顯示圓角</translation>
 <translation id="4109670531935487117">在網址列顯示自動完成建議</translation>
 <translation id="4579877808890085926">裝置上的建議</translation>
@@ -532,6 +542,7 @@
 <translation id="4590997608186539865">播放清單</translation>
 <translation id="1199170151481311646">隱私權保護分析</translation>
 <translation id="5990642573624858459">統計報告</translation>
+<translation id="6560669651825861597">影響所有瀏覽器設定檔</translation>
 <translation id="2441719842399509963">重設為預設值</translation>
 <translation id="2587535830241068901">自訂您的瀏覽器，同時仍支援 Brave</translation>
 <translation id="123297831435065577">Brave Origin 是專為那些不需要支援 Brave 營運的所有功能，但仍希望享有 Brave 獨有隱私保護的使用者所設計的付費版瀏覽器。Origin 使用者將持續享有我們業界領先的隱私保護、廣告攔截及速度優勢（透過盾牌技術實現），同時也能獲得定期的軟體更新、Chromium 修補程式，以及安全與隱私功能的改進。</translation>
@@ -559,6 +570,16 @@
 <translation id="5825943197137337319">僅限預設公用介面</translation>
 <translation id="1689062823386843231">停用非代理 UDP</translation>
 <translation id="3540231253392253941">使用 Google 服務來推播訊息</translation>
+<translation id="5813105074916486721">本機記錄保留期限</translation>
+<translation id="5671611745062206644">Brave 在本機儲存您的瀏覽記錄的時間長度</translation>
+<translation id="7184510058087008090">1 天</translation>
+<translation id="8097397186614425669">1 週</translation>
+<translation id="1600157116238060201">1 個月</translation>
+<translation id="6774350394520543146">3 個月</translation>
+<translation id="2268310966956852466">6 個月</translation>
+<translation id="5353781333882815543">1 年</translation>
+<translation id="6796569320325473726">5 年</translation>
+<translation id="1658834457013045127">永久</translation>
 <translation id="933652931229970927">自動傳送診斷報告</translation>
 <translation id="8868426106596092089">在 Brave 瀏覽器當機或凍結時自動傳送診斷報告，協助改善 Brave 的產品穩定性。</translation>
 <translation id="4891600875049212418">造訪敏感網站時停止記錄</translation>
@@ -683,6 +704,7 @@
 <translation id="4908081302669157000">電話號碼、電子郵件和地址</translation>
 <translation id="294985549514492876">Web 應用程式 (PWA)</translation>
 <translation id="7029809446516969842">密碼</translation>
+<translation id="1571419474754278280">Leo AI 對話</translation>
 <translation id="6011308810877101166">改善搜尋建議</translation>
 <translation id="2332576387809612040">開啟時，Brave 會將您在位址列或搜尋方塊中輸入的內容傳送至預設搜尋引擎，以獲得更好的建議。關閉時，Brave 只會顯示您裝置上產生的建議。在無痕視窗中，此功能將常設為關閉。</translation>
 <translation id="5522403133543437426">網址列中使用的搜尋引擎。</translation>

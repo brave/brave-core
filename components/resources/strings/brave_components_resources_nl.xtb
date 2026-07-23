@@ -786,9 +786,7 @@
 <translation id="5486744676117070166">Fout bij het ophalen van volgende nonce-waarde</translation>
 <translation id="6180576227145734714">Transactiegegevens 'naar' moeten een geldig adres zijn wanneer deze worden vermeld</translation>
 <translation id="6688162556547723415">De aangevraagde methode en/of rekening is niet geautoriseerd door de gebruiker.</translation>
-<translation id="8767749833522980474">crypto</translation>
 <translation id="6122742277607781713">Portfolio</translation>
-<translation id="7020503656406658141">Prijzen</translation>
 <translation id="3586775666459823714">NFT's</translation>
 <translation id="1987317783729300807">Accounts</translation>
 <translation id="3567988240819868195">Markt</translation>
@@ -1822,7 +1820,6 @@
 <translation id="803703704549420287">Filters wissen</translation>
 <translation id="1472675084647422956">Meer weergeven</translation>
 <translation id="4522570452068850558">Details</translation>
-<translation id="4583937519241190398">Geverifieerd door DappRadar</translation>
 <translation id="8713438253026855351">Overschakelen naar afgeschermd account</translation>
 <translation id="3526789880090101085">Account afschermen</translation>
 <translation id="3155166394760577549">Schakel afscherming in voor meer privacy bij transacties.</translation>
@@ -1955,6 +1952,7 @@
 <translation id="6261915643960475695">Zakelijk</translation>
 <translation id="8265589281845759879">Auto's</translation>
 <translation id="7726519849288907308">Beroemdheden</translation>
+<translation id="8767749833522980474">crypto</translation>
 <translation id="7577010593836079522">Cultuur</translation>
 <translation id="6807791860691150411">Onderwijs</translation>
 <translation id="3706423975342040244">Entertainment</translation>
@@ -2171,6 +2169,7 @@
 <translation id="2367972762794486313">Apps weergeven</translation>
 <translation id="3142853026316054951">Focusmodus aan/uit</translation>
 <translation id="3468387898712904997">Nieuwe e-mailalias</translation>
+<translation id="4711475997833555304">Maak een willekeurig e-mailadres aan dat wordt doorgestuurd naar uw inbox.</translation>
 <translation id="2796584247246518451">Nieuwe tijdelijke container</translation>
 <translation id="8591883849678260674">Origineel bekijken</translation>
 <translation id="1969654232209826429">minuten leestijd</translation>
@@ -2230,8 +2229,10 @@
 <translation id="8743383817154663379">Er is iets misgegaan tijdens de verwerking van je verzoek. Probeer het later nog eens.</translation>
 <translation id="2712650703044366764">Dit model heeft een ongeldig eindpunt. Controleer je configuratie en probeer het opnieuw.</translation>
 <translation id="7092656392206649236">Er is iets misgegaan bij de communicatie met Leo. Probeer het opnieuw.</translation>
+<translation id="4539536233699928121">Er is iets misgegaan bij de communicatie met NEAR. Probeer het opnieuw.</translation>
 <translation id="3552709750512842961">Statuscode: <ph name="STATUS_CODE"/>, foutcode: <ph name="ERROR_CODE"/></translation>
 <translation id="9215978379284690246">Statuscode: <ph name="STATUS_CODE"/></translation>
+<translation id="5820497878628354073">Statuscode: <ph name="STATUS_CODE"/>, interne statuscode: <ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">Je hebt de limiet van Premium bereikt. Probeer het opnieuw over een paar uur.</translation>
 <translation id="3683964919745779766">Je hebt de limiet voor dit model bereikt of je hebt geen credits meer. Probeer het later nog eens.</translation>
 <translation id="7692501701960747469">De geconfigureerde API-sleutel voor dit model is ongeldig. Controleer de configuratie en probeer het opnieuw.</translation>
@@ -2405,6 +2406,9 @@
 <translation id="9051226419897869406">Chat privé met Brave Leo</translation>
 <translation id="2414904697165579184">Antwoorden vormen op basis van de inhoud van tabbladen</translation>
 <translation id="8258324391302611485">De inhoud van deze pagina wordt samen met je berichten naar Leo verstuurd.</translation>
+<translation id="443008484043213881">Tools</translation>
+<translation id="4343623396828510727">Deze sites bieden tools die Leo kan gebruiken om gegevens naar en van deze site te verzenden. Voeg deze tools niet toe of keur ze niet goed als dit gesprek gegevens bevat die u niet aan deze site wilt tonen.</translation>
+<translation id="5021823940147712387">Tools verwijderen</translation>
 <translation id="318819763888864209">Alle abonnementen worden automatisch verlengd, maar kunnen voor de verlengdatum op elk gewenst moment worden opgezegd.</translation>
 <translation id="5091223967610958">Deel de hostnaam van van de pagina waarop u zich bevindt (<ph name="HOST_NAME"/>) om ons te helpen Leo nog beter te maken.</translation>
 <translation id="8732450785281947197">AI-tools van Leo</translation>
@@ -2483,6 +2487,9 @@
 <translation id="7918928051723770926">Taak voltooid</translation>
 <translation id="2113810663179257944">Code-uitvoering</translation>
 <translation id="4838375634693651776">Code in sandbox uitvoeren om u te helpen met uw query</translation>
+<translation id="6990975553143971265">Uw browsergeschiedenis doorzoeken op "<ph name="QUERY"/>"</translation>
+<translation id="8302511726757276645">Uw browsergeschiedenis doorzoeken</translation>
+<translation id="8410699755320690690">Brave AI wil uw browsegeschiedenis doorzoeken. Het zoeken gebeurt lokaal op uw apparaat, dus uw volledige geschiedenis wordt nergens naartoe verzonden. Alleen de titels, URL's en geïndexeerde tekstpassages van de overeenkomende pagina's worden als onderdeel van dit gesprek naar Brave AI verzonden.</translation>
 <translation id="4379566111233326721">Code:</translation>
 <translation id="3542130965673205258">Output:</translation>
 <translation id="6911817209337314910">Enkele opties genereren waaruit u kunt kiezen</translation>
@@ -2692,6 +2699,21 @@
 <translation id="7586067492365979844">Brave Shields heeft een nieuw thuis en ontwerp. Het integreert nu met site-informatie voor een alles-in-één ervaring.</translation>
 <translation id="9114542678887529043">Brave Shields heeft een nieuw thuis en ontwerp. U kunt het openen door op het sitepictogram in de adresbalk te klikken.</translation>
 <translation id="4242533952199664413">Instellingen openen</translation>
+<translation id="3616113530831147358">Audio</translation>
+<translation id="7972837668077967426">Canvas</translation>
+<translation id="2182250753201267390">Apparaatgeheugen</translation>
+<translation id="1217374757325197995">Event Source Pool</translation>
+<translation id="1823768272150895732">Lettertype</translation>
+<translation id="436315497893815819">Hardwaregelijktijdigheid</translation>
+<translation id="7846634333498149051">Toetsenbord</translation>
+<translation id="5302048478445481009">Taal</translation>
+<translation id="7986250835989845763">Media-apparaten</translation>
+<translation id="4267171000817377500">Plug-ins</translation>
+<translation id="3441653493275994384">Scherm</translation>
+<translation id="1772612984983840854">Spraaksynthese</translation>
+<translation id="1167475333911019229">USB-apparaat serienummer</translation>
+<translation id="6897140037006041989">User Agent</translation>
+<translation id="6433005682384591812">Web Sockets Pool</translation>
 <translation id="6294662480095808915">Privacy. Standaard.</translation>
 <translation id="4366423156486478559">Ontvang bescherming door Brave voor elke link waarop u klikt. Stel Brave in als uw standaardbrowser en zoek privé.</translation>
 <translation id="3830912418080848377">Instellingen importeren</translation>
@@ -2728,7 +2750,6 @@
 <translation id="6821966107067356137">RSS-feed toevoegen</translation>
 <translation id="2478076885740497414">App installeren</translation>
 <translation id="8293206222192510085">Voeg Bladwijzer toe</translation>
-<translation id="1010029336854254368">Menu Delen</translation>
 <translation id="7758460733045216901">Bladwijzerpaneel</translation>
 <translation id="958268166261124668">Brave VPN: verbonden</translation>
 <translation id="6021669293402055982">Brave VPN: geen verbinding</translation>
@@ -2851,17 +2872,31 @@ Laten we je verbinding snel in orde brengen!</translation>
 <translation id="5816720995022674532">Origin is gratis te gebruiken op Linux-apparaten, maar kan ook <ph name="BEGIN_LINK"/>aangeschaft<ph name="END_LINK"/> worden als u Brave als bedrijf wilt ondersteunen. Als u aanschaft, ontgrendelt u ook de mogelijkheid om Origin op Android-, iOS-, macOS- en Windows-apparaten te gebruiken.</translation>
 <translation id="3065220545261045367">Ondersteun Brave door Origin aan te schaffen</translation>
 <translation id="2069499076031488636">Ga verder met Origin gratis op Linux</translation>
+<translation id="6820590295368504396">Kan geen verbinding maken met SKU-service</translation>
+<translation id="2525146368601152300">Aankoopid is leeg</translation>
+<translation id="7858444547014304753">Ongeldige aankoopid</translation>
+<translation id="2016076837307423164">Inloggegevens ophalen mislukt</translation>
+<translation id="3890481923176188801">Aankoop niet gevonden</translation>
 <translation id="5713644099811900409">Brave-account</translation>
 <translation id="2906576968270573525">Inloggen of een Brave-account maken</translation>
 <translation id="6972754398087986839">Aan de slag</translation>
 <translation id="5378207817582281342">Bijna daar!</translation>
 <translation id="3750210661641549834">Verifieer uw e-mailadres om uw account aan te maken.</translation>
-<translation id="4129813507847680661">Registratiecode invoeren</translation>
+<translation id="4351175281479794167">Verificatiecode invoeren</translation>
 <translation id="1672793037892810340">U zou een e-mail moeten hebben ontvangen met een code die u moet invoeren.</translation>
 <translation id="4821255729182569254">Bevestigingse-mail opnieuw verzenden</translation>
 <translation id="5837679375142747484">Zie je de e-mail niet? Controleer dan de spammap of <ph name="BEGIN_LINK"/>verstuur opnieuw<ph name="END_LINK"/>.</translation>
 <translation id="1080588816740959885">Zie je de e-mail niet? Controleer dan de spammap of verstuur opnieuw.</translation>
 <translation id="1020730839570724178">Registratie annuleren</translation>
+<translation id="7155125570724238786">Verifieer uw e-mailadres om uw wachtwoord opnieuw in te stellen.</translation>
+<translation id="816074628631172140">Uw e-mailadres is geverifieerd. Stel een nieuw wachtwoord in om het opnieuw instellen van uw wachtwoord te voltooien.</translation>
+<translation id="7543374051303238869">Nieuw wachtwoord instellen</translation>
+<translation id="8378209932853841849">Opnieuw instellen van wachtwoord annuleren</translation>
+<translation id="4405566535206792621">Verifieer uw e-mailadres om uw wachtwoord te wijzigen.</translation>
+<translation id="3135333563420939059">Uw e-mailadres is geverifieerd. Stel een nieuw wachtwoord in om de wijziging van uw wachtwoord te voltooien.</translation>
+<translation id="4227581348172626540">Wijziging van wachtwoord annuleren</translation>
+<translation id="808894953321890993">Wachtwoord wijzigen</translation>
+<translation id="7967687455715421528">Kan wachtwoord niet wijzigen</translation>
 <translation id="4869737930995549965">Uitloggen</translation>
 <translation id="5538654494923870167">Aan de slag met uw Brave-account</translation>
 <translation id="1544145635547515689">Een Brave-account aanmaken</translation>
@@ -2876,10 +2911,11 @@ Laten we je verbinding snel in orde brengen!</translation>
 <translation id="5486261815000869482">Wachtwoord bevestigen</translation>
 <translation id="7345706641791090287">Bevestig uw wachtwoord</translation>
 <translation id="7114054701490058191">Wachtwoorden komen niet overeen</translation>
+<translation id="4277028893293644418">Wachtwoord opnieuw instellen</translation>
+<translation id="9033485352495162741">Bevestiging geslaagd. Voer nu uw gewenste nieuwe wachtwoord in:</translation>
 <translation id="1293857704520741614">Log in op uw account</translation>
 <translation id="118617366439356381">Wachtwoord vergeten?</translation>
 <translation id="5183159033908953146">Bevestig het e-mailadres van uw Brave-account en u ontvangt vervolgens een link om uw wachtwoord opnieuw in te stellen. De link is slechts 30 minuten geldig.</translation>
-<translation id="3997368361371298873">Waarschuwing: omdat u niet bent ingelogd op dit apparaat, worden bij het opnieuw instellen van uw wachtwoord <ph name="BEGIN_BOLD"/>al uw gegevens verwijderd<ph name="END_BOLD"/> van de server. Als u een ander apparaat heeft waarop u bent ingelogd, wijzig dan uw wachtwoord vanaf dat apparaat in plaats van uw wachtwoord opnieuw in te stellen.</translation>
 <translation id="3674472551471103443">Stel uw wachtwoord opnieuw in</translation>
 <translation id="2755539422340788311">Verifieer uw e-mailadres</translation>
 <translation id="6641436078676327508">U zou een e-mail moeten hebben ontvangen met een korte code. Voer deze hier in om door te gaan.</translation>
@@ -2896,10 +2932,16 @@ Laten we je verbinding snel in orde brengen!</translation>
 <translation id="7144067487084094749">Er bestaat al een account voor dit e-mailadres. Probeer in te loggen in plaats van een account aan te maken.</translation>
 <translation id="5288951359968156008">Het domein van dit e-mailadres wordt niet ondersteund. Gebruik een ander e-mailadres.</translation>
 <translation id="7625678607509255072">Limiet voor e-mailverificatie overschreden. Wacht 30 minuten voordat u het opnieuw probeert.</translation>
-<translation id="4582421696414628320">Verificatie verlopen. Start het registratieproces opnieuw.</translation>
+<translation id="9121175588136821850">Verificatiecode verlopen. Start het registratieproces opnieuw.</translation>
 <translation id="8439543211004394821">Er zijn te veel onjuiste codes ingevoerd. Start het registratieproces opnieuw.</translation>
 <translation id="3229986152760633988">Verkeerde code, probeer het opnieuw.</translation>
 <translation id="818783632689113711">Er is al een account aangevraagd voor dit e-mailadres. Controleer uw e-mail of probeer het over 30 minuten opnieuw.</translation>
+<translation id="4776810543245166572">Geen account gevonden voor dit e-mailadres.</translation>
+<translation id="7090885444036935209">Ongeldig e-mailadres.</translation>
+<translation id="1542836798393843657">Te veel verificatiepogingen voor dit e-mailadres. Probeer het over 24 uur opnieuw.</translation>
+<translation id="7572012011062736429">Interne fout. Sluit het dialoogvenster, annuleer de verificatie en probeer het opnieuw.</translation>
+<translation id="2477280119520811719">Verificatiecode verlopen. Start het proces voor het wijzigen van het wachtwoord opnieuw.</translation>
+<translation id="7103280722523884198">Er zijn te veel onjuiste codes ingevoerd. Start het proces voor het wijzigen van het wachtwoord opnieuw.</translation>
 <translation id="4178004989875422946">Met een Brave-account krijgt u eenvoudig toegang tot Brave-services.</translation>
 <translation id="4902897635127068510">Bedoelde u <ph name="SUGGESTION"/>?</translation>
 <translation id="8314772463905284467">Caps Lock staat aan</translation>
@@ -2908,6 +2950,7 @@ Laten we je verbinding snel in orde brengen!</translation>
 <translation id="2112559299194052697">Opnieuw verzenden niet mogelijk</translation>
 <translation id="7932611814134267012">Er zijn al te veel verificatie-e-mails verzonden. Controleer uw spammap.</translation>
 <translation id="1364223093800750401">E-mailadres al geverifieerd.</translation>
+<translation id="1353061468772282268">De verificatiecode is verlopen. Annuleer de verificatie en probeer het opnieuw.</translation>
 <translation id="3353844160742960162">Privacy-instellingen afstemmen</translation>
 <translation id="528205534230423181">Deze website biedt privacy-instellingen die Brave automatisch voor u kan aanpassen. Dit is wat we aanbevelen:</translation>
 <translation id="1063227610401477317">Wijzigingen toepassen</translation>

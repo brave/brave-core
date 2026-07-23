@@ -41,7 +41,7 @@
 <translation id="5197219128592971597">Visita sempre les URL de pàgina originals (que no són d'AMP) en lloc de les versions d'Accelerated Mobile Pages de Google</translation>
 <translation id="920638232916443453">Redirigeix automàticament les URL de rastrejament</translation>
 <translation id="1118970888826017401">Habilita el suport per evitar les URL de rastrejament de redireccions de nivell superior.</translation>
-<translation id="94154759592465111">Bloqueja els scripts</translation>
+<translation id="4824468494729001999">Bloqueja scripts</translation>
 <translation id="7714773920987474116">Bloqueja el JavaScript (pot trencar llocs web)</translation>
 <translation id="2233004324252915283">Bloqueja el contingut recomanat de YouTube</translation>
 <translation id="1005372663692637999">Bloqueja els elements de la targeta següent i final a youtube.com.</translation>
@@ -151,6 +151,33 @@
 <translation id="6975864539539353406">Esborra les galetes i altres dades dels llocs quan tanquis un lloc</translation>
 <translation id="7740929262043547697">Permet el bloqueig d'elements a les finestres d'incògnit</translation>
 <translation id="1260864846935682371">Activa la característica Bloca Elements dels Escuts a les finestres d'incògnit. Tingues en compte que els elements blocats a les finestres d'incògnit també es blocaran a les finestres no privades.</translation>
+<translation id="4021136205151368133">Nota: això pot reduir les proteccions de privadesa de Brave.</translation>
+<translation id="2876155735620608356">Escuts activats per a aquest lloc</translation>
+<translation id="8605306630462821888">Escuts desactivats per a aquest lloc</translation>
+<translation id="1574700443447059851">Rastrejadors, anuncis i més bloquejats.</translation>
+<translation id="4039014515785210563">Tria com gestionar els rastrejadors i els anuncis</translation>
+<translation id="8423733350479881051">Tria com gestionar les galetes</translation>
+<translation id="9064628362799094520">Dades del lloc shred</translation>
+<translation id="2862348905922940916">Restableix aquest lloc als valors predeterminats d'Escuts</translation>
+<translation id="269939061709857874">Lloc restablert als valors predeterminats d'Escuts</translation>
+<translation id="3623708006387030755">Configuració global d'Escuts</translation>
+<translation id="2387532482048804818">Digue'ns si el lloc no funcionava correctament amb Escuts activat.</translation>
+<translation id="5412004902081180614">Informar</translation>
+<translation id="1209739344687072997">Informa d'una pàgina web inexistent</translation>
+<translation id="2606165159306988240">Fes saber als desenvolupadors de Brave que aquesta web no funciona de forma adequada amb aquest lloc.</translation>
+<translation id="6806248680442980382">Gràcies per ajudar a fer Brave millor per a tothom. Aquest informe només contindrà la informació necessària perquè puguem corregir aquest lloc.</translation>
+<translation id="7549123865054511884">Què no funciona en aquest lloc?</translation>
+<translation id="9094461910562981998">Contacta amb mi a través de (opcional)</translation>
+<translation id="7645128170699559106">Correu electrònic, nom d'usuari d'X i més</translation>
+<translation id="446579367766109694">Si introdueixes la teva informació de contacte, aquesta serà emmagatzemada per a futurs informes</translation>
+<translation id="2653659639078652383">Envia</translation>
+<translation id="8459191579769999214">Veure la captura de pantalla</translation>
+<translation id="4530541918195747729">Informe enviat. Gràcies!</translation>
+<translation id="5528772406060281700">Dades del lloc shred</translation>
+<translation id="6795622376590884449">Shred automàtic</translation>
+<translation id="3520341243738311408">Quan es tanquen les pestanyes del lloc</translation>
+<translation id="3559735673608367395">Quan es tanca l'aplicació</translation>
+<translation id="9140049656798805345">Dades actuals del lloc shred</translation>
 <translation id="1680858055899097121">No segueixis les pestanyes entre sessions de navegació</translation>
 <translation id="7142548388914389999">Permet l'anàlisi de productes que preserven la privacitat (P3A)</translation>
 <translation id="5254037869598726291">La informació anonimitzada P3A ajuda a Brave a estimar l'ús general, i assegurar que millorem característiques populars.</translation>
@@ -209,24 +236,12 @@
 <translation id="5109496672133133896">Informació privada del producte</translation>
 <translation id="3545804467215833536">Toca per veure els protectors de Brave</translation>
 <translation id="1724327820822194498">Consulta tots els elements indesitjables que ha bloquejat Brave, a cada pàgina, amb els protectors.</translation>
-<translation id="5386259141409498372"><ph name="BIG_TECH"/> i <ph name="TRACKER"/> altres anuncis i rastrejadors bloquejats</translation>
-<translation id="7256200875155794202"><ph name="BIG_TECH"/> i altres anuncis i rastrejadors bloquejats</translation>
 <translation id="3092683655478890840"><ph name="TRACKER_COUNT"/> anuncis i rastrejadors bloquejats</translation>
 <translation id="8281886186245836920">Omet</translation>
-<translation id="986879628471635371">Resolució de problemes a bord</translation>
 <translation id="5806601733251372221">Escuts de Brave</translation>
-<translation id="8537217141725709400">Guanya <ph name="TOKEN"/>s</translation>
-<translation id="3333887201479867589">Recompenses de Brave</translation>
-<translation id="5870330605209713397">veient anuncis respectuosos amb la privacitat i donant suport als teus llocs i creadors preferits per defecte.</translation>
-<translation id="5302488867897327287">En clicar Comença a utilitzar Recompenses de Brave, acceptes</translation>
 <translation id="4281844954008187215">Condicions del servei</translation>
 <translation id="6871397658902960384">Inicia la navegació</translation>
-<translation id="454386012157232640">No vaig veure un anunci</translation>
-<translation id="1448877943847791441">Brave et mostrarà el teu primer anunci a</translation>
-<translation id="4410793187232041318">Ara guanyaràs tokens dels Anunics e Brave.</translation>
 <translation id="6511854390690723657">Aquest és el teu primer anunci de Brave. Prem per a més informació.</translation>
-<translation id="2070991379950719711">Comença a utilitzar Recompenses de Brave</translation>
-<translation id="48520986898237073">Continua cap a la cartera</translation>
 <translation id="6213254277250932867">Tinc una frase de recuperació de 12 paraules</translation>
 <translation id="4225265925807365011">Tinc una frase de recuperació de 24 paraules</translation>
 <translation id="3570367516044491911">Configura com a navegador predeterminat</translation>
@@ -234,6 +249,7 @@
 <translation id="1545749641540134597">Escaneja codi QR</translation>
 <translation id="5317781812114905957">Instruccions</translation>
 <translation id="8515319483805157233">Per cercar per codi QR, alinea el codi QR al centre del marc.</translation>
+<translation id="3333887201479867589">Recompenses de Brave</translation>
 <translation id="7658239707568436148">Cancel·la</translation>
 <translation id="1201402288615127009">Següent</translation>
 <translation id="8481779960444041069">Per millorar la teva privacitat, estableix Brave com el teu navegador predeterminat</translation>
@@ -339,10 +355,11 @@
 <translation id="2803313416453193357">Obre la carpeta</translation>
 <translation id="8985635554450124959">No s'ha pogut configurar la sincronització</translation>
 <translation id="7173114856073700355">Obre Configuració</translation>
-<translation id="496896260395129787">Aquest compte de sincronització de Brave s'ha suprimit d'un altre dispositiu. Si no volies desactivar la sincronització, <ph name="LINK_TEXT"/></translation>
-<translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>torna a crear el compte</translation>
+<translation id="674078455841038219">Aquest compte de sincronització de Brave s'ha suprimit d'un altre dispositiu. Si no volies desactivar la sincronització, torna a crear el compte.</translation>
+<translation id="8913415701676265311">Torna a crear</translation>
 <translation id="4094590686212463338">No s'ha pogut unir a aquesta cadena de sincronització. S'ha suprimit la cadena de sincronització.</translation>
 <translation id="4908081302669157000">Números de telèfon, correus electrònics i adreces</translation>
+<translation id="1571419474754278280">Converses de Leo IA</translation>
 <translation id="1056898198331236512">Advertiment</translation>
 <translation id="1426410128494586442">Sí</translation>
 <translation id="7811264919113243207">Amb això es compartiran les teves dades de Brave, incloses les teves contrasenyes, amb el dispositiu que ha generat aquest codi QR.
@@ -366,10 +383,9 @@ Segur que vols continuar?</translation>
 <translation id="1413177583895309156">El VPN de Brave xifra i protegeix tota la teva activitat en línia, fins i tot si aquesta té lloc fora del navegador de Brave.</translation>
 <translation id="3974348661685061050">Prova-ho gratis durant 7 dies</translation>
 <translation id="5789441016350810005">Anuncis de Brave enviats quan el navegador es queda en segon pla</translation>
-<translation id="1486343603936278248">token</translation>
 <translation id="7781069478569868053">Pàgina de pestanya nova</translation>
 <translation id="5927196110206824867">Les imatges de fons patrocinades ajuden a Brave en la seva missió de construir un lloc web independent on els usuaris són la prioritat. I, a diferència de les Big Tech, mesurem el rendiment dels anuncis de manera anònima per garantir la teva privacitat.</translation>
-<translation id="8748471354357836070">Més informació / opcions de renúncia</translation>
+<translation id="6165508094623778733">Saber més</translation>
 <translation id="3171669670217312786">Imatges de fons</translation>
 <translation id="8522669544471808198">Mostra imatges de fons</translation>
 <translation id="6258554626602400736">Mostrar publicitat a la pàgina de nova pestanya</translation>
@@ -397,7 +413,7 @@ Segur que vols continuar?</translation>
 <translation id="7151914815476509258">Bloqueja els rastrejadors i els anuncis (Estàndard)</translation>
 <translation id="7384778069178817075">Permet tots els rastrejadors i anuncis</translation>
 <translation id="1173312143376149085"><ph name="BEGIN_LINK_0"/>L'opció "Bloquejar totes les cookies" està obsoleta. Si vols saber com activar aquesta opció a la força, visita<ph name="END_LINK_0"/><ph name="BEGIN_LINK_1"/>la nostra pàgina d'ajuda<ph name="END_LINK_1"/></translation>
-<translation id="3763681089644577874">Bloqueja les galetes</translation>
+<translation id="8823559166155093873">Bloqueja les galetes</translation>
 <translation id="614747795780742163">Evita que els llocs web emmagatzemin informació sobre les visites prèvies.</translation>
 <translation id="6883611015375728278">Bloqueja totes les galetes</translation>
 <translation id="6196640612572343990">Bloqueja les galetes de tercers</translation>
@@ -408,7 +424,7 @@ Segur que vols continuar?</translation>
 <translation id="1876882294512858963">Passa sempre al mode Off-The-Record</translation>
 <translation id="554464532999080267">Pregunta-m'ho sempre abans de passar al mode Off-The-Record (opció predeterminada)</translation>
 <translation id="926857659063503456">No passis mai al mode Off-The-Record</translation>
-<translation id="3895527457258986253">Bloqueja l'empremta digital</translation>
+<translation id="6531019308847917584">Bloqueja l'empremta digital</translation>
 <translation id="7854108565842971747">Aquestes són les proteccions predeterminades dels nous llocs web. Si les canvies, no afectarà la configuració existent per lloc.</translation>
 <translation id="218587021686734263">Evita les empremtes digitals mitjançant la configuració de la llengua</translation>
 <translation id="1706099589708266367">Redueix la quantitat que els llocs web poden aprendre sobre tu en funció de la configuració de la llengua del teu navegador.</translation>
@@ -418,22 +434,12 @@ Segur que vols continuar?</translation>
 <translation id="7445306466605902444">Empremta dactilar bloquejada (estrictament, pot trencar llocs)</translation>
 <translation id="5582686930349810484">Empremtes dactilars bloquejades (estàndard)</translation>
 <translation id="769702552748212954">Permet totes les empremtes dactilars</translation>
-<translation id="876424292214881779">S'han bloquejat anuncis i altres coses estranyes</translation>
-<translation id="6849027612978668678">Els llocs sovint inclouen galetes i scripts que intenten identificar-te i identificar el teu dispositiu. Volen esbrinar qui ets i seguir, a partir del web, tot el que fas a cada lloc.\n\nBrave bloqueja aquestes coses de manera que pots navegar sense que et segueixin.</translation>
-<translation id="8553998445606452168">Sobre Escuts de Brave</translation>
-<translation id="8912304686498704084">AMUNT</translation>
-<translation id="4963218453264888510">AVALL</translation>
-<translation id="7474113515179313724">Navegues per aquest lloc sense les proteccions de privacitat de Brave. No funciona correctament amb Escuts?</translation>
 <translation id="4226543734057230801">Xarxes Ethereum</translation>
 <translation id="3504157706952484145">Xarxes Filecoin</translation>
 <translation id="1561541094377237745">Xarxes Solana</translation>
 <translation id="7141438739990875547">Xarxes Bitcoin</translation>
 <translation id="9055546041146396417">Si aquest lloc sembla que estigui trencat, prova de desactivar Escuts.</translation>
 <translation id="7898672232170410330">Bloqueja l'element</translation>
-<translation id="9064628362799094520">Shred les dades del lloc</translation>
-<translation id="8949611615512336262">Shred automàtic: <ph name="AUTO_SHRED_MODE_TEXT"/></translation>
-<translation id="9140049656798805345">Dades actuals del lloc shred</translation>
-<translation id="6795622376590884449">Shred automàtic</translation>
 <translation id="7961015016161918242">Mai</translation>
 <translation id="3200744626782631683">Les dades de navegació mai no s'eliminen automàticament.</translation>
 <translation id="1991004083507807299">Pestanyes del lloc tancades</translation>
@@ -444,23 +450,11 @@ Segur que vols continuar?</translation>
 <translation id="2997451887458851244">Actualitzar Auto Shred i ajustar quines dades s'eliminen</translation>
 <translation id="363903976200491771">Esmicolar automàticament les dades de navegació</translation>
 <translation id="1028873002018537235">Esmicolar l'historial de navegació</translation>
-<translation id="1209739344687072997">Informa d'una pàgina web inexistent</translation>
-<translation id="8510478288840333677">Fes saber als desenvolupadors de Brave que aquesta web no funciona de forma adequada amb Escuts:</translation>
-<translation id="1653405824851871276">Gràcies per ajudar a fer Brave millor per a tothom. Aquest informe només contindrà la informació necessària perquè puguem corregir aquest lloc. <ph name="LEARN_MORE"/></translation>
-<translation id="8759753423332885148">Més informació.</translation>
-<translation id="8740275226259417070">Això és una pàgina d'error. No es pot informar com a lloc trencat.</translation>
 <translation id="721949491455392748">Incloure una captura de pantalla de la pàgina actual</translation>
-<translation id="8459191579769999214">Veure la captura de pantalla</translation>
 <translation id="6476216365964140603">Informació addicional (opcional)</translation>
-<translation id="6145852496180774737">Contacta amb mi a través de: (opcional)</translation>
-<translation id="6367576083705149078">Si introdueixes la teva informació de contacte, aquesta serà emmagatzemada per a futurs informes.</translation>
-<translation id="7616645803364270729">Correu electrònic, Twitter, etc.</translation>
-<translation id="5299848999918506028">Gràcies!</translation>
-<translation id="76550953340008122">Gràcies per fer saber als desenvolupadors de Brave que hi ha un problema amb aquesta web. Farem tot el que puguem per arreglar-lo!</translation>
 <translation id="3037432377946455872">Quin és el principal problema que veus?</translation>
 <translation id="8731661215617360873">Selecciona una opció</translation>
 <translation id="650318023204990401">Controls avançats</translation>
-<translation id="7205939464631857223">Esborrar tots els elements bloquejats</translation>
 <translation id="5370478469168390143">Guarda les dades en línia</translation>
 <translation id="1118508688433541158">Navega més ràpid i bloqueja anuncis amb Brave</translation>
 <translation id="7427391215172269363">Cada dia estalvio dades navegant la web amb Brave.</translation>
@@ -510,17 +504,17 @@ Segur que vols continuar?</translation>
 <translation id="2718046830255553131">Les dades dels informes de privacitat han sigut esborrades.</translation>
 <translation id="8376263745431603066">Activa el "mode nocturn" (experimental)</translation>
 <translation id="1383876407941801731">Cerca</translation>
-<translation id="6165508094623778733">Saber més</translation>
 <translation id="13296465911709339">El text s'ha copiat al porta-retalls.</translation>
 <translation id="2735834606413553397">S'ha copiat l'adreça pública al porta-retalls.</translation>
 <translation id="2977461003134694205">Estadístiques de privacitat</translation>
 <translation id="8804164990146287819">Política de privacitat</translation>
 <translation id="5705882733397021510">Endarrere</translation>
+<translation id="8450375131309292971">Estira per actualitzar</translation>
+<translation id="880475987868032564">Activa el gest d'estirar per actualitzar. En lliscar cap avall des de la part superior d'una pàgina, aquesta s'actualitzarà.</translation>
 <translation id="7889432931837317731">Obre automàticament quan sigui possible</translation>
 <translation id="1029304566263314007">Mostra les notificacions de progrés de baixada</translation>
 <translation id="2977501775944575564">Descàrrega en paral·lel</translation>
 <translation id="6224180438946945617">Habilitar la descàrrega en paral·lel per accelerar la velocitat de la baixada</translation>
-<translation id="8967385052772844086">Consulta l'informe de privacitat complet</translation>
 <translation id="3479552764303398839">Ara no</translation>
 <translation id="7138272885617540195">Permet que els enllaços d'aplicacions s'obrin en aplicacions fora de Brave</translation>
 <translation id="4954512758656527938">Cartera predeterminada d'Ethereum</translation>
@@ -784,7 +778,6 @@ Si no acceptes la sol·licitud, la VPN no es tornarà a connectar i la teva conn
 <translation id="2156993118928861787">Adreça no vàlida</translation>
 <translation id="7791543448312431591">Afegeix</translation>
 <translation id="6889920539620318793">Estableix com a actiu</translation>
-<translation id="2653659639078652383">Envia</translation>
 <translation id="4945690646623486292">Selecciona una xarxa</translation>
 <translation id="8006088103295786154">Accés a la Cartera de Brave</translation>
 <translation id="5308380583665731573">Connecta</translation>
@@ -1105,7 +1098,6 @@ Si no acceptes la sol·licitud, la VPN no es tornarà a connectar i la teva conn
 <translation id="1336494649091412226">Segur que vols sortir de Brave?</translation>
 <translation id="6061635824229591714">Dades del lloc shred?</translation>
 <translation id="1265051174491933207">El shred suprimirà les dades del lloc i tancarà totes les pestanyes de "<ph name="SITE_NAME"/>". Això no es pot desfer.</translation>
-<translation id="5528772406060281700">Dades del lloc shred</translation>
 <translation id="4426990318287827331">Dades del shred</translation>
 <translation id="7942415993090181327">Historial de xat</translation>
 <translation id="6859935199732075666">Mostra els errors de Safe Browsing</translation>

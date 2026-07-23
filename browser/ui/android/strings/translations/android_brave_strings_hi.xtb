@@ -41,7 +41,7 @@
 <translation id="5197219128592971597">Google के एक्सीलरेटेड मोबाइल पेज वर्ज़न के बजाय, हमेशा असली (नॉन-AMP) पेज के URL पर जाएँ</translation>
 <translation id="920638232916443453">अपने-आप दूसरे पेज पर ले जाने वाले ट्रैकिंग URL</translation>
 <translation id="1118970888826017401">अपने-आप दूसरे पेज पर भेजने वाले टॉप लेवल ट्रैकिंग URL को छोड़कर आगे बढ़ने के लिए सपोर्ट को चालू करें</translation>
-<translation id="94154759592465111">स्क्रिप्ट्स को अवरुद्ध करें</translation>
+<translation id="4824468494729001999">स्क्रिप्ट ब्लॉक करें</translation>
 <translation id="7714773920987474116">जावास्क्रिप्ट को ब्लॉक करता है (साइटों को ब्रेक कर सकता है)</translation>
 <translation id="2233004324252915283">YouTube की ओर से सुझाए गए कंटेंट को ब्लॉक करें</translation>
 <translation id="1005372663692637999">YouTube पर 'अगला क्या है' और आखिर में दिखाए जाने वाले कार्ड को ब्लॉक करता है.</translation>
@@ -151,6 +151,33 @@
 <translation id="6975864539539353406">जब आप कोई साइट बंद करते हैं तो कुकीज़ और अन्य साइट डेटा साफ़ करता है</translation>
 <translation id="7740929262043547697">प्राइवेट Windows में तत्व ब्लॉकिंग की अनुमति दें</translation>
 <translation id="1260864846935682371">प्राइवेट Windows में Shields का Block Elements फ़ीचर सक्षम करता है। ध्यान दें कि प्राइवेट Windows में ब्लॉक किए गए तत्व नॉन-प्राइवेट Windows में भी ब्लॉक होंगे।</translation>
+<translation id="4021136205151368133">नोट: इससे Brave की गोपनीयता सुरक्षा कम हो सकती है।</translation>
+<translation id="2876155735620608356">इस साइट के लिए Shields चालू है</translation>
+<translation id="8605306630462821888">इस साइट के लिए Shields बंद है</translation>
+<translation id="1574700443447059851">Trackers, ऐड, और बहुत कुछ अवरुद्ध किया गया है।</translation>
+<translation id="4039014515785210563">चुनें कि ट्रैकर और ऐड को कैसे हैंडल करना है</translation>
+<translation id="8423733350479881051">चुनें कि कुकीज़ को कैसे हैंडल करना है</translation>
+<translation id="9064628362799094520">साइट का डेटा श्रेड करें</translation>
+<translation id="2862348905922940916">इस साइट को Shields डिफ़ॉल्ट पर रीसेट करें</translation>
+<translation id="269939061709857874">साइट Shields डिफ़ॉल्ट पर रीसेट हो गई</translation>
+<translation id="3623708006387030755">Shields के ग्लोबल सेटिंग</translation>
+<translation id="2387532482048804818">अगर शील्ड चालू रखने पर साइट ठीक से काम नहीं कर रही थी, तो हमें बताएँ.</translation>
+<translation id="5412004902081180614">रिपोर्ट करें</translation>
+<translation id="1209739344687072997">एक ब्रेक हुई साइट की रिपोर्ट करें</translation>
+<translation id="2606165159306988240">चलिए Brave के डेवलपर्स को बताएँ कि यह साइट इस साइट के साथ ठीक से काम नहीं करती है.</translation>
+<translation id="6806248680442980382">Brave को सभी के लिए बेहतर बनाने में मदद करने के लिए धन्यवाद.  इस रिपोर्ट में, हमें इस साइट को ठीक करने के लिए बस जो ज़रूरी जानकारी होगी वही शामिल होगी.</translation>
+<translation id="7549123865054511884">इस साइट पर क्या काम नहीं कर रहा है?</translation>
+<translation id="9094461910562981998">मुझसे संपर्क करें (वैकल्पिक)</translation>
+<translation id="7645128170699559106">ईमेल, X उपयोगकर्ता नाम, और बहुत कुछ</translation>
+<translation id="446579367766109694">अगर आप संपर्क जानकारी देते हैं, तो इसे भविष्य की रिपोर्ट के लिए स्टोर किया जाएगा</translation>
+<translation id="2653659639078652383">सबमिट करें</translation>
+<translation id="8459191579769999214">स्क्रीनशॉट देखें</translation>
+<translation id="4530541918195747729">रिपोर्ट सबमिट कर दी गई. धन्यवाद!</translation>
+<translation id="5528772406060281700">साइट डेटा श्रेड करें</translation>
+<translation id="6795622376590884449">अपने-आप श्रेड करें</translation>
+<translation id="3520341243738311408">जब साइट के टैब बंद हों</translation>
+<translation id="3559735673608367395">जब ऐप बंद हो</translation>
+<translation id="9140049656798805345">अभी साइट डेटा श्रेड करें</translation>
 <translation id="1680858055899097121">ब्राउज़िंग सत्रों के बीच टैब बनाएं न रखें</translation>
 <translation id="7142548388914389999">गोपनीयता-संरक्षण प्रोडक्ट एनालिटिक्स की अनुमति दें (P3A)</translation>
 <translation id="5254037869598726291">अनामित P3A जानकारी Brave को समग्र उपयोग का अनुमान लगाने में मदद करती है, और यह सुनिश्चित करती है कि हम लोकप्रिय सुविधाओं में सुधार कर रहे हैं.</translation>
@@ -209,24 +236,12 @@
 <translation id="5109496672133133896">निजी प्रोडक्ट जानकारी</translation>
 <translation id="3545804467215833536">Brave शील्ड देखने के लिए टैप करें</translation>
 <translation id="1724327820822194498">वह सभी बेकार चीजें देखें, जो Brave ने हर पेज पर शील्ड के ज़रिए ब्लॉक की हैं.</translation>
-<translation id="5386259141409498372"><ph name="BIG_TECH"/> और <ph name="TRACKER"/> अन्य विज्ञापन और ट्रैकर ब्लॉक किए गए</translation>
-<translation id="7256200875155794202"><ph name="BIG_TECH"/> और अन्य विज्ञापन ट्रैकर ब्लॉक किए गए हैं</translation>
 <translation id="3092683655478890840"><ph name="TRACKER_COUNT"/> विज्ञापन और ट्रैकर ब्लॉक किए गए</translation>
 <translation id="8281886186245836920">अभी नहीं</translation>
-<translation id="986879628471635371">शुरुआत करने में समस्या निवारण</translation>
 <translation id="5806601733251372221">Brave शील्ड्स</translation>
-<translation id="8537217141725709400"><ph name="TOKEN"/>s पाएं</translation>
-<translation id="3333887201479867589">Brave रिवार्ड्स</translation>
-<translation id="5870330605209713397">गोपनीयता-सम्बंधित विज्ञापन देखकर और डिफ़ॉल्ट रूप से अपने पसंदीदा साइटों और निर्माताओं का समर्थन करें।</translation>
-<translation id="5302488867897327287">स्टार्ट यूजिंग ब्रेव रिवार्ड्स का उपयोग करके, आप इससे सहमत हैं</translation>
 <translation id="4281844954008187215">सेवा की शर्तें</translation>
 <translation id="6871397658902960384">ब्राउज़ करना शुरू करें</translation>
-<translation id="454386012157232640">मैंने कोई विज्ञापन नहीं देखा</translation>
-<translation id="1448877943847791441">में Brave आपके पहले विज्ञापन को दिखाएगा</translation>
-<translation id="4410793187232041318">अब आप Brave विज्ञापनों से टोकन अर्जित करेंगे।</translation>
 <translation id="6511854390690723657">यह आपका पहला Brave विज्ञापन है। और जानने के लिए टैप करें।</translation>
-<translation id="2070991379950719711">ब्रेव रिवार्ड्स का उपयोग करना शुरू करें</translation>
-<translation id="48520986898237073">वॉलेट में योगदान करें</translation>
 <translation id="6213254277250932867">मेरे पास 12 शब्दों का रिकवरी फ्रेज़ है</translation>
 <translation id="4225265925807365011">मेरे पास 24 शब्दों का रिकवरी फ्रेज़ है</translation>
 <translation id="3570367516044491911">डिफ़ॉल्ट ब्राउज़र के रूप में सेट करें</translation>
@@ -234,6 +249,7 @@
 <translation id="1545749641540134597">QR कोड स्कैन करें</translation>
 <translation id="5317781812114905957">निर्देश</translation>
 <translation id="8515319483805157233">QR कोड से सर्च करने के लिए, QR कोड को फ़्रेम के बीच में रखें.</translation>
+<translation id="3333887201479867589">Brave रिवार्ड्स</translation>
 <translation id="7658239707568436148">रद्द करना</translation>
 <translation id="1201402288615127009">अगला</translation>
 <translation id="8481779960444041069">अपनी गोपनीयता में सुधार करने के लिए, Brave को अपने डिफ़ॉल्ट ब्राउज़र के तौर पर सेट करें</translation>
@@ -339,10 +355,11 @@
 <translation id="2803313416453193357">फ़ोल्डर खोलें</translation>
 <translation id="8985635554450124959">सिंक को सेटअप नहीं किया जा सका</translation>
 <translation id="7173114856073700355">सेटिंग खोलें</translation>
-<translation id="496896260395129787">यह Brave सिंक अकाउंट दूसरे डिवाइस से मिट चुका है. अगर आप सिंक को बंद करना नहीं चाहते थे, <ph name="LINK_TEXT"/></translation>
-<translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/> तो फिर से अकाउंट बनाएँ</translation>
+<translation id="674078455841038219">यह Brave सिंक अकाउंट दूसरे डिवाइस से मिट चुका है. अगर आप सिंक को बंद करना नहीं चाहते थे, अकाउंट फिर से बनाएँ.</translation>
+<translation id="8913415701676265311">फिर से बनाएँ</translation>
 <translation id="4094590686212463338">इस सिंक चेन में शामिल नहीं हो सकते. यह सिंक चेन मिट चुकी है.</translation>
 <translation id="4908081302669157000">फ़ोन नंबर, ईमेल और पता</translation>
+<translation id="1571419474754278280">Leo AI बातचीत</translation>
 <translation id="1056898198331236512">चेतावनी</translation>
 <translation id="1426410128494586442">हां</translation>
 <translation id="7811264919113243207">इससे आपका Brave डेटा शेयर किया जाएगा, जिसमें यह QR कोड बनाने वाले डिवाइस के साथ पासवर्ड शेयर करना भी शामिल है.
@@ -365,10 +382,9 @@
 <translation id="1413177583895309156">Brave VPN उन सभी गतिविधियों को एन्क्रिप्ट और सुरक्षित करता है जो आप ऑनलाइन करते हैं, Brave ब्राउज़र के बाहर भी।</translation>
 <translation id="3974348661685061050">7 दिनों के लिए मुफ़्त में आज़माएँ</translation>
 <translation id="5789441016350810005">ब्राउज़र के बैकग्राउंड होने पर Brave विज्ञापन भेजे जाते हैं</translation>
-<translation id="1486343603936278248">टोकन</translation>
 <translation id="7781069478569868053">नया टैब पेज</translation>
 <translation id="5927196110206824867">स्पॉन्सर की गई बैकग्राउंड इमेज Brave के स्वतंत्र, यूज़र्स को पहले रखने वाले वेब को सपोर्ट करती हैं। और Big Tech से हटकर, हम आपकी प्राइवेसी को सुरक्षित रखने के लिए ऐड की परफ़ॉर्मेंस को अनाम तरीके से मापते हैं।</translation>
-<translation id="8748471354357836070">ज़्यादा जानें / विकल्प ऑप्ट आउट करें</translation>
+<translation id="6165508094623778733">और जानें</translation>
 <translation id="3171669670217312786">बैकग्राउंड फ़ोटो</translation>
 <translation id="8522669544471808198">बैकग्राउंड इमेज दिखाएँ</translation>
 <translation id="6258554626602400736">नए टैब पेज ऐड्स दिखाएँ</translation>
@@ -396,7 +412,7 @@
 <translation id="7151914815476509258">ट्रैकर और &amp; विज्ञापनों को ब्लॉक करें (सामान्य)</translation>
 <translation id="7384778069178817075">सभी ट्रैकर्स और विज्ञापनों की अनुमति दें</translation>
 <translation id="1173312143376149085"><ph name="BEGIN_LINK_0"/>"सभी कुकीज़ को ब्लॉक करें" विकल्प को हटा दिया गया है। इस विकल्प को कैसे फ़ोर्स एनेबल करें, यह जानने के लिए, visit<ph name="END_LINK_0"/> <ph name="BEGIN_LINK_1"/>हमारे सहायता पेज<ph name="END_LINK_1"/> पर जाएँ</translation>
-<translation id="3763681089644577874">कुकीज़ ब्लॉक करें</translation>
+<translation id="8823559166155093873">कुकीज़ ब्लॉक करें</translation>
 <translation id="614747795780742163">वेबसाइटों को आपके पिछले आगमन के बारे में जानकारी संग्रहीत करने से रोकता है</translation>
 <translation id="6883611015375728278">सभी कुकी को रोकें</translation>
 <translation id="6196640612572343990">तीसरे पक्ष की कुकी ब्लॉक करें</translation>
@@ -407,7 +423,7 @@
 <translation id="1876882294512858963">हमेशा अदृश्य मोड में रहें</translation>
 <translation id="554464532999080267">अदृश्य मोड शुरू करने से पहले पूछें (स्टैंडर्ड)</translation>
 <translation id="926857659063503456">अदृश्य मोड कभी भी शुरू न करें</translation>
-<translation id="3895527457258986253">फ़िंगरप्रिंटिंग ब्लॉक करें</translation>
+<translation id="6531019308847917584">फ़िंगरप्रिंटिंग ब्लॉक करें</translation>
 <translation id="7854108565842971747">ये नई साइटों के लिए डिफ़ॉल्ट शील्ड सेटिंग्स हैं. इन्हें बदलने से आपकी मौजूदा प्रति-साइट सेटिंग्स पर कोई फ़र्क नहीं पड़ेगा.</translation>
 <translation id="218587021686734263">भाषा सेटिंग के ज़रिए फ़िंगरप्रिंटिंग को रोकें</translation>
 <translation id="1706099589708266367">आपके ब्राउज़र की भाषा की सेटिंग के आधार पर वेबसाइट आपके बारे में कितना सीख सकती हैं, इसे कम करता है.</translation>
@@ -417,22 +433,12 @@
 <translation id="7445306466605902444">फ़िंगरप्रिंटिंग ब्लॉक (सख्त, साइटों को ब्रेक कर सकते हैं)</translation>
 <translation id="5582686930349810484">फ़िंगरप्रिंटिंग ब्लॉक की गई है (सामान्य)</translation>
 <translation id="769702552748212954">सभी फिंगरप्रिंटिंग की अनुमति दें</translation>
-<translation id="876424292214881779">विज्ञापन और अन्य बकवास चीज़ें ब्लॉक की गईं</translation>
-<translation id="6849027612978668678">साइट्स में अक्सर कुकीज़ और स्क्रिप्ट शामिल होती हैं जो आपको और आपके डिवाइस को पहचानने की कोशिश करती हैं. वे यह पता लगाना चाहते हैं कि आप कौन हैं और पूरे वेब पर आपको फ़ॉलो करते हैं, हर साइट पर आप क्या करते हैं, इस पर नज़र रखते हैं.\n\nBrave इन चीज़ों को ब्लॉक करता है ताकि आप बिना किसी को फ़ॉलो किए ब्राउज़ कर सकें.</translation>
-<translation id="8553998445606452168">Brave शील्ड के बारे में</translation>
-<translation id="8912304686498704084">अप</translation>
-<translation id="4963218453264888510">डाउन</translation>
-<translation id="7474113515179313724">आप Brave की गोपनीयता सुरक्षा के बिना इस साइट को ब्राउज़ कर रहे हैं। क्या यह शील्ड के साथ सही तरीके से काम नहीं करता है?</translation>
 <translation id="4226543734057230801">Ethereum नेटवर्क</translation>
 <translation id="3504157706952484145">Filecoin नेटवर्क</translation>
 <translation id="1561541094377237745">Solana नेटवर्क</translation>
 <translation id="7141438739990875547">Bitcoin नेटवर्क</translation>
 <translation id="9055546041146396417">यदि यह साइट ठीक से नहीं दिखाई देती है, तो शील्ड को डाउन करने का प्रयास करें।</translation>
 <translation id="7898672232170410330">एलिमेंट ब्लॉक करें</translation>
-<translation id="9064628362799094520">साइट का डेटा श्रेड करें</translation>
-<translation id="8949611615512336262">अपने-आप श्रेड करें: <ph name="AUTO_SHRED_MODE_TEXT"/></translation>
-<translation id="9140049656798805345">अभी साइट डेटा श्रेड करें</translation>
-<translation id="6795622376590884449">अपने-आप श्रेड करें</translation>
 <translation id="7961015016161918242">कभी नहीं</translation>
 <translation id="3200744626782631683">ब्राउज़िंग डेटा कभी भी स्वचालित रूप से नष्ट नहीं किया जाता है।</translation>
 <translation id="1991004083507807299">साइट के टैब बंद होने पर</translation>
@@ -443,23 +449,11 @@
 <translation id="2997451887458851244">ऑटो श्रेड को अपडेट करें और यह समायोजित करें कि कौन सा डेटा श्रेड किया जाए।</translation>
 <translation id="363903976200491771">स्वचालित रूप से ब्राउज़िंग डेटा को श्रेड करें</translation>
 <translation id="1028873002018537235">ब्राउज़िंग इतिहास को श्रेड करें</translation>
-<translation id="1209739344687072997">एक ब्रेक हुई साइट की रिपोर्ट करें</translation>
-<translation id="8510478288840333677">चलिए Brave के डेवलपर्स को बताएँ कि यह साइट संरक्षण साथ ठीक से काम नहीं करती है:</translation>
-<translation id="1653405824851871276">Brave को सभी के लिए बेहतर बनाने में मदद करने के लिए धन्यवाद. यह रिपोर्ट हमें इस साइट को ठीक करने के लिए केवल ज़रूरी जानकारी भेजेगी. <ph name="LEARN_MORE"/></translation>
-<translation id="8759753423332885148">और जानें।</translation>
-<translation id="8740275226259417070">यह एक एरर पेज है. इसे टूटी हुई साइट के तौर पर रिपोर्ट नहीं किया जा सकता.</translation>
 <translation id="721949491455392748">इस पेज का स्क्रीनशॉट शामिल करें</translation>
-<translation id="8459191579769999214">स्क्रीनशॉट देखें</translation>
 <translation id="6476216365964140603">अधिक जानकारी (वैकल्पिक)</translation>
-<translation id="6145852496180774737">मुझसे संपर्क करें: (वैकल्पिक)</translation>
-<translation id="6367576083705149078">अगर आप संपर्क जानकारी देते हैं, तो उसे भविष्य की रिपोर्ट्स के लिए स्टोर किया जाएगा।</translation>
-<translation id="7616645803364270729">ईमेल, Twitter, वगैरह.</translation>
-<translation id="5299848999918506028">धन्यवाद!</translation>
-<translation id="76550953340008122">इस साइट की समस्या के बारे में Brave के डेवलपर्स को बताने के लिए धन्यवाद। हम इसे ठीक करने की पूरी कोशिश करेंगे!</translation>
 <translation id="3037432377946455872">आपको कौनसी मुख्य समस्या दिख रही है?</translation>
 <translation id="8731661215617360873">एक विकल्प चुनें</translation>
 <translation id="650318023204990401">उन्नत कंट्रोल</translation>
-<translation id="7205939464631857223">ब्लॉक किए गए सभी एलिमेंट हटाएँ</translation>
 <translation id="5370478469168390143">डेटा ऑनलाइन सेव करें</translation>
 <translation id="1118508688433541158">Brave के साथ तेजी से ब्राउज़ करें और विज्ञापन ब्लॉक करें</translation>
 <translation id="7427391215172269363">हरदिन मैं Brave से वेब ब्राउज़ करके डेटा बचाता हूँ.</translation>
@@ -509,17 +503,17 @@
 <translation id="2718046830255553131">गोपनीयता रिपोर्ट डेटा को साफ़ कर दिया गया है।</translation>
 <translation id="8376263745431603066">"नाइट मोड" सक्रीय करें (प्रायोगिक)</translation>
 <translation id="1383876407941801731">खोज</translation>
-<translation id="6165508094623778733">ज़्यादा जानें</translation>
 <translation id="13296465911709339">आपके टेक्स्ट को क्लिपबोर्ड पर कॉपी किया गया है।</translation>
 <translation id="2735834606413553397">सार्वजनिक पते को क्लिपबोर्ड पर कॉपी कर लिया गया है.</translation>
 <translation id="2977461003134694205">गोपनीयता आँकड़े</translation>
 <translation id="8804164990146287819">गोपनीयता नीति</translation>
 <translation id="5705882733397021510">वापस जाएँ</translation>
+<translation id="8450375131309292971">रीफ़्रेश करने के लिए खींचें</translation>
+<translation id="880475987868032564">रीफ़्रेश करने के लिए खींचें जेस्चर को सक्षम करता है. पेज के ऊपर से नीचे की ओर स्वाइप करने से पेज रीफ़्रेश हो जाएगा.</translation>
 <translation id="7889432931837317731">अगर संभव हो तो स्वचालित रूप से खोलें</translation>
 <translation id="1029304566263314007">डाउनलोड की प्रगति के नोटिफ़िकेशन दिखाएँ</translation>
 <translation id="2977501775944575564">पैरलेल डाउनलोडिंग</translation>
 <translation id="6224180438946945617">डाउनलोड स्पीड बढ़ाने के लिए पैरलेल डाउनलोडिंग इनेबल करें</translation>
-<translation id="8967385052772844086">पूरी गोपनीयता रिपोर्ट देखें</translation>
 <translation id="3479552764303398839">अभी नहीं</translation>
 <translation id="7138272885617540195">ऐप लिंक को Brave के बाहर के ऐप्स में खोलने की अनुमति दें</translation>
 <translation id="4954512758656527938">डिफ़ॉल्ट Ethereum वॉलेट</translation>
@@ -783,7 +777,6 @@
 <translation id="2156993118928861787">अमान्य पता</translation>
 <translation id="7791543448312431591">जोड़ें</translation>
 <translation id="6889920539620318793">एक्टिव के तौर पर सेट करें</translation>
-<translation id="2653659639078652383">सबमिट करें</translation>
 <translation id="4945690646623486292">नेटवर्क चुनें</translation>
 <translation id="8006088103295786154">Brave वॉलेट को ऐक्सेस करें</translation>
 <translation id="5308380583665731573">जुडिये</translation>
@@ -1104,7 +1097,6 @@
 <translation id="1336494649091412226">क्या आप वाकई Brave से बाहर जाना चाहते हैं?</translation>
 <translation id="6061635824229591714">साइट डेटा श्रेड करें?</translation>
 <translation id="1265051174491933207">डेटा श्रेड करने से साइट डेटा मिटा दिया जाएगा और सभी '<ph name="SITE_NAME"/>' टैब बंद हो जाएंगे। इसे पहले जैसा नहीं किया जा सकता।</translation>
-<translation id="5528772406060281700">साइट डेटा श्रेड करें</translation>
 <translation id="4426990318287827331">डेटा श्रेड करें</translation>
 <translation id="7942415993090181327">चैट का इतिहास</translation>
 <translation id="6859935199732075666">सुरक्षित ब्राउज़िक की गड़बड़ियाँ दिखाएँ</translation>

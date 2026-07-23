@@ -41,7 +41,7 @@
 <translation id="5197219128592971597">Zawsze odwiedzaj pierwotne (bez standardu AMP) adresy URL, a nie wersje stron korzystających ze standardu Accelerated Mobile Pages Google</translation>
 <translation id="920638232916443453">Automatycznie przekierowuj śledzące adresy URL</translation>
 <translation id="1118970888826017401">Włącz obsługę pomijania przekierowywania najwyższego poziomu w przypadku śledzących adresów URL.</translation>
-<translation id="94154759592465111">Zablokuj skrypty</translation>
+<translation id="4824468494729001999">Zablokuj skrypty</translation>
 <translation id="7714773920987474116">Blokuje skrypty Javascript (może popsuć działanie stron internetowych)</translation>
 <translation id="2233004324252915283">Blokuj treści rekomendowane przez YouTube</translation>
 <translation id="1005372663692637999">Blokuje ekrany końcowe i następne w serwisie youtube.com.</translation>
@@ -151,6 +151,33 @@
 <translation id="6975864539539353406">Usuwa pliki cookie i inne dane strony po jej zamknięciu</translation>
 <translation id="7740929262043547697">Zezwól na blokowanie elementów w prywatnych oknach</translation>
 <translation id="1260864846935682371">Włącza funkcję blokowania elementów przez Tarcze w prywatnych oknach. Uwaga: elementy zablokowane w prywatnych oknach będą również blokowane w zwykłych oknach.</translation>
+<translation id="4021136205151368133">Uwaga: może to zmniejszyć ochronę prywatności Brave.</translation>
+<translation id="2876155735620608356">Tarcze włączone dla tej witryny</translation>
+<translation id="8605306630462821888">Tarcze wyłączone dla tej witryny</translation>
+<translation id="1574700443447059851">Zablokowane skrypty śledzące, reklamy i inne.</translation>
+<translation id="4039014515785210563">Wybierz, jak obsługiwać elementy śledzące i reklamy</translation>
+<translation id="8423733350479881051">Wybierz, jak obsługiwać pliki cookie</translation>
+<translation id="9064628362799094520">Usunąć dane strony</translation>
+<translation id="2862348905922940916">Przywróć domyślne ustawienia Tarcz dla tej witryny</translation>
+<translation id="269939061709857874">Przywrócono domyślne ustawienia Tarcz dla witryny</translation>
+<translation id="3623708006387030755">Ustawienia globalne Tarcz</translation>
+<translation id="2387532482048804818">Poinformuj nas, jeśli strona nie działała poprawnie z włączonymi Tarczami.</translation>
+<translation id="5412004902081180614">Zgłoś</translation>
+<translation id="1209739344687072997">Zgłoś uszkodzoną stronę</translation>
+<translation id="2606165159306988240">Daj znać programistom Brave, że ta witryna nie działa poprawnie z tą witryną.</translation>
+<translation id="6806248680442980382">Dziękujemy za pomoc w ulepszaniu Brave dla wszystkich użytkowników. Ten raport będzie zawierał tylko informacje niezbędne do naprawienia tej strony.</translation>
+<translation id="7549123865054511884">Co nie działa na tej witrynie?</translation>
+<translation id="9094461910562981998">Skontaktuj się ze mną przez (opcjonalne)</translation>
+<translation id="7645128170699559106">E-mail, nazwa użytkownika X i inne</translation>
+<translation id="446579367766109694">Jeśli podasz dane kontaktowe, zostaną zapisane na potrzeby przyszłych raportów</translation>
+<translation id="2653659639078652383">Prześlij</translation>
+<translation id="8459191579769999214">Wyświetl zrzut ekranu</translation>
+<translation id="4530541918195747729">Raport wysłany. Dziękujemy!</translation>
+<translation id="5528772406060281700">Usunąć dane strony</translation>
+<translation id="6795622376590884449">Automatyczne usuwanie</translation>
+<translation id="3520341243738311408">Gdy karty witryny są zamknięte</translation>
+<translation id="3559735673608367395">Gdy aplikacja jest zamykana</translation>
+<translation id="9140049656798805345">Usuń dane strony teraz</translation>
 <translation id="1680858055899097121">Nie utrzymuj kart między sesjami przeglądania</translation>
 <translation id="7142548388914389999">Zezwól na zastosowanie analizy produktów z zachowaniem prywatności (P3A)</translation>
 <translation id="5254037869598726291">Zanonimizowane dane P3A pomagają Brave oszacować ogólny poziom użytkowania i upewnić się, że ulepszamy popularne funkcje.</translation>
@@ -209,24 +236,12 @@
 <translation id="5109496672133133896">Prywatne uwagi na temat produktu</translation>
 <translation id="3545804467215833536">Stuknij, aby wyświetlić Tarcze Brave</translation>
 <translation id="1724327820822194498">Dzięki Tarczom będzie można zobaczyć wszystkie zablokowane przez Brave niepożądane elementy.</translation>
-<translation id="5386259141409498372">Zablokowano skrypty śledzące <ph name="BIG_TECH"/> i inne reklamy (<ph name="TRACKER"/>)</translation>
-<translation id="7256200875155794202">Zablokowano reklamy i skrypty śledzące: <ph name="BIG_TECH"/></translation>
 <translation id="3092683655478890840">Zablokowanych reklam i skryptów śledzących: <ph name="TRACKER_COUNT"/></translation>
 <translation id="8281886186245836920">Pomiń</translation>
-<translation id="986879628471635371">Rozwiązywanie problemów z wdrożeniem</translation>
 <translation id="5806601733251372221">Tarcze Brave</translation>
-<translation id="8537217141725709400">Zdobywaj <ph name="TOKEN"/>y</translation>
-<translation id="3333887201479867589">Nagrody Brave</translation>
-<translation id="5870330605209713397">oglądając reklamy szanujące prywatność, i domyślnie wspieraj swoje ulubione witryny oraz twórców.</translation>
-<translation id="5302488867897327287">Stukając opcję Zacznij podczas korzystania z nagród Brave, zgadzają się Państwo na</translation>
 <translation id="4281844954008187215">Warunki świadczenia usługi</translation>
 <translation id="6871397658902960384">Zacznij przeglądać</translation>
-<translation id="454386012157232640">Nie było reklamy</translation>
-<translation id="1448877943847791441">Brave pokaże Twoją pierwszą reklamę za</translation>
-<translation id="4410793187232041318">Teraz zyskasz token z reklam Brave.</translation>
 <translation id="6511854390690723657">To Twoja pierwsza reklama Brave. Kliknij, aby dowiedzieć się więcej.</translation>
-<translation id="2070991379950719711">Zacznij korzystać z nagród Brave.</translation>
-<translation id="48520986898237073">Przejdź do portfela</translation>
 <translation id="6213254277250932867">Mam 12-wyrazową frazę odzyskiwania</translation>
 <translation id="4225265925807365011">Mam 24-wyrazową frazę odzyskiwania</translation>
 <translation id="3570367516044491911">Ustaw jako domyślną przeglądarkę</translation>
@@ -234,6 +249,7 @@
 <translation id="1545749641540134597">Skanuj kod QR</translation>
 <translation id="5317781812114905957">Instrukcje</translation>
 <translation id="8515319483805157233">Aby wyszukać za pomocą kodu QR, wyrównaj QR wewnątrz ramki.</translation>
+<translation id="3333887201479867589">Nagrody Brave</translation>
 <translation id="7658239707568436148">Anuluj</translation>
 <translation id="1201402288615127009">Dalej</translation>
 <translation id="8481779960444041069">Aby zwiększyć prywatność, używaj Brave jako domyślnej przeglądarki</translation>
@@ -339,10 +355,11 @@
 <translation id="2803313416453193357">Otwórz folder</translation>
 <translation id="8985635554450124959">Nie można skonfigurować synchronizacji</translation>
 <translation id="7173114856073700355">Otwórz Ustawienia</translation>
-<translation id="496896260395129787">Konto synchronizacji Brave zostało usunięte z poziomu innego urządzenia. Jeśli wyłączenie synchronizacji było przypadkowe, <ph name="LINK_TEXT"/></translation>
-<translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>utwórz konto ponownie</translation>
+<translation id="674078455841038219">Konto synchronizacji Brave zostało usunięte z poziomu innego urządzenia. Jeśli wyłączenie synchronizacji było przypadkowe, utwórz konto ponownie.</translation>
+<translation id="8913415701676265311">Utwórz ponownie</translation>
 <translation id="4094590686212463338">Nie można połączyć z tym łańcuchem synchronizacji. Został on usunięty.</translation>
 <translation id="4908081302669157000">Numery telefonów, adresy e-mail i adresy fizyczne</translation>
+<translation id="1571419474754278280">Rozmowy z Leo AI</translation>
 <translation id="1056898198331236512">Uwaga</translation>
 <translation id="1426410128494586442">Tak</translation>
 <translation id="7811264919113243207">Spowoduje to udostępnienie danych Brave, w tym potencjalnie haseł, urządzeniu, które wygenerowało ten kod QR.
@@ -366,10 +383,9 @@ Czy na pewno chcesz to zrobić?</translation>
 <translation id="1413177583895309156">Brave VPN szyfruje i chroni wszystko, co robisz online, nawet poza przeglądarką Brave.</translation>
 <translation id="3974348661685061050">Wypróbuj za darmo przez 7 dni</translation>
 <translation id="5789441016350810005">Reklamy Brave przesyłane, gdy przeglądarka znajduje się w tle</translation>
-<translation id="1486343603936278248">token</translation>
 <translation id="7781069478569868053">Strona nowej karty</translation>
 <translation id="5927196110206824867">Sponsorowane obrazy tła wspierają misję Brave polegającą na budowaniu niezależnej, zorientowanej na użytkownika sieci. W przeciwieństwie do Big Techu mierzymy skuteczność reklam anonimowo, aby zachować twoją prywatność.</translation>
-<translation id="8748471354357836070">Dowiedz się więcej / opcje rezygnacji</translation>
+<translation id="6165508094623778733">Więcej informacji</translation>
 <translation id="3171669670217312786">Obrazy tła</translation>
 <translation id="8522669544471808198">Wyświetl obrazy w tle</translation>
 <translation id="6258554626602400736">Pokaż reklamy na stronie nowej karty</translation>
@@ -400,7 +416,7 @@ Czy na pewno chcesz to zrobić?</translation>
 <translation id="7151914815476509258">Zablokuj skrypty śledzące i reklamy (standardowo)</translation>
 <translation id="7384778069178817075">Zezwól na skrypty śledzące i reklamy</translation>
 <translation id="1173312143376149085"><ph name="BEGIN_LINK_0"/>Opcja „Blokuj wszystkie pliki cookie” została wycofana. Aby dowiedzieć się, jak wymusić włączenie tej opcji, wejdź na <ph name="END_LINK_0"/> <ph name="BEGIN_LINK_1"/>naszą stronę pomocy<ph name="END_LINK_1"/></translation>
-<translation id="3763681089644577874">Zablokuj pliki cookies</translation>
+<translation id="8823559166155093873">Zablokuj pliki cookies</translation>
 <translation id="614747795780742163">Uniemożliwia stronom internetowym przechowywanie danych o wcześniejszych wizytach</translation>
 <translation id="6883611015375728278">Zablokuj wszystkie pliki cookie</translation>
 <translation id="6196640612572343990">Blokuj pliki cookie innych firm</translation>
@@ -411,7 +427,7 @@ Czy na pewno chcesz to zrobić?</translation>
 <translation id="1876882294512858963">Zawsze przeglądaj w trybie bez zapisywania danych</translation>
 <translation id="554464532999080267">Zapytaj, zanim przejdziesz do trybu bez zapisywania danych (standard)</translation>
 <translation id="926857659063503456">Nigdy nie przechodź do trybu bez zapisywania danych</translation>
-<translation id="3895527457258986253">Zablokuj rozpoznawanie urządzenia</translation>
+<translation id="6531019308847917584">Zablokuj zdejmowanie odcisków palca</translation>
 <translation id="7854108565842971747">To są domyślne ustawienia tarcz dla nowych stron. Zmiana ta nie wpłynie na istniejące ustawienia dla poszczególnych stron.</translation>
 <translation id="218587021686734263">Zapobiegaj pobieraniu odcisków palców za pomocą ustawień językowych</translation>
 <translation id="1706099589708266367">Ogranicza ilość informacji, jakie strony internetowe mogą uzyskać o Tobie na podstawie ustawień językowych przeglądarki.</translation>
@@ -421,22 +437,12 @@ Czy na pewno chcesz to zrobić?</translation>
 <translation id="7445306466605902444">Zablokuj rozpoznawanie urządzenia (ścisłe, strona może nie działać)</translation>
 <translation id="5582686930349810484">Zablokuj rozpoznawanie urządzenia (standardowe)</translation>
 <translation id="769702552748212954">Zezwalaj na rozpoznawanie urządzenia</translation>
-<translation id="876424292214881779">Reklamy i inne nieprzyjemne rzeczy zablokowane</translation>
-<translation id="6849027612978668678">Witryny często zawierają pliki cookies i skrypty, które próbują zidentyfikować Ciebie i Twoje urządzenie. Chcą dowiedzieć się, kim jesteś, i śledzić Cię w sieci, monitorując wykonywane przez Ciebie czynności na każdej stronie.\n\nBrave blokuje to, dzięki czemu możesz przeglądać, i nikt nie będzie Cię śledzić.</translation>
-<translation id="8553998445606452168">O tarczach Brave</translation>
-<translation id="8912304686498704084">WŁĄCZONE</translation>
-<translation id="4963218453264888510">WYŁĄCZONE</translation>
-<translation id="7474113515179313724">Przeglądasz tę stronę bez włączonych tarcz Brave. Czy strona nie działa prawidłowo z włączonymi tarczami?</translation>
 <translation id="4226543734057230801">Sieci Ethereum</translation>
 <translation id="3504157706952484145">Sieci Filecoin</translation>
 <translation id="1561541094377237745">Sieci Solana</translation>
 <translation id="7141438739990875547">Sieci Bitcoin</translation>
 <translation id="9055546041146396417">Jeśli strona nie działa, spróbuj wyłączyć tarcze.</translation>
 <translation id="7898672232170410330">Blokuj element</translation>
-<translation id="9064628362799094520">Usunąć dane strony</translation>
-<translation id="8949611615512336262">Automatyczne usuwanie: <ph name="AUTO_SHRED_MODE_TEXT"/></translation>
-<translation id="9140049656798805345">Usuń dane strony teraz</translation>
-<translation id="6795622376590884449">Automatyczne usuwanie</translation>
 <translation id="7961015016161918242">Nigdy</translation>
 <translation id="3200744626782631683">Dane dotyczące przeglądania stron internetowych nigdy nie są automatycznie niszczone</translation>
 <translation id="1991004083507807299">Zamknięte zakładki strony</translation>
@@ -447,24 +453,11 @@ Czy na pewno chcesz to zrobić?</translation>
 <translation id="2997451887458851244">Zaktualizuj funkcję automatycznego niszczenia danych i dostosuj zakres niszczonych danych</translation>
 <translation id="363903976200491771">Automatyczne usuwanie danych przeglądania</translation>
 <translation id="1028873002018537235">Usuń historię przeglądania</translation>
-<translation id="1209739344687072997">Zgłoś uszkodzoną stronę</translation>
-<translation id="8510478288840333677">Poinformuj programistów Brave, że ta strona nie działa prawidłowo z tarczami Brave.</translation>
-<translation id="1653405824851871276">Dziękujemy za pomoc w ulepszaniu Brave dla wszystkich użytkowników. Ten raport będzie zawierał tylko informacje niezbędne do naprawienia tej strony.
-<ph name="LEARN_MORE"/></translation>
-<translation id="8759753423332885148">Dowiedz się więcej.</translation>
-<translation id="8740275226259417070">Ta strona jest stroną błędu. Nie można jej zgłosić jako uszkodzonej strony.</translation>
 <translation id="721949491455392748">Dołącz zrzut ekranu bieżącej strony</translation>
-<translation id="8459191579769999214">Wyświetl zrzut ekranu</translation>
 <translation id="6476216365964140603">Dodatkowe szczegóły (opcjonalne)</translation>
-<translation id="6145852496180774737">Skontaktuj się ze mną przez: (opcjonalne)</translation>
-<translation id="6367576083705149078">Jeśli podasz dane kontaktowe, zostaną one zapisane na potrzeby przyszłych raportów.</translation>
-<translation id="7616645803364270729">E-mail, Twitter, itp.</translation>
-<translation id="5299848999918506028">Dziękujemy!</translation>
-<translation id="76550953340008122">Dziękujemy za poinformowanie deweloperów Brave, że coś jest nie tak z tą witryną. Dołożymy wszelkich starań, aby ją naprawić!</translation>
 <translation id="3037432377946455872">Jaki główny problem zauważasz?</translation>
 <translation id="8731661215617360873">Wybierz jedną opcję</translation>
 <translation id="650318023204990401">Zaawansowane sterowanie</translation>
-<translation id="7205939464631857223">Wyczyść wszystkie zablokowane elementy</translation>
 <translation id="5370478469168390143">Zapisz dane online</translation>
 <translation id="1118508688433541158">Przeglądaj szybciej i blokuj reklamy z Brave</translation>
 <translation id="7427391215172269363">Codziennie zapisuję dane, przeglądając Internet za pomocą przeglądarki Brave.</translation>
@@ -514,17 +507,17 @@ Czy na pewno chcesz to zrobić?</translation>
 <translation id="2718046830255553131">Wyczyszczono dane o raportach o prywatności.</translation>
 <translation id="8376263745431603066">Włącz „Tryb nocny” (funkcja eksperymentalna)</translation>
 <translation id="1383876407941801731">Szukaj</translation>
-<translation id="6165508094623778733">Dowiedz się więcej</translation>
 <translation id="13296465911709339">Twój tekst został skopiowany do schowka.</translation>
 <translation id="2735834606413553397">Adres publiczny został skopiowany do schowka.</translation>
 <translation id="2977461003134694205">Statystyki prywatności</translation>
 <translation id="8804164990146287819">Polityka prywatności</translation>
 <translation id="5705882733397021510">Wróć</translation>
+<translation id="8450375131309292971">Pociągnij, aby odświeżyć</translation>
+<translation id="880475987868032564">Włącza gest pociągnięcia w celu odświeżenia. Przesunięcie w dół od górnej krawędzi strony spowoduje jej odświeżenie.</translation>
 <translation id="7889432931837317731">Kiedy to możliwe, otwieraj automatycznie</translation>
 <translation id="1029304566263314007">Pokazuj powiadomienia o postępie pobierania</translation>
 <translation id="2977501775944575564">Pobieranie równoległe</translation>
 <translation id="6224180438946945617">Włączenie pobierania równoległego przyspieszy proces pobierania</translation>
-<translation id="8967385052772844086">Zobacz pełny Raport prywatności</translation>
 <translation id="3479552764303398839">Nie teraz</translation>
 <translation id="7138272885617540195">Zezwalaj na otwieranie łączy w zewnętrznych aplikacjach</translation>
 <translation id="4954512758656527938">Domyślny portfel Ethereum</translation>
@@ -788,7 +781,6 @@ Jeżeli nie zaakceptujesz tego żądania, połączenie z VPN nie zostanie ponown
 <translation id="2156993118928861787">Nieprawidłowy adres</translation>
 <translation id="7791543448312431591">Dodaj</translation>
 <translation id="6889920539620318793">Ustaw jako aktywną</translation>
-<translation id="2653659639078652383">Prześlij</translation>
 <translation id="4945690646623486292">Wybierz sieć</translation>
 <translation id="8006088103295786154">Dostęp do portfela Brave</translation>
 <translation id="5308380583665731573">Połącz</translation>
@@ -1111,7 +1103,6 @@ poprzednich rozmów z SI Leo Brave. Tego działania nie można cofnąć.</transl
 <translation id="1336494649091412226">Czy na pewno chcesz opuścić Brave?</translation>
 <translation id="6061635824229591714">Usunąć dane strony?</translation>
 <translation id="1265051174491933207">Usunięcie spowoduje usunięcie danych strony i zamknięcie wszystkich kart „<ph name="SITE_NAME"/>”. Nie można tego cofnąć.</translation>
-<translation id="5528772406060281700">Usunąć dane strony</translation>
 <translation id="4426990318287827331">Usuń dane</translation>
 <translation id="7942415993090181327">Historia czatu</translation>
 <translation id="6859935199732075666">Pokazuj błędy Bezpiecznego przeglądania</translation>

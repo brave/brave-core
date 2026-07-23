@@ -181,7 +181,6 @@
 <translation id="7129458170538955174">ਇਸ ਸਟੋਰ ਸੰਬੰਧੀ ਜਾਣਕਾਰੀ ਵਾਲੀ ਸਕ੍ਰੀਨ ਅੱਧੀ ਉਚਾਈ ਤੱਕ ਖੁੱਲ੍ਹੀ ਹੈ</translation>
 <translation id="7204204600596740190">ਬਹੁ-ਚੋਣ ਮੋਡ</translation>
 <translation id="7211038039686180558">ਤੁਹਾਡੇ ਟੈਬ ਗਰੁੱਪ ਸਵੈਚਲਿਤ ਤੌਰ 'ਤੇ ਤੁਹਾਡੇ ਸਾਰੇ ਸਾਈਨ-ਇਨ ਕੀਤੇ ਡੀਵਾਈਸਾਂ 'ਤੇ ਰੱਖਿਅਤ ਹੁੰਦੇ ਹਨ ਅਤੇ ਅੱਪਡੇਟ ਹੁੰਦੇ ਹਨ</translation>
-<translation id="731648547091221002"><ph name="COLOR_NAME"/> ਨੂੰ ਚੁਣਿਆ ਗਿਆ</translation>
 <translation id="7326879924029668159">ਵਾਪਸੀ ਸੰਬੰਧੀ ਨੀਤੀ ਅਤੇ ਹੋਰ ਚੀਜ਼ਾਂ ਦੇਖੋ</translation>
 <translation id="7352298686197644113">ਦੇਖੋ ਕਿ ਤੁਹਾਡੇ ਖੁੱਲ੍ਹੇ ਟੈਬਾਂ ਵਿੱਚ ਕਿਹੜੀ ਆਈਟਮ ਦੀ ਕੀਮਤ ਘੱਟ ਹੈ</translation>
 <translation id="7369451074646620503">"<ph name="TAB_GROUP_NAME"/>" ਟੈਬ ਗਰੁੱਪ ਹੁਣ ਉਪਲਬਧ ਨਹੀਂ ਹੈ</translation>
@@ -207,7 +206,6 @@
 <translation id="7854360405711302755">{REVIEWS,plural, =1{ <ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/> ਰੇਟਿੰਗ, <ph name="REVIEWS_COUNT_ONE"/> ਸਮੀਖਿਆ}one{<ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/> ਰੇਟਿੰਗ, <ph name="REVIEWS_COUNT_MANY"/> ਸਮੀਖਿਆ}other{<ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/> ਰੇਟਿੰਗ, <ph name="REVIEWS_COUNT_MANY"/> ਸਮੀਖਿਆਵਾਂ}}</translation>
 <translation id="7885132941432959125">ਟੈਬ ਨੂੰ ਸੱਜੇ ਲਿਜਾਓ</translation>
 <translation id="7887334752153342268">ਡੁਪਲੀਕੇਟ</translation>
-<translation id="7939917283308035850"><ph name="COLOR_NAME"/> ਨੂੰ ਨਹੀਂ ਚੁਣਿਆ ਗਿਆ</translation>
 <translation id="7961015016161918242">ਕਦੇ ਨਹੀਂ</translation>
 <translation id="7966321538264951561">ਸੁਝਾਵਾਂ ਨੂੰ ਖਾਰਜ ਕਰੋ।</translation>
 <translation id="796696298310625748">{WINDOW_COUNT,plural, =1{ਟੈਬ ਨੂੰ ਨਵੀਂ ਵਿੰਡੋ ਵਿੱਚ ਲਿਜਾਓ}one{ਟੈਬ ਨੂੰ ਕਿਸੇ ਹੋਰ ਵਿੰਡੋ ਵਿੱਚ ਲਿਜਾਓ}other{ਟੈਬ ਨੂੰ ਕਿਸੇ ਹੋਰ ਵਿੰਡੋ ਵਿੱਚ ਲਿਜਾਓ}}</translation>

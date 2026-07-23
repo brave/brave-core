@@ -181,7 +181,6 @@
 <translation id="7129458170538955174">Bu mağazayla ilgili bilgiler ekranın yarısına kadar açıldı</translation>
 <translation id="7204204600596740190">Çoklu seçim modu</translation>
 <translation id="7211038039686180558">Sekme gruplarınız, oturum açılmış tüm cihazlarınızda otomatik olarak kaydedilip güncellenir</translation>
-<translation id="731648547091221002"><ph name="COLOR_NAME"/> seçili</translation>
 <translation id="7326879924029668159">İade politikasını ve daha fazlasını görün</translation>
 <translation id="7352298686197644113">Açık sekmelerinizdeki hangi öğenin fiyatının daha düşük olduğunu görün</translation>
 <translation id="7369451074646620503">"<ph name="TAB_GROUP_NAME"/>" sekme grubu artık kullanılamıyor</translation>
@@ -207,7 +206,6 @@
 <translation id="7854360405711302755">{REVIEWS,plural, =1{ <ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/> puan, <ph name="REVIEWS_COUNT_ONE"/> yorum}other{<ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/> puan, <ph name="REVIEWS_COUNT_MANY"/> yorum}}</translation>
 <translation id="7885132941432959125">Sekmeyi sağa taşı</translation>
 <translation id="7887334752153342268">Yinele</translation>
-<translation id="7939917283308035850"><ph name="COLOR_NAME"/> seçili değil</translation>
 <translation id="7961015016161918242">Hiçbir zaman</translation>
 <translation id="7966321538264951561">Önerileri kapat.</translation>
 <translation id="796696298310625748">{WINDOW_COUNT,plural, =1{Sekmeyi yeni pencereye taşı}other{Sekmeyi başka bir pencereye taşı}}</translation>

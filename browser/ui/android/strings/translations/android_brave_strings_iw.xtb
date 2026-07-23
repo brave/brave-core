@@ -41,7 +41,7 @@
 <translation id="5197219128592971597">בקר תמיד בכתובות URL של דפים מקוריים (שאינם AMP), במקום בגרסאות דפי המוביל המואצים של גוגל.</translation>
 <translation id="920638232916443453">כתובות אתרים למעקב להפניה אוטומטית</translation>
 <translation id="1118970888826017401">אפשר תמיכה בעקיפה של כתובות אתרים למעקב אחר הפניות מחדש.</translation>
-<translation id="94154759592465111">חסום תסריטים</translation>
+<translation id="4824468494729001999">חסום סקריפטים</translation>
 <translation id="7714773920987474116">חוסם JavaScript (עלול לשבור אתרים)</translation>
 <translation id="2233004324252915283">חסום תוכן מומלץ ב-Youtube</translation>
 <translation id="1005372663692637999">חוסם את רכיבי הלשונית 'הבא' ו-'סיום' ב-youtube.com.</translation>
@@ -151,6 +151,33 @@
 <translation id="6975864539539353406">מנקה קובצי Cookie ונתוני אתר אחרים כאשר אתה סוגר אתר</translation>
 <translation id="7740929262043547697">אפשר חסימת רכיבים בחלונות אנונימיים</translation>
 <translation id="1260864846935682371">מפעיל את תכונת חסימת רכיבים במגנים ב-Windows אנונימיים. שים לב שרכיבים שנחסמים בחלונות אנונימיים ייחסמו גם בחלונות שאינם אנונימיים.</translation>
+<translation id="4021136205151368133">הערה: פעולה זו עלולה להפחית את רמת ההגנה על הפרטיות של Brave.</translation>
+<translation id="2876155735620608356">מגנים מופעלים עבור אתר זה</translation>
+<translation id="8605306630462821888">מגנים מושבתים עבור אתר זה</translation>
+<translation id="1574700443447059851">עוקבים, מודעות ועוד חסומים.</translation>
+<translation id="4039014515785210563">בחר/י כיצד לטפל ב-trackers ובמודעות</translation>
+<translation id="8423733350479881051">בחר/י כיצד לטפל ב-cookies</translation>
+<translation id="9064628362799094520">גריסת נתוני האתר</translation>
+<translation id="2862348905922940916">אפס/י אתר זה לברירות המחדל של Shields</translation>
+<translation id="269939061709857874">האתר אופס לברירות המחדל של Shields</translation>
+<translation id="3623708006387030755">הגדרות גלובליות של Shields</translation>
+<translation id="2387532482048804818">ספר לנו אם האתר לא פעל כשורה במצב הגנות מופעלות.</translation>
+<translation id="5412004902081180614">דוח</translation>
+<translation id="1209739344687072997">דווח/י על אתר לא תקין</translation>
+<translation id="2606165159306988240">הודע/י למפתחים של Brave כי אתר זה אינו עובד בצורה תקינה עם אתר זה.</translation>
+<translation id="6806248680442980382">תודה שעזרת להפוך את Brave לטוב יותר עבור כולם. דיווח זה יכלול רק את המידע הדרוש לנו לתיקון אתר זה.</translation>
+<translation id="7549123865054511884">מה לא עובד באתר זה?</translation>
+<translation id="9094461910562981998">צור איתי קשר בכתובת (לא חובה)</translation>
+<translation id="7645128170699559106">אימייל, שם משתמש ב-X ועוד</translation>
+<translation id="446579367766109694">אם סיפקת פרטי קשר, הם יאוחסנו עבור דוחות עתידיים</translation>
+<translation id="2653659639078652383">שלח</translation>
+<translation id="8459191579769999214">הצג את צילום המסך</translation>
+<translation id="4530541918195747729">הדוח נשלח. תודה!</translation>
+<translation id="5528772406060281700">לגרוס נתוני אתר</translation>
+<translation id="6795622376590884449">גריסה אוטומטית</translation>
+<translation id="3520341243738311408">כאשר לשוניות האתר נסגרות</translation>
+<translation id="3559735673608367395">כאשר האפליקציה יוצאת</translation>
+<translation id="9140049656798805345">גריסת נתוני אתר כעת</translation>
 <translation id="1680858055899097121">אל תשמר כרטיסיות בין הפעלות גלישה</translation>
 <translation id="7142548388914389999">אפשר ניתוח מוצרים השומר על פרטיות (P3A)</translation>
 <translation id="5254037869598726291">מידע P3A אנונימי מסייע ל-Brave להעריך את השימוש הכולל, ולוודא שאנחנו’re משפרים את התכונות הפופולריות.</translation>
@@ -209,24 +236,12 @@
 <translation id="5109496672133133896">תובנות פרטיות של מוצר</translation>
 <translation id="3545804467215833536">לחצו כדי לראות את Brave Shields</translation>
 <translation id="1724327820822194498">ראו את כל הדברים הרעים שנחסמו על ידי Brave, בכל עמוד, עם Shields.</translation>
-<translation id="5386259141409498372"><ph name="BIG_TECH"/> ו-<ph name="TRACKER"/> פרסומות אחרות &amp; רכיבי מעקב נחסמו</translation>
-<translation id="7256200875155794202"><ph name="BIG_TECH"/> ועוד עוקבי מודעות נחסמו</translation>
 <translation id="3092683655478890840"><ph name="TRACKER_COUNT"/> ads &amp; רכיבי מעקב נחסמו</translation>
 <translation id="8281886186245836920">דלג</translation>
-<translation id="986879628471635371">פתרון תקלות מובנה</translation>
 <translation id="5806601733251372221">Brave Shields</translation>
-<translation id="8537217141725709400">הרווח/י <ph name="TOKEN"/>s</translation>
-<translation id="3333887201479867589">תגמולי Brave</translation>
-<translation id="5870330605209713397">על ידי צפייה בפרסומות השומרות על הפרטיות ותמיכה באתרים והיוצרים המועדפים עליך כברירת מחדל.</translation>
-<translation id="5302488867897327287">על ידי לחיצה על התחל להשתמש ב-Brave Rewards, הנך מסכימ/ה ל-</translation>
 <translation id="4281844954008187215">תנאי שירות</translation>
 <translation id="6871397658902960384">התחל גלישה</translation>
-<translation id="454386012157232640">לא ראיתי מודעת פרסומות</translation>
-<translation id="1448877943847791441">Brave יציג את המודעה הראשונה שלך ב-</translation>
-<translation id="4410793187232041318">עכשיו תרוויח/י טוקן מ-Brave Ads.</translation>
 <translation id="6511854390690723657">זה פרסומת Brave הראשון שלך. נא להקיש כדי ללמוד עוד.</translation>
-<translation id="2070991379950719711">התחל להשתמש ב-Brave Rewards</translation>
-<translation id="48520986898237073">המשך לארנק</translation>
 <translation id="6213254277250932867">יש ברשותי ביטוי שחזור בן 12 מילים</translation>
 <translation id="4225265925807365011">יש ברשותי ביטוי שחזור בן 24 מילים</translation>
 <translation id="3570367516044491911">הגדר כדפדפן ברירת המחדל</translation>
@@ -234,6 +249,7 @@
 <translation id="1545749641540134597">סריקת קוד QR</translation>
 <translation id="5317781812114905957">הוראות</translation>
 <translation id="8515319483805157233">כדי לחפש לפי קוד QR, מקם את קוד ה-QR במרכז המסגרת.</translation>
+<translation id="3333887201479867589">תגמולי Brave</translation>
 <translation id="7658239707568436148">ביטול</translation>
 <translation id="1201402288615127009">הבא</translation>
 <translation id="8481779960444041069">כדי לשפר את הפרטיות שלך, הגדר Brave בתור דפדפן ברירת המחדל שלך</translation>
@@ -340,10 +356,11 @@
 <translation id="2803313416453193357">תיקייה פתוחה</translation>
 <translation id="8985635554450124959">לא ניתן להגדיר סנכרון</translation>
 <translation id="7173114856073700355">פתיחת ההגדרות</translation>
-<translation id="496896260395129787">חשבון Brave Sync זה נמחק ממכשיר אחר. אם לא התכוונת להשבית את הסנכרון, <ph name="LINK_TEXT"/></translation>
-<translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>מחדש את החשבון</translation>
+<translation id="674078455841038219">חשבון Brave Sync זה נמחק ממכשיר אחר. אם לא התכוונת להשבית את הסנכרון, צור מחדש את החשבון.</translation>
+<translation id="8913415701676265311">צור מחדש</translation>
 <translation id="4094590686212463338">לא ניתן היה להצטרף לשרשרת הסנכרון הזו. שרשרת הסנכרון נמחקה.</translation>
 <translation id="4908081302669157000">מספרי טלפון, דוא"ל וכתובות</translation>
+<translation id="1571419474754278280">שיחות Leo AI</translation>
 <translation id="1056898198331236512">אזהרה</translation>
 <translation id="1426410128494586442">כן</translation>
 <translation id="7811264919113243207">פעולה זו תשתף נתוני Brave שלך, העשויים לכלול את הסיסמאות שלך, עם המכשיר שיצר QR קוד זה.
@@ -367,10 +384,9 @@
 <translation id="1413177583895309156">Brave VPN מצפין ומגן על כל מה שעשית ברשת, אפילו מחוץ לדפדפן Brave.</translation>
 <translation id="3974348661685061050">לנסות חינם למשך 7 ימים</translation>
 <translation id="5789441016350810005">Brave Ads נשלחות כאשר הדפדפן נמצא ברקע</translation>
-<translation id="1486343603936278248">טוקן</translation>
 <translation id="7781069478569868053">דף כרטיסייה חדשה</translation>
 <translation id="5927196110206824867">תמונות רקע ממומנות תומכות במשימה של Brave לבנות רשת אינטרנט עצמאית ששמה את המשתמש בעדיפות ראשונה. ושלא כמו חברות ביג טק, אנחנו מודדים את ביצועי המודעות באופן אנונימי כדי לשמור על הפרטיות שלך.</translation>
-<translation id="8748471354357836070">למידע נוסף / אפשרויות ביטול</translation>
+<translation id="6165508094623778733">למידע נוסף</translation>
 <translation id="3171669670217312786">תמונות רקע</translation>
 <translation id="8522669544471808198">הצג תמונות רקע</translation>
 <translation id="6258554626602400736">הצגת מודעות בדף הכרטיסייה החדשה</translation>
@@ -401,7 +417,7 @@
 <translation id="7151914815476509258">חסום עוקבים ופרסומות (סטנדרטי)</translation>
 <translation id="7384778069178817075">אפשר את כל העוקבים  &amp; הפרסומות</translation>
 <translation id="1173312143376149085"><ph name="BEGIN_LINK_0"/>האפשרות ״חסימת כל העוגיות״ הוסרה. כדי ללמוד איך להפעיל כוח את האפשרות הזו, אפשר לבקר<ph name="END_LINK_0"/><ph name="BEGIN_LINK_1"/>בדף העזרה שלנו<ph name="END_LINK_1"/></translation>
-<translation id="3763681089644577874">חסום קבצי עוגייה</translation>
+<translation id="8823559166155093873">חסימת קובצי עוגיות</translation>
 <translation id="614747795780742163">מונע מאתרים לאחסן מידע אודות הביקורים הקודמים שלך</translation>
 <translation id="6883611015375728278">חסימת כל העוגיות</translation>
 <translation id="6196640612572343990">‏חסום קובצי Cookie של צד שלישי</translation>
@@ -412,7 +428,7 @@
 <translation id="1876882294512858963">תמיד לך ל-Off-The-Record</translation>
 <translation id="554464532999080267">שאל לפני מעבר ל-Of-The-Record (סטנדרטי)</translation>
 <translation id="926857659063503456">לעולם אל תלך ל-Off-The-Record</translation>
-<translation id="3895527457258986253">חסום טביעות אצבע</translation>
+<translation id="6531019308847917584">חסימת טביעות אצבע</translation>
 <translation id="7854108565842971747">אלו הן הגדרות ברירת המחדל של Shields עבור אתרים חדשים. שינוי הגדרות אלו לא ישפיע על ההגדרות הספציפיות הקיימות עבור אתר מסוים.</translation>
 <translation id="218587021686734263">מנע טביעת אצבע באמצעות הגדרות שפה</translation>
 <translation id="1706099589708266367">מפחית את מידת האפשרויות של אתרים ללמוד עליך בהתבסס על הגדרות השפה של הדפדפן שלך.</translation>
@@ -422,22 +438,12 @@
 <translation id="7445306466605902444">טביעות אצבע חסומות (מחמיר, עשוי לשבש פעולה תקינה של אתרים)</translation>
 <translation id="5582686930349810484">טביעות אצבע חסומות (סטנדרטי)</translation>
 <translation id="769702552748212954">אפשר כל לקיחת טביעות אצבע</translation>
-<translation id="876424292214881779">פרסומות ומטרדים אחרים נחסמו</translation>
-<translation id="6849027612978668678">אתרים כוללים לעתים קרובות קובצי עוגייה וסקריפטים שמנסים לזהות אותך ואת המכשיר שלך. הם רוצים להבין מי אתה ולעקוב אחריך ברחבי האינטרנט ולנטר אחר מה שאתה עושה בכל אתר.\n\n Braveחוסם את הדברים האלה כך שתוכל לגלוש מבלי שיעקבו אחריך.</translation>
-<translation id="8553998445606452168">אודות Brave Shields</translation>
-<translation id="8912304686498704084">למעלה</translation>
-<translation id="4963218453264888510">למטה</translation>
-<translation id="7474113515179313724">הנך גולש/ת באתר זה ללא הגנת הפרטיות של Brave. האם זה לא עובד כמו שצריך עם Shields?</translation>
 <translation id="4226543734057230801">רשתות Ethereum</translation>
 <translation id="3504157706952484145">רשתות Filecoin</translation>
 <translation id="1561541094377237745">רשתות Solana</translation>
 <translation id="7141438739990875547">רשתות ביטקוין</translation>
 <translation id="9055546041146396417">אם נראה שאתר זה שבור, נסה/י לכבות את Shields.</translation>
 <translation id="7898672232170410330">חסום אלמנט</translation>
-<translation id="9064628362799094520">גריסת נתוני האתר</translation>
-<translation id="8949611615512336262">גריסה אוטומטית: <ph name="AUTO_SHRED_MODE_TEXT"/></translation>
-<translation id="9140049656798805345">גריסת נתוני אתר כעת</translation>
-<translation id="6795622376590884449">גריסה אוטומטית</translation>
 <translation id="7961015016161918242">אף פעם</translation>
 <translation id="3200744626782631683">נתוני הגלישה לעולם אינם נמחקים באופן אוטומטי</translation>
 <translation id="1991004083507807299">כשכרטיסיית האתר סגורה</translation>
@@ -448,23 +454,11 @@
 <translation id="2997451887458851244">עדכן את 'גריסה אוטומטית' והגדר אילו נתונים יגרסו</translation>
 <translation id="363903976200491771">מחיקת נתוני הגלישה באופן אוטומטי</translation>
 <translation id="1028873002018537235">מחיקת היסטוריית הגלישה</translation>
-<translation id="1209739344687072997">דווח/י על אתר לא תקין</translation>
-<translation id="8510478288840333677">הודע/י למפתחים של Brave כי אתר זה אינו עובד בצורה תקינה עם Shields:</translation>
-<translation id="1653405824851871276">תודה שעזרת להפוך את Brave לטוב יותר עבור כולם. הדיווח יכיל רק את המידע הדרוש לנו לתיקון אתר זה.<ph name="LEARN_MORE"/></translation>
-<translation id="8759753423332885148">למד עוד.</translation>
-<translation id="8740275226259417070">זוהי שגיאת דף. לא ניתן לדווח עליה כעל אתר שבור.</translation>
 <translation id="721949491455392748">יש לכלול צילום מסך של הדף הנוכחי</translation>
-<translation id="8459191579769999214">הצג את צילום המסך</translation>
 <translation id="6476216365964140603">פרטים נוספים (אופציונלי)</translation>
-<translation id="6145852496180774737">צור איתי קשר בכתובת: (לא חובה)</translation>
-<translation id="6367576083705149078">אם סיפקת פרטי קשר, הם יאוחסנו עבור דוחות עתידיים.</translation>
-<translation id="7616645803364270729">דואר אלקטרוני, טוויטר וכו'.</translation>
-<translation id="5299848999918506028">תודה!</translation>
-<translation id="76550953340008122">תודה שהודעת למפתחים של Brave שמשהו לא תקין באתר זה. אנו נעשה כמיטב יכולתנו לתקן זאת!</translation>
 <translation id="3037432377946455872">מה הבעיה העיקרית?</translation>
 <translation id="8731661215617360873">יש לבחור אפשרות אחת</translation>
 <translation id="650318023204990401">בקרות מתקדמות</translation>
-<translation id="7205939464631857223">ניקוי כל האלמנטים החסומים</translation>
 <translation id="5370478469168390143">שמור נתונים באופן מקוון</translation>
 <translation id="1118508688433541158">גלשו במהירות רבה יותר וחסמו פרסומות עם Brave</translation>
 <translation id="7427391215172269363">אני חוסך בצריכת נתונים כל יום בזכות הגלישה ב-Brave.</translation>
@@ -514,17 +508,17 @@
 <translation id="2718046830255553131">נתוני דוחות הפרטיות נמחקו.</translation>
 <translation id="8376263745431603066">אפשר "מצב לילה" (ניסיוני)</translation>
 <translation id="1383876407941801731">חיפוש</translation>
-<translation id="6165508094623778733">לימדו עוד</translation>
 <translation id="13296465911709339">הטקסט שלך הועתק ללוח.</translation>
 <translation id="2735834606413553397">הכתובת הציבורית הועתקה ללוח.</translation>
 <translation id="2977461003134694205">סטטיסטיקות פרטיות</translation>
 <translation id="8804164990146287819">מדיניות הפרטיות</translation>
 <translation id="5705882733397021510">חזור</translation>
+<translation id="8450375131309292971">משיכה לרענון</translation>
+<translation id="880475987868032564">מפעיל את מחוות המשיכה לרענון. החלקה כלפי מטה מראש הדף תרענן את הדף.</translation>
 <translation id="7889432931837317731">פתח אוטומטית כאשר ניתן</translation>
 <translation id="1029304566263314007">הצג התראות על התקדמות ההורדה</translation>
 <translation id="2977501775944575564">מבצע הורדה במקביל</translation>
 <translation id="6224180438946945617">אפשר הורדה במקביל כדי להאיץ את מהירות ההורדה</translation>
-<translation id="8967385052772844086">הצג דוח פרטיות מלא</translation>
 <translation id="3479552764303398839">לא עכשיו</translation>
 <translation id="7138272885617540195">אפשר קישורי אפליקציות להיפתח באפליקציות מחוץ ל-Brave</translation>
 <translation id="4954512758656527938">ארנק ברירת המחדל של Ethereum</translation>
@@ -788,7 +782,6 @@
 <translation id="2156993118928861787">כתובת לא חוקית</translation>
 <translation id="7791543448312431591">הוסף</translation>
 <translation id="6889920539620318793">הגדר כפעיל</translation>
-<translation id="2653659639078652383">שלח</translation>
 <translation id="4945690646623486292">בחירת רשת</translation>
 <translation id="8006088103295786154">כניסה לארנק Brave</translation>
 <translation id="5308380583665731573">התחברות</translation>
@@ -1109,7 +1102,6 @@
 <translation id="1336494649091412226">בטוח שבא לך לצאת מ-Brave?</translation>
 <translation id="6061635824229591714">לגרוס נתוני אתר?</translation>
 <translation id="1265051174491933207">גריסה תמחק את נתוני האתר ותסגור את כל הכרטיסיות של '<ph name="SITE_NAME"/>'. פעולה זו לא ניתנת לביטול.</translation>
-<translation id="5528772406060281700">לגרוס נתוני אתר</translation>
 <translation id="4426990318287827331">גריסת נתונים</translation>
 <translation id="7942415993090181327">היסטוריית צ׳אטים</translation>
 <translation id="6859935199732075666">הצגת שגיאות גלישה בטוחה</translation>

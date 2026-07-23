@@ -790,9 +790,7 @@
 <translation id="5486744676117070166">تعذر الحصول على القيمة لمرة واحدة التالية</translation>
 <translation id="6180576227145734714">يجب أن تكون بيانات المعاملة "الجهة المرسل إليها" عنوانًا صالحًا عند تحديدها</translation>
 <translation id="6688162556547723415">الطريقة المطلوبة و/أو الحساب غير معتمد بواسطة المستخدم.</translation>
-<translation id="8767749833522980474">عملة مشفرة</translation>
 <translation id="6122742277607781713">ملف تعريف شخصي</translation>
-<translation id="7020503656406658141">الأسعار</translation>
 <translation id="3586775666459823714">الرموز المميزة غير القابلة للاستبدال (NFT)</translation>
 <translation id="1987317783729300807">الحسابات</translation>
 <translation id="3567988240819868195">السوق</translation>
@@ -1827,7 +1825,6 @@
 <translation id="803703704549420287">مسح عوامل التصفية</translation>
 <translation id="1472675084647422956">عرض المزيد</translation>
 <translation id="4522570452068850558">التفاصيل</translation>
-<translation id="4583937519241190398">مُصدّق عليه من طرف DappRadar</translation>
 <translation id="8713438253026855351">التبديل إلى حساب محمي</translation>
 <translation id="3526789880090101085">حساب درع</translation>
 <translation id="3155166394760577549">قم بتفعيل الحماية لتعزيز خصوصية المعاملات.</translation>
@@ -1960,6 +1957,7 @@
 <translation id="6261915643960475695">الأعمال التجارية</translation>
 <translation id="8265589281845759879">السيارات</translation>
 <translation id="7726519849288907308">المشاهير</translation>
+<translation id="8767749833522980474">عملة مشفرة</translation>
 <translation id="7577010593836079522">التقافة</translation>
 <translation id="6807791860691150411">التعليم</translation>
 <translation id="3706423975342040244">الترفيه</translation>
@@ -2176,6 +2174,7 @@
 <translation id="2367972762794486313">إظهار التطبيقات</translation>
 <translation id="3142853026316054951">تبديل وضع التركيز</translation>
 <translation id="3468387898712904997">معرّف بريد إلكتروني جديد</translation>
+<translation id="4711475997833555304">أنشئ بريدًا إلكترونيًا عشوائيًا يعيد توجيه الرسائل إلى صندوق الوارد الخاص بك.</translation>
 <translation id="2796584247246518451">حاوية مؤقتة جديدة</translation>
 <translation id="8591883849678260674">عرض الصفحة الأصلية</translation>
 <translation id="1969654232209826429">دقائق للقراءة</translation>
@@ -2235,8 +2234,10 @@
 <translation id="8743383817154663379">حدث خطأ ما أثناء معالجة طلبك. يرجى المحاولة مرة أخرى لاحقًا.</translation>
 <translation id="2712650703044366764">هذا النموذج يحتوي على نقطة نهاية غير صالحة. يرجى التحقق من الإعداد الخاص بك والمحاولة مرة أخرى.</translation>
 <translation id="7092656392206649236">حدث خطأ ما أثناء التواصل مع Leo. يرجى المحاولة مرة أخرى.</translation>
+<translation id="4539536233699928121">حدث خطأ ما أثناء التواصل مع NEAR. يرجى المحاولة مرة أخرى.</translation>
 <translation id="3552709750512842961">رمز الحالة: <ph name="STATUS_CODE"/>، رمز الخطأ: <ph name="ERROR_CODE"/></translation>
 <translation id="9215978379284690246">رمز الحالة: <ph name="STATUS_CODE"/></translation>
+<translation id="5820497878628354073">رمز الحالة: <ph name="STATUS_CODE"/>، رمز الحالة الداخلي: <ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">لقد وصلت إلى الحد الأقصى للسعر المميز. يُرجى المحاولة مرة أخرى في غضون ساعات قليلة.</translation>
 <translation id="3683964919745779766">لقد بلغت حد المعدل الأقصى لهذا النموذج أو نفذت أرصدتك. يرجى المحاولة مرة أخرى لاحقاً.</translation>
 <translation id="7692501701960747469">مفتاح API الذي تم إعداده لهذا النموذج غير صالح. يُرجى التحقق من إعداداتك والمحاولة مرة أخرى.</translation>
@@ -2410,6 +2411,9 @@
 <translation id="9051226419897869406">الدردشة بخصوصية مع Brave Leo</translation>
 <translation id="2414904697165579184">قم بصياغة الإجابات بناءً على محتويات علامة (علامات) التوبيب</translation>
 <translation id="8258324391302611485">سيتم إرسال محتوى هذه الصفحة إلى Leo إلى جانب رسائلك.</translation>
+<translation id="443008484043213881">الأدوات</translation>
+<translation id="4343623396828510727">تكشف هذه المواقع عن أدوات يمكن أن يستخدمها Leo لإرسال البيانات من هذا الموقع وإليه. لا ترفق أو توافق على هذه الأدوات إذا كانت هذه المحادثة تحتوي على بيانات لا تريد أن يراها هذا الموقع.</translation>
+<translation id="5021823940147712387">إزالة الأدوات</translation>
 <translation id="318819763888864209">تجدد جميع الاشتراكات تلقائيًا ولكن يمكن إلغاؤها في أي وقت قبل التجديد.</translation>
 <translation id="5091223967610958">شارك اسم المضيف للصفحة التي أنت فيها (<ph name="HOST_NAME"/>)  لمساعدتنا على تحسين مساعد Leo.</translation>
 <translation id="8732450785281947197">أدوات Leo للذكاء الاصطناعي</translation>
@@ -2488,6 +2492,9 @@
 <translation id="7918928051723770926">اكتملت المهمة</translation>
 <translation id="2113810663179257944">تنفيذ الكود</translation>
 <translation id="4838375634693651776">تنفيذ الكود في صندوق رمل للمساعدة في استعلامك</translation>
+<translation id="6990975553143971265">البحث في سجل المتصفح عن "<ph name="QUERY"/>"</translation>
+<translation id="8302511726757276645">البحث في سجل المتصفح</translation>
+<translation id="8410699755320690690">يريد Brave AI البحث في سجل التصفح الخاص بك. يتم إجراء البحث محليًا على جهازك، لذا لا يتم إرسال سجلك الكامل إلى أي مكان. سيتم إرسال عناوين الصفحات المطابقة وعناوين URL ومقاطع النص المفهرسة فقط إلى Brave AI كجزء من هذه المحادثة.</translation>
 <translation id="4379566111233326721">الكود:</translation>
 <translation id="3542130965673205258">الناتج:</translation>
 <translation id="6911817209337314910">إنشاء بعض الخيارات لتختار من بينها</translation>
@@ -2697,6 +2704,21 @@
 <translation id="7586067492365979844">Brave Shields لديها منزل وتصميم جديد. يتكامل الآن مع معلومات الموقع للحصول على تجربة موحدة.</translation>
 <translation id="9114542678887529043">Brave Shields لديها منزل وتصميم جديد. يمكنك الوصول إليها بالنقر على أيقونة الموقع في شريط العنوان.</translation>
 <translation id="4242533952199664413">فتح الإعدادات</translation>
+<translation id="3616113530831147358">الصوت</translation>
+<translation id="7972837668077967426">Canvas</translation>
+<translation id="2182250753201267390">ذاكرة الجهاز</translation>
+<translation id="1217374757325197995">Event Source Pool</translation>
+<translation id="1823768272150895732">الخط</translation>
+<translation id="436315497893815819">Hardware Concurrency</translation>
+<translation id="7846634333498149051">لوحة المفاتيح</translation>
+<translation id="5302048478445481009">اللغة</translation>
+<translation id="7986250835989845763">أجهزة الوسائط</translation>
+<translation id="4267171000817377500">الإضافات</translation>
+<translation id="3441653493275994384">الشاشة</translation>
+<translation id="1772612984983840854">تركيب الكلام</translation>
+<translation id="1167475333911019229">الرقم التسلسلي لجهاز USB</translation>
+<translation id="6897140037006041989">User Agent</translation>
+<translation id="6433005682384591812">Web Sockets Pool</translation>
 <translation id="6294662480095808915">الحصوصية. بشكل افتراضي.</translation>
 <translation id="4366423156486478559">احصل على حماية Brave على كل رابط تنقر عليه. ليس عليك سوى تعيين Brave كإعداد افتراضي وتصفح بخصوصية.</translation>
 <translation id="3830912418080848377">إعدادات الاستيراد</translation>
@@ -2733,7 +2755,6 @@
 <translation id="6821966107067356137">إضافة موجز RSS</translation>
 <translation id="2478076885740497414">تثبيت التطبيق</translation>
 <translation id="8293206222192510085">إضافة إشارة مرجعية</translation>
-<translation id="1010029336854254368">قائمة المشاركة</translation>
 <translation id="7758460733045216901">لوحة الإشارات المرجعية</translation>
 <translation id="958268166261124668">Brave VPN: متصل</translation>
 <translation id="6021669293402055982">Brave VPN: غير متصل</translation>
@@ -2854,17 +2875,31 @@
 <translation id="5816720995022674532">Origin مجاني للاستخدام على أجهزة Linux، لكنه <ph name="BEGIN_LINK"/>متاح للشراء<ph name="END_LINK"/> إذا كنت ترغب في دعم Brave كعمل تجاري. قد يؤدي الشراء أيضًا إلى فتح القدرة على استخدام Origin على أجهزة Android و iOS و macOS و Windows.</translation>
 <translation id="3065220545261045367">دعم Brave عن طريق شراء Origin</translation>
 <translation id="2069499076031488636">متابعة Origin مجانًا على Linux</translation>
+<translation id="6820590295368504396">يتعذر الاتصال بخدمة SKU</translation>
+<translation id="2525146368601152300">معرّف الشراء فارغ</translation>
+<translation id="7858444547014304753">معرّف الشراء غير صالح</translation>
+<translation id="2016076837307423164">فشل جلب بيانات الاعتماد</translation>
+<translation id="3890481923176188801">لم يتم العثور على الشراء</translation>
 <translation id="5713644099811900409">حساب Brave</translation>
 <translation id="2906576968270573525">سجل الدخول أو أنشئ حساب Brave</translation>
 <translation id="6972754398087986839">البدء</translation>
 <translation id="5378207817582281342">تقريبا!</translation>
 <translation id="3750210661641549834">لإنشاء حسابك، يُرجى التحقق من عنوان بريدك الإلكتروني.</translation>
-<translation id="4129813507847680661">أدخل رمز التسجيل</translation>
+<translation id="4351175281479794167">أدخل رمز التحقق</translation>
 <translation id="1672793037892810340">من المفترض أن تكون قد تلقيت رسالة بريد إلكتروني تحتوي على رمز يجب عليك إدخاله.</translation>
 <translation id="4821255729182569254">أعد إرسال رسالة التأكيد</translation>
 <translation id="5837679375142747484">لا ترى البريد الإلكتروني؟ تحقق من مجلد البريد غير المرغوب فيه أو <ph name="BEGIN_LINK"/>أعد الإرسال<ph name="END_LINK"/>.</translation>
 <translation id="1080588816740959885">لا ترى البريد الإلكتروني؟ تحقق من مجلد البريد غير المرغوب فيه أو أعد الإرسال.</translation>
 <translation id="1020730839570724178">إلغاء التسجيل</translation>
+<translation id="7155125570724238786">لإعادة تعيين كلمة مرورك، يُرجى التحقق من عنوان بريدك الإلكتروني.</translation>
+<translation id="816074628631172140">تم التحقق من بريدك الإلكتروني. عيّن كلمة مرور جديدة لإكمال إعادة تعيين كلمة المرور.</translation>
+<translation id="7543374051303238869">تعيين كلمة مرور جديدة</translation>
+<translation id="8378209932853841849">إلغاء إعادة تعيين كلمة المرور</translation>
+<translation id="4405566535206792621">لتغيير كلمة مرورك، يُرجى التحقق من عنوان بريدك الإلكتروني.</translation>
+<translation id="3135333563420939059">تم التحقق من بريدك الإلكتروني. عيّن كلمة مرور جديدة لإكمال تغيير كلمة المرور.</translation>
+<translation id="4227581348172626540">إلغاء تغيير كلمة المرور</translation>
+<translation id="808894953321890993">تغيير كلمة المرور</translation>
+<translation id="7967687455715421528">يتعذّر تغيير كلمة المرور</translation>
 <translation id="4869737930995549965">تسجيل الخروج</translation>
 <translation id="5538654494923870167">ابدأ باستخدام حسابك على Brave</translation>
 <translation id="1544145635547515689">إنشاء حساب Brave</translation>
@@ -2879,10 +2914,11 @@
 <translation id="5486261815000869482">تأكيد كلمة المرور</translation>
 <translation id="7345706641791090287">أكّد كلمة المرور الخاصة بك</translation>
 <translation id="7114054701490058191">كلمات المرور غير متطابقة</translation>
+<translation id="4277028893293644418">إعادة تعيين كلمة المرور</translation>
+<translation id="9033485352495162741">تم التأكيد بنجاح. الآن أدخل كلمة المرور الجديدة التي تريدها:</translation>
 <translation id="1293857704520741614">سجّل الدخول إلى حسابك</translation>
 <translation id="118617366439356381">هل نسيت كلمة المرور؟</translation>
 <translation id="5183159033908953146">أكّد البريد الإلكتروني لحسابك على Brave وستتلقى بعد ذلك رابطًا لإعادة تعيين كلمة المرور. سيكون الرابط صالحًا لمدة 30 دقيقة فقط.</translation>
-<translation id="3997368361371298873">تحذير: نظرًا لأنك لم تسجل الدخول إلى هذا الجهاز، فإن إعادة تعيين كلمة المرور ستؤدي إلى <ph name="BEGIN_BOLD"/>حذف جميع بياناتك<ph name="END_BOLD"/> على الخادم. إذا كان لديك جهاز آخر مسجّل الدخول فيه، فقم بتغيير كلمة المرور من ذلك الجهاز بدلاً من إعادة تعيين كلمة المرور.</translation>
 <translation id="3674472551471103443">إعادة تعيين كلمة المرور</translation>
 <translation id="2755539422340788311">تحقق من بريدك الإلكتروني</translation>
 <translation id="6641436078676327508">من المفترض أن تكون قد تلقيت رسالة بريد إلكتروني تحتوي على رمز قصير. يرجى إدخاله هنا للمتابعة.</translation>
@@ -2899,10 +2935,16 @@
 <translation id="7144067487084094749">يوجد حساب بالفعل لعنوان البريد الإلكتروني هذا. حاول تسجيل الدخول بدلاً من إنشاء حساب.</translation>
 <translation id="5288951359968156008">نطاق عنوان البريد الإلكتروني هذا غير مدعوم. يُرجى استخدام عنوان بريد إلكتروني مختلف.</translation>
 <translation id="7625678607509255072">تم تجاوز حد التحقق من البريد الإلكتروني. يُرجى الانتظار 30 دقيقة قبل المحاولة مجددًا.</translation>
-<translation id="4582421696414628320">انتهت صلاحية التحقق. ابدأ عملية التسجيل مرة أخرى.</translation>
+<translation id="9121175588136821850">انتهت صلاحية رمز التحقق. ابدأ عملية التسجيل مرة أخرى.</translation>
 <translation id="8439543211004394821">تم إدخال عدد كبير جدًا من الرموز غير الصحيحة. ابدأ عملية التسجيل مرة أخرى.</translation>
 <translation id="3229986152760633988">رمز خاطئ، يُرجى المحاولة مجددًا.</translation>
 <translation id="818783632689113711">تم طلب حساب بالفعل لعنوان البريد الإلكتروني هذا. يرجى التحقق من بريدك الإلكتروني أو المحاولة مرة أخرى خلال 30 دقيقة.</translation>
+<translation id="4776810543245166572">لم يتم العثور على أي حساب لعنوان البريد الإلكتروني هذا.</translation>
+<translation id="7090885444036935209">عنوان البريد الإلكتروني غير صالح.</translation>
+<translation id="1542836798393843657">عدد كبير جدًا من محاولات التحقق لعنوان البريد الإلكتروني هذا. أعد المحاولة خلال 24 ساعة.</translation>
+<translation id="7572012011062736429">خطأ داخلي. أغلِق مربع الحوار، وألغِ التحقق، وأعد المحاولة.</translation>
+<translation id="2477280119520811719">انتهت صلاحية رمز التحقق. ابدأ عملية تغيير كلمة المرور مرة أخرى.</translation>
+<translation id="7103280722523884198">تم إدخال عدد كبير جدًا من الرموز غير الصحيحة. ابدأ عملية تغيير كلمة المرور مرة أخرى.</translation>
 <translation id="4178004989875422946">سيتيح لك حساب Brave الوصول بسهولة إلى خدمات Brave.</translation>
 <translation id="4902897635127068510">هل تقصد <ph name="SUGGESTION"/>؟</translation>
 <translation id="8314772463905284467">مفتاح Caps Lock مفعّل</translation>
@@ -2911,6 +2953,7 @@
 <translation id="2112559299194052697">تعذرت إعادة الإرسال</translation>
 <translation id="7932611814134267012">تم إرسال عدد كبير جدًا من رسائل التحقق بالبريد الإلكتروني بالفعل. يُرجى التحقق من مجلد البريد غير المرغوب فيه.</translation>
 <translation id="1364223093800750401">تم التحقق من البريد الإلكتروني بالفعل.</translation>
+<translation id="1353061468772282268">انتهت صلاحية رمز التحقق. ألغِ التحقق وأعد المحاولة.</translation>
 <translation id="3353844160742960162">ضبط إعدادات الخصوصية</translation>
 <translation id="528205534230423181">يوفّر هذا الموقع إعدادات خصوصية يمكن لـ Brave ضبطها لك تلقائيًا. إليك ما نوصي به:</translation>
 <translation id="1063227610401477317">تطبيق التغييرات</translation>
