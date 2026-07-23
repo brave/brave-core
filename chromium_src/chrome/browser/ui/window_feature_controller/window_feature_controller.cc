@@ -7,7 +7,12 @@
 
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "build/build_config.h"
-#include "chrome/browser/ui/layout_constants.h"
+
+// Forward declared instead of including "chrome/browser/ui/layout_constants.h"
+// to avoid adding a compile-time dependency on that target.
+namespace tabs {
+bool UseCompactHorizontalTabs();
+}  // namespace tabs
 
 #if BUILDFLAG(IS_MAC)
 #define UsesImmersiveFullscreenMode UsesImmersiveFullscreenMode_ChromiumImpl
