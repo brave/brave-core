@@ -788,9 +788,7 @@
 <translation id="5486744676117070166">Nepavyko gauti kitos nonce vertės</translation>
 <translation id="6180576227145734714">Nurodžius su operacijos duomenimis susijęs gavėjas turi būti tinkamas adresas.</translation>
 <translation id="6688162556547723415">Naudotojas nepatvirtino prašomo metodo ir (arba) sąskaitos.</translation>
-<translation id="8767749833522980474">Kriptovaliuta</translation>
 <translation id="6122742277607781713">Portfelis</translation>
-<translation id="7020503656406658141">Kainos</translation>
 <translation id="3586775666459823714">NFT</translation>
 <translation id="1987317783729300807">Paskyros</translation>
 <translation id="3567988240819868195">Rinka</translation>
@@ -1826,7 +1824,6 @@
 <translation id="803703704549420287">Išvalyti filtrus</translation>
 <translation id="1472675084647422956">Rodyti daugiau</translation>
 <translation id="4522570452068850558">Išsami informacija</translation>
-<translation id="4583937519241190398">Patvirtino DappRadar</translation>
 <translation id="8713438253026855351">Perėjimas prie apsaugotos paskyros</translation>
 <translation id="3526789880090101085">Apsaugoti paskyrą</translation>
 <translation id="3155166394760577549">Įgalinkite apsaugą, kad pagerintumėte operacijų privatumą.</translation>
@@ -1960,6 +1957,7 @@
 <translation id="6261915643960475695">Verslas</translation>
 <translation id="8265589281845759879">Automobiliai</translation>
 <translation id="7726519849288907308">Įžymybės</translation>
+<translation id="8767749833522980474">Kriptovaliuta</translation>
 <translation id="7577010593836079522">Kultūra</translation>
 <translation id="6807791860691150411">Švietimas</translation>
 <translation id="3706423975342040244">Pramogos</translation>
@@ -2176,6 +2174,7 @@
 <translation id="2367972762794486313">Rodyti programas</translation>
 <translation id="3142853026316054951">Įjungti / išjungti fokusavimo režimą</translation>
 <translation id="3468387898712904997">Naujas el. pašto slapyvardis</translation>
+<translation id="4711475997833555304">Sukurkite atsitiktinį el. paštą, kuris peradresuoja į jūsų pašto dėžutę.</translation>
 <translation id="2796584247246518451">Naujas laikinas konteineris</translation>
 <translation id="8591883849678260674">Žiūrėti originalą</translation>
 <translation id="1969654232209826429">min. nuskaitymas</translation>
@@ -2235,8 +2234,10 @@
 <translation id="8743383817154663379">Apdorojant jūsų užklausą įvyko klaida. Prašome pabandyti vėliau.</translation>
 <translation id="2712650703044366764">Šis modelis turi netinkamą galinį tašką. Patikrinkite savo konfigūraciją ir bandykite dar kartą.</translation>
 <translation id="7092656392206649236">Bendraujant su Leo įvyko klaida. Prašome pabandyti dar kartą.</translation>
+<translation id="4539536233699928121">Bendraujant su NEAR įvyko klaida. Prašome pabandyti dar kartą.</translation>
 <translation id="3552709750512842961">Būsenos kodas: <ph name="STATUS_CODE"/>, klaidos kodas: <ph name="ERROR_CODE"/></translation>
 <translation id="9215978379284690246">Būsenos kodas: <ph name="STATUS_CODE"/></translation>
+<translation id="5820497878628354073">Būsenos kodas: <ph name="STATUS_CODE"/>, vidinis būsenos kodas: <ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">Pasiekėte „Premium“ tarifo limitą. Bandykite dar kartą po kelių valandų.</translation>
 <translation id="3683964919745779766">Pasiekėte šio modelio tarifų limitą arba nebeturite kreditų. Prašome pabandyti vėliau.</translation>
 <translation id="7692501701960747469">Šiam modeliui sukonfigūruotas API raktas negalioja. Patikrinkite savo konfigūraciją ir bandykite dar kartą.</translation>
@@ -2410,6 +2411,9 @@
 <translation id="9051226419897869406">Privačiai kalbėkitės su „Brave Leo“</translation>
 <translation id="2414904697165579184">Generuoti atsakymus pagal kortelės (-ių) turinį</translation>
 <translation id="8258324391302611485">Šio puslapio turinys bus siunčiamas „Leo“ kartu su jūsų žinutėmis.</translation>
+<translation id="443008484043213881">Įrankiai</translation>
+<translation id="4343623396828510727">Šios svetainės teikia įrankius, kuriuos Leo gali naudoti duomenims siųsti į šią svetainę ir iš jos. Neprijunkite ir netvirtinkite šių įrankių, jei šiame pokalbyje yra duomenų, kurių nenorite, kad ši svetainė matytų.</translation>
+<translation id="5021823940147712387">Pašalinti įrankius</translation>
 <translation id="318819763888864209">Visos prenumeratos atnaujinamos automatiškai, bet jas galima bet kada nutraukti iki atnaujinimo.</translation>
 <translation id="5091223967610958">Bendrinkite puslapio, kuriame esate (<ph name="HOST_NAME"/>), pagrindinio kompiuterio vardą, kad padėtumėte mums tobulinti „Leo“.</translation>
 <translation id="8732450785281947197">„Leo“ DI įrankiai</translation>
@@ -2488,6 +2492,9 @@
 <translation id="7918928051723770926">Užduotis baigta</translation>
 <translation id="2113810663179257944">Kodo vykdymas</translation>
 <translation id="4838375634693651776">Smėlyje paleidžiamas kodas, kad padėtų jūsų užklausai</translation>
+<translation id="6990975553143971265">Ieškoma jūsų naršyklės istorijoje „<ph name="QUERY"/>“</translation>
+<translation id="8302511726757276645">Ieškoma jūsų naršyklės istorijoje</translation>
+<translation id="8410699755320690690">Brave AI nori ieškoti jūsų naršymo istorijoje. Paieška vykdoma lokaliai jūsų įrenginyje, todėl visa jūsų istorija niekur nesiunčiama. Tik atitinkančių puslapių pavadinimai, URL adresai ir indeksuoti teksto fragmentai bus siunčiami į Brave AI kaip šio pokalbio dalis.</translation>
 <translation id="4379566111233326721">Kodas:</translation>
 <translation id="3542130965673205258">Išvedinys:</translation>
 <translation id="6911817209337314910">Generuojamos parinktys, iš kurių galite pasirinkti</translation>
@@ -2697,6 +2704,21 @@
 <translation id="7586067492365979844">"Brave Shields" turi naujus namus ir dizainą. Dabar jis integruotas su svetainės informacija, kad būtų galima naudotis vienu langeliu.</translation>
 <translation id="9114542678887529043">"Brave Shields" turi naujus namus ir dizainą. Jį pasieksite paspaudę svetainės piktogramą adreso juostoje.</translation>
 <translation id="4242533952199664413">Atidaryti nustatymus</translation>
+<translation id="3616113530831147358">Garsas</translation>
+<translation id="7972837668077967426">Drobė</translation>
+<translation id="2182250753201267390">Įrenginio atmintis</translation>
+<translation id="1217374757325197995">Įvykių šaltinių telkinys</translation>
+<translation id="1823768272150895732">Šriftas</translation>
+<translation id="436315497893815819">Aparatinis lygiagretumas</translation>
+<translation id="7846634333498149051">Klaviatūra</translation>
+<translation id="5302048478445481009">Kalba</translation>
+<translation id="7986250835989845763">Medijos įrenginiai</translation>
+<translation id="4267171000817377500">Papildiniai</translation>
+<translation id="3441653493275994384">Ekranas</translation>
+<translation id="1772612984983840854">Kalbos sintezė</translation>
+<translation id="1167475333911019229">USB įrenginio serijos numeris</translation>
+<translation id="6897140037006041989">Naudotojo agentas</translation>
+<translation id="6433005682384591812">Web Sockets telkinys</translation>
 <translation id="6294662480095808915">Privatumas, be jokių kalbų.</translation>
 <translation id="4366423156486478559">„Brave“ visuomet jus saugo – kad ir kurią nuorodą spustelėtumėte. Nustatykite „Brave“ numatytąja naršykle ir naršykite. Privačiai.</translation>
 <translation id="3830912418080848377">Importavimo nustatymai</translation>
@@ -2733,7 +2755,6 @@
 <translation id="6821966107067356137">Pridėti RSS kanalo prenumeratą</translation>
 <translation id="2478076885740497414">Įdiegti programą</translation>
 <translation id="8293206222192510085">Žymės pridėjimas</translation>
-<translation id="1010029336854254368">Bendrinti meniu</translation>
 <translation id="7758460733045216901">Žymių skydelis</translation>
 <translation id="958268166261124668">„Brave“ VPN: prisijungta</translation>
 <translation id="6021669293402055982">„Brave“ VPN: neprisijungta</translation>
@@ -2856,17 +2877,31 @@ Būkite prisijungę!</translation>
 <translation id="5816720995022674532">Origin naudojimas Linux įrenginiuose yra nemokamas, tačiau jis vis dar <ph name="BEGIN_LINK"/>pasiekiamas pirkimui<ph name="END_LINK"/>, jei norėtumėte palaikyti Brave kaip verslą. Pirkimas taip pat atrakintų galimybę naudoti Origin Android, iOS, macOS ir Windows įrenginiuose.</translation>
 <translation id="3065220545261045367">Palaikykite Brave pirkdami Origin</translation>
 <translation id="2069499076031488636">Tęsti naudojant Origin nemokamai Linux</translation>
+<translation id="6820590295368504396">Nepavyksta prisijungti prie SKU tarnybos</translation>
+<translation id="2525146368601152300">Pirkimo ID yra tuščias</translation>
+<translation id="7858444547014304753">Netinkamas pirkimo ID</translation>
+<translation id="2016076837307423164">Nepavyko gauti kredencialų</translation>
+<translation id="3890481923176188801">Pirkimas nerastas</translation>
 <translation id="5713644099811900409">„Brave“ paskyra</translation>
 <translation id="2906576968270573525">Prisijunkite arba sukurkite „Brave“ paskyrą</translation>
 <translation id="6972754398087986839">Pradėkite</translation>
 <translation id="5378207817582281342">Beveik baigta!</translation>
 <translation id="3750210661641549834">Norėdami sukurti paskyrą, patvirtinkite savo el. pašto adresą.</translation>
-<translation id="4129813507847680661">Įvesti registracijos kodą</translation>
+<translation id="4351175281479794167">Įvesti patvirtinimo kodą</translation>
 <translation id="1672793037892810340">Turėjote gauti el. laišką su kodu, kurį reikės įvesti.</translation>
 <translation id="4821255729182569254">Siųsti patvirtinimo el. laišką iš naujo</translation>
 <translation id="5837679375142747484">Nematote el. laiško? Patikrinkite savo brukalo aplanką arba <ph name="BEGIN_LINK"/>siųskite iš naujo<ph name="END_LINK"/>.</translation>
 <translation id="1080588816740959885">Nematote el. laiško? Patikrinkite savo brukalo aplanką arba siųskite jį iš naujo.</translation>
 <translation id="1020730839570724178">Atšaukti registraciją</translation>
+<translation id="7155125570724238786">Norėdami iš naujo nustatyti slaptažodį, patvirtinkite savo el. pašto adresą.</translation>
+<translation id="816074628631172140">Jūsų el. paštas patvirtintas. Nustatykite naują slaptažodį, kad užbaigtumėte slaptažodžio atkūrimą.</translation>
+<translation id="7543374051303238869">Nustatyti naują slaptažodį</translation>
+<translation id="8378209932853841849">Atšaukti slaptažodžio atkūrimą</translation>
+<translation id="4405566535206792621">Norėdami pakeisti slaptažodį, patvirtinkite savo el. pašto adresą.</translation>
+<translation id="3135333563420939059">Jūsų el. paštas patvirtintas. Nustatykite naują slaptažodį, kad užbaigtumėte slaptažodžio keitimą.</translation>
+<translation id="4227581348172626540">Atšaukti slaptažodžio keitimą</translation>
+<translation id="808894953321890993">Pakeisti slaptažodį</translation>
+<translation id="7967687455715421528">Nepavyko pakeisti slaptažodžio</translation>
 <translation id="4869737930995549965">Atsijungti</translation>
 <translation id="5538654494923870167">Pradėkite naudotis „Brave“ paskyra</translation>
 <translation id="1544145635547515689">Sukurti „Brave“ paskyrą</translation>
@@ -2881,10 +2916,11 @@ Būkite prisijungę!</translation>
 <translation id="5486261815000869482">Patvirtinti slaptažodį</translation>
 <translation id="7345706641791090287">Patvirtinkite savo slaptažodį</translation>
 <translation id="7114054701490058191">Slaptažodžiai nesutampa</translation>
+<translation id="4277028893293644418">Iš naujo nustatyti slaptažodį</translation>
+<translation id="9033485352495162741">Patvirtinimas sėkmingas. Dabar įveskite pageidaujamą naują slaptažodį:</translation>
 <translation id="1293857704520741614">Prisijunkite prie savo paskyros</translation>
 <translation id="118617366439356381">Pamiršote slaptažodį?</translation>
 <translation id="5183159033908953146">Patvirtinkite savo „Brave“ paskyros el. paštą ir gausite nuorodą slaptažodžiui iš naujo nustatyti. Nuoroda galios tik 30 minučių.</translation>
-<translation id="3997368361371298873">Įspėjimas: kadangi šiame įrenginyje nesate prisijungę, slaptažodžio nustatymas iš naujo <ph name="BEGIN_BOLD"/>ištrins visus jūsų duomenis<ph name="END_BOLD"/> serveryje. Jei turite kitą įrenginį, kuriame esate prisijungę, pakeiskite slaptažodį iš to įrenginio, o ne nustatykite jį iš naujo.</translation>
 <translation id="3674472551471103443">Iš naujo nustatyti slaptažodį</translation>
 <translation id="2755539422340788311">Patvirtinkite savo el. paštą</translation>
 <translation id="6641436078676327508">Turėjote gauti el. laišką su trumpu kodu. Įveskite jį čia, kad tęstumėte.</translation>
@@ -2901,10 +2937,16 @@ Būkite prisijungę!</translation>
 <translation id="7144067487084094749">Paskyra su šiuo el. pašto adresu jau egzistuoja. Bandykite prisijungti, o ne kurti paskyrą.</translation>
 <translation id="5288951359968156008">Šio el. pašto adreso domenas nepalaikomas. Naudokite kitą el. pašto adresą.</translation>
 <translation id="7625678607509255072">Viršyta el. pašto patvirtinimo riba. Palaukite 30 minučių ir bandykite dar kartą.</translation>
-<translation id="4582421696414628320">Patvirtinimas baigėsi. Pradėkite registracijos procesą iš naujo.</translation>
+<translation id="9121175588136821850">Patvirtinimo kodas baigėsi. Pradėkite registracijos procesą iš naujo.</translation>
 <translation id="8439543211004394821">Įvesta per daug neteisingų kodų. Pradėkite registracijos procesą iš naujo.</translation>
 <translation id="3229986152760633988">Neteisingas kodas, bandykite dar kartą.</translation>
 <translation id="818783632689113711">Šiam el. pašto adresui paskyra jau buvo užregistruota. Patikrinkite el. paštą arba bandykite dar kartą po 30 minučių.</translation>
+<translation id="4776810543245166572">Šiam el. pašto adresui paskyra nerasta.</translation>
+<translation id="7090885444036935209">Netinkamas el. pašto adresas.</translation>
+<translation id="1542836798393843657">Per daug patvirtinimo bandymų šiam el. pašto adresui. Bandykite dar kartą po 24 valandų.</translation>
+<translation id="7572012011062736429">Vidinė klaida. Uždarykite dialogo langą, atšaukite patvirtinimą ir bandykite dar kartą.</translation>
+<translation id="2477280119520811719">Patvirtinimo kodas baigėsi. Pradėkite slaptažodžio keitimo procesą iš naujo.</translation>
+<translation id="7103280722523884198">Įvesta per daug neteisingų kodų. Pradėkite slaptažodžio keitimo procesą iš naujo.</translation>
 <translation id="4178004989875422946">„Brave“ paskyra leis lengvai pasiekti „Brave“ paslaugas.</translation>
 <translation id="4902897635127068510">Ar turėjote omenyje <ph name="SUGGESTION"/>?</translation>
 <translation id="8314772463905284467">„Caps Lock“ yra įjungtas</translation>
@@ -2913,6 +2955,7 @@ Būkite prisijungę!</translation>
 <translation id="2112559299194052697">Nepavyko siųsti iš naujo</translation>
 <translation id="7932611814134267012">Jau išsiųsta per daug patvirtinimo el. laiškų. Patikrinkite savo brukalo aplanką.</translation>
 <translation id="1364223093800750401">El. paštas jau patvirtintas.</translation>
+<translation id="1353061468772282268">Patvirtinimo kodas baigėsi. Atšaukite patvirtinimą ir bandykite dar kartą.</translation>
 <translation id="3353844160742960162">Privatumo nustatymų derinimas</translation>
 <translation id="528205534230423181">Ši svetainė siūlo privatumo nustatymus, kuriuos „Brave“ gali automatiškai pritaikyti už jus. Štai ką rekomenduojame:</translation>
 <translation id="1063227610401477317">Taikyti pakeitimus</translation>

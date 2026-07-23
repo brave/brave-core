@@ -15,9 +15,11 @@
 <translation id="1052842760770519282">Noen av passordene dine er ikke tilgjengelige</translation>
 <translation id="1057623954802068161">Rull til toppen av siden</translation>
 <translation id="1066338698580889414">Promoteringen av tipsvarsler er åpnet i full høyde</translation>
+<translation id="1067048845568873861">Opprettet</translation>
 <translation id="1070689840697074178">Du kan laste ned PDF-filer her</translation>
 <translation id="107147699690128016">Hvis du endrer filetternavnet, kan filen bli åpnet i et annet program og muligens utgjøre en fare for enheten.</translation>
 <translation id="1073328695547557412">Trykk på Google Lens-ikonet</translation>
+<translation id="1075811647922107217">Sidestørrelse</translation>
 <translation id="1080116354587839789">Tilpass til vindusbredden</translation>
 <translation id="1086486568852410168">Søk med Google Lens</translation>
 <translation id="1087799850623149508">Du kan trykke og holde for å flytte adressefeltet til bunnen</translation>
@@ -30,7 +32,6 @@
 <translation id="1108938384783527433">Loggsynkronisering</translation>
 <translation id="1111673857033749125">Bokmerker som er lagret på de andre enhetene dine, vises her.</translation>
 <translation id="1123537484474186311"><ph name="TAB_TITLE"/>, bilde-i-bilde-fane</translation>
-<translation id="1124357650933674597">{NUM_WINDOWS,plural, =1{Gjenopprett 1 vindu}other{Gjenopprett # vinduer}}</translation>
 <translation id="1126696498560056882">Administrer kontoer på denne enheten</translation>
 <translation id="9171525955914564119">For å få bokmerkene dine med mer på alle enhetene dine, logg på Brave som <ph name="EMAIL"/></translation>
 <translation id="1138458427267715730">Få varsler om avslag hvor som helst på nettet</translation>
@@ -74,14 +75,12 @@
 <translation id="1269129608791067105">Her finner du loggen din</translation>
 <translation id="1273937721055267968">Blokker <ph name="DOMAIN"/></translation>
 <translation id="1280921956537356716">Slå på varsler for tips</translation>
-<translation id="1283039547216852943">Trykk for å vise</translation>
 <translation id="1289129165308566697">Se loggen din på andre enheter</translation>
 <translation id="129553762522093515">Nylig lukket</translation>
 <translation id="1298077576058087471">Spar opptil 60 % data – les dagens nyheter</translation>
 <translation id="1303507811548703290"><ph name="DOMAIN"/> – sendt fra <ph name="DEVICE_NAME"/></translation>
 <translation id="1310482092992808703">Gruppér faner</translation>
 <translation id="1318262688555255786">Del linken til nettsiden <ph name="PAGE_TITLE"/>. Kilde: <ph name="PAGE_URL"/></translation>
-<translation id="1320912611264252795">Mapper med flyt for lagring av bokmerke er åpnet i full høyde</translation>
 <translation id="1327257854815634930">Navigasjonsloggen er åpnet</translation>
 <translation id="6773423637732432200">Kan ikke oppdatere Brave. Flere alternativer</translation>
 <translation id="3169981355900570544">Hurtigtaster for funksjoner i Brave.</translation>
@@ -116,6 +115,7 @@ For å se flere innstillinger som bruker data for å forbedre Brave-opplevelsen 
 <translation id="1435593198351412143">Åpne PDF-filer automatisk</translation>
 <translation id="1437543266176261764">Kjører i <ph name="APP_NAME"/></translation>
 <translation id="1448440926884431741">Organiser sporede produkter i Bokmerker</translation>
+<translation id="1452651021404174820">Velg en enhet</translation>
 <translation id="1455845192930279203">Vil du laste ned «<ph name="FILE_NAME"/>» (<ph name="FILE_SIZE"/>) fra <ph name="DOWNLOAD_DOMAIN"/> likevel?</translation>
 <translation id="1460751212339734034">Spar tid – skriv mindre</translation>
 <translation id="146522654774760805">Passord og autofyll</translation>
@@ -123,6 +123,7 @@ For å se flere innstillinger som bruker data for å forbedre Brave-opplevelsen 
 <translation id="1477626028522505441">Nedlastingen av <ph name="FILE_NAME"/> ble avbrutt på grunn av tjenerproblemer.</translation>
 <translation id="147982357559798527">Endret</translation>
 <translation id="5970766554644855317">Det kan hende at deler av loggen din ikke vises her. For å se hele Brave-loggen din, åpne hele Brave-loggen.</translation>
+<translation id="1483493594462132177">Send</translation>
 <translation id="1495677929897281669">Tilbake til fanen</translation>
 <translation id="1496514951988037011">brukernavn</translation>
 <translation id="1501480321619201731">Slett gruppen</translation>
@@ -177,6 +178,7 @@ Bare personer som har passordfrasen din, kan lese de krypterte dataene. Passordf
 <translation id="1792959175193046959">Endre standard nedlastingssted når som helst</translation>
 <translation id="1796666869097395659">Minimer fanen for å gå tilbake til den senere</translation>
 <translation id="7401204338724669842">Brave-tips</translation>
+<translation id="1803799720926799756">Filstørrelse</translation>
 <translation id="1807246157184219062">Lys</translation>
 <translation id="1807709131360304325">Åpne et nytt vindu</translation>
 <translation id="1812027881030482584"><ph name="SITE_ETLD_PLUS_ONE"/> kan ikke fortsette å bruke <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/></translation>
@@ -238,7 +240,6 @@ Bare personer som har passordfrasen din, kan lese de krypterte dataene. Passordf
 <translation id="2082238445998314030">Resultat <ph name="RESULT_NUMBER"/> av <ph name="TOTAL_RESULTS"/></translation>
 <translation id="2091863218454846791">Viser kompakt visning</translation>
 <translation id="2093731487903423814">de siste 15 minuttene</translation>
-<translation id="2167041492202907944">Trykk her for å lukke alle inkognitovinduer</translation>
 <translation id="2096577711562668473">Vil du bytte autofylltjeneste?</translation>
 <translation id="2109384632594340939">profilbildet ditt</translation>
 <translation id="2111511281910874386">Gå til side</translation>
@@ -253,6 +254,7 @@ Bare personer som har passordfrasen din, kan lese de krypterte dataene. Passordf
 <translation id="2149968176347646218">Tilkoblingen er ikke sikker</translation>
 <translation id="2149973817440762519">Rediger bokmerke</translation>
 <translation id="526235294307144732">For å bruke og lagre Brave-data i Brave-kontoen din, skriv inn passordfrasen din</translation>
+<translation id="2164015935042801524">Høyreklikk her for å vise faner vertikalt</translation>
 <translation id="2166228530126694506">Versjon <ph name="VERSION_NUMBER"/></translation>
 <translation id="2172688499998841696">Bildebeskrivelser er av</translation>
 <translation id="2172905120685242547">Vil du lukke vinduet?</translation>
@@ -293,6 +295,7 @@ Bare personer som har passordfrasen din, kan lese de krypterte dataene. Passordf
 <translation id="2323763861024343754">Nettstedslagring</translation>
 <translation id="2327445548174191329">Fra <ph name="DEVICE_NAME"/></translation>
 <translation id="2328474416100889417">Alle mister tilgangen til fanegruppen «<ph name="GROUP_NAME"/>» umiddelbart, og alle invitasjonslinker deaktiveres</translation>
+<translation id="3096606216245789753">Vi presenterer AI-modus i Brave</translation>
 <translation id="2330186936255788117">Flere bokmerker</translation>
 <translation id="2332515770639153015">Safe Browsing med økt beskyttelse er påslått</translation>
 <translation id="233375395665273385">Slett og logg av</translation>
@@ -305,6 +308,7 @@ Bare personer som har passordfrasen din, kan lese de krypterte dataene. Passordf
 <translation id="351551888962017708">Flere sider forhåndslastes. Sider kan bli forhåndslastet via Braves tjenere når andre nettsteder eller apper ber om det.</translation>
 <translation id="2366554533468315977">Prishistorikk for dette alternativet fra hele nettet</translation>
 <translation id="2367818124433749493">Utviklersnarveier</translation>
+<translation id="2369058545741334020">Åpne i lesemodus</translation>
 <translation id="2385605401818128172">Du kan gjennomgå nettsteder som sender mange varsler, og forhindre dem fra å sende flere fremover</translation>
 <translation id="2386938421315164605">Skjul emner og gjør dem synlige</translation>
 <translation id="2390510615457643724">Vil du laste ned <ph name="FILE_NAME"/> <ph name="FILE_SIZE"/> på nytt?</translation>
@@ -313,6 +317,7 @@ Bare personer som har passordfrasen din, kan lese de krypterte dataene. Passordf
 <translation id="2411239243988279592"><ph name="TAB_TITLE"/>, valgt fane med lyd</translation>
 <translation id="2413014528833954543">Kan ikke sjekke passord på denne enheten</translation>
 <translation id="2414886740292270097">Mørk</translation>
+<translation id="2415037988255164008">Vil du gjenopprette vinduene?</translation>
 <translation id="2421705177906985956">Ingen nettsteder å vise akkurat nå</translation>
 <translation id="2426805022920575512">Velg en annen konto</translation>
 <translation id="2427025860753516072">{FILE_COUNT,plural, =1{Videoer, 1 video på listen}other{Videoer, # videoer på listen}}</translation>
@@ -490,7 +495,6 @@ Bare personer som har passordfrasen din, kan lese de krypterte dataene. Passordf
 <translation id="3114507951000454849">Les dagens nyheter <ph name="NEWS_ICON"/></translation>
 <translation id="3122883569442693641">Mer informasjon</translation>
 <translation id="3123734510202723619">Kunngjøringer</translation>
-<translation id="717431576750604961">Trykk på Inkognito-indikatoren for å lukke alle inkognitovinduer</translation>
 <translation id="3134385238404760368">Ingen nylige faner</translation>
 <translation id="3135655388926735587">Trykk på Nylige faner</translation>
 <translation id="5063487983358782016">Startsiden for Brave</translation>
@@ -499,7 +503,6 @@ Bare personer som har passordfrasen din, kan lese de krypterte dataene. Passordf
 <translation id="3161699713309727585"><ph name="BUTTON_TEXT"/> – åpnes på en ny fane</translation>
 <translation id="3166827708714933426">Hurtigtaster for vinduer og faner</translation>
 <translation id="3167258285411721858">Du kan be om mobilnettstedet for <ph name="HOST_NAME"/></translation>
-<translation id="3183941812169784232">Vil du gjenopprette alle vinduene?</translation>
 <translation id="3187472288455401631">Annonsemålinger</translation>
 <translation id="3189635831478931757">Fanegruppen <ph name="GROUP_TITLE"/></translation>
 <translation id="3200536777393523575">Vil du lukke det aktive vinduet?</translation>
@@ -540,7 +543,6 @@ Bare personer som har passordfrasen din, kan lese de krypterte dataene. Passordf
 <translation id="3359667936385849800">Bruk den nåværende tjenesteleverandøren din</translation>
 <translation id="3373701465337594448">Når dette vises, vises en liste her over nettsteder du besøker som gjetter interessene dine</translation>
 <translation id="3384347053049321195">Del bildet</translation>
-<translation id="4882907322692413634">Gemini er ikke tilgjengelig i inkognitomodus</translation>
 <translation id="3387650086002190359">Nedlastingen av <ph name="FILE_NAME"/> ble avbrutt på grunn av filsystemfeil.</translation>
 <translation id="5654361895804243820">Du kan administrere vinduene dine i Window Manager for Brave</translation>
 <translation id="3417835166382867856">Søk i faner</translation>
@@ -548,6 +550,7 @@ Bare personer som har passordfrasen din, kan lese de krypterte dataene. Passordf
 <translation id="4114256890962999877">For å beholde tilgangen til passordene dine, eksporter dem nå, oppdater Google Play-tjenester, og importer dem til Brave Passordlagring igjen. <ph name="BEGIN_LINK"/>Se fullstendige instruksjoner.<ph name="END_LINK"/></translation>
 <translation id="3435738964857648380">Sikkerhet</translation>
 <translation id="3435914367318771664">Legg fanen til i en ny gruppe</translation>
+<translation id="3436118221454753036">Spør AI-modus</translation>
 <translation id="3830890663494219270">For å få passordene dine med mer på alle enhetene dine, logg på Brave</translation>
 <translation id="3439276997620616816">Her finner du de nylige fanene dine</translation>
 <translation id="3443221991560634068">Last inn den aktive siden på nytt</translation>
@@ -574,6 +577,7 @@ Bare personer som har passordfrasen din, kan lese de krypterte dataene. Passordf
 <translation id="3524334353996115845">La <ph name="ORIGIN"/> bekrefte at det er deg</translation>
 <translation id="3527085408025491307">Mappe</translation>
 <translation id="3542235761944717775"><ph name="KILOBYTES"/> kB er tilgjengelig</translation>
+<translation id="3547933853190131743">Søk med AI-modus</translation>
 <translation id="719175600387583059">Siden de forhåndslastede sidene er krypterte og nettstedet eller appen som linker til sidene, er et Brave-nettsted eller en Brave-app, får ikke Braves tjenere noen ny informasjon ved privat forhåndslasting av disse sidene.</translation>
 <translation id="3549657413697417275">Søk i loggen</translation>
 <translation id="3557336313807607643">Legg til i kontakter</translation>
@@ -597,6 +601,7 @@ Bare personer som har passordfrasen din, kan lese de krypterte dataene. Passordf
 <translation id="871233388178581868">Brave kan sjekke passordene dine når du lagrer dem</translation>
 <translation id="3636940436873918441">Foretrukne språk</translation>
 <translation id="7120697372526128040">Hvis du har glemt passordfrasen eller vil endre denne innstillingen, kan du <ph name="BEGIN_LINK"/>slette Brave-dataene i kontoen din<ph name="END_LINK"/>.</translation>
+<translation id="3649090831059057090"><ph name="WINDOW_TITLE"/> – <ph name="TAB_COUNT"/></translation>
 <translation id="3653111872753786013"><ph name="WEBSITE_TITLE"/>: <ph name="WEBSITE_URL"/></translation>
 <translation id="5399378599142661690">Gå til startsiden for Brave-appen</translation>
 <translation id="368329460027487650">Logget av. Åpner alternativer for pålogging.</translation>
@@ -621,6 +626,8 @@ Bare personer som har passordfrasen din, kan lese de krypterte dataene. Passordf
 <translation id="3739899004075612870">Satt som bokmerke i <ph name="PRODUCT_NAME"/></translation>
 <translation id="3740290940447881599">Sørg for at du stoler på dette nettstedet</translation>
 <translation id="3740525748616366977">Talesøk er ikke tilgjengelig på denne enheten</translation>
+<translation id="3749289110408117711">Filnavn</translation>
+<translation id="3756823472711156529">Gjenopprett gruppe</translation>
 <translation id="7338686239886724619">Når du betaler med dette kortet, fylles et virtuelt kortnummer inn for å beskytte kortopplysningene dine. Administrer dette i Brave Wallet.  <ph name="BEGIN_LINK1"/>Finn ut mer om virtuelle kort<ph name="END_LINK1"/></translation>
 <translation id="376561056759077985">Noen av dataene er ikke lagret ennå</translation>
 <translation id="3770620323585347665">Gi vinduet et navn</translation>
@@ -648,6 +655,7 @@ Bare personer som har passordfrasen din, kan lese de krypterte dataene. Passordf
 <translation id="3870538285500327859"><ph name="TAB_TITLE"/>, valgt bilde-i-bilde-fane</translation>
 <translation id="3870908470613821006">Alle mister tilgangen til fanegruppen «<ph name="GROUP_NAME"/>» umiddelbart, og den blir slettet fra alle enheter</translation>
 <translation id="3873174561423636563">Før du kan fortsette, må <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/> dele <ph name="FIELDS_STRING"/> med dette nettstedet. Se <ph name="BEGIN_LINK1"/>vilkårene for bruk<ph name="END_LINK1"/> av dette nettstedet.</translation>
+<translation id="3882323608730650973">Endret</translation>
 <translation id="3892148308691398805">Kopier teksten</translation>
 <translation id="3893858854379998374">Du må slette de ubrukte bokmerkene dine for å lagre bokmerker i kontoen din</translation>
 <translation id="3898498281932368596">Blokker og forlat</translation>
@@ -677,6 +685,7 @@ Bare personer som har passordfrasen din, kan lese de krypterte dataene. Passordf
 <translation id="399788104667917863">Fest til verktøyraden</translation>
 <translation id="4000212216660919741">Hjem uten nett</translation>
 <translation id="4694008025405984126">Tilpass og kontroller Brave med et element som er uthevet</translation>
+<translation id="4002066346123236978">Tittel</translation>
 <translation id="5267293611589304570">{NUM_PASSWORDS,plural, =1{1 kompromittert passord i Brave-kontoen din}other{# kompromitterte passord i Brave-kontoen din}}</translation>
 <translation id="7002462047122704254">For å få bokmerkene dine med mer på alle enhetene dine, logg på Brave</translation>
 <translation id="4024768890073681126">Nettleseren administreres av forelderen din</translation>
@@ -698,7 +707,6 @@ Bare personer som har passordfrasen din, kan lese de krypterte dataene. Passordf
 <translation id="7268155614575494857">For å hjelpe Brave Passordlagring med å lagre påloggingsinformasjonen din, legg til brukernavnet ditt for dette nettstedet</translation>
 <translation id="4095146165863963773">Slette appdataene?</translation>
 <translation id="4095483462103784441">Opprett en ny fanegruppe</translation>
-<translation id="4096227151372679484">Flyt for lagring av bokmerke er åpnet i halv høyde</translation>
 <translation id="1523634703470981382">Oppdatering av Brave Passordlagring er åpnet</translation>
 <translation id="4113030288477039509">Styres av administratoren din</translation>
 <translation id="4116038641877404294">Last ned sidene for å bruke dem uten nett</translation>
@@ -1064,7 +1072,6 @@ Brave-kontoen din kan ha andre former for nettleserlogger, for eksempel søk og 
 <translation id="569536719314091526">Oversett denne siden til hvilket som helst språk via Flere alternativer-knappen</translation>
 <translation id="2320748512701464301">Brave kan beskytte deg mot databrudd, utrygge nettsteder med mer</translation>
 <translation id="5698878456427040674">Sjekk om den valgte kontoen støttes.</translation>
-<translation id="5700415746238689851">Åpne Gemini</translation>
 <translation id="5709213329446699338"><ph name="SITE"/> vil koble til en seriell port</translation>
 <translation id="5715150588940290235">Vil du slette lagrede sikkerhetskoder?</translation>
 <translation id="572328651809341494">Nylige faner</translation>
@@ -1120,7 +1127,6 @@ Brave-kontoen din kan ha andre former for nettleserlogger, for eksempel søk og 
 <translation id="59577092665511740">Velg en konto.</translation>
 <translation id="5958275228015807058">Du finner filene og sidene dine under Nedlastinger</translation>
 <translation id="4262327329851675629">{NUM_REVOKED_PERMISSIONS,plural, =1{Brave har stoppet et nettsted du ikke har besøkt nylig, fra å sende deg varsler}other{Brave har stoppet nettsteder du ikke har besøkt nylig, fra å sende deg varsler}}</translation>
-<translation id="5962718611393537961">Trykk for å skjule</translation>
 <translation id="5964869237734432770">Stopp bildebeskrivelser</translation>
 <translation id="5972844218283131174">Velg bort alle</translation>
 <translation id="5975083100439434680">Zoom ut</translation>
@@ -1228,6 +1234,7 @@ Noen nettsteder kan for eksempel svare på denne forespørselen ved å vise deg 
 <translation id="634208815998129842">Oppgavebehandling</translation>
 <translation id="6343495912647200061">{SHIPPING_ADDRESS,plural, =1{<ph name="SHIPPING_ADDRESS_PREVIEW"/> og <ph name="NUMBER_OF_ADDITIONAL_ADDRESSES"/> til}other{<ph name="SHIPPING_ADDRESS_PREVIEW"/> og <ph name="NUMBER_OF_ADDITIONAL_ADDRESSES"/> til}}</translation>
 <translation id="6345878117466430440">Merk som lest</translation>
+<translation id="6350745006329795504">Administrer enhetene dine</translation>
 <translation id="6356893102071098867">Sjekk at du har valgt riktig konto</translation>
 <translation id="6364438453358674297">Vil du fjerne forslaget fra loggen?</translation>
 <translation id="806493401838431801">Forhåndslaster oftere sider som Brave tror du sannsynligvis kommer til å besøke. Denne innstillingen kan medføre høyere databruk.</translation>
@@ -1283,6 +1290,7 @@ Noen nettsteder kan for eksempel svare på denne forespørselen ved å vise deg 
 <translation id="6556501700899673703">Lexend</translation>
 <translation id="6560414384669816528">Søk med Sogou</translation>
 <translation id="656065428026159829">Se mer</translation>
+<translation id="6565781844089373403">Gjenopprett vinduer</translation>
 <translation id="6565959834589222080">Wifi brukes når det er tilgjengelig</translation>
 <translation id="657177046675873214">For å få bokmerkene dine på alle enhetene dine, slå på «Bokmerker» i innstillingene</translation>
 <translation id="6573096386450695060">Tillat alltid</translation>
@@ -1357,6 +1365,7 @@ Noen nettsteder kan for eksempel svare på denne forespørselen ved å vise deg 
 <translation id="6846298663435243399">Laster inn …</translation>
 <translation id="6850409657436465440">Nedlastingen din pågår fremdeles</translation>
 <translation id="6850830437481525139"><ph name="TAB_COUNT"/> faner ble lukket</translation>
+<translation id="6852437757508328589">{NUM_RESULTS,plural, =1{Fant 1 resultat}other{Fant # resultater}}</translation>
 <translation id="685340923442249391">{FILE_COUNT,plural, =1{Lydfiler, 1 lydfil på listen}other{Lydfiler, # lydfiler på listen}}</translation>
 <translation id="4046835482356054431">Discover fra Brave – av</translation>
 <translation id="6864459304226931083">Last ned bildet</translation>
@@ -1392,6 +1401,7 @@ Noen nettsteder kan for eksempel svare på denne forespørselen ved å vise deg 
 <translation id="6937524809504266803">Personlig tilpasning og tilknytning</translation>
 <translation id="6937876069006524083">Kallenavn (valgfritt)</translation>
 <translation id="6942665639005891494">Endre standard nedlastingssted når som helst via menyalternativet Innstillinger</translation>
+<translation id="6944854424004126054">Gjenopprett vinduet</translation>
 <translation id="6945221475159498467">Velg</translation>
 <translation id="6955535239952325894">Denne innstillingen er slått av for administrerte nettlesere</translation>
 <translation id="6963766334940102469">Slett bokmerker</translation>
@@ -1881,12 +1891,14 @@ For å endre denne innstillingen, <ph name="BEGIN_LINK"/>slett Brave-dataene i k
 <translation id="8998837250940831980">Kunne ikke minimere fanen. Prøv igjen senere.</translation>
 <translation id="9010094279589497751">Åpne Gemini raskt når du trenger det</translation>
 <translation id="9012585441087414258">Beskytter mot nettsteder, nedlastinger og utvidelser som anses som farlige. Hvis en side gjør noe mistenkelig, blir nettadresser og deler av sideinnholdet sendt til Google Safe Browsing.</translation>
+<translation id="9014097371980259227">Noen verktøy er flyttet for å hjelpe deg med å søke med AI-modus</translation>
 <translation id="9019199799064251516">Vil du fortsette uten profillås for bilen?</translation>
 <translation id="9022774213089566801">Ofte besøkte</translation>
 <translation id="9022871169049522985">Nettsteder og annonsører kan måle annonseresultater sine</translation>
 <translation id="5687542525349822727">Angi Brave som standard</translation>
 <translation id="9027728231343310283">Angre <ph name="SITE"/></translation>
 <translation id="9035378196785279980">Flytt til\u2026</translation>
+<translation id="904146253922032365">Trykk og hold for å vise faner vertikalt</translation>
 <translation id="9042893549633094279">Personvern og sikkerhet</translation>
 <translation id="1612219807314383628">Start et søk raskt i Brave</translation>
 <translation id="9050666287014529139">Passordfrase</translation>
@@ -1908,6 +1920,7 @@ For å endre denne innstillingen, <ph name="BEGIN_LINK"/>slett Brave-dataene i k
 <translation id="7708077127614889658">Åpne i et Brave-vindu</translation>
 <translation id="2324185818196590038">For å få en mest mulig personlig tilpasset opplevelse, ta med Brave i Nett- og appaktivitet og sammenknyttede Brave-tjenester</translation>
 <translation id="9099220545925418560">Basert på nettleserloggen din. Denne innstillingen er slått av.</translation>
+<translation id="9099674669267916096">Antall sider</translation>
 <translation id="9100610230175265781">Det kreves en passordfrase</translation>
 <translation id="9101137867221042551">Administrering</translation>
 <translation id="9102803872260866941">Fanen for forhåndsvisning er åpnet</translation>
@@ -1951,7 +1964,6 @@ For å endre denne innstillingen, <ph name="BEGIN_LINK"/>slett Brave-dataene i k
 <translation id="938850635132480979">Feil: <ph name="ERROR_CODE"/></translation>
 <translation id="939598580284253335">Angi en passordfrase</translation>
 <translation id="945522503751344254">Send tilbakemelding</translation>
-<translation id="949667118776341807">Rotér</translation>
 <translation id="5406914950576900927">Brave kan bruke <ph name="BEGIN_BOLD"/>Sogou<ph name="END_BOLD"/> for søk i Kina. Du kan endre dette i <ph name="BEGIN_LINK"/>Innstillinger<ph name="END_LINK"/>.</translation>
 <translation id="961856697154696964">Slett nettlesingsdata</translation>
 <translation id="963246339335003378">Åpne Oppgavebehandling</translation>
@@ -2046,6 +2058,8 @@ For å endre denne innstillingen, <ph name="BEGIN_LINK"/>slett Brave-dataene i k
 <translation id="7019870729880056499">{TAB_COUNT, plural,
           =1 {<ph name="INCOGNITO_TAB_COUNT"/> privat og <ph name="TAB_COUNT_ONE"/> annen fane lukkes}
           other {<ph name="INCOGNITO_TAB_COUNT"/> privat og <ph name="TAB_COUNT_MANY"/> andre faner lukkes}}</translation>
+<translation id="2167041492202907944">For å slette data, lukk alle private vinduer</translation>
+<translation id="717431576750604961">For å lukke alle Private vinduer, trykk på Private indikator</translation>
 <translation id="4362959348993021460">Trykk og hold for å bytte til Privat</translation>
 <translation id="1393515642387718683">Dobbelttrykk og hold for å bytte til Privat</translation>
 <translation id="7096147642287317420">Dobbelttrykk og hold for å bytte fra Privat</translation>
@@ -2055,4 +2069,5 @@ For å endre denne innstillingen, <ph name="BEGIN_LINK"/>slett Brave-dataene i k
 <translation id="3095878721037212218">Du vil enkelt kunne administrere mediakontroller, private økter, nedlastinger med mer</translation>
 <translation id="5129323533070334129">Vil du lagre passnøkkelen utenom Privat modus?</translation>
 <translation id="4325212706000356062">Søk i dine egne private faner</translation>
+<translation id="4882907322692413634">Gemini er ikke tilgjengelig i privatmodus</translation>
 </translationbundle>

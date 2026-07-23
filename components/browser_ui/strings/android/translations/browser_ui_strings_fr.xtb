@@ -161,7 +161,6 @@
 <translation id="2546283357679194313">Cookies et données des sites</translation>
 <translation id="3127075554145176599">Profitez du plus haut niveau de protection de Brave contre les menaces en ligne</translation>
 <translation id="2570922361219980984">L'accès à la position est également désactivé pour cet appareil. Activez-le dans les <ph name="BEGIN_LINK"/>paramètres Android<ph name="END_LINK"/>.</translation>
-<translation id="257931822824936280">Développé – Cliquer pour réduire</translation>
 <translation id="2586657967955657006">Presse-papiers</translation>
 <translation id="2588271083332682494">Rangez vos onglets en groupes</translation>
 <translation id="2592917252160773942">Les sites peuvent demander à utiliser votre caméra</translation>
@@ -404,7 +403,6 @@
 <translation id="509133520954049755">Demander l'affichage sur ordinateur</translation>
 <translation id="5091663350197390230">Lorsque cette option est activée, les sites peuvent utiliser JavaScript. Lorsqu'elle est désactivée, les sites ne peuvent pas utiliser JavaScript.</translation>
 <translation id="5099358668261120049">L'ensemble des données et cookies stockés par <ph name="ORIGIN"/> ou par l'appli associée sur votre écran d'accueil seront supprimés.</translation>
-<translation id="5100237604440890931">Réduit – Cliquer pour développer</translation>
 <translation id="7143053178237996319">Vous pouvez utiliser Brave chaque fois que vous appuyez sur des liens dans des messages, des documents et d'autres applis</translation>
 <translation id="512938610812707830">Bottom sheet des collections de thèmes de l'apparence de la page "Nouvel onglet" ouverte à pleine hauteur</translation>
 <translation id="5137460097045297858">Bottom sheet du flux Discover ouverte à mi-hauteur</translation>
@@ -445,7 +443,7 @@
 <translation id="5591840828808741583"><ph name="SITE_NAME"/> bloquée</translation>
 <translation id="5617702678271228680">Bottom sheet des cartes de la page Nouvel onglet</translation>
 <translation id="5621413808884657932">Lorsque cette option est activée, les sites peuvent demander à accéder à d'autres applis et services sur cet appareil. Lorsque cette option est désactivée, les sites ne peuvent pas accéder à d'autres applis ni services sur cet appareil.</translation>
-<translation id="5632485077360054581">Démonstration</translation>
+<translation id="5632485077360054581">Voir comment faire</translation>
 <translation id="5649053991847567735">Téléchargements automatiques</translation>
 <translation id="5668404140385795438">Ignore la demande d'un site d'empêcher les zooms avant</translation>
 <translation id="5668843533782548925">Les sites sont plus lents, mais plus sécurisés</translation>
@@ -692,7 +690,6 @@ La Protection Avancée contrôle les paramètres Brave suivants :</translation
 <translation id="8197286292360124385">Autorisation accordée : <ph name="PERMISSION_1"/></translation>
 <translation id="8200772114523450471">Reprendre</translation>
 <translation id="8211406090763984747">La connexion est sécurisée</translation>
-<translation id="822964464349305906"><ph name="TYPE_1"/>, <ph name="TYPE_2"/></translation>
 <translation id="823874716226307142">Lorsque cette option est activée, les sites peuvent demander à accéder à d'autres appareils sur votre réseau local. Lorsque cette option est désactivée, les sites ne peuvent pas accéder à d'autres appareils sur votre réseau local.</translation>
 <translation id="8249310407154411074">Déplacer vers le haut</translation>
 <translation id="8261506727792406068">Supprimer</translation>

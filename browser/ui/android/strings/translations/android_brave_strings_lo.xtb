@@ -41,7 +41,7 @@
 <translation id="5197219128592971597">ເຂົ້າເບິ່ງ URL ຫນ້າທີ່ເປັນຕົ້ນສາທານະ (ທີ່ບໍ່ແມ່ນ AMP) ຊ່ວຍເຉື້ອນໄຫວໄປທີ່ໜ້າ Mobີລ (AMP)ຂອງກູເກິລ.</translation>
 <translation id="920638232916443453">ການນຳທາງ URL ການຕິດຕາມອັດຕະໂນມັດ</translation>
 <translation id="1118970888826017401">ເປີດແຕ່ງການສະໜັບສະໜູນໃນການບ່ອຍທາງ URL ການຕິດຕາມສຳລັບລະດັບສູງ.</translation>
-<translation id="94154759592465111">ປິດ Scripts</translation>
+<translation id="4824468494729001999">ບລ໊ອກສະກຣິບ</translation>
 <translation id="7714773920987474116">ປິດ JavaScript (ອາດຈະທຳໃຫ້ເວັບໄຊທ໌ບໍ່ມາດຕານານ)</translation>
 <translation id="2233004324252915283">ບລັອກເນື້ອຫາແນະນຳໃນ YouTube</translation>
 <translation id="1005372663692637999">ບລັອກວິດີໂອຖັດໄປ ແລະ ກາດແນະນຳທ້າຍຄລິບໃນ youtube.com.</translation>
@@ -151,6 +151,33 @@
 <translation id="6975864539539353406">ປັດໃຈຄຸກກີ້ແລະຂໍ້ມູນເວັບໄຊອື່ນເມື່ອທ່ານປິດເວັບໄຊ</translation>
 <translation id="7740929262043547697">ຍອມໃຫ້ບລ໋ອກເພາະສ່ວນໃນໜ້າຕ່າງສ່ວນຕົວ</translation>
 <translation id="1260864846935682371">ເປີດໃຊ້ຟີເຈີບລ໋ອກເພາະສ່ວນຂອງ Shields ໃນໜ້າຕ່າງສ່ວນຕົວ. ເຊີ່ງເພາະສ່ວນທີ່ຖືກບລ໋ອກໃນໜ້າຕ່າງສ່ວນຕົວ ກໍ່ຈະຖືກບລ໋ອກໃນໜ້າຕ່າງທົ່ວໄປເຊັ່ນກັນ.</translation>
+<translation id="4021136205151368133">ໝາຍເຫດ: ນີ້ອາດຈະຫຼຸດລະດັບການປົກປ້ອງຄວາມເປັນສ່ວນຕົວຂອງ Brave.</translation>
+<translation id="2876155735620608356">Shields up ສຳລັບເວັບໄຊສ໌ນີ້</translation>
+<translation id="8605306630462821888">Shields down ສຳລັບເວັບໄຊສ໌ນີ້</translation>
+<translation id="1574700443447059851">ຕົວຕິດຕາມ, ໂຄສະນາ, ແລະອື່ນໆທີ່ຖືກບລັອກ.</translation>
+<translation id="4039014515785210563">ເລືອກວິທີຈັດການ tracker ແລະ ads</translation>
+<translation id="8423733350479881051">ເລືອກວິທີຈັດການ cookie</translation>
+<translation id="9064628362799094520">ທຳລາຍຂໍ້ມູນຂອງເວັບໄຊສ໌</translation>
+<translation id="2862348905922940916">ຕັ້ງເວັບໄຊສ໌ນີ້ຄືນໃໝ່ເປັນຄ່າເລີ່ມຕົ້ນຂອງ Shields</translation>
+<translation id="269939061709857874">ເວັບໄຊສ໌ຖືກຕັ້ງຄືນໃໝ່ເປັນຄ່າເລີ່ມຕົ້ນຂອງ Shields</translation>
+<translation id="3623708006387030755">ການຕັ້ງຄ່າສ່ວນກາງຂອງ Shields</translation>
+<translation id="2387532482048804818">ບອກເຮົາຖ້າເວັບໄຊບໍ່ເຮັດວຽກຢ່າງຖືກຕ້ອງກັບ Shields ຂື້ນ.</translation>
+<translation id="5412004902081180614">ລາຍງານ</translation>
+<translation id="1209739344687072997">ລາຍງານເວັບໄຊທ໌ທີ່ມີບັນຫາ</translation>
+<translation id="2606165159306988240">ແຈ້ງໃຫ້ນັກພັດທະນາຂອງ Brave ຮູ້ວ່າເວັບໄຊທ໌ນີ້ບໍ່ເຮັດວຽກຢ່າງຖືກຕ້ອງກັບເວັບໄຊທ໌ນີ້.</translation>
+<translation id="6806248680442980382">ຂອບໃຈທີ່ຊ່ວຍພັດທະນາ Brave. ການລາຍງານນີ້ຈະປະກອບດ້ວຍຂໍ້ມູນທີ່ຈຳເປັນສຳລັບແກ້ໄຂເວັບໄຊຕ໌ນີ້ເທົ່ານັ້ນ.</translation>
+<translation id="7549123865054511884">ອັນໃດບໍ່ເຮັດວຽກຢູ່ເວັບໄຊສ໌ນີ້?</translation>
+<translation id="9094461910562981998">ຕິດຕໍ່ຂ້ອຍໄດ້ທີ່ (ທາງເລືອກ)</translation>
+<translation id="7645128170699559106">ອີເມວ, ຊື່ຜູ້ໃຊ້ X, ແລະ ອື່ນໆ</translation>
+<translation id="446579367766109694">ຖ້າທ່ານໃຫ້ຂໍ້ມູນການຕິດຕໍ່ ຂໍ້ມູນນັ້ນຈະຖືກບັນທຶກເພື່ອໃຊ້ສຳລັບການລາຍງານໃນອະນາຄົດ</translation>
+<translation id="2653659639078652383">ສົມຄວມ</translation>
+<translation id="8459191579769999214">ເບິ່ງການຊັບຈັກຫນ້າ</translation>
+<translation id="4530541918195747729">ສົ່ງລາຍງານແລ້ວ. ຂອບໃຈ!</translation>
+<translation id="5528772406060281700">ກຳຈັດຂໍ້ມູນ</translation>
+<translation id="6795622376590884449">ກຳຈັດອັດຕະໂນມັດ</translation>
+<translation id="3520341243738311408">ເມື່ອປິດແທັບຂອງເວັບໄຊສ໌</translation>
+<translation id="3559735673608367395">ເມື່ອອອກຈາກແອັບ</translation>
+<translation id="9140049656798805345">ທຳລາຍຂໍ້ມູນເວັບໄຊສ໌ຕອນນີ້</translation>
 <translation id="1680858055899097121">ບໍ່ໃຊ້ໃຫມ່ແຖບໃນເວລາຫວ່າງການຄົ້ນຫາ</translation>
 <translation id="7142548388914389999">ອະນຸຍາດການວິເຄາະຜະລິດຕະພັນກ່ຽວກັບຄວາມເປັນສ່ວນຕົວ</translation>
 <translation id="5254037869598726291">P3A ທີ່ບໍ່ໄດ້ໄປໃຊ້ຂໍ້ມູນການເປັນນິຄົມແລະໃຫ້ເປັນຕາຫຼັ່ງນັກເມົາຫລາຍ.</translation>
@@ -208,24 +235,12 @@
 <translation id="5109496672133133896">ຂໍ້ມູນໂຕະວັດຕາມສ່ວນຕົວ</translation>
 <translation id="3545804467215833536">ກົດເພື່ອເບິ່ງ Brave Shields</translation>
 <translation id="1724327820822194498">ເຫັນທຸກ ຄວາມສາມາດທີ່ Brave ປ້ອງກັນໄດ້, ທຸກອ່ອນປະເງີນ, ໃຫ້ Shields.</translation>
-<translation id="5386259141409498372"><ph name="BIG_TECH"/> ແລະ <ph name="TRACKER"/> ບລັອກໂຄສະນາ &amp; ຕົວຕິດຕາມແລ້ວ</translation>
-<translation id="7256200875155794202"><ph name="BIG_TECH"/> ແລະ Brave &amp; ຕົວຕິດຕາມອື່ນໆທີ່ຖືກປ້ອງກັນ</translation>
 <translation id="3092683655478890840"><ph name="TRACKER_COUNT"/> ບລັອກໂຄສະນາ &amp; ຕົວຕິດຕາມແລ້ວ</translation>
 <translation id="8281886186245836920">ຂ້າມ</translation>
-<translation id="986879628471635371">ການລົງທະບຽນມື້ໃໝ່</translation>
 <translation id="5806601733251372221">Brave Shields</translation>
-<translation id="8537217141725709400">ສ້າງ <ph name="TOKEN"/></translation>
-<translation id="3333887201479867589">Brave Rewards</translation>
-<translation id="5870330605209713397">ໂດຍການເບິ່ງໂຄສະນາໃຫ້ການສັບພອນເວັບໄຊ້ແລະສ້າງເອີນເອີ້ນ.</translation>
-<translation id="5302488867897327287">ໂດຍການກົດເລີ່ມໃຊ້ Brave Rewards, ທ່ານຍອມຮັບມື້ຕົ້ນ</translation>
 <translation id="4281844954008187215">ເງື່ອນໄຂການໃຊ້ງານ</translation>
 <translation id="6871397658902960384">ເລີ່ມການຮູນເສື່ອງ</translation>
-<translation id="454386012157232640">ຂ້ອມມູນບໍ່ໄດ້ຄຳນຶງ</translation>
-<translation id="1448877943847791441">Brave ກຳລັງສະແດງໂຄສະນາແຕກໃນ</translation>
-<translation id="4410793187232041318">ດຽວນີ້ທ່ານຈະໄດ້ຮັບໂທເຄນຈາກ Brave Ads.</translation>
 <translation id="6511854390690723657">ນີ້ແມ່ນໂຄສະນາແທັບທີທ່ານສະແດງ. ກົດເພື່ອຮຽນຫຼາຍຂຶ້ນ.</translation>
-<translation id="2070991379950719711">ເລີ່ມນໍາໃຊ້ Brave Rewards</translation>
-<translation id="48520986898237073">ຕໍ່ໄປຍັງ wallet</translation>
 <translation id="6213254277250932867">ຂ້ອຍໄດ້ມີປະໂຫຍດບາງງານທີ່ສັບພວນໂຄສະນາ</translation>
 <translation id="4225265925807365011">ຂ້ອຍເຄີຍມີປະໂຫຍດໃນຫຼັງຕົ້ນແບບໂຄສະນາຕົ້ນ</translation>
 <translation id="3570367516044491911">ຕັ້ງເປັນບຣາວເຊີ້ເລີ່ມຕົ້ນ</translation>
@@ -233,6 +248,7 @@
 <translation id="1545749641540134597">ໃຊ້ QR Code</translation>
 <translation id="5317781812114905957">ຄໍາແນະນຳ</translation>
 <translation id="8515319483805157233">ແມ່ນແຕ້ QR Code, ປັດງານໃນການຂໍໍ້ຂວາງ</translation>
+<translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="7658239707568436148">ຍົກເລີກ</translation>
 <translation id="1201402288615127009">ຖັດໄປ</translation>
 <translation id="8481779960444041069">ເພື່ອພັດທະນາຄວາເປັນມີມະນັງານ, ຕັດາ ເປັນ Browser Start</translation>
@@ -345,10 +361,11 @@ Enter the sync chain code words shown below.</translation>
 <translation id="2803313416453193357">ເປີດໂຟນເດີ</translation>
 <translation id="8985635554450124959">ການເຊື່ອມໄດ້ຜິດພາດ</translation>
 <translation id="7173114856073700355">ເປີດຕັ້ງຄ່າ</translation>
-<translation id="496896260395129787">ບັນຊີ Brave Sync ນີ້ໄດ້ຖືກລຶບອອກຈາກອຸປະກອນອື່ນ. ຖ້າເຈົ້າບໍ່ຕັ້ງໃຈທີ່ຈະປິດ Sync,<ph name="LINK_TEXT"/></translation>
-<translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>ສ້າງໃໝ່ບັນຊີ</translation>
+<translation id="674078455841038219">ບັນຊີ Brave Sync ນີ້ໄດ້ຖືກລຶບອອກຈາກອຸປະກອນອື່ນ. ຖ້າເຈົ້າບໍ່ຕັ້ງໃຈທີ່ຈະປິດ Sync, ໃຫ້ສ້າງບັນຊີຄືນໃໝ່.</translation>
+<translation id="8913415701676265311">ສ້າງຄືນໃໝ່</translation>
 <translation id="4094590686212463338">ບໍ່ສາມາດເຂົ້າຮ່ວມແຊ່ນ Sync ນີ້ໄດ້. ແຊ່ນ Sync ນີ້ຖືກລົບແລ້ວ.</translation>
 <translation id="4908081302669157000">ເບີໂທ, ອີເມວ, ແລະທີ່ຢູ່</translation>
+<translation id="1571419474754278280">ການສົນທະນາ Leo AI</translation>
 <translation id="1056898198331236512">ອຸປະກອນ</translation>
 <translation id="1426410128494586442">ແມ່ນ</translation>
 <translation id="7811264919113243207">ຄືຄວາມປອດໄພຂອງທ່ານ,ທີ່ການເກັບຢາກຳມະຫົບໃຫ້ວ່າຜູ້ເກັງໄດ້ແວ່ນຄອນ.</translation>
@@ -368,10 +385,9 @@ Enter the sync chain code words shown below.</translation>
 <translation id="1413177583895309156">Brave VPN ເຂົ້າລະຫັດ ແລະ ປົກປ້ອງທຸກກິດຈະກຳອອນລາຍຂອງທ່ານ, ເຖິງແມ່ນວ່າໃຊ້ງານນອກບຣາວເຊີ້ Brave.</translation>
 <translation id="3974348661685061050">ທົດລອງໃຊ້ຟຣີ 7 ມື້</translation>
 <translation id="5789441016350810005">Brave Ads ຫຼາຍຮູປ</translation>
-<translation id="1486343603936278248">ໂທເກັນ</translation>
 <translation id="7781069478569868053">ໜ້າແທັບໃໝ່</translation>
 <translation id="5927196110206824867">ພາບພື້ນຫຼັງທີ່ໄດ້ຮັບການສະໜັບສະໜູນໄດ້ສະໜັບສະໜູນພັນທະກິດຂອງ Brave ທີ່ຈະສ້າງເວັບທີ່ເປັນເອກະລາດ ແລະສົນໃຈຜູ້ໃຊ້ກ່ອນ. ແລະບໍ່ເຫມືອນບໍລິສັດ Big Tech ພວກເຮົາວັດຜົນໂຄສະນາຢ່າງບໍ່ລະບຸຕົວເພື່ອປົກປ້ອງຄວາມເປັນສ່ວນຕົວຂອງທ່ານ.</translation>
-<translation id="8748471354357836070">ຮຽນຮູ້ເພີ່ມເຕີມ / ຕົກລົງທາງເລືອກ</translation>
+<translation id="6165508094623778733">ຮຽນຮູ້ເພີ່ມເຕີມ</translation>
 <translation id="3171669670217312786">ພາບພື້ນຫຼັງ</translation>
 <translation id="8522669544471808198">ສະແດງຮູບພື້ນຫຼັງ</translation>
 <translation id="6258554626602400736">ສະແດງໂຄສະນາໜ້າແທັບໃໝ່</translation>
@@ -399,7 +415,7 @@ Enter the sync chain code words shown below.</translation>
 <translation id="7151914815476509258">ບລັອກເຈົ້າກອງຕາມ &amp; ຂ່າວ (Standard)</translation>
 <translation id="7384778069178817075">ອະນຸຍາດໃຫ້ tracker ແລະຂໍ້ສະເໜີທັງໝົດ</translation>
 <translation id="1173312143376149085"><ph name="BEGIN_LINK_0"/>ຕົວເລືອກ "Block all Cookies" ຖືກລົບອອກແລ້ວ. ຂໍ້ມູນການເປີດໃຊ້ຕົວເລືອກນີ້, ກວດເບິ່ງ<ph name="END_LINK_0"/> <ph name="BEGIN_LINK_1"/>ເວັບໜ້າຊ່ວຍເຫຼືອຂອງພວກເຮົາ<ph name="END_LINK_1"/></translation>
-<translation id="3763681089644577874">ບລັອກຄຸກຂີ</translation>
+<translation id="8823559166155093873">ບລອກຄຸກຄີ້</translation>
 <translation id="614747795780742163">ຫ້າມເວັບໄຊທ໌ຈາກເກັບຂໍ້ມູນກ່ຽວກັບການຢ້ຽມສຽບຂິດການຂອງທ່ານ</translation>
 <translation id="6883611015375728278">ບລອກຄຸກຄີ້ທັງໝົດ</translation>
 <translation id="6196640612572343990">ບລອກຄຸກຄີ້ທາງທີສາມ</translation>
@@ -410,7 +426,7 @@ Enter the sync chain code words shown below.</translation>
 <translation id="1876882294512858963">ຕະຫຼອດເວລາອອກນອກປືສາດ</translation>
 <translation id="554464532999080267">ຂໍອອກກ່ອນຊື່ມາທາງປືສາດ (standard)</translation>
 <translation id="926857659063503456">ບໍໃຊ້ຊື່ທາງປືສາດ</translation>
-<translation id="3895527457258986253">ບລອກການຄວບຄູມ</translation>
+<translation id="6531019308847917584">ບລ໋ອກການເລືອກໄປຊ້ຳ</translation>
 <translation id="7854108565842971747">ນີ້ແມ່ນຄ່າປືມລັດຂອງທີ Unix. ການປ່ຽນແຫຼງເຫົານີ້ບໍ່ສະຫງົບສມາທິການຕັ້ງຄ່າທີ່ນແມ້ນ.</translation>
 <translation id="218587021686734263">ປ້ອງກັນບລອກທາງພາສາ</translation>
 <translation id="1706099589708266367">ປ້ອງກັນບລອກທາງພາສາ</translation>
@@ -420,43 +436,21 @@ Enter the sync chain code words shown below.</translation>
 <translation id="7445306466605902444">ບລັອກການລະບຸລັກສະນະ (ເຂັ້ມງວດ, ອາດທຳໃຫ້ເວັບໄຊທ໌ທຸດລົມ)</translation>
 <translation id="5582686930349810484">ບລັອກການລະບຸລັກສະນະ (ມາດຕະຖານ)</translation>
 <translation id="769702552748212954">ອະນຸຍາດໃຫ້ການລະບຸລັກສະນະທັງໝົດ</translation>
-<translation id="876424292214881779">ໂຄສະນາ ແລະ ສິ່ງລົບກວນອື່ນໆຖືກບລັອກແລ້ວ</translation>
-<translation id="6849027612978668678">ເວັບໄຊຫຼາຍແອບປາບ:ຄຸກຂີໍ ແລະ ສະບາຍນົມ</translation>
-<translation id="8553998445606452168">ກ່ຽວກັບ Brave Shields</translation>
-<translation id="8912304686498704084">ຂຶ້ນ</translation>
-<translation id="4963218453264888510">ລົງ</translation>
-<translation id="7474113515179313724">ທ່ານກຳລັງເປີດເວັບໄຊທ໌ນີ້ໂດຍບໍ່ມີການປົກປ້ອງຄວາມເປັນສ່ວນຕົວຈາກ Brave. ເວັບໄຊທ໌ເຮັດວຽກບໍ່ຖືກຕ້ອງເມື່ອເປີດ Shields ແມ່ນບໍ່?</translation>
 <translation id="4226543734057230801">ເຄືອຂ່າຍ Ethereum</translation>
 <translation id="3504157706952484145">ເຄືອຂ່າຍ Filecoin</translation>
 <translation id="1561541094377237745">ເຄືອຂ່າຍ Solana</translation>
 <translation id="7141438739990875547">ເຄືອຂ່າຍ Bitcoin</translation>
 <translation id="9055546041146396417">ຖ້າເວັບໄຊທ໌ນີ້ສະແດງຜົນຜິດປົກກະຕິ, ລອງປິດ Shields ເບິ່ງ.</translation>
 <translation id="7898672232170410330">ບລັອກອົງປະກອບ</translation>
-<translation id="9064628362799094520">ກຳຈັດຂໍ້ມູນເວັບໄຊ</translation>
-<translation id="8949611615512336262">ກຳຈັດອັດຕະໂນມັດ: <ph name="AUTO_SHRED_MODE_TEXT"/></translation>
-<translation id="9140049656798805345">ກຳຈັດຂໍ້ມູນເວັບໄຊດຽວນີ້</translation>
-<translation id="6795622376590884449">ກຳຈັດອັດຕະໂນມັດ</translation>
 <translation id="7961015016161918242">ບໍ່ເລີຍ</translation>
 <translation id="1991004083507807299">ປິດແທັບເວັບໄຊ</translation>
 <translation id="5827277414420724690">ປິດແອັບ</translation>
 <translation id="4279349293084858577">ກຳຈັດ</translation>
-<translation id="1209739344687072997">ລາຍງານເວັບໄຊທ໌ທີ່ມີບັນຫາ</translation>
-<translation id="8510478288840333677">ເປັນຂໍ້ມູນບັນທຶກວ່ານີ້ເວັບໄຊທ໌ບໍ່ໄດ້ໂຄເທິນສານນີ້ 'ຊຽກເຄືອຂົນ'.</translation>
-<translation id="1653405824851871276">ຂອບໃຈທີ່ໄດ້ຊ່ວຍເຮົາທ້ໍາວ່າ Brave ດີຂຶ້ນສໍາລັບທຸກຄົນ. ຂໍ້ຄວາມນີ້ຈະປະກອບກ່ຽວກັບຂໍ້ມູນທີ່ເຮົາຕ້ອງການ. <ph name="LEARN_MORE"/></translation>
-<translation id="8759753423332885148">ຮຽນຮູ້ເພີ່ມເຕີມ.</translation>
-<translation id="8740275226259417070">ນີ້ແມ່ນໜ້າເວັບທີ່ເກີດຂໍ້ຜິດພາດ. ບໍ່ສາມາດລາຍງານໄດ້ວ່າເວັບໄຊທ໌ສະເໝີຂ້ອນນີ້ທຸດລົມ.</translation>
 <translation id="721949491455392748">ແນບພາບຈໍໜ້າປະຈຸບັນ</translation>
-<translation id="8459191579769999214">ເບິ່ງຮູບພາບ</translation>
 <translation id="6476216365964140603">ລາຍລະອຽດເພີ່ມເຕີມ (ບໍ່ຈຳເປັນ)</translation>
-<translation id="6145852496180774737">ຕິດຕໍ່ຂ້ອຍໄດ້ທີ່: (ທາງເລືອກ)</translation>
-<translation id="6367576083705149078">ຖ້າທ່ານໃຫ້ຂໍ້ມູນການຕິດຕໍ່ ຂໍ້ມູນນັ້ນຈະຖືກບັນທຶກເພື່ອໃຊ້ສຳລັບການລາຍງານໃນອະນາຄົດ.</translation>
-<translation id="7616645803364270729">ອີເມວ, Twitter, ແລະອື່ນໆ</translation>
-<translation id="5299848999918506028">ຂອບໃຈ!</translation>
-<translation id="76550953340008122">ຂອບໃຈທີ່ແຈ້ງໃຫ້ນັກພັດທະນາ Brave ຊາບວ່າເວັບໄຊທ໌ນີ້ມີບັນຫາ. ພວກເຮົາຈະພະຍາຍາມແກ້ໃຫ້ໄດ້ເວລາໄວທີ່ສຸດ!</translation>
 <translation id="3037432377946455872">ບັນຫາຫຼັກທີ່ທ່ານເຫັນແມ່ນຫຍັງ?</translation>
 <translation id="8731661215617360873">ເລືອກລາຍການໜຶ່ງ</translation>
 <translation id="650318023204990401">ການຄວບຄຸມຂັ້ນສູງ</translation>
-<translation id="7205939464631857223">ລ້າງອົງປະກອບທີ່ຖືກບລັອກທັງຫມົດ</translation>
 <translation id="5370478469168390143">ເກັບຂໍ້ມູນອອນໄລນ</translation>
 <translation id="1118508688433541158">ແບບຂະໜາດໃຫ່ຍແລະຮັບຜູ່ຄວບຟັງສະນຳໃຈນຳ Brave</translation>
 <translation id="7427391215172269363">ທຸກໆມື້ຂອ້ຍເປັນວິທີແກ້ບລອກເວັບໄຊ Brave.</translation>
@@ -506,17 +500,17 @@ Enter the sync chain code words shown below.</translation>
 <translation id="2718046830255553131">ຂໍ້ມູນການລາຍງານສ່ວນຕົວໄດ້ລົບໄປແລ້ວ.</translation>
 <translation id="8376263745431603066">ເປີດ 'ພາຍໃນເຕົ້າເມືອເຄີຍແນວໃໝ່' (ທົດລອງ)</translation>
 <translation id="1383876407941801731">ຊອກຫາ</translation>
-<translation id="6165508094623778733">ຮຽນຮູ້ເພີ່ມເຕີມ</translation>
 <translation id="13296465911709339">ຂໍຄວາມຂອງທ່ານຖືກ​ສຳ​ນຳ​ບາງ​ເລືອນ​ສະ​ຂອງ​ໄລບາດ.</translation>
 <translation id="2735834606413553397">ທີ່ຢູ່ສາທານາຂອງທ່ານຖືກ​ສຳ​ນຳ​ບາງ​ເລືອນ​ສະ​ຂອງ​ໄລບາດ.</translation>
 <translation id="2977461003134694205">ສະຖິຕິຄວາມເປັນສ່ວນຕົວ</translation>
 <translation id="8804164990146287819">ນະໂຍບາຍຄວາມສ່ວນຕົວ</translation>
 <translation id="5705882733397021510">ກັບໄປ</translation>
+<translation id="8450375131309292971">ດຶງເພື່ອໂຫຼດຄືນໃໝ່</translation>
+<translation id="880475987868032564">ເປີດໃຊ້ທ່າທາງດຶງເພື່ອໂຫຼດຄືນໃໝ່. ການປັດລົງຈາກເທິງສຸດຂອງໜ້າຈະໂຫຼດໜ້ານັ້ນຄືນໃໝ່.</translation>
 <translation id="7889432931837317731">ເປີດອັດຕະໂນມັດເມື່ອເປັນໄປໄດ້</translation>
 <translation id="1029304566263314007">ສະແດງການແຈ້ງເຕືອນຄວາມຄືບໜ້າການດາວໂຫລດ</translation>
 <translation id="2977501775944575564">ການດາວໂຫລດເຊົ້າຄູ່ຂະ</translation>
 <translation id="6224180438946945617">ເປີດໃຊ້ການດາວໂຫລດເພື່ອເພີ່ມໄວ</translation>
-<translation id="8967385052772844086">ເບິ່ງລາຍງານຄວາມເປັນສ່ວນຕົວເຕັມ</translation>
 <translation id="3479552764303398839">ຍັງບໍ່ແມ່ນຕອນນີ້</translation>
 <translation id="7138272885617540195">ອະນຸຍາດໃຫ້ລິ້ງແອບເປີດໃນພາຍນອກ Brave</translation>
 <translation id="4954512758656527938">ກະເປ່ Ethereum ຄ່າເລີ່ມຕົ້ນ</translation>
@@ -778,7 +772,6 @@ Enter the sync chain code words shown below.</translation>
 <translation id="2156993118928861787">ທີ່ຢູ່ບໍ່ຖືກຕ້ອງ</translation>
 <translation id="7791543448312431591">ເພີ່ມ</translation>
 <translation id="6889920539620318793">ຕັ້ງເປັນທີ່ໃຊ້ວຽກ</translation>
-<translation id="2653659639078652383">ສົ່ງຂໍ້ມູນ</translation>
 <translation id="4945690646623486292">ເລືອກເຄືອຂ່າຍ</translation>
 <translation id="8006088103295786154">ເຂົ້າເຖິງ Brave Wallet</translation>
 <translation id="5308380583665731573">ເຊື່ອມຕໍ່</translation>
@@ -1099,7 +1092,6 @@ Enter the sync chain code words shown below.</translation>
 <translation id="1336494649091412226">ທ່ານແນ່ໃຈທີ່ຈະອອກຈາກ Brave ບໍ?</translation>
 <translation id="6061635824229591714">ທ່ານຈະກຳຈັດຂໍ້ມູນເວັບໄຊທ໌ນີ້ບໍ?</translation>
 <translation id="1265051174491933207">ການກຳຈັດຈະລຶບຂໍ້ມູນເວັບໄຊທ໌ ແລະປິດແທັບ '<ph name="SITE_NAME"/>' ທັງໝົດ. ບໍ່ສາມາດຍ້ອນກັບໄດ້.</translation>
-<translation id="5528772406060281700">ກຳຈັດຂໍ້ມູນ</translation>
 <translation id="4426990318287827331">ກຳຈັດຂໍ້ມູນ</translation>
 <translation id="7942415993090181327">ປະຫວັດການສົນທະນາ</translation>
 <translation id="6859935199732075666">ສະແດງຄວາມຜິດພາດຂອງ Safe Browsing</translation>

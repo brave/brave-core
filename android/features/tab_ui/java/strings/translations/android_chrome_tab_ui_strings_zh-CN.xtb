@@ -181,7 +181,6 @@
 <translation id="7129458170538955174">此商店的相关信息已半屏打开</translation>
 <translation id="7204204600596740190">多选模式</translation>
 <translation id="7211038039686180558">您的标签页分组会自动保存，并在您所有已登录账号的设备上更新</translation>
-<translation id="731648547091221002">已选中<ph name="COLOR_NAME"/></translation>
 <translation id="7326879924029668159">查看退货政策及其他信息</translation>
 <translation id="7352298686197644113">查看您打开的标签页中哪件商品降价了</translation>
 <translation id="7369451074646620503">“<ph name="TAB_GROUP_NAME"/>”标签页分组已不可用</translation>
@@ -207,7 +206,6 @@
 <translation id="7854360405711302755">{REVIEWS,plural, =1{当前评分是 <ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/>，共有 <ph name="REVIEWS_COUNT_ONE"/> 条评价}other{当前评分是 <ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/>，共有 <ph name="REVIEWS_COUNT_MANY"/> 条评价}}</translation>
 <translation id="7885132941432959125">右移标签页</translation>
 <translation id="7887334752153342268">复制</translation>
-<translation id="7939917283308035850">未选择<ph name="COLOR_NAME"/></translation>
 <translation id="7961015016161918242">一律不</translation>
 <translation id="7966321538264951561">忽略此建议。</translation>
 <translation id="796696298310625748">{WINDOW_COUNT,plural, =1{将标签页移至新窗口}other{将标签页移至另一个窗口}}</translation>

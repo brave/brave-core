@@ -19,6 +19,7 @@
 <ph name="EXTENSION_NAME"/></translation>
 <translation id="1184145431117212167">Windows のバージョンがサポートされていないためインストールできませんでした。</translation>
 <translation id="8541922081612557424">Brave について</translation>
+<translation id="987734326276404793">スマートフォンの Brave で価格トラッキングのアラートを受け取る</translation>
 <translation id="1203500561924088507">インストールいただきありがとうございます。<ph name="BUNDLE_NAME"/> を使用するにはブラウザを再起動してください。</translation>
 <translation id="1232234696885483911">画像検索を開くと、ページのタイトル、URL、コンテンツ（PDF を含む）が自動的にサーバーに送信されます。<ph name="LEARN_MORE"/></translation>
 <translation id="1934377710648094656">Brave にログイン中は、Brave アカウントのパスワードやその他の設定を使用できます。この設定を変更するには、[Brave のアカウント設定] に移動してください。</translation>
@@ -31,12 +32,14 @@
 <translation id="4798342026247191171">新しい Brave プロファイルの設定</translation>
 <translation id="4291722755910963157">Gemini in Brave を使ってみる</translation>
 <translation id="878572309106296578">Bluetooth デバイスを検出するには、Brave に Bluetooth へのアクセスを許可する必要があります。<ph name="IDS_SERIAL_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></translation>
+<translation id="7562683844189283122">スマートフォンで Brave にログイン</translation>
 <translation id="1330562121671411446">検出言語</translation>
 <translation id="6204677860546245308">Brave の推奨ブラウザ設定を使用する</translation>
 <translation id="108284536240904209">Brave（<ph name="URL"/>）からもデータを削除する</translation>
 <translation id="1345251407431278948">固定しました。ツールバーの新しいボタンから、画像検索にアクセスできます</translation>
 <translation id="1356661055722410047">New! 画面上のテキストや画像を翻訳できるようになりました</translation>
 <translation id="1383876407941801731">検索</translation>
+<translation id="3535301204632475895">Brave アプリで、ブラウジングを外出先でも続けられます</translation>
 <translation id="7009295044271335553">Brave プロフィールを管理(&amp;M)</translation>
 <translation id="1404026649028693342">AI モードを常に表示する</translation>
 <translation id="141901961143729572">ご意見をお聞かせください</translation>
@@ -48,10 +51,10 @@
 <translation id="721261350616678948">Brave にログイン</translation>
 <translation id="1547469039832541117">ハイライト表示されているタスクを終了します。</translation>
 <translation id="1530633922026945685">周囲の 3D マップを作成するには、Brave にカメラの使用を許可する必要があります</translation>
-<translation id="9125033103884432">{NUM_EXTENSIONS,plural, =1{この拡張機能のサポートは終了しました。削除することをおすすめします。}other{これらの拡張機能のサポートは終了しました。削除することをおすすめします}}</translation>
 <translation id="51545890371361355">Brave を固定</translation>
 <translation id="6570689355868013775">Brave の安全性ツール</translation>
 <translation id="1902837727299679178">Brave がパスワード マネージャーのデータの削除をリクエストしています。続行するには、Windows のパスワードを入力してください。</translation>
+<translation id="1655849915812740665">スマートフォンの Brave アプリで Brave を最大限に活用できます</translation>
 <translation id="4449148723378534338">Brave のプライバシーとセキュリティに関する重要な設定を確認します</translation>
 <translation id="1640672724030957280">ダウンロードしています...</translation>
 <translation id="1680687534629375545">画像検索でこのページについて質問する</translation>
@@ -68,6 +71,7 @@
 <translation id="4529028207655448215">Brave が <ph name="AUTHENTICATION_PURPOSE"/></translation>
 <translation id="7362761326208547489">次回 <ph name="DEVICE_TYPE"/> で Brave を開いたときに、Brave パスワード マネージャーを使用するよう求めるメッセージが表示されます。</translation>
 <translation id="1838374766361614909">検索をクリア</translation>
+<translation id="3643631442346149414">Brave での作業を保護するため、組織は特定の情報を表示または管理できます</translation>
 <translation id="3541642064306182066">閲覧履歴データをこのデバイスからのみ削除して、Brave アカウントに残すには、<ph name="BEGIN_LINK"/>Brave からログアウト<ph name="END_LINK"/>します。</translation>
 <translation id="5679816001365584346">スマートフォンに Brave をダウンロードして、外出先でタブグループを開いたり、新しいタブグループを作成したりできます。</translation>
 <translation id="4559627161887338743">ログインする Brave アカウントを管理できます。Brave アカウントは、Brave ブラウザ、Play ストア、Gmail などで使用されます。家族など、あなた以外の人のアカウントを追加する場合は、<ph name="DEVICE_TYPE"/> に新しいユーザーを追加してください。<ph name="LINK_BEGIN"/>詳細<ph name="LINK_END"/></translation>
@@ -84,18 +88,21 @@
 <translation id="9048754176089806686">このダウンロードは Brave でブロックされました。ファイル形式が一般的にダウンロードされるものではなく、危害を及ぼす可能性があります</translation>
 <translation id="1953553007165777902">ダウンロードしています... 残り <ph name="MINUTE"/> 分です</translation>
 <translation id="1775322105159056176">Brave では既定のブラウザを判定または設定できません</translation>
+<translation id="197326043290947695">画像検索でスマートにブラウジング</translation>
 <translation id="4372901050442507812">新しいタブを開いて、Brave で一部のファイルがブロックされる理由を確認します</translation>
 <translation id="2703425183860615504">Brave ソフトウェアを最新の状態に保ちます。このサービスを無効にしたり停止したりすると、Brave ソフトウェアが最新の状態に保たれなくなります。その結果、セキュリティ上の脆弱性が見つかっても修正できず、機能が動作しなくなる可能性があります。このサービスを使用する Brave ソフトウェアがなくなると、このサービスは自動的にアンインストールされます。</translation>
 <translation id="9220324636239049437">このデバイスから 1 件の項目を削除します。後でデータを取得するには、<ph name="USER_EMAIL"/> として Brave にログインしてください。</translation>
 <translation id="2018879682492276940">インストールできませんでした。もう一度お試しください。</translation>
 <translation id="2039417478970545937">設定に移動。</translation>
 <translation id="5499149312981370855">Brave の履歴を含めて、Brave サービスのパーソナライズに使用するかどうかを選択してください</translation>
+<translation id="5152523902653128156">Brave に組み込まれており、安全なパスワードを作成、保存、自動入力できます。ショートカットを追加すると、簡単にアクセスできます。</translation>
 <translation id="6959434860418352144">新しいタブページで [Brave をカスタマイズ] ボタンをクリックして、Brave のレイアウトを変更できます</translation>
 <translation id="2066690553719545730">AI モードを常に表示する</translation>
 <translation id="2472891440303445472">このダウンロードは Brave でブロックされました。ファイルが虚偽のもので、デバイスに予期しない変更を加える可能性があります</translation>
 <translation id="2054358978145431867">次回 Brave iOS を開いたときに、<ph name="FEATURE_NAME"/> を試すよう求めるメッセージが表示されます。</translation>
 <translation id="2726948994393234543">Brave アカウントに保存したパスワードなどの Brave データは、このデバイスから削除されます。Brave でこれらのデータを再度使用するには、もう一度ログインしてください。</translation>
 <translation id="4375530476448642348">{COUNT,plural, =1{1 分間使用しなかった場合、組織は Brave の閲覧データを自動的に削除します。これには、履歴、自動入力、ダウンロードが含まれます。タブは開いたままになります。}other{# 分間使用しなかった場合、組織は Brave の閲覧データを自動的に削除します。これには、履歴、自動入力、ダウンロードが含まれます。タブは開いたままになります。}}</translation>
+<translation id="2125838419757773031">画面の領域を選択して検索</translation>
 <translation id="2126108037660393668">ダウンロードしたファイルの検証で不合格でした。</translation>
 <translation id="2135919691573380097">このサイトを報告する</translation>
 <translation id="2137162749895930932">翻訳画面を閉じる</translation>
@@ -106,24 +113,17 @@
 <translation id="8841019650931243995">Brave Origin - ネットワークにログイン - <ph name="PAGE_TITLE"/></translation>
 <translation id="2190166659037789668">更新確認エラー: <ph name="UPDATE_CHECK_ERROR"/>。</translation>
 <translation id="2058539073923004395">Brave からアカウントを削除</translation>
+<translation id="4022045673362955204">Brave アプリで、便利なショッピング ツールを外出先でも利用できます</translation>
 <translation id="5550942974310218641">iOS 版 Brave のセーフ ブラウジング保護強化機能により、外出先で安全に使用できます</translation>
 <translation id="6677253423995557759">危険なサイトのため、Brave で通知の権限を削除しました。</translation>
 <translation id="2236949375853147973">マイ アクティビティ</translation>
 <translation id="457168681575748148">すべてのデバイスでアドレスやその他の設定を使用するには、Brave にログインしてください。このアドレスは、ログイン後に Brave アカウントに保存されます。</translation>
 <translation id="5659384504794665581">パソコンを共有している場合、友だちや家族はそれぞれ Brave を自分専用のブラウザとして自分用の設定をして使うことができます。</translation>
+<translation id="2752319862668322390">Brave のスキル</translation>
 <translation id="2283803047247799269">画像検索でこのタブを検索</translation>
 <translation id="8984404842684436004">{NUM_TABS,plural, =1{ブラウザの動作を遅くしているタブを一時停止することをおすすめします}other{ブラウザの動作を遅くしているタブを一時停止することをおすすめします}}</translation>
 <translation id="2307973900865360088">Dock に追加</translation>
 <translation id="7810992039564280750">Brave に保存されている安全でないサイトのリストと URL を照合します。サイトがパスワードを不正に取得しようとしている場合や、ユーザーが安全でないファイルをダウンロードしようとした場合は、URL とページ コンテンツの一部をセーフ ブラウジングに送信することがあります。</translation>
-<translation id="5042718521573656164">この操作を行うと、次のようになります。
-          <ph name="LINE_BREAKS"/>
-           • Brave の設定と Brave のショートカットがリセットされます
-           <ph name="LINE_BREAK"/>
-           • 拡張機能が無効になります
-           <ph name="LINE_BREAK"/>
-           • Cookie や他の一時的なサイトデータが削除されます
-            <ph name="LINE_BREAKS"/>
-           ブックマーク、履歴、保存したパスワードへの影響はありません。</translation>
 <translation id="9095263438435683933">Android スマートフォンに番号を送信するには、両方のデバイスで Brave にログインしてください。</translation>
 <translation id="2356070529366658676">確認する</translation>
 <translation id="2359808026110333948">続行</translation>
@@ -135,6 +135,7 @@
 <translation id="1248225940185478633">このサイトを利用するには、Brave でカメラとマイクの使用を許可する必要があります</translation>
 <translation id="2403703063067034158">起動エラー: 現在、別のインスタンスのセットアップが実行中です。しばらくしてからもう一度お試しください。</translation>
 <translation id="5298352791080868905">他のアプリから Brave でリンクを開いたり、タスクバーから Brave にアクセスしたりできます</translation>
+<translation id="2600233721598267627">[要約] ボタンをクリックしてこのドキュメントを Gemini in Brave と共有すると、概要の確認や追加の質問ができます</translation>
 <translation id="2118275934191847461"><ph name="BEGIN_LINK"/>Brave のツール<ph name="END_LINK"/>を使って、自分で管理しながら安全にブラウジングできます</translation>
 <translation id="2451727308784734061">ショートカットを使用してパスワード マネージャーにすばやくアクセスできます。ショートカットはパソコンのホーム画面やアプリ ランチャーに移動できます。</translation>
 <translation id="6381750314821942592">Brave はまもなく終了します</translation>
@@ -147,6 +148,7 @@
 <translation id="2351700486811407088">Brave Origin Helper</translation>
 <translation id="2575822587468774919">画像検索で検索する範囲を選択</translation>
 <translation id="3830890663494219270">すべてのデバイスでパスワードやその他の設定を使用するには、Brave にログインしてください</translation>
+<translation id="6908148552215338695">スマートフォンで QR コードをスキャンして Brave をダウンロードし、Brave アカウントにログインします。</translation>
 <translation id="6252796827759111076">Brave を引き続き使用</translation>
 <translation id="259935314519650377">ダウンロードしたインストーラのキャッシュに失敗しました。エラー: <ph name="UNPACK_CACHING_ERROR_CODE"/>。</translation>
 <translation id="2620436844016719705">システム</translation>
@@ -167,6 +169,7 @@
 <translation id="2799223571221894425">再起動</translation>
 <translation id="5962774139606909656">あなたの Brave</translation>
 <translation id="2816462166102338036">画像検索でこの動画を検索する</translation>
+<translation id="1992849613617207128">iOS 版 Brave で、外出先でもカメラで商品を検索したり、値下げをトラッキングしたりできます。</translation>
 <translation id="2841525013647267359">原文の言語</translation>
 <translation id="2846251086934905009">インストール エラー: インストーラが完了しませんでした。インストールは中止されました。</translation>
 <translation id="777113543093865885">Brave から削除...</translation>
@@ -184,6 +187,7 @@
 <translation id="3003694935412297923">すべてのタスク</translation>
 <translation id="7611046016537686219">{count,plural, =1{Brave アカウントに一部のデータを保存して、すべてのデバイスで使用できるようにするには、Brave で本人確認を行う必要があります。今すぐログアウトすると、このデータ（1 個のアイテム）は削除されます。}other{Brave アカウントに一部のデータを保存して、すべてのデバイスで使用できるようにするには、Brave で本人確認を行う必要があります。今すぐログアウトすると、このデータ（{count} 個のアイテム）は削除されます。}}</translation>
 <translation id="4202995875619419215">Brave の新しいタブで <ph name="URL"/> を開きます。</translation>
+<translation id="1266825212217391702">スキルなどの AI イノベーションは Brave アカウントに保存され、Brave 同期とは別に管理されます</translation>
 <translation id="8880183781256147665">Brave に追加...</translation>
 <translation id="3038232873781883849">インストールの待機中...</translation>
 <translation id="3045032126857188731">翻訳先の言語: <ph name="LANGUAGE"/></translation>
@@ -191,6 +195,7 @@
 <translation id="4503085212612536713">その他の Brave プロフィール</translation>
 <translation id="2041039306630146369">拡張機能は、Brave をカスタマイズできるアドオンです。情報整理や日々のタスクの効率化など、拡張機能を使って Brave を自分仕様にすることができます。</translation>
 <translation id="7918740962659365265">障害レポートと<ph name="UMA_LINK"/>を Brave に自動送信して Brave の機能向上に役立てる</translation>
+<translation id="6828757829023033545">Brave アプリで、Brave の安全機能を外出先でも利用できます</translation>
 <translation id="2332543193474246254">{NUM_DEVICES,plural, =0{1 つ以上の Brave 拡張機能が 1 台の USB デバイスにアクセスしていました}=1{1 つ以上の Brave 拡張機能が 1 台の USB デバイスにアクセスしています}other{1 つ以上の Brave 拡張機能が # 台の USB デバイスにアクセスしています}}</translation>
 <translation id="3700405816184340252">Brave の履歴</translation>
 <translation id="7365690458036015383">インストーラ アーカイブを解凍できませんでした。Brave をダウンロードし直してください。</translation>
@@ -212,6 +217,7 @@
 <translation id="2585240446624043880">Brave はこのデータ ディレクトリへの読み書きを実行できません:
 
 <ph name="USER_DATA_DIRECTORY"/></translation>
+<translation id="8414435293910785169">iOS 版 Brave で、お気に入りの Brave AI ツールを外出先でも利用できます。</translation>
 <translation id="3286538390144397061">今すぐ再起動</translation>
 <translation id="2339258256897053758">Brave API キーが欠落しています。Brave の一部の機能は無効になります。</translation>
 <translation id="8926637909431618259">Brave を閉じた際にバックグラウンド アプリの処理を続行する</translation>
@@ -232,6 +238,7 @@
 <translation id="599091950194451698">ウィンドウを共有するには、[システム設定] で Brave に画面の録画を許可してください。</translation>
 <translation id="1447863765638888625"><ph name="EXISTING_USER"/>さんがすでにログインしています。ブラウジング環境を分ける場合は、自分用のプロファイルで <ph name="USER_EMAIL_ADDRESS"/> として Brave にログインしてください。</translation>
 <translation id="7624624622436403494">モバイル デバイスに Brave ブラウザをダウンロードするための QR コード</translation>
+<translation id="8478154085901340543">リマインダー: Brave の優れた安全機能をポケットに</translation>
 <translation id="8981774130895723211">画面を共有するには、[システム設定] で Brave に画面の録画を許可してください。</translation>
 <translation id="2981961446160697133">保護強化機能により、Brave で認識できないサイトでは JavaScript の最適化が無効になります</translation>
 <translation id="3597003331831379823">昇格された権限で設定を実行できませんでした。<ph name="METAINSTALLER_ERROR"/></translation>
@@ -269,6 +276,7 @@
 <translation id="1311808042904310985">Brave for Testing について(&amp;G)</translation>
 <translation id="1152920704813762236">Chrome OS について</translation>
 <translation id="8282895427217902177">ユーザーがサイトにアクセスすると、Brave はユーザーの IP アドレスを隠すプライバシー サーバーを経由して、URL の一部を難読化してから <ph name="BEGIN_LINK"/>Brave セーフ ブラウジング<ph name="END_LINK"/>に送信します。サイトで不審な動作が検出された場合は、URL 全体とページ コンテンツの一部も送信されます。</translation>
+<translation id="4016217212818346953">パスワード マネージャーで安全に</translation>
 <translation id="3703994572283698466">Chrome OS は、<ph name="BEGIN_LINK_LINUX_OSS"/>Linux 開発環境<ph name="END_LINK_LINUX_OSS"/>と同様に、追加の<ph name="BEGIN_LINK_CROS_OSS"/>オープンソース ソフトウェア<ph name="END_LINK_CROS_OSS"/>によって実現しました。</translation>
 <translation id="4022972681110646219">画面を翻訳</translation>
 <translation id="4023601594785368013">元の言語: <ph name="LANGUAGE"/></translation>
@@ -350,11 +358,14 @@
 <translation id="7406627712452599344">ゲスト ユーザーは、記録を残さずに Brave を使用できます。</translation>
 <translation id="844471735881341044">Brave のアカウント設定</translation>
 <translation id="5952898964075639679">Brave に自分を追加</translation>
+<translation id="504699503110800016">オーバーフロー メニューを開きます</translation>
+<translation id="4877750182157975795"><ph name="DEVICE_TYPE"/> の Brave で、Brave のお気に入りすべてにアクセスできます</translation>
 <translation id="1204184037023366446">Brave がハンド トラッキングの許可を求めています</translation>
 <translation id="5406591571925937375">最近アクセスしていないため、Brave で <ph name="PERMISSION_1"/>、<ph name="PERMISSION_2"/>、<ph name="PERMISSION_3"/> の権限を削除しました。</translation>
 <translation id="5174969993834422967">通知はデフォルトでブロックされています。このサイトの通知を表示するには、ロケーション バーの右上にある通知アイコンをクリックしてください。</translation>
 <translation id="5174983315706567306">ディスクの空き容量が不足しています。</translation>
 <translation id="8157129267754368853">Brave アカウントの再認証が必要です</translation>
+<translation id="758175943316138760">iOS 版 Brave で、中断したところから再開できます。</translation>
 <translation id="6234515504547364178">Brave からのログアウト</translation>
 <translation id="5234764350956374838">閉じる</translation>
 <translation id="5254739261293693943">この動画について質問する</translation>
@@ -363,6 +374,7 @@
 <translation id="5286907366254680517">検出しました</translation>
 <translation id="7264453786974905915">Brave アプリを入手</translation>
 <translation id="6944930779012811739">Brave Updater 内部サービス</translation>
+<translation id="6214255602211289863">Brave の他の Gemini 機能と組み合わせて使用できます</translation>
 <translation id="5346389065299425353">複数のタブ、ファイル、ツールを追加し、対象を掘り下げて検索します</translation>
 <translation id="4672413209491548018">Gemini in Brave でこのドキュメントの概要をすばやく把握し、質問することができます</translation>
 <translation id="7573068992266397941">安全に関する推奨事項をご確認ください</translation>
@@ -384,6 +396,7 @@
 <translation id="696826782632239602">このサイトで現在地を共有するには、Brave で位置情報の使用を許可する必要があります</translation>
 <translation id="1744365871163268756">Brave は最新のシステム アップデートをインストールしています。しばらくお待ちください。</translation>
 <translation id="3861679447659630159">Brave でパスワードを編集しようとしています。続行するには、Windows のパスワードを入力してください。</translation>
+<translation id="8535558155562097643">Brave で、Brave ドライブや YouTube などのお気に入りのアプリを外出先でもシームレスに利用できます。</translation>
 <translation id="5524890928877629608">検索範囲の左上隅: 左 <ph name="LEFT"/>%、上 <ph name="TOP"/>%</translation>
 <translation id="232381795826373334">Brave で PDF を開く</translation>
 <translation id="5536164441519929134">このタブについて<ph name="LINE_BREAK"/>質問する</translation>
@@ -421,11 +434,13 @@
 <translation id="5101892358689285100">Brave を自分好みに</translation>
 <translation id="5960071705175224773">不明なアプリによって設定が変更されました</translation>
 <translation id="5968400720580217226">AI モード</translation>
+<translation id="5977420883993828287">固定しました。ツールバーからコンテキスト タスクを使用できます</translation>
 <translation id="4357808717322635817">{COUNT,plural, =1{1 分間使用しなかった場合、組織は Brave を自動的に終了します。}other{# 分間使用しなかった場合、組織は Brave を自動的に終了します。}}</translation>
 <translation id="3598551856834560515">同期を開始するには、Brave を更新します</translation>
 <translation id="6003112304606738118">ダウンロードしています... 残り <ph name="HOURS"/> 時間です</translation>
 <translation id="6009821354356307391">もっと聞く</translation>
 <translation id="6040143037577758943">閉じる</translation>
+<translation id="9138151530563359301"><ph name="DEVICE_TYPE"/> の Brave アプリで、オンライン ショッピングをさらに便利に利用できます</translation>
 <translation id="700488072601322385">データを保護するため、最近アクセスしていないサイトから権限を自動で削除します。通知は停止されません。</translation>
 <translation id="9071554113102421877">Brave で開く(&amp;O)</translation>
 <translation id="6069027071882229820">画像としてコピー</translation>
@@ -451,6 +466,7 @@
 <translation id="7651600795135059130">Brave に保存されている安全でないサイトのリストと URL を照合します</translation>
 <translation id="5019879183386042809">Brave を既定のブラウザにする</translation>
 <translation id="6248988683584659830">設定項目を検索</translation>
+<translation id="1481716298194191711">スマートフォンの Brave アプリで、Brave の優れた安全機能を外出先でも利用できます</translation>
 <translation id="7445061995866044926">Brave からログアウトしますか？</translation>
 <translation id="4659866260728515512">これらのタブでは追加のリソースが使用されています。パフォーマンスを改善するには、Brave でこれらのタブを非アクティブにしてください。</translation>
 <translation id="6806912298071949921">Brave プロフィールをカスタマイズ</translation>
@@ -489,6 +505,7 @@
 <translation id="3556601443414636547">この設定の変更内容は、Brave を再起動すると適用されます。</translation>
 <translation id="3396870972301571614">Brave メインメニューの [拡張機能] をクリックして拡張機能を管理できます。</translation>
 <translation id="2535436634051789953">別の Brave プロフィールに切り替えて、そのプロフィールのパスワードを表示できます</translation>
+<translation id="6376474391582629025">Brave アプリで、優れた AI ツールを外出先でも利用できます</translation>
 <translation id="2312399718665761438">スペルミスを修正するために、テキスト欄に入力したテキストが Brave から Brave に送信されます</translation>
 <translation id="3507835409099344374">Brave の通知設定に移動</translation>
 <translation id="6600016381025017075">このページの内容を検索</translation>
@@ -521,8 +538,20 @@
 <translation id="3028928628792374067">Brave で「<ph name="EXTENSION_NAME"/>」に不正なソフトウェアが含まれていることが検出されました</translation>
 <translation id="6877155553248388166">検索範囲の右下隅: 右 <ph name="RIGHT"/>%、下 <ph name="BOTTOM"/>%</translation>
 <translation id="6896758677409633944">コピー</translation>
+<translation id="6898028264630240901">コンテキスト タスクを固定して、ブラウジング中に質問できます</translation>
 <translation id="862687584320433626">Brave を既定のブラウザに設定して、タスクバーに固定する</translation>
 <translation id="1991562568473125499">Brave プロフィールを管理(&amp;M)</translation>
+<translation id="6995921847081718550">この操作を行うと、次のようになります。
+          <ph name="LINE_BREAKS"/>
+            • 起動ページ、新しいタブページ、検索エンジン、固定タブがリセットされます
+            <ph name="LINE_BREAK"/>
+            • 拡張機能が無効になります
+            <ph name="LINE_BREAK"/>
+            • Cookie や他の一時的なサイトデータが削除されます
+            <ph name="LINE_BREAK"/>
+            • Brave のショートカットがリセットされます
+            <ph name="LINE_BREAKS"/>
+            ブックマーク、履歴、保存したパスワードへの影響はありません。</translation>
 <translation id="6934579572334859869">画像検索でこの画像について質問する</translation>
 <translation id="5529781826378237601">Brave のブックマーク数の上限（<ph name="BOOKMARK_LIMIT"/> 個）に達したため、Brave アカウントにまだ保存されていないブックマークがあります。
 
@@ -537,6 +566,8 @@
 <translation id="7047386856539490735">この結果は役に立ちましたか？</translation>
 <translation id="1705567146636171298">Brave を更新</translation>
 <translation id="5499063270485366718">画像に有効な説明が設定されていない場合に、Brave で説明を自動的に生成できるよう Brave に画像が送信されます。</translation>
+<translation id="1196733835766994012"><ph name="DEVICE_TYPE"/> の Brave アプリで AI を活用できます</translation>
+<translation id="7166289504510860270">スマートフォンの Brave アプリで、パスワードやタブなどを外出先でも使用できます</translation>
 <translation id="5966368554860795750">Brave for Testing をカスタマイズ</translation>
 <translation id="792838367208896130">メッセージ、ドキュメント、他のアプリのリンクをクリックしたときに、常に Brave で開くことができます</translation>
 <translation id="375314543563594498">Brave から <ph name="EXTENSION_NAME"/> を削除</translation>
@@ -545,6 +576,7 @@
 <translation id="1197672524850678392">Brave を起動できませんでした。もう一度お試しください。</translation>
 <translation id="3625983487600668413">Brave を Dock に追加すると、いつでもすばやくアクセスできます</translation>
 <translation id="5755581833598928580">メッセージ、ドキュメント、他のアプリのリンクをクリックしたときに、常に Brave で開くよう設定できます</translation>
+<translation id="7216228761061470870">パソコンで画像検索を使用すると、ページのタイトル、URL、コンテンツ（PDF を含む）がサーバーに送信されます</translation>
 <translation id="5516268345616100622">タスク マネージャ - Brave</translation>
 <translation id="1871621397473741084">すぐにブラウジングを開始: Windows の起動時に Brave を自動で起動できるようになりました。</translation>
 <translation id="7274695763216404502">固定しました。ツールバーから画像検索を使用できます</translation>
@@ -562,7 +594,6 @@
 <translation id="7352651011704765696">問題が発生しました</translation>
 <translation id="6085660187823915017">今後、Brave のアップデートを受信するには、macOS 13 以降が必要となります。このコンピュータでは macOS 12 が実行されています。</translation>
 <translation id="2865744782251083875">最近アクセスしていないため、Brave で <ph name="PERMISSION_1"/> と <ph name="PERMISSION_2"/> の権限を削除しました。</translation>
-<translation id="4631170166710903214">この拡張機能は現在サポートされていません。代わりに削除することをおすすめします。</translation>
 <translation id="4104934885375476361">Brave を既定のブラウザに設定しました</translation>
 <translation id="7951152294775418909">前回開いていたページを開く: Brave で再起動するたびにタブが復元されます。この機能をオフにするには、</translation>
 <translation id="3191314862567596053">Brave にパスワードをインポート</translation>
@@ -576,6 +607,7 @@
 <translation id="5296583608321648908">今後、Brave のアップデートを受信するには、Windows 10 以降が必要となります。このパソコンでは Windows 7 が実行されています。</translation>
 <translation id="3962395975456095331">Brave を再起動しますか？</translation>
 <translation id="2619516027171717873">実行中の Brave と同じバージョンをインストールすることはできません。Brave を閉じてからもう一度お試しください。</translation>
+<translation id="6607863494375614497">ヒント: Brave の優れた機能をいつでも手元に</translation>
 <translation id="5337027666828618338">ほとんどの場合、サイトは適切に機能します。Brave のウィンドウをすべて閉じると、ほとんどのサイトからログアウトします。ただし Brave にログインしている場合、Brave アカウントからはログアウトしません。</translation>
 <translation id="3186363903915641692">{0,plural, =1{Brave は 1 分後に再起動されます}other{Brave は # 分後に再起動されます}}</translation>
 <translation id="552342471964912391">データを保護するため、最近アクセスしていないサイトから権限を自動で削除します。</translation>
@@ -591,6 +623,7 @@
 <translation id="3343095737966473035">Brave はデフォルトのブラウザとして設定されていません</translation>
 <translation id="5477319665405831211">同期してカスタマイズした Brave をどのデバイスでも使用できます</translation>
 <translation id="2339273275658335597">Brave の更新</translation>
+<translation id="4870714623113535320">Brave で作業を保護</translation>
 <translation id="7716950018788545737">タスクを終了しました。</translation>
 <translation id="77283119132245232"><ph name="BROWSER_NAME"/> のシステム トレース サービスを提供します。このサービスを無効にした場合、ブラウザによって作成されるパフォーマンス トレースに、コンテキスト切り替えやスレッドの準備完了などのシステム全体のイベントは含められません。</translation>
 <translation id="4784414698887946907">このデバイスから閲覧データを削除します。後でデータを取得するには、<ph name="USER_EMAIL"/> として Brave にログインしてください。</translation>
@@ -614,19 +647,23 @@
 <translation id="6396151137840491551">可能な場合に安全でない接続を HTTPS に自動的にアップグレードします</translation>
 <translation id="2925193881330501265">Brave に <ph name="USER_EMAIL_ADDRESS"/> としてログインしていました。再度ログインするには同じアカウントを使用してください。</translation>
 <translation id="6915252145142862992">この Brave はセカンダリ インストールのため、既定のブラウザには設定できません。</translation>
+<translation id="7766756101194440006"><ph name="DEVICE_TYPE"/> の Brave アプリで Brave を最大限に活用できます</translation>
 <translation id="8004582292198964060">ブラウザ</translation>
 <translation id="8010081455002666927">自動検出</translation>
 <translation id="7685904775439037072">Brave にアクセスを許可すると、ウェブサイトからアクセスをリクエストできるようになります。</translation>
 <translation id="3230755314472063687">Brave をタスクバーに固定すると、いつでもすばやくアクセスできます</translation>
 <translation id="80471789339884597">インストールいただきありがとうございます。<ph name="BUNDLE_NAME"/> を使用するにはすべてのブラウザを再起動してください。</translation>
 <translation id="8054112667659782652">画像検索のショートカットを常に表示する</translation>
+<translation id="8069447462453318634">[ツールバーに固定] を選択します</translation>
 <translation id="6175141682081019059">Brave のアプリ向けのバックグラウンドでの実行を無効にする</translation>
 <translation id="80790299200510644">画像検索</translation>
 <translation id="8086881907087796310">パソコンがハードウェアの最小要件を満たしていないため、インストールできませんでした。</translation>
 <translation id="5528402763209637578"><ph name="PAGE_TITLE"/> - Brave Origin for Testing</translation>
 <translation id="2061155704815580583">このサイトを利用するには、Brave で位置情報の使用を許可する必要があります</translation>
 <translation id="3576319845915562805">次回 <ph name="DEVICE_TYPE"/> で Brave を開いたときに、価格トラッキングのアラートを有効にするよう促すメッセージが表示されます。</translation>
+<translation id="3728025339793417202">スマートフォンの Brave アプリで、気になるアイテムの値下げアラートを受け取ることができます</translation>
 <translation id="8118331347066725040">Brave レンズでの検索に関するフィードバックを送信する</translation>
+<translation id="4449306641116952869">Brave を自分好みに</translation>
 <translation id="5334309298019785904">ご使用のドメインでは同期を利用できないため、Chrome OS はデータを同期できませんでした。</translation>
 <translation id="813913629614996137">初期化しています...</translation>
 <translation id="5775051495647233404">Gemini in Brave を開くときに、キーボード ショートカットを使用します。</translation>
@@ -647,6 +684,7 @@
 <translation id="6098476632210317894"><ph name="TIMEOUT_DURATION"/> 使用しなかったため、Brave は組織によって終了されます。</translation>
 <translation id="8321888067342493336">画像として保存</translation>
 <translation id="2591326305549412656">Brave の前回の使用者は <ph name="USER_EMAIL_ADDRESS"/> です</translation>
+<translation id="6771602601399828881">Brave でスキルを有効にする</translation>
 <translation id="5592122595094519401">Brave アカウント「<ph name="ACCOUNT_EMAIL"/>」で Brave のデータを引き続き使用するには、Brave を更新してください</translation>
 <translation id="2569754604093464025">今後、Brave のアップデートを受信するには、Windows 10 以降が必要となります。このパソコンでは Windows 8 が実行されています。</translation>
 <translation id="8362914115861174987">訳文の言語</translation>
@@ -668,6 +706,7 @@
 <translation id="6080203201796279095">Brave を既定のブラウザとしてお選びいただきありがとうございます。</translation>
 <translation id="871233388178581868">パスワードを保存すると、Brave による確認が可能になります</translation>
 <translation id="8525579356836940628">インストールが停止しました</translation>
+<translation id="909104880763805392"><ph name="DEVICE_TYPE"/> の Brave アプリで、パスワードやタブなどを外出先でも使用できます</translation>
 <translation id="3667461919057407535">一般に報告されているデータ侵害でパスワードが検出された場合、警告が表示されます</translation>
 <translation id="8555465886620020932">サービスエラー: <ph name="SERVICE_ERROR"/>。</translation>
 <translation id="7998982887712810347">Brave の一部の機能と拡張機能にはショートカットが用意されており、有効にするよう選択できます。</translation>
@@ -687,6 +726,7 @@
 <translation id="878572486461146056">インストール エラー: ネットワーク管理者により、インストールを許可しないというグループ ポリシーが適用されています: <ph name="INSTALL_ERROR"/></translation>
 <translation id="4831743161813926460">このサイトを利用するには、Brave でカメラとマイクの使用を許可する必要があります</translation>
 <translation id="8813277370772331957">後で通知</translation>
+<translation id="1588296410638341457">このドキュメントを Gemini in Brave と共有すると、概要の確認や追加の質問ができます</translation>
 <translation id="64216977793816291">Brave にログインしますか？</translation>
 <translation id="7447364954121496869">Brave を既定のブラウザに設定してタスクバーに固定する</translation>
 <translation id="8826492472752484139">[パスワード マネージャー] をクリックする</translation>
@@ -699,13 +739,24 @@
 <translation id="8285294305439559616">Brave でパスワードを表示しようとしています。続行するには、Windows のパスワードを入力してください。</translation>
 <translation id="4684884244620579559">Brave は既定のブラウザではなくなりました。Brave を既定のブラウザにしますか？</translation>
 <translation id="6389268239133412586">Brave を更新できません</translation>
+<translation id="8944232836376404813">この操作を行うと、次のようになります。
+          <ph name="LINE_BREAKS"/>
+            • 起動ページ、新しいタブページ、検索エンジン、固定タブがリセットされます
+            <ph name="LINE_BREAK"/>
+            • 拡張機能が無効になります
+            <ph name="LINE_BREAK"/>
+            • Cookie や他の一時的なサイトデータが削除されます
+            <ph name="LINE_BREAKS"/>
+            ブックマーク、履歴、保存したパスワードへの影響はありません。</translation>
 <translation id="7731184591599776500">Brave Enterprise ロゴ</translation>
+<translation id="2001474182910589370"><ph name="DEVICE_TYPE"/> の Brave アプリで、Brave の安全機能を外出先でも利用できます</translation>
 <translation id="6500340165622970282">プロファイルを開く際にエラーが発生したため、Brave を起動できません。Brave を再起動してみてください。</translation>
 <translation id="3424657754843264466">Brave プロファイルを管理</translation>
 <translation id="9018218886431812662">インストールが完了しました</translation>
 <translation id="82609232232243542">Brave にログイン</translation>
 <translation id="7055223246119657449">このダウンロードは Brave でブロックされました。アーカイブ ファイルに他のファイルが含まれており、マルウェアが隠されている可能性があります</translation>
 <translation id="8341362078156319636">パスワード、ブックマーク、履歴をデバイス間で完全に同期できます。既定のブラウザを Brave に変更すると、お馴染みの機能を簡単に利用できるようになります。Brave はタスクバーに固定され、すばやくアクセスできます。</translation>
+<translation id="8965179855019347124">スマートフォンの Brave アプリで Brave の優れた AI ツールを使用できます</translation>
 <translation id="9049928023195059068">他の Brave サービスにログインしたときに Brave にログインする</translation>
 <translation id="4561046754724442504">Brave は自動的に終了しました</translation>
 <translation id="5173820533850252773">Brave は古いバージョンです</translation>
@@ -722,6 +773,7 @@
 <translation id="538146372587193686">Brave Origin（mDNS インバウンド）</translation>
 <translation id="296137235951584143">Brave を独自にカスタマイズ</translation>
 <translation id="7977787072794666032">Windows XP と Windows Vista はサポートされなくなったため、Brave は正常に機能しない可能性があります</translation>
+<translation id="8462937515915443472">Brave で、Brave の優れた安全機能を外出先でも利用できます。</translation>
 <translation id="945522503751344254">フィードバックを送信</translation>
 <translation id="4484434718272972655">Brave はどなたが使用しますか？</translation>
 <translation id="7173394303099002355">Brave の最高のセキュリティ強度で保護</translation>

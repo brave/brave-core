@@ -775,9 +775,7 @@
 <translation id="5486744676117070166">ບໍ່ສາມາດໄດ້ຄ່າ nonce ຕໍ່າແບບຕໍ່ໄປ</translation>
 <translation id="6180576227145734714">ຂໍ້ມູນທຸລະກຳ 'to' ຕ້ອງແມ່ນທີ່ຢູ່ທີ່ຖືກຕ້ອງເມື່ອຖືກລະບຸ</translation>
 <translation id="6688162556547723415">ວິທີການກັບ/ຫຼືບັນຊີທີ່ຜູ້ໃຊ້ດວນສ່ວນບໍ່ໄດ້ຮັບອານຸຍາດ</translation>
-<translation id="8767749833522980474">ຄຣິບໂຕ</translation>
 <translation id="6122742277607781713">ພັອກຟົນໂລ</translation>
-<translation id="7020503656406658141">ລາຄາ</translation>
 <translation id="3586775666459823714">ເອນເອຟທີ</translation>
 <translation id="1987317783729300807">ບັນຊີ</translation>
 <translation id="3567988240819868195">ຕະຫລາດ</translation>
@@ -1804,7 +1802,6 @@
 <translation id="803703704549420287">ລ້າງຕົວກອງ</translation>
 <translation id="1472675084647422956">ສະແດງເພີ່ມເຕີມ</translation>
 <translation id="4522570452068850558">ລາຍລະອຽດ</translation>
-<translation id="4583937519241190398">ເຈົ້າໄດ້ຮັບຢ່າງອົນຸຍາດໂດຍ DaapRadar</translation>
 <translation id="8713438253026855351">ປ່ຽນໄປບັນຊີທີ່ມີການປ້ອງກັນ</translation>
 <translation id="3526789880090101085">ປ່ອງກັນບັນຊີ</translation>
 <translation id="3155166394760577549">ເປີດໃຊ້ການວ່າງເປົ່າເພື່ອສົ່ງໃນ</translation>
@@ -1937,6 +1934,7 @@
 <translation id="6261915643960475695">ທຸລະກິດ</translation>
 <translation id="8265589281845759879">ລົດ</translation>
 <translation id="7726519849288907308">ຊາວບັນເທິງ</translation>
+<translation id="8767749833522980474">ຄຣິບໂຕ</translation>
 <translation id="7577010593836079522">ວັດທະນະທຳ</translation>
 <translation id="6807791860691150411">ການສືກສາ</translation>
 <translation id="3706423975342040244">ຄວາມບັນເທິງ</translation>
@@ -2153,6 +2151,7 @@
 <translation id="2367972762794486313">Show apps</translation>
 <translation id="3142853026316054951">ສະຫຼັບໂໝດໂຟກັສ</translation>
 <translation id="3468387898712904997">ອີເມວອະລາການໃຫມ່</translation>
+<translation id="4711475997833555304">ສ້າງອີເມວແບບສຸ່ມທີ່ສົ່ງຕໍ່ໄປຫາກ່ອງຈົດໝາຍຂອງທ່ານ.</translation>
 <translation id="2796584247246518451">ກ່ອງເກັບຊົ່ວຄາວໃໝ່</translation>
 <translation id="8591883849678260674">View original</translation>
 <translation id="1969654232209826429">min. read</translation>
@@ -2212,8 +2211,10 @@
 <translation id="8743383817154663379">ມີບາງຢ່າງຕົວຍັງບໍ່ຖະລຸດ. ກະລຸນາລອງໃໝ່ໃນພາຍຫຼັງ.</translation>
 <translation id="2712650703044366764">ລຸ່ນນີ້ມີບໍລິການວິທີບໍ່ຖືກຕ້ອງ. ກະລຸນາກວດສອບການຕັ້ງຄ່າຂອງທ່ານແລະລອງໃໝ່.</translation>
 <translation id="7092656392206649236">ມີບາງຢ່າງຜິດພາດໃນຂະນະທີ່ສື່ສານກັບ Leo. ກະລຸນາລອງໃໝ່ອີກຄັ້ງ.</translation>
+<translation id="4539536233699928121">ມີບາງຢ່າງຜິດພາດໃນຂະນະທີ່ສື່ສານກັບ NEAR. ກະລຸນາລອງໃໝ່ອີກຄັ້ງ.</translation>
 <translation id="3552709750512842961">ລະຫັດສະຖານະ: <ph name="STATUS_CODE"/>, ລະຫັດຂໍ້ຜິດພາດ: <ph name="ERROR_CODE"/></translation>
 <translation id="9215978379284690246">ລະຫັດສະຖານະ: <ph name="STATUS_CODE"/></translation>
+<translation id="5820497878628354073">ລະຫັດສະຖານະ: <ph name="STATUS_CODE"/>, ລະຫັດສະຖານະພາຍໃນ: <ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">ທ່ານບໍ່ສາມາດເອົາໄດ້ນີ້ເພາະຖືກຈຳກັດວຽກວານພິເສດ. ກະລຸນາລອງໃໝ່ເພື່ອບົດຂັ້ນຕອນໃໜ່.</translation>
 <translation id="3683964919745779766">ທ່ານໄດ້ໃຊ້ສິດທີ່ຈະຢຸດລາຍການນີ້ເພື່ອແບບໜຶ່ງໃນການເຮັດວຽກນຳໃນໂມເດລນີ້ ຫຼືໃຊ້ໝູ່ໃນການແນະນຳຂອງທ່ານ. ກະລຸນາລອງໃໝ່ພາຍຫຼັງ.</translation>
 <translation id="7692501701960747469">ກະແບບຂອງ API ສຳລັບໂມເດລນີ້ບໍ່ຖືກຕ້ອງ. ກະລຸນາກວດຄືນການຕັ້ງຄ່າຂອງທ່ານແລະລອງໃໝ່.</translation>
@@ -2387,6 +2388,9 @@
 <translation id="9051226419897869406">ສົນທະນາສວນຕົວກັບ Leo Brave</translation>
 <translation id="2414904697165579184">ປັບຮູບແບບຄໍາຕອບທີ່ອີງຢູ່ເນື້ອຫາຂອງແຕ່ລະແທັບ</translation>
 <translation id="8258324391302611485">ເນື້ອຫາຂອງໜ້ານີ້ຈະຖືກສົ່ງໄປຫາ Leo ພ້ອມກັບຂໍ້ຄວາມຂອງທ່ານ.</translation>
+<translation id="443008484043213881">ເຄື່ອງມື</translation>
+<translation id="4343623396828510727">ເວັບໄຊເຫຼົ່ານີ້ເປີດເຜີຍເຄື່ອງມືທີ່ Leo ສາມາດໃຊ້ເພື່ອສົ່ງຂໍ້ມູນໄປຫາ ແລະ ຈາກເວັບໄຊນີ້. ຢ່າແນບ ຫຼື ອະນຸມັດເຄື່ອງມືເຫຼົ່ານີ້ ຖ້າການສົນທະນານີ້ມີຂໍ້ມູນທີ່ທ່ານບໍ່ຕ້ອງການໃຫ້ເວັບໄຊນີ້ເຫັນ.</translation>
+<translation id="5021823940147712387">ຖອນເຄື່ອງມືອອກ</translation>
 <translation id="318819763888864209">ການສະໝັກໃຊ້ງານທັງໝົດຈະຕໍ່ອາຍຸອັດຕະໂນມັດແຕ່ທ່ານສາມາດຍົກເລີກໄດ້ຕະຫຼອດເວລາກ່ອນຮອດຮອບຖັດໄປ.</translation>
 <translation id="5091223967610958">ແຊເຫມົ້ານາມຂອງເວັບທີ່ທ່ານຢູ່ຍູ່ (<ph name="HOST_NAME"/>) ເພື່ອຊ່ວຍເຮັດໃຫ້ Leo ເປັນຫມູ່.</translation>
 <translation id="8732450785281947197">Leo AI tools</translation>
@@ -2465,6 +2469,9 @@
 <translation id="7918928051723770926">ສຳເລັດໜ້າວຽກແລ້ວ</translation>
 <translation id="2113810663179257944">ການປະຕິບັດລະຫັດ</translation>
 <translation id="4838375634693651776">ກຳລັງປະຕິບັດລະຫັດໃນ sandbox ເພື່ອຊ່ວຍກັບ query ຂອງທ່ານ</translation>
+<translation id="6990975553143971265">ກຳລັງຄົ້ນຫາປະຫວັດບຣາວເຊີຂອງທ່ານສຳລັບ "<ph name="QUERY"/>"</translation>
+<translation id="8302511726757276645">ກຳລັງຄົ້ນຫາປະຫວັດບຣາວເຊີຂອງທ່ານ</translation>
+<translation id="8410699755320690690">Brave AI ຕ້ອງການຄົ້ນຫາປະຫວັດການທ່ອງເວັບຂອງທ່ານ. ການຄົ້ນຫາຈະດຳເນີນການເທິງອຸປະກອນຂອງທ່ານ, ດັ່ງນັ້ນປະຫວັດເຕັມຮູບແບບຂອງທ່ານຈະບໍ່ຖືກສົ່ງໄປໃສ. ພຽງແຕ່ຫົວຂໍ້, URLs ແລະ ຂໍ້ຄວາມທີ່ຖືກຈັດດັດຊະນີຂອງໜ້າທີ່ກົງກັນເທົ່ານັ້ນທີ່ຈະຖືກສົ່ງໄປຫາ Brave AI ເປັນສ່ວນໜຶ່ງຂອງການສົນທະນານີ້.</translation>
 <translation id="4379566111233326721">ລະຫັດ:</translation>
 <translation id="3542130965673205258">ເອົ້າພຸດ:</translation>
 <translation id="6911817209337314910">ກຳລັງສ້າງ options ບາງຢ່າງໃຫ້ທ່ານເລືອກ</translation>
@@ -2674,6 +2681,21 @@
 <translation id="7586067492365979844">Brave Shields ມີໂຮມທີ່ໃຫມ່ແລະການອອກແບບ. ມັນກ່ືພົວພັນກັບຂໍ້ມູນຂອງໄຊທ໌ສໍາລັບປະສົບການຫນຶ່ງຫຼຸມ.</translation>
 <translation id="9114542678887529043">Brave Shields ມີໂຮມທີ່ໃຫມ່ແລະການອອກແບບ. ເຂົ້າເຖິງໄດ້ໂດຍການຄລິກໄອຄອນໄຊທ໌ໃນແຖບທີ່ຢູ່.</translation>
 <translation id="4242533952199664413">ເປີດຕັ້ງຄ່າ</translation>
+<translation id="3616113530831147358">ສຽງ</translation>
+<translation id="7972837668077967426">Canvas</translation>
+<translation id="2182250753201267390">ຄວາມຈຳຂອງອຸປະກອນ</translation>
+<translation id="1217374757325197995">Event Source Pool</translation>
+<translation id="1823768272150895732">ຟອນ</translation>
+<translation id="436315497893815819">Hardware Concurrency</translation>
+<translation id="7846634333498149051">ແປ້ນພິມ</translation>
+<translation id="5302048478445481009">ພາສາ</translation>
+<translation id="7986250835989845763">ອຸປະກອນມີເດຍ</translation>
+<translation id="4267171000817377500">Plugins</translation>
+<translation id="3441653493275994384">ໜ້າຈໍ</translation>
+<translation id="1772612984983840854">Speech Synthesis</translation>
+<translation id="1167475333911019229">ໝາຍເລກຊີຣຽວອຸປະກອນ Usb</translation>
+<translation id="6897140037006041989">User Agent</translation>
+<translation id="6433005682384591812">Web Sockets Pool</translation>
 <translation id="6294662480095808915">ຄວາມເປັນສ່ວນຕົວ.ເຕັມລະອຽດ.</translation>
 <translation id="4366423156486478559">ໄດ້ຮັບການປົກປ້ອງຂອງ Brave ໃນທຸກລິ້ງທີ່ເຈົ້າຄິກ.ເພີ່ມ Brave ເປັນຕ້ນຕໍ່ແລະເຂົ້າເບິ່ງ. ໂຄສົດຄົ້ນ.</translation>
 <translation id="3830912418080848377">ແປຮູບແບບການຕັ້ງຄ່າ</translation>
@@ -2710,7 +2732,6 @@
 <translation id="6821966107067356137">ເພີ່ມແຫຼ່ງອາຫານ RSS</translation>
 <translation id="2478076885740497414">ຕິດຕັ້ງແອັບ</translation>
 <translation id="8293206222192510085">ເພີ່ມບຸກມາກ</translation>
-<translation id="1010029336854254368">ແບ່ງປະກອບ</translation>
 <translation id="7758460733045216901">ປຸ່ມບັນດາບາດ</translation>
 <translation id="958268166261124668">Brave VPN: ເຊື່ອມໂດຍສຳເລັດ</translation>
 <translation id="6021669293402055982">Brave VPN: ບໍ່ເຊື່ອມ</translation>
@@ -2822,17 +2843,31 @@
 <translation id="5816720995022674532">Origin ຟຣີທີ່ຈະໃຊ້ໃນອຸປະກອນ Linux, ແຕ່ຍັງ <ph name="BEGIN_LINK"/>ສາມາດຊື້ໄດ້<ph name="END_LINK"/> ຖ້າທ່ານຕ້ອງການສະໜັບສະໜູນ Brave ເປັນທຸລະກິດ. ການຊື້ອາດຈະປົດລັອກຄວາມສາມາດໃນການໃຊ້ Origin ໃນອຸປະກອນ Android, iOS, macOS, ແລະ Windows.</translation>
 <translation id="3065220545261045367">ສະໜັບສະໜູນ Brave ໂດຍການຊື້ Origin</translation>
 <translation id="2069499076031488636">ດຳເນີນການກັບ Origin ຟຣີໃນ Linux</translation>
+<translation id="6820590295368504396">ບໍ່ສາມາດເຊື່ອມຕໍ່ SKU service</translation>
+<translation id="2525146368601152300">ລະຫັດການຊື້ວ່າງເປົ່າ</translation>
+<translation id="7858444547014304753">ລະຫັດການຊື້ບໍ່ຖືກຕ້ອງ</translation>
+<translation id="2016076837307423164">ບໍ່ສາມາດດຶງຂໍ້ມູນຮັບຮອງ</translation>
+<translation id="3890481923176188801">ບໍ່ພົບການຊື້</translation>
 <translation id="5713644099811900409">ບັນຊີ Brave</translation>
 <translation id="2906576968270573525">ເຂົ້າສູ່ລະບົບ ຫຼື ສ້າງບັນຊີ Brave</translation>
 <translation id="6972754398087986839">ເລີ່ມຕົ້ນໃຊ້ງານ</translation>
 <translation id="5378207817582281342">ໃກ້ສຳເລັດແລ້ວ!</translation>
 <translation id="3750210661641549834">ເພື່ອສ້າງບັນຊີຂອງທ່ານ, ກະລຸນາຢືນຢັນທີ່ຢູ່ອີເມວຂອງທ່ານ.</translation>
-<translation id="4129813507847680661">ໃສ່ລະຫັດລົງທະບຽນ</translation>
+<translation id="4351175281479794167">ໃສ່ລະຫັດຢືນຢັນ</translation>
 <translation id="1672793037892810340">ທ່ານຄວນໄດ້ຮັບອີເມວທີ່ມີລະຫັດທີ່ທ່ານຈະຕ້ອງປ້ອນເຂົ້າ.</translation>
 <translation id="4821255729182569254">ສົ່ງອີເມວຢືນຢັນໃໝ່</translation>
 <translation id="5837679375142747484">ບໍ່ພົບອີເມວ? ກວດກາໂຟນເດີສະແປມຂອງທ່ານຫຼື <ph name="BEGIN_LINK"/>ສົ່ງໃໝ່<ph name="END_LINK"/> ມັນ.</translation>
 <translation id="1080588816740959885">ບໍ່ພົບອີເມວ? ກວດກາໂຟນເດີສະແປມຂອງທ່ານຫຼືສົ່ງມັນໃໝ່.</translation>
 <translation id="1020730839570724178">ຍົກເລີກການລົງທະບຽນ</translation>
+<translation id="7155125570724238786">ເພື່ອຣີເຊັດລະຫັດຜ່ານຂອງທ່ານ, ກະລຸນາຢືນຢັນທີ່ຢູ່ອີເມວຂອງທ່ານ.</translation>
+<translation id="816074628631172140">ອີເມວຂອງທ່ານໄດ້ຖືກຢືນຢັນແລ້ວ. ຕັ້ງລະຫັດຜ່ານໃໝ່ເພື່ອສຳເລັດການຣີເຊັດລະຫັດຜ່ານຂອງທ່ານ.</translation>
+<translation id="7543374051303238869">ຕັ້ງລະຫັດຜ່ານໃໝ່</translation>
+<translation id="8378209932853841849">ຍົກເລີກການຣີເຊັດລະຫັດຜ່ານ</translation>
+<translation id="4405566535206792621">ເພື່ອປ່ຽນລະຫັດຜ່ານຂອງທ່ານ, ກະລຸນາຢືນຢັນທີ່ຢູ່ອີເມວຂອງທ່ານ.</translation>
+<translation id="3135333563420939059">ອີເມວຂອງທ່ານໄດ້ຖືກຢືນຢັນແລ້ວ. ຕັ້ງລະຫັດຜ່ານໃໝ່ເພື່ອສຳເລັດການປ່ຽນລະຫັດຜ່ານຂອງທ່ານ.</translation>
+<translation id="4227581348172626540">ຍົກເລີກການປ່ຽນລະຫັດຜ່ານ</translation>
+<translation id="808894953321890993">ປ່ຽນລະຫັດຜ່ານ</translation>
+<translation id="7967687455715421528">ບໍ່ສາມາດປ່ຽນລະຫັດຜ່ານ</translation>
 <translation id="4869737930995549965">ອອກຈາກລະບົບ</translation>
 <translation id="5538654494923870167">ເລີ່ມຕົ້ນກັບບັນຊີ Brave ຂອງທ່ານ</translation>
 <translation id="1544145635547515689">ສ້າງບັນຊີ Brave</translation>
@@ -2847,10 +2882,11 @@
 <translation id="5486261815000869482">ຢືນຢັນລະຫັດຜ່ານ</translation>
 <translation id="7345706641791090287">ຢືນຢັນລະຫັດຜ່ານຂອງທ່ານ</translation>
 <translation id="7114054701490058191">ລະຫັດຜ່ານບໍ່ກົງກັນ</translation>
+<translation id="4277028893293644418">ຣີເຊັດລະຫັດຜ່ານ</translation>
+<translation id="9033485352495162741">ການຢືນຢັນສຳເລັດ. ຕອນນີ້ໃສ່ລະຫັດຜ່ານໃໝ່ທີ່ທ່ານຕ້ອງການ:</translation>
 <translation id="1293857704520741614">ເຂົ້າສູ່ລະບົບບັນຊີຂອງທ່ານ</translation>
 <translation id="118617366439356381">ລືມລະຫັດຜ່ານຂອງທ່ານບໍ?</translation>
 <translation id="5183159033908953146">ຢືນຢັນອີເມວບັນຊີ Brave ຂອງທ່ານ ແລະທ່ານຈະໄດ້ຮັບລິ້ງເພື່ອຣີເຊັດລະຫັດຜ່ານຂອງທ່ານ. ລິ້ງຈະໃຊ້ໄດ້ພຽງ 30 ນາທີເທົ່ານັ້ນ.</translation>
-<translation id="3997368361371298873">ຄຳເຕືອນ: ເນື່ອງຈາກທ່ານບໍ່ໄດ້ເຂົ້າສູ່ລະບົບໃນອຸປະກອນນີ້, ການຣີເຊັດລະຫັດຜ່ານຂອງທ່ານຈະ <ph name="BEGIN_BOLD"/>ລຶບຂໍ້ມູນທັງໝົດຂອງທ່ານ<ph name="END_BOLD"/> ໃນເຊີບເວີ. ຖ້າທ່ານມີອຸປະກອນອື່ນທີ່ທ່ານໄດ້ເຂົ້າສູ່ລະບົບແລ້ວ, ຈົ່ງປ່ຽນລະຫັດຜ່ານຂອງທ່ານຈາກອຸປະກອນນັ້ນແທນທີ່ຈະຣີເຊັດລະຫັດຜ່ານຂອງທ່ານ.</translation>
 <translation id="3674472551471103443">ຣີເຊັດລະຫັດຜ່ານຂອງທ່ານ</translation>
 <translation id="2755539422340788311">ຢືນຢັນອີເມວຂອງທ່ານ</translation>
 <translation id="6641436078676327508">ທ່ານຄວນໄດ້ຮັບອີເມວທີ່ມີລະຫັດສັ້ນ. ກະລຸນາໃສ່ມັນຢູ່ບ່ອນນີ້ເພື່ອດຳເນີນຕໍ່.</translation>
@@ -2867,10 +2903,16 @@
 <translation id="7144067487084094749">ບັນຊີສຳລັບທີ່ຢູ່ອີເມວນີ້ມີຢູ່ແລ້ວ. ລອງເຂົ້າສູ່ລະບົບແທນທີ່ຈະສ້າງບັນຊີໃໝ່.</translation>
 <translation id="5288951359968156008">ໂດເມນຂອງທີ່ຢູ່ອີເມວນີ້ບໍ່ໄດ້ຮັບການຮອງຮັບ. ກະລຸນາໃຊ້ທີ່ຢູ່ອີເມວທີ່ແຕກຕ່າງ.</translation>
 <translation id="7625678607509255072">ເກີນຂີດຈຳກັດການຢືນຢັນອີເມວ. ກະລຸນາລໍຖ້າ 30 ນາທີກ່ອນທີ່ຈະລອງໃໝ່.</translation>
-<translation id="4582421696414628320">ການຢືນຢັນໝົດອາຍຸແລ້ວ. ເລີ່ມຂັ້ນຕອນການລົງທະບຽນໃໝ່ອີກຄັ້ງ.</translation>
+<translation id="9121175588136821850">ລະຫັດຢືນຢັນໝົດອາຍຸແລ້ວ. ເລີ່ມຂັ້ນຕອນການລົງທະບຽນໃໝ່ອີກຄັ້ງ.</translation>
 <translation id="8439543211004394821">ໃສ່ລະຫັດທີ່ບໍ່ຖືກຕ້ອງຫຼາຍຄັ້ງເກີນໄປ. ເລີ່ມຂັ້ນຕອນການລົງທະບຽນໃໝ່ອີກຄັ້ງ.</translation>
 <translation id="3229986152760633988">ລະຫັດຜິດ, ກະລຸນາລອງໃໝ່.</translation>
 <translation id="818783632689113711">account ໄດ້ຖືກຮ້ອງຂໍແລ້ວສຳລັບທີ່ຢູ່ email ນີ້. ກະລຸນາກວດສອບ email ຂອງທ່ານ ຫຼືລອງໃໝ່ໃນ 30 ນາທີ.</translation>
+<translation id="4776810543245166572">ບໍ່ພົບບັນຊີສຳລັບທີ່ຢູ່ອີເມວນີ້.</translation>
+<translation id="7090885444036935209">ທີ່ຢູ່ອີເມວບໍ່ຖືກຕ້ອງ.</translation>
+<translation id="1542836798393843657">ພະຍາຍາມຢືນຢັນຫຼາຍຄັ້ງເກີນໄປສຳລັບທີ່ຢູ່ອີເມວນີ້. ລອງໃໝ່ອີກຄັ້ງໃນ 24 ຊົ່ວໂມງ.</translation>
+<translation id="7572012011062736429">ຂໍ້ຜິດພາດພາຍໃນ. ປິດກ່ອງໂຕ້ຕອບ, ຍົກເລີກການຢືນຢັນ, ແລ້ວລອງໃໝ່ອີກຄັ້ງ.</translation>
+<translation id="2477280119520811719">ລະຫັດຢືນຢັນໝົດອາຍຸແລ້ວ. ເລີ່ມຂັ້ນຕອນການປ່ຽນລະຫັດຜ່ານໃໝ່ອີກຄັ້ງ.</translation>
+<translation id="7103280722523884198">ໃສ່ລະຫັດທີ່ບໍ່ຖືກຕ້ອງຫຼາຍຄັ້ງເກີນໄປ. ເລີ່ມຂັ້ນຕອນການປ່ຽນລະຫັດຜ່ານໃໝ່ອີກຄັ້ງ.</translation>
 <translation id="4178004989875422946">ບັນຊີ Brave ຈະຊ່ວຍໃຫ້ທ່ານສາມາດເຂົ້າເຖິງບໍລິການຂອງ Brave ໄດ້ງ່າຍ.</translation>
 <translation id="4902897635127068510">ທ່ານໝາຍເຖິງ <ph name="SUGGESTION"/> ບໍ?</translation>
 <translation id="8314772463905284467">Caps Lock ເປີດຢູ່</translation>
@@ -2879,6 +2921,7 @@
 <translation id="2112559299194052697">ບໍ່ສາມາດສົ່ງໃໝ່ໄດ້</translation>
 <translation id="7932611814134267012">ໄດ້ສົ່ງອີເມວຢືນຢັນຫຼາຍຄັ້ງເກີນໄປແລ້ວ. ກະລຸນາກວດກາໂຟນເດີສະແປມຂອງທ່ານ.</translation>
 <translation id="1364223093800750401">ອີເມວໄດ້ຮັບການຢືນຢັນແລ້ວ.</translation>
+<translation id="1353061468772282268">ລະຫັດຢືນຢັນໝົດອາຍຸແລ້ວ. ຍົກເລີກການຢືນຢັນ ແລ້ວລອງໃໝ່ອີກຄັ້ງ.</translation>
 <translation id="3353844160742960162">ການປັບແຕ່ງການຕັ້ງຄ່າຄວາມເປັນສ່ວນຕົວ</translation>
 <translation id="528205534230423181">ເວັບໄຊທ໌ນີ້ມີການຕັ້ງຄ່າຄວາມເປັນສ່ວນຕົວທີ່ Brave ສາມາດປັບໃຫ້ທ່ານໂດຍອັດຕະໂນມັດ. ນີ້ແມ່ນສິ່ງທີ່ພວກເຮົາແນະນຳ:</translation>
 <translation id="1063227610401477317">ນຳໃຊ້ການປ່ຽນແປງ</translation>

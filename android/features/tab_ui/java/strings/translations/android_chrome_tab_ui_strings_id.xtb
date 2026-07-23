@@ -181,7 +181,6 @@
 <translation id="7129458170538955174">Informasi tentang toko ini terbuka setengah</translation>
 <translation id="7204204600596740190">Mode multi-pilihan</translation>
 <translation id="7211038039686180558">Grup tab Anda disimpan dan diperbarui otomatis di semua perangkat yang digunakan untuk login</translation>
-<translation id="731648547091221002"><ph name="COLOR_NAME"/> Dipilih</translation>
 <translation id="7326879924029668159">Lihat kebijakan pengembalian dan lainnya</translation>
 <translation id="7352298686197644113">Lihat item mana di tab terbuka yang memiliki harga lebih rendah</translation>
 <translation id="7369451074646620503">Grup tab "<ph name="TAB_GROUP_NAME"/>" tidak lagi tersedia</translation>
@@ -207,7 +206,6 @@
 <translation id="7854360405711302755">{REVIEWS,plural, =1{ Rating <ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/>, <ph name="REVIEWS_COUNT_ONE"/> ulasan}other{Rating <ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/>, <ph name="REVIEWS_COUNT_MANY"/> ulasan}}</translation>
 <translation id="7885132941432959125">Pindahkan tab ke kanan</translation>
 <translation id="7887334752153342268">Duplikasikan</translation>
-<translation id="7939917283308035850"><ph name="COLOR_NAME"/> Tidak dipilih</translation>
 <translation id="7961015016161918242">Jangan pernah</translation>
 <translation id="7966321538264951561">Tutup saran.</translation>
 <translation id="796696298310625748">{WINDOW_COUNT,plural, =1{Pindahkan tab ke jendela baru}other{Pindahkan tab ke jendela lain}}</translation>

@@ -161,7 +161,6 @@
 <translation id="2546283357679194313">Cookie và dữ liệu trang web</translation>
 <translation id="3127075554145176599">Được bảo vệ trước các mối đe doạ trên mạng bằng công nghệ mạnh mẽ nhất của Brave</translation>
 <translation id="2570922361219980984">Quyền truy cập vị trí cũng đã bị tắt đối với thiết bị này. Hãy bật trong <ph name="BEGIN_LINK"/>Cài đặt Android<ph name="END_LINK"/>.</translation>
-<translation id="257931822824936280">Đã mở rộng - nhấp để thu gọn.</translation>
 <translation id="2586657967955657006">Bảng nhớ tạm</translation>
 <translation id="2588271083332682494">Sắp xếp gọn gàng nhờ các nhóm thẻ</translation>
 <translation id="2592917252160773942">Các trang web có thể yêu cầu sử dụng camera của bạn</translation>
@@ -210,7 +209,7 @@
 <translation id="3084983642903364837">Vào trình đơn có biểu tượng 3 dấu chấm để chỉnh sửa trang chủ của bạn sau.</translation>
 <translation id="310297983047869047">Trang trình bày trước</translation>
 <translation id="3108122610701115301">Đặt làm mặc định</translation>
-<translation id="310979712355504754">Xóa tất cả</translation>
+<translation id="310979712355504754">Xoá tất cả</translation>
 <translation id="311394601889664316">Không cho phép các trang web chỉnh sửa tệp hoặc thư mục trên thiết bị</translation>
 <translation id="3114012059975132928">Trình phát video</translation>
 <translation id="3115898365077584848">Hiển thị thông tin</translation>
@@ -404,7 +403,6 @@
 <translation id="509133520954049755">Yêu cầu chế độ xem trên máy tính</translation>
 <translation id="5091663350197390230">Khi bạn bật tuỳ chọn này, các trang web có thể dùng JavaScript. Khi bạn tắt tuỳ chọn này, các trang web không thể dùng JavaScript.</translation>
 <translation id="5099358668261120049">Thao tác này sẽ xoá toàn bộ dữ liệu và cookie do <ph name="ORIGIN"/> hoặc ứng dụng liên quan trên Màn hình chính lưu trữ.</translation>
-<translation id="5100237604440890931">Đã thu gọn - nhấp để mở rộng.</translation>
 <translation id="7143053178237996319">Bạn có thể dùng Brave bất cứ khi nào nhấn vào các đường liên kết trong thư/tin nhắn, tài liệu và các ứng dụng khác</translation>
 <translation id="512938610812707830">Bảng bộ sưu tập giao diện trang thẻ mới ở dưới cùng đã mở toàn bộ</translation>
 <translation id="5137460097045297858">Bảng nguồn cấp dữ liệu Khám phá ở dưới cùng đã mở trên một nửa màn hình</translation>
@@ -692,7 +690,6 @@ Chương trình Bảo vệ nâng cao kiểm soát các chế độ cài đặt s
 <translation id="8197286292360124385">Đã cho phép: <ph name="PERMISSION_1"/></translation>
 <translation id="8200772114523450471">Tiếp tục</translation>
 <translation id="8211406090763984747">Kết nối này an toàn</translation>
-<translation id="822964464349305906"><ph name="TYPE_1"/>, <ph name="TYPE_2"/></translation>
 <translation id="823874716226307142">Khi bạn bật lựa chọn này, trang web có thể yêu cầu quyền truy cập vào các thiết bị khác trên mạng cục bộ của bạn. Khi bạn tắt lựa chọn này, trang web không thể truy cập vào các thiết bị khác trên mạng cục bộ của bạn.</translation>
 <translation id="8249310407154411074">Chuyển lên trên cùng</translation>
 <translation id="8261506727792406068">Xoá</translation>
