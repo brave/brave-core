@@ -20,7 +20,7 @@ BASE_DECLARE_FEATURE(kConfirmationsFeature);
 inline constexpr base::FeatureParam<base::TimeDelta>
     kProcessConfirmationInitialBackoffDelay{
         &kConfirmationsFeature, "process_confirmation_initial_backoff_delay",
-        base::Seconds(15)};
+        base::Seconds(30)};
 
 inline constexpr base::FeatureParam<base::TimeDelta>
     kProcessConfirmationMaxBackoffDelay{
