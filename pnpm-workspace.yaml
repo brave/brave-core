@@ -23,6 +23,13 @@ allowBuilds:
   usb: true
   utf-8-validate: true
 
+catalog:
+  '@types/react': '19.2.17'
+  '@types/react-dom': '19.2.3'
+  'react': '19.2.7'
+  'react-dom': '19.2.7'
+  'styled-components': '6.4.3'
+
 # HTTP fetch timeout in milliseconds (5 minutes).
 fetchTimeout: 300000
 
@@ -34,6 +41,13 @@ nodeLinker: isolated
 
 # Force specific versions for dependencies across the graph.
 overrides:
+  # React overrides.
+  '@brave/brave-ui>styled-components': 'catalog:'
+  '@types/react': 'catalog:'
+  '@types/react-dom': 'catalog:'
+  'react': 'catalog:'
+  'react-dom': 'catalog:'
+
   # Security-related overrides.
   'axios': '1.18.0'
   'elliptic': '6.6.1'
@@ -43,13 +57,6 @@ overrides:
   'protobufjs': '7.6.5'
   'tiny-secp256k1': '1.1.7'
   'uuid': '14.0.0'
-
-  # React overrides.
-  'react': '19.2.7'
-  'react-dom': '19.2.7'
-  '@types/react': '19.2.17'
-  '@types/react-dom': '19.2.3'
-  '@brave/brave-ui>styled-components': '6.4.3'
 
 # Relax peer dependency version checks for listed packages.
 peerDependencyRules:
