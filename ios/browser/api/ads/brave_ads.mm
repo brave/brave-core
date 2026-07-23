@@ -358,6 +358,9 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
         strongSelf.networkConnectivityAvailable =
             (nw_path_get_status(path) == nw_path_status_satisfied ||
              nw_path_get_status(path) == nw_path_status_satisfiable);
+        dispatch_async(dispatch_get_main_queue(), ^{
+          [strongSelf notifyNetworkConnectionChanged];
+        });
       });
   nw_path_monitor_start(networkMonitor);
 }
@@ -1704,6 +1707,12 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
 - (void)notifyDidCloseTab:(NSInteger)tabId {
   if (adsService) {
     adsService->NotifyDidCloseTab(static_cast<int32_t>(tabId));
+  }
+}
+
+- (void)notifyNetworkConnectionChanged {
+  if (adsService) {
+    adsService->GetAdsClientNotifier()->NotifyNetworkConnectionChanged();
   }
 }
 

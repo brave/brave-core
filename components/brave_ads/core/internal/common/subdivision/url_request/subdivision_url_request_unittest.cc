@@ -8,6 +8,8 @@
 #include <memory>
 #include <string>
 
+#include "base/time/time.h"
+#include "brave/components/brave_ads/core/internal/common/random/test/scoped_rand_time_delta_with_jitter_for_testing.h"
 #include "brave/components/brave_ads/core/internal/common/subdivision/url_request/subdivision_url_request_builder_util.h"
 #include "brave/components/brave_ads/core/internal/common/subdivision/url_request/test/subdivision_url_request_delegate_mock.h"
 #include "brave/components/brave_ads/core/internal/common/subdivision/url_request/test/subdivision_url_request_test_util.h"
@@ -169,6 +171,55 @@ TEST_F(BraveAdsSubdivisionUrlRequestTest,
 
   // Assert
   EXPECT_TRUE(HasPendingTasks());
+}
+
+TEST_F(BraveAdsSubdivisionUrlRequestTest, RefetchesImmediatelyWhenIdle) {
+  // Arrange
+  const test::URLResponseMap url_responses = {
+      {BuildSubdivisionUrlPath(),
+       {{net::HTTP_OK,
+         test::BuildSubdivisionUrlResponseBody(/*country_code=*/"US",
+                                               /*subdivision_code=*/"CA")}}}};
+  test::MockUrlResponses(ads_client_mock_, url_responses);
+
+  // Act
+  subdivision_url_request_->Refetch();
+
+  // Assert
+  EXPECT_TRUE(HasPendingTasks());
+}
+
+TEST_F(BraveAdsSubdivisionUrlRequestTest,
+       RefetchCancelsPendingPeriodicFetchAndFetchesImmediately) {
+  // Arrange: pin the timer's random privacy jitter to exactly `kFetchAfter` so
+  // the pending delay is deterministic instead of a random value in a range.
+  constexpr base::TimeDelta kFetchAfter = base::Days(1);
+  const test::ScopedRandTimeDeltaWithJitterForTesting
+      scoped_rand_time_delta_with_jitter(kFetchAfter);
+
+  const test::URLResponseMap url_responses = {
+      {BuildSubdivisionUrlPath(),
+       {{net::HTTP_OK,
+         test::BuildSubdivisionUrlResponseBody(/*country_code=*/"US",
+                                               /*subdivision_code=*/"CA")}}}};
+  test::MockUrlResponses(ads_client_mock_, url_responses);
+
+  subdivision_url_request_->PeriodicallyFetch();
+  ASSERT_EQ(kFetchAfter, NextPendingTaskDelay());
+
+  // Fast-forward to partway through the wait for the next periodic fetch.
+  FastForwardClockBy(base::Hours(23));
+  ASSERT_EQ(base::Hours(1), NextPendingTaskDelay());
+
+  // Act: cancels the 1 hour remaining on the periodic fetch timer scheduled
+  // by `PeriodicallyFetch` and fetches again straight away instead of
+  // waiting for it to fire.
+  subdivision_url_request_->Refetch();
+
+  // Assert: the next fetch is rescheduled a full `kFetchAfter` out again,
+  // proving the pending timer was cancelled rather than left to fire on its
+  // original schedule.
+  EXPECT_EQ(kFetchAfter, NextPendingTaskDelay());
 }
 
 }  // namespace brave_ads

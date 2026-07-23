@@ -38,6 +38,7 @@ class FakeBatAdsServiceFactory : public BatAdsServiceFactory {
   size_t become_active_count() const;
   base::TimeDelta last_idle_time() const;
   bool last_screen_was_locked() const;
+  size_t network_connection_changed_count() const;
 
   // Causes subsequently launched services to report initialization failure.
   void set_simulate_initialization_failure() {

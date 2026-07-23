@@ -34,4 +34,8 @@ void FakeBatAdsClientNotifier::NotifyUserDidBecomeActive(
   last_screen_was_locked_ = screen_was_locked;
 }
 
+void FakeBatAdsClientNotifier::NotifyNetworkConnectionChanged() {
+  ++network_connection_changed_count_;
+}
+
 }  // namespace brave_ads::test

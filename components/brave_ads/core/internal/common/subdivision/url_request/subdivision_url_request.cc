@@ -50,6 +50,12 @@ void SubdivisionUrlRequest::PeriodicallyFetch() {
   Fetch();
 }
 
+void SubdivisionUrlRequest::Refetch() {
+  timer_.Stop();
+  is_periodically_fetching_ = false;
+  PeriodicallyFetch();
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 
 void SubdivisionUrlRequest::Fetch() {
