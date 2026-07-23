@@ -62,7 +62,7 @@ def main():
 
             {output_dir}
 
-            Ensure you run the correct `npm run build` command prior to building
+            Ensure you run the correct `pnpm run build` command prior to building
             ''')
             raise Exception(err)
     else:

@@ -478,7 +478,7 @@ def submit_pr(channel, top_level_base, remote_base, local_branch, issues_fixed):
 
     # add uplift specific details (if needed)
     if is_nightly(channel) or local_branch.startswith(top_level_base):
-        pr_body = 'TODO: fill me in\n(created using `npm run pr`)'
+        pr_body = 'TODO: fill me in\n(created using `pnpm run pr`)'
     else:
         pr_title += ' (uplift to ' + remote_base + ')'
         pr_body = 'Uplift of #' + str(config.master_pr_number) + '\n'

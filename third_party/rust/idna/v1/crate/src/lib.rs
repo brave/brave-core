@@ -64,7 +64,7 @@ pub enum AsciiDenyList {
 
 // Tests from original idna crate
 // To build tests run
-// `npm run build -- --target=brave/third_party/rust/idna/v0_2:lib_idna_v0_2_unittests`
+// `pnpm run build --target=brave/third_party/rust/idna/v0_2:lib_idna_v0_2_unittests`
 // and then run `out_dir/lib_idna_v0_2_unittests`
 #[test]
 fn test_domain_to_ascii() {
