@@ -293,7 +293,17 @@ fn append_extra(
                 // Disabled is the 0'th variant of the Mode type.
                 buf.extend_from_slice(&[0x00 /* mode */]);
             }
-            _ => continue,
+            SignedExtension::AuthorizeCall
+            | SignedExtension::CheckNonZeroSender
+            | SignedExtension::CheckSpecVersion
+            | SignedExtension::CheckTxVersion
+            | SignedExtension::CheckGenesis
+            | SignedExtension::CheckWeight
+            | SignedExtension::PrevalidateAttests
+            | SignedExtension::EthSetOrigin
+            | SignedExtension::WeightReclaim
+            | SignedExtension::StorageWeightReclaim
+            | SignedExtension::UnusedLast => continue,
         }
     }
 
@@ -336,7 +346,22 @@ fn append_implicit(
                 // Disabled is the 0'th variant of the Mode type.
                 buf.extend_from_slice(&[0x00 /* mode */]);
             }
-            _ => continue,
+            SignedExtension::AuthorizeValueTransfer
+            | SignedExtension::AuthorizeCall
+            | SignedExtension::AsPgas
+            | SignedExtension::AsRingAlias
+            | SignedExtension::AsDotnsGateway
+            | SignedExtension::RestrictOrigins
+            | SignedExtension::CheckNonZeroSender
+            | SignedExtension::CheckNonce
+            | SignedExtension::CheckWeight
+            | SignedExtension::ChargeAssetTxPayment
+            | SignedExtension::PrevalidateAttests
+            | SignedExtension::EthSetOrigin
+            | SignedExtension::StorageWeightReclaim
+            | SignedExtension::ChargeTransactionPayment
+            | SignedExtension::WeightReclaim
+            | SignedExtension::UnusedLast => continue,
         }
     }
 
