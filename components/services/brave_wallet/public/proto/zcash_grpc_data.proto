@@ -11,6 +11,9 @@ message TreeState {
   uint32 time = 4;
   string saplingTree = 5;
   string orchardTree = 6;
+  // Hex-encoded ironwood note commitment tree frontier (same encoding as
+  // orchardTree).
+  string ironwoodTree = 7;
 }
 
 message GetAddressUtxosRequest {
@@ -87,6 +90,7 @@ message CompactOrchardAction {
 message ChainMetadata {
   uint32 saplingCommitmentTreeSize = 1;
   uint32 orchardCommitmentTreeSize = 2;
+  uint32 ironwoodCommitmentTreeSize = 3;
 }
 
 message CompactTx {
@@ -98,6 +102,10 @@ message CompactTx {
   repeated CompactSaplingSpend spends = 4;
   repeated CompactSaplingOutput outputs = 5;
   repeated CompactOrchardAction actions = 6;
+  // Fields 7 and 8 are transparent inputs/outputs (vin/vout) on the wire; the
+  // server emits ironwood actions at field 9.
+  reserved 7, 8;
+  repeated CompactOrchardAction ironwoodActions = 9;
 }
 
 message CompactBlock {

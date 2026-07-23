@@ -787,9 +787,9 @@ async function fetchAccountCurrentNativeBalance({
 
       switch (token.zcashTokenType) {
         case BraveWallet.ZCashTokenType.kOrchard:
-          return Amount.normalize(balance.shieldedBalance.toString())
+          return Amount.normalize(balance.orchardBalance.toString())
         case BraveWallet.ZCashTokenType.kIronwood:
-          return '0'
+          return Amount.normalize(balance.ironwoodBalance.toString())
         default:
           return Amount.normalize(balance.transparentBalance.toString())
       }

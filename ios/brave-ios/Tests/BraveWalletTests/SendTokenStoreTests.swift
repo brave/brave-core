@@ -139,8 +139,10 @@ class SendTokenStoreTests: XCTestCase {
         .init(
           totalBalance: 1_000_000,
           transparentBalance: 1_000_000,
-          shieldedBalance: 0,
-          shieldedPendingBalance: 0,
+          orchardBalance: 0,
+          orchardPendingBalance: 0,
+          ironwoodBalance: 0,
+          ironwoodPendingBalance: 0,
           balances: [:]
         ),
         nil

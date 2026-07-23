@@ -541,8 +541,10 @@ import XCTest
           .init(
             totalBalance: UInt64(zecTransparentBalanceInSatoshi) ?? 0,
             transparentBalance: UInt64(zecTransparentBalanceInSatoshi) ?? 0,
-            shieldedBalance: 0,
-            shieldedPendingBalance: 0,
+            orchardBalance: 0,
+            orchardPendingBalance: 0,
+        ironwoodBalance: 0,
+        ironwoodPendingBalance: 0,
             balances: [:]
           ),
           nil
@@ -552,8 +554,10 @@ import XCTest
           .init(
             totalBalance: 0,
             transparentBalance: 0,
-            shieldedBalance: 0,
-            shieldedPendingBalance: 0,
+            orchardBalance: 0,
+            orchardPendingBalance: 0,
+        ironwoodBalance: 0,
+        ironwoodPendingBalance: 0,
             balances: [:]
           ),
           nil

@@ -66,7 +66,7 @@ const GetBalanceSection = (props: GetBalanceSectionProps) => {
   const [makeAccountShieldableResult, setMakeAccountShieldableResult] =
     React.useState<string>()
   const [syncStatusResult, setSyncStatusResult] = React.useState<string>()
-  const [shieldedBalanceValue, setShieldedBalanceValue] =
+  const [orchardBalanceValue, setOrchardBalanceValue] =
     React.useState<string>()
   const [accountBirthdayValue, setAccountBirthdayValue] =
     React.useState<string>()
@@ -160,7 +160,7 @@ const GetBalanceSection = (props: GetBalanceSectionProps) => {
                 + '/'
                 + status.totalRanges,
             )
-            setShieldedBalanceValue('Found balance: ' + status.spendableBalance)
+            setOrchardBalanceValue('Found balance: ' + status.spendableBalance)
           }
         },
         onSyncError: (accountId: BraveWallet.AccountId, error: string) => {
@@ -221,7 +221,7 @@ const GetBalanceSection = (props: GetBalanceSectionProps) => {
           <h3>sync status: {syncStatusResult}</h3>
           <h3>shield result: {shieldResult}</h3>
           <h3>balance: {balance?.totalBalance.toString()}</h3>
-          <h3>shielded balance: {shieldedBalanceValue}</h3>
+          <h3>orchard balance: {orchardBalanceValue}</h3>
 
           <ul>
             {balance?.balances

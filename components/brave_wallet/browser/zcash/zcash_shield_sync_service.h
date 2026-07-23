@@ -76,6 +76,7 @@ class ZCashShieldSyncService {
     virtual ~OrchardBlockScannerProxy();
     virtual void ScanBlocks(
         OrchardTreeState tree_state,
+        std::optional<OrchardTreeState> ironwood_tree_state,
         std::vector<zcash::mojom::CompactBlockPtr> blocks,
         base::OnceCallback<void(base::expected<OrchardBlockScanner::Result,
                                                OrchardBlockScanner::ErrorCode>)>
@@ -86,6 +87,7 @@ class ZCashShieldSyncService {
                           OrchardBlockScanner::ErrorCode>
     ScanBlocksInBackground(OrchardFullViewKey full_view_key,
                            OrchardTreeState tree_state,
+                           std::optional<OrchardTreeState> ironwood_tree_state,
                            std::vector<zcash::mojom::CompactBlockPtr> blocks);
     OrchardFullViewKey full_view_key_;
     scoped_refptr<base::TaskRunner> task_runner_;

@@ -15,6 +15,7 @@
 #include "base/containers/extend.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_rpc.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 
 namespace brave_wallet {
 
@@ -216,10 +217,34 @@ void ZCashBlocksBatchScanTask::ScanBlocks() {
     tree_state.frontier = std::move(frontier_bytes);
   }
 
+  std::optional<OrchardTreeState> ironwood_tree_state;
+  if (IsZCashIronwoodEnabled()) {
+    std::vector<uint8_t> ironwood_frontier_bytes;
+    // Allow an empty ironwood tree to simplify testing, matching the orchard
+    // handling above.
+    if (!frontier_tree_state_.value()->ironwoodTree.empty() &&
+        !base::HexStringToBytes(frontier_tree_state_.value()->ironwoodTree,
+                                &ironwood_frontier_bytes)) {
+      error_ = ZCashShieldSyncService::Error{
+          ZCashShieldSyncService::ErrorCode::kScannerError,
+          "Failed to parse ironwood tree state"};
+      ScheduleWorkOnTask();
+      return;
+    }
+
+    OrchardTreeState state;
+    state.block_height = frontier_block_.value()->height;
+    state.tree_size =
+        frontier_block_.value()->chain_metadata->ironwood_commitment_tree_size;
+    state.frontier = std::move(ironwood_frontier_bytes);
+    ironwood_tree_state = std::move(state);
+  }
+
   latest_scanned_block_ = downloaded_blocks_->back().Clone();
 
   scanner_->ScanBlocks(
-      std::move(tree_state), std::move(downloaded_blocks_.value()),
+      std::move(tree_state), std::move(ironwood_tree_state),
+      std::move(downloaded_blocks_.value()),
       base::BindOnce(&ZCashBlocksBatchScanTask::OnBlocksScanned,
                      weak_ptr_factory_.GetWeakPtr()));
 }

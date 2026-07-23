@@ -40,6 +40,7 @@ class ZCashResolveBalanceTask {
       base::expected<ZCashWalletService::UtxoMap, std::string> result);
 
   void OnGetSpendableNotes(
+      OrchardPool pool,
       base::expected<std::optional<OrchardSyncState::SpendableNotesBundle>,
                      OrchardStorage::Error> result);
 
@@ -54,7 +55,8 @@ class ZCashResolveBalanceTask {
   std::optional<ZCashWalletService::UtxoMap> utxo_map_;
   std::optional<mojom::ZCashBalancePtr> result_;
 
-  std::optional<OrchardSyncState::SpendableNotesBundle> spendable_notes_result_;
+  std::optional<OrchardSyncState::SpendableNotesBundle> orchard_notes_result_;
+  std::optional<OrchardSyncState::SpendableNotesBundle> ironwood_notes_result_;
 
   base::WeakPtrFactory<ZCashResolveBalanceTask> weak_ptr_factory_{this};
 };

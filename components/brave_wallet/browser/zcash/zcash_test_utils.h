@@ -8,6 +8,7 @@
 
 #include <array>
 #include <memory>
+#include <optional>
 #include <vector>
 
 #include "brave/components/brave_wallet/browser/zcash/zcash_shield_sync_service.h"
@@ -24,6 +25,7 @@ class MockOrchardBlockScannerProxy
  public:
   using Callback = base::RepeatingCallback<void(
       OrchardTreeState tree_state,
+      std::optional<OrchardTreeState> ironwood_tree_state,
       std::vector<zcash::mojom::CompactBlockPtr> blocks,
       base::OnceCallback<void(base::expected<OrchardBlockScanner::Result,
                                              OrchardBlockScanner::ErrorCode>)>
@@ -35,6 +37,7 @@ class MockOrchardBlockScannerProxy
 
   void ScanBlocks(
       OrchardTreeState tree_state,
+      std::optional<OrchardTreeState> ironwood_tree_state,
       std::vector<zcash::mojom::CompactBlockPtr> blocks,
       base::OnceCallback<void(base::expected<OrchardBlockScanner::Result,
                                              OrchardBlockScanner::ErrorCode>)>
