@@ -1,0 +1,63 @@
+# Eval: review-prs must flag a CS-003 (positive-form booleans) violation.
+#
+# CS-003 "Use Positive Form for Booleans and Methods" lives in
+# docs/best-practices/coding-standards.md. The fixture is a PR diff that adds
+# the doc's exact WRONG pattern (IsTorDisabled / kTorDisabled). We assert the
+# skill flags it and attributes it to rule CS-003.
+#
+# This is the FIRST test; the harness is designed to add one <rule-id>.promptfoo.yaml
+# per best-practice rule later, reusing this provider + asserts.
+description: review-prs flags a CS-003 (positive-form booleans) violation.
+
+prompts:
+  - 'file://CS-003.prompt.md'
+
+providers:
+  # Our Claude Code provider. It links the skill, puts a fake `gh` on PATH that
+  # serves the fixture PR (so nothing touches real GitHub), runs Claude Code
+  # headless, and harvests the skill's results into testing/.last_run/results.json.
+  - id: 'python:../../../testing/claude_provider.py'
+    config:
+      # promptfoo's python-worker timeout in MS (its default is 300000 = 5 min,
+      # far too short for a full agent run). This is promptfoo's own knob; our
+      # provider's internal timeoutSeconds is separate. Keep timeout > it.
+      timeout: 2400000
+      timeoutSeconds: 1800
+      skills:
+        - review-prs
+      allowedTools: 'Bash,Read,Glob,Grep,Write,Edit,Task'
+      fake_gh:
+        repo: brave/brave-core
+        prs:
+          '1':
+            title: 'Add Tor disabled pref'
+            author: external-contributor
+            state: open
+            merged: false
+            mergeable: MERGEABLE
+            headRefOid: 0123456789abcdef0123456789abcdef01234567
+            diff_file: 'fixtures/cs-003-violation.patch'
+            reviews: []
+            review_comments: []
+            issue_comments: []
+
+tests:
+  - assert:
+      # Structural check: the violations the skill wrote name rule CS-003 and
+      # point at the offending symbol. (Name/signature-agnostic beyond these.)
+      - type: python
+        value: 'file://../../../testing/asserts/check_changes.py:check_file_content'
+        config:
+          files:
+            - path: '../../../testing/.last_run/results.json'
+              present:
+                - 'CS-003'
+                - 'IsTorDisabled'
+      # Belt-and-suspenders text check on the agent's own output.
+      - type: icontains
+        value: 'CS-003'
+    metadata:
+      # Review is LLM-driven and nondeterministic: pass if >= 2 of 3 runs pass.
+      runs_per_test: 3
+      pass_k_threshold: 2
+      tags: ['stable']
