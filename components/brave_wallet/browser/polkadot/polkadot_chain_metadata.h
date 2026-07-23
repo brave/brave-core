@@ -8,13 +8,15 @@
 
 #include <stdint.h>
 
+#include <array>
 #include <optional>
-#include <string_view>
 
 #include "base/containers/span.h"
 #include "brave/components/brave_wallet/browser/internal/polkadot_extrinsic.rs.h"
 
 namespace brave_wallet {
+
+inline constexpr size_t kMaxSignedExtensions = 64;
 
 // Runtime metadata is sourced from the hex string returned by
 // state_getMetadata:
@@ -47,7 +49,7 @@ class PolkadotChainMetadata {
       uint8_t transfer_all_call_index,
       uint16_t ss58_prefix,
       uint32_t spec_version,
-      bool asset_tx_payment,
+      const std::array<uint8_t, kMaxSignedExtensions>& signed_extensions,
       bool has_assets_pallet,
       uint8_t assets_pallet_index,
       uint8_t assets_transfer_all_call_index,
