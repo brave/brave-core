@@ -14,16 +14,12 @@
 #include "base/memory/weak_ptr.h"
 #include "base/sequence_checker.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom-forward.h"
+#include "brave/components/api_request_helper/api_request_helper.h"
 #include "url/gurl.h"
 
 namespace network {
 class SharedURLLoaderFactory;
 }
-
-namespace api_request_helper {
-class APIRequestHelper;
-class APIRequestResult;
-}  // namespace api_request_helper
 
 namespace ai_chat {
 
@@ -45,6 +41,14 @@ class RemoteModelsFetcher {
   // network or parse failure, the callback is invoked with an empty
   // vector.
   void FetchModels(FetchModelsCallback callback);
+
+  void SetAPIRequestHelperForTesting(
+      std::unique_ptr<api_request_helper::APIRequestHelper> api_helper) {
+    api_request_helper_ = std::move(api_helper);
+  }
+  api_request_helper::APIRequestHelper* GetAPIRequestHelperForTesting() {
+    return api_request_helper_.get();
+  }
 
  private:
   void OnFetchComplete(FetchModelsCallback callback,
