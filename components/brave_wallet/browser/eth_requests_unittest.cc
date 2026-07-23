@@ -96,7 +96,7 @@ TEST(EthRequestUnitTest, GetLogsPayload) {
   sub_topics.Append(
       "0x000000000000000000000000a94f5374fce5edbc8e2a8697c15331677e6ebf0b");
   sub_topics.Append(
-      "0x0000000000000000000000000aff3454fce5edbc8cca8697c15331677e6ebccc");
+      "0x0000000000000000000000000aff3454fce5edbc8e2a8697c15331677e6ebccc");
   topics.Append(std::move(sub_topics));
 
   base::ListValue addresses;
@@ -112,7 +112,20 @@ TEST(EthRequestUnitTest, GetLogsPayload) {
       "0xb903239f8543d04b5dc1ba6579132b143087c68db1b2168786408fcbce568238");
   ASSERT_EQ(
       GetLogsPayload(std::move(filtering)),
-      R"({"id":1,"jsonrpc":"2.0","method":"eth_getLogs","params":[{"address":["0x8888f1f195afa192cfee860698584c030f4c9db1"],"blockhash":"0xb903239f8543d04b5dc1ba6579132b143087c68db1b2168786408fcbce568238","fromBlock":"0x1","toBlock":"0x2","topics":["0x000000000000000000000000a94f5374fce5edbc8e2a8697c15331677e6ebf0b",["0x000000000000000000000000a94f5374fce5edbc8e2a8697c15331677e6ebf0b","0x0000000000000000000000000aff3454fce5edbc8cca8697c15331677e6ebccc"]]}]})");  // NOLINT
+      R"({"id":1,"jsonrpc":"2.0","method":"eth_getLogs","params":[{"address":["0x8888f1f195afa192cfee860698584c030f4c9db1"],"blockhash":"0xb903239f8543d04b5dc1ba6579132b143087c68db1b2168786408fcbce568238","fromBlock":"0x1","toBlock":"0x2","topics":["0x000000000000000000000000a94f5374fce5edbc8e2a8697c15331677e6ebf0b",["0x000000000000000000000000a94f5374fce5edbc8e2a8697c15331677e6ebf0b","0x0000000000000000000000000aff3454fce5edbc8e2a8697c15331677e6ebccc"]]}]})");  // NOLINT
+}
+
+TEST(EthRequestUnitTest, GetSimulateV1Payload) {
+  constexpr char kData[] =
+      "0xa22cb465000000000000000000000000bfb30a082f650c2a15d0632f0e87be4f8e6446"
+      "0f0000000000000000000000000000000000000000000000000000000000000001";
+  ASSERT_EQ(
+      GetSimulateV1Payload("0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045",
+                           "0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D", kData,
+                           ""),
+      R"({"id":1,"jsonrpc":"2.0","method":"eth_simulateV1","params":[{"blockStateCalls":[{"calls":[{"data":")"
+      R"(0xa22cb465000000000000000000000000bfb30a082f650c2a15d0632f0e87be4f8e64460f0000000000000000000000000000000000000000000000000000000000000001)"
+      R"(","from":"0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045","to":"0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D"}]}],"traceTransfers":false,"validation":false},"latest"]})");  // NOLINT
 }
 
 }  // namespace brave_wallet::eth

@@ -313,6 +313,18 @@ class JsonRpcService : public mojom::JsonRpcService {
                       const std::string& data,
                       GetEstimateGasCallback callback);
 
+  // Simulates an EVM call via eth_simulateV1. `ok` is false when the RPC cannot
+  // simulate (unsupported method, HTTP/JSON-RPC error, or parse failure); in
+  // that case `calls` is empty and callers should fall back to static analysis.
+  using SimulateEvmTransactionCallback =
+      base::OnceCallback<void(bool ok, std::vector<SimulatedCall> calls)>;
+  void SimulateEvmTransaction(const std::string& chain_id,
+                              const std::string& from_address,
+                              const std::string& to_address,
+                              const std::string& value,
+                              const std::string& data,
+                              SimulateEvmTransactionCallback callback);
+
   using GetGasPriceCallback =
       base::OnceCallback<void(const std::string& result,
                               mojom::ProviderError error,
@@ -635,6 +647,8 @@ class JsonRpcService : public mojom::JsonRpcService {
                            APIRequestResult api_request_result);
   void OnGetEstimateGas(GetEstimateGasCallback callback,
                         APIRequestResult api_request_result);
+  void OnSimulateEvmTransaction(SimulateEvmTransactionCallback callback,
+                                APIRequestResult api_request_result);
   void OnGetGasPrice(GetGasPriceCallback callback,
                      APIRequestResult api_request_result);
   void OnGetBaseFeePerGas(GetBaseFeePerGasCallback callback,

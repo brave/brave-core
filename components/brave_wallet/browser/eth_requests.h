@@ -63,6 +63,14 @@ std::string GetBlockByNumberPayload(std::string_view quantity_tag,
 std::string GetTransactionReceiptPayload(std::string_view transaction_hash);
 // Returns an array of all logs matching a given filter object.
 std::string GetLogsPayload(base::DictValue filter_options);
+// Simulates a call without committing it, returning receipts with logs for each
+// call. Used to detect hidden authorizations (e.g. setApprovalForAll nested in
+// a multicall) by inspecting emitted events rather than statically unwrapping
+// calldata. `val` may be empty to omit the value field.
+std::string GetSimulateV1Payload(std::string_view from_address,
+                                 std::string_view to_address,
+                                 std::string_view data,
+                                 std::string_view val);
 
 }  // namespace brave_wallet::eth
 

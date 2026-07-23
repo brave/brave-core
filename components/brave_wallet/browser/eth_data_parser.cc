@@ -11,6 +11,7 @@
 
 #include "base/check_op.h"
 #include "base/containers/queue.h"
+#include "base/numerics/checked_math.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
@@ -62,6 +63,14 @@ constexpr size_t kMaxMulticallDepth = 1022;
 constexpr size_t kMaxMulticallCallsProcessed = 15'000;
 constexpr char kFilForwarderTransferSelector[] =
     "0xd948d468";  // forward(bytes)
+
+// keccak256("ApprovalForAll(address,address,bool)")
+constexpr char kApprovalForAllTopic[] =
+    "0x17307eab39ab6107e8899845ad3d59bd9653f200f220920489ca2b5937696c31";
+// keccak256("Approval(address,address,uint256)")
+constexpr char kApprovalTopic[] =
+    "0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925";
+constexpr uint8_t kSetApprovalForAllSelector[4] = {0xa2, 0x2c, 0xb4, 0x65};
 
 // CowSwap function selectors
 constexpr char kCowOrderSellEthSelector[] = "0x322bba21";
@@ -660,6 +669,62 @@ std::optional<std::vector<std::string>> FindAllNestedSetApprovalForAll(
 }
 
 }  // namespace
+
+std::vector<AuthorizationFinding> ScanAuthorizations(
+    const std::vector<SimulatedCall>& calls) {
+  std::vector<AuthorizationFinding> findings;
+  for (const auto& call : calls) {
+    if (!call.success) {
+      continue;
+    }
+    for (const auto& log : call.logs) {
+      if (log.topics.empty()) {
+        continue;
+      }
+      AuthorizationFinding::Kind kind;
+      if (base::EqualsCaseInsensitiveASCII(log.topics[0],
+                                           kApprovalForAllTopic)) {
+        kind = AuthorizationFinding::Kind::kApprovalForAll;
+      } else if (base::EqualsCaseInsensitiveASCII(log.topics[0],
+                                                  kApprovalTopic)) {
+        kind = AuthorizationFinding::Kind::kErc20Approval;
+      } else {
+        continue;
+      }
+      if (log.topics.size() < 3) {
+        continue;
+      }
+      findings.push_back(
+          {kind, log.address, log.topics[1], log.topics[2], log.data});
+    }
+  }
+  return findings;
+}
+
+std::vector<std::string> FindSetApprovalForAllOperatorsByByteScan(
+    base::span<const uint8_t> data) {
+  std::vector<std::string> operators;
+  constexpr size_t kCallSize = 4 + 32 + 32;
+  for (size_t off = 0; off + kCallSize <= data.size(); ++off) {
+    if (data.subspan(off, 4u) != base::span(kSetApprovalForAllSelector)) {
+      continue;
+    }
+    size_t approved_off = base::CheckAdd(off, 4u, 32u).ValueOrDie();
+    bool nonzero = false;
+    for (size_t i = 0; i < 32; ++i) {
+      if (data[approved_off + i] != 0) {
+        nonzero = true;
+        break;
+      }
+    }
+    if (!nonzero) {
+      continue;
+    }
+    size_t operator_off = base::CheckAdd(off, 4u, 12u).ValueOrDie();
+    operators.push_back(ToHex(data.subspan(operator_off, 20u)));
+  }
+  return operators;
+}
 
 std::optional<std::tuple<mojom::TransactionType,    // tx_type
                          std::vector<std::string>,  // tx_params

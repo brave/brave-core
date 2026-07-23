@@ -1944,6 +1944,33 @@ void JsonRpcService::OnGetEstimateGas(GetEstimateGasCallback callback,
   std::move(callback).Run(*result, mojom::ProviderError::kSuccess, "");
 }
 
+void JsonRpcService::SimulateEvmTransaction(
+    const std::string& chain_id,
+    const std::string& from_address,
+    const std::string& to_address,
+    const std::string& value,
+    const std::string& data,
+    SimulateEvmTransactionCallback callback) {
+  auto internal_callback =
+      base::BindOnce(&JsonRpcService::OnSimulateEvmTransaction,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+  RequestInternal(
+      eth::GetSimulateV1Payload(from_address, to_address, data, value), true,
+      GetNetworkURL(chain_id, mojom::CoinType::ETH),
+      std::move(internal_callback));
+}
+
+void JsonRpcService::OnSimulateEvmTransaction(
+    SimulateEvmTransactionCallback callback,
+    APIRequestResult api_request_result) {
+  if (!api_request_result.Is2XXResponseCode()) {
+    std::move(callback).Run(false, {});
+    return;
+  }
+  auto calls = eth::ParseEthSimulateV1(api_request_result.value_body());
+  std::move(callback).Run(calls.has_value(), std::move(calls).value_or({}));
+}
+
 void JsonRpcService::GetGasPrice(const std::string& chain_id,
                                  GetGasPriceCallback callback) {
   if (gas_price_for_testing_) {

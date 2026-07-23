@@ -3570,4 +3570,187 @@ TEST(EthDataParser,
   EXPECT_EQ(swap_info->provider, mojom::SwapProvider::kSquid);
 }
 
+namespace {
+
+Log MakeLog(std::string address,
+            std::vector<std::string> topics,
+            std::string data = "0x") {
+  Log log;
+  log.address = std::move(address);
+  log.topics = std::move(topics);
+  log.data = std::move(data);
+  return log;
+}
+
+SimulatedCall MakeCall(bool success, std::vector<Log> logs) {
+  SimulatedCall call;
+  call.success = success;
+  call.logs = std::move(logs);
+  return call;
+}
+
+// keccak256("ApprovalForAll(address,address,bool)")
+constexpr char kApprovalForAllTopic[] =
+    "0x17307eab39ab6107e8899845ad3d59bd9653f200f220920489ca2b5937696c31";
+// keccak256("Approval(address,address,uint256)")
+constexpr char kApprovalTopic[] =
+    "0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925";
+
+// A 32-byte topic encoding a 20-byte address (12 zero bytes + address).
+std::string AddressTopic(std::string_view address) {
+  return "0x000000000000000000000000" + std::string(address);
+}
+
+}  // namespace
+
+TEST(EthDataParser, ScanAuthorizationsFindsApprovalForAllGrant) {
+  auto calls = std::vector<SimulatedCall>{MakeCall(
+      true,
+      {MakeLog("0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d",
+               {kApprovalForAllTopic,
+                AddressTopic("0xd8da6bf26964af9d7eed9e03e53415d37aa96045"),
+                AddressTopic("0x000000000000000000000000000000000000dead")},
+               "0x0000000000000000000000000000000000000000000000000000000000000"
+               "001")})};
+  auto findings = ScanAuthorizations(calls);
+  ASSERT_EQ(findings.size(), 1u);
+  EXPECT_EQ(findings[0].kind, AuthorizationFinding::Kind::kApprovalForAll);
+  EXPECT_EQ(findings[0].token_contract,
+            "0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d");
+  EXPECT_EQ(findings[0].grantor,
+            AddressTopic("0xd8da6bf26964af9d7eed9e03e53415d37aa96045"));
+  EXPECT_EQ(findings[0].grantee,
+            AddressTopic("0x000000000000000000000000000000000000dead"));
+}
+
+TEST(EthDataParser, ScanAuthorizationsFindsErc20Approval) {
+  auto calls = std::vector<SimulatedCall>{MakeCall(
+      true,
+      {MakeLog("0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+               {kApprovalTopic,
+                AddressTopic("0xd8da6bf26964af9d7eed9e03e53415d37aa96045"),
+                AddressTopic("0x000000000000000000000000000000000000dead")},
+               "0x0000000000000000000000000000000000000000000000000000000000000"
+               "001")})};
+  auto findings = ScanAuthorizations(calls);
+  ASSERT_EQ(findings.size(), 1u);
+  EXPECT_EQ(findings[0].kind, AuthorizationFinding::Kind::kErc20Approval);
+}
+
+TEST(EthDataParser, ScanAuthorizationsSkipsRevertedCall) {
+  // A reverted call may carry logs from failed sub-calls; they must not be
+  // treated as real grants.
+  auto calls = std::vector<SimulatedCall>{MakeCall(
+      false,
+      {MakeLog("0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d",
+               {kApprovalForAllTopic,
+                AddressTopic("0xd8da6bf26964af9d7eed9e03e53415d37aa96045"),
+                AddressTopic("0x000000000000000000000000000000000000dead")})})};
+  EXPECT_TRUE(ScanAuthorizations(calls).empty());
+}
+
+TEST(EthDataParser, ScanAuthorizationsIgnoresUnknownEvent) {
+  auto calls = std::vector<SimulatedCall>{MakeCall(
+      true,
+      {MakeLog("0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d",
+               {"0xdeadbeef",
+                AddressTopic("0xd8da6bf26964af9d7eed9e03e53415d37aa96045"),
+                AddressTopic("0x000000000000000000000000000000000000dead")})})};
+  EXPECT_TRUE(ScanAuthorizations(calls).empty());
+}
+
+TEST(EthDataParser, ScanAuthorizationsCollectsMultipleGrantsAcrossCalls) {
+  auto calls = std::vector<SimulatedCall>{
+      MakeCall(
+          true,
+          {MakeLog(
+              "0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d",
+              {kApprovalForAllTopic,
+               AddressTopic("0xd8da6bf26964af9d7eed9e03e53415d37aa96045"),
+               AddressTopic("0x0000000000000000000000000000000000000001")})}),
+      MakeCall(
+          true,
+          {MakeLog(
+              "0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d",
+              {kApprovalForAllTopic,
+               AddressTopic("0xd8da6bf26964af9d7eed9e03e53415d37aa96045"),
+               AddressTopic("0x0000000000000000000000000000000000000002")})})};
+  auto findings = ScanAuthorizations(calls);
+  ASSERT_EQ(findings.size(), 2u);
+  EXPECT_EQ(findings[0].grantee,
+            AddressTopic("0x0000000000000000000000000000000000000001"));
+  EXPECT_EQ(findings[1].grantee,
+            AddressTopic("0x0000000000000000000000000000000000000002"));
+}
+
+TEST(EthDataParser, ByteScanFindsDirectSetApprovalForAllGrant) {
+  std::vector<uint8_t> data;
+  ASSERT_TRUE(PrefixedHexStringToBytes(
+      "0xa22cb465"
+      "000000000000000000000000bfb30a082f650c2a15d0632f0e87be4f8e64460f"
+      "0000000000000000000000000000000000000000000000000000000000000001",
+      &data));
+  auto operators = FindSetApprovalForAllOperatorsByByteScan(data);
+  ASSERT_EQ(operators.size(), 1u);
+  EXPECT_EQ(operators[0], "0xbfb30a082f650c2a15d0632f0e87be4f8e64460f");
+}
+
+TEST(EthDataParser, ByteScanSkipsRevoke) {
+  std::vector<uint8_t> data;
+  ASSERT_TRUE(PrefixedHexStringToBytes(
+      "0xa22cb465"
+      "000000000000000000000000bfb30a082f650c2a15d0632f0e87be4f8e64460f"
+      "0000000000000000000000000000000000000000000000000000000000000000",
+      &data));
+  EXPECT_TRUE(FindSetApprovalForAllOperatorsByByteScan(data).empty());
+}
+
+TEST(EthDataParser, ByteScanFindsSelectorNestedVerbatimInMulticall) {
+  // A setApprovalForAll grant wrapped in multicall(bytes[]). The inner
+  // selector is not 32-byte aligned, so byte-by-byte scanning is required.
+  std::vector<uint8_t> inner;
+  ASSERT_TRUE(PrefixedHexStringToBytes(
+      "0xa22cb465"
+      "000000000000000000000000bfb30a082f650c2a15d0632f0e87be4f8e64460f"
+      "0000000000000000000000000000000000000000000000000000000000000001",
+      &inner));
+  auto encode_multicall = [](const std::vector<std::vector<uint8_t>>& calls) {
+    std::vector<uint8_t> out = {0xac, 0x96, 0x50, 0xd8};
+    auto append_word = [&](uint64_t value) {
+      std::vector<uint8_t> word(32, 0);
+      for (int i = 0; i < 8; ++i) {
+        word[31 - i] = static_cast<uint8_t>((value >> (8 * i)) & 0xff);
+      }
+      out.insert(out.end(), word.begin(), word.end());
+    };
+    append_word(0x20);
+    append_word(calls.size());
+    size_t running = calls.size() * 32;
+    for (const auto& call : calls) {
+      append_word(running);
+      running += 32 + ((call.size() + 31) / 32) * 32;
+    }
+    for (const auto& call : calls) {
+      append_word(call.size());
+      out.insert(out.end(), call.begin(), call.end());
+      out.insert(out.end(), (((call.size() + 31) / 32) * 32) - call.size(), 0);
+    }
+    return out;
+  };
+  auto data = encode_multicall({inner});
+  auto operators = FindSetApprovalForAllOperatorsByByteScan(data);
+  ASSERT_EQ(operators.size(), 1u);
+  EXPECT_EQ(operators[0], "0xbfb30a082f650c2a15d0632f0e87be4f8e64460f");
+}
+
+TEST(EthDataParser, ByteScanNoSelectorReturnsEmpty) {
+  std::vector<uint8_t> data;
+  ASSERT_TRUE(PrefixedHexStringToBytes(
+      "0xa9059cbb"  // ERC-20 transfer
+      "000000000000000000000000bfb30a082f650c2a15d0632f0e87be4f8e64460f"
+      "0000000000000000000000000000000000000000000000000000000000000064",
+      &data));
+  EXPECT_TRUE(FindSetApprovalForAllOperatorsByByteScan(data).empty());
+}
+
 }  // namespace brave_wallet

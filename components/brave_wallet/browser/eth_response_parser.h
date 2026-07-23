@@ -52,6 +52,12 @@ DecodeGetERC20TokenBalancesEthCallResponse(const std::string& data);
 std::optional<std::string> ParseEthEstimateGas(const base::Value& json_value);
 std::optional<std::string> ParseEthGasPrice(const base::Value& json_value);
 bool ParseEthGetLogs(const base::Value& json_value, std::vector<Log>* logs);
+// Parses an eth_simulateV1 response into one SimulatedCall per call across all
+// block results. Returns nullopt on any structural failure (caller falls back
+// to static analysis); an empty vector means simulation succeeded with no
+// calls.
+std::optional<std::vector<SimulatedCall>> ParseEthSimulateV1(
+    const base::Value& json_value);
 
 std::optional<std::vector<std::string>>
 ParseUnstoppableDomainsProxyReaderGetMany(const base::Value& json_value);
