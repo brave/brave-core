@@ -1,9 +1,9 @@
 diff --git a/chrome/browser/ui/page_action/page_action_model.h b/chrome/browser/ui/page_action/page_action_model.h
-index a8ceae38c751f7c793777ca569e9c2bc115aea35..e4ec5ce3e337e121e958bd773216058ccb5c680a 100644
+index 05ddda45c3da6b49bdbeeaa264b235d6321ba9de..30fd030d81f39068a83c3b5a10371b0d9a0fefba 100644
 --- a/chrome/browser/ui/page_action/page_action_model.h
 +++ b/chrome/browser/ui/page_action/page_action_model.h
-@@ -136,9 +136,28 @@ class PageActionModelInterface {
-   virtual bool GetShowTrailingIcon() const = 0;
+@@ -140,9 +140,28 @@ class PageActionModelInterface {
+   virtual std::optional<ui::ColorId> GetOverrideBackgroundColorId() const = 0;
  
    virtual bool IsEphemeral() const = 0;
 +  virtual void SetOverrideChipColors(
@@ -31,7 +31,7 @@ index a8ceae38c751f7c793777ca569e9c2bc115aea35..e4ec5ce3e337e121e958bd773216058c
  class PageActionModel : public PageActionModelInterface {
   public:
    explicit PageActionModel(actions::ActionId action_id,
-@@ -256,6 +275,7 @@ class PageActionModel : public PageActionModelInterface {
+@@ -264,6 +283,7 @@ class PageActionModel : public PageActionModelInterface {
    bool IsEphemeral() const override;
  
   private:
@@ -39,11 +39,11 @@ index a8ceae38c751f7c793777ca569e9c2bc115aea35..e4ec5ce3e337e121e958bd773216058c
    // Identifies which property triggered a NotifyChange call, used for
    // per-property reentrancy checks.
    enum class Property {
-@@ -282,7 +302,12 @@ class PageActionModel : public PageActionModelInterface {
-     kAnimationStyle,
+@@ -291,7 +311,12 @@ class PageActionModel : public PageActionModelInterface {
      kTrailingImage,
      kShowTrailingIcon,
--    kMaxValue = kShowTrailingIcon,
+     kOverrideBackgroundColor,
+-    kMaxValue = kOverrideBackgroundColor,
 +    kAlwaysShowLabel,
 +    kOverrideChipColors,
 +    kOverrideHeight,
@@ -53,7 +53,7 @@ index a8ceae38c751f7c793777ca569e9c2bc115aea35..e4ec5ce3e337e121e958bd773216058c
    };
    using PropertySet =
        base::EnumSet<Property, Property::kShowRequested, Property::kMaxValue>;
-@@ -395,6 +420,7 @@ class PageActionModel : public PageActionModelInterface {
+@@ -405,6 +430,7 @@ class PageActionModel : public PageActionModelInterface {
  
    base::ObserverList<PageActionModelObserver> observer_list_;
  };

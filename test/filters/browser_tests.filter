@@ -2358,6 +2358,11 @@
 -All/ClickToCallPolicyTest.*
 -ClickToCallBrowserTest.*
 
+# This test fails because it expects the url to be
+# https://myactivity.google.com/search-services/apps but it's
+# https://support.brave.app/
+-SettingsUITest.GoogleSearchAiModeWorkspaceUrl
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -All/DeclarativeNetRequestBrowserTest.RendererCacheCleared/*
 -All/FromGWSNavigationAndKeepAliveRequestBrowserTest.TwoDifferentCategoryRequestAndTwoDifferentCategoryNavigationsFromSRP/*
