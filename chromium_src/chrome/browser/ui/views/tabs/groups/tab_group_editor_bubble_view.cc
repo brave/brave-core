@@ -6,10 +6,12 @@
 #include "chrome/browser/ui/views/tabs/groups/tab_group_editor_bubble_view.h"
 
 #include "base/check.h"
+#include "brave/browser/ui/views/tabs/brave_tab_group_header.h"
 #include "chrome/app/vector_icons/vector_icons.h"
 #include "chrome/browser/ui/views/data_sharing/data_sharing_bubble_controller.h"
 #include "chrome/browser/user_education/user_education_service.h"
 #include "ui/views/layout/flex_layout.h"
+#include "ui/views/view_utils.h"
 
 namespace {
 
@@ -31,11 +33,23 @@ void MaybeRemoveFooter(TabGroupEditorBubbleView* bubble_view,
   layout->SetInteriorMargin(margin);
 }
 
+TabGroupEditorBubbleView* SetEditorBubbleArrowForBraveTabGroupHeader(
+    TabGroupEditorBubbleView* bubble_view,
+    views::View* anchor_view) {
+  auto* group_header = views::AsViewClass<BraveTabGroupHeader>(anchor_view);
+  if (group_header) {
+    bubble_view->SetArrow(
+        group_header->GetEditorBubbleArrow(bubble_view->arrow()));
+  }
+  return bubble_view;
+}
+
 }  // namespace
 
-#define CreateBubble(bubble_view)                                           \
-  CreateBubble(bubble_view);                                                \
-  MaybeRemoveFooter(bubble_view, bubble_view->footer_.ExtractAsDangling()); \
+#define CreateBubble(bubble_view)                                            \
+  CreateBubble(                                                              \
+      SetEditorBubbleArrowForBraveTabGroupHeader(bubble_view, anchor_view)); \
+  MaybeRemoveFooter(bubble_view, bubble_view->footer_.ExtractAsDangling());  \
   bubble_view->footer_ = nullptr
 
 #define kUngroupRefreshOldIcon \
