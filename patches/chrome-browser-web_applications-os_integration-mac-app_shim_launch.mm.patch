@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/web_applications/os_integration/mac/app_shim_launch.mm b/chrome/browser/web_applications/os_integration/mac/app_shim_launch.mm
+index 49761f6f52c57c807c516cdb150b91ab7e5c1c91..4e28737618608af408cec0e66e604b0ec5f0fd14 100644
+--- a/chrome/browser/web_applications/os_integration/mac/app_shim_launch.mm
++++ b/chrome/browser/web_applications/os_integration/mac/app_shim_launch.mm
+@@ -159,6 +159,7 @@ void LaunchTheFirstShimThatWorksOnFileThread(
+   variations::VariationsCommandLine::GetForCurrentProcess().ApplyToCommandLine(
+       command_line);
+ 
++  BRAVE_LAUNCH_THE_FIRST_SHIM_THAT_WORKS_ON_FILE_THREAD
+   base::mac::LaunchApplication(
+       shim_path, command_line, /*url_specs=*/{},
+       {.activate = launch_mode != ShimLaunchMode::kBackground,

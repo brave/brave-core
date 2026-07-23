@@ -1,0 +1,6 @@
+from brave_chromium_utils import inline_file
+inline_file("//chrome/app_shim/DEPS", globals(), locals())
+
+include_rules += [
+  "+brave/components/constants/mac_app_mode_common.h",
+]

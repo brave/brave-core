@@ -30,6 +30,7 @@ source_set("constants") {
     "brave_constants.h",
     "brave_paths.h",
     "brave_switches.h",
+    "mac_app_mode_common.h",
     "network_constants.h",
     "pref_names.h",
     "url_constants.h",
