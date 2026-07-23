@@ -1,5 +1,5 @@
 diff --git a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-index 35c368e0cac75dbbed3dfccbca3369c7523b8f3b..b7a76a085635bbca8e1ea01991c436fe758c983f 100644
+index 612548b6ac7886b3be55d27b141cc9fb3c5a1ca0..81f2c64a0d6d2db489d6e32bc2def5023fe46fc0 100644
 --- a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
 +++ b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
 @@ -508,6 +508,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
@@ -10,7 +10,7 @@ index 35c368e0cac75dbbed3dfccbca3369c7523b8f3b..b7a76a085635bbca8e1ea01991c436fe
  }
  
  void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
-@@ -991,6 +992,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
+@@ -992,6 +993,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
    // Deprecated 07/2026.
    registry->RegisterTimePref(kObsoleteManagementProfileLastLogTime,
                               base::Time());
@@ -18,7 +18,7 @@ index 35c368e0cac75dbbed3dfccbca3369c7523b8f3b..b7a76a085635bbca8e1ea01991c436fe
  }
  
  // This method should be periodically pruned of year+ old migrations.
-@@ -1022,6 +1024,7 @@ void MigrateObsoleteLocalStatePrefs(PrefService* prefs) {
+@@ -1023,6 +1025,7 @@ void MigrateObsoleteLocalStatePrefs(PrefService* prefs) {
  
    // Added 07/2026.
    prefs->ClearPref(kObsoleteManagementPlatformLastLogTime);
@@ -26,7 +26,7 @@ index 35c368e0cac75dbbed3dfccbca3369c7523b8f3b..b7a76a085635bbca8e1ea01991c436fe
  }
  
  // This method should be periodically pruned of year+ old migrations.
-@@ -1098,6 +1101,7 @@ void MigrateObsoleteProfilePrefs(PrefService* prefs) {
+@@ -1099,6 +1102,7 @@ void MigrateObsoleteProfilePrefs(PrefService* prefs) {
  
    // Added 07/2026.
    prefs->ClearPref(kObsoleteManagementProfileLastLogTime);

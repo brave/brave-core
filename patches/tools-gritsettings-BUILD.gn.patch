@@ -1,8 +1,8 @@
 diff --git a/tools/gritsettings/BUILD.gn b/tools/gritsettings/BUILD.gn
-index c38ea0efb4474dae38b9d3a3a364aa816a9d5d70..f58ac2cc08765c0a146f7e86beba8476ad65a294 100644
+index 33f20b3044c0176a7784f1fcead7b1e008ad9457..19b81d5cb62b464866336dd9289f354404dd0309 100644
 --- a/tools/gritsettings/BUILD.gn
 +++ b/tools/gritsettings/BUILD.gn
-@@ -12,6 +12,7 @@ action("default_resource_ids") {
+@@ -13,6 +13,7 @@ action_with_pydeps("default_resource_ids") {
    deps = [ "//tools/grit:grit_sources" ]
    depfile = "$target_gen_dir/$target_name.d"
    _rebased_input = rebase_path(inputs[0], root_build_dir)

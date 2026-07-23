@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/extensions/extensions_menu_entry_view.h b/chrome/browser/ui/views/extensions/extensions_menu_entry_view.h
-index bd25de250cbca0a378aaa4759cd57d7621fa9616..c947a0c98b99e1229c05b6efcede73832aeb06fa 100644
+index 97a5e55dd0895e7731d56ddda2d98456db753a23..18ba46a7d7cf72a2c83644df8e2be05ccde39966 100644
 --- a/chrome/browser/ui/views/extensions/extensions_menu_entry_view.h
 +++ b/chrome/browser/ui/views/extensions/extensions_menu_entry_view.h
-@@ -49,7 +49,7 @@ class ExtensionsMenuEntryView
+@@ -53,7 +53,7 @@ class ExtensionsMenuEntryView
        const ExtensionsMenuViewModel::ControlState& button_state);
  
    // Updates the context menu button given `is_action_pinned`.
@@ -11,7 +11,7 @@ index bd25de250cbca0a378aaa4759cd57d7621fa9616..c947a0c98b99e1229c05b6efcede7383
        ExtensionsMenuViewModel::ControlState button_state);
  
    const extensions::ExtensionId& extension_id() { return extension_id_; }
-@@ -68,6 +68,7 @@ class ExtensionsMenuEntryView
+@@ -75,6 +75,7 @@ class ExtensionsMenuEntryView
    }
  
   private:

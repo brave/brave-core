@@ -1,8 +1,8 @@
 diff --git a/base/feature_list.h b/base/feature_list.h
-index f1bb27db59120c7842eee71c20f1e4b1e64fdacd..1747ca696904a9dedf2c711e4d7e73389b4aa1de 100644
+index f4c249517a25906ae4878846a7187d47763a10fe..9e4c2239a174bcc5d438f5a24c7b656eff153fae 100644
 --- a/base/feature_list.h
 +++ b/base/feature_list.h
-@@ -92,6 +92,11 @@ class BASE_EXPORT FeatureList {
+@@ -102,6 +102,11 @@ class BASE_EXPORT FeatureList {
    FeatureList& operator=(const FeatureList&) = delete;
    ~FeatureList();
  

@@ -1,5 +1,5 @@
 diff --git a/components/omnibox/browser/actions/omnibox_action_client_delegator.h b/components/omnibox/browser/actions/omnibox_action_client_delegator.h
-index ddd7235f30a75571efbececa92e6c14e4096dbfd..4c188a12ef9a9f1987d7030c9ddf5409d281bfe7 100644
+index 391a6f3b41ec5567194f0c1f6ba552ad21c2b7ae..e5e0bc73dd71e0659d4514ca2d95a04298dce5a6 100644
 --- a/components/omnibox/browser/actions/omnibox_action_client_delegator.h
 +++ b/components/omnibox/browser/actions/omnibox_action_client_delegator.h
 @@ -22,6 +22,15 @@ class OmniboxActionClientDelegator : public OmniboxAction::Client {

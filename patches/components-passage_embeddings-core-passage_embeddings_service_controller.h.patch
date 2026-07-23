@@ -1,5 +1,5 @@
 diff --git a/components/passage_embeddings/core/passage_embeddings_service_controller.h b/components/passage_embeddings/core/passage_embeddings_service_controller.h
-index d8ef6e1164bd801491aca4b3fbfd3b7c66458744..e9e49932d46afca61beae7d6cd6d3c0cda208247 100644
+index 183cfd742526c18ffcb12342b287cb2880e29a1b..cd4a28d4019287e890f25f54715cbba9edfab27b 100644
 --- a/components/passage_embeddings/core/passage_embeddings_service_controller.h
 +++ b/components/passage_embeddings/core/passage_embeddings_service_controller.h
 @@ -43,7 +43,7 @@ class PassageEmbeddingsServiceController : public EmbedderMetadataProvider {
@@ -11,7 +11,7 @@ index d8ef6e1164bd801491aca4b3fbfd3b7c66458744..e9e49932d46afca61beae7d6cd6d3c0c
  
    bool EmbedderRunning();
  
-@@ -55,6 +55,7 @@ class PassageEmbeddingsServiceController : public EmbedderMetadataProvider {
+@@ -60,6 +60,7 @@ class PassageEmbeddingsServiceController : public EmbedderMetadataProvider {
    void RemoveObserver(EmbedderMetadataObserver* observer) override;
  
   private:
@@ -19,7 +19,7 @@ index d8ef6e1164bd801491aca4b3fbfd3b7c66458744..e9e49932d46afca61beae7d6cd6d3c0c
    // Computes embeddings for each entry in `passages`. Will invoke `callback`
    // when done. If successful, it is guaranteed that `results` will have the
    // same number of passages and embeddings and in the same order as
-@@ -66,13 +67,13 @@ class PassageEmbeddingsServiceController : public EmbedderMetadataProvider {
+@@ -71,13 +72,13 @@ class PassageEmbeddingsServiceController : public EmbedderMetadataProvider {
        base::RepeatingCallback<void(std::vector<std::string> passages,
                                     PassagePriority priority,
                                     GetEmbeddingsResultCallback callback)>;

@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/linux/BUILD.gn b/chrome/installer/linux/BUILD.gn
-index 14c3ba316b7628dc4475edce6be9457e1c604d51..9e7e474d7a1667682aa8fc41736dfe21f05cb9b2 100644
+index f7b8679690f69ed401e61e04dc371f7117693054..4323d2845ff09d76764de93f096e79c3464ce393 100644
 --- a/chrome/installer/linux/BUILD.gn
 +++ b/chrome/installer/linux/BUILD.gn
 @@ -18,6 +18,7 @@ import("//third_party/angle/gni/angle.gni")
@@ -34,7 +34,7 @@ index 14c3ba316b7628dc4475edce6be9457e1c604d51..9e7e474d7a1667682aa8fc41736dfe21
  }
  
  # On ChromeOS, system services depend on real ANGLE libraries rather than dummy
-@@ -368,6 +372,7 @@ copy("common_packaging_files") {
+@@ -369,6 +373,7 @@ copy("common_packaging_files") {
    }
  
    outputs = [ "$root_out_dir/installer/common/{{source_file_part}}" ]
@@ -42,7 +42,7 @@ index 14c3ba316b7628dc4475edce6be9457e1c604d51..9e7e474d7a1667682aa8fc41736dfe21
  }
  
  copy("deb_packaging_files") {
-@@ -468,6 +473,7 @@ group("installer_deps") {
+@@ -469,6 +474,7 @@ group("installer_deps") {
      "//components/privacy_sandbox/privacy_sandbox_attestations/preload:component",
      "//sandbox/linux:chrome_sandbox",
    ]
@@ -50,7 +50,7 @@ index 14c3ba316b7628dc4475edce6be9457e1c604d51..9e7e474d7a1667682aa8fc41736dfe21
    if (bundle_widevine_cdm) {
      public_deps += [ "//third_party/widevine/cdm" ]
    }
-@@ -535,11 +541,14 @@ group("installer_deps") {
+@@ -536,11 +542,14 @@ group("installer_deps") {
  template("linux_package") {
    assert(defined(invoker.channel))
    channel = invoker.channel
@@ -66,7 +66,7 @@ index 14c3ba316b7628dc4475edce6be9457e1c604d51..9e7e474d7a1667682aa8fc41736dfe21
    }
  
    deb_target_name = "${target_name}_deb"
-@@ -548,7 +557,7 @@ template("linux_package") {
+@@ -549,7 +558,7 @@ template("linux_package") {
      script = "debian/build.py"
  
      inputs = packaging_files
@@ -75,7 +75,7 @@ index 14c3ba316b7628dc4475edce6be9457e1c604d51..9e7e474d7a1667682aa8fc41736dfe21
  
      args = [
        "-a",
-@@ -585,7 +594,7 @@ template("linux_package") {
+@@ -586,7 +595,7 @@ template("linux_package") {
        script = "rpm/build.py"
  
        inputs = packaging_files
@@ -84,7 +84,7 @@ index 14c3ba316b7628dc4475edce6be9457e1c604d51..9e7e474d7a1667682aa8fc41736dfe21
  
        args = [
          "-a",
-@@ -633,3 +642,6 @@ linux_package("unstable") {
+@@ -634,3 +643,6 @@ linux_package("unstable") {
  linux_package("canary") {
    channel = "canary"
  }

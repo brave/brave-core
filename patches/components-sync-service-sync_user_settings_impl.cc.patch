@@ -1,5 +1,5 @@
 diff --git a/components/sync/service/sync_user_settings_impl.cc b/components/sync/service/sync_user_settings_impl.cc
-index 634bef915355eece0c48e9642f911aeb9e245bcc..885bc889861276af25c9d3cfcf52cdf256e65b78 100644
+index 2cc72205ef6538f2c183cb215a5fbb4113ba6eed..0ac8ca32914dc6e1213c1680279cee2035e5afbe 100644
 --- a/components/sync/service/sync_user_settings_impl.cc
 +++ b/components/sync/service/sync_user_settings_impl.cc
 @@ -394,6 +394,7 @@ DataTypeSet SyncUserSettingsImpl::GetPreferredDataTypes() const {

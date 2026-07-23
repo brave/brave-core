@@ -1,8 +1,8 @@
 diff --git a/components/autofill/core/browser/ui/autofill_external_delegate.cc b/components/autofill/core/browser/ui/autofill_external_delegate.cc
-index d06420ac37bd229c54c592fd6bdfe1489882e3fe..ff23c1a43bdd0492da671526ce8f7629253230f9 100644
+index 88e1f3e7c9e783344beaa5b71f6b4c9312afb556..2518fa31bee3b58c99570526e2c98e58f4e4eaab 100644
 --- a/components/autofill/core/browser/ui/autofill_external_delegate.cc
 +++ b/components/autofill/core/browser/ui/autofill_external_delegate.cc
-@@ -453,6 +453,7 @@ void AutofillExternalDelegate::AttemptToDisplayAutofillSuggestions(
+@@ -449,6 +449,7 @@ void AutofillExternalDelegate::AttemptToDisplayAutofillSuggestions(
    // updated to match.
    InsertDataListValues(last_query_.field_datalist_options, suggestions);
  

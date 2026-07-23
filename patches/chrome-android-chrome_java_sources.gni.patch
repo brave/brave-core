@@ -1,8 +1,8 @@
 diff --git a/chrome/android/chrome_java_sources.gni b/chrome/android/chrome_java_sources.gni
-index 42388df2aeae843fc3a1876313fe2f7b340cb7ac..d5028cd963e5e2284816f7d3ed0097e686314fb0 100644
+index fa4e501b969a68d102a3a19c2a5e15fd1e8d8274..4d73e3ed3100f1037fc967a5e2d11d77c1345c0d 100644
 --- a/chrome/android/chrome_java_sources.gni
 +++ b/chrome/android/chrome_java_sources.gni
-@@ -1356,3 +1356,4 @@ if (enable_screen_capture) {
+@@ -1372,3 +1372,4 @@ if (enable_screen_capture) {
      "java/src/org/chromium/chrome/browser/media/MediaCapturePickerTabObserver.java",
    ]
  }

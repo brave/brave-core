@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ssl/ask_before_http_dialog_controller.cc b/chrome/browser/ssl/ask_before_http_dialog_controller.cc
-index de9f7813a8e53c16fab70438121dbc09d0330834..f281d89470a6cca5cd2d19582c81897d46e422b0 100644
+index 59d86233c19cb13d5c4e766c444ba2c3d55e2eb5..bdcfdf79d1e5c3f5bf6243b279b34b65cf4b5d77 100644
 --- a/chrome/browser/ssl/ask_before_http_dialog_controller.cc
 +++ b/chrome/browser/ssl/ask_before_http_dialog_controller.cc
 @@ -54,7 +54,7 @@ using HttpWarningReason =

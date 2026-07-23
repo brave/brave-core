@@ -1,5 +1,5 @@
 diff --git a/crypto/unexportable_key_software_unsecure.cc b/crypto/unexportable_key_software_unsecure.cc
-index bd7153dbbcc50cf7c2e76daf5b7432e46c588e36..8cf1a9de9676a966a6c8538f6fb01eed5759c632 100644
+index e5988e3524e3023ece69c1555660ee74e0bd66dc..ee9291f155e31881b494c9c54191cb87b42b9d3e 100644
 --- a/crypto/unexportable_key_software_unsecure.cc
 +++ b/crypto/unexportable_key_software_unsecure.cc
 @@ -267,6 +267,7 @@ class SoftwareProvider : public UnexportableKeyProvider {

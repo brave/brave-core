@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/webui/unexportable_keys_internals/unexportable_keys_internals_handler.cc b/chrome/browser/ui/webui/unexportable_keys_internals/unexportable_keys_internals_handler.cc
-index 1fc1df73d8a4cc436b5a4ba6be6a70c366cd8c11..74d57aaddb7a77368214ebc5ce6249f48a3cedff 100644
+index 96b4b4032063149643b6f6f4bb6d8c67eb383eea..b14f61e3154568a41d39495a520f3571b3531ecf 100644
 --- a/chrome/browser/ui/webui/unexportable_keys_internals/unexportable_keys_internals_handler.cc
 +++ b/chrome/browser/ui/webui/unexportable_keys_internals/unexportable_keys_internals_handler.cc
 @@ -32,6 +32,8 @@ std::string_view GetAlgorithmName(

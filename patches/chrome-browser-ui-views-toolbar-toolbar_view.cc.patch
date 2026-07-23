@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/toolbar/toolbar_view.cc b/chrome/browser/ui/views/toolbar/toolbar_view.cc
-index 648c436ffb74b5ec0b0f0ad1bf4a0743ccb17c5c..69447fc893f87ae0a823713d8de3415143ea854c 100644
+index 40d785b75b6e9b28c8de5f613229101750b588f8..58da41d4f8b60aaaba6161c4bcaf122ae1702e2d 100644
 --- a/chrome/browser/ui/views/toolbar/toolbar_view.cc
 +++ b/chrome/browser/ui/views/toolbar/toolbar_view.cc
-@@ -320,7 +320,7 @@ void ToolbarView::Init() {
+@@ -319,7 +319,7 @@ void ToolbarView::Init() {
    aura::WindowOcclusionTracker::ScopedPause pause_occlusion;
  #endif
  
@@ -11,7 +11,7 @@ index 648c436ffb74b5ec0b0f0ad1bf4a0743ccb17c5c..69447fc893f87ae0a823713d8de34151
    std::unique_ptr<WebUILocationBar> webui_location_bar;
    if (features::IsWebUILocationBarEnabled() &&
        /* TODO(http://crbug.com/470042732): Figure out where we fit in other
-@@ -329,7 +329,7 @@ void ToolbarView::Init() {
+@@ -328,7 +328,7 @@ void ToolbarView::Init() {
        display_mode_ == DisplayMode::kNormal) {
      webui_location_bar = std::make_unique<WebUILocationBar>(browser_, this);
    } else {
@@ -20,7 +20,7 @@ index 648c436ffb74b5ec0b0f0ad1bf4a0743ccb17c5c..69447fc893f87ae0a823713d8de34151
          browser_, browser_->GetProfile(), browser_->command_controller(), this,
          display_mode_ != DisplayMode::kNormal);
    }
-@@ -577,7 +577,7 @@ void ToolbarView::Init() {
+@@ -576,7 +576,7 @@ void ToolbarView::Init() {
  
    if (!features::IsWebUIAvatarButtonEnabled()) {
      avatar_ =
@@ -29,7 +29,7 @@ index 648c436ffb74b5ec0b0f0ad1bf4a0743ccb17c5c..69447fc893f87ae0a823713d8de34151
      bool show_avatar_toolbar_button =
          AvatarToolbarButtonInterface::CanShowForProfile(browser_->GetProfile());
      avatar_->SetVisible(show_avatar_toolbar_button);
-@@ -589,7 +589,7 @@ void ToolbarView::Init() {
+@@ -588,7 +588,7 @@ void ToolbarView::Init() {
    // WebUI app menu button handles these internally, so no need to set these
    // properties here, and the control is added as part of the WebUI toolbar.
    if (!features::IsWebUIAppMenuButtonEnabled()) {

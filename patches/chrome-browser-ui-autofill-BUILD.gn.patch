@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/autofill/BUILD.gn b/chrome/browser/ui/autofill/BUILD.gn
-index b024d459678c7a15e0ce6973c1b56a729e99b985..f341b8287d06216a458a6af1e55a370a085c7500 100644
+index 6d3297d5fcd726d68467ffa9514cab4e392ab06c..a68121840767655bf02ae1754ef3a04b73d28956 100644
 --- a/chrome/browser/ui/autofill/BUILD.gn
 +++ b/chrome/browser/ui/autofill/BUILD.gn
 @@ -249,6 +249,7 @@ source_set("impl") {
@@ -10,7 +10,7 @@ index b024d459678c7a15e0ce6973c1b56a729e99b985..f341b8287d06216a458a6af1e55a370a
  
    if (safe_browsing_mode != 0) {
      deps += [ "//components/safe_browsing/content/browser/password_protection" ]
-@@ -274,6 +275,7 @@ source_set("impl") {
+@@ -276,6 +277,7 @@ source_set("impl") {
        "//components/password_manager/core/browser/features:password_features",
        "//components/plus_addresses/core/browser/resources/strings",
      ]

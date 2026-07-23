@@ -1,8 +1,8 @@
 diff --git a/chrome/BUILD.gn b/chrome/BUILD.gn
-index 973a46b2a34bb170e49417f4f76f8b2d899317d8..4567bc0ff3550ba984a971f6c88357178a4975ae 100644
+index 1781455ab68410459ba8f764f6487a69d4bdf279..e19eebf1626db86c3cd6eda9d8cfe1b53f2e639d 100644
 --- a/chrome/BUILD.gn
 +++ b/chrome/BUILD.gn
-@@ -194,6 +194,7 @@ if (!is_android && !is_mac) {
+@@ -195,6 +195,7 @@ if (!is_android && !is_mac) {
          "app/main_dll_loader_win.cc",
          "app/main_dll_loader_win.h",
        ]
@@ -10,7 +10,7 @@ index 973a46b2a34bb170e49417f4f76f8b2d899317d8..4567bc0ff3550ba984a971f6c8835717
  
        deps += [
          ":chrome_dll",
-@@ -515,11 +516,12 @@ if (is_win) {
+@@ -522,11 +523,12 @@ if (is_win) {
        args += [ "--keystone=0" ]
      }
    }
@@ -24,7 +24,7 @@ index 973a46b2a34bb170e49417f4f76f8b2d899317d8..4567bc0ff3550ba984a971f6c8835717
      extra_substitutions = [
        "CHROMIUM_BUNDLE_ID=$chrome_mac_bundle_id",
        "CHROMIUM_SHORT_NAME=$chrome_product_short_name",
-@@ -539,6 +541,7 @@ if (is_win) {
+@@ -547,6 +549,7 @@ if (is_win) {
        "//chrome/common:buildflags",
        "//chrome/common:version_header",
      ]
@@ -32,7 +32,7 @@ index 973a46b2a34bb170e49417f4f76f8b2d899317d8..4567bc0ff3550ba984a971f6c8835717
  
      if (enable_updater) {
        deps += [ ":chromium_updater_privileged_helper" ]
-@@ -684,6 +687,7 @@ if (is_win) {
+@@ -692,6 +695,7 @@ if (is_win) {
        # this dependency directly copies the file into the framework's
        # resources directory.
        public_deps += [ ":chrome_framework_widevine_signature" ]
@@ -40,7 +40,7 @@ index 973a46b2a34bb170e49417f4f76f8b2d899317d8..4567bc0ff3550ba984a971f6c8835717
      }
    }
  
-@@ -727,9 +731,11 @@ if (is_win) {
+@@ -735,9 +739,11 @@ if (is_win) {
        "--scm=0",
      ]
    }
@@ -52,7 +52,7 @@ index 973a46b2a34bb170e49417f4f76f8b2d899317d8..4567bc0ff3550ba984a971f6c8835717
      if (is_chrome_branded && include_branded_entitlements) {
        # These entitlements are bound to the official Google Chrome signing
        # certificate and will not necessarily work in any other build.
-@@ -754,6 +760,7 @@ if (is_win) {
+@@ -762,6 +768,7 @@ if (is_win) {
          info_plist_target = invoker.info_plist_target
        } else {
          info_plist_target = ":chrome_helper_plist"
@@ -60,7 +60,7 @@ index 973a46b2a34bb170e49417f4f76f8b2d899317d8..4567bc0ff3550ba984a971f6c8835717
        }
  
        extra_substitutions = [
-@@ -939,6 +946,7 @@ if (is_win) {
+@@ -948,6 +955,7 @@ if (is_win) {
      if (enable_updater) {
        if (is_chrome_branded) {
          sources += [ "//third_party/updater/chrome_mac_universal_prod/cipd/${updater_product_full_name}.app" ]
@@ -68,7 +68,7 @@ index 973a46b2a34bb170e49417f4f76f8b2d899317d8..4567bc0ff3550ba984a971f6c8835717
        } else {
          sources += [ "$root_out_dir/${updater_product_full_name}.app" ]
  
-@@ -1236,6 +1244,7 @@ if (is_win) {
+@@ -1258,6 +1266,7 @@ if (is_win) {
        "-current_version",
        chrome_dylib_version,
      ]
@@ -76,7 +76,7 @@ index 973a46b2a34bb170e49417f4f76f8b2d899317d8..4567bc0ff3550ba984a971f6c8835717
  
      if (!is_component_build) {
        # Specify a sensible install_name for static builds. The library is
-@@ -1447,6 +1456,7 @@ if (is_win) {
+@@ -1469,6 +1478,7 @@ if (is_win) {
  
  group("dependencies") {
    public_deps = [
@@ -84,7 +84,7 @@ index 973a46b2a34bb170e49417f4f76f8b2d899317d8..4567bc0ff3550ba984a971f6c8835717
      "//build:branding_buildflags",
      "//build:chromeos_buildflags",
      "//chrome/browser",
-@@ -1493,7 +1503,7 @@ group("dependencies") {
+@@ -1515,7 +1525,7 @@ group("dependencies") {
  
  if (is_win) {
    process_version_rc_template("chrome_exe_version") {
@@ -93,7 +93,7 @@ index 973a46b2a34bb170e49417f4f76f8b2d899317d8..4567bc0ff3550ba984a971f6c8835717
      output = "$target_gen_dir/chrome_exe_version.rc"
    }
  
-@@ -1542,6 +1552,7 @@ group("resources") {
+@@ -1564,6 +1574,7 @@ group("resources") {
      "//chrome/browser:resources",
      "//chrome/common:resources",
      "//chrome/renderer:resources",
@@ -101,7 +101,7 @@ index 973a46b2a34bb170e49417f4f76f8b2d899317d8..4567bc0ff3550ba984a971f6c8835717
    ]
  }
  
-@@ -1567,6 +1578,7 @@ if (!is_android) {
+@@ -1589,6 +1600,7 @@ if (!is_android) {
      if (enable_resource_allowlist_generation) {
        repack_allowlist = _chrome_resource_allowlist
        deps = [ ":resource_allowlist" ]

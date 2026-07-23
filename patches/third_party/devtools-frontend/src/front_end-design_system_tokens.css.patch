@@ -1,5 +1,5 @@
 diff --git a/front_end/design_system_tokens.css b/front_end/design_system_tokens.css
-index de3f89a6528036341dec59288442ba24ee451c65..caba036a1e7a0048be7e2f3f159a57e35f840b12 100644
+index 805d7284aef8660a0f59e70b3e51ccb18331a78e..1df926f46e4f8b63dcfd27edd47bc96215c81f78 100644
 --- a/front_end/design_system_tokens.css
 +++ b/front_end/design_system_tokens.css
 @@ -387,7 +387,7 @@

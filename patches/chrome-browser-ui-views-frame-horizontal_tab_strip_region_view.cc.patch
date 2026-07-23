@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.cc b/chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.cc
-index cd70db2f20c0fe10d0848dc9a6132ea511f044b6..3486604081d9bcec6269b1f87374046ad3a0f1fb 100644
+index f994a992e8eaa8124d8633239ec3f13cd43c4b62..def06d8fca1bfa6f91c7078cb70182235e46546f 100644
 --- a/chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.cc
 +++ b/chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.cc
 @@ -86,6 +86,7 @@ class FrameGrabHandle : public views::View {
@@ -38,7 +38,7 @@ index cd70db2f20c0fe10d0848dc9a6132ea511f044b6..3486604081d9bcec6269b1f87374046a
              base::BindRepeating(&TabStrip::NewTabButtonPressed,
                                  base::Unretained(tab_strip_)),
              features::IsRoundedIconsEnabled() ? vector_icons::kAddWeight500Icon
-@@ -475,14 +476,14 @@ void HorizontalTabStripRegionViewOld::InitializeTabStrip() {
+@@ -476,14 +477,14 @@ void HorizontalTabStripRegionViewOld::InitializeTabStrip() {
    }
  
    tab_strip_->Initialize();
@@ -55,7 +55,7 @@ index cd70db2f20c0fe10d0848dc9a6132ea511f044b6..3486604081d9bcec6269b1f87374046a
    tab_strip_->Reset();
  }
  
-@@ -605,7 +606,7 @@ void HorizontalTabStripRegionViewOld::UpdateButtonBorders() {
+@@ -606,7 +607,7 @@ void HorizontalTabStripRegionViewOld::UpdateButtonBorders() {
    const int extra_vertical_space =
        GetLayoutConstant(LayoutConstant::kTabStripHeight) -
        GetLayoutConstant(LayoutConstant::kTabstripToolbarOverlap) -
@@ -64,7 +64,7 @@ index cd70db2f20c0fe10d0848dc9a6132ea511f044b6..3486604081d9bcec6269b1f87374046a
    const int top_inset = extra_vertical_space / 2;
    const int bottom_inset =
        extra_vertical_space - top_inset +
-@@ -892,13 +893,16 @@ void HorizontalTabStripRegionViewNew::OnTabStripViewSet() {
+@@ -899,13 +900,16 @@ void HorizontalTabStripRegionViewNew::OnTabStripViewSet() {
    ReorderChildView(tab_strip_view(), index);
  }
  
