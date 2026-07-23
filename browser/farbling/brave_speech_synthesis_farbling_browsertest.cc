@@ -3,9 +3,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <algorithm>
 #include <memory>
+#include <string>
+#include <vector>
 
 #include "base/path_service.h"
+#include "base/strings/string_split.h"
+#include "base/strings/string_util.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/features.h"
@@ -27,6 +32,23 @@ using brave_shields::ControlType;
 namespace {
 constexpr char kEmbeddedTestServerDirectory[] = "speech";
 constexpr char kTitleScript[] = "document.title";
+
+// The voices list is returned as a comma-separated "name (voiceURI)" string.
+// Its ordering is not stable across navigations: on macOS the platform
+// default voice is resolved asynchronously and, once known, is moved to the
+// front of the list (see TtsPlatformImplMac::Voices). The first navigation in
+// this test can read getVoices() before that async resolution completes, so an
+// unfarbled list may be plain alphabetical on one domain and default-voice-
+// first on another, even though the set of voices is identical. Farbling being
+// off only guarantees the same voices on every domain, not the same order, so
+// compare order-independently. (Voice names never contain a comma, so
+// splitting on ',' is safe here.)
+std::string SortedVoices(const std::string& voices) {
+  std::vector<std::string> parts = base::SplitString(
+      voices, ",", base::TRIM_WHITESPACE, base::SPLIT_WANT_ALL);
+  std::sort(parts.begin(), parts.end());
+  return base::JoinString(parts, ",");
+}
 }  // namespace
 
 class BraveSpeechSynthesisFarblingBrowserTest : public InProcessBrowserTest {
@@ -110,8 +132,9 @@ IN_PROC_BROWSER_TEST_F(BraveSpeechSynthesisFarblingBrowserTest, FarbleVoices) {
   std::string off_voices_z =
       EvalJs(web_contents(), kTitleScript).ExtractString();
   ASSERT_NE("failed", off_voices_z);
-  // The voices list should be the same on every domain if farbling is off.
-  EXPECT_EQ(off_voices_b, off_voices_z);
+  // The voices list should be the same on every domain if farbling is off
+  // (order-independent; see SortedVoices).
+  EXPECT_EQ(SortedVoices(off_voices_b), SortedVoices(off_voices_z));
 
   // Farbling level: default
   // The voices list is farbled per domain.
@@ -127,9 +150,12 @@ IN_PROC_BROWSER_TEST_F(BraveSpeechSynthesisFarblingBrowserTest, FarbleVoices) {
   // list, and each domain's lists should be different from each other.
   // (That is not true of all domains, because there are a finite number of
   // farbling choices, but it should be true of these two domains.)
-  EXPECT_NE(off_voices_b, default_voices_b);
-  EXPECT_NE(off_voices_z, default_voices_z);
-  EXPECT_NE(default_voices_b, default_voices_z);
+  // Compare order-independently (see SortedVoices): otherwise these could pass
+  // merely because the platform reorders the default voice between navigations,
+  // masking a regression where farbling silently stops adding the fake voice.
+  EXPECT_NE(SortedVoices(off_voices_b), SortedVoices(default_voices_b));
+  EXPECT_NE(SortedVoices(off_voices_z), SortedVoices(default_voices_z));
+  EXPECT_NE(SortedVoices(default_voices_b), SortedVoices(default_voices_z));
 
   // Farbling level: maximum
   // The voices list is empty.
@@ -151,6 +177,7 @@ IN_PROC_BROWSER_TEST_F(BraveSpeechSynthesisFarblingBrowserTest, FarbleVoices) {
   std::string off_voices_z2 =
       EvalJs(web_contents(), kTitleScript).ExtractString();
   ASSERT_NE("failed", off_voices_z2);
-  // The voices list should be the same on every domain if farbling is off.
-  EXPECT_EQ(off_voices_b, off_voices_z2);
+  // The voices list should be the same on every domain if farbling is off
+  // (order-independent; see SortedVoices).
+  EXPECT_EQ(SortedVoices(off_voices_b), SortedVoices(off_voices_z2));
 }
