@@ -16,7 +16,12 @@ class BatAdsServiceFactory {
   virtual ~BatAdsServiceFactory() = default;
 
   // Launches a new Bat Ads Service.
-  virtual mojo::Remote<bat_ads::mojom::BatAdsService> Launch() const = 0;
+  virtual mojo::Remote<bat_ads::mojom::BatAdsService> Launch() = 0;
+
+  // Invalidates the in-flight `Launch`. A bind that has not yet run becomes
+  // a no-op; a bind that already ran has its service closed instead of
+  // being left running after the caller has moved on.
+  virtual void Invalidate() = 0;
 };
 
 }  // namespace brave_ads

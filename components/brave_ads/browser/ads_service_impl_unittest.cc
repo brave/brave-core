@@ -378,6 +378,36 @@ TEST_F(BraveAdsAdsServiceImplTest,
 }
 
 TEST_F(BraveAdsAdsServiceImplTest,
+       InvalidatesFactoryWhenSponsoredAdsAreDisabledThenReenabled) {
+  // Arrange
+  prefs_.SetBoolean(prefs::kSponsoredEnabled, false);
+  Startup();
+  prefs_.SetBoolean(prefs::kSponsoredEnabled, true);
+  const size_t invalidate_count_before_opt_out =
+      bat_ads_service_factory_->invalidate_count();
+
+  // Act
+  prefs_.SetBoolean(prefs::kSponsoredEnabled, false);
+
+  // Assert
+  EXPECT_EQ(invalidate_count_before_opt_out + 1,
+            bat_ads_service_factory_->invalidate_count());
+}
+
+TEST_F(BraveAdsAdsServiceImplTest, InvalidatesFactoryOnProfileShutdown) {
+  // Arrange
+  prefs_.SetBoolean(prefs::kSponsoredEnabled, true);
+  Startup();
+  ASSERT_EQ(0U, bat_ads_service_factory_->invalidate_count());
+
+  // Act
+  Shutdown();
+
+  // Assert
+  EXPECT_EQ(1U, bat_ads_service_factory_->invalidate_count());
+}
+
+TEST_F(BraveAdsAdsServiceImplTest,
        ServiceDoesNotStopWhenNewTabPageBackgroundImagesAreDisabled) {
   // Arrange
   prefs_.SetBoolean(prefs::kSponsoredEnabled, true);
