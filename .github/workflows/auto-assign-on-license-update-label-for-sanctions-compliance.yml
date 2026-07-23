@@ -9,16 +9,16 @@ permissions:
 
 jobs:
   assign-user:
-        runs-on: ubuntu-slim
+    runs-on: ubuntu-slim
     if: github.event.label.name == 'license-update'
     steps:
       - name: Auto Assign on license-update labels for Sanctions Compliance
         uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
         with:
           script: |
-            github.rest.issues.addAssignees({
+            github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: context.issue.number,
-              assignees: ['mrose17']
+              body: '@brave/license-reviewer This PR has been labeled `license-update` and requires your attention.'
             })
