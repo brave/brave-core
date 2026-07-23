@@ -11,7 +11,7 @@ argument-hint:
   '<patch file, source path, or nothing to infer from working tree>'
 disable-model-invocation: true
 allowed-tools:
-  Bash(python3:*), Bash(vpython3:*), Bash(git:*), Bash(npm:*), Bash(ls:*),
+  Bash(python3:*), Bash(vpython3:*), Bash(git:*), Bash(pnpm:*), Bash(ls:*),
   Bash(cat:*), Bash(grep:*), Bash(diff:*), Bash(find:*), Read, Grep, Glob, Edit,
   Write, Agent
 ---
@@ -20,7 +20,7 @@ allowed-tools:
 
 Create a 🩹 Plaster config for a patch the user has already written. The user
 made a normal Brave-core change the usual way — edited an upstream source under
-`src/`, then ran `npm run update_patches` to generate
+`src/`, then ran `pnpm run update_patches` to generate
 `patches/<dashed-path>.patch` — and now wants the equivalent
 `rewrite/<path>.yaml` so the change is expressed as a robust regex substitution
 instead of a brittle context patch.
@@ -284,4 +284,4 @@ config and tied to it by `.patchinfo`). Then offer to push and open a PR
   the safety mechanism working.
 - **Keep the regex minimal and intent-bearing.** The smallest match that is
   still unique is the most robust across rebases.
-- **Format docs/markdown with `npm run format`** if you touch any.
+- **Format docs/markdown with `pnpm run format`** if you touch any.
