@@ -96,6 +96,19 @@ base::DictValue EthTxMeta::ToValue() const {
   dict.Set("tx_receipt", TransactionReceiptToValue(tx_receipt_));
   dict.Set("tx", tx_->ToValue());
   dict.Set("sign_only", sign_only_);
+  if (!authorization_findings_.empty()) {
+    base::ListValue findings_list;
+    for (const auto& f : authorization_findings_) {
+      base::DictValue fd;
+      fd.Set("kind", static_cast<int>(f.kind));
+      fd.Set("token_contract", f.token_contract);
+      fd.Set("grantor", f.grantor);
+      fd.Set("grantee", f.grantee);
+      fd.Set("raw_value", f.raw_value);
+      findings_list.Append(std::move(fd));
+    }
+    dict.Set("authorization_findings", std::move(findings_list));
+  }
   return dict;
 }
 
