@@ -63,7 +63,7 @@ class AdBlockEngineWrapper {
   std::optional<std::string> GetCspDirectives(
       const GURL& url,
       blink::mojom::ResourceType resource_type,
-      const std::optional<url::Origin>& request_initiator,
+      const std::string& tab_host,
       const std::string& method);
 
   void UseResources(const adblock::BraveCoreResourceStorage& storage);
