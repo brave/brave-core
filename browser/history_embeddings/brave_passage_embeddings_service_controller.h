@@ -96,6 +96,12 @@ class BravePassageEmbeddingsServiceController
   // local_ai::LocalModelsUpdaterState::Observer:
   void OnLocalModelsReady(const base::FilePath& install_dir) override;
 
+  // Reply for the OnLocalModelsReady existence check: records the LiteRT model
+  // paths and notifies observers only when both files are actually on disk.
+  void OnLitertModelChecked(const base::FilePath& embeddings_model_path,
+                            const base::FilePath& sp_model_path,
+                            bool models_exist);
+
   // Posts the disk read for the five EmbeddingGemma files. Wired to
   // OnLocalModelFilesLoaded; the receiver waits on the mojo pipe until
   // BindPassageEmbedder is invoked there.
