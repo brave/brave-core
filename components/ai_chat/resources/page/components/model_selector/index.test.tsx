@@ -41,7 +41,7 @@ describe('ModelSelector', () => {
       },
     },
     {
-      key: 'chat-basic',
+      key: 'mock-basic-model',
       displayName: 'Basic Model',
       isSuggestedModel: true,
       isNearModel: false,
@@ -64,7 +64,7 @@ describe('ModelSelector', () => {
       },
     },
     {
-      key: 'another-chat-basic',
+      key: 'another-mock-basic-model',
       displayName: 'Another Basic Model',
       isSuggestedModel: false,
       isNearModel: false,
@@ -203,7 +203,7 @@ describe('ModelSelector', () => {
         initialState={{
           conversationState: {
             allModels: mockModels,
-            currentModelKey: 'chat-basic',
+            currentModelKey: 'mock-basic-model',
           },
           ...props?.initialState,
         }}
@@ -382,7 +382,7 @@ describe('ModelSelector', () => {
         initialState: {
           conversationState: {
             allModels: filteredModels,
-            currentModelKey: 'chat-basic',
+            currentModelKey: 'mock-basic-model',
           },
         },
         aiChatOverrides: {
