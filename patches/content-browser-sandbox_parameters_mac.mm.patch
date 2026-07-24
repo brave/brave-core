@@ -1,0 +1,14 @@
+diff --git a/content/browser/sandbox_parameters_mac.mm b/content/browser/sandbox_parameters_mac.mm
+index b2701104febe4e21a50744909e8f9dd117cdecc7..c40943b6bfc450ff4b825a1f4e73181a55155405 100644
+--- a/content/browser/sandbox_parameters_mac.mm
++++ b/content/browser/sandbox_parameters_mac.mm
+@@ -207,7 +207,8 @@ bool SetupGpuSandboxParameters(sandbox::SandboxSerializer* serializer,
+ 
+   CHECK(serializer->SetBooleanParameter(
+       sandbox::policy::kParamOdmeUserDirAccess,
+-      base::FeatureList::IsEnabled(kMacSandboxOdmeUserDirAccess)));
++      base::FeatureList::IsEnabled(kMacSandboxOdmeUserDirAccess) ||
++          command_line.HasSwitch("passage-embeddings-gpu-cache")));
+ 
+   base::FilePath helper_bundle_path =
+       base::apple::GetInnermostAppBundlePath(command_line.GetProgram());

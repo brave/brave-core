@@ -66,6 +66,10 @@
 #include "brave/components/brave_vpn/common/features.h"
 #endif
 
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+#include "brave/browser/history_embeddings/features.h"
+#endif
+
 #if BUILDFLAG(ENABLE_PLAYLIST)
 #include "brave/components/playlist/core/common/features.h"
 #endif
@@ -763,6 +767,20 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
   })
 #else
 #define BRAVE_HISTORY_EMBEDDINGS_FLAG
+#endif
+
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+#define BRAVE_HISTORY_EMBEDDINGS_LITERT_GPU_FLAG                             \
+  EXPAND_FEATURE_ENTRIES({                                                   \
+      "brave-history-embeddings-litert",                                     \
+      "History embeddings via LiteRT",                                       \
+      "Runs the history embeddings model (EmbeddingGemma) natively on "      \
+      "LiteRT (Metal GPU, WebGPU, or CPU) instead of the WASM worker.",      \
+      kOsDesktop,                                                            \
+      FEATURE_VALUE_TYPE(passage_embeddings::kBraveHistoryEmbeddingsLitert), \
+  })
+#else
+#define BRAVE_HISTORY_EMBEDDINGS_LITERT_GPU_FLAG
 #endif
 
 #define BRAVE_OMNIBOX_FEATURES                                                \
@@ -1485,6 +1503,7 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
   BRAVE_AI_CHAT_FEATURE_ENTRIES                                                \
   BRAVE_AI_CHAT_TAB_MANAGEMENT_TOOL_ENTRY                                      \
   BRAVE_HISTORY_EMBEDDINGS_FLAG                                                \
+  BRAVE_HISTORY_EMBEDDINGS_LITERT_GPU_FLAG                                     \
   BRAVE_OMNIBOX_FEATURES                                                       \
   BRAVE_MIDDLE_CLICK_AUTOSCROLL_FEATURE_ENTRY                                  \
   BRAVE_UPGRADE_WHEN_IDLE_FEATURE_ENTRY                                        \

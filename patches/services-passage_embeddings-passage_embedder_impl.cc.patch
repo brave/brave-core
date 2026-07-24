@@ -1,0 +1,13 @@
+diff --git a/services/passage_embeddings/passage_embedder_impl.cc b/services/passage_embeddings/passage_embedder_impl.cc
+index b925fbd4d0f8fff73e426b0d1354e08706ee06b8..ac9e989b90557eea811b9712d9b3acce1500ba2a 100644
+--- a/services/passage_embeddings/passage_embedder_impl.cc
++++ b/services/passage_embeddings/passage_embedder_impl.cc
+@@ -146,6 +146,8 @@ bool PassageEmbedderImpl::BuildExecutionTask() {
+   CHECK_NE(current_priority_, mojom::PassagePriority::kUnknown);
+   executor_.reset();
+ 
++  BRAVE_PASSAGE_EMBEDDER_IMPL_BUILD_EXECUTION_TASK
++
+   std::unique_ptr<tflite::OpResolver> op_resolver;
+   if (execute_for_gemma_) {
+     op_resolver = std::make_unique<GemmaOpResolver>();

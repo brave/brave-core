@@ -7,6 +7,16 @@ import("//brave/components/local_ai/buildflags/buildflags.gni")
 
 assert(enable_local_ai)
 
+# Feature flag for the native LiteRT embedder. Split out so //brave/browser
+# (about_flags) can reference it without the heavy service headers.
+source_set("features") {
+  sources = [
+    "features.cc",
+    "features.h",
+  ]
+  deps = [ "//base" ]
+}
+
 # Resolves open-tab URLs to URLIDs via HistoryService and ranks them with
 # HistoryEmbeddingsSearch. Shared by the tab_search WebUI page handler and the
 # semantic tab search chat tool.
@@ -67,6 +77,7 @@ source_set("unit_tests") {
 
   deps = [
     ":batch_passage_embedder",
+    ":features",
     ":history_embeddings",
     "//base",
     "//base/test:test_support",
@@ -127,6 +138,7 @@ source_set("history_embeddings") {
 
   deps = [
     ":batch_passage_embedder",
+    ":features",
     "//brave/app:brave_generated_resources_grit",
     "//brave/browser/local_ai",
     "//brave/components/history_embeddings",
@@ -134,5 +146,7 @@ source_set("history_embeddings") {
     "//chrome/browser:browser_public_dependencies",
     "//chrome/browser/profiles",
     "//components/history_embeddings/core",
+    "//components/optimization_guide/proto:optimization_guide_proto",
+    "//content/public/browser",
   ]
 }
