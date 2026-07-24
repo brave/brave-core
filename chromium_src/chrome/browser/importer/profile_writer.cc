@@ -6,6 +6,7 @@
 #include "base/uuid.h"
 #include "chrome/browser/autofill/personal_data_manager_factory.h"
 #include "components/autofill/core/browser/data_manager/personal_data_manager.h"
+#include "components/autofill/core/common/autofill_constants.h"
 
 #include <chrome/browser/importer/profile_writer.cc>
 
@@ -17,8 +18,9 @@ void ProfileWriter::AddCreditCard(const std::u16string& name_on_card,
   autofill::PersonalDataManager* personal_data =
       autofill::PersonalDataManagerFactory::GetForBrowserContext(profile_);
 
-  autofill::CreditCard credit_card = autofill::CreditCard(
-      base::Uuid::GenerateRandomV4().AsLowercaseString(), origin);
+  autofill::CreditCard credit_card =
+      autofill::CreditCard(base::Uuid::GenerateRandomV4().AsLowercaseString());
+  credit_card.set_is_user_confirmed(origin == autofill::kSettingsOrigin);
 
   if (!name_on_card.empty()) {
     credit_card.SetRawInfo(autofill::CREDIT_CARD_NAME_FULL,
