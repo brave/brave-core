@@ -1,4 +1,4 @@
-/* Copyright (c) 2025 The Brave Authors. All rights reserved.
+/* Copyright (c) 2026 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
@@ -28,9 +28,9 @@ class ZCashV5Serializer {
       const std::optional<ZCashTransaction::TxInput>& input);
   static std::vector<uint8_t> SerializeRawTransaction(
       const ZCashTransaction& tx);
-  static bool SignTransparentPart(KeyringService& keyring_service,
-                                  const mojom::AccountIdPtr& account_id,
-                                  ZCashTransaction& tx);
+  static bool SignTransparentPartV5(KeyringService& keyring_service,
+                                    const mojom::AccountIdPtr& account_id,
+                                    ZCashTransaction& tx);
 
  private:
   FRIEND_TEST_ALL_PREFIXES(ZCashV5SerializerTest, HashHeader);

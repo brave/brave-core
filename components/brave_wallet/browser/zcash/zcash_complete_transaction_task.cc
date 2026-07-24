@@ -15,6 +15,7 @@
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_rpc.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_serializer.h"
+#include "brave/components/brave_wallet/browser/zcash/zcash_serializer_utils.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_wallet_service.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
@@ -251,8 +252,8 @@ void ZCashCompleteTransactionTask::SignOrchardPart() {
   transaction_.v5_part().orchard.digest =
       orchard_bundle_manager->GetOrchardDigest();
 
-  auto sighash =
-      ZCashSerializer::CalculateSignatureDigest(transaction_, std::nullopt);
+  auto sighash = ZCashSerializerUtils::CalculateSignatureDigest(transaction_,
+                                                                std::nullopt);
 
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},

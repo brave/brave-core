@@ -12,6 +12,7 @@
 #include <string>
 #include <vector>
 
+#include "base/numerics/checked_math.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
 #include "brave/components/services/brave_wallet/public/mojom/zcash_decoder.mojom.h"
@@ -108,11 +109,8 @@ class ZCashTransaction {
     ShieldedPool& operator=(ShieldedPool&& other);
     bool operator==(const ShieldedPool& other) const;
 
-    base::DictValue ToValue() const;
-    static std::optional<ShieldedPool> FromValue(const base::DictValue& value);
-
-    uint64_t TotalInputsAmount() const;
-    uint64_t TotalOutputsAmount() const;
+    base::CheckedNumeric<uint64_t> TotalInputsAmount() const;
+    base::CheckedNumeric<uint64_t> TotalOutputsAmount() const;
 
     std::vector<OrchardInput> inputs;
     std::vector<OrchardOutput> outputs;
@@ -136,8 +134,8 @@ class ZCashTransaction {
     void WriteTopLevel(base::DictValue& tx_dict) const;
     static std::optional<V5Part> ReadTopLevel(const base::DictValue& tx_dict);
 
-    uint64_t TotalInputsAmount() const;
-    uint64_t TotalOutputsAmount() const;
+    base::CheckedNumeric<uint64_t> TotalInputsAmount() const;
+    base::CheckedNumeric<uint64_t> TotalOutputsAmount() const;
 
     ShieldedPool orchard;
   };
@@ -155,7 +153,7 @@ class ZCashTransaction {
       const base::DictValue& value);
 
   bool IsTransparentPartSigned() const;
-  uint64_t TotalInputsAmount() const;
+  base::CheckedNumeric<uint64_t> TotalInputsAmount() const;
 
   uint8_t sighash_type() const;
 

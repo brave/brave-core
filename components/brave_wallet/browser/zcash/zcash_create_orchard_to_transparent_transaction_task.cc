@@ -152,8 +152,8 @@ void ZCashCreateOrchardToTransparentTransactionTask::CreateTransaction() {
   // ValueOrDie is correct here since PickZCashOrchardInputs already
   // selects correct inputs and corresponding fee\change.
   uint64_t actual_send_amount =
-      base::CheckSub<uint64_t>(zcash_transaction.TotalInputsAmount(),
-                               zcash_transaction.fee(), pick_result->change)
+      base::CheckSub(zcash_transaction.TotalInputsAmount(),
+                     zcash_transaction.fee(), pick_result->change)
           .ValueOrDie();
   transparent_output.amount = actual_send_amount;
   transparent_output.script_pubkey =

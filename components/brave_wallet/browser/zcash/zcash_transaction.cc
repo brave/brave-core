@@ -32,12 +32,8 @@ ZCashTransaction::ZCashTransaction(const ZCashTransaction& other) = default;
 ZCashTransaction::ZCashTransaction(ZCashTransaction&& other) = default;
 ZCashTransaction& ZCashTransaction::operator=(ZCashTransaction&& other) =
     default;
-bool ZCashTransaction::operator==(const ZCashTransaction& other) const {
-  return std::tie(transparent_part_, v5_part_, locktime_, to_, amount_, fee_,
-                  memo_) == std::tie(other.transparent_part_, other.v5_part_,
-                                     other.locktime_, other.to_, other.amount_,
-                                     other.fee_, other.memo_);
-}
+bool ZCashTransaction::operator==(const ZCashTransaction& other) const =
+    default;
 
 ZCashTransaction::Outpoint::Outpoint() = default;
 ZCashTransaction::Outpoint::~Outpoint() = default;
@@ -48,9 +44,7 @@ ZCashTransaction::Outpoint::Outpoint(Outpoint&& other) = default;
 ZCashTransaction::Outpoint& ZCashTransaction::Outpoint::operator=(
     Outpoint&& other) = default;
 bool ZCashTransaction::Outpoint::operator==(
-    const ZCashTransaction::Outpoint& other) const {
-  return std::tie(this->txid, this->index) == std::tie(other.txid, other.index);
-}
+    const ZCashTransaction::Outpoint& other) const = default;
 
 ZCashTransaction::ShieldedPool::ShieldedPool() = default;
 ZCashTransaction::ShieldedPool::~ShieldedPool() = default;
@@ -62,101 +56,24 @@ ZCashTransaction::ShieldedPool& ZCashTransaction::ShieldedPool::operator=(
 ZCashTransaction::ShieldedPool& ZCashTransaction::ShieldedPool::operator=(
     const ShieldedPool& other) = default;
 bool ZCashTransaction::ShieldedPool::operator==(
-    const ShieldedPool& other) const {
-  return std::tie(this->digest, this->outputs, this->raw_tx) ==
-         std::tie(other.digest, other.outputs, other.raw_tx);
-}
+    const ShieldedPool& other) const = default;
 
-uint64_t ZCashTransaction::ShieldedPool::TotalInputsAmount() const {
-  uint64_t result = 0;
+base::CheckedNumeric<uint64_t>
+ZCashTransaction::ShieldedPool::TotalInputsAmount() const {
+  base::CheckedNumeric<uint64_t> result = 0;
   for (const auto& input : inputs) {
     result += input.note.amount;
   }
   return result;
 }
 
-uint64_t ZCashTransaction::ShieldedPool::TotalOutputsAmount() const {
-  uint64_t result = 0;
+base::CheckedNumeric<uint64_t>
+ZCashTransaction::ShieldedPool::TotalOutputsAmount() const {
+  base::CheckedNumeric<uint64_t> result = 0;
   for (const auto& output : outputs) {
     result += output.value;
   }
   return result;
-}
-
-base::DictValue ZCashTransaction::ShieldedPool::ToValue() const {
-  base::DictValue dict;
-  auto& inputs_value = dict.Set("inputs", base::ListValue())->GetList();
-  for (auto& input : inputs) {
-    inputs_value.Append(input.ToValue());
-  }
-  auto& outputs_value = dict.Set("outputs", base::ListValue())->GetList();
-  for (auto& output : outputs) {
-    outputs_value.Append(output.ToValue());
-  }
-  if (anchor_block_height) {
-    dict.Set("anchor_block_height", base::NumberToString(*anchor_block_height));
-  }
-  if (digest) {
-    dict.Set("digest", base::HexEncode(*digest));
-  }
-  if (raw_tx) {
-    dict.Set("raw_tx", base::HexEncode(*raw_tx));
-  }
-  return dict;
-}
-
-// static
-std::optional<ZCashTransaction::ShieldedPool>
-ZCashTransaction::ShieldedPool::FromValue(const base::DictValue& dict) {
-  ShieldedPool pool;
-  auto* inputs_list = dict.FindList("inputs");
-  if (inputs_list) {
-    for (auto& item : *inputs_list) {
-      if (!item.is_dict()) {
-        return std::nullopt;
-      }
-      auto input_opt = OrchardInput::FromValue(item.GetDict());
-      if (!input_opt) {
-        return std::nullopt;
-      }
-      pool.inputs.push_back(std::move(*input_opt));
-    }
-  }
-  auto* outputs_list = dict.FindList("outputs");
-  if (outputs_list) {
-    for (auto& item : *outputs_list) {
-      if (!item.is_dict()) {
-        return std::nullopt;
-      }
-      auto output_opt = OrchardOutput::FromValue(item.GetDict());
-      if (!output_opt) {
-        return std::nullopt;
-      }
-      pool.outputs.push_back(std::move(*output_opt));
-    }
-  }
-  if (dict.Find("anchor_block_height")) {
-    uint32_t height = 0;
-    if (!ReadUint32StringTo(dict, "anchor_block_height", height)) {
-      return std::nullopt;
-    }
-    pool.anchor_block_height = height;
-  }
-  if (dict.Find("digest")) {
-    std::array<uint8_t, kZCashDigestSize> digest_val{};
-    if (!ReadHexByteArrayTo<kZCashDigestSize>(dict, "digest", digest_val)) {
-      return std::nullopt;
-    }
-    pool.digest = digest_val;
-  }
-  if (dict.Find("raw_tx")) {
-    std::vector<uint8_t> raw_tx_val;
-    if (!ReadHexByteArrayTo(dict, "raw_tx", raw_tx_val)) {
-      return std::nullopt;
-    }
-    pool.raw_tx = std::move(raw_tx_val);
-  }
-  return pool;
 }
 
 ZCashTransaction::V5Part::V5Part() = default;
@@ -167,14 +84,15 @@ ZCashTransaction::V5Part& ZCashTransaction::V5Part::operator=(V5Part&& other) =
     default;
 ZCashTransaction::V5Part& ZCashTransaction::V5Part::operator=(
     const V5Part& other) = default;
-bool ZCashTransaction::V5Part::operator==(const V5Part& other) const {
-  return orchard == other.orchard;
-}
+bool ZCashTransaction::V5Part::operator==(const V5Part& other) const = default;
 
-uint64_t ZCashTransaction::V5Part::TotalInputsAmount() const {
+base::CheckedNumeric<uint64_t> ZCashTransaction::V5Part::TotalInputsAmount()
+    const {
   return orchard.TotalInputsAmount();
 }
-uint64_t ZCashTransaction::V5Part::TotalOutputsAmount() const {
+
+base::CheckedNumeric<uint64_t> ZCashTransaction::V5Part::TotalOutputsAmount()
+    const {
   return orchard.TotalOutputsAmount();
 }
 
@@ -247,10 +165,7 @@ ZCashTransaction::TransparentPart& ZCashTransaction::TransparentPart::operator=(
 ZCashTransaction::TransparentPart& ZCashTransaction::TransparentPart::operator=(
     const TransparentPart& other) = default;
 bool ZCashTransaction::TransparentPart::operator==(
-    const TransparentPart& other) const {
-  return std::tie(this->inputs, this->outputs) ==
-         std::tie(other.inputs, other.outputs);
-}
+    const TransparentPart& other) const = default;
 bool ZCashTransaction::TransparentPart::IsEmpty() const {
   return inputs.empty() && outputs.empty();
 }
@@ -296,12 +211,7 @@ ZCashTransaction::TxInput& ZCashTransaction::TxInput::operator=(
 ZCashTransaction::TxInput& ZCashTransaction::TxInput::operator=(
     ZCashTransaction::TxInput&& other) = default;
 bool ZCashTransaction::TxInput::operator==(
-    const ZCashTransaction::TxInput& other) const {
-  return std::tie(this->utxo_address, this->utxo_outpoint, this->utxo_value,
-                  this->script_sig, this->script_pub_key) ==
-         std::tie(other.utxo_address, other.utxo_outpoint, other.utxo_value,
-                  other.script_sig, other.script_pub_key);
-}
+    const ZCashTransaction::TxInput& other) const = default;
 
 base::DictValue ZCashTransaction::TxInput::ToValue() const {
   base::DictValue dict;
@@ -378,10 +288,7 @@ ZCashTransaction::TxOutput& ZCashTransaction::TxOutput::operator=(
 ZCashTransaction::TxOutput& ZCashTransaction::TxOutput::operator=(
     const ZCashTransaction::TxOutput& other) = default;
 bool ZCashTransaction::TxOutput::operator==(
-    const ZCashTransaction::TxOutput& other) const {
-  return std::tie(this->address, this->amount, this->script_pubkey) ==
-         std::tie(other.address, other.amount, other.script_pubkey);
-}
+    const ZCashTransaction::TxOutput& other) const = default;
 
 base::DictValue ZCashTransaction::TxOutput::ToValue() const {
   base::DictValue dict;
@@ -523,8 +430,8 @@ bool ZCashTransaction::IsTransparentPartSigned() const {
                              [](auto& input) { return input.IsSigned(); });
 }
 
-uint64_t ZCashTransaction::TotalInputsAmount() const {
-  uint64_t result = 0;
+base::CheckedNumeric<uint64_t> ZCashTransaction::TotalInputsAmount() const {
+  base::CheckedNumeric<uint64_t> result = 0;
   for (auto& input : transparent_part_.inputs) {
     result += input.utxo_value;
   }

@@ -26,6 +26,7 @@
 #include "brave/components/brave_wallet/browser/internal/orchard_test_utils.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
+#include "brave/components/brave_wallet/browser/zcash/v5_zcash_serializer.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_auto_sync_manager.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_complete_transaction_task.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_rpc.h"
@@ -616,6 +617,52 @@ TEST_F(ZCashWalletServiceUnitTest, SignAndPostTransaction) {
             "1bd354c73a4a87854c67ffffffff0220a10700000000001976a91415af26f9"
             "b71022a01eade958cd05145f7ba5afe688acb8880000000000001976a914c7"
             "cb443e547988b992adc1b47427ce6c40f3ca9e88ac000000");
+}
+
+TEST_F(ZCashWalletServiceUnitTest, SignTransparentPartV5) {
+  auto account =
+      GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashMainnet, 0);
+  auto account_id = account->account_id.Clone();
+  keyring_service_->UpdateNextUnusedAddressForZCashAccount(account_id, 2, 2);
+
+  // This transaction is the transparent signing vector used by
+  // SignAndPostTransaction above.
+  ZCashTransaction tx;
+  tx.set_consensus_brach_id(0xc2d6d0b4);
+  tx.set_locktime(2286687);
+  tx.set_expiry_height(2286707);
+
+  ZCashTransaction::TxInput input;
+  input.utxo_outpoint.txid = GetTxId(
+      "70f1aa91889eee3e5ba60231a2e625e60480dc2e43ddc9439dc4fe8f09a1a278");
+  input.utxo_outpoint.index = 0;
+  input.utxo_address = "t1c61yifRMgyhMsBYsFDBa5aEQkgU65CGau";
+  input.utxo_value = 537000;
+  input.script_pub_key =
+      ZCashAddressToScriptPubkey(input.utxo_address, false).value();
+  tx.transparent_part().inputs.push_back(std::move(input));
+
+  ZCashTransaction::TxOutput recipient;
+  recipient.address = "t1KrG29yWzoi7Bs2pvsgXozZYPvGG4D3sGi";
+  recipient.amount = 500000;
+  recipient.script_pubkey =
+      ZCashAddressToScriptPubkey(recipient.address, false).value();
+  tx.transparent_part().outputs.push_back(std::move(recipient));
+
+  ZCashTransaction::TxOutput change;
+  change.address = "t1c61yifRMgyhMsBYsFDBa5aEQkgU65CGau";
+  change.amount = 35000;
+  change.script_pubkey =
+      ZCashAddressToScriptPubkey(change.address, false).value();
+  tx.transparent_part().outputs.push_back(std::move(change));
+
+  ASSERT_TRUE(ZCashV5Serializer::SignTransparentPartV5(*keyring_service_,
+                                                       account_id, tx));
+  EXPECT_EQ(ToHex(tx.transparent_part().inputs[0].script_sig),
+            "0x47304402202fc68ead746e8e93bb661ac79e71e1d3d84fd0f2aac76a8cb"
+            "4fa831a847787ff022028efe32152f282d7167c40d62b07aedad73a66c7"
+            "a3548413f289e2aef3da96b30121028754aaa5d9198198ecf5fd1849cbf"
+            "38a92ed707e2f181bd354c73a4a87854c67");
 }
 
 TEST_F(ZCashWalletServiceUnitTest, AddressDiscovery) {
