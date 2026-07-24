@@ -1,4 +1,5 @@
 include_rules = [
+  "+components/pref_registry",
   "+components/prefs",
   "+crypto",
   "+services/data_decoder/public",
