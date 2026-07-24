@@ -78,8 +78,8 @@ public class PrivateTabSystemUiModeChangeTest {
 
     @After
     public void tearDown() throws IOException {
-        // Restore Battery Saver before resetting simulated battery state: Android rejects enabling it
-        // while the device reports external power.
+        // Restore Battery Saver before resetting simulated battery state: Android rejects enabling
+        // it while the device reports external power.
         try {
             if (mInitialBatterySaverMode != null
                     && !getBatterySaverMode().equals(mInitialBatterySaverMode)) {
