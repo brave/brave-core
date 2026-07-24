@@ -46,9 +46,9 @@ class BraveSpellingOptionsSubMenuObserverTest : public InProcessBrowserTest {
                  BraveSpellingOptionsSubMenuObserver::GTEST_MODE_NORMAL) {
     Clear();
     menu_ = std::make_unique<BraveMockRenderViewContextMenu>(
-        incognito ? browser()->profile()->GetPrimaryOTRProfile(
+        incognito ? browser()->GetProfile()->GetPrimaryOTRProfile(
                         /*create_if_needed=*/true)
-                  : browser()->profile());
+                  : browser()->GetProfile());
     std::unique_ptr<BraveSpellingOptionsSubMenuObserver> observer =
         std::make_unique<BraveSpellingOptionsSubMenuObserver>(menu_.get(),
                                                               menu_.get(), 1);

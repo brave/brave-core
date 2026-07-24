@@ -73,7 +73,7 @@ class AIChatGlobalSidePanelBrowserTest
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
     // Must be opted-in to use AI Chat agent profile
-    ai_chat::SetUserOptedIn(browser()->profile()->GetPrefs(), true);
+    ai_chat::SetUserOptedIn(browser()->GetProfile()->GetPrefs(), true);
   }
 
   ~AIChatGlobalSidePanelBrowserTest() override = default;
@@ -175,10 +175,10 @@ IN_PROC_BROWSER_TEST_P(AIChatGlobalSidePanelBrowserTest,
   // have global sidepanel behavior.
   base::test::TestFuture<Browser*> ai_chat_browser_future;
   ai_chat::OpenBrowserWindowForAIChatAgentProfileForTesting(
-      *browser()->profile(), ai_chat_browser_future.GetCallback());
+      *browser()->GetProfile(), ai_chat_browser_future.GetCallback());
   Browser* ai_chat_browser = ai_chat_browser_future.Get();
   ASSERT_TRUE(ai_chat_browser);
-  ASSERT_TRUE(ai_chat_browser->profile()->IsAIChatAgent());
+  ASSERT_TRUE(ai_chat_browser->GetProfile()->IsAIChatAgent());
 
   // Test that agent profile always uses global behavior regardless of flag
   // state

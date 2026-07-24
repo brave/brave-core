@@ -93,8 +93,8 @@ class BackupResultsServiceBrowserTestBase : public InProcessBrowserTest {
                             base::Unretained(this)));
 
     ASSERT_TRUE(https_server_->Start());
-    backup_results_service_ =
-        BackupResultsServiceFactory::GetForBrowserContext(browser()->profile());
+    backup_results_service_ = BackupResultsServiceFactory::GetForBrowserContext(
+        browser()->GetProfile());
   }
 
   void TearDownOnMainThread() override { backup_results_service_ = nullptr; }

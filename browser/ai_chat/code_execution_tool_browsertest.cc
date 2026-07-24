@@ -83,7 +83,7 @@ class AIChatCodeExecutionToolBrowserTest : public InProcessBrowserTest {
         &AIChatCodeExecutionToolBrowserTest::HandleTestRequest,
         base::Unretained(this)));
     ASSERT_TRUE(http_server_.Start());
-    tool_ = std::make_unique<CodeExecutionTool>(browser()->profile());
+    tool_ = std::make_unique<CodeExecutionTool>(browser()->GetProfile());
     tool_->SetExecutionTimeLimitForTesting(base::Seconds(30));
   }
 

@@ -52,7 +52,7 @@ class BraveWelcomeUIBrowserTest : public InProcessBrowserTest {
 
 // Check whether startup url at first run is our welcome page.
 IN_PROC_BROWSER_TEST_F(BraveWelcomeUIBrowserTest, PRE_StartupURLTest) {
-  Browser* new_browser = OpenNewBrowser(browser()->profile());
+  Browser* new_browser = OpenNewBrowser(browser()->GetProfile());
   ASSERT_TRUE(new_browser);
   TabStripModel* tab_strip = new_browser->tab_strip_model();
   ASSERT_EQ(1, tab_strip->count());
@@ -68,7 +68,7 @@ IN_PROC_BROWSER_TEST_F(BraveWelcomeUIBrowserTest, PRE_StartupURLTest) {
 
 // Check wheter startup url is not welcome ui at second run.
 IN_PROC_BROWSER_TEST_F(BraveWelcomeUIBrowserTest, StartupURLTest) {
-  Browser* new_browser = OpenNewBrowser(browser()->profile());
+  Browser* new_browser = OpenNewBrowser(browser()->GetProfile());
   ASSERT_TRUE(new_browser);
   TabStripModel* tab_strip = new_browser->tab_strip_model();
   ASSERT_EQ(1, tab_strip->count());

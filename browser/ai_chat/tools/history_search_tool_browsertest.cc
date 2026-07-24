@@ -80,7 +80,7 @@ class HistorySearchToolBrowserTest
     // brave-history-embeddings feature flag and a Brave-owned pref. Enable
     // the pref so BrowserToolProvider::CreateTools actually constructs the
     // HistorySearchTool we're exercising here.
-    browser()->profile()->GetPrefs()->SetBoolean(
+    browser()->GetProfile()->GetPrefs()->SetBoolean(
         local_ai::prefs::kBraveHistoryEmbeddingsEnabled, true);
     AIChatConversationUIBrowserTestBase::SetUpOnMainThread();
   }

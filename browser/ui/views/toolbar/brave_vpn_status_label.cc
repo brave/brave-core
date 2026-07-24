@@ -57,7 +57,7 @@ int GetLongestStringIdForConnectionState() {
 BraveVPNStatusLabel::BraveVPNStatusLabel(Browser* browser)
     : browser_(browser),
       service_(brave_vpn::BraveVpnServiceFactory::GetForProfile(
-          browser_->profile())) {
+          browser_->GetProfile())) {
   CHECK(service_);
 
   Observe(service_);

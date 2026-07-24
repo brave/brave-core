@@ -46,7 +46,7 @@ class BraveRealboxHandlerTest : public InProcessBrowserTest {
     testing::NiceMock<MockSearchboxPage> page;
     RealboxHandler handler(
         remote_page_handler.BindNewPipeAndPassReceiver(),
-        page.BindAndGetRemote(), browser()->profile(), contents(),
+        page.BindAndGetRemote(), browser()->GetProfile(), contents(),
         base::BindLambdaForTesting(
             []() -> contextual_search::ContextualSearchSessionHandle* {
               return nullptr;
@@ -62,7 +62,7 @@ class BraveRealboxHandlerTest : public InProcessBrowserTest {
   }
 
   testing::AssertionResult VerifyTemplateURLServiceLoad() {
-    auto* profile = browser()->profile();
+    auto* profile = browser()->GetProfile();
     auto* service = TemplateURLServiceFactory::GetForProfile(profile);
     if (service->loaded()) {
       return testing::AssertionSuccess();

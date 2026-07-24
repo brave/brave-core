@@ -165,7 +165,7 @@ class BraveWalletEthereumChainTest : public InProcessBrowserTest {
 
   void SetUpOnMainThread() override {
     brave_wallet::SetDefaultEthereumWallet(
-        browser()->profile()->GetPrefs(),
+        browser()->GetProfile()->GetPrefs(),
         brave_wallet::mojom::DefaultWallet::BraveWallet);
     InProcessBrowserTest::SetUpOnMainThread();
     mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
@@ -229,7 +229,7 @@ class BraveWalletEthereumChainTest : public InProcessBrowserTest {
 
   brave_wallet::JsonRpcService* GetJsonRpcService() {
     return brave_wallet::BraveWalletServiceFactory::GetInstance()
-        ->GetServiceForContext(browser()->profile())
+        ->GetServiceForContext(browser()->GetProfile())
         ->json_rpc_service();
   }
 

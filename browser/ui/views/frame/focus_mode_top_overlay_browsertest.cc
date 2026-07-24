@@ -274,7 +274,7 @@ IN_PROC_BROWSER_TEST_F(FocusModeTopOverlayBrowserTest,
                        ToolbarBorderTracksOverlayActivation) {
   // The caption-button border only applies with vertical tabs enabled and the
   // window title hidden.
-  auto* prefs = browser()->profile()->GetPrefs();
+  auto* prefs = browser()->GetProfile()->GetPrefs();
   prefs->SetBoolean(brave_tabs::kVerticalTabsEnabled, true);
   prefs->SetBoolean(brave_tabs::kVerticalTabsShowTitleOnWindow, false);
 

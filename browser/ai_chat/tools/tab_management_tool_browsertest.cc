@@ -248,7 +248,7 @@ class TabManagementToolBrowserTest : public InProcessBrowserTest {
  public:
   TabManagementToolBrowserTest() = default;
 
-  Profile* profile() { return browser()->profile(); }
+  Profile* profile() { return browser()->GetProfile(); }
 
   // Add a tab with given URL to the specified browser, return its tab handle.
   int AddTabAndGetHandle(BrowserWindowInterface* b,

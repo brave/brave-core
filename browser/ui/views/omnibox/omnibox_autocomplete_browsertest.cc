@@ -45,7 +45,7 @@ IN_PROC_BROWSER_TEST_F(OmniboxAutocompleteTest, AutocompleteDisabledTest) {
                   .empty());
 
   // Initially autocomplete is enabled.
-  EXPECT_TRUE(browser()->profile()->GetPrefs()->GetBoolean(
+  EXPECT_TRUE(browser()->GetProfile()->GetPrefs()->GetBoolean(
       omnibox::kAutocompleteEnabled));
 
   omnibox_view()->SetUserText(u"foo", /* update_popup=*/true);
@@ -62,8 +62,8 @@ IN_PROC_BROWSER_TEST_F(OmniboxAutocompleteTest, AutocompleteDisabledTest) {
   location_bar_view()->GetOmniboxController()->StopAutocomplete(
       /*clear_result=*/true);
 
-  browser()->profile()->GetPrefs()->SetBoolean(omnibox::kAutocompleteEnabled,
-                                               false);
+  browser()->GetProfile()->GetPrefs()->SetBoolean(omnibox::kAutocompleteEnabled,
+                                                  false);
   omnibox_view()->SetUserText(u"bar", /* update_popup=*/true);
   edit_model()->StartAutocomplete(false);
 

@@ -130,7 +130,7 @@ class EmailAliasesAutofillTest : public InProcessBrowserTest,
 
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
-    autofill::WaitForPersonalDataManagerToBeLoaded(browser()->profile());
+    autofill::WaitForPersonalDataManagerToBeLoaded(browser()->GetProfile());
 
     embedded_test_server()->ServeFilesFromDirectory(
         base::PathService::CheckedGet(brave::DIR_TEST_DATA));
@@ -142,7 +142,7 @@ class EmailAliasesAutofillTest : public InProcessBrowserTest,
   }
 
   void ImportAddress() {
-    autofill::AddTestProfile(browser()->profile(),
+    autofill::AddTestProfile(browser()->GetProfile(),
                              autofill::test::GetFullProfile());
   }
 

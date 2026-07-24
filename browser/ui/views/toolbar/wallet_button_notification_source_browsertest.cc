@@ -47,7 +47,7 @@ class WalletButtonNotificationSourceTest : public InProcessBrowserTest {
 
   BraveWalletService* brave_wallet_service() {
     return BraveWalletServiceFactory::GetServiceForContext(
-        browser()->profile());
+        browser()->GetProfile());
   }
 
   NetworkManager* network_manager() {
@@ -223,13 +223,13 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
   std::optional<bool> show_badge_suggest_result;
   std::optional<size_t> count_result;
   auto notification_source = std::make_unique<WalletButtonNotificationSource>(
-      browser()->profile(), base::BindRepeating(base::BindLambdaForTesting(
-                                [&show_badge_suggest_result, &count_result](
-                                    bool show_badge_suggest, size_t count) {
-                                  show_badge_suggest_result =
-                                      show_badge_suggest;
-                                  count_result = count;
-                                })));
+      browser()->GetProfile(), base::BindRepeating(base::BindLambdaForTesting(
+                                   [&show_badge_suggest_result, &count_result](
+                                       bool show_badge_suggest, size_t count) {
+                                     show_badge_suggest_result =
+                                         show_badge_suggest;
+                                     count_result = count;
+                                   })));
   notification_source->Init();
 
   // Wait until WalletButtonNotificationSource checks are finished
@@ -247,13 +247,13 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
   std::optional<bool> show_badge_suggest_result;
   std::optional<size_t> count_result;
   auto notification_source = std::make_unique<WalletButtonNotificationSource>(
-      browser()->profile(), base::BindRepeating(base::BindLambdaForTesting(
-                                [&show_badge_suggest_result, &count_result](
-                                    bool show_badge_suggest, size_t count) {
-                                  show_badge_suggest_result =
-                                      show_badge_suggest;
-                                  count_result = count;
-                                })));
+      browser()->GetProfile(), base::BindRepeating(base::BindLambdaForTesting(
+                                   [&show_badge_suggest_result, &count_result](
+                                       bool show_badge_suggest, size_t count) {
+                                     show_badge_suggest_result =
+                                         show_badge_suggest;
+                                     count_result = count;
+                                   })));
   notification_source->Init();
 
   // Wait until WalletButtonNotificationSource checks are finished
@@ -269,13 +269,13 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
   std::optional<bool> show_badge_suggest_result;
   std::optional<size_t> count_result;
   auto notification_source = std::make_unique<WalletButtonNotificationSource>(
-      browser()->profile(), base::BindRepeating(base::BindLambdaForTesting(
-                                [&show_badge_suggest_result, &count_result](
-                                    bool show_badge_suggest, size_t count) {
-                                  show_badge_suggest_result =
-                                      show_badge_suggest;
-                                  count_result = count;
-                                })));
+      browser()->GetProfile(), base::BindRepeating(base::BindLambdaForTesting(
+                                   [&show_badge_suggest_result, &count_result](
+                                       bool show_badge_suggest, size_t count) {
+                                     show_badge_suggest_result =
+                                         show_badge_suggest;
+                                     count_result = count;
+                                   })));
   notification_source->Init();
 
   // Wait until WalletButtonNotificationSource checks are finished
@@ -299,13 +299,13 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
   std::optional<bool> show_badge_suggest_result;
   std::optional<size_t> count_result;
   auto notification_source = std::make_unique<WalletButtonNotificationSource>(
-      browser()->profile(), base::BindRepeating(base::BindLambdaForTesting(
-                                [&show_badge_suggest_result, &count_result](
-                                    bool show_badge_suggest, size_t count) {
-                                  show_badge_suggest_result =
-                                      show_badge_suggest;
-                                  count_result = count;
-                                })));
+      browser()->GetProfile(), base::BindRepeating(base::BindLambdaForTesting(
+                                   [&show_badge_suggest_result, &count_result](
+                                       bool show_badge_suggest, size_t count) {
+                                     show_badge_suggest_result =
+                                         show_badge_suggest;
+                                     count_result = count;
+                                   })));
   notification_source->Init();
 
   // Wait until WalletButtonNotificationSource checks are finished
@@ -360,13 +360,13 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
   std::optional<bool> show_badge_suggest_result;
   std::optional<size_t> count_result;
   auto notification_source = std::make_unique<WalletButtonNotificationSource>(
-      browser()->profile(), base::BindRepeating(base::BindLambdaForTesting(
-                                [&show_badge_suggest_result, &count_result](
-                                    bool show_badge_suggest, size_t count) {
-                                  show_badge_suggest_result =
-                                      show_badge_suggest;
-                                  count_result = count;
-                                })));
+      browser()->GetProfile(), base::BindRepeating(base::BindLambdaForTesting(
+                                   [&show_badge_suggest_result, &count_result](
+                                       bool show_badge_suggest, size_t count) {
+                                     show_badge_suggest_result =
+                                         show_badge_suggest;
+                                     count_result = count;
+                                   })));
   notification_source->Init();
 
   // Wait until WalletButtonNotificationSource checks are finished
@@ -549,13 +549,13 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
   std::optional<bool> show_badge_suggest_result;
   std::optional<size_t> count_result;
   auto notification_source = std::make_unique<WalletButtonNotificationSource>(
-      browser()->profile(), base::BindRepeating(base::BindLambdaForTesting(
-                                [&show_badge_suggest_result, &count_result](
-                                    bool show_badge_suggest, size_t count) {
-                                  show_badge_suggest_result =
-                                      show_badge_suggest;
-                                  count_result = count;
-                                })));
+      browser()->GetProfile(), base::BindRepeating(base::BindLambdaForTesting(
+                                   [&show_badge_suggest_result, &count_result](
+                                       bool show_badge_suggest, size_t count) {
+                                     show_badge_suggest_result =
+                                         show_badge_suggest;
+                                     count_result = count;
+                                   })));
   notification_source->Init();
 
   // Wait until WalletButtonNotificationSource checks are finished
@@ -580,13 +580,13 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
     std::optional<bool> show_badge_suggest_result;
     std::optional<size_t> count_result;
     auto notification_source = std::make_unique<WalletButtonNotificationSource>(
-        browser()->profile(), base::BindRepeating(base::BindLambdaForTesting(
-                                  [&show_badge_suggest_result, &count_result](
-                                      bool show_badge_suggest, size_t count) {
-                                    show_badge_suggest_result =
-                                        show_badge_suggest;
-                                    count_result = count;
-                                  })));
+        browser()->GetProfile(),
+        base::BindRepeating(base::BindLambdaForTesting(
+            [&show_badge_suggest_result, &count_result](bool show_badge_suggest,
+                                                        size_t count) {
+              show_badge_suggest_result = show_badge_suggest;
+              count_result = count;
+            })));
     notification_source->Init();
     run_loop.RunUntilIdle();
 
@@ -599,13 +599,13 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
     std::optional<bool> show_badge_suggest_result;
     std::optional<size_t> count_result;
     auto notification_source = std::make_unique<WalletButtonNotificationSource>(
-        browser()->profile(), base::BindRepeating(base::BindLambdaForTesting(
-                                  [&show_badge_suggest_result, &count_result](
-                                      bool show_badge_suggest, size_t count) {
-                                    show_badge_suggest_result =
-                                        show_badge_suggest;
-                                    count_result = count;
-                                  })));
+        browser()->GetProfile(),
+        base::BindRepeating(base::BindLambdaForTesting(
+            [&show_badge_suggest_result, &count_result](bool show_badge_suggest,
+                                                        size_t count) {
+              show_badge_suggest_result = show_badge_suggest;
+              count_result = count;
+            })));
     notification_source->Init();
     run_loop.RunUntilIdle();
 

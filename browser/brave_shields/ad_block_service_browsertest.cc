@@ -226,7 +226,7 @@ PrefService* AdBlockServiceTest::local_state() {
 }
 
 HostContentSettingsMap* AdBlockServiceTest::content_settings() {
-  return HostContentSettingsMapFactory::GetForProfile(profile());
+  return HostContentSettingsMapFactory::GetForProfile(GetProfile());
 }
 
 brave_shields::AdBlockComponentServiceManager*
@@ -3297,7 +3297,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, NoCosmeticFiltersOnSpeedreaderPage) {
 
   auto* speedreader_service =
       speedreader::SpeedreaderServiceFactory::GetForBrowserContext(
-          browser()->profile());
+          browser()->GetProfile());
   speedreader_service->SetAllowedForAllReadableSites(true);
   const GURL url = embedded_test_server()->GetURL(
       "a.com", "/speedreader/article/simple.html");
