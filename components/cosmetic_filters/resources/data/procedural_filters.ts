@@ -16,6 +16,11 @@ type CSSSelector = string
 type CSSInstruction = string
 type CSSValue = string
 
+interface ProceduralOperator {
+  type: OperatorType
+  arg: string
+}
+type ProceduralSelector = ProceduralOperator[]
 type OperatorType = string
 type OperatorArg = CSSSelector | ProceduralSelector | string
 type OperatorResult = HTMLElement[]
@@ -57,7 +62,7 @@ const _asHTMLElement = (node: Node): HTMLElement | null => {
 
 const _compileRegEx = (regexText: string): RegExp => {
   const regexParts = regexText.split('/')
-  const regexPattern = regexParts[1]
+  const regexPattern = regexParts[1]!
   const regexArgs = regexParts[2]
   const regex = new W.RegExp(regexPattern, regexArgs)
   return regex
@@ -197,7 +202,7 @@ const _parseCSSInstruction = (arg: string): [CSSInstruction, CSSValue] => {
   if (rs.length !== 2) {
     throw Error(`Unexpected format for a CSS rule: ${arg}`)
   }
-  return [rs[0].trim(), rs[1].trim()]
+  return [rs[0]!.trim(), rs[1]!.trim()]
 }
 
 const _allOtherSiblings = (element: HTMLElement): HTMLElement[] => {
@@ -607,7 +612,7 @@ const _determineInitNodesAndIndex = (
   // Case one: we're applying the procedural filter on a set of nodes (instead
   // of the entire document)  In this case, we already know which nodes to
   // consider, easy case.
-  const firstOperator = selector[0]
+  const firstOperator = selector[0]!
   const firstOperatorType = firstOperator.type
   const firstArg = firstOperator.args[0]
 
@@ -641,14 +646,14 @@ const applyCompiledSelector = (
   let [index, nodesToConsider] = initState
   const numOperators = selector.length
   for (index; nodesToConsider.length > 0 && index < numOperators; ++index) {
-    const operator = selector[index]
+    const operator = selector[index]!
     const operatorFunc = operator.func
     const operatorType = operator.type
 
     // Note that we special case the :matches-path case here, since if
     // if it passes for one element, then it will pass for all elements.
     if (fastPathOperatorTypes.includes(operatorType)) {
-      const firstNode = nodesToConsider[0]
+      const firstNode = nodesToConsider[0]!
       if (operatorFunc(firstNode).length === 0) {
         nodesToConsider = []
       }
