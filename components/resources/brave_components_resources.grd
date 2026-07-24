@@ -90,7 +90,6 @@
       </if>
 
       <!-- WebUI Local AI resources -->
-      <include name="IDR_LOCAL_AI_HTML" file="../local_ai/resources/local_ai.html" type="BINDATA" />
       <include name="IDR_ON_DEVICE_SPEECH_RECOGNITION_WORKER_HTML" file="../local_ai/resources/speech_worker/speech_worker.html" type="BINDATA" />
 
       <part file="../brave_ads/browser/resources/ads_internals_resources.grdp" />
