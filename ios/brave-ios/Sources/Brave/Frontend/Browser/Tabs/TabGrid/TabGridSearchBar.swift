@@ -82,7 +82,10 @@ extension TabGridSearchBar {
       uiView: UISearchTextField,
       context: Context
     ) -> CGSize? {
-      return .init(width: proposal.replacingUnspecifiedDimensions().width, height: 36.0)
+      if #unavailable(iOS 26.0) {
+        return .init(width: proposal.replacingUnspecifiedDimensions().width, height: 36)
+      }
+      return nil
     }
 
     public func makeCoordinator() -> Coordinator {

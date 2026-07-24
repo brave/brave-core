@@ -102,6 +102,10 @@ class TabGridViewModel {
     }
   }
 
+  var regularTabCount: Int {
+    tabManager.tabsCountForMode(isPrivate: false)
+  }
+
   var selectedTab: (any TabState)? {
     tabManager.selectedTab
   }

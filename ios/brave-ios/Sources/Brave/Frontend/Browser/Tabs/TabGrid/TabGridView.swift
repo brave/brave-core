@@ -176,29 +176,12 @@ struct TabGridView: View {
     .background(Color(uiColor: browserColors.tabSwitcherBackground))
     .overlay(alignment: .top) {
       VStack(spacing: 12) {
-        if !viewModel.isSearching {
-          let isHeaderDisabled = editMode == .active
-          headerBar
-            .transition(.blurReplace().animation(.default))
-            .animation(
-              .default,
-              body: { content in
-                content
-                  .opacity(isHeaderDisabled ? 0.5 : 1)
-                  .disabled(isHeaderDisabled)
-              }
-            )
-        }
         if editMode == .active {
           editModeHeaderBar
             .transition(.blurReplace())
-        } else if !isSearchBarHidden {
-          TabGridSearchBar(
-            text: $viewModel.searchQuery,
-            isFocused: $viewModel.isSearching,
-            scrollView: containerView.collectionView
-          )
-          .containerCornerOffset(.leading, sizeToFit: true)
+        } else {
+          headerBar
+            .transition(.blurReplace().animation(.default))
         }
       }
       .padding(.horizontal, 16)
@@ -381,95 +364,114 @@ struct TabGridView: View {
   }
 
   var headerBar: some View {
-    HStack {
-      if !privateBrowsingOnly.value {
-        PrivateBrowsingPicker(isPrivateBrowsing: $viewModel.isPrivateBrowsing)
+    HStack(spacing: 12) {
+      if !viewModel.isSearching {
+        moreMenu
       }
-      Spacer()
-      HStack(spacing: 20) {
-        if viewModel.isShredMenuVisible {
-          Menu {
-            Button {
-              isShredAlertPresented = true
-              activeShredMode = .selectedTab
-            } label: {
-              Text(Strings.TabGrid.shredSelectedTabButtonTitle)
-            }
-            .disabled(!viewModel.isSelectedTabShredAvailable)
-            Button(role: .destructive) {
-              isShredAlertPresented = true
-              activeShredMode = .allTabs
-            } label: {
-              Text(Strings.TabGrid.shredAllTabsButtonTitle)
-            }
-          } label: {
-            Label(Strings.TabGrid.shredTabsAccessibilityLabel, braveSystemImage: "leo.shred.data")
-          }
-        }
-        Button {
-          destinationSheet = .history
-        } label: {
-          Label(Strings.TabGrid.viewHistoryAccessibilityLabel, braveSystemImage: "leo.history")
-        }
-        Button {
-          destinationSheet = .syncedTabs
-        } label: {
-          Label(
-            Strings.TabGrid.viewSyncedTabsAccessibilityLabel,
-            braveSystemImage: "leo.smartphone.laptop"
-          )
-        }
+      if !isSearchBarHidden {
+        TabGridSearchBar(
+          text: $viewModel.searchQuery,
+          isFocused: $viewModel.isSearching,
+          scrollView: containerView.collectionView
+        )
+        .frame(maxWidth: .infinity, minHeight: 44)
+      } else if !viewModel.isSearching {
+        Spacer()
       }
-      .font(.callout)
-      .imageScale(.large)
-      .labelStyle(.iconOnly)
+      if !viewModel.isSearching, !viewModel.tabs.isEmpty {
+        shredMenu
+      }
     }
+    .fixedSize(horizontal: false, vertical: true)
     .containerCornerOffset(.leading, sizeToFit: true)
     .foregroundStyle(Color(braveSystemName: .textSecondary))
     .dynamicTypeSize(.xSmall..<DynamicTypeSize.accessibility2)
   }
 
+  var moreMenu: some View {
+    Menu {
+      ControlGroup {
+        Button {
+          destinationSheet = .history
+        } label: {
+          Label(Strings.TabGrid.viewHistoryMenuItemLabel, braveSystemImage: "leo.history")
+        }
+        .accessibilityLabel(Strings.TabGrid.viewHistoryAccessibilityLabel)
+        Button {
+          destinationSheet = .syncedTabs
+        } label: {
+          Label(
+            Strings.TabGrid.viewSyncedTabsMenuItemLabel,
+            braveSystemImage: "leo.smartphone.laptop"
+          )
+        }
+        .accessibilityLabel(Strings.TabGrid.viewSyncedTabsAccessibilityLabel)
+      }
+      .controlGroupStyle(.menu)
+      if viewModel.isPrivateBrowsing && !privateBrowsingOnly.value {
+        Section {
+          Button {
+            destinationSheet = .privateTabsSettings
+          } label: {
+            Label(Strings.TabGrid.privateTabsSettingsTitle, braveSystemImage: "leo.settings")
+          }
+        }
+      }
+      if !viewModel.tabs.isEmpty {
+        Section {
+          Button {
+            withAnimation {
+              editMode = .active
+            }
+          } label: {
+            Label(
+              Strings.TabGrid.selectTabsButtonTitle,
+              braveSystemImage: "leo.check.circle-outline"
+            )
+          }
+          Button(role: .destructive) {
+            viewModel.closeAllTabs()
+            dismiss()
+          } label: {
+            Label(Strings.TabGrid.closeAllTabsButtonTitle, braveSystemImage: "leo.close")
+          }
+        }
+      }
+    } label: {
+      Label(Strings.TabGrid.moreMenuButtonTitle, braveSystemImage: "leo.more.horizontal")
+        .labelStyle(.buttonIconOnly)
+    }
+    .plainHeaderIconButtonStyle()
+    .menuOrder(.fixed)
+    .accessibilityLabel(Strings.TabGrid.moreMenuButtonTitle)
+  }
+
+  var shredMenu: some View {
+    Menu {
+      Button {
+        isShredAlertPresented = true
+        activeShredMode = .selectedTab
+      } label: {
+        Text(Strings.TabGrid.shredSelectedTabButtonTitle)
+      }
+      .disabled(!viewModel.isSelectedTabShredAvailable)
+      Button(role: .destructive) {
+        isShredAlertPresented = true
+        activeShredMode = .allTabs
+      } label: {
+        Text(Strings.TabGrid.shredAllTabsButtonTitle)
+      }
+      .disabled(!viewModel.isShredMenuVisible)
+    } label: {
+      Label(Strings.TabGrid.shredTabsAccessibilityLabel, braveSystemImage: "leo.shred.data")
+        .labelStyle(.buttonIconOnly)
+    }
+    .plainHeaderIconButtonStyle()
+    .disabled(!viewModel.isShredMenuVisible)
+  }
+
   var footerBar: some View {
     HStack {
-      Menu {
-        if viewModel.isPrivateBrowsing && !privateBrowsingOnly.value {
-          Section {
-            Button {
-              destinationSheet = .privateTabsSettings
-            } label: {
-              Label(Strings.TabGrid.privateTabsSettingsTitle, braveSystemImage: "leo.settings")
-            }
-          }
-        }
-        Section {
-          if !viewModel.tabs.isEmpty {
-            Button {
-              withAnimation {
-                editMode = .active
-              }
-            } label: {
-              Label(
-                Strings.TabGrid.selectTabsButtonTitle,
-                braveSystemImage: "leo.check.circle-outline"
-              )
-            }
-            Button(role: .destructive) {
-              viewModel.closeAllTabs()
-              dismiss()
-            } label: {
-              Label(Strings.TabGrid.closeAllTabsButtonTitle, braveSystemImage: "leo.close")
-            }
-          }
-        }
-      } label: {
-        Text(Strings.TabGrid.moreMenuButtonTitle)
-          .padding(4)
-          .lineLimit(1)
-      }
-      .menuOrder(.fixed)
-      .frame(maxWidth: .infinity, alignment: .leading)
-
-      Spacer()
       Button {
         viewModel.addTab()
         // Let the tab show up in the collection view first
@@ -479,32 +481,33 @@ struct TabGridView: View {
         }
       } label: {
         Label(Strings.TabGrid.newTabAccessibilityLabel, braveSystemImage: "leo.plus.add")
-          .labelStyle(.iconOnly)
-          .font(.callout)
-          .imageScale(.large)
-          .foregroundStyle(Color(braveSystemName: .iconDefault))
-          .padding(.horizontal, 22)
-          .padding(.vertical, 8)
-          .background(
-            Color(uiColor: browserColors.tabSwitcherForeground),
-            in: .rect(cornerRadius: 12, style: .continuous)
-          )
+          .labelStyle(.buttonIconOnly)
       }
+      .addTabIconButtonStyle()
       .keyboardShortcut("t", modifiers: [.command])
-      .buttonStyle(.plain)
       Spacer()
+
+      if !privateBrowsingOnly.value {
+        TabGridModeSwitcher(
+          isPrivateBrowsing: $viewModel.isPrivateBrowsing,
+          regularTabCount: viewModel.regularTabCount
+        )
+        .scaledToFit()
+        .dynamicTypeSize(.xSmall..<DynamicTypeSize.xxxLarge)
+      }
+      Spacer()
+
       Button {
         if viewModel.tabs.isEmpty {
           viewModel.addTab()
         }
         dismiss()
       } label: {
-        Text(Strings.done)
-          .padding(4)
-          .lineLimit(1)
+        Label(Strings.done, braveSystemImage: "leo.check.normal")
+          .labelStyle(.buttonIconOnly)
       }
+      .filledToolbarIconButtonStyle()
       .keyboardShortcut(.defaultAction)
-      .frame(maxWidth: .infinity, alignment: .trailing)
     }
     .foregroundStyle(Color(braveSystemName: .textSecondary))
     .fontWeight(.medium)
@@ -530,10 +533,10 @@ struct TabGridView: View {
           editMode = .inactive
         }
       } label: {
-        Text(Strings.CancelString)
-          .fontWeight(.medium)
-          .foregroundStyle(Color(braveSystemName: .textSecondary))
+        Label(Strings.CancelString, braveSystemImage: "leo.close")
+          .labelStyle(.titleOnly)
       }
+      .plainHeaderIconButtonStyle()
     }
     .containerCornerOffset(.leading, sizeToFit: true)
     .padding(.vertical, 4)
@@ -546,10 +549,11 @@ struct TabGridView: View {
         activeShredMode = .selectedTabs
       } label: {
         Label(Strings.TabGrid.shredSelectedTabsButtonTitle, braveSystemImage: "leo.shred.data")
-          .frame(maxWidth: .infinity)
       }
-      .buttonStyle(.outline)
+      .plainToolbarIconButtonStyle()
       .disabled(selectedTabs.isEmpty || !viewModel.isShredAvailableForSelectedTabs(selectedTabs))
+      .frame(maxWidth: .infinity, alignment: .leading)
+
       Button {
         withAnimation {
           let dismissAfterClose = selectedTabs.count == viewModel.tabs.count
@@ -562,13 +566,15 @@ struct TabGridView: View {
         }
       } label: {
         Label(Strings.close, braveSystemImage: "leo.close")
-          .frame(maxWidth: .infinity)
       }
-      .buttonStyle(.filled)
+      .filledToolbarIconButtonStyle()
       .disabled(selectedTabs.isEmpty)
+      .frame(maxWidth: .infinity, alignment: .trailing)
     }
+    .fontWeight(.medium)
     .padding(.horizontal, 16)
     .padding(.vertical, 8)
+    .dynamicTypeSize(.xSmall..<DynamicTypeSize.accessibility2)
   }
 
   private func contextMenu(for tabs: [any TabState]) -> UIMenu? {
@@ -646,63 +652,166 @@ struct TabGridView: View {
   }
 }
 
+extension View {
+  func plainHeaderIconButtonStyle() -> some View {
+    self
+      .controlSize(.regular)
+      .osAvailabilityModifiers { content in
+        if #available(iOS 26.0, *) {
+          content.buttonStyle(.plainGlass)
+        } else {
+          content.buttonStyle(.plainFaint)
+        }
+      }
+      .fixedSize()
+  }
+
+  func addTabIconButtonStyle() -> some View {
+    self
+      .controlSize(.regular)
+      .osAvailabilityModifiers { content in
+        if #available(iOS 26.0, *) {
+          content.buttonStyle(.plainGlass)
+        } else {
+          content.buttonStyle(TabGridLegacyAddTabButtonStyle())
+        }
+      }
+      .fixedSize()
+  }
+
+  func plainToolbarIconButtonStyle() -> some View {
+    self
+      .controlSize(.regular)
+      .osAvailabilityModifiers { content in
+        if #available(iOS 26.0, *) {
+          content.buttonStyle(.plainGlass)
+        } else {
+          content.buttonStyle(.plainBordered)
+        }
+      }
+      .fixedSize()
+  }
+
+  func filledToolbarIconButtonStyle() -> some View {
+    self
+      .controlSize(.regular)
+      .osAvailabilityModifiers { content in
+        if #available(iOS 26.0, *) {
+          content.buttonStyle(.glassFilled)
+        } else {
+          content.buttonStyle(.filled)
+        }
+      }
+      .fixedSize()
+  }
+}
+
+/// Pre-iOS 26 add-tab button style: a light filled circle with a dark icon per the tab tray design spec.
+private struct TabGridLegacyAddTabButtonStyle: ButtonStyle {
+  @Environment(\.isEnabled) private var isEnabled
+
+  func makeBody(configuration: Configuration) -> some View {
+    configuration.label
+      .padding(12)
+      .foregroundStyle(Color(braveSystemName: isEnabled ? .iconDefault : .textDisabled))
+      .background {
+        if isEnabled {
+          Color(braveSystemName: .containerBackground)
+            .mix(
+              with: Color(braveSystemName: .fixedForeground),
+              by: configuration.isPressed ? 0.1 : 0
+            )
+        } else {
+          Color(braveSystemName: .iconDefault).opacity(0.07)
+        }
+      }
+      .clipShape(.circle)
+      .contentShape(.circle)
+      .hoverEffect()
+      .animation(.linear(duration: 0.15), value: isEnabled)
+  }
+}
+
 // We must use a UISegmentedControl directly as you cannot change the height of a PickerView using
 // a segmented picker style
-private struct PrivateBrowsingPicker: UIViewRepresentable {
+private struct TabGridModeSwitcher: UIViewRepresentable {
   @Binding var isPrivateBrowsing: Bool
+  var regularTabCount: Int
+
+  private var tabCount: String {
+    String.localizedStringWithFormat(
+      regularTabCount == 1
+        ? Strings.TabGrid.tabsCountSingularFormatString
+        : Strings.TabGrid.tabsCountPluralFormatString,
+      regularTabCount
+    )
+  }
+
+  private var controlHeight: CGFloat {
+    if #available(iOS 26.0, *) {
+      44
+    } else {
+      40
+    }
+  }
 
   func makeUIView(context: Context) -> UISegmentedControl {
     let uiView = UISegmentedControl(
-      frame: .zero,
-      actions: [
-        .init(
-          title: Strings.TabGrid.regularBrowsingModeAccessibilityLabel,
-          image: UIImage(braveSystemNamed: "leo.browser.mobile-tabs"),
-          handler: { _ in }
-        ),
-        .init(
-          title: Strings.TabGrid.privateBrowsingModeAccessibilityLabel,
-          image: UIImage(braveSystemNamed: "leo.product.private-window"),
-          handler: { _ in }
-        ),
+      items: [
+        tabCount,
+        Strings.TabGrid.privateBrowsingModeTitle,
       ]
     )
     uiView.addAction(
       .init(handler: { [unowned uiView] _ in
-        let isPrivate = uiView.selectedSegmentIndex == 1
-        self.isPrivateBrowsing = isPrivate
+        isPrivateBrowsing = uiView.selectedSegmentIndex == 1
       }),
       for: .valueChanged
     )
+    uiView.selectedSegmentTintColor = UIColor(braveSystemName: .containerBackground)
     return uiView
   }
-  func updateUIView(_ uiView: UIViewType, context: Context) {
+
+  func updateUIView(_ uiView: UISegmentedControl, context: Context) {
+    uiView.setTitle(tabCount, forSegmentAt: 0)
     uiView.selectedSegmentIndex = isPrivateBrowsing ? 1 : 0
     uiView.backgroundColor = UIColor(
       braveSystemName: isPrivateBrowsing ? .privateWindow10 : .neutral10
     )
-    uiView.selectedSegmentTintColor = UIColor(
-      braveSystemName: isPrivateBrowsing ? .privateWindow30 : .containerBackground
+    let titleFont = UIFont.preferredFont(
+      for: .subheadline,
+      weight: .medium,
+      traitCollection: .init(
+        preferredContentSizeCategory: uiView.traitCollection.toolbarButtonContentSizeCategory
+      )
     )
     uiView.setTitleTextAttributes(
       [
-        .foregroundColor: UIColor(
-          braveSystemName: isPrivateBrowsing ? .iconInteractive : .iconDefault
-        )
+        .font: titleFont,
+        .foregroundColor: isPrivateBrowsing
+          ? UIColor.white : UIColor(braveSystemName: .iconDefault),
       ],
       for: .selected
     )
     uiView.setTitleTextAttributes(
-      [.foregroundColor: UIColor(braveSystemName: .iconDefault)],
+      [
+        .font: titleFont,
+        .foregroundColor: UIColor(braveSystemName: .iconDefault),
+      ],
       for: .normal
     )
   }
+
   func sizeThatFits(
     _ proposal: ProposedViewSize,
     uiView: UISegmentedControl,
     context: Context
   ) -> CGSize? {
-    return .init(width: uiView.intrinsicContentSize.width + 44, height: 40)
+    let idealWidth = uiView.intrinsicContentSize.width + 44
+    return .init(
+      width: proposal.width.map { min($0, idealWidth) } ?? idealWidth,
+      height: controlHeight
+    )
   }
 }
 

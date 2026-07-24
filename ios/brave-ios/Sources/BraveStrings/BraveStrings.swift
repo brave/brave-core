@@ -1168,6 +1168,20 @@ extension Strings {
       value: "Shred All Tabs",
       comment: "A button title that when tapped allows users to shred all of their tabs"
     )
+    public static let viewHistoryMenuItemLabel = NSLocalizedString(
+      "tabGrid.viewHistoryMenuItemLabel",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "History",
+      comment: "Label for history menu item button that when tapped presents the users history & recently closed tabs"
+    )
+    public static let viewSyncedTabsMenuItemLabel = NSLocalizedString(
+      "tabGrid.viewSyncedTabsMenuItemLabel",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Sync",
+      comment: "Label for synced tabs menu item that when tapped presents the users synced tabs"
+    )
     public static let viewHistoryAccessibilityLabel = NSLocalizedString(
       "tabGrid.viewHistoryAccessibilityLabel",
       tableName: "BraveShared",
@@ -1195,6 +1209,27 @@ extension Strings {
       bundle: .module,
       value: "Private Browsing",
       comment: "Accessibility label for the regular browsing option in the browsing mode picker"
+    )
+    public static let tabsCountSingularFormatString = NSLocalizedString(
+      "tabGrid.tabsCountFormatSingular",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "%lld Tab",
+      comment: "A label in the tab tray mode switcher shown when there is 1 regular tab open e.g. '1 Tab'"
+    )
+    public static let tabsCountPluralFormatString = NSLocalizedString(
+      "tabGrid.tabsCountFormatPlural",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "%lld Tabs",
+      comment: "A label in the tab tray mode switcher shown when there are 0 or more than 1 regular tabs open e.g. '129 Tabs'"
+    )
+    public static let privateBrowsingModeTitle = NSLocalizedString(
+      "tabGrid.privateBrowsingModeTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Private",
+      comment: "A label in the tab tray mode switcher for private browsing mode"
     )
     public static let privateBrowsingInfoTitle = NSLocalizedString(
       "tabGrid.privateBrowsingInfoTitle",
