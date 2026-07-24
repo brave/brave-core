@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { render, screen, waitFor } from '@testing-library/react'
+import { render, screen, waitFor, fireEvent } from '@testing-library/react'
 import {
   EmailAliasModal,
   DeleteAliasModal,
@@ -254,6 +254,20 @@ describe('EmailAliasModal', () => {
     expect(
       screen.getByText(S.SETTINGS_EMAIL_ALIASES_MANAGE_BUTTON),
     ).toBeInTheDocument()
+
+    // Mock the clipboard API
+    Object.assign(navigator, {
+      clipboard: {
+        writeText: jest.fn(),
+      },
+    })
+
+    // Click copy button
+    const copyButtons = screen.getAllByTestId('copy-toast')
+    fireEvent.click(copyButtons[0])
+    expect(navigator.clipboard.writeText).toHaveBeenCalledWith(
+      'alias-0@bravealias.com',
+    )
   })
 
   it('shows loading state while generating alias', async () => {
