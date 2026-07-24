@@ -47,6 +47,8 @@ class QuickViewToolbarModel {
   var isLoading: Bool = true
   var loadingProgress: Double = 0.0
   var onActionButton: ((QuickViewActionButton) -> Void)?
+  var collapseProgress: CGFloat = 0.0
+  private var loadingCompletionTask: Task<Void, Never>?
 
   init(
     url: URL,
@@ -102,11 +104,19 @@ extension QuickViewToolbarModel: TabObserver {
   }
 
   func tabDidStartLoading(_ tab: some TabState) {
+    loadingCompletionTask?.cancel()
+    loadingCompletionTask = nil
     isLoading = true
   }
 
   func tabDidStopLoading(_ tab: some TabState) {
-    isLoading = false
+    loadingCompletionTask = Task { @MainActor [weak self] in
+      guard let self else { return }
+      self.loadingProgress = 1.0
+      try? await Task.sleep(for: .milliseconds(300))
+      guard !Task.isCancelled else { return }
+      self.isLoading = false
+    }
   }
 
   func tabDidChangeLoadProgress(_ tab: some TabState) {

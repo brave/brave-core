@@ -7,6 +7,7 @@ import BraveCore
 import BraveShields
 import BraveUI
 import CertificateUtilities
+import Combine
 import Data
 import Preferences
 import Shared
@@ -32,8 +33,16 @@ class QuickViewController: UIViewController {
     manager.isPrivateBrowsing = profile.isOffTheRecord
     return manager
   }()
+  let toolbarVisibilityViewModel = ToolbarVisibilityViewModel(estimatedTransitionDistance: 110)
+  private var toolbarVisibilityCancellable: AnyCancellable?
+  private var toolbarBottomConstraint: Constraint?
   private let onOpenInNewTab: ((URLRequest) -> Void)?
   private let onAttachTab: ((any TabState) -> Void)?
+
+  private var isKeyboardVisible: Bool = false
+  private var preKeyboardToolbarState: ToolbarVisibilityViewModel.ToolbarState?
+  private var toolbarHeightConstraint: Constraint?
+  private var toolbarFullHeight: CGFloat = 0
 
   init(
     url: URL,
@@ -59,6 +68,27 @@ class QuickViewController: UIViewController {
 
   @available(*, unavailable)
   required init?(coder aDecoder: NSCoder) { fatalError() }
+
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    // only want to measure toolbar height once and when keyboard is not visible
+    guard !isKeyboardVisible, toolbarFullHeight == 0 else { return }
+    let toolbarHeight = toolbarHostingController.view.intrinsicContentSize.height
+    if toolbarHeight > 0 {
+      toolbarFullHeight = toolbarHeight
+      let collapsedHeight = QuickViewToolbarView.collapsedHeight(compatibleWith: traitCollection)
+      toolbarVisibilityViewModel.transitionDistance =
+        toolbarHeight - collapsedHeight
+        - (traitCollection.userInterfaceIdiom == .pad ? view.safeAreaInsets.bottom : 0)
+      if toolbarHeightConstraint == nil {
+        toolbarHostingController.view.snp.makeConstraints {
+          toolbarHeightConstraint = $0.height.equalTo(toolbarHeight).constraint
+        }
+      } else {
+        toolbarHeightConstraint?.update(offset: toolbarHeight)
+      }
+    }
+  }
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -93,10 +123,17 @@ class QuickViewController: UIViewController {
     setupUI()
 
     currentTab?.loadRequest(URLRequest(url: url))
+
+    toolbarVisibilityCancellable = toolbarVisibilityViewModel.objectWillChange
+      .receive(on: DispatchQueue.main)
+      .sink { [weak self] _ in
+        self?.handleToolbarVisibilityStateChange()
+      }
+
+    KeyboardHelper.defaultHelper.addDelegate(self)
   }
 
   private func updateViewModel() {
-    let colors: any BrowserColors = profile.isOffTheRecord ? .privateMode : .standard
     // update shield button status
     refreshShieldStatus(url: currentTab?.visibleURL ?? url)
     // update action buttons
@@ -165,9 +202,10 @@ class QuickViewController: UIViewController {
     view.backgroundColor = colors.chromeBackground
     view.addSubview(currentTab.view)
 
-    toolbarHostingController.view.backgroundColor = .clear
+    toolbarHostingController.view.backgroundColor = colors.chromeBackground
     addChild(toolbarHostingController)
     view.addSubview(toolbarHostingController.view)
+    toolbarHostingController.sizingOptions = [.intrinsicContentSize]
     toolbarHostingController.didMove(toParent: self)
 
     currentTab.view.snp.makeConstraints {
@@ -177,7 +215,7 @@ class QuickViewController: UIViewController {
     }
     toolbarHostingController.view.snp.makeConstraints {
       $0.leading.trailing.equalTo(view)
-      $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
+      toolbarBottomConstraint = $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).constraint
     }
   }
 
@@ -382,6 +420,35 @@ class QuickViewController: UIViewController {
       $0.bottom.equalTo(toolbarHostingController.view.snp.top)
     }
   }
+
+  private func handleToolbarVisibilityStateChange() {
+    guard !isKeyboardVisible else { return }
+
+    let state = toolbarVisibilityViewModel.toolbarState
+    let progress = toolbarVisibilityViewModel.interactiveTransitionProgress
+    let maxOffset = toolbarVisibilityViewModel.transitionDistance
+
+    if let p = progress {
+      let collapseProgress: CGFloat
+      switch state {
+      case .expanded:
+        collapseProgress = p
+      case .collapsed:
+        collapseProgress = 1 - p
+      }
+      toolbarViewModel.collapseProgress = collapseProgress
+      toolbarBottomConstraint?.update(offset: maxOffset * collapseProgress)
+      view.layoutIfNeeded()
+      return
+    }
+    // snapped state
+    let targetOffset: CGFloat = state == .expanded ? 0 : maxOffset
+    toolbarViewModel.collapseProgress = state == .expanded ? 0 : 1
+    toolbarBottomConstraint?.update(offset: targetOffset)
+    let animator = toolbarVisibilityViewModel.toolbarChangePropertyAnimator
+    animator.addAnimations { self.view.layoutIfNeeded() }
+    animator.startAnimation()
+  }
 }
 
 // MARK: - TabDelegate
@@ -401,15 +468,10 @@ extension QuickViewController: TabDelegate {
     }
     return nil
   }
-
-  func tabDidStartNavigation(_ tab: some TabState) {
-    if tab.visibleURL?.isInternalURL(for: .readermode) != true {
-      hideReaderModeBar()
-    }
-  }
 }
 
 // MARK: - TabObserver
+
 extension QuickViewController: TabObserver {
   func tabDidCreateWebView(_ tab: some TabState) {
     if let detachedTabPrivacyHelper = DetachedTabPrivacyHelper(
@@ -417,6 +479,16 @@ extension QuickViewController: TabObserver {
     ) {
       tab.detachedPrivacyHelper = detachedTabPrivacyHelper
     }
+  }
+
+  func tabDidStartNavigation(_ tab: some TabState) {
+    if let scrollView = tab.webViewProxy?.scrollView {
+      toolbarVisibilityViewModel.beginObservingScrollView(scrollView)
+    }
+    if tab.visibleURL?.isInternalURL(for: .readermode) != true {
+      hideReaderModeBar()
+    }
+    toolbarVisibilityViewModel.toolbarState = .expanded
   }
 
   func tabDidUpdateURL(_ tab: some TabState) {
@@ -427,6 +499,9 @@ extension QuickViewController: TabObserver {
   }
 
   func tabWillBeDestroyed(_ tab: some TabState) {
+    if let scrollView = tab.webViewProxy?.scrollView {
+      toolbarVisibilityViewModel.endScrollViewObservation(scrollView)
+    }
     tab.removeObserver(self)
   }
 }
@@ -479,5 +554,63 @@ extension QuickViewController: UIAdaptivePresentationControllerDelegate {
     traitCollection: UITraitCollection
   ) -> UIModalPresentationStyle {
     return .none
+  }
+}
+
+// MARK: - KeyboardHelperDelegate
+
+extension QuickViewController: KeyboardHelperDelegate {
+  func keyboardHelper(
+    _ keyboardHelper: Shared.KeyboardHelper,
+    keyboardWillShowWithState state: Shared.KeyboardState
+  ) {
+    let keyboardHeight = state.intersectionHeightForView(view)
+    guard keyboardHeight > 0, state.isLocal, !isKeyboardVisible
+    else { return }
+    isKeyboardVisible = true
+    preKeyboardToolbarState = toolbarVisibilityViewModel.toolbarState
+
+    toolbarVisibilityViewModel.isEnabled = false
+    toolbarViewModel.collapseProgress = 1
+
+    let collapsedHeight = QuickViewToolbarView.collapsedHeight(compatibleWith: traitCollection)
+    let offset = view.safeAreaInsets.bottom - keyboardHeight
+    UIViewPropertyAnimator(duration: state.animationDuration, curve: state.animationCurve) {
+      self.toolbarBottomConstraint?.update(offset: offset)
+      self.toolbarHeightConstraint?.update(offset: collapsedHeight)
+      self.view.layoutIfNeeded()
+    }.startAnimation()
+  }
+
+  func keyboardHelper(
+    _ keyboardHelper: Shared.KeyboardHelper,
+    keyboardWillHideWithState state: Shared.KeyboardState
+  ) {
+    guard isKeyboardVisible else { return }
+    isKeyboardVisible = false
+
+    let restoredOffset: CGFloat
+    switch preKeyboardToolbarState {
+    case .collapsed:
+      restoredOffset = toolbarVisibilityViewModel.transitionDistance
+      toolbarViewModel.collapseProgress = 1
+    default:
+      restoredOffset = 0
+      toolbarViewModel.collapseProgress = 0
+    }
+
+    let animator = UIViewPropertyAnimator(
+      duration: state.animationDuration,
+      curve: state.animationCurve
+    ) {
+      self.toolbarBottomConstraint?.update(offset: restoredOffset)
+      self.toolbarHeightConstraint?.update(offset: self.toolbarFullHeight)
+      self.view.layoutIfNeeded()
+    }
+    animator.addCompletion { _ in
+      self.isKeyboardVisible = false
+      self.toolbarVisibilityViewModel.isEnabled = true
+    }
+    animator.startAnimation()
   }
 }
