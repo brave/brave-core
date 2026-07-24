@@ -29,6 +29,7 @@ export const defaultConversationEntriesState: Mojom.ConversationEntriesState = {
   isLeoModel: true,
   allModels: [],
   currentModelKey: '',
+  defaultModelKey: '',
   contentUsedPercentage: undefined,
   visualContentUsedPercentage: undefined,
   trimmedTokens: BigInt(0),

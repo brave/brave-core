@@ -120,6 +120,7 @@ export default function createUntrustedConversationApi(
         isLeoModel: true,
         allModels: [],
         currentModelKey: '',
+        defaultModelKey: '',
         contentUsedPercentage: undefined,
         visualContentUsedPercentage: undefined,
         trimmedTokens: BigInt(0),

@@ -10,6 +10,7 @@ import * as Mojom from '../../../common/mojom'
 import MockContext from '../../mock_untrusted_conversation_context'
 import { clearAllDataForTesting } from '$web-common/api'
 import ModelIntro from '.'
+import styles from './style.module.scss'
 
 describe('ModelIntro', () => {
   beforeEach(() => {
@@ -37,35 +38,51 @@ describe('ModelIntro', () => {
     },
   }
 
-  it('should render model intro', () => {
+  it('should render model intro for the provided model key', () => {
     const { container } = render(
       <MockContext
         initialState={{
           conversationEntriesState: {
             allModels: [currentModel],
-            currentModelKey: currentModel.key,
             isLeoModel: true,
           },
         }}
       >
-        <ModelIntro />
+        <ModelIntro modelKey={currentModel.key} />
       </MockContext>,
     )
     expect(container).toBeInTheDocument()
 
-    // Test that the model text is rendered
-    const modelText = container.querySelector<HTMLHeadingElement>('h3')
+    const modelText = container.querySelector<HTMLSpanElement>(
+      `.${styles.name}`,
+    )
     expect(modelText).toBeInTheDocument()
     expect(modelText).toHaveTextContent('Test Model')
 
-    // Test that the model intro icon is rendered
     const modelIntroIcon = container.querySelector<HTMLDivElement>('leo-icon')
     expect(modelIntroIcon).toBeInTheDocument()
     expect(modelIntroIcon).toHaveAttribute('name', 'product-brave-leo')
 
-    // Test that the tooltip is rendered
     const tooltip = container.querySelector<HTMLDivElement>('leo-tooltip')
     expect(tooltip).toBeInTheDocument()
+  })
+
+  it('should not render when the model key is unknown', () => {
+    const { container } = render(
+      <MockContext
+        initialState={{
+          conversationEntriesState: {
+            allModels: [currentModel],
+            isLeoModel: true,
+          },
+        }}
+      >
+        <ModelIntro modelKey='missing-model' />
+      </MockContext>,
+    )
+
+    expect(container.querySelector(`.${styles.name}`)).not.toBeInTheDocument()
+    expect(container.querySelector('leo-tooltip')).not.toBeInTheDocument()
   })
 
   it('should render model intro tooltip', () => {
@@ -74,23 +91,20 @@ describe('ModelIntro', () => {
         initialState={{
           conversationEntriesState: {
             allModels: [currentModel],
-            currentModelKey: currentModel.key,
             isLeoModel: true,
           },
         }}
       >
-        <ModelIntro />
+        <ModelIntro modelKey={currentModel.key} />
       </MockContext>,
     )
     const tooltip = container.querySelector<HTMLDivElement>('leo-tooltip')
     expect(tooltip).toBeInTheDocument()
 
-    // Test that the tooltip content is rendered
     const tooltipContent =
       tooltip?.querySelector<HTMLDivElement>('[slot="content"]')
     expect(tooltipContent).toBeInTheDocument()
 
-    // Test that the tooltip content has the correct message
     const tooltipContentText = tooltipContent?.textContent
     expect(tooltipContentText).toBe(S.CHAT_UI_INTRO_MESSAGE_TEST_MODEL)
   })

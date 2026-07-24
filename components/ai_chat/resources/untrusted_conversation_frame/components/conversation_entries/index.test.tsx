@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { act, fireEvent, render, screen } from '@testing-library/react'
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import '@testing-library/jest-dom'
 import * as React from 'react'
 import * as Mojom from '../../../common/mojom'
@@ -18,6 +18,7 @@ import MockContext, {
 import { UntrustedConversationContext } from '../../untrusted_conversation_context'
 import type { AssistantResponseProps } from '../assistant_response'
 import ConversationEntries, { highlightRichText } from '.'
+import styles from './style.module.scss'
 
 const assistantResponseMock = jest.fn((props: AssistantResponseProps) => (
   <div />
@@ -38,6 +39,58 @@ jest.mock('../assistant_task/assistant_task', () => ({
   __esModule: true,
   default: () => <div data-testid='assistant-task' />,
 }))
+
+jest.mock('../model_intro', () => ({
+  __esModule: true,
+  default: ({ modelKey }: { modelKey: string }) => (
+    <div
+      data-testid='model-intro'
+      data-model-key={modelKey}
+    />
+  ),
+}))
+
+describe('ConversationEntries ModelIntro placement', () => {
+  it('renders inline markers after the anchored entry pair', () => {
+    const { container, getByTestId } = render(
+      <MockContext
+        initialState={{
+          conversationHistory: [
+            createConversationTurnWithDefaults({
+              characterType: Mojom.CharacterType.ASSISTANT,
+              text: 'Latest reply',
+            }),
+          ],
+        }}
+      >
+        <ConversationEntries
+          modelIntroMarkers={[
+            {
+              id: 'marker-1',
+              modelKey: 'test-model',
+              afterPairIndex: 0,
+            },
+          ]}
+        />
+      </MockContext>,
+    )
+
+    const modelIntro = getByTestId('model-intro')
+    const entryPairs = container.querySelectorAll(`.${styles.entryPair}`)
+    const anchoredEntryPair = entryPairs[0]
+    expect(anchoredEntryPair).toContainElement(modelIntro)
+    expect(modelIntro).toHaveAttribute('data-model-key', 'test-model')
+
+    const assistantTurn = anchoredEntryPair.querySelector(
+      '[data-testid="assistant-turn"]',
+    )
+    expect(assistantTurn).toBeTruthy()
+    expect(
+      assistantTurn!.compareDocumentPosition(modelIntro)
+        & Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy()
+  })
+})
 
 describe('ConversationEntries allowedLinks per response', () => {
   const assistantTurn1 = {
