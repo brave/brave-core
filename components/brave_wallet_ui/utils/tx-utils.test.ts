@@ -56,6 +56,8 @@ import {
   getTransactionTransferredValue,
   getTransactionTypeName,
   isCancelTransaction,
+  getSetApprovalForAllOperator,
+  isSetApprovalForAllTransaction,
   parseSwapInfo,
 } from './tx-utils'
 
@@ -1382,6 +1384,40 @@ describe('isCancelTransaction', () => {
       id: 'submitted-tx',
     }
     expect(isCancelTransaction(cancelTx, [submittedTx])).toBe(true)
+  })
+})
+
+describe('isSetApprovalForAllTransaction', () => {
+  const mockOperatorAddress = '0x1234567890123456789012345678901234567890'
+
+  const makeSetApprovalForAllTx = (operator: string, approved: boolean) => ({
+    ...mockEthSendTransaction,
+    txType: BraveWallet.TransactionType.ERC721SetApprovalForAll,
+    txArgs: [operator, approved ? '0x1' : '0x0'],
+  })
+
+  test('should return true for setApprovalForAll with approved=true', () => {
+    const tx = makeSetApprovalForAllTx(mockOperatorAddress, true)
+    expect(isSetApprovalForAllTransaction(tx)).toBe(true)
+  })
+
+  test('should return false for setApprovalForAll with approved=false', () => {
+    const tx = makeSetApprovalForAllTx(mockOperatorAddress, false)
+    expect(isSetApprovalForAllTransaction(tx)).toBe(false)
+  })
+
+  test('should return false for other transaction types', () => {
+    const tx = {
+      ...mockEthSendTransaction,
+      txType: BraveWallet.TransactionType.Other,
+      txArgs: [],
+    }
+    expect(isSetApprovalForAllTransaction(tx)).toBe(false)
+  })
+
+  test('should expose the operator address as the granted spender', () => {
+    const tx = makeSetApprovalForAllTx(mockOperatorAddress, true)
+    expect(getSetApprovalForAllOperator(tx)).toBe(mockOperatorAddress)
   })
 })
 

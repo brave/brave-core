@@ -12,8 +12,10 @@
 #include <vector>
 
 #include "base/gtest_prod_util.h"
+#include "base/timer/timer.h"
 #include "brave/components/brave_wallet/browser/eip1559_transaction.h"
 #include "brave/components/brave_wallet/browser/eth_block_tracker.h"
+#include "brave/components/brave_wallet/browser/eth_data_parser.h"
 #include "brave/components/brave_wallet/browser/eth_nonce_tracker.h"
 #include "brave/components/brave_wallet/browser/eth_pending_tx_tracker.h"
 #include "brave/components/brave_wallet/browser/eth_transaction.h"
@@ -231,6 +233,17 @@ class EthTxManager : public TxManager, public EthBlockTracker::Observer {
       const std::string& result,
       mojom::ProviderError error,
       const std::string& error_message);
+  void OnSimulateEvmTransactionForUnapproved(bool timed_out,
+                                             bool ok,
+                                             std::vector<SimulatedCall> calls);
+  void FinalizeAddUnapprovedTransaction(
+      const mojom::AccountIdPtr& from,
+      const std::optional<url::Origin>& origin,
+      std::unique_ptr<EthTransaction> tx,
+      AddUnapprovedEvmTransactionCallback callback,
+      bool sign_only,
+      mojom::SwapInfoPtr swap_info,
+      std::vector<AuthorizationFinding> findings);
   void OnGetGasEstimation1559(
       GetGasEstimation1559Callback callback,
       const std::string& chain_id,
@@ -303,6 +316,24 @@ class EthTxManager : public TxManager, public EthBlockTracker::Observer {
   std::unique_ptr<EthNonceTracker> nonce_tracker_;
   std::unique_ptr<EthPendingTxTracker> pending_tx_tracker_;
   raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;
+  base::OneShotTimer simulate_timer_;
+
+  struct PendingSimulateTx {
+    PendingSimulateTx(const mojom::AccountIdPtr& from,
+                      const std::optional<url::Origin>& origin,
+                      std::unique_ptr<EthTransaction> tx,
+                      AddUnapprovedEvmTransactionCallback callback,
+                      bool sign_only,
+                      mojom::SwapInfoPtr swap_info);
+    ~PendingSimulateTx();
+    mojom::AccountIdPtr from;
+    std::optional<url::Origin> origin;
+    std::unique_ptr<EthTransaction> tx;
+    AddUnapprovedEvmTransactionCallback callback;
+    bool sign_only;
+    mojom::SwapInfoPtr swap_info;
+  };
+  std::unique_ptr<PendingSimulateTx> pending_simulate_tx_;
 
   base::WeakPtrFactory<EthTxManager> weak_factory_{this};
 };

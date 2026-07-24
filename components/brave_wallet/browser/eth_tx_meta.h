@@ -8,7 +8,9 @@
 
 #include <memory>
 #include <utility>
+#include <vector>
 
+#include "brave/components/brave_wallet/browser/eth_data_parser.h"
 #include "brave/components/brave_wallet/browser/eth_transaction.h"
 #include "brave/components/brave_wallet/browser/tx_meta.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -42,6 +44,12 @@ class EthTxMeta : public TxMeta {
   }
   void set_tx(std::unique_ptr<EthTransaction> tx) { tx_ = std::move(tx); }
   void set_sign_only(bool sign_only) { sign_only_ = sign_only; }
+  void set_authorization_findings(std::vector<AuthorizationFinding> findings) {
+    authorization_findings_ = std::move(findings);
+  }
+  const std::vector<AuthorizationFinding>& authorization_findings() const {
+    return authorization_findings_;
+  }
 
   bool IsRetriable() const;
 
@@ -49,6 +57,7 @@ class EthTxMeta : public TxMeta {
   bool sign_only_ = false;
   TransactionReceipt tx_receipt_;
   std::unique_ptr<EthTransaction> tx_;
+  std::vector<AuthorizationFinding> authorization_findings_;
 };
 
 }  // namespace brave_wallet
