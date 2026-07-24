@@ -20,22 +20,15 @@ struct QuickViewToolbarView: View {
     viewModel.isPrivate ? .privateMode : .standard
   }
 
-  @ScaledMetric private var baseAddressFontSize: CGFloat = 15
-  @ScaledMetric private var addressFontCollapseDelta: CGFloat = 3
-
   var body: some View {
     VStack(spacing: 0) {
       topRow
-        .padding(.top, viewModel.collapseProgress < 1 ? 16 : 4)
-        .padding(.bottom, viewModel.collapseProgress < 1 ? 0 : 4)
-      if viewModel.collapseProgress < 1 {
-        bottomRow
-          .padding(.top, 12)
-          .padding(.bottom, 16)
-      }
+      bottomRow
+        .padding(.top, 12)
+        .padding(.bottom, 16)
+        .opacity(1 - viewModel.collapseProgress)
     }
     .padding(.horizontal, 16)
-    .frame(maxWidth: .infinity, alignment: .top)
   }
 
   private var shieldButton: some View {
@@ -113,9 +106,7 @@ struct QuickViewToolbarView: View {
     URLDisplayLabel(
       formattedURL: viewModel.displayURL,
       isLeftToRight: viewModel.isURLLeftToRight,
-      textFont: .systemFont(
-        ofSize: baseAddressFontSize - addressFontCollapseDelta * viewModel.collapseProgress
-      ),
+      textFont: .preferredFont(forTextStyle: .subheadline),
       textColor: UIColor(braveSystemName: .textTertiary),
       gradientColors: [
         browserColors.chromeBackground.cgColor,
@@ -124,6 +115,53 @@ struct QuickViewToolbarView: View {
       isShrinkWrapped: viewModel.secureContentState.shouldDisplayWarning
     )
     .accessibilityLabel(viewModel.displayURL)
+  }
+
+  private var expandedAddressView: some View {
+    HStack(alignment: .top, spacing: 8) {
+      shieldButton
+        .background(shieldBackgroundView)
+
+      VStack(spacing: 12) {
+        HStack(spacing: 8) {
+          if viewModel.secureContentState.shouldDisplayWarning {
+            sslStatusButton.background(sslStatusBackgroundView)
+          }
+          addressView
+        }
+        .frame(
+          maxWidth: viewModel.secureContentState.shouldDisplayWarning ? .infinity : nil,
+          alignment: .center
+        )
+        progressBar
+          .hidden(isHidden: !viewModel.isLoading)
+      }
+      .padding(.horizontal, 16)
+
+      topRightButtonsView
+    }
+    .labelStyle(QuickViewToolbarLabelTopIconStyle())
+    .padding(.top, 16)
+  }
+
+  private var collapsedAddressView: some View {
+    VStack {
+      URLDisplayLabel(
+        formattedURL: viewModel.displayURL,
+        isLeftToRight: viewModel.isURLLeftToRight,
+        textFont: .preferredFont(forTextStyle: .caption2),
+        textColor: UIColor(braveSystemName: .textTertiary),
+        gradientColors: [
+          browserColors.chromeBackground.cgColor,
+          browserColors.chromeBackground.withAlphaComponent(0.1).cgColor,
+        ],
+        isShrinkWrapped: viewModel.secureContentState.shouldDisplayWarning
+      )
+      .accessibilityLabel(viewModel.displayURL)
+      .fixedSize(horizontal: false, vertical: true)
+      .padding(.vertical, 4)
+      Spacer()
+    }
   }
 
   private var topRightButtonsView: some View {
@@ -160,15 +198,11 @@ struct QuickViewToolbarView: View {
     case .invalidCertificate:
       Text(Strings.tabToolbarNotSecureTitle)
         .foregroundColor(Color(braveSystemName: .systemfeedbackErrorText))
-        .font(
-          .system(size: baseAddressFontSize - addressFontCollapseDelta * viewModel.collapseProgress)
-        )
+        .font(viewModel.collapseProgress == 1 ? .caption2 : .subheadline)
     case .missingSSL, .mixedContent:
       Text(Strings.tabToolbarNotSecureTitle)
         .foregroundColor(Color(braveSystemName: .textTertiary))
-        .font(
-          .system(size: baseAddressFontSize - addressFontCollapseDelta * viewModel.collapseProgress)
-        )
+        .font(viewModel.collapseProgress == 1 ? .caption2 : .subheadline)
     }
   }
 
@@ -184,37 +218,13 @@ struct QuickViewToolbarView: View {
   }
 
   private var topRow: some View {
-    HStack(alignment: .top, spacing: 8) {
-      if viewModel.collapseProgress < 1 {
-        shieldButton
-          .background(shieldBackgroundView)
-          .opacity(1 - viewModel.collapseProgress)
-      }
+    ZStack {
+      expandedAddressView
+        .opacity(1 - viewModel.collapseProgress)
 
-      VStack(spacing: 12) {
-        HStack(spacing: 8) {
-          if viewModel.secureContentState.shouldDisplayWarning {
-            sslStatusButton.background(sslStatusBackgroundView)
-          }
-          addressView
-        }
-        .frame(
-          maxWidth: viewModel.secureContentState.shouldDisplayWarning ? .infinity : nil,
-          alignment: .center
-        )
-        if viewModel.collapseProgress < 1 {
-          progressBar
-            .hidden(isHidden: !viewModel.isLoading)
-        }
-      }
-      .padding(.horizontal, 16)
-
-      if viewModel.collapseProgress < 1 {
-        topRightButtonsView
-          .opacity(1 - viewModel.collapseProgress)
-      }
+      collapsedAddressView
+        .opacity(viewModel.collapseProgress)
     }
-    .labelStyle(QuickViewToolbarLabelTopIconStyle())
   }
 
   private var progressBar: some View {
@@ -297,7 +307,6 @@ struct QuickViewToolbarView: View {
         iconDisabledColor: Color(browserColors.iconDisabled)
       )
     )
-    .opacity(1 - viewModel.collapseProgress)
   }
 }
 
@@ -337,7 +346,10 @@ extension QuickViewToolbarView {
   /// Height of the URL-only strip that remains visible when collapsed.
   /// Includes 4pt top and 4pt bottom padding so the URL label is vertically centered.
   static func collapsedHeight(compatibleWith traitCollection: UITraitCollection) -> CGFloat {
-    UIFontMetrics(forTextStyle: .subheadline).scaledValue(for: 24, compatibleWith: traitCollection)
-      + 8  // 4pt top padding + 4pt bottom padding when collapsed
+    let labelHeight = UIFont.preferredFont(
+      forTextStyle: .caption2,
+      compatibleWith: traitCollection
+    ).lineHeight
+    return labelHeight + 8
   }
 }

@@ -33,7 +33,9 @@ class QuickViewController: UIViewController {
     manager.isPrivateBrowsing = profile.isOffTheRecord
     return manager
   }()
-  let toolbarVisibilityViewModel = ToolbarVisibilityViewModel(estimatedTransitionDistance: 110)
+  private let toolbarVisibilityViewModel = ToolbarVisibilityViewModel(
+    estimatedTransitionDistance: 110
+  )
   private var toolbarVisibilityCancellable: AnyCancellable?
   private var toolbarBottomConstraint: Constraint?
   private let onOpenInNewTab: ((URLRequest, Bool) -> Void)?
@@ -41,6 +43,7 @@ class QuickViewController: UIViewController {
   private let onAttachTab: ((any TabState) -> Void)?
 
   private var isKeyboardVisible: Bool = false
+  private var isHardwareKeyboardActive: Bool = false
   private var preKeyboardToolbarState: ToolbarVisibilityViewModel.ToolbarState?
   private var toolbarHeightConstraint: Constraint?
   private var toolbarFullHeight: CGFloat = 0
@@ -80,9 +83,7 @@ class QuickViewController: UIViewController {
     if toolbarHeight > 0 {
       toolbarFullHeight = toolbarHeight
       let collapsedHeight = QuickViewToolbarView.collapsedHeight(compatibleWith: traitCollection)
-      toolbarVisibilityViewModel.transitionDistance =
-        toolbarHeight - collapsedHeight
-        - (traitCollection.userInterfaceIdiom == .pad ? view.safeAreaInsets.bottom : 0)
+      toolbarVisibilityViewModel.transitionDistance = toolbarHeight - collapsedHeight
       if toolbarHeightConstraint == nil {
         toolbarHostingController.view.snp.makeConstraints {
           toolbarHeightConstraint = $0.height.equalTo(toolbarHeight).constraint
@@ -206,9 +207,10 @@ class QuickViewController: UIViewController {
     view.addSubview(currentTab.view)
 
     toolbarHostingController.view.backgroundColor = colors.chromeBackground
+    toolbarHostingController.safeAreaRegions = []
     addChild(toolbarHostingController)
     view.addSubview(toolbarHostingController.view)
-    toolbarHostingController.sizingOptions = [.intrinsicContentSize]
+    toolbarHostingController.view.translatesAutoresizingMaskIntoConstraints = false
     toolbarHostingController.didMove(toParent: self)
 
     currentTab.view.snp.makeConstraints {
@@ -434,7 +436,9 @@ class QuickViewController: UIViewController {
   }
 
   private func handleToolbarVisibilityStateChange() {
-    guard !isKeyboardVisible else { return }
+    guard !isKeyboardVisible, !isHardwareKeyboardActive else {
+      return
+    }
 
     let state = toolbarVisibilityViewModel.toolbarState
     let progress = toolbarVisibilityViewModel.interactiveTransitionProgress
@@ -754,19 +758,44 @@ extension QuickViewController: KeyboardHelperDelegate {
     keyboardWillShowWithState state: Shared.KeyboardState
   ) {
     let keyboardHeight = state.intersectionHeightForView(view)
-    guard keyboardHeight > 0, state.isLocal, !isKeyboardVisible
+    let isKeyboardActiveForWebContent =
+      currentTab?.webViewProxy?.isKeyboardVisible == true
+    let isKeyboardActiveForFindInPage = currentTab?.isFindNavigatorVisible == true
+    let isBraveOriginatedKeyboard = state.isLocal
+    guard keyboardHeight > 0,
+      isKeyboardActiveForWebContent || isKeyboardActiveForFindInPage || isBraveOriginatedKeyboard
     else { return }
+    if isHardwareKeyboardActive {
+      // hw -> sw transition: already collapsed, just reposition
+      let offset =
+        view.safeAreaInsets.bottom - keyboardHeight + toolbarVisibilityViewModel.transitionDistance
+      let animator = UIViewPropertyAnimator(
+        duration: state.animationDuration,
+        curve: state.animationCurve
+      ) {
+        self.toolbarBottomConstraint?.update(offset: offset)
+        self.view.layoutIfNeeded()
+      }
+      animator.addCompletion { _ in
+        self.isHardwareKeyboardActive = false
+        self.isKeyboardVisible = true
+        self.toolbarViewModel.collapseProgress = 1
+      }
+      animator.startAnimation()
+      return
+    }
+
+    // fresh software keyboard show
+    guard !isKeyboardVisible else { return }
+
     isKeyboardVisible = true
     preKeyboardToolbarState = toolbarVisibilityViewModel.toolbarState
-
     toolbarVisibilityViewModel.isEnabled = false
     toolbarViewModel.collapseProgress = 1
-
-    let collapsedHeight = QuickViewToolbarView.collapsedHeight(compatibleWith: traitCollection)
-    let offset = view.safeAreaInsets.bottom - keyboardHeight
+    let offset =
+      view.safeAreaInsets.bottom - keyboardHeight + toolbarVisibilityViewModel.transitionDistance
     UIViewPropertyAnimator(duration: state.animationDuration, curve: state.animationCurve) {
       self.toolbarBottomConstraint?.update(offset: offset)
-      self.toolbarHeightConstraint?.update(offset: collapsedHeight)
       self.view.layoutIfNeeded()
     }.startAnimation()
   }
@@ -775,8 +804,46 @@ extension QuickViewController: KeyboardHelperDelegate {
     _ keyboardHelper: Shared.KeyboardHelper,
     keyboardWillHideWithState state: Shared.KeyboardState
   ) {
-    guard isKeyboardVisible else { return }
+    // 4 cases
+    // 1. webcontent keyboard full dismiss
+    // 2. webcontent keyboard sw -> hw transition
+    // 3. find in page keyboard full dismiss
+    // 4. find in page keyboard sw -> hw transtion
+    let keyboardHeight = state.intersectionHeightForView(view)
+
+    if currentTab?.isFindNavigatorVisible == true {
+      // Find in page: cases 3 & 4 have identical keyboardHeight and isFindNavigatorVisible at
+      // callback time. Defer one run loop so isFindNavigatorVisible reflects the settled state.
+      guard isKeyboardVisible || isHardwareKeyboardActive else { return }
+      DispatchQueue.main.async { [weak self] in
+        guard let self else { return }
+        if self.currentTab?.isFindNavigatorVisible == true {
+          // case 4: sw -> hw while find in page still active — reposition
+          self.performHardwareKeyboardTransition(keyboardHeight: keyboardHeight, state: state)
+        } else {
+          // case 3: find in page fully dismissed
+          self.performFullKeyboardDismiss(state: state)
+        }
+      }
+      return
+    }
+
+    // webcontent keyboard
+    if keyboardHeight > 0 {
+      // case 2: sw -> hw — reposition
+      guard isKeyboardVisible else { return }
+      performHardwareKeyboardTransition(keyboardHeight: keyboardHeight, state: state)
+      return
+    }
+
+    // case 1: full dismiss
+    performFullKeyboardDismiss(state: state)
+  }
+
+  private func performFullKeyboardDismiss(state: Shared.KeyboardState) {
+    guard isKeyboardVisible || isHardwareKeyboardActive else { return }
     isKeyboardVisible = false
+    isHardwareKeyboardActive = false
 
     let restoredOffset: CGFloat
     switch preKeyboardToolbarState {
@@ -793,13 +860,25 @@ extension QuickViewController: KeyboardHelperDelegate {
       curve: state.animationCurve
     ) {
       self.toolbarBottomConstraint?.update(offset: restoredOffset)
-      self.toolbarHeightConstraint?.update(offset: self.toolbarFullHeight)
       self.view.layoutIfNeeded()
     }
     animator.addCompletion { _ in
-      self.isKeyboardVisible = false
       self.toolbarVisibilityViewModel.isEnabled = true
     }
     animator.startAnimation()
+  }
+
+  private func performHardwareKeyboardTransition(
+    keyboardHeight: CGFloat,
+    state: Shared.KeyboardState
+  ) {
+    isKeyboardVisible = false
+    isHardwareKeyboardActive = true
+    let offset =
+      view.safeAreaInsets.bottom - keyboardHeight + toolbarVisibilityViewModel.transitionDistance
+    UIViewPropertyAnimator(duration: state.animationDuration, curve: state.animationCurve) {
+      self.toolbarBottomConstraint?.update(offset: offset)
+      self.view.layoutIfNeeded()
+    }.startAnimation()
   }
 }
