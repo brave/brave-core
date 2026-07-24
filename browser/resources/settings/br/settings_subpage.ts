@@ -12,8 +12,8 @@ injectStyle(SettingsSubpageElement, css`
   :host {
     min-height: auto !important;
     display: inline-block;
+    width:100%;
     position: relative;
-    margin-bottom: var(--leo-spacing-4xl);
   }
   :host(:not(.multi-card)) {
     background-color: var(--leo-color-page-background) !important;
