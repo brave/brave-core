@@ -124,22 +124,31 @@ void RunAppLaunchCallbacksForDirectLaunch(
     return;                                                                  \
   }
 
-#define LaunchShimForTesting LaunchShimForTesting_ChromiumImpl
+namespace web_app {
+
+// Replaces the upstream LaunchServices-based implementation with a direct
+// spawn.
+void BraveLaunchShimForTesting(const base::FilePath& shim_path,  // IN-TEST
+                               const std::vector<GURL>& urls,
+                               ShimLaunchedCallback launched_callback,
+                               ShimTerminatedCallback terminated_callback,
+                               const base::FilePath& chromium_path);
+
+}  // namespace web_app
 
 #include <chrome/browser/web_applications/os_integration/mac/app_shim_launch.mm>
 
 #undef BRAVE_LAUNCH_THE_FIRST_SHIM_THAT_WORKS_ON_FILE_THREAD
-#undef LaunchShimForTesting
 
 namespace web_app {
 
 // Replaces the upstream LaunchServices-based implementation with a direct
 // spawn.
-void LaunchShimForTesting(const base::FilePath& shim_path,  // IN-TEST
-                          const std::vector<GURL>& urls,
-                          ShimLaunchedCallback launched_callback,
-                          ShimTerminatedCallback terminated_callback,
-                          const base::FilePath& chromium_path) {
+void BraveLaunchShimForTesting(const base::FilePath& shim_path,  // IN-TEST
+                               const std::vector<GURL>& urls,
+                               ShimLaunchedCallback launched_callback,
+                               ShimTerminatedCallback terminated_callback,
+                               const base::FilePath& chromium_path) {
   base::CommandLine command_line = BuildCommandLineForShimLaunch();
   command_line.AppendSwitch(app_mode::kLaunchedForTest);
   command_line.AppendSwitch(app_mode::kIsNormalLaunch);

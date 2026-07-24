@@ -1,12 +1,17 @@
 diff --git a/chrome/browser/web_applications/os_integration/mac/app_shim_launch.mm b/chrome/browser/web_applications/os_integration/mac/app_shim_launch.mm
-index 49761f6f52c57c807c516cdb150b91ab7e5c1c91..4e28737618608af408cec0e66e604b0ec5f0fd14 100644
+index 49761f6f52c57c807c516cdb150b91ab7e5c1c91..5ce11204222fa3236954f79fe733fd3edc461808 100644
 --- a/chrome/browser/web_applications/os_integration/mac/app_shim_launch.mm
 +++ b/chrome/browser/web_applications/os_integration/mac/app_shim_launch.mm
-@@ -159,6 +159,7 @@ void LaunchTheFirstShimThatWorksOnFileThread(
-   variations::VariationsCommandLine::GetForCurrentProcess().ApplyToCommandLine(
-       command_line);
- 
-+  BRAVE_LAUNCH_THE_FIRST_SHIM_THAT_WORKS_ON_FILE_THREAD
-   base::mac::LaunchApplication(
-       shim_path, command_line, /*url_specs=*/{},
-       {.activate = launch_mode != ShimLaunchMode::kBackground,
+@@ -276,6 +276,12 @@ void LaunchShimForTesting(const base::FilePath& shim_path,  // IN-TEST
+                           ShimLaunchedCallback launched_callback,
+                           ShimTerminatedCallback terminated_callback,
+                           const base::FilePath& chromium_path) {
++  BraveLaunchShimForTesting(shim_path,
++                            urls,
++                            std::move(launched_callback),
++                            std::move(terminated_callback),
++                            chromium_path);
++  return;
+   base::CommandLine command_line = BuildCommandLineForShimLaunch();
+   command_line.AppendSwitch(app_mode::kLaunchedForTest);
+   command_line.AppendSwitch(app_mode::kIsNormalLaunch);
