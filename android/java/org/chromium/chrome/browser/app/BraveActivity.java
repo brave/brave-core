@@ -2479,7 +2479,7 @@ public abstract class BraveActivity extends ChromeActivity
         }
         if (intent != null) {
             String openUrl = intent.getStringExtra(BraveActivity.OPEN_URL);
-            if (!TextUtils.isEmpty(openUrl)) {
+            if (!TextUtils.isEmpty(openUrl) && !BraveIntentHandler.isUrlUnsafe(openUrl)) {
                 try {
                     openNewOrSelectExistingTab(openUrl);
                 } catch (NullPointerException e) {
@@ -2498,7 +2498,7 @@ public abstract class BraveActivity extends ChromeActivity
                         || requestCode == BraveConstants.SITE_BANNER_REQUEST_CODE)) {
             if (data != null) {
                 String open_url = data.getStringExtra(BraveActivity.OPEN_URL);
-                if (!TextUtils.isEmpty(open_url)) {
+                if (!TextUtils.isEmpty(open_url) && !BraveIntentHandler.isUrlUnsafe(open_url)) {
                     openNewOrSelectExistingTab(open_url);
                 }
             }
