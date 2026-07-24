@@ -1,0 +1,44 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Only remove a window with zero tabs when Brave also allows closing the app
+      with zero tabs (CloseBraveManager, referenced by fully-qualified name so no
+      import is needed). The captured indentation (\2) reproduces the surrounding
+      block so the inserted statement lines up with the following if.
+    regex:
+      re_pattern: |-
+        (getTabModelSelector\(\)\.getTotalTabCount\(\) == 0\) \{\n)( +)(if \(shouldRemoveWindowWithZeroTabs\))
+      replace: |-
+        \1\2shouldRemoveWindowWithZeroTabs = shouldRemoveWindowWithZeroTabs && org.chromium.chrome.browser.partnercustomizations.CloseBraveManager.shouldCloseAppWithZeroTabs();\n\2\3
+  - description: |-
+      Notify Brave's onTabStateInitializedHandler() hook (overridden in
+      BraveActivity) once tab state is initialized. Inserted after the
+      mMultiInstanceManager block, reusing the captured indentation (\2).
+    regex:
+      re_pattern: |-
+        (mMultiInstanceManager\.onTabStateInitialized\(\);\n)( +)(\}\n)
+      replace: |-
+        \1\2\3\2onTabStateInitializedHandler();\n
+  - description: |-
+      Repoint the pane order controller import at Brave's subclass. The
+      constructor below is redirected to BraveDefaultPaneOrderController (same
+      package), so the upstream import would otherwise be unused and trip the
+      UnusedImports checkstyle rule; redirecting the import keeps it valid.
+    regex:
+      re_pattern: |-
+        import org.chromium.chrome.browser.hub.(DefaultPaneOrderController;)
+      replace: |-
+        import org.chromium.chrome.browser.hub.Brave\1
+  - description: |-
+      Instantiate Brave's pane order controller, which hides the Tab Groups pane
+      from the Hub (tab switcher overview) when the "Enable tab groups" master
+      switch is off.
+    regex:
+      re_pattern: |-
+        new (DefaultPaneOrderController\()
+      replace: |-
+        new Brave\1

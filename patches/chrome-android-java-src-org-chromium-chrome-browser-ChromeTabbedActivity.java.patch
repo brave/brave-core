@@ -1,7 +1,16 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
-index 977f05360fe1eb6a1043f26c19b53145ad7721a6..c73b0ac3fcfaef888b4604a5d738d5ce87a7d1c5 100644
+index 977f05360fe1eb6a1043f26c19b53145ad7721a6..b3ab1f581dbdd7bb58ff2f5209337937cde0da79 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
+@@ -154,7 +154,7 @@ import org.chromium.chrome.browser.history.HistoryManagerUtils;
+ import org.chromium.chrome.browser.history.HistoryPane;
+ import org.chromium.chrome.browser.history.HistoryTabHelper;
+ import org.chromium.chrome.browser.homepage.HomepageManager;
+-import org.chromium.chrome.browser.hub.DefaultPaneOrderController;
++import org.chromium.chrome.browser.hub.BraveDefaultPaneOrderController;
+ import org.chromium.chrome.browser.hub.HubColorMixer.OverviewModeAlphaObserver;
+ import org.chromium.chrome.browser.hub.HubLayoutDependencyHolder;
+ import org.chromium.chrome.browser.hub.HubManager;
 @@ -929,6 +929,7 @@ public class ChromeTabbedActivity extends ChromeActivity implements PreAttachInt
                          private void closeIfNoTabsAndHomepageEnabled(
                                  boolean isPendingClosure, boolean shouldRemoveWindowWithZeroTabs) {
@@ -10,6 +19,15 @@ index 977f05360fe1eb6a1043f26c19b53145ad7721a6..c73b0ac3fcfaef888b4604a5d738d5ce
                                  if (shouldRemoveWindowWithZeroTabs) {
                                      mMultiInstanceManager.closeChromeWindowIfEmpty(mWindowId);
                                  } else if (HomepageManager.getInstance()
+@@ -1218,7 +1219,7 @@ public class ChromeTabbedActivity extends ChromeActivity implements PreAttachInt
+                 new HubProvider(
+                         this,
+                         getProfileProviderSupplier(),
+-                        new DefaultPaneOrderController(),
++                        new BraveDefaultPaneOrderController(),
+                         mBackPressManager,
+                         getMenuOrKeyboardActionController(),
+                         this::getSnackbarManager,
 @@ -3748,6 +3749,7 @@ public class ChromeTabbedActivity extends ChromeActivity implements PreAttachInt
                          if (mMultiInstanceManager != null) {
                              mMultiInstanceManager.onTabStateInitialized();
