@@ -423,11 +423,12 @@ void AIChatUIPageHandler::OpenURL(const GURL& url) {
     return;
   }
 
-  // A frontend link was clicked inside the conversation. If AI Chat is a full
-  // browser tab, move the live conversation into the side panel and open the
-  // link in a tab in its place. No-op unless the feature is enabled and AI
-  // Chat is a full tab; internal chrome/UI links use OpenURLInNewTab directly
-  // and never reach here.
+  // A link in the AI Chat UI was clicked. If AI Chat is a full browser tab,
+  // move the live conversation into the side panel and open the link in a tab
+  // in its place. No-op unless the feature is enabled and AI Chat is a full
+  // tab. Neither the links AI Chat opens itself (`GoPremium` and friends, which
+  // use OpenURLInNewTab directly) nor the anchors a conversation renders (which
+  // the browser opens, and `AIChatFullPageLinkObserver` moves for) reach here.
   ai_chat::MaybeMoveFullPageChatToSidePanel(owner_web_contents_);
 
   OpenURLInNewTab(url);
