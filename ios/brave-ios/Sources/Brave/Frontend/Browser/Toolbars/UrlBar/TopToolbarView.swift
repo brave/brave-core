@@ -510,6 +510,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
       additionalButtons: [shortcutButton]
     )
     updateForTraitCollection()
+    updateColors()
   }
 
   private func updateForTraitCollection() {
@@ -597,7 +598,9 @@ class TopToolbarView: UIView, ToolbarProtocol {
   private func updateColors() {
     overrideUserInterfaceStyle = privateBrowsingManager.isPrivateBrowsing ? .dark : .unspecified
     let browserColors = privateBrowsingManager.browserColors
-    backgroundColor = browserColors.chromeBackground
+    let isDark = traitCollection.userInterfaceStyle == .dark
+    locationContainer.layer.borderColor = isDark ? browserColors.dividerSubtle.cgColor : nil
+    locationContainer.layer.borderWidth = isDark ? 1.0 / traitCollection.displayScale : 0
     locationTextField?.backgroundColor = browserColors.containerBackground
     locationTextField?.textColor = browserColors.textPrimary
     locationTextField?.attributedPlaceholder = makePlaceholder(colors: browserColors)

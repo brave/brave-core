@@ -78,7 +78,6 @@ class TabBarCell: UICollectionViewCell {
   private func updateColors() {
     let browserColors: any BrowserColors =
       tabManager?.privateBrowsingManager.browserColors ?? .standard
-    backgroundColor = browserColors.tabBarTabBackground
     separatorLine.backgroundColor = browserColors.dividerSubtle
     highlightView.backgroundColor = isSelected ? browserColors.tabBarTabActiveBackground : .clear
     highlightView.layer.shadowOpacity = isSelected ? 0.05 : 0.0
