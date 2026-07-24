@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <grit-part>
 
-  <message name="IDS_NEW_TAB_WHAT_IS_A_SPONSORED_SITE_LABEL" desc="Label for 'What is a sponsored site?' link in sponsored site context menu" formatter_data="webui=BraveNewTabPage">
-    What is a sponsored site?
+  <message name="IDS_NEW_TAB_WHAT_ARE_SPONSORED_SITES_LABEL" desc="Label for 'What are sponsored sites?' link in sponsored site context menu" formatter_data="webui=BraveNewTabPage">
+    What are sponsored sites?
   </message>
 
   <message name="IDS_NEW_TAB_ADD_TOP_SITE_LABEL" desc="Label button that opens the Add Site dialog" formatter_data="webui=BraveNewTabPage">
