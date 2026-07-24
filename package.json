@@ -81,7 +81,7 @@
         "dir": "src",
         "tag": "151.0.7922.34",
         "repository": {
-          "url": "https://chromium.googlesource.com/chromium/src.git"
+          "url": "https://gerrit.brave.com/googlesource/chromium"
         },
         "custom_deps": {
           "src/testing/libfuzzer/fuzzers/wasm_corpus": null,
