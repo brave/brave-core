@@ -3,20 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-# The Chromium-bundled Node.js binary path.
-if (host_os == "win") {
-  _node_bin = "//third_party/node/win/node.exe"
-} else if (host_os == "mac") {
-  if (host_cpu == "arm64") {
-    _node_bin = "//third_party/node/mac_arm64/node-darwin-arm64/bin/node"
-  } else {
-    _node_bin = "//third_party/node/mac/node-darwin-x64/bin/node"
-  }
-} else if (host_os == "linux") {
-  _node_bin = "//third_party/node/linux/node-linux-x64/bin/node"
-} else {
-  assert(false, "Unsupported host_os: $host_os")
-}
+import("//brave/build/node_bin.gni")
 
 # Runs a Node.js script as a GN action during the build. Use ONLY for build
 # steps that require Node.js (e.g. webpack, typescript, etc.). In other cases
@@ -47,7 +34,7 @@ template("node_action") {
     args = [ "{{response_file_name}}" ]
 
     inputs = [
-      _node_bin,
+      node_bin,
       _node_script,
     ]
     if (defined(invoker.inputs)) {
@@ -76,7 +63,7 @@ template("node_action") {
                            ])
 
     response_file_contents = [
-      rebase_path(_node_bin, root_build_dir),
+      rebase_path(node_bin, root_build_dir),
       rebase_path(_node_script, root_build_dir),
     ]
 
