@@ -112,6 +112,8 @@ nala_icons = [
   "ic_arrow_undo.xml",
   "ic_arrow_up_and_down.xml",
   "ic_bar_chart_search.xml",
+  "ic_biometric_login.xml",
+  "ic_brave_icon_release_color.xml",
   "ic_bar_chart.xml",
   "ic_browser_customizable_shortcut.xml",
   "ic_browser_group.xml",
