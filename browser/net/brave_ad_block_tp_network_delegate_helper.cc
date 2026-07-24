@@ -213,8 +213,8 @@ ShouldBlockRequestResult ShouldBlockRequestOnTaskRunner(
   }
 
   bool force_aggressive = SameDomainOrHost(
-      url::Origin::CreateFromNormalizedTuple("https", "youtube.com", 443),
       input.request_initiator,
+      url::Origin::CreateFromNormalizedTuple("https", "youtube.com", 443),
       net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
 
   SCOPED_UMA_HISTOGRAM_TIMER("Brave.Adblock.ShouldBlockRequest");
@@ -438,15 +438,9 @@ int OnBeforeURLRequest_AdBlockTPPreWork(const ResponseCallback& next_callback,
                                         T<BraveRequestInfo> ctx) {
   // If the following info isn't available, then proper content settings can't
   // be looked up, so do nothing.
-  if (ctx->request_url().is_empty() || !ctx->allow_brave_shields() ||
-      ctx->allow_ads() ||
+  if (ctx->request_url().is_empty() || !ctx->request_initiator() ||
+      !ctx->allow_brave_shields() || ctx->allow_ads() ||
       ctx->resource_type() == BraveRequestInfo::kInvalidResourceType) {
-    return net::OK;
-  }
-
-  const auto request_initiator = ctx->request_initiator();
-  if (!request_initiator) {
-    // Skip browser-initiated requests.
     return net::OK;
   }
 
@@ -459,7 +453,7 @@ int OnBeforeURLRequest_AdBlockTPPreWork(const ResponseCallback& next_callback,
 
   // Also, until a better solution is available, we explicitly allow any
   // request from an extension.
-  if (request_initiator->scheme() == kChromeExtensionScheme &&
+  if (ctx->request_initiator()->scheme() == kChromeExtensionScheme &&
       !base::FeatureList::IsEnabled(
           ::brave_shields::features::kBraveExtensionNetworkBlocking)) {
     return net::OK;
