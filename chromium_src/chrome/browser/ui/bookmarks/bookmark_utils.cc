@@ -22,25 +22,6 @@
 #include "ui/color/color_provider.h"
 #include "ui/gfx/color_utils.h"
 
-namespace chrome {
-
-void ToggleBookmarkBarWhenVisible_ChromiumImpl(
-    content::BrowserContext* browser_context);
-
-void BraveToggleBookmarkBarState(content::BrowserContext* browser_context) {
-  ToggleBookmarkBarWhenVisible_ChromiumImpl(browser_context);
-  auto* prefs = user_prefs::UserPrefs::Get(browser_context);
-  // On macOS with the View menu or via hotkeys, the options Always show
-  // bookmarks is a checkbox. We will keep that checkbox to be Always and Never.
-  const bool always_show =
-      prefs->GetBoolean(bookmarks::prefs::kShowBookmarkBar);
-  brave::SetBookmarkState(always_show ? brave::BookmarkBarState::kAlways
-                                      : brave::BookmarkBarState::kNever,
-                          prefs);
-}
-
-}  // namespace chrome
-
 #define IsAppsShortcutEnabled IsAppsShortcutEnabled_Unused
 #define ShouldShowAppsShortcutInBookmarkBar \
   ShouldShowAppsShortcutInBookmarkBar_Unused
@@ -49,19 +30,12 @@ void BraveToggleBookmarkBarState(content::BrowserContext* browser_context) {
 #define GetBookmarkFolderIcon GetBookmarkFolderIcon_UnUsed
 #endif
 
-#define ToggleBookmarkBarWhenVisible                                       \
-  ToggleBookmarkBarWhenVisible(content::BrowserContext* browser_context) { \
-    BraveToggleBookmarkBarState(browser_context);                          \
-  }                                                                        \
-  void ToggleBookmarkBarWhenVisible_ChromiumImpl
-
 #include <chrome/browser/ui/bookmarks/bookmark_utils.cc>
 
 #if defined(TOOLKIT_VIEWS)
 #undef GetBookmarkFolderIcon
 #endif  // defined(TOOLKIT_VIEWS)
 
-#undef ToggleBookmarkBarWhenVisible
 #undef IsAppsShortcutEnabled
 #undef ShouldShowAppsShortcutInBookmarkBar
 
