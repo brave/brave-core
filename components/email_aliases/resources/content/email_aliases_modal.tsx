@@ -328,7 +328,7 @@ export const EmailAliasModal = ({
           {getLocale(S.SETTINGS_EMAIL_ALIASES_BUBBLE_DESCRIPTION)}
         </ModalDescription>
       )}
-      {limitReached ? (
+      {limitReached && !editing ? (
         <EmailAliasLimitReached
           aliases={aliases!}
           aliasLimit={aliasLimit}
@@ -414,7 +414,7 @@ export const EmailAliasModal = ({
         >
           {getLocale(S.SETTINGS_EMAIL_ALIASES_CANCEL_BUTTON)}
         </Button>
-        {!limitReached && (
+        {(!limitReached || editing) && (
           <Button
             id='create-alias-button'
             kind='filled'
