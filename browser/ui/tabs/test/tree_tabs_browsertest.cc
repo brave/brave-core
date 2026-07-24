@@ -124,7 +124,7 @@ class TreeTabsBrowserTest : public InProcessBrowserTest {
   }
   ~TreeTabsBrowserTest() override = default;
 
-  Profile* profile() { return browser()->profile(); }
+  Profile* profile() { return browser()->GetProfile(); }
   BraveTabStripModel& tab_strip_model() {
     return *static_cast<BraveTabStripModel*>(browser()->tab_strip_model());
   }
@@ -186,7 +186,7 @@ class TreeTabsBrowserTest : public InProcessBrowserTest {
   // initialized.
   void EnsureTabGroupSyncServiceInitialized() {
     auto* tab_groups_service =
-        tab_groups::TabGroupSyncServiceFactory::GetForProfile(profile());
+        tab_groups::TabGroupSyncServiceFactory::GetForProfile(GetProfile());
     ASSERT_TRUE(tab_groups_service);
     tab_groups_service->SetIsInitializedForTesting(true);
   }

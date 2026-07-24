@@ -71,8 +71,8 @@ BraveContentsContainerView::BraveContentsContainerView(
       for_web_panel_(for_web_panel) {
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   auto* browser = browser_view_->browser();
-  reader_mode_toolbar_ =
-      AddChildView(std::make_unique<ReaderModeToolbarView>(browser->profile()));
+  reader_mode_toolbar_ = AddChildView(
+      std::make_unique<ReaderModeToolbarView>(browser->GetProfile()));
   reader_mode_toolbar_->SetDelegate(this);
 #endif
 

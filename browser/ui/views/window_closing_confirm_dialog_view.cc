@@ -105,7 +105,7 @@ WindowClosingConfirmDialogView::WindowClosingConfirmDialogView(
     base::OnceCallback<void(bool)> response_callback)
     : browser_(browser),
       response_callback_(std::move(response_callback)),
-      prefs_(browser->profile()->GetOriginalProfile()->GetPrefs()) {
+      prefs_(browser->GetProfile()->GetOriginalProfile()->GetPrefs()) {
   set_should_ignore_snapping(true);
   SetButtonLabel(ui::mojom::DialogButton::kOk,
                  l10n_util::GetStringUTF16(

@@ -202,7 +202,8 @@ class SplitViewBrowserTest : public InProcessBrowserTest {
 
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
-    browser()->profile()->GetPrefs()->SetBoolean(kWebViewRoundedCorners, false);
+    browser()->GetProfile()->GetPrefs()->SetBoolean(kWebViewRoundedCorners,
+                                                    false);
   }
 
   TabStrip* tab_strip() {
@@ -489,7 +490,8 @@ class SplitViewWithRoundedCornersTest : public SplitViewBrowserTest {
 
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
-    browser()->profile()->GetPrefs()->SetBoolean(kWebViewRoundedCorners, true);
+    browser()->GetProfile()->GetPrefs()->SetBoolean(kWebViewRoundedCorners,
+                                                    true);
   }
 };
 
@@ -523,7 +525,8 @@ IN_PROC_BROWSER_TEST_F(SplitViewWithRoundedCornersTest, ContentsOutlineTest) {
   EXPECT_TRUE(has_contents_outline(brave_browser_view()));
 
   // Turn off the rounded corners.
-  browser()->profile()->GetPrefs()->SetBoolean(kWebViewRoundedCorners, false);
+  browser()->GetProfile()->GetPrefs()->SetBoolean(kWebViewRoundedCorners,
+                                                  false);
 
   // Outline should be gone.
   EXPECT_FALSE(has_contents_outline(brave_browser_view()));
@@ -532,7 +535,7 @@ IN_PROC_BROWSER_TEST_F(SplitViewWithRoundedCornersTest, ContentsOutlineTest) {
   EXPECT_FALSE(has_contents_outline(brave_browser_view()));
 
   // Turn on the rounded corners.
-  browser()->profile()->GetPrefs()->SetBoolean(kWebViewRoundedCorners, true);
+  browser()->GetProfile()->GetPrefs()->SetBoolean(kWebViewRoundedCorners, true);
 
   // Still don't have outline as split view is active.
   EXPECT_FALSE(has_contents_outline(brave_browser_view()));
@@ -707,7 +710,7 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest, SplitViewWithPinnedTabTest) {
 }
 
 IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest, BookmarksBarVisibilityTest) {
-  auto* prefs = browser()->profile()->GetPrefs();
+  auto* prefs = browser()->GetProfile()->GetPrefs();
   auto* tab_strip_model = browser()->tab_strip_model();
   NewSplitTab();
 

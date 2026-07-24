@@ -137,7 +137,7 @@ class DebounceBrowserTest : public BaseLocalDataFilesBrowserTest {
   }
 
   void ToggleDebouncePref(bool on) {
-    browser()->profile()->GetPrefs()->SetBoolean(
+    browser()->GetProfile()->GetPrefs()->SetBoolean(
         debounce::prefs::kDebounceEnabled, on);
   }
 
@@ -163,7 +163,8 @@ class DebounceBrowserTest : public BaseLocalDataFilesBrowserTest {
   }
 
   HostContentSettingsMap* content_settings() {
-    return HostContentSettingsMapFactory::GetForProfile(browser()->profile());
+    return HostContentSettingsMapFactory::GetForProfile(
+        browser()->GetProfile());
   }
 
   bool IsShowingInterstitial() {

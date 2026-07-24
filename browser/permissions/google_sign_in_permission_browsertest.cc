@@ -99,11 +99,12 @@ class GoogleSignInBrowserTest : public InProcessBrowserTest {
   }
 
   content_settings::CookieSettings* cookie_settings() {
-    return CookieSettingsFactory::GetForProfile(browser()->profile()).get();
+    return CookieSettingsFactory::GetForProfile(browser()->GetProfile()).get();
   }
 
   HostContentSettingsMap* content_settings() {
-    return HostContentSettingsMapFactory::GetForProfile(browser()->profile());
+    return HostContentSettingsMapFactory::GetForProfile(
+        browser()->GetProfile());
   }
 
   permissions::PermissionRequestManager* GetPermissionRequestManager() {
@@ -144,31 +145,31 @@ class GoogleSignInBrowserTest : public InProcessBrowserTest {
 
   void DefaultBlockAllCookies() {
     brave_shields::SetCookieControlType(
-        content_settings(), browser()->profile()->GetPrefs(),
+        content_settings(), browser()->GetProfile()->GetPrefs(),
         brave_shields::ControlType::BLOCK, GURL());
   }
 
   void DefaultAllowAllCookies() {
     brave_shields::SetCookieControlType(
-        content_settings(), browser()->profile()->GetPrefs(),
+        content_settings(), browser()->GetProfile()->GetPrefs(),
         brave_shields::ControlType::ALLOW, GURL());
   }
 
   void AllowCookies(const GURL& url) {
     brave_shields::SetCookieControlType(content_settings(),
-                                        browser()->profile()->GetPrefs(),
+                                        browser()->GetProfile()->GetPrefs(),
                                         brave_shields::ControlType::ALLOW, url);
   }
 
   void BlockThirdPartyCookies(const GURL& url) {
     brave_shields::SetCookieControlType(
-        content_settings(), browser()->profile()->GetPrefs(),
+        content_settings(), browser()->GetProfile()->GetPrefs(),
         brave_shields::ControlType::BLOCK_THIRD_PARTY, url);
   }
 
   void BlockCookies(const GURL& url) {
     brave_shields::SetCookieControlType(content_settings(),
-                                        browser()->profile()->GetPrefs(),
+                                        browser()->GetProfile()->GetPrefs(),
                                         brave_shields::ControlType::BLOCK, url);
   }
 
@@ -177,7 +178,7 @@ class GoogleSignInBrowserTest : public InProcessBrowserTest {
   }
 
   void ExpectCookiesOnHost(const GURL& url, const std::string& expected) {
-    EXPECT_EQ(expected, content::GetCookies(browser()->profile(), url));
+    EXPECT_EQ(expected, content::GetCookies(browser()->GetProfile(), url));
   }
 
   void NavigateFrameTo(const GURL& url, const std::string& id = "test") {
@@ -191,8 +192,8 @@ class GoogleSignInBrowserTest : public InProcessBrowserTest {
   }
 
   void SetGoogleSignInPref(bool value) {
-    browser()->profile()->GetPrefs()->SetBoolean(kGoogleLoginControlType,
-                                                 value);
+    browser()->GetProfile()->GetPrefs()->SetBoolean(kGoogleLoginControlType,
+                                                    value);
   }
 
   void ClickButtonWithId(const std::string& id) {
@@ -403,7 +404,7 @@ IN_PROC_BROWSER_TEST_F(GoogleSignInBrowserTest, FirebaseAuthButNoParam) {
 IN_PROC_BROWSER_TEST_F(GoogleSignInBrowserTest, IncognitoModeInheritAllow) {
   // Allowed permission for a website is inherited in incognito
   CheckAskAndAcceptFlow();
-  Profile* profile = browser()->profile();
+  Profile* profile = browser()->GetProfile();
   Browser* incognito_browser = CreateIncognitoBrowser(profile);
   SetBrowser(incognito_browser);
   SetPromptFactory(GetPermissionRequestManager());
@@ -413,7 +414,7 @@ IN_PROC_BROWSER_TEST_F(GoogleSignInBrowserTest, IncognitoModeInheritAllow) {
 IN_PROC_BROWSER_TEST_F(GoogleSignInBrowserTest, IncognitoModeInheritBlock) {
   // Blocked permission for a website is inherited in incognito
   CheckAskAndDenyFlow();
-  Profile* profile = browser()->profile();
+  Profile* profile = browser()->GetProfile();
   Browser* incognito_browser = CreateIncognitoBrowser(profile);
   SetBrowser(incognito_browser);
   SetPromptFactory(GetPermissionRequestManager());

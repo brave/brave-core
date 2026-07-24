@@ -200,7 +200,8 @@ class BraveContentSettingsAgentImplBrowserTest : public InProcessBrowserTest {
   const ContentSettingsPattern& iframe_pattern() { return iframe_pattern_; }
 
   HostContentSettingsMap* content_settings() {
-    return HostContentSettingsMapFactory::GetForProfile(browser()->profile());
+    return HostContentSettingsMapFactory::GetForProfile(
+        browser()->GetProfile());
   }
 
   void BlockReferrers() {
@@ -227,19 +228,19 @@ class BraveContentSettingsAgentImplBrowserTest : public InProcessBrowserTest {
 
   void Block3PCookies() {
     brave_shields::SetCookieControlType(
-        content_settings(), browser()->profile()->GetPrefs(),
+        content_settings(), browser()->GetProfile()->GetPrefs(),
         ControlType::BLOCK_THIRD_PARTY, top_level_page_url());
   }
 
   void BlockCookies() {
     brave_shields::SetCookieControlType(
-        content_settings(), browser()->profile()->GetPrefs(),
+        content_settings(), browser()->GetProfile()->GetPrefs(),
         ControlType::BLOCK, top_level_page_url());
   }
 
   void AllowCookies() {
     brave_shields::SetCookieControlType(
-        content_settings(), browser()->profile()->GetPrefs(),
+        content_settings(), browser()->GetProfile()->GetPrefs(),
         ControlType::ALLOW, top_level_page_url());
   }
 
@@ -851,19 +852,19 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest, AllowCookies) {
 
   NavigateToPageWithIframe();
   CheckCookie(contents(), kTestCookie);
-  EXPECT_EQ(COOKIE_STR, content::GetCookies(browser()->profile(), url()));
+  EXPECT_EQ(COOKIE_STR, content::GetCookies(browser()->GetProfile(), url()));
 
   NavigateIframe(cross_site_url());
   Check3PCookie(child_frame(), kTestCookie);
   EXPECT_EQ(COOKIE_STR,
-            content::GetCookies(browser()->profile(), cross_site_url()));
+            content::GetCookies(browser()->GetProfile(), cross_site_url()));
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
                        ChromiumCookieBlockOverridesBraveAllowCookiesTopLevel) {
   AllowCookies();
   HostContentSettingsMap* content_settings =
-      HostContentSettingsMapFactory::GetForProfile(browser()->profile());
+      HostContentSettingsMapFactory::GetForProfile(browser()->GetProfile());
   content_settings->SetContentSettingCustomScope(
       top_level_page_pattern(), ContentSettingsPattern::Wildcard(),
       ContentSettingsType::COOKIES, CONTENT_SETTING_BLOCK);
@@ -881,7 +882,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
                        ChromiumCookieBlockOverridesBraveAllowCookiesIframe) {
   AllowCookies();
   HostContentSettingsMap* content_settings =
-      HostContentSettingsMapFactory::GetForProfile(browser()->profile());
+      HostContentSettingsMapFactory::GetForProfile(browser()->GetProfile());
   content_settings->SetContentSettingCustomScope(
       iframe_pattern(), ContentSettingsPattern::Wildcard(),
       ContentSettingsType::COOKIES, CONTENT_SETTING_BLOCK);

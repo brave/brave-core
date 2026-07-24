@@ -87,8 +87,8 @@ class BraveTabHoverTest : public InProcessBrowserTest {
 // The ThumbnailTabHelper needs to be attached in all |TabHoverModes| so that
 // we can change between modes safely without restarting.
 IN_PROC_BROWSER_TEST_F(BraveTabHoverTest, ThumbnailHelperIsAlwaysAttached) {
-  browser()->profile()->GetPrefs()->SetInteger(brave_tabs::kTabHoverMode,
-                                               brave_tabs::TabHoverMode::CARD);
+  browser()->GetProfile()->GetPrefs()->SetInteger(
+      brave_tabs::kTabHoverMode, brave_tabs::TabHoverMode::CARD);
   std::vector<TabStrip::AddTabData> data_list;
   tabs::TabData data;
   data.visible_url = GURL("https://card.com");
@@ -103,7 +103,7 @@ IN_PROC_BROWSER_TEST_F(BraveTabHoverTest, ThumbnailHelperIsAlwaysAttached) {
             content::WebContentsUserData<ThumbnailTabHelper>::FromWebContents(
                 contents()));
 
-  browser()->profile()->GetPrefs()->SetInteger(
+  browser()->GetProfile()->GetPrefs()->SetInteger(
       brave_tabs::kTabHoverMode, brave_tabs::TabHoverMode::CARD_WITH_PREVIEW);
   data_list = {};
   data.visible_url = GURL("https://card-with-preview.com");
@@ -118,7 +118,7 @@ IN_PROC_BROWSER_TEST_F(BraveTabHoverTest, ThumbnailHelperIsAlwaysAttached) {
             content::WebContentsUserData<ThumbnailTabHelper>::FromWebContents(
                 contents()));
 
-  browser()->profile()->GetPrefs()->SetInteger(
+  browser()->GetProfile()->GetPrefs()->SetInteger(
       brave_tabs::kTabHoverMode, brave_tabs::TabHoverMode::TOOLTIP);
 
   data_list = {};
@@ -148,8 +148,8 @@ IN_PROC_BROWSER_TEST_F(BraveTabHoverTest,
                        MAYBE_HoverModesAreCorrectlyConfigured) {
   // In Card mode, the widget should become visible but the thumbnail should not
   // be created.
-  browser()->profile()->GetPrefs()->SetInteger(brave_tabs::kTabHoverMode,
-                                               brave_tabs::TabHoverMode::CARD);
+  browser()->GetProfile()->GetPrefs()->SetInteger(
+      brave_tabs::kTabHoverMode, brave_tabs::TabHoverMode::CARD);
   HoverOverTab(active_tab());
 
   Widget* widget = hover_card()->GetWidget();
@@ -164,7 +164,7 @@ IN_PROC_BROWSER_TEST_F(BraveTabHoverTest,
 
   // In Preview mode, the widget should become visible and the card should have
   // a thumbnail view.
-  browser()->profile()->GetPrefs()->SetInteger(
+  browser()->GetProfile()->GetPrefs()->SetInteger(
       brave_tabs::kTabHoverMode, brave_tabs::TabHoverMode::CARD_WITH_PREVIEW);
   HoverOverTab(active_tab());
   widget = hover_card()->GetWidget();
@@ -178,7 +178,7 @@ IN_PROC_BROWSER_TEST_F(BraveTabHoverTest,
   EXPECT_FALSE(widget->IsVisible());
 
   // In Tooltip mode, the widget should not be made visible.
-  browser()->profile()->GetPrefs()->SetInteger(
+  browser()->GetProfile()->GetPrefs()->SetInteger(
       brave_tabs::kTabHoverMode, brave_tabs::TabHoverMode::TOOLTIP);
   HoverOverTab(active_tab());
   widget = hover_card()->GetWidget();
@@ -212,8 +212,8 @@ IN_PROC_BROWSER_TEST_F(BraveTabHoverTestWithChromeFlag,
 
   // In Card mode, the widget should become visible and because the
   // |kTabHoverCardImages| feature is enabled, the preview should be created.
-  browser()->profile()->GetPrefs()->SetInteger(brave_tabs::kTabHoverMode,
-                                               brave_tabs::TabHoverMode::CARD);
+  browser()->GetProfile()->GetPrefs()->SetInteger(
+      brave_tabs::kTabHoverMode, brave_tabs::TabHoverMode::CARD);
   HoverOverTab(active_tab());
 
   Widget* widget = hover_card()->GetWidget();
@@ -227,7 +227,7 @@ IN_PROC_BROWSER_TEST_F(BraveTabHoverTestWithChromeFlag,
   EXPECT_FALSE(widget->IsVisible());
 
   // In Preview mode, both flags are set to enable the preview.
-  browser()->profile()->GetPrefs()->SetInteger(
+  browser()->GetProfile()->GetPrefs()->SetInteger(
       brave_tabs::kTabHoverMode, brave_tabs::TabHoverMode::CARD_WITH_PREVIEW);
   HoverOverTab(active_tab());
 
@@ -242,7 +242,7 @@ IN_PROC_BROWSER_TEST_F(BraveTabHoverTestWithChromeFlag,
   EXPECT_FALSE(widget->IsVisible());
 
   // In Tooltip mode, the widget should not be made visible.
-  browser()->profile()->GetPrefs()->SetInteger(
+  browser()->GetProfile()->GetPrefs()->SetInteger(
       brave_tabs::kTabHoverMode, brave_tabs::TabHoverMode::TOOLTIP);
   HoverOverTab(active_tab());
   widget = hover_card()->GetWidget();

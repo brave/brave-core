@@ -16,7 +16,7 @@ BraveBookmarkBarView::BraveBookmarkBarView(Browser* browser,
     : BookmarkBarView(browser, browser_view) {
   show_all_bookmarks_button_pref_.Init(
       brave::bookmarks::prefs::kShowAllBookmarksButton,
-      browser_->profile()->GetPrefs(),
+      browser_->GetProfile()->GetPrefs(),
       base::BindRepeating(
           &BraveBookmarkBarView::OnShowAllBookmarksButtonPrefChanged,
           base::Unretained(this)));

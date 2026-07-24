@@ -107,7 +107,7 @@ class BraveBrowserCommandControllerTest : public InProcessBrowserTest {
                  policy::POLICY_LEVEL_MANDATORY, policy::POLICY_SCOPE_MACHINE,
                  policy::POLICY_SOURCE_PLATFORM, base::Value(!value), nullptr);
     provider_.UpdateChromePolicy(policies);
-    EXPECT_EQ(ai_chat::IsAIChatEnabled(browser()->profile()->GetPrefs()),
+    EXPECT_EQ(ai_chat::IsAIChatEnabled(browser()->GetProfile()->GetPrefs()),
               !value);
   }
 #endif
@@ -119,14 +119,14 @@ class BraveBrowserCommandControllerTest : public InProcessBrowserTest {
                  policy::POLICY_SCOPE_MACHINE, policy::POLICY_SOURCE_PLATFORM,
                  base::Value(value), nullptr);
     provider_.UpdateChromePolicy(policies);
-    EXPECT_EQ(
-        brave_vpn::IsBraveVPNDisabledByPolicy(browser()->profile()->GetPrefs()),
-        value);
+    EXPECT_EQ(brave_vpn::IsBraveVPNDisabledByPolicy(
+                  browser()->GetProfile()->GetPrefs()),
+              value);
   }
 
   void SetPurchasedUserForBraveVPN(Browser* browser, bool purchased) {
     auto* service =
-        brave_vpn::BraveVpnServiceFactory::GetForProfile(browser->profile());
+        brave_vpn::BraveVpnServiceFactory::GetForProfile(browser->GetProfile());
     ASSERT_TRUE(!!service);
     auto target_state = purchased
                             ? brave_vpn::mojom::PurchasedState::PURCHASED
@@ -245,8 +245,8 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-  EXPECT_FALSE(
-      brave_vpn::IsBraveVPNDisabledByPolicy(browser()->profile()->GetPrefs()));
+  EXPECT_FALSE(brave_vpn::IsBraveVPNDisabledByPolicy(
+      browser()->GetProfile()->GetPrefs()));
   CheckBraveVPNCommands(browser());
   BlockVPNByPolicy(true);
   CheckBraveVPNCommandsDisabledByPolicy(browser());
@@ -319,7 +319,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
 
   Browser* guest_browser = browser_creation_observer.Wait();
   DCHECK(guest_browser);
-  EXPECT_TRUE(guest_browser->profile()->IsGuestSession());
+  EXPECT_TRUE(guest_browser->GetProfile()->IsGuestSession());
   auto* command_controller = guest_browser->command_controller();
   EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_REWARDS));
 
@@ -352,7 +352,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
   brave::NewOffTheRecordWindowTor(browser());
   Browser* tor_browser = tor_browser_creation_observer.Wait();
   DCHECK(tor_browser);
-  EXPECT_TRUE(tor_browser->profile()->IsTor());
+  EXPECT_TRUE(tor_browser->GetProfile()->IsTor());
   auto* command_controller = tor_browser->command_controller();
   EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_REWARDS));
 
@@ -393,7 +393,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
                        ToggleAIChat_ControlledByPolicy) {
   auto* command_controller = browser()->command_controller();
   // Sanity check policy is enabled by default
-  EXPECT_TRUE(ai_chat::IsAIChatEnabled(browser()->profile()->GetPrefs()));
+  EXPECT_TRUE(ai_chat::IsAIChatEnabled(browser()->GetProfile()->GetPrefs()));
   EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_TOGGLE_AI_CHAT));
   // When AI Chat is blocked by policy, the commands should not be available
   BlockAIChatByPolicy(true);
@@ -651,7 +651,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
   // the service being initialized and the browser being destroyed.
   tab_groups::TabGroupSyncService* service =
       tab_groups::TabGroupSyncServiceFactory::GetForProfile(
-          browser()->profile());
+          browser()->GetProfile());
   ASSERT_TRUE(service);
   service->SetIsInitializedForTesting(true);
   EXPECT_EQ(0u, service->GetAllGroups().size());
@@ -861,8 +861,8 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerFocusModeTest,
 
 IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerFocusModeTest,
                        FocusModeDisabledForPopupWindow) {
-  Browser* popup = Browser::Create(
-      Browser::CreateParams(Browser::TYPE_POPUP, browser()->profile(), true));
+  Browser* popup = Browser::Create(Browser::CreateParams(
+      Browser::TYPE_POPUP, browser()->GetProfile(), true));
   chrome::AddTabAt(popup, GURL("about:blank"), -1, true);
   BrowserWindow::FromBrowser(popup)->Show();
   EXPECT_FALSE(
@@ -891,7 +891,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerWithEmailAliasesTest,
                        EmailAliasesOpensSettings) {
   // Mark the promo as already shown so the command navigates directly to
   // settings instead of showing the promo dialog first.
-  browser()->profile()->GetPrefs()->SetBoolean(
+  browser()->GetProfile()->GetPrefs()->SetBoolean(
       email_aliases::prefs::kPromoShown, true);
 
   auto* command_controller = browser()->command_controller();

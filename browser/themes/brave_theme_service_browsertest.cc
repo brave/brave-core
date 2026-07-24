@@ -75,10 +75,10 @@ class BraveThemeServiceTest : public InProcessBrowserTest {
         GetTestDataDir().AppendASCII("extensions").AppendASCII(filename);
 
     extensions::TestExtensionRegistryObserver observer(
-        extensions::ExtensionRegistry::Get(browser()->profile()));
+        extensions::ExtensionRegistry::Get(browser()->GetProfile()));
 
     auto installer =
-        extensions::CrxInstaller::CreateSilent(browser()->profile());
+        extensions::CrxInstaller::CreateSilent(browser()->GetProfile());
     installer->set_allow_silent_install(true);
     installer->set_was_triggered_by_user_download();
     installer->set_creation_flags(extensions::Extension::FROM_WEBSTORE);
@@ -102,7 +102,7 @@ IN_PROC_BROWSER_TEST_F(BraveThemeServiceTest, ColorProviderTest) {
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   // Check frame color is not ours when theme extension is installed.
   ThemeService* theme_service =
-      ThemeServiceFactory::GetForProfile(browser()->profile());
+      ThemeServiceFactory::GetForProfile(browser()->GetProfile());
   test::ThemeServiceChangedWaiter waiter(theme_service);
 
   EXPECT_FALSE(UsingCustomTheme(*theme_service));
@@ -127,16 +127,16 @@ IN_PROC_BROWSER_TEST_F(BraveThemeServiceTest, NonNormalWindowDarkModeTest) {
   profiles::SwitchToGuestProfile();
   Browser* guest_browser = ui_test_utils::WaitForBrowserToOpen();
   ASSERT_TRUE(guest_browser);
-  ASSERT_TRUE(guest_browser->profile()->IsGuestSession());
-  ASSERT_FALSE(guest_browser->profile()->IsIncognitoProfile());
+  ASSERT_TRUE(guest_browser->GetProfile()->IsGuestSession());
+  ASSERT_FALSE(guest_browser->GetProfile()->IsIncognitoProfile());
   auto* browser_view = BrowserView::GetBrowserViewForBrowser(guest_browser);
   auto* browser_widget = browser_view->GetWidget();
   auto key = browser_widget->GetColorProviderKeyForTesting();
   EXPECT_EQ(ui::ColorProviderKey::ColorMode::kDark, key.color_mode);
 
-  auto* private_browser = CreateIncognitoBrowser(browser()->profile());
+  auto* private_browser = CreateIncognitoBrowser(browser()->GetProfile());
   ASSERT_TRUE(private_browser);
-  ASSERT_TRUE(private_browser->profile()->IsIncognitoProfile());
+  ASSERT_TRUE(private_browser->GetProfile()->IsIncognitoProfile());
   browser_view = BrowserView::GetBrowserViewForBrowser(private_browser);
   browser_widget = browser_view->GetWidget();
   key = browser_widget->GetColorProviderKeyForTesting();
@@ -144,9 +144,9 @@ IN_PROC_BROWSER_TEST_F(BraveThemeServiceTest, NonNormalWindowDarkModeTest) {
 
 #if BUILDFLAG(ENABLE_TOR)
   Browser* tor_browser =
-      TorProfileManager::SwitchToTorProfile(browser()->profile());
+      TorProfileManager::SwitchToTorProfile(browser()->GetProfile());
   ASSERT_TRUE(tor_browser);
-  ASSERT_TRUE(tor_browser->profile()->IsIncognitoProfile());
+  ASSERT_TRUE(tor_browser->GetProfile()->IsIncognitoProfile());
   browser_view = BrowserView::GetBrowserViewForBrowser(tor_browser);
   browser_widget = browser_view->GetWidget();
   key = browser_widget->GetColorProviderKeyForTesting();
@@ -156,7 +156,7 @@ IN_PROC_BROWSER_TEST_F(BraveThemeServiceTest, NonNormalWindowDarkModeTest) {
 
 IN_PROC_BROWSER_TEST_F(BraveThemeServiceTest, PRE_BraveDarkModeMigrationTest) {
   auto* local_state = g_browser_process->local_state();
-  auto* profile_prefs = browser()->profile()->GetPrefs();
+  auto* profile_prefs = browser()->GetProfile()->GetPrefs();
 
   // Check on first launch.
   EXPECT_EQ(dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DEFAULT,
@@ -178,7 +178,7 @@ IN_PROC_BROWSER_TEST_F(BraveThemeServiceTest, PRE_BraveDarkModeMigrationTest) {
 
 IN_PROC_BROWSER_TEST_F(BraveThemeServiceTest, BraveDarkModeMigrationTest) {
   auto* local_state = g_browser_process->local_state();
-  auto* profile_prefs = browser()->profile()->GetPrefs();
+  auto* profile_prefs = browser()->GetProfile()->GetPrefs();
 
   EXPECT_EQ(dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DARK,
             static_cast<dark_mode::BraveDarkModeType>(

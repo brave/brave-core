@@ -110,7 +110,7 @@ class BraveWalletServiceTest : public InProcessBrowserTest {
     InProcessBrowserTest::SetUpOnMainThread();
     mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
     notification_tester_ = std::make_unique<NotificationDisplayServiceTester>(
-        browser()->profile());
+        browser()->GetProfile());
     base::FilePath test_data_dir;
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
     https_server_.SetSSLConfig(net::EmbeddedTestServer::CERT_TEST_NAMES);
@@ -134,17 +134,17 @@ class BraveWalletServiceTest : public InProcessBrowserTest {
 
   BraveWalletService* wallet_service() {
     return BraveWalletServiceFactory::GetServiceForContext(
-        browser()->profile());
+        browser()->GetProfile());
   }
 
   TxService* tx_service() { return wallet_service()->tx_service(); }
 
   BraveWalletService* incognito_wallet_service() {
     if (!incognito_browser_) {
-      incognito_browser_ = CreateIncognitoBrowser(browser()->profile());
+      incognito_browser_ = CreateIncognitoBrowser(browser()->GetProfile());
     }
     return brave_wallet::BraveWalletServiceFactory::GetInstance()
-        ->GetServiceForContext(incognito_browser_->profile());
+        ->GetServiceForContext(incognito_browser_->GetProfile());
   }
 
   void CloseIncognitoBrowser() {

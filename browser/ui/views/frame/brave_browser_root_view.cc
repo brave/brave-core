@@ -15,7 +15,7 @@
 BraveBrowserRootView::BraveBrowserRootView(BrowserView* browser_view,
                                            views::Widget* widget)
     : BrowserRootView(browser_view, widget), browser_(browser_view->browser()) {
-  if (!browser_->profile()->IsRegularProfile()) {
+  if (!browser_->GetProfile()->IsRegularProfile()) {
     theme_observation_.Observe(ui::NativeTheme::GetInstanceForNativeUi());
   }
 }

@@ -31,13 +31,12 @@
 namespace {
 
 uint64_t getProfileBandwidthSaved(Browser* browser) {
-  return browser->profile()->GetPrefs()->GetUint64(
+  return browser->GetProfile()->GetPrefs()->GetUint64(
       brave_perf_predictor::prefs::kBandwidthSavedBytes);
 }
 
 uint64_t getProfileAdsBlocked(Browser* browser) {
-  return browser->profile()->GetPrefs()->GetUint64(
-      kAdsBlocked);
+  return browser->GetProfile()->GetPrefs()->GetUint64(kAdsBlocked);
 }
 
 }  // namespace
@@ -60,7 +59,7 @@ class PerfPredictorTabHelperTest : public InProcessBrowserTest {
     host_resolver()->AddRule("*", "127.0.0.1");
 
     auto* content_settings =
-        HostContentSettingsMapFactory::GetForProfile(browser()->profile());
+        HostContentSettingsMapFactory::GetForProfile(browser()->GetProfile());
 
     // Most tests are written for aggressive mode. Individual tests should reset
     // this using `DisableAggressiveMode` if they are testing standard mode

@@ -184,7 +184,7 @@ void BraveAppMenuModel::BuildBraveProductsSection() {
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   if (IsCommandIdEnabled(IDC_BRAVE_VPN_MENU)) {
     sub_menus().push_back(std::make_unique<BraveVPNMenuModel>(
-        browser(), browser()->profile()->GetPrefs()));
+        browser(), browser()->GetProfile()->GetPrefs()));
     InsertSubMenuWithStringIdAt(GetNextIndexOfBraveProductsSection(),
                                 IDC_BRAVE_VPN_MENU, IDS_BRAVE_VPN_MENU,
                                 sub_menus().back().get());
@@ -307,7 +307,7 @@ void BraveAppMenuModel::BuildMoreToolsSubMenu() {
     need_separator = false;
   }
 
-  if (!browser()->profile()->IsOffTheRecord()) {
+  if (!browser()->GetProfile()->IsOffTheRecord()) {
     if (auto index =
             more_tools_menu_model->GetIndexOfCommandId(IDC_NAME_WINDOW)) {
       more_tools_menu_model->InsertItemWithStringIdAt(
@@ -420,7 +420,7 @@ void BraveAppMenuModel::ExecuteCommand(int id, int event_flags) {
       id == IDC_SIDEBAR_SHOW_OPTION_MOUSEOVER ||
       id == IDC_SIDEBAR_SHOW_OPTION_NEVER) {
     auto* service =
-        sidebar::SidebarServiceFactory::GetForProfile(browser()->profile());
+        sidebar::SidebarServiceFactory::GetForProfile(browser()->GetProfile());
     service->SetSidebarShowOption(ConvertIDCToSidebarShowOptions(id));
     return;
   }

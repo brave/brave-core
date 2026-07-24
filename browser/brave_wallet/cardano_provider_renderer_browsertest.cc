@@ -248,7 +248,7 @@ class CardanoProviderRendererTest : public InProcessBrowserTest {
 
   brave_wallet::KeyringService* GetKeyringService() {
     return brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
-               browser()->profile())
+               browser()->GetProfile())
         ->keyring_service();
   }
 
@@ -1804,7 +1804,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest,
 
 IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, NotInstalled) {
   brave_wallet::SetDefaultCardanoWallet(
-      browser()->profile()->GetPrefs(),
+      browser()->GetProfile()->GetPrefs(),
       brave_wallet::mojom::DefaultWallet::None);
 
   GURL url = embedded_test_server()->GetURL("/simple.html");

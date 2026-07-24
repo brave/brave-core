@@ -61,7 +61,7 @@ class WindowClosingConfirmBrowserTest : public InProcessBrowserTest,
 
     InProcessBrowserTest::SetUpOnMainThread();
 
-    PrefService* prefs = browser()->profile()->GetPrefs();
+    PrefService* prefs = browser()->GetProfile()->GetPrefs();
     // Enabled by default.
     EXPECT_TRUE(prefs->GetBoolean(kEnableWindowClosingConfirm));
 
@@ -148,7 +148,7 @@ class WindowClosingConfirmBrowserTest : public InProcessBrowserTest,
   }
 
   content::DownloadManager* DownloadManagerForBrowser(Browser* browser) {
-    return browser->profile()->GetDownloadManager();
+    return browser->GetProfile()->GetDownloadManager();
   }
 
   DownloadPrefs* GetDownloadPrefs(Browser* browser) {
@@ -227,7 +227,7 @@ IN_PROC_BROWSER_TEST_F(WindowClosingConfirmBrowserTest,
 
   // However, should not ask for profile deletion.
   closing_confirm_dialog_created_ = false;
-  webui::DeleteProfileAtPath(browser()->profile()->GetPath(),
+  webui::DeleteProfileAtPath(browser()->GetProfile()->GetPath(),
                              ProfileMetrics::DELETE_PROFILE_SETTINGS);
   ui_test_utils::WaitForBrowserToClose(browser());
   EXPECT_FALSE(closing_confirm_dialog_created_);
@@ -277,8 +277,8 @@ IN_PROC_BROWSER_TEST_F(WindowClosingConfirmBrowserTest, TestWithDownload) {
 #else
   auto* brave_browser = static_cast<BraveBrowser*>(browser());
 #endif
-  brave_browser->profile()->GetPrefs()->SetBoolean(prefs::kPromptForDownload,
-                                                   false);
+  brave_browser->GetProfile()->GetPrefs()->SetBoolean(prefs::kPromptForDownload,
+                                                      false);
 
   test_response_handler()->RegisterToTestServer(embedded_test_server());
   ASSERT_TRUE(embedded_test_server()->Start());

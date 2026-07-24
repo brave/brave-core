@@ -34,7 +34,7 @@ class BackgroundColorTabHelperBrowserTest
 IN_PROC_BROWSER_TEST_P(BackgroundColorTabHelperBrowserTest,
                        PRE_BackgroundColorIsSet) {
   auto* theme_service =
-      ThemeServiceFactory::GetForProfile(browser()->profile());
+      ThemeServiceFactory::GetForProfile(browser()->GetProfile());
   theme_service->SetBrowserColorScheme(
       IsDarkMode() ? ThemeService::BrowserColorScheme::kDark
                    : ThemeService::BrowserColorScheme::kLight);

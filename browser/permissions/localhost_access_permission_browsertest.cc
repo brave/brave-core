@@ -99,7 +99,8 @@ class LocalhostAccessBrowserTest
   }
 
   HostContentSettingsMap* content_settings() {
-    return HostContentSettingsMapFactory::GetForProfile(browser()->profile());
+    return HostContentSettingsMapFactory::GetForProfile(
+        browser()->GetProfile());
   }
 
   permissions::PermissionRequestManager* GetPermissionRequestManager() {
@@ -370,7 +371,7 @@ IN_PROC_BROWSER_TEST_P(LocalhostAccessBrowserTest, IncognitoModeInheritAllow) {
       localhost_server_->GetURL(test_domain, kTestTargetPath);
   CheckAskAndAcceptFlow(target_url);
   // Check incognito mode.
-  Profile* profile = browser()->profile();
+  Profile* profile = browser()->GetProfile();
   Browser* incognito_browser = CreateIncognitoBrowser(profile);
   SetBrowser(incognito_browser);
   CheckCurrentStatusIs(ContentSetting::CONTENT_SETTING_ASK);
@@ -384,7 +385,7 @@ IN_PROC_BROWSER_TEST_P(LocalhostAccessBrowserTest, IncognitoModeInheritBlock) {
       localhost_server_->GetURL(test_domain, kTestTargetPath);
   CheckAskAndDenyFlow(target_url);
   // Check Incognito mode.
-  Profile* profile = browser()->profile();
+  Profile* profile = browser()->GetProfile();
   Browser* incognito_browser = CreateIncognitoBrowser(profile);
   SetBrowser(incognito_browser);
   CheckCurrentStatusIs(ContentSetting::CONTENT_SETTING_ASK);

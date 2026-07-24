@@ -136,7 +136,7 @@ BraveBrowserCommandController::BraveBrowserCommandController(
   InitBraveCommandState();
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   if (auto* vpn_service = brave_vpn::BraveVpnServiceFactory::GetForProfile(
-          browser_->profile())) {
+          browser_->GetProfile())) {
     brave_vpn::BraveVpnServiceObserver::Observe(vpn_service);
   }
 #endif
@@ -249,15 +249,15 @@ void BraveBrowserCommandController::InitBraveCommandState() {
   // Sync, Rewards, and Wallet pages don't work in tor(guest) sessions.
   // They also don't work in private windows but they are redirected
   // to a normal window in this case.
-  const bool is_guest_session = browser_->profile()->IsGuestSession();
+  const bool is_guest_session = browser_->GetProfile()->IsGuestSession();
   if (!is_guest_session) {
     // If Rewards is not supported due to OFAC sanctions we still want to show
     // the menu item.
-    if (brave_rewards::IsSupported(browser_->profile()->GetPrefs())) {
+    if (brave_rewards::IsSupported(browser_->GetProfile()->GetPrefs())) {
       UpdateCommandForBraveRewards();
     }
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
-    if (brave_wallet::IsAllowed(browser_->profile()->GetPrefs())) {
+    if (brave_wallet::IsAllowed(browser_->GetProfile()->GetPrefs())) {
       UpdateCommandForBraveWallet();
     }
 #endif
@@ -273,11 +273,11 @@ void BraveBrowserCommandController::InitBraveCommandState() {
   UpdateCommandForBraveVPN();
   UpdateCommandForPlaylist();
   UpdateCommandForWaybackMachine();
-  pref_change_registrar_.Init(browser_->profile()->GetPrefs());
+  pref_change_registrar_.Init(browser_->GetProfile()->GetPrefs());
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
   UpdateCommandForAIChat();
-  if (ai_chat::IsAllowedForContext(browser_->profile(), false)) {
+  if (ai_chat::IsAllowedForContext(browser_->GetProfile(), false)) {
     pref_change_registrar_.Add(
         ai_chat::prefs::kEnabledByPolicy,
         base::BindRepeating(
@@ -287,7 +287,7 @@ void BraveBrowserCommandController::InitBraveCommandState() {
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-  if (brave_vpn::IsAllowedForContext(browser_->profile())) {
+  if (brave_vpn::IsAllowedForContext(browser_->GetProfile())) {
     pref_change_registrar_.Add(
         brave_vpn::prefs::kManagedBraveVPNDisabled,
         base::BindRepeating(
@@ -322,7 +322,7 @@ void BraveBrowserCommandController::InitBraveCommandState() {
 #endif
 
   UpdateCommandEnabled(IDC_SHOW_APPS_PAGE,
-                       !browser_->profile()->IsPrimaryOTRProfile());
+                       !browser_->GetProfile()->IsPrimaryOTRProfile());
 
   UpdateCommandEnabled(IDC_BRAVE_BOOKMARK_BAR_SUBMENU, true);
 
@@ -332,8 +332,8 @@ void BraveBrowserCommandController::InitBraveCommandState() {
 
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)
   UpdateCommandEnabled(IDC_CONFIGURE_BRAVE_NEWS,
-                       !browser_->profile()->IsOffTheRecord() &&
-                           !browser_->profile()->GetPrefs()->GetBoolean(
+                       !browser_->GetProfile()->IsOffTheRecord() &&
+                           !browser_->GetProfile()->GetPrefs()->GetBoolean(
                                brave_news::prefs::kBraveNewsDisabledByPolicy));
 #endif  // BUILDFLAG(ENABLE_BRAVE_NEWS)
 
@@ -343,7 +343,7 @@ void BraveBrowserCommandController::InitBraveCommandState() {
 
 #if BUILDFLAG(ENABLE_BRAVE_TALK)
   UpdateCommandEnabled(IDC_SHOW_BRAVE_TALK,
-                       !browser_->profile()->GetPrefs()->GetBoolean(
+                       !browser_->GetProfile()->GetPrefs()->GetBoolean(
                            brave_talk::prefs::kDisabledByPolicy));
 #endif
   UpdateCommandEnabled(IDC_TOGGLE_SHIELDS, true);
@@ -373,13 +373,13 @@ void BraveBrowserCommandController::InitBraveCommandState() {
       IDC_SHOW_EMAIL_ALIASES,
       email_aliases::features::IsEmailAliasesEnabled() &&
           email_aliases::EmailAliasesServiceFactory::GetServiceForProfile(
-              browser_->profile()));
+              browser_->GetProfile()));
 #endif
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
   UpdateCommandEnabled(
       IDC_NEW_TEMPORARY_CONTAINER,
-      ContainersServiceFactory::GetForProfile(browser_->profile()));
+      ContainersServiceFactory::GetForProfile(browser_->GetProfile()));
 #endif
 
   if (browser_->is_type_normal()) {
@@ -419,10 +419,10 @@ void BraveBrowserCommandController::UpdateCommandForWebcompatReporter() {
 void BraveBrowserCommandController::UpdateCommandForTor() {
   // Enable new tor connection only for tor profile.
   UpdateCommandEnabled(IDC_NEW_TOR_CONNECTION_FOR_SITE,
-                       browser_->profile()->IsTor());
+                       browser_->GetProfile()->IsTor());
   UpdateCommandEnabled(
       IDC_NEW_OFFTHERECORD_WINDOW_TOR,
-      !TorProfileServiceFactory::IsTorDisabled(browser_->profile()));
+      !TorProfileServiceFactory::IsTorDisabled(browser_->GetProfile()));
 }
 #endif
 
@@ -436,7 +436,7 @@ void BraveBrowserCommandController::UpdateCommandForSidebar() {
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
     UpdateCommandEnabled(
         IDC_TOGGLE_PLAYLIST_SIDE_PANEL,
-        playlist::IsPlaylistAllowed(browser_->profile()->GetPrefs()));
+        playlist::IsPlaylistAllowed(browser_->GetProfile()->GetPrefs()));
 #endif
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)
     // The Brave News side panel is only shown when the sidebar feature is on
@@ -444,7 +444,7 @@ void BraveBrowserCommandController::UpdateCommandForSidebar() {
     UpdateCommandEnabled(
         IDC_TOGGLE_BRAVE_NEWS_SIDE_PANEL,
         base::FeatureList::IsEnabled(brave_news::features::kBraveNewsSidebar) &&
-            brave_news::IsEnabled(browser_->profile()->GetPrefs()));
+            brave_news::IsEnabled(browser_->GetProfile()->GetPrefs()));
 #endif
   }
 }
@@ -452,7 +452,8 @@ void BraveBrowserCommandController::UpdateCommandForSidebar() {
 #if BUILDFLAG(ENABLE_AI_CHAT)
 void BraveBrowserCommandController::UpdateCommandForAIChat() {
   // AI Chat command implementation needs sidebar
-  bool allowed_for_context = ai_chat::IsAllowedForContext(browser_->profile());
+  bool allowed_for_context =
+      ai_chat::IsAllowedForContext(browser_->GetProfile());
   UpdateCommandEnabled(IDC_TOGGLE_AI_CHAT, sidebar::CanUseSidebar(&*browser_) &&
                                                allowed_for_context);
   UpdateCommandEnabled(
@@ -463,7 +464,7 @@ void BraveBrowserCommandController::UpdateCommandForAIChat() {
 
 void BraveBrowserCommandController::UpdateCommandForBraveVPN() {
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-  if (!brave_vpn::IsBraveVPNEnabled(browser_->profile())) {
+  if (!brave_vpn::IsBraveVPNEnabled(browser_->GetProfile())) {
     UpdateCommandEnabled(IDC_SHOW_BRAVE_VPN_PANEL, false);
     UpdateCommandEnabled(IDC_BRAVE_VPN_MENU, false);
     UpdateCommandEnabled(IDC_TOGGLE_BRAVE_VPN_TOOLBAR_BUTTON, false);
@@ -486,7 +487,7 @@ void BraveBrowserCommandController::UpdateCommandForBraveVPN() {
   UpdateCommandEnabled(IDC_MANAGE_BRAVE_VPN_PLAN, true);
 
   if (auto* vpn_service = brave_vpn::BraveVpnServiceFactory::GetForProfile(
-          browser_->profile())) {
+          browser_->GetProfile())) {
     // Only show vpn sub menu for purchased user.
     UpdateCommandEnabled(IDC_BRAVE_VPN_MENU, vpn_service->IsPurchased());
     UpdateCommandEnabled(IDC_TOGGLE_BRAVE_VPN, vpn_service->IsPurchased());
@@ -496,12 +497,12 @@ void BraveBrowserCommandController::UpdateCommandForBraveVPN() {
 
 void BraveBrowserCommandController::UpdateCommandForPlaylist() {
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
-  if (playlist::IsPlaylistAllowed(browser_->profile()->GetPrefs())) {
+  if (playlist::IsPlaylistAllowed(browser_->GetProfile()->GetPrefs())) {
     UpdateCommandEnabled(
         IDC_SHOW_PLAYLIST_BUBBLE,
         browser_->is_type_normal() &&
             playlist::PlaylistServiceFactory::GetForBrowserContext(
-                browser_->profile()));
+                browser_->GetProfile()));
   }
 #endif
 }
@@ -610,19 +611,19 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
   switch (id) {
     case IDC_NEW_WINDOW:
       // Use chromium's action for non-Tor profiles.
-      if (!browser_->profile()->IsTor()) {
+      if (!browser_->GetProfile()->IsTor()) {
         return BrowserCommandController::ExecuteCommandWithDispositionImpl(
             id, disposition, time_stamp, std::nullopt);
       }
-      NewEmptyWindow(browser_->profile()->GetOriginalProfile());
+      NewEmptyWindow(browser_->GetProfile()->GetOriginalProfile());
       break;
     case IDC_NEW_INCOGNITO_WINDOW:
       // Use chromium's action for non-Tor profiles.
-      if (!browser_->profile()->IsTor()) {
+      if (!browser_->GetProfile()->IsTor()) {
         return BrowserCommandController::ExecuteCommandWithDispositionImpl(
             id, disposition, time_stamp, std::nullopt);
       }
-      NewIncognitoWindow(browser_->profile()->GetOriginalProfile());
+      NewIncognitoWindow(browser_->GetProfile()->GetOriginalProfile());
       break;
     case IDC_SHOW_BRAVE_REWARDS:
       brave::ShowBraveRewards(&*browser_);

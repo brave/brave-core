@@ -213,7 +213,7 @@ class WalletPanelUIBrowserTest : public InProcessBrowserTest {
   }
 
   void WaitForNeonEVMNetworkUrl(const GURL& url) {
-    auto* prefs = browser()->profile()->GetPrefs();
+    auto* prefs = browser()->GetProfile()->GetPrefs();
 
     if (brave_wallet_service()->network_manager()->GetNetworkURL(
             mojom::kNeonEVMMainnetChainId, mojom::CoinType::ETH) == url) {
@@ -242,7 +242,7 @@ class WalletPanelUIBrowserTest : public InProcessBrowserTest {
 
   BraveWalletService* brave_wallet_service() {
     return BraveWalletServiceFactory::GetServiceForContext(
-        browser()->profile());
+        browser()->GetProfile());
   }
 
  private:

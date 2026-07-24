@@ -54,7 +54,7 @@ int BrowserViewLayoutDelegateImpl::GetRoundedCornersWebViewMargin() const {
 
 bool BrowserViewLayoutDelegateImpl::IsBookmarkBarOnByPref() const {
   return browser_view().browser() &&
-         browser_view().browser()->profile()->GetPrefs()->GetBoolean(
+         browser_view().browser()->GetProfile()->GetPrefs()->GetBoolean(
              bookmarks::prefs::kShowBookmarkBar);
 }
 
