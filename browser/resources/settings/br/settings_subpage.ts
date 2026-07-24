@@ -11,8 +11,9 @@ import {SettingsSubpageElement} from '../settings_page/settings_subpage.js'
 injectStyle(SettingsSubpageElement, css`
   :host {
     min-height: auto !important;
-    display: inline;
+    display: inline-block;
     position: relative;
+    margin-bottom: var(--leo-spacing-4xl);
   }
   :host(:not(.multi-card)) {
     background-color: var(--leo-color-page-background) !important;
@@ -22,8 +23,8 @@ injectStyle(SettingsSubpageElement, css`
     box-shadow: var(--leo-effect-elevation-01) !important;
     background-color: var(--leo-color-container-background) !important;
     border-radius: var(--leo-radius-m) !important;
+    padding-bottom:var(--leo-spacing-m);
     display: block;
-    padding-bottom: var(--leo-spacing-2xl);
   }
   #headerLine {
     padding-top: 0 !important;
