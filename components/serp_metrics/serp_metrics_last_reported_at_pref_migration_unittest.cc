@@ -28,8 +28,9 @@ class SerpMetricsLastReportedAtPrefMigrationTest : public ::testing::Test {
   void SetUp() override {
     local_state_.registry()->RegisterStringPref(kLastCheckYMD,
                                                 /* Never checked */ "");
-    local_state_.registry()->RegisterTimePref(prefs::kLastReportedAt,
-                                              /* Never checked */ base::Time());
+    local_state_.registry()->RegisterTimePref(
+        prefs::kLastDailyReportedAt,
+        /* Never reported */ base::Time());
 
     serp_metrics_ = std::make_unique<SerpMetrics>(
         &local_state_, test::FakeSerpMetricsTimePeriodStoreFactory());
@@ -100,7 +101,7 @@ TEST_F(SerpMetricsLastReportedAtPrefMigrationTest,
 
   // Day 1: Stale
   serp_metrics_->RecordSearch(SerpMetricType::kBrave);
-  local_state_.SetTime(prefs::kLastReportedAt, base::Time::Now());
+  local_state_.SetTime(prefs::kLastDailyReportedAt, base::Time::Now());
   AdvanceClockToNextUTCMidnight();
 
   // Day 2: Yesterday
@@ -197,7 +198,7 @@ TEST_F(SerpMetricsLastReportedAtPrefMigrationTest,
   // Day 1: Yesterday
   serp_metrics_->RecordSearch(SerpMetricType::kBrave);
   serp_metrics_->RecordSearch(SerpMetricType::kBrave);
-  local_state_.SetTime(prefs::kLastReportedAt, base::Time::Now());
+  local_state_.SetTime(prefs::kLastDailyReportedAt, base::Time::Now());
   AdvanceClockToNextUTCMidnight();
 
   // Day 2: Today
@@ -215,7 +216,7 @@ TEST_F(SerpMetricsLastReportedAtPrefMigrationTest,
   // Day 1: Yesterday
   serp_metrics_->RecordSearch(SerpMetricType::kBrave);
   serp_metrics_->RecordSearch(SerpMetricType::kBrave);
-  local_state_.SetTime(prefs::kLastReportedAt, base::Time::Now());
+  local_state_.SetTime(prefs::kLastDailyReportedAt, base::Time::Now());
   AdvanceClockToNextUTCMidnight();
 
   // Day 2: Today
