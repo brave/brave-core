@@ -64,9 +64,11 @@ void ExpectConversationEquals(base::Location location,
     // has_content is not persisted
     a->has_content = false;
     b->has_content = false;
-    // Date is not persisted
-    a->updated_time = base::Time::Now();
-    b->updated_time = base::Time::Now();
+    // Date is not persisted. Use a single timestamp for both so the clones
+    // compare equal regardless of any clock tick between the assignments.
+    const base::Time now = base::Time::Now();
+    a->updated_time = now;
+    b->updated_time = now;
     // content_id is not persisted
     for (auto& content : a->associated_content) {
       content->content_id = 0;
