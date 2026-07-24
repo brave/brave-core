@@ -44,7 +44,7 @@
 #include "base/logging.h"
 #include "base/process/launch.h"
 #include "base/task/thread_pool.h"
-#include "brave/components/constants/mac_app_mode_common.h"
+#include "brave/app_shim/test_launch_url.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/common/content_switches.h"
 

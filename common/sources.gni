@@ -21,7 +21,10 @@ brave_chrome_common_deps = [
   "//ui/base",
 ]
 
-brave_chrome_common_public_deps = [ "//brave/components/constants" ]
+brave_chrome_common_public_deps = [
+  "//brave/app_shim",
+  "//brave/components/constants",
+]
 
 brave_chrome_constants_deps = [ "//brave/components/brave_origin/buildflags" ]
 

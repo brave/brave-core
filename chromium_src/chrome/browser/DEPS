@@ -3,6 +3,7 @@ inline_file("//chrome/browser/DEPS", globals(), locals())
 
 include_rules += [
   "+brave/app",
+  "+brave/app_shim/test_launch_url.h",
   "+brave/browser",
   "+brave/common",
   "+brave/build/android/jni_headers",
