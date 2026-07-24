@@ -133,7 +133,7 @@ mojom::TransactionInfoPtr EthTxMeta::ToTransactionInfo() const {
 
   std::optional<std::string> signed_transaction;
   if (tx_->IsSigned()) {
-    signed_transaction = tx_->GetSignedTransaction();
+    signed_transaction = ToHex(tx_->GetSignedTransaction());
   }
 
   // Apply defaults to swap_info extracted from non-data parts of the

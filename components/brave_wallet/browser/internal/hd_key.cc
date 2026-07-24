@@ -356,7 +356,7 @@ std::optional<Secp256k1Signature> HDKey::SignCompact(Secp256k1SignMsgSpan msg) {
   }
 
   int recid = 0;
-  std::array<uint8_t, kSecp256k1CompactSignatureSize> rs_bytes;
+  std::array<uint8_t, Secp256k1Signature::kCompactSignatureSize> rs_bytes;
   if (!secp256k1_ecdsa_recoverable_signature_serialize_compact(
           GetSecp256k1Ctx(), rs_bytes.data(), &recid, &ecdsa_sig)) {
     return std::nullopt;
@@ -375,7 +375,7 @@ std::optional<std::vector<uint8_t>> HDKey::SignDer(Secp256k1SignMsgSpan msg) {
 
   auto sig_has_low_r = [](const secp256k1_context* ctx,
                           const secp256k1_ecdsa_signature* sig) {
-    uint8_t compact_sig[kSecp256k1CompactSignatureSize] = {};
+    uint8_t compact_sig[Secp256k1Signature::kCompactSignatureSize] = {};
     secp256k1_ecdsa_signature_serialize_compact(ctx, compact_sig, sig);
 
     return compact_sig[0] < 0x80;
@@ -411,10 +411,10 @@ std::optional<std::vector<uint8_t>> HDKey::SignDer(Secp256k1SignMsgSpan msg) {
 }
 
 bool HDKey::VerifyForTesting(Secp256k1SignMsgSpan msg,
-                             CompactSignatureSpan sig) {
+                             const Secp256k1Signature& sig) {
   secp256k1_ecdsa_signature ecdsa_sig;
   if (!secp256k1_ecdsa_signature_parse_compact(GetSecp256k1Ctx(), &ecdsa_sig,
-                                               sig.data())) {
+                                               sig.rs_bytes().data())) {
     return false;
   }
   secp256k1_pubkey pubkey;

@@ -10,6 +10,7 @@
 
 #include "base/check.h"
 #include "base/containers/extend.h"
+#include "base/types/optional_util.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/rlp_encode.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
@@ -34,7 +35,8 @@ Eip2930Transaction::Eip2930Transaction(
     uint256_t gas_limit,
     std::variant<EthAddress, EthContractCreationAddress> to,
     uint256_t value,
-    const std::vector<uint8_t>& data)
+    const std::vector<uint8_t>& data,
+    uint256_t chain_id)
     : EthTransaction(chain_id,
                      nonce,
                      gas_price,
@@ -72,12 +74,10 @@ std::optional<Eip2930Transaction> Eip2930Transaction::FromValue(
     return std::nullopt;
   }
 
-  Eip2930Transaction tx(legacy_tx->chain_id(), legacy_tx->nonce(),
-                        legacy_tx->gas_price(), legacy_tx->gas_limit(),
-                        legacy_tx->to(), legacy_tx->value(), legacy_tx->data());
-  tx.v_ = legacy_tx->v();
-  tx.r_ = legacy_tx->r();
-  tx.s_ = legacy_tx->s();
+  Eip2930Transaction tx(legacy_tx->nonce(), legacy_tx->gas_price(),
+                        legacy_tx->gas_limit(), legacy_tx->to(),
+                        legacy_tx->value(), legacy_tx->data(), chain_id);
+  tx.signature_ = base::OptionalFromPtr(legacy_tx->GetSignature());
 
   const base::ListValue* access_list = value.FindList("access_list");
   if (!access_list) {
@@ -131,8 +131,7 @@ Eip2930Transaction::ValueToAccessList(const base::ListValue& value) {
 }
 
 std::vector<uint8_t> Eip2930Transaction::GetMessageToSignImpl() const {
-  DCHECK(nonce_);
-  DCHECK(chain_id_);
+  CHECK(nonce_);
 
   base::ListValue list;
   list.Append(RLPUint256ToBlob(chain_id_));
@@ -168,7 +167,8 @@ uint256_t Eip2930Transaction::GetDataFee() const {
 }
 
 std::vector<uint8_t> Eip2930Transaction::Serialize() const {
-  DCHECK(chain_id_);
+  CHECK(nonce_);
+  CHECK(signature_);
 
   base::ListValue list;
   list.Append(RLPUint256ToBlob(chain_id_));
@@ -179,9 +179,9 @@ std::vector<uint8_t> Eip2930Transaction::Serialize() const {
   list.Append(RLPUint256ToBlob(value_));
   list.Append(base::Value(data_));
   list.Append(base::Value(AccessListToValue(access_list_)));
-  list.Append(RLPUint256ToBlob(v_));
-  list.Append(base::Value(r_));
-  list.Append(base::Value(s_));
+  list.Append(RLPUint256ToBlob(signature_->recid()));
+  list.Append(base::Value(signature_->r_bytes()));
+  list.Append(base::Value(signature_->s_bytes()));
 
   std::vector<uint8_t> result;
   result.push_back(static_cast<uint8_t>(type_));
