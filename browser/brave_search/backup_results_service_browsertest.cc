@@ -7,6 +7,7 @@
 
 #include "base/base64.h"
 #include "base/containers/map_util.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/time/time.h"
@@ -76,7 +77,7 @@ constexpr char kTestFinalHtml[] =
 
 }  // namespace
 
-class BackupResultsServiceBrowserTest : public InProcessBrowserTest {
+class BackupResultsServiceBrowserTestBase : public InProcessBrowserTest {
  public:
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
@@ -87,7 +88,7 @@ class BackupResultsServiceBrowserTest : public InProcessBrowserTest {
     https_server_ = std::make_unique<net::EmbeddedTestServer>(
         net::test_server::EmbeddedTestServer::TYPE_HTTPS);
     https_server_->RegisterRequestHandler(
-        base::BindRepeating(&BackupResultsServiceBrowserTest::HandleRequest,
+        base::BindRepeating(&BackupResultsServiceBrowserTestBase::HandleRequest,
                             base::Unretained(this)));
 
     ASSERT_TRUE(https_server_->Start());
@@ -152,7 +153,25 @@ class BackupResultsServiceBrowserTest : public InProcessBrowserTest {
   std::vector<std::string> request_paths_;
 };
 
-IN_PROC_BROWSER_TEST_F(BackupResultsServiceBrowserTest, BasicRenderAndLoad) {
+class BackupResultsServiceBrowserTest
+    : public BackupResultsServiceBrowserTestBase,
+      public testing::WithParamInterface<std::tuple<bool, bool, int>> {
+ public:
+  BackupResultsServiceBrowserTest() {
+    auto [zero_size, history_seed, farbling] = GetParam();
+    scoped_feature_list_.InitWithFeaturesAndParameters(
+        {{features::kBackupResults,
+          {{features::kBackupResultsZeroSize.name,
+            zero_size ? "true" : "false"},
+           {features::kBackupResultsHistorySeed.name,
+            history_seed ? "true" : "false"},
+           {features::kBackupResultsFarbling.name,
+            base::NumberToString(farbling)}}}},
+        {});
+  }
+};
+
+IN_PROC_BROWSER_TEST_P(BackupResultsServiceBrowserTest, BasicRenderAndLoad) {
   GURL url = https_server_->GetURL("google.ca", kTestInitPath);
 
   {
@@ -199,7 +218,7 @@ IN_PROC_BROWSER_TEST_F(BackupResultsServiceBrowserTest, BasicRenderAndLoad) {
   }
 }
 
-IN_PROC_BROWSER_TEST_F(BackupResultsServiceBrowserTest, InvalidDomain) {
+IN_PROC_BROWSER_TEST_P(BackupResultsServiceBrowserTest, InvalidDomain) {
   base::RunLoop run_loop;
   GURL url = https_server_->GetURL("google.invalid", kTestInitPath);
 
@@ -215,7 +234,7 @@ IN_PROC_BROWSER_TEST_F(BackupResultsServiceBrowserTest, InvalidDomain) {
   run_loop.Run();
 }
 
-IN_PROC_BROWSER_TEST_F(BackupResultsServiceBrowserTest, InvalidRedirect) {
+IN_PROC_BROWSER_TEST_P(BackupResultsServiceBrowserTest, InvalidRedirect) {
   redirect_to_invalid_domain_ = true;
 
   base::RunLoop run_loop;
@@ -234,7 +253,7 @@ IN_PROC_BROWSER_TEST_F(BackupResultsServiceBrowserTest, InvalidRedirect) {
   run_loop.Run();
 }
 
-IN_PROC_BROWSER_TEST_F(BackupResultsServiceBrowserTest, CookieHeader) {
+IN_PROC_BROWSER_TEST_P(BackupResultsServiceBrowserTest, CookieHeader) {
   base::RunLoop run_loop;
   GURL url = https_server_->GetURL("google.co.uk", kTestFinalPath);
 
@@ -262,7 +281,7 @@ IN_PROC_BROWSER_TEST_F(BackupResultsServiceBrowserTest, CookieHeader) {
 }
 
 class BackupResultsServiceFullRenderBrowserTest
-    : public BackupResultsServiceBrowserTest {
+    : public BackupResultsServiceBrowserTestBase {
  public:
   BackupResultsServiceFullRenderBrowserTest() {
     scoped_feature_list_.InitAndEnableFeature(
@@ -292,7 +311,7 @@ IN_PROC_BROWSER_TEST_F(BackupResultsServiceFullRenderBrowserTest, FullRender) {
 }
 
 class BackupResultsServiceDisabledBrowserTest
-    : public BackupResultsServiceBrowserTest {
+    : public BackupResultsServiceBrowserTestBase {
  public:
   BackupResultsServiceDisabledBrowserTest() {
     scoped_feature_list_.InitAndDisableFeature(features::kBackupResults);
@@ -317,7 +336,7 @@ IN_PROC_BROWSER_TEST_F(BackupResultsServiceDisabledBrowserTest,
 }
 
 class BackupResultsServiceFeatureHeadersBrowserTest
-    : public BackupResultsServiceBrowserTest {
+    : public BackupResultsServiceBrowserTestBase {
  public:
   BackupResultsServiceFeatureHeadersBrowserTest() {
     scoped_feature_list_.InitWithFeaturesAndParameters(
@@ -375,7 +394,7 @@ IN_PROC_BROWSER_TEST_F(BackupResultsServiceFeatureHeadersBrowserTest,
 }
 
 class BackupResultsServiceUAOverrideBrowserTest
-    : public BackupResultsServiceBrowserTest {
+    : public BackupResultsServiceBrowserTestBase {
  public:
   BackupResultsServiceUAOverrideBrowserTest() {
     scoped_feature_list_.InitWithFeaturesAndParameters(
@@ -404,7 +423,7 @@ IN_PROC_BROWSER_TEST_F(BackupResultsServiceUAOverrideBrowserTest, WebContents) {
 }
 
 class BackupResultsServiceUAOverrideWithMetadataBrowserTest
-    : public BackupResultsServiceBrowserTest {
+    : public BackupResultsServiceBrowserTestBase {
  public:
   BackupResultsServiceUAOverrideWithMetadataBrowserTest() {
     blink::UserAgentMetadata ua_metadata;
@@ -449,7 +468,7 @@ IN_PROC_BROWSER_TEST_F(BackupResultsServiceUAOverrideWithMetadataBrowserTest,
 }
 
 class BackupResultsServiceDailyLimitBrowserTest
-    : public BackupResultsServiceBrowserTest {
+    : public BackupResultsServiceBrowserTestBase {
  public:
   BackupResultsServiceDailyLimitBrowserTest() {
     scoped_feature_list_.InitWithFeaturesAndParameters(
@@ -521,7 +540,7 @@ IN_PROC_BROWSER_TEST_F(BackupResultsServiceDailyLimitBrowserTest,
 }
 
 // Verifies that the default param value (-1) does not impose any daily limit.
-IN_PROC_BROWSER_TEST_F(BackupResultsServiceBrowserTest, NoDailyLimitByDefault) {
+IN_PROC_BROWSER_TEST_P(BackupResultsServiceBrowserTest, NoDailyLimitByDefault) {
   GURL url = https_server_->GetURL("google.co.uk", kTestFinalPath);
   net::HttpRequestHeaders headers;
   headers.SetHeader(net::HttpRequestHeaders::kCookie, "testcookie=value");
@@ -543,13 +562,13 @@ IN_PROC_BROWSER_TEST_F(BackupResultsServiceBrowserTest, NoDailyLimitByDefault) {
 }
 
 class BackupResultsServiceLoadAfterRestoreBrowserTest
-    : public BackupResultsServiceBrowserTest {
+    : public BackupResultsServiceBrowserTestBase {
  public:
   BackupResultsServiceLoadAfterRestoreBrowserTest() {
     scoped_feature_list_.InitWithFeaturesAndParameters(
         {{features::kBackupResults,
           {{features::kBackupResultsLoadAfterRestore.name, "true"}}}},
-        {});
+        {features::kBackupResultsFullRender});
   }
 };
 
@@ -578,5 +597,12 @@ IN_PROC_BROWSER_TEST_F(BackupResultsServiceLoadAfterRestoreBrowserTest,
     run_loop.Run();
   }
 }
+
+INSTANTIATE_TEST_SUITE_P(
+    ,
+    BackupResultsServiceBrowserTest,
+    testing::Values(
+        std::make_tuple(true, false, -1),  // zero_size, history_seed, farbling
+        std::make_tuple(false, true, 0)));
 
 }  // namespace brave_search
