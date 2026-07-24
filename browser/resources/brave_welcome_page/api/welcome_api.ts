@@ -23,6 +23,7 @@ import {
 
 import { addWebUiListener, sendWithPromise } from 'chrome://resources/js/cr.js'
 import { createInterfaceApi, endpointsFor, state } from '$web-common/api'
+import { loadTimeData } from '$web-common/loadTimeData'
 
 export { ColorScheme, Theme, ChromeColor }
 
@@ -74,6 +75,10 @@ interface ApiInit {
     importData: (profileIndex: number, types: Set<ImportDataType>) => void
     addImportStatusListener: (fn: (status: ImportDataStatus) => void) => void
   }
+  isCrashReportingPrefManaged: boolean
+  isP3APrefManaged: boolean
+  isWebDiscoveryPrefManaged: boolean
+  webDiscoveryFeatureEnabled: boolean
 }
 
 function defaultInit(): ApiInit {
@@ -119,6 +124,16 @@ function defaultInit(): ApiInit {
         })
       },
     },
+    isCrashReportingPrefManaged: loadTimeData.getBoolean(
+      'isCrashReportingPrefManaged',
+    ),
+    isP3APrefManaged: loadTimeData.getBoolean('isP3APrefManaged'),
+    isWebDiscoveryPrefManaged: loadTimeData.getBoolean(
+      'isWebDiscoveryPrefManaged',
+    ),
+    webDiscoveryFeatureEnabled: loadTimeData.getBoolean(
+      'webDiscoveryFeatureEnabled',
+    ),
   }
 }
 
@@ -150,6 +165,15 @@ export function createWelcomeApi(init = defaultInit()) {
             api.getVerticalTabsEnabled.update(enabled)
           },
         },
+        setWebDiscoveryEnabled: {
+          mutationResponse: () => {},
+        },
+        setP3AEnabled: {
+          mutationResponse: () => {},
+        },
+        setCrashReportsEnabled: {
+          mutationResponse: () => {},
+        },
       }),
       ...endpointsFor(themeColorPickerHandler, {
         getChromeColors: {
@@ -165,6 +189,10 @@ export function createWelcomeApi(init = defaultInit()) {
         query: () => init.messages.getBrowserProfilesForImport(),
       },
       importDataStatus: state<ImportDataStatus>(''),
+      isCrashReportingPrefManaged: state(init.isCrashReportingPrefManaged),
+      isP3APrefManaged: state(init.isP3APrefManaged),
+      isWebDiscoveryPrefManaged: state(init.isWebDiscoveryPrefManaged),
+      webDiscoveryFeatureEnabled: state(init.webDiscoveryFeatureEnabled),
     },
 
     actions: {

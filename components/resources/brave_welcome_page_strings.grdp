@@ -133,4 +133,44 @@
     Search engines
   </message>
 
+  <message name="IDS_WELCOME_PAGE_METRICS_STEP_TITLE" desc="Title for the metrics opt-in step" formatter_data="webui=BraveWelcomePage">
+    Build a better web with us
+  </message>
+
+  <message name="IDS_WELCOME_PAGE_PRODUCT_WDP_TITLE" desc="Title of the Web Discovery Project opt-in card" formatter_data="webui=BraveWelcomePage">
+    Help Brave Search grow
+  </message>
+
+  <message name="IDS_WELCOME_PAGE_PRODUCT_WDP_DESCRIPTION" desc="Description of the Web Discovery Project opt-in card" formatter_data="webui=BraveWelcomePage">
+    Opt into the Web Discovery Project to help grow the index and improve search results.
+  </message>
+
+  <message name="IDS_WELCOME_PAGE_PRODUCT_P3A_TITLE" desc="Title of the privacy-preserving product analytics opt-in card" formatter_data="webui=BraveWelcomePage">
+    Help us make the browser better
+  </message>
+
+  <message name="IDS_WELCOME_PAGE_PRODUCT_P3A_DESCRIPTION" desc="Description of the privacy-preserving product analytics opt-in card" formatter_data="webui=BraveWelcomePage">
+    Share private &amp; anonymous product insights.
+  </message>
+
+  <message name="IDS_WELCOME_PAGE_PRODUCT_CRASH_REPORTS_TITLE" desc="Title of the crash reports opt-in card" formatter_data="webui=BraveWelcomePage">
+    Send crash reports
+  </message>
+
+  <message name="IDS_WELCOME_PAGE_PRODUCT_CRASH_REPORTS_DESCRIPTION" desc="Description of the crash reports opt-in card" formatter_data="webui=BraveWelcomePage">
+    Send diagnostic reports if you experience a crash or freeze.
+  </message>
+
+  <message name="IDS_WELCOME_PAGE_METRICS_STEP_TEXT1" desc="First paragraph on the metrics opt-in step" formatter_data="webui=BraveWelcomePage">
+    Help Brave be better and create better products by enabling these private metrics. We promise to protect your privacy in everything we do.
+  </message>
+
+  <message name="IDS_WELCOME_PAGE_METRICS_STEP_TEXT2" desc="Second paragraph on the metrics opt-in step. $1 wraps a link to the privacy settings page and $2 wraps a link to the privacy policy." formatter_data="webui=BraveWelcomePage">
+    You can change these choices at any time in Brave at <ph name="SETTINGS_LINK">$1</ph>. Read our full <ph name="PRIVACY_POLICY_LINK_BEGIN">$2</ph>Privacy Policy<ph name="PRIVACY_POLICY_LINK_END">/$2</ph>.
+  </message>
+
+  <message name="IDS_WELCOME_PAGE_START_BROWSING_BUTTON_LABEL" desc="Label for the button that completes onboarding and starts browsing" formatter_data="webui=BraveWelcomePage">
+    Start browsing
+  </message>
+
 </grit-part>
