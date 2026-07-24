@@ -18,6 +18,7 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kNtpBackgroundImageErrorDetection, base::FEATURE_DISABLED_BY_DEFAULT},
     {kNtpChromeCartModule, base::FEATURE_DISABLED_BY_DEFAULT},
     {kNtpModulesMaxColumnCount, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kNtpSimplificationBookmarkBar, base::FEATURE_ENABLED_BY_DEFAULT},
 }});
 
 }  // namespace ntp_features
