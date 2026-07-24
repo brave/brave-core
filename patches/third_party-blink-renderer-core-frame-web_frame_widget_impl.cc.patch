@@ -1,0 +1,29 @@
+diff --git a/third_party/blink/renderer/core/frame/web_frame_widget_impl.cc b/third_party/blink/renderer/core/frame/web_frame_widget_impl.cc
+index 79e6cb0a13aef9a5290314dcc2998aeb7854f539..8aeb1e43647a7e32e27cc2bca5020d9828e592c5 100644
+--- a/third_party/blink/renderer/core/frame/web_frame_widget_impl.cc
++++ b/third_party/blink/renderer/core/frame/web_frame_widget_impl.cc
+@@ -39,6 +39,7 @@
+ #include "base/debug/dump_without_crashing.h"
+ #include "base/functional/callback_helpers.h"
+ #include "base/functional/function_ref.h"
++#include "base/logging.h"
+ #include "base/metrics/histogram_functions.h"
+ #include "base/metrics/histogram_macros.h"
+ #include "base/numerics/safe_conversions.h"
+@@ -3377,6 +3378,7 @@ void WebFrameWidgetImpl::AutoscrollEnd() {
+ 
+ void WebFrameWidgetImpl::DidMeaningfulLayout(WebMeaningfulLayout layout_type) {
+   if (layout_type == blink::WebMeaningfulLayout::kVisuallyNonEmpty) {
++    LOG(ERROR) << "SponsoredRichMedia: DidMeaningfulLayout kVisuallyNonEmpty";
+     NotifyPresentationTime(
+         BindOnce(&WebFrameWidgetImpl::PresentationCallbackForMeaningfulLayout,
+                  WrapWeakPersistent(this)));
+@@ -3692,6 +3694,8 @@ void WebFrameWidgetImpl::NotifyCoreAnimationErrorCode(
+ 
+ void WebFrameWidgetImpl::NotifySwapAndPresentationTime(
+     PromiseCallbacks callbacks) {
++  LOG(ERROR) << "SponsoredRichMedia: NotifySwapAndPresentationTime"
++             << " does_composite=" << View()->does_composite();
+   if (!View()->does_composite())
+     return;
+ 

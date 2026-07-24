@@ -9,6 +9,7 @@
 
 #include "base/files/file_path.h"
 #include "base/functional/bind.h"
+#include "base/logging.h"
 #include "base/memory/ref_counted_memory.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/constants/webui_url_constants.h"
@@ -37,8 +38,11 @@ void NTPSponsoredRichMediaSource::StartDataRequest(
     const content::WebContents::Getter& /*wc_getter*/,
     GotDataCallback callback) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  LOG(ERROR) << "SponsoredRichMedia: StartDataRequest url=" << url << ".";
 
   if (!background_images_service_) {
+    LOG(ERROR) << "SponsoredRichMedia: StartDataRequest denied,"
+                  " background_images_service_ is null.";
     return DenyAccess(std::move(callback));
   }
 
@@ -46,6 +50,8 @@ void NTPSponsoredRichMediaSource::StartDataRequest(
       background_images_service_->GetSponsoredImagesData(
           /*supports_rich_media=*/true);
   if (!images_data) {
+    LOG(ERROR) << "SponsoredRichMedia: StartDataRequest denied,"
+                  " images_data is null.";
     return DenyAccess(std::move(callback));
   }
 
@@ -54,9 +60,15 @@ void NTPSponsoredRichMediaSource::StartDataRequest(
   const std::optional<base::FilePath> file_path =
       MaybeGetFilePathForRequestPath(request_path, images_data->campaigns);
   if (!file_path) {
+    LOG(ERROR) << "SponsoredRichMedia: StartDataRequest denied,"
+                  " no file for request_path="
+               << request_path << ".";
     return DenyAccess(std::move(callback));
   }
 
+  LOG(ERROR) << "SponsoredRichMedia: StartDataRequest allowed,"
+                " file_path="
+             << *file_path << ".";
   AllowAccess(*file_path, std::move(callback));
 }
 
