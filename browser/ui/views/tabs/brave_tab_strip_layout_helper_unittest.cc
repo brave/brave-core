@@ -11,12 +11,18 @@
 
 #include "base/logging.h"
 #include "base/strings/string_number_conversions.h"
+#include "brave/browser/ui/views/tabs/brave_tab.h"
 #include "chrome/browser/ui/tabs/tab_types.h"
+#include "chrome/browser/ui/views/tabs/fake_tab_slot_controller.h"
 #include "chrome/browser/ui/views/tabs/tab_layout_state.h"
 #include "chrome/browser/ui/views/tabs/tab_strip_layout_types.h"
 #include "chrome/browser/ui/views/tabs/tab_width_constraints.h"
+#include "chrome/test/views/chrome_views_test_base.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "ui/base/metadata/metadata_header_macros.h"
+#include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/gfx/geometry/rect.h"
+#include "ui/views/view.h"
 
 namespace tabs {
 
@@ -41,6 +47,26 @@ TabWidthConstraints MakeTabConstraints(TabPinned pinned,
   constraints.set_is_tab_in_group(in_group);
   return constraints;
 }
+
+// A BraveTab whose GetTabNestingInfo() is directly settable, so tests can
+// exercise tree-tab indentation/stacking without wiring up a real tree-tab
+// node graph.
+class TestBraveTab : public BraveTab {
+  METADATA_HEADER(TestBraveTab, BraveTab)
+
+ public:
+  TestBraveTab(tabs::TabHandle handle, TabSlotController* controller)
+      : BraveTab(handle, controller) {}
+
+  void set_nesting_info(TabNestingInfo info) { nesting_info_ = info; }
+  TabNestingInfo GetTabNestingInfo() const override { return nesting_info_; }
+
+ private:
+  TabNestingInfo nesting_info_;
+};
+
+BEGIN_METADATA(TestBraveTab)
+END_METADATA
 
 }  // namespace
 
@@ -430,6 +456,124 @@ TEST(BraveTabStripLayoutHelperUnitTest,
   ASSERT_EQ(1u, bounds.size());
   EXPECT_EQ(kMarginForVerticalTabContainers + 4, bounds[0].x());
   EXPECT_EQ(constraints.size_info().min_inactive_width, bounds[0].width());
+}
+
+// Tests for CalculateBoundsForVerticalDraggedViews
+
+class CalculateBoundsForVerticalDraggedViewsTest : public ChromeViewsTestBase {
+};
+
+TEST_F(CalculateBoundsForVerticalDraggedViewsTest,
+       IndentsNestedChildRelativeToParent) {
+  FakeTabSlotController controller;
+  views::View parent;
+
+  TestBraveTab* root = parent.AddChildView(
+      std::make_unique<TestBraveTab>(tabs::TabHandle(1), &controller));
+  root->SetBoundsRect({0, 0, 0, kVerticalTabHeight});
+  root->set_nesting_info({.tree_height = 1, .level = 0});
+
+  TestBraveTab* child = parent.AddChildView(
+      std::make_unique<TestBraveTab>(tabs::TabHandle(2), &controller));
+  child->SetBoundsRect({0, 0, 0, kVerticalTabHeight});
+  child->set_nesting_info({.tree_height = 1, .level = 1});
+
+  // With this width, level, and tree_height, even_offset_per_level =
+  // (200 - kVerticalTabMinWidth) / (tree_height + 1) = (200 - 32) / 2 = 84,
+  // which is >= kBaseOffsetPerLevel, so the offset is exactly
+  // kBaseOffsetPerLevel * level = 20 (same formula as
+  // CalculateVerticalTabBounds_NestingUsesBaseOffsetWhenEnoughSpace above).
+  constexpr int kDragAreaWidth = 200;
+  constexpr int kExpectedOffset = kBaseOffsetPerLevel;
+
+  std::vector<TabSlotView*> views = {root, child};
+  std::vector<gfx::Rect> bounds = CalculateBoundsForVerticalDraggedViews(
+      views, kDragAreaWidth, /*is_vertical_tabs_floating=*/false);
+
+  ASSERT_EQ(2u, bounds.size());
+
+  // The root (level 0) isn't indented and spans the full drag area width.
+  EXPECT_EQ(0, bounds[0].x());
+  EXPECT_EQ(kDragAreaWidth, bounds[0].width());
+
+  // The nested child is indented (and narrowed) relative to its parent, the
+  // same way tabs are indented in the static (non-dragging) layout.
+  EXPECT_EQ(bounds[0].x() + kExpectedOffset, bounds[1].x());
+  EXPECT_EQ(bounds[0].width() - kExpectedOffset, bounds[1].width());
+}
+
+TEST_F(CalculateBoundsForVerticalDraggedViewsTest,
+       StacksNestedChildTightlyThenResumesNormalSpacing) {
+  FakeTabSlotController controller;
+  views::View parent;
+
+  TestBraveTab* root = parent.AddChildView(
+      std::make_unique<TestBraveTab>(tabs::TabHandle(1), &controller));
+  root->SetBoundsRect({0, 0, 0, kVerticalTabHeight});
+  root->set_nesting_info({.tree_height = 1, .level = 0});
+
+  TestBraveTab* child = parent.AddChildView(
+      std::make_unique<TestBraveTab>(tabs::TabHandle(2), &controller));
+  child->SetBoundsRect({0, 0, 0, kVerticalTabHeight});
+  child->set_nesting_info({.tree_height = 1, .level = 1});
+
+  // Not nested: the subtree has ended, so this should get normal spacing.
+  TestBraveTab* sibling = parent.AddChildView(
+      std::make_unique<TestBraveTab>(tabs::TabHandle(3), &controller));
+  sibling->SetBoundsRect({0, 0, 0, kVerticalTabHeight});
+  sibling->set_nesting_info({});
+
+  std::vector<TabSlotView*> views = {root, child, sibling};
+  std::vector<gfx::Rect> bounds = CalculateBoundsForVerticalDraggedViews(
+      views, /*drag_area_width=*/200, /*is_vertical_tabs_floating=*/false);
+
+  ASSERT_EQ(3u, bounds.size());
+
+  // The nested child is stacked tightly under its parent: it starts before
+  // the parent's bottom edge (partial overlap), instead of the normal
+  // height + kVerticalTabsSpacing gap.
+  EXPECT_EQ(bounds[1].y(), bounds[0].y() + tabs::kNestedTabStackedOffset);
+  EXPECT_LT(bounds[1].y(), bounds[0].bottom());
+
+  // Once the nested subtree ends, normal spacing resumes.
+  EXPECT_EQ(kVerticalTabsSpacing, bounds[2].y() - bounds[1].bottom());
+}
+
+// Tests for ReorderDraggedViewsForStacking
+
+class ReorderDraggedViewsForStackingTest : public ChromeViewsTestBase {};
+
+TEST_F(ReorderDraggedViewsForStackingTest, FirstDraggedViewEndsUpOnTop) {
+  FakeTabSlotController controller;
+  views::View parent;
+  BraveTab* a = parent.AddChildView(
+      std::make_unique<BraveTab>(tabs::TabHandle(1), &controller));
+  BraveTab* b = parent.AddChildView(
+      std::make_unique<BraveTab>(tabs::TabHandle(2), &controller));
+  BraveTab* c = parent.AddChildView(
+      std::make_unique<BraveTab>(tabs::TabHandle(3), &controller));
+
+  ReorderDraggedViewsForStacking(&parent, {a, b, c});
+
+  // `a` is the first dragged view, so it should end up with the highest
+  // child index (painted last, i.e. on top of the pile). `c`, the last
+  // dragged view, ends up at the bottom.
+  ASSERT_EQ(3u, parent.children().size());
+  EXPECT_EQ(0u, *parent.GetIndexOf(c));
+  EXPECT_EQ(1u, *parent.GetIndexOf(b));
+  EXPECT_EQ(2u, *parent.GetIndexOf(a));
+}
+
+TEST_F(ReorderDraggedViewsForStackingTest, SingleViewStaysInPlace) {
+  FakeTabSlotController controller;
+  views::View parent;
+  BraveTab* a = parent.AddChildView(
+      std::make_unique<BraveTab>(tabs::TabHandle(1), &controller));
+
+  ReorderDraggedViewsForStacking(&parent, {a});
+
+  ASSERT_EQ(1u, parent.children().size());
+  EXPECT_EQ(0u, *parent.GetIndexOf(a));
 }
 
 }  // namespace tabs

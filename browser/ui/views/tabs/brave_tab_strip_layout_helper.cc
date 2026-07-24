@@ -22,10 +22,41 @@
 #include "chrome/browser/ui/views/tabs/tab_strip_layout.h"
 #include "chrome/browser/ui/views/tabs/tab_width_constraints.h"
 #include "ui/gfx/geometry/rect.h"
+#include "ui/views/view.h"
+#include "ui/views/view_utils.h"
 
 namespace tabs {
 
 namespace {
+
+// Computes the horizontal offset to apply to a tab at |level| within a tree
+// whose height is |tree_height|, given |available_width_for_tab| and
+// |tab_minimum_width|. Shared between the static vertical layout and the
+// dragged-views layout so indentation looks the same in both states.
+int CalculateNestingOffset(int available_width_for_tab,
+                           int tab_minimum_width,
+                           int level,
+                           int tree_height) {
+  const int available_width_for_tree =
+      available_width_for_tab - tab_minimum_width;
+  const int clamped_available_width_for_tree =
+      std::max(0, available_width_for_tree);
+  const int tree_levels = std::max(1, tree_height + 1);
+  const int even_offset_per_level =
+      clamped_available_width_for_tree / tree_levels;
+
+  // Fallback should be based on tree-wide capacity, not the current node's
+  // level, to avoid threshold jumps at specific depths.
+  const bool should_use_narrow_offset =
+      even_offset_per_level < kBaseOffsetPerLevel;
+  const int offset_per_level = should_use_narrow_offset
+                                   ? std::max(1, even_offset_per_level)
+                                   : kBaseOffsetPerLevel;
+
+  int offset = offset_per_level * level;
+  // This ensures that the tab is always at least the minimum width.
+  return std::clamp(offset, 0, clamped_available_width_for_tree);
+}
 
 void CalculateVerticalLayout(const std::vector<TabWidthConstraints>& tabs,
                              std::optional<int> width,
@@ -79,24 +110,8 @@ void CalculateVerticalLayout(const std::vector<TabWidthConstraints>& tabs,
       // and width of the tab to fit the nesting level.
       const int tab_minimum_width = tab.size_info().min_inactive_width;
       const int tree_height = tab.state().nesting_info().tree_height;
-      const int available_width_for_tree = rect.width() - tab_minimum_width;
-      const int clamped_available_width_for_tree =
-          std::max(0, available_width_for_tree);
-      const int tree_levels = std::max(1, tree_height + 1);
-      const int even_offset_per_level =
-          clamped_available_width_for_tree / tree_levels;
-
-      // Fallback should be based on tree-wide capacity, not the current node's
-      // level, to avoid threshold jumps at specific depths.
-      const bool should_use_narrow_offset =
-          even_offset_per_level < kBaseOffsetPerLevel;
-      const int offset_per_level = should_use_narrow_offset
-                                       ? std::max(1, even_offset_per_level)
-                                       : kBaseOffsetPerLevel;
-
-      int offset = offset_per_level * level;
-      // This ensures that the tab is always at least the minimum width.
-      offset = std::clamp(offset, 0, clamped_available_width_for_tree);
+      const int offset = CalculateNestingOffset(rect.width(), tab_minimum_width,
+                                                level, tree_height);
 
       rect.set_x(offset + rect.x());
       rect.set_width(rect.width() - offset);
@@ -232,17 +247,17 @@ std::pair<std::vector<gfx::Rect>, LayoutDomain> CalculateVerticalTabBounds(
 
 std::vector<gfx::Rect> CalculateBoundsForVerticalDraggedViews(
     const std::vector<TabSlotView*>& views,
-    TabStrip* tab_strip) {
-  const bool is_vertical_tabs_floating =
-      static_cast<BraveTabStrip*>(tab_strip)->IsVerticalTabsFloating();
+    int drag_area_width,
+    bool is_vertical_tabs_floating) {
+  // Fan-out offset between successively stacked pinned tabs.
+  constexpr int kStackedOffset = 4;
 
   std::vector<gfx::Rect> bounds;
   int x = 0;
   int y = 0;
-  for (const TabSlotView* view : views) {
-    auto width = tab_strip->GetDragContext()
-                     ->GetPositioningDelegate()
-                     ->GetTabDragAreaWidth();
+  for (size_t i = 0; i < views.size(); ++i) {
+    const TabSlotView* view = views[i];
+    int width = drag_area_width;
     const int height = view->height();
     const bool is_slot_tab =
         view->GetTabSlotViewType() == TabSlotView::ViewType::kTab;
@@ -251,7 +266,6 @@ std::vector<gfx::Rect> CalculateBoundsForVerticalDraggedViews(
           static_cast<const Tab*>(view)->data().pinned) {
         // In case it's a pinned tab, lay out them horizontally
         bounds.emplace_back(x, y, tabs::kVerticalTabMinWidth, height);
-        constexpr int kStackedOffset = 4;
         x += kStackedOffset;
         continue;
       }
@@ -262,12 +276,57 @@ std::vector<gfx::Rect> CalculateBoundsForVerticalDraggedViews(
         width -= x * 2;
       }
     }
-    bounds.emplace_back(x, y, width, height);
 
-    // unpinned dragged tabs are laid out vertically.
-    y += height + kVerticalTabsSpacing;
+    int tab_x = x;
+    const auto nesting_info = view->GetTabNestingInfo();
+    if (nesting_info.level) {
+      // Indent nested (tree) tabs the same way the static vertical layout
+      // does, so the dragged pile still communicates the tab hierarchy.
+      const int offset =
+          CalculateNestingOffset(width, tabs::kVerticalTabMinWidth,
+                                 nesting_info.level, nesting_info.tree_height);
+      tab_x += offset;
+      width -= offset;
+    }
+
+    bounds.emplace_back(tab_x, y, width, height);
+
+    // Unpinned dragged tabs are laid out vertically. If the next tab is a
+    // tree-tab child, stack it tightly under this one (partial overlap) to
+    // keep the dragged subtree compact; otherwise use normal spacing.
+    const bool next_is_nested_child =
+        i + 1 < views.size() && views[i + 1]->GetTabNestingInfo().level > 0;
+    y += next_is_nested_child ? kNestedTabStackedOffset
+                              : height + kVerticalTabsSpacing;
   }
+
   return bounds;
+}
+
+std::vector<gfx::Rect> CalculateBoundsForVerticalDraggedViews(
+    const std::vector<TabSlotView*>& views,
+    TabStrip* tab_strip) {
+  const bool is_vertical_tabs_floating =
+      views::AsViewClass<BraveTabStrip>(tab_strip)->IsVerticalTabsFloating();
+  const int drag_area_width = tab_strip->GetDragContext()
+                                  ->GetPositioningDelegate()
+                                  ->GetTabDragAreaWidth();
+  return CalculateBoundsForVerticalDraggedViews(views, drag_area_width,
+                                                is_vertical_tabs_floating);
+}
+
+void ReorderDraggedViewsForStacking(views::View* parent,
+                                    const std::vector<TabSlotView*>& views) {
+  for (TabSlotView* view : base::Reversed(views)) {
+    if (view->GetTabSlotViewType() == TabSlotView::ViewType::kTab &&
+        views::AsViewClass<Tab>(view)->data().pinned) {
+      // As can't drag pinned tabs and unpinned tabs together, we don't need to
+      // continue.
+      return;
+    }
+
+    parent->ReorderChildView(view, parent->children().size() - 1);
+  }
 }
 
 void UpdateInsertionIndexForVerticalTabs(
