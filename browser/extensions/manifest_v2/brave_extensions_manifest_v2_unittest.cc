@@ -3,12 +3,15 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+#include <algorithm>
+
 #include "base/files/file_enumerator.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/functional/callback_helpers.h"
 #include "base/path_service.h"
 #include "base/test/scoped_feature_list.h"
+#include "base/values.h"
 #include "brave/browser/extensions/manifest_v2/brave_extensions_manifest_v2_migrator.h"
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/extensions/extension_management.h"
@@ -23,6 +26,7 @@
 #include "extensions/browser/install_verifier.h"
 #include "extensions/browser/manifest_v2_handler.h"
 #include "extensions/browser/mv2_deprecation_impact_checker.h"
+#include "extensions/browser/pref_names.h"
 #include "extensions/common/constants.h"
 #include "extensions/common/extension_builder.h"
 #include "extensions/common/extension_features.h"
@@ -375,4 +379,79 @@ TEST_P(BraveExtensionsManifestV2SettingsBackupTest, BackupSettingsOnInstall) {
     EXPECT_FALSE(
         base::PathExists(profile()->GetPath().AppendASCII("MV2Backup")));
   }
+}
+
+TEST_P(BraveExtensionsManifestV2SettingsBackupTest, CopyBrowserLevelSettings) {
+  // Browser-level prefs copy runs through the migrator, which is only created
+  // when settings backup is enabled.
+  if (!GetParam().feature_enabled || !GetParam().backup_enabled) {
+    return;
+  }
+
+  base::ScopedAllowBlockingForTesting allow_io;
+
+  auto* prefs = extensions::ExtensionPrefs::Get(profile());
+
+  // Install uBlock from CWS and configure browser-level prefs.
+  auto webstore_extension =
+      extensions::ExtensionBuilder("test")
+          .SetID(extensions_mv2::kWebStoreUBlockId)
+          .SetVersion("1.65.0")
+          .AddFlags(extensions::Extension::FROM_WEBSTORE)
+          .SetLocation(extensions::mojom::ManifestLocation::kExternalPolicy)
+          .Build();
+  registrar()->AddExtension(webstore_extension);
+  prefs->UpdateExtensionPref(extensions_mv2::kWebStoreUBlockId,
+                             "manifest.version", base::Value("1.65.0"));
+
+  prefs->SetWithholdingPermissions(extensions_mv2::kWebStoreUBlockId, true);
+  prefs->SetIsIncognitoEnabled(extensions_mv2::kWebStoreUBlockId, true);
+  prefs->SetAllowFileAccess(extensions_mv2::kWebStoreUBlockId, true);
+  prefs->SetPinnedExtensions({extensions_mv2::kWebStoreUBlockId});
+
+  base::ListValue explicit_hosts_list;
+  explicit_hosts_list.Append("https://example.com/*");
+  base::DictValue granted_permissions;
+  granted_permissions.Set("explicit_host", std::move(explicit_hosts_list));
+  prefs->UpdateExtensionPref(extensions_mv2::kWebStoreUBlockId,
+                             "granted_permissions",
+                             base::Value(std::move(granted_permissions)));
+
+  // Install the Brave-hosted replacement; OnExtensionInstalled copies browser
+  // prefs from the still-installed WebStore extension.
+  auto brave_extension =
+      extensions::ExtensionBuilder("test")
+          .SetID(extensions_mv2::kUBlockId)
+          .SetVersion("1.65.0")
+          .AddFlags(extensions::Extension::FROM_WEBSTORE)
+          .SetLocation(extensions::mojom::ManifestLocation::kExternalPolicy)
+          .Build();
+  registrar()->AddExtension(brave_extension);
+  prefs->UpdateExtensionPref(extensions_mv2::kUBlockId, "manifest.version",
+                             base::Value("1.65.0"));
+  registry()->TriggerOnInstalled(brave_extension.get(), /*is_update=*/false);
+  WaitForExtensionsFileOperations();
+
+  EXPECT_TRUE(prefs->GetWithholdingPermissions(extensions_mv2::kUBlockId));
+  EXPECT_TRUE(prefs->IsIncognitoEnabled(extensions_mv2::kUBlockId));
+  EXPECT_TRUE(prefs->AllowFileAccess(extensions_mv2::kUBlockId));
+
+  const base::DictValue* brave_prefs =
+      prefs->pref_service()
+          ->GetDict(extensions::pref_names::kExtensions)
+          .FindDict(extensions_mv2::kUBlockId);
+  ASSERT_TRUE(brave_prefs);
+  const base::DictValue* copied_granted =
+      brave_prefs->FindDict("granted_permissions");
+  ASSERT_TRUE(copied_granted);
+  const base::ListValue* explicit_hosts =
+      copied_granted->FindList("explicit_host");
+  ASSERT_TRUE(explicit_hosts);
+  ASSERT_EQ(1u, explicit_hosts->size());
+  EXPECT_EQ("https://example.com/*", (*explicit_hosts)[0].GetString());
+
+  const extensions::ExtensionIdList pinned = prefs->GetPinnedExtensions();
+  EXPECT_TRUE(std::ranges::contains(pinned, extensions_mv2::kUBlockId));
+  EXPECT_FALSE(
+      std::ranges::contains(pinned, extensions_mv2::kWebStoreUBlockId));
 }

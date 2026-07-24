@@ -69,6 +69,13 @@ class ExtensionsManifestV2Migrator
                        const std::string& error,
                        extensions::webstore_install::Result result);
 
+  // Copies user-facing browser prefs (permissions, incognito, file access,
+  // pinned state) from a WebStore-hosted extension to its Brave-hosted
+  // counterpart. No-op if the WebStore prefs entry is missing.
+  void CopyBrowserLevelSettings(
+      const extensions::ExtensionId& webstore_extension_id,
+      const extensions::ExtensionId& brave_hosted_extension_id);
+
   const raw_ptr<Profile> profile_ = nullptr;
   base::ScopedObservation<extensions::ExtensionPrefs,
                           extensions::ExtensionPrefsObserver>
