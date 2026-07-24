@@ -10,12 +10,14 @@
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
+#include "brave/components/constants/pref_names.h"
 #include "chrome/test/base/chrome_render_view_host_test_harness.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/favicon/content/content_favicon_driver.h"
 #include "components/favicon/core/test/mock_favicon_service.h"
 #include "components/prefs/testing_pref_service.h"
+#include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/test/navigation_simulator.h"
 #include "content/public/test/test_renderer_host.h"
@@ -81,6 +83,10 @@ class BraveShieldsTabHelperUnitTest
   }
 
   void Reload() { content::NavigationSimulator::Reload(web_contents()); }
+
+  TestingProfile* profile() {
+    return static_cast<TestingProfile*>(browser_context());
+  }
 
   PrefService* profile_prefs() {
     return Profile::FromBrowserContext(web_contents()->GetBrowserContext())
@@ -329,6 +335,51 @@ TEST_F(BraveShieldsTabHelperUnitTest,
   brave_shields_tab_helper_->SetBraveShieldsEnabled(false);
   EXPECT_TRUE(brave_shields_tab_helper_
                   ->ShouldShowShieldsDisabledAdBlockOnlyModePrompt());
+}
+
+TEST_F(BraveShieldsTabHelperUnitTest, IsBraveShieldsManaged) {
+  // about:blank test
+  NavigateTo(GURL("about:blank"));
+  EXPECT_FALSE(brave_shields_tab_helper_->IsBraveShieldsManaged());
+
+  GURL host2("http://host2.com");
+  GURL host1("http://host1.com");
+
+  NavigateTo(host2);
+  EXPECT_FALSE(brave_shields_tab_helper_->IsBraveShieldsManaged());
+
+  base::ListValue disabled_list;
+  disabled_list.Append("[*.]host2.com");
+  profile()->GetTestingPrefService()->SetManagedPref(
+      kManagedBraveShieldsDisabledForUrls, std::move(disabled_list));
+  // only disabled pref set
+  NavigateTo(host2);
+  EXPECT_TRUE(brave_shields_tab_helper_->IsBraveShieldsManaged());
+
+  NavigateTo(host1);
+  EXPECT_FALSE(brave_shields_tab_helper_->IsBraveShieldsManaged());
+
+  base::ListValue enabled_list;
+  enabled_list.Append("[*.]host1.com");
+  profile()->GetTestingPrefService()->SetManagedPref(
+      kManagedBraveShieldsEnabledForUrls, std::move(enabled_list));
+
+  // both disabled/enabled prefs set
+  NavigateTo(host2);
+  EXPECT_TRUE(brave_shields_tab_helper_->IsBraveShieldsManaged());
+
+  NavigateTo(host1);
+  EXPECT_TRUE(brave_shields_tab_helper_->IsBraveShieldsManaged());
+
+  profile()->GetTestingPrefService()->RemoveManagedPref(
+      kManagedBraveShieldsDisabledForUrls);
+
+  // only enabled prefs set
+  NavigateTo(host2);
+  EXPECT_FALSE(brave_shields_tab_helper_->IsBraveShieldsManaged());
+
+  NavigateTo(host1);
+  EXPECT_TRUE(brave_shields_tab_helper_->IsBraveShieldsManaged());
 }
 
 }  // namespace brave_shields
