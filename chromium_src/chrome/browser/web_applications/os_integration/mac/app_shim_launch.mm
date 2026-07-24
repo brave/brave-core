@@ -93,8 +93,7 @@ void RunAppLaunchCallbacksForDirectLaunch(
       {base::MayBlock(), base::TaskShutdownBehavior::CONTINUE_ON_SHUTDOWN},
       base::BindOnce(
           [](base::Process process, ShimTerminatedCallback callback) {
-            int exit_code = 0;
-            process.WaitForExit(&exit_code);
+            process.WaitForExit(nullptr);
             content::GetUIThreadTaskRunner({})->PostTask(FROM_HERE,
                                                          std::move(callback));
           },
