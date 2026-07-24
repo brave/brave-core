@@ -719,6 +719,41 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic_NoRuntimeVersion) {
   EXPECT_EQ(signed_extrinsic.error(), WalletInternalErrorMessage());
 }
 
+TEST_F(PolkadotWalletServiceUnitTest,
+       SignTransferExtrinsic_NullChainHeaderResult) {
+  auto signed_extrinsic = SignTransferExtrinsicWithFailedStep(
+      [](PolkadotMockRpc& rpc) { rpc.ReturnNullInitialChainHeader(); });
+  EXPECT_EQ(signed_extrinsic.error(), WalletInternalErrorMessage());
+}
+
+TEST_F(PolkadotWalletServiceUnitTest,
+       SignTransferExtrinsic_NullParentHeaderResult) {
+  auto signed_extrinsic = SignTransferExtrinsicWithFailedStep(
+      [](PolkadotMockRpc& rpc) { rpc.ReturnNullParentBlockHeader(); });
+  EXPECT_EQ(signed_extrinsic.error(), WalletInternalErrorMessage());
+}
+
+TEST_F(PolkadotWalletServiceUnitTest,
+       SignTransferExtrinsic_NullFinalizedHeadResult) {
+  auto signed_extrinsic = SignTransferExtrinsicWithFailedStep(
+      [](PolkadotMockRpc& rpc) { rpc.ReturnNullFinalizedHead(); });
+  EXPECT_EQ(signed_extrinsic.error(), WalletInternalErrorMessage());
+}
+
+TEST_F(PolkadotWalletServiceUnitTest,
+       SignTransferExtrinsic_NullFinalizedBlockHeaderResult) {
+  auto signed_extrinsic = SignTransferExtrinsicWithFailedStep(
+      [](PolkadotMockRpc& rpc) { rpc.ReturnNullFinalizedBlockHeader(); });
+  EXPECT_EQ(signed_extrinsic.error(), WalletInternalErrorMessage());
+}
+
+TEST_F(PolkadotWalletServiceUnitTest,
+       SignTransferExtrinsic_NullGenesisHashResult) {
+  auto signed_extrinsic = SignTransferExtrinsicWithFailedStep(
+      [](PolkadotMockRpc& rpc) { rpc.ReturnNullGenesisBlockHash(); });
+  EXPECT_EQ(signed_extrinsic.error(), WalletInternalErrorMessage());
+}
+
 TEST_F(PolkadotWalletServiceUnitTest, SignAndSendTransaction) {
   // Test the normal happy path where we create a signed extrinsic for the
   // specified account and then author it on the block chain.
