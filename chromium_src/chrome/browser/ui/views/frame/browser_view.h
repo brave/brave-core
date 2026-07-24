@@ -12,9 +12,9 @@
 #include "chrome/browser/ui/exclusive_access/exclusive_access_context.h"
 #include "chrome/browser/ui/views/frame/shadow_overlay_view.h"
 
-#define BrowserViewLayoutDelegateImplOld                        \
-  BrowserViewLayoutDelegateImplOld;                             \
-  friend class BraveBrowserView;                                \
+#define BrowserViewLayoutDelegateImplOld \
+  BrowserViewLayoutDelegateImplOld;      \
+  friend class BraveBrowserView;         \
   virtual bool IsWebPanelContents(content::WebContents* contents)
 
 #define BrowserWindow BraveBrowserWindow
@@ -40,7 +40,15 @@
 #define ShouldDrawTabStrokes virtual ShouldDrawTabStrokes
 #define GetFrameElementInfo virtual GetFrameElementInfo
 
+#if BUILDFLAG(IS_MAC)
+#define CreateMacOverlayView virtual CreateMacOverlayView
+#endif
+
 #include <chrome/browser/ui/views/frame/browser_view.h>  // IWYU pragma: export
+
+#if BUILDFLAG(IS_MAC)
+#undef CreateMacOverlayView
+#endif
 
 #undef GetFrameElementInfo
 #undef ReparentTopContainerForEndOfImmersive

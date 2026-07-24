@@ -205,6 +205,10 @@ class BraveBrowserView : public BrowserView,
   BraveShieldsToolbarButton* GetPwaShieldsToolbarButton();
 #endif
 
+#if BUILDFLAG(IS_MAC)
+  views::View* CreateMacOverlayView() override;
+#endif
+
  private:
   class TabCyclingEventHandler;
   class BrowserWindowMouseEventHandler;
