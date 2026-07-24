@@ -28,7 +28,10 @@ static_library("variations") {
 source_set("unit_tests") {
   testonly = true
 
-  sources = [ "command_line_utils_unittest.cc" ]
+  sources = [
+    "command_line_utils_unittest.cc",
+    "study_filtering_unittest.cc",
+  ]
 
   deps = [
     ":buildflags",
