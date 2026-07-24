@@ -34,7 +34,7 @@ import { FungibleAssetDetails } from '../../../../page/screens/fungible_asset_de
 import { PortfolioNftAsset } from '../portfolio/portfolio-nft-asset'
 import { MarketView } from '../../../../page/screens/market/market'
 import { AccountsOverview } from '../../../../page/screens/accounts_overview/accounts_overview'
-import { Account } from '../accounts/account'
+import { AccountDetails } from '../../../../page/screens/account_details/account_details'
 import { AddAccountModal } from '../../popup-modals/add-account-modal/add-account-modal'
 import {
   RemoveAccountModal, //
@@ -156,7 +156,7 @@ export const CryptoView = ({ sessionRoute }: Props) => {
         </Route>
 
         <Route path={WalletRoutes.Account}>
-          <Account />
+          <AccountDetails />
         </Route>
 
         <Route path={WalletRoutes.Accounts}>

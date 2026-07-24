@@ -1,13 +1,15 @@
 // Copyright (c) 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at https://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 import styled from 'styled-components'
 import Alert from '@brave/leo/react/alert'
-import * as leo from '@brave/leo/tokens/css/variables'
 
-import { Column, Row } from '../../../shared/style'
-import { layoutPanelWidth } from '../../wallet-page-wrapper/wallet-page-wrapper.style'
+// Shared Styles
+import { Column, Row } from '../../../components/shared/style'
+import {
+  layoutPanelWidth, //
+} from '../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper.style'
 
 export const ControlsWrapper = styled(Column)`
   padding: 0px 32px;
@@ -42,11 +44,6 @@ export const EmptyStateWrapper = styled(Column)`
   @media screen and (max-width: ${layoutPanelWidth}px) {
     padding: 16px;
   }
-`
-
-export const AccountsListWrapper = styled(Column)`
-  border-radius: ${leo.radius.l};
-  border: 1px solid ${leo.color.divider.subtle};
 `
 
 export const SyncAlertWrapper = styled(Row)`
