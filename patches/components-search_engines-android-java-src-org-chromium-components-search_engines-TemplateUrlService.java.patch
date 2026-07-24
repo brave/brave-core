@@ -1,11 +1,11 @@
 diff --git a/components/search_engines/android/java/src/org/chromium/components/search_engines/TemplateUrlService.java b/components/search_engines/android/java/src/org/chromium/components/search_engines/TemplateUrlService.java
-index be9153aad2317f6efd343c227f7ca5d05d3a969a..52cb1d1113cf7470589a612c35f304acf1c8dc7f 100644
+index be9153aad2317f6efd343c227f7ca5d05d3a969a..fd6d3caf8fbdab4acee87accd5a76b24bd112b54 100644
 --- a/components/search_engines/android/java/src/org/chromium/components/search_engines/TemplateUrlService.java
 +++ b/components/search_engines/android/java/src/org/chromium/components/search_engines/TemplateUrlService.java
-@@ -60,6 +60,15 @@ public class TemplateUrlService {
-     private void clearNativePtr() {
-         mNativeTemplateUrlServiceAndroid = 0;
-     }
+@@ -30,6 +30,15 @@ import java.util.List;
+  */
+ @NullMarked
+ public class TemplateUrlService {
 +    /**
 +     * Returns whether the native service is available for JNI calls.
 +     *
@@ -15,6 +15,6 @@ index be9153aad2317f6efd343c227f7ca5d05d3a969a..52cb1d1113cf7470589a612c35f304ac
 +    public boolean hasNativeService() {
 +        return mNativeTemplateUrlServiceAndroid != 0;
 +    }
- 
-     public boolean isLoaded() {
-         ThreadUtils.assertOnUiThread();
+     /** This listener will be notified when template url service is done loading. */
+     public interface LoadListener {
+         void onTemplateUrlServiceLoaded();

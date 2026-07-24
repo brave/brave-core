@@ -12,12 +12,9 @@ substitutions:
       native code clears its pointer. Return before calling JNI.
     count: 1
     regex:
-      re_pattern:
-        '(    @Override\n    public void onTemplateURLServiceChanged\(\)
-        \{\n)(        boolean isDseGoogle =
-        mTemplateUrlService\.isDefaultSearchEngineGoogle\(\);)'
+      re_pattern: '(public void onTemplateURLServiceChanged\(\)\s*\{)'
       replace: |-
-        \1        if (!mTemplateUrlService.hasNativeService()) {
+        \1
+                if (!mTemplateUrlService.hasNativeService()) {
                     return;
                 }
-        \2

@@ -12,12 +12,9 @@ substitutions:
       native code clears its pointer. Return UNSUITABLE_URL before calling JNI.
     count: 1
     regex:
-      re_pattern:
-        '(    private static @HeaderState int
-        geoHeaderStateForDse\(\n            Profile profile, TemplateUrlService
-        templateService\) \{\n)(        return geoHeaderStateForUrl\()'
+      re_pattern: '(geoHeaderStateForDse\s*\([^)]*\)\s*\{)'
       replace: |-
-        \1        if (!templateService.hasNativeService()) {
+        \1
+                if (!templateService.hasNativeService()) {
                     return HeaderState.UNSUITABLE_URL;
                 }
-        \2
