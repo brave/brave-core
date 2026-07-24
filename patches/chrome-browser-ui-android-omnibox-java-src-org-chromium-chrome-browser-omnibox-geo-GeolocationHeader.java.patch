@@ -1,0 +1,14 @@
+diff --git a/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/geo/GeolocationHeader.java b/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/geo/GeolocationHeader.java
+index b7dc84e7decbcc7444d3c3d13240a15554d9b233..b5705dd2d4d631fbed17271507007efa3210c6e2 100644
+--- a/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/geo/GeolocationHeader.java
++++ b/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/geo/GeolocationHeader.java
+@@ -211,6 +211,9 @@ public class GeolocationHeader {
+ 
+     private static @HeaderState int geoHeaderStateForDse(
+             Profile profile, TemplateUrlService templateService) {
++        if (!templateService.hasNativeService()) {
++            return HeaderState.UNSUITABLE_URL;
++        }
+         return geoHeaderStateForUrl(
+                 profile, templateService, templateService.getUrlForSearchQuery(DUMMY_URL_QUERY));
+     }
