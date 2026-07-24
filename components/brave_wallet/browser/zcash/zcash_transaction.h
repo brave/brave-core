@@ -12,6 +12,7 @@
 #include <string>
 #include <vector>
 
+#include "base/numerics/checked_math.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
 #include "brave/components/services/brave_wallet/public/mojom/zcash_decoder.mojom.h"
@@ -98,20 +99,45 @@ class ZCashTransaction {
   using OrchardOutput = ::brave_wallet::OrchardOutput;
   using OrchardInput = ::brave_wallet::OrchardInput;
 
-  struct OrchardPart {
-    OrchardPart();
-    ~OrchardPart();
-    OrchardPart(OrchardPart&& other);
-    OrchardPart(const OrchardPart& other);
-    OrchardPart& operator=(const OrchardPart& other);
-    OrchardPart& operator=(OrchardPart&& other);
-    bool operator==(const OrchardPart& other) const;
+  // A single orchard-format shielded pool serialized as opaque rust bytes.
+  struct ShieldedPool {
+    ShieldedPool();
+    ~ShieldedPool();
+    ShieldedPool(ShieldedPool&& other);
+    ShieldedPool(const ShieldedPool& other);
+    ShieldedPool& operator=(const ShieldedPool& other);
+    ShieldedPool& operator=(ShieldedPool&& other);
+    bool operator==(const ShieldedPool& other) const;
+
+    base::CheckedNumeric<uint64_t> TotalInputsAmount() const;
+    base::CheckedNumeric<uint64_t> TotalOutputsAmount() const;
 
     std::vector<OrchardInput> inputs;
     std::vector<OrchardOutput> outputs;
     std::optional<uint32_t> anchor_block_height;
     std::optional<std::array<uint8_t, kZCashDigestSize>> digest;
     std::optional<std::vector<uint8_t>> raw_tx;
+  };
+
+  // v5 transaction shielded data: a single orchard pool.
+  struct V5Part {
+    V5Part();
+    ~V5Part();
+    V5Part(V5Part&& other);
+    V5Part(const V5Part& other);
+    V5Part& operator=(const V5Part& other);
+    V5Part& operator=(V5Part&& other);
+    bool operator==(const V5Part& other) const;
+
+    // Backward-compatible top-level v5 JSON (keys: orchard_inputs,
+    // orchard_outputs, anchor_block_height) written directly onto the tx dict.
+    void WriteTopLevel(base::DictValue& tx_dict) const;
+    static std::optional<V5Part> ReadTopLevel(const base::DictValue& tx_dict);
+
+    base::CheckedNumeric<uint64_t> TotalInputsAmount() const;
+    base::CheckedNumeric<uint64_t> TotalOutputsAmount() const;
+
+    ShieldedPool orchard;
   };
 
   ZCashTransaction();
@@ -127,7 +153,7 @@ class ZCashTransaction {
       const base::DictValue& value);
 
   bool IsTransparentPartSigned() const;
-  uint64_t TotalInputsAmount() const;
+  base::CheckedNumeric<uint64_t> TotalInputsAmount() const;
 
   uint8_t sighash_type() const;
 
@@ -146,8 +172,8 @@ class ZCashTransaction {
   const TransparentPart& transparent_part() const { return transparent_part_; }
   TransparentPart& transparent_part() { return transparent_part_; }
 
-  const OrchardPart& orchard_part() const { return orchard_part_; }
-  OrchardPart& orchard_part() { return orchard_part_; }
+  const V5Part& v5_part() const { return v5_part_; }
+  V5Part& v5_part() { return v5_part_; }
 
   uint32_t locktime() const { return locktime_; }
   void set_locktime(uint32_t locktime) { locktime_ = locktime; }
@@ -166,7 +192,7 @@ class ZCashTransaction {
 
  private:
   TransparentPart transparent_part_;
-  OrchardPart orchard_part_;
+  V5Part v5_part_;
 
   uint32_t locktime_ = 0;
   uint32_t expiry_height_ = 0;

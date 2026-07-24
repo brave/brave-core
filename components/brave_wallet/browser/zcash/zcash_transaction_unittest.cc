@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/zcash/zcash_transaction.h"
 
+#include <limits>
 #include <memory>
 #include <utility>
 
@@ -132,7 +133,7 @@ TEST(ZCashTransaction, Value) {
   orchard_output.value = 100;
   orchard_output.addr.fill(2);
   orchard_output.memo = memo;
-  tx.orchard_part().outputs.push_back(std::move(orchard_output));
+  tx.v5_part().orchard.outputs.push_back(std::move(orchard_output));
 
   tx.set_to(kAddress1);
   tx.set_amount(12345);
@@ -144,7 +145,7 @@ TEST(ZCashTransaction, Value) {
   EXPECT_EQ(*parsed, tx);
   EXPECT_EQ(parsed->transparent_part().inputs, tx.transparent_part().inputs);
   EXPECT_EQ(parsed->transparent_part().outputs, tx.transparent_part().outputs);
-  EXPECT_EQ(parsed->orchard_part().outputs, tx.orchard_part().outputs);
+  EXPECT_EQ(parsed->v5_part().orchard.outputs, tx.v5_part().orchard.outputs);
   EXPECT_EQ(parsed->to(), tx.to());
   EXPECT_EQ(parsed->amount(), tx.amount());
   EXPECT_EQ(parsed->locktime(), tx.locktime());
@@ -184,7 +185,7 @@ TEST(ZCashTransaction, IsSigned) {
 
 TEST(ZCashTransaction, TotalInputsAmount) {
   ZCashTransaction tx;
-  EXPECT_EQ(tx.TotalInputsAmount(), 0u);
+  EXPECT_EQ(tx.TotalInputsAmount().ValueOrDie(), 0u);
 
   ZCashTransaction::TxInput input1;
   input1.utxo_address = kAddress1;
@@ -193,7 +194,7 @@ TEST(ZCashTransaction, TotalInputsAmount) {
   input1.utxo_value = 555666777;
   input1.script_sig = {1, 2, 3};
   tx.transparent_part().inputs.push_back(std::move(input1));
-  EXPECT_EQ(tx.TotalInputsAmount(), 555666777u);
+  EXPECT_EQ(tx.TotalInputsAmount().ValueOrDie(), 555666777u);
 
   ZCashTransaction::TxInput input2;
   input2.utxo_address = kAddress2;
@@ -201,7 +202,16 @@ TEST(ZCashTransaction, TotalInputsAmount) {
   base::HexStringToSpan(kTxid2, input2.utxo_outpoint.txid);
   input2.utxo_value = 555;
   tx.transparent_part().inputs.push_back(input2);
-  EXPECT_EQ(tx.TotalInputsAmount(), 555666777u + 555u);
+  EXPECT_EQ(tx.TotalInputsAmount().ValueOrDie(), 555666777u + 555u);
+}
+
+TEST(ZCashTransaction, TotalInputsAmountOverflow) {
+  ZCashTransaction tx;
+  tx.transparent_part().inputs.emplace_back().utxo_value =
+      std::numeric_limits<uint64_t>::max();
+  tx.v5_part().orchard.inputs.emplace_back().note.amount = 1;
+
+  EXPECT_FALSE(tx.TotalInputsAmount().IsValid());
 }
 
 TEST(ZCashTransaction, ShieldedOutputs) {
@@ -347,15 +357,15 @@ TEST(ZCashTransactionUtilsUnitTest, ValidateAmounts) {
     tx.set_fee(5000u);
 
     // Add orchard inputs
-    auto& input1 = tx.orchard_part().inputs.emplace_back();
+    auto& input1 = tx.v5_part().orchard.inputs.emplace_back();
     input1.note.amount = 10000u;
-    auto& input2 = tx.orchard_part().inputs.emplace_back();
+    auto& input2 = tx.v5_part().orchard.inputs.emplace_back();
     input2.note.amount = 20000u;
 
     // Add orchard outputs
-    auto& output1 = tx.orchard_part().outputs.emplace_back();
+    auto& output1 = tx.v5_part().orchard.outputs.emplace_back();
     output1.value = 15000u;
-    auto& output2 = tx.orchard_part().outputs.emplace_back();
+    auto& output2 = tx.v5_part().orchard.outputs.emplace_back();
     output2.value = 10000u;
 
     // 30000 (inputs) = 25000 (outputs) + 5000 (fee)
@@ -372,7 +382,7 @@ TEST(ZCashTransactionUtilsUnitTest, ValidateAmounts) {
     t_input.utxo_value = 10000u;
 
     // Orchard inputs
-    auto& o_input = tx.orchard_part().inputs.emplace_back();
+    auto& o_input = tx.v5_part().orchard.inputs.emplace_back();
     o_input.note.amount = 20000u;
 
     // Transparent outputs
@@ -380,7 +390,7 @@ TEST(ZCashTransactionUtilsUnitTest, ValidateAmounts) {
     t_output.amount = 15000u;
 
     // Orchard outputs
-    auto& o_output = tx.orchard_part().outputs.emplace_back();
+    auto& o_output = tx.v5_part().orchard.outputs.emplace_back();
     o_output.value = 10000u;
 
     // 30000 (inputs) = 25000 (outputs) + 5000 (fee)
@@ -395,13 +405,13 @@ TEST(ZCashTransactionUtilsUnitTest, ValidateAmounts) {
     auto& t_input = tx.transparent_part().inputs.emplace_back();
     t_input.utxo_value = 10000u;
 
-    auto& o_input = tx.orchard_part().inputs.emplace_back();
+    auto& o_input = tx.v5_part().orchard.inputs.emplace_back();
     o_input.note.amount = 5000u;
 
     auto& t_output = tx.transparent_part().outputs.emplace_back();
     t_output.amount = 10000u;
 
-    auto& o_output = tx.orchard_part().outputs.emplace_back();
+    auto& o_output = tx.v5_part().orchard.outputs.emplace_back();
     o_output.value = 6000u;
 
     // 15000 (inputs) < 16000 (outputs) + 5000 (fee) = 21000
@@ -416,13 +426,13 @@ TEST(ZCashTransactionUtilsUnitTest, ValidateAmounts) {
     auto& t_input = tx.transparent_part().inputs.emplace_back();
     t_input.utxo_value = 20000u;
 
-    auto& o_input = tx.orchard_part().inputs.emplace_back();
+    auto& o_input = tx.v5_part().orchard.inputs.emplace_back();
     o_input.note.amount = 10000u;
 
     auto& t_output = tx.transparent_part().outputs.emplace_back();
     t_output.amount = 10000u;
 
-    auto& o_output = tx.orchard_part().outputs.emplace_back();
+    auto& o_output = tx.v5_part().orchard.outputs.emplace_back();
     o_output.value = 5000u;
 
     // 30000 (inputs) > 15000 (outputs) + 5000 (fee) = 20000
@@ -436,13 +446,13 @@ TEST(ZCashTransactionUtilsUnitTest, ValidateAmounts) {
 
     // Multiple orchard inputs
     for (uint64_t amount : {10000u, 20000u, 30000u}) {
-      auto& input = tx.orchard_part().inputs.emplace_back();
+      auto& input = tx.v5_part().orchard.inputs.emplace_back();
       input.note.amount = amount;
     }
 
     // Multiple orchard outputs (total = 50000)
     for (uint64_t value : {15000u, 20000u, 15000u}) {
-      auto& output = tx.orchard_part().outputs.emplace_back();
+      auto& output = tx.v5_part().orchard.outputs.emplace_back();
       output.value = value;
     }
 
@@ -455,9 +465,9 @@ TEST(ZCashTransactionUtilsUnitTest, ValidateAmounts) {
     ZCashTransaction tx;
     tx.set_fee(5000u);
 
-    auto& input1 = tx.orchard_part().inputs.emplace_back();
+    auto& input1 = tx.v5_part().orchard.inputs.emplace_back();
     input1.note.amount = 10000u;
-    auto& input2 = tx.orchard_part().inputs.emplace_back();
+    auto& input2 = tx.v5_part().orchard.inputs.emplace_back();
     input2.note.amount = 20000u;
 
     // Transparent output (orchard to transparent transaction)
@@ -482,6 +492,66 @@ TEST(ZCashTransactionUtilsUnitTest, ValidateAmounts) {
     // 10000000000 (input) = 9999999000 (output) + 1000 (fee)
     EXPECT_TRUE(tx.ValidateAmounts());
   }
+}
+
+TEST(ZCashTransactionUtilsUnitTest, ValidateAmountsOverflow) {
+  {
+    ZCashTransaction tx;
+    tx.transparent_part().inputs.emplace_back().utxo_value =
+        std::numeric_limits<uint64_t>::max();
+    tx.v5_part().orchard.inputs.emplace_back().note.amount = 1;
+    EXPECT_FALSE(tx.ValidateAmounts());
+  }
+
+  {
+    ZCashTransaction tx;
+    tx.transparent_part().inputs.emplace_back().utxo_value =
+        std::numeric_limits<uint64_t>::max();
+    tx.transparent_part().outputs.emplace_back().amount =
+        std::numeric_limits<uint64_t>::max();
+    tx.v5_part().orchard.outputs.emplace_back().value = 1;
+    EXPECT_FALSE(tx.ValidateAmounts());
+  }
+
+  {
+    ZCashTransaction tx;
+    tx.transparent_part().inputs.emplace_back().utxo_value =
+        std::numeric_limits<uint64_t>::max();
+    tx.transparent_part().outputs.emplace_back().amount =
+        std::numeric_limits<uint64_t>::max();
+    tx.set_fee(1);
+    EXPECT_FALSE(tx.ValidateAmounts());
+  }
+}
+
+// Regression tests for ZCashTransaction::operator==.
+// Guards the fix where the second tuple entry incorrectly compared
+// this->orchard_part_ against itself instead of other.orchard_part_.
+TEST(ZCashTransaction, OperatorEquals_OrchardPart) {
+  ZCashTransaction tx1;
+  ZCashTransaction tx2;
+
+  // Identical transactions must be equal.
+  EXPECT_EQ(tx1, tx2);
+
+  // A difference in orchard_part must be detected.
+  tx1.v5_part().orchard.outputs.emplace_back();  // add one output
+  EXPECT_NE(tx1, tx2);
+
+  // After making tx2 match tx1 they must be equal again.
+  tx2.v5_part().orchard.outputs.emplace_back();
+  EXPECT_EQ(tx1, tx2);
+}
+
+TEST(ZCashTransaction, ToValueFromValue_VersionRoundTrip) {
+  ZCashTransaction tx;
+  tx.set_locktime(10);
+  tx.set_to("t1example");
+  auto& input = tx.transparent_part().inputs.emplace_back();
+  input.utxo_value = 5;
+  auto parsed = ZCashTransaction::FromValue(tx.ToValue());
+  ASSERT_TRUE(parsed);
+  EXPECT_EQ(*parsed, tx);
 }
 
 }  // namespace brave_wallet

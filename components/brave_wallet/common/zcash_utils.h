@@ -171,6 +171,7 @@ struct OrchardInput {
   OrchardNote note;
   std::optional<OrchardNoteWitness> witness;
 
+  bool operator==(const OrchardInput& other) const = default;
   base::DictValue ToValue() const;
   static std::optional<OrchardInput> FromValue(const base::DictValue& value);
 };
