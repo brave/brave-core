@@ -383,7 +383,11 @@ void EthTxManager::OnSimulateEvmTransactionForUnapproved(
   std::vector<AuthorizationFinding> findings;
   if (!timed_out && ok && !calls.empty()) {
     findings = ScanAuthorizations(calls);
-  } else {
+  }
+  // If simulation yielded no ApprovalForAll findings (either because it
+  // failed/timed out, or because the on-chain contract emits no events),
+  // fall back to scanning the raw calldata for the setApprovalForAll selector.
+  if (findings.empty()) {
     auto operators = FindSetApprovalForAllOperatorsByByteScan(
         base::span(pending->tx->data()));
     for (const auto& op : operators) {
