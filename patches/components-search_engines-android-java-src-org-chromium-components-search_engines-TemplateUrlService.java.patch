@@ -1,0 +1,20 @@
+diff --git a/components/search_engines/android/java/src/org/chromium/components/search_engines/TemplateUrlService.java b/components/search_engines/android/java/src/org/chromium/components/search_engines/TemplateUrlService.java
+index be9153aad2317f6efd343c227f7ca5d05d3a969a..fd6d3caf8fbdab4acee87accd5a76b24bd112b54 100644
+--- a/components/search_engines/android/java/src/org/chromium/components/search_engines/TemplateUrlService.java
++++ b/components/search_engines/android/java/src/org/chromium/components/search_engines/TemplateUrlService.java
+@@ -30,6 +30,15 @@ import java.util.List;
+  */
+ @NullMarked
+ public class TemplateUrlService {
++    /**
++     * Returns whether the native service is available for JNI calls.
++     *
++     * The Java wrapper can outlive native teardown during activity
++     * recreation. This does not indicate whether {@link #isLoaded()} returns true.
++     */
++    public boolean hasNativeService() {
++        return mNativeTemplateUrlServiceAndroid != 0;
++    }
+     /** This listener will be notified when template url service is done loading. */
+     public interface LoadListener {
+         void onTemplateUrlServiceLoaded();
