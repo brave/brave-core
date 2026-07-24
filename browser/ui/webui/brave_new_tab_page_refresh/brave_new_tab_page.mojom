@@ -223,8 +223,10 @@ interface NewTabPageHandler {
   // Reports a top site tile click for navigation source metrics.
   RecordTopSiteClick() => ();
 
-  // Returns sponsored sites whose advertiser domain the user has visited.
-  // Returns an empty array if sponsored sites are disabled or unavailable.
+  // Returns all sponsored sites the user is eligible to see. Returns an
+  // empty array if sponsored sites are disabled or unavailable. The caller
+  // is responsible for filtering these down to sites relevant to the
+  // user's top sites before display.
   GetSponsoredSites() => (array<SponsoredSite> sites);
 
   // Gets or sets whether the clock is displayed on the new tab page.
