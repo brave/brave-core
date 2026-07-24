@@ -100,11 +100,6 @@ void RunAppLaunchCallbacksForDirectLaunch(
           std::move(process_for_wait), std::move(terminated_callback)));
 }
 
-}  // namespace
-}  // namespace web_app
-
-namespace web_app {
-
 // Replaces the upstream LaunchServices-based implementation with a direct
 // spawn.
 void BraveLaunchShimForTesting(const base::FilePath& shim_path,  // IN-TEST
@@ -130,11 +125,13 @@ bool BraveLaunchTheFirstShimThatWorksOnFileThread(
     ShimLaunchedCallback* launched_callback,
     ShimTerminatedCallback* terminated_callback);
 
+}  // namespace
 }  // namespace web_app
 
 #include <chrome/browser/web_applications/os_integration/mac/app_shim_launch.mm>
 
 namespace web_app {
+namespace {
 
 // Replaces the upstream LaunchServices-based implementation with a direct
 // spawn.
@@ -208,4 +205,5 @@ bool BraveLaunchTheFirstShimThatWorksOnFileThread(
   return true;
 }
 
+}  // namespace
 }  // namespace web_app
