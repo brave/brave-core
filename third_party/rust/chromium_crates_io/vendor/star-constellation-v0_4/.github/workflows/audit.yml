@@ -1,0 +1,25 @@
+name: Security audit
+on:
+  push:
+    paths:
+      - '**/Cargo.toml'
+      - '**/Cargo.lock'
+  pull_request:
+    branches:
+      main
+    paths:
+      - '**/Cargo.toml'
+      - '**/Cargo.lock'
+  schedule:
+    - cron: '19 20 1 * *'
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+      - run: cargo install cargo-audit
+      - run: cargo audit --ignore RUSTSEC-2025-0141 # Temporarily ignore bincode unmaintained advisory
