@@ -301,10 +301,6 @@ source_set("ui") {
     sources += [
       "bookmark/bookmark_helper.cc",
       "bookmark/bookmark_helper.h",
-      "bookmark/bookmark_prefs_service.cc",
-      "bookmark/bookmark_prefs_service.h",
-      "bookmark/bookmark_prefs_service_factory.cc",
-      "bookmark/bookmark_prefs_service_factory.h",
       "bookmark/brave_bookmark_prefs.cc",
       "bookmark/brave_bookmark_prefs.h",
       "brave_browser.cc",
