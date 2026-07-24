@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/ads_notifier_manager.h"
 
-#include <utility>
-
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ads_observer.h"
@@ -41,6 +39,14 @@ void AdsNotifierManager::NotifyBrowserUpgradeRequiredToServeAds() const {
 void AdsNotifierManager::NotifyIneligibleWalletToServeAds() const {
   for (const auto& ads_observer : observers_) {
     ads_observer->OnIneligibleWalletToServeAds();
+  }
+}
+
+void AdsNotifierManager::NotifySolveCaptchaToServeAds(
+    const std::string& payment_id,
+    const std::string& captcha_id) const {
+  for (const auto& ads_observer : observers_) {
+    ads_observer->OnSolveCaptchaToServeAds(payment_id, captcha_id);
   }
 }
 
