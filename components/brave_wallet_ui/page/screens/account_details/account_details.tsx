@@ -1,7 +1,7 @@
 // Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at https://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
 import Button from '@brave/leo/react/button'
@@ -10,14 +10,14 @@ import { Redirect, useParams, useHistory } from 'react-router'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // redux
-import { useAppDispatch } from '../../../../common/hooks/use-redux'
+import { useAppDispatch } from '../../../common/hooks/use-redux'
 
 // Selectors
 import {
   useSafeUISelector,
   useSafeWalletSelector, //
-} from '../../../../common/hooks/use-safe-selector'
-import { UISelectors, WalletSelectors } from '../../../../common/selectors'
+} from '../../../common/hooks/use-safe-selector'
+import { UISelectors, WalletSelectors } from '../../../common/selectors'
 
 // Types
 import {
@@ -31,34 +31,34 @@ import {
   ZCashTestnetKeyringIds,
   CardanoTestnetKeyringIds,
   SerializableTransactionInfo,
-} from '../../../../constants/types'
+} from '../../../constants/types'
 
 // utils
-import { getLocale } from '../../../../../common/locale'
-import { sortTransactionByDate } from '../../../../utils/tx-utils'
+import { getLocale } from '../../../../common/locale'
+import { sortTransactionByDate } from '../../../utils/tx-utils'
 import {
   getBalance,
   formatTokenBalanceWithSymbol,
-} from '../../../../utils/balance-utils'
-import { filterNetworksForAccount } from '../../../../utils/network-utils'
+} from '../../../utils/balance-utils'
+import { filterNetworksForAccount } from '../../../utils/network-utils'
 import {
   makeAccountRoute,
   makeFundWalletRoute,
   makePortfolioAssetRoute,
   openTab,
-} from '../../../../utils/routes-utils'
-import { makeNetworkAsset } from '../../../../options/asset-options'
+} from '../../../utils/routes-utils'
+import { makeNetworkAsset } from '../../../options/asset-options'
 
-import Amount from '../../../../utils/amount'
+import Amount from '../../../utils/amount'
 import {
   getTokenPriceAmountFromRegistry,
   computeFiatAmount,
   getPriceRequestsForTokens,
-} from '../../../../utils/pricing-utils'
+} from '../../../utils/pricing-utils'
 import {
   selectAllVisibleUserAssetsFromQueryResult, //
-} from '../../../../common/slices/entities/blockchain-token.entity'
-import { getAssetIdKey, isTokenWatchOnly } from '../../../../utils/asset-utils'
+} from '../../../common/slices/entities/blockchain-token.entity'
+import { getAssetIdKey, isTokenWatchOnly } from '../../../utils/asset-utils'
 
 // Styled Components
 import {
@@ -69,54 +69,66 @@ import {
   EmptyStateWrapper,
   SyncAlert,
   SyncAlertWrapper,
-} from './style'
-import { Column, Row, VerticalSpace, Text } from '../../../shared/style'
-import { EmptyTransactionsIcon } from '../portfolio/style'
-import { NftGrid } from '../nfts/components/nfts.styles'
+} from './account_details.style'
+import {
+  Column,
+  Row,
+  VerticalSpace,
+  Text,
+} from '../../../components/shared/style'
+import { EmptyTransactionsIcon } from '../../../components/desktop/views/portfolio/style'
+import { NftGrid } from '../../../components/desktop/views/nfts/components/nfts.styles'
 
 // Components
 import {
   PortfolioAssetItemLoadingSkeleton, //
-} from '../../portfolio-asset-item/portfolio-asset-item-loading-skeleton'
-import { PortfolioAssetItem } from '../../portfolio-asset-item/index'
+} from '../../../components/desktop/portfolio-asset-item/portfolio-asset-item-loading-skeleton'
+import { PortfolioAssetItem } from '../../../components/desktop/portfolio-asset-item/index'
 import {
   AccountDetailsHeader, //
-} from '../../card-headers/account-details-header'
+} from '../../../components/desktop/card-headers/account-details-header'
 import {
   SegmentedControl, //
-} from '../../../shared/segmented_control/segmented_control'
+} from '../../../components/shared/segmented_control/segmented_control'
 import {
   NFTGridViewItem, //
-} from '../portfolio/components/nft-grid-view/nft-grid-view-item'
+} from '../../../components/desktop/views/portfolio/components/nft-grid-view/nft-grid-view-item'
 import {
   NftsEmptyState, //
-} from '../nfts/components/nfts-empty-state/nfts-empty-state'
+} from '../../../components/desktop/views/nfts/components/nfts-empty-state/nfts-empty-state'
 import {
   AddOrEditNftModal, //
-} from '../../popup-modals/add-edit-nft-modal/add-edit-nft-modal'
+} from '../../../components/desktop/popup-modals/add-edit-nft-modal/add-edit-nft-modal'
 import {
   WalletPageWrapper, //
-} from '../../wallet-page-wrapper/wallet-page-wrapper'
+} from '../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper'
 import {
   EmptyTokenListState, //
-} from '../../empty_token_list_state/empty_token_list_state'
+} from '../../../components/desktop/empty_token_list_state/empty_token_list_state'
 import {
   ViewOnBlockExplorerModal, //
-} from '../../popup-modals/view_on_block_explorer_modal/view_on_block_explorer_modal'
-import { ZCashSyncModal } from '../../popup-modals/zcash_sync_modal/zcash_sync_modal'
-import { ShieldAccountAlert } from './shield_account_alert/shield_account_alert'
+} from '../../../components/desktop/popup-modals/view_on_block_explorer_modal/view_on_block_explorer_modal'
+import {
+  ZCashSyncModal, //
+} from '../../../components/desktop/popup-modals/zcash_sync_modal/zcash_sync_modal'
+import {
+  ShieldAccountAlert, //
+} from './components/shield_account_alert/shield_account_alert'
 import {
   VirtualizedTransactionList, //
-} from '../../virtualized_transaction_list/virtualized_transaction_list'
+} from '../../../components/desktop/virtualized_transaction_list/virtualized_transaction_list'
 import {
   ShieldZCashAccountModal, //
-} from '../../popup-modals/shield_zcash_account/shield_zcash_account'
+} from '../../../components/desktop/popup-modals/shield_zcash_account/shield_zcash_account'
+import {
+  TransactionDetailsModal, //
+} from '../../../components/desktop/popup-modals/transaction_details_modal/transaction_details_modal'
 
 // options
-import { AccountDetailsOptions } from '../../../../options/nav-options'
+import { AccountDetailsOptions } from '../../../options/nav-options'
 
 // Hooks
-import useInterval from '../../../../common/hooks/interval'
+import useInterval from '../../../common/hooks/interval'
 import {
   useAddHiddenAccountMutation,
   useGetDefaultFiatCurrencyQuery,
@@ -130,29 +142,28 @@ import {
   useGetZCashBalanceQuery,
   useClearChainTipStatusCacheMutation,
   useGetIsShieldingAvailableQuery,
-} from '../../../../common/slices/api.slice'
+} from '../../../common/slices/api.slice'
 import {
   querySubscriptionOptions60s, //
-} from '../../../../common/slices/constants'
+} from '../../../common/slices/constants'
 import {
   usePersistedTokenSpotPricesQuery, //
-} from '../../../../common/hooks/use-persisted-spot-prices'
+} from '../../../common/hooks/use-persisted-spot-prices'
 import {
   useBalancesFetcher, //
-} from '../../../../common/hooks/use-balances-fetcher'
-import { useExplorer } from '../../../../common/hooks/explorer'
+} from '../../../common/hooks/use-balances-fetcher'
+import { useExplorer } from '../../../common/hooks/explorer'
 import {
   useIsAccountSyncing, //
-} from '../../../../common/hooks/use_is_account_syncing'
+} from '../../../common/hooks/use_is_account_syncing'
 import {
   useFindBuySupportedToken, //
-} from '../../../../common/hooks/use-multi-chain-buy-assets'
-import { useRoute } from '../../../../common/hooks/use_route'
+} from '../../../common/hooks/use-multi-chain-buy-assets'
+import { useRoute } from '../../../common/hooks/use_route'
 
 // Actions
-import { AccountsTabActions } from '../../../../page/reducers/accounts-tab-reducer'
-import { useAccountsQuery } from '../../../../common/slices/api.slice.extra'
-import { TransactionDetailsModal } from '../../popup-modals/transaction_details_modal/transaction_details_modal'
+import { AccountsTabActions } from '../../reducers/accounts-tab-reducer'
+import { useAccountsQuery } from '../../../common/slices/api.slice.extra'
 
 const INDIVIDUAL_TESTNET_ACCOUNT_KEYRING_IDS = [
   ...BitcoinTestnetKeyringIds,
@@ -173,7 +184,7 @@ const coinSupportsAssets = (coin: BraveWallet.CoinType) => {
   return [BraveWallet.CoinType.ETH, BraveWallet.CoinType.SOL].includes(coin)
 }
 
-export const Account = () => {
+export const AccountDetails = () => {
   // safe selectors
   const assetAutoDiscoveryCompleted = useSafeWalletSelector(
     WalletSelectors.assetAutoDiscoveryCompleted,
@@ -891,5 +902,3 @@ export const Account = () => {
     </WalletPageWrapper>
   )
 }
-
-export default Account

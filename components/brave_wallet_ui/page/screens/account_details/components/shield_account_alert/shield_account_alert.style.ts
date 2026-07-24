@@ -7,8 +7,10 @@ import styled from 'styled-components'
 import LeoAlert from '@brave/leo/react/alert'
 
 // Shared Styles
-import { Row } from '../../../../shared/style'
-import { layoutPanelWidth } from '../../../wallet-page-wrapper/wallet-page-wrapper.style'
+import { Row } from '../../../../../components/shared/style'
+import {
+  layoutPanelWidth, //
+} from '../../../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper.style'
 
 export const Wrapper = styled(Row)`
   padding: 0px 32px;

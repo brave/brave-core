@@ -19,14 +19,14 @@ import { UISelectors } from '../../../../../common/selectors'
 // Components
 import {
   ShieldZCashAccountModal, //
-} from '../../../popup-modals/shield_zcash_account/shield_zcash_account'
+} from '../../../../../components/desktop/popup-modals/shield_zcash_account/shield_zcash_account'
 
 // Utils
 import { getLocale } from '../../../../../../common/locale'
 
 // Styled Components
 import { Wrapper, Alert } from './shield_account_alert.style'
-import { Row, Column, Text } from '../../../../shared/style'
+import { Row, Column, Text } from '../../../../../components/shared/style'
 
 export interface Props {
   account: BraveWallet.AccountInfo
