@@ -107,20 +107,18 @@ AdBlockEngine::~AdBlockEngine() = default;
 adblock::BlockerResult AdBlockEngine::ShouldStartRequest(
     const GURL& url,
     blink::mojom::ResourceType resource_type,
-    const std::string& tab_host,
+    const url::Origin& request_initiator,
     const std::string& method,
     bool previously_matched_rule,
     bool previously_matched_exception,
     bool previously_matched_important) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   // Determine third-party here so the library doesn't need to figure it out.
-  // CreateFromNormalizedTuple is needed because SameDomainOrHost needs
-  // a URL or origin and not a string to a host name.
-  bool is_third_party = !SameDomainOrHost(
-      url, url::Origin::CreateFromNormalizedTuple("https", tab_host, 80),
-      INCLUDE_PRIVATE_REGISTRIES);
+  bool is_third_party =
+      !SameDomainOrHost(url, request_initiator, INCLUDE_PRIVATE_REGISTRIES);
+  const auto initiator_hostname = request_initiator.host();
   return ad_block_client_->matches(
-      url.spec(), std::string(url.host()), tab_host,
+      url.spec(), std::string(url.host()), initiator_hostname,
       ResourceTypeToString(resource_type), is_third_party, method,
       // Checking normal rules is skipped if a normal rule or exception rule was
       // found previously
@@ -132,17 +130,24 @@ adblock::BlockerResult AdBlockEngine::ShouldStartRequest(
 std::optional<std::string> AdBlockEngine::GetCspDirectives(
     const GURL& url,
     blink::mojom::ResourceType resource_type,
-    const std::string& tab_host,
+    const std::optional<url::Origin>& request_initiator,
     const std::string& method) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   // Determine third-party here so the library doesn't need to figure it out.
-  // CreateFromNormalizedTuple is needed because SameDomainOrHost needs
-  // a URL or origin and not a string to a host name.
-  bool is_third_party = !SameDomainOrHost(
-      url, url::Origin::CreateFromNormalizedTuple("https", tab_host, 80),
-      INCLUDE_PRIVATE_REGISTRIES);
+  bool is_third_party =
+      request_initiator &&
+      !SameDomainOrHost(url, *request_initiator, INCLUDE_PRIVATE_REGISTRIES);
+
+  // Top-level document requests do not have a valid initiator URL, and
+  // requests from special schemes like file:// do not have host parts, so we
+  // use the request URL as the initiator.
+  const std::string_view initiator_host =
+      request_initiator && !request_initiator->host().empty()
+          ? request_initiator->host()
+          : url.host();
+
   auto result = ad_block_client_->get_csp_directives(
-      url.spec(), std::string(url.host()), tab_host,
+      url.spec(), std::string(url.host()), std::string(initiator_host),
       ResourceTypeToString(resource_type), is_third_party, method);
 
   if (result.empty()) {

@@ -55,7 +55,7 @@ std::unique_ptr<AdBlockEngineWrapper> AdBlockEngineWrapper::Create() {
 adblock::BlockerResult AdBlockEngineWrapper::ShouldStartRequest(
     const GURL& url,
     blink::mojom::ResourceType resource_type,
-    const std::string& tab_host,
+    const url::Origin& request_initiator,
     const std::string& method,
     bool aggressive_blocking,
     bool previously_matched_rule,
@@ -65,7 +65,7 @@ adblock::BlockerResult AdBlockEngineWrapper::ShouldStartRequest(
   TRACE_EVENT("brave.adblock", "ShouldStartRequest", "url", url);
 
   adblock::BlockerResult fp_result = default_engine_->ShouldStartRequest(
-      url, resource_type, tab_host, method, previously_matched_rule,
+      url, resource_type, request_initiator, method, previously_matched_rule,
       previously_matched_exception, previously_matched_important);
 
   // removeparam results from the default engine are always ignored
@@ -75,7 +75,7 @@ adblock::BlockerResult AdBlockEngineWrapper::ShouldStartRequest(
       base::FeatureList::IsEnabled(
           brave_shields::features::kBraveAdblockDefault1pBlocking) ||
       !SameDomainOrHost(
-          url, url::Origin::CreateFromNormalizedTuple("https", tab_host, 80),
+          url, request_initiator,
           net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES)) {
     if (fp_result.important) {
       return fp_result;
@@ -90,7 +90,7 @@ adblock::BlockerResult AdBlockEngineWrapper::ShouldStartRequest(
                          ? GURL(std::string(fp_result.rewritten_url.value))
                          : url;
   auto result = additional_filters_engine_->ShouldStartRequest(
-      request_url, resource_type, tab_host, method,
+      request_url, resource_type, request_initiator, method,
       previously_matched_rule | fp_result.matched,
       previously_matched_exception | fp_result.has_exception,
       previously_matched_important | fp_result.important);
@@ -148,15 +148,15 @@ DATFileDataBuffer AdBlockEngineWrapper::Serialize(bool is_default_engine) {
 std::optional<std::string> AdBlockEngineWrapper::GetCspDirectives(
     const GURL& url,
     blink::mojom::ResourceType resource_type,
-    const std::string& tab_host,
+    const std::optional<url::Origin>& request_initiator,
     const std::string& method) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   TRACE_EVENT("brave.adblock", "GetCspDirectives", "url", url);
-  auto csp_directives =
-      default_engine_->GetCspDirectives(url, resource_type, tab_host, method);
+  auto csp_directives = default_engine_->GetCspDirectives(
+      url, resource_type, request_initiator, method);
 
   const auto additional_csp = additional_filters_engine_->GetCspDirectives(
-      url, resource_type, tab_host, method);
+      url, resource_type, request_initiator, method);
   MergeCspDirectiveInto(additional_csp, &csp_directives);
 
   return csp_directives;

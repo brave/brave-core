@@ -67,7 +67,7 @@ mod ffi {
             &self,
             url: &CxxString,
             hostname: &CxxString,
-            source_hostname: &CxxString,
+            initiator_hostname: &CxxString,
             request_type: &CxxString,
             third_party_request: bool,
             method: &CxxString,

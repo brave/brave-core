@@ -22,6 +22,7 @@
 #include "net/url_request/referrer_policy.h"
 #include "third_party/blink/public/mojom/loader/resource_load_info.mojom-shared.h"
 #include "url/gurl.h"
+#include "url/origin.h"
 
 template <template <typename> class T>
 class BraveRequestHandler;
@@ -82,8 +83,8 @@ class BraveRequestInfo {
   const GURL& tab_url() const;
   void set_tab_url(const GURL& value);
 
-  const GURL& initiator_url() const;
-  void set_initiator_url(const GURL& value);
+  const std::optional<url::Origin>& request_initiator() const;
+  void set_request_initiator(const std::optional<url::Origin>& value);
 
   bool internal_redirect() const;
   void set_internal_redirect(bool value);
@@ -206,7 +207,7 @@ class BraveRequestInfo {
   GURL request_url_;
   GURL tab_origin_;
   GURL tab_url_;
-  GURL initiator_url_;
+  std::optional<url::Origin> request_initiator_;
 
   bool internal_redirect_ = false;
   GURL redirect_source_;

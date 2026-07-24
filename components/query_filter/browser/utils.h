@@ -10,6 +10,7 @@
 #include <string>
 
 #include "url/gurl.h"
+#include "url/origin.h"
 
 namespace query_filter {
 std::optional<GURL> ApplyQueryFilter(const GURL& original_url);
@@ -17,16 +18,16 @@ std::optional<GURL> ApplyQueryFilter(const GURL& original_url);
 // This function will return a new url stripping known tracking query params.
 // If nothing is to be stripped, a null value is returned.
 //
-// `initiator_url` specifies the origin initiating the resource request.
-// If there were redirects, this is the url prior to any redirects.
+// `request_initiator` specifies the origin initiating the resource request.
+// If there were redirects, this is the origin prior to any redirects.
 // `redirect_source_url` specifies the url that we are currently navigating
 // from, including any redirects that might have happened. `request_url`
 // specifies where we are navigating to. `request_method` indicates the HTTP
-// method of the request. `internal_redirect` indicates wether or not this is an
-// internal redirect or not. This function returns the url we should redirect to
-// or a `std::nullopt` value if nothing is changed.
+// method of the request. `internal_redirect` indicates whether or not this is
+// an internal redirect or not. This function returns the url we should redirect
+// to or a `std::nullopt` value if nothing is changed.
 std::optional<GURL> MaybeApplyQueryStringFilter(
-    const GURL& initiator_url,
+    const std::optional<url::Origin>& request_initiator,
     const GURL& redirect_source_url,
     const GURL& request_url,
     const std::string& request_method,
