@@ -60,8 +60,17 @@ extension CarplayTemplateApplicationSceneDelegate: CPTemplateApplicationSceneDel
   ) {
     log.debug("Template application scene did connect.")
 
-    DispatchQueue.main.async {
-      PlaylistCoordinator.shared.connect(interfaceController: interfaceController)
+    Task { @MainActor in
+      // CarPlay can connect independently of a `BrowserViewController` as a result
+      // of cold-launching directly from the CarPlay screen,
+      // so ensure the default profile is loaded here first.
+      let profileController = await AppState.shared.defaultProfileLoader.profileController(
+        braveCore: AppState.shared.braveCore
+      )
+      PlaylistCoordinator.shared.connect(
+        interfaceController: interfaceController,
+        profile: profileController.profile
+      )
     }
   }
 
