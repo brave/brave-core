@@ -1,22 +1,4 @@
-#[cfg(feature = "std")]
-extern crate std;
-
-use core::fmt;
-
-// This private alias mirrors `std::io::RawOsError`:
-// https://doc.rust-lang.org/std/io/type.RawOsError.html)
-cfg_if::cfg_if!(
-    if #[cfg(target_os = "uefi")] {
-        // See the UEFI spec for more information:
-        // https://uefi.org/specs/UEFI/2.10/Apx_D_Status_Codes.html
-        type RawOsError = usize;
-        type NonZeroRawOsError = core::num::NonZeroUsize;
-        const UEFI_ERROR_FLAG: RawOsError = 1 << (RawOsError::BITS - 1);
-    } else {
-        type RawOsError = i32;
-        type NonZeroRawOsError = core::num::NonZeroI32;
-    }
-);
+use core::{fmt, num::NonZeroU32};
 
 /// A small and `no_std` compatible error type
 ///
@@ -24,155 +6,113 @@ cfg_if::cfg_if!(
 /// if so, which error code the OS gave the application. If such an error is
 /// encountered, please consult with your system documentation.
 ///
+/// Internally this type is a NonZeroU32, with certain values reserved for
+/// certain purposes, see [`Error::INTERNAL_START`] and [`Error::CUSTOM_START`].
+///
 /// *If this crate's `"std"` Cargo feature is enabled*, then:
 /// - [`getrandom::Error`][Error] implements
 ///   [`std::error::Error`](https://doc.rust-lang.org/std/error/trait.Error.html)
 /// - [`std::io::Error`](https://doc.rust-lang.org/std/io/struct.Error.html) implements
 ///   [`From<getrandom::Error>`](https://doc.rust-lang.org/std/convert/trait.From.html).
-
-// note: on non-UEFI targets OS errors are represented as negative integers,
-// while on UEFI targets OS errors have the highest bit set to 1.
 #[derive(Copy, Clone, Eq, PartialEq)]
-pub struct Error(NonZeroRawOsError);
+pub struct Error(NonZeroU32);
+
+const fn internal_error(n: u16) -> Error {
+    // SAFETY: code > 0 as INTERNAL_START > 0 and adding n won't overflow a u32.
+    let code = Error::INTERNAL_START + (n as u32);
+    Error(unsafe { NonZeroU32::new_unchecked(code) })
+}
 
 impl Error {
     /// This target/platform is not supported by `getrandom`.
-    pub const UNSUPPORTED: Error = Self::new_internal(0);
+    pub const UNSUPPORTED: Error = internal_error(0);
     /// The platform-specific `errno` returned a non-positive value.
-    pub const ERRNO_NOT_POSITIVE: Error = Self::new_internal(1);
+    pub const ERRNO_NOT_POSITIVE: Error = internal_error(1);
     /// Encountered an unexpected situation which should not happen in practice.
-    pub const UNEXPECTED: Error = Self::new_internal(2);
+    pub const UNEXPECTED: Error = internal_error(2);
+    /// Call to [`CCRandomGenerateBytes`](https://opensource.apple.com/source/CommonCrypto/CommonCrypto-60074/include/CommonRandom.h.auto.html) failed
+    /// on iOS, tvOS, or waatchOS.
+    // TODO: Update this constant name in the next breaking release.
+    pub const IOS_SEC_RANDOM: Error = internal_error(3);
+    /// Call to Windows [`RtlGenRandom`](https://docs.microsoft.com/en-us/windows/win32/api/ntsecapi/nf-ntsecapi-rtlgenrandom) failed.
+    pub const WINDOWS_RTL_GEN_RANDOM: Error = internal_error(4);
+    /// RDRAND instruction failed due to a hardware issue.
+    pub const FAILED_RDRAND: Error = internal_error(5);
+    /// RDRAND instruction unsupported on this target.
+    pub const NO_RDRAND: Error = internal_error(6);
+    /// The environment does not support the Web Crypto API.
+    pub const WEB_CRYPTO: Error = internal_error(7);
+    /// Calling Web Crypto API `crypto.getRandomValues` failed.
+    pub const WEB_GET_RANDOM_VALUES: Error = internal_error(8);
+    /// On VxWorks, call to `randSecure` failed (random number generator is not yet initialized).
+    pub const VXWORKS_RAND_SECURE: Error = internal_error(11);
+    /// Node.js does not have the `crypto` CommonJS module.
+    pub const NODE_CRYPTO: Error = internal_error(12);
+    /// Calling Node.js function `crypto.randomFillSync` failed.
+    pub const NODE_RANDOM_FILL_SYNC: Error = internal_error(13);
+    /// Called from an ES module on Node.js. This is unsupported, see:
+    /// <https://docs.rs/getrandom#nodejs-es-module-support>.
+    pub const NODE_ES_MODULE: Error = internal_error(14);
 
-    /// Internal errors can be in the range of 2^16..2^17
-    const INTERNAL_START: RawOsError = 1 << 16;
-    /// Custom errors can be in the range of 2^17..(2^17 + 2^16)
-    const CUSTOM_START: RawOsError = 1 << 17;
+    /// Codes below this point represent OS Errors (i.e. positive i32 values).
+    /// Codes at or above this point, but below [`Error::CUSTOM_START`] are
+    /// reserved for use by the `rand` and `getrandom` crates.
+    pub const INTERNAL_START: u32 = 1 << 31;
 
-    /// Creates a new instance of an `Error` from a negative error code.
-    #[cfg(not(target_os = "uefi"))]
-    #[allow(dead_code)]
-    pub(super) fn from_neg_error_code(code: RawOsError) -> Self {
-        if code < 0 {
-            let code = NonZeroRawOsError::new(code).expect("`code` is negative");
-            Self(code)
-        } else {
-            Error::UNEXPECTED
-        }
-    }
-
-    /// Creates a new instance of an `Error` from an UEFI error code.
-    #[cfg(target_os = "uefi")]
-    #[allow(dead_code)]
-    pub(super) fn from_uefi_code(code: RawOsError) -> Self {
-        if code & UEFI_ERROR_FLAG != 0 {
-            let code = NonZeroRawOsError::new(code).expect("The highest bit of `code` is set to 1");
-            Self(code)
-        } else {
-            Self::UNEXPECTED
-        }
-    }
+    /// Codes at or above this point can be used by users to define their own
+    /// custom errors.
+    pub const CUSTOM_START: u32 = (1 << 31) + (1 << 30);
 
     /// Extract the raw OS error code (if this error came from the OS)
     ///
     /// This method is identical to [`std::io::Error::raw_os_error()`][1], except
-    /// that it works in `no_std` contexts. On most targets this method returns
-    /// `Option<i32>`, but some platforms (e.g. UEFI) may use a different primitive
-    /// type like `usize`. Consult with the [`RawOsError`] docs for more information.
-    ///
-    /// If this method returns `None`, the error value can still be formatted via
-    /// the `Display` implementation.
+    /// that it works in `no_std` contexts. If this method returns `None`, the
+    /// error value can still be formatted via the `Display` implementation.
     ///
     /// [1]: https://doc.rust-lang.org/std/io/struct.Error.html#method.raw_os_error
-    /// [`RawOsError`]: https://doc.rust-lang.org/std/io/type.RawOsError.html
     #[inline]
-    pub fn raw_os_error(self) -> Option<RawOsError> {
-        let code = self.0.get();
-
-        // note: in this method we need to cover only backends which rely on
-        // `Error::{from_error_code, from_errno, from_uefi_code}` methods,
-        // on all other backends this method always returns `None`.
-
-        #[cfg(target_os = "uefi")]
-        {
-            if code & UEFI_ERROR_FLAG != 0 {
-                Some(code)
-            } else {
-                None
+    pub fn raw_os_error(self) -> Option<i32> {
+        if self.0.get() < Self::INTERNAL_START {
+            match () {
+                #[cfg(target_os = "solid_asp3")]
+                // On SOLID, negate the error code again to obtain the original
+                // error code.
+                () => Some(-(self.0.get() as i32)),
+                #[cfg(not(target_os = "solid_asp3"))]
+                () => Some(self.0.get() as i32),
             }
-        }
-
-        #[cfg(not(target_os = "uefi"))]
-        {
-            // On most targets `std` expects positive error codes while retrieving error strings:
-            // - `libc`-based targets use `strerror_r` which expects positive error codes.
-            // - Hermit relies on the `hermit-abi` crate, which expects positive error codes:
-            //   https://docs.rs/hermit-abi/0.4.0/src/hermit_abi/errno.rs.html#400-532
-            // - WASIp1 uses the same conventions as `libc`:
-            //   https://github.com/rust-lang/rust/blob/1.85.0/library/std/src/sys/pal/wasi/os.rs#L57-L67
-            //
-            // The only exception is Solid, `std` expects negative system error codes, see:
-            // https://github.com/rust-lang/rust/blob/1.85.0/library/std/src/sys/pal/solid/error.rs#L5-L31
-            if code >= 0 {
-                None
-            } else if cfg!(not(target_os = "solid_asp3")) {
-                code.checked_neg()
-            } else {
-                Some(code)
-            }
+        } else {
+            None
         }
     }
 
-    /// Creates a new instance of an `Error` from a particular custom error code.
-    pub const fn new_custom(n: u16) -> Error {
-        // SAFETY: code > 0 as CUSTOM_START > 0 and adding `n` won't overflow `RawOsError`.
-        let code = Error::CUSTOM_START + (n as RawOsError);
-        Error(unsafe { NonZeroRawOsError::new_unchecked(code) })
+    /// Extract the bare error code.
+    ///
+    /// This code can either come from the underlying OS, or be a custom error.
+    /// Use [`Error::raw_os_error()`] to disambiguate.
+    #[inline]
+    pub const fn code(self) -> NonZeroU32 {
+        self.0
     }
+}
 
-    /// Creates a new instance of an `Error` from a particular internal error code.
-    pub(crate) const fn new_internal(n: u16) -> Error {
-        // SAFETY: code > 0 as INTERNAL_START > 0 and adding `n` won't overflow `RawOsError`.
-        let code = Error::INTERNAL_START + (n as RawOsError);
-        Error(unsafe { NonZeroRawOsError::new_unchecked(code) })
-    }
+cfg_if! {
+    if #[cfg(unix)] {
+        fn os_err(errno: i32, buf: &mut [u8]) -> Option<&str> {
+            let buf_ptr = buf.as_mut_ptr() as *mut libc::c_char;
+            if unsafe { libc::strerror_r(errno, buf_ptr, buf.len()) } != 0 {
+                return None;
+            }
 
-    fn internal_desc(&self) -> Option<&'static str> {
-        let desc = match *self {
-            Error::UNSUPPORTED => "getrandom: this target is not supported",
-            Error::ERRNO_NOT_POSITIVE => "errno: did not return a positive value",
-            Error::UNEXPECTED => "unexpected situation",
-            #[cfg(any(
-                target_os = "ios",
-                target_os = "visionos",
-                target_os = "watchos",
-                target_os = "tvos",
-            ))]
-            Error::IOS_RANDOM_GEN => "SecRandomCopyBytes: iOS Security framework failure",
-            #[cfg(all(windows, target_vendor = "win7"))]
-            Error::WINDOWS_RTL_GEN_RANDOM => "RtlGenRandom: Windows system function failure",
-            #[cfg(all(feature = "wasm_js", getrandom_backend = "wasm_js"))]
-            Error::WEB_CRYPTO => "Web Crypto API is unavailable",
-            #[cfg(target_os = "vxworks")]
-            Error::VXWORKS_RAND_SECURE => "randSecure: VxWorks RNG module is not initialized",
-
-            #[cfg(any(
-                getrandom_backend = "rdrand",
-                all(target_arch = "x86_64", target_env = "sgx")
-            ))]
-            Error::FAILED_RDRAND => "RDRAND: failed multiple times: CPU issue likely",
-            #[cfg(any(
-                getrandom_backend = "rdrand",
-                all(target_arch = "x86_64", target_env = "sgx")
-            ))]
-            Error::NO_RDRAND => "RDRAND: instruction not supported",
-
-            #[cfg(getrandom_backend = "rndr")]
-            Error::RNDR_FAILURE => "RNDR: Could not generate a random number",
-            #[cfg(getrandom_backend = "rndr")]
-            Error::RNDR_NOT_AVAILABLE => "RNDR: Register not supported",
-            _ => return None,
-        };
-        Some(desc)
+            // Take up to trailing null byte
+            let n = buf.len();
+            let idx = buf.iter().position(|&b| b == 0).unwrap_or(n);
+            core::str::from_utf8(&buf[..idx]).ok()
+        }
+    } else {
+        fn os_err(_errno: i32, _buf: &mut [u8]) -> Option<&str> {
+            None
+        }
     }
 }
 
@@ -181,9 +121,11 @@ impl fmt::Debug for Error {
         let mut dbg = f.debug_struct("Error");
         if let Some(errno) = self.raw_os_error() {
             dbg.field("os_error", &errno);
-            #[cfg(feature = "std")]
-            dbg.field("description", &std::io::Error::from_raw_os_error(errno));
-        } else if let Some(desc) = self.internal_desc() {
+            let mut buf = [0u8; 128];
+            if let Some(err) = os_err(errno, &mut buf) {
+                dbg.field("description", &err);
+            }
+        } else if let Some(desc) = internal_desc(*self) {
             dbg.field("internal_code", &self.0.get());
             dbg.field("description", &desc);
         } else {
@@ -196,17 +138,52 @@ impl fmt::Debug for Error {
 impl fmt::Display for Error {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         if let Some(errno) = self.raw_os_error() {
-            cfg_if! {
-                if #[cfg(feature = "std")] {
-                    std::io::Error::from_raw_os_error(errno).fmt(f)
-                } else {
-                    write!(f, "OS Error: {errno}")
-                }
+            let mut buf = [0u8; 128];
+            match os_err(errno, &mut buf) {
+                Some(err) => err.fmt(f),
+                None => write!(f, "OS Error: {}", errno),
             }
-        } else if let Some(desc) = self.internal_desc() {
+        } else if let Some(desc) = internal_desc(*self) {
             f.write_str(desc)
         } else {
             write!(f, "Unknown Error: {}", self.0.get())
         }
+    }
+}
+
+impl From<NonZeroU32> for Error {
+    fn from(code: NonZeroU32) -> Self {
+        Self(code)
+    }
+}
+
+fn internal_desc(error: Error) -> Option<&'static str> {
+    match error {
+        Error::UNSUPPORTED => Some("getrandom: this target is not supported"),
+        Error::ERRNO_NOT_POSITIVE => Some("errno: did not return a positive value"),
+        Error::UNEXPECTED => Some("unexpected situation"),
+        Error::IOS_SEC_RANDOM => Some("SecRandomCopyBytes: iOS Security framework failure"),
+        Error::WINDOWS_RTL_GEN_RANDOM => Some("RtlGenRandom: Windows system function failure"),
+        Error::FAILED_RDRAND => Some("RDRAND: failed multiple times: CPU issue likely"),
+        Error::NO_RDRAND => Some("RDRAND: instruction not supported"),
+        Error::WEB_CRYPTO => Some("Web Crypto API is unavailable"),
+        Error::WEB_GET_RANDOM_VALUES => Some("Calling Web API crypto.getRandomValues failed"),
+        Error::VXWORKS_RAND_SECURE => Some("randSecure: VxWorks RNG module is not initialized"),
+        Error::NODE_CRYPTO => Some("Node.js crypto CommonJS module is unavailable"),
+        Error::NODE_RANDOM_FILL_SYNC => Some("Calling Node.js API crypto.randomFillSync failed"),
+        Error::NODE_ES_MODULE => Some("Node.js ES modules are not directly supported, see https://docs.rs/getrandom#nodejs-es-module-support"),
+        _ => None,
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::Error;
+    use core::mem::size_of;
+
+    #[test]
+    fn test_size() {
+        assert_eq!(size_of::<Error>(), 4);
+        assert_eq!(size_of::<Result<(), Error>>(), 4);
     }
 }
