@@ -10,9 +10,12 @@
 #include "base/debug/crash_logging.h"
 #include "base/functional/bind.h"
 #include "base/notreached.h"
+#include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/new_tab_page_ad_builder.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_builder.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_handler_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/new_tab_page_ads/new_tab_page_ad_event_factory.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/new_tab_page_ads/new_tab_page_ad_event_handler_util.h"
 #include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_info.h"
@@ -104,13 +107,19 @@ void NewTabPageAdEventHandler::GetAdEventsCallback(
                              mojom_ad_event_type, std::move(callback));
   }
 
+  if (IsDuplicateOfPendingAdEvent(ad, mojom_ad_event_type)) {
+    return FailedToFireEvent(ad.placement_id, ad.creative_instance_id,
+                             mojom_ad_event_type, std::move(callback));
+  }
+  TrackPendingAdEvent(ad, mojom_ad_event_type);
+
   FireEvent(ad, mojom_ad_event_type, std::move(callback));
 }
 
 void NewTabPageAdEventHandler::FireEvent(
     const NewTabPageAdInfo& ad,
     mojom::NewTabPageAdEventType mojom_ad_event_type,
-    FireNewTabPageAdEventHandlerCallback callback) const {
+    FireNewTabPageAdEventHandlerCallback callback) {
   if (mojom_ad_event_type == mojom::NewTabPageAdEventType::kClicked) {
     // `RecordAdEvent` is asynchronous. Notifying the delegate before the write
     // ensures `last_clicked_ad` is set before any page navigation commits.
@@ -128,7 +137,9 @@ void NewTabPageAdEventHandler::FireEventCallback(
     const NewTabPageAdInfo& ad,
     mojom::NewTabPageAdEventType mojom_ad_event_type,
     FireNewTabPageAdEventHandlerCallback callback,
-    bool success) const {
+    bool success) {
+  UntrackPendingAdEvent(ad, mojom_ad_event_type);
+
   if (!success) {
     SCOPED_CRASH_KEY_NUMBER("Issue50267", "event_type",
                             static_cast<int>(mojom_ad_event_type));
@@ -168,6 +179,29 @@ void NewTabPageAdEventHandler::FailedToFireEvent(
                                       mojom_ad_event_type);
 
   std::move(callback).Run(/*success=*/false, placement_id, mojom_ad_event_type);
+}
+
+bool NewTabPageAdEventHandler::IsDuplicateOfPendingAdEvent(
+    const NewTabPageAdInfo& ad,
+    mojom::NewTabPageAdEventType mojom_ad_event_type) const {
+  return ShouldDeduplicateAdEvent(ad, pending_ad_events_, mojom_ad_event_type);
+}
+
+void NewTabPageAdEventHandler::TrackPendingAdEvent(
+    const NewTabPageAdInfo& ad,
+    mojom::NewTabPageAdEventType mojom_ad_event_type) {
+  pending_ad_events_.push_back(BuildAdEvent(
+      ad, ToMojomConfirmationType(mojom_ad_event_type), base::Time::Now()));
+}
+
+void NewTabPageAdEventHandler::UntrackPendingAdEvent(
+    const NewTabPageAdInfo& ad,
+    mojom::NewTabPageAdEventType mojom_ad_event_type) {
+  std::erase_if(pending_ad_events_, [&](const auto& pending_ad_event) {
+    return pending_ad_event.placement_id == ad.placement_id &&
+           pending_ad_event.confirmation_type ==
+               ToMojomConfirmationType(mojom_ad_event_type);
+  });
 }
 
 void NewTabPageAdEventHandler::NotifyWillFireNewTabPageAdClickedEvent(
