@@ -191,10 +191,15 @@ class BraveBrowserView::BrowserWindowMouseEventHandler
     auto* widget = browser_view_->GetWidget();
     CHECK(widget && widget->GetNativeWindow());
 
-    // Use application monitor to get events when browser widget is inactive
-    // while application is active. This can happen in fullscreen and other
-    // overlay widget is focused. (ex, immersive mode on macOS)
-    monitor_ = views::EventMonitor::CreateApplicationMonitor(
+    // Use a window-scoped monitor so that mouse moves in other browser
+    // windows don't get handled here. An application-wide monitor was used
+    // previously to also get events when the browser widget is inactive
+    // while an overlay widget is focused (ex, immersive mode on macOS), but
+    // that observes mouse moves across *all* browser windows in the process,
+    // causing hover-expand (vertical tabs/sidebar) to trigger in every open
+    // window instead of just the one being hovered. See AddOverlayWidget()
+    // for how the overlay-widget case is handled instead.
+    monitor_ = views::EventMonitor::CreateWindowMonitor(
         this, widget->GetNativeWindow(), {ui::EventType::kMouseMoved});
   }
 
@@ -204,6 +209,18 @@ class BraveBrowserView::BrowserWindowMouseEventHandler
       delete;
   BrowserWindowMouseEventHandler& operator=(
       const BrowserWindowMouseEventHandler&) = delete;
+
+  // Adds a window-scoped monitor for an overlay widget belonging to this same
+  // browser window (ex, immersive-fullscreen overlay widgets on macOS), so
+  // that hover-expand keeps working while the overlay widget is focused
+  // instead of the main browser widget.
+  void AddOverlayWidget(views::Widget* overlay_widget) {
+    if (!overlay_widget || !overlay_widget->GetNativeWindow()) {
+      return;
+    }
+    overlay_monitors_.push_back(views::EventMonitor::CreateWindowMonitor(
+        this, overlay_widget->GetNativeWindow(), {ui::EventType::kMouseMoved}));
+  }
 
  private:
   // ui::EventObserver overrides:
@@ -216,6 +233,7 @@ class BraveBrowserView::BrowserWindowMouseEventHandler
 
   raw_ptr<BraveBrowserView> browser_view_ = nullptr;
   std::unique_ptr<views::EventMonitor> monitor_;
+  std::vector<std::unique_ptr<views::EventMonitor>> overlay_monitors_;
 };
 
 class BraveBrowserView::TabCyclingEventHandler : public ui::EventObserver,
@@ -802,6 +820,22 @@ void BraveBrowserView::RemovedFromWidget() {
   focus_mode_observation_.Reset();
   BrowserView::RemovedFromWidget();
 }
+
+#if BUILDFLAG(IS_MAC)
+views::View* BraveBrowserView::CreateMacOverlayView() {
+  auto* overlay_view = BrowserView::CreateMacOverlayView();
+
+  // Hover-expand (vertical tabs/sidebar) needs mouse events while the overlay
+  // widget is focused instead of this window's main widget (ex, immersive
+  // fullscreen). `browser_window_mouse_event_handler_` normally only monitors
+  // the main widget, so add the overlay widgets it created above too.
+  CHECK(browser_window_mouse_event_handler_);
+  browser_window_mouse_event_handler_->AddOverlayWidget(overlay_widget());
+  browser_window_mouse_event_handler_->AddOverlayWidget(tab_overlay_widget());
+
+  return overlay_view;
+}
+#endif
 
 bool BraveBrowserView::ShowBraveHelpBubbleView(const std::string& text) {
   if (page_info::features::IsShowBraveShieldsInPageInfoEnabled()) {
