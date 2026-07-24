@@ -1,10 +1,11 @@
 # rand_core
 
-[![Test Status](https://github.com/rust-random/rand/actions/workflows/test.yml/badge.svg?event=push)](https://github.com/rust-random/rand/actions)
+[![Test Status](https://github.com/rust-random/rand/workflows/Tests/badge.svg?event=push)](https://github.com/rust-random/rand/actions)
 [![Latest version](https://img.shields.io/crates/v/rand_core.svg)](https://crates.io/crates/rand_core)
 [![Book](https://img.shields.io/badge/book-master-yellow.svg)](https://rust-random.github.io/book/)
 [![API](https://img.shields.io/badge/api-master-yellow.svg)](https://rust-random.github.io/rand/rand_core)
 [![API](https://docs.rs/rand_core/badge.svg)](https://docs.rs/rand_core)
+[![Minimum rustc version](https://img.shields.io/badge/rustc-1.36+-lightgray.svg)](https://github.com/rust-random/rand#rust-version-requirements)
 
 Core traits and error types of the [rand] library, plus tools for implementing
 RNGs.
@@ -41,10 +42,34 @@ The traits and error types are also available via `rand`.
 ## Versions
 
 The current version is:
-
-```toml
-rand_core = "0.9.0"
 ```
+rand_core = "0.6.0"
+```
+
+Rand libs have inter-dependencies and make use of the
+[semver trick](https://github.com/dtolnay/semver-trick/) in order to make traits
+compatible across crate versions. (This is especially important for `RngCore`
+and `SeedableRng`.) A few crate releases are thus compatibility shims,
+depending on the *next* lib version (e.g. `rand_core` versions `0.2.2` and
+`0.3.1`). This means, for example, that `rand_core_0_4_0::SeedableRng` and
+`rand_core_0_3_0::SeedableRng` are distinct, incompatible traits, which can
+cause build errors. Usually, running `cargo update` is enough to fix any issues.
+
+## Crate Features
+
+`rand_core` supports `no_std` and `alloc`-only configurations, as well as full
+`std` functionality. The differences between `no_std` and full `std` are small,
+comprising `RngCore` support for `Box<R>` types where `R: RngCore`,
+`std::io::Read` support for types supporting `RngCore`, and
+extensions to the `Error` type's functionality.
+
+The `std` feature is *not enabled by default*. This is primarily to avoid build
+problems where one crate implicitly requires `rand_core` with `std` support and
+another crate requires `rand` *without* `std` support. However, the `rand` crate
+continues to enable `std` support by default, both for itself and `rand_core`.
+
+The `serde1` feature can be used to derive `Serialize` and `Deserialize` for RNG
+implementations that use the `BlockRng` or `BlockRng64` wrappers.
 
 
 # License

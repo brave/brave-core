@@ -4,37 +4,6 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.9.3] — 2025-02-29
-### Other
-- Remove `zerocopy` dependency (#1607)
-- Deprecate `rand_core::impls::fill_via_u32_chunks`, `fill_via_u64_chunks` (#1607)
-
-## [0.9.2] - 2025-02-22
-### API changes
-- Relax `Sized` bound on impls of `TryRngCore`, `TryCryptoRng` and `UnwrapMut` (#1593)
-- Add `UnwrapMut::re` to reborrow the inner rng with a tighter lifetime (#1595)
-
-## [0.9.1] - 2025-02-16
-### API changes
-- Add `TryRngCore::unwrap_mut`, providing an impl of `RngCore` over `&mut rng` (#1589)
-
-## [0.9.0] - 2025-01-27
-### Dependencies and features
-- Bump the MSRV to 1.63.0 (#1207, #1246, #1269, #1341, #1416, #1536); note that 1.60.0 may work for dependents when using `--ignore-rust-version`
-- Update to `getrandom` v0.3.0 (#1558)
-- Use `zerocopy` to replace some `unsafe` code (#1349, #1393, #1446, #1502)
-- Rename feature `serde1` to `serde` (#1477)
-- Rename feature `getrandom` to `os_rng` (#1537)
-
-### API changes
-- Allow `rand_core::impls::fill_via_u*_chunks` to mutate source (#1182)
-- Add fn `RngCore::read_adapter` implementing `std::io::Read` (#1267)
-- Add trait `CryptoBlockRng: BlockRngCore`; make `trait CryptoRng: RngCore` replacing `CryptoRngCore` (#1273)
-- Add traits `TryRngCore`, `TryCryptoRng` (#1424, #1499)
-- Rename `fn SeedableRng::from_rng` -> `try_from_rng` and add infallible variant `fn from_rng` (#1424)
-- Rename `fn SeedableRng::from_entropy` -> `from_os_rng` and add fallible variant `fn try_from_os_rng` (#1424)
-- Add bounds `Clone` and `AsRef` to associated type `SeedableRng::Seed` (#1491)
-
 ## [0.6.4] - 2022-09-15
 - Fix unsoundness in `<BlockRng64 as RngCore>::next_u32` (#1160)
 - Reduce use of `unsafe` and improve gen_bytes performance (#1180)

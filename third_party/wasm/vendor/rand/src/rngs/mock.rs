@@ -8,42 +8,27 @@
 
 //! Mock random number generator
 
-#![allow(deprecated)]
+use rand_core::{impls, Error, RngCore};
 
-use rand_core::{impls, RngCore};
+#[cfg(feature = "serde1")]
+use serde::{Serialize, Deserialize};
 
-#[cfg(feature = "serde")]
-use serde::{Deserialize, Serialize};
-
-/// A mock generator yielding very predictable output
+/// A simple implementation of `RngCore` for testing purposes.
 ///
 /// This generates an arithmetic sequence (i.e. adds a constant each step)
 /// over a `u64` number, using wrapping arithmetic. If the increment is 0
 /// the generator yields a constant.
 ///
-/// Other integer types (64-bit and smaller) are produced via cast from `u64`.
-///
-/// Other types are produced via their implementation of [`Rng`](crate::Rng) or
-/// [`Distribution`](crate::distr::Distribution).
-/// Output values may not be intuitive and may change in future releases but
-/// are considered
-/// [portable](https://rust-random.github.io/book/portability.html).
-/// (`bool` output is true when bit `1u64 << 31` is set.)
-///
-/// # Example
-///
 /// ```
-/// # #![allow(deprecated)]
 /// use rand::Rng;
 /// use rand::rngs::mock::StepRng;
 ///
 /// let mut my_rng = StepRng::new(2, 1);
-/// let sample: [u64; 3] = my_rng.random();
+/// let sample: [u64; 3] = my_rng.gen();
 /// assert_eq!(sample, [2, 3, 4]);
 /// ```
 #[derive(Debug, Clone, PartialEq, Eq)]
-#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
-#[deprecated(since = "0.9.2", note = "Deprecated without replacement")]
+#[cfg_attr(feature = "serde1", derive(Serialize, Deserialize))]
 pub struct StepRng {
     v: u64,
     a: u64,
@@ -68,13 +53,35 @@ impl RngCore for StepRng {
 
     #[inline]
     fn next_u64(&mut self) -> u64 {
-        let res = self.v;
+        let result = self.v;
         self.v = self.v.wrapping_add(self.a);
-        res
+        result
     }
 
     #[inline]
-    fn fill_bytes(&mut self, dst: &mut [u8]) {
-        impls::fill_bytes_via_next(self, dst)
+    fn fill_bytes(&mut self, dest: &mut [u8]) {
+        impls::fill_bytes_via_next(self, dest);
+    }
+
+    #[inline]
+    fn try_fill_bytes(&mut self, dest: &mut [u8]) -> Result<(), Error> {
+        self.fill_bytes(dest);
+        Ok(())
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    #[test]
+    #[cfg(feature = "serde1")]
+    fn test_serialization_step_rng() {
+        use super::StepRng;
+
+        let some_rng = StepRng::new(42, 7);
+        let de_some_rng: StepRng =
+            bincode::deserialize(&bincode::serialize(&some_rng).unwrap()).unwrap();
+        assert_eq!(some_rng.v, de_some_rng.v);
+        assert_eq!(some_rng.a, de_some_rng.a);
+
     }
 }
