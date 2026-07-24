@@ -7,25 +7,30 @@
 
 #include <memory>
 #include <string>
+#include <utility>
 #include <vector>
 
-#include "base/command_line.h"
-#include "base/strings/string_util.h"
-#include "base/test/bind.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
+#include "base/test/values_test_util.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
-#include "services/network/public/cpp/resource_request.h"
-#include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
-#include "services/network/test/test_url_loader_factory.h"
+#include "brave/components/api_request_helper/api_request_helper.h"
+#include "brave/components/api_request_helper/mock_api_request_helper.h"
+#include "net/http/http_status_code.h"
+#include "net/traffic_annotation/network_traffic_annotation_test_helper.h"
+#include "services/network/public/cpp/shared_url_loader_factory.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "url/gurl.h"
+
+using api_request_helper::MockAPIRequestHelper;
+using ResultCallback = api_request_helper::APIRequestHelper::ResultCallback;
+using Ticket = api_request_helper::APIRequestHelper::Ticket;
+using ::testing::_;
 
 namespace ai_chat {
 
 namespace {
-
-constexpr char kTestServerUrl[] = "https://example.com";
-constexpr char kTestEndpoint[] = "https://example.com/v1/models";
 
 constexpr char kValidModelsJSON[] = R"([
     {
@@ -74,8 +79,6 @@ constexpr char kValidModelsJSON[] = R"([
       }
     }
   ])";
-
-constexpr char kInvalidJSON[] = "{ invalid json";
 
 constexpr char kMissingKeyJSON[] = R"([
     {
@@ -151,61 +154,76 @@ constexpr char kMissingAccessJSON[] = R"([
 
 class RemoteModelsFetcherTest : public testing::Test {
  public:
-  RemoteModelsFetcherTest()
-      : shared_url_loader_factory_(
-            base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
-                &test_url_loader_factory_)) {}
-
   void SetUp() override {
-    base::CommandLine::ForCurrentProcess()->AppendSwitchASCII(
-        "ai-chat-server-url", kTestServerUrl);
-    fetcher_ =
-        std::make_unique<RemoteModelsFetcher>(shared_url_loader_factory_);
+    fetcher_ = std::make_unique<RemoteModelsFetcher>(nullptr);
+    auto mock_helper =
+        std::make_unique<testing::NiceMock<MockAPIRequestHelper>>(
+            TRAFFIC_ANNOTATION_FOR_TESTS, nullptr);
+    fetcher_->SetAPIRequestHelperForTesting(std::move(mock_helper));
   }
 
   void TearDown() override { fetcher_.reset(); }
 
  protected:
-  void SimulateSuccessfulFetch(const std::string& json_response,
-                               const std::string& base_url = kTestEndpoint) {
-    test_url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
-        [this, json_response,
-         base_url](const network::ResourceRequest& request) {
-          if (base::StartsWith(request.url.spec(), base_url)) {
-            test_url_loader_factory_.AddResponse(request.url.spec(),
-                                                 json_response);
-          } else {
-            ADD_FAILURE() << "Unexpected request: " << request.url.spec();
-          }
-        }));
+  MockAPIRequestHelper* GetMockAPIRequestHelper() {
+    return static_cast<MockAPIRequestHelper*>(
+        fetcher_->GetAPIRequestHelperForTesting());
   }
 
-  void SimulateHTTPError(int http_code,
-                         const std::string& base_url = kTestEndpoint) {
-    test_url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
-        [this, http_code, base_url](const network::ResourceRequest& request) {
-          if (base::StartsWith(request.url.spec(), base_url)) {
-            test_url_loader_factory_.AddResponse(
-                request.url.spec(), "",
-                static_cast<net::HttpStatusCode>(http_code));
-          } else {
-            ADD_FAILURE() << "Unexpected request: " << request.url.spec();
-          }
-        }));
+  // Simulates a successful HTTP fetch whose body is |json_response|.
+  void SimulateSuccessfulFetch(const std::string& json_response) {
+    EXPECT_CALL(*GetMockAPIRequestHelper(), Request(_, _, _, _, _, _, _, _))
+        .WillOnce(
+            [json_response](
+                const std::string& method, const GURL& url,
+                const std::string& body, const std::string& content_type,
+                ResultCallback result_callback,
+                const base::flat_map<std::string, std::string>& headers,
+                const api_request_helper::APIRequestOptions& options,
+                api_request_helper::APIRequestHelper::ResponseConversionCallback
+                    conversion_callback) {
+              std::move(result_callback)
+                  .Run(api_request_helper::APIRequestResult(
+                      net::HTTP_OK, base::test::ParseJson(json_response), {},
+                      net::OK, GURL()));
+              return Ticket();
+            });
   }
 
-  void SimulateNetworkError(const std::string& base_url = kTestEndpoint) {
-    test_url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
-        [this, base_url](const network::ResourceRequest& request) {
-          if (base::StartsWith(request.url.spec(), base_url)) {
-            test_url_loader_factory_.AddResponse(
-                request.url, network::mojom::URLResponseHead::New(), "",
-                network::URLLoaderCompletionStatus(
-                    net::ERR_CONNECTION_REFUSED));
-          } else {
-            ADD_FAILURE() << "Unexpected request: " << request.url.spec();
-          }
-        }));
+  void SimulateHTTPError(int http_code) {
+    EXPECT_CALL(*GetMockAPIRequestHelper(), Request(_, _, _, _, _, _, _, _))
+        .WillOnce(
+            [http_code](
+                const std::string& method, const GURL& url,
+                const std::string& body, const std::string& content_type,
+                ResultCallback result_callback,
+                const base::flat_map<std::string, std::string>& headers,
+                const api_request_helper::APIRequestOptions& options,
+                api_request_helper::APIRequestHelper::ResponseConversionCallback
+                    conversion_callback) {
+              std::move(result_callback)
+                  .Run(api_request_helper::APIRequestResult(
+                      http_code, base::Value(), {}, net::OK, GURL()));
+              return Ticket();
+            });
+  }
+
+  void SimulateNetworkError() {
+    EXPECT_CALL(*GetMockAPIRequestHelper(), Request(_, _, _, _, _, _, _, _))
+        .WillOnce(
+            [](const std::string& method, const GURL& url,
+               const std::string& body, const std::string& content_type,
+               ResultCallback result_callback,
+               const base::flat_map<std::string, std::string>& headers,
+               const api_request_helper::APIRequestOptions& options,
+               api_request_helper::APIRequestHelper::ResponseConversionCallback
+                   conversion_callback) {
+              std::move(result_callback)
+                  .Run(api_request_helper::APIRequestResult(
+                      -1, base::Value(), {}, net::ERR_CONNECTION_REFUSED,
+                      GURL()));
+              return Ticket();
+            });
   }
 
   void ExpectEmptyResult(const std::string& json) {
@@ -216,8 +234,6 @@ class RemoteModelsFetcherTest : public testing::Test {
   }
 
   base::test::TaskEnvironment task_environment_;
-  network::TestURLLoaderFactory test_url_loader_factory_;
-  scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   std::unique_ptr<RemoteModelsFetcher> fetcher_;
 };
 
@@ -300,7 +316,23 @@ TEST_F(RemoteModelsFetcherTest, NetworkError) {
 }
 
 TEST_F(RemoteModelsFetcherTest, InvalidJSON) {
-  SimulateSuccessfulFetch(kInvalidJSON);
+  // APIRequestHelper leaves value_body() as a default (NONE-type) Value when
+  // the response body fails to parse as JSON, while still reporting a 2XX
+  // response code.
+  EXPECT_CALL(*GetMockAPIRequestHelper(), Request(_, _, _, _, _, _, _, _))
+      .WillOnce(
+          [](const std::string& method, const GURL& url,
+             const std::string& body, const std::string& content_type,
+             ResultCallback result_callback,
+             const base::flat_map<std::string, std::string>& headers,
+             const api_request_helper::APIRequestOptions& options,
+             api_request_helper::APIRequestHelper::ResponseConversionCallback
+                 conversion_callback) {
+            std::move(result_callback)
+                .Run(api_request_helper::APIRequestResult(
+                    net::HTTP_OK, base::Value(), {}, net::OK, GURL()));
+            return Ticket();
+          });
 
   base::test::TestFuture<std::vector<mojom::ModelPtr>> future;
   fetcher_->FetchModels(future.GetCallback());
