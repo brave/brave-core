@@ -8,14 +8,16 @@
 
 #include <memory>
 
+#include "base/memory/raw_ptr.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/gfx/geometry/rounded_corners_f.h"
 #include "ui/views/controls/webview/webview.h"
 
 namespace content {
-class BrowserContext;
 class WebContents;
 }  // namespace content
+
+class BrowserWindowInterface;
 
 class ReaderModeToolbarView : public views::View {
   METADATA_HEADER(ReaderModeToolbarView, views::View)
@@ -25,7 +27,7 @@ class ReaderModeToolbarView : public views::View {
     virtual void OnReaderModeToolbarActivate(ReaderModeToolbarView* toolbar) {}
   };
 
-  explicit ReaderModeToolbarView(content::BrowserContext* browser_context);
+  explicit ReaderModeToolbarView(BrowserWindowInterface* browser);
   ~ReaderModeToolbarView() override;
 
   ReaderModeToolbarView(const ReaderModeToolbarView&) = delete;
@@ -58,6 +60,7 @@ class ReaderModeToolbarView : public views::View {
   gfx::RoundedCornersF rounded_corners_;
   std::unique_ptr<views::WebView> toolbar_;
   std::unique_ptr<content::WebContents> toolbar_contents_;
+  raw_ptr<BrowserWindowInterface> browser_ = nullptr;
   raw_ptr<Delegate> delegate_ = nullptr;
 };
 

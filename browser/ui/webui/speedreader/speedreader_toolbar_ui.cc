@@ -15,10 +15,9 @@
 #include "brave/components/speedreader/resources/panel/grit/brave_speedreader_toolbar_generated_map.h"
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
-#include "chrome/browser/ui/browser_window/public/profile_browser_collection.h"
 #include "chrome/browser/ui/prefs/prefs_tab_helper.h"
 #include "chrome/browser/ui/webui/theme_source.h"
+#include "chrome/browser/ui/webui/webui_embedding_context.h"
 #include "components/grit/brave_components_resources.h"
 #include "content/public/browser/host_zoom_map.h"
 #include "content/public/browser/url_data_source.h"
@@ -37,11 +36,6 @@ SpeedreaderToolbarUI::SpeedreaderToolbarUI(content::WebUI* web_ui)
   content::HostZoomMap::Get(web_ui->GetWebContents()->GetSiteInstance())
       ->SetZoomLevelForHostAndScheme(content::kChromeUIScheme,
                                      kSpeedreaderPanelHost, 0);
-
-  if (auto* bwi = ProfileBrowserCollection::GetForProfile(profile_)
-                      ->GetLastActiveBrowser()) {
-    browser_ = bwi->GetBrowserForMigrationOnly();
-  }
 
   content::WebUIDataSource* source = CreateAndAddWebUIDataSource(
       web_ui, kSpeedreaderPanelHost, kBraveSpeedreaderToolbarGenerated,
@@ -86,9 +80,12 @@ void SpeedreaderToolbarUI::CreateInterfaces(
         toolbar_data_handler,
     mojo::PendingRemote<speedreader::mojom::ToolbarEventsHandler>
         toolbar_events_handler) {
-  toolbar_data_handler_ = std::make_unique<SpeedreaderToolbarDataHandlerImpl>(
-      browser_, std::move(toolbar_data_handler),
-      std::move(toolbar_events_handler));
+  if (auto* browser =
+          webui::GetBrowserWindowInterface(web_ui()->GetWebContents())) {
+    toolbar_data_handler_ = std::make_unique<SpeedreaderToolbarDataHandlerImpl>(
+        browser, std::move(toolbar_data_handler),
+        std::move(toolbar_events_handler));
+  }
 }
 
 SpeedreaderToolbarUIConfig::SpeedreaderToolbarUIConfig()

@@ -68,6 +68,7 @@ class BraveBrowser;
 class BraveShieldsToolbarButton;
 class BraveHelpBubbleHostView;
 class BraveMultiContentsView;
+class BrowserWindowInterface;
 class ContentsLayoutManager;
 class FocusModeTitleBarView;
 class FocusModeTopOverlay;
@@ -96,7 +97,7 @@ class BraveBrowserView : public BrowserView,
   // We use rounded corners even rounded corners setting is disabled.
   // Call this when we want to know
   static bool ShouldUseBraveWebViewRoundedCornersForContents(
-      const Browser* browser);
+      const BrowserWindowInterface* browser);
 
   void SetStarredState(bool is_starred) override;
   void ShowUpdateChromeDialog() override;
