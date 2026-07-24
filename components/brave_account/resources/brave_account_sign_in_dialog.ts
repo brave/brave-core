@@ -51,13 +51,13 @@ export class BraveAccountSignInDialogElement extends CrLitElement {
   // protocol in our WASM (compiled from Rust), and so the flow must run in the
   // renderer to manage the transient cryptographic state — the service only
   // transports the two server round trips
-  // (`loginInitialize`/`loginFinalize`). We'll revisit handling this
+  // (`loginStep1`/`loginStep2`). We'll revisit handling this
   // through Mojo in C++ if that proves practical.
   protected async onSignInButtonClicked() {
     try {
       const serializedKE1 = this.login.start(this.password)
       const { encryptedLoginToken, serializedKE2 } =
-        await this.browserProxy.authentication.loginInitialize(
+        await this.browserProxy.authentication.loginStep1(
           this.browserProxy.getInitiatingService(),
           this.email,
           serializedKE1,
@@ -67,7 +67,7 @@ export class BraveAccountSignInDialogElement extends CrLitElement {
         this.password,
         this.email,
       )
-      await this.browserProxy.authentication.loginFinalize(
+      await this.browserProxy.authentication.loginStep2(
         encryptedLoginToken,
         clientMac,
       )

@@ -176,14 +176,16 @@ class StateBase : public mojom::Authentication {
 
  private:
   // Flow helpers, each owned by one state and implementing that state's
-  // flow overrides on its owner's behalf: `Register` and `ResetPassword` owned
-  // by `LoggedOutState` (the `Register*` and `ResetPassword*` overrides),
-  // `ChangePassword` owned by `LoggedInState` (the `ChangePassword*`
-  // overrides). They are friended on `StateBase` (not on the owning state)
-  // because the plumbing they borrow through their back-reference - request
-  // lifetime (`in_flight_`, `SendStateOwnedRequest()`), crypto, and
-  // `account_state_prefs_` - is bound to `StateBase` and can't move out.
+  // flow overrides on its owner's behalf: `Login`, `Register`, and
+  // `ResetPassword` owned by `LoggedOutState` (the `LoginStep*`, `Register*`,
+  // and `ResetPassword*` overrides), `ChangePassword` owned by `LoggedInState`
+  // (the `ChangePassword*` overrides). They are friended on `StateBase` (not
+  // on the owning state) because the plumbing they borrow through their
+  // back-reference - request lifetime (`in_flight_`,
+  // `SendStateOwnedRequest()`), crypto, and `account_state_prefs_` - is bound
+  // to `StateBase` and can't move out.
   friend class ChangePassword;
+  friend class Login;
   friend class Register;
   friend class ResetPassword;
 
@@ -226,14 +228,14 @@ class StateBase : public mojom::Authentication {
       const std::string& email,
       ResetPasswordPasswordFinalizeCallback callback) override;
 
-  void LoginInitialize(mojom::Service initiating_service,
-                       const std::string& email,
-                       const std::string& serialized_ke1,
-                       LoginInitializeCallback callback) override;
+  void LoginStep1(mojom::Service initiating_service,
+                  const std::string& email,
+                  const std::string& serialized_ke1,
+                  LoginStep1Callback callback) override;
 
-  void LoginFinalize(const std::string& encrypted_login_token,
-                     const std::string& client_mac,
-                     LoginFinalizeCallback callback) override;
+  void LoginStep2(const std::string& encrypted_login_token,
+                  const std::string& client_mac,
+                  LoginStep2Callback callback) override;
 
   void ChangePasswordVerifyInit(
       const std::string& email,
