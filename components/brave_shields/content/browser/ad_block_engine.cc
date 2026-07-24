@@ -139,7 +139,6 @@ std::optional<std::string> AdBlockEngine::GetCspDirectives(
   bool is_third_party = !SameDomainOrHost(
       url, url::Origin::CreateFromNormalizedTuple("https", tab_host, 80),
       INCLUDE_PRIVATE_REGISTRIES);
-
   auto result = ad_block_client_->get_csp_directives(
       url.spec(), std::string(url.host()), tab_host,
       ResourceTypeToString(resource_type), is_third_party, method);
