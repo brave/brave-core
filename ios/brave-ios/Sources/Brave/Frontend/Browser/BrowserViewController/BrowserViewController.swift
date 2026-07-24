@@ -1423,9 +1423,18 @@ public class BrowserViewController: UIViewController {
           clearRecentSearchAlertDismissed = true
         }
 
+        // When the keyboard belongs to the browser (URL bar editing, or the collapsed keyboard
+        // mini-bar shown for web content / find-in-page), keep the bottom bar pinned above the
+        // keyboard even while an unrelated modal is presented (e.g. a download prompt or external
+        // app alert). Otherwise the bar drops back down underneath the keyboard and doesn't
+        // recover once the modal is dismissed.
+        let isBrowserKeyboardActive =
+          topToolbar.inOverlayMode || !toolbarVisibilityViewModel.isEnabled
+
         shouldEvaluateKeyboardConstraints =
           (activeKeyboardHeight > 0)
-          && (presentedViewController == nil
+          && (isBrowserKeyboardActive
+            || presentedViewController == nil
             || searchEngineSettingsDismissed
             || clearRecentSearchAlertDismissed
             || presentedViewController is TabGridHostingController)
