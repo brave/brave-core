@@ -51,6 +51,8 @@ public class PrivateTabSystemUiModeChangeTest {
     private static final String BATTERY_SAVER_MODE_SETTING = "settings get global low_power";
     private static final String BATTERY_SAVER_MODE_ENABLED = "1";
     private static final String BATTERY_SAVER_MODE_DISABLED = "0";
+    private static final String BATTERY_UNPLUG_COMMAND = "cmd battery unplug";
+    private static final String BATTERY_RESET_COMMAND = "cmd battery reset";
     private static final String UI_MODE_DUMP_COMMAND = "dumpsys uimode";
     private static final String CURRENT_UI_MODE_PREFIX = "mCurUiMode=0x";
 
@@ -61,6 +63,7 @@ public class PrivateTabSystemUiModeChangeTest {
     private UiDevice mDevice;
     private String mInitialNightMode;
     private String mInitialBatterySaverMode;
+    private boolean mBatteryUnpluggedForTest;
 
     @Before
     public void setUp() throws IOException {
@@ -75,15 +78,23 @@ public class PrivateTabSystemUiModeChangeTest {
 
     @After
     public void tearDown() throws IOException {
+        // Restore Battery Saver before resetting simulated battery state: Android rejects enabling it
+        // while the device reports external power.
         try {
             if (mInitialBatterySaverMode != null
                     && !getBatterySaverMode().equals(mInitialBatterySaverMode)) {
                 setBatterySaverMode(mInitialBatterySaverMode);
             }
         } finally {
-            // Restore night mode even if battery-saver restoration fails.
-            if (mInitialNightMode != null && !getNightMode().equals(mInitialNightMode)) {
-                setNightMode(mInitialNightMode);
+            try {
+                if (mBatteryUnpluggedForTest) {
+                    mDevice.executeShellCommand(BATTERY_RESET_COMMAND);
+                }
+            } finally {
+                // Restore night mode even if Battery Saver or battery-state restoration fails.
+                if (mInitialNightMode != null && !getNightMode().equals(mInitialNightMode)) {
+                    setNightMode(mInitialNightMode);
+                }
             }
         }
     }
@@ -103,6 +114,10 @@ public class PrivateTabSystemUiModeChangeTest {
     @Test
     @MediumTest
     public void testPrivateTabDoesNotCrashAfterBatterySaverModeChange() throws IOException {
+        // Battery Saver cannot be enabled while the device reports external power.
+        mDevice.executeShellCommand(BATTERY_UNPLUG_COMMAND);
+        mBatteryUnpluggedForTest = true;
+
         recreateActivityForBatterySaverMode(BATTERY_SAVER_MODE_ENABLED);
         // The real system configuration change triggers the activity recreation under test.
         assertTrue(
