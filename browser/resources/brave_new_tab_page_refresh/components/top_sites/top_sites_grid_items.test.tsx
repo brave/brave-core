@@ -149,9 +149,10 @@ describe('useTopSitesGridItems', () => {
   it('should place sponsored sites ahead of top sites, each carrying its original index', () => {
     const topSiteA = createTopSite('https://foo.com')
     const topSiteB = createTopSite('https://qux.com')
+    const topSiteC = createTopSite('https://baz.com')
     const sponsoredSite = createSponsoredSite('https://baz.com')
     const store = createStore({
-      topSites: [topSiteA, topSiteB],
+      topSites: [topSiteA, topSiteB, topSiteC],
       sponsoredSites: [sponsoredSite],
     })
 
@@ -165,6 +166,58 @@ describe('useTopSitesGridItems', () => {
       { type: 'top-site', site: topSiteA, index: 0 },
       { type: 'top-site', site: topSiteB, index: 1 },
     ])
+  })
+
+  it('should show only the sponsored sites that match a top site when there are multiple', () => {
+    const matchedTopSite = createTopSite('https://bar.com')
+    const relevantSponsoredSite = createSponsoredSite('https://bar.com')
+    const irrelevantSponsoredSite = createSponsoredSite('https://foo.com')
+    const store = createStore({
+      topSites: [matchedTopSite],
+      sponsoredSites: [relevantSponsoredSite, irrelevantSponsoredSite],
+    })
+
+    const { result } = renderHook(
+      () => useTopSitesGridItems({ canAddSite: false }),
+      { wrapper: createWrapper(store) },
+    )
+
+    expect(result.current).toEqual([
+      { type: 'sponsored-site', site: relevantSponsoredSite },
+    ])
+  })
+
+  it('should not show a sponsored site with an unparsable target URL', () => {
+    const topSite = createTopSite('https://bar.com')
+    const sponsoredSite = createSponsoredSite('not-a-url')
+    const store = createStore({
+      topSites: [topSite],
+      sponsoredSites: [sponsoredSite],
+    })
+
+    const { result } = renderHook(
+      () => useTopSitesGridItems({ canAddSite: false }),
+      { wrapper: createWrapper(store) },
+    )
+
+    expect(result.current).toEqual([
+      { type: 'top-site', site: topSite, index: 0 },
+    ])
+  })
+
+  it('should not show any sponsored sites when there are no top sites at all', () => {
+    const sponsoredSite = createSponsoredSite('https://baz.com')
+    const store = createStore({
+      topSites: [],
+      sponsoredSites: [sponsoredSite],
+    })
+
+    const { result } = renderHook(
+      () => useTopSitesGridItems({ canAddSite: false }),
+      { wrapper: createWrapper(store) },
+    )
+
+    expect(result.current).toEqual([])
   })
 
   it('should omit a top site deduplicated against a sponsored site, preserving remaining indices', () => {
