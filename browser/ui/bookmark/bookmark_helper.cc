@@ -12,6 +12,8 @@
 
 namespace brave {
 
+namespace {
+
 BookmarkBarState GetBookmarkBarState(PrefService* prefs) {
   // kShowBookmarkBar has higher priority and the bookmark bar is shown always.
   if (prefs->GetBoolean(bookmarks::prefs::kShowBookmarkBar))
@@ -25,7 +27,9 @@ BookmarkBarState GetBookmarkBarState(PrefService* prefs) {
   return BookmarkBarState::kNever;
 }
 
-void SetBookmarkState(BookmarkBarState state, PrefService* prefs) {
+}  // namespace
+
+void SetBookmarkStateForTesting(BookmarkBarState state, PrefService* prefs) {
   if (state == BookmarkBarState::kAlways) {
     prefs->SetBoolean(bookmarks::prefs::kShowBookmarkBar, true);
     prefs->SetBoolean(bookmarks::prefs::kAlwaysShowBookmarkBarOnNTP, false);
