@@ -47,6 +47,16 @@ enum {
   kProfileContentSettingsPartitionedExceptionsFingerprintingV2 = 300027,
   kProfileContentSettingsPartitionedExceptionsBraveShields = 300028,
   kProfileContentSettingsPartitionedExceptionsBraveSpeedreader = 300029,
+  // Brave News prefs (mirrors
+  // brave/components/brave_news/common/pref_names.h). Synced as part of the
+  // "Settings" (PREFERENCES) sync type.
+  kBraveNewsShouldShowToolbarButton = 300030,
+  kBraveNewsNewTabPageShowToday = 300031,
+  kBraveNewsOptedIn = 300032,
+  kBraveNewsSources = 300033,
+  kBraveNewsChannels = 300034,
+  kBraveNewsDirectFeeds = 300035,
+  kBraveNewsOpenArticlesInNewTab = 300036,
 };
 }  // namespace brave_syncable_prefs_ids
 
@@ -197,6 +207,42 @@ const auto& BraveSyncablePreferences() {
             kProfileContentSettingsPartitionedExceptionsTrackers,
         syncer::PREFERENCES, sync_preferences::PrefSensitivity::kNone,
         sync_preferences::MergeBehavior::kMergeableDict}},
+      // Brave News prefs (mirrors
+      // brave/components/brave_news/common/pref_names.h).
+      {"brave.today.should_show_toolbar_button",
+       {brave_syncable_prefs_ids::kBraveNewsShouldShowToolbarButton,
+        syncer::PREFERENCES, sync_preferences::PrefSensitivity::kNone,
+        sync_preferences::MergeBehavior::kNone}},
+      {"brave.new_tab_page.show_brave_news",
+       {brave_syncable_prefs_ids::kBraveNewsNewTabPageShowToday,
+        syncer::PREFERENCES, sync_preferences::PrefSensitivity::kNone,
+        sync_preferences::MergeBehavior::kNone}},
+      {"brave.today.opted_in",
+       {brave_syncable_prefs_ids::kBraveNewsOptedIn, syncer::PREFERENCES,
+        sync_preferences::PrefSensitivity::kNone,
+        sync_preferences::MergeBehavior::kNone}},
+      // These dicts hold mutable subscription state (toggles and removals), not
+      // just additions. A per-key union merge (kMergeableDict) is additive and
+      // resolves conflicts in favor of the account value, so toggles get
+      // reverted and removals get resurrected at sync association. kNone gives
+      // whole-dict last-writer-wins, so adds, removals and toggles all
+      // propagate.
+      {"brave.today.sources",
+       {brave_syncable_prefs_ids::kBraveNewsSources, syncer::PREFERENCES,
+        sync_preferences::PrefSensitivity::kNone,
+        sync_preferences::MergeBehavior::kNone}},
+      {"brave.news.channels",
+       {brave_syncable_prefs_ids::kBraveNewsChannels, syncer::PREFERENCES,
+        sync_preferences::PrefSensitivity::kNone,
+        sync_preferences::MergeBehavior::kNone}},
+      {"brave.today.userfeeds",
+       {brave_syncable_prefs_ids::kBraveNewsDirectFeeds, syncer::PREFERENCES,
+        sync_preferences::PrefSensitivity::kNone,
+        sync_preferences::MergeBehavior::kNone}},
+      {"brave.news.open-articles-in-new-tab",
+       {brave_syncable_prefs_ids::kBraveNewsOpenArticlesInNewTab,
+        syncer::PREFERENCES, sync_preferences::PrefSensitivity::kNone,
+        sync_preferences::MergeBehavior::kNone}},
   });
   return kBraveSyncablePrefsAllowList;
 }
