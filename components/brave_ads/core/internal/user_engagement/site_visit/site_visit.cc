@@ -348,6 +348,11 @@ void SiteVisit::OnTabDidFailToLoad(const TabInfo& tab) {
     return;
   }
 
+  if (IsLandingOnPage(tab.id)) {
+    // Already landing on the page.
+    return;
+  }
+
   DidNotLandOnPage(tab.id, *ad);
 }
 

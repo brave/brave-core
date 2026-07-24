@@ -811,6 +811,36 @@ TEST_F(BraveAdsSiteVisitTest,
   FastForwardClockBy(kPageLandAfter.Get());
 }
 
+TEST_F(
+    BraveAdsSiteVisitTest,
+    DoNotNotifyDidNotLandOnPageIfAlreadyLandingWhenAnotherNavigationFailsToLoad) {
+  // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(kSiteVisitFeature);
+
+  const AdInfo ad_1 = test::BuildAd(mojom::AdType::kNotificationAd,
+                                    /*use_random_uuids=*/true);
+  EXPECT_CALL(site_visit_observer_mock_,
+              OnMaybeLandOnPage(ad_1, /*after=*/kPageLandAfter.Get()));
+  SimulateClickingAd(ad_1, /*tab_id=*/1,
+                     /*redirect_chain=*/{GURL("https://brave.com")},
+                     net::HTTP_OK);
+  ASSERT_EQ(1U, GetPendingTaskCount());
+
+  const AdInfo ad_2 = test::BuildAd(mojom::AdType::kNotificationAd,
+                                    /*use_random_uuids=*/true);
+  site_visit_->set_last_clicked_ad(ad_2);
+
+  // Act
+  EXPECT_CALL(site_visit_observer_mock_, OnDidNotLandOnPage).Times(0);
+  tab_helper_.FailToLoadUrl(/*tab_id=*/1,
+                            /*redirect_chain=*/{GURL("https://brave.com")});
+
+  // Assert
+  EXPECT_CALL(site_visit_observer_mock_,
+              OnDidLandOnPage(/*tab_id=*/1, net::HTTP_OK, ad_1));
+  FastForwardClockBy(kPageLandAfter.Get());
+}
+
 TEST_F(BraveAdsSiteVisitTest,
        PageLandIsNotRecordedWhenNavigationCommitsBeforeLastClickedAdIsSet) {
   // Arrange
