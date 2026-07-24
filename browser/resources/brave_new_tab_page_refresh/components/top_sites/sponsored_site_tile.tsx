@@ -15,6 +15,9 @@ import { formatString } from '$web-common/formatString'
 import { getString } from '../../lib/strings'
 import { Link } from '../common/link'
 
+const tooltipHideDelay = 0
+const tooltipShowDelay = 200
+
 interface Props {
   site: SponsoredSite
   onContextMenu: (event: React.MouseEvent) => void
@@ -28,6 +31,8 @@ export function SponsoredSitesTile(props: Props) {
       mode='default'
       placement='bottom'
       positionStrategy='fixed'
+      mouseleaveTimeout={tooltipHideDelay}
+      mouseenterDelay={tooltipShowDelay}
     >
       <a
         className='top-site-tile'

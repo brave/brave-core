@@ -22,6 +22,14 @@ function getTileLink() {
   return document.querySelector<HTMLAnchorElement>('a.top-site-tile')!
 }
 
+// The Leo tooltip web component receives its props as plain JS properties
+// set directly on the element, not as HTML attributes.
+function getTooltipElement() {
+  return document.querySelector('leo-tooltip') as
+    | (HTMLElement & { mouseenterDelay?: number; mouseleaveTimeout?: number })
+    | null
+}
+
 function createSite(overrides: Partial<SponsoredSite> = {}): SponsoredSite {
   return {
     relativeImageUrl: 'chrome://branded-wallpaper/sponsored-images/foo',
@@ -86,6 +94,26 @@ describe('SponsoredSitesTile', () => {
       expect(getTileLink()).toHaveAttribute('href', expectedHref)
     },
   )
+
+  it('should open its tooltip on a delay rather than immediately on hover', () => {
+    render(
+      <SponsoredSitesTile
+        site={createSite()}
+        onContextMenu={() => {}}
+      />,
+    )
+    expect(getTooltipElement()?.mouseenterDelay).toBe(200)
+  })
+
+  it('should close its tooltip immediately when the pointer leaves', () => {
+    render(
+      <SponsoredSitesTile
+        site={createSite()}
+        onContextMenu={() => {}}
+      />,
+    )
+    expect(getTooltipElement()?.mouseleaveTimeout).toBe(0)
+  })
 
   it('should not be draggable', () => {
     render(
