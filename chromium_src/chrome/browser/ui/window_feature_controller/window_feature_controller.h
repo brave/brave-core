@@ -18,7 +18,7 @@
   bool UsesImmersiveFullscreenTabbedMode_ChromiumImpl() const; \
                                                                \
  private:                                                      \
-  mutable std::optional<bool> vertical_tabs_on_at_startup_;    \
+  mutable std::optional<bool> disabled_at_startup_;            \
                                                                \
  public:                                                       \
   bool UsesImmersiveFullscreenMode

@@ -25,6 +25,7 @@
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/sidebar/browser/sidebar_service.h"
 #include "build/build_config.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/infobars/confirm_infobar_creator.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_commands.h"
@@ -933,6 +934,37 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest,
   brave::ToggleVerticalTabStrip(browser_with_vertical_at_startup);
   view_with_vertical_at_startup->DeprecatedLayoutImmediately();
   EXPECT_FALSE(WindowFeatureController::From(browser_with_vertical_at_startup)
+                   ->UsesImmersiveFullscreenMode());
+}
+
+// Immersive fullscreen: same as ImmersiveModeAndVerticalTabsAtStartup above,
+// but for compact mode. Compact mode is a local-state pref, so toggling it
+// affects every window, but each window's startup snapshot
+// (disabled_at_startup_) is only captured on that window's first
+// UsesImmersiveFullscreenMode() call.
+IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest,
+                       ImmersiveModeAndCompactModeAtStartup) {
+  auto* local_state = g_browser_process->local_state();
+
+  // Default browser: compact mode off at startup.
+  ASSERT_FALSE(local_state->GetBoolean(brave_tabs::kCompactHorizontalTabs));
+  EXPECT_TRUE(
+      WindowFeatureController::From(browser())->UsesImmersiveFullscreenMode());
+  local_state->SetBoolean(brave_tabs::kCompactHorizontalTabs, true);
+  EXPECT_FALSE(
+      WindowFeatureController::From(browser())->UsesImmersiveFullscreenMode());
+  local_state->SetBoolean(brave_tabs::kCompactHorizontalTabs, false);
+  EXPECT_TRUE(
+      WindowFeatureController::From(browser())->UsesImmersiveFullscreenMode());
+
+  // Second window: compact mode on at startup.
+  local_state->SetBoolean(brave_tabs::kCompactHorizontalTabs, true);
+  Browser* browser_with_compact_at_startup =
+      CreateBrowser(browser()->profile());
+  EXPECT_FALSE(WindowFeatureController::From(browser_with_compact_at_startup)
+                   ->UsesImmersiveFullscreenMode());
+  local_state->SetBoolean(brave_tabs::kCompactHorizontalTabs, false);
+  EXPECT_FALSE(WindowFeatureController::From(browser_with_compact_at_startup)
                    ->UsesImmersiveFullscreenMode());
 }
 
