@@ -31,18 +31,21 @@ class BraveAdsNotificationAdServingTest : public test::TestBase {
     ads_client_notifier_.NotifyBrowserDidBecomeActive();
 
     ads_client_notifier_.NotifyDidInitializeAds();
+
+    subdivision_targeting_ = std::make_unique<SubdivisionTargeting>();
+    anti_targeting_resource_ = std::make_unique<AntiTargetingResource>();
   }
 
   void MaybeServeAd() {
-    SubdivisionTargeting subdivision_targeting;
-    AntiTargetingResource anti_targeting_resource;
     ad_serving_ = std::make_unique<NotificationAdServing>(
-        subdivision_targeting, anti_targeting_resource);
+        *subdivision_targeting_, *anti_targeting_resource_);
     ad_serving_->SetDelegate(&delegate_mock_);
 
     ad_serving_->MaybeServeAd();
   }
 
+  std::unique_ptr<SubdivisionTargeting> subdivision_targeting_;
+  std::unique_ptr<AntiTargetingResource> anti_targeting_resource_;
   ::testing::StrictMock<NotificationAdServingDelegateMock> delegate_mock_;
   std::unique_ptr<NotificationAdServing> ad_serving_;
 };

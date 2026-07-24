@@ -155,7 +155,7 @@ TEST_F(BraveAdsTextClassificationResourceTest,
   SetProfileBooleanPref(prefs::kOptedInToNotificationAds, true);
 
   // Assert
-  EXPECT_TRUE(resource_->IsLoaded());
+  EXPECT_TRUE(base::test::RunUntil([this] { return resource_->IsLoaded(); }));
 }
 
 TEST_F(BraveAdsTextClassificationResourceTest,
