@@ -120,7 +120,7 @@ class HorizontalScrollableTabStripBrowserTest : public InProcessBrowserTest {
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
     // Horizontal scrolling requires kBraveScrollableTabStrip and this pref.
-    browser()->profile()->GetPrefs()->SetBoolean(
+    browser()->GetProfile()->GetPrefs()->SetBoolean(
         brave_tabs::kScrollableHorizontalTabStrip, true);
   }
 
@@ -148,7 +148,7 @@ IN_PROC_BROWSER_TEST_F(
     GetScrollDirectionNotHorizontalWhenScrollableHorizontalPrefDisabled) {
   // kBraveScrollableTabStrip is enabled in the fixture, but horizontal strip
   // scrolling is still gated by kScrollableHorizontalTabStrip.
-  browser()->profile()->GetPrefs()->SetBoolean(
+  browser()->GetProfile()->GetPrefs()->SetBoolean(
       brave_tabs::kScrollableHorizontalTabStrip, false);
   RunScheduledLayouts();
 
@@ -334,7 +334,7 @@ IN_PROC_BROWSER_TEST_F(HorizontalScrollableTabStripBrowserTest,
       tab_strip->GetTabContainerForTesting());
   ASSERT_TRUE(container);
 
-  browser()->profile()->GetPrefs()->SetBoolean(
+  browser()->GetProfile()->GetPrefs()->SetBoolean(
       brave_tabs::kShowHorizontalTabScrollButtons, false);
 
   while (container->GetMaxScrollOffsetForTesting() == 0) {
@@ -356,7 +356,7 @@ IN_PROC_BROWSER_TEST_F(HorizontalScrollableTabStripBrowserTest,
       tab_strip->GetTabContainerForTesting());
   ASSERT_TRUE(container);
 
-  browser()->profile()->GetPrefs()->SetBoolean(
+  browser()->GetProfile()->GetPrefs()->SetBoolean(
       brave_tabs::kShowHorizontalTabScrollButtons, true);
   StopAnimatingAndLayout();
 
@@ -382,7 +382,7 @@ IN_PROC_BROWSER_TEST_F(HorizontalScrollableTabStripBrowserTest,
       tab_strip->GetTabContainerForTesting());
   ASSERT_TRUE(container);
 
-  browser()->profile()->GetPrefs()->SetBoolean(
+  browser()->GetProfile()->GetPrefs()->SetBoolean(
       brave_tabs::kShowHorizontalTabScrollButtons, true);
   StopAnimatingAndLayout();
 
@@ -405,7 +405,7 @@ IN_PROC_BROWSER_TEST_F(HorizontalScrollableTabStripBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(HorizontalScrollableTabStripBrowserTest,
                        NewTabButtonTrailingGapWhenScrollButtonsVisible) {
-  browser()->profile()->GetPrefs()->SetBoolean(
+  browser()->GetProfile()->GetPrefs()->SetBoolean(
       brave_tabs::kShowHorizontalTabScrollButtons, true);
 
   auto* tab_strip = views::AsViewClass<BraveTabStrip>(
@@ -448,14 +448,14 @@ IN_PROC_BROWSER_TEST_F(HorizontalScrollableTabStripBrowserTest,
   // HorizontalScrollButtonsHiddenWhenPrefOff). Adding many tabs while the
   // scroll-button chrome is visible can change active-tab sizing so much that
   // the strip no longer reports overflow, which makes ScrollTabsBy a no-op.
-  browser()->profile()->GetPrefs()->SetBoolean(
+  browser()->GetProfile()->GetPrefs()->SetBoolean(
       brave_tabs::kShowHorizontalTabScrollButtons, false);
   while (container->GetMaxScrollOffsetForTesting() == 0) {
     AppendTab();
     StopAnimatingAndLayout();
   }
 
-  browser()->profile()->GetPrefs()->SetBoolean(
+  browser()->GetProfile()->GetPrefs()->SetBoolean(
       brave_tabs::kShowHorizontalTabScrollButtons, true);
   StopAnimatingAndLayout();
 
@@ -494,7 +494,7 @@ IN_PROC_BROWSER_TEST_F(HorizontalScrollableTabStripBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(HorizontalScrollableTabStripBrowserTest,
                        HorizontalScrollButtonsHiddenWithVerticalTabs) {
-  browser()->profile()->GetPrefs()->SetBoolean(
+  browser()->GetProfile()->GetPrefs()->SetBoolean(
       brave_tabs::kShowHorizontalTabScrollButtons, true);
 
   auto* tab_strip = views::AsViewClass<BraveTabStrip>(
@@ -508,8 +508,8 @@ IN_PROC_BROWSER_TEST_F(HorizontalScrollableTabStripBrowserTest,
     StopAnimatingAndLayout();
   }
 
-  browser()->profile()->GetPrefs()->SetBoolean(brave_tabs::kVerticalTabsEnabled,
-                                               true);
+  browser()->GetProfile()->GetPrefs()->SetBoolean(
+      brave_tabs::kVerticalTabsEnabled, true);
   StopAnimatingAndLayout();
 
   BraveHorizontalTabStripRegionView* region = tab_strip_region();
@@ -527,7 +527,7 @@ IN_PROC_BROWSER_TEST_F(
       tab_strip->GetTabContainerForTesting());
   ASSERT_TRUE(container);
 
-  browser()->profile()->GetPrefs()->SetBoolean(
+  browser()->GetProfile()->GetPrefs()->SetBoolean(
       brave_tabs::kShowHorizontalTabScrollButtons, true);
   StopAnimatingAndLayout();
   GrowHorizontalStripUntilMaxOffsetAtLeastNTimesStep(container, 2);
@@ -579,9 +579,9 @@ IN_PROC_BROWSER_TEST_F(
       tab_strip->GetTabContainerForTesting());
   ASSERT_TRUE(container);
 
-  browser()->profile()->GetPrefs()->SetBoolean(
+  browser()->GetProfile()->GetPrefs()->SetBoolean(
       brave_tabs::kShowHorizontalTabScrollButtons, false);
-  browser()->profile()->GetPrefs()->SetBoolean(
+  browser()->GetProfile()->GetPrefs()->SetBoolean(
       brave_tabs::kShowHorizontalTabScrollButtons, true);
   StopAnimatingAndLayout();
   GrowHorizontalStripUntilMaxOffsetAtLeastNTimesStep(container, 2);
@@ -632,9 +632,9 @@ IN_PROC_BROWSER_TEST_F(HorizontalScrollableTabStripBrowserTest,
       tab_strip->GetTabContainerForTesting());
   ASSERT_TRUE(container);
 
-  browser()->profile()->GetPrefs()->SetBoolean(
+  browser()->GetProfile()->GetPrefs()->SetBoolean(
       brave_tabs::kShowHorizontalTabScrollButtons, false);
-  browser()->profile()->GetPrefs()->SetBoolean(
+  browser()->GetProfile()->GetPrefs()->SetBoolean(
       brave_tabs::kShowHorizontalTabScrollButtons, true);
   GrowHorizontalStripUntilMaxOffsetAtLeastNTimesStep(container, 2);
 
@@ -719,7 +719,7 @@ IN_PROC_BROWSER_TEST_F(HorizontalScrollableTabStripBrowserTest,
   // ---- Disable horizontal scrolling ----
   // OnScrollableHorizontalTabStripPrefChanged() fires synchronously and
   // must clear all clip paths and make all tabs visible.
-  browser()->profile()->GetPrefs()->SetBoolean(
+  browser()->GetProfile()->GetPrefs()->SetBoolean(
       brave_tabs::kScrollableHorizontalTabStrip, false);
   StopAnimatingAndLayout();
 
@@ -744,9 +744,9 @@ IN_PROC_BROWSER_TEST_F(HorizontalScrollableTabStripBrowserTest,
       tab_strip->GetTabContainerForTesting());
   ASSERT_TRUE(container);
 
-  browser()->profile()->GetPrefs()->SetBoolean(
+  browser()->GetProfile()->GetPrefs()->SetBoolean(
       brave_tabs::kShowHorizontalTabScrollButtons, false);
-  browser()->profile()->GetPrefs()->SetBoolean(
+  browser()->GetProfile()->GetPrefs()->SetBoolean(
       brave_tabs::kShowHorizontalTabScrollButtons, true);
   GrowHorizontalStripUntilMaxOffsetAtLeastNTimesStep(container, 2);
 

@@ -78,8 +78,8 @@ IN_PROC_BROWSER_TEST_F(BraveHorizontalTabStripRegionViewBrowserTest,
 
   // Check button and bubble state after trun on vertical tab.
   // Hidden when vertical tabs are active (combo is repurposed away).
-  browser()->profile()->GetPrefs()->SetBoolean(brave_tabs::kVerticalTabsEnabled,
-                                               true);
+  browser()->GetProfile()->GetPrefs()->SetBoolean(
+      brave_tabs::kVerticalTabsEnabled, true);
   RunScheduledLayouts();
   bubble_host = browser_view()->GetTabSearchBubbleHost();
   EXPECT_FALSE(tab_strip_combo->GetVisible())

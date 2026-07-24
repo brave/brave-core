@@ -37,7 +37,7 @@ class BraveTabStripGetTabMinWidthModeBrowserTest : public InProcessBrowserTest {
     scoped_feature_list_.InitAndEnableFeature(tabs::kBraveScrollableTabStrip);
   }
 
-  PrefService* prefs() { return browser()->profile()->GetPrefs(); }
+  PrefService* prefs() { return browser()->GetProfile()->GetPrefs(); }
 
   BraveTabStrip* tab_strip() { return GetBraveTabStrip(browser()); }
 
@@ -77,7 +77,7 @@ class BraveTabStripGetTabMinWidthModeFeatureDisabledBrowserTest
     scoped_feature_list_.InitAndDisableFeature(tabs::kBraveScrollableTabStrip);
   }
 
-  PrefService* prefs() { return browser()->profile()->GetPrefs(); }
+  PrefService* prefs() { return browser()->GetProfile()->GetPrefs(); }
 
   BraveTabStrip* tab_strip() { return GetBraveTabStrip(browser()); }
 

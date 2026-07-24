@@ -26,12 +26,12 @@ BraveRoundedOmniboxResultsFrame::BraveRoundedOmniboxResultsFrame(
 
   show_vertical_tabs_.Init(
       brave_tabs::kVerticalTabsEnabled,
-      browser_->profile()->GetOriginalProfile()->GetPrefs(),
+      browser_->GetProfile()->GetOriginalProfile()->GetPrefs(),
       base::BindRepeating(&BraveRoundedOmniboxResultsFrame::UpdateShadowBorder,
                           base::Unretained(this)));
   show_window_title_for_vertical_tabs_.Init(
       brave_tabs::kVerticalTabsShowTitleOnWindow,
-      browser_->profile()->GetOriginalProfile()->GetPrefs(),
+      browser_->GetProfile()->GetOriginalProfile()->GetPrefs(),
       base::BindRepeating(&BraveRoundedOmniboxResultsFrame::UpdateShadowBorder,
                           base::Unretained(this)));
 }

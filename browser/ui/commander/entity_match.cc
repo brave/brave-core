@@ -168,7 +168,7 @@ std::vector<WindowMatch> WindowsMatchingInput(
           return true;  // continue iterating
         }
         if (match_profile &&
-            browser->profile() != browser_to_exclude->GetProfile()) {
+            browser->GetProfile() != browser_to_exclude->GetProfile()) {
           return true;  // continue iterating
         }
         std::u16string title =

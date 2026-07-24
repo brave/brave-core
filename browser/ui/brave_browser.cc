@@ -122,8 +122,8 @@ void BraveBrowser::OnTabClosing(tabs::TabInterface* tab,
   }
 
   bool more_than_one = false;
-  ProfileBrowserCollection::GetForProfile(profile())->ForEach(
-      [this, &more_than_one](BrowserWindowInterface* browser) {
+  ProfileBrowserCollection::GetForProfile(GetProfile())
+      ->ForEach([this, &more_than_one](BrowserWindowInterface* browser) {
         if (!more_than_one) {
           more_than_one = true;
           return true;
@@ -149,7 +149,7 @@ void BraveBrowser::OnTabClosing(tabs::TabInterface* tab,
 }
 
 void BraveBrowser::TabStripEmpty() {
-  if (profile()->GetPrefs()->GetBoolean(kEnableClosingLastTab) ||
+  if (GetProfile()->GetPrefs()->GetBoolean(kEnableClosingLastTab) ||
       !is_type_normal() || ignore_enable_closing_last_tab_pref_) {
     Browser::TabStripEmpty();
     return;
@@ -231,7 +231,7 @@ void BraveBrowser::OnTabStripModelChanged(
     const TabStripSelectionChange& selection) {
   Browser::OnTabStripModelChanged(tab_strip_model, change, selection);
 
-  if (!profile()->GetPrefs()->GetBoolean(kEnableClosingLastTab) &&
+  if (!GetProfile()->GetPrefs()->GetBoolean(kEnableClosingLastTab) &&
       change.type() == TabStripModelChange::kRemoved) {
     for (const auto& contents : change.GetRemove()->contents) {
       // If there is no tab after this change for inserting them to
@@ -305,7 +305,7 @@ bool BraveBrowser::ShouldAskForBrowserClosingBeforeHandlers() {
     return false;
   }
 
-  PrefService* prefs = profile()->GetPrefs();
+  PrefService* prefs = GetProfile()->GetPrefs();
   if (!prefs->GetBoolean(kEnableWindowClosingConfirm)) {
     return false;
   }
@@ -323,7 +323,7 @@ bool BraveBrowser::AreAllTabsSharedPinnedTabs() {
     return false;
   }
 
-  if (!profile()->GetPrefs()->GetBoolean(brave_tabs::kSharedPinnedTab)) {
+  if (!GetProfile()->GetPrefs()->GetBoolean(brave_tabs::kSharedPinnedTab)) {
     return false;
   }
 

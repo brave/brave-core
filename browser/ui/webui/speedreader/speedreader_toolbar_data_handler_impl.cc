@@ -129,7 +129,7 @@ void SpeedreaderToolbarDataHandlerImpl::SetTtsSettings(
 
 void SpeedreaderToolbarDataHandlerImpl::ObserveThemeChange() {
   theme_observation_.Observe(
-      ThemeServiceFactory::GetForProfile(browser_->profile()));
+      ThemeServiceFactory::GetForProfile(browser_->GetProfile()));
   native_theme_observation_.Observe(
       BrowserWindow::FromBrowser(browser_)->GetNativeTheme());
   OnThemeChanged();
@@ -149,8 +149,9 @@ void SpeedreaderToolbarDataHandlerImpl::ViewOriginal() {
 
 void SpeedreaderToolbarDataHandlerImpl::AiChat() {
 #if BUILDFLAG(ENABLE_AI_CHAT)
-  if (!browser_ || !ai_chat::IsAIChatEnabled(browser_->profile()->GetPrefs()) ||
-      !browser_->profile()->IsRegularProfile()) {
+  if (!browser_ ||
+      !ai_chat::IsAIChatEnabled(browser_->GetProfile()->GetPrefs()) ||
+      !browser_->GetProfile()->IsRegularProfile()) {
     return;
   }
   auto* side_panel = browser_->GetFeatures().side_panel_ui();
@@ -217,7 +218,7 @@ speedreader::SpeedreaderService*
 SpeedreaderToolbarDataHandlerImpl::GetSpeedreaderService() {
   DCHECK(browser_);
   return speedreader::SpeedreaderServiceFactory::GetForBrowserContext(
-      browser_->profile());
+      browser_->GetProfile());
 }
 
 speedreader::TtsPlayer::Controller*

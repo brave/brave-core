@@ -43,7 +43,7 @@ namespace {
 constexpr gfx::Size kAddItemBubbleEntrySize{242, 40};
 
 sidebar::SidebarService* GetSidebarService(Browser* browser) {
-  return sidebar::SidebarServiceFactory::GetForProfile(browser->profile());
+  return sidebar::SidebarServiceFactory::GetForProfile(browser->GetProfile());
 }
 
 class SidebarAddItemButton : public views::LabelButton {
@@ -126,7 +126,7 @@ SidebarAddItemBubbleDelegateView::SidebarAddItemBubbleDelegateView(
     views::View* anchor_view)
     : BubbleDialogDelegateView(
           anchor_view,
-          sidebar::GetBubbleArrowForSidebar(browser->profile()->GetPrefs()),
+          sidebar::GetBubbleArrowForSidebar(browser->GetProfile()->GetPrefs()),
           views::BubbleBorder::STANDARD_SHADOW),
       browser_(browser) {
   DCHECK(browser_);

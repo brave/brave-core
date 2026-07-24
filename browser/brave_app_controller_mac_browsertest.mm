@@ -209,12 +209,12 @@ IN_PROC_BROWSER_TEST_F(BraveAppControllerBrowserTest,
   AppController* ac =
       base::apple::ObjCCastStrict<AppController>([NSApp delegate]);
   [ac mainMenuCreated];
-  [ac setLastProfile:browser()->profile()];
+  [ac setLastProfile:browser()->GetProfile()];
 
   // Add one bookmark item.
   constexpr char kPersistBookmarkURL[] = "http://www.cnn.com/";
   constexpr char16_t kPersistBookmarkTitle[] = u"CNN";
-  BookmarkModel* bookmark_model = WaitForBookmarkModel(browser()->profile());
+  BookmarkModel* bookmark_model = WaitForBookmarkModel(browser()->GetProfile());
   bookmarks::AddIfNotBookmarked(bookmark_model, GURL(kPersistBookmarkURL),
                                 kPersistBookmarkTitle);
 
@@ -231,8 +231,8 @@ IN_PROC_BROWSER_TEST_F(BraveAppControllerBrowserTest,
       base::SysNSStringToUTF16([[normal_window_submenu itemAtIndex:4] title]));
 
   // Create private browser and check bookmark menubar has same items.
-  auto* private_browser = CreateIncognitoBrowser(browser()->profile());
-  [ac setLastProfile:private_browser->profile()];
+  auto* private_browser = CreateIncognitoBrowser(browser()->GetProfile());
+  [ac setLastProfile:private_browser->GetProfile()];
   NSMenu* private_browser_submenu = [ac bookmarkMenuBridge]->BookmarkMenu();
   [[private_browser_submenu delegate] menuNeedsUpdate:private_browser_submenu];
   EXPECT_EQ(5, [private_browser_submenu numberOfItems]);
@@ -245,7 +245,7 @@ IN_PROC_BROWSER_TEST_F(BraveAppControllerBrowserTest,
   chrome::CloseWindow(private_browser);
   observer.Wait();
 
-  [ac setLastProfile:browser()->profile()];
+  [ac setLastProfile:browser()->GetProfile()];
   [[normal_window_submenu delegate] menuNeedsUpdate:normal_window_submenu];
   EXPECT_EQ(5, [normal_window_submenu numberOfItems]);
   EXPECT_EQ(
@@ -262,7 +262,8 @@ IN_PROC_BROWSER_TEST_F(BraveAppControllerBrowserTest, TorItemEnabled) {
 
   NSMenu* dockMenu = [ac applicationDockMenu:app];
   ASSERT_TRUE(dockMenu);
-  ASSERT_FALSE(TorProfileServiceFactory::IsTorDisabled(browser()->profile()));
+  ASSERT_FALSE(
+      TorProfileServiceFactory::IsTorDisabled(browser()->GetProfile()));
 
   // Tor item should exist and be enabled
   NSMenuItem* tor_menu = [dockMenu itemWithTag:IDC_NEW_OFFTHERECORD_WINDOW_TOR];
@@ -273,7 +274,7 @@ IN_PROC_BROWSER_TEST_F(BraveAppControllerBrowserTest, TorItemEnabled) {
   EXPECT_FALSE(tor_menu.isHidden);
 
   // Executing the item should create a new incognito window with Tor
-  [ac executeCommand:tor_menu withProfile:browser()->profile()];
+  [ac executeCommand:tor_menu withProfile:browser()->GetProfile()];
   base::RunLoop().RunUntilIdle();
 
   BrowserWindowInterface* tor_window =
@@ -291,18 +292,19 @@ IN_PROC_BROWSER_TEST_F(BraveAppControllerBrowserTest,
 
   NSMenu* dockMenu = [ac applicationDockMenu:app];
   ASSERT_TRUE(dockMenu);
-  ASSERT_FALSE(TorProfileServiceFactory::IsTorDisabled(browser()->profile()));
+  ASSERT_FALSE(
+      TorProfileServiceFactory::IsTorDisabled(browser()->GetProfile()));
   NSMenuItem* tor_menu = [dockMenu itemWithTag:IDC_NEW_OFFTHERECORD_WINDOW_TOR];
   EXPECT_TRUE(tor_menu);
   EXPECT_TRUE(tor_menu.enabled);
   EXPECT_FALSE(tor_menu.isHidden);
 
   // When policy disabled incognito mode, the tor itme should be hidden
-  PrefService* pref_service = browser()->profile()->GetPrefs();
+  PrefService* pref_service = browser()->GetProfile()->GetPrefs();
   pref_service->SetInteger(
       policy::policy_prefs::kIncognitoModeAvailability,
       static_cast<int>(policy::IncognitoModeAvailability::kDisabled));
-  ASSERT_TRUE(TorProfileServiceFactory::IsTorDisabled(browser()->profile()));
+  ASSERT_TRUE(TorProfileServiceFactory::IsTorDisabled(browser()->GetProfile()));
 
   // Tor item should exist and be enabled
   EXPECT_FALSE([ac validateUserInterfaceItem:tor_menu]);
@@ -325,7 +327,8 @@ IN_PROC_BROWSER_TEST_F(BraveAppControllerBrowserTest,
 
   NSMenu* dockMenu = [ac applicationDockMenu:app];
   ASSERT_TRUE(dockMenu);
-  ASSERT_FALSE(TorProfileServiceFactory::IsTorDisabled(browser()->profile()));
+  ASSERT_FALSE(
+      TorProfileServiceFactory::IsTorDisabled(browser()->GetProfile()));
   NSMenuItem* tor_menu = [dockMenu itemWithTag:IDC_NEW_OFFTHERECORD_WINDOW_TOR];
   EXPECT_TRUE(tor_menu);
   EXPECT_TRUE(tor_menu.enabled);
@@ -345,7 +348,7 @@ IN_PROC_BROWSER_TEST_F(BraveAppControllerBrowserTest, TorMenuItemExists) {
       base::apple::ObjCCastStrict<BraveAppController>([app delegate]);
   ASSERT_TRUE(controller);
 
-  [controller setLastProfile:browser()->profile()];
+  [controller setLastProfile:browser()->GetProfile()];
   [controller mainMenuCreated];
 
   NSMenu* fileMenu = [[[NSApp mainMenu] itemWithTag:kMacFileMenuId] submenu];
@@ -365,10 +368,11 @@ IN_PROC_BROWSER_TEST_F(BraveAppControllerBrowserTest,
   ASSERT_TRUE(controller);
 
   // Ensure Tor is enabled
-  browser()->profile()->GetPrefs()->ClearPref(
+  browser()->GetProfile()->GetPrefs()->ClearPref(
       policy::policy_prefs::kIncognitoModeAvailability);
   g_browser_process->local_state()->ClearPref(tor::prefs::kTorDisabled);
-  ASSERT_FALSE(TorProfileServiceFactory::IsTorDisabled(browser()->profile()));
+  ASSERT_FALSE(
+      TorProfileServiceFactory::IsTorDisabled(browser()->GetProfile()));
 
   [controller mainMenuCreated];
 
@@ -383,7 +387,7 @@ IN_PROC_BROWSER_TEST_F(BraveAppControllerBrowserTest,
   [[torMenuItem menu] setDelegate:controller];
 
   // Trigger menu update
-  [controller setLastProfile:browser()->profile()];
+  [controller setLastProfile:browser()->GetProfile()];
   [controller menuNeedsUpdate:[torMenuItem menu]];
 
   EXPECT_TRUE([torMenuItem isEnabled]);
@@ -399,11 +403,11 @@ IN_PROC_BROWSER_TEST_F(BraveAppControllerBrowserTest,
   ASSERT_TRUE(controller);
 
   // Ensure Tor is disabled
-  browser()->profile()->GetPrefs()->SetInteger(
+  browser()->GetProfile()->GetPrefs()->SetInteger(
       policy::policy_prefs::kIncognitoModeAvailability,
       static_cast<int>(policy::IncognitoModeAvailability::kDisabled));
   g_browser_process->local_state()->SetBoolean(tor::prefs::kTorDisabled, true);
-  ASSERT_TRUE(TorProfileServiceFactory::IsTorDisabled(browser()->profile()));
+  ASSERT_TRUE(TorProfileServiceFactory::IsTorDisabled(browser()->GetProfile()));
 
   [controller mainMenuCreated];
 
@@ -418,7 +422,7 @@ IN_PROC_BROWSER_TEST_F(BraveAppControllerBrowserTest,
   [[torMenuItem menu] setDelegate:controller];
 
   // Trigger menu update
-  [controller setLastProfile:browser()->profile()];
+  [controller setLastProfile:browser()->GetProfile()];
   [controller menuNeedsUpdate:[torMenuItem menu]];
 
   EXPECT_FALSE([torMenuItem isEnabled]);

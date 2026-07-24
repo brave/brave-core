@@ -41,8 +41,8 @@ PageActionIconParams& ModifyIconParamsForBrave(PageActionIconParams& params) {
   // Browser could be null if the location bar was created for
   // PresentationReceiverWindowView.
   if (params.browser && params.browser->is_type_normal() &&
-      !params.browser->profile()->IsOffTheRecord() &&
-      playlist::IsPlaylistAllowed(params.browser->profile()->GetPrefs())) {
+      !params.browser->GetProfile()->IsOffTheRecord() &&
+      playlist::IsPlaylistAllowed(params.browser->GetProfile()->GetPrefs())) {
     params.types_enabled.push_back(brave::kPlaylistPageActionIconType);
   }
 #endif  // BUILDFLAG(ENABLE_PLAYLIST)

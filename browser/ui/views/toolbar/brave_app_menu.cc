@@ -122,7 +122,7 @@ SidebarShowOptionInMenuButton::SidebarShowOptionInMenuButton(
   SetFocusBehavior(FocusBehavior::ALWAYS);
 
   auto* service = sidebar::SidebarServiceFactory::GetForProfile(
-      app_menu_->browser()->profile());
+      app_menu_->browser()->GetProfile());
   CHECK(service);
 
   sidebar_service_observation_.Observe(service);
@@ -245,7 +245,7 @@ void BraveAppMenu::RecordMenuUsage(int command_id) {
   if (command_id == IDC_TOGGLE_AI_CHAT) {
     auto* profile_metrics =
         misc_metrics::ProfileMiscMetricsServiceFactory::GetServiceForContext(
-            browser_->profile());
+            browser_->GetProfile());
     if (profile_metrics) {
       auto* ai_chat_metrics = profile_metrics->GetAIChatMetrics();
       CHECK(ai_chat_metrics);

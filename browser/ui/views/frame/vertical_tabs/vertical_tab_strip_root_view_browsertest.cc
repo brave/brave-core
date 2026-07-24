@@ -221,7 +221,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripRootViewBrowserTest,
   ASSERT_TRUE(region_view->IsMenuShowing());
 
   // Keep the browser process alive after the target browser is closed.
-  ASSERT_TRUE(CreateBrowser(browser()->profile()));
+  ASSERT_TRUE(CreateBrowser(browser()->GetProfile()));
 
   // Closing the browser must not use the system menu model after it has been
   // freed.

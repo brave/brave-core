@@ -141,7 +141,7 @@ class SameSiteStrictCookieTorBrowserTest : public InProcessBrowserTest {
 IN_PROC_BROWSER_TEST_F(SameSiteStrictCookieTorBrowserTest,
                        OpenLinkInTorDoesNotSendSameSiteStrictCookie) {
   Browser* tor_browser =
-      TorProfileManager::SwitchToTorProfile(browser()->profile());
+      TorProfileManager::SwitchToTorProfile(browser()->GetProfile());
 
   const auto set_cookie_url =
       https_server_->GetURL(kSiteB, "/set-strict-cookie");
@@ -186,7 +186,7 @@ IN_PROC_BROWSER_TEST_F(SameSiteStrictCookieTorBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(SameSiteStrictCookieTorBrowserTest, OnionLocation) {
   Browser* tor_browser =
-      TorProfileManager::SwitchToTorProfile(browser()->profile());
+      TorProfileManager::SwitchToTorProfile(browser()->GetProfile());
 
   const auto set_cookie_url =
       onion_server_->GetURL(kOnion, "/set-strict-cookie");
@@ -215,7 +215,7 @@ IN_PROC_BROWSER_TEST_F(
     SameSiteStrictCookieTorBrowserTest,
     BlockedOnionLinkCrossSiteDoesNotSendSameSiteStrictCookie) {
   Browser* tor_browser =
-      TorProfileManager::SwitchToTorProfile(browser()->profile());
+      TorProfileManager::SwitchToTorProfile(browser()->GetProfile());
 
   const GURL set_cookie_url =
       onion_server_->GetURL(kOnion, "/set-strict-cookie");

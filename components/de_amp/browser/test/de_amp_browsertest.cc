@@ -134,7 +134,7 @@ class DeAmpBrowserTest : public InProcessBrowserTest {
     InProcessBrowserTest::SetUpOnMainThread();
     mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
     host_resolver()->AddRule("*", "127.0.0.1");
-    prefs_ = browser()->profile()->GetPrefs();
+    prefs_ = browser()->GetProfile()->GetPrefs();
 
     content::SetupCrossSiteRedirector(https_server_.get());
   }
@@ -317,10 +317,10 @@ IN_PROC_BROWSER_TEST_F(DeAmpBrowserTest, ContentDispositionAttachment) {
   // for downloads). Disable the download prompt so it proceeds automatically,
   // then use a download observer + NO_WAIT instead.
   // Pattern from chrome/browser/download/download_browsertest.cc.
-  browser()->profile()->GetPrefs()->SetBoolean(prefs::kPromptForDownload,
-                                               false);
+  browser()->GetProfile()->GetPrefs()->SetBoolean(prefs::kPromptForDownload,
+                                                  false);
   content::DownloadTestObserverTerminal download_observer(
-      browser()->profile()->GetDownloadManager(), 1,
+      browser()->GetProfile()->GetDownloadManager(), 1,
       content::DownloadTestObserver::ON_DANGEROUS_DOWNLOAD_ACCEPT);
   ui_test_utils::NavigateToURLWithDisposition(
       browser(), amp_url, WindowOpenDisposition::CURRENT_TAB,
@@ -452,7 +452,7 @@ IN_PROC_BROWSER_TEST_F(DeAmpBrowserTest, RestoreTab) {
   SetRequestHandler(kTestAmpPage, Amp(kTestCanonicalPage));
   StartServer();
   NavigateToURLAndWaitForRedirects(kTestAmpPage, kTestCanonicalPage);
-  Profile* profile = browser()->profile();
+  Profile* profile = browser()->GetProfile();
 
   ScopedKeepAlive test_keep_alive(KeepAliveOrigin::PANEL_VIEW,
                                   KeepAliveRestartOption::DISABLED);

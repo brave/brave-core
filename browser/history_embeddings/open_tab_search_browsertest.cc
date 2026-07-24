@@ -71,7 +71,7 @@ class OpenTabSearchBrowserTest : public InProcessBrowserTest {
     mock_cert_verifier_.TearDownInProcessBrowserTestFixture();
   }
 
-  Profile* profile() { return browser()->profile(); }
+  Profile* profile() { return browser()->GetProfile(); }
 
   GURL GetURL(const std::string& host, const std::string& path) {
     return https_server_.GetURL(host, path);

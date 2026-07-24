@@ -1772,7 +1772,7 @@ hidden coupling — this is a design default for all features, not just a fix fo
 // hidden dependencies, makes modularization impossible)
 FooFeature(Browser* browser) : browser_(browser) {}
 void FooFeature::DoStuff() {
-  DoStuffWith(browser_->profile()->GetPrefs());
+  DoStuffWith(browser_->GetProfile()->GetPrefs());
 }
 
 // ❌ ALSO WRONG - reaching for ambient global state

@@ -162,7 +162,7 @@ IN_PROC_BROWSER_TEST_F(WebMcpBrowserTest,
   ASSERT_TRUE(content);
 
   auto* ai_chat_service =
-      AIChatServiceFactory::GetForBrowserContext(browser()->profile());
+      AIChatServiceFactory::GetForBrowserContext(browser()->GetProfile());
   auto* conversation = ai_chat_service->CreateConversation();
   ASSERT_TRUE(conversation);
 
@@ -215,7 +215,7 @@ IN_PROC_BROWSER_TEST_F(WebMcpBrowserTest,
   ASSERT_TRUE(content);
 
   auto* ai_chat_service =
-      AIChatServiceFactory::GetForBrowserContext(browser()->profile());
+      AIChatServiceFactory::GetForBrowserContext(browser()->GetProfile());
   auto* conversation = ai_chat_service->CreateConversation();
   ASSERT_TRUE(conversation);
 
@@ -230,7 +230,7 @@ IN_PROC_BROWSER_TEST_F(WebMcpBrowserTest,
 IN_PROC_BROWSER_TEST_F(WebMcpBrowserTest,
                        AssociatedContentManager_RefreshesAcrossNavigations) {
   auto* ai_chat_service =
-      AIChatServiceFactory::GetForBrowserContext(browser()->profile());
+      AIChatServiceFactory::GetForBrowserContext(browser()->GetProfile());
   auto* conversation = ai_chat_service->CreateConversation();
   ASSERT_TRUE(conversation);
   auto* manager = conversation->associated_content_manager();

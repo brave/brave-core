@@ -19,7 +19,7 @@ substitutions:
     regex:
       re_pattern: '(void UnloadController::TabStripEmpty\(\) \{\n)'
       replace: |
-        \1  if (!browser_->profile()->GetPrefs()->GetBoolean(kEnableClosingLastTab)) {
+        \1  if (!browser_->GetProfile()->GetPrefs()->GetBoolean(kEnableClosingLastTab)) {
             return;
           }
   - description: |

@@ -49,7 +49,7 @@ class CommanderServiceBrowserTest : public InProcessBrowserTest {
   }
 
  protected:
-  Profile* profile() { return browser()->profile(); }
+  Profile* profile() { return browser()->GetProfile(); }
   commander::CommanderService* commander() {
     return commander::CommanderServiceFactory::GetForBrowserContext(profile());
   }

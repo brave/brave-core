@@ -42,9 +42,9 @@ class BraveSpellingMenuObserverTest : public InProcessBrowserTest {
   void Reset(bool incognito = false) {
     observer_.reset();
     menu_ = std::make_unique<BraveMockRenderViewContextMenu>(
-        incognito ? browser()->profile()->GetPrimaryOTRProfile(
+        incognito ? browser()->GetProfile()->GetPrimaryOTRProfile(
                         /*create_if_needed=*/true)
-                  : browser()->profile());
+                  : browser()->GetProfile());
     observer_ = std::make_unique<SpellingMenuObserver>(menu_.get());
     menu_->SetObserver(observer_.get());
     // Uncomment to print the menu to standard output for each test.

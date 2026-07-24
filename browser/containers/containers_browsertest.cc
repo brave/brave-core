@@ -123,7 +123,7 @@ class ContainersBrowserTest : public InProcessBrowserTest {
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
     host_resolver()->AddRule("*", "127.0.0.1");
-    SetContainersEnabled(true, browser()->profile()->GetPrefs());
+    SetContainersEnabled(true, browser()->GetProfile()->GetPrefs());
   }
 
   // JavaScript helper to set a cookie
@@ -271,7 +271,7 @@ class ContainersBrowserTest : public InProcessBrowserTest {
   }
 
   ContainersService* GetContainersService() {
-    return ContainersServiceFactory::GetForProfile(browser()->profile());
+    return ContainersServiceFactory::GetForProfile(browser()->GetProfile());
   }
 
   void SetBraveNewTabButtonSkipContainersContextMenuRunForTesting(
@@ -290,7 +290,7 @@ class ContainersBrowserTest : public InProcessBrowserTest {
     base::ScopedAllowBlockingForTesting allow_blocking_for_testing;
     base::FilePath storage_path =
         browser()
-            ->profile()
+            ->GetProfile()
             ->GetPath()
             .AppendASCII("Storage")
             .AppendASCII("ext")
@@ -304,8 +304,8 @@ class ContainersBrowserTest : public InProcessBrowserTest {
     NavigateParams params(browser(), url, ui::PAGE_TRANSITION_LINK);
     params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
     params.storage_partition_config = content::StoragePartitionConfig::Create(
-        browser()->profile(), kContainersStoragePartitionDomain, container_id,
-        browser()->profile()->IsOffTheRecord());
+        browser()->GetProfile(), kContainersStoragePartitionDomain,
+        container_id, browser()->GetProfile()->IsOffTheRecord());
     ui_test_utils::NavigateToURL(&params);
     return browser()->tab_strip_model()->GetActiveWebContents();
   }
@@ -397,7 +397,7 @@ class ContainersBrowserTest : public InProcessBrowserTest {
 
   void RemoveSiteDataAndWait() {
     content::BrowsingDataRemover* remover =
-        browser()->profile()->GetBrowsingDataRemover();
+        browser()->GetProfile()->GetBrowsingDataRemover();
     content::BrowsingDataRemoverCompletionObserver completion_observer(remover);
     remover->RemoveAndReply(
         base::Time(), base::Time::Max(),
@@ -409,7 +409,7 @@ class ContainersBrowserTest : public InProcessBrowserTest {
 
   void ExpectUsedContainerStoragePartitionConfigsMatch(
       const std::vector<std::string>& expected_ids) {
-    Profile* profile = browser()->profile();
+    Profile* profile = browser()->GetProfile();
     std::vector<content::StoragePartitionConfig> configs =
         GetUsedContainerStoragePartitionConfigs(profile);
     ASSERT_EQ(expected_ids.size(), configs.size());
@@ -467,8 +467,8 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest, IsolateCookiesAndStorage) {
   NavigateParams params(browser(), url, ui::PAGE_TRANSITION_LINK);
   params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
   params.storage_partition_config = content::StoragePartitionConfig::Create(
-      browser()->profile(), kContainersStoragePartitionDomain, "container-a",
-      browser()->profile()->IsOffTheRecord());
+      browser()->GetProfile(), kContainersStoragePartitionDomain, "container-a",
+      browser()->GetProfile()->IsOffTheRecord());
   ui_test_utils::NavigateToURL(&params);
 
   content::WebContents* web_contents_container_a =
@@ -530,8 +530,8 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest, IsolateCookiesAndStorage) {
   NavigateParams params_b(browser(), url, ui::PAGE_TRANSITION_LINK);
   params_b.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
   params_b.storage_partition_config = content::StoragePartitionConfig::Create(
-      browser()->profile(), kContainersStoragePartitionDomain, "container-b",
-      browser()->profile()->IsOffTheRecord());
+      browser()->GetProfile(), kContainersStoragePartitionDomain, "container-b",
+      browser()->GetProfile()->IsOffTheRecord());
   ui_test_utils::NavigateToURL(&params_b);
 
   content::WebContents* web_contents_container_b =
@@ -560,8 +560,8 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
   NavigateParams params(browser(), url, ui::PAGE_TRANSITION_LINK);
   params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
   params.storage_partition_config = content::StoragePartitionConfig::Create(
-      browser()->profile(), kContainersStoragePartitionDomain, kTestContainerId,
-      browser()->profile()->IsOffTheRecord());
+      browser()->GetProfile(), kContainersStoragePartitionDomain,
+      kTestContainerId, browser()->GetProfile()->IsOffTheRecord());
   ui_test_utils::NavigateToURL(&params);
 
   content::WebContents* web_contents =
@@ -597,8 +597,8 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
   NavigateParams params(browser(), url, ui::PAGE_TRANSITION_LINK);
   params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
   params.storage_partition_config = content::StoragePartitionConfig::Create(
-      browser()->profile(), kContainersStoragePartitionDomain, kTestContainerId,
-      browser()->profile()->IsOffTheRecord());
+      browser()->GetProfile(), kContainersStoragePartitionDomain,
+      kTestContainerId, browser()->GetProfile()->IsOffTheRecord());
   ui_test_utils::NavigateToURL(&params);
 
   content::WebContents* web_contents_reloaded =
@@ -630,14 +630,14 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
   synced.push_back(containers::mojom::Container::New(
       kTestContainerId, "ReadableName", containers::mojom::Icon::kWork,
       SK_ColorRED));
-  SetContainersToPrefs(synced, *browser()->profile()->GetPrefs());
+  SetContainersToPrefs(synced, *browser()->GetProfile()->GetPrefs());
 
   const GURL url("https://a.test/simple.html");
   NavigateParams params(browser(), url, ui::PAGE_TRANSITION_LINK);
   params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
   params.storage_partition_config = content::StoragePartitionConfig::Create(
-      browser()->profile(), kContainersStoragePartitionDomain, kTestContainerId,
-      browser()->profile()->IsOffTheRecord());
+      browser()->GetProfile(), kContainersStoragePartitionDomain,
+      kTestContainerId, browser()->GetProfile()->IsOffTheRecord());
   ui_test_utils::NavigateToURL(&params);
 
   content::WebContents* web_contents =
@@ -650,7 +650,7 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
   ASSERT_TRUE(service);
   EXPECT_TRUE(service->GetRuntimeContainerById(kTestContainerId));
 
-  PrefService* prefs = browser()->profile()->GetPrefs();
+  PrefService* prefs = browser()->GetProfile()->GetPrefs();
   EXPECT_TRUE(GetContainerFromPrefs(*prefs, kTestContainerId));
   mojom::ContainerPtr used_after_nav =
       GetLocallyUsedContainerFromPrefs(*prefs, kTestContainerId);
@@ -706,8 +706,8 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
   NavigateParams params(browser(), url, ui::PAGE_TRANSITION_LINK);
   params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
   params.storage_partition_config = content::StoragePartitionConfig::Create(
-      browser()->profile(), kContainersStoragePartitionDomain, kTestContainerId,
-      browser()->profile()->IsOffTheRecord());
+      browser()->GetProfile(), kContainersStoragePartitionDomain,
+      kTestContainerId, browser()->GetProfile()->IsOffTheRecord());
   ui_test_utils::NavigateToURL(&params);
 
   content::WebContents* container_web_contents =
@@ -822,8 +822,8 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest, IsolateServiceWorkers) {
   NavigateParams params(browser(), url, ui::PAGE_TRANSITION_LINK);
   params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
   params.storage_partition_config = content::StoragePartitionConfig::Create(
-      browser()->profile(), kContainersStoragePartitionDomain, "container-a",
-      browser()->profile()->IsOffTheRecord());
+      browser()->GetProfile(), kContainersStoragePartitionDomain, "container-a",
+      browser()->GetProfile()->IsOffTheRecord());
   ui_test_utils::NavigateToURL(&params);
 
   content::WebContents* web_contents_container_a =
@@ -867,8 +867,8 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest, IsolateServiceWorkers) {
   NavigateParams params_b(browser(), url, ui::PAGE_TRANSITION_LINK);
   params_b.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
   params_b.storage_partition_config = content::StoragePartitionConfig::Create(
-      browser()->profile(), kContainersStoragePartitionDomain, "container-b",
-      browser()->profile()->IsOffTheRecord());
+      browser()->GetProfile(), kContainersStoragePartitionDomain, "container-b",
+      browser()->GetProfile()->IsOffTheRecord());
   ui_test_utils::NavigateToURL(&params_b);
 
   content::WebContents* web_contents_container_b =
@@ -971,8 +971,8 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest, OpenUrlInContainer) {
 
   content::StoragePartitionConfig expected_config =
       content::StoragePartitionConfig::Create(
-          browser()->profile(), kContainersStoragePartitionDomain,
-          "test-container", browser()->profile()->IsOffTheRecord());
+          browser()->GetProfile(), kContainersStoragePartitionDomain,
+          "test-container", browser()->GetProfile()->IsOffTheRecord());
 
   EXPECT_EQ(expected_config, storage_partition->GetConfig());
 
@@ -995,7 +995,7 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
                        CreateTemporaryContainerAndOpenUrl) {
   const GURL url("https://a.test/simple.html");
   const auto before_containers =
-      GetLocallyUsedContainersFromPrefs(*browser()->profile()->GetPrefs());
+      GetLocallyUsedContainersFromPrefs(*browser()->GetProfile()->GetPrefs());
 
   brave::CreateTemporaryContainerAndOpenUrl(browser(), url);
 
@@ -1009,7 +1009,7 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
   EXPECT_EQ(url, web_contents->GetLastCommittedURL());
 
   const auto after_containers =
-      GetLocallyUsedContainersFromPrefs(*browser()->profile()->GetPrefs());
+      GetLocallyUsedContainersFromPrefs(*browser()->GetProfile()->GetPrefs());
   ASSERT_EQ(before_containers.size() + 1, after_containers.size());
 
   content::StoragePartition* storage_partition =
@@ -1022,7 +1022,7 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
   EXPECT_TRUE(IsTemporaryContainerId(container_id));
 
   mojom::ContainerPtr container = GetLocallyUsedContainerFromPrefs(
-      *browser()->profile()->GetPrefs(), container_id);
+      *browser()->GetProfile()->GetPrefs(), container_id);
   ASSERT_TRUE(container);
   EXPECT_EQ(container_id, container->id);
 
@@ -1098,8 +1098,8 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest, OpenTabUrlsInContainer) {
 
   content::StoragePartitionConfig expected_config =
       content::StoragePartitionConfig::Create(
-          browser()->profile(), kContainersStoragePartitionDomain,
-          "test-container-2", browser()->profile()->IsOffTheRecord());
+          browser()->GetProfile(), kContainersStoragePartitionDomain,
+          "test-container-2", browser()->GetProfile()->IsOffTheRecord());
 
   EXPECT_EQ(expected_config, storage_partition->GetConfig());
 
@@ -1170,7 +1170,7 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
   synced.push_back(container_a.Clone());
   synced.push_back(container_b.Clone());
   synced.push_back(container_unused.Clone());
-  SetContainersToPrefs(synced, *browser()->profile()->GetPrefs());
+  SetContainersToPrefs(synced, *browser()->GetProfile()->GetPrefs());
 
   brave::OpenUrlInContainer(browser(), url, container_a);
   EXPECT_EQ(2, browser()->tab_strip_model()->count());
@@ -1469,8 +1469,8 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
   NavigateParams params(browser(), url, ui::PAGE_TRANSITION_LINK);
   params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
   params.storage_partition_config = content::StoragePartitionConfig::Create(
-      browser()->profile(), kContainersStoragePartitionDomain, kTestContainerId,
-      browser()->profile()->IsOffTheRecord());
+      browser()->GetProfile(), kContainersStoragePartitionDomain,
+      kTestContainerId, browser()->GetProfile()->IsOffTheRecord());
   ui_test_utils::NavigateToURL(&params);
 
   content::WebContents* web_contents =
@@ -1502,8 +1502,8 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
   NavigateParams params(browser(), url, ui::PAGE_TRANSITION_LINK);
   params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
   params.storage_partition_config = content::StoragePartitionConfig::Create(
-      browser()->profile(), kContainersStoragePartitionDomain, kTestContainerId,
-      browser()->profile()->IsOffTheRecord());
+      browser()->GetProfile(), kContainersStoragePartitionDomain,
+      kTestContainerId, browser()->GetProfile()->IsOffTheRecord());
   ui_test_utils::NavigateToURL(&params);
 
   content::WebContents* web_contents_reloaded =
@@ -1630,8 +1630,8 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest, GetStoragePartitionKeyToRestore) {
   NavigateParams params(browser(), url, ui::PAGE_TRANSITION_LINK);
   params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
   params.storage_partition_config = content::StoragePartitionConfig::Create(
-      browser()->profile(), kContainersStoragePartitionDomain, kTestContainerId,
-      browser()->profile()->IsOffTheRecord());
+      browser()->GetProfile(), kContainersStoragePartitionDomain,
+      kTestContainerId, browser()->GetProfile()->IsOffTheRecord());
   ui_test_utils::NavigateToURL(&params);
 
   content::WebContents* web_contents =
@@ -1656,8 +1656,8 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest, HotRestoreClosedContainerTab) {
   NavigateParams params(browser(), url, ui::PAGE_TRANSITION_LINK);
   params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
   params.storage_partition_config = content::StoragePartitionConfig::Create(
-      browser()->profile(), kContainersStoragePartitionDomain, kTestContainerId,
-      browser()->profile()->IsOffTheRecord());
+      browser()->GetProfile(), kContainersStoragePartitionDomain,
+      kTestContainerId, browser()->GetProfile()->IsOffTheRecord());
   ui_test_utils::NavigateToURL(&params);
 
   content::WebContents* original_web_contents =
@@ -1715,8 +1715,8 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
   NavigateParams params(browser(), url_a, ui::PAGE_TRANSITION_LINK);
   params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
   params.storage_partition_config = content::StoragePartitionConfig::Create(
-      browser()->profile(), kContainersStoragePartitionDomain, kTestContainerId,
-      browser()->profile()->IsOffTheRecord());
+      browser()->GetProfile(), kContainersStoragePartitionDomain,
+      kTestContainerId, browser()->GetProfile()->IsOffTheRecord());
   ui_test_utils::NavigateToURL(&params);
 
   content::WebContents* web_contents =
@@ -1810,8 +1810,8 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
   NavigateParams params(browser(), urls[0], ui::PAGE_TRANSITION_LINK);
   params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
   params.storage_partition_config = content::StoragePartitionConfig::Create(
-      browser()->profile(), kContainersStoragePartitionDomain, kTestContainerId,
-      browser()->profile()->IsOffTheRecord());
+      browser()->GetProfile(), kContainersStoragePartitionDomain,
+      kTestContainerId, browser()->GetProfile()->IsOffTheRecord());
   ui_test_utils::NavigateToURL(&params);
 
   content::WebContents* web_contents =
@@ -1897,8 +1897,8 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest, PRE_MixedTabsPersistence) {
   NavigateParams params_a(browser(), url, ui::PAGE_TRANSITION_LINK);
   params_a.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
   params_a.storage_partition_config = content::StoragePartitionConfig::Create(
-      browser()->profile(), kContainersStoragePartitionDomain, "container-a",
-      browser()->profile()->IsOffTheRecord());
+      browser()->GetProfile(), kContainersStoragePartitionDomain, "container-a",
+      browser()->GetProfile()->IsOffTheRecord());
   ui_test_utils::NavigateToURL(&params_a);
   content::WebContents* container_a_tab =
       browser()->tab_strip_model()->GetActiveWebContents();
@@ -1911,8 +1911,8 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest, PRE_MixedTabsPersistence) {
   NavigateParams params_b(browser(), url, ui::PAGE_TRANSITION_LINK);
   params_b.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
   params_b.storage_partition_config = content::StoragePartitionConfig::Create(
-      browser()->profile(), kContainersStoragePartitionDomain, "container-b",
-      browser()->profile()->IsOffTheRecord());
+      browser()->GetProfile(), kContainersStoragePartitionDomain, "container-b",
+      browser()->GetProfile()->IsOffTheRecord());
   ui_test_utils::NavigateToURL(&params_b);
   content::WebContents* container_b_tab =
       browser()->tab_strip_model()->GetActiveWebContents();
@@ -1999,7 +1999,7 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
       kTestContainerId, "Shopping", containers::mojom::Icon::kShopping,
       SK_ColorBLUE);
   synced.push_back(container.Clone());
-  SetContainersToPrefs(synced, *browser()->profile()->GetPrefs());
+  SetContainersToPrefs(synced, *browser()->GetProfile()->GetPrefs());
 
   brave::OpenUrlInContainer(browser(), url, container);
   content::WebContents* container_tab =
@@ -2009,9 +2009,10 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
   EXPECT_TRUE(
       content::ExecJs(container_tab, SetIndexedDBJS("cleanup", "value")));
 
-  SetContainersToPrefs({}, *browser()->profile()->GetPrefs());
+  SetContainersToPrefs({}, *browser()->GetProfile()->GetPrefs());
 
-  auto* service = ContainersServiceFactory::GetForProfile(browser()->profile());
+  auto* service =
+      ContainersServiceFactory::GetForProfile(browser()->GetProfile());
   ASSERT_TRUE(service);
   auto cached_container = service->GetRuntimeContainerById(kTestContainerId);
   ASSERT_TRUE(cached_container);
@@ -2025,7 +2026,7 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
   EXPECT_TRUE(service->GetRuntimeContainerById(kTestContainerId));
 
   auto* tab_restore_service =
-      TabRestoreServiceFactory::GetForProfile(browser()->profile());
+      TabRestoreServiceFactory::GetForProfile(browser()->GetProfile());
   ASSERT_TRUE(tab_restore_service);
   tab_restore_service->ClearEntries();
 
@@ -2038,7 +2039,8 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
   auto container = containers::mojom::Container::New(
       kTestContainerId, "Shopping", containers::mojom::Icon::kShopping,
       SK_ColorBLUE);
-  auto* service = ContainersServiceFactory::GetForProfile(browser()->profile());
+  auto* service =
+      ContainersServiceFactory::GetForProfile(browser()->GetProfile());
   ASSERT_TRUE(base::test::RunUntil(
       [&] { return !service->GetRuntimeContainerById(kTestContainerId); }));
 
@@ -2127,8 +2129,8 @@ IN_PROC_BROWSER_TEST_F(ContainersDisabledAfterRestoreBrowserTest,
   NavigateParams params(browser(), url, ui::PAGE_TRANSITION_LINK);
   params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
   params.storage_partition_config = content::StoragePartitionConfig::Create(
-      browser()->profile(), kContainersStoragePartitionDomain, "test-container",
-      browser()->profile()->IsOffTheRecord());
+      browser()->GetProfile(), kContainersStoragePartitionDomain,
+      "test-container", browser()->GetProfile()->IsOffTheRecord());
   ui_test_utils::NavigateToURL(&params);
 
   content::WebContents* web_contents =
@@ -2174,7 +2176,7 @@ IN_PROC_BROWSER_TEST_F(ContainersDisabledAfterRestoreBrowserTest,
   ASSERT_TRUE(storage_partition);
 
   content::StoragePartitionConfig default_config =
-      content::StoragePartitionConfig::CreateDefault(browser()->profile());
+      content::StoragePartitionConfig::CreateDefault(browser()->GetProfile());
 
   // The storage partition should be the default one
   EXPECT_EQ(default_config, storage_partition->GetConfig());
@@ -2219,7 +2221,7 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
 
   std::vector<mojom::ContainerPtr> synced;
   synced.push_back(MakeContainer(kTestContainerId, "Test"));
-  SetContainersToPrefs(synced, *browser()->profile()->GetPrefs());
+  SetContainersToPrefs(synced, *browser()->GetProfile()->GetPrefs());
 
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* default_web_contents =
@@ -2251,8 +2253,8 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
   NavigateParams params(browser(), new_tab_url, ui::PAGE_TRANSITION_LINK);
   params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
   params.storage_partition_config = content::StoragePartitionConfig::Create(
-      browser()->profile(), kContainersStoragePartitionDomain, "test-container",
-      browser()->profile()->IsOffTheRecord());
+      browser()->GetProfile(), kContainersStoragePartitionDomain,
+      "test-container", browser()->GetProfile()->IsOffTheRecord());
   ui_test_utils::NavigateToURL(&params);
 
   content::WebContents* web_contents =
@@ -2266,8 +2268,8 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
 
   content::StoragePartitionConfig expected_config =
       content::StoragePartitionConfig::Create(
-          browser()->profile(), kContainersStoragePartitionDomain,
-          "test-container", browser()->profile()->IsOffTheRecord());
+          browser()->GetProfile(), kContainersStoragePartitionDomain,
+          "test-container", browser()->GetProfile()->IsOffTheRecord());
 
   EXPECT_EQ(expected_config, storage_partition->GetConfig());
   EXPECT_EQ("test-container", storage_partition->GetConfig().partition_name());
@@ -2280,7 +2282,7 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
   std::vector<mojom::ContainerPtr> synced;
   synced.push_back(mojom::Container::New(kTestContainerId, "Test",
                                          mojom::Icon::kWork, SK_ColorRED));
-  SetContainersToPrefs(synced, *browser()->profile()->GetPrefs());
+  SetContainersToPrefs(synced, *browser()->GetProfile()->GetPrefs());
   ASSERT_TRUE(GetContainersService());
   BrowserView* const browser_view =
       BrowserView::GetBrowserViewForBrowser(browser());
@@ -2352,7 +2354,7 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
 IN_PROC_BROWSER_TEST_F(ContainersBrowserTest, DefaultZoomSharedWithContainer) {
   const GURL url = https_server_.GetURL("b.test", "/simple.html");
   const double kDefaultZoom = blink::ZoomFactorToZoomLevel(1.5);
-  browser()->profile()->GetZoomLevelPrefs()->SetDefaultZoomLevelPref(
+  browser()->GetProfile()->GetZoomLevelPrefs()->SetDefaultZoomLevelPref(
       kDefaultZoom);
 
   content::WebContents* container_wc =
@@ -2412,7 +2414,7 @@ IN_PROC_BROWSER_TEST_F(
 // so the container partition comes from pinned-tab encoding, not session data.
 IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
                        PRE_PinnedTabRestorePreservesContainer) {
-  Profile* profile = browser()->profile();
+  Profile* profile = browser()->GetProfile();
   SessionStartupPref pref(SessionStartupPref::DEFAULT);
   SessionStartupPref::SetStartupPref(profile, pref);
   profile->GetPrefs()->SetInteger(prefs::kRestoreOnStartup,
@@ -2423,7 +2425,7 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
   std::vector<mojom::ContainerPtr> synced;
   synced.push_back(
       MakeContainer(kTestContainerId, "Work", mojom::Icon::kWork, SK_ColorRED));
-  SetContainersToPrefs(synced, *browser()->profile()->GetPrefs());
+  SetContainersToPrefs(synced, *browser()->GetProfile()->GetPrefs());
 
   const GURL url = https_server_.GetURL("a.test", "/simple.html");
   content::WebContents* web_contents =
@@ -2439,10 +2441,10 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
   ASSERT_NE(TabStripModel::kNoTab, container_tab_index);
   tab_strip_model->SetTabPinned(container_tab_index, true);
 
-  PinnedTabCodec::WritePinnedTabs(browser()->profile());
+  PinnedTabCodec::WritePinnedTabs(browser()->GetProfile());
 
   StartupTabs pinned_tabs =
-      PinnedTabCodec::ReadPinnedTabs(browser()->profile());
+      PinnedTabCodec::ReadPinnedTabs(browser()->GetProfile());
   ASSERT_EQ(1u, pinned_tabs.size());
   ASSERT_TRUE(std::holds_alternative<ContainerId>(pinned_tabs[0].container));
   EXPECT_EQ(kTestContainerId,
@@ -2451,7 +2453,7 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
                        PinnedTabRestorePreservesContainer) {
-  Profile* profile = browser()->profile();
+  Profile* profile = browser()->GetProfile();
   SessionStartupPref pref = SessionStartupPref::GetStartupPref(profile);
   EXPECT_FALSE(pref.ShouldRestoreLastSession());
 
@@ -2540,7 +2542,7 @@ class ContainersCommandLineContainerBrowserTest : public ContainersBrowserTest {
 // and --container on the command line.
 IN_PROC_BROWSER_TEST_F(ContainersCommandLineContainerBrowserTest,
                        PRE_CommandLineContainerSwitch) {
-  Profile* profile = browser()->profile();
+  Profile* profile = browser()->GetProfile();
   std::vector<mojom::ContainerPtr> synced;
   synced.push_back(
       MakeContainer(kTestContainerId, "Work", mojom::Icon::kWork, SK_ColorRED));

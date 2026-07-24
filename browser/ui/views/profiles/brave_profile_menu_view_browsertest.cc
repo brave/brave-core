@@ -111,9 +111,9 @@ class BraveProfileMenuViewTest : public InProcessBrowserTest {
     const auto* title_container_view =
         menu->identity_info_container_->children()[1].get();
     EXPECT_EQ(0u, title_container_view->children().size());
-    if (!browser->profile()->IsGuestSession()) {
+    if (!browser->GetProfile()->IsGuestSession()) {
       EXPECT_EQ(
-          GetProfileName(browser->profile()),
+          GetProfileName(browser->GetProfile()),
           static_cast<const views::Label*>(title_container_view)->GetText());
     }
   }

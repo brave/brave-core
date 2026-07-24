@@ -38,7 +38,7 @@ class WalletSidePanelBrowserTest : public InProcessBrowserTest {
 
 IN_PROC_BROWSER_TEST_F(WalletSidePanelBrowserTest,
                        RegistersContextualEntryForTab) {
-  ASSERT_TRUE(brave_wallet::IsAllowed(browser()->profile()->GetPrefs()));
+  ASSERT_TRUE(brave_wallet::IsAllowed(browser()->GetProfile()->GetPrefs()));
   ASSERT_TRUE(sidebar::CanUseSidebar(browser()));
 
   auto* registry = SidePanelRegistry::From(browser()->GetActiveTabInterface());
