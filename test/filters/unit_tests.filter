@@ -740,6 +740,9 @@
 -ManifestV2HandlerUnitTest.ProfileMetrics_ExtensionsThatAreDisabledForOtherReasonsEmitOther
 -ManifestV2HandlerUnitTest.ShouldBlockInstallation_UserInstalledExtensions
 
+# Flaky on our CI and upstream
+-IndigoToolbarTest.ExpandCollapseInteractions
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -AboutFlagsHistogramTest.*
 -AboutFlagsTest.EveryFlagHasMetadata
