@@ -171,11 +171,12 @@ public class TxFragment extends Fragment {
 
         advanceSettingContainer.setOnClickListener(
                 v -> {
-                    final Intent intent = AdvanceTxSettingActivity.createIntent(
-                            requireActivity(),
-                            mTxInfo.id,
-                            mTxInfo.chainId,
-                            mParsedTx.getNonce());
+                    final Intent intent =
+                            AdvanceTxSettingActivity.createIntent(
+                                    requireActivity(),
+                                    mTxInfo.id,
+                                    mTxInfo.chainId,
+                                    mParsedTx.getNonce());
                     assumeNonNull(mAdvanceTxSettingLauncher).launch(intent);
                 });
 
