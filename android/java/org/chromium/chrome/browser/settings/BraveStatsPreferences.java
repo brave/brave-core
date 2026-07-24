@@ -22,12 +22,11 @@ import org.chromium.chrome.browser.local_database.DatabaseHelper;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
+import org.chromium.components.browser_ui.settings.search.BaseSearchIndexProvider;
 
-/**
- * Fragment to keep track of all the display related preferences.
- */
+/** Fragment to keep track of all the display related preferences. */
 public class BraveStatsPreferences extends BravePreferenceFragment
-    implements OnPreferenceChangeListener {
+        implements OnPreferenceChangeListener {
 
     // deprecated preferences from browser-android-tabs
     public static final String PREF_BRAVE_STATS = "brave_stats";
@@ -137,4 +136,8 @@ public class BraveStatsPreferences extends BravePreferenceFragment
             assert false : "Unexpected preferenceName " + preferenceName;
         }
     }
+
+    public static final BaseSearchIndexProvider SEARCH_INDEX_DATA_PROVIDER =
+            new BaseSearchIndexProvider(
+                    BraveStatsPreferences.class.getName(), R.xml.brave_stats_preferences);
 }

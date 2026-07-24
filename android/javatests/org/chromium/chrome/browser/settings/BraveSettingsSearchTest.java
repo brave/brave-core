@@ -417,23 +417,24 @@ public class BraveSettingsSearchTest {
      * Verifies that key Brave-specific settings entries appear in the `Privacy Report` Settings
      * search results.
      */
-    // Disabled: BraveStatsPreferences has no search index provider.
-    // TODO(https://github.com/brave/brave-browser/issues/57183)
-    // @Test
-    // @SmallTest
-    // @Feature({"Preferences"})
-    // public void testPrivacyReportSettingsAreSearchable() {
-    //     mSettingsActivityTestRule.startSettingsActivity();
+    @Test
+    @SmallTest
+    @Feature({"Preferences"})
+    public void testPrivacyReportSettingsAreSearchable() {
+        mSettingsActivityTestRule.startSettingsActivity();
 
-    //     typeIntoSearch("Privacy Report");
-    //     assertSearchResult("Privacy Report", "Privacy Report");
+        // "Privacy Report" matches two result titles: the General-section entry that links to this
+        // screen, and the brave_stats switch inside the screen itself. Scope the assertion to the
+        // "Privacy Report" section so the duplicate title is not ambiguous.
+        typeIntoSearch("Privacy Report");
+        assertOneOfSearchResultsIs("Privacy Report", "Privacy Report");
 
-    //     clearAndTypeIntoSearch("Privacy Report Notification");
-    //     assertSearchResult("Privacy Report Notification");
+        clearAndTypeIntoSearch("Privacy Report Notification");
+        assertSearchResult("Privacy Report Notification");
 
-    //     clearAndTypeIntoSearch("Clear all privacy reports data");
-    //     assertSearchResult("Clear all privacy reports data");
-    // }
+        clearAndTypeIntoSearch("Clear all privacy reports data");
+        assertSearchResult("Clear all privacy reports data");
+    }
 
     /**
      * Verifies that key Brave-specific settings entries appear in the `Site settings` Settings
