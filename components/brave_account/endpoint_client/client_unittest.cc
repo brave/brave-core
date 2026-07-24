@@ -6,6 +6,7 @@
 #include "brave/components/brave_account/endpoint_client/client.h"
 
 #include <concepts>
+#include <cstddef>
 #include <optional>
 #include <string>
 #include <string_view>
@@ -17,6 +18,7 @@
 #include "base/functional/bind.h"
 #include "base/json/json_reader.h"
 #include "base/no_destructor.h"
+#include "base/test/bind.h"
 #include "base/test/run_until.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
@@ -33,6 +35,8 @@
 #include "brave/components/brave_account/endpoint_client/request_handle.h"
 #include "brave/components/brave_account/endpoint_client/request_types.h"
 #include "brave/components/brave_account/endpoint_client/response.h"
+#include "brave/components/brave_account/endpoint_client/retry_options.h"
+#include "brave/components/brave_account/endpoint_client/test_support.h"
 #include "brave/components/brave_account/endpoint_client/with_headers.h"
 #include "net/base/net_errors.h"
 #include "net/http/http_request_headers.h"
@@ -537,6 +541,26 @@ class ClientTestCancelableRequest
   network::TestURLLoaderFactory test_url_loader_factory_;
 };
 
+struct RetryOptionsTestCase {
+  std::string test_name;
+  detail::RetryOptions retry_options;
+  // Total number of times the request is expected to be issued
+  // (initial attempt + retries).
+  std::size_t expected_num_requests;
+};
+
+class ClientTestRetryOptions
+    : public testing::TestWithParam<RetryOptionsTestCase> {
+ public:
+  static constexpr auto kNameGenerator = [](const auto& info) {
+    return info.param.test_name;
+  };
+
+ protected:
+  base::test::TaskEnvironment task_environment_;
+  network::TestURLLoaderFactory test_url_loader_factory_;
+};
+
 }  // namespace
 
 TEST_P(ClientTestJSONPlainRequest, Send) {
@@ -638,5 +662,73 @@ INSTANTIATE_TEST_SUITE_P(CancelableRequest,
                                       ? "same_sequence"
                                       : "different_sequence";
                          });
+
+TEST(ClientTestUrlReplacements, OverridesReachTheOutgoingRequest) {
+  base::test::TaskEnvironment task_environment;
+  network::TestURLLoaderFactory test_url_loader_factory;
+
+  // JSONEndpoint::URL() is https://example.com/api/query; the request's
+  // url_replacements override the host, path, and query.
+  test_url_loader_factory.SetInterceptor(base::BindLambdaForTesting(
+      [&](const network::ResourceRequest& resource_request) {
+        EXPECT_EQ(resource_request.url,
+                  GURL("https://host.example.com/path/to/resource?key=value"));
+        test_url_loader_factory.AddResponse(resource_request.url.spec(), "");
+      }));
+
+  JSONEndpoint::Request request;
+  request.url_replacements.SetHost("host.example.com")
+      .SetPath("/path/to/resource")
+      .SetQuery("key=value");
+
+  base::test::TestFuture<JSONEndpoint::Response> future;
+  Client<JSONEndpoint>::Send(test_url_loader_factory.GetSafeWeakWrapper(),
+                             std::move(request), future.GetCallback());
+  // Wait() only resolves once the request completed, which requires the
+  // interceptor to have run and served a response - so the EXPECT_EQ above is
+  // guaranteed to have been reached.
+  ASSERT_TRUE(future.Wait());
+}
+
+TEST_P(ClientTestRetryOptions, Retry) {
+  const auto& test_case = GetParam();
+
+  // Always respond with 5xx so every attempt is retried until max_retries is
+  // exhausted, then count how many times the request was actually issued.
+  MockResponseFor<JSONEndpoint>(
+      test_url_loader_factory_,
+      {.net_error = net::OK, .status_code = net::HTTP_INTERNAL_SERVER_ERROR});
+
+  std::size_t num_requests = 0;
+  test_url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
+      [&](const network::ResourceRequest&) { ++num_requests; }));
+
+  JSONEndpoint::Request request;
+  request.retry_options = test_case.retry_options;
+
+  base::test::TestFuture<JSONEndpoint::Response> future;
+  Client<JSONEndpoint>::Send(test_url_loader_factory_.GetSafeWeakWrapper(),
+                             std::move(request), future.GetCallback());
+  ASSERT_TRUE(future.Wait());
+
+  EXPECT_EQ(num_requests, test_case.expected_num_requests);
+}
+
+INSTANTIATE_TEST_SUITE_P(
+    RetryOptions,
+    ClientTestRetryOptions,
+    testing::Values(
+        // The default retry_options must not retry.
+        RetryOptionsTestCase{.test_name = "does_not_retry_by_default",
+                             .retry_options = {},
+                             .expected_num_requests = 1},
+        RetryOptionsTestCase{
+            .test_name = "retries_on_server_error_up_to_max_retries",
+            .retry_options = {.max_retries = 2,
+                              .retry_mode =
+                                  network::SimpleURLLoader::RETRY_ON_5XX},
+            // Initial request + 2 retries.
+            .expected_num_requests = 3}),
+    ClientTestRetryOptions::kNameGenerator);
 
 }  // namespace brave_account::endpoint_client
