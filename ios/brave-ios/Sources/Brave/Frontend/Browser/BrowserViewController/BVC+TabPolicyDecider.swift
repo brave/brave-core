@@ -88,10 +88,18 @@ extension BrowserViewController: TabPolicyDecider {
     let isPrivateBrowsing = privateBrowsingManager.isPrivateBrowsing
 
     if tab.isExternalAppAlertPresented == true {
+      // Some external-app schemes may fire the same request back-to-back.
+      // Don't tear down and re-present the alert for a request that matches
+      // the one it's already asking about, otherwise it can dismiss and
+      // presents repeatedly.
+      if tab.externalAppURL == requestURL {
+        return .cancel
+      }
       tab.externalAppPopup?.dismissWithType(dismissType: .noAnimation)
       tab.externalAppPopupContinuation?.resume(with: .success(false))
       tab.externalAppPopupContinuation = nil
       tab.externalAppPopup = nil
+      tab.externalAppURL = nil
       tab.isExternalAppAlertPresented = false
     }
 
@@ -745,6 +753,7 @@ extension BrowserViewController {
 
       view.endEditing(true)
       tab.isExternalAppAlertPresented = true
+      tab.externalAppURL = url
 
       let popup = AlertPopupView(
         imageView: nil,
@@ -769,6 +778,7 @@ extension BrowserViewController {
           openedURLCompletionHandler(false)
           removeTabIfEmpty()
           tab?.isExternalAppAlertPresented = false
+          tab?.externalAppURL = nil
           return .flyDown
         }
       }
@@ -779,6 +789,7 @@ extension BrowserViewController {
         }
         removeTabIfEmpty()
         tab?.isExternalAppAlertPresented = false
+        tab?.externalAppURL = nil
         return .flyDown
       }
       popup.showWithType(showType: .flyUp)

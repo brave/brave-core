@@ -189,12 +189,15 @@ class TabBrowserData: NSObject, TabObserver {
   var externalAppAlertCounter = 0
   var isExternalAppAlertSuppressed = false
   var externalAppURLDomain: String?
+  /// The url the currently presented custom url-scheme alert is asking about
+  var externalAppURL: URL?
 
   func resetExternalAlertProperties() {
     externalAppAlertCounter = 0
     isExternalAppAlertPresented = false
     isExternalAppAlertSuppressed = false
     externalAppURLDomain = nil
+    externalAppURL = nil
   }
 
   /// A list of domains that we want to proceed to anyways regardless of any ad-blocking
