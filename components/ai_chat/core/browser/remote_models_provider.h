@@ -50,6 +50,8 @@ class RemoteModelsProvider {
   // invoked asynchronously.
   void GetModels(GetModelsCallback callback);
 
+  RemoteModelsFetcher& GetFetcherForTesting() { return fetcher_; }
+
  private:
   void OnCacheLoaded(std::optional<std::vector<mojom::ModelPtr>> cached_models);
   void OnFetchComplete(std::vector<mojom::ModelPtr> models);
