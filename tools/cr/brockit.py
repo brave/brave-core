@@ -1869,10 +1869,11 @@ class Rebase(Task):
                 f'--internal-rebase-crash-sequence-editor={crash_seq_editor}')
             env["GIT_SEQUENCE_EDITOR"] = shlex.join(editor)
         else:
-            # If there are no internal operation, we can just return always
-            # true to whatever plan git gives us.
-            env["GIT_SEQUENCE_EDITOR"] = 'cmd /c "exit 0"' if platform.system(
-            ) == 'Windows' else 'true'
+            # No internal plan rewriting: accept git's plan as-is. Git runs the
+            # sequence editor through its bundled `sh -c` even on Windows, so
+            # `true` (an sh builtin) works everywhere -- unlike `cmd`, which
+            # re-parses git's backslash-separated todo path and mangles it.
+            env["GIT_SEQUENCE_EDITOR"] = 'true'
 
         try:
             # `interactive=True` as we may need to open an editor if
