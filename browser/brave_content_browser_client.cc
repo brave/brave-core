@@ -115,7 +115,6 @@
 #include "components/content_settings/browser/page_specific_content_settings.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/embedder_support/switches.h"
-#include "components/history_embeddings/core/history_embeddings_features.h"
 #include "components/prefs/pref_service.h"
 #include "components/services/heap_profiling/public/mojom/heap_profiling_client.mojom.h"
 #include "components/user_prefs/user_prefs.h"
@@ -170,11 +169,6 @@
 #include "brave/browser/ui/webui/history/brave_history_embeddings.mojom.h"
 #endif
 #endif  // !BUILDFLAG(IS_ANDROID)
-
-#if BUILDFLAG(ENABLE_LOCAL_AI)
-#include "brave/browser/ui/webui/local_ai/local_ai_ui.h"
-#include "brave/components/local_ai/core/local_ai.mojom.h"
-#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
 #include "brave/browser/ui/webui/ads_internals/ads_internals_ui.h"
@@ -995,12 +989,6 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
 
   map->Add<skus::mojom::SkusService>(
       base::BindRepeating(&MaybeBindSkusSdkImpl));
-#if BUILDFLAG(ENABLE_LOCAL_AI)
-  if (base::FeatureList::IsEnabled(history_embeddings::kHistoryEmbeddings)) {
-    content::RegisterWebUIControllerInterfaceBinder<
-        local_ai::mojom::LocalAIService, local_ai::UntrustedLocalAIUI>(map);
-  }
-#endif
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   map->Add<brave_vpn::mojom::ServiceHandler>(
       base::BindRepeating(&MaybeBindBraveVpnImpl));

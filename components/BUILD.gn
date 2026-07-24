@@ -106,9 +106,6 @@ test("brave_components_unittests") {
   }
 
   if (use_blink) {
-    if (enable_local_ai) {
-      deps += [ "//brave/components/local_ai/content:unit_tests" ]
-    }
     if (enable_ai_chat) {
       deps += [ "//brave/components/ai_chat/content/browser:unit_tests" ]
     }
