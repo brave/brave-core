@@ -125,6 +125,7 @@ bool ClearExtensionSettingsOnFileThread(
   return !error;
 }
 
+// Returns false in case of an error.
 bool MoveExtensionSettings(const extensions::ExtensionId& source_extension_id,
                            const base::FilePath& source_dir,
                            const extensions::ExtensionId& target_extension_id,
@@ -177,7 +178,7 @@ bool MoveExtensionSettings(const extensions::ExtensionId& source_extension_id,
           error = true;
         }
       });
-  return error;
+  return !error;
 }
 
 base::Version BackupExtensionSettingsOnFileThread(
@@ -198,8 +199,8 @@ base::Version BackupExtensionSettingsOnFileThread(
       base::GetDeletePathRecursivelyCallback(backup_path));
 
   const bool error =
-      MoveExtensionSettings(webstore_extension_id, profile_dir,
-                            webstore_extension_id, backup_path, false);
+      !MoveExtensionSettings(webstore_extension_id, profile_dir,
+                             webstore_extension_id, backup_path, false);
 
   if (error || !base::WriteFile(backup_path.AppendASCII(kVersion),
                                 version.GetString())) {
@@ -232,11 +233,11 @@ void ImportExtensionSettingsOnFileThread(
       },
       brave_hosted_extension_id, profile_dir));
 
-  const bool error = MoveExtensionSettings(webstore_extension_id, backup_path,
-                                           brave_hosted_extension_id,
-                                           profile_dir, /*delete_source=*/true);
+  const bool succeed = MoveExtensionSettings(
+      webstore_extension_id, backup_path, brave_hosted_extension_id,
+      profile_dir, /*delete_source=*/true);
 
-  if (!error) {
+  if (succeed) {
     clear_settings_on_error.ReplaceClosure(base::DoNothing());
   }
 }
