@@ -11,7 +11,6 @@
 #include <vector>
 
 #include "base/memory/weak_ptr.h"
-#include "base/notimplemented.h"
 #include "brave/browser/psst/psst_tab_web_contents_observer.h"
 #include "brave/browser/psst/psst_ui_delegate_impl.h"
 #include "brave/browser/ui/tabs/public/brave_tab_features.h"
@@ -23,7 +22,6 @@
 #include "chrome/browser/ui/webui/constrained_web_dialog_ui.h"
 #include "components/constrained_window/constrained_window_views.h"
 #include "content/public/browser/web_contents.h"
-
 namespace psst {
 
 namespace {
@@ -119,6 +117,14 @@ void BravePsstDialogHandler::OnSetRequestStatus(
   client_page_->OnSetRequestStatus(uid, error);
 }
 
+void BravePsstDialogHandler::OnPsstErrorsReportSent() {
+  if (!client_page_ || !client_page_.is_bound() ||
+      !client_page_.is_connected()) {
+    return;
+  }
+  client_page_->OnPsstErrorsReportSent();
+}
+
 void BravePsstDialogHandler::OnTabStripModelChanged(
     TabStripModel* tab_strip_model,
     const TabStripModelChange& change,
@@ -156,8 +162,7 @@ void BravePsstDialogHandler::ReportFailedContent() {
     return;
   }
 
-  // Report Submission Implementation
-  NOTIMPLEMENTED();
+  psst_dialog_delegate_->SubmitPsstErrorsReport();
 }
 
 void BravePsstDialogHandler::CloseDialog() {

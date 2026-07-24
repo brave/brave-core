@@ -9,6 +9,7 @@
 #include <string>
 #include <vector>
 
+#include "base/memory/raw_ptr.h"
 #include "brave/browser/psst/psst_tab_web_contents_observer.h"
 #include "brave/browser/psst/psst_ui_delegate_impl.h"
 #include "brave/components/psst/core/common/psst_ui_common.mojom-shared.h"
@@ -21,7 +22,6 @@ namespace psst {
 
 class BravePsstDialogUI;
 class PsstTabWebContentsObserver;
-
 class BravePsstDialogHandler : public psst::mojom::PsstConsentHelper,
                                public PsstUiDelegateImpl::Observer,
                                public TabStripModelObserver {
@@ -49,6 +49,7 @@ class BravePsstDialogHandler : public psst::mojom::PsstConsentHelper,
 
   void OnSetRequestStatus(const std::string& uid,
                           const std::optional<std::string>& error) override;
+  void OnPsstErrorsReportSent() override;
 
   // TabStripModelObserver
   void OnTabStripModelChanged(
