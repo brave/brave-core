@@ -102,7 +102,7 @@ TEST_F(BraveBrowserPrefsTest, BookmarkBarState_Untouched_KeepsUpstreamDefault) {
 // `kShowBookmarkBar` is intentionally left intact (kept in sync), while the
 // deprecated `kAlwaysShowBookmarkBarOnNTP` is cleared.
 TEST_F(BraveBrowserPrefsTest, BookmarkBarState_Always_Migrates) {
-  brave::SetBookmarkState(brave::BookmarkBarState::kAlways, &prefs_);
+  brave::SetBookmarkStateForTesting(brave::BookmarkBarState::kAlways, &prefs_);
 
   MigrateObsoletePrefs();
 
@@ -117,7 +117,7 @@ TEST_F(BraveBrowserPrefsTest, BookmarkBarState_Always_Migrates) {
 
 // The deprecated "NTP only" state maps to `kOnlyShowOnNtp`.
 TEST_F(BraveBrowserPrefsTest, BookmarkBarState_Ntp_Migrates) {
-  brave::SetBookmarkState(brave::BookmarkBarState::kNtp, &prefs_);
+  brave::SetBookmarkStateForTesting(brave::BookmarkBarState::kNtp, &prefs_);
 
   MigrateObsoletePrefs();
 
@@ -132,7 +132,7 @@ TEST_F(BraveBrowserPrefsTest, BookmarkBarState_Ntp_Migrates) {
 
 // The deprecated "never show" state maps to `kAlwaysHide`.
 TEST_F(BraveBrowserPrefsTest, BookmarkBarState_Never_Migrates) {
-  brave::SetBookmarkState(brave::BookmarkBarState::kNever, &prefs_);
+  brave::SetBookmarkStateForTesting(brave::BookmarkBarState::kNever, &prefs_);
 
   MigrateObsoletePrefs();
 
