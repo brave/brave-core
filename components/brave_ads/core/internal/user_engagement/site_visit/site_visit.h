@@ -100,6 +100,7 @@ class SiteVisit final : public BrowserManagerObserver,
   void OnTabDidChangeFocus(int32_t tab_id) override;
   void OnTabDidChange(const TabInfo& tab) override;
   void OnTabDidLoad(const TabInfo& tab, int http_status_code) override;
+  void OnTabDidFailToLoad(const TabInfo& tab) override;
   void OnDidCloseTab(int32_t tab_id) override;
 
   base::ObserverList<SiteVisitObserver> observers_;

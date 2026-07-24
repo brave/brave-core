@@ -340,6 +340,17 @@ void SiteVisit::OnTabDidLoad(const TabInfo& tab, int http_status_code) {
   MaybeLandOnPage(tab, http_status_code);
 }
 
+void SiteVisit::OnTabDidFailToLoad(const TabInfo& tab) {
+  MaybeCancelPageLand(tab.id);
+
+  const std::optional<AdInfo> ad = MaybeGetLastClickedAdIfAllowedToLandOnPage();
+  if (!ad) {
+    return;
+  }
+
+  DidNotLandOnPage(tab.id, *ad);
+}
+
 void SiteVisit::OnDidCloseTab(int32_t tab_id) {
   CancelPageLand(tab_id);
 }
