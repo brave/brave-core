@@ -532,6 +532,7 @@ TEST_F(CalculateBoundsForVerticalDraggedViewsTest,
   // The nested child is stacked tightly under its parent: it starts before
   // the parent's bottom edge (partial overlap), instead of the normal
   // height + kVerticalTabsSpacing gap.
+  EXPECT_EQ(bounds[1].y(), bounds[0].y() + tabs::kNestedTabStackedOffset);
   EXPECT_LT(bounds[1].y(), bounds[0].bottom());
 
   // Once the nested subtree ends, normal spacing resumes.
@@ -559,31 +560,6 @@ TEST_F(ReorderDraggedViewsForStackingTest, FirstDraggedViewEndsUpOnTop) {
   // dragged view, ends up at the bottom.
   ASSERT_EQ(3u, parent.children().size());
   EXPECT_EQ(0u, *parent.GetIndexOf(c));
-  EXPECT_EQ(1u, *parent.GetIndexOf(b));
-  EXPECT_EQ(2u, *parent.GetIndexOf(a));
-}
-
-TEST_F(ReorderDraggedViewsForStackingTest, SkipsPinnedTabs) {
-  FakeTabSlotController controller;
-  views::View parent;
-  auto pinned_tab_owned =
-      std::make_unique<BraveTab>(tabs::TabHandle(1), &controller);
-  tabs::TabData data;
-  data.pinned = true;
-  pinned_tab_owned->SetDataForTesting(std::move(data));
-  BraveTab* pinned_tab = parent.AddChildView(std::move(pinned_tab_owned));
-
-  BraveTab* a = parent.AddChildView(
-      std::make_unique<BraveTab>(tabs::TabHandle(2), &controller));
-  BraveTab* b = parent.AddChildView(
-      std::make_unique<BraveTab>(tabs::TabHandle(3), &controller));
-
-  ReorderDraggedViewsForStacking(&parent, {pinned_tab, a, b});
-
-  // The pinned tab is left at its original position; only `a` and `b` get
-  // reordered relative to each other.
-  ASSERT_EQ(3u, parent.children().size());
-  EXPECT_EQ(0u, *parent.GetIndexOf(pinned_tab));
   EXPECT_EQ(1u, *parent.GetIndexOf(b));
   EXPECT_EQ(2u, *parent.GetIndexOf(a));
 }

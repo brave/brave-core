@@ -39,6 +39,12 @@ inline constexpr int kPinnedUnpinnedSeparatorHeight = 1;
 // The base offset per level for vertical tabs in tree tabs
 inline constexpr int kBaseOffsetPerLevel = 20;
 
+// Vertical gap between a tree-tab parent and its nested children so a
+// dragged subtree renders as a compact, overlapping pile instead of a
+// fully spaced list. Taller than kStackedOffset so the pile still reads
+// as a visible stack rather than nearly-flush tabs.
+inline constexpr int kNestedTabStackedOffset = 12;
+
 int GetTabCornerRadius(const Tab& tab);
 
 void CalculatePinnedTabsBoundsInGrid(

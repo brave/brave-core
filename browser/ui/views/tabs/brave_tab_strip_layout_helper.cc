@@ -251,11 +251,6 @@ std::vector<gfx::Rect> CalculateBoundsForVerticalDraggedViews(
     bool is_vertical_tabs_floating) {
   // Fan-out offset between successively stacked pinned tabs.
   constexpr int kStackedOffset = 4;
-  // Vertical gap between a tree-tab parent and its nested children so a
-  // dragged subtree renders as a compact, overlapping pile instead of a
-  // fully spaced list. Taller than kStackedOffset so the pile still reads
-  // as a visible stack rather than nearly-flush tabs.
-  constexpr int kNestedTabStackedOffset = 12;
 
   std::vector<gfx::Rect> bounds;
   int x = 0;
@@ -312,7 +307,7 @@ std::vector<gfx::Rect> CalculateBoundsForVerticalDraggedViews(
     const std::vector<TabSlotView*>& views,
     TabStrip* tab_strip) {
   const bool is_vertical_tabs_floating =
-      static_cast<BraveTabStrip*>(tab_strip)->IsVerticalTabsFloating();
+      views::AsViewClass<BraveTabStrip>(tab_strip)->IsVerticalTabsFloating();
   const int drag_area_width = tab_strip->GetDragContext()
                                   ->GetPositioningDelegate()
                                   ->GetTabDragAreaWidth();
@@ -322,12 +317,14 @@ std::vector<gfx::Rect> CalculateBoundsForVerticalDraggedViews(
 
 void ReorderDraggedViewsForStacking(views::View* parent,
                                     const std::vector<TabSlotView*>& views) {
-  for (size_t i = views.size(); i-- > 0;) {
-    TabSlotView* view = views[i];
+  for (TabSlotView* view : base::Reversed(views)) {
     if (view->GetTabSlotViewType() == TabSlotView::ViewType::kTab &&
         views::AsViewClass<Tab>(view)->data().pinned) {
-      continue;
+      // As can't drag pinned tabs and unpinned tabs together, we don't need to
+      // continue.
+      return;
     }
+
     parent->ReorderChildView(view, parent->children().size() - 1);
   }
 }
