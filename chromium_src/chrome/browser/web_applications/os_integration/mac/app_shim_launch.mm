@@ -10,7 +10,7 @@
 // When the tests are run from a volume that macOS classifies as "removable",
 // then macOS sometimes shows a GUI prompt "<shim name> would like to access
 // files on a removable volume". In unattended runs (the typical case in CI),
-// the prompt never gets answered. The tests (eg. WebAppIntegration*) leak the
+// the prompt never gets answered. The tests (e.g. WebAppIntegration*) leak the
 // running shim processes, so their requests stay pending. One unanswered prompt
 // blocks at the head of `sandboxd`'s queue, and every subsequent check parks
 // its own worker thread behind it, until the thread pool is exhausted and
