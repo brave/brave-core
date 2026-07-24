@@ -1,0 +1,102 @@
+# Eval: browser-window-feature-refactor moves a Browser-window method into a
+# BWF-owned feature controller.
+#
+# Ported from chromium's agents/prompts/eval/browser_window_feature_refactor/,
+# retargeted at Brave's Claude Code harness. Differences vs. upstream:
+#   * provider is our claude_provider.py (sandbox mode), not gemini_provider.py;
+#   * the refactor mutates files, so it runs in a throwaway per-run git repo
+#     (config.sandbox) and asserts read the mirror at .last_run/sandbox/ —
+#     `check_files_added` (which shells to `git status` in the assert's own cwd)
+#     is therefore replaced by `check_files_exist` (a plain filesystem check).
+# The fixture, prompt, and content asserts are otherwise a faithful port.
+description:
+  browser-window-feature-refactor moves a fake BrowserWindow method into a
+  BWF-owned controller.
+
+prompts:
+  - 'file://prompt.md'
+
+providers:
+  # Claude Code provider in sandbox mode: it applies the setup patch and runs
+  # the agent in an isolated temp git repo (never the real tree), then mirrors
+  # the result to agents/testing/.last_run/sandbox/ for the asserts below.
+  - id: 'python:../../../testing/claude_provider.py'
+    config:
+      # promptfoo's python-worker timeout (ms); keep well above timeoutSeconds.
+      timeout: 2400000
+      timeoutSeconds: 1800
+      sandbox: true
+      skills:
+        - browser-window-feature-refactor
+      changes:
+        - apply: agents/prompts/eval/browser-window-feature-refactor/fixtures/fake_qr_window_method.patch
+
+tests:
+  - assert:
+      # The two new controller files were created in the sandbox.
+      - type: python
+        value: 'file://../../../testing/asserts/check_changes.py:check_files_exist'
+        config:
+          files:
+            - '../../../testing/.last_run/sandbox/chrome/browser/ui/browser_window/test/fake_qrcode_window_controller_eval.cc'
+            - '../../../testing/.last_run/sandbox/chrome/browser/ui/browser_window/test/fake_qrcode_window_controller_eval.h'
+      - type: python
+        value: 'file://../../../testing/asserts/check_changes.py:check_file_content'
+        config:
+          files:
+            # The QR method left FakeBrowserWindow entirely.
+            - path: '../../../testing/.last_run/sandbox/chrome/browser/ui/browser_window/test/fake_browser_window_eval.h'
+              absent:
+                - 'ShowQRCodeBubble'
+            - path: '../../../testing/.last_run/sandbox/chrome/browser/ui/browser_window/test/fake_browser_window_eval.cc'
+              absent:
+                - 'FakeBrowserWindow::ShowQRCodeBubble'
+                - 'QR bubble shown by BrowserWindow'
+            # BWF owns the controller via a forward decl + unique_ptr member, and
+            # does not expose a public accessor. The two multi-line `absent`
+            # blocks catch the member being dropped into the wrong ownership
+            # group (must not sit right after `browser_` or the embedder member).
+            - path: '../../../testing/.last_run/sandbox/chrome/browser/ui/browser_window/test/fake_browser_window_features_eval.h'
+              present:
+                - 'class FakeQRCodeWindowController;'
+                - 'std::unique_ptr<FakeQRCodeWindowController>'
+              absent:
+                - 'fake_qrcode_window_controller()'
+                - |-
+                  raw_ptr<FakeBrowserWindowInterface> browser_ = nullptr;
+                    std::unique_ptr<FakeQRCodeWindowController>
+                - |-
+                  std::unique_ptr<FakeEmbedderFeatures> fake_embedder_features_;
+                    std::unique_ptr<FakeQRCodeWindowController>
+            - path: '../../../testing/.last_run/sandbox/chrome/browser/ui/browser_window/test/fake_browser_window_features_eval.cc'
+              present:
+                - 'fake_qrcode_window_controller_ ='
+                # Created through the UnownedUserData factory
+                # (`GetUserDataFactory().CreateInstance<>()`), not
+                # `std::make_unique<>()`, matching BWF guidance. The member stays
+                # a `std::unique_ptr<>`.
+                - 'GetUserDataFactory().CreateInstance<FakeQRCodeWindowController>'
+                # Name/signature-agnostic: the controller is invoked from the
+                # call site. The exact method name is not what this eval tests
+                # (a real refactor may rename the moved method).
+                - 'fake_qrcode_window_controller_->'
+              absent:
+                - 'GetBrowserForMigrationOnly'
+                - |-
+                  InitPostBrowserViewConstruction() {
+                    fake_qrcode_window_controller_ =
+            - path: '../../../testing/.last_run/sandbox/chrome/browser/ui/browser_window/test/fake_qrcode_window_controller_eval.h'
+              present:
+                - 'class FakeQRCodeWindowController'
+            - path: '../../../testing/.last_run/sandbox/chrome/browser/ui/browser_window/test/fake_qrcode_window_controller_eval.cc'
+              present:
+                # Name-agnostic: a method is implemented on the controller and
+                # the bubble message now lives here. We do not pin the name.
+                - 'FakeQRCodeWindowController::'
+                - 'QR bubble shown by feature controller'
+    metadata:
+      # Refactor is LLM-driven and nondeterministic: pass if >= 2 of 3 runs pass.
+      # Expensive (a full multi-file refactor); run on-demand, not per-PR.
+      runs_per_test: 3
+      pass_k_threshold: 2
+      tags: ['stable']
