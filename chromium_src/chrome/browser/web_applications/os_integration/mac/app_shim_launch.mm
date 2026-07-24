@@ -91,9 +91,12 @@ void RunAppLaunchCallbacksForDirectLaunch(
       base::BindOnce(std::move(launched_callback), std::move(process)));
   base::ThreadPool::PostTask(
       FROM_HERE,
-      {base::MayBlock(), base::TaskShutdownBehavior::CONTINUE_ON_SHUTDOWN},
+      {base::MayBlock(), base::WithBaseSyncPrimitives(),
+       base::TaskShutdownBehavior::CONTINUE_ON_SHUTDOWN},
       base::BindOnce(
           [](base::Process process, ShimTerminatedCallback callback) {
+            // WaitForExit() blocks on a //base sync primitive, which is why the
+            // task requests base::WithBaseSyncPrimitives() above.
             process.WaitForExit(nullptr);
             content::GetUIThreadTaskRunner({})->PostTask(FROM_HERE,
                                                          std::move(callback));
