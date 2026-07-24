@@ -8,8 +8,13 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/check_deref.h"
 #include "base/functional/bind.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
+#include "brave/components/constants/pref_names.h"
+#include "brave/components/p3a/pref_names.h"
+#include "brave/components/web_discovery/buildflags/buildflags.h"
+#include "chrome/browser/metrics/metrics_reporting_state.h"
 #include "chrome/browser/themes/theme_service.h"
 #include "components/prefs/pref_service.h"
 
@@ -46,8 +51,10 @@ ThemeService::BrowserColorScheme ToBrowserColorScheme(
 WelcomePageHandler::WelcomePageHandler(
     mojo::PendingReceiver<mojom::WelcomePageHandler> receiver,
     ThemeService* theme_service,
-    PrefService* prefs)
-    : receiver_(this, std::move(receiver)) {
+    PrefService* prefs,
+    PrefService* local_state)
+    : receiver_(this, std::move(receiver)),
+      local_state_(CHECK_DEREF(local_state)) {
   CHECK(theme_service);
   CHECK(prefs);
   theme_service_observation_.Observe(theme_service);
@@ -89,6 +96,29 @@ void WelcomePageHandler::SetVerticalTabsEnabled(
     SetVerticalTabsEnabledCallback callback) {
   pref_change_registrar_.prefs()->SetBoolean(brave_tabs::kVerticalTabsEnabled,
                                              enabled);
+  std::move(callback).Run();
+}
+
+void WelcomePageHandler::SetWebDiscoveryEnabled(
+    [[maybe_unused]] bool enabled,
+    SetWebDiscoveryEnabledCallback callback) {
+#if BUILDFLAG(ENABLE_WEB_DISCOVERY)
+  pref_change_registrar_.prefs()->SetBoolean(kWebDiscoveryEnabled, enabled);
+#endif
+  std::move(callback).Run();
+}
+
+void WelcomePageHandler::SetP3AEnabled(bool enabled,
+                                       SetP3AEnabledCallback callback) {
+  local_state_->SetBoolean(p3a::kP3AEnabled, enabled);
+  std::move(callback).Run();
+}
+
+void WelcomePageHandler::SetCrashReportsEnabled(
+    bool enabled,
+    SetCrashReportsEnabledCallback callback) {
+  ChangeMetricsReportingState(
+      enabled, metrics::ChangeMetricsReportingStateCalledFrom::kUiSettings);
   std::move(callback).Run();
 }
 
