@@ -101,7 +101,6 @@ class SearchPage implements PageInterface {
   onPermissionPromptChanged(isShowing: boolean, promptSize: Size): void {}
   setRestoredTabIds(tabIds: number[]): void { }
   setAimThreadRestoredTabs(tabs: TabInfo[]): void { }
-  updateSmartTabSharingActive(active: boolean): void { }
 }
 
 export const search = new SearchPage()
