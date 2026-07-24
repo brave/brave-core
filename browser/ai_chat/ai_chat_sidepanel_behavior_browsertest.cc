@@ -77,7 +77,7 @@ class AIChatGlobalSidePanelBrowserTest
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
     // Must be opted-in to use AI Chat agent profile
-    ai_chat::SetUserOptedIn(browser()->profile()->GetPrefs(), true);
+    ai_chat::SetUserOptedIn(browser()->GetProfile()->GetPrefs(), true);
   }
 
   ~AIChatGlobalSidePanelBrowserTest() override = default;
@@ -154,7 +154,8 @@ class AIChatGlobalSidePanelBrowserTest
   // failed, in which case the test is already failing).
   std::string CreateConversation(Browser* browser) {
     ai_chat::AIChatService* service =
-        ai_chat::AIChatServiceFactory::GetForBrowserContext(browser->profile());
+        ai_chat::AIChatServiceFactory::GetForBrowserContext(
+            browser->GetProfile());
     EXPECT_TRUE(service);
     if (!service) {
       return std::string();
@@ -182,10 +183,10 @@ IN_PROC_BROWSER_TEST_P(AIChatGlobalSidePanelBrowserTest,
   // have global sidepanel behavior.
   base::test::TestFuture<Browser*> ai_chat_browser_future;
   ai_chat::OpenBrowserWindowForAIChatAgentProfileForTesting(
-      *browser()->profile(), ai_chat_browser_future.GetCallback());
+      *browser()->GetProfile(), ai_chat_browser_future.GetCallback());
   Browser* ai_chat_browser = ai_chat_browser_future.Get();
   ASSERT_TRUE(ai_chat_browser);
-  ASSERT_TRUE(ai_chat_browser->profile()->IsAIChatAgent());
+  ASSERT_TRUE(ai_chat_browser->GetProfile()->IsAIChatAgent());
 
   // Test that agent profile always uses global behavior regardless of flag
   // state
@@ -749,7 +750,7 @@ IN_PROC_BROWSER_TEST_P(AIChatGlobalSidePanelBrowserTest,
 
   content::TestNavigationObserver observer(conversation_url);
   observer.StartWatchingNewWebContents();
-  ai_chat::OpenConversationInSidePanel(browser()->profile(), uuid);
+  ai_chat::OpenConversationInSidePanel(browser()->GetProfile(), uuid);
   observer.Wait();
   EXPECT_TRUE(observer.last_navigation_succeeded());
 
@@ -792,7 +793,7 @@ IN_PROC_BROWSER_TEST_P(AIChatGlobalSidePanelBrowserTest,
 
   content::TestNavigationObserver observer(conversation_url);
   observer.WatchExistingWebContents();
-  ai_chat::OpenConversationInSidePanel(browser()->profile(), uuid);
+  ai_chat::OpenConversationInSidePanel(browser()->GetProfile(), uuid);
   observer.Wait();
   EXPECT_TRUE(observer.last_navigation_succeeded());
 
@@ -821,7 +822,7 @@ IN_PROC_BROWSER_TEST_P(AIChatGlobalSidePanelBrowserTest,
 
   content::TestNavigationObserver observer(conversation_url);
   observer.StartWatchingNewWebContents();
-  ai_chat::OpenConversationInSidePanel(browser()->profile(), uuid);
+  ai_chat::OpenConversationInSidePanel(browser()->GetProfile(), uuid);
   observer.Wait();
   ASSERT_TRUE(base::test::RunUntil([&]() { return side_panel->GetVisible(); }));
 
@@ -835,7 +836,7 @@ IN_PROC_BROWSER_TEST_P(AIChatGlobalSidePanelBrowserTest,
 
   // Re-opening cancels the close instead of being suppressed by that stale
   // state, and the panel settles open on the same conversation.
-  ai_chat::OpenConversationInSidePanel(browser()->profile(), uuid);
+  ai_chat::OpenConversationInSidePanel(browser()->GetProfile(), uuid);
   EXPECT_FALSE(side_panel->IsClosing());
   ASSERT_TRUE(base::test::RunUntil([&]() { return side_panel->GetVisible(); }));
   EXPECT_TRUE(IsSidePanelOpen(browser()));
@@ -853,11 +854,11 @@ IN_PROC_BROWSER_TEST_P(AIChatGlobalSidePanelBrowserTest,
   if (IsGlobalFlagEnabled()) {
     GTEST_SKIP() << "Only applies when the side panel is not global.";
   }
-  ASSERT_FALSE(ai_chat::ShouldSidePanelBeGlobal(browser()->profile()));
+  ASSERT_FALSE(ai_chat::ShouldSidePanelBeGlobal(browser()->GetProfile()));
 
   const std::string uuid = CreateConversation(browser());
   ASSERT_FALSE(uuid.empty());
-  ai_chat::OpenConversationInSidePanel(browser()->profile(), uuid);
+  ai_chat::OpenConversationInSidePanel(browser()->GetProfile(), uuid);
 
   EXPECT_FALSE(IsSidePanelOpen(browser()));
   EXPECT_FALSE(ai_chat::GetSidePanelWebContents(browser()));

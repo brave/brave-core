@@ -90,7 +90,7 @@ class OnionDomainThrottleBrowserTest
     if (!tor_window) {
       return browser();
     }
-    return TorProfileManager::SwitchToTorProfile(browser()->profile());
+    return TorProfileManager::SwitchToTorProfile(browser()->GetProfile());
   }
 
   content::WebContents* GetActiveWebContents(Browser* browser) {
@@ -100,7 +100,7 @@ class OnionDomainThrottleBrowserTest
   }
 
   Browser* SetUpScenario(const OnionAccessScenario& scenario) {
-    browser()->profile()->GetPrefs()->SetBoolean(
+    browser()->GetProfile()->GetPrefs()->SetBoolean(
         tor::prefs::kOnionOnlyInTorWindows, scenario.onion_only_in_tor_windows);
 
     Browser* browser = GetBrowser(scenario.tor_window);

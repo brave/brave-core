@@ -43,7 +43,7 @@ class BraveRewardsOFACTest : public InProcessBrowserTest {
     return web_contents()->GetBrowserContext();
   }
 
-  Profile* profile() { return browser()->profile(); }
+  Profile* profile() { return browser()->GetProfile(); }
 
   PrefService* prefs() { return user_prefs::UserPrefs::Get(browser_context()); }
 };
@@ -76,16 +76,17 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsOFACTest, IsBraveRewardsDisabled) {
 IN_PROC_BROWSER_TEST_F(BraveRewardsOFACTest, GetRewardsAndAdsServices) {
   {
     const brave_l10n::test::ScopedDefaultLocale locale("en_CA");  // "Canada"
-    EXPECT_NE(brave_rewards::RewardsServiceFactory::GetForProfile(profile()),
+    EXPECT_NE(brave_rewards::RewardsServiceFactory::GetForProfile(GetProfile()),
               nullptr);
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
-    EXPECT_NE(brave_ads::AdsServiceFactory::GetForProfile(profile()), nullptr);
+    EXPECT_NE(brave_ads::AdsServiceFactory::GetForProfile(GetProfile()),
+              nullptr);
 #endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
   }
 
   {
     const brave_l10n::test::ScopedDefaultLocale locale("es_CU");  // "Cuba"
-    EXPECT_EQ(brave_rewards::RewardsServiceFactory::GetForProfile(profile()),
+    EXPECT_EQ(brave_rewards::RewardsServiceFactory::GetForProfile(GetProfile()),
               nullptr);
   }
 }

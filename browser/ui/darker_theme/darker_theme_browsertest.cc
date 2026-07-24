@@ -40,7 +40,7 @@ class DarkerThemeBrowserTest : public InProcessBrowserTest {
 
 IN_PROC_BROWSER_TEST_F(DarkerThemeBrowserTest, EnableDarkerMode) {
   // By default, the darker theme should be off.
-  ASSERT_FALSE(browser()->profile()->GetPrefs()->GetBoolean(
+  ASSERT_FALSE(browser()->GetProfile()->GetPrefs()->GetBoolean(
       darker_theme::prefs::kBraveDarkerMode));
 
   auto* browser_view =
@@ -48,7 +48,7 @@ IN_PROC_BROWSER_TEST_F(DarkerThemeBrowserTest, EnableDarkerMode) {
   auto* browser_widget =
       static_cast<BraveBrowserWidget*>(browser_view->browser_widget());
   auto* theme_service =
-      ThemeServiceFactory::GetForProfile(browser()->profile());
+      ThemeServiceFactory::GetForProfile(browser()->GetProfile());
   ASSERT_TRUE(theme_service);
   theme_service->SetBrowserColorScheme(ThemeService::BrowserColorScheme::kDark);
 
@@ -57,7 +57,7 @@ IN_PROC_BROWSER_TEST_F(DarkerThemeBrowserTest, EnableDarkerMode) {
   ASSERT_EQ(color_provider_key.color_mode,
             ui::ColorProviderKey::ColorMode::kDark);
 
-  auto* prefs = browser()->profile()->GetPrefs();
+  auto* prefs = browser()->GetProfile()->GetPrefs();
   // Enable the darker theme.
   prefs->SetBoolean(darker_theme::prefs::kBraveDarkerMode, true);
   color_provider_key = browser_widget->GetColorProviderKey();
@@ -105,7 +105,7 @@ IN_PROC_BROWSER_TEST_F(DarkerThemeFeatureToggleOffBrowserTest,
 
   // In this PRE_ test, we turns on Darker theme preference and then turns off
   // the feature flag.
-  auto* prefs = browser()->profile()->GetPrefs();
+  auto* prefs = browser()->GetProfile()->GetPrefs();
   prefs->SetBoolean(darker_theme::prefs::kBraveDarkerMode, true);
 }
 
@@ -116,7 +116,7 @@ IN_PROC_BROWSER_TEST_F(DarkerThemeFeatureToggleOffBrowserTest,
       << "Feature flag should be disabled from PRE_FeatureDisabledByUsers.";
 
   // After the feature flag is turned off, the preference should be removed.
-  auto* prefs = browser()->profile()->GetPrefs();
+  auto* prefs = browser()->GetProfile()->GetPrefs();
   EXPECT_FALSE(prefs->FindPreference(darker_theme::prefs::kBraveDarkerMode));
 
   // Even if the preference was previously set to true, the darker theme
@@ -126,7 +126,7 @@ IN_PROC_BROWSER_TEST_F(DarkerThemeFeatureToggleOffBrowserTest,
   auto* browser_widget =
       static_cast<BraveBrowserWidget*>(browser_view->browser_widget());
   auto* theme_service =
-      ThemeServiceFactory::GetForProfile(browser()->profile());
+      ThemeServiceFactory::GetForProfile(browser()->GetProfile());
   ASSERT_TRUE(theme_service);
   theme_service->SetBrowserColorScheme(ThemeService::BrowserColorScheme::kDark);
 

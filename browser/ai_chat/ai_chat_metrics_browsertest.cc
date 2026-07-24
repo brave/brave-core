@@ -41,7 +41,7 @@ class AIChatMetricsTest : public InProcessBrowserTest {
         params);
     auto* profile_metrics =
         misc_metrics::ProfileMiscMetricsServiceFactory::GetServiceForContext(
-            browser()->profile());
+            browser()->GetProfile());
     ai_chat_metrics_ = profile_metrics->GetAIChatMetrics();
   }
 

@@ -175,7 +175,7 @@ void WaybackMachineActionIconView::OnExecuting(ExecuteSource source) {
 
 void WaybackMachineActionIconView::UpdateImpl() {
   // Hide icon if disabled by policy
-  auto* prefs = user_prefs::UserPrefs::Get(browser_->profile());
+  auto* prefs = user_prefs::UserPrefs::Get(browser_->GetProfile());
   if (!IsWaybackMachineEnabled(prefs)) {
     SetVisible(false);
     SetIsLoading(false);

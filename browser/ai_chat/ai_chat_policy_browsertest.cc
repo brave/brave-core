@@ -76,7 +76,7 @@ class AIChatPolicyTest : public InProcessBrowserTest,
     return browser()->tab_strip_model()->GetActiveWebContents();
   }
 
-  Profile* profile() { return browser()->profile(); }
+  Profile* profile() { return browser()->GetProfile(); }
 
   PrefService* prefs() { return profile()->GetPrefs(); }
 

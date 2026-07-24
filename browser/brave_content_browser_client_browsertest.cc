@@ -259,7 +259,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, MixedContentForOnion) {
   net::ProxyConfigServiceTor::SetBypassTorProxyConfigForTesting(true);
   tor::TorNavigationThrottle::SetSkipWaitForTorConnectedForTesting(true);
   Browser* tor_browser =
-      TorProfileManager::SwitchToTorProfile(browser()->profile());
+      TorProfileManager::SwitchToTorProfile(browser()->GetProfile());
 
   const GURL onion_url =
       embedded_test_server()->GetURL("test.onion", "/onion.html");
@@ -363,7 +363,8 @@ class BraveContentBrowserClientReferrerTest
     : public BraveContentBrowserClientTest {
  public:
   HostContentSettingsMap* content_settings() {
-    return HostContentSettingsMapFactory::GetForProfile(browser()->profile());
+    return HostContentSettingsMapFactory::GetForProfile(
+        browser()->GetProfile());
   }
 };
 
@@ -379,8 +380,8 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientReferrerTest,
 
   // Cross-origin navigations get an origin.
   blink::mojom::ReferrerPtr referrer = kReferrer.Clone();
-  client()->MaybeHideReferrer(browser()->profile(), kRequestUrl, kDocumentUrl,
-                              &referrer);
+  client()->MaybeHideReferrer(browser()->GetProfile(), kRequestUrl,
+                              kDocumentUrl, &referrer);
 
   // Creating an Origin off a GURL should generally be avoided, but it's ok in
   // this particular case where we're just testing and using the http protocol.
@@ -389,25 +390,25 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientReferrerTest,
 
   // Same-origin navigations get full referrers.
   referrer = kReferrer.Clone();
-  client()->MaybeHideReferrer(browser()->profile(), kSameOriginRequestUrl,
+  client()->MaybeHideReferrer(browser()->GetProfile(), kSameOriginRequestUrl,
                               kDocumentUrl, &referrer);
   EXPECT_EQ(referrer->url, kDocumentUrl);
 
   // Same-site navigations get truncated referrers.
   referrer = kReferrer.Clone();
-  client()->MaybeHideReferrer(browser()->profile(), kSameSiteRequestUrl,
+  client()->MaybeHideReferrer(browser()->GetProfile(), kSameSiteRequestUrl,
                               kDocumentUrl, &referrer);
   EXPECT_EQ(referrer->url, document_url_origin);
 
   // Cross-origin iframe navigations get origins.
   referrer = kReferrer.Clone();
-  client()->MaybeHideReferrer(browser()->profile(), kRequestUrl, kDocumentUrl,
-                              &referrer);
+  client()->MaybeHideReferrer(browser()->GetProfile(), kRequestUrl,
+                              kDocumentUrl, &referrer);
   EXPECT_EQ(referrer->url, document_url_origin);
 
   // Same-origin iframe navigations get full referrers.
   referrer = kReferrer.Clone();
-  client()->MaybeHideReferrer(browser()->profile(), kSameOriginRequestUrl,
+  client()->MaybeHideReferrer(browser()->GetProfile(), kSameOriginRequestUrl,
                               kDocumentUrl, &referrer);
   EXPECT_EQ(referrer->url, kDocumentUrl);
 
@@ -415,19 +416,19 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientReferrerTest,
   const GURL kExtensionUrl("chrome-extension://abc/path?query");
   referrer = kReferrer.Clone();
   referrer->url = kExtensionUrl;
-  client()->MaybeHideReferrer(browser()->profile(), kRequestUrl, kExtensionUrl,
-                              &referrer);
+  client()->MaybeHideReferrer(browser()->GetProfile(), kRequestUrl,
+                              kExtensionUrl, &referrer);
   EXPECT_EQ(referrer->url, kExtensionUrl);
 
   // Special rule for Onion services.
   const GURL kOnionUrl("http://lwkjglkejslkgjel.onion/index.html");
   referrer = kReferrer.Clone();
   referrer->url = kOnionUrl;
-  client()->MaybeHideReferrer(browser()->profile(), kRequestUrl, kOnionUrl,
+  client()->MaybeHideReferrer(browser()->GetProfile(), kRequestUrl, kOnionUrl,
                               &referrer);
   EXPECT_EQ(referrer->url, GURL());  // .onion -> normal
   referrer = kReferrer.Clone();
-  client()->MaybeHideReferrer(browser()->profile(), kOnionUrl, kDocumentUrl,
+  client()->MaybeHideReferrer(browser()->GetProfile(), kOnionUrl, kDocumentUrl,
                               &referrer);
   EXPECT_EQ(referrer->url, document_url_origin);  // normal -> .onion
 
@@ -437,8 +438,8 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientReferrerTest,
       ContentSettingsPattern::Wildcard(), ContentSettingsType::BRAVE_REFERRERS,
       CONTENT_SETTING_ALLOW);
   referrer = kReferrer.Clone();
-  client()->MaybeHideReferrer(browser()->profile(), kRequestUrl, kDocumentUrl,
-                              &referrer);
+  client()->MaybeHideReferrer(browser()->GetProfile(), kRequestUrl,
+                              kDocumentUrl, &referrer);
   EXPECT_EQ(referrer->url, kDocumentUrl);
 }
 
@@ -452,7 +453,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, CheckExpectedExtensions) {
   };
 
   extensions::ExtensionRegistry* registry =
-      extensions::ExtensionRegistry::Get(browser()->profile());
+      extensions::ExtensionRegistry::Get(browser()->GetProfile());
   std::set<std::string> installed_extensions =
       registry->GenerateInstalledExtensionsSet().GetIDs();
 
@@ -511,7 +512,7 @@ IN_PROC_BROWSER_TEST_P(WinBraveContentBrowserClientTest, PRE_WindowsRecall) {
   }
 
   // incognito behavior is unchanged from upstream (always false)
-  Browser* incognito = CreateIncognitoBrowser(browser()->profile());
+  Browser* incognito = CreateIncognitoBrowser(browser()->GetProfile());
   EXPECT_FALSE(GetShouldDoLearning(incognito));
 }
 
@@ -530,7 +531,7 @@ IN_PROC_BROWSER_TEST_P(WinBraveContentBrowserClientTest, WindowsRecall) {
   }
 
   // incognito behavior is unchanged from upstream (always false)
-  Browser* incognito = CreateIncognitoBrowser(browser()->profile());
+  Browser* incognito = CreateIncognitoBrowser(browser()->GetProfile());
   EXPECT_FALSE(GetShouldDoLearning(incognito));
 }
 

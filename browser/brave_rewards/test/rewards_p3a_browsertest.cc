@@ -64,7 +64,7 @@ class RewardsP3ABrowserTest : public InProcessBrowserTest,
     ASSERT_TRUE(https_server_->Start());
 
     // Rewards service
-    auto* profile = browser()->profile();
+    auto* profile = browser()->GetProfile();
     rewards_service_ = static_cast<RewardsServiceImpl*>(
         RewardsServiceFactory::GetForProfile(profile));
     rewards_service_->AddObserver(this);
@@ -111,7 +111,7 @@ class RewardsP3ABrowserTest : public InProcessBrowserTest,
   void TurnOnRewards() {
     // Set the enabled pref to false so that wallet creation will automatically
     // turn on Ads and AC.
-    browser()->profile()->GetPrefs()->SetBoolean(prefs::kEnabled, false);
+    browser()->GetProfile()->GetPrefs()->SetBoolean(prefs::kEnabled, false);
     test_util::CreateRewardsWallet(rewards_service_);
   }
 
@@ -170,7 +170,7 @@ IN_PROC_BROWSER_TEST_F(RewardsP3ABrowserTest, ToggleAdTypes) {
   test_util::StartProcess(rewards_service_);
   WaitForRewardsInitialization();
 
-  PrefService* prefs = browser()->profile()->GetPrefs();
+  PrefService* prefs = browser()->GetProfile()->GetPrefs();
 
   TurnOnRewards();
 
@@ -192,7 +192,7 @@ IN_PROC_BROWSER_TEST_F(RewardsP3ABrowserTest, ToggleAdTypes) {
 
 #if !BUILDFLAG(IS_ANDROID)
 IN_PROC_BROWSER_TEST_F(RewardsP3ABrowserTest, Conversion) {
-  PrefService* prefs = browser()->profile()->GetPrefs();
+  PrefService* prefs = browser()->GetProfile()->GetPrefs();
   prefs->SetBoolean(prefs::kEnabled, false);
 
   p3a::ConversionMonitor conversion_monitor(prefs);
@@ -222,7 +222,7 @@ IN_PROC_BROWSER_TEST_F(RewardsP3ABrowserTest, Conversion) {
 #endif  // !BUILDFLAG(IS_ANDROID)
 
 IN_PROC_BROWSER_TEST_F(RewardsP3ABrowserTest, OfferEvents) {
-  auto* prefs = browser()->profile()->GetPrefs();
+  auto* prefs = browser()->GetProfile()->GetPrefs();
 
   // Test view recording
   p3a::RecordOfferView(prefs);

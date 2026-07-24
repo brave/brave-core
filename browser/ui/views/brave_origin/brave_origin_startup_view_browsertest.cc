@@ -279,11 +279,11 @@ IN_PROC_BROWSER_TEST_F(BraveOriginStartupViewBrowserTest,
 
   // Call the real Start() override. It should intercept and show the dialog.
   StartupBrowserCreator browser_creator;
-  StartupProfileInfo profile_info{browser()->profile(),
+  StartupProfileInfo profile_info{browser()->GetProfile(),
                                   StartupProfileMode::kBrowserWindow};
   bool result = browser_creator.Start(*base::CommandLine::ForCurrentProcess(),
                                       base::FilePath(), profile_info,
-                                      {browser()->profile()});
+                                      {browser()->GetProfile()});
   EXPECT_TRUE(result);
   EXPECT_TRUE(BraveOriginStartupView::IsShowing());
 
@@ -305,11 +305,11 @@ IN_PROC_BROWSER_TEST_F(BraveOriginStartupViewBrowserTest,
   BraveOriginStartupView::SetShouldShowDialogForTesting(true);
 
   StartupBrowserCreator browser_creator;
-  StartupProfileInfo profile_info{browser()->profile(),
+  StartupProfileInfo profile_info{browser()->GetProfile(),
                                   StartupProfileMode::kBrowserWindow};
   bool result = browser_creator.Start(*base::CommandLine::ForCurrentProcess(),
                                       base::FilePath(), profile_info,
-                                      {browser()->profile()});
+                                      {browser()->GetProfile()});
   EXPECT_TRUE(result);
   EXPECT_TRUE(BraveOriginStartupView::IsShowing());
 
@@ -336,11 +336,11 @@ IN_PROC_BROWSER_TEST_F(BraveOriginStartupViewBrowserTest,
       GlobalBrowserCollection::GetInstance()->GetSize();
 
   StartupBrowserCreator browser_creator;
-  StartupProfileInfo profile_info{browser()->profile(),
+  StartupProfileInfo profile_info{browser()->GetProfile(),
                                   StartupProfileMode::kBrowserWindow};
   bool result = browser_creator.Start(*base::CommandLine::ForCurrentProcess(),
                                       base::FilePath(), profile_info,
-                                      {browser()->profile()});
+                                      {browser()->GetProfile()});
   EXPECT_TRUE(result);
   EXPECT_FALSE(BraveOriginStartupView::IsShowing());
 

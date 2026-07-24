@@ -32,7 +32,7 @@ AIChatButton::AIChatButton(Browser* browser)
     : ToolbarButton(base::BindRepeating(&AIChatButton::ButtonPressed,
                                         base::Unretained(this))),
       browser_(*browser),
-      prefs_(*browser_->profile()->GetOriginalProfile()->GetPrefs()) {
+      prefs_(*browser_->GetProfile()->GetOriginalProfile()->GetPrefs()) {
   SetMenuModel(CreateMenuModel());
 
   SetVectorIcon(kLeoProductBraveLeoIcon);
@@ -48,7 +48,7 @@ AIChatButton::AIChatButton(Browser* browser)
 AIChatButton::~AIChatButton() = default;
 
 void AIChatButton::ButtonPressed() {
-  auto* prefs = browser_->profile()->GetOriginalProfile()->GetPrefs();
+  auto* prefs = browser_->GetProfile()->GetOriginalProfile()->GetPrefs();
   if (prefs->GetBoolean(
           ai_chat::prefs::kBraveAIChatToolbarButtonOpensFullPage)) {
     brave::ShowFullpageChat(base::to_address(browser_));
@@ -58,7 +58,7 @@ void AIChatButton::ButtonPressed() {
 
   auto* profile_metrics =
       misc_metrics::ProfileMiscMetricsServiceFactory::GetServiceForContext(
-          browser_->profile());
+          browser_->GetProfile());
   if (!profile_metrics) {
     return;
   }

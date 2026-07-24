@@ -330,7 +330,7 @@ BraveVerticalTabStripRegionView::BraveVerticalTabStripRegionView(
   resize_area_ = AddChildView(std::make_unique<ResettableResizeArea>(this));
   SetBackground(views::CreateSolidBackground(kColorToolbar));
 
-  auto* prefs = browser_->profile()->GetPrefs();
+  auto* prefs = browser_->GetProfile()->GetPrefs();
 
   sidebar_side_.Init(prefs::kSidePanelHorizontalAlignment, prefs,
                      base::BindRepeating(
@@ -379,7 +379,7 @@ BraveVerticalTabStripRegionView::BraveVerticalTabStripRegionView(
 #endif
 
   vertical_tab_on_right_.Init(
-      brave_tabs::kVerticalTabsOnRight, browser()->profile()->GetPrefs(),
+      brave_tabs::kVerticalTabsOnRight, prefs,
       base::BindRepeating(
           &BraveVerticalTabStripRegionView::OnBrowserPanelsMoved,
           base::Unretained(this)));
@@ -973,7 +973,7 @@ int BraveVerticalTabStripRegionView::GetTabStripViewportMaxHeight() const {
 }
 
 void BraveVerticalTabStripRegionView::ResetExpandedWidth() {
-  auto* prefs = browser_->profile()->GetPrefs();
+  auto* prefs = browser_->GetProfile()->GetPrefs();
   prefs->ClearPref(brave_tabs::kVerticalTabsExpandedWidth);
 
   PreferredSizeChanged();

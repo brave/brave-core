@@ -256,10 +256,10 @@ class TreeTabDragControllerTest
 
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
-    browser()->profile()->GetPrefs()->SetBoolean(
+    browser()->GetProfile()->GetPrefs()->SetBoolean(
         brave_tabs::kVerticalTabsEnabled, true);
-    browser()->profile()->GetPrefs()->SetBoolean(brave_tabs::kTreeTabsEnabled,
-                                                 true);
+    browser()->GetProfile()->GetPrefs()->SetBoolean(
+        brave_tabs::kTreeTabsEnabled, true);
   }
 
   // Creates a new Browser and resizes browser() and the new browser to be
@@ -297,7 +297,7 @@ class TreeTabDragControllerTest
       browser_rect.set_x(browser_rect.right() - 2 * window_decoration_width);
     }
 
-    Browser* browser2 = CreateBrowser(browser()->profile());
+    Browser* browser2 = CreateBrowser(browser()->GetProfile());
     if (PlatformSupportsScreenCoordinates()) {
       ui_test_utils::SetAndWaitForBounds(*browser2, browser_rect);
     } else {
@@ -391,7 +391,7 @@ IN_PROC_BROWSER_TEST_F(
   tabs::TabInterface* const parent_tab = source_model.GetTabAtIndex(0);
   auto child_interface = std::make_unique<tabs::TabModel>(
       content::WebContents::Create(
-          content::WebContents::CreateParams(browser()->profile())),
+          content::WebContents::CreateParams(browser()->GetProfile())),
       &source_model);
   child_interface->set_opener(parent_tab);
   source_model.AddTab(std::move(child_interface), -1,
@@ -405,7 +405,7 @@ IN_PROC_BROWSER_TEST_F(
   // current selection when we press on it below.
   auto sibling = std::make_unique<tabs::TabModel>(
       content::WebContents::Create(
-          content::WebContents::CreateParams(browser()->profile())),
+          content::WebContents::CreateParams(browser()->GetProfile())),
       &source_model);
   source_model.AddTab(std::move(sibling), -1, ui::PAGE_TRANSITION_AUTO_BOOKMARK,
                       ADD_NONE);

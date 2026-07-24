@@ -36,7 +36,7 @@ IN_PROC_BROWSER_TEST_F(IdentityExtensionApiTest, FetchingTokenInteractiveMode) {
   BraveWebAuthFlow::SetTokenForTesting("test_token");
 
   ASSERT_TRUE(extensions::BackgroundScriptExecutor::ExecuteScriptAsync(
-      browser()->profile(), kIdentityTestExtensionId, R"(
+      browser()->GetProfile(), kIdentityTestExtensionId, R"(
         chrome.identity.getAuthToken({ interactive: true }, function(token) {
           if (chrome.runtime.lastError) {
             chrome.test.fail();
@@ -61,7 +61,7 @@ IN_PROC_BROWSER_TEST_F(IdentityExtensionApiTest, FetchingTokenSilentMode) {
   BraveWebAuthFlow::SetTokenForTesting("test_token");
 
   ASSERT_TRUE(extensions::BackgroundScriptExecutor::ExecuteScriptAsync(
-      browser()->profile(), kIdentityTestExtensionId, R"(
+      browser()->GetProfile(), kIdentityTestExtensionId, R"(
         chrome.identity.getAuthToken({ interactive: false }, function(token) {
           if (chrome.runtime.lastError) {
             chrome.test.fail();

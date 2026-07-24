@@ -33,7 +33,7 @@ class CommanderServiceInteractiveUITest : public InteractiveBrowserTest {
  protected:
   commander::CommanderService* commander() {
     return commander::CommanderServiceFactory::GetForBrowserContext(
-        browser()->profile());
+        browser()->GetProfile());
   }
 
   OmniboxView* omnibox() {

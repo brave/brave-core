@@ -69,7 +69,7 @@ class EthereumProviderBrowserTest : public InProcessBrowserTest {
 
   void SetUpOnMainThread() override {
     brave_wallet::SetDefaultEthereumWallet(
-        browser()->profile()->GetPrefs(),
+        browser()->GetProfile()->GetPrefs(),
         brave_wallet::mojom::DefaultWallet::BraveWallet);
     mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
     host_resolver()->AddRule("*", "127.0.0.1");
@@ -86,7 +86,8 @@ class EthereumProviderBrowserTest : public InProcessBrowserTest {
   net::EmbeddedTestServer* https_server() { return &https_server_; }
 
   KeyringService* keyring_service() {
-    return BraveWalletServiceFactory::GetServiceForContext(browser()->profile())
+    return BraveWalletServiceFactory::GetServiceForContext(
+               browser()->GetProfile())
         ->keyring_service();
   }
 

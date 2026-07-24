@@ -131,7 +131,7 @@ class EmailAliasesAutofillTest : public InProcessBrowserTest,
 
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
-    autofill::WaitForPersonalDataManagerToBeLoaded(browser()->profile());
+    autofill::WaitForPersonalDataManagerToBeLoaded(browser()->GetProfile());
 
     embedded_test_server()->ServeFilesFromDirectory(
         base::PathService::CheckedGet(brave::DIR_TEST_DATA));
@@ -143,7 +143,7 @@ class EmailAliasesAutofillTest : public InProcessBrowserTest,
   }
 
   void ImportAddress() {
-    autofill::AddTestProfile(browser()->profile(),
+    autofill::AddTestProfile(browser()->GetProfile(),
                              autofill::test::GetFullProfile());
   }
 
@@ -252,7 +252,7 @@ IN_PROC_BROWSER_TEST_P(EmailAliasesAutofillTest,
   autofill_client()->ResetSuggestions();
 
   // Disable "New Email Alias" suggestion.
-  browser()->profile()->GetPrefs()->SetBoolean(
+  browser()->GetProfile()->GetPrefs()->SetBoolean(
       prefs::kEmailAliasesNewAliasAutofillSuggestionEnabled, false);
 
   content::SimulateMouseClickOrTapElementWithId(GetWebContents(), "email");

@@ -41,7 +41,7 @@ SharedPinnedTabServiceBrowserTest::~SharedPinnedTabServiceBrowserTest() =
 
 Browser* SharedPinnedTabServiceBrowserTest::CreateNewBrowser() {
   auto* new_browser =
-      chrome::OpenEmptyWindow(browser()->profile(),
+      chrome::OpenEmptyWindow(browser()->GetProfile(),
                               /*should_trigger_session_restore= */ false)
           ->GetBrowserForMigrationOnly();
   browsers_.push_back(new_browser->AsWeakPtr());
@@ -50,7 +50,7 @@ Browser* SharedPinnedTabServiceBrowserTest::CreateNewBrowser() {
 
 SharedPinnedTabService* SharedPinnedTabServiceBrowserTest::GetForBrowser(
     Browser* browser) {
-  return SharedPinnedTabServiceFactory::GetForProfile(browser->profile());
+  return SharedPinnedTabServiceFactory::GetForProfile(browser->GetProfile());
 }
 
 void SharedPinnedTabServiceBrowserTest::WaitUntil(
@@ -114,8 +114,8 @@ void SharedPinnedTabServiceBrowserTest::SetUpOnMainThread() {
       }));
   ASSERT_TRUE(https_server_->Start());
 
-  browser()->profile()->GetPrefs()->SetBoolean(brave_tabs::kSharedPinnedTab,
-                                               true);
+  browser()->GetProfile()->GetPrefs()->SetBoolean(brave_tabs::kSharedPinnedTab,
+                                                  true);
 }
 
 void SharedPinnedTabServiceBrowserTest::SetUpCommandLine(
@@ -334,8 +334,8 @@ IN_PROC_BROWSER_TEST_F(SharedPinnedTabServiceBrowserTest, PreferenceChanged) {
   ASSERT_TRUE(browser_2->tab_strip_model()->IsTabPinned(1));
 
   // When disabling the shared pinned tab preference
-  browser_1->profile()->GetPrefs()->SetBoolean(brave_tabs::kSharedPinnedTab,
-                                               false);
+  browser_1->GetProfile()->GetPrefs()->SetBoolean(brave_tabs::kSharedPinnedTab,
+                                                  false);
 
   // Then all dummy contents should be gone.
   EXPECT_EQ(2, browser_1->tab_strip_model()->count());
@@ -347,8 +347,8 @@ IN_PROC_BROWSER_TEST_F(SharedPinnedTabServiceBrowserTest, PreferenceChanged) {
   EXPECT_FALSE(browser_2->tab_strip_model()->IsTabPinned(1));
 
   // When enabling the shared pinned tab preference
-  browser_1->profile()->GetPrefs()->SetBoolean(brave_tabs::kSharedPinnedTab,
-                                               true);
+  browser_1->GetProfile()->GetPrefs()->SetBoolean(brave_tabs::kSharedPinnedTab,
+                                                  true);
 
   // All pinned tabs should be synchronized
   EXPECT_EQ(3, browser_1->tab_strip_model()->count());

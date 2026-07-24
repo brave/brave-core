@@ -239,7 +239,7 @@ IN_PROC_BROWSER_TEST_F(AIChatBrowserTest,
           ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
 
   auto* ai_chat_service =
-      AIChatServiceFactory::GetForBrowserContext(browser()->profile());
+      AIChatServiceFactory::GetForBrowserContext(browser()->GetProfile());
   auto* conversation = ai_chat_service->CreateConversation();
   ai_chat_service->MaybeAssociateContent(&content1->web_contents_content(),
                                          conversation->get_conversation_uuid());

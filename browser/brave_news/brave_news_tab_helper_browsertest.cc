@@ -127,7 +127,7 @@ class BraveNewsTabHelperTest : public InProcessBrowserTest {
   }
 
   void OptIn() {
-    auto* prefs = browser()->profile()->GetPrefs();
+    auto* prefs = browser()->GetProfile()->GetPrefs();
     prefs->SetBoolean(brave_news::prefs::kNewTabPageShowToday, true);
     prefs->SetBoolean(brave_news::prefs::kBraveNewsOptedIn, true);
   }

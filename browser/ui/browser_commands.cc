@@ -150,7 +150,7 @@ namespace {
 bool CanTakeTabs(const Browser* from, const Browser* to) {
   return from != to && from->type() == Browser::TYPE_NORMAL &&
          !UnloadController::From(from)->is_attempting_to_close_browser() &&
-         !from->IsDeleteScheduled() && to->profile() == from->profile();
+         !from->IsDeleteScheduled() && to->GetProfile() == from->GetProfile();
 }
 
 std::vector<int> GetSelectedIndices(Browser* browser) {
@@ -236,7 +236,7 @@ class BookmarksExportListener : public ui::SelectFileDialog::Listener {
 #if BUILDFLAG(ENABLE_TOR)
 void NewOffTheRecordWindowTor(Browser* browser) {
   CHECK(browser);
-  NewOffTheRecordWindowTor(browser->profile());
+  NewOffTheRecordWindowTor(browser->GetProfile());
 }
 
 void NewOffTheRecordWindowTor(Profile* profile) {
@@ -294,7 +294,7 @@ void ToggleBraveVPNTrayIcon() {
 
 void ToggleBraveVPNButton(Browser* browser) {
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-  auto* prefs = browser->profile()->GetPrefs();
+  auto* prefs = browser->GetProfile()->GetPrefs();
   const bool show = prefs->GetBoolean(brave_vpn::prefs::kBraveVPNShowButton);
   prefs->SetBoolean(brave_vpn::prefs::kBraveVPNShowButton, !show);
 #endif
@@ -303,7 +303,7 @@ void ToggleBraveVPNButton(Browser* browser) {
 void OpenBraveVPNUrls(Browser* browser, int command_id) {
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   auto* vpn_service =
-      brave_vpn::BraveVpnServiceFactory::GetForProfile(browser->profile());
+      brave_vpn::BraveVpnServiceFactory::GetForProfile(browser->GetProfile());
   CHECK(vpn_service);
   std::string target_url;
   switch (command_id) {
@@ -399,7 +399,7 @@ void CopyLinkWithStrictCleaning(BrowserWindowInterface* browser,
 }
 
 void ToggleWindowTitleVisibilityForVerticalTabs(Browser* browser) {
-  auto* prefs = browser->profile()->GetOriginalProfile()->GetPrefs();
+  auto* prefs = browser->GetProfile()->GetOriginalProfile()->GetPrefs();
   prefs->SetBoolean(
       brave_tabs::kVerticalTabsShowTitleOnWindow,
       !prefs->GetBoolean(brave_tabs::kVerticalTabsShowTitleOnWindow));
@@ -410,7 +410,7 @@ void ToggleVerticalTabStrip(Browser* browser) {
     return;
   }
 
-  auto* profile = browser->profile()->GetOriginalProfile();
+  auto* profile = browser->GetProfile()->GetOriginalProfile();
   auto* prefs = profile->GetPrefs();
   const bool was_using_vertical_tab_strip =
       prefs->GetBoolean(brave_tabs::kVerticalTabsEnabled);
@@ -419,14 +419,14 @@ void ToggleVerticalTabStrip(Browser* browser) {
 }
 
 void ToggleVerticalTabStripFloatingMode(Browser* browser) {
-  auto* prefs = browser->profile()->GetOriginalProfile()->GetPrefs();
+  auto* prefs = browser->GetProfile()->GetOriginalProfile()->GetPrefs();
   prefs->SetBoolean(
       brave_tabs::kVerticalTabsFloatingEnabled,
       !prefs->GetBoolean(brave_tabs::kVerticalTabsFloatingEnabled));
 }
 
 void ToggleVerticalTabStripExpanded(Browser* browser) {
-  auto* prefs = browser->profile()->GetPrefs();
+  auto* prefs = browser->GetProfile()->GetPrefs();
   bool expanded_state_per_window =
       prefs->GetBoolean(brave_tabs::kVerticalTabsExpandedStatePerWindow);
   // Toggle preference if all tabs share the same state (derived from prefs)
@@ -461,7 +461,7 @@ void ToggleActiveTabAudioMute(Browser* browser) {
 }
 
 void ToggleSidebarPosition(Browser* browser) {
-  auto* prefs = browser->profile()->GetPrefs();
+  auto* prefs = browser->GetProfile()->GetPrefs();
   prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment,
                     !prefs->GetBoolean(prefs::kSidePanelHorizontalAlignment));
 }
@@ -540,7 +540,7 @@ void ToggleJavascriptEnabled(Browser* browser) {
 void ToggleCommander(Browser* browser) {
   if (auto* commander_service =
           commander::CommanderServiceFactory::GetForBrowserContext(
-              browser->profile())) {
+              browser->GetProfile())) {
     commander_service->Toggle();
   }
 }
@@ -833,7 +833,8 @@ void BringAllTabs(Browser* browser) {
 
   const bool shared_pinned_tab_enabled =
       base::FeatureList::IsEnabled(tabs::kBraveSharedPinnedTabs) &&
-      browser->profile()->GetPrefs()->GetBoolean(brave_tabs::kSharedPinnedTab);
+      browser->GetProfile()->GetPrefs()->GetBoolean(
+          brave_tabs::kSharedPinnedTab);
 
   base::flat_set<Browser*> browsers_to_close;
   std::ranges::for_each(browsers, [&detached_pinned_tabs,
@@ -1074,11 +1075,11 @@ void ScrollTabToBottom(Browser* browser) {
 }
 
 void ExportAllBookmarks(Browser* browser) {
-  (new BookmarksExportListener(browser->profile()))->ShowFileDialog(browser);
+  (new BookmarksExportListener(browser->GetProfile()))->ShowFileDialog(browser);
 }
 
 void ToggleAllBookmarksButtonVisibility(Browser* browser) {
-  auto* prefs = browser->profile()->GetPrefs();
+  auto* prefs = browser->GetProfile()->GetPrefs();
   prefs->SetBoolean(
       brave::bookmarks::prefs::kShowAllBookmarksButton,
       !prefs->GetBoolean(brave::bookmarks::prefs::kShowAllBookmarksButton));

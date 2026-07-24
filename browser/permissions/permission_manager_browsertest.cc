@@ -187,7 +187,7 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest, RequestPermissions) {
     for (const auto& sub_request_origin : sub_request_origins) {
       SCOPED_TRACE(testing::Message() << sub_request_origin);
 
-      EXPECT_EQ(host_content_settings_map(browser()->profile())
+      EXPECT_EQ(host_content_settings_map(browser()->GetProfile())
                     ->GetContentSetting(sub_request_origin.GetURL(),
                                         GetLastCommitedOrigin().GetURL(),
                                         test_case.type),
@@ -234,7 +234,7 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest, RequestPermissions) {
          base::zip(expected_settings, sub_request_origins)) {
       SCOPED_TRACE(testing::Message() << sub_request_origin);
 
-      EXPECT_EQ(host_content_settings_map(browser()->profile())
+      EXPECT_EQ(host_content_settings_map(browser()->GetProfile())
                     ->GetContentSetting(sub_request_origin.GetURL(),
                                         GetLastCommitedOrigin().GetURL(),
                                         test_case.type),
@@ -433,7 +433,7 @@ class PermissionManagerIncognitoBrowserTest : public InProcessBrowserTest {
 
 IN_PROC_BROWSER_TEST_F(PermissionManagerIncognitoBrowserTest,
                        IncognitoPermissionsDoNotLeak) {
-  auto* incognito_browser = CreateIncognitoBrowser(browser()->profile());
+  auto* incognito_browser = CreateIncognitoBrowser(browser()->GetProfile());
 
   // Verify permissions do not leak from incognito profile into normal profile.
   TestRequestPermissionsDoNotLeak(incognito_browser, browser());
@@ -441,7 +441,7 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerIncognitoBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(PermissionManagerIncognitoBrowserTest,
                        PermissionsDoNotLeak) {
-  auto* incognito_browser = CreateIncognitoBrowser(browser()->profile());
+  auto* incognito_browser = CreateIncognitoBrowser(browser()->GetProfile());
 
   // Verify permissions do not leak from normal profile into incognito profile.
   TestRequestPermissionsDoNotLeak(browser(), incognito_browser);

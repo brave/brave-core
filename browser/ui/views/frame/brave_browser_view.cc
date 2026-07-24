@@ -885,7 +885,7 @@ void BraveBrowserView::LoadAccelerators() {
   if (base::FeatureList::IsEnabled(commands::features::kBraveCommands)) {
     auto* accelerator_service =
         commands::AcceleratorServiceFactory::GetForContext(
-            browser()->profile());
+            browser()->GetProfile());
     if (accelerator_service) {
       accelerators_observation_.Observe(accelerator_service);
       return;
@@ -1274,7 +1274,7 @@ bool BraveBrowserView::UpdateToolbarSecurityState() {
 
 bool BraveBrowserView::AcceleratorPressed(const ui::Accelerator& accelerator) {
   if (base::FeatureList::IsEnabled(tabs::kBraveSharedPinnedTabs) &&
-      browser()->profile()->GetPrefs()->GetBoolean(
+      browser()->GetProfile()->GetPrefs()->GetBoolean(
           brave_tabs::kSharedPinnedTab)) {
     if (int command_id; FindCommandIdForAccelerator(accelerator, &command_id) &&
                         command_id == IDC_CLOSE_TAB) {
