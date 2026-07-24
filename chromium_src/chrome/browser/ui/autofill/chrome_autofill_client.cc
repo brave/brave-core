@@ -26,6 +26,7 @@
 
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
 #include "brave/browser/ui/email_aliases/email_aliases_controller.h"
+#include "brave/components/email_aliases/pref_names.h"
 #endif
 
 namespace autofill {
@@ -127,6 +128,14 @@ class BraveChromeAutofillClient : public ChromeAutofillClient {
       const PasswordFormClassification& form_classification,
       const FormFieldData& field,
       std::vector<Suggestion>& chrome_suggestions) {
+    auto* profile =
+        Profile::FromBrowserContext(web_contents()->GetBrowserContext());
+    if (!profile->GetPrefs()->GetBoolean(
+            email_aliases::prefs::
+                kEmailAliasesNewAliasAutofillSuggestionEnabled)) {
+      return;
+    }
+
     email_aliases::EmailAliasesController* controller =
         GetEmailAliasesControllerFromWebContents(web_contents());
     if (controller) {

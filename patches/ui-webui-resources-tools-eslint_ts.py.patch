@@ -1,0 +1,27 @@
+diff --git a/ui/webui/resources/tools/eslint_ts.py b/ui/webui/resources/tools/eslint_ts.py
+index 7b7ccc2bc1ef56336d27fe26778a5c8155174cf9..7a0a3f43b0e0f9be6070777da419c7a44abd84b9 100755
+--- a/ui/webui/resources/tools/eslint_ts.py
++++ b/ui/webui/resources/tools/eslint_ts.py
+@@ -7,6 +7,7 @@ import argparse
+ import sys
+ import os
+ import platform
++import shlex
+ 
+ _HERE_PATH = os.path.dirname(__file__)
+ _SRC_PATH = os.path.normpath(os.path.join(_HERE_PATH, '..', '..', '..', '..'))
+@@ -64,6 +65,14 @@ def _generate_config_file(args):
+ 
+ 
+ def main(argv):
++  rsp_parser = argparse.ArgumentParser()
++  rsp_parser.add_argument('--rsp', required=False)
++  rsp_args, _ = rsp_parser.parse_known_args(argv)
++
++  if rsp_args.rsp:
++        with open(rsp_args.rsp, 'r') as f:
++            # Do not prepend argv[0], because original script strips it.
++            argv = shlex.split(f.read())
+   parser = argparse.ArgumentParser()
+   parser.add_argument('--in_folder', required=True)
+   parser.add_argument('--out_folder', required=True)

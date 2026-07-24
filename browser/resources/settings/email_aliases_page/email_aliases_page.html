@@ -1,0 +1,15 @@
+<settings-subpage page-title="[[pageTitle_]]" class="multi-card">
+  <settings-section id="signInSection">
+    <div id="signInRoot"></div>
+    <settings-toggle-button
+        class="cr-row"
+        icon="email-shield"
+        hidden$="[[!showEmailAliasesSettings_]]"
+        pref="{{prefs.brave.email_aliases.new_alias_autofill_suggestion_enabled}}"
+        label="$i18n{SETTINGS_EMAIL_ALIASES_AUTOFILL_SUGGESTION_LABEL}"
+        sub-label="$i18n{SETTINGS_EMAIL_ALIASES_AUTOFILL_SUGGESTION_SUBLABEL}">
+    </settings-toggle-button>
+  </settings-section>
+  <settings-section id="manageSection">
+  </settings-section>
+</settings-subpage>

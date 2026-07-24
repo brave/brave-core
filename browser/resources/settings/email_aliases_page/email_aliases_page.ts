@@ -3,9 +3,14 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { loadTimeData } from 'chrome://resources/js/load_time_data.js'
-import '../settings_page/settings_subpage.js'
-import { EmailAliasesStrings } from '../brave_components_webui_strings.js'
+import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
+import {loadTimeData} from 'chrome://resources/js/load_time_data.js';
+import '../controls/settings_toggle_button.js';
+import '../settings_page/settings_subpage.js';
+import '../settings_page/settings_section.js';
+import {PrefsMixin} from '/shared/settings/prefs/prefs_mixin.js';
+import {EmailAliasesStrings} from '../brave_components_webui_strings.js'
+import {getTemplate} from './email_aliases_page.html.js';
 
 // Unfortunately, our current WebPack build does not support ESModule output and
 // it expects loadTimeData to be on the globalThis. The settings page has been
@@ -13,30 +18,52 @@ import { EmailAliasesStrings } from '../brave_components_webui_strings.js'
 // now, this provides a shim between the old and the new system.
 window.loadTimeData = loadTimeData
 
-class EmailAliasesPage extends HTMLElement {
-  connectedCallback() {
-    const title = loadTimeData.getString(
-      EmailAliasesStrings.SETTINGS_EMAIL_ALIASES_LABEL,
-    )
+interface SettingsEmailAliasesPageElement {
+  $: {
+    signInRoot: HTMLElement,
+    manageSection: HTMLElement,
+  }
+}
 
-    this.attachShadow({ mode: 'open' })
-    const subpage = document.createElement('settings-subpage')
-    subpage.setAttribute('page-title', title)
-    subpage.setAttribute('class', 'multi-card')
-    this.shadowRoot!.appendChild(subpage)
+class SettingsEmailAliasesPageElement extends PrefsMixin(PolymerElement) {
+  static get is() {
+    return 'settings-email-aliases-page';
+  }
+
+  static get template() {
+    return getTemplate();
+  }
+
+  static get properties() {
+    return {
+      pageTitle_: {
+        type: String,
+        value: () => loadTimeData.getString(
+            EmailAliasesStrings.SETTINGS_EMAIL_ALIASES_LABEL),
+      },
+      showEmailAliasesSettings_: {
+        type: Boolean,
+        value: false,
+      },
+    };
+  }
+
+  declare pageTitle_: string;
+  declare showEmailAliasesSettings_: boolean;
+
+  override ready() {
+    super.ready();
 
     customElements.whenDefined('settings-brave-account-row').then(() => {
       const bundlePath = '/email_aliases.bundle.js'
-      import(bundlePath).then(({ mount }) => {
-        const signInSection = document.createElement('settings-section')
-        subpage.appendChild(signInSection)
-
-        const manageSection = document.createElement('settings-section')
-        subpage.appendChild(manageSection)
-
-        mount(signInSection, manageSection)
-      })
-    })
+      import(bundlePath).then(({mount}) => {
+        mount(this.$.signInRoot, this.$.manageSection, {
+          onLoggedInChange: (loggedIn: boolean) => {
+            this.showEmailAliasesSettings_ = loggedIn;
+          },
+        });
+      });
+    });
 
     if (loadTimeData.getBoolean('shouldExposeElementsForTesting')) {
       window.testing = window.testing || {}
@@ -45,4 +72,11 @@ class EmailAliasesPage extends HTMLElement {
   }
 }
 
-customElements.define('settings-email-aliases-page', EmailAliasesPage)
+customElements.define(
+    SettingsEmailAliasesPageElement.is, SettingsEmailAliasesPageElement);
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'settings-email-aliases-page': SettingsEmailAliasesPageElement;
+  }
+}
