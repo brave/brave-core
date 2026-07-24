@@ -8,11 +8,9 @@
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "build/build_config.h"
 
-// Forward declared instead of including "chrome/browser/ui/layout_constants.h"
-// to avoid adding a compile-time dependency on that target.
-namespace tabs {
-bool UseCompactHorizontalTabs();
-}  // namespace tabs
+// Forward declared to avoid adding a compile-time dependency.
+// impl target is //brave/browser/ui/window_feature_controller:chromium_impl.
+bool BraveDisablesImmersiveFullscreenMode();
 
 #if BUILDFLAG(IS_MAC)
 #define UsesImmersiveFullscreenMode UsesImmersiveFullscreenMode_ChromiumImpl
@@ -34,14 +32,16 @@ bool WindowFeatureController::UsesImmersiveFullscreenMode() const {
   if (!disabled_at_startup_.has_value()) {
     disabled_at_startup_ =
         tabs::utils::ShouldShowBraveVerticalTabs(&browser_.get()) ||
-        tabs::UseCompactHorizontalTabs();
+        BraveDisablesImmersiveFullscreenMode();
   }
+
   if (*disabled_at_startup_) {
     return false;
   }
+
   // Immersive is also incompatible with vertical tabs at runtime.
   if (tabs::utils::ShouldShowBraveVerticalTabs(&browser_.get()) ||
-      tabs::UseCompactHorizontalTabs()) {
+      BraveDisablesImmersiveFullscreenMode()) {
     return false;
   }
 
@@ -50,7 +50,7 @@ bool WindowFeatureController::UsesImmersiveFullscreenMode() const {
 
 bool WindowFeatureController::UsesImmersiveFullscreenTabbedMode() const {
   if (tabs::utils::ShouldShowBraveVerticalTabs(&browser_.get()) ||
-      tabs::UseCompactHorizontalTabs()) {
+      BraveDisablesImmersiveFullscreenMode()) {
     return false;
   }
 
