@@ -45,4 +45,7 @@ specific_include_rules = {
   "utils\.cc": [
     "!brave/components/l10n/common/locale_util.h",
   ],
+  "model_service_unittest\.cc": [
+    "+components/grit/brave_components_webui_strings.h",
+  ],
 }
