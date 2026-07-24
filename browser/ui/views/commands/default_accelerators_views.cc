@@ -4,42 +4,38 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 #include <algorithm>
-#include <utility>
 
-#include "base/containers/flat_set.h"
-#include "brave/browser/ui/commands/accelerator_service.h"
 #include "brave/browser/ui/commands/default_accelerators.h"
+#include "build/build_config.h"
 #include "chrome/browser/ui/accelerator_table.h"
 #include "ui/base/accelerators/accelerator.h"
 
-#if BUILDFLAG(IS_MAC)
-#include "brave/browser/ui/views/commands/default_accelerators_mac.h"
-#endif  // BUILDFLAG(IS_MAC)
-
 namespace commands {
 
-std::pair<AcceleratorPrefManager::Accelerators, base::flat_set<ui::Accelerator>>
-GetDefaultAccelerators() {
-  std::pair<AcceleratorPrefManager::Accelerators,
-            base::flat_set<ui::Accelerator>>
-      result;
-  auto& [defaults, system_commands] = result;
+DefaultAccelerators::DefaultAccelerators() = default;
+DefaultAccelerators::~DefaultAccelerators() = default;
+DefaultAccelerators::DefaultAccelerators(DefaultAccelerators&&) = default;
+DefaultAccelerators& DefaultAccelerators::operator=(DefaultAccelerators&&) =
+    default;
 
-  auto add_to_accelerators = [&defaults](const AcceleratorMapping& mapping) {
-    defaults[mapping.command_id].push_back(
-        ui::Accelerator(mapping.keycode, mapping.modifiers));
-  };
+DefaultAccelerators GetDefaultAccelerators() {
+  DefaultAccelerators result;
 
-  std::ranges::for_each(GetAcceleratorList(), add_to_accelerators);
+  std::ranges::for_each(
+      GetAcceleratorList(), [&result](const AcceleratorMapping& mapping) {
+        result.accelerators[mapping.command_id].push_back(
+            ui::Accelerator(mapping.keycode, mapping.modifiers));
+      });
 #if BUILDFLAG(IS_MAC)
-  // TODO(sko) These accelerators should be flagged as system_commands unless we
-  // can modify the OS settings. See the comment in default_accelerator_mac.h
-  std::ranges::for_each(GetGlobalAccelerators(), add_to_accelerators);
-  std::ranges::for_each(GetGlobalAccelerators(),
-                        [&system_commands](const AcceleratorMapping& mapping) {
-                          system_commands.insert(ui::Accelerator(
-                              mapping.keycode, mapping.modifiers));
-                        });
+  const DefaultAccelerators& global_accelerators = GetGlobalAccelerators();
+  for (const auto& [command_id, accelerators] :
+       global_accelerators.accelerators) {
+    auto& command_accelerators = result.accelerators[command_id];
+    command_accelerators.insert(command_accelerators.end(),
+                                accelerators.begin(), accelerators.end());
+  }
+  result.menu_dispatched = global_accelerators.menu_dispatched;
+  result.system_managed = global_accelerators.system_managed;
 #endif  // BUILDFLAG(IS_MAC)
   return result;
 }

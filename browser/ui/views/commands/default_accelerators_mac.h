@@ -6,16 +6,31 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_COMMANDS_DEFAULT_ACCELERATORS_MAC_H_
 #define BRAVE_BROWSER_UI_VIEWS_COMMANDS_DEFAULT_ACCELERATORS_MAC_H_
 
-#include <vector>
+#include <optional>
 
-#include "chrome/browser/ui/accelerator_table.h"
+#include "base/functional/function_ref.h"
+#include "ui/base/accelerators/accelerator.h"
+
+@class NSMenu;
+@class NSMenuItem;
 
 namespace commands {
 
-// Returns shortcuts mapped to global menu, which can be changed dynamically
-// by the OS too. This is why we don't have a static table for these.
-// (System Preference > Keyboard > Keyboard Shortcuts > App shortcuts)
-std::vector<AcceleratorMapping> GetGlobalAccelerators();
+// Whether |command_id|'s key equivalents are hard-coded and dynamically
+// swapped by upstream's app_controller_mac.mm, so user customizations can't
+// be applied to them (i.e. IDC_CLOSE_TAB / IDC_CLOSE_WINDOW).
+bool IsUnmodifiableCommand(int command_id);
+
+// Parses |item|'s key equivalent into an accelerator, using the same
+// interpretation that GetGlobalAccelerators() uses to build the defaults.
+// Returns std::nullopt if the item has no key equivalent or its tag isn't a
+// known command.
+std::optional<ui::Accelerator> GetAcceleratorFromMenuItem(NSMenuItem* item);
+
+// Invokes |visitor| for every item in |menu| and its submenus, excluding the
+// services menu (whose items are managed by the OS).
+void ForEachMenuItem(NSMenu* menu,
+                     base::FunctionRef<void(NSMenuItem*)> visitor);
 
 }  // namespace commands
 

@@ -16,7 +16,10 @@ import("//brave/components/tor/buildflags/buildflags.gni")
 source_set("unit_tests") {
   testonly = true
 
-  sources = [ "accelerator_service_unittest.cc" ]
+  sources = [
+    "accelerator_service_unittest.cc",
+    "default_accelerators_unittest.cc",
+  ]
 
   deps = [
     "//base",
