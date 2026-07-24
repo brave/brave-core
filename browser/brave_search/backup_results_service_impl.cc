@@ -29,6 +29,10 @@
 #include "chrome/browser/content_settings/page_specific_content_settings_delegate.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/content_settings/browser/page_specific_content_settings.h"
+#include "components/content_settings/core/browser/host_content_settings_map.h"
+#include "components/content_settings/core/common/content_settings.h"
+#include "components/content_settings/core/common/content_settings_pattern.h"
+#include "components/content_settings/core/common/content_settings_types.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_thread.h"
@@ -185,6 +189,20 @@ void BackupResultsServiceImpl::FetchBackupResults(
       Profile::OTRProfileID::CreateUniqueForSearchBackupResults();
   auto* otr_profile = profile_->GetOffTheRecordProfile(otr_profile_id, true);
 
+  const int farbling = features::kBackupResultsFarbling.Get();
+  if (farbling != 0) {
+    auto* otr_host_content_settings_map =
+        HostContentSettingsMapFactory::GetForProfile(otr_profile);
+    if (otr_host_content_settings_map) {
+      const auto primary_pattern =
+          ContentSettingsPattern::FromURLNoWildcard(url);
+      otr_host_content_settings_map->SetContentSettingCustomScope(
+          primary_pattern, ContentSettingsPattern::Wildcard(),
+          ContentSettingsType::BRAVE_FINGERPRINTING_V2,
+          farbling > 0 ? CONTENT_SETTING_BLOCK : CONTENT_SETTING_ALLOW);
+    }
+  }
+
   std::unique_ptr<content::WebContents> web_contents;
 
   if (should_render) {
@@ -197,13 +215,17 @@ void BackupResultsServiceImpl::FetchBackupResults(
     brave_shields::BraveShieldsWebContentsObserver::CreateForWebContents(
         web_contents.get());
 
-    int stored_width =
-        local_state_->GetInteger(prefs::kBackupResultsLastViewWidth);
-    int stored_height =
-        local_state_->GetInteger(prefs::kBackupResultsLastViewHeight);
-    gfx::Size view_size(
-        stored_width > 0 ? stored_width : base::RandIntInclusive(800, 1920),
-        stored_height > 0 ? stored_height : base::RandIntInclusive(600, 1080));
+    gfx::Size view_size;
+    if (!features::kBackupResultsZeroSize.Get()) {
+      int stored_width =
+          local_state_->GetInteger(prefs::kBackupResultsLastViewWidth);
+      int stored_height =
+          local_state_->GetInteger(prefs::kBackupResultsLastViewHeight);
+      view_size = gfx::Size(
+          stored_width > 0 ? stored_width : base::RandIntInclusive(800, 1920),
+          stored_height > 0 ? stored_height
+                            : base::RandIntInclusive(600, 1080));
+    }
 #if BUILDFLAG(IS_ANDROID)
     auto* native_view = web_contents->GetNativeView();
     float dip_scale = native_view->GetDipScale();
@@ -218,7 +240,9 @@ void BackupResultsServiceImpl::FetchBackupResults(
     web_preferences.supports_multiple_windows = false;
     web_contents->SetWebPreferences(web_preferences);
 
-    SeedNavigationHistory(*web_contents, url);
+    if (features::kBackupResultsHistorySeed.Get()) {
+      SeedNavigationHistory(*web_contents, url);
+    }
 
     BackupResultsWebContentsObserver::CreateForWebContents(
         web_contents.get(), weak_ptr_factory_.GetWeakPtr());
