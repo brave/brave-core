@@ -578,25 +578,48 @@ void AIChatUIPageHandler::NotifyNewDefaultConversation() {
           : std::nullopt);
 }
 
+ConversationHandler*
+AIChatUIPageHandler::AdoptOrCreateConversationForActiveContent() {
+  auto* service = AIChatServiceFactory::GetForBrowserContext(profile_);
+  // Adopt the conversation cached for this tab's content if it hasn't been
+  // shown yet (e.g. one the context menu created before the panel opened), so
+  // its message isn't orphaned in a conversation the panel never binds to. A
+  // conversation already on screen has a connected client, so adopting is
+  // limited to one that hasn't been displayed yet: this neither hijacks the
+  // visible conversation nor a "new conversation" request.
+  if (active_chat_tab_helper_) {
+    ConversationHandler* conversation =
+        service->GetConversationHandlerForContent(
+            active_chat_tab_helper_->web_contents_content().content_id());
+    if (conversation && !conversation->IsAnyClientConnected()) {
+      return conversation;
+    }
+  }
+
+  ConversationHandler* conversation = service->CreateConversation();
+  // For global panel, associate the current tab's content synchronously so
+  // GetState() on the frontend returns it already populated. Tab switches are
+  // handled by the frontend via AssociateTab/DisassociateContent.
+  if (active_chat_tab_helper_ &&
+      ai_chat::CanAssociateContent(
+          &active_chat_tab_helper_->web_contents_content())) {
+    conversation->associated_content_manager()->AddContent(
+        &active_chat_tab_helper_->web_contents_content());
+  }
+  return conversation;
+}
+
+// See AIChatUIHandler::BindRelatedConversation in ai_chat.mojom for the
+// contract. Implementation note: the content-associated case resumes (or
+// creates) the conversation keyed to the active tab's content_id; every other
+// case defers to AdoptOrCreateConversationForActiveContent().
 void AIChatUIPageHandler::BindRelatedConversation(
     mojo::PendingReceiver<mojom::ConversationHandler> receiver,
     mojo::PendingRemote<mojom::ConversationUI> conversation_ui_handler) {
   ConversationHandler* conversation;
   if (!active_chat_tab_helper_ || !conversations_are_content_associated_) {
-    conversation = AIChatServiceFactory::GetForBrowserContext(profile_)
-                       ->CreateConversation();
-    // For global panel, associate the current tab's content synchronously so
-    // GetState() on the frontend returns it already populated. Tab switches
-    // are handled by the frontend via AssociateTab/DisassociateContent.
-    if (active_chat_tab_helper_) {
-      conversation->associated_content_manager()->AddContent(
-          &active_chat_tab_helper_->web_contents_content());
-    }
+    conversation = AdoptOrCreateConversationForActiveContent();
   } else {
-    // GetOrCreateConversationHandlerForContent ensures the side panel binds to
-    // the same conversation already tied to this content_id. For example, if we
-    // create a new conversation via the context menu, we want to make sure we
-    // load it here.
     conversation =
         AIChatServiceFactory::GetForBrowserContext(profile_)
             ->GetOrCreateConversationHandlerForContent(
@@ -652,6 +675,11 @@ void AIChatUIPageHandler::DisassociateContent(
   service->DisassociateContent(content, conversation_uuid);
 }
 
+// See AIChatUIHandler::NewConversation in ai_chat.mojom for the contract.
+// Implementation note: the content-associated case unconditionally creates a
+// fresh conversation keyed to the active tab's content_id (which
+// BindRelatedConversation() then resumes); every other case defers to
+// AdoptOrCreateConversationForActiveContent().
 void AIChatUIPageHandler::NewConversation(
     mojo::PendingReceiver<mojom::ConversationHandler> receiver,
     mojo::PendingRemote<mojom::ConversationUI> conversation_ui_handler) {
@@ -663,16 +691,7 @@ void AIChatUIPageHandler::NewConversation(
                 active_chat_tab_helper_->web_contents_content().content_id(),
                 active_chat_tab_helper_->web_contents_content().GetWeakPtr());
   } else {
-    conversation = AIChatServiceFactory::GetForBrowserContext(profile_)
-                       ->CreateConversation();
-    // For global panel, associate the current tab's content synchronously so
-    // GetState() on the frontend returns it already populated.
-    if (active_chat_tab_helper_ &&
-        ai_chat::CanAssociateContent(
-            &active_chat_tab_helper_->web_contents_content())) {
-      conversation->associated_content_manager()->AddContent(
-          &active_chat_tab_helper_->web_contents_content());
-    }
+    conversation = AdoptOrCreateConversationForActiveContent();
   }
 
   conversation->Bind(std::move(receiver), std::move(conversation_ui_handler));
