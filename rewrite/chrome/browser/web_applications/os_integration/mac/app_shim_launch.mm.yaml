@@ -5,6 +5,23 @@
 
 substitutions:
   - description: |
+      In tests, spawn the shim as a direct child instead of opening it through
+      LaunchServices (for more information, see the top comment in the
+      chromium_src override).
+    regex:
+      re_pattern:
+        '(void
+        LaunchTheFirstShimThatWorksOnFileThread\(.*?)(\n  base::mac::LaunchApplication)'
+      re_flags: [DOTALL]
+      replace: |-
+        \1
+          if (BraveLaunchTheFirstShimThatWorksOnFileThread(
+                  shim_path, command_line, &shim_paths, launched_after_rebuild,
+                  launch_mode, bundle_id, &launched_callback, &terminated_callback)) {
+            return;
+          }\2
+
+  - description: |
       Recover launch URLs that were passed on the command line for testing.
     preempt_function_impl:
       function_name: LaunchShimForTesting

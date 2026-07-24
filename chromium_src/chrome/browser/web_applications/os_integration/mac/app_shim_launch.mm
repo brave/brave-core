@@ -103,27 +103,6 @@ void RunAppLaunchCallbacksForDirectLaunch(
 }  // namespace
 }  // namespace web_app
 
-// In tests, spawn the shim as a direct child instead of opening it through
-// LaunchServices (see file comment). On spawn failure, fall back to trying the
-// remaining candidate shim paths, mirroring upstream's implementation.
-#define BRAVE_LAUNCH_THE_FIRST_SHIM_THAT_WORKS_ON_FILE_THREAD                \
-  if (base::CommandLine::ForCurrentProcess()->HasSwitch(                     \
-          switches::kTestType)) {                                            \
-    base::Process process = LaunchShimDirectly(shim_path, command_line);     \
-    if (process.IsValid()) {                                                 \
-      RunAppLaunchCallbacksForDirectLaunch(std::move(process),               \
-                                           std::move(launched_callback),     \
-                                           std::move(terminated_callback));  \
-    } else {                                                                 \
-      LOG(ERROR) << "Failed to launch application with path: " << shim_path; \
-      LaunchTheFirstShimThatWorksOnFileThread(                               \
-          std::move(shim_paths), launched_after_rebuild, launch_mode,        \
-          bundle_id, std::move(launched_callback),                           \
-          std::move(terminated_callback));                                   \
-    }                                                                        \
-    return;                                                                  \
-  }
-
 namespace web_app {
 
 // Replaces the upstream LaunchServices-based implementation with a direct
@@ -134,11 +113,26 @@ void BraveLaunchShimForTesting(const base::FilePath& shim_path,  // IN-TEST
                                ShimTerminatedCallback terminated_callback,
                                const base::FilePath& chromium_path);
 
+// If this is a test run, spawns the shim at `shim_path` as a direct child
+// instead of opening it through LaunchServices (see file comment) and returns
+// true; on spawn failure, falls back to trying the remaining candidate shim
+// paths, mirroring upstream's implementation. Returns false without touching
+// the arguments when this is not a test run, so the caller can proceed with the
+// upstream launch. `shim_paths` and the callbacks are passed by pointer because
+// they are only consumed on the test path.
+bool BraveLaunchTheFirstShimThatWorksOnFileThread(
+    const base::FilePath& shim_path,
+    const base::CommandLine& command_line,
+    std::vector<base::FilePath>* shim_paths,
+    bool launched_after_rebuild,
+    ShimLaunchMode launch_mode,
+    const std::string& bundle_id,
+    ShimLaunchedCallback* launched_callback,
+    ShimTerminatedCallback* terminated_callback);
+
 }  // namespace web_app
 
 #include <chrome/browser/web_applications/os_integration/mac/app_shim_launch.mm>
-
-#undef BRAVE_LAUNCH_THE_FIRST_SHIM_THAT_WORKS_ON_FILE_THREAD
 
 namespace web_app {
 
@@ -186,6 +180,32 @@ void BraveLaunchShimForTesting(const base::FilePath& shim_path,  // IN-TEST
           },
           shim_path, command_line, std::move(launched_callback),
           std::move(terminated_callback)));
+}
+
+bool BraveLaunchTheFirstShimThatWorksOnFileThread(
+    const base::FilePath& shim_path,
+    const base::CommandLine& command_line,
+    std::vector<base::FilePath>* shim_paths,
+    bool launched_after_rebuild,
+    ShimLaunchMode launch_mode,
+    const std::string& bundle_id,
+    ShimLaunchedCallback* launched_callback,
+    ShimTerminatedCallback* terminated_callback) {
+  if (!base::CommandLine::ForCurrentProcess()->HasSwitch(switches::kTestType)) {
+    return false;
+  }
+  base::Process process = LaunchShimDirectly(shim_path, command_line);
+  if (process.IsValid()) {
+    RunAppLaunchCallbacksForDirectLaunch(std::move(process),
+                                         std::move(*launched_callback),
+                                         std::move(*terminated_callback));
+  } else {
+    LOG(ERROR) << "Failed to launch application with path: " << shim_path;
+    LaunchTheFirstShimThatWorksOnFileThread(
+        std::move(*shim_paths), launched_after_rebuild, launch_mode, bundle_id,
+        std::move(*launched_callback), std::move(*terminated_callback));
+  }
+  return true;
 }
 
 }  // namespace web_app
