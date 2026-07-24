@@ -1,0 +1,30 @@
+caption: Enable Brave new tab page ads
+default: null
+desc: |-
+  Enable or disable Brave new tab page ads.
+
+  If this policy is set to false, Brave new tab page ads are disabled and users cannot enable them.
+
+  If this policy is set to true or left unset, Brave new tab page ads are enabled but users can disable them in settings.
+example_value: true
+features:
+  can_be_mandatory: true
+  can_be_recommended: false
+  dynamic_refresh: true
+  per_profile: true
+items:
+- caption: Enable Brave new tab page ads (can be disabled in settings)
+  value: true
+- caption: Disable Brave new tab page ads
+  value: false
+- caption: Use default behavior
+  value: null
+owners:
+- managed-policies@brave.com
+schema:
+  type: boolean
+supported_on:
+- chrome.*:151-
+- android:151-
+tags: []
+type: main

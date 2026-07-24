@@ -39,6 +39,9 @@ export function BackgroundPanel() {
   const sponsoredImagesEnabled = useBackgroundState(
     (s) => s.sponsoredImagesEnabled,
   )
+  const sponsoredImagesManagedByPolicy = useBackgroundState(
+    (s) => s.sponsoredImagesManagedByPolicy,
+  )
   const selectedBackground = useBackgroundState((s) => s.selectedBackground)
   const braveBackgrounds = useBackgroundState((s) => s.braveBackgrounds)
   const customBackgrounds = useBackgroundState((s) => s.customBackgrounds)
@@ -164,36 +167,39 @@ export function BackgroundPanel() {
           {getString(S.NEW_TAB_SHOW_BACKGROUNDS_LABEL)}
         </span>
       </Toggle>
-      {backgroundsEnabled && rewardsFeatureEnabled && (
-        <Toggle
-          className='toggle-row'
-          size='small'
-          checked={sponsoredImagesEnabled}
-          onChange={({ checked }) => {
-            actions.setSponsoredImagesEnabled(checked)
-          }}
-        >
-          <span className='label'>
-            {getString(S.NEW_TAB_SHOW_SPONSORED_IMAGES_LABEL)}
-            <div className='subtext'>
-              {!rewardsEnabled
-                && formatString(
-                  getString(S.NEW_TAB_SHOW_SPONSORED_IMAGES_EARNING_TEXT),
-                  {
-                    $1: (content) => (
-                      <Link
-                        url={settingsURL}
-                        openInNewTab
-                      >
-                        {content}
-                      </Link>
-                    ),
-                  },
-                )}
-            </div>
-          </span>
-        </Toggle>
-      )}
+      {backgroundsEnabled
+        && rewardsFeatureEnabled
+        && (!sponsoredImagesManagedByPolicy || sponsoredImagesEnabled) && (
+          <Toggle
+            data-testid='sponsored-images-toggle'
+            className='toggle-row'
+            size='small'
+            checked={sponsoredImagesEnabled}
+            onChange={({ checked }) => {
+              actions.setSponsoredImagesEnabled(checked)
+            }}
+          >
+            <span className='label'>
+              {getString(S.NEW_TAB_SHOW_SPONSORED_IMAGES_LABEL)}
+              <div className='subtext'>
+                {!rewardsEnabled
+                  && formatString(
+                    getString(S.NEW_TAB_SHOW_SPONSORED_IMAGES_EARNING_TEXT),
+                    {
+                      $1: (content) => (
+                        <Link
+                          url={settingsURL}
+                          openInNewTab
+                        >
+                          {content}
+                        </Link>
+                      ),
+                    },
+                  )}
+              </div>
+            </span>
+          </Toggle>
+        )}
       {backgroundsEnabled && backgroundsCustomizable && (
         <>
           <div className='background-options'>

@@ -35,6 +35,7 @@ export interface AdsInfo {
   browserUpgradeRequired: boolean
   isSupportedRegion: boolean
   adsEnabled: Record<AdType, boolean>
+  adsManagedByPolicy: Record<AdType, boolean>
   adTypesReceivedThisMonth: Record<AdType, number>
   minEarningsPreviousMonth: number
   nextPaymentDate: number

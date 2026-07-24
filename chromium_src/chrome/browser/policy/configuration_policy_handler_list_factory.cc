@@ -12,6 +12,7 @@
 #include "brave/browser/policy/handlers/brave_referrers_policy_handler.h"
 #include "brave/browser/policy/handlers/brave_remember_1p_storage_policy_handler.h"
 #include "brave/components/brave_ads/buildflags/buildflags.h"
+#include "brave/components/ntp_background_images/common/pref_names.h"
 #include "components/policy/core/browser/boolean_disabling_policy_handler.h"
 #include "components/policy/core/browser/configuration_policy_handler.h"
 #include "components/policy/policy_constants.h"
@@ -40,6 +41,10 @@ std::unique_ptr<ConfigurationPolicyHandlerList> BuildHandlerList(
   handlers->AddHandler(std::make_unique<BooleanDisablingPolicyHandler>(
       key::kBraveSearchResultAdsEnabled,
       brave_ads::prefs::kOptedInToSearchResultAds));
+  handlers->AddHandler(std::make_unique<BooleanDisablingPolicyHandler>(
+      key::kBraveNewTabPageAdsEnabled,
+      ntp_background_images::prefs::
+          kNewTabPageShowSponsoredImagesBackgroundImage));
 #endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
   handlers->AddHandler(std::make_unique<BraveAdblockPolicyHandler>());

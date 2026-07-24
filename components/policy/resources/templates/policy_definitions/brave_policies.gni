@@ -12,6 +12,7 @@ brave_policies = [
   "BraveSoftware/BraveGlobalPrivacyControlEnabled.yaml",
   "BraveSoftware/BraveLocalAIEnabled.yaml",
   "BraveSoftware/BraveNewsDisabled.yaml",
+  "BraveSoftware/BraveNewTabPageAdsEnabled.yaml",
   "BraveSoftware/BraveP3AEnabled.yaml",
   "BraveSoftware/BravePlaylistEnabled.yaml",
   "BraveSoftware/BraveReduceLanguageEnabled.yaml",

@@ -38,6 +38,7 @@ export interface BackgroundState {
   backgroundsEnabled: boolean
   backgroundsCustomizable: boolean
   sponsoredImagesEnabled: boolean
+  sponsoredImagesManagedByPolicy: boolean
   braveBackgrounds: BraveBackground[]
   customBackgrounds: string[]
   selectedBackground: SelectedBackground
@@ -98,6 +99,7 @@ export function defaultBackgroundStore(): BackgroundStore {
     backgroundsEnabled: true,
     backgroundsCustomizable: true,
     sponsoredImagesEnabled: true,
+    sponsoredImagesManagedByPolicy: false,
     braveBackgrounds: [],
     customBackgrounds: [],
     selectedBackground: {

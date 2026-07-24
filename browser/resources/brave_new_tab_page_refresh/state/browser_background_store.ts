@@ -24,6 +24,9 @@ export function createBackgroundStore() {
     backgroundsCustomizable: loadTimeData.getBoolean(
       'customBackgroundFeatureEnabled',
     ),
+    sponsoredImagesManagedByPolicy: loadTimeData.getBoolean(
+      'sponsoredImagesManagedByPolicy',
+    ),
     sponsoredRichMediaBaseUrl: loadTimeData.getString(
       'sponsoredRichMediaBaseUrl',
     ),
