@@ -9,6 +9,7 @@
 #include <memory>
 
 #include "components/web_modal/web_contents_modal_dialog_manager_delegate.h"
+#include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/views/controls/webview/unhandled_keyboard_event_handler.h"
 #include "ui/views/controls/webview/webview.h"
 #include "url/gurl.h"
@@ -48,6 +49,8 @@ class StatusBubbleViews;
 class AIChatMovableSidePanelWebView
     : public views::WebView,
       public web_modal::WebContentsModalDialogManagerDelegate {
+  METADATA_HEADER(AIChatMovableSidePanelWebView, views::WebView)
+
  public:
   // Factory used by `AIChatSidePanelWebView::CreateView` when the feature is
   // enabled. If `is_tab_associated` is true the panel tracks the active tab's
@@ -65,6 +68,12 @@ class AIChatMovableSidePanelWebView
 
   // Takes ownership of `web_contents` and displays it in this view.
   void AdoptWebContents(std::unique_ptr<content::WebContents> web_contents);
+
+  // Relinquishes ownership of the hosted `WebContents`, detaching it from this
+  // view without destroying it. Used by the reverse transfer (side panel ->
+  // tab) so the live conversation can be re-inserted into a browser tab.
+  // Returns null when the view is not currently hosting any contents.
+  std::unique_ptr<content::WebContents> ReleaseWebContents();
 
   // views::WebView:
   void SetWebContents(content::WebContents* web_contents) override;
