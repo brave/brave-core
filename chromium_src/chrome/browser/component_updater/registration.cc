@@ -63,9 +63,9 @@ void RegisterComponentsForUpdate() {
   psst::RegisterPsstComponent(cus);
 #endif
 #if BUILDFLAG(ENABLE_AI_CHAT)
-  // Only fetch WebMCP tool scripts when AI Chat is enabled and the runtime
-  // feature is on. Note: this is the process-wide feature/policy state; the
-  // per-tab injector (WebMcpInjector) is still gated on the kWebMCP feature.
+  // Only fetch WebMCP tool scripts when AI Chat is enabled and the WebMCP
+  // feature is enabled. Note: this is the process-wide feature/policy state,
+  // not per-profile as components are shared across all profiles.
   if (ai_chat::features::IsAIChatEnabled() &&
       base::FeatureList::IsEnabled(blink::features::kWebMCP)) {
     web_mcp::RegisterWebMcpComponent(cus);
