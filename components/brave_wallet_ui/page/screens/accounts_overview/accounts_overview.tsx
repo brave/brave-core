@@ -1,47 +1,47 @@
 // Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at https://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
 import { useHistory } from 'react-router'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // selectors
-import { useSafeWalletSelector } from '../../../../common/hooks/use-safe-selector'
-import { WalletSelectors } from '../../../../common/selectors'
+import { useSafeWalletSelector } from '../../../common/hooks/use-safe-selector'
+import { WalletSelectors } from '../../../common/selectors'
 
 // constants
-import { BraveWallet, AccountPageTabs } from '../../../../constants/types'
+import { BraveWallet, AccountPageTabs } from '../../../constants/types'
 import {
   querySubscriptionOptions60s, //
-} from '../../../../common/slices/constants'
-import { emptyRewardsInfo } from '../../../../common/async/base-query-cache'
+} from '../../../common/slices/constants'
+import { emptyRewardsInfo } from '../../../common/async/base-query-cache'
 
 // utils
-import { getLocale } from '../../../../../common/locale'
+import { getLocale } from '../../../../common/locale'
 import {
   groupAccountsById,
   sortAccountsByName,
-} from '../../../../utils/account-utils'
-import { makeAccountRoute } from '../../../../utils/routes-utils'
-import { getPriceRequestsForTokens } from '../../../../utils/pricing-utils'
+} from '../../../utils/account-utils'
+import { makeAccountRoute } from '../../../utils/routes-utils'
+import { getPriceRequestsForTokens } from '../../../utils/pricing-utils'
 
 // Styled Components
-import { AccountsListWrapper } from './style'
-import { Column, Row, Text } from '../../../shared/style'
+import { AccountsListWrapper } from './accounts_overview.style'
+import { Column, Row, Text } from '../../../components/shared/style'
 
 // Components
-import AccountListItem from '../../account-list-item'
+import AccountListItem from '../../../components/desktop/account-list-item'
 import {
   WalletPageWrapper, //
-} from '../../wallet-page-wrapper/wallet-page-wrapper'
-import { AccountsHeader } from '../../card-headers/accounts-header'
+} from '../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper'
+import { AccountsHeader } from '../../../components/desktop/card-headers/accounts-header'
 
 // Hooks
 import {
   useBalancesFetcher, //
-} from '../../../../common/hooks/use-balances-fetcher'
+} from '../../../common/hooks/use-balances-fetcher'
 import {
   useGetDefaultFiatCurrencyQuery,
   useGetHiddenAccountsQuery,
@@ -49,13 +49,13 @@ import {
   useGetRewardsInfoQuery,
   useGetUserTokensRegistryQuery,
   useGetIsShieldingAvailableQuery,
-} from '../../../../common/slices/api.slice'
-import { useAccountsQuery } from '../../../../common/slices/api.slice.extra'
+} from '../../../common/slices/api.slice'
+import { useAccountsQuery } from '../../../common/slices/api.slice.extra'
 import {
   usePersistedTokenSpotPricesQuery, //
-} from '../../../../common/hooks/use-persisted-spot-prices'
+} from '../../../common/hooks/use-persisted-spot-prices'
 
-export const Accounts = () => {
+export const AccountsOverview = () => {
   // routing
   const history = useHistory()
 
@@ -369,5 +369,3 @@ export const Accounts = () => {
     </WalletPageWrapper>
   )
 }
-
-export default Accounts

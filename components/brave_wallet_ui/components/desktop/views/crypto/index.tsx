@@ -33,7 +33,7 @@ import { PortfolioOverview } from '../../../../page/screens/portfolio_overview/p
 import { FungibleAssetDetails } from '../../../../page/screens/fungible_asset_details/fungible_asset_details'
 import { PortfolioNftAsset } from '../portfolio/portfolio-nft-asset'
 import { MarketView } from '../../../../page/screens/market/market'
-import { Accounts } from '../accounts/accounts'
+import { AccountsOverview } from '../../../../page/screens/accounts_overview/accounts_overview'
 import { Account } from '../accounts/account'
 import { AddAccountModal } from '../../popup-modals/add-account-modal/add-account-modal'
 import {
@@ -150,7 +150,7 @@ export const CryptoView = ({ sessionRoute }: Props) => {
           <WalletPageWrapper wrapContentInBox={true}>
             <DefaultPageWrapper>
               <Banners />
-              <Accounts />
+              <AccountsOverview />
             </DefaultPageWrapper>
           </WalletPageWrapper>
         </Route>
@@ -160,7 +160,7 @@ export const CryptoView = ({ sessionRoute }: Props) => {
         </Route>
 
         <Route path={WalletRoutes.Accounts}>
-          <Accounts />
+          <AccountsOverview />
         </Route>
 
         {/* Market */}
