@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "base/check.h"
+#include "base/values.h"
 #include "brave/browser/brave_local_state_prefs.h"
 #include "brave/browser/brave_profile_prefs.h"
 #include "brave/browser/brave_stats/buildflags.h"
@@ -35,6 +36,7 @@
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/accessibility/page_colors_controller.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/toolbar/toolbar_pref_names.h"
 #include "chrome/common/channel_info.h"
 #include "chrome/common/pref_names.h"
 #include "components/gcm_driver/gcm_buildflags.h"
@@ -134,6 +136,34 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
   // Must be called before ChromiumImpl because it's migrating a Chromium pref
   // to Brave pref.
   brave::welcome_ui::prefs::MigratePrefs(profile_prefs);
+#endif  // !BUILDFLAG(IS_ANDROID)
+
+#if !BUILDFLAG(IS_ANDROID)
+  // Added 2026-07.
+  // Must be called before ChromiumImpl: it reads the upstream marker pref
+  // "toolbar.tab_search_migration_complete", which ChromiumImpl clears in its
+  // MigrateObsoleteProfilePrefs. Brave used to expose tab search as a pinned
+  // toolbar action (kActionTabSearch in prefs::kPinnedActions); Chromium 151
+  // dropped that in favor of the tab strip combo button
+  // (prefs::kTabSearchPinnedToTabstrip) and removed its own migration, so Brave
+  // must carry the state over. A non-default marker means this profile went
+  // through the era where the tab search action was auto-pinned by default, so
+  // its current pinned/unpinned state reflects the user's choice. Because
+  // ChromiumImpl clears the marker right after, this runs at most once and a
+  // later manual toggle of the combo button is never clobbered.
+  if (const auto* tab_search_migrated = profile_prefs->FindPreference(
+          "toolbar.tab_search_migration_complete");
+      tab_search_migrated && !tab_search_migrated->IsDefaultValue()) {
+    // "kActionTabSearch" is the stringized enum name of
+    // actions::kActionTabSearch as serialized into prefs::kPinnedActions.
+    // Hardcoded to match the frozen on-disk value written by older builds
+    // (deriving it via actions::ActionIdMap would be fragile to a future enum
+    // rename and doesn't work before that map is initialized).
+    const bool tab_search_pinned = profile_prefs->GetList(prefs::kPinnedActions)
+                                       .contains("kActionTabSearch");
+    profile_prefs->SetBoolean(prefs::kTabSearchPinnedToTabstrip,
+                              tab_search_pinned);
+  }
 #endif  // !BUILDFLAG(IS_ANDROID)
 
   MigrateObsoleteProfilePrefs_ChromiumImpl(profile_prefs, profile_path);
@@ -277,16 +307,11 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
   brave_account::prefs::MigrateObsoleteProfilePrefs(profile_prefs);
 
   // Added 2026-06
-#if !BUILDFLAG(IS_ANDROID)
-  const auto* deprecated_tab_search_show =
-      profile_prefs->FindPreference(kTabsSearchShow);
-  if (deprecated_tab_search_show &&
-      !deprecated_tab_search_show->IsDefaultValue()) {
-    profile_prefs->SetBoolean(prefs::kTabSearchPinnedToTabstrip,
-                              profile_prefs->GetBoolean(kTabsSearchShow));
-  }
+  // kTabsSearchShow (brave.tabs_search_show) is dead: its settings toggle was
+  // removed in 2025 and nothing reads it anymore. The tab search visibility
+  // state is migrated from prefs::kPinnedActions above (before ChromiumImpl);
+  // just drop the obsolete pref here.
   profile_prefs->ClearPref(kTabsSearchShow);
-#endif
 
   // END_MIGRATE_OBSOLETE_PROFILE_PREFS
 }
