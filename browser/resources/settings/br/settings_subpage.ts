@@ -10,10 +10,11 @@ import {SettingsSubpageElement} from '../settings_page/settings_subpage.js'
 
 injectStyle(SettingsSubpageElement, css`
   :host {
-    min-height: auto !important;
     display: inline-block;
-    width:100%;
+    min-height: auto !important;
+    padding-bottom: var(--leo-spacing-xl) !important;
     position: relative;
+    width:100%;
   }
   :host(:not(.multi-card)) {
     background-color: var(--leo-color-page-background) !important;
