@@ -294,11 +294,12 @@ describe('TopSitesGrid onDrop', () => {
   it('should snap to the start when dropped on a sponsored site', () => {
     const topSiteA = createTopSite('https://foo.com')
     const topSiteB = createTopSite('https://bar.com')
+    const topSiteC = createTopSite('https://baz.com')
     const sponsoredSite = createSponsoredSite('https://baz.com')
     const setTopSitePosition = jest.fn()
     renderGrid(
       {
-        topSites: [topSiteA, topSiteB],
+        topSites: [topSiteA, topSiteB, topSiteC],
         sponsoredSites: [sponsoredSite],
       },
       { setTopSitePosition },
@@ -329,11 +330,12 @@ describe('TopSitesGrid onDrop', () => {
 
   it('should not reorder when the dragged tile is a sponsored site', () => {
     const topSiteA = createTopSite('https://foo.com')
+    const topSiteB = createTopSite('https://bar.com')
     const sponsoredSite = createSponsoredSite('https://bar.com')
     const setTopSitePosition = jest.fn()
     renderGrid(
       {
-        topSites: [topSiteA],
+        topSites: [topSiteA, topSiteB],
         sponsoredSites: [sponsoredSite],
       },
       { setTopSitePosition },
