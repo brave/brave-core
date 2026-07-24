@@ -401,7 +401,8 @@ mojom::ToolUseEventPtr ProtoToToolUse(
                   block_proto.web_sources_content_block())));
           break;
         case sync_pb::AIChatContentBlock::CONTENT_NOT_SET:
-          break;
+          // Variant not known by this client or not set
+          return nullptr;
       }
     }
     tool_use->output = std::move(blocks);
@@ -420,34 +421,33 @@ mojom::ToolUseEventPtr ProtoToToolUse(
 
 mojom::ConversationEntryEventPtr ProtoToEntryEvent(
     const sync_pb::AIChatEntryEventProto& proto) {
-  if (proto.has_completion()) {
-    return mojom::ConversationEntryEvent::NewCompletionEvent(
-        mojom::CompletionEvent::New(ReadCompressibleString(proto.completion())
-                                        .value_or(std::string())));
+  switch (proto.event_case()) {
+    case sync_pb::AIChatEntryEventProto::kCompletion:
+      return mojom::ConversationEntryEvent::NewCompletionEvent(
+          mojom::CompletionEvent::New(ReadCompressibleString(proto.completion())
+                                          .value_or(std::string())));
+    case sync_pb::AIChatEntryEventProto::kSearchQueries:
+      return mojom::ConversationEntryEvent::NewSearchQueriesEvent(
+          mojom::SearchQueriesEvent::New(
+              base::ToVector(proto.search_queries().queries())));
+    case sync_pb::AIChatEntryEventProto::kWebSources:
+      return mojom::ConversationEntryEvent::NewSourcesEvent(
+          mojom::WebSourcesEvent::New(
+              base::ToVector(proto.web_sources().sources(), &ProtoToWebSource),
+              ReadCompressibleStrings(proto.web_sources().rich_results())));
+    case sync_pb::AIChatEntryEventProto::kInlineSearch:
+      return mojom::ConversationEntryEvent::NewInlineSearchEvent(
+          mojom::InlineSearchEvent::New(
+              proto.inline_search().query(),
+              ReadCompressibleString(proto.inline_search().results_json())
+                  .value_or(std::string())));
+    case sync_pb::AIChatEntryEventProto::kToolUse:
+      return mojom::ConversationEntryEvent::NewToolUseEvent(
+          ProtoToToolUse(proto.tool_use()));
+    case sync_pb::AIChatEntryEventProto::EVENT_NOT_SET:
+      // Variant not known by this client or not set
+      return nullptr;
   }
-  if (proto.has_search_queries()) {
-    return mojom::ConversationEntryEvent::NewSearchQueriesEvent(
-        mojom::SearchQueriesEvent::New(
-            base::ToVector(proto.search_queries().queries())));
-  }
-  if (proto.has_web_sources()) {
-    return mojom::ConversationEntryEvent::NewSourcesEvent(
-        mojom::WebSourcesEvent::New(
-            base::ToVector(proto.web_sources().sources(), &ProtoToWebSource),
-            ReadCompressibleStrings(proto.web_sources().rich_results())));
-  }
-  if (proto.has_inline_search()) {
-    return mojom::ConversationEntryEvent::NewInlineSearchEvent(
-        mojom::InlineSearchEvent::New(
-            proto.inline_search().query(),
-            ReadCompressibleString(proto.inline_search().results_json())
-                .value_or(std::string())));
-  }
-  if (proto.has_tool_use()) {
-    return mojom::ConversationEntryEvent::NewToolUseEvent(
-        ProtoToToolUse(proto.tool_use()));
-  }
-  return nullptr;
 }
 
 mojom::AssociatedContentPtr ProtoToAssociatedContent(
@@ -459,9 +459,14 @@ mojom::AssociatedContentPtr ProtoToAssociatedContent(
   if (proto.has_url()) {
     content->url = GURL(proto.url());
   }
-  content->content_type =
-      mojo::ConvertIntToMojoEnum<mojom::ContentType>(proto.content_type())
-          .value_or(mojom::ContentType::PageContent);
+  auto content_type =
+      mojo::ConvertIntToMojoEnum<mojom::ContentType>(proto.content_type());
+  if (!content_type) {
+    DVLOG(1) << "Rejecting associated content with unknown content_type "
+             << proto.content_type();
+    return nullptr;
+  }
+  content->content_type = content_type.value();
   content->content_used_percentage = proto.content_used_percentage();
   content->conversation_turn_uuid = entry_uuid;
   return content;
@@ -474,8 +479,12 @@ mojom::UploadedFilePtr ProtoToUploadedFile(
     file->filename = proto.filename();
   }
   file->filesize = proto.filesize();
-  file->type = mojo::ConvertIntToMojoEnum<mojom::UploadedFileType>(proto.type())
-                   .value_or(mojom::UploadedFileType::kText);
+  auto type = mojo::ConvertIntToMojoEnum<mojom::UploadedFileType>(proto.type());
+  if (!type) {
+    DVLOG(1) << "Rejecting uploaded file with unknown type " << proto.type();
+    return nullptr;
+  }
+  file->type = type.value();
   // Only populate bytes when the sender actually shipped them. When the sender
   // omitted them (the oneof holds omitted_data_hash instead), leave |data|
   // empty so the caller can restore any existing local bytes.
@@ -491,19 +500,25 @@ mojom::UploadedFilePtr ProtoToUploadedFile(
 // texts| with the last_contents value for each AC the sender included. An AC
 // with omitted last_contents is intentionally left out of the texts map so the
 // caller preserves any existing local text.
-void ReadAssociatedContentFromEntry(
+bool ReadAssociatedContentFromEntry(
     const sync_pb::AIChatConversationSpecifics_Entry& proto,
     std::vector<mojom::AssociatedContentPtr>& associated_content,
     base::flat_map<std::string, std::string>* associated_content_texts) {
   for (const auto& content_proto : proto.associated_content()) {
-    associated_content.push_back(
-        ProtoToAssociatedContent(content_proto, proto.uuid()));
+    mojom::AssociatedContentPtr content_item =
+        ProtoToAssociatedContent(content_proto, proto.uuid());
+    if (!content_item) {
+      // If the associated content failed to decode, reject the entire entry.
+      return false;
+    }
+    associated_content.push_back(std::move(content_item));
     if (associated_content_texts && content_proto.has_last_contents()) {
       if (auto value = ReadCompressibleString(content_proto.last_contents())) {
         (*associated_content_texts)[content_proto.uuid()] = std::move(*value);
       }
     }
   }
+  return true;
 }
 
 }  // namespace
@@ -610,12 +625,23 @@ mojom::ConversationTurnPtr SpecificsToEntry(
   if (proto.has_prompt()) {
     entry->prompt = proto.prompt();
   }
-  entry->character_type =
-      mojo::ConvertIntToMojoEnum<mojom::CharacterType>(proto.character_type())
-          .value_or(mojom::CharacterType::HUMAN);
-  entry->action_type =
-      mojo::ConvertIntToMojoEnum<mojom::ActionType>(proto.action_type())
-          .value_or(mojom::ActionType::UNSPECIFIED);
+  auto character_type =
+      mojo::ConvertIntToMojoEnum<mojom::CharacterType>(proto.character_type());
+  if (!character_type) {
+    DVLOG(1) << "Rejecting entry with unknown character_type "
+             << proto.character_type();
+    return nullptr;
+  }
+  entry->character_type = character_type.value();
+  auto action_type =
+      mojo::ConvertIntToMojoEnum<mojom::ActionType>(proto.action_type());
+  if (!action_type) {
+    DVLOG(1) << "Rejecting entry with unknown action_type "
+             << proto.action_type();
+    return nullptr;
+  }
+  entry->action_type = action_type.value();
+
   if (proto.has_selected_text()) {
     entry->selected_text = proto.selected_text();
   }
@@ -627,19 +653,29 @@ mojom::ConversationTurnPtr SpecificsToEntry(
     std::vector<mojom::ConversationEntryEventPtr> events;
     events.reserve(proto.events_size());
     for (const auto& event_proto : proto.events()) {
-      if (auto event = ProtoToEntryEvent(event_proto)) {
-        events.push_back(std::move(event));
+      auto event = ProtoToEntryEvent(event_proto);
+      if (!event) {
+        return nullptr;
       }
+      events.push_back(std::move(event));
     }
     entry->events = std::move(events);
   }
 
-  ReadAssociatedContentFromEntry(proto, associated_content,
-                                 associated_content_texts);
+  if (!ReadAssociatedContentFromEntry(proto, associated_content,
+                                      associated_content_texts)) {
+    return nullptr;
+  }
 
   if (!proto.uploaded_files().empty()) {
     entry->uploaded_files =
         base::ToVector(proto.uploaded_files(), &ProtoToUploadedFile);
+    // If any are nullptr (failed to decode), reject the entire entry.
+    if (std::any_of(entry->uploaded_files->begin(),
+                    entry->uploaded_files->end(),
+                    [](const auto& file) { return !file; })) {
+      return nullptr;
+    }
   }
 
   if (proto.has_skill()) {
