@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_extrinsic.h"
 
 #include "base/containers/to_vector.h"
+#include "base/rand_util.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/browser/bip39.h"
@@ -769,6 +770,105 @@ TEST(PolkadotExtrinsics, SignedExtrinsic_AssetsTransferAll) {
       ;
 
   EXPECT_EQ(extrinsic, expected_extrinsic);
+}
+
+TEST(PolkadotExtrinsics, ShuffledSignedExtensions) {
+  auto testnet_metadata = MakeWestendMetadata();
+
+  std::array<uint8_t, 32> recipient = {};
+  base::HexStringToSpan(kBob, recipient);
+
+  uint128_t send_amount = 1234;
+  uint32_t spec_version = 1020001;
+  uint32_t transaction_version = 27;
+
+  uint32_t sender_nonce = 1;
+  uint32_t block_number = 28794326;
+  const char block_hash_encoded[] =
+      R"(0x4b12cf2089483b06ea4fab577067bebe0e936dbb5317232d65617ab3af7fa425)";
+
+  const char genesis_hash_encoded[] =
+      R"(0xe143f23803ac50e8f6f8e62695d1ce9e4e1d68aa36c1cd2cfd15340213f3423e)";
+
+  uint32_t account_index = 0;
+
+  auto keypair = HDKeySr25519::GenerateFromSeed(kSchnorrkelSeed);
+  keypair = keypair.DeriveHard(base::byte_span_from_cstring("westend"));
+  keypair = keypair.DeriveHard(account_index);
+  EXPECT_EQ(base::HexEncodeLower(keypair.GetPublicKey()),
+            "d4f9c4dfa3e6ff57b4e1fdea8699e57b0210cf04afe0281acba187d7d1b49274");
+
+  keypair.SetMockRndSeedForTesting();
+
+  const bool transfer_all = false;
+
+  std::array<uint8_t, 16> send_amount_bytes = {};
+  base::span(send_amount_bytes)
+      .copy_from(base::byte_span_from_ref(send_amount));
+
+  std::array<uint8_t, 32> genesis_hash = {};
+  EXPECT_TRUE(PrefixedHexStringToFixed(genesis_hash_encoded, genesis_hash));
+
+  std::array<uint8_t, 32> block_hash = {};
+  EXPECT_TRUE(PrefixedHexStringToFixed(block_hash_encoded, block_hash));
+
+  {
+    // Clear all the signed extensions. We should still get something out.
+    testnet_metadata->signed_extensions = {};
+    auto signature_payload =
+        UnwrapExtrinsicBytes(generate_extrinsic_signature_payload(
+            *testnet_metadata, sender_nonce, send_amount_bytes, transfer_all,
+            recipient, spec_version, transaction_version, block_number,
+            genesis_hash, block_hash));
+
+    auto signature = keypair.SignMessage(signature_payload);
+    EXPECT_TRUE(keypair.VerifyMessage(signature, signature_payload));
+
+    auto signed_extrinsic = UnwrapExtrinsicBytes(make_signed_extrinsic(
+        *testnet_metadata, keypair.GetPublicKey(), recipient, send_amount_bytes,
+        transfer_all, signature, block_number, sender_nonce));
+
+    // Nonsense extrinsic, but shouldn't crash the browser and shouldn't be
+    // something exploitable.
+    EXPECT_EQ(
+        base::HexEncodeLower(signed_extrinsic),
+        "21028400d4f9c4dfa3e6ff57b4e1fdea8699e57b0210cf04afe0281acba187d7d1b492"
+        "740184a451019853337a9d36fe0b290904c2342e9f55c1c06cd44a0df0bd1c5b701ce5"
+        "e9a5c3254230d0c88b215c642391d2e8d103103d82432fefcfdef081513b840403008e"
+        "af04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a484913");
+  }
+
+  {
+    // Generate random valid SignedExtensions, any order and with any number of
+    // repetitions.
+    for (auto& ext : testnet_metadata->signed_extensions) {
+      ext = base::RandIntInclusive(1, 20);
+    }
+
+    auto signature_payload =
+        UnwrapExtrinsicBytes(generate_extrinsic_signature_payload(
+            *testnet_metadata, sender_nonce, send_amount_bytes, transfer_all,
+            recipient, spec_version, transaction_version, block_number,
+            genesis_hash, block_hash));
+
+    auto signature = keypair.SignMessage(signature_payload);
+    EXPECT_TRUE(keypair.VerifyMessage(signature, signature_payload));
+
+    auto signed_extrinsic = UnwrapExtrinsicBytes(make_signed_extrinsic(
+        *testnet_metadata, keypair.GetPublicKey(), recipient, send_amount_bytes,
+        transfer_all, signature, block_number, sender_nonce));
+
+    // Nonsense extrinsic, but shouldn't crash the browser and shouldn't be
+    // something exploitable.
+    EXPECT_NE(
+        base::HexEncodeLower(signed_extrinsic),
+        "21028400d4f9c4dfa3e6ff57b4e1fdea8699e57b0210cf04afe0281acba187d7d1b492"
+        "740184a451019853337a9d36fe0b290904c2342e9f55c1c06cd44a0df0bd1c5b701ce5"
+        "e9a5c3254230d0c88b215c642391d2e8d103103d82432fefcfdef081513b840403008e"
+        "af04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a484913")
+        << "SignedExtensions used were: "
+        << testing::PrintToString(testnet_metadata->signed_extensions);
+  }
 }
 
 TEST(PolkadotExtrinsics, MetadataSerde) {
