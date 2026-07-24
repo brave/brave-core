@@ -233,10 +233,12 @@ export function createSearchStore() {
         match.destinationUrl,
         true,
         event.button,
-        event.altKey,
-        event.ctrlKey,
-        event.metaKey,
-        event.shiftKey,
+        {
+          altKey: event.altKey,
+          ctrlKey: event.ctrlKey,
+          metaKey: event.metaKey,
+          shiftKey: event.shiftKey,
+        },
         /* via_keyboard= */ false,
       )
     },

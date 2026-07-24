@@ -45,7 +45,12 @@ const openMatch = (match: AutocompleteMatch, line: number, event: React.MouseEve
   if (searchEngine) {
     getNTPBrowserAPI().newTabMetrics.reportNTPSearchUsage(searchEngine.prepopulateId)
   }
-  omniboxController.openAutocompleteMatch(line, match.destinationUrl, true, button, event.altKey, event.ctrlKey, event.metaKey, event.shiftKey, event instanceof KeyboardEvent)
+  omniboxController.openAutocompleteMatch(line, match.destinationUrl, true, button, {
+    altKey: event.altKey,
+    ctrlKey: event.ctrlKey,
+    metaKey: event.metaKey,
+    shiftKey: event.shiftKey,
+  }, event instanceof KeyboardEvent)
 }
 
 const useUrlWhatYouTyped = (query: string) => React.useMemo(() => {
