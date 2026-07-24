@@ -714,6 +714,7 @@ source_set("unit_tests") {
     "cardano/cardano_block_tracker_unittest.cc",
     "cardano/cardano_cip30_serializer_unittest.cc",
     "cardano/cardano_create_transaction_task_unittest.cc",
+    "cardano/cardano_dapp_utils_unittest.cc",
     "cardano/cardano_get_utxos_task_unittest.cc",
     "cardano/cardano_hd_keyring_unittest.cc",
     "cardano/cardano_knapsack_solver_unittest.cc",

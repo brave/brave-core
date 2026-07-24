@@ -14,7 +14,7 @@ export const PanelWrapper = styled.div<{
   display: flex;
   align-items: center;
   justify-content: center;
-  width: ${(p) => (p.width ? p.width : 320)}px;
+  width: ${(p) => (p.width ? p.width : 390)}px;
   height: ${(p) => (p.height ? p.height : p.isLonger ? 540 : 400)}px;
   background-color: ${leo.color.page.background};
   /* Cr151+ bubble autosize uses document scrollWidth; clip overflow so
