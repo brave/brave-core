@@ -57,12 +57,12 @@ class CosmeticFiltersScriptHandler: TabContentScript {
             for: frameURL,
             ids: Set(dto.data.ids),
             classes: Set(dto.data.classes)
-          ) ?? (.init(), .init())
+          ) ?? (nil, nil)
 
         replyHandler(
           [
-            "aggressiveSelectors": Array(aggressiveSelectors),
-            "standardSelectors": Array(standardSelectors),
+            "aggressiveSelectors": Array(aggressiveSelectors ?? .init()),
+            "standardSelectors": Array(standardSelectors ?? .init()),
           ],
           nil
         )
