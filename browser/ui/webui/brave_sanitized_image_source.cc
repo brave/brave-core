@@ -210,7 +210,7 @@ BraveSanitizedImageSource::BraveSanitizedImageSource(
 }
 
 bool BraveSanitizedImageSource::AllowCaching() {
-  return false;
+  return true;
 }
 std::string BraveSanitizedImageSource::GetSource() {
   if (serve_untrusted_) {
