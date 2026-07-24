@@ -41,6 +41,10 @@ AcceleratorServiceFactory::AcceleratorServiceFactory()
           "AcceleratorServiceFactory",
           ProfileSelections::Builder()
               .WithRegular(ProfileSelection::kRedirectedToOriginal)
+              // Guest windows use the service too, so their shortcuts behave
+              // like regular windows (customizations don't persist as guest
+              // prefs are ephemeral).
+              .WithGuest(ProfileSelection::kRedirectedToOriginal)
               .Build()) {}
 
 AcceleratorServiceFactory::~AcceleratorServiceFactory() = default;
@@ -56,9 +60,8 @@ AcceleratorServiceFactory::BuildServiceInstanceForBrowserContext(
   auto* profile = Profile::FromBrowserContext(context);
   DCHECK(profile);
 
-  auto [accelerators, system_managed] = GetDefaultAccelerators();
-  return std::make_unique<AcceleratorService>(
-      profile->GetPrefs(), std::move(accelerators), std::move(system_managed));
+  return std::make_unique<AcceleratorService>(profile->GetPrefs(),
+                                              GetDefaultAccelerators());
 }
 
 }  // namespace commands

@@ -16,6 +16,10 @@ namespace brave {
 BASE_DECLARE_FEATURE(kUpgradeWhenIdle);
 }
 
+namespace commands {
+class AcceleratorMenuCoordinatorMac;
+}
+
 class BraveBrowserMainPartsMac : public ChromeBrowserMainPartsMac {
  public:
   BraveBrowserMainPartsMac(bool is_integration_test, StartupData* startup_data);
@@ -29,6 +33,8 @@ class BraveBrowserMainPartsMac : public ChromeBrowserMainPartsMac {
   void PostMainMessageLoopRun() override;
 
   std::unique_ptr<brave::UpgradeWhenIdle> upgrade_when_idle_;
+  std::unique_ptr<commands::AcceleratorMenuCoordinatorMac>
+      accelerator_menu_coordinator_;
 };
 
 #endif  // BRAVE_BROWSER_BRAVE_BROWSER_MAIN_PARTS_MAC_H_
