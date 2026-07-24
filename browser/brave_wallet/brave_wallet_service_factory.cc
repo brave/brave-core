@@ -62,14 +62,4 @@ content::BrowserContext* BraveWalletServiceFactory::GetBrowserContextToUse(
   return context;
 }
 
-bool BraveWalletServiceFactory::ServiceIsNULLWhileTesting() const {
-  // Using BrowserTabStripTracker in BraveWalletServiceDelegate can cause
-  // upstream tests to crash if they don't have the correct order of
-  // creation/destruction of profiles and calls to
-  // SetUpGlobalFeaturesForTesting/TearDownGlobalFeaturesForTesting because
-  // BrowserTabStripTracker relies on global features. By default, make this
-  // service NULL for testing and create it manually in tests when needed.
-  return true;
-}
-
 }  // namespace brave_wallet
