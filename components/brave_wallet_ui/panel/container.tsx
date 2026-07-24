@@ -38,10 +38,11 @@ import { FullScreenWrapper } from '../page/screens/page-screen.styles'
 import { TransactionStatus } from '../components/extension/post-confirmation'
 import {
   useSafePanelSelector,
+  useSafeUISelector,
   useSafeWalletSelector,
   useUnsafePanelSelector,
 } from '../common/hooks/use-safe-selector'
-import { WalletSelectors } from '../common/selectors'
+import { UISelectors, WalletSelectors } from '../common/selectors'
 import { PanelSelectors } from './selectors'
 import {
   useGetPendingAddChainRequestQuery,
@@ -85,6 +86,9 @@ function Container() {
   const hasInitialized = useSafeWalletSelector(WalletSelectors.hasInitialized)
   const isWalletCreated = useSafeWalletSelector(WalletSelectors.isWalletCreated)
   const isWalletLocked = useSafeWalletSelector(WalletSelectors.isWalletLocked)
+
+  // ui selectors (safe)
+  const isSidePanel = useSafeUISelector(UISelectors.isSidePanel)
 
   // panel selectors (safe)
   const selectedPanel = useSafePanelSelector(PanelSelectors.selectedPanel)
@@ -152,6 +156,7 @@ function Container() {
       <PanelWrapper
         width={390}
         height={650}
+        isSidePanel={isSidePanel}
       >
         <FullScreenWrapper>
           <ProgressRing mode='indeterminate' />
@@ -165,6 +170,7 @@ function Container() {
       <PanelWrapper
         width={390}
         height={650}
+        isSidePanel={isSidePanel}
       >
         <WelcomePanel />
       </PanelWrapper>
@@ -176,6 +182,7 @@ function Container() {
       <PanelWrapper
         width={390}
         height={650}
+        isSidePanel={isSidePanel}
       >
         <PageContainer />
       </PanelWrapper>
@@ -371,6 +378,7 @@ function Container() {
     <PanelWrapper
       width={390}
       height={650}
+      isSidePanel={isSidePanel}
     >
       <PageContainer />
     </PanelWrapper>

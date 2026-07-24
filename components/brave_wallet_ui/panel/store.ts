@@ -43,6 +43,11 @@ const store = configureStore({
     ui: {
       ...defaultUIState,
       isPanel: true,
+      // Bubble and side panel share the same WebUI host; side panel uses
+      // ?isSidePanel=true (see kBraveUIWalletSidePanelURL).
+      isSidePanel:
+        new URLSearchParams(window.location.search).get('isSidePanel')
+        === 'true',
     },
   },
   middleware: (getDefaultMiddleware) =>
