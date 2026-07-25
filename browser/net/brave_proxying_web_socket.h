@@ -154,8 +154,6 @@ class BraveProxyingWebSocket
   network::ResourceRequest request_;
   network::mojom::URLResponseHead response_;
   scoped_refptr<net::HttpResponseHeaders> override_headers_;
-  net::IPEndPoint remote_endpoint_;
-  std::optional<net::SSLInfo> ssl_info_;
   mojo::PendingRemote<network::mojom::WebSocket> websocket_;
   mojo::PendingReceiver<network::mojom::WebSocketClient> client_receiver_;
   network::mojom::WebSocketHandshakeResponsePtr handshake_response_;

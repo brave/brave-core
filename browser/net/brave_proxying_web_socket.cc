@@ -12,7 +12,7 @@
 #include "base/check_op.h"
 #include "base/functional/bind.h"
 #include "base/memory/scoped_refptr.h"
-#include "base/strings/string_number_conversions.h"
+#include "base/strings/stringprintf.h"
 #include "brave/browser/net/brave_request_handler.h"
 #include "brave/browser/net/url_context.h"
 #include "brave/components/constants/network_constants.h"
@@ -239,30 +239,23 @@ void BraveProxyingWebSocket<T>::OnConnectionEstablished(
   readable_ = std::move(readable);
   writable_ = std::move(writable);
 
-  remote_endpoint_ = handshake_response_->remote_endpoint;
-  response_.remote_endpoint = remote_endpoint_;
+  response_.remote_endpoint = handshake_response_->remote_endpoint;
 
   // If the network service supplied a TrustedHeaderClient, response header
   // processing happened through OnHeadersReceived() already. Otherwise,
   // reconstruct the handshake response headers here so Brave's
   // OnHeadersReceived callbacks still run before establishment is forwarded.
-  if (proxy_has_extra_headers()) {
+  if (receiver_as_header_client_.is_bound()) {
     ContinueToCompleted();
     return;
   }
 
-  std::string status_line = "HTTP/";
-  status_line +=
-      base::NumberToString(handshake_response_->http_version.major_value());
-  status_line += ".";
-  status_line +=
-      base::NumberToString(handshake_response_->http_version.minor_value());
-  status_line += " ";
-  status_line += base::NumberToString(handshake_response_->status_code);
-  status_line += " ";
-  status_line += handshake_response_->status_text;
   response_.headers =
-      base::MakeRefCounted<net::HttpResponseHeaders>(status_line);
+      base::MakeRefCounted<net::HttpResponseHeaders>(base::StringPrintf(
+          "HTTP/%d.%d %d %s", handshake_response_->http_version.major_value(),
+          handshake_response_->http_version.minor_value(),
+          handshake_response_->status_code,
+          handshake_response_->status_text.c_str()));
   for (const auto& header : handshake_response_->headers) {
     response_.headers->AddHeader(header->name, header->value);
   }
@@ -310,9 +303,8 @@ void BraveProxyingWebSocket<T>::OnHeadersReceived(
   DCHECK(proxy_has_extra_headers());
 
   on_headers_received_callback_ = std::move(callback);
-  remote_endpoint_ = remote_endpoint;
-  ssl_info_ = ssl_info;
   response_.remote_endpoint = remote_endpoint;
+  response_.ssl_info = ssl_info;
   response_.headers = base::MakeRefCounted<net::HttpResponseHeaders>(headers);
 
   ContinueToHeadersReceived();
@@ -475,11 +467,11 @@ void BraveProxyingWebSocket<T>::OnHeadersReceivedComplete(int error_code) {
     headers = override_headers_->raw_headers();
   }
 
-  if (proxy_has_extra_headers()) {
+  if (receiver_as_header_client_.is_bound()) {
     proxy_trusted_header_client_->OnHeadersReceived(
         headers.value_or(response_.headers ? response_.headers->raw_headers()
                                            : std::string()),
-        remote_endpoint_, ssl_info_,
+        response_.remote_endpoint, response_.ssl_info,
         base::BindOnce(
             &BraveProxyingWebSocket::OnHeadersReceivedCompleteFromProxy,
             weak_factory_.GetWeakPtr()));
@@ -490,6 +482,9 @@ void BraveProxyingWebSocket<T>::OnHeadersReceivedComplete(int error_code) {
 
 template <template <typename> class T>
 void BraveProxyingWebSocket<T>::ContinueToCompleted() {
+  // OnConnectionEstablished is delayed until Brave and any downstream
+  // TrustedHeaderClient have seen the response headers, matching Chromium's
+  // WebRequestProxyingWebSocket flow.
   DCHECK(forwarding_handshake_client_);
   DCHECK(handshake_response_);
   forwarding_handshake_client_->OnConnectionEstablished(
