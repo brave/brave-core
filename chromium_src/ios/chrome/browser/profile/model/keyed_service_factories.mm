@@ -147,7 +147,7 @@ void EnsureProfileKeyedServiceFactoriesBuilt() {
   IOSPasswordRequirementsServiceFactory::GetInstance();
   IOSUserEventServiceFactory::GetInstance();
   LanguageModelManagerFactory::GetInstance();
-  ListFamilyMembersServiceFactory::GetInstance();
+  supervised_user::ListFamilyMembersServiceFactory::GetInstance();
   OptimizationGuideServiceFactory::GetInstance();
   DataTypeStoreServiceFactory::GetInstance();
   PowerBookmarkServiceFactory::GetInstance();
