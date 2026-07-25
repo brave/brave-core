@@ -787,8 +787,8 @@ extension QuickViewController: KeyboardHelperDelegate {
 
     // fresh software keyboard show
     guard !isKeyboardVisible else { return }
-
     isKeyboardVisible = true
+    isHardwareKeyboardActive = true
     preKeyboardToolbarState = toolbarVisibilityViewModel.toolbarState
     toolbarVisibilityViewModel.isEnabled = false
     toolbarViewModel.collapseProgress = 1
@@ -829,9 +829,8 @@ extension QuickViewController: KeyboardHelperDelegate {
     }
 
     // webcontent keyboard
-    if keyboardHeight > 0 {
+    if keyboardHeight > 0, isKeyboardVisible {
       // case 2: sw -> hw — reposition
-      guard isKeyboardVisible else { return }
       performHardwareKeyboardTransition(keyboardHeight: keyboardHeight, state: state)
       return
     }
