@@ -43,8 +43,8 @@ net::RedirectInfo CreateRedirectInfo(const network::ResourceRequest& request,
 network::mojom::URLResponseHeadPtr CreateRedirectHead(const GURL& new_url) {
   auto head = network::mojom::URLResponseHead::New();
   head->headers = base::MakeRefCounted<net::HttpResponseHeaders>(
-      net::HttpUtil::AssembleRawHeaders("HTTP/1.1 302 Found\nLocation: " +
-                                        new_url.spec() + "\n\n"));
+      net::HttpUtil::AssembleRawHeaders(
+          "HTTP/1.1 302 Found\nLocation: " + new_url.spec() + "\n\n"));
   return head;
 }
 
@@ -56,9 +56,9 @@ class BraveProxyingURLLoaderFactoryTest : public testing::Test {
   scoped_refptr<network::SharedURLLoaderFactory> CreateFactory() {
     network::URLLoaderFactoryBuilder builder;
     proxy_ = std::make_unique<BraveProxyingURLLoaderFactory<std::shared_ptr>>(
-        request_handler_, profile_.get(),
-        content::GlobalRenderFrameHostToken(), builder,
-        base::MakeRefCounted<RequestIDGenerator>(), base::DoNothing(), nullptr);
+        request_handler_, profile_.get(), content::GlobalRenderFrameHostToken(),
+        builder, base::MakeRefCounted<RequestIDGenerator>(), base::DoNothing(),
+        nullptr);
     return std::move(builder).Finish(test_factory_.GetSafeWeakWrapper());
   }
 
@@ -87,15 +87,15 @@ TEST_F(BraveProxyingURLLoaderFactoryTest, BlocksUnsafeNetworkRedirect) {
   network::TestURLLoaderFactory::Redirects redirects;
   redirects.emplace_back(CreateRedirectInfo(request, unsafe_url),
                          CreateRedirectHead(unsafe_url));
-  test_factory_.AddResponse(
-      request_url, network::mojom::URLResponseHead::New(), "",
-      network::URLLoaderCompletionStatus(net::OK), std::move(redirects));
+  test_factory_.AddResponse(request_url, network::mojom::URLResponseHead::New(),
+                            "", network::URLLoaderCompletionStatus(net::OK),
+                            std::move(redirects));
 
   auto factory = CreateFactory();
   network::TestURLLoaderClient client;
-  factory->CreateLoaderAndStart(
-      mojo::NullReceiver(), 1, 0, request, client.CreateRemote(),
-      net::MutableNetworkTrafficAnnotationTag());
+  factory->CreateLoaderAndStart(mojo::NullReceiver(), 1, 0, request,
+                                client.CreateRemote(),
+                                net::MutableNetworkTrafficAnnotationTag());
   client.RunUntilComplete();
 
   EXPECT_FALSE(client.has_received_redirect());
@@ -136,10 +136,10 @@ TEST_F(BraveProxyingURLLoaderFactoryTest,
   auto factory = CreateFactory();
   network::TestURLLoaderClient client;
   mojo::Remote<network::mojom::URLLoader> loader;
-  factory->CreateLoaderAndStart(
-      loader.BindNewPipeAndPassReceiver(), 1, 0,
-      CreateRequest(request_url, initiator), client.CreateRemote(),
-      net::MutableNetworkTrafficAnnotationTag());
+  factory->CreateLoaderAndStart(loader.BindNewPipeAndPassReceiver(), 1, 0,
+                                CreateRequest(request_url, initiator),
+                                client.CreateRemote(),
+                                net::MutableNetworkTrafficAnnotationTag());
 
   client.RunUntilRedirectReceived();
   loader->FollowRedirect({}, std::nullopt);

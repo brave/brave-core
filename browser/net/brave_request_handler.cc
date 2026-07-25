@@ -213,7 +213,7 @@ void BraveRequestHandler<T>::OnURLRequestDestroyed(
 }
 
 template <template <typename> class T>
-void BraveRequestHandler<T>::SetBeforeURLRequestCallbackForTesting(
+void BraveRequestHandler<T>::SetBeforeURLRequestCallbackForTesting(  // IN-TEST
     brave::OnBeforeURLRequestCallback<T> callback) {
   before_url_request_callbacks_.clear();
   before_url_request_callbacks_.push_back(std::move(callback));
