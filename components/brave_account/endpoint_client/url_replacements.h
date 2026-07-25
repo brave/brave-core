@@ -22,10 +22,10 @@ namespace brave_account::endpoint_client {
 // non-self-contained and prone to dangling views.
 //
 // UrlReplacements instead owns its replacement strings (setters take
-// std::string by value), so it is self-contained and safe to store and move.
-// It never hands out a GURL::Replacements; Apply() builds one transiently,
-// uses it to rewrite the given base URL, and discards it - the string_views
-// never outlive the expression.
+// std::string by value), so it is self-contained and safe to store, copy, and
+// move. It never hands out a GURL::Replacements; Apply() builds one
+// transiently, uses it to rewrite the given base URL, and discards it - the
+// string_views never outlive the expression.
 //
 // This exposes only the components current callers need (host, path, query);
 // it is not a 1:1 mirror of GURL::Replacements. Others (scheme, port, etc.)
@@ -34,8 +34,8 @@ class UrlReplacements {
  public:
   UrlReplacements();
 
-  UrlReplacements(const UrlReplacements&) = delete;
-  UrlReplacements& operator=(const UrlReplacements&) = delete;
+  UrlReplacements(const UrlReplacements&);
+  UrlReplacements& operator=(const UrlReplacements&);
 
   UrlReplacements(UrlReplacements&&);
   UrlReplacements& operator=(UrlReplacements&&);

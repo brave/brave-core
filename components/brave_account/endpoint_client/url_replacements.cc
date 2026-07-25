@@ -9,6 +9,9 @@ namespace brave_account::endpoint_client {
 
 UrlReplacements::UrlReplacements() = default;
 
+UrlReplacements::UrlReplacements(const UrlReplacements&) = default;
+UrlReplacements& UrlReplacements::operator=(const UrlReplacements&) = default;
+
 UrlReplacements::UrlReplacements(UrlReplacements&&) = default;
 UrlReplacements& UrlReplacements::operator=(UrlReplacements&&) = default;
 

@@ -76,7 +76,6 @@ class Client {
 
     auto resource_request = std::make_unique<network::ResourceRequest>();
     resource_request->url = request.url_replacements.Apply(Endpoint::URL());
-    CHECK(resource_request->url.is_valid());
     resource_request->method = Request::Method();
     resource_request->load_flags = net::LOAD_BYPASS_CACHE |
                                    net::LOAD_DISABLE_CACHE |
