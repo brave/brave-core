@@ -206,3 +206,8 @@ content_settings_types.mojom @brave/content-settings-reviewers
 # These rules are last to take precedence over directory rules. Do not add any
 # new rules at the end of this file or below the comment above that indicates
 # the start of this list
+
+# BraveProxyingURLLoaderFactory and BraveProxyingWebSocket are deprecated.
+# New functionality should use URLLoaderThrottle, NavigationThrottle or
+# rule sets that can be applied with DocumentSubresourceFilter
+brave/browser/net/brave_request_handler.cc @brave/brave-core-owners
