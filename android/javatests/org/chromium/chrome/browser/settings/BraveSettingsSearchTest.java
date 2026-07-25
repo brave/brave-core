@@ -129,7 +129,7 @@ public class BraveSettingsSearchTest {
         // assertSearchResult("Sync");
 
         clearAndTypeIntoSearch("Privacy Report");
-        assertSearchResult("Privacy Report");
+        assertOneOfSearchResultsIs("Privacy Report", "General");
 
         // Disabled — result appears under "Advanced" instead of "General"; see
         // https://github.com/brave/brave-browser/issues/57198
