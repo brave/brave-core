@@ -39,6 +39,10 @@ void RemoveTrackableSecurityHeadersForThirdParty(
     }
   }
   if (!has_trackable_security_header) {
+    // Avoid cloning and reparsing the raw response headers for the common case
+    // where there is nothing for STP to remove. Without this guard every
+    // third-party response would pay that cost even when the header list is
+    // already safe to pass through unchanged.
     return;
   }
 
