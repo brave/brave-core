@@ -1,12 +1,12 @@
 diff --git a/third_party/blink/renderer/bindings/idl_in_modules.gni b/third_party/blink/renderer/bindings/idl_in_modules.gni
-index 296e7230642aaadadab1d31401dc809248d6f077..7a76586084f41d4e7fafa90ca2e3c50fb5367e9b 100644
+index 874dad45b33dd618f31afa94f102183328bab83c..f0ee4e2176271fd5a0d65077f8dfe8696f3c5277 100644
 --- a/third_party/blink/renderer/bindings/idl_in_modules.gni
 +++ b/third_party/blink/renderer/bindings/idl_in_modules.gni
 @@ -1298,6 +1298,7 @@ static_idl_files_in_modules = [
    "//third_party/blink/renderer/modules/xr/xr_webgl_layer_init.idl",
    "//third_party/blink/renderer/modules/xr/xr_webgl_sub_image.idl",
  ]
-+static_idl_files_in_modules += brave_static_idl_files_in_modules
++static_idl_files_in_modules += brave_static_idl_files_in_modules static_idl_files_in_modules -= brave_static_idl_files_to_exclude_in_modules
  
  # Direct Sockets
  # This uses target_os rather than current_os (which is what is_android is set
