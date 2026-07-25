@@ -236,6 +236,10 @@ void BraveProxyingWebSocket<T>::OnAuthRequired(
     const scoped_refptr<net::HttpResponseHeaders>& headers,
     const net::IPEndPoint& remote_endpoint,
     OnAuthRequiredCallback callback) {
+  if (!proxy_auth_handler_.is_bound()) {
+    std::move(callback).Run(std::nullopt);
+    return;
+  }
   proxy_auth_handler_->OnAuthRequired(auth_info, headers, remote_endpoint,
                                       std::move(callback));
 }
@@ -431,6 +435,7 @@ void BraveProxyingWebSocket<T>::OnHeadersReceivedComplete(int error_code) {
 template <template <typename> class T>
 void BraveProxyingWebSocket<T>::PauseIncomingMethodCallProcessing() {
   receiver_as_handshake_client_.Pause();
+  receiver_as_auth_handler_.Pause();
   if (proxy_has_extra_headers()) {
     receiver_as_header_client_.Pause();
   }
@@ -439,6 +444,7 @@ void BraveProxyingWebSocket<T>::PauseIncomingMethodCallProcessing() {
 template <template <typename> class T>
 void BraveProxyingWebSocket<T>::ResumeIncomingMethodCallProcessing() {
   receiver_as_handshake_client_.Resume();
+  receiver_as_auth_handler_.Resume();
   if (proxy_has_extra_headers()) {
     receiver_as_header_client_.Resume();
   }
