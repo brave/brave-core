@@ -17,6 +17,7 @@ import android.widget.FrameLayout;
 import org.chromium.base.Log;
 import org.chromium.base.version_info.VersionInfo;
 import org.chromium.chrome.browser.content.WebContentsFactory;
+import org.chromium.chrome.browser.crash.ChromePureJavaExceptionReporter;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.components.embedder_support.view.ContentView;
 import org.chromium.components.thinwebview.ThinWebView;
@@ -54,7 +55,7 @@ public class SponsoredRichMediaWebView {
                         TAG,
                         "First paint timeout elapsed %dms after documentLoadedInPrimaryMainFrame.",
                         FIRST_PAINT_TIMEOUT_MS);
-                notifyFailure();
+                notifyFailure("First paint timeout.");
             };
     private String mPlacementId;
     private String mCreativeInstanceId;
@@ -153,7 +154,7 @@ public class SponsoredRichMediaWebView {
                                 TAG,
                                 "Renderer process gone, terminationStatus=%d.",
                                 terminationStatus);
-                        notifyFailure();
+                        notifyFailure("Renderer process gone.");
                     }
 
                     @Override
@@ -169,7 +170,7 @@ public class SponsoredRichMediaWebView {
                                 isInPrimaryMainFrame,
                                 errorCode,
                                 failingUrl);
-                        notifyFailure();
+                        notifyFailure("Load failed.");
                     }
 
                     @Override
@@ -229,13 +230,16 @@ public class SponsoredRichMediaWebView {
         return mWebView.getView();
     }
 
-    private void notifyFailure() {
+    private void notifyFailure(String reason) {
         Log.w(
                 TAG,
-                "Notifying failure, view width=%d, height=%d, attached=%b.",
+                "Notifying failure, reason=%s, view width=%d, height=%d, attached=%b.",
+                reason,
                 mWebView.getView().getWidth(),
                 mWebView.getView().getHeight(),
                 mWebView.getView().isAttachedToWindow());
+        ChromePureJavaExceptionReporter.reportJavaException(
+                new Throwable("SponsoredRichMediaWebView failed to render: " + reason));
         mHandler.removeCallbacks(mFirstPaintTimeout);
         mOnFailure.run();
     }
