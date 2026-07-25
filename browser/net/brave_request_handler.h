@@ -47,6 +47,9 @@ class BraveRequestHandler {
   void OnURLRequestDestroyed(T<brave::BraveRequestInfo> ctx);
   void RunCallbackForRequestIdentifier(uint64_t request_identifier, int rv);
 
+  void SetBeforeURLRequestCallbackForTesting(
+      brave::OnBeforeURLRequestCallback<T> callback);
+
  private:
   void SetupCallbacks();
   void RunNextCallback(T<brave::BraveRequestInfo> ctx);
