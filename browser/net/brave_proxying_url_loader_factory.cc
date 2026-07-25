@@ -180,10 +180,12 @@ void BraveProxyingURLLoaderFactory<T>::InProgressRequest::UpdateRequestInfo() {
 template <>
 void BraveProxyingURLLoaderFactory<
     std::shared_ptr>::InProgressRequest::CreateBraveRequestInfo() {
+  network::ResourceRequest request_for_info = request_;
+  request_for_info.request_initiator = original_initiator_;
   ctx_ = brave::BraveRequestInfo::MakeCTX(
-      request_, render_frame_token_, request_id_, browser_context_, ctx_.get(),
-      factory_->url_loader_factory_type_, factory_->request_initiator_,
-      factory_->isolation_info_);
+      request_for_info, render_frame_token_, request_id_, browser_context_,
+      ctx_.get(), factory_->url_loader_factory_type_,
+      factory_->request_initiator_, factory_->isolation_info_);
 }
 
 template <>
@@ -192,8 +194,10 @@ void BraveProxyingURLLoaderFactory<
   if (ctx_) {
     factory_->request_handler_->OnURLRequestDestroyed(ctx_);
   }
+  network::ResourceRequest request_for_info = request_;
+  request_for_info.request_initiator = original_initiator_;
   ctx_owned_ = brave::BraveRequestInfo::MakeCTX(
-      request_, render_frame_token_, request_id_, browser_context_,
+      request_for_info, render_frame_token_, request_id_, browser_context_,
       ctx_owned_.get(), factory_->url_loader_factory_type_,
       factory_->request_initiator_, factory_->isolation_info_);
   ctx_ = ctx_owned_->AsWeakPtr();
@@ -201,7 +205,6 @@ void BraveProxyingURLLoaderFactory<
 
 template <template <typename> class T>
 void BraveProxyingURLLoaderFactory<T>::InProgressRequest::RestartInternal() {
-  request_completed_ = false;
   elapsed_timer_ = {};
 
   base::RepeatingCallback<void(int)> continuation =
@@ -383,6 +386,7 @@ void BraveProxyingURLLoaderFactory<
   head->headers = base::MakeRefCounted<net::HttpResponseHeaders>(
       net::HttpUtil::AssembleRawHeaders(headers));
   head->encoded_data_length = 0;
+  head->bypass_redirect_checks = true;
 
   current_response_head_ = std::move(head);
   ctx_->set_internal_redirect(true);
@@ -592,6 +596,7 @@ void BraveProxyingURLLoaderFactory<
     net::RedirectInfo redirect_info = CreateRedirectInfo(
         request_, new_url, override_headers_->response_code(),
         net::RedirectUtil::GetReferrerPolicyHeader(override_headers_.get()));
+    current_response_head_->bypass_redirect_checks = true;
 
     // These will get re-bound if a new request is initiated by
     // |FollowRedirect()|.
@@ -622,6 +627,13 @@ void BraveProxyingURLLoaderFactory<T>::InProgressRequest::
     proxied_client_receiver_.Resume();
   }
 
+  if (!ctx_->internal_redirect() &&
+      !content::IsSafeRedirectTarget(request_.url, redirect_info.new_url)) {
+    OnRequestError(
+        network::URLLoaderCompletionStatus(net::ERR_UNSAFE_REDIRECT));
+    return;
+  }
+
   if (ctx_->internal_redirect()) {
     ctx_->set_redirect_source(GURL());
   } else {
@@ -629,17 +641,7 @@ void BraveProxyingURLLoaderFactory<T>::InProgressRequest::
   }
   target_client_->OnReceiveRedirect(redirect_info,
                                     std::move(current_response_head_));
-  request_.url = redirect_info.new_url;
-  request_.method = redirect_info.new_method;
-  request_.site_for_cookies = redirect_info.new_site_for_cookies;
-  request_.referrer = GURL(redirect_info.new_referrer);
-  request_.referrer_policy = redirect_info.new_referrer_policy;
-
-  if (request_.trusted_params) {
-    request_.trusted_params->isolation_info =
-        request_.trusted_params->isolation_info.CreateForRedirect(
-            url::Origin::Create(redirect_info.new_url));
-  }
+  request_.UpdateOnRedirect(redirect_info);
 
   // The request method can be changed to "GET". In this case we need to
   // reset the request body manually.
@@ -647,7 +649,6 @@ void BraveProxyingURLLoaderFactory<T>::InProgressRequest::
     request_.request_body = nullptr;
   }
 
-  request_completed_ = true;
 }
 
 template <template <typename> class T>
@@ -688,19 +689,17 @@ void BraveProxyingURLLoaderFactory<T>::InProgressRequest::
 template <template <typename> class T>
 void BraveProxyingURLLoaderFactory<T>::InProgressRequest::OnRequestError(
     const network::URLLoaderCompletionStatus& status) {
-  if (!request_completed_) {
-    // Make a non-const copy of status so that |should_collapse_initiator| can
-    // be modified
-    network::URLLoaderCompletionStatus collapse_status(status);
+  // Make a non-const copy of status so that |should_collapse_initiator| can be
+  // modified.
+  network::URLLoaderCompletionStatus collapse_status(status);
 
-    if (base::FeatureList::IsEnabled(
-            ::brave_shields::features::kBraveAdblockCollapseBlockedElements) &&
-        ctx_->blocked_by() == brave::kAdBlocked) {
-      collapse_status.should_collapse_initiator = true;
-    }
-
-    target_client_->OnComplete(collapse_status);
+  if (base::FeatureList::IsEnabled(
+          ::brave_shields::features::kBraveAdblockCollapseBlockedElements) &&
+      ctx_->blocked_by() == brave::kAdBlocked) {
+    collapse_status.should_collapse_initiator = true;
   }
+
+  target_client_->OnComplete(collapse_status);
 
   // Deletes |this|.
   factory_->RemoveRequest(this);

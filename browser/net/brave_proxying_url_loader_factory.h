@@ -136,6 +136,7 @@ class BraveProxyingURLLoaderFactory : public network::mojom::URLLoaderFactory {
     T<brave::BraveRequestInfo> ctx_;
     const raw_ref<BraveProxyingURLLoaderFactory> factory_;
     network::ResourceRequest request_;
+    const std::optional<url::Origin> original_initiator_;
     const uint64_t request_id_;
     const int32_t network_service_request_id_;
 
@@ -168,8 +169,6 @@ class BraveProxyingURLLoaderFactory : public network::mojom::URLLoaderFactory {
     mojo::ScopedDataPipeConsumerHandle current_response_body_;
     scoped_refptr<net::HttpResponseHeaders> override_headers_;
     GURL redirect_url_;
-
-    bool request_completed_ = false;
 
     // This stores the parameters to FollowRedirect that came from
     // the client. That way we can combine it with any other changes that
