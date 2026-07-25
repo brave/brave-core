@@ -93,7 +93,13 @@ void BraveProxyingWebSocket<base::WeakPtr>::CreateBraveRequestInfo() {
 template <template <typename> class T>
 void BraveProxyingWebSocket<T>::Start(
     mojo::PendingRemote<network::mojom::WebSocketHandshakeClient>
-        handshake_client) {
+        handshake_client,
+    mojo::PendingRemote<network::mojom::TrustedHeaderClient>
+        trusted_header_client) {
+  if (trusted_header_client) {
+    proxy_trusted_header_client_.Bind(std::move(trusted_header_client));
+  }
+
   forwarding_handshake_client_.Bind(std::move(handshake_client));
   forwarding_handshake_client_.set_disconnect_with_reason_handler(
       base::BindOnce(&BraveProxyingWebSocket::OnMojoConnectionError,
@@ -308,11 +314,10 @@ void BraveProxyingWebSocket<T>::OnBeforeSendHeadersCompleteFromProxy(
     return;
   }
 
-  // update the headers from the proxy
+  // A missing replacement header set means the downstream header client made no
+  // modifications. Preserve the existing headers.
   if (headers) {
     request_.headers = *headers;
-  } else {
-    request_.headers.Clear();
   }
 
   auto continuation =

@@ -65,7 +65,9 @@ class BraveProxyingWebSocket
       const std::optional<std::string>& user_agent);
 
   void Start(mojo::PendingRemote<network::mojom::WebSocketHandshakeClient>
-                 handshake_client);
+                 handshake_client,
+             mojo::PendingRemote<network::mojom::TrustedHeaderClient>
+                 trusted_header_client = mojo::NullRemote());
 
   content::ContentBrowserClient::WebSocketFactory CreateWebSocketFactory();
   bool proxy_has_extra_headers();
