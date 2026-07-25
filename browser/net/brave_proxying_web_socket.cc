@@ -97,6 +97,10 @@ void BraveProxyingWebSocket<T>::Start(
     mojo::PendingRemote<network::mojom::TrustedHeaderClient>
         trusted_header_client) {
   if (trusted_header_client) {
+    // Brave sits in front of Chrome's WebSocket factory. When Chrome does not
+    // install another proxy, this is the downstream trusted-header client, so
+    // bind it before OnBeforeRequestComplete() so its header changes can be
+    // merged into request_ before Brave's OnBeforeStartTransaction handling.
     proxy_trusted_header_client_.Bind(std::move(trusted_header_client));
   }
 
