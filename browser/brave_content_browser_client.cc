@@ -1220,15 +1220,15 @@ void BraveContentBrowserClient::WillCreateURLLoaderFactory(
   // TODO(iefremov): Skip proxying for certain requests?
   if (base::FeatureList::IsEnabled(features::kBraveRequestInfoUniquePtr)) {
     BraveProxyingURLLoaderFactory<base::WeakPtr>::MaybeProxyRequest(
-        browser_context, frame, factory_builder,
-        navigation_response_task_runner);
+        browser_context, frame, factory_builder, type, request_initiator,
+        isolation_info, navigation_response_task_runner);
   } else {
     // Ignore shared_ptr presubmit error, this is old code we are trying to
     // convert to unique_ptr/WeakPtr
     BraveProxyingURLLoaderFactory<
         std::shared_ptr>::MaybeProxyRequest(  // nocheck
-        browser_context, frame, factory_builder,
-        navigation_response_task_runner);
+        browser_context, frame, factory_builder, type, request_initiator,
+        isolation_info, navigation_response_task_runner);
   }
 
   ChromeContentBrowserClient::WillCreateURLLoaderFactory(

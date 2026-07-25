@@ -16,6 +16,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/sequence_checker.h"
 #include "content/public/browser/global_routing_id.h"
+#include "net/base/isolation_info.h"
 #include "net/base/network_anonymization_key.h"
 #include "net/http/http_request_headers.h"
 #include "net/http/http_response_headers.h"
@@ -188,7 +189,10 @@ class BraveRequestInfo {
       content::GlobalRenderFrameHostToken render_frame_token,
       uint64_t request_identifier,
       content::BrowserContext* browser_context,
-      brave::BraveRequestInfo* old_ctx);
+      brave::BraveRequestInfo* old_ctx,
+      const std::optional<url::Origin>& factory_request_initiator = std::nullopt,
+      const std::optional<net::IsolationInfo>& factory_isolation_info =
+          std::nullopt);
 
   base::WeakPtr<BraveRequestInfo> AsWeakPtr() {
     return weak_factory_.GetWeakPtr();
