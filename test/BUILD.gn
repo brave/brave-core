@@ -150,8 +150,6 @@ test("brave_unit_tests") {
     "//brave/third_party/blink/renderer/brave_font_whitelist_unittest.cc",
     "//brave/third_party/libaddressinput/chromium/chrome_metadata_source_unittest.cc",
     "//brave/vendor/brave_base/random_unittest.cc",
-    "//chrome/browser/signin/test_signin_client_builder.cc",
-    "//chrome/browser/signin/test_signin_client_builder.h",
     "//components/domain_reliability/test_util.cc",
     "//components/domain_reliability/test_util.h",
     "//components/sync/base/data_type_unittest.cc",
