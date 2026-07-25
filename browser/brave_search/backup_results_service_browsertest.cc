@@ -155,10 +155,12 @@ class BackupResultsServiceBrowserTestBase : public InProcessBrowserTest {
 
 class BackupResultsServiceBrowserTest
     : public BackupResultsServiceBrowserTestBase,
-      public testing::WithParamInterface<std::tuple<bool, bool, int>> {
+      public testing::WithParamInterface<
+          std::tuple<bool, bool, int, std::string, std::string>> {
  public:
   BackupResultsServiceBrowserTest() {
-    auto [zero_size, history_seed, farbling] = GetParam();
+    auto [zero_size, history_seed, farbling, languages_header,
+          renderer_languages] = GetParam();
     scoped_feature_list_.InitWithFeaturesAndParameters(
         {{features::kBackupResults,
           {{features::kBackupResultsZeroSize.name,
@@ -166,7 +168,10 @@ class BackupResultsServiceBrowserTest
            {features::kBackupResultsHistorySeed.name,
             history_seed ? "true" : "false"},
            {features::kBackupResultsFarbling.name,
-            base::NumberToString(farbling)}}}},
+            base::NumberToString(farbling)},
+           {features::kBackupResultsLanguagesHeader.name, languages_header},
+           {features::kBackupResultsRendererLanguages.name,
+            renderer_languages}}}},
         {});
   }
 };
@@ -602,7 +607,10 @@ INSTANTIATE_TEST_SUITE_P(
     ,
     BackupResultsServiceBrowserTest,
     testing::Values(
-        std::make_tuple(true, false, -1),  // zero_size, history_seed, farbling
-        std::make_tuple(false, true, 0)));
+        // zero_size, history_seed, farbling, languages_header,
+        // renderer_languages
+        std::make_tuple(true, false, -1, "primary_single", "primary_multiple"),
+        std::make_tuple(true, false, -1, "en-US,fr", "original"),
+        std::make_tuple(false, true, 0, "", "")));
 
 }  // namespace brave_search
