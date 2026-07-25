@@ -28,6 +28,20 @@ void RemoveTrackableSecurityHeadersForThirdParty(
     return;
   }
 
+  const net::HttpResponseHeaders* headers =
+      override_response_headers->get() ? override_response_headers->get()
+                                       : original_response_headers;
+  bool has_trackable_security_header = false;
+  for (auto header : kTrackableSecurityHeaders) {
+    if (headers->HasHeader(std::string(header))) {
+      has_trackable_security_header = true;
+      break;
+    }
+  }
+  if (!has_trackable_security_header) {
+    return;
+  }
+
   if (!override_response_headers->get()) {
     *override_response_headers =
         new net::HttpResponseHeaders(original_response_headers->raw_headers());
