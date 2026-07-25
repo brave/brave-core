@@ -16,8 +16,8 @@
 #include "base/functional/bind.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
-#include "base/notreached.h"
 #include "base/metrics/histogram_macros.h"
+#include "base/notreached.h"
 #include "brave/browser/net/brave_request_handler.h"
 #include "brave/browser/net/resource_context_data.h"
 #include "brave/browser/net/url_context.h"
@@ -91,9 +91,15 @@ net::RedirectInfo CreateRedirectInfo(
       false /* is_signed_exchange_fallback_redirect */);
 }
 
+// Worker factories can be created without a RenderFrameHost, and requests
+// made through them do not always carry TrustedParams. Use the context captured
+// when those factories were created as a fallback. Other factory types already
+// get their context from the request or frame; retaining that path avoids
+// changing their behavior when a factory is reused or a request redirects.
 bool ShouldUseFactoryURLLoaderContext(
     content::ContentBrowserClient::URLLoaderFactoryType type) {
-  using URLLoaderFactoryType = content::ContentBrowserClient::URLLoaderFactoryType;
+  using URLLoaderFactoryType =
+      content::ContentBrowserClient::URLLoaderFactoryType;
   switch (type) {
     case URLLoaderFactoryType::kWorkerMainResource:
     case URLLoaderFactoryType::kWorkerSubResource:

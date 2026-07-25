@@ -451,8 +451,8 @@ std::unique_ptr<brave::BraveRequestInfo> BraveRequestInfo::MakeCTX(
     isolation_info = &request.trusted_params->isolation_info;
   } else if (factory_isolation_info) {
     // Worker factories do not have a frame token and their ResourceRequests may
-    // not carry TrustedParams. The factory-level IsolationInfo is the only place
-    // where the top-frame origin is still available.
+    // not carry TrustedParams. The factory-level IsolationInfo is the only
+    // place where the top-frame origin is still available.
     isolation_info = &*factory_isolation_info;
   }
   if (isolation_info) {
@@ -462,9 +462,8 @@ std::unique_ptr<brave::BraveRequestInfo> BraveRequestInfo::MakeCTX(
     // given that this is always empty for subresources.
     ctx->set_network_anonymization_key(
         isolation_info->network_anonymization_key());
-    ctx->set_tab_origin(isolation_info->top_frame_origin()
-                            .value_or(url::Origin())
-                            .GetURL());
+    ctx->set_tab_origin(
+        isolation_info->top_frame_origin().value_or(url::Origin()).GetURL());
   }
   // TODO(iefremov): We still need this for WebSockets, currently
   // |AddChannelRequest| provides only old-fashioned |site_for_cookies|.

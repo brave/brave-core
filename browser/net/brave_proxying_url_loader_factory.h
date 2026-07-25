@@ -200,7 +200,8 @@ class BraveProxyingURLLoaderFactory : public network::mojom::URLLoaderFactory {
       content::BrowserContext* browser_context,
       content::GlobalRenderFrameHostToken render_frame_token,
       network::URLLoaderFactoryBuilder& factory_builder,
-      content::ContentBrowserClient::URLLoaderFactoryType url_loader_factory_type,
+      content::ContentBrowserClient::URLLoaderFactoryType
+          url_loader_factory_type,
       const url::Origin& request_initiator,
       const net::IsolationInfo& isolation_info,
       scoped_refptr<RequestIDGenerator> request_id_generator,
@@ -217,7 +218,8 @@ class BraveProxyingURLLoaderFactory : public network::mojom::URLLoaderFactory {
       content::BrowserContext* browser_context,
       content::RenderFrameHost* render_frame_host,
       network::URLLoaderFactoryBuilder& factory_builder,
-      content::ContentBrowserClient::URLLoaderFactoryType url_loader_factory_type,
+      content::ContentBrowserClient::URLLoaderFactoryType
+          url_loader_factory_type,
       const url::Origin& request_initiator,
       const net::IsolationInfo& isolation_info,
       scoped_refptr<base::SequencedTaskRunner> navigation_response_task_runner);

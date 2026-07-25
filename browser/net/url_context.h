@@ -190,7 +190,8 @@ class BraveRequestInfo {
       uint64_t request_identifier,
       content::BrowserContext* browser_context,
       brave::BraveRequestInfo* old_ctx,
-      const std::optional<url::Origin>& factory_request_initiator = std::nullopt,
+      const std::optional<url::Origin>& factory_request_initiator =
+          std::nullopt,
       const std::optional<net::IsolationInfo>& factory_isolation_info =
           std::nullopt);
 
