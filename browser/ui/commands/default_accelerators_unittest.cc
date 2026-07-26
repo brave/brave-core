@@ -46,10 +46,11 @@ TEST(DefaultAcceleratorsUnitTest, MenuDispatchedAcceleratorsAreDefaults) {
 TEST(DefaultAcceleratorsUnitTest, SystemManagedAcceleratorsAreDefaults) {
   const DefaultAccelerators defaults = GetDefaultAccelerators();
   for (const auto& accelerator : defaults.system_managed) {
-    EXPECT_TRUE(std::ranges::any_of(
-        defaults.accelerators, [&accelerator](const auto& entry) {
-          return std::ranges::contains(entry.second, accelerator);
-        }))
+    EXPECT_TRUE(std::ranges::any_of(defaults.accelerators,
+                                    [&accelerator](const auto& entry) {
+                                      return std::ranges::contains(entry.second,
+                                                                   accelerator);
+                                    }))
         << "System managed accelerator isn't a default for any command";
   }
 }
