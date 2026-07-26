@@ -309,7 +309,7 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
   // Added 2026-06
   // kTabsSearchShow (brave.tabs_search_show) is dead: its settings toggle was
   // removed in 2025 and nothing reads it anymore. The tab search visibility
-  // state is migrated from prefs::kPinnedActions above (before ChromiumImpl);
+  // state is migrated from prefs::kPinnedActions (before ChromiumImpl);
   // just drop the obsolete pref here.
   profile_prefs->ClearPref(kTabsSearchShow);
 
