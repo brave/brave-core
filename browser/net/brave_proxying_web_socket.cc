@@ -246,7 +246,9 @@ void BraveProxyingWebSocket<T>::OnConnectionEstablished(
   // reconstruct the handshake response headers here so Brave's
   // OnHeadersReceived callbacks still run before establishment is forwarded.
   if (receiver_as_header_client_.is_bound()) {
-    ContinueToCompleted();
+    if (response_headers_complete_) {
+      ContinueToCompleted();
+    }
     return;
   }
 
@@ -448,7 +450,10 @@ void BraveProxyingWebSocket<T>::OnHeadersReceivedCompleteFromProxy(
   }
 
   ResumeIncomingMethodCallProcessing();
-  ContinueToCompleted();
+  response_headers_complete_ = true;
+  if (handshake_response_) {
+    ContinueToCompleted();
+  }
 }
 
 template <template <typename> class T>

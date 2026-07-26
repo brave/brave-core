@@ -162,6 +162,7 @@ class BraveProxyingWebSocket
 
   GURL redirect_url_;
   bool is_done_ = false;
+  bool response_headers_complete_ = false;
   uint64_t request_id_ = 0;
 
   // chrome websocket proxy
