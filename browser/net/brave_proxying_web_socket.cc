@@ -236,6 +236,11 @@ void BraveProxyingWebSocket<T>::OnAuthRequired(
     const scoped_refptr<net::HttpResponseHeaders>& headers,
     const net::IPEndPoint& remote_endpoint,
     OnAuthRequiredCallback callback) {
+  if (!callback) {
+    OnError(net::ERR_FAILED);
+    return;
+  }
+
   if (!proxy_auth_handler_.is_bound()) {
     std::move(callback).Run(std::nullopt);
     return;
