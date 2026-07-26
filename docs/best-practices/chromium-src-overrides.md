@@ -323,11 +323,16 @@ bool WindowFeatureController::UsesImmersiveFullscreenMode() const {
 }
 ```
 
-```gn
+```diff
 # chrome/browser/ui/window_feature_controller/BUILD.gn (patched upstream file)
-deps += [
-  "//brave/browser/ui/views/tabs",
-]
+ source_set("window_feature_controller") {
+   sources = [
+     "window_feature_controller.cc",
+   ]
++  deps += [
++    "//brave/browser/ui/views/tabs",
++  ]
+ }
 ```
 
 **Correct: the override only calls a forward-declared hook, and the Brave
@@ -335,6 +340,8 @@ implementation target owns the Brave include and dependency wiring.**
 
 ```cpp
 // chromium_src/chrome/browser/ui/window_feature_controller/window_feature_controller.cc
+class Browser;
+
 std::optional<bool> BraveUsesImmersiveFullscreenMode(bool disabled_at_startup,
                                                      Browser* browser);
 
@@ -372,6 +379,7 @@ source_set("chromium_impl") {
 
 # brave/browser/BUILD.gn
 source_set("core") {
+  ...
   deps += [
     "//brave/browser/ui/window_feature_controller:chromium_impl",
   ]
