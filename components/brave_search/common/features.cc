@@ -80,4 +80,19 @@ const base::FeatureParam<bool> kBackupResultsAllowCosmeticAssets{
 const base::FeatureParam<bool> kBackupResultsAllowUnclassifiedRequests{
     &kBackupResults, "allow_unclassified_requests", false};
 
+const base::FeatureParam<int> kBackupResultsFarbling{&kBackupResults,
+                                                     "farbling", 0};
+
+const base::FeatureParam<bool> kBackupResultsHistorySeed{&kBackupResults,
+                                                         "history_seed", true};
+
+const base::FeatureParam<bool> kBackupResultsZeroSize{&kBackupResults,
+                                                      "zero_size", false};
+
+const base::FeatureParam<std::string> kBackupResultsRendererLanguages{
+    &kBackupResults, "renderer_languages", ""};
+
+const base::FeatureParam<std::string> kBackupResultsLanguagesHeader{
+    &kBackupResults, "languages_header", ""};
+
 }  // namespace brave_search::features
