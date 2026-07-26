@@ -1947,6 +1947,7 @@ public class BytecodeTest {
                         Context.class,
                         LocationBarLayout.class,
                         LocationBarDataProvider.class,
+                        OmniboxResourceProvider.class,
                         LocationBarEmbedderUiOverrides.class,
                         MonotonicObservableSupplier.class,
                         OverrideUrlLoadingDelegate.class,
