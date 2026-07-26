@@ -51,3 +51,53 @@ IN_PROC_BROWSER_TEST_F(PwaShieldsBrowserTest,
   EXPECT_TRUE(views::IsViewClass<BraveShieldsToolbarButton>(shields));
   EXPECT_TRUE(shields->GetVisible());
 }
+
+// Regression test for https://github.com/brave/brave-browser/issues/57349:
+// macOS immersive fullscreen reparents the web app toolbar (moving it into a
+// separate overlay widget), which re-triggers
+// WebAppToolbarButtonContainer::AddedToWidget(). The duplicate-add guard
+// relies on BraveBrowserView::GetPwaShieldsToolbarButton(), which returns a
+// weak pointer cached directly on BraveBrowserView (rather than a
+// BrowserElementsViews/ElementTracker lookup, which is keyed to the
+// *original* widget's context and wouldn't find a button that moved along
+// with the container into a different one), so it must survive reparenting.
+IN_PROC_BROWSER_TEST_F(PwaShieldsBrowserTest,
+                       ShieldsButtonNotDuplicatedWhenToolbarReparented) {
+  const webapps::AppId app_id = InstallPWA(GetInstallableAppURL());
+  Browser* app_browser = LaunchWebAppBrowser(app_id);
+  ASSERT_TRUE(app_browser);
+
+  auto* elements = BrowserElementsViews::From(app_browser);
+  ASSERT_TRUE(elements);
+  views::View* shields = nullptr;
+  ASSERT_TRUE(base::test::RunUntil([&] {
+    shields = elements->GetView(BraveShieldsActionView::kShieldsActionIcon,
+                                /*require_visible=*/true);
+    return shields != nullptr;
+  }));
+  ASSERT_TRUE(views::IsViewClass<BraveShieldsToolbarButton>(shields));
+
+  views::View* container = shields->parent();
+  ASSERT_TRUE(container);
+  views::View* container_parent = container->parent();
+  ASSERT_TRUE(container_parent);
+
+  // 1 for page action view, 1 for toolbar button
+  ASSERT_EQ(2u, elements
+                    ->GetAllViews(BraveShieldsActionView::kShieldsActionIcon,
+                                  /*require_visible=*/false)
+                    .size());
+
+  // Simulate the transient hidden state and the widget reparenting that
+  // immersive fullscreen performs on macOS - which triggers AddedToWidget
+  shields->SetVisible(false);
+  container_parent->RemoveChildView(container);
+  container_parent->AddChildView(container);
+  shields->SetVisible(true);
+
+  // Shouldn't add another action icon.
+  EXPECT_EQ(2u, elements
+                    ->GetAllViews(BraveShieldsActionView::kShieldsActionIcon,
+                                  /*require_visible=*/false)
+                    .size());
+}

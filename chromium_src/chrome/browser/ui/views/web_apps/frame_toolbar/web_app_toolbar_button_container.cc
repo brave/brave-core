@@ -18,7 +18,6 @@
 #include "chrome/browser/ui/views/bubble/webui_bubble_manager.h"
 #include "chrome/browser/ui/views/extensions/extensions_toolbar_desktop.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
-#include "chrome/browser/ui/views/interaction/browser_elements_views.h"
 #include "chrome/browser/ui/views/toolbar/pinned_toolbar_actions_container.h"
 #include "chrome/browser/ui/views/toolbar/pinned_toolbar_button_status_indicator.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_action_view.h"
@@ -57,6 +56,7 @@ void MaybeAddPwaShieldsToolbarButton(WebAppToolbarButtonContainer* container) {
     // Page Info owns Shields; do not add a duplicate title-bar control.
     return;
   }
+
   if (BraveBrowserView::From(base_browser_view)->GetPwaShieldsToolbarButton()) {
     return;
   }
@@ -96,6 +96,8 @@ void MaybeAddPwaShieldsToolbarButton(WebAppToolbarButtonContainer* container) {
       views::FlexSpecification(views::LayoutOrientation::kHorizontal,
                                views::MinimumFlexSizeRule::kPreferredSnapToZero)
           .WithWeight(0));
+  BraveBrowserView::From(base_browser_view)
+      ->SetPwaShieldsToolbarButton(ptr->GetWeakPtr());
 }
 
 }  // namespace
