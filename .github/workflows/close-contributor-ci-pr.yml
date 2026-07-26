@@ -1,0 +1,57 @@
+name: Close contributor CI PR
+
+on:
+  pull_request_target:
+    types: [closed]
+
+permissions:
+  pull-requests: write
+
+jobs:
+  close-contributor-ci-pr:
+    if: ${{ github.event.pull_request.merged == true }}
+    runs-on: ubuntu-slim
+    steps:
+      - name: Close associated contributor CI PR
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
+        with:
+          script: |
+            const sourcePr = context.payload.pull_request;
+            const ciTitle = `CI run for contributor PR #${sourcePr.number}`;
+            const headOwner = sourcePr.head.repo?.owner?.login || sourcePr.head.user?.login;
+            const expectedHeadRef = headOwner
+              ? `contributor-${headOwner}-${sourcePr.head.ref}`
+              : undefined;
+            const { owner, repo } = context.repo;
+
+            const candidates = await github.paginate(github.rest.pulls.list, {
+              owner,
+              repo,
+              state: 'open',
+              per_page: 100,
+            });
+
+            const matches = candidates.filter((pr) => {
+              if (pr.number === sourcePr.number || !pr.draft) {
+                return false;
+              }
+
+              return pr.title === ciTitle ||
+                pr.head.ref === expectedHeadRef ||
+                pr.body?.includes(`proposed in PR #${sourcePr.number}`);
+            });
+
+            if (matches.length === 0) {
+              core.info(`No open contributor CI PR found for PR #${sourcePr.number}.`);
+              return;
+            }
+
+            for (const pr of matches) {
+              core.info(`Closing associated contributor CI PR #${pr.number}: ${pr.html_url}`);
+              await github.rest.pulls.update({
+                owner,
+                repo,
+                pull_number: pr.number,
+                state: 'closed',
+              });
+            }
