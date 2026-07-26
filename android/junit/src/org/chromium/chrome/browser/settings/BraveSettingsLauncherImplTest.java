@@ -109,8 +109,8 @@ public class BraveSettingsLauncherImplTest {
         Intent intent = shadowOf(mContext).getNextStartedActivity();
         assertNotNull(intent);
         assertShowsBraveClearBrowsingData(intent);
-        assertNotNull(intent.getBundleExtra(SettingsActivity.EXTRA_SHOW_FRAGMENT_ARGUMENTS));
-        assertTrue(intent.getBooleanExtra(SettingsActivity.EXTRA_ADD_TO_BACK_STACK, false));
+        assertNotNull(intent.getBundleExtra(SettingsIntentUtil.EXTRA_SHOW_FRAGMENT_ARGUMENTS));
+        assertTrue(intent.getBooleanExtra(SettingsIntentUtil.EXTRA_ADD_TO_BACK_STACK, false));
     }
 
     @Test
@@ -149,6 +149,6 @@ public class BraveSettingsLauncherImplTest {
     }
 
     private static String showFragmentName(Intent intent) {
-        return intent.getStringExtra(SettingsActivity.EXTRA_SHOW_FRAGMENT);
+        return intent.getStringExtra(SettingsIntentUtil.EXTRA_SHOW_FRAGMENT);
     }
 }
