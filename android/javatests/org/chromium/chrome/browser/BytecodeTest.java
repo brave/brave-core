@@ -55,7 +55,6 @@ import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.base.supplier.OneshotSupplierImpl;
 import org.chromium.base.supplier.SettableMonotonicObservableSupplier;
 import org.chromium.base.supplier.SettableNonNullObservableSupplier;
-import org.chromium.base.supplier.SettableNullableObservableSupplier;
 import org.chromium.base.test.util.Batch;
 import org.chromium.chrome.browser.back_press.BackPressManager;
 import org.chromium.chrome.browser.bookmarks.BookmarkImageFetcher;
@@ -1967,8 +1966,7 @@ public class BytecodeTest {
                         FuseboxCoordinator.class,
                         LocationBarEmbedder.class,
                         OmniboxChipManager.class,
-                        LocationBarFocusScrimHandler.class,
-                        SettableNullableObservableSupplier.class));
+                        LocationBarFocusScrimHandler.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/AppHooks",

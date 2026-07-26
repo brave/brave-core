@@ -16,7 +16,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
-import org.chromium.base.supplier.SettableNullableObservableSupplier;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
@@ -41,7 +40,6 @@ import org.chromium.ui.base.PageTransition;
 import org.chromium.ui.base.WindowAndroid;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 import org.chromium.ui.permissions.PermissionCallback;
-import org.chromium.url.GURL;
 
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
@@ -92,8 +90,7 @@ public class BraveLocationBarMediator extends LocationBarMediator {
             FuseboxCoordinator fuseboxCoordinator,
             LocationBarEmbedder locationBarEmbedder,
             @Nullable OmniboxChipManager omniboxChipManager,
-            @Nullable LocationBarFocusScrimHandler scrimHandler,
-            SettableNullableObservableSupplier<GURL> exactMatchUrlSupplier) {
+            @Nullable LocationBarFocusScrimHandler scrimHandler) {
         super(
                 context,
                 locationBarLayout,
@@ -118,8 +115,7 @@ public class BraveLocationBarMediator extends LocationBarMediator {
                 fuseboxCoordinator,
                 locationBarEmbedder,
                 omniboxChipManager,
-                scrimHandler,
-                exactMatchUrlSupplier);
+                scrimHandler);
     }
 
     public static Class<OmniboxUma> getOmniboxUmaClass() {
