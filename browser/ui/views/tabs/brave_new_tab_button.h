@@ -69,8 +69,9 @@ class BraveNewTabButton : public NewTabButton {
   std::unique_ptr<containers::ContainersMenuModel> containers_menu_model_;
   std::unique_ptr<views::MenuRunner> containers_context_menu_runner_;
 
-  // When true, the containers menu model and runner are created but RunMenuAt
-  // is skipped so tests do not block in MenuRunner's nested loop.
+  // When true, RunMenuAt is skipped for both the containers menu and the
+  // upstream NewTabButton fallback menu, so tests do not block in
+  // MenuRunner's nested loop.
   bool skip_containers_context_menu_runner_for_testing_ = false;
 #endif
 
