@@ -25,6 +25,7 @@
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_shields/core/common/shields_settings.mojom-shared.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/content_settings/core/browser/brave_content_settings_migration_helper.h"
 #include "brave/components/content_settings/core/browser/brave_content_settings_utils.h"
 #include "brave/components/content_settings/core/common/content_settings_util.h"
 #include "brave/components/google_sign_in_permission/google_sign_in_permission_util.h"
@@ -102,24 +103,6 @@ bool IsActive(const Rule* rule,
   }
 
   return true;
-}
-
-// Returns whether |rule| is a JAVASCRIPT rule that Shields authored, as opposed
-// to one the user created through the Chromium Site Settings UI. Shields wrote
-// its per-site JS rules with a host pattern of the form "*://host/*" (produced
-// by content_settings::CreateHostPattern()) paired with a wildcard secondary
-// pattern; reconstructing that pattern from the rule's host and comparing lets
-// us select only Shields-origin rules during migration.
-bool IsShieldsAuthoredJavascriptRule(const Rule& rule) {
-  if (rule.secondary_pattern != ContentSettingsPattern::Wildcard()) {
-    return false;
-  }
-  const std::string host = rule.primary_pattern.GetHost();
-  if (host.empty()) {
-    return false;
-  }
-  return rule.primary_pattern == content_settings::CreateHostPattern(GURL(
-                                     base::StrCat({"https://", host, "/"})));
 }
 
 // Computes the set of change notifications needed to move an effective rule set
@@ -595,25 +578,11 @@ void BravePrefProvider::MigrateShieldsSettingsV4ToV5() {
     return;
   }
 
-  // Only JAVASCRIPT rules that Shields itself created should move to
-  // BRAVE_JAVASCRIPT; JAVASCRIPT exceptions the user added through the Chromium
-  // Site Settings UI must stay put. Shields wrote its per-site JS rules through
-  // SetNoScriptControlType(), which always uses a host pattern of the form
-  // "*://host/*" (scheme-wildcard, specific host, wildcard path) produced by
-  // content_settings::CreateHostPattern(), paired with a wildcard secondary
-  // pattern. The Chromium UI instead writes scheme-specific, port-qualified
-  // patterns (e.g. "https://host:443"), so matching this exact Shields-authored
-  // shape reliably selects only Shields-origin rules.
-  std::vector<std::unique_ptr<Rule>> rules_to_migrate;
-  auto rule_iterator = PrefProvider::GetRuleIterator(
-      ContentSettingsType::JAVASCRIPT, /*off_the_record*/ false);
-  while (rule_iterator && rule_iterator->HasNext()) {
-    auto rule = rule_iterator->Next();
-    if (IsShieldsAuthoredJavascriptRule(*rule)) {
-      rules_to_migrate.emplace_back(CloneRule(CHECK_DEREF(rule.get())));
-    }
-  }
-  rule_iterator.reset();
+  // Only Shields-authored JAVASCRIPT rules should move to BRAVE_JAVASCRIPT;
+  // user-authored Chromium Site Settings exceptions must stay on JAVASCRIPT.
+  std::vector<std::unique_ptr<Rule>> rules_to_migrate =
+      brave_content_settings_migration::GetShieldsAuthoredJavascriptRules(
+          *this);
 
   for (const auto& rule : rules_to_migrate) {
     SetWebsiteSettingInternal(rule->primary_pattern, rule->secondary_pattern,
