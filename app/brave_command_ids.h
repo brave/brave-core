@@ -170,6 +170,17 @@
 // acceleratable so users can assign it a custom keyboard shortcut.
 #define IDC_BLOCK_ELEMENTS 56470
 
+// Brave Containers: Open a new tab directly in the nth container.
+#define IDC_NEW_TAB_IN_CONTAINER_1 56471
+#define IDC_NEW_TAB_IN_CONTAINER_2 56472
+#define IDC_NEW_TAB_IN_CONTAINER_3 56473
+#define IDC_NEW_TAB_IN_CONTAINER_4 56474
+#define IDC_NEW_TAB_IN_CONTAINER_5 56475
+#define IDC_NEW_TAB_IN_CONTAINER_6 56476
+#define IDC_NEW_TAB_IN_CONTAINER_7 56477
+#define IDC_NEW_TAB_IN_CONTAINER_8 56478
+#define IDC_NEW_TAB_IN_CONTAINER_9 56479
+
 #define IDC_BRAVE_COMMANDS_LAST 57000
 
 #endif  // BRAVE_APP_BRAVE_COMMAND_IDS_H_
