@@ -274,7 +274,9 @@ void BraveProxyingURLLoaderFactory<T>::InProgressRequest::SetPriority(
 
 template <template <typename> class T>
 void BraveProxyingURLLoaderFactory<T>::InProgressRequest::OnReceiveEarlyHints(
-    network::mojom::EarlyHintsPtr early_hints) {}
+    network::mojom::EarlyHintsPtr early_hints) {
+  target_client_->OnReceiveEarlyHints(std::move(early_hints));
+}
 
 template <template <typename> class T>
 void BraveProxyingURLLoaderFactory<T>::InProgressRequest::OnReceiveResponse(
