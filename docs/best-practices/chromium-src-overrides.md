@@ -327,11 +327,15 @@ bool WindowFeatureController::UsesImmersiveFullscreenMode() const {
 # chrome/browser/ui/window_feature_controller/BUILD.gn (patched upstream file)
  source_set("window_feature_controller") {
    sources = [
+     ...
      "window_feature_controller.cc",
++    ...
    ]
-+  deps += [
-+    "//brave/browser/ui/views/tabs",
-+  ]
+
+   deps = [
+     ...
+   ]
++  deps += [ "//brave/browser/ui/views/tabs" ]
  }
 ```
 
