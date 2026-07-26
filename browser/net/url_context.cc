@@ -8,6 +8,7 @@
 #include <memory>
 #include <string>
 
+#include "base/notreached.h"
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
@@ -21,6 +22,35 @@
 namespace brave {
 
 namespace {
+
+// Worker URLLoader factories cover worker script loads and fetch/XHR-style
+// requests made by workers. Worker WebSocket handshakes are handled by
+// BraveProxyingWebSocket instead. These URLLoader factories can be created
+// without a RenderFrameHost, and requests made through them do not always carry
+// TrustedParams. Use the context captured when those factories were created as
+// a fallback. Other factory types already get their context from the request or
+// frame; retaining that path avoids changing their behavior when a factory is
+// reused or a request redirects.
+bool ShouldUseFactoryURLLoaderContext(
+    content::ContentBrowserClient::URLLoaderFactoryType type) {
+  using URLLoaderFactoryType =
+      content::ContentBrowserClient::URLLoaderFactoryType;
+  switch (type) {
+    case URLLoaderFactoryType::kWorkerMainResource:
+    case URLLoaderFactoryType::kWorkerSubResource:
+    case URLLoaderFactoryType::kServiceWorkerScript:
+    case URLLoaderFactoryType::kServiceWorkerSubResource:
+      return true;
+    case URLLoaderFactoryType::kNavigation:
+    case URLLoaderFactoryType::kDownload:
+    case URLLoaderFactoryType::kDocumentSubResource:
+    case URLLoaderFactoryType::kPrefetch:
+    case URLLoaderFactoryType::kDevTools:
+    case URLLoaderFactoryType::kEarlyHints:
+      return false;
+  }
+  NOTREACHED();
+}
 
 std::string GetUploadData(const network::ResourceRequest& request) {
   std::string upload_data;
@@ -426,15 +456,21 @@ std::unique_ptr<brave::BraveRequestInfo> BraveRequestInfo::MakeCTX(
     uint64_t request_identifier,
     content::BrowserContext* browser_context,
     brave::BraveRequestInfo* old_ctx,
+    std::optional<content::ContentBrowserClient::URLLoaderFactoryType>
+        url_loader_factory_type,
     const std::optional<url::Origin>& factory_request_initiator,
     const std::optional<net::IsolationInfo>& factory_isolation_info) {
   auto ctx = std::make_unique<brave::BraveRequestInfo>();
   ctx->set_request_identifier(request_identifier);
   ctx->set_method(request.method);
   ctx->set_request_url(request.url);
-  ctx->set_request_initiator(request.request_initiator
-                                 ? request.request_initiator
-                                 : factory_request_initiator);
+  const bool use_factory_context =
+      url_loader_factory_type &&
+      ShouldUseFactoryURLLoaderContext(*url_loader_factory_type);
+  ctx->set_request_initiator(
+      request.request_initiator
+          ? request.request_initiator
+          : (use_factory_context ? factory_request_initiator : std::nullopt));
 
   ctx->set_referrer(request.referrer);
   ctx->set_referrer_policy(request.referrer_policy);
@@ -449,7 +485,7 @@ std::unique_ptr<brave::BraveRequestInfo> BraveRequestInfo::MakeCTX(
   const net::IsolationInfo* isolation_info = nullptr;
   if (request.trusted_params) {
     isolation_info = &request.trusted_params->isolation_info;
-  } else if (factory_isolation_info) {
+  } else if (use_factory_context && factory_isolation_info) {
     // Worker factories do not have a frame token and their ResourceRequests may
     // not carry TrustedParams. The factory-level IsolationInfo is the only
     // place where the top-frame origin is still available.

@@ -17,7 +17,6 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/metrics/histogram_macros.h"
-#include "base/notreached.h"
 #include "brave/browser/net/brave_request_handler.h"
 #include "brave/browser/net/resource_context_data.h"
 #include "brave/browser/net/url_context.h"
@@ -89,35 +88,6 @@ net::RedirectInfo CreateRedirectInfo(
       referrer_policy_header, false /* insecure_scheme_was_upgraded */,
       false /* copy_fragment */,
       false /* is_signed_exchange_fallback_redirect */);
-}
-
-// Worker URLLoader factories cover worker script loads and fetch/XHR-style
-// requests made by workers. Worker WebSocket handshakes are handled by
-// BraveProxyingWebSocket instead. These URLLoader factories can be created
-// without a RenderFrameHost, and requests made through them do not always carry
-// TrustedParams. Use the context captured when those factories were created as
-// a fallback. Other factory types already get their context from the request or
-// frame; retaining that path avoids changing their behavior when a factory is
-// reused or a request redirects.
-bool ShouldUseFactoryURLLoaderContext(
-    content::ContentBrowserClient::URLLoaderFactoryType type) {
-  using URLLoaderFactoryType =
-      content::ContentBrowserClient::URLLoaderFactoryType;
-  switch (type) {
-    case URLLoaderFactoryType::kWorkerMainResource:
-    case URLLoaderFactoryType::kWorkerSubResource:
-    case URLLoaderFactoryType::kServiceWorkerScript:
-    case URLLoaderFactoryType::kServiceWorkerSubResource:
-      return true;
-    case URLLoaderFactoryType::kNavigation:
-    case URLLoaderFactoryType::kDownload:
-    case URLLoaderFactoryType::kDocumentSubResource:
-    case URLLoaderFactoryType::kPrefetch:
-    case URLLoaderFactoryType::kDevTools:
-    case URLLoaderFactoryType::kEarlyHints:
-      return false;
-  }
-  NOTREACHED();
 }
 
 }  // namespace
@@ -210,14 +180,10 @@ void BraveProxyingURLLoaderFactory<T>::InProgressRequest::UpdateRequestInfo() {
 template <>
 void BraveProxyingURLLoaderFactory<
     std::shared_ptr>::InProgressRequest::CreateBraveRequestInfo() {
-  const bool use_factory_context =
-      ShouldUseFactoryURLLoaderContext(factory_->url_loader_factory_type_);
   ctx_ = brave::BraveRequestInfo::MakeCTX(
       request_, render_frame_token_, request_id_, browser_context_, ctx_.get(),
-      use_factory_context ? std::make_optional(factory_->request_initiator_)
-                          : std::nullopt,
-      use_factory_context ? std::make_optional(factory_->isolation_info_)
-                          : std::nullopt);
+      factory_->url_loader_factory_type_, factory_->request_initiator_,
+      factory_->isolation_info_);
 }
 
 template <>
@@ -226,15 +192,10 @@ void BraveProxyingURLLoaderFactory<
   if (ctx_) {
     factory_->request_handler_->OnURLRequestDestroyed(ctx_);
   }
-  const bool use_factory_context =
-      ShouldUseFactoryURLLoaderContext(factory_->url_loader_factory_type_);
   ctx_owned_ = brave::BraveRequestInfo::MakeCTX(
       request_, render_frame_token_, request_id_, browser_context_,
-      ctx_owned_.get(),
-      use_factory_context ? std::make_optional(factory_->request_initiator_)
-                          : std::nullopt,
-      use_factory_context ? std::make_optional(factory_->isolation_info_)
-                          : std::nullopt);
+      ctx_owned_.get(), factory_->url_loader_factory_type_,
+      factory_->request_initiator_, factory_->isolation_info_);
   ctx_ = ctx_owned_->AsWeakPtr();
 }
 

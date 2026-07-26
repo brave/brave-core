@@ -6,6 +6,7 @@
 #include "brave/browser/net/url_context.h"
 
 #include "chrome/test/base/testing_profile.h"
+#include "content/public/browser/content_browser_client.h"
 #include "content/public/browser/global_routing_id.h"
 #include "net/base/isolation_info.h"
 #include "net/base/site_for_cookies.h"
@@ -41,7 +42,9 @@ TEST(BraveRequestInfoTest,
 
   auto ctx = BraveRequestInfo::MakeCTX(
       request, content::GlobalRenderFrameHostToken(), 1, &profile,
-      /*old_ctx=*/nullptr, factory_initiator, factory_isolation_info);
+      /*old_ctx=*/nullptr,
+      content::ContentBrowserClient::URLLoaderFactoryType::kWorkerSubResource,
+      factory_initiator, factory_isolation_info);
 
   EXPECT_EQ(factory_initiator.GetURL(), ctx->initiator_url());
   EXPECT_EQ(factory_top_frame_origin.GetURL(), ctx->tab_origin());
@@ -69,13 +72,37 @@ TEST(BraveRequestInfoTest, RequestContextOverridesFactoryContext) {
 
   auto ctx = BraveRequestInfo::MakeCTX(
       request, content::GlobalRenderFrameHostToken(), 1, &profile,
-      /*old_ctx=*/nullptr, factory_initiator,
-      MakeIsolationInfo(factory_top_frame_origin));
+      /*old_ctx=*/nullptr,
+      content::ContentBrowserClient::URLLoaderFactoryType::kWorkerSubResource,
+      factory_initiator, MakeIsolationInfo(factory_top_frame_origin));
 
   EXPECT_EQ(request_initiator.GetURL(), ctx->initiator_url());
   EXPECT_EQ(request_top_frame_origin.GetURL(), ctx->tab_origin());
   EXPECT_TRUE(ctx->network_anonymization_key().IsEqualForTesting(
       request.trusted_params->isolation_info.network_anonymization_key()));
+}
+
+TEST(BraveRequestInfoTest, NonWorkerFactoryTypeIgnoresFactoryContextFallback) {
+  TestingProfile profile;
+  network::ResourceRequest request;
+  request.url = GURL("https://document.example/fetch");
+  ASSERT_FALSE(request.request_initiator);
+  ASSERT_FALSE(request.trusted_params);
+
+  const url::Origin factory_initiator =
+      url::Origin::Create(GURL("https://factory-initiator.example"));
+  const url::Origin factory_top_frame_origin =
+      url::Origin::Create(GURL("https://factory-top-frame.example"));
+
+  auto ctx = BraveRequestInfo::MakeCTX(
+      request, content::GlobalRenderFrameHostToken(), 1, &profile,
+      /*old_ctx=*/nullptr,
+      content::ContentBrowserClient::URLLoaderFactoryType::kDocumentSubResource,
+      factory_initiator, MakeIsolationInfo(factory_top_frame_origin));
+
+  EXPECT_TRUE(ctx->initiator_url().is_empty());
+  EXPECT_TRUE(ctx->tab_origin().is_empty());
+  EXPECT_TRUE(ctx->network_anonymization_key().IsEmpty());
 }
 
 }  // namespace

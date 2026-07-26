@@ -15,6 +15,7 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/sequence_checker.h"
+#include "content/public/browser/content_browser_client.h"
 #include "content/public/browser/global_routing_id.h"
 #include "net/base/isolation_info.h"
 #include "net/base/network_anonymization_key.h"
@@ -190,6 +191,8 @@ class BraveRequestInfo {
       uint64_t request_identifier,
       content::BrowserContext* browser_context,
       brave::BraveRequestInfo* old_ctx,
+      std::optional<content::ContentBrowserClient::URLLoaderFactoryType>
+          url_loader_factory_type = std::nullopt,
       const std::optional<url::Origin>& factory_request_initiator =
           std::nullopt,
       const std::optional<net::IsolationInfo>& factory_isolation_info =
