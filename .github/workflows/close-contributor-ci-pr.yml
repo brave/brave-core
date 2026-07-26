@@ -17,18 +17,12 @@ jobs:
         with:
           script: |
             const { owner, repo } = context.repo;
-            const shas = [
-              context.sha,
-              ...(context.payload.commits || []).map((commit) => commit.id),
-            ];
-            const uniqueShas = [...new Set(shas.filter(Boolean))];
-
             const query = `
               query($owner: String!, $repo: String!, $oid: GitObjectID!) {
                 repository(owner: $owner, name: $repo) {
                   object(oid: $oid) {
                     ... on Commit {
-                      associatedPullRequests(first: 20) {
+                      associatedPullRequests(first: 1) {
                         nodes {
                           number
                           merged
@@ -44,24 +38,23 @@ jobs:
               }
             `;
 
-            const sourcePrs = [];
-            const seenPrs = new Set();
-            for (const oid of uniqueShas) {
-              const result = await github.graphql(query, { owner, repo, oid });
-              const pullRequests = result.repository.object
-                ?.associatedPullRequests?.nodes || [];
-              for (const pr of pullRequests) {
-                if (pr.merged && !seenPrs.has(pr.number)) {
-                  seenPrs.add(pr.number);
-                  sourcePrs.push(pr);
-                }
-              }
-            }
-
-            if (sourcePrs.length === 0) {
+            const result = await github.graphql(query, {
+              owner,
+              repo,
+              oid: context.sha,
+            });
+            const sourcePr = result.repository.object?.associatedPullRequests
+              ?.nodes?.[0];
+            if (!sourcePr?.merged) {
               core.info(`No merged pull request found for push ${context.sha}.`);
               return;
             }
+
+            const ciTitle = `CI run for contributor PR #${sourcePr.number}`;
+            const headOwner = sourcePr.headRepositoryOwner?.login;
+            const expectedHeadRef = headOwner
+              ? `contributor-${headOwner}-${sourcePr.headRefName}`
+              : undefined;
 
             const candidates = await github.paginate(github.rest.pulls.list, {
               owner,
@@ -70,35 +63,27 @@ jobs:
               per_page: 100,
             });
 
-            for (const sourcePr of sourcePrs) {
-              const ciTitle = `CI run for contributor PR #${sourcePr.number}`;
-              const headOwner = sourcePr.headRepositoryOwner?.login;
-              const expectedHeadRef = headOwner
-                ? `contributor-${headOwner}-${sourcePr.headRefName}`
-                : undefined;
+            const matches = candidates.filter((pr) => {
+              if (pr.number === sourcePr.number || !pr.draft) {
+                return false;
+              }
 
-              const matches = candidates.filter((pr) => {
-                if (pr.number === sourcePr.number || !pr.draft) {
-                  return false;
-                }
+              return pr.title === ciTitle ||
+                pr.head.ref === expectedHeadRef ||
+                pr.body?.includes(`proposed in PR #${sourcePr.number}`);
+            });
 
-                return pr.title === ciTitle ||
-                  pr.head.ref === expectedHeadRef ||
-                  pr.body?.includes(`proposed in PR #${sourcePr.number}`);
+            if (matches.length === 0) {
+              core.info(`No open contributor CI PR found for PR #${sourcePr.number}.`);
+              return;
+            }
+
+            for (const pr of matches) {
+              core.info(`Closing associated contributor CI PR #${pr.number}: ${pr.html_url}`);
+              await github.rest.pulls.update({
+                owner,
+                repo,
+                pull_number: pr.number,
+                state: 'closed',
               });
-
-              if (matches.length === 0) {
-                core.info(`No open contributor CI PR found for PR #${sourcePr.number}.`);
-                continue;
-              }
-
-              for (const pr of matches) {
-                core.info(`Closing associated contributor CI PR #${pr.number}: ${pr.html_url}`);
-                await github.rest.pulls.update({
-                  owner,
-                  repo,
-                  pull_number: pr.number,
-                  state: 'closed',
-                });
-              }
             }
