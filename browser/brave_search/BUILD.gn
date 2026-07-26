@@ -27,6 +27,7 @@ source_set("brave_search") {
     "//chrome/browser/profiles",
     "//components/content_settings/browser",
     "//components/keyed_service/core",
+    "//components/language/core/browser",
     "//components/prefs",
     "//content/public/browser",
     "//services/network/public/cpp",
