@@ -51,8 +51,8 @@ public class BraveLeoSuggestionProcessor extends BaseSuggestionViewProcessor {
                 new SuggestionSpannable(mUrlBarEditingTextProvider.getTextWithoutAutocomplete()));
         model.set(SuggestionViewProperties.TEXT_LINE_2_TEXT, new SuggestionSpannable(mAskLeo));
         model.set(
-                BaseSuggestionViewProperties.ON_CLICK,
-                () -> {
+                BaseSuggestionViewProperties.ON_ACTIVATE,
+                (modifiers) -> {
                     Tab tab = mActivityTabSupplier.get();
                     if (tab != null) {
                         mBraveLeoAutocompleteDelegate.openLeoQuery(
