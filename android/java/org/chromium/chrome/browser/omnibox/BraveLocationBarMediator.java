@@ -24,6 +24,7 @@ import org.chromium.chrome.browser.lens.LensController;
 import org.chromium.chrome.browser.locale.LocaleManager;
 import org.chromium.chrome.browser.omnibox.UrlBar.ScrollType;
 import org.chromium.chrome.browser.omnibox.fusebox.FuseboxCoordinator;
+import org.chromium.chrome.browser.omnibox.styles.OmniboxResourceProvider;
 import org.chromium.chrome.browser.omnibox.suggestions.AutocompleteCoordinator;
 import org.chromium.chrome.browser.omnibox.suggestions.OmniboxLoadUrlParams;
 import org.chromium.chrome.browser.profiles.Profile;
@@ -71,6 +72,7 @@ public class BraveLocationBarMediator extends LocationBarMediator {
             Context context,
             LocationBarLayout locationBarLayout,
             LocationBarDataProvider locationBarDataProvider,
+            OmniboxResourceProvider resourceProvider,
             LocationBarEmbedderUiOverrides embedderUiOverrides,
             MonotonicObservableSupplier<Profile> profileSupplier,
             OverrideUrlLoadingDelegate overrideUrlLoadingDelegate,
@@ -96,6 +98,7 @@ public class BraveLocationBarMediator extends LocationBarMediator {
                 context,
                 locationBarLayout,
                 locationBarDataProvider,
+                resourceProvider,
                 embedderUiOverrides,
                 profileSupplier,
                 overrideUrlLoadingDelegate,
