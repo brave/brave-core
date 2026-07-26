@@ -216,7 +216,11 @@ void BraveNewTabButton::ShowContextMenuForViewImpl(
       return;
     }
   }
-  NewTabButton::ShowContextMenuForViewImpl(source, point, source_type);
+  // In some tests, we want to skip running the menu runner to avoid
+  // blocking the test.
+  if (!skip_containers_context_menu_runner_for_testing_) {
+    NewTabButton::ShowContextMenuForViewImpl(source, point, source_type);
+  }
 }
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 

@@ -2405,6 +2405,8 @@ IN_PROC_BROWSER_TEST_F(
       horizontal_tab_strip_region->new_tab_button());
   ASSERT_TRUE(new_tab);
 
+  // MenuRunner::RunMenuAt blocks until the menu closes; skip it for the test
+  SetBraveNewTabButtonSkipContainersContextMenuRunForTesting(new_tab, true);
   new_tab->ShowContextMenuForViewImpl(new_tab, gfx::Point(0, 0),
                                       ui::mojom::MenuSourceType::kMouse);
   EXPECT_FALSE(BraveNewTabButtonHasPreparedContainersContextMenu(new_tab));
