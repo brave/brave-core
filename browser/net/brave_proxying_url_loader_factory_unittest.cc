@@ -109,9 +109,10 @@ TEST_F(BraveProxyingURLLoaderFactoryTest, BlocksUnsafeNetworkRedirect) {
   network::TestURLLoaderClient client;
   mojo::Remote<network::mojom::URLLoader> loader;
   CreateLoaderAndStart(factory, loader, request, client);
-  client.RunUntilComplete();
+  task_environment_.RunUntilIdle();
 
   EXPECT_FALSE(client.has_received_redirect());
+  ASSERT_TRUE(client.has_received_completion());
   EXPECT_EQ(net::ERR_UNSAFE_REDIRECT, client.completion_status().error_code);
 }
 
