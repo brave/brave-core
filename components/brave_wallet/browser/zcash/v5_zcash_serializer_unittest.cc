@@ -1,17 +1,20 @@
-/* Copyright (c) 2023 The Brave Authors. All rights reserved.
+/* Copyright (c) 2026 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_wallet/browser/zcash/zcash_serializer.h"
+#include "brave/components/brave_wallet/browser/zcash/v5_zcash_serializer.h"
 
 #include <algorithm>
 #include <memory>
 #include <utility>
+#include <vector>
 
 #include "base/strings/string_number_conversions.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_wallet/browser/internal/orchard_bundle_manager.h"
+#include "brave/components/brave_wallet/browser/zcash/zcash_keyring.h"
+#include "brave/components/brave_wallet/browser/zcash/zcash_serializer.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_transaction.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/features.h"
@@ -29,129 +32,17 @@ bool IsAddressAllowed(const std::string&) {
 
 }  // namespace
 
-TEST(ZCashSerializerTest, HashPrevouts) {
-  ZCashTransaction zcash_transaciton;
-  zcash_transaciton.set_consensus_brach_id(0xc2d6d0b4);
-
-  {
-    ZCashTransaction::TxInput tx_input;
-    tx_input.utxo_outpoint.txid = {20,  107, 157, 73,  221, 140, 120, 53,
-                                   244, 58,  55,  220, 160, 120, 126, 62,
-                                   201, 246, 96,  82,  35,  213, 186, 122,
-                                   224, 171, 144, 37,  183, 59,  192, 63};
-    tx_input.utxo_outpoint.index = 3224808575;
-    zcash_transaciton.transparent_part().inputs.push_back(std::move(tx_input));
-  }
-
-  {
-    ZCashTransaction::TxInput tx_input;
-    tx_input.utxo_outpoint.txid = {193, 161, 45,  18,  123, 87,  200, 19,
-                                   137, 118, 231, 145, 1,   59,  1,   95,
-                                   6,   166, 36,  245, 33,  182, 238, 4,
-                                   236, 152, 8,   147, 199, 229, 224, 26};
-    tx_input.utxo_outpoint.index = 1493393971;
-    zcash_transaciton.transparent_part().inputs.push_back(std::move(tx_input));
-  }
-
-  {
-    ZCashTransaction::TxInput tx_input;
-    tx_input.utxo_outpoint.txid = {208, 145, 48,  246, 53,  17,  218, 84,
-                                   131, 45,  233, 19,  107, 57,  244, 89,
-                                   159, 90,  165, 223, 187, 69,  218, 96,
-                                   205, 206, 171, 126, 239, 222, 137, 190};
-    tx_input.utxo_outpoint.index = 3237475171;
-    zcash_transaciton.transparent_part().inputs.push_back(std::move(tx_input));
-  }
-
-  ASSERT_EQ(
-      "0x7db761d908021c98a19c43f75c6486275eaca3c11f9dc6cbaf66d3050c23b515",
-      ToHex(ZCashSerializer::HashPrevouts(zcash_transaciton)));
-}
-
-TEST(ZCashSerializerTest, HashOutputs) {
-  ZCashTransaction zcash_transaciton;
-  zcash_transaciton.set_consensus_brach_id(0xc2d6d0b4);
-
-  {
-    ZCashTransaction::TxOutput tx_output;
-    base::HexStringToBytes("630063ac", &tx_output.script_pubkey);
-    tx_output.amount = 1264123119664452;
-    zcash_transaciton.transparent_part().outputs.push_back(
-        std::move(tx_output));
-  }
-
-  {
-    ZCashTransaction::TxOutput tx_output;
-    base::HexStringToBytes("636a5351520065ac65", &tx_output.script_pubkey);
-    tx_output.amount = 810835337737746;
-    zcash_transaciton.transparent_part().outputs.push_back(
-        std::move(tx_output));
-  }
-
-  ASSERT_EQ(
-      "0x0dc9291fc891c10bdecedde449fa319cfa3f45cf7779423c2272c013d7fe0080",
-      ToHex(ZCashSerializer::HashOutputs(zcash_transaciton)));
-}
-
-TEST(ZCashSerializerTest, HashSequences) {
-  ZCashTransaction zcash_transaciton;
-  zcash_transaciton.set_consensus_brach_id(0xc2d6d0b4);
-
-  {
-    ZCashTransaction::TxInput tx_input;
-    tx_input.n_sequence = 1290119100;
-    zcash_transaciton.transparent_part().inputs.push_back(std::move(tx_input));
-  }
-
-  {
-    ZCashTransaction::TxInput tx_input;
-    tx_input.n_sequence = 3797894359;
-    zcash_transaciton.transparent_part().inputs.push_back(std::move(tx_input));
-  }
-
-  {
-    ZCashTransaction::TxInput tx_input;
-    tx_input.n_sequence = 4015866081;
-    zcash_transaciton.transparent_part().inputs.push_back(std::move(tx_input));
-  }
-
-  ASSERT_EQ(
-      "0x17cae6cde4962f6eb86b350eb5a80d5576a958b4bd3438689e94ee387eb80f8e",
-      ToHex(ZCashSerializer::HashSequences(zcash_transaciton)));
-}
-
-TEST(ZCashSerializerTest, HashHeader) {
+TEST(ZCashV5SerializerTest, HashHeader) {
   ZCashTransaction zcash_transaciton;
   zcash_transaciton.set_consensus_brach_id(0xc2d6d0b4);
   zcash_transaciton.set_expiry_height(10000);
   zcash_transaciton.set_locktime(1);
   EXPECT_EQ(
       "0xc632e4b84e69afe329c646d3eaa71935a8922f8f2236ba3603c439bdb939db83",
-      ToHex(ZCashSerializer::HashHeader(zcash_transaciton)));
+      ToHex(ZCashV5Serializer::HashHeader(zcash_transaciton)));
 }
 
-TEST(ZCashSerializerTest, HashTxIn) {
-  {
-    ZCashTransaction::TxInput tx_input;
-
-    tx_input.utxo_outpoint.txid = {20,  107, 157, 73,  221, 140, 120, 53,
-                                   244, 58,  55,  220, 160, 120, 126, 62,
-                                   201, 246, 96,  82,  35,  213, 186, 122,
-                                   224, 171, 144, 37,  183, 59,  192, 63};
-    tx_input.utxo_outpoint.index = 3224808575;
-
-    tx_input.utxo_value = 1848924248978091;
-    tx_input.n_sequence = 1290119100;
-    base::HexStringToBytes("ac0000", &tx_input.script_pub_key);
-
-    ASSERT_EQ(
-        "0xb39969f0fba708491e480d80d4d675a1f1552cc7d479d7942f75fa31ad9c6ad6",
-        ToHex(ZCashSerializer::HashTxIn(tx_input)));
-  }
-}
-
-// https://zcashblockexplorer.com/transactions/360d056309669faf0d7937f41581418be5e46b04e2cea0a7b14261d7bff1d825/raw
-TEST(ZCashSerializerTest, TxId_TransparentOnly) {
+TEST(ZCashV5SerializerTest, TxId_TransparentOnly) {
   ZCashTransaction tx;
   tx.set_consensus_brach_id(0xc2d6d0b4);
   tx.set_expiry_height(2283846);
@@ -200,7 +91,7 @@ TEST(ZCashSerializerTest, TxId_TransparentOnly) {
     tx.transparent_part().outputs.push_back(std::move(tx_output));
   }
 
-  auto tx_id = ZCashSerializer::CalculateTxIdDigest(tx);
+  auto tx_id = ZCashV5Serializer::CalculateTxIdDigest(tx);
 
   ASSERT_EQ(
       ToHex(tx_id),
@@ -215,8 +106,7 @@ void AppendMerklePath(OrchardNoteWitness& witness, const std::string& hex) {
 }
 }  // namespace
 
-// https://blockexplorer.one/zcash/testnet/tx/496dfffff625ada462cbc8a733f305fdef1ca584ceb8e7efa5e28e38249b466e
-TEST(ZCashSerializerTest, OrchardToTransparentBundle) {
+TEST(ZCashV5SerializerTest, OrchardToTransparentBundle) {
 #if BUILDFLAG(IS_IOS)
   base::test::ScopedFeatureList feature_list;
   feature_list.InitWithFeaturesAndParameters(
@@ -362,7 +252,7 @@ TEST(ZCashSerializerTest, OrchardToTransparentBundle) {
         input.witness.value(),
         "0x87d063cd07ee4944222b7762840eb94c688bec743fa8bdf7715c8fe29f104c2a");
 
-    tx.orchard_part().inputs.push_back(std::move(input));
+    tx.v5_part().orchard.inputs.push_back(std::move(input));
   }
 
   // Second input.
@@ -485,10 +375,10 @@ TEST(ZCashSerializerTest, OrchardToTransparentBundle) {
         input.witness.value(),
         "0x87d063cd07ee4944222b7762840eb94c688bec743fa8bdf7715c8fe29f104c2a");
 
-    tx.orchard_part().inputs.push_back(std::move(input));
+    tx.v5_part().orchard.inputs.push_back(std::move(input));
   }
 
-  tx.orchard_part().anchor_block_height = 3667180u;
+  tx.v5_part().orchard.anchor_block_height = 3667180u;
 
   // Change.
   {
@@ -498,7 +388,7 @@ TEST(ZCashSerializerTest, OrchardToTransparentBundle) {
     output.addr =
         keyring.GetOrchardRawBytes(*(mojom::ZCashKeyId::New(0u, 1u, 0u)))
             .value();
-    tx.orchard_part().outputs.push_back(std::move(output));
+    tx.v5_part().orchard.outputs.push_back(std::move(output));
   }
 
   {
@@ -517,12 +407,12 @@ TEST(ZCashSerializerTest, OrchardToTransparentBundle) {
                                             mojom::AccountKind::kDerived, 0);
   spends_bundle.fvk = keyring.GetOrchardFullViewKey(0u).value();
   spends_bundle.sk = keyring.GetOrchardSpendingKey(0u).value();
-  for (const auto& input : tx.orchard_part().inputs) {
+  for (const auto& input : tx.v5_part().orchard.inputs) {
     spends_bundle.inputs.push_back(input);
   }
 
   std::vector<OrchardOutput> outputs;
-  for (const auto& output : tx.orchard_part().outputs) {
+  for (const auto& output : tx.v5_part().orchard.outputs) {
     outputs.push_back(output);
   }
 
@@ -543,20 +433,20 @@ TEST(ZCashSerializerTest, OrchardToTransparentBundle) {
       state_tree_bytes.value(), std::move(spends_bundle), std::move(outputs));
   EXPECT_TRUE(orchard_bundle_manager);
 
-  tx.orchard_part().digest = orchard_bundle_manager->GetOrchardDigest();
+  tx.v5_part().orchard.digest = orchard_bundle_manager->GetOrchardDigest();
 
   auto shielded_sighash =
-      ZCashSerializer::CalculateSignatureDigest(tx, std::nullopt);
+      ZCashV5Serializer::CalculateSignatureDigest(tx, std::nullopt);
 
   EXPECT_EQ(
       "0xb7f7080426736db2435919601f9167eada09b626776328fc1613078843588a70",
       ToHex(shielded_sighash));
 
-  auto orchard_raw_part = tx.orchard_part().raw_tx =
+  auto orchard_raw_part = tx.v5_part().orchard.raw_tx =
       orchard_bundle_manager->ApplySignature(shielded_sighash)->GetRawTxBytes();
 
   EXPECT_EQ(
-      ToHex(tx.orchard_part().raw_tx.value()),
+      ToHex(tx.v5_part().orchard.raw_tx.value()),
       "0x0256fca85195acfc96859a47b2cff57aeb6eb71c84f60d2c5bdc37243baf8847a2c988"
       "23d9a80fa5b24c1945bef5ccfa6629ef3ef93dc367efa51a9b19269cb00045e6d46d7fde"
       "fd518b0c3b205d09439f044cba4c24aa3e8172ddb7647a0491367988a8f6d8f0b269fd17"
@@ -1069,14 +959,14 @@ TEST(ZCashSerializerTest, OrchardToTransparentBundle) {
       "f506cf24521f2fa4dd3a675109b59495937853b88951528c564a040a30b9db585d0c837a"
       "9a671f95483b96847e35759173a7dd157aec996dcb6ae91deb8787e12b393e48b96a5522"
       "dfc00d421000e5f7459efae0dff97f3cbd451d03",
-      ToHex(ZCashSerializer::SerializeRawTransaction(tx)));
+      ToHex(ZCashV5Serializer::SerializeRawTransaction(tx)));
 
   EXPECT_EQ(
-      ToHex(ZCashSerializer::CalculateTxIdDigest(tx)),
+      ToHex(ZCashV5Serializer::CalculateTxIdDigest(tx)),
       "0x708a584388071316fc28637726b609daea67911f60195943b26d73260408f7b7");
 }
 
-TEST(ZCashSerializerTest, OrchardBundle) {
+TEST(ZCashV5SerializerTest, OrchardBundle) {
   ZCashKeyring keyring(
       std::vector<uint8_t>({0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
                             0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f,
@@ -1113,11 +1003,11 @@ TEST(ZCashSerializerTest, OrchardBundle) {
                    21,  46,  32,  149, 127, 239, 163, 246, 227, 18,  158,
                    164, 223, 176, 169, 233, 135, 3,   166, 61,  171, 146,
                    149, 137, 214, 220, 81,  201, 112, 249, 53,  179};
-    tx.orchard_part().outputs.push_back(std::move(output));
+    tx.v5_part().orchard.outputs.push_back(std::move(output));
   }
 
   std::vector<OrchardOutput> outputs;
-  for (const auto& output : tx.orchard_part().outputs) {
+  for (const auto& output : tx.v5_part().orchard.outputs) {
     outputs.push_back(OrchardOutput{output.value, output.addr});
   }
 
@@ -1126,14 +1016,15 @@ TEST(ZCashSerializerTest, OrchardBundle) {
       std::vector<uint8_t>() /* Use empty orchard tree */,
       OrchardSpendsBundle(), std::move(outputs));
 
-  tx.orchard_part().digest = orchard_bundle_manager->GetOrchardDigest();
+  tx.v5_part().orchard.digest = orchard_bundle_manager->GetOrchardDigest();
 
   EXPECT_EQ(
       "0x10a9b751104fc2ca413fa45efaab70bcf6eaa3bafe865402a97db549456cd1ec",
-      ToHex(tx.orchard_part().digest.value()));
+      ToHex(tx.v5_part().orchard.digest.value()));
 
-  auto transparent_signature_digest = ZCashSerializer::CalculateSignatureDigest(
-      tx, tx.transparent_part().inputs[0]);
+  auto transparent_signature_digest =
+      ZCashV5Serializer::CalculateSignatureDigest(
+          tx, tx.transparent_part().inputs[0]);
   EXPECT_EQ(
       "0x37df59fbf0244263fe9eae69d44b54f7eda9f6cc6cdb1b72b044e478628fc61a",
       ToHex(transparent_signature_digest));
@@ -1149,17 +1040,17 @@ TEST(ZCashSerializerTest, OrchardBundle) {
       ToHex(tx.transparent_part().inputs[0].script_sig));
 
   auto shielded_sighash =
-      ZCashSerializer::CalculateSignatureDigest(tx, std::nullopt);
+      ZCashV5Serializer::CalculateSignatureDigest(tx, std::nullopt);
 
   EXPECT_EQ(
       "0xb74780ff85431f696720b96f122a000a252ca02774c8e2c6c65656814087de20",
       ToHex(shielded_sighash));
 
-  auto orchard_raw_part = tx.orchard_part().raw_tx =
+  auto orchard_raw_part = tx.v5_part().orchard.raw_tx =
       orchard_bundle_manager->ApplySignature(shielded_sighash)->GetRawTxBytes();
 
   EXPECT_EQ(
-      ToHex(tx.orchard_part().raw_tx.value()),
+      ToHex(tx.v5_part().orchard.raw_tx.value()),
       "0x024330112c31d0cbb0db4f77cefc9036ed215ea86ba2aee9a5de08953a8216282f5136"
       "e62a35a7a471c0a68f7a2b09915993244010af0ce69e863a0cdc68042b103dd62d315080"
       "c0bec76397d7c6ad365d84a6354d07049e484d0240410c589389eeb33ccbb564cc383b01"
@@ -1675,7 +1566,7 @@ TEST(ZCashSerializerTest, OrchardBundle) {
       "05560832e81672cf290adf6db5f622d69ad5a6c5ec468dfb33044b4b56b5e5a51e7b4e30"
       "b9d4a478f44833cd5d4d2a6e03c350ab0fae5a07298a050f34ba6a5606ab261f6e2b0012"
       "46a5b2ab8f5209df22e6eb3cdc41b63ab1f7ce4b8726e8922e",
-      ToHex(ZCashSerializer::SerializeRawTransaction(tx)));
+      ToHex(ZCashV5Serializer::SerializeRawTransaction(tx)));
 }
 
 }  // namespace brave_wallet

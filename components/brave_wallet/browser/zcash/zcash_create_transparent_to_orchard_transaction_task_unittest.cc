@@ -188,20 +188,20 @@ TEST_F(ZCashCreateTransparentToOrchardTransactionTaskTest, TransactionCreated) {
   EXPECT_EQ(tx_result.value().transparent_part().inputs.size(), 2u);
   EXPECT_EQ(tx_result.value().transparent_part().outputs.size(), 1u);
 
-  EXPECT_EQ(tx_result.value().orchard_part().inputs.size(), 0u);
-  EXPECT_EQ(tx_result.value().orchard_part().outputs.size(), 1u);
-  EXPECT_EQ(tx_result.value().orchard_part().anchor_block_height.value(),
+  EXPECT_EQ(tx_result.value().v5_part().orchard.inputs.size(), 0u);
+  EXPECT_EQ(tx_result.value().v5_part().orchard.outputs.size(), 1u);
+  EXPECT_EQ(tx_result.value().v5_part().orchard.anchor_block_height.value(),
             1000u);
 
   EXPECT_EQ(tx_result.value().transparent_part().outputs[0].amount, 10000u);
-  EXPECT_EQ(tx_result.value().orchard_part().outputs[0].value, 100000u);
+  EXPECT_EQ(tx_result.value().v5_part().orchard.outputs[0].value, 100000u);
 
   auto id = mojom::ZCashKeyId::New(account_id()->account_index, 1, 0);
   auto addr = keyring_service().GetZCashAddress(account_id(), *id);
 
   EXPECT_EQ(tx_result.value().transparent_part().outputs[0].address,
             addr->address_string);
-  EXPECT_EQ(tx_result.value().orchard_part().outputs[0].addr,
+  EXPECT_EQ(tx_result.value().v5_part().orchard.outputs[0].addr,
             orchard_part.value());
 }
 
@@ -269,20 +269,20 @@ TEST_F(ZCashCreateTransparentToOrchardTransactionTaskTest,
   EXPECT_EQ(tx_result.value().transparent_part().inputs.size(), 2u);
   EXPECT_EQ(tx_result.value().transparent_part().outputs.size(), 1u);
 
-  EXPECT_EQ(tx_result.value().orchard_part().inputs.size(), 0u);
-  EXPECT_EQ(tx_result.value().orchard_part().outputs.size(), 1u);
-  EXPECT_EQ(tx_result.value().orchard_part().anchor_block_height.value(),
+  EXPECT_EQ(tx_result.value().v5_part().orchard.inputs.size(), 0u);
+  EXPECT_EQ(tx_result.value().v5_part().orchard.outputs.size(), 1u);
+  EXPECT_EQ(tx_result.value().v5_part().orchard.anchor_block_height.value(),
             1000u);
 
   EXPECT_EQ(tx_result.value().transparent_part().outputs[0].amount, 10000u);
-  EXPECT_EQ(tx_result.value().orchard_part().outputs[0].value, 100000u);
+  EXPECT_EQ(tx_result.value().v5_part().orchard.outputs[0].value, 100000u);
 
   auto id = mojom::ZCashKeyId::New(testnet_account_id->account_index, 1, 0);
   auto addr = keyring_service().GetZCashAddress(testnet_account_id, *id);
 
   EXPECT_EQ(tx_result.value().transparent_part().outputs[0].address,
             addr->address_string);
-  EXPECT_EQ(tx_result.value().orchard_part().outputs[0].addr,
+  EXPECT_EQ(tx_result.value().v5_part().orchard.outputs[0].addr,
             orchard_part.value());
 }
 
@@ -338,21 +338,21 @@ TEST_F(ZCashCreateTransparentToOrchardTransactionTaskTest,
   EXPECT_EQ(tx_result.value().transparent_part().inputs.size(), 2u);
   EXPECT_EQ(tx_result.value().transparent_part().outputs.size(), 1u);
 
-  EXPECT_EQ(tx_result.value().orchard_part().inputs.size(), 0u);
-  EXPECT_EQ(tx_result.value().orchard_part().outputs.size(), 1u);
-  EXPECT_EQ(tx_result.value().orchard_part().anchor_block_height.value(),
+  EXPECT_EQ(tx_result.value().v5_part().orchard.inputs.size(), 0u);
+  EXPECT_EQ(tx_result.value().v5_part().orchard.outputs.size(), 1u);
+  EXPECT_EQ(tx_result.value().v5_part().orchard.anchor_block_height.value(),
             1000u);
 
   EXPECT_EQ(tx_result.value().transparent_part().outputs[0].amount,
             30000000000u - 15000000000u - 4 * 5000u);
-  EXPECT_EQ(tx_result.value().orchard_part().outputs[0].value, 15000000000u);
+  EXPECT_EQ(tx_result.value().v5_part().orchard.outputs[0].value, 15000000000u);
 
   auto id = mojom::ZCashKeyId::New(account_id()->account_index, 1, 0);
   auto addr = keyring_service().GetZCashAddress(account_id(), *id);
 
   EXPECT_EQ(tx_result.value().transparent_part().outputs[0].address,
             addr->address_string);
-  EXPECT_EQ(tx_result.value().orchard_part().outputs[0].addr,
+  EXPECT_EQ(tx_result.value().v5_part().orchard.outputs[0].addr,
             orchard_part.value());
 }
 
@@ -509,14 +509,14 @@ TEST_F(ZCashCreateTransparentToOrchardTransactionTaskTest,
   EXPECT_EQ(tx_result.value().transparent_part().inputs.size(), 3u);
   EXPECT_EQ(tx_result.value().transparent_part().outputs.size(), 0u);
 
-  EXPECT_EQ(tx_result.value().orchard_part().inputs.size(), 0u);
-  EXPECT_EQ(tx_result.value().orchard_part().outputs.size(), 1u);
-  EXPECT_EQ(tx_result.value().orchard_part().anchor_block_height.value(),
+  EXPECT_EQ(tx_result.value().v5_part().orchard.inputs.size(), 0u);
+  EXPECT_EQ(tx_result.value().v5_part().orchard.outputs.size(), 1u);
+  EXPECT_EQ(tx_result.value().v5_part().orchard.anchor_block_height.value(),
             1000u);
 
-  EXPECT_EQ(tx_result.value().orchard_part().outputs[0].value, 185000u);
+  EXPECT_EQ(tx_result.value().v5_part().orchard.outputs[0].value, 185000u);
 
-  EXPECT_EQ(tx_result.value().orchard_part().outputs[0].addr,
+  EXPECT_EQ(tx_result.value().v5_part().orchard.outputs[0].addr,
             orchard_part.value());
 }
 
@@ -571,15 +571,15 @@ TEST_F(ZCashCreateTransparentToOrchardTransactionTaskTest,
   EXPECT_EQ(tx_result.value().transparent_part().inputs.size(), 1u);
   EXPECT_EQ(tx_result.value().transparent_part().outputs.size(), 0u);
 
-  EXPECT_EQ(tx_result.value().orchard_part().inputs.size(), 0u);
-  EXPECT_EQ(tx_result.value().orchard_part().outputs.size(), 1u);
-  EXPECT_EQ(tx_result.value().orchard_part().anchor_block_height.value(),
+  EXPECT_EQ(tx_result.value().v5_part().orchard.inputs.size(), 0u);
+  EXPECT_EQ(tx_result.value().v5_part().orchard.outputs.size(), 1u);
+  EXPECT_EQ(tx_result.value().v5_part().orchard.anchor_block_height.value(),
             1000u);
 
-  EXPECT_EQ(tx_result.value().orchard_part().outputs[0].value,
+  EXPECT_EQ(tx_result.value().v5_part().orchard.outputs[0].value,
             10000000000u - 3 * 5000u);
 
-  EXPECT_EQ(tx_result.value().orchard_part().outputs[0].addr,
+  EXPECT_EQ(tx_result.value().v5_part().orchard.outputs[0].addr,
             orchard_part.value());
 }
 
