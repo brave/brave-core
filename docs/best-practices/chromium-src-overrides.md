@@ -302,11 +302,16 @@ patched target's dependency graph, and forces us to patch Brave deps into the
 upstream GN config.
 
 Prefer keeping the override minimal: **forward-declare a free function** (or
-factory) in the override and call it. Put the `#include`, implementation, and
-implementation dependencies together in a dedicated Brave target, then make the
-relevant top-level Brave target depend on that implementation target. The
-override itself should include no Brave header and the upstream target should
-not need a patched dependency on Brave implementation details.
+factory) in the override and call it. Put the hook implementation in a matching
+Brave source file outside `chromium_src` (for example,
+`brave/browser/ui/window_feature_controller/window_feature_controller.cc`) and
+put that source in a dedicated Brave target in the same directory. That target
+owns the Brave `#include` and its implementation dependencies. Finally, make the
+relevant existing top-level Brave target (for example, `//brave/browser:core`)
+depend on the dedicated implementation target so the hook is linked into the
+same binary as the upstream target. The override itself should include no Brave
+header and the upstream target should not need a patched dependency on Brave
+implementation details.
 
 **Wrong: the override includes Brave implementation details and the upstream GN
 file is patched to know about those Brave dependencies.**
