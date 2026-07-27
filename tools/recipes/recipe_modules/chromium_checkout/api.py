@@ -6,6 +6,8 @@
 
 from __future__ import annotations
 
+import contextlib
+import functools
 import logging
 from pathlib import Path
 import re
@@ -23,15 +25,51 @@ WIN_HERMETIC_TOOLCHAIN_BASE_URL = (
     'https://vhemnu34de4lf5cj6bx2wwshyy0egdxk.lambda-url.us-west-'
     '2.on.aws/windows-hermetic-toolchain/')
 
+# The URL for Chromium's googlesource.
+CHROMIUM_URL = 'https://chromium.googlesource.com/chromium/src.git'
+
 
 class ChromiumCheckoutApi(RecipeApi):
     """Clones, syncs, and validates a Chromium `src/` checkout."""
 
+    @contextlib.contextmanager
+    def chromium_layout(self):
+        """Context manager entered before any Chromium checkout operation.
+
+        Responsible for basic environment initialization.
+        """
+        with self.m.context(
+                env=
+            {
+                # CHROME_HEADLESS makes sure that running `gclient
+                # runhooks` and other tools don't require user
+                # interaction.
+                'CHROME_HEADLESS': '1',
+            }):
+            yield
+
+    def _with_chromium_layout(fn):
+        """Decorator applying `chromium_layout()` to a bound
+        `ChromiumCheckoutApi` method.
+
+        INTERNAL: decorates `ChromiumCheckoutApi` member functions only; do
+        not use outside this class/module.
+        """
+
+        @functools.wraps(fn)
+        def inner(self, *args, **kwargs):
+            with self.chromium_layout():
+                return fn(self, *args, **kwargs)
+
+        return inner
+
+    @_with_chromium_layout
     def ensure_checkout(self,
                         *,
                         chromium_src: str | Path | None = None,
                         ref: str | None = None,
-                        git_cache: str | Path | None = None) -> Path:
+                        git_cache: str | Path | None = None,
+                        depth: int | None = None) -> Path:
         """Guarantee a Chromium checkout at *chromium_src*, optionally on *ref*.
 
         Clones a fresh checkout if *chromium_src* is not already a valid
@@ -44,6 +82,9 @@ class ChromiumCheckoutApi(RecipeApi):
             git_cache: Optional explicit git cache directory. When given it sets
                 `GIT_CACHE_PATH`; otherwise an existing `GIT_CACHE_PATH` in the
                 environment is used as-is.
+            depth: Optional history depth for the shared git-cache mirror (see
+                `clone`/`checkout_ref`). `None` fetches full history, matching
+                `git cache populate`'s own default.
 
         Returns:
             The resolved absolute `src/` path.
@@ -56,18 +97,18 @@ class ChromiumCheckoutApi(RecipeApi):
             self.set_git_cache(git_cache or None)
         self.validate_git_cache()
 
-        # depot_tools provides `fetch`/`gclient`, needed whether we clone or
-        # operate on an existing checkout.
+        # depot_tools provides `fetch`/`gclient`/`git cache`, needed whether we
+        # clone or operate on an existing checkout.
         self.m.depot_tools.ensure_on_path()
 
         # No valid checkout yet -> clone one.
         if not self.has_valid_checkout(chromium_src):
             logging.info('Chromium src not found at %s, cloning...',
                          chromium_src)
-            self.clone(chromium_src)
+            self.clone(chromium_src, depth=depth)
 
         if ref:
-            self.checkout_ref(chromium_src, ref)
+            self.checkout_ref(chromium_src, ref, depth=depth)
         return chromium_src
 
     def validate_git_cache(self) -> str:
@@ -154,14 +195,53 @@ class ChromiumCheckoutApi(RecipeApi):
             return False
         return True
 
-    def clone(self, chromium_src: str | Path) -> None:
-        """Clone a fresh Chromium checkout at *chromium_src* via `fetch`."""
+    def clone(self,
+              chromium_src: str | Path,
+              *,
+              depth: int | None = None) -> None:
+        """Clone a fresh Chromium checkout at *chromium_src*.
+
+        Rather than a plain network clone, `git cache populate` fetches into
+        a persistent, shared bare mirror under `GIT_CACHE_PATH` (reused across
+        every checkout and build on this machine, not just this one), and the
+        working checkout is a `--local --shared` clone of it, so re-cloning is
+        disk I/O rather than a repeat of the same network fetch.
+        """
         chromium_src = Path(chromium_src)
         self.m.path.mkdir(chromium_src.parent)
-        self.m.step('fetch chromium', ['fetch', '--nohooks', 'chromium'],
+
+        # Writes the `.gclient` solution file so `gclient sync` (for DEPS, in
+        # `checkout_ref`) knows about the `src` solution once it exists below.
+        self.m.step('gclient config', [
+            'gclient', 'config', '--name', 'src', '--unmanaged', CHROMIUM_URL
+        ],
                     cwd=chromium_src.parent)
 
-    def checkout_ref(self, chromium_src: str | Path, ref: str) -> None:
+        git_cache_path = self.validate_git_cache()
+        mirror_dir = self._populate_git_cache(
+            git_cache_path,
+            CHROMIUM_URL,
+            depth=depth,
+            populate_step='git cache populate',
+            exists_step='git cache exists')
+        # `--local --shared`: a same-volume, hardlink-sharing clone of the
+        # mirror, effectively free compared to a network clone. `origin` ends up
+        # pointing at `mirror_dir` (the clone source), which is exactly what we
+        # want for `checkout_ref`'s subsequent fetches to stay local too.
+        self.m.step('clone from git cache', [
+            'git', 'clone', '--no-checkout', '--local', '--shared', mirror_dir,
+            chromium_src
+        ])
+        self._disable_git_gc(chromium_src)
+        self.m.step('checkout origin/HEAD',
+                    ['git', 'checkout', '--force', 'origin/HEAD', '--'],
+                    cwd=chromium_src)
+
+    def checkout_ref(self,
+                     chromium_src: str | Path,
+                     ref: str,
+                     *,
+                     depth: int | None = None) -> None:
         """Check out *ref* in *chromium_src* and resync dependencies."""
         chromium_src = Path(chromium_src)
         logging.info('Checking out Chromium ref %s', ref)
@@ -171,7 +251,34 @@ class ChromiumCheckoutApi(RecipeApi):
             self.m.env.set('DEPOT_TOOLS_WIN_TOOLCHAIN_BASE_URL',
                            WIN_HERMETIC_TOOLCHAIN_BASE_URL)
 
-        if re.fullmatch(r'\d+\.\d+\.\d+\.\d+', ref):
+        is_tag = bool(re.fullmatch(r'\d+\.\d+\.\d+\.\d+', ref))
+
+        git_cache_path = self.validate_git_cache()
+        # The mirror's default `refs/heads/*` fetch already covers branches;
+        # tags need an explicit ref, since fetching every tag chromium/src has
+        # ever had would be far more expensive than the one we actually want.
+        mirror_dir = self._populate_git_cache(
+            git_cache_path,
+            CHROMIUM_URL,
+            ref=f'refs/tags/{ref}' if is_tag else None,
+            depth=depth,
+            populate_step='git cache populate for ref',
+            exists_step='git cache exists for ref')
+
+        # `chromium_src` may already exist from a prior run (or from before
+        # this checkout started using a git cache mirror at all), so point
+        # `origin` at the mirror unconditionally rather than assuming `clone`
+        # already did it. Everything below then runs as local disk I/O instead
+        # of talking to the real remote.
+        self.m.step('point origin at git cache',
+                    ['git', 'remote', 'set-url', 'origin', mirror_dir],
+                    cwd=chromium_src)
+        self.m.step(
+            'restore origin push url',
+            ['git', 'remote', 'set-url', '--push', 'origin', CHROMIUM_URL],
+            cwd=chromium_src)
+
+        if is_tag:
             # Chromium release tag (e.g. `150.0.7850.1`): fetch it as a tag so
             # it lands at `refs/tags/<ref>` in the local repo.
             self.m.step('fetch tag', [
@@ -191,3 +298,61 @@ class ChromiumCheckoutApi(RecipeApi):
                     cwd=chromium_src)
         self.m.step('gclient sync', ['gclient', 'sync', '--force', '-D'],
                     cwd=chromium_src)
+
+    def _populate_git_cache(self,
+                            git_cache_path: str | Path,
+                            url: str,
+                            *,
+                            ref: str | None = None,
+                            depth: int | None = None,
+                            populate_step: str,
+                            exists_step: str) -> str:
+        """Populate (or refresh) the shared bare mirror for *url*.
+
+        `git cache populate` fetches into a persistent bare mirror under
+        `GIT_CACHE_PATH`, which is reused across every checkout and build on
+        this machine, rather than the working checkout talking to the remote
+        directly. `--no-fetch-tags` skips chromium/src's huge tag history. The
+        mirror's default `refs/heads/*` fetch already covers branches, so a
+        specific tag *ref* is fetched precisely via `--ref` instead of ever
+        needing the full tag catalog.
+
+        Args:
+            git_cache_path: `GIT_CACHE_PATH` (the `--cache-dir` for `git
+                cache`).
+            url: The repo to mirror.
+            ref: An additional fully-qualified ref (e.g. `refs/tags/<tag>`) to
+                fetch into the mirror, beyond its default `refs/heads/*`.
+            depth: Optional history depth; `None` fetches full history.
+            populate_step: Step name for the `git cache populate` call.
+            exists_step: Step name for the `git cache exists` call.
+
+        Returns:
+            The absolute path to the mirror directory.
+        """
+        populate_cmd = [
+            'git', 'cache', 'populate', '--cache-dir', git_cache_path, url,
+            '--reset-fetch-config', '--no-fetch-tags'
+        ]
+        if ref:
+            populate_cmd.extend(['--ref', ref])
+        if depth:
+            populate_cmd.extend(['--depth', str(depth)])
+        self.m.step(populate_step, populate_cmd)
+
+        return self.m.step(exists_step, [
+            'git', 'cache', 'exists', '--quiet', '--cache-dir', git_cache_path,
+            url
+        ],
+                           capture_output=True).stdout.strip()
+
+    def _disable_git_gc(self, chromium_src: str | Path) -> None:
+        """Disable background gc in *chromium_src*.
+
+        A shared, long-lived checkout can have several tools touching it
+        around the same time, and an auto-triggered `git gc` racing with them
+        (or being killed midway) can corrupt the repo.
+        """
+        for key in ('gc.auto', 'gc.autodetach', 'gc.autopacklimit'):
+            self.m.step(f'git config {key}=0', ['git', 'config', key, '0'],
+                        cwd=chromium_src)

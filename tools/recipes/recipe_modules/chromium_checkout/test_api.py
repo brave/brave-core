@@ -17,6 +17,9 @@ from recipe_test_api import RecipeTestApi, TestData
 # Default simulated git cache directory.
 _GIT_CACHE = '/b/cache'
 
+# Default simulated mirror directory `git cache exists` resolves to.
+_MIRROR_DIR = '/b/cache/chromium.googlesource.com-chromium-src'
+
 
 class ChromiumCheckoutTestApi(RecipeTestApi):
     """Seed the simulated state `chromium_checkout.ensure_checkout` requires."""
@@ -28,3 +31,14 @@ class ChromiumCheckoutTestApi(RecipeTestApi):
     def existing_checkout(self) -> TestData:
         """Simulate a valid existing checkout (`chrome/VERSION` present)."""
         return self.m.path.files('brave-browser/src/chrome/VERSION')
+
+    def git_cache_populated(self, mirror_dir: str = _MIRROR_DIR) -> TestData:
+        """Seed `clone`/`checkout_ref`'s `git cache exists` lookups.
+
+        Both `clone` and `checkout_ref` run a `git cache exists` step to
+        resolve the mirror directory `git cache populate` just fetched into;
+        required whenever either of them runs, since the simulated stdout is
+        `None` (not an empty string) unless seeded.
+        """
+        return (self.step_data('git cache exists', stdout=mirror_dir) +
+                self.step_data('git cache exists for ref', stdout=mirror_dir))

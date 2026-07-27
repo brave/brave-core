@@ -25,14 +25,23 @@ def RunSteps(api, properties):
 
 
 def GenTests(api):
-    # No existing checkout -> clone, then check out a release tag.
+    # No existing checkout -> clone via a shared git-cache mirror, then check
+    # out a release tag (also fetched into the mirror first).
     yield api.test(
         'fresh tag',
         api.chromium_checkout.with_git_cache(),
+        api.chromium_checkout.git_cache_populated(),
         api.properties(chromium_ref='151.0.7917.1'),
-        api.post_process(post_process.MustRun, 'fetch chromium'),
+        api.post_process(post_process.MustRun, 'gclient config'),
+        api.post_process(post_process.MustRun, 'git cache populate'),
+        api.post_process(post_process.MustRun, 'clone from git cache'),
+        api.post_process(post_process.MustRun, 'checkout origin/HEAD'),
+        api.post_process(post_process.MustRun, 'git cache populate for ref'),
         api.post_process(post_process.MustRun, 'fetch tag'),
         api.post_process(post_process.MustRun, 'gclient sync'),
+        api.post_process(post_process.StepCommandContains,
+                         'git cache populate for ref',
+                         ['--ref', 'refs/tags/151.0.7917.1']),
         api.post_process(post_process.StatusSuccess),
     )
     # Existing checkout (chrome/VERSION present) + a branch ref -> no clone,
@@ -41,9 +50,12 @@ def GenTests(api):
         'existing branch',
         api.chromium_checkout.with_git_cache(),
         api.chromium_checkout.existing_checkout(),
+        api.chromium_checkout.git_cache_populated(),
         api.properties(chromium_ref='main'),
         api.post_process(post_process.MustRun, 'check chrome/VERSION'),
-        api.post_process(post_process.DoesNotRun, 'fetch chromium'),
+        api.post_process(post_process.DoesNotRun, 'gclient config'),
+        api.post_process(post_process.DoesNotRun, 'clone from git cache'),
+        api.post_process(post_process.MustRun, 'point origin at git cache'),
         api.post_process(post_process.MustRun, 'fetch ref'),
         api.post_process(post_process.StatusSuccess),
     )
@@ -61,6 +73,7 @@ def GenTests(api):
         api.platform.name('win'),
         api.chromium_checkout.with_git_cache(),
         api.chromium_checkout.existing_checkout(),
+        api.chromium_checkout.git_cache_populated(),
         api.properties(chromium_ref='main'),
         api.post_process(post_process.MustRun, 'win toolchain env'),
         api.post_process(
