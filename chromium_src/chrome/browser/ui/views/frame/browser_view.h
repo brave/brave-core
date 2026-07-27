@@ -40,17 +40,7 @@
 #define ShouldDrawTabStrokes virtual ShouldDrawTabStrokes
 #define GetFrameElementInfo virtual GetFrameElementInfo
 
-#if BUILDFLAG(IS_MAC)
-#define CreateMacOverlayView     \
-  CreateMacOverlayView_Unused(); \
-  virtual views::View* CreateMacOverlayView
-#endif
-
 #include <chrome/browser/ui/views/frame/browser_view.h>  // IWYU pragma: export
-
-#if BUILDFLAG(IS_MAC)
-#undef CreateMacOverlayView
-#endif
 
 #undef GetFrameElementInfo
 #undef ReparentTopContainerForEndOfImmersive
