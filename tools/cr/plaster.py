@@ -1700,11 +1700,256 @@ class AddToPublic(_AstGrepRewriter):
         return cls(class_name=body['class_name'], code=body['code'])
 
 
+class AddEnumEntries(_AstGrepRewriter):
+    """Append entries to a C++ enum, keeping its max-value entry last."""
+
+    NAME: Final = 'add_enum_entries'
+    # Two ops share the work (see `apply`); this names the language and a
+    # representative op for the base's helpers.
+    OP_ID: Final = 'cxx.insert_enum_entries_before_max_value'
+    SUMMARY: Final = 'Append entries to an enum, re-pointing its max value.'
+    # Authored in Markdown; `Help` renders it with rich.
+    HELP: Final = r"""
+        Appends entries to an enum.
+
+        This rewriter appends entries at the end of an enum. When `max_value` is
+        provided, the keys are appended just before the max-value entry. If the
+        max-value entry has a value assigned to it, the last appended entry is
+        assigned as the new max-value.
+
+        Fields:
+
+        - `enum_name` — the enum to extend (can be `enum` or `enum class`).
+        - `entries` — the entry to add, or a list of them, in the order they
+          should appear. Each is an entry name, optionally with an `= value` of
+          its own (`kBraveMaxValue = kBraveCardano`).
+        - `max_value` — optional: the name of the entry that must stay last.
+          Omit it for an enum that ends in an ordinary entry.
+
+        The insertion happens exactly once, so `count` is always 1. Declaring a
+        `max_value` that is not the enum's last entry is an error, rather than
+        an insertion in the wrong place.
+
+        Examples:
+
+        ```yaml
+        substitutions:
+          - description: Add the Brave properties, keeping kMaxValue last.
+            add_enum_entries:
+              enum_name: Property
+              max_value: kMaxValue
+              entries:
+                - kAlwaysShowLabel
+                - kOverrideChipColors
+                - kOverrideBorder
+
+          - description: Add ECDSA_SHA384 so downstream switches handle it.
+            add_enum_entries:
+              enum_name: SignatureAlgorithm
+              entries: ECDSA_SHA384
+        ```
+
+        The first entry turns this upstream enum:
+
+        ```cpp
+        enum class Property {
+          // ... upstream entries ...
+          kOverrideBackgroundColor,
+          kMaxValue = kOverrideBackgroundColor,
+        };
+        ```
+
+        into:
+
+        ```cpp
+        enum class Property {
+          // ... upstream entries ...
+          kOverrideBackgroundColor,
+          kAlwaysShowLabel,
+          kOverrideChipColors,
+          kOverrideBorder,
+          kMaxValue = kOverrideBorder,
+        };
+        ```
+    """
+
+    # The two placements: before the declared max-value entry, or after the
+    # enum's current last entry when no `max_value` is declared.
+    _INSERT_BEFORE_MAX_VALUE: Final = 'cxx.insert_enum_entries_before_max_value'
+    _APPEND_AFTER_LAST: Final = 'cxx.append_enum_entries_after_last'
+
+    # One entry as authored: a name, optionally with an `= value`. A comma or a
+    # newline would take the shape of the emitted list out of our hands.
+    _ENTRY_RE: Final = re.compile(r'\w+(?:\s*=\s*[^,\n]+)?')
+
+    # The name leading an entry, as authored or as read back from the source.
+    _ENTRY_NAME_RE: Final = re.compile(r'\s*(\w+)')
+
+    # The separator following an entry, with any spacing before it.
+    _SEPARATOR_RE: Final = re.compile(rb'[ \t]*,')
+
+    @classmethod
+    def validate_count(cls, count: int, description: str) -> None:
+        # The insertion happens once, in whichever placement applies, so a
+        # `count:` other than 1 is meaningless here.
+        if count != 1:
+            raise ValueError(f'{cls.NAME} inserts exactly once and does not '
+                             f'accept a count other than 1 '
+                             f'(in "{description}")')
+
+    def __init__(self, *, enum_name: str, entries: list[str],
+                 max_value: str | None):
+        super().__init__()
+        self._enum_name = enum_name
+        self._entries = entries
+        self._max_value = max_value
+
+    def apply(self,
+              contents: str,
+              *,
+              count: int,
+              description: str,
+              blank_for_parse: bool = False) -> tuple[str, list[str]]:
+        # The insertion happens exactly once, either above the declared
+        # max-value entry or after the enum's current last entry. Both
+        # placements anchor on that last entry, so the new entries take its
+        # column, and a trailing comment in the body never displaces them.
+        del count
+        engine = AstRewriter(RewritersEval.load(),
+                             contents,
+                             blank_for_parse=blank_for_parse)
+        source = contents.encode('utf-8')
+        enum_inputs = {'enum_name': self._enum_name}
+
+        last = engine.first_match(
+            Operation(self._INSERT_BEFORE_MAX_VALUE, enum_inputs))
+        # A missing anchor leaves the run to report the count shortfall.
+        last_text = source[last.start:last.end].decode('utf-8') if last else ''
+        indent = _leading_indent(source, last.start) if last else ''
+
+        if self._max_value is not None:
+            name = self._entry_name(last_text)
+            if last is not None and name != self._max_value:
+                return contents, [
+                    f'Enum `{self._enum_name}` ends in `{name}`, not in the '
+                    f'declared `max_value` entry `{self._max_value}` '
+                    f'(in "{description}")'
+                ]
+            op = Operation(
+                self._INSERT_BEFORE_MAX_VALUE, {
+                    'enum_name': self._enum_name,
+                    'entries': self._entry_block(indent, indent_first=False),
+                    'indent': indent,
+                    'value': self._repointed_entry(last_text),
+                }, MatchExpectation.exactly(1))
+        else:
+            op = Operation(
+                self._APPEND_AFTER_LAST, {
+                    'enum_name': self._enum_name,
+                    'entries': self._entry_block(indent, indent_first=True),
+                    'comma': self._separator(source, last.end) if last else '',
+                }, MatchExpectation.exactly(1))
+        changes = engine.run(op)
+        error = op.expectation.error_for(changes)
+        return engine.content, [error] if error else []
+
+    def _entry_block(self, indent: str, *, indent_first: bool) -> str:
+        """The entries as `<entry>,` lines at `indent`, ready to splice in.
+
+        `indent_first` opens the first line at `indent` too; it is off where the
+        block starts at the column the matched entry already sits at. Escapes
+        backslashes, since the text is spliced into a `re.sub` replacement where
+        a backslash is special.
+        """
+        block = (indent if indent_first else '') + f',\n{indent}'.join(
+            self._entries) + ','
+        return block.replace('\\', '\\\\')
+
+    def _repointed_entry(self, last_text: str) -> str:
+        """The entry the max value is re-pointed at, or '' where it keeps none.
+
+        An entry carrying no value of its own takes the one that follows on from
+        whatever precedes it, so inserting entries above it moves it along by
+        itself, and the op's `when_set` leaves it alone for an empty value. One
+        that does carry a value has to be re-pointed, or it would keep covering
+        the upstream entries alone.
+        """
+        if '=' not in last_text:
+            return ''
+        return self._entry_name(self._entries[-1])
+
+    @classmethod
+    def _entry_name(cls, text: str) -> str | None:
+        """The entry name leading `text`, or None where it holds no name."""
+        match = cls._ENTRY_NAME_RE.match(text)
+        return match.group(1) if match else None
+
+    @classmethod
+    def _is_entry_name(cls, value: object) -> bool:
+        """True where `value` is a bare entry name, e.g. `kMaxValue`."""
+        return isinstance(value, str) and cls._entry_name(value) == value
+
+    @classmethod
+    def _separator(cls, source: bytes, pos: int) -> str:
+        """The separator following the entry ending at `pos`, or '' for none.
+
+        Returned as the source's own text, spacing included, so a placement can
+        fold it into the span it rewrites rather than leave a comma dangling
+        after the appended entries.
+        """
+        match = cls._SEPARATOR_RE.match(source, pos)
+        return match.group().decode('utf-8') if match else ''
+
+    @classmethod
+    def parse(cls, body: object, *, description: str) -> AddEnumEntries:
+        """Validate the body, accepting one entry or a list of them."""
+        if not isinstance(body, dict):
+            raise ValueError(
+                f'"{cls.NAME}" must be a mapping (in "{description}")')
+        allowed = {'enum_name', 'entries', 'max_value'}
+        unknown = sorted(set(body) - allowed)
+        if unknown:
+            raise ValueError(
+                f'Unrecognised {cls.NAME} arg(s): '
+                f'{", ".join(repr(k) for k in unknown)} (in "{description}")')
+        missing = sorted({'enum_name', 'entries'} - set(body))
+        if missing:
+            raise ValueError(f'{cls.NAME} requires arg(s): '
+                             f'{", ".join(missing)} (in "{description}")')
+        if not isinstance(body['enum_name'], str) or not body['enum_name']:
+            raise ValueError(f'{cls.NAME} `enum_name` must be a non-empty '
+                             f'string (in "{description}")')
+        max_value = body.get('max_value')
+        if max_value is not None and not cls._is_entry_name(max_value):
+            raise ValueError(f'{cls.NAME} `max_value` must be an entry name '
+                             f'(in "{description}")')
+        return cls(enum_name=body['enum_name'],
+                   entries=cls._parse_entries(body['entries'], description),
+                   max_value=max_value)
+
+    @classmethod
+    def _parse_entries(cls, value: object, description: str) -> list[str]:
+        """Normalise `entries` to a non-empty list of entries, as authored."""
+        entries = [value] if isinstance(value, str) else value
+        if not (isinstance(entries, list) and entries
+                and all(isinstance(entry, str) for entry in entries)):
+            raise ValueError(
+                f'{cls.NAME} `entries` must be a string or a non-empty list of '
+                f'strings (in "{description}")')
+        for entry in entries:
+            if not cls._ENTRY_RE.fullmatch(entry):
+                raise ValueError(
+                    f'{cls.NAME} `entries` items must be an entry name, '
+                    f'optionally with an `= value`, and carry no trailing '
+                    f'comma: {entry!r} (in "{description}")')
+        return list(entries)
+
+
 _REWRITERS: MappingProxyType[str, type[Rewriter]] = MappingProxyType({
     rewriter.NAME: rewriter
     for rewriter in (Regex, MakeVirtual, AddFriend, DropFinal,
                      PreemptFunctionImpl, AfterFunctionImpl, RenameClass,
-                     AddToProtected, AddToPublic)
+                     AddToProtected, AddToPublic, AddEnumEntries)
 })
 
 

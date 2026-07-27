@@ -283,6 +283,33 @@ inside:
             },
         },
 
+        # The last entry of the enum named `enum_name`: the final `enumerator`
+        # among the ones its body holds. `ofRule` narrows what `nthChild`
+        # counts to entries alone, so a comment sitting after the last entry, or
+        # anywhere else in the body, does not displace it. Anchoring on the
+        # entry, rather than on the body's closing brace, also means the match
+        # never depends on where that brace sits.
+        "cxx.find_last_enum_entry": {
+            "template": """\
+kind: enumerator
+nthChild:
+  position: 1
+  reverse: true
+  ofRule:
+    kind: enumerator
+inside:
+  kind: enumerator_list
+  inside:
+    kind: enum_specifier
+    has:
+      field: name
+      regex: ^{enum_name}$
+""",
+            "result": {
+                "node": "enumerator",
+            },
+        },
+
         # Every identifier-family token whose text is exactly `class_name`:
         # type positions (type_identifier), the `Class::` qualifier
         # (namespace_identifier), the ctor/dtor name and bare uses (identifier),
@@ -497,6 +524,52 @@ regex: ^{class_name}$
             },
             "result": {
                 "node": "field_declaration_list",
+            },
+        },
+
+        # The enum's max-value entry, the last one, which the caller has already
+        # established is the declared one, replaced by `entries` followed by
+        # that entry itself, its name (`\1`) re-emitted so the match's own
+        # spelling carries over. `entries` arrives with its first line
+        # unindented, the match starting at the column the entry already sits
+        # at, and `indent` opens every line after it.
+        # `value` is optional: when the caller names the entry to re-point at,
+        # `when_set` expands it to the value this one now takes, and when it is
+        # empty the placeholder renders as nothing, which is what an entry
+        # carrying no value of its own needs, since it simply follows on from
+        # whatever was inserted above it.
+        "cxx.insert_enum_entries_before_max_value": {
+            "matcher": "cxx.find_last_enum_entry",
+            "inputs": ["enum_name", "entries", "indent", "value"],
+            "when_set": {
+                "value": " = {value}",
+            },
+            "replace": {
+                "re_pattern": "(?s)^(\\w+).*$",
+                "replace": "{entries}\\n{indent}\\1{value}",
+            },
+            "result": {
+                "node": "enumerator",
+            },
+        },
+
+        # `entries` appended after the enum's last entry, which is re-emitted
+        # (`\1`) with the separator the new entries now require. `comma` is the
+        # separator the source already has, if any: it is folded into the
+        # rewritten span so it cannot be left dangling after the appended
+        # entries, and is empty for a last entry that carries none (the closing
+        # brace allows it). `entries` arrives fully indented, as it opens a
+        # line of its own.
+        "cxx.append_enum_entries_after_last": {
+            "matcher": "cxx.find_last_enum_entry",
+            "inputs": ["enum_name", "entries", "comma"],
+            "replace": {
+                "consume_after": "{comma}",
+                "re_pattern": "(?s)^(.*)$",
+                "replace": "\\1,\\n{entries}",
+            },
+            "result": {
+                "node": "enumerator",
             },
         },
     },
