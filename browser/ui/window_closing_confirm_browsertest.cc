@@ -3,7 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "base/byte_size.h"
 #include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/run_loop.h"
@@ -12,7 +11,6 @@
 #include "brave/browser/ui/views/window_closing_confirm_dialog_view.h"
 #include "brave/components/constants/pref_names.h"
 #include "chrome/browser/download/download_manager_utils.h"
-#include "chrome/browser/download/download_prefs.h"
 #include "chrome/browser/lifetime/application_lifetime_desktop.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -30,7 +28,7 @@
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/download_test_observer.h"
-#include "content/public/test/test_download_http_response.h"
+#include "content/public/test/slow_download_http_response.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "ui/views/widget/widget_observer.h"
 
@@ -64,6 +62,11 @@ class WindowClosingConfirmBrowserTest : public InProcessBrowserTest,
     PrefService* prefs = browser()->GetProfile()->GetPrefs();
     // Enabled by default.
     EXPECT_TRUE(prefs->GetBoolean(kEnableWindowClosingConfirm));
+
+    closing_all_browsers_subscription_ =
+        chrome::AddClosingAllBrowsersCallback(base::BindRepeating(
+            &WindowClosingConfirmBrowserTest::OnClosingAllBrowserCallback,
+            base::Unretained(this)));
 
     SetDialogCreationCallback();
   }
@@ -108,14 +111,21 @@ class WindowClosingConfirmBrowserTest : public InProcessBrowserTest,
     }
   }
 
+  void ResetClosingAllBrowsersNotified() {
+    closing_all_browsers_notified_ = false;
+  }
+
   void SetClosingBrowserCallbackAndWait() {
-    run_loop_ = std::make_unique<base::RunLoop>();
-    auto subscription =
-        chrome::AddClosingAllBrowsersCallback(base::BindRepeating(
-            &WindowClosingConfirmBrowserTest::OnClosingAllBrowserCallback,
-            base::Unretained(this)));
-    run_loop_->Run();
-    run_loop_.reset();
+    // The notification this waits for may have already arrived (see
+    // ResetClosingAllBrowsersNotified()'s comment), in which case there's
+    // nothing left to wait for.
+    if (closing_all_browsers_notified_) {
+      closing_all_browsers_notified_ = false;
+      return;
+    }
+    closing_all_browsers_run_loop_ = std::make_unique<base::RunLoop>();
+    closing_all_browsers_run_loop_->Run();
+    closing_all_browsers_run_loop_.reset();
   }
 
   // views::WidgetObserver:
@@ -133,8 +143,10 @@ class WindowClosingConfirmBrowserTest : public InProcessBrowserTest,
 
   // To detect the timing when BeforeUnloadFired() is called.
   void OnClosingAllBrowserCallback(bool closing) {
-    if (run_loop_)
-      run_loop_->Quit();
+    closing_all_browsers_notified_ = true;
+    if (closing_all_browsers_run_loop_) {
+      closing_all_browsers_run_loop_->Quit();
+    }
   }
 
   // Create a DownloadTestObserverInProgress that will wait for the
@@ -151,27 +163,16 @@ class WindowClosingConfirmBrowserTest : public InProcessBrowserTest,
     return browser->GetProfile()->GetDownloadManager();
   }
 
-  DownloadPrefs* GetDownloadPrefs(Browser* browser) {
-    return DownloadPrefs::FromDownloadManager(
-        DownloadManagerForBrowser(browser));
-  }
-
-  base::FilePath GetDownloadDirectory(Browser* browser) {
-    return GetDownloadPrefs(browser)->DownloadPath();
-  }
-
-  content::TestDownloadResponseHandler* test_response_handler() {
-    return &test_response_handler_;
-  }
-
   void SetDownloadConfirmReturn(bool allow) {
     BraveBrowserView::SetDownloadConfirmReturnForTesting(allow);
   }
 
-  content::TestDownloadResponseHandler test_response_handler_;
   bool closing_confirm_dialog_created_ = false;
   bool allow_to_close_ = false;
   std::unique_ptr<base::RunLoop> run_loop_;
+  base::CallbackListSubscription closing_all_browsers_subscription_;
+  bool closing_all_browsers_notified_ = false;
+  std::unique_ptr<base::RunLoop> closing_all_browsers_run_loop_;
 };
 
 IN_PROC_BROWSER_TEST_F(WindowClosingConfirmBrowserTest, TestWithTwoNTPTabs) {
@@ -249,6 +250,7 @@ IN_PROC_BROWSER_TEST_F(WindowClosingConfirmBrowserTest,
 
   // Check beforeunload dialog is launched after allowed to close window.
   allow_to_close_ = true;
+  ResetClosingAllBrowsersNotified();
   chrome::CloseWindow(brave_browser);
   EXPECT_TRUE(closing_confirm_dialog_created_);
   ASSERT_NO_FATAL_FAILURE(CancelClose());
@@ -280,23 +282,20 @@ IN_PROC_BROWSER_TEST_F(WindowClosingConfirmBrowserTest, TestWithDownload) {
   brave_browser->GetProfile()->GetPrefs()->SetBoolean(prefs::kPromptForDownload,
                                                       false);
 
-  test_response_handler()->RegisterToTestServer(embedded_test_server());
+  // Use a response that deliberately never completes (rather than a real, large
+  // file download) so the download is guaranteed to still be IN_PROGRESS for as
+  // long as this test needs it, regardless of how slow or loaded the machine
+  // running the test is. A real, finite download is racy here: it can finish in
+  // the background while this test works through its sequence of close
+  // attempts, especially under load, silently turning the "close while
+  // downloading" assertions below into a no-op instead of an actual test of the
+  // blocking behavior.
+  embedded_test_server()->RegisterRequestHandler(base::BindRepeating(
+      &content::SlowDownloadHttpResponse::HandleSlowDownloadRequest));
   ASSERT_TRUE(embedded_test_server()->Start());
-  GURL url = embedded_test_server()->GetURL("/large_file");
 
-  content::TestDownloadHttpResponse::Parameters parameters;
-  parameters.size = base::MiBU(32).InBytes(); /* 32MB file. */
-  content::TestDownloadHttpResponse::StartServing(parameters, url);
-
-  // Ensure that we have enough disk space to download the large file.
-  {
-    base::ScopedAllowBlockingForTesting allow_blocking;
-    std::optional<int64_t> free_space = base::SysInfo::AmountOfFreeDiskSpace(
-        GetDownloadDirectory(brave_browser));
-    ASSERT_TRUE(free_space.has_value());
-    ASSERT_LE(parameters.size, *free_space)
-        << "Not enough disk space to download. Got " << *free_space;
-  }
+  GURL url = embedded_test_server()->GetURL(
+      content::SlowDownloadHttpResponse::kKnownSizeUrl);
 
   // Make browser has two tabs.
   ui_test_utils::NavigateToURLWithDisposition(
@@ -330,6 +329,7 @@ IN_PROC_BROWSER_TEST_F(WindowClosingConfirmBrowserTest, TestWithDownload) {
   allow_to_close_ = true;
   closing_confirm_dialog_created_ = false;
   SetDownloadConfirmReturn(false);
+  ResetClosingAllBrowsersNotified();
   chrome::CloseWindow(brave_browser);
   EXPECT_TRUE(closing_confirm_dialog_created_);
   WaitTillConfirmDialogClosed();
