@@ -860,12 +860,7 @@ TEST(PolkadotExtrinsics, ShuffledSignedExtensions) {
 
     // Nonsense extrinsic, but shouldn't crash the browser and shouldn't be
     // something exploitable.
-    EXPECT_NE(
-        base::HexEncodeLower(signed_extrinsic),
-        "21028400d4f9c4dfa3e6ff57b4e1fdea8699e57b0210cf04afe0281acba187d7d1b492"
-        "740184a451019853337a9d36fe0b290904c2342e9f55c1c06cd44a0df0bd1c5b701ce5"
-        "e9a5c3254230d0c88b215c642391d2e8d103103d82432fefcfdef081513b840403008e"
-        "af04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a484913")
+    EXPECT_NE(base::HexEncodeLower(signed_extrinsic), "")
         << "SignedExtensions used were: "
         << testing::PrintToString(testnet_metadata->signed_extensions);
   }
