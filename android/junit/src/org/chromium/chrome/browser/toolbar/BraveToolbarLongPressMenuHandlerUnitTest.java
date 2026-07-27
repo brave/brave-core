@@ -43,6 +43,7 @@ import org.chromium.ui.listmenu.ListMenuItemProperties;
 import org.chromium.ui.modelutil.MVCListAdapter.ModelList;
 import org.chromium.ui.widget.ViewRectProvider;
 import org.chromium.url.GURL;
+import org.chromium.url.JUnitTestGURLs;
 
 import java.util.function.BooleanSupplier;
 
@@ -96,6 +97,10 @@ public final class BraveToolbarLongPressMenuHandlerUnitTest {
         verify(mActivityLifecycleDispatcher).register(mToolbarLongPressMenuHandler);
     }
 
+    /**
+     * Without a URL to copy - which is what the address bar reports on the new tab page - the menu
+     * is left with the "Move address bar to the bottom/top" item only.
+     */
     @Test
     @SmallTest
     @Restriction({DeviceFormFactor.PHONE})
@@ -109,5 +114,25 @@ public final class BraveToolbarLongPressMenuHandlerUnitTest {
         assertEquals(
                 ToolbarLongPressMenuHandler.MenuItemType.MOVE_ADDRESS_BAR_TO,
                 list.get(0).model.get(ListMenuItemProperties.MENU_ITEM_ID));
+    }
+
+    /** "Copy link" must still be offered when the address bar does have a URL to copy. */
+    @Test
+    @SmallTest
+    @Restriction({DeviceFormFactor.PHONE})
+    public void testbuildMenuItemsWithUrl() {
+        mUrl = JUnitTestGURLs.EXAMPLE_URL;
+
+        ModelList list = mToolbarLongPressMenuHandler.buildMenuItems(true);
+
+        assertEquals(2, list.size());
+        assertEquals(
+                ToolbarLongPressMenuHandler.MenuItemType.MOVE_ADDRESS_BAR_TO,
+                list.get(0).model.get(ListMenuItemProperties.MENU_ITEM_ID));
+        assertEquals(
+                R.string.toolbar_copy_link, list.get(1).model.get(ListMenuItemProperties.TITLE_ID));
+        assertEquals(
+                ToolbarLongPressMenuHandler.MenuItemType.COPY_LINK,
+                list.get(1).model.get(ListMenuItemProperties.MENU_ITEM_ID));
     }
 }
