@@ -146,8 +146,7 @@ class BraveProxyingWebSocketTest : public testing::Test {
               base::BindLambdaForTesting(
                   [&](int result,
                       const std::optional<net::HttpRequestHeaders>& headers,
-                      std::optional<base::DictValue>
-                          extended_net_log_events) {
+                      std::optional<base::DictValue> extended_net_log_events) {
                     EXPECT_EQ(net::OK, result);
                     ASSERT_TRUE(headers);
                     *final_headers = *headers;
