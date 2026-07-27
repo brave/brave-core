@@ -12,7 +12,6 @@
 #include "base/check_op.h"
 #include "base/functional/bind.h"
 #include "base/memory/scoped_refptr.h"
-#include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "brave/browser/net/brave_request_handler.h"
 #include "brave/browser/net/url_context.h"
 #include "brave/components/constants/network_constants.h"
@@ -21,6 +20,7 @@
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/render_process_host.h"
 #include "net/cookies/site_for_cookies.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 template <template <typename> class T>
 BraveProxyingWebSocket<T>::BraveProxyingWebSocket(
