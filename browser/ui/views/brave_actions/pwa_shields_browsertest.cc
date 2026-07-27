@@ -55,12 +55,12 @@ IN_PROC_BROWSER_TEST_F(PwaShieldsBrowserTest,
 // Regression test for https://github.com/brave/brave-browser/issues/57349:
 // macOS immersive fullscreen reparents the web app toolbar (moving it into a
 // separate overlay widget), which re-triggers
-// WebAppToolbarButtonContainer::AddedToWidget(). The duplicate-add guard
-// relies on BraveBrowserView::GetPwaShieldsToolbarButton(), which returns a
-// weak pointer cached directly on BraveBrowserView (rather than a
-// BrowserElementsViews/ElementTracker lookup, which is keyed to the
-// *original* widget's context and wouldn't find a button that moved along
-// with the container into a different one), so it must survive reparenting.
+// WebAppToolbarButtonContainer::AddedToWidget(). In this case, we should not
+// add multiple PWA Shields toolbar buttons to the web app window. Note that
+// we are using the same id for the Shield page action view and toolbar button,
+// so the number of views retrieved by BrowserElementsViews::GetAllViews()
+// should remain 2 (1 for the page action view, 1 for the toolbar button) even
+// after the reparenting.
 IN_PROC_BROWSER_TEST_F(PwaShieldsBrowserTest,
                        ShieldsButtonNotDuplicatedWhenToolbarReparented) {
   const webapps::AppId app_id = InstallPWA(GetInstallableAppURL());

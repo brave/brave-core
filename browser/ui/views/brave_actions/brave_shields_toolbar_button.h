@@ -42,10 +42,6 @@ class BraveShieldsToolbarButton : public ToolbarButton {
 
   views::Widget* GetBubbleWidget();
 
-  base::WeakPtr<BraveShieldsToolbarButton> GetWeakPtr() {
-    return weak_ptr_factory_.GetWeakPtr();
-  }
-
   // ToolbarButton
   void OnThemeChanged() override;
   std::u16string GetRenderedTooltipText(const gfx::Point& p) const override;

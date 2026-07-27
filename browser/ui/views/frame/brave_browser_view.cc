@@ -1132,19 +1132,15 @@ void BraveBrowserView::OnSidebarControlViewVisibilityChanged() {
   }
 }
 
-// Cached directly by SetPwaShieldsToolbarButton() rather than looked up via
-// BrowserElementsViews, since macOS immersive fullscreen reparents the button
-// into a separate overlay widget with its own ui::ElementContext, which an
-// ElementTracker-based lookup can't see across.
 BraveShieldsToolbarButton* BraveBrowserView::GetPwaShieldsToolbarButton() {
   return pwa_shields_toolbar_button_.get();
 }
 
 void BraveBrowserView::SetPwaShieldsToolbarButton(
-    base::WeakPtr<BraveShieldsToolbarButton> button) {
+    BraveShieldsToolbarButton* button) {
   CHECK(!pwa_shields_toolbar_button_)
       << "PWA Shields toolbar button should only be set once";
-  pwa_shields_toolbar_button_ = std::move(button);
+  pwa_shields_toolbar_button_ = button;
 }
 
 void BraveBrowserView::OnActiveTabChanged(content::WebContents* old_contents,

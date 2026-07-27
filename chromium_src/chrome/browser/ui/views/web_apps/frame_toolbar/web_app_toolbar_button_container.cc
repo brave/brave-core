@@ -58,6 +58,7 @@ void MaybeAddPwaShieldsToolbarButton(WebAppToolbarButtonContainer* container) {
   }
 
   if (BraveBrowserView::From(base_browser_view)->GetPwaShieldsToolbarButton()) {
+    // Already added a PWA Shields toolbar button for this window.
     return;
   }
 
@@ -88,16 +89,14 @@ void MaybeAddPwaShieldsToolbarButton(WebAppToolbarButtonContainer* container) {
       base::BindRepeating(&WebUIBubbleManager::Create<ShieldsPanelUI>));
   ConfigureWebAppToolbarButton(button.get(), frame_toolbar);
 
-  raw_ptr<BraveShieldsToolbarButton> ptr = button.get();
-  container->AddChildViewAt(std::move(button), insert_index);
+  auto* ptr = container->AddChildViewAt(std::move(button), insert_index);
   views::SetHitTestComponent(ptr, static_cast<int>(HTCLIENT));
   ptr->SetProperty(
       views::kFlexBehaviorKey,
       views::FlexSpecification(views::LayoutOrientation::kHorizontal,
                                views::MinimumFlexSizeRule::kPreferredSnapToZero)
           .WithWeight(0));
-  BraveBrowserView::From(base_browser_view)
-      ->SetPwaShieldsToolbarButton(ptr->GetWeakPtr());
+  BraveBrowserView::From(base_browser_view)->SetPwaShieldsToolbarButton(ptr);
 }
 
 }  // namespace

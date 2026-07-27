@@ -204,13 +204,11 @@ class BraveBrowserView : public BrowserView,
   // returns valid pointer only when it's web app browser.
   BraveShieldsToolbarButton* GetPwaShieldsToolbarButton();
 
-  // Called once, when the button is first created for this window. Cached
-  // directly here (rather than looked up via BrowserElementsViews) because
-  // macOS immersive fullscreen reparents the button into a separate overlay
-  // widget with its own ui::ElementContext, which an ElementTracker-based
-  // lookup can't see across.
-  void SetPwaShieldsToolbarButton(
-      base::WeakPtr<BraveShieldsToolbarButton> button);
+  // Should be called once, when the button is first created for this window.
+  // Cached directly here, in order to keep track of the button regardless of
+  // its current widget. (e.g. in macOS immersive fullscreen, the button is
+  // reparented into other widget)
+  void SetPwaShieldsToolbarButton(BraveShieldsToolbarButton* button);
 #endif
 
  private:
@@ -322,7 +320,7 @@ class BraveBrowserView : public BrowserView,
   // Caches the PWA Shields toolbar button for this window. Note that this
   // button could belong to overlay widget in macOS fullscreen. That's why we
   // cache it here instead of looking it up via BrowserElementsViews.
-  base::WeakPtr<BraveShieldsToolbarButton> pwa_shields_toolbar_button_;
+  raw_ptr<BraveShieldsToolbarButton> pwa_shields_toolbar_button_;
 #endif
 
 #if defined(USE_AURA)
