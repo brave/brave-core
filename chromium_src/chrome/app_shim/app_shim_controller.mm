@@ -15,8 +15,15 @@
 
 namespace {
 
-// Appends URLs on the command line that are tagged with `kTestLaunchUrlPrefix`
-// to `launch_urls`.
+// Upstream launches the app shim in tests via LaunchServices. This leaks
+// processes and eventually clogs up sandboxd - see the top-level comment in
+// app_shim_launch.mm. To work around this, we instead launch the app shim via
+// fork/exec. This has the following limitation: A shim spawned with
+// LaunchServices receives its launch URLs through -application:openURLs:. A
+// shim launched via fork/exec does not. We work around this by passing the
+// launch URLs as command line arguments. The function below receives them and
+// passes them to the upstream implementation, as if they were received through
+// -application:openURLs:.
 void AppendTestLaunchUrls(std::vector<GURL>& launch_urls) {
   const std::string_view prefix(app_mode::kTestLaunchUrlPrefix);
   for (const auto& arg : base::CommandLine::ForCurrentProcess()->GetArgs()) {
