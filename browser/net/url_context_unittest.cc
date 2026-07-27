@@ -78,8 +78,8 @@ TEST(BraveRequestInfoTest, RequestContextOverridesFactoryContext) {
 
   EXPECT_EQ(request_initiator.GetURL(), ctx->initiator_url());
   EXPECT_EQ(request_top_frame_origin.GetURL(), ctx->tab_origin());
-  EXPECT_TRUE(ctx->network_anonymization_key().IsEqualForTesting(
-      request.trusted_params->isolation_info.network_anonymization_key()));
+  EXPECT_EQ(ctx->network_anonymization_key(),
+            request.trusted_params->isolation_info.network_anonymization_key());
 }
 
 TEST(BraveRequestInfoTest, NonWorkerFactoryTypeIgnoresFactoryContextFallback) {
