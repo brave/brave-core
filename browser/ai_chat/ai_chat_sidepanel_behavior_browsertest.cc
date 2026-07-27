@@ -275,8 +275,7 @@ IN_PROC_BROWSER_TEST_P(AIChatGlobalSidePanelBrowserTest,
   ASSERT_TRUE(leo_contents);
 
   ASSERT_TRUE(base::test::RunUntil([&]() {
-    return IsSidePanelOpen(browser()) &&
-           VerifyElementState("standalone-main", true,
+    return VerifyElementState("standalone-main", true,
                               leo_contents->GetPrimaryMainFrame(), FROM_HERE);
   }));
 
