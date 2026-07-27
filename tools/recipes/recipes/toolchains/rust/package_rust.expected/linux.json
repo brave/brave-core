@@ -206,6 +206,8 @@
     "cmd": [
       "git",
       "fetch",
+      "--depth",
+      "1",
       "--no-tags",
       "origin",
       "refs/tags/151.0.7917.1:refs/tags/151.0.7917.1"
