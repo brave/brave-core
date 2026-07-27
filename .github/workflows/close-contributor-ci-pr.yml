@@ -47,22 +47,20 @@ jobs:
             }
 
             const ciTitle = `CI run for contributor PR #${sourcePr.number}`;
-            const matches = pullRequests.filter((pr) =>
+            const ciPr = pullRequests.find((pr) =>
               pr.number !== sourcePr.number &&
               pr.isDraft &&
               pr.title === ciTitle &&
               pr.body?.includes(`proposed in PR #${sourcePr.number}`));
-            if (matches.length === 0) {
+            if (!ciPr) {
               core.info(`No open contributor CI PR found for PR #${sourcePr.number}.`);
               return;
             }
 
-            for (const pr of matches) {
-              core.info(`Closing associated contributor CI PR #${pr.number}: ${pr.url}`);
-              await github.rest.pulls.update({
-                owner,
-                repo,
-                pull_number: pr.number,
-                state: 'closed',
-              });
-            }
+            core.info(`Closing associated contributor CI PR #${ciPr.number}: ${ciPr.url}`);
+            await github.rest.pulls.update({
+              owner,
+              repo,
+              pull_number: ciPr.number,
+              state: 'closed',
+            });
