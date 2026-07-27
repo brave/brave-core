@@ -128,9 +128,6 @@ extra_kv = { allow_unsafe = false }
 [crate.addchain]
 extra_kv = { allow_unsafe = false }
 
-[crate.adler2]
-extra_kv = { allow_unsafe = false }
-
 [crate.adss]
 license_files = ['LICENSE']
 extra_kv = { allow_unsafe = false }
@@ -211,14 +208,8 @@ extra_kv = { allow_unsafe = false }
 [crate.byte-slice-cast]
 extra_kv = { allow_unsafe = true }
 
-[crate.bytemuck]
-extra_kv = { allow_unsafe = true }
-
 [crate.byteorder]
 extra_kv = { allow_unsafe = true }
-
-[crate.byteorder-lite]
-extra_kv = { allow_unsafe = false }
 
 [crate.bytes]
 license_files = ['../../../../../../third_party/rust/chromium_crates_io/vendor/bytes-v1/LICENSE']
@@ -385,12 +376,6 @@ extra_kv = { allow_unsafe = true }
 license_files = ['../../../../../../third_party/rust/chromium_crates_io/vendor/equivalent-v1/LICENSE-APACHE']
 extra_kv = { allow_unsafe = false }
 
-[crate.fax]
-extra_kv = { allow_unsafe = false }
-
-[crate.fdeflate]
-extra_kv = { allow_unsafe = false }
-
 [crate.feed-rs]
 extra_kv = { allow_unsafe = false }
 
@@ -406,9 +391,6 @@ extra_kv = { allow_unsafe = false }
 
 [crate.flatbuffers]
 extra_kv = { allow_unsafe = true, allow_unstable_features = ["trusted_len"] }
-
-[crate.flate2]
-extra_kv = { allow_unsafe = true }
 
 [crate.fnv]
 extra_kv = { allow_unsafe = false }
@@ -622,12 +604,6 @@ extra_kv = { allow_unsafe = true }
 [crate.mime]
 extra_kv = { allow_unsafe = false }
 
-[crate.miniz_oxide]
-extra_kv = { allow_unsafe = false }
-
-[crate.moxcms]
-extra_kv = { allow_unsafe = true }
-
 [crate.multibase]
 extra_kv = { allow_unsafe = false }
 
@@ -734,9 +710,6 @@ extra_kv = { allow_unsafe = true }
 [crate.pin-utils]
 extra_kv = { allow_unsafe = false }
 
-[crate.png]
-extra_kv = { allow_unsafe = false }
-
 [crate.poly1305]
 extra_kv = { raw_gn = '''
 if (target_cpu == "x64" || target_cpu == "x86") {
@@ -765,12 +738,6 @@ extra_kv = { allow_unsafe = false }
 
 [crate.proc-macro2]
 extra_kv = { allow_unsafe = true }
-
-[crate.pxfm]
-extra_kv = { allow_unsafe = true }
-
-[crate.quick-error]
-extra_kv = { allow_unsafe = false }
 
 [crate.quick-xml]
 extra_kv = { allow_unsafe = false }
@@ -884,9 +851,6 @@ extra_kv = { allow_unsafe = true }
 
 [crate.shardtree]
 extra_kv = { allow_unsafe = false }
-
-[crate.simd-adler32]
-extra_kv = { allow_unsafe = true }
 
 [crate.sinsemilla]
 extra_kv = { allow_unsafe = false }
@@ -1044,9 +1008,6 @@ extra_build_script_input_roots = [ "entities.rs", "local_names.txt" ]
 build_script_outputs = [ "generated.rs", "named_entities.rs" ]
 extra_kv = { allow_unsafe = false }
 
-[crate.weezl]
-extra_kv = { allow_unsafe = false }
-
 [crate.windows-targets]
 license_files = ['../../../../../common/licenses/Apache-2.0']
 extra_kv = { allow_unsafe = false }
@@ -1108,4 +1069,3 @@ extra_kv = { allow_unsafe = false }
 
 [crate.zmij]
 extra_kv = { allow_unsafe = true }
-
