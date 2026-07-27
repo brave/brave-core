@@ -22,7 +22,7 @@ jobs:
                 repository(owner: $owner, name: $repo) {
                   object(oid: $oid) {
                     ... on Commit {
-                      associatedPullRequests(first: 10) {
+                      associatedPullRequests(first: 3) {
                         nodes {
                           number
                           merged
@@ -39,6 +39,12 @@ jobs:
 
             const pullRequests =
               result.repository.object?.associatedPullRequests?.nodes ?? [];
+            if (pullRequests.length !== 2) {
+              core.info(
+                `Expected 2 pull requests for push ${context.sha}; found ${pullRequests.length}.`);
+              return;
+            }
+
             const sourcePr = pullRequests.find((pr) => pr.merged);
             if (!sourcePr) {
               core.info(`No merged pull request found for push ${context.sha}.`);
