@@ -658,6 +658,9 @@ export const transactionEndpoints = ({
             sendingMaxAmount: payload.sendingMaxAmount,
             memo: payload.memo,
             useShieldedPool: payload.useShieldedPool,
+            zcashTokenType: payload.useShieldedPool
+              ? BraveWallet.ZCashTokenType.kOrchard
+              : BraveWallet.ZCashTokenType.kTransparent,
             swapInfo: payload.swapInfo,
           }
 
