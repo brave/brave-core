@@ -115,7 +115,11 @@ export const addressEndpoints = ({
           const { txType, error } =
             await api.zcashWalletService.getTransactionType(
               arg.accountId,
-              arg.useShieldedPool,
+              arg.useShieldedPool
+                ? BraveWallet.ZCashTokenType.kOrchard
+                : BraveWallet.ZCashTokenType.kTransparent,
+              false, // ironwoodActive: Ironwood send routing is not yet
+              // surfaced in the UI.
               arg.address,
             )
           return {

@@ -9,7 +9,6 @@
 #include <string>
 #include <vector>
 
-#include "base/check.h"
 #include "base/check_op.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_transaction.h"
@@ -17,40 +16,62 @@
 
 namespace brave_wallet {
 namespace {
-// TODO(cypt4): This assumes a v5 transaction. v6 (Ironwood) meta must branch on
-// tx.is_v6() and read v6_part().legacy_orchard / .ironwood.
+
+void AppendShieldedPool(const std::string& chain_id,
+                        const ZCashTransaction::ShieldedPool& pool_data,
+                        mojom::ZCashTokenType pool_tag,
+                        std::vector<mojom::ZecTxInputPtr>& inputs,
+                        std::vector<mojom::ZecTxOutputPtr>& outputs) {
+  const bool testnet = chain_id == mojom::kZCashTestnet;
+  for (const auto& in : pool_data.inputs) {
+    auto ua = GetOrchardUnifiedAddress(in.note.addr, testnet);
+    if (ua) {
+      auto z = mojom::ZecTxInput::New(*ua, in.note.amount, pool_tag);
+      inputs.push_back(std::move(z));
+    }
+  }
+  for (const auto& out : pool_data.outputs) {
+    auto ua = GetOrchardUnifiedAddress(out.addr, testnet);
+    if (ua) {
+      auto z = mojom::ZecTxOutput::New(*ua, out.value, pool_tag);
+      outputs.push_back(std::move(z));
+    }
+  }
+}
+
 mojom::ZecTxDataPtr ToZecTxData(const std::string& chain_id,
                                 ZCashTransaction& tx) {
   std::vector<mojom::ZecTxInputPtr> mojom_inputs;
+  std::vector<mojom::ZecTxOutputPtr> mojom_outputs;
+
+  // Transparent part is version-agnostic.
   for (auto& input : tx.transparent_part().inputs) {
     mojom_inputs.push_back(
-        mojom::ZecTxInput::New(input.utxo_address, input.utxo_value));
+        mojom::ZecTxInput::New(input.utxo_address, input.utxo_value,
+                               mojom::ZCashTokenType::kTransparent));
   }
-  for (auto& input : tx.v5_part().orchard.inputs) {
-    auto orchard_unified_addr = GetOrchardUnifiedAddress(
-        input.note.addr, chain_id == mojom::kZCashTestnet);
-    if (orchard_unified_addr) {
-      mojom_inputs.push_back(
-          mojom::ZecTxInput::New(*orchard_unified_addr, input.note.amount));
-    }
-  }
-
-  std::vector<mojom::ZecTxOutputPtr> mojom_outputs;
   for (auto& output : tx.transparent_part().outputs) {
-    mojom_outputs.push_back(
-        mojom::ZecTxOutput::New(output.address, output.amount));
-  }
-  for (auto& output : tx.v5_part().orchard.outputs) {
-    auto orchard_unified_addr =
-        GetOrchardUnifiedAddress(output.addr, chain_id == mojom::kZCashTestnet);
-    if (orchard_unified_addr) {
-      mojom_outputs.push_back(
-          mojom::ZecTxOutput::New(*orchard_unified_addr, output.value));
-    }
+    mojom_outputs.push_back(mojom::ZecTxOutput::New(
+        output.address, output.amount, mojom::ZCashTokenType::kTransparent));
   }
 
-  bool use_shielded_pool = !tx.v5_part().orchard.inputs.empty();
-  DCHECK(!use_shielded_pool || tx.transparent_part().inputs.empty());
+  bool use_shielded_pool = false;
+  if (tx.is_v6()) {
+    AppendShieldedPool(chain_id, tx.v6_part().legacy_orchard,
+                       mojom::ZCashTokenType::kOrchard, mojom_inputs,
+                       mojom_outputs);
+    AppendShieldedPool(chain_id, tx.v6_part().ironwood,
+                       mojom::ZCashTokenType::kIronwood, mojom_inputs,
+                       mojom_outputs);
+    use_shielded_pool = !tx.v6_part().legacy_orchard.inputs.empty() ||
+                        !tx.v6_part().ironwood.inputs.empty();
+  } else {
+    AppendShieldedPool(chain_id, tx.v5_part().orchard,
+                       mojom::ZCashTokenType::kOrchard, mojom_inputs,
+                       mojom_outputs);
+    use_shielded_pool = !tx.v5_part().orchard.inputs.empty();
+  }
+
   return mojom::ZecTxData::New(
       use_shielded_pool, tx.to(), false, OrchardMemoToVec(tx.memo()),
       tx.amount(), tx.fee(), std::move(mojom_inputs), std::move(mojom_outputs));

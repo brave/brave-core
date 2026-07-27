@@ -32,8 +32,12 @@ namespace brave_wallet {
 
 class OrchardSyncState;
 class ZCashAutoSyncManager;
+class ZCashCreateIronwoodToIronwoodTransactionTask;
+class ZCashCreateIronwoodToTransparentTransactionTask;
+class ZCashCreateOrchardToIronwoodTransactionTask;
 class ZCashCreateOrchardToOrchardTransactionTask;
 class ZCashCreateOrchardToTransparentTransactionTask;
+class ZCashCreateTransparentToIronwoodTransactionTask;
 class ZCashCreateTransparentToOrchardTransactionTask;
 class ZCashCreateTransparentTransactionTask;
 class ZCashGetTransparentUtxosContext;
@@ -127,11 +131,13 @@ class ZCashWalletService : public mojom::ZCashWalletService,
 
   base::expected<mojom::ZCashTxType, mojom::ZCashAddressError>
   GetTransactionType(const mojom::AccountIdPtr& account_id,
-                     bool use_shielded_pool,
+                     mojom::ZCashTokenType from_token_type,
+                     bool ironwood_active,
                      const std::string& addr);
 
   void GetTransactionType(mojom::AccountIdPtr account_id,
-                          bool use_shielded_pool,
+                          mojom::ZCashTokenType from_token_type,
+                          bool ironwood_active,
                           const std::string& addr,
                           GetTransactionTypeCallback callback) override;
 
@@ -141,27 +147,56 @@ class ZCashWalletService : public mojom::ZCashWalletService,
   virtual void GetUtxos(const mojom::AccountIdPtr& account_id,
                         GetUtxosCallback);
 
-  void CreateFullyTransparentTransaction(mojom::AccountIdPtr account_id,
-                                         const std::string& address_to,
-                                         uint64_t amount,
-                                         CreateTransactionCallback callback);
+  virtual void CreateFullyTransparentTransaction(
+      mojom::AccountIdPtr account_id,
+      const std::string& address_to,
+      uint64_t amount,
+      CreateTransactionCallback callback);
 
-  void CreateOrchardToOrchardTransaction(mojom::AccountIdPtr account_id,
-                                         const std::string& address_to,
-                                         uint64_t amount,
-                                         std::optional<OrchardMemo> memo,
-                                         CreateTransactionCallback callback);
-  void CreateTransparentToOrchardTransaction(
+  virtual void CreateOrchardToOrchardTransaction(
       mojom::AccountIdPtr account_id,
       const std::string& address_to,
       uint64_t amount,
       std::optional<OrchardMemo> memo,
       CreateTransactionCallback callback);
-  void CreateOrchardToTransparentTransaction(
+  virtual void CreateTransparentToOrchardTransaction(
+      mojom::AccountIdPtr account_id,
+      const std::string& address_to,
+      uint64_t amount,
+      std::optional<OrchardMemo> memo,
+      CreateTransactionCallback callback);
+  virtual void CreateOrchardToTransparentTransaction(
       mojom::AccountIdPtr account_id,
       const std::string& address_to,
       uint64_t amount,
       CreateTransactionCallback callback);
+
+  virtual void CreateTransparentToIronwoodTransaction(
+      mojom::AccountIdPtr account_id,
+      const std::string& address_to,
+      uint64_t amount,
+      std::optional<OrchardMemo> memo,
+      CreateTransactionCallback callback);
+  virtual void CreateIronwoodToIronwoodTransaction(
+      mojom::AccountIdPtr account_id,
+      const std::string& address_to,
+      uint64_t amount,
+      std::optional<OrchardMemo> memo,
+      CreateTransactionCallback callback);
+  virtual void CreateOrchardToIronwoodTransaction(
+      mojom::AccountIdPtr account_id,
+      const std::string& address_to,
+      uint64_t amount,
+      std::optional<OrchardMemo> memo,
+      CreateTransactionCallback callback);
+  virtual void CreateIronwoodToTransparentTransaction(
+      mojom::AccountIdPtr account_id,
+      const std::string& address_to,
+      uint64_t amount,
+      CreateTransactionCallback callback);
+
+  void GetLatestBlockForChain(const std::string& chain_id,
+                              ZCashRpc::GetLatestBlockCallback callback);
 
   void GetTransactionStatus(const mojom::AccountIdPtr& account_id,
                             std::unique_ptr<ZCashTxMeta> tx_meta,
@@ -189,7 +224,11 @@ class ZCashWalletService : public mojom::ZCashWalletService,
                               const std::optional<std::string>&)>;
 
   friend class ZCashCompleteTransactionTask;
+  friend class ZCashCreateIronwoodToIronwoodTransactionTask;
+  friend class ZCashCreateIronwoodToTransparentTransactionTask;
+  friend class ZCashCreateOrchardToIronwoodTransactionTask;
   friend class ZCashCreateOrchardToOrchardTransactionTask;
+  friend class ZCashCreateTransparentToIronwoodTransactionTask;
   friend class ZCashCreateTransparentToOrchardTransactionTask;
   friend class ZCashCreateTransparentTransactionTask;
   friend class ZCashDiscoverNextUnusedZCashAddressTask;
@@ -273,6 +312,23 @@ class ZCashWalletService : public mojom::ZCashWalletService,
 
   void OnCreateOrchardToTransparentTransactionTaskDone(
       ZCashCreateOrchardToTransparentTransactionTask* task,
+      CreateTransactionCallback callback,
+      base::expected<ZCashTransaction, std::string> result);
+
+  void OnCreateTransparentToIronwoodTransactionTaskDone(
+      ZCashCreateTransparentToIronwoodTransactionTask* task,
+      CreateTransactionCallback callback,
+      base::expected<ZCashTransaction, std::string> result);
+  void OnCreateIronwoodToIronwoodTransactionTaskDone(
+      ZCashCreateIronwoodToIronwoodTransactionTask* task,
+      CreateTransactionCallback callback,
+      base::expected<ZCashTransaction, std::string> result);
+  void OnCreateOrchardToIronwoodTransactionTaskDone(
+      ZCashCreateOrchardToIronwoodTransactionTask* task,
+      CreateTransactionCallback callback,
+      base::expected<ZCashTransaction, std::string> result);
+  void OnCreateIronwoodToTransparentTransactionTaskDone(
+      ZCashCreateIronwoodToTransparentTransactionTask* task,
       CreateTransactionCallback callback,
       base::expected<ZCashTransaction, std::string> result);
 
@@ -363,6 +419,14 @@ class ZCashWalletService : public mojom::ZCashWalletService,
       create_shielded_transaction_tasks_;
   TaskContainer<ZCashCreateOrchardToTransparentTransactionTask>
       create_orchard_to_transparent_transaction_tasks_;
+  TaskContainer<ZCashCreateTransparentToIronwoodTransactionTask>
+      create_transparent_to_ironwood_transaction_tasks_;
+  TaskContainer<ZCashCreateIronwoodToIronwoodTransactionTask>
+      create_ironwood_to_ironwood_transaction_tasks_;
+  TaskContainer<ZCashCreateOrchardToIronwoodTransactionTask>
+      create_orchard_to_ironwood_transaction_tasks_;
+  TaskContainer<ZCashCreateIronwoodToTransparentTransactionTask>
+      create_ironwood_to_transparent_transaction_tasks_;
   std::map<mojom::AccountIdPtr, std::unique_ptr<ZCashShieldSyncService>>
       shield_sync_services_;
   std::map<mojom::AccountIdPtr, std::unique_ptr<ZCashAutoSyncManager>>

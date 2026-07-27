@@ -2163,6 +2163,10 @@ enum ZCashTxType {
   kShielding = 5,
   // Internal transfer to the account's transparent address
   kUnshielding = 6,
+  kTransparentToIronwood = 7,
+  kOrchardToIronwood = 8,
+  kIronwoodToIronwood = 9,
+  kIronwoodToTransparent = 10,
 };
 
 enum ZCashAddressError {
@@ -2233,7 +2237,8 @@ interface ZCashWalletService {
       => (string? tx_id, string? error_message);
 
   GetTransactionType(
-      AccountId account_id, bool use_shielded_pool, string recipient)
+      AccountId account_id, ZCashTokenType from_token_type,
+      bool ironwood_active, string recipient)
       => (ZCashTxType tx_type, ZCashAddressError error);
 
   AddObserver(pending_remote<ZCashWalletServiceObserver> observer);
@@ -2373,11 +2378,13 @@ struct BtcTxData {
 struct ZecTxInput {
   string address;
   uint64 value;
+  ZCashTokenType pool = kNone;
 };
 
 struct ZecTxOutput {
   string address;
   uint64 value;
+  ZCashTokenType pool = kNone;
 };
 
 struct ZecTxData {
@@ -2558,6 +2565,7 @@ struct NewZCashTransactionParams {
   // Memo field should exist only for shielded output.
   array<uint8>? memo;
   bool use_shielded_pool;
+  ZCashTokenType zcash_token_type;
   SwapInfo? swap_info;
 };
 

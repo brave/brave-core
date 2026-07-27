@@ -119,7 +119,8 @@ OrchardSyncState::Rewind(const mojom::AccountIdPtr& account_id,
 
 base::expected<std::optional<OrchardSyncState::SpendableNotesBundle>,
                OrchardStorage::Error>
-OrchardSyncState::GetSpendableNotes(const mojom::AccountIdPtr& account_id,
+OrchardSyncState::GetSpendableNotes(OrchardPool pool,
+                                    const mojom::AccountIdPtr& account_id,
                                     const OrchardAddrRawPart& change_address) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   ASSIGN_OR_RETURN(auto account_meta, storage_.GetAccountMeta(account_id));
@@ -130,10 +131,10 @@ OrchardSyncState::GetSpendableNotes(const mojom::AccountIdPtr& account_id,
   if (!latest_scanned_block_id) {
     return OrchardSyncState::SpendableNotesBundle();
   }
-  ASSIGN_OR_RETURN(auto notes, storage_.GetSpendableNotes(OrchardPool::kOrchard,
-                                                          account_id));
+  ASSIGN_OR_RETURN(auto notes,
+                   storage_.GetSpendableNotes(pool, account_id));
   ASSIGN_OR_RETURN(auto anchor, storage_.GetMaxCheckpointedHeight(
-                                    OrchardPool::kOrchard, account_id,
+                                    pool, account_id,
                                     latest_scanned_block_id.value(),
                                     kZCashInternalAddressMinConfirmations));
 
