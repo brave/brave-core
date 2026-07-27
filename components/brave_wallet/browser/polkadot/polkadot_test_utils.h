@@ -108,6 +108,10 @@ struct PolkadotMockRpc {
   void AddGetRuntimeInfo();
   void AddGetGenesisBlockHash();
 
+  // Registers a response for the metadata provider's latest runtime-version
+  // probe (state_getRuntimeVersion with no block hash).
+  void AddGetLatestRuntimeVersion(uint32_t spec_version);
+
   // Convenience wrapper for the above Add* family of functions.
   void AddReqResPairs();
   void AddWestendAssetHubReqResPairs();

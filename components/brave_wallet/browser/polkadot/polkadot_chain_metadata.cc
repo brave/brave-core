@@ -48,7 +48,7 @@ PolkadotChainMetadata PolkadotChainMetadata::FromFields(
     uint8_t transfer_all_call_index,
     uint16_t ss58_prefix,
     uint32_t spec_version,
-    bool asset_tx_payment,
+    const std::array<uint8_t, kMaxSignedExtensions>& signed_extensions,
     bool has_assets_pallet,
     uint8_t assets_pallet_index,
     uint8_t assets_transfer_all_call_index,
@@ -67,7 +67,7 @@ PolkadotChainMetadata PolkadotChainMetadata::FromFields(
   metadata->has_assets_pallet = has_assets_pallet;
   metadata->ss58_prefix = ss58_prefix;
   metadata->spec_version = spec_version;
-  metadata->asset_tx_payment = asset_tx_payment;
+  metadata->signed_extensions = signed_extensions;
 
   return metadata;
 }
