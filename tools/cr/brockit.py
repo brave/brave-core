@@ -245,18 +245,18 @@ tools/cr/brockit.py gen-rust-toolchain @latest-canary --watch
 ```
 
 ### `brockit.py update-rust-wasm-toolchain`
-This command repins the Rust/WASM toolchain objects in
-`tools/cr/install_extra_deps.py` to the latest published archives for
-a given Chromium tag's Rust+Clang revision, and commits the change. The tag's
-`tools/rust/update_rust.py` and `tools/clang/scripts/update.py` are read to
-identify the toolchain to pin.
+This command repins the Rust/WASM toolchain objects in `EXTRA_DEPS` to the
+published archive for a given Chromium tag's Rust+Clang revision and Brave
+sub-revision, and commits the change.
 
 ```sh
-tools/cr/brockit.py update-rust-wasm-toolchain --to=150.0.7850.1
+tools/cr/brockit.py update-rust-wasm-toolchain --to=150.0.7850.1 \
+  --brave-subrevision=1
 ```
 
 The `--to` expects a Chromium referecence, and this includes reference labels
-(e.g. `@latest-tag`, etc).
+(e.g. `@latest-tag`, etc). `--brave-subrevision` must name the exact
+sub-revision already published.
 
 Pass `--culprit=<hash>` to reference a specific Chromium commit in the commit
 body. If none is provided, `brockit` uses the last Chromium commit that has
@@ -2258,10 +2258,10 @@ class _RepinToolchainTask(Task):
     def status_message(self) -> str:
         return f'Updating the {self._toolchain.spec.label} toolchain...'
 
-    def execute(self, chromium_ref: str, culprit: str | None):
+    def execute(self, chromium_ref: str, culprit: str | None, **repin_kwargs):
         version = _fetch_chromium_tag(chromium_ref)
         _ensure_chromium_tags(str(version))
-        self._toolchain.repin(version, culprit)
+        self._toolchain.repin(version, culprit, **repin_kwargs)
 
 
 class _GenToolchainTask(Task):
@@ -2645,9 +2645,9 @@ def main():
         parents=[global_parser],
         formatter_class=argparse.RawTextHelpFormatter,
         help='Repins the Rust/WASM toolchain objects in '
-        'tools/cr/install_extra_deps.py to the latest published '
-        'archives for a Chromium tag\'s Rust+Clang revision, and commits the '
-        'change.')
+        'tools/cr/install_extra_deps.py to the published archive for a '
+        'Chromium tag\'s Rust+Clang revision and a given Brave sub-revision, '
+        'and commits the change.')
     update_rust_parser.add_argument(
         '--to',
         required=True,
@@ -2657,6 +2657,12 @@ def main():
             '(e.g. 150.0.7850.1), or one of the @latest-* labels accepted by\n'
             '`lift --to` (e.g. @latest-canary, @latest-m150,\n'
             '@latest-for-branch, @latest-tag).'))
+    update_rust_parser.add_argument(
+        '--brave-subrevision',
+        type=int,
+        required=True,
+        dest='brave_subrevision',
+        help='The published Brave sub-revision to repin')
     update_rust_parser.add_argument(
         '--culprit',
         default=None,
@@ -2730,7 +2736,9 @@ def main():
                 chromium_ref=args.to, culprit=args.culprit)
         if args.command == 'update-rust-wasm-toolchain':
             _RepinToolchainTask(toolchain.RustToolchain()).run(
-                chromium_ref=args.to, culprit=args.culprit)
+                chromium_ref=args.to,
+                culprit=args.culprit,
+                brave_subrevision=args.brave_subrevision)
         gen_toolchains = {
             'gen-rust-toolchain': toolchain.RustToolchain,
             'gen-xcode-toolchain': toolchain.XcodeToolchain,
