@@ -7,18 +7,26 @@
 
 #include <utility>
 
+#include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
+#include "base/strings/strcat.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_account/endpoint_client/client.h"
 #include "brave/components/brave_account/endpoint_client/with_headers.h"
 #include "net/base/net_errors.h"
+#include "net/http/http_status_code.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 
+using brave_account::endpoint_client::Client;
+using brave_account::endpoint_client::WithHeaders;
+
 namespace brave_vpn::v2 {
+
+using endpoints::GetSubscriberCredentialV12;
 
 namespace {
 constexpr char kHeaderBravePaymentsEnvironment[] = "Brave-Payments-Environment";
@@ -50,38 +58,39 @@ Request MakeRequest() {
   Request request;
   request.network_traffic_annotation_tag =
       net::MutableNetworkTrafficAnnotationTag(kTrafficAnnotation);
-#if 0
-  // TODO(https://github.com/brave/brave-browser/issues/57112)
-  // Enable retry policy once the PR related to the issue has been merged.
   request.retry_options = {
       .max_retries = 1,
       .retry_mode = network::SimpleURLLoader::RETRY_ON_NETWORK_CHANGE};
-#endif
   return request;
 }
 
 // Describes a failed response for which no typed body was recovered; i.e. a
 // transport-level or HTTP-level failure rather than a parsed error body.
 template <typename Response>
-std::optional<std::string> MaybeDescribeTransportFailure(
+std::optional<std::string> MaybeDescribeUnrecoverableResponse(
     const Response& response) {
   if (response.body) {
     return std::nullopt;
   }
-  if (response.net_error != net::OK) {
-    return net::ErrorToString(response.net_error);
-  }
-  if (response.status_code) {
-    return absl::StrFormat("Unexpected HTTP status: %d", *response.status_code);
-  }
-  return "No response received";
+  return response.status_code
+      .transform([](int status_code) {
+        return absl::StrFormat("HTTP %d %s: body missing or failed to parse",
+                               status_code,
+                               net::GetHttpReasonPhrase(status_code));
+      })
+      .value_or(base::StrCat({net::ErrorToString(response.net_error),
+                              response.net_error == net::OK
+                                  ? " (no response headers received)"
+                                  : ""}));
 }
 
 }  // namespace
 
 BraveVpnApiClient::BraveVpnApiClient(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
-    : url_loader_factory_(std::move(url_loader_factory)) {}
+    : url_loader_factory_(std::move(url_loader_factory)) {
+  CHECK(url_loader_factory_);
+}
 
 BraveVpnApiClient::~BraveVpnApiClient() = default;
 
@@ -89,15 +98,15 @@ void BraveVpnApiClient::GetSubscriberCredentialV12(
     SubscriberCredentialCallback callback,
     const std::string& skus_credential,
     const std::string& environment) {
-  using Endpoint = endpoints::GetSubscriberCredentialV12;
-  using Request =
-      brave_account::endpoint_client::WithHeaders<Endpoint::Request>;
+  CHECK(!skus_credential.empty());
+  CHECK(!environment.empty());
 
-  auto request = MakeRequest<Request>();
+  auto request =
+      MakeRequest<WithHeaders<GetSubscriberCredentialV12::Request>>();
   request.body.skus_credential = skus_credential;
   request.headers.SetHeader(kHeaderBravePaymentsEnvironment, environment);
 
-  brave_account::endpoint_client::Client<Endpoint>::Send(
+  Client<endpoints::GetSubscriberCredentialV12>::Send(
       url_loader_factory_, std::move(request),
       base::BindOnce(&BraveVpnApiClient::OnGetSubscriberCredentialV12Response,
                      weak_factory_.GetWeakPtr(), std::move(callback)));
@@ -106,17 +115,14 @@ void BraveVpnApiClient::GetSubscriberCredentialV12(
 void BraveVpnApiClient::OnGetSubscriberCredentialV12Response(
     SubscriberCredentialCallback callback,
     endpoints::GetSubscriberCredentialV12::Response response) {
-  std::optional<std::string> maybe_transport_error =
-      MaybeDescribeTransportFailure(response);
-  if (maybe_transport_error.has_value()) {
-    std::move(callback).Run(base::unexpected(maybe_transport_error.value()));
-    return;
+  if (auto unrecoverable = MaybeDescribeUnrecoverableResponse(response)) {
+    return std::move(callback).Run(base::unexpected(*std::move(unrecoverable)));
   }
 
   std::move(callback).Run(
-      std::move(*response.body)
+      std::move(CHECK_DEREF(response.body))
           .transform(
-              [](endpoints::GetSubscriberCredentialV12ResponseBody success) {
+              [](endpoints::GetSubscriberCredentialV12SuccessBody success) {
                 return std::move(success.subscriber_credential);
               })
           .transform_error([](endpoints::VpnErrorBody error) {

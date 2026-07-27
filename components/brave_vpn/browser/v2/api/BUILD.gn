@@ -38,6 +38,7 @@ source_set("unit_tests") {
     ":api",
     "//base",
     "//base/test:test_support",
+    "//brave/components/brave_account/endpoint_client:test_support",
     "//net",
     "//services/network:test_support",
     "//services/network/public/cpp",

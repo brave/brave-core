@@ -29,6 +29,7 @@
 #include "base/time/time.h"
 #include "base/types/expected.h"
 #include "base/values.h"
+#include "brave/components/brave_account/endpoint_client/test_support.h"
 #include "brave/components/brave_vpn/browser/v2/api/brave_vpn_api_client.h"
 #include "brave/components/brave_vpn/browser/v2/credential_store.h"
 #include "brave/components/brave_vpn/browser/v2/skus_service_client.h"
@@ -48,10 +49,10 @@
 #include "components/prefs/testing_pref_service.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "net/http/http_status_code.h"
+#include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "ui/base/l10n/l10n_util.h"
 
 namespace brave_vpn::v2 {
@@ -222,7 +223,9 @@ class StateChangeCollector {
 
 class FakeBraveVpnApiClient : public BraveVpnApiClient {
  public:
-  FakeBraveVpnApiClient() : BraveVpnApiClient(nullptr) {}
+  FakeBraveVpnApiClient(
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
+      : BraveVpnApiClient(std::move(url_loader_factory)) {}
   ~FakeBraveVpnApiClient() override = default;
 
   void GetSubscriberCredentialV12(SubscriberCredentialCallback callback,
@@ -376,10 +379,11 @@ class PurchasedStateManagerTest : public testing::Test {
  protected:
   base::test::TaskEnvironment task_environment_{
       base::test::TaskEnvironment::TimeSource::MOCK_TIME};
+  network::TestURLLoaderFactory url_loader_factory_;
   TestingPrefServiceSimple local_pref_service_;
   CredentialStore credential_store_{&local_pref_service_};
   StateChangeCollector collector_;
-  FakeBraveVpnApiClient api_client_;
+  FakeBraveVpnApiClient api_client_{url_loader_factory_.GetSafeWeakWrapper()};
   FakeSkusServiceClient skus_client_;
   std::unique_ptr<PurchasedStateManager> manager_;
 };
@@ -754,6 +758,7 @@ TEST_F(PurchasedStateManagerTest, StaleExchangeResponseIsDropped) {
 
   EXPECT_FALSE(manager_->IsPurchased());
   EXPECT_FALSE(credential_store_.HasValidSubscriberCredential());
+  EXPECT_TRUE(credential_store_.HasValidSkusCredential());
   EXPECT_EQ(manager_->GetInfo().state, mojom::PurchasedState::FAILED);
 }
 
@@ -1059,11 +1064,6 @@ TEST_F(PurchasedStateManagerTest, ExpiredSummaryMeansNotPurchased) {
 class PurchasedStateManagerWithRealSkusServiceTest
     : public PurchasedStateManagerTest {
  public:
-  struct StubHttpsResponse {
-    std::string body;
-    net::HttpStatusCode status = net::HTTP_OK;
-  };
-
   PurchasedStateManagerWithRealSkusServiceTest() : PurchasedStateManagerTest() {
     scoped_feature_list_.InitWithFeatures({skus::features::kSkusFeature}, {});
     skus::RegisterLocalStatePrefs(local_pref_service_.registry());
@@ -1077,9 +1077,6 @@ class PurchasedStateManagerWithRealSkusServiceTest
     ASSERT_TRUE(base::Time::FromString("2023-01-04", &future_mock_time));
     task_environment_.AdvanceClock(future_mock_time - base::Time::Now());
 
-    shared_url_loader_factory_ =
-        base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
-            &url_loader_factory_);
     url_loader_factory_.SetInterceptor(base::BindRepeating(
         &PurchasedStateManagerWithRealSkusServiceTest::Interceptor,
         base::Unretained(this)));
@@ -1131,29 +1128,29 @@ class PurchasedStateManagerWithRealSkusServiceTest
     return skus_service_->MakeRemote();
   }
 
-  void SetInterceptorResponse(const std::string& response,
-                              net::HttpStatusCode status = net::HTTP_OK) {
-    interceptor_responses_ = {{response, status}};
-    interceptor_response_index_ = 0;
+  void SetExchangeResponse(
+      endpoints::GetSubscriberCredentialV12::Response response) {
+    exchange_responses_.clear();
+    exchange_responses_.push_back(std::move(response));
+    exchange_response_index_ = 0;
   }
 
   // Serve one response per successive intercepted request, in order (one per
   // exchange attempt). The last entry repeats once the list is exhausted, so a
   // stray request can't underflow the index.
-  void SetInterceptorResponseSequence(
-      std::vector<StubHttpsResponse> responses) {
+  void SetExchangeResponseSequence(
+      std::vector<endpoints::GetSubscriberCredentialV12::Response> responses) {
     CHECK(!responses.empty());
-    interceptor_responses_ = std::move(responses);
-    interceptor_response_index_ = 0;
+    exchange_responses_ = std::move(responses);
+    exchange_response_index_ = 0;
   }
 
-  void Interceptor(const network::ResourceRequest& request) {
-    url_loader_factory_.ClearResponses();
-    const StubHttpsResponse& response = interceptor_responses_[std::min(
-        interceptor_response_index_, interceptor_responses_.size() - 1)];
-    ++interceptor_response_index_;
-    url_loader_factory_.AddResponse(request.url.spec(), response.body,
-                                    response.status);
+  void Interceptor(const network::ResourceRequest&) {
+    const size_t i =
+        std::min(exchange_response_index_++, exchange_responses_.size() - 1);
+    brave_account::endpoint_client::MockResponseFor<
+        endpoints::GetSubscriberCredentialV12>(url_loader_factory_,
+                                               exchange_responses_[i]);
   }
 
   void WaitForCommitOrTerminalOutcome(size_t terminal_change_count) {
@@ -1176,14 +1173,27 @@ class PurchasedStateManagerWithRealSkusServiceTest
   }
 
  protected:
+  const endpoints::GetSubscriberCredentialV12::Response
+      kTokenNoLongerValidResponse{
+          .net_error = net::OK,
+          .status_code = net::HTTP_BAD_REQUEST,
+          .body = base::unexpected(endpoints::VpnErrorBody{
+              .error_title = std::string(kTokenNoLongerValid),
+              .error_message = "consumed"})};
+  const endpoints::GetSubscriberCredentialV12::Response
+      kExchangeSuccessResponse{
+          .net_error = net::OK,
+          .status_code = net::HTTP_OK,
+          .body = endpoints::GetSubscriberCredentialV12SuccessBody{
+              .subscriber_credential = std::string(kTestSubscriberCredential)}};
+
   base::test::ScopedFeatureList scoped_feature_list_;
-  network::TestURLLoaderFactory url_loader_factory_;
-  scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   std::unique_ptr<BraveVpnApiClient> real_api_client_;
   std::unique_ptr<skus::SkusServiceImpl> skus_service_;
   std::unique_ptr<SkusServiceClient> real_skus_client_;
-  std::vector<StubHttpsResponse> interceptor_responses_{{}};
-  size_t interceptor_response_index_ = 0;
+  std::vector<endpoints::GetSubscriberCredentialV12::Response>
+      exchange_responses_{{.net_error = net::OK, .status_code = net::HTTP_OK}};
+  size_t exchange_response_index_ = 0;
 };
 
 // The full chain against the real SKUS: summary JSON parses, the presentation
@@ -1264,6 +1274,10 @@ TEST_F(PurchasedStateManagerWithRealSkusServiceTest,
   const std::string other_env = OtherEnvironment();
   manager_->Load(OtherDomain());
 
+  // The unstubbed exchange (we stub only the SKUS chain here) fails after the
+  // commit, so a FAILED terminal outcome is expected. However, the commit's
+  // effects outlive the failure: the environment switched and the SKUS
+  // credential is cached.
   WaitForCommitOrTerminalOutcome(2);  // post-commit LOADING + FAILED.
 
   ASSERT_EQ(url_loader_factory_.NumPending(), 0);
@@ -1278,8 +1292,7 @@ TEST_F(PurchasedStateManagerWithRealSkusServiceTest,
 TEST_F(PurchasedStateManagerWithRealSkusServiceTest,
        FullChainExchangeSucceedsPurchased) {
   CreateManager(CurrentEnvironment());
-  SetInterceptorResponse(absl::StrFormat(R"({"subscriber-credential":"%s"})",
-                                         kTestSubscriberCredential));
+  SetExchangeResponse(kExchangeSuccessResponse);
   manager_->Load(CurrentDomain());
 
   WaitForCommitOrTerminalOutcome(2);  // LOADING + PURCHASED.
@@ -1297,10 +1310,7 @@ TEST_F(PurchasedStateManagerWithRealSkusServiceTest,
 TEST_F(PurchasedStateManagerWithRealSkusServiceTest,
        FullChainTokenNoLongerValidRetriesThenFails) {
   CreateManager(CurrentEnvironment());
-  SetInterceptorResponse(
-      absl::StrFormat(R"({"error-title":"%s","error-message":"consumed"})",
-                      kTokenNoLongerValid),
-      net::HTTP_BAD_REQUEST);
+  SetExchangeResponse(kTokenNoLongerValidResponse);
   manager_->Load(CurrentDomain());
 
   // Not WaitForCommitOrTerminalOutcome: the retry rewrites the credential pref
@@ -1323,15 +1333,8 @@ TEST_F(PurchasedStateManagerWithRealSkusServiceTest,
 TEST_F(PurchasedStateManagerWithRealSkusServiceTest,
        FullChainTokenNoLongerValidRetrySucceeds) {
   CreateManager(CurrentEnvironment());
-  SetInterceptorResponseSequence(
-      {// First exchange attempt: token consumed.
-       {absl::StrFormat(R"({"error-title":"%s","error-message":"consumed"})",
-                        kTokenNoLongerValid),
-        net::HTTP_BAD_REQUEST},
-       // Retry attempt: success.
-       {absl::StrFormat(R"({"subscriber-credential":"%s"})",
-                        kTestSubscriberCredential),
-        net::HTTP_OK}});
+  SetExchangeResponseSequence(
+      {kTokenNoLongerValidResponse, kExchangeSuccessResponse});
   manager_->Load(CurrentDomain());
 
   // Not WaitForCommitOrTerminalOutcome: the retry rewrites the credential pref

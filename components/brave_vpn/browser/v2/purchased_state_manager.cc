@@ -89,26 +89,30 @@ void PurchasedStateManager::Load(const std::string& domain) {
       SetPurchasedState(request_environment, mojom::PurchasedState::PURCHASED);
       return;
     }
-
-    if (credential_store_->HasValidSkusCredential()) {
+    // The valid cached SKUS credential must have an expiration time, because
+    // the store only reports valid credentials. However, both GetSkusCredential
+    // and GetExpirationTime re-evaluate validity against current time, so a
+    // credential expiring between the two reads can make them disagree. We're
+    // checking for both valid credential and expiration time here to avoid
+    // TOCTOU issues.
+    const std::string skus_credential = credential_store_->GetSkusCredential();
+    const std::optional<base::Time> expiration_time =
+        credential_store_->GetExpirationTime();
+    if (!skus_credential.empty() && expiration_time.has_value()) {
       // Previous attempt to exchange the skus credential for a subscriber
       // credential failed. Try again with the cached skus credential.
       VLOG(2) << "Trying to exchange cached skus credential for subscriber "
                  "credential";
       BeginLoad(request_environment);
 
-      // The cached SKUS credential must have an expiration time, because the
-      // store only retains valid SKUS credentials.
-      std::optional<base::Time> expiration_time =
-          credential_store_->GetExpirationTime();
-      CHECK(expiration_time.has_value());
-
-      // Exchange the cached SKUS credential for a subscriber credential.
+      // Exchange the cached SKUS credential for a subscriber credential. The
+      // valid cached SKUS credential must have an expiration time, because the
+      // store only reports valid SKUS credentials.
       api_client_->GetSubscriberCredentialV12(
           base::BindOnce(&PurchasedStateManager::OnGetSubscriberCredential,
                          weak_factory_.GetWeakPtr(), loading_sequence_, domain,
-                         expiration_time.value()),
-          credential_store_->GetSkusCredential(), loading_environment_);
+                         *expiration_time),
+          skus_credential, loading_environment_);
       return;
     }
   }
@@ -402,10 +406,6 @@ void PurchasedStateManager::OnGetSubscriberCredential(
     base::expected<std::string, std::string> result) {
   if (sequence != loading_sequence_) {
     VLOG(2) << __func__ << ": Ignoring response of a stale load";
-    return;
-  }
-  if (!skus::DomainIsForProduct(domain, skus::GetVpnProductPrefix())) {
-    VLOG(2) << __func__ << ": Called for non-vpn product";
     return;
   }
 

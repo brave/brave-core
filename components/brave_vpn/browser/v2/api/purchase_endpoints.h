@@ -31,20 +31,19 @@ inline constexpr char kSubscriberCredentialKey[] = "subscriber-credential";
 // GetSubscriberCredentialV12 API exchanges a SKUs credential for a subscriber
 // credential.
 struct GetSubscriberCredentialV12RequestBody {
-  std::string validation_method = kValidationMethodValue;
   std::string skus_credential;
 
   base::DictValue ToValue() const {
     return base::DictValue()
-        .Set(kValidationMethodKey, validation_method)
+        .Set(kValidationMethodKey, kValidationMethodValue)
         .Set(kSkusCredentialKey, skus_credential);
   }
 };
 
-struct GetSubscriberCredentialV12ResponseBody {
+struct GetSubscriberCredentialV12SuccessBody {
   std::string subscriber_credential;
 
-  static std::optional<GetSubscriberCredentialV12ResponseBody> FromValue(
+  static std::optional<GetSubscriberCredentialV12SuccessBody> FromValue(
       const base::Value& value) {
     const auto* dict = value.GetIfDict();
     if (!dict) {
@@ -54,8 +53,13 @@ struct GetSubscriberCredentialV12ResponseBody {
     if (!credential) {
       return std::nullopt;
     }
-    return GetSubscriberCredentialV12ResponseBody{.subscriber_credential =
-                                                      *credential};
+    return GetSubscriberCredentialV12SuccessBody{.subscriber_credential =
+                                                     *credential};
+  }
+
+  base::DictValue ToValue() const {
+    return base::DictValue().Set(kSubscriberCredentialKey,
+                                 subscriber_credential);
   }
 };
 
@@ -63,7 +67,7 @@ struct GetSubscriberCredentialV12 {
   using Request = brave_account::endpoint_client::POST<
       GetSubscriberCredentialV12RequestBody>;
   using Response = brave_account::endpoint_client::
-      Response<GetSubscriberCredentialV12ResponseBody, VpnErrorBody>;
+      Response<GetSubscriberCredentialV12SuccessBody, VpnErrorBody>;
 
   static GURL URL() {
     return GURL(base::StrCat({url::kHttpsScheme, url::kStandardSchemeSeparator,

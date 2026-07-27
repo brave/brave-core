@@ -1,3 +1,5 @@
-include_rules = [
-  "+services/network/public/mojom",
-]
+specific_include_rules = {
+  ".*_unittest\.cc": [
+    "+services/network/public/mojom",
+  ],
+}

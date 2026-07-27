@@ -65,6 +65,7 @@ source_set("unit_tests") {
     "//base",
     "//base:i18n",
     "//base/test:test_support",
+    "//brave/components/brave_account/endpoint_client:test_support",
     "//brave/components/brave_vpn/common",
     "//brave/components/brave_vpn/common/mojom",
     "//brave/components/resources:strings",

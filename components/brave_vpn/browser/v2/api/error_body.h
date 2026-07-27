@@ -35,6 +35,12 @@ struct VpnErrorBody {
     }
     return VpnErrorBody{.error_title = *title, .error_message = *message};
   }
+
+  base::DictValue ToValue() const {
+    return base::DictValue()
+        .Set(kErrorTitleKey, error_title)
+        .Set(kErrorMessageKey, error_message);
+  }
 };
 
 }  // namespace brave_vpn::v2::endpoints
