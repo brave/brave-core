@@ -170,11 +170,6 @@ void TxService::Bind(
 }
 
 template <>
-void TxService::Bind(mojo::PendingReceiver<mojom::FilTxManagerProxy> receiver) {
-  fil_tx_manager_receivers_.Add(this, std::move(receiver));
-}
-
-template <>
 void TxService::Bind(mojo::PendingReceiver<mojom::BtcTxManagerProxy> receiver) {
   btc_tx_manager_receivers_.Add(this, std::move(receiver));
 }
@@ -694,21 +689,6 @@ void TxService::ProcessSolanaHardwareSignature(
     mojom::SolanaSignaturePtr hw_signature,
     ProcessSolanaHardwareSignatureCallback callback) {
   GetSolanaTxManager()->ProcessSolanaHardwareSignature(
-      tx_meta_id, std::move(hw_signature), std::move(callback));
-}
-
-void TxService::GetFilTransactionMessageToSign(
-    const std::string& tx_meta_id,
-    GetFilTransactionMessageToSignCallback callback) {
-  GetFilTxManager()->GetFilTransactionMessageToSign(tx_meta_id,
-                                                    std::move(callback));
-}
-
-void TxService::ProcessFilHardwareSignature(
-    const std::string& tx_meta_id,
-    mojom::FilecoinSignaturePtr hw_signature,
-    ProcessFilHardwareSignatureCallback callback) {
-  GetFilTxManager()->ProcessFilHardwareSignature(
       tx_meta_id, std::move(hw_signature), std::move(callback));
 }
 

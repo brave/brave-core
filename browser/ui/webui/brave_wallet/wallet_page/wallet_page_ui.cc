@@ -183,8 +183,6 @@ void WalletPageUI::CreatePageHandler(
         eth_tx_manager_proxy_receiver,
     mojo::PendingReceiver<mojom::SolanaTxManagerProxy>
         solana_tx_manager_proxy_receiver,
-    mojo::PendingReceiver<mojom::FilTxManagerProxy>
-        filecoin_tx_manager_proxy_receiver,
     mojo::PendingReceiver<mojom::BtcTxManagerProxy>
         bitcoin_tx_manager_proxy_receiver,
     mojo::PendingReceiver<mojom::BraveWalletService>
@@ -212,7 +210,6 @@ void WalletPageUI::CreatePageHandler(
     wallet_service->Bind(std::move(tx_service_receiver));
     wallet_service->Bind(std::move(eth_tx_manager_proxy_receiver));
     wallet_service->Bind(std::move(solana_tx_manager_proxy_receiver));
-    wallet_service->Bind(std::move(filecoin_tx_manager_proxy_receiver));
     wallet_service->Bind(std::move(bitcoin_tx_manager_proxy_receiver));
     wallet_service->Bind(std::move(asset_ratio_service_receiver));
     wallet_service->Bind(std::move(swap_service_receiver));

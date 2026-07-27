@@ -15,12 +15,10 @@ import {
   TrezorBridgeTransport,
 } from '../../common/hardware/trezor/trezor-bridge-transport'
 import { kTrezorBridgeUrl } from '../../common/hardware/trezor/trezor-messages'
-import FilecoinLedgerBridgeKeyring from '../../common/hardware/ledgerjs/fil_ledger_bridge_keyring'
 import BitcoinLedgerBridgeKeyring from '../hardware/ledgerjs/btc_ledger_bridge_keyring'
 
 // Lazy instances for keyrings
 let ethereumHardwareKeyring: EthereumLedgerBridgeKeyring
-let filecoinHardwareKeyring: FilecoinLedgerBridgeKeyring
 let solanaHardwareKeyring: SolanaLedgerBridgeKeyring
 let bitcoinHardwareKeyring: BitcoinLedgerBridgeKeyring
 let trezorHardwareKeyring: TrezorBridgeKeyring
@@ -31,15 +29,12 @@ export async function getHardwareKeyring(
 ): Promise<
   | EthereumLedgerBridgeKeyring
   | HWInterfaces.TrezorKeyring
-  | FilecoinLedgerBridgeKeyring
   | SolanaLedgerBridgeKeyring
   | BitcoinLedgerBridgeKeyring
 > {
   if (vendor === BraveWallet.HardwareVendor.kLedger) {
     if (coin === BraveWallet.CoinType.ETH) {
       return getLedgerEthereumHardwareKeyring()
-    } else if (coin === BraveWallet.CoinType.FIL) {
-      return getLedgerFilecoinHardwareKeyring()
     } else if (coin === BraveWallet.CoinType.SOL) {
       return getLedgerSolanaHardwareKeyring()
     } else if (coin === BraveWallet.CoinType.BTC) {
@@ -59,13 +54,6 @@ export function getLedgerEthereumHardwareKeyring(): EthereumLedgerBridgeKeyring 
     ethereumHardwareKeyring = new EthereumLedgerBridgeKeyring()
   }
   return ethereumHardwareKeyring
-}
-
-export function getLedgerFilecoinHardwareKeyring(): FilecoinLedgerBridgeKeyring {
-  if (!filecoinHardwareKeyring) {
-    filecoinHardwareKeyring = new FilecoinLedgerBridgeKeyring()
-  }
-  return filecoinHardwareKeyring
 }
 
 export function getLedgerSolanaHardwareKeyring(): SolanaLedgerBridgeKeyring {

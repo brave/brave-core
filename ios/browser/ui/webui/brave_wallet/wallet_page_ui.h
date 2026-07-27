@@ -57,8 +57,6 @@ class WalletPageUI : public web::WebUIIOSController,
           eth_tx_manager_proxy,
       mojo::PendingReceiver<brave_wallet::mojom::SolanaTxManagerProxy>
           solana_tx_manager_proxy,
-      mojo::PendingReceiver<brave_wallet::mojom::FilTxManagerProxy>
-          filecoin_tx_manager_proxy,
       mojo::PendingReceiver<brave_wallet::mojom::BtcTxManagerProxy>
           bitcoin_tx_manager_proxy_receiver,
       mojo::PendingReceiver<brave_wallet::mojom::BraveWalletService>

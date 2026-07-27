@@ -29,10 +29,6 @@ class FilTxManager : public TxManager, public FilBlockTracker::Observer {
  public:
   using AddUnapprovedFilecoinTransactionCallback =
       mojom::TxService::AddUnapprovedFilecoinTransactionCallback;
-  using GetFilTransactionMessageToSignCallback =
-      mojom::FilTxManagerProxy::GetFilTransactionMessageToSignCallback;
-  using ProcessFilHardwareSignatureCallback =
-      mojom::FilTxManagerProxy::ProcessFilHardwareSignatureCallback;
 
   FilTxManager(TxService& tx_service,
                JsonRpcService* json_rpc_service,
@@ -52,9 +48,6 @@ class FilTxManager : public TxManager, public FilBlockTracker::Observer {
       AddUnapprovedFilecoinTransactionCallback callback);
   void ApproveTransaction(const std::string& tx_meta_id,
                           ApproveTransactionCallback) override;
-  void GetFilTransactionMessageToSign(
-      const std::string& tx_meta_id,
-      GetFilTransactionMessageToSignCallback callback);
 
   void SpeedupOrCancelTransaction(
       const std::string& tx_meta_id,
@@ -64,11 +57,6 @@ class FilTxManager : public TxManager, public FilBlockTracker::Observer {
                         RetryTransactionCallback callback) override;
 
   void Reset() override;
-
-  void ProcessFilHardwareSignature(
-      const std::string& tx_meta_id,
-      const mojom::FilecoinSignaturePtr& hw_signature,
-      ProcessFilHardwareSignatureCallback callback);
 
   void GetEstimatedGas(const std::string& chain_id,
                        const mojom::AccountIdPtr& from_account_id,
@@ -86,11 +74,6 @@ class FilTxManager : public TxManager, public FilBlockTracker::Observer {
                       ApproveTransactionCallback callback,
                       bool success,
                       uint256_t nonce);
-  void OnGetNextNonceForHardware(
-      std::unique_ptr<FilTxMeta> meta,
-      GetFilTransactionMessageToSignCallback callback,
-      bool success,
-      uint256_t nonce);
   void OnSendFilecoinTransaction(const std::string& tx_meta_id,
                                  ApproveTransactionCallback callback,
                                  const std::string& tx_hash,

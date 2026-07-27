@@ -1072,8 +1072,6 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_NO_ACCOUNTS_WITH_A_BALANCE},
     {"braveWalletNoAccountsWithABalanceDescription",
      IDS_BRAVE_WALLET_NO_ACCOUNTS_WITH_A_BALANCE_DESCRIPTION},
-    {"braveWalletLedgerFilecoinUnlockError",
-     IDS_BRAVE_WALLET_LEDGER_FILECOIN_UNLOCK_ERROR},
     {"braveWalletLedgerValidationError",
      IDS_BRAVE_WALLET_LEDGER_VALIDATION_ERROR},
     {"braveWalletHardwareAccountNotFound",

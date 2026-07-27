@@ -29,7 +29,6 @@ export class WalletPanelApiProxy extends WalletApiProxy {
       this.txService.$.bindNewPipeAndPassReceiver(),
       this.ethTxManagerProxy.$.bindNewPipeAndPassReceiver(),
       this.solanaTxManagerProxy.$.bindNewPipeAndPassReceiver(),
-      this.filTxManagerProxy.$.bindNewPipeAndPassReceiver(),
       this.btcTxManagerProxy.$.bindNewPipeAndPassReceiver(),
       this.braveWalletService.$.bindNewPipeAndPassReceiver(),
       this.braveWalletIpfsService.$.bindNewPipeAndPassReceiver(),
