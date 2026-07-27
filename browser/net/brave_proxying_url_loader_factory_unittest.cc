@@ -28,7 +28,7 @@
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/origin.h"
 
-namespace {
+namespace brave_proxying_url_loader_factory_test {
 
 net::RedirectInfo CreateRedirectInfo(const network::ResourceRequest& request,
                                      const GURL& new_url) {
@@ -85,6 +85,13 @@ class BraveProxyingURLLoaderFactoryTest : public testing::Test {
     return request;
   }
 
+  void SetBeforeURLRequestCallback(
+      brave::OnBeforeURLRequestCallback<std::shared_ptr> callback) {
+    request_handler_.before_url_request_callbacks_.clear();
+    request_handler_.before_url_request_callbacks_.push_back(
+        std::move(callback));
+  }
+
  protected:
   content::BrowserTaskEnvironment task_environment_;
   BraveRequestHandler<std::shared_ptr> request_handler_;
@@ -123,18 +130,17 @@ TEST_F(BraveProxyingURLLoaderFactoryTest,
   const url::Origin initiator =
       url::Origin::Create(GURL("https://initiator.example"));
 
-  request_handler_.SetBeforeURLRequestCallbackForTesting(
-      base::BindLambdaForTesting(
-          [request_url, first_redirect_url, second_redirect_url](
-              const brave::ResponseCallback&,
-              std::shared_ptr<brave::BraveRequestInfo> ctx) {
-            if (ctx->request_url() == request_url) {
-              ctx->set_new_url_spec(first_redirect_url.spec());
-            } else if (ctx->request_url() == first_redirect_url) {
-              ctx->set_new_url_spec(second_redirect_url.spec());
-            }
-            return net::OK;
-          }));
+  SetBeforeURLRequestCallback(base::BindLambdaForTesting(
+      [request_url, first_redirect_url, second_redirect_url](
+          const brave::ResponseCallback&,
+          std::shared_ptr<brave::BraveRequestInfo> ctx) {
+        if (ctx->request_url() == request_url) {
+          ctx->set_new_url_spec(first_redirect_url.spec());
+        } else if (ctx->request_url() == first_redirect_url) {
+          ctx->set_new_url_spec(second_redirect_url.spec());
+        }
+        return net::OK;
+      }));
 
   std::optional<url::Origin> second_request_initiator;
   test_factory_.SetInterceptor(base::BindLambdaForTesting(
@@ -164,4 +170,4 @@ TEST_F(BraveProxyingURLLoaderFactoryTest,
   EXPECT_EQ(net::OK, client.completion_status().error_code);
 }
 
-}  // namespace
+}  // namespace brave_proxying_url_loader_factory_test
