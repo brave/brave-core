@@ -286,6 +286,9 @@ interface ChatUI {
   // if any.
   OnNewDefaultConversation(int32? content_id);
   OnChildFrameBound(pending_receiver<ParentUIFrame> receiver);
+
+  // Notifies that the display mode has changed - standalone vs side panel
+  OnDisplayModeChanged(bool is_standalone);
 };
 
 struct ConversationState {

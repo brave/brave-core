@@ -105,6 +105,7 @@ export default function FullScreen() {
         styles.fullscreen,
         aiChatContext.isMobile && isSmall && styles.mobile,
       )}
+      data-testid='full-page'
     >
       <div className={styles.left}>
         {(!aiChatContext.isMobile || !isSmall) && (

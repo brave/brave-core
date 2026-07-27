@@ -65,6 +65,9 @@ class AIChatUI : public ui::MojoWebUIController {
     embedder_ = embedder;
   }
 
+  // Get a reference to the page handler communicating with the page.
+  ai_chat::AIChatUIPageHandler* page_handler() { return page_handler_.get(); }
+
   static constexpr std::string_view GetWebUIName() { return "AIChatPanel"; }
 
  private:
