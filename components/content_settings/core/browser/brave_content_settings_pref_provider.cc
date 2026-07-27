@@ -1187,7 +1187,8 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
 
         // If Google Sign-In permission feature flag is disabled,
         // we add 3p cookie exception globally for Google/Firebase auth domains.
-        // TODO(ssahib): Remove this once we no longer need to support the flag.
+        // This fallback can be removed once the feature flag is no longer
+        // supported.
         if (!google_sign_in_flag_enabled &&
             prefs_->FindPreference(kGoogleLoginControlType) &&
             prefs_->GetBoolean(kGoogleLoginControlType)) {
