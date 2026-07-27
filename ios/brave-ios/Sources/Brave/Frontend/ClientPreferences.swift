@@ -18,11 +18,10 @@ enum TabBarVisibility: Int, CaseIterable {
 enum BackgroundMediaType: Int, CaseIterable {
   case defaultImages
   case sponsoredImages
-  case sponsoredImagesAndVideos
 
   public var isSponsored: Bool {
     switch self {
-    case .sponsoredImages, .sponsoredImagesAndVideos: return true
+    case .sponsoredImages: return true
     case .defaultImages: return false
     }
   }
@@ -271,14 +270,14 @@ extension Preferences {
     /// - Warning: You should not access this directly but  through ``backgroundMediaType``
     static let backgroundMediaTypeRaw = Option<Int>(
       key: "newtabpage.background-media-type",
-      default: BackgroundMediaType.sponsoredImagesAndVideos.rawValue
+      default: BackgroundMediaType.sponsoredImages.rawValue
     )
 
     /// A  variable to access the ``backgroundMediaTypeRaw`` preference value
     static var backgroundMediaType: BackgroundMediaType {
       get {
         BackgroundMediaType(rawValue: backgroundMediaTypeRaw.value)
-          ?? BackgroundMediaType.sponsoredImagesAndVideos
+          ?? BackgroundMediaType.sponsoredImages
       }
       set { backgroundMediaTypeRaw.value = newValue.rawValue }
     }

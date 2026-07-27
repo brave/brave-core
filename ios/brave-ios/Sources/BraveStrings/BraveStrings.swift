@@ -4230,14 +4230,6 @@ extension Strings {
       comment:
         "A selection to let the users see sponsored image backgrounds when opening a new tab."
     )
-    public static let settingsSponsoredImagesAndVideosSelection = NSLocalizedString(
-      "ntp.settingsSponsoredImagesAndVideosSelection",
-      tableName: "BraveShared",
-      bundle: .module,
-      value: "Sponsored Images & Videos",
-      comment:
-        "A selection to let the users see sponsored image and video backgrounds when opening a new tab."
-    )
     public static let settingsAutoOpenKeyboard = NSLocalizedString(
       "ntp.settingsAutoOpenKeyboard",
       tableName: "BraveShared",
