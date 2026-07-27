@@ -181,7 +181,13 @@ extension BrowserViewController: TabDelegate {
 
     let linkPreview: UIContextMenuContentPreviewProvider? = { [unowned self, weak tab] in
       guard let tab else { return nil }
-      return LinkPreviewViewController(url: url, for: tab, browserController: self)
+      return LinkPreviewViewController(
+        url: url,
+        for: tab,
+        policyDecider: self,
+        tabDelegate: self,
+        downloadDelegate: self
+      )
     }
 
     let linkPreviewProvider = Preferences.General.enableLinkPreview.value ? linkPreview : nil
