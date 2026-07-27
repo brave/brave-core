@@ -178,7 +178,9 @@ TEST_F(BraveProxyingWebSocketTest,
                       &downstream_header_client_called);
 
   EXPECT_TRUE(downstream_header_client_called);
-  EXPECT_EQ("1", final_headers.GetHeader("X-Downstream").value_or(""));
+  const auto downstream_header = final_headers.GetHeader("X-Downstream");
+  ASSERT_TRUE(downstream_header.has_value());
+  EXPECT_EQ("1", *downstream_header);
 }
 
 TEST_F(BraveProxyingWebSocketTest,
@@ -189,7 +191,9 @@ TEST_F(BraveProxyingWebSocketTest,
                       &downstream_header_client_called);
 
   EXPECT_TRUE(downstream_header_client_called);
-  EXPECT_EQ("1", final_headers.GetHeader("X-Original").value_or(""));
+  const auto original_header = final_headers.GetHeader("X-Original");
+  ASSERT_TRUE(original_header.has_value());
+  EXPECT_EQ("1", *original_header);
 }
 
 }  // namespace
