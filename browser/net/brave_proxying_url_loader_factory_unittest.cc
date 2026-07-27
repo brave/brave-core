@@ -77,9 +77,8 @@ class BraveProxyingURLLoaderFactoryTest : public testing::Test {
                                   net::MutableNetworkTrafficAnnotationTag());
   }
 
-  network::ResourceRequest CreateRequest(
-      const GURL& url,
-      std::optional<url::Origin> initiator) {
+  network::ResourceRequest CreateRequest(const GURL& url,
+                                         std::optional<url::Origin> initiator) {
     network::ResourceRequest request;
     request.url = url;
     request.request_initiator = std::move(initiator);
