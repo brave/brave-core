@@ -24,6 +24,7 @@
 #include "chrome/test/base/testing_profile.h"
 #include "content/public/browser/content_browser_client.h"
 #include "content/public/browser/global_routing_id.h"
+#include "content/public/test/browser_task_environment.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
@@ -145,7 +146,7 @@ class BraveProxyingWebSocketTest : public testing::Test {
               base::BindLambdaForTesting(
                   [&](int result,
                       const std::optional<net::HttpRequestHeaders>& headers,
-                      const std::optional<base::Value::Dict>&
+                      std::optional<base::DictValue>
                           extended_net_log_events) {
                     EXPECT_EQ(net::OK, result);
                     ASSERT_TRUE(headers);
