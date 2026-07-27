@@ -19,7 +19,7 @@ function installProxy(cb) {
       },
       apply: function () {
         cb()
-        return wrap(Reflect.apply(...arguments))
+        return Reflect.apply(...arguments)
       },
     })
   }
