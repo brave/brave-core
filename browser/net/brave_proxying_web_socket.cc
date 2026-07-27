@@ -12,7 +12,7 @@
 #include "base/check_op.h"
 #include "base/functional/bind.h"
 #include "base/memory/scoped_refptr.h"
-#include "base/strings/str_format.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "brave/browser/net/brave_request_handler.h"
 #include "brave/browser/net/url_context.h"
 #include "brave/components/constants/network_constants.h"
@@ -253,7 +253,7 @@ void BraveProxyingWebSocket<T>::OnConnectionEstablished(
   }
 
   response_.headers =
-      base::MakeRefCounted<net::HttpResponseHeaders>(base::StrFormat(
+      base::MakeRefCounted<net::HttpResponseHeaders>(absl::StrFormat(
           "HTTP/%d.%d %d %s", handshake_response_->http_version.major_value(),
           handshake_response_->http_version.minor_value(),
           handshake_response_->status_code, handshake_response_->status_text));
