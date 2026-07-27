@@ -168,16 +168,16 @@ void StateBase::ResetPasswordPasswordFinalize(
       MakeCalledInWrongStateError<mojom::ResetPasswordError>());
 }
 
-void StateBase::LoginInitialize(mojom::Service,
-                                const std::string&,
-                                const std::string&,
-                                LoginInitializeCallback callback) {
+void StateBase::LoginStep1(mojom::Service initiating_service,
+                           const std::string& email,
+                           const std::string& serialized_ke1,
+                           LoginStep1Callback callback) {
   std::move(callback).Run(MakeCalledInWrongStateError<mojom::LoginError>());
 }
 
-void StateBase::LoginFinalize(const std::string&,
-                              const std::string&,
-                              LoginFinalizeCallback callback) {
+void StateBase::LoginStep2(const std::string& encrypted_login_token,
+                           const std::string& client_mac,
+                           LoginStep2Callback callback) {
   std::move(callback).Run(MakeCalledInWrongStateError<mojom::LoginError>());
 }
 
