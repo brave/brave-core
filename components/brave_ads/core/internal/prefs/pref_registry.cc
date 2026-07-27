@@ -61,8 +61,6 @@ void RegisterProfilePrefs(PrefRegistrySimple* const registry) {
   registry->RegisterListPref(prefs::kSaveAds);
   registry->RegisterListPref(prefs::kMarkedAsInappropriate);
 
-  registry->RegisterBooleanPref(prefs::kHasMigratedClientState, false);
-
   registry->RegisterStringPref(prefs::kBrowserVersionNumber, "");
 
   // Ads service prefs.
