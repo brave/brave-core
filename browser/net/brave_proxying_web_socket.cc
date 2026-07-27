@@ -170,7 +170,9 @@ void BraveProxyingWebSocket<T>::WebSocketFactoryRun(
         trusted_header_client) {
   DCHECK(!forwarding_handshake_client_);
   proxy_url_ = url;
-  proxy_auth_handler_.Bind(std::move(auth_handler));
+  if (auth_handler) {
+    proxy_auth_handler_.Bind(std::move(auth_handler));
+  }
 
   if (trusted_header_client) {
     proxy_trusted_header_client_.Bind(std::move(trusted_header_client));
