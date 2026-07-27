@@ -68,6 +68,16 @@ struct PolkadotMockRpc {
   void RejectFinalizedBlockHeader();
   void RejectGenesisBlockHash();
   void RejectRuntimeVersion();
+
+  // Respond to an individual step of the signing-payload assembly with a
+  // successful JSON-RPC response whose "result" is null (as Substrate nodes may
+  // do when overloaded) rather than a JSON-RPC error. Configure exactly one
+  // before calling AddReqResPairs() to exercise a specific null-result path.
+  void ReturnNullInitialChainHeader();
+  void ReturnNullParentBlockHeader();
+  void ReturnNullFinalizedHead();
+  void ReturnNullFinalizedBlockHeader();
+  void ReturnNullGenesisBlockHash();
   void SetSenderPubKey(
       base::span<uint8_t, kPolkadotSubstrateAccountIdSize> pubkey);
   void SetExpectedExtrinsic(std::string extrinsic);
@@ -165,6 +175,12 @@ struct PolkadotMockRpc {
   bool reject_finalized_block_header_ = false;
   bool reject_genesis_block_hash_ = false;
   bool reject_runtime_version_ = false;
+
+  bool null_initial_chain_header_ = false;
+  bool null_parent_block_header_ = false;
+  bool null_finalized_head_ = false;
+  bool null_finalized_block_header_ = false;
+  bool null_genesis_block_hash_ = false;
 };
 
 // Build metadata from a known relay/parachain name returned by system_chain.
