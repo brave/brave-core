@@ -37,22 +37,32 @@ const FBMD_HEADER_HEX_LEN: usize = 6;
 const FBMD_CHUNK_HEX_LEN: usize = 8;
 
 pub fn remove_iptc_metadata(data: &[u8]) -> Vec<u8> {
-    // Brave plasters //third_party/rust/image to enable jpeg/png/tiff/webp
-    // (Chromium ships bmp-only for Skia). See
-    // rewrite/third_party/rust/image/v0_25/BUILD.gn.yaml.
-    match image::guess_format(data) {
-        Ok(_) => {
-            let mut out = data.to_vec();
-            scrub_fbmd_tracking(&mut out);
-            out
-        }
-        Err(_) => Vec::new(),
+    if !is_supported_image(data) {
+        return Vec::new();
     }
+    let mut out = data.to_vec();
+    scrub_fbmd_tracking(&mut out);
+    out
+}
+
+/// Magic-byte check for formats we may receive from downloads (JPEG/PNG).
+/// FBMD scrubbing currently only mutates JPEG; PNG is accepted and returned
+/// unchanged when no FBMD is present.
+fn is_supported_image(data: &[u8]) -> bool {
+    is_jpeg(data) || is_png(data)
+}
+
+fn is_jpeg(data: &[u8]) -> bool {
+    data.starts_with(&[0xff, 0xd8])
+}
+
+fn is_png(data: &[u8]) -> bool {
+    data.starts_with(b"\x89PNG\r\n\x1a\n")
 }
 
 /// Locates IPTC Special Instructions and zeroes FBMD tracking chunks in place.
 fn scrub_fbmd_tracking(data: &mut [u8]) {
-    if data.starts_with(&[0xff, 0xd8]) {
+    if is_jpeg(data) {
         scrub_fbmd_in_jpeg(data);
     }
 }

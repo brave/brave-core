@@ -529,13 +529,6 @@ rustflags += [
 license_files = ['../../../../../common/licenses/Apache-2.0']
 extra_kv = { allow_unsafe = false }
 
-[crate.image]
-extra_kv = { allow_unsafe = false }
-
-# Used by plastered //third_party/rust/image for WebP encode/decode.
-[crate.image-webp]
-extra_kv = { allow_unsafe = true }
-
 [crate.image_metadata_stripper_cxx]
 extra_kv = { allow_unsafe = false }
 
@@ -987,10 +980,6 @@ if (epoch == "2") {
 }
 ''' , allow_unsafe = false }
 
-# Used by plastered //third_party/rust/image for TIFF encode/decode.
-[crate.tiff]
-extra_kv = { allow_unsafe = true }
-
 [crate.tracing]
 extra_kv = { allow_unsafe = true }
 
@@ -1120,9 +1109,3 @@ extra_kv = { allow_unsafe = false }
 [crate.zmij]
 extra_kv = { allow_unsafe = true }
 
-# Used by plastered //third_party/rust/image for JPEG decode (SIMD unsafe).
-[crate.zune-core]
-extra_kv = { allow_unsafe = true }
-
-[crate.zune-jpeg]
-extra_kv = { allow_unsafe = true }

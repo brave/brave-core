@@ -17,45 +17,17 @@
 
 namespace image_metadata_stripper {
 
-namespace {
-
-bool HasSupportedImageExtension(const base::FilePath& path) {
-  static constexpr const base::FilePath::CharType* kExtensions[] = {
-      FILE_PATH_LITERAL(".jpg"),  FILE_PATH_LITERAL(".jpeg"),
-      FILE_PATH_LITERAL(".jpe"),  FILE_PATH_LITERAL(".png"),
-      FILE_PATH_LITERAL(".webp"), FILE_PATH_LITERAL(".tif"),
-      FILE_PATH_LITERAL(".tiff"),
-  };
-  const base::FilePath::StringType ext = path.FinalExtension();
-  for (const auto* supported : kExtensions) {
-    if (base::FilePath::CompareEqualIgnoreCase(ext, supported)) {
-      return true;
-    }
-  }
-  return false;
-}
-
-bool IsSupportedImageFile(const base::FilePath& path) {
-  return !path.empty() && HasSupportedImageExtension(path);
-}
-
-}  // namespace
-
-void RemoveIptcMetadata(const base::FilePath& file_path) {
-  if (!IsSupportedImageFile(file_path)) {
-    return;
-  }
-
+bool RemoveIptcMetadata(const base::FilePath& file_path) {
   if (!base::PathExists(file_path)) {
     DVLOG(1) << "IPTC strip skipped; file missing: " << file_path;
-    return;
+    return false;
   }
 
   std::optional<std::vector<uint8_t>> file_bytes =
       base::ReadFileToBytes(file_path);
   if (!file_bytes.has_value()) {
     DVLOG(1) << "IPTC strip failed; could not read: " << file_path;
-    return;
+    return false;
   }
 
   std::vector<uint8_t> stripped = base::ToVector(
@@ -63,16 +35,19 @@ void RemoveIptcMetadata(const base::FilePath& file_path) {
   if (stripped.empty()) {
     // Unrecognized/invalid image bytes — leave the file unchanged.
     DVLOG(1) << "IPTC strip skipped; unrecognized image: " << file_path;
-    return;
+    return true;
   }
 
   if (stripped == *file_bytes) {
-    return;
+    return true;
   }
 
   if (!base::WriteFile(file_path, base::as_byte_span(stripped))) {
     DVLOG(1) << "IPTC strip failed; could not write: " << file_path;
+    return false;
   }
+
+  return true;
 }
 
 }  // namespace image_metadata_stripper

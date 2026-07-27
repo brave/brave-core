@@ -14,7 +14,7 @@ namespace image_metadata_stripper {
 // |file_path| in place via the Rust FFI. Returns true on success, if the file
 // is not a supported image, or if no FBMD payload was present. Returns false
 // only on I/O failure for a supported image path.
-void RemoveIptcMetadata(const base::FilePath& file_path);
+bool RemoveIptcMetadata(const base::FilePath& file_path);
 
 }  // namespace image_metadata_stripper
 

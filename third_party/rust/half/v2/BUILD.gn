@@ -41,11 +41,6 @@ cargo_crate("lib") {
   allow_unsafe = true
 
   deps = [ "//brave/third_party/rust/cfg_if/v1:lib" ]
-  features = [
-    "alloc",
-    "default",
-    "std",
-  ]
   rustenv = []
   rustflags = []
 

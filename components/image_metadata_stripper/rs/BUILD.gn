@@ -14,6 +14,4 @@ rust_static_library("rust_lib") {
   edition = "2021"
   sources = [ "src/lib.rs" ]
   cxx_bindings = [ "src/lib.rs" ]
-
-  deps = [ "//third_party/rust/image/v0_25:lib" ]
 }
