@@ -112,15 +112,19 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorHardwareConcurrencyFarblingBrowserTest,
   ASSERT_GE(real_value, 2);
 
   // Farbling level: balanced (default)
-  // navigator.hardwareConcurrency should be greater than or equal to 4
-  // (or equal to real_value if real_value < 4) and less than or equal to the
-  // real value
   SetFingerprintingDefault();
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), farbling_url()));
   int fake_value =
       content::EvalJs(contents(), kHardwareConcurrencyScript).ExtractInt();
-  EXPECT_GE(fake_value, std::min(4, real_value));
-  EXPECT_LE(fake_value, real_value);
+
+  const int min_processors_for_farbling = 4;
+
+  if (real_value < min_processors_for_farbling) {
+    EXPECT_EQ(real_value, fake_value);
+  } else {
+    EXPECT_GE(fake_value, std::min(4, real_value));
+    EXPECT_LE(fake_value, real_value);
+  }
 
   // Farbling level: maximum
   // navigator.hardwareConcurrency should be greater than or equal to 4
@@ -172,8 +176,15 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorHardwareConcurrencyFarblingBrowserTest,
   int fake_value;
   base::StringToInt(content::EvalJs(contents(), kTitleScript).ExtractString(),
                     &fake_value);
-  EXPECT_GE(fake_value, std::min(4, real_value));
-  EXPECT_LE(fake_value, real_value);
+  
+  const int min_processors_for_farbling = 4;
+
+  if (real_value < min_processors_for_farbling) {
+    EXPECT_EQ(real_value, fake_value);
+  } else {
+    EXPECT_GE(fake_value, std::min(4, real_value));
+    EXPECT_LE(fake_value, real_value);
+  }
 
   // Farbling level: maximum
   BlockFingerprinting();
