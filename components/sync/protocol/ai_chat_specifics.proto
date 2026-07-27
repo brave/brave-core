@@ -80,7 +80,9 @@ message AIChatConversationSpecifics {
     optional string uuid = 1;
     // UUID of the conversation this entry belongs to.
     optional string conversation_uuid = 2;
-    optional int64 date_unix_epoch_micros = 3;
+    // Microseconds since the Windows epoch (1601). Mirrors
+    // mojom::ConversationTurn::created_time.
+    optional int64 created_time_windows_epoch_micros = 3;
     optional string entry_text = 4;
     // Optional user-invisible override prompt sent to the AI engine.
     optional string prompt = 5;
@@ -164,15 +166,15 @@ message AIChatUploadedFile {
   optional AIChatCompressibleString extracted_text = 6;
 }
 
-// An event within a conversation entry.
+// An event within a conversation entry. Events are ordered by their position
+// in the repeated |events| field of the parent Entry.
 message AIChatEntryEventProto {
-  optional int32 event_order = 1;
   oneof event {
-    AIChatCompressibleString completion = 2;
-    AIChatSearchQueriesEvent search_queries = 3;
-    AIChatWebSourcesEvent web_sources = 4;
-    AIChatInlineSearchEvent inline_search = 5;
-    AIChatToolUseEvent tool_use = 6;
+    AIChatCompressibleString completion = 1;
+    AIChatSearchQueriesEvent search_queries = 2;
+    AIChatWebSourcesEvent web_sources = 3;
+    AIChatInlineSearchEvent inline_search = 4;
+    AIChatToolUseEvent tool_use = 5;
   }
 }
 
