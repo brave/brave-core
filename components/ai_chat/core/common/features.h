@@ -105,7 +105,8 @@ bool IsAIChatGlobalSidePanelEverywhereEnabled();
 // Moves the full-page AI Chat conversation into the side panel when an
 // in-conversation link is clicked, and back into a tab when opening the
 // conversation full-page, transferring the live WebContents to preserve state.
-// Desktop only; disabled by default.
+// Desktop only.
+// https://github.com/brave/brave-browser/issues/57047
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 BASE_DECLARE_FEATURE(kAIChatMoveFullPageToSidePanel);
 
