@@ -482,9 +482,6 @@ export enum WalletRoutes {
   Market = '/crypto/explore/market',
   MarketSub = '/crypto/explore/market/:coingeckoId?',
 
-  // Web3
-  Web3 = '/crypto/explore/web3',
-
   // accounts
   Accounts = '/crypto/accounts',
   Account = '/crypto/accounts/:accountId/:selectedTab?',
@@ -859,7 +856,6 @@ export type NavIDTypes =
   | 'available_assets'
   | 'bridge'
   | 'explore'
-  | 'web3'
   | 'connections'
 
 export type AccountPageTabs =

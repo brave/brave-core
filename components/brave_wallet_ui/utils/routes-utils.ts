@@ -109,11 +109,6 @@ export function isPersistableSessionRoute(
      */
     || route.includes(WalletRoutes.Market + '/')
     /**
-     * Web3 route uses a query param to determine the
-     * dappCategory and can not be exact matched.
-     */
-    || route.includes(WalletRoutes.Web3)
-    /**
      * Insure that the Connections route is an exact match.
      */
     || routePath === WalletRoutes.Connections

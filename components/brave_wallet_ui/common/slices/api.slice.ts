@@ -45,7 +45,6 @@ import { transactionEndpoints } from './endpoints/transaction.endpoints'
 import { swapEndpoints } from './endpoints/swap.endpoints'
 import { encryptionEndpoints } from './endpoints/encryption.endpoints'
 import { signingEndpoints } from './endpoints/signing.endpoints'
-import { dappRadarEndpoints } from './endpoints/dapp_radar.endpoints'
 import { meldIntegrationEndpoints } from './endpoints/meld_integration.endpoints'
 import { zcashEndpoints } from './endpoints/zcash.endpoints'
 
@@ -150,8 +149,6 @@ export function createWalletApi() {
       .injectEndpoints({ endpoints: encryptionEndpoints })
       // Message Signing endpoints
       .injectEndpoints({ endpoints: signingEndpoints })
-      // dApp Radar Endpoints
-      .injectEndpoints({ endpoints: dappRadarEndpoints })
       // meld integration endpoints
       .injectEndpoints({ endpoints: meldIntegrationEndpoints })
       // zcash endpoints
@@ -258,7 +255,6 @@ export const {
   useGetTokenInfoQuery,
   useGetTokenSpotPricesQuery,
   useGetTokensRegistryQuery,
-  useGetTopDappsQuery,
   useGetTransactionQuery,
   useGetTransactionsQuery,
   useGetUserTokensRegistryQuery,
