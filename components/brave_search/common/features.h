@@ -69,6 +69,25 @@ extern const base::FeatureParam<bool> kBackupResultsAllowCosmeticAssets;
 // If true, allows requests that don't match any known category through
 // the URL loader throttle.
 extern const base::FeatureParam<bool> kBackupResultsAllowUnclassifiedRequests;
+// Controls farbling behavior. 0 = use default setting. >0 = force enable
+// <0 = force disable
+extern const base::FeatureParam<int> kBackupResultsFarbling;
+// If true (default), seeds the navigation history with the origin root
+// before loading the target URL. If false, skips navigation history seeding.
+extern const base::FeatureParam<bool> kBackupResultsHistorySeed;
+// If false (default), resizes the backup results WebContents to 0x0.
+// If true, uses the last recorded or randomized view size.
+extern const base::FeatureParam<bool> kBackupResultsZeroSize;
+// Controls the language list used for navigator.languages.
+// Valid values: "" (no override), "original" (use the
+// original profile's full accept-language list), "primary_single" (use only
+// the first language from the original profile), "primary_multiple" (use all
+// languages from the original profile that share the primary language code),
+// or a custom comma-separated language list (e.g. "en-US,en,fr").
+extern const base::FeatureParam<std::string> kBackupResultsRendererLanguages;
+// Controls the language list used for the Accept-Language HTTP header.
+// Same value format as kBackupResultsRendererLanguages.
+extern const base::FeatureParam<std::string> kBackupResultsLanguagesHeader;
 
 }  // namespace features
 }  // namespace brave_search
