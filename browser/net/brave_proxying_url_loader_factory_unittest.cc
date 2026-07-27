@@ -79,10 +79,10 @@ class BraveProxyingURLLoaderFactoryTest : public testing::Test {
 
   network::ResourceRequest CreateRequest(
       const GURL& url,
-      const std::optional<url::Origin>& initiator) {
+      std::optional<url::Origin> initiator) {
     network::ResourceRequest request;
     request.url = url;
-    request.request_initiator = initiator;
+    request.request_initiator = std::move(initiator);
     return request;
   }
 
