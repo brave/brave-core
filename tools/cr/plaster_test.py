@@ -8,6 +8,7 @@ import unittest
 from pathlib import Path
 import argparse
 import contextlib
+import copy
 import hashlib
 import io
 import json
@@ -1631,6 +1632,20 @@ class RewriterFormsTest(unittest.TestCase):
             source.replace('{\n  Upstream();', '{\n  if (!ok) return;\n'
                            '  Upstream();'))
 
+    def test_preempt_function_impl_constructor(self):
+        # A constructor has no return type, so the matcher's `return_type`
+        # capture cannot resolve for it. This op never asks for that capture,
+        # so the rewrite still applies -- captures are resolved lazily.
+        result = self._apply(
+            'ctor.cc', 'C::C() : x_(1) {\n  Init();\n}\n', 'substitutions:\n'
+            '  - description: skip upstream init when Brave owns it\n'
+            '    preempt_function_impl:\n'
+            '      function_name: C::C\n'
+            "      return_if: 'BraveOwnsInit()'\n")
+        self.assertEqual(
+            result, 'C::C() : x_(1) {\n'
+            '  if (BraveOwnsInit()) return;\n  Init();\n}\n')
+
     def test_preempt_function_impl_targets_named_function_only(self):
         # Only the named function's body is touched, not a sibling in the same
         # file.
@@ -2329,7 +2344,8 @@ class RewriterFormsTest(unittest.TestCase):
             '      code: |-\n'
             '        RecordBraveMetric();\n')
         self.assertEqual(
-            result, 'void C::Foo() {\n  [&]() {\n  Upstream();\n  }();\n'
+            result,
+            'void C::Foo() {\n  [&]() -> void {\n  Upstream();\n  }();\n'
             '  RecordBraveMetric();\n}\n')
 
     def test_after_function_impl_captures_result(self):
@@ -2345,8 +2361,99 @@ class RewriterFormsTest(unittest.TestCase):
             '      code: |-\n'
             '        return BraveAdjust(score);\n')
         self.assertEqual(
-            result, 'int C::Compute() {\n  auto score = [&]() {\n'
+            result, 'int C::Compute() {\n  int score = [&]() -> int {\n'
             '  return real_;\n  }();\n  return BraveAdjust(score);\n}\n')
+
+    def test_after_function_impl_reference_return_type(self):
+        # The lambda and the result variable both state the return type exactly
+        # as upstream spells it. `const` leads the type as a separate node and
+        # the `&` hangs off the declarator, so neither is part of the `type`
+        # field -- a naive capture would yield `std::vector<int>`, silently
+        # turning the reference return into a copy.
+        result = self._apply(
+            'append_ref.cc',
+            'const std::vector<int>& C::Items() const {\n  return items_;\n}\n',
+            'substitutions:\n'
+            '  - description: let Brave filter the returned items\n'
+            '    after_function_impl:\n'
+            '      function_name: C::Items\n'
+            '      result_var: items\n'
+            '      code: |-\n'
+            '        return BraveFilter(items);\n')
+        self.assertEqual(
+            result, 'const std::vector<int>& C::Items() const {\n'
+            '  const std::vector<int>& items = [&]()'
+            ' -> const std::vector<int>& {\n'
+            '  return items_;\n  }();\n  return BraveFilter(items);\n}\n')
+
+    def test_after_function_impl_pointer_return_type(self):
+        # The `*` lives on the declarator, not the type field.
+        result = self._apply(
+            'append_ptr.cc', 'Widget* C::GetWidget() {\n  return w_;\n}\n',
+            'substitutions:\n'
+            '  - description: fall back to the Brave widget\n'
+            '    after_function_impl:\n'
+            '      function_name: C::GetWidget\n'
+            '      result_var: widget\n'
+            '      code: |-\n'
+            '        return widget ? widget : BraveWidget();\n')
+        self.assertEqual(
+            result, 'Widget* C::GetWidget() {\n'
+            '  Widget* widget = [&]() -> Widget* {\n'
+            '  return w_;\n  }();\n'
+            '  return widget ? widget : BraveWidget();\n}\n')
+
+    def test_after_function_impl_trailing_return_type(self):
+        # With a trailing return type the `type` field is a bare `auto`, so the
+        # capture takes the trailing type instead -- its first candidate.
+        result = self._apply(
+            'append_trailing.cc',
+            'auto C::Name() -> const char* {\n  return name_;\n}\n',
+            'substitutions:\n'
+            '  - description: let Brave rename\n'
+            '    after_function_impl:\n'
+            '      function_name: C::Name\n'
+            '      result_var: name\n'
+            '      code: |-\n'
+            '        return BraveName(name);\n')
+        self.assertEqual(
+            result, 'auto C::Name() -> const char* {\n'
+            '  const char* name = [&]() -> const char* {\n'
+            '  return name_;\n  }();\n  return BraveName(name);\n}\n')
+
+    def test_after_function_impl_multiline_signature_return_type(self):
+        # A return type split across lines is spliced into generated code as a
+        # single expression, so its whitespace collapses to single spaces.
+        result = self._apply(
+            'append_multiline_sig.cc',
+            'const std::map<int, std::string>&\nC::Map() const {\n'
+            '  return m_;\n}\n', 'substitutions:\n'
+            '  - description: let Brave extend the map\n'
+            '    after_function_impl:\n'
+            '      function_name: C::Map\n'
+            '      result_var: m\n'
+            '      code: |-\n'
+            '        return BraveMap(m);\n')
+        self.assertEqual(
+            result, 'const std::map<int, std::string>&\nC::Map() const {\n'
+            '  const std::map<int, std::string>& m = [&]()'
+            ' -> const std::map<int, std::string>& {\n'
+            '  return m_;\n  }();\n  return BraveMap(m);\n}\n')
+
+    def test_after_function_impl_constructor(self):
+        # A constructor has no return type to read, so the capture falls
+        # through to `void` -- which is what its wrapped body returns.
+        result = self._apply(
+            'append_ctor.cc', 'C::C() : x_(1) {\n  Init();\n}\n',
+            'substitutions:\n'
+            '  - description: run Brave setup after the upstream body\n'
+            '    after_function_impl:\n'
+            '      function_name: C::C\n'
+            '      code: |-\n'
+            '        BraveInit();\n')
+        self.assertEqual(
+            result, 'C::C() : x_(1) {\n  [&]() -> void {\n  Init();\n  }();\n'
+            '  BraveInit();\n}\n')
 
     def test_after_function_impl_wraps_early_returns(self):
         # Every `return` in the upstream body only returns from the lambda, so
@@ -2365,7 +2472,7 @@ class RewriterFormsTest(unittest.TestCase):
             '      code: |-\n'
             '        BraveCleanup();\n')
         self.assertEqual(
-            result, 'void C::Foo() {\n  [&]() {\n'
+            result, 'void C::Foo() {\n  [&]() -> void {\n'
             '  if (!ready_) {\n    return;\n  }\n  Work();\n  }();\n'
             '  BraveCleanup();\n}\n')
 
@@ -2379,7 +2486,8 @@ class RewriterFormsTest(unittest.TestCase):
             '      code: |-\n'
             '        AfterFree(x);\n')
         self.assertEqual(
-            result, 'void FreeFunc(int x) {\n  [&]() {\n  Upstream(x);\n'
+            result,
+            'void FreeFunc(int x) {\n  [&]() -> void {\n  Upstream(x);\n'
             '  }();\n  AfterFree(x);\n}\n')
 
     def test_after_function_impl_multiline_code_indented(self):
@@ -2396,7 +2504,8 @@ class RewriterFormsTest(unittest.TestCase):
             '\n'
             '        Track();\n')
         self.assertEqual(
-            result, 'void C::Foo() {\n  [&]() {\n  Upstream();\n  }();\n'
+            result,
+            'void C::Foo() {\n  [&]() -> void {\n  Upstream();\n  }();\n'
             '  Prepare();\n\n  Track();\n}\n')
 
     def test_after_function_impl_targets_named_function_only(self):
@@ -2412,7 +2521,8 @@ class RewriterFormsTest(unittest.TestCase):
             '        after_b();\n')
         self.assertEqual(
             result, 'void C::A() {\n  a();\n}\n\n'
-            'void C::B() {\n  [&]() {\n  b();\n  }();\n  after_b();\n}\n')
+            'void C::B() {\n  [&]() -> void {\n  b();\n  }();\n'
+            '  after_b();\n}\n')
 
     def test_after_function_impl_overloads_need_count(self):
         result = self._apply(
@@ -2426,9 +2536,10 @@ class RewriterFormsTest(unittest.TestCase):
             '      code: |-\n'
             '        done();\n')
         self.assertEqual(
-            result,
-            'void C::F() {\n  [&]() {\n  a();\n  }();\n  done();\n}\n\n'
-            'void C::F(int x) {\n  [&]() {\n  b();\n  }();\n  done();\n}\n')
+            result, 'void C::F() {\n  [&]() -> void {\n  a();\n  }();\n'
+            '  done();\n}\n\n'
+            'void C::F(int x) {\n  [&]() -> void {\n  b();\n  }();\n'
+            '  done();\n}\n')
 
     def test_after_function_impl_overload_count_mismatch_fails(self):
         with self.assertRaises(plaster.PlasterApplyError):
@@ -3064,6 +3175,156 @@ class RewritersEvalTest(unittest.TestCase):
         self._assert_invalid(lambda spec: spec['ast.rewriter'][
             'cxx.make_virtual'].update({'first_match': 'yes'}))
 
+    # -- matcher captures ---------------------------------------------------
+
+    # The candidate list `_with_capture` gives a capture by default.
+    _RET_CANDIDATES = ({'text': 'RET'}, )
+
+    @staticmethod
+    def _with_capture(spec: dict, candidates=_RET_CANDIDATES) -> dict:
+        """Bind `$RET` in the matcher template and expose it as a capture."""
+        matcher = spec['ast.matcher']['cxx.find_class_method_decl']
+        matcher['template'] += 'has:\n  field: type\n  pattern: $RET\n'
+        matcher['result']['captures'] = {'return_type': list(candidates)}
+        return spec
+
+    def test_rewriter_may_use_matcher_capture(self):
+        # A capture is not an input: the rewriter names it in `replace` without
+        # declaring it, and the engine fills it per match.
+        spec = self._with_capture(self._valid_spec())
+        spec['ast.rewriter']['cxx.make_virtual']['replace']['replace'] = (
+            'virtual {return_type} ')
+        rewriters = plaster.RewritersEval(repr(spec))
+        self.assertEqual(
+            rewriters.matcher('cxx.find_class_method_decl')['result']
+            ['captures']['return_type'], [{
+                'text': 'RET'
+            }])
+
+    def test_matcher_capture_may_go_unused(self):
+        # Matchers are shared, so a capture one rewriter needs is dead weight
+        # to another. Unlike an input, that is not an error.
+        rewriters = plaster.RewritersEval(
+            repr(self._with_capture(self._valid_spec())))
+        self.assertIn(
+            'return_type',
+            rewriters.matcher('cxx.find_class_method_decl')['result']
+            ['captures'])
+
+    def test_matcher_capture_reads_unbound_metavariable(self):
+        # `$NOPE` appears in no template, so the capture could never resolve.
+        self._assert_invalid(
+            lambda s: self._with_capture(s, [{
+                'text': 'NOPE'
+            }]), 'never binds')
+
+    def test_matcher_capture_span_reads_unbound_metavariable(self):
+        self._assert_invalid(
+            lambda s: self._with_capture(s, [{
+                'span': ['RET', 'NOPE']
+            }]), 'never binds')
+
+    def test_matcher_capture_span_needs_two_metavariables(self):
+        self._assert_invalid(
+            lambda s: self._with_capture(s, [{
+                'span': ['RET']
+            }]))
+
+    def test_matcher_capture_needs_a_candidate(self):
+        self._assert_invalid(lambda s: self._with_capture(s, []))
+
+    def test_matcher_capture_candidate_needs_known_kind(self):
+        self._assert_invalid(
+            lambda s: self._with_capture(s, [{
+                'node': 'RET'
+            }]))
+
+    def test_matcher_capture_literal_candidate(self):
+        # A literal reads no metavariable, so it always resolves -- it is the
+        # way to give a capture a fallback for code that binds nothing.
+        rewriters = plaster.RewritersEval(
+            repr(
+                self._with_capture(self._valid_spec(), [{
+                    'text': 'RET'
+                }, {
+                    'literal': 'void'
+                }])))
+        self.assertEqual(
+            rewriters.matcher('cxx.find_class_method_decl')['result']
+            ['captures']['return_type'][-1], {'literal': 'void'})
+
+    def test_matcher_capture_literal_must_be_non_empty(self):
+        self._assert_invalid(
+            lambda s: self._with_capture(s, [{
+                'literal': ''
+            }]))
+
+    def test_matcher_capture_metavariable_must_be_upper_case(self):
+        self._assert_invalid(
+            lambda s: self._with_capture(s, [{
+                'text': 'ret'
+            }]))
+
+    def test_rewriter_input_may_not_shadow_a_capture(self):
+        # If both could fill `{return_type}`, which wins would be invisible at
+        # the call site.
+        def mutate(spec):
+            self._with_capture(spec)
+            rewriter = spec['ast.rewriter']['cxx.make_virtual']
+            rewriter['inputs'].append('return_type')
+            rewriter['replace']['replace'] = 'virtual {return_type} '
+
+        self._assert_invalid(mutate, 'shadow')
+
+    # -- optional inputs (`when_set`) ---------------------------------------
+
+    def test_rewriter_when_set_expands_an_optional_input(self):
+        spec = self._valid_spec()
+        rewriter = spec['ast.rewriter']['cxx.make_virtual']
+        rewriter['inputs'].append('result_var')
+        rewriter['when_set'] = {'result_var': 'auto {result_var} = '}
+        rewriter['replace']['replace'] = '{result_var}virtual '
+        rewriters = plaster.RewritersEval(repr(spec))
+        self.assertEqual(
+            rewriters.rewriter('cxx.make_virtual')['when_set'],
+            {'result_var': 'auto {result_var} = '})
+
+    def test_rewriter_when_set_input_must_be_declared(self):
+        self._assert_invalid(
+            lambda s: s['ast.rewriter']['cxx.make_virtual'].update(
+                {'when_set': {
+                    'nope': 'x'
+                }}), 'undeclared input')
+
+    def test_rewriter_when_set_template_placeholder_must_be_declared(self):
+        # A `when_set` template is rendered like any other, so what it reads
+        # must be a declared input or a capture.
+        def mutate(spec):
+            rewriter = spec['ast.rewriter']['cxx.make_virtual']
+            rewriter['inputs'].append('result_var')
+            rewriter['replace']['replace'] = '{result_var}virtual '
+            rewriter['when_set'] = {'result_var': '{undeclared} '}
+
+        self._assert_invalid(mutate, 'undeclared input')
+
+    def test_rewriter_when_set_template_may_read_a_capture(self):
+
+        def mutate(spec):
+            self._with_capture(spec)
+            rewriter = spec['ast.rewriter']['cxx.make_virtual']
+            rewriter['inputs'].append('result_var')
+            rewriter['when_set'] = {
+                'result_var': '{return_type} {result_var} = '
+            }
+            rewriter['replace']['replace'] = '{result_var}virtual '
+            return spec
+
+        spec = self._valid_spec()
+        mutate(spec)
+        rewriters = plaster.RewritersEval(repr(spec))
+        self.assertIn('result_var',
+                      rewriters.rewriter('cxx.make_virtual')['when_set'])
+
 
 # ast-grep matcher templates used to build synthetic RewritersEval specs for
 # the engine tests below. The shipped rewriters.pyl is empty until the ops that
@@ -3292,6 +3553,59 @@ class RunAstGrepTest(unittest.TestCase):
                                  rule_body='kind: not_a_real_kind',
                                  source='int x;\n')
 
+    # -- metavariables ------------------------------------------------------
+
+    # Binds `$TYPE` and `$NAME` always, and `$QUAL` only when the declaration
+    # leads with a qualifier -- the shape a capture's candidate list relies on.
+    _TYPED_METHOD_RULE = ('kind: field_declaration\n'
+                          'all:\n'
+                          '  - has:\n'
+                          '      field: type\n'
+                          '      pattern: $TYPE\n'
+                          '  - has:\n'
+                          '      kind: function_declarator\n'
+                          '      stopBy: end\n'
+                          '      has:\n'
+                          '        field: declarator\n'
+                          '        pattern: $NAME\n'
+                          '  - any:\n'
+                          '      - has:\n'
+                          '          kind: type_qualifier\n'
+                          '          pattern: $QUAL\n'
+                          '      - not:\n'
+                          '          has:\n'
+                          '            kind: type_qualifier\n')
+
+    _TYPED_SRC = 'class C {\n  const int* Foo();\n  void Bar();\n};\n'
+
+    def _typed_matches(self) -> list[plaster.AstMatch]:
+        return plaster.run_ast_grep(language='cpp',
+                                    rule_body=self._TYPED_METHOD_RULE,
+                                    source=self._TYPED_SRC)
+
+    def test_exposes_metavariable_ranges(self):
+        raw = self._TYPED_SRC.encode('utf-8')
+        qualified = self._typed_matches()[0]
+        text = {
+            name: raw[start:end].decode()
+            for name, (start, end) in qualified.metavars.items()
+        }
+        self.assertEqual(text, {'QUAL': 'const', 'TYPE': 'int', 'NAME': 'Foo'})
+        # The span between two metavariables recovers what no single node
+        # holds: the `*` sits on the declarator, the `const` before the type.
+        start = qualified.metavars['QUAL'][0]
+        self.assertEqual(raw[start:qualified.metavars['NAME'][0]].decode(),
+                         'const int* ')
+
+    def test_omits_unbound_metavariables(self):
+        # `Bar` has no leading qualifier, so `$QUAL`'s `any:` branch never
+        # matched and the metavariable is simply absent.
+        plain = self._typed_matches()[1]
+        self.assertEqual(sorted(plain.metavars), ['NAME', 'TYPE'])
+
+    def test_match_without_metavariables_has_none(self):
+        self.assertEqual(self._find('Foo', self._SRC)[0].metavars, {})
+
 
 class AstRewriterTest(unittest.TestCase):
     """Integration tests for plaster.AstRewriter (real ast-grep binary).
@@ -3422,6 +3736,191 @@ class AstRewriterTest(unittest.TestCase):
             rewriter.run(
                 plaster.Operation('cxx.drop_final', {'class_name': 'C'})), 0)
         self.assertEqual(rewriter.content, 'class C {\n};\n')
+
+
+class AstCaptureTest(unittest.TestCase):
+    """Capture resolution and optional inputs (real ast-grep binary).
+
+    Exercises the engine mechanics in isolation from the shipped ops: a matcher
+    that binds three metavariables, a capture whose candidates fall back
+    through them, and a rewriter with an optional input.
+    """
+
+    # `$NAME` always binds; `$TYPE` only when there is a return type (a
+    # constructor has none) and `$QUAL` only on a qualified declaration.
+    # Constructors parse as `declaration`, regular methods as
+    # `field_declaration`.
+    _RULE = ('any:\n'
+             '  - kind: field_declaration\n'
+             '  - kind: declaration\n'
+             'all:\n'
+             '  - has:\n'
+             '      kind: function_declarator\n'
+             '      stopBy: end\n'
+             '      has:\n'
+             '        field: declarator\n'
+             '        pattern: $NAME\n'
+             '        regex: ^{method_name}$\n'
+             '  - any:\n'
+             '      - has:\n'
+             '          field: type\n'
+             '          pattern: $TYPE\n'
+             '      - not:\n'
+             '          has:\n'
+             '            field: type\n'
+             '            pattern: $_\n'
+             '  - any:\n'
+             '      - has:\n'
+             '          kind: type_qualifier\n'
+             '          pattern: $QUAL\n'
+             '      - not:\n'
+             '          has:\n'
+             '            kind: type_qualifier\n')
+
+    _SPEC = {
+        'ast.matcher': {
+            'cxx.find_typed_method': {
+                'template': _RULE,
+                'result': {
+                    'node': 'field_declaration',
+                    'captures': {
+                        'return_type': [
+                            {
+                                'span': ['QUAL', 'NAME']
+                            },
+                            {
+                                'span': ['TYPE', 'NAME']
+                            },
+                        ],
+                    },
+                },
+            },
+        },
+        'ast.rewriter': {
+            'cxx.annotate': {
+                'matcher': 'cxx.find_typed_method',
+                'inputs': ['method_name', 'note'],
+                'replace': {
+                    're_pattern': '$',
+                    'replace': '  // {note}: {return_type}',
+                },
+                'result': {
+                    'node': 'field_declaration'
+                },
+            },
+            'cxx.annotate_optional': {
+                'matcher': 'cxx.find_typed_method',
+                'inputs': ['method_name', 'prefix'],
+                'when_set': {
+                    'prefix': '{prefix} {return_type} -- ',
+                },
+                'replace': {
+                    're_pattern': '$',
+                    'replace': '  // {prefix}done',
+                },
+                'result': {
+                    'node': 'field_declaration'
+                },
+            },
+        },
+    }
+
+    def _run(self, source: str, op: plaster.Operation) -> str:
+        rewriter = plaster.AstRewriter(plaster.RewritersEval(repr(self._SPEC)),
+                                       source)
+        rewriter.run(op)
+        return rewriter.content
+
+    def _annotate(self, source: str, method_name: str = 'Foo') -> str:
+        return self._run(
+            source,
+            plaster.Operation('cxx.annotate', {
+                'method_name': method_name,
+                'note': 'type'
+            }))
+
+    def test_first_candidate_wins(self):
+        # `$QUAL` binds, so the first span candidate resolves and carries the
+        # qualifier and the `*` that flank the `type` field.
+        result = self._annotate('class C {\n  const int* Foo();\n};\n')
+        self.assertIn('// type: const int*', result)
+
+    def test_falls_back_to_later_candidate(self):
+        # No qualifier, so the first candidate cannot resolve and the second
+        # supplies the value.
+        result = self._annotate('class C {\n  int Foo();\n};\n')
+        self.assertIn('// type: int', result)
+
+    def test_collapses_whitespace_in_a_span(self):
+        result = self._annotate('class C {\n  const std::map<int,\n'
+                                '      std::string>&\n      Foo();\n};\n')
+        self.assertIn('// type: const std::map<int, std::string>&', result)
+
+    def test_reversed_span_raises(self):
+        # Both metavariables bind, but the candidate names them in source order
+        # `NAME`..`TYPE` -- backwards. Falling through to the next candidate
+        # would hide a spec bug behind a value derived some other way, so this
+        # is reported instead.
+        spec = copy.deepcopy(self._SPEC)
+        spec['ast.matcher']['cxx.find_typed_method']['result']['captures'] = {
+            'return_type': [{
+                'span': ['NAME', 'TYPE']
+            }, {
+                'literal': 'void'
+            }],
+        }
+        rewriter = plaster.AstRewriter(plaster.RewritersEval(repr(spec)),
+                                       'class C {\n  int Foo();\n};\n')
+        with self.assertRaises(plaster.AstCaptureError) as ctx:
+            rewriter.run(
+                plaster.Operation('cxx.annotate', {
+                    'method_name': 'Foo',
+                    'note': 'type'
+                }))
+        self.assertIn('spans $NAME to $TYPE', str(ctx.exception))
+        self.assertIn('wrong order', str(ctx.exception))
+
+    def test_unresolvable_capture_raises(self):
+        # A constructor binds neither `$QUAL` nor `$TYPE`, so no candidate
+        # applies and the engine refuses rather than splicing an empty type.
+        with self.assertRaises(plaster.AstCaptureError) as ctx:
+            self._annotate('class C {\n  C();\n};\n', method_name='C')
+        message = str(ctx.exception)
+        self.assertIn('cxx.annotate', message)
+        self.assertIn('cannot resolve `return_type`', message)
+        # The diagnostic locates the match and reports what did bind.
+        self.assertIn('line 2', message)
+        self.assertIn('$NAME', message)
+
+    def test_capture_is_only_resolved_when_a_template_asks(self):
+        # `cxx.annotate_optional` names `return_type` only inside `when_set`,
+        # so with the optional input unset the constructor rewrite succeeds.
+        result = self._run(
+            'class C {\n  C();\n};\n',
+            plaster.Operation('cxx.annotate_optional', {
+                'method_name': 'C',
+                'prefix': ''
+            }))
+        self.assertEqual(result, 'class C {\n  C();  // done\n};\n')
+
+    def test_optional_input_expands_when_set(self):
+        result = self._run(
+            'class C {\n  const int* Foo();\n};\n',
+            plaster.Operation('cxx.annotate_optional', {
+                'method_name': 'Foo',
+                'prefix': 'returns'
+            }))
+        self.assertIn('// returns const int* -- done', result)
+
+    def test_optional_input_renders_empty_when_unset(self):
+        result = self._run(
+            'class C {\n  const int* Foo();\n};\n',
+            plaster.Operation('cxx.annotate_optional', {
+                'method_name': 'Foo',
+                'prefix': ''
+            }))
+        self.assertIn('// done', result)
+        self.assertNotIn('--', result)
 
 
 class _FlatAstGrepRewriter(plaster._AstGrepRewriter):
