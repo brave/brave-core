@@ -313,10 +313,10 @@ same binary as the upstream target. The override itself should include no Brave
 header and the upstream target should not need a patched dependency on Brave
 implementation details.
 
-**Wrong: the override includes Brave implementation details and the upstream GN
-file is patched to know about those Brave dependencies.**
+**BAD:**
 
 ```cpp
+// ❌ WRONG - the override includes Brave implementation details
 // chromium_src/chrome/browser/ui/window_feature_controller/window_feature_controller.cc
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 
@@ -329,6 +329,7 @@ bool WindowFeatureController::UsesImmersiveFullscreenMode() const {
 ```
 
 ```diff
+# ❌ WRONG - the upstream GN file knows about Brave implementation dependencies
 # chrome/browser/ui/window_feature_controller/BUILD.gn (patched upstream file)
  source_set("window_feature_controller") {
    sources = [
@@ -344,10 +345,10 @@ bool WindowFeatureController::UsesImmersiveFullscreenMode() const {
  }
 ```
 
-**Correct: the override only calls a forward-declared hook, and the Brave
-implementation target owns the Brave include and dependency wiring.**
+**GOOD:**
 
 ```cpp
+// ✅ CORRECT - the override calls a forward-declared hook
 // chromium_src/chrome/browser/ui/window_feature_controller/window_feature_controller.cc
 class Browser;
 
@@ -376,6 +377,7 @@ std::optional<bool> BraveUsesImmersiveFullscreenMode(bool disabled_at_startup,
 ```
 
 ```gn
+# ✅ CORRECT - a Brave target owns the include and dependency wiring
 # brave/browser/ui/window_feature_controller/BUILD.gn
 source_set("chromium_impl") {
   sources = [
