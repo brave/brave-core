@@ -40,6 +40,7 @@ def GenTests(api):
         api.path.dirs('/b/cache'),
         api.path.files('brave-browser/src/chrome/VERSION'),
         api.env.on_path('gclient', '/dt/gclient'),
+        api.chromium_checkout.git_cache_populated(),
         api.post_process(post_process.StatusSuccess),
         api.post_process(post_process.DropExpectation),
     )
@@ -84,10 +85,12 @@ def GenTests(api):
         api.env.set('MODE', 'invalid_checkout'),
         api.chromium_checkout.with_git_cache(),
         api.chromium_checkout.existing_checkout(),
+        api.chromium_checkout.git_cache_populated(),
         api.env.on_path('gclient', '/dt/gclient'),
         api.step.data('check chrome/VERSION', retcode=1),
         api.post_process(post_process.MustRun, 'check chrome/VERSION'),
-        api.post_process(post_process.MustRun, 'fetch chromium'),
+        api.post_process(post_process.MustRun, 'gclient config'),
+        api.post_process(post_process.MustRun, 'clone from git cache'),
         api.post_process(post_process.StatusSuccess),
         api.post_process(post_process.DropExpectation),
     )

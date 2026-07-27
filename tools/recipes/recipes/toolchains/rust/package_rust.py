@@ -26,7 +26,8 @@ def RunSteps(api: RecipeScriptApi, properties: InputProperties,
              env_properties: EnvProperties) -> None:
     chromium_src = api.chromium_checkout.ensure_checkout(
         ref=properties.chromium_ref,
-        git_cache=env_properties.GIT_CACHE or None)
+        git_cache=env_properties.GIT_CACHE or None,
+        depth=1)
 
     brave_core_root = api.brave_core_checkout.deploy('tools/cr/toolchains')
 
@@ -52,13 +53,18 @@ def GenTests(api):
     yield api.test(
         'linux',
         api.chromium_checkout.with_git_cache(),
+        api.chromium_checkout.git_cache_populated(),
         api.brave_core_checkout.deployed('tools/cr/toolchains'),
         api.properties(brave_subrevision=1, chromium_ref='151.0.7917.1'),
-        api.post_process(post_process.MustRun, 'fetch chromium'),
+        api.post_process(post_process.MustRun, 'clone from git cache'),
         api.post_process(post_process.MustRun, 'fetch tag'),
         api.post_process(post_process.MustRun, 'build rust toolchain'),
         api.post_process(post_process.StepCommandContains,
                          'build rust toolchain', ['--brave-subrevision', '1']),
+        api.post_process(post_process.StepCommandContains,
+                         'git cache populate', ['--depth', '1']),
+        api.post_process(post_process.StepCommandContains,
+                         'git cache populate for ref', ['--depth', '1']),
         api.post_process(post_process.StatusSuccess),
     )
     # Without a git cache, the checkout refuses to run.
