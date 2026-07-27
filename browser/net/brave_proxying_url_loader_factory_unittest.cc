@@ -11,14 +11,15 @@
 #include <utility>
 
 #include "base/functional/bind.h"
+#include "base/functional/callback_helpers.h"
 #include "base/strings/strcat.h"
 #include "base/test/bind.h"
-#include "base/test/task_environment.h"
 #include "brave/browser/net/brave_request_handler.h"
 #include "brave/components/constants/network_constants.h"
 #include "chrome/test/base/testing_profile.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
+#include "content/public/test/browser_task_environment.h"
 #include "net/base/net_errors.h"
 #include "net/http/http_request_headers.h"
 #include "net/http/http_util.h"
@@ -116,15 +117,21 @@ TEST_F(BraveProxyingURLLoaderFactoryTest, BlocksUnsafeNetworkRedirect) {
 }
 
 TEST_F(BraveProxyingURLLoaderFactoryTest,
-       PreservesOriginalInitiatorAcrossBraveRedirect) {
+       TaintsInitiatorOnCrossOriginBraveRedirect) {
   // Brave rewrites clients4.google.com requests to clients4.brave.com via its
   // static redirect rules, exercising the same synthetic-redirect path this
-  // change fixes.
+  // change fixes. Because the redirect is cross-origin, the outgoing request's
+  // initiator must be tainted to an opaque origin, matching Chromium's
+  // WebRequest behavior for step 10 of "4.4. HTTP-redirect fetch"
+  // (https://fetch.spec.whatwg.org/#http-redirect-fetch). The real initiator is
+  // separately retained for BraveRequestInfo via |original_initiator_| so
+  // Shields still attributes the request to the true initiator.
   const GURL request_url("https://clients4.google.com/resource");
   const GURL redirected_url =
       GURL(base::StrCat({"https://", kBraveClients4Proxy, "/resource"}));
   const url::Origin initiator =
       url::Origin::Create(GURL("https://initiator.example"));
+  ASSERT_FALSE(initiator.opaque());
 
   std::optional<url::Origin> redirected_request_initiator;
   test_factory_.SetInterceptor(base::BindLambdaForTesting(
@@ -147,7 +154,8 @@ TEST_F(BraveProxyingURLLoaderFactoryTest,
   client.RunUntilComplete();
 
   ASSERT_TRUE(redirected_request_initiator.has_value());
-  EXPECT_EQ(initiator, *redirected_request_initiator);
+  EXPECT_TRUE(redirected_request_initiator->opaque());
+  EXPECT_NE(initiator, *redirected_request_initiator);
   EXPECT_EQ(net::OK, client.completion_status().error_code);
 }
 
