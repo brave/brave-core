@@ -151,6 +151,7 @@ const MockContext = React.forwardRef<MockContextRef, MockContextProps>(
     return (
       <UntrustedConversationContextProvider
         api={untrustedApi.api}
+        threadUuid={null}
         overrides={overrides}
       >
         {children}

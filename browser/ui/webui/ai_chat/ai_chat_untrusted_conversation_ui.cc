@@ -124,6 +124,15 @@ class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
     OpenURL(GURL(ai_chat::kLeoStorageSupportUrl));
   }
 
+  void GetPluralString(const std::string& key,
+                       int32_t count,
+                       GetPluralStringCallback callback) override {
+    auto iter = std::ranges::find(webui::kAiChatStrings, key,
+                                  &webui::LocalizedString::name);
+    CHECK(iter != webui::kAiChatStrings.end());
+    std::move(callback).Run(l10n_util::GetPluralStringFUTF8(iter->id, count));
+  }
+
   void AddTabToThumbnailTracker(int32_t tab_id) override {
 #if !BUILDFLAG(IS_ANDROID)  // Match thumnbail_tracker.h GN guard
     // Security check: only allow if the conversation has the tab as a task

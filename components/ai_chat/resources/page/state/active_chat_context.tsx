@@ -20,6 +20,10 @@ export interface SelectedChatDetails
   createNewConversation: () => void
   isMainConversation: boolean
   openMainConversation: () => void
+  // The thread currently shown in the side-by-side thread panel, if any.
+  openThreadUuid: string | undefined
+  openThread: (threadUuid: string) => void
+  closeThread: () => void
 }
 
 /**
@@ -35,6 +39,9 @@ export const ActiveChatContext = React.createContext<SelectedChatDetails>({
   createNewConversation: () => {},
   isMainConversation: false,
   openMainConversation: () => {},
+  openThreadUuid: undefined,
+  openThread: () => {},
+  closeThread: () => {},
   // It's ok to stub undefined for now because we don't render children unless
   // we have a value. For convenience we don't need to have this as an optional
   // value.
@@ -78,6 +85,7 @@ export function ActiveChatProvider({
     React.useState<BindConversation.ConversationBindings>()
   const [globalConversationId, setGlobalConversationId] =
     React.useState<string>('')
+  const [openThreadUuid, setOpenThreadUuid] = React.useState<string>()
 
   // Whenever we create a new conversation in global panel mode, that becomes the main conversation.
   React.useEffect(() => {
@@ -124,12 +132,16 @@ export function ActiveChatProvider({
         updateSelectedConversation('')
       },
       isMainConversation,
+      openThreadUuid,
+      openThread: (threadUuid: string) => setOpenThreadUuid(threadUuid),
+      closeThread: () => setOpenThreadUuid(undefined),
     }),
     [
       selectedConversationId,
       updateSelectedConversationId,
       conversationAPI,
       globalConversationId,
+      openThreadUuid,
     ],
   )
 
@@ -137,6 +149,16 @@ export function ActiveChatProvider({
   aiChat.api.useRequestNewConversation(() => {
     details.createNewConversation()
   }, [aiChat.api])
+
+  // Handle child frame requests to open a thread in the side panel
+  aiChat.api.useOpenThread((threadUuid) => {
+    setOpenThreadUuid(threadUuid)
+  }, [aiChat.api])
+
+  // Close any open thread panel when the active conversation changes.
+  React.useEffect(() => {
+    setOpenThreadUuid(undefined)
+  }, [selectedConversationId])
 
   // Only rebind the conversation when a new default is signalled in normal
   // sidebar mode. In global panel mode the conversation persists across tab

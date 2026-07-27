@@ -73,7 +73,10 @@ function App(props: AppProps) {
   }, [api, isConversationLoaded])
 
   return (
-    <UntrustedConversationContextProvider api={api}>
+    <UntrustedConversationContextProvider
+      api={api}
+      threadUuid={props.boundConversation.threadUuid}
+    >
       <Conversation />
     </UntrustedConversationContextProvider>
   )

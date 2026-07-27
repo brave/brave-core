@@ -418,6 +418,11 @@ class ConversationHandler : public mojom::ConversationHandler,
   // to.
   std::vector<mojom::ConversationTurnPtr>& GetChatHistory(
       std::optional<std::string_view> thread_uuid);
+  // If |thread_uuid| names a known thread, increments its entry count to
+  // account for a newly added entry and notifies observers. When this is the
+  // thread's first entry, observers also learn the thread now exists before its
+  // first entry is reported. A no-op otherwise.
+  void MaybeHandleNewThreadEntry(const std::optional<std::string>& thread_uuid);
   // Builds the conversation history to send to the engine for a generation in
   // the given thread (or the root conversation). For a thread, this prepends
   // the root conversation entries up to and including the thread's origin
@@ -546,6 +551,12 @@ class ConversationHandler : public mojom::ConversationHandler,
   // Are we currently performing a loop of tool uses?
   bool is_tool_use_in_progress_ = false;
   mojom::TaskState tool_use_task_state_ = mojom::TaskState::kNone;
+
+  // UUID of the thread that is currently generating or executing a tool. Set
+  // whenever is_request_in_progress_ or is_tool_use_in_progress_ is set, and
+  // cleared when generation or execution completes. std::nullopt refers to the
+  // root thread.
+  std::optional<std::string> thread_uuid_in_progress_;
 
   // Keep track of whether we've generated suggested questions for the current
   // context. We cannot rely on counting the questions in |suggested_questions_|

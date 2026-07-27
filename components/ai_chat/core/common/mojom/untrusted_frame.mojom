@@ -48,6 +48,10 @@ interface ParentUIFrame {
   // Request the parent frame to reset the current error and restore the
   // failed message to the input box.
   HandleResetError();
+
+  // Request the parent frame to open the thread panel for the thread with the
+  // given uuid.
+  OpenThread(string thread_uuid);
 };
 
 // Browser-side handler for a Conversation's UI responsible for displaying
@@ -93,8 +97,10 @@ interface UntrustedConversationHandler {
   RetryAPIRequest();
 
   // Creates a new thread originating from the conversation entry with the
-  // given uuid. Does not persist anything until a turn is submitted to the thread.
-  CreateConversationThread(string origin_entry_uuid) => (string thread_id);
+  // given uuid, and returns its uuid. Does not persist anything until a turn is
+  // submitted to the thread. Returns null (a no-op) if the entry already has an
+  // empty thread, so duplicate empty threads aren't created.
+  CreateConversationThread(string origin_entry_uuid) => (string? thread_id);
 };
 
 // Untrusted-UI-side handler for a Conversation, responsible for displaying
@@ -177,6 +183,9 @@ interface UntrustedUIHandler {
 
   // Opens the storage support URL
   OpenStorageSupportUrl();
+
+  // Get a plural string for the given key and count.
+  GetPluralString(string key, int32 count) => (string plural_string);
 };
 
 // Browser-side service interface for profile-level operations from the

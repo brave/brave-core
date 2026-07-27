@@ -29,6 +29,7 @@ import {
 import AssistantResponse from '../assistant_response'
 import EditInput from '../edit_input'
 import EditIndicator from '../edit_indicator'
+import ThreadIndicator from '../thread_indicator'
 import {
   getGroupAllowedLinks,
   getReasoningText,
@@ -194,9 +195,19 @@ function ConversationEntries(props: {
   const [activeMenuId, setActiveMenuId] = React.useState<number>()
   const [editInputId, setEditInputId] = React.useState<number>()
   const entryPairs = usePairedConversationGroups()
+
+  // We are only generating for this frame if the in-progress thread matches
+  // the thread this frame is rendering. Both the frame's threadUuid and the
+  // state's threadUuidInProgress use a nullish value to refer to the root
+  // conversation.
+  const conversationState = conversationContext.api.useStateData()
+  const isGenerating =
+    conversationContext.isGenerating
+    && (conversationState.threadUuidInProgress ?? null)
+      === (conversationContext.threadUuid ?? null)
+
   const hasGenerated = React.useRef(false)
-  hasGenerated.current =
-    hasGenerated.current || conversationContext.isGenerating
+  hasGenerated.current = hasGenerated.current || isGenerating
 
   const showHumanMenu = (id: number) => {
     setActiveMenuId(id)
@@ -240,7 +251,7 @@ function ConversationEntries(props: {
     const isAIAssistant =
       firstEntryEdit.characterType === Mojom.CharacterType.ASSISTANT
     const isEntryInProgressButGroup =
-      isActiveGroup && isAIAssistant && conversationContext.isGenerating
+      isActiveGroup && isAIAssistant && isGenerating
     const isHuman = firstEntryEdit.characterType === Mojom.CharacterType.HUMAN
 
     const showLongPageContentInfo =
@@ -274,6 +285,10 @@ function ConversationEntries(props: {
         )?.key ?? undefined)
       : undefined
 
+    // A thread branches from a specific assistant entry. Show an indicator for
+    // each child thread on the group's last assistant entry.
+    const childThreadUuids = group.at(-1)?.childThreadUuids ?? []
+
     const turnClass = classnames({
       [styles.turn]: true,
       [styles.turnAI]: isAIAssistant,
@@ -292,8 +307,7 @@ function ConversationEntries(props: {
 
     // Omit artifacts until generation is complete so we show
     // the artifacts and the final response text at the same time.
-    const shouldOmitToolArtifacts =
-      isActiveGroup && conversationContext.isGenerating
+    const shouldOmitToolArtifacts = isActiveGroup && isGenerating
     const toolArtifacts = !shouldOmitToolArtifacts
       ? getToolArtifacts(group)
       : null
@@ -504,7 +518,7 @@ function ConversationEntries(props: {
             <EditIndicator time={lastEditedTime} />
           )}
           {isAIAssistant
-            && (!conversationContext.isGenerating || !isActiveGroup)
+            && (!isGenerating || !isActiveGroup)
             && conversationContext.isLeoModel
             && !firstEntryEdit.selectedText
             && !showEditInput && (
@@ -518,8 +532,18 @@ function ConversationEntries(props: {
                   canEditEntry ? () => setEditInputId(entryNumber) : undefined
                 }
                 onCopyTextClicked={handleCopyText}
+                scrollToBottom={props.scrollToBottom}
+                isLastGroup={isActiveGroup}
               />
             )}
+          {isAIAssistant &&
+            !conversationContext.threadUuid &&
+            childThreadUuids.map((threadUuid) => (
+              <ThreadIndicator
+                key={threadUuid}
+                threadUuid={threadUuid}
+              />
+            ))}
         </div>
       </div>
     )

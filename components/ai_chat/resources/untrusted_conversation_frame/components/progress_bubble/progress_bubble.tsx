@@ -121,9 +121,13 @@ function useProgressState(
   const conversationState = conversationContext.api.useStateData()
 
   // We are in progress if we are generating, executing a tool, or waiting
-  // for a tool.
+  // for a tool - but only when the in-progress thread matches the thread this
+  // frame is rendering. Both the frame's threadUuid and the state's
+  // threadUuidInProgress use a nullish value to refer to the root conversation.
   const groupIsWorking =
     isActiveGroup
+    && (conversationState.threadUuidInProgress ?? null)
+      === (conversationContext.threadUuid ?? null)
     && (conversationState.isGenerating || conversationState.isToolExecuting)
 
   // Pick the most recent event that represents the bubble's status —

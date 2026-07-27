@@ -24,6 +24,8 @@ interface ContextActionsAssistantProps {
   turnNEARVerified?: boolean
   onEditAnswerClicked?: () => void
   onCopyTextClicked?: () => void
+  scrollToBottom?: () => void
+  isLastGroup?: boolean
 }
 
 export default function ContextActionsAssistant(
@@ -113,6 +115,25 @@ export default function ContextActionsAssistant(
     setIsRegenerateAnswerMenuOpen(isOpen)
   }
 
+  // Create a new thread branching from this answer, then open it in the thread
+  // panel. Multiple threads can originate from the same entry. If the entry
+  // already has an empty thread, the handler is a no-op (returns null) and we
+  // do nothing.
+  const handleCreateThread = React.useCallback(async () => {
+    if (!props.turnUuid) return
+    const { threadId } =
+      await conversationContext.conversationHandler.createConversationThread(
+        props.turnUuid,
+      )
+    if (!threadId) return
+    // Only scroll if this answer is the last group in the conversation, so we
+    // don't yank the view away from an earlier answer the user threaded.
+    if (props.isLastGroup) {
+      props.scrollToBottom?.()
+    }
+    conversationContext.parentUiFrame?.openThread(threadId)
+  }, [conversationContext, props.turnUuid, props.scrollToBottom, props.isLastGroup])
+
   return (
     <div className={styles.actionsWrapper}>
       {props.onCopyTextClicked && (
@@ -128,6 +149,18 @@ export default function ContextActionsAssistant(
           className={styles.button}
         >
           <Icon name='edit-pencil' />
+        </Button>
+      )}
+      {!conversationContext.isReadOnly && !conversationContext.threadUuid && props.turnUuid && (
+        <Button
+          onClick={handleCreateThread}
+          fab
+          size='small'
+          kind='plain-faint'
+          title={getLocale(S.CHAT_UI_CREATE_THREAD_BUTTON_LABEL)}
+          className={styles.button}
+        >
+          <Icon name='thread' />
         </Button>
       )}
       {!conversationContext.isReadOnly && (

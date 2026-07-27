@@ -224,6 +224,7 @@ export default function createAIChatApi(
           showImageLightbox(file) {},
           requestNewConversation() {},
           handleResetError() {},
+          openThread(threadUuid) {},
         },
         (observer) => {
           conversationEntriesFrameObserver = observer

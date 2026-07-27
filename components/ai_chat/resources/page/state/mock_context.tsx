@@ -219,6 +219,9 @@ export function MockContext(props: MockContextProps) {
         openMainConversation={() => {}}
         createNewConversation={() => {}}
         isMainConversation={false}
+        openThreadUuid={undefined}
+        openThread={() => {}}
+        closeThread={() => {}}
         {...conversationProps}
         overrides={conversationOverrides}
       >

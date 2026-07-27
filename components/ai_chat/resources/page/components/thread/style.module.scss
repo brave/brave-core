@@ -1,0 +1,50 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+.thread {
+  display: flex;
+  flex: 1 1 0;
+  flex-direction: column;
+  min-width: 0;
+  height: 100%;
+  overflow: hidden;
+  border: 1px solid var(--leo-color-divider-subtle);
+  border-radius: var(--leo-radius-xl);
+  background: var(--leo-color-container-background);
+  box-shadow:
+    0px 2px 4px -2px rgba(0, 0, 0, 0.08),
+    0px 4px 6px -1px rgba(0, 0, 0, 0.08);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: var(--leo-spacing-m);
+  height: 64px;
+  padding: 0 var(--leo-spacing-m) 0 var(--leo-spacing-2xl);
+  flex-shrink: 0;
+}
+
+.closeButton {
+  flex: 0 0 auto;
+}
+
+.title {
+  flex-grow: 1;
+  min-width: 0;
+  font: var(--leo-font-heading-h4);
+  color: var(--leo-color-text-secondary);
+}
+
+.entries {
+  flex: 1 1 0;
+  min-height: 0;
+  overflow: auto;
+}
+
+.input {
+  flex-shrink: 0;
+  padding: var(--leo-spacing-m);
+}

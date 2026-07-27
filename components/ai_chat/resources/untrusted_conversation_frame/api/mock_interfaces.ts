@@ -25,6 +25,7 @@ import * as Mojom from '../../common/mojom'
 export const defaultConversationEntriesState: Mojom.ConversationEntriesState = {
   isGenerating: false,
   isToolExecuting: false,
+  threadUuidInProgress: undefined,
   toolUseTaskState: Mojom.TaskState.kNone,
   isLeoModel: true,
   allModels: [],
@@ -97,6 +98,7 @@ export function createMockUntrustedUIHandler(
   return {
     // Query methods - return empty/default results
     hasMemory: () => Promise.resolve({ exists: false }),
+    getPluralString: () => Promise.resolve({ pluralString: '' }),
 
     // Action methods - fire and forget stubs
     bindConversationHandler: () => {},

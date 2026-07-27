@@ -18,8 +18,12 @@ export async function bindUntrustedConversation() {
   // Service is bound directly to the WebUI via the interface broker
   const service = Mojom.UntrustedService.getRemote()
 
-  // This frame gets the conversation ID from the URL
-  const conversationId = window.location.pathname.split('/').pop() || ''
+  // This frame gets the conversation ID (and optional thread ID) from the URL
+  // path: /<conversationId> for the main conversation, or
+  // /<conversationId>/<threadId> for a thread view.
+  const [conversationId = '', threadId = ''] = window.location.pathname
+    .split('/')
+    .filter(Boolean)
 
   uiHandler.bindConversationHandler(
     conversationId,
@@ -33,6 +37,7 @@ export async function bindUntrustedConversation() {
     uiHandler,
     parentUIFrame,
     service,
+    threadId || null,
   )
 
   const uiReceiver = new Mojom.UntrustedUIReceiver(conversationAPI.uiObserver)
@@ -63,6 +68,7 @@ export async function bindUntrustedConversation() {
 
   return {
     api: conversationAPI.api,
+    threadUuid: conversationAPI.threadUuid,
     close: () => {
       conversationAPI.close()
       conversationUIReceiver.$.close()

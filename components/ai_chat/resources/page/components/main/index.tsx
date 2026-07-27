@@ -15,6 +15,7 @@ import * as Mojom from '../../../common/mojom'
 import scrollerStyles from '../../../common/scroller.module.scss'
 import { useConversation } from '../../state/conversation_context'
 import { useAIChat } from '../../state/ai_chat_context'
+import { useActiveChat } from '../../state/active_chat_context'
 import ConversationsList from '../conversations_list'
 import DeleteConversationModal from '../delete_conversation_modal'
 import { ConversationHeader } from '../header'
@@ -30,6 +31,7 @@ import ToolsMenu, {
   getIsSkill,
 } from '../filter_menu/tools_menu'
 import WelcomeGuide from '../welcome_guide'
+import Thread from '../thread'
 import styles from './style.module.scss'
 import Attachments from '../attachments'
 import useHasConversationStarted from '../../hooks/useHasConversationStarted'
@@ -40,6 +42,7 @@ import { stringifyContent } from '../input_box/editable_content'
 function Main() {
   const aiChatContext = useAIChat()
   const conversationContext = useConversation()
+  const { openThreadUuid } = useActiveChat()
   const [isConversationListOpen, setIsConversationsListOpen] =
     React.useState(false)
   const [isShareDialogOpen, setIsShareDialogOpen] = React.useState(false)
@@ -192,61 +195,68 @@ function Main() {
         position='top-center'
         className={styles.alertCenter}
       />
-      {!aiChatContext.hasAcceptedAgreement && !hasConversationStarted ? (
-        <div
-          className={classnames(
-            scrollerStyles.scroller,
-            styles.centeredContent,
+      <div className={styles.split}>
+        <div className={styles.left}>
+          {!aiChatContext.hasAcceptedAgreement && !hasConversationStarted ? (
+            <div
+              className={classnames(
+                scrollerStyles.scroller,
+                styles.centeredContent,
+              )}
+            >
+              <WelcomeGuide />
+            </div>
+          ) : (
+            <aiChatContext.conversationEntriesComponent
+              className={styles.conversationContainer}
+            />
           )}
-        >
-          <WelcomeGuide />
+          {showAttachments && (
+            <Dialog
+              isOpen
+              onClose={() => conversationContext.setAttachmentsDialog(null)}
+              className={styles.attachmentsDialog}
+            >
+              <Attachments />
+            </Dialog>
+          )}
+          <div className={styles.input}>
+            <ToolsMenu
+              isOpen={
+                !conversationContext.selectedSkill
+                && !conversationContext.selectedActionType
+                && conversationContext.isToolsMenuOpen
+              }
+              setIsOpen={conversationContext.setIsToolsMenuOpen}
+              query={extractedQuery}
+              categories={categoriesWithSkills}
+              isMobile={aiChatContext.isMobile}
+              handleClick={handleToolsMenuClick}
+              handleEditClick={handleToolsMenuEditClick}
+              handleNewSkillClick={handleNewSkillClick}
+              handleAutoSelect={handleToolsMenuSelect}
+            />
+            <TabsMenu />
+            <InputBox
+              ref={inputBoxRef}
+              conversationStarted={hasConversationStarted}
+              context={{ ...conversationContext, ...aiChatContext }}
+              maybeShowSoftKeyboard={maybeShowSoftKeyboard}
+            />
+          </div>
         </div>
-      ) : (
-        <>
-          <aiChatContext.conversationEntriesComponent
-            className={styles.conversationContainer}
-          />
-        </>
-      )}
+        {openThreadUuid && (
+          <div className={styles.threadPanel}>
+            <Thread threadUuid={openThreadUuid} />
+          </div>
+        )}
+      </div>
       {aiChatContext.isConversationShareEnabled && (
         <ShareConversationModal
           isOpen={isShareDialogOpen}
           onClose={() => setIsShareDialogOpen(false)}
         />
       )}
-      {showAttachments && (
-        <Dialog
-          isOpen
-          onClose={() => conversationContext.setAttachmentsDialog(null)}
-          className={styles.attachmentsDialog}
-        >
-          <Attachments />
-        </Dialog>
-      )}
-      <div className={styles.input}>
-        <ToolsMenu
-          isOpen={
-            !conversationContext.selectedSkill
-            && !conversationContext.selectedActionType
-            && conversationContext.isToolsMenuOpen
-          }
-          setIsOpen={conversationContext.setIsToolsMenuOpen}
-          query={extractedQuery}
-          categories={categoriesWithSkills}
-          isMobile={aiChatContext.isMobile}
-          handleClick={handleToolsMenuClick}
-          handleEditClick={handleToolsMenuEditClick}
-          handleNewSkillClick={handleNewSkillClick}
-          handleAutoSelect={handleToolsMenuSelect}
-        />
-        <TabsMenu />
-        <InputBox
-          ref={inputBoxRef}
-          conversationStarted={hasConversationStarted}
-          context={{ ...conversationContext, ...aiChatContext }}
-          maybeShowSoftKeyboard={maybeShowSoftKeyboard}
-        />
-      </div>
       <DeleteConversationModal />
       <ImageLightbox
         file={conversationContext.previewUploadedFile}

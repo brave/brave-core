@@ -25,6 +25,35 @@
   --conversation-content-margin: var(--leo-spacing-xl);
 }
 
+.split {
+  display: flex;
+  flex: 1 1 0;
+  min-height: 0;
+  width: 100%;
+  overflow: hidden;
+}
+
+.left {
+  display: flex;
+  flex: 1 1 0;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.threadPanel {
+  display: flex;
+  flex-shrink: 0;
+  width: 40%;
+  min-width: 360px;
+  max-width: 560px;
+  height: 100%;
+  padding: var(--leo-spacing-xl);
+  padding-left: 0;
+  margin-left: var(--leo-spacing-m);
+}
+
 .attachmentsDialog {
   --leo-dialog-padding: 0;
   --leo-dialog-width: 500px;
@@ -55,7 +84,8 @@
 }
 
 .conversationContainer {
-  height: 100%;
+  flex: 1 1 0;
+  min-height: 0;
   width: 100%;
 }
 

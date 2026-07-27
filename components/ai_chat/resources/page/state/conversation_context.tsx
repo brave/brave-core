@@ -29,6 +29,9 @@ export type UploadedImageData = Mojom.UploadedFile
 // connected to the relevant API endpoints.
 export type ConversationContextProps = SelectedChatDetails & {
   isNTPWidget?: boolean
+  // When set, entries submitted from this context are added to the given
+  // thread rather than the root conversation.
+  threadUuid?: string
 }
 
 //
@@ -266,12 +269,14 @@ export function useProvideConversationContext(props: ConversationContextProps) {
       aiChat.api.metrics.onSendingPromptWithFullPage()
     }
 
+    const threadUuid = props.threadUuid ?? null
+
     if (selectedSkill) {
       api.conversationHandler.submitHumanConversationEntryWithSkill(
         stringifyContent(inputText),
         selectedSkill.id,
         pendingMessageFiles,
-        null,
+        threadUuid,
       )
     } else if (selectedActionType) {
       // The action's inline chip is a UI affordance only - the prompt is
@@ -283,13 +288,13 @@ export function useProvideConversationContext(props: ConversationContextProps) {
       api.conversationHandler.submitHumanConversationEntryWithAction(
         stringifyContent(actionInput),
         selectedActionType,
-        null,
+        threadUuid,
       )
     } else {
       api.conversationHandler.submitHumanConversationEntry(
         stringifyContent(inputText),
         pendingMessageFiles,
-        null,
+        threadUuid,
       )
     }
 

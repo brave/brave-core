@@ -483,6 +483,7 @@ leo_icons_sources = [
   "theme-light.svg",
   "theme-system.svg",
   "themes.svg",
+  "thread.svg",
   "thumb-down.svg",
   "thumb-up.svg",
   "trash.svg",
