@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_chain_metadata_prefs.h"
 
+#include "base/strings/string_number_conversions.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -29,9 +30,17 @@ constexpr char kAssetsPalletIndex[] = "assets_pallet_index";
 constexpr char kAssetsTransferAllCallIndex[] = "assets_transfer_all_call_index";
 constexpr char kAssetsTransferKeepAliveCallIndex[] =
     "assets_transfer_keep_alive_call_index";
-constexpr char kAssetTxPayment[] = "asset_tx_payment";
+constexpr char kSignedExtensions[] = "signed_extensions";
 constexpr char kSs58Prefix[] = "ss58_prefix";
 constexpr char kVersionField[] = "version";
+
+std::string MakeDefaultSignedExtensions() {
+  std::array<uint8_t, kMaxSignedExtensions> signed_exts = {
+      2, 7, 8, 9, 10, 11, 12, 13, 14, 16, 17, 18};
+  return base::HexEncodeLower(signed_exts);
+}
+
+}  // namespace
 
 class PolkadotChainMetadataPrefsUnitTest : public testing::Test {
  protected:
@@ -59,12 +68,13 @@ TEST_F(PolkadotChainMetadataPrefsUnitTest, SetAndGetChainMetadataRoundTrip) {
     uint8_t assets_transfer_keep_alive_call_index;
     uint16_t ss58_prefix;
     uint32_t spec_version;
-    bool asset_tx_payment;
+    std::array<uint8_t, kMaxSignedExtensions> signed_extensions;
   };
 
   const TestCase test_cases[] = {
       {"Polkadot Metadata",
-       /*system_pallet_index=*/3, /*balances_pallet_index=*/7,
+       /*system_pallet_index=*/3,
+       /*balances_pallet_index=*/7,
        /*transaction_payment_pallet_index=*/8,
        /*transfer_allow_death_call_index=*/2,
        /*transfer_keep_alive_call_index=*/4,
@@ -74,7 +84,8 @@ TEST_F(PolkadotChainMetadataPrefsUnitTest, SetAndGetChainMetadataRoundTrip) {
        /*assets_transfer_all_call_index=*/0,
        /*assets_transfer_keep_alive_call_index=*/0,
        /*ss58_prefix=*/42,
-       /*spec_version=*/1234, /*asset_tx_payment=*/false},
+       /*spec_version=*/1234, /*signed_extensions=*/
+       {1, 2, 3, 4}},
       {"AssetHub Polkadot Metadata",
        /*system_pallet_index=*/0, /*balances_pallet_index=*/0x0a,
        /*transaction_payment_pallet_index=*/5,
@@ -86,7 +97,7 @@ TEST_F(PolkadotChainMetadataPrefsUnitTest, SetAndGetChainMetadataRoundTrip) {
        /*assets_transfer_all_call_index=*/10,
        /*assets_transfer_keep_alive_call_index=*/9,
        /*ss58_prefix=*/std::numeric_limits<uint16_t>::max(),
-       /*spec_version=*/12344321, /*asset_tx_payment=*/true}};
+       /*spec_version=*/12344321, /*signed_extensions=*/{5, 6, 7, 8}}};
 
   for (const auto& tc : test_cases) {
     SCOPED_TRACE(tc.test_name);
@@ -95,7 +106,7 @@ TEST_F(PolkadotChainMetadataPrefsUnitTest, SetAndGetChainMetadataRoundTrip) {
         tc.system_pallet_index, tc.balances_pallet_index,
         tc.transaction_payment_pallet_index, tc.transfer_allow_death_call_index,
         tc.transfer_keep_alive_call_index, tc.transfer_all_call_index,
-        tc.ss58_prefix, tc.spec_version, tc.asset_tx_payment,
+        tc.ss58_prefix, tc.spec_version, tc.signed_extensions,
         tc.has_assets_pallet, tc.assets_pallet_index,
         tc.assets_transfer_all_call_index,
         tc.assets_transfer_keep_alive_call_index);
@@ -135,7 +146,7 @@ TEST_F(PolkadotChainMetadataPrefsUnitTest, InvalidRangeRejected) {
     value.Set(kAssetsPalletIndex, 0);
     value.Set(kAssetsTransferAllCallIndex, 0);
     value.Set(kAssetsTransferKeepAliveCallIndex, 0);
-    value.Set(kAssetTxPayment, false);
+    value.Set(kSignedExtensions, MakeDefaultSignedExtensions());
     value.Set(kSs58Prefix, 0);
     value.Set(kSpecVersion, 100);
     update->Set(mojom::kPolkadotMainnet, std::move(value));
@@ -161,7 +172,7 @@ TEST_F(PolkadotChainMetadataPrefsUnitTest, NegativeValueRejected) {
     value.Set(kAssetsPalletIndex, 0);
     value.Set(kAssetsTransferAllCallIndex, 0);
     value.Set(kAssetsTransferKeepAliveCallIndex, 0);
-    value.Set(kAssetTxPayment, false);
+    value.Set(kSignedExtensions, MakeDefaultSignedExtensions());
     value.Set(kSs58Prefix, 0);
     value.Set(kSpecVersion, 100);
     update->Set(mojom::kPolkadotMainnet, std::move(value));
@@ -186,7 +197,7 @@ TEST_F(PolkadotChainMetadataPrefsUnitTest, MissingRequiredFieldRejected) {
     value.Set(kAssetsPalletIndex, 0);
     value.Set(kAssetsTransferAllCallIndex, 0);
     value.Set(kAssetsTransferKeepAliveCallIndex, 0);
-    value.Set(kAssetTxPayment, false);
+    value.Set(kSignedExtensions, MakeDefaultSignedExtensions());
     value.Set(kSs58Prefix, 42);
     // Missing spec version should reject persisted value.
     update->Set(mojom::kPolkadotMainnet, std::move(value));
@@ -195,7 +206,7 @@ TEST_F(PolkadotChainMetadataPrefsUnitTest, MissingRequiredFieldRejected) {
   EXPECT_FALSE(prefs.GetChainMetadata(mojom::kPolkadotMainnet));
 
   {
-    // Missing AssetTxPayment.
+    // Missing SignedExtensions.
 
     ScopedDictPrefUpdate update(&profile_prefs_,
                                 kBraveWalletPolkadotChainMetadata);
@@ -218,6 +229,47 @@ TEST_F(PolkadotChainMetadataPrefsUnitTest, MissingRequiredFieldRejected) {
   EXPECT_FALSE(MakePrefs().GetChainMetadata(mojom::kPolkadotMainnet));
 }
 
+TEST_F(PolkadotChainMetadataPrefsUnitTest, InvalidSignedExtensionsRejected) {
+  struct TestCase {
+    std::string test_name;
+    std::string signed_extensions;
+  };
+
+  const TestCase test_cases[] = {
+      {"NonHex", "not_hex"},
+      {"OddLength", "0102030"},
+      {"TooShort", "0102"},
+      {"TooLong", std::string(2 * (kMaxSignedExtensions + 1), 'a')},
+      {"Empty", ""}};
+
+  for (const auto& tc : test_cases) {
+    SCOPED_TRACE(tc.test_name);
+
+    {
+      ScopedDictPrefUpdate update(&profile_prefs_,
+                                  kBraveWalletPolkadotChainMetadata);
+      update->Set(kVersionField, PolkadotChainMetadataPrefs::kVersion);
+      base::DictValue value;
+      value.Set(kSystemPalletIndex, 0);
+      value.Set(kBalancesPalletIndex, 3);
+      value.Set(kTransactionPaymentPalletIndex, 2);
+      value.Set(kTransferAllowDeathCallIndex, 1);
+      value.Set(kTransferKeepAliveCallIndex, 4);
+      value.Set(kTransferAllCallIndex, 1);
+      value.Set(kHasAssetsPallet, false);
+      value.Set(kAssetsPalletIndex, 0);
+      value.Set(kAssetsTransferAllCallIndex, 0);
+      value.Set(kAssetsTransferKeepAliveCallIndex, 0);
+      value.Set(kSignedExtensions, tc.signed_extensions);
+      value.Set(kSs58Prefix, 42);
+      value.Set(kSpecVersion, 1234);
+      update->Set(mojom::kPolkadotMainnet, std::move(value));
+    }
+
+    EXPECT_FALSE(MakePrefs().GetChainMetadata(mojom::kPolkadotMainnet));
+  }
+}
+
 TEST_F(PolkadotChainMetadataPrefsUnitTest, VersionMismatchClearsMetadataPrefs) {
   {
     ScopedDictPrefUpdate update(&profile_prefs_,
@@ -230,7 +282,7 @@ TEST_F(PolkadotChainMetadataPrefsUnitTest, VersionMismatchClearsMetadataPrefs) {
     value.Set(kTransferAllowDeathCallIndex, 1);
     value.Set(kTransferKeepAliveCallIndex, 4);
     value.Set(kTransferAllCallIndex, 1);
-    value.Set(kAssetTxPayment, false);
+    value.Set(kSignedExtensions, MakeDefaultSignedExtensions());
     value.Set(kSs58Prefix, 42);
     value.Set(kSpecVersion, 100);
     update->Set(mojom::kPolkadotMainnet, std::move(value));
@@ -252,7 +304,7 @@ TEST_F(PolkadotChainMetadataPrefsUnitTest, MissingVersionClearsMetadataPrefs) {
     value.Set(kTransferAllowDeathCallIndex, 1);
     value.Set(kTransferKeepAliveCallIndex, 4);
     value.Set(kTransferAllCallIndex, 1);
-    value.Set(kAssetTxPayment, false);
+    value.Set(kSignedExtensions, MakeDefaultSignedExtensions());
     value.Set(kSs58Prefix, 42);
     value.Set(kSpecVersion, 100);
     update->Set(mojom::kPolkadotMainnet, std::move(value));
@@ -263,5 +315,4 @@ TEST_F(PolkadotChainMetadataPrefsUnitTest, MissingVersionClearsMetadataPrefs) {
       profile_prefs_.GetDict(kBraveWalletPolkadotChainMetadata).empty());
 }
 
-}  // namespace
 }  // namespace brave_wallet
