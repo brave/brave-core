@@ -116,6 +116,7 @@ BraveProxyingURLLoaderFactory<T>::InProgressRequest::InProgressRequest(
     scoped_refptr<base::SequencedTaskRunner> navigation_response_task_runner)
     : factory_(factory),
       request_(request),
+      original_initiator_(request.request_initiator),
       request_id_(request_id),
       network_service_request_id_(network_service_request_id),
       render_frame_token_(render_frame_token),
@@ -302,6 +303,12 @@ template <template <typename> class T>
 void BraveProxyingURLLoaderFactory<T>::InProgressRequest::OnReceiveRedirect(
     const net::RedirectInfo& redirect_info,
     network::mojom::URLResponseHeadPtr head) {
+  if (!content::IsSafeRedirectTarget(request_.url, redirect_info.new_url)) {
+    OnRequestError(
+        network::URLLoaderCompletionStatus(net::ERR_UNSAFE_REDIRECT));
+    return;
+  }
+
   current_response_head_ = std::move(head);
   DCHECK(ctx_);
   ctx_->set_internal_redirect(false);
@@ -627,13 +634,6 @@ void BraveProxyingURLLoaderFactory<T>::InProgressRequest::
     proxied_client_receiver_.Resume();
   }
 
-  if (!ctx_->internal_redirect() &&
-      !content::IsSafeRedirectTarget(request_.url, redirect_info.new_url)) {
-    OnRequestError(
-        network::URLLoaderCompletionStatus(net::ERR_UNSAFE_REDIRECT));
-    return;
-  }
-
   if (ctx_->internal_redirect()) {
     ctx_->set_redirect_source(GURL());
   } else {
@@ -755,9 +755,6 @@ void BraveProxyingURLLoaderFactory<T>::MaybeProxyRequest(
     content::BrowserContext* browser_context,
     content::RenderFrameHost* render_frame_host,
     network::URLLoaderFactoryBuilder& factory_builder,
-    content::ContentBrowserClient::URLLoaderFactoryType url_loader_factory_type,
-    const url::Origin& request_initiator,
-    const net::IsolationInfo& isolation_info,
     scoped_refptr<base::SequencedTaskRunner> navigation_response_task_runner) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   ResourceContextData<T>::StartProxying(

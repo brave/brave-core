@@ -26,13 +26,11 @@
 #include "base/timer/elapsed_timer.h"
 #include "brave/browser/net/resource_context_data.h"
 #include "brave/browser/net/url_context.h"
-#include "content/public/browser/content_browser_client.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "net/base/completion_once_callback.h"
-#include "net/base/isolation_info.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "services/network/public/cpp/http_request_headers_update_params.h"
 #include "services/network/public/cpp/resource_request.h"
@@ -217,10 +215,6 @@ class BraveProxyingURLLoaderFactory : public network::mojom::URLLoaderFactory {
       content::BrowserContext* browser_context,
       content::RenderFrameHost* render_frame_host,
       network::URLLoaderFactoryBuilder& factory_builder,
-      content::ContentBrowserClient::URLLoaderFactoryType
-          url_loader_factory_type,
-      const url::Origin& request_initiator,
-      const net::IsolationInfo& isolation_info,
       scoped_refptr<base::SequencedTaskRunner> navigation_response_task_runner);
 
   // network::mojom::URLLoaderFactory:
