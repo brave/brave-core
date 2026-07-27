@@ -1402,8 +1402,8 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, FrameSourceURL) {
   EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
 }
 
-// Sandboxed iframes by default have an opaque request_initiator.
-// Requests from them must still be checked by adblock.
+// The requests from sandboxed iframes also must be checked by adblock
+// even though they have an opaque request_initiator.
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SandboxedIframeRequestsBlocked) {
   UpdateAdBlockInstanceWithRules("adbanner.js");
 

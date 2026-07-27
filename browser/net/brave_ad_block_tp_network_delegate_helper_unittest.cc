@@ -274,9 +274,8 @@ TYPED_TEST(BraveAdBlockTPNetworkDelegateHelperTest, SimpleBlocking) {
   EXPECT_EQ(0ULL, this->host_resolver_->num_resolve());
 }
 
-// Opaque initiators (e.g. sandboxed iframe / about:srcdoc) are present and must
-// still be checked. The requests from opaque origins are always treated as
-// third-party.
+// The request from opaque origins (e.g. sandboxed about:blank iframe)
+// also must be processed by adblock and treated as third-party.
 TYPED_TEST(BraveAdBlockTPNetworkDelegateHelperTest, OpaqueInitiator) {
   const GURL url("https://brave.com/test.txt");
   const url::Origin opaque_initiator =
