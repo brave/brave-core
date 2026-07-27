@@ -1,0 +1,56 @@
+diff --git a/base/feature_list.cc b/base/feature_list.cc
+index a428f09c6a64842be4c01eb3bbf605a668ecfa00..1bd01e6f876adec32c4aff0f44b05699b563bafd 100644
+--- a/base/feature_list.cc
++++ b/base/feature_list.cc
+@@ -612,7 +612,13 @@ bool FeatureList::UpdateRuntimeMutableFeatureState(
+ }
+ 
+ bool FeatureList::IsFeatureOverridden(std::string_view feature_name) const {
++  bool result = [&]() -> bool {
+   return GetOverrideEntryByFeatureName(feature_name);
++  }();
++  if (result) {
++    return result;
++  }
++  return internal::IsFeatureOverridden(feature_name);
+ }
+ 
+ bool FeatureList::IsFeatureOverriddenFromCommandLine(
+@@ -718,7 +724,7 @@ bool FeatureList::IsEnabled(const Feature& feature) {
+     EarlyFeatureAccessTracker::GetInstance()->AccessedFeature(
+         feature, g_feature_list_instance &&
+                      g_feature_list_instance->IsEarlyAccessInstance());
+-    return feature.default_state == FEATURE_ENABLED_BY_DEFAULT;
++    return GetCompileTimeFeatureState(feature);
+   }
+   return g_feature_list_instance->IsFeatureEnabled(feature);
+ }
+@@ -730,6 +736,7 @@ bool FeatureList::IsValidFeatureOrFieldTrialName(std::string_view name) {
+ 
+ // static
+ std::optional<bool> FeatureList::GetStateIfOverridden(const Feature& feature) {
++  std::optional<bool> result = [&]() -> std::optional<bool> {
+   if (!g_feature_list_instance ||
+       !g_feature_list_instance->AllowFeatureAccess(feature)) {
+     EarlyFeatureAccessTracker::GetInstance()->AccessedFeature(
+@@ -739,6 +746,11 @@ std::optional<bool> FeatureList::GetStateIfOverridden(const Feature& feature) {
+     return std::nullopt;
+   }
+   return g_feature_list_instance->IsFeatureEnabledIfOverridden(feature);
++  }();
++  if (result.has_value()) {
++    return result;
++  }
++  return internal::GetStateIfOverridden(feature);
+ }
+ 
+ // static
+@@ -1041,7 +1053,7 @@ bool FeatureList::IsFeatureEnabled(const Feature& feature) const {
+     return overridden_state == OVERRIDE_ENABLE_FEATURE;
+   }
+ 
+-  return feature.default_state == FEATURE_ENABLED_BY_DEFAULT;
++  return GetCompileTimeFeatureState(feature);
+ }
+ 
+ std::optional<bool> FeatureList::IsFeatureEnabledIfOverridden(
