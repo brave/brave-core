@@ -138,6 +138,7 @@ public class AppState {
         await braveCore.loadDefaultProfile()
       }
       self.task = task
+      defer { self.task = nil }
       return await task.value
     }
   }
