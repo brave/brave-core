@@ -6,6 +6,7 @@
 #include "brave/components/tabs/public/brave_tab_strip_collection.h"
 
 #include "brave/components/tabs/public/brave_tab_strip_collection_delegate.h"
+#include "brave/components/tabs/public/tree_tab_node_tab_collection.h"
 #include "components/split_tabs/split_tab_visual_data.h"
 #include "components/tabs/public/tab_collection.h"
 #include "components/tabs/public/tab_interface.h"
@@ -198,6 +199,53 @@ BraveTabStripCollection::GetTreeTabNodeIdForGroup(
   }
 
   return nullptr;
+}
+
+void BraveTabStripCollection::PrepareTreeTabNodesForBatchDetach(
+    const std::vector<TabInterface*>& moving_tabs) {
+  if (delegate_ && delegate_->ShouldHandleTabManipulation()) {
+    delegate_->PrepareTreeTabNodesForBatchDetach(moving_tabs);
+  }
+}
+
+bool BraveTabStripCollection::ShouldDetachAsTreeSubtreeRoot(
+    TabInterface* tab,
+    const std::vector<TabInterface*>& moving_tabs) {
+  if (delegate_ && delegate_->ShouldHandleTabManipulation()) {
+    return delegate_->ShouldDetachAsTreeSubtreeRoot(tab, moving_tabs);
+  }
+  return false;
+}
+
+void BraveTabStripCollection::WillDetachTreeTabNodeSubtree(
+    TreeTabNodeTabCollection& subtree_root) {
+  if (delegate_ && delegate_->ShouldHandleTabManipulation()) {
+    delegate_->WillDetachTreeTabNodeSubtree(subtree_root);
+  }
+}
+
+void BraveTabStripCollection::DidAttachTreeTabNodeSubtree(
+    TreeTabNodeTabCollection& subtree_root) {
+  if (delegate_ && delegate_->ShouldHandleTabManipulation()) {
+    delegate_->DidAttachTreeTabNodeSubtree(subtree_root);
+  }
+}
+
+void BraveTabStripCollection::InsertDetachedTreeTabNode(
+    std::unique_ptr<TabCollection> collection,
+    int index) {
+  // Insert the already tree-shaped collection directly via the base
+  // implementation, bypassing the delegate's InsertTabCollectionAt (which
+  // only knows how to wrap raw SPLIT/GROUP collections in a fresh tree node,
+  // not re-attach an existing TreeTabNodeTabCollection subtree).
+  auto* tree_node_ptr =
+      static_cast<TreeTabNodeTabCollection*>(collection.get());
+  TabStripCollection::InsertTabCollectionAt(std::move(collection), index,
+                                            /*pinned=*/false,
+                                            /*parent_group=*/std::nullopt);
+  if (delegate_ && delegate_->ShouldHandleTabManipulation()) {
+    delegate_->DidAttachTreeTabNodeSubtree(*tree_node_ptr);
+  }
 }
 
 }  // namespace tabs

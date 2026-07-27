@@ -274,3 +274,27 @@ void BraveTabStripModel::SetSplitPinnedImplForTesting(
   CHECK(split_collection);
   TabStripModel::SetSplitPinnedImpl(split_collection, pinned);  // IN-TEST
 }
+
+std::vector<std::variant<std::unique_ptr<DetachedTab>,
+                         std::unique_ptr<DetachedTabCollection>>>
+BraveTabStripModel::DetachTabsAndCollectionsForInsertion(
+    const std::vector<int>& tab_indices) {
+  if (!tree_tab_model_) {
+    return TabStripModel::DetachTabsAndCollectionsForInsertion(tab_indices);
+  }
+
+  // Hoisting non-selected children out of a moving tab's tree node can shift
+  // tab positions (e.g. a hoisted child lands ahead of its former parent), so
+  // `tab_indices` may no longer point at the originally-selected tabs once
+  // this returns. Resolve the tabs first, then re-derive their indices from
+  // the (possibly moved) tabs before detaching.
+  const std::vector<tabs::TabInterface*> tabs = GetTabsAtIndices(tab_indices);
+  contents_data_->PrepareTreeTabNodesForBatchDetach(tabs);
+
+  std::vector<int> updated_indices;
+  updated_indices.reserve(tabs.size());
+  for (tabs::TabInterface* tab : tabs) {
+    updated_indices.push_back(GetIndexOfTab(tab));
+  }
+  return TabStripModel::DetachTabsAndCollectionsForInsertion(updated_indices);
+}

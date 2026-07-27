@@ -27,3 +27,19 @@ substitutions:
       re_pattern: (void CloseTab\(.*?toast_controller\(\);)
       re_flags: [DOTALL]
       replace: \1\n  toast_controller = nullptr;
+
+  - description: Call InsertDetachedTreeTabNodeAt() in MoveTabsToWindowImpl().
+
+      In case of the detached collection is a tree tab node collection, we
+      should call InsertDetachedTreeTabNodeAt(). This inserts the code ahead of
+      other if statements that checks the collection type.
+    regex:
+      re_pattern: |
+        (if \(std::holds_alternative<std::unique_ptr<tabs::TabGroupTabCollection>>\()
+      replace: |-
+        if (std::holds_alternative<
+                      std::unique_ptr<tabs::TreeTabNodeTabCollection>>(
+                      collection->get()->collection_)) {
+                target_model->InsertDetachedTreeTabNodeAt(std::move(*collection),
+                                                          target_model->count());
+              } else \1\n
