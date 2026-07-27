@@ -8,40 +8,44 @@ import { Redirect, useHistory, useParams } from 'react-router'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // types
-import { WalletRoutes } from '../../../../constants/types'
+import { WalletRoutes } from '../../../constants/types'
 
 // Utils
-import { getBalance } from '../../../../utils/balance-utils'
-import { makeSendRoute } from '../../../../utils/routes-utils'
-import Amount from '../../../../utils/amount'
-import { getAssetIdKey } from '../../../../utils/asset-utils'
+import { getBalance } from '../../../utils/balance-utils'
+import { makeSendRoute } from '../../../utils/routes-utils'
+import Amount from '../../../utils/amount'
+import { getAssetIdKey } from '../../../utils/asset-utils'
 
 // Components
-import { NftScreen } from '../../../../nft/components/nft-details/nft-screen'
+import { NftScreen } from '../../../nft/components/nft-details/nft-screen'
+import {
+  NftAssetHeader, //
+} from '../../../components/desktop/card-headers/nft-asset-header'
 
 // Hooks
 import {
   useGetNetworkQuery,
   useGetSimpleHashSpamNftsQuery,
   useGetUserTokensRegistryQuery,
-} from '../../../../common/slices/api.slice'
+} from '../../../common/slices/api.slice'
 import {
   useScopedBalanceUpdater, //
-} from '../../../../common/hooks/use-scoped-balance-updater'
-import { useAccountsQuery } from '../../../../common/slices/api.slice.extra'
+} from '../../../common/hooks/use-scoped-balance-updater'
+import { useAccountsQuery } from '../../../common/slices/api.slice.extra'
 import {
   selectAllVisibleUserAssetsFromQueryResult, //
   selectHiddenNftsFromQueryResult,
-} from '../../../../common/slices/entities/blockchain-token.entity'
-import { useRoute } from '../../../../common/hooks/use_route'
+} from '../../../common/slices/entities/blockchain-token.entity'
+import { useRoute } from '../../../common/hooks/use_route'
 
 // Styled Components
-import { Skeleton } from '../../../shared/loading-skeleton/styles'
-import { WalletPageWrapper } from '../../wallet-page-wrapper/wallet-page-wrapper'
-import NftAssetHeader from '../../card-headers/nft-asset-header'
-import { StyledWrapper } from './style'
+import { Skeleton } from '../../../components/shared/loading-skeleton/styles'
+import {
+  WalletPageWrapper, //
+} from '../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper'
+import { Column } from '../../../components/shared/style'
 
-export const PortfolioNftAsset = () => {
+export const NFTAssetDetails = () => {
   // routing
   const history = useHistory()
   const { openOrPushRoute } = useRoute()
@@ -154,7 +158,12 @@ export const PortfolioNftAsset = () => {
         />
       }
     >
-      <StyledWrapper>
+      <Column
+        width='100%'
+        height='100%'
+        alignItems='flex-start'
+        justifyContent='flex-start'
+      >
         {selectedAssetFromParams ? (
           <NftScreen
             selectedAsset={selectedAssetFromParams}
@@ -163,9 +172,7 @@ export const PortfolioNftAsset = () => {
         ) : (
           <Skeleton />
         )}
-      </StyledWrapper>
+      </Column>
     </WalletPageWrapper>
   )
 }
-
-export default PortfolioNftAsset
