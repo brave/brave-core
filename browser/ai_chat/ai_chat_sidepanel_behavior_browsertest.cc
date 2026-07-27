@@ -36,6 +36,7 @@
 #include "content/public/browser/web_ui.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
+#include "net/test/embedded_test_server/embedded_test_server.h"
 #include "printing/buildflags/buildflags.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/blink/public/mojom/window_features/window_features.mojom.h"
@@ -361,6 +362,71 @@ IN_PROC_BROWSER_TEST_P(AIChatGlobalSidePanelBrowserTest,
             nullptr);
   ASSERT_EQ(side_panel->GetContentParentView()->children().size(), 1u);
   EXPECT_EQ(GetAttachedSidePanelWebContents(browser()), leo_contents);
+}
+
+// End-to-end forward move: conversation links are plain `<a target="_blank">`
+// anchors, so following one opens a new foreground tab through the browser's
+// normal new-window path with no AI Chat handler involved.
+// `AIChatFullPageLinkObserver` watches for that and moves the full-page
+// conversation into the side panel, so the linked page takes its place instead
+// of covering it. Where the transfer doesn't apply the link still opens and AI
+// Chat stays a full tab. The click is made in the WebUI's main frame: the
+// conversation renders its links in an iframe of the same `WebContents`, and
+// the browser-side signal the observer watches is identical either way.
+IN_PROC_BROWSER_TEST_P(AIChatGlobalSidePanelBrowserTest,
+                       LinkOpeningNewTabMovesFullPageChatToSidePanel) {
+  ASSERT_TRUE(embedded_test_server()->Start());
+
+  auto* tab_strip = browser()->tab_strip_model();
+
+  // Open the full-page AI Chat conversation in a new tab, keeping the original
+  // tab so the tab strip stays valid after AI Chat is detached.
+  ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
+      browser(), GURL(kAIChatUIURL), WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
+  content::WebContents* leo_contents = tab_strip->GetActiveWebContents();
+  ASSERT_TRUE(leo_contents);
+
+  const int initial_tab_count = tab_strip->count();
+
+  // Follow a link the way the conversation renders it.
+  const GURL link_url = embedded_test_server()->GetURL("/title1.html");
+  ASSERT_TRUE(content::ExecJs(
+      leo_contents,
+      content::JsReplace("const link = document.createElement('a');"
+                         "link.href = $1;"
+                         "link.target = '_blank';"
+                         "link.rel = 'noopener noreferrer';"
+                         "document.body.appendChild(link);"
+                         "link.click();",
+                         link_url)));
+
+  // The transfer requires both the move feature and the global side panel.
+  if (!(IsMoveToSidePanelEnabled() && IsGlobalFlagEnabled())) {
+    // The link opens in a tab of its own and AI Chat stays a full tab.
+    ASSERT_TRUE(base::test::RunUntil(
+        [&]() { return tab_strip->count() == initial_tab_count + 1; }));
+    EXPECT_NE(tab_strip->GetIndexOfWebContents(leo_contents),
+              TabStripModel::kNoTab);
+    EXPECT_FALSE(IsSidePanelOpen(browser()));
+    return;
+  }
+
+  // The side panel now shows and hosts the *same* live WebContents (no reload /
+  // no fresh contents). Only this end state can be waited on: the link's tab is
+  // inserted and AI Chat is detached back-to-back, so the tab strip is never
+  // observed holding both.
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    return IsSidePanelOpen(browser()) &&
+           GetAttachedSidePanelWebContents(browser()) == leo_contents;
+  }));
+
+  // The link's tab took AI Chat's place: it is the active tab, and the tab
+  // count is unchanged because AI Chat left the strip as the link's tab joined.
+  EXPECT_EQ(tab_strip->GetIndexOfWebContents(leo_contents),
+            TabStripModel::kNoTab);
+  EXPECT_EQ(tab_strip->count(), initial_tab_count);
+  EXPECT_EQ(tab_strip->GetActiveWebContents()->GetVisibleURL(), link_url);
 }
 
 // The forward move only applies to a full-page AI Chat. When AI Chat is already

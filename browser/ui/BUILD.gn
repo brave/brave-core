@@ -216,9 +216,11 @@ source_set("ui") {
 
   if (enable_ai_chat) {
     # Compiled on all platforms: the desktop side panel implementations live in
-    # //brave/browser/ui/views/side_panel/ai_chat, while this file provides the
+    # //brave/browser/ui/views/side_panel/ai_chat, while these files provide the
     # non-views (e.g. Android) fallbacks, so callers stay platform-agnostic.
     sources += [
+      "side_panel/ai_chat/ai_chat_full_page_link_observer.cc",
+      "side_panel/ai_chat/ai_chat_full_page_link_observer.h",
       "side_panel/ai_chat/ai_chat_side_panel_utils.cc",
       "side_panel/ai_chat/ai_chat_side_panel_utils.h",
     ]

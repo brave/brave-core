@@ -20,11 +20,13 @@ Browser* GetBrowserForWebContents(content::WebContents* web_contents);
 void ClosePanel(content::WebContents* web_contents);
 
 // Forward (tab -> side panel): when `ai_chat_web_contents` is a full browser
-// tab and the `kAIChatMoveFullPageToSidePanel` feature is enabled, opens
-// `link_url` in a tab at AI Chat's position and moves the live AI Chat
-// `WebContents` into the side panel. Returns true if the click was handled this
-// way (the caller must then NOT open `link_url` itself). Desktop only; the
-// definition lives in the toolkit_views translation unit.
+// tab and the `kAIChatMoveFullPageToSidePanel` feature is enabled, moves the
+// live AI Chat `WebContents` into the side panel (preserving state). Returns
+// true if the conversation was moved. Opening the link that prompted the move
+// is the caller's separate responsibility - see `AIChatFullPageLinkObserver`
+// for anchor clicks, which the browser opens itself, and
+// `AIChatUIPageHandler::OpenURLInNewTab` for links AI Chat opens over Mojo.
+// Desktop only; the definition lives in the toolkit_views translation unit.
 bool MaybeMoveFullPageChatToSidePanel(
     content::WebContents* ai_chat_web_contents);
 

@@ -116,12 +116,14 @@ bool MaybeMoveFullPageChatToSidePanel(
 
   const tabs::TabHandle ai_chat_handle = ai_chat_tab->GetHandle();
 
-  // Capture the full-page contents' rect (in browser/widget coordinates) before
-  // detaching, so the side panel can animate the conversation in from where it
-  // currently sits. This must happen before `DetachWebContents`, which orphans
-  // the contents' native view and leaves it unable to report an on-screen rect.
-  // AI Chat is the active tab at this point (its own link was just clicked), so
-  // the active contents web view hosts it.
+  // Capture the content area's rect (in browser/widget coordinates) before
+  // detaching, so the side panel can animate the conversation in from where the
+  // full page sits. The active contents web view spans that area whichever tab
+  // is active, which is what matters here: AI Chat is still the active tab when
+  // it moves from a Mojo link handler, while the link's new tab has just been
+  // activated when it moves from `AIChatFullPageLinkObserver`. This must happen
+  // before `DetachWebContents`, which orphans the contents' native view and
+  // leaves it unable to report an on-screen rect.
   gfx::Rect starting_bounds;
   if (BrowserElementsViews* elements = BrowserElementsViews::From(browser)) {
     if (views::WebView* contents_web_view =
