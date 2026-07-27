@@ -24,6 +24,9 @@ public class PlaylistManager: NSObject {
   private let cacheManager = PlaylistDownloadManager()
   private var frc = PlaylistItem.frc()
   private var didRestoreSession = false
+  /// In-flight download work keyed by item id. Holds the `Task` doing mime-type probing (which eventually kicks off the URLSession download)
+  /// so duplicate requests are rejected and cancellation stops probe work that hasn't reached `cacheManager` yet.
+  @MainActor private var pendingDownloadTasks = [String: (id: UUID, task: Task<Void, Never>)]()
 
   private var _playbackTask: Task<Void, Error>?
 
@@ -241,7 +244,10 @@ public class PlaylistManager: NSObject {
   }
 
   public func cacheState(for itemId: String) async -> PlaylistDownloadManager.CacheState {
-    if cacheManager.downloadTask(for: itemId) != nil {
+    let isInProgress = await MainActor.run {
+      pendingDownloadTasks[itemId] != nil || cacheManager.downloadTask(for: itemId) != nil
+    }
+    if isInProgress {
       return .inProgress
     }
 
@@ -334,35 +340,68 @@ public class PlaylistManager: NSObject {
     guard
       FeatureList.kPlaylistOfflineCacheEnabled.enabled
         || FeatureList.kPlaylistCacheFirstEnabled.enabled,
-      cacheManager.downloadTask(for: item.tagId) == nil,
       let assetUrl = URL(string: item.src)
     else { return }
-    Task {
-      if assetUrl.scheme == "data" {
-        DispatchQueue.main.async {
-          self.cacheManager.downloadDataAsset(assetUrl, for: item)
-        }
-        return
+
+    let itemId = item.tagId
+    Task { @MainActor in
+      guard pendingDownloadTasks[itemId] == nil,
+        cacheManager.downloadTask(for: itemId) == nil
+      else { return }
+
+      let registrationId = UUID()
+      let downloadTask = Task { [weak self] in
+        guard let self else { return }
+        await self.downloadItem(
+          item,
+          assetUrl: assetUrl,
+          itemId: itemId,
+          registrationId: registrationId
+        )
       }
+      pendingDownloadTasks[itemId] = (registrationId, downloadTask)
+    }
+  }
 
-      let mimeType = await PlaylistMediaStreamer.getMimeType(assetUrl)
-      guard let mimeType = mimeType?.lowercased() else { return }
+  private func downloadItem(
+    _ item: PlaylistInfo,
+    assetUrl: URL,
+    itemId: String,
+    registrationId: UUID
+  ) async {
+    defer {
+      Task { @MainActor in
+        if pendingDownloadTasks[itemId]?.id == registrationId {
+          pendingDownloadTasks.removeValue(forKey: itemId)
+        }
+      }
+    }
 
+    if assetUrl.scheme == "data" {
+      await MainActor.run {
+        self.cacheManager.downloadDataAsset(assetUrl, for: item)
+      }
+      return
+    }
+
+    let mimeType = await PlaylistMediaStreamer.getMimeType(assetUrl)
+    guard let mimeType = mimeType?.lowercased() else { return }
+
+    await MainActor.run {
       if mimeType.contains("x-mpegurl") || mimeType.contains("application/vnd.apple.mpegurl")
         || mimeType.contains("mpegurl")
       {
-        DispatchQueue.main.async {
-          self.cacheManager.downloadHLSAsset(assetUrl, for: item)
-        }
+        self.cacheManager.downloadHLSAsset(assetUrl, for: item)
       } else {
-        DispatchQueue.main.async {
-          self.cacheManager.downloadFileAsset(assetUrl, for: item)
-        }
+        self.cacheManager.downloadFileAsset(assetUrl, for: item)
       }
     }
   }
 
+  @MainActor
   public func cancelDownload(itemId: String) {
+    pendingDownloadTasks[itemId]?.task.cancel()
+    pendingDownloadTasks.removeValue(forKey: itemId)
     cacheManager.cancelDownload(itemId: itemId)
   }
 
