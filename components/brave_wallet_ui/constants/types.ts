@@ -149,6 +149,7 @@ export interface UIState {
   selectedPendingTransactionId?: string | undefined
   transactionProviderErrorRegistry: TransactionProviderErrorRegistry
   isPanel: boolean
+  isSidePanel: boolean
   isMobile: boolean
   isIOS: boolean
 }

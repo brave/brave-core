@@ -9,6 +9,7 @@ export const PanelWrapper = styled.div<{
   isLonger?: boolean
   width?: number
   height?: number
+  isSidePanel?: boolean
 }>`
   position: relative;
   display: flex;
@@ -19,8 +20,8 @@ export const PanelWrapper = styled.div<{
   background-color: ${leo.color.page.background};
   /* Cr151+ bubble autosize uses document scrollWidth; clip overflow so
      absolute/fixed children cannot inflate the panel beyond its set size. */
-  overflow: hidden;
-  contain: layout;
+  overflow: ${(p) => (p.isSidePanel ? 'unset' : 'hidden')};
+  contain: ${(p) => (p.isSidePanel ? 'unset' : 'layout')};
 `
 
 export const SendWrapper = styled.div`

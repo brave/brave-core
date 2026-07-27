@@ -26,7 +26,7 @@ std::unique_ptr<views::View> WalletSidePanelWebView::CreateView(
   CHECK(profile);
 
   auto contents_wrapper = std::make_unique<WalletSidePanelContentsWrapper>(
-      GURL(kBraveUIWalletPanelURL), profile, IDS_SIDEBAR_WALLET_ITEM_TITLE,
+      GURL(kBraveUIWalletSidePanelURL), profile, IDS_SIDEBAR_WALLET_ITEM_TITLE,
       /*esc_closes_ui=*/false);
 
   auto web_view = std::make_unique<WalletSidePanelWebView>(
