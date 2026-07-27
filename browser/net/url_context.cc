@@ -458,8 +458,8 @@ std::unique_ptr<brave::BraveRequestInfo> BraveRequestInfo::MakeCTX(
     brave::BraveRequestInfo* old_ctx,
     std::optional<content::ContentBrowserClient::URLLoaderFactoryType>
         url_loader_factory_type,
-    const std::optional<url::Origin>& factory_request_initiator,
-    const std::optional<net::IsolationInfo>& factory_isolation_info) {
+    base::optional_ref<const url::Origin> factory_request_initiator,
+    base::optional_ref<const net::IsolationInfo> factory_isolation_info) {
   auto ctx = std::make_unique<brave::BraveRequestInfo>();
   ctx->set_request_identifier(request_identifier);
   ctx->set_method(request.method);
@@ -467,10 +467,11 @@ std::unique_ptr<brave::BraveRequestInfo> BraveRequestInfo::MakeCTX(
   const bool use_factory_context =
       url_loader_factory_type &&
       ShouldUseFactoryURLLoaderContext(*url_loader_factory_type);
-  ctx->set_request_initiator(
-      request.request_initiator
-          ? request.request_initiator
-          : (use_factory_context ? factory_request_initiator : std::nullopt));
+  std::optional<url::Origin> request_initiator = request.request_initiator;
+  if (!request_initiator && use_factory_context && factory_request_initiator) {
+    request_initiator = *factory_request_initiator;
+  }
+  ctx->set_request_initiator(request_initiator);
 
   ctx->set_referrer(request.referrer);
   ctx->set_referrer_policy(request.referrer_policy);

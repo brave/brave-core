@@ -15,6 +15,7 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/sequence_checker.h"
+#include "base/types/optional_ref.h"
 #include "content/public/browser/content_browser_client.h"
 #include "content/public/browser/global_routing_id.h"
 #include "net/base/isolation_info.h"
@@ -193,9 +194,9 @@ class BraveRequestInfo {
       brave::BraveRequestInfo* old_ctx,
       std::optional<content::ContentBrowserClient::URLLoaderFactoryType>
           url_loader_factory_type = std::nullopt,
-      const std::optional<url::Origin>& factory_request_initiator =
+      base::optional_ref<const url::Origin> factory_request_initiator =
           std::nullopt,
-      const std::optional<net::IsolationInfo>& factory_isolation_info =
+      base::optional_ref<const net::IsolationInfo> factory_isolation_info =
           std::nullopt);
 
   base::WeakPtr<BraveRequestInfo> AsWeakPtr() {
