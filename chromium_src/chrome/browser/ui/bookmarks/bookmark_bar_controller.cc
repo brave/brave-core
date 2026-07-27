@@ -7,6 +7,7 @@
 
 #include "chrome/browser/ui/sad_tab.h"
 #include "components/bookmarks/browser/bookmark_model.h"
+#include "components/bookmarks/common/bookmark_bar_visibility_state.h"
 #include "components/bookmarks/common/bookmark_pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
@@ -16,8 +17,8 @@
 bool ShowBookmarkBarEnabled(content::WebContents* web_contents) {
   PrefService* prefs =
       user_prefs::UserPrefs::Get(web_contents->GetBrowserContext());
-  return prefs->GetBoolean(::bookmarks::prefs::kAlwaysShowBookmarkBarOnNTP) ||
-         prefs->GetBoolean(::bookmarks::prefs::kShowBookmarkBar);
+  return prefs->GetInteger(bookmarks::prefs::kBookmarkBarVisibilityState) ==
+         static_cast<int>(bookmarks::BookmarkBarVisibilityState::kAlwaysHide);
 }
 
 #define ShouldShow(...) \

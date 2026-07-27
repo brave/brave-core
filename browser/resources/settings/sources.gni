@@ -26,7 +26,6 @@ brave_settings_preprocessor_defines = [ "enable_ai_chat=$enable_ai_chat" ]
 brave_settings_web_component_files = [
   "ad_block_only_mode_page/ad_block_only_mode_alert.ts",
   "ad_block_only_mode_page/ad_block_only_mode_page.ts",
-  "brave_appearance_page/bookmark_bar.ts",
   "brave_appearance_page/sidebar.ts",
   "brave_appearance_page/tabs.ts",
   "brave_appearance_page/toolbar.ts",

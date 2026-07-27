@@ -65,6 +65,7 @@
 #endif
 
 #if !BUILDFLAG(IS_ANDROID)
+#include "brave/browser/ui/bookmark/bookmark_helper.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/new_tab_page_initializer.h"
 #include "brave/browser/ui/webui/welcome_page/brave_welcome_ui_prefs.h"
@@ -288,6 +289,10 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
   profile_prefs->ClearPref(kTabsSearchShow);
 #endif
 
+// Added 2026-07
+#if !BUILDFLAG(IS_ANDROID)
+  brave::MigrateBookmarkState(profile_prefs);
+#endif
   // END_MIGRATE_OBSOLETE_PROFILE_PREFS
 }
 

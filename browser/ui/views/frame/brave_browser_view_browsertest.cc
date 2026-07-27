@@ -51,6 +51,8 @@
 #include "chrome/browser/ui/window_feature_controller/window_feature_controller.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/test/base/in_process_browser_test.h"
+#include "components/bookmarks/common/bookmark_bar_visibility_state.h"
+#include "components/bookmarks/common/bookmark_pref_names.h"
 #include "components/infobars/content/content_infobar_manager.h"
 #include "components/infobars/core/confirm_infobar_delegate.h"
 #include "components/infobars/core/infobar.h"
@@ -148,7 +150,9 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest, LayoutWithVerticalTabTest) {
   auto* prefs = browser()->profile()->GetPrefs();
 
   // Check bookmark only on the NTP is default.
-  EXPECT_EQ(brave::BookmarkBarState::kNtp, brave::GetBookmarkBarState(prefs));
+  EXPECT_EQ(
+      prefs->GetInteger(bookmarks::prefs::kBookmarkBarVisibilityState),
+      static_cast<int>(bookmarks::BookmarkBarVisibilityState::kOnlyShowOnNtp));
 
   // BookmarkBar not visible as current active tab is not NTP.
   EXPECT_FALSE(bookmark_bar()->GetVisible());
@@ -210,8 +214,12 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest, LayoutWithVerticalTabTest) {
 
   // Hide bookmark bar always.
   // Check contents container is positioned right after the vertical tab.
-  brave::SetBookmarkState(brave::BookmarkBarState::kNever, prefs);
-  EXPECT_EQ(brave::BookmarkBarState::kNever, brave::GetBookmarkBarState(prefs));
+  prefs->SetInteger(
+      bookmarks::prefs::kBookmarkBarVisibilityState,
+      static_cast<int>(bookmarks::BookmarkBarVisibilityState::kAlwaysHide));
+  EXPECT_EQ(
+      prefs->GetInteger(bookmarks::prefs::kBookmarkBarVisibilityState),
+      static_cast<int>(bookmarks::BookmarkBarVisibilityState::kAlwaysHide));
   ASSERT_TRUE(base::test::RunUntil([&]() {
     return !BrowserView::GetBrowserViewForBrowser(browser())
                 ->IsBookmarkBarAnimating();
@@ -232,9 +240,12 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest, LayoutWithVerticalTabTest) {
   // Show bookmark bar always.
   // Check vertical tab is positioned below the bookmark bar.
   // Check contents container is positioned below the info bar.
-  brave::SetBookmarkState(brave::BookmarkBarState::kAlways, prefs);
-  EXPECT_EQ(brave::BookmarkBarState::kAlways,
-            brave::GetBookmarkBarState(prefs));
+  prefs->SetInteger(
+      bookmarks::prefs::kBookmarkBarVisibilityState,
+      static_cast<int>(bookmarks::BookmarkBarVisibilityState::kAlwaysShow));
+  EXPECT_EQ(
+      prefs->GetInteger(bookmarks::prefs::kBookmarkBarVisibilityState),
+      static_cast<int>(bookmarks::BookmarkBarVisibilityState::kAlwaysShow));
   ASSERT_TRUE(base::test::RunUntil([&]() {
     return !BrowserView::GetBrowserViewForBrowser(browser())
                 ->IsBookmarkBarAnimating();
