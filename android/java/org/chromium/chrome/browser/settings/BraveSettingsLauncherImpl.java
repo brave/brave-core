@@ -5,7 +5,6 @@
 
 package org.chromium.chrome.browser.settings;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -27,37 +26,26 @@ public class BraveSettingsLauncherImpl extends SettingsNavigationImpl {
         super();
     }
 
-    @Override
-    public void startSettings(
-            Context context,
-            @Nullable Class<? extends Fragment> fragment,
-            @Nullable Bundle fragmentArgs) {
-        if (fragment != null) {
-            fragment = substituteFragment(fragment);
-        }
-        super.startSettings(context, fragment, fragmentArgs);
-    }
-
+    // This is the only overload that every startSettings() and createSettingsIntent() variant in
+    // SettingsNavigationImpl funnels into, so overriding it applies the Brave fragment substitution
+    // to all entry points, including the ones that pass a @SettingsFragment enum value instead of a
+    // fragment class (for example Quick Delete's "More options" and the History page's "Delete
+    // browsing data").
     @Override
     public Intent createSettingsIntent(
             Context context,
             @Nullable Class<? extends Fragment> fragment,
-            @Nullable Bundle fragmentArgs) {
+            @Nullable Bundle fragmentArgs,
+            boolean addToBackStack,
+            @Nullable String tag) {
+        // Substitute before calling super: SettingsIntentUtil decides whether the fragment is
+        // standalone by reflecting on the fragment name, so it has to see the Brave class.
         if (fragment != null) {
             fragment = substituteFragment(fragment);
         }
-        Intent intent = super.createSettingsIntent(context, fragment, fragmentArgs);
+        Intent intent =
+                super.createSettingsIntent(context, fragment, fragmentArgs, addToBackStack, tag);
         intent.setClass(context, BraveSettingsActivity.class);
-        if (!(context instanceof Activity)) {
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        }
-        if (fragment != null) {
-            intent.putExtra(SettingsActivity.EXTRA_SHOW_FRAGMENT, fragment.getName());
-        }
-        if (fragmentArgs != null) {
-            intent.putExtra(SettingsActivity.EXTRA_SHOW_FRAGMENT_ARGUMENTS, fragmentArgs);
-        }
         return intent;
     }
 
