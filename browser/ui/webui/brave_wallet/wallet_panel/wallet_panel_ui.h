@@ -10,10 +10,12 @@
 #include <string>
 
 #include "base/memory/weak_ptr.h"
+#include "brave/browser/ui/webui/brave_wallet/ledger/ledger_bridge_broker.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_panel/wallet_panel_handler.h"
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/wallet_handler.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/ledger_bridge.mojom.h"
 #include "chrome/browser/ui/webui/top_chrome/top_chrome_web_ui_controller.h"
 #include "chrome/browser/ui/webui/top_chrome/top_chrome_webui_config.h"
 #include "content/public/browser/web_ui_message_handler.h"
@@ -47,6 +49,16 @@ class WalletPanelUI : public TopChromeWebUIController,
   void BindInterface(
       mojo::PendingReceiver<brave_rewards::mojom::RewardsPageHandler> receiver);
 #endif
+
+  // Exposes the reverse channel used to deliver the untrusted Ledger bridge
+  // frame's `LedgerBridge` remote to this panel's renderer.
+  void BindInterface(
+      mojo::PendingReceiver<brave_wallet::mojom::LedgerBridgeService> receiver);
+
+  // Called (via the untrusted ledger UI handler) when the child ledger frame
+  // hands up its `LedgerBridge` remote.
+  void BindLedgerBridge(
+      mojo::PendingRemote<brave_wallet::mojom::LedgerBridge> bridge);
 
   // The bubble disappears by default when Trezor opens a popup window
   // from the wallet panel bubble. In order to prevent it we set a callback
@@ -105,6 +117,8 @@ class WalletPanelUI : public TopChromeWebUIController,
 
   mojo::Receiver<brave_wallet::mojom::PanelHandlerFactory>
       panel_factory_receiver_{this};
+
+  brave_wallet::LedgerBridgeBroker ledger_bridge_broker_;
 
   WEB_UI_CONTROLLER_TYPE_DECL();
 };

@@ -10,6 +10,7 @@
 
 #include "base/check.h"
 #include "base/command_line.h"
+#include "base/feature_list.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "brave/browser/brave_wallet/blockchain_images_source.h"
@@ -21,6 +22,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
+#include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/web_ui_constants.h"
 #include "brave/components/brave_wallet_panel/resources/grit/brave_wallet_panel_generated_map.h"
 #include "chrome/browser/profiles/profile.h"
@@ -78,6 +80,9 @@ WalletPanelUI::WalletPanelUI(content::WebUI* web_ui)
   webui::SetupWebUIDataSource(source, base::span(kBraveWalletPanelGenerated),
                               IDR_WALLET_PANEL_HTML);
   source->AddString("braveWalletLedgerBridgeUrl", kUntrustedLedgerURL);
+  source->AddBoolean("isLedgerMojoBridgeEnabled",
+                     base::FeatureList::IsEnabled(
+                         brave_wallet::features::kBraveWalletLedgerMojoBridgeFeature));
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FrameSrc,
       base::JoinString({"frame-src", kUntrustedTrezorURL, kUntrustedLedgerURL,
@@ -156,6 +161,16 @@ void WalletPanelUI::BindInterface(
       nullptr, profile->GetPrefs());
 }
 #endif  // BUILDFLAG(ENABLE_BRAVE_REWARDS)
+
+void WalletPanelUI::BindInterface(
+    mojo::PendingReceiver<brave_wallet::mojom::LedgerBridgeService> receiver) {
+  ledger_bridge_broker_.BindService(std::move(receiver));
+}
+
+void WalletPanelUI::BindLedgerBridge(
+    mojo::PendingRemote<brave_wallet::mojom::LedgerBridge> bridge) {
+  ledger_bridge_broker_.OnChildBridgeConnected(std::move(bridge));
+}
 
 void WalletPanelUI::CreatePanelHandler(
     mojo::PendingReceiver<brave_wallet::mojom::PanelHandler> panel_receiver,

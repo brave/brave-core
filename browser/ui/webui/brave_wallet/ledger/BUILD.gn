@@ -8,17 +8,36 @@ import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 assert(!is_android)
 assert(enable_brave_wallet)
 
+# The broker is a separate target (with no wallet page/panel dependency) so
+# that the wallet page/panel controllers can own it while the ledger UI still
+# depends on those controllers for routing, keeping the graph acyclic.
+source_set("ledger_bridge_broker") {
+  sources = [
+    "ledger_bridge_broker.cc",
+    "ledger_bridge_broker.h",
+  ]
+  deps = [
+    "//brave/components/brave_wallet/common:mojom",
+    "//mojo/public/cpp/bindings",
+  ]
+}
+
 source_set("ledger") {
   sources = [
     "ledger_ui.cc",
     "ledger_ui.h",
   ]
   deps = [
+    "//brave/browser/ui/webui/brave_wallet/wallet_page",
+    "//brave/browser/ui/webui/brave_wallet/wallet_panel",
     "//brave/components/brave_wallet/common:common_constants",
+    "//brave/components/brave_wallet/common:mojom",
     "//brave/components/brave_wallet_ui:resources",
     "//brave/components/brave_wallet_ui/ledger:ledger_bridge_generated",
     "//brave/components/resources:static_resources_grit",
     "//content/public/browser",
+    "//mojo/public/cpp/bindings",
+    "//services/network/public/mojom",
     "//ui/webui",
     "//ui/webui/resources:resources_grit",
   ]

@@ -42,6 +42,11 @@ BASE_DECLARE_FEATURE(kBraveWalletTransactionSimulationsFeature);
 BASE_DECLARE_FEATURE(kBraveWalletAccountHidingFeature);
 BASE_DECLARE_FEATURE(kBraveWalletSidePanel);
 
+// When enabled, communication with the `chrome-untrusted://ledger-bridge`
+// hardware-wallet iframe uses Mojom instead of the legacy `postMessage`
+// protocol.
+BASE_DECLARE_FEATURE(kBraveWalletLedgerMojoBridgeFeature);
+
 #if BUILDFLAG(IS_IOS)
 BASE_DECLARE_FEATURE(kBraveWalletWebUIFeature);
 #endif

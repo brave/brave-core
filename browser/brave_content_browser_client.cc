@@ -364,7 +364,9 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/browser/ui/webui/brave_wallet/wallet_page/wallet_page_ui.h"
 #if !BUILDFLAG(IS_ANDROID)
+#include "brave/browser/ui/webui/brave_wallet/ledger/ledger_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_panel/wallet_panel_ui.h"
+#include "brave/components/brave_wallet/common/ledger_bridge.mojom.h"
 #endif
 #endif
 
@@ -721,6 +723,10 @@ void BraveContentBrowserClient::RegisterTrustedWebUIInterfaceBrokers(
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
       .Add<brave_rewards::mojom::RewardsPageHandler>()
 #endif  // BUILDFLAG(ENABLE_BRAVE_REWARDS)
+#if !BUILDFLAG(IS_ANDROID)
+      // Reverse channel for the mojom Ledger bridge (desktop-only feature).
+      .Add<brave_wallet::mojom::LedgerBridgeService>()
+#endif  // !BUILDFLAG(IS_ANDROID)
       ;
 #if !BUILDFLAG(IS_ANDROID)
   registry.ForWebUI<WalletPanelUI>()
@@ -728,7 +734,12 @@ void BraveContentBrowserClient::RegisterTrustedWebUIInterfaceBrokers(
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
       .Add<brave_rewards::mojom::RewardsPageHandler>()
 #endif  // BUILDFLAG(ENABLE_BRAVE_REWARDS)
-      ;
+      .Add<brave_wallet::mojom::LedgerBridgeService>();
+  // The untrusted ledger bridge frame, embedded by the wallet page/panel,
+  // hands its LedgerBridge remote up through this handler when running in
+  // mojo mode.
+  registry.ForWebUI<ledger::UntrustedLedgerUI>()
+      .Add<brave_wallet::mojom::LedgerBridgeUIHandler>();
 #endif  // !BUILDFLAG(IS_ANDROID)
 #endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 

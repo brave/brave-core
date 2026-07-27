@@ -19,7 +19,9 @@
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
+#include "base/feature_list.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
+#include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/web_ui_constants.h"
 #include "brave/components/brave_wallet_page/resources/grit/brave_wallet_page_generated_map.h"
 #include "chrome/browser/profiles/profile.h"
@@ -111,6 +113,9 @@ WalletPageUI::WalletPageUI(content::WebUI* web_ui)
           kUntrustedLedgerURL + " " + kUntrustedNftURL + " " +
           kUntrustedLineChartURL + " " + kUntrustedMarketURL + ";");
   source->AddString("braveWalletLedgerBridgeUrl", kUntrustedLedgerURL);
+  source->AddBoolean(
+      "isLedgerMojoBridgeEnabled",
+      base::FeatureList::IsEnabled(features::kBraveWalletLedgerMojoBridgeFeature));
   source->AddString("braveWalletTrezorBridgeUrl", kUntrustedTrezorURL);
   source->AddString("braveWalletNftBridgeUrl", kUntrustedNftURL);
   source->AddString("braveWalletLineChartBridgeUrl", kUntrustedLineChartURL);
@@ -159,6 +164,18 @@ void WalletPageUI::BindInterface(
       nullptr, profile->GetPrefs());
 }
 #endif  // BUILDFLAG(ENABLE_BRAVE_REWARDS)
+
+#if !BUILDFLAG(IS_ANDROID)
+void WalletPageUI::BindInterface(
+    mojo::PendingReceiver<mojom::LedgerBridgeService> receiver) {
+  ledger_bridge_broker_.BindService(std::move(receiver));
+}
+
+void WalletPageUI::BindLedgerBridge(
+    mojo::PendingRemote<mojom::LedgerBridge> bridge) {
+  ledger_bridge_broker_.OnChildBridgeConnected(std::move(bridge));
+}
+#endif  // !BUILDFLAG(IS_ANDROID)
 
 void WalletPageUI::CreatePageHandler(
     mojo::PendingReceiver<mojom::PageHandler> page_receiver,
