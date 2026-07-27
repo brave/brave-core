@@ -24,12 +24,24 @@ SpeedreaderDistilledPageProducer::~SpeedreaderDistilledPageProducer() = default;
 // static
 std::unique_ptr<SpeedreaderDistilledPageProducer>
 SpeedreaderDistilledPageProducer::MaybeCreate(
+    const GURL& request_url,
     base::WeakPtr<SpeedreaderDelegate> speedreader_delegate) {
-  if (!speedreader_delegate || !speedreader_delegate->IsPageContentPresent()) {
+  if (!speedreader_delegate ||
+      !speedreader_delegate->IsPageContentPresent(request_url)) {
     return nullptr;
   }
   return base::WrapUnique(
       new SpeedreaderDistilledPageProducer(std::move(speedreader_delegate)));
+}
+
+bool SpeedreaderDistilledPageProducer::ShouldProcess(
+    const GURL& response_url,
+    network::mojom::URLResponseHead* response_head) {
+  // The distilled content belongs to the page it was distilled from and must
+  // never be sent as a body of any other url, so re-check the url of the
+  // response, it may differ from the url the request was started with.
+  return speedreader_delegate_ &&
+         speedreader_delegate_->IsPageContentPresent(response_url);
 }
 
 void SpeedreaderDistilledPageProducer::UpdateResponseHead(

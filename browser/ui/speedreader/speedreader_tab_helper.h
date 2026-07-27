@@ -22,6 +22,7 @@
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
 #include "mojo/public/cpp/bindings/associated_receiver.h"
+#include "url/gurl.h"
 
 namespace content {
 class NavigationHandle;
@@ -141,7 +142,7 @@ class SpeedreaderTabHelper
 
   // SpeedreaderDelegate:
   bool IsPageDistillationAllowed() override;
-  bool IsPageContentPresent() override;
+  bool IsPageContentPresent(const GURL& url) override;
   std::string TakePageContent() override;
   void OnDistillComplete(DistillationResult result) override;
   void OnDistilledDocumentSent() override;
@@ -167,7 +168,13 @@ class SpeedreaderTabHelper
   void SetDocumentAttribute(const std::string& attribute,
                             const std::string& value);
 
-  void OnGetDocumentSource(bool success, std::string html);
+  // Drops the distilled content prepared for a single show. Called when the
+  // content wasn't sent to the page it was distilled from, so it can't be sent
+  // to any other page.
+  void ClearSingleShowContent();
+
+  // |distilled_from| is the url of the page the |html| was distilled from.
+  void OnGetDocumentSource(GURL distilled_from, bool success, std::string html);
 
   void TransitStateTo(const DistillState& desired_state,
                       bool no_reload = false);
@@ -182,7 +189,11 @@ class SpeedreaderTabHelper
 #endif
   bool is_visible_ = false;
 
+  // The distilled content to be sent instead of the body of the next
+  // navigation to |single_show_content_url_|. Both are dropped together, see
+  // ClearSingleShowContent().
   std::string single_show_content_;
+  GURL single_show_content_url_;
 
   DistillState distill_state_{DistillStates::ViewOriginal()};
 

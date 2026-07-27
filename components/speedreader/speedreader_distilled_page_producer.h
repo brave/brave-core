@@ -11,6 +11,7 @@
 
 #include "base/memory/weak_ptr.h"
 #include "brave/components/body_sniffer/body_sniffer_url_loader.h"
+#include "url/gurl.h"
 
 namespace speedreader {
 
@@ -20,8 +21,15 @@ class SpeedreaderDistilledPageProducer : public body_sniffer::BodyProducer {
  public:
   ~SpeedreaderDistilledPageProducer() override;
 
+  // |request_url| is the url of the request the producer is going to be
+  // attached to. The distilled content is sent only if it was distilled from
+  // that url, see ShouldProcess().
   static std::unique_ptr<SpeedreaderDistilledPageProducer> MaybeCreate(
+      const GURL& request_url,
       base::WeakPtr<SpeedreaderDelegate> speedreader_delegate);
+
+  bool ShouldProcess(const GURL& response_url,
+                     network::mojom::URLResponseHead* response_head) override;
 
   void UpdateResponseHead(
       network::mojom::URLResponseHead* response_head) override;

@@ -56,6 +56,16 @@
 
 namespace speedreader {
 
+namespace {
+
+// The reload which sends the distilled content doesn't include the fragment in
+// the network request, so the urls are compared ignoring it.
+bool IsSameUrlIgnoringRef(const GURL& a, const GURL& b) {
+  return a.is_valid() && b.is_valid() && a.GetWithoutRef() == b.GetWithoutRef();
+}
+
+}  // namespace
+
 std::u16string GetSpeedreaderData(
     std::initializer_list<std::pair<std::string_view, int>> resources) {
   base::DictValue sr_data;
@@ -155,9 +165,9 @@ void SpeedreaderTabHelper::ProcessIconClick() {
     const auto& vo = std::get<DistillStates::ViewOriginal>(distill_state_);
     if (!vo.was_auto_distilled ||
         !speedreader_service_->IsAllowedForSite(web_contents())) {
-      GetDistilledHTML(
-          base::BindOnce(&SpeedreaderTabHelper::OnGetDocumentSource,
-                         weak_factory_.GetWeakPtr()));
+      GetDistilledHTML(base::BindOnce(
+          &SpeedreaderTabHelper::OnGetDocumentSource,
+          weak_factory_.GetWeakPtr(), web_contents()->GetLastCommittedURL()));
     } else {
       TransitStateTo(DistillStates::Distilling(
           DistillStates::Distilling::Reason::kAutomatic));
@@ -388,6 +398,22 @@ void SpeedreaderTabHelper::DidRedirectNavigation(
 
 void SpeedreaderTabHelper::DidFinishNavigation(
     content::NavigationHandle* navigation_handle) {
+  if (navigation_handle->IsInPrimaryMainFrame() &&
+      !navigation_handle->IsSameDocument() && !single_show_content_.empty()) {
+    // The distilled content is consumed while the response is being processed,
+    // which happens before the navigation is finished. It is still here, so
+    // this navigation didn't take it (i.e. it was redirected to another url,
+    // cancelled or turned into a download). Drop the content, it must never be
+    // sent as a body of another navigation.
+    ClearSingleShowContent();
+
+    if (DistillStates::IsDistilling(distill_state_)) {
+      // Nothing has been distilled. Leave the distilling state, otherwise the
+      // following navigations won't be re-evaluated at all (see the early
+      // return in ProcessNavigation).
+      TransitStateTo(DistillStates::ViewOriginal(), true);
+    }
+  }
   ProcessNavigation(navigation_handle, true);
 }
 
@@ -447,12 +473,15 @@ bool SpeedreaderTabHelper::IsPageDistillationAllowed() {
          DistillStates::IsDistilled(distill_state_);
 }
 
-bool SpeedreaderTabHelper::IsPageContentPresent() {
-  return !single_show_content_.empty();
+bool SpeedreaderTabHelper::IsPageContentPresent(const GURL& url) {
+  return !single_show_content_.empty() &&
+         IsSameUrlIgnoringRef(single_show_content_url_, url);
 }
 
 std::string SpeedreaderTabHelper::TakePageContent() {
-  return std::move(single_show_content_);
+  single_show_content_url_ = GURL();
+  // std::exchange to guarantee that the content is left empty.
+  return std::exchange(single_show_content_, std::string());
 }
 
 void SpeedreaderTabHelper::OnDistillComplete(DistillationResult result) {
@@ -595,8 +624,20 @@ void SpeedreaderTabHelper::SetDocumentAttribute(const std::string& attribute,
       script, base::DoNothing(), ISOLATED_WORLD_ID_BRAVE_INTERNAL);
 }
 
-void SpeedreaderTabHelper::OnGetDocumentSource(bool success, std::string html) {
-  if (!success || html.empty()) {
+void SpeedreaderTabHelper::ClearSingleShowContent() {
+  single_show_content_.clear();
+  single_show_content_url_ = GURL();
+}
+
+void SpeedreaderTabHelper::OnGetDocumentSource(GURL distilled_from,
+                                               bool success,
+                                               std::string html) {
+  // The page may have been navigated away while the content was being
+  // distilled. The content of the old page must not be shown under the url of
+  // the new one.
+  if (!success || html.empty() ||
+      !IsSameUrlIgnoringRef(distilled_from,
+                            web_contents()->GetLastCommittedURL())) {
     TransitStateTo(DistillStates::DistillReverting(
         DistillStates::DistillReverting::Reason::kError, false));
     TransitStateTo(DistillStates::ViewOriginal());
@@ -604,6 +645,7 @@ void SpeedreaderTabHelper::OnGetDocumentSource(bool success, std::string html) {
   }
 
   single_show_content_ = std::move(html);
+  single_show_content_url_ = std::move(distilled_from);
   TransitStateTo(
       DistillStates::Distilling(DistillStates::Distilling::Reason::kManual));
 }
