@@ -28,7 +28,6 @@ jobs:
                           merged
                           isDraft
                           title
-                          body
                           url
                         }
                       }
@@ -50,8 +49,7 @@ jobs:
             const ciPr = pullRequests.find((pr) =>
               pr.number !== sourcePr.number &&
               pr.isDraft &&
-              pr.title === ciTitle &&
-              pr.body?.includes(`proposed in PR #${sourcePr.number}`));
+              pr.title === ciTitle);
             if (!ciPr) {
               core.info(`No open contributor CI PR found for PR #${sourcePr.number}.`);
               return;
