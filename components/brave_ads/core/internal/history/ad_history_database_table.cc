@@ -116,42 +116,6 @@ void GetCallback(
   std::move(callback).Run(std::move(ad_history));
 }
 
-void MigrateToV42(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
-  CHECK(mojom_db_transaction);
-
-  Execute(mojom_db_transaction, R"(
-      CREATE TABLE ad_history (
-        id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-        created_at TIMESTAMP NOT NULL,
-        type TEXT NOT NULL,
-        confirmation_type TEXT NOT NULL,
-        placement_id TEXT NOT NULL,
-        creative_instance_id TEXT NOT NULL,
-        creative_set_id TEXT NOT NULL,
-        campaign_id TEXT NOT NULL,
-        advertiser_id TEXT NOT NULL,
-        segment TEXT NOT NULL,
-        title TEXT NOT NULL,
-        description TEXT NOT NULL,
-        target_url TEXT NOT NULL
-      ))");
-
-  // Optimize database query for `GetForDateRange`,
-  // `GetHighestRankedPlacementsForDateRange`, and `PurgeExpired`.
-  CreateTableIndex(mojom_db_transaction,
-                   /*table_name=*/"ad_history", /*columns=*/{"created_at"});
-
-  // Optimize database query for `GetHighestRankedPlacementsForDateRange`.
-  CreateTableIndex(mojom_db_transaction, /*table_name=*/"ad_history",
-                   /*columns=*/{"confirmation_type"});
-  CreateTableIndex(mojom_db_transaction, /*table_name=*/"ad_history",
-                   /*columns=*/{"placement_id"});
-
-  // Optimize database query for `GetForCreativeInstanceId`.
-  CreateTableIndex(mojom_db_transaction, /*table_name=*/"ad_history",
-                   /*columns=*/{"creative_instance_id"});
-}
-
 std::string BuildInsertSql(const mojom::DBActionInfoPtr& mojom_db_action,
                            const AdHistoryList& ad_history) {
   CHECK(mojom_db_action);
@@ -461,11 +425,6 @@ void AdHistory::Migrate(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
   CHECK(mojom_db_transaction);
 
   switch (to_version) {
-    case 42: {
-      MigrateToV42(mojom_db_transaction);
-      break;
-    }
-
     default: {
       // No migration needed.
       break;

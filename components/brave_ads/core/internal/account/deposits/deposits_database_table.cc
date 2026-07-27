@@ -92,18 +92,6 @@ std::string BuildInsertSql(const mojom::DBActionInfoPtr& mojom_db_action,
       {kTableName, BuildBindColumnPlaceholder(/*column_count=*/3)}, nullptr);
 }
 
-void MigrateToV43(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
-  CHECK(mojom_db_transaction);
-
-  // Optimize database query for `GetForCreativeInstanceId`.
-  CreateTableIndex(mojom_db_transaction, /*table_name=*/"deposits",
-                   /*columns=*/{"creative_instance_id"});
-
-  // Optimize database query for `PurgeExpired`.
-  CreateTableIndex(mojom_db_transaction, /*table_name=*/"deposits",
-                   /*columns=*/{"expire_at"});
-}
-
 void MigrateToV57(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
   CHECK(mojom_db_transaction);
 
@@ -203,11 +191,6 @@ void Deposits::Migrate(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
   CHECK(mojom_db_transaction);
 
   switch (to_version) {
-    case 43: {
-      MigrateToV43(mojom_db_transaction);
-      break;
-    }
-
     case 57: {
       MigrateToV57(mojom_db_transaction);
       break;
