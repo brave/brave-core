@@ -33,10 +33,6 @@ class NeuralModel final {
 
   ~NeuralModel() = default;
 
-  const neural_text_classification::flat::Model& model() const {
-    return *model_;
-  }
-
   std::optional<PredictionMap> Predict(const VectorData& data) const;
 
   std::optional<PredictionMap> GetTopPredictions(const VectorData& data) const;

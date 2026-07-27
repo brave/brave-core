@@ -675,8 +675,9 @@ class XcodeToolchain(Toolchain):
     def _rewrite_hermetic_xcode_script(
             self, sdk_info: build_xcode_toolchain.MacSdkInfo, index: dict,
             mac_toolchain_py: str) -> bool:
-        """Pins the archive hash and SDK constants, refreshes the provenance
-        comment, and mirrors Chromium's `MAC_MINIMUM_OS_VERSION` block.
+        """Pins the archive hash, size, and SDK constants, refreshes the
+        provenance comment, and mirrors Chromium's `MAC_MINIMUM_OS_VERSION`
+        block.
 
         `mac_toolchain_py` is the upstream `build/mac_toolchain.py` source the
         minimum-OS block is lifted from.
@@ -693,6 +694,10 @@ class XcodeToolchain(Toolchain):
         content = re.sub(r"MAC_BINARIES_HASH = '[^']*'",
                          f"MAC_BINARIES_HASH = '{index['sha256sum']}'",
                          original,
+                         count=1)
+        content = re.sub(r'MAC_BINARIES_SIZE = \d+',
+                         f"MAC_BINARIES_SIZE = {index['size_bytes']}",
+                         content,
                          count=1)
         content = re.sub(r"MAC_SDK_OFFICIAL_VERSION = '[^']*'",
                          f"MAC_SDK_OFFICIAL_VERSION = '{sdk_version}'",

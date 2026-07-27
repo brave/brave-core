@@ -15,7 +15,6 @@ import android.net.Uri;
 
 import androidx.test.filters.SmallTest;
 
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,8 +30,7 @@ import org.chromium.base.test.BaseRobolectricTestRunner;
 import org.chromium.base.test.util.Features.EnableFeatures;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ChromeInactivityTracker;
-import org.chromium.chrome.browser.app.flags.BraveCachedFlags;
-import org.chromium.chrome.browser.app.flags.ChromeCachedFlags;
+import org.chromium.chrome.browser.ntp.BraveFreshNtpHelper;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.components.browser_ui.media.MediaNotificationController;
 import org.chromium.components.browser_ui.media.MediaNotificationInfo;
@@ -46,13 +44,6 @@ import org.chromium.services.media_session.MediaMetadata;
 public class BraveReturnToChromeUtilUnitTest {
     @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
     @Mock private ChromeInactivityTracker mInactivityTracker;
-
-    @Before
-    public void setUp() {
-        // Force the ChromeCachedFlags superclass to initialize first so the BraveCachedFlags
-        // singleton is fully constructed before any of its static fields are accessed.
-        ChromeCachedFlags.getInstance();
-    }
 
     @Test
     @SmallTest
@@ -156,7 +147,7 @@ public class BraveReturnToChromeUtilUnitTest {
      * option and a background duration that comfortably exceeds the threshold.
      */
     private void setUpInactivityVariant() {
-        BraveCachedFlags.sBraveFreshNtpAfterIdleExperimentVariant.setForTesting("B");
+        BraveFreshNtpHelper.sBraveFreshNtpAfterIdleExperimentVariant.setForTesting("B");
         ChromeSharedPreferences.getInstance()
                 .writeInt(
                         BravePreferenceKeys.BRAVE_NEW_TAB_PAGE_OPENING_SCREEN,

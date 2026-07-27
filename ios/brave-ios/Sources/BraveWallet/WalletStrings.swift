@@ -6040,5 +6040,12 @@ extension Strings {
       value: "Continue with %lld Networks",
       comment: "The title of the continue button in onboarding network selection screen. '%lld' refers to a number (for example \"Continue with 8 Networks\")"
     )
+    public static let localhostNotSupported = NSLocalizedString(
+      "wallet.localhostNotSupported",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Localhost is not supported.",
+      comment: "An error message will be shown when a switch network request is made. But the switch to network is localhost."
+    )
   }
 }

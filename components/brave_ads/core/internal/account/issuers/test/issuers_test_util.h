@@ -8,28 +8,21 @@
 
 #include <string>
 
-#include "brave/components/brave_ads/core/internal/account/issuers/token_issuers/token_issuer_info.h"
+#include "base/containers/flat_set.h"
+#include "brave/components/brave_ads/core/internal/account/issuers/issuers_info.h"
+#include "brave/components/brave_ads/core/internal/account/issuers/token_issuers/payment_token_issuer_info.h"
 
-namespace brave_ads {
-
-struct IssuersInfo;
-
-namespace test {
-
-TokenIssuerList BuildTokenIssuers();
+namespace brave_ads::test {
 
 std::string BuildIssuersUrlResponseBody();
 
-IssuersInfo BuildIssuers(
-    int ping,
-    const TokenIssuerPublicKeyMap& confirmation_token_issuer_public_keys,
-    const TokenIssuerPublicKeyMap& payment_token_issuer_public_keys);
+IssuersInfo BuildIssuers(int ping,
+                         base::flat_set<std::string> confirmation_public_keys,
+                         PaymentTokenIssuerPublicKeyMap payment_public_keys);
 IssuersInfo BuildIssuers();
 
 void BuildAndSetIssuers();
 
-}  // namespace test
-
-}  // namespace brave_ads
+}  // namespace brave_ads::test
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_ISSUERS_TEST_ISSUERS_TEST_UTIL_H_

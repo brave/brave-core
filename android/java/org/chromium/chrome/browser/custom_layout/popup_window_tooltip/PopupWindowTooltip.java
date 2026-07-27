@@ -58,6 +58,7 @@ public class PopupWindowTooltip implements PopupWindow.OnDismissListener {
     private final boolean mDismissOnOutsideTouch;
     private final boolean mModal;
     private final boolean mBackgroundDimDisabled;
+    private final float mDimAmount;
     private final boolean mContentArrowAtStart;
     private final View mContentView;
     private View mContentLayout;
@@ -94,6 +95,7 @@ public class PopupWindowTooltip implements PopupWindow.OnDismissListener {
         mOnDismissListener = builder.mOnDismissListener;
         mOnShowListener = builder.mOnShowListener;
         mBackgroundDimDisabled = builder.mBackgroundDimDisabled;
+        mDimAmount = builder.mDimAmount;
         mContentArrowAtStart = builder.mContentArrowAtStart;
         mParentPaddingHorizontal = builder.mParentPaddingHorizontal;
         mParentPaddingVertical = builder.mParentPaddingVertical;
@@ -176,7 +178,7 @@ public class PopupWindowTooltip implements PopupWindow.OnDismissListener {
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         WindowManager.LayoutParams p = (WindowManager.LayoutParams) container.getLayoutParams();
         p.flags |= WindowManager.LayoutParams.FLAG_DIM_BEHIND;
-        p.dimAmount = 0.4f;
+        p.dimAmount = mDimAmount > 0f ? mDimAmount : 0.4f;
         wm.updateViewLayout(container, p);
     }
 
@@ -422,6 +424,7 @@ public class PopupWindowTooltip implements PopupWindow.OnDismissListener {
         private boolean mDismissOnOutsideTouch = true;
         private boolean mModal;
         private boolean mBackgroundDimDisabled;
+        private float mDimAmount;
         private boolean mContentArrowAtStart;
         private View mContentView;
         private View mAnchorView;
@@ -514,6 +517,11 @@ public class PopupWindowTooltip implements PopupWindow.OnDismissListener {
 
         public Builder backgroundDimDisabled(boolean backgroundDimDisabled) {
             mBackgroundDimDisabled = backgroundDimDisabled;
+            return this;
+        }
+
+        public Builder dimAmount(float dimAmount) {
+            mDimAmount = dimAmount;
             return this;
         }
 

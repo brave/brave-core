@@ -1299,7 +1299,7 @@ void BraveBrowserView::HandleBrowserWindowMouseEvent(
       VerticalTabController::FromBrowser(browser())
           ->ShouldShowBraveVerticalTabs()) {
     vertical_tab_strip_container_view_->vertical_tab_strip_region_view()
-        ->ShowVerticalTabStripOnMouseOver(point_in_screen);
+        ->HandleMouseEvent(point_in_screen);
   }
 }
 

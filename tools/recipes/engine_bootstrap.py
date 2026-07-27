@@ -35,7 +35,7 @@ import subprocess
 import sys
 
 # brave-core remote + branch the engine code is fetched from. SSH, matching the
-# `brave_core_shallow` recipe module.
+# `brave_core_checkout` recipe module.
 REPO_URL = 'git@github.com:brave/brave-core.git'
 BRAVE_CORE_REF = 'master'
 

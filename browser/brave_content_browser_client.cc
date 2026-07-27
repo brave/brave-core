@@ -173,7 +173,10 @@
 
 #if BUILDFLAG(ENABLE_LOCAL_AI)
 #include "brave/browser/ui/webui/local_ai/local_ai_ui.h"
+#include "brave/browser/ui/webui/local_ai/on_device_speech_recognition_worker_ui.h"
+#include "brave/components/local_ai/core/features.h"
 #include "brave/components/local_ai/core/local_ai.mojom.h"
+#include "brave/components/local_ai/core/on_device_speech_recognition.mojom.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
@@ -259,6 +262,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/components/commands/common/features.h"
 #include "brave/ui/webui/brave_color_change_listener/brave_color_change_handler.h"
 #include "ui/webui/resources/cr_components/color_change_listener/color_change_listener.mojom.h"
+#include "ui/webui/resources/cr_components/theme_color_picker/theme_color_picker.mojom.h"
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/browser/ui/ai_chat/utils.h"
 #endif
@@ -778,7 +782,8 @@ void BraveContentBrowserClient::RegisterTrustedWebUIInterfaceBrokers(
   }
 
   registry.ForWebUI<BraveWelcomePageUI>()
-      .Add<brave_welcome_page::mojom::WelcomePageHandler>();
+      .Add<brave_welcome_page::mojom::WelcomePageHandler>()
+      .Add<theme_color_picker::mojom::ThemeColorPickerHandlerFactory>();
 
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)
   if (base::FeatureList::IsEnabled(
@@ -799,8 +804,9 @@ void BraveContentBrowserClient::RegisterTrustedWebUIInterfaceBrokers(
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
   if (email_aliases::features::IsEmailAliasesEnabled()) {
     registry.ForWebUI<EmailAliasesPanelUI>()
-        .Add<email_aliases::mojom::EmailAliasesService>()
-        .Add<email_aliases::mojom::EmailAliasesPanelHandler>();
+        .Add<brave_account::mojom::Authentication>()
+        .Add<email_aliases::mojom::EmailAliasesPanelHandler>()
+        .Add<email_aliases::mojom::EmailAliasesService>();
     registry.ForWebUI<EmailAliasesPromoUI>()
         .Add<email_aliases::mojom::EmailAliasesPromoHandler>();
   }
@@ -996,6 +1002,11 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
   if (base::FeatureList::IsEnabled(history_embeddings::kHistoryEmbeddings)) {
     content::RegisterWebUIControllerInterfaceBinder<
         local_ai::mojom::LocalAIService, local_ai::UntrustedLocalAIUI>(map);
+  }
+  if (base::FeatureList::IsEnabled(local_ai::kBraveOnDeviceSpeechRecognition)) {
+    content::RegisterWebUIControllerInterfaceBinder<
+        local_ai::mojom::SpeechRecognitionFactoryHost,
+        local_ai::UntrustedOnDeviceSpeechRecognitionWorkerUI>(map);
   }
 #endif
 #if BUILDFLAG(ENABLE_BRAVE_VPN)

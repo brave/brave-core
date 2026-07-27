@@ -5,7 +5,11 @@
 
 #include "brave/browser/ui/views/tabs/brave_browser_tab_strip_controller.h"
 
+#include <algorithm>
+#include <optional>
+#include <unordered_set>
 #include <utility>
+#include <vector>
 
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/tabs/brave_tab_menu_model_factory.h"
@@ -22,11 +26,16 @@
 #include "chrome/browser/sessions/tab_restore_service_factory.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/tabs/features.h"
+#include "chrome/browser/ui/tabs/split_tab_util.h"
 #include "chrome/browser/ui/tabs/tab_muted_utils.h"
+#include "chrome/browser/ui/views/tabs/browser_tab_strip_controller.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
 #include "components/prefs/pref_service.h"
 #include "components/sessions/core/tab_restore_service.h"
+#include "components/split_tabs/split_tab_id.h"
 #include "components/tabs/public/tab_interface.h"
+#include "third_party/abseil-cpp/absl/container/flat_hash_set.h"
+#include "ui/events/event.h"
 #include "ui/views/view_utils.h"
 
 BraveBrowserTabStripController::BraveBrowserTabStripController(
@@ -326,6 +335,113 @@ void BraveBrowserTabStripController::OnTreeTabChanged(
     }
     case TreeTabChange::Type::kNodeReparented:
       break;
+  }
+}
+
+void BraveBrowserTabStripController::SelectTab(int model_index,
+                                               const ui::Event& event) {
+  auto* brave_model = static_cast<BraveTabStripModel*>(model_.get());
+  if (!brave_model->tree_model() ||
+      model_index < model_->IndexOfFirstNonPinnedTab()) {
+    BrowserTabStripController::SelectTab(model_index, event);
+    return;
+  }
+
+  // Tab::OnMousePressed() and Tab::OnMouseReleased() both funnel a plain
+  // (unmodified) click through SelectTab(): press calls it for a
+  // not-yet-selected tab, and release always calls it when no drag occurred,
+  // to reset a stale multi-selection down to just the clicked tab. Expanding
+  // a tree-tab parent's selection to its whole subtree needs to happen for
+  // both, so a subsequent drag (which reads the live selection at press time)
+  // carries the subtree along, and the expansion isn't immediately undone by
+  // the no-drag reset on release. Other callers of SelectTab() (keyboard,
+  // touch, context menu, tests) keep the default single-tab behavior.
+  // The possible scenarios are:
+  // 1. Click on a not-yet-selected tab: SelectTab() is called TWICE for the
+  //    same physical click - once on press (expanding the subtree), and
+  //    again on release right afterward (since release always fires when no
+  //    drag occurred). Without tree_tab_subtree_expanded_on_press_index_,
+  //    that second call can't tell "I'm the tail end of the click
+  //    that just expanded this subtree" apart from "I'm a separate, later
+  //    click on an already-selected subtree" - both look identical from
+  //    here - so it would misread its own press-time expansion as a
+  //    deliberate second click and collapse it right back.
+  //    - If the user instead starts dragging after the press, only the press
+  //      call happens (release's SelectTab() call is skipped when a real
+  //      drag completes), so the whole subtree is already selected by the
+  //      time the drag reads the live selection.
+  // 2. Click on an already-selected tab: press is skipped entirely (Tab::
+  //    OnMousePressed() only calls SelectTab() for a not-yet-selected tab),
+  //    so only the release call happens, and it toggles the subtree
+  //    selection on/off.
+  //    - Press on an already-selected tab and then dragging away doesn't
+  //      call SelectTab() at all, so the selection is left untouched.
+  const bool is_plain_mouse_click =
+      event.type() == ui::EventType::kMousePressed ||
+      event.type() == ui::EventType::kMouseReleased;
+
+  // Consumed at most once: read whatever the previous call left behind, then
+  // clear it so it can't leak into some unrelated later call (e.g. if a real
+  // drag intervenes and the paired release never arrives).
+  const std::optional<int> expanded_on_previous_press =
+      tree_tab_subtree_expanded_on_press_index_;
+  tree_tab_subtree_expanded_on_press_index_.reset();
+
+  std::vector<int> descendant_indices;
+  bool subtree_already_selected = false;
+  int resolved_index = model_index;
+  if (is_plain_mouse_click) {
+    // Resolve to the tab this call will actually activate (a split's last-
+    // active member), matching BrowserTabStripController::SelectTab()'s own
+    // redirect, so we consider the right tab's tree-tab descendants.
+    if (std::optional<split_tabs::SplitTabId> split_id =
+            tabstrip_->tab_at(model_index)->split();
+        split_id.has_value()) {
+      resolved_index =
+          split_tabs::GetIndexOfLastActiveTab(model_, split_id.value());
+    }
+
+    descendant_indices =
+        brave_model->GetTreeTabDescendantIndices(resolved_index);
+    if (!descendant_indices.empty()) {
+      if (event.type() == ui::EventType::kMouseReleased &&
+          expanded_on_previous_press == resolved_index) {
+        // This release is the second half of the same click that already
+        // expanded the subtree on press moments ago - not a deliberate,
+        // separate second click. Don't treat it as a toggle-off.
+        subtree_already_selected = false;
+      } else {
+        // If the whole subtree is already selected (e.g. a second, unmodified
+        // click on a tree node that was already selected together with its
+        // descendants), collapse the selection back down to just the clicked
+        // tab instead of re-expanding it.
+        subtree_already_selected =
+            model_->IsTabSelected(resolved_index) &&
+            std::ranges::all_of(descendant_indices, [this](int i) {
+              return model_->IsTabSelected(i);
+            });
+      }
+    }
+  }
+
+  BrowserTabStripController::SelectTab(model_index, event);
+
+  if (descendant_indices.empty() || subtree_already_selected) {
+    return;
+  }
+
+  absl::flat_hash_set<tabs::TabInterface*> descendant_tabs;
+  for (int descendant_index : descendant_indices) {
+    descendant_tabs.insert(model_->GetTabAtIndex(descendant_index));
+  }
+
+  tabs::TabStripModelSelectionState new_selection = model_->selection_model();
+  new_selection.AppendTabsToSelection(std::unordered_set<tabs::TabInterface*>(
+      descendant_tabs.begin(), descendant_tabs.end()));
+  model_->SetSelectionFromModel(std::move(new_selection));
+
+  if (event.type() == ui::EventType::kMousePressed) {
+    tree_tab_subtree_expanded_on_press_index_ = resolved_index;
   }
 }
 

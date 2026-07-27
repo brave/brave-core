@@ -16,6 +16,7 @@
 #include "base/functional/bind.h"
 #include "base/functional/callback_forward.h"
 #include "base/location.h"
+#include "base/logging.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/sequence_checker.h"
 #include "base/trace_event/trace_event.h"
@@ -47,9 +48,11 @@ AdBlockService::SourceProviderObserver::SourceProviderObserver(
     AdBlockResourceProvider* resource_provider,
     AdBlockFiltersProviderManager* filters_provider_manager,
     bool engine_is_default,
+    bool debug_mode,
     scoped_refptr<base::SequencedTaskRunner> task_runner)
     : on_resources_loaded_(std::move(on_resources_loaded)),
       engine_is_default_(engine_is_default),
+      debug_mode_(debug_mode),
       task_runner_(std::move(task_runner)),
       resource_provider_(resource_provider),
       filters_provider_manager_(filters_provider_manager) {
@@ -79,13 +82,14 @@ void AdBlockService::SourceProviderObserver::OnFilterSetLoaded(
   task_runner_->PostTaskAndReplyWithResult(
       FROM_HERE,
       base::BindOnce(
-          [](base::OnceCallback<void(rust::Box<adblock::FilterSet>*)> cb) {
+          [](bool debug_mode,
+             base::OnceCallback<void(rust::Box<adblock::FilterSet>*)> cb) {
             auto filter_set = std::make_unique<rust::Box<adblock::FilterSet>>(
-                adblock::new_filter_set());
+                adblock::new_filter_set(debug_mode));
             std::move(cb).Run(filter_set.get());
             return filter_set;
           },
-          std::move(cb)),
+          debug_mode_, std::move(cb)),
       base::BindOnce(
           &AdBlockService::SourceProviderObserver::OnFilterSetCreated,
           weak_factory_.GetWeakPtr()));
@@ -246,16 +250,22 @@ AdBlockService::AdBlockService(
             filters_provider_manager_.get());
   }
 
+  const bool debug_mode = IsDebugMode();
+  if (debug_mode) {
+    LOG(WARNING) << "Adblock debug mode is enabled. Extra CPU and memory usage "
+                    "are expected.";
+  }
+
   const auto make_on_resources_loaded_callback = base::BindRepeating(
       &AdBlockService::OnResourcesLoaded, base::Unretained(this));
 
   default_service_observer_ = std::make_unique<SourceProviderObserver>(
       make_on_resources_loaded_callback, resource_provider_.get(),
-      filters_provider_manager_.get(), true, task_runner_);
+      filters_provider_manager_.get(), true, debug_mode, task_runner_);
   additional_filters_service_observer_ =
       std::make_unique<SourceProviderObserver>(
           make_on_resources_loaded_callback, resource_provider_.get(),
-          filters_provider_manager_.get(), false, task_runner_);
+          filters_provider_manager_.get(), false, debug_mode, task_runner_);
 }
 
 AdBlockService::~AdBlockService() = default;
@@ -420,6 +430,16 @@ void AdBlockService::SetupDiscardPolicy(
       .WithArgs(policy);
 }
 
+bool AdBlockService::IsDebugMode() const {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  return local_state_->GetBoolean(prefs::kAdBlockDebugMode);
+}
+
+void AdBlockService::SetDebugMode(bool debug_mode) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  local_state_->SetBoolean(prefs::kAdBlockDebugMode, debug_mode);
+}
+
 void RegisterPrefsForAdBlockService(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(prefs::kAdBlockCookieListSettingTouched, false);
   registry->RegisterBooleanPref(
@@ -435,6 +455,7 @@ void RegisterPrefsForAdBlockService(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(prefs::kFBEmbedControlType, true);
   registry->RegisterBooleanPref(prefs::kTwitterEmbedControlType, true);
   registry->RegisterBooleanPref(prefs::kLinkedInEmbedControlType, false);
+  registry->RegisterBooleanPref(prefs::kAdBlockDebugMode, false);
 }
 
 void RegisterPrefsForAdBlockServiceForMigration(PrefRegistrySimple* registry) {

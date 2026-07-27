@@ -3,4 +3,5 @@ include_rules = [
   "+brave/components/ai_chat/ios/browser",
   "+brave/components/ai_chat/resources/grit",
   "+brave/components/constants",
+  "+brave/components/version_info",
 ]

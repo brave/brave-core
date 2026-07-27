@@ -14,6 +14,7 @@
 #include "brave/browser/ntp_background/new_tab_takeover_infobar_delegate.h"
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/background_facade.h"
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/custom_image_chooser.h"
+#include "brave/browser/ui/webui/brave_new_tab_page_refresh/sponsored_sites_facade.h"
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/top_sites_facade.h"
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/vpn_facade.h"
 #include "brave/components/brave_perf_predictor/common/pref_names.h"
@@ -46,6 +47,7 @@ NewTabPageHandler::NewTabPageHandler(
     mojo::PendingReceiver<mojom::NewTabPageHandler> receiver,
     std::unique_ptr<CustomImageChooser> custom_image_chooser,
     std::unique_ptr<BackgroundFacade> background_facade,
+    std::unique_ptr<SponsoredSitesFacade> sponsored_sites_facade,
     std::unique_ptr<TopSitesFacade> top_sites_facade,
     std::unique_ptr<VPNFacade> vpn_facade,
     content::WebContents& web_contents,
@@ -58,6 +60,7 @@ NewTabPageHandler::NewTabPageHandler(
       update_observer_(pref_service, top_sites_facade.get()),
       custom_image_chooser_(std::move(custom_image_chooser)),
       background_facade_(std::move(background_facade)),
+      sponsored_sites_facade_(std::move(sponsored_sites_facade)),
       top_sites_facade_(std::move(top_sites_facade)),
       vpn_facade_(std::move(vpn_facade)),
       web_contents_(web_contents),
@@ -67,6 +70,7 @@ NewTabPageHandler::NewTabPageHandler(
       was_restored_(was_restored) {
   CHECK(custom_image_chooser_);
   CHECK(background_facade_);
+  CHECK(sponsored_sites_facade_);
   CHECK(top_sites_facade_);
   CHECK(vpn_facade_);
 
@@ -77,6 +81,9 @@ NewTabPageHandler::NewTabPageHandler(
 
   update_observer_.SetCallback(base::BindRepeating(&NewTabPageHandler::OnUpdate,
                                                    weak_factory_.GetWeakPtr()));
+
+  sponsored_sites_facade_->SetSitesUpdatedCallback(base::BindRepeating(
+      &NewTabPageHandler::OnSponsoredSitesUpdate, weak_factory_.GetWeakPtr()));
 }
 
 NewTabPageHandler::~NewTabPageHandler() = default;
@@ -355,6 +362,20 @@ void NewTabPageHandler::SetShowTopSites(bool show_top_sites,
   std::move(callback).Run();
 }
 
+void NewTabPageHandler::GetShowSponsoredSites(
+    GetShowSponsoredSitesCallback callback) {
+  std::move(callback).Run(
+      pref_service_->GetBoolean(kNewTabPageShowSponsoredSites));
+}
+
+void NewTabPageHandler::SetShowSponsoredSites(
+    bool show_sponsored_sites,
+    SetShowSponsoredSitesCallback callback) {
+  pref_service_->SetBoolean(kNewTabPageShowSponsoredSites,
+                            show_sponsored_sites);
+  std::move(callback).Run();
+}
+
 void NewTabPageHandler::GetTopSitesListKind(
     GetTopSitesListKindCallback callback) {
   std::move(callback).Run(top_sites_facade_->GetListKind());
@@ -422,6 +443,10 @@ void NewTabPageHandler::RecordTopSiteClick(
     navigation_source_metrics_->RecordTopSiteNavigation(is_custom);
   }
   std::move(callback).Run();
+}
+
+void NewTabPageHandler::GetSponsoredSites(GetSponsoredSitesCallback callback) {
+  sponsored_sites_facade_->GetSites(std::move(callback));
 }
 
 void NewTabPageHandler::SetCustomTopSitePosition(
@@ -522,7 +547,7 @@ void NewTabPageHandler::SetShowRewardsWidget(
 }
 
 void NewTabPageHandler::GetShowVPNWidget(GetShowVPNWidgetCallback callback) {
-  if (auto pref_name = vpn_facade_->GetWidgetPrefName()) {
+  if (std::optional<std::string> pref_name = vpn_facade_->GetWidgetPrefName()) {
     std::move(callback).Run(pref_service_->GetBoolean(*pref_name));
   } else {
     std::move(callback).Run(false);
@@ -531,7 +556,7 @@ void NewTabPageHandler::GetShowVPNWidget(GetShowVPNWidgetCallback callback) {
 
 void NewTabPageHandler::SetShowVPNWidget(bool show_vpn_widget,
                                          SetShowVPNWidgetCallback callback) {
-  if (auto pref_name = vpn_facade_->GetWidgetPrefName()) {
+  if (std::optional<std::string> pref_name = vpn_facade_->GetWidgetPrefName()) {
     pref_service_->SetBoolean(*pref_name, show_vpn_widget);
   }
   std::move(callback).Run();
@@ -588,6 +613,7 @@ void NewTabPageHandler::OnUpdate(UpdateObserver::Source update_source) {
       break;
     case UpdateObserver::Source::kTopSites:
       page_->OnTopSitesUpdated();
+      page_->OnSponsoredSitesUpdated();
       break;
     case UpdateObserver::Source::kClock:
       page_->OnClockStateUpdated();
@@ -606,6 +632,12 @@ void NewTabPageHandler::OnUpdate(UpdateObserver::Source update_source) {
     case UpdateObserver::Source::kVPN:
       page_->OnVPNStateUpdated();
       break;
+  }
+}
+
+void NewTabPageHandler::OnSponsoredSitesUpdate() {
+  if (page_.is_bound()) {
+    page_->OnSponsoredSitesUpdated();
   }
 }
 

@@ -4,173 +4,180 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 """Post-process checks for recipe simulation tests.
 
-A minimal mirror of `recipe_engine.post_process`. A recipe's `GenTests` attaches
-checks with `api.post_process(func, *args)`; after simulation the test runner
-calls each `func(check, steps, *args)`, where:
+A recipe's `GenTests` attaches checks with `api.post_process(func, *args)`.
+After running a simulation the runner calls each `func(check, steps, *args)`,
+where:
 
-  * `check` is a `Checker`. Call it as `check(cond)` or `check(hint, cond)`.
-    Failures are collected (not raised), so every check in a hook runs.
+  * `check` is a `check.Checker`. Call it as `check(cond)` or
+    `check(hint, cond)`. Failures are recorded (not raised) with an
+    AST-introspected rendering of the failing expression and its sub-values, so
+    every check in a hook runs. See `check.py`.
   * `steps` is an ordered `dict` mapping step name -> step dict
-    (`{'name', 'cmd', 'cwd'?, 'env'?, 'retcode'}`), plus the terminal
-    `'$result'` entry (`{'name': '$result', 'status': ...}`).
+    (`{'name', 'cmd', 'cwd'?, 'env'?, 'retcode'?}`), plus the terminal
+    `'$result'` entry. `$result` has no `failure` key on success. On a non-infra
+    failure it is `{'failure': {'failure': {}, 'humanReason': ...}}`; on an
+    infra failure/exception it is `{'failure': {'humanReason': ...}}`.
 
 A check function returns `None` to only assert, or a (subset) `dict` to *filter*
-the recorded steps for the written expectation. Returning an empty dict drops
-the expectation file entirely (see `DropExpectation`).
-
-Simplifications vs upstream: no AST-introspected failure rendering (checks carry
-a caller-supplied hint), and the returned-dict filter is used verbatim rather
-than subset-verified.
+the recorded steps for the written expectation; the runner subset-verifies that
+returned dict (see `check.VerifySubset`). Returning an empty dict drops the
+expectation file entirely (see `DropExpectation`).
 """
 
 from __future__ import annotations
 
+from collections.abc import Sequence
 import re
-from typing import Any
+from typing import TYPE_CHECKING
 
-# The '$result' pseudo-step name holding the overall run status.
+if TYPE_CHECKING:
+    from check import Checker
+
+# The '$result' pseudo-step name holding the overall run result.
 RESULT_STEP = '$result'
 
 # A step dict, or the $result dict.
 Step = dict
-Steps = dict  # OrderedDict-like {name: Step}
-
-# Sentinel distinguishing `check(cond)` from `check(hint, cond)`.
-_MISSING = object()
-
-
-class Checker:
-    """Collects check failures for a single post-process hook.
-
-    Calling the checker records (but does not raise) failures, so a hook reports
-    every failed assertion in one pass. `failures` is a list of human-readable
-    strings, each prefixed with the `api.post_process(...)` call site.
-    """
-
-    def __init__(self, context: str) -> None:
-        self._context = context
-        self.failures: list[str] = []
-
-    def __call__(self, arg1: Any, arg2: Any = _MISSING) -> bool:
-        """`check(cond)` or `check(hint, cond)`; returns `bool(cond)`."""
-        if arg2 is _MISSING:
-            hint, cond = None, arg1
-        else:
-            hint, cond = arg1, arg2
-        if not cond:
-            message = f'{self._context}: check failed'
-            if hint:
-                message += f': {hint}'
-            self.failures.append(message)
-        return bool(cond)
-
-
-def _run_steps(steps: Steps) -> Steps:
-    """Return only the executed steps (drops the `$result` pseudo-step)."""
-    return {name: step for name, step in steps.items() if name != RESULT_STEP}
+Steps = dict  # ordered {name: Step}
 
 
 # -- Presence -----------------------------------------------------------------
 
 
-def MustRun(check: Checker, steps: Steps, step_name: str) -> None:
-    check(f'step {step_name!r} must run', step_name in _run_steps(steps))
+def MustRun(check: Checker, step_odict: Steps, *steps: str) -> None:
+    """Assert that steps with the given names are in the expectations."""
+    for step_name in steps:
+        check(step_name in step_odict)
 
 
-def DoesNotRun(check: Checker, steps: Steps, step_name: str) -> None:
-    check(f'step {step_name!r} must not run', step_name
-          not in _run_steps(steps))
+def DoesNotRun(check: Checker, step_odict: Steps, *steps: str) -> None:
+    """Assert that the given steps don't run."""
+    ban_set = set(steps)
+    for step_name in step_odict:
+        check(step_name not in ban_set)
 
 
-def MustRunRE(check: Checker, steps: Steps, pattern: str) -> None:
-    regex = re.compile(pattern)
-    check(f'a step matching {pattern!r} must run',
-          any(regex.search(name) for name in _run_steps(steps)))
+def MustRunRE(check: Checker,
+              step_odict: Steps,
+              step_regex: str | re.Pattern,
+              at_least: int = 1,
+              at_most: int | None = None) -> None:
+    """Assert that steps matching the given regex are in the expectations."""
+    compiled_regex = re.compile(step_regex)
+    matches = 0
+    for step_name in step_odict:
+        if compiled_regex.match(step_name):
+            matches += 1
+    check(matches >= at_least)
+    if at_most is not None:
+        check(matches <= at_most)
 
 
-def DoesNotRunRE(check: Checker, steps: Steps, pattern: str) -> None:
-    regex = re.compile(pattern)
-    check(f'no step may match {pattern!r}',
-          not any(regex.search(name) for name in _run_steps(steps)))
+def DoesNotRunRE(check: Checker, step_odict: Steps, *step_regexes:
+                 str) -> None:
+    """Assert that no steps matching any of the regexes have run."""
+    compiled_regexes = [re.compile(r) for r in step_regexes]
+    for step_name in step_odict:
+        for regex in compiled_regexes:
+            check(not regex.match(step_name))
 
 
 # -- Command inspection -------------------------------------------------------
 
 
+def _fullmatch(pattern: str | re.Pattern, string: str) -> bool:
+    match = re.match(pattern, string)
+    return bool(match and match.span()[1] == len(string))
+
+
 def _is_subsequence(sub: list, seq: list) -> bool:
-    """Whether *sub* appears in *seq* in order (not always contiguously)."""
+    """Whether *sub* appears in *seq* in order (not necessarily contiguously)."""
     it = iter(seq)
     return all(item in it for item in sub)
 
 
-def StepCommandContains(check: Checker, steps: Steps, step_name: str,
-                        args: list[str]) -> None:
-    step = _run_steps(steps).get(step_name)
-    if not check(f'step {step_name!r} must run', step is not None):
-        return
-    check(f'{step_name!r} command must contain {args!r} in order',
-          _is_subsequence([str(a) for a in args], step['cmd']))
+def StepCommandContains(check: Checker, step_odict: Steps, step: str,
+                        argument_sequence: Sequence[str]) -> None:
+    """Assert that a step's command contained the given argument sequence."""
+    check(
+        'command line for step %s contained %s' % (step, argument_sequence),
+        _is_subsequence([str(a) for a in argument_sequence],
+                        step_odict[step]['cmd']))
 
 
-def StepCommandRE(check: Checker, steps: Steps, step_name: str,
-                  patterns: list[str]) -> None:
-    step = _run_steps(steps).get(step_name)
-    if not check(f'step {step_name!r} must run', step is not None):
-        return
-    cmd = step['cmd']
-    for i, pattern in enumerate(patterns):
-        matched = i < len(cmd) and re.search(pattern, cmd[i]) is not None
-        check(f'{step_name!r} cmd[{i}] must match {pattern!r}', matched)
+def StepCommandRE(check: Checker, step_odict: Steps, step: str,
+                  expected_patterns: Sequence[str | re.Pattern]) -> None:
+    """Assert that a step's command matches the given list of regexes.
+
+    The i-th command argument is matched against the i-th pattern. A pattern
+    that does not match the entire argument is a failure, as are surplus
+    arguments or unused patterns.
+    """
+    cmd = step_odict[step]['cmd']
+    for expected, actual in zip(expected_patterns, cmd):
+        check(_fullmatch(expected, actual))
+    unmatched = cmd[len(expected_patterns):]
+    check('all arguments matched', not unmatched)
+    unused = expected_patterns[len(cmd):]
+    check('all patterns used', not unused)
 
 
 # -- Per-step status ----------------------------------------------------------
 
 
-def StepSuccess(check: Checker, steps: Steps, step_name: str) -> None:
-    step = _run_steps(steps).get(step_name)
-    if not check(f'step {step_name!r} must run', step is not None):
-        return
-    check(f'step {step_name!r} must succeed', step.get('retcode', 0) == 0)
+def StepSuccess(check: Checker, step_odict: Steps, step: str) -> None:
+    """Assert that a step succeeded (its simulated retcode was zero)."""
+    check(step_odict[step].get('retcode', 0) == 0)
 
 
-def StepFailure(check: Checker, steps: Steps, step_name: str) -> None:
-    step = _run_steps(steps).get(step_name)
-    if not check(f'step {step_name!r} must run', step is not None):
-        return
-    check(f'step {step_name!r} must fail', step.get('retcode', 0) != 0)
+def StepFailure(check: Checker, step_odict: Steps, step: str) -> None:
+    """Assert that a step failed (its simulated retcode was non-zero)."""
+    check(step_odict[step].get('retcode', 0) != 0)
 
 
 # -- Overall result -----------------------------------------------------------
 
 
-def _status(steps: Steps) -> str | None:
-    result = steps.get(RESULT_STEP)
-    return result.get('status') if result else None
+def StatusSuccess(check: Checker, step_odict: Steps) -> None:
+    """Assert that the recipe finished successfully."""
+    failure = step_odict[RESULT_STEP].get('failure')
+    check('recipe succeeded (found failure instead)', failure is None)
 
 
-def StatusSuccess(check: Checker, steps: Steps) -> None:
-    check(f'overall status must be SUCCESS (was {_status(steps)})',
-          _status(steps) == 'SUCCESS')
+def StatusAnyFailure(check: Checker, step_odict: Steps) -> None:
+    """Assert that the recipe failed (infra or non-infra)."""
+    check('recipe failed (found success instead)', 'failure'
+          in step_odict[RESULT_STEP])
 
 
-def StatusFailure(check: Checker, steps: Steps) -> None:
-    check(f'overall status must be FAILURE (was {_status(steps)})',
-          _status(steps) == 'FAILURE')
+def StatusFailure(check: Checker, step_odict: Steps) -> None:
+    """Assert that the recipe had a non-infra failure."""
+    result = step_odict[RESULT_STEP]
+    if not check('recipe failed (found success instead)', 'failure' in result):
+        return
+    check('expected failure but recipe had infra failure', 'failure'
+          in result['failure'])
 
 
-def StatusException(check: Checker, steps: Steps) -> None:
-    check(f'overall status must be EXCEPTION (was {_status(steps)})',
-          _status(steps) == 'EXCEPTION')
+def StatusException(check: Checker, step_odict: Steps) -> None:
+    """Assert that the recipe had an infra failure."""
+    result = step_odict[RESULT_STEP]
+    if not check('recipe had infra failure (found success instead)', 'failure'
+                 in result):
+        return
+    check('recipe had infra failure (found non-infra failure instead)',
+          'failure' not in result['failure'])
 
 
 # -- Expectation control ------------------------------------------------------
 
 
-def DropExpectation(_check: Checker, _steps: Steps) -> Steps:
+def DropExpectation(_check: Checker, _step_odict: Steps) -> Steps:
     """Suppress writing this test's expectation file.
 
-    Returning an empty mapping signals the runner to write (and, in train mode,
-    remove any stale) expectation file. Handy for tests that assert only via
-    other post-process checks and don't need a golden file.
+    Returning an empty mapping signals the runner to write no expectation (and,
+    in train mode, to remove any stale one). Handy for tests that assert only via
+    other post-process checks and don't need a golden file. Must be the last
+    check in a case: no steps remain for later checks to evaluate.
     """
     return {}

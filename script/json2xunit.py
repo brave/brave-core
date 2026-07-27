@@ -6,7 +6,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 """
-On Android the `--output' switch to `npm run test', which produces xunit
+On Android the `--output' switch to `pnpm run test', which produces xunit
 reports, doesn't work (https://github.com/brave/brave-browser/issues/15595).
 
 This script reads json on stdin (`--json-results-file') and prints xunit xml

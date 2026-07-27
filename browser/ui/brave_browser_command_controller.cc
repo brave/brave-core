@@ -23,6 +23,7 @@
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/rewards_util.h"
+#include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_talk/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
@@ -151,6 +152,7 @@ void BraveBrowserCommandController::OnTabChangedAt(tabs::TabInterface* tab,
                        brave::HasDuplicateTabs(&*browser_));
   UpdateCommandsForTabs();
   UpdateCommandsForSend();
+  UpdateCommandForBlockElements();
 }
 
 void BraveBrowserCommandController::OnTabPinnedStateChanged(
@@ -173,6 +175,7 @@ void BraveBrowserCommandController::OnTabStripModelChanged(
   UpdateCommandsForTabs();
   UpdateCommandsForSend();
   UpdateCommandsForPin();
+  UpdateCommandForBlockElements();
 
   if (browser_->is_type_normal() && selection.active_tab_changed()) {
     UpdateCommandForSplitView();
@@ -340,6 +343,7 @@ void BraveBrowserCommandController::InitBraveCommandState() {
 #endif
   UpdateCommandEnabled(IDC_TOGGLE_SHIELDS, true);
   UpdateCommandEnabled(IDC_TOGGLE_JAVASCRIPT, true);
+  UpdateCommandForBlockElements();
 
   UpdateCommandEnabled(IDC_CLOSE_DUPLICATE_TABS,
                        brave::HasDuplicateTabs(&*browser_));
@@ -543,6 +547,15 @@ void BraveBrowserCommandController::UpdateCommandsForPin() {
                        brave::CanCloseUnpinnedTabs(&*browser_));
 }
 
+void BraveBrowserCommandController::UpdateCommandForBlockElements() {
+  auto* contents = browser_->tab_strip_model()->GetActiveWebContents();
+  const bool enabled =
+      base::FeatureList::IsEnabled(
+          brave_shields::features::kBraveShieldsElementPicker) &&
+      contents && contents->GetLastCommittedURL().SchemeIsHTTPOrHTTPS();
+  UpdateCommandEnabled(IDC_BLOCK_ELEMENTS, enabled);
+}
+
 void BraveBrowserCommandController::UpdateCommandForFocusMode() {
   UpdateCommandEnabled(IDC_TOGGLE_FOCUS_MODE,
                        BrowserSupportsFocusMode(base::to_address(browser_)));
@@ -713,6 +726,9 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       break;
     case IDC_TOGGLE_JAVASCRIPT:
       brave::ToggleJavascriptEnabled(&*browser_);
+      break;
+    case IDC_BLOCK_ELEMENTS:
+      brave::LaunchContentPicker(&*browser_);
       break;
     case IDC_SHOW_PLAYLIST_BUBBLE:
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)

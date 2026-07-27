@@ -39,7 +39,7 @@ class AdsClientMock : public AdsClient {
               CanShowNotificationAdsWhileBrowserIsBackgrounded,
               (),
               (const));
-  MOCK_METHOD(void, ShowNotificationAd, (const NotificationAdInfo&));
+  MOCK_METHOD(void, ShowNotificationAd, (mojom::NotificationAdInfoPtr));
   MOCK_METHOD(void, CloseNotificationAd, (const std::string&));
 
   MOCK_METHOD(void, GetSiteHistory, (int, int, GetSiteHistoryCallback));

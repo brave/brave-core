@@ -8,8 +8,6 @@ import Icon from '@brave/leo/react/icon'
 import Button from '@brave/leo/react/button'
 import Label from '@brave/leo/react/label'
 import { Conversation } from '../../../common/mojom'
-import { serializeConversationForSharing } from '../../../common/conversation_serialization'
-import { encryptForSharing } from '../../../common/conversation_share_encryption'
 import useCanStartNewConversation from '../../hooks/useCanStartNewConversation'
 import FeatureButtonMenu, {
   Props as FeatureButtonMenuProps,
@@ -19,6 +17,10 @@ import { useAIChat, useIsSmall } from '../../state/ai_chat_context'
 import { useConversation } from '../../state/conversation_context'
 import { getLocale } from '$web-common/locale'
 import { useActiveChat } from '../../state/active_chat_context'
+
+type Props = FeatureButtonMenuProps & {
+  startSharingConversation: () => void
+}
 
 const Logo = ({ isPremium }: { isPremium: boolean }) => (
   <div className={styles.logo}>
@@ -42,11 +44,11 @@ const newChatButtonLabel = getLocale(S.CHAT_UI_NEW_CONVERSATION_BUTTON_LABEL)
 const closeButtonLabel = getLocale(S.CHAT_UI_LABEL_CLOSE)
 const openFullPageButtonLabel = getLocale(S.CHAT_UI_OPEN_LABEL)
 const shareConversationButtonLabel = getLocale(
-  S.CHAT_UI_SHARE_CONVERSATION_BUTTON_LABEL,
+  S.CHAT_UI_SHARE_CONVERSATION_LABEL,
 )
 
 export const ConversationHeader = React.forwardRef(function (
-  props: FeatureButtonMenuProps,
+  props: Props,
   ref: React.Ref<HTMLDivElement>,
 ) {
   const aiChatContext = useAIChat()
@@ -70,26 +72,6 @@ export const ConversationHeader = React.forwardRef(function (
     aiChatContext.isConversationShareEnabled
     && conversationHistory.length > 0
     && !conversationState.isRequestInProgress
-
-  const handleShareConversation = async () => {
-    // Encrypt the conversation in the client so the sharing server only ever
-    // sees ciphertext. The decryption key stays on the client and is appended
-    // to the returned viewer URL as a fragment, so the shared link is only
-    // usable by whoever the user shares it with.
-    const json = serializeConversationForSharing(conversationHistory)
-    const { ciphertext, keyFragment } = await encryptForSharing(json)
-    // The browser process combines the key fragment with the server's viewer
-    // URL and copies the resulting shareable link to the clipboard, marked as
-    // confidential (excluded from clipboard history and other
-    // data-leak-prevention surfaces) - something the renderer cannot do. The
-    // key fragment is not sent to the sharing server. Failure (a null result)
-    // is a no-op: nothing is copied, so there is nothing more to do here.
-    await aiChatContext.api.service.shareConversation(
-      ciphertext,
-      keyFragment,
-      /*copyToClipboard=*/ true,
-    )
-  }
 
   const showTitle =
     (!isMainConversation || aiChatContext.isStandalone) && !isMobile
@@ -180,7 +162,7 @@ export const ConversationHeader = React.forwardRef(function (
                 kind='plain-faint'
                 aria-label={shareConversationButtonLabel}
                 title={shareConversationButtonLabel}
-                onClick={handleShareConversation}
+                onClick={props.startSharingConversation}
               >
                 <Icon name='share' />
               </Button>

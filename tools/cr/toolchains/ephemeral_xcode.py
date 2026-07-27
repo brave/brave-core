@@ -13,7 +13,7 @@ import json
 import logging
 import re
 import shutil
-import subprocess
+import sys
 import tempfile
 import urllib.error
 import urllib.request
@@ -25,6 +25,13 @@ from typing import Any
 from rich.progress import (BarColumn, DownloadColumn, Progress,
                            TaskProgressColumn, TextColumn, TimeRemainingColumn,
                            TransferSpeedColumn)
+
+# `cherry_picks` is a sibling module; add this directory to the path so the
+# import resolves whether this module is imported by a sibling build script or
+# run on its own.
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+
+from cherry_picks import _check_call  # pylint: disable=wrong-import-position
 
 # Per-request timeout for the small HTTP fetches (gitiles raw files and the
 # xcodereleases.com JSON).
@@ -51,43 +58,6 @@ XCODE_ARCHIVE_BUCKET_URL = (
 # Directory where downloaded Xcodes are expanded and reused across runs, keyed
 # by build number as `xcode_<build>.app`.
 XCODE_APPS_DIR = Path('/Applications')
-
-
-def _check_call(*command,
-                cwd=None,
-                capture_stdout: bool = False) -> str | None:
-    """Run *command* as a subprocess, logging the invocation.
-
-    Logs the full command string at INFO level before executing it.  Stderr is
-    inherited from the parent process so subprocess output streams directly to
-    the terminal.
-
-    Args:
-        *command: The program and its arguments (passed as positional args, not
-            as a list).
-        cwd: Optional working directory for the subprocess.  Defaults to the
-            caller's current working directory when `None`.
-        capture_stdout: When `True`, capture the child's stdout and return it as
-            a UTF-8 decoded string.  When `False` (default), stdout is inherited
-            from the parent and the function returns `None`.
-
-    Returns:
-        The decoded stdout if `capture_stdout=True`, otherwise `None`.
-
-    Raises:
-        subprocess.CalledProcessError: If the process exits with a non-zero
-            return code.
-    """
-    logging.info(' >>>> %s', ' '.join(str(a) for a in command))
-
-    result = subprocess.run(command,
-                            cwd=cwd,
-                            check=True,
-                            stdout=subprocess.PIPE if capture_stdout else None)
-
-    if capture_stdout:
-        return result.stdout.decode('utf-8', errors='replace')
-    return None
 
 
 def _fetch_xcode_releases() -> Any:
@@ -465,7 +435,7 @@ class EphemeralXcode:
         useless archive.
         """
         developer_dir = _check_call('xcode-select', '-p',
-                                    capture_stdout=True).strip()
+                                    capture_output=True).stdout.strip()
         app = Path(developer_dir).parent.parent
         if app.suffix != '.app':
             raise RuntimeError(
@@ -489,12 +459,13 @@ class EphemeralXcode:
                              '-version',
                              '-sdk',
                              'macosx',
-                             capture_stdout=True)
+                             capture_output=True).stdout
         sdk_version = re.search(r'^SDKVersion: (.+)$', output, re.MULTILINE)
         sdk_build = re.search(r'^ProductBuildVersion: (.+)$', output,
                               re.MULTILINE)
 
-        output = _check_call('xcodebuild', '-version', capture_stdout=True)
+        output = _check_call('xcodebuild', '-version',
+                             capture_output=True).stdout
         xcode_version = re.search(r'^Xcode (.+)$', output, re.MULTILINE)
         xcode_build = re.search(r'^Build version (.+)$', output, re.MULTILINE)
 

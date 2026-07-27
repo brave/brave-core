@@ -28,6 +28,9 @@
 /* A picker title for selecting a automatic shred setting option */
 "AutoShred" = "Автоматично шредиране";
 
+/* The description for shredding when the app is closed */
+"AutoShredSectionTitle" = "Автоматично унищожаване на данните за сърфирането";
+
 /* The option the user can select to do aggressive ad and tracker blocking */
 "BlockAdsAndTrackingAggressive" = "Агресивно";
 
@@ -205,11 +208,20 @@
 /* An option setting for never automatically shreding site data */
 "ShredNever" = "Никога";
 
+/* The description for never automatically shreding site data */
+"ShredNeverDescription" = "Данните за сърфиране никога не се унищожават автоматично";
+
 /* An option setting for automatically shredding only when the app is closed */
 "ShredOnAppClose" = "Затваряне на приложението";
 
+/* The description for shredding when the app is closed */
+"ShredOnAppCloseDescription" = "Данните за сърфиране се унищожават автоматично, когато приложението Brave бъде затворено/рестартирано";
+
 /* An option setting for automatically shredding when the site is closed */
 "ShredOnSiteTabsClosed" = "Затваряне на разделите на сайта";
+
+/* The description for shredding when the site is closed */
+"ShredOnSiteTabsClosedDescription" = "Данните за сърфиране се унищожават автоматично, когато всички отворени раздели на даден сайт бъдат затворени";
 
 /* A message for a confirmation window that appears when a user clicks on 'Shred All Tabs'. */
 "ShredSiteAllTabsConfirmationMessage" = "При шредирането ще бъдат затворени всички раздели, и всички данни от сайта ще бъдат изтрити. Това действие не може да бъде отменено.";

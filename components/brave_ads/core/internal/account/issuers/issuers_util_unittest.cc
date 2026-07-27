@@ -19,10 +19,10 @@ TEST_F(BraveAdsIssuersUtilTest, IsIssuersValid) {
   // Arrange
   const IssuersInfo issuers = test::BuildIssuers(
       /*ping=*/7'200'000,
-      /*confirmation_token_issuer_public_keys=*/
-      {{"OqhZpUC8B15u+Gc11rQYRl8O3zOSAUIEC2JuDHI32TM=", 0.0},
-       {"QnShwT9vRebch3WDu28nqlTaNCU5MaOF1n4VV4Q3K1g=", 0.0}},
-      /*payment_token_issuer_public_keys=*/
+      /*confirmation_public_keys=*/
+      {"OqhZpUC8B15u+Gc11rQYRl8O3zOSAUIEC2JuDHI32TM=",
+       "QnShwT9vRebch3WDu28nqlTaNCU5MaOF1n4VV4Q3K1g="},
+      /*payment_public_keys=*/
       {{"JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=", 0.0},
        {"OqhZpUC8B15u+Gc11rQYRl8O3zOSAUIEC2JuDHI32TM=", 0.1},
        {"XovQyvVWM8ez0mAzTtfqgPIbSpH5/idv8w0KJxhirwA=", 0.1},
@@ -39,10 +39,10 @@ TEST_F(BraveAdsIssuersUtilTest, IsIssuersInvalid) {
   // Arrange
   const IssuersInfo issuers = test::BuildIssuers(
       /*ping=*/7'200'000,
-      /*confirmation_token_issuer_public_keys=*/
-      {{"OqhZpUC8B15u+Gc11rQYRl8O3zOSAUIEC2JuDHI32TM=", 0.0},
-       {"QnShwT9vRebch3WDu28nqlTaNCU5MaOF1n4VV4Q3K1g=", 0.0}},
-      /*payment_token_issuer_public_keys=*/
+      /*confirmation_public_keys=*/
+      {"OqhZpUC8B15u+Gc11rQYRl8O3zOSAUIEC2JuDHI32TM=",
+       "QnShwT9vRebch3WDu28nqlTaNCU5MaOF1n4VV4Q3K1g="},
+      /*payment_public_keys=*/
       {{"JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=", 0.0},
        {"OqhZpUC8B15u+Gc11rQYRl8O3zOSAUIEC2JuDHI32TM=", 0.1},
        {"XovQyvVWM8ez0mAzTtfqgPIbSpH5/idv8w0KJxhirwA=", 0.1},
@@ -76,10 +76,10 @@ TEST_F(BraveAdsIssuersUtilTest, HasIssuersChanged) {
 
   const IssuersInfo issuers = test::BuildIssuers(
       /*ping=*/3'600'000,
-      /*confirmation_token_issuer_public_keys=*/
-      {{"Nj2NZ6nJUsK5MJ9ga9tfyctxzpT+GlvENF2TRHU4kBg=", 0.0},
-       {"TFQCiRJocOh0A8+qHQvdu3V/lDpGsZHJOnZzqny6rFg=", 0.0}},
-      /*payment_token_issuer_public_keys=*/
+      /*confirmation_public_keys=*/
+      {"Nj2NZ6nJUsK5MJ9ga9tfyctxzpT+GlvENF2TRHU4kBg=",
+       "TFQCiRJocOh0A8+qHQvdu3V/lDpGsZHJOnZzqny6rFg="},
+      /*payment_public_keys=*/
       {{"PmXS59VTEVIPZckOqGdpjisDidUbhLGbhAhN5tmfhhs=", 0.1},
        {"Bgk5gT+b96iSr3nD5nuTM/yGQ5klrIe6VC6DDdM6sFs=", 0.0}});
 
@@ -91,10 +91,10 @@ TEST_F(BraveAdsIssuersUtilTest, HasIssuersChangedOnInitialFetch) {
   // Arrange
   const IssuersInfo issuers = test::BuildIssuers(
       /*ping=*/3'600'000,
-      /*confirmation_token_issuer_public_keys=*/
-      {{"Nj2NZ6nJUsK5MJ9ga9tfyctxzpT+GlvENF2TRHU4kBg=", 0.0},
-       {"TFQCiRJocOh0A8+qHQvdu3V/lDpGsZHJOnZzqny6rFg=", 0.0}},
-      /*payment_token_issuer_public_keys=*/
+      /*confirmation_public_keys=*/
+      {"Nj2NZ6nJUsK5MJ9ga9tfyctxzpT+GlvENF2TRHU4kBg=",
+       "TFQCiRJocOh0A8+qHQvdu3V/lDpGsZHJOnZzqny6rFg="},
+      /*payment_public_keys=*/
       {{"PmXS59VTEVIPZckOqGdpjisDidUbhLGbhAhN5tmfhhs=", 0.1},
        {"Bgk5gT+b96iSr3nD5nuTM/yGQ5klrIe6VC6DDdM6sFs=", 0.0}});
 
@@ -108,10 +108,10 @@ TEST_F(BraveAdsIssuersUtilTest, HasIssuersNotChanged) {
 
   const IssuersInfo issuers = test::BuildIssuers(
       /*ping=*/7'200'000,
-      /*confirmation_token_issuer_public_keys=*/
-      {{"OqhZpUC8B15u+Gc11rQYRl8O3zOSAUIEC2JuDHI32TM=", 0.0},
-       {"QnShwT9vRebch3WDu28nqlTaNCU5MaOF1n4VV4Q3K1g=", 0.0}},
-      /*payment_token_issuer_public_keys=*/
+      /*confirmation_public_keys=*/
+      {"OqhZpUC8B15u+Gc11rQYRl8O3zOSAUIEC2JuDHI32TM=",
+       "QnShwT9vRebch3WDu28nqlTaNCU5MaOF1n4VV4Q3K1g="},
+      /*payment_public_keys=*/
       {{"JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=", 0.0},
        {"OqhZpUC8B15u+Gc11rQYRl8O3zOSAUIEC2JuDHI32TM=", 0.1}});
 

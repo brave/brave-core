@@ -20,7 +20,7 @@
 #include "brave/components/brave_ads/core/internal/common/test/internal/profile_pref_value_test_util_internal.h"
 #include "brave/components/brave_ads/core/internal/common/test/local_state_pref_value_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/profile_pref_value_test_util.h"
-#include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client_notifier.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client_notifier_observer.h"
 
@@ -46,14 +46,24 @@ void MockNotifyPendingObservers(AdsClientMock& ads_client_mock,
 
 void MockShowNotificationAd(AdsClientMock& ads_client_mock) {
   ON_CALL(ads_client_mock, ShowNotificationAd)
-      .WillByDefault([](const NotificationAdInfo& ad) {
+      .WillByDefault([](mojom::NotificationAdInfoPtr ad) {
+        CHECK(ad);
+
+        const bool is_valid =
+            ad->type != mojom::AdType::kUndefined &&
+            !ad->placement_id.empty() && !ad->creative_instance_id.empty() &&
+            !ad->creative_set_id.empty() && !ad->campaign_id.empty() &&
+            !ad->advertiser_id.empty() && !ad->segment.empty() &&
+            ad->target_url.is_valid() && !ad->title.empty() &&
+            !ad->body.empty();
+
         // TODO(https://github.com/brave/brave-browser/issues/29587): Decouple
         // reminders from push notification ads.
-        const bool is_reminder_valid = !ad.placement_id.empty() &&
-                                       !ad.title.empty() && !ad.body.empty() &&
-                                       ad.target_url.is_valid();
+        const bool is_reminder_valid =
+            !ad->placement_id.empty() && !ad->title.empty() &&
+            !ad->body.empty() && ad->target_url.is_valid();
 
-        CHECK(ad.IsValid() || is_reminder_valid);
+        CHECK(is_valid || is_reminder_valid);
       });
 }
 

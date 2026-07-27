@@ -62,8 +62,9 @@ void OrchardSyncStateTest::SetUp() {
   ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
   sync_state_ = std::make_unique<OrchardSyncState>(temp_dir_.GetPath());
   sync_state_->OverrideShardTreeForTesting(
-      account_id_, orchard::CreateShardTreeForTesting(
-                       sync_state_->orchard_storage(), account_id_));
+      account_id_,
+      orchard::CreateShardTreeForTesting(sync_state_->orchard_storage(),
+                                         account_id_, OrchardPool::kOrchard));
 }
 
 TEST_F(OrchardSyncStateTest, CheckpointsPruned) {
@@ -87,9 +88,17 @@ TEST_F(OrchardSyncStateTest, CheckpointsPruned) {
       sync_state()->ApplyScanResults(account_id(), std::move(result)).value());
 
   // Testing tree has prune depth of 10.
-  EXPECT_EQ(10u, storage().CheckpointCount(account_id()).value());
-  EXPECT_EQ(40u, storage().MinCheckpointId(account_id()).value().value());
-  EXPECT_EQ(76u, storage().MaxCheckpointId(account_id()).value().value());
+  EXPECT_EQ(
+      10u,
+      storage().CheckpointCount(OrchardPool::kOrchard, account_id()).value());
+  EXPECT_EQ(40u, storage()
+                     .MinCheckpointId(OrchardPool::kOrchard, account_id())
+                     .value()
+                     .value());
+  EXPECT_EQ(76u, storage()
+                     .MaxCheckpointId(OrchardPool::kOrchard, account_id())
+                     .value()
+                     .value());
 }
 
 TEST_F(OrchardSyncStateTest, InsertWithFrontier) {
@@ -220,9 +229,17 @@ TEST_F(OrchardSyncStateTest, MinCheckpoint) {
       OrchardStorage::Result::kSuccess,
       sync_state()->ApplyScanResults(account_id(), std::move(result)).value());
 
-  EXPECT_EQ(10u, storage().CheckpointCount(account_id()).value());
-  EXPECT_EQ(40u, storage().MinCheckpointId(account_id()).value().value());
-  EXPECT_EQ(76u, storage().MaxCheckpointId(account_id()).value().value());
+  EXPECT_EQ(
+      10u,
+      storage().CheckpointCount(OrchardPool::kOrchard, account_id()).value());
+  EXPECT_EQ(40u, storage()
+                     .MinCheckpointId(OrchardPool::kOrchard, account_id())
+                     .value()
+                     .value());
+  EXPECT_EQ(76u, storage()
+                     .MaxCheckpointId(OrchardPool::kOrchard, account_id())
+                     .value()
+                     .value());
 }
 
 TEST_F(OrchardSyncStateTest, MaxCheckpoint) {
@@ -286,9 +303,17 @@ TEST_F(OrchardSyncStateTest, MaxCheckpoint) {
                   .value());
   }
 
-  EXPECT_EQ(3u, storage().CheckpointCount(account_id()).value());
-  EXPECT_EQ(1u, storage().MinCheckpointId(account_id()).value().value());
-  EXPECT_EQ(3u, storage().MaxCheckpointId(account_id()).value().value());
+  EXPECT_EQ(
+      3u,
+      storage().CheckpointCount(OrchardPool::kOrchard, account_id()).value());
+  EXPECT_EQ(1u, storage()
+                    .MinCheckpointId(OrchardPool::kOrchard, account_id())
+                    .value()
+                    .value());
+  EXPECT_EQ(3u, storage()
+                    .MaxCheckpointId(OrchardPool::kOrchard, account_id())
+                    .value()
+                    .value());
 }
 
 TEST_F(OrchardSyncStateTest, GetSpendableNotes_NoRegisteredAccount) {
@@ -315,6 +340,7 @@ TEST_F(OrchardSyncStateTest, GetSpendableNotes_FilterByAddress_And_Anchor) {
       note.block_id = i;
       note.addr.fill(2);
       note.nullifier.fill(i - 1000u);
+      note.note_version = 2;
       notes.push_back(note);
       if (i == 1025) {
         commitments.push_back(
@@ -358,6 +384,7 @@ TEST_F(OrchardSyncStateTest, GetSpendableNotes_FilterByAddress_External) {
       note.block_id = i;
       note.addr.fill(2);
       note.nullifier.fill(i - 1000u);
+      note.note_version = 2;
       notes.push_back(note);
       commitments.push_back(
           CreateCommitment(CreateMockCommitmentValue(i, 2), true, i));
@@ -396,6 +423,7 @@ TEST_F(OrchardSyncStateTest, GetSpendableNotes_FilterByAddress_Internal) {
       note.block_id = i;
       note.addr.fill(2);
       note.nullifier.fill(i - 1000u);
+      note.note_version = 2;
       notes.push_back(note);
       commitments.push_back(
           CreateCommitment(CreateMockCommitmentValue(i, 2), true, i));
@@ -434,6 +462,7 @@ TEST_F(OrchardSyncStateTest, GetSpendableNotes_NoAnchor) {
       note.block_id = i;
       note.addr.fill(2);
       note.nullifier.fill(i - 1000u);
+      note.note_version = 2;
       result.discovered_notes.push_back(note);
     }
 
@@ -548,6 +577,7 @@ TEST_F(OrchardSyncStateTest, Rewind_ToMarkedHeight) {
       note.block_id = 1;
       note.amount = 10000;
       note.nullifier.fill(1);
+      note.note_version = 2;
       result.discovered_notes.push_back(note);
     }
     {
@@ -555,6 +585,7 @@ TEST_F(OrchardSyncStateTest, Rewind_ToMarkedHeight) {
       note.block_id = 2;
       note.amount = 10000;
       note.nullifier.fill(2);
+      note.note_version = 2;
       result.discovered_notes.push_back(note);
     }
     {
@@ -623,6 +654,7 @@ TEST_F(OrchardSyncStateTest, Rewind_ToMarkedHeight) {
       note.block_id = 2;
       note.amount = 10000;
       note.nullifier.fill(2);
+      note.note_version = 2;
       result.discovered_notes.push_back(note);
     }
     EXPECT_EQ(OrchardStorage::Result::kSuccess,
@@ -688,6 +720,7 @@ TEST_F(OrchardSyncStateTest, Rewind) {
       note.block_id = 1;
       note.amount = 10000;
       note.nullifier.fill(1);
+      note.note_version = 2;
       result.discovered_notes.push_back(note);
     }
     {
@@ -695,6 +728,7 @@ TEST_F(OrchardSyncStateTest, Rewind) {
       note.block_id = 2;
       note.amount = 10000;
       note.nullifier.fill(2);
+      note.note_version = 2;
       result.discovered_notes.push_back(note);
     }
     {

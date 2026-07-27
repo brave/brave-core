@@ -56,18 +56,10 @@ struct DataImporterPasswordConflictView: View {
               Strings.DataImporter
                 .importStatePasswordConflictKeepExistingPasswordsTitle
             )
-            .font(.headline)
-            .padding(.horizontal)
-            .padding(.vertical, 12.0)
-            .foregroundStyle(Color(braveSystemName: .schemesOnPrimary))
             .frame(maxWidth: .infinity)
-            .background(
-              Color(braveSystemName: .buttonBackground),
-              in: RoundedRectangle(cornerRadius: 12.0, style: .continuous)
-            )
           }
         )
-        .buttonStyle(.plain)
+        .buttonStyle(.filled)
 
         Button(
           action: {
@@ -78,14 +70,11 @@ struct DataImporterPasswordConflictView: View {
               Strings.DataImporter
                 .importStatePasswordConflictKeepImportedPasswordsTitle
             )
-            .font(.headline)
-            .padding(.horizontal)
-            .padding(.vertical, 12.0)
             .foregroundStyle(Color(braveSystemName: .textInteractive))
             .frame(maxWidth: .infinity)
           }
         )
-        .buttonStyle(.plain)
+        .buttonStyle(.plainFaint)
       }
       .padding(16.0)
       .frame(maxWidth: .infinity, maxHeight: .infinity)

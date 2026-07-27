@@ -15,14 +15,11 @@ extension UIFont {
     weight: Weight,
     traitCollection: UITraitCollection? = nil
   ) -> UIFont {
-    let fontMetrics = UIFontMetrics(forTextStyle: style)
     let fontDescriptor = UIFontDescriptor.preferredFontDescriptor(
       withTextStyle: style,
       compatibleWith: traitCollection
     )
-    let font = UIFont.systemFont(ofSize: fontDescriptor.pointSize, weight: weight)
-
-    return fontMetrics.scaledFont(for: font)
+    return UIFont.systemFont(ofSize: fontDescriptor.pointSize, weight: weight)
   }
 
   public func with(traits: UIFontDescriptor.SymbolicTraits?) -> UIFont {

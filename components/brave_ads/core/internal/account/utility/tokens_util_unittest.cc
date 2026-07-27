@@ -90,7 +90,7 @@ TEST_F(BraveAdsSignedTokensUtilTest, ParseVerifyAndUnblindTokens) {
       cbr::test::GetBlindedTokens(), cbr::test::GetPublicKey());
 
   // Assert
-  EXPECT_TRUE(result.has_value());
+  EXPECT_TRUE(result);
 }
 
 TEST_F(BraveAdsSignedTokensUtilTest,
@@ -105,7 +105,7 @@ TEST_F(BraveAdsSignedTokensUtilTest,
                                                   cbr::test::GetPublicKey());
 
   // Assert
-  EXPECT_FALSE(result.has_value());
+  EXPECT_FALSE(result);
 }
 
 TEST_F(BraveAdsSignedTokensUtilTest,
@@ -120,7 +120,7 @@ TEST_F(BraveAdsSignedTokensUtilTest,
                                                   cbr::test::GetPublicKey());
 
   // Assert
-  EXPECT_FALSE(result.has_value());
+  EXPECT_FALSE(result);
 }
 
 TEST_F(BraveAdsSignedTokensUtilTest,
@@ -135,7 +135,7 @@ TEST_F(BraveAdsSignedTokensUtilTest,
                                                   cbr::test::GetPublicKey());
 
   // Assert
-  EXPECT_FALSE(result.has_value());
+  EXPECT_FALSE(result);
 }
 
 TEST_F(BraveAdsSignedTokensUtilTest,
@@ -150,7 +150,7 @@ TEST_F(BraveAdsSignedTokensUtilTest,
                                                   cbr::test::GetPublicKey());
 
   // Assert
-  EXPECT_FALSE(result.has_value());
+  EXPECT_FALSE(result);
 }
 
 }  // namespace brave_ads

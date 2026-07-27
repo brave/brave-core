@@ -1,7 +1,7 @@
 # Don't add paths that are already ignored in .gitignore:
-# npm run format/presubmit does it automatically.
+# pnpm run format/presubmit does it automatically.
 # For manual run:
-# npm run format -- --all-files --only-prettier [--dry-run]
+# pnpm run format --all-files --only-prettier [--dry-run]
 
 # Ignore HTML Files - incompatible with presubmit rules
 *.html
@@ -38,6 +38,7 @@ browser/brave_vpn/win/brave_vpn_wireguard_service/README.md
 .clang-tidy
 chromium_presubmit_config.json5
 jest.config.js
+pnpm-lock.yaml
 snapcraft.yaml
 
 # Ignored minified javascript

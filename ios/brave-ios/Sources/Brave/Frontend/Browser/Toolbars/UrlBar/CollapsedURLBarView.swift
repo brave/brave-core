@@ -111,6 +111,8 @@ class CollapsedURLBarView: UIView {
           // Force left to right render direction
           let paragraphStyle = NSMutableParagraphStyle()
           paragraphStyle.baseWritingDirection = .leftToRight
+          paragraphStyle.lineBreakMode = .byTruncatingHead
+          paragraphStyle.alignment = .right
           let urlString = URLFormatter.formatURLOrigin(
             forDisplayOmitSchemePathAndTrivialSubdomains: URLOrigin(url: $0.strippingBlobURLAuth)
               .url?.absoluteString

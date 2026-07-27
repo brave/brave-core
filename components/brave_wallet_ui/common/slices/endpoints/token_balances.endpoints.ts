@@ -273,7 +273,7 @@ export const tokenBalancesEndpoints = ({
                   contractAddress: balanceResult.contractAddress,
                   tokenId: balanceResult.tokenId,
                   tokenBalancesRegistry: registry,
-                  isShielded: balanceResult.isShielded,
+                  zcashTokenType: balanceResult.zcashTokenType,
                 }),
             })
           }
@@ -366,7 +366,7 @@ export const tokenBalancesEndpoints = ({
                   tokenBalancesRegistry,
                   coinType: BraveWallet.CoinType.ETH,
                   tokenId: '',
-                  isShielded: false,
+                  zcashTokenType: BraveWallet.ZCashTokenType.kNone,
                 },
               )
             }
@@ -392,7 +392,7 @@ export const tokenBalancesEndpoints = ({
                 tokenBalancesRegistry,
                 coinType: asset.coin,
                 tokenId: asset.tokenId,
-                isShielded: asset.isShielded,
+                zcashTokenType: asset.zcashTokenType,
               })
             }
           }
@@ -785,9 +785,14 @@ async function fetchAccountCurrentNativeBalance({
         )
       }
 
-      return token.isShielded
-        ? Amount.normalize(balance.shieldedBalance.toString())
-        : Amount.normalize(balance.transparentBalance.toString())
+      switch (token.zcashTokenType) {
+        case BraveWallet.ZCashTokenType.kOrchard:
+          return Amount.normalize(balance.shieldedBalance.toString())
+        case BraveWallet.ZCashTokenType.kIronwood:
+          return '0'
+        default:
+          return Amount.normalize(balance.transparentBalance.toString())
+      }
     }
 
     case BraveWallet.CoinType.ADA: {
@@ -1047,7 +1052,7 @@ async function fetchAccountTokenBalanceRegistryForChainId({
             balance: new Amount(balance).format(),
             coinType: arg.coin,
             tokenId: '', // these are ERC20 tokens,
-            isShielded: false,
+            zcashTokenType: BraveWallet.ZCashTokenType.kNone,
           })
         }
       }
@@ -1080,7 +1085,7 @@ async function fetchAccountTokenBalanceRegistryForChainId({
           balance,
           coinType: token.coin,
           tokenId: '',
-          isShielded: token.isShielded,
+          zcashTokenType: token.zcashTokenType,
         })
       }
     },
@@ -1109,7 +1114,7 @@ async function fetchAccountTokenBalanceRegistryForChainId({
           balance: Amount.normalize(amount),
           coinType: arg.coin,
           tokenId: '',
-          isShielded: false,
+          zcashTokenType: BraveWallet.ZCashTokenType.kNone,
         })
       }
     }
@@ -1143,7 +1148,7 @@ async function fetchAccountTokenBalanceRegistryForChainId({
           balance: result,
           coinType: token.coin,
           tokenId: token.tokenId,
-          isShielded: token.isShielded,
+          zcashTokenType: token.zcashTokenType,
         })
       }
     },
@@ -1281,7 +1286,7 @@ async function fetchNftBalancesForAccount({
           balance: nftBalance.toString(),
           coinType: token.coin,
           tokenId: token.tokenId,
-          isShielded: false,
+          zcashTokenType: BraveWallet.ZCashTokenType.kNone,
         })
       })
     }

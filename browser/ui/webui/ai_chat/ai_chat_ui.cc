@@ -30,6 +30,7 @@
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/ai_chat/resources/grit/ai_chat_ui_generated_map.h"
 #include "brave/components/constants/webui_url_constants.h"
+#include "brave/components/version_info/version_info.h"
 #include "chrome/browser/bookmarks/bookmark_model_factory.h"
 #include "chrome/browser/history/history_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
@@ -104,6 +105,9 @@ AIChatUI::AIChatUI(content::WebUI* web_ui)
   source->AddBoolean("isConversationShareEnabled",
                      base::FeatureList::IsEnabled(
                          ai_chat::features::kAIChatConversationShare));
+  // Brave client version, used to tag serialized conversations for sharing.
+  source->AddString("braveVersion",
+                    version_info::GetBraveVersionWithoutChromiumMajorVersion());
 
   web_ui->AddRequestableScheme(content::kChromeUIUntrustedScheme);
   source->OverrideContentSecurityPolicy(

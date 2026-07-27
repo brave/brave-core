@@ -136,9 +136,12 @@ describe('AllowAddChangeNetworkPanel', () => {
         mockAddChainRequest.originInfo.eTldPlusOne,
       )
 
-      // Check if the favicon is displayed
-      const favIcon = container.querySelector('img[src*="chrome://favicon2"]')
+      // In tests/Storybook, site favicons are unavailable so a placeholder
+      // icon stub is shown instead of chrome://favicon2.
+      const originCard = screen.getByTestId('origin-info-card')
+      const favIcon = originCard.querySelector('img')
       expect(favIcon).toBeInTheDocument()
+      expect(favIcon).toHaveAttribute('src', 'test-file-stub')
     })
   })
 })

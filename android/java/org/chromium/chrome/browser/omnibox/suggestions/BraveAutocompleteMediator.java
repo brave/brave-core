@@ -8,9 +8,13 @@ package org.chromium.chrome.browser.omnibox.suggestions;
 import android.content.Context;
 import android.os.Handler;
 
+import androidx.annotation.NonNull;
+
+import org.chromium.base.BraveReflectionUtil;
 import org.chromium.base.Callback;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
+import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.brave_leo.BraveLeoPrefUtils;
 import org.chromium.chrome.browser.brave_leo.BraveLeoUtils;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
@@ -26,11 +30,15 @@ import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.share.ShareDelegate;
 import org.chromium.chrome.browser.tab.Tab;
+import org.chromium.components.omnibox.AutocompleteMatch;
+import org.chromium.components.omnibox.OmniboxSuggestionType;
 import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.content_public.browser.WebContents;
+import org.chromium.misc_metrics.mojom.MiscAndroidMetrics;
 import org.chromium.ui.base.WindowAndroid;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 import org.chromium.ui.modelutil.PropertyModel;
+import org.chromium.url.GURL;
 
 import java.util.List;
 import java.util.Locale;
@@ -92,6 +100,66 @@ class BraveAutocompleteMediator extends AutocompleteMediator
 
         mDelegate = delegate;
         mActivityTabSupplier = activityTabSupplier;
+    }
+
+    @Override
+    void loadUrlForOmniboxMatch(
+            int matchIndex,
+            @NonNull AutocompleteMatch suggestion,
+            @NonNull GURL url,
+            long inputStart,
+            boolean openInNewTab,
+            boolean openInNewWindow) {
+        Context context =
+                (Context)
+                        BraveReflectionUtil.getField(AutocompleteMediator.class, "mContext", this);
+        LocationBarDataProvider dataProvider =
+                (LocationBarDataProvider)
+                        BraveReflectionUtil.getField(
+                                AutocompleteMediator.class, "mDataProvider", this);
+
+        if (dataProvider != null && context != null && context instanceof BraveActivity) {
+            MiscAndroidMetrics miscAndroidMetrics =
+                    ((BraveActivity) context).getMiscAndroidMetrics();
+            if (miscAndroidMetrics != null) {
+                int type = suggestion.getType();
+                boolean isSearchQuery =
+                        type == OmniboxSuggestionType.SEARCH_WHAT_YOU_TYPED
+                                || type == OmniboxSuggestionType.SEARCH_HISTORY
+                                || type == OmniboxSuggestionType.SEARCH_SUGGEST
+                                || type == OmniboxSuggestionType.SEARCH_SUGGEST_ENTITY
+                                || type == OmniboxSuggestionType.SEARCH_SUGGEST_TAIL
+                                || type == OmniboxSuggestionType.SEARCH_SUGGEST_PERSONALIZED
+                                || type == OmniboxSuggestionType.SEARCH_SUGGEST_PROFILE
+                                || type == OmniboxSuggestionType.SEARCH_OTHER_ENGINE;
+
+                if (!dataProvider.isIncognito()) {
+                    boolean isNewTab = dataProvider.getNewTabPageDelegate().isCurrentlyVisible();
+                    miscAndroidMetrics.recordLocationBarChange(isNewTab, isSearchQuery);
+                }
+
+                if (isSearchQuery) {
+                    boolean isSuggestion = type != OmniboxSuggestionType.SEARCH_WHAT_YOU_TYPED;
+                    miscAndroidMetrics.recordOmniboxSearchQuery(url.getSpec(), isSuggestion);
+                }
+
+                if (url.getScheme().startsWith("http")) {
+                    if (type == OmniboxSuggestionType.URL_WHAT_YOU_TYPED) {
+                        miscAndroidMetrics.recordOmniboxDirectNavigation();
+                    } else if (type == OmniboxSuggestionType.HISTORY_URL
+                            || type == OmniboxSuggestionType.HISTORY_TITLE
+                            || type == OmniboxSuggestionType.HISTORY_BODY
+                            || type == OmniboxSuggestionType.HISTORY_KEYWORD) {
+                        miscAndroidMetrics.recordOmniboxHistoryNavigation();
+                    } else if (type == OmniboxSuggestionType.BOOKMARK_TITLE) {
+                        miscAndroidMetrics.recordOmniboxBookmarkNavigation();
+                    }
+                }
+            }
+        }
+
+        super.loadUrlForOmniboxMatch(
+                matchIndex, suggestion, url, inputStart, openInNewTab, openInNewWindow);
     }
 
     @Override

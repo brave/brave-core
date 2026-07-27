@@ -20,13 +20,13 @@ import {
 // Styled Components
 import { Column } from '../../shared/style'
 
-export const _OriginInfoCardVerified = {
+export const _OriginInfoCard = {
   render: () => {
     return <OriginInfoCard origin={mockUniswapOriginInfo} />
   },
 }
 
-export const _OriginInfoCardNotVerified = {
+export const _OriginInfoCardLongOrigin = {
   render: () => {
     return <OriginInfoCard origin={mockOriginInfo} />
   },

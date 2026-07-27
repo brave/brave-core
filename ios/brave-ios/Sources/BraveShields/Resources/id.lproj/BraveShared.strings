@@ -28,6 +28,9 @@
 /* A picker title for selecting a automatic shred setting option */
 "AutoShred" = "Musnahkan Otomatis";
 
+/* The description for shredding when the app is closed */
+"AutoShredSectionTitle" = "Hancurkan Data Penjelajahan Secara Otomatis";
+
 /* The option the user can select to do aggressive ad and tracker blocking */
 "BlockAdsAndTrackingAggressive" = "Agresif";
 
@@ -205,11 +208,20 @@
 /* An option setting for never automatically shreding site data */
 "ShredNever" = "Jangan pernah";
 
+/* The description for never automatically shreding site data */
+"ShredNeverDescription" = "Data penjelajahan tidak pernah dihapus secara otomatis";
+
 /* An option setting for automatically shredding only when the app is closed */
 "ShredOnAppClose" = "Penutupan Aplikasi";
 
+/* The description for shredding when the app is closed */
+"ShredOnAppCloseDescription" = "Data penjelajahan dihapus secara otomatis saat aplikasi Brave ditutup / dimulai ulang";
+
 /* An option setting for automatically shredding when the site is closed */
 "ShredOnSiteTabsClosed" = "Tab Situs Tertutup";
+
+/* The description for shredding when the site is closed */
+"ShredOnSiteTabsClosedDescription" = "Data penjelajahan dihapus secara otomatis saat semua tab yang terbuka ke sebuah situs ditutup";
 
 /* A message for a confirmation window that appears when a user clicks on 'Shred All Tabs'. */
 "ShredSiteAllTabsConfirmationMessage" = "Pemusnahan data akan menutup semua tab yang terbuka, dan menghapus semua data situs. Tindakan ini tidak dapat dibatalkan.";

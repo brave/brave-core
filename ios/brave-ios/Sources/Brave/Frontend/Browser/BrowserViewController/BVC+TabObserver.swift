@@ -104,45 +104,6 @@ extension BrowserViewController: TabObserver {
       alert.dismiss(animated: false)
     }
 
-    // Providers need re-initialized when changing origin to align with desktop in
-    // `BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame`
-    // https://github.com/brave/brave-core/blob/1.52.x/browser/brave_content_browser_client.cc#L608
-    if profileController.braveWalletAPI.isAllowed {
-      tab.wallet?.clearSolanaConnectedAccounts()
-
-      if let walletHelper = tab.wallet {
-        let committedOrigin = tab.lastCommittedURL?.origin
-        if let provider = profileController.braveWalletAPI.ethereumProvider(
-          with: walletHelper,
-          origin: committedOrigin,
-          isPrivateBrowsing: tab.isPrivate
-        ) {
-          // The Ethereum provider will fetch allowed accounts from it's delegate (the tab)
-          // on initialization. Fetching allowed accounts requires the origin; so we need to
-          // initialize after `commitedURL` / `url` are updated above
-          walletHelper.walletEthProvider = provider
-          walletHelper.walletEthProvider?.initialize(eventsListener: walletHelper)
-        }
-        if let provider = profileController.braveWalletAPI.solanaProvider(
-          with: walletHelper,
-          origin: committedOrigin,
-          isPrivateBrowsing: tab.isPrivate
-        ) {
-          walletHelper.walletSolProvider = provider
-          walletHelper.walletSolProvider?.initialize(eventsListener: walletHelper)
-        }
-        if WalletConstants.isCardanoDAppSupportEnabled,
-          let provider = profileController.braveWalletAPI.cardanoProvider(
-            with: walletHelper,
-            origin: committedOrigin,
-            isPrivateBrowsing: tab.isPrivate
-          )
-        {
-          tab.walletCardanoProvider = provider
-        }
-      }
-    }
-
     // The toolbar and url bar changes can not be
     // on different tab than selected. Or the webview
     // previews and etc will effect the status
@@ -202,18 +163,9 @@ extension BrowserViewController: TabObserver {
     )
     tab.browserData?.reportPageLoad(to: rewards, redirectChain: tab.redirectChain)
 
-    Task {
-      await tab.wallet?.updateEthereumProperties()
-      await tab.wallet?.updateSolanaProperties()
-    }
-
     if tab.visibleURL?.isLocal == false {
       // Set rewards inter site url as new page load url.
       tab.rewardsXHRLoadURL = tab.visibleURL
-    }
-
-    if tab.wallet?.walletEthProvider != nil {
-      tab.wallet?.emitEthereumEvent(.connect)
     }
 
     if let lastCommittedURL = tab.lastCommittedURL {

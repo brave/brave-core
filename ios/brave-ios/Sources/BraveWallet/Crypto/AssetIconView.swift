@@ -190,7 +190,7 @@ struct AssetIconView_Previews: PreviewProvider {
         coingeckoId: "",
         chainId: "",
         coin: .eth,
-        isShielded: false
+        zcashTokenType: .none
       ),
       meldCryptoCurrency: nil,
       network: .mockMainnet

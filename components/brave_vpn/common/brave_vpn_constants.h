@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_VPN_COMMON_BRAVE_VPN_CONSTANTS_H_
 #define BRAVE_COMPONENTS_BRAVE_VPN_COMMON_BRAVE_VPN_CONSTANTS_H_
 
+#include "build/build_config.h"
 #include "build/buildflag.h"
 
 namespace brave_vpn {
@@ -62,6 +63,11 @@ inline constexpr char kRetriedSkusCredentialKey[] = "retried_skus_credential";
 inline constexpr char kSubscriberCredentialExpirationKey[] = "expiration";
 inline constexpr char kProxyUrl[] =
     "https://connect-api.guardianapp.com/api/v1/smart-proxy-routing/static-pac";
+
+// Keys of the SKUS credential-summary JSON response.
+inline constexpr char kCredentialSummaryActiveKey[] = "active";
+inline constexpr char kCredentialSummaryRemainingCredentialCountKey[] =
+    "remaining_credential_count";
 
 #if !BUILDFLAG(IS_ANDROID)
 inline constexpr char kTokenNoLongerValid[] = "Token No Longer Valid";

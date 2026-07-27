@@ -1,0 +1,261 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+#include "brave/components/ai_chat/core/browser/remote_models_serialization.h"
+
+#include <optional>
+#include <string>
+#include <string_view>
+#include <utility>
+#include <vector>
+
+#include "base/check.h"
+#include "base/containers/fixed_flat_map.h"
+#include "base/containers/map_util.h"
+#include "base/logging.h"
+#include "base/numerics/safe_conversions.h"
+#include "base/values.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+
+namespace ai_chat {
+
+namespace {
+
+constexpr char kBasicAccess[] = "basic";
+constexpr char kPremiumAccess[] = "premium";
+constexpr char kBasicAndPremiumAccess[] = "basic_and_premium";
+
+constexpr char kChatCapability[] = "chat";
+constexpr char kContentAgentCapability[] = "content_agent";
+constexpr char kDeepResearchCapability[] = "deep_research";
+constexpr char kFilesCapability[] = "files";
+constexpr char kSummaryCapability[] = "summary";
+
+constexpr auto kStringToAccessMap =
+    base::MakeFixedFlatMap<std::string_view, mojom::ModelAccess>({
+        {kBasicAccess, mojom::ModelAccess::BASIC},
+        {kPremiumAccess, mojom::ModelAccess::PREMIUM},
+        {kBasicAndPremiumAccess, mojom::ModelAccess::BASIC_AND_PREMIUM},
+    });
+
+constexpr auto kAccessToStringMap =
+    base::MakeFixedFlatMap<mojom::ModelAccess, std::string_view>({
+        {mojom::ModelAccess::BASIC, kBasicAccess},
+        {mojom::ModelAccess::PREMIUM, kPremiumAccess},
+        {mojom::ModelAccess::BASIC_AND_PREMIUM, kBasicAndPremiumAccess},
+    });
+
+constexpr auto kStringToCapabilityMap =
+    base::MakeFixedFlatMap<std::string_view, mojom::ConversationCapability>({
+        {kChatCapability, mojom::ConversationCapability::CHAT},
+        {kContentAgentCapability, mojom::ConversationCapability::CONTENT_AGENT},
+        {kDeepResearchCapability, mojom::ConversationCapability::DEEP_RESEARCH},
+        {kFilesCapability, mojom::ConversationCapability::FILES},
+        {kSummaryCapability, mojom::ConversationCapability::SUMMARY},
+    });
+
+constexpr auto kCapabilityToStringMap =
+    base::MakeFixedFlatMap<mojom::ConversationCapability, std::string_view>({
+        {mojom::ConversationCapability::CHAT, kChatCapability},
+        {mojom::ConversationCapability::CONTENT_AGENT, kContentAgentCapability},
+        {mojom::ConversationCapability::DEEP_RESEARCH, kDeepResearchCapability},
+        {mojom::ConversationCapability::FILES, kFilesCapability},
+        {mojom::ConversationCapability::SUMMARY, kSummaryCapability},
+    });
+
+struct ParsedCapabilities {
+  std::vector<mojom::ConversationCapability> capabilities;
+  mojom::ModelCategory category;
+};
+
+// Parses the model's capability list and derives its category from the first
+// CHAT or SUMMARY capability in list order. Returns std::nullopt if the list
+// is missing or declares neither category capability, in which case the model
+// is rejected.
+std::optional<ParsedCapabilities> ParseCapabilities(
+    const base::DictValue& model_dict) {
+  const base::ListValue* capabilities_list =
+      model_dict.FindList(kCapabilitiesField);
+  if (!capabilities_list) {
+    return std::nullopt;
+  }
+
+  std::vector<mojom::ConversationCapability> capabilities;
+  for (const auto& capability_value : *capabilities_list) {
+    if (!capability_value.is_string()) {
+      continue;
+    }
+    if (const auto* capability = base::FindOrNull(
+            kStringToCapabilityMap, capability_value.GetString())) {
+      capabilities.push_back(*capability);
+    }
+  }
+
+  for (auto capability : capabilities) {
+    if (capability == mojom::ConversationCapability::CHAT) {
+      return ParsedCapabilities{std::move(capabilities),
+                                mojom::ModelCategory::CHAT};
+    }
+    if (capability == mojom::ConversationCapability::SUMMARY) {
+      return ParsedCapabilities{std::move(capabilities),
+                                mojom::ModelCategory::SUMMARY};
+    }
+  }
+  return std::nullopt;
+}
+
+mojom::ModelPtr ParseModel(const base::DictValue& model_dict) {
+  const std::string* key = model_dict.FindString(kKeyField);
+  if (!key || key->empty()) {
+    return nullptr;
+  }
+
+  const std::string* display_name = model_dict.FindString(kDisplayNameField);
+  if (!display_name || display_name->empty()) {
+    return nullptr;
+  }
+
+  const base::DictValue* options_dict = model_dict.FindDict(kOptionsField);
+  if (!options_dict) {
+    return nullptr;
+  }
+
+  const std::string* name = options_dict->FindString(kNameField);
+  if (!name || name->empty()) {
+    return nullptr;
+  }
+
+  std::optional<int> max_content_length =
+      options_dict->FindInt(kMaxAssociatedContentLengthField);
+  if (!max_content_length.has_value() || *max_content_length <= 0) {
+    return nullptr;
+  }
+
+  std::optional<int> warning_limit =
+      options_dict->FindInt(kLongConversationWarningCharacterLimitField);
+  if (!warning_limit.has_value() || *warning_limit <= 0) {
+    return nullptr;
+  }
+
+  const std::string* access = options_dict->FindString(kAccessField);
+  const mojom::ModelAccess* parsed_access =
+      access ? base::FindOrNull(kStringToAccessMap, *access) : nullptr;
+  if (!parsed_access) {
+    return nullptr;
+  }
+
+  auto parsed_capabilities = ParseCapabilities(model_dict);
+  if (!parsed_capabilities) {
+    return nullptr;
+  }
+
+  auto model = mojom::Model::New();
+  model->key = *key;
+  model->display_name = *display_name;
+  model->is_suggested_model =
+      model_dict.FindBool(kIsSuggestedModelField).value_or(false);
+  model->is_near_model = model_dict.FindBool(kIsNearModelField).value_or(false);
+  model->supported_capabilities = std::move(parsed_capabilities->capabilities);
+
+  auto leo_opts = mojom::LeoModelOptions::New();
+  leo_opts->name = *name;
+
+  const std::string* display_maker =
+      options_dict->FindString(kDisplayMakerField);
+  if (display_maker) {
+    leo_opts->display_maker = *display_maker;
+  }
+
+  const std::string* description = options_dict->FindString(kDescriptionField);
+  leo_opts->description = description ? *description : "";
+
+  leo_opts->category = parsed_capabilities->category;
+  leo_opts->access = *parsed_access;
+
+  leo_opts->max_associated_content_length =
+      base::saturated_cast<uint32_t>(*max_content_length);
+  leo_opts->long_conversation_warning_character_limit =
+      base::saturated_cast<uint32_t>(*warning_limit);
+
+  model->options = mojom::ModelOptions::NewLeoModelOptions(std::move(leo_opts));
+
+  return model;
+}
+
+std::string_view AccessToString(mojom::ModelAccess access) {
+  auto it = kAccessToStringMap.find(access);
+  CHECK(it != kAccessToStringMap.end());
+  return it->second;
+}
+
+std::string_view CapabilityToString(mojom::ConversationCapability capability) {
+  auto it = kCapabilityToStringMap.find(capability);
+  CHECK(it != kCapabilityToStringMap.end());
+  return it->second;
+}
+
+base::DictValue ModelToDict(const mojom::Model& model) {
+  base::DictValue dict;
+  dict.Set(kKeyField, model.key);
+  dict.Set(kDisplayNameField, model.display_name);
+  dict.Set(kIsSuggestedModelField, model.is_suggested_model);
+  dict.Set(kIsNearModelField, model.is_near_model);
+
+  base::ListValue capabilities;
+  for (auto capability : model.supported_capabilities) {
+    capabilities.Append(CapabilityToString(capability));
+  }
+  dict.Set(kCapabilitiesField, std::move(capabilities));
+
+  CHECK(model.options && model.options->is_leo_model_options());
+  const auto& leo_opts = model.options->get_leo_model_options();
+  base::DictValue options;
+  options.Set(kNameField, leo_opts->name);
+  if (!leo_opts->display_maker.empty()) {
+    options.Set(kDisplayMakerField, leo_opts->display_maker);
+  }
+  options.Set(kDescriptionField, leo_opts->description);
+  options.Set(kAccessField, AccessToString(leo_opts->access));
+  options.Set(
+      kMaxAssociatedContentLengthField,
+      base::saturated_cast<int>(leo_opts->max_associated_content_length));
+  options.Set(kLongConversationWarningCharacterLimitField,
+              base::saturated_cast<int>(
+                  leo_opts->long_conversation_warning_character_limit));
+  dict.Set(kOptionsField, std::move(options));
+
+  return dict;
+}
+
+}  // namespace
+
+std::vector<mojom::ModelPtr> ParseModelsFromJSON(const base::Value& json) {
+  if (!json.is_list()) {
+    return {};
+  }
+
+  std::vector<mojom::ModelPtr> models;
+  for (const auto& model_value : json.GetList()) {
+    if (!model_value.is_dict()) {
+      continue;
+    }
+    auto model = ParseModel(model_value.GetDict());
+    if (model) {
+      models.push_back(std::move(model));
+    }
+  }
+  return models;
+}
+
+base::ListValue SerializeModels(const std::vector<mojom::ModelPtr>& models) {
+  base::ListValue list;
+  for (const auto& model : models) {
+    CHECK(model);
+    list.Append(ModelToDict(*model));
+  }
+  return list;
+}
+
+}  // namespace ai_chat

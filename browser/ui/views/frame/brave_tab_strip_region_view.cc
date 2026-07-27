@@ -270,35 +270,40 @@ void BraveHorizontalTabStripRegionView::CreateScrollButtonsIfNeeded() {
 }
 
 void BraveHorizontalTabStripRegionView::CreateWorkspaceButtonIfNeeded() {
-  if (base::FeatureList::IsEnabled(features::kWorkspaces)) {
-    auto* bwi = tab_strip_->GetBrowserWindowInterface();
-    if (bwi->GetType() != BrowserWindowInterface::Type::TYPE_NORMAL) {
-      return;
-    }
-
-    // Insert before the tab strip so the button appears at the left edge of the
-    // tab area, before the first tab.
-    const std::optional<size_t> strip_idx = GetIndexOf(tab_strip_);
-    CHECK(strip_idx.has_value());
-    workspaces_button_ = AddChildViewAt(
-        std::make_unique<TabStripControlButton>(
-            bwi,
-            base::BindRepeating(
-                &BraveHorizontalTabStripRegionView::OnWorkspacesButtonPressed,
-                weak_factory_.GetWeakPtr()),
-            kLeoSpacesIcon),
-        strip_idx.value());
-    workspaces_button_->SetProperty(views::kCrossAxisAlignmentKey,
-                                    views::LayoutAlignment::kCenter);
-    workspaces_button_->SetProperty(
-        views::kFlexBehaviorKey,
-        views::FlexSpecification(views::MinimumFlexSizeRule::kPreferred,
-                                 views::MaximumFlexSizeRule::kPreferred));
-    workspaces_button_->SetTooltipText(
-        l10n_util::GetStringUTF16(IDS_TOOLTIP_WORKSPACES_BUTTON));
-    workspaces_button_->GetViewAccessibility().SetName(
-        l10n_util::GetStringUTF16(IDS_ACCNAME_WORKSPACES_BUTTON));
+  // Only show the spaces button if the feature is enabled and this is a regular
+  // browser window (not private, not PWA/popup/PIP/etc).
+  if (!base::FeatureList::IsEnabled(features::kWorkspaces)) {
+    return;
   }
+
+  auto* bwi = tab_strip_->GetBrowserWindowInterface();
+  if (bwi->GetType() != BrowserWindowInterface::Type::TYPE_NORMAL ||
+      bwi->GetProfile()->IsOffTheRecord()) {
+    return;
+  }
+
+  // Insert before the tab strip so the button appears at the left edge of the
+  // tab area, before the first tab.
+  const std::optional<size_t> strip_idx = GetIndexOf(tab_strip_);
+  CHECK(strip_idx.has_value());
+  workspaces_button_ = AddChildViewAt(
+      std::make_unique<TabStripControlButton>(
+          bwi,
+          base::BindRepeating(
+              &BraveHorizontalTabStripRegionView::OnWorkspacesButtonPressed,
+              weak_factory_.GetWeakPtr()),
+          kLeoSpacesIcon),
+      strip_idx.value());
+  workspaces_button_->SetProperty(views::kCrossAxisAlignmentKey,
+                                  views::LayoutAlignment::kCenter);
+  workspaces_button_->SetProperty(
+      views::kFlexBehaviorKey,
+      views::FlexSpecification(views::MinimumFlexSizeRule::kPreferred,
+                               views::MaximumFlexSizeRule::kPreferred));
+  workspaces_button_->SetTooltipText(
+      l10n_util::GetStringUTF16(IDS_TOOLTIP_WORKSPACES_BUTTON));
+  workspaces_button_->GetViewAccessibility().SetName(
+      l10n_util::GetStringUTF16(IDS_ACCNAME_WORKSPACES_BUTTON));
 }
 
 void BraveHorizontalTabStripRegionView::

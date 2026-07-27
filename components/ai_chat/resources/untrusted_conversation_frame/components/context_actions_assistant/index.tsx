@@ -118,7 +118,7 @@ export default function ContextActionsAssistant(
       {props.onCopyTextClicked && (
         <CopyButton onClick={props.onCopyTextClicked} />
       )}
-      {props.onEditAnswerClicked && (
+      {!conversationContext.isReadOnly && props.onEditAnswerClicked && (
         <Button
           onClick={props.onEditAnswerClicked}
           fab
@@ -130,37 +130,41 @@ export default function ContextActionsAssistant(
           <Icon name='edit-pencil' />
         </Button>
       )}
-      <Button
-        onClick={() => handleLikeOrDislikeAnswer('liked')}
-        fab
-        size='small'
-        kind='plain-faint'
-        title={getLocale(S.CHAT_UI_LIKE_ANSWER_BUTTON_LABEL)}
-        className={styles.button}
-      >
-        <Icon
-          name='thumb-up'
-          className={classnames({
-            [styles.liked]: currentRatingStatus === 'liked',
-          })}
-        />
-      </Button>
-      <Button
-        onClick={() => handleLikeOrDislikeAnswer('disliked')}
-        fab
-        size='small'
-        kind='plain-faint'
-        title={getLocale(S.CHAT_UI_DISMISS_BUTTON_LABEL)}
-        className={styles.button}
-      >
-        <Icon
-          name='thumb-down'
-          className={classnames({
-            [styles.disliked]: currentRatingStatus === 'disliked',
-          })}
-        />
-      </Button>
-      {props.turnModelKey && (
+      {!conversationContext.isReadOnly && (
+        <Button
+          onClick={() => handleLikeOrDislikeAnswer('liked')}
+          fab
+          size='small'
+          kind='plain-faint'
+          title={getLocale(S.CHAT_UI_LIKE_ANSWER_BUTTON_LABEL)}
+          className={styles.button}
+        >
+          <Icon
+            name='thumb-up'
+            className={classnames({
+              [styles.liked]: currentRatingStatus === 'liked',
+            })}
+          />
+        </Button>
+      )}
+      {!conversationContext.isReadOnly && (
+        <Button
+          onClick={() => handleLikeOrDislikeAnswer('disliked')}
+          fab
+          size='small'
+          kind='plain-faint'
+          title={getLocale(S.CHAT_UI_DISMISS_BUTTON_LABEL)}
+          className={styles.button}
+        >
+          <Icon
+            name='thumb-down'
+            className={classnames({
+              [styles.disliked]: currentRatingStatus === 'disliked',
+            })}
+          />
+        </Button>
+      )}
+      {!conversationContext.isReadOnly && props.turnModelKey && (
         <RegenerateAnswerMenu
           isOpen={isRegenerateAnswerMenuOpen}
           onOpen={() => handleOpenCloseRegenerateAnswerMenu(true)}

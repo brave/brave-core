@@ -304,6 +304,7 @@ var package = Package(
       ],
       plugins: ["LoggerPlugin"]
     ),
+    .testTarget(name: "BraveUITests", dependencies: ["BraveUI"]),
     .target(
       name: "BraveShields",
       dependencies: ["Strings", "Preferences", "BraveCore", "Web", "Data"],

@@ -150,6 +150,7 @@ AdsServiceImpl::AdsServiceImpl(
     std::unique_ptr<DeviceId> device_id,
     std::unique_ptr<BatAdsServiceFactory> bat_ads_service_factory,
     std::unique_ptr<ApplicationStateMonitor> application_state_monitor,
+    std::unique_ptr<ShutdownMonitor> shutdown_monitor,
     ResourceComponent& resource_component,
     history::HistoryService* history_service,
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
@@ -179,12 +180,22 @@ AdsServiceImpl::AdsServiceImpl(
       rewards_service_(rewards_service),
 #endif
       application_state_monitor_(std::move(application_state_monitor)),
+      shutdown_monitor_(std::move(shutdown_monitor)),
       policy_initialization_waiter_(std::move(policy_initialization_waiter)),
       bat_ads_client_associated_receiver_(this) {
   CHECK(device_id_);
   CHECK(bat_ads_service_factory_);
   CHECK(application_state_monitor_);
+  CHECK(shutdown_monitor_);
   CHECK(policy_initialization_waiter_);
+
+  // Chrome only ever notifies app termination once per process, so subscribe
+  // immediately rather than waiting for `InitializeBatAdsCallback`, otherwise
+  // a profile that finishes initializing after that single notification has
+  // already fired would never hear about it.
+  app_terminating_subscription_ = shutdown_monitor_->AddAppTerminatingCallback(
+      base::BindOnce(&AdsServiceImpl::OnBrowserWillShutdown,
+                     weak_ptr_factory_.GetWeakPtr()));
 
   if (!http_client_ || !history_service_ || !host_content_settings_map_) {
     CHECK_IS_TEST();
@@ -935,7 +946,6 @@ void AdsServiceImpl::CloseAllNotificationAds() {
   }
 
   const auto& list = prefs_->GetList(prefs::kNotificationAds);
-
   const base::circular_deque<NotificationAdInfo> ads =
       NotificationAdsFromList(list);
 
@@ -957,7 +967,10 @@ void AdsServiceImpl::MaybeOpenNewTabWithAd() {
 }
 
 void AdsServiceImpl::OpenNewTabWithAd(const std::string& placement_id) {
-  if (StopNotificationAdTimeOutTimer(placement_id)) {
+  // `CloseNotificationAd` already cancels the timeout for reminders, so only
+  // cancel it here for the branches that do not call it.
+  if (!IsReminder(placement_id) &&
+      StopNotificationAdTimeOutTimer(placement_id)) {
     VLOG(2) << "Canceled timeout for notification ad with placement id "
             << placement_id;
   }
@@ -978,14 +991,12 @@ void AdsServiceImpl::OpenNewTabWithAd(const std::string& placement_id) {
 }
 
 void AdsServiceImpl::OpenNewTabWithAdCallback(
-    std::optional<base::DictValue> dict) {
-  if (!dict) {
+    brave_ads::mojom::NotificationAdInfoPtr notification_ad) {
+  if (!notification_ad) {
     return VLOG(0) << "Failed to get notification ad";
   }
 
-  const NotificationAdInfo notification_ad = NotificationAdFromDict(*dict);
-
-  OpenNewTabWithUrl(notification_ad.target_url);
+  OpenNewTabWithUrl(notification_ad->target_url);
 }
 
 void AdsServiceImpl::OpenNewTabWithUrl(const GURL& url) {
@@ -1068,6 +1079,8 @@ void AdsServiceImpl::ShutdownAdsService() {
 #endif
 
   application_state_monitor_observation_.Reset();
+
+  app_terminating_subscription_ = {};
 
   CloseAllNotificationAds();
 
@@ -1400,6 +1413,12 @@ void AdsServiceImpl::NotifyTabDidLoad(int32_t tab_id, int http_status_code) {
   }
 }
 
+void AdsServiceImpl::NotifyTabDidFailToLoad(int32_t tab_id) {
+  if (bat_ads_client_notifier_remote_.is_bound()) {
+    bat_ads_client_notifier_remote_->NotifyTabDidFailToLoad(tab_id);
+  }
+}
+
 void AdsServiceImpl::NotifyDidCloseTab(int32_t tab_id) {
   if (bat_ads_client_notifier_remote_.is_bound()) {
     bat_ads_client_notifier_remote_->NotifyDidCloseTab(tab_id);
@@ -1456,25 +1475,28 @@ void AdsServiceImpl::CanShowNotificationAdsWhileBrowserIsBackgrounded(
       delegate_->CanShowSystemNotificationsWhileBrowserIsBackgrounded());
 }
 
-void AdsServiceImpl::ShowNotificationAd(base::DictValue dict) {
-  const NotificationAdInfo ad = NotificationAdFromDict(dict);
+void AdsServiceImpl::ShowNotificationAd(
+    brave_ads::mojom::NotificationAdInfoPtr notification_ad) {
+  CHECK(notification_ad);
 
   std::u16string title;
-  if (base::IsStringUTF8(ad.title)) {
-    title = base::UTF8ToUTF16(ad.title);
+  if (base::IsStringUTF8(notification_ad->title)) {
+    title = base::UTF8ToUTF16(notification_ad->title);
   }
 
   std::u16string body;
-  if (base::IsStringUTF8(ad.body)) {
-    body = base::UTF8ToUTF16(ad.body);
+  if (base::IsStringUTF8(notification_ad->body)) {
+    body = base::UTF8ToUTF16(notification_ad->body);
   }
 
-  delegate_->ShowNotificationAd(ad.placement_id, title, body);
+  delegate_->ShowNotificationAd(notification_ad->placement_id, title, body);
 
-  StartNotificationAdTimeOutTimer(ad.placement_id);
+  StartNotificationAdTimeOutTimer(notification_ad->placement_id);
 }
 
 void AdsServiceImpl::CloseNotificationAd(const std::string& placement_id) {
+  StopNotificationAdTimeOutTimer(placement_id);
+
   delegate_->CloseNotificationAd(placement_id);
 }
 
@@ -1689,6 +1711,12 @@ void AdsServiceImpl::OnBrowserDidResignActive() {
 #endif  // BUILDFLAG(IS_ANDROID)
     bat_ads_client_notifier_remote_->NotifyBrowserDidEnterBackground();
   }
+}
+
+void AdsServiceImpl::OnBrowserWillShutdown() {
+  // Runs before `ShutdownAdsService()`'s call, closing the ad as soon as
+  // quitting starts instead of leaving it clickable until profile teardown.
+  CloseAllNotificationAds();
 }
 
 void AdsServiceImpl::OnResourceComponentDidChange(

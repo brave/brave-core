@@ -27,4 +27,4 @@ class ChromiumCheckoutTestApi(RecipeTestApi):
 
     def existing_checkout(self) -> TestData:
         """Simulate a valid existing checkout (`chrome/VERSION` present)."""
-        return self.m.path.files('chromium/src/chrome/VERSION')
+        return self.m.path.files('brave-browser/src/chrome/VERSION')

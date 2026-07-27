@@ -3,11 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import { loadTimeData } from '$web-common/loadTimeData'
 import * as Mojom from './mojom'
-
-// TODO(https://github.com/brave/brave-browser/issues/56444): get current client
-// version from loadTimeData.
-export const CONVERSATION_EXPORT_VERSION = '1.93.8'
 
 type ConversationData = Mojom.ConversationTurn[]
 
@@ -73,7 +70,9 @@ export function serializeConversationForSharing(
   // the parsing of the conversation data, the above algorithm of which may
   // change over time, and will be deployed with that version of the UI code.
   const payload: SerializedConversation = {
-    version: CONVERSATION_EXPORT_VERSION,
+    // The Brave client version that produced this payload, so the viewer can
+    // choose the correct parsing algorithm for the data below.
+    version: loadTimeData.getString('braveVersion'),
     data: stringifyConversationData(data),
   }
 

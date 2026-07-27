@@ -13,19 +13,15 @@ substitutions:
       class_name: DataTypeWorker
       method_name: OnCommitResponse
 
-  # add_friend inserts each friend as the first line of the private section, so
-  # these two are ordered to yield `BraveDataTypeWorker` then
+  # The friends land in the order listed, yielding `BraveDataTypeWorker` then
   # `BraveDataTypeWorkerTest`, with the FRIEND_TEST_ALL_PREFIXES anchored on the
   # latter.
-  - description: 'Friend BraveDataTypeWorkerTest'
+  - description: 'Friend BraveDataTypeWorker and its test'
     add_friend:
       class_name: DataTypeWorker
-      friend_type: class BraveDataTypeWorkerTest
-
-  - description: 'Friend BraveDataTypeWorker'
-    add_friend:
-      class_name: DataTypeWorker
-      friend_type: class BraveDataTypeWorker
+      friend_type:
+        - class BraveDataTypeWorker
+        - class BraveDataTypeWorkerTest
 
   - description: 'Friend the BraveDataTypeWorker tests'
     regex:

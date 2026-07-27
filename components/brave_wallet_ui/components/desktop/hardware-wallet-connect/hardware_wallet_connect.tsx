@@ -19,9 +19,6 @@ import {
   HardwareWalletAccountsList,
 } from './accounts_list'
 import {
-  AuthorizeHardwareDeviceIFrame, //
-} from '../../shared/authorize-hardware-device/authorize-hardware-device'
-import {
   HardwareButton, //
 } from '../popup-modals/add-account-modal/hardware-button/hardware_button'
 
@@ -186,9 +183,6 @@ export const HardwareWalletConnect = ({
   const [currentDerivationScheme, setCurrentDerivationScheme] =
     React.useState<DerivationScheme>(DerivationSchemes.EthLedgerLive)
   const [showAccountsList, setShowAccountsList] = React.useState<boolean>(false)
-  const [showAuthorizeDevice, setShowAuthorizeDevice] =
-    React.useState<boolean>(false)
-  const hideAuthorizeDevice = () => setShowAuthorizeDevice(false)
   const [totalNumberOfAccounts, setTotalNumberOfAccounts] = React.useState(0)
   const [deviceName, setDeviceName] = React.useState<string>('')
 
@@ -263,7 +257,6 @@ export const HardwareWalletConnect = ({
       startIndex: accounts.length,
       count: numberOfAccountsToLoad,
       scheme: currentHardwareImportScheme,
-      onAuthorized: hideAuthorizeDevice,
     }).then((result) => {
       if (ignore) {
         return
@@ -279,13 +272,9 @@ export const HardwareWalletConnect = ({
         return
       }
 
-      if (result.error === 'unauthorized') {
-        setShowAuthorizeDevice(true)
-      } else {
-        setConnectionError(
-          getErrorMessage(result.error, selectedAccountType.name),
-        )
-      }
+      setConnectionError(
+        getErrorMessage(result.error, selectedAccountType.name),
+      )
     })
     return () => {
       ignore = true
@@ -438,19 +427,15 @@ export const HardwareWalletConnect = ({
             )}
       </Instructions>
       <VerticalSpace space='100px' />
-      {showAuthorizeDevice ? (
-        <AuthorizeHardwareDeviceIFrame coinType={selectedAccountType.coin} />
-      ) : (
-        <ContinueButton
-          onClick={increaseNumberOfAccounts}
-          isLoading={isLoadingAccounts}
-        >
-          <div slot='loading'>
-            {getLocale('braveWalletConnectingHardwareWallet')}
-          </div>
-          {!isLoadingAccounts && getLocale('braveWalletAddAccountConnect')}
-        </ContinueButton>
-      )}
+      <ContinueButton
+        onClick={increaseNumberOfAccounts}
+        isLoading={isLoadingAccounts}
+      >
+        <div slot='loading'>
+          {getLocale('braveWalletConnectingHardwareWallet')}
+        </div>
+        {!isLoadingAccounts && getLocale('braveWalletAddAccountConnect')}
+      </ContinueButton>
     </Column>
   )
 }

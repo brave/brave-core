@@ -65,31 +65,31 @@
 "aichat.byomSectionHeaderTitle" = "Ajoutez votre modèle";
 
 /* The subtitle for intro view which triggers just chat */
-"aichat.chatIntroJustTalkSubTitle" = "Demandez-moi tout ce que vous voulez ! Nous pouvons discuter de n’importe quel sujet. J’apprends et je m’améliore en permanence afin de fournir de meilleures réponses.";
+"aichat.chatIntroJustTalkSubTitle" = "Demandez-moi tout ce que vous voulez ! Nous pouvons discuter de n'importe quel sujet. J'apprends et je m'améliore en permanence afin de fournir de meilleures réponses.";
 
 /* The title for intro view which triggers just chat */
 "aichat.chatIntroJustTalkTitle" = "Vous voulez simplement discuter ?";
 
 /* The subtitle for intro view */
-"aichat.chatIntroSubTitle" = "Un assistant intelligent optimisé par l’IA, directement intégré à Brave.";
+"aichat.chatIntroSubTitle" = "Un assistant intelligent optimisé par l'IA, directement intégré à Brave.";
 
 /* The title for intro view */
-"aichat.chatIntroTitle" = "Bonjour, je m’appelle Leo !";
+"aichat.chatIntroTitle" = "Bonjour, je m'appelle Leo !";
 
 /* The subtitle for intro view which triggers website help for article */
-"aichat.chatIntroWebsiteHelpSubtitleArticleSummarize" = "Je peux vous aider à résumer des articles, à développer le contenu d’un site, et bien plus encore.";
+"aichat.chatIntroWebsiteHelpSubtitleArticleSummarize" = "Je peux vous aider à résumer des articles, à développer le contenu d'un site, et bien plus encore.";
 
 /* The subtitle for intro view which triggers website help for summary */
-"aichat.chatIntroWebsiteHelpSubtitlePageSummarize" = "Je peux vous aider à résumer des articles, à développer le contenu d’un site, et bien plus encore. Vous ne savez pas par où commencer ? Essayez ceci :";
+"aichat.chatIntroWebsiteHelpSubtitlePageSummarize" = "Je peux vous aider à résumer des articles, à développer le contenu d'un site, et bien plus encore. Vous ne savez pas par où commencer ? Essayez ceci :";
 
 /* The title for intro view which triggers website help */
-"aichat.chatIntroWebsiteHelpTitle" = "Besoin d’aide concernant un site Web ?";
+"aichat.chatIntroWebsiteHelpTitle" = "Besoin d'aide concernant un site Web ?";
 
 /* The title for the chat section in the menu */
 "aichat.chatMenuSectionTitle" = "Chat";
 
 /* The title shown on limit reached error view, which is suggesting user to change default model */
-"aichat.contextLimitErrorTitle" = "Cette conversation est trop longue et ne peut pas se poursuivre.\nIl est possible qu’il existe d’autres modèles avec lesquels Leo peut maintenir l’exactitude pendant des conversations plus longues.";
+"aichat.contextLimitErrorTitle" = "Cette conversation est trop longue et ne peut pas se poursuivre.\nIl est possible qu'il existe d'autres modèles avec lesquels Leo peut maintenir l'exactitude pendant des conversations plus longues.";
 
 /* The title of the section where custom models are displayed as a list. */
 "aichat.customModelChatSectionTitle" = "Modèles personnalisés";

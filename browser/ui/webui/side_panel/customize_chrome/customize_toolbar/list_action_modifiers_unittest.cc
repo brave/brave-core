@@ -10,6 +10,7 @@
 #include "base/containers/fixed_flat_set.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/screenshot/features.h"
+#include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
@@ -395,6 +396,31 @@ TEST_F(ListActionModifiersUnitTest,
                         &side_panel::customize_chrome::mojom::Action::id);
   ASSERT_NE(screenshot_it, modified_actions.end());
   EXPECT_EQ((*screenshot_it)->category,
+            side_panel::customize_chrome::mojom::CategoryId::kNavigation);
+}
+
+TEST_F(ListActionModifiersUnitTest,
+       ApplyBraveSpecificModifications_VerticalTabToggleNotAddedByDefault) {
+  ASSERT_FALSE(prefs()->GetBoolean(brave_tabs::kVerticalTabsEnabled));
+  auto modified_actions = customize_chrome::ApplyBraveSpecificModifications(
+      web_contents_.get(), GetBasicActions());
+  auto toggle_it = std::ranges::find(
+      modified_actions, ActionId::kShowVerticalTabToggleButton,
+      &side_panel::customize_chrome::mojom::Action::id);
+  EXPECT_EQ(toggle_it, modified_actions.end());
+}
+
+TEST_F(
+    ListActionModifiersUnitTest,
+    ApplyBraveSpecificModifications_VerticalTabToggleAddedWhenVerticalTabsEnabled) {
+  prefs()->SetBoolean(brave_tabs::kVerticalTabsEnabled, true);
+  auto modified_actions = customize_chrome::ApplyBraveSpecificModifications(
+      web_contents_.get(), GetBasicActions());
+  auto toggle_it = std::ranges::find(
+      modified_actions, ActionId::kShowVerticalTabToggleButton,
+      &side_panel::customize_chrome::mojom::Action::id);
+  ASSERT_NE(toggle_it, modified_actions.end());
+  EXPECT_EQ((*toggle_it)->category,
             side_panel::customize_chrome::mojom::CategoryId::kNavigation);
 }
 

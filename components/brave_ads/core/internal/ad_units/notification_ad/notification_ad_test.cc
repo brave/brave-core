@@ -15,7 +15,7 @@
 #include "brave/components/brave_ads/core/internal/serving/notification_ad_serving_feature.h"
 #include "brave/components/brave_ads/core/internal/serving/notification_ad_serving_util.h"
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/test/permission_rules_test_util.h"
-#include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ads.h"
 #include "net/http/http_status_code.h"
 
@@ -90,9 +90,9 @@ TEST_F(BraveAdsNotificationAdIntegrationTest, TriggerViewedEvent) {
 
   base::RunLoop run_loop;
   EXPECT_CALL(ads_client_mock_, ShowNotificationAd)
-      .WillOnce([&](const NotificationAdInfo& ad) {
+      .WillOnce([&](mojom::NotificationAdInfoPtr ad) {
         ASSERT_TRUE(
-            NotificationAdManager::GetInstance().Exists(ad.placement_id));
+            NotificationAdManager::GetInstance().Exists(ad->placement_id));
 
         // Act & Assert
         base::MockCallback<ResultCallback> callback;
@@ -102,12 +102,12 @@ TEST_F(BraveAdsNotificationAdIntegrationTest, TriggerViewedEvent) {
             .WillOnce(
                 base::test::RunOnceClosure(ad_event_run_loop.QuitClosure()));
         GetAds().TriggerNotificationAdEvent(
-            ad.placement_id, mojom::NotificationAdEventType::kViewedImpression,
+            ad->placement_id, mojom::NotificationAdEventType::kViewedImpression,
             callback.Get());
         ad_event_run_loop.Run();
 
         EXPECT_TRUE(
-            NotificationAdManager::GetInstance().Exists(ad.placement_id));
+            NotificationAdManager::GetInstance().Exists(ad->placement_id));
         run_loop.Quit();
       });
 
@@ -124,12 +124,12 @@ TEST_F(BraveAdsNotificationAdIntegrationTest, TriggerClickedEvent) {
 
   base::RunLoop run_loop;
   EXPECT_CALL(ads_client_mock_, ShowNotificationAd)
-      .WillOnce([&](const NotificationAdInfo& ad) {
+      .WillOnce([&](mojom::NotificationAdInfoPtr ad) {
         ASSERT_TRUE(
-            NotificationAdManager::GetInstance().Exists(ad.placement_id));
+            NotificationAdManager::GetInstance().Exists(ad->placement_id));
 
         // Act & Assert
-        EXPECT_CALL(ads_client_mock_, CloseNotificationAd(ad.placement_id))
+        EXPECT_CALL(ads_client_mock_, CloseNotificationAd(ad->placement_id))
             .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
 
         base::MockCallback<ResultCallback> callback;
@@ -139,12 +139,12 @@ TEST_F(BraveAdsNotificationAdIntegrationTest, TriggerClickedEvent) {
             .WillOnce(
                 base::test::RunOnceClosure(ad_event_run_loop.QuitClosure()));
         GetAds().TriggerNotificationAdEvent(
-            ad.placement_id, mojom::NotificationAdEventType::kClicked,
+            ad->placement_id, mojom::NotificationAdEventType::kClicked,
             callback.Get());
         ad_event_run_loop.Run();
 
         EXPECT_FALSE(
-            NotificationAdManager::GetInstance().Exists(ad.placement_id));
+            NotificationAdManager::GetInstance().Exists(ad->placement_id));
         run_loop.Quit();
       });
 
@@ -161,9 +161,9 @@ TEST_F(BraveAdsNotificationAdIntegrationTest, TriggerDismissedEvent) {
 
   base::RunLoop run_loop;
   EXPECT_CALL(ads_client_mock_, ShowNotificationAd)
-      .WillOnce([&](const NotificationAdInfo& ad) {
+      .WillOnce([&](mojom::NotificationAdInfoPtr ad) {
         ASSERT_TRUE(
-            NotificationAdManager::GetInstance().Exists(ad.placement_id));
+            NotificationAdManager::GetInstance().Exists(ad->placement_id));
 
         // Act & Assert
         base::MockCallback<ResultCallback> callback;
@@ -173,12 +173,12 @@ TEST_F(BraveAdsNotificationAdIntegrationTest, TriggerDismissedEvent) {
             .WillOnce(
                 base::test::RunOnceClosure(ad_event_run_loop.QuitClosure()));
         GetAds().TriggerNotificationAdEvent(
-            ad.placement_id, mojom::NotificationAdEventType::kDismissed,
+            ad->placement_id, mojom::NotificationAdEventType::kDismissed,
             callback.Get());
         ad_event_run_loop.Run();
 
         EXPECT_FALSE(
-            NotificationAdManager::GetInstance().Exists(ad.placement_id));
+            NotificationAdManager::GetInstance().Exists(ad->placement_id));
         run_loop.Quit();
       });
 
@@ -195,9 +195,9 @@ TEST_F(BraveAdsNotificationAdIntegrationTest, TriggerTimedOutEvent) {
 
   base::RunLoop run_loop;
   EXPECT_CALL(ads_client_mock_, ShowNotificationAd)
-      .WillOnce([&](const NotificationAdInfo& ad) {
+      .WillOnce([&](mojom::NotificationAdInfoPtr ad) {
         ASSERT_TRUE(
-            NotificationAdManager::GetInstance().Exists(ad.placement_id));
+            NotificationAdManager::GetInstance().Exists(ad->placement_id));
 
         // Act & Assert
         base::MockCallback<ResultCallback> callback;
@@ -207,12 +207,12 @@ TEST_F(BraveAdsNotificationAdIntegrationTest, TriggerTimedOutEvent) {
             .WillOnce(
                 base::test::RunOnceClosure(ad_event_run_loop.QuitClosure()));
         GetAds().TriggerNotificationAdEvent(
-            ad.placement_id, mojom::NotificationAdEventType::kTimedOut,
+            ad->placement_id, mojom::NotificationAdEventType::kTimedOut,
             callback.Get());
         ad_event_run_loop.Run();
 
         EXPECT_FALSE(
-            NotificationAdManager::GetInstance().Exists(ad.placement_id));
+            NotificationAdManager::GetInstance().Exists(ad->placement_id));
         run_loop.Quit();
       });
 

@@ -21,6 +21,7 @@ def RunSteps(api):
         # Nested contexts compose: a second PATH prefix stacks in front, and
         # cwd applies only within the inner block.
         with api.context(env_prefixes={'PATH': ['/opt/extra']},
+                         env_suffixes={'LD_LIBRARY_PATH': ['/opt/lib']},
                          cwd=api.path.out):
             api.step('nested context', ['node', 'build.js'])
 

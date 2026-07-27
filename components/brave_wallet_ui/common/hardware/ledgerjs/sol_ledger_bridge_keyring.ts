@@ -26,8 +26,8 @@ export default class SolanaLedgerBridgeKeyring
   extends LedgerBridgeKeyring
   implements LedgerSolanaKeyring
 {
-  constructor(onAuthorized?: () => void) {
-    super(onAuthorized)
+  constructor() {
+    super()
   }
 
   bridgeType = (): BridgeType => {

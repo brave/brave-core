@@ -25,6 +25,7 @@ inline constexpr char kAdBlockRegionalFilters[] =
     "brave.ad_block.regional_filters";
 inline constexpr char kAdBlockListSubscriptions[] =
     "brave.ad_block.list_subscriptions";
+inline constexpr char kAdBlockDebugMode[] = "brave.ad_block.debug_mode";
 inline constexpr char kAdBlockDeveloperMode[] = "brave.ad_block.developer_mode";
 
 inline constexpr char kMigratedAdblockSocialMediaBlockingSettings[] =

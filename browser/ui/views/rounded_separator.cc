@@ -29,8 +29,11 @@ RoundedSeparator::RoundedSeparator() {
 
 RoundedSeparator::~RoundedSeparator() = default;
 
-void RoundedSeparator::SetColor(SkColor color) {
-  overridden_color_ = color;
+void RoundedSeparator::SetColorId(ui::ColorId color_id) {
+  if (color_id_ == color_id) {
+    return;
+  }
+  color_id_ = color_id;
   SchedulePaint();
 }
 
@@ -51,9 +54,7 @@ gfx::Size RoundedSeparator::CalculatePreferredSize(
 }
 
 void RoundedSeparator::OnPaint(gfx::Canvas* canvas) {
-  SkColor color = overridden_color_
-                      ? *overridden_color_
-                      : GetColorProvider()->GetColor(ui::kColorSeparator);
+  const SkColor color = GetColorProvider()->GetColor(color_id_);
 
   float dsf = canvas->UndoDeviceScaleFactor();
 

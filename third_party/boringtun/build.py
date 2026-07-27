@@ -235,14 +235,86 @@ def _write_shell_wrapper(directory: Path, name: str, command: str,
     return path
 
 
+def _win_vc_tools_dir(winsysroot: Path) -> Path:
+    """Return the versioned MSVC toolset dir under a Visual Studio root.
+
+    clang-cl and lld-link derive the SDK location from /winsysroot and
+    ignore an explicit /winsdkdir when both are given, so a local VS
+    install (where the SDK lives outside the VS dir) must use the split
+    /vctoolsdir + /winsdkdir form instead. That requires resolving
+    <root>/VC/Tools/MSVC/<version> ourselves; picks the highest version
+    when several toolsets are installed.
+    """
+    msvc = winsysroot / 'VC' / 'Tools' / 'MSVC'
+    if not msvc.is_dir():
+        sys.exit(f'MSVC toolset dir not found at {msvc}')
+    versions = sorted(
+        (d for d in msvc.iterdir()
+         if d.is_dir() and all(p.isdigit() for p in d.name.split('.'))),
+        key=lambda d: [int(p) for p in d.name.split('.')])
+    if not versions:
+        sys.exit(f'no MSVC toolset installed under {msvc}')
+    return versions[-1]
+
+
+def _win_sysroot_flags(winsysroot: Path, winsdkdir: Path | None) -> list[str]:
+    """Return ['/flag', '"value"', ...] locating the MSVC libs/headers.
+
+    When the Windows SDK lives under the sysroot as "Windows Kits/10"
+    (the hermetic toolchain package layout; this probe mirrors how
+    clang-cl and lld-link expand /winsysroot), a single /winsysroot is
+    emitted, keeping hermetic builds identical to before this option
+    existed. Otherwise (a locally installed Visual Studio, where the
+    SDK lives outside the VS dir) the split /vctoolsdir + /winsdkdir
+    form is required: /winsysroot takes precedence over /winsdkdir in
+    LLVM's MSVC path detection, so passing both would point SDK lookup
+    at a "Windows Kits/10" dir that does not exist under the VS root.
+    """
+    if winsdkdir and not (winsysroot / 'Windows Kits' / '10').is_dir():
+        return [
+            '/vctoolsdir', f'"{_win_vc_tools_dir(winsysroot)}"', '/winsdkdir',
+            f'"{winsdkdir}"'
+        ]
+    return ['/winsysroot', f'"{winsysroot}"']
+
+
+def _win_sysroot_flags_gnu(winsysroot: Path,
+                           winsdkdir: Path | None) -> list[str]:
+    """GNU-driver (bare clang) counterpart of _win_sysroot_flags().
+
+    Bare clang does not accept the CL-style /winsysroot family; the
+    equivalent spellings are -Xmicrosoft-windows-sys-root and, for the
+    split form, -Xmicrosoft-visualc-tools-root plus
+    -Xmicrosoft-windows-sdk-root. Layout selection matches
+    _win_sysroot_flags(): a single sys-root when the SDK lives under
+    the sysroot (the hermetic package), the split form otherwise (a
+    local VS install). Paths use forward slashes, consistently with
+    the other GNU-driver flags in this file.
+    """
+
+    def fwd(path: Path) -> str:
+        return str(path).replace('\\', '/')
+
+    if winsdkdir and not (winsysroot / 'Windows Kits' / '10').is_dir():
+        return [
+            '-Xmicrosoft-visualc-tools-root',
+            f'"{fwd(_win_vc_tools_dir(winsysroot))}"',
+            '-Xmicrosoft-windows-sdk-root',
+            f'"{fwd(winsdkdir)}"',
+        ]
+    return ['-Xmicrosoft-windows-sys-root', f'"{fwd(winsysroot)}"']
+
+
 def _make_compiler_wrappers(wrappers_dir: Path, binpath: Path,
-                            winsysroot: Path) -> tuple[Path, Path]:
+                            winsysroot: Path,
+                            winsdkdir: Path | None) -> tuple[Path, Path]:
     """Create clang and clang-cl shell scripts that inject the Windows
     sysroot in the dialect each compiler personality understands.
 
     The bare-clang shim and clang-cl share CFLAGS via cc-rs, but they
-    accept different sysroot flags: clang-cl takes /winsysroot:<path>,
-    bare clang (GNU driver) takes -Xmicrosoft-windows-sys-root <path>.
+    accept different sysroot flags: clang-cl takes the /winsysroot
+    family (see _win_sysroot_flags), bare clang (GNU driver) takes the
+    -Xmicrosoft-* spellings (see _win_sysroot_flags_gnu).
     Putting the sysroot in CFLAGS forces one dialect on both, which
     breaks ring's bare-clang override on aarch64-pc-windows-msvc.
     Wrappers move the sysroot out of CFLAGS so each personality gets
@@ -254,15 +326,13 @@ def _make_compiler_wrappers(wrappers_dir: Path, binpath: Path,
 
     Returns (clang_wrapper, clang_cl_wrapper).
     """
-    xsysroot = str(winsysroot).replace('\\', '/')
-
     # clang-cl wrapper: absolute path to the bundled `clang-cl`,
-    # plus winsysroot.
+    # plus the winsysroot (or vctoolsdir + winsdkdir) flags.
     clang_cl = _write_shell_wrapper(
         wrappers_dir,
         'clang-cl',
         str(binpath / CLANG_CL),
-        ['/winsysroot', f'"{winsysroot}"'],
+        _win_sysroot_flags(winsysroot, winsdkdir),
         flags_after_args=False,
     )
 
@@ -279,7 +349,7 @@ def _make_compiler_wrappers(wrappers_dir: Path, binpath: Path,
         wrappers_dir,
         'clang',
         local_clang,
-        ['--driver-mode=gcc', '-Xmicrosoft-windows-sys-root', f'"{xsysroot}"'],
+        ['--driver-mode=gcc'] + _win_sysroot_flags_gnu(winsysroot, winsdkdir),
         flags_after_args=False,
     )
 
@@ -334,7 +404,8 @@ def _make_linker_wrapper(wrappers_dir: Path,
                          sysroot: Path,
                          target_os,
                          triple=None,
-                         mac_min_version=None) -> Path:
+                         mac_min_version=None,
+                         winsdkdir: Path | None = None) -> Path:
     """Create a wrapper script that invokes the given linker with appropriate
     flags. On Windows, this is used to pass /winsysroot to the linker in
     cross-builds. On macOS, this is used to select clang with -fuse-ld=lld
@@ -344,8 +415,15 @@ def _make_linker_wrapper(wrappers_dir: Path,
     """
     if target_os == 'win':
         # lld-link is positional about its inputs, so put our injected
-        # flags after the user's args.
-        flags = [f'/winsysroot:{sysroot}'] if sysroot else []
+        # flags after the user's args. lld-link takes these options in
+        # /flag:value form, unlike clang-cl's separate-argument form.
+        flags = []
+        if sysroot:
+            pairs = _win_sysroot_flags(sysroot, winsdkdir)
+            flags = [
+                f'{flag}:{value}'
+                for flag, value in zip(pairs[::2], pairs[1::2])
+            ]
         flags_after_args = True
     else:
         flags = ['-fuse-ld=lld'] + _cross_compile_flags(
@@ -361,8 +439,14 @@ def _make_linker_wrapper(wrappers_dir: Path,
     )
 
 
-def _setup_cc_env(env, triple, target_os, wrappers_dir: Path, binpath: Path,
-                  sysroot: Path, mac_min_version):
+def _setup_cc_env(env,
+                  triple,
+                  target_os,
+                  wrappers_dir: Path,
+                  binpath: Path,
+                  sysroot: Path,
+                  mac_min_version,
+                  win_sdk_dir=None):
     """Configure env vars for cc-rs and cargo's target linker.
  
     Ring and other Rust crates that build C via build.rs use cc-rs,
@@ -390,13 +474,13 @@ def _setup_cc_env(env, triple, target_os, wrappers_dir: Path, binpath: Path,
             # exists only for ring's PATH-based clang lookup; cc_path
             # below is the clang-cl wrapper used as CC_<triple>.
             _, cc_path = _make_compiler_wrappers(wrappers_dir, binpath,
-                                                 sysroot)
+                                                 sysroot, win_sdk_dir)
         else:
             cc_path = binpath / cc_name
         ar_path = binpath / ar_name
         linker_path = _make_linker_wrapper(wrappers_dir, binpath / link_name,
                                            sysroot, target_os, triple,
-                                           mac_min_version)
+                                           mac_min_version, win_sdk_dir)
 
         for tool, label in [(cc_path, 'CC'), (ar_path, 'AR'),
                             (linker_path, 'Linker')]:
@@ -653,6 +737,13 @@ def main():
     ap.add_argument('--cc-sysroot',
                     help='Path to the sysroot for the target platform, if '
                     'needed. On Windows, it should be the MSVC winsysroot.')
+    ap.add_argument('--win-sdk-dir',
+                    help='Path to the Windows SDK root (e.g. "C:\\Program '
+                    'Files (x86)\\Windows Kits\\10"). Only used when the '
+                    'SDK does not live under --cc-sysroot as '
+                    '"Windows Kits\\10", i.e. a locally installed Visual '
+                    'Studio rather than the hermetic toolchain package; '
+                    'hermetic layouts keep using /winsysroot.')
     ap.add_argument('--mac-min-version',
                     help='Minimum macOS version to target, e.g. "12.0". Only '
                     'needed for cross-building on macOS.')
@@ -695,6 +786,8 @@ def main():
 
     bin_path = Path(args.cc_binpath).resolve() if args.cc_binpath else None
     sysroot_path = Path(args.cc_sysroot).resolve() if args.cc_sysroot else None
+    win_sdk_dir = Path(
+        args.win_sdk_dir).resolve() if args.win_sdk_dir else None
 
     if bin_path:
         extra = str(bin_path)
@@ -709,13 +802,14 @@ def main():
     log.info(f'CARGO_TARGET_DIR: {target_dir}')
     log.info(f'CC path:          {bin_path}')
     log.info(f'sysroot:          {sysroot_path}')
+    log.info(f'win sdk:          {win_sdk_dir}')
 
     lib_filename = LIB_NAME[args.target_os]
     triple = TRIPLE[(args.target_os, args.target_cpu)]
 
     # Set up any necessary C compiler env vars for build scripts.
     _setup_cc_env(env, triple, args.target_os, wrappers_dir, bin_path,
-                  sysroot_path, args.mac_min_version)
+                  sysroot_path, args.mac_min_version, win_sdk_dir)
 
     # Decide whether to compile std from source. Brave's bundled rust
     # toolchain ships prebuilt rust-std only for the host triple per

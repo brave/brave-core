@@ -18,10 +18,6 @@ inline constexpr char kFetchFromNative[] =
     "brave.brave_search.fetch_se_from_native";
 #endif
 
-inline constexpr char kBackupResultsLastQueryTime[] =
-    "brave.search.backup_results.last_query_time";
-inline constexpr char kBackupResultsFailuresStorage[] =
-    "brave.search.backup_results.failures_storage";
 inline constexpr char kBackupResultsDailyRequestCount[] =
     "brave.search.backup_results.daily_request_count";
 inline constexpr char kBackupResultsDailyRequestWindowStart[] =
@@ -30,6 +26,19 @@ inline constexpr char kBackupResultsLastViewWidth[] =
     "brave.search.backup_results.last_view_width";
 inline constexpr char kBackupResultsLastViewHeight[] =
     "brave.search.backup_results.last_view_height";
+
+inline constexpr char kBackupResultsTotalQueryCount[] =
+    "brave.search.backup_results.total_query_count";
+inline constexpr char kBackupResultsFailedQueryCount[] =
+    "brave.search.backup_results.failed_query_count";
+inline constexpr char kBackupResultsLastReportTime[] =
+    "brave.search.backup_results.last_report_time";
+
+// Deprecated 07/2026
+inline constexpr char kBackupResultsLastQueryTime[] =
+    "brave.search.backup_results.last_query_time";
+inline constexpr char kBackupResultsFailuresStorage[] =
+    "brave.search.backup_results.failures_storage";
 
 }  // namespace prefs
 }  // namespace brave_search

@@ -18,6 +18,7 @@
 #include "base/timer/timer.h"
 #include "brave/components/brave_vpn/common/mojom/brave_vpn.mojom.h"
 #include "brave/components/skus/common/skus_sdk.mojom-forward.h"
+#include "build/build_config.h"
 
 class PrefService;
 
@@ -84,7 +85,7 @@ class PurchasedStateManager final {
   void BeginLoad(std::string env);
   void FinishLoad(std::string env,
                   mojom::PurchasedState state,
-                  std::optional<std::string> description);
+                  std::optional<std::string> description = std::nullopt);
   void CancelPendingLoad();
   void OnLoadTimeout();
 
@@ -92,9 +93,17 @@ class PurchasedStateManager final {
   void OnCredentialSummary(uint64_t sequence,
                            const std::string& domain,
                            skus::mojom::SkusResultPtr summary);
+  void OnPrepareCredentialsPresentation(
+      uint64_t sequence,
+      const std::string& domain,
+      skus::mojom::SkusResultPtr credential_as_cookie);
   void RunPurchasedStateCallback(mojom::PurchasedState state,
                                  std::optional<std::string> description);
   void ScheduleSubscriberCredentialRefresh();
+
+#if !BUILDFLAG(IS_ANDROID)
+  void UpdatePurchasedStateForSessionExpired();
+#endif
 
   const raw_ref<PrefService> local_prefs_;
   const raw_ref<SkusServiceClient> skus_client_;

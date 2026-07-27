@@ -13,7 +13,7 @@
     </a>
   </div>
   <settings-dropdown-menu label="$i18n{webRTCLearnMoreURL}"
-      pref="{{prefs.webrtc.ip_handling_policy}}"
+      pref-key="webrtc.ip_handling_policy"
       menu-options="[[webRTCPolicies_]]">
   </settings-dropdown-menu>
 </div>
@@ -36,7 +36,7 @@
     </div>
   </div>
   <settings-dropdown-menu id="historyRetention"
-      pref="{{prefs.brave.history.retention_days}}"
+      pref-key="brave.history.retention_days"
       menu-options="[[historyRetentionOptions_]]">
   </settings-dropdown-menu>
 </div>
@@ -67,10 +67,22 @@
         <div class="label">$i18n{requestOTRLabel}</div>
     </div>
     <settings-dropdown-menu id="defaultRequestOTR"
-                            pref="{{prefs.brave.request_otr.request_otr_action_option}}"
+                            pref-key="brave.request_otr.request_otr_action_option"
                             menu-options="[[requestOTRActions_]]">
     </settings-dropdown-menu>
 </div>
+<!-- <if expr="enable_psst"> -->
+<template is="dom-if" if="[[isPsstFeatureEnabled_]]">
+  <settings-toggle-button
+    class="cr-row"
+    pref="{{prefs.brave.psst.settings.enable_psst}}"
+    label="$i18n{psstSettingsToggleLabel}"
+    sub-label="$i18n{psstSettingsToggleSubLabel}"
+    learn-more-url="$i18n{psstLearnMoreURL}">
+  </settings-toggle-button>
+</template>
+<!-- </if> -->
+
 <!-- <if expr="is_win"> -->
   <template is="dom-if" if="[[isWindowsRecallAvailable_]]">
     <settings-toggle-button id="windowsRecallDisabled"

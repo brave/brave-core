@@ -170,7 +170,8 @@ void NewTabPageInitializer::AddCSPOverrides() {
       network::mojom::CSPDirectiveName::ImgSrc,
       "img-src chrome://brave-image chrome://resources chrome://theme "
       "chrome://background-wallpaper chrome://custom-wallpaper "
-      "chrome://branded-wallpaper chrome://favicon2 blob: data: 'self';");
+      "chrome://branded-wallpaper chrome://sponsored-site-image "
+      "chrome://favicon2 blob: data: 'self';");
 
   source_->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FrameSrc,

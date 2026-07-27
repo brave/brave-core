@@ -161,8 +161,8 @@ class AdsService : public KeyedService {
                                             ResultCallback callback) = 0;
 
   // Called to get ad history for the given date range in descending order. The
-  // callback takes one argument - `base::ListValue` containing info of the
-  // obtained ad history.
+  // callback takes one argument - a vector of `mojom::AdHistoryItemInfo`
+  // containing the obtained ad history enriched with reaction state.
   virtual void GetAdHistory(base::Time from_time,
                             base::Time to_time,
                             GetAdHistoryForUICallback callback) = 0;
@@ -238,6 +238,9 @@ class AdsService : public KeyedService {
   // Called when a browser tab has loaded. `http_status_code` should be set to
   // the HTTP status code.
   virtual void NotifyTabDidLoad(int32_t tab_id, int http_status_code) = 0;
+
+  // Called when a browser tab failed to load, e.g., due to a network error.
+  virtual void NotifyTabDidFailToLoad(int32_t tab_id) = 0;
 
   // Called when a browser tab with the specified `tab_id` is closed.
   virtual void NotifyDidCloseTab(int32_t tab_id) = 0;

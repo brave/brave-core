@@ -19,22 +19,22 @@ from pathlib import Path
 _STAMP = '.stamp'
 
 # Our EXTRA_DEPS file at the root of the repo.
-_EXTRA_DEPS_FILE = Path(__file__).resolve().parents[2] / 'EXTRA_DEPS'
+EXTRA_DEPS_FILE = Path(__file__).resolve().parents[2] / 'EXTRA_DEPS'
 
 
 def _load_extra_deps() -> dict:
-    """Load the `extra_deps` literal from `_EXTRA_DEPS_FILE`.
+    """Load the `extra_deps` literal from `EXTRA_DEPS_FILE`.
 
     The file is a pure declarative table: its `extra_deps = {...}` assignment is
     read with `ast.literal_eval`, never executed.
     """
-    source = _EXTRA_DEPS_FILE.read_text(encoding='utf-8')
+    source = EXTRA_DEPS_FILE.read_text(encoding='utf-8')
     for node in ast.parse(source).body:
         if (isinstance(node, ast.Assign) and len(node.targets) == 1
                 and isinstance(node.targets[0], ast.Name)
                 and node.targets[0].id == 'extra_deps'):
             return ast.literal_eval(node.value)
-    raise ValueError(f'No extra_deps assignment found in {_EXTRA_DEPS_FILE}')
+    raise ValueError(f'No extra_deps assignment found in {EXTRA_DEPS_FILE}')
 
 
 EXTRA_DEPS = _load_extra_deps()

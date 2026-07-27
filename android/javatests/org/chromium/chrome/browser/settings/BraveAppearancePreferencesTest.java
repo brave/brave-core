@@ -7,6 +7,7 @@ package org.chromium.chrome.browser.settings;
 
 import static org.junit.Assert.assertTrue;
 
+import android.os.Build;
 import android.os.Looper;
 
 import androidx.annotation.Nullable;
@@ -61,6 +62,7 @@ public class BraveAppearancePreferencesTest {
         final String[] sortedPrefKeys = {
             AppearancePreferences.PREF_NAVIGATION_SECTION,
             AppearanceSettingsFragment.PREF_UI_THEME,
+            BravePreferenceKeys.BRAVE_ANDROID_DYNAMIC_COLORS_ENABLED,
             AppearancePreferences.PREF_BRAVE_CUSTOMIZE_MENU,
             AppearanceSettingsFragment.PREF_TOOLBAR_SHORTCUT,
             AppearancePreferences.PREF_ADDRESS_BAR,
@@ -88,6 +90,23 @@ public class BraveAppearancePreferencesTest {
                     "\"" + prevPref.getTitle() + "\" should precede \"" + pref.getTitle() + "\"",
                     pref.getOrder() > prevPref.getOrder());
             prevPref = pref;
+        }
+    }
+
+    @Test
+    @SmallTest
+    @EnableFeatures(BraveFeatureList.BRAVE_ANDROID_DYNAMIC_COLORS)
+    public void testDynamicColorsPreferenceAvailability() {
+        startSettings();
+
+        Preference dynamicColorsPreference =
+                mAppearancePreferences.findPreference(
+                        BravePreferenceKeys.BRAVE_ANDROID_DYNAMIC_COLORS_ENABLED);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            Assert.assertNotNull(dynamicColorsPreference);
+            assertTrue(dynamicColorsPreference.isVisible());
+        } else {
+            Assert.assertNull(dynamicColorsPreference);
         }
     }
 

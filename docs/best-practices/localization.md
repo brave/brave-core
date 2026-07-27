@@ -97,7 +97,7 @@ To customize an upstream string:
 
 **For simple word/phrase substitutions across upstream strings in all locales,
 use `brave/script/lib/l10n/grd_string_replacements.py`** with
-`default_replacements` and run `npm run chromium_rebase_l10n`. This applies the
+`default_replacements` and run `pnpm run chromium_rebase_l10n`. This applies the
 replacement consistently across all localized versions without needing to
 manually edit GRD files or create chromium_src overrides.
 

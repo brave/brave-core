@@ -9,6 +9,7 @@
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/brave_talk/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/sidebar/common/features.h"
 #include "url/gurl.h"
@@ -28,7 +29,9 @@ struct SidebarItem {
 #if BUILDFLAG(ENABLE_BRAVE_TALK)
     kBraveTalk = 1,
 #endif
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
     kWallet = 2,
+#endif
     kBookmarks = 3,
     kReadingList = 4,
     kHistory = 5,
@@ -45,7 +48,10 @@ struct SidebarItem {
 
   // Count of built-in items based on enabled features.
   static constexpr size_t kBuiltInItemsCount =
-      4  // kWallet, kBookmarks, kReadingList, kHistory
+      3  // kBookmarks, kReadingList, kHistory
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+      + 1  // kWallet
+#endif
 #if BUILDFLAG(ENABLE_PLAYLIST)
       + 1  // kPlaylist
 #endif

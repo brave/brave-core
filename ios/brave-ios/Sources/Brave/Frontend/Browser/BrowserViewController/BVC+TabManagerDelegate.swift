@@ -65,7 +65,7 @@ extension BrowserViewController: TabManagerDelegate {
       /// use it's `AIChatWebDelegate` to fetch content from.
       detachedTab.leoTabHelper
     }
-    tab.wallet = .init(tab: tab)
+    tab.wallet = .init(tab: tab, braveWalletAPI: profileController.braveWalletAPI)
     tab.wallet?.delegate = self
     tab.walletWebUIHelper = .init(
       tab: tab,
@@ -83,6 +83,9 @@ extension BrowserViewController: TabManagerDelegate {
       },
       openWalletHomeHandler: { [weak self] in
         self?.openWalletHome()
+      },
+      scanAddressQRCodeHandler: { [weak self] completion in
+        self?.scanAddressQRCode(completion: completion)
       }
     )
     let braveShieldsHelper: BraveShieldsTabHelper = .init(

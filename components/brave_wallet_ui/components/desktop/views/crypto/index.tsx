@@ -29,12 +29,12 @@ import { ExploreWeb3Header } from '../../card-headers/explorer_web3_header'
 import {
   EditVisibleAssetsModal, //
 } from '../../popup-modals/edit-visible-assets-modal/index'
-import { PortfolioOverview } from '../portfolio/portfolio-overview'
-import { PortfolioFungibleAsset } from '../portfolio/portfolio-fungible-asset'
+import { PortfolioOverview } from '../../../../page/screens/portfolio_overview/portfolio_overview'
+import { FungibleAssetDetails } from '../../../../page/screens/fungible_asset_details/fungible_asset_details'
 import { PortfolioNftAsset } from '../portfolio/portfolio-nft-asset'
-import { MarketView } from '../market'
-import { Accounts } from '../accounts/accounts'
-import { Account } from '../accounts/account'
+import { MarketView } from '../../../../page/screens/market/market'
+import { AccountsOverview } from '../../../../page/screens/accounts_overview/accounts_overview'
+import { AccountDetails } from '../../../../page/screens/account_details/account_details'
 import { AddAccountModal } from '../../popup-modals/add-account-modal/add-account-modal'
 import {
   RemoveAccountModal, //
@@ -43,7 +43,7 @@ import { AccountSettingsModal } from '../../popup-modals/account-settings-modal/
 import {
   WalletPageWrapper, //
 } from '../../wallet-page-wrapper/wallet-page-wrapper'
-import { MarketAsset } from '../market/market_asset'
+import { MarketAssetDetails } from '../../../../page/screens/market/market_asset_details'
 import { NftCollection } from '../nfts/components/nft_collection'
 import {
   PageNotFound, //
@@ -131,7 +131,7 @@ export const CryptoView = ({ sessionRoute }: Props) => {
           path={WalletRoutes.PortfolioAsset}
           exact
         >
-          <PortfolioFungibleAsset />
+          <FungibleAssetDetails />
         </Route>
 
         <Route
@@ -150,17 +150,17 @@ export const CryptoView = ({ sessionRoute }: Props) => {
           <WalletPageWrapper wrapContentInBox={true}>
             <DefaultPageWrapper>
               <Banners />
-              <Accounts />
+              <AccountsOverview />
             </DefaultPageWrapper>
           </WalletPageWrapper>
         </Route>
 
         <Route path={WalletRoutes.Account}>
-          <Account />
+          <AccountDetails />
         </Route>
 
         <Route path={WalletRoutes.Accounts}>
-          <Accounts />
+          <AccountsOverview />
         </Route>
 
         {/* Market */}
@@ -185,7 +185,7 @@ export const CryptoView = ({ sessionRoute }: Props) => {
         >
           <WalletPageWrapper wrapContentInBox={true}>
             <DefaultPageWrapper>
-              <MarketAsset />
+              <MarketAssetDetails />
             </DefaultPageWrapper>
           </WalletPageWrapper>
         </Route>

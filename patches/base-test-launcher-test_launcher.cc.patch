@@ -1,0 +1,342 @@
+diff --git a/base/test/launcher/test_launcher.cc b/base/test/launcher/test_launcher.cc
+index e5cf52b39bdabd892f05b9f6856e98f986d2b9d0..08b0f1a4a3836a46d6966d6938f424e241cbd8f7 100644
+--- a/base/test/launcher/test_launcher.cc
++++ b/base/test/launcher/test_launcher.cc
+@@ -430,7 +430,7 @@ int LaunchChildTestProcessWithOptions(const CommandLine& command_line,
+   DCHECK(!new_options.job_handle);
+ 
+   win::ScopedHandle job_handle;
+-  if (flags & TestLauncher::USE_JOB_OBJECTS) {
++  if (flags & TestLauncher_ChromiumImpl::USE_JOB_OBJECTS) {
+     job_handle.Set(CreateJobObject(NULL, NULL));
+     if (!job_handle.is_valid()) {
+       LOG(ERROR) << "Could not create JobObject.";
+@@ -650,7 +650,7 @@ struct ChildProcessResults {
+ // dirs are not supported.
+ FilePath CreateChildTempDirIfSupported(const FilePath& task_temp_dir,
+                                        int child_index) {
+-  if (!TestLauncher::SupportsPerChildTempDirs()) {
++  if (!TestLauncher_ChromiumImpl::SupportsPerChildTempDirs()) {
+     return FilePath();
+   }
+   FilePath child_temp = task_temp_dir.AppendASCII(NumberToString(child_index));
+@@ -679,7 +679,7 @@ ChildProcessResults DoLaunchChildTestProcess(
+     const FilePath& result_file,
+     TimeDelta timeout_per_test,
+     size_t num_tests,
+-    const TestLauncher::LaunchOptions& test_launch_options,
++    const TestLauncher_ChromiumImpl::LaunchOptions& test_launch_options,
+     bool redirect_stdio,
+     TestLauncherDelegate* delegate) {
+   TimeTicks start_time = TimeTicks::Now();
+@@ -797,7 +797,7 @@ std::vector<std::string> ExtractTestsFromFilter(const std::string& filter,
+ // and control running pre tests in sequence.
+ class TestRunner {
+  public:
+-  explicit TestRunner(TestLauncher* launcher,
++  explicit TestRunner(TestLauncher_ChromiumImpl* launcher,
+                       size_t max_workers = 1u,
+                       size_t batch_size = 1u)
+       : launcher_(launcher),
+@@ -854,7 +854,7 @@ class TestRunner {
+ 
+   ThreadChecker thread_checker_;
+ 
+-  const raw_ptr<TestLauncher> launcher_;
++  const raw_ptr<TestLauncher_ChromiumImpl> launcher_;
+   JobHandle job_handle_;
+   // Max number of workers to use.
+   const size_t max_workers_;
+@@ -1005,7 +1005,7 @@ const char kIsolatedScriptRunDisabledTestsFlag[] =
+ const char kIsolatedScriptTestFilterFlag[] = "isolated-script-test-filter";
+ const char kIsolatedScriptTestRepeatFlag[] = "isolated-script-test-repeat";
+ 
+-class TestLauncher::TestInfo {
++class TestLauncher_ChromiumImpl::TestInfo {
+  public:
+   TestInfo() = default;
+   TestInfo(const TestInfo& other) = default;
+@@ -1042,7 +1042,7 @@ class TestLauncher::TestInfo {
+   bool pre_test_;
+ };
+ 
+-TestLauncher::TestInfo::TestInfo(const TestIdentifier& test_id)
++TestLauncher_ChromiumImpl::TestInfo::TestInfo(const TestIdentifier& test_id)
+     : test_case_name_(test_id.test_case_name),
+       test_name_(test_id.test_name),
+       file_(test_id.file),
+@@ -1053,18 +1053,18 @@ TestLauncher::TestInfo::TestInfo(const TestIdentifier& test_id)
+   pre_test_ = test_name_.find(kPreTestPrefix) != std::string::npos;
+ }
+ 
+-std::string TestLauncher::TestInfo::GetDisabledStrippedName() const {
++std::string TestLauncher_ChromiumImpl::TestInfo::GetDisabledStrippedName() const {
+   std::string test_name = GetFullName();
+   ReplaceSubstringsAfterOffset(&test_name, 0, kDisabledTestPrefix,
+                                std::string());
+   return test_name;
+ }
+ 
+-std::string TestLauncher::TestInfo::GetFullName() const {
++std::string TestLauncher_ChromiumImpl::TestInfo::GetFullName() const {
+   return FormatFullTestName(test_case_name_, test_name_);
+ }
+ 
+-std::string TestLauncher::TestInfo::GetPreName() const {
++std::string TestLauncher_ChromiumImpl::TestInfo::GetPreName() const {
+   std::string name = test_name_;
+   ReplaceSubstringsAfterOffset(&name, 0, kDisabledTestPrefix, std::string());
+   std::string case_name = test_case_name_;
+@@ -1073,7 +1073,7 @@ std::string TestLauncher::TestInfo::GetPreName() const {
+   return FormatFullTestName(case_name, kPreTestPrefix + name);
+ }
+ 
+-std::string TestLauncher::TestInfo::GetPrefixStrippedName() const {
++std::string TestLauncher_ChromiumImpl::TestInfo::GetPrefixStrippedName() const {
+   std::string test_name = GetDisabledStrippedName();
+   ReplaceSubstringsAfterOffset(&test_name, 0, kPreTestPrefix, std::string());
+   return test_name;
+@@ -1085,12 +1085,12 @@ bool TestLauncherDelegate::ShouldRunTest(const TestIdentifier& test) {
+   return true;
+ }
+ 
+-TestLauncher::LaunchOptions::LaunchOptions() = default;
+-TestLauncher::LaunchOptions::LaunchOptions(const LaunchOptions& other) =
++TestLauncher_ChromiumImpl::LaunchOptions::LaunchOptions() = default;
++TestLauncher_ChromiumImpl::LaunchOptions::LaunchOptions(const LaunchOptions& other) =
+     default;
+-TestLauncher::LaunchOptions::~LaunchOptions() = default;
++TestLauncher_ChromiumImpl::LaunchOptions::~LaunchOptions() = default;
+ 
+-TestLauncher::TestLauncher(TestLauncherDelegate* launcher_delegate,
++TestLauncher_ChromiumImpl::TestLauncher_ChromiumImpl(TestLauncherDelegate* launcher_delegate,
+                            size_t parallel_jobs,
+                            size_t retry_limit)
+     : launcher_delegate_(launcher_delegate),
+@@ -1109,11 +1109,11 @@ TestLauncher::TestLauncher(TestLauncherDelegate* launcher_delegate,
+       watchdog_timer_(FROM_HERE,
+                       kOutputTimeout,
+                       this,
+-                      &TestLauncher::OnOutputTimeout),
++                      &TestLauncher_ChromiumImpl::OnOutputTimeout),
+       parallel_jobs_(parallel_jobs),
+       print_test_stdio_(AUTO) {}
+ 
+-TestLauncher::~TestLauncher() {
++TestLauncher_ChromiumImpl::~TestLauncher_ChromiumImpl() {
+   if (base::ThreadPoolInstance::Get()) {
+     // Clear the ThreadPoolInstance entirely to make it clear to final cleanup
+     // phases that they are happening in a single-threaded phase. Assertions in
+@@ -1124,7 +1124,7 @@ TestLauncher::~TestLauncher() {
+   }
+ }
+ 
+-bool TestLauncher::Run(CommandLine* command_line) {
++bool TestLauncher_ChromiumImpl::Run(CommandLine* command_line) {
+   base::PlatformThread::SetName("TestLauncherMain");
+ 
+   if (!Init((command_line == nullptr) ? CommandLine::ForCurrentProcess()
+@@ -1146,7 +1146,7 @@ bool TestLauncher::Run(CommandLine* command_line) {
+ 
+   auto controller = base::FileDescriptorWatcher::WatchReadable(
+       g_shutdown_pipe[0],
+-      base::BindRepeating(&TestLauncher::OnShutdownPipeReadable,
++      base::BindRepeating(&TestLauncher_ChromiumImpl::OnShutdownPipeReadable,
+                           Unretained(this)));
+ #endif  // BUILDFLAG(IS_POSIX)
+ 
+@@ -1195,7 +1195,7 @@ bool TestLauncher::Run(CommandLine* command_line) {
+   return run_result;
+ }
+ 
+-void TestLauncher::LaunchChildGTestProcess(
++void TestLauncher_ChromiumImpl::LaunchChildGTestProcess(
+     scoped_refptr<TaskRunner> task_runner,
+     const std::vector<std::string>& test_names,
+     const FilePath& task_temp_dir,
+@@ -1223,7 +1223,7 @@ void TestLauncher::LaunchChildGTestProcess(
+   // on a worker pool thread.
+   task_runner->PostTask(
+       FROM_HERE,
+-      BindOnce(&TestLauncher::ProcessTestResults, Unretained(this), test_names,
++      BindOnce(&TestLauncher_ChromiumImpl::ProcessTestResults, Unretained(this), test_names,
+                result_file, process_results.output_file_contents,
+                process_results.elapsed_time, process_results.exit_code,
+                process_results.was_timeout, process_results.thread_id,
+@@ -1255,7 +1255,7 @@ TestResult::Status MissingResultStatus(size_t tests_to_run_count,
+ }
+ 
+ // Returns interpreted test results.
+-void TestLauncher::ProcessTestResults(
++void TestLauncher_ChromiumImpl::ProcessTestResults(
+     const std::vector<std::string>& test_names,
+     const FilePath& result_file,
+     const std::string& output,
+@@ -1364,7 +1364,7 @@ void TestLauncher::ProcessTestResults(
+   }
+ }
+ 
+-void TestLauncher::OnTestFinished(const TestResult& original_result) {
++void TestLauncher_ChromiumImpl::OnTestFinished(const TestResult& original_result) {
+   ++test_finished_count_;
+ 
+   TestResult result(original_result);
+@@ -1414,7 +1414,7 @@ void TestLauncher::OnTestFinished(const TestResult& original_result) {
+   // There are no results for this tests,
+   // most likley due to another test failing in the same batch.
+   if (result.status != TestResult::TEST_SKIPPED) {
+-    results_tracker_.AddTestResult(result);
++    results_tracker_.AddTestResult(OnTestResult(result));
+   }
+ 
+   // TODO(phajdan.jr): Align counter (padding).
+@@ -1520,7 +1520,7 @@ bool LoadFilterFile(const FilePath& file_path,
+   return true;
+ }
+ 
+-bool TestLauncher::IsOnlyExactPositiveFilterFromFile(
++bool TestLauncher_ChromiumImpl::IsOnlyExactPositiveFilterFromFile(
+     const CommandLine* command_line) const {
+   if (command_line->HasSwitch(kGTestFilterFlag)) {
+     LOG(ERROR) << "Found " << switches::kTestLauncherFilterFile;
+@@ -1539,7 +1539,7 @@ bool TestLauncher::IsOnlyExactPositiveFilterFromFile(
+   return true;
+ }
+ 
+-bool TestLauncher::Init(CommandLine* command_line) {
++bool TestLauncher_ChromiumImpl::Init(CommandLine* command_line) {
+   // Initialize sharding. Command line takes precedence over legacy environment
+   // variables.
+   if (command_line->HasSwitch(switches::kTestLauncherTotalShards) &&
+@@ -1855,7 +1855,7 @@ bool TestLauncher::Init(CommandLine* command_line) {
+   return true;
+ }
+ 
+-bool TestLauncher::InitTests() {
++bool TestLauncher_ChromiumImpl::InitTests() {
+   std::vector<TestIdentifier> tests;
+   if (!launcher_delegate_->GetTests(&tests)) {
+     LOG(ERROR) << "Failed to get list of tests.";
+@@ -1909,7 +1909,7 @@ bool TestLauncher::InitTests() {
+   return true;
+ }
+ 
+-bool TestLauncher::ShuffleTests(CommandLine* command_line) {
++bool TestLauncher_ChromiumImpl::ShuffleTests(CommandLine* command_line) {
+   if (command_line->HasSwitch(kGTestShuffleFlag)) {
+     uint32_t shuffle_seed;
+     if (command_line->HasSwitch(kGTestRandomSeedFlag)) {
+@@ -1945,7 +1945,7 @@ bool TestLauncher::ShuffleTests(CommandLine* command_line) {
+   return true;
+ }
+ 
+-bool TestLauncher::ProcessAndValidateTests() {
++bool TestLauncher_ChromiumImpl::ProcessAndValidateTests() {
+   bool result = true;
+   absl::flat_hash_set<std::string> disabled_tests;
+   absl::flat_hash_map<std::string, TestInfo> pre_tests;
+@@ -2000,12 +2000,12 @@ bool TestLauncher::ProcessAndValidateTests() {
+   return result;
+ }
+ 
+-void TestLauncher::CreateAndStartThreadPool(size_t num_parallel_jobs) {
++void TestLauncher_ChromiumImpl::CreateAndStartThreadPool(size_t num_parallel_jobs) {
+   base::ThreadPoolInstance::Create("TestLauncher");
+   base::ThreadPoolInstance::Get()->Start({num_parallel_jobs});
+ }
+ 
+-void TestLauncher::CombinePositiveTestFilters(
++void TestLauncher_ChromiumImpl::CombinePositiveTestFilters(
+     std::vector<std::string> filter_a,
+     std::vector<std::string> filter_b) {
+   has_at_least_one_positive_filter_ = !filter_a.empty() || !filter_b.empty();
+@@ -2036,7 +2036,7 @@ void TestLauncher::CombinePositiveTestFilters(
+   }
+ }
+ 
+-bool TestLauncher::ShouldRunInCurrentShard(
++bool TestLauncher_ChromiumImpl::ShouldRunInCurrentShard(
+     std::string_view prefix_stripped_name) const {
+   CHECK(!StartsWith(prefix_stripped_name, kPreTestPrefix));
+   CHECK(!StartsWith(prefix_stripped_name, kDisabledTestPrefix));
+@@ -2044,7 +2044,7 @@ bool TestLauncher::ShouldRunInCurrentShard(
+          static_cast<uint32_t>(shard_index_);
+ }
+ 
+-std::vector<std::string> TestLauncher::CollectTests() {
++std::vector<std::string> TestLauncher_ChromiumImpl::CollectTests() {
+   std::vector<std::string> test_names;
+   // To support RTS(regression test selection), which may have 100,000 or
+   // more exact gtest filter, we first split filter into exact filter
+@@ -2164,7 +2164,7 @@ std::vector<std::string> TestLauncher::CollectTests() {
+   return test_names;
+ }
+ 
+-void TestLauncher::RunTests() {
++void TestLauncher_ChromiumImpl::RunTests() {
+   std::vector<std::string> original_test_names = CollectTests();
+ 
+   std::vector<std::string> test_names;
+@@ -2199,7 +2199,7 @@ void TestLauncher::RunTests() {
+   test_runner.Run(test_names);
+ }
+ 
+-void TestLauncher::PrintFuzzyMatchingTestNames() {
++void TestLauncher_ChromiumImpl::PrintFuzzyMatchingTestNames() {
+   for (const auto& filter : positive_test_filter_) {
+     if (filter.empty()) {
+       continue;
+@@ -2226,7 +2226,7 @@ void TestLauncher::PrintFuzzyMatchingTestNames() {
+   }
+ }
+ 
+-bool TestLauncher::RunRetryTests() {
++bool TestLauncher_ChromiumImpl::RunRetryTests() {
+   while (!tests_to_retry_.empty() && retries_left_ > 0) {
+     // Retry all tests that depend on a failing test.
+     std::vector<std::string> test_names;
+@@ -2257,7 +2257,7 @@ bool TestLauncher::RunRetryTests() {
+   return tests_to_retry_.empty();
+ }
+ 
+-void TestLauncher::OnTestIterationStart() {
++void TestLauncher_ChromiumImpl::OnTestIterationStart() {
+   test_started_count_ = 0;
+   test_finished_count_ = 0;
+   test_success_count_ = 0;
+@@ -2269,7 +2269,7 @@ void TestLauncher::OnTestIterationStart() {
+ #if BUILDFLAG(IS_POSIX)
+ // I/O watcher for the reading end of the self-pipe above.
+ // Terminates any launched child processes and exits the process.
+-void TestLauncher::OnShutdownPipeReadable() {
++void TestLauncher_ChromiumImpl::OnShutdownPipeReadable() {
+   fprintf(stdout, "\nCaught signal. Killing spawned test processes...\n");
+   fflush(stdout);
+ 
+@@ -2282,7 +2282,7 @@ void TestLauncher::OnShutdownPipeReadable() {
+ }
+ #endif  // BUILDFLAG(IS_POSIX)
+ 
+-void TestLauncher::MaybeSaveSummaryAsJSON(
++void TestLauncher_ChromiumImpl::MaybeSaveSummaryAsJSON(
+     const std::vector<std::string>& additional_tags) {
+   if (!summary_path_.empty()) {
+     if (!results_tracker_.SaveSummaryAsJSON(summary_path_, additional_tags)) {
+@@ -2296,7 +2296,7 @@ void TestLauncher::MaybeSaveSummaryAsJSON(
+   }
+ }
+ 
+-void TestLauncher::OnTestIterationFinished() {
++void TestLauncher_ChromiumImpl::OnTestIterationFinished() {
+   TestResultsTracker::TestStatusMap tests_by_status(
+       results_tracker_.GetTestStatusMapForCurrentIteration());
+   if (!tests_by_status[TestResult::TEST_UNKNOWN].empty()) {
+@@ -2306,7 +2306,7 @@ void TestLauncher::OnTestIterationFinished() {
+   results_tracker_.PrintSummaryOfCurrentIteration();
+ }
+ 
+-void TestLauncher::OnOutputTimeout() {
++void TestLauncher_ChromiumImpl::OnOutputTimeout() {
+   DCHECK(thread_checker_.CalledOnValidThread());
+ 
+   AutoLock lock(*GetLiveProcessesLock());

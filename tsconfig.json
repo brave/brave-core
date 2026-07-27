@@ -91,4 +91,9 @@
     "noUnusedLocals": true,
   },
   "include": [],
+  "references": [
+    // Include the lit mangler tsconfig so `chromium_src/**/*.lit_mangler.ts`
+    // files can have working TypeScript intellisense.
+    { "path": "./tools/chromium_src/lit_mangler/tsconfig.json" },
+  ],
 }

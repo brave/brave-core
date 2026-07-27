@@ -17,8 +17,6 @@
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/brave_search_conversion/p3a.h"
 #include "brave/components/brave_search_conversion/utils.h"
-#include "brave/components/misc_metrics/brave_search_metrics.h"
-#include "brave/components/misc_metrics/navigation_source_metrics.h"
 #include "brave/components/misc_metrics/page_metrics.h"
 #include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
 #include "brave/components/omnibox/browser/promotion_utils.h"
@@ -107,11 +105,7 @@ BraveOmniboxClientImpl::BraveOmniboxClientImpl(LocationBar* location_bar,
       misc_metrics::ProfileMiscMetricsServiceFactory::GetServiceForContext(
           profile->GetOriginalProfile());
   if (original_profile_metrics) {
-    auto* page_metrics = original_profile_metrics->GetPageMetrics();
-    if (page_metrics) {
-      brave_search_metrics_ = &page_metrics->brave_search_metrics();
-      navigation_source_metrics_ = &page_metrics->navigation_source_metrics();
-    }
+    page_metrics_ = original_profile_metrics->GetPageMetrics();
   }
 
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
@@ -185,26 +179,27 @@ void BraveOmniboxClientImpl::OnAutocompleteAccept(
 #endif
 
     // Record omnibox entry type for Brave Search queries
-    if (brave_search_metrics_) {
+    if (page_metrics_) {
       bool is_suggestion =
           match.type != AutocompleteMatchType::SEARCH_WHAT_YOU_TYPED;
-      brave_search_metrics_->MaybeRecordOmniboxQuery(destination_url,
-                                                     is_suggestion);
+      page_metrics_->brave_search_metrics().MaybeRecordOmniboxQuery(
+          destination_url, is_suggestion);
+      page_metrics_->RecordOmniboxQuery();
     }
   }
-  if (navigation_source_metrics_ && destination_url.SchemeIsHTTPOrHTTPS()) {
+  if (page_metrics_ && destination_url.SchemeIsHTTPOrHTTPS()) {
     switch (match.type) {
       case AutocompleteMatchType::URL_WHAT_YOU_TYPED:
-        navigation_source_metrics_->RecordDirectNavigation();
+        page_metrics_->navigation_source_metrics().RecordDirectNavigation();
         break;
       case AutocompleteMatchType::HISTORY_URL:
       case AutocompleteMatchType::HISTORY_TITLE:
       case AutocompleteMatchType::HISTORY_BODY:
       case AutocompleteMatchType::HISTORY_KEYWORD:
-        navigation_source_metrics_->RecordHistoryNavigation();
+        page_metrics_->navigation_source_metrics().RecordHistoryNavigation();
         break;
       case AutocompleteMatchType::BOOKMARK_TITLE:
-        navigation_source_metrics_->RecordBookmarkNavigation();
+        page_metrics_->navigation_source_metrics().RecordBookmarkNavigation();
         break;
       default:
         break;

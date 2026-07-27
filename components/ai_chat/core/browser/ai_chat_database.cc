@@ -1568,16 +1568,43 @@ bool AIChatDatabase::DeleteAllData() {
   return LazyInit(true);
 }
 
-bool AIChatDatabase::DeleteAssociatedWebContent(
-    std::optional<base::Time> begin_time,
-    std::optional<base::Time> end_time) {
+std::optional<std::vector<ClearedAssociatedContentEntry>>
+AIChatDatabase::DeleteAssociatedWebContent(std::optional<base::Time> begin_time,
+                                           std::optional<base::Time> end_time) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (!LazyInit()) {
-    return false;
+    return std::nullopt;
   }
   DVLOG(4) << "Deleting associated web content for time range "
            << begin_time.value_or(base::Time()) << " to "
            << end_time.value_or(base::Time::Max());
+
+  // Collect the entries whose associated content is about to be cleared (only
+  // rows that actually still hold content), so the caller can propagate the
+  // change. This must run before the UPDATE below.
+  std::vector<ClearedAssociatedContentEntry> cleared;
+  static constexpr char kSelectQuery[] =
+      "SELECT conversation_uuid, conversation_entry_uuid"
+      " FROM associated_content"
+      " WHERE (url IS NOT NULL OR title IS NOT NULL OR last_contents IS NOT "
+      "NULL)"
+      "  AND conversation_uuid IN ("
+      "   SELECT conversation_uuid"
+      "   FROM conversation_entry"
+      "   WHERE date >= ? AND date <= ?)";
+  sql::Statement select_statement(GetDB().GetUniqueStatement(kSelectQuery));
+  CHECK(select_statement.is_valid());
+  select_statement.BindTime(0, begin_time.value_or(base::Time()));
+  select_statement.BindTime(1, end_time.value_or(base::Time::Max()));
+  while (select_statement.Step()) {
+    cleared.emplace_back(select_statement.ColumnString(0),
+                         select_statement.ColumnString(1));
+  }
+  if (!select_statement.Succeeded()) {
+    DVLOG(0) << "Failed to read affected rows for DeleteAssociatedWebContent: "
+             << db_.GetErrorMessage();
+    return std::nullopt;
+  }
 
   // Set any associated content url, title and content to NULL where
   // conversation had any entry between begin_time and end_time.
@@ -1596,9 +1623,9 @@ bool AIChatDatabase::DeleteAssociatedWebContent(
     DVLOG(0) << "Failed to execute 'associated_content' update statement for "
                 "DeleteAssociatedWebContent: "
              << db_.GetErrorMessage();
-    return false;
+    return std::nullopt;
   }
-  return true;
+  return cleared;
 }
 
 sql::Database& AIChatDatabase::GetDB() {

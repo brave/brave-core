@@ -9,7 +9,6 @@ substitutions:
 
       Brave subclasses AvatarToolbarButton, so it needs friend access to the
       private members.
-    regex:
-      re_pattern: '( private:\n)'
-      replace: |
-        \1  friend class BraveAvatarToolbarButton;
+    add_friend:
+      class_name: AvatarToolbarButton
+      friend_type: class BraveAvatarToolbarButton

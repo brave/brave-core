@@ -118,6 +118,8 @@ import yaml
 # This is necessary because these scripts are used by brockit too.
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
+from cherry_picks import (  # pylint: disable=wrong-import-position
+    _check_call, cherry_picks)
 from upload import sha256_file  # pylint: disable=wrong-import-position
 
 # Executable suffix for host tools on the current platform.
@@ -217,7 +219,7 @@ VPYTHON_PATH = Path('third_party/depot_tools') / (
 CHROME_VERSION_FILE = Path('chrome/VERSION')
 
 # Upstream cherry-picks applied onto the checkout for the build's duration (see
-# `_cherry_picks`). Each is skipped automatically if the active Chromium ref
+# `cherry_picks`). Each is skipped automatically if the active Chromium ref
 # already contains it, so commits can stay listed here across version bumps
 # until they age out of the picks we still need.
 #
@@ -233,21 +235,6 @@ CLANG_CHERRY_PICK_COMMITS = [
     'a710d2e1475f4c224290ce22f1a21c42d5fad900',
     '0210b44659fd7251672077e9ab83b5324db0c08e',
 ]
-
-# Fixed git author/committer metadata applied when we cherry-pick onto the
-# checkout. A commit's hash includes this metadata, and `rustc` encodes the
-# Chromium `HEAD` it was built from, so pinning it (together with `--no-gpg-sign`
-# on the cherry-pick) keeps the resulting HEAD — and the toolchain hash —
-# identical regardless of the local git config. Mirrors the override upstream's
-# `tools/clang/scripts/build.py` uses for its own cherry-picks.
-GIT_METADATA_OVERRIDES = {
-    'GIT_AUTHOR_NAME': 'Dummy Author',
-    'GIT_AUTHOR_EMAIL': 'none@none.com',
-    'GIT_AUTHOR_DATE': '2099-01-01 10:10:10',
-    'GIT_COMMITTER_NAME': 'Dummy Committer',
-    'GIT_COMMITTER_EMAIL': 'none@none.com',
-    'GIT_COMMITTER_DATE': '2099-01-01 10:10:10',
-}
 
 # The bucket in our infra where the rust toolchain is archived.
 TOOLCHAIN_BUCKET_URL = (
@@ -290,64 +277,14 @@ if sys.platform == 'win32':
     GIT_SH_PRESUMED_BIN_PATH = Path(r'C:\Program Files\Git\bin\sh.exe')
 
 
-def _check_call(*command,
-                cwd=None,
-                env=None,
-                check=True,
-                capture_output=False):
-    """Run *command* as a subprocess, logging the invocation.
-
-    Logs the full command string at INFO level before executing it.  Stdout
-    and stderr are inherited from the parent process (so subprocess output
-    streams directly to the terminal) unless `capture_output` is set.
-
-    Args:
-        *command: The program and its arguments (passed as positional args,
-            not as a list).
-        cwd: Optional working directory for the subprocess.  Defaults to the
-            caller's current working directory when `None`.
-        env: Optional environment mapping for the subprocess.  Inherits the
-            parent process environment when `None`.
-        check: Raise `CalledProcessError` on a non-zero exit when True.
-        capture_output: Capture stdout/stderr (as text) instead of inheriting
-            the parent's streams.
-
-    Returns:
-        The `subprocess.CompletedProcess` for the invocation.
-
-    Raises:
-        subprocess.CalledProcessError: If `check` is True and the process exits
-            with a non-zero return code.
-        RuntimeError: On Windows, if the command cannot be resolved to an
-        executable path.
-    """
-    logging.info(' >>>> %s', ' '.join(str(a) for a in command))
-
-    if platform.system() == 'Windows':
-        # On Windows, resolve the command to an absolute path to avoid issues
-        # with bat files not matching the command name (e.g. `gclient` vs
-        # `gclient.bat`). This avoids the use of `shell=True`.
-        resolved = shutil.which(command[0])
-        if resolved is None:
-            raise RuntimeError(f'Command not found: {command[0]}')
-        if resolved != command[0]:
-            command = [resolved] + list(command[1:])
-
-    return subprocess.run(command,
-                          cwd=cwd,
-                          env=env,
-                          check=check,
-                          capture_output=capture_output,
-                          text=True)
-
-
 def _latest_index_object(index_url: str,
-                         expected_stem: str) -> tuple[str, str]:
+                         expected_stem: str) -> tuple[str, str, int]:
     """Download a platform's YAML index and return its latest archive.
 
     The index lists builds in chronological order, so the last element is the
     most recent archive for that platform + revision. Returns
-    `(object_name, sha256sum)`, where `object_name` is the archive's basename.
+    `(object_name, sha256sum, size_bytes)`, where `object_name` is the
+    archive's basename.
 
     `expected_stem` is the `<platform>-<upstream-stem>` the archive name must
     start with. A mismatch means the index was fetched from the wrong key or is
@@ -364,16 +301,17 @@ def _latest_index_object(index_url: str,
         raise RuntimeError(f'Published toolchain index is empty: {index_url}')
     latest = entries[-1]
     if (not isinstance(latest, dict) or 'url' not in latest
-            or 'sha256sum' not in latest):
+            or 'sha256sum' not in latest or 'size_bytes' not in latest):
         raise RuntimeError(
             f'Malformed entry in toolchain index {index_url}: expected a '
-            f'mapping with "url" and "sha256sum", got {latest!r}')
+            f'mapping with "url", "sha256sum", and "size_bytes", got '
+            f'{latest!r}')
     object_name = latest['url'].rsplit('/', 1)[-1]
     if not object_name.startswith(f'{expected_stem}-'):
         raise RuntimeError(
             f'Toolchain index {index_url} yielded {object_name!r}, which does '
             f'not start with the expected {expected_stem!r} stem.')
-    return object_name, latest['sha256sum']
+    return object_name, latest['sha256sum'], latest['size_bytes']
 
 
 def rust_toolchain_extra_dep(upstream_stem: str) -> dict[str, dict]:
@@ -388,7 +326,7 @@ def rust_toolchain_extra_dep(upstream_stem: str) -> dict[str, dict]:
             'bucket': '<bucket>/',
             'condition': 'not rust_force_head_revision',
             'objects': [
-              {'object_name': ..., 'sha256sum': ...,
+              {'object_name': ..., 'sha256sum': ..., 'size_bytes': ...,
                'overlayed_on': ..., 'condition': ...},
               ...
             ],
@@ -410,11 +348,13 @@ def rust_toolchain_extra_dep(upstream_stem: str) -> dict[str, dict]:
     for platform_prefix, condition in SUPPORTED_PLATFORM_CONDITIONS.items():
         stem = f'{platform_prefix}-{upstream_stem}'
         index_url = f'{TOOLCHAIN_BUCKET_URL}/{stem}.yaml'
-        object_name, sha256sum = _latest_index_object(index_url, stem)
+        object_name, sha256sum, size_bytes = _latest_index_object(
+            index_url, stem)
         host_os = PLATFORM_PREFIX_TO_CHROMIUM_HOST_OS[platform_prefix]
         objects.append({
             'object_name': object_name,
             'sha256sum': sha256sum,
+            'size_bytes': size_bytes,
             # Upstream Chromium-built Rust toolchain this archive overlays; see
             # `sync_deps.GetRustObjectNames` for the matching naming scheme.
             'overlayed_on': f'{host_os}/{upstream_stem}.tar.xz',
@@ -894,6 +834,7 @@ class ToolchainBuilder:
           * `url`              — full bucket URL the tarball will be served at.
           * `timestamp`        — ISO 8601 UTC time of this build.
           * `sha256sum`        — hex SHA-256 of the tarball bytes.
+          * `size_bytes`       — exact size of the tarball in bytes.
           * `chromium_version` — `MAJOR.MINOR.BUILD.PATCH` parsed from
                                  `chrome/VERSION`.
           * `chromium_commit`  — HEAD commit hash in the Chromium checkout.
@@ -1006,6 +947,7 @@ class ToolchainBuilder:
             'url': archive_url,
             'timestamp': datetime.now(timezone.utc).isoformat(),
             'sha256sum': archive_sha256,
+            'size_bytes': archive_path.stat().st_size,
             'chromium_version': self._chromium_version(),
             'chromium_commit': self._chromium_commit(),
             'command_line': self._command_line(),
@@ -1231,96 +1173,6 @@ class ToolchainBuilder:
 
         return True
 
-    def _run_git(self,
-                 *args,
-                 check: bool = True,
-                 capture_output: bool = False,
-                 env: dict | None = None) -> subprocess.CompletedProcess:
-        """Run `git -C <chromium_src> <args...>` via `_check_call`.
-
-        Thin wrapper that prepends the `git -C <checkout>` prefix so git
-        operations on the Chromium source tree share one code path. See
-        `_check_call` for the argument semantics and return value.
-        """
-        return _check_call('git',
-                           '-C',
-                           str(self._chromium_src),
-                           *args,
-                           check=check,
-                           capture_output=capture_output,
-                           env=env)
-
-    @contextlib.contextmanager
-    def _cherry_picks(self, commits: list[str]):
-        """Context manager: apply upstream cherry-picks for the build's
-        duration.
-
-        Ensures every commit in *commits* is in the checkout's history while the
-        build runs, then restores the original HEAD afterwards. Used to pull in
-        upstream fixes the active Chromium ref may predate — see
-        `CLANG_CHERRY_PICK_COMMITS`, which includes the commit that pins the git
-        author/committer metadata `tools/clang/scripts/build.py` stamps onto its
-        LLVM cherry-picks so the toolchain hash is reproducible across the
-        full-toolchain and wasm32 builds.
-
-        Protocol:
-        1. For each commit, fetch it if its object is missing (the ref may have
-           branched before it landed), then skip it if it is already reachable
-           from HEAD.
-        2. If nothing needs applying, `yield` immediately and leave the checkout
-           untouched — there is nothing to clean up.
-        3. Otherwise cherry-pick the remaining commits — with
-           `GIT_METADATA_OVERRIDES` and `--no-gpg-sign` so the resulting HEAD is
-           deterministic — `yield`, and unconditionally restore the checkout to
-           its original HEAD in a `finally` block. Build outputs are untracked,
-           so the reset leaves them in place.
-        """
-        to_apply = []
-        for commit in commits:
-            object_present = self._run_git('cat-file',
-                                           '-e',
-                                           f'{commit}^{{commit}}',
-                                           check=False,
-                                           capture_output=True).returncode == 0
-            if not object_present:
-                logging.info('Fetching cherry-pick %s.', commit)
-                self._run_git('fetch', 'origin', commit)
-
-            already_applied = self._run_git(
-                'merge-base',
-                '--is-ancestor',
-                commit,
-                'HEAD',
-                check=False,
-                capture_output=True).returncode == 0
-            if already_applied:
-                logging.info('Cherry-pick %s already present; skipping.',
-                             commit)
-            else:
-                to_apply.append(commit)
-
-        if not to_apply:
-            yield
-            return
-
-        original_head = self._run_git('rev-parse', 'HEAD',
-                                      capture_output=True).stdout.strip()
-        logging.info('Cherry-picking %s.', ', '.join(to_apply))
-        self._run_git('cherry-pick',
-                      '--keep-redundant-commits',
-                      '--no-gpg-sign',
-                      *to_apply,
-                      env={
-                          **os.environ,
-                          **GIT_METADATA_OVERRIDES
-                      })
-        try:
-            yield
-        finally:
-            logging.info('Restoring checkout to %s after cherry-picks.',
-                         original_head)
-            self._run_git('reset', '--hard', original_head)
-
     def run(self,
             clear: bool = False,
             force_overwrite: bool = False,
@@ -1330,7 +1182,7 @@ class ToolchainBuilder:
 
         Coordinates the phases in order:
 
-        1. Within `_cherry_picks` (which applies `CLANG_CHERRY_PICK_COMMITS`
+        1. Within `cherry_picks` (which applies `CLANG_CHERRY_PICK_COMMITS`
            so both builds cherry-pick to identical hashes):
            a. `_package_full_rust` (only when `full_toolchain`) — build and
               package the complete Rust toolchain via `package_rust.py`.
@@ -1442,7 +1294,7 @@ class ToolchainBuilder:
 
         # Cherry picks upstream commits (committership reproducibility fix and
         # any others) that the active Chromium ref may predate.
-        with self._cherry_picks(CLANG_CHERRY_PICK_COMMITS):
+        with cherry_picks(self._chromium_src, CLANG_CHERRY_PICK_COMMITS):
             # Build and package the full Rust toolchain first, the overlay the
             # wasm32 sysroot onto it.
             base_archive = None

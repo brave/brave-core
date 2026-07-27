@@ -119,7 +119,7 @@ bool TokenMatchesDict(const brave_wallet::mojom::BlockchainTokenPtr& token,
   }
 
   // ZCash shielded tokens are hardcoded, so they don't appear in the prefs
-  if (token->is_shielded) {
+  if (IsShieldedTokenType(token->zcash_token_type)) {
     return false;
   }
 
@@ -680,7 +680,7 @@ mojom::BlockchainTokenPtr GetUserAsset(PrefService* prefs,
                                        std::string_view token_id,
                                        bool is_erc721,
                                        bool is_erc1155,
-                                       bool is_shielded) {
+                                       mojom::ZCashTokenType zcash_token_type) {
   mojom::BlockchainTokenPtr token = mojom::BlockchainToken::New();
   token->chain_id = chain_id;
   token->contract_address = address;
@@ -688,11 +688,15 @@ mojom::BlockchainTokenPtr GetUserAsset(PrefService* prefs,
   token->token_id = token_id;
   token->is_erc721 = is_erc721;
   token->is_erc1155 = is_erc1155;
-  token->is_shielded = is_shielded;
+  token->zcash_token_type = zcash_token_type;
 
-  // ZCash shielded tokens are hardcoded, so they don't appear in the prefs
-  if (token->is_shielded && token->coin == mojom::CoinType::ZEC) {
-    return GetZcashNativeShieldedToken(token->chain_id);
+  if (token->coin == mojom::CoinType::ZEC) {
+    if (zcash_token_type == mojom::ZCashTokenType::kOrchard) {
+      return GetZcashNativeShieldedToken(token->chain_id);
+    }
+    if (zcash_token_type == mojom::ZCashTokenType::kIronwood) {
+      return GetZcashNativeIronwoodToken(token->chain_id);
+    }
   }
 
   const auto& user_assets_list = prefs->GetList(kBraveWalletUserAssetsList);
@@ -1003,6 +1007,11 @@ mojom::BlockchainTokenPtr GetBitcoinNativeToken(std::string_view chain_id) {
   return result;
 }
 
+bool IsShieldedTokenType(mojom::ZCashTokenType type) {
+  return type == mojom::ZCashTokenType::kOrchard ||
+         type == mojom::ZCashTokenType::kIronwood;
+}
+
 mojom::BlockchainTokenPtr GetZcashNativeToken(std::string_view chain_id) {
   auto network = NetworkManager::GetKnownChain(chain_id, mojom::CoinType::ZEC);
   CHECK(network);
@@ -1010,6 +1019,7 @@ mojom::BlockchainTokenPtr GetZcashNativeToken(std::string_view chain_id) {
   auto result = NetworkToNativeToken(*network);
   result->logo = "zec.png";
   result->coingecko_id = "zec";
+  result->zcash_token_type = mojom::ZCashTokenType::kTransparent;
 
   return result;
 }
@@ -1053,8 +1063,22 @@ mojom::BlockchainTokenPtr GetZcashNativeShieldedToken(
   auto result = NetworkToNativeToken(*network);
   result->logo = "zec.png";
   result->coingecko_id = "zec";
-  result->is_shielded = true;
+  result->zcash_token_type = mojom::ZCashTokenType::kOrchard;
   result->name += "(Shielded)";
+
+  return result;
+}
+
+mojom::BlockchainTokenPtr GetZcashNativeIronwoodToken(
+    std::string_view chain_id) {
+  auto network = NetworkManager::GetKnownChain(chain_id, mojom::CoinType::ZEC);
+  CHECK(network);
+
+  auto result = NetworkToNativeToken(*network);
+  result->logo = "zec.png";
+  result->coingecko_id = "zec";
+  result->zcash_token_type = mojom::ZCashTokenType::kIronwood;
+  result->name += "(Ironwood)";
 
   return result;
 }

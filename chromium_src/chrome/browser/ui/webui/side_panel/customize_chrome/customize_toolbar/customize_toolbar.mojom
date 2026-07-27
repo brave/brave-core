@@ -14,6 +14,7 @@ enum ActionId {
   kShowVPN,
   kShowSidePanel,
   kShowScreenshot,
+  kShowVerticalTabToggleButton,
 
   // Actions in the "Address bar" category.
   kShowReward,

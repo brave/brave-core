@@ -57,6 +57,9 @@ const base::FeatureParam<bool> kCardanoDAppSupport{
 const base::FeatureParam<bool> kZCashShieldedTransactionsEnabled{
     &kBraveWalletZCashFeature, "zcash_shielded_transactions_enabled", true};
 
+const base::FeatureParam<bool> kZCashIronwoodEnabled{
+    &kBraveWalletZCashFeature, "zcash_ironwood_enabled", false};
+
 BASE_FEATURE(kBraveWalletAnkrBalancesFeature,
              "BraveWalletAnkrBalances",
              base::FEATURE_DISABLED_BY_DEFAULT);
@@ -73,6 +76,8 @@ BASE_FEATURE(kBraveWalletAccountHidingFeature,
              base::FEATURE_DISABLED_BY_DEFAULT
 #endif
 );
+
+BASE_FEATURE(kBraveWalletSidePanel, base::FEATURE_DISABLED_BY_DEFAULT);
 
 #if BUILDFLAG(IS_IOS)
 BASE_FEATURE(kBraveWalletWebUIFeature, base::FEATURE_ENABLED_BY_DEFAULT);

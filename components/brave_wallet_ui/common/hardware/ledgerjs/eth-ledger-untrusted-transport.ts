@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import TransportWebHID from '@ledgerhq/hw-transport-webhid'
+import Transport from '@ledgerhq/hw-transport'
 import { TransportStatusError } from '@ledgerhq/errors'
 import Eth from '@ledgerhq/hw-app-eth'
 import {
@@ -89,9 +89,10 @@ export class EthereumLedgerUntrustedMessagingTransport //
   private handleGetAccount = async (
     command: EthGetAccountCommand,
   ): Promise<EthGetAccountResponse> => {
-    const transport = await TransportWebHID.create()
-    const app = new Eth(transport)
+    let transport: Transport | undefined
     try {
+      transport = await this.createTransport()
+      const app = new Eth(transport)
       const result = await app.getAddress(command.path)
       const response: EthGetAccountResponse = {
         ...command,
@@ -117,16 +118,17 @@ export class EthereumLedgerUntrustedMessagingTransport //
       }
       return response
     } finally {
-      await transport.close()
+      await transport?.close()
     }
   }
 
   private handleSignTransaction = async (
     command: EthSignTransactionCommand,
   ): Promise<EthSignTransactionResponse> => {
-    const transport = await TransportWebHID.create()
-    const app = new Eth(transport)
+    let transport: Transport | undefined
     try {
+      transport = await this.createTransport()
+      const app = new Eth(transport)
       const result = await app.signTransaction(command.path, command.rawTxHex)
       const response: EthSignTransactionResponse = {
         ...command,
@@ -151,16 +153,17 @@ export class EthereumLedgerUntrustedMessagingTransport //
       }
       return response
     } finally {
-      await transport.close()
+      await transport?.close()
     }
   }
 
   private handleSignPersonalMessage = async (
     command: EthSignPersonalMessageCommand,
   ): Promise<EthSignPersonalMessageResponse> => {
-    const transport = await TransportWebHID.create()
-    const app = new Eth(transport)
+    let transport: any
     try {
+      transport = await this.createTransport()
+      const app = new Eth(transport)
       const result = await app.signPersonalMessage(
         command.path,
         command.messageHex,
@@ -192,16 +195,19 @@ export class EthereumLedgerUntrustedMessagingTransport //
       }
       return response
     } finally {
-      await transport.close()
+      if (transport) {
+        await transport.close()
+      }
     }
   }
 
   private handleSignEip712Message = async (
     command: EthSignEip712MessageCommand,
   ): Promise<EthSignEip712MessageResponse> => {
-    const transport = await TransportWebHID.create()
-    const app = new Eth(transport)
+    let transport: Transport | undefined
     try {
+      transport = await this.createTransport()
+      const app = new Eth(transport)
       const result = await app.signEIP712HashedMessage(
         command.path,
         command.domainSeparatorHex,
@@ -234,7 +240,7 @@ export class EthereumLedgerUntrustedMessagingTransport //
       }
       return response
     } finally {
-      await transport.close()
+      await transport?.close()
     }
   }
 }

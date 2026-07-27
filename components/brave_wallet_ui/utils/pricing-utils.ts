@@ -102,7 +102,7 @@ export const computeFiatAmountToAssetValue = ({
 export const getPriceIdForToken = (
   token: Pick<
     BraveWallet.BlockchainToken,
-    'contractAddress' | 'symbol' | 'coingeckoId' | 'chainId' | 'isShielded'
+    'contractAddress' | 'symbol' | 'coingeckoId' | 'chainId' | 'zcashTokenType'
   >,
 ) => {
   if (token?.coingeckoId) {

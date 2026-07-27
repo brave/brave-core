@@ -37,6 +37,7 @@ import {
   isCardanoTransaction,
 } from '../../utils/tx-utils'
 import { makeNetworkAsset } from '../../options/asset-options'
+import { isShieldedToken } from '../../utils/asset-utils'
 
 // Custom Hooks
 import useGetTokenInfo from './use-get-token-info'
@@ -271,7 +272,9 @@ export const usePendingTransactions = () => {
             isErc721: false,
             isNft: false,
             tokenId: '',
-            isShielded: transactionDetails?.token?.isShielded || false,
+            zcashTokenType:
+              transactionDetails?.token?.zcashTokenType
+              ?? BraveWallet.ZCashTokenType.kNone,
           },
         }
       : skipToken,
@@ -288,7 +291,7 @@ export const usePendingTransactions = () => {
             isErc721: transactionDetails.token.isErc721,
             isNft: transactionDetails.token.isNft,
             tokenId: transactionDetails.token.tokenId,
-            isShielded: transactionDetails.token.isShielded,
+            zcashTokenType: transactionDetails.token.zcashTokenType,
           },
         }
       : skipToken,
@@ -308,7 +311,7 @@ export const usePendingTransactions = () => {
             isErc721: sourceToken.isErc721,
             isNft: sourceToken.isNft,
             tokenId: sourceToken.tokenId,
-            isShielded: sourceToken.isShielded,
+            zcashTokenType: sourceToken.zcashTokenType,
           },
         }
       : skipToken,
@@ -572,7 +575,7 @@ export const usePendingTransactions = () => {
       ? {
           chainId: transactionsNetwork.chainId,
           accountId: txAccount.accountId,
-          useShieldedPool: txToken.isShielded,
+          useShieldedPool: isShieldedToken(txToken),
           address: transactionDetails.recipient,
         }
       : skipToken,

@@ -31,10 +31,7 @@ cargo_crate("lib") {
 
   allow_unsafe = true
 
-  features = [
-    "default",
-    "use_std",
-  ]
+  features = [ "use_std" ]
   rustenv = []
   rustflags = []
 

@@ -8,9 +8,11 @@
 
 #include <memory>
 
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/email_aliases/buildflags/buildflags.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
 
+class AIChatSidePanelTabTransferBridge;
 class BraveShieldsUIContentsCache;
 class BraveNonClientHitTestHelper;
 class BraveVPNController;
@@ -63,6 +65,14 @@ class BrowserWindowFeatures : public BrowserWindowFeatures_ChromiumImpl {
 #if BUILDFLAG(ENABLE_PLAYLIST)
   PlaylistSidePanelCoordinator* playlist_side_panel_coordinator() {
     return playlist_side_panel_coordinator_.get();
+  }
+#endif
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  // Null unless the `kAIChatMoveFullPageToSidePanel` feature is enabled and
+  // this is a normal window with AI Chat available.
+  AIChatSidePanelTabTransferBridge* ai_chat_side_panel_tab_transfer_bridge() {
+    return ai_chat_side_panel_tab_transfer_bridge_.get();
   }
 #endif
 
@@ -121,6 +131,10 @@ class BrowserWindowFeatures : public BrowserWindowFeatures_ChromiumImpl {
 #if BUILDFLAG(ENABLE_PLAYLIST)
   std::unique_ptr<PlaylistSidePanelCoordinator>
       playlist_side_panel_coordinator_;
+#endif
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  std::unique_ptr<AIChatSidePanelTabTransferBridge>
+      ai_chat_side_panel_tab_transfer_bridge_;
 #endif
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
   std::unique_ptr<email_aliases::EmailAliasesController>

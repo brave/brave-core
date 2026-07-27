@@ -1,8 +1,8 @@
 diff --git a/components/omnibox/browser/omnibox_text_util.cc b/components/omnibox/browser/omnibox_text_util.cc
-index 8768401b23b6e5523db66a42874de18623edcba1..e6e599f7a143310c8f7d4a956abbc6280a302632 100644
+index b1ac72ce3c8034e0a799680bd0ae14e4539b61a8..34a7bf829837b571b2c5c921009e919816b547c5 100644
 --- a/components/omnibox/browser/omnibox_text_util.cc
 +++ b/components/omnibox/browser/omnibox_text_util.cc
-@@ -161,6 +161,7 @@ void AdjustTextForCopy(
+@@ -165,6 +165,7 @@ void AdjustTextForCopy(
    if (!has_user_modified_text) {
      *url_from_text = navigation_entry_url;
      *write_url = true;

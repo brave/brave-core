@@ -10,18 +10,31 @@
 # resolved in code):
 #
 #   "ast.matcher" — a structural query:
-#       args:     arg names the caller supplies; each is a {placeholder}.
-#       template: ast-grep rule body (the part under `rule:`); {arg}s filled.
+#       template: ast-grep rule body (the part under `rule:`). Its {placeholder}
+#                 fields are the matcher's inputs; they are inferred from the
+#                 template, not declared.
 #       result:   { node: <tree-sitter kind> } each match is.
 #
 #   "ast.rewriter" — edits each node a matcher finds:
 #       matcher:  id of the "ast.matcher" op locating the node(s).
+#       inputs:   the interface the rewriter requires, so the template it uses
+#                 can be rendered.
 #       replace:  { re_pattern, replace }, re.sub'd over each match's source;
-#                 `replace` is {arg}-formatted first (literal braces: {{ }}).
+#                 `replace` is {input}-formatted first (literal braces: {{ }}).
+#                 Optional `consume_before` / `consume_after` tokens (also
+#                 {input}-formatted) are folded into the rewritten span when the
+#                 matched node stops short of an adjacent token (e.g. the `:`
+#                 after an access_specifier, the space before a `final`
+#                 specifier, or a class member's leading indentation).
+#       first_match: optional bool; when true only the first match (in source
+#                 order) is rewritten and any later matches are ignored. Use it
+#                 when the matcher can legitimately find several nodes but the
+#                 rewrite belongs to only the first (e.g. a class that reopens
+#                 `private:` more than once).
 #       result:   { node: <kind> } being replaced.
 #
 # An op yields every match in source order; the caller (plaster) decides how
-# many it expects. Arg values are injected verbatim into the rule's `regex:`
+# many it expects. Input values are injected verbatim into the rule's `regex:`
 # fields, so the caller escapes any regex metacharacters.
 
 {
@@ -34,7 +47,6 @@
         # sharing the name each produce their own match. The result node is a
         # field_declaration for methods and a declaration for con/destructors.
         "cxx.find_class_method_decl": {
-            "args": ["class_name", "method_name"],
             "template": """\
 any:
   - kind: field_declaration
@@ -59,21 +71,85 @@ inside:
 
         # The `private` access specifier opening `class_name`'s private section.
         # The node is the `private` keyword; the `:` that follows is a separate
-        # token immediately after it.
+        # token immediately after it. The specifier must be a *direct* member of
+        # `class_name`: its immediate parent is the class body
+        # (field_declaration_list), whose immediate parent is the class. Nesting
+        # through the body with the default (neighbor) `stopBy` -- rather than an
+        # `stopBy: end` ancestor search -- keeps a nested class's own `private:`
+        # from matching the enclosing class.
         "cxx.find_class_private_section": {
-            "args": ["class_name"],
             "template": """\
 kind: access_specifier
 regex: ^private$
 inside:
-  kind: class_specifier
+  kind: field_declaration_list
+  inside:
+    kind: class_specifier
+    has:
+      field: name
+      regex: ^{class_name}$
+""",
+            "result": {
+                "node": "access_specifier",
+            },
+        },
+
+        # Finds the protected section in a given class.
+        "cxx.find_class_protected_section": {
+            "template": """\
+kind: access_specifier
+regex: ^protected$
+inside:
+  kind: field_declaration_list
+  inside:
+    kind: class_specifier
+    has:
+      field: name
+      regex: ^{class_name}$
+""",
+            "result": {
+                "node": "access_specifier",
+            },
+        },
+
+        # Finds the first access specifier after the `public:` section, the
+        # first match being the boundary of the `public:` section.
+        "cxx.find_section_after_public": {
+            "template": """\
+kind: access_specifier
+regex: ^(private|protected)$
+follows:
+  kind: access_specifier
+  regex: ^public$
   stopBy: end
+inside:
+  kind: field_declaration_list
+  inside:
+    kind: class_specifier
+    has:
+      field: name
+      regex: ^{class_name}$
+""",
+            "result": {
+                "node": "access_specifier",
+            },
+        },
+
+        # The body of a class after the `public:` section is found.
+        "cxx.find_class_body_with_public": {
+            "template": """\
+kind: field_declaration_list
+has:
+  kind: access_specifier
+  regex: ^public$
+inside:
+  kind: class_specifier
   has:
     field: name
     regex: ^{class_name}$
 """,
             "result": {
-                "node": "access_specifier",
+                "node": "field_declaration_list",
             },
         },
 
@@ -82,7 +158,6 @@ inside:
         # class-head `final` matches; a method's trailing `final` is nested
         # under its declaration, not directly inside the class.
         "cxx.find_class_final": {
-            "args": ["class_name"],
             "template": """\
 kind: virtual_specifier
 regex: ^final$
@@ -96,27 +171,88 @@ inside:
                 "node": "virtual_specifier",
             },
         },
+
+        # The body (compound_statement) of the definition of `function_name`.
+        # The match is the whole `{ ... }` block of the function_definition
+        # whose declarator text is exactly `function_name` -- a qualified
+        # `Class::Method` for a member, or the bare name for a free function.
+        # The function_declarator is reached with `stopBy: end`, so
+        # return-type wrappers (pointer/reference declarators, a trailing return
+        # type) between it and the definition do not matter. Anchoring on the
+        # AST body -- rather than a regex from the signature to the first `{` --
+        # is immune to braces in the parameter list (a `= {}` default argument),
+        # a multi-line signature, or an earlier overload. Each overload sharing
+        # the name yields its own match.
+        "cxx.find_function_body": {
+            "template": """\
+kind: compound_statement
+inside:
+  kind: function_definition
+  has:
+    kind: function_declarator
+    stopBy: end
+    has:
+      field: declarator
+      regex: ^{function_name}$
+""",
+            "result": {
+                "node": "compound_statement",
+            },
+        },
+
+        # Every identifier-family token whose text is exactly `class_name`:
+        # type positions (type_identifier), the `Class::` qualifier
+        # (namespace_identifier), the ctor/dtor name and bare uses (identifier),
+        # and the delegating/base name in a member initializer (`: Class(...)`,
+        # a field_identifier). The last is scoped to the name slot (first child
+        # of a field_initializer), so a member access like `other.Class` in the
+        # argument list is left untouched.
+        "cxx.find_class_name_tokens": {
+            "template": """\
+any:
+  - kind: type_identifier
+  - kind: namespace_identifier
+  - kind: identifier
+  - all:
+      - kind: field_identifier
+      - nthChild: 1
+      - inside:
+          kind: field_initializer
+regex: ^{class_name}$
+""",
+            "result": {
+                "node": "identifier",
+            },
+        },
     },
     "ast.rewriter": {
 
         # The whole method declaration (multi-line signature and trailing
-        # semicolon included) with `virtual ` prepended.
+        # semicolon included) with `virtual ` inserted before the type. Any
+        # attributes are re-emitted.
         "cxx.make_virtual": {
             "matcher": "cxx.find_class_method_decl",
+            "inputs": ["class_name", "method_name"],
             "replace": {
-                "re_pattern": "^",
-                "replace": "virtual ",
+                "re_pattern": "^((?:\\[\\[.*?\\]\\]\\s*)*)",
+                "replace": "\\1virtual ",
             },
             "result": {
                 "node": "field_declaration",
             },
         },
 
-        # The class's `private:` section with a `friend` declaration inserted as
-        # its first line.
+        # The class's first `private:` section with a `friend` declaration
+        # inserted as its first line. The matcher stops at the `private`
+        # keyword, so the op consumes the original `:` and re-emits it. A class
+        # may reopen `private:` more than once, so `first_match` keeps the
+        # friend in the first section only.
         "cxx.add_friend": {
             "matcher": "cxx.find_class_private_section",
+            "inputs": ["class_name", "friend_type"],
+            "first_match": True,
             "replace": {
+                "consume_after": ":",
                 "re_pattern": "$",
                 "replace": ":\\n  friend {friend_type};",
             },
@@ -126,16 +262,146 @@ inside:
         },
 
         # `class_name`'s declaration with its `final` specifier removed, so the
-        # class can be subclassed. The drop_final engine also consumes the
-        # leading space before `final` so no doubled space is left behind.
+        # class can be subclassed. `consume_before` also drops the leading space
+        # before `final` so no doubled space is left behind.
         "cxx.drop_final": {
             "matcher": "cxx.find_class_final",
+            "inputs": ["class_name"],
             "replace": {
+                "consume_before": " ",
                 "re_pattern": "^final$",
                 "replace": "",
             },
             "result": {
                 "node": "virtual_specifier",
+            },
+        },
+
+        # The function body with `prologue` inserted as its first statement,
+        # right after the opening brace. The matcher lands on the whole
+        # compound_statement, so anchoring the replace on `^{` inserts after the
+        # brace and leaves the rest of the body untouched. The caller passes
+        # `prologue` already indented to the body's first-statement level and
+        # with backslashes escaped for the `re.sub` replacement.
+        "cxx.preempt_function_impl": {
+            "matcher": "cxx.find_function_body",
+            "inputs": ["function_name", "prologue"],
+            "replace": {
+                "re_pattern": "^\\{",
+                "replace": "{{\\n{prologue}",
+            },
+            "result": {
+                "node": "compound_statement",
+            },
+        },
+
+        # The function body wrapped in an immediately-invoked `[&]` lambda, with
+        # `epilogue` appended after it. The matcher lands on the whole
+        # compound_statement; a DOTALL `^{ ... }$` capture folds the entire
+        # upstream body (`\1`) between a lambda prefix and its `}();`
+        # invocation, so the body's own lines are re-emitted verbatim, then
+        # appends `epilogue` as the body's trailing statements.
+        # `capture` is empty (a void wrap: `[&]() {...}();`) or an
+        # `auto <var> =` lead so the epilogue can read the wrapped body's return
+        # value. The caller passes `epilogue` indented to the body level and
+        # both spliced values with backslashes escaped for the `re.sub`
+        # replacement.
+        "cxx.after_function_impl": {
+            "matcher": "cxx.find_function_body",
+            "inputs": ["function_name", "capture", "epilogue"],
+            "replace": {
+                "re_pattern": "(?s)^\\{(.*)\\}$",
+                "replace": "{{\\n  {capture}[&]() {{\\1  }}();\\n{epilogue}\\n}}",
+            },
+            "result": {
+                "node": "compound_statement",
+            },
+        },
+
+        # Each matched name token replaced with `rename`. The matcher already
+        # pinned every match's text to exactly `class_name`, so the whole token
+        # (`^.+$`) is swapped for the new name.
+        "cxx.rename_class": {
+            "matcher": "cxx.find_class_name_tokens",
+            "inputs": ["class_name", "rename"],
+            "replace": {
+                "re_pattern": "^.+$",
+                "replace": "{rename}",
+            },
+            "result": {
+                "node": "identifier",
+            },
+        },
+
+        # Inserts `code` under an existing `protected:` specifier for the class.
+        "cxx.add_to_protected": {
+            "matcher": "cxx.find_class_protected_section",
+            "inputs": ["class_name", "code"],
+            "first_match": True,
+            "replace": {
+                "consume_after": ":",
+                "re_pattern": "$",
+                "replace": ":\\n{code}",
+            },
+            "result": {
+                "node": "access_specifier",
+            },
+        },
+
+        # Inserts a fresh `protected:` section just before an existing
+        # `private:` one, and adds `code` under it. The matched `private`
+        # keyword's own leading whitespace prefixes the new `protected:`, so it
+        # inherits the class's indentation; `code` arrives at the member level
+        # and `indent` re-emits the `private` keyword at its original column.
+        "cxx.add_protected_before_private": {
+            "matcher": "cxx.find_class_private_section",
+            "inputs": ["class_name", "code", "indent"],
+            "first_match": True,
+            "replace": {
+                "re_pattern": "^private$",
+                "replace": "protected:\\n{code}\\n\\n{indent}private",
+            },
+            "result": {
+                "node": "access_specifier",
+            },
+        },
+
+        # Appends `code` at the end of `class_name`'s public section, just
+        # before the section that follows it. `consume_before` folds the
+        # keyword's entire leading indentation (`indent`) into the span so the
+        # replacement controls all whitespace: `code` (already member-indented)
+        # becomes the last public line(s), a blank line separates it, then the
+        # boundary keyword (`\1`) is re-emitted at that same `indent`.
+        "cxx.append_to_public_before_section": {
+            "matcher": "cxx.find_section_after_public",
+            "inputs": ["class_name", "code", "indent"],
+            "first_match": True,
+            "replace": {
+                "consume_before": "{indent}",
+                "re_pattern": "^(private|protected)$",
+                "replace": "{code}\\n\\n{indent}\\1",
+            },
+            "result": {
+                "node": "access_specifier",
+            },
+        },
+
+        # Appends `code` at the end of `class_name`'s public section when it is
+        # the last (or only) section, inserting it just before the body's
+        # closing brace. The pattern consumes the final `}` together with the
+        # newline and indentation on its line, so inline method bodies earlier
+        # in the class are left alone and the brace is re-emitted at its
+        # original column (`indent`) after the appended, member-indented `code`.
+        "cxx.append_to_public_before_close": {
+            "matcher": "cxx.find_class_body_with_public",
+            "inputs": ["class_name", "code", "indent"],
+            "first_match": True,
+            "replace": {
+                "re_pattern": "\\n[ \\t]*\\}$",
+                "replace": "\\n{code}\\n{indent}}}",
+            },
+            "result": {
+                "node": "field_declaration_list",
             },
         },
     },

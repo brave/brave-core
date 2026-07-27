@@ -9,10 +9,9 @@
 import '$web-common/disableDuplicateSvelteTrustedPolicies'
 
 import { createRoot } from 'react-dom/client'
+import * as React from 'react'
 import { SignInPage, ManagePage } from './content/email_aliases_manage_page'
 import { StyleSheetManager } from 'styled-components'
-import { shouldForwardProp } from '$web-common/StyledComponentsProvider'
-import * as React from 'react'
 import { setIconBasePath } from '@brave/leo/react/icon'
 import {
   EmailAliasesMetrics,
@@ -21,9 +20,37 @@ import {
   EmailAliasesServiceObserverReceiver,
   EmailAliasesService,
 } from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
-import { useEmailAliases } from './content/use_email_aliases'
+import {
+  useEmailAliases,
+  useBraveAccountState,
+  getLoggedInEmail,
+  isAccountLoggedIn,
+} from './content/use_email_aliases'
+import { shouldForwardProp } from '$web-common/StyledComponentsProvider'
 
 export const ManagePageConnected = ({
+  authEmail,
+  emailAliasesService,
+  bindObserver,
+  metrics,
+}: {
+  authEmail: string
+  emailAliasesService: EmailAliasesServiceInterface
+  bindObserver: (observer: EmailAliasesServiceObserverInterface) => () => void
+  metrics?: ReturnType<typeof EmailAliasesMetrics.getRemote>
+}) => {
+  const { aliasesUpdate } = useEmailAliases(bindObserver)
+  return (
+    <ManagePage
+      authEmail={authEmail}
+      aliasesUpdate={aliasesUpdate}
+      emailAliasesService={emailAliasesService}
+      metrics={metrics}
+    />
+  )
+}
+
+export const EmailAliasesManagePage = ({
   emailAliasesService,
   bindObserver,
   metrics,
@@ -32,12 +59,15 @@ export const ManagePageConnected = ({
   bindObserver: (observer: EmailAliasesServiceObserverInterface) => () => void
   metrics?: ReturnType<typeof EmailAliasesMetrics.getRemote>
 }) => {
-  const { authState, aliasesUpdate } = useEmailAliases(bindObserver)
+  const accountState = useBraveAccountState()
+  if (!isAccountLoggedIn(accountState)) {
+    return null
+  }
   return (
-    <ManagePage
-      authState={authState}
-      aliasesUpdate={aliasesUpdate}
+    <ManagePageConnected
+      authEmail={getLoggedInEmail(accountState)}
       emailAliasesService={emailAliasesService}
+      bindObserver={bindObserver}
       metrics={metrics}
     />
   )
@@ -74,7 +104,7 @@ export const mount = (signInElem: HTMLElement, manageElem: HTMLElement) => {
       target={manageElem.getRootNode() as ShadowRoot}
       shouldForwardProp={shouldForwardProp}
     >
-      <ManagePageConnected
+      <EmailAliasesManagePage
         emailAliasesService={emailAliasesService}
         bindObserver={bindObserver}
         metrics={emailAliasesMetrics}

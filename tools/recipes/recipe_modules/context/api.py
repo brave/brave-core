@@ -78,8 +78,8 @@ class ContextApi(RecipeApi):
                 substituted from the startup environment when the step runs;
                 `None` removes the variable.
         """
-        # member name -> value to restore on exit (mirrors upstream's
-        # `deferred_assignments`), so the `finally` unwinds exactly what changed.
+        # member name -> value to restore on exit, so the `finally` unwinds
+        # exactly what changed.
         deferred: dict[str, Any] = {}
 
         def _push(member: str, new: Any) -> None:

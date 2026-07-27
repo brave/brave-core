@@ -40,7 +40,7 @@ void VerifyDepositForCreativeInstanceIdExpectation(
                                           test_future.GetCallback());
   const auto [success, deposit] = test_future.Take();
   EXPECT_TRUE(success);
-  EXPECT_NE(deposit, std::nullopt);
+  EXPECT_TRUE(deposit);
 }
 
 void VerifyCreativeSetConversionExpectation(size_t expected_count) {

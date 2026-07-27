@@ -1,0 +1,39 @@
+diff --git a/chrome/browser/ui/views/frame/browser_frame_view_win.h b/chrome/browser/ui/views/frame/browser_frame_view_win.h
+index 0d3be37f68c7c1defba82902b197b71fa3128f3b..32c4cf9f3b039097303bfe1f0918d559074cbc2a 100644
+--- a/chrome/browser/ui/views/frame/browser_frame_view_win.h
++++ b/chrome/browser/ui/views/frame/browser_frame_view_win.h
+@@ -101,6 +101,7 @@ class BrowserFrameViewWin : public BrowserFrameView, public TabIconViewModel {
+                                   float new_device_scale_factor) override;
+ 
+  private:
++  friend class BraveBrowserFrameViewWin;
+   friend class BrowserCaptionButtonContainer;
+ 
+   class CaptionButtonMetrics;
+@@ -125,7 +126,7 @@ class BrowserFrameViewWin : public BrowserFrameView, public TabIconViewModel {
+   // which is sometimes different than FrameBorderThickness(). Does not include
+   // the titlebar/tabstrip area. If |restored| is true, this is calculated as if
+   // the window was restored, regardless of its current state.
+-  int FrameTopBorderThickness(bool restored) const;
++  virtual int FrameTopBorderThickness(bool restored) const;
+   int FrameTopBorderThicknessPx(bool restored) const;
+ 
+   // Returns the height of the titlebar for popups or other browser types that
+@@ -145,7 +146,7 @@ class BrowserFrameViewWin : public BrowserFrameView, public TabIconViewModel {
+ 
+   // Returns whether or not the window should display a title of the specified
+   // |type|.
+-  bool ShouldShowWindowTitle(TitlebarType type) const;
++  virtual bool ShouldShowWindowTitle(TitlebarType type) const;
+ 
+   // Called when the device enters or exits tablet mode.
+   void TabletModeChanged();
+@@ -158,7 +159,7 @@ class BrowserFrameViewWin : public BrowserFrameView, public TabIconViewModel {
+ 
+   // Layout various sub-components of this view.
+   void LayoutTitleBar();
+-  void LayoutCaptionButtons();
++  virtual void LayoutCaptionButtons();
+   void LayoutClientView();
+   void LayoutWebAppWindowTitle(const gfx::Rect& available_space,
+                                views::Label& window_title_label) const;

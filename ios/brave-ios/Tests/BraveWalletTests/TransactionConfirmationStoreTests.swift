@@ -779,7 +779,7 @@ extension BraveWallet.BlockchainToken {
     coingeckoId: "",
     chainId: "",
     coin: .eth,
-    isShielded: false
+    zcashTokenType: .none
   )
 }
 

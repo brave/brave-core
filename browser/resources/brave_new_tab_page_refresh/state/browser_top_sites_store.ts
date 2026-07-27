@@ -23,15 +23,23 @@ export function createTopSitesStore() {
   })
 
   async function updatePrefs() {
-    const [{ showTopSites }, { listKind }] = await Promise.all([
-      handler.getShowTopSites(),
-      handler.getTopSitesListKind(),
-    ])
+    const [{ showSponsoredSites }, { showTopSites }, { listKind }] =
+      await Promise.all([
+        handler.getShowSponsoredSites(),
+        handler.getShowTopSites(),
+        handler.getTopSitesListKind(),
+      ])
 
     store.update({
+      showSponsoredSites,
       showTopSites,
       topSitesListKind: listKind,
     })
+  }
+
+  async function updateSponsoredSites() {
+    const { sites } = await handler.getSponsoredSites()
+    store.update({ sponsoredSites: sites })
   }
 
   async function updateTopSites() {
@@ -40,7 +48,7 @@ export function createTopSitesStore() {
   }
 
   async function loadData() {
-    await Promise.all([updateTopSites(), updatePrefs()])
+    await Promise.all([updateSponsoredSites(), updatePrefs(), updateTopSites()])
 
     store.update({ initialized: true })
   }
@@ -50,7 +58,10 @@ export function createTopSitesStore() {
   }
 
   newTabProxy.addListeners({
-    onTopSitesUpdated: debounce(loadData, 10),
+    onTopSitesUpdated: debounce(async () => {
+      await Promise.all([updateTopSites(), updatePrefs()])
+    }, 10),
+    onSponsoredSitesUpdated: debounce(updateSponsoredSites, 10),
   })
 
   document.addEventListener('visibilitychange', () => {
@@ -62,6 +73,12 @@ export function createTopSitesStore() {
   loadData()
 
   const actions: TopSitesActions = {
+    setShowSponsoredSites(showSponsoredSites) {
+      handler.setShowSponsoredSites(showSponsoredSites)
+      store.update({ showSponsoredSites })
+      updateSponsoredSites()
+    },
+
     setShowTopSites(showTopSites) {
       handler.setShowTopSites(showTopSites)
     },

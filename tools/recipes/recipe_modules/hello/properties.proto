@@ -1,0 +1,17 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+syntax = "proto3";
+
+// A module's own PROPERTIES proto declares the package as the module's
+// namespace (the file name is dropped), so the message imports from
+// PB.recipe_modules.brave.hello.properties.
+package recipe_modules.brave.hello;
+
+message InputProperties {
+  // Who to greet. Fed into the config system as the `TARGET` default via
+  // HelloApi.get_config_defaults(); empty means "use the schema default".
+  string target = 1;
+}

@@ -27,7 +27,6 @@ class BraveShieldsActionView : public views::LabelButton {
 
   BraveShieldsActionView(
       BrowserWindowInterface* browser_window_interface,
-      views::LayoutProvider& layout_provider,
       CreateWebUIBubbleManagerCallback create_bubble_manager_callback);
   BraveShieldsActionView(const BraveShieldsActionView&) = delete;
   BraveShieldsActionView& operator=(const BraveShieldsActionView&) = delete;
@@ -51,7 +50,6 @@ class BraveShieldsActionView : public views::LabelButton {
 
   const raw_ptr<BrowserWindowInterface> browser_window_interface_ = nullptr;
   std::unique_ptr<BraveShieldsActionController> controller_;
-  raw_ref<views::LayoutProvider> layout_provider_;
   base::WeakPtrFactory<BraveShieldsActionView> weak_ptr_factory_{this};
 };
 

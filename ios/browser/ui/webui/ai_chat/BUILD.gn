@@ -26,6 +26,7 @@ source_set("ai_chat") {
     "//brave/components/constants",
     "//brave/components/resources:static_resources",
     "//brave/components/resources:strings_grit",
+    "//brave/components/version_info",
     "//brave/ios/browser/ai_chat",
     "//brave/ios/browser/api/profile",
     "//brave/ios/browser/api/web_view",

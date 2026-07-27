@@ -20,9 +20,9 @@ namespace page_actions {
 // PartitionedStoragePageActionController via PageActionControllerImpl to add
 // chip-color, label, height and triggerable-event overrides on top of the
 // upstream model.
-class PageActionModel : public chromium_impl::PageActionModel {
+class PageActionModel : public PageActionModel_ChromiumImpl {
  public:
-  using chromium_impl::PageActionModel::PageActionModel;
+  using PageActionModel_ChromiumImpl::PageActionModel_ChromiumImpl;
   ~PageActionModel() override;
 
   void SetOverrideChipColors(

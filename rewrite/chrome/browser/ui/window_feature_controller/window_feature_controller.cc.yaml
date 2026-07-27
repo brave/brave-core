@@ -28,10 +28,19 @@ substitutions:
               browser_(browser)\2
 
   - description: |
-      Make `NormalBrowserSupportsWindowFeature` an internal method
+      Give Brave control over NormalBrowserSupportsWindowFeature on Windows.
 
-      This is done so we can provide our own `NormalBrowserSupportsWindowFeature` with
-      specific handling for Windows.
-    regex:
-      pattern: 'WindowFeatureController::NormalBrowserSupportsWindowFeature('
-      replace: 'WindowFeatureController::NormalBrowserSupportsWindowFeature_ChromiumImpl('
+      When vertical tabs are enabled, Windows needs the ability to show the title
+      bar, so short-circuit kFeatureTitleBar before the upstream logic runs. The
+      tabs::utils helpers come from the chromium_src override's include.
+    preempt_function_impl:
+      function_name: WindowFeatureController::NormalBrowserSupportsWindowFeature
+      code: |-
+        #if BUILDFLAG(IS_WIN)
+        if (feature == WindowFeature::kFeatureTitleBar) {
+          // In case of vertical tab strip is allowed, we need to have ability to
+          // show title bar on Windows.
+          return tabs::utils::ShouldShowBraveVerticalTabs(&browser_.get()) &&
+                 tabs::utils::ShouldShowWindowTitleForVerticalTabs(&browser_.get());
+        }
+        #endif

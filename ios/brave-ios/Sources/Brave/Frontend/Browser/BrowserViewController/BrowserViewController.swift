@@ -625,19 +625,7 @@ public class BrowserViewController: UIViewController {
     notificationsHandler?.actionOccured = { [weak self] ad, action in
       guard let self = self, let ad = ad else { return }
       if action == .opened {
-        var url = URL(string: ad.targetURL)
-        if url == nil,
-          let percentEncodedURLString =
-            ad.targetURL.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
-        {
-          // Try to percent-encode the string and try that
-          url = URL(string: percentEncodedURLString)
-        }
-        guard let targetURL = url else {
-          assertionFailure("Invalid target URL for creative instance id: \(ad.creativeInstanceID)")
-          return
-        }
-        let request = URLRequest(url: targetURL)
+        let request = URLRequest(url: ad.targetUrl)
         self.tabManager.addTabAndSelect(
           request,
           isPrivate: self.privateBrowsingManager.isPrivateBrowsing
@@ -1435,9 +1423,18 @@ public class BrowserViewController: UIViewController {
           clearRecentSearchAlertDismissed = true
         }
 
+        // When the keyboard belongs to the browser (URL bar editing, or the collapsed keyboard
+        // mini-bar shown for web content / find-in-page), keep the bottom bar pinned above the
+        // keyboard even while an unrelated modal is presented (e.g. a download prompt or external
+        // app alert). Otherwise the bar drops back down underneath the keyboard and doesn't
+        // recover once the modal is dismissed.
+        let isBrowserKeyboardActive =
+          topToolbar.inOverlayMode || !toolbarVisibilityViewModel.isEnabled
+
         shouldEvaluateKeyboardConstraints =
           (activeKeyboardHeight > 0)
-          && (presentedViewController == nil
+          && (isBrowserKeyboardActive
+            || presentedViewController == nil
             || searchEngineSettingsDismissed
             || clearRecentSearchAlertDismissed
             || presentedViewController is TabGridHostingController)

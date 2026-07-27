@@ -7,7 +7,19 @@
 
 import SwiftUI
 
+private enum ButtonLabel {
+  case label
+  case text
+  case iconOnly
+}
+
+extension EnvironmentValues {
+  @Entry fileprivate var buttonLabel: ButtonLabel = .label
+}
+
 private struct ButtonGridRow: View {
+  @Environment(\.buttonLabel) private var buttonLabel
+
   var title: String
 
   var body: some View {
@@ -19,7 +31,15 @@ private struct ButtonGridRow: View {
           ForEach([true, false], id: \.self) { isEnabled in
             Button {
             } label: {
-              Label("Text", braveSystemImage: "leo.copy")
+              switch buttonLabel {
+              case .label:
+                Label("Text", braveSystemImage: "leo.copy")
+              case .text:
+                Text("Text")
+              case .iconOnly:
+                Label("Text", braveSystemImage: "leo.copy")
+                  .labelStyle(.buttonIconOnly)
+              }
             }
             .disabled(!isEnabled)
             .gridCellAnchor(.leading)
@@ -96,6 +116,38 @@ struct ButtonPreviewGrid<Rows: View>: View {
     }
     .background(Color(white: 0.9).gradient)
   }
+}
+
+#Preview("Text Only") {
+  ButtonPreviewGrid {
+    ButtonGridRow(title: "Filled")
+      .buttonStyle(.filled)
+    ButtonGridRow(title: "Hero")
+      .buttonStyle(.hero)
+    ButtonGridRow(title: "Outline")
+      .buttonStyle(.outline)
+    ButtonGridRow(title: "Plain")
+      .buttonStyle(.plainBordered)
+    ButtonGridRow(title: "Plain Faint")
+      .buttonStyle(.plainFaint)
+  }
+  .environment(\.buttonLabel, .text)
+}
+
+#Preview("Icon Only") {
+  ButtonPreviewGrid {
+    ButtonGridRow(title: "Filled")
+      .buttonStyle(.filled)
+    ButtonGridRow(title: "Hero")
+      .buttonStyle(.hero)
+    ButtonGridRow(title: "Outline")
+      .buttonStyle(.outline)
+    ButtonGridRow(title: "Plain")
+      .buttonStyle(.plainBordered)
+    ButtonGridRow(title: "Plain Faint")
+      .buttonStyle(.plainFaint)
+  }
+  .environment(\.buttonLabel, .iconOnly)
 }
 
 #endif

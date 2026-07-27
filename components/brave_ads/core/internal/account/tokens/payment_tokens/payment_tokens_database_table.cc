@@ -39,7 +39,8 @@ void BindColumnTypes(const mojom::DBActionInfoPtr& mojom_db_action) {
       mojom::DBBindColumnType::kString,  // unblinded_token
       mojom::DBBindColumnType::kString,  // public_key
       mojom::DBBindColumnType::kString,  // confirmation_type
-      mojom::DBBindColumnType::kString   // ad_type
+      mojom::DBBindColumnType::kString,  // ad_type
+      mojom::DBBindColumnType::kBool     // rfc
   };
 }
 
@@ -60,6 +61,8 @@ size_t BindColumns(const mojom::DBActionInfoPtr& mojom_db_action,
     BindColumnString(mojom_db_action, index++,
                      ToString(payment_token.confirmation_type));
     BindColumnString(mojom_db_action, index++, ToString(payment_token.ad_type));
+    BindColumnBool(mojom_db_action, index++,
+                   payment_token.unblinded_token.rfc());
 
     ++row_count;
   }
@@ -107,9 +110,10 @@ std::string BuildInsertSql(const mojom::DBActionInfoPtr& mojom_db_action,
             unblinded_token,
             public_key,
             confirmation_type,
-            ad_type
+            ad_type,
+            rfc
           ) VALUES $2)",
-      {kTableName, BuildBindColumnPlaceholders(/*column_count=*/5U, row_count)},
+      {kTableName, BuildBindColumnPlaceholders(/*column_count=*/6U, row_count)},
       nullptr);
 }
 
@@ -125,6 +129,31 @@ void Insert(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
   mojom_db_action->type = mojom::DBActionInfo::Type::kExecuteWithBindings;
   mojom_db_action->sql = BuildInsertSql(mojom_db_action, payment_tokens);
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
+}
+
+void MigrateToV56(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
+  CHECK(mojom_db_transaction);
+
+  // Create the `payment_tokens` table at its original schema; the `rfc` column
+  // is added by the version 58 migration.
+  Execute(mojom_db_transaction, R"(
+      CREATE TABLE payment_tokens (
+        transaction_id TEXT NOT NULL PRIMARY KEY ON CONFLICT REPLACE,
+        unblinded_token TEXT NOT NULL,
+        public_key TEXT NOT NULL,
+        confirmation_type TEXT NOT NULL,
+        ad_type TEXT NOT NULL
+      ))");
+}
+
+void MigrateToV58(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
+  CHECK(mojom_db_transaction);
+
+  // Whether the token uses the RFC 9497 compliant derivation. Pre-existing
+  // tokens use the legacy derivation.
+  Execute(mojom_db_transaction, R"(
+      ALTER TABLE payment_tokens
+        ADD COLUMN rfc INTEGER NOT NULL DEFAULT 0)");
 }
 
 }  // namespace
@@ -209,7 +238,8 @@ void PaymentTokens::GetAll(GetPaymentTokensCallback callback) const {
             unblinded_token,
             public_key,
             confirmation_type,
-            ad_type
+            ad_type,
+            rfc
           FROM
             $1)",
       {kTableName}, nullptr);
@@ -230,7 +260,8 @@ void PaymentTokens::Create(
         unblinded_token TEXT NOT NULL,
         public_key TEXT NOT NULL,
         confirmation_type TEXT NOT NULL,
-        ad_type TEXT NOT NULL
+        ad_type TEXT NOT NULL,
+        rfc INTEGER NOT NULL DEFAULT 0
       ))");
 }
 
@@ -241,7 +272,12 @@ void PaymentTokens::Migrate(
 
   switch (to_version) {
     case 56: {
-      Create(mojom_db_transaction);
+      MigrateToV56(mojom_db_transaction);
+      break;
+    }
+
+    case 58: {
+      MigrateToV58(mojom_db_transaction);
       break;
     }
 

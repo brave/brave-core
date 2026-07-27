@@ -150,7 +150,7 @@ interface RewardsPageHandler {
   GetAdsStatement() => (AdsStatement? statement);
 
   // Returns Ads history for the current user.
-  GetAdsHistory() => (string history);
+  GetAdsHistory() => (array<brave_ads.mojom.AdHistoryItemInfo>? history);
 
   // Updates Ads settings for the current user.
   SetAdTypeEnabled(brave_ads.mojom.AdType ad_type, bool enabled) => ();
@@ -158,9 +158,9 @@ interface RewardsPageHandler {
   SetAdsSubdivision(string subdivision) => ();
 
   // Toggles flags for Ad History items.
-  ToggleAdLike(string history_item) => ();
-  ToggleAdDislike(string history_item) => ();
-  ToggleAdInappropriate(string history_item) => ();
+  ToggleAdLike(brave_ads.mojom.ReactionInfo reaction) => ();
+  ToggleAdDislike(brave_ads.mojom.ReactionInfo reaction) => ();
+  ToggleAdInappropriate(brave_ads.mojom.ReactionInfo reaction) => ();
 
   // Returns the currently active Rewards notifications for the user.
   GetRewardsNotifications() => (array<RewardsNotification> notifications);

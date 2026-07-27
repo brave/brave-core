@@ -13,7 +13,6 @@
 #include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
 #include "base/time/time.h"
-#include "brave/components/brave_ads/buildflags/buildflags.h"
 
 class BraveStatsUpdaterTest;
 class GURL;
@@ -47,9 +46,6 @@ class BraveStatsUpdaterParams {
   std::string GetWeekOfInstallationParam() const;
   std::string GetDateOfInstallationParam() const;
   std::string GetReferralCodeParam() const;
-#if BUILDFLAG(ENABLE_BRAVE_ADS)
-  std::string GetAdsEnabledParam() const;
-#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
   GURL GetUpdateURL(const GURL& base_update_url,
                     std::string_view platform_id,
                     std::string_view channel_name,

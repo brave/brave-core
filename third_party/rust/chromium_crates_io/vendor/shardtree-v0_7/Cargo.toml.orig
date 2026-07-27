@@ -1,0 +1,49 @@
+[package]
+name = "shardtree"
+description = "A space-efficient Merkle tree with witnessing of marked leaves, checkpointing & state restoration."
+version = "0.7.0"
+authors = [
+    "Kris Nuttycombe <kris@nutty.land>",
+]
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+homepage.workspace = true
+repository.workspace = true
+categories.workspace = true
+
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs"]
+
+[dependencies]
+assert_matches = { workspace = true, optional = true }
+bitflags.workspace = true
+either = { workspace = true, features = ["use_std"] }
+incrementalmerkletree.workspace = true
+proptest = { workspace = true, optional = true }
+incrementalmerkletree-testing = { workspace = true, optional = true }
+tracing.workspace = true
+
+[dev-dependencies]
+assert_matches.workspace = true
+incrementalmerkletree = { workspace = true, features = ["test-dependencies"] }
+incrementalmerkletree-testing.workspace = true
+proptest.workspace = true
+
+[features]
+# The legacy-api feature guards types and functions that are useful for
+# migrating data previously managed using `incrementalmerkletree/legacy-api` 
+# types into the `ShardTree` data structure.
+legacy-api = ["incrementalmerkletree/legacy-api"]
+# The test-depenencies feature can be enabled to expose types and functions
+# that are useful for testing `shardtree` functionality.
+test-dependencies = [
+  "dep:proptest", 
+  "dep:assert_matches", 
+  "dep:incrementalmerkletree-testing", 
+  "incrementalmerkletree/test-dependencies"
+]
+
+[target.'cfg(unix)'.dev-dependencies]
+tempfile.workspace = true

@@ -8,7 +8,6 @@
 #include "base/json/json_reader.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_info.h"
-#include "brave/components/brave_ads/core/internal/account/issuers/token_issuers/token_issuer_info.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/url_request/issuers_url_request_json_reader_util.h"
 
 namespace brave_ads::json::reader {
@@ -25,14 +24,15 @@ std::optional<IssuersInfo> ReadIssuers(const std::string& json) {
     return std::nullopt;
   }
 
-  std::optional<TokenIssuerList> token_issuers = ParseTokenIssuers(*dict);
+  auto token_issuers = ParseTokenIssuers(*dict);
   if (!token_issuers) {
     return std::nullopt;
   }
 
   IssuersInfo issuers;
   issuers.ping = *ping;
-  issuers.token_issuers = *token_issuers;
+  issuers.confirmation_token_issuer = std::move(token_issuers->confirmation);
+  issuers.payment_token_issuer = std::move(token_issuers->payment);
 
   return issuers;
 }

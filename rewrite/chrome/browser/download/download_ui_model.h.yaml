@@ -1,0 +1,19 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Declare virtual hooks to handle DownloadCommands::kDeleteLocalFile and
+      DownloadCommands::kCopyDownloadLink commands.
+
+      These are internal hooks invoked from ExecuteCommand and overridden by
+      Brave (see chromium_src download_item_model), so they belong in the
+      protected section of the upstream DownloadUIModel class.
+    add_to_protected:
+      class_name: DownloadUIModel
+      code: |-
+        // Brave: virtual hooks for kDeleteLocalFile / kCopyDownloadLink commands.
+        virtual void DeleteLocalFile() {}
+        virtual void CopyDownloadLinkToClipboard() {}

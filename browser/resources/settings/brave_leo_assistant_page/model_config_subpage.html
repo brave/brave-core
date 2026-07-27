@@ -1,0 +1,20 @@
+<!-- Copyright (c) 2026 The Brave Authors. All rights reserved.
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this file,
+You can obtain one at https://mozilla.org/MPL/2.0/. -->
+
+<style include="settings-shared">
+</style>
+
+<settings-subpage page-title="[[pageTitle_]]" class="multi-card">
+  <settings-section>
+    <template is="dom-if" if="[[showForm_]]" restamp>
+      <model-config-ui
+        id="model-config-ui"
+        model-item="[[editingModel_]]"
+        on-save="onModelConfigSave_"
+        on-close="onModelConfigClose_">
+      </model-config-ui>
+    </template>
+  </settings-section>
+</settings-subpage>

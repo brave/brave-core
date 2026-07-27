@@ -18,10 +18,18 @@ import logging
 import os
 from pathlib import Path
 import platform
+import re
+import subprocess
 import sys
 import tarfile
 
+sys.path.insert(
+    0,
+    str(Path(__file__).resolve().parents[2] / 'tools' / 'cr' / 'toolchains'))
+
+# pylint: disable=wrong-import-position
 import build_ast_grep
+from upload import S3Uploader, sha256_file, summarise
 
 
 def _platform_tag() -> str:
@@ -33,10 +41,28 @@ def _platform_tag() -> str:
     return 'linux-x64'
 
 
+def _ast_grep_version() -> str:
+    """Return the release version of the freshly built ast-grep binary.
+
+    Raises:
+        RuntimeError: If the binary is missing or its version cannot be parsed.
+    """
+    binary = build_ast_grep.AST_GREP_BIN
+    if not binary.is_file():
+        raise RuntimeError(f'ast-grep binary not found at {binary}')
+    output = subprocess.run([str(binary), '--version'],
+                            check=True,
+                            capture_output=True,
+                            text=True).stdout
+    match = re.search(r'\d+\.\d+\.\d+(?:[-+][0-9A-Za-z.-]+)?', output)
+    if not match:
+        raise RuntimeError(f'Could not parse ast-grep version from {output!r}')
+    return match.group(0)
+
+
 def _package_name() -> str:
     """Output archive filename: `ast-grep-<version>-<platform>.tar.gz`."""
-    return (f'ast-grep-{build_ast_grep.AST_GREP_REF}-{_platform_tag()}'
-            '.tar.gz')
+    return f'ast-grep-{_ast_grep_version()}-{_platform_tag()}.tar.gz'
 
 
 def _create_archive(out_dir: Path) -> Path:
@@ -80,6 +106,10 @@ def main() -> int:
     parser.add_argument('--verbose',
                         action='store_true',
                         help='Enable debug logging.')
+    parser.add_argument('--upload',
+                        action='store_true',
+                        help='Upload the packaged tarball to our public '
+                        'bucket.')
     args = parser.parse_args()
 
     logging.basicConfig(level=logging.DEBUG if args.verbose else logging.INFO,
@@ -88,8 +118,17 @@ def main() -> int:
     build_ast_grep.build(args.jobs, clean=args.clean)
     archive = _create_archive(args.out_dir.expanduser().resolve())
 
+    if args.upload:
+        result = S3Uploader(bucket='brave-build-deps-public').upload(
+            archive, prefix='ast-grep', sign=False)
+        logging.info('Upload summary:\n%s', summarise(result))
+        sha256, size = result.sha256, result.size_bytes
+    else:
+        sha256, size = sha256_file(archive), archive.stat().st_size
+
     logging.info('Done.')
     logging.info('ast-grep package: %s', archive)
+    logging.info('  sha256: %s  (%d bytes)', sha256, size)
     return 0
 
 

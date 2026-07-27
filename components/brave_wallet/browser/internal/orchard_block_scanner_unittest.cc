@@ -533,6 +533,7 @@ TEST(OrchardBlockScanner, FoundKnownNullifiers) {
   note.block_id = 10;
   std::ranges::copy(nullifier_bytes, note.nullifier.begin());
   note.amount = 1;
+  note.note_version = 2;
 
   notes.push_back(note);
   blocks.push_back(std::move(block));

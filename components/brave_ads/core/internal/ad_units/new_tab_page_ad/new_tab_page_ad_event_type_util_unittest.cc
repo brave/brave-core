@@ -35,9 +35,9 @@ TEST(BraveAdsNewTabPageAdEventTypeUtilTest, ToMojomNewTabPageAdEventType) {
   EXPECT_EQ(ToMojomNewTabPageAdEventType("media_100"),
             mojom::NewTabPageAdEventType::kMedia100);
 
-  EXPECT_EQ(ToMojomNewTabPageAdEventType(""), std::nullopt);
+  EXPECT_FALSE(ToMojomNewTabPageAdEventType(""));
 
-  EXPECT_EQ(ToMojomNewTabPageAdEventType("foobar"), std::nullopt);
+  EXPECT_FALSE(ToMojomNewTabPageAdEventType("foobar"));
 }
 
 TEST(BraveAdsNewTabPageAdEventTypeUtilTest, ToString) {

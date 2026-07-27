@@ -245,10 +245,31 @@ BraveTreeTabStripCollectionDelegate::CompactMovingTabs(
       types_to_compact.Has(tabs::TabCollection::Type::GROUP);
   const bool compact_splits =
       types_to_compact.Has(tabs::TabCollection::Type::SPLIT);
+  const bool compact_tree =
+      types_to_compact.Has(tabs::TabCollection::Type::TREE_NODE);
 
   base::flat_set<tab_groups::TabGroupId> compacted_groups;
   base::flat_set<split_tabs::SplitTabId> compacted_splits;
+  base::flat_set<tabs::TabInterface*> moving_tabs_set;
+  if (compact_tree) {
+    moving_tabs_set = base::flat_set<tabs::TabInterface*>(moving_tabs.begin(),
+                                                          moving_tabs.end());
+  }
   for (auto* tab : moving_tabs) {
+    // If this tab sits under a tree node whose ancestor tree node is also
+    // moving (whether that ancestor is a bare tab, or wraps a group/split
+    // that is fully selected), the ancestor will be detached as a whole and
+    // will carry this tab's entire subtree along with it, since
+    // MoveTabsRecursive keeps connected subtrees nested. This applies
+    // regardless of whether |tab| itself is a bare tree-node tab or a member
+    // of a group/split wrapped by a tree node, so this check must run before
+    // the group/split compaction below.
+    if (compact_tree &&
+        IsTreeNodeCoveredByMovingAncestor(GetParentTreeNodeCollectionOfTab(tab),
+                                          moving_tabs_set)) {
+      continue;
+    }
+
     if (compact_groups) {
       if (auto group = tab->GetGroup()) {
         if (compacted_groups.contains(group.value())) {
@@ -282,6 +303,23 @@ BraveTreeTabStripCollectionDelegate::CompactMovingTabs(
   }
 
   return compacted_tabs;
+}
+
+bool BraveTreeTabStripCollectionDelegate::IsTreeNodeCoveredByMovingAncestor(
+    tabs::TreeTabNodeTabCollection* tree_node,
+    const base::flat_set<tabs::TabInterface*>& moving_tabs) const {
+  for (auto* ancestor = tree_node->GetParentCollection();
+       ancestor && ancestor->type() == tabs::TabCollection::Type::TREE_NODE;
+       ancestor = ancestor->GetParentCollection()) {
+    auto* ancestor_node =
+        static_cast<tabs::TreeTabNodeTabCollection*>(ancestor);
+    if (ancestor_node->current_value_type() ==
+            tabs::TreeTabNodeTabCollection::CurrentValueType::kTab &&
+        moving_tabs.contains(ancestor_node->GetCurrentTab())) {
+      return true;
+    }
+  }
+  return false;
 }
 
 base::expected<void, std::unique_ptr<tabs::TabInterface>>
@@ -625,18 +663,25 @@ void BraveTreeTabStripCollectionDelegate::MoveTabsRecursive(
           ? original_parent_collection->GetIndexOfCollection(first_tree_node)
           : std::nullopt;
 
-  // Before removing the tree tab node from the parent, make sure all
-  // children of the tree tab node are moved to the parent.
+  // Before removing the tree tab node from the parent, make sure any
+  // children of the tree tab node that are not also being moved are hoisted
+  // to the parent. Children that are moving together with their parent (a
+  // connected subtree) are left nested so the hierarchy is preserved instead
+  // of being flattened.
+  const base::flat_set<tabs::TabInterface*> moving_tabs_set(moving_tabs.begin(),
+                                                            moving_tabs.end());
   for (auto* moving_tab : base::Reversed(moving_tabs)) {
     auto* moving_tab_tree_node = GetParentTreeNodeCollectionOfTab(moving_tab);
-    MoveChildrenOfTreeTabNodeToParent(
-        static_cast<tabs::TreeTabNodeTabCollection*>(moving_tab_tree_node));
+    MoveNonSelectedChildrenOfTreeTabNodeToParent(
+        static_cast<tabs::TreeTabNodeTabCollection*>(moving_tab_tree_node),
+        moving_tabs_set);
   }
 
   // Remove the moving tab first from the original parent.
-  auto compacted_moving_tabs = CompactMovingTabs(
-      moving_tabs,
-      {tabs::TabCollection::Type::GROUP, tabs::TabCollection::Type::SPLIT});
+  auto compacted_moving_tabs =
+      CompactMovingTabs(moving_tabs, {tabs::TabCollection::Type::GROUP,
+                                      tabs::TabCollection::Type::SPLIT,
+                                      tabs::TabCollection::Type::TREE_NODE});
   std::vector<std::unique_ptr<tabs::TabCollection>>
       unique_moving_tab_collections_reversed;
   for (auto& tab_or_collection : base::Reversed(compacted_moving_tabs)) {
@@ -1357,6 +1402,50 @@ void BraveTreeTabStripCollectionDelegate::MoveChildrenOfTreeTabNodeToNode(
               target_collection->AddCollection(
                   tree_tab_node_collection->MaybeRemoveCollection(collection),
                   target_index);
+            }},
+        child);
+  }
+}
+
+void BraveTreeTabStripCollectionDelegate::
+    MoveNonSelectedChildrenOfTreeTabNodeToParent(
+        tabs::TreeTabNodeTabCollection* tree_tab_node_collection,
+        const base::flat_set<tabs::TabInterface*>& moving_tabs) const {
+  auto* tree_node_owner_collection =
+      tree_tab_node_collection->GetParentCollection();
+  auto local_index = tree_node_owner_collection->GetIndexOfCollection(
+      tree_tab_node_collection);
+  CHECK(local_index.has_value());
+
+  auto children = tree_tab_node_collection->GetTreeNodeChildren();
+  for (auto& child : base::Reversed(children)) {
+    std::visit(
+        absl::Overload{
+            [&](tabs::TabInterface* tab) {
+              if (moving_tabs.contains(tab)) {
+                // This tab is moving together with its parent tree node, so
+                // keep it nested instead of hoisting it out.
+                return;
+              }
+
+              tree_node_owner_collection->AddTab(
+                  tree_tab_node_collection->MaybeRemoveTab(tab), *local_index);
+            },
+            [&](tabs::TabCollection* collection) {
+              auto recursive_tabs = collection->GetTabsRecursive();
+              if (!recursive_tabs.empty() &&
+                  std::ranges::all_of(recursive_tabs, [&](auto* tab) {
+                    return moving_tabs.contains(tab);
+                  })) {
+                // Every tab in this child subtree is also moving with its
+                // parent, so keep the subtree nested to preserve the
+                // hierarchy instead of flattening it.
+                return;
+              }
+
+              tree_node_owner_collection->AddCollection(
+                  tree_tab_node_collection->MaybeRemoveCollection(collection),
+                  *local_index);
             }},
         child);
   }

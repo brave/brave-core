@@ -46,6 +46,7 @@ brave_chrome_java_deps = [
   "//brave/browser/ui/android/favicon:java",
   "//brave/browser/ui/android/logo:java",
   "//brave/browser/ui/android/omnibox:java",
+  "//brave/browser/ui/android/theme:dynamic_colors_java",
   "//brave/browser/ui/android/theme:java",
   "//brave/browser/ui/android/toolbar:java",
   "//brave/components/ai_chat/core/common/mojom:mojom_java",

@@ -13,6 +13,8 @@ import static org.chromium.build.NullUtil.assumeNonNull;
 
 import android.content.Context;
 
+import androidx.fragment.app.Fragment;
+
 import org.jni_zero.CalledByNative;
 import org.jni_zero.JniType;
 import org.jni_zero.NativeMethods;
@@ -59,15 +61,19 @@ class CredentialEditBridge implements UiDismissalHandler, CredentialActionDelega
         mNativeCredentialEditBridge = nativeCredentialEditBridge;
         SettingsNavigation settingsNavigation =
                 SettingsNavigationFactory.createSettingsNavigation();
+        // Add the credential page to the back stack so that, when settings runs as a single
+        // activity (e.g. multi-column layout on tablets), it is shown within the current Settings
+        // activity - nested under the password list - instead of launching a separate activity.
+        Class<? extends Fragment> fragment;
         if (isBlockedCredential) {
-            settingsNavigation.startSettings(context, BlockedCredentialFragmentView.class);
-            return;
+            fragment = BlockedCredentialFragmentView.class;
+        } else if (isFederatedCredential) {
+            fragment = FederatedCredentialFragmentView.class;
+        } else {
+            fragment = CredentialEditFragmentView.class;
         }
-        if (isFederatedCredential) {
-            settingsNavigation.startSettings(context, FederatedCredentialFragmentView.class);
-            return;
-        }
-        settingsNavigation.startSettings(context, CredentialEditFragmentView.class);
+        settingsNavigation.startSettings(
+                context, fragment, /* fragmentArgs= */ null, /* addToBackStack= */ true);
     }
 
     public void initialize(CredentialEditCoordinator coordinator) {

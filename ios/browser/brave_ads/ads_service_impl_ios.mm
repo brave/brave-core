@@ -388,6 +388,10 @@ void AdsServiceImplIOS::NotifyTabDidLoad(int32_t tab_id, int http_status_code) {
   ads_client_notifier_->NotifyTabDidLoad(tab_id, http_status_code);
 }
 
+void AdsServiceImplIOS::NotifyTabDidFailToLoad(int32_t tab_id) {
+  ads_client_notifier_->NotifyTabDidFailToLoad(tab_id);
+}
+
 void AdsServiceImplIOS::NotifyDidCloseTab(int32_t tab_id) {
   ads_client_notifier_->NotifyDidCloseTab(tab_id);
 }

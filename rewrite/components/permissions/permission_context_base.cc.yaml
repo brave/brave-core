@@ -4,13 +4,12 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 substitutions:
-  - description:
-      'Moving `PermissionContextBase` into `chromium_impl` as in the header.'
-    regex:
-      pattern: 'namespace permissions'
-      replace: 'namespace permissions::chromium_impl'
+  - description: |
+      Rename PermissionContextBase to PermissionContextBase_ChromiumImpl.
+    rename_class:
+      class_name: PermissionContextBase
+      rename: PermissionContextBase_ChromiumImpl
 
-    count: 2
   - description: 'Calls BraveCanBypassEmbeddingOriginCheck for wallet handling'
     regex:
       pattern: 'CanBypassEmbeddingOriginCheck('

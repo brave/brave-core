@@ -14,6 +14,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 
 import androidx.annotation.ColorInt;
+import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.content.res.AppCompatResources;
 
 import org.chromium.build.annotations.NullMarked;
@@ -31,6 +32,14 @@ import java.util.Objects;
 /** Provides Brave favicon variants for Chromium tab-list UI. */
 @NullMarked
 public class BraveTabListFaviconProvider extends TabListFaviconProvider {
+    @VisibleForTesting
+    static final int BRAVE_NTP_FAVICON_DRAWABLE_ID_OUTLINE =
+            R.drawable.ic_social_brave_outline_favicon_fullheight;
+
+    @VisibleForTesting
+    static final int BRAVE_NTP_FAVICON_DRAWABLE_ID_FILLED =
+            R.drawable.ic_social_brave_carved_favicon_fullheight;
+
     private final Context mContext;
     private final boolean mIsTabStrip;
     private final int mDefaultFaviconSize;
@@ -55,7 +64,7 @@ public class BraveTabListFaviconProvider extends TabListFaviconProvider {
             return super.getRoundedChromeFavicon(isIncognito);
         }
 
-        int drawableId = getBraveNtpFaviconDrawableId();
+        int drawableId = getBraveNtpFaviconDrawableId(isIncognito);
         @Nullable Drawable braveNtpSourceDrawable =
                 AppCompatResources.getDrawable(mContext, drawableId);
         if (braveNtpSourceDrawable == null) {
@@ -81,11 +90,11 @@ public class BraveTabListFaviconProvider extends TabListFaviconProvider {
                 selectedIconColor);
     }
 
-    private int getBraveNtpFaviconDrawableId() {
-        if (ColorUtils.inNightMode(mContext)) {
-            return R.drawable.ic_social_brave_carved_favicon_fullheight;
+    int getBraveNtpFaviconDrawableId(boolean isIncognito) {
+        if (isIncognito || ColorUtils.inNightMode(mContext)) {
+            return BRAVE_NTP_FAVICON_DRAWABLE_ID_FILLED;
         }
-        return R.drawable.ic_social_brave_outline_favicon_fullheight;
+        return BRAVE_NTP_FAVICON_DRAWABLE_ID_OUTLINE;
     }
 
     private Drawable createTintedDrawable(Bitmap bitmap, @ColorInt int color) {

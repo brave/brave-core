@@ -28,23 +28,33 @@ from urllib.error import URLError  # pylint: disable=no-name-in-module,import-er
 
 from packaging.version import parse as parse_version
 
-# Importing script explicitly, so we can call this script from the terminal
-# without needing to set up the PYTHONPATH.
-sys.path.append(str(Path(__file__).resolve().parents[2] / 'script'))
-
-import deps  # pylint: disable=wrong-import-position
+sys.path.append(str(Path(__file__).resolve().parents[2] / 'tools' / 'cr'))
+from tarball_installer import (  # pylint: disable=wrong-import-position
+    TarballInstaller)
 
 # The hash sum for the archive expected to be downloaded.
 MAC_BINARIES_HASH = '0e1a4db4cb6fc9ca78cc71872ff57f837226f1004a7fbf6ce73a5cd89345c289'
+
+# The exact size of the archive in bytes, checked on download.
+MAC_BINARIES_SIZE = 883762569
 
 # This contains binaries from Xcode 26.5 (17F42) along with the macOS 26.5 SDK
 # (25F70) and the Metal toolchain (17F42).
 MAC_SDK_OFFICIAL_VERSION = '26.5'
 MAC_SDK_OFFICIAL_BUILD_VERSION = '25F70'
-XCODE_TOOLCHAIN_DOWNLOAD_URL = (
+
+# The bucket prefix the archive object name is appended to.
+XCODE_TOOLCHAIN_BUCKET = (
     'https://vhemnu34de4lf5cj6bx2wwshyy0egdxk.lambda-url.us-west-2.on.aws'
-    '/xcode-hermetic-toolchain/xcode-hermetic-toolchain-'
+    '/xcode-hermetic-toolchain/')
+
+# The archive object name; also drives the sidecar file names TarballInstaller
+# writes into MAC_BINARIES_ROOT to record what is deployed.
+XCODE_TOOLCHAIN_OBJECT = (
+    'xcode-hermetic-toolchain-'
     f'{MAC_SDK_OFFICIAL_VERSION}-{MAC_SDK_OFFICIAL_BUILD_VERSION}.tar.gz')
+
+XCODE_TOOLCHAIN_DOWNLOAD_URL = XCODE_TOOLCHAIN_BUCKET + XCODE_TOOLCHAIN_OBJECT
 
 # The toolchain will not be downloaded if the minimum OS version is not met. 19
 # is the Darwin major version number for macOS 10.15. Xcode 26.4 17E192 only
@@ -56,12 +66,6 @@ MAC_MINIMUM_OS_VERSION = [19, 4]
 # Destination for the hermetic Xcode binaries to be extracted at.
 MAC_BINARIES_ROOT = Path(
     __file__).resolve().parents[3] / 'build' / 'mac_files' / 'xcode_binaries'
-
-# The name for the hash file use to track the installation of the toolchain.
-DOWNLOADED_TOOLCHAIN_HASH = (
-    MAC_BINARIES_ROOT /
-    f'.{os.path.basename(XCODE_TOOLCHAIN_DOWNLOAD_URL).replace(".", "_")}_hash'
-)
 
 
 def _load_plist(path: Path) -> dict:
@@ -90,57 +94,21 @@ def _get_hermetic_xcode_version() -> str:
     return _load_plist(plist_path)['CFBundleShortVersionString']
 
 
-class SdkInstaller:
-    """A basic installer to handle the SDK archive.
-
-    This installer is designed to download and extract the SDK archive when
-    needed. It relies on a sidecar file to record the hash of the currently
-    installed SDK, rather than keying up the install merely by the SDK version
-    present in the destination.
-    """
-
-    def is_installed(self) -> bool:
-        """Returns True if the sidecar exists and has the expected hash.
-
-        A symlinked destination is never treated as installed, so the caller
-        always redeploys a real directory on top of it.
-        """
-        if MAC_BINARIES_ROOT.is_symlink():
-            return False
-        if not DOWNLOADED_TOOLCHAIN_HASH.is_file():
-            return False
-        return DOWNLOADED_TOOLCHAIN_HASH.read_text().rstrip(
-        ) == MAC_BINARIES_HASH
-
-    def install(self) -> bool:
-        """Downloads and extracts the SDK archive if it is not already present.
-
-        Returns True if the archive was downloaded and extracted, or False if
-        the expected hash was already in place and nothing needed to be done.
-        Also writes the expected hash to the sidecar file, which is used to
-        detect the current install. On a download failure it prints a
-        diagnostic and re-raises.
-        """
-        if self.is_installed():
-            return False
-        print(f'Downloading hermetic Xcode: {XCODE_TOOLCHAIN_DOWNLOAD_URL}')
-        try:
-            deps.DownloadAndUnpack(XCODE_TOOLCHAIN_DOWNLOAD_URL,
-                                   MAC_BINARIES_ROOT,
-                                   sha256=MAC_BINARIES_HASH)
-        except URLError:
-            print(
-                f'Failed to download hermetic Xcode: {XCODE_TOOLCHAIN_DOWNLOAD_URL}'
-            )
-            raise
-        DOWNLOADED_TOOLCHAIN_HASH.write_text(MAC_BINARIES_HASH)
-        return True
-
-
 def _install_xcode_binaries() -> int:
     """Installs the Xcode binaries needed to build Brave and accepts the
     license."""
-    SdkInstaller().install()
+    installer = TarballInstaller.for_object(
+        MAC_BINARIES_ROOT, XCODE_TOOLCHAIN_BUCKET, {
+            'object_name': XCODE_TOOLCHAIN_OBJECT,
+            'sha256sum': MAC_BINARIES_HASH,
+            'size_bytes': MAC_BINARIES_SIZE,
+        })
+    try:
+        installer.install()
+    except URLError:
+        print('Failed to download hermetic Xcode: '
+              f'{XCODE_TOOLCHAIN_DOWNLOAD_URL}')
+        raise
 
     if sys.platform != 'darwin':
         return 0

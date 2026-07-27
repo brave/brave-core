@@ -13,9 +13,11 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.share.ShareDelegate;
 import org.chromium.chrome.browser.shields.UrlSanitizerServiceFactory;
+import org.chromium.chrome.browser.tasks.tab_management.BraveTabUiFeatureUtilities;
 import org.chromium.components.embedder_support.contextmenu.ContextMenuItemDelegate;
 import org.chromium.components.embedder_support.contextmenu.ContextMenuNativeDelegate;
 import org.chromium.components.embedder_support.contextmenu.ContextMenuParams;
+import org.chromium.ui.modelutil.MVCListAdapter.ModelList;
 import org.chromium.url_sanitizer.mojom.UrlSanitizerService;
 
 import java.util.List;
@@ -43,6 +45,20 @@ public class BraveChromeContextMenuPopulator extends ChromeContextMenuPopulator 
                 context,
                 params,
                 nativeDelegate);
+    }
+
+    @Override
+    public List<ModelList> buildContextMenu() {
+        List<ModelList> groupedItems = super.buildContextMenu();
+        // Hide the "Open in new tab in group" link context menu item when the Brave "Enable tab
+        // groups" master switch is off.
+        if (!BraveTabUiFeatureUtilities.isTabGroupsEnabled()) {
+            for (ModelList group : groupedItems) {
+                BraveTabUiFeatureUtilities.removeMenuItems(
+                        group, R.id.contextmenu_open_in_new_tab_in_group);
+            }
+        }
+        return groupedItems;
     }
 
     @Override

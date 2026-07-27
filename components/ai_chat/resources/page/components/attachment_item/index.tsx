@@ -164,11 +164,13 @@ function AttachmentUploadItem({
   file,
   index,
   remove,
+  onPreview,
   className,
 }: {
   file: Mojom.UploadedFile
   index: number
   remove?: (index: number) => void
+  onPreview: (file: Mojom.UploadedFile) => void
   className?: string
 }) {
   const isImage =
@@ -186,6 +188,14 @@ function AttachmentUploadItem({
     return URL.createObjectURL(blob)
   }, [file, isImage])
 
+  React.useEffect(() => {
+    return () => {
+      if (dataUrl) {
+        URL.revokeObjectURL(dataUrl)
+      }
+    }
+  }, [dataUrl])
+
   const filesize = React.useMemo(() => {
     return formatFileSize(Number(file.filesize))
   }, [file.filesize])
@@ -194,10 +204,20 @@ function AttachmentUploadItem({
     return (
       <AttachmentItem
         icon={
-          <img
-            className={styles.image}
-            src={dataUrl!}
-          />
+          <button
+            type='button'
+            className={styles.imageButton}
+            aria-label={getLocale(
+              S.CHAT_UI_IMAGE_LIGHTBOX_PREVIEW_BUTTON_LABEL,
+            )}
+            onClick={() => onPreview(file)}
+          >
+            <img
+              className={styles.image}
+              src={dataUrl!}
+              alt=''
+            />
+          </button>
         }
         title={
           isFileFullPageScreenshot
@@ -227,6 +247,7 @@ function AttachmentUploadItem({
 export function AttachmentUploadItems(props: {
   uploadedFiles: Mojom.UploadedFile[]
   remove?: (index: number) => void
+  onPreview: (file: Mojom.UploadedFile) => void
   chipClassName?: string
 }) {
   // Calculate first full page screenshot index.
@@ -243,7 +264,7 @@ export function AttachmentUploadItems(props: {
             || index === firstFullPageScreenshotIndex
           )
         })
-        .map((file, filteredIndex) => {
+        .map((file) => {
           // Find the original index in the unfiltered array
           const originalIndex = props.uploadedFiles.indexOf(file)
 
@@ -253,6 +274,7 @@ export function AttachmentUploadItems(props: {
               file={file}
               index={originalIndex}
               remove={props.remove}
+              onPreview={props.onPreview}
               className={props.chipClassName}
             />
           )

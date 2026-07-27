@@ -71,6 +71,11 @@ public class BraveSearchEnginesPreferences extends BravePreferenceFragment
     }
 
     @Override
+    public String getMainMenuKey() {
+        return "brave_search_engines";
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         // updateSearchEnginePreference method does a lot of preference finding,

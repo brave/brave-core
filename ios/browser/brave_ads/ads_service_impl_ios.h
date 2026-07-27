@@ -133,6 +133,7 @@ class AdsServiceImplIOS : public AdsService {
                           bool is_restoring,
                           bool is_visible) override;
   void NotifyTabDidLoad(int32_t tab_id, int http_status_code) override;
+  void NotifyTabDidFailToLoad(int32_t tab_id) override;
   void NotifyDidCloseTab(int32_t tab_id) override;
 
   void NotifyUserGestureEventTriggered(int32_t page_transition) override;

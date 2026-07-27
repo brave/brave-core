@@ -19,6 +19,11 @@ Object.defineProperty(URL, 'createObjectURL', {
   value: jest.fn(() => 'mock-object-url'),
 })
 
+Object.defineProperty(URL, 'revokeObjectURL', {
+  writable: true,
+  value: jest.fn(),
+})
+
 const testContext: InputBoxProps['context'] = {
   isMobile: false,
   getPluralString: () => Promise.resolve(''),
@@ -56,6 +61,7 @@ const testContext: InputBoxProps['context'] = {
   handleSkillClick: () => {},
   selectedSkill: undefined,
   focusInput: jest.fn(),
+  setPreviewUploadedFile: jest.fn(),
   processImageFile: jest.fn(),
   processPdfFile: jest.fn(),
   processTextFile: jest.fn(),

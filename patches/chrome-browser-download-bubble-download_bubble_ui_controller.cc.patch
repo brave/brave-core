@@ -1,0 +1,21 @@
+diff --git a/chrome/browser/download/bubble/download_bubble_ui_controller.cc b/chrome/browser/download/bubble/download_bubble_ui_controller.cc
+index 5acb06f2d7bf1c47f041c1ea6f30257034cb7a84..a5ac9129720b186a1fee3d9374cb7fafddc5e50b 100644
+--- a/chrome/browser/download/bubble/download_bubble_ui_controller.cc
++++ b/chrome/browser/download/bubble/download_bubble_ui_controller.cc
+@@ -267,7 +267,7 @@ void DownloadBubbleUIController::ProcessDownloadButtonPress(
+   }
+   download::DownloadItem* item = model->GetDownloadItem();
+   DownloadCommands commands(model);
+-  base::UmaHistogramEnumeration("Download.Bubble.ProcessedCommand2", command);
++  base::DoNothing();
+   DownloadItemWarningData::WarningSurface warning_surface =
+       is_main_view ? DownloadItemWarningData::WarningSurface::BUBBLE_MAINPAGE
+                    : DownloadItemWarningData::WarningSurface::BUBBLE_SUBPAGE;
+@@ -346,6 +346,7 @@ void DownloadBubbleUIController::ProcessDownloadButtonPress(
+     case DownloadCommands::ALWAYS_OPEN_TYPE:
+     case DownloadCommands::CANCEL_DEEP_SCAN:
+     case DownloadCommands::OPEN_SAFE_BROWSING_SETTING:
++    case DownloadCommands::DELETE_LOCAL_FILE:
+       commands.ExecuteCommand(command);
+       break;
+     default:

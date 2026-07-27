@@ -62,6 +62,22 @@ window.getComputedStyle = function (...args) {
   }
 } as typeof window.getComputedStyle
 
+// jsdom does not implement the Constructable Stylesheets API used by
+// components/common/scoped_css.ts to register component styles as a
+// module-load side effect. Without this, importing any component whose
+// sibling `.style.ts` file calls `scoped.css` crashes on
+// `document.adoptedStyleSheets.push(...)` before a single test can run.
+if (!('adoptedStyleSheets' in document)) {
+  ;(document as any).adoptedStyleSheets = []
+}
+if (typeof (windowAsAny.CSSStyleSheet?.prototype as any)?.replace !== 'function') {
+  windowAsAny.CSSStyleSheet = class CSSStyleSheetPolyfill {
+    replace() {
+      return Promise.resolve(this)
+    }
+  }
+}
+
 // jsdom does not implement the Web Animations API. Svelte 5's transition system
 // calls Element.animate() during mount/unmount and assigns onfinish to advance
 // its state machine, so the stub fires onfinish on the next microtask.

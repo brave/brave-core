@@ -54,6 +54,7 @@ class TabManager final : public AdsClientNotifierObserver {
   void NotifyTabDidChangeFocus(int32_t tab_id);
   void NotifyTabDidChange(const TabInfo& tab);
   void NotifyTabDidLoad(const TabInfo& tab, int http_status_code);
+  void NotifyTabDidFailToLoad(const TabInfo& tab);
   void NotifyDidOpenNewTab(const TabInfo& tab);
   void NotifyTextContentDidChange(int32_t tab_id,
                                   base::span<const GURL> redirect_chain,
@@ -74,6 +75,7 @@ class TabManager final : public AdsClientNotifierObserver {
                             bool is_restoring,
                             bool is_visible) override;
   void OnNotifyTabDidLoad(int32_t tab_id, int http_status_code) override;
+  void OnNotifyTabDidFailToLoad(int32_t tab_id) override;
   void OnNotifyDidCloseTab(int32_t tab_id) override;
 
   base::ObserverList<TabManagerObserver> observers_;

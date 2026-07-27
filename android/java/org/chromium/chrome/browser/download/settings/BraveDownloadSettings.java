@@ -111,4 +111,9 @@ public class BraveDownloadSettings extends DownloadSettings
         }
         return super.onPreferenceChange(preference, newValue);
     }
+
+    @Override
+    public String getMainMenuKey() {
+        return "brave_downloads";
+    }
 }

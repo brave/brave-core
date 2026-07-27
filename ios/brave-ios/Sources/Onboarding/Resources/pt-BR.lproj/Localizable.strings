@@ -47,10 +47,16 @@
 "playlistInfoFeaturePointSubtitleTwo" = "Mantenha o fluxo: adicione vídeos enquanto navega, assista mais tarde.";
 
 /* A list of features in Playlist */
+"playlistInfoFeaturePointTitleOne" = "Adicione vídeos ao Brave Playlist.";
+
+/* A list of features in Playlist */
 "playlistInfoFeaturePointTitleThree" = "A reprodução é melhor na lista de reprodução";
 
 /* A list of features in Playlist */
 "playlistInfoFeaturePointTitleTwo" = "Toque no botão para adicionar vídeos a uma lista de reprodução";
+
+/* A body of text explaining the feature that will be displayed under a title reading 'Introducing Brave Playlist' */
+"playlistOnboardingDescription" = "Crie playlists com o seu conteúdo preferido. Adicione multimídia a partir de qualquer página.";
 
 /* %@ will be replaced by the text 'Add to Playlist' and an icon. Guides the user to tap an icon just above to add some content to the playlist feature */
 "userActionPrompt" = "Toque em %@ para adicionar o seu primeiro item";

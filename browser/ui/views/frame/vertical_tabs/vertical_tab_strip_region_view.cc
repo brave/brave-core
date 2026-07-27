@@ -386,6 +386,12 @@ BraveVerticalTabStripRegionView::BraveVerticalTabStripRegionView(
                             base::Unretained(this)));
   }
 
+  show_toggle_button_pref_.Init(
+      brave_tabs::kVerticalTabsShowToggleButton, prefs,
+      base::BindRepeating(
+          &BraveVerticalTabStripRegionView::OnShowToggleButtonPrefChanged,
+          base::Unretained(this)));
+
   widget_observation_.Observe(browser_view->GetWidget());
 
   if (auto* focus_mode_controller =
@@ -399,7 +405,7 @@ BraveVerticalTabStripRegionView::BraveVerticalTabStripRegionView(
                           base::Unretained(this)));
 
   // Note: This should happen after all the PrefMembers have been initialized.
-  OnFloatingModePrefChanged();
+  OnShowToggleButtonPrefChanged();
 
   set_context_menu_controller(this);
 }
@@ -708,6 +714,7 @@ void BraveVerticalTabStripRegionView::Layout(PassKey) {
 }
 
 void BraveVerticalTabStripRegionView::OnShowVerticalTabsPrefChanged() {
+  UpdateFloatingStateForBrowserMode();
   UpdateLayout();
 
   if (!VerticalTabController::FromBrowser(browser_)
@@ -788,15 +795,24 @@ void BraveVerticalTabStripRegionView::OnMouseEntered() {
   ScheduleFloatingModeTimer();
 }
 
-void BraveVerticalTabStripRegionView::ShowVerticalTabStripOnMouseOver(
+void BraveVerticalTabStripRegionView::HandleMouseEvent(
+    const gfx::PointF& point_in_screen) {
+  if (ShowVerticalTabStripOnMouseOver(point_in_screen)) {
+    return;
+  }
+
+  CollapseVerticalTabStripOnMouseOut(point_in_screen);
+}
+
+bool BraveVerticalTabStripRegionView::ShowVerticalTabStripOnMouseOver(
     const gfx::PointF& point_in_screen) {
   if (!IsFloatingVerticalTabsEnabled()) {
-    return;
+    return false;
   }
 
   // If already expanded, no need to show on mouse over.
   if (state_ == State::kExpanded || state_ == State::kFloating) {
-    return;
+    return false;
   }
 
   gfx::RectF mouse_event_detect_bounds(
@@ -813,8 +829,24 @@ void BraveVerticalTabStripRegionView::ShowVerticalTabStripOnMouseOver(
 
   if (mouse_event_detect_bounds.Contains(point_in_screen)) {
     OnMouseEntered();
+    return true;
+  }
+
+  return false;
+}
+
+void BraveVerticalTabStripRegionView::CollapseVerticalTabStripOnMouseOut(
+    const gfx::PointF& point_in_screen) {
+  if (state_ != State::kFloating) {
     return;
   }
+
+  if (gfx::RectF(GetBoundsInScreen()).Contains(point_in_screen)) {
+    return;
+  }
+
+  mouse_enter_timer_.Stop();
+  ScheduleCollapseTimer();
 }
 
 void BraveVerticalTabStripRegionView::OnMousePressedInTree() {
@@ -1040,6 +1072,19 @@ void BraveVerticalTabStripRegionView::
   PreferredSizeChanged();
 }
 
+void BraveVerticalTabStripRegionView::OnShowToggleButtonPrefChanged() {
+  if (!show_toggle_button_pref_.GetValue()) {
+    // There is no other way to expand collapsed vertical tabs when the
+    // toggle button is hidden, so force the base/resting state to collapsed.
+    collapsed_pref_.SetValue(true);
+    SetState(State::kCollapsed);
+  }
+
+  // Floating mode is forced on when the toggle button is hidden; make sure
+  // this state change is applied immediately.
+  OnFloatingModePrefChanged();
+}
+
 void BraveVerticalTabStripRegionView::OnExpandedWidthPrefChanged() {
   if (!expanded_state_per_window_pref_.GetPrefName().empty() &&
       *expanded_state_per_window_pref_) {
@@ -1154,7 +1199,6 @@ void BraveVerticalTabStripRegionView::UpdateFloatingStateForBrowserMode() {
       width_animation_.Stop();
       SetVisible(false);
       SetState(State::kCollapsed);
-      PreferredSizeChanged();
     }
   } else if (floating_restore_state_) {
     // When exiting floating mode based on the current browser mode, restore the
@@ -1163,8 +1207,12 @@ void BraveVerticalTabStripRegionView::UpdateFloatingStateForBrowserMode() {
     floating_restore_state_.reset();
     SetVisible(true);
     SetState(restore_state);
-    PreferredSizeChanged();
   }
+
+  // This method is called whenever browser mode(fullscreen or focus mode) is
+  // changed. Even floating state is not changed, host view's preferred size
+  // should be updated. Notify to VerticalTabStripContainerView to do it.
+  PreferredSizeChanged();
 }
 
 void BraveVerticalTabStripRegionView::ScheduleFloatingModeTimer() {

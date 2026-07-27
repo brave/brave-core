@@ -12,9 +12,6 @@ const boolValues: Record<string, boolean> = {
   isAIChatAgentProfile: false,
 }
 
-const stringKeys = Object.keys(braveComponentsStrings)
-console.log('Setting up loadTimeData mock with keys:', stringKeys)
-
 const global: any = window
 global.loadTimeData = {
   getString(key: string) {

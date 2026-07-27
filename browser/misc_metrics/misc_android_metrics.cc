@@ -9,9 +9,8 @@
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/browser/misc_metrics/uptime_monitor_impl.h"
 #include "brave/browser/search_engines/search_engine_tracker.h"
-#include "brave/components/misc_metrics/brave_search_metrics.h"
 #include "brave/components/misc_metrics/default_browser_monitor.h"
-#include "brave/components/misc_metrics/navigation_source_metrics.h"
+#include "brave/components/misc_metrics/page_metrics.h"
 #include "brave/components/misc_metrics/privacy_hub_metrics.h"
 #include "brave/components/misc_metrics/quick_search_metrics.h"
 #include "brave/components/misc_metrics/tab_metrics.h"
@@ -31,12 +30,10 @@ MiscAndroidMetrics::MiscAndroidMetrics(
     ProcessMiscMetrics* misc_metrics,
     SearchEngineTracker* search_engine_tracker,
     TemplateURLService* template_url_service,
-    BraveSearchMetrics* brave_search_metrics,
-    NavigationSourceMetrics* navigation_source_metrics)
+    PageMetrics* page_metrics)
     : misc_metrics_(misc_metrics),
       search_engine_tracker_(search_engine_tracker),
-      brave_search_metrics_(brave_search_metrics),
-      navigation_source_metrics_(navigation_source_metrics),
+      page_metrics_(page_metrics),
       quick_search_metrics_(
           std::make_unique<QuickSearchMetrics>(local_state,
                                                template_url_service)) {}
@@ -86,54 +83,56 @@ void MiscAndroidMetrics::RecordSetAsDefault(bool is_default) {
 void MiscAndroidMetrics::RecordQuickSearch(bool is_leo,
                                            const std::string& keyword) {
   quick_search_metrics_->RecordQuickSearch(is_leo, keyword);
-  if (brave_search_metrics_) {
-    brave_search_metrics_->MaybeRecordQuickSearch(is_leo, keyword);
+  if (page_metrics_) {
+    page_metrics_->brave_search_metrics().MaybeRecordQuickSearch(is_leo,
+                                                                 keyword);
   }
 }
 
 void MiscAndroidMetrics::RecordIntentURL(const std::string& url) {
-  if (!brave_search_metrics_) {
+  if (!page_metrics_) {
     return;
   }
-  brave_search_metrics_->MaybeRecordWidgetSearch(GURL(url));
+  page_metrics_->brave_search_metrics().MaybeRecordWidgetSearch(GURL(url));
 }
 
 void MiscAndroidMetrics::RecordOmniboxSearchQuery(
     const std::string& destination_url,
     bool is_suggestion) {
-  if (!brave_search_metrics_) {
+  if (!page_metrics_) {
     return;
   }
-  brave_search_metrics_->MaybeRecordOmniboxQuery(GURL(destination_url),
-                                                 is_suggestion);
+  page_metrics_->brave_search_metrics().MaybeRecordOmniboxQuery(
+      GURL(destination_url), is_suggestion);
+  page_metrics_->RecordOmniboxQuery();
 }
 
 void MiscAndroidMetrics::RecordOmniboxDirectNavigation() {
-  if (!navigation_source_metrics_) {
+  if (!page_metrics_) {
     return;
   }
-  navigation_source_metrics_->RecordDirectNavigation();
+  page_metrics_->navigation_source_metrics().RecordDirectNavigation();
 }
 
 void MiscAndroidMetrics::RecordOmniboxHistoryNavigation() {
-  if (!navigation_source_metrics_) {
+  if (!page_metrics_) {
     return;
   }
-  navigation_source_metrics_->RecordHistoryNavigation();
+  page_metrics_->navigation_source_metrics().RecordHistoryNavigation();
 }
 
 void MiscAndroidMetrics::RecordOmniboxBookmarkNavigation() {
-  if (!navigation_source_metrics_) {
+  if (!page_metrics_) {
     return;
   }
-  navigation_source_metrics_->RecordBookmarkNavigation();
+  page_metrics_->navigation_source_metrics().RecordBookmarkNavigation();
 }
 
 void MiscAndroidMetrics::RecordTopSiteNavigation(bool is_custom) {
-  if (!navigation_source_metrics_) {
+  if (!page_metrics_) {
     return;
   }
-  navigation_source_metrics_->RecordTopSiteNavigation(is_custom);
+  page_metrics_->navigation_source_metrics().RecordTopSiteNavigation(is_custom);
 }
 
 void MiscAndroidMetrics::RecordOpeningScreenSettingSwitch(

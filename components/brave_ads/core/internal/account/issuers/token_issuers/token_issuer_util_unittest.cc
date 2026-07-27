@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/account/issuers/token_issuers/token_issuer_util.h"
 
-#include "brave/components/brave_ads/core/internal/account/issuers/issuers_info.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_util.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/test/issuers_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/public_key.h"
@@ -17,131 +16,82 @@ namespace brave_ads {
 
 class BraveAdsTokenIssuerUtilTest : public test::TestBase {};
 
-TEST_F(BraveAdsTokenIssuerUtilTest, TokenIssuerExistsForConfirmationType) {
+TEST_F(BraveAdsTokenIssuerUtilTest, ConfirmationTokenIssuerExists) {
   // Arrange
   test::BuildAndSetIssuers();
 
   // Act & Assert
-  EXPECT_TRUE(TokenIssuerExistsForType(TokenIssuerType::kConfirmations));
+  EXPECT_TRUE(ConfirmationTokenIssuerExists());
 }
 
-TEST_F(BraveAdsTokenIssuerUtilTest,
-       TokenIssuerDoesNotExistForConfirmationType) {
+TEST_F(BraveAdsTokenIssuerUtilTest, ConfirmationTokenIssuerDoesNotExist) {
   // Arrange
-  const IssuersInfo issuers = test::BuildIssuers(
-      /*ping=*/7'200'000, /*confirmation_token_issuer_public_keys=*/{},
-      /*payment_token_issuer_public_keys=*/
+  SetIssuers(test::BuildIssuers(
+      /*ping=*/7'200'000, /*confirmation_public_keys=*/{},
+      /*payment_public_keys=*/
       {{"JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=", 0.0},
-       {"OqhZpUC8B15u+Gc11rQYRl8O3zOSAUIEC2JuDHI32TM=", 0.1}});
-
-  SetIssuers(issuers);
+       {"OqhZpUC8B15u+Gc11rQYRl8O3zOSAUIEC2JuDHI32TM=", 0.1}}));
 
   // Act & Assert
-  EXPECT_FALSE(TokenIssuerExistsForType(TokenIssuerType::kConfirmations));
+  EXPECT_FALSE(ConfirmationTokenIssuerExists());
 }
 
-TEST_F(BraveAdsTokenIssuerUtilTest, TokenIssuerExistsForPaymentsType) {
+TEST_F(BraveAdsTokenIssuerUtilTest, PaymentTokenIssuerExists) {
   // Arrange
   test::BuildAndSetIssuers();
 
   // Act & Assert
-  EXPECT_TRUE(TokenIssuerExistsForType(TokenIssuerType::kPayments));
+  EXPECT_TRUE(PaymentTokenIssuerExists());
 }
 
-TEST_F(BraveAdsTokenIssuerUtilTest, TokenIssuerDoesNotExistForPaymentsType) {
+TEST_F(BraveAdsTokenIssuerUtilTest, PaymentTokenIssuerDoesNotExist) {
   // Arrange
-  const IssuersInfo issuers = test::BuildIssuers(
+  SetIssuers(test::BuildIssuers(
       /*ping=*/7'200'000,
-      /*confirmation_token_issuer_public_keys=*/
-      {{"OqhZpUC8B15u+Gc11rQYRl8O3zOSAUIEC2JuDHI32TM=", 0.0},
-       {"cKo0rk1iS8Obgyni0X3RRoydDIGHsivTkfX/TM1Xl24=", 0.0}},
-      /*payment_token_issuer_public_keys=*/{});
-
-  SetIssuers(issuers);
+      /*confirmation_public_keys=*/
+      {"OqhZpUC8B15u+Gc11rQYRl8O3zOSAUIEC2JuDHI32TM=",
+       "cKo0rk1iS8Obgyni0X3RRoydDIGHsivTkfX/TM1Xl24="},
+      /*payment_public_keys=*/{}));
 
   // Act & Assert
-  EXPECT_FALSE(TokenIssuerExistsForType(TokenIssuerType::kPayments));
+  EXPECT_FALSE(PaymentTokenIssuerExists());
 }
 
-TEST_F(BraveAdsTokenIssuerUtilTest,
-       TokenIssuerPublicKeyExistsForConfirmationsType) {
+TEST_F(BraveAdsTokenIssuerUtilTest, ConfirmationTokenIssuerPublicKeyExists) {
   // Arrange
   test::BuildAndSetIssuers();
 
   // Act & Assert
-  EXPECT_TRUE(TokenIssuerPublicKeyExistsForType(
-      TokenIssuerType::kConfirmations,
+  EXPECT_TRUE(ConfirmationTokenIssuerPublicKeyExists(
       cbr::PublicKey("QnShwT9vRebch3WDu28nqlTaNCU5MaOF1n4VV4Q3K1g=")));
 }
 
 TEST_F(BraveAdsTokenIssuerUtilTest,
-       TokenIssuerPublicKeyDoesNotExistForConfirmationsType) {
+       ConfirmationTokenIssuerPublicKeyDoesNotExist) {
   // Arrange
   test::BuildAndSetIssuers();
 
   // Act & Assert
-  EXPECT_FALSE(TokenIssuerPublicKeyExistsForType(
-      TokenIssuerType::kConfirmations,
+  EXPECT_FALSE(ConfirmationTokenIssuerPublicKeyExists(
       cbr::PublicKey("Nj2NZ6nJUsK5MJ9ga9tfyctxzpT+GlvENF2TRHU4kBg=")));
 }
 
-TEST_F(BraveAdsTokenIssuerUtilTest, TokenIssuerPublicKeyExistsForPaymentsType) {
+TEST_F(BraveAdsTokenIssuerUtilTest, PaymentTokenIssuerPublicKeyExists) {
   // Arrange
   test::BuildAndSetIssuers();
 
   // Act & Assert
-  EXPECT_TRUE(TokenIssuerPublicKeyExistsForType(
-      TokenIssuerType::kPayments,
+  EXPECT_TRUE(PaymentTokenIssuerPublicKeyExists(
       cbr::PublicKey("OqhZpUC8B15u+Gc11rQYRl8O3zOSAUIEC2JuDHI32TM=")));
 }
 
-TEST_F(BraveAdsTokenIssuerUtilTest,
-       TokenIssuerPublicKeyDoesNotExistForPaymentsType) {
+TEST_F(BraveAdsTokenIssuerUtilTest, PaymentTokenIssuerPublicKeyDoesNotExist) {
   // Arrange
   test::BuildAndSetIssuers();
 
   // Act & Assert
-  EXPECT_FALSE(TokenIssuerPublicKeyExistsForType(
-      TokenIssuerType::kPayments,
+  EXPECT_FALSE(PaymentTokenIssuerPublicKeyExists(
       cbr::PublicKey("zNWjpwIbghgXvTol3XPLKV3NJoEFtvUoPMiKstiWm3A=")));
-}
-
-TEST_F(BraveAdsTokenIssuerUtilTest, GetTokenIssuerForType) {
-  // Arrange
-  const IssuersInfo issuers = test::BuildIssuers(
-      /*ping=*/7'200'000,
-      /*confirmation_token_issuer_public_keys=*/
-      {{"OqhZpUC8B15u+Gc11rQYRl8O3zOSAUIEC2JuDHI32TM=", 0.0},
-       {"QnShwT9vRebch3WDu28nqlTaNCU5MaOF1n4VV4Q3K1g=", 0.0}},
-      /*payment_token_issuer_public_keys=*/
-      {{"JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=", 0.0},
-       {"OqhZpUC8B15u+Gc11rQYRl8O3zOSAUIEC2JuDHI32TM=", 0.1}});
-
-  // Act
-  std::optional<TokenIssuerInfo> token_issuer =
-      GetTokenIssuerForType(issuers, TokenIssuerType::kPayments);
-  ASSERT_TRUE(token_issuer);
-
-  // Assert
-  EXPECT_THAT(*token_issuer,
-              ::testing::FieldsAre(
-                  TokenIssuerType::kPayments,
-                  TokenIssuerPublicKeyMap{
-                      {"JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=", 0.0},
-                      {"OqhZpUC8B15u+Gc11rQYRl8O3zOSAUIEC2JuDHI32TM=", 0.1}}));
-}
-
-TEST_F(BraveAdsTokenIssuerUtilTest, DoNotGetTokenIssuerForMissingType) {
-  // Arrange
-  const IssuersInfo issuers = test::BuildIssuers(
-      /*ping=*/7'200'000,
-      /*confirmation_token_issuer_public_keys=*/
-      {{"OqhZpUC8B15u+Gc11rQYRl8O3zOSAUIEC2JuDHI32TM=", 0.0},
-       {"QnShwT9vRebch3WDu28nqlTaNCU5MaOF1n4VV4Q3K1g=", 0.0}},
-      /*payment_token_issuer_public_keys=*/{});
-
-  // Act & Assert
-  EXPECT_FALSE(GetTokenIssuerForType(issuers, TokenIssuerType::kPayments));
 }
 
 }  // namespace brave_ads

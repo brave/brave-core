@@ -28,6 +28,9 @@
 /* A picker title for selecting a automatic shred setting option */
 "AutoShred" = "自動銷毀";
 
+/* The description for shredding when the app is closed */
+"AutoShredSectionTitle" = "自動粉碎瀏覽資料";
+
 /* The option the user can select to do aggressive ad and tracker blocking */
 "BlockAdsAndTrackingAggressive" = "積極";
 
@@ -205,11 +208,20 @@
 /* An option setting for never automatically shreding site data */
 "ShredNever" = "一律不要";
 
+/* The description for never automatically shreding site data */
+"ShredNeverDescription" = "瀏覽資料永遠不會自動粉碎";
+
 /* An option setting for automatically shredding only when the app is closed */
 "ShredOnAppClose" = "應用程式關閉";
 
+/* The description for shredding when the app is closed */
+"ShredOnAppCloseDescription" = "當 Brave 應用程式關閉／重新啟動時，瀏覽資料會自動粉碎";
+
 /* An option setting for automatically shredding when the site is closed */
 "ShredOnSiteTabsClosed" = "網站分頁關閉";
+
+/* The description for shredding when the site is closed */
+"ShredOnSiteTabsClosedDescription" = "當開啟某網站的所有分頁都關閉時，瀏覽資料會自動粉碎";
 
 /* A message for a confirmation window that appears when a user clicks on 'Shred All Tabs'. */
 "ShredSiteAllTabsConfirmationMessage" = "銷毀將關閉所有打開的分頁，並刪除所有網站資料。此操作無法復原。";

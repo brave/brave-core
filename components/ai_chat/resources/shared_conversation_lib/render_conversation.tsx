@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import './load_time_data'
+import './set_icon_base_path'
 import '@brave/leo/tokens/css/variables.css'
 import '$web-common/defaultTrustedTypesPolicy'
 import '../../../../ui/webui/resources/css/reset.css'
@@ -11,7 +12,6 @@ import '../../../../ui/webui/resources/css/reset.css'
 import * as React from 'react'
 import { createRoot } from 'react-dom/client'
 import StyledComponentsProvider from '$web-common/StyledComponentsProvider'
-import { setIconBasePath } from '@brave/leo/react/icon'
 import * as Mojom from '../common/mojom'
 import { parseConversationData } from '../common/conversation_serialization'
 import Conversation from '../untrusted_conversation_frame/components/conversation'
@@ -25,14 +25,6 @@ import {
   createMockUntrustedService,
   createMockUntrustedUIHandler,
 } from '../untrusted_conversation_frame/api/mock_interfaces'
-
-// Set the nala icon path to be relative to this script, which should be
-// the root of the output bundle.
-// Need to store import.meta.url in a separate variable to the URL building
-// otherwise webpack will try to resolve '.' locally (and probably fail).
-const scriptUrl = import.meta.url
-const relativePathUrl = new URL('./nala-icons', scriptUrl)
-setIconBasePath(relativePathUrl.toString())
 
 /**
  * Create a minimal local-only read-only version of the AI Chat API interfaces.
@@ -79,8 +71,6 @@ export function renderConversation(
     return
   }
 
-  console.log('conversation', conversation)
-
   api.getConversationHistory.update(conversation)
 
   const root = createRoot(element)
@@ -88,7 +78,10 @@ export function renderConversation(
   root.render(
     <StyledComponentsProvider>
       <div style={{ backgroundColor: 'var(--leo-color-container-background)' }}>
-        <UntrustedConversationContextProvider api={api}>
+        <UntrustedConversationContextProvider
+          api={api}
+          isReadOnly
+        >
           <Conversation />
         </UntrustedConversationContextProvider>
       </div>

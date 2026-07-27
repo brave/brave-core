@@ -21,8 +21,6 @@ export enum LedgerCommand {
   SignTransaction = 'ledger-sign-transaction',
   SignPersonalMessage = 'ledger-sign-personal-message',
   SignEip712Message = 'ledger-sign-eip-712-message',
-  AuthorizationRequired = 'authorization-required', // Sent by the frame to the parent context
-  AuthorizationSuccess = 'authorization-success', // Sent by the frame to the parent context
 }
 
 // LedgerBridgeErrorCodes are errors related to the configuring
@@ -69,21 +67,9 @@ export type GetDeviceNameCommand = CommandMessage & {
   command: LedgerCommand.GetDeviceName
 }
 
-// AuthorizationRequired command
-export type AuthorizationRequiredCommand = CommandMessage & {
-  command: LedgerCommand.AuthorizationRequired
-}
-export type AuthorizationSuccessResponsePayload = CommandMessage
-  & LedgerResponsePayload
-export type AuthorizationSuccessCommand = CommandMessage & {
-  command: LedgerCommand.AuthorizationSuccess
-}
-
 export type LedgerFrameCommand =
   | UnlockCommand
   | GetDeviceNameCommand
-  | AuthorizationRequiredCommand
-  | AuthorizationSuccessCommand
   | SolLedgerFrameCommand
   | EthLedgerFrameCommand
   | FilLedgerFrameCommand

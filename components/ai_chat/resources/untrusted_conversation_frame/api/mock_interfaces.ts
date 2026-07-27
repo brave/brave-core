@@ -130,10 +130,10 @@ export function createMockParentUIFrame(
     // Action methods - fire and forget stubs
     childHeightChanged: () => {},
     rateMessage: () => {},
-    userRequestedOpenGeneratedUrl: () => {},
     dragStart: () => {},
     regenerateAnswerMenuIsOpen: () => {},
     showSkillDialog: () => {},
+    showImageLightbox: () => {},
     showPremiumSuggestionForRegenerate: () => {},
     requestNewConversation: () => {},
     handleResetError: () => {},

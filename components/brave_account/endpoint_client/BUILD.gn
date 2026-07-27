@@ -21,7 +21,10 @@ source_set("endpoint_client") {
     "request_handle.h",
     "request_types.h",
     "response.h",
+    "retry_options.h",
     "static_string.h",
+    "url_replacements.cc",
+    "url_replacements.h",
     "with_headers.h",
   ]
 
@@ -60,6 +63,7 @@ source_set("unit_tests") {
     "is_response_body_unittest.cc",
     "is_response_unittest.cc",
     "maybe_strip_with_headers_unittest.cc",
+    "url_replacements_unittest.cc",
   ]
 
   deps = [
@@ -68,6 +72,7 @@ source_set("unit_tests") {
     "//brave/components/brave_account/endpoint_client",
     "//brave/components/brave_account/endpoint_client:json_test_endpoint_bodies",
     "//brave/components/brave_account/endpoint_client:protobuf_test_endpoint_bodies",
+    "//brave/components/brave_account/endpoint_client:test_support",
     "//net",
     "//services/network:test_support",
     "//services/network/public/cpp",

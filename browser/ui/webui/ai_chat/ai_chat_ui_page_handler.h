@@ -142,6 +142,12 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
 
   void HandleWebContentsDestroyed();
 
+  // Opens `url` in a new foreground tab. This is the plain link-handling
+  // behavior used by internal chrome/UI links (e.g. "Go Premium") and as the
+  // fallback for `OpenURL` when the conversation is not moved into the side
+  // panel.
+  void OpenURLInNewTab(const GURL& url);
+
   // AssociatedContentDelegate::Observer
   void OnRequestArchive(AssociatedContentDelegate* delegate) override;
   void OnNewPage(AssociatedContentDelegate* delegate) override;

@@ -14,7 +14,6 @@
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_util.h"
-#include "brave/components/brave_ads/core/internal/account/issuers/token_issuers/token_issuer_types.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/token_issuers/token_issuer_util.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_tokens_util.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/token_generator_interface.h"
@@ -84,15 +83,30 @@ void RefillConfirmationTokens::Refill() {
   NotifyWillRefillConfirmationTokens(
       /*count=*/CalculateAmountOfConfirmationTokensToRefill());
 
-  GenerateTokens();
+  if (!GenerateTokens()) {
+    return FailedToRefill();
+  }
 
   RequestSignedTokens();
 }
 
-void RefillConfirmationTokens::GenerateTokens() {
+bool RefillConfirmationTokens::GenerateTokens() {
   const size_t count = CalculateAmountOfConfirmationTokensToRefill();
-  tokens_ = GetTokenGenerator()->Generate(count);
-  blinded_tokens_ = cbr::BlindTokens(*tokens_);
+  cbr::TokenList tokens = GetTokenGenerator()->Generate(count);
+
+  cbr::BlindedTokenList blinded_tokens = cbr::BlindTokens(tokens);
+  if (blinded_tokens.empty()) {
+    // A token whose preimage maps to the identity element cannot be blinded
+    // (see `cbr::Token::Blind`). This is astronomically unlikely; abort the
+    // refill so the next cycle regenerates fresh tokens, keeping `tokens_` and
+    // `blinded_tokens_` index-aligned.
+    BLOG(0, "Failed to blind confirmation tokens");
+    return false;
+  }
+
+  tokens_ = std::move(tokens);
+  blinded_tokens_ = std::move(blinded_tokens);
+  return true;
 }
 
 bool RefillConfirmationTokens::ShouldRequestSignedTokens() const {
@@ -254,8 +268,7 @@ RefillConfirmationTokens::HandleGetSignedTokensUrlResponse(
         {.message = "Failed to parse public key", .should_retry = false});
   }
 
-  if (!TokenIssuerPublicKeyExistsForType(TokenIssuerType::kConfirmations,
-                                         *public_key)) {
+  if (!ConfirmationTokenIssuerPublicKeyExists(*public_key)) {
     return UrlResponseError(
         {.message = "Confirmations public key does not exist",
          .should_retry = true});

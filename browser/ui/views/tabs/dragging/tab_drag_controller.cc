@@ -18,6 +18,7 @@
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_container_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
+#include "brave/browser/ui/views/tabs/brave_tab_strip_layout_helper.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/tabs/features.h"
@@ -82,6 +83,17 @@ void BraveTabDragController::StartDraggingTabsSession(
       offset_from_first_dragged_view_.y());
   dragging_tabs_session_->set_is_showing_vertical_tabs(
       is_showing_vertical_tabs_);
+
+  // Vertical tabs can render a dragged tree-tab subtree as a partially
+  // overlapping stack (see CalculateBoundsForVerticalDraggedViews). Children
+  // added later paint on top by default (see
+  // TabDragContextImpl::PaintChildren / ZOrderableTabContainerElement), which
+  // would otherwise let the last dragged view cover all the others. Fix the
+  // paint order once here rather than on every drag layout pass.
+  if (is_showing_vertical_tabs_) {
+    tabs::ReorderDraggedViewsForStacking(attached_context_,
+                                         drag_data_.attached_views());
+  }
 }
 
 void BraveTabDragController::DetachAndAttachToNewContext(

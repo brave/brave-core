@@ -66,7 +66,7 @@ resources outside this repository, go to:
 - Markdown documents must follow the
   [Markdown Style Guide](https://chromium.googlesource.com/chromium/src/+/HEAD/styleguide/markdown/markdown.md).
 
-Use `npm run format` to auto format documents.
+Use `pnpm run format` to auto format documents.
 
 ### Previewing changes
 
@@ -74,7 +74,7 @@ Use `npm run format` to auto format documents.
 
 ```bash
 # in src/brave/
-npm run docs
+pnpm run docs
 ```
 
 This is only an estimate. The **github** view may differ.

@@ -9,6 +9,7 @@
 #include <memory>
 
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/zcash_utils.h"
 
 namespace brave_wallet {
 
@@ -21,7 +22,8 @@ class OrchardShardTree;
 // Creates a small tree height of 8 for testing purposes.
 std::unique_ptr<OrchardShardTree> CreateShardTreeForTesting(  // IN-TEST
     ::brave_wallet::OrchardStorage& storage,
-    const mojom::AccountIdPtr& account_id);
+    const mojom::AccountIdPtr& account_id,
+    OrchardPool pool);
 
 }  // namespace orchard
 }  // namespace brave_wallet

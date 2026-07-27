@@ -29,6 +29,21 @@ void RecordToHistogramBucket(const char* histogram_name,
                                 std::size(buckets) + 1);
 }
 
+template <std::size_t N>
+void RecordPercentageHistogram(const char* histogram_name,
+                               const int (&buckets)[N],
+                               int numerator,
+                               int denominator) {
+  DCHECK(histogram_name);
+  if (denominator <= 0) {
+    return;
+  }
+  // Don't round down to 0% if the numerator is nonzero.
+  int percentage =
+      numerator > 0 ? std::max(1, (numerator * 100) / denominator) : 0;
+  RecordToHistogramBucket(histogram_name, buckets, percentage);
+}
+
 }  // namespace p3a_utils
 
 #endif  // BRAVE_COMPONENTS_P3A_UTILS_BUCKET_H_

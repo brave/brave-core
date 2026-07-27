@@ -45,7 +45,7 @@ bool IsNewNavigation(web::NavigationContext* navigation_context) {
       navigation_context->GetPageTransition());
 }
 
-bool IsErrorPage(int http_status_code) {
+bool IsHttpErrorStatusCode(int http_status_code) {
   const int http_status_code_class = http_status_code / 100;
   return http_status_code_class == kHttpClientErrorResponseStatusCodeClass ||
          http_status_code_class == kHttpServerErrorResponseStatusCodeClass;
@@ -130,8 +130,23 @@ void AdsTabHelper::DidFinishNavigation(
 
   // Notify of tab changes after navigation completes but before notifying that
   // the tab has loaded, so that any listeners can process the tab changes
-  // before the tab is considered loaded.
+  // before the tab is considered loaded. This must also happen before
+  // `MaybeNotifyTabDidFailToLoad()` below, as `TabManager` only knows about a
+  // tab once it has observed a tab change for it, and looks up the tab by id
+  // to include its details in the fail-to-load notification.
   MaybeNotifyTabDidChange();
+
+  if (navigation_context->GetError()) {
+    // Reset `http_status_code_` as the page failed to load, even if response
+    // headers with a non-error status code were received before the network
+    // error occurred.
+    http_status_code_.reset();
+
+    // Notify the tab failed to load, instead of the tab loaded, to prevent an
+    // ad landing from being incorrectly recorded for network error pages.
+    MaybeNotifyTabDidFailToLoad();
+    return;
+  }
 
   MaybeNotifyTabDidLoad();
 
@@ -182,6 +197,10 @@ void AdsTabHelper::MaybeNotifyTabDidLoad() {
   ads_service_->NotifyTabDidLoad(tab_id_, *http_status_code_);
 }
 
+void AdsTabHelper::MaybeNotifyTabDidFailToLoad() {
+  ads_service_->NotifyTabDidFailToLoad(tab_id_);
+}
+
 void AdsTabHelper::OnVisibilityChanged(bool is_visible) {
   const bool last_is_web_contents_visible = is_web_state_visible_;
   is_web_state_visible_ = is_visible;
@@ -194,10 +213,11 @@ bool AdsTabHelper::ShouldNotifyTabContentDidChange() const {
   // Don't notify about content changes if the ads service is not available, the
   // tab was restored, was a previously committed navigation, the web contents
   // are still loading, or an error page was displayed. `http_status_code_` can
-  // be `std::nullopt` if the navigation never finishes which can occur if the
-  // user constantly refreshes the page.
+  // be `std::nullopt` if the navigation never finishes, which can occur if the
+  // user constantly refreshes the page, or if the committed navigation was a
+  // network error page.
   return !was_restored_ && is_new_navigation_ && !redirect_chain_.empty() &&
-         http_status_code_ && !IsErrorPage(*http_status_code_);
+         http_status_code_ && !IsHttpErrorStatusCode(*http_status_code_);
 }
 
 void AdsTabHelper::MaybeNotifyTabTextContentDidChange() {

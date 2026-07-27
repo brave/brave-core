@@ -40,6 +40,7 @@ android_library("java") {
     ":java_resources",
     "//base:supplier_java",
     "//brave/build/android:android_brave_strings_grd",
+    "//chrome/browser/settings:factory_java",
     "//components/browser_ui/settings/android:java",
     "//third_party/android_deps:material_design_java",
     "//third_party/androidx:androidx_annotation_annotation_java",

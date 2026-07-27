@@ -274,7 +274,9 @@ void BraveProxyingURLLoaderFactory<T>::InProgressRequest::SetPriority(
 
 template <template <typename> class T>
 void BraveProxyingURLLoaderFactory<T>::InProgressRequest::OnReceiveEarlyHints(
-    network::mojom::EarlyHintsPtr early_hints) {}
+    network::mojom::EarlyHintsPtr early_hints) {
+  target_client_->OnReceiveEarlyHints(std::move(early_hints));
+}
 
 template <template <typename> class T>
 void BraveProxyingURLLoaderFactory<T>::InProgressRequest::OnReceiveResponse(
@@ -793,10 +795,6 @@ void BraveProxyingURLLoaderFactory<T>::OnTargetFactoryError() {
 
 template <template <typename> class T>
 void BraveProxyingURLLoaderFactory<T>::OnProxyBindingError() {
-  if (proxy_receivers_.empty()) {
-    target_factory_.reset();
-  }
-
   MaybeRemoveProxy();
 }
 
@@ -812,9 +810,12 @@ void BraveProxyingURLLoaderFactory<T>::RemoveRequest(
 
 template <template <typename> class T>
 void BraveProxyingURLLoaderFactory<T>::MaybeRemoveProxy() {
-  // Even if all URLLoaderFactory pipes connected to this object have been
-  // closed it has to stay alive until all active requests have completed.
-  if (target_factory_.is_bound() || !requests_.empty()) {
+  // We can delete this factory only when there are no active requests and no
+  // remaining URLLoaderFactory receivers. Active requests may be waiting on
+  // asynchronous Shields callbacks; keep |target_factory_| alive so they can
+  // resume and create their target URLLoader even after the last factory
+  // receiver disconnects.
+  if (!requests_.empty() || !proxy_receivers_.empty()) {
     return;
   }
 

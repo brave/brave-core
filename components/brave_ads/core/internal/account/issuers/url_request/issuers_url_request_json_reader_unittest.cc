@@ -28,12 +28,10 @@ TEST(BraveAdsSubdivisionUrlRequestJsonReaderUtilTest, ReadIssuers) {
           "name": "confirmations",
           "publicKeys": [
             {
-              "publicKey": "OqhZpUC8B15u+Gc11rQYRl8O3zOSAUIEC2JuDHI32TM=",
-              "associatedValue": ""
+              "publicKey": "OqhZpUC8B15u+Gc11rQYRl8O3zOSAUIEC2JuDHI32TM="
             },
             {
-              "publicKey": "QnShwT9vRebch3WDu28nqlTaNCU5MaOF1n4VV4Q3K1g=",
-              "associatedValue": ""
+              "publicKey": "QnShwT9vRebch3WDu28nqlTaNCU5MaOF1n4VV4Q3K1g="
             }
           ]
         },
@@ -70,12 +68,10 @@ TEST(BraveAdsSubdivisionUrlRequestJsonReaderUtilTest,
           "name": "confirmations",
           "publicKeys": [
             {
-              "publicKey": "OqhZpUC8B15u+Gc11rQYRl8O3zOSAUIEC2JuDHI32TM=",
-              "associatedValue": ""
+              "publicKey": "OqhZpUC8B15u+Gc11rQYRl8O3zOSAUIEC2JuDHI32TM="
             },
             {
-              "publicKey": "QnShwT9vRebch3WDu28nqlTaNCU5MaOF1n4VV4Q3K1g=",
-              "associatedValue": ""
+              "publicKey": "QnShwT9vRebch3WDu28nqlTaNCU5MaOF1n4VV4Q3K1g="
             }
           ]
         },

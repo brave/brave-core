@@ -73,7 +73,8 @@ class RecipeTestApiTest(unittest.TestCase):
     def test_post_process_records_context(self):
         td = RecipeTestApi.post_process(lambda c, s: None)
         hook = td.post_process_hooks[0]
-        self.assertIn('recipe_test_api_test.py:', hook.context)
+        self.assertIn('recipe_test_api_test.py', hook.filename)
+        self.assertGreater(hook.lineno, 0)
 
     def test_root_is_its_own_injection_site(self):
         root = RecipeTestApi(module=None)

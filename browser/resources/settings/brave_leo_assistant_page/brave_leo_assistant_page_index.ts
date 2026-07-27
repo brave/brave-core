@@ -20,6 +20,7 @@ import {getTemplate} from './brave_leo_assistant_page_index.html.js';
 
 // Subpages
 import './brave_leo_assistant_page.js';
+import './model_config_subpage.js';
 
 
 export interface BraveLeoAssistantPageIndexElement {
@@ -67,6 +68,10 @@ export class BraveLeoAssistantPageIndexElement extends
         case routes.BRAVE_LEO_CUSTOMIZATION:
           this.$.viewManager.switchView(
               'customization', 'no-animation', 'no-animation');
+          break;
+        case routes.BRAVE_LEO_ADD_MODEL:
+          this.$.viewManager.switchView(
+              'add-model', 'no-animation', 'no-animation');
           break;
         case routes.BASIC:
           // Switch back to the default view in case they are part of search

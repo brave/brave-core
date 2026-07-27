@@ -53,7 +53,7 @@ class TestApiInjectionTest(unittest.TestCase):
     def test_root_api_exposes_dep_helpers(self):
         root = runner._build_root_test_api(['platform', 'step'])
         # api.platform.name(...) and api.step.data(...) resolve to the module
-        # test apis, mirroring the recipes_py example.
+        # test apis.
         self.assertEqual(
             root.platform.name('mac').mod_data['platform']['name'], 'mac')
         self.assertIn('s', root.step.data('s', retcode=2).step_data)

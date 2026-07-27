@@ -13,6 +13,7 @@ import { BraveWallet } from '../../../../constants/types'
 import { getLocale } from '../../../../../common/locale'
 import Amount from '../../../../utils/amount'
 import { formatTokenBalanceWithSymbol } from '../../../../utils/balance-utils'
+import { isShieldedToken } from '../../../../utils/asset-utils'
 import {
   useGetDefaultFiatCurrencyQuery,
   useGetNetworkQuery,
@@ -115,8 +116,10 @@ export const TokenListItem = React.forwardRef<HTMLDivElement, Props>(
           : ''
         return `${token.name || token.symbol} ${id}`
       }
-      if (token.isShielded) {
-        return 'Zcash'
+      if (isShieldedToken(token)) {
+        return token.zcashTokenType === BraveWallet.ZCashTokenType.kIronwood
+          ? 'Zcash (Ironwood)'
+          : 'Zcash'
       }
       return token.name || token.symbol
     }, [token])
@@ -211,7 +214,7 @@ export const TokenListItem = React.forwardRef<HTMLDivElement, Props>(
                   >
                     {tokenDisplayName}
                   </TokenNameText>
-                  {token.isShielded && <ShieldedLabel />}
+                  {isShieldedToken(token) && <ShieldedLabel />}
                   {disabledText && (
                     <DisabledLabel>{getLocale(disabledText)}</DisabledLabel>
                   )}

@@ -90,7 +90,10 @@ export function QueryBox(props: Props) {
   }
 
   return (
-    <div data-css-scope={style.scope}>
+    <div
+      className='allow-background-pointer-events'
+      data-css-scope={style.scope}
+    >
       <div className='query-container'>
         <div className='input-container'>
           <MaybeAIChatContext shouldRenderContext={showChatInput}>

@@ -14,7 +14,10 @@
     "retcode": 1
   },
   {
-    "name": "$result",
-    "status": "FAILURE"
+    "failure": {
+      "failure": {},
+      "humanReason": "Step('might fail') failed"
+    },
+    "name": "$result"
   }
 ]

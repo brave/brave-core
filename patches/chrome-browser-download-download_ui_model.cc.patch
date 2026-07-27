@@ -1,0 +1,43 @@
+diff --git a/chrome/browser/download/download_ui_model.cc b/chrome/browser/download/download_ui_model.cc
+index 4bc7f513e085db5da77082bc0ed91046f2c443b6..44d2955442e23ee1697ad4a8608ea7dad7fec6c4 100644
+--- a/chrome/browser/download/download_ui_model.cc
++++ b/chrome/browser/download/download_ui_model.cc
+@@ -615,6 +615,9 @@ bool DownloadUIModel::IsCommandEnabled(
+     case DownloadCommands::ALWAYS_OPEN_TYPE:
+     case DownloadCommands::OPEN_WITH_MEDIA_APP:
+     case DownloadCommands::EDIT_WITH_MEDIA_APP:
++    case DownloadCommands::REMOVE_FROM_LIST:
++    case DownloadCommands::DELETE_LOCAL_FILE:
++    case DownloadCommands::COPY_DOWNLOAD_LINK:
+       NOTREACHED();
+     case DownloadCommands::CANCEL:
+       return !IsDone();
+@@ -679,6 +682,9 @@ bool DownloadUIModel::IsCommandChecked(
+     case DownloadCommands::CANCEL_DEEP_SCAN:
+     case DownloadCommands::OPEN_WITH_MEDIA_APP:
+     case DownloadCommands::EDIT_WITH_MEDIA_APP:
++    case DownloadCommands::REMOVE_FROM_LIST:
++    case DownloadCommands::DELETE_LOCAL_FILE:
++    case DownloadCommands::COPY_DOWNLOAD_LINK:
+       return false;
+   }
+   return false;
+@@ -754,6 +760,9 @@ void DownloadUIModel::ExecuteCommand(DownloadCommands* download_commands,
+       break;
+     case DownloadCommands::OPEN_WITH_MEDIA_APP:
+     case DownloadCommands::EDIT_WITH_MEDIA_APP:
++    case DownloadCommands::REMOVE_FROM_LIST:
++    case DownloadCommands::DELETE_LOCAL_FILE:
++    case DownloadCommands::COPY_DOWNLOAD_LINK:
+ #if BUILDFLAG(IS_CHROMEOS)
+       OpenUsingMediaApp();
+       break;
+@@ -1099,7 +1108,7 @@ std::u16string
+ DownloadUIModel::StatusTextBuilderBase::GetCompletedRemovedOrSavedStatusText()
+     const {
+   if (model_->GetFileExternallyRemoved()) {
+-    return l10n_util::GetStringUTF16(IDS_DOWNLOAD_STATUS_REMOVED);
++    return l10n_util::GetStringUTF16(IDS_DOWNLOAD_FILE_REMOVED);
+   }
+   return std::u16string();
+ }

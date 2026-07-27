@@ -9,8 +9,10 @@
 #include <memory>
 
 #include "components/web_modal/web_contents_modal_dialog_manager_delegate.h"
+#include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/views/controls/webview/unhandled_keyboard_event_handler.h"
 #include "ui/views/controls/webview/webview.h"
+#include "url/gurl.h"
 
 namespace blink::mojom {
 class FileChooserParams;
@@ -33,9 +35,9 @@ namespace web_modal {
 class WebContentsModalDialogHost;
 }  // namespace web_modal
 
-class GURL;
 class Profile;
 class SidePanelEntryScope;
+class StatusBubbleViews;
 
 // A side panel host for AI Chat used when the
 // `kAIChatMoveFullPageToSidePanel` feature is enabled. Unlike the WebUI-wrapper
@@ -47,6 +49,8 @@ class SidePanelEntryScope;
 class AIChatMovableSidePanelWebView
     : public views::WebView,
       public web_modal::WebContentsModalDialogManagerDelegate {
+  METADATA_HEADER(AIChatMovableSidePanelWebView, views::WebView)
+
  public:
   // Factory used by `AIChatSidePanelWebView::CreateView` when the feature is
   // enabled. If `is_tab_associated` is true the panel tracks the active tab's
@@ -65,10 +69,28 @@ class AIChatMovableSidePanelWebView
   // Takes ownership of `web_contents` and displays it in this view.
   void AdoptWebContents(std::unique_ptr<content::WebContents> web_contents);
 
+  // Relinquishes ownership of the hosted `WebContents`, detaching it from this
+  // view without destroying it. Used by the reverse transfer (side panel ->
+  // tab) so the live conversation can be re-inserted into a browser tab.
+  // Returns null when the view is not currently hosting any contents.
+  std::unique_ptr<content::WebContents> ReleaseWebContents();
+
   // views::WebView:
   void SetWebContents(content::WebContents* web_contents) override;
 
+  // views::View:
+  // Keep the status bubble anchored to the bottom-left of the panel as it
+  // resizes, mirroring how `AIChatSidePanelWebView` drives its status bubble.
+  bool GetNeedsNotificationWhenVisibleBoundsChange() const override;
+  void OnVisibleBoundsChanged() override;
+
   // content::WebContentsDelegate:
+  // The side panel's `WebContents` delegate does not drive the browser status
+  // bubble, so hovering a link would otherwise disclose nothing. Show the
+  // hovered URL in our own status bubble, mirroring a normal tab. Keeping this
+  // parity with `AIChatSidePanelWebView` ensures every clickable link discloses
+  // its destination even when this movable panel becomes the default.
+  void UpdateTargetURL(content::WebContents* source, const GURL& url) override;
   content::WebContents* AddNewContents(
       content::WebContents* source,
       std::unique_ptr<content::WebContents> new_contents,
@@ -92,6 +114,13 @@ class AIChatMovableSidePanelWebView
   web_modal::WebContentsModalDialogHost* GetWebContentsModalDialogHost(
       content::WebContents* web_contents) override;
 
+  // Returns the most recent hovered-link URL forwarded to the status bubble
+  // (empty when no link is hovered). Lets tests verify that link-hover
+  // destination disclosure is wired up.
+  const GURL& status_bubble_url_for_testing() const {
+    return status_bubble_url_for_testing_;
+  }
+
  private:
   // Attach a modal dialog manager to `web_contents` so dialogs display
   // correctly while it is hosted in the side panel.
@@ -106,6 +135,12 @@ class AIChatMovableSidePanelWebView
 
   // Handles keyboard events that come back unhandled from the renderer.
   views::UnhandledKeyboardEventHandler unhandled_keyboard_event_handler_;
+
+  // Shows the hovered link's URL in the bottom-left of the panel, like a tab.
+  std::unique_ptr<StatusBubbleViews> status_bubble_;
+
+  // Mirror of the last URL forwarded to `status_bubble_`, for tests.
+  GURL status_bubble_url_for_testing_;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_SIDE_PANEL_AI_CHAT_AI_CHAT_MOVABLE_SIDE_PANEL_WEB_VIEW_H_

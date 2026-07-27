@@ -196,18 +196,6 @@ export const signingEndpoints = ({
           )
 
           if (!signed.success && signed.code) {
-            if (signed.code === 'unauthorized') {
-              store.dispatch(
-                PanelActions.setHardwareWalletInteractionError(signed.code),
-              )
-              return {
-                data: {
-                  success: false,
-                  hardwareWalletInteractionError: signed.code,
-                },
-              }
-            }
-
             const deviceError =
               info.vendor === BraveWallet.HardwareVendor.kTrezor
                 ? dialogErrorFromTrezorErrorCode(signed.code)

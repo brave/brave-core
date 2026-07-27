@@ -28,6 +28,9 @@
 /* A picker title for selecting a automatic shred setting option */
 "AutoShred" = "自動削除";
 
+/* The description for shredding when the app is closed */
+"AutoShredSectionTitle" = "閲覧データを自動的に消去";
+
 /* The option the user can select to do aggressive ad and tracker blocking */
 "BlockAdsAndTrackingAggressive" = "積極的";
 
@@ -205,11 +208,20 @@
 /* An option setting for never automatically shreding site data */
 "ShredNever" = "使用しない";
 
+/* The description for never automatically shreding site data */
+"ShredNeverDescription" = "閲覧データが自動的にシュレッダー処理されることはありません";
+
 /* An option setting for automatically shredding only when the app is closed */
 "ShredOnAppClose" = "アプリの終了時";
 
+/* The description for shredding when the app is closed */
+"ShredOnAppCloseDescription" = "Brave アプリを閉じる／再起動すると、閲覧データが自動的にシュレッダー処理されます";
+
 /* An option setting for automatically shredding when the site is closed */
 "ShredOnSiteTabsClosed" = "サイトタブの終了時";
+
+/* The description for shredding when the site is closed */
+"ShredOnSiteTabsClosedDescription" = "サイトで開いているすべてのタブを閉じると、閲覧データが自動的にシュレッダー処理されます";
 
 /* A message for a confirmation window that appears when a user clicks on 'Shred All Tabs'. */
 "ShredSiteAllTabsConfirmationMessage" = "削除を選択すると、このサイトに開いている全タブを閉じ、すべてのサイトデータを削除します。これは元に戻せません。";

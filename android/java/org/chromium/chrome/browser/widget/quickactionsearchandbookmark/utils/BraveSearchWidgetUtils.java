@@ -14,6 +14,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
+
 import com.google.android.apps.chrome.appwidget.bookmarks.BookmarkThumbnailWidgetProvider;
 
 import org.chromium.base.ContextUtils;
@@ -82,7 +85,23 @@ public class BraveSearchWidgetUtils {
         return appWidgetManager != null && appWidgetManager.isRequestPinAppWidgetSupported();
     }
 
+    private static @Nullable Runnable sRequestPinAppWidgetForTesting;
+
+    /**
+     * Overrides the body of {@link #requestPinAppWidget()} for tests. When set, the given runnable
+     * is invoked instead of issuing the real system pin-widget request (which would pop a system
+     * dialog outside the app). Pass {@code null} to restore the default behavior.
+     */
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    public static void setRequestPinAppWidgetForTesting(@Nullable Runnable runnable) {
+        sRequestPinAppWidgetForTesting = runnable;
+    }
+
     public static void requestPinAppWidget() {
+        if (sRequestPinAppWidgetForTesting != null) {
+            sRequestPinAppWidgetForTesting.run();
+            return;
+        }
         Context context = ContextUtils.getApplicationContext();
         AppWidgetManager appWidgetManager = context.getSystemService(AppWidgetManager.class);
 

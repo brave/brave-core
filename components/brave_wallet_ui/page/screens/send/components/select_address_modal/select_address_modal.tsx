@@ -11,9 +11,10 @@ import Tooltip from '@brave/leo/react/tooltip'
 
 // Selectors
 import {
-  useSafeWalletSelector, //
+  useSafeUISelector,
+  useSafeWalletSelector,
 } from '../../../../../common/hooks/use-safe-selector'
-import { WalletSelectors } from '../../../../../common/selectors'
+import { WalletSelectors, UISelectors } from '../../../../../common/selectors'
 
 // Types
 import {
@@ -65,6 +66,7 @@ import { endsWithAny } from '../../../../../utils/string-utils'
 import {
   findTokenByContractAddress,
   getAssetIdKey,
+  isShieldedToken,
 } from '../../../../../utils/asset-utils'
 import { isFVMAccount } from '../../../../../utils/account-utils'
 
@@ -106,6 +108,9 @@ import {
   SearchBoxContainer,
   PasteButton,
 } from './select_address_modal.style'
+
+// wallet page api proxy
+import getWalletPageApiProxy from '../../../../../page/wallet_page_api_proxy'
 
 interface Props {
   onClose: () => void
@@ -325,7 +330,9 @@ export const SelectAddressModal = React.forwardRef<HTMLDivElement, Props>(
         ? {
             chainId: selectedNetwork.chainId,
             accountId: fromAccountId,
-            useShieldedPool: !!selectedAsset?.isShielded,
+            useShieldedPool: !!(
+              selectedAsset && isShieldedToken(selectedAsset)
+            ),
             address: trimmedSearchValue,
           }
         : skipToken,
@@ -477,6 +484,15 @@ export const SelectAddressModal = React.forwardRef<HTMLDivElement, Props>(
       }
     }, [])
 
+    const onScanQRCode = React.useCallback(async () => {
+      const { address } = await getWalletPageApiProxy().pageHandler.scanQRCode()
+      if (address !== '') {
+        setSearchValue(address)
+      }
+    }, [])
+
+    const isIOS = useSafeUISelector(UISelectors.isIOS)
+
     if (showChecksumInfo) {
       return (
         <PopupModal
@@ -530,13 +546,18 @@ export const SelectAddressModal = React.forwardRef<HTMLDivElement, Props>(
               type='text'
               disabled={isGeneratingAddress}
             >
-              <Column slot='right-icon'>
+              <Row slot='right-icon'>
                 <Tooltip text={getLocale('braveWalletPasteFromClipboard')}>
                   <PasteButton onClick={onPaste}>
                     <Icon name='copy-plain-text' />
                   </PasteButton>
                 </Tooltip>
-              </Column>
+                {isIOS && (
+                  <PasteButton onClick={onScanQRCode}>
+                    <Icon name='qr-code' />
+                  </PasteButton>
+                )}
+              </Row>
             </AddressInput>
           </SearchBoxContainer>
           {isGeneratingAddress ? (
@@ -704,7 +725,7 @@ export const AccountGroupItem = (props: AccountsListProps) => {
         isDisabled={
           // Show transparent address of the selected account
           // if shielded asset chosen.
-          !selectedAsset?.isShielded
+          !(selectedAsset && isShieldedToken(selectedAsset))
           && account.accountId.uniqueKey === fromAccountId?.uniqueKey
         }
         isSelected={account.accountId.uniqueKey === fromAccountId?.uniqueKey}
@@ -722,9 +743,9 @@ export const AccountGroupItem = (props: AccountsListProps) => {
           onClick={() =>
             onSelectAccount(account, zcashAccountInfo.orchardInternalAddress)
           }
-          isDisabled={!!selectedAsset?.isShielded}
+          isDisabled={!!(selectedAsset && isShieldedToken(selectedAsset))}
           isSelected={
-            !!selectedAsset?.isShielded
+            !!(selectedAsset && isShieldedToken(selectedAsset))
             && account.accountId.uniqueKey === fromAccountId?.uniqueKey
           }
           isShielded={true}

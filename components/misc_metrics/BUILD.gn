@@ -21,6 +21,7 @@ static_library("misc_metrics") {
     "general_browser_usage.h",
     "language_metrics.cc",
     "language_metrics.h",
+    "media_session_metrics.h",
     "menu_metrics.cc",
     "menu_metrics.h",
     "navigation_source_metrics.cc",

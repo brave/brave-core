@@ -97,6 +97,33 @@ def _find_api_class(api_module: types.ModuleType,
     return classes[0]
 
 
+def _load_config_ctx(module_name: str):
+    """Return the `ConfigContext` from a module's `config.py`, or None.
+
+    A module opts into the config system by defining a `config.py` that assigns
+    exactly one `config_item_context(...)` result at module scope (the module's
+    CONFIG_CTX). Modules without a `config.py` return None (they have no
+    config). See the "Configs" section of README.md.
+    """
+    config_path = RECIPES_ROOT / MODULES_PKG / module_name / 'config.py'
+    if not config_path.exists():
+        return None
+    _ensure_protos()
+    from config import ConfigContext  # pylint: disable=import-outside-toplevel
+    config_module = importlib.import_module(f'{MODULES_PKG}.{module_name}'
+                                            '.config')
+    contexts = [
+        value for value in vars(config_module).values()
+        if isinstance(value, ConfigContext)
+    ]
+    if len(contexts) != 1:
+        raise RuntimeError(
+            f"recipe module '{module_name}' has a config.py but defines "
+            f'{len(contexts)} config contexts; expected exactly one '
+            '(from config_item_context(...))')
+    return contexts[0]
+
+
 class _Engine:
     """Resolves DEPS and instantiates module APIs, caching by module name."""
 
@@ -109,8 +136,8 @@ class _Engine:
         # in test mode: it seeds this onto every module (so the seam modules
         # simulate I/O) and does not touch the real cwd.
         self._test = test
-        # Root directory the job runs in. Recipe paths (chromium/src, out, ...)
-        # are derived from it by the `path` module.
+        # Root directory the job runs in. Recipe paths (brave-browser/src,
+        # out, ...) are derived from it by the `path` module.
         if self._test is not None:
             # Fixed synthetic workspace so module-derived paths are
             # deterministic; never chdir'd into (nothing runs on disk).
@@ -126,8 +153,63 @@ class _Engine:
         # brave-core ref the checkout modules clone. Defaults to `master`;
         # overridable (mainly for testing against a non-master ref).
         self._brave_core_ref: str = brave_core_ref
+        # The run's input property JSON and environment, seeded by
+        # `run_loaded_recipe` before any module is instantiated. A module's
+        # `PROPERTIES`/`ENV_PROPERTIES` are bound from these (see
+        # `_module_property_args`). Empty defaults let tests instantiate a
+        # module directly (without a recipe) -- a module then just sees its
+        # proto defaults.
+        self._properties: dict[str, object] = {}
+        self._environ: Mapping[str, str] = {}
         # module name -> instantiated RecipeApi (one instance per run).
         self._cache: dict[str, RecipeApi] = {}
+
+    def _module_property_args(self, name: str,
+                              package: types.ModuleType) -> list[object]:
+        """Bind a module's declared `PROPERTIES`/`ENV_PROPERTIES` messages.
+
+        Mirrors the recipe-level binding in `_run_steps`, but for a recipe
+        module. A module opts in by declaring `PROPERTIES` and/or
+        `ENV_PROPERTIES` (protobuf message classes) in its `__init__.py`; the
+        engine passes the bound messages positionally to the module's
+        `RecipeApi.__init__`, in the same order `RunSteps` receives them:
+
+            neither                 -> API()
+            PROPERTIES              -> API(properties)
+            PROPERTIES + ENV_PROPS  -> API(properties, env_properties)
+            ENV_PROPERTIES          -> API(env_properties)
+
+        A module's `PROPERTIES` are namespaced: they are read from the
+        `$<module_name>` block of the input property JSON (the single-repo
+        analogue of upstream's `$<repo>/<module>` key), so per-module input is
+        kept separate from the recipe's own top-level properties. `ENV_PROPERTIES`
+        are read from the environment with keys upper-cased. Both decode with
+        unknown fields ignored.
+        """
+        properties_def = getattr(package, 'PROPERTIES', None)
+        env_properties_def = getattr(package, 'ENV_PROPERTIES', None)
+
+        args: list[object] = []
+        if properties_def is not None:
+            if not proto_support.is_message_class(properties_def):
+                raise TypeError(
+                    f"module '{name}' PROPERTIES must be a protobuf message "
+                    f'class; got {properties_def!r}')
+            block = self._properties.get(f'${name}', {})
+            args.append(
+                jsonpb.ParseDict(block,
+                                 properties_def(),
+                                 ignore_unknown_fields=True))
+        if env_properties_def is not None:
+            args.append(
+                jsonpb.ParseDict(
+                    {
+                        k.upper(): v
+                        for k, v in self._environ.items()
+                    },
+                    env_properties_def(),
+                    ignore_unknown_fields=True))
+        return args
 
     def _instantiate_module(self, name: str, chain: list[str]) -> RecipeApi:
         if name in self._cache:
@@ -136,21 +218,26 @@ class _Engine:
             cycle = ' -> '.join(chain + [name])
             raise RuntimeError(f'cyclical DEPS detected: {cycle}')
 
+        # A module's __init__.py/api.py may import its typed PROPERTIES message
+        # from `PB`, so the proto package must exist before we import it.
+        _ensure_protos()
         package = importlib.import_module(f'{MODULES_PKG}.{name}')
         deps = list(getattr(package, 'DEPS', []))
         api_module = importlib.import_module(f'{MODULES_PKG}.{name}.api')
         api_class = _find_api_class(api_module, name)
 
-        inst = api_class()
-        # Seed engine-provided values (workspace, brave-core ref) so modules can
-        # use them. setattr keeps the engine out of the instance's protected
-        # members directly.
+        inst = api_class(*self._module_property_args(name, package))
+        # Seed engine-provided values (workspace, brave-core ref, and the
+        # module's name and config context) so modules can use them. setattr
+        # keeps the engine out of the instance's protected members directly.
         setattr(inst, '_workspace', self._workspace)
         setattr(inst, '_brave_core_ref', self._brave_core_ref)
+        setattr(inst, '_module_name', name)
+        setattr(inst, '_config_ctx', _load_config_ctx(name))
         for dep_name in deps:
             setattr(inst.m, dep_name,
                     self._instantiate_module(dep_name, chain + [name]))
-        # A module can reach itself via `self.m.<own_name>`, as in recipes_py.
+        # A module can reach itself via `self.m.<own_name>`.
         setattr(inst.m, name, inst)
 
         # Seed the simulation context (test mode only) after DEPS are wired but
@@ -179,6 +266,13 @@ class _Engine:
         Splits the import from the run so the test runner can import a recipe
         once (from either `recipes/` or a module's `examples/`) and drive it.
         """
+        # Seed the run's input before instantiating any module, so a module's
+        # PROPERTIES/ENV_PROPERTIES can be bound from it (see
+        # `_module_property_args`). In test mode ENV_PROPERTIES is sourced from
+        # the simulated environment so expectations don't depend on host env.
+        self._properties = properties or {}
+        self._environ = self._test.env if self._test is not None else os.environ
+
         api = RecipeScriptApi()
         for dep_name in getattr(recipe, 'DEPS', []):
             setattr(api, dep_name, self._instantiate_module(dep_name, []))
@@ -187,10 +281,7 @@ class _Engine:
         if run_steps is None:
             raise RuntimeError(f"recipe '{recipe_name}' is missing RunSteps")
 
-        # In test mode, source ENV_PROPERTIES from the simulated environment so
-        # expectations don't depend on the host's env vars.
-        environ = self._test.env if self._test is not None else os.environ
-        return _run_steps(run_steps, api, properties or {}, environ,
+        return _run_steps(run_steps, api, self._properties, self._environ,
                           getattr(recipe, 'PROPERTIES', None),
                           getattr(recipe, 'ENV_PROPERTIES', None))
 
@@ -296,7 +387,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument('--workspace',
                         default=None,
                         help='Root directory the job runs in; recipe paths '
-                        '(chromium/src, out, ...) are relative to it '
+                        '(brave-browser/src, out, ...) are relative to it '
                         '(default: current directory)')
     parser.add_argument('--brave-core-ref',
                         default='master',

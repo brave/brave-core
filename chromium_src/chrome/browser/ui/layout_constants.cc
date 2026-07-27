@@ -27,7 +27,10 @@ std::optional<gfx::Insets> GetBraveLayoutInsets(LayoutInset inset) {
     case LOCATION_BAR_PAGE_INFO_ICON_PADDING:
       return gfx::Insets::VH(compact ? 4 : 6, 6);
     case LOCATION_BAR_PAGE_ACTION_ICON_PADDING:
-      return gfx::Insets::VH(4, 4);
+      // Trailing icons are 20px. Compact location_height is 26, so vertical
+      // padding must be 3 (20 + 2*3 = 26). Normal location_height is 28
+      // (20 + 2*4 = 28).
+      return gfx::Insets::VH(compact ? 3 : 4, 4);
     case TOOLBAR_BUTTON:
       // Use 4 inset - (TOOLBAR_BUTTON_HEIGHT(28) - icon size(20)) / 2
       // icon size - ToolbarButton::kDefaultIconSize
@@ -78,7 +81,12 @@ std::optional<int> GetBraveLayoutConstant(LayoutConstant constant) {
       return std::nullopt;
     }
     case LayoutConstant::kLocationBarChildCornerRadius:
-      return 4;
+      return 6;
+    // Uniform padding keeps the LHS camera/mic chip square. Match site-info
+    // width in normal (16 + 2*6 = 28); use 4 in compact so the chip fits
+    // location_height (16 + 2*4 = 24 ≤ 26).
+    case LayoutConstant::kLocationBarChipPadding:
+      return UseCompactHorizontalTabs() ? 4 : 6;
     case LayoutConstant::kTabSeparatorHeight: {
       return 16;
     }
@@ -92,14 +100,13 @@ std::optional<int> GetBraveLayoutConstant(LayoutConstant constant) {
     case LayoutConstant::kLocationBarHeight:
       // Consider adjust below element padding also when this height is changed.
       return UseCompactHorizontalTabs() ? 28 : 32;
-    case LayoutConstant::kLocationBarTrailingIconSize:
-      return 18;
-    case LayoutConstant::kLocationBarIconSize:
-      return 16;
     case LayoutConstant::kLocationBarElementPadding:
     case LayoutConstant::kLocationBarPageInfoIconVerticalPadding:
-    case LayoutConstant::kLocationBarTrailingDecorationEdgePadding:
       return UseCompactHorizontalTabs() ? 1 : 2;
+    // Flush trailing icons to the omnibar's right edge (was 2 normal / 1
+    // compact).
+    case LayoutConstant::kLocationBarTrailingDecorationEdgePadding:
+      return 0;
     default:
       break;
   }

@@ -18,6 +18,8 @@ source_set("customize_chrome") {
 
   deps = [
     "//base",
+    "//brave/app/vector_icons",
+    "//brave/browser/ui:brave_tab_prefs",
     "//brave/browser/ui/screenshot",
     "//brave/components/ai_chat/core/common/buildflags",
     "//brave/components/brave_news/common/buildflags",
@@ -96,6 +98,8 @@ source_set("unit_tests") {
   deps = [
     ":customize_chrome",
     "//base",
+    "//brave/app/vector_icons",
+    "//brave/browser/ui:brave_tab_prefs",
     "//brave/browser/ui/screenshot",
     "//brave/components/ai_chat/core/common/buildflags",
     "//brave/components/brave_news/common/buildflags",

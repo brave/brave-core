@@ -24,9 +24,3 @@ export const Title = styled(Text)`
   font: ${leo.font.heading.h4};
   letter-spacing: ${leo.typography.letterSpacing.large};
 `
-
-export const EmptySpace = styled.div`
-  display: flex;
-  height: 44px;
-  width: 100%;
-`

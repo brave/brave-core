@@ -133,14 +133,15 @@ export default function AttachmentButtonMenu(props: Props) {
         {props.associateDefaultContent && (
           <leo-menu-item
             onClick={() => {
-              props.associateDefaultContent?.()
+              props.associateDefaultContent?.associate()
               props.focusInput()
             }}
           >
             <div className={styles.buttonContent}>
-              <Icon
-                className={styles.buttonIcon}
-                name='window-tab'
+              <img
+                className={styles.favicon}
+                src={`//favicon2?size=64&pageUrl=${encodeURIComponent(props.associateDefaultContent.url)}&allowGoogleServerFallback=0`}
+                alt=''
               />
               {getLocale(S.AI_CHAT_CURRENT_TAB_CONTENTS_BUTTON_LABEL)}
             </div>

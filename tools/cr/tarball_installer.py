@@ -2,17 +2,17 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
-"""`TarballInstaller`: fetch, verify, and extract one `EXTRA_DEPS` object.
+"""`TarballInstaller`: fetch, verify, and extract one bucket-hosted archive.
 
-Stdlib-only: it downloads over HTTP, verifies the sha256, extracts the archive,
-and writes the sidecar files that record what is deployed. Also runnable as a
-CLI to deploy a single-object `EXTRA_DEPS` entry into the checkout.
+This script is designed to be used with EXTRA_DEPS entries, but the object can
+also be directly provided by the caller.
 """
 
 from __future__ import annotations
 
 import argparse
 from collections.abc import Callable
+from collections.abc import Mapping
 from dataclasses import dataclass
 import hashlib
 import json
@@ -43,8 +43,9 @@ _INSTALLABLE = sorted(path for path, spec in EXTRA_DEPS.items()
 class TarballInstaller:
     """Installs one resolved `EXTRA_DEPS` object into its destination.
 
-    Handles the mechanics for a single object: sha256 verification, extraction
-    (wiping the destination first when it owns it), and writing the sidecar
+    Handles the mechanics for a single object: size + sha256 verification,
+    extraction (wiping the destination first when it owns it), and writing the
+    sidecar
     files `extra_deps` reads back to tell a deployed tree from a stale one:
 
       .{prefix}_hash                the object's sha256
@@ -61,9 +62,25 @@ class TarballInstaller:
     object_name: str
     # The expected sha256 of the archive.
     sha256sum: str
+    # The expected size of the archive in bytes.
+    size_bytes: int
     # True when the dep owns dest_dir (wiped before extract); False when it
     # overlays an existing upstream tree (extracted on top).
     owns_dest: bool
+
+    @classmethod
+    def for_object(cls, dest_dir: Path, bucket: str,
+                   obj: Mapping) -> TarballInstaller:
+        """Build an installer for a single caller-provided archive object.
+
+        `obj` are expected to follow the schema format for `EXTRA_DEPS` objects.
+        """
+        return cls(dest_dir=dest_dir,
+                   url=bucket + obj['object_name'],
+                   object_name=obj['object_name'],
+                   sha256sum=obj['sha256sum'],
+                   size_bytes=obj['size_bytes'],
+                   owns_dest=not obj.get('overlayed_on'))
 
     @classmethod
     def for_dep(cls, root: Path, path: str, spec: dict) -> TarballInstaller:
@@ -79,12 +96,7 @@ class TarballInstaller:
             raise ValueError(
                 f'{path}: only single-object entries can be installed here, '
                 f'but this one has {len(objects)}')
-        obj = objects[0]
-        return cls(dest_dir=root / path,
-                   url=spec['bucket'] + obj['object_name'],
-                   object_name=obj['object_name'],
-                   sha256sum=obj['sha256sum'],
-                   owns_dest=not obj.get('overlayed_on'))
+        return cls.for_object(root / path, spec['bucket'], objects[0])
 
     def is_installed(self) -> bool:
         """True when the `_hash` sidecar already records `sha256sum`."""
@@ -107,16 +119,28 @@ class TarballInstaller:
             with archive_path.open('wb') as archive_file:
                 download(self.url, archive_file)
             self._verify(archive_path)
-            if self.owns_dest and self.dest_dir.exists():
-                # Drop the previous extraction so nothing stale lingers;
-                # overlays deliberately keep the upstream tree they sit on.
-                shutil.rmtree(self.dest_dir)
+            if self.owns_dest and (self.dest_dir.exists()
+                                   or self.dest_dir.is_symlink()):
+                # Drop the previous extraction so nothing stale lingers. A
+                # symlinked destination is replaced by the real extracted tree
+                # (rmtree refuses a symlink). Overlays deliberately keep the
+                # upstream tree they sit on.
+                if self.dest_dir.is_symlink():
+                    self.dest_dir.unlink()
+                else:
+                    shutil.rmtree(self.dest_dir)
             member_names = self._extract(archive_path)
         self._write_sidecars(member_names)
         return True
 
     def _verify(self, archive_path: Path) -> None:
-        """Raise `ValueError` unless `archive_path` hashes to `sha256sum`."""
+        """Raise `ValueError` unless `archive_path` matches size and sha256.
+        """
+        actual_size = archive_path.stat().st_size
+        if actual_size != self.size_bytes:
+            raise ValueError(f'size mismatch for {self.url}\n'
+                             f'  expected: {self.size_bytes} bytes\n'
+                             f'  actual:   {actual_size} bytes')
         digest = hashlib.sha256()
         # Not using mmap to make this script more tolerable to a larger range
         # of Python versions, as this script is called by `launcher.py` without
@@ -205,7 +229,15 @@ class TarballInstaller:
                 return names
         with tarfile.open(archive_path, mode='r:*') as tar:
             names = tar.getnames()
-            tar.extractall(path=self.dest_dir, filter='data')
+            # The `filter='data'` extraction guard (PEP 706) only exists on
+            # Python 3.12+ and the 3.8.17/3.9.17/3.10.12/3.11.4 backports. This
+            # script runs under whatever bare `python3` invoked `launcher.py`
+            # (no vpython guarantee), so fall back when the runtime is older.
+            # `tarfile.data_filter` is present exactly when the kwarg is.
+            if hasattr(tarfile, 'data_filter'):
+                tar.extractall(path=self.dest_dir, filter='data')
+            else:
+                tar.extractall(path=self.dest_dir)
             return names
 
     def _write_sidecars(self, member_names: list[str]) -> None:
@@ -215,10 +247,11 @@ class TarballInstaller:
             '_content_names': json.dumps(member_names),
         }
         for suffix, content in contents.items():
+            # `write_bytes` (not `write_text(newline=...)`, whose `newline`
+            # kwarg is Python 3.10+) so the exact `\n`-terminated UTF-8 lands on
+            # disk without platform newline translation, on any `python3`.
             sidecar_path(self.dest_dir, self.object_name,
-                         suffix).write_text(f'{content}\n',
-                                            encoding='utf-8',
-                                            newline='')
+                         suffix).write_bytes(f'{content}\n'.encode('utf-8'))
 
 
 def main(argv: list[str] | None = None) -> int:

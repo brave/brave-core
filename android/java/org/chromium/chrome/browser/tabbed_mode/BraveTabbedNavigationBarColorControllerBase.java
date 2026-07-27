@@ -16,9 +16,9 @@ import org.chromium.base.BraveReflectionUtil;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
+import org.chromium.chrome.browser.theme.BraveDynamicColors;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 import org.chromium.chrome.browser.toolbar.menu_button.BraveMenuButtonCoordinator;
-import org.chromium.chrome.browser.util.BraveDynamicColors;
 
 /** Base class for the upstream's `TabbedNavigationBarColorController` class. */
 @RequiresApi(Build.VERSION_CODES.O_MR1)
@@ -50,7 +50,7 @@ class BraveTabbedNavigationBarColorControllerBase {
     public int getNavigationBarColor(boolean forceDarkNavigationBar) {
         // Adjust navigation bar color to match the bottom toolbar color when it is visible,
         // unless dynamic colors are enabled (in which case we let upstream handle it).
-        if (!BraveDynamicColors.sDynamicColorsEnabled.isEnabled()) {
+        if (!BraveDynamicColors.isDynamicColorsEnabled()) {
             if (BottomToolbarConfiguration.isBraveBottomControlsEnabled()
                     && BraveMenuButtonCoordinator.isMenuFromBottom()
                     && mContext != null

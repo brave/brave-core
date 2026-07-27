@@ -58,16 +58,16 @@ class LivePlaylistWebLoader: UIView, PlaylistWebLoader {
     super.init(frame: .zero)
 
     tab.browserData = .init(tab: tab)
+    if FeatureList.kUseProfileWebViewConfiguration.enabled {
+      tab.playlist = .init(tab: tab, delegate: self)
+    }
+    tab.createWebView()
     if !FeatureList.kUseProfileWebViewConfiguration.enabled {
       tab.browserData?.setScript(
         script: .playlistMediaSource,
         enabled: true
       )
     } else {
-      tab.playlist = .init(tab: tab, delegate: self)
-    }
-    tab.createWebView()
-    if FeatureList.kUseProfileWebViewConfiguration.enabled {
       BraveWebView.from(tab: tab)?.enablePlaylistCompatibilityMode()
     }
     tab.webViewProxy?.scrollView?.layer.masksToBounds = true

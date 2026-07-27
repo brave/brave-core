@@ -23,13 +23,13 @@ from PB.recipes.brave.toolchains.xcode.build_xcode_toolchain import (
 if TYPE_CHECKING:
     from engine import RecipeScriptApi
 
-DEPS = ['path', 'step', 'platform', 'depot_tools', 'brave_core_shallow']
+DEPS = ['path', 'step', 'platform', 'depot_tools', 'brave_core_checkout']
 
 PROPERTIES = InputProperties
 
 
 def RunSteps(api: RecipeScriptApi, properties: InputProperties) -> None:
-    brave_core_root = api.brave_core_shallow.deploy('tools/cr/toolchains')
+    brave_core_root = api.brave_core_checkout.deploy('tools/cr/toolchains')
 
     vpython3 = api.depot_tools.vpython3()
     # `--clear` wipes any prior output so every run starts from a clean out dir.
@@ -49,11 +49,11 @@ def RunSteps(api: RecipeScriptApi, properties: InputProperties) -> None:
 
 def GenTests(api):
     # Happy path: deploy the build scripts on a mac host, then build.
-    # `deployed` seeds brave_core_shallow's post-checkout path check.
+    # `deployed` seeds brave_core_checkout's post-checkout path check.
     yield api.test(
         'mac',
         api.platform.name('mac'),
-        api.brave_core_shallow.deployed('tools/cr/toolchains'),
+        api.brave_core_checkout.deployed('tools/cr/toolchains'),
         api.properties(chromium_tag='150.0.7841.1'),
         api.post_process(post_process.MustRun, 'build xcode toolchain'),
         api.post_process(post_process.StepCommandContains,
@@ -67,7 +67,7 @@ def GenTests(api):
     yield api.test(
         'force overwrite',
         api.platform.name('mac'),
-        api.brave_core_shallow.deployed('tools/cr/toolchains'),
+        api.brave_core_checkout.deployed('tools/cr/toolchains'),
         api.properties(chromium_tag='150.0.7841.1', force_overwrite=True),
         api.post_process(post_process.StepCommandContains,
                          'build xcode toolchain', ['--force-overwrite']),

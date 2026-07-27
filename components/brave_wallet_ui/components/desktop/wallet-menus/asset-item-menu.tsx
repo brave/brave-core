@@ -47,6 +47,7 @@ import {
   getAssetIdKey,
   getDoesCoinSupportSwap,
   getDoesCoinSupportBridge,
+  isShieldedToken,
 } from '../../../utils/asset-utils'
 
 // Components
@@ -124,10 +125,14 @@ export const AssetItemMenu = (props: Props) => {
   }, [assetBalance])
 
   const canShieldFunds =
-    availableShieldedAccountData && !asset.isShielded && !isAssetsBalanceZero
+    availableShieldedAccountData
+    && !isShieldedToken(asset)
+    && !isAssetsBalanceZero
 
   const canUnshieldFunds =
-    availableShieldedAccountData && asset.isShielded && !isAssetsBalanceZero
+    availableShieldedAccountData
+    && isShieldedToken(asset)
+    && !isAssetsBalanceZero
 
   const isSwapSupported = getDoesCoinSupportSwap(asset.coin)
   const isBridgeSupported = getDoesCoinSupportBridge(asset.coin)

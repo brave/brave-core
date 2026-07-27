@@ -28,7 +28,7 @@ constexpr int kBadgeHeight = 12;
 constexpr int kBadgeMaxWidth = 16;
 constexpr int kVPadding = 1;
 constexpr int kVMarginTop = 2;
-constexpr int kOuterCornerRadius = 5;
+constexpr int kOuterCornerRadius = 6;
 constexpr int kTextHeightTarget = kBadgeHeight - (kVPadding * 2);
 constexpr int kMaxIncrementAttempts = 5;
 }  // namespace

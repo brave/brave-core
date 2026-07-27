@@ -78,7 +78,7 @@ void FakeBatAds::TriggerNewTabPageAdEvent(
 void FakeBatAds::MaybeGetNotificationAd(
     const std::string& /*placement_id*/,
     MaybeGetNotificationAdCallback callback) {
-  std::move(callback).Run(/*value=*/std::nullopt);
+  std::move(callback).Run(/*notification_ad=*/nullptr);
 }
 
 void FakeBatAds::TriggerNotificationAdEvent(

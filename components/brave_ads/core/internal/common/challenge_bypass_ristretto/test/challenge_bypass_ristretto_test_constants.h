@@ -20,19 +20,19 @@ inline constexpr char kTokenBase64[] =
     R"(IXDCnZnVEJ0orkbZfr2ut2NQPQ0ofdervKBmQ2hyjcClGCjA3/ExbBumO0ua5cxwo//nN0uKQ60kknru8hRXx0FMYHu7ahizDiX18HVBawWBzA46pyrBtJDfiomK6HQI)";
 
 inline constexpr char kBlindedTokenBase64[] =
-    R"(mNRViqFD8ZPpjRZi4Xwj1UEsU1j9qPNc4R/BoiWsVi0=)";
+    R"(lNBi9HHnnYKfhhsSyVXzvDRLo1GZgvKUsJO1su+XqBE=)";
 
 inline constexpr char kSignedTokenBase64[] =
-    R"(jGZR7JREp+zoqxgsMOa32F+zhhBw/0d/HeVhl9iPVWU=)";
+    R"(iOwpuDyRqB17a1EuDcZI0Bj1qejMDEDb3CNDFMw2mRs=)";
 
 inline constexpr char kBatchDLEQProofBase64[] =
-    R"(y0a409PTX6g97xC0Xq8cCuY7ElLPaP+QJ6DaHNfqlQWizBYCSWdaleakKatkyNswfPmkQuhL7awmzQ0ygEUGDw==)";
+    R"(nUCfjjXu7CVnXnrphb9gdKospgcuRXW+Ynz09xEk7Aqqh+HRvuONOSKYIJmRxjoevzj1MyhX/7A2DBzUhVypBg==)";
 
 inline constexpr char kUnblindedTokenBase64[] =
-    R"(IXDCnZnVEJ0orkbZfr2ut2NQPQ0ofdervKBmQ2hyjcClGCjA3/ExbBumO0ua5cxwo//nN0uKQ60kknru8hRXx0DWhwHwuFlxmot8WgVbnQ0XtPx7q9BG0jbI00AJStwN)";
+    R"(IXDCnZnVEJ0orkbZfr2ut2NQPQ0ofdervKBmQ2hyjcClGCjA3/ExbBumO0ua5cxwo//nN0uKQ60kknru8hRXxxp3wWTyvqX11LbDh92JmYmOWaAKpUqvxWB6ddmXXkxt)";
 
 inline constexpr char kVerificationSignatureBase64[] =
-    R"(V7Gilxl5TNv7pTqq8Sftmu+O+HgJ44Byn8PhDkDIwnsgncGiCduuoRMNagUnN7AXalaQdy1GedKj5thKFeyUcQ==)";
+    R"(zAVQUqZgMdqC3x8gPpaHQiK0nXYcYEEzbFB4L2PwkjI4w6TjxAJ6qK+xd3FVzp53J1d3tufLViu6CAS6YZV9aA==)";
 
 inline constexpr char kTokenPreimageBase64[] =
     R"(IXDCnZnVEJ0orkbZfr2ut2NQPQ0ofdervKBmQ2hyjcClGCjA3/ExbBumO0ua5cxwo//nN0uKQ60kknru8hRXxw==)";

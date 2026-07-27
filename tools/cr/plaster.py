@@ -398,6 +398,9 @@ class Rewriter(abc.ABC):
     # The `<name>:` key that selects this rewriter in a `substitutions:` entry.
     NAME: ClassVar[str] = ''
 
+    # A rewriter-specific override for the default value of `count:`.
+    DEFAULT_COUNT: ClassVar[int | None] = None
+
     # One-line summary shown in the `Rewriters` help index.
     SUMMARY: ClassVar[str] = ''
 
@@ -406,8 +409,22 @@ class Rewriter(abc.ABC):
     HELP: ClassVar[str] = ''
 
     @abc.abstractmethod
-    def apply(self, contents: str) -> tuple[str, int]:
-        """Transform `contents`, returning (new_contents, num_changes)."""
+    def apply(self,
+              contents: str,
+              *,
+              count: int,
+              description: str,
+              blank_for_parse: bool = False) -> tuple[str, list[str]]:
+        """Transform `contents`, returning (new_contents, validation_errors).
+
+        `count` is the entry's `count:` (default 1, `0` meaning "one or more").
+        Each rewriter decides how it applies. For a single-site rewriter it is
+        the expected number of matches. A composed rewriter may instead give
+        each of its operations its own expectation. `errors` is the list of
+        human-readable count/validation failures (empty when the entry applied
+        as expected). `blank_for_parse` is the file-wide
+        `blank_macros_for_ast_parsing` flag used by AST rewriters.
+        """
 
     @classmethod
     @abc.abstractmethod
@@ -415,9 +432,51 @@ class Rewriter(abc.ABC):
         """Build a rewriter from its YAML body, validating its fields."""
 
     @classmethod
+    def validate_count(cls, count: int, description: str) -> None:
+        """Reject an unsupported `count:` for this rewriter.
+        """
+
+    @classmethod
     def help_text(cls) -> str:
         """The full, user-facing help for this rewriter as dedented Markdown."""
         return textwrap.dedent(cls.HELP or cls.__doc__ or '').strip('\n')
+
+    def source_language(self) -> str | None:
+        """The source language this rewriter requires, or None if agnostic.
+
+        AST rewriters parse the target in a specific language (the `<lang>.`
+        prefix of their op id), so they may only be used on sources of that
+        language. Text rewriters are language-agnostic and return None.
+        """
+        return None
+
+
+# The file-wide plaster keys allowed at the top level of a YAML plaster.
+_TOP_LEVEL_KEYS: Final = frozenset(
+    {'substitutions', 'blank_macros_for_ast_parsing'})
+
+# Target-source suffixes plaster treats as C++. `blank_macros_for_ast_parsing`
+# blanks constructs for the tree-sitter C++ parser, so it is only meaningful for
+# these.
+_CXX_SOURCE_SUFFIXES: Final = frozenset(
+    {'.h', '.hpp', '.hxx', '.h++', '.cc', '.cpp', '.cxx', '.c++', '.mm'})
+
+
+def _is_cxx_source(plaster_path: Path) -> bool:
+    """True if the plaster's target source (its path minus `.yaml`) is C++."""
+    return plaster_path.with_suffix('').suffix in _CXX_SOURCE_SUFFIXES
+
+
+@dataclass(frozen=True)
+class PlasterSpec:
+    """A parsed plaster file: its substitutions plus its file-wide options."""
+
+    # The `substitutions:` entries, in order.
+    substitutions: list[Substitution]
+
+    # Indicates to the AST-rewriter that it needs to blank all cxx preprocessor
+    # directives that can interfere with parsing.
+    blank_macros_for_ast_parsing: bool = False
 
 
 @dataclass(frozen=True)
@@ -438,9 +497,16 @@ class Substitution:
     # The rewriter this entry composes; `apply` delegates to it.
     rewriter: Rewriter
 
-    def apply(self, contents: str) -> tuple[str, int]:
-        """Apply the composed rewriter, returning (new_contents, changes)."""
-        return self.rewriter.apply(contents)
+    def apply(self,
+              contents: str,
+              *,
+              blank_for_parse: bool = False) -> tuple[str, list[str]]:
+        """Apply the composed rewriter, returning (new_contents, errors).
+        """
+        return self.rewriter.apply(contents,
+                                   count=self.expected_count,
+                                   description=self.description,
+                                   blank_for_parse=blank_for_parse)
 
     class _NoDupSafeLoader(yaml.SafeLoader):
         """`yaml.SafeLoader` that rejects duplicate mapping keys.
@@ -475,16 +541,27 @@ class Substitution:
         }
 
     @staticmethod
-    def from_yaml(contents: str) -> list[Substitution]:
-        """Parse all substitutions from the contents of a YAML plaster file.
+    def from_yaml(contents: str) -> PlasterSpec:
+        """Parse a YAML plaster file into a `PlasterSpec`.
 
-        YAML plasters use a top-level `substitutions:` list.
+        YAML plasters use a top-level `substitutions:` list, plus file-level
+        values.
         """
         data = yaml.load(contents, Loader=Substitution._NoDupSafeLoader)
         if data is None:
             data = {}
         if not isinstance(data, dict):
             raise ValueError('Plaster YAML must be a mapping at the top level')
+        unknown = sorted(set(data) - _TOP_LEVEL_KEYS)
+        if unknown:
+            raise ValueError('Unrecognised top-level plaster key(s): ' +
+                             ', '.join(repr(k)
+                                       for k in unknown) + '; allowed: ' +
+                             ', '.join(sorted(_TOP_LEVEL_KEYS)))
+        blank_for_parse = data.get('blank_macros_for_ast_parsing', False)
+        if not isinstance(blank_for_parse, bool):
+            raise ValueError(
+                '`blank_macros_for_ast_parsing` must be a boolean')
         raw = data.get('substitutions')
         if raw is None:
             raise ValueError(
@@ -495,18 +572,20 @@ class Substitution:
             raise ValueError(
                 'Plaster YAML `substitutions:` must contain at least one entry'
             )
-        return [Substitution._from_item(entry) for entry in raw]
+        return PlasterSpec(
+            substitutions=[Substitution._from_item(entry) for entry in raw],
+            blank_macros_for_ast_parsing=blank_for_parse)
 
     @staticmethod
     def _from_item(data: object) -> Substitution:
         """Validate one `substitutions:` entry and build its rewriter.
 
-        An entry names a rewriter when it carries one of `_REWRITERS` as a key.
-        `description` and the optional `count` are item-level for every form.
+        An entry names a rewriter by carrying one of `_REWRITERS` as a key,
+        alongside the item-level `description` and optional `count`.
 
         Raises:
-            ValueError: on a malformed entry (missing/typo'd keys, mixed
-                forms, or invalid rewriter-specific fields).
+            ValueError: on a malformed entry (missing/typo'd keys, a missing
+                or unknown rewriter, or invalid rewriter-specific fields).
         """
         if not isinstance(data, dict):
             raise ValueError(f'substitution entry must be a mapping, got '
@@ -517,20 +596,11 @@ class Substitution:
         if not isinstance(description, str):
             raise ValueError('No description specified for substitution entry')
 
-        expected_count = Substitution._parse_count(data, description)
-
         rewriter_keys = sorted(keys & _REWRITERS.keys())
         if len(rewriter_keys) > 1:
             raise ValueError(
                 f'Only one rewriter allowed per entry, got '
                 f'{", ".join(rewriter_keys)} (in "{description}")')
-        # TODO(brave.dev/bug/56854): the bare regex form (regex fields placed
-        # directly on the item, without a `regex:` key) is deprecated. Once all
-        # plasters are migrated, delete this mixing check -- with no bare form
-        # there is nothing to mix.
-        if rewriter_keys and (keys & Regex._FIELD_KEYS):
-            raise ValueError(f'Cannot mix the "{rewriter_keys[0]}" rewriter '
-                             f'with bare regex fields (in "{description}")')
 
         if rewriter_keys:
             name = rewriter_keys[0]
@@ -540,47 +610,104 @@ class Substitution:
                                  f'rewriter: '
                                  f'{", ".join(repr(k) for k in unknown)} '
                                  f'(in "{description}")')
+            # The chosen rewriter decides what an omitted `count:` means, and
+            # may reject a count it does not support.
+            expected_count = Substitution._parse_count(
+                data, description, _REWRITERS[name].DEFAULT_COUNT)
+            _REWRITERS[name].validate_count(expected_count, description)
             rewriter = _REWRITERS[name].parse(data[name],
                                               description=description)
             return Substitution(description=description,
                                 expected_count=expected_count,
                                 rewriter=rewriter)
 
-        # No rewriter key: tolerated bare regex (the legacy form).
-        #
-        # TODO(brave.dev/bug/56854): the bare regex form (regex fields placed
-        # directly on the item, without a `regex:` key) is deprecated. Once all
-        # plasters are migrated, delete this whole block and require a rewriter
-        # key above, so an entry with no rewriter key becomes an error.
-        unknown = sorted(keys - ({'description', 'count'} | Regex._FIELD_KEYS))
+        # Every entry must name a rewriter. Surface the most helpful error we
+        # can: a mapping-valued stray key is almost certainly an attempt to use
+        # a rewriter that is not registered -- point the user at the ones that
+        # are; anything else is an unrecognised key.
+        unknown = sorted(keys - {'description', 'count'})
+        bad_rewriters = [k for k in unknown if isinstance(data[k], dict)]
+        if bad_rewriters:
+            available = ', '.join(sorted(_REWRITERS)) or '(none)'
+            raise ValueError(
+                f'Unknown rewriter(s): '
+                f'{", ".join(repr(k) for k in bad_rewriters)}; available '
+                f'rewriters: {available} (in "{description}")')
         if unknown:
-            # Every rewriter body is a mapping, so an unknown key carrying one
-            # is almost certainly an attempt to use a rewriter that is not
-            # registered -- point the user at the ones that are.
-            bad_rewriters = [k for k in unknown if isinstance(data[k], dict)]
-            if bad_rewriters:
-                available = ', '.join(sorted(_REWRITERS)) or '(none)'
-                raise ValueError(
-                    f'Unknown rewriter(s): '
-                    f'{", ".join(repr(k) for k in bad_rewriters)}; available '
-                    f'rewriters: {available} (in "{description}")')
             raise ValueError('Unrecognised substitution key(s): '
                              f'{", ".join(repr(k) for k in unknown)}')
-        # Compose a `regex:` body from the bare fields and hand it to Regex.
-        fields = {k: data[k] for k in keys & Regex._FIELD_KEYS}
-        rewriter = Regex.parse(fields, description=description)
-        return Substitution(description=description,
-                            expected_count=expected_count,
-                            rewriter=rewriter)
+        raise ValueError(
+            f'No rewriter specified (in "{description}"); expected one of: '
+            f'{", ".join(sorted(_REWRITERS)) or "(none)"}')
 
     @staticmethod
-    def _parse_count(data: dict[str, object], description: str) -> int:
-        expected_count = data.get('count', 1)
+    def _parse_count(data: dict[str, object],
+                     description: str,
+                     default: int | None = None) -> int:
+        expected_count = data.get('count', 1 if default is None else default)
         # bool is a subclass of int; reject it explicitly.
         if (not isinstance(expected_count, int)
                 or isinstance(expected_count, bool)):
             raise ValueError(f'count must be an integer (in "{description}")')
         return expected_count
+
+
+@dataclass(frozen=True)
+class MatchExpectation:
+    """How many matches an operation must make to count as correctly applied.
+
+    A closed range `[minimum, maximum]`; `maximum is None` means unbounded. The
+    canonical forms cover every case plaster needs:
+
+    - `exactly(n)`   — precisely `n` matches (the default, `exactly(1)`).
+    - `at_least_one` — one or more (the `count: 0` form).
+    - `optional`     — any number including zero; never fails on its own. Use
+      for an operation that may legitimately find nothing, leaving a
+      cross-operation rule (e.g. "at least one of these") to a rewriter's own
+      validation.
+    """
+
+    minimum: int
+    maximum: int | None
+
+    @classmethod
+    def exactly(cls, n: int) -> MatchExpectation:
+        return cls(n, n)
+
+    @classmethod
+    def at_least_one(cls) -> MatchExpectation:
+        return cls(1, None)
+
+    @classmethod
+    def optional(cls) -> MatchExpectation:
+        return cls(0, None)
+
+    @classmethod
+    def from_count(cls, count: int) -> MatchExpectation:
+        """Map an entry's `count:` to an expectation (`0` -> one-or-more)."""
+        return cls.at_least_one() if count == 0 else cls.exactly(count)
+
+    def accepts(self, matches: int) -> bool:
+        """True if `matches` satisfies this expectation."""
+        return matches >= self.minimum and (self.maximum is None
+                                            or matches <= self.maximum)
+
+    def error_for(self, matches: int) -> str | None:
+        """A failure message if `matches` is unacceptable, else None.
+
+        The `exactly`/`at_least_one` wordings match plaster's historical count
+        errors so existing diagnostics are unchanged.
+        """
+        if self.accepts(matches):
+            return None
+        if self.minimum == 1 and self.maximum is None:
+            return 'Expected at least one match but found none'
+        if self.minimum == self.maximum:
+            return (f'Unexpected number of matches ({matches} vs '
+                    f'{self.minimum})')
+        upper = 'any' if self.maximum is None else self.maximum
+        return (f'Unexpected number of matches ({matches} vs '
+                f'{self.minimum}..{upper})')
 
 
 class Regex(Rewriter):
@@ -618,12 +745,7 @@ class Regex(Rewriter):
         ```
     """
 
-    # The pattern/replacement fields, valid either bare on the item or nested
-    # under a `regex:` op key.
-    #
-    # TODO(brave.dev/bug/56854): the bare placement is deprecated; this set
-    # stays for the `regex:` form, but once all plasters are migrated its bare
-    # use in `Substitution._from_item` should go.
+    # The pattern/replacement fields, nested under the `regex:` op key.
     _FIELD_KEYS = frozenset(('pattern', 're_pattern', 'replace', 're_flags'))
 
     def __init__(self, *, re_pattern: str, replace: str, re_flags: int = 0):
@@ -631,18 +753,27 @@ class Regex(Rewriter):
         self._replace = replace
         self._re_flags = re_flags
 
-    def apply(self, contents: str) -> tuple[str, int]:
-        # `count=0` is provided here so all substitutions are applied, and then
-        # the number of them gets validated by the callers.
-        return re.subn(self._re_pattern,
-                       self._replace,
-                       contents,
-                       flags=self._re_flags,
-                       count=0)
+    def apply(self,
+              contents: str,
+              *,
+              count: int,
+              description: str,
+              blank_for_parse: bool = False) -> tuple[str, list[str]]:
+        del description  # Only the count matters for the regex diagnostic.
+        del blank_for_parse  # Text substitution never parses; nothing to relax.
+        # `count=0` here means "replace every match"; how many were expected is
+        # validated afterwards against the entry's `count:`.
+        content, matches = re.subn(self._re_pattern,
+                                   self._replace,
+                                   contents,
+                                   flags=self._re_flags,
+                                   count=0)
+        error = MatchExpectation.from_count(count).error_for(matches)
+        return content, [error] if error else []
 
     @classmethod
     def parse(cls, body: object, *, description: str) -> Regex:
-        """Build from a regex field mapping (a `regex:` body or bare keys)."""
+        """Build from a `regex:` body (a mapping of the regex fields)."""
         if not isinstance(body, dict):
             raise ValueError(f'"regex" must be a mapping (in "{description}")')
         unknown = sorted(set(body) - cls._FIELD_KEYS)
@@ -694,58 +825,135 @@ class Regex(Rewriter):
         return re_flags
 
 
+@dataclass(frozen=True)
+class Operation:
+    """One planned ast-grep op invocation: the whole contract to the engine.
+
+    `op_id` names an `ast.rewriter` in `rewriters.pyl`; `inputs` binds each of
+    that op's declared `inputs` to a concrete string. Everything else the engine
+    needs -- which matcher to run, which adjacent tokens to consume, the
+    replacement template -- lives in the op spec, so a frontend `Rewriter`
+    composes purely by emitting `Operation`s (one, several of the same op, or a
+    mix of different ops) and never touches engine internals.
+
+    `expectation` is how many matches this operation must make to be considered
+    correctly applied; it is validation metadata that `AstRewriter.run` ignores
+    (the engine just reports how many matches it made) and the composing
+    `Rewriter` checks. A composed rewriter sets a per-operation expectation --
+    e.g. `add_friend` expects each friend inserted exactly once regardless of
+    how many friends there are -- rather than folding everything into one total.
+    """
+
+    # The `rewriters.pyl` rewriter op id this invokes (e.g. `cxx.make_virtual`).
+    op_id: str
+
+    # Values bound to the op's declared `inputs`, injected into its templates.
+    inputs: dict[str, str]
+
+    # How many matches this operation must make (default: exactly one).
+    expectation: MatchExpectation = MatchExpectation.exactly(1)
+
+
 class _AstGrepRewriter(Rewriter):
     """Base for rewriters backed by an ast-grep op declared in `rewriters.pyl`.
 
     A concrete subclass sets the usual `NAME`/`SUMMARY`/`HELP` metadata plus the
-    `OP_ID` it resolves to, the string arguments its body accepts (`_ARG_KEYS`),
-    and any adjacent tokens the op consumes (`_CONSUME_BEFORE`/`_CONSUME_AFTER`,
-    engine details -- see `AstRewriter.apply`). `parse` validates the body as a
-    mapping of exactly those string args and `apply` runs the op, so subclasses
-    are pure declarations.
+    `OP_ID` it resolves to. `apply` runs whatever `operations` returns against
+    the engine, so a subclass expresses itself entirely by *composing*
+    operations rather than by driving the engine.
+
+    The default `operations`/`parse` cover the common 1:1 case: the YAML body is
+    a flat mapping of exactly the op's declared `inputs` (read from the spec,
+    the single source of truth), producing a single operation whose expectation
+    is the entry's `count:`. Subclasses that take a richer body (e.g. a list-
+    valued field expanding to several operations) override `parse` and
+    `operations`, and may override `validate_outcomes` to add cross-operation
+    rules (e.g. "at least one of these optional operations must apply").
     """
 
     # The `rewriters.pyl` op id this resolves to (e.g. `cxx.make_virtual`).
     OP_ID: ClassVar[str] = ''
 
-    # The string argument names the op body must supply.
-    _ARG_KEYS: ClassVar[frozenset[str]] = frozenset()
+    def __init__(self, inputs: dict[str, str] | None = None):
+        # The flat default binds these to the op's single operation; composing
+        # subclasses hold their own parsed shape and leave this empty.
+        self._inputs = inputs if inputs is not None else {}
 
-    # Literals the op assumes sit immediately before / after each matched node.
-    _CONSUME_BEFORE: ClassVar[str] = ''
-    _CONSUME_AFTER: ClassVar[str] = ''
+    def source_language(self) -> str:
+        """The `<lang>.` prefix for the op (e.g. `cxx` for `cxx.make_virtual`).
 
-    def __init__(self, args: dict[str, str]):
-        self._args = args
+        AST rewriters parse the target in this language, so they are only valid
+        on sources of it.
+        """
+        return self.OP_ID.split('.', 1)[0]
 
-    def apply(self, contents: str) -> tuple[str, int]:
-        rewriter = AstRewriter(RewritersEval.load(), contents)
-        count = rewriter.apply(self.OP_ID,
-                               self._args,
-                               consume_before=self._CONSUME_BEFORE,
-                               consume_after=self._CONSUME_AFTER)
-        return rewriter.content, count
+    def operations(self, count: int) -> list[Operation]:
+        """The ordered ast-grep operations this rewriter expands to.
+
+        `count` is the entry's `count:`; the default single operation adopts it
+        as its expectation, so a flat rewriter keeps plaster's original count
+        semantics. Composed rewriters typically ignore it in favour of a
+        per-operation expectation.
+        """
+        return [
+            Operation(self.OP_ID, self._inputs,
+                      MatchExpectation.from_count(count))
+        ]
+
+    def apply(self,
+              contents: str,
+              *,
+              count: int,
+              description: str,
+              blank_for_parse: bool = False) -> tuple[str, list[str]]:
+        engine = AstRewriter(RewritersEval.load(),
+                             contents,
+                             blank_for_parse=blank_for_parse)
+        outcomes = [(op, engine.run(op)) for op in self.operations(count)]
+        return engine.content, self.validate_outcomes(outcomes, description)
+
+    def validate_outcomes(self, outcomes: list[tuple[Operation, int]],
+                          description: str) -> list[str]:
+        """Errors for `(operation, matches)` outcomes; empty when all applied.
+
+        The default checks each operation against its own `expectation`.
+        Override to add cross-operation rules -- an override typically calls
+        `super().validate_outcomes(...)` first, then appends group checks.
+        """
+        del description  # Historical count diagnostics do not name the entry.
+        errors = []
+        for op, matches in outcomes:
+            error = op.expectation.error_for(matches)
+            if error:
+                errors.append(error)
+        return errors
+
+    @classmethod
+    def declared_inputs(cls) -> frozenset[str]:
+        """The op's declared `inputs`, read from the `rewriters.pyl` spec."""
+        return frozenset(RewritersEval.load().rewriter(cls.OP_ID)['inputs'])
 
     @classmethod
     def parse(cls, body: object, *, description: str) -> _AstGrepRewriter:
         """Validate a `<NAME>:` body of string args and build the rewriter."""
+        keys = cls.declared_inputs()
         if not isinstance(body, dict):
             raise ValueError(
                 f'"{cls.NAME}" must be a mapping (in "{description}")')
-        unknown = sorted(set(body) - cls._ARG_KEYS)
+        unknown = sorted(set(body) - keys)
         if unknown:
             raise ValueError(
                 f'Unrecognised {cls.NAME} arg(s): '
                 f'{", ".join(repr(k) for k in unknown)} (in "{description}")')
-        missing = sorted(cls._ARG_KEYS - set(body))
+        missing = sorted(keys - set(body))
         if missing:
             raise ValueError(f'{cls.NAME} requires arg(s): '
                              f'{", ".join(missing)} (in "{description}")')
-        for key in sorted(cls._ARG_KEYS):
+        for key in sorted(keys):
             if not isinstance(body[key], str):
                 raise ValueError(f'{cls.NAME} `{key}` must be a string '
                                  f'(in "{description}")')
-        return cls({key: body[key] for key in cls._ARG_KEYS})
+        return cls({key: body[key] for key in keys})
 
 
 class MakeVirtual(_AstGrepRewriter):
@@ -754,10 +962,11 @@ class MakeVirtual(_AstGrepRewriter):
     NAME: Final = 'make_virtual'
     OP_ID: Final = 'cxx.make_virtual'
     SUMMARY: Final = 'Prepend `virtual ` to a class method declaration.'
-    _ARG_KEYS: Final = frozenset(('class_name', 'method_name'))
     # Authored in Markdown; `Help` renders it with rich.
     HELP: Final = r"""
-        Prepends `virtual ` to a C++ method declaration.
+        Adds `virtual ` to a C++ method declaration. A leading attribute like
+        `[[nodiscard]]` is kept first, so `virtual` lands after it
+        (`[[nodiscard]] virtual T Foo()`), as the grammar requires.
 
         Fields:
 
@@ -781,26 +990,23 @@ class MakeVirtual(_AstGrepRewriter):
 
 
 class AddFriend(_AstGrepRewriter):
-    """Add a `friend` declaration to a C++ class's private section, via the
-    ast-grep rewriters."""
+    """Add one or more `friend` declarations to a C++ class's private section,
+    via the ast-grep rewriters."""
 
     NAME: Final = 'add_friend'
     OP_ID: Final = 'cxx.add_friend'
-    SUMMARY: Final = 'Add a `friend` declaration to a class private section.'
-    _ARG_KEYS: Final = frozenset(('class_name', 'friend_type'))
-    # The matcher stops at the `private` keyword; the op re-emits the `:` that
-    # follows, so consume the original one.
-    _CONSUME_AFTER: Final = ':'
+    SUMMARY: Final = 'Add `friend` declaration(s) to a class private section.'
     # Authored in Markdown; `Help` renders it with rich.
     HELP: Final = r"""
-        Inserts a `friend` declaration as the first line of a class's private
-        section. The class must have a `private:` section.
+        Inserts one or more `friend` declarations as the first lines of a
+        class's private section. The class must have a `private:` section.
 
         Fields:
 
         - `class_name` — the class to befriend from.
         - `friend_type` — the friend's declaration body, e.g. `class BraveFoo`
-          becomes `friend class BraveFoo;`.
+          becomes `friend class BraveFoo;`. May be a single string, or a list
+          of them.
 
         Example:
 
@@ -810,8 +1016,78 @@ class AddFriend(_AstGrepRewriter):
             add_friend:
               class_name: MultiContentsView
               friend_type: class BraveMultiContentsView
+
+          - description: Friend the Brave worker and its test.
+            add_friend:
+              class_name: DataTypeWorker
+              friend_type:
+                - class BraveDataTypeWorker
+                - class BraveDataTypeWorkerTest
         ```
     """
+
+    def __init__(self, *, class_name: str, friend_types: list[str]):
+        # This rewriter holds its own parsed shape and builds operations from
+        # it, so the base's flat inputs stay empty.
+        super().__init__()
+        self._class_name = class_name
+        self._friend_types = friend_types
+
+    def operations(self, count: int) -> list[Operation]:
+        # Each friend targets the class's single private section, so it is
+        # expected exactly once -- independent of how many friends are listed,
+        # which is why the entry's `count:` is not used here.
+        #
+        # `add_friend` inserts each friend as the *first* private line, so a
+        # later insertion ends up above an earlier one. Emit in reverse so the
+        # friends land in the order the user listed them.
+        del count
+        return [
+            Operation(self.OP_ID, {
+                'class_name': self._class_name,
+                'friend_type': friend_type,
+            }, MatchExpectation.exactly(1))
+            for friend_type in reversed(self._friend_types)
+        ]
+
+    @classmethod
+    def parse(cls, body: object, *, description: str) -> AddFriend:
+        """Validate an `add_friend:` body, accepting a single friend or a list.
+
+        `friend_type` may be a string (one friend) or a non-empty list of
+        strings (several); everything else matches the flat-args form.
+        """
+        if not isinstance(body, dict):
+            raise ValueError(
+                f'"{cls.NAME}" must be a mapping (in "{description}")')
+        required = {'class_name', 'friend_type'}
+        unknown = sorted(set(body) - required)
+        if unknown:
+            raise ValueError(
+                f'Unrecognised {cls.NAME} arg(s): '
+                f'{", ".join(repr(k) for k in unknown)} (in "{description}")')
+        missing = sorted(required - set(body))
+        if missing:
+            raise ValueError(f'{cls.NAME} requires arg(s): '
+                             f'{", ".join(missing)} (in "{description}")')
+        if not isinstance(body['class_name'], str):
+            raise ValueError(f'{cls.NAME} `class_name` must be a string '
+                             f'(in "{description}")')
+        return cls(class_name=body['class_name'],
+                   friend_types=cls._parse_friend_types(
+                       body['friend_type'], description))
+
+    @staticmethod
+    def _parse_friend_types(value: object, description: str) -> list[str]:
+        """Normalise `friend_type` to a non-empty list of strings."""
+        if isinstance(value, str):
+            return [value]
+        if (isinstance(value, list) and value
+                and all(isinstance(item, str) for item in value)):
+            return list(value)
+        raise ValueError(
+            f'{AddFriend.NAME} `friend_type` must be a string or a non-empty '
+            f'list of strings (in "{description}")')
 
 
 class DropFinal(_AstGrepRewriter):
@@ -821,10 +1097,6 @@ class DropFinal(_AstGrepRewriter):
     NAME: Final = 'drop_final'
     OP_ID: Final = 'cxx.drop_final'
     SUMMARY: Final = 'Remove the `final` specifier from a class declaration.'
-    _ARG_KEYS: Final = frozenset(('class_name', ))
-    # The matcher stops at the `final` keyword; consume the space before it so
-    # dropping `final` leaves no doubled space.
-    _CONSUME_BEFORE: Final = ' '
     # Authored in Markdown; `Help` renders it with rich.
     HELP: Final = r"""
         Removes the `final` specifier from a C++ class declaration, so the class
@@ -846,10 +1118,580 @@ class DropFinal(_AstGrepRewriter):
     """
 
 
-# A set with all the rewriters available in plaster.
+class PreemptFunctionImpl(_AstGrepRewriter):
+    """Insert a statement block at the top of a C++ function body, via the
+    ast-grep rewriters.
+    """
+
+    NAME: Final = 'preempt_function_impl'
+    OP_ID: Final = 'cxx.preempt_function_impl'
+    SUMMARY: Final = 'Insert a statement block at the top of a function body.'
+    # Authored in Markdown; `Help` renders it with rich.
+    HELP: Final = r"""
+        Inserts a statement block as the first thing in a C++ function's body,
+        right after the opening brace. Use it to preempt the implementation of
+        an upstream function, rather than renaming it to an inner
+        `_ChromiumImpl`.
+
+        Fields:
+
+        - `function_name` — the function's name exactly as its definition
+          writes it: a qualified `Class::Method` for a member, or the bare name
+          for a free function.
+
+        Exactly one of the following selects what to insert:
+
+        - `return_if` — a boolean condition that expands to `if (<condition>)
+          return;`, or `if (<condition>) return <return_value>;` when
+          `return_value` is also given.
+        - `code` — a free-form statement block. Write it flush-left; the whole
+          block is indented to the body's first-statement level for you.
+
+        - `return_value` — optional, only valid with `return_if`: the value the
+          generated early return yields.
+
+        Each overload sharing the name is one match, so an overloaded method
+        needs a matching `count`.
+
+        Examples:
+
+        ```yaml
+        substitutions:
+          - description: Skip autocomplete when Brave has it disabled.
+            preempt_function_impl:
+              function_name: OmniboxController::StartAutocomplete
+              return_if: '!IsAutocompleteEnabled(client_->GetPrefs())'
+
+          - description: Never expose the feedback buttons; return false early.
+            preempt_function_impl:
+              function_name: OmniboxResultView::IsFeedbackButtonVisible
+              return_if: 'true'
+              return_value: 'false'
+
+          - description: Pin Brave-managed actions before the upstream body.
+            preempt_function_impl:
+              function_name: CustomizeToolbarHandler::PinAction
+              code: |-
+                if (PinBraveAction(action_id, prefs(), pin)) {
+                  return;
+                }
+        ```
+
+        The last entry turns this upstream definition:
+
+        ```cpp
+        void CustomizeToolbarHandler::PinAction(int action_id, bool pin) {
+          // ... upstream body ...
+        }
+        ```
+
+        into (note the flush-left `code` block indented to the body level):
+
+        ```cpp
+        void CustomizeToolbarHandler::PinAction(int action_id, bool pin) {
+          if (PinBraveAction(action_id, prefs(), pin)) {
+            return;
+          }
+          // ... upstream body ...
+        }
+        ```
+    """
+
+    # The keys that select what to insert; exactly one must be present.
+    _MODE_KEYS: Final = frozenset({'code', 'return_if'})
+
+    def __init__(self, *, function_name: str, prologue: str):
+        # This rewriter holds its own parsed shape (the resolved prologue text)
+        # and builds its operation from it, so the base's flat inputs stay
+        # empty.
+        super().__init__()
+        self._function_name = function_name
+        self._prologue = prologue
+
+    def operations(self, count: int) -> list[Operation]:
+        # A function body is matched once per overload, so the entry's `count:`
+        # carries through unchanged (an overloaded method needs a matching
+        # count).
+        #
+        # The prologue lands as the body's first statement, so indent every
+        # non-blank line to the body's first level -- two spaces, which is where
+        # an out-of-line `Class::Method` definition always sits (file/namespace
+        # scope). Escape backslashes last, since the text is spliced into a
+        # `re.sub` replacement where a backslash is special.
+        prologue = _indent_yaml(self._prologue).replace('\\', '\\\\')
+        return [
+            Operation(self.OP_ID, {
+                'function_name': self._function_name,
+                'prologue': prologue,
+            }, MatchExpectation.from_count(count))
+        ]
+
+    @classmethod
+    def parse(cls, body: object, *, description: str) -> PreemptFunctionImpl:
+        """Validate a `preempt_function_impl:` body and resolve what to insert.
+
+        Requires `function_name`, plus exactly one of `code` or `return_if`;
+        `return_value` is optional and only valid with `return_if`.
+        """
+        if not isinstance(body, dict):
+            raise ValueError(
+                f'"{cls.NAME}" must be a mapping (in "{description}")')
+        allowed = {'function_name', 'return_value'} | cls._MODE_KEYS
+        unknown = sorted(set(body) - allowed)
+        if unknown:
+            raise ValueError(
+                f'Unrecognised {cls.NAME} arg(s): '
+                f'{", ".join(repr(k) for k in unknown)} (in "{description}")')
+        if not isinstance(body.get('function_name'),
+                          str) or not body['function_name']:
+            raise ValueError(f'{cls.NAME} `function_name` must be a non-empty '
+                             f'string (in "{description}")')
+        prologue = cls._resolve_prologue(body, description)
+        return cls(function_name=body['function_name'], prologue=prologue)
+
+    @classmethod
+    def _resolve_prologue(cls, body: dict, description: str) -> str:
+        """Build the text to insert from the `code`/`return_if` fields."""
+        modes = sorted(cls._MODE_KEYS & set(body))
+        if len(modes) != 1:
+            raise ValueError(
+                f'{cls.NAME} requires exactly one of `code` or `return_if` '
+                f'(in "{description}")')
+        mode = modes[0]
+        if mode == 'code':
+            if 'return_value' in body:
+                raise ValueError(
+                    f'{cls.NAME} `return_value` is only valid with `return_if` '
+                    f'(in "{description}")')
+            code = body['code']
+            if not isinstance(code, str) or not code:
+                raise ValueError(
+                    f'{cls.NAME} `code` must be a non-empty string '
+                    f'(in "{description}")')
+            return code
+        condition = body['return_if']
+        if not isinstance(condition, str) or not condition:
+            raise ValueError(f'{cls.NAME} `return_if` must be a non-empty '
+                             f'string (in "{description}")')
+        return_value = body.get('return_value', '')
+        if not isinstance(return_value, str):
+            raise ValueError(f'{cls.NAME} `return_value` must be a string '
+                             f'(in "{description}")')
+        value = f' {return_value}' if return_value else ''
+        return f'if ({condition}) return{value};'
+
+
+class AfterFunctionImpl(_AstGrepRewriter):
+    """Wrap a function body in a lambda and run a code block after it.
+
+    The upstream body runs first, then our code. The idea of this rewriter is to
+    eliminate the need for certain cases where we either rename a function in
+    upstream to an inner `_ChromiumImpl` and call it, or when we subclass a
+    function to override it and call the base.
+
+    This rewriter offers a third option: wrap the upstream body in a lambda and
+    run a code block after it.
+    """
+
+    NAME: Final = 'after_function_impl'
+    OP_ID: Final = 'cxx.after_function_impl'
+    SUMMARY: Final = 'Run a statement block after a function body, wrapped so '\
+                     'it always runs.'
+    # Authored in Markdown; `Help` renders it with rich.
+    HELP: Final = r"""
+        Wraps a C++ function's whole body in an immediately-invoked `[&]` lambda
+        and runs a statement block after it, so that code always runs before the
+        function ends. This is an alternative to renaming the function to an
+        inner `_ChromiumImpl`, or to subclassing and calling the base, when you
+        want to run code after the upstream body.
+
+        The upstream body becomes `[&]() { ... }();`: a lambda capturing
+        everything (including `this`) by reference and invoked immediately.
+
+        Fields:
+
+        - `function_name` — the function's name exactly as its definition
+          writes it: a qualified `Class::Method` for a member, or the bare name
+          for a free function.
+        - `code` — the statement block to append.
+        - `result_var` — optional. For a non-void function, names a variable
+          bound to the wrapped body's return value (`auto <result_var> = [&]()
+          { ... }();`) so the appended `code` can use it. When set, the appended
+          `code` owns the function's final `return`.
+
+        Each overload sharing the name is one match, so an overloaded method
+        needs a matching `count`.
+
+        Examples:
+
+        ```yaml
+        substitutions:
+          - description: Record a metric after the upstream body always runs.
+            after_function_impl:
+              function_name: DownloadDisplayController::OnButtonPressed
+              code: |-
+                RecordBraveDownloadInteraction();
+
+          - description: Let Brave adjust the computed value before returning.
+            after_function_impl:
+              function_name: OmniboxController::ComputeScore
+              result_var: score
+              code: |-
+                return ComputeScore_BraveImpl(score);
+        ```
+
+        The second entry turns this upstream definition:
+
+        ```cpp
+        int OmniboxController::ComputeScore() {
+          // ... upstream body with its own returns ...
+        }
+        ```
+
+        into (the upstream body is wrapped, not reindented):
+
+        ```cpp
+        int OmniboxController::ComputeScore() {
+          auto score = [&]() {
+          // ... upstream body with its own returns ...
+          }();
+          return ComputeScore_BraveImpl(score);
+        }
+        ```
+    """
+
+    def __init__(self, *, function_name: str, capture: str, epilogue: str):
+        super().__init__()
+        self._function_name = function_name
+        self._capture = capture
+        self._epilogue = epilogue
+
+    def operations(self, count: int) -> list[Operation]:
+        # Escape backslashes last in both spliced values, since they are spliced
+        # into a `re.sub` replacement where a backslash is special.
+        epilogue = _indent_yaml(self._epilogue).replace('\\', '\\\\')
+        capture = self._capture.replace('\\', '\\\\')
+        return [
+            Operation(
+                self.OP_ID, {
+                    'function_name': self._function_name,
+                    'capture': capture,
+                    'epilogue': epilogue,
+                }, MatchExpectation.from_count(count))
+        ]
+
+    @classmethod
+    def parse(cls, body: object, *, description: str) -> AfterFunctionImpl:
+        """Validate an `after_function_impl:` body and resolve what to append.
+
+        Requires `function_name` and `code`. `result_var` is optional and, when
+        given, binds the wrapped body's value to `auto <result_var>`.
+        """
+        if not isinstance(body, dict):
+            raise ValueError(
+                f'"{cls.NAME}" must be a mapping (in "{description}")')
+        allowed = {'function_name', 'code', 'result_var'}
+        unknown = sorted(set(body) - allowed)
+        if unknown:
+            raise ValueError(
+                f'Unrecognised {cls.NAME} arg(s): '
+                f'{", ".join(repr(k) for k in unknown)} (in "{description}")')
+        if not isinstance(body.get('function_name'),
+                          str) or not body['function_name']:
+            raise ValueError(f'{cls.NAME} `function_name` must be a non-empty '
+                             f'string (in "{description}")')
+        code = body.get('code')
+        if not isinstance(code, str) or not code:
+            raise ValueError(f'{cls.NAME} `code` must be a non-empty string '
+                             f'(in "{description}")')
+        capture = cls._resolve_capture(body, description)
+        return cls(function_name=body['function_name'],
+                   capture=capture,
+                   epilogue=code)
+
+    @classmethod
+    def _resolve_capture(cls, body: dict, description: str) -> str:
+        """Build the `auto <result_var> = ` lead, or empty for a void wrap."""
+        if 'result_var' not in body:
+            return ''
+        result_var = body['result_var']
+        if not isinstance(result_var, str) or not result_var:
+            raise ValueError(f'{cls.NAME} `result_var` must be a non-empty '
+                             f'string (in "{description}")')
+        return f'auto {result_var} = '
+
+
+class RenameClass(_AstGrepRewriter):
+    """Rename a C++ class."""
+
+    NAME: Final = 'rename_class'
+    OP_ID: Final = 'cxx.rename_class'
+    SUMMARY: Final = 'Rename a class and every code token of its name.'
+    # For this rewriter we have less of a concerns about `count`.
+    DEFAULT_COUNT: Final = 0
+    # Authored in Markdown; `Help` renders it with rich.
+    HELP: Final = r"""
+        Renames a C++ class everywhere its name appears as a *code token*: the
+        class declaration, type positions (`Foo*`, `<Foo>`), the `Foo::`
+        qualifier on out-of-line members, and constructor/destructor names.
+
+        Fields:
+
+        - `class_name` — the current class name.
+        - `rename` — the name to rename it to (e.g. `Foo_ChromiumImpl`).
+
+        Example:
+
+        ```yaml
+        substitutions:
+          - description: Rename so the Brave subclass can reuse the name.
+            rename_class:
+              class_name: TestLauncher
+              rename: TestLauncher_ChromiumImpl
+        ```
+    """
+
+
+class AddToProtected(_AstGrepRewriter):
+    """Add a member declaration to a C++ class's `protected:` section"""
+
+    NAME: Final = 'add_to_protected'
+    # Two ops share the work (see `operations`); this names the language and a
+    # representative op for the base's helpers.
+    OP_ID: Final = 'cxx.add_to_protected'
+    SUMMARY: Final = 'Add code to a class protected section (creating one if '\
+                     'needed).'
+    # Authored in Markdown; `Help` renders it with rich.
+    HELP: Final = r"""
+        Adds code to a C++ class's `protected:` section. It will either use an
+        existing `protected:` section or create a new one.
+
+        Fields:
+
+        - `class_name` — the class to add to.
+        - `code` — free-form text to insert in the protected section, e.g. a
+          declaration like `virtual void OnFoo() = 0;`.
+
+        Example:
+
+        ```yaml
+        substitutions:
+          - description: Add a protected hook for the Brave subclass to override.
+            add_to_protected:
+              class_name: TestLauncher_ChromiumImpl
+              code: 'virtual const TestResult& OnTestResult(const TestResult& result) = 0;'
+        ```
+    """
+
+    # This rewriter uses composite operations that look for an existing
+    # protected section, or add one before `private:`.
+    _ADD_TO_EXISTING: Final = 'cxx.add_to_protected'
+    _CREATE_BEFORE_PRIVATE: Final = 'cxx.add_protected_before_private'
+
+    @classmethod
+    def validate_count(cls, count: int, description: str) -> None:
+        # The code is inserted once, into whichever placement applies, so a
+        # `count:` other than 1 is meaningless here.
+        if count != 1:
+            raise ValueError(f'{cls.NAME} adds the code exactly once and does '
+                             f'not accept a count other than 1 '
+                             f'(in "{description}")')
+
+    def __init__(self, *, class_name: str, code: str):
+        super().__init__()
+        self._class_name = class_name
+        self._code = code
+
+    def apply(self,
+              contents: str,
+              *,
+              count: int,
+              description: str,
+              blank_for_parse: bool = False) -> tuple[str, list[str]]:
+        # The code is inserted exactly once either in an existing protected
+        # section or in a new one created just before a private section. Each
+        # placement is indented to the anchor's real column (Chromium members
+        # sit one space in from their access specifier), so a nested class is
+        # indented correctly rather than at the top-level column.
+        del count, description
+        engine = AstRewriter(RewritersEval.load(),
+                             contents,
+                             blank_for_parse=blank_for_parse)
+        source = contents.encode('utf-8')
+        class_inputs = {'class_name': self._class_name}
+
+        anchor = engine.first_match(
+            Operation(self._ADD_TO_EXISTING, class_inputs))
+        if anchor is not None:
+            member = len(_leading_indent(source, anchor.start)) + 1
+            op = Operation(
+                self._ADD_TO_EXISTING, {
+                    'class_name': self._class_name,
+                    'code': _indent_code(self._code, member),
+                }, MatchExpectation.exactly(1))
+        else:
+            anchor = engine.first_match(
+                Operation(self._CREATE_BEFORE_PRIVATE, class_inputs))
+            # A missing anchor leaves the run to report the count shortfall.
+            indent = _leading_indent(source, anchor.start) if anchor else ''
+            op = Operation(
+                self._CREATE_BEFORE_PRIVATE, {
+                    'class_name': self._class_name,
+                    'code': _indent_code(self._code,
+                                         len(indent) + 1),
+                    'indent': indent,
+                }, MatchExpectation.exactly(1))
+        changes = engine.run(op)
+        error = op.expectation.error_for(changes)
+        return engine.content, [error] if error else []
+
+    @classmethod
+    def parse(cls, body: object, *, description: str) -> AddToProtected:
+        """Validate an `add_to_protected:` body of string args."""
+        if not isinstance(body, dict):
+            raise ValueError(
+                f'"{cls.NAME}" must be a mapping (in "{description}")')
+        required = {'class_name', 'code'}
+        unknown = sorted(set(body) - required)
+        if unknown:
+            raise ValueError(
+                f'Unrecognised {cls.NAME} arg(s): '
+                f'{", ".join(repr(k) for k in unknown)} (in "{description}")')
+        missing = sorted(required - set(body))
+        if missing:
+            raise ValueError(f'{cls.NAME} requires arg(s): '
+                             f'{", ".join(missing)} (in "{description}")')
+        for key in sorted(required):
+            if not isinstance(body[key], str) or not body[key]:
+                raise ValueError(f'{cls.NAME} `{key}` must be a non-empty '
+                                 f'string (in "{description}")')
+        return cls(class_name=body['class_name'], code=body['code'])
+
+
+class AddToPublic(_AstGrepRewriter):
+    """Append a member declaration to the end of a C++ class's `public:` section
+    """
+
+    NAME: Final = 'add_to_public'
+    # Two ops share the work (see `apply`); this names the language and a
+    # representative op for the base's helpers.
+    OP_ID: Final = 'cxx.append_to_public_before_section'
+    SUMMARY: Final = 'Append code to the end of a class public section.'
+    # Authored in Markdown; `Help` renders it with rich.
+    HELP: Final = r"""
+        Appends code to a C++ class's `public:` section, at the end of it.
+
+        Fields:
+
+        - `class_name` — the class to add to.
+        - `code` — free-form text to append to the public section, e.g. a
+          declaration like `virtual void OnFoo();`.
+
+        Example:
+
+        ```yaml
+        substitutions:
+          - description: Expose a Brave hook on the public interface.
+            add_to_public:
+              class_name: TestLauncher_ChromiumImpl
+              code: 'virtual const TestResult& OnTestResult(const TestResult& result);'
+        ```
+    """
+
+    # This rewriter appends either before the section that follows public, or
+    # -- when public is the last/only section -- before the class's closing
+    # brace.
+    _APPEND_BEFORE_SECTION: Final = 'cxx.append_to_public_before_section'
+    _APPEND_BEFORE_CLOSE: Final = 'cxx.append_to_public_before_close'
+
+    @classmethod
+    def validate_count(cls, count: int, description: str) -> None:
+        # The code is inserted once, into whichever placement applies, so a
+        # `count:` other than 1 is meaningless here.
+        if count != 1:
+            raise ValueError(f'{cls.NAME} adds the code exactly once and does '
+                             f'not accept a count other than 1 '
+                             f'(in "{description}")')
+
+    def __init__(self, *, class_name: str, code: str):
+        super().__init__()
+        self._class_name = class_name
+        self._code = code
+
+    def apply(self,
+              contents: str,
+              *,
+              count: int,
+              description: str,
+              blank_for_parse: bool = False) -> tuple[str, list[str]]:
+        # The code is appended exactly once, either just before the section
+        # that follows public or, when public is last, before the closing brace.
+        # Each placement is indented to the anchor's real column so a nested
+        # class is indented correctly rather than at the top-level column.
+        del count, description
+        engine = AstRewriter(RewritersEval.load(),
+                             contents,
+                             blank_for_parse=blank_for_parse)
+        source = contents.encode('utf-8')
+        class_inputs = {'class_name': self._class_name}
+
+        anchor = engine.first_match(
+            Operation(self._APPEND_BEFORE_SECTION, class_inputs))
+        if anchor is not None:
+            indent = _leading_indent(source, anchor.start)
+            op = Operation(
+                self._APPEND_BEFORE_SECTION, {
+                    'class_name': self._class_name,
+                    'code': _indent_code(self._code,
+                                         len(indent) + 1),
+                    'indent': indent,
+                }, MatchExpectation.exactly(1))
+        else:
+            anchor = engine.first_match(
+                Operation(self._APPEND_BEFORE_CLOSE, class_inputs))
+            # The closing brace is the last byte of the matched body; a missing
+            # anchor leaves the run to report the count shortfall.
+            indent = (_leading_indent(source, anchor.end -
+                                      1) if anchor else '')
+            op = Operation(
+                self._APPEND_BEFORE_CLOSE, {
+                    'class_name': self._class_name,
+                    'code': _indent_code(self._code,
+                                         len(indent) + 2),
+                    'indent': indent,
+                }, MatchExpectation.exactly(1))
+        changes = engine.run(op)
+        error = op.expectation.error_for(changes)
+        return engine.content, [error] if error else []
+
+    @classmethod
+    def parse(cls, body: object, *, description: str) -> AddToPublic:
+        """Validate an `add_to_public:` body of string args."""
+        if not isinstance(body, dict):
+            raise ValueError(
+                f'"{cls.NAME}" must be a mapping (in "{description}")')
+        required = {'class_name', 'code'}
+        unknown = sorted(set(body) - required)
+        if unknown:
+            raise ValueError(
+                f'Unrecognised {cls.NAME} arg(s): '
+                f'{", ".join(repr(k) for k in unknown)} (in "{description}")')
+        missing = sorted(required - set(body))
+        if missing:
+            raise ValueError(f'{cls.NAME} requires arg(s): '
+                             f'{", ".join(missing)} (in "{description}")')
+        for key in sorted(required):
+            if not isinstance(body[key], str) or not body[key]:
+                raise ValueError(f'{cls.NAME} `{key}` must be a non-empty '
+                                 f'string (in "{description}")')
+        return cls(class_name=body['class_name'], code=body['code'])
+
+
 _REWRITERS: MappingProxyType[str, type[Rewriter]] = MappingProxyType({
     rewriter.NAME: rewriter
-    for rewriter in (Regex, MakeVirtual, AddFriend, DropFinal)
+    for rewriter in (Regex, MakeVirtual, AddFriend, DropFinal,
+                     PreemptFunctionImpl, AfterFunctionImpl, RenameClass,
+                     AddToProtected, AddToPublic)
 })
 
 
@@ -931,27 +1773,32 @@ class PlasterFile:
 
         info = PatchinfoBuilder(self.path)
         if suffix == '.yaml':
-            substitutions = Substitution.from_yaml(info.plaster_contents)
+            doc = Substitution.from_yaml(info.plaster_contents)
+            is_cxx = _is_cxx_source(self.path)
+            if doc.blank_macros_for_ast_parsing and not is_cxx:
+                raise ValueError(
+                    '`blank_macros_for_ast_parsing` is only supported for C++ '
+                    f'sources (in {self.path})')
+            if not is_cxx:
+                for substitution in doc.substitutions:
+                    if substitution.rewriter.source_language() == 'cxx':
+                        raise ValueError(
+                            f'the `{substitution.rewriter.NAME}` rewriter is '
+                            f'only supported for C++ sources (in {self.path})')
         else:
             raise ValueError(f'Unsupported plaster file extension: {suffix}')
         contents = repository.chromium.read_file(info.source)
         errors = []
 
         try:
-            for substitution in substitutions:
-                contents, num_changes = substitution.apply(contents)
-
-                # count == 0 means "one or more matches", but zero matches still
-                # result in a failure.
-                if substitution.expected_count == 0:
-                    if num_changes == 0:
-                        errors.append(
-                            'Expected at least one match but found none in '
-                            f'{self.path}')
-                elif num_changes != substitution.expected_count:
-                    errors.append(
-                        f'Unexpected number of matches ({num_changes} vs '
-                        f'{substitution.expected_count}) in {self.path}')
+            for substitution in doc.substitutions:
+                # Each substitution owns its count validation (per-operation for
+                # composed rewriters) and reports any failures; we just attach
+                # the file being patched.
+                contents, sub_errors = substitution.apply(
+                    contents, blank_for_parse=doc.blank_macros_for_ast_parsing)
+                errors.extend(f'{error} in {self.path}'
+                              for error in sub_errors)
 
         except re.error as e:
             errors.append(f'Invalid regex: {e} in {self.path}')
@@ -1012,28 +1859,12 @@ def _is_op_id(op_id: str) -> bool:
     return bool(name) and prefix in _LANGUAGE_BY_PREFIX
 
 
-def _template_args_match(spec: dict) -> dict:
-    """schema validator: a matcher's template uses exactly its declared args.
-
-    Returns the spec unchanged on success or raises schema.SchemaError if the
-    template references a placeholder that is not a declared arg, or declares
-    an arg the template never uses, catching any typos.
-    """
-    placeholders = {
+def _placeholders(template: str) -> set[str]:
+    """The set of named `{placeholder}` fields referenced in `template`."""
+    return {
         name
-        for _, name, _, _ in string.Formatter().parse(spec['template']) if name
+        for _, name, _, _ in string.Formatter().parse(template) if name
     }
-    declared = set(spec['args'])
-    undeclared = sorted(placeholders - declared)
-    if undeclared:
-        raise schema.SchemaError(
-            f'template uses undeclared placeholder(s): {", ".join(undeclared)}'
-        )
-    unused = sorted(declared - placeholders)
-    if unused:
-        raise schema.SchemaError(
-            f'declared arg(s) never used in template: {", ".join(unused)}')
-    return spec
 
 
 # Reusable leaf schemas.
@@ -1051,19 +1882,26 @@ _RESULT_SCHEMA = {
     'node': _NON_EMPTY_STR,
 }
 
-# A matcher op: a templated ast-grep query plus its result shape.
-_MATCHER_SCHEMA = schema.And(
-    {
-        'args': [str],
-        'template': _NON_EMPTY_STR,
-        'result': _RESULT_SCHEMA,
-    }, _template_args_match)
+# A matcher op: a templated ast-grep query plus its result shape. Its inputs
+# are the template's `{placeholder}`s, inferred rather than declared.
+_MATCHER_SCHEMA = {
+    'template': _NON_EMPTY_STR,
+    'result': _RESULT_SCHEMA,
+}
 
 # A rewriter op: locates nodes through a matcher op and edits each via a regex
-# substitution.
+# substitution. `inputs` is its public interface (validated against the
+# templates it feeds in `_check_cross_references`); `replace` may name adjacent
+# tokens to fold into each rewritten span, which are `{input}`-formatted like
+# `replace` itself. `first_match`, when true, rewrites only the first match (in
+# source order) and ignores any later ones.
 _REWRITER_SCHEMA = {
     'matcher': _NON_EMPTY_STR,
+    'inputs': [str],
+    schema.Optional('first_match'): bool,
     'replace': {
+        schema.Optional('consume_before'): str,
+        schema.Optional('consume_after'): str,
         're_pattern': _REGEX_STR,
         'replace': str,
     },
@@ -1171,9 +2009,12 @@ class RewritersEval:
     def _check_cross_references(self) -> None:
         """Validate rules that span records, which schema cannot express.
 
-        Each rewriter must reference a matcher that exists, and must declare the
+        Each rewriter must reference a matcher that exists, must declare the
         same result node as that matcher (it replaces the node the matcher
-        locates, so the two must agree).
+        locates, so the two must agree), and its declared `inputs` must be
+        exactly the `{placeholder}`s used across the matcher template and the
+        `replace` template -- so the op's advertised interface never drifts from
+        what its templates actually consume.
         """
         for op_id, spec in self._rewriters.items():
             ref = spec['matcher']
@@ -1181,12 +2022,30 @@ class RewritersEval:
                 raise RewritersSchemaError(
                     f'{self._source}: rewriter {op_id!r} references unknown '
                     f'matcher {ref!r}')
-            matcher_node = self._matchers[ref]['result']['node']
+            matcher = self._matchers[ref]
+            matcher_node = matcher['result']['node']
             if spec['result']['node'] != matcher_node:
                 raise RewritersSchemaError(
                     f'{self._source}: rewriter {op_id!r} result node '
                     f'{spec["result"]["node"]!r} does not match matcher '
                     f'{ref!r} node {matcher_node!r}')
+
+            declared = set(spec['inputs'])
+            replace = spec['replace']
+            used = (_placeholders(matcher['template'])
+                    | _placeholders(replace['replace'])
+                    | _placeholders(replace.get('consume_before', ''))
+                    | _placeholders(replace.get('consume_after', '')))
+            undeclared = sorted(used - declared)
+            if undeclared:
+                raise RewritersSchemaError(
+                    f'{self._source}: rewriter {op_id!r} templates use '
+                    f'undeclared input(s): {", ".join(undeclared)}')
+            unused = sorted(declared - used)
+            if unused:
+                raise RewritersSchemaError(
+                    f'{self._source}: rewriter {op_id!r} declares input(s) '
+                    f'never used in its templates: {", ".join(unused)}')
 
 
 def _ast_grep_platform_dir() -> str:
@@ -1238,6 +2097,27 @@ def _indent_yaml(text: str, spaces: int = 2) -> str:
                      for line in text.splitlines())
 
 
+def _indent_code(text: str, spaces: int) -> str:
+    """Indent `code` to a member level and escape it for a `re.sub` replacement.
+
+    A member-level rewriter splices `code` into an ast-grep op's `re.sub`
+    replacement, so it is indented to the target column and its backslashes are
+    doubled (a backslash is special in a replacement string).
+    """
+    return _indent_yaml(text, spaces).replace('\\', '\\\\')
+
+
+def _leading_indent(source: bytes, pos: int) -> str:
+    """The leading whitespace of the line containing byte offset `pos`.
+
+    Used to anchor an insertion to the real indentation of a class member,
+    keyword or brace, rather than assuming the top-level column.
+    """
+    line_start = source.rfind(b'\n', 0, pos) + 1
+    line = source[line_start:pos]
+    return line[:len(line) - len(line.lstrip(b' \t'))].decode('utf-8')
+
+
 def run_ast_grep(*, language: str, rule_body: str,
                  source: str) -> list[AstMatch]:
     """Run an ast-grep rule against in-memory source and return its matches.
@@ -1278,58 +2158,126 @@ class AstRewriter:
     """Applies ast-grep rewriter ops to the contents of a single file.
 
     Constructed with an already-parsed `RewritersEval` and the target file's
-    contents. `apply` runs one rewriter op (by id) over the current contents,
+    contents. `run` executes one bound `Operation` over the current contents,
     mutating them in place and returning how many places changed; call it
-    repeatedly to accumulate edits. Op-specific conveniences (which op id and
-    which adjacent tokens to consume) belong with the `Rewriter` classes that
-    drive this engine, not here.
+    repeatedly to accumulate edits. The engine is fully self-contained: an op's
+    matcher, replacement, and any adjacent tokens to consume all come from the
+    op spec, so the `Rewriter` classes that drive it only choose which
+    operations to run.
     """
 
-    def __init__(self, rewriters: RewritersEval, content: str):
+    # Class-head export macro (e.g. `MODULES_EXPORT`, `COMPONENT_EXPORT(FOO)`):
+    # the keyword and its space, the macro, then the start of the real name.
+    # Used by `_prepare_cxx_for_parse`.
+    _EXPORT_MACRO_RE = re.compile(r'(\b(?:class|struct)\s+)'
+                                  r'([A-Z][A-Z0-9_]*_EXPORT(?:\s*\([^()]*\))?)'
+                                  r'(\s+[A-Za-z_])')
+
+    # A preprocessor conditional directive line (`#if`, `#ifdef` ...), matched
+    # without its trailing newline. Used by `_prepare_cxx_for_parse`.
+    _CXX_CONDITIONAL_RE = re.compile(
+        r'(?m)^[ \t]*#[ \t]*(?:if|ifdef|ifndef|elif|else|endif)\b.*$')
+
+    def __init__(self,
+                 rewriters: RewritersEval,
+                 content: str,
+                 *,
+                 blank_for_parse: bool = False):
         self._rewriters = rewriters
-        self._content = content
+        self._source = content
+        # When set, blank constructs tree-sitter cannot parse before matching
+        # (see `_prepare_cxx_for_parse`). Off by default. Opt-in per file.
+        self._blank_for_parse = blank_for_parse
 
     @property
     def content(self) -> str:
         """The current file contents, reflecting every applied rewrite."""
-        return self._content
+        return self._source
 
-    def apply(self,
-              op_id: str,
-              args: dict[str, str],
-              *,
-              consume_before: str = '',
-              consume_after: str = '') -> int:
-        """Run rewriter `op_id` with `args`, mutate content, return count.
+    def _prepare_cxx_for_parse(self) -> str:
+        """Normalise C++ source for tree-sitter parsing
+
+        Two constructs are handled:
+
+        - A class-head export macro (`class MODULES_EXPORT Foo`): tree-sitter
+          has no macro definitions, so it reads the macro as the class name and
+          drops the real name, any `final`, and the body into an error node.
+          Blanking the macro leaves a plain `class Foo ...`.
+        - A preprocessor conditional (`#if`/`#endif`/...), most damaging inside
+          a base-specifier list (`#if defined(USE_AURA)`), which has no grammar
+          node and breaks the class head. Blanking the directive lines, keeping
+          the guarded code, makes the head parse.
+
+        Both substitutions only replace characters in place, so every byte
+        offset is preserved. Blanking every conditional file-wide is safe
+        because the caller opts in per file via `blank_macros_for_ast_parsing`,
+        and a directive guarding an alternative definition would leave two
+        matches that the count check flags.
+        """
+        source = self._EXPORT_MACRO_RE.sub(
+            lambda m: m.group(1) + ' ' * len(m.group(2)) + m.group(3),
+            self._source)
+        return self._CXX_CONDITIONAL_RE.sub(
+            lambda line: ' ' * len(line.group(0)), source)
+
+    def _locate(self, op: Operation) -> list[AstMatch]:
+        """Every match for `op`'s matcher, in source order.
+        """
+        rewriter = self._rewriters.rewriter(op.op_id)
+        matcher = self._rewriters.matcher(rewriter['matcher'])
+        language = self._rewriters.language_of(op.op_id)
+        rule_body = matcher['template'].format(**op.inputs)
+
+        # `_prepare_cxx_for_parse` blanks C++-specific constructs, so it only
+        # applies to `cxx.` ops.
+        blank = self._blank_for_parse and op.op_id.startswith('cxx.')
+        source_for_parse = (self._prepare_cxx_for_parse()
+                            if blank else self._source)
+        return run_ast_grep(language=language,
+                            rule_body=rule_body,
+                            source=source_for_parse)
+
+    def first_match(self, op: Operation) -> AstMatch | None:
+        """The first match for `op`'s matcher, or None. Does not mutate content.
+
+        Parse-normalisation preserves byte offsets, so a caller can read the
+        real source (e.g. to derive an insertion's indentation) at the returned
+        offsets before running the op.
+        """
+        matches = self._locate(op)
+        return matches[0] if matches else None
+
+    def run(self, op: Operation) -> int:
+        """Run one bound `Operation`, mutate content, return the change count.
 
         Locates nodes via the op's matcher template, applies the op's `replace`
-        regex substitution (with `args` filled into the replacement template)
-        to each matched node, and splices the results back into the held
-        contents from the end so earlier byte offsets stay valid. Returns the
-        total number of substitutions made.
+        regex substitution (with `op.inputs` filled into the replacement
+        template) to each matched node, and splices the results back into the
+        held contents from the end so earlier byte offsets stay valid. Returns
+        the total number of substitutions made.
 
-        `consume_before` / `consume_after` are literals the op assumes
-        immediately precede / follow each matched node. They are folded into the
-        rewritten span used when the node kind stops short of an adjacent
-        token (e.g. the `:` after an access_specifier, or the space before a
-        `final` specifier). They are engine details, not part of the rewriters
-        spec.
+        An op's `replace` may name `consume_before` / `consume_after` tokens
+        (themselves `op.inputs`-formatted) that sit immediately before / after
+        each matched node; they are folded into the rewritten span when the node
+        kind stops short of an adjacent token (e.g. the `:` after an
+        access_specifier, or the space before a `final` specifier). An op that
+        sets `first_match` rewrites only the first match (in source order),
+        leaving any later matches untouched.
         """
-        rewriter = self._rewriters.rewriter(op_id)
-        matcher = self._rewriters.matcher(rewriter['matcher'])
-        language = self._rewriters.language_of(op_id)
-        rule_body = matcher['template'].format(**args)
+        rewriter = self._rewriters.rewriter(op.op_id)
+        matches = self._locate(op)
+        if rewriter.get('first_match'):
+            matches = matches[:1]
 
-        matches = run_ast_grep(language=language,
-                               rule_body=rule_body,
-                               source=self._content)
+        replace = rewriter['replace']
+        pattern = replace['re_pattern']
+        replacement = replace['replace'].format(**op.inputs)
+        before = replace.get('consume_before',
+                             '').format(**op.inputs).encode('utf-8')
+        after = replace.get('consume_after',
+                            '').format(**op.inputs).encode('utf-8')
 
-        pattern = rewriter['replace']['re_pattern']
-        replacement = rewriter['replace']['replace'].format(**args)
-        before = consume_before.encode('utf-8')
-        after = consume_after.encode('utf-8')
-
-        source = self._content.encode('utf-8')
+        source = self._source.encode('utf-8')
         edits = []
         total = 0
         for match in matches:
@@ -1350,7 +2298,7 @@ class AstRewriter:
         # Apply from the end so each splice leaves earlier offsets unchanged.
         for start, end, new_text in sorted(edits, reverse=True):
             source = source[:start] + new_text.encode('utf-8') + source[end:]
-        self._content = source.decode('utf-8')
+        self._source = source.decode('utf-8')
         return total
 
 
@@ -1373,7 +2321,15 @@ def get_plaster_files(filepaths: list[str] | None = None) -> list[PlasterFile]:
               and filepath.endswith(PLASTER_EXTENSION)):
             expected_plaster_files.add(filepath)
         else:
-            raise ValueError(f'Unexpected file path: {filepath}')
+            hint = ''
+            # Control characters mean the shell interpreted unquoted
+            # backslash escapes (e.g. '\a' -> bell) before we saw the path,
+            # mangling it beyond recovery. Guide the user to quote it.
+            if any(ord(c) < 0x20 for c in filepath):
+                hint = ('\nThe path contains control characters, likely '
+                        'because an unquoted backslash path was escaped by '
+                        'the shell. Quote the path or use forward slashes.')
+            raise PlasterError(f'Unexpected file path: {filepath!r}{hint}')
 
     plaster_parent = Path(PLASTER_FILES_PATH).parent
 

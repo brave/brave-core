@@ -209,12 +209,12 @@ export default function createAIChatApi(
           // in mojom to `OnConversationEntriesFrameHeightChanged`, etc.
           childHeightChanged(height) {},
           rateMessage(turnUuid, isLiked) {},
-          userRequestedOpenGeneratedUrl(url) {},
           dragStart() {},
           // <if expr="is_ios">
           dismissMenus() {},
           // </if>
           showSkillDialog(prompt) {},
+          showImageLightbox(file) {},
           requestNewConversation() {},
           handleResetError() {},
         },

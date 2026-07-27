@@ -1,0 +1,55 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Use Brave's "Import from Edge" string instead of Chromium's.
+    regex:
+      pattern: 'IDS_IMPORT_FROM_EDGE'
+      replace: 'IDS_BRAVE_IMPORT_FROM_EDGE'
+
+  - description: |-
+      Detect Chromium-family browser profiles alongside the platform browsers.
+
+      Brave defines DetectChromeProfiles() (in the chromium_src override) to
+      surface Chrome/Edge/Vivaldi/Opera/Yandex/Whale/Brave profiles. Append it
+      as the last call of each branch of the default-browser if/else blocks in
+      DetectSourceProfilesWorker (the Windows and macOS arms), so those
+      profiles are offered right after the platform's native browsers.
+    count: 2
+    regex:
+      # Match a default-browser if/else block, capturing each branch body and
+      # the indentation of its closing brace (\2 and \4). The statement indent
+      # is that brace indent + 2 spaces, so we don't hardcode nesting depth.
+      re_pattern:
+        'if \(shell_integration::IsFirefoxDefaultBrowser\(\)\) \{(.+?\n)( *)\}
+        else \{(.+?\n)( *)\}'
+      re_flags: [DOTALL]
+      replace:
+        'if (shell_integration::IsFirefoxDefaultBrowser())
+        {\g<1>\g<2>  DetectChromeProfiles(&profiles);\n\g<2>} else
+        {\g<3>\g<4>  DetectChromeProfiles(&profiles);\n\g<4>}'
+
+  - description: |-
+      Detect Chromium-family profiles on the remaining platforms (Linux, etc).
+
+      The non-Windows/macOS arm only detects Firefox, so rewrite it to mirror
+      the other arms: pick the ordering with the default-browser heuristic and
+      detect Chrome-family profiles via DetectChromeProfiles().
+    regex:
+      pattern: |-
+        #else
+          DetectFirefoxProfiles(locale, &profiles);
+        #endif
+      replace: |-
+        #else
+          if (shell_integration::IsFirefoxDefaultBrowser()) {
+            DetectFirefoxProfiles(locale, &profiles);
+            DetectChromeProfiles(&profiles);
+          } else {
+            DetectChromeProfiles(&profiles);
+            DetectFirefoxProfiles(locale, &profiles);
+          }
+        #endif

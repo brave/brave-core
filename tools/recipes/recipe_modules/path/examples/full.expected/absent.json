@@ -7,7 +7,20 @@
     "name": "out ready"
   },
   {
-    "name": "$result",
-    "status": "SUCCESS"
+    "cmd": [
+      "echo",
+      "[HOME]"
+    ],
+    "name": "home"
+  },
+  {
+    "cmd": [
+      "echo",
+      "[HOME]/cache"
+    ],
+    "name": "cache"
+  },
+  {
+    "name": "$result"
   }
 ]

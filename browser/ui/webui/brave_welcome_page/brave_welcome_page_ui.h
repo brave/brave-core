@@ -14,13 +14,18 @@
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "ui/webui/mojo_web_ui_controller.h"
+#include "ui/webui/resources/cr_components/theme_color_picker/theme_color_picker.mojom.h"
+
+class ThemeColorPickerHandler;
 
 namespace brave_welcome_page {
 class WelcomePageHandler;
 }  // namespace brave_welcome_page
 
 // The Web UI controller for the Brave welcome page.
-class BraveWelcomePageUI : public ui::MojoWebUIController {
+class BraveWelcomePageUI
+    : public ui::MojoWebUIController,
+      public theme_color_picker::mojom::ThemeColorPickerHandlerFactory {
  public:
   explicit BraveWelcomePageUI(content::WebUI* web_ui);
   ~BraveWelcomePageUI() override;
@@ -32,8 +37,23 @@ class BraveWelcomePageUI : public ui::MojoWebUIController {
       mojo::PendingReceiver<brave_welcome_page::mojom::WelcomePageHandler>
           receiver);
 
+  void BindInterface(
+      mojo::PendingReceiver<
+          theme_color_picker::mojom::ThemeColorPickerHandlerFactory> receiver);
+
  private:
+  // theme_color_picker::mojom::ThemeColorPickerHandlerFactory:
+  void CreateThemeColorPickerHandler(
+      mojo::PendingRemote<theme_color_picker::mojom::ThemeColorPickerClient>
+          client,
+      mojo::PendingReceiver<theme_color_picker::mojom::ThemeColorPickerHandler>
+          handler) override;
+
   std::unique_ptr<brave_welcome_page::WelcomePageHandler> page_handler_;
+
+  std::unique_ptr<ThemeColorPickerHandler> theme_color_picker_handler_;
+  mojo::Receiver<theme_color_picker::mojom::ThemeColorPickerHandlerFactory>
+      theme_color_picker_handler_factory_receiver_{this};
 
   WEB_UI_CONTROLLER_TYPE_DECL();
 };

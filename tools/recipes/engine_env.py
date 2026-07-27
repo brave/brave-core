@@ -39,7 +39,7 @@ def merge_envs(
         return result
 
     # Backing for `%(KEY)s` substitution: unknown keys resolve to '' rather than
-    # raising, matching the upstream behaviour.
+    # raising.
     subst: Mapping[str, str] = defaultdict(str, **dict(original))
 
     merged: set[str] = set()

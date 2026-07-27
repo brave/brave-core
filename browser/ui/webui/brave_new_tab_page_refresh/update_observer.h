@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_UI_WEBUI_BRAVE_NEW_TAB_PAGE_REFRESH_UPDATE_OBSERVER_H_
 #define BRAVE_BROWSER_UI_WEBUI_BRAVE_NEW_TAB_PAGE_REFRESH_UPDATE_OBSERVER_H_
 
+#include <initializer_list>
 #include <string>
 
 #include "base/functional/callback.h"
@@ -48,6 +49,8 @@ class UpdateObserver {
   void OnUpdate(Source update_source);
   void OnPrefChanged(Source update_source, const std::string& path);
   void AddPrefListener(const std::string& path, Source update_source);
+  void AddPrefListener(const std::string& path,
+                       std::initializer_list<Source> sources);
 
   PrefChangeRegistrar pref_change_registrar_;
   base::RepeatingCallback<void(Source)> callback_;

@@ -23,12 +23,13 @@ std::optional<int> ParsePing(const base::DictValue& dict) {
   return dict.FindInt(kPingKey);
 }
 
-std::optional<TokenIssuerList> ParseTokenIssuers(const base::DictValue& dict) {
-  if (const auto* const list = dict.FindList(kIssuersKey)) {
-    return MaybeBuildTokenIssuersFromList(*list);
+std::optional<TokenIssuersInfo> ParseTokenIssuers(const base::DictValue& dict) {
+  const auto* const list = dict.FindList(kIssuersKey);
+  if (!list) {
+    return std::nullopt;
   }
 
-  return std::nullopt;
+  return MaybeBuildTokenIssuersFromList(*list);
 }
 
 }  // namespace brave_ads::json::reader

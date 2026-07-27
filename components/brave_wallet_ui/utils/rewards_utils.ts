@@ -180,7 +180,7 @@ export const getRewardsBATToken = (
     tokenId: '',
     coingeckoId: '',
     coin: BraveWallet.CoinType.ETH,
-    isShielded: false,
+    zcashTokenType: BraveWallet.ZCashTokenType.kNone,
     chainId: provider,
   }
 }

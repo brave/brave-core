@@ -300,6 +300,13 @@ public class PasswordSettings extends ChromeBaseSettingsFragment
         return mPageTitle;
     }
 
+    @Override
+    public @Nullable String getMainMenuKey() {
+        // Matches the "passwords" preference key in main_preferences.xml so the entry is
+        // highlighted while this page is shown in multi-column settings.
+        return "passwords";
+    }
+
     private @ManagePasswordsReferrer int getReferrerFromInstanceStateOrLaunchBundle(
             @Nullable Bundle savedInstanceState) {
         if (savedInstanceState != null

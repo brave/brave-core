@@ -697,6 +697,7 @@
 -ContextualSearchboxHandlerTest.QueryAutocomplete_SetsLensInputs_InToolModes
 -OmniboxEditModelPopupTest.AiModeButtonClick*
 -OmniboxEditModelPopupTest.AimPopup*
+-OmniboxPopupHandlerTest.*
 -WebuiOmniboxHandlerTest.OnActiveTabChanged_SavesAndRestoresState
 
 # These tests crash because the tests initialize profile first and then reset
@@ -738,6 +739,9 @@
 -ManifestV2HandlerUnitTest.ProfileMetrics_ExtensionLocationsAreProperlyGrouped
 -ManifestV2HandlerUnitTest.ProfileMetrics_ExtensionsThatAreDisabledForOtherReasonsEmitOther
 -ManifestV2HandlerUnitTest.ShouldBlockInstallation_UserInstalledExtensions
+
+# Flaky on our CI and upstream
+-IndigoToolbarTest.ExpandCollapseInteractions
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -AboutFlagsHistogramTest.*

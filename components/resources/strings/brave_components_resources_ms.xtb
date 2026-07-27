@@ -786,9 +786,7 @@
 <translation id="5486744676117070166">Gagal mendapat nilai nonce seterusnya</translation>
 <translation id="6180576227145734714">Data transaksi 'kepada' mestilah alamat yang sah apabila dinyatakan</translation>
 <translation id="6688162556547723415">Kaedah dan/atau akaun yang diminta belum dibenarkan oleh pengguna.</translation>
-<translation id="8767749833522980474">Kripto</translation>
 <translation id="6122742277607781713">Portfolio</translation>
-<translation id="7020503656406658141">Harga</translation>
 <translation id="3586775666459823714">NFT</translation>
 <translation id="1987317783729300807">Akaun</translation>
 <translation id="3567988240819868195">Pasaran</translation>
@@ -1822,7 +1820,6 @@
 <translation id="803703704549420287">Kosongkan penapis</translation>
 <translation id="1472675084647422956">Tunjukkan lagi</translation>
 <translation id="4522570452068850558">Butiran</translation>
-<translation id="4583937519241190398">Disahkan oleh DappRadar</translation>
 <translation id="8713438253026855351">Tukar kepada akaun berperisai</translation>
 <translation id="3526789880090101085">Akaun perisai</translation>
 <translation id="3155166394760577549">Aktifkan perlindungan untuk meningkatkan privasi transaksi.</translation>
@@ -1955,6 +1952,7 @@
 <translation id="6261915643960475695">Perniagaan</translation>
 <translation id="8265589281845759879">Kereta</translation>
 <translation id="7726519849288907308">Selebriti</translation>
+<translation id="8767749833522980474">Kripto</translation>
 <translation id="7577010593836079522">Budaya</translation>
 <translation id="6807791860691150411">Pendidikan</translation>
 <translation id="3706423975342040244">Hiburan</translation>
@@ -2171,6 +2169,7 @@
 <translation id="2367972762794486313">Paparkan apl</translation>
 <translation id="3142853026316054951">Togol mod fokus</translation>
 <translation id="3468387898712904997">Alias E-mel Baharu</translation>
+<translation id="4711475997833555304">Cipta e-mel rawak yang memajukan ke peti masuk anda.</translation>
 <translation id="2796584247246518451">Kontena sementara baharu</translation>
 <translation id="8591883849678260674">Lihat asal</translation>
 <translation id="1969654232209826429">minit bacaan</translation>
@@ -2230,8 +2229,10 @@
 <translation id="8743383817154663379">Ada sesuatu yang tidak kena semasa memproses permintaan anda. Sila cuba lagi nanti.</translation>
 <translation id="2712650703044366764">Model ini mempunyai titik akhir yang tidak sah. Sila semak konfigurasi anda dan cuba lagi.</translation>
 <translation id="7092656392206649236">Terdapat masalah semasa berkomunikasi dengan Leo. Sila cuba lagi.</translation>
+<translation id="4539536233699928121">Terdapat masalah semasa berkomunikasi dengan NEAR. Sila cuba lagi.</translation>
 <translation id="3552709750512842961">Kod status: <ph name="STATUS_CODE"/>, kod ralat: <ph name="ERROR_CODE"/></translation>
 <translation id="9215978379284690246">Kod status: <ph name="STATUS_CODE"/></translation>
+<translation id="5820497878628354073">Kod status: <ph name="STATUS_CODE"/>, kod status dalaman: <ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">Anda telah mencapai had kadar premium. Sila cuba lagi dalam beberapa jam.</translation>
 <translation id="3683964919745779766">Anda telah mencapai had kadar untuk model ini atau kehabisan kredit. Sila cuba lagi nanti.</translation>
 <translation id="7692501701960747469">Kunci API yang dikonfigurasi untuk model ini tidak sah. Sila semak konfigurasi anda dan cuba lagi.</translation>
@@ -2405,6 +2406,9 @@
 <translation id="9051226419897869406">Bersembang secara Tertutup dengan Brave Leo</translation>
 <translation id="2414904697165579184">Bentuk jawapan berdasarkan kandungan tab</translation>
 <translation id="8258324391302611485">Kandungan halaman ini akan dihantar kepada Leo bersama mesej anda.</translation>
+<translation id="443008484043213881">Alat</translation>
+<translation id="4343623396828510727">Tapak ini mendedahkan alat yang boleh digunakan oleh Leo untuk menghantar data ke dan dari tapak ini. Jangan lampirkan atau luluskan alat ini jika perbualan ini mengandungi data yang anda tidak mahu tapak ini lihat.</translation>
+<translation id="5021823940147712387">Alih keluar alat</translation>
 <translation id="318819763888864209">Semua langganan dibaharui secara automatik tetapi boleh dibatalkan pada bila-bila masa sebelum dibaharui.</translation>
 <translation id="5091223967610958">Kongsi nama hos laman yang anda berada (<ph name="HOST_NAME"/>) untuk membantu kami menjadikan Leo lebih baik.</translation>
 <translation id="8732450785281947197">Alatan Leo AI</translation>
@@ -2483,6 +2487,9 @@
 <translation id="7918928051723770926">Tugasan selesai</translation>
 <translation id="2113810663179257944">Pelaksanaan Kod</translation>
 <translation id="4838375634693651776">Melaksanakan kod dalam kotak pasir untuk membantu dengan pertanyaan anda</translation>
+<translation id="6990975553143971265">Mencari sejarah pelayar anda untuk "<ph name="QUERY"/>"</translation>
+<translation id="8302511726757276645">Mencari sejarah pelayar anda</translation>
+<translation id="8410699755320690690">Brave AI mahu mencari sejarah pelayaran anda. Carian ini berjalan secara setempat pada peranti anda, jadi keseluruhan sejarah anda tidak dihantar ke mana-mana. Hanya tajuk, URL dan petikan teks berindeks bagi halaman yang sepadan akan dihantar kepada Brave AI sebagai sebahagian daripada perbualan ini.</translation>
 <translation id="4379566111233326721">Kod:</translation>
 <translation id="3542130965673205258">Output:</translation>
 <translation id="6911817209337314910">Menjana beberapa pilihan untuk anda pilih</translation>
@@ -2692,6 +2699,21 @@
 <translation id="7586067492365979844">Perisai Brave mempunyai rumah dan reka bentuk baharu. Ia kini menyatu dengan maklumat tapak untuk pengalaman sehenti.</translation>
 <translation id="9114542678887529043">Perisai Brave mempunyai rumah dan reka bentuk baharu. Aksesnya dengan mengklik ikon tapak di bar alamat.</translation>
 <translation id="4242533952199664413">Buka tetapan</translation>
+<translation id="3616113530831147358">Audio</translation>
+<translation id="7972837668077967426">Canvas</translation>
+<translation id="2182250753201267390">Memori Peranti</translation>
+<translation id="1217374757325197995">Kumpulan Sumber Acara</translation>
+<translation id="1823768272150895732">Fon</translation>
+<translation id="436315497893815819">Concurrency Perkakasan</translation>
+<translation id="7846634333498149051">Papan Kekunci</translation>
+<translation id="5302048478445481009">Bahasa</translation>
+<translation id="7986250835989845763">Peranti Media</translation>
+<translation id="4267171000817377500">Pemalam</translation>
+<translation id="3441653493275994384">Skrin</translation>
+<translation id="1772612984983840854">Sintesis Pertuturan</translation>
+<translation id="1167475333911019229">Nombor Siri Peranti USB</translation>
+<translation id="6897140037006041989">Ejen Pengguna</translation>
+<translation id="6433005682384591812">Kumpulan Web Sockets</translation>
 <translation id="6294662480095808915">Privasi. Secara Lalai.</translation>
 <translation id="4366423156486478559">Dapatkan perlindungan Brave pada setiap pautan yang anda klik. Hanya tetapkan Brave sebagai lalai dan semak imbas. Secara peribadi.</translation>
 <translation id="3830912418080848377">Tetapan Import</translation>
@@ -2728,7 +2750,6 @@
 <translation id="6821966107067356137">Tambah suapan RSS</translation>
 <translation id="2478076885740497414">Pasang apl</translation>
 <translation id="8293206222192510085">Tambah Penanda Halaman</translation>
-<translation id="1010029336854254368">Menu Kongsi</translation>
 <translation id="7758460733045216901">Panel Penanda Halaman</translation>
 <translation id="958268166261124668">VPN Brave: Disambungkan</translation>
 <translation id="6021669293402055982">VPN Brave: Diputuskan sambungan</translation>
@@ -2851,17 +2872,31 @@ Mari sambungkan anda!</translation>
 <translation id="5816720995022674532">Origin adalah percuma untuk digunakan pada peranti Linux, tetapi masih <ph name="BEGIN_LINK"/>tersedia untuk pembelian<ph name="END_LINK"/> jika anda ingin menyokong Brave sebagai perniagaan. Membeli juga akan membuka keupayaan untuk menggunakan Origin pada peranti Android, iOS, macOS, dan Windows.</translation>
 <translation id="3065220545261045367">Sokong Brave dengan membeli Origin</translation>
 <translation id="2069499076031488636">Teruskan dengan Origin secara percuma pada Linux</translation>
+<translation id="6820590295368504396">Tidak dapat menyambung ke perkhidmatan SKU</translation>
+<translation id="2525146368601152300">ID pembelian kosong</translation>
+<translation id="7858444547014304753">ID pembelian tidak sah</translation>
+<translation id="2016076837307423164">Gagal mendapatkan bukti kelayakan</translation>
+<translation id="3890481923176188801">Pembelian tidak ditemukan</translation>
 <translation id="5713644099811900409">Akaun Brave</translation>
 <translation id="2906576968270573525">Log masuk atau cipta akaun Brave</translation>
 <translation id="6972754398087986839">Mulakan</translation>
 <translation id="5378207817582281342">Almost there!</translation>
 <translation id="3750210661641549834">Untuk mencipta akaun anda, sila sahkan alamat e-mel anda.</translation>
-<translation id="4129813507847680661">Masukkan kod pendaftaran</translation>
+<translation id="4351175281479794167">Masukkan kod pengesahan</translation>
 <translation id="1672793037892810340">Anda sepatutnya menerima e-mel dengan kod yang perlu anda masukkan.</translation>
 <translation id="4821255729182569254">Hantar semula e-mel pengesahan</translation>
 <translation id="5837679375142747484">Tidak nampak e-mel tersebut? Periksa folder spam anda atau <ph name="BEGIN_LINK"/>hantar semula<ph name="END_LINK"/> ia.</translation>
 <translation id="1080588816740959885">Tidak nampak e-mel tersebut? Periksa folder spam anda atau hantar semula ia.</translation>
 <translation id="1020730839570724178">Batalkan pendaftaran</translation>
+<translation id="7155125570724238786">Untuk menetapkan semula kata laluan anda, sila sahkan alamat e-mel anda.</translation>
+<translation id="816074628631172140">E-mel anda telah disahkan. Tetapkan kata laluan baharu untuk melengkapkan penetapan semula kata laluan anda.</translation>
+<translation id="7543374051303238869">Tetapkan kata laluan baharu</translation>
+<translation id="8378209932853841849">Batal tetapan semula kata laluan</translation>
+<translation id="4405566535206792621">Untuk menukar kata laluan anda, sila sahkan alamat e-mel anda.</translation>
+<translation id="3135333563420939059">E-mel anda telah disahkan. Tetapkan kata laluan baharu untuk melengkapkan penukaran kata laluan anda.</translation>
+<translation id="4227581348172626540">Batal penukaran kata laluan</translation>
+<translation id="808894953321890993">Tukar kata laluan</translation>
+<translation id="7967687455715421528">Tidak dapat menukar kata laluan</translation>
 <translation id="4869737930995549965">Log keluar</translation>
 <translation id="5538654494923870167">Mulakan dengan akaun Brave anda</translation>
 <translation id="1544145635547515689">Cipta akaun Brave</translation>
@@ -2876,10 +2911,11 @@ Mari sambungkan anda!</translation>
 <translation id="5486261815000869482">Sahkan kata laluan</translation>
 <translation id="7345706641791090287">Sahkan kata laluan anda</translation>
 <translation id="7114054701490058191">Kata laluan tidak sepadan</translation>
+<translation id="4277028893293644418">Tetapkan semula kata laluan</translation>
+<translation id="9033485352495162741">Pengesahan berjaya. Sekarang masukkan kata laluan baharu yang anda ingini:</translation>
 <translation id="1293857704520741614">Log masuk ke akaun anda</translation>
 <translation id="118617366439356381">Lupa kata laluan anda?</translation>
 <translation id="5183159033908953146">Sahkan e-mel akaun Brave anda dan anda akan menerima pautan untuk menetapkan semula kata laluan anda. Pautan ini hanya akan sah selama 30 minit.</translation>
-<translation id="3997368361371298873">Amaran: memandangkan anda tidak log masuk ke dalam device ini, menetapkan semula kata laluan anda akan <ph name="BEGIN_BOLD"/>memadamkan semua data anda<ph name="END_BOLD"/> pada server. Jika anda mempunyai device lain di mana anda telah log masuk, tukar kata laluan anda dari device tersebut dan bukannya menetapkan semula kata laluan anda.</translation>
 <translation id="3674472551471103443">Tetapkan semula kata laluan anda</translation>
 <translation id="2755539422340788311">Sahkan e-mel anda</translation>
 <translation id="6641436078676327508">Anda sepatutnya menerima e-mel dengan kod ringkas. Sila masukkannya di sini untuk meneruskan.</translation>
@@ -2896,10 +2932,16 @@ Mari sambungkan anda!</translation>
 <translation id="7144067487084094749">Akaun sudah wujud untuk alamat e-mel ini. Cuba log masuk dan bukannya mencipta akaun.</translation>
 <translation id="5288951359968156008">Domain alamat e-mel ini tidak disokong. Sila gunakan alamat e-mel yang berbeza.</translation>
 <translation id="7625678607509255072">Had pengesahan e-mel telah dilampaui. Sila tunggu 30 minit sebelum mencuba lagi.</translation>
-<translation id="4582421696414628320">Pengesahan telah tamat tempoh. Mulakan proses pendaftaran semula.</translation>
+<translation id="9121175588136821850">Kod pengesahan telah tamat tempoh. Mulakan proses pendaftaran semula.</translation>
 <translation id="8439543211004394821">Terlalu banyak kod yang tidak betul telah dimasukkan. Mulakan proses pendaftaran semula.</translation>
 <translation id="3229986152760633988">Kod salah, sila cuba lagi.</translation>
 <translation id="818783632689113711">Akaun telah pun diminta untuk alamat e-mel ini. Sila semak e-mel anda atau cuba lagi dalam masa 30 minit.</translation>
+<translation id="4776810543245166572">Tiada akaun ditemukan untuk alamat e-mel ini.</translation>
+<translation id="7090885444036935209">Alamat e-mel tidak sah.</translation>
+<translation id="1542836798393843657">Terlalu banyak percubaan pengesahan untuk alamat e-mel ini. Cuba lagi dalam 24 jam.</translation>
+<translation id="7572012011062736429">Ralat dalaman. Tutup dialog, batalkan pengesahan dan cuba lagi.</translation>
+<translation id="2477280119520811719">Kod pengesahan telah tamat tempoh. Mulakan proses penukaran kata laluan semula.</translation>
+<translation id="7103280722523884198">Terlalu banyak kod yang tidak betul telah dimasukkan. Mulakan proses penukaran kata laluan semula.</translation>
 <translation id="4178004989875422946">Akaun Brave akan membolehkan anda mengakses perkhidmatan Brave dengan mudah.</translation>
 <translation id="4902897635127068510">Adakah anda maksudkan <ph name="SUGGESTION"/>?</translation>
 <translation id="8314772463905284467">Caps Lock dihidupkan</translation>
@@ -2908,6 +2950,7 @@ Mari sambungkan anda!</translation>
 <translation id="2112559299194052697">Tidak dapat menghantar semula</translation>
 <translation id="7932611814134267012">Terlalu banyak e-mel pengesahan telah dihantar. Sila periksa folder spam anda.</translation>
 <translation id="1364223093800750401">E-mel sudah disahkan.</translation>
+<translation id="1353061468772282268">Kod pengesahan telah tamat tempoh. Batalkan pengesahan dan cuba lagi.</translation>
 <translation id="3353844160742960162">Penalaan Tetapan Privasi</translation>
 <translation id="528205534230423181">Website ini menawarkan tetapan privasi yang Brave boleh laraskan secara automatik untuk anda. Berikut adalah yang kami syorkan:</translation>
 <translation id="1063227610401477317">Gunakan Perubahan</translation>

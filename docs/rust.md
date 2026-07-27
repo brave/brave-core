@@ -12,6 +12,13 @@ When integrating Rust code into brave-core, keep the following points in mind:
 - Look at existing deps in `third_party/rust` and try to match up versions
   whenever possible. We are trying to avoid having multiple copies of the same
   third party libs
+- https://cxx.rs/ is recommended to understand the underlying concepts around
+  the Rust <-- FFI --> C++ FFI layer. At Brave, we use FFI to integrate our
+  [adblock engine](https://sourcegraph.com/r/github.com/brave/brave-core/-/tree/components/brave_shields/core/common/adblock/rs)
+  which is written in Rust with our native C++ code. It's also recommended to
+  look at
+  https://github.com/brave/brave-core/blob/master/docs/best-practices/coding-standards-apis.md#-string-usage-in-rustc-ffi
+  which captures the coding standard when working with Rust in Brave.
 
 ### Updating vendored tool crates
 
@@ -20,7 +27,7 @@ The `tools/crates/` directory vendors Rust CLI tools (`cargo-audit`,
 dependency (e.g. for a security advisory) without re-vendoring everything:
 
 ```sh
-npm run update_brave_tools_crates -- --update-crate=<name>@<version>
+pnpm run update_brave_tools_crates --update-crate=<name>@<version>
 ```
 
 This downloads the crate directly from crates.io and patches only the targeted
@@ -28,7 +35,7 @@ This downloads the crate directly from crates.io and patches only the targeted
 crates, run without arguments:
 
 ```sh
-npm run update_brave_tools_crates
+pnpm run update_brave_tools_crates
 ```
 
 ### Patching crates

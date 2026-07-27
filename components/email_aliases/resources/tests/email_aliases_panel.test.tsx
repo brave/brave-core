@@ -13,6 +13,8 @@ import {
   EmailAliasesServiceObserverInterface,
 } from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
 
+const mockAuthEmail = 'test@brave.com'
+
 const mockEmailAliasesPanelHandler: EmailAliasesPanelHandlerInterface = {
   onAliasCreated: jest.fn(),
   onManageAliases: jest.fn(),
@@ -23,8 +25,6 @@ const mockEmailAliasesService: EmailAliasesServiceInterface = {
   updateAlias: jest.fn(),
   deleteAlias: jest.fn(),
   generateAlias: jest.fn(),
-  requestAuthentication: jest.fn(),
-  cancelAuthenticationOrLogout: jest.fn(),
   addObserver: jest.fn(),
 }
 
@@ -47,6 +47,7 @@ describe('PanelConnected', () => {
 
     render(
       <EmailAliasesPanelConnected
+        authEmail={mockAuthEmail}
         emailAliasesService={mockEmailAliasesService}
         emailAliasesPanelHandler={mockEmailAliasesPanelHandler}
         bindObserver={createBindObserver(mockEmailAliasesService)}
@@ -66,6 +67,7 @@ describe('PanelConnected', () => {
 
     render(
       <EmailAliasesPanelConnected
+        authEmail={mockAuthEmail}
         emailAliasesService={mockEmailAliasesService}
         emailAliasesPanelHandler={mockEmailAliasesPanelHandler}
         bindObserver={createBindObserver(mockEmailAliasesService)}
@@ -87,6 +89,7 @@ describe('PanelConnected', () => {
 
     render(
       <EmailAliasesPanelConnected
+        authEmail={mockAuthEmail}
         emailAliasesService={mockEmailAliasesService}
         emailAliasesPanelHandler={mockEmailAliasesPanelHandler}
         bindObserver={createBindObserver(mockEmailAliasesService)}

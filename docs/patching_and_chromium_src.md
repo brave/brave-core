@@ -124,19 +124,19 @@ No BUILD.gn changes are needed for this.
 ### Patch the Chromium files
 
 When other options are exhausted, you can patch the code directly in `src/`.
-After making the changes, you can run the npm command `npm run update_patches`.
+After making the changes, you can run the npm command `pnpm run update_patches`.
 This will update the patches which are stored in `src/brave/patches`. Please
 note that removed changes in `src` currently will not update the patches, so you
 will have to do that manually.
 
 .patchinfo files are git-ignored metadata files to track which patches have been
-applied. They are created during `npm run apply_patches`. Run that command
+applied. They are created during `pnpm run apply_patches`. Run that command
 whenever switching branches where .patch files are added, modified, or removed
 so that chromium files get updated. Sync will also run that command, so you
 don't have to yourself if performing that.
 
 _Tip: Directly after generating new patches and when changing branches where
-patches are modified, ensure you run `npm run apply_patches` to generate the
+patches are modified, ensure you run `pnpm run apply_patches` to generate the
 metadata and remove your patched changes when changing to a branch no longer
 containing the patches._
 

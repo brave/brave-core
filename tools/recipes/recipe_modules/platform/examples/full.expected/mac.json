@@ -1,0 +1,19 @@
+[
+  {
+    "cmd": [
+      "echo",
+      "mac"
+    ],
+    "name": "report platform"
+  },
+  {
+    "cmd": [
+      "echo",
+      "mac"
+    ],
+    "name": "mac only"
+  },
+  {
+    "name": "$result"
+  }
+]

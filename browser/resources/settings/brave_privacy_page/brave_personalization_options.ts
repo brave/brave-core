@@ -113,6 +113,13 @@ export class SettingsBravePersonalizationOptions extends SettingsBravePersonaliz
           return loadTimeData.getBoolean('isRequestOTRFeatureEnabled')
         },
       },
+      isPsstFeatureEnabled_: {
+        readOnly: true,
+        type: Boolean,
+        value: function () {
+          return loadTimeData.getBoolean('isPsstFeatureEnabled')
+        },
+      },
       requestOTRActions_: {
         readOnly: true,
         type: Array,
@@ -146,6 +153,7 @@ export class SettingsBravePersonalizationOptions extends SettingsBravePersonaliz
   declare private historyRetentionOptions_: Object[]
   declare private isDebounceFeatureEnabled_: boolean
   declare private isRequestOTRFeatureEnabled_: boolean
+  declare private isPsstFeatureEnabled_: boolean
   declare private requestOTRActions_: Object[]
   declare private requestOTRAction_: String
   declare private isWindowsRecallAvailable_: boolean

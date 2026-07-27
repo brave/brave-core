@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -21,7 +22,6 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
 
@@ -29,6 +29,8 @@ import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.CoinType;
+import org.chromium.build.annotations.NullMarked;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.domain.KeyringModel.FilecoinNetworkType;
@@ -43,6 +45,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Arrays;
 
+@NullMarked
 public class AddAccountActivity extends BraveWalletBaseActivity {
     private static final String TAG = "AddAccountActivity";
 
@@ -50,42 +53,55 @@ public class AddAccountActivity extends BraveWalletBaseActivity {
     private static final int FILECOIN_TESTNET_POSITION = 1;
 
     private @CoinType.EnumType int mCoinForNewAccount;
-    private AccountInfo mEditedAccountInfo;
+    private @Nullable AccountInfo mEditedAccountInfo;
 
     private EditText mPrivateKeyControl;
     private EditText mAddAccountText;
     private EditText mImportAccountPasswordText;
     private Spinner mFilecoinNetworkSpinner;
     private static final int FILE_PICKER_REQUEST_CODE = 1;
-    private WalletModel mWalletModel;
-    @FilecoinNetworkType private String mSelectedFilecoinNetwork;
+    private @Nullable WalletModel mWalletModel;
 
-    @NonNull
+    @FilecoinNetworkType
+    private String mSelectedFilecoinNetwork = BraveWalletConstants.FILECOIN_MAINNET;
+
     public static Intent createIntentToAddAccount(
-            @NonNull Context context, @CoinType.EnumType int coinForNewAccount) {
-        Intent intent = new Intent(context, AddAccountActivity.class);
+            final Context context, @CoinType.EnumType final int coinForNewAccount) {
+        final Intent intent = new Intent(context, AddAccountActivity.class);
         intent.putExtra(Utils.COIN_TYPE, coinForNewAccount);
         return intent;
     }
 
     @Override
     protected void onPreCreate() {
-        Intent intent = getIntent();
+        final Intent intent = getIntent();
         if (intent != null) {
             mCoinForNewAccount = intent.getIntExtra(Utils.COIN_TYPE, -1);
             mEditedAccountInfo = WalletUtils.getAccountInfoFromIntent(intent);
         }
-        mSelectedFilecoinNetwork = BraveWalletConstants.FILECOIN_MAINNET;
     }
 
     @Override
     protected void triggerLayoutInflation() {
+        if (mEditedAccountInfo == null) {
+            // The screen may show a private key or a password. Secure the window
+            // before any content is rendered, as restoring the instance state
+            // after a configuration change can populate these fields well before
+            // native initialization completes.
+            getWindow()
+                    .setFlags(
+                            WindowManager.LayoutParams.FLAG_SECURE,
+                            WindowManager.LayoutParams.FLAG_SECURE);
+        }
         setContentView(R.layout.activity_add_account);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        final Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(getResources().getString(R.string.add_account));
+        final ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setTitle(getResources().getString(R.string.add_account));
+        }
 
         mAddAccountText = findViewById(R.id.add_account_text);
         mPrivateKeyControl = findViewById(R.id.import_account_text);
@@ -120,15 +136,22 @@ public class AddAccountActivity extends BraveWalletBaseActivity {
                     @Override
                     public void onTextChanged(CharSequence s, int start, int before, int count) {
                         // Disable add button if input is empty.
-                        String inputText = s.toString().trim();
+                        final String inputText = s.toString().trim();
                         btnAdd.setEnabled(!TextUtils.isEmpty(inputText));
                     }
                 });
 
         btnAdd.setOnClickListener(
                 v -> {
+                    if (mKeyringService == null) {
+                        // Wallet services are unavailable until native
+                        // initialization completes. Restoring the instance state
+                        // after a configuration change re-enables the button
+                        // before that happens, so ignore early clicks.
+                        return;
+                    }
                     if (mEditedAccountInfo != null) {
-                        updateAccountName();
+                        updateAccountName(mEditedAccountInfo);
                         return;
                     }
 
@@ -159,7 +182,11 @@ public class AddAccountActivity extends BraveWalletBaseActivity {
         if (mEditedAccountInfo != null) {
             Button btnAdd = findViewById(R.id.btn_add);
             btnAdd.setText(getResources().getString(R.string.wallet_accounts_update));
-            mAddAccountText.setText(mEditedAccountInfo.name);
+            // Prefill the current account name only when the field is empty,
+            // preserving the text restored after a configuration change.
+            if (TextUtils.isEmpty(mAddAccountText.getText().toString().trim())) {
+                mAddAccountText.setText(mEditedAccountInfo.name);
+            }
             ActionBar actionBar = getSupportActionBar();
             if (actionBar != null) {
                 actionBar.setTitle(getResources().getString(R.string.update_account));
@@ -169,27 +196,50 @@ public class AddAccountActivity extends BraveWalletBaseActivity {
             return;
         }
 
-        getWindow()
-                .setFlags(
-                        WindowManager.LayoutParams.FLAG_SECURE,
-                        WindowManager.LayoutParams.FLAG_SECURE);
+        if (mWalletModel == null) {
+            // Account creation cannot work without the wallet model. This may
+            // happen when the activity is restored after its process was killed
+            // and BraveActivity has not been recreated yet.
+            finish();
+            return;
+        }
         LiveDataUtil.observeOnce(
                 mWalletModel.getKeyringModel().mAccountInfos,
                 accounts -> {
-                    mAddAccountText.setText(
-                            WalletUtils.generateUniqueAccountName(
-                                    mCoinForNewAccount, accounts.toArray(new AccountInfo[0])));
+                    // Prefill a generated name only when the field is empty,
+                    // preserving the text restored after a configuration change.
+                    if (TextUtils.isEmpty(mAddAccountText.getText().toString().trim())) {
+                        mAddAccountText.setText(
+                                WalletUtils.generateUniqueAccountName(
+                                        mCoinForNewAccount, accounts.toArray(new AccountInfo[0])));
+                    }
                 });
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onRestoreInstanceState(@Nullable Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        // View visibility is not part of the saved view hierarchy state. Show
+        // the password field again when the restored private key content is a
+        // JSON keystore, mirroring the file picker flow.
+        if (mEditedAccountInfo == null
+                && Utils.isJSONValid(mPrivateKeyControl.getText().toString())) {
+            findViewById(R.id.import_account_password_layout).setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         switch (requestCode) {
             case FILE_PICKER_REQUEST_CODE:
-                if (resultCode == -1) {
+                final Uri fileUri =
+                        resultCode == Activity.RESULT_OK && data != null ? data.getData() : null;
+                if (fileUri != null) {
                     try {
-                        Uri fileUri = data.getData();
                         InputStream inputStream = getContentResolver().openInputStream(fileUri);
+                        if (inputStream == null) {
+                            break;
+                        }
                         BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
                         StringBuilder sb = new StringBuilder();
                         String line;
@@ -223,9 +273,9 @@ public class AddAccountActivity extends BraveWalletBaseActivity {
         }
     }
 
-    private void updateAccountName() {
+    private void updateAccountName(final AccountInfo editedAccountInfo) {
         mKeyringService.setAccountName(
-                mEditedAccountInfo.accountId,
+                editedAccountInfo.accountId,
                 mAddAccountText.getText().toString(),
                 this::handleUpdateAccount);
     }
@@ -276,6 +326,12 @@ public class AddAccountActivity extends BraveWalletBaseActivity {
     }
 
     private void addAccount(@CoinType.EnumType int coinType) {
+        if (mWalletModel == null) {
+            // Unreachable in practice: when the wallet model is unavailable the
+            // activity finishes during native initialization, before the add
+            // button can be clicked.
+            return;
+        }
         mWalletModel
                 .getKeyringModel()
                 .addAccount(

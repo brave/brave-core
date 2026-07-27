@@ -3,9 +3,8 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
-"""Tests for `engine_env.merge_envs` (the env composition ported from
-recipe_engine). Covers prefix/suffix joining, override folding, `%(VAR)s`
-substitution, and variable removal."""
+"""Tests for `engine_env.merge_envs` (the env composition). Covers prefix/suffix
+joining, override folding, `%(VAR)s` substitution, and variable removal."""
 
 from __future__ import annotations
 

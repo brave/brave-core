@@ -1,9 +1,0 @@
-Name: zcash_primitives
-URL: https://crates.io/crates/zcash_primitives
-Version: 0.28.0
-License: MPL-2.0
-License File:
-Shipped: yes
-Security Critical: yes
-
-Description: Rust implementations of the Zcash primitives

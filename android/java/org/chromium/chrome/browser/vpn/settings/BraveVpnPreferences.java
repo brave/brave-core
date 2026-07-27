@@ -235,6 +235,11 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
     }
 
     @Override
+    public String getMainMenuKey() {
+        return "brave_vpn";
+    }
+
+    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         if (context != null) {

@@ -1,9 +1,9 @@
 diff --git a/chrome/browser/ui/page_action/page_action_model.h b/chrome/browser/ui/page_action/page_action_model.h
-index 42bfebc53d9a4bbd6a27d1b3e0276c93fb190235..c8cd64443e334b2d68d81d687416dc509de71e35 100644
+index 05ddda45c3da6b49bdbeeaa264b235d6321ba9de..da8fef645217f18bd6b8d71f62aea1244c1aa02c 100644
 --- a/chrome/browser/ui/page_action/page_action_model.h
 +++ b/chrome/browser/ui/page_action/page_action_model.h
-@@ -128,9 +128,28 @@ class PageActionModelInterface {
-   virtual PageActionColorSource GetColorSource() const = 0;
+@@ -140,16 +140,34 @@ class PageActionModelInterface {
+   virtual std::optional<ui::ColorId> GetOverrideBackgroundColorId() const = 0;
  
    virtual bool IsEphemeral() const = 0;
 +  virtual void SetOverrideChipColors(
@@ -27,11 +27,22 @@ index 42bfebc53d9a4bbd6a27d1b3e0276c93fb190235..c8cd64443e334b2d68d81d687416dc50
  };
  
  // PageActionModel represents the page action's state, scoped to a single tab.
-+namespace chromium_impl {
- class PageActionModel : public PageActionModelInterface {
+-class PageActionModel : public PageActionModelInterface {
++class PageActionModel_ChromiumImpl : public PageActionModelInterface {
   public:
-   explicit PageActionModel(actions::ActionId action_id,
-@@ -240,6 +259,7 @@ class PageActionModel : public PageActionModelInterface {
+-  explicit PageActionModel(actions::ActionId action_id,
++  explicit PageActionModel_ChromiumImpl(actions::ActionId action_id,
+                            bool is_ephemeral = false);
+-  PageActionModel(const PageActionModel&) = delete;
+-  PageActionModel& operator=(const PageActionModel&) = delete;
+-  ~PageActionModel() override;
++  PageActionModel_ChromiumImpl(const PageActionModel_ChromiumImpl&) = delete;
++  PageActionModel_ChromiumImpl& operator=(const PageActionModel_ChromiumImpl&) = delete;
++  ~PageActionModel_ChromiumImpl() override;
+ 
+   actions::ActionId GetActionId() const override;
+ 
+@@ -264,6 +282,7 @@ class PageActionModel : public PageActionModelInterface {
    bool IsEphemeral() const override;
  
   private:
@@ -39,11 +50,11 @@ index 42bfebc53d9a4bbd6a27d1b3e0276c93fb190235..c8cd64443e334b2d68d81d687416dc50
    // Identifies which property triggered a NotifyChange call, used for
    // per-property reentrancy checks.
    enum class Property {
-@@ -263,7 +283,12 @@ class PageActionModel : public PageActionModelInterface {
-     kIsAnchoredMessageShowing,
-     kAnchoredMessageIcon,
-     kAnchoredMessageExpandableContent,
--    kMaxValue = kAnchoredMessageExpandableContent,
+@@ -291,7 +310,12 @@ class PageActionModel : public PageActionModelInterface {
+     kTrailingImage,
+     kShowTrailingIcon,
+     kOverrideBackgroundColor,
+-    kMaxValue = kOverrideBackgroundColor,
 +    kAlwaysShowLabel,
 +    kOverrideChipColors,
 +    kOverrideHeight,
@@ -53,11 +64,3 @@ index 42bfebc53d9a4bbd6a27d1b3e0276c93fb190235..c8cd64443e334b2d68d81d687416dc50
    };
    using PropertySet =
        base::EnumSet<Property, Property::kShowRequested, Property::kMaxValue>;
-@@ -371,6 +396,7 @@ class PageActionModel : public PageActionModelInterface {
- 
-   base::ObserverList<PageActionModelObserver> observer_list_;
- };
-+}  // namespace chromium_impl
- 
- class PageActionModelFactory {
-  public:

@@ -28,6 +28,8 @@ class TabManagerObserverMock : public TabManagerObserver {
 
   MOCK_METHOD(void, OnTabDidLoad, (const TabInfo&, int));
 
+  MOCK_METHOD(void, OnTabDidFailToLoad, (const TabInfo&));
+
   MOCK_METHOD(void, OnTabDidChangeFocus, (int32_t));
 
   MOCK_METHOD(void, OnTabDidChange, (const TabInfo&));

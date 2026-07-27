@@ -32,7 +32,7 @@ deps = {
     "url": "https://github.com/ronaldoussoren/macholib.git@36a6777ccd0891c5d1b44ba885573d7c90740015",
     "condition": "checkout_mac",
   },
-  "components/brave_wallet/browser/zcash/rust/librustzcash/src": "https://github.com/brave/librustzcash.git@f34cb36d9287b76b52ba1a2ab58e50db96706dc8", # brave-orchard-0.14
+  "components/brave_wallet/browser/zcash/rust/librustzcash/src": "https://github.com/brave/librustzcash.git@f01f50d64214278552edbe4a34b9049244ce03c1", # brave_ironwood_support
 }
 
 recursedeps = [
@@ -202,6 +202,7 @@ hooks = [
     'pattern': '.',
     'action': ['vpython3',
                'tools/cr/install_extra_deps.py',
+               'sync',
                'src/third_party/rust-toolchain']
   },
   {
@@ -209,6 +210,7 @@ hooks = [
     'pattern': '.',
     'action': ['vpython3',
                'tools/cr/install_extra_deps.py',
+               'sync',
                'src/brave/third_party/ast-grep/ast-grep-linux',
                'src/brave/third_party/ast-grep/ast-grep-mac',
                'src/brave/third_party/ast-grep/ast-grep-mac_arm64',
@@ -219,6 +221,7 @@ hooks = [
     'pattern': '.',
     'action': ['vpython3',
                'tools/cr/install_extra_deps.py',
+               'sync',
                'src/brave/third_party/node/node-linux-x64',
                'src/brave/third_party/node/node-mac-x64',
                'src/brave/third_party/node/node-mac-arm64',

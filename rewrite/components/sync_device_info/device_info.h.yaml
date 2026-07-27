@@ -22,43 +22,31 @@ substitutions:
                          SelfDeleteSupport::kNotSupported\2
 
   - description: |
-      Declare a move constructor for DeviceInfo
+      Add Brave-specific declarations to DeviceInfo's public interface
 
-      The defaulted move constructor is suppressed by the deleted copy operations
-      together with the user-declared destructor. We re-introduce a move
-      constructor so that Brave-specific call sites can wrap the value-returning
-      upstream `SpecificsToModel` into `std::make_unique<DeviceInfo>(...)`,
-      removing the need to duplicate the upstream argument list.
-    regex:
-      re_pattern: '(DeviceInfo& operator=\(const DeviceInfo&\) = delete;)'
-      replace: |-
-        \1
+      Re-introduces a move constructor, suppressed by the deleted copy
+      operations together with the user-declared destructor, so Brave call sites
+      can wrap the value-returning upstream `SpecificsToModel` into
+      `std::make_unique<DeviceInfo>(...)`. The remaining accessors used to exist
+      in Chromium, were dropped at some point, and are reinstated on Brave.
+    add_to_public:
+      class_name: DeviceInfo
+      code: |-
+        DeviceInfo(DeviceInfo&&);
 
-          DeviceInfo(DeviceInfo&&);
-
-  - description: |
-      Add Brave-specific methods to DeviceInfo public interface
-
-      Adding brave-specific methods to this type's interface. This methods used to
-      exist in Chromium, but they were dropped at some point, and then reinstated on
-      Brave.
-    regex:
-      re_pattern: '(~DeviceInfo\(\);)'
-      replace: |-
-        \1
-          SelfDeleteSupport self_delete_support() const {
-            return self_delete_support_;
-          }
-          void set_self_delete_support(SelfDeleteSupport self_delete_support) {
-            self_delete_support_ = self_delete_support;
-          }
-          // Gets the OS in string form.
-          std::string GetOSString() const;
-          // Gets the device type in string form.
-          std::string GetDeviceTypeString() const;
-          // Converts the DeviceInfo values to a JS friendly DictionaryValue,
-          // which extension APIs can expose to third party apps.
-          base::DictValue ToValue() const;
+        SelfDeleteSupport self_delete_support() const {
+          return self_delete_support_;
+        }
+        void set_self_delete_support(SelfDeleteSupport self_delete_support) {
+          self_delete_support_ = self_delete_support;
+        }
+        // Gets the OS in string form.
+        std::string GetOSString() const;
+        // Gets the device type in string form.
+        std::string GetDeviceTypeString() const;
+        // Converts the DeviceInfo values to a JS friendly DictionaryValue,
+        // which extension APIs can expose to third party apps.
+        base::DictValue ToValue() const;
 
   - description: |
       Add self_delete_support_ as last member of DeviceInfo

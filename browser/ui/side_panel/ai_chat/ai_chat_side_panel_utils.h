@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_UI_SIDE_PANEL_AI_CHAT_AI_CHAT_SIDE_PANEL_UTILS_H_
 
 #include "content/public/browser/web_contents.h"
+#include "url/gurl.h"
 
 class Browser;
 class Profile;
@@ -17,6 +18,25 @@ namespace ai_chat {
 // https://source.chromium.org/chromium/chromium/src/+/main:chrome/browser/ui/side_panel/companion/companion_side_panel_controller_utils.h;l=19;drc=e87fd2634a1140a87d59c7aa72668d16e4c102c2
 Browser* GetBrowserForWebContents(content::WebContents* web_contents);
 void ClosePanel(content::WebContents* web_contents);
+
+// Forward (tab -> side panel): when `ai_chat_web_contents` is a full browser
+// tab and the `kAIChatMoveFullPageToSidePanel` feature is enabled, opens
+// `link_url` in a tab at AI Chat's position and moves the live AI Chat
+// `WebContents` into the side panel. Returns true if the click was handled this
+// way (the caller must then NOT open `link_url` itself). Desktop only; the
+// definition lives in the toolkit_views translation unit.
+bool MaybeMoveFullPageChatToSidePanel(
+    content::WebContents* ai_chat_web_contents);
+
+// Reverse (side panel -> tab): when `ai_chat_web_contents` is the live AI Chat
+// conversation hosted in the global side panel, moves that live `WebContents`
+// into a new full-page tab (preserving state) and closes the panel. Returns
+// true if the switch was handled this way (the caller must then NOT open a
+// fresh full-page tab). No-op (returns false) unless the
+// `kAIChatMoveFullPageToSidePanel` feature is enabled, the side panel is the
+// global standalone AI Chat, and it is the one being shown. Desktop only; the
+// definition lives in the toolkit_views translation unit.
+bool MaybeMoveSidePanelChatToTab(content::WebContents* ai_chat_web_contents);
 
 // Closes the side panel only if the AI Chat entry is the one currently being
 // shown. Used when moving a conversation to a full-page tab, where leaving the

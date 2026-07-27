@@ -63,6 +63,9 @@
 -CmdLineURLIncognitoBasicTestFeatureEnabled/LaunchNavigationBrowserBasicTest.CmdLineLaunch/0
 -UpdateMetricsProviderBrowserTest.RunInBackground
 
+# Flaky on CI
+-GlicDragAndDropPolicyTest.testWebToGlicDragDlpBlocked
+
 # These tests fail on CI but passes locally
 -AppMenuBrowserTest.*
 -LiveCaptionUnavailabilityNotifierTest.CaptionBubbleDestroyed

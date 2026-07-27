@@ -3,11 +3,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include <string>
+
 #include "base/at_exit.h"
 #include "base/command_line.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/logging.h"
+#include "base/process/launch.h"
 #include "base/process/memory.h"
 #include "brave/components/brave_vpn/app/v2/agent/agent_app.h"
 #include "brave/components/brave_vpn/app/v2/agent/single_instance.h"
@@ -63,6 +66,11 @@ int main(int argc, char* argv[]) {
                             brave_vpn::v2::switches::kVpnAppUserDataDir));
   if (crashpad_handler_status.has_value()) {
     return crashpad_handler_status.value();
+  }
+
+  // Attach a console to the process if requested.
+  if (command_line.HasSwitch(brave_vpn::v2::switches::kVpnAppConsole)) {
+    base::RouteStdioToConsole(/*create_console_if_not_found=*/true);
   }
 #endif  // BUILDFLAG(IS_WIN)
 

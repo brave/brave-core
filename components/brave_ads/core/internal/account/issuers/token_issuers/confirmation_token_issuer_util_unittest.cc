@@ -8,7 +8,6 @@
 #include "base/uuid.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_feature.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_info.h"
-#include "brave/components/brave_ads/core/internal/account/issuers/token_issuers/token_issuer_info.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -19,35 +18,33 @@ class BraveAdsConfirmationsIssuerUtilTest : public test::TestBase {};
 
 TEST_F(BraveAdsConfirmationsIssuerUtilTest, IsConfirmationTokenIssuerValid) {
   // Arrange
-  TokenIssuerInfo token_issuer;
-  token_issuer.type = TokenIssuerType::kConfirmations;
-
-  for (size_t i = 0; i < kMaximumTokenIssuerPublicKeys.Get(); ++i) {
-    token_issuer.public_keys.insert(
-        {/*public_key=*/base::Uuid::GenerateRandomV4().AsLowercaseString(),
-         /*associated_value=*/0.1});
-  }
-
   IssuersInfo issuers;
-  issuers.token_issuers.push_back(token_issuer);
+  for (size_t i = 0; i < kMaximumTokenIssuerPublicKeys.Get(); ++i) {
+    issuers.confirmation_token_issuer.public_keys.insert(
+        base::Uuid::GenerateRandomV4().AsLowercaseString());
+  }
 
   // Act & Assert
   EXPECT_TRUE(IsConfirmationTokenIssuerValid(issuers));
 }
 
-TEST_F(BraveAdsConfirmationsIssuerUtilTest, IsConfirmationTokenIssuerInvalid) {
+TEST_F(BraveAdsConfirmationsIssuerUtilTest,
+       IsConfirmationTokenIssuerInvalidIfExceedsMaximum) {
   // Arrange
-  TokenIssuerInfo token_issuer;
-  token_issuer.type = TokenIssuerType::kConfirmations;
-
+  IssuersInfo issuers;
   for (size_t i = 0; i < kMaximumTokenIssuerPublicKeys.Get() + 1; ++i) {
-    token_issuer.public_keys.insert(
-        {/*public_key=*/base::Uuid::GenerateRandomV4().AsLowercaseString(),
-         /*associated_value=*/0.1});
+    issuers.confirmation_token_issuer.public_keys.insert(
+        base::Uuid::GenerateRandomV4().AsLowercaseString());
   }
 
-  IssuersInfo issuers;
-  issuers.token_issuers.push_back(token_issuer);
+  // Act & Assert
+  EXPECT_FALSE(IsConfirmationTokenIssuerValid(issuers));
+}
+
+TEST_F(BraveAdsConfirmationsIssuerUtilTest,
+       IsConfirmationTokenIssuerInvalidIfEmpty) {
+  // Arrange
+  const IssuersInfo issuers;
 
   // Act & Assert
   EXPECT_FALSE(IsConfirmationTokenIssuerValid(issuers));

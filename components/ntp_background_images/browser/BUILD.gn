@@ -27,6 +27,8 @@ static_library("browser") {
     "ntp_sponsored_images_data.h",
     "ntp_sponsored_rich_media_ad_event_handler.cc",
     "ntp_sponsored_rich_media_ad_event_handler.h",
+    "ntp_sponsored_sites_data.cc",
+    "ntp_sponsored_sites_data.h",
     "ntp_sponsored_source_util.cc",
     "ntp_sponsored_source_util.h",
     "sponsored_images_component_data.cc",
@@ -47,6 +49,8 @@ static_library("browser") {
       "ntp_sponsored_image_source.h",
       "ntp_sponsored_rich_media_source.cc",
       "ntp_sponsored_rich_media_source.h",
+      "ntp_sponsored_site_image_source.cc",
+      "ntp_sponsored_site_image_source.h",
     ]
   }
 
@@ -131,6 +135,7 @@ source_set("unit_tests") {
     "ntp_background_images_service_unittest.cc",
     "ntp_sponsored_images_data_unittest.cc",
     "ntp_sponsored_rich_media_data_unittest.cc",
+    "ntp_sponsored_sites_data_unittest.cc",
     "ntp_sponsored_source_util_unittest.cc",
     "view_counter_model_unittest.cc",
   ]
@@ -152,12 +157,15 @@ source_set("unit_tests") {
     ":test_support",
     "//base",
     "//base/test:test_support",
+    "//brave/components/brave_component_updater/browser:test_support",
     "//brave/components/brave_rewards/core",
     "//brave/components/ntp_background_images/buildflags",
     "//brave/components/ntp_background_images/common",
+    "//components/component_updater:test_support",
     "//components/country_codes",
     "//components/prefs:test_support",
     "//components/sync_preferences:test_support",
+    "//components/update_client",
     "//testing/gmock",
     "//testing/gtest",
     "//ui/gfx/geometry",

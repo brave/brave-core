@@ -12,6 +12,7 @@ source_set("browser_window") {
 
   public_deps = [
     "//base",
+    "//brave/components/ai_chat/core/common/buildflags",
     "//brave/components/playlist/core/common/buildflags",
   ]
 

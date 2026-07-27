@@ -1,0 +1,36 @@
+diff --git a/chrome/browser/ui/views/omnibox/omnibox_result_view.h b/chrome/browser/ui/views/omnibox/omnibox_result_view.h
+index aaeaef3d92a7dc4c6ec50e688231c5862a6ae55e..15bb8064ec69589c40842e709b2265f0d16c7374 100644
+--- a/chrome/browser/ui/views/omnibox/omnibox_result_view.h
++++ b/chrome/browser/ui/views/omnibox/omnibox_result_view.h
+@@ -61,14 +61,14 @@ class OmniboxResultView : public views::View {
+   // Updates the match used to paint the contents of this result view. We copy
+   // the match so that we can continue to paint the last result even after the
+   // model has changed.
+-  void SetMatch(const AutocompleteMatch& match);
++  virtual void SetMatch(const AutocompleteMatch& match);
+ 
+   // Applies the current theme to the current text and widget colors.
+   // Also refreshes the icons which may need to be re-colored as well.
+   void ApplyThemeAndRefreshIcons(bool force_reapply_styles = false);
+ 
+   // Invoked when this result view has been selected or unselected.
+-  void OnSelectionStateChanged();
++  virtual void OnSelectionStateChanged();
+ 
+   // Whether this result view should be considered 'selected'. This returns
+   // false if this line's header is selected (instead of the match itself).
+@@ -102,12 +102,13 @@ class OmniboxResultView : public views::View {
+   void OnThemeChanged() override;
+ 
+  private:
++  friend class BraveOmniboxResultView;
+   FRIEND_TEST_ALL_PREFIXES(OmniboxPopupViewViewsTest, DeleteSuggestion);
+   FRIEND_TEST_ALL_PREFIXES(OmniboxResultViewTest, ContextualSecondaryText);
+ 
+   void OpenIphLink();
+ 
+-  gfx::Image GetIcon() const;
++  virtual gfx::Image GetIcon() const;
+ 
+   // Updates the highlight state of the row, as well as conditionally shows
+   // controls that are only visible on row hover.

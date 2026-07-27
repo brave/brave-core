@@ -247,6 +247,7 @@ class InstallTest(unittest.TestCase):
             'objects': [{
                 'object_name': 'node.tar.gz',
                 'sha256sum': _sha256(data),
+                'size_bytes': len(data),
                 'condition': 'host_os == "linux"'
             }],
         }
@@ -267,6 +268,7 @@ class InstallTest(unittest.TestCase):
             'objects': [{
                 'object_name': 'overlay.tar.gz',
                 'sha256sum': _sha256(data),
+                'size_bytes': len(data),
                 'overlayed_on': 'Linux_x64/base.tar.xz',
                 'condition': 'host_os == "linux"',
             }],
@@ -286,6 +288,7 @@ class InstallTest(unittest.TestCase):
             'objects': [{
                 'object_name': 'overlay.tar.gz',
                 'sha256sum': 'a',
+                'size_bytes': 1,
                 'overlayed_on': 'Linux_x64/base.tar.xz',
                 'condition': 'host_os == "linux"',
             }],
@@ -394,11 +397,13 @@ class FromCheckoutIntegrationTest(unittest.TestCase):
                 {
                     'object_name': 'node-linux.tar.gz',
                     'sha256sum': _sha256(data),
+                    'size_bytes': len(data),
                     'condition': 'host_os == "linux"',
                 },
                 {
                     'object_name': 'node-mac.tar.gz',
                     'sha256sum': 'unused',
+                    'size_bytes': 0,
                     'condition': 'host_os == "mac"',
                 },
             ],
@@ -467,7 +472,7 @@ class MainTest(unittest.TestCase):
                                    'from_checkout',
                                    return_value=runner):
                 with mock.patch.object(sys, 'argv',
-                                       ['install_extra_deps', dep]):
+                                       ['install_extra_deps', 'sync', dep]):
                     self.assertEqual(m.main(), 0)
         runner.install.assert_called_once_with(dep, self._FAKE_EXTRA_DEPS[dep])
 
@@ -481,7 +486,7 @@ class MainTest(unittest.TestCase):
                                    'from_checkout',
                                    return_value=runner):
                 with mock.patch.object(sys, 'argv',
-                                       ['install_extra_deps', *deps]):
+                                       ['install_extra_deps', 'sync', *deps]):
                     self.assertEqual(m.main(), 0)
         self.assertEqual(
             runner.install.call_args_list,
@@ -494,13 +499,130 @@ class MainTest(unittest.TestCase):
                                    'from_checkout') as checkout:
                 with mock.patch.object(
                         sys, 'argv',
-                    ['install_extra_deps', 'src/does/not/exist']):
+                    ['install_extra_deps', 'sync', 'src/does/not/exist']):
                     # argparse prints a usage error to stderr before exiting;
                     # keep it out of the test output.
                     with contextlib.redirect_stderr(io.StringIO()):
                         with self.assertRaises(SystemExit):
                             m.main()
                 checkout.assert_not_called()
+
+    def test_dispatches_setdep(self):
+        """The `setdep` subcommand forwards its revisions to `setdep` and never
+        touches the checkout (it only edits the EXTRA_DEPS file)."""
+        revision = 'src/path/to/dep@pkg.tar.gz,abc,1'
+        with mock.patch.object(m, 'setdep') as setdep:
+            with mock.patch.object(m.ExtraDepsRunner,
+                                   'from_checkout') as checkout:
+                with mock.patch.object(
+                        sys, 'argv',
+                    ['install_extra_deps', 'setdep', '-r', revision]):
+                    self.assertEqual(m.main(), 0)
+        setdep.assert_called_once_with([revision])
+        checkout.assert_not_called()
+
+    def test_setdep_requires_a_revision(self):
+        """`setdep` with no `-r` is rejected by argparse before any work."""
+        with mock.patch.object(m, 'setdep') as setdep:
+            with mock.patch.object(sys, 'argv',
+                                   ['install_extra_deps', 'setdep']):
+                with contextlib.redirect_stderr(io.StringIO()):
+                    with self.assertRaises(SystemExit):
+                        m.main()
+        setdep.assert_not_called()
+
+
+class ParseObjectSpecTest(unittest.TestCase):
+    """Tests for the `_parse_object_spec` setdep-argument parser."""
+
+    def test_parses_a_triple_and_strips_whitespace(self):
+        self.assertEqual(
+            m._parse_object_spec('pkg.tar.gz , abc123 , 42'), {
+                'object_name': 'pkg.tar.gz',
+                'sha256sum': 'abc123',
+                'size_bytes': '42',
+            })
+
+    def test_rejects_wrong_field_count(self):
+        with self.assertRaises(ValueError):
+            m._parse_object_spec('pkg.tar.gz,abc123')
+
+    def test_rejects_an_empty_field(self):
+        with self.assertRaises(ValueError):
+            m._parse_object_spec('pkg.tar.gz,,42')
+
+    def test_rejects_a_non_integer_size(self):
+        with self.assertRaises(ValueError):
+            m._parse_object_spec('pkg.tar.gz,abc123,huge')
+
+
+class SetDepTest(unittest.TestCase):
+    """Tests for `setdep`, the comment-preserving EXTRA_DEPS editor.
+
+    Each test points `EXTRA_DEPS_FILE` at a temp fixture and patches the loaded
+    `EXTRA_DEPS` table so path validation matches it, then checks the rendered
+    file byte-for-byte where it matters.
+    """
+
+    _SOURCE = '''\
+# A leading comment that must survive the edit.
+extra_deps = {
+    'src/path/to/dep': {
+        'bucket': 'https://downloads.invalid/',
+        'condition': 'host_os == "linux"',
+        'objects': [
+            {
+                'object_name': 'old.tar.gz',
+                'sha256sum': 'oldsha',
+                'size_bytes': 1,
+                'overlayed_on': 'upstream/old.tar.gz',
+                'condition': 'host_os == "linux"',
+            },
+        ],
+    },
+}
+'''
+
+    def setUp(self):
+        tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(tmp.cleanup)
+        self._path = Path(tmp.name) / 'EXTRA_DEPS'
+        self._path.write_text(self._SOURCE, encoding='utf-8')
+        # `setdep` reads/writes the file at `EXTRA_DEPS_FILE` and validates dep
+        # paths against `EXTRA_DEPS`; point both at the fixture. The table's
+        # values are unused (only membership is checked).
+        for patcher in (mock.patch.object(m, 'EXTRA_DEPS_FILE', self._path),
+                        mock.patch.object(m, 'EXTRA_DEPS',
+                                          {'src/path/to/dep': None})):
+            patcher.start()
+            self.addCleanup(patcher.stop)
+
+    def test_updates_only_the_object_fields(self):
+        """The three object fields change; comments and other keys are kept."""
+        m.setdep(['src/path/to/dep@new.tar.gz,newsha,222'])
+        result = self._path.read_text(encoding='utf-8')
+        self.assertIn("'object_name': 'new.tar.gz',", result)
+        self.assertIn("'sha256sum': 'newsha',", result)
+        # `size_bytes` renders as a bare int, not a quoted string.
+        self.assertIn("'size_bytes': 222,", result)
+        # The comment and the keys setdep does not touch survive verbatim.
+        self.assertIn('# A leading comment that must survive the edit.',
+                      result)
+        self.assertIn("'overlayed_on': 'upstream/old.tar.gz',", result)
+        self.assertIn("'bucket': 'https://downloads.invalid/',", result)
+
+    def test_rejects_an_unknown_entry_without_writing(self):
+        with self.assertRaises(ValueError):
+            m.setdep(['src/does/not/exist@new.tar.gz,newsha,222'])
+        self.assertEqual(self._path.read_text(encoding='utf-8'), self._SOURCE)
+
+    def test_rejects_an_object_count_mismatch(self):
+        with self.assertRaises(ValueError):
+            m.setdep(['src/path/to/dep@a.tar.gz,sa,1?b.tar.gz,sb,2'])
+
+    def test_rejects_a_malformed_revision(self):
+        with self.assertRaises(ValueError):
+            m.setdep(['src/path/to/dep'])  # Missing `@object,...`.
 
 
 if __name__ == '__main__':

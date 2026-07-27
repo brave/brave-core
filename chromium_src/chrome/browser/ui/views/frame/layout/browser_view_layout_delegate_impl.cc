@@ -5,6 +5,7 @@
 
 #include "chrome/browser/ui/views/frame/layout/browser_view_layout_delegate_impl.h"
 
+#include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
@@ -13,25 +14,28 @@
 #include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
 #include "chrome/browser/ui/side_panel/side_panel_ui.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/frame/vertical_tab_strip_region_view.h"
 #include "components/bookmarks/common/bookmark_pref_names.h"
 
 #include <chrome/browser/ui/views/frame/layout/browser_view_layout_delegate_impl.cc>
 
 bool BrowserViewLayoutDelegateImpl::ShouldShowVerticalTabs() const {
   return browser_view().browser() &&
-         tabs::utils::ShouldShowBraveVerticalTabs(browser_view().browser());
+         VerticalTabController::FromBrowser(browser_view().browser())
+             ->ShouldShowBraveVerticalTabs();
 }
 
 bool BrowserViewLayoutDelegateImpl::ShouldShowWindowTitleForVerticalTabs()
     const {
   return browser_view().browser() &&
-         tabs::utils::ShouldShowWindowTitleForVerticalTabs(
-             browser_view().browser());
+         VerticalTabController::FromBrowser(browser_view().browser())
+             ->ShouldShowWindowTitleForVerticalTabs();
 }
 
 bool BrowserViewLayoutDelegateImpl::IsVerticalTabOnRight() const {
   return browser_view().browser() &&
-         tabs::utils::IsVerticalTabOnRight(browser_view().browser());
+         VerticalTabController::FromBrowser(browser_view().browser())
+             ->IsVerticalTabOnRight();
 }
 
 bool BrowserViewLayoutDelegateImpl::

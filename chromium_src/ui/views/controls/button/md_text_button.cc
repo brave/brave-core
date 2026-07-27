@@ -31,9 +31,7 @@
 #include "ui/views/controls/highlight_path_generator.h"
 #include "ui/views/view_class_properties.h"
 
-#define MdTextButton MdTextButtonBase
 #include <ui/views/controls/button/md_text_button.cc>
-#undef MdTextButton
 
 namespace {
 
@@ -124,11 +122,11 @@ MdTextButton::MdTextButton(
     int button_context,
     bool use_text_color_for_icon,
     std::unique_ptr<LabelButtonImageContainer> image_container)
-    : MdTextButtonBase(std::move(callback),
-                       text,
-                       button_context,
-                       use_text_color_for_icon,
-                       std::move(image_container)) {
+    : MdTextButton_ChromiumImpl(std::move(callback),
+                                text,
+                                button_context,
+                                use_text_color_for_icon,
+                                std::move(image_container)) {
   // Disabled upstream's ink-drop as we have specific color for hover state.
   InkDrop::Get(this)->SetMode(views::InkDropHost::InkDropMode::OFF);
   SetImageLabelSpacing(6);
@@ -152,7 +150,7 @@ void MdTextButton::SetLoading(bool loading) {
 }
 
 void MdTextButton::UpdateTextColor() {
-  MdTextButtonBase::UpdateTextColor();
+  MdTextButton_ChromiumImpl::UpdateTextColor();
 
   // Use explicitely set color instead of our default colors except for
   // prominent style. As we have specific bg color for prominent, need to use
@@ -185,7 +183,7 @@ void MdTextButton::UpdateBackgroundColor() {
 }
 
 void MdTextButton::UpdateColors() {
-  MdTextButtonBase::UpdateColors();
+  MdTextButton_ChromiumImpl::UpdateColors();
 
   // Update the icon color.
   if (icon_) {

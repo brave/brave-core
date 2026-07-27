@@ -37,6 +37,7 @@
 		279A828E28FEF01E00F55A5E /* BraveWidgets.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = CA0391E5271E1382000EB13C /* BraveWidgets.intentdefinition */; settings = {ATTRIBUTES = (no_codegen, ); }; };
 		279A829228FEF0BF00F55A5E /* BraveShared in Frameworks */ = {isa = PBXBuildFile; productRef = 279A829128FEF0BF00F55A5E /* BraveShared */; };
 		279C432E2853E51E00A9F708 /* DesignSystem in Frameworks */ = {isa = PBXBuildFile; productRef = 279C432D2853E51E00A9F708 /* DesignSystem */; };
+		279F8EE4300FFE9600B80983 /* MarketplaceKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 279F8EE3300FFE9600B80983 /* MarketplaceKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		27A28ED528C00C1D001466A4 /* LockScreenShortcutWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27A28ED428C00C19001466A4 /* LockScreenShortcutWidget.swift */; };
 		27BEDCCC28AD37CE0073425E /* BraveWidgets.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = CA0391E5271E1382000EB13C /* BraveWidgets.intentdefinition */; settings = {ATTRIBUTES = (no_codegen, ); }; };
 		27C1C5EB29B6A46300739BE5 /* Preferences in Frameworks */ = {isa = PBXBuildFile; productRef = 27C1C5EA29B6A46300739BE5 /* Preferences */; };
@@ -224,6 +225,7 @@
 		27995074284FDAE400BC2054 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = Shortcuts/de.lproj/BrowserIntents.strings; sourceTree = "<group>"; };
 		279AC848284FDB8600238C32 /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = Shortcuts/uk.lproj/BrowserIntents.strings; sourceTree = "<group>"; };
 		279DC775284FDB4000F4134D /* nb */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nb; path = Shortcuts/nb.lproj/BrowserIntents.strings; sourceTree = "<group>"; };
+		279F8EE3300FFE9600B80983 /* MarketplaceKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MarketplaceKit.framework; path = System/Library/Frameworks/MarketplaceKit.framework; sourceTree = SDKROOT; };
 		27A28ED428C00C19001466A4 /* LockScreenShortcutWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockScreenShortcutWidget.swift; sourceTree = "<group>"; };
 		27AC169623834510004BE19C /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		27AC7CF724C759BE00441317 /* Enterprise.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Enterprise.entitlements; sourceTree = "<group>"; };
@@ -575,6 +577,7 @@
 				27D7FF5329BA69330096DD93 /* BraveShields in Frameworks */,
 				27FA217F2837FB0100FA2C45 /* BraveShared in Frameworks */,
 				27D7FF7329BB816E0096DD93 /* PrivateCDN in Frameworks */,
+				279F8EE4300FFE9600B80983 /* MarketplaceKit.framework in Frameworks */,
 				2714EE8E2AF3F656002090A9 /* AuthenticationServices.framework in Frameworks */,
 				278852E62ACDE795005395CF /* UserAgent in Frameworks */,
 				27FA21812837FB0100FA2C45 /* BraveWallet in Frameworks */,
@@ -773,6 +776,7 @@
 		7B604FC11C496005006EEEC3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				279F8EE3300FFE9600B80983 /* MarketplaceKit.framework */,
 				0A1DF485244A2ECB00541FE4 /* NetworkExtension.framework */,
 				0A6AC4E824484FBC003D1ED7 /* StoreKit.framework */,
 				5E8CD8E023D5E3D100548FC0 /* libarchive.2.tbd */,

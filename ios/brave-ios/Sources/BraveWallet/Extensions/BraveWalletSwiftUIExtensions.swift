@@ -91,7 +91,7 @@ extension BraveWallet.NetworkInfo: @retroactive Identifiable {
       coingeckoId: "",
       chainId: chainId,
       coin: coin,
-      isShielded: false
+      zcashTokenType: .none
     )
   }
 

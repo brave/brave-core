@@ -18,6 +18,7 @@
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/public_key.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/unblinded_token.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_column_util.h"
+#include "brave/components/brave_ads/core/internal/common/database/database_table_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_transaction_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
@@ -212,6 +213,11 @@ void ConfirmationTokens::Migrate(
   switch (to_version) {
     case 56: {
       Create(mojom_db_transaction);
+      break;
+    }
+
+    case 58: {
+      DeleteTable(mojom_db_transaction, kTableName);
       break;
     }
 

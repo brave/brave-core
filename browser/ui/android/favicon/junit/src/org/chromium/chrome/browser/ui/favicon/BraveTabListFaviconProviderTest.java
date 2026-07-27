@@ -70,6 +70,27 @@ public class BraveTabListFaviconProviderTest {
     }
 
     @Test
+    public void testGetBraveNtpFaviconDrawableIdPrivateTabsMatchDarkVariant() {
+        ColorUtils.setInNightModeForTesting(false);
+        BraveTabListFaviconProvider provider = createProvider(/* isTabStrip= */ false);
+
+        Assert.assertEquals(
+                BraveTabListFaviconProvider.BRAVE_NTP_FAVICON_DRAWABLE_ID_OUTLINE,
+                provider.getBraveNtpFaviconDrawableId(/* isIncognito= */ false));
+        Assert.assertEquals(
+                BraveTabListFaviconProvider.BRAVE_NTP_FAVICON_DRAWABLE_ID_FILLED,
+                provider.getBraveNtpFaviconDrawableId(/* isIncognito= */ true));
+
+        ColorUtils.setInNightModeForTesting(true);
+        Assert.assertEquals(
+                BraveTabListFaviconProvider.BRAVE_NTP_FAVICON_DRAWABLE_ID_FILLED,
+                provider.getBraveNtpFaviconDrawableId(/* isIncognito= */ false));
+        Assert.assertEquals(
+                BraveTabListFaviconProvider.BRAVE_NTP_FAVICON_DRAWABLE_ID_FILLED,
+                provider.getBraveNtpFaviconDrawableId(/* isIncognito= */ true));
+    }
+
+    @Test
     public void testGetRoundedChromeFaviconTabStripDelegatesToUpstream() {
         TabFavicon favicon = createProvider(/* isTabStrip= */ true).getRoundedChromeFavicon(false);
 

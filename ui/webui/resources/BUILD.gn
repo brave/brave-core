@@ -52,7 +52,10 @@ if (include_polymer) {
     mojo_files = [ "$root_gen_dir/brave/ui/webui/resources/js/brave_browser_command/brave_browser_command.mojom-webui.ts" ]
     mojo_files_deps = [ "js/brave_browser_command:mojo_bindings_ts__generator" ]
 
-    css_files = [ "page_specific/settings/br_settings_shared.css" ]
+    css_files = [
+      "page_specific/settings/br_settings_shared.css",
+      "page_specific/settings/br_settings_shared_lit.css",
+    ]
 
     ts_composite = true
     generate_grdp = true
@@ -291,6 +294,7 @@ leo_icons_sources = [
   "google-color.svg",
   "graph.svg",
   "grid04.svg",
+  "grok.svg",
   "hamburger-menu.svg",
   "hand-coins.svg",
   "hand-raised.svg",
@@ -374,6 +378,7 @@ leo_icons_sources = [
   "nft.svg",
   "notification-off.svg",
   "notification.svg",
+  "nvidia-color.svg",
   "ollama.svg",
   "op-color.svg",
   "openai.svg",
@@ -473,7 +478,10 @@ leo_icons_sources = [
   "support.svg",
   "swap-horizontal.svg",
   "swap-vertical.svg",
+  "theme-dark.svg",
   "theme-darker.svg",
+  "theme-light.svg",
+  "theme-system.svg",
   "themes.svg",
   "thumb-down.svg",
   "thumb-up.svg",
@@ -514,6 +522,7 @@ leo_icons_sources = [
   "window-tab-close.svg",
   "window-tab-new.svg",
   "window-tab.svg",
+  "window-tabs-horizontal.svg",
   "window-tabs-vertical-expanded.svg",
   "window-tabs.svg",
   "window.svg",
@@ -602,7 +611,6 @@ if (enable_speedreader) {
     "readermode-serif.svg",
     "rewind-outline.svg",
     "speed.svg",
-    "theme-system.svg",
   ]
 }
 

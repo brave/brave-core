@@ -138,7 +138,7 @@ const Gate3StepSource = ({
         chainId: step.destinationToken.chainId ?? '',
         isNft: false,
         isErc721: false,
-        isShielded: false,
+        zcashTokenType: BraveWallet.ZCashTokenType.kNone,
       }) as BraveWallet.BlockchainToken,
     [step.destinationToken, fallbackDestinationToken],
   )

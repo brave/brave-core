@@ -18,6 +18,7 @@
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/custom_image_chooser.h"
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/new_tab_page_handler.h"
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/new_tab_page_initializer.h"
+#include "brave/browser/ui/webui/brave_new_tab_page_refresh/sponsored_sites_facade.h"
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/top_sites_facade.h"
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/vpn_facade.h"
 #include "brave/components/brave_ads/buildflags/buildflags.h"
@@ -74,6 +75,7 @@ using brave_new_tab_page_refresh::BackgroundFacade;
 using brave_new_tab_page_refresh::CustomImageChooser;
 using brave_new_tab_page_refresh::NewTabPageHandler;
 using brave_new_tab_page_refresh::NewTabPageInitializer;
+using brave_new_tab_page_refresh::SponsoredSitesFacade;
 using brave_new_tab_page_refresh::TopSitesFacade;
 using brave_new_tab_page_refresh::VPNFacade;
 
@@ -104,6 +106,8 @@ void BraveNewTabPageUI::BindInterface(
       std::make_unique<CustomBackgroundFileManager>(profile), *prefs,
       g_brave_browser_process->ntp_background_images_service(),
       ntp_background_images::ViewCounterServiceFactory::GetForProfile(profile));
+  auto sponsored_sites_facade = std::make_unique<SponsoredSitesFacade>(
+      *prefs, g_brave_browser_process->ntp_background_images_service());
   auto top_sites_facade = std::make_unique<TopSitesFacade>(
       ChromeMostVisitedSitesFactory::NewForProfile(profile), *prefs);
 
@@ -122,8 +126,8 @@ void BraveNewTabPageUI::BindInterface(
 
   page_handler_ = std::make_unique<NewTabPageHandler>(
       std::move(receiver), std::move(image_chooser),
-      std::move(background_facade), std::move(top_sites_facade),
-      std::move(vpn_facade), *web_contents, *prefs,
+      std::move(background_facade), std::move(sponsored_sites_facade),
+      std::move(top_sites_facade), std::move(vpn_facade), *web_contents, *prefs,
       *TemplateURLServiceFactory::GetForProfile(profile),
       *g_brave_browser_process->process_misc_metrics()->new_tab_metrics(),
       page_metrics, was_restored_);

@@ -1228,7 +1228,6 @@
   <message name="IDS_BRAVE_WALLET_CLEAR_FILTERS" desc="Clear filters label">Clear filters</message>
   <message name="IDS_BRAVE_WALLET_SHOW_MORE" desc="Show more label">Show more</message>
   <message name="IDS_BRAVE_WALLET_DETAILS" desc="Details label">Details</message>
-  <message name="IDS_BRAVE_WALLET_VERIFIED" desc="Verified label">Verified by DappRadar</message>
   <message name="IDS_BRAVE_WALLET_SWITCH_TO_SHIELDED_ACCOUNT" desc="Switch to a shielded account button text">Switch to a shielded account</message>
   <message name="IDS_BRAVE_WALLET_SHIELD_ACCOUNT" desc="Shield account button text">Shield account</message>
   <message name="IDS_BRAVE_WALLET_SHIELD_ACCOUNT_ALERT_DESCRIPTION" desc="Shield account alert description">Enable shielding to enhance transaction privacy.</message>

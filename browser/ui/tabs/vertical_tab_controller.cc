@@ -88,6 +88,13 @@ bool VerticalTabController::IsFloatingVerticalTabsEnabled() const {
     return true;
   }
 
+  if (!ShouldShowVerticalTabToggleButton()) {
+    // When the toggle button is hidden, there is no other way to expand
+    // collapsed vertical tabs, so floating mode must stay on regardless of
+    // the setting of kVerticalTabsFloatingEnabled.
+    return true;
+  }
+
   return prefs_->GetBoolean(brave_tabs::kVerticalTabsFloatingEnabled);
 }
 
@@ -100,4 +107,12 @@ bool VerticalTabController::ShouldHideVerticalTabsCompletelyWhenCollapsed()
   return base::FeatureList::IsEnabled(tabs::kBraveVerticalTabHideCompletely) &&
          prefs_->GetBoolean(
              brave_tabs::kVerticalTabsHideCompletelyWhenCollapsed);
+}
+
+bool VerticalTabController::ShouldShowVerticalTabToggleButton() const {
+  if (!ShouldShowBraveVerticalTabs()) {
+    return false;
+  }
+
+  return prefs_->GetBoolean(brave_tabs::kVerticalTabsShowToggleButton);
 }

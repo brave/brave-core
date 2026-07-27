@@ -7,6 +7,8 @@
 #define BRAVE_BROWSER_UI_WEBUI_SIDE_PANEL_CUSTOMIZE_CHROME_CUSTOMIZE_TOOLBAR_BRAVE_ACTION_H_
 
 #include "base/containers/fixed_flat_map.h"
+#include "brave/app/vector_icons/vector_icons.h"
+#include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
@@ -130,6 +132,17 @@ inline constexpr BraveAction kShowScreenshotAction = {
     .pref_name = kShowScreenshotButton,
     .icon = kLeoScreenshotIcon};
 
+inline constexpr BraveAction kShowVerticalTabToggleButtonAction = {
+    .id = side_panel::customize_chrome::mojom::ActionId::
+        kShowVerticalTabToggleButton,
+    .display_name_resource_id =
+        IDS_CUSTOMIZE_TOOLBAR_TOGGLE_VERTICAL_TAB_BUTTON,
+    .anchor =
+        side_panel::customize_chrome::mojom::ActionId::kShowAddBookmarkButton,
+    .category = side_panel::customize_chrome::mojom::CategoryId::kNavigation,
+    .pref_name = brave_tabs::kVerticalTabsShowToggleButton,
+    .icon = kLeoWindowTabsVerticalExpandedIcon};
+
 inline constexpr BraveAction kShowPwaInstallAction = {
     .id = side_panel::customize_chrome::mojom::ActionId::kShowPwaInstall,
     .display_name_resource_id = IDS_CUSTOMIZE_TOOLBAR_TOGGLE_PWA_INSTALL,
@@ -161,6 +174,8 @@ inline constexpr auto kBraveActions =
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)
         {kShowBraveNews.id, &kShowBraveNews},
 #endif  // BUILDFLAG(ENABLE_BRAVE_NEWS)
+        {kShowVerticalTabToggleButtonAction.id,
+         &kShowVerticalTabToggleButtonAction},
         {kShowPwaInstallAction.id, &kShowPwaInstallAction},
     });
 

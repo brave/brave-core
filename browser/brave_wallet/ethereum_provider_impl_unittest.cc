@@ -2610,7 +2610,8 @@ TEST_F(EthereumProviderImplUnitTest, AddSuggestToken) {
   mojom::BlockchainTokenPtr token = mojom::BlockchainToken::New(
       "0x0D8775F648430679A709E98d2b0Cb6250d2887EF", "BAT", "", false, true,
       false, false, mojom::SPLTokenProgram::kUnsupported, false, false, "BAT",
-      18, true, "", "", "0x1", mojom::CoinType::ETH, false);
+      18, true, "", "", "0x1", mojom::CoinType::ETH,
+      mojom::ZCashTokenType::kNone);
   bool approved = false;
   mojom::ProviderError error = mojom::ProviderError::kUnknown;
   std::string error_message;

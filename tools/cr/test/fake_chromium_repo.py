@@ -132,6 +132,7 @@ class FakeChromiumRepo:
         """
         path.mkdir(parents=True, exist_ok=True)
         self._run_git_command(['init'], path)
+        self._run_git_command(['config', 'core.autocrlf', 'false'], path)
         (path / 'README.md').write_text(f'# Fake {path.name} repo\n')
         self._run_git_command(['add', 'README.md'], path)
         self._run_git_command(['config', 'user.name', 'Fake User'], path)
@@ -269,7 +270,7 @@ class FakeChromiumRepo:
         """
         file_path = repo_path / relative_path
         file_path.parent.mkdir(parents=True, exist_ok=True)
-        file_path.write_text(content)
+        file_path.write_text(content, newline='\n')
         self._run_git_command(['add', str(file_path)], repo_path)
 
     def delete_file(self, relative_path: str, repo_path: Path) -> None:

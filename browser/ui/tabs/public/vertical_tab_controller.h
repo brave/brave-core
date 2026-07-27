@@ -49,6 +49,10 @@ class VerticalTabController {
   // bar regardless of the setting of kVerticalTabsFloatingEnabled.
   bool ShouldHideVerticalTabsCompletelyWhenCollapsed() const;
 
+  // Returns true when the vertical tab toggle button (the button used to
+  // expand/collapse the vertical tab strip) should be shown.
+  bool ShouldShowVerticalTabToggleButton() const;
+
  private:
   BrowserWindowInterface::Type type_;
   raw_ptr<PrefService> prefs_;

@@ -59,6 +59,10 @@ class BraveAdblockInternalsMessageHandler
         "brave_adblock_internals.discardRegex",
         base::BindRepeating(&BraveAdblockInternalsMessageHandler::DiscardRegex,
                             base::Unretained(this)));
+    web_ui()->RegisterMessageCallback(
+        "brave_adblock_internals.setDebugMode",
+        base::BindRepeating(&BraveAdblockInternalsMessageHandler::SetDebugMode,
+                            base::Unretained(this)));
   }
 
   void GetDebugInfo(const base::ListValue& args) {
@@ -119,6 +123,12 @@ class BraveAdblockInternalsMessageHandler
     g_brave_browser_process->ad_block_service()->DiscardRegex(regex_id);
   }
 
+  void SetDebugMode(const base::ListValue& args) {
+    CHECK_EQ(1U, args.size());
+    const bool debug_mode = args[0].GetBool();
+    g_brave_browser_process->ad_block_service()->SetDebugMode(debug_mode);
+  }
+
   void OnGetDebugInfo(const std::string& callback_id,
                       base::DictValue mem_info,
                       std::pair<base::DictValue, base::DictValue> debug_info) {
@@ -129,6 +139,8 @@ class BraveAdblockInternalsMessageHandler
     result.Set("default_engine", std::move(debug_info.first));
     result.Set("additional_engine", std::move(debug_info.second));
     result.Set("memory", std::move(mem_info));
+    result.Set("debug_mode",
+               g_brave_browser_process->ad_block_service()->IsDebugMode());
     ResolveJavascriptCallback(base::Value(callback_id), result);
   }
 

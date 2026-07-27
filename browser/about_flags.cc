@@ -251,6 +251,14 @@ const char* const kBraveSyncImplLink[1] = {"https://github.com/brave/go-sync"};
           kOsDesktop | kOsAndroid,                                            \
           FEATURE_VALUE_TYPE(brave_wallet::features::                         \
                                  kBraveWalletTransactionSimulationsFeature),  \
+      },                                                                      \
+      {                                                                       \
+          "brave-wallet-side-panel",                                          \
+          "Enable Brave Wallet in the sidebar panel",                         \
+          "Show the Wallet panel UI in the browser sidebar instead of "       \
+          "opening a full-page tab",                                          \
+          kOsDesktop,                                                         \
+          FEATURE_VALUE_TYPE(brave_wallet::features::kBraveWalletSidePanel),  \
       })
 #else
 #define BRAVE_NATIVE_WALLET_FEATURE_ENTRIES

@@ -8,6 +8,7 @@
 
 #include "base/memory/raw_ref.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/zcash_utils.h"
 #include "third_party/rust/cxx/v1/cxx.h"
 
 namespace brave_wallet {
@@ -28,12 +29,14 @@ struct CxxCheckpointIdResultWrapper;
 struct CxxCheckpointsResultWrapper;
 struct CxxOrchardShardResultWrapper;
 struct CxxOrchardShardTreeCapResultWrapper;
+struct CxxRetainedCheckpointsResultWrapper;
 struct CxxShardRootsResultWrapper;
 
 class CxxOrchardShardTreeDelegate {
  public:
-  explicit CxxOrchardShardTreeDelegate(OrchardStorage& storage,
-                                       const mojom::AccountIdPtr& account_id);
+  CxxOrchardShardTreeDelegate(OrchardStorage& storage,
+                              const mojom::AccountIdPtr& account_id,
+                              OrchardPool pool);
   ~CxxOrchardShardTreeDelegate();
 
   ::rust::Box<CxxOrchardShardResultWrapper> LastShard(
@@ -67,9 +70,20 @@ class CxxOrchardShardTreeDelegate {
       uint32_t checkpoint_id) const;
   ::rust::Box<CxxCheckpointsResultWrapper> GetCheckpoints(size_t limit) const;
 
+  // Explicitly retained checkpoints are only persisted for the Orchard pool
+  // (`OrchardStorage::*OrchardRetainedCheckpoint*`); the Ironwood pool has no
+  // equivalent storage yet, so these are no-ops for `pool_ == kIronwood`.
+  ::rust::Box<CxxBoolResultWrapper> AddRetainedCheckpoint(
+      uint32_t checkpoint_id) const;
+  ::rust::Box<CxxBoolResultWrapper> RemoveRetainedCheckpoint(
+      uint32_t checkpoint_id) const;
+  ::rust::Box<CxxRetainedCheckpointsResultWrapper> GetRetainedCheckpoints()
+      const;
+
  private:
   raw_ref<OrchardStorage> storage_;
   ::brave_wallet::mojom::AccountIdPtr account_id_;
+  OrchardPool pool_;
 };
 
 }  // namespace orchard

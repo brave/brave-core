@@ -134,8 +134,14 @@ export class SettingsBraveAppearanceBookmarkBarElement
   private onPrefsChanged_() {
     this.setControlValueFromPrefs()
   }
-  private onShowOptionChanged_() {
-    const state = this.bookmarkBarStatePref_.value
+  private onShowOptionChanged_(e: Event) {
+    // Since cr151 `settings-dropdown-menu` is a Lit control that no longer
+    // writes back to the bound `pref` object (it persists via `pref-key`). This
+    // control uses a synthetic pref, so read the selected value directly from
+    // the dropdown instead of the (now stale) `bookmarkBarStatePref_`.
+    const state = Number(
+      (e.target as unknown as {getSelectedValue(): string})
+        .getSelectedValue()) as BookmarkBarState
     if (state === BookmarkBarState.ALWAYS) {
       this.bookmarkBarShowEnabledLabel_ =
         this.i18n('appearanceSettingsBookmarBarAlwaysDesc')
@@ -147,7 +153,7 @@ export class SettingsBraveAppearanceBookmarkBarElement
         this.i18n('appearanceSettingsBookmarBarNeverDesc')
     }
 
-    this.saveBookmarkBarStateToPrefs(this.bookmarkBarStatePref_.value)
+    this.saveBookmarkBarStateToPrefs(state)
   }
 
 }

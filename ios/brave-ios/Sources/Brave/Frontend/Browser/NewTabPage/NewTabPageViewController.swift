@@ -695,10 +695,10 @@ class NewTabPageViewController: UIViewController {
     }
 
     // Ensure we only record a viewed impression once per placement id.
-    if lastViewedSponsoredBackgroundId == newTabPageAd.placementID {
+    if lastViewedSponsoredBackgroundId == newTabPageAd.placementId {
       return
     }
-    lastViewedSponsoredBackgroundId = newTabPageAd.placementID
+    lastViewedSponsoredBackgroundId = newTabPageAd.placementId
 
     delegate?.showNewTabTakeoverInfoBarIfNeeded()
     reportSponsoredBackgroundEvent(.viewedImpression)
@@ -712,7 +712,7 @@ class NewTabPageViewController: UIViewController {
       case .sponsoredMedia(let sponsoredBackground, let newTabPageAd) = background.currentBackground
     {
       rewards.ads.triggerNewTabPageAdEvent(
-        newTabPageAd.placementID,
+        newTabPageAd.placementId,
         creativeInstanceId: sponsoredBackground.creativeInstanceId,
         metricType: sponsoredBackground.metricType,
         eventType: event,

@@ -101,6 +101,9 @@ class BraveBrowserCommandController : public chrome::BrowserCommandController
   void UpdateCommandForWaybackMachine();
   void UpdateCommandsForTabs();
   void UpdateCommandsForSend();
+  // Enables IDC_BLOCK_ELEMENTS only when the active tab is an http(s) page,
+  // where the element picker can run.
+  void UpdateCommandForBlockElements();
   void UpdateCommandsForPin();
   void UpdateCommandForFocusMode();
   void UpdateCommandForSplitView();

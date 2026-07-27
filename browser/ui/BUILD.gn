@@ -145,6 +145,8 @@ source_set("ui") {
       "//brave/browser/ui/webui/brave_wallet/market",
       "//brave/browser/ui/webui/brave_wallet/nft",
       "//brave/browser/ui/webui/brave_wallet/wallet_page",
+      "//brave/components/brave_wallet/browser:utils",
+      "//brave/components/brave_wallet/common",
       "//brave/components/decentralized_dns/core",
     ]
 
@@ -152,6 +154,10 @@ source_set("ui") {
       sources += [
         "views/permission_bubble/brave_wallet_permission_prompt_impl.cc",
         "views/permission_bubble/brave_wallet_permission_prompt_impl.h",
+        "views/side_panel/wallet/wallet_side_panel_contents_wrapper.cc",
+        "views/side_panel/wallet/wallet_side_panel_contents_wrapper.h",
+        "views/side_panel/wallet/wallet_side_panel_web_view.cc",
+        "views/side_panel/wallet/wallet_side_panel_web_view.h",
         "views/toolbar/wallet_button.cc",
         "views/toolbar/wallet_button.h",
         "views/toolbar/wallet_button_notification_source.cc",
@@ -169,6 +175,7 @@ source_set("ui") {
         "//brave/browser/ui/webui/brave_wallet/ledger",
         "//brave/browser/ui/webui/brave_wallet/trezor",
         "//brave/browser/ui/webui/brave_wallet/wallet_panel",
+        "//chrome/browser/picture_in_picture",
       ]
     }
   }
@@ -208,6 +215,14 @@ source_set("ui") {
   }
 
   if (enable_ai_chat) {
+    # Compiled on all platforms: the desktop side panel implementations live in
+    # //brave/browser/ui/views/side_panel/ai_chat, while this file provides the
+    # non-views (e.g. Android) fallbacks, so callers stay platform-agnostic.
+    sources += [
+      "side_panel/ai_chat/ai_chat_side_panel_utils.cc",
+      "side_panel/ai_chat/ai_chat_side_panel_utils.h",
+    ]
+
     deps += [ "//brave/components/ai_chat/core/common" ]
 
     if (!is_android) {
@@ -321,8 +336,6 @@ source_set("ui") {
       "omnibox/brave_omnibox_client_impl.cc",
       "omnibox/brave_omnibox_client_impl.h",
       "session_crashed_bubble_brave.cc",
-      "side_panel/ai_chat/ai_chat_side_panel_utils.cc",
-      "side_panel/ai_chat/ai_chat_side_panel_utils.h",
       "startup/brave_startup_tab_provider_impl.cc",
       "startup/brave_startup_tab_provider_impl.h",
       "tabs/brave_tab_color_mixer.cc",
@@ -1550,6 +1563,19 @@ source_set("browser_tests") {
         "//brave/components/playlist/core/common",
         "//chrome/browser/ui/browser_window",
         "//chrome/browser/web_applications:web_applications_test_support",
+      ]
+    }
+
+    if (enable_brave_wallet) {
+      sources += [ "views/side_panel/wallet/wallet_side_panel_browsertest.cc" ]
+
+      deps += [
+        "//brave/browser/ui/sidebar:sidebar_impl",
+        "//brave/components/brave_wallet/browser:utils",
+        "//brave/components/brave_wallet/common",
+        "//chrome/browser/ui/side_panel",
+        "//chrome/browser/ui/side_panel:side_panel_views_dependent",
+        "//components/tabs:public",
       ]
     }
 

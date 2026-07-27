@@ -1,0 +1,18 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Allow Brave internal pages to break out of favicon theming.
+
+      Consult ShouldThemifyFaviconForEntryBraveImpl (defined in the chromium_src
+      override) first: when it returns a value, honor it, carry on with the
+      upstream implementation.
+    preempt_function_impl:
+      function_name: ShouldThemifyFaviconForEntry
+      code: |-
+        if (auto brave_themify = ShouldThemifyFaviconForEntryBraveImpl(entry)) {
+          return *brave_themify;
+        }

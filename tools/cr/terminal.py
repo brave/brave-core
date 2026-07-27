@@ -6,6 +6,8 @@
 from __future__ import annotations
 
 from contextlib import contextmanager
+from pathlib import Path
+import json
 import logging
 import platform
 import secrets
@@ -37,6 +39,19 @@ def is_verbose() -> bool:
     time, before any `argparse` parser has had a chance to run.
     """
     return '--verbose' in sys.argv
+
+
+def get_package_manager() -> str:
+    """Returns the package manager configured in brave/package.json."""
+    package_json = Path(__file__).resolve().parents[2] / 'package.json'
+    package_config = json.loads(package_json.read_text(encoding='utf-8'))
+    package_manager = package_config.get('devEngines',
+                                         {}).get('packageManager',
+                                                 {}).get('name')
+    if not package_manager:
+        raise RuntimeError(
+            f'No devEngines.packageManager.name found in {package_json}.')
+    return package_manager
 
 
 class _PresetLoggingHandler(logging.Handler):
@@ -191,7 +206,7 @@ class Terminal:
             env: dict[str, str] | None = None,
             cwd=None,
             interactive: bool = False,
-            stdin: str | None = None):
+            stdin: str | bytes | None = None):
         """Runs a command on the terminal.
 
         When `interactive=True`, the subprocess inherits the parent's
@@ -205,10 +220,12 @@ class Terminal:
         add a few keys on top of `os.environ`, copy it first
         (`env={**os.environ, ...}`).
 
-                Pass `stdin=` to feed data into the subprocess's stdin. Captured
-        (non-interactive) mode encodes it with utf-8 to match the
-        captured streams; interactive mode rejects `stdin=` because the
-        subprocess owns the tty.
+                Pass `stdin=` to feed data into the subprocess's stdin. A `str`
+        is encoded as utf-8; `bytes` are sent as-is. Either way the stdin pipe
+        runs in binary mode so the child reads back exactly the bytes passed,
+        with no line-ending translation (see the note below on why this
+        matters). Interactive mode rejects `stdin=` because the subprocess owns
+        the tty.
         """
         # Convert all arguments to strings, to avoid issues with `PurePath`
         # being passed arguments
@@ -247,20 +264,35 @@ class Terminal:
             if resolved != cmd[0]:
                 cmd = [resolved] + cmd[1:]
 
-        # Captured mode pairs `capture_output` with text decoding so the
-        # `.stdout` / `.stderr` strings on the result are usable directly.
-        # Interactive mode skips both -- stdio is inherited from the parent,
-        # nothing is captured, and `text` / `encoding` are irrelevant.
-        capture_kwargs: dict[str, object] = {}
-        if not interactive:
-            capture_kwargs.update(capture_output=True,
-                                  text=True,
-                                  encoding='utf-8')
-
         if interactive and stdin is not None:
             raise ValueError(
                 'terminal.run(): `stdin=` is not supported with '
                 '`interactive=True` (the subprocess owns the tty).')
+
+        # Captured mode records stdout/stderr on the result. We normally let
+        # subprocess decode them as UTF-8 text, which also folds CRLF into LF
+        # (universal newlines).
+        #
+        # When feeding `stdin`, we run the pipes in binary mode instead. Binary
+        # pipes perform no newline translation at any layer, so the bytes flow
+        # through untouched in both directions.
+        feed_stdin = stdin is not None
+        stdin_bytes = None
+        if feed_stdin:
+            stdin_bytes = (stdin.encode('utf-8')
+                           if isinstance(stdin, str) else stdin)
+
+        capture_kwargs: dict[str, object] = {}
+        if not interactive:
+            capture_kwargs.update(capture_output=True)
+            if not feed_stdin:
+                capture_kwargs.update(text=True, encoding='utf-8')
+
+        def decode_stream(data):
+            """UTF-8 decode a binary captured stream, preserving newlines."""
+            if data is None or isinstance(data, str):
+                return data
+            return data.decode('utf-8')
 
         # The status spinner has to be stopped before running any commands in
         # interactive mode, to not interfere with that process's output.
@@ -273,9 +305,14 @@ class Terminal:
                                     check=True,
                                     env=env,
                                     cwd=cwd,
-                                    input=stdin,
+                                    input=stdin_bytes,
                                     **capture_kwargs)
         except subprocess.CalledProcessError as e:
+            if feed_stdin:
+                # Streams were captured as bytes; decode for logging and for
+                # the caller's own exception handling.
+                e.stdout = decode_stream(e.stdout)
+                e.stderr = decode_stream(e.stderr)
             if e.stderr:
                 # Only captured in non-interactive mode.
                 logging.debug('❯ %s', e.stderr.strip())
@@ -287,6 +324,9 @@ class Terminal:
                 self.current_command_start_time = None
                 self.running_command = None
 
+        if feed_stdin:
+            result.stdout = decode_stream(result.stdout)
+            result.stderr = decode_stream(result.stderr)
         return result
 
     def run_git(self,
@@ -317,20 +357,28 @@ class Terminal:
         console.log(f'[bold red]*[/] {message}')
 
     def run_npm_command(self, *cmd):
-        """Runs an npm build command.
+        """Runs an npm or pnpm build command.
 
-      This function will run 'npm run' commands appended by any extra arguments
-      are passed into it.
+        This function will run 'npm run' or 'pnpm run' (based on the lockfile in
+        the nearest ancestor directory containing package.json) with any extra
+        arguments passed into it.
 
-      e.g:
-          self.run_npm_command('init')
-      """
-        cmd = ['npm', 'run'] + list(cmd)
+        e.g:
+            self.run_npm_command('init')
+        """
+        package_manager = get_package_manager()
+        args = list(cmd)
+        if package_manager == 'pnpm':
+            args = [arg for arg in args if arg != '--']
+        cmd = [package_manager, 'run'] + args
         if self.infra_mode and len(cmd) == 3 and cmd[-1] == 'init':
             # Special flag to avoid running into issues in jenkins when running
             # `gclient sync` with `--revision`. For more details see:
             # https://github.com/brave/brave-browser/issues/44921
-            cmd += ['--', '--with_issue_44921']
+            if package_manager == 'pnpm':
+                cmd.append('--with_issue_44921')
+            else:
+                cmd += ['--', '--with_issue_44921']
         return self.run(cmd)
 
 

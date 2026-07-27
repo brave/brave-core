@@ -46,6 +46,7 @@ interface BatAdsClientNotifier {
                      bool is_visible);
   NotifyTabDidLoad(int32 tab_id,
                    int32 http_status_code);
+  NotifyTabDidFailToLoad(int32 tab_id);
   NotifyDidCloseTab(int32 tab_id);
 
   NotifyUserGestureEventTriggered(int32 page_transition);
@@ -77,7 +78,7 @@ interface BatAdsClient {
   CanShowNotificationAds() => (bool can_show);
   [Sync]
   CanShowNotificationAdsWhileBrowserIsBackgrounded() => (bool can_show);
-  ShowNotificationAd(mojo_base.mojom.DictionaryValue value);
+  ShowNotificationAd(brave_ads.mojom.NotificationAdInfo notification_ad);
   CloseNotificationAd(string placement_id);
 
   GetSiteHistory(int32 max_count, int32 days_ago) =>
@@ -161,7 +162,7 @@ interface BatAds {
           (bool success);
 
   MaybeGetNotificationAd(string placement_id) =>
-      (mojo_base.mojom.DictionaryValue? value);
+      (brave_ads.mojom.NotificationAdInfo? notification_ad);
   TriggerNotificationAdEvent(
       string placement_id,
       brave_ads.mojom.NotificationAdEventType mojom_ad_event_type) =>
@@ -178,7 +179,7 @@ interface BatAds {
       (bool success);
 
   GetAdHistory(mojo_base.mojom.Time from_time, mojo_base.mojom.Time to_time) =>
-      (mojo_base.mojom.ListValue? value);
+      (array<brave_ads.mojom.AdHistoryItemInfo>? ad_history);
 
   ToggleLikeAd(brave_ads.mojom.ReactionInfo mojom_reaction) => (bool success);
   ToggleDislikeAd(brave_ads.mojom.ReactionInfo mojom_reaction) =>

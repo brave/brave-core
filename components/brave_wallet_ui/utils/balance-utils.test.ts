@@ -10,6 +10,9 @@ import {
   setBalance,
 } from './balance-utils'
 
+// types
+import { BraveWallet } from '../constants/types'
+
 // mocks
 import { mockAccount } from '../common/constants/mocks'
 import {
@@ -29,7 +32,7 @@ describe('getBalance', () => {
       tokenBalancesRegistry,
       coinType: mockBasicAttentionToken.coin,
       tokenId: '',
-      isShielded: false,
+      zcashTokenType: BraveWallet.ZCashTokenType.kNone,
     })
 
     expect(
@@ -51,7 +54,7 @@ describe('getBalance', () => {
       tokenBalancesRegistry,
       coinType: mockBasicAttentionToken.coin,
       tokenId: '',
-      isShielded: false,
+      zcashTokenType: BraveWallet.ZCashTokenType.kNone,
     })
 
     expect(
@@ -73,7 +76,7 @@ describe('getBalance', () => {
       tokenBalancesRegistry,
       coinType: mockBasicAttentionToken.coin,
       tokenId: '',
-      isShielded: false,
+      zcashTokenType: BraveWallet.ZCashTokenType.kNone,
     })
 
     expect(
@@ -95,7 +98,7 @@ describe('getBalance', () => {
       tokenBalancesRegistry,
       coinType: mockBasicAttentionToken.coin,
       tokenId: '',
-      isShielded: false,
+      zcashTokenType: BraveWallet.ZCashTokenType.kNone,
     })
 
     expect(
@@ -140,7 +143,7 @@ describe('getPercentAmount', () => {
         tokenBalancesRegistry,
         coinType: mockERC20Token.coin,
         tokenId: '',
-        isShielded: false,
+        zcashTokenType: BraveWallet.ZCashTokenType.kNone,
       })
 
       expect(

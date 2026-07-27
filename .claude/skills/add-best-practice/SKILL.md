@@ -236,9 +236,9 @@ If validation fails, fix the issue before proceeding.
 
 ## Step 9: Format Markdown
 
-All created or modified docs MUST be formatted with `npm run format` before
+All created or modified docs MUST be formatted with `pnpm run format` before
 being committed — unformatted docs fail CI's presubmit step. ALWAYS `git add`
-any new (untracked) docs BEFORE calling `npm run format` — the formatter
+any new (untracked) docs BEFORE calling `pnpm run format` — the formatter
 silently skips untracked files, so missing this step means the new doc ships
 unformatted and CI will reject it.
 
@@ -288,7 +288,7 @@ Report the PR URL if created.
 
 - **No Claude Code attribution** — do NOT include `Co-Authored-By`,
   `Generated with Claude Code`, or any other attribution in commits or PRs
-- **Always format with `npm run format`** — never hand-format markdown or use
+- **Always format with `pnpm run format`** — never hand-format markdown or use
   another formatter. New (untracked) documents must be `git add`ed first, or the
   formatter will skip them silently
 

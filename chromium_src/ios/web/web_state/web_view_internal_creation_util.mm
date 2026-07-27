@@ -15,6 +15,16 @@
 
 @implementation BraveCRWWebView
 
+- (instancetype)initWithFrame:(CGRect)frame
+                configuration:(WKWebViewConfiguration*)configuration {
+  if ((self = [super initWithFrame:frame configuration:configuration])) {
+    // In Brave we want this to be enabled by default, Chromium enables it
+    // lazily based on first explicit activation of find in page
+    self.findInteractionEnabled = YES;
+  }
+  return self;
+}
+
 - (void)buildMenuWithBuilder:(id<UIMenuBuilder>)builder {
   [super buildMenuWithBuilder:builder];
   // Typically Chromium only calls buildMenuWithBuilder when there is text

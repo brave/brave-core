@@ -315,6 +315,7 @@ import requests
 from rich.markdown import Markdown
 from rich.padding import Padding
 from rich.syntax import Syntax
+import shlex
 import shutil
 import subprocess
 import sys
@@ -1849,10 +1850,16 @@ class Rebase(Task):
 
             # Squashes will cause `GIT_EDITOR` also to open for the commit
             # message, so we need to handle those too.
-            env["GIT_EDITOR"] = (
-                f'{str(VPYTHON3_PATH)} {__file__} '
-                '--internal-rebase-fix-message '
-                f'--internal-rebase-crash-msg-editor={crash_msg_editor}')
+            #
+            # `shlex.join` (rather than a plain `" ".join`/f-string) matters
+            # on Windows: git invokes the editor via its bundled `sh -c`,
+            # which treats unquoted backslashes as escape characters and
+            # would silently mangle the absolute, backslash-separated
+            # `VPYTHON3_PATH` / `__file__` paths.
+            env["GIT_EDITOR"] = shlex.join([
+                str(VPYTHON3_PATH), __file__, '--internal-rebase-fix-message',
+                f'--internal-rebase-crash-msg-editor={crash_msg_editor}'
+            ])
 
         if len(editor) > 2:
             # Pass the captured sequence-editor fallback alongside the plan
@@ -1860,12 +1867,13 @@ class Rebase(Task):
             # `EditorRecoverableFailure` fires.
             editor.append(
                 f'--internal-rebase-crash-sequence-editor={crash_seq_editor}')
-            env["GIT_SEQUENCE_EDITOR"] = " ".join(editor)
+            env["GIT_SEQUENCE_EDITOR"] = shlex.join(editor)
         else:
-            # If there are no internal operation, we can just return always
-            # true to whatever plan git gives us.
-            env["GIT_SEQUENCE_EDITOR"] = 'cmd /c "exit 0"' if platform.system(
-            ) == 'Windows' else 'true'
+            # No internal plan rewriting: accept git's plan as-is. Git runs the
+            # sequence editor through its bundled `sh -c` even on Windows, so
+            # `true` (an sh builtin) works everywhere -- unlike `cmd`, which
+            # re-parses git's backslash-separated todo path and mangles it.
+            env["GIT_SEQUENCE_EDITOR"] = 'true'
 
         try:
             # `interactive=True` as we may need to open an editor if
@@ -2130,7 +2138,7 @@ class Merge(Task):
             f'--internal-rebase-capture-dest={dest}'
         ]
         env = os.environ.copy()
-        env['GIT_SEQUENCE_EDITOR'] = ' '.join(editor)
+        env['GIT_SEQUENCE_EDITOR'] = shlex.join(editor)
         rebase_args = ['rebase', '--interactive']
         if autosquash:
             # `--empty=drop` only matters alongside `--autosquash`, matching

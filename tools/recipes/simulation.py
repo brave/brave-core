@@ -16,7 +16,7 @@ Holds everything needed to run a recipe with zero real side effects:
     live in `StepApi`); simulation records an ordered step list and returns
     canned results.
   * expectation helpers: `stabilize` (machine paths -> `[WORKSPACE]`/`[HOME]`
-    tokens), `serialize_steps`, and `apply_post_process`.
+    tokens), `build_steps`, and `apply_post_process`.
 
 Deliberately never imports `engine` (the engine imports this), so there is no
 cycle: the test runner in `engine.py` drives a recipe, then hands the recorded
@@ -27,13 +27,16 @@ from __future__ import annotations
 
 from collections.abc import Iterable
 import copy
+import inspect
 from pathlib import Path, PurePosixPath
 import subprocess
+import sys
 from typing import Any
 
+from check import Check, Checker, PostProcessError, VerifySubset
 from engine_env import merge_envs
 import post_process as pp
-from recipe_test_api import StepTestData, TestData
+from recipe_test_api import PostprocessHookContext, StepTestData, TestData
 
 # Fixed synthetic locations used in test mode. They are never touched on disk;
 # they exist only so module-derived paths are deterministic, and are rewritten
@@ -240,12 +243,15 @@ def stabilize(value: str, context: TestContext | None = None) -> str:
     return value.replace(home, HOME_TOKEN)
 
 
-def build_steps(runner: SimulationStepRunner, status: str, reason: str | None,
+def build_steps(runner: SimulationStepRunner, failure: dict | None,
                 context: TestContext) -> dict[str, dict]:
     """Assemble the ordered `{name: step}` map (+ `$result`) for post-process.
 
-    Paths are stabilized here so post-process checks and the written
-    expectation see the same tokenized commands.
+    Paths are stabilized here so post-process checks and the written expectation
+    see the same tokenized commands. `failure` is `None` for a successful run,
+    otherwise it is the terminal result's `failure` payload. A non-infra failure
+    carries an inner `{'failure': {}}`, which an infra failure does not. Any
+    machine paths in its `humanReason` are stabilized too.
     """
     steps: dict[str, dict] = {}
     for step in runner.recorded_steps:
@@ -270,34 +276,67 @@ def build_steps(runner: SimulationStepRunner, status: str, reason: str | None,
             entry['retcode'] = step['retcode']
         steps[step['name']] = entry
 
-    result: dict[str, Any] = {'name': pp.RESULT_STEP, 'status': status}
-    if reason is not None:
-        result['reason'] = reason
+    result: dict[str, Any] = {'name': pp.RESULT_STEP}
+    if failure is not None:
+        if 'humanReason' in failure:
+            failure = {
+                **failure,
+                'humanReason': stabilize(failure['humanReason'], context),
+            }
+        result['failure'] = failure
     steps[pp.RESULT_STEP] = result
     return steps
 
 
 def apply_post_process(
-        hooks, steps: dict[str,
-                           dict]) -> tuple[dict[str, dict] | None, list[str]]:
-    """Run post-process hooks; return (filtered steps or None, failures).
+        hooks: list[PostprocessHookContext],
+        steps: dict[str, dict]) -> tuple[dict[str, dict] | None, list[Check]]:
+    """Run post-process hooks.
 
-    Each hook gets its own `Checker` and a deep copy of the current steps. A
-    hook that returns a mapping replaces the steps for later hooks and for the
-    written expectation; an empty mapping drops the expectation (returns None).
+    Each hook gets its own `Checker` and a deep copy of the current steps (the
+    checker MUST be a local so its stack walk can find the frames to blame). A
+    `KeyError` from a hook (e.g. indexing a step that didn't run) is rendered as
+    a failed check rather than aborting the case. A hook that returns a mapping
+    filters the steps for later hooks and for the written expectation, but only
+    after `VerifySubset` confirms it introduced no new keys / reordering /
+    changed values, otherwise a `PostProcessError` is raised. An empty mapping
+    drops the expectation (returns `None`).
     """
-    failures: list[str] = []
+    failed_checks: list[Check] = []
     for hook in hooks:
-        check = pp.Checker(hook.context)
         working = copy.deepcopy(steps)
+        # Kept in a local named `check`: `Checker._call_impl` walks the stack for
+        # the frame in which the checker is a local variable.
+        check = Checker(hook, working)
         try:
             result = hook.func(check, working, *hook.args, **hook.kwargs)
-        except Exception as exc:  # pylint: disable=broad-except
-            failures.append(f'{hook.context}: hook raised {exc!r}')
+        except KeyError:
+            exc_type, exc_value, exc_traceback = sys.exc_info()
+            try:
+                failed_checks.append(
+                    Check.create(
+                        '',
+                        hook,
+                        inspect.getinnerframes(exc_traceback)[1:],
+                        False,
+                        check._ignore_set,  # pylint: disable=protected-access
+                        {
+                            'raised exception': '%s: %s' %
+                            (exc_type.__name__, exc_value)
+                        },
+                    ))
+            finally:
+                # avoid reference cycle as suggested by inspect docs.
+                del exc_traceback
             continue
-        failures.extend(check.failures)
+        failed_checks += check.failed_checks
         if result is not None:
-            if not result:
-                return None, failures  # DropExpectation.
+            msg = VerifySubset(result, steps)
+            if msg:
+                raise PostProcessError('post process: steps' + msg)
+            # Restore 'name' if a filter dropped it.
+            for name, step in result.items():
+                step['name'] = name
             steps = result
-    return steps, failures
+    # An empty mapping means drop the expectation.
+    return (steps if steps else None), failed_checks

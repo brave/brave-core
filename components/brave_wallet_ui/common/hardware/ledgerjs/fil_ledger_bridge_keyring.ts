@@ -23,10 +23,6 @@ export default class FilecoinLedgerBridgeKeyring
   extends LedgerBridgeKeyring
   implements LedgerFilecoinKeyring
 {
-  constructor(onAuthorized?: () => void) {
-    super(onAuthorized)
-  }
-
   bridgeType = (): BridgeType => {
     return BridgeTypes.FilLedger
   }

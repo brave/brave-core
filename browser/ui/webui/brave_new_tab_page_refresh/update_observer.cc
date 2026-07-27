@@ -6,6 +6,7 @@
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/update_observer.h"
 
 #include <utility>
+#include <vector>
 
 #include "brave/browser/ntp_background/ntp_background_prefs.h"
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/top_sites_facade.h"
@@ -19,6 +20,10 @@
 #include "chrome/browser/new_tab_page/ntp_pref_names.h"
 #include "chrome/common/pref_names.h"
 
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+#include "brave/components/brave_rewards/core/pref_names.h"
+#endif
+
 #if BUILDFLAG(ENABLE_BRAVE_TALK)
 #include "brave/components/brave_talk/pref_names.h"
 #endif
@@ -29,11 +34,14 @@ UpdateObserver::UpdateObserver(PrefService& pref_service,
                                TopSitesFacade* top_sites_facade) {
   pref_change_registrar_.Init(&pref_service);
 
+  // Sponsored site tiles need both prefs enabled to show, so turning either
+  // one off should also hide the tiles.
   AddPrefListener(ntp_background_images::prefs::kNewTabPageShowBackgroundImage,
-                  Source::kBackgrounds);
+                  {Source::kBackgrounds, Source::kTopSites});
   AddPrefListener(ntp_background_images::prefs::
                       kNewTabPageShowSponsoredImagesBackgroundImage,
-                  Source::kBackgrounds);
+                  {Source::kBackgrounds, Source::kTopSites});
+  AddPrefListener(kNewTabPageShowSponsoredSites, Source::kTopSites);
   AddPrefListener(NTPBackgroundPrefs::kPrefName, Source::kBackgrounds);
   AddPrefListener(NTPBackgroundPrefs::kCustomImageListPrefName,
                   Source::kBackgrounds);
@@ -61,6 +69,7 @@ UpdateObserver::UpdateObserver(PrefService& pref_service,
 
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   AddPrefListener(kNewTabPageShowRewards, Source::kRewards);
+  AddPrefListener(brave_rewards::prefs::kExternalWalletType, Source::kTopSites);
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
@@ -97,6 +106,23 @@ void UpdateObserver::AddPrefListener(const std::string& path,
   pref_change_registrar_.Add(
       path, base::BindRepeating(&UpdateObserver::OnPrefChanged,
                                 weak_factory_.GetWeakPtr(), update_source));
+}
+
+void UpdateObserver::AddPrefListener(
+    const std::string& path,
+    std::initializer_list<Source> update_sources) {
+  pref_change_registrar_.Add(
+      path,
+      base::BindRepeating(
+          [](base::WeakPtr<UpdateObserver> self,
+             std::vector<Source> update_sources) {
+            if (self) {
+              for (Source update_source : update_sources) {
+                self->OnUpdate(update_source);
+              }
+            }
+          },
+          weak_factory_.GetWeakPtr(), std::vector<Source>(update_sources)));
 }
 
 }  // namespace brave_new_tab_page_refresh

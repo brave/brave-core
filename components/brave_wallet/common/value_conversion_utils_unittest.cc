@@ -398,7 +398,7 @@ TEST(ValueConversionUtilsUnitTest, ValueToBlockchainToken) {
       "0x0D8775F648430679A709E98d2b0Cb6250d2887EF", "Basic Attention Token",
       "bat.png", true, true, false, false, mojom::SPLTokenProgram::kUnsupported,
       false, false, "BAT", 18, true, "", "", "0x1", mojom::CoinType::ETH,
-      false);
+      mojom::ZCashTokenType::kNone);
 
   mojom::BlockchainTokenPtr token = ValueToBlockchainToken(json_value);
   EXPECT_EQ(token, expected_token);
@@ -437,7 +437,7 @@ TEST(ValueConversionUtilsUnitTest, ValueToBlockchainToken) {
       "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "Crypto Kitties",
       "CryptoKitties-Kitty-13733.svg", false, false, true, false,
       mojom::SPLTokenProgram::kUnsupported, true, true, "CK", 0, true, "", "",
-      "0x1", mojom::CoinType::ETH, false);
+      "0x1", mojom::CoinType::ETH, mojom::ZCashTokenType::kNone);
 
   token = ValueToBlockchainToken(json_value);
   EXPECT_EQ(token, expected_token);
@@ -462,7 +462,8 @@ TEST(ValueConversionUtilsUnitTest, ValueToBlockchainToken) {
   expected_token = mojom::BlockchainToken::New(
       "0x28472a58A490c5e09A238847F66A68a47cC76f0f", "ADIDAS", "adidas.png",
       false, false, false, true, mojom::SPLTokenProgram::kUnsupported, true,
-      false, "ADIDAS", 0, true, "", "", "0x1", mojom::CoinType::ETH, false);
+      false, "ADIDAS", 0, true, "", "", "0x1", mojom::CoinType::ETH,
+      mojom::ZCashTokenType::kNone);
 
   token = ValueToBlockchainToken(json_value);
   EXPECT_EQ(token, expected_token);
@@ -488,7 +489,7 @@ TEST(ValueConversionUtilsUnitTest, ValueToBlockchainToken) {
   expected_token = mojom::BlockchainToken::New(
       "addr", "name", "logo", false, false, false, false,
       mojom::SPLTokenProgram::kUnknown, false, false, "TEST", 8, true, "", "",
-      "0x65", mojom::CoinType::SOL, false);
+      "0x65", mojom::CoinType::SOL, mojom::ZCashTokenType::kNone);
 
   token = ValueToBlockchainToken(json_value);
   EXPECT_EQ(token, expected_token);
@@ -529,16 +530,65 @@ TEST(ValueConversionUtilsUnitTest, ValueToBlockchainToken) {
       "is_spam": false,
       "decimals": 8,
       "visible": true,
-      "is_shielded": true,
   })");
+  json_value.Set("zcash_token_type",
+                 static_cast<int>(mojom::ZCashTokenType::kOrchard));
 
   expected_token = mojom::BlockchainToken::New(
       "", "zec", "zec.png", false, false, false, false,
       mojom::SPLTokenProgram::kUnsupported, false, false, "ZEC", 8, true, "",
-      "", "zcash_mainnet", mojom::CoinType::ZEC, true);
+      "", "zcash_mainnet", mojom::CoinType::ZEC,
+      mojom::ZCashTokenType::kOrchard);
 
   token = ValueToBlockchainToken(json_value);
   EXPECT_EQ(token, expected_token);
+
+  // Legacy is_shielded=true → kOrchard.
+  json_value = base::test::ParseJsonDict(R"({
+      "coin": 133,
+      "chain_id": "zcash_mainnet",
+      "address": "",
+      "name": "zec",
+      "symbol": "ZEC",
+      "logo": "zec.png",
+      "is_erc20": false,
+      "is_erc721": false,
+      "is_erc1155": false,
+      "is_nft": false,
+      "is_spam": false,
+      "decimals": 8,
+      "visible": true,
+      "is_shielded": true
+  })");
+  token = ValueToBlockchainToken(json_value);
+  ASSERT_TRUE(token);
+  EXPECT_EQ(token->zcash_token_type, mojom::ZCashTokenType::kOrchard);
+
+  // Legacy is_shielded=false + ZEC → kTransparent.
+  json_value.Set("is_shielded", false);
+  token = ValueToBlockchainToken(json_value);
+  ASSERT_TRUE(token);
+  EXPECT_EQ(token->zcash_token_type, mojom::ZCashTokenType::kTransparent);
+
+  // Legacy missing is_shielded + non-ZEC → kNone.
+  json_value = base::test::ParseJsonDict(R"({
+      "coin": 60,
+      "chain_id": "0x1",
+      "address": "0x0D8775F648430679A709E98d2b0Cb6250d2887EF",
+      "name": "Basic Attention Token",
+      "symbol": "BAT",
+      "logo": "bat.png",
+      "is_erc20": true,
+      "is_erc721": false,
+      "is_erc1155": false,
+      "is_nft": false,
+      "is_spam": false,
+      "decimals": 18,
+      "visible": true
+  })");
+  token = ValueToBlockchainToken(json_value);
+  ASSERT_TRUE(token);
+  EXPECT_EQ(token->zcash_token_type, mojom::ZCashTokenType::kNone);
 }
 
 TEST(ValueConversionUtilsUnitTest, PermissionRequestResponseToValue) {

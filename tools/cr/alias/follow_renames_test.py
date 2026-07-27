@@ -460,8 +460,9 @@ class PlasterApplyTest(_Base):
 
     _SUBST_YAML = ('substitutions:\n'
                    '  - description: Replace old_func\n'
-                   '    pattern: old_func\n'
-                   '    replace: new_func\n')
+                   '    regex:\n'
+                   '      pattern: old_func\n'
+                   '      replace: new_func\n')
 
     def test_patch_created_at_new_location(self) -> None:
         """Plaster writes patches/B-foo.cc.patch after an upstream rename."""
@@ -599,8 +600,9 @@ class PatchFileRepairTest(_Base):
         """Patch deleted by _repair_plaster_files is not re-renamed here."""
         _SUBST_YAML = ('substitutions:\n'
                        '  - description: test\n'
-                       '    pattern: old_func\n'
-                       '    replace: new_func\n')
+                       '    regex:\n'
+                       '      pattern: old_func\n'
+                       '      replace: new_func\n')
         before = self._chromium_head()
         self._chromium_commit(self._OLD_REL, 'void old_func() {}\n')
         self._brave_commit('rewrite/A/foo.cc.yaml', _SUBST_YAML)

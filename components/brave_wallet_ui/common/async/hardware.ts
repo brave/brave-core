@@ -397,12 +397,10 @@ export async function signSolTransactionWithHardwareKeyring(
   vendor: BraveWallet.HardwareVendor,
   path: string,
   message: Buffer,
-  onAuthorized?: () => void,
 ): Promise<HardwareOperationResultSolanaSignature> {
   const deviceKeyring = await getHardwareKeyring(
     vendor,
     BraveWallet.CoinType.SOL,
-    onAuthorized,
   )
 
   if (deviceKeyring instanceof SolanaLedgerBridgeKeyring) {
@@ -437,10 +435,6 @@ export const getDeviceNameFromDevice = async (
 export const loadAccountsFromDevice = async (
   opts: FetchHardwareWalletAccountsProps,
 ): Promise<HardwareOperationResultAccounts> => {
-  const keyring = await getHardwareKeyring(
-    opts.scheme.vendor,
-    opts.scheme.coin,
-    opts.onAuthorized,
-  )
+  const keyring = await getHardwareKeyring(opts.scheme.vendor, opts.scheme.coin)
   return keyring.getAccounts(opts.startIndex, opts.count, opts.scheme)
 }

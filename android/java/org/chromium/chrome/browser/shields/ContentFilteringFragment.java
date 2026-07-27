@@ -142,7 +142,10 @@ public class ContentFilteringFragment extends BravePreferenceFragment
         }
         Intent intent =
                 mSettingsLauncher.createSettingsIntent(
-                        getActivity(), AddCustomFilterListsFragment.class, null);
+                        getActivity(),
+                        AddCustomFilterListsFragment.class,
+                        /* fragmentArgs= */ null,
+                        /* addToBackStack= */ true);
         mAddCustomFilterResultLauncher.launch(intent);
     }
 
@@ -165,7 +168,10 @@ public class ContentFilteringFragment extends BravePreferenceFragment
         }
         Intent intent =
                 mSettingsLauncher.createSettingsIntent(
-                        getActivity(), CreateCustomFiltersFragment.class, null);
+                        getActivity(),
+                        CreateCustomFiltersFragment.class,
+                        /* fragmentArgs= */ null,
+                        /* addToBackStack= */ true);
         getActivity().startActivity(intent);
     }
 

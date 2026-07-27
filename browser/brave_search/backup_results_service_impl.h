@@ -22,6 +22,7 @@
 #include "third_party/blink/public/common/user_agent/user_agent_metadata.h"
 #include "url/gurl.h"
 
+class PrefRegistrySimple;
 class PrefService;
 class Profile;
 
@@ -43,6 +44,8 @@ namespace brave_search {
 class BackupResultsServiceImpl : public BackupResultsService,
                                  public ProfileObserver {
  public:
+  static void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
+
   static void RecordLastViewSize(PrefService* local_state,
                                  const gfx::Size& size);
 
@@ -123,6 +126,12 @@ class BackupResultsServiceImpl : public BackupResultsService,
 
   void SeedNavigationHistory(content::WebContents& web_contents,
                              const GURL& target_url);
+
+  void MaybeConfigureFarblingAndAcceptLanguage(Profile* otr_profile,
+                                               const GURL& url);
+  void MaybeConfigureRendererLanguages(content::WebContents& web_contents);
+  std::string GetLanguageListOverride(
+      const std::string& feature_param_value) const;
 
   net::HttpRequestHeaders GetExtraHeaders(
       const std::optional<net::HttpRequestHeaders>& request_headers);

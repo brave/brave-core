@@ -20,6 +20,11 @@
 #include "url/gurl.h"
 
 static_assert(BUILDFLAG(ENABLE_BRAVE_WALLET));
+
+namespace views {
+class Widget;
+}  // namespace views
+
 namespace content {
 class BrowserContext;
 struct GlobalRenderFrameHostId;
@@ -66,6 +71,7 @@ class BraveWalletTabHelper
   bool IsShowingBubble();
   bool IsBubbleClosedForTesting();
   content::WebContents* GetBubbleWebContentsForTesting();
+  views::Widget* GetBubbleWidgetForTesting();
   void SetShowBubbleCallbackForTesting(base::OnceClosure callback) {
     show_bubble_callback_for_testing_ = std::move(callback);
   }

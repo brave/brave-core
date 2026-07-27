@@ -5,42 +5,47 @@
 
 #include "chrome/browser/download/bubble/download_display_controller.h"
 
-#define DownloadDisplayController DownloadDisplayControllerChromium
+namespace {
 
-#include "base/check.h"
-#include "chrome/browser/download/bubble/download_bubble_display_info.h"
-#include "chrome/browser/ui/web_applications/app_browser_controller.h"
+bool ShouldShowToolbarButtonForInProgressDownload(
+    const DownloadBubbleDisplayInfo& info,
+    DownloadDisplay* display,
+    DownloadBubbleUIController* bubble_controller,
+    const BrowserWindowInterface* browser);
+
+}  // namespace
 
 #include <chrome/browser/download/bubble/download_display_controller.cc>
 
-#undef DownloadDisplayController
+namespace {
 
-void DownloadDisplayController::UpdateToolbarButtonState(
+bool ShouldShowToolbarButtonForInProgressDownload(
     const DownloadBubbleDisplayInfo& info,
-    const DownloadDisplay::ProgressInfo& progress_info) {
-  DownloadDisplayControllerChromium::UpdateToolbarButtonState(info,
-                                                              progress_info);
-
+    DownloadDisplay* display,
+    DownloadBubbleUIController* bubble_controller,
+    const BrowserWindowInterface* browser) {
   if (info.all_models_size == 0) {
-    return;
+    return false;
   }
 
-  if (display_->IsShowing()) {
-    return;
+  if (display->IsShowing()) {
+    return false;
   }
 
-  // Show toolbar if there's at least one in-progress download item.
-  // Upstream doesn't show toolbar button when only dangerous files are
-  // in-progress. We cannot use DownloadBubbleDisplayInfo's in_progress_count
-  // here because it doesn't include dangerous files.
+  // Show the toolbar button if there's at least one in-progress download item.
+  // Upstream doesn't show it when only dangerous files are in-progress, and we
+  // can't use DownloadBubbleDisplayInfo::in_progress_count because it excludes
+  // dangerous files.
   std::vector<DownloadUIModel::DownloadUIModelPtr> all_models;
-  bubble_controller_->update_service()->GetAllModelsToDisplay(
-      all_models, GetWebAppIdForBrowser(browser_),
+  bubble_controller->update_service()->GetAllModelsToDisplay(
+      all_models, GetWebAppIdForBrowser(browser),
       /*force_backfill_download_items=*/true);
   for (const auto& model : all_models) {
     if (model->GetState() == download::DownloadItem::IN_PROGRESS) {
-      ShowToolbarButton();
-      return;
+      return true;
     }
   }
+  return false;
 }
+
+}  // namespace

@@ -1,0 +1,25 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# NOTE: The Brave `TestLauncher` subclass method definitions stay in the
+# chromium_src wrapper. This plaster renames the upstream method definitions to
+# `TestLauncher_ChromiumImpl` and routes results through the Brave `OnTestResult`
+# hook, replacing the two `#define`s the wrapper used to apply around its
+# `#include` of this source.
+substitutions:
+  - description: |
+      Rename the upstream definitions to TestLauncher_ChromiumImpl
+    rename_class:
+      class_name: TestLauncher
+      rename: TestLauncher_ChromiumImpl
+
+  - description: |
+      Route recorded results through the Brave OnTestResult hook
+
+      OnTestResult is the virtual injected into TestLauncher_ChromiumImpl; being
+      called here (from base-class code) is why it must exist on the base.
+    regex:
+      re_pattern: 'results_tracker_\.AddTestResult\(result\)'
+      replace: 'results_tracker_.AddTestResult(OnTestResult(result))'

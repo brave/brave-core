@@ -906,15 +906,6 @@ IN_PROC_BROWSER_TEST_F(
 }
 
 #if BUILDFLAG(IS_MAC)
-IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest, ImmersiveTabbedMode) {
-  // We disabled tabbed mode by default.
-  // See
-  // https://github.com/brave/brave-browser/issues/56914#issuecomment-4911022632
-  // for more details.
-  EXPECT_FALSE(WindowFeatureController::From(browser())
-                   ->UsesImmersiveFullscreenTabbedMode());
-}
-
 // Immersive fullscreen: (1) when vertical tabs are off at startup, immersive
 // is available and is disabled at runtime when vertical tabs are turned on;
 // (2) when vertical tabs were on at startup, immersive stays disabled for the

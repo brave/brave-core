@@ -57,8 +57,8 @@ orchard::OrchardShardTree& OrchardSyncState::GetOrCreateShardTree(
     const mojom::AccountIdPtr& account_id) LIFETIME_BOUND {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (shard_trees_.find(account_id->unique_key) == shard_trees_.end()) {
-    shard_trees_[account_id->unique_key] =
-        orchard::OrchardShardTree::Create(storage_, account_id);
+    shard_trees_[account_id->unique_key] = orchard::OrchardShardTree::Create(
+        storage_, account_id, OrchardPool::kOrchard);
   }
   auto* manager = shard_trees_[account_id->unique_key].get();
   CHECK(manager);
@@ -130,9 +130,11 @@ OrchardSyncState::GetSpendableNotes(const mojom::AccountIdPtr& account_id,
   if (!latest_scanned_block_id) {
     return OrchardSyncState::SpendableNotesBundle();
   }
-  ASSIGN_OR_RETURN(auto notes, storage_.GetSpendableNotes(account_id));
+  ASSIGN_OR_RETURN(auto notes, storage_.GetSpendableNotes(OrchardPool::kOrchard,
+                                                          account_id));
   ASSIGN_OR_RETURN(auto anchor, storage_.GetMaxCheckpointedHeight(
-                                    account_id, latest_scanned_block_id.value(),
+                                    OrchardPool::kOrchard, account_id,
+                                    latest_scanned_block_id.value(),
                                     kZCashInternalAddressMinConfirmations));
 
   SpendableNotesBundle result;
@@ -165,7 +167,7 @@ OrchardSyncState::GetSpendableNotes(const mojom::AccountIdPtr& account_id,
 base::expected<std::vector<OrchardNoteSpend>, OrchardStorage::Error>
 OrchardSyncState::GetNullifiers(const mojom::AccountIdPtr& account_id) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  return storage_.GetNullifiers(account_id);
+  return storage_.GetNullifiers(OrchardPool::kOrchard, account_id);
 }
 
 base::expected<OrchardStorage::Result, OrchardStorage::Error>
@@ -173,7 +175,8 @@ OrchardSyncState::ApplyScanResults(
     const mojom::AccountIdPtr& account_id,
     OrchardBlockScanner::Result block_scanner_results) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  auto existing_notes = storage_.GetSpendableNotes(account_id);
+  auto existing_notes =
+      storage_.GetSpendableNotes(OrchardPool::kOrchard, account_id);
   RETURN_IF_ERROR(existing_notes);
 
   std::vector<OrchardNote> notes_to_add =
@@ -204,10 +207,10 @@ OrchardSyncState::ApplyScanResults(
                                 "Failed to insert commitments"});
     }
 
-    auto update_notes_result =
-        storage_.UpdateNotes(account_id, notes_to_add, std::move(nf_to_add),
-                             block_scanner_results.latest_scanned_block_id,
-                             block_scanner_results.latest_scanned_block_hash);
+    auto update_notes_result = storage_.UpdateNotes(
+        OrchardPool::kOrchard, account_id, notes_to_add, std::move(nf_to_add),
+        block_scanner_results.latest_scanned_block_id,
+        block_scanner_results.latest_scanned_block_hash);
 
     if (!update_notes_result.has_value() ||
         update_notes_result.value() != OrchardStorage::Result::kSuccess) {
@@ -266,13 +269,13 @@ OrchardSyncState::CalculateWitnessForCheckpoint(
 base::expected<std::optional<uint32_t>, OrchardStorage::Error>
 OrchardSyncState::GetLatestShardIndex(const mojom::AccountIdPtr& account_id) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  return storage_.GetLatestShardIndex(account_id);
+  return storage_.GetLatestShardIndex(OrchardPool::kOrchard, account_id);
 }
 
 base::expected<std::optional<uint32_t>, OrchardStorage::Error>
 OrchardSyncState::GetMinCheckpointId(const mojom::AccountIdPtr& account_id) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  return storage_.MinCheckpointId(account_id);
+  return storage_.MinCheckpointId(OrchardPool::kOrchard, account_id);
 }
 
 void OrchardSyncState::ResetDatabase() {

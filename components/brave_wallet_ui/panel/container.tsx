@@ -32,7 +32,7 @@ import {
 } from '../components/extension/public_encryption_key_panels/decrypt_message_request_panel'
 
 import { LongWrapper, ConnectWithSiteWrapper } from '../stories/style'
-import { PanelWrapper, WelcomePanelWrapper } from './style'
+import { PanelWrapper } from './style'
 import { FullScreenWrapper } from '../page/screens/page-screen.styles'
 
 import { TransactionStatus } from '../components/extension/post-confirmation'
@@ -162,11 +162,12 @@ function Container() {
 
   if (!isWalletCreated) {
     return (
-      <WelcomePanelWrapper>
-        <LongWrapper>
-          <WelcomePanel />
-        </LongWrapper>
-      </WelcomePanelWrapper>
+      <PanelWrapper
+        width={390}
+        height={650}
+      >
+        <WelcomePanel />
+      </PanelWrapper>
     )
   }
 

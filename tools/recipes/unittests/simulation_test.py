@@ -21,13 +21,13 @@ from recipe_test_api import RecipeTestApi, StepTestData, TestData
 class SimFSTest(unittest.TestCase):
 
     def test_file_and_ancestor_semantics(self):
-        fs = simulation.SimFS(files=['/b/s/chromium/src/chrome/VERSION'])
-        self.assertTrue(fs.is_file('/b/s/chromium/src/chrome/VERSION'))
-        self.assertTrue(fs.exists('/b/s/chromium/src/chrome/VERSION'))
+        fs = simulation.SimFS(files=['/b/s/brave-browser/src/chrome/VERSION'])
+        self.assertTrue(fs.is_file('/b/s/brave-browser/src/chrome/VERSION'))
+        self.assertTrue(fs.exists('/b/s/brave-browser/src/chrome/VERSION'))
         # Ancestors of a seeded file are directories that exist.
-        self.assertTrue(fs.is_dir('/b/s/chromium/src'))
+        self.assertTrue(fs.is_dir('/b/s/brave-browser/src'))
         # The file itself is not a directory.
-        self.assertFalse(fs.is_dir('/b/s/chromium/src/chrome/VERSION'))
+        self.assertFalse(fs.is_dir('/b/s/brave-browser/src/chrome/VERSION'))
         self.assertFalse(fs.exists('/b/s/nope'))
 
     def test_mkdir_mutates(self):
@@ -93,7 +93,7 @@ class TestContextTest(unittest.TestCase):
                 }
             },
             'path': {
-                'files': ['chromium/src/chrome/VERSION'],
+                'files': ['brave-browser/src/chrome/VERSION'],
                 'dirs': []
             },
         }
@@ -102,7 +102,8 @@ class TestContextTest(unittest.TestCase):
         self.assertEqual(ctx.env['K'], 'V')
         self.assertEqual(ctx.which_map['gclient'], '/g')
         # Relative seed resolves under the simulated workspace.
-        self.assertTrue(ctx.fs.is_file('/b/s/chromium/src/chrome/VERSION'))
+        self.assertTrue(
+            ctx.fs.is_file('/b/s/brave-browser/src/chrome/VERSION'))
 
 
 class ExpectationTest(unittest.TestCase):
@@ -114,7 +115,7 @@ class ExpectationTest(unittest.TestCase):
         self.assertEqual(simulation.stabilize('/b/home/.cache', ctx),
                          '[HOME]/.cache')
 
-    def test_build_steps_appends_result(self):
+    def test_build_steps_success_result(self):
         runner = simulation.SimulationStepRunner()
         runner.run({
             'name': 'a',
@@ -122,36 +123,49 @@ class ExpectationTest(unittest.TestCase):
         },
                    check=True,
                    capture_output=False)
-        steps = simulation.build_steps(runner, 'EXCEPTION', 'boom',
-                                       simulation.TestContext())
+        steps = simulation.build_steps(runner, None, simulation.TestContext())
         self.assertEqual(steps['a']['cmd'], ['[WORKSPACE]/out/tool'])
-        self.assertEqual(steps[pp.RESULT_STEP], {
-            'name': '$result',
-            'status': 'EXCEPTION',
-            'reason': 'boom',
-        })
+        # A successful run's $result carries no failure key.
+        self.assertEqual(steps[pp.RESULT_STEP], {'name': '$result'})
+
+    def test_build_steps_failure_result_stabilizes_reason(self):
+        runner = simulation.SimulationStepRunner()
+        failure = {'humanReason': 'boom at /b/s/out/tool'}
+        steps = simulation.build_steps(runner, failure,
+                                       simulation.TestContext())
+        # An infra failure carries only humanReason (paths stabilized).
+        self.assertEqual(
+            steps[pp.RESULT_STEP], {
+                'name': '$result',
+                'failure': {
+                    'humanReason': 'boom at [WORKSPACE]/out/tool'
+                },
+            })
 
     def test_apply_post_process_filter_and_drop(self):
-        steps = {
-            'a': {
-                'name': 'a'
-            },
-            '$result': {
-                'name': '$result',
-                'status': 'SUCCESS'
-            }
-        }
+        steps = {'a': {'name': 'a'}, '$result': {'name': '$result'}}
         # A filtering hook narrows the steps for the written expectation.
         keep_a = RecipeTestApi.post_process(lambda c, s: {'a': s['a']})
-        filtered, failures = simulation.apply_post_process(
+        filtered, failed_checks = simulation.apply_post_process(
             keep_a.post_process_hooks, steps)
         self.assertEqual(list(filtered), ['a'])
-        self.assertEqual(failures, [])
+        self.assertEqual(failed_checks, [])
         # DropExpectation -> None.
         drop = RecipeTestApi.post_process(pp.DropExpectation)
         filtered, _ = simulation.apply_post_process(drop.post_process_hooks,
                                                     steps)
         self.assertIsNone(filtered)
+
+    def test_apply_post_process_rejects_superset(self):
+        steps = {'a': {'name': 'a'}, '$result': {'name': '$result'}}
+        # A hook that adds a step is not a subset of the recorded steps.
+        add = RecipeTestApi.post_process(lambda c, s: {
+            **s, 'b': {
+                'name': 'b'
+            }
+        })
+        with self.assertRaises(simulation.PostProcessError):
+            simulation.apply_post_process(add.post_process_hooks, steps)
 
 
 if __name__ == '__main__':

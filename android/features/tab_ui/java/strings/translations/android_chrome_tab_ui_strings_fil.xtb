@@ -181,7 +181,6 @@
 <translation id="7129458170538955174">Binuksan ang impormasyon tungkol sa store na to nang kalahati ang taas</translation>
 <translation id="7204204600596740190">Multi-select mode</translation>
 <translation id="7211038039686180558">Awtomatikong nase-save at naa-update ang mga grupo ng tab mo sa lahat ng iyong naka-sign in na device</translation>
-<translation id="731648547091221002">Pinili ang <ph name="COLOR_NAME"/></translation>
 <translation id="7326879924029668159">Tingnan ang patakaran sa pagbabalik at higit pa</translation>
 <translation id="7352298686197644113">Tingnan kung aling item sa iyong mga nakabukas na tab ang may mas mababang presyo</translation>
 <translation id="7369451074646620503">Hindi available ang grupo ng tab na "<ph name="TAB_GROUP_NAME"/>"</translation>
@@ -207,7 +206,6 @@
 <translation id="7854360405711302755">{REVIEWS,plural, =1{ <ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/> rating, <ph name="REVIEWS_COUNT_ONE"/> review}one{<ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/> rating, <ph name="REVIEWS_COUNT_MANY"/> review}other{<ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/> rating, <ph name="REVIEWS_COUNT_MANY"/> na review}}</translation>
 <translation id="7885132941432959125">Ilipat ang tab sa kanan</translation>
 <translation id="7887334752153342268">Doblehin</translation>
-<translation id="7939917283308035850">Hindi pinili ang <ph name="COLOR_NAME"/></translation>
 <translation id="7961015016161918242">Hindi Kailanman</translation>
 <translation id="7966321538264951561">I-dismiss ang mga suhestyon.</translation>
 <translation id="796696298310625748">{WINDOW_COUNT,plural, =1{Ilipat ang tab sa bagong window}one{Ilipat ang tab sa ibang window}other{Ilipat ang tab sa ibang window}}</translation>

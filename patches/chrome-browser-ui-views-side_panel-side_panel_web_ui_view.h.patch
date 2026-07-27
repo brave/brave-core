@@ -1,12 +1,13 @@
 diff --git a/chrome/browser/ui/views/side_panel/side_panel_web_ui_view.h b/chrome/browser/ui/views/side_panel/side_panel_web_ui_view.h
-index 8fee06b8477a14ebcde6a588c16f0776f5cab210..82372be70459d7f57c87406a4290c69c24ce3152 100644
+index 8fee06b8477a14ebcde6a588c16f0776f5cab210..24eac41a49f85b19bd8de612a18957ea39393e23 100644
 --- a/chrome/browser/ui/views/side_panel/side_panel_web_ui_view.h
 +++ b/chrome/browser/ui/views/side_panel/side_panel_web_ui_view.h
-@@ -55,6 +55,7 @@ class SidePanelWebUIView : public views::WebView,
-   void HideCustomContextMenu() override;
+@@ -56,6 +56,8 @@ class SidePanelWebUIView : public views::WebView,
    bool HandleKeyboardEvent(content::WebContents* source,
                             const input::NativeWebKeyboardEvent& event) override;
-+  bool HandleContextMenu(content::RenderFrameHost& render_frame_host, const content::ContextMenuParams& params) override;
  
++  bool HandleContextMenu(content::RenderFrameHost& render_frame_host, const content::ContextMenuParams& params) override;
++
   private:
    base::RepeatingClosure on_show_cb_;
+   base::RepeatingClosure close_cb_;

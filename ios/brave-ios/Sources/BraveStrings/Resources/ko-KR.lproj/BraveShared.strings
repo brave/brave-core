@@ -949,12 +949,6 @@
 /* Abbreviation for 'Month', use full word' Month' if this word can't be shortened in your language */
 "monthAbbreviation" = "월";
 
-/* No comment provided by engineer. */
-"MyFirstAdBody" = "자세히 알아보려면 여기를 탭하세요.";
-
-/* No comment provided by engineer. */
-"MyFirstAdTitle" = "첫 번째로 표시되는 Brave 광고";
-
 /* Bookmark title / Device name */
 "Name" = "이름";
 

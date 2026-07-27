@@ -160,7 +160,7 @@ export const AddCustomTokenForm = (props: Props) => {
         splTokenProgram: BraveWallet.SPLTokenProgram.kUnknown,
         isNft: false,
         isSpam: false,
-        isShielded: false,
+        zcashTokenType: BraveWallet.ZCashTokenType.kNone,
         visible: true,
       }
     }, [

@@ -49,9 +49,8 @@ void PagePercentageMetrics::RecordPercentageHistogram(
   if (count == 0) {
     return;
   }
-  int percentage = std::max(1, (count * 100) / total);
-  p3a_utils::RecordToHistogramBucket(histogram_name, kPercentageBuckets,
-                                     percentage);
+  p3a_utils::RecordPercentageHistogram(histogram_name, kPercentageBuckets,
+                                       count, total);
 }
 
 bool PagePercentageMetrics::HasReportIntervalElapsed() const {

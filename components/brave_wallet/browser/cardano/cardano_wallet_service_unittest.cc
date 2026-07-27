@@ -272,7 +272,8 @@ TEST_F(CardanoWalletServiceUnitTest, GetUtxosRunsTokenDiscovery) {
           "62626262626262626262626262626262626262626262626262626262626172",
           "Bar token", "", false, false, false, false,
           mojom::SPLTokenProgram::kUnknown, false, false, "bar", 6, true, "",
-          "", mojom::kCardanoMainnet, mojom::CoinType::ADA, false));
+          "", mojom::kCardanoMainnet, mojom::CoinType::ADA,
+          mojom::ZCashTokenType::kNone));
 
   auto token_foo = token_discovery_future.Take();
   EXPECT_EQ(
@@ -281,7 +282,8 @@ TEST_F(CardanoWalletServiceUnitTest, GetUtxosRunsTokenDiscovery) {
           "66666666666666666666666666666666666666666666666666666666666f6f",
           "Foo token", "", false, false, false, false,
           mojom::SPLTokenProgram::kUnknown, false, false, "foo", 6, true, "",
-          "", mojom::kCardanoMainnet, mojom::CoinType::ADA, false));
+          "", mojom::kCardanoMainnet, mojom::CoinType::ADA,
+          mojom::ZCashTokenType::kNone));
 
   // Request same set of utxos again, no tokens appear.
   cardano_wallet_service_->GetUtxos(account_id(), utxos_future.GetCallback());
@@ -313,7 +315,8 @@ TEST_F(CardanoWalletServiceUnitTest, GetUtxosRunsTokenDiscovery) {
           "6262626262626262626262626262626262626262626262626262626262617a",
           "Baz token", "", false, false, false, false,
           mojom::SPLTokenProgram::kUnknown, false, false, "baz", 6, true, "",
-          "", mojom::kCardanoMainnet, mojom::CoinType::ADA, false));
+          "", mojom::kCardanoMainnet, mojom::CoinType::ADA,
+          mojom::ZCashTokenType::kNone));
 }
 
 TEST_F(CardanoWalletServiceUnitTest, GetTransactionStatus) {

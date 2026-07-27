@@ -1,10 +1,4 @@
 <style include="cr-shared-style settings-shared">
-  .primary-title {
-    font: var(--leo-font-heading-h3);
-    color: var(--leo-color-text-primary);
-    margin-bottom: var(--leo-spacing-2xl);
-  }
-
   .container {
     width: 100%;
     padding: 16px 0;
@@ -78,20 +72,6 @@
 
 <div class="settings-box">
   <div class="container">
-    <div>
-      <template
-        is="dom-if"
-        if="[[!isEditing_]]"
-      >
-        <div class="primary-title">$i18n{braveLeoAssistantAddModelLabel}</div>
-      </template>
-      <template
-        is="dom-if"
-        if="[[isEditing_]]"
-      >
-        <div class="primary-title">$i18n{braveLeoAssistantEditModelLabel}</div>
-      </template>
-    </div>
     <div class="input-container">
       <div class="custom-label">
         <div class="label-text">
@@ -354,7 +334,7 @@
         kind="plain-faint"
         on-click="handleCloseClick_"
       >
-        $i18n{braveLeoAssistantCloseButtonLabel}
+        $i18n{cancel}
       </leo-button>
     </div>
   </div>

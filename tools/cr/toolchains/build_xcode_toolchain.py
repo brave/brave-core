@@ -82,8 +82,9 @@ from rich.progress import (BarColumn, DownloadColumn, Progress,
 # This is necessary because these scripts are used be brockit too.
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
+from cherry_picks import _check_call  # pylint: disable=wrong-import-position
 from ephemeral_xcode import (  # pylint: disable=wrong-import-position
-    HTTP_FETCH_TIMEOUT_SECS, EphemeralXcode, MacSdkInfo, _check_call)
+    HTTP_FETCH_TIMEOUT_SECS, EphemeralXcode, MacSdkInfo)
 from upload import sha256_file  # pylint: disable=wrong-import-position
 
 # Gitiles raw-text endpoint for `build/xcode_binaries.yaml` at a given
@@ -177,7 +178,7 @@ def _brave_core_commit() -> str:
                        'rev-parse',
                        'HEAD',
                        cwd=Path(__file__).resolve().parent,
-                       capture_stdout=True).strip()
+                       capture_output=True).stdout.strip()
 
 
 def _remote_url_exists(url: str) -> bool:
@@ -280,8 +281,8 @@ def fetch_published_index(sdk_info: MacSdkInfo) -> dict:
 
     Resolves the sibling YAML index for `sdk_info` on the public download
     bucket, parses it, and returns it verbatim -- the mapping `_write_index`
-    published (`url`, `sha256sum`, `xcode_version`, `xcode_build`,
-    `metal_build`, ...). This is the entry point brockit's
+    published (`url`, `sha256sum`, `size_bytes`, `xcode_version`,
+    `xcode_build`, `metal_build`, ...). This is the entry point brockit's
     `update-xcode-toolchain` consumes, mirroring how
     `build_rust_toolchain.rust_toolchain_extra_dep` serves the Rust toolchain.
 
@@ -437,7 +438,7 @@ class ToolchainBuilder:
         metal_bin = _check_call('xcrun',
                                 '--find',
                                 'metal',
-                                capture_stdout=True).strip()
+                                capture_output=True).stdout.strip()
         self._metal_build = _metal_build_from_path(metal_bin)
         logging.info('Metal toolchain build: %s', self._metal_build
                      or '(unknown)')
@@ -592,6 +593,7 @@ class ToolchainBuilder:
 
           * `url`              — bucket URL the toolchain archive is served on.
           * `sha256sum`        — hex SHA-256 of the archive bytes.
+          * `size_bytes`       — exact size of the archive in bytes.
           * `xcode_xip_source_url` — Apple `.xip` URL from xcodereleases.com
                                  the toolchain was built from.
           * `xcode_xip_sha1sum` — SHA-1 of that `.xip` (from xcodereleases.com,
@@ -616,6 +618,7 @@ class ToolchainBuilder:
         index = {
             'url': PACKAGE_DOWNLOAD_URL_BASE + archive_path.name,
             'sha256sum': sha256_file(archive_path),
+            'size_bytes': archive_path.stat().st_size,
             'xcode_xip_source_url': xcode_release.download_url,
             'xcode_xip_sha1sum': xcode_release.sha1,
             'xcode_version': xcode_release.version,

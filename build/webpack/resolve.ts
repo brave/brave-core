@@ -15,7 +15,6 @@ type PathMap = Record<string, string | string[]>
  */
 export const baseResolve = (alias: PathMap): ResolveOptions => ({
   extensions: ['.js', '.tsx', '.ts', '.json'],
-  symlinks: false, // If symlinks are used, don't use different IDs for them
   alias,
   modules: ['node_modules'],
   fallback,

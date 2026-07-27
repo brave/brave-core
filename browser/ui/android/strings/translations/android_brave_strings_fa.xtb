@@ -41,7 +41,7 @@
 <translation id="5197219128592971597">به‌جای نسخه‌های صفحه تلفن همراه تسریع‌شده Google، همیشه از نشانی‌های وب صفحه اصلی (غیر AMP) بازدید کنید</translation>
 <translation id="920638232916443453">تغییر مسیر خودکار ردیابی نشانی‌های وب‌سایت</translation>
 <translation id="1118970888826017401">برای دور زدن بالاترین درجه تغییر مسیر ردیابی نشانی‌های وب‌سایت پشتیبانی را فعال کنید.</translation>
-<translation id="94154759592465111">مسدود کردن اسکریپت</translation>
+<translation id="4824468494729001999">مسدود کردن اسکریپت‌ها</translation>
 <translation id="7714773920987474116">جاوااسکریپت را مسدود می‌کند (ممکن است منجر به خرابی سایت‌ها شود)</translation>
 <translation id="2233004324252915283">مسدود کردن محتوای توصیه‌شده YouTube</translation>
 <translation id="1005372663692637999">عناصر کارت پایان و قسمت بعدی را در youtube.com مسدود می‌کند.</translation>
@@ -153,6 +153,33 @@
 <translation id="6975864539539353406">وقتی سایتی را می‌بندید، کوکی‌ها و سایر اطلاعات سایت را پاک می‌کند</translation>
 <translation id="7740929262043547697">اجازه مسدودسازی مؤلفه‌ها در Windows خصوصی</translation>
 <translation id="1260864846935682371">قابلیت مسدودسازی مؤلفه‌های سپرها را در Windows خصوصی فعال می‌کند. توجه داشته باشید که مؤلفه‌هایی که در Windows خصوصی مسدود می‌شوند، در Windows غیرخصوصی نیز مسدود خواهند شد.</translation>
+<translation id="4021136205151368133">توجه: این مورد ممکن است محافظت‌های حریم خصوصی Brave را کاهش دهد.</translation>
+<translation id="2876155735620608356">سپرها برای این سایت فعال است</translation>
+<translation id="8605306630462821888">سپرها برای این سایت غیرفعال است</translation>
+<translation id="1574700443447059851">ردیاب‌ها، آگهی‌ها و موارد دیگر مسدود شدند.</translation>
+<translation id="4039014515785210563">نحوهٔ مدیریت ردیاب‌ها و تبلیغات را انتخاب کنید</translation>
+<translation id="8423733350479881051">نحوهٔ مدیریت کوکی‌ها را انتخاب کنید</translation>
+<translation id="9064628362799094520">داده‌های سایت را پاک کنید</translation>
+<translation id="2862348905922940916">بازنشانی این سایت به تنظیمات پیش‌فرض سپرها</translation>
+<translation id="269939061709857874">سایت به تنظیمات پیش‌فرض سپرها بازنشانی شد</translation>
+<translation id="3623708006387030755">تنظیمات سراسری سپرها</translation>
+<translation id="2387532482048804818">اگر سایت با سپرهای روشن به‌درستی کار نکرد به ما اطلاع دهید.</translation>
+<translation id="5412004902081180614">گزارش</translation>
+<translation id="1209739344687072997">گزارش خرابی سایت</translation>
+<translation id="2606165159306988240">به توسعه‌دهندگان Brave اطلاع دهید که این سایت به‌درستی کار نمی‌کند.</translation>
+<translation id="6806248680442980382">از شما بابت کمک به بهبود Brave برای همه، متشکریم. این گزارش فقط حاوی اطلاعات لازم برای تعمیر این سایت است.</translation>
+<translation id="7549123865054511884">چه چیزی در این سایت کار نمی‌کند؟</translation>
+<translation id="9094461910562981998">از این طریق با من تماس بگیرید (اختیاری)</translation>
+<translation id="7645128170699559106">ایمیل، نام کاربری X و موارد دیگر</translation>
+<translation id="446579367766109694">اگر اطلاعات تماس خود را ارائه دهید، برای گزارش‌های آتی ذخیره خواهد شد</translation>
+<translation id="2653659639078652383">ارائه</translation>
+<translation id="8459191579769999214">مشاهده عکس صفحه</translation>
+<translation id="4530541918195747729">گزارش ارسال شد. ممنون از شما!</translation>
+<translation id="5528772406060281700">پاک‌کردن داده‌های سایت</translation>
+<translation id="6795622376590884449">پاک‌کردن خودکار</translation>
+<translation id="3520341243738311408">وقتی زبانه‌های سایت بسته می‌شوند</translation>
+<translation id="3559735673608367395">وقتی برنامه بسته می‌شود</translation>
+<translation id="9140049656798805345">پاک‌کردن داده‌های سایت اکنون</translation>
 <translation id="1680858055899097121">بین جلسه‌های مرور وب، زبانه‌ها نگه داشته نمی‌شوند</translation>
 <translation id="7142548388914389999">مجاز کردن تجزیه‌وتحلیل‌های محصول حفاظت‌کننده از حریم‌خصوصی (P3A)</translation>
 <translation id="5254037869598726291">اطلاعات P3A بی‌نام‌شده به Brave کمک می‌کند مصرف کلی را تخمین بزند و تضمین می‌کند که ما ویژگی‌های پرطرفدار را بهبود می‌بخشیم.</translation>
@@ -211,24 +238,12 @@
 <translation id="5109496672133133896">اطلاعات محصول خصوصی</translation>
 <translation id="3545804467215833536">برای مشاهده «سپرهای ایمنی Brave» ضربه بزنید</translation>
 <translation id="1724327820822194498">با «سپرهای ایمنی» همه موارد بدی را که Brave در هر صفحه مسدود کرده است ببینید.</translation>
-<translation id="5386259141409498372"><ph name="BIG_TECH"/> و <ph name="TRACKER"/> آگهی و ردیاب دیگر مسدود شدند</translation>
-<translation id="7256200875155794202"><ph name="BIG_TECH"/> و سایر آگهی‌ها ‎‎و‏ ردیاب‌ها مسدود می‌شوند.</translation>
 <translation id="3092683655478890840"><ph name="TRACKER_COUNT"/> آگهی و ردیاب مسدود شدند</translation>
 <translation id="8281886186245836920">رد شدن</translation>
-<translation id="986879628471635371">آشنا شدن با عیب‌یابی</translation>
 <translation id="5806601733251372221">سپرهای ایمنی Brave</translation>
-<translation id="8537217141725709400">کسب کردن <ph name="TOKEN"/>s</translation>
-<translation id="3333887201479867589">Brave Rewards</translation>
-<translation id="5870330605209713397">برای دیدن آگهی‌هایی که به حریم خصوصی احترام می‌گذارند و حمایت از سایت‌ها و پدیدآورندگان مورد علاقه‌تان به‌صورت پیش‌فرض.</translation>
-<translation id="5302488867897327287">با ضربه زدن روی «شروع»، با استفاده از Brave Rewards موافقت خود را اعلام می‌کنید با</translation>
 <translation id="4281844954008187215">شرایط خدمات</translation>
 <translation id="6871397658902960384">شروع مرور</translation>
-<translation id="454386012157232640">هیچ‌گونه آگهی مشاهده نکردم.</translation>
-<translation id="1448877943847791441">مرورگر Brave اولین آگهی شما را پخش می‌کند در</translation>
-<translation id="4410793187232041318">اکنون توکن را از «آگهی‌های Brave» کسب خواهید کرد.</translation>
 <translation id="6511854390690723657">این اولین تبلیغ از مرورگر Brave برای شما است. برای کسب اطلاعات بیشتر، ضربه بزنید.</translation>
-<translation id="2070991379950719711">شروع استفاده از Brave Rewards</translation>
-<translation id="48520986898237073">ادامه و رفتن به کیف پول</translation>
 <translation id="6213254277250932867">من یک عبارت بازیابی 12 کلمه‌ای دارم</translation>
 <translation id="4225265925807365011">من یک عبارت بازیابی 24 کلمه‌ای دارم</translation>
 <translation id="3570367516044491911">تنظیم به‌عنوان مرورگر پیش‌فرض</translation>
@@ -236,6 +251,7 @@
 <translation id="1545749641540134597">اسکن QR کد</translation>
 <translation id="5317781812114905957">دستورالعمل‌ها</translation>
 <translation id="8515319483805157233">برای اینکه بتوانید از طریق کد QR جستجو کنید، کد QR را در وسط کادر قرار دهید.</translation>
+<translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="7658239707568436148">لغو</translation>
 <translation id="1201402288615127009">بعدی</translation>
 <translation id="8481779960444041069">برای بهبود حریم خصوصی خود، Brave را به‌عنوان مرورگر پیش‌فرض خود تنظیم کنید</translation>
@@ -341,10 +357,11 @@
 <translation id="2803313416453193357">باز کردن پوشه</translation>
 <translation id="8985635554450124959">تنظیم همگام‌سازی امکان‌پذیر نبود</translation>
 <translation id="7173114856073700355">باز کردن تنظیمات</translation>
-<translation id="496896260395129787">این حساب «همگام‌سازی Brave» از طریق دستگاه دیگری حذف شده است. اگر شما قصد غیرفعال کردن Sync را نداشتید، <ph name="LINK_TEXT"/></translation>
-<translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>حساب را مجدداً بسازید</translation>
+<translation id="674078455841038219">این حساب «هم‌گام‌سازی Brave» از طریق دستگاه دیگری حذف شده است. اگر شما قصد غیرفعال کردن Sync را نداشتید، حساب را دوباره بسازید.</translation>
+<translation id="8913415701676265311">ساخت مجدد</translation>
 <translation id="4094590686212463338">امکان پیوستن به این زنجیره همگام‌سازی وجود ندارد. زنجیره همگام‌سازی پاک شده است.</translation>
 <translation id="4908081302669157000">شماره‌های تلفن، ایمیل‌ها و نشانی‌ها</translation>
+<translation id="1571419474754278280">گفتگوهای Leo AI</translation>
 <translation id="1056898198331236512">اخطار</translation>
 <translation id="1426410128494586442">بله</translation>
 <translation id="7811264919113243207">با این کار داده‌های Brave (برای مثال به‌طور محتمل رمزعبورهای شما)، با دستگاهی که این کد QR را ایجاد کرده است به اشتراک گذاشته می‌شوند.
@@ -368,10 +385,9 @@
 <translation id="1413177583895309156">Brave VPN تمام فعالیت‌های آنلاین شما را، حتی خارج از مرورگر Brave، رمزنگاری و محافظت می‌کند.</translation>
 <translation id="3974348661685061050">به‌مدت ۷ روز رایگان امتحان کنید</translation>
 <translation id="5789441016350810005">وقتی مرورگر در پس‌زمینه بود، «آگهی‌های Brave» ارسال شد</translation>
-<translation id="1486343603936278248">توکن</translation>
 <translation id="7781069478569868053">صفحه برگه جدید</translation>
 <translation id="5927196110206824867">تصاویر پس‌زمینه دارای حامی مالی از مأموریت Brave برای ساخت یک وب مستقل با اولویت کاربر پشتیبانی می‌کند. برخلاف شرکت‌های بزرگ فناوری، ما عملکرد تبلیغات را به‌صورت ناشناس اندازه‌گیری می‌کنیم تا حریم خصوصی شما حفظ شود.</translation>
-<translation id="8748471354357836070">بیشتر بدانید/گزینه‌های انصراف</translation>
+<translation id="6165508094623778733">بیشتر بدانید</translation>
 <translation id="3171669670217312786">تصاویر پس‌زمینه</translation>
 <translation id="8522669544471808198">نمایش تصاویر پس‌زمینه</translation>
 <translation id="6258554626602400736">نمایش تبلیغات در صفحه زبانه جدید</translation>
@@ -399,7 +415,7 @@
 <translation id="7151914815476509258">مسدود کردن ردیاب‌ها و آگهی‌ها (استاندارد)</translation>
 <translation id="7384778069178817075">مجاز بودن همه ردیاب‌ها و آگهی‌ها</translation>
 <translation id="1173312143376149085"><ph name="BEGIN_LINK_0"/>گزینه «مسدودسازی تمام کوکی‌ها» منسوخ شده است. برای یادگیری نحوه فعال‌سازی اجباری این گزینه، به <ph name="END_LINK_0"/> <ph name="BEGIN_LINK_1"/>صفحه کمک ما<ph name="END_LINK_1"/> مراجعه کنید</translation>
-<translation id="3763681089644577874">مسدود کردن کوکی‌ها</translation>
+<translation id="8823559166155093873">مسدود کردن کوکی‌ها</translation>
 <translation id="614747795780742163">مانع از این می‌شود که وب‌سایت‌ها اطلاعات مربوط به بازدیدهای قبلی شما را ذخیره کنند</translation>
 <translation id="6883611015375728278">مسدود کردن همه کوکی‌ها</translation>
 <translation id="6196640612572343990">مسدود کردن کوکی‌های شخص ثالث</translation>
@@ -410,7 +426,7 @@
 <translation id="1876882294512858963">همیشه به صورت خصوصی و محرمانه پیش بروید</translation>
 <translation id="554464532999080267">پرسش قبل از رفتن به حالت خصوصی و محرمانه (استاندارد)</translation>
 <translation id="926857659063503456">هیچگاه به حالت خصوصی و محرمانه نروید</translation>
-<translation id="3895527457258986253">مسدود کردن تشخیص اثر انگشت</translation>
+<translation id="6531019308847917584">مسدود کردن تشخیص اثر انگشت</translation>
 <translation id="7854108565842971747">این‌ها تنظیمات پیش‌فرض «سپر ایمنی» برای سایت‌های جدید هستند. تغییر این موارد بر تنظیمات موجود در هر سایت تأثیر نخواهد گذاشت.</translation>
 <translation id="218587021686734263">از طریق تنظیمات زبان از اثر انگشت جلوگیری کنید</translation>
 <translation id="1706099589708266367">بر اساس تنظیمات زبان مرورگر، میزان اطلاعاتی که وب سایت ها می توانند درباره شما بیاموزند را کاهش می دهد.</translation>
@@ -420,22 +436,12 @@
 <translation id="7445306466605902444">تشخیص اثر انگشت مسدود شد (شدید، ممکن است منجر به خرابی سایت‌ها شود)</translation>
 <translation id="5582686930349810484">تشخیص اثر انگشت مسدود شد (استاندارد)</translation>
 <translation id="769702552748212954">مجاز بودن انواع انگشت‌نگاری</translation>
-<translation id="876424292214881779">آگهی و سایر موارد ناخوشایند مسدود شده است</translation>
-<translation id="6849027612978668678">سایت‌ها اغلب شامل کوکی‌ها و اسکریپت‌هایی هستند که سعی در شناسایی شما و دستگاه شما دارند. آن‌ها می‌خواهند بفهمند شما چه کسی هستید و شما را در سراسر وب دنبال می‌کنند و کارهایی را که در هر سایت انجام می‌دهید زیر نظر می‌گیرند.\n\nBrave این موارد را مسدود می‌کند تا بتوانید بدون اینکه تحت نظر باشید در فضای وب به گشت و گذار بپردازید.</translation>
-<translation id="8553998445606452168">درباره سپرهای ایمنی Brave</translation>
-<translation id="8912304686498704084">فعال</translation>
-<translation id="4963218453264888510">غیرفعال</translation>
-<translation id="7474113515179313724">بدون محافظ حریم خصوصی Brave این سایت را مرور می‌کنید. آیا این سایت با فعال بودن «سپر امنیتی» درست کار نمی‌کند؟</translation>
 <translation id="4226543734057230801">شبکه‌های Ethereum</translation>
 <translation id="3504157706952484145">شبکه‌های Filecoin</translation>
 <translation id="1561541094377237745">شبکه‌های Solana</translation>
 <translation id="7141438739990875547">شبکه‌های بیت‌کوین</translation>
 <translation id="9055546041146396417">اگر این سایت خراب به نظر می‌رسد، سپر ایمنی را غیرفعال کنید.</translation>
 <translation id="7898672232170410330">عنصر قفل</translation>
-<translation id="9064628362799094520">داده‌های سایت را پاک کنید</translation>
-<translation id="8949611615512336262">پاک‌کردن خودکار: <ph name="AUTO_SHRED_MODE_TEXT"/></translation>
-<translation id="9140049656798805345">پاک‌کردن داده‌های سایت اکنون</translation>
-<translation id="6795622376590884449">پاک‌کردن خودکار</translation>
 <translation id="7961015016161918242">هرگز</translation>
 <translation id="3200744626782631683">داده‌های مرور هرگز به‌طور خودکار حذف نمی‌شوند.</translation>
 <translation id="1991004083507807299">برگه سایت بسته شد</translation>
@@ -446,23 +452,11 @@
 <translation id="2997451887458851244">Auto Shred را به‌روزرسانی کنید و داده‌های حذف‌شده را تنظیم کنید.</translation>
 <translation id="363903976200491771">داده‌های مرور را به‌طور خودکار خرد کنید</translation>
 <translation id="1028873002018537235">تخریب تاریخچهٔ مرور</translation>
-<translation id="1209739344687072997">گزارش خرابی سایت</translation>
-<translation id="8510478288840333677">به توسعه‌دهندگان Brave اطلاع دهید که «سپرهای ایمنی» در این سایت به‌خوبی کار نمی‌کند.</translation>
-<translation id="1653405824851871276">از شما بابت کمک به بهبود Brave برای همه، سپاسگزاریم. این گزارش فقط حاوی اطلاعات لازم برای تعمیر این سایت است. <ph name="LEARN_MORE"/></translation>
-<translation id="8759753423332885148">بیشتر بدانید.</translation>
-<translation id="8740275226259417070">این صفحه خطا است. نمی‌توان آن را به‌عنوان سایت خراب گزارش کرد.</translation>
 <translation id="721949491455392748">شامل کردن عکس صفحه از صفحه فعلی</translation>
-<translation id="8459191579769999214">مشاهده عکس صفحه</translation>
 <translation id="6476216365964140603">جزئیات بیشتر (اختیاری)</translation>
-<translation id="6145852496180774737">از این طریق با من تماس بگیرید: (اختیاری)</translation>
-<translation id="6367576083705149078">اگر اطلاعات تماس خود را ارائه دهید، برای گزارش‌های آینده ذخیره خواهد شد.</translation>
-<translation id="7616645803364270729">ایمیل، توئیتر، غیره.</translation>
-<translation id="5299848999918506028">متشکریم!</translation>
-<translation id="76550953340008122">متشکریم که وجود مشکل در این سایت را به توسعه‌دهندگان Brave اطلاع دادید. تمام تلاشمان را برای رفع مشکل آن به کار می‌گیریم.</translation>
 <translation id="3037432377946455872">مشکل اصلی که با آن مواجه هستید، چیست؟</translation>
 <translation id="8731661215617360873">یک گزینه را انتخاب کنیذ</translation>
 <translation id="650318023204990401">کنترل‌های پیشرفته</translation>
-<translation id="7205939464631857223">همه عناصر مسدودشده را پاک کن</translation>
 <translation id="5370478469168390143">ذخیره آنلاین داده‌ها</translation>
 <translation id="1118508688433541158">با Brave سریع‌تر مرور کنید و آگهی‌ها را مسدود کنید</translation>
 <translation id="7427391215172269363">هرروز با استفاده از Brave برای مرور وب، در مصرف داده صرفه‌جویی می‌کنم.</translation>
@@ -512,17 +506,17 @@
 <translation id="2718046830255553131">داده‌های گزارش‌های حریم‌خصوصی پاک شده‌اند.</translation>
 <translation id="8376263745431603066">فعال کردن «حالت شب» (آزمایشی)</translation>
 <translation id="1383876407941801731">جستجو</translation>
-<translation id="6165508094623778733">بیشتر بدانید</translation>
 <translation id="13296465911709339">نوشتار شما در بریده‌دان کپی شده است.</translation>
 <translation id="2735834606413553397">نشانی عمومی در بریده‌دان کپی شده است.</translation>
 <translation id="2977461003134694205">آمار حریم خصوصی</translation>
 <translation id="8804164990146287819">خط مشی حریم خصوصی</translation>
 <translation id="5705882733397021510">برگشتن</translation>
+<translation id="8450375131309292971">کشیدن برای به‌روزرسانی</translation>
+<translation id="880475987868032564">اشارهٔ کشیدن برای به‌روزرسانی را فعال می‌کند. کشیدن انگشت به پایین از بالای صفحه، صفحه را به‌روزرسانی می‌کند.</translation>
 <translation id="7889432931837317731">باز کردن خودکار، در صورت امکان</translation>
 <translation id="1029304566263314007">نمایش اعلان‌های پیشرفت دانلود</translation>
 <translation id="2977501775944575564">دانلود موازی</translation>
 <translation id="6224180438946945617">برای افزایش سرعت بارگیری، دانلود موازی را فعال کنید</translation>
-<translation id="8967385052772844086">مشاهده گزارش حریم خصوصی کامل</translation>
 <translation id="3479552764303398839">اکنون نه</translation>
 <translation id="7138272885617540195">به پیوندهای برنامه اجازه دهید در برنامه‌های خارج از Brave باز شوند</translation>
 <translation id="4954512758656527938">کیف پول پیش‌فرض اتریوم</translation>
@@ -786,7 +780,6 @@
 <translation id="2156993118928861787">آدرس نامعتبر</translation>
 <translation id="7791543448312431591">افزودن</translation>
 <translation id="6889920539620318793">تنظیم به‌عنوان فعال</translation>
-<translation id="2653659639078652383">ارسال</translation>
 <translation id="4945690646623486292">انتخاب شبکه</translation>
 <translation id="8006088103295786154">دسترسی به کیف پول Brave</translation>
 <translation id="5308380583665731573">اتصال</translation>
@@ -1107,7 +1100,6 @@
 <translation id="1336494649091412226">مطمئنید می‌خواهید از Brave خارج شوید؟</translation>
 <translation id="6061635824229591714">داده‌های سایت حذف شوند؟</translation>
 <translation id="1265051174491933207">حذف امن داده‌ها باعث حذف اطلاعات سایت و بستن تمام تب‌های «<ph name="SITE_NAME"/>» می‌شود. این عملیات قابل بازگشت نیست.</translation>
-<translation id="5528772406060281700">پاک‌کردن داده‌های سایت</translation>
 <translation id="4426990318287827331">حذف امن داده‌ها</translation>
 <translation id="7942415993090181327">سابقه گفتگو</translation>
 <translation id="6859935199732075666">نمایش خطاهای مرور ایمن</translation>

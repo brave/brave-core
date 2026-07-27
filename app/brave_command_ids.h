@@ -165,6 +165,11 @@
 #define IDC_TOGGLE_PLAYLIST_SIDE_PANEL 56465
 #define IDC_TOGGLE_BRAVE_NEWS_SIDE_PANEL 56466
 
+// Launches the element picker so users can block page elements. Unlike
+// IDC_ADBLOCK_CONTEXT_BLOCK_ELEMENTS (a context-menu-only command), this is
+// acceleratable so users can assign it a custom keyboard shortcut.
+#define IDC_BLOCK_ELEMENTS 56470
+
 #define IDC_BRAVE_COMMANDS_LAST 57000
 
 #endif  // BRAVE_APP_BRAVE_COMMAND_IDS_H_

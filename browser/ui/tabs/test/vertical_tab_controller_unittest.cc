@@ -105,6 +105,32 @@ TEST_F(VerticalTabControllerUnitTest,
   EXPECT_FALSE(controller->IsFloatingVerticalTabsEnabled());
 }
 
+TEST_F(VerticalTabControllerUnitTest,
+       ShouldShowVerticalTabToggleButtonDefault) {
+  pref_service_.SetBoolean(brave_tabs::kVerticalTabsEnabled, true);
+  // kVerticalTabsShowToggleButton defaults to true
+  auto controller = MakeController();
+  EXPECT_TRUE(controller->ShouldShowVerticalTabToggleButton());
+}
+
+TEST_F(VerticalTabControllerUnitTest,
+       ShouldShowVerticalTabToggleButtonFalseWhenVerticalTabsOff) {
+  auto controller = MakeController();
+  EXPECT_FALSE(controller->ShouldShowVerticalTabToggleButton());
+}
+
+TEST_F(VerticalTabControllerUnitTest,
+       IsFloatingVerticalTabsEnabledWhenToggleButtonHidden) {
+  pref_service_.SetBoolean(brave_tabs::kVerticalTabsEnabled, true);
+  pref_service_.SetBoolean(brave_tabs::kVerticalTabsFloatingEnabled, false);
+  pref_service_.SetBoolean(brave_tabs::kVerticalTabsShowToggleButton, false);
+  auto controller = MakeController();
+  EXPECT_FALSE(controller->ShouldShowVerticalTabToggleButton());
+  // Floating mode is forced on when there is no toggle button to expand
+  // collapsed tabs, regardless of kVerticalTabsFloatingEnabled.
+  EXPECT_TRUE(controller->IsFloatingVerticalTabsEnabled());
+}
+
 TEST_F(VerticalTabControllerUnitTest, IsVerticalTabOnRightDefault) {
   auto controller = MakeController();
   EXPECT_FALSE(controller->IsVerticalTabOnRight());

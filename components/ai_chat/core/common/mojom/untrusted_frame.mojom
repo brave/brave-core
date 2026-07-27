@@ -24,14 +24,6 @@ interface ParentUIFrame {
   // sensitive user information being captured.
   RateMessage(string turn_uuid, bool is_liked);
 
-  // This is sent to the parent trusted webui to allow displaying the
-  // open external link modal outside of the untrusted iframe. This is
-  // to prevent the modal backdrop from being clipped within the iframe
-  // and fixes centering the modal in the page view. The parent frame
-  // then deals with whether to display the modal or to continue opening
-  // the link.
-  UserRequestedOpenGeneratedUrl(url.mojom.Url url);
-
   // Notify the parent that the child has received a drag enter. We don't have
   // a corresponding DragEnd because the parent should intercept the drag event
   // with an overlay.
@@ -45,6 +37,10 @@ interface ParentUIFrame {
 
   // Show the skill creation dialog with the provided prompt text
   ShowSkillDialog(string prompt);
+
+  // Show image attachment lightbox in the parent trusted UI so the
+  // backdrop is not clipped by the untrusted iframe.
+  ShowImageLightbox(UploadedFile file);
 
   // Request the parent frame to create a new conversation
   RequestNewConversation();

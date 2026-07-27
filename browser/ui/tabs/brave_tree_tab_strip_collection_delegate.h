@@ -133,6 +133,16 @@ class BraveTreeTabStripCollectionDelegate
       tabs::TabCollection* target_collection,
       size_t target_index) const;
 
+  // Like MoveChildrenOfTreeTabNodeToParent(), but a child is left nested
+  // under |tree_tab_node_collection| when every tab it contains is also in
+  // |moving_tabs| - i.e. the child is a connected subtree moving together
+  // with its parent, so the hierarchy should be preserved instead of
+  // flattened. Children that aren't fully part of the move are hoisted to
+  // the parent as before.
+  void MoveNonSelectedChildrenOfTreeTabNodeToParent(
+      tabs::TreeTabNodeTabCollection* tree_tab_node_collection,
+      const base::flat_set<tabs::TabInterface*>& moving_tabs) const;
+
   // Groups where every tab in the group is in |moving_tabs|, so the move should
   // relocate the whole group collection. Empty when whole-group detection does
   // not apply (e.g. moving into a group or pinning).
@@ -149,6 +159,15 @@ class BraveTreeTabStripCollectionDelegate
   CompactMovingTabs(
       const std::vector<tabs::TabInterface*>& moving_tabs,
       const tabs::TabCollection::TypeEnumSet& types_to_compact) const;
+
+  // Returns true if an ancestor of |tree_node| (walking up while still under
+  // TreeTabNodeTabCollections) is itself one of |moving_tabs| - i.e.
+  // |tree_node| (whether it holds a bare tab, or wraps a group/split) will
+  // already be carried along nested when that ancestor is detached as a
+  // whole, so it should not be compacted/detached separately.
+  bool IsTreeNodeCoveredByMovingAncestor(
+      tabs::TreeTabNodeTabCollection* tree_node,
+      const base::flat_set<tabs::TabInterface*>& moving_tabs) const;
 
   // Returns the tab's parent collection in the strip; if the direct parent is
   // a split or group, returns the split/group's parent (e.g. group). This is

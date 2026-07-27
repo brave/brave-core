@@ -4,12 +4,28 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import {
+  ColorScheme,
   WelcomePageHandler,
+  WelcomePageInterface,
+  WelcomePageReceiver,
   WelcomePageHandlerInterface,
 } from 'gen/brave/browser/ui/webui/brave_welcome_page/brave_welcome_page.mojom.m.js'
 
+import {
+  Theme,
+  ChromeColor,
+  ThemeColorPickerClientInterface,
+  ThemeColorPickerClientReceiver,
+  ThemeColorPickerHandlerFactory,
+  ThemeColorPickerHandlerInterface,
+  ThemeColorPickerHandlerRemote,
+} from 'chrome://resources/cr_components/theme_color_picker/theme_color_picker.mojom-webui.js'
+
 import { addWebUiListener, sendWithPromise } from 'chrome://resources/js/cr.js'
-import { createInterfaceApi, state } from '$web-common/api'
+import { createInterfaceApi, endpointsFor, state } from '$web-common/api'
+import { loadTimeData } from '$web-common/loadTimeData'
+
+export { ColorScheme, Theme, ChromeColor }
 
 // Type returned from requestDefaultBrowserState message.
 export interface DefaultBrowserInfo {
@@ -49,17 +65,39 @@ export type ImportDataStatus = '' | 'in-progress' | 'succeeded'
 
 interface ApiInit {
   welcomePageHandler: WelcomePageHandlerInterface
+  bindWelcomePageHandler: (page: WelcomePageInterface) => void
+  themeColorPickerHandler: ThemeColorPickerHandlerInterface
+  bindThemeColorPickerHandler: (client: ThemeColorPickerClientInterface) => void
   messages: {
     getDefaultBrowserInfo: () => Promise<DefaultBrowserInfo>
     getBrowserProfilesForImport: () => Promise<BrowserProfile[]>
     setAsDefaultBrowser: () => void
     importData: (profileIndex: number, types: Set<ImportDataType>) => void
+    addImportStatusListener: (fn: (status: ImportDataStatus) => void) => void
   }
+  isCrashReportingPrefManaged: boolean
+  isP3APrefManaged: boolean
+  isWebDiscoveryPrefManaged: boolean
+  webDiscoveryFeatureEnabled: boolean
 }
 
 function defaultInit(): ApiInit {
+  const welcomePageHandler = WelcomePageHandler.getRemote()
+  const themeColorPickerHandler = new ThemeColorPickerHandlerRemote()
   return {
-    welcomePageHandler: WelcomePageHandler.getRemote(),
+    welcomePageHandler,
+    bindWelcomePageHandler: (page) => {
+      welcomePageHandler.setWelcomePage(
+        new WelcomePageReceiver(page).$.bindNewPipeAndPassRemote(),
+      )
+    },
+    themeColorPickerHandler,
+    bindThemeColorPickerHandler: (client) => {
+      ThemeColorPickerHandlerFactory.getRemote().createThemeColorPickerHandler(
+        new ThemeColorPickerClientReceiver(client).$.bindNewPipeAndPassRemote(),
+        themeColorPickerHandler.$.bindNewPipeAndPassReceiver(),
+      )
+    },
     messages: {
       getDefaultBrowserInfo() {
         return sendWithPromise('requestDefaultBrowserState')
@@ -73,13 +111,77 @@ function defaultInit(): ApiInit {
       importData(profileIndex, types) {
         chrome.send('importData', [profileIndex, importTypesToDict(types)])
       },
+      addImportStatusListener(fn) {
+        addWebUiListener('brave-import-data-status-changed', (status: any) => {
+          switch (String(status?.event ?? '')) {
+            case 'ImportStarted':
+              fn('in-progress')
+              break
+            case 'ImportEnded':
+              fn('succeeded')
+              break
+          }
+        })
+      },
     },
+    isCrashReportingPrefManaged: loadTimeData.getBoolean(
+      'isCrashReportingPrefManaged',
+    ),
+    isP3APrefManaged: loadTimeData.getBoolean('isP3APrefManaged'),
+    isWebDiscoveryPrefManaged: loadTimeData.getBoolean(
+      'isWebDiscoveryPrefManaged',
+    ),
+    webDiscoveryFeatureEnabled: loadTimeData.getBoolean(
+      'webDiscoveryFeatureEnabled',
+    ),
   }
 }
 
 export function createWelcomeApi(init = defaultInit()) {
+  const { welcomePageHandler, themeColorPickerHandler } = init
+
   const api = createInterfaceApi({
     endpoints: {
+      ...endpointsFor(welcomePageHandler, {
+        getColorScheme: {
+          response: (r) => r.colorScheme,
+          prefetchWithArgs: [],
+          placeholderData: ColorScheme.kSystem,
+        },
+        setColorScheme: {
+          mutationResponse: () => {},
+          onMutate: ([colorScheme]: [ColorScheme]) => {
+            api.getColorScheme.update(colorScheme)
+          },
+        },
+        getVerticalTabsEnabled: {
+          response: (r) => r.enabled,
+          prefetchWithArgs: [],
+          placeholderData: false,
+        },
+        setVerticalTabsEnabled: {
+          mutationResponse: () => {},
+          onMutate: ([enabled]: [boolean]) => {
+            api.getVerticalTabsEnabled.update(enabled)
+          },
+        },
+        setWebDiscoveryEnabled: {
+          mutationResponse: () => {},
+        },
+        setP3AEnabled: {
+          mutationResponse: () => {},
+        },
+        setCrashReportsEnabled: {
+          mutationResponse: () => {},
+        },
+      }),
+      ...endpointsFor(themeColorPickerHandler, {
+        getChromeColors: {
+          response: (r) => r.colors,
+          placeholderData: [] as ChromeColor[],
+        },
+      }),
+      theme: state<Theme | undefined>(),
       getDefaultBrowserState: {
         query: () => init.messages.getDefaultBrowserInfo(),
       },
@@ -87,20 +189,50 @@ export function createWelcomeApi(init = defaultInit()) {
         query: () => init.messages.getBrowserProfilesForImport(),
       },
       importDataStatus: state<ImportDataStatus>(''),
+      isCrashReportingPrefManaged: state(init.isCrashReportingPrefManaged),
+      isP3APrefManaged: state(init.isP3APrefManaged),
+      isWebDiscoveryPrefManaged: state(init.isWebDiscoveryPrefManaged),
+      webDiscoveryFeatureEnabled: state(init.webDiscoveryFeatureEnabled),
     },
 
     actions: {
       setAsDefaultBrowser: init.messages.setAsDefaultBrowser,
       importData: init.messages.importData,
+      setThemeColor: (
+        seed: ChromeColor['seed'],
+        variant: ChromeColor['variant'],
+      ) => {
+        themeColorPickerHandler.setSeedColor(seed, variant)
+      },
+      setGreyThemeColor: () => {
+        themeColorPickerHandler.setGreyDefaultColor()
+      },
     },
   })
 
-  addWebUiListener('brave-import-data-status-changed', (status: any) => {
-    switch (String(status?.event ?? '')) {
-      case 'ImportStarted':
-        api.importDataStatus.update('in-progress')
+  init.bindWelcomePageHandler({
+    onThemeChanged: () => {
+      api.getColorScheme.invalidate()
+    },
+    onVerticalTabsEnabledChanged: () => {
+      api.getVerticalTabsEnabled.invalidate()
+    },
+  })
+
+  init.bindThemeColorPickerHandler({
+    setTheme: (theme) => {
+      api.theme.update(theme)
+    },
+  })
+
+  themeColorPickerHandler.updateTheme()
+
+  init.messages.addImportStatusListener((status) => {
+    switch (status) {
+      case 'in-progress':
+        api.importDataStatus.update(status)
         break
-      case 'ImportEnded':
+      case 'succeeded':
         if (api.importDataStatus.current() === 'in-progress') {
           api.importDataStatus.update('succeeded')
         }

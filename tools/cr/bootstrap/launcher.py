@@ -89,6 +89,10 @@ SHIM_TARGETS: dict[str, Shim] = {
         'src/brave/third_party/node/node-win-x64/node_modules/npm/bin/npm-cli.js',
         'node',
         self_update_extra_dep_entry='src/brave/third_party/node/node-win-x64'),
+    'pnpm': Shim(
+        'src/brave/third_party/node/node_modules/pnpm/bin/pnpm.mjs',
+        'node',
+        self_update_extra_dep_entry='src/brave/third_party/node/node_modules'),
 }
 
 
@@ -151,6 +155,28 @@ def _resolve_vpython3(src: Path) -> Path:
     return src / 'third_party' / 'depot_tools' / name
 
 
+# TODO(https://brave.dev/b/57477): this `npm_wrapper` special-casing exists
+# only while `build/npm_wrapper` sits ahead of our shims on `$PATH` in CI. That
+# wrapper translates `npm` to `pnpm` and otherwise defers to the next `npm` on
+# `$PATH` (our shim). If our `npm` fallback resolved a binary back out of the
+# wrapper dir, the wrapper would call our shim, which would fall back to the
+# wrapper again, ping-ponging forever. The wrapper dir is recognised by a
+# sentinel file it is guaranteed to contain. Delete this constant and
+# `_is_wrapper_dir`, and the guarded block in `_resolve_system_binary`, once
+# `build/npm_wrapper` is gone.
+_WRAPPER_SENTINELS: tuple[str, ...] = ('npm_wrapper.py', )
+
+
+def _is_wrapper_dir(directory: Path) -> bool:
+    """Whether `directory` is the `npm_wrapper` routing dir.
+
+    TODO(https://brave.dev/b/57477): remove with the rest of the `npm_wrapper`
+    special-casing once `build/npm_wrapper` is gone.
+    """
+    return any(
+        (directory / sentinel).is_file() for sentinel in _WRAPPER_SENTINELS)
+
+
 def _resolve_system_binary(tool: str,
                            exclude_dir: Path | None = None) -> str | None:
     """Locate `tool` on `$PATH`, minus the shim dir.
@@ -159,10 +185,20 @@ def _resolve_system_binary(tool: str,
     and recurse; drop it (this file's dir by default) before searching.
     """
     here = (exclude_dir or Path(__file__).parent).resolve()
-    entries = [
-        entry for entry in os.environ.get('PATH', '').split(os.pathsep)
-        if entry and Path(entry).resolve() != here
-    ]
+    entries = []
+    for entry in os.environ.get('PATH', '').split(os.pathsep):
+        if not entry:
+            continue
+        resolved = Path(entry).resolve()
+        if resolved == here:
+            continue
+        # TODO(https://brave.dev/b/57477): the `npm` fallback alone must skip a
+        # `build/npm_wrapper` dir present on `$PATH` (the wrapper shadows `npm`
+        # only); resolving into it would ping-pong between the wrapper and our
+        # shim. Remove once `build/npm_wrapper` is gone.
+        if tool == 'npm' and _is_wrapper_dir(resolved):
+            continue
+        entries.append(entry)
     return shutil.which(tool, path=os.pathsep.join(entries))
 
 
@@ -242,9 +278,46 @@ class SelfUpdater:
         return module
 
 
+@dataclass(frozen=True)
+class Invocation:
+    """A resolved command to run for a shim.
+
+    `argv` is the command prefix to run. `path_prepend`, when set, is a
+    directory to prepend to `$PATH` for the child process so that any nested
+    `node` lookups resolve to the checkout binary directly, instead of recursing
+    back through the shim that sits first on `$PATH`.
+    """
+
+    # The argv prefix to run the tool with.
+    argv: list[str]
+
+    # A directory to prepend to `$PATH` before running, or None.
+    path_prepend: Path | None = None
+
+
+def _run_with_path_prepended(directory: Path | None, run):
+    """Run `run()` with `directory` prepended to `$PATH`, then restore `$PATH`.
+
+    The prepend is skipped when `directory` is None, or when it is already on
+    `$PATH`, for the duration of the call.
+    """
+    previous = os.environ.get('PATH', '')
+    already_present = directory is not None and any(
+        entry and Path(entry).resolve() == directory.resolve()
+        for entry in previous.split(os.pathsep))
+    if directory is None or already_present:
+        return run()
+    os.environ['PATH'] = (os.pathsep.join([str(directory), previous])
+                          if previous else str(directory))
+    try:
+        return run()
+    finally:
+        os.environ['PATH'] = previous
+
+
 def resolve_invocation(tool: str, checkout: Path | None,
-                       allow_fallback: bool) -> list[str] | None:
-    """The argv prefix to run `tool` from `checkout`.
+                       allow_fallback: bool) -> Invocation | None:
+    """The command to run `tool` from `checkout`.
 
     This function attempts to resolve the invocation for a given tool. Tools
     are usually run from checkout, but certain tools are allowed to fallback to
@@ -263,23 +336,26 @@ def resolve_invocation(tool: str, checkout: Path | None,
                 updater.deploy()
         if target.is_file():
             if shim.runtime == 'vpython':
-                invocation = [
-                    str(_resolve_vpython3(checkout.parent)),
-                    str(target)
-                ]
+                invocation = Invocation(
+                    [str(_resolve_vpython3(checkout.parent)),
+                     str(target)])
             elif shim.runtime == 'node':
                 # Run with whatever `node` is on $PATH (our node shim, which
                 # resolves the right node in turn).
                 node = shutil.which('node')
                 if node is not None:
-                    invocation = [node, str(target)]
+                    invocation = Invocation([node, str(target)])
             else:
-                invocation = [str(target)]
+                # A bare checkout binary (node). Prepend its directory to
+                # `$PATH` so child processes that spawn `node` hit this binary
+                # directly rather than recursing through the shim.
+                invocation = Invocation([str(target)],
+                                        path_prepend=target.parent)
 
     if invocation is None and allow_fallback:
         system = _resolve_system_binary(tool.split('-', 1)[0])
         if system is not None:
-            invocation = [system]
+            invocation = Invocation([system])
     return invocation
 
 
@@ -301,7 +377,8 @@ def build_parser() -> argparse.ArgumentParser:
         help='Allow falling back to a binary on $PATH if outside a checkout.')
     parser.add_argument('tool',
                         metavar='TOOL',
-                        help='shim to run (e.g. brockit, plaster, node, npm)')
+                        help='shim to run (e.g. brockit, plaster, node, npm, '
+                        'pnpm)')
     parser.add_argument('tool_args',
                         metavar='...',
                         nargs=argparse.REMAINDER,
@@ -326,7 +403,9 @@ def main() -> int:
     if invocation is not None:
         # Intentionally do not change cwd: the tool runs relative to the current
         # path.
-        return subprocess.call([*invocation, *tool_args])
+        return _run_with_path_prepended(
+            invocation.path_prepend,
+            lambda: subprocess.call([*invocation.argv, *tool_args]))
 
     # Resolved a known tool but produced nothing to run — report why.
     if parsed.allow_fallback:

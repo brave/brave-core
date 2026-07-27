@@ -42,18 +42,10 @@ struct DataImporterSuccessView: View {
         },
         label: {
           Text(Strings.DataImporter.importStateSuccessContinueTitle)
-            .font(.headline)
-            .padding(.horizontal)
-            .padding(.vertical, 12.0)
-            .foregroundStyle(Color(braveSystemName: .schemesOnPrimary))
             .frame(maxWidth: .infinity)
-            .background(
-              Color(braveSystemName: .buttonBackground),
-              in: RoundedRectangle(cornerRadius: 12.0, style: .continuous)
-            )
         }
       )
-      .buttonStyle(.plain)
+      .buttonStyle(.filled)
     }
   }
 }

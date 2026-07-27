@@ -3,6 +3,13 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+/* eslint-disable import/first */
+
+// Set up loadTimeData mock BEFORE importing the module under test
+;(window as any).loadTimeData = {
+  getString: (key: string) => (key === 'braveVersion' ? '1.93.8' : ''),
+}
+
 import { describe, it, expect } from '@jest/globals'
 import ComplexConversation from '../page/stories/conversations/multi_tool_multi_turn'
 import {

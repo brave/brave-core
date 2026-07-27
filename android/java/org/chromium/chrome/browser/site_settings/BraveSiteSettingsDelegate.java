@@ -38,12 +38,16 @@ public class BraveSiteSettingsDelegate extends ChromeSiteSettingsDelegate
      */
     @Override
     public void launchClearBrowsingDataDialog(Activity currentActivity) {
+        // Match upstream ChromeSiteSettingsDelegate#launchClearBrowsingDataDialog: push onto the
+        // back stack so, in single-activity settings, back returns to the previous settings page
+        // instead of exiting to Main Settings.
         SettingsNavigationFactory.createSettingsNavigation()
                 .startSettings(
                         currentActivity,
                         BraveClearBrowsingDataFragment.class,
                         ClearBrowsingDataFragment.createFragmentArgs(
-                                BraveSiteSettingsDelegate.class.getName()));
+                                BraveSiteSettingsDelegate.class.getName()),
+                        /* addToBackStack= */ true);
     }
 
     @Override
