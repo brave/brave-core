@@ -16,9 +16,11 @@
 #include "base/android/callback_android.h"
 #include "base/android/jni_array.h"
 #include "base/android/jni_string.h"
+#include "base/feature_list.h"
 #include "base/files/file_path.h"
 #include "base/functional/bind.h"
 #include "base/no_destructor.h"
+#include "base/system/sys_info.h"
 #include "base/values.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/ntp_background/view_counter_service_factory.h"
@@ -32,6 +34,7 @@
 #include "chrome/android/chrome_jni_headers/NTPBackgroundImagesBridge_jni.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
+#include "components/thin_webview/features.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/browser_thread.h"
 
@@ -41,6 +44,20 @@ using base::android::JavaRef;
 using base::android::ScopedJavaLocalRef;
 using content::BrowserThread;
 using ntp_background_images::ViewCounterServiceFactory;
+
+namespace {
+
+bool SupportsRichMediaNTT() {
+  // Low-end devices without `SurfaceView` compositing enabled fail to render
+  // HTML content in `ThinWebView` which causes dNTTs to show an empty page.
+  // Do not show dNTTs on such devices until `SurfaceView` compositing for
+  // `ThinWebView` is enabled by default.
+  return base::FeatureList::IsEnabled(
+             thin_webview::android::kUseSurfaceViewForThinWebView) ||
+         !base::SysInfo::IsLowEndDevice();
+}
+
+}  // namespace
 
 namespace ntp_background_images {
 
@@ -182,6 +199,10 @@ NTPBackgroundImagesBridge::CreateBrandedWallpaper(const base::DictValue& data) {
           data.FindString(ntp_background_images::kWallpaperTypeKey)) {
     is_rich_media = *sponsored_rich_media_type ==
                     ntp_background_images::kRichMediaWallpaperType;
+  }
+
+  if (is_rich_media && !SupportsRichMediaNTT()) {
+    return base::android::ScopedJavaLocalRef<jobject>();
   }
 
   brave_ads::mojom::NewTabPageAdMetricType metric_type =

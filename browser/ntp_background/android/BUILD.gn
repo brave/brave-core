@@ -22,6 +22,7 @@ source_set("android") {
     "//brave/components/ntp_background_images/browser",
     "//chrome/browser/profiles:profile",
     "//components/keyed_service/content",
+    "//components/thin_webview",
     "//content/public/browser",
   ]
 }
