@@ -2330,6 +2330,355 @@ class RewriterFormsTest(unittest.TestCase):
             '    virtual void A();\n    virtual void B();\n\n'
             '   private:\n    int x_;\n  };\n};\n')
 
+    # -- add_enum_entries op (real ast-grep binary) --------------------------
+    #
+    # The sources below are cut down from the upstream enums our `rewrite/`
+    # plasters extend today, so each case shows the rewriter covering one of
+    # them.
+
+    def test_add_enum_entries_repoints_the_max_value(self):
+        # chrome/browser/ui/page_action/page_action_model.h: the entries are
+        # appended to the nested `Property` enum, at its own column, and
+        # kMaxValue is re-pointed at the last one so PropertySet's EnumSet range
+        # covers them.
+        result = self._apply(
+            'enum_property.h', 'class PageActionModelInterface {\n public:\n'
+            '  enum class Property {\n'
+            '    kShowRequested,\n'
+            '    kOverrideBackgroundColor,\n'
+            '    kMaxValue = kOverrideBackgroundColor,\n'
+            '  };\n};\n', 'substitutions:\n'
+            '  - description: add the Brave properties\n'
+            '    add_enum_entries:\n'
+            '      enum_name: Property\n'
+            '      max_value: kMaxValue\n'
+            '      entries:\n'
+            '        - kAlwaysShowLabel\n'
+            '        - kOverrideChipColors\n'
+            '        - kOverrideBorder\n')
+        self.assertEqual(
+            result, 'class PageActionModelInterface {\n public:\n'
+            '  enum class Property {\n'
+            '    kShowRequested,\n'
+            '    kOverrideBackgroundColor,\n'
+            '    kAlwaysShowLabel,\n'
+            '    kOverrideChipColors,\n'
+            '    kOverrideBorder,\n'
+            '    kMaxValue = kOverrideBorder,\n'
+            '  };\n};\n')
+
+    def test_add_enum_entries_repoints_a_max_value_of_any_name(self):
+        # components/sync/base/user_selectable_type.h: the max value is spelled
+        # kLastType, and carries no trailing comma of its own -- neither matters
+        # to the insertion, which re-emits the entry in place.
+        result = self._apply(
+            'enum_last_type.h', 'enum class UserSelectableType {\n'
+            '  kBookmarks,\n'
+            '  kFirstType = kBookmarks,\n'
+            '\n'
+            '  kCookies,\n'
+            '  kLastType = kCookies\n'
+            '};\n', 'substitutions:\n'
+            '  - description: append kAIChat as the new kLastType\n'
+            '    add_enum_entries:\n'
+            '      enum_name: UserSelectableType\n'
+            '      max_value: kLastType\n'
+            '      entries: kAIChat\n')
+        self.assertEqual(
+            result, 'enum class UserSelectableType {\n'
+            '  kBookmarks,\n'
+            '  kFirstType = kBookmarks,\n'
+            '\n'
+            '  kCookies,\n'
+            '  kAIChat,\n'
+            '  kLastType = kAIChat\n'
+            '};\n')
+
+    def test_add_enum_entries_accepts_entries_carrying_values(self):
+        # components/permissions/request_type.h: the Brave entries include
+        # aliases of their own. The max value is re-pointed at the last entry
+        # added -- kBraveMaxValue, which its alias makes equal to kBraveCardano.
+        result = self._apply(
+            'enum_request_type.h', 'enum class RequestType {\n'
+            '  kStorageAccess,\n'
+            '  kWindowManagement,\n'
+            '  kMaxValue = kWindowManagement,\n'
+            '};\n', 'substitutions:\n'
+            '  - description: append the Brave request types\n'
+            '    add_enum_entries:\n'
+            '      enum_name: RequestType\n'
+            '      max_value: kMaxValue\n'
+            '      entries:\n'
+            '        - kWidevine\n'
+            '        - kBraveCardano\n'
+            '        - kBraveMinValue = kWidevine\n'
+            '        - kBraveMaxValue = kBraveCardano\n')
+        self.assertEqual(
+            result, 'enum class RequestType {\n'
+            '  kStorageAccess,\n'
+            '  kWindowManagement,\n'
+            '  kWidevine,\n'
+            '  kBraveCardano,\n'
+            '  kBraveMinValue = kWidevine,\n'
+            '  kBraveMaxValue = kBraveCardano,\n'
+            '  kMaxValue = kBraveMaxValue,\n'
+            '};\n')
+
+    def test_add_enum_entries_leaves_a_valueless_max_value_alone(self):
+        # An entry that carries no value of its own follows on from whatever
+        # precedes it, so inserting before it already moves it along; it is
+        # re-emitted untouched rather than pointed at the new last key.
+        result = self._apply(
+            'enum_count.h', 'enum class Kind {\n'
+            '  kA,\n'
+            '  kCount,\n'
+            '};\n', 'substitutions:\n'
+            '  - description: add kB before the count\n'
+            '    add_enum_entries:\n'
+            '      enum_name: Kind\n'
+            '      max_value: kCount\n'
+            '      entries: kB\n')
+        self.assertEqual(
+            result, 'enum class Kind {\n'
+            '  kA,\n'
+            '  kB,\n'
+            '  kCount,\n'
+            '};\n')
+
+    def test_add_enum_entries_appends_without_a_max_value(self):
+        # crypto/signature_verifier.h: an unscoped enum with no max-value entry,
+        # so the entries simply follow the last one. The comment above that entry
+        # is not where the insertion goes.
+        result = self._apply(
+            'enum_signature.h', 'class SignatureVerifier {\n public:\n'
+            '  enum SignatureAlgorithm {\n'
+            '    RSA_PKCS1_SHA1,\n'
+            '    // This is RSA-PSS with SHA-256 as both signing hash and MGF-1\n'
+            '    // hash.\n'
+            '    RSA_PSS_SHA256,\n'
+            '  };\n};\n', 'substitutions:\n'
+            '  - description: add ECDSA_SHA384 for downstream switches\n'
+            '    add_enum_entries:\n'
+            '      enum_name: SignatureAlgorithm\n'
+            '      entries: ECDSA_SHA384\n')
+        self.assertEqual(
+            result, 'class SignatureVerifier {\n public:\n'
+            '  enum SignatureAlgorithm {\n'
+            '    RSA_PKCS1_SHA1,\n'
+            '    // This is RSA-PSS with SHA-256 as both signing hash and MGF-1\n'
+            '    // hash.\n'
+            '    RSA_PSS_SHA256,\n'
+            '    ECDSA_SHA384,\n'
+            '  };\n};\n')
+
+    def test_add_enum_entries_appends_without_a_max_value_or_a_separator(self):
+        # The same enum, with the trailing comma its last entry is free to omit
+        # while nothing follows it. Appending after that entry adds the comma the
+        # new key now requires, and the comment above is still not the anchor.
+        result = self._apply(
+            'enum_signature_bare.h', 'class SignatureVerifier {\n public:\n'
+            '  enum SignatureAlgorithm {\n'
+            '    RSA_PKCS1_SHA1,\n'
+            '    // This is RSA-PSS with SHA-256 as both signing hash and MGF-1\n'
+            '    // hash.\n'
+            '    RSA_PSS_SHA256\n'
+            '  };\n};\n', 'substitutions:\n'
+            '  - description: add ECDSA_SHA384 for downstream switches\n'
+            '    add_enum_entries:\n'
+            '      enum_name: SignatureAlgorithm\n'
+            '      entries: ECDSA_SHA384\n')
+        self.assertEqual(
+            result, 'class SignatureVerifier {\n public:\n'
+            '  enum SignatureAlgorithm {\n'
+            '    RSA_PKCS1_SHA1,\n'
+            '    // This is RSA-PSS with SHA-256 as both signing hash and MGF-1\n'
+            '    // hash.\n'
+            '    RSA_PSS_SHA256,\n'
+            '    ECDSA_SHA384,\n'
+            '  };\n};\n')
+
+    def test_add_enum_entries_ignores_a_comment_after_the_last_entry(self):
+        # A comment trailing the last entry is not an entry: the entries still go
+        # after that entry, where a match on the body's closing brace would put
+        # them after the comment instead.
+        result = self._apply(
+            'enum_trailing_comment.h', 'enum class OriginFilter {\n'
+            '  kPublic = 0,\n'
+            '  kValidTestOriginForTesting,\n'
+            '  // NOTE(crbug.com/481255908): Remove the placeholder filter.\n'
+            '};\n', 'substitutions:\n'
+            '  - description: add the Brave origins\n'
+            '    add_enum_entries:\n'
+            '      enum_name: OriginFilter\n'
+            '      entries:\n'
+            '        - kBraveSearch\n'
+            '        - kBraveTalk\n')
+        self.assertEqual(
+            result, 'enum class OriginFilter {\n'
+            '  kPublic = 0,\n'
+            '  kValidTestOriginForTesting,\n'
+            '  kBraveSearch,\n'
+            '  kBraveTalk,\n'
+            '  // NOTE(crbug.com/481255908): Remove the placeholder filter.\n'
+            '};\n')
+
+    def test_add_enum_entries_separates_a_bare_last_entry(self):
+        # The upstream last entry carries no comma, since nothing followed it.
+        # Appending after it adds the one the new entries now require.
+        result = self._apply(
+            'enum_bare_last.h', 'enum class Kind {\n'
+            '  kA,\n'
+            '  kB\n'
+            '};\n', 'substitutions:\n'
+            '  - description: append two kinds\n'
+            '    add_enum_entries:\n'
+            '      enum_name: Kind\n'
+            '      entries:\n'
+            '        - kC\n'
+            '        - kD\n')
+        self.assertEqual(
+            result, 'enum class Kind {\n'
+            '  kA,\n'
+            '  kB,\n'
+            '  kC,\n'
+            '  kD,\n'
+            '};\n')
+
+    def test_add_enum_entries_scoped_to_named_enum(self):
+        # Only the named enum is extended; a sibling enum is left alone.
+        result = self._apply(
+            'enum_scope.h', 'enum class Kind {\n  kA,\n};\n\n'
+            'enum class Other {\n  kA,\n};\n', 'substitutions:\n'
+            '  - description: add only to Kind\n'
+            '    add_enum_entries:\n'
+            '      enum_name: Kind\n'
+            '      entries: kB\n')
+        self.assertEqual(
+            result, 'enum class Kind {\n  kA,\n  kB,\n};\n\n'
+            'enum class Other {\n  kA,\n};\n')
+
+    def test_add_enum_entries_extends_an_enum_with_a_base_clause(self):
+        # An underlying type on the enum head does not get in the way of the
+        # body's entries.
+        result = self._apply(
+            'enum_base.h', 'enum class Kind : int {\n  kA,\n};\n',
+            'substitutions:\n'
+            '  - description: add kB\n'
+            '    add_enum_entries:\n'
+            '      enum_name: Kind\n'
+            '      entries: kB\n')
+        self.assertEqual(result, 'enum class Kind : int {\n  kA,\n  kB,\n};\n')
+
+    def test_add_enum_entries_two_enums_of_the_same_name_fail(self):
+        # Two enums share the name, so which one to extend is ambiguous: the
+        # count check flags it rather than extending both.
+        with self.assertRaises(plaster.PlasterApplyError):
+            self._apply(
+                'enum_ambiguous.h', 'enum class Kind {\n  kA,\n};\n'
+                'class C {\n public:\n  enum class Kind {\n    kX,\n  };\n};\n',
+                'substitutions:\n'
+                '  - description: ambiguous enum name\n'
+                '    add_enum_entries:\n'
+                '      enum_name: Kind\n'
+                '      entries: kB\n')
+
+    def test_add_enum_entries_max_value_not_last_fails(self):
+        # The declared max value is no longer the enum's last entry, so the
+        # premise of the insertion no longer holds. The error names the entry
+        # that is last, so the next reader knows what changed upstream.
+        with self.assertRaises(plaster.PlasterApplyError) as ctx:
+            self._apply(
+                'enum_moved_max_value.h', 'enum class Kind {\n'
+                '  kA,\n'
+                '  kMaxValue = kA,\n'
+                '  kExtra,\n'
+                '};\n', 'substitutions:\n'
+                '  - description: the max value is not last anymore\n'
+                '    add_enum_entries:\n'
+                '      enum_name: Kind\n'
+                '      max_value: kMaxValue\n'
+                '      entries: kB\n')
+        self.assertIn(
+            'Enum `Kind` ends in `kExtra`, not in the declared `max_value` '
+            'entry `kMaxValue`', str(ctx.exception))
+
+    def test_add_enum_entries_absent_enum_fails(self):
+        with self.assertRaises(plaster.PlasterApplyError):
+            self._apply(
+                'enum_absent.h', 'enum class Kind {\n  kA,\n};\n',
+                'substitutions:\n'
+                '  - description: no such enum\n'
+                '    add_enum_entries:\n'
+                '      enum_name: Missing\n'
+                '      entries: kB\n')
+
+    def test_add_enum_entries_empty_enum_fails(self):
+        # There is no last entry to anchor on.
+        with self.assertRaises(plaster.PlasterApplyError):
+            self._apply(
+                'enum_empty.h', 'enum class Kind {};\n', 'substitutions:\n'
+                '  - description: nothing to append to\n'
+                '    add_enum_entries:\n'
+                '      enum_name: Kind\n'
+                '      entries: kB\n')
+
+    def test_add_enum_entries_unknown_arg_rejected(self):
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: typo arg\n'
+            '    add_enum_entries:\n'
+            '      enum_name: Kind\n'
+            '      key: kB\n', 'Unrecognised add_enum_entries arg')
+
+    def test_add_enum_entries_missing_arg_rejected(self):
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: missing entries\n'
+            '    add_enum_entries:\n'
+            '      enum_name: Kind\n', 'add_enum_entries requires arg')
+
+    def test_add_enum_entries_empty_entry_list_rejected(self):
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: no entries to add\n'
+            '    add_enum_entries:\n'
+            '      enum_name: Kind\n'
+            '      entries: []\n',
+            'add_enum_entries `entries` must be a string or a '
+            'non-empty list of strings')
+
+    def test_add_enum_entries_entry_with_trailing_comma_rejected(self):
+        # The separators are the rewriter's to add, so an authored one is a
+        # mistake rather than something to pass through.
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: comma in the key\n'
+            '    add_enum_entries:\n'
+            '      enum_name: Kind\n'
+            "      entries: 'kB,'\n",
+            'add_enum_entries `entries` items must be an '
+            'entry name')
+
+    def test_add_enum_entries_max_value_must_name_an_entry(self):
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: the max value is not a name\n'
+            '    add_enum_entries:\n'
+            '      enum_name: Kind\n'
+            '      max_value: kMaxValue = kA\n'
+            '      entries: kB\n',
+            'add_enum_entries `max_value` must be an entry name')
+
+    def test_add_enum_entries_count_other_than_one_rejected(self):
+        # It always adds the entries once, so any other count is a config error.
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: bogus count\n'
+            '    count: 2\n'
+            '    add_enum_entries:\n'
+            '      enum_name: Kind\n'
+            '      entries: kB\n', 'does not accept a count other than 1')
+
     # -- after_function_impl op (real ast-grep binary) -------------------------
 
     def test_after_function_impl_void(self):

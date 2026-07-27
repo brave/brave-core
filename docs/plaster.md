@@ -139,6 +139,7 @@ introduce more rewriters. These are the ones we have supported for now.
 | `rename_class`          | AST  | Renames a C++ class.                              |
 | `add_to_protected`      | AST  | Adds a member to a class `protected:` section.    |
 | `add_to_public`         | AST  | Appends a member to a class `public:` section.    |
+| `add_enum_entries`      | AST  | Appends entries to the end of a C++ enum.         |
 
 Use `plaster --help` to discover rewriters and read their full docs:
 
