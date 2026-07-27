@@ -291,23 +291,110 @@ gn check out/Default
 
 <a id="CSRC-019"></a>
 
-## ❌ chromium_src Must Not Depend on Brave Component Targets
+## ❌ chromium_src Should Avoid Depending on Brave Targets
 
-**The chromium_src layer must never have GN dependencies on
-`//brave/components/` targets.** This prevents patch churn when upstream
-modularizes targets. Use forward declarations in chromium_src with
-implementations resolved at link time from other targets via `sources.gni`.
+**A chromium_src override should avoid adding a GN dependency on, or a direct
+`#include` of, any downstream `//brave/...` target** (`//brave/components/...`,
+`//brave/browser/...`, `//brave/chrome/...`, etc.). The override is compiled as
+part of the upstream target, so pulling a Brave target into it creates an
+upstream → Brave dependency that breaks whenever upstream modularizes, grows the
+patched target's dependency graph, and forces us to patch Brave deps into the
+upstream GN config.
+
+Prefer keeping the override minimal: **forward-declare a free function** (or
+factory) in the override and call it. Put the hook implementation in a matching
+Brave source file outside `chromium_src` (for example,
+`brave/browser/ui/window_feature_controller/window_feature_controller.cc`) and
+put that source in a dedicated Brave target in the same directory. That target
+owns the Brave `#include` and its implementation dependencies. Finally, make the
+relevant existing top-level Brave target (for example, `//brave/browser:core`)
+depend on the dedicated implementation target so the hook is linked into the
+same binary as the upstream target. The override itself should include no Brave
+header and the upstream target should not need a patched dependency on Brave
+implementation details.
+
+**BAD:**
 
 ```cpp
-// ❌ WRONG - direct include from chromium_src to brave component
-// chromium_src/chrome/browser/policy/profile_policy_connector.cc
-#include "brave/components/brave_policy/brave_browser_policy_provider.h"
+// ❌ WRONG - the override includes Brave implementation details
+// chromium_src/chrome/browser/ui/window_feature_controller/window_feature_controller.cc
+#include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 
-// ✅ CORRECT - forward declare, implement in component, link via sources.gni
-// chromium_src/chrome/browser/policy/profile_policy_connector.cc
-std::unique_ptr<policy::ConfigurationPolicyProvider>
-CreateBraveBrowserPolicyProvider();
-// Implementation lives in brave/components/brave_policy/
+bool WindowFeatureController::UsesImmersiveFullscreenMode() const {
+  if (tabs::utils::ShouldUseImmersiveFullscreen(browser_)) {
+    return true;
+  }
+  return WindowFeatureController::UsesImmersiveFullscreenMode_ChromiumImpl();
+}
+```
+
+```diff
+# ❌ WRONG - the upstream GN file knows about Brave implementation dependencies
+# chrome/browser/ui/window_feature_controller/BUILD.gn (patched upstream file)
+ source_set("window_feature_controller") {
+   sources = [
+     ...
+     "window_feature_controller.cc",
++    ...
+   ]
+
+   deps = [
+     ...
+   ]
++  deps += [ "//brave/browser/ui/views/tabs" ]
+ }
+```
+
+**GOOD:**
+
+```cpp
+// ✅ CORRECT - the override calls a forward-declared hook
+// chromium_src/chrome/browser/ui/window_feature_controller/window_feature_controller.cc
+class Browser;
+
+std::optional<bool> BraveUsesImmersiveFullscreenMode(bool disabled_at_startup,
+                                                     Browser* browser);
+
+bool WindowFeatureController::UsesImmersiveFullscreenMode() const {
+  if (auto result =
+          BraveUsesImmersiveFullscreenMode(disabled_at_startup_, browser_)) {
+    return *result;
+  }
+  return WindowFeatureController::UsesImmersiveFullscreenMode_ChromiumImpl();
+}
+
+// brave/browser/ui/window_feature_controller/window_feature_controller.cc
+#include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
+
+std::optional<bool> BraveUsesImmersiveFullscreenMode(bool disabled_at_startup,
+                                                     Browser* browser) {
+  if (!disabled_at_startup &&
+      tabs::utils::ShouldUseImmersiveFullscreen(browser)) {
+    return true;
+  }
+  return std::nullopt;
+}
+```
+
+```gn
+# ✅ CORRECT - a Brave target owns the include and dependency wiring
+# brave/browser/ui/window_feature_controller/BUILD.gn
+source_set("chromium_impl") {
+  sources = [
+    "window_feature_controller.cc",
+  ]
+  deps = [
+    "//brave/browser/ui/views/tabs",
+  ]
+}
+
+# brave/browser/BUILD.gn
+source_set("core") {
+  ...
+  deps += [
+    "//brave/browser/ui/window_feature_controller:chromium_impl",
+  ]
+}
 ```
 
 ---
