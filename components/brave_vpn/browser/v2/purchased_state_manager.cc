@@ -15,7 +15,6 @@
 #include "base/functional/bind.h"
 #include "base/location.h"
 #include "base/logging.h"
-#include "base/notimplemented.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
@@ -79,13 +78,14 @@ void PurchasedStateManager::Load(const std::string& domain) {
   // environment must authorize with SKUS from scratch.
   const std::string current_environment = GetCurrentEnvironment();
   if (current_environment == request_environment) {
-    if (credential_store_->GetValidSubscriberCredential().has_value()) {
+    if (std::optional<CredentialStore::Credential> cached_credential =
+            credential_store_->GetValidSubscriberCredential()) {
       // Already purchased. Serving from cache settles the visible state
       // immediately, so any in-flight load for another environment is cancelled
       // rather than left to finish against a state that just changed under it.
       VLOG(2) << "Already have valid subscriber credential, scheduling refresh";
       CancelPendingLoad();
-      ScheduleSubscriberCredentialRefresh();
+      ScheduleSubscriberCredentialRefresh(cached_credential->expiration);
       SetPurchasedState(request_environment, mojom::PurchasedState::PURCHASED);
       return;
     }
@@ -163,29 +163,21 @@ void PurchasedStateManager::SetPurchasedState(
 }
 
 void PurchasedStateManager::CheckInitialState() {
-  if (credential_store_->GetValidSubscriberCredential().has_value()) {
-    // Have a valid subscriber credential, so we are purchased. Schedule a
-    // refresh of the credential before it expires.
-    VLOG(2) << "Have valid subscriber credential, scheduling refresh";
-    ScheduleSubscriberCredentialRefresh();
-    SetPurchasedState(GetCurrentEnvironment(),
-                      mojom::PurchasedState::PURCHASED);
-  } else if (credential_store_->GetValidSkusCredential().has_value()) {
-    // There is a cached SKUS credential - exchange it for a subscriber
-    // credential upfront.
-    VLOG(2) << "Reloading purchased state due to cached SKUS credential";
-    Reload();
-  } else {
-    // A stored subscriber credential may have been invalidated while we were
-    // not running. Always clear whatever is cached; if something stale was
-    // present, reload the state.
-    const bool has_stale_credential = credential_store_->HasAnyCredential();
-    credential_store_->Clear();
-    if (has_stale_credential) {
-      VLOG(2) << "Reloading purchased state due to stale credential";
-      Reload();
-    }
+  // A stored subscriber credential might have been invalidated while we were
+  // not running. If nothing (even stale) is present, don't attempt to load
+  // the state.
+  if (!credential_store_->HasAnyCredential()) {
+    return;
   }
+  // Always clear cached stale credentials.
+  if (!credential_store_->GetValidSubscriberCredential() &&
+      !credential_store_->GetValidSkusCredential()) {
+    credential_store_->Clear();
+  }
+
+  // Load the state for the current environment; it will set the right purchased
+  // state, taking fast paths wherever possible.
+  Reload();
 }
 
 void PurchasedStateManager::BeginLoad(std::string env) {
@@ -450,7 +442,7 @@ void PurchasedStateManager::OnGetSubscriberCredential(
       .value = result.value(),
       .expiration = expiration_time,
   });
-  ScheduleSubscriberCredentialRefresh();
+  ScheduleSubscriberCredentialRefresh(expiration_time);
   FinishLoad(loading_environment_, mojom::PurchasedState::PURCHASED);
 }
 
@@ -460,8 +452,36 @@ void PurchasedStateManager::RunPurchasedStateCallback(
   purchased_state_changed_callback_.Run(state, std::move(description));
 }
 
-void PurchasedStateManager::ScheduleSubscriberCredentialRefresh() {
-  NOTIMPLEMENTED();
+void PurchasedStateManager::ScheduleSubscriberCredentialRefresh(
+    const base::Time& expiration_time) {
+  // We're scheduling a refresh at expiration, not earlier, because subscriber
+  // credential itself outlives SKUS expiry, so the refresh happens before the
+  // credential actually dies.
+  const base::TimeDelta delta = expiration_time - base::Time::Now();
+  VLOG(2) << "Schedule subscriber credential refresh after " << delta;
+  subscriber_credential_refresh_timer_.Start(
+      FROM_HERE, delta,
+      base::BindOnce(&PurchasedStateManager::RefreshSubscriberCredential,
+                     base::Unretained(this)));
+}
+
+void PurchasedStateManager::RefreshSubscriberCredential() {
+  VLOG(2) << "Refreshing subscriber credential...";
+
+  if (!loading_environment_.empty()) {
+    // A load for the CURRENT environment already owns resolution of the visible
+    // state: it reschedules the refresh on success, and on failure leaves none
+    // intentionally (recovery is manual). A silent load for ANOTHER environment
+    // does not touch the current environment, so it cannot settle the refresh -
+    // but the failure is fairly soft: we end up in a stale state that fixes
+    // itself on the next UI interaction.
+    VLOG(2) << "Load in flight, skipping refresh";
+    return;
+  }
+
+  // Clear the cached credential to get a new subscriber credential.
+  credential_store_->Clear();
+  Reload();
 }
 
 #if !BUILDFLAG(IS_ANDROID)
