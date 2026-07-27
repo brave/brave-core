@@ -56,22 +56,21 @@ jobs:
               ? `contributor-${headOwner}-${sourcePr.headRefName}`
               : undefined;
 
-            const candidates = await github.paginate(github.rest.pulls.list, {
-              owner,
-              repo,
-              state: 'open',
-              per_page: 100,
-            });
+            const candidates = expectedHeadRef
+              ? await github.paginate(github.rest.pulls.list, {
+                  owner,
+                  repo,
+                  head: `${owner}:${expectedHeadRef}`,
+                  state: 'open',
+                  per_page: 100,
+                })
+              : [];
 
-            const matches = candidates.filter((pr) => {
-              if (pr.number === sourcePr.number || !pr.draft) {
-                return false;
-              }
-
-              return pr.title === ciTitle ||
-                pr.head.ref === expectedHeadRef ||
-                pr.body?.includes(`proposed in PR #${sourcePr.number}`);
-            });
+            const matches = candidates.filter((pr) =>
+              pr.number !== sourcePr.number &&
+              pr.draft &&
+              pr.title === ciTitle &&
+              pr.body?.includes(`proposed in PR #${sourcePr.number}`));
 
             if (matches.length === 0) {
               core.info(`No open contributor CI PR found for PR #${sourcePr.number}.`);
