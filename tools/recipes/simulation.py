@@ -47,6 +47,18 @@ SIM_HOME = PurePosixPath('/b/home')
 WORKSPACE_TOKEN = '[WORKSPACE]'
 HOME_TOKEN = '[HOME]'
 
+# This engine's own root (`tools/recipes/`), for stabilizing commands that
+# reference a resource file living next to a recipe module (e.g. `file`'s
+# `resources/fileutil.py`) via a real `Path(__file__).resolve()`-derived
+# path -- unlike `SIM_WORKSPACE`/`SIM_HOME`, this is a real machine path even
+# in test mode, so it varies by checkout location unless stabilized here too.
+# Computed independently of (but always equal to) `engine.RECIPES_ROOT`,
+# since both are `Path(__file__).resolve().parent` of a sibling file in this
+# same directory; this module deliberately never imports `engine` (see the
+# module docstring).
+RECIPES_ROOT = Path(__file__).resolve().parent
+RECIPES_ROOT_TOKEN = '[RECIPES_ROOT]'
+
 
 def _norm(path: str | Path) -> str:
     """Normalize a path to a stable string key for the simulated filesystem."""
@@ -238,6 +250,7 @@ def _resolve_seed(path: str) -> str:
 
 def stabilize(value: str, context: TestContext | None = None) -> str:
     """Rewrite machine-specific path prefixes to stable tokens."""
+    value = value.replace(str(RECIPES_ROOT), RECIPES_ROOT_TOKEN)
     value = value.replace(str(SIM_WORKSPACE), WORKSPACE_TOKEN)
     home = str(context.home) if context is not None else str(SIM_HOME)
     return value.replace(home, HOME_TOKEN)
