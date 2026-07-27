@@ -76,6 +76,11 @@ class BraveTabStripModel : public TabStripModel {
   void SelectRelativeTab(TabRelativeDirection direction,
                          TabStripUserGestureDetails detail) override;
 
+  std::vector<std::variant<std::unique_ptr<DetachedTab>,
+                           std::unique_ptr<DetachedTabCollection>>>
+  DetachTabsAndCollectionsForInsertion(
+      const std::vector<int>& tab_indices) override;
+
  private:
   friend class TreeTabsBrowserTest;
 

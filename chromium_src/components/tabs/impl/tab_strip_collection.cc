@@ -67,4 +67,17 @@ const tree_tab::TreeTabNodeId* TabStripCollection::GetTreeTabNodeIdForGroup(
   return nullptr;
 }
 
+bool TabStripCollection::ShouldDetachAsTreeSubtreeRoot(
+    TabInterface* tab,
+    const std::vector<TabInterface*>& moving_tabs) {
+  return false;
+}
+
+void TabStripCollection::InsertDetachedTreeTabNode(
+    std::unique_ptr<TabCollection> collection,
+    int index) {
+  InsertTabCollectionAt(std::move(collection), index, /*pinned=*/false,
+                        /*parent_group=*/std::nullopt);
+}
+
 }  // namespace tabs
