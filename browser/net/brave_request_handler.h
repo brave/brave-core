@@ -18,10 +18,6 @@
 
 class PrefChangeRegistrar;
 
-namespace brave_proxying_url_loader_factory_test {
-class BraveProxyingURLLoaderFactoryTest;
-}
-
 // Contains different network stack hooks (similar to capabilities of WebRequest
 // API).
 template <template <typename> class T>
@@ -52,8 +48,6 @@ class BraveRequestHandler {
   void RunCallbackForRequestIdentifier(uint64_t request_identifier, int rv);
 
  private:
-  friend class brave_proxying_url_loader_factory_test::
-      BraveProxyingURLLoaderFactoryTest;
   void SetupCallbacks();
   void RunNextCallback(T<brave::BraveRequestInfo> ctx);
 

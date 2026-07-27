@@ -11,10 +11,11 @@
 #include <utility>
 
 #include "base/functional/bind.h"
+#include "base/strings/strcat.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
 #include "brave/browser/net/brave_request_handler.h"
-#include "brave/browser/net/url_context.h"
+#include "brave/components/constants/network_constants.h"
 #include "chrome/test/base/testing_profile.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
@@ -85,13 +86,6 @@ class BraveProxyingURLLoaderFactoryTest : public testing::Test {
     return request;
   }
 
-  void SetBeforeURLRequestCallback(
-      brave::OnBeforeURLRequestCallback<std::shared_ptr> callback) {
-    request_handler_.before_url_request_callbacks_.clear();
-    request_handler_.before_url_request_callbacks_.push_back(
-        std::move(callback));
-  }
-
  protected:
   content::BrowserTaskEnvironment task_environment_;
   BraveRequestHandler<std::shared_ptr> request_handler_;
@@ -123,34 +117,25 @@ TEST_F(BraveProxyingURLLoaderFactoryTest, BlocksUnsafeNetworkRedirect) {
 }
 
 TEST_F(BraveProxyingURLLoaderFactoryTest,
-       PreservesOriginalInitiatorAcrossSyntheticRedirect) {
-  const GURL request_url("https://example.com/source");
-  const GURL first_redirect_url("https://other.example/first");
-  const GURL second_redirect_url("https://third.example/second");
+       PreservesOriginalInitiatorAcrossBraveRedirect) {
+  // Brave rewrites clients4.google.com requests to clients4.brave.com via its
+  // static redirect rules, exercising the same synthetic-redirect path this
+  // change fixes.
+  const GURL request_url("https://clients4.google.com/resource");
+  const GURL redirected_url =
+      GURL(base::StrCat({"https://", kBraveClients4Proxy, "/resource"}));
   const url::Origin initiator =
       url::Origin::Create(GURL("https://initiator.example"));
 
-  SetBeforeURLRequestCallback(base::BindLambdaForTesting(
-      [request_url, first_redirect_url, second_redirect_url](
-          const brave::ResponseCallback&,
-          std::shared_ptr<brave::BraveRequestInfo> ctx) {
-        if (ctx->request_url() == request_url) {
-          ctx->set_new_url_spec(first_redirect_url.spec());
-        } else if (ctx->request_url() == first_redirect_url) {
-          ctx->set_new_url_spec(second_redirect_url.spec());
-        }
-        return net::OK;
-      }));
-
-  std::optional<url::Origin> second_request_initiator;
+  std::optional<url::Origin> redirected_request_initiator;
   test_factory_.SetInterceptor(base::BindLambdaForTesting(
-      [&second_request_initiator,
-       second_redirect_url](const network::ResourceRequest& request) {
-        if (request.url == second_redirect_url) {
-          second_request_initiator = request.request_initiator;
+      [&redirected_request_initiator,
+       redirected_url](const network::ResourceRequest& request) {
+        if (request.url == redirected_url) {
+          redirected_request_initiator = request.request_initiator;
         }
       }));
-  test_factory_.AddResponse(second_redirect_url.spec(), "ok");
+  test_factory_.AddResponse(redirected_url.spec(), "ok");
 
   auto factory = CreateFactory();
   network::TestURLLoaderClient client;
@@ -160,13 +145,10 @@ TEST_F(BraveProxyingURLLoaderFactoryTest,
 
   client.RunUntilRedirectReceived();
   loader->FollowRedirect({}, std::nullopt);
-  client.ClearHasReceivedRedirect();
-  client.RunUntilRedirectReceived();
-  loader->FollowRedirect({}, std::nullopt);
   client.RunUntilComplete();
 
-  ASSERT_TRUE(second_request_initiator.has_value());
-  EXPECT_EQ(initiator, *second_request_initiator);
+  ASSERT_TRUE(redirected_request_initiator.has_value());
+  EXPECT_EQ(initiator, *redirected_request_initiator);
   EXPECT_EQ(net::OK, client.completion_status().error_code);
 }
 
