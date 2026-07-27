@@ -17,6 +17,7 @@
 #include "base/run_loop.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
+#include "base/test/test_future.h"
 #include "base/values.h"
 #include "brave/browser/net/brave_request_handler.h"
 #include "brave/browser/net/url_context.h"
@@ -122,6 +123,7 @@ class BraveProxyingWebSocketTest : public testing::Test {
     downstream_header_client.set_replacement_headers(
         std::move(replacement_headers));
     TestHandshakeClient handshake_client;
+    base::test::TestFuture<void> headers_processed;
 
     auto proxy = CreateProxy(base::BindLambdaForTesting(
         [&](const GURL& url,
@@ -148,12 +150,13 @@ class BraveProxyingWebSocketTest : public testing::Test {
                     EXPECT_EQ(net::OK, result);
                     ASSERT_TRUE(headers);
                     *final_headers = *headers;
+                    headers_processed.SetValue();
                   }));
         }));
 
     proxy->Start(handshake_client.CreateRemote(),
                  downstream_header_client.CreateRemote());
-    task_environment_.RunUntilIdle();
+    ASSERT_TRUE(headers_processed.Wait());
     *downstream_header_client_called =
         downstream_header_client.on_before_send_headers_called();
   }
