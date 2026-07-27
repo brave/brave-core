@@ -13,14 +13,49 @@
 #       template: ast-grep rule body (the part under `rule:`). Its {placeholder}
 #                 fields are the matcher's inputs; they are inferred from the
 #                 template, not declared.
-#       result:   { node: <tree-sitter kind> } each match is.
+#       result:   what each match yields:
+#                 node:     the <tree-sitter kind> each match is.
+#                 captures: optional { name: [candidate, ...] } of values read
+#                 out of the matched code, which a rewriter using this matcher
+#                 may reference as {name} in its `replace` templates. Each
+#                 candidate derives the value from the metavariables the
+#                 template binds, and the first one whose metavariables are all
+#                 bound wins. A value that upstream can spell more than one
+#                 way is expressed as a list, most specific first:
+#                     { "text": "VAR" }        the text $VAR matched.
+#                     { "span": ["A", "B"] }   the source from the start of $A
+#                                              to the start of $B, for a value
+#                                              no single node covers. It takes
+#                                              whatever lies between them, so
+#                                              $B must be the token right after
+#                                              the wanted text.
+#                     { "literal": "void" }    a fixed string, for code that
+#                                              binds nothing; it always
+#                                              resolves, so it is only useful
+#                                              last.
+#                 Captures are resolved lazily, and only the ones a rendered
+#                 template names are read, so a matcher may offer a capture that
+#                 does not resolve for every node it matches. A capture with no
+#                 applicable candidate is an error naming the op and the line.
+#                 Whitespace in a resolved value is collapsed to single spaces,
+#                 since captures are spliced into generated code as a single
+#                 expression -- so a capture suits a declaration or a type, not
+#                 text whose own spacing matters (a string literal, a comment).
 #
 #   "ast.rewriter" — edits each node a matcher finds:
 #       matcher:  id of the "ast.matcher" op locating the node(s).
 #       inputs:   the interface the rewriter requires, so the template it uses
-#                 can be rendered.
+#                 can be rendered. Distinct from the matcher's captures, which
+#                 the engine supplies per match rather than the caller.
+#       when_set: optional { input: template } making an input optional. When
+#                 the caller passes a non-empty value, {input} renders as that
+#                 template (which may itself read the input, other inputs, and
+#                 captures); when the value is empty, it renders as nothing. It
+#                 is how one op covers a shape with an optional part, instead of
+#                 near-duplicate ops that differ only by a lead or a suffix.
 #       replace:  { re_pattern, replace }, re.sub'd over each match's source;
-#                 `replace` is {input}-formatted first (literal braces: {{ }}).
+#                 `replace` is {input}/{capture}-formatted first (literal
+#                 braces: {{ }}).
 #                 Optional `consume_before` / `consume_after` tokens (also
 #                 {input}-formatted) are folded into the rewritten span when the
 #                 matched node stops short of an adjacent token (e.g. the `:`
@@ -183,20 +218,68 @@ inside:
         # is immune to braces in the parameter list (a `= {}` default argument),
         # a multi-line signature, or an earlier overload. Each overload sharing
         # the name yields its own match.
+        #
+        # `return_type` captures the function's return type exactly as upstream
+        # spells it. No single node holds it: the C++ grammar puts a leading
+        # `const` in a type_qualifier *sibling* of the `type` field, hangs `*`
+        # and `&` off the declarator, and leaves `type` as a bare `auto` when
+        # the real type trails the parameter list. So the candidates read, in
+        # order: a trailing return type; else the source from the leading
+        # qualifier to the name (`const std::vector<int>& Foo::Get`); else the
+        # source from the type to the name (`Widget* Foo::Get`, `bool Foo::Is`).
+        # Each of the three parts is optional in the rule, so a con/destructor
+        # -- which has no `type` field at all -- still matches; for it the
+        # candidates fall through to the literal `void`, which is what a body
+        # wrapped in a lambda there returns.
         "cxx.find_function_body": {
             "template": """\
 kind: compound_statement
 inside:
   kind: function_definition
-  has:
-    kind: function_declarator
-    stopBy: end
-    has:
-      field: declarator
-      regex: ^{function_name}$
+  all:
+    - has:
+        kind: function_declarator
+        stopBy: end
+        all:
+          - has:
+              field: declarator
+              pattern: $FUNCTION
+              regex: ^{function_name}$
+          - any:
+              - has:
+                  kind: trailing_return_type
+                  has:
+                    kind: type_descriptor
+                    pattern: $TRAILING_RETURN_TYPE
+              - not:
+                  has:
+                    kind: trailing_return_type
+    - any:
+        - has:
+            field: type
+            pattern: $RETURN_TYPE
+        - not:
+            has:
+              field: type
+              pattern: $_
+    - any:
+        - has:
+            kind: type_qualifier
+            pattern: $LEADING_QUALIFIER
+        - not:
+            has:
+              kind: type_qualifier
 """,
             "result": {
                 "node": "compound_statement",
+                "captures": {
+                    "return_type": [
+                        {"text": "TRAILING_RETURN_TYPE"},
+                        {"span": ["LEADING_QUALIFIER", "FUNCTION"]},
+                        {"span": ["RETURN_TYPE", "FUNCTION"]},
+                        {"literal": "void"},
+                    ],
+                },
             },
         },
 
@@ -300,18 +383,30 @@ regex: ^{class_name}$
         # compound_statement; a DOTALL `^{ ... }$` capture folds the entire
         # upstream body (`\1`) between a lambda prefix and its `}();`
         # invocation, so the body's own lines are re-emitted verbatim, then
-        # appends `epilogue` as the body's trailing statements.
-        # `capture` is empty (a void wrap: `[&]() {...}();`) or an
-        # `auto <var> =` lead so the epilogue can read the wrapped body's return
-        # value. The caller passes `epilogue` indented to the body level and
-        # both spliced values with backslashes escaped for the `re.sub`
+        # appends `epilogue` as the body's trailing statements. The lambda
+        # states the enclosing function's `return_type` rather than deducing
+        # one, so a body returning `{}` still compiles and a `T&` return is not
+        # quietly deduced to a `T` copy. The caller passes `epilogue` indented
+        # to the body level, with backslashes escaped for the `re.sub`
         # replacement.
+        # `result_var` is optional: when the caller names one, `when_set`
+        # expands it to a declaration binding the wrapped body's value, and
+        # when it is empty the placeholder renders as nothing, leaving a bare
+        # void wrap. The variable is declared with the same `return_type` the
+        # lambda returns, which keeps a reference or pointer return exactly as
+        # upstream declared it (an `auto` lead would decay `const T&` to a `T`
+        # copy).
         "cxx.after_function_impl": {
             "matcher": "cxx.find_function_body",
-            "inputs": ["function_name", "capture", "epilogue"],
+            "inputs": ["function_name", "result_var", "epilogue"],
+            "when_set": {
+                "result_var": "{return_type} {result_var} = ",
+            },
             "replace": {
                 "re_pattern": "(?s)^\\{(.*)\\}$",
-                "replace": "{{\\n  {capture}[&]() {{\\1  }}();\\n{epilogue}\\n}}",
+                "replace":
+                "{{\\n  {result_var}[&]() -> {return_type} "
+                "{{\\1  }}();\\n{epilogue}\\n}}",
             },
             "result": {
                 "node": "compound_statement",
