@@ -9,7 +9,7 @@
 #include "content/public/browser/content_browser_client.h"
 #include "content/public/browser/global_routing_id.h"
 #include "net/base/isolation_info.h"
-#include "net/base/site_for_cookies.h"
+#include "net/cookies/site_for_cookies.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/mojom/url_request.mojom.h"
 #include "testing/gtest/include/gtest/gtest.h"
