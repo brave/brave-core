@@ -17,68 +17,48 @@ jobs:
         with:
           script: |
             const { owner, repo } = context.repo;
-            const query = `
+            const result = await github.graphql(`
               query($owner: String!, $repo: String!, $oid: GitObjectID!) {
                 repository(owner: $owner, name: $repo) {
                   object(oid: $oid) {
                     ... on Commit {
-                      associatedPullRequests(first: 1) {
+                      associatedPullRequests(first: 10) {
                         nodes {
                           number
                           merged
-                          headRefName
-                          headRepositoryOwner {
-                            login
-                          }
+                          isDraft
+                          title
+                          body
+                          url
                         }
                       }
                     }
                   }
                 }
               }
-            `;
+            `, { owner, repo, oid: context.sha });
 
-            const result = await github.graphql(query, {
-              owner,
-              repo,
-              oid: context.sha,
-            });
-            const sourcePr = result.repository.object?.associatedPullRequests
-              ?.nodes?.[0];
-            if (!sourcePr?.merged) {
+            const pullRequests =
+              result.repository.object?.associatedPullRequests?.nodes ?? [];
+            const sourcePr = pullRequests.find((pr) => pr.merged);
+            if (!sourcePr) {
               core.info(`No merged pull request found for push ${context.sha}.`);
               return;
             }
 
             const ciTitle = `CI run for contributor PR #${sourcePr.number}`;
-            const headOwner = sourcePr.headRepositoryOwner?.login;
-            const expectedHeadRef = headOwner
-              ? `contributor-${headOwner}-${sourcePr.headRefName}`
-              : undefined;
-
-            const candidates = expectedHeadRef
-              ? await github.paginate(github.rest.pulls.list, {
-                  owner,
-                  repo,
-                  head: `${owner}:${expectedHeadRef}`,
-                  state: 'open',
-                  per_page: 100,
-                })
-              : [];
-
-            const matches = candidates.filter((pr) =>
+            const matches = pullRequests.filter((pr) =>
               pr.number !== sourcePr.number &&
-              pr.draft &&
+              pr.isDraft &&
               pr.title === ciTitle &&
               pr.body?.includes(`proposed in PR #${sourcePr.number}`));
-
             if (matches.length === 0) {
               core.info(`No open contributor CI PR found for PR #${sourcePr.number}.`);
               return;
             }
 
             for (const pr of matches) {
-              core.info(`Closing associated contributor CI PR #${pr.number}: ${pr.html_url}`);
+              core.info(`Closing associated contributor CI PR #${pr.number}: ${pr.url}`);
               await github.rest.pulls.update({
                 owner,
                 repo,
