@@ -10,6 +10,7 @@
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/ai_chat/ai_chat_agent_profile_helper.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
+#include "brave/browser/ui/side_panel/ai_chat/ai_chat_side_panel_utils.h"
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
@@ -30,9 +31,7 @@
 #include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
 #include "chrome/browser/ui/profiles/profile_picker.h"
 #include "chrome/browser/ui/profiles/profile_view_utils.h"
-#include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_coordinator.h"
-#include "chrome/browser/ui/views/side_panel/side_panel_web_ui_view.h"
 #include "chrome/common/chrome_paths.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/common/webui_url_constants.h"
@@ -69,21 +68,6 @@ class AIChatAgentProfileBrowserTest : public InProcessBrowserTest {
     }
   }
 
-  // Returns the WebContents of the side panel view currently attached to the
-  // browser window (as opposed to `GetWebContentsForTest`, which re-runs the
-  // entry factory and returns a fresh, unattached contents). Null if the side
-  // panel is not hosting an AI Chat view.
-  content::WebContents* GetAttachedSidePanelWebContents(Browser* browser) {
-    auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser);
-    if (!browser_view) {
-      return nullptr;
-    }
-    auto* view =
-        browser_view->GetViewByID(SidePanelWebUIView::kSidePanelWebViewId);
-    return view ? views::AsViewClass<views::WebView>(view)->web_contents()
-                : nullptr;
-  }
-
   void VerifyAIChatSidePanelShowing(Browser* browser,
                                     bool should_open_panel = false) {
     auto* side_panel_coordinator = SidePanelCoordinator::From(browser);
@@ -91,7 +75,7 @@ class AIChatAgentProfileBrowserTest : public InProcessBrowserTest {
     if (should_open_panel) {
       side_panel_coordinator->Show(SidePanelEntry::Id::kChatUI);
     }
-    auto* side_panel_web_contents = GetAttachedSidePanelWebContents(browser);
+    auto* side_panel_web_contents = GetSidePanelWebContents(browser);
     ASSERT_TRUE(side_panel_web_contents);
     auto* web_ui = side_panel_web_contents->GetWebUI();
     ASSERT_TRUE(web_ui);
@@ -420,7 +404,7 @@ class AIChatAgentProfileWebUIContentBrowserTest
                                  const std::string& selector) {
     // TODO(https://github.com/brave/brave-browser/issues/48165): This would be
     // nicer in an interactive_uitest.
-    auto* side_panel_web_contents = GetAttachedSidePanelWebContents(browser);
+    auto* side_panel_web_contents = GetSidePanelWebContents(browser);
     constexpr char kWaitForAIChatRenderScript[] = R"(
       new Promise((resolve, reject) => {
         const TIMEOUT_SECONDS = 10;
@@ -461,7 +445,7 @@ class AIChatAgentProfileWebUIContentBrowserTest
   }
 
   bool IsElementInSidePanel(Browser* browser, const std::string& selector) {
-    auto* side_panel_web_contents = GetAttachedSidePanelWebContents(browser);
+    auto* side_panel_web_contents = GetSidePanelWebContents(browser);
     auto result = content::EvalJs(
         side_panel_web_contents,
         content::JsReplace("!!document.querySelector($1)", selector));

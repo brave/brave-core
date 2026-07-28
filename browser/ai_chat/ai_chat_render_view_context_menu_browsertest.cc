@@ -9,8 +9,10 @@
 #include "base/path_service.h"
 #include "base/run_loop.h"
 #include "base/test/bind.h"
+#include "base/test/run_until.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
+#include "brave/browser/ui/side_panel/ai_chat/ai_chat_side_panel_utils.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_model.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
@@ -19,6 +21,7 @@
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/engine/mock_engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
+#include "brave/components/ai_chat/core/common/ai_chat_urls.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/constants/brave_paths.h"
@@ -419,12 +422,29 @@ IN_PROC_BROWSER_TEST_F(AIChatRenderViewContextMenuBrowserTest,
 
   ASSERT_TRUE(menu->IsCommandIdEnabled(IDC_AI_CHAT_CONTEXT_SUMMARIZE_TEXT));
 
+  // Capture the content-associated conversation the command submits to, so we
+  // can assert the side panel is routed to *that* conversation rather than a
+  // fresh/global one.
+  ConversationHandler* conversation_handler = GetConversationHandler();
+  ASSERT_TRUE(conversation_handler);
+  const std::string conversation_uuid =
+      conversation_handler->get_conversation_uuid();
+
   // Execute the command.
   menu->ExecuteCommand(IDC_AI_CHAT_CONTEXT_SUMMARIZE_TEXT, 0);
   run_loop.Run();
 
   EXPECT_EQ(submitted_text, "This is the way");
   EXPECT_TRUE(IsAIChatSidebarActive());
+
+  // With the (default) global side panel, the command routes through
+  // `ai_chat::OpenConversationInSidePanel()`, so the panel's live WebContents
+  // is navigated to the submitted conversation's URL.
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    content::WebContents* panel_contents = GetSidePanelWebContents(browser());
+    return panel_contents && panel_contents->GetLastCommittedURL() ==
+                                 ai_chat::ConversationUrl(conversation_uuid);
+  }));
 }
 
 #if BUILDFLAG(ENABLE_PDF)
