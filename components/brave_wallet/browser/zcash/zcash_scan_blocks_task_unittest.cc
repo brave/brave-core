@@ -14,11 +14,13 @@
 #include "base/task/thread_pool.h"
 #include "base/test/bind.h"
 #include "base/test/mock_callback.h"
+#include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_wallet/browser/internal/orchard_test_utils.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_rpc.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_test_utils.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
+#include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -127,8 +129,69 @@ class ZCashScanBlocksTaskTest : public testing::Test {
         });
   }
 
-  ZCashActionContext CreateContext() {
-    return ZCashActionContext(zcash_rpc_, {}, sync_state_, account_id_);
+  ZCashActionContext CreateContext() { return CreateContext(account_id_); }
+
+  ZCashActionContext CreateContext(const mojom::AccountIdPtr& account_id) {
+    return ZCashActionContext(zcash_rpc_, {}, sync_state_, account_id);
+  }
+
+  void RegisterAccount(const mojom::AccountIdPtr& account_id,
+                       uint32_t birthday) {
+    auto lambda = base::BindLambdaForTesting(
+        [&](base::expected<OrchardStorage::Result, OrchardStorage::Error>
+                result) {
+          EXPECT_EQ(OrchardStorage::Result::kSuccess, result.value());
+        });
+    sync_state_.AsyncCall(&OrchardSyncState::RegisterAccount)
+        .WithArgs(account_id.Clone(), birthday)
+        .Then(std::move(lambda));
+    task_environment_.RunUntilIdle();
+  }
+
+  // The default mocks from InitZCashRpc() assert a mainnet chain ID and cap
+  // block heights near kNu5BlockUpdate. Testnet's Ironwood activation height
+  // is reachable without scanning millions of blocks, so tests exercising
+  // activation behavior use this instead.
+  void InitTestnetZCashRpc(uint32_t chain_tip_height) {
+    ON_CALL(zcash_rpc(), GetLatestBlock(_, _))
+        .WillByDefault(
+            [chain_tip_height](const std::string& chain_id,
+                               ZCashRpc::GetLatestBlockCallback callback) {
+              EXPECT_EQ(chain_id, mojom::kZCashTestnet);
+              std::move(callback).Run(zcash::mojom::BlockID::New(
+                  chain_tip_height, std::vector<uint8_t>({})));
+            });
+
+    ON_CALL(zcash_rpc(), GetTreeState(_, _, _))
+        .WillByDefault([](const std::string& chain_id,
+                          zcash::mojom::BlockIDPtr block,
+                          ZCashRpc::GetTreeStateCallback callback) {
+          EXPECT_EQ(chain_id, mojom::kZCashTestnet);
+          // Valid tree state
+          auto tree_state = zcash::mojom::TreeState::New(
+              chain_id, block->height, "aabb", 0, "", "", "");
+          std::move(callback).Run(std::move(tree_state));
+        });
+
+    ON_CALL(zcash_rpc(), GetCompactBlocks(_, _, _, _))
+        .WillByDefault([](const std::string& chain_id, uint32_t from,
+                          uint32_t to,
+                          ZCashRpc::GetCompactBlocksCallback callback) {
+          EXPECT_EQ(chain_id, mojom::kZCashTestnet);
+          std::vector<zcash::mojom::CompactBlockPtr> blocks;
+          for (uint32_t i = from; i <= to; i++) {
+            auto chain_metadata = zcash::mojom::ChainMetadata::New();
+            chain_metadata->orchard_commitment_tree_size = 0;
+            chain_metadata->ironwood_commitment_tree_size = 0;
+            // Create empty block for testing
+            blocks.push_back(zcash::mojom::CompactBlock::New(
+                0u, i, std::vector<uint8_t>({0xbb, 0xaa}),
+                std::vector<uint8_t>(), 0u, std::vector<uint8_t>(),
+                std::vector<zcash::mojom::CompactTxPtr>(),
+                std::move(chain_metadata)));
+          }
+          std::move(callback).Run(std::move(blocks));
+        });
   }
 
   testing::NiceMock<MockZCashRPC>& zcash_rpc() { return zcash_rpc_; }
@@ -138,12 +201,18 @@ class ZCashScanBlocksTaskTest : public testing::Test {
   base::expected<std::optional<OrchardSyncState::SpendableNotesBundle>,
                  OrchardStorage::Error>
   GetSpendableNotes() {
+    return GetSpendableNotes(OrchardPool::kOrchard, account_id_);
+  }
+
+  base::expected<std::optional<OrchardSyncState::SpendableNotesBundle>,
+                 OrchardStorage::Error>
+  GetSpendableNotes(OrchardPool pool, const mojom::AccountIdPtr& account_id) {
     std::optional<
         base::expected<std::optional<OrchardSyncState::SpendableNotesBundle>,
                        OrchardStorage::Error>>
         result;
     sync_state_.AsyncCall(&OrchardSyncState::GetSpendableNotes)
-        .WithArgs(account_id_.Clone(), OrchardAddrRawPart({}))
+        .WithArgs(pool, account_id.Clone(), OrchardAddrRawPart({}))
         .Then(base::BindLambdaForTesting(
             [&](base::expected<
                 std::optional<OrchardSyncState::SpendableNotesBundle>,
@@ -156,6 +225,7 @@ class ZCashScanBlocksTaskTest : public testing::Test {
   CreateMockOrchardBlockScannerProxy() {
     return std::make_unique<MockOrchardBlockScannerProxy>(base::BindRepeating(
         [](OrchardTreeState tree_state,
+           std::optional<OrchardTreeState> ironwood_tree_state,
            std::vector<zcash::mojom::CompactBlockPtr> blocks,
            base::OnceCallback<void(
                base::expected<OrchardBlockScanner::Result,
@@ -170,46 +240,109 @@ class ZCashScanBlocksTaskTest : public testing::Test {
           for (const auto& block : blocks) {
             // 3 notes in the blockchain found in the first batch
             if (block->height == kNu5BlockUpdate + 105) {
-              result.discovered_notes.push_back(
+              result.orchard.discovered_notes.push_back(
                   GenerateMockOrchardNote(account_id, block->height, 1));
             } else if (block->height == kNu5BlockUpdate + 205) {
-              result.discovered_notes.push_back(
+              result.orchard.discovered_notes.push_back(
                   GenerateMockOrchardNote(account_id, block->height, 2));
             } else if (block->height == kNu5BlockUpdate + 305) {
-              result.discovered_notes.push_back(
+              result.orchard.discovered_notes.push_back(
                   GenerateMockOrchardNote(account_id, block->height, 3));
             }
 
             // First 2 notes are spent in the second batch
             if (block->height == kNu5BlockUpdate + kExpectedBatchSize + 255) {
-              result.found_spends.push_back(OrchardNoteSpend(
+              result.orchard.found_spends.push_back(OrchardNoteSpend(
                   block->height, {GenerateMockNullifier(account_id, 1)}));
             } else if (block->height ==
                        kNu5BlockUpdate + kExpectedBatchSize + 265) {
-              result.found_spends.push_back(OrchardNoteSpend(
+              result.orchard.found_spends.push_back(OrchardNoteSpend(
                   block->height, {GenerateMockNullifier(account_id, 2)}));
             }
 
             // Another 2 additional notes found in the third batch
             if (block->height ==
                 kNu5BlockUpdate + kExpectedBatchSize * 2 + 105) {
-              result.discovered_notes.push_back(
+              result.orchard.discovered_notes.push_back(
                   GenerateMockOrchardNote(account_id, block->height, 4));
             } else if (block->height ==
                        kNu5BlockUpdate + kExpectedBatchSize * 2 + 205) {
-              result.discovered_notes.push_back(
+              result.orchard.discovered_notes.push_back(
                   GenerateMockOrchardNote(account_id, block->height, 5));
             }
 
             // Another 2 additional notes found far away from 3 previous batches
             if (block->height ==
                 kNu5BlockUpdate + kExpectedBatchSize * 7 + 105) {
-              result.discovered_notes.push_back(
+              result.orchard.discovered_notes.push_back(
                   GenerateMockOrchardNote(account_id, block->height, 6));
             } else if (block->height ==
                        kNu5BlockUpdate + kExpectedBatchSize * 7 + 205) {
-              result.discovered_notes.push_back(
+              result.orchard.discovered_notes.push_back(
                   GenerateMockOrchardNote(account_id, block->height, 7));
+            }
+          }
+          std::move(callback).Run(std::move(result));
+        }));
+  }
+
+  // Simulates a scan batch straddling the Ironwood activation height on
+  // testnet: orchard notes are discovered before activation, while ironwood
+  // notes and both pools' nullifiers only appear after it. Mirrors real
+  // scanning behavior in that ironwood data is only produced when
+  // `ironwood_tree_state` is present, i.e. when the Ironwood feature is
+  // enabled and the batch reaches the activation height.
+  std::unique_ptr<MockOrchardBlockScannerProxy>
+  CreateIronwoodActivationBlockScannerProxy() {
+    return std::make_unique<MockOrchardBlockScannerProxy>(base::BindRepeating(
+        [](OrchardTreeState tree_state,
+           std::optional<OrchardTreeState> ironwood_tree_state,
+           std::vector<zcash::mojom::CompactBlockPtr> blocks,
+           base::OnceCallback<void(
+               base::expected<OrchardBlockScanner::Result,
+                              OrchardBlockScanner::ErrorCode>)> callback) {
+          auto account_id = MakeIndexBasedAccountId(
+              mojom::CoinType::ZEC, mojom::KeyringId::kZCashTestnet,
+              mojom::AccountKind::kDerived, 0);
+          constexpr uint32_t kActivation = kIronwoodActivationHeightTestnet;
+
+          OrchardBlockScanner::Result result = CreateResultForTesting(
+              std::move(tree_state), std::vector<OrchardCommitment>(),
+              blocks.back()->height, ToHex(blocks.back()->hash));
+          if (ironwood_tree_state) {
+            result.ironwood = CreateIronwoodPoolResultForTesting(
+                std::move(*ironwood_tree_state),
+                std::vector<OrchardCommitment>(), blocks.back()->height,
+                ToHex(blocks.back()->hash));
+          }
+
+          for (const auto& block : blocks) {
+            // Orchard notes discovered before Ironwood activation.
+            if (block->height == kActivation - 15) {
+              result.orchard.discovered_notes.push_back(
+                  GenerateMockOrchardNote(account_id, block->height, 1));
+            } else if (block->height == kActivation - 5) {
+              result.orchard.discovered_notes.push_back(
+                  GenerateMockOrchardNote(account_id, block->height, 2));
+            } else if (block->height == kActivation + 10) {
+              // Orchard nullifier found after activation, spending note 1.
+              result.orchard.found_spends.push_back(
+                  GenerateMockNoteSpend(account_id, block->height, 1));
+            }
+
+            if (result.ironwood) {
+              if (block->height == kActivation + 5) {
+                result.ironwood->discovered_notes.push_back(
+                    GenerateMockOrchardNote(account_id, block->height, 11));
+              } else if (block->height == kActivation + 8) {
+                result.ironwood->discovered_notes.push_back(
+                    GenerateMockOrchardNote(account_id, block->height, 12));
+              } else if (block->height == kActivation + 15) {
+                // Ironwood nullifier found after activation, spending
+                // note 11.
+                result.ironwood->found_spends.push_back(
+                    GenerateMockNoteSpend(account_id, block->height, 11));
+              }
             }
           }
           std::move(callback).Run(std::move(result));
@@ -229,6 +362,7 @@ TEST_F(ZCashScanBlocksTaskTest, ScanRanges) {
   auto block_scanner =
       std::make_unique<MockOrchardBlockScannerProxy>(base::BindRepeating(
           [](OrchardTreeState tree_state,
+             std::optional<OrchardTreeState> ironwood_tree_state,
              std::vector<zcash::mojom::CompactBlockPtr> blocks,
              base::OnceCallback<void(
                  base::expected<OrchardBlockScanner::Result,
@@ -309,6 +443,7 @@ TEST_F(ZCashScanBlocksTaskTest, ScanSingle) {
   auto block_scanner =
       std::make_unique<MockOrchardBlockScannerProxy>(base::BindRepeating(
           [](OrchardTreeState tree_state,
+             std::optional<OrchardTreeState> ironwood_tree_state,
              std::vector<zcash::mojom::CompactBlockPtr> blocks,
              base::OnceCallback<void(
                  base::expected<OrchardBlockScanner::Result,
@@ -322,7 +457,7 @@ TEST_F(ZCashScanBlocksTaskTest, ScanSingle) {
                 ToHex(blocks[blocks.size() - 1]->hash));
             EXPECT_EQ(blocks.size(), 1u);
             EXPECT_EQ(blocks[0]->height, kNu5BlockUpdate + 1u);
-            result.discovered_notes.push_back(
+            result.orchard.discovered_notes.push_back(
                 GenerateMockOrchardNote(account_id, blocks[0]->height, 1));
             std::move(callback).Run(std::move(result));
           }));
@@ -663,6 +798,7 @@ TEST_F(ZCashScanBlocksTaskTest, DecodingError) {
   auto block_scanner =
       std::make_unique<MockOrchardBlockScannerProxy>(base::BindRepeating(
           [](OrchardTreeState tree_state,
+             std::optional<OrchardTreeState> ironwood_tree_state,
              std::vector<zcash::mojom::CompactBlockPtr> blocks,
              base::OnceCallback<void(
                  base::expected<OrchardBlockScanner::Result,
@@ -688,6 +824,89 @@ TEST_F(ZCashScanBlocksTaskTest, DecodingError) {
   task.Start();
 
   task_environment().RunUntilIdle();
+}
+
+TEST_F(ZCashScanBlocksTaskTest, IronwoodActivation_Enabled) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeatureWithParameters(
+      features::kBraveWalletZCashFeature, {{"zcash_ironwood_enabled", "true"}});
+
+  auto testnet_account = MakeIndexBasedAccountId(
+      mojom::CoinType::ZEC, mojom::KeyringId::kZCashTestnet,
+      mojom::AccountKind::kDerived, 0);
+  RegisterAccount(testnet_account, kIronwoodActivationHeightTestnet - 20);
+  InitTestnetZCashRpc(kIronwoodActivationHeightTestnet + 20);
+
+  auto block_scanner = CreateIronwoodActivationBlockScannerProxy();
+  ZCashActionContext context = CreateContext(testnet_account);
+
+  base::MockCallback<ZCashScanBlocksTask::ZCashScanBlocksTaskObserver> callback;
+  EXPECT_CALL(callback, Run(testing::_)).Times(testing::AnyNumber());
+
+  auto task = ZCashScanBlocksTask(context, *block_scanner, callback.Get(),
+                                  std::nullopt);
+  task.Start();
+  task_environment().RunUntilIdle();
+
+  // Note 1 (discovered pre-activation) is spent by the post-activation
+  // orchard nullifier, leaving only note 2 (amount 20).
+  auto orchard_notes =
+      GetSpendableNotes(OrchardPool::kOrchard, testnet_account);
+  ASSERT_TRUE(orchard_notes.has_value());
+  ASSERT_TRUE(orchard_notes.value().has_value());
+  ASSERT_EQ(orchard_notes.value()->all_notes.size(), 1u);
+  EXPECT_EQ(orchard_notes.value()->all_notes[0].amount, 20u);
+
+  // Note 11 (discovered post-activation) is spent by the ironwood
+  // nullifier, leaving only note 12 (amount 120).
+  auto ironwood_notes =
+      GetSpendableNotes(OrchardPool::kIronwood, testnet_account);
+  ASSERT_TRUE(ironwood_notes.has_value());
+  ASSERT_TRUE(ironwood_notes.value().has_value());
+  ASSERT_EQ(ironwood_notes.value()->all_notes.size(), 1u);
+  EXPECT_EQ(ironwood_notes.value()->all_notes[0].amount, 120u);
+}
+
+TEST_F(ZCashScanBlocksTaskTest, IronwoodActivation_Disabled) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeatureWithParameters(
+      features::kBraveWalletZCashFeature,
+      {{"zcash_ironwood_enabled", "false"}});
+
+  auto testnet_account = MakeIndexBasedAccountId(
+      mojom::CoinType::ZEC, mojom::KeyringId::kZCashTestnet,
+      mojom::AccountKind::kDerived, 0);
+  RegisterAccount(testnet_account, kIronwoodActivationHeightTestnet - 20);
+  InitTestnetZCashRpc(kIronwoodActivationHeightTestnet + 20);
+
+  auto block_scanner = CreateIronwoodActivationBlockScannerProxy();
+  ZCashActionContext context = CreateContext(testnet_account);
+
+  base::MockCallback<ZCashScanBlocksTask::ZCashScanBlocksTaskObserver> callback;
+  EXPECT_CALL(callback, Run(testing::_)).Times(testing::AnyNumber());
+
+  auto task = ZCashScanBlocksTask(context, *block_scanner, callback.Get(),
+                                  std::nullopt);
+  task.Start();
+  task_environment().RunUntilIdle();
+
+  // Orchard is unaffected by the flag: note 1 is still spent by the
+  // post-activation nullifier, leaving only note 2.
+  auto orchard_notes =
+      GetSpendableNotes(OrchardPool::kOrchard, testnet_account);
+  ASSERT_TRUE(orchard_notes.has_value());
+  ASSERT_TRUE(orchard_notes.value().has_value());
+  ASSERT_EQ(orchard_notes.value()->all_notes.size(), 1u);
+  EXPECT_EQ(orchard_notes.value()->all_notes[0].amount, 20u);
+
+  // With the feature disabled, ZCashBlocksBatchScanTask never passes an
+  // ironwood tree state to the scanner, so no ironwood notes or nullifiers
+  // are ever produced or persisted, even past the activation height.
+  auto ironwood_notes =
+      GetSpendableNotes(OrchardPool::kIronwood, testnet_account);
+  ASSERT_TRUE(ironwood_notes.has_value());
+  ASSERT_TRUE(ironwood_notes.value().has_value());
+  EXPECT_TRUE(ironwood_notes.value()->all_notes.empty());
 }
 
 }  // namespace brave_wallet

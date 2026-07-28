@@ -55,8 +55,9 @@ class MockOrchardSyncState : public OrchardSyncState {
   using OrchardSyncState::OrchardSyncState;
   ~MockOrchardSyncState() override {}
 
-  MOCK_METHOD1(GetMinCheckpointId,
+  MOCK_METHOD2(GetMinCheckpointId,
                base::expected<std::optional<uint32_t>, OrchardStorage::Error>(
+                   OrchardPool pool,
                    const mojom::AccountIdPtr& account_id));
 
   MOCK_METHOD3(Rewind,
@@ -132,8 +133,9 @@ class ZCashVerifyChainStateTaskTest : public testing::Test {
 };
 
 TEST_F(ZCashVerifyChainStateTaskTest, NoReorg) {
-  ON_CALL(mocked_sync_state(), GetMinCheckpointId(_))
-      .WillByDefault([](const mojom::AccountIdPtr& account_id) {
+  ON_CALL(mocked_sync_state(), GetMinCheckpointId(_, _))
+      .WillByDefault([](OrchardPool pool,
+                        const mojom::AccountIdPtr& account_id) {
         return base::ok(std::optional<uint32_t>(kLatestScannedBlock - 100u));
       });
 
@@ -181,8 +183,9 @@ TEST_F(ZCashVerifyChainStateTaskTest, NoReorg) {
 }
 
 TEST_F(ZCashVerifyChainStateTaskTest, Reorg_ChainTipBeforeLatestScannedBlock) {
-  ON_CALL(mocked_sync_state(), GetMinCheckpointId(_))
-      .WillByDefault([](const mojom::AccountIdPtr& account_id) {
+  ON_CALL(mocked_sync_state(), GetMinCheckpointId(_, _))
+      .WillByDefault([](OrchardPool pool,
+                        const mojom::AccountIdPtr& account_id) {
         return base::ok(std::optional<uint32_t>(kLatestScannedBlock - 100u));
       });
 
@@ -240,8 +243,9 @@ TEST_F(ZCashVerifyChainStateTaskTest, Reorg_ChainTipBeforeLatestScannedBlock) {
 }
 
 TEST_F(ZCashVerifyChainStateTaskTest, Reorg_ChainTipAfterLatestScannedBlock) {
-  ON_CALL(mocked_sync_state(), GetMinCheckpointId(_))
-      .WillByDefault([](const mojom::AccountIdPtr& account_id) {
+  ON_CALL(mocked_sync_state(), GetMinCheckpointId(_, _))
+      .WillByDefault([](OrchardPool pool,
+                        const mojom::AccountIdPtr& account_id) {
         return base::ok(std::optional<uint32_t>(kLatestScannedBlock - 100u));
       });
 
@@ -301,8 +305,9 @@ TEST_F(ZCashVerifyChainStateTaskTest, Reorg_ChainTipAfterLatestScannedBlock) {
 }
 
 TEST_F(ZCashVerifyChainStateTaskTest, Reorg_LatestBlockHashChanged) {
-  ON_CALL(mocked_sync_state(), GetMinCheckpointId(_))
-      .WillByDefault([](const mojom::AccountIdPtr& account_id) {
+  ON_CALL(mocked_sync_state(), GetMinCheckpointId(_, _))
+      .WillByDefault([](OrchardPool pool,
+                        const mojom::AccountIdPtr& account_id) {
         return base::ok(std::optional<uint32_t>(kLatestScannedBlock - 100u));
       });
 
@@ -359,10 +364,11 @@ TEST_F(ZCashVerifyChainStateTaskTest, Reorg_LatestBlockHashChanged) {
 }
 
 TEST_F(ZCashVerifyChainStateTaskTest, Error_CheckpointIdFailed) {
-  ON_CALL(mocked_sync_state(), GetMinCheckpointId(_))
-      .WillByDefault([](const mojom::AccountIdPtr& account_id) {
-        return base::unexpected(OrchardStorage::Error());
-      });
+  ON_CALL(mocked_sync_state(), GetMinCheckpointId(_, _))
+      .WillByDefault(
+          [](OrchardPool pool, const mojom::AccountIdPtr& account_id) {
+            return base::unexpected(OrchardStorage::Error());
+          });
 
   ON_CALL(zcash_rpc(), GetLatestBlock(_, _))
       .WillByDefault([](const std::string& chain_id,
@@ -408,10 +414,11 @@ TEST_F(ZCashVerifyChainStateTaskTest, Error_CheckpointIdFailed) {
 }
 
 TEST_F(ZCashVerifyChainStateTaskTest, Error_NoCheckpointId) {
-  ON_CALL(mocked_sync_state(), GetMinCheckpointId(_))
-      .WillByDefault([](const mojom::AccountIdPtr& account_id) {
-        return base::ok(std::nullopt);
-      });
+  ON_CALL(mocked_sync_state(), GetMinCheckpointId(_, _))
+      .WillByDefault(
+          [](OrchardPool pool, const mojom::AccountIdPtr& account_id) {
+            return base::ok(std::nullopt);
+          });
 
   ON_CALL(zcash_rpc(), GetLatestBlock(_, _))
       .WillByDefault([](const std::string& chain_id,
@@ -457,8 +464,9 @@ TEST_F(ZCashVerifyChainStateTaskTest, Error_NoCheckpointId) {
 }
 
 TEST_F(ZCashVerifyChainStateTaskTest, Error_LatestBlockFailed) {
-  ON_CALL(mocked_sync_state(), GetMinCheckpointId(_))
-      .WillByDefault([](const mojom::AccountIdPtr& account_id) {
+  ON_CALL(mocked_sync_state(), GetMinCheckpointId(_, _))
+      .WillByDefault([](OrchardPool pool,
+                        const mojom::AccountIdPtr& account_id) {
         return base::ok(std::optional<uint32_t>(kLatestScannedBlock - 100u));
       });
 
@@ -512,8 +520,9 @@ TEST_F(ZCashVerifyChainStateTaskTest, Error_LatestBlockFailed) {
 }
 
 TEST_F(ZCashVerifyChainStateTaskTest, Error_TreeStateFailed) {
-  ON_CALL(mocked_sync_state(), GetMinCheckpointId(_))
-      .WillByDefault([](const mojom::AccountIdPtr& account_id) {
+  ON_CALL(mocked_sync_state(), GetMinCheckpointId(_, _))
+      .WillByDefault([](OrchardPool pool,
+                        const mojom::AccountIdPtr& account_id) {
         return base::ok(std::optional<uint32_t>(kLatestScannedBlock - 100u));
       });
 

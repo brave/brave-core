@@ -10,71 +10,177 @@
 #include <utility>
 #include <vector>
 
+#include "base/logging.h"
 #include "base/memory/ptr_util.h"
 #include "base/threading/thread_restrictions.h"
 #include "brave/components/brave_wallet/browser/zcash/rust/lib.rs.h"
 #include "brave/components/brave_wallet/browser/zcash/rust/orchard_decoded_blocks_bundle_impl.h"
+#include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
 
 namespace brave_wallet::orchard {
+
+namespace {
+
+const char* PoolName(::brave_wallet::OrchardPool pool) {
+  switch (pool) {
+    case ::brave_wallet::OrchardPool::kOrchard:
+      return "orchard";
+    case ::brave_wallet::OrchardPool::kIronwood:
+      return "ironwood";
+  }
+}
+
+void LogCompactAction(
+    const char* label,
+    size_t index,
+    const ::brave_wallet::zcash::mojom::CompactOrchardActionPtr& action) {
+  LOG(ERROR) << "XXXZZZ OrchardBlockDecoder action[" << label << "][" << index
+             << "] nullifier=" << ToHex(action->nullifier)
+             << " cmx=" << ToHex(action->cmx)
+             << " ephemeral_key=" << ToHex(action->ephemeral_key)
+             << " ciphertext=" << ToHex(action->ciphertext) << " sizes=["
+             << action->nullifier.size() << "," << action->cmx.size() << ","
+             << action->ephemeral_key.size() << "," << action->ciphertext.size()
+             << "]";
+}
+
+void LogDecodePoolArgs(
+    const ::brave_wallet::OrchardTreeState& tree_state,
+    const std::vector<::brave_wallet::zcash::mojom::CompactBlockPtr>& blocks,
+    ::brave_wallet::OrchardPool pool) {
+  LOG(ERROR) << "XXXZZZ OrchardBlockDecoder::DecodePool pool=" << PoolName(pool)
+             << " blocks=" << blocks.size()
+             << " tree_state={block_height=" << tree_state.block_height
+             << " tree_size=" << tree_state.tree_size
+             << " frontier_size=" << tree_state.frontier.size()
+             << " frontier=" << ToHex(tree_state.frontier) << "}";
+
+  for (size_t b = 0; b < blocks.size(); ++b) {
+    const auto& block = blocks[b];
+    LOG(ERROR) << "XXXZZZ OrchardBlockDecoder block[" << b
+               << "] height=" << block->height
+               << " proto_version=" << block->proto_version
+               << " time=" << block->time << " hash=" << ToHex(block->hash)
+               << " prev_hash=" << ToHex(block->prev_hash)
+               << " header=" << ToHex(block->header)
+               << " vtx=" << block->vtx.size();
+    if (block->chain_metadata) {
+      LOG(ERROR) << "XXXZZZ OrchardBlockDecoder block[" << b
+                 << "] chain_metadata={orchard_commitment_tree_size="
+                 << block->chain_metadata->orchard_commitment_tree_size
+                 << " ironwood_commitment_tree_size="
+                 << block->chain_metadata->ironwood_commitment_tree_size << "}";
+    }
+    for (size_t t = 0; t < block->vtx.size(); ++t) {
+      const auto& tx = block->vtx[t];
+      LOG(ERROR) << "XXXZZZ OrchardBlockDecoder block[" << b << "] tx[" << t
+                 << "] index=" << tx->index << " fee=" << tx->fee
+                 << " hash=" << ToHex(tx->hash)
+                 << " orchard_actions=" << tx->orchard_actions.size()
+                 << " ironwood_actions=" << tx->ironwood_actions.size();
+      for (size_t i = 0; i < tx->orchard_actions.size(); ++i) {
+        LogCompactAction("orchard", i, tx->orchard_actions[i]);
+      }
+      for (size_t i = 0; i < tx->ironwood_actions.size(); ++i) {
+        LogCompactAction("ironwood", i, tx->ironwood_actions[i]);
+      }
+    }
+  }
+}
+
+}  // namespace
+
+OrchardBlockDecoder::Result::Result() = default;
+OrchardBlockDecoder::Result::~Result() = default;
+OrchardBlockDecoder::Result::Result(Result&&) = default;
+OrchardBlockDecoder::Result& OrchardBlockDecoder::Result::operator=(Result&&) =
+    default;
 
 OrchardBlockDecoder::OrchardBlockDecoder() = default;
 OrchardBlockDecoder::~OrchardBlockDecoder() = default;
 
 // static
-std::unique_ptr<OrchardDecodedBlocksBundle> OrchardBlockDecoder::DecodeBlocks(
+std::unique_ptr<OrchardDecodedBlocksBundle> OrchardBlockDecoder::DecodePool(
     const OrchardFullViewKey& fvk,
     const ::brave_wallet::OrchardTreeState& tree_state,
-    const std::vector<::brave_wallet::zcash::mojom::CompactBlockPtr>& blocks) {
-  base::AssertLongCPUWorkAllowed();
-  ::rust::Vec<orchard::CxxOrchardCompactAction> orchard_actions;
-  for (const auto& block : blocks) {
-    bool block_has_orchard_action = false;
-    for (const auto& tx : block->vtx) {
-      for (const auto& orchard_action : tx->orchard_actions) {
-        block_has_orchard_action = true;
-        orchard::CxxOrchardCompactAction orchard_compact_action;
+    const std::vector<::brave_wallet::zcash::mojom::CompactBlockPtr>& blocks,
+    ::brave_wallet::OrchardPool pool,
+    uint32_t ironwood_activation_height) {
+  LogDecodePoolArgs(tree_state, blocks, pool);
 
-        if (orchard_action->nullifier.size() != kOrchardNullifierSize ||
-            orchard_action->cmx.size() != kOrchardCmxSize ||
-            orchard_action->ephemeral_key.size() != kOrchardEphemeralKeySize ||
-            orchard_action->ciphertext.size() != kOrchardCipherTextSize) {
+  const bool is_ironwood = pool == ::brave_wallet::OrchardPool::kIronwood;
+  ::rust::Vec<orchard::CxxOrchardCompactAction> compact_actions;
+  for (const auto& block : blocks) {
+    // Ironwood commitments only exist from the activation height onward. Skip
+    // pre-activation blocks so they never contribute to the Ironwood tree.
+    if (is_ironwood && block->height < ironwood_activation_height) {
+      continue;
+    }
+    bool block_has_action = false;
+    for (const auto& tx : block->vtx) {
+      const auto& actions =
+          is_ironwood ? tx->ironwood_actions : tx->orchard_actions;
+      for (const auto& action : actions) {
+        if (action->nullifier.size() != kOrchardNullifierSize ||
+            action->cmx.size() != kOrchardCmxSize ||
+            action->ephemeral_key.size() != kOrchardEphemeralKeySize ||
+            action->ciphertext.size() != kOrchardCipherTextSize) {
           return nullptr;
         }
-
-        orchard_compact_action.block_id = block->height;
-        orchard_compact_action.is_block_last_action = false;
-        base::span(orchard_compact_action.nullifier)
-            .copy_from(orchard_action->nullifier);
-        base::span(orchard_compact_action.cmx).copy_from(orchard_action->cmx);
-        base::span(orchard_compact_action.ephemeral_key)
-            .copy_from(orchard_action->ephemeral_key);
-        base::span(orchard_compact_action.enc_cipher_text)
-            .copy_from(orchard_action->ciphertext);
-
-        orchard_actions.push_back(std::move(orchard_compact_action));
+        block_has_action = true;
+        orchard::CxxOrchardCompactAction c;
+        c.block_id = block->height;
+        c.is_block_last_action = false;
+        base::span(c.nullifier).copy_from(action->nullifier);
+        base::span(c.cmx).copy_from(action->cmx);
+        base::span(c.ephemeral_key).copy_from(action->ephemeral_key);
+        base::span(c.enc_cipher_text).copy_from(action->ciphertext);
+        compact_actions.push_back(std::move(c));
       }
     }
-    if (block_has_orchard_action) {
-      orchard_actions.back().is_block_last_action = true;
+    if (block_has_action) {
+      compact_actions.back().is_block_last_action = true;
     }
   }
 
   CxxOrchardShardTreeState prior_tree_state;
   prior_tree_state.block_height = tree_state.block_height;
   prior_tree_state.tree_size = tree_state.tree_size;
-
   std::ranges::copy(tree_state.frontier,
                     std::back_inserter(prior_tree_state.frontier));
 
-  ::rust::Box<CxxOrchardDecodedBlocksBundleResult> decode_result = batch_decode(
-      fvk, std::move(prior_tree_state), std::move(orchard_actions));
-
+  ::rust::Box<CxxOrchardDecodedBlocksBundleResult> decode_result =
+      is_ironwood ? batch_decode_ironwood(fvk, std::move(prior_tree_state),
+                                          std::move(compact_actions))
+                  : batch_decode(fvk, std::move(prior_tree_state),
+                                 std::move(compact_actions));
   if (decode_result->is_ok()) {
+    auto bundle = decode_result->unwrap();
     return std::make_unique<OrchardDecodedBlocksBundleImpl>(
-        base::PassKey<class OrchardBlockDecoder>(), decode_result->unwrap());
+        base::PassKey<class OrchardBlockDecoder>(), std::move(bundle));
   }
   return nullptr;
+}
+
+// static
+OrchardBlockDecoder::Result OrchardBlockDecoder::DecodeBlocks(
+    const OrchardFullViewKey& fvk,
+    const ::brave_wallet::OrchardTreeState& orchard_tree_state,
+    const std::vector<::brave_wallet::zcash::mojom::CompactBlockPtr>& blocks,
+    const ::brave_wallet::OrchardTreeState* ironwood_tree_state,
+    uint32_t ironwood_activation_height) {
+  base::AssertLongCPUWorkAllowed();
+  Result result;
+  // Orchard processes every block; the activation cut does not apply (0).
+  result.orchard =
+      DecodePool(fvk, orchard_tree_state, blocks, OrchardPool::kOrchard, 0);
+  if (ironwood_tree_state) {
+    result.ironwood =
+        DecodePool(fvk, *ironwood_tree_state, blocks, OrchardPool::kIronwood,
+                   ironwood_activation_height);
+  }
+  return result;
 }
 
 }  // namespace brave_wallet::orchard

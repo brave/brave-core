@@ -162,6 +162,7 @@ class ZCashShieldSyncServiceTest : public testing::Test {
   CreateMockOrchardBlockScannerProxy() {
     return std::make_unique<MockOrchardBlockScannerProxy>(base::BindRepeating(
         [](OrchardTreeState tree_state,
+           std::optional<OrchardTreeState> ironwood_tree_state,
            std::vector<zcash::mojom::CompactBlockPtr> blocks,
            base::OnceCallback<void(
                base::expected<OrchardBlockScanner::Result,
@@ -204,8 +205,8 @@ class ZCashShieldSyncServiceTest : public testing::Test {
           OrchardBlockScanner::Result result = CreateResultForTesting(
               std::move(tree_state), std::move(commitments),
               blocks.back()->height, ToHex(blocks.back()->hash));
-          result.discovered_notes = notes;
-          result.found_spends = spends;
+          result.orchard.discovered_notes = notes;
+          result.orchard.found_spends = spends;
           std::move(callback).Run(std::move(result));
         }));
   }
@@ -293,6 +294,7 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
   sync_service()->SetOrchardBlockScannerProxyForTesting(
       std::make_unique<MockOrchardBlockScannerProxy>(base::BindRepeating(
           [](OrchardTreeState tree_state,
+             std::optional<OrchardTreeState> ironwood_tree_state,
              std::vector<zcash::mojom::CompactBlockPtr> blocks,
              base::OnceCallback<void(
                  base::expected<OrchardBlockScanner::Result,
@@ -332,8 +334,8 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
             OrchardBlockScanner::Result result = CreateResultForTesting(
                 std::move(orchard_tree_state), std::move(commitments),
                 blocks.back()->height, ToHex(blocks.back()->hash));
-            result.discovered_notes = notes;
-            result.found_spends = spends;
+            result.orchard.discovered_notes = notes;
+            result.orchard.found_spends = spends;
             std::move(callback).Run(std::move(result));
           })));
 
@@ -376,6 +378,7 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
   sync_service()->SetOrchardBlockScannerProxyForTesting(
       std::make_unique<MockOrchardBlockScannerProxy>(base::BindRepeating(
           [](OrchardTreeState tree_state,
+             std::optional<OrchardTreeState> ironwood_tree_state,
              std::vector<zcash::mojom::CompactBlockPtr> blocks,
              base::OnceCallback<void(
                  base::expected<OrchardBlockScanner::Result,
@@ -401,7 +404,7 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
             OrchardBlockScanner::Result result = CreateResultForTesting(
                 std::move(orchard_tree_state), std::move(commitments),
                 blocks.back()->height, ToHex(blocks.back()->hash));
-            result.discovered_notes = notes;
+            result.orchard.discovered_notes = notes;
             std::move(callback).Run(std::move(result));
           })));
 
@@ -442,6 +445,7 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
   sync_service()->SetOrchardBlockScannerProxyForTesting(
       std::make_unique<MockOrchardBlockScannerProxy>(base::BindRepeating(
           [](OrchardTreeState tree_state,
+             std::optional<OrchardTreeState> ironwood_tree_state,
              std::vector<zcash::mojom::CompactBlockPtr> blocks,
              base::OnceCallback<void(
                  base::expected<OrchardBlockScanner::Result,
@@ -471,8 +475,8 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
             OrchardBlockScanner::Result result = CreateResultForTesting(
                 std::move(tree_state), std::move(commitments),
                 blocks.back()->height, ToHex(blocks.back()->hash));
-            result.discovered_notes = discovered_notes;
-            result.found_spends = found_spends;
+            result.orchard.discovered_notes = discovered_notes;
+            result.orchard.found_spends = found_spends;
             std::move(callback).Run(std::move(result));
           })));
 

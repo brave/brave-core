@@ -11,20 +11,48 @@
 #include <vector>
 
 #include "brave/components/brave_wallet/browser/zcash/rust/orchard_decoded_blocks_bundle.h"
+#include "brave/components/brave_wallet/common/zcash_utils.h"
 #include "brave/components/services/brave_wallet/public/mojom/zcash_decoder.mojom.h"
 
 namespace brave_wallet::orchard {
 
 class OrchardBlockDecoder {
  public:
-  static std::unique_ptr<OrchardDecodedBlocksBundle> DecodeBlocks(
+  // Result of decoding one batch of blocks for both pools.
+  struct Result {
+    Result();
+    ~Result();
+    Result(Result&&);
+    Result& operator=(Result&&);
+
+    // Non-null on success. Null means the Orchard decode failed.
+    std::unique_ptr<OrchardDecodedBlocksBundle> orchard;
+    // Null when Ironwood was not requested (or decode failed).
+    std::unique_ptr<OrchardDecodedBlocksBundle> ironwood;
+  };
+
+  static Result DecodeBlocks(
       const OrchardFullViewKey& fvk,
-      const ::brave_wallet::OrchardTreeState& tree_state,
-      const std::vector<::brave_wallet::zcash::mojom::CompactBlockPtr>& blocks);
+      const ::brave_wallet::OrchardTreeState& orchard_tree_state,
+      const std::vector<::brave_wallet::zcash::mojom::CompactBlockPtr>& blocks,
+      const ::brave_wallet::OrchardTreeState* ironwood_tree_state = nullptr,
+      // Blocks with height < this value are excluded from the Ironwood pool.
+      // Ignored for the Orchard pool. 0 means "no cut".
+      uint32_t ironwood_activation_height = 0);
 
  private:
   OrchardBlockDecoder();
   ~OrchardBlockDecoder();
+
+  // Decodes a single pool. Selects tx->orchard_actions vs tx->ironwood_actions
+  // based on `pool`, then calls the (shared) Rust batch_decode. Must be a
+  // member so it can mint base::PassKey<OrchardBlockDecoder>.
+  static std::unique_ptr<OrchardDecodedBlocksBundle> DecodePool(
+      const OrchardFullViewKey& fvk,
+      const ::brave_wallet::OrchardTreeState& tree_state,
+      const std::vector<::brave_wallet::zcash::mojom::CompactBlockPtr>& blocks,
+      ::brave_wallet::OrchardPool pool,
+      uint32_t ironwood_activation_height);
 };
 
 }  // namespace brave_wallet::orchard
