@@ -101,7 +101,7 @@ def cmd_install_hook() -> int:
         HOOK_SOURCE.chmod(HOOK_SOURCE.stat().st_mode | stat.S_IXUSR
                           | stat.S_IXGRP | stat.S_IXOTH)
 
-    print(f'Installed: {HOOK_DEST} → {HOOK_SOURCE}')
+    print(f'Installed: {HOOK_DEST} -> {HOOK_SOURCE}')
     return 0
 
 
