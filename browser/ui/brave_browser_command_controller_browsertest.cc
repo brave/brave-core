@@ -556,16 +556,16 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
   const GURL b("https://b.com/");
 
   // Two distinct URLs, so there are still no duplicates.
-  chrome::AddTabAt(browser(), a, 1, false);
-  chrome::AddTabAt(browser(), b, 2, false);
+  chrome::AddTabAt(browser(), a, -1, false);
+  chrome::AddTabAt(browser(), b, -1, false);
   EXPECT_EQ(3, tsm->count());
   EXPECT_FALSE(
       command_controller->IsCommandEnabled(IDC_CLOSE_ALL_DUPLICATE_TABS));
 
   // Add duplicates of both URLs, so the command becomes enabled.
-  chrome::AddTabAt(browser(), a, 3, false);
-  chrome::AddTabAt(browser(), b, 4, false);
-  chrome::AddTabAt(browser(), a, 5, false);
+  chrome::AddTabAt(browser(), a, -1, false);
+  chrome::AddTabAt(browser(), b, -1, false);
+  chrome::AddTabAt(browser(), a, -1, false);
   EXPECT_EQ(6, tsm->count());
   EXPECT_TRUE(
       command_controller->IsCommandEnabled(IDC_CLOSE_ALL_DUPLICATE_TABS));
@@ -600,8 +600,8 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
   const GURL b("https://b.com/");
 
   // Open 'a' in the foreground so it becomes the active tab, plus a 'b' tab.
-  chrome::AddTabAt(browser(), a, 1, true);
-  chrome::AddTabAt(browser(), b, 2, false);
+  chrome::AddTabAt(browser(), a, -1, true);
+  chrome::AddTabAt(browser(), b, -1, false);
   ASSERT_EQ(a, tsm->GetActiveWebContents()->GetVisibleURL());
   // The active tab has no duplicate yet.
   EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_CLOSE_DUPLICATE_TABS));
@@ -617,6 +617,9 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
   // Only the duplicate of the active tab is closed; the 'b' duplicates remain.
   ASSERT_TRUE(base::test::RunUntil([&]() { return tsm->count() == 4; }));
   EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_CLOSE_DUPLICATE_TABS));
+
+  // The first (original) about:blank tab is left untouched.
+  EXPECT_EQ(GURL("about:blank"), tsm->GetWebContentsAt(0)->GetVisibleURL());
 
   int a_count = 0;
   int b_count = 0;
