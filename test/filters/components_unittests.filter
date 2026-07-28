@@ -26,6 +26,24 @@
 # shares the fixture name with the upstream tests below.
 -RankerModelLoaderImplTest.*
 
+# `HashAffiliationFetcher::StartRequest` is stubbed off in Brave (see
+# chromium_src/components/affiliations/core/browser/hash_affiliation_fetcher.cc),
+# so none of this fixture's tests exercise real behavior any more. Covered
+# instead by DisabledHashAffiliationFetcherTest in
+# chromium_src/components/affiliations/core/browser/hash_affiliation_fetcher_unittest.cc.
+-HashAffiliationFetcherTest.*
+
+# These AffiliationFetcherManagerTest cases exercise the same stubbed
+# `HashAffiliationFetcher::StartRequest` indirectly via
+# AffiliationFetcherManager::Fetch, so they no longer see a real network
+# request or real response data.
+-AffiliationFetcherManagerTest.OneFetchCallCreatesOneFetcher
+-AffiliationFetcherManagerTest.MultipleFetchCallsCreateMultipleFetchers
+-AffiliationFetcherManagerTest.CompletionClosureInvokedOnFetchCompletion
+-AffiliationFetcherManagerTest.CompletionClosureInvokedOnMultipleFetchCompletions
+-AffiliationFetcherManagerTest.DelegateInvokedOnFetchSuccess
+-AffiliationFetcherManagerTest.DelegateInvokedOnAllPossibleResponses
+
 # This test fails because we use a different sync server endpoint.
 -HistoryNoticeUtilsTest.WebHistoryStates
 
