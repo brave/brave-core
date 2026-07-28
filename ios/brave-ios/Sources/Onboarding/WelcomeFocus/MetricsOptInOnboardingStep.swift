@@ -10,9 +10,9 @@ import Strings
 import SwiftUI
 
 struct MetricsOptInGraphicsView: View {
-  @Environment(\.onboardingEnvironment.p3aUtils) private var p3aUtils
+  @Bindable var state: MetricsOptInOnboardingStep.State
+
   @State private var isDisplayingP3AHelp = false
-  @State private var isP3AEnabled: Bool = false
 
   var body: some View {
     VStack(spacing: 0) {
@@ -22,7 +22,7 @@ struct MetricsOptInGraphicsView: View {
         .aspectRatio(contentMode: .fit)
         .frame(maxHeight: 250)
       Spacer()
-      Toggle(LocalizedStringKey(Strings.FocusOnboarding.p3aToggleTitle), isOn: $isP3AEnabled)
+      Toggle(LocalizedStringKey(Strings.FocusOnboarding.p3aToggleTitle), isOn: $state.isP3AEnabled)
         .padding(24)
         .foregroundStyle(Color(braveSystemName: .textPrimary))
         .tint(Color(braveSystemName: .primitivePrimary35))
@@ -43,12 +43,6 @@ struct MetricsOptInGraphicsView: View {
           }
         )
     }
-    .onAppear {
-      isP3AEnabled = p3aUtils?.isP3AEnabled ?? false
-    }
-    .onChange(of: isP3AEnabled) { _, newValue in
-      p3aUtils?.isP3AEnabled = newValue
-    }
     .sheet(isPresented: $isDisplayingP3AHelp) {
       FocusSafariControllerView(url: FocusOnboardingConstants.p3aHelpArticle)
     }
@@ -56,6 +50,7 @@ struct MetricsOptInGraphicsView: View {
 }
 
 struct MetricsOptInActionsView: View {
+  var state: MetricsOptInOnboardingStep.State
   var continueHandler: () -> Void
 
   @Environment(\.onboardingEnvironment.p3aUtils) private var p3aUtils
@@ -64,6 +59,7 @@ struct MetricsOptInActionsView: View {
   var body: some View {
     Button {
       if let p3aUtils = p3aUtils {
+        p3aUtils.isP3AEnabled = state.isP3AEnabled
         attributionManager?.pingDAUServer(p3aUtils.isP3AEnabled)
         p3aUtils.isNoticeAcknowledged = true
       }
@@ -88,7 +84,12 @@ private struct FocusSafariControllerView: UIViewControllerRepresentable {
 }
 
 public struct MetricsOptInOnboardingStep: OnboardingStep {
+  @Observable class State {
+    var isP3AEnabled: Bool = true
+  }
   public var id: String = "metrics-opt-in"
+  private var state: State = .init()
+
   public func makeTitle() -> some View {
     OnboardingTitleView(
       title: Strings.FocusOnboarding.p3aScreenTitle,
@@ -96,10 +97,10 @@ public struct MetricsOptInOnboardingStep: OnboardingStep {
     )
   }
   public func makeGraphic() -> some View {
-    MetricsOptInGraphicsView()
+    MetricsOptInGraphicsView(state: state)
   }
   public func makeActions(continueHandler: @escaping () -> Void) -> some View {
-    MetricsOptInActionsView(continueHandler: continueHandler)
+    MetricsOptInActionsView(state: state, continueHandler: continueHandler)
   }
 }
 
