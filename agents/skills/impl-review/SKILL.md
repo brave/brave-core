@@ -86,6 +86,7 @@ Parse the review comments to understand what changes are requested:
    - Whether it affects production code, test code, or both
 
 3. **Present the plan:**
+
    - How many review comments were found
    - Which are actionable vs already addressed
    - Which comments are questions, the proposed answer for each one, and which
@@ -96,14 +97,14 @@ Parse the review comments to understand what changes are requested:
 
 4. **Answer questions before implementation:**
 
-   - For question-only comments, draft the answer, ask for confirmation, post
-     it if confirmed, and do not make code changes
-   - If a question also contains an explicit change request (for example,
-     "Could you change X?"), draft and confirm the answer first, post it if
-     confirmed, then follow the normal implementation confirmation flow for the
-     requested change
-   - If the user does not confirm posting an answer, do not implement any
-     change that depends on that unanswered question
+   - For question-only comments, draft the answer, ask for confirmation, post it
+     if confirmed, and do not make code changes
+   - If a question also contains an explicit change request (for example, "Could
+     you change X?"), draft and confirm the answer first, post it if confirmed,
+     then follow the normal implementation confirmation flow for the requested
+     change
+   - If the user does not confirm posting an answer, do not implement any change
+     that depends on that unanswered question
 
 ### 5. Checkout the Branch
 
@@ -119,10 +120,6 @@ Ensure you're on the correct branch and up to date with the remote.
 
 **CRITICAL: Only make changes the reviewer explicitly asks for.**
 
-- If a review comment is phrased as a question, answer it first and do not
-  change code unless the reviewer or requester explicitly asks for a change
-- Do NOT infer a change request from a question, even when a code change might
-  seem like the likely follow-up
 - Do NOT make any additional changes — no "while I'm here" cleanups, no extra
   refactoring, no renaming things the reviewer didn't mention
 - If the reviewer asks you to fix one thing, fix exactly that one thing and
