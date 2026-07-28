@@ -41,6 +41,12 @@ class SettingsEmailAliasesPageElement extends PrefsMixin(PolymerElement) {
         value: () => loadTimeData.getString(
             EmailAliasesStrings.SETTINGS_EMAIL_ALIASES_LABEL),
       },
+      autofillSuggestionToggleLabel_: {
+        type: String,
+        value: () => loadTimeData.getString(
+          EmailAliasesStrings.SETTINGS_EMAIL_ALIASES_AUTOFILL_SUGGESTION_LABEL
+        ),
+      },
       showEmailAliasesSettings_: {
         type: Boolean,
         value: false,
@@ -49,6 +55,7 @@ class SettingsEmailAliasesPageElement extends PrefsMixin(PolymerElement) {
   }
 
   declare pageTitle_: string;
+  declare autofillSuggestionToggleLabel_: string;
   declare showEmailAliasesSettings_: boolean;
 
   override ready() {
