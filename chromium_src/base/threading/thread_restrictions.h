@@ -6,17 +6,11 @@
 #ifndef BRAVE_CHROMIUM_SRC_BASE_THREADING_THREAD_RESTRICTIONS_H_
 #define BRAVE_CHROMIUM_SRC_BASE_THREADING_THREAD_RESTRICTIONS_H_
 
-class BraveBrowsingDataRemoverDelegate;
+class BraveBrowsingDataRemoverDelegate;  // NOLINT(build/forward_decl)
 namespace brave {
-class ProcessLauncher;
+class ProcessLauncher;  // NOLINT(build/forward_decl)
 }
 
-#define BRAVE_SCOPED_ALLOW_BASE_SYNC_PRIMITIVES_H  \
-  friend class ::BraveBrowsingDataRemoverDelegate; \
-  friend class brave::ProcessLauncher;
-
 #include <base/threading/thread_restrictions.h>  // IWYU pragma: export
-
-#undef BRAVE_SCOPED_ALLOW_BASE_SYNC_PRIMITIVES_H
 
 #endif  // BRAVE_CHROMIUM_SRC_BASE_THREADING_THREAD_RESTRICTIONS_H_

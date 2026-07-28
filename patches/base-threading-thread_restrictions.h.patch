@@ -1,12 +1,13 @@
 diff --git a/base/threading/thread_restrictions.h b/base/threading/thread_restrictions.h
-index c97be53dd6bd91360a2861231707d01537c0ce6a..a26170d6efaa5c917ccb5c4b7f443f2f275909d7 100644
+index c97be53dd6bd91360a2861231707d01537c0ce6a..bf2001acee19b4c14f8d0b3013fc38ac4af6e866 100644
 --- a/base/threading/thread_restrictions.h
 +++ b/base/threading/thread_restrictions.h
-@@ -748,6 +748,7 @@ class BASE_EXPORT ScopedAllowBaseSyncPrimitives {
-   ScopedAllowBaseSyncPrimitives& operator=(
+@@ -749,6 +749,8 @@ class BASE_EXPORT ScopedAllowBaseSyncPrimitives {
        const ScopedAllowBaseSyncPrimitives&) = delete;
  
-+  BRAVE_SCOPED_ALLOW_BASE_SYNC_PRIMITIVES_H
   private:
++  friend class ::BraveBrowsingDataRemoverDelegate;
++  friend class brave::ProcessLauncher;
    // This can only be instantiated by friends. Use
    // ScopedAllowBaseSyncPrimitivesForTesting in unit tests to avoid the friend
+   // requirement.
