@@ -1,20 +1,49 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
-index 977f05360fe1eb6a1043f26c19b53145ad7721a6..c73b0ac3fcfaef888b4604a5d738d5ce87a7d1c5 100644
+index 977f05360fe1eb6a1043f26c19b53145ad7721a6..7b0157274916aa0c649244887c600513c80a451e 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
-@@ -929,6 +929,7 @@ public class ChromeTabbedActivity extends ChromeActivity implements PreAttachInt
+@@ -154,7 +154,7 @@ import org.chromium.chrome.browser.history.HistoryManagerUtils;
+ import org.chromium.chrome.browser.history.HistoryPane;
+ import org.chromium.chrome.browser.history.HistoryTabHelper;
+ import org.chromium.chrome.browser.homepage.HomepageManager;
+-import org.chromium.chrome.browser.hub.DefaultPaneOrderController;
++import org.chromium.chrome.browser.hub.BraveDefaultPaneOrderController;
+ import org.chromium.chrome.browser.hub.HubColorMixer.OverviewModeAlphaObserver;
+ import org.chromium.chrome.browser.hub.HubLayoutDependencyHolder;
+ import org.chromium.chrome.browser.hub.HubManager;
+@@ -928,6 +928,14 @@ public class ChromeTabbedActivity extends ChromeActivity implements PreAttachInt
+ 
                          private void closeIfNoTabsAndHomepageEnabled(
                                  boolean isPendingClosure, boolean shouldRemoveWindowWithZeroTabs) {
-                             if (getTabModelSelector().getTotalTabCount() == 0) {
++                            if (getTabModelSelector().getTotalTabCount() == 0) {
 +                                shouldRemoveWindowWithZeroTabs = shouldRemoveWindowWithZeroTabs && org.chromium.chrome.browser.partnercustomizations.CloseBraveManager.shouldCloseAppWithZeroTabs();
++                            }
++                            closeIfNoTabsAndHomepageEnabled_ChromiumImpl(isPendingClosure, shouldRemoveWindowWithZeroTabs);
++                        }
++
++                        private void closeIfNoTabsAndHomepageEnabled_ChromiumImpl(
++                                boolean isPendingClosure, boolean shouldRemoveWindowWithZeroTabs) {
+                             if (getTabModelSelector().getTotalTabCount() == 0) {
                                  if (shouldRemoveWindowWithZeroTabs) {
                                      mMultiInstanceManager.closeChromeWindowIfEmpty(mWindowId);
-                                 } else if (HomepageManager.getInstance()
-@@ -3748,6 +3749,7 @@ public class ChromeTabbedActivity extends ChromeActivity implements PreAttachInt
+@@ -1218,7 +1226,7 @@ public class ChromeTabbedActivity extends ChromeActivity implements PreAttachInt
+                 new HubProvider(
+                         this,
+                         getProfileProviderSupplier(),
+-                        new DefaultPaneOrderController(),
++                        new BraveDefaultPaneOrderController(),
+                         mBackPressManager,
+                         getMenuOrKeyboardActionController(),
+                         this::getSnackbarManager,
+@@ -3745,6 +3753,11 @@ public class ChromeTabbedActivity extends ChromeActivity implements PreAttachInt
+                 new TabModelSelectorObserver() {
+                     @Override
+                     public void onTabStateInitialized() {
++                        onTabStateInitialized_ChromiumImpl();
++                        onTabStateInitializedHandler();
++                    }
++
++                    private void onTabStateInitialized_ChromiumImpl() {
                          if (mMultiInstanceManager != null) {
                              mMultiInstanceManager.onTabStateInitialized();
                          }
-+                        onTabStateInitializedHandler();
-                     }
-                 };
-         mTabModelSelector.addObserver(mTabModelSelectorObserver);
