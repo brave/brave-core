@@ -5,6 +5,7 @@
 
 #include "brave/browser/net/url_context.h"
 
+#include "base/test/task_environment.h"
 #include "chrome/test/base/testing_profile.h"
 #include "content/public/browser/content_browser_client.h"
 #include "content/public/browser/global_routing_id.h"
@@ -25,8 +26,13 @@ net::IsolationInfo MakeIsolationInfo(const url::Origin& top_frame_origin) {
       top_frame_origin, net::SiteForCookies::FromOrigin(top_frame_origin));
 }
 
-TEST(BraveRequestInfoTest,
-     UsesFactoryContextWhenWorkerRequestOmitsRequestContext) {
+class BraveRequestInfoTest : public testing::Test {
+ protected:
+  base::test::TaskEnvironment task_environment_;
+};
+
+TEST_F(BraveRequestInfoTest,
+       UsesFactoryContextWhenWorkerRequestOmitsRequestContext) {
   TestingProfile profile;
   network::ResourceRequest request;
   request.url = GURL("https://worker.example/fetch");
@@ -53,7 +59,7 @@ TEST(BraveRequestInfoTest,
             factory_isolation_info.network_anonymization_key());
 }
 
-TEST(BraveRequestInfoTest, RequestContextOverridesFactoryContext) {
+TEST_F(BraveRequestInfoTest, RequestContextOverridesFactoryContext) {
   TestingProfile profile;
   const url::Origin request_initiator =
       url::Origin::Create(GURL("https://request-initiator.example"));
@@ -84,7 +90,8 @@ TEST(BraveRequestInfoTest, RequestContextOverridesFactoryContext) {
             request.trusted_params->isolation_info.network_anonymization_key());
 }
 
-TEST(BraveRequestInfoTest, NonWorkerFactoryTypeIgnoresFactoryContextFallback) {
+TEST_F(BraveRequestInfoTest,
+       NonWorkerFactoryTypeIgnoresFactoryContextFallback) {
   TestingProfile profile;
   network::ResourceRequest request;
   request.url = GURL("https://document.example/fetch");
