@@ -133,6 +133,46 @@
     Search engines
   </message>
 
+  <message name="IDS_WELCOME_PAGE_FEATURES_STEP_TITLE" desc="Title for the feature selection step" formatter_data="webui=BraveWelcomePage">
+    Customize Brave
+  </message>
+
+  <message name="IDS_WELCOME_PAGE_FEATURES_STEP_TEXT" desc="Text on the feature selection step" formatter_data="webui=BraveWelcomePage">
+    Select the features you would like displayed by default in the main toolbar. You can always show or hide these later in Settings.
+  </message>
+
+  <message name="IDS_WELCOME_PAGE_PRODUCT_LEO_AI_TITLE" desc="Title of the Leo AI product card" formatter_data="webui=BraveWelcomePage">
+    Leo AI
+  </message>
+
+  <message name="IDS_WELCOME_PAGE_PRODUCT_LEO_AI_DESCRIPTION" desc="Description of the Leo AI product card" formatter_data="webui=BraveWelcomePage">
+    The smart AI assistant built right into your browser. Ask questions, summarize pages, create new content, and more.
+  </message>
+
+  <message name="IDS_WELCOME_PAGE_PRODUCT_WEB3_WALLET_TITLE" desc="Title of the Web3 wallet product card" formatter_data="webui=BraveWelcomePage">
+    Web3 wallet
+  </message>
+
+  <message name="IDS_WELCOME_PAGE_PRODUCT_WEB3_WALLET_DESCRIPTION" desc="Description of the Web3 wallet product card" formatter_data="webui=BraveWelcomePage">
+    The secure, built-in crypto wallet that supercharges your browser for Web3.
+  </message>
+
+  <message name="IDS_WELCOME_PAGE_PRODUCT_REWARDS_TITLE" desc="Title of the Brave Rewards product card" formatter_data="webui=BraveWelcomePage">
+    Rewards
+  </message>
+
+  <message name="IDS_WELCOME_PAGE_PRODUCT_REWARDS_DESCRIPTION" desc="Description of the Brave Rewards product card" formatter_data="webui=BraveWelcomePage">
+    Support content creators and earn tokens for ads you see in Brave.
+  </message>
+
+  <message name="IDS_WELCOME_PAGE_PRODUCT_VPN_TITLE" desc="Title of the Brave VPN product card" formatter_data="webui=BraveWelcomePage">
+    VPN
+  </message>
+
+  <message name="IDS_WELCOME_PAGE_PRODUCT_VPN_DESCRIPTION" desc="Description of the Brave VPN product card" formatter_data="webui=BraveWelcomePage">
+    Hide your IP address, mask your location, and access your favorite content on the go.
+  </message>
+
   <message name="IDS_WELCOME_PAGE_METRICS_STEP_TITLE" desc="Title for the metrics opt-in step" formatter_data="webui=BraveWelcomePage">
     Build a better web with us
   </message>

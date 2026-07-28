@@ -151,7 +151,7 @@ style.passthrough.css`
     }
 
     .step-ui {
-      align-self: center;
+      align-self: safe center;
     }
   }
 `

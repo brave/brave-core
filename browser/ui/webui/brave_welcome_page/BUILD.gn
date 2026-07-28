@@ -3,6 +3,10 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
+import("//brave/components/brave_rewards/core/buildflags/buildflags.gni")
+import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//mojo/public/tools/bindings/mojom.gni")
 
 assert(!is_android)
@@ -15,6 +19,8 @@ source_set("brave_welcome_page") {
   sources = [
     "brave_welcome_page_ui.cc",
     "brave_welcome_page_ui.h",
+    "welcome_page_features.cc",
+    "welcome_page_features.h",
     "welcome_page_handler.cc",
     "welcome_page_handler.h",
   ]
@@ -30,6 +36,11 @@ source_set("brave_welcome_page") {
     "//base",
     "//brave/browser/resources/brave_welcome_page:generated_resources",
     "//brave/browser/ui:brave_tab_prefs",
+    "//brave/components/ai_chat/core/common/buildflags",
+    "//brave/components/brave_rewards/core/buildflags",
+    "//brave/components/brave_search_conversion",
+    "//brave/components/brave_vpn/common/buildflags",
+    "//brave/components/brave_wallet/common/buildflags",
     "//brave/components/constants",
     "//brave/components/p3a",
     "//brave/components/resources:static_resources",
@@ -44,4 +55,32 @@ source_set("brave_welcome_page") {
     "//mojo/public/cpp/bindings",
     "//ui/webui",
   ]
+
+  if (enable_ai_chat) {
+    deps += [
+      "//brave/browser/ai_chat",
+      "//brave/components/ai_chat/core/common",
+    ]
+  }
+
+  if (enable_brave_rewards) {
+    deps += [
+      "//brave/browser/brave_rewards:util",
+      "//brave/components/brave_rewards/core",
+    ]
+  }
+
+  if (enable_brave_vpn) {
+    deps += [
+      "//brave/browser/brave_vpn",
+      "//brave/components/brave_vpn/common",
+    ]
+  }
+
+  if (enable_brave_wallet) {
+    deps += [
+      "//brave/browser/brave_wallet",
+      "//brave/components/brave_wallet/browser",
+    ]
+  }
 }

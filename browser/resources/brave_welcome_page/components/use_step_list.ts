@@ -6,14 +6,25 @@
 import * as React from 'react'
 
 import { useImportableProfiles } from './use_importable_profiles'
+import {
+  hasFeaturesAvailable,
+  useProductFeatures,
+} from './use_product_features'
 
-const baseSteps = ['welcome', 'import', 'appearance', 'metrics'] as const
+const baseSteps = [
+  'welcome',
+  'import',
+  'appearance',
+  'features',
+  'metrics',
+] as const
 
 export type Step = (typeof baseSteps)[number]
 
 // Returns the current list of visible Welcome steps.
 export function useStepList() {
   const profiles = useImportableProfiles()
+  const features = useProductFeatures()
 
   return React.useMemo(() => {
     const hidden = new Set<Step>()
@@ -23,6 +34,11 @@ export function useStepList() {
       hidden.add('import')
     }
 
+    // Hide the features step if there are no products to offer.
+    if (!hasFeaturesAvailable(features)) {
+      hidden.add('features')
+    }
+
     return baseSteps.filter((step) => !hidden.has(step))
-  }, [profiles])
+  }, [profiles, features])
 }
