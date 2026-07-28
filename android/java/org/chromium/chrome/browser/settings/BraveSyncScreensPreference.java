@@ -5,6 +5,8 @@
 
 package org.chromium.chrome.browser.settings;
 
+import static org.chromium.build.NullUtil.assertNonNull;
+
 import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
@@ -130,6 +132,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
     private AlertDialog mFinalWarningDialog;
     private Dialog mPlayServicesErrorDialog;
     private TabLayout mTabLayout;
+    private View mRootView;
 
     // One-shot listener used to re-apply the wide-display layout correction once the fragment root
     // gets its post-rotation size (see correctWideDisplayLayoutAfterRotation).
@@ -235,13 +238,9 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
         if (getView() == null) {
             return;
         }
-        View root = getView().findViewById(R.id.brave_sync_layout);
-        if (root == null) {
-            return;
-        }
         // root persists across rotations; ensure only one listener is attached.
         if (mRotationLayoutListener != null) {
-            root.removeOnLayoutChangeListener(mRotationLayoutListener);
+            mRootView.removeOnLayoutChangeListener(mRotationLayoutListener);
         }
         mRotationLayoutListener =
                 (v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
@@ -255,19 +254,11 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
                     mRotationLayoutListener = null;
                     applyWideDisplayLayoutCorrection();
                 };
-        root.addOnLayoutChangeListener(mRotationLayoutListener);
+        mRootView.addOnLayoutChangeListener(mRotationLayoutListener);
     }
 
     private void applyWideDisplayLayoutCorrection() {
-        // PostTask does not track the fragment/view lifecycle (unlike View.post), so guard against
-        // the fragment being torn down between posting and execution.
-        if (getActivity() == null || getView() == null) {
-            return;
-        }
-        View root = getView().findViewById(R.id.brave_sync_layout);
-        if (root == null) {
-            return;
-        }
+        assertNonNull(mRootView);
         int screenWidthDp = getResources().getConfiguration().screenWidthDp;
         int padding = 0;
         // In Multi-column Settings mode this fragment lives in a narrow detail pane, which already
@@ -285,8 +276,9 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
                     Math.round((excessWidthDp / 2.f) * getResources().getDisplayMetrics().density);
             padding = Math.max(minWidePadding, paddingPx);
         }
-        root.setPadding(padding, root.getPaddingTop(), padding, root.getPaddingBottom());
-        ViewUtils.requestLayout(root, "BraveSyncScreensPreference.correctWideDisplayLayout");
+        mRootView.setPadding(
+                padding, mRootView.getPaddingTop(), padding, mRootView.getPaddingBottom());
+        ViewUtils.requestLayout(mRootView, "BraveSyncScreensPreference.correctWideDisplayLayout");
         // Re-measure the currently visible sub-screen against the corrected size. The initial and
         // other sub-screens use a fillViewport ScrollView with weighted children (e.g. the Sync
         // graphic), whose heights depend on the viewport size and must be recomputed after a
@@ -339,6 +331,15 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
         requireActivity()
                 .getOnBackPressedDispatcher()
                 .addCallback(getViewLifecycleOwner(), mBackPressedCallback);
+    }
+
+    @Override
+    public void onDestroyView() {
+        if (mRotationLayoutListener != null) {
+            mRootView.removeOnLayoutChangeListener(mRotationLayoutListener);
+            mRotationLayoutListener = null;
+        }
+        super.onDestroyView();
     }
 
     private boolean ensureCameraPermission() {
@@ -630,6 +631,8 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
 
         mLayoutMobile = getView().findViewById(R.id.brave_sync_frame_mobile);
         mLayoutLaptop = getView().findViewById(R.id.brave_sync_frame_laptop);
+
+        mRootView = getView().findViewById(R.id.brave_sync_layout);
 
         setAppropriateView();
 
