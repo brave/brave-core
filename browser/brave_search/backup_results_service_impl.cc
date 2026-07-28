@@ -61,7 +61,11 @@
 #include "ui/gfx/geometry/size.h"
 
 #if BUILDFLAG(IS_ANDROID)
+#include "base/android/jni_android.h"
+#include "base/android/scoped_java_ref.h"
+#include "brave/build/android/jni_headers/BackupResultsWindowFactory_jni.h"
 #include "ui/android/view_android.h"
+#include "ui/android/window_android.h"
 #else
 #include "ui/gfx/geometry/rect.h"
 #endif
@@ -192,6 +196,9 @@ void BackupResultsServiceImpl::FetchBackupResults(
   MaybeConfigureFarblingAndAcceptLanguage(otr_profile, url);
 
   std::unique_ptr<content::WebContents> web_contents;
+#if BUILDFLAG(IS_ANDROID)
+  ui::WindowAndroid* window_android = nullptr;
+#endif
 
   if (should_render) {
     auto create_params = content::WebContents::CreateParams(otr_profile);
@@ -216,6 +223,14 @@ void BackupResultsServiceImpl::FetchBackupResults(
     }
 #if BUILDFLAG(IS_ANDROID)
     auto* native_view = web_contents->GetNativeView();
+    // Root the view tree in a window so that window.outerWidth/outerHeight
+    // report the device window bounds rather than the view bounds.
+    JNIEnv* env = base::android::AttachCurrentThread();
+    window_android = ui::WindowAndroid::FromJavaWindowAndroid(
+        Java_BackupResultsWindowFactory_create(env));
+    if (window_android) {
+      window_android->AddChild(native_view);
+    }
     float dip_scale = native_view->GetDipScale();
     native_view->OnSizeChanged(
         static_cast<int>(view_size.width() * dip_scale),
@@ -241,6 +256,9 @@ void BackupResultsServiceImpl::FetchBackupResults(
   auto request = pending_requests_.emplace(
       pending_requests_.end(), std::move(web_contents), headers, otr_profile,
       low_latency_required, std::move(callback));
+#if BUILDFLAG(IS_ANDROID)
+  request->window_android = window_android;
+#endif
 
   if (should_render) {
     const bool load_after_restore =
@@ -634,6 +652,17 @@ void BackupResultsServiceImpl::CleanupAndDispatchResult(
   backup_results_metrics_.RecordQuery(!result);
 
   std::move(pending_request->callback).Run(result);
+
+  pending_request->web_contents = nullptr;
+#if BUILDFLAG(IS_ANDROID)
+  if (pending_request->window_android) {
+    auto java_window = pending_request->window_android->GetJavaObject();
+    pending_request->window_android = nullptr;
+    Java_BackupResultsWindowFactory_destroy(
+        base::android::AttachCurrentThread(), java_window);
+  }
+#endif
+
   pending_requests_.erase(pending_request);
 
   if (profile_) {
@@ -676,6 +705,14 @@ void BackupResultsServiceImpl::Shutdown() {
     profile_->RemoveObserver(this);
     for (auto& request : pending_requests_) {
       request.web_contents = nullptr;
+#if BUILDFLAG(IS_ANDROID)
+      if (request.window_android) {
+        auto java_window = request.window_android->GetJavaObject();
+        request.window_android = nullptr;
+        Java_BackupResultsWindowFactory_destroy(
+            base::android::AttachCurrentThread(), java_window);
+      }
+#endif
       auto* otr_profile = request.otr_profile.get();
       request.otr_profile = nullptr;
       profile_->DestroyOffTheRecordProfile(otr_profile);
