@@ -26,13 +26,11 @@
 #include "base/timer/elapsed_timer.h"
 #include "brave/browser/net/resource_context_data.h"
 #include "brave/browser/net/url_context.h"
-#include "content/public/browser/content_browser_client.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "net/base/completion_once_callback.h"
-#include "net/base/isolation_info.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "services/network/public/cpp/http_request_headers_update_params.h"
 #include "services/network/public/cpp/resource_request.h"
@@ -136,6 +134,7 @@ class BraveProxyingURLLoaderFactory : public network::mojom::URLLoaderFactory {
     T<brave::BraveRequestInfo> ctx_;
     const raw_ref<BraveProxyingURLLoaderFactory> factory_;
     network::ResourceRequest request_;
+    const std::optional<url::Origin> original_initiator_;
     const uint64_t request_id_;
     const int32_t network_service_request_id_;
 
@@ -168,8 +167,6 @@ class BraveProxyingURLLoaderFactory : public network::mojom::URLLoaderFactory {
     mojo::ScopedDataPipeConsumerHandle current_response_body_;
     scoped_refptr<net::HttpResponseHeaders> override_headers_;
     GURL redirect_url_;
-
-    bool request_completed_ = false;
 
     // This stores the parameters to FollowRedirect that came from
     // the client. That way we can combine it with any other changes that
