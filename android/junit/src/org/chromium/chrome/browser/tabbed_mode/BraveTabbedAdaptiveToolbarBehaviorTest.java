@@ -6,6 +6,8 @@
 package org.chromium.chrome.browser.tabbed_mode;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import android.app.Activity;
 
@@ -17,6 +19,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.robolectric.Robolectric;
 
+import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.supplier.ObservableSuppliers;
 import org.chromium.base.supplier.SettableMonotonicObservableSupplier;
 import org.chromium.base.supplier.SettableNullableObservableSupplier;
@@ -27,6 +30,7 @@ import org.chromium.chrome.browser.bookmarks.BookmarkModel;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsVisibilityManager;
 import org.chromium.chrome.browser.glic.GlicButtonDelegate;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
+import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.tab_group_suggestion.toolbar.GroupSuggestionsButtonController;
 import org.chromium.chrome.browser.tabmodel.TabCreatorManager;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
@@ -83,6 +87,8 @@ public class BraveTabbedAdaptiveToolbarBehaviorTest {
     @After
     public void tearDown() {
         AdaptiveToolbarBehavior.sValidButtons.clear();
+        ChromeSharedPreferences.getInstance()
+                .removeKey(BravePreferenceKeys.BRAVE_TAB_GROUPS_FEATURE_ENABLED);
     }
 
     @Test
@@ -101,5 +107,44 @@ public class BraveTabbedAdaptiveToolbarBehaviorTest {
                                 AdaptiveToolbarButtonVariant.HISTORY));
 
         assertEquals(AdaptiveToolbarButtonVariant.SHARE, result);
+    }
+
+    @Test
+    public void resultFilter_keepsTabGroupingWhenTabGroupsEnabled() {
+        // Tab groups are enabled by default (no pref written).
+        AdaptiveToolbarBehavior.sValidButtons.add(AdaptiveToolbarButtonVariant.TAB_GROUPING);
+
+        int result =
+                mBehavior.resultFilter(Arrays.asList(AdaptiveToolbarButtonVariant.TAB_GROUPING));
+
+        assertEquals(AdaptiveToolbarButtonVariant.TAB_GROUPING, result);
+    }
+
+    @Test
+    public void resultFilter_dropsTabGroupingWhenTabGroupsDisabled() {
+        ChromeSharedPreferences.getInstance()
+                .writeBoolean(BravePreferenceKeys.BRAVE_TAB_GROUPS_FEATURE_ENABLED, false);
+        AdaptiveToolbarBehavior.sValidButtons.add(AdaptiveToolbarButtonVariant.TAB_GROUPING);
+
+        // The only predicted button is Tab grouping, which is filtered out, so nothing is shown.
+        int result =
+                mBehavior.resultFilter(Arrays.asList(AdaptiveToolbarButtonVariant.TAB_GROUPING));
+
+        assertEquals(AdaptiveToolbarButtonVariant.UNKNOWN, result);
+    }
+
+    @Test
+    public void canShowManualOverride_allowsTabGroupingWhenTabGroupsEnabled() {
+        assertTrue(mBehavior.canShowManualOverride(AdaptiveToolbarButtonVariant.TAB_GROUPING));
+    }
+
+    @Test
+    public void canShowManualOverride_blocksTabGroupingWhenTabGroupsDisabled() {
+        ChromeSharedPreferences.getInstance()
+                .writeBoolean(BravePreferenceKeys.BRAVE_TAB_GROUPS_FEATURE_ENABLED, false);
+
+        assertFalse(mBehavior.canShowManualOverride(AdaptiveToolbarButtonVariant.TAB_GROUPING));
+        // Non-grouping buttons are unaffected.
+        assertTrue(mBehavior.canShowManualOverride(AdaptiveToolbarButtonVariant.BOOKMARKS));
     }
 }
