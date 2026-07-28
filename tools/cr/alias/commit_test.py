@@ -507,8 +507,19 @@ class TestGracefulExit(unittest.TestCase):
     def tearDown(self) -> None:
         self._sandbox.__exit__(None, None, None)
 
+    @unittest.skipIf(
+        platform.system() == 'Windows',
+        'SIGINT cannot be delivered to a child process on Windows')
     def test_no_traceback_on_keyboard_interrupt(self) -> None:
-        """Sending SIGINT produces exit code 130 with no traceback."""
+        """Sending SIGINT produces exit code 130 with no traceback.
+
+        POSIX-only. Popen.send_signal on Windows accepts just SIGTERM,
+        CTRL_C_EVENT and CTRL_BREAK_EVENT, and neither Ctrl event can be
+        aimed at one child: Windows disables Ctrl-C for a process group and
+        CTRL_BREAK_EVENT raises SIGBREAK, which Python does not translate to
+        KeyboardInterrupt. Sending either would signal the test runner's own
+        console group rather than exercise cmd.py's handler.
+        """
         import signal
 
         proc = subprocess.Popen(
