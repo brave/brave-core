@@ -1,0 +1,282 @@
+[
+  {
+    "cmd": [
+      "git",
+      "clone",
+      "--depth",
+      "1",
+      "https://chromium.googlesource.com/chromium/tools/depot_tools",
+      "[WORKSPACE]/brave-browser/src/third_party/depot_tools"
+    ],
+    "name": "clone depot_tools"
+  },
+  {
+    "cmd": [
+      "gclient"
+    ],
+    "name": "verify gclient"
+  },
+  {
+    "cmd": [
+      "[WORKSPACE]/brave-browser/src/third_party/depot_tools/vpython3",
+      "-u",
+      "[RECIPES_ROOT]/recipe_modules/file/resources/fileutil.py",
+      "read_text",
+      "/etc/config.json"
+    ],
+    "name": "read config"
+  },
+  {
+    "cmd": [
+      "echo",
+      "{'key': 'value'}"
+    ],
+    "name": "echo json"
+  },
+  {
+    "cmd": [
+      "[WORKSPACE]/brave-browser/src/third_party/depot_tools/vpython3",
+      "-u",
+      "[RECIPES_ROOT]/recipe_modules/file/resources/fileutil.py",
+      "copy",
+      "/src/a.txt",
+      "/dst/a.txt"
+    ],
+    "name": "copy file"
+  },
+  {
+    "cmd": [
+      "[WORKSPACE]/brave-browser/src/third_party/depot_tools/vpython3",
+      "-u",
+      "[RECIPES_ROOT]/recipe_modules/file/resources/fileutil.py",
+      "copytree",
+      "--symlinks",
+      "--hardlink",
+      "--allow-override",
+      "/src/dir",
+      "/dst/dir"
+    ],
+    "name": "copy tree"
+  },
+  {
+    "cmd": [
+      "[WORKSPACE]/brave-browser/src/third_party/depot_tools/vpython3",
+      "-u",
+      "[RECIPES_ROOT]/recipe_modules/file/resources/fileutil.py",
+      "move",
+      "/src/b.txt",
+      "/dst/b.txt"
+    ],
+    "name": "move file"
+  },
+  {
+    "cmd": [
+      "[WORKSPACE]/brave-browser/src/third_party/depot_tools/vpython3",
+      "-u",
+      "[RECIPES_ROOT]/recipe_modules/file/resources/fileutil.py",
+      "chmod",
+      "/dst/a.txt",
+      "--mode",
+      "0o755",
+      "--recursive"
+    ],
+    "name": "chmod file"
+  },
+  {
+    "cmd": [
+      "[WORKSPACE]/brave-browser/src/third_party/depot_tools/vpython3",
+      "-u",
+      "[RECIPES_ROOT]/recipe_modules/file/resources/fileutil.py",
+      "remove",
+      "/dst/a.txt"
+    ],
+    "name": "remove file"
+  },
+  {
+    "cmd": [
+      "[WORKSPACE]/brave-browser/src/third_party/depot_tools/vpython3",
+      "-u",
+      "[RECIPES_ROOT]/recipe_modules/file/resources/fileutil.py",
+      "rmtree",
+      "/dst/dir"
+    ],
+    "name": "rmtree dir"
+  },
+  {
+    "cmd": [
+      "[WORKSPACE]/brave-browser/src/third_party/depot_tools/vpython3",
+      "-u",
+      "[RECIPES_ROOT]/recipe_modules/file/resources/fileutil.py",
+      "rmcontents",
+      "/dst"
+    ],
+    "name": "rmcontents dir"
+  },
+  {
+    "cmd": [
+      "[WORKSPACE]/brave-browser/src/third_party/depot_tools/vpython3",
+      "-u",
+      "[RECIPES_ROOT]/recipe_modules/file/resources/fileutil.py",
+      "rmglob",
+      "/dst",
+      "**/*.txt",
+      "--hidden"
+    ],
+    "name": "rmglob"
+  },
+  {
+    "cmd": [
+      "[WORKSPACE]/brave-browser/src/third_party/depot_tools/vpython3",
+      "-u",
+      "[RECIPES_ROOT]/recipe_modules/file/resources/fileutil.py",
+      "glob",
+      "/src",
+      "*.py",
+      "--hidden"
+    ],
+    "name": "glob"
+  },
+  {
+    "cmd": [
+      "echo",
+      "[PosixPath('/src/a.py'), PosixPath('/src/sub/b.py')]"
+    ],
+    "name": "echo glob"
+  },
+  {
+    "cmd": [
+      "[WORKSPACE]/brave-browser/src/third_party/depot_tools/vpython3",
+      "-u",
+      "[RECIPES_ROOT]/recipe_modules/file/resources/fileutil.py",
+      "listdir",
+      "/src",
+      "--recursive"
+    ],
+    "name": "listdir"
+  },
+  {
+    "cmd": [
+      "echo",
+      "[PosixPath('/src/a.txt'), PosixPath('/src/sub/b.txt')]"
+    ],
+    "name": "echo listdir"
+  },
+  {
+    "cmd": [
+      "[WORKSPACE]/brave-browser/src/third_party/depot_tools/vpython3",
+      "-u",
+      "[RECIPES_ROOT]/recipe_modules/file/resources/fileutil.py",
+      "ensure_directory",
+      "/newdir",
+      "--mode",
+      "0o755"
+    ],
+    "name": "ensure dir"
+  },
+  {
+    "cmd": [
+      "[WORKSPACE]/brave-browser/src/third_party/depot_tools/vpython3",
+      "-u",
+      "[RECIPES_ROOT]/recipe_modules/file/resources/fileutil.py",
+      "filesizes",
+      "/a.txt",
+      "/b.txt"
+    ],
+    "name": "filesizes"
+  },
+  {
+    "cmd": [
+      "echo",
+      "[111, 222]"
+    ],
+    "name": "echo sizes"
+  },
+  {
+    "cmd": [
+      "[WORKSPACE]/brave-browser/src/third_party/depot_tools/vpython3",
+      "-u",
+      "[RECIPES_ROOT]/recipe_modules/file/resources/fileutil.py",
+      "symlink",
+      "/target",
+      "/link"
+    ],
+    "name": "symlink"
+  },
+  {
+    "cmd": [
+      "[WORKSPACE]/brave-browser/src/third_party/depot_tools/vpython3",
+      "-u",
+      "[RECIPES_ROOT]/recipe_modules/file/resources/fileutil.py",
+      "truncate",
+      "/big.bin",
+      "10"
+    ],
+    "name": "truncate"
+  },
+  {
+    "cmd": [
+      "[WORKSPACE]/brave-browser/src/third_party/depot_tools/vpython3",
+      "-u",
+      "[RECIPES_ROOT]/recipe_modules/file/resources/fileutil.py",
+      "flatten_single_directories",
+      "/nested"
+    ],
+    "name": "flatten"
+  },
+  {
+    "cmd": [
+      "[WORKSPACE]/brave-browser/src/third_party/depot_tools/vpython3",
+      "-u",
+      "[RECIPES_ROOT]/recipe_modules/file/resources/fileutil.py",
+      "compute_hash",
+      "/base",
+      "a.txt",
+      "dir"
+    ],
+    "name": "compute hash"
+  },
+  {
+    "cmd": [
+      "echo",
+      "deadbeef"
+    ],
+    "name": "echo hash"
+  },
+  {
+    "cmd": [
+      "[WORKSPACE]/brave-browser/src/third_party/depot_tools/vpython3",
+      "-u",
+      "[RECIPES_ROOT]/recipe_modules/file/resources/fileutil.py",
+      "file_hash",
+      "/a.txt"
+    ],
+    "name": "file hash"
+  },
+  {
+    "cmd": [
+      "echo",
+      "c0ffee"
+    ],
+    "name": "echo file hash"
+  },
+  {
+    "cmd": [
+      "[WORKSPACE]/brave-browser/src/third_party/depot_tools/vpython3",
+      "-u",
+      "[RECIPES_ROOT]/recipe_modules/file/resources/fileutil.py",
+      "is_executable",
+      "/a.txt"
+    ],
+    "name": "is executable"
+  },
+  {
+    "cmd": [
+      "echo",
+      "True"
+    ],
+    "name": "echo executable"
+  },
+  {
+    "name": "$result"
+  }
+]
