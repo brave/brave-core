@@ -20,8 +20,10 @@
 #include "content/public/browser/content_browser_client.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
+#include "net/base/isolation_info.h"
 #include "services/network/public/mojom/url_loader_factory.mojom.h"
 #include "services/network/public/mojom/websocket.mojom.h"
+#include "url/origin.h"
 
 template <template <typename> class T>
 class BraveProxyingURLLoaderFactory;
@@ -69,6 +71,10 @@ class ResourceContextData : public base::SupportsUserData::Data {
       content::BrowserContext* browser_context,
       content::GlobalRenderFrameHostToken render_frame_token,
       network::URLLoaderFactoryBuilder& factory_builder,
+      content::ContentBrowserClient::URLLoaderFactoryType
+          url_loader_factory_type,
+      const url::Origin& request_initiator,
+      const net::IsolationInfo& isolation_info,
       scoped_refptr<base::SequencedTaskRunner> navigation_response_task_runner);
 
   static BraveProxyingWebSocket<T>* CreateProxyingWebSocket(

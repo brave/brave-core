@@ -181,7 +181,9 @@ template <>
 void BraveProxyingURLLoaderFactory<
     std::shared_ptr>::InProgressRequest::CreateBraveRequestInfo() {
   ctx_ = brave::BraveRequestInfo::MakeCTX(
-      request_, render_frame_token_, request_id_, browser_context_, ctx_.get());
+      request_, render_frame_token_, request_id_, browser_context_, ctx_.get(),
+      factory_->url_loader_factory_type_, factory_->request_initiator_,
+      factory_->isolation_info_);
 }
 
 template <>
@@ -190,9 +192,10 @@ void BraveProxyingURLLoaderFactory<
   if (ctx_) {
     factory_->request_handler_->OnURLRequestDestroyed(ctx_);
   }
-  ctx_owned_ = brave::BraveRequestInfo::MakeCTX(request_, render_frame_token_,
-                                                request_id_, browser_context_,
-                                                ctx_owned_.get());
+  ctx_owned_ = brave::BraveRequestInfo::MakeCTX(
+      request_, render_frame_token_, request_id_, browser_context_,
+      ctx_owned_.get(), factory_->url_loader_factory_type_,
+      factory_->request_initiator_, factory_->isolation_info_);
   ctx_ = ctx_owned_->AsWeakPtr();
 }
 
@@ -709,12 +712,18 @@ BraveProxyingURLLoaderFactory<T>::BraveProxyingURLLoaderFactory(
     content::BrowserContext* browser_context,
     content::GlobalRenderFrameHostToken render_frame_token,
     network::URLLoaderFactoryBuilder& factory_builder,
+    content::ContentBrowserClient::URLLoaderFactoryType url_loader_factory_type,
+    const url::Origin& request_initiator,
+    const net::IsolationInfo& isolation_info,
     scoped_refptr<RequestIDGenerator> request_id_generator,
     DisconnectCallback on_disconnect,
     scoped_refptr<base::SequencedTaskRunner> navigation_response_task_runner)
     : request_handler_(request_handler),
       browser_context_(browser_context),
       render_frame_token_(render_frame_token),
+      url_loader_factory_type_(url_loader_factory_type),
+      request_initiator_(request_initiator),
+      isolation_info_(isolation_info),
       request_id_generator_(request_id_generator),
       disconnect_callback_(std::move(on_disconnect)),
       navigation_response_task_runner_(
@@ -747,13 +756,17 @@ void BraveProxyingURLLoaderFactory<T>::MaybeProxyRequest(
     content::BrowserContext* browser_context,
     content::RenderFrameHost* render_frame_host,
     network::URLLoaderFactoryBuilder& factory_builder,
+    content::ContentBrowserClient::URLLoaderFactoryType url_loader_factory_type,
+    const url::Origin& request_initiator,
+    const net::IsolationInfo& isolation_info,
     scoped_refptr<base::SequencedTaskRunner> navigation_response_task_runner) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   ResourceContextData<T>::StartProxying(
       browser_context,
       render_frame_host ? render_frame_host->GetGlobalFrameToken()
                         : content::GlobalRenderFrameHostToken(),
-      factory_builder, navigation_response_task_runner);
+      factory_builder, url_loader_factory_type, request_initiator,
+      isolation_info, navigation_response_task_runner);
 }
 
 template <template <typename> class T>
