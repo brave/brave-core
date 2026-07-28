@@ -63,6 +63,7 @@
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/devtools/devtools_ui_controller.h"
 #include "chrome/browser/devtools/devtools_window.h"
+#include "chrome/browser/ui/bookmarks/bookmark_tab_helper.h"
 #include "chrome/browser/ui/browser_actions.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_element_identifiers.h"
@@ -602,6 +603,38 @@ void BraveBrowserView::SetStarredState(bool is_starred) {
   if (button) {
     button->SetToggled(is_starred);
   }
+}
+
+void BraveBrowserView::URLStarredChanged(content::WebContents* web_contents,
+                                         bool starred) {
+  if (web_contents == GetActiveWebContents()) {
+    SetStarredState(starred);
+  }
+}
+
+void BraveBrowserView::ObserveBookmarkTabHelper(
+    content::WebContents* contents) {
+  bookmark_tab_helper_observation_.Reset();
+  if (auto* bookmark_helper =
+          contents ? BookmarkTabHelper::FromWebContents(contents) : nullptr) {
+    bookmark_tab_helper_observation_.Observe(bookmark_helper);
+    SetStarredState(bookmark_helper->is_starred());
+  } else {
+    SetStarredState(false);
+  }
+}
+
+void BraveBrowserView::OnActiveTabWillDiscardContents(
+    tabs::TabInterface* tab,
+    content::WebContents* old_contents,
+    content::WebContents* new_contents) {
+  ObserveBookmarkTabHelper(new_contents);
+}
+
+void BraveBrowserView::OnActiveTabWillDetach(
+    tabs::TabInterface* tab,
+    tabs::TabInterface::DetachReason reason) {
+  bookmark_tab_helper_observation_.Reset();
 }
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
@@ -1191,6 +1224,21 @@ void BraveBrowserView::OnActiveTabChanged(content::WebContents* old_contents,
       IsTabChangeInSplitView(old_contents, new_contents);
 
   BrowserView::OnActiveTabChanged(old_contents, new_contents, index, reason);
+
+  ObserveBookmarkTabHelper(new_contents);
+  active_tab_will_discard_contents_subscription_ = {};
+  active_tab_will_detach_subscription_ = {};
+  if (auto* tab = new_contents
+                      ? tabs::TabInterface::GetFromContents(new_contents)
+                      : nullptr) {
+    active_tab_will_discard_contents_subscription_ =
+        tab->RegisterWillDiscardContents(base::BindRepeating(
+            &BraveBrowserView::OnActiveTabWillDiscardContents,
+            base::Unretained(this)));
+    active_tab_will_detach_subscription_ =
+        tab->RegisterWillDetach(base::BindRepeating(
+            &BraveBrowserView::OnActiveTabWillDetach, base::Unretained(this)));
+  }
 
   // Switching between tabs may change state that is relevant for focus mode
   // (e.g. when switching between an https tab and an http tab).
