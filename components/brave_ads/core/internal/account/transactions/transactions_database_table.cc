@@ -106,60 +106,6 @@ void GetCallback(
   std::move(callback).Run(/*success=*/true, transactions);
 }
 
-void MigrateToV35(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
-  CHECK(mojom_db_transaction);
-
-  // Optimize database query for `GetForDateRange`.
-  CreateTableIndex(mojom_db_transaction, /*table_name=*/"transactions",
-                   /*columns=*/{"created_at"});
-}
-
-void MigrateToV40(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
-  CHECK(mojom_db_transaction);
-
-  // Delete legacy transactions with an undefined `creative_instance_id`,
-  // `segment`, `ad_type`, or `confirmation_type`.
-  Execute(mojom_db_transaction, R"(
-      DELETE FROM
-        transactions
-      WHERE
-        COALESCE(creative_instance_id, '') = ''
-        OR COALESCE(segment, '') = ''
-        OR COALESCE(ad_type, '') = ''
-        OR COALESCE(confirmation_type, '') = '')");
-
-  // Create a temporary table:
-  //   - with a new `creative_instance_id` column constraint.
-  //   - with a new `segment` column constraint.
-  //   - with a new `reconciled_at` default value.
-  Execute(mojom_db_transaction, R"(
-      CREATE TABLE transactions_temp (
-        id TEXT NOT NULL PRIMARY KEY ON CONFLICT REPLACE,
-        created_at TIMESTAMP NOT NULL,
-        creative_instance_id TEXT NOT NULL,
-        value DOUBLE NOT NULL,
-        segment TEXT NOT NULL,
-        ad_type TEXT NOT NULL,
-        confirmation_type TEXT NOT NULL,
-        reconciled_at TIMESTAMP DEFAULT 0
-      ))");
-
-  // Copy legacy columns to the temporary table, drop the legacy table,
-  // rename the temporary table and create an index.
-  const std::vector<std::string> columns = {
-      "id",      "created_at", "creative_instance_id", "value",
-      "segment", "ad_type",    "confirmation_type",    "reconciled_at"};
-
-  CopyTableColumns(mojom_db_transaction, "transactions", "transactions_temp",
-                   columns, /*should_drop=*/true);
-
-  RenameTable(mojom_db_transaction, "transactions_temp", "transactions");
-
-  // Optimize database query for `GetForDateRange`.
-  CreateTableIndex(mojom_db_transaction, /*table_name=*/"transactions",
-                   /*columns=*/{"created_at"});
-}
-
 std::string BuildInsertSql(const mojom::DBActionInfoPtr& mojom_db_action,
                            const TransactionList& transactions) {
   CHECK(mojom_db_action);
@@ -192,18 +138,6 @@ void Insert(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
   mojom_db_action->type = mojom::DBActionInfo::Type::kExecuteWithBindings;
   mojom_db_action->sql = BuildInsertSql(mojom_db_action, transactions);
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
-}
-
-void MigrateToV43(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
-  CHECK(mojom_db_transaction);
-
-  // Optimize database query for `Reconcile`.
-  CreateTableIndex(mojom_db_transaction, /*table_name=*/"transactions",
-                   /*columns=*/{"reconciled_at"});
-  CreateTableIndex(mojom_db_transaction, /*table_name=*/"transactions",
-                   /*columns=*/{"id"});
-  CreateTableIndex(mojom_db_transaction, /*table_name=*/"transactions",
-                   /*columns=*/{"creative_instance_id"});
 }
 
 void MigrateToV57(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
@@ -366,21 +300,6 @@ void Transactions::Migrate(
   CHECK(mojom_db_transaction);
 
   switch (to_version) {
-    case 35: {
-      MigrateToV35(mojom_db_transaction);
-      break;
-    }
-
-    case 40: {
-      MigrateToV40(mojom_db_transaction);
-      break;
-    }
-
-    case 43: {
-      MigrateToV43(mojom_db_transaction);
-      break;
-    }
-
     case 57: {
       MigrateToV57(mojom_db_transaction);
       break;
