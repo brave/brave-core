@@ -63,6 +63,7 @@
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/devtools/devtools_ui_controller.h"
 #include "chrome/browser/devtools/devtools_window.h"
+#include "chrome/browser/ui/bookmarks/bookmark_tab_helper.h"
 #include "chrome/browser/ui/browser_actions.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_element_identifiers.h"
@@ -586,6 +587,25 @@ void BraveBrowserView::SetStarredState(bool is_starred) {
   }
 }
 
+void BraveBrowserView::URLStarredChanged(content::WebContents* web_contents,
+                                         bool starred) {
+  if (web_contents == GetActiveWebContents()) {
+    SetStarredState(starred);
+  }
+}
+
+void BraveBrowserView::ObserveBookmarkTabHelper(
+    content::WebContents* contents) {
+  bookmark_tab_helper_observation_.Reset();
+  if (auto* bookmark_helper =
+          contents ? BookmarkTabHelper::FromWebContents(contents) : nullptr) {
+    bookmark_tab_helper_observation_.Observe(bookmark_helper);
+    SetStarredState(bookmark_helper->is_starred());
+  } else {
+    SetStarredState(false);
+  }
+}
+
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 ReaderModeToolbarView* BraveBrowserView::reader_mode_toolbar() {
   return BraveContentsContainerView::From(
@@ -865,6 +885,25 @@ void BraveBrowserView::OnTabStripModelChanged(
     const TabStripModelChange& change,
     const TabStripSelectionChange& selection) {
   BrowserView::OnTabStripModelChanged(tab_strip_model, change, selection);
+
+  if (change.type() == TabStripModelChange::kRemoved) {
+    // A tab's WebContents can be removed and destroyed without an intervening
+    // OnActiveTabChanged() call (e.g. all tabs closing together during browser
+    // shutdown), which would otherwise move |bookmark_tab_helper_observation_|
+    // off of it. Stop observing here so we don't hold a dangling raw_ptr to the
+    // freed BookmarkTabHelper.
+    for (const auto& removed_tab : change.GetRemove()->contents) {
+      auto* bookmark_helper =
+          removed_tab.contents
+              ? BookmarkTabHelper::FromWebContents(removed_tab.contents)
+              : nullptr;
+      if (bookmark_helper &&
+          bookmark_tab_helper_observation_.IsObservingSource(bookmark_helper)) {
+        bookmark_tab_helper_observation_.Reset();
+        break;
+      }
+    }
+  }
 
   if (change.type() != TabStripModelChange::kSelectionOnly) {
     // Stop tab cycling if tab is closed dusing the cycle.
@@ -1157,6 +1196,8 @@ void BraveBrowserView::OnActiveTabChanged(content::WebContents* old_contents,
       IsTabChangeInSplitView(old_contents, new_contents);
 
   BrowserView::OnActiveTabChanged(old_contents, new_contents, index, reason);
+
+  ObserveBookmarkTabHelper(new_contents);
 
   // Switching between tabs may change state that is relevant for focus mode
   // (e.g. when switching between an https tab and an http tab).
