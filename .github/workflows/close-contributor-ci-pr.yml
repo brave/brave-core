@@ -1,9 +1,8 @@
 name: Close contributor CI PR
 
 on:
-  pull_request_target:
+  push:
     branches: [master]
-    types: [closed]
 
 permissions:
   contents: read
@@ -11,9 +10,6 @@ permissions:
 
 jobs:
   close-contributor-ci-pr:
-    if: >-
-      github.event.pull_request.merged == true &&
-      github.event.pull_request.head.repo.full_name != github.repository
     runs-on: ubuntu-slim
     steps:
       - name: Close associated contributor CI PR
@@ -32,6 +28,7 @@ jobs:
                           author {
                             login
                           }
+                          merged
                           isDraft
                           title
                           url
@@ -41,29 +38,30 @@ jobs:
                   }
                 }
               }
-            `, {
-              owner,
-              repo,
-              oid: context.payload.pull_request.merge_commit_sha,
-            });
+            `, { owner, repo, oid: context.sha });
 
             const pullRequests =
               result.repository.object?.associatedPullRequests?.nodes ?? [];
             if (pullRequests.length !== 2) {
               core.info(
-                `Expected 2 pull requests for merge commit ${context.payload.pull_request.merge_commit_sha}; found ${pullRequests.length}.`);
+                `Expected 2 pull requests for push ${context.sha}; found ${pullRequests.length}.`);
               return;
             }
 
-            const sourcePrNumber = context.payload.pull_request.number;
-            const ciTitle = `CI run for contributor PR #${sourcePrNumber}`;
+            const sourcePr = pullRequests.find((pr) => pr.merged);
+            if (!sourcePr) {
+              core.info(`No merged pull request found for push ${context.sha}.`);
+              return;
+            }
+
+            const ciTitle = `CI run for contributor PR #${sourcePr.number}`;
             const ciPr = pullRequests.find((pr) =>
-              pr.number !== sourcePrNumber &&
+              pr.number !== sourcePr.number &&
               pr.author.login === 'brave-builds' &&
               pr.isDraft &&
               pr.title === ciTitle);
             if (!ciPr) {
-              core.info(`No open contributor CI PR found for PR #${sourcePrNumber}.`);
+              core.info(`No open contributor CI PR found for PR #${sourcePr.number}.`);
               return;
             }
 
