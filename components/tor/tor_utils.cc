@@ -5,18 +5,24 @@
 
 #include "brave/components/tor/tor_utils.h"
 
+#include <algorithm>
 #include <optional>
 #include <string>
+#include <string_view>
 #include <utility>
 #include <vector>
 
 #include "base/files/file_path.h"
 #include "base/no_destructor.h"
+#include "base/strings/string_split.h"
+#include "base/strings/string_util.h"
 #include "base/values.h"
 #include "brave/components/tor/tor_constants.h"
 #include "chrome/common/chrome_constants.h"
 #include "chrome/common/pref_names.h"
 #include "components/prefs/pref_service.h"
+#include "net/base/ip_address.h"
+#include "net/base/url_util.h"
 
 namespace {
 constexpr const char kUseBridgesKey[] = "use_bridges";
@@ -101,6 +107,131 @@ const std::vector<std::string>& GetBuiltinBridges(
   }
 }
 
+// Bridge lines reach us from three places, none of which is trustworthy: the
+// `provided_bridges` pref (typed by the user), the `requested_bridges` pref
+// (fetched from Tor's BridgeDB) and the `builtin_bridges` dict (shipped by the
+// component updater). Each line is then interpolated verbatim into a
+// double-quoted argument of a Tor control port SETCONF command, see
+// TorControl::SetupBridges().
+//
+// Rather than pattern-matching the lines, validate them against the grammar
+// Tor's own parse_bridge_line() accepts:
+//
+//   [<transport-name>] <host>[:<port>] [<fingerprint>] [<key>=<value> ...]
+//
+// Anything that cannot be positively identified as that shape is dropped. See
+// GetBuiltinBridges() above for examples of well formed lines.
+
+// The longest built-in line is ~465 characters (a snowflake line, most of it
+// the `ice=` STUN server list), so this leaves ample headroom.
+constexpr size_t kMaxBridgeLineLength = 1024;
+// A well formed line has a handful of fields; the longest built-in one has 8.
+constexpr size_t kMaxBridgeTokens = 32;
+constexpr size_t kMaxTransportNameLength = 64;
+// Fingerprints are hex encoded SHA-1 digests of the bridge's identity key.
+constexpr size_t kFingerprintLength = 40;
+// Bounds the size of the SETCONF command built from a single list. Tor only
+// ever uses a few bridges at a time; the built-in lists hold at most 11.
+constexpr size_t kMaxBridgesPerList = 64;
+
+// Tor splits `Bridge` lines on whitespace, so a field never contains a space.
+constexpr char kBridgeFieldSeparator[] = " ";
+
+// Names of pluggable transport arguments (`cert`, `iat-mode`, `utls-imitate`,
+// ...) and of the transports themselves (`obfs4`, `meek_lite`, ...).
+bool IsValidIdentifier(std::string_view token) {
+  return !token.empty() && std::ranges::all_of(token, [](char c) {
+    return base::IsAsciiAlphaNumeric(c) || c == '_' || c == '-';
+  });
+}
+
+bool IsSafeBridgeChar(char c) {
+  // Printable ASCII only. This rejects CR and LF, which would terminate the
+  // control port command and inject an additional one, along with tabs, NULs
+  // and every non-ASCII byte. A double quote or a backslash is excluded on top
+  // of that because either would alter the quoting of the SETCONF argument.
+  return base::IsAsciiPrintable(c) && c != '"' && c != '\\';
+}
+
+bool IsValidHostPort(std::string_view token) {
+  std::string host;
+  int port = -1;
+  // Handles bracketed IPv6 literals, and rejects embedded credentials
+  // (`user:password@host`), a trailing bare colon and out-of-range ports. The
+  // port is optional: Tor defaults it to 443.
+  if (!net::ParseHostAndPort(token, &host, &port)) {
+    return false;
+  }
+  // ParseHostAndPort() accepts port 0, which Tor cannot connect to.
+  if (port == 0) {
+    return false;
+  }
+  net::IPAddress ip;
+  if (ip.AssignFromIPLiteral(host)) {
+    return true;
+  }
+  // ParseHostAndPort() does not canonicalize the host, and the compliance
+  // check below assumes canonical (lower-case) input.
+  return net::IsCanonicalizedHostCompliant(base::ToLowerASCII(host));
+}
+
+bool IsFingerprint(std::string_view token) {
+  return token.size() == kFingerprintLength &&
+         std::ranges::all_of(token, [](char c) { return base::IsHexDigit(c); });
+}
+
+// Trailing pluggable transport arguments, e.g. `iat-mode=0` or `cert=...`.
+// Values are opaque to us, so only the shape and the key are checked.
+bool IsValidTransportArg(std::string_view token) {
+  const size_t separator = token.find('=');
+  if (separator == std::string_view::npos || separator + 1 == token.size()) {
+    return false;
+  }
+  return IsValidIdentifier(token.substr(0, separator));
+}
+
+bool IsValidBridgeLine(std::string_view line) {
+  if (line.empty() || line.size() > kMaxBridgeLineLength) {
+    return false;
+  }
+  if (!std::ranges::all_of(line, &IsSafeBridgeChar)) {
+    return false;
+  }
+
+  const std::vector<std::string_view> tokens =
+      base::SplitStringPiece(line, kBridgeFieldSeparator, base::TRIM_WHITESPACE,
+                             base::SPLIT_WANT_NONEMPTY);
+  if (tokens.empty() || tokens.size() > kMaxBridgeTokens) {
+    return false;
+  }
+
+  auto token = tokens.begin();
+
+  // The leading transport name is optional. It never contains a ':' or a '.',
+  // while the <host>[:<port>] that follows it always contains one of the two,
+  // so the two forms can be told apart without look-ahead.
+  if (token->find_first_of(":.") == std::string_view::npos) {
+    if (!IsValidIdentifier(*token) || token->size() > kMaxTransportNameLength) {
+      return false;
+    }
+    ++token;
+  }
+
+  // <host>[:<port>] is the only required field.
+  if (token == tokens.end() || !IsValidHostPort(*token)) {
+    return false;
+  }
+  ++token;
+
+  // The fingerprint is optional and, when present, directly follows the host.
+  if (token != tokens.end() && IsFingerprint(*token)) {
+    ++token;
+  }
+
+  // Everything that is left has to be a transport argument.
+  return std::all_of(token, tokens.end(), &IsValidTransportArg);
+}
+
 std::vector<std::string> LoadBridgesList(const base::ListValue* v) {
   std::vector<std::string> result;
   if (!v) {
@@ -108,10 +239,14 @@ std::vector<std::string> LoadBridgesList(const base::ListValue* v) {
   }
 
   for (const auto& s : *v) {
-    if (!s.is_string()) {
+    if (result.size() == kMaxBridgesPerList) {
+      break;
+    }
+    const std::string* bridge = s.GetIfString();
+    if (!bridge || !IsValidBridgeLine(*bridge)) {
       continue;
     }
-    result.push_back(s.GetString());
+    result.push_back(*bridge);
   }
   return result;
 }
