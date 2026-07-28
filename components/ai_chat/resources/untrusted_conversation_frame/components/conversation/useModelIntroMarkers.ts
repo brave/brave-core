@@ -120,9 +120,10 @@ export function useModelIntroMarkers(): ModelIntroMarker[] {
   React.useEffect(() => {
     const { currentModelKey } = state
 
-    // Establish a baseline on mount / after a reset; do not create a marker
-    // for the model that is already selected.
-    if (prevModelKeyRef.current === undefined) {
+    // Establish a baseline on mount / after a reset / while the API is still
+    // hydrating an empty currentModelKey. Do not create a marker for the
+    // model that is already selected once state settles.
+    if (!prevModelKeyRef.current) {
       prevModelKeyRef.current = currentModelKey
       baselineModelKeyRef.current = currentModelKey
       prevHistoryLengthRef.current = conversationHistory.length
