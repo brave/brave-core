@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.settings;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -15,8 +16,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import androidx.preference.Preference;
+import androidx.preference.PreferenceGroupAdapter;
+import androidx.preference.PreferenceScreen;
 
 import org.chromium.base.ContextUtils;
+import org.chromium.build.annotations.NonNull;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
@@ -26,6 +30,12 @@ public abstract class BravePreferenceFragment extends ChromeBaseSettingsFragment
     protected static final int STORAGE_PERMISSION_EXPORT_REQUEST_CODE = 8000;
     protected static final int STORAGE_PERMISSION_IMPORT_REQUEST_CODE =
             STORAGE_PERMISSION_EXPORT_REQUEST_CODE + 1;
+
+    @Override
+    protected @NonNull PreferenceGroupAdapter onCreateAdapter(
+            @NonNull PreferenceScreen preferenceScreen) {
+        return new BraveSettingsPreferenceGroupAdapter(preferenceScreen);
+    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -71,13 +81,15 @@ public abstract class BravePreferenceFragment extends ChromeBaseSettingsFragment
     protected boolean isStoragePermissionGranted(boolean isExport) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             Context context = ContextUtils.getApplicationContext();
-            if (context.checkSelfPermission(
-                    android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+            if (context.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    == PackageManager.PERMISSION_GRANTED) {
                 return true;
             } else {
                 requestPermissions(
-                        new String[] { android.Manifest.permission.WRITE_EXTERNAL_STORAGE },
-                        isExport ? STORAGE_PERMISSION_EXPORT_REQUEST_CODE : STORAGE_PERMISSION_IMPORT_REQUEST_CODE);
+                        new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        isExport
+                                ? STORAGE_PERMISSION_EXPORT_REQUEST_CODE
+                                : STORAGE_PERMISSION_IMPORT_REQUEST_CODE);
                 return false;
             }
         }
