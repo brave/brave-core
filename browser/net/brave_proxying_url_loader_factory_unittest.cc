@@ -14,7 +14,9 @@
 #include "base/functional/callback_helpers.h"
 #include "base/strings/strcat.h"
 #include "base/test/bind.h"
+#include "base/test/scoped_feature_list.h"
 #include "brave/browser/net/brave_request_handler.h"
+#include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/constants/network_constants.h"
 #include "chrome/test/base/testing_profile.h"
 #include "content/public/browser/browser_task_traits.h"
@@ -53,13 +55,17 @@ network::mojom::URLResponseHeadPtr CreateRedirectHead(const GURL& new_url) {
 
 class BraveProxyingURLLoaderFactoryTest : public testing::Test {
  public:
-  BraveProxyingURLLoaderFactoryTest()
-      : request_handler_(), profile_(TestingProfile::Builder().Build()) {}
+  BraveProxyingURLLoaderFactoryTest() {
+    feature_list_.InitAndDisableFeature(
+        brave_shields::features::kBraveAdblockCspRules);
+    request_handler_ = std::make_unique<BraveRequestHandler<std::shared_ptr>>();
+    profile_ = TestingProfile::Builder().Build();
+  }
 
   mojo::Remote<network::mojom::URLLoaderFactory> CreateFactory() {
     network::URLLoaderFactoryBuilder builder;
     proxy_ = std::make_unique<BraveProxyingURLLoaderFactory<std::shared_ptr>>(
-        request_handler_, profile_.get(), content::GlobalRenderFrameHostToken(),
+        *request_handler_, profile_.get(), content::GlobalRenderFrameHostToken(),
         builder, base::MakeRefCounted<RequestIDGenerator>(), base::DoNothing(),
         nullptr);
 
@@ -88,8 +94,9 @@ class BraveProxyingURLLoaderFactoryTest : public testing::Test {
   }
 
  protected:
+  base::test::ScopedFeatureList feature_list_;
   content::BrowserTaskEnvironment task_environment_;
-  BraveRequestHandler<std::shared_ptr> request_handler_;
+  std::unique_ptr<BraveRequestHandler<std::shared_ptr>> request_handler_;
   std::unique_ptr<TestingProfile> profile_;
   network::TestURLLoaderFactory test_factory_;
   std::unique_ptr<BraveProxyingURLLoaderFactory<std::shared_ptr>> proxy_;
