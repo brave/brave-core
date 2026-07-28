@@ -183,12 +183,16 @@ export class NemotronStreamSession {
     onResult: (text: string, isFinal: boolean) => void,
   ) {
     this.model = model
+    if (sampleRateHz !== config.TARGET_SAMPLE_RATE) {
+      throw new Error(`Unsupported sample rate for Nemotron: ${sampleRateHz} Hz`)
+    }
     this.sampleRateHz = sampleRateHz
     this.onResult = onResult
     this.frontend = new StreamingMelFrontend(
       model.fbank,
       model.hann,
       initFftPower(config.N_FFT as FftSize),
+      sampleRateHz,
     )
   }
 
@@ -203,7 +207,7 @@ export class NemotronStreamSession {
       this.debug('audio appended', {
         samples: samples.length,
         ms: this.samplesToMs(samples.length),
-        frontend: this.frontend.debugState(this.sampleRateHz),
+        frontend: this.frontend.debugState(),
       })
     }
 
@@ -230,7 +234,7 @@ export class NemotronStreamSession {
       this.debug('finish requested, appended silence', {
         flushSamples: flush,
         flushMs: this.samplesToMs(flush),
-        frontend: this.frontend.debugState(this.sampleRateHz),
+        frontend: this.frontend.debugState(),
       })
     }
 
@@ -247,6 +251,12 @@ export class NemotronStreamSession {
     this.frontend.wipe()
     this.hyp.fill(0)
     this.hyp.length = 0
+    this.cacheCh.fill(0)
+    this.cacheTime.fill(0)
+    this.cacheLen.fill(BigInt(0))
+    this.st1.fill(0)
+    this.st2.fill(0)
+    this.prevToken = config.NEMO_BLANK
   }
 
   private async processAvailable(final: boolean): Promise<void> {
@@ -257,7 +267,7 @@ export class NemotronStreamSession {
       const chunkIdx = this.chunkIdx++
 
       const frontendBefore = config.DEBUG
-        ? this.frontend.debugState(this.sampleRateHz)
+        ? this.frontend.debugState()
         : undefined
 
       const chunkStarted = performance.now()
@@ -438,7 +448,7 @@ export class NemotronStreamSession {
           cacheLen: Number(this.cacheLen[0]),
 
           frontendBefore,
-          frontendAfter: this.frontend.debugState(this.sampleRateHz),
+          frontendAfter: this.frontend.debugState(),
         })
       }
 

@@ -7,17 +7,36 @@ import * as config from './configs'
 import type { FftSize, FftState } from './configs'
 
 export interface StreamingMelFrontendDebugState {
+  // Total number of raw PCM samples appended since the stream started.
   rawSamplesReceived: number
+
+  // Absolute sample index represented by rawAudio[0].
   rawBaseSample: number
+
+  // Number of raw PCM samples currently retained in memory.
   rawBufferedSamples: number
 
+  // Absolute mel-frame index represented by melFrames[0].
   melFrameBase: number
+
+  // Number of computed mel frames currently retained in memory,
+  // including frames kept for pre-encode context.
   melBufferedFrames: number
+
+  // Absolute index of the next mel frame that has not yet been computed.
   nextMelFrame: number
+
+  // Absolute index of the first new mel frame in the next encoder chunk.
   nextChunkFrame: number
 
+  // Number of computed, stable mel frames not yet consumed as new
+  // encoder input frames.
   stableBacklogFrames: number
+
+  // Number of complete NEMO_CHUNK-sized encoder inputs currently ready.
   chunksReady: number
+
+  // Approximate duration of stableBacklogFrames in milliseconds.
   estimatedStableBacklogMs: number
 }
 
@@ -62,11 +81,12 @@ export function initFftPower(n: FftSize): FftState {
 }
 
 // Compute power spectrum from a real-valued N_FFT frame.
-function fftPower(frame: Float32Array, fft: FftState): Float32Array {
+function fftPower(fft: FftState): Float32Array {
   const n = fft.n
   const real = fft.real
   const imag = fft.imag
   const bitRev = fft.bitRev
+  const frame = fft.frame
 
   // Bit-reversed copy of real input.
   // frame is expected to have length N_FFT.
@@ -132,6 +152,17 @@ export class StreamingMelFrontend {
   private rawSamplesReceived = 0
 
   private melFrames: Float32Array[] = []
+  private freeMelFrames: Float32Array[] = []
+
+  private acquireMelFrame(): Float32Array {
+    return this.freeMelFrames.pop() ?? new Float32Array(config.N_MELS)
+  }
+
+  private releaseMelFrame(frame: Float32Array): void {
+    frame.fill(0)
+    this.freeMelFrames.push(frame)
+  }
+
   private melFrameBase = 0
   private nextMelFrame = 0
   private nextChunkFrame = 0
@@ -140,6 +171,7 @@ export class StreamingMelFrontend {
     private readonly fbank: Float32Array,
     private readonly hann: Float32Array,
     private readonly fftPre: FftState,
+    private readonly sampleRateHz: number,
   ) {}
 
   appendAudioSamples(samples: Float32Array): void {
@@ -190,6 +222,9 @@ export class StreamingMelFrontend {
   }
 
   consumeChunk(): void {
+    if (!this.hasFullChunk()) {
+      throw new Error('Cannot consume an incomplete mel chunk')
+    }  
     this.nextChunkFrame += config.NEMO_CHUNK
     this.trimOldBuffers()
   }
@@ -204,9 +239,18 @@ export class StreamingMelFrontend {
       frame.fill(0)
     }
     this.melFrames.length = 0
+    this.rawBaseSample = 0
+    this.rawSamplesReceived = 0
+    this.melFrameBase = 0
+    this.nextMelFrame = 0
+    this.nextChunkFrame = 0
+    this.fftPre.frame.fill(0)
+    this.fftPre.real.fill(0)
+    this.fftPre.imag.fill(0)
+    this.fftPre.power.fill(0)
   }
 
-  debugState(sampleRateHz: number): StreamingMelFrontendDebugState {
+  debugState(): StreamingMelFrontendDebugState {
     const stableBacklogFrames = this.nextMelFrame - this.nextChunkFrame
 
     return {
@@ -222,7 +266,7 @@ export class StreamingMelFrontend {
       stableBacklogFrames,
       chunksReady: Math.floor(stableBacklogFrames / config.NEMO_CHUNK),
       estimatedStableBacklogMs:
-        (stableBacklogFrames * config.HOP_LENGTH * 1000) / sampleRateHz,
+        (stableBacklogFrames * config.HOP_LENGTH * 1000) / this.sampleRateHz,
     }
   }
 
@@ -262,9 +306,9 @@ export class StreamingMelFrontend {
         this.preemphasizedSampleAt(rawStart + i) * this.hann[i]
     }
 
-    const power = fftPower(frame, this.fftPre)
+    const power = fftPower(this.fftPre)
     const nfFreq = config.N_FFT / 2 + 1
-    const melFrame = new Float32Array(config.N_MELS)
+    const melFrame = this.acquireMelFrame()
 
     for (let m = 0; m < config.N_MELS; m++) {
       let acc = 0
@@ -364,7 +408,7 @@ export class StreamingMelFrontend {
       // resident acoustics to the live window rather than leaving dropped
       // frames in the JS heap until garbage collection.
       for (let i = 0; i < dropFrames; i++) {
-        this.melFrames[i].fill(0)
+        this.releaseMelFrame(this.melFrames[i])
       }
       this.melFrames.splice(0, dropFrames)
       this.melFrameBase = keepFromFrame
@@ -380,6 +424,7 @@ export class StreamingMelFrontend {
     const dropSamples = firstRawNeeded - this.rawBaseSample
 
     if (dropSamples > 0) {
+      this.rawAudio.fill(0, 0, dropSamples)
       this.rawAudio.splice(0, dropSamples)
       this.rawBaseSample += dropSamples
     }
