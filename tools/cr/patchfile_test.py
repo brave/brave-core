@@ -36,7 +36,9 @@ class PatchfileTest(unittest.TestCase):
             self.fake_chromium_src.write_and_stage_file(
                 dex_py, 'original\n', repo)
             self.fake_chromium_src.commit('Add dex.py', repo)
-            (repo / dex_py).write_text('original\nbrave_change\n')
+            (repo / dex_py).write_text('original\nbrave_change\n',
+                                       encoding='utf-8',
+                                       newline='')
         self.fake_chromium_src.run_update_patches()
 
         patchfile = Patchfile(
@@ -66,7 +68,9 @@ class PatchfileTest(unittest.TestCase):
             self.fake_chromium_src.write_and_stage_file(
                 dex_py, 'original\n', repo)
             self.fake_chromium_src.commit('Add dex.py', repo)
-            (repo / dex_py).write_text('original\nbrave_change\n')
+            (repo / dex_py).write_text('original\nbrave_change\n',
+                                       encoding='utf-8',
+                                       newline='')
         self.fake_chromium_src.run_update_patches()
 
         patchfile = Patchfile(
@@ -111,27 +115,32 @@ class PatchfileTest(unittest.TestCase):
 
         # Let's create a patch for it
         target_file = self.fake_chromium_src.chromium / test_idl
-        target_file.write_text(target_file.read_text().replace(
-            'FROM_STORE', 'FROM_STORE,\n    FROM_BRAVE_STORE'))
+        target_file.write_text(
+            target_file.read_bytes().decode('utf-8').replace(
+                'FROM_STORE', 'FROM_STORE,\n    FROM_BRAVE_STORE'),
+            encoding='utf-8',
+            newline='')
         self.fake_chromium_src.run_update_patches()
         # clearing out our custom change so we can have upstream changes
         # piling to this file
         self.fake_chromium_src._run_git_command(
             ["checkout", "."], self.fake_chromium_src.chromium)
-        self.assertNotIn('FROM_BRAVE_STORE', target_file.read_text())
+        self.assertNotIn('FROM_BRAVE_STORE',
+                         target_file.read_bytes().decode('utf-8'))
 
         # Adding an upstream chromium change that should conflict with our
         # patch
         self.fake_chromium_src.write_and_stage_file(
             test_idl,
-            target_file.read_text().replace('FROM_STORE',
-                                            'FROM_STORE,\n    DELETED'),
+            target_file.read_bytes().decode('utf-8').replace(
+                'FROM_STORE', 'FROM_STORE,\n    DELETED'),
             self.fake_chromium_src.chromium)
         self.fake_chromium_src.commit(
             'Added DELETED to developer_private.idl Location',
             self.fake_chromium_src.chromium)
 
-        self.assertNotIn('FROM_BRAVE_STORE', target_file.read_text())
+        self.assertNotIn('FROM_BRAVE_STORE',
+                         target_file.read_bytes().decode('utf-8'))
         patchfile = Patchfile(
             path=self.fake_chromium_src.get_patchfile_path_for_source(
                 self.fake_chromium_src.chromium, test_idl))
@@ -167,32 +176,40 @@ class PatchfileTest(unittest.TestCase):
 
         # Let's create a patch for it
         target_file = self.fake_chromium_src.chromium / test_idl
-        target_file.write_text(target_file.read_text().replace(
-            'FROM_STORE', 'FROM_STORE,\n    FROM_BRAVE_STORE'))
+        target_file.write_text(
+            target_file.read_bytes().decode('utf-8').replace(
+                'FROM_STORE', 'FROM_STORE,\n    FROM_BRAVE_STORE'),
+            encoding='utf-8',
+            newline='')
 
         # Let's create a patch with trailing spaces
-        target_file.write_text(target_file.read_text().replace(
-            'UNKNOWN', 'UNKNOWN,\n    ANOTHER '))
+        target_file.write_text(
+            target_file.read_bytes().decode('utf-8').replace(
+                'UNKNOWN', 'UNKNOWN,\n    ANOTHER '),
+            encoding='utf-8',
+            newline='')
 
         self.fake_chromium_src.run_update_patches()
         # clearing out our custom change so we can have upstream changes
         # piling to this file
         self.fake_chromium_src._run_git_command(
             ["checkout", "."], self.fake_chromium_src.chromium)
-        self.assertNotIn('FROM_BRAVE_STORE', target_file.read_text())
+        self.assertNotIn('FROM_BRAVE_STORE',
+                         target_file.read_bytes().decode('utf-8'))
 
         # Adding an upstream chromium change that should conflict with our
         # patch
         self.fake_chromium_src.write_and_stage_file(
             test_idl,
-            target_file.read_text().replace('FROM_STORE',
-                                            'FROM_STORE,\n    DELETED'),
+            target_file.read_bytes().decode('utf-8').replace(
+                'FROM_STORE', 'FROM_STORE,\n    DELETED'),
             self.fake_chromium_src.chromium)
         self.fake_chromium_src.commit(
             'Added DELETED to developer_private.idl Location',
             self.fake_chromium_src.chromium)
 
-        self.assertNotIn('FROM_BRAVE_STORE', target_file.read_text())
+        self.assertNotIn('FROM_BRAVE_STORE',
+                         target_file.read_bytes().decode('utf-8'))
         patchfile = Patchfile(
             path=self.fake_chromium_src.get_patchfile_path_for_source(
                 self.fake_chromium_src.chromium, test_idl))
@@ -226,8 +243,11 @@ class PatchfileTest(unittest.TestCase):
 
         # Let's create a patch for it
         target_file = self.fake_chromium_src.chromium / test_idl
-        target_file.write_text(target_file.read_text().replace(
-            'FROM_STORE', 'FROM_STORE,\n    FROM_BRAVE_STORE'))
+        target_file.write_text(
+            target_file.read_bytes().decode('utf-8').replace(
+                'FROM_STORE', 'FROM_STORE,\n    FROM_BRAVE_STORE'),
+            encoding='utf-8',
+            newline='')
         self.fake_chromium_src.run_update_patches()
         # clearing out our custom change so we can have upstream changes piling
         # to this file
@@ -237,7 +257,7 @@ class PatchfileTest(unittest.TestCase):
         # Adding an upstream chromium change to the file.
         self.fake_chromium_src.write_and_stage_file(
             test_idl,
-            target_file.read_text() + """
+            target_file.read_bytes().decode('utf-8') + """
                 enum ViewType {
                   APP_WINDOW,
                   BACKGROUND_CONTENTS,
@@ -262,18 +282,21 @@ class PatchfileTest(unittest.TestCase):
                     MANIFEST,
                     RUNTIME
                   };
-                """ + target_file.read_text(), self.fake_chromium_src.chromium)
+                """ + target_file.read_bytes().decode('utf-8'),
+            self.fake_chromium_src.chromium)
         self.fake_chromium_src.commit(
             'Added ErrorType to developer_private.idl',
             self.fake_chromium_src.chromium)
 
-        self.assertNotIn('FROM_BRAVE_STORE', target_file.read_text())
+        self.assertNotIn('FROM_BRAVE_STORE',
+                         target_file.read_bytes().decode('utf-8'))
         patchfile = Patchfile(
             path=self.fake_chromium_src.get_patchfile_path_for_source(
                 self.fake_chromium_src.chromium, test_idl))
         status = patchfile.apply()
         self.assertEqual(status, Patchfile.ApplyStatus.CLEAN)
-        self.assertIn('FROM_BRAVE_STORE', target_file.read_text())
+        self.assertIn('FROM_BRAVE_STORE',
+                      target_file.read_bytes().decode('utf-8'))
 
     def test_apply_broken(self):
         '''Tests the behavior when applying a broken patchfile.'''
@@ -286,29 +309,35 @@ class PatchfileTest(unittest.TestCase):
                                       self.fake_chromium_src.chromium)
 
         target_file = self.fake_chromium_src.chromium / test_idl
-        target_file.write_text(target_file.read_text() + 'last line\n')
+        target_file.write_text(target_file.read_bytes().decode('utf-8') +
+                               'last line\n',
+                               encoding='utf-8',
+                               newline='')
         self.fake_chromium_src.run_update_patches()
 
         self.fake_chromium_src._run_git_command(
             ['checkout', '.'], self.fake_chromium_src.chromium)
-        self.assertNotIn('last line', target_file.read_text())
+        self.assertNotIn('last line', target_file.read_bytes().decode('utf-8'))
 
         patchfile = Patchfile(
             path=self.fake_chromium_src.get_patchfile_path_for_source(
                 self.fake_chromium_src.chromium, test_idl))
         status = patchfile.apply()
         self.assertEqual(status, Patchfile.ApplyStatus.CLEAN)
-        self.assertIn('last line', target_file.read_text())
+        self.assertIn('last line', target_file.read_bytes().decode('utf-8'))
 
         self.fake_chromium_src._run_git_command(
             ['checkout', '--force', 'HEAD'], self.fake_chromium_src.chromium)
-        self.assertNotIn('last line', target_file.read_text())
+        self.assertNotIn('last line', target_file.read_bytes().decode('utf-8'))
 
         # A simple strip over the contents of the patch should break it
         target_patch = (self.fake_chromium_src.brave /
                         self.fake_chromium_src.get_patchfile_path_for_source(
                             self.fake_chromium_src.chromium, test_idl))
-        target_patch.write_text(target_patch.read_text().strip())
+        target_patch.write_text(
+            target_patch.read_bytes().decode('utf-8').strip(),
+            encoding='utf-8',
+            newline='')
 
         # apply() reads the patch from disk at call time, so the same
         # Patchfile instance applies the now-broken patch.
@@ -326,23 +355,26 @@ class PatchfileTest(unittest.TestCase):
                                       self.fake_chromium_src.chromium)
 
         target_file = self.fake_chromium_src.chromium / test_idl
-        target_file.write_text(target_file.read_text() + 'last line\n')
+        target_file.write_text(target_file.read_bytes().decode('utf-8') +
+                               'last line\n',
+                               encoding='utf-8',
+                               newline='')
         self.fake_chromium_src.run_update_patches()
 
         self.fake_chromium_src._run_git_command(
             ['checkout', '.'], self.fake_chromium_src.chromium)
-        self.assertNotIn('last line', target_file.read_text())
+        self.assertNotIn('last line', target_file.read_bytes().decode('utf-8'))
 
         patchfile = Patchfile(
             path=self.fake_chromium_src.get_patchfile_path_for_source(
                 self.fake_chromium_src.chromium, test_idl))
         status = patchfile.apply()
         self.assertEqual(status, Patchfile.ApplyStatus.CLEAN)
-        self.assertIn('last line', target_file.read_text())
+        self.assertIn('last line', target_file.read_bytes().decode('utf-8'))
 
         self.fake_chromium_src._run_git_command(
             ['checkout', '--force', 'HEAD'], self.fake_chromium_src.chromium)
-        self.assertNotIn('last line', target_file.read_text())
+        self.assertNotIn('last line', target_file.read_bytes().decode('utf-8'))
 
         # deleting file.
         self.fake_chromium_src.delete_file(test_idl,
@@ -370,12 +402,15 @@ class PatchfileTest(unittest.TestCase):
         target_file = self.fake_chromium_src.chromium / test_idl
         # Trailing whitespace causes git to emit a warning line before the
         # error: line when applying against a deleted file.
-        target_file.write_text(target_file.read_text() + 'last line   \n')
+        target_file.write_text(target_file.read_bytes().decode('utf-8') +
+                               'last line   \n',
+                               encoding='utf-8',
+                               newline='')
         self.fake_chromium_src.run_update_patches()
 
         self.fake_chromium_src._run_git_command(
             ['checkout', '.'], self.fake_chromium_src.chromium)
-        self.assertNotIn('last line', target_file.read_text())
+        self.assertNotIn('last line', target_file.read_bytes().decode('utf-8'))
 
         # Sanity-check: patch applies cleanly before we delete the file.
         patchfile = Patchfile(
@@ -383,11 +418,11 @@ class PatchfileTest(unittest.TestCase):
                 self.fake_chromium_src.chromium, test_idl))
         status = patchfile.apply()
         self.assertEqual(status, Patchfile.ApplyStatus.CLEAN)
-        self.assertIn('last line', target_file.read_text())
+        self.assertIn('last line', target_file.read_bytes().decode('utf-8'))
 
         self.fake_chromium_src._run_git_command(
             ['checkout', '--force', 'HEAD'], self.fake_chromium_src.chromium)
-        self.assertNotIn('last line', target_file.read_text())
+        self.assertNotIn('last line', target_file.read_bytes().decode('utf-8'))
 
         # Simulate upstream deletion of the file.
         self.fake_chromium_src.delete_file(test_idl,
@@ -416,7 +451,9 @@ class PatchfileTest(unittest.TestCase):
             self.fake_chromium_src.write_and_stage_file(
                 source, 'original\n', repo)
             self.fake_chromium_src.commit(f'Add {source.name}', repo)
-            (repo / source).write_text('original\nbrave_change\n')
+            (repo / source).write_text('original\nbrave_change\n',
+                                       encoding='utf-8',
+                                       newline='')
         self.fake_chromium_src.run_update_patches()
 
         self.assertEqual(
@@ -448,7 +485,9 @@ class PatchfileTest(unittest.TestCase):
             self.fake_chromium_src.write_and_stage_file(
                 dex_py, 'original\n', repo)
             self.fake_chromium_src.commit('Add dex.py', repo)
-            (repo / dex_py).write_text('original\nbrave_change\n')
+            (repo / dex_py).write_text('original\nbrave_change\n',
+                                       encoding='utf-8',
+                                       newline='')
         self.fake_chromium_src.run_update_patches()
 
         self.assertEqual(
@@ -483,8 +522,11 @@ class PatchfileTest(unittest.TestCase):
 
         # Create a patch for the file
         target_file = self.fake_chromium_src.chromium / test_file
-        target_file.write_text(target_file.read_text().replace(
-            'HOSTED_APP', 'HOSTED_APP,\n    NEW_TYPE'))
+        target_file.write_text(
+            target_file.read_bytes().decode('utf-8').replace(
+                'HOSTED_APP', 'HOSTED_APP,\n    NEW_TYPE'),
+            encoding='utf-8',
+            newline='')
         self.fake_chromium_src.run_update_patches()
 
         # Add a few empty commits
@@ -547,8 +589,11 @@ class PatchfileTest(unittest.TestCase):
 
         # Create a patch for the file
         target_file = self.fake_chromium_src.chromium / test_file
-        target_file.write_text(target_file.read_text().replace(
-            'HOSTED_APP', 'HOSTED_APP,\n    NEW_TYPE'))
+        target_file.write_text(
+            target_file.read_bytes().decode('utf-8').replace(
+                'HOSTED_APP', 'HOSTED_APP,\n    NEW_TYPE'),
+            encoding='utf-8',
+            newline='')
         self.fake_chromium_src.run_update_patches()
 
         # Delete the file and commit
@@ -604,8 +649,11 @@ class PatchfileTest(unittest.TestCase):
 
         # Create a patch for the file
         target_file = self.fake_chromium_src.chromium / test_file
-        target_file.write_text(target_file.read_text().replace(
-            'HOSTED_APP', 'HOSTED_APP,\n    NEW_TYPE'))
+        target_file.write_text(
+            target_file.read_bytes().decode('utf-8').replace(
+                'HOSTED_APP', 'HOSTED_APP,\n    NEW_TYPE'),
+            encoding='utf-8',
+            newline='')
         self.fake_chromium_src.run_update_patches()
 
         # Rename the file and commit
@@ -645,14 +693,14 @@ class PatchfileTest(unittest.TestCase):
             test_file, 'original\n', self.fake_chromium_src.chromium)
         self.fake_chromium_src.commit('Add foo.cc',
                                       self.fake_chromium_src.chromium)
-        (self.fake_chromium_src.chromium /
-         test_file).write_text('original\nbrave_change\n')
+        (self.fake_chromium_src.chromium / test_file).write_text(
+            'original\nbrave_change\n', encoding='utf-8', newline='')
         self.fake_chromium_src.run_update_patches()
 
         plaster_path = (self.fake_chromium_src.brave /
                         'rewrite/chrome/browser/foo.cc.yaml')
         plaster_path.parent.mkdir(parents=True, exist_ok=True)
-        plaster_path.write_text('')
+        plaster_path.write_text('', encoding='utf-8', newline='')
 
         patchfile = Patchfile(
             path=self.fake_chromium_src.get_patchfile_path_for_source(
@@ -666,8 +714,8 @@ class PatchfileTest(unittest.TestCase):
             test_file, 'original\n', self.fake_chromium_src.chromium)
         self.fake_chromium_src.commit('Add foo.cc',
                                       self.fake_chromium_src.chromium)
-        (self.fake_chromium_src.chromium /
-         test_file).write_text('original\nbrave_change\n')
+        (self.fake_chromium_src.chromium / test_file).write_text(
+            'original\nbrave_change\n', encoding='utf-8', newline='')
         self.fake_chromium_src.run_update_patches()
 
         patchfile = Patchfile(
@@ -682,13 +730,15 @@ class PatchfileTest(unittest.TestCase):
         self.fake_chromium_src.write_and_stage_file(test_file, 'original\n',
                                                     v8)
         self.fake_chromium_src.commit('Add foo.cc', v8)
-        (v8 / test_file).write_text('original\nbrave_change\n')
+        (v8 / test_file).write_text('original\nbrave_change\n',
+                                    encoding='utf-8',
+                                    newline='')
         self.fake_chromium_src.run_update_patches()
 
         # Create a yaml file that would match if the repo check were absent.
         plaster_path = self.fake_chromium_src.brave / 'rewrite/src/foo.cc.yaml'
         plaster_path.parent.mkdir(parents=True, exist_ok=True)
-        plaster_path.write_text('')
+        plaster_path.write_text('', encoding='utf-8', newline='')
 
         patchfile = Patchfile(
             path=self.fake_chromium_src.get_patchfile_path_for_source(
@@ -725,7 +775,7 @@ class PatchfilePlasterApplyTest(unittest.TestCase):
                      self._SOURCE_FILE.parent /
                      (self._SOURCE_FILE.name + '.yaml'))
         yaml_path.parent.mkdir(parents=True, exist_ok=True)
-        yaml_path.write_text(content)
+        yaml_path.write_text(content, encoding='utf-8', newline='')
 
     def _setup_conflict_and_patchfile(self) -> Patchfile:
         """Commits BASE_CONTENT, generates a brave patch (x=0→1), then commits
@@ -741,7 +791,9 @@ class PatchfilePlasterApplyTest(unittest.TestCase):
                                                     chromium)
         self.fake_chromium_src.commit('Add foo.cc', chromium)
 
-        (chromium / self._SOURCE_FILE).write_text(self._BRAVE_CONTENT)
+        (chromium / self._SOURCE_FILE).write_text(self._BRAVE_CONTENT,
+                                                  encoding='utf-8',
+                                                  newline='')
         self.fake_chromium_src.run_update_patches()
         self.fake_chromium_src._run_git_command(['checkout', '.'], chromium)
 
@@ -767,7 +819,9 @@ class PatchfilePlasterApplyTest(unittest.TestCase):
                                                     chromium)
         self.fake_chromium_src.commit('Add foo.cc', chromium)
 
-        (chromium / self._SOURCE_FILE).write_text(self._BRAVE_CONTENT)
+        (chromium / self._SOURCE_FILE).write_text(self._BRAVE_CONTENT,
+                                                  encoding='utf-8',
+                                                  newline='')
         self.fake_chromium_src.run_update_patches()
         self.fake_chromium_src._run_git_command(['checkout', '.'], chromium)
 
@@ -794,7 +848,9 @@ class PatchfilePlasterApplyTest(unittest.TestCase):
         """Broken patch path + working plaster → PLASTER_FIXED."""
         self._write_plaster_yaml(self._WORKING_YAML)
         patchfile, patch_path = self._setup_broken_and_patchfile()
-        patch_path.write_text(patch_path.read_text().strip())
+        patch_path.write_text(patch_path.read_bytes().decode('utf-8').strip(),
+                              encoding='utf-8',
+                              newline='')
         self.assertEqual(patchfile.apply(),
                          Patchfile.ApplyStatus.PLASTER_FIXED)
 
@@ -802,7 +858,9 @@ class PatchfilePlasterApplyTest(unittest.TestCase):
         """Broken patch path + broken plaster → PLASTER_BROKEN."""
         self._write_plaster_yaml(self._BROKEN_YAML)
         patchfile, patch_path = self._setup_broken_and_patchfile()
-        patch_path.write_text(patch_path.read_text().strip())
+        patch_path.write_text(patch_path.read_bytes().decode('utf-8').strip(),
+                              encoding='utf-8',
+                              newline='')
         self.assertEqual(patchfile.apply(),
                          Patchfile.ApplyStatus.PLASTER_BROKEN)
 
