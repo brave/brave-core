@@ -19,9 +19,6 @@ export interface WalletApiDataOverrides {
   accountInfos?: BraveWallet.AccountInfo[]
   nativeBalanceRegistry?: NativeAssetBalanceRegistry
   tokenBalanceRegistry?: TokenBalancesRegistry
-  simulationOptInStatus?: BraveWallet.BlowfishOptInStatus
-  evmSimulationResponse?: BraveWallet.EVMSimulationResponse | null
-  svmSimulationResponse?: BraveWallet.SolanaSimulationResponse | null
   signSolTransactionsRequests?: BraveWallet.SignSolTransactionsRequest[]
   signCardanoTransactionRequests?: BraveWallet.SignCardanoTransactionRequest[]
 }
