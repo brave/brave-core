@@ -105,6 +105,7 @@ source_set("unit_tests") {
     "//brave/components/brave_rewards/core",
     "//brave/components/brave_rewards/core:features",
     "//brave/components/brave_shields/content/browser",
+    "//brave/components/brave_shields/core/common",
     "//brave/components/brave_shields/content/test:test_support",
     "//brave/components/brave_shields/core/common",
     "//brave/components/brave_user_agent/browser",
