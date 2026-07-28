@@ -10,6 +10,7 @@
 #include "base/path_service.h"
 #include "base/run_loop.h"
 #include "base/strings/escape.h"
+#include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "base/test/bind.h"
 #include "base/test/run_until.h"
@@ -49,6 +50,7 @@
 #include "chrome/browser/ui/views/frame/toolbar_button_provider.h"
 #include "chrome/browser/ui/views/page_action/page_action_icon_view.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
+#include "chrome/common/pref_names.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/language/core/browser/language_prefs.h"
@@ -57,6 +59,7 @@
 #include "content/public/browser/render_view_host.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
+#include "content/public/test/download_test_observer.h"
 #include "content/public/test/test_navigation_observer.h"
 #include "content/public/test/test_utils.h"
 #include "net/dns/mock_host_resolver.h"
@@ -1161,6 +1164,133 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ToolbarWithRoundedCorners) {
   EXPECT_EQ(0, tab_strip_model->active_index());
   EXPECT_EQ(browser_view->reader_mode_toolbar()->rounded_corners_.IsEmpty(),
             !rounded_contents);
+}
+
+// The content distilled from one page must never be shown as the content of
+// another page: it would allow a page to put its own markup under the URL,
+// the TLS indicators and the response headers of an unrelated origin.
+// The reload which speedreader triggers to show the distilled content is
+// answered here in a way that leaves the content unsent, i.e. the reload is
+// redirected somewhere else or turned into a download.
+class SpeedReaderContentSpoofBrowserTest : public SpeedReaderBrowserTest {
+ public:
+  static constexpr char kVictimHost[] = "b.test";
+  static constexpr char kVictimPage[] = "/simple.html";
+  // The title of kVictimPage, it must stay the title of the shown document.
+  static constexpr char kVictimPageTitle[] = "OK";
+
+  SpeedReaderContentSpoofBrowserTest() = default;
+  ~SpeedReaderContentSpoofBrowserTest() override = default;
+
+  void SetUpOnMainThread() override {
+    // Request handlers have a priority over the file serving handler installed
+    // by SpeedReaderBrowserTest, so the first request is still served from the
+    // disk, see HandleReload().
+    https_server_.RegisterRequestHandler(
+        base::BindRepeating(&SpeedReaderContentSpoofBrowserTest::HandleReload,
+                            base::Unretained(this)));
+    SpeedReaderBrowserTest::SetUpOnMainThread();
+  }
+
+  GURL victim_url() const {
+    return https_server_.GetURL(kVictimHost, kVictimPage);
+  }
+
+  // Opens the readable page which answers the speedreader's reload according to
+  // |mode| ("redirect" or "attachment").
+  void NavigateToReadablePage(std::string_view mode) {
+    NavigateToPageSynchronously(base::StrCat({kTestPageReadable, "?", mode}),
+                                WindowOpenDisposition::CURRENT_TAB);
+    ASSERT_TRUE(WaitDistillable());
+  }
+
+  // Turns the reader mode on. Speedreader distills the current document and
+  // reloads the page to show the distilled content.
+  void TurnOnReaderMode() {
+    browser()->command_controller()->ExecuteCommand(
+        IDC_SPEEDREADER_ICON_ONCLICK);
+  }
+
+  // Checks that the document currently shown is the original kVictimPage and
+  // not something distilled by speedreader.
+  void ExpectVictimPageIsIntact() {
+    EXPECT_EQ(victim_url(), ActiveWebContents()->GetLastCommittedURL());
+    EXPECT_EQ(kVictimPageTitle,
+              content::EvalJs(ActiveWebContents(), "document.title",
+                              content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+                              ISOLATED_WORLD_ID_BRAVE_INTERNAL)
+                  .ExtractString());
+    EXPECT_FALSE(
+        content::EvalJs(ActiveWebContents(),
+                        "!!document.getElementById('brave_speedreader_style')",
+                        content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+                        ISOLATED_WORLD_ID_BRAVE_INTERNAL)
+            .ExtractBool());
+    EXPECT_FALSE(speedreader::DistillStates::IsDistilled(
+        tab_helper()->PageDistillState()));
+    // The pending distillation is dropped together with the content, so
+    // speedreader is not stuck in the distilling state either.
+    EXPECT_TRUE(speedreader::DistillStates::IsViewOriginal(
+        tab_helper()->PageDistillState()));
+  }
+
+ private:
+  std::unique_ptr<net::test_server::HttpResponse> HandleReload(
+      const net::test_server::HttpRequest& request) {
+    if (request.GetURL().path() != kTestPageReadable ||
+        ++requests_count_ == 1) {
+      // Let the readable page itself be served from the disk.
+      return nullptr;
+    }
+
+    auto response = std::make_unique<net::test_server::BasicHttpResponse>();
+    response->set_content_type("text/html");
+    if (request.GetURL().query() == "redirect") {
+      response->set_code(net::HTTP_FOUND);
+      response->AddCustomHeader("Location", victim_url().spec());
+    } else {
+      response->set_code(net::HTTP_OK);
+      response->AddCustomHeader("Content-Disposition", "attachment");
+      response->set_content("<html><body>attachment</body></html>");
+    }
+    return response;
+  }
+
+  // Accessed on the embedded test server's thread only.
+  int requests_count_ = 0;
+};
+
+// The reload is turned into a download, so the distilled content is never
+// consumed. It must not stay armed for the pages the user visits next.
+IN_PROC_BROWSER_TEST_F(SpeedReaderContentSpoofBrowserTest,
+                       DistilledContentIsDroppedWhenTheReloadIsNotShown) {
+  ASSERT_NO_FATAL_FAILURE(NavigateToReadablePage("attachment"));
+  const GURL readable_url = ActiveWebContents()->GetLastCommittedURL();
+
+  // Content-Disposition: attachment replaces the reload with a download, so
+  // waiting for the navigation would hang, the events it waits for never come
+  // for downloads. Disable the download prompt so the download proceeds
+  // automatically and wait for the download itself instead. Same pattern as
+  // DeAmpBrowserTest.ContentDispositionAttachment.
+  browser()->profile()->GetPrefs()->SetBoolean(prefs::kPromptForDownload,
+                                               false);
+  content::DownloadTestObserverTerminal download_observer(
+      browser()->profile()->GetDownloadManager(), 1,
+      content::DownloadTestObserver::ON_DANGEROUS_DOWNLOAD_ACCEPT);
+  TurnOnReaderMode();
+  download_observer.WaitForFinished();
+  EXPECT_EQ(1u, download_observer.NumDownloadsSeenInState(
+                    download::DownloadItem::COMPLETE));
+
+  // The download doesn't replace the page, so the readable page is still
+  // shown, with the distilled content still waiting to be sent.
+  EXPECT_EQ(readable_url, ActiveWebContents()->GetLastCommittedURL());
+
+  // Now the user navigates wherever they want. The content must be dropped
+  // when this navigation starts, long before its response arrives.
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), victim_url()));
+
+  ExpectVictimPageIsIntact();
 }
 
 class SpeedReaderWithSplitViewBrowserTest : public SpeedReaderBrowserTest {

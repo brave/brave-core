@@ -1159,7 +1159,7 @@ BraveContentBrowserClient::CreateURLLoaderThrottles(
 
       auto producer =
           speedreader::SpeedreaderDistilledPageProducer::MaybeCreate(
-              tab_helper->GetWeakPtr());
+              request.url, tab_helper->GetWeakPtr());
       if (producer) {
         body_sniffer_throttle->SetBodyProducer(std::move(producer));
       }
