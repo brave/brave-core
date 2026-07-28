@@ -6,9 +6,9 @@
 #include "brave/components/tor/tor_utils.h"
 
 #include <string>
-#include <string_view>
 #include <vector>
 
+#include "base/containers/to_value_list.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/values.h"
@@ -58,9 +58,8 @@ constexpr const char* kWellFormedBridges[] = {
     kAnotherValidBridge,
 };
 
-// Control-character and quoting attacks. Bridge lines are interpolated into a
-// double-quoted argument of a Tor control port SETCONF command, so each of
-// these would either break out of the quoting or inject an extra command.
+// Control-character and quoting attacks against the Tor control port command
+// these lines are interpolated into.
 constexpr const char* kUnsafeCharacterBridges[] = {
     // Closes the quoted argument.
     "obfs4 192.0.2.1:443 iat-mode=0\" UseBridges=0",
@@ -121,11 +120,7 @@ constexpr const char* kMalformedBridges[] = {
 };
 
 base::ListValue MakeList(const std::vector<std::string>& items) {
-  base::ListValue list;
-  for (const auto& item : items) {
-    list.Append(item);
-  }
-  return list;
+  return base::ToValueList(items);
 }
 
 // Round-trips `bridges` through the pref representation and returns the list as
@@ -139,38 +134,6 @@ std::vector<std::string> LoadProvidedBridges(
     return {};
   }
   return std::move(config->provided_bridges);
-}
-
-std::vector<std::string> LoadRequestedBridges(
-    const std::vector<std::string>& bridges) {
-  base::DictValue dict;
-  dict.Set("requested_bridges", MakeList(bridges));
-  auto config = BridgesConfig::FromDict(dict);
-  if (!config) {
-    return {};
-  }
-  return std::move(config->requested_bridges);
-}
-
-std::vector<std::string> LoadBuiltinBridges(
-    const std::vector<std::string>& bridges) {
-  base::DictValue builtin;
-  builtin.Set("obfs4", MakeList(bridges));
-
-  base::DictValue dict;
-  dict.Set("use_builtin_bridges",
-           static_cast<int>(BridgesConfig::BuiltinType::kObfs4));
-  dict.Set("builtin_bridges", std::move(builtin));
-
-  auto config = BridgesConfig::FromDict(dict);
-  if (!config) {
-    return {};
-  }
-  auto found = config->builtin_bridges.find(BridgesConfig::BuiltinType::kObfs4);
-  if (found == config->builtin_bridges.end()) {
-    return {};
-  }
-  return found->second;
 }
 
 }  // namespace
@@ -197,17 +160,11 @@ TEST(TorUtilsTest, MalformedBridgesAreSkipped) {
 }
 
 TEST(TorUtilsTest, InvalidBridgesAreSkippedInPlace) {
-  // Valid entries around an invalid one are kept, in order.
-  for (const char* bridge : kUnsafeCharacterBridges) {
-    EXPECT_EQ(std::vector<std::string>({kValidBridge, kAnotherValidBridge}),
-              LoadProvidedBridges({kValidBridge, bridge, kAnotherValidBridge}))
-        << "not skipped: " << bridge;
-  }
-  for (const char* bridge : kMalformedBridges) {
-    EXPECT_EQ(std::vector<std::string>({kValidBridge, kAnotherValidBridge}),
-              LoadProvidedBridges({kValidBridge, bridge, kAnotherValidBridge}))
-        << "not skipped: " << bridge;
-  }
+  // An invalid entry is dropped without disturbing the ones around it. Which
+  // entry is invalid does not matter here; that is covered by the tables above.
+  EXPECT_EQ(std::vector<std::string>({kValidBridge, kAnotherValidBridge}),
+            LoadProvidedBridges({kValidBridge, "obfs4 192.0.2.1:443 bogus",
+                                 kAnotherValidBridge}));
 }
 
 TEST(TorUtilsTest, ValidationAppliesToEveryBridgeList) {
@@ -219,9 +176,21 @@ TEST(TorUtilsTest, ValidationAppliesToEveryBridgeList) {
       "obfs4 192.0.2.1:443 notakeyvaluepair", kAnotherValidBridge};
   const std::vector<std::string> expected = {kValidBridge, kAnotherValidBridge};
 
-  EXPECT_EQ(expected, LoadProvidedBridges(input));
-  EXPECT_EQ(expected, LoadRequestedBridges(input));
-  EXPECT_EQ(expected, LoadBuiltinBridges(input));
+  base::DictValue builtin;
+  builtin.Set("obfs4", MakeList(input));
+
+  base::DictValue dict;
+  dict.Set("use_builtin_bridges",
+           static_cast<int>(BridgesConfig::BuiltinType::kObfs4));
+  dict.Set("provided_bridges", MakeList(input));
+  dict.Set("requested_bridges", MakeList(input));
+  dict.Set("builtin_bridges", std::move(builtin));
+
+  auto config = BridgesConfig::FromDict(dict);
+  ASSERT_TRUE(config);
+  EXPECT_EQ(expected, config->provided_bridges);
+  EXPECT_EQ(expected, config->requested_bridges);
+  EXPECT_EQ(expected, config->GetBuiltinBridges());
 }
 
 TEST(TorUtilsTest, HardcodedBuiltinBridgesPassValidation) {
@@ -256,39 +225,28 @@ TEST(TorUtilsTest, EmbeddedNulIsSkipped) {
 }
 
 TEST(TorUtilsTest, OverlongBridgesAreSkipped) {
-  // 1024 characters is the cap. Grow a valid line with long-but-well-formed
-  // arguments, so that the length cap is what rejects it rather than the cap
-  // on the number of fields.
-  const std::string padding =
-      base::StrCat({" padding-key=", std::string(240, 'a')});
-  std::string bridge = "obfs4 192.0.2.1:443";
-  std::string last_in_bounds;
-  while (bridge.size() <= 1024) {
-    last_in_bounds = bridge;
-    base::StrAppend(&bridge, {padding});
-  }
-  ASSERT_GT(bridge.size(), 1024u);
-  EXPECT_EQ(std::vector<std::string>(), LoadProvidedBridges({bridge}));
+  // A single argument long enough to push an otherwise well formed line past
+  // the 1024 character cap on its own.
+  const std::string too_long =
+      base::StrCat({"obfs4 192.0.2.1:443 pad=", std::string(1024, 'a')});
+  EXPECT_EQ(std::vector<std::string>(), LoadProvidedBridges({too_long}));
 
-  // A long but in-bounds line is still accepted.
-  ASSERT_LE(last_in_bounds.size(), 1024u);
-  ASSERT_GT(last_in_bounds.size(), 768u);
-  EXPECT_EQ(std::vector<std::string>({last_in_bounds}),
-            LoadProvidedBridges({last_in_bounds}));
+  // The same line truncated to exactly the cap is still accepted.
+  const std::string at_cap = too_long.substr(0, 1024);
+  EXPECT_EQ(std::vector<std::string>({at_cap}), LoadProvidedBridges({at_cap}));
 }
 
 TEST(TorUtilsTest, BridgeListIsCapped) {
-  // Bounds the size of the SETCONF command built from the list.
+  // Bounds the size of the SETCONF command built from the list. Ports differ so
+  // that the entries are distinguishable and order is actually checked.
   std::vector<std::string> input;
   for (int i = 0; i < 100; ++i) {
     input.push_back(
-        base::StrCat({"obfs4 192.0.2.1:", base::NumberToString(1024 + i)}));
+        base::StrCat({"obfs4 192.0.2.1:", base::NumberToString(443 + i)}));
   }
-  const auto loaded = LoadProvidedBridges(input);
-  EXPECT_EQ(64u, loaded.size());
-  // The cap keeps the first entries, in order.
-  EXPECT_EQ(input[0], loaded.front());
-  EXPECT_EQ(input[63], loaded.back());
+  // The cap keeps the first 64 entries, in order.
+  EXPECT_EQ(std::vector<std::string>(input.begin(), input.begin() + 64),
+            LoadProvidedBridges(input));
 }
 
 TEST(TorUtilsTest, BuiltinBridgesFallBackWhenAllEntriesInvalid) {

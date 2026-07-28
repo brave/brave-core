@@ -110,9 +110,9 @@ const std::vector<std::string>& GetBuiltinBridges(
 // Bridge lines reach us from three places, none of which is trustworthy: the
 // `provided_bridges` pref (typed by the user), the `requested_bridges` pref
 // (fetched from Tor's BridgeDB) and the `builtin_bridges` dict (shipped by the
-// component updater). Each line is then interpolated verbatim into a
-// double-quoted argument of a Tor control port SETCONF command, see
-// TorControl::SetupBridges().
+// component updater). Each line is forwarded verbatim to the Tor control port
+// by TorControl::SetupBridges(), where a malformed one is more than just
+// useless; see IsSafeBridgeChar() below.
 //
 // Rather than pattern-matching the lines, validate them against the grammar
 // Tor's own parse_bridge_line() accepts:
@@ -125,17 +125,11 @@ const std::vector<std::string>& GetBuiltinBridges(
 // The longest built-in line is ~465 characters (a snowflake line, most of it
 // the `ice=` STUN server list), so this leaves ample headroom.
 constexpr size_t kMaxBridgeLineLength = 1024;
-// A well formed line has a handful of fields; the longest built-in one has 8.
-constexpr size_t kMaxBridgeTokens = 32;
-constexpr size_t kMaxTransportNameLength = 64;
 // Fingerprints are hex encoded SHA-1 digests of the bridge's identity key.
 constexpr size_t kFingerprintLength = 40;
 // Bounds the size of the SETCONF command built from a single list. Tor only
 // ever uses a few bridges at a time; the built-in lists hold at most 11.
 constexpr size_t kMaxBridgesPerList = 64;
-
-// Tor splits `Bridge` lines on whitespace, so a field never contains a space.
-constexpr char kBridgeFieldSeparator[] = " ";
 
 // Names of pluggable transport arguments (`cert`, `iat-mode`, `utls-imitate`,
 // ...) and of the transports themselves (`obfs4`, `meek_lite`, ...).
@@ -170,8 +164,11 @@ bool IsValidHostPort(std::string_view token) {
   if (ip.AssignFromIPLiteral(host)) {
     return true;
   }
-  // ParseHostAndPort() does not canonicalize the host, and the compliance
-  // check below assumes canonical (lower-case) input.
+  // Deliberately case-folded rather than canonicalized: the original line, not
+  // a canonical form of it, is what gets handed to Tor, and Tor does no
+  // canonicalization of its own. Case folding is the only normalization that
+  // does not change which characters are present, and the check below assumes
+  // lower-case input.
   return net::IsCanonicalizedHostCompliant(base::ToLowerASCII(host));
 }
 
@@ -183,11 +180,9 @@ bool IsFingerprint(std::string_view token) {
 // Trailing pluggable transport arguments, e.g. `iat-mode=0` or `cert=...`.
 // Values are opaque to us, so only the shape and the key are checked.
 bool IsValidTransportArg(std::string_view token) {
-  const size_t separator = token.find('=');
-  if (separator == std::string_view::npos || separator + 1 == token.size()) {
-    return false;
-  }
-  return IsValidIdentifier(token.substr(0, separator));
+  const auto key_value = base::SplitStringOnce(token, '=');
+  return key_value && !key_value->second.empty() &&
+         IsValidIdentifier(key_value->first);
 }
 
 bool IsValidBridgeLine(std::string_view line) {
@@ -198,10 +193,12 @@ bool IsValidBridgeLine(std::string_view line) {
     return false;
   }
 
-  const std::vector<std::string_view> tokens =
-      base::SplitStringPiece(line, kBridgeFieldSeparator, base::TRIM_WHITESPACE,
-                             base::SPLIT_WANT_NONEMPTY);
-  if (tokens.empty() || tokens.size() > kMaxBridgeTokens) {
+  // Tor splits `Bridge` lines on spaces, so a field never contains one. The
+  // charset check above already rejected every other kind of whitespace, so
+  // the pieces need no trimming.
+  const std::vector<std::string_view> tokens = base::SplitStringPiece(
+      line, " ", base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
+  if (tokens.empty()) {
     return false;
   }
 
@@ -211,7 +208,7 @@ bool IsValidBridgeLine(std::string_view line) {
   // while the <host>[:<port>] that follows it always contains one of the two,
   // so the two forms can be told apart without look-ahead.
   if (token->find_first_of(":.") == std::string_view::npos) {
-    if (!IsValidIdentifier(*token) || token->size() > kMaxTransportNameLength) {
+    if (!IsValidIdentifier(*token)) {
       return false;
     }
     ++token;
@@ -229,7 +226,7 @@ bool IsValidBridgeLine(std::string_view line) {
   }
 
   // Everything that is left has to be a transport argument.
-  return std::all_of(token, tokens.end(), &IsValidTransportArg);
+  return std::ranges::all_of(token, tokens.end(), &IsValidTransportArg);
 }
 
 std::vector<std::string> LoadBridgesList(const base::ListValue* v) {
@@ -237,6 +234,7 @@ std::vector<std::string> LoadBridgesList(const base::ListValue* v) {
   if (!v) {
     return result;
   }
+  result.reserve(std::min(v->size(), kMaxBridgesPerList));
 
   for (const auto& s : *v) {
     if (result.size() == kMaxBridgesPerList) {
