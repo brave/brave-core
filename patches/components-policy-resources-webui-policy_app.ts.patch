@@ -1,0 +1,13 @@
+diff --git a/components/policy/resources/webui/policy_app.ts b/components/policy/resources/webui/policy_app.ts
+index 4924b24626afaa4537c507d16df789095fd4be52..443134318c9cbc0c0f0a24797d7428c985f23d34 100644
+--- a/components/policy/resources/webui/policy_app.ts
++++ b/components/policy/resources/webui/policy_app.ts
+@@ -182,7 +182,7 @@ export class PolicyAppElement extends CrLitElement {
+                   policyNames['precedence']?.policyNames,
+                 ].includes(knownPolicyNames) &&
+                         knownPolicyNamesSet.has(name) ?
+-                    `https://chromeenterprise.google/policies/?policy=${name}` :
++                    `https://support.brave.app/hc/en-us/articles/360039248271-Group-Policy?policy=${name}` :
+                     undefined,
+                 isExtension: value.isExtension || false,
+               },
