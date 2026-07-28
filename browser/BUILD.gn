@@ -74,6 +74,7 @@ source_set("core") {
 
   sources = brave_chrome_browser_sources
   deps = brave_chrome_browser_deps
+  deps += [ "//brave/browser/ui/window_feature_controller:chromium_impl" ]
   public_deps = brave_chrome_browser_public_deps +
                 [ "//chrome/browser:browser_public_dependencies" ]
   allow_circular_includes_from =
