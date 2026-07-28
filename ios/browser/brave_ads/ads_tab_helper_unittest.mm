@@ -169,6 +169,10 @@ class AdsTabHelperTest : public PlatformTest {
 
   AdsServiceMock& ads_service_mock() { return ads_service_mock_; }
 
+  AdsTabHelper* ads_tab_helper() {
+    return AdsTabHelper::FromWebState(web_state_.get());
+  }
+
   FakeNavigationManagerWithRestore& navigation_manager() {
     CHECK(navigation_manager_);
     return *navigation_manager_;
@@ -397,6 +401,60 @@ TEST_F(AdsTabHelperTest,
           "HTTP/1.1 500 Internal Server Error\r\n\r\n"))
       .Simulate();
   SimulatePageLoad(kInnerText);
+}
+
+TEST_F(AdsTabHelperTest, NotifyTabDidStartPlayingMedia) {
+  EXPECT_CALL(ads_service_mock(), NotifyTabDidStartPlayingMedia);
+
+  ads_tab_helper()->NotifyTabDidStartPlayingMedia(/*player_id=*/1);
+}
+
+TEST_F(AdsTabHelperTest,
+       DoNotNotifyTabDidStartPlayingMediaForAlreadyPlayingPlayer) {
+  ads_tab_helper()->NotifyTabDidStartPlayingMedia(/*player_id=*/1);
+  EXPECT_CALL(ads_service_mock(), NotifyTabDidStartPlayingMedia).Times(0);
+
+  ads_tab_helper()->NotifyTabDidStartPlayingMedia(/*player_id=*/1);
+}
+
+TEST_F(AdsTabHelperTest,
+       DoNotNotifyTabDidStartPlayingMediaWhenAnotherPlayerIsAlreadyPlaying) {
+  ads_tab_helper()->NotifyTabDidStartPlayingMedia(/*player_id=*/1);
+  EXPECT_CALL(ads_service_mock(), NotifyTabDidStartPlayingMedia).Times(0);
+
+  ads_tab_helper()->NotifyTabDidStartPlayingMedia(/*player_id=*/2);
+}
+
+TEST_F(AdsTabHelperTest, NotifyTabDidStopPlayingMedia) {
+  ads_tab_helper()->NotifyTabDidStartPlayingMedia(/*player_id=*/1);
+  EXPECT_CALL(ads_service_mock(), NotifyTabDidStopPlayingMedia);
+
+  ads_tab_helper()->NotifyTabDidStopPlayingMedia(/*player_id=*/1);
+}
+
+TEST_F(AdsTabHelperTest,
+       DoNotNotifyTabDidStopPlayingMediaWhenAnotherPlayerIsStillPlaying) {
+  ads_tab_helper()->NotifyTabDidStartPlayingMedia(/*player_id=*/1);
+  ads_tab_helper()->NotifyTabDidStartPlayingMedia(/*player_id=*/2);
+  EXPECT_CALL(ads_service_mock(), NotifyTabDidStopPlayingMedia).Times(0);
+
+  ads_tab_helper()->NotifyTabDidStopPlayingMedia(/*player_id=*/1);
+}
+
+TEST_F(AdsTabHelperTest,
+       DoNotNotifyTabDidStopPlayingMediaForPlayerThatWasNotPlaying) {
+  EXPECT_CALL(ads_service_mock(), NotifyTabDidStopPlayingMedia).Times(0);
+
+  ads_tab_helper()->NotifyTabDidStopPlayingMedia(/*player_id=*/1);
+}
+
+TEST_F(AdsTabHelperTest,
+       NotifyTabDidStartPlayingMediaForReusedPlayerIdAfterNavigation) {
+  ads_tab_helper()->NotifyTabDidStartPlayingMedia(/*player_id=*/1);
+  Navigation(GURL("https://brave.com")).Simulate();
+  EXPECT_CALL(ads_service_mock(), NotifyTabDidStartPlayingMedia);
+
+  ads_tab_helper()->NotifyTabDidStartPlayingMedia(/*player_id=*/1);
 }
 
 TEST_F(AdsTabHelperTest, NotifyDidCloseTab) {

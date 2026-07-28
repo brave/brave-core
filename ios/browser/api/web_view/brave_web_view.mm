@@ -640,7 +640,7 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
   if (!adsTabHelper) {
     return;
   }
-  adsTabHelper->NotifyTabDidStartPlayingMedia();
+  adsTabHelper->NotifyTabDidStartPlayingMedia(/*player_id=*/0);
 }
 
 - (void)notifyTabDidStopPlayingMedia {
@@ -648,7 +648,7 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
   if (!adsTabHelper) {
     return;
   }
-  adsTabHelper->NotifyTabDidStopPlayingMedia();
+  adsTabHelper->NotifyTabDidStopPlayingMedia(/*player_id=*/0);
 }
 
 @end
