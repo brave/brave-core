@@ -255,6 +255,24 @@ void AddBraveTabThemeColorMixer(ui::ColorProvider* provider,
   postprocessing_mixer[kColorNewTabButtonBackgroundFrameInactive] = {
       ui::kColorFrameInactive};
 
+  // TabStripComboButton / tab search icon (horizontal caret and vertical
+  // toolbar button). Chromium maps these CR color IDs through regular-mixer
+  // ColorId references to kColorTabForegroundInactiveFrameActive, which cannot
+  // see this postprocessing mixer's overrides — so without an explicit recipe
+  // here the icon keeps the regular dark-theme (near-white) color.
+  const SkColor toolbar_icon =
+      postprocessing_mixer.GetResultColor(kColorToolbarButtonIcon);
+  const SkColor toolbar_icon_inactive =
+      postprocessing_mixer.GetResultColor(kColorToolbarButtonIconInactive);
+  postprocessing_mixer[kColorNewTabButtonCRForegroundFrameActive] = {
+      toolbar_icon};
+  postprocessing_mixer[kColorNewTabButtonCRForegroundFrameInactive] = {
+      toolbar_icon_inactive};
+  postprocessing_mixer[kColorTabSearchButtonCRForegroundFrameActive] = {
+      toolbar_icon};
+  postprocessing_mixer[kColorTabSearchButtonCRForegroundFrameInactive] = {
+      toolbar_icon_inactive};
+
   // Vertical tabs
   postprocessing_mixer[kColorBraveVerticalTabActiveBackground] =
       darker_theme::ApplyDarknessFromColor(nala::kColorPrimitiveNeutral20);
