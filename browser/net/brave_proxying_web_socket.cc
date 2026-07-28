@@ -494,7 +494,8 @@ void BraveProxyingWebSocket<T>::ContinueToCompleted() {
       std::move(handshake_response_), std::move(readable_),
       std::move(writable_));
 
-  OnError(net::ERR_FAILED);
+  // Deletes |this|.
+  std::move(on_disconnect_).Run(this);
 }
 
 template <template <typename> class T>
