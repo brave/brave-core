@@ -1,0 +1,14 @@
+diff --git a/base/logging/rust_logger/print_rust_log_ffi.cc b/base/logging/rust_logger/print_rust_log_ffi.cc
+index 0d54e6e649a29f1804b06a354d4561f871cf0c7e..62b26b7a53c1c5ece9b56eda2218f29c8882a43c 100644
+--- a/base/logging/rust_logger/print_rust_log_ffi.cc
++++ b/base/logging/rust_logger/print_rust_log_ffi.cc
+@@ -27,6 +27,9 @@ void print_rust_log(const RustFmtArguments& msg,
+                     const char* file,
+                     int32_t line,
+                     int32_t severity) {
++  if (!ShouldPrintRustLog(severity)) {
++    return;
++  }
+   LogMessageRustWrapper wrapper(file, line, severity);
+   msg.format(wrapper);
+ }
