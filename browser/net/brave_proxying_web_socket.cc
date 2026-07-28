@@ -243,10 +243,10 @@ void BraveProxyingWebSocket<T>::OnConnectionEstablished(
 
   response_.remote_endpoint = handshake_response_->remote_endpoint;
 
-  // If the network service supplied a TrustedHeaderClient, response header
-  // processing happened through OnHeadersReceived() already. Otherwise,
-  // reconstruct the handshake response headers here so Brave's
-  // OnHeadersReceived callbacks still run before establishment is forwarded.
+  // The TrustedHeaderClient path receives response headers separately through
+  // OnHeadersReceived(). Without one, reconstruct them from the handshake so
+  // Brave's response callbacks see the same data before establishment is
+  // forwarded. This matches WebRequestProxyingWebSocket.
   if (receiver_as_header_client_.is_bound()) {
     ContinueToCompleted();
     return;
@@ -461,20 +461,18 @@ void BraveProxyingWebSocket<T>::OnHeadersReceivedComplete(int error_code) {
     return;
   }
 
-  std::optional<std::string> headers;
-  if (override_headers_) {
-    headers = override_headers_->raw_headers();
-  }
-
   if (receiver_as_header_client_.is_bound()) {
     proxy_trusted_header_client_->OnHeadersReceived(
-        headers.value_or(response_.headers ? response_.headers->raw_headers()
-                                           : std::string()),
-        response_.remote_endpoint, response_.ssl_info,
+        response_.headers->raw_headers(), response_.remote_endpoint,
+        response_.ssl_info,
         base::BindOnce(
             &BraveProxyingWebSocket::OnHeadersReceivedCompleteFromProxy,
             weak_factory_.GetWeakPtr()));
   } else {
+    std::optional<std::string> headers;
+    if (override_headers_) {
+      headers = override_headers_->raw_headers();
+    }
     OnHeadersReceivedCompleteFromProxy(error_code, headers, std::nullopt);
   }
 }

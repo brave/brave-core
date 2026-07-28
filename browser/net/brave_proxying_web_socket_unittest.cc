@@ -13,8 +13,8 @@
 
 #include "base/functional/bind.h"
 #include "base/memory/scoped_refptr.h"
-#include "base/run_loop.h"
 #include "base/test/bind.h"
+#include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
@@ -83,24 +83,11 @@ class TestHandshakeClient : public network::mojom::WebSocketHandshakeClient {
       mojo::ScopedDataPipeProducerHandle writable) override {
     connection_established_ = true;
     response_ = std::move(response);
-    if (quit_closure_) {
-      std::move(quit_closure_).Run();
-    }
-  }
-
-  void RunUntilConnectionEstablished() {
-    if (connection_established_) {
-      return;
-    }
-    base::RunLoop run_loop;
-    quit_closure_ = run_loop.QuitClosure();
-    run_loop.Run();
   }
 
  private:
   mojo::Receiver<network::mojom::WebSocketHandshakeClient> receiver_{this};
   network::mojom::WebSocketHandshakeResponsePtr response_;
-  base::OnceClosure quit_closure_;
   bool connection_established_ = false;
 };
 
@@ -204,7 +191,9 @@ TEST_F(BraveProxyingWebSocketTest,
            /*additional_headers=*/{},
            downstream_handshake_client.CreateRemote(), mojo::NullRemote(),
            mojo::NullRemote());
-  downstream_handshake_client.RunUntilConnectionEstablished();
+  ASSERT_TRUE(base::test::RunUntil([&] {
+    return downstream_handshake_client.connection_established();
+  }));
 
   ASSERT_TRUE(downstream_handshake_client.response());
   const auto& response = downstream_handshake_client.response();
