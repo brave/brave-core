@@ -56,7 +56,8 @@ std::unique_ptr<TemplateURL> MaybeGetTemplateURLForPrepopulatedEngine(
 // Returns a `TemplateURL` if `url` matches the search engine results page for
 // any prepopulated engine in the allow list.
 std::unique_ptr<TemplateURL> MaybeGetTemplateUrl(const GURL& url) {
-  for (const auto* prepopulated_engine :
+  for (const TemplateURLPrepopulateData::PrepopulatedEngine*
+           prepopulated_engine :
        regional_capabilities::GetAllPrepopulatedEngines()) {
     if (auto search_engine = MaybeGetTemplateURLForPrepopulatedEngine(
             *prepopulated_engine, url)) {
