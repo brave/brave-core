@@ -88,6 +88,18 @@ void EmitEthereumEvent(web::WebState* web_state,
   ExecuteJavaScript(web_state, base::UTF8ToUTF16(script));
 }
 
+std::string ValueOrUndefined(base::Value value) {
+  if (value.is_none()) {
+    // Empty base::Value will get serialized as `null`
+    return "undefined";
+  }
+  std::string json_value;
+  if (!base::JSONWriter::Write(value, &json_value)) {
+    return "undefined";
+  }
+  return json_value;
+}
+
 }  // namespace
 
 EthereumProviderTabHelper::EthereumProviderTabHelper(
@@ -218,39 +230,41 @@ void EthereumProviderTabHelper::OnGetChainIdForProperties(
 
   // `chainId` is always assigned as a quoted hex string, e.g.
   // `window.ethereum.chainId = "0x1"`.
-  ExecuteJavaScript(web_state_,
-                    base::UTF8ToUTF16(base::StrCat(
-                        {"window.ethereum.chainId = \"", chain_id, "\""})));
+  ExecuteJavaScript(
+      web_state_, base::UTF8ToUTF16(
+                      base::StrCat({"window.ethereum.chainId = ",
+                                    ValueOrUndefined(base::Value(chain_id))})));
 
   // `networkVersion` is the decimal form of the chain id, or the literal string
   // "undefined" when it cannot be parsed.
-  std::string network_version = "undefined";
+  base::Value network_version;
   std::string_view hex = chain_id;
   if (base::StartsWith(hex, "0x", base::CompareCase::INSENSITIVE_ASCII)) {
     hex.remove_prefix(2);
   }
   if (uint32_t parsed = 0; base::HexStringToUInt(hex, &parsed)) {
-    network_version = base::NumberToString(parsed);
+    network_version = base::Value(base::NumberToString(parsed));
   }
-  ExecuteJavaScript(
-      web_state_,
-      base::UTF8ToUTF16(base::StrCat(
-          {"window.ethereum.networkVersion = \"", network_version, "\""})));
+  ExecuteJavaScript(web_state_,
+                    base::UTF8ToUTF16(base::StrCat(
+                        {"window.ethereum.networkVersion = ",
+                         ValueOrUndefined(std::move(network_version))})));
 
   // `selectedAddress` is the first allowed account (quoted), or bare
   // `undefined` when the keyring is locked / there are no allowed accounts.
   // `GetAllowedAccounts(false)` already returns nullopt when the keyring is
   // locked.
-  std::string selected_address = "undefined";
+  base::Value selected_address;
   std::optional<std::vector<std::string>> allowed_accounts =
       provider_->GetAllowedAccounts(/*include_accounts_when_locked=*/false);
   if (allowed_accounts && !allowed_accounts->empty()) {
-    selected_address = base::StrCat({"\"", allowed_accounts->front(), "\""});
+    selected_address =
+        base::Value(base::StrCat({"\"", allowed_accounts->front(), "\""}));
   }
-  ExecuteJavaScript(
-      web_state_,
-      base::UTF8ToUTF16(base::StrCat(
-          {"window.ethereum.selectedAddress = ", selected_address})));
+  ExecuteJavaScript(web_state_,
+                    base::UTF8ToUTF16(base::StrCat(
+                        {"window.ethereum.selectedAddress = ",
+                         ValueOrUndefined(std::move(selected_address))})));
 }
 
 void EthereumProviderTabHelper::CreateProvider() {
@@ -294,6 +308,7 @@ void EthereumProviderTabHelper::PageLoaded(
     web::WebState* web_state,
     web::PageLoadCompletionStatus load_completion_status) {
   if (load_completion_status == web::PageLoadCompletionStatus::SUCCESS) {
+    UpdateEthereumProperties();
     EmitEthereumEvent(web_state, "connect", std::nullopt);
   }
 }
