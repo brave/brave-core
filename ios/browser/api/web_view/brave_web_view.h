@@ -146,8 +146,8 @@ CWV_EXPORT
 // AdsReportingScript is converted to a Chromium JavaScriptFeature
 CWV_EXPORT
 @interface BraveWebView (AdsNotifier)
-- (void)notifyTabDidStartPlayingMedia;
-- (void)notifyTabDidStopPlayingMedia;
+- (void)notifyTabDidStartPlayingMedia:(NSInteger)playerId;
+- (void)notifyTabDidStopPlayingMedia:(NSInteger)playerId;
 @end
 
 CWV_EXPORT

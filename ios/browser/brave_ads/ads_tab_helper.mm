@@ -77,12 +77,30 @@ AdsTabHelper::~AdsTabHelper() {
   }
 }
 
-void AdsTabHelper::NotifyTabDidStartPlayingMedia() {
-  ads_service_->NotifyTabDidStartPlayingMedia(tab_id_);
+void AdsTabHelper::NotifyTabDidStartPlayingMedia(int player_id) {
+  if (IsPlayingMediaWithAudio(player_id)) {
+    return;
+  }
+
+  media_players_with_audio_.insert(player_id);
+  if (media_players_with_audio_.size() == 1) {
+    // If this is the first media player that has started playing, notify
+    // that the tab has started playing media.
+    MaybeNotifyTabDidStartPlayingMedia();
+  }
 }
 
-void AdsTabHelper::NotifyTabDidStopPlayingMedia() {
-  ads_service_->NotifyTabDidStopPlayingMedia(tab_id_);
+void AdsTabHelper::NotifyTabDidStopPlayingMedia(int player_id) {
+  if (!IsPlayingMediaWithAudio(player_id)) {
+    return;
+  }
+
+  media_players_with_audio_.erase(player_id);
+  if (media_players_with_audio_.empty()) {
+    // If this is the last media player that has stopped playing, notify that
+    // the tab has stopped playing media.
+    MaybeNotifyTabDidStopPlayingMedia();
+  }
 }
 
 void AdsTabHelper::WasShown(web::WebState* web_state) {
@@ -99,6 +117,10 @@ void AdsTabHelper::DidStartNavigation(
   redirect_chain_.clear();
   http_status_code_.reset();
   is_same_document_navigation_ = false;
+
+  // All media players from the previous document are torn down and their IDs
+  // become invalid, so player tracking must not carry over to the next one.
+  media_players_with_audio_.clear();
 
   if (web::NavigationManager* navigation_manager =
           web_state->GetNavigationManager()) {
@@ -212,6 +234,18 @@ void AdsTabHelper::MaybeNotifyTabDidLoad() {
 
 void AdsTabHelper::MaybeNotifyTabDidFailToLoad() {
   ads_service_->NotifyTabDidFailToLoad(tab_id_);
+}
+
+void AdsTabHelper::MaybeNotifyTabDidStartPlayingMedia() {
+  ads_service_->NotifyTabDidStartPlayingMedia(tab_id_);
+}
+
+void AdsTabHelper::MaybeNotifyTabDidStopPlayingMedia() {
+  ads_service_->NotifyTabDidStopPlayingMedia(tab_id_);
+}
+
+bool AdsTabHelper::IsPlayingMediaWithAudio(int player_id) const {
+  return media_players_with_audio_.contains(player_id);
 }
 
 void AdsTabHelper::OnVisibilityChanged(bool is_visible) {
