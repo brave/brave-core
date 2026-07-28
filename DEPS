@@ -41,6 +41,15 @@ recursedeps = [
 
 hooks = [
   {
+    # Link Brave's checked-in agent skills (agents/skills/) into the Claude Code
+    # discovery dir (.claude/skills/) so every developer discovers them with no
+    # manual step. Idempotent; the generated links are gitignored. See
+    # agents/skills/setup.py.
+    'name': 'link_agent_skills',
+    'pattern': '.',
+    'action': ['python3', 'agents/skills/setup.py', 'link', '-q'],
+  },
+  {
     'name': 'bootstrap_ios',
     'pattern': '.',
     'condition': 'checkout_ios and host_os == "mac"',
