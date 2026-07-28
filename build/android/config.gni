@@ -34,6 +34,7 @@ brave_chrome_java_deps = [
   "//brave/browser/customize_menu/android:java",
   "//brave/browser/download/android:java",
   "//brave/browser/first_run/android:java",
+  "//brave/browser/hub/android:java",
   "//brave/browser/notifications/android:brave_java",
   "//brave/browser/notifications/android:java",
   "//brave/browser/ntp_customization:java",
