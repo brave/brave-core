@@ -9,6 +9,7 @@
 
 #include "base/check.h"
 #include "brave/browser/ui/views/side_panel/ai_chat/ai_chat_movable_side_panel_web_view.h"
+#include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
 #include "brave/components/ai_chat/core/common/ai_chat_urls.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/navigator/browser_navigator.h"
@@ -38,6 +39,24 @@ namespace {
 
 SidePanelEntry::Key ChatEntryKey() {
   return SidePanelEntry::Key(SidePanelEntry::Id::kChatUI);
+}
+
+AIChatUI* GetAIChatUIWebUI(content::WebContents* web_contents) {
+  if (!web_contents) {
+    return nullptr;
+  }
+
+  auto* web_ui = web_contents->GetWebUI();
+  if (!web_ui) {
+    return nullptr;
+  }
+
+  auto* controller = web_ui->GetController();
+  if (!controller) {
+    return nullptr;
+  }
+
+  return controller->GetAs<AIChatUI>();
 }
 
 }  // namespace
@@ -80,6 +99,14 @@ void AIChatSidePanelTabTransferBridge::TransferFullPageContentsToSidePanel(
   // again and adopt the pending contents (see
   // `AIChatMovableSidePanelWebView::CreateView`).
   ClearChatEntryCache();
+
+  // Notify the page that it's now in a Side Panel
+  AIChatUI* ai_chat_ui = GetAIChatUIWebUI(pending_web_contents_.get());
+  if (ai_chat_ui) {
+    ai_chat_ui->page_handler()->SetDisplayMode(false);
+  } else {
+    DVLOG(1) << "No AIChatUI found for the transferred WebContents";
+  }
 
   // Animate the conversation into the panel from where the full page currently
   // sits (flash-free). When the caller could not capture a starting rect (e.g.
@@ -181,6 +208,13 @@ bool AIChatSidePanelTabTransferBridge::MoveSidePanelContentsToTab(
   params.transition = ui::PAGE_TRANSITION_LINK;
   Navigate(&params);
 
+  // Notify the page that it's now in a full-page tab
+  AIChatUI* ai_chat_ui = GetAIChatUIWebUI(side_panel_contents);
+  if (ai_chat_ui) {
+    ai_chat_ui->page_handler()->SetDisplayMode(true);
+  } else {
+    DVLOG(1) << "No AIChatUI found for the transferred WebContents";
+  }
   // The conversation now lives in a tab; close the (now-empty) panel. Its view
   // is torn down on close, but its owned contents was already released.
   side_panel_ui->Close();

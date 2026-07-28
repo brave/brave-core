@@ -127,6 +127,10 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
   void BindParentUIFrameFromChildFrame(
       mojo::PendingReceiver<mojom::ParentUIFrame> receiver);
 
+  // Update the page's display mode (standalone vs side panel) and notify the
+  // page of the change.
+  void SetDisplayMode(bool is_standalone);
+
  private:
   class ChatContextObserver : public content::WebContentsObserver {
    public:

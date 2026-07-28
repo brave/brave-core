@@ -11,6 +11,7 @@
 #include "base/test/test_future.h"
 #include "base/time/time.h"
 #include "brave/browser/ai_chat/ai_chat_agent_profile_helper.h"
+#include "brave/browser/ai_chat/ai_chat_conversation_ui_browsertest_base.h"
 #include "brave/browser/ui/side_panel/ai_chat/ai_chat_side_panel_utils.h"
 #include "brave/browser/ui/views/side_panel/ai_chat/ai_chat_movable_side_panel_web_view.h"
 #include "brave/browser/ui/views/side_panel/ai_chat/ai_chat_side_panel_web_view.h"
@@ -34,6 +35,7 @@
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_delegate.h"
 #include "content/public/browser/web_ui.h"
+#include "content/public/common/url_constants.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
@@ -48,7 +50,7 @@
 
 // Tests sidepanel behavior for AI Chat scenarios
 class AIChatGlobalSidePanelBrowserTest
-    : public InProcessBrowserTest,
+    : public ai_chat::AIChatConversationUIBrowserTestBase,
       public testing::WithParamInterface<std::tuple<bool, bool>> {
  public:
   AIChatGlobalSidePanelBrowserTest() {
@@ -272,6 +274,11 @@ IN_PROC_BROWSER_TEST_P(AIChatGlobalSidePanelBrowserTest,
   content::WebContents* leo_contents = tab_strip->GetActiveWebContents();
   ASSERT_TRUE(leo_contents);
 
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    return VerifyElementState("standalone-main", true,
+                              leo_contents->GetPrimaryMainFrame(), FROM_HERE);
+  }));
+
   const int initial_tab_count = tab_strip->count();
 
   // The transfer requires both the move feature and the global side panel.
@@ -299,9 +306,15 @@ IN_PROC_BROWSER_TEST_P(AIChatGlobalSidePanelBrowserTest,
 
   // The AI Chat side panel now shows and hosts the *same* live WebContents (no
   // reload / no fresh contents).
-  ASSERT_TRUE(
-      base::test::RunUntil([&]() { return IsSidePanelOpen(browser()); }));
-  EXPECT_EQ(GetAttachedSidePanelWebContents(browser()), leo_contents);
+  content::WebContents* side_panel_contents =
+      GetAttachedSidePanelWebContents(browser());
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    return IsSidePanelOpen(browser()) &&
+           VerifyElementState("sidepanel-main", true,
+                              side_panel_contents->GetPrimaryMainFrame(),
+                              FROM_HERE);
+  }));
+  EXPECT_EQ(side_panel_contents, leo_contents);
 }
 
 // The forward move slides the conversation into the side panel with a content
@@ -384,15 +397,15 @@ IN_PROC_BROWSER_TEST_P(AIChatGlobalSidePanelBrowserTest,
   ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
       browser(), GURL(kAIChatUIURL), WindowOpenDisposition::NEW_FOREGROUND_TAB,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
-  content::WebContents* leo_contents = tab_strip->GetActiveWebContents();
-  ASSERT_TRUE(leo_contents);
+  content::WebContents* ai_chat_contents = tab_strip->GetActiveWebContents();
+  ASSERT_TRUE(ai_chat_contents);
 
   const int initial_tab_count = tab_strip->count();
 
   // Follow a link the way the conversation renders it.
   const GURL link_url = embedded_test_server()->GetURL("/title1.html");
   ASSERT_TRUE(content::ExecJs(
-      leo_contents,
+      ai_chat_contents,
       content::JsReplace("const link = document.createElement('a');"
                          "link.href = $1;"
                          "link.target = '_blank';"
@@ -406,7 +419,7 @@ IN_PROC_BROWSER_TEST_P(AIChatGlobalSidePanelBrowserTest,
     // The link opens in a tab of its own and AI Chat stays a full tab.
     ASSERT_TRUE(base::test::RunUntil(
         [&]() { return tab_strip->count() == initial_tab_count + 1; }));
-    EXPECT_NE(tab_strip->GetIndexOfWebContents(leo_contents),
+    EXPECT_NE(tab_strip->GetIndexOfWebContents(ai_chat_contents),
               TabStripModel::kNoTab);
     EXPECT_FALSE(IsSidePanelOpen(browser()));
     return;
@@ -418,12 +431,12 @@ IN_PROC_BROWSER_TEST_P(AIChatGlobalSidePanelBrowserTest,
   // observed holding both.
   ASSERT_TRUE(base::test::RunUntil([&]() {
     return IsSidePanelOpen(browser()) &&
-           GetAttachedSidePanelWebContents(browser()) == leo_contents;
+           GetAttachedSidePanelWebContents(browser()) == ai_chat_contents;
   }));
 
   // The link's tab took AI Chat's place: it is the active tab, and the tab
   // count is unchanged because AI Chat left the strip as the link's tab joined.
-  EXPECT_EQ(tab_strip->GetIndexOfWebContents(leo_contents),
+  EXPECT_EQ(tab_strip->GetIndexOfWebContents(ai_chat_contents),
             TabStripModel::kNoTab);
   EXPECT_EQ(tab_strip->count(), initial_tab_count);
   EXPECT_EQ(tab_strip->GetActiveWebContents()->GetVisibleURL(), link_url);
@@ -599,38 +612,56 @@ IN_PROC_BROWSER_TEST_P(AIChatGlobalSidePanelBrowserTest,
   content::WebContents* panel_contents = nullptr;
   ASSERT_TRUE(base::test::RunUntil([&]() {
     panel_contents = GetAttachedSidePanelWebContents(browser());
-    return IsSidePanelOpen(browser()) && panel_contents != nullptr;
+    return IsSidePanelOpen(browser()) && panel_contents != nullptr &&
+           VerifyElementState("sidepanel-main", true,
+                              panel_contents->GetPrimaryMainFrame(), FROM_HERE);
   }));
 
   auto* tab_strip = browser()->tab_strip_model();
   const int initial_tab_count = tab_strip->count();
 
+  ASSERT_TRUE(VerifyElementState("open-full-page-button", /*expect_exist=*/true,
+                                 panel_contents->GetPrimaryMainFrame()));
+  ASSERT_TRUE(ClickElement("open-full-page-button",
+                           panel_contents->GetPrimaryMainFrame()));
+
+  // A new foreground tab should open at the conversation's full-page URL.
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    return (browser()->tab_strip_model()->count() == initial_tab_count + 1) &&
+           !IsSidePanelOpen(browser());
+  }));
+
   // The transfer requires both the move feature and the global side panel.
   const bool expect_transfer =
       IsMoveToSidePanelEnabled() && IsGlobalFlagEnabled();
 
-  const bool handled = ai_chat::MaybeMoveSidePanelChatToTab(panel_contents);
-
   if (!expect_transfer) {
-    // No transfer: the conversation stays in the side panel.
-    EXPECT_FALSE(handled);
-    EXPECT_TRUE(IsSidePanelOpen(browser()));
-    EXPECT_EQ(tab_strip->count(), initial_tab_count);
+    // No transfer: the conversation is a new web contents.
+    EXPECT_EQ(tab_strip->GetIndexOfWebContents(panel_contents),
+              TabStripModel::kNoTab);
+    content::WebContents* new_tab =
+        browser()->tab_strip_model()->GetActiveWebContents();
+    ASSERT_TRUE(content::WaitForLoadStop(new_tab));
+    const GURL& full_page_url = new_tab->GetLastCommittedURL();
+    EXPECT_TRUE(full_page_url.SchemeIs(content::kChromeUIScheme));
+    EXPECT_EQ(full_page_url.host(), "leo-ai");
+    // The path carries the conversation uuid, e.g. chrome://leo-ai/<uuid>.
+    EXPECT_GT(full_page_url.path().length(), 1u);
     return;
   }
-
-  EXPECT_TRUE(handled);
 
   // The same live conversation contents is now a full-page foreground tab (no
   // reload / no fresh contents).
   EXPECT_EQ(tab_strip->GetActiveWebContents(), panel_contents);
   EXPECT_NE(tab_strip->GetIndexOfWebContents(panel_contents),
             TabStripModel::kNoTab);
-  EXPECT_EQ(tab_strip->count(), initial_tab_count + 1);
 
   // The side panel has closed to avoid showing the same conversation twice.
-  ASSERT_TRUE(
-      base::test::RunUntil([&]() { return !IsSidePanelOpen(browser()); }));
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    return !IsSidePanelOpen(browser()) &&
+           VerifyElementState("standalone-main", true,
+                              panel_contents->GetPrimaryMainFrame(), FROM_HERE);
+  }));
 }
 
 // The reverse move only applies to a side-panel-hosted conversation. A

@@ -382,6 +382,7 @@ class FakeChatUI : public mojom::ChatUI {
   }
   void OnChildFrameBound(
       mojo::PendingReceiver<mojom::ParentUIFrame> receiver) override {}
+  void OnDisplayModeChanged(bool is_standalone) override {}
 
   std::optional<int32_t> last_content_id_;
   int call_count_ = 0;

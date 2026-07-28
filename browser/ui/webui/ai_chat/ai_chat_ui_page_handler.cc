@@ -697,4 +697,11 @@ void AIChatUIPageHandler::BindParentUIFrameFromChildFrame(
   chat_ui_->OnChildFrameBound(std::move(receiver));
 }
 
+void AIChatUIPageHandler::SetDisplayMode(bool is_standalone) {
+  if (!chat_ui_.is_bound()) {
+    return;
+  }
+  chat_ui_->OnDisplayModeChanged(is_standalone);
+}
+
 }  // namespace ai_chat

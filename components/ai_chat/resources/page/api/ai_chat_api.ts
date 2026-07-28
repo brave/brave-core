@@ -196,6 +196,10 @@ export default function createAIChatApi(
           onNewDefaultConversation(contentId: number) {},
 
           onChildFrameBound(parentPagePendingReceiver) {},
+
+          onDisplayModeChanged(isStandalone) {
+            api.isStandalone.update(isStandalone)
+          },
         },
         async (observer) => {
           chatUIObserver = observer
