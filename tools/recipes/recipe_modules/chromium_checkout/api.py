@@ -278,16 +278,27 @@ class ChromiumCheckoutApi(RecipeApi):
             ['git', 'remote', 'set-url', '--push', 'origin', CHROMIUM_URL],
             cwd=chromium_src)
 
+        # `--depth` here (not just on the `populate` above) matters whenever
+        # *chromium_src* is already shallow at a different commit than the
+        # mirror's current one for this ref (e.g. re-checking out a branch
+        # after it moved on): a plain `git fetch` tries to extend the
+        # existing shallow history and fails outright ("did not send all
+        # necessary objects") once the mirror can no longer connect the two.
+        # Passing `--depth` here instead negotiates a fresh, self-contained
+        # shallow window for the requested ref, which doesn't depend on that
+        # connection at all.
+        depth_args = ['--depth', str(depth)] if depth else []
         if is_tag:
             # Chromium release tag (e.g. `150.0.7850.1`): fetch it as a tag so
             # it lands at `refs/tags/<ref>` in the local repo.
             self.m.step('fetch tag', [
-                'git', 'fetch', '--no-tags', 'origin',
+                'git', 'fetch', *depth_args, '--no-tags', 'origin',
                 f'refs/tags/{ref}:refs/tags/{ref}'
             ],
                         cwd=chromium_src)
         else:
-            self.m.step('fetch ref', ['git', 'fetch', 'origin', ref],
+            self.m.step('fetch ref',
+                        ['git', 'fetch', *depth_args, 'origin', ref],
                         cwd=chromium_src)
 
         # A manual `git checkout --force` rather than `gclient sync -r <ref>`
