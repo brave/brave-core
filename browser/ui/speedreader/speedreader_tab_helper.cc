@@ -59,7 +59,7 @@ namespace speedreader {
 namespace {
 
 // The reload which sends the distilled content doesn't include the fragment in
-// the network request, so the urls are compared ignoring it.
+// the network request, so the URLs are compared ignoring it.
 bool IsSameUrlIgnoringRef(const GURL& a, const GURL& b) {
   return a.is_valid() && b.is_valid() && a.GetWithoutRef() == b.GetWithoutRef();
 }
@@ -402,7 +402,7 @@ void SpeedreaderTabHelper::DidFinishNavigation(
       !navigation_handle->IsSameDocument() && !single_show_content_.empty()) {
     // The distilled content is consumed while the response is being processed,
     // which happens before the navigation is finished. It is still here, so
-    // this navigation didn't take it (i.e. it was redirected to another url,
+    // this navigation didn't take it (i.e. it was redirected to another URL,
     // cancelled or turned into a download). Drop the content, it must never be
     // sent as a body of another navigation.
     ClearSingleShowContent();
@@ -633,7 +633,7 @@ void SpeedreaderTabHelper::OnGetDocumentSource(GURL distilled_from,
                                                bool success,
                                                std::string html) {
   // The page may have been navigated away while the content was being
-  // distilled. The content of the old page must not be shown under the url of
+  // distilled. The content of the old page must not be shown under the URL of
   // the new one.
   if (!success || html.empty() ||
       !IsSameUrlIgnoringRef(distilled_from,

@@ -50,6 +50,7 @@
 #include "chrome/browser/ui/views/frame/toolbar_button_provider.h"
 #include "chrome/browser/ui/views/page_action/page_action_icon_view.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
+#include "chrome/common/pref_names.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/language/core/browser/language_prefs.h"
@@ -58,6 +59,7 @@
 #include "content/public/browser/render_view_host.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
+#include "content/public/test/download_test_observer.h"
 #include "content/public/test/test_navigation_observer.h"
 #include "content/public/test/test_utils.h"
 #include "net/dns/mock_host_resolver.h"
@@ -1165,8 +1167,8 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ToolbarWithRoundedCorners) {
 }
 
 // The content distilled from one page must never be shown as the content of
-// another page: it would allow a page to put its own markup under the url,
-// the tls indicators and the response headers of an unrelated origin.
+// another page: it would allow a page to put its own markup under the URL,
+// the TLS indicators and the response headers of an unrelated origin.
 // The reload which speedreader triggers to show the distilled content is
 // answered here in a way that leaves the content unsent, i.e. the reload is
 // redirected somewhere else or turned into a download.
@@ -1202,18 +1204,11 @@ class SpeedReaderContentSpoofBrowserTest : public SpeedReaderBrowserTest {
     ASSERT_TRUE(WaitDistillable());
   }
 
-  // Turns the reader mode on and waits until the reload which speedreader
-  // triggers to show the distilled content is finished at |target_url|. The
-  // reload may not commit at all (i.e. it becomes a download), so uncommitted
-  // navigations are observed too.
-  void ClickReaderButtonAndWaitForReload(const GURL& target_url) {
-    content::TestNavigationObserver observer(
-        target_url, content::MessageLoopRunner::QuitMode::IMMEDIATE,
-        /*ignore_uncommitted_navigations=*/false);
-    observer.WatchWebContents(ActiveWebContents());
+  // Turns the reader mode on. Speedreader distills the current document and
+  // reloads the page to show the distilled content.
+  void TurnOnReaderMode() {
     browser()->command_controller()->ExecuteCommand(
         IDC_SPEEDREADER_ICON_ONCLICK);
-    observer.WaitForNavigationFinished();
   }
 
   // Checks that the document currently shown is the original kVictimPage and
@@ -1267,7 +1262,11 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderContentSpoofBrowserTest,
                        DistilledContentIsNotSentToRedirectedUrl) {
   ASSERT_NO_FATAL_FAILURE(NavigateToReadablePage("redirect"));
 
-  ClickReaderButtonAndWaitForReload(victim_url());
+  // The reload starts at the readable page and is redirected to the victim.
+  content::TestNavigationManager reload(
+      ActiveWebContents(), ActiveWebContents()->GetLastCommittedURL());
+  TurnOnReaderMode();
+  ASSERT_TRUE(reload.WaitForNavigationFinished());
   ASSERT_TRUE(content::WaitForLoadStop(ActiveWebContents()));
 
   ExpectVictimPageIsIntact();
@@ -1280,7 +1279,20 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderContentSpoofBrowserTest,
   ASSERT_NO_FATAL_FAILURE(NavigateToReadablePage("attachment"));
   const GURL readable_url = ActiveWebContents()->GetLastCommittedURL();
 
-  ClickReaderButtonAndWaitForReload(readable_url);
+  // Content-Disposition: attachment replaces the reload with a download, so
+  // waiting for the navigation would hang, the events it waits for never come
+  // for downloads. Disable the download prompt so the download proceeds
+  // automatically and wait for the download itself instead. Same pattern as
+  // DeAmpBrowserTest.ContentDispositionAttachment.
+  browser()->profile()->GetPrefs()->SetBoolean(prefs::kPromptForDownload,
+                                               false);
+  content::DownloadTestObserverTerminal download_observer(
+      browser()->profile()->GetDownloadManager(), 1,
+      content::DownloadTestObserver::ON_DANGEROUS_DOWNLOAD_ACCEPT);
+  TurnOnReaderMode();
+  download_observer.WaitForFinished();
+  EXPECT_EQ(1u, download_observer.NumDownloadsSeenInState(
+                    download::DownloadItem::COMPLETE));
 
   // The download doesn't replace the page, so the readable page is still shown
   // and speedreader is not distilling anymore.

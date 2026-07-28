@@ -20,7 +20,7 @@ class SpeedreaderDelegate {
  public:
   virtual bool IsPageDistillationAllowed() = 0;
   // Returns true if the distilled content is available and it was distilled
-  // from |url|. The content must not be sent as a body of any other url.
+  // from |url|. The content must not be sent as a body of any other URL.
   virtual bool IsPageContentPresent(const GURL& url) = 0;
   virtual std::string TakePageContent() = 0;
   virtual void OnDistillComplete(DistillationResult result) = 0;

@@ -77,7 +77,7 @@ void BodySnifferThrottle::WillProcessResponse(
   }
   if (producer_ && !producer_->ShouldProcess(response_url, response_head)) {
     // The response is not the one the producer has the content for, i.e. the
-    // request was redirected to another url.
+    // request was redirected to another URL.
     producer_.reset();
   }
   for (auto& handler : body_handlers_) {

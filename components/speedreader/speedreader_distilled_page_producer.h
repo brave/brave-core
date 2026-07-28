@@ -21,9 +21,9 @@ class SpeedreaderDistilledPageProducer : public body_sniffer::BodyProducer {
  public:
   ~SpeedreaderDistilledPageProducer() override;
 
-  // |request_url| is the url of the request the producer is going to be
+  // |request_url| is the URL of the request the producer is going to be
   // attached to. The distilled content is sent only if it was distilled from
-  // that url, see ShouldProcess().
+  // that URL, see ShouldProcess().
   static std::unique_ptr<SpeedreaderDistilledPageProducer> MaybeCreate(
       const GURL& request_url,
       base::WeakPtr<SpeedreaderDelegate> speedreader_delegate);

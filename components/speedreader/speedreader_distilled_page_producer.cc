@@ -38,8 +38,8 @@ bool SpeedreaderDistilledPageProducer::ShouldProcess(
     const GURL& response_url,
     network::mojom::URLResponseHead* response_head) {
   // The distilled content belongs to the page it was distilled from and must
-  // never be sent as a body of any other url, so re-check the url of the
-  // response, it may differ from the url the request was started with.
+  // never be sent as a body of any other URL, so re-check the URL of the
+  // response, it may differ from the URL the request was started with.
   return speedreader_delegate_ &&
          speedreader_delegate_->IsPageContentPresent(response_url);
 }

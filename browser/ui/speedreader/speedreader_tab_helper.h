@@ -173,7 +173,7 @@ class SpeedreaderTabHelper
   // to any other page.
   void ClearSingleShowContent();
 
-  // |distilled_from| is the url of the page the |html| was distilled from.
+  // |distilled_from| is the URL of the page the |html| was distilled from.
   void OnGetDocumentSource(GURL distilled_from, bool success, std::string html);
 
   void TransitStateTo(const DistillState& desired_state,

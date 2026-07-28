@@ -103,7 +103,7 @@ class BodyProducer {
 
   // Called on response received, returns true if the producer wants to replace
   // the body of this response. The response may be received from a different
-  // url than the request was started with (redirects), so producers must check
+  // URL than the request was started with (redirects), so producers must check
   // |response_url| before claiming the response.
   virtual bool ShouldProcess(
       const GURL& response_url,
