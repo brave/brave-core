@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveShared
 import Foundation
 import Shared
 import WebKit
@@ -278,6 +279,36 @@ class URLExtensionTests: XCTestCase {
     XCTAssertEqual(URL(string: "https://otap.co")?.baseDomain, "otap.co")
     XCTAssertEqual(URL(string: "https://test.otap.co")?.baseDomain, "test.otap.co")
     XCTAssertEqual(URL(string: "https://one.two.otap.co")?.baseDomain, "one.two.otap.co")
+  }
+
+  func testIsYouTubeURL() {
+    let youTubeURLs = [
+      "https://youtube.com",
+      "https://www.youtube.com",
+      "https://m.youtube.com",
+      "https://youtu.be",
+      "https://youtube.com/watch?v=1234567",
+      "https://www.youtube.com/watch?v=1234567",
+      "https://m.youtube.com/watch?v=1234567",
+      "https://youtu.be/1234567",
+      "http://youtube.com",
+      "http://www.youtube.com",
+      "http://m.youtube.com",
+      "http://youtu.be",
+    ]
+
+    let nonYouTubeURLs = [
+      "https://brave.com",
+      "https://notyoutube.com",
+      "https://youtube.com.com",
+      "https://youtube.evil.com",
+      "https://youtu.be.be",
+      "https://youtu.evil.be",
+      "about:blank",
+    ]
+
+    youTubeURLs.forEach { XCTAssertTrue(URL(string: $0)!.isYouTubeURL, $0) }
+    nonYouTubeURLs.forEach { XCTAssertFalse(URL(string: $0)!.isYouTubeURL, $0) }
   }
 
   func testNewTabPageURL() {
