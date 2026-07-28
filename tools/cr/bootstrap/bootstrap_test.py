@@ -202,7 +202,11 @@ class ResolveVpython3Test(unittest.TestCase):
         # Whether found on $PATH or via the chromium-bundled fallback, the
         # resolved interpreter is always a vpython3 (vpython3.bat on Windows).
         resolved = launcher._resolve_vpython3(Path('/home/dev/src/brave'))
-        self.assertIn(resolved.name, ('vpython3', 'vpython3.bat'))
+
+        # Normalize the case here. This is because on Windows, shutil.which()
+        # will use %PATHEXT%, which contains uppercase extension names.
+        self.assertIn(os.path.normcase(resolved.name),
+                      ('vpython3', 'vpython3.bat'))
 
 
 class FindBraveCheckoutTest(unittest.TestCase):
