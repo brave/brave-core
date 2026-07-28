@@ -2237,13 +2237,21 @@
 # https://github.com/brave/brave-browser/issues/54240
 -All/SaveToDriveEventDispatcherBrowserTest.Notify/0
 
-# Known upstream flake (8.2% flake rate over 30 days). Race condition between
-# autofill form classification and APC extraction: GetAutofillFieldData()
-# returns nullopt when autofill hasn't cached the cross-site iframe's form yet,
-# so no bounding boxes are generated and screenshot redaction is skipped.
-# Not disabled by Chromium. No Brave chromium_src modifications in this area.
+# Known upstream flake (4.5% flake rate over 30 days, 20k+ verdicts). Race
+# condition between autofill form classification and APC extraction:
+# GetAutofillFieldData() returns nullopt when autofill hasn't cached the
+# cross-site iframe's form yet, so no bounding boxes are generated and screenshot
+# redaction is skipped (bitmap stays white instead of the redaction color and
+# Glic.PageContextFetcher.ScreenshotRedacted records false). The test is
+# value-parameterized (testing::Bool with an empty instantiation prefix), so the
+# entry needs a "/*" suffix to match the PasswordTrackedElements{Enabled,
+# Disabled} instances; the original bare entry matched nothing, which is why the
+# failure recurred. Chromium disables the sibling
+# RedactionWhenScreenshotReceivedFirst on Linux/ASAN/MSAN (crbug.com/515405394).
+# No Brave chromium_src modifications affecting screenshot redaction.
 # https://github.com/brave/brave-browser/issues/54104
--SensitivePaymentRedactionMultiSourcePageContextFetcherBrowserTest.BasicRedactionInIframe
+# https://github.com/brave/brave-browser/issues/56792
+-SensitivePaymentRedactionMultiSourcePageContextFetcherBrowserTest.BasicRedactionInIframe/*
 
 # Chromium test: upstream flake. The globally registered UpdateMetricsProvider
 # may record histogram samples during browser startup (e.g. via initial
