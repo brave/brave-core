@@ -14,6 +14,8 @@ namespace brave_ads {
 
 namespace {
 
+constexpr std::string_view kObsoleteHasMigratedClientStateV7 =
+    "brave.brave_ads.state.has_migrated.client.v7";
 constexpr std::string_view kObsoleteHasMigratedConfirmationStateV8 =
     "brave.brave_ads.state.has_migrated.confirmations.v8";
 constexpr std::string_view kObsoleteHasMigratedStateV2 =
@@ -45,6 +47,9 @@ void RegisterProfilePrefsForMigration(PrefRegistrySimple* const registry) {
   // Added 04/2026.
   registry->RegisterBooleanPref(kObsoleteHasMigratedConfirmationStateV8, false);
   registry->RegisterBooleanPref(kObsoleteHasMigratedStateV2, false);
+
+  // Added 07/2026.
+  registry->RegisterBooleanPref(kObsoleteHasMigratedClientStateV7, false);
 }
 
 void MigrateObsoleteProfilePrefs(PrefService* const prefs) {
@@ -56,6 +61,9 @@ void MigrateObsoleteProfilePrefs(PrefService* const prefs) {
   // Added 04/2026.
   prefs->ClearPref(kObsoleteHasMigratedConfirmationStateV8);
   prefs->ClearPref(kObsoleteHasMigratedStateV2);
+
+  // Added 07/2026.
+  prefs->ClearPref(kObsoleteHasMigratedClientStateV7);
 }
 
 void RegisterLocalStatePrefsForMigration(PrefRegistrySimple* registry) {
