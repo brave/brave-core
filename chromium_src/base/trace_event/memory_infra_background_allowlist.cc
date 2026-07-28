@@ -5,14 +5,11 @@
 
 #include "base/trace_event/memory_infra_background_allowlist.h"
 
-#define IsMemoryAllocatorDumpNameInAllowlist \
-  IsMemoryAllocatorDumpNameInAllowlist_ChromiumImpl
-#include <base/trace_event/memory_infra_background_allowlist.cc>
-#undef IsMemoryAllocatorDumpNameInAllowlist
-
 namespace base::trace_event {
 
-bool IsMemoryAllocatorDumpNameInAllowlist(const std::string& name) {
+namespace {
+
+bool IsMemoryAllocatorDumpNameInBraveAllowlist(const std::string& name) {
   if (name.starts_with(
           "extensions/value_store/Extensions.Database.Open.BraveWallet/")) {
     return true;
@@ -21,7 +18,11 @@ bool IsMemoryAllocatorDumpNameInAllowlist(const std::string& name) {
                        "Extensions.Database.Open.AdBlock Custom Resources/")) {
     return true;
   }
-  return IsMemoryAllocatorDumpNameInAllowlist_ChromiumImpl(name);
+  return false;
 }
 
+}  // namespace
+
 }  // namespace base::trace_event
+
+#include <base/trace_event/memory_infra_background_allowlist.cc>
