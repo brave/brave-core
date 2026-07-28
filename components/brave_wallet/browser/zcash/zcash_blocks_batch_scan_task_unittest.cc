@@ -129,7 +129,8 @@ class ZCashBlocksBatchScanTest : public testing::Test {
                        OrchardStorage::Error>>
         result;
     sync_state_.AsyncCall(&OrchardSyncState::GetSpendableNotes)
-        .WithArgs(account_id_.Clone(), OrchardAddrRawPart({}))
+        .WithArgs(OrchardPool::kOrchard, account_id_.Clone(),
+                  OrchardAddrRawPart({}))
         .Then(base::BindLambdaForTesting(
             [&](base::expected<
                 std::optional<OrchardSyncState::SpendableNotesBundle>,
@@ -154,29 +155,29 @@ class ZCashBlocksBatchScanTest : public testing::Test {
               blocks.back()->height, ToHex(blocks.back()->hash));
           for (const auto& block : blocks) {
             if (block->height == kNu5BlockUpdate + 105) {
-              result.discovered_notes.push_back(
+              result.orchard.discovered_notes.push_back(
                   GenerateMockOrchardNote(account_id, block->height, 1));
             } else if (block->height == kNu5BlockUpdate + 205) {
-              result.discovered_notes.push_back(
+              result.orchard.discovered_notes.push_back(
                   GenerateMockOrchardNote(account_id, block->height, 2));
             } else if (block->height == kNu5BlockUpdate + 305) {
-              result.discovered_notes.push_back(
+              result.orchard.discovered_notes.push_back(
                   GenerateMockOrchardNote(account_id, block->height, 3));
             }
 
             if (block->height == kNu5BlockUpdate + 255) {
-              result.found_spends.push_back(OrchardNoteSpend(
+              result.orchard.found_spends.push_back(OrchardNoteSpend(
                   block->height, {GenerateMockNullifier(account_id, 1)}));
             } else if (block->height == kNu5BlockUpdate + 265) {
-              result.found_spends.push_back(OrchardNoteSpend(
+              result.orchard.found_spends.push_back(OrchardNoteSpend(
                   block->height, {GenerateMockNullifier(account_id, 2)}));
             }
 
             if (block->height == kNu5BlockUpdate + 405) {
-              result.discovered_notes.push_back(
+              result.orchard.discovered_notes.push_back(
                   GenerateMockOrchardNote(account_id, block->height, 4));
             } else if (block->height == kNu5BlockUpdate + 505) {
-              result.discovered_notes.push_back(
+              result.orchard.discovered_notes.push_back(
                   GenerateMockOrchardNote(account_id, block->height, 5));
             }
           }
@@ -290,8 +291,8 @@ TEST_F(ZCashBlocksBatchScanTest, Scan) {
           [&](base::expected<void, ZCashShieldSyncService::Error> result) {
             EXPECT_TRUE(result.has_value());
             auto value = task.TakeResult();
-            EXPECT_EQ(value.discovered_notes.size(), 4u);
-            EXPECT_EQ(value.found_spends.size(), 2u);
+            EXPECT_EQ(value.orchard.discovered_notes.size(), 4u);
+            EXPECT_EQ(value.orchard.found_spends.size(), 2u);
           });
 
   task.Start();
@@ -339,13 +340,13 @@ TEST_F(ZCashBlocksBatchScanTest, Error_PartialDecoding) {
                 blocks.back()->height, ToHex(blocks.back()->hash));
             for (const auto& block : blocks) {
               if (block->height == kNu5BlockUpdate + 105) {
-                result.discovered_notes.push_back(
+                result.orchard.discovered_notes.push_back(
                     GenerateMockOrchardNote(account_id, block->height, 1));
               } else if (block->height == kNu5BlockUpdate + 205) {
-                result.discovered_notes.push_back(
+                result.orchard.discovered_notes.push_back(
                     GenerateMockOrchardNote(account_id, block->height, 2));
               } else if (block->height == kNu5BlockUpdate + 305) {
-                result.discovered_notes.push_back(
+                result.orchard.discovered_notes.push_back(
                     GenerateMockOrchardNote(account_id, block->height, 3));
               }
 

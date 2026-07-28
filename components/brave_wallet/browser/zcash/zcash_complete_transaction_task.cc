@@ -172,7 +172,7 @@ void ZCashCompleteTransactionTask::CalculateWitness() {
 
   context_.sync_state
       ->AsyncCall(&OrchardSyncState::CalculateWitnessForCheckpoint)
-      .WithArgs(context_.account_id.Clone(),
+      .WithArgs(OrchardPool::kOrchard, context_.account_id.Clone(),
                 transaction_.v5_part().orchard.inputs,
                 transaction_.v5_part().orchard.anchor_block_height.value())
       .Then(base::BindOnce(
