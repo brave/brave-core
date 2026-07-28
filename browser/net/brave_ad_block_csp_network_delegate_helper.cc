@@ -24,14 +24,14 @@
 namespace brave {
 
 std::optional<std::string> GetCspDirectivesOnTaskRunner(
-    const url::Origin& request_initiator,
+    const url::Origin& first_party_origin,
     const GURL& request_url,
     blink::mojom::ResourceType resource_type,
     const std::string& method,
     std::optional<std::string> original_csp,
     brave_shields::AdBlockEngineWrapper* engine_wrapper) {
   std::optional<std::string> csp_directives = engine_wrapper->GetCspDirectives(
-      request_url, resource_type, request_initiator, method);
+      request_url, resource_type, first_party_origin, method);
 
   brave_shields::MergeCspDirectiveInto(original_csp, &csp_directives);
   return csp_directives;
@@ -83,18 +83,18 @@ int OnHeadersReceived_AdBlockCspWork(
 
     // Top-level document requests are always considered as first party, and
     // requests from special schemes like file:// do not have host parts, so we
-    // use the request URL as the initiator.
+    // use the request URL as first_party_origin.
 
-    const bool use_fallback_initiator =
+    const bool use_fallback_origin =
         !ctx->request_initiator() || ctx->request_initiator()->host().empty() ||
         ctx->resource_type() == blink::mojom::ResourceType::kMainFrame;
-    const url::Origin& request_initiator =
-        use_fallback_initiator ? url::Origin::Create(ctx->request_url())
-                               : *ctx->request_initiator();
+    const url::Origin& first_party_origin =
+        use_fallback_origin ? url::Origin::Create(ctx->request_url())
+                            : *ctx->request_initiator();
 
     auto* ad_block_service = g_brave_browser_process->ad_block_service();
     ad_block_service->AsyncCallAndReplyWithResult<std::optional<std::string>>(
-        base::BindOnce(&GetCspDirectivesOnTaskRunner, request_initiator,
+        base::BindOnce(&GetCspDirectivesOnTaskRunner, first_party_origin,
                        ctx->request_url(), ctx->resource_type(), ctx->method(),
                        std::move(original_csp)),
         base::BindOnce(&OnReceiveCspDirectives, next_callback,
