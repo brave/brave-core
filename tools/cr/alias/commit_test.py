@@ -19,7 +19,7 @@ import unittest
 from pathlib import Path
 
 import _boot  # noqa: F401
-from cmd_test import (CMD_SCRIPT, _GIT_ENV_OVERRIDES, _Sandbox)
+from cmd_test import (CMD_SCRIPT, _GIT_ENV_OVERRIDES, _TEXT_IO, _Sandbox)
 from alias.commit import _MarkChangeShortcut
 
 # ---------------------------------------------------------------------------
@@ -357,11 +357,11 @@ class TestReassignFixup(unittest.TestCase):
             subprocess.check_output(
                 ['git', 'rev-list', '--count', 'HEAD'],
                 cwd=self._sandbox.root,
-                text=True,
                 env={
                     **os.environ,
                     **_GIT_ENV_OVERRIDES
                 },
+                **_TEXT_IO,
             ).strip())
 
     def test_joined_form_creates_reassign_commit(self) -> None:
@@ -517,11 +517,11 @@ class TestGracefulExit(unittest.TestCase):
             cwd=self._sandbox.root,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
-            text=True,
             env={
                 **os.environ,
                 **_GIT_ENV_OVERRIDES
             },
+            **_TEXT_IO,
         )
         try:
             proc.send_signal(signal.SIGINT)

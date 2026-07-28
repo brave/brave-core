@@ -33,6 +33,13 @@ from test.fake_chromium_repo import FakeChromiumRepo
 CMD_SCRIPT: Path = Path(__file__).parent / 'cmd.py'
 HOOK_SOURCE: Path = Path(__file__).parent / 'commit-msg.py'
 
+# Subprocess text-decoding options. `text=True` alone decodes with the locale
+# encoding, which on Windows is the ANSI code page (e.g. cp1252) and cannot
+# decode the UTF-8 that git and tools/cr emit. Left at the default, non-ASCII
+# output raises UnicodeDecodeError inside subprocess's reader thread, where it
+# is swallowed and silently truncates the captured output.
+_TEXT_IO: dict[str, str] = {'encoding': 'utf-8', 'errors': 'replace'}
+
 # Minimal git environment that suppresses GPG signing and user-config lookup.
 _GIT_ENV_OVERRIDES: dict[str, str] = {
     'GIT_AUTHOR_NAME': 'Test User',
@@ -71,11 +78,11 @@ def _git(cwd: Path, *args: str) -> subprocess.CompletedProcess:
         cwd=cwd,
         check=True,
         capture_output=True,
-        text=True,
         env={
             **os.environ,
             **_GIT_ENV_OVERRIDES
         },
+        **_TEXT_IO,
     )
 
 
@@ -93,9 +100,9 @@ def _run_gc(
         cwd=cwd,
         env=full_env,
         capture_output=True,
-        text=True,
         check=False,
         input=stdin,
+        **_TEXT_IO,
     )
 
 
@@ -171,11 +178,11 @@ class _Sandbox:
         return subprocess.check_output(
             ['git', 'log', '-1', '--format=%B'],
             cwd=self.root,
-            text=True,
             env={
                 **os.environ,
                 **_GIT_ENV_OVERRIDES
             },
+            **_TEXT_IO,
         ).strip()
 
     def run_gc(
@@ -196,7 +203,7 @@ class _Sandbox:
             cwd=self.root,
             capture_output=True,
             check=False,
-            text=True,
+            **_TEXT_IO,
         )
         return result.stdout.strip()
 
@@ -364,7 +371,6 @@ class TestSetupAlias(unittest.TestCase):
             ['git', 'cr', 'commit', '-m', 'Alias end-to-end'],
             cwd=self._sandbox.root,
             capture_output=True,
-            text=True,
             check=False,
             env={
                 **os.environ,
@@ -374,6 +380,7 @@ class TestSetupAlias(unittest.TestCase):
                 # prefer over the .git/config alias.
                 'PATH': _path_without_git_cr_shim(),
             },
+            **_TEXT_IO,
         )
         self.assertEqual(result.returncode, 0, msg=f'stderr: {result.stderr}')
         self.assertIn('Alias end-to-end', self._sandbox.last_commit_message())
