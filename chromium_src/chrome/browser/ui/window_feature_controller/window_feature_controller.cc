@@ -5,12 +5,12 @@
 
 #include "chrome/browser/ui/window_feature_controller/window_feature_controller.h"
 
-#include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
 #include "build/build_config.h"
 
 // Forward declared to avoid adding a compile-time dependency.
 // impl target is //brave/browser/ui/window_feature_controller:chromium_impl.
-bool BraveDisablesImmersiveFullscreenMode();
+bool BraveDisablesImmersiveFullscreenMode(
+    VerticalTabController* vertical_tab_controller);
 
 #if BUILDFLAG(IS_MAC)
 #define UsesImmersiveFullscreenMode UsesImmersiveFullscreenMode_ChromiumImpl
@@ -30,9 +30,8 @@ bool WindowFeatureController::UsesImmersiveFullscreenMode() const {
   // first call happens during BrowserView construction (before the user can
   // toggle vertical tabs), so this captures the startup state.
   if (!disabled_at_startup_.has_value()) {
-    disabled_at_startup_ =
-        vertical_tab_controller_->ShouldShowBraveVerticalTabs() ||
-        BraveDisablesImmersiveFullscreenMode();
+    disabled_at_startup_ = BraveDisablesImmersiveFullscreenMode(
+        base::to_address(vertical_tab_controller_));
   }
 
   if (*disabled_at_startup_) {
@@ -40,8 +39,8 @@ bool WindowFeatureController::UsesImmersiveFullscreenMode() const {
   }
 
   // Immersive is also incompatible with vertical tabs at runtime.
-  if (vertical_tab_controller_->ShouldShowBraveVerticalTabs() ||
-      BraveDisablesImmersiveFullscreenMode()) {
+  if (BraveDisablesImmersiveFullscreenMode(
+          base::to_address(vertical_tab_controller_))) {
     return false;
   }
 
@@ -49,8 +48,8 @@ bool WindowFeatureController::UsesImmersiveFullscreenMode() const {
 }
 
 bool WindowFeatureController::UsesImmersiveFullscreenTabbedMode() const {
-  if (vertical_tab_controller_->ShouldShowBraveVerticalTabs() ||
-      BraveDisablesImmersiveFullscreenMode()) {
+  if (BraveDisablesImmersiveFullscreenMode(
+          base::to_address(vertical_tab_controller_))) {
     return false;
   }
 

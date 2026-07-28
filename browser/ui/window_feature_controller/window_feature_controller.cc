@@ -3,12 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
 #include "chrome/browser/ui/layout_constants.h"
 
-// TODO(https://github.com/brave/brave-browser/issues/57601): The vertical
-// tabs check should be moved here instead of being done separately in
-// WindowFeatureController to avoid adding external dependency to upstream
-// target.
-bool BraveDisablesImmersiveFullscreenMode() {
-  return tabs::UseCompactHorizontalTabs();
+bool BraveDisablesImmersiveFullscreenMode(
+    VerticalTabController* vertical_tab_controller) {
+  return vertical_tab_controller->ShouldShowBraveVerticalTabs() ||
+         tabs::UseCompactHorizontalTabs();
 }
