@@ -215,8 +215,7 @@ class WinVsCodeIpcConnectionTest(unittest.TestCase):
                 self.assertEqual(path, '/')
                 payload = json.loads(body)
                 self.assertEqual(payload['type'], 'open')
-                self.assertEqual(payload['fileURIs'],
-                                 [_TEST_PATH.as_uri()])
+                self.assertEqual(payload['fileURIs'], [_TEST_PATH.as_uri()])
                 self.assertTrue(payload['forceReuseWindow'])
                 self.assertEqual(headers['Content-Type'], 'application/json')
 
