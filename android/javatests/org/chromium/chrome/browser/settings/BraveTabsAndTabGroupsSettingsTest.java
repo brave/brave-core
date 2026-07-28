@@ -7,6 +7,7 @@ package org.chromium.chrome.browser.settings;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import android.os.Looper;
@@ -23,12 +24,17 @@ import org.junit.runner.RunWith;
 
 import org.chromium.base.BraveFeatureList;
 import org.chromium.base.BravePreferenceKeys;
+import org.chromium.base.ThreadUtils;
+import org.chromium.base.test.util.CriteriaHelper;
 import org.chromium.base.test.util.DoNotBatch;
 import org.chromium.base.test.util.Features.EnableFeatures;
 import org.chromium.chrome.browser.partnercustomizations.CloseBraveManager;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.test.ChromeJUnit4ClassRunner;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
+import org.chromium.ui.modaldialog.ModalDialogManager;
+import org.chromium.ui.modaldialog.ModalDialogProperties;
+import org.chromium.ui.modelutil.PropertyModel;
 
 /** Tests for {@link BraveTabsAndTabGroupsSettings}. */
 @RunWith(ChromeJUnit4ClassRunner.class)
@@ -42,7 +48,10 @@ public class BraveTabsAndTabGroupsSettingsTest {
 
     @Before
     public void setup() {
-        Looper.prepare();
+        // All test methods share the instrumentation thread, so only the first one prepares it.
+        if (Looper.myLooper() == null) {
+            Looper.prepare();
+        }
         resetPrefsToDefaults();
     }
 
@@ -55,6 +64,8 @@ public class BraveTabsAndTabGroupsSettingsTest {
     @SmallTest
     @EnableFeatures(BraveFeatureList.BRAVE_ANDROID_TAB_GROUPS_SETTINGS)
     public void testTabGroupsParentDisablesDependentRowsInPlace() {
+        // Groups are kept when they are synced, so the switch flips without a confirmation.
+        BraveTabsAndTabGroupsSettings.setTabGroupSyncActiveForTesting(true);
         startSettings();
 
         ChromeSwitchPreference enableTabGroupsSwitch =
@@ -113,6 +124,105 @@ public class BraveTabsAndTabGroupsSettingsTest {
         }
         assertTrue(tabGroupsBarSwitch.isEnabled());
         assertTrue(openLinksInCurrentTabGroupSwitch.isEnabled());
+    }
+
+    @Test
+    @SmallTest
+    @EnableFeatures(BraveFeatureList.BRAVE_ANDROID_TAB_GROUPS_SETTINGS)
+    public void testCancellingConfirmationKeepsTabGroupsEnabled() {
+        BraveTabsAndTabGroupsSettings.setTabGroupSyncActiveForTesting(false);
+        startSettings();
+
+        ChromeSwitchPreference enableTabGroupsSwitch =
+                mSettings.findPreference(
+                        BraveTabsAndTabGroupsSettings.PREF_ENABLE_TAB_GROUPS_SWITCH);
+        ChromeSwitchPreference tabGroupsBarSwitch =
+                mSettings.findPreference(BraveTabsAndTabGroupsSettings.PREF_TAB_GROUPS_BAR_SWITCH);
+        assertNotNull(enableTabGroupsSwitch);
+        assertNotNull(tabGroupsBarSwitch);
+        assertTrue(enableTabGroupsSwitch.isChecked());
+
+        clickConfirmationButton(enableTabGroupsSwitch, ModalDialogProperties.ButtonType.NEGATIVE);
+
+        assertTrue(enableTabGroupsSwitch.isChecked());
+        assertTrue(isTabGroupsEnabled());
+        assertTrue(tabGroupsBarSwitch.isEnabled());
+    }
+
+    @Test
+    @SmallTest
+    @EnableFeatures(BraveFeatureList.BRAVE_ANDROID_TAB_GROUPS_SETTINGS)
+    public void testAcceptingConfirmationDisablesTabGroups() {
+        BraveTabsAndTabGroupsSettings.setTabGroupSyncActiveForTesting(false);
+        startSettings();
+
+        ChromeSwitchPreference enableTabGroupsSwitch =
+                mSettings.findPreference(
+                        BraveTabsAndTabGroupsSettings.PREF_ENABLE_TAB_GROUPS_SWITCH);
+        ChromeSwitchPreference tabGroupsBarSwitch =
+                mSettings.findPreference(BraveTabsAndTabGroupsSettings.PREF_TAB_GROUPS_BAR_SWITCH);
+        assertNotNull(enableTabGroupsSwitch);
+        assertNotNull(tabGroupsBarSwitch);
+        assertTrue(enableTabGroupsSwitch.isChecked());
+
+        clickConfirmationButton(enableTabGroupsSwitch, ModalDialogProperties.ButtonType.POSITIVE);
+
+        assertFalse(enableTabGroupsSwitch.isChecked());
+        assertFalse(isTabGroupsEnabled());
+        assertFalse(tabGroupsBarSwitch.isEnabled());
+    }
+
+    @Test
+    @SmallTest
+    @EnableFeatures(BraveFeatureList.BRAVE_ANDROID_TAB_GROUPS_SETTINGS)
+    public void testNoConfirmationWhenTabGroupsAreSynced() {
+        BraveTabsAndTabGroupsSettings.setTabGroupSyncActiveForTesting(true);
+        startSettings();
+
+        ChromeSwitchPreference enableTabGroupsSwitch =
+                mSettings.findPreference(
+                        BraveTabsAndTabGroupsSettings.PREF_ENABLE_TAB_GROUPS_SWITCH);
+        assertNotNull(enableTabGroupsSwitch);
+
+        ThreadUtils.runOnUiThreadBlocking(enableTabGroupsSwitch::onClick);
+
+        assertNull(getModalDialogManager().getCurrentDialogForTest());
+        assertFalse(enableTabGroupsSwitch.isChecked());
+        assertFalse(isTabGroupsEnabled());
+    }
+
+    /** Turns the tab groups switch off and answers the confirmation dialog with {@code button}. */
+    private void clickConfirmationButton(
+            ChromeSwitchPreference enableTabGroupsSwitch,
+            @ModalDialogProperties.ButtonType int button) {
+        ModalDialogManager modalDialogManager = getModalDialogManager();
+        ThreadUtils.runOnUiThreadBlocking(enableTabGroupsSwitch::onClick);
+
+        CriteriaHelper.pollUiThread(
+                () -> {
+                    PropertyModel dialog = modalDialogManager.getCurrentDialogForTest();
+                    if (dialog == null) {
+                        return false;
+                    }
+                    dialog.get(ModalDialogProperties.CONTROLLER).onClick(dialog, button);
+                    return true;
+                },
+                "The disable tab groups confirmation dialog was never shown.");
+        CriteriaHelper.pollUiThread(
+                () -> modalDialogManager.getCurrentDialogForTest() == null,
+                "The disable tab groups confirmation dialog was never dismissed.");
+    }
+
+    private static boolean isTabGroupsEnabled() {
+        return ChromeSharedPreferences.getInstance()
+                .readBoolean(BravePreferenceKeys.BRAVE_TAB_GROUPS_FEATURE_ENABLED, true);
+    }
+
+    private ModalDialogManager getModalDialogManager() {
+        ModalDialogManager modalDialogManager =
+                mSettingsActivityTestRule.getActivity().getModalDialogManager();
+        assertNotNull(modalDialogManager);
+        return modalDialogManager;
     }
 
     private void startSettings() {
