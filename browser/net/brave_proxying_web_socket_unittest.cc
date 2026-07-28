@@ -191,9 +191,8 @@ TEST_F(BraveProxyingWebSocketTest,
            /*additional_headers=*/{},
            downstream_handshake_client.CreateRemote(), mojo::NullRemote(),
            mojo::NullRemote());
-  ASSERT_TRUE(base::test::RunUntil([&] {
-    return downstream_handshake_client.connection_established();
-  }));
+  ASSERT_TRUE(base::test::RunUntil(
+      [&] { return downstream_handshake_client.connection_established(); }));
 
   ASSERT_TRUE(downstream_handshake_client.response());
   const auto& response = downstream_handshake_client.response();
