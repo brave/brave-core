@@ -1,20 +1,20 @@
-Total size 89112K
+Total size 89100K
 
-GROUP chromium [62026K total]
+GROUP chromium [62031K total]
   2467K listdata.json 9.3249.1600 [ActorSafetyLists]
      2K Amount Extraction Heuristic Regexes 4 [AmountExtractionHeuristicRegexes]
      2K captcha_providers.json 8.5419.4434 [CaptchaProviders]
-  1630K crl-set-8842677472625857699.data 10647 [CertificateRevocation]
+  1620K crl-set-17441684453888336233.data 10662 [CertificateRevocation]
     31K chromeCommerceHeuristics 2023.3.30.1305 [CommerceHeuristics]
-   265K Crowd Deny 2026.7.13.81 [Crowd Deny]
+   270K Crowd Deny 2026.7.20.61 [Crowd Deny]
      9K fileTypePolicies 145.0.7584.0 [FileTypePolicies]
     13K First Party Sets 2025.7.24.0 [FirstPartySetsPreloaded]
      7K history_search_strings_farmhashed.binarypb 6.7431.9692 [HistorySearch]
      9K MEI Preload 1.1.0.3 [MEIPreload]
   7744K OnDeviceHeadSuggestENUS500000 20251024.824731831.14 [OnDeviceHeadSuggestModel]
-   543K Optimization Hints 707 [OptimizationHints]
+   554K Optimization Hints 711 [OptimizationHints]
      1K Origin Trials Updates 1.0.0.20 [OriginTrials]
-   371K pkiMetadata 1716 [PKIMetadata]
+   370K pkiMetadata 1720 [PKIMetadata]
      4K sslErrorAssistant 7 [SSLErrorAssistant]
    181K safetyTips 3091 [SafetyTips]
    422K Subresource Filtering Rules 9.70.0 [Subresource Filter]
@@ -24,6 +24,6 @@ GROUP chromium [62026K total]
   1642K zxcvbnData 3 [ZxcvbnData]
   1728K hyphens-data 120.0.6050.0 [hyphen-data]
 
-GROUP large_files [20722K total]
-  1865K Safe Browsing\ChromeExtMalware.store.32_13428521193055129
- 18857K Safe Browsing\UrlSoceng.store.4_13428521192541471
+GROUP large_files [20651K total]
+  1865K Safe Browsing\ChromeExtMalware.store.32_13429125674992894
+ 18785K Safe Browsing\UrlSoceng.store.4_13429125674079988
