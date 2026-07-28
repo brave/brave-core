@@ -33,6 +33,8 @@
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/origin.h"
 
+namespace {
+
 net::RedirectInfo CreateRedirectInfo(const network::ResourceRequest& request,
                                      const GURL& new_url) {
   return net::RedirectInfo::ComputeRedirectInfo(
@@ -164,3 +166,5 @@ TEST_F(BraveProxyingURLLoaderFactoryTest,
   EXPECT_NE(initiator, *redirected_request_initiator);
   EXPECT_EQ(net::OK, client.completion_status().error_code);
 }
+
+}  // namespace
