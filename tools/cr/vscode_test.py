@@ -40,6 +40,8 @@ class PosixVsCodeIpcConnectionTest(unittest.TestCase):
             conn = _PosixVsCodeIpcConnection()
             self.assertEqual(conn._socket_path, '')
 
+    @unittest.skipIf(platform.system() == 'Windows',
+                     'socket.AF_UNIX does not exist on Windows')
     def test_connect_creates_unix_socket(self):
         """connect() opens an AF_UNIX socket and connects to _socket_path."""
         with patch.dict(os.environ, {'VSCODE_IPC_HOOK_CLI': self.sock_path}):
