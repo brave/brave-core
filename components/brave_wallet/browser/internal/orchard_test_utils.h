@@ -20,6 +20,12 @@ OrchardBlockScanner::Result CreateResultForTesting(
     uint32_t latest_scanned_block_id,
     const std::string& latest_scanned_block_hash);
 
+OrchardBlockScanner::PoolResult CreateIronwoodPoolResultForTesting(
+    OrchardTreeState tree_state,
+    std::vector<OrchardCommitment> commitments,
+    uint32_t latest_scanned_block_id,
+    const std::string& latest_scanned_block_hash);
+
 OrchardCommitmentValue CreateMockCommitmentValue(uint32_t position,
                                                  uint32_t rseed);
 
