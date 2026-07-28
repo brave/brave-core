@@ -75,6 +75,10 @@ Parse the review comments to understand what changes are requested:
    - Comments that have already been addressed (check commit timestamps vs
      comment timestamps)
 
+   **Questions are not change requests.** When a comment is phrased as a
+   question, answer the question first. Do not make code changes in response to
+   it unless the reviewer or requester explicitly asks for a change.
+
 2. **Categorize each requested change:**
 
    - Which file(s) need modification
@@ -84,8 +88,22 @@ Parse the review comments to understand what changes are requested:
 3. **Present the plan:**
    - How many review comments were found
    - Which are actionable vs already addressed
+   - Which comments are questions, the proposed answer for each one, and which
+     question comments (if any) also contain an explicit change request
    - What changes you plan to make for each
-   - Ask for user confirmation before proceeding
+   - Ask for user confirmation before posting answers or proceeding with
+     implementation
+
+4. **Answer questions before implementation:**
+
+   - For question-only comments, draft the answer, ask for confirmation, post
+     it if confirmed, and do not make code changes
+   - If a question also contains an explicit change request (for example,
+     "Could you change X?"), draft and confirm the answer first, post it if
+     confirmed, then follow the normal implementation confirmation flow for the
+     requested change
+   - If the user does not confirm posting an answer, do not implement any
+     change that depends on that unanswered question
 
 ### 5. Checkout the Branch
 
@@ -101,6 +119,10 @@ Ensure you're on the correct branch and up to date with the remote.
 
 **CRITICAL: Only make changes the reviewer explicitly asks for.**
 
+- If a review comment is phrased as a question, answer it first and do not
+  change code unless the reviewer or requester explicitly asks for a change
+- Do NOT infer a change request from a question, even when a code change might
+  seem like the likely follow-up
 - Do NOT make any additional changes — no "while I'm here" cleanups, no extra
   refactoring, no renaming things the reviewer didn't mention
 - If the reviewer asks you to fix one thing, fix exactly that one thing and
@@ -161,6 +183,10 @@ commits for each.
 Show the draft comment to the user and ask for confirmation before posting. If
 the user rejects, skip posting.
 
+If question answers were already posted before implementation, do not duplicate
+them in the final summary comment; briefly reference that they were answered and
+summarize only the implemented changes.
+
 Post a summary comment on the PR:
 
 ```bash
@@ -187,13 +213,15 @@ Output a summary to the user:
 
 ## Important Rules
 
-1. **Minimal changes** — Only implement what reviewers explicitly ask for
-2. **New commits only** — Never amend; separate commits let reviewers track what
+1. **Questions first** — Answer comments phrased as questions before taking
+   action; do not change code unless the reviewer or requester explicitly asks
+2. **Minimal changes** — Only implement what reviewers explicitly ask for
+3. **New commits only** — Never amend; separate commits let reviewers track what
    changed
-3. **No attribution** — No `Co-Authored-By` lines in commits
-4. **User confirmation** — Present the plan before implementing, confirm before
+4. **No attribution** — No `Co-Authored-By` lines in commits
+5. **User confirmation** — Present the plan before implementing, confirm before
    committing, confirm before posting comments
-5. **Preflight required** — All changes must pass preflight before pushing
+6. **Preflight required** — All changes must pass preflight before pushing
 
 ---
 
