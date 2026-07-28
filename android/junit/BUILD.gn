@@ -54,6 +54,7 @@ if (is_android) {
     resources_package = "org.chromium.chrome.browser.toolbar"
     sources = [
       "src/org/chromium/chrome/browser/toolbar/BraveToolbarLongPressMenuHandlerUnitTest.java",
+      "src/org/chromium/chrome/browser/toolbar/BraveToolbarManagerUnitTest.java",
       "src/org/chromium/chrome/browser/toolbar/adaptive/settings/BraveAdaptiveToolbarSettingsFragmentTest.java",
       "src/org/chromium/chrome/browser/toolbar/top/BraveTabSwitcherActionMenuCoordinatorTest.java",
     ]
