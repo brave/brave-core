@@ -1,0 +1,13 @@
+diff --git a/components/search_engines/search_terms_data.cc b/components/search_engines/search_terms_data.cc
+index edc375b207c0dcc92aaf8086aaba26656282aef7..896fc3c8c4deedecfe99fb6fdab4eef1c2b153e5 100644
+--- a/components/search_engines/search_terms_data.cc
++++ b/components/search_engines/search_terms_data.cc
+@@ -114,7 +114,7 @@ std::string SearchTermsData::GoogleBaseSearchByImageURLValue() const {
+   const std::string kGoogleHomepageURLPath = std::string("searchbyimage/");
+ 
+ #if !BUILDFLAG(IS_IOS) && !BUILDFLAG(IS_ANDROID)
+-  if (base::FeatureList::IsEnabled(lens::features::kLensStandalone)) {
++  if (base::FeatureList::IsEnabled(lens::features::kLensStandalone) || ((true))) {
+     return lens::features::GetHomepageURLForLens();
+   }
+ #endif  // !BUILDFLAG(IS_IOS) && !BUILDFLAG(IS_ANDROID)
