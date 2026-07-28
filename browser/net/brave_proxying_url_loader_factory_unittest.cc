@@ -130,6 +130,32 @@ TEST_F(BraveProxyingURLLoaderFactoryTest, BlocksUnsafeNetworkRedirect) {
 }
 
 TEST_F(BraveProxyingURLLoaderFactoryTest,
+       AllowsUnsafeRedirectWhenChecksAreBypassed) {
+  const GURL request_url("https://example.com/source");
+  const GURL unsafe_url("data:text/plain,safe-from-upstream-proxy");
+  network::ResourceRequest request = CreateRequest(
+      request_url, url::Origin::Create(GURL("https://initiator.example")));
+  auto redirect_head = CreateRedirectHead(unsafe_url);
+  redirect_head->bypass_redirect_checks = true;
+  network::TestURLLoaderFactory::Redirects redirects;
+  redirects.emplace_back(CreateRedirectInfo(request, unsafe_url),
+                         std::move(redirect_head));
+  test_factory_.AddResponse(request_url, network::mojom::URLResponseHead::New(),
+                            "", network::URLLoaderCompletionStatus(net::OK),
+                            std::move(redirects));
+
+  auto factory = CreateFactory();
+  network::TestURLLoaderClient client;
+  mojo::Remote<network::mojom::URLLoader> loader;
+  CreateLoaderAndStart(factory, loader, request, client);
+  client.RunUntilRedirectReceived();
+
+  EXPECT_TRUE(client.has_received_redirect());
+  EXPECT_EQ(unsafe_url, client.redirect_info().new_url);
+  EXPECT_TRUE(client.response_head()->bypass_redirect_checks);
+}
+
+TEST_F(BraveProxyingURLLoaderFactoryTest,
        TaintsInitiatorOnCrossOriginBraveRedirect) {
   // Brave rewrites clients4.google.com requests to clients4.brave.com via its
   // static redirect rules, exercising the same synthetic-redirect path this
