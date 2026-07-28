@@ -93,14 +93,15 @@ void BraveRequestInfo::set_tab_url(const GURL& value) {
   tab_url_ = value;
 }
 
-const GURL& BraveRequestInfo::initiator_url() const {
+const std::optional<url::Origin>& BraveRequestInfo::request_initiator() const {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  return initiator_url_;
+  return request_initiator_;
 }
 
-void BraveRequestInfo::set_initiator_url(const GURL& value) {
+void BraveRequestInfo::set_request_initiator(
+    const std::optional<url::Origin>& value) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  initiator_url_ = value;
+  request_initiator_ = value;
 }
 
 bool BraveRequestInfo::internal_redirect() const {
@@ -429,9 +430,7 @@ std::unique_ptr<brave::BraveRequestInfo> BraveRequestInfo::MakeCTX(
   ctx->set_request_identifier(request_identifier);
   ctx->set_method(request.method);
   ctx->set_request_url(request.url);
-  // TODO(iefremov): Replace GURL with Origin
-  ctx->set_initiator_url(
-      request.request_initiator.value_or(url::Origin()).GetURL());
+  ctx->set_request_initiator(request.request_initiator);
 
   ctx->set_referrer(request.referrer);
   ctx->set_referrer_policy(request.referrer_policy);

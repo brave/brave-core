@@ -219,8 +219,8 @@ TYPED_TEST(BraveSiteHacksNetworkDelegateHelperTest, QueryStringUntouched) {
        "https://example.com/Unsubscribe.html?fake_param=abc&mkt_tok=123"});
   for (const auto& url : urls) {
     auto brave_request_info = this->MakeRequest(GURL(url));
-    brave_request_info->set_initiator_url(
-        GURL("https://example.net"));  // cross-site
+    brave_request_info->set_request_initiator(
+        url::Origin::Create(GURL("https://example.net")));  // cross-site
     brave_request_info->set_method("GET");
     int rc = brave::OnBeforeURLRequest_SiteHacksWork(ResponseCallback(),
                                                      brave_request_info);
@@ -240,7 +240,8 @@ TYPED_TEST(BraveSiteHacksNetworkDelegateHelperTest, QueryStringExempted) {
 
   for (const auto& initiator : initiators) {
     auto brave_request_info = this->MakeRequest(tracking_url);
-    brave_request_info->set_initiator_url(GURL(initiator));
+    brave_request_info->set_request_initiator(
+        url::Origin::Create(GURL(initiator)));
     brave_request_info->set_method("GET");
     int rc = brave::OnBeforeURLRequest_SiteHacksWork(ResponseCallback(),
                                                      brave_request_info);
@@ -252,8 +253,8 @@ TYPED_TEST(BraveSiteHacksNetworkDelegateHelperTest, QueryStringExempted) {
   // Internal redirect
   {
     auto brave_request_info = this->MakeRequest(tracking_url);
-    brave_request_info->set_initiator_url(
-        GURL("https://example.net"));  // cross-site
+    brave_request_info->set_request_initiator(
+        url::Origin::Create(GURL("https://example.net")));  // cross-site
     brave_request_info->set_method("GET");
     brave_request_info->set_internal_redirect(true);
     brave_request_info->set_redirect_source(
@@ -268,8 +269,8 @@ TYPED_TEST(BraveSiteHacksNetworkDelegateHelperTest, QueryStringExempted) {
   // POST requests
   {
     auto brave_request_info = this->MakeRequest(tracking_url);
-    brave_request_info->set_initiator_url(
-        GURL("https://example.net"));  // cross-site
+    brave_request_info->set_request_initiator(
+        url::Origin::Create(GURL("https://example.net")));  // cross-site
     brave_request_info->set_method("POST");
     brave_request_info->set_redirect_source(
         GURL("https://example.org"));  // cross-site
@@ -283,8 +284,8 @@ TYPED_TEST(BraveSiteHacksNetworkDelegateHelperTest, QueryStringExempted) {
   // Same-site redirect
   {
     auto brave_request_info = this->MakeRequest(tracking_url);
-    brave_request_info->set_initiator_url(
-        GURL("https://example.net"));  // cross-site
+    brave_request_info->set_request_initiator(
+        url::Origin::Create(GURL("https://example.net")));  // cross-site
     brave_request_info->set_method("GET");
     brave_request_info->set_redirect_source(
         GURL("https://sub.example.com"));  // same-site
@@ -336,8 +337,8 @@ TYPED_TEST(BraveSiteHacksNetworkDelegateHelperTest, QueryStringFiltered) {
         "https://example.com/?foo=bar"}});
   for (const auto& pair : urls) {
     auto brave_request_info = this->MakeRequest(GURL(pair.first));
-    brave_request_info->set_initiator_url(
-        GURL("https://example.net"));  // cross-site
+    brave_request_info->set_request_initiator(
+        url::Origin::Create(GURL("https://example.net")));  // cross-site
     brave_request_info->set_method("GET");
     int rc = brave::OnBeforeURLRequest_SiteHacksWork(ResponseCallback(),
                                                      brave_request_info);
@@ -349,8 +350,8 @@ TYPED_TEST(BraveSiteHacksNetworkDelegateHelperTest, QueryStringFiltered) {
   {
     auto brave_request_info =
         this->MakeRequest(GURL("https://example.com/?fbclid=1"));
-    brave_request_info->set_initiator_url(
-        GURL("https://example.com"));  // same-origin
+    brave_request_info->set_request_initiator(
+        url::Origin::Create(GURL("https://example.com")));  // same-origin
     brave_request_info->set_method("GET");
     brave_request_info->set_redirect_source(
         GURL("https://example.net"));  // cross-site
@@ -364,7 +365,7 @@ TYPED_TEST(BraveSiteHacksNetworkDelegateHelperTest, QueryStringFiltered) {
   {
     auto brave_request_info =
         this->MakeRequest(GURL("https://example.com/?fbclid=2"));
-    brave_request_info->set_initiator_url(GURL());
+    brave_request_info->set_request_initiator(std::nullopt);
     brave_request_info->set_method("GET");
     int rc = brave::OnBeforeURLRequest_SiteHacksWork(ResponseCallback(),
                                                      brave_request_info);
@@ -381,7 +382,8 @@ TYPED_TEST(BraveSiteHacksNetworkDelegateHelperTest,
 
   auto brave_request_info =
       this->MakeRequest(GURL("https://example.com/?fbclid=1"));
-  brave_request_info->set_initiator_url(GURL("https://example.net"));
+  brave_request_info->set_request_initiator(
+      url::Origin::Create(GURL("https://example.net")));
   brave_request_info->set_method("GET");
   int rc = brave::OnBeforeURLRequest_SiteHacksWork(ResponseCallback(),
                                                    brave_request_info);
@@ -400,7 +402,8 @@ TYPED_TEST(BraveSiteHacksNetworkDelegateHelperTest,
 
   auto brave_request_info =
       this->MakeRequest(GURL("https://example.com/?fbclid=1"));
-  brave_request_info->set_initiator_url(GURL("https://example.net"));
+  brave_request_info->set_request_initiator(
+      url::Origin::Create(GURL("https://example.net")));
   brave_request_info->set_method("GET");
   int rc = brave::OnBeforeURLRequest_SiteHacksWork(ResponseCallback(),
                                                    brave_request_info);
@@ -419,7 +422,8 @@ TYPED_TEST(BraveSiteHacksNetworkDelegateHelperTest,
 
   auto brave_request_info =
       this->MakeRequest(GURL("https://example.com/?fbclid=1"));
-  brave_request_info->set_initiator_url(GURL("https://example.net"));
+  brave_request_info->set_request_initiator(
+      url::Origin::Create(GURL("https://example.net")));
   brave_request_info->set_method("GET");
   brave_request_info->set_allow_brave_shields(false);
   int rc = brave::OnBeforeURLRequest_SiteHacksWork(ResponseCallback(),
@@ -437,7 +441,8 @@ TYPED_TEST(BraveSiteHacksNetworkDelegateHelperTest,
 
   auto brave_request_info =
       this->MakeRequest(GURL("https://example.com/?fbclid=1"));
-  brave_request_info->set_initiator_url(GURL("https://example.net"));
+  brave_request_info->set_request_initiator(
+      url::Origin::Create(GURL("https://example.net")));
   brave_request_info->set_method("GET");
   int rc = brave::OnBeforeURLRequest_SiteHacksWork(ResponseCallback(),
                                                    brave_request_info);
