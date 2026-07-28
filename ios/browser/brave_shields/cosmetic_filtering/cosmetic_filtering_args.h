@@ -11,7 +11,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 OBJC_EXPORT
-@interface CosmeticFilteringArgs : NSObject <NSCopying, NSSecureCoding>
+@interface CosmeticFilteringArgs : NSObject
 
 @property(nonatomic, assign) BOOL hideFirstPartyContent;
 @property(nonatomic, assign) BOOL genericHide;

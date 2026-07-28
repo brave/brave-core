@@ -18,13 +18,12 @@
 #include "base/json/json_reader.h"
 #include "base/strings/sys_string_conversions.h"
 #include "base/values.h"
-#include "brave/ios/browser/api/url/url_utils.h"
 #include "brave/ios/browser/brave_shields/cosmetic_filtering/cosmetic_filtering_args.h"
 #include "brave/ios/browser/brave_shields/cosmetic_filtering/cosmetic_filtering_tab_helper.h"
 #include "ios/web/public/js_messaging/java_script_feature.h"
 #include "ios/web/public/js_messaging/script_message.h"
 #include "ios/web/public/web_state.h"
-#include "net/base/apple/url_conversions.h"
+#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "url/gurl.h"
 
 namespace {
@@ -106,16 +105,15 @@ base::Value ArgsResponseDictFrom(CosmeticFilteringArgs* args) {
 
 // Build `{'standardSelectors': [], 'aggressiveSelectors': []}` response,
 // mirroring the result type of `sendSelectors()` in cosmetic_filtering.ts.
-base::Value SelectorsResponseDictFrom(
-    std::vector<std::string> standard_selectors,
-    std::vector<std::string> aggressive_selectors) {
+base::Value SelectorsResponseDictFrom(NSSet<NSString*>* standard_selectors,
+                                      NSSet<NSString*>* aggressive_selectors) {
   base::ListValue standard_list;
-  for (auto& selector : standard_selectors) {
-    standard_list.Append(std::move(selector));
+  for (NSString* selector in standard_selectors) {
+    standard_list.Append(base::SysNSStringToUTF8(selector));
   }
   base::ListValue aggressive_list;
-  for (auto& selector : aggressive_selectors) {
-    aggressive_list.Append(std::move(selector));
+  for (NSString* selector in aggressive_selectors) {
+    aggressive_list.Append(base::SysNSStringToUTF8(selector));
   }
   base::DictValue response;
   response.Set("standardSelectors", std::move(standard_list));
@@ -128,16 +126,21 @@ base::Value SelectorsResponseDictFrom(
 // skipped.
 base::Value PartinessResponseDictFrom(const base::ListValue& urls,
                                       const GURL& frame_url) {
-  NSString* frame_etld = net::NSURLWithGURL(frame_url).brave_domainAndRegistry;
+  const std::string frame_etld =
+      net::registry_controlled_domains::GetDomainAndRegistry(
+          frame_url,
+          net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
   base::DictValue response;
   for (const base::Value& entry : urls) {
     const std::string* url_string = entry.GetIfString();
     if (!url_string) {
       continue;
     }
-    NSString* url_etld =
-        net::NSURLWithGURL(GURL(*url_string)).brave_domainAndRegistry;
-    response.Set(*url_string, [frame_etld isEqualToString:url_etld]);
+    const std::string url_etld =
+        net::registry_controlled_domains::GetDomainAndRegistry(
+            GURL(*url_string),
+            net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
+    response.Set(*url_string, frame_etld == url_etld);
   }
   return base::Value(std::move(response));
 }
@@ -192,6 +195,12 @@ void CosmeticFilteringJavaScriptFeature::ScriptMessageReceivedWithReply(
     web::WebState* web_state,
     const web::ScriptMessage& message,
     ScriptMessageReplyCallback callback) {
+  const GURL frame_url = message.security_origin().GetURL();
+  if (!frame_url.is_valid()) {
+    std::move(callback).Run(nullptr, nil);
+    return;
+  }
+
   auto body = token_.GetValidatedScriptMessageBody(message);
   const base::DictValue* script_dict =
       body ? body.value()->GetIfDict() : nullptr;
@@ -203,12 +212,6 @@ void CosmeticFilteringJavaScriptFeature::ScriptMessageReceivedWithReply(
   const std::string* request_type_string =
       script_dict->FindString(kMessageRequestTypeKey);
   if (!request_type_string) {
-    std::move(callback).Run(nullptr, nil);
-    return;
-  }
-
-  const GURL frame_url = message.security_origin().GetURL();
-  if (!frame_url.is_valid()) {
     std::move(callback).Run(nullptr, nil);
     return;
   }
@@ -254,14 +257,14 @@ void CosmeticFilteringJavaScriptFeature::ScriptMessageReceivedWithReply(
         frame_url, ids, classes,
         base::BindOnce(
             [](ScriptMessageReplyCallback callback,
-               const std::vector<std::string>* standard_selectors,
-               const std::vector<std::string>* aggressive_selectors) {
+               NSSet<NSString*>* standard_selectors,
+               NSSet<NSString*>* aggressive_selectors) {
               if (!standard_selectors || !aggressive_selectors) {
                 std::move(callback).Run(nullptr, nil);
                 return;
               }
               base::Value response = SelectorsResponseDictFrom(
-                  *standard_selectors, *aggressive_selectors);
+                  standard_selectors, aggressive_selectors);
               std::move(callback).Run(&response, nil);
             },
             std::move(callback)));

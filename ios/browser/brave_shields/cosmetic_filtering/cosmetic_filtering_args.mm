@@ -7,10 +7,6 @@
 
 @implementation CosmeticFilteringArgs
 
-+ (BOOL)supportsSecureCoding {
-  return YES;
-}
-
 - (instancetype)
         initWithHideFirstPartyContent:(BOOL)hideFirstPartyContent
                           genericHide:(BOOL)genericHide
@@ -33,51 +29,6 @@
     _aggressiveSelectors = [aggressiveSelectors copy];
     _standardSelectors = [standardSelectors copy];
     _proceduralFilters = [proceduralFilters copy];
-  }
-  return self;
-}
-
-- (id)copyWithZone:(NSZone*)zone {
-  return [[CosmeticFilteringArgs alloc]
-          initWithHideFirstPartyContent:self.hideFirstPartyContent
-                            genericHide:self.genericHide
-           firstSelectorsPollingDelayMs:self.firstSelectorsPollingDelayMs
-      switchToSelectorsPollingThreshold:self.switchToSelectorsPollingThreshold
-       fetchNewClassIdRulesThrottlingMs:self.fetchNewClassIdRulesThrottlingMs
-                    aggressiveSelectors:self.aggressiveSelectors
-                      standardSelectors:self.standardSelectors
-                      proceduralFilters:self.proceduralFilters];
-}
-
-- (void)encodeWithCoder:(NSCoder*)coder {
-  [coder encodeBool:self.hideFirstPartyContent forKey:@"hideFirstPartyContent"];
-  [coder encodeBool:self.genericHide forKey:@"genericHide"];
-  [coder encodeObject:self.firstSelectorsPollingDelayMs
-               forKey:@"firstSelectorsPollingDelayMs"];
-  [coder encodeObject:self.switchToSelectorsPollingThreshold
-               forKey:@"switchToSelectorsPollingThreshold"];
-  [coder encodeObject:self.fetchNewClassIdRulesThrottlingMs
-               forKey:@"fetchNewClassIdRulesThrottlingMs"];
-  [coder encodeObject:self.aggressiveSelectors forKey:@"aggressiveSelectors"];
-  [coder encodeObject:self.standardSelectors forKey:@"standardSelectors"];
-  [coder encodeObject:self.proceduralFilters forKey:@"proceduralFilters"];
-}
-
-- (instancetype)initWithCoder:(NSCoder*)coder {
-  self = [super init];
-  if (self) {
-    _hideFirstPartyContent = [coder decodeBoolForKey:@"hideFirstPartyContent"];
-    _genericHide = [coder decodeBoolForKey:@"genericHide"];
-    _firstSelectorsPollingDelayMs =
-        [coder decodeObjectForKey:@"firstSelectorsPollingDelayMs"];
-    _switchToSelectorsPollingThreshold =
-        [coder decodeObjectForKey:@"switchToSelectorsPollingThreshold"];
-    _fetchNewClassIdRulesThrottlingMs =
-        [coder decodeObjectForKey:@"fetchNewClassIdRulesThrottlingMs"];
-    _aggressiveSelectors =
-        [[coder decodeObjectForKey:@"aggressiveSelectors"] copy];
-    _standardSelectors = [[coder decodeObjectForKey:@"standardSelectors"] copy];
-    _proceduralFilters = [[coder decodeObjectForKey:@"proceduralFilters"] copy];
   }
   return self;
 }
