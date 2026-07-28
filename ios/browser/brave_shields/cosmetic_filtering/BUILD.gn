@@ -17,8 +17,8 @@ source_set("cosmetic_filtering") {
   ]
   deps = [
     ":cosmetic_filtering_js",
-    "//brave/ios/browser/api/url",
     "//ios/chrome/browser/shared/model/profile",
+    "//net",
     "//url",
   ]
   public_deps = [

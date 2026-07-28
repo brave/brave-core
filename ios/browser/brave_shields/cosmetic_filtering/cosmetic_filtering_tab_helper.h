@@ -6,8 +6,9 @@
 #ifndef BRAVE_IOS_BROWSER_BRAVE_SHIELDS_COSMETIC_FILTERING_COSMETIC_FILTERING_TAB_HELPER_H_
 #define BRAVE_IOS_BROWSER_BRAVE_SHIELDS_COSMETIC_FILTERING_COSMETIC_FILTERING_TAB_HELPER_H_
 
+#import <Foundation/Foundation.h>
+
 #include <string>
-#include <vector>
 
 #include "base/containers/span.h"
 #include "base/functional/callback_forward.h"
@@ -32,15 +33,15 @@ class CosmeticFilteringTabHelper
       const GURL& url,
       base::OnceCallback<void(CosmeticFilteringArgs*)> callback);
 
-  // `standard_selectors` and `aggressive_selectors` are null when no result
+  // `standard_selectors` and `aggressive_selectors` are nil when no result
   // could be computed (e.g. no bridge is attached).
   void SelectorsToHideFor(
       const GURL& url,
       base::span<const std::string> ids,
       base::span<const std::string> classes,
-      base::OnceCallback<
-          void(const std::vector<std::string>* standard_selectors,
-               const std::vector<std::string>* aggressive_selectors)> callback);
+      base::OnceCallback<void(NSSet<NSString*>* standard_selectors,
+                              NSSet<NSString*>* aggressive_selectors)>
+          callback);
 
  private:
   friend class web::WebStateUserData<CosmeticFilteringTabHelper>;
