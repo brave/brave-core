@@ -65,9 +65,9 @@ class BraveProxyingURLLoaderFactoryTest : public testing::Test {
   mojo::Remote<network::mojom::URLLoaderFactory> CreateFactory() {
     network::URLLoaderFactoryBuilder builder;
     proxy_ = std::make_unique<BraveProxyingURLLoaderFactory<std::shared_ptr>>(
-        *request_handler_, profile_.get(), content::GlobalRenderFrameHostToken(),
-        builder, base::MakeRefCounted<RequestIDGenerator>(), base::DoNothing(),
-        nullptr);
+        *request_handler_, profile_.get(),
+        content::GlobalRenderFrameHostToken(), builder,
+        base::MakeRefCounted<RequestIDGenerator>(), base::DoNothing(), nullptr);
 
     mojo::Remote<network::mojom::URLLoaderFactory> factory;
     std::move(builder).Finish(factory.BindNewPipeAndPassReceiver(),
