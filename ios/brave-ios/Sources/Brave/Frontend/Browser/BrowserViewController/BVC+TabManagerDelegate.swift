@@ -153,12 +153,16 @@ extension BrowserViewController: TabManagerDelegate {
         profile: tab.profile,
         syncAPI: profileController.syncAPI,
         sendTabAPI: profileController.sendTabAPI,
-        onOpenInNewTab: { [weak self] request in
+        onOpenInNewTab: { [weak self] request, isPrivateMode in
           guard let self else { return }
           self.tabManager.addTabAndSelect(
             request,
-            isPrivate: self.privateBrowsingManager.isPrivateBrowsing
+            isPrivate: isPrivateMode
           )
+        },
+        onOpenInNewWindow: { [weak self] url, isPrivateMode in
+          guard let self else { return }
+          self.openInNewWindow(url: url, isPrivate: isPrivateMode)
         },
         onAttachTab: { [weak self] tab in
           guard let self else { return }
