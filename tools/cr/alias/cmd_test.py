@@ -206,7 +206,8 @@ def _fake_global_env(hooks_dir: Path) -> dict[str, str]:
     """Return env overrides that point git's global config to a temp gitconfig
     with core.hooksPath set to hooks_dir, without touching ~/.gitconfig."""
     cfg = hooks_dir.parent / 'gitconfig'
-    cfg.write_text(f'[core]\n\thooksPath = {hooks_dir}\n', encoding='utf-8')
+    cfg.write_text(f'[core]\n\thooksPath = {hooks_dir.as_posix()}\n',
+                   encoding='utf-8')
     return {'GIT_CONFIG_GLOBAL': str(cfg)}
 
 
