@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include <optional>
+#include <string_view>
 
 #include "brave/components/update_client/buildflags.h"
 #include "build/build_config.h"
@@ -124,6 +125,19 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest,
                        ComponentUpdaterReplacement) {
+  // `BraveMainDelegate` only replaces the component updater URL source when an
+  // endpoint is baked into the build. `updater_prod_endpoint` is only required
+  // to be non-empty for official builds (see
+  // //brave/components/update_client/BUILD.gn), so there is no replacement to
+  // verify when it is empty. `if constexpr` is required here: with an empty
+  // endpoint a plain `if` leaves the code below unreachable, which
+  // `-Wunreachable-code` rejects.
+  constexpr std::string_view kUpdaterProdEndpoint =
+      BUILDFLAG(UPDATER_PROD_ENDPOINT);
+  if constexpr (kUpdaterProdEndpoint.empty()) {
+    GTEST_SKIP() << "updater_prod_endpoint is empty in this build";
+  }
+
   EXPECT_TRUE(base::CommandLine::ForCurrentProcess()->HasSwitch(
       switches::kComponentUpdater));
   EXPECT_EQ(base::CommandLine::ForCurrentProcess()->GetSwitchValueASCII(
