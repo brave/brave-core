@@ -1228,6 +1228,10 @@ class SpeedReaderContentSpoofBrowserTest : public SpeedReaderBrowserTest {
             .ExtractBool());
     EXPECT_FALSE(speedreader::DistillStates::IsDistilled(
         tab_helper()->PageDistillState()));
+    // The pending distillation is dropped together with the content, so
+    // speedreader is not stuck in the distilling state either.
+    EXPECT_TRUE(speedreader::DistillStates::IsViewOriginal(
+        tab_helper()->PageDistillState()));
   }
 
  private:
@@ -1294,13 +1298,12 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderContentSpoofBrowserTest,
   EXPECT_EQ(1u, download_observer.NumDownloadsSeenInState(
                     download::DownloadItem::COMPLETE));
 
-  // The download doesn't replace the page, so the readable page is still shown
-  // and speedreader is not distilling anymore.
+  // The download doesn't replace the page, so the readable page is still
+  // shown, with the distilled content still waiting to be sent.
   EXPECT_EQ(readable_url, ActiveWebContents()->GetLastCommittedURL());
-  EXPECT_TRUE(speedreader::DistillStates::IsViewOriginal(
-      tab_helper()->PageDistillState()));
 
-  // Now the user navigates wherever they want.
+  // Now the user navigates wherever they want. The content must be dropped
+  // when this navigation starts, long before its response arrives.
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), victim_url()));
 
   ExpectVictimPageIsIntact();

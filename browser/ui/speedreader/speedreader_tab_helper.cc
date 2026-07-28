@@ -388,32 +388,18 @@ void SpeedreaderTabHelper::ReadyToCommitNavigation(
 
 void SpeedreaderTabHelper::DidStartNavigation(
     content::NavigationHandle* navigation_handle) {
+  MaybeDropSingleShowContent(navigation_handle);
   ProcessNavigation(navigation_handle);
 }
 
 void SpeedreaderTabHelper::DidRedirectNavigation(
     content::NavigationHandle* navigation_handle) {
+  MaybeDropSingleShowContent(navigation_handle);
   ProcessNavigation(navigation_handle);
 }
 
 void SpeedreaderTabHelper::DidFinishNavigation(
     content::NavigationHandle* navigation_handle) {
-  if (navigation_handle->IsInPrimaryMainFrame() &&
-      !navigation_handle->IsSameDocument() && !single_show_content_.empty()) {
-    // The distilled content is consumed while the response is being processed,
-    // which happens before the navigation is finished. It is still here, so
-    // this navigation didn't take it (i.e. it was redirected to another URL,
-    // cancelled or turned into a download). Drop the content, it must never be
-    // sent as a body of another navigation.
-    ClearSingleShowContent();
-
-    if (DistillStates::IsDistilling(distill_state_)) {
-      // Nothing has been distilled. Leave the distilling state, otherwise the
-      // following navigations won't be re-evaluated at all (see the early
-      // return in ProcessNavigation).
-      TransitStateTo(DistillStates::ViewOriginal(), true);
-    }
-  }
   ProcessNavigation(navigation_handle, true);
 }
 
@@ -627,6 +613,30 @@ void SpeedreaderTabHelper::SetDocumentAttribute(const std::string& attribute,
 void SpeedreaderTabHelper::ClearSingleShowContent() {
   single_show_content_.clear();
   single_show_content_url_ = GURL();
+}
+
+void SpeedreaderTabHelper::MaybeDropSingleShowContent(
+    content::NavigationHandle* navigation_handle) {
+  if (single_show_content_.empty() ||
+      !navigation_handle->IsInPrimaryMainFrame() ||
+      navigation_handle->IsSameDocument() ||
+      IsPageContentPresent(navigation_handle->GetURL())) {
+    return;
+  }
+
+  // This navigation is not the one the content was distilled for, i.e. the
+  // reload was redirected somewhere else or the page was left before the
+  // reload happened. The content belongs to the page it was distilled from and
+  // must never be sent as a body of another page, so drop it now, before the
+  // response of this navigation is processed.
+  ClearSingleShowContent();
+
+  if (DistillStates::IsDistilling(distill_state_)) {
+    // Nothing is going to be distilled, leave the distilling state, otherwise
+    // ProcessNavigation() won't evaluate the page being navigated to (and the
+    // distiller would be attached to it).
+    Transit(distill_state_, DistillStates::ViewOriginal());
+  }
 }
 
 void SpeedreaderTabHelper::OnGetDocumentSource(GURL distilled_from,

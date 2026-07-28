@@ -168,10 +168,13 @@ class SpeedreaderTabHelper
   void SetDocumentAttribute(const std::string& attribute,
                             const std::string& value);
 
-  // Drops the distilled content prepared for a single show. Called when the
-  // content wasn't sent to the page it was distilled from, so it can't be sent
-  // to any other page.
+  // Drops the distilled content prepared for a single show.
   void ClearSingleShowContent();
+
+  // Drops the distilled content, and the pending distillation with it, unless
+  // |navigation_handle| is a navigation to the page the content was distilled
+  // from.
+  void MaybeDropSingleShowContent(content::NavigationHandle* navigation_handle);
 
   // |distilled_from| is the URL of the page the |html| was distilled from.
   void OnGetDocumentSource(GURL distilled_from, bool success, std::string html);
