@@ -286,7 +286,8 @@ IN_PROC_BROWSER_TEST_F(DeAmpBrowserTest, PendingCanonicalDoesNotSpoofOmnibox) {
                               content::EXECUTE_SCRIPT_NO_USER_GESTURE));
   ASSERT_TRUE(canonical_manager.WaitForRequestStart());
 
-  EXPECT_EQ(web_contents()->GetController().GetVisibleEntry()->GetURL(), simple);
+  EXPECT_EQ(web_contents()->GetController().GetVisibleEntry()->GetURL(),
+            simple);
   EXPECT_NE(web_contents()->GetController().GetVisibleEntry()->GetURL(),
             hung_canonical_url);
 }
