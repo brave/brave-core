@@ -9,7 +9,7 @@ import SafariServices
 import Strings
 import SwiftUI
 
-struct P3AOptInGraphicsView: View {
+struct MetricsOptInGraphicsView: View {
   @Environment(\.onboardingEnvironment.p3aUtils) private var p3aUtils
   @State private var isDisplayingP3AHelp = false
   @State private var isP3AEnabled: Bool = false
@@ -55,7 +55,7 @@ struct P3AOptInGraphicsView: View {
   }
 }
 
-struct P3AOptInActionsView: View {
+struct MetricsOptInActionsView: View {
   var continueHandler: () -> Void
 
   @Environment(\.onboardingEnvironment.p3aUtils) private var p3aUtils
@@ -87,8 +87,8 @@ private struct FocusSafariControllerView: UIViewControllerRepresentable {
   func updateUIViewController(_ uiViewController: SFSafariViewController, context: Context) {}
 }
 
-public struct P3AOptInOnboardingStep: OnboardingStep {
-  public var id: String = "p3a-opt-in"
+public struct MetricsOptInOnboardingStep: OnboardingStep {
+  public var id: String = "metrics-opt-in"
   public func makeTitle() -> some View {
     OnboardingTitleView(
       title: Strings.FocusOnboarding.p3aScreenTitle,
@@ -96,19 +96,19 @@ public struct P3AOptInOnboardingStep: OnboardingStep {
     )
   }
   public func makeGraphic() -> some View {
-    P3AOptInGraphicsView()
+    MetricsOptInGraphicsView()
   }
   public func makeActions(continueHandler: @escaping () -> Void) -> some View {
-    P3AOptInActionsView(continueHandler: continueHandler)
+    MetricsOptInActionsView(continueHandler: continueHandler)
   }
 }
 
-extension OnboardingStep where Self == P3AOptInOnboardingStep {
-  public static var p3aOptIn: Self { .init() }
+extension OnboardingStep where Self == MetricsOptInOnboardingStep {
+  public static var metricsOptIn: Self { .init() }
 }
 
 #if DEBUG
 #Preview {
-  OnboardingStepView(step: .p3aOptIn)
+  OnboardingStepView(step: .metricsOptIn)
 }
 #endif

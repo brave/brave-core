@@ -65,7 +65,7 @@ extension BrowserViewController {
         p3aUtils: braveCore.p3aUtils,
         attributionManager: attributionManager
       ),
-      steps: [.p3aOptIn],
+      steps: [.metricsOptIn],
       showSplashScreen: false,
       showDismissButton: false
     ).then {
