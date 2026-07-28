@@ -265,8 +265,8 @@ void BackupResultsServiceImpl::FetchBackupResults(
   }
 
   auto request = pending_requests_.emplace(
-      pending_requests_.end(), std::move(web_contents), headers, otr_profile,
-      low_latency_required, std::move(callback));
+      pending_requests_.end(), std::move(web_contents), headers, profile_,
+      otr_profile, low_latency_required, std::move(callback));
 #if BUILDFLAG(IS_ANDROID)
   request->window_android = window_android;
 #endif
@@ -294,6 +294,7 @@ void BackupResultsServiceImpl::FetchBackupResults(
 BackupResultsServiceImpl::PendingRequest::PendingRequest(
     std::unique_ptr<content::WebContents> web_contents,
     std::optional<net::HttpRequestHeaders> headers,
+    Profile* original_profile,
     Profile* otr_profile,
     bool low_latency_required,
     BackupResultsCallback callback)
@@ -301,9 +302,23 @@ BackupResultsServiceImpl::PendingRequest::PendingRequest(
       callback(std::move(callback)),
       low_latency_required(low_latency_required),
       web_contents(std::move(web_contents)),
+      original_profile(original_profile),
       otr_profile(otr_profile) {}
 
-BackupResultsServiceImpl::PendingRequest::~PendingRequest() = default;
+BackupResultsServiceImpl::PendingRequest::~PendingRequest() {
+  web_contents = nullptr;
+#if BUILDFLAG(IS_ANDROID)
+  if (window_android) {
+    auto java_window = window_android->GetJavaObject();
+    window_android = nullptr;
+    Java_BackupResultsWindowFactory_destroy(
+        base::android::AttachCurrentThread(), java_window);
+  }
+#endif
+  auto* profile_to_destroy = otr_profile.get();
+  otr_profile = nullptr;
+  original_profile->DestroyOffTheRecordProfile(profile_to_destroy);
+}
 
 BackupResultsServiceImpl::PendingRequestList::iterator
 BackupResultsServiceImpl::FindPendingRequest(
@@ -657,28 +672,11 @@ void BackupResultsServiceImpl::HandleWebContentsContentExtraction(
 void BackupResultsServiceImpl::CleanupAndDispatchResult(
     PendingRequestList::iterator pending_request,
     std::optional<BackupResults> result) {
-  auto* otr_profile = pending_request->otr_profile.get();
-
   // Track query result (failure if result is nullopt, success otherwise)
   backup_results_metrics_.RecordQuery(!result);
 
   std::move(pending_request->callback).Run(result);
-
-  pending_request->web_contents = nullptr;
-#if BUILDFLAG(IS_ANDROID)
-  if (pending_request->window_android) {
-    auto java_window = pending_request->window_android->GetJavaObject();
-    pending_request->window_android = nullptr;
-    Java_BackupResultsWindowFactory_destroy(
-        base::android::AttachCurrentThread(), java_window);
-  }
-#endif
-
   pending_requests_.erase(pending_request);
-
-  if (profile_) {
-    profile_->DestroyOffTheRecordProfile(otr_profile);
-  }
 }
 
 bool BackupResultsServiceImpl::UpdateDailyRequestCount() {
@@ -714,20 +712,6 @@ void BackupResultsServiceImpl::OnProfileWillBeDestroyed(Profile* profile) {
 void BackupResultsServiceImpl::Shutdown() {
   if (profile_) {
     profile_->RemoveObserver(this);
-    for (auto& request : pending_requests_) {
-      request.web_contents = nullptr;
-#if BUILDFLAG(IS_ANDROID)
-      if (request.window_android) {
-        auto java_window = request.window_android->GetJavaObject();
-        request.window_android = nullptr;
-        Java_BackupResultsWindowFactory_destroy(
-            base::android::AttachCurrentThread(), java_window);
-      }
-#endif
-      auto* otr_profile = request.otr_profile.get();
-      request.otr_profile = nullptr;
-      profile_->DestroyOffTheRecordProfile(otr_profile);
-    }
     pending_requests_.clear();
     profile_ = nullptr;
   }

@@ -86,6 +86,7 @@ class BackupResultsServiceImpl : public BackupResultsService,
   struct PendingRequest {
     PendingRequest(std::unique_ptr<content::WebContents> web_contents,
                    std::optional<net::HttpRequestHeaders> headers,
+                   Profile* original_profile,
                    Profile* otr_profile,
                    bool low_latency_required,
                    BackupResultsCallback callback);
@@ -103,6 +104,7 @@ class BackupResultsServiceImpl : public BackupResultsService,
     raw_ptr<ui::WindowAndroid> window_android = nullptr;
 #endif
 
+    raw_ptr<Profile> original_profile;
     raw_ptr<Profile> otr_profile;
     scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory;
     std::unique_ptr<network::SimpleURLLoader> simple_url_loader;
