@@ -188,13 +188,15 @@ constexpr auto kDefaultEnginesByCountryIdMap = base::MakeFixedFlatMap<
 
 // Builds a vector of PrepulatedEngine objects from the given array of
 // |engine_ids|.
-std::vector<const PrepopulatedEngine*> GetEnginesFromEngineIDs(
+std::vector<raw_ptr<const TemplateURLPrepopulateData::PrepopulatedEngine>>
+GetEnginesFromEngineIDs(
     base::span<const TemplateURLPrepopulateData::BravePrepopulatedEngineID>
         engine_ids) {
-  std::vector<const PrepopulatedEngine*> engines;
+  std::vector<raw_ptr<const TemplateURLPrepopulateData::PrepopulatedEngine>>
+      engines;
   for (TemplateURLPrepopulateData::BravePrepopulatedEngineID engine_id :
        engine_ids) {
-    const PrepopulatedEngine* engine = base::FindPtrOrNull(
+    const auto* engine = base::FindPtrOrNull(
         TemplateURLPrepopulateData::kBraveEngines, engine_id);
     CHECK(engine);
     engines.push_back(engine);
@@ -205,8 +207,8 @@ std::vector<const PrepopulatedEngine*> GetEnginesFromEngineIDs(
 // Uses brave_engines_XX localized arrays of engine IDs instead of Chromium's
 // localized arrays of PrepopulatedEngines to construct the vector of
 // TemplateURLData.
-std::vector<const PrepopulatedEngine*> GetBravePrepopulatedEnginesForCountryID(
-    country_codes::CountryId country_id) {
+std::vector<raw_ptr<const TemplateURLPrepopulateData::PrepopulatedEngine>>
+GetBravePrepopulatedEnginesForCountryID(country_codes::CountryId country_id) {
   base::span<const TemplateURLPrepopulateData::BravePrepopulatedEngineID>
       brave_engine_ids = kBraveEnginesDefault;
 
@@ -220,8 +222,8 @@ std::vector<const PrepopulatedEngine*> GetBravePrepopulatedEnginesForCountryID(
 
   // Build a vector PrepopulatedEngines from
   // TemplateURLPrepopulateData::BravePrepopulatedEngineIDs.
-  std::vector<const PrepopulatedEngine*> engines =
-      GetEnginesFromEngineIDs(brave_engine_ids);
+  std::vector<raw_ptr<const TemplateURLPrepopulateData::PrepopulatedEngine>>
+      engines = GetEnginesFromEngineIDs(brave_engine_ids);
   DCHECK(engines.size() == brave_engine_ids.size());
 
   return engines;
@@ -731,10 +733,10 @@ TemplateURLPrepopulateData::BravePrepopulatedEngineID GetDefaultSearchEngine(
 
 }  // namespace
 
-std::vector<const PrepopulatedEngine*> GetPrepopulatedEngines(
-    CountryId country_id,
-    PrefService& prefs,
-    SearchEngineListType search_engine_list_type) {
+std::vector<raw_ptr<const TemplateURLPrepopulateData::PrepopulatedEngine>>
+GetPrepopulatedEngines(CountryId country_id,
+                       PrefService& prefs,
+                       SearchEngineListType search_engine_list_type) {
   return GetBravePrepopulatedEnginesForCountryID(country_id);
 }
 
