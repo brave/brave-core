@@ -29,7 +29,7 @@
                android:layout_height="0px"
                android:layout_weight="3"
                app:srcCompat="@drawable/brave_sync"
-               android:scaleType="center"
+               android:scaleType="centerInside"
                android:contentDescription="@null" />
 
            <TextView android:id="@+id/brave_sync_text_initial"
