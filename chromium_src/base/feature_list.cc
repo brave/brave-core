@@ -17,6 +17,14 @@
 #include "base/no_destructor.h"
 
 namespace base {
+
+static inline bool operator<(const std::reference_wrapper<const Feature>& lhs,
+                             const std::reference_wrapper<const Feature>& rhs) {
+  // Compare internal pointers directly, because there must only ever be one
+  // struct instance for a given feature name.
+  return &lhs.get() < &rhs.get();
+}
+
 namespace internal {
 namespace {
 
@@ -102,14 +110,6 @@ FeatureDefaultStateOverrider::FeatureDefaultStateOverrider(
 }
 
 }  // namespace internal
-
-// Custom comparator to use std::reference_wrapper as a key in a map/set.
-static inline bool operator<(const std::reference_wrapper<const Feature>& lhs,
-                             const std::reference_wrapper<const Feature>& rhs) {
-  // Compare internal pointers directly, because there must only ever be one
-  // struct instance for a given feature name.
-  return &lhs.get() < &rhs.get();
-}
 
 // static
 FeatureState FeatureList::GetCompileTimeFeatureState(const Feature& feature) {
