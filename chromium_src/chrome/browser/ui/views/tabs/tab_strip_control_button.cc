@@ -9,8 +9,16 @@
 
 #define TabStripControlButton TabStripControlButton_ChromiumImpl
 
+// Use the CR foreground token for the default active icon color so ultra-dark
+// postprocessing of kColorNewTabButtonCRForegroundFrameActive applies to the
+// horizontal new-tab, workspaces, and scroll buttons. Outside darker theme
+// this CR id still aliases to kColorTabForegroundInactiveFrameActive.
+#define kColorTabForegroundInactiveFrameActive \
+  kColorNewTabButtonCRForegroundFrameActive
+
 #include <chrome/browser/ui/views/tabs/tab_strip_control_button.cc>
 
+#undef kColorTabForegroundInactiveFrameActive
 #undef TabStripControlButton
 
 TabStripControlButton::~TabStripControlButton() = default;

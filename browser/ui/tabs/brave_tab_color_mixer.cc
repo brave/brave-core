@@ -255,11 +255,12 @@ void AddBraveTabThemeColorMixer(ui::ColorProvider* provider,
   postprocessing_mixer[kColorNewTabButtonBackgroundFrameInactive] = {
       ui::kColorFrameInactive};
 
-  // TabStripComboButton / tab search icon (horizontal caret and vertical
-  // toolbar button). Chromium maps these CR color IDs through regular-mixer
-  // ColorId references to kColorTabForegroundInactiveFrameActive, which cannot
-  // see this postprocessing mixer's overrides — so without an explicit recipe
-  // here the icon keeps the regular dark-theme (near-white) color.
+  // Tab-strip control / combo-button icons (tab search, horizontal +,
+  // workspaces, scroll chevrons, vertical-tab toolbar search). Chromium maps
+  // these CR color IDs through regular-mixer ColorId references, which cannot
+  // see this postprocessing mixer's overrides of tab-foreground colors — so
+  // without an explicit recipe here the icons keep the regular dark-theme
+  // (near-white) color. Match toolbar icons instead.
   const SkColor toolbar_icon =
       postprocessing_mixer.GetResultColor(kColorToolbarButtonIcon);
   const SkColor toolbar_icon_inactive =
@@ -283,12 +284,10 @@ void AddBraveTabThemeColorMixer(ui::ColorProvider* provider,
   postprocessing_mixer[kColorBraveVerticalTabSeparator] = {
       nala::kColorPrimitiveNeutral15};
 
-  const SkColor ntb_forground = postprocessing_mixer.GetResultColor(
-      kColorTabForegroundInactiveFrameActive);
-  postprocessing_mixer[kColorBraveVerticalTabNTBIconColor] = {ntb_forground};
-  postprocessing_mixer[kColorBraveVerticalTabNTBTextColor] = {ntb_forground};
+  postprocessing_mixer[kColorBraveVerticalTabNTBIconColor] = {toolbar_icon};
+  postprocessing_mixer[kColorBraveVerticalTabNTBTextColor] = {toolbar_icon};
   postprocessing_mixer[kColorBraveVerticalTabNTBShortcutTextColor] = {
-      ntb_forground};
+      toolbar_icon};
 #endif  // defined(TOOLKIT_VIEWS)
 }
 
