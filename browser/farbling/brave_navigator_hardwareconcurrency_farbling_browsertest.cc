@@ -176,7 +176,7 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorHardwareConcurrencyFarblingBrowserTest,
   int fake_value;
   base::StringToInt(content::EvalJs(contents(), kTitleScript).ExtractString(),
                     &fake_value);
-  
+
   const int min_processors_for_farbling = 4;
 
   if (real_value < min_processors_for_farbling) {
