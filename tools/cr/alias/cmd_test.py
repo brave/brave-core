@@ -27,6 +27,7 @@ import unittest
 from pathlib import Path
 
 import _boot  # noqa: F401
+from alias.base import WINDOWS_SHIM
 from test.fake_chromium_repo import FakeChromiumRepo
 
 CMD_SCRIPT: Path = Path(__file__).parent / 'cmd.py'
@@ -137,7 +138,8 @@ class _Sandbox:
     def install_hook(self, *, as_copy: bool = False) -> None:
         """Put commit-msg.py in .git/hooks/commit-msg.
 
-        By default a symlink is created (mirroring 'gc install-hook').
+        By default this mirrors 'gc install-hook': a symlink on POSIX, the
+        bash shim on Windows.
         Pass as_copy=True to simulate a manually-copied (potentially
         stale) hook.
         """
@@ -148,6 +150,8 @@ class _Sandbox:
             dest.unlink()
         if as_copy:
             shutil.copy2(HOOK_SOURCE, dest)
+        elif platform.system() == 'Windows':
+            dest.write_bytes(WINDOWS_SHIM)
         else:
             dest.symlink_to(HOOK_SOURCE)
         # Ensure the hook (and source) are executable.
@@ -281,7 +285,11 @@ class TestInstallHook(unittest.TestCase):
         self.assertEqual(dest.resolve(), HOOK_SOURCE.resolve())
 
     def test_overwrites_existing_hook(self) -> None:
-        """install-hook replaces an existing hook file with a symlink."""
+        """install-hook replaces an existing hook file.
+
+        On POSIX the replacement is a symlink; on Windows it is the bash
+        shim cmd_install_hook writes instead.
+        """
         dest = self._sandbox.hook_dest
         dest.parent.mkdir(exist_ok=True)
         if dest.exists() or dest.is_symlink():
@@ -289,8 +297,12 @@ class TestInstallHook(unittest.TestCase):
         dest.write_text('old hook\n', encoding='utf-8')
 
         result = self._run()
-        self.assertEqual(result.returncode, 0)
-        self.assertTrue(dest.is_symlink())
+        self.assertEqual(result.returncode, 0, msg=f'stderr: {result.stderr}')
+        if platform.system() == 'Windows':
+            self.assertNotIn('old hook', dest.read_text(encoding='utf-8'))
+            self.assertIn('commit-msg.py', dest.read_text(encoding='utf-8'))
+        else:
+            self.assertTrue(dest.is_symlink())
 
     def test_hook_source_is_executable_after_install(self) -> None:
         """The hook source file is executable after install-hook runs."""
