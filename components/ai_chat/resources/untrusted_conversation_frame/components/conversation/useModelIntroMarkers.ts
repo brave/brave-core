@@ -9,7 +9,7 @@ import { getPairedConversationGroups } from '../conversation_entries/conversatio
 
 /**
  * A sticky ModelIntro pill anchored to the point in the conversation where
- * the user selected a non-default model. Markers are session-only.
+ * the user selected a different model. Markers are session-only.
  *
  * - `afterPairIndex === null`: render at the top of Conversation (before
  *   any entries), typically when the model was changed before the first
@@ -43,7 +43,10 @@ function createModelIntroMarker(
  *
  * Markers are sticky once the user sends a prompt after selecting a model.
  * Repeated model changes at the same conversation position (before sending)
- * replace the pending marker instead of stacking.
+ * replace the pending marker instead of stacking. Switching back to the
+ * baseline model for that position (the model in use when the position was
+ * established) removes the pending marker — including when that baseline is
+ * Automatic / the default.
  */
 export function useModelIntroMarkers(): ModelIntroMarker[] {
   const context = useUntrustedConversationContext()
@@ -60,6 +63,14 @@ export function useModelIntroMarkers(): ModelIntroMarker[] {
   // when the conversation first loads.
   const prevModelKeyRef = React.useRef<string | undefined>(undefined)
 
+  // Model in effect for the current pending position. Selecting a different
+  // model creates/replaces a marker; selecting this model again removes it.
+  const baselineModelKeyRef = React.useRef<string | undefined>(undefined)
+
+  // Used to detect newly sent turns so the baseline can advance with the
+  // conversation position.
+  const prevHistoryLengthRef = React.useRef(0)
+
   // Identity of the conversation currently showing markers. The untrusted
   // frame does not receive a conversation-level uuid on every history turn,
   // so we use the first turn's uuid as a stable stand-in. When it changes,
@@ -75,6 +86,8 @@ export function useModelIntroMarkers(): ModelIntroMarker[] {
       setModelIntroMarkers([])
       conversationIdentityRef.current = null
       prevModelKeyRef.current = undefined
+      baselineModelKeyRef.current = undefined
+      prevHistoryLengthRef.current = 0
       return
     }
 
@@ -98,18 +111,33 @@ export function useModelIntroMarkers(): ModelIntroMarker[] {
       conversationIdentityRef.current = firstUuid
       setModelIntroMarkers([])
       prevModelKeyRef.current = undefined
+      baselineModelKeyRef.current = undefined
+      prevHistoryLengthRef.current = 0
     }
   }, [conversationHistory.length, conversationHistory[0]?.uuid])
 
-  // Create or replace a marker when the user selects a non-default model.
+  // Create, replace, or clear a marker when the user changes models.
   React.useEffect(() => {
-    const { currentModelKey, defaultModelKey } = state
+    const { currentModelKey } = state
 
     // Establish a baseline on mount / after a reset; do not create a marker
     // for the model that is already selected.
     if (prevModelKeyRef.current === undefined) {
       prevModelKeyRef.current = currentModelKey
+      baselineModelKeyRef.current = currentModelKey
+      prevHistoryLengthRef.current = conversationHistory.length
       return
+    }
+
+    const historyGrew =
+      conversationHistory.length !== prevHistoryLengthRef.current
+    prevHistoryLengthRef.current = conversationHistory.length
+
+    // New turns commit the previous selection. Advance the baseline using the
+    // model that was selected when those turns were produced (before any
+    // simultaneous model change in this effect run).
+    if (historyGrew) {
+      baselineModelKeyRef.current = prevModelKeyRef.current
     }
 
     if (prevModelKeyRef.current === currentModelKey) {
@@ -118,24 +146,33 @@ export function useModelIntroMarkers(): ModelIntroMarker[] {
 
     prevModelKeyRef.current = currentModelKey
 
-    // Switching back to the default model should not add a new pill;
-    // existing historical markers remain.
-    if (currentModelKey === defaultModelKey) {
+    // Anchor to the latest entry pair, or to the top when there are no turns
+    // yet (model changed before the conversation started).
+    const pairedGroups = getPairedConversationGroups(conversationHistory)
+    const afterPairIndex =
+      conversationHistory.length === 0 ? null : pairedGroups.length - 1
+
+    // Reverting to the baseline model for this position drops the pending
+    // marker (e.g. Automatic → Qwen → Automatic). Historical markers from
+    // earlier turns remain.
+    if (currentModelKey === baselineModelKeyRef.current) {
+      setModelIntroMarkers((previousMarkers) => {
+        const lastMarker = previousMarkers.at(-1)
+        if (lastMarker && lastMarker.afterPairIndex === afterPairIndex) {
+          return previousMarkers.slice(0, -1)
+        }
+        return previousMarkers
+      })
       return
     }
 
     setModelIntroMarkers((previousMarkers) => {
-      // Ignore duplicate consecutive selections of the same non-default model.
+      // Ignore duplicate consecutive selections of the same model.
       const lastMarker = previousMarkers.at(-1)
       if (lastMarker?.modelKey === currentModelKey) {
         return previousMarkers
       }
 
-      // Anchor to the latest entry pair, or to the top when there are no turns
-      // yet (model changed before the conversation started).
-      const pairedGroups = getPairedConversationGroups(conversationHistory)
-      const afterPairIndex =
-        conversationHistory.length === 0 ? null : pairedGroups.length - 1
       const nextMarker = createModelIntroMarker(currentModelKey, afterPairIndex)
 
       // User changed the model again before sending a prompt — replace the
@@ -146,7 +183,7 @@ export function useModelIntroMarkers(): ModelIntroMarker[] {
 
       return [...previousMarkers, nextMarker]
     })
-  }, [conversationHistory.length, state.currentModelKey, state.defaultModelKey])
+  }, [conversationHistory.length, state.currentModelKey])
 
   return modelIntroMarkers
 }

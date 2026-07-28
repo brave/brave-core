@@ -225,7 +225,7 @@ describe('useModelIntroMarkers', () => {
     })
   })
 
-  it('does not create a marker when switching back to the default model', async () => {
+  it('removes the pending marker when switching back to the baseline model before sending', async () => {
     const { result, mockRef } = renderModelIntroMarkersHook({
       conversationEntriesState: {
         currentModelKey: 'default-model',
@@ -251,8 +251,206 @@ describe('useModelIntroMarkers', () => {
       })
     })
 
-    expect(result.current).toHaveLength(1)
-    expect(result.current[0].modelKey).toBe('test-model')
+    await waitFor(() => {
+      expect(result.current).toHaveLength(0)
+    })
+  })
+
+  it('removes the pending inline marker when switching back to the baseline model before sending', async () => {
+    const conversationHistory = [
+      createConversationTurnWithDefaults({
+        uuid: 'turn-1',
+        characterType: Mojom.CharacterType.ASSISTANT,
+        text: 'Latest reply',
+      }),
+    ]
+    const { result, mockRef } = renderModelIntroMarkersHook(
+      {
+        conversationEntriesState: {
+          currentModelKey: 'default-model',
+          defaultModelKey: 'default-model',
+        },
+        conversationHistory,
+      },
+      conversationHistory,
+    )
+
+    await act(async () => {
+      mockRef.current!.api.state.update({
+        currentModelKey: 'test-model',
+        defaultModelKey: 'default-model',
+      })
+    })
+
+    await waitFor(() => {
+      expect(result.current).toHaveLength(1)
+    })
+    expect(result.current[0]).toMatchObject({
+      modelKey: 'test-model',
+      afterPairIndex: 0,
+    })
+
+    await act(async () => {
+      mockRef.current!.api.state.update({
+        currentModelKey: 'default-model',
+        defaultModelKey: 'default-model',
+      })
+    })
+
+    await waitFor(() => {
+      expect(result.current).toHaveLength(0)
+    })
+  })
+
+  it('creates a marker when switching to the default model from a specific model', async () => {
+    const conversationHistory = [
+      createConversationTurnWithDefaults({
+        uuid: 'turn-1',
+        characterType: Mojom.CharacterType.ASSISTANT,
+        text: 'Latest reply',
+      }),
+    ]
+    const { result, mockRef } = renderModelIntroMarkersHook(
+      {
+        conversationEntriesState: {
+          currentModelKey: 'test-model',
+          defaultModelKey: 'default-model',
+        },
+        conversationHistory,
+      },
+      conversationHistory,
+    )
+
+    await act(async () => {
+      mockRef.current!.api.state.update({
+        currentModelKey: 'default-model',
+        defaultModelKey: 'default-model',
+      })
+    })
+
+    await waitFor(() => {
+      expect(result.current).toHaveLength(1)
+    })
+    expect(result.current[0]).toMatchObject({
+      modelKey: 'default-model',
+      afterPairIndex: 0,
+    })
+  })
+
+  it('keeps committed markers and adds one when switching models after sending', async () => {
+    const firstTurn = createConversationTurnWithDefaults({
+      uuid: 'turn-1',
+      characterType: Mojom.CharacterType.ASSISTANT,
+      text: 'First reply',
+    })
+    const { result, mockRef } = renderModelIntroMarkersHook(
+      {
+        conversationEntriesState: {
+          currentModelKey: 'default-model',
+          defaultModelKey: 'default-model',
+        },
+        conversationHistory: [firstTurn],
+      },
+      [firstTurn],
+    )
+
+    await act(async () => {
+      mockRef.current!.api.state.update({
+        currentModelKey: 'test-model',
+        defaultModelKey: 'default-model',
+      })
+    })
+
+    await waitFor(() => {
+      expect(result.current).toHaveLength(1)
+    })
+    expect(result.current[0]).toMatchObject({
+      modelKey: 'test-model',
+      afterPairIndex: 0,
+    })
+
+    // Sending a prompt commits the marker at afterPairIndex 0 and advances
+    // the baseline to test-model, so switching to default creates a new pill.
+    const secondTurn = createConversationTurnWithDefaults({
+      uuid: 'turn-2',
+      characterType: Mojom.CharacterType.HUMAN,
+      text: 'Follow-up',
+    })
+    const thirdTurn = createConversationTurnWithDefaults({
+      uuid: 'turn-3',
+      characterType: Mojom.CharacterType.ASSISTANT,
+      text: 'Second reply',
+    })
+
+    await act(async () => {
+      mockRef.current!.api.getConversationHistory.update([
+        firstTurn,
+        secondTurn,
+        thirdTurn,
+      ])
+    })
+
+    await act(async () => {
+      mockRef.current!.api.state.update({
+        currentModelKey: 'default-model',
+        defaultModelKey: 'default-model',
+      })
+    })
+
+    await waitFor(() => {
+      expect(result.current).toHaveLength(2)
+    })
+    expect(result.current[0]).toMatchObject({
+      modelKey: 'test-model',
+      afterPairIndex: 0,
+    })
+    expect(result.current[1]).toMatchObject({
+      modelKey: 'default-model',
+      afterPairIndex: 1,
+    })
+  })
+
+  it('removes a pending default-model marker when switching back to the prior specific model', async () => {
+    const conversationHistory = [
+      createConversationTurnWithDefaults({
+        uuid: 'turn-1',
+        characterType: Mojom.CharacterType.ASSISTANT,
+        text: 'Latest reply',
+      }),
+    ]
+    const { result, mockRef } = renderModelIntroMarkersHook(
+      {
+        conversationEntriesState: {
+          currentModelKey: 'test-model',
+          defaultModelKey: 'default-model',
+        },
+        conversationHistory,
+      },
+      conversationHistory,
+    )
+
+    await act(async () => {
+      mockRef.current!.api.state.update({
+        currentModelKey: 'default-model',
+        defaultModelKey: 'default-model',
+      })
+    })
+
+    await waitFor(() => {
+      expect(result.current).toHaveLength(1)
+    })
+    expect(result.current[0].modelKey).toBe('default-model')
+
+    await act(async () => {
+      mockRef.current!.api.state.update({
+        currentModelKey: 'test-model',
+        defaultModelKey: 'default-model',
+      })
+    })
+
+    await waitFor(() => {
+      expect(result.current).toHaveLength(0)
+    })
   })
 
   it('keeps top markers after the conversation starts', async () => {
