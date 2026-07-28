@@ -1258,7 +1258,7 @@ void BraveContentBrowserClient::CreateChromeWebSocket(
         frame, proxy->CreateWebSocketFactory(), url, site_for_cookies,
         user_agent, std::move(handshake_client), std::move(options));
   } else {
-    proxy->Start(std::move(handshake_client));
+    proxy->Start(std::move(handshake_client), std::move(options.header_client));
   }
 }
 void BraveContentBrowserClient::CreateWebSocket(
