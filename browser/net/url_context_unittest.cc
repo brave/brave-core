@@ -46,7 +46,8 @@ TEST(BraveRequestInfoTest,
       content::ContentBrowserClient::URLLoaderFactoryType::kWorkerSubResource,
       factory_initiator, factory_isolation_info);
 
-  EXPECT_EQ(factory_initiator.GetURL(), ctx->initiator_url());
+  ASSERT_TRUE(ctx->request_initiator());
+  EXPECT_EQ(factory_initiator, *ctx->request_initiator());
   EXPECT_EQ(factory_top_frame_origin.GetURL(), ctx->tab_origin());
   EXPECT_EQ(ctx->network_anonymization_key(),
             factory_isolation_info.network_anonymization_key());
@@ -76,7 +77,8 @@ TEST(BraveRequestInfoTest, RequestContextOverridesFactoryContext) {
       content::ContentBrowserClient::URLLoaderFactoryType::kWorkerSubResource,
       factory_initiator, MakeIsolationInfo(factory_top_frame_origin));
 
-  EXPECT_EQ(request_initiator.GetURL(), ctx->initiator_url());
+  ASSERT_TRUE(ctx->request_initiator());
+  EXPECT_EQ(request_initiator, *ctx->request_initiator());
   EXPECT_EQ(request_top_frame_origin.GetURL(), ctx->tab_origin());
   EXPECT_EQ(ctx->network_anonymization_key(),
             request.trusted_params->isolation_info.network_anonymization_key());
@@ -100,7 +102,7 @@ TEST(BraveRequestInfoTest, NonWorkerFactoryTypeIgnoresFactoryContextFallback) {
       content::ContentBrowserClient::URLLoaderFactoryType::kDocumentSubResource,
       factory_initiator, MakeIsolationInfo(factory_top_frame_origin));
 
-  EXPECT_TRUE(ctx->initiator_url().is_empty());
+  EXPECT_FALSE(ctx->request_initiator());
   EXPECT_TRUE(ctx->tab_origin().is_empty());
   EXPECT_TRUE(ctx->network_anonymization_key().IsEmpty());
 }
