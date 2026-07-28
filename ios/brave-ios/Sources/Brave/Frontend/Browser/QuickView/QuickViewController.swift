@@ -32,7 +32,8 @@ class QuickViewController: UIViewController {
     manager.isPrivateBrowsing = profile.isOffTheRecord
     return manager
   }()
-  private let onOpenInNewTab: ((URLRequest) -> Void)?
+  private let onOpenInNewTab: ((URLRequest, Bool) -> Void)?
+  private let onOpenInNewWindow: ((URL, Bool) -> Void)?
   private let onAttachTab: ((any TabState) -> Void)?
 
   init(
@@ -40,7 +41,8 @@ class QuickViewController: UIViewController {
     profile: any Profile,
     syncAPI: BraveSyncAPI,
     sendTabAPI: BraveSendTabAPI,
-    onOpenInNewTab: ((URLRequest) -> Void)?,
+    onOpenInNewTab: ((URLRequest, Bool) -> Void)?,
+    onOpenInNewWindow: ((URL, Bool) -> Void)?,
     onAttachTab: ((any TabState) -> Void)?
   ) {
     self.url = url
@@ -52,6 +54,7 @@ class QuickViewController: UIViewController {
       isPrivate: profile.isOffTheRecord
     )
     self.onOpenInNewTab = onOpenInNewTab
+    self.onOpenInNewWindow = onOpenInNewWindow
     self.onAttachTab = onAttachTab
     super.init(nibName: nil, bundle: nil)
     modalPresentationStyle = .fullScreen
@@ -382,6 +385,15 @@ class QuickViewController: UIViewController {
       $0.bottom.equalTo(toolbarHostingController.view.snp.top)
     }
   }
+
+  private func openNewTab(with request: URLRequest, inPrivateMode: Bool) {
+    dismiss(animated: true) { [weak self] in
+      guard let self else { return }
+      self.currentTab?.removeObserver(self.toolbarViewModel)
+      self.currentTab?.removeObserver(self)
+      self.onOpenInNewTab?(request, inPrivateMode)
+    }
+  }
 }
 
 // MARK: - TabDelegate
@@ -397,7 +409,7 @@ extension QuickViewController: TabDelegate {
       currentTab.removeObserver(self.toolbarViewModel)
       currentTab.removeObserver(self)
       self.onAttachTab?(currentTab)
-      self.onOpenInNewTab?(request)
+      self.onOpenInNewTab?(request, profile.isOffTheRecord)
     }
     return nil
   }
@@ -406,6 +418,179 @@ extension QuickViewController: TabDelegate {
     if tab.visibleURL?.isInternalURL(for: .readermode) != true {
       hideReaderModeBar()
     }
+  }
+
+  func tab(
+    _ tab: some TabState,
+    contextMenuConfigurationForLinkURL linkURL: URL?
+  ) async -> UIContextMenuConfiguration? {
+    guard let url = linkURL, url.isWebPage() else {
+      return UIContextMenuConfiguration(identifier: nil, previewProvider: nil, actionProvider: nil)
+    }
+
+    let actionProvider: UIContextMenuActionProvider = { [weak self] _ -> UIMenu? in
+      guard let self else { return nil }
+      var actions = [UIAction]()
+
+      if let currentTab = self.currentTab {
+        let isPrivate = currentTab.isPrivate
+
+        if !isPrivate {
+          let openNewTabAction = UIAction(
+            title: Strings.openNewTabButtonTitle,
+            image: UIImage(braveSystemNamed: "leo.browser.mobile-tab-new")
+          ) { [weak self] _ in
+            self?.openNewTab(with: URLRequest(url: url), inPrivateMode: false)
+          }
+
+          openNewTabAction.accessibilityLabel = "linkContextMenu.openInNewTab"
+          actions.append(openNewTabAction)
+        }
+
+        let openNewPrivateTabAction = UIAction(
+          title: Strings.openNewPrivateTabButtonTitle,
+          image: UIImage(braveSystemNamed: "leo.product.private-window")
+        ) { [weak self] _ in
+          guard let self else { return }
+          if !isPrivate, Preferences.Privacy.privateBrowsingLock.value {
+            self.askForLocalAuthentication { [weak self] success, error in
+              if success {
+                self?.openNewTab(with: URLRequest(url: url), inPrivateMode: true)
+              }
+            }
+          } else {
+            self.openNewTab(with: URLRequest(url: url), inPrivateMode: true)
+          }
+        }
+        openNewPrivateTabAction.accessibilityLabel = "linkContextMenu.openInNewPrivateTab"
+
+        actions.append(openNewPrivateTabAction)
+
+        if UIApplication.shared.supportsMultipleScenes {
+          if !isPrivate {
+            let openNewWindowAction = UIAction(
+              title: Strings.openInNewWindowTitle,
+              image: UIImage(braveSystemNamed: "leo.window.tab-new")
+            ) { [weak self] _ in
+              self?.onOpenInNewWindow?(url, false)
+            }
+
+            openNewWindowAction.accessibilityLabel = "linkContextMenu.openInNewWindow"
+            actions.append(openNewWindowAction)
+          }
+
+          let openNewPrivateWindowAction = UIAction(
+            title: Strings.openInNewPrivateWindowTitle,
+            image: UIImage(braveSystemNamed: "leo.window.tab-private")
+          ) { [weak self] _ in
+            guard let self else { return }
+            if !isPrivate, Preferences.Privacy.privateBrowsingLock.value {
+              self.askForLocalAuthentication { [weak self] success, error in
+                if success {
+                  self?.onOpenInNewWindow?(url, true)
+                }
+              }
+            } else {
+              self.onOpenInNewWindow?(url, true)
+            }
+          }
+
+          openNewPrivateWindowAction.accessibilityLabel = "linkContextMenu.openInNewPrivateWindow"
+          actions.append(openNewPrivateWindowAction)
+        }
+
+        let copyAction = UIAction(
+          title: Strings.copyLinkActionTitle,
+          image: UIImage(braveSystemNamed: "leo.copy"),
+          handler: UIAction.deferredActionHandler { _ in
+            UIPasteboard.general.url = url as URL
+          }
+        )
+        copyAction.accessibilityLabel = "linkContextMenu.copyLink"
+        actions.append(copyAction)
+
+        let copyCleanLinkAction = UIAction(
+          title: Strings.copyCleanLink,
+          image: UIImage(braveSystemNamed: "leo.copy.clean"),
+          handler: UIAction.deferredActionHandler { _ in
+            let service = URLSanitizerServiceFactory.get(privateMode: currentTab.isPrivate)
+            let cleanedURL = service?.sanitize(url: url) ?? url
+            UIPasteboard.general.url = cleanedURL
+          }
+        )
+        copyCleanLinkAction.accessibilityLabel = "linkContextMenu.copyCleanLink"
+        actions.append(copyCleanLinkAction)
+
+        let shareAction = UIAction(
+          title: Strings.shareLinkActionTitle,
+          image: UIImage(braveSystemNamed: "leo.share.macos")
+        ) { [weak self] _ in
+          guard let self else { return }
+          let anchorView = self.toolbarHostingController.rootView.shareBackgroundView.uiView
+          self.presentShareActivity(
+            url: url,
+            tab: currentTab,
+            syncAPI: self.syncAPI,
+            sendTabAPI: self.sendTabAPI,
+            feedDataSource: nil,
+            isBraveNewsAvailable: false,
+            source: .init(
+              view: anchorView,
+              rect: anchorView.bounds,
+              arrowDirection: .any
+            ),
+            callbacks: .init(
+              onToggleReaderMode: { [weak self] in
+                self?.currentTab?.readerMode?.toggleReaderMode()
+              },
+              onShowSubmitReport: { [weak self] url in
+                self?.showSubmitReportView(for: url)
+              }
+            )
+          )
+        }
+        shareAction.accessibilityLabel = "linkContextMenu.share"
+        actions.append(shareAction)
+
+        let linkPreview = Preferences.General.enableLinkPreview.value
+
+        let linkPreviewTitle =
+          linkPreview ? Strings.hideLinkPreviewsActionTitle : Strings.showLinkPreviewsActionTitle
+        let linkPreviewAction = UIAction(
+          title: linkPreviewTitle,
+          image: UIImage(braveSystemNamed: linkPreview ? "leo.eye.off" : "leo.eye.on")
+        ) { _ in
+          Preferences.General.enableLinkPreview.value.toggle()
+        }
+
+        actions.append(linkPreviewAction)
+      }
+
+      let formattedURL = URLFormatter.formatURL(
+        url.absoluteString,
+        formatTypes: [.omitDefaults, .omitTrivialSubdomains],
+        unescapeOptions: .normal
+      )
+      return UIMenu(title: formattedURL, children: actions)
+    }
+
+    let linkPreview: UIContextMenuContentPreviewProvider? = { [unowned self, weak tab] in
+      guard let tab else { return nil }
+      return LinkPreviewViewController(
+        url: url,
+        for: tab,
+        policyDecider: currentTab?.detachedPrivacyHelper,
+        tabDelegate: self,
+        downloadDelegate: nil
+      )
+    }
+
+    let linkPreviewProvider = Preferences.General.enableLinkPreview.value ? linkPreview : nil
+    return UIContextMenuConfiguration(
+      identifier: nil,
+      previewProvider: linkPreviewProvider,
+      actionProvider: actionProvider
+    )
   }
 }
 
