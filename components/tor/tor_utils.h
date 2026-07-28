@@ -6,9 +6,11 @@
 #ifndef BRAVE_COMPONENTS_TOR_TOR_UTILS_H_
 #define BRAVE_COMPONENTS_TOR_TOR_UTILS_H_
 
+#include <cstddef>
 #include <map>
 #include <optional>
 #include <string>
+#include <string_view>
 #include <vector>
 
 #include "base/values.h"
@@ -16,6 +18,17 @@
 class PrefService;
 
 namespace tor {
+
+// Maximum length of a single bridge line, and the maximum number of bridge
+// lines Tor is configured with at once.
+inline constexpr size_t kMaxBridgeLineLength = 1024;
+inline constexpr size_t kMaxBridgeLines = 64;
+
+// Returns true if `line` matches the grammar Tor's own parse_bridge_line()
+// accepts, and contains no character that could break out of the quoted
+// argument of a control port SETCONF command. A line that fails this is both
+// unusable by Tor and unsafe to forward to it; see TorControl::SetupBridges().
+bool IsValidBridgeLine(std::string_view line);
 
 struct BridgesConfig {
   // This enum is used in prefs & UI. Be careful when editing.

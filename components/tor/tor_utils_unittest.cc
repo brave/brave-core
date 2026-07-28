@@ -6,6 +6,8 @@
 #include "brave/components/tor/tor_utils.h"
 
 #include <string>
+#include <string_view>
+#include <utility>
 #include <vector>
 
 #include "base/containers/to_value_list.h"
@@ -42,8 +44,9 @@ constexpr const char* kWellFormedBridges[] = {
     "obfs4 192.0.2.1:443",
     // Transport, address and fingerprint, no arguments.
     "obfs4 192.0.2.1:443 86AC7B8D430DAC4117E9F42C9EAED18133863AAF",
-    // Lower-case and mixed-case fingerprints are both hex.
+    // Fingerprints are hex in either case, and may be mixed.
     "obfs4 192.0.2.1:443 86ac7b8d430dac4117e9f42c9eaed18133863aaf",
+    "obfs4 192.0.2.1:443 86Ac7B8d430DaC4117e9F42c9EaEd18133863aAf",
     // Address plus arguments, no transport and no fingerprint.
     "192.0.2.1:443 iat-mode=0",
     // Underscores and dashes appear in real transport names and argument keys.
@@ -119,78 +122,50 @@ constexpr const char* kMalformedBridges[] = {
      "91A6354697E6B02A386312F68D82CF86824D3606"),
 };
 
+// An entry that is rejected, used where the reason does not matter.
+constexpr char kInvalidBridge[] = "obfs4 192.0.2.1:443 notakeyvaluepair";
+
 base::ListValue MakeList(const std::vector<std::string>& items) {
   return base::ToValueList(items);
 }
 
-// Round-trips `bridges` through the pref representation and returns the list as
-// BridgesConfig parsed it.
-std::vector<std::string> LoadProvidedBridges(
-    const std::vector<std::string>& bridges) {
-  base::DictValue dict;
-  dict.Set("provided_bridges", MakeList(bridges));
-  auto config = BridgesConfig::FromDict(dict);
-  if (!config) {
-    return {};
-  }
-  return std::move(config->provided_bridges);
-}
-
 }  // namespace
+
+// -- Grammar -----------------------------------------------------------------
 
 TEST(TorUtilsTest, WellFormedBridgesAreAccepted) {
   for (const char* bridge : kWellFormedBridges) {
-    EXPECT_EQ(std::vector<std::string>({bridge}), LoadProvidedBridges({bridge}))
-        << "wrongly rejected: " << bridge;
+    EXPECT_TRUE(IsValidBridgeLine(bridge)) << "wrongly rejected: " << bridge;
   }
 }
 
-TEST(TorUtilsTest, BridgesWithUnsafeCharactersAreSkipped) {
+TEST(TorUtilsTest, BridgesWithUnsafeCharactersAreRejected) {
   for (const char* bridge : kUnsafeCharacterBridges) {
-    EXPECT_EQ(std::vector<std::string>(), LoadProvidedBridges({bridge}))
-        << "wrongly accepted: " << bridge;
+    EXPECT_FALSE(IsValidBridgeLine(bridge)) << "wrongly accepted: " << bridge;
   }
 }
 
-TEST(TorUtilsTest, MalformedBridgesAreSkipped) {
+TEST(TorUtilsTest, MalformedBridgesAreRejected) {
   for (const char* bridge : kMalformedBridges) {
-    EXPECT_EQ(std::vector<std::string>(), LoadProvidedBridges({bridge}))
-        << "wrongly accepted: " << bridge;
+    EXPECT_FALSE(IsValidBridgeLine(bridge)) << "wrongly accepted: " << bridge;
   }
 }
 
-TEST(TorUtilsTest, InvalidBridgesAreSkippedInPlace) {
-  // An invalid entry is dropped without disturbing the ones around it. Which
-  // entry is invalid does not matter here; that is covered by the tables above.
-  EXPECT_EQ(std::vector<std::string>({kValidBridge, kAnotherValidBridge}),
-            LoadProvidedBridges({kValidBridge, "obfs4 192.0.2.1:443 bogus",
-                                 kAnotherValidBridge}));
+TEST(TorUtilsTest, EmbeddedNulIsRejected) {
+  // Without the NUL this line is well formed, so the NUL is what fails it.
+  EXPECT_FALSE(IsValidBridgeLine(
+      std::string_view("obfs4 192.0.2.1:443\0 iat-mode=0", 31)));
 }
 
-TEST(TorUtilsTest, ValidationAppliesToEveryBridgeList) {
-  // provided_bridges comes from the user, requested_bridges from BridgeDB and
-  // builtin_bridges from the component updater. All three go through the same
-  // validation.
-  const std::vector<std::string> input = {
-      kValidBridge, "obfs4 192.0.2.1:443\r\nSETCONF SocksPort=1234",
-      "obfs4 192.0.2.1:443 notakeyvaluepair", kAnotherValidBridge};
-  const std::vector<std::string> expected = {kValidBridge, kAnotherValidBridge};
+TEST(TorUtilsTest, OverlongBridgesAreRejected) {
+  // A single argument long enough to push an otherwise well formed line past
+  // the length cap on its own.
+  const std::string too_long = base::StrCat(
+      {"obfs4 192.0.2.1:443 pad=", std::string(kMaxBridgeLineLength, 'a')});
+  EXPECT_FALSE(IsValidBridgeLine(too_long));
 
-  base::DictValue builtin;
-  builtin.Set("obfs4", MakeList(input));
-
-  base::DictValue dict;
-  dict.Set("use_builtin_bridges",
-           static_cast<int>(BridgesConfig::BuiltinType::kObfs4));
-  dict.Set("provided_bridges", MakeList(input));
-  dict.Set("requested_bridges", MakeList(input));
-  dict.Set("builtin_bridges", std::move(builtin));
-
-  auto config = BridgesConfig::FromDict(dict);
-  ASSERT_TRUE(config);
-  EXPECT_EQ(expected, config->provided_bridges);
-  EXPECT_EQ(expected, config->requested_bridges);
-  EXPECT_EQ(expected, config->GetBuiltinBridges());
+  // The same line truncated to exactly the cap is still accepted.
+  EXPECT_TRUE(IsValidBridgeLine(too_long.substr(0, kMaxBridgeLineLength)));
 }
 
 TEST(TorUtilsTest, HardcodedBuiltinBridgesPassValidation) {
@@ -200,53 +175,73 @@ TEST(TorUtilsTest, HardcodedBuiltinBridgesPassValidation) {
   for (auto type : {BridgesConfig::BuiltinType::kSnowflake,
                     BridgesConfig::BuiltinType::kObfs4,
                     BridgesConfig::BuiltinType::kMeekAzure}) {
+    SCOPED_TRACE(static_cast<int>(type));
     BridgesConfig config;
     config.use_builtin = type;
     const auto& hardcoded = config.GetBuiltinBridges();
     ASSERT_FALSE(hardcoded.empty());
     for (const auto& bridge : hardcoded) {
-      EXPECT_EQ(std::vector<std::string>({bridge}),
-                LoadProvidedBridges({bridge}))
+      EXPECT_TRUE(IsValidBridgeLine(bridge))
           << "built-in bridge rejected: " << bridge;
     }
   }
 }
 
-TEST(TorUtilsTest, EmbeddedNulIsSkipped) {
-  base::ListValue list;
-  list.Append(std::string("obfs4 192.0.2.1:443\0 iat-mode=0", 31));
+// -- Pref loading ------------------------------------------------------------
 
+TEST(TorUtilsTest, UserProvidedBridgesAreStoredVerbatim) {
+  // The settings page writes back whatever it reads, so filtering the user's
+  // own list here would erase a rejected line from their settings instead of
+  // ignoring it. TorControl::SetupBridges() drops it at the point of use.
+  const std::vector<std::string> input = {kValidBridge, kInvalidBridge,
+                                          kAnotherValidBridge};
   base::DictValue dict;
-  dict.Set("provided_bridges", std::move(list));
+  dict.Set("provided_bridges", MakeList(input));
 
   auto config = BridgesConfig::FromDict(dict);
   ASSERT_TRUE(config);
-  EXPECT_TRUE(config->provided_bridges.empty());
+  EXPECT_EQ(input, config->provided_bridges);
 }
 
-TEST(TorUtilsTest, OverlongBridgesAreSkipped) {
-  // A single argument long enough to push an otherwise well formed line past
-  // the 1024 character cap on its own.
-  const std::string too_long =
-      base::StrCat({"obfs4 192.0.2.1:443 pad=", std::string(1024, 'a')});
-  EXPECT_EQ(std::vector<std::string>(), LoadProvidedBridges({too_long}));
+TEST(TorUtilsTest, NetworkSourcedBridgesAreFiltered) {
+  // requested_bridges and builtin_bridges both come from Tor's moat service.
+  const std::vector<std::string> input = {
+      kValidBridge, "obfs4 192.0.2.1:443\r\nSETCONF SocksPort=1234",
+      kInvalidBridge, kAnotherValidBridge};
+  const std::vector<std::string> expected = {kValidBridge, kAnotherValidBridge};
 
-  // The same line truncated to exactly the cap is still accepted.
-  const std::string at_cap = too_long.substr(0, 1024);
-  EXPECT_EQ(std::vector<std::string>({at_cap}), LoadProvidedBridges({at_cap}));
+  base::DictValue builtin;
+  builtin.Set("obfs4", MakeList(input));
+
+  base::DictValue dict;
+  dict.Set("use_builtin_bridges",
+           static_cast<int>(BridgesConfig::BuiltinType::kObfs4));
+  dict.Set("requested_bridges", MakeList(input));
+  dict.Set("builtin_bridges", std::move(builtin));
+
+  auto config = BridgesConfig::FromDict(dict);
+  ASSERT_TRUE(config);
+  EXPECT_EQ(expected, config->requested_bridges);
+  EXPECT_EQ(expected, config->GetBuiltinBridges());
 }
 
-TEST(TorUtilsTest, BridgeListIsCapped) {
-  // Bounds the size of the SETCONF command built from the list. Ports differ so
-  // that the entries are distinguishable and order is actually checked.
+TEST(TorUtilsTest, NetworkSourcedBridgeListIsCapped) {
+  // Ports differ so that the entries are distinguishable and order is checked.
   std::vector<std::string> input;
-  for (int i = 0; i < 100; ++i) {
+  for (size_t i = 0; i < kMaxBridgeLines * 2; ++i) {
     input.push_back(
         base::StrCat({"obfs4 192.0.2.1:", base::NumberToString(443 + i)}));
   }
-  // The cap keeps the first 64 entries, in order.
-  EXPECT_EQ(std::vector<std::string>(input.begin(), input.begin() + 64),
-            LoadProvidedBridges(input));
+
+  base::DictValue dict;
+  dict.Set("requested_bridges", MakeList(input));
+
+  auto config = BridgesConfig::FromDict(dict);
+  ASSERT_TRUE(config);
+  // The cap keeps the first kMaxBridgeLines entries, in order.
+  EXPECT_EQ(
+      std::vector<std::string>(input.begin(), input.begin() + kMaxBridgeLines),
+      config->requested_bridges);
 }
 
 TEST(TorUtilsTest, BuiltinBridgesFallBackWhenAllEntriesInvalid) {
@@ -286,8 +281,15 @@ TEST(TorUtilsTest, NonStringEntriesAreSkipped) {
             config->provided_bridges);
 }
 
-TEST(TorUtilsTest, ValidBridgesSurviveRoundTrip) {
+TEST(TorUtilsTest, AllFieldsSurviveRoundTrip) {
+  base::DictValue builtin;
+  builtin.Set("snowflake", MakeList({kValidBridge}));
+
   base::DictValue dict;
+  dict.Set("use_bridges", static_cast<int>(BridgesConfig::Usage::kProvide));
+  dict.Set("use_builtin_bridges",
+           static_cast<int>(BridgesConfig::BuiltinType::kSnowflake));
+  dict.Set("builtin_bridges", std::move(builtin));
   dict.Set("provided_bridges", MakeList({kValidBridge, kAnotherValidBridge}));
   dict.Set("requested_bridges", MakeList({kAnotherValidBridge}));
 
@@ -296,6 +298,10 @@ TEST(TorUtilsTest, ValidBridgesSurviveRoundTrip) {
 
   auto reparsed = BridgesConfig::FromDict(config->ToDict());
   ASSERT_TRUE(reparsed);
+  EXPECT_EQ(BridgesConfig::Usage::kProvide, reparsed->use_bridges);
+  EXPECT_EQ(BridgesConfig::BuiltinType::kSnowflake, reparsed->use_builtin);
+  EXPECT_EQ(std::vector<std::string>({kValidBridge}),
+            reparsed->GetBuiltinBridges());
   EXPECT_EQ(std::vector<std::string>({kValidBridge, kAnotherValidBridge}),
             reparsed->provided_bridges);
   EXPECT_EQ(std::vector<std::string>({kAnotherValidBridge}),

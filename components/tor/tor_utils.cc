@@ -13,6 +13,7 @@
 #include <vector>
 
 #include "base/files/file_path.h"
+#include "base/logging.h"
 #include "base/no_destructor.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
@@ -108,11 +109,12 @@ const std::vector<std::string>& GetBuiltinBridges(
 }
 
 // Bridge lines reach us from three places, none of which is trustworthy: the
-// `provided_bridges` pref (typed by the user), the `requested_bridges` pref
-// (fetched from Tor's BridgeDB) and the `builtin_bridges` dict (shipped by the
-// component updater). Each line is forwarded verbatim to the Tor control port
-// by TorControl::SetupBridges(), where a malformed one is more than just
-// useless; see IsSafeBridgeChar() below.
+// `provided_bridges` pref (typed by the user), and the `requested_bridges` pref
+// and `builtin_bridges` dict, both of which are fetched over the network from
+// Tor's moat service (see BuiltinBridgesRequest in tor_profile_service_impl.cc
+// and BridgeRequest in brave_tor_handler.cc). Each line is then forwarded
+// verbatim to the Tor control port by TorControl::SetupBridges(), where a
+// malformed one is more than just useless; see IsSafeBridgeChar().
 //
 // Rather than pattern-matching the lines, validate them against the grammar
 // Tor's own parse_bridge_line() accepts:
@@ -120,16 +122,21 @@ const std::vector<std::string>& GetBuiltinBridges(
 //   [<transport-name>] <host>[:<port>] [<fingerprint>] [<key>=<value> ...]
 //
 // Anything that cannot be positively identified as that shape is dropped. See
-// GetBuiltinBridges() above for examples of well formed lines.
+// GetBuiltinBridges() for examples of well formed lines.
 
-// The longest built-in line is ~465 characters (a snowflake line, most of it
-// the `ice=` STUN server list), so this leaves ample headroom.
-constexpr size_t kMaxBridgeLineLength = 1024;
 // Fingerprints are hex encoded SHA-1 digests of the bridge's identity key.
 constexpr size_t kFingerprintLength = 40;
-// Bounds the size of the SETCONF command built from a single list. Tor only
-// ever uses a few bridges at a time; the built-in lists hold at most 11.
-constexpr size_t kMaxBridgesPerList = 64;
+
+// Whether a list read out of prefs is filtered as it is loaded.
+enum class Validation {
+  // Store the list verbatim. Used for the user's own `provided_bridges`: the
+  // settings page writes back whatever it reads, so dropping a line here would
+  // erase it from the user's settings rather than merely ignore it.
+  kNone,
+  // Drop anything IsValidBridgeLine() rejects. Used for the lists fetched from
+  // Tor's moat service, which no human will notice us discarding.
+  kEnforce,
+};
 
 // Names of pluggable transport arguments (`cert`, `iat-mode`, `utls-imitate`,
 // ...) and of the transports themselves (`obfs4`, `meek_lite`, ...).
@@ -167,8 +174,8 @@ bool IsValidHostPort(std::string_view token) {
   // Deliberately case-folded rather than canonicalized: the original line, not
   // a canonical form of it, is what gets handed to Tor, and Tor does no
   // canonicalization of its own. Case folding is the only normalization that
-  // does not change which characters are present, and the check below assumes
-  // lower-case input.
+  // does not change which characters are present, and
+  // IsCanonicalizedHostCompliant() assumes lower-case input.
   return net::IsCanonicalizedHostCompliant(base::ToLowerASCII(host));
 }
 
@@ -185,6 +192,41 @@ bool IsValidTransportArg(std::string_view token) {
          IsValidIdentifier(key_value->first);
 }
 
+std::vector<std::string> LoadBridgesList(const base::ListValue* v,
+                                         Validation validation) {
+  std::vector<std::string> result;
+  if (!v) {
+    return result;
+  }
+  result.reserve(validation == Validation::kEnforce
+                     ? std::min(v->size(), tor::kMaxBridgeLines)
+                     : v->size());
+
+  for (const auto& s : *v) {
+    const std::string* bridge = s.GetIfString();
+    if (!bridge) {
+      continue;
+    }
+    if (validation == Validation::kEnforce) {
+      if (result.size() == tor::kMaxBridgeLines) {
+        VLOG(1) << "Ignoring Tor bridges beyond the first "
+                << tor::kMaxBridgeLines;
+        break;
+      }
+      if (!tor::IsValidBridgeLine(*bridge)) {
+        VLOG(1) << "Dropping malformed Tor bridge line: " << *bridge;
+        continue;
+      }
+    }
+    result.push_back(*bridge);
+  }
+  return result;
+}
+
+}  // namespace
+
+namespace tor {
+
 bool IsValidBridgeLine(std::string_view line) {
   if (line.empty() || line.size() > kMaxBridgeLineLength) {
     return false;
@@ -193,9 +235,9 @@ bool IsValidBridgeLine(std::string_view line) {
     return false;
   }
 
-  // Tor splits `Bridge` lines on spaces, so a field never contains one. The
-  // charset check above already rejected every other kind of whitespace, so
-  // the pieces need no trimming.
+  // Tor splits `Bridge` lines on spaces, so a field never contains one.
+  // IsSafeBridgeChar() already rejected every other kind of whitespace, so the
+  // pieces need no trimming.
   const std::vector<std::string_view> tokens = base::SplitStringPiece(
       line, " ", base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
   if (tokens.empty()) {
@@ -229,30 +271,6 @@ bool IsValidBridgeLine(std::string_view line) {
   return std::ranges::all_of(token, tokens.end(), &IsValidTransportArg);
 }
 
-std::vector<std::string> LoadBridgesList(const base::ListValue* v) {
-  std::vector<std::string> result;
-  if (!v) {
-    return result;
-  }
-  result.reserve(std::min(v->size(), kMaxBridgesPerList));
-
-  for (const auto& s : *v) {
-    if (result.size() == kMaxBridgesPerList) {
-      break;
-    }
-    const std::string* bridge = s.GetIfString();
-    if (!bridge || !IsValidBridgeLine(*bridge)) {
-      continue;
-    }
-    result.push_back(*bridge);
-  }
-  return result;
-}
-
-}  // namespace
-
-namespace tor {
-
 BridgesConfig::BridgesConfig() = default;
 BridgesConfig::BridgesConfig(BridgesConfig&&) noexcept = default;
 BridgesConfig::~BridgesConfig() = default;
@@ -269,7 +287,8 @@ const std::vector<std::string>& BridgesConfig::GetBuiltinBridges() const {
 
 void BridgesConfig::UpdateBuiltinBridges(const base::DictValue& dict) {
   auto load_builtin = [&](BuiltinType type) {
-    auto list = LoadBridgesList(dict.FindList(GetBuiltinTypeName(type)));
+    auto list = LoadBridgesList(dict.FindList(GetBuiltinTypeName(type)),
+                                Validation::kEnforce);
     if (!list.empty()) {
       builtin_bridges[type] = std::move(list);
     }
@@ -292,9 +311,13 @@ std::optional<BridgesConfig> BridgesConfig::FromDict(
   if (auto* bridges = dict.FindDict(kBuiltinBridgesKey)) {
     result.UpdateBuiltinBridges(*bridges);
   }
-  result.provided_bridges = LoadBridgesList(dict.FindList(kProvidedBridgesKey));
+  // The user's own list is kept verbatim so that a line the grammar rejects is
+  // ignored rather than erased: BraveTorHandler hands whatever it reads back to
+  // SetTorBridgesConfig(), which writes it straight to the pref.
+  result.provided_bridges =
+      LoadBridgesList(dict.FindList(kProvidedBridgesKey), Validation::kNone);
   result.requested_bridges =
-      LoadBridgesList(dict.FindList(kRequestedBrigesKey));
+      LoadBridgesList(dict.FindList(kRequestedBrigesKey), Validation::kEnforce);
   return result;
 }
 

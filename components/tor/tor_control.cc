@@ -5,6 +5,8 @@
 
 #include "brave/components/tor/tor_control.h"
 
+#include <cstddef>
+#include <string>
 #include <utility>
 #include <vector>
 
@@ -20,6 +22,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_view_util.h"
 #include "base/task/sequenced_task_runner.h"
+#include "brave/components/tor/tor_utils.h"
 #include "net/base/io_buffer.h"
 #include "net/base/net_errors.h"
 #include "net/socket/tcp_client_socket.h"
@@ -577,21 +580,41 @@ void TorControl::SetupBridges(const std::vector<std::string>& bridges,
     return;
   }
   DCHECK_CALLED_ON_VALID_SEQUENCE(io_sequence_checker_);
-  if (bridges.empty()) {
+
+  // Every bridge list reaches the control port through here, whatever its
+  // source, so this is where the lines are vetted. Each one is interpolated
+  // verbatim into the quoted SETCONF argument below, where a stray quote,
+  // backslash or newline would alter the command or append a second one.
+  std::string command = "SETCONF ";
+  size_t used = 0;
+  for (const auto& bridge : bridges) {
+    if (used == kMaxBridgeLines) {
+      VLOG(1) << "Ignoring Tor bridges beyond the first " << kMaxBridgeLines;
+      break;
+    }
+    if (!IsValidBridgeLine(bridge)) {
+      VLOG(1) << "Dropping malformed Tor bridge line: " << bridge;
+      continue;
+    }
+    base::StrAppend(&command, {"Bridge=\"", bridge, "\""});
+    ++used;
+  }
+
+  // Also covers an empty `bridges`. Enabling UseBridges with no usable bridge
+  // would leave Tor unable to connect at all, so fall back to clearing the
+  // configuration instead.
+  if (used == 0) {
     DoCmd("RESETCONF UseBridges Bridge ClientTransportPlugin",
           base::DoNothing(),
           base::BindOnce(&TorControl::OnBrigdesConfigured,
                          weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
-  } else {
-    std::string command = "SETCONF ";
-    for (const auto& bridge : bridges) {
-      base::StrAppend(&command, {"Bridge=\"", bridge, "\""});
-    }
-    base::StrAppend(&command, {"UseBridges=1"});
-    DoCmd(std::move(command), base::DoNothing(),
-          base::BindOnce(&TorControl::OnBrigdesConfigured,
-                         weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+    return;
   }
+
+  base::StrAppend(&command, {"UseBridges=1"});
+  DoCmd(std::move(command), base::DoNothing(),
+        base::BindOnce(&TorControl::OnBrigdesConfigured,
+                       weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void TorControl::OnPluggableTransportsConfigured(
