@@ -10,6 +10,9 @@ import Alert from '@brave/leo/react/alert'
 import Col from './styles/Col'
 import styled from 'styled-components'
 import { Alias } from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
+import Tooltip from '@brave/leo/react/tooltip'
+import Button from '@brave/leo/react/button'
+import Icon from '@brave/leo/react/icon'
 import './strings'
 
 const SectionCol = styled(Col)`
@@ -34,13 +37,48 @@ const AliasListBox = styled.div`
   border: 1px solid ${color.divider.subtle};
   border-radius: ${radius.m};
   overflow: hidden auto;
-  max-height: 208px;
+  max-height: 212px;
 `
+
+const CopyToast = ({
+  text,
+  children,
+}: {
+  text: string
+  children: React.ReactNode
+}) => {
+  const [copied, setCopied] = React.useState<boolean>(false)
+  const copy = () => {
+    navigator.clipboard.writeText(text)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 1000)
+  }
+  return (
+    <div
+      data-testid='copy-toast'
+      onClick={copy}
+    >
+      {copied ? (
+        <Tooltip
+          text={getLocale(S.SETTINGS_EMAIL_ALIASES_COPIED_TO_CLIPBOARD)}
+          mode='mini'
+        >
+          {children}
+        </Tooltip>
+      ) : (
+        children
+      )}
+    </div>
+  )
+}
 
 const AliasRow = styled.div<{ showDivider: boolean }>`
   font: ${font.default.semibold};
   padding: ${spacing.m} ${spacing.l};
   gap: 8px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
   border-bottom: ${(p) =>
     p.showDivider
       ? `1px solid ${color.divider.subtle}`
@@ -81,6 +119,18 @@ export const EmailAliasLimitReached = ({
               showDivider={index < aliases.length - 1}
             >
               {alias.email}
+              <CopyToast text={alias.email}>
+                <Button
+                  fab
+                  title={getLocale(
+                    S.SETTINGS_EMAIL_ALIASES_CLICK_TO_COPY_ALIAS,
+                  )}
+                  kind='plain-faint'
+                  size='medium'
+                >
+                  <Icon name='copy' />
+                </Button>
+              </CopyToast>
             </AliasRow>
           ))}
         </AliasListBox>
