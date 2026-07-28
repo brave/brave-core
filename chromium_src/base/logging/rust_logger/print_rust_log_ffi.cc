@@ -7,16 +7,11 @@
 
 #include "base/logging.h"
 
-#define print_rust_log print_rust_log_chromium_impl
-#include <base/logging/rust_logger/print_rust_log_ffi.cc>
-#undef print_rust_log
-
 namespace logging::internal {
 
-void print_rust_log(const RustFmtArguments& msg,
-                    const char* file,
-                    int32_t line,
-                    int32_t severity) {
+namespace {
+
+bool ShouldPrintRustLog(int32_t& severity) {
   switch (severity) {
     // Trace and debug logs are set as `LOGGING_INFO`. We also map
     // `LOGGING_WARN` to verbose, to avoid "excessive output" errors in unit
@@ -27,15 +22,14 @@ void print_rust_log(const RustFmtArguments& msg,
       break;
     default:
       // All other cases are handled by the upstream version.
-      print_rust_log_chromium_impl(msg, file, line, severity);
-      return;
+      return true;
   }
 
-  if (!VLOG_IS_ON(-severity)) {
-    return;
-  }
-
-  print_rust_log_chromium_impl(msg, file, line, severity);
+  return VLOG_IS_ON(-severity);
 }
 
+}  // namespace
+
 }  // namespace logging::internal
+
+#include <base/logging/rust_logger/print_rust_log_ffi.cc>
