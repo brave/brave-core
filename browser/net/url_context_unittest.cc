@@ -5,9 +5,11 @@
 
 #include "brave/browser/net/url_context.h"
 
-#include "base/test/task_environment.h"
 #include "chrome/test/base/testing_profile.h"
+#include "content/public/browser/browser_task_traits.h"
+#include "content/public/browser/browser_thread.h"
 #include "content/public/browser/content_browser_client.h"
+#include "content/public/test/browser_task_environment.h"
 #include "content/public/browser/global_routing_id.h"
 #include "net/base/isolation_info.h"
 #include "net/cookies/site_for_cookies.h"
@@ -28,7 +30,7 @@ net::IsolationInfo MakeIsolationInfo(const url::Origin& top_frame_origin) {
 
 class BraveRequestInfoTest : public testing::Test {
  protected:
-  base::test::TaskEnvironment task_environment_;
+  content::BrowserTaskEnvironment task_environment_;
 };
 
 TEST_F(BraveRequestInfoTest,
