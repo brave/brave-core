@@ -16,6 +16,7 @@
 #include "base/timer/timer.h"
 #include "brave/components/brave_search/browser/backup_results_metrics.h"
 #include "brave/components/brave_search/browser/backup_results_service.h"
+#include "build/build_config.h"
 #include "chrome/browser/profiles/profile_observer.h"
 #include "content/public/browser/navigation_controller.h"
 #include "net/http/http_request_headers.h"
@@ -38,6 +39,12 @@ namespace network {
 class SharedURLLoaderFactory;
 class SimpleURLLoader;
 }  // namespace network
+
+#if BUILDFLAG(IS_ANDROID)
+namespace ui {
+class WindowAndroid;
+}  // namespace ui
+#endif
 
 namespace brave_search {
 
@@ -90,6 +97,11 @@ class BackupResultsServiceImpl : public BackupResultsService,
     bool low_latency_required;
     std::unique_ptr<content::WebContents> web_contents;
     GURL target_url;
+
+#if BUILDFLAG(IS_ANDROID)
+    // Root window for the `web_contents` view tree.
+    raw_ptr<ui::WindowAndroid> window_android = nullptr;
+#endif
 
     raw_ptr<Profile> otr_profile;
     scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory;
