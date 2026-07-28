@@ -131,6 +131,10 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
     private Dialog mPlayServicesErrorDialog;
     private TabLayout mTabLayout;
 
+    // One-shot listener used to re-apply the wide-display layout correction once the fragment root
+    // gets its post-rotation size (see correctWideDisplayLayoutAfterRotation).
+    private View.OnLayoutChangeListener mRotationLayoutListener;
+
     // Below enum is matching the values of GetDeviceTypeString() in brave_device_info.cc
     public enum DeviceType {
         UNKNOWN("unknown"),
@@ -203,9 +207,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
      *
      * <p>We correct this after the rotation layout pass settles: apply the padding computed from
      * screenWidthDp (already updated for the new orientation), force a re-layout, and rebuild the
-     * device list so the dynamically-added rows are re-measured against the correct width. This
-     * runs from a posted runnable (not from within a layout pass) so the forced re-layout is
-     * honored.
+     * device list so the dynamically-added rows are re-measured against the correct width.
      *
      * <p>Since cr151 the Multi-column Settings feature (default-on) hosts this fragment in a narrow
      * detail pane rather than full screen. In that mode the screenWidthDp-based centering padding
@@ -213,17 +215,47 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
      * so we skip it and let the pane constrain the width - mirroring upstream WideDisplayPadding,
      * which does not attach a ViewResizer when {@link
      * SettingsActivity#isTwoColumnSettingsVisible()}.
+     *
+     * <p>This also affects phones: when the landscape window is wide enough the multi-column
+     * SlidingPaneLayout keeps both panes visible (a narrow detail pane), which is why the issue
+     * does not reproduce with 3-button navigation - the extra nav-bar width keeps the pane below
+     * the two-column threshold. The detail pane re-measures on its own schedule after a rotation,
+     * so the correction is applied from a one-shot OnLayoutChangeListener once the root actually
+     * receives its new size.
      */
     private void correctWideDisplayLayoutAfterRotation() {
-        // Post twice so this runs after the framework's rotation layout pass and the ViewResizer
-        // have finished, guaranteeing our padding is the final value and the forced re-layout is
-        // not swallowed by being called during a layout pass.
-        PostTask.postTask(
-                TaskTraits.UI_USER_VISIBLE,
-                () ->
-                        PostTask.postTask(
-                                TaskTraits.UI_USER_VISIBLE,
-                                this::applyWideDisplayLayoutCorrection));
+        // The fragment root re-measures on its own schedule after a rotation. In Multi-column
+        // Settings it lives in a SlidingPaneLayout detail pane whose size settles a frame or two
+        // after onConfigurationChanged, so reading it synchronously here would give a stale
+        // (previous-orientation) size and leave the fillViewport weighted content (e.g. the Sync
+        // graphic) at its old height. Re-apply the correction from a one-shot
+        // OnLayoutChangeListener
+        // once the root actually receives its new size, so we measure against the final
+        // orientation.
+        if (getView() == null) {
+            return;
+        }
+        View root = getView().findViewById(R.id.brave_sync_layout);
+        if (root == null) {
+            return;
+        }
+        // root persists across rotations; ensure only one listener is attached.
+        if (mRotationLayoutListener != null) {
+            root.removeOnLayoutChangeListener(mRotationLayoutListener);
+        }
+        mRotationLayoutListener =
+                (v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
+                    boolean sizeChanged =
+                            (right - left) != (oldRight - oldLeft)
+                                    || (bottom - top) != (oldBottom - oldTop);
+                    if (!sizeChanged) {
+                        return;
+                    }
+                    v.removeOnLayoutChangeListener(mRotationLayoutListener);
+                    mRotationLayoutListener = null;
+                    applyWideDisplayLayoutCorrection();
+                };
+        root.addOnLayoutChangeListener(mRotationLayoutListener);
     }
 
     private void applyWideDisplayLayoutCorrection() {
@@ -255,10 +287,37 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
         }
         root.setPadding(padding, root.getPaddingTop(), padding, root.getPaddingBottom());
         ViewUtils.requestLayout(root, "BraveSyncScreensPreference.correctWideDisplayLayout");
+        // Re-measure the currently visible sub-screen against the corrected size. The initial and
+        // other sub-screens use a fillViewport ScrollView with weighted children (e.g. the Sync
+        // graphic), whose heights depend on the viewport size and must be recomputed after a
+        // rotation; requestLayout on the visible ScrollView forces that.
+        View visibleScrollView = getVisibleSyncScrollView();
+        if (visibleScrollView != null) {
+            ViewUtils.requestLayout(
+                    visibleScrollView, "BraveSyncScreensPreference.correctVisibleScrollView");
+        }
         // Rebuild the device rows so they re-measure against the corrected content width.
         if (mScrollViewSyncDone != null && View.VISIBLE == mScrollViewSyncDone.getVisibility()) {
             onDevicesAvailable();
         }
+    }
+
+    private View getVisibleSyncScrollView() {
+        View[] scrollViews = {
+            mScrollViewSyncInitial,
+            mScrollViewSyncChainCode,
+            mScrollViewSyncStartChain,
+            mScrollViewAddMobileDevice,
+            mScrollViewAddLaptop,
+            mScrollViewEnterCodeWords,
+            mScrollViewSyncDone
+        };
+        for (View scrollView : scrollViews) {
+            if (scrollView != null && View.VISIBLE == scrollView.getVisibility()) {
+                return scrollView;
+            }
+        }
+        return null;
     }
 
     @Override
