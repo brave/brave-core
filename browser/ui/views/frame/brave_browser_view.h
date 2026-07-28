@@ -182,6 +182,12 @@ class BraveBrowserView : public BrowserView,
   // Returns the PWA Shields toolbar button, if it exists. Note that this
   // returns valid pointer only when it's web app browser.
   BraveShieldsToolbarButton* GetPwaShieldsToolbarButton();
+
+  // Should be called once, when the button is first created for this window.
+  // Cached directly here, in order to keep track of the button regardless of
+  // its current widget. (e.g. in macOS immersive fullscreen, the button is
+  // reparented into other widget)
+  void SetPwaShieldsToolbarButton(BraveShieldsToolbarButton* button);
 #endif
 
  private:
@@ -287,6 +293,13 @@ class BraveBrowserView : public BrowserView,
   raw_ptr<views::View> vertical_tab_strip_host_view_ = nullptr;
   raw_ptr<BraveVerticalTabStripContainerView>
       vertical_tab_strip_container_view_ = nullptr;
+
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+  // Caches the PWA Shields toolbar button for this window. Note that this
+  // button could belong to overlay widget in macOS fullscreen. That's why we
+  // cache it here instead of looking it up via BrowserElementsViews.
+  raw_ptr<BraveShieldsToolbarButton> pwa_shields_toolbar_button_;
+#endif
 
 #if defined(USE_AURA)
   raw_ptr<views::View> sidebar_host_view_ = nullptr;

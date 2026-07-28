@@ -80,7 +80,6 @@
 #include "chrome/browser/ui/views/frame/layout/browser_view_layout.h"
 #include "chrome/browser/ui/views/frame/multi_contents_view.h"
 #include "chrome/browser/ui/views/frame/top_container_view.h"
-#include "chrome/browser/ui/views/interaction/browser_elements_views.h"
 #include "chrome/browser/ui/views/side_panel/side_panel.h"
 #include "chrome/browser/ui/views/tab_search_bubble_host.h"
 #include "chrome/browser/ui/views/tabs/shared/tab_strip_combo_button.h"
@@ -1145,26 +1144,15 @@ views::View* BraveBrowserView::side_panel_shadow_overlay_for_testing() {
   return side_panel_shadow_overlay_.get();
 }
 
-// PWA and omnibox Shields share kShieldsActionIcon; the PWA build uses
-// BraveShieldsToolbarButton with that id.
 BraveShieldsToolbarButton* BraveBrowserView::GetPwaShieldsToolbarButton() {
-  BrowserElementsViews* elements = BrowserElementsViews::From(browser());
-  if (!elements) {
-    return nullptr;
-  }
+  return pwa_shields_toolbar_button_.get();
+}
 
-  auto* shield = elements->GetView(BraveShieldsActionView::kShieldsActionIcon,
-                                   /*require_visible=*/true);
-  if (!shield) {
-    return nullptr;
-  }
-
-  if (!views::IsViewClass<BraveShieldsToolbarButton>(shield)) {
-    // This case, BraveShieldsActionView is visible.
-    return nullptr;
-  }
-
-  return views::AsViewClass<BraveShieldsToolbarButton>(shield);
+void BraveBrowserView::SetPwaShieldsToolbarButton(
+    BraveShieldsToolbarButton* button) {
+  CHECK(!pwa_shields_toolbar_button_)
+      << "PWA Shields toolbar button should only be set once";
+  pwa_shields_toolbar_button_ = button;
 }
 
 void BraveBrowserView::OnActiveTabChanged(content::WebContents* old_contents,
