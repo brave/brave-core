@@ -147,7 +147,7 @@ void MigrateToVersion(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
 
 }  // namespace
 
-void MigrateFromVersion(int from_version, ResultCallback callback) {
+void MigrateFromVersion(int from_version, RunDBTransactionCallback callback) {
   CHECK_LT(from_version, kVersionNumber);
 
   mojom::DBTransactionInfoPtr mojom_db_transaction =
