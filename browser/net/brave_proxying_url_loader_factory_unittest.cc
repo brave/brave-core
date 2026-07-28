@@ -21,6 +21,7 @@
 #include "chrome/test/base/testing_profile.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
+#include "content/public/browser/content_browser_client.h"
 #include "content/public/test/browser_task_environment.h"
 #include "net/base/net_errors.h"
 #include "net/http/http_request_headers.h"
@@ -67,7 +68,11 @@ class BraveProxyingURLLoaderFactoryTest : public testing::Test {
     proxy_ = std::make_unique<BraveProxyingURLLoaderFactory<std::shared_ptr>>(
         *request_handler_, profile_.get(),
         content::GlobalRenderFrameHostToken(), builder,
-        base::MakeRefCounted<RequestIDGenerator>(), base::DoNothing(), nullptr);
+        content::ContentBrowserClient::URLLoaderFactoryType::
+            kDocumentSubResource,
+        url::Origin::Create(GURL("https://factory-initiator.example")),
+        net::IsolationInfo(), base::MakeRefCounted<RequestIDGenerator>(),
+        base::DoNothing(), nullptr);
 
     mojo::Remote<network::mojom::URLLoaderFactory> factory;
     std::move(builder).Finish(factory.BindNewPipeAndPassReceiver(),
