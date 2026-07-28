@@ -399,34 +399,41 @@ IN_PROC_BROWSER_TEST_F(ContentAgentToolsTest, BlockExtensionStore) {
 }
 
 // Companion to BlockExtensionStore that covers the page-action entry point
-// (MayActOnTab) rather than the navigation one. Both share the
-// BRAVE_MAY_ACT_ON_URL_INTERNAL hook in the execution_engine.cc override, but
-// they are separate call sites, so each is exercised on its own.
+// (the inlined page-action check in SafetyChecksForNextAction) rather than
+// the navigation one. Both share the BRAVE_MAY_ACT_ON_URL_INTERNAL hook in the
+// execution_engine.cc override, but they are separate call sites, so each is
+// exercised on its own. Upstream removed the standalone MayActOnTab method
+// (crrev.com/c/8151383), so this is now exercised end to end via a tool call
+// rather than by calling the engine directly.
 IN_PROC_BROWSER_TEST_F(ContentAgentToolsTest, BlockExtensionStorePageAction) {
   // Commit the task's tab on an extension store URL. host_resolver maps "*" to
   // the test server (see SetUpOnMainThread), so the committed URL keeps the
-  // chromewebstore.google.com host that MayActOnTab reads and the hook checks.
+  // chromewebstore.google.com host that the page-action check reads and the
+  // hook checks.
   content::WebContents* contents = web_contents();
   const GURL webstore_url = embedded_https_test_server().GetURL(
       "chromewebstore.google.com", "/actor/input.html");
   ASSERT_TRUE(content::NavigateToURL(contents, webstore_url));
 
-  tabs::TabInterface* tab = tool_provider_->GetTaskTabHandleForTesting().Get();
-  ASSERT_TRUE(tab);
+  auto click_tool = FindToolByName("click_element");
+  ASSERT_TRUE(click_tool);
 
-  auto* actor_service =
-      actor::ActorKeyedServiceFactory::GetActorKeyedService(agent_profile_);
-  actor::ActorTask* task = actor_service->GetTask(tool_provider_->GetTaskId());
-  ASSERT_TRUE(task);
+  int input_node_id = GetDOMNodeId("#input");
+  auto target_dict = target_test_util::GetContentNodeTargetDict(
+      input_node_id, GetMainFrameDocumentIdentifier());
+
+  base::DictValue input;
+  input.Set("target", target_dict.Clone());
+  input.Set("click_type", "left");
+  input.Set("click_count", "single");
 
   // A page action against a tab already on an extension store URL must be
-  // rejected by the page-action (MayActOnTab) BRAVE_MAY_ACT_ON_URL_INTERNAL
-  // hook in the execution_engine.cc override.
-  base::test::TestFuture<actor::MayActOnUrlBlockReason> block_reason;
-  task->GetExecutionEngine().MayActOnTab(*tab, actor_service->GetJournal(),
-                                         tool_provider_->GetTaskId(),
-                                         block_reason.GetCallback());
-  EXPECT_NE(block_reason.Take(), actor::MayActOnUrlBlockReason::kAllowed);
+  // rejected by the page-action BRAVE_MAY_ACT_ON_URL_INTERNAL hook in the
+  // execution_engine.cc override.
+  auto result = ExecuteToolAndWait(click_tool, *base::WriteJson(input),
+                                   /*verify_success=*/false);
+  EXPECT_GT(result.size(), 0u);
+  EXPECT_THAT(result, ContentBlockText(testing::HasSubstr("Error")));
 }
 
 // Test drag and release tool with coordinates (since drag needs from/to)
