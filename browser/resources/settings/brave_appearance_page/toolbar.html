@@ -11,34 +11,34 @@
 <settings-toggle-button elide-label
   class="cr-row"
   hidden="[[!pageVisibility.homeButton]]"
-  pref="{{prefs.browser.show_home_button}}"
+  pref-key="browser.show_home_button"
   label="$i18n{showHomeButton}"
   sub-label="[[getShowHomeSubLabel_(
-                prefs.browser.show_home_button.value,
-                prefs.homepage_is_newtabpage.value,
-                prefs.homepage.value)]]">
+                showHomeButtonPref_.value,
+                homepageIsNewTabPagePref_.value,
+                homepagePref_.value)]]">
 </settings-toggle-button>
-<template is="dom-if" if="[[prefs.browser.show_home_button.value]]">
+<template is="dom-if" if="[[showHomeButtonPref_.value]]">
   <div id="home-button-options" class="list-frame"
     hidden="[[!pageVisibility.homeButton]]">
-    <settings-radio-group pref="{{prefs.homepage_is_newtabpage}}">
+    <settings-radio-group pref-key="homepage_is_newtabpage">
       <controlled-radio-button class="list-item" name="true"
-        pref="[[prefs.homepage_is_newtabpage]]"
+        pref-key="homepage_is_newtabpage"
         label="$i18n{homePageNtp}" no-extension-indicator>
       </controlled-radio-button>
       <controlled-radio-button id="custom-input" class="list-item"
-        name="false" pref="[[prefs.homepage_is_newtabpage]]"
+        name="false" pref-key="homepage_is_newtabpage"
         no-extension-indicator>
-        <home-url-input id="customHomePage" pref="{{prefs.homepage}}"
-          can-tab="[[!prefs.homepage_is_newtabpage.value]]">
+        <home-url-input id="customHomePage"
+          can-tab="[[!homepageIsNewTabPagePref_.value]]">
         </home-url-input>
       </controlled-radio-button>
-      <template is="dom-if" if="[[prefs.homepage.extensionId]]">
+      <template is="dom-if" if="[[homepagePref_.extensionId]]">
         <extension-controlled-indicator
-          extension-id="[[prefs.homepage.extensionId]]"
+          extension-id="[[homepagePref_.extensionId]]"
           extension-can-be-disabled="[[
-                        prefs.homepage.extensionCanBeDisabled]]"
-          extension-name="[[prefs.homepage.controlledByName]]"
+                        homepagePref_.extensionCanBeDisabled]]"
+          extension-name="[[homepagePref_.controlledByName]]"
           on-disable-extension="onDisableExtension_">
         </extension-controlled-indicator>
       </template>
@@ -47,55 +47,55 @@
 </template>
 <settings-toggle-button class="hr"
   hidden="[[!isShowBraveShieldsInPageInfoEnabled_]]"
-  pref="{{prefs.brave.subtle_app_menu_logo}}"
+  pref-key="brave.subtle_app_menu_logo"
   label="$i18n{appearanceSettingsSubtleAppMenuLogo}">
 </settings-toggle-button>
-<settings-brave-appearance-bookmark-bar prefs="{{prefs}}">
+<settings-brave-appearance-bookmark-bar>
 </settings-brave-appearance-bookmark-bar>
 <settings-toggle-button class="hr" id="showSavedTabGroups"
-    pref="{{prefs.bookmark_bar.show_tab_groups}}"
+    pref-key="bookmark_bar.show_tab_groups"
     label="$i18n{showTabGroupsInBookmarksBar}">
 </settings-toggle-button>
 <settings-toggle-button class="hr" id="autoPinNewTabGroups"
-    pref="{{prefs.auto_pin_new_tab_groups}}"
+    pref-key="auto_pin_new_tab_groups"
     label="$i18n{autoPinNewTabGroups}">
 </settings-toggle-button>
 <settings-toggle-button
   id="autocomplete-suggestion-sources"
   class="cr-row"
-  pref="{{prefs.brave.autocomplete_enabled}}"
+  pref-key="brave.autocomplete_enabled"
   label="$i18n{appearanceSettingsShowAutocompleteInAddressBar}">
 </settings-toggle-button>
 <template
   is="dom-if"
-  if="[[prefs.brave.autocomplete_enabled.value]]">
+  if="[[autocompleteEnabledPref_.value]]">
   <div class="list-frame vertical-list">
     <settings-checkbox
       class="cr-row list-item"
-      pref="{{prefs.brave.top_site_suggestions_enabled}}"
+      pref-key="brave.top_site_suggestions_enabled"
       label="$i18n{appearanceSettingsUseOnDeviceSuggestions}">
     </settings-checkbox>
     <settings-checkbox
       class="cr-row list-item"
-      pref="{{prefs.brave.omnibox.history_suggestions_enabled}}"
+      pref-key="brave.omnibox.history_suggestions_enabled"
       label="$i18n{appearanceSettingsUseHistorySuggestions}">
     </settings-checkbox>
     <settings-checkbox
       class="cr-row list-item"
-      pref="{{prefs.brave.omnibox.bookmark_suggestions_enabled}}"
+      pref-key="brave.omnibox.bookmark_suggestions_enabled"
       label="$i18n{appearanceSettingsUseBookmarkSuggestions}">
     </settings-checkbox>
     <template is="dom-if" if="[[showCommandsInOmnibox_()]]">
       <settings-checkbox
         class="cr-row list-item"
-        pref="{{prefs.brave.omnibox.commander_suggestions_enabled}}"
+        pref-key="brave.omnibox.commander_suggestions_enabled"
         label="$i18n{appearanceSettingsUseCommanderSuggestions}">
       </settings-checkbox>
     </template>
     <if expr="enable_ai_chat">
     <template is="dom-if" if="[[showLeoAssistant_()]]">
       <settings-checkbox class="cr-row list-item"
-        pref="{{prefs.brave.ai_chat.autocomplete_provider_enabled}}"
+        pref-key="brave.ai_chat.autocomplete_provider_enabled"
         label="$i18n{appearanceSettingsUseLeoSuggestions}">
       </settings-checkbox>
     </template>
@@ -104,18 +104,18 @@
 </template>
 <settings-toggle-button
   class="cr-row"
-  pref="{{prefs.brave.location_bar_is_wide}}"
+  pref-key="brave.location_bar_is_wide"
   label="$i18n{appearanceSettingsLocationBarIsWide}">
 </settings-toggle-button>
 <settings-toggle-button
-  pref="{{prefs.omnibox.prevent_url_elisions}}"
+  pref-key="omnibox.prevent_url_elisions"
   class="cr-row"
   label="$i18n{showFullUrls}">
 </settings-toggle-button>
 
 <if expr="is_macosx">
   <settings-toggle-button
-    pref="{{prefs.browser.show_fullscreen_toolbar}}"
+    pref-key="browser.show_fullscreen_toolbar"
     class="cr-row"
     label="$i18n{showToolbarInFullScreen}">
   </settings-toggle-button>
@@ -124,13 +124,13 @@
 <settings-toggle-button
   id="compactModeToggle"
   class="cr-row"
-  pref="{{prefs.brave.tabs.compact_horizontal_tabs}}"
+  pref-key="brave.tabs.compact_horizontal_tabs"
   label="$i18n{SETTINGS_APPEARANCE_SETTINGS_TABS_USE_COMPACT_HORIZONTAL_TABS}"
   disabled="[[!compactModeToggleEnabled_]]">
 </settings-toggle-button>
 
 <settings-toggle-button
   class="cr-row"
-  pref="{{prefs.brave.web_view_rounded_corners}}"
+  pref-key="brave.web_view_rounded_corners"
   label="$i18n{appearanceSettingsWebViewRoundedCorners}">
 </settings-toggle-button>

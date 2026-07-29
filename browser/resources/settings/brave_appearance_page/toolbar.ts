@@ -6,7 +6,7 @@
 import { afterNextRender, PolymerElement } from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 import { I18nMixin, I18nMixinInterface } from 'chrome://resources/cr_elements/i18n_mixin.js'
 import { WebUiListenerMixin } from 'chrome://resources/cr_elements/web_ui_listener_mixin.js'
-import { PrefsMixin, PrefsMixinInterface } from '/shared/settings/prefs/prefs_mixin.js'
+import { PrefServiceObserverMixin } from '/shared/settings/prefs2/pref_service_observer_mixin.js'
 import { sendWithPromise } from 'chrome://resources/js/cr.js'
 import { loadTimeData } from "../i18n_setup.js"
 import { getTemplate } from './toolbar.html.js'
@@ -23,8 +23,10 @@ import '../settings_vars.css.js'
 import './bookmark_bar.js'
 
 const SettingsBraveAppearanceToolbarElementBase = WebUiListenerMixin(RouteObserverMixin(
-  I18nMixin(PrefsMixin(PolymerElement))
+  I18nMixin(PrefServiceObserverMixin(PolymerElement))
 ))
+
+type PrefObject<T> = chrome.settingsPrivate.PrefObject<T>
 
 /**
  * 'settings-brave-appearance-toolbar' is the settings page area containing
@@ -49,11 +51,22 @@ class SettingsBraveAppearanceToolbarElement extends SettingsBraveAppearanceToolb
         type: Boolean,
         value: true,
       },
+      showHomeButtonPref_: Object,
+      homepageIsNewTabPagePref_: Object,
+      homepagePref_: Object,
+      autocompleteEnabledPref_: Object,
     }
   }
 
   private declare isShowBraveShieldsInPageInfoEnabled_: boolean
   private declare compactModeToggleEnabled_: boolean
+  // Mirrored from the global PrefService, purely so this element's own
+  // template can read the current values for sub-labels and dom-if
+  // conditions. The controls themselves read/write via `pref-key` directly.
+  private declare showHomeButtonPref_: PrefObject<boolean>|undefined
+  private declare homepageIsNewTabPagePref_: PrefObject<boolean>|undefined
+  private declare homepagePref_: PrefObject<string>|undefined
+  private declare autocompleteEnabledPref_: PrefObject<boolean>|undefined
 
   override connectedCallback() {
     super.connectedCallback()
@@ -62,6 +75,13 @@ class SettingsBraveAppearanceToolbarElement extends SettingsBraveAppearanceToolb
     this.addWebUiListener(
         'compact-mode-toggle-enabled-changed',
         (enabled: boolean) => { this.compactModeToggleEnabled_ = enabled })
+
+    this.mirrorPrefs({
+      'browser.show_home_button': 'showHomeButtonPref_',
+      'homepage_is_newtabpage': 'homepageIsNewTabPagePref_',
+      'homepage': 'homepagePref_',
+      'brave.autocomplete_enabled': 'autocompleteEnabledPref_',
+    })
   }
 
   /**
