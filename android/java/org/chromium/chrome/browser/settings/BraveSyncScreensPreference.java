@@ -136,6 +136,11 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
     // gets its post-rotation size (see correctWideDisplayLayoutAfterRotation).
     private View.OnLayoutChangeListener mRotationLayoutListener;
 
+    // The title resource of the currently shown Sync (sub-)screen. Remembered so it can be
+    // re-applied to the correct title source after a rotation flips the column mode (see
+    // setScreenTitle / correctWideDisplayLayoutAfterRotation).
+    private int mCurrentScreenTitleResId = R.string.sync_category_title;
+
     // Below enum is matching the values of GetDeviceTypeString() in brave_device_info.cc
     public enum DeviceType {
         UNKNOWN("unknown"),
@@ -251,6 +256,10 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
                     v.removeOnLayoutChangeListener(mRotationLayoutListener);
                     mRotationLayoutListener = null;
                     applyWideDisplayLayoutCorrection();
+                    // The rotation may have flipped the column mode; re-apply the current screen
+                    // title to the correct source (detail-pane supplier vs activity title) now that
+                    // isTwoColumnSettingsVisible() reflects the settled layout.
+                    setScreenTitle(mCurrentScreenTitleResId);
                 };
         mRootView.addOnLayoutChangeListener(mRotationLayoutListener);
     }
@@ -649,8 +658,14 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
      * driven by the activity title. In cr151 Multi-column Settings the activity title is the left
      * list-pane toolbar ("Settings") and must not be overwritten by a Sync sub-screen; the detail
      * (right) pane title is driven by {@link #getPageTitle()} instead, so update that supplier.
+     *
+     * <p>The chosen source depends on the current column mode, but a rotation can flip that mode
+     * without a screen transition, leaving the other source stale. We remember the current title in
+     * {@link #mCurrentScreenTitleResId} and re-apply it once the post-rotation layout settles (see
+     * {@link #correctWideDisplayLayoutAfterRotation}).
      */
     private void setScreenTitle(int titleResId) {
+        mCurrentScreenTitleResId = titleResId;
         Activity activity = getActivity();
         if (activity == null) {
             return;
