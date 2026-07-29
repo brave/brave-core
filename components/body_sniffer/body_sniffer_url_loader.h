@@ -101,6 +101,14 @@ class BodyProducer {
  public:
   virtual ~BodyProducer() = default;
 
+  // Called on response received, returns true if the producer wants to replace
+  // the body of this response. The response may be received from a different
+  // URL than the request was started with (redirects), so producers must check
+  // |response_url| before claiming the response.
+  virtual bool ShouldProcess(
+      const GURL& response_url,
+      network::mojom::URLResponseHead* response_head) = 0;
+
   // Updates the original response head.
   virtual void UpdateResponseHead(
       network::mojom::URLResponseHead* response_head) = 0;
