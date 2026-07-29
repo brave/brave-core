@@ -4,14 +4,17 @@
 
 import braveComponentsStrings from 'gen/components/grit/brave_components_webui_mock_strings'
 
- // When building Storybook in transpileOnly mode `const enums` are not
- // preserved - to get around this we create a proxy which will return the
- // correct string key.
-(globalThis as any).S = new Proxy({}, {
-  get: (target, prop) => {
-    return prop
-  }
-})
+// When building Storybook in transpileOnly mode `const enums` are not
+// preserved - to get around this we create a proxy which will return the
+// correct string key.
+;(globalThis as any).S = new Proxy(
+  {},
+  {
+    get: (target, prop) => {
+      return prop
+    },
+  },
+)
 
 let locale: Record<string, string> = {
   ...braveComponentsStrings,
@@ -284,7 +287,7 @@ let locale: Record<string, string> = {
 export function provideStrings(strings: Record<string, string>) {
   locale = {
     ...locale,
-    ...strings
+    ...strings,
   }
 }
 
