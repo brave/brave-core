@@ -27,9 +27,13 @@ namespace brave_ads::test {
 // all other methods are no-ops.
 class FakeBatAds : public bat_ads::mojom::BatAds {
  public:
-  // `initialize_callback` is called when `Initialize` succeeds.
+  // `initialize_callback` is called when `Initialize` succeeds. When
+  // `simulate_shutdown_disconnect` is true, `Shutdown` severs the pipe
+  // instead of replying, simulating the bat ads utility process
+  // disconnecting mid-shutdown.
   FakeBatAds(base::RepeatingClosure initialize_callback,
-             bool simulate_initialization_failure);
+             bool simulate_initialization_failure,
+             bool simulate_shutdown_disconnect);
 
   FakeBatAds(const FakeBatAds&) = delete;
   FakeBatAds& operator=(const FakeBatAds&) = delete;
@@ -101,6 +105,7 @@ class FakeBatAds : public bat_ads::mojom::BatAds {
  private:
   base::RepeatingClosure initialize_callback_;
   bool simulate_initialization_failure_;
+  bool simulate_shutdown_disconnect_;
 
   mojo::AssociatedReceiver<bat_ads::mojom::BatAds> bat_ads_associated_receiver_{
       this};

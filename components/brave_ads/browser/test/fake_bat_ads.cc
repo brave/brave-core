@@ -17,9 +17,11 @@
 namespace brave_ads::test {
 
 FakeBatAds::FakeBatAds(base::RepeatingClosure initialize_callback,
-                       bool simulate_initialization_failure)
+                       bool simulate_initialization_failure,
+                       bool simulate_shutdown_disconnect)
     : initialize_callback_(std::move(initialize_callback)),
-      simulate_initialization_failure_(simulate_initialization_failure) {}
+      simulate_initialization_failure_(simulate_initialization_failure),
+      simulate_shutdown_disconnect_(simulate_shutdown_disconnect) {}
 
 FakeBatAds::~FakeBatAds() = default;
 
@@ -39,6 +41,14 @@ void FakeBatAds::Initialize(brave_ads::mojom::WalletInfoPtr /*mojom_wallet*/,
 }
 
 void FakeBatAds::Shutdown(ShutdownCallback callback) {
+  if (simulate_shutdown_disconnect_) {
+    // Simulate the bat ads utility process disconnecting mid-shutdown by
+    // severing the pipe instead of replying, dropping `callback` without
+    // running it.
+    bat_ads_associated_receiver_.reset();
+    return;
+  }
+
   std::move(callback).Run(/*success=*/true);
 }
 

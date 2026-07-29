@@ -840,6 +840,10 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
 
       // Delete browsing data settings
       {"clearBraveAdsData", IDS_SETTINGS_CLEAR_BRAVE_ADS_DATA},
+      {"clearBraveAdsDataToastLabel",
+       IDS_SETTINGS_CLEAR_BRAVE_ADS_DATA_TOAST_LABEL},
+      {"clearBraveAdsDataErrorToastLabel",
+       IDS_SETTINGS_CLEAR_BRAVE_ADS_DATA_ERROR_TOAST_LABEL},
       {"resetRewardsData", IDS_SETTINGS_RESET_REWARDS_DATA},
 
       // Misc (TODO: Organize this)
