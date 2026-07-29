@@ -1,5 +1,5 @@
 diff --git a/components/sync/protocol/proto_visitors.h b/components/sync/protocol/proto_visitors.h
-index e44657e6ea3760c40b48d513c25388f91b5faa90..0e4866ed58099fe260c0cbdd0fcb07757fee811b 100644
+index 9d937fd881d20b7aa7db666cebb9d26f2cba5e9e..509b0990863772f0f7478e99a931d312a622de9b 100644
 --- a/components/sync/protocol/proto_visitors.h
 +++ b/components/sync/protocol/proto_visitors.h
 @@ -667,6 +667,7 @@ VISIT_PROTO_FIELDS(const sync_pb::DeviceInfoSpecifics& proto) {
@@ -22,8 +22,8 @@ index e44657e6ea3760c40b48d513c25388f91b5faa90..0e4866ed58099fe260c0cbdd0fcb0775
  }
  
  VISIT_PROTO_FIELDS(const sync_pb::EntitySpecifics& proto) {
--  static_assert(66 == GetNumDataTypes(),
-+  static_assert(66 + 1 == GetNumDataTypes(),
+-  static_assert(67 == GetNumDataTypes(),
++  static_assert(67 + 1 == GetNumDataTypes(),
                  "When adding a new protocol type, you will likely need to add "
                  "it here as well.");
    VISIT(encrypted);
@@ -33,5 +33,5 @@ index e44657e6ea3760c40b48d513c25388f91b5faa90..0e4866ed58099fe260c0cbdd0fcb0775
    VISIT(gemini_thread);
 +  VISIT(ai_chat_conversation);
    VISIT(notebook);
+   VISIT(journey);
  }
- 
