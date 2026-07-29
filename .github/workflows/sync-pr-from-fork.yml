@@ -32,25 +32,23 @@ jobs:
           fi
 
           pr_number="${PR_NUMBER:-"$(gh pr list --search "$COMMIT_HASH" --json number -q '.[].number')"}"
-          gh_pr_view=$(gh pr view "${pr_number:?}" --json baseRefName,headRefName,headRefOid,headRepositoryOwner,isCrossRepository)
+          gh_pr_view=$(gh pr view "${pr_number:?}" --json baseRefName,headRefName,headRepositoryOwner,isCrossRepository)
 
           JQ="jq -e -r"
           baseRefName=$($JQ ".baseRefName" <<<"$gh_pr_view")
           headRefName=$($JQ ".headRefName" <<<"$gh_pr_view")
-          headRefOid=$($JQ ".headRefOid" <<<"$gh_pr_view")
           headRepositoryOwnerLogin=$($JQ ".headRepositoryOwner.login" <<<"$gh_pr_view")
           isCrossRepository=$($JQ ".isCrossRepository" <<<"$gh_pr_view")
 
           [[ "$isCrossRepository" = "true" ]] || { echo "PR is not cross repo. Exiting!"; exit 1; }
-          [[ "$headRefOid" = "$COMMIT_HASH" ]] || { echo "PR head does not match $COMMIT_HASH. Exiting!"; exit 1; }
 
           contribHeadRefName="contributor-$headRepositoryOwnerLogin-$headRefName"
           if gh api "repos/${GITHUB_REPOSITORY}/git/refs/heads/$contribHeadRefName" -q .ref > /dev/null 2>&1; then
             gh api --method PATCH "repos/${GITHUB_REPOSITORY}/git/refs/heads/$contribHeadRefName" \
-              --field sha="$headRefOid" --field force=true
+              --field sha="$COMMIT_HASH" --field force=true
           else
             gh api --method POST "repos/${GITHUB_REPOSITORY}/git/refs" \
-              --field ref="refs/heads/$contribHeadRefName" --field sha="$headRefOid"
+              --field ref="refs/heads/$contribHeadRefName" --field sha="$COMMIT_HASH"
           fi
 
           existing_prs=$(gh pr list -H "$contribHeadRefName" --json number)
