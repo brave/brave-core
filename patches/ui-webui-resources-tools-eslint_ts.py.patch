@@ -1,0 +1,11 @@
+diff --git a/ui/webui/resources/tools/eslint_ts.py b/ui/webui/resources/tools/eslint_ts.py
+index 7b7ccc2bc1ef56336d27fe26778a5c8155174cf9..8e2f0bcde21c9d58e5d735d96ba6e7199e8b4bfa 100755
+--- a/ui/webui/resources/tools/eslint_ts.py
++++ b/ui/webui/resources/tools/eslint_ts.py
+@@ -118,5 +118,6 @@ def main(argv):
+     ] + files)
+ 
+ 
++from brave_chromium_utils import inline_chromium_src_override; inline_chromium_src_override(globals(), locals())
+ if __name__ == '__main__':
+   main(sys.argv[1:])
