@@ -11,10 +11,8 @@ import("//mojo/public/tools/bindings/mojom.gni")
 import("//tools/grit/preprocess_if_expr.gni")
 import("//tools/grit/repack.gni")
 
-# Uses ES modules (output_module defaults to true) so the generated mojo
-# bindings used by the mojo transport (see ledger_mojo_untrusted_bridge.ts) can
-# load the mojo core from chrome-untrusted://resources.
 transpile_web_ui("ledger_bridge_ui") {
+  output_module = false
   entry_points = [ [
         "ledger",
         rebase_path("ledger.ts"),
@@ -24,6 +22,7 @@ transpile_web_ui("ledger_bridge_ui") {
 
   imports_from = [ "//brave/components/brave_wallet_ui/" ]
 
+  # TODO(apaymyshev): ledger iframe should not depend on wallet's mojo
   deps = [
     "//brave/components/brave_wallet/common:mojom_js",
     "//brave/components/brave_wallet/common:preprocess_mojo",

@@ -11,7 +11,7 @@
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/wallet_handler.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "build/build_config.h"
+#include "brave/components/brave_wallet/common/ledger_bridge.mojom.h"
 #include "content/public/browser/web_ui_controller.h"
 #include "content/public/browser/web_ui_message_handler.h"
 #include "content/public/browser/webui_config.h"
@@ -24,16 +24,12 @@
 #include "brave/components/brave_rewards/core/mojom/rewards_page.mojom.h"
 #endif
 
-#if !BUILDFLAG(IS_ANDROID)
-#include "brave/browser/ui/webui/brave_wallet/ledger/ledger_bridge_broker.h"
-#include "brave/components/brave_wallet/common/ledger_bridge.mojom.h"
-#endif
-
 namespace brave_wallet {
 class WalletPageHandler;
 
 class WalletPageUI : public ui::MojoWebUIController,
-                     public mojom::PageHandlerFactory {
+                     public mojom::PageHandlerFactory,
+                     public mojom::LedgerBridgeService {
  public:
   explicit WalletPageUI(content::WebUI* web_ui);
   WalletPageUI(const WalletPageUI&) = delete;
@@ -44,21 +40,17 @@ class WalletPageUI : public ui::MojoWebUIController,
   // interface passing the pending receiver that will be internally bound.
   void BindInterface(mojo::PendingReceiver<mojom::PageHandlerFactory> receiver);
 
+  // Binds the `LedgerBridgeService` requested by the trusted renderer.
+  void BindInterface(
+      mojo::PendingReceiver<mojom::LedgerBridgeService> receiver);
+
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   void BindInterface(
       mojo::PendingReceiver<brave_rewards::mojom::RewardsPageHandler> receiver);
 #endif
 
-#if !BUILDFLAG(IS_ANDROID)
-  // Exposes the reverse channel used to deliver the untrusted Ledger bridge
-  // frame's `LedgerBridge` remote to this page's renderer.
-  void BindInterface(
-      mojo::PendingReceiver<mojom::LedgerBridgeService> receiver);
-
-  // Called (via the untrusted ledger UI handler) when the child ledger frame
-  // hands up its `LedgerBridge` remote.
+  // Called with `LedgerBridge` coming from untrusted subframe.
   void BindLedgerBridge(mojo::PendingRemote<mojom::LedgerBridge> bridge);
-#endif
 
  private:
   // mojom::PageHandlerFactory:
@@ -88,17 +80,22 @@ class WalletPageUI : public ui::MojoWebUIController,
       mojo::PendingReceiver<mojom::MeldIntegrationService>
           meld_integration_service) override;
 
+  // mojom::LedgerBridgeService:
+  void GetLedgerBridge(GetLedgerBridgeCallback callback) override;
+
+  void MaybeRespondWithBridge();
+
+  mojo::PendingRemote<mojom::LedgerBridge> ledger_bridge_;
+  GetLedgerBridgeCallback ledger_bridge_callback_;
+
   std::unique_ptr<WalletPageHandler> page_handler_;
   std::unique_ptr<WalletHandler> wallet_handler_;
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   std::unique_ptr<brave_rewards::mojom::RewardsPageHandler> rewards_handler_;
 #endif
 
+  mojo::Receiver<mojom::LedgerBridgeService> service_receiver_{this};
   mojo::Receiver<mojom::PageHandlerFactory> page_factory_receiver_{this};
-
-#if !BUILDFLAG(IS_ANDROID)
-  LedgerBridgeBroker ledger_bridge_broker_;
-#endif
 
   WEB_UI_CONTROLLER_TYPE_DECL();
 };

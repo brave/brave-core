@@ -20,7 +20,6 @@ source_set("wallet_panel") {
   deps = [
     "//brave/browser/brave_wallet",
     "//brave/browser/brave_wallet:tab_helper",
-    "//brave/browser/ui/webui/brave_wallet/ledger:ledger_bridge_broker",
     "//brave/components/brave_ads/buildflags",
     "//brave/components/brave_rewards/core/buildflags",
     "//brave/components/brave_wallet/browser",

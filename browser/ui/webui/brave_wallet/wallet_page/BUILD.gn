@@ -45,7 +45,6 @@ source_set("wallet_page") {
     sources += [ "wallet_page_handler_desktop.cc" ]
     deps += [
       "//brave/browser/ui/brave_wallet",
-      "//brave/browser/ui/webui/brave_wallet/ledger:ledger_bridge_broker",
       "//chrome/browser/ui/webui:theme_source",
       "//chrome/browser/ui/webui/sanitized_image:sanitized_image_source",
     ]

@@ -18,8 +18,7 @@ import {
   HardwareOperationResultFilecoinSignature,
   HardwareOperationResultSolanaSignature,
 } from '../types'
-import * as LedgerMojom //
-  from 'gen/brave/components/brave_wallet/common/ledger_bridge.mojom.m.js'
+import * as LedgerMojom from 'gen/brave/components/brave_wallet/common/ledger_bridge.mojom.m.js' //
 import { ledgerBridgeRegistry } from './ledger_bridge_registry'
 import EthereumLedgerBridgeKeyring from './eth_ledger_bridge_keyring'
 import SolanaLedgerBridgeKeyring from './sol_ledger_bridge_keyring'

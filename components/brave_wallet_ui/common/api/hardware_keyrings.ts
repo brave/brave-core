@@ -61,13 +61,7 @@ export async function getHardwareKeyring(
   assertNotReached(`Unsupported coin ${coin} and vendor ${vendor}`)
 }
 
-// Whether Ledger communication with the `chrome-untrusted://ledger-bridge`
-// iframe should use Mojom instead of postMessage. The mojo keyrings subclass
-// the postMessage ones, so callers (and their `instanceof` checks) are
-// unaffected by which transport is selected.
 function useLedgerMojoBridge(): boolean {
-  // Always set by the wallet page/panel data sources (see wallet_page_ui.cc /
-  // wallet_panel_ui.cc).
   return loadTimeData.getBoolean('isLedgerMojoBridgeEnabled')
 }
 

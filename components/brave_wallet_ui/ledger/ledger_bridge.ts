@@ -25,20 +25,7 @@ const stripUndefinedFields = <T extends object>(obj: T): T => {
   ) as T
 }
 
-// Runs inside the untrusted `chrome-untrusted://ledger-bridge` frame (when the
-// frame is running in mojo mode) and implements the `LedgerBridge` mojo
-// interface. This is the Mojom equivalent of the postMessage
-// `*LedgerUntrustedMessagingTransport` classes; the device I/O (`@ledgerhq` /
-// `@glif` calls) is intentionally the same, only the transport differs.
-// Signature/account structs are built directly as the reused
-// `brave_wallet.mojom` types (arrays of numbers) so no trusted-side conversion
-// is needed.
-//
-// We isolate the Ledger library from the wallet so that if it is compromised
-// the impact to the wallet is reduced.
-export class LedgerMojoUntrustedBridge
-  implements LedgerMojom.LedgerBridgeInterface
-{
+export class LedgerBridge implements LedgerMojom.LedgerBridgeInterface {
   private deviceName: string = ''
 
   // Filecoin uses a persistent provider/transport (see @glif).
@@ -509,4 +496,14 @@ function vToHex(vNumber: number): string {
     v = `0${v}`
   }
   return v
+}
+
+// Bootstraps the mojo transport: creates the device-backed `LedgerBridge`
+// implementation, binds it to a mojo pipe, and hands the remote up to the
+// browser, which routes it to the embedding wallet page/panel renderer.
+export const setupLedgerBridge = () => {
+  const bridge = new LedgerBridge()
+  const receiver = new LedgerMojom.LedgerBridgeReceiver(bridge)
+  const uiHandler = LedgerMojom.LedgerBridgeUIHandler.getRemote()
+  uiHandler.bindLedgerBridge(receiver.$.bindNewPipeAndPassRemote())
 }

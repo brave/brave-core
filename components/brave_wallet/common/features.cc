@@ -68,8 +68,7 @@ BASE_FEATURE(kBraveWalletTransactionSimulationsFeature,
              "BraveWalletTransactionSimulations",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
-BASE_FEATURE(kBraveWalletLedgerMojoBridgeFeature,
-             "BraveWalletLedgerMojoBridge",
+BASE_FEATURE(kBraveWalletMojoForHardwareWalletFeature,
              base::FEATURE_DISABLED_BY_DEFAULT);
 
 BASE_FEATURE(kBraveWalletAccountHidingFeature,

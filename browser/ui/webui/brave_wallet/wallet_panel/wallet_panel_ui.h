@@ -10,7 +10,6 @@
 #include <string>
 
 #include "base/memory/weak_ptr.h"
-#include "brave/browser/ui/webui/brave_wallet/ledger/ledger_bridge_broker.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_panel/wallet_panel_handler.h"
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/wallet_handler.h"
@@ -33,6 +32,9 @@ class WebContents;
 }  // namespace content
 
 class WalletPanelUI : public TopChromeWebUIController,
+#if !BUILDFLAG(IS_ANDROID)
+                      public brave_wallet::mojom::LedgerBridgeService,
+#endif
                       public brave_wallet::mojom::PanelHandlerFactory {
  public:
   explicit WalletPanelUI(content::WebUI* web_ui);
@@ -45,20 +47,20 @@ class WalletPanelUI : public TopChromeWebUIController,
   void BindInterface(
       mojo::PendingReceiver<brave_wallet::mojom::PanelHandlerFactory> receiver);
 
+#if !BUILDFLAG(IS_ANDROID)
+  // Binds the `LedgerBridgeService` requested by the trusted renderer.
+  void BindInterface(
+      mojo::PendingReceiver<brave_wallet::mojom::LedgerBridgeService> receiver);
+
+  // Called with `LedgerBridge` coming from untrusted subframe.
+  void BindLedgerBridge(
+      mojo::PendingRemote<brave_wallet::mojom::LedgerBridge> bridge);
+#endif
+
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   void BindInterface(
       mojo::PendingReceiver<brave_rewards::mojom::RewardsPageHandler> receiver);
 #endif
-
-  // Exposes the reverse channel used to deliver the untrusted Ledger bridge
-  // frame's `LedgerBridge` remote to this panel's renderer.
-  void BindInterface(
-      mojo::PendingReceiver<brave_wallet::mojom::LedgerBridgeService> receiver);
-
-  // Called (via the untrusted ledger UI handler) when the child ledger frame
-  // hands up its `LedgerBridge` remote.
-  void BindLedgerBridge(
-      mojo::PendingRemote<brave_wallet::mojom::LedgerBridge> bridge);
 
   // The bubble disappears by default when Trezor opens a popup window
   // from the wallet panel bubble. In order to prevent it we set a callback
@@ -108,6 +110,11 @@ class WalletPanelUI : public TopChromeWebUIController,
       mojo::PendingReceiver<brave_wallet::mojom::MeldIntegrationService>
           meld_integration_service) override;
 
+  // mojom::LedgerBridgeService:
+  void GetLedgerBridge(GetLedgerBridgeCallback callback) override;
+
+  void MaybeRespondWithBridge();
+
   std::unique_ptr<WalletPanelHandler> panel_handler_;
   std::unique_ptr<brave_wallet::WalletHandler> wallet_handler_;
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
@@ -115,10 +122,14 @@ class WalletPanelUI : public TopChromeWebUIController,
 #endif
   base::WeakPtr<content::WebContents> active_web_contents_;
 
+  mojo::PendingRemote<brave_wallet::mojom::LedgerBridge> ledger_bridge_;
+  GetLedgerBridgeCallback ledger_bridge_callback_;
+
+  mojo::Receiver<brave_wallet::mojom::LedgerBridgeService> service_receiver_{
+      this};
+
   mojo::Receiver<brave_wallet::mojom::PanelHandlerFactory>
       panel_factory_receiver_{this};
-
-  brave_wallet::LedgerBridgeBroker ledger_bridge_broker_;
 
   WEB_UI_CONTROLLER_TYPE_DECL();
 };

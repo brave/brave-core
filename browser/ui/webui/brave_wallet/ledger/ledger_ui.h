@@ -9,11 +9,14 @@
 #include <memory>
 
 #include "brave/components/brave_wallet/common/ledger_bridge.mojom-forward.h"
+#include "brave/components/brave_wallet/common/ledger_bridge.mojom.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/webui_config.h"
 #include "content/public/common/url_constants.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
+#include "mojo/public/cpp/bindings/receiver.h"
 #include "ui/webui/mojo_web_ui_controller.h"
+#include "ui/webui/untrusted_web_ui_controller.h"
 
 namespace ledger {
 
@@ -22,7 +25,9 @@ namespace ledger {
 // side-by-side, selected at runtime via a loadTimeData flag: the legacy
 // `postMessage` protocol (handled entirely in JS, no browser-side involvement)
 // and a Mojom-based `LedgerBridge` interface, brokered here.
-class UntrustedLedgerUI : public ui::MojoWebUIController {
+class UntrustedLedgerUI : public ui::UntrustedWebUIController,
+                          public ui::EnableMojoWebUI,
+                          public brave_wallet::mojom::LedgerBridgeUIHandler {
  public:
   explicit UntrustedLedgerUI(content::WebUI* web_ui);
   UntrustedLedgerUI(const UntrustedLedgerUI&) = delete;
@@ -34,7 +39,11 @@ class UntrustedLedgerUI : public ui::MojoWebUIController {
           receiver);
 
  private:
-  std::unique_ptr<brave_wallet::mojom::LedgerBridgeUIHandler> handler_;
+  // mojom::LedgerBridgeUIHandler:
+  void BindLedgerBridge(
+      mojo::PendingRemote<brave_wallet::mojom::LedgerBridge> bridge) override;
+
+  mojo::Receiver<brave_wallet::mojom::LedgerBridgeUIHandler> receiver_{this};
 
   WEB_UI_CONTROLLER_TYPE_DECL();
 };

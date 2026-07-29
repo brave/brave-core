@@ -720,26 +720,21 @@ void BraveContentBrowserClient::RegisterTrustedWebUIInterfaceBrokers(
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
   registry.ForWebUI<brave_wallet::WalletPageUI>()
       .Add<brave_wallet::mojom::PageHandlerFactory>()
+#if !BUILDFLAG(IS_ANDROID)
+      .Add<brave_wallet::mojom::LedgerBridgeService>()
+#endif  // !BUILDFLAG(IS_ANDROID)
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
       .Add<brave_rewards::mojom::RewardsPageHandler>()
 #endif  // BUILDFLAG(ENABLE_BRAVE_REWARDS)
-#if !BUILDFLAG(IS_ANDROID)
-      // Reverse channel for the mojom Ledger bridge (desktop-only feature).
-      .Add<brave_wallet::mojom::LedgerBridgeService>()
-#endif  // !BUILDFLAG(IS_ANDROID)
       ;
 #if !BUILDFLAG(IS_ANDROID)
   registry.ForWebUI<WalletPanelUI>()
       .Add<brave_wallet::mojom::PanelHandlerFactory>()
+      .Add<brave_wallet::mojom::LedgerBridgeService>()
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
       .Add<brave_rewards::mojom::RewardsPageHandler>()
 #endif  // BUILDFLAG(ENABLE_BRAVE_REWARDS)
-      .Add<brave_wallet::mojom::LedgerBridgeService>();
-  // The untrusted ledger bridge frame, embedded by the wallet page/panel,
-  // hands its LedgerBridge remote up through this handler when running in
-  // mojo mode.
-  registry.ForWebUI<ledger::UntrustedLedgerUI>()
-      .Add<brave_wallet::mojom::LedgerBridgeUIHandler>();
+      ;
 #endif  // !BUILDFLAG(IS_ANDROID)
 #endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 
@@ -860,6 +855,13 @@ void BraveContentBrowserClient::RegisterUntrustedWebUIInterfaceBrokers(
   if (base::FeatureList::IsEnabled(brave_news::features::kBraveNewsSidebar)) {
     registry.ForWebUI<BraveNewsUI>()
         .Add<brave_news::mojom::BraveNewsController>();
+  }
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET) && !BUILDFLAG(IS_ANDROID)
+  if (brave_wallet::IsMojoForHardwareWalletEnabled()) {
+    registry.ForWebUI<ledger::UntrustedLedgerUI>()
+        .Add<brave_wallet::mojom::LedgerBridgeUIHandler>();
   }
 #endif
 }

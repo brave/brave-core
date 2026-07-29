@@ -4,24 +4,14 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { loadTimeData } from '../../../../common/loadTimeData'
-import * as LedgerMojom //
-  from 'gen/brave/components/brave_wallet/common/ledger_bridge.mojom.m.js'
+import * as LedgerMojom from 'gen/brave/components/brave_wallet/common/ledger_bridge.mojom.m.js' //
 
 const kLedgerMojoFrameId = 'ledger-mojo-bridge-frame'
 
 // Holds the single connection to the untrusted `chrome-untrusted://
-// ledger-bridge` frame (running in mojo mode). On first use it registers a
-// `LedgerBridgeListener` with the browser (via `LedgerBridgeService`) and
-// creates the hidden bridge iframe. When the child frame loads it hands its
-// `LedgerBridge` remote up through the browser, which delivers it to
-// `onLedgerBridgeConnected`, resolving `getBridge()`.
-//
-// The listener is registered before the iframe is created, and the browser-side
-// broker buffers a pending bridge, so ordering is safe.
+// ledger-bridge` frame.
 class LedgerBridgeRegistry {
   private bridge?: Promise<LedgerMojom.LedgerBridgeRemote>
-  // Retained so the listener pipe is not garbage collected.
-  private listenerReceiver?: LedgerMojom.LedgerBridgeListenerReceiver
 
   getBridge = (): Promise<LedgerMojom.LedgerBridgeRemote> => {
     if (!this.bridge) {
@@ -36,26 +26,15 @@ class LedgerBridgeRegistry {
 
   resetForTesting = () => {
     this.bridge = undefined
-    this.listenerReceiver = undefined
     document.getElementById(kLedgerMojoFrameId)?.remove()
   }
 
-  private connect = (): Promise<LedgerMojom.LedgerBridgeRemote> => {
-    return new Promise((resolve) => {
-      const listener: LedgerMojom.LedgerBridgeListenerInterface = {
-        // A received pending_remote is delivered as an already-bound remote.
-        onLedgerBridgeConnected: (bridge) => {
-          resolve(bridge)
-        },
-      }
-      this.listenerReceiver = new LedgerMojom.LedgerBridgeListenerReceiver(
-        listener,
-      )
-      LedgerMojom.LedgerBridgeService.getRemote().registerLedgerBridgeListener(
-        this.listenerReceiver.$.bindNewPipeAndPassRemote(),
-      )
-      this.ensureFrame()
-    })
+  private connect = async (): Promise<LedgerMojom.LedgerBridgeRemote> => {
+    // Setup ledger subframe which will send LedgerBridge instance to browser.
+    this.ensureFrame()
+    // Wait for a pipe to ledger subframe.
+    return (await LedgerMojom.LedgerBridgeService.getRemote().getLedgerBridge())
+      .bridge
   }
 
   private ensureFrame = () => {

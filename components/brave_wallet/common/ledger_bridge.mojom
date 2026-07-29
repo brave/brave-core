@@ -104,58 +104,55 @@ union BtcSignatureResult {
 // (renderer), which hosts the `@ledgerhq/*` libraries and talks to the device
 // over WebHID.
 // The trusted wallet page/panel renderer holds the Remote and calls these
-// methods. A single interface (rather than one per chain) is used because the
-// security boundary is the untrusted origin, not the coin.
+// methods.
 interface LedgerBridge {
   // Ensures a device is connected and unlocked. A null error means success.
   Unlock() => (LedgerError? error);
+
   GetDeviceName() => (DeviceNameResult result);
 
   EthGetAccount(string path) => (EthAccountResult result);
+
   EthSignTransaction(string path, string raw_tx_hex) => (EthVrsResult result);
+
   EthSignPersonalMessage(string path, string message_hex)
       => (EthBytesResult result);
+
   EthSignEip712Message(string path,
                        string domain_separator_hex,
                        string hash_struct_message_hex)
       => (EthBytesResult result);
 
   SolGetAccount(string path) => (SolAccountResult result);
+
   SolSignTransaction(string path, array<uint8> raw_tx_bytes)
       => (SolSignatureResult result);
 
   FilGetAccount(uint32 from, uint32 count, bool is_testnet)
       => (FilAccountResult result);
+
   FilSignTransaction(string message) => (FilSignatureResult result);
 
-  BtcGetAccount(string path, uint32 xpub_version) => (BtcAccountResult result);
+  BtcGetAccount(string path, uint32 xpub_version)
+      => (BtcAccountResult result);
+
   BtcSignTransaction(array<BtcInputTransaction> input_transactions,
                      array<uint8> output_script,
                      string? change_path,
                      uint32 lock_time) => (BtcSignatureResult result);
 };
 
-// Implemented by the browser (the UntrustedLedgerUI controller). The
-// untrusted child frame obtains this via the interface broker `getRemote()`
-// and hands its `LedgerBridge` remote up so the browser can route it to the
-// embedding wallet page/panel.
+// Implemented by the browser (the UntrustedLedgerUI controller).
 interface LedgerBridgeUIHandler {
   // The child passes the remote end of its LedgerBridge; the browser routes it
   // to the parent wallet page/panel controller.
   BindLedgerBridge(pending_remote<LedgerBridge> bridge);
 };
 
-// Implemented by the trusted wallet page/panel renderer. The browser holds the
-// Remote and delivers a connected child bridge to it.
-interface LedgerBridgeListener {
-  OnLedgerBridgeConnected(pending_remote<LedgerBridge> bridge);
-};
-
-// Implemented by the browser (the wallet page/panel controller), exposed to the
-// trusted wallet page/panel renderer via the interface broker. The renderer
-// registers its listener so the browser can deliver child bridges as they
-// connect. This provides the browser->renderer channel that the existing
-// PageHandler/PanelHandler (renderer->browser only) do not.
+// Implemented by the browser the wallet page/panel controller (via
+// `LedgerBridgeBroker`).
 interface LedgerBridgeService {
-  RegisterLedgerBridgeListener(pending_remote<LedgerBridgeListener> listener);
+  // Wallet's page/panel js calls this to get the LedgerBridge remote from the
+  // untrusted child frame.
+  GetLedgerBridge() => (pending_remote<LedgerBridge> bridge);
 };
