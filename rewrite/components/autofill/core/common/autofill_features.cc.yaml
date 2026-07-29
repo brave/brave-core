@@ -10,8 +10,3 @@ substitutions:
       replace:
         'BASE_FEATURE(kAutofillAiServerModel,
         base::FEATURE_DISABLED_BY_DEFAULT);'
-
-  - description: 'Ship kYourSavedInfoSettingsPage disabled.'
-    set_feature_flag_default_state:
-      feature_name: kYourSavedInfoSettingsPage
-      value: base::FEATURE_DISABLED_BY_DEFAULT
