@@ -42,7 +42,8 @@ ZCashShieldSyncService::OrchardBlockScannerProxy::ScanBlocksInBackground(
     OrchardTreeState tree_state,
     std::vector<zcash::mojom::CompactBlockPtr> blocks) {
   OrchardBlockScanner scanner(full_view_key);
-  return scanner.ScanBlocks(tree_state, std::move(blocks));
+  return scanner.ScanBlocks(tree_state, std::move(blocks), std::nullopt,
+                            0xFFFFFFFF);
 }
 
 void ZCashShieldSyncService::OrchardBlockScannerProxy::ScanBlocks(

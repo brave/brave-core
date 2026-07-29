@@ -74,11 +74,8 @@ class OrchardBlockScanner {
   virtual base::expected<Result, OrchardBlockScanner::ErrorCode> ScanBlocks(
       const OrchardTreeState& orchard_tree_state,
       const std::vector<zcash::mojom::CompactBlockPtr>& blocks,
-      base::optional_ref<const OrchardTreeState> ironwood_tree_state =
-          std::nullopt,
-      // Blocks below this height are excluded from the Ironwood pool. Default 0
-      // keeps existing callers/tests (no cut).
-      uint32_t ironwood_activation_height = 0);
+      base::optional_ref<const OrchardTreeState> ironwood_tree_state,
+      uint32_t ironwood_activation_height);
 
  private:
   OrchardFullViewKey fvk_;

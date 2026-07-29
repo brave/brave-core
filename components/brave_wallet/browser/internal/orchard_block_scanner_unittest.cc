@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <array>
 #include <initializer_list>
+#include <optional>
 #include <string_view>
 
 #include "base/check.h"
@@ -235,7 +236,8 @@ TEST(OrchardBlockScannerTest, DiscoverNewNotes) {
     blocks.push_back(std::move(block));
   }
 
-  auto result = scanner.ScanBlocks({}, std::move(blocks));
+  auto result =
+      scanner.ScanBlocks({}, std::move(blocks), std::nullopt, 0xFFFFFFFF);
 
   EXPECT_EQ(result.value().orchard.discovered_notes.size(), 4u);
   EXPECT_EQ(result.value().orchard.discovered_notes[0].block_id, 10u);
@@ -289,7 +291,8 @@ TEST(OrchardBlockScannerTest, WrongInput) {
 
     blocks.push_back(std::move(block));
 
-    auto result = scanner.ScanBlocks({}, std::move(blocks));
+    auto result =
+        scanner.ScanBlocks({}, std::move(blocks), std::nullopt, 0xFFFFFFFF);
     EXPECT_FALSE(result.has_value());
   }
 
@@ -318,7 +321,8 @@ TEST(OrchardBlockScannerTest, WrongInput) {
 
     blocks.push_back(std::move(block));
 
-    auto result = scanner.ScanBlocks({}, std::move(blocks));
+    auto result =
+        scanner.ScanBlocks({}, std::move(blocks), std::nullopt, 0xFFFFFFFF);
     EXPECT_FALSE(result.has_value());
   }
 
@@ -348,7 +352,8 @@ TEST(OrchardBlockScannerTest, WrongInput) {
 
     blocks.push_back(std::move(block));
 
-    auto result = scanner.ScanBlocks({}, std::move(blocks));
+    auto result =
+        scanner.ScanBlocks({}, std::move(blocks), std::nullopt, 0xFFFFFFFF);
     EXPECT_FALSE(result.has_value());
   }
 
@@ -377,7 +382,8 @@ TEST(OrchardBlockScannerTest, WrongInput) {
 
     blocks.push_back(std::move(block));
 
-    auto result = scanner.ScanBlocks({}, std::move(blocks));
+    auto result =
+        scanner.ScanBlocks({}, std::move(blocks), std::nullopt, 0xFFFFFFFF);
     EXPECT_FALSE(result.has_value());
   }
 
@@ -406,7 +412,8 @@ TEST(OrchardBlockScannerTest, WrongInput) {
 
     blocks.push_back(std::move(block));
 
-    auto result = scanner.ScanBlocks({}, std::move(blocks));
+    auto result =
+        scanner.ScanBlocks({}, std::move(blocks), std::nullopt, 0xFFFFFFFF);
     EXPECT_FALSE(result.has_value());
   }
 
@@ -433,14 +440,16 @@ TEST(OrchardBlockScannerTest, WrongInput) {
 
     blocks.push_back(std::move(block));
 
-    auto result = scanner.ScanBlocks({}, std::move(blocks));
+    auto result =
+        scanner.ScanBlocks({}, std::move(blocks), std::nullopt, 0xFFFFFFFF);
     EXPECT_FALSE(result.has_value());
   }
 
   // Empty blocks list
   {
     std::vector<zcash::mojom::CompactBlockPtr> blocks;
-    auto result = scanner.ScanBlocks({}, std::move(blocks));
+    auto result =
+        scanner.ScanBlocks({}, std::move(blocks), std::nullopt, 0xFFFFFFFF);
     EXPECT_FALSE(result.has_value());
   }
 }
@@ -530,7 +539,8 @@ TEST(OrchardBlockScanner, FoundKnownNullifiers_SameBatch) {
     blocks.push_back(std::move(block));
   }
 
-  auto result = scanner.ScanBlocks({}, std::move(blocks));
+  auto result =
+      scanner.ScanBlocks({}, std::move(blocks), std::nullopt, 0xFFFFFF);
 
   EXPECT_EQ(result.value().orchard.discovered_notes.size(), 1u);
   EXPECT_EQ(result.value().orchard.discovered_notes[0].block_id, 10u);
@@ -597,7 +607,8 @@ TEST(OrchardBlockScanner, FoundKnownNullifiers) {
 
   OrchardTreeState tree_state;
 
-  auto result = scanner.ScanBlocks(tree_state, std::move(blocks));
+  auto result = scanner.ScanBlocks(tree_state, std::move(blocks), std::nullopt,
+                                   0xFFFFFFFF);
 
   EXPECT_TRUE(result.has_value());
   EXPECT_EQ(result.value().orchard.found_spends.size(), 1u);
@@ -634,7 +645,7 @@ TEST(OrchardBlockScannerTest, DiscoverNewIronwoodNotes) {
 
   OrchardTreeState ironwood_tree_state;
   auto result =
-      scanner.ScanBlocks(OrchardTreeState(), blocks, ironwood_tree_state);
+      scanner.ScanBlocks(OrchardTreeState(), blocks, ironwood_tree_state, 0);
 
   ASSERT_TRUE(result.has_value());
   ASSERT_TRUE(result.value().ironwood.has_value());
@@ -711,7 +722,7 @@ TEST(OrchardBlockScannerTest, IronwoodFeatureOff_ResultIsNullopt) {
   auto blocks = BuildBlocksWithIronwoodActions(10u, 3);
 
   auto result =
-      scanner.ScanBlocks(OrchardTreeState(), blocks, ironwood_tree_state);
+      scanner.ScanBlocks(OrchardTreeState(), blocks, ironwood_tree_state, 0);
 
   ASSERT_TRUE(result.has_value());
   EXPECT_EQ(result.value().ironwood, std::nullopt);
@@ -742,7 +753,7 @@ TEST(OrchardBlockScannerTest, IronwoodFeatureOn_IronwoodResultPopulated) {
   auto blocks = BuildBlocksWithIronwoodActions(10u, kIronwoodActionCount);
 
   auto result =
-      scanner.ScanBlocks(OrchardTreeState(), blocks, ironwood_tree_state);
+      scanner.ScanBlocks(OrchardTreeState(), blocks, ironwood_tree_state, 0);
 
   ASSERT_TRUE(result.has_value());
   ASSERT_TRUE(result.value().ironwood.has_value());
