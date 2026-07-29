@@ -108,36 +108,31 @@ const std::vector<std::string>& GetBuiltinBridges(
   }
 }
 
-// Bridge lines reach us from three places, none of which is trustworthy: the
-// `provided_bridges` pref (typed by the user), and the `requested_bridges` pref
-// and `builtin_bridges` dict, both of which are fetched over the network from
-// Tor's moat service (see BuiltinBridgesRequest in tor_profile_service_impl.cc
-// and BridgeRequest in brave_tor_handler.cc). Each line is then forwarded
-// verbatim to the Tor control port by TorControl::SetupBridges(), where a
-// malformed one is more than just useless; see IsSafeBridgeChar().
-//
-// Rather than pattern-matching the lines, validate them against the grammar
-// Tor's own parse_bridge_line() accepts:
+// Bridge lines are forwarded verbatim to the Tor control port by
+// TorControl::SetupBridges(), where a malformed one is more than just useless;
+// see IsSafeBridgeChar(). Rather than pattern-matching them, validate against
+// the grammar Tor's own parse_bridge_line() accepts:
 //
 //   [<transport-name>] <host>[:<port>] [<fingerprint>] [<key>=<value> ...]
 //
-// Anything that cannot be positively identified as that shape is dropped. See
-// GetBuiltinBridges() for examples of well formed lines.
+// See GetBuiltinBridges() for examples of well formed lines.
+//
+// That check is applied where a bad line can still be acted on, which is never
+// here:
+//
+//   - BraveTorHandler::SetBridgesConfig() rejects a submission containing one,
+//     so the person who typed it is told rather than having it discarded. It is
+//     the only way `provided_bridges` and `requested_bridges` are ever written.
+//   - UpdateBuiltinBridges() filters, because `builtin_bridges` arrives from
+//     Tor's moat service with nobody to report a bad line to.
+//   - TorControl::SetupBridges() filters again as the last line of defence,
+//     covering a hand-edited pref file or a list stored by an older build.
+//
+// Loading a list out of prefs is therefore verbatim: filtering here would erase
+// what the user typed, since the settings page writes back whatever it reads.
 
 // Fingerprints are hex encoded SHA-1 digests of the bridge's identity key.
 constexpr size_t kFingerprintLength = 40;
-
-// Whether a list read out of prefs is run through FilterBridgeLines() as it
-// is loaded.
-enum class Validation {
-  // Store the list verbatim. Used for the user's own `provided_bridges`: the
-  // settings page writes back whatever it reads, so dropping a line here would
-  // erase it from the user's settings rather than merely ignore it.
-  kNone,
-  // Filter on load. Used for the lists fetched from Tor's moat service, which
-  // no human will notice us discarding.
-  kEnforce,
-};
 
 // Names of pluggable transport arguments (`cert`, `iat-mode`, `utls-imitate`,
 // ...) and of the transports themselves (`obfs4`, `meek_lite`, ...).
@@ -193,8 +188,7 @@ bool IsValidTransportArg(std::string_view token) {
          IsValidIdentifier(key_value->first);
 }
 
-std::vector<std::string> LoadBridgesList(const base::ListValue* v,
-                                         Validation validation) {
+std::vector<std::string> LoadBridgesList(const base::ListValue* v) {
   std::vector<std::string> result;
   if (!v) {
     return result;
@@ -204,9 +198,6 @@ std::vector<std::string> LoadBridgesList(const base::ListValue* v,
     if (const std::string* bridge = s.GetIfString()) {
       result.push_back(*bridge);
     }
-  }
-  if (validation == Validation::kEnforce) {
-    return tor::FilterBridgeLines(result);
   }
   return result;
 }
@@ -294,8 +285,11 @@ const std::vector<std::string>& BridgesConfig::GetBuiltinBridges() const {
 
 void BridgesConfig::UpdateBuiltinBridges(const base::DictValue& dict) {
   auto load_builtin = [&](BuiltinType type) {
-    auto list = LoadBridgesList(dict.FindList(GetBuiltinTypeName(type)),
-                                Validation::kEnforce);
+    // This dict comes from Tor's moat service, so there is nobody to report a
+    // bad line to. Leaving nothing stored for a wholly unusable payload makes
+    // GetBuiltinBridges() fall back to the hardcoded list.
+    auto list = FilterBridgeLines(
+        LoadBridgesList(dict.FindList(GetBuiltinTypeName(type))));
     if (!list.empty()) {
       builtin_bridges[type] = std::move(list);
     }
@@ -318,13 +312,9 @@ std::optional<BridgesConfig> BridgesConfig::FromDict(
   if (auto* bridges = dict.FindDict(kBuiltinBridgesKey)) {
     result.UpdateBuiltinBridges(*bridges);
   }
-  // The user's own list is kept verbatim so that a line the grammar rejects is
-  // ignored rather than erased: BraveTorHandler hands whatever it reads back to
-  // SetTorBridgesConfig(), which writes it straight to the pref.
-  result.provided_bridges =
-      LoadBridgesList(dict.FindList(kProvidedBridgesKey), Validation::kNone);
+  result.provided_bridges = LoadBridgesList(dict.FindList(kProvidedBridgesKey));
   result.requested_bridges =
-      LoadBridgesList(dict.FindList(kRequestedBrigesKey), Validation::kEnforce);
+      LoadBridgesList(dict.FindList(kRequestedBrigesKey));
   return result;
 }
 

@@ -329,12 +329,31 @@ void BraveTorHandler::GetBridgesConfig(const base::ListValue& args) {
 }
 
 void BraveTorHandler::SetBridgesConfig(const base::ListValue& args) {
-  CHECK_EQ(1u, args.size());
-  CHECK(args[0].is_dict());
+  CHECK_EQ(2u, args.size());
+  CHECK(args[1].is_dict());
 
-  const auto bridges_config = tor::BridgesConfig::FromValue(&args[0]);
+  AllowJavascript();
+
+  const auto bridges_config = tor::BridgesConfig::FromValue(&args[1]);
   CHECK(bridges_config);
+
+  // This is the only way `provided_bridges` and `requested_bridges` are ever
+  // written, so it is where a line Tor cannot use gets reported back instead of
+  // being silently discarded somewhere the person who typed it will never see.
+  // Rejecting the whole submission leaves the pref, and the text in the
+  // settings page, exactly as they were.
+  for (const auto* bridges : {&bridges_config->provided_bridges,
+                              &bridges_config->requested_bridges}) {
+    for (const auto& bridge : *bridges) {
+      if (!tor::IsValidBridgeLine(bridge)) {
+        RejectJavascriptCallback(args[0], base::Value(bridge));
+        return;
+      }
+    }
+  }
+
   TorProfileServiceFactory::SetTorBridgesConfig(*bridges_config);
+  ResolveJavascriptCallback(args[0], base::Value());
 }
 
 void BraveTorHandler::RequestBridgesCaptcha(const base::ListValue& args) {

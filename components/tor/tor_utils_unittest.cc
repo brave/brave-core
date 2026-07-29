@@ -230,26 +230,29 @@ TEST(TorUtilsTest, FilterBridgeLinesHandlesEmptyResult) {
 
 // -- Pref loading ------------------------------------------------------------
 
-TEST(TorUtilsTest, UserProvidedBridgesAreStoredVerbatim) {
-  // The settings page writes back whatever it reads, so filtering the user's
-  // own list here would erase a rejected line from their settings instead of
-  // ignoring it. TorControl::SetupBridges() drops it at the point of use.
+TEST(TorUtilsTest, SubmittedBridgeListsAreLoadedVerbatim) {
+  // The settings page writes back whatever it reads, so filtering here would
+  // erase a rejected line from the user's settings instead of ignoring it.
+  // BraveTorHandler::SetBridgesConfig() refuses to store one in the first
+  // place, and TorControl::SetupBridges() drops it at the point of use.
   const std::vector<std::string> input = {kValidBridge, kInvalidBridge,
                                           kAnotherValidBridge};
   base::DictValue dict;
   dict.Set("provided_bridges", MakeList(input));
+  dict.Set("requested_bridges", MakeList(input));
 
   auto config = BridgesConfig::FromDict(dict);
   ASSERT_TRUE(config);
   EXPECT_EQ(input, config->provided_bridges);
+  EXPECT_EQ(input, config->requested_bridges);
 }
 
-TEST(TorUtilsTest, NetworkSourcedBridgesAreFiltered) {
-  // requested_bridges and builtin_bridges both come from Tor's moat service.
+TEST(TorUtilsTest, BuiltinBridgesAreFiltered) {
+  // builtin_bridges arrives from Tor's moat service, with nobody to report a
+  // bad line to, so it is filtered as it is ingested.
   const std::vector<std::string> input = {
       kValidBridge, "obfs4 192.0.2.1:443\r\nSETCONF SocksPort=1234",
       kInvalidBridge, kAnotherValidBridge};
-  const std::vector<std::string> expected = {kValidBridge, kAnotherValidBridge};
 
   base::DictValue builtin;
   builtin.Set("obfs4", MakeList(input));
@@ -257,13 +260,12 @@ TEST(TorUtilsTest, NetworkSourcedBridgesAreFiltered) {
   base::DictValue dict;
   dict.Set("use_builtin_bridges",
            static_cast<int>(BridgesConfig::BuiltinType::kObfs4));
-  dict.Set("requested_bridges", MakeList(input));
   dict.Set("builtin_bridges", std::move(builtin));
 
   auto config = BridgesConfig::FromDict(dict);
   ASSERT_TRUE(config);
-  EXPECT_EQ(expected, config->requested_bridges);
-  EXPECT_EQ(expected, config->GetBuiltinBridges());
+  EXPECT_EQ(std::vector<std::string>({kValidBridge, kAnotherValidBridge}),
+            config->GetBuiltinBridges());
 }
 
 TEST(TorUtilsTest, BuiltinBridgesFallBackWhenAllEntriesInvalid) {
