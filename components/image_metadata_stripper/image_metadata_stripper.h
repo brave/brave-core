@@ -15,7 +15,7 @@ namespace image_metadata_stripper {
 // for an image file in |file_path|.
 // TODO(https://github.com/brave/brave-browser/issues/5238): Add the core
 // logic to remove the IPTC metadata.
-bool RemoveFbIptcMetadata(const base::FilePath& file_path);
+bool RemoveIptcMetadata(const base::FilePath& file_path);
 
 }  // namespace image_metadata_stripper
 

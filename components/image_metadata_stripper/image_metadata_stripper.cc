@@ -14,7 +14,7 @@
 
 namespace image_metadata_stripper {
 
-bool RemoveFbIptcMetadata(const base::FilePath& file_path) {
+bool RemoveIptcMetadata(const base::FilePath& file_path) {
   if (!base::PathExists(file_path)) {
     DVLOG(1) << "IPTC strip skipped; file missing: " << file_path;
     return false;

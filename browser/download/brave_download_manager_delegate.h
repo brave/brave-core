@@ -14,6 +14,22 @@ class Profile;
 
 class BraveDownloadManagerDelegate : public ChromeDownloadManagerDelegate {
  public:
+  // Similar to SafeBrowsingState in the upstream to prevent repeated calls to
+  // iptc stripping and block the download.
+  struct IptcStrippingState : public DownloadCompletionBlocker {
+    constexpr static char kUserDataKey[] =
+        "brave.image_metadata_strip_data_key";
+
+    IptcStrippingState() = default;
+    ~IptcStrippingState() override = default;
+
+    IptcStrippingState(const IptcStrippingState&) = delete;
+    IptcStrippingState& operator=(const IptcStrippingState&) = delete;
+
+    // A flag to ensure we perform the stripping only once.
+    bool stripping_started = false;
+  };
+
   explicit BraveDownloadManagerDelegate(Profile* profile);
   BraveDownloadManagerDelegate(const BraveDownloadManagerDelegate&) = delete;
   BraveDownloadManagerDelegate& operator=(const BraveDownloadManagerDelegate&) =
@@ -25,12 +41,8 @@ class BraveDownloadManagerDelegate : public ChromeDownloadManagerDelegate {
   bool IsDownloadReadyForCompletion(
       download::DownloadItem* item,
       base::OnceClosure internal_complete_callback) override;
-
-  // Runs |internal_complete_callback| once image metadata stripping has
-  // finished, so the download is not completed before the tracking metadata is
-  // removed. |success| reflects whether the stripping succeeded.
-  void OnImageMetadataStripped(base::OnceClosure internal_complete_callback,
-                               bool success);
+  // Marks the download as completed for iptc.
+  void OnImageMetadataStripped(IptcStrippingState* state, bool success);
 
   base::WeakPtrFactory<BraveDownloadManagerDelegate> weak_ptr_factory_{this};
 };
