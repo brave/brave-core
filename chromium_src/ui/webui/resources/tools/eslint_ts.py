@@ -20,4 +20,4 @@ def main(original_function, argv):
             # Do not prepend argv[0], because original script strips it.
             argv = shlex.split(f.read())
 
-    original_function(argv)
+    return original_function(argv)
