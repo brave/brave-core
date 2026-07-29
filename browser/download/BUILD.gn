@@ -17,3 +17,28 @@ source_set("download") {
     "//chrome/browser/profiles:profile",
   ]
 }
+
+source_set("browser_tests") {
+  testonly = true
+
+  sources = [ "brave_download_manager_delegate_browsertest.cc" ]
+
+  deps = [
+    ":download",
+    "//base",
+    "//base/test:test_support",
+    "//brave/components/image_metadata_stripper/common",
+    "//chrome/browser/download",
+    "//chrome/browser/profiles:profile",
+    "//chrome/browser/ui",
+    "//chrome/common",
+    "//chrome/test:test_support",
+    "//chrome/test:test_support_ui",
+    "//components/prefs",
+    "//net",
+    "//net:test_support",
+    "//testing/gtest",
+  ]
+
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+}
