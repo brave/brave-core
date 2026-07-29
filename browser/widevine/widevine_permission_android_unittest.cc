@@ -52,6 +52,14 @@ class WidevinePermissionAndroidTest : public ChromeRenderViewHostTestHarness {
     brave_drm_tab_helper()->DidStartNavigation(&test_handle);
   }
 
+  // BraveDrmTabHelper::OnWidevineKeySystemAccessRequest() can only resolve the
+  // requesting frame while a mojo message is being dispatched, so tests that
+  // don't go through the renderer name the frame explicitly.
+  void SimulateWidevineKeySystemAccessRequest() {
+    brave_drm_tab_helper()->OnWidevineKeySystemAccessRequestForFrame(
+        web_contents()->GetPrimaryMainFrame());
+  }
+
  protected:
   void SetUp() override {
     ChromeRenderViewHostTestHarness::SetUp();
@@ -102,7 +110,7 @@ TEST_F(WidevinePermissionAndroidTest, BraveDrmTabHelperTest) {
   permissions::PermissionRequestManager* manager = permission_request_manager();
   EXPECT_FALSE(brave_drm_tab_helper()->ShouldShowWidevineOptIn());
 
-  brave_drm_tab_helper()->OnWidevineKeySystemAccessRequest();
+  SimulateWidevineKeySystemAccessRequest();
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(brave_drm_tab_helper()->ShouldShowWidevineOptIn());
 
@@ -112,7 +120,7 @@ TEST_F(WidevinePermissionAndroidTest, BraveDrmTabHelperTest) {
   // After navigation
   SimulateNavigation();
   EXPECT_FALSE(brave_drm_tab_helper()->ShouldShowWidevineOptIn());
-  brave_drm_tab_helper()->OnWidevineKeySystemAccessRequest();
+  SimulateWidevineKeySystemAccessRequest();
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(brave_drm_tab_helper()->ShouldShowWidevineOptIn());
 
@@ -143,7 +151,7 @@ TEST_F(WidevinePermissionAndroidTest, WidevinePermissionRequestTest) {
   permissions::PermissionRequestManager* manager = permission_request_manager();
 
   // Accept
-  brave_drm_tab_helper()->OnWidevineKeySystemAccessRequest();
+  SimulateWidevineKeySystemAccessRequest();
   base::RunLoop().RunUntilIdle();
 
   EXPECT_TRUE(manager->has_pending_requests() &&
@@ -155,7 +163,7 @@ TEST_F(WidevinePermissionAndroidTest, WidevinePermissionRequestTest) {
   // Deny
   local_state()->SetBoolean(kWidevineEnabled, false);
   SimulateNavigation();
-  brave_drm_tab_helper()->OnWidevineKeySystemAccessRequest();
+  SimulateWidevineKeySystemAccessRequest();
   base::RunLoop().RunUntilIdle();
 
   EXPECT_TRUE(manager->has_pending_requests() &&
@@ -165,7 +173,7 @@ TEST_F(WidevinePermissionAndroidTest, WidevinePermissionRequestTest) {
 
   // Cancel
   SimulateNavigation();
-  brave_drm_tab_helper()->OnWidevineKeySystemAccessRequest();
+  SimulateWidevineKeySystemAccessRequest();
   base::RunLoop().RunUntilIdle();
 
   EXPECT_TRUE(manager->has_pending_requests() &&
