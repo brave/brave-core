@@ -1,16 +1,16 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/personalization_options.html b/chrome/browser/resources/settings/privacy_page/personalization_options.html
-index 50a3c356721437fd5bca3d2239bea82589488416..7fb3bab5748873b0d40b407aa52416c736e713e5 100644
+index f4968fb7c8f1463279e9284551b02d5c8eb03081..69da1c093015f158a35e5bad8697233d1072169f 100644
 --- a/chrome/browser/resources/settings/privacy_page/personalization_options.html
 +++ b/chrome/browser/resources/settings/privacy_page/personalization_options.html
-@@ -24,6 +24,7 @@
- 
-     </style>
+@@ -5,6 +5,7 @@ import {RestartType} from '../relaunch_mixin_lit.js';
+ // </if>
+ #html_wrapper_imports_end -->
  
 +<if expr="_google_chrome">
  <if expr="not is_chromeos">
      <div id="chromeSigninUserChoiceSetting" class="hr cr-row" role="group"
-         hidden="[[!chromeSigninUserChoiceInfo_.shouldShowSettings]]"
-@@ -65,6 +66,7 @@
+         ?hidden="${!this.chromeSigninUserChoiceInfo_?.shouldShowSettings}"
+@@ -47,6 +48,7 @@ import {RestartType} from '../relaunch_mixin_lit.js';
          no-set-pref>
      </settings-toggle-button>
  </if><!-- not chromeos -->
@@ -18,23 +18,23 @@ index 50a3c356721437fd5bca3d2239bea82589488416..7fb3bab5748873b0d40b407aa52416c7
  <if expr="_google_chrome">
  <if expr="is_chromeos">
      <!-- Ash Browser settings show a link to the OS settings instead. -->
-@@ -76,6 +78,7 @@
+@@ -58,6 +60,7 @@ import {RestartType} from '../relaunch_mixin_lit.js';
        </cr-link-row>
-     </template>
+     ` : ''}
  </if><!-- chromeos -->
 +</if><!-- _google_chrome -->
  <if expr="not is_chromeos">
-     <template is="dom-if" if="[[!shouldUseMetricsConsentRestructure_]]">
-       <settings-toggle-button id="metricsReportingControl"
-@@ -93,13 +96,14 @@
-       </settings-toggle-button>
-     </template>
+     ${!this.shouldUseMetricsConsentRestructure_ ? html`
+       <div class="cr-row hr">
+@@ -87,13 +90,14 @@ import {RestartType} from '../relaunch_mixin_lit.js';
+       </div>
+     ` : ''}
  </if><!-- not chromeos -->
 -</if><!-- _google_chrome -->
 +<if expr="_google_chrome">
      <settings-toggle-button id="urlCollectionToggle"
          class="hr"
-         pref="{{prefs.url_keyed_anonymized_data_collection.enabled}}"
+         pref-key="url_keyed_anonymized_data_collection.enabled"
          label="$i18n{urlKeyedAnonymizedDataCollection}"
          sub-label="$i18n{urlKeyedAnonymizedDataCollectionDesc}">
      </settings-toggle-button>
@@ -42,15 +42,15 @@ index 50a3c356721437fd5bca3d2239bea82589488416..7fb3bab5748873b0d40b407aa52416c7
  <if expr="_google_chrome">
  <if expr="not is_chromeos">
      <settings-toggle-button id="spellCheckControl"
-@@ -155,6 +159,7 @@
+@@ -149,6 +153,7 @@ import {RestartType} from '../relaunch_mixin_lit.js';
        </settings-toggle-button>
-     </template>
+     ` : ''}
  
 +<if expr="_google_chrome">
-     <template is="dom-if" if="[[showSignoutDialog_]]" restamp>
-       <settings-signout-dialog sync-status="[[syncStatus]]"
-           on-close="onSignoutDialogClosed_">
-@@ -175,3 +180,4 @@
+     ${this.showSignoutDialog_ ? html`
+       <settings-signout-dialog .syncStatus="${this.syncStatus}"
+           @close="${this.onSignoutDialogClose_}">
+@@ -169,3 +174,4 @@ import {RestartType} from '../relaunch_mixin_lit.js';
        <div>$i18n{chromeSigninChoiceToast}</div>
      </cr-toast>
  </if>
