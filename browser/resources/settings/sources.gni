@@ -90,7 +90,6 @@ brave_settings_ts_files = [
   "br/import_data_dialog.ts",
   "br/index.ts",
   "br/memory_page.ts",
-  "br/on_startup_page.ts",
   "br/page_visibility.ts",
   "br/passwords_section.ts",
   "br/payments_section.ts",
