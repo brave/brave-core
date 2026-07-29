@@ -29,6 +29,7 @@ import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabObscuringHandler;
 import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider;
+import org.chromium.chrome.browser.theme.BraveDynamicColors;
 import org.chromium.chrome.browser.theme.ThemeColorProvider;
 import org.chromium.chrome.browser.toolbar.ToolbarDataProvider;
 import org.chromium.chrome.browser.toolbar.ToolbarProgressBar;
@@ -172,46 +173,51 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
         mControlContainer = controlContainer;
 
         if (isToolbarPhone()) {
-            // We basically do here what we must do at ToolbarPhone.ctor
-            // mLocationBarBackgroundColorForNtp =
-            //      getContext().getColor(R.color.location_bar_background_color_for_ntp);
-            // But we can't use bytecode patching to overide constructor because ToolbarPhone object
-            // is created via reflection during inflate of layout/toolbar_phone.xml.
-            // So use reflection to set ToolbarPhone.mLocationBarBackgroundColorForNtp
+            if (BraveDynamicColors.isDynamicColorsEnabled()) {
+            } else {
+                // Existing Brave NTP resource-color override.
+                // We basically do here what we must do at ToolbarPhone.ctor
+                // mLocationBarBackgroundColorForNtp =
+                //      getContext().getColor(R.color.location_bar_background_color_for_ntp);
+                // But we can't use bytecode patching to overide constructor because ToolbarPhone
+                // object is created via reflection during inflate of layout/toolbar_phone.xml.
+                // So use reflection to set ToolbarPhone.mLocationBarBackgroundColorForNtp
 
-            // ContextUtils.getApplicationContext() does not respect Dark theme,
-            // we must get ToolbarPhone context.
-            Object toolbarContext =
-                    BraveReflectionUtil.invokeMethod(
-                            android.view.View.class, mBraveToolbarLayout, "getContext");
+                // ContextUtils.getApplicationContext() does not respect Dark theme,
+                // we must get ToolbarPhone context.
+                Object toolbarContext =
+                        BraveReflectionUtil.invokeMethod(
+                                android.view.View.class, mBraveToolbarLayout, "getContext");
 
-            assert toolbarContext instanceof Context;
+                assert toolbarContext instanceof Context;
 
-            @ColorInt
-            int locationBarBackgroundColorForNtp =
-                    ((Context) toolbarContext)
-                            .getColor(R.color.location_bar_background_color_for_ntp);
+                @ColorInt
+                int locationBarBackgroundColorForNtp =
+                        ((Context) toolbarContext)
+                                .getColor(R.color.location_bar_background_color_for_ntp);
 
-            BraveReflectionUtil.setField(
-                    ToolbarPhone.class,
-                    "mLocationBarBackgroundColorForNtp",
-                    mBraveToolbarLayout,
-                    locationBarBackgroundColorForNtp);
-
-            // We need to set toolbar background color which in upstream is calculated
-            // at ToolbarPhone.updateLocationBarLayoutForExpansionAnimation with
-            // ColorUtils.blendColorsMultiply(...), which otherwise will be a bit
-            // more gray than white and will have poor contrast with address bar area.
-            @ColorInt
-            int toolbarBackgroundColorForNtp =
-                    ((Context) toolbarContext).getColor(R.color.toolbar_background_color_for_ntp);
-
-            if (!ColorUtils.inNightMode((Context) toolbarContext)) {
                 BraveReflectionUtil.setField(
                         ToolbarPhone.class,
-                        "mToolbarBackgroundColorForNtp",
+                        "mLocationBarBackgroundColorForNtp",
                         mBraveToolbarLayout,
-                        toolbarBackgroundColorForNtp);
+                        locationBarBackgroundColorForNtp);
+
+                // We need to set toolbar background color which in upstream is calculated
+                // at ToolbarPhone.updateLocationBarLayoutForExpansionAnimation with
+                // ColorUtils.blendColorsMultiply(...), which otherwise will be a bit
+                // more gray than white and will have poor contrast with address bar area.
+                @ColorInt
+                int toolbarBackgroundColorForNtp =
+                        ((Context) toolbarContext)
+                                .getColor(R.color.toolbar_background_color_for_ntp);
+
+                if (!ColorUtils.inNightMode((Context) toolbarContext)) {
+                    BraveReflectionUtil.setField(
+                            ToolbarPhone.class,
+                            "mToolbarBackgroundColorForNtp",
+                            mBraveToolbarLayout,
+                            toolbarBackgroundColorForNtp);
+                }
             }
         }
     }
