@@ -1,0 +1,232 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/findinpage/FindToolbar.java b/chrome/android/java/src/org/chromium/chrome/browser/findinpage/FindToolbar.java
+index 5786682fd2216b2348de257e4fbfad2dafb83c63..ff1898487796c6b6f1106833eb6bb200de95aef3 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/findinpage/FindToolbar.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/findinpage/FindToolbar.java
+@@ -29,6 +29,9 @@ import android.view.inputmethod.InputConnection;
+ import android.widget.ImageButton;
+ import android.widget.LinearLayout;
+ import android.widget.TextView;
++import android.widget.EditText;
++import android.widget.TextView;
++import org.chromium.ui.widget.ButtonCompat;
+ 
+ import androidx.annotation.IntDef;
+ import androidx.annotation.VisibleForTesting;
+@@ -89,9 +92,15 @@ public class FindToolbar extends LinearLayout implements BackPressHandler {
+     private final TabModelObserver mTabModelObserver;
+     private final TabObserver mTabObserver;
+ 
++    private final static int mMinOrdinal = 1;
++    private int mMaxOrdinal;
++
+     // Toolbar UI
+     private TextView mFindStatus;
+     protected FindQuery mFindQuery;
++    protected EditText mNthMatchEditText;
++    protected TextView mMatchesSeparator;
++    protected ButtonCompat mLastMatchButton;
+     protected ImageButton mCloseFindButton;
+     protected ImageButton mFindPrevButton;
+     protected ImageButton mFindNextButton;
+@@ -112,6 +121,9 @@ public class FindToolbar extends LinearLayout implements BackPressHandler {
+     /** Whether toolbar text is being set automatically (not typed by user). */
+     private boolean mSettingFindTextProgrammatically;
+ 
++    /** Whether toolbar N text is being set automatically (not typed by user). */
++    private boolean mSettingNthMatchTextProgrammatically;
++
+     /** Whether the search key should trigger a new search. */
+     private boolean mSearchKeyShouldTriggerSearch;
+ 
+@@ -289,7 +301,7 @@ public class FindToolbar extends LinearLayout implements BackPressHandler {
+                             // Don't clearResults() as that would cause flicker.
+                             // Just wait until onFindResultReceived updates it.
+                             mSearchKeyShouldTriggerSearch = false;
+-                            mFindInPageBridge.startFinding(s.toString(), true, false);
++                            mFindInPageBridge.startFinding(s.toString(), true, false, 0);
+                         } else {
+                             clearResults();
+                             mFindInPageBridge.stopFinding(true);
+@@ -326,6 +338,88 @@ public class FindToolbar extends LinearLayout implements BackPressHandler {
+         setStatus("", false);
+         mFindStatus.setAccessibilityLiveRegion(View.ACCESSIBILITY_LIVE_REGION_POLITE);
+ 
++        mNthMatchEditText = findViewById(R.id.nth_match_edittext);
++        mNthMatchEditText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_TEXT_VARIATION_FILTER);
++        mNthMatchEditText.setOnFocusChangeListener(
++                new View.OnFocusChangeListener() {
++                    @Override
++                    public void onFocusChange(View v, boolean hasFocus) {
++                        if (!hasFocus) {
++                            if (assumeNonNull(mNthMatchEditText.getText()).length() > 0) {
++                                mSearchKeyShouldTriggerSearch = true;
++                            }
++                            mWindowAndroid.getKeyboardDelegate().hideKeyboard(mNthMatchEditText);
++                        }
++                    }
++                });
++        mNthMatchEditText.addTextChangedListener(
++            new EmptyTextWatcher() {
++                @Override
++                public void onTextChanged(CharSequence s, int start, int before, int count) {
++                    if (mFindInPageBridge == null) return;
++
++                    if (mSettingFindTextProgrammatically || mSettingNthMatchTextProgrammatically) return;
++
++                    // If we're called during onRestoreInstanceState() the current
++                    // view won't have been set yet. TODO(husky): Find a better fix.
++                    assert mCurrentTab != null;
++                    assert mCurrentTab.getWebContents() != null;
++                    if (mCurrentTab.getWebContents() == null) return;
++
++                    if (s.length() > 0) {
++                        // Don't clearResults() as that would cause flicker.
++                        // Just wait until onFindResultReceived updates it.
++                        mSearchKeyShouldTriggerSearch = false;
++                        int inputOrdinal = Integer.valueOf(s.toString()).intValue();
++                        if (inputOrdinal > mMaxOrdinal) {
++                            inputOrdinal = mMaxOrdinal;
++                            setNthMatchTextQuietly(mMaxOrdinal);
++                        }
++                        else if (inputOrdinal < mMinOrdinal) {
++                            inputOrdinal = mMinOrdinal;
++                            setNthMatchTextQuietly(mMinOrdinal);
++                        }
++
++                        hideKeyboardAndFindNth(inputOrdinal);
++                    }
++                }
++            });
++        mNthMatchEditText.setOnEditorActionListener(
++            new TextView.OnEditorActionListener() {
++                @Override
++                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
++                    if (event != null && event.getAction() == KeyEvent.ACTION_UP) return false;
++
++                    if (mFindInPageBridge == null) return false;
++
++                    // Only trigger a new find if the text was set programmatically.
++                    // Otherwise just revisit the current active match.
++                    if (mSearchKeyShouldTriggerSearch) {
++                        mSearchKeyShouldTriggerSearch = false;
++                        int inputOrdinal = ensureBoundedOrdinal(Integer.valueOf(v.getText().toString()).intValue());
++
++                        hideKeyboardAndFindNth(inputOrdinal);
++                    } else {
++                        mWindowAndroid.getKeyboardDelegate().hideKeyboard(mFindQuery);
++                        mFindInPageBridge.activateFindInPageResultForAccessibility();
++                    }
++                    return true;
++                }
++            });
++
++        mMatchesSeparator = findViewById(R.id.match_count_separator);
++        mMatchesSeparator.setText(new String("/").toCharArray(), 0, 1);
++        mLastMatchButton = findViewById(R.id.last_match_button);
++        mLastMatchButton.setOnClickListener(
++            new OnClickListener() {
++                @Override
++                public void onClick(View v) {
++                    // Triggers nthMatchEditText's onTextChanged(...) event.
++                    mNthMatchEditText.setText(String.valueOf(mMaxOrdinal));
++                }
++            }
++        );
++
+         mFindPrevButton = findViewById(R.id.find_prev_button);
+         mFindPrevButton.setOnClickListener(
+                 new OnClickListener() {
+@@ -387,6 +481,26 @@ public class FindToolbar extends LinearLayout implements BackPressHandler {
+     // Overridden by subclasses.
+     protected void findResultSelected(Rect rect) {}
+ 
++    private int ensureBoundedOrdinal(int ordinal) {
++        if (ordinal < mMinOrdinal) {
++            ordinal = mMinOrdinal;
++        }
++        else if (ordinal > mMaxOrdinal) {
++            ordinal = mMaxOrdinal;
++        }
++        return ordinal;
++    }
++
++    private void setNthMatchTextQuietly(int ordinal) {
++
++        mSettingNthMatchTextProgrammatically = true;
++
++        mNthMatchEditText.setText(String.valueOf(ordinal));
++        mNthMatchEditText.setSelection(mNthMatchEditText.getText().length()); // Move the cursor to the end.
++
++        mSettingNthMatchTextProgrammatically = false;
++    }
++
+     private void hideKeyboardAndStartFinding(boolean forward) {
+         if (mFindInPageBridge == null) return;
+ 
+@@ -394,10 +508,23 @@ public class FindToolbar extends LinearLayout implements BackPressHandler {
+         if (findQuery.length() == 0) return;
+ 
+         mWindowAndroid.getKeyboardDelegate().hideKeyboard(mFindQuery);
+-        mFindInPageBridge.startFinding(findQuery, forward, false);
++        mFindInPageBridge.startFinding(findQuery, forward, false, 0);
+         mFindInPageBridge.activateFindInPageResultForAccessibility();
+     }
+ 
++    private void hideKeyboardAndFindNth(int match_ordinal) {
++
++        if (mFindInPageBridge == null) return;
++
++        final String findQuery = assumeNonNull(mFindQuery.getText()).toString();
++        if (findQuery.length() == 0) return;
++
++        mWindowAndroid.getKeyboardDelegate().hideKeyboard(mFindQuery);
++        mFindInPageBridge.startFinding(findQuery, true, false, match_ordinal);
++        mFindInPageBridge.activateFindInPageResultForAccessibility();
++    }
++
++
+     private boolean mShowKeyboardOnceWindowIsFocused;
+ 
+     @Override
+@@ -494,6 +621,11 @@ public class FindToolbar extends LinearLayout implements BackPressHandler {
+                         R.string.find_in_page_count,
+                         Math.max(result.activeMatchOrdinal, 0),
+                         result.numberOfMatches);
++
++        mMaxOrdinal = result.numberOfMatches;
++        setNthMatchTextQuietly(result.activeMatchOrdinal);
++        mLastMatchButton.setText(String.valueOf(mMaxOrdinal));
++
+         setStatus(text, result.numberOfMatches == 0);
+ 
+         setPrevNextEnabled(result.numberOfMatches > 0);
+@@ -727,6 +859,11 @@ public class FindToolbar extends LinearLayout implements BackPressHandler {
+         }
+         mFindQuery.setText(findText);
+         mSettingFindTextProgrammatically = false;
++
++        final String findQuery = assumeNonNull(mFindQuery.getText()).toString();
++        if (findQuery.length() > 0) {
++            mFindInPageBridge.startFinding(findQuery, true, false, 0);
++        }
+     }
+ 
+     /** Sets the find query text string. */
+@@ -767,7 +904,16 @@ public class FindToolbar extends LinearLayout implements BackPressHandler {
+         mFindStatus.setText(text);
+         mFindStatus.setContentDescription(null);
+         mFindStatus.setTextColor(getStatusColor(failed, isIncognito()));
+-        mFindStatus.setVisibility(TextUtils.isEmpty(text) ? GONE : VISIBLE);
++
++        if (
++            mNthMatchEditText != null &&
++            mMatchesSeparator != null &&
++            mLastMatchButton != null
++            ) {
++            mNthMatchEditText.setVisibility(TextUtils.isEmpty(text) ? GONE : VISIBLE);
++            mMatchesSeparator.setVisibility(TextUtils.isEmpty(text) ? GONE : VISIBLE);
++            mLastMatchButton.setVisibility(TextUtils.isEmpty(text) ? GONE : VISIBLE);
++        }
+     }
+ 
+     /**

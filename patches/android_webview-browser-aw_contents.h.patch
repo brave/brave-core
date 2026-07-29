@@ -1,0 +1,12 @@
+diff --git a/android_webview/browser/aw_contents.h b/android_webview/browser/aw_contents.h
+index 9f347aa19d1b7c12bc7231ad1d54d64fcd629583..1dc05e7ef3cd93fe4a813e7a2fc9d08bc095ae26 100644
+--- a/android_webview/browser/aw_contents.h
++++ b/android_webview/browser/aw_contents.h
+@@ -256,6 +256,7 @@ class AwContents : public FindHelper::Listener,
+   void FindAllAsync(JNIEnv* env,
+                     const base::android::JavaRef<jstring>& search_string);
+   void FindNext(JNIEnv* env, bool forward);
++  void FindNth(JNIEnv* env, int match_ordinal);
+   void ClearMatches(JNIEnv* env);
+   FindHelper* GetFindHelper();
+ 

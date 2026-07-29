@@ -4894,6 +4894,12 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_ACCESSIBLE_FIND_IN_PAGE_NO_RESULTS" desc="Accessible text to be spoken when the user does a find in page query and no results are found.">
         No results
       </message>
+      <message name="IDS_HINT_FIND_IN_PAGE_NTH_MATCH_EDITTEXT" desc="Hint text to show for the find in page search field when the search field is empty.">
+        N
+      </message>
+      <message name="IDS_FIND_IN_PAGE_COUNT_SEPARATOR" desc="Text to show between N ordinal EditText and Last Match Button.">
+        /
+      </message>
 
       <!-- Omnibox -->
       <message name="IDS_LOCATION_BAR_VERBOSE_STATUS_OFFLINE" desc="Verbose indication of offline status in the location bar. [CHAR_LIMIT=20]">

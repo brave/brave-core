@@ -1,0 +1,29 @@
+diff --git a/android_webview/browser/find_helper.cc b/android_webview/browser/find_helper.cc
+index 906c24d94c1ede961b06258890814457363c64df..35176130a0e93dc3c4c2b1ca4a7edbe9e9dc06f1 100644
+--- a/android_webview/browser/find_helper.cc
++++ b/android_webview/browser/find_helper.cc
+@@ -71,6 +71,24 @@ void FindHelper::FindNext(bool forward) {
+                         std::move(options), /*skip_delay=*/false);
+ }
+ 
++void FindHelper::FindNext(int match_ordinal) {
++  if (!async_find_started_)
++    return;
++
++  current_request_id_ = find_request_id_counter_++;
++
++  if (MaybeHandleEmptySearch(last_search_string_))
++    return;
++
++  auto options = blink::mojom::FindOptions::New();
++  options->match_case = false;
++  options->new_session = false;
++  options->match_ordinal = match_ordinal;
++
++  GetWebContents().Find(current_request_id_, last_search_string_,
++                        std::move(options), /*skip_delay=*/false);
++}
++
+ void FindHelper::ClearMatches() {
+   GetWebContents().StopFinding(content::STOP_FIND_ACTION_CLEAR_SELECTION);
+ 

@@ -1,0 +1,61 @@
+diff --git a/chrome/android/java/res/layout/find_in_page.xml b/chrome/android/java/res/layout/find_in_page.xml
+index af6944c2a9d2660aeefe1933cddf95ef9a4e2053..7883e97af25cdbed2ac30c0bb16d7b64b7cf3b7f 100644
+--- a/chrome/android/java/res/layout/find_in_page.xml
++++ b/chrome/android/java/res/layout/find_in_page.xml
+@@ -27,6 +27,48 @@ found in the LICENSE file.
+         android:imeOptions="actionSearch|flagNoExtractUi"
+         android:singleLine="true"
+         android:textAppearance="@style/TextAppearance.TextLarge.Primary" />
++        
++    <!-- Composite of N ordinal EditText, "/" separator, and Last Match Button-->    
++    <LinearLayout
++        xmlns:android="http://schemas.android.com/apk/res/android"
++        xmlns:app="http://schemas.android.com/apk/res-auto"
++        android:layout_width="wrap_content"
++        android:layout_height="wrap_content"
++        android:orientation="horizontal"
++        style="@android:style/Theme.Holo.Light">
++        <EditText
++            android:id="@+id/nth_match_edittext"
++            android:layout_width="wrap_content"
++            android:layout_height="wrap_content"
++            android:layout_gravity="center_vertical"
++            android:background="@null"
++            android:hint="@string/hint_find_in_page_nth_match_edittext"
++            android:imeOptions="actionSearch|flagNoExtractUi"
++            android:singleLine="true"
++            android:visibility="gone"
++            android:layout_marginEnd="16dp"/>
++        <TextView
++            android:id="@+id/match_count_separator"
++            android:layout_width="wrap_content"
++            android:layout_height="wrap_content"
++            android:layout_marginEnd="16dp"
++            android:background="@null"
++            android:singleLine="true"
++            android:visibility="gone"
++            android:text="@string/find_in_page_count_separator"
++            android:textAppearance="@style/TextAppearance.TextLarge.Secondary" />
++        <org.chromium.ui.widget.ButtonCompat
++            android:id="@+id/last_match_button"
++            android:layout_width="wrap_content"
++            android:layout_height="wrap_content"
++            android:layout_marginEnd="16dp"
++            android:background="@null"
++            android:singleLine="true"
++            android:visibility="gone"
++            android:textAppearance="@style/TextAppearance.TextLarge.Secondary"/>
++    </LinearLayout>
++
++    <!--Invisible match status string. Kept for accessibility-->
+     <TextView
+         android:id="@+id/find_status"
+         android:layout_width="wrap_content"
+@@ -34,6 +76,7 @@ found in the LICENSE file.
+         android:layout_marginEnd="16dp"
+         android:background="@null"
+         android:singleLine="true"
++        android:visibility="gone"
+         android:textAppearance="@style/TextAppearance.TextLarge.Secondary" />
+     <View
+         android:id="@+id/find_separator"

@@ -1,0 +1,15 @@
+diff --git a/components/find_in_page/android/find_in_page_bridge.h b/components/find_in_page/android/find_in_page_bridge.h
+index db65f8b2486307095e569e805600989475c556a9..eb3bbc16b2467f88b19dc299af911c22eeab2c5b 100644
+--- a/components/find_in_page/android/find_in_page_bridge.h
++++ b/components/find_in_page/android/find_in_page_bridge.h
+@@ -25,7 +25,9 @@ class FindInPageBridge {
+   void StartFinding(JNIEnv* env,
+                     const base::android::JavaRef<jstring>& search_string,
+                     bool forward_direction,
+-                    bool case_sensitive);
++                    bool case_sensitive,
++                    int match_ordinal = 0
++                  );
+ 
+   void StopFinding(JNIEnv* env, bool clearSelection);
+ 

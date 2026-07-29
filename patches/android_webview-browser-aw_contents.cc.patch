@@ -1,0 +1,16 @@
+diff --git a/android_webview/browser/aw_contents.cc b/android_webview/browser/aw_contents.cc
+index 81bc4304c6919ebdfc222a1bf02da6bf4db8230e..7bc088638fc5e4385a7bd41b800826700e9adbd0 100644
+--- a/android_webview/browser/aw_contents.cc
++++ b/android_webview/browser/aw_contents.cc
+@@ -815,6 +815,11 @@ void AwContents::FindNext(JNIEnv* env, bool forward) {
+   GetFindHelper()->FindNext(forward);
+ }
+ 
++void AwContents::FindNth(JNIEnv* env, int match_ordinal) {
++  DCHECK_CURRENTLY_ON(BrowserThread::UI);
++  GetFindHelper()->FindNth(match_ordinal);
++}
++
+ void AwContents::ClearMatches(JNIEnv* env) {
+   DCHECK_CURRENTLY_ON(BrowserThread::UI);
+   GetFindHelper()->ClearMatches();

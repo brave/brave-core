@@ -1,0 +1,27 @@
+diff --git a/android_webview/java/src/org/chromium/android_webview/AwContents.java b/android_webview/java/src/org/chromium/android_webview/AwContents.java
+index 93ad7b99e6aa47d9ad94696c8fe176af1247c2ab..966dc95896e26053bce56d138122c554f789b82c 100644
+--- a/android_webview/java/src/org/chromium/android_webview/AwContents.java
++++ b/android_webview/java/src/org/chromium/android_webview/AwContents.java
+@@ -2186,6 +2186,13 @@ public class AwContents implements SmartClipProvider {
+         }
+     }
+ 
++    public void findNth(int matchOrdinal) {
++        if (TRACE) Log.i(TAG, "%s findNth", this);
++        if (!isDestroyed(WARN)) {
++            AwContentsJni.get().findNth(mNativeAwContents, matchOrdinal);
++        }
++    }
++
+     public void clearMatches() {
+         if (TRACE) Log.i(TAG, "%s clearMatches", this);
+         if (!isDestroyed(WARN)) {
+@@ -4988,6 +4995,8 @@ public class AwContents implements SmartClipProvider {
+         void findAllAsync(long nativeAwContents, String searchString);
+ 
+         void findNext(long nativeAwContents, boolean forward);
++        
++        void findNth(long nativeAwContents, int matchOrdinal);
+ 
+         void clearMatches(long nativeAwContents);
+ 

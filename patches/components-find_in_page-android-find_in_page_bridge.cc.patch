@@ -1,0 +1,23 @@
+diff --git a/components/find_in_page/android/find_in_page_bridge.cc b/components/find_in_page/android/find_in_page_bridge.cc
+index 67c3e6cc6f1ca5e4d26e514ef6ae2c04724d14b5..1afa706c21cd3dad5d52a6d21e897caa2c6fdbc5 100644
+--- a/components/find_in_page/android/find_in_page_bridge.cc
++++ b/components/find_in_page/android/find_in_page_bridge.cc
+@@ -32,12 +32,16 @@ void FindInPageBridge::Destroy(JNIEnv*) {
+ void FindInPageBridge::StartFinding(JNIEnv* env,
+                                     const JavaRef<jstring>& search_string,
+                                     bool forward_direction,
+-                                    bool case_sensitive) {
++                                    bool case_sensitive,
++                                    int match_ordinal) {
+   find_in_page::FindTabHelper::FromWebContents(web_contents_)
+       ->StartFinding(
+           base::android::ConvertJavaStringToUTF16(env, search_string),
+           forward_direction, case_sensitive,
+-          true /* find_match */);
++          true, /* find_match */
++          false, /* run_synchronously_for_testing */
++          match_ordinal /* N */
++        );
+ }
+ 
+ void FindInPageBridge::StopFinding(JNIEnv* env, bool clearSelection) {

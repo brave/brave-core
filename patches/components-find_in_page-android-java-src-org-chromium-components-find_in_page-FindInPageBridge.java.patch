@@ -1,0 +1,28 @@
+diff --git a/components/find_in_page/android/java/src/org/chromium/components/find_in_page/FindInPageBridge.java b/components/find_in_page/android/java/src/org/chromium/components/find_in_page/FindInPageBridge.java
+index 445946497873a23db174cd16a2d4bb201626db97..8a3f59888667b25172ed96a1a50edda2a916cb19 100644
+--- a/components/find_in_page/android/java/src/org/chromium/components/find_in_page/FindInPageBridge.java
++++ b/components/find_in_page/android/java/src/org/chromium/components/find_in_page/FindInPageBridge.java
+@@ -32,11 +32,11 @@ public class FindInPageBridge {
+      * This function does not block while a search is in progress.
+      * Set a listener using setFindResultListener to receive the results.
+      */
+-    public void startFinding(String searchString, boolean forwardDirection, boolean caseSensitive) {
++    public void startFinding(String searchString, boolean forwardDirection, boolean caseSensitive, int matchOrdinal) {
+         assert mNativeFindInPageBridge != 0;
+         FindInPageBridgeJni.get()
+                 .startFinding(
+-                        mNativeFindInPageBridge, searchString, forwardDirection, caseSensitive);
++                        mNativeFindInPageBridge, searchString, forwardDirection, caseSensitive, matchOrdinal);
+     }
+ 
+     /**
+@@ -89,7 +89,8 @@ public class FindInPageBridge {
+                 long nativeFindInPageBridge,
+                 String searchString,
+                 boolean forwardDirection,
+-                boolean caseSensitive);
++                boolean caseSensitive,
++                int matchOrdinal);
+ 
+         void stopFinding(long nativeFindInPageBridge, boolean clearSelection);
+ 

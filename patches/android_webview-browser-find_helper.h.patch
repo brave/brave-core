@@ -1,0 +1,25 @@
+diff --git a/android_webview/browser/find_helper.h b/android_webview/browser/find_helper.h
+index 8cec5086866509594ced8bfa3004317172d20813..5771e537e522451bb7acdf6401fa068f49fb6d97 100644
+--- a/android_webview/browser/find_helper.h
++++ b/android_webview/browser/find_helper.h
+@@ -22,9 +22,9 @@ class FindHelper : public content::WebContentsUserData<FindHelper> {
+  public:
+   class Listener {
+    public:
+-    // Called when receiving a new find-in-page update.
+-    // This will be triggered when the results of FindAllSync, FindAllAsync and
+-    // FindNext are available. The value provided in active_ordinal is 0-based.
++     // Called when receiving a new find-in-page update.
++    // This will be triggered when the results of FindAllSync, FindAllAsync, 
++    // FindNext, and FindNth are available. The value provided in active_ordinal is 0-based.
+     virtual void OnFindResultReceived(int active_ordinal,
+                                       int match_count,
+                                       bool finished) = 0;
+@@ -49,6 +49,7 @@ class FindHelper : public content::WebContentsUserData<FindHelper> {
+ 
+   // Methods valid in both synchronous and asynchronous modes.
+   void FindNext(bool forward);
++  void FindNth(int match_ordinal);
+   void ClearMatches();
+ 
+  private:

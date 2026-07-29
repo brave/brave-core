@@ -1,0 +1,62 @@
+diff --git a/android_webview/glue/java/src/com/android/webview/chromium/WebViewChromium.java b/android_webview/glue/java/src/com/android/webview/chromium/WebViewChromium.java
+index f2eaa10d6c5ee69614c43e065ab3f6b5db313e4b..cd75f1f80c38463c90c9e9aac67bc23a697db01a 100644
+--- a/android_webview/glue/java/src/com/android/webview/chromium/WebViewChromium.java
++++ b/android_webview/glue/java/src/com/android/webview/chromium/WebViewChromium.java
+@@ -173,6 +173,7 @@ class WebViewChromium
+         ApiCall.EVALUATE_JAVASCRIPT,
+         ApiCall.EXTRACT_SMART_CLIP_DATA,
+         ApiCall.FIND_NEXT,
++        ApiCall.FIND_NTH,
+         ApiCall.GET_CERTIFICATE,
+         ApiCall.GET_CONTENT_HEIGHT,
+         ApiCall.GET_CONTENT_WIDTH,
+@@ -630,6 +631,7 @@ class WebViewChromium
+         int WEBVIEW_CHROMIUM_INIT = 236;
+         int WEBVIEW_CHROMIUM_INIT_FOR_REAL = 237;
+         int COUNT = 238;
++        int FIND_NTH = 239;
+     }
+ 
+     // LINT.ThenChange(/tools/metrics/histograms/metadata/android/enums.xml:WebViewApiCall)
+@@ -691,6 +693,7 @@ class WebViewChromium
+         ApiCallUserAction.WEBVIEW_INSTANCE_FIND_ALL_ASYNC,
+         ApiCallUserAction.WEBVIEW_INSTANCE_FIND_FOCUS,
+         ApiCallUserAction.WEBVIEW_INSTANCE_FIND_NEXT,
++        ApiCallUserAction.WEBVIEW_INSTANCE_FIND_NTH,
+         ApiCallUserAction.WEBVIEW_INSTANCE_FLING_SCROLL,
+         ApiCallUserAction.WEBVIEW_INSTANCE_GET_ACCESSIBILITY_NODE_PROVIDER,
+         ApiCallUserAction.WEBVIEW_INSTANCE_GET_CERTIFICATE,
+@@ -953,6 +956,7 @@ class WebViewChromium
+         String WEBVIEW_INSTANCE_FIND_ALL_ASYNC = "WebViewInstanceFindAllAsync";
+         String WEBVIEW_INSTANCE_FIND_FOCUS = "WebViewInstanceFindFocus";
+         String WEBVIEW_INSTANCE_FIND_NEXT = "WebViewInstanceFindNext";
++        String WEBVIEW_INSTANCE_FIND_NTH = "WebViewInstanceFindNth";
+         String WEBVIEW_INSTANCE_FLING_SCROLL = "WebViewInstanceFlingScroll";
+         String WEBVIEW_INSTANCE_GET_ACCESSIBILITY_NODE_PROVIDER =
+                 "WebViewInstanceGetAccessibilityNodeProvider";
+@@ -2784,6 +2788,25 @@ class WebViewChromium
+         }
+     }
+ 
++     @Override
++    public void findNth(final int matchOrdinal) {
++        forbidBuilderConfiguration();
++        if (checkNeedsPost()) {
++            mFactory.addTask(
++                    new Runnable() {
++                        @Override
++                        public void run() {
++                            findNth(matchOrdinal);
++                        }
++                    });
++            return;
++        }
++        try (TraceEvent event = TraceEvent.scoped("WebView.APICall.Framework.FIND_NTH")) {
++            recordWebViewApiCall(ApiCall.FIND_NTH, ApiCallUserAction.WEBVIEW_INSTANCE_FIND_NTH);
++            mAwContents.findNth(matchOrdinal);
++        }
++    }
++
+     @Override
+     public int findAll(final String searchString) {
+         findAllAsync(searchString);
