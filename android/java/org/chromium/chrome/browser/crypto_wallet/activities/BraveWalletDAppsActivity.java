@@ -10,6 +10,7 @@ import static org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletDA
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.os.Bundle;
 import android.view.Window;
 
 import androidx.fragment.app.Fragment;
@@ -73,6 +74,20 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
         SIWE_MESSAGE,
         SIGN_MESSAGE_ERROR,
         FINISH;
+    }
+
+    @Override
+    protected @Nullable Bundle transformSavedInstanceStateForOnCreate(
+            @Nullable Bundle savedInstanceState) {
+        // The DApps fragments depend on the WalletModel, which only becomes available
+        // after native initialization (finishNativeInitialization). On a configuration
+        // change such as rotation, the FragmentManager would otherwise restore these
+        // fragments before the model is ready and crash in
+        // WalletBottomSheetDialogFragment.onAttach. Drop the saved fragment/view state so
+        // the activity rebuilds its fragment from the pending request once the model is
+        // initialized. The activity itself is fully reconstructed from its intent and the
+        // wallet's pending requests, so nothing else needs to be restored.
+        return null;
     }
 
     @Override
