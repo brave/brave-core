@@ -8,6 +8,7 @@
 #include "brave/browser/ui/brave_browser_actions.h"
 #include "brave/browser/ui/brave_browser_command_controller.h"
 #include "brave/browser/ui/brave_browser_content_setting_bubble_model_delegate.h"
+#include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
 #include "brave/browser/ui/toolbar/brave_location_bar_model_delegate.h"
 #include "brave/browser/ui/views/side_panel/brave_side_panel_coordinator.h"
 #include "chrome/browser/contextual_tasks/contextual_tasks_side_panel_coordinator.h"

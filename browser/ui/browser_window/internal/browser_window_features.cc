@@ -80,12 +80,7 @@ class BraveVPNController {};
 #endif
 
 BrowserWindowFeatures::BrowserWindowFeatures() = default;
-BrowserWindowFeatures::~BrowserWindowFeatures() {
-  // As window_feature_controller_ is dependent on vertical tab controller, it
-  // should be destroyed first.
-  window_feature_controller_.reset();
-  vertical_tab_controller_.reset();
-}
+BrowserWindowFeatures::~BrowserWindowFeatures() = default;
 
 brave_rewards::RewardsPanelCoordinator*
 BrowserWindowFeatures::rewards_panel_coordinator() {

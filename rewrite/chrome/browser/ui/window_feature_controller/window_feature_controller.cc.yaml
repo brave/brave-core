@@ -13,7 +13,7 @@ substitutions:
       re_flags: [DOTALL]
       replace: |-
         \1,
-              VerticalTabController& vertical_tab_controller\2
+              const base::WeakPtr<VerticalTabController>& vertical_tab_controller\2
 
   - description: |
       Initialise `vertical_tab_controller_` in the constructor
@@ -40,6 +40,6 @@ substitutions:
         if (feature == WindowFeature::kFeatureTitleBar) {
           // In case of vertical tab strip is allowed, we need to have ability to
           // show title bar on Windows.
-          return BraveShouldShowTitlebar(base::to_address(vertical_tab_controller_));
+          return BraveShouldShowTitlebar(vertical_tab_controller_);
         }
         #endif

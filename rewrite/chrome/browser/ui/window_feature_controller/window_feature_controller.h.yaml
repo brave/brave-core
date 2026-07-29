@@ -13,7 +13,7 @@ substitutions:
       re_flags: [DOTALL]
       replace: |-
         \1,
-              VerticalTabController& vertical_tab_controller\2
+              const base::WeakPtr<VerticalTabController>& vertical_tab_controller\2
 
   - description: |
       Add `vertical_tab_controller_` as the last member of WindowFeatureController
@@ -24,4 +24,4 @@ substitutions:
       re_flags: [DOTALL]
       replace: |-
         \1
-          const raw_ref<VerticalTabController> vertical_tab_controller_;\2
+          const base::WeakPtr<VerticalTabController> vertical_tab_controller_;\2
