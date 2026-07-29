@@ -86,20 +86,20 @@ class PsstTabWebContentsObserver : public tabs::ContentsObservingTabFeature {
                              PrefService* prefs,
                              std::unique_ptr<PsstUiDelegate> ui_delegate);
 
-  bool ShouldInsertScriptForPage(int id);
-  void InsertUserScript(int id, std::unique_ptr<MatchedRule> rule);
+  bool ShouldInsertScriptForPage(int page_id);
+  void InsertUserScript(int page_id, std::unique_ptr<MatchedRule> rule);
 
-  void OnUserScriptResult(int id,
+  void OnUserScriptResult(int page_id,
                           std::unique_ptr<MatchedRule> rule,
                           base::Value script_result);
   void OnUserAcceptedPsstSettings(
-      int id,
+      int page_id,
       bool is_initial,
       std::unique_ptr<MatchedRule> rule,
       base::Value user_script_result,
       const std::vector<std::string>& perform_for_uids);
-  void OnPolicyScriptResult(int nav_entry_id, base::Value script_result);
-  void RunWithTimeout(const int last_committed_entry_id,
+  void OnPolicyScriptResult(int page_id, base::Value script_result);
+  void RunWithTimeout(const int page_id,
                       const std::string& script,
                       bool is_async,
                       InsertScriptInPageCallback callback);
@@ -122,6 +122,16 @@ class PsstTabWebContentsObserver : public tabs::ContentsObservingTabFeature {
   InjectScriptAsyncCallback inject_async_script_callback_;
   std::unique_ptr<PsstUiDelegate> ui_delegate_;
   base::OneShotTimer timeout_timer_;
+
+  // Counter for the current primary page. Async script
+  // callbacks capture the value current at dispatch time; a mismatch means the
+  // page changed underneath and the callback must be dropped.
+  int current_page_id_ = 0;
+
+  // Whether the currently committed primary page is eligible for PSST
+  // processing. Recomputed on every cross-document primary main frame commit.
+  bool should_process_current_page_ = false;
+
   base::WeakPtrFactory<PsstTabWebContentsObserver> weak_factory_{this};
 };
 
