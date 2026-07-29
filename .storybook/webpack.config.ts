@@ -7,7 +7,7 @@ import path from 'path'
 import webpack, { Configuration } from 'webpack'
 import fs from 'fs'
 import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin'
-import genTsConfig from '../build/commands/lib/genTsConfig'
+import { writeGenTsConfig } from '../build/webpack/ts-config'
 import { genPath } from '../build/commands/lib/guessConfig'
 import { fallback } from '../build/webpack/polyfill'
 import generatePathMap from '../build/webpack/path-map'
@@ -81,10 +81,10 @@ export default async ({
   config: Configuration
   mode: string
 }) => {
-  const tsConfigPath = await genTsConfig(
+  const tsConfigPath = await writeGenTsConfig(
+    pathMap,
     genPath,
     'tsconfig-storybook.json',
-    genPath,
     path.resolve(__dirname, '../tsconfig-storybook.json'),
   )
   console.log(`Using generated tsconfig path of '${tsConfigPath}'`)

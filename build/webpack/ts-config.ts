@@ -3,32 +3,29 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import fs from 'fs-extra'
+import fs from 'node:fs/promises'
 import path from 'node:path'
-import Config from './config.ts'
+import type { PathMap } from './resolve.ts'
 
 /**
  * Generates a tsconfig.json file in the gen/ directory
- * so that typescript can import files from cthe current build's
+ * so that typescript can import files from the current build's
  * gen/ directory (e.g. mojom-generated JS).
  *
- * @param {*} genPath precompiled brave-core gen dir full path
- * @param {*} name name of tsconfig file, e.g. tsconfig-webpack.json
- * @param {*} atPath where to generate the file
- * @param {*} extendsFrom full path of tsconfig to extend
+ * @param pathMap prepared webpack path aliases
+ * @param genPath precompiled brave-core gen dir full path
+ * @param name name of tsconfig file, e.g. tsconfig-webpack.json
+ * @param extendsFrom full path of tsconfig to extend
  * @returns full path to created tsconfig file
  */
-export default async function createGenTsConfig(
-  genPath,
-  name = 'tsconfig-webpack.json',
-  atPath = genPath,
-  extendsFrom = path.join(Config.braveCoreDir, 'tsconfig-webpack.json'),
-) {
-  const pathMap = await import('../../webpack/path-map.js').then((module) =>
-    module.default(genPath),
-  )
-  const configExtendsFrom = path.relative(atPath, extendsFrom)
-  const tsConfigPath = path.join(atPath, name)
+export async function writeGenTsConfig(
+  pathMap: PathMap,
+  genPath: string,
+  name: string,
+  extendsFrom: string,
+): Promise<string> {
+  const configExtendsFrom = path.relative(genPath, extendsFrom)
+  const tsConfigPath = path.join(genPath, name)
   // Even though ts-loader will get the paths from webpack for module resolution
   // that does not help some issues where chromium both generates ts definitions
   // and has JSDoc comments for the .m.js file. Sometimes the JSDoc is incorrect
@@ -39,10 +36,11 @@ export default async function createGenTsConfig(
   // and will fail with an error. Whilst this should be fixed in the chromium source,
   // it's better to be explicit here so that developers get the same experience at
   // both compile and design time.
-  const paths = {}
-  for (const path in pathMap) {
-    paths[path] = [pathMap[path]]
-    paths[`${path}/*`] = [`${pathMap[path]}/*`]
+  const paths: Record<string, string[]> = {}
+  for (const [alias, target] of Object.entries(pathMap)) {
+    const targets = Array.isArray(target) ? target : [target]
+    paths[alias] = targets
+    paths[`${alias}/*`] = targets.map((t) => `${t}/*`)
   }
   const config = {
     extends: configExtendsFrom,

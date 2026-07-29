@@ -7,7 +7,7 @@ import path from 'node:path'
 import type { ResolveOptions } from 'webpack'
 import { fallback } from './polyfill.ts'
 
-type PathMap = Record<string, string | string[]>
+export type PathMap = Record<string, string | string[]>
 
 /**
  * The module-resolution config shared by every Brave webpack build. Pass the
