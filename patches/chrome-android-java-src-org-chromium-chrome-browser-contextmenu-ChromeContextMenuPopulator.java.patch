@@ -1,26 +1,26 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuPopulator.java b/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuPopulator.java
-index 32751fe481e5ffd2bbf3871749a33198e076286f..90b66f5e0e977fa9f0aa2cb3d11d9c8e2a4bfedf 100644
+index 6928417ec1da2330b6ccff09a8cb16fbabfd8424..ed70447b43a7dd090c5c0c7dbb1a2ca9f3d89dae 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuPopulator.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuPopulator.java
-@@ -263,6 +263,7 @@ public class ChromeContextMenuPopulator implements ContextMenuPopulator {
-             Action.SEND_TAB_TO_SELF,
+@@ -274,6 +274,7 @@ public class ChromeContextMenuPopulator implements ContextMenuPopulator {
              Action.TRANSLATE,
              Action.CREATE_QR_CODE,
+             Action.ASK_GEMINI,
 +            Action.COPY_CLEAN_LINK,
          })
          @Retention(RetentionPolicy.SOURCE)
          public @interface Action {
-@@ -325,7 +326,8 @@ public class ChromeContextMenuPopulator implements ContextMenuPopulator {
-             int SEND_TAB_TO_SELF = 56;
+@@ -337,7 +338,8 @@ public class ChromeContextMenuPopulator implements ContextMenuPopulator {
              int TRANSLATE = 57;
              int CREATE_QR_CODE = 58;
--            int NUM_ENTRIES = 59;
-+            int COPY_CLEAN_LINK = 59;
+             int ASK_GEMINI = 59;
+-            int NUM_ENTRIES = 60;
++            int COPY_CLEAN_LINK = 60;
 +            int NUM_ENTRIES = COPY_CLEAN_LINK + 1;
          }
  
          // LINT.ThenChange(/tools/metrics/histograms/enums.xml:ContextMenuOptionAndroid)
-@@ -674,6 +676,7 @@ public class ChromeContextMenuPopulator implements ContextMenuPopulator {
+@@ -703,6 +705,7 @@ public class ChromeContextMenuPopulator implements ContextMenuPopulator {
              if (!MailTo.isMailTo(mParams.getLinkUrl().getSpec())
                      && !UrlUtilities.isTelScheme(mParams.getLinkUrl())) {
                  linkGroup.add(createListItem(Item.COPY_LINK_ADDRESS));
