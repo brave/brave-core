@@ -1,8 +1,8 @@
 diff --git a/components/autofill/core/common/autofill_features.h b/components/autofill/core/common/autofill_features.h
-index c99b5f6922f19fed892f69c5df86462e83b676b8..c8781c2bfb5bc1ba4e2460e8fbbd9ee17d186ff2 100644
+index 4fd290c741a7a36bc8b1ca98f5449ad4bc4b2cc8..e3b4ef2046e2c3b798ef81206790053116616dd3 100644
 --- a/components/autofill/core/common/autofill_features.h
 +++ b/components/autofill/core/common/autofill_features.h
-@@ -108,7 +108,7 @@ COMPONENT_EXPORT(AUTOFILL)
+@@ -112,7 +112,7 @@ COMPONENT_EXPORT(AUTOFILL)
  BASE_DECLARE_FEATURE_PARAM(std::string,
                             kAutofillAiSavePromptSurveyDeclinedTriggerId);
  COMPONENT_EXPORT(AUTOFILL)
