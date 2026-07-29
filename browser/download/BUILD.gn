@@ -15,6 +15,5 @@ source_set("download") {
     "//brave/components/image_metadata_stripper/common",
     "//chrome/browser/download",
     "//chrome/browser/profiles:profile",
-    "//components/download/public/common:public",
   ]
 }
