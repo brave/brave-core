@@ -1238,6 +1238,28 @@
 # Upstream Chromium test, no Brave modifications in this code path.
 -AutoPictureInPictureTabHelperBrowserTest.PromptResultRecorded_VideoConferencingAllowOnce
 
+# Null pointer dereference at the same crash site as the entry above
+# (AutoPipSettingView::OnButtonPressed), reached from the HaTS survey test.
+# AutoPipSettingOverlayView::ShowBubble() is what assigns the pointer that
+# get_view_for_testing() returns, and it runs from a task posted by
+# PictureInPictureBrowserFrameView::AddedToWidget(). The test waits only for the
+# kEnterPictureInPicture media event, so that task can still be queued when
+# simulate_button_press_for_testing() dereferences the null pointer. ASan
+# changes which of the two lands first; observed as an access-violation on the
+# Windows x64 nightly ASan builder.
+# Stable upstream per LUCI Analysis (0.3% over 30 days: 229 failed + 150 flaky),
+# but an unsynchronized posted task is not sanitizer-specific, so this goes in
+# the all-platform filter rather than browser_tests-windows-asan.filter.
+# Upstream Chromium test. There is no Brave override or patch for
+# chrome/browser/picture_in_picture/ or picture_in_picture_browser_frame_view.*,
+# and Brave's other picture-in-picture overrides and patches touch only the
+# video PiP path and Android, while this test covers document PiP. Brave does
+# substitute BraveBrowserView/BraveBrowserWidget for the PiP window, which can
+# perturb main-thread task ordering but cannot supply the synchronization the
+# test is missing.
+# https://github.com/brave/brave-browser/issues/56974
+-All/AutoPictureInPictureTabHelperHatsDocumentPipBrowserTest.TriggersSurveyOnTabActivation/0
+
 # Brave disables Session Cookies restore when ContinueWhereILeftOff is enabled.
 -ContinueWhereILeftOffTest.SessionCookies
 
