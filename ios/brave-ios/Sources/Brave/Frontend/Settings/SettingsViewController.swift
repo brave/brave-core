@@ -521,7 +521,7 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
                   rowUUID: braveAccountChangePasswordRowUUID,
                   sectionUUID: braveAccountSectionUUID
                 )
-                braveAccountAuthentication.changePasswordVerifyInit(
+                braveAccountAuthentication.changePasswordStep1(
                   email: braveAccountState.loggedIn!.email
                 ) { [weak self] _, failure in
                   guard let self else { return }

@@ -14,10 +14,10 @@
 #include "base/time/time.h"
 #include "base/timer/timer.h"
 #include "brave/components/brave_account/brave_account_state_prefs.h"
-#include "brave/components/brave_account/change_password.h"
 #include "brave/components/brave_account/endpoint_client/request_handle.h"
 #include "brave/components/brave_account/endpoints/auth_validate.h"
 #include "brave/components/brave_account/endpoints/service_token.h"
+#include "brave/components/brave_account/flows/change_password.h"
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
 #include "brave/components/brave_account/state_base.h"
 #include "components/os_crypt/async/common/encryptor.h"
@@ -54,21 +54,17 @@ class LoggedInState : public StateBase {
   }
 
  private:
-  void ChangePasswordVerifyInit(
-      const std::string& email,
-      ChangePasswordVerifyInitCallback callback) override;
+  void ChangePasswordStep1(const std::string& email,
+                           ChangePasswordStep1Callback callback) override;
 
-  void ChangePasswordVerifyComplete(
-      const std::string& code,
-      ChangePasswordVerifyCompleteCallback callback) override;
+  void ChangePasswordStep2(const std::string& code,
+                           ChangePasswordStep2Callback callback) override;
 
-  void ChangePasswordPasswordInit(
-      const std::string& blinded_message,
-      ChangePasswordPasswordInitCallback callback) override;
+  void ChangePasswordStep3(const std::string& blinded_message,
+                           ChangePasswordStep3Callback callback) override;
 
-  void ChangePasswordPasswordFinalize(
-      const std::string& serialized_record,
-      ChangePasswordPasswordFinalizeCallback callback) override;
+  void ChangePasswordStep4(const std::string& serialized_record,
+                           ChangePasswordStep4Callback callback) override;
 
   void LogOut() override;
 

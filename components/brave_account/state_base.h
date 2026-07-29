@@ -232,21 +232,17 @@ class StateBase : public mojom::Authentication {
                   const std::string& client_mac,
                   LoginStep2Callback callback) override;
 
-  void ChangePasswordVerifyInit(
-      const std::string& email,
-      ChangePasswordVerifyInitCallback callback) override;
+  void ChangePasswordStep1(const std::string& email,
+                           ChangePasswordStep1Callback callback) override;
 
-  void ChangePasswordVerifyComplete(
-      const std::string& code,
-      ChangePasswordVerifyCompleteCallback callback) override;
+  void ChangePasswordStep2(const std::string& code,
+                           ChangePasswordStep2Callback callback) override;
 
-  void ChangePasswordPasswordInit(
-      const std::string& blinded_message,
-      ChangePasswordPasswordInitCallback callback) override;
+  void ChangePasswordStep3(const std::string& blinded_message,
+                           ChangePasswordStep3Callback callback) override;
 
-  void ChangePasswordPasswordFinalize(
-      const std::string& serialized_record,
-      ChangePasswordPasswordFinalizeCallback callback) override;
+  void ChangePasswordStep4(const std::string& serialized_record,
+                           ChangePasswordStep4Callback callback) override;
 
   void LogOut() override;
 

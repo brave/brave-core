@@ -64,10 +64,10 @@ inline const std::string& EncryptedVerificationToken() {
 struct AuthenticationObserverTestCase;
 struct AuthValidateTestCase;
 struct CancelVerificationTestCase;
-struct ChangePasswordPasswordFinalizeTestCase;
-struct ChangePasswordPasswordInitTestCase;
-struct ChangePasswordVerifyCompleteTestCase;
-struct ChangePasswordVerifyInitTestCase;
+struct ChangePasswordStep1TestCase;
+struct ChangePasswordStep2TestCase;
+struct ChangePasswordStep3TestCase;
+struct ChangePasswordStep4TestCase;
 struct GetServiceTokenTestCase;
 struct LoginStep1TestCase;
 struct LoginStep2TestCase;
@@ -120,13 +120,10 @@ class BraveAccountServiceTest : public testing::TestWithParam<const TestCase*> {
       }
     }
 
-    if constexpr (std::is_same_v<TestCase,
-                                 ChangePasswordPasswordFinalizeTestCase> ||
-                  std::is_same_v<TestCase,
-                                 ChangePasswordPasswordInitTestCase> ||
-                  std::is_same_v<TestCase,
-                                 ChangePasswordVerifyCompleteTestCase> ||
-                  std::is_same_v<TestCase, ChangePasswordVerifyInitTestCase> ||
+    if constexpr (std::is_same_v<TestCase, ChangePasswordStep1TestCase> ||
+                  std::is_same_v<TestCase, ChangePasswordStep2TestCase> ||
+                  std::is_same_v<TestCase, ChangePasswordStep3TestCase> ||
+                  std::is_same_v<TestCase, ChangePasswordStep4TestCase> ||
                   std::is_same_v<TestCase, GetServiceTokenTestCase> ||
                   std::is_same_v<TestCase, LoginStep1TestCase> ||
                   std::is_same_v<TestCase, LoginStep2TestCase> ||
