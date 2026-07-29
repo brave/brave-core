@@ -28,7 +28,7 @@
 #include "url/origin.h"
 
 template <template <typename> class T>
-class BraveRequestHandler;
+class BraveRequestHandlerImpl;
 
 namespace content {
 class BrowserContext;
@@ -207,7 +207,7 @@ class BraveRequestInfo {
   // Please don't add any more friends here if it can be avoided.
   // We should also remove the one below.
   template <template <typename> class T>
-  friend class ::BraveRequestHandler;
+  friend class ::BraveRequestHandlerImpl;
 
   GURL* new_url() const;
   void set_new_url(GURL* value);

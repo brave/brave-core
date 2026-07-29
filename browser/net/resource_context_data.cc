@@ -15,6 +15,7 @@
 #include "brave/browser/net/brave_proxying_url_loader_factory.h"
 #include "brave/browser/net/brave_proxying_web_socket.h"
 #include "brave/browser/net/brave_request_handler.h"
+#include "brave/browser/net/brave_request_handler_impl.h"
 #include "content/public/browser/browser_context.h"
 #include "net/cookies/site_for_cookies.h"
 
@@ -54,7 +55,7 @@ void ResourceContextData<T>::StartProxying(
   }
 
   if (!self->request_handler_) {
-    self->request_handler_ = std::make_unique<BraveRequestHandler<T>>();
+    self->request_handler_ = std::make_unique<BraveRequestHandlerImpl<T>>();
   }
 
   auto proxy = std::make_unique<BraveProxyingURLLoaderFactory<T>>(
@@ -89,7 +90,7 @@ BraveProxyingWebSocket<T>* ResourceContextData<T>::CreateProxyingWebSocket(
   }
 
   if (!self->request_handler_) {
-    self->request_handler_ = std::make_unique<BraveRequestHandler<T>>();
+    self->request_handler_ = std::make_unique<BraveRequestHandlerImpl<T>>();
   }
 
   network::ResourceRequest request;

@@ -12,19 +12,13 @@
 
 #include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
-#include "base/strings/strcat.h"
 #include "base/test/bind.h"
-#include "base/test/scoped_feature_list.h"
-#include "brave/browser/net/brave_request_handler.h"
-#include "brave/components/brave_shields/core/common/features.h"
-#include "brave/components/constants/network_constants.h"
+#include "brave/browser/net/fake_brave_request_handler.h"
 #include "chrome/test/base/testing_profile.h"
-#include "content/public/browser/browser_task_traits.h"
-#include "content/public/browser/browser_thread.h"
 #include "content/public/browser/content_browser_client.h"
 #include "content/public/test/browser_task_environment.h"
 #include "net/base/net_errors.h"
-#include "net/http/http_request_headers.h"
+#include "net/http/http_response_headers.h"
 #include "net/http/http_util.h"
 #include "net/url_request/redirect_info.h"
 #include "services/network/public/cpp/url_loader_factory_builder.h"
@@ -32,6 +26,7 @@
 #include "services/network/test/test_url_loader_client.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "url/gurl.h"
 #include "url/origin.h"
 
 namespace {
@@ -57,9 +52,8 @@ network::mojom::URLResponseHeadPtr CreateRedirectHead(const GURL& new_url) {
 class BraveProxyingURLLoaderFactoryTest : public testing::Test {
  public:
   BraveProxyingURLLoaderFactoryTest() {
-    feature_list_.InitAndDisableFeature(
-        brave_shields::features::kBraveAdblockCspRules);
-    request_handler_ = std::make_unique<BraveRequestHandler<std::shared_ptr>>();
+    request_handler_ =
+        std::make_unique<FakeBraveRequestHandler<std::shared_ptr>>();
     profile_ = TestingProfile::Builder().Build();
   }
 
@@ -99,9 +93,8 @@ class BraveProxyingURLLoaderFactoryTest : public testing::Test {
   }
 
  protected:
-  base::test::ScopedFeatureList feature_list_;
   content::BrowserTaskEnvironment task_environment_;
-  std::unique_ptr<BraveRequestHandler<std::shared_ptr>> request_handler_;
+  std::unique_ptr<FakeBraveRequestHandler<std::shared_ptr>> request_handler_;
   std::unique_ptr<TestingProfile> profile_;
   network::TestURLLoaderFactory test_factory_;
   std::unique_ptr<BraveProxyingURLLoaderFactory<std::shared_ptr>> proxy_;
@@ -157,20 +150,18 @@ TEST_F(BraveProxyingURLLoaderFactoryTest,
 
 TEST_F(BraveProxyingURLLoaderFactoryTest,
        TaintsInitiatorOnCrossOriginBraveRedirect) {
-  // Brave rewrites clients4.google.com requests to clients4.brave.com via its
-  // static redirect rules, exercising the same synthetic-redirect path this
-  // change fixes. Because the redirect is cross-origin, the outgoing request's
-  // initiator must be tainted to an opaque origin, matching Chromium's
-  // WebRequest behavior for step 10 of "4.4. HTTP-redirect fetch"
-  // (https://fetch.spec.whatwg.org/#http-redirect-fetch). The real initiator is
-  // separately retained for BraveRequestInfo via |original_initiator_| so
-  // Shields still attributes the request to the true initiator.
-  const GURL request_url("https://clients4.google.com/resource");
-  const GURL redirected_url =
-      GURL(base::StrCat({"https://", kBraveClients4Proxy, "/resource"}));
+  // When the handler rewrites a request to a cross-origin URL (mimicking a
+  // Brave static/adblock redirect), the outgoing request's initiator must be
+  // tainted to an opaque origin, matching Chromium's WebRequest behavior for
+  // step 10 of "4.4. HTTP-redirect fetch"
+  // (https://fetch.spec.whatwg.org/#http-redirect-fetch).
+  const GURL request_url("https://redirect-source.example/resource");
+  const GURL redirected_url("https://redirect-target.example/resource");
   const url::Origin initiator =
       url::Origin::Create(GURL("https://initiator.example"));
   ASSERT_FALSE(initiator.opaque());
+
+  request_handler_->SetRedirect(request_url, redirected_url);
 
   std::optional<url::Origin> redirected_request_initiator;
   test_factory_.SetInterceptor(base::BindLambdaForTesting(
