@@ -114,10 +114,10 @@ IN_PROC_BROWSER_TEST_F(PlaylistCoordinatorBrowserTest,
   EXPECT_NE(app_view, browser_view);
 
   EXPECT_FALSE(app_view->GetIsNormalType());
-  EXPECT_TRUE(app_browser->is_type_app());
+  EXPECT_EQ(app_browser->GetType(), BrowserWindowInterface::Type::TYPE_APP);
 
   EXPECT_FALSE(app_view->GetIsNormalType());
-  EXPECT_TRUE(app_browser->is_type_app());
+  EXPECT_EQ(app_browser->GetType(), BrowserWindowInterface::Type::TYPE_APP);
   EXPECT_FALSE(sidebar::CanUseSidebar(app_browser));
   EXPECT_FALSE(app_browser->GetFeatures().playlist_side_panel_coordinator());
 }
