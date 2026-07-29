@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/mini_installer/chrome.release b/chrome/installer/mini_installer/chrome.release
-index cf4c3fa1816ed500b7f2168abc105fcec5f18a84..466df8bf5270d65ba844beba35d57ed8b6e871b1 100644
+index b0008cc7bb75f1779680c5035ba0a053dd010dcc..59ddb44ea046f92b82bf8174bf009fd43d9abf63 100644
 --- a/chrome/installer/mini_installer/chrome.release
 +++ b/chrome/installer/mini_installer/chrome.release
 @@ -6,7 +6,7 @@
@@ -30,8 +30,8 @@ index cf4c3fa1816ed500b7f2168abc105fcec5f18a84..466df8bf5270d65ba844beba35d57ed8
 +chrome_child.dll.sig: %(VersionDir)s\
  chrome_elf.dll: %(VersionDir)s\
  chrome_pwa_launcher.exe: %(VersionDir)s\
- chrome_wer.dll: %(VersionDir)s\
-@@ -72,6 +82,7 @@ IwaKeyDistribution\manifest.json: %(VersionDir)s\IwaKeyDistribution\
+ chrome_renderer.dll: %(VersionDir)s\
+@@ -73,6 +83,7 @@ IwaKeyDistribution\manifest.json: %(VersionDir)s\IwaKeyDistribution\
  
  [HIDPI]
  chrome_200_percent.pak: %(VersionDir)s\

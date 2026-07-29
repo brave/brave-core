@@ -1,10 +1,10 @@
 diff --git a/tools/perf/process_perf_results.py b/tools/perf/process_perf_results.py
-index 3bad74e2dc3c863561eac54f01a78b0f89472fd2..221aa00650e7950c0181d190b9fd6713d5c055b2 100755
+index 1ebcb330d56233e3ab670e750ac29b3de98d000e..8a539b0da952287ef5152b4af9b29487a8186a89 100755
 --- a/tools/perf/process_perf_results.py
 +++ b/tools/perf/process_perf_results.py
-@@ -47,7 +47,7 @@ except ImportError:
+@@ -49,7 +49,7 @@ try:
+ except ImportError:
    pass
- 
  
 -RESULTS_URL = 'https://chromeperf.appspot.com'
 +RESULTS_URL = 'https://brave-perf-dashboard.appspot.com'; sys.path.append(os.path.join(path_util.GetChromiumSrcDir(), 'brave', 'tools', 'perf', 'components')); import brave_logdog_helper as logdog_helper
