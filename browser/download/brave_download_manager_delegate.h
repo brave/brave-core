@@ -38,6 +38,11 @@ class BraveDownloadManagerDelegate : public ChromeDownloadManagerDelegate {
       delete;
   ~BraveDownloadManagerDelegate() override;
 
+  // A test only method to set a callback which would be fired once the iptc
+  // stripping of a download item has finished.
+  static void SetOnImageMetadataStrippedCallbackForTesting(
+      base::OnceClosure* callback = nullptr);
+
  private:
   // ChromeDownloadManagerDelegate override.
   bool IsDownloadReadyForCompletion(

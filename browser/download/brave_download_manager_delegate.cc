@@ -9,6 +9,7 @@
 #include <string>
 #include <utility>
 
+#include "base/check_is_test.h"
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
@@ -16,6 +17,7 @@
 #include "base/location.h"
 #include "base/logging.h"
 #include "base/memory/ptr_util.h"
+#include "base/memory/weak_ptr.h"
 #include "base/task/task_traits.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/image_metadata_stripper/common/features.h"
@@ -24,6 +26,13 @@
 #include "components/download/public/common/download_item.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/download_manager.h"
+
+namespace {
+
+// IN-TEST
+base::OnceClosure* g_on_metadata_stripped_callback_for_testing = nullptr;
+
+}  // namespace
 
 BraveDownloadManagerDelegate::BraveDownloadManagerDelegate(Profile* profile)
     : ChromeDownloadManagerDelegate(profile) {}
@@ -41,8 +50,9 @@ bool BraveDownloadManagerDelegate::IsDownloadReadyForCompletion(
         item, std::move(internal_complete_callback));
   }
 
-  // |chromium_callback| is fired only when we return true from here and
-  // |brave_callback| is not fired.
+  // |chromium_callback| is fired only when we return true from this method and
+  // |brave_callback| is NOT fired. We fire |brave_callback| only when we remove
+  // the iptc metadata which will make |chromium_callback| never fire.
   auto [chromium_callback, brave_callback] =
       base::SplitOnceCallback(std::move(internal_complete_callback));
   if (!ChromeDownloadManagerDelegate::IsDownloadReadyForCompletion(
@@ -75,8 +85,21 @@ bool BraveDownloadManagerDelegate::IsDownloadReadyForCompletion(
          base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN},
         base::BindOnce(&image_metadata_stripper::RemoveIptcMetadata,
                        item->GetFullPath()),
-        base::BindOnce(&BraveDownloadManagerDelegate::OnImageMetadataStripped,
-                       weak_ptr_factory_.GetWeakPtr(), item->GetId()));
+        base::BindOnce(
+            [](base::WeakPtr<BraveDownloadManagerDelegate> delegate,
+               uint32_t download_id, bool success) {
+              if (delegate) {
+                delegate->OnImageMetadataStripped(download_id, success);
+              }
+
+              if (g_on_metadata_stripped_callback_for_testing) {
+                CHECK_IS_TEST();
+                CHECK(!g_on_metadata_stripped_callback_for_testing->is_null());
+                std::move(*g_on_metadata_stripped_callback_for_testing).Run();
+                g_on_metadata_stripped_callback_for_testing = nullptr;
+              }
+            },
+            weak_ptr_factory_.GetWeakPtr(), item->GetId()));
 
     state->stripping_started = true;
     return false;
@@ -116,4 +139,11 @@ void BraveDownloadManagerDelegate::OnImageMetadataStripped(uint32_t download_id,
     DCHECK(state->stripping_started);
     state->CompleteDownload();
   }
+}
+
+// static
+void BraveDownloadManagerDelegate::
+    SetOnImageMetadataStrippedCallbackForTesting(  // IN-TEST
+        base::OnceClosure* callback) {
+  g_on_metadata_stripped_callback_for_testing = callback;
 }

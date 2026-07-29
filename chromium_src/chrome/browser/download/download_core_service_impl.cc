@@ -5,6 +5,7 @@
 
 #include "brave/browser/download/brave_download_manager_delegate.h"
 
-#define ChromeDownloadManagerDelegate BraveDownloadManagerDelegate
+#define BRAVE_CREATE_DOWNLOAD_MANAGER_DELEGATE \
+  manager_delegate_ = std::make_unique<BraveDownloadManagerDelegate>(profile_);
 #include <chrome/browser/download/download_core_service_impl.cc>
-#undef ChromeDownloadManagerDelegate
+#undef BRAVE_CREATE_DOWNLOAD_MANAGER_DELEGATE
