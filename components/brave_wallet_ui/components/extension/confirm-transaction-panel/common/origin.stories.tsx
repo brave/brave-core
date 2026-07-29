@@ -6,7 +6,7 @@
 import * as React from 'react'
 
 // components
-import { Origin, TransactionOrigin } from './origin'
+import { Origin } from './origin'
 
 // styles
 import { Column } from '../../../shared/style'
@@ -17,8 +17,6 @@ import {
   mockOriginInfo,
   mockUniswapOriginInfo,
 } from '../../../../stories/mock-data/mock-origin-info'
-import { mockERC20Token } from '../../../../stories/mock-data/mock-asset-options'
-import { mockEthMainnet } from '../../../../stories/mock-data/mock-networks'
 
 export const _LongOrigin = {
   render: () => {
@@ -45,20 +43,6 @@ export const BraveOrigin = {
     return (
       <Column>
         <Origin originInfo={mockBraveWalletOrigin} />
-      </Column>
-    )
-  },
-}
-
-export const _TransactionOrigin = {
-  render: () => {
-    return (
-      <Column>
-        <TransactionOrigin
-          network={mockEthMainnet}
-          originInfo={mockUniswapOriginInfo}
-          contractAddress={mockERC20Token.contractAddress}
-        />
       </Column>
     )
   },

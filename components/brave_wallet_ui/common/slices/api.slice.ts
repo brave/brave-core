@@ -19,7 +19,6 @@ import {
 
 // api
 import { createWalletApiBase } from './api-base.slice'
-import { transactionSimulationEndpoints } from './endpoints/tx-simulation.endpoints'
 import { braveRewardsApiEndpoints } from './endpoints/rewards.endpoints'
 import { pricingEndpoints } from './endpoints/pricing.endpoints'
 import { nftsEndpoints } from './endpoints/nfts.endpoints'
@@ -113,8 +112,6 @@ export function createWalletApi() {
       .injectEndpoints({ endpoints: tokenBalancesEndpoints })
       // brave rewards endpoints
       .injectEndpoints({ endpoints: braveRewardsApiEndpoints })
-      // tx simulation
-      .injectEndpoints({ endpoints: transactionSimulationEndpoints })
       // price history endpoints
       .injectEndpoints({ endpoints: pricingEndpoints })
       // nfts endpoints
@@ -204,12 +201,10 @@ export const {
   useGetERC20AllowanceQuery,
   useGetEthAddressChecksumQuery,
   useGetEthNftOwnerQuery,
-  useGetEVMTransactionSimulationQuery,
   useGetFVMAddressQuery,
   useGetGasEstimation1559Query,
   useGetHardwareAccountDiscoveryBalanceQuery,
   useGetHiddenAccountsQuery,
-  useGetHasTransactionSimulationSupportQuery,
   useGetIpfsGatewayTranslatedNftUrlQuery,
   useGetIsBase58EncodedSolPubkeyQuery,
   useGetIsMetaMaskInstalledQuery,
@@ -217,7 +212,6 @@ export const {
   useGetIsShieldingAvailableQuery,
   useGetIsSyncInProgressQuery,
   useGetIsTokenOwnedByUserQuery,
-  useGetIsTxSimulationOptInStatusQuery,
   useGetIsWalletBackedUpQuery,
   useGetNetworksRegistryQuery,
   useGetNftAssetIdsByCollectionRegistryQuery,
@@ -246,8 +240,6 @@ export const {
   useGetNetworkForAccountOnActiveOriginQuery,
   useGetSimpleHashSpamNftsQuery,
   useGetSolanaEstimatedFeeQuery,
-  useGetSolanaTransactionSimulationQuery,
-  useGetSolanaSignTransactionsRequestSimulationQuery,
   useGetSwapStatusQuery,
   useGetSwapSupportedNetworksQuery,
   useGetTokenBalancesForChainIdQuery,
@@ -282,9 +274,7 @@ export const {
   useLazyGetChainTipStatusQuery,
   useLazyGetDefaultFiatCurrencyQuery,
   useLazyGetERC20AllowanceQuery,
-  useLazyGetEVMTransactionSimulationQuery,
   useLazyGetGasEstimation1559Query,
-  useLazyGetIsTxSimulationOptInStatusQuery,
   useLazyGetIsShieldingAvailableQuery,
   useLazyGetNetworksRegistryQuery,
   useLazyGetNftDiscoveryEnabledStatusQuery,
@@ -293,7 +283,6 @@ export const {
   useLazyGetSelectedChainQuery,
   useLazyGetSellAssetUrlQuery,
   useLazyGetSolanaEstimatedFeeQuery,
-  useLazyGetSolanaTransactionSimulationQuery,
   useLazyGetSwapSupportedNetworksQuery,
   useLazyGetTokenBalancesForChainIdQuery,
   useLazyGetTokenBalancesRegistryQuery,
@@ -340,7 +329,6 @@ export const {
   useSendPolkadotTransactionMutation,
   useSetAutoLockMinutesMutation,
   useSetDefaultFiatCurrencyMutation,
-  useSetIsTxSimulationOptInStatusMutation,
   useSetNetworkMutation,
   useSetNetworkForAccountOnActiveOriginMutation,
   useSetNftDiscoveryEnabledMutation,

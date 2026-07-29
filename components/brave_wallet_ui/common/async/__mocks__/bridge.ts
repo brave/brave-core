@@ -126,13 +126,6 @@ export class MockedWalletApiProxy {
 
   userAssets: BraveWallet.BlockchainToken[] = mockAccountAssetOptions
 
-  evmSimulationResponse: BraveWallet.EVMSimulationResponse | null = null
-
-  svmSimulationResponse: BraveWallet.SolanaSimulationResponse | null = null
-
-  txSimulationOptInStatus: BraveWallet.BlowfishOptInStatus =
-    BraveWallet.BlowfishOptInStatus.kAllowed
-
   /**
    * balance = [accountAddress][chainId]
    */
@@ -249,12 +242,6 @@ export class MockedWalletApiProxy {
       overrides.nativeBalanceRegistry ?? this.nativeBalanceRegistry
     this.tokenBalancesRegistry =
       overrides.tokenBalanceRegistry ?? this.tokenBalancesRegistry
-    this.evmSimulationResponse =
-      overrides.evmSimulationResponse ?? this.evmSimulationResponse
-    this.svmSimulationResponse =
-      overrides.svmSimulationResponse ?? this.svmSimulationResponse
-    this.txSimulationOptInStatus =
-      overrides.simulationOptInStatus ?? this.txSimulationOptInStatus
     this.signSolTransactionsRequests =
       overrides.signSolTransactionsRequests ?? this.signSolTransactionsRequests
     this.signCardanoTransactionRequests =
@@ -447,11 +434,6 @@ export class MockedWalletApiProxy {
     getPendingSignMessageErrors: async () => {
       return {
         errors: [mockSignMessageError],
-      }
-    },
-    getTransactionSimulationOptInStatus: async () => {
-      return {
-        status: this.txSimulationOptInStatus,
       }
     },
     getAnkrSupportedChainIds: async () => {
@@ -1410,34 +1392,6 @@ export class MockedWalletApiProxy {
       )
       return {
         transactionInfo: foundTx || null,
-      }
-    },
-  }
-
-  simulationService: InstanceType<
-    typeof BraveWallet.SimulationServiceInterface
-  > = {
-    hasMessageScanSupport: async (chainId) => ({ result: false }),
-    hasTransactionScanSupport: async () => ({ result: true }),
-    scanEVMTransaction: async (txInfo, language) => {
-      return {
-        errorResponse: '',
-        errorString: '',
-        response: this.evmSimulationResponse,
-      }
-    },
-    scanSolanaTransaction: async (request, language) => {
-      return {
-        errorResponse: '',
-        errorString: '',
-        response: this.svmSimulationResponse,
-      }
-    },
-    scanSignSolTransactionsRequest: async (request, language) => {
-      return {
-        errorResponse: '',
-        errorString: '',
-        response: this.svmSimulationResponse,
       }
     },
   }

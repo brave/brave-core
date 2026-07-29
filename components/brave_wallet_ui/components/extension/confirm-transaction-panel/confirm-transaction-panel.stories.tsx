@@ -16,7 +16,7 @@ export const _ConfirmTransactionPanel = {
       <WalletPanelStory>
         <PanelWrapper>
           <LongWrapper>
-            <ConfirmTransactionPanel retrySimulation={() => {}} />
+            <ConfirmTransactionPanel />
           </LongWrapper>
         </PanelWrapper>
       </WalletPanelStory>
