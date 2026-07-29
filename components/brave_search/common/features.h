@@ -78,6 +78,10 @@ extern const base::FeatureParam<bool> kBackupResultsHistorySeed;
 // If false (default), resizes the backup results WebContents to 0x0.
 // If true, uses the last recorded or randomized view size.
 extern const base::FeatureParam<bool> kBackupResultsZeroSize;
+// If true, the target URL is rewritten to retain only the "q" query parameter;
+// all other query parameters and the fragment are removed. Requests for URLs
+// without a "q" parameter will fail.
+extern const base::FeatureParam<bool> kBackupResultsCleanUrl;
 // Controls the language list used for navigator.languages.
 // Valid values: "" (no override), "original" (use the
 // original profile's full accept-language list), "primary_single" (use only
