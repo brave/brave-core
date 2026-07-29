@@ -113,6 +113,12 @@ ACTION_P(CheckIfMatchFailsCallback, loop) {
   loop->Quit();
 }
 
+ACTION(CheckIfMatchWithoutRule) {
+  std::move(
+      const_cast<base::OnceCallback<void(std::unique_ptr<MatchedRule>)>&>(arg1))
+      .Run(nullptr);
+}
+
 // testing::InvokeArgument<N> does not work with base::OnceCallback, so we
 // define our own gMock action to run the 2nd argument.
 ACTION_P(InsertScriptInPageCallback, future, value) {
@@ -127,6 +133,13 @@ ACTION_P(InsertPolicyScriptInPageCallback, future, value) {
       const_cast<PsstTabWebContentsObserver::InsertScriptInPageCallback&>(arg1))
       .Run(value.Clone());
   future->SetValue(value.Clone());
+}
+
+// Captures the script result callback instead of running it, so that the test
+// can decide when (and after which navigations) it is invoked.
+ACTION_P(HoldInsertScriptInPageCallback, holder) {
+  *holder = std::move(
+      const_cast<PsstTabWebContentsObserver::InsertScriptInPageCallback&>(arg1));
 }
 
 ACTION_P(ShowCallback, future, urls_to_skip) {
@@ -400,6 +413,132 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
 
   second_nav_check_loop.Run();
   EXPECT_EQ(base::Value(), second_nav_user_script_insert_future.Take());
+}
+
+// The user script runs asynchronously in the renderer, so its result can come
+// back after the user has already navigated elsewhere. The result must be
+// dropped: no UI update and no policy script injection into the new page.
+TEST_F(PsstTabWebContentsObserverUnitTest,
+       UserScriptResultArrivingAfterNavigationIsDropped) {
+  const GURL second_navigation_url("https://example2.com");
+
+  base::RunLoop first_nav_check_loop;
+  base::RunLoop second_nav_check_loop;
+  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url_, _))
+      .WillOnce(CheckIfMatchCallback(
+          &first_nav_check_loop,
+          CreateMatchedRule(user_script_, policy_script_)));
+  // The second page has no matching rule, so it starts no flow of its own and
+  // anything observed afterwards can only come from the stale first flow.
+  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(second_navigation_url, _))
+      .WillOnce(CheckIfMatchFailsCallback(&second_nav_check_loop));
+
+  // Hold the user script result until after the second navigation commits.
+  PsstTabWebContentsObserver::InsertScriptInPageCallback
+      held_user_script_callback;
+  EXPECT_CALL(inject_script_callback(), Run(user_script_, _))
+      .WillOnce(HoldInsertScriptInPageCallback(&held_user_script_callback));
+
+  // The stale result must not reach the UI or trigger the policy script.
+  EXPECT_CALL(ui_delegate(), GetPsstWebsiteSettings).Times(0);
+  EXPECT_CALL(ui_delegate(), Show).Times(0);
+  EXPECT_CALL(ui_delegate(), UpdateTasks).Times(0);
+  EXPECT_CALL(inject_async_script_callback(), Run).Times(0);
+
+  {
+    DocumentOnLoadObserver observer(web_contents());
+    content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
+                                                               url_);
+    observer.Wait();
+  }
+  first_nav_check_loop.Run();
+  ASSERT_FALSE(held_user_script_callback.is_null());
+
+  {
+    DocumentOnLoadObserver observer(web_contents());
+    content::NavigationSimulator::NavigateAndCommitFromBrowser(
+        web_contents(), second_navigation_url);
+    observer.Wait();
+  }
+  second_nav_check_loop.Run();
+
+  // A result that would otherwise drive the whole flow: it has a user id and
+  // tasks, so on a still-current page it would show the consent dialog and run
+  // the policy script.
+  std::move(held_user_script_callback)
+      .Run(base::Value(
+          base::DictValue()
+              .Set("initial_execution", true)
+              .Set("user_id", user_id_)
+              .Set("site_name", "example")
+              .Set("tasks", base::ListValue().Append(
+                                base::DictValue()
+                                    .Set("uid", "1")
+                                    .Set("url", url_.spec())
+                                    .Set("description", "settings")))));
+}
+
+// A back navigation re-commits an already visited entry as a new page, so a
+// user script result held from that entry's earlier visit is still stale and
+// must be dropped.
+TEST_F(PsstTabWebContentsObserverUnitTest,
+       UserScriptResultArrivingAfterBackNavigationToSameEntryIsDropped) {
+  const GURL second_navigation_url("https://example2.com");
+
+  base::RunLoop first_nav_check_loop;
+  base::RunLoop second_nav_check_loop;
+  // The back navigation may or may not reach DocumentOnLoadCompleted in the
+  // test harness, so no run loop is tied to a rule check for it. What matters
+  // for this test is only that the back navigation commits.
+  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url_, _))
+      .WillOnce(CheckIfMatchCallback(
+          &first_nav_check_loop,
+          CreateMatchedRule(user_script_, policy_script_)))
+      .WillRepeatedly(CheckIfMatchWithoutRule());
+  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(second_navigation_url, _))
+      .WillOnce(CheckIfMatchFailsCallback(&second_nav_check_loop));
+
+  PsstTabWebContentsObserver::InsertScriptInPageCallback
+      held_user_script_callback;
+  EXPECT_CALL(inject_script_callback(), Run(user_script_, _))
+      .WillOnce(HoldInsertScriptInPageCallback(&held_user_script_callback));
+
+  EXPECT_CALL(ui_delegate(), GetPsstWebsiteSettings).Times(0);
+  EXPECT_CALL(ui_delegate(), Show).Times(0);
+  EXPECT_CALL(ui_delegate(), UpdateTasks).Times(0);
+  EXPECT_CALL(inject_async_script_callback(), Run).Times(0);
+
+  {
+    DocumentOnLoadObserver observer(web_contents());
+    content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
+                                                               url_);
+    observer.Wait();
+  }
+  first_nav_check_loop.Run();
+  ASSERT_FALSE(held_user_script_callback.is_null());
+
+  {
+    DocumentOnLoadObserver observer(web_contents());
+    content::NavigationSimulator::NavigateAndCommitFromBrowser(
+        web_contents(), second_navigation_url);
+    observer.Wait();
+  }
+  second_nav_check_loop.Run();
+
+  content::NavigationSimulator::GoBack(web_contents());
+  ASSERT_EQ(url_, web_contents()->GetLastCommittedURL());
+
+  std::move(held_user_script_callback)
+      .Run(base::Value(
+          base::DictValue()
+              .Set("initial_execution", true)
+              .Set("user_id", user_id_)
+              .Set("site_name", "example")
+              .Set("tasks", base::ListValue().Append(
+                                base::DictValue()
+                                    .Set("uid", "1")
+                                    .Set("url", url_.spec())
+                                    .Set("description", "settings")))));
 }
 
 TEST_F(PsstTabWebContentsObserverUnitTest, ShouldProcessRedirectsNavigations) {
