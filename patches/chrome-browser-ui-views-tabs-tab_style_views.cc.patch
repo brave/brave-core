@@ -1,8 +1,17 @@
 diff --git a/chrome/browser/ui/views/tabs/tab_style_views.cc b/chrome/browser/ui/views/tabs/tab_style_views.cc
-index 38fd672d4610b8ff1d5c975a43a10e8389e9c84c..1a63f8c854052d03edd21ba13bd9a183af936c53 100644
+index 5ae142a178b4109ead0cbdffacf62a54f707bfc6..031082331f19b18671cbdf30d4997ff5a4cc04ea 100644
 --- a/chrome/browser/ui/views/tabs/tab_style_views.cc
 +++ b/chrome/browser/ui/views/tabs/tab_style_views.cc
-@@ -77,18 +77,19 @@ class TabStyleViewsImpl : public TabStyleViews {
+@@ -54,7 +54,7 @@ class TabStyleViewsImpl : public TabStyleViews {
+   TabStyleViewsImpl(const TabStyleViewsImpl&) = delete;
+   TabStyleViewsImpl& operator=(const TabStyleViewsImpl&) = delete;
+ 
+-  int GetStrokeThickness() const override;
++  virtual int GetStrokeThickness() const override;
+   const TabStyleViewDelegate* delegate() const override {
+     return delegate_.get();
+   }
+@@ -77,11 +77,12 @@ class TabStyleViewsImpl : public TabStyleViews {
    }
  
   private:
@@ -16,15 +25,7 @@ index 38fd672d4610b8ff1d5c975a43a10e8389e9c84c..1a63f8c854052d03edd21ba13bd9a183
        TabStyle::TabSelectionState selection_state,
        bool hovered) const;
  
-   // Returns the thickness of the stroke drawn around the top and sides of the
-   // tab. Only active tabs may have a stroke, and not in all cases. If there
-   // is no stroke, returns 0.
--  int GetStrokeThickness() const;
-+  virtual int GetStrokeThickness() const;
- 
-   bool ShouldPaintTabBackgroundColor(
-       TabStyle::TabSelectionState selection_state,
-@@ -106,7 +107,7 @@ class TabStyleViewsImpl : public TabStyleViews {
+@@ -104,7 +105,7 @@ class TabStyleViewsImpl : public TabStyleViews {
    // Returns a single separator's opacity based on whether it is the
    // logically `leading` separator. `for_layout` has the same meaning as in
    // GetSeparatorOpacities().
@@ -33,7 +34,7 @@ index 38fd672d4610b8ff1d5c975a43a10e8389e9c84c..1a63f8c854052d03edd21ba13bd9a183
  
    // Helper that returns an interpolated opacity if the tab or its neighbor
    // `other_tab` is mid-hover-animation. Used in almost all cases when a
-@@ -118,7 +119,7 @@ class TabStyleViewsImpl : public TabStyleViews {
+@@ -117,7 +118,7 @@ class TabStyleViewsImpl : public TabStyleViews {
    TabStyle::TabSelectionState GetSelectionState() const;
  
    // Gets the bounds for the leading and trailing separators for a tab.
@@ -42,7 +43,7 @@ index 38fd672d4610b8ff1d5c975a43a10e8389e9c84c..1a63f8c854052d03edd21ba13bd9a183
  
    // Returns the opacities of the separators. If `for_layout` is true, returns
    // the "layout" opacities, which ignore the effects of surrounding tabs' hover
-@@ -126,7 +127,7 @@ class TabStyleViewsImpl : public TabStyleViews {
+@@ -125,7 +126,7 @@ class TabStyleViewsImpl : public TabStyleViews {
    TabStyle::SeparatorOpacities GetSeparatorOpacities(bool for_layout) const;
  
    // Returns whether the mouse is currently hovering this tab.
@@ -51,15 +52,15 @@ index 38fd672d4610b8ff1d5c975a43a10e8389e9c84c..1a63f8c854052d03edd21ba13bd9a183
  
    // Returns whether the hover animation is being shown.
    bool IsHoverAnimationActive() const;
-@@ -337,6 +338,7 @@ SkPath TabStyleViewsImpl::GetPath(TabStyle::PathType path_type,
+@@ -332,6 +333,7 @@ SkPath TabStyleViewsImpl::GetPath(TabStyle::PathType path_type,
      extension_corner_radius -= 0.5f * stroke_adjustment;
    }
  
 +  extension_corner_radius = 0;
    float left_extension_corner_radius = extension_corner_radius;
-   if (IsLeftSplitTab(tab())) {
+   if (delegate_->IsLeftSplitTab()) {
      top_right_corner_radius = 0;
-@@ -989,14 +991,18 @@ void TabStyleViewsImpl::PaintSeparators(gfx::Canvas* canvas) const {
+@@ -927,14 +929,18 @@ void TabStyleViewsImpl::PaintSeparators(gfx::Canvas* canvas) const {
                                                     SK_AlphaOPAQUE));
    };
  
@@ -79,15 +80,15 @@ index 38fd672d4610b8ff1d5c975a43a10e8389e9c84c..1a63f8c854052d03edd21ba13bd9a183
 +                        separator_radius, flags);
  }
  
- bool TabStyleViewsImpl::IsLeftSplitTab(const Tab* tab) const {
-@@ -1136,10 +1142,12 @@ ui::metadata::TypeConverter<TabStyle::TabColors>::GetValidStrings() {
+ BrowserFrameView* TabStyleViewsImpl::GetBrowserFrameView() const {
+@@ -1034,10 +1040,12 @@ ui::metadata::TypeConverter<TabStyle::TabColors>::GetValidStrings() {
  
  // TabStyleViews ---------------------------------------------------------------
  
 +#if 0  // TabStyleViews::CreateForTab declared in the chromium_src.
  // static
  std::unique_ptr<TabStyleViews> TabStyleViews::CreateForTab(Tab* tab) {
-   return std::make_unique<TabStyleViewsImpl>(tab);
+   return std::make_unique<TabStyleViewsImpl>(Tab::CreateStyleDelegate(tab));
  }
 +#endif
  
