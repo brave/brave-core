@@ -1258,7 +1258,7 @@ TEST_F(ZCashWalletServiceUnitTest, AutoSync) {
                 "main" /* network */,
                 100000u - kChainReorgBlockDelta /* height */,
                 "hexhexhex2" /* hash */, 123 /* time */, "" /* sapling tree */,
-                "" /* orchard tree */);
+                "" /* orchard tree */, "" /* ironwood tree */);
             std::move(callback).Run(std::move(tree_state));
           });
 
@@ -1536,7 +1536,7 @@ TEST_F(ZCashWalletServiceUnitTest, MakeAccountShielded) {
                 "main" /* network */,
                 100000u - kChainReorgBlockDelta /* height */,
                 "hexhexhex2" /* hash */, 123 /* time */, "" /* sapling tree */,
-                "" /* orchard tree */);
+                "" /* orchard tree */, "" /* ironwood tree */);
             std::move(callback).Run(std::move(tree_state));
           });
 
@@ -1614,7 +1614,7 @@ TEST_F(ZCashWalletServiceUnitTest, ResetSyncStateWithAccountBirthday) {
                 "main" /* network */,
                 100000u - kChainReorgBlockDelta /* height */,
                 "new_hash" /* hash */, 123 /* time */, "" /* sapling tree */,
-                "" /* orchard tree */);
+                "" /* orchard tree */, "" /* ironwood tree */);
             std::move(callback).Run(std::move(tree_state));
           });
 
@@ -1832,7 +1832,8 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_ShieldFunds) {
             "0aa1e9e1598d35470810012dcc4273c8a0ed2337ecf7879380a07e7d427c7f9d82"
             "e538002bd1442978402c01daf63debf5b40df902dae98dadc029f281474d190cdd"
             "ecef1b10653248a234150001e2bca6a8d987d668defba89dc082196a922634ed88"
-            "e065c669e526bb8815ee1b000000000000" /* orchard tree */);
+            "e065c669e526bb8815ee1b000000000000" /* orchard tree */,
+            "" /* ironwood tree */);
         std::move(callback).Run(std::move(tree_state));
       });
 
@@ -2249,7 +2250,8 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_ShieldAllFunds) {
                 "0810012dcc4273c8a0ed2337ecf7879380a07e7d427c7f9d82e538002bd144"
                 "2978402c01daf63debf5b40df902dae98dadc029f281474d190cddecef1b10"
                 "653248a234150001e2bca6a8d987d668defba89dc082196a922634ed88e065"
-                "c669e526bb8815ee1b000000000000" /* orchard tree */);
+                "c669e526bb8815ee1b000000000000" /* orchard tree */,
+                "" /* ironwood tree */);
             std::move(callback).Run(std::move(tree_state));
           });
 
@@ -2919,7 +2921,8 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_SendShieldedFunds) {
                 "e1598d35470810012dcc4273c8a0ed2337ecf7879380a07e7d427c7f9d82e5"
                 "38002bd1442978402c01daf63debf5b40df902dae98dadc029f281474d190c"
                 "ddecef1b10653248a234150001e2bca6a8d987d668defba89dc082196a9226"
-                "34ed88e065c669e526bb8815ee1b000000000000");
+                "34ed88e065c669e526bb8815ee1b000000000000",
+                "" /* ironwood tree */);
             std::move(callback).Run(std::move(tree_state));
           });
 
@@ -3564,7 +3567,8 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_UnshieldFunds) {
             "e1598d35470810012dcc4273c8a0ed2337ecf7879380a07e7d427c7f9d82e5"
             "38002bd1442978402c01daf63debf5b40df902dae98dadc029f281474d190c"
             "ddecef1b10653248a234150001e2bca6a8d987d668defba89dc082196a9226"
-            "34ed88e065c669e526bb8815ee1b000000000000");
+            "34ed88e065c669e526bb8815ee1b000000000000",
+            "" /* ironwood tree */);
         std::move(callback).Run(std::move(tree_state));
       });
 
