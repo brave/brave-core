@@ -24,6 +24,7 @@
 #include "brave/components/ai_chat/core/browser/engine/oai_message_utils.h"
 #include "brave/components/ai_chat/core/browser/engine/test_utils.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
+#include "brave/components/ai_chat/core/common/constants.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
@@ -919,7 +920,7 @@ TEST_F(ConversationAPIClientUnitTest, PerformRequest_WithToolUseResponse) {
         EXPECT_TRUE(result.event->is_completion_event());
         EXPECT_EQ(result.event->get_completion_event()->completion,
                   "This is a test completion");
-        EXPECT_EQ(result.model_key, "chat-automatic");
+        EXPECT_EQ(result.model_key, kChatAutomaticModelKey);
       });
 
   EXPECT_CALL(mock_callbacks, OnDataReceived)
@@ -932,7 +933,7 @@ TEST_F(ConversationAPIClientUnitTest, PerformRequest_WithToolUseResponse) {
                                                  "{\"location\":\"New York\"}",
                                                  std::nullopt, std::nullopt,
                                                  nullptr, false));
-        EXPECT_EQ(result.model_key, "chat-automatic");
+        EXPECT_EQ(result.model_key, kChatAutomaticModelKey);
       });
 
   EXPECT_CALL(mock_callbacks, OnDataReceived)
@@ -945,7 +946,7 @@ TEST_F(ConversationAPIClientUnitTest, PerformRequest_WithToolUseResponse) {
             mojom::ToolUseEvent::New(
                 "search_web", "call_456", "{\"query\":\"Hello, world!\"}",
                 std::nullopt, std::nullopt, nullptr, false));
-        EXPECT_EQ(result.model_key, "chat-automatic");
+        EXPECT_EQ(result.model_key, kChatAutomaticModelKey);
       });
 
   EXPECT_CALL(mock_callbacks, OnCompleted(_))
@@ -1316,7 +1317,7 @@ TEST_F(ConversationAPIClientUnitTest,
         EXPECT_TRUE(result.event->is_completion_event());
         EXPECT_EQ(result.event->get_completion_event()->completion,
                   "This is a test completion");
-        EXPECT_EQ(result.model_key, "chat-automatic");
+        EXPECT_EQ(result.model_key, kChatAutomaticModelKey);
       });
 
   EXPECT_CALL(mock_callbacks, OnCompleted(_))
@@ -1399,7 +1400,7 @@ TEST_F(ConversationAPIClientUnitTest,
         ASSERT_TRUE(result->event->is_completion_event());
         EXPECT_EQ(result->event->get_completion_event()->completion,
                   "This is a test completion");
-        EXPECT_EQ(result->model_key, "chat-automatic");
+        EXPECT_EQ(result->model_key, kChatAutomaticModelKey);
       });
 
   // Begin request with model override but NULL data_received_callback
@@ -1641,7 +1642,7 @@ TEST_F(ConversationAPIClientUnitTest, OnQueryDataReceived_ContentReceipt) {
                     1234567890u);
           EXPECT_EQ(result.event->get_content_receipt_event()->trimmed_tokens,
                     987654321u);
-          EXPECT_EQ(result.model_key, "chat-automatic");
+          EXPECT_EQ(result.model_key, kChatAutomaticModelKey);
         });
 
     client_->OnQueryDataReceived(
@@ -1668,7 +1669,7 @@ TEST_F(ConversationAPIClientUnitTest, OnQueryDataReceived_ContentReceipt) {
                     0u);
           EXPECT_EQ(result.event->get_content_receipt_event()->trimmed_tokens,
                     0u);
-          EXPECT_EQ(result.model_key, "chat-automatic");
+          EXPECT_EQ(result.model_key, kChatAutomaticModelKey);
         });
 
     client_->OnQueryDataReceived(
@@ -1696,7 +1697,7 @@ TEST_F(ConversationAPIClientUnitTest, OnQueryDataReceived_ContentReceipt) {
                     5000u);
           EXPECT_EQ(result.event->get_content_receipt_event()->trimmed_tokens,
                     0u);
-          EXPECT_EQ(result.model_key, "chat-automatic");
+          EXPECT_EQ(result.model_key, kChatAutomaticModelKey);
         });
 
     client_->OnQueryDataReceived(
@@ -1724,7 +1725,7 @@ TEST_F(ConversationAPIClientUnitTest, OnQueryDataReceived_ContentReceipt) {
                     0u);
           EXPECT_EQ(result.event->get_content_receipt_event()->trimmed_tokens,
                     3000u);
-          EXPECT_EQ(result.model_key, "chat-automatic");
+          EXPECT_EQ(result.model_key, kChatAutomaticModelKey);
         });
 
     client_->OnQueryDataReceived(
@@ -1753,7 +1754,7 @@ TEST_F(ConversationAPIClientUnitTest, OnQueryDataReceived_ContentReceipt) {
                     0u);
           EXPECT_EQ(result.event->get_content_receipt_event()->trimmed_tokens,
                     0u);
-          EXPECT_EQ(result.model_key, "chat-automatic");
+          EXPECT_EQ(result.model_key, kChatAutomaticModelKey);
         });
 
     client_->OnQueryDataReceived(
@@ -1782,7 +1783,7 @@ TEST_F(ConversationAPIClientUnitTest, OnQueryDataReceived_ContentReceipt) {
                     8000u);
           EXPECT_EQ(result.event->get_content_receipt_event()->trimmed_tokens,
                     0u);
-          EXPECT_EQ(result.model_key, "chat-automatic");
+          EXPECT_EQ(result.model_key, kChatAutomaticModelKey);
         });
 
     client_->OnQueryDataReceived(
@@ -1923,7 +1924,7 @@ TEST_F(ConversationAPIClientUnitTest, OnQueryDataReceived_InlineSearch) {
           const auto* event = result.event->get_inline_search_event().get();
           EXPECT_EQ(event->query, "weather today");
           EXPECT_FALSE(event->results_json.empty());
-          EXPECT_EQ(result.model_key, "chat-automatic");
+          EXPECT_EQ(result.model_key, kChatAutomaticModelKey);
         });
 
     client_->OnQueryDataReceived(
@@ -2044,7 +2045,7 @@ TEST_F(ConversationAPIClientUnitTest, OnQueryDataReceived_CompletionChunk) {
           ASSERT_TRUE(result.event->is_completion_event());
           EXPECT_EQ(result.event->get_completion_event()->completion,
                     "This is a chunk.");
-          EXPECT_EQ(result.model_key, "chat-automatic");
+          EXPECT_EQ(result.model_key, kChatAutomaticModelKey);
         });
 
     client_->OnQueryDataReceived(

@@ -14,6 +14,7 @@
 #include "base/time/time.h"
 #include "base/uuid.h"
 #include "brave/components/ai_chat/core/browser/associated_content_manager.h"
+#include "brave/components/ai_chat/core/common/constants.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/ai_chat/core/common/test_utils.h"
@@ -188,7 +189,7 @@ std::vector<mojom::ConversationTurnPtr> CreateSampleChatHistory(
         std::nullopt /* prompt */, std::nullopt, std::move(events),
         now + base::Seconds((i * 60) + 30) + base::Hours(future_hours),
         std::nullopt, std::nullopt, nullptr /* skill */, false,
-        "chat-automatic", nullptr));
+        kChatAutomaticModelKey, nullptr));
   }
   return history;
 }

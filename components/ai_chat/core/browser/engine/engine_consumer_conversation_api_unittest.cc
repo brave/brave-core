@@ -1234,14 +1234,13 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 TEST_F(EngineConsumerConversationAPIUnitTest,
        GenerateAssistantResponse_WithModelKeyOverride) {
   auto* mock_api_client = GetMockConversationAPIClient();
-  constexpr char kModelKey[] = "chat-automatic";
-
   // Expect PerformRequest with the overridden model name
   EXPECT_CALL(
       *mock_api_client,
-      PerformRequest(_, _, _, _, _, _,
-                     testing::Eq(std::optional<std::string>(
-                         model_service_->GetLeoModelNameByKey(kModelKey)))))
+      PerformRequest(
+          _, _, _, _, _, _,
+          testing::Eq(std::optional<std::string>(
+              model_service_->GetLeoModelNameByKey(kChatAutomaticModelKey)))))
       .WillOnce([&](std::vector<OAIMessage> messages,
                     std::optional<base::ListValue> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
@@ -1261,7 +1260,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
   turn->uuid = "turn-1";
   turn->character_type = mojom::CharacterType::HUMAN;
   turn->text = "What is this about?";
-  turn->model_key = kModelKey;
+  turn->model_key = kChatAutomaticModelKey;
   history.push_back(std::move(turn));
 
   base::RunLoop run_loop;
