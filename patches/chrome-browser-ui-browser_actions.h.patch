@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/browser_actions.h b/chrome/browser/ui/browser_actions.h
-index 8db06aca9d4791fbb15835d411cd2e0b4646493d..666b9794e85d46eb3cba59113ce3d65885d44ce7 100644
+index cda6bf3dfdcbc428d43d7e0cea6d2cab48798e05..45a78cf776c533e6dfca64d6fd6a7f92188bd093 100644
 --- a/chrome/browser/ui/browser_actions.h
 +++ b/chrome/browser/ui/browser_actions.h
-@@ -31,7 +31,7 @@ class BrowserActions {
+@@ -31,14 +31,14 @@ class BrowserActions {
    explicit BrowserActions(BrowserWindowInterface* bwi);
    BrowserActions(const BrowserActions&) = delete;
    BrowserActions& operator=(const BrowserActions&) = delete;
@@ -11,8 +11,7 @@ index 8db06aca9d4791fbb15835d411cd2e0b4646493d..666b9794e85d46eb3cba59113ce3d658
  
    static std::u16string GetCleanTitleAndTooltipText(std::u16string string);
  
-@@ -39,7 +39,7 @@ class BrowserActions {
-   actions::ActionItem* app_menu_root() const { return app_menu_root_; }
+   actions::ActionItem* root_action_item() const { return root_action_item_; }
  
    // Initialization is separate from construction to allow more precise timing.
 -  void InitializeBrowserActions();
@@ -20,7 +19,7 @@ index 8db06aca9d4791fbb15835d411cd2e0b4646493d..666b9794e85d46eb3cba59113ce3d658
  
    // Registers a window-scoped action item.
    actions::ActionItem* RegisterAction(
-@@ -54,6 +54,7 @@ class BrowserActions {
+@@ -49,6 +49,7 @@ class BrowserActions {
    }
  
   private:

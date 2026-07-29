@@ -1,26 +1,26 @@
 diff --git a/chrome/browser/ui/browser.cc b/chrome/browser/ui/browser.cc
-index 47c68b1f47caa9ff748bfe2f17374699a9ec410d..2633291f2214cb17a370fb51281a10052ab9b563 100644
+index 52f14726f3d552ce6745007354d3512bcca003a6..a792b8e913d2794c0909843a4c95ffc0ee3aa926 100644
 --- a/chrome/browser/ui/browser.cc
 +++ b/chrome/browser/ui/browser.cc
-@@ -467,7 +467,7 @@ Browser* Browser::Create(const CreateParams& params) {
-   // should handle this; see e.g. crbug.com/40154317 and crbug.com/40798999.
-   CHECK_EQ(CreationStatus::kOk, GetCreationStatusForProfile(params.profile));
+@@ -329,7 +329,7 @@ Browser* Browser::Create(const CreateParams& params) {
+   CHECK_EQ(CreationStatus::kOk,
+            GetBrowserWindowCreationStatusForProfile(*params.profile));
  
 -  std::unique_ptr<Browser> browser = base::WrapUnique(new Browser(params));
 +  std::unique_ptr<Browser> browser = base::WrapUnique(new BraveBrowser(params));
    Browser* const browser_ptr = browser.get();
    BrowserManagerServiceFactory::GetForProfile(params.profile)
        ->AddBrowser(std::move(browser));
-@@ -483,7 +483,7 @@ std::unique_ptr<Browser> Browser::DeprecatedCreateOwnedForTesting(
-   // should handle this; see e.g. crbug.com/40154317 and crbug.com/40798999.
-   CHECK_EQ(CreationStatus::kOk, GetCreationStatusForProfile(params.profile));
+@@ -346,7 +346,7 @@ std::unique_ptr<Browser> Browser::DeprecatedCreateOwnedForTesting(
+   CHECK_EQ(CreationStatus::kOk,
+            GetBrowserWindowCreationStatusForProfile(*params.profile));
  
 -  std::unique_ptr<Browser> browser = base::WrapUnique(new Browser(params));
 +  std::unique_ptr<Browser> browser = base::WrapUnique(new BraveBrowser(params));
    BrowserManagerServiceFactory::GetForProfile(params.profile)
        ->AddBrowserForTesting(browser.get());
    return browser;
-@@ -494,8 +494,8 @@ Browser::Browser(const CreateParams& params)
+@@ -357,8 +357,8 @@ Browser::Browser(const CreateParams& params)
        profile_(params.profile),
        window_(nullptr),
        tab_strip_model_delegate_(
