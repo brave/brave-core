@@ -367,7 +367,7 @@ struct TabGridView: View {
     HStack(spacing: 12) {
       if !viewModel.isSearching {
         moreMenu
-          .transition(.tabGridHeaderButtonLeading)
+          .transition(.blurReplace())
       }
       if !isSearchBarHidden {
         TabGridSearchBar(
@@ -381,7 +381,7 @@ struct TabGridView: View {
       }
       if !viewModel.isSearching, !viewModel.tabs.isEmpty {
         shredMenu
-          .transition(.tabGridHeaderButtonLeading)
+          .transition(.blurReplace())
       }
     }
     .animation(.toolbarsSizeAnimation, value: viewModel.isSearching)
@@ -881,15 +881,6 @@ extension Animation {
   /// entering multi-select mode
   static var toolbarsSizeAnimation: Animation {
     .spring(response: 0.3)
-  }
-}
-
-extension AnyTransition {
-  /// Exits toward the leading edge while shrinking
-  fileprivate static var tabGridHeaderButtonLeading: AnyTransition {
-    .move(edge: .leading)
-      .combined(with: .scale(scale: 0.1, anchor: .trailing))
-      .combined(with: .opacity)
   }
 }
 
