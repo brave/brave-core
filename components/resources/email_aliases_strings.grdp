@@ -12,6 +12,9 @@
   <message name="IDS_SETTINGS_EMAIL_ALIASES_LABEL" desc="The label for the email aliases" formatter_data="webui=EmailAliases">
     Email Aliases
   </message>
+  <message name="IDS_SETTINGS_EMAIL_ALIASES_AUTOFILL_SUGGESTION_LABEL" desc="The label for the email aliases autofill suggestion toggle" formatter_data="webui=EmailAliases">
+    Show "New Alias" hint on email fields
+  </message>
   <message name="IDS_SETTINGS_EMAIL_ALIASES_COPIED_TO_CLIPBOARD" desc="The label for the copied to clipboard" formatter_data="webui=EmailAliases">
     Copied to clipboard
   </message>
