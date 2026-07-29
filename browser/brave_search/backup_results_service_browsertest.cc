@@ -10,6 +10,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
+#include "base/test/test_future.h"
 #include "base/time/time.h"
 #include "brave/browser/brave_search/backup_results_service_factory.h"
 #include "brave/browser/brave_search/backup_results_service_impl.h"
@@ -107,6 +108,9 @@ class BackupResultsServiceBrowserTestBase : public InProcessBrowserTest {
 
     auto url = request.GetURL();
     request_paths_.emplace_back(url.path());
+    if (!first_request_url_) {
+      first_request_url_ = url;
+    }
     if (auto* v = base::FindOrNull(request.headers, kTestCustomHeaderName)) {
       last_custom_header_ = *v;
     }
@@ -150,6 +154,7 @@ class BackupResultsServiceBrowserTestBase : public InProcessBrowserTest {
 
   std::optional<std::string> last_custom_header_;
   std::optional<std::string> last_user_agent_;
+  std::optional<GURL> first_request_url_;
   std::vector<std::string> request_paths_;
 };
 
@@ -600,6 +605,52 @@ IN_PROC_BROWSER_TEST_F(BackupResultsServiceLoadAfterRestoreBrowserTest,
             }),
         low_latency_required);
     run_loop.Run();
+  }
+}
+
+class BackupResultsServiceCleanUrlBrowserTest
+    : public BackupResultsServiceBrowserTestBase {
+ public:
+  BackupResultsServiceCleanUrlBrowserTest() {
+    scoped_feature_list_.InitWithFeaturesAndParameters(
+        {{features::kBackupResults,
+          {{features::kBackupResultsCleanUrl.name, "true"}}}},
+        {});
+  }
+};
+
+IN_PROC_BROWSER_TEST_F(BackupResultsServiceCleanUrlBrowserTest, CleanUrl) {
+  // Query params other than "q", along with the fragment, should be stripped
+  // from the requested URL. The escaped "q" value should be left as-is.
+  {
+    base::test::TestFuture<std::optional<BackupResultsService::BackupResults>>
+        future;
+    backup_results_service_->FetchBackupResults(
+        https_server_->GetURL("google.ca",
+                              "/test?hl=en&q=caf%C3%A9+%26+bar%3F&gl=us#frag"),
+        std::nullopt, future.GetCallback());
+
+    EXPECT_TRUE(future.Take().has_value());
+    EXPECT_EQ(first_request_url_,
+              https_server_->GetURL("/test?q=caf%C3%A9+%26+bar%3F"));
+    EXPECT_EQ(request_paths_,
+              (std::vector<std::string>{kTestInitPath, kTestFinalPath}));
+  }
+
+  first_request_url_.reset();
+  request_paths_.clear();
+
+  // A URL without a "q" param should fail without hitting the network.
+  {
+    base::test::TestFuture<std::optional<BackupResultsService::BackupResults>>
+        future;
+    backup_results_service_->FetchBackupResults(
+        https_server_->GetURL("google.ca", "/test?hl=en"), std::nullopt,
+        future.GetCallback());
+
+    EXPECT_FALSE(future.Take().has_value());
+    EXPECT_FALSE(first_request_url_.has_value());
+    EXPECT_TRUE(request_paths_.empty());
   }
 }
 
