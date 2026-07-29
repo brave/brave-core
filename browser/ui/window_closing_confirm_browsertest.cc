@@ -302,6 +302,7 @@ IN_PROC_BROWSER_TEST_F(WindowClosingConfirmBrowserTest, TestWithDownload) {
       brave_browser, GURL(url::kAboutBlankURL),
       WindowOpenDisposition::NEW_FOREGROUND_TAB,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
+  LOG(ERROR) << "CHECKPOINT 1: Navigation to url::kAboutBlankURL completed.";
 
   std::unique_ptr<content::DownloadTestObserver> progress_waiter(
       CreateInProgressWaiter(brave_browser, 1));
@@ -310,7 +311,9 @@ IN_PROC_BROWSER_TEST_F(WindowClosingConfirmBrowserTest, TestWithDownload) {
   ui_test_utils::NavigateToURLWithDisposition(
       brave_browser, url, WindowOpenDisposition::CURRENT_TAB,
       ui_test_utils::BROWSER_TEST_NO_WAIT);
+  LOG(ERROR) << "CHECKPOINT 2: Navigation to download URL started.";
   progress_waiter->WaitForFinished();
+  LOG(ERROR) << "CHECKPOINT 3: Navigation to download wait completed.";
 
   EXPECT_EQ(1u, progress_waiter->NumDownloadsSeenInState(
                     download::DownloadItem::IN_PROGRESS));
@@ -320,9 +323,13 @@ IN_PROC_BROWSER_TEST_F(WindowClosingConfirmBrowserTest, TestWithDownload) {
   closing_confirm_dialog_created_ = false;
   SetDownloadConfirmReturn(false);
   chrome::CloseWindow(brave_browser);
+  LOG(ERROR)
+      << "CHECKPOINT 4: CloseWindow called with allow_to_close_ = false.";
   EXPECT_TRUE(closing_confirm_dialog_created_);
   EXPECT_TRUE(brave_browser->ShouldAskForBrowserClosingBeforeHandlers());
   WaitTillConfirmDialogClosed();
+  LOG(ERROR) << "CHECKPOINT 5: WaitTillConfirmDialogClosed with "
+                "allow_to_close_ = false completed.";
 
   // Allow window closing while downloading and don't cancel downloading.
   // Then, we could ask window closing again.
@@ -331,9 +338,14 @@ IN_PROC_BROWSER_TEST_F(WindowClosingConfirmBrowserTest, TestWithDownload) {
   SetDownloadConfirmReturn(false);
   ResetClosingAllBrowsersNotified();
   chrome::CloseWindow(brave_browser);
+  LOG(ERROR) << "CHECKPOINT 6: CloseWindow called with allow_to_close_ = true.";
   EXPECT_TRUE(closing_confirm_dialog_created_);
   WaitTillConfirmDialogClosed();
+  LOG(ERROR) << "CHECKPOINT 7: WaitTillConfirmDialogClosed with "
+                "allow_to_close_ = true completed.";
   SetClosingBrowserCallbackAndWait();
+  LOG(ERROR) << "CHECKPOINT 8: SetClosingBrowserCallbackAndWait with "
+                "allow_to_close_ = true completed.";
   EXPECT_TRUE(brave_browser->ShouldAskForBrowserClosingBeforeHandlers());
 
   // Close window again by cancelling download to terminate test.
@@ -341,6 +353,11 @@ IN_PROC_BROWSER_TEST_F(WindowClosingConfirmBrowserTest, TestWithDownload) {
   closing_confirm_dialog_created_ = false;
   SetDownloadConfirmReturn(true);
   chrome::CloseWindow(brave_browser);
+  LOG(ERROR) << "CHECKPOINT 9: CloseWindow called with allow_to_close_ = true "
+                "and SetDownloadConfirmReturn(true).";
   EXPECT_TRUE(closing_confirm_dialog_created_);
   WaitTillConfirmDialogClosed();
+  LOG(ERROR)
+      << "CHECKPOINT 10: WaitTillConfirmDialogClosed with "
+         "allow_to_close_ = true and SetDownloadConfirmReturn(true) completed.";
 }
