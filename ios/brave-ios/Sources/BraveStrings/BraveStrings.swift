@@ -1210,14 +1210,14 @@ extension Strings {
       value: "Private Browsing",
       comment: "Accessibility label for the regular browsing option in the browsing mode picker"
     )
-    public static let tabsCountSingularFormatString = NSLocalizedString(
+    public static let tabsCountFormatSingular = NSLocalizedString(
       "tabGrid.tabsCountFormatSingular",
       tableName: "BraveShared",
       bundle: .module,
       value: "%lld Tab",
       comment: "A label in the tab tray mode switcher shown when there is 1 regular tab open e.g. '1 Tab'"
     )
-    public static let tabsCountPluralFormatString = NSLocalizedString(
+    public static let tabsCountFormatPlural = NSLocalizedString(
       "tabGrid.tabsCountFormatPlural",
       tableName: "BraveShared",
       bundle: .module,

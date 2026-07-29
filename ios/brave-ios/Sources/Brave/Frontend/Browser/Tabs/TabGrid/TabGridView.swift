@@ -744,8 +744,8 @@ private struct TabGridModeSwitcher: UIViewRepresentable {
   private var tabCount: String {
     String.localizedStringWithFormat(
       regularTabCount == 1
-        ? Strings.TabGrid.tabsCountSingularFormatString
-        : Strings.TabGrid.tabsCountPluralFormatString,
+        ? Strings.TabGrid.tabsCountFormatSingular
+        : Strings.TabGrid.tabsCountFormatPlural,
       regularTabCount
     )
   }
