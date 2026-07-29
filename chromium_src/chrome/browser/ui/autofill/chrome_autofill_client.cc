@@ -26,6 +26,7 @@
 
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
 #include "brave/browser/ui/email_aliases/email_aliases_controller.h"
+#include "brave/components/email_aliases/pref_names.h"
 #endif
 
 namespace autofill {
@@ -130,6 +131,14 @@ class BraveChromeAutofillClient : public ChromeAutofillClient {
     email_aliases::EmailAliasesController* controller =
         GetEmailAliasesControllerFromWebContents(web_contents());
     if (controller) {
+      auto* profile =
+          Profile::FromBrowserContext(web_contents()->GetBrowserContext());
+      if (!profile->GetPrefs()->GetBoolean(
+              email_aliases::prefs::
+                  kEmailAliasesNewAliasAutofillSuggestionEnabled)) {
+        return;
+      }
+
       const bool contains_email_suggestion =
           std::ranges::find_if(chrome_suggestions, [](const auto& suggestion) {
             return suggestion.icon == autofill::Suggestion::Icon::kEmail;
