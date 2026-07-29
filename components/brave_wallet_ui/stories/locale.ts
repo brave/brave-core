@@ -1593,14 +1593,7 @@ provideStrings({
   braveWalletExempliGratia: 'e.g $1',
 
   // Explore
-  braveWalletWeb3: 'Web3',
   braveWalletTopNavExplore: 'Explore',
-  braveWalletNoDappsFound: 'No DApps found',
-  braveWalletActiveWallets: 'Active wallets',
-  braveWalletVisitDapp: 'Visit $1',
-  braveWalletFilters: 'Filters',
-  braveWalletClearFilters: 'Clear filters',
-  braveWalletShowMore: 'Show more',
   braveWalletDetails: 'Details',
 
   // ZCash

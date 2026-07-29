@@ -191,12 +191,6 @@ export const ExploreNavOptions: NavOption[] = [
     icon: 'discover',
     route: WalletRoutes.Market,
   },
-  {
-    id: 'web3',
-    name: 'braveWalletWeb3',
-    icon: 'discover',
-    route: WalletRoutes.Web3,
-  },
 ]
 
 export const PortfolioAssetOptions: NavOption[] = [
