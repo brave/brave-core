@@ -20,6 +20,7 @@
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/render_process_host.h"
 #include "net/cookies/site_for_cookies.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 template <template <typename> class T>
 BraveProxyingWebSocket<T>::BraveProxyingWebSocket(
@@ -169,7 +170,9 @@ void BraveProxyingWebSocket<T>::WebSocketFactoryRun(
         trusted_header_client) {
   DCHECK(!forwarding_handshake_client_);
   proxy_url_ = url;
-  proxy_auth_handler_.Bind(std::move(auth_handler));
+  if (auth_handler) {
+    proxy_auth_handler_.Bind(std::move(auth_handler));
+  }
 
   if (trusted_header_client) {
     proxy_trusted_header_client_.Bind(std::move(trusted_header_client));
@@ -232,12 +235,33 @@ void BraveProxyingWebSocket<T>::OnConnectionEstablished(
     mojo::ScopedDataPipeProducerHandle writable) {
   DCHECK(forwarding_handshake_client_);
   DCHECK(!is_done_);
-  remote_endpoint_ = response->remote_endpoint;
-  forwarding_handshake_client_->OnConnectionEstablished(
-      std::move(websocket), std::move(client_receiver), std::move(response),
-      std::move(readable), std::move(writable));
+  websocket_ = std::move(websocket);
+  client_receiver_ = std::move(client_receiver);
+  handshake_response_ = std::move(response);
+  readable_ = std::move(readable);
+  writable_ = std::move(writable);
 
-  OnError(net::ERR_FAILED);
+  response_.remote_endpoint = handshake_response_->remote_endpoint;
+
+  // The TrustedHeaderClient path receives response headers separately through
+  // OnHeadersReceived(). Without one, reconstruct them from the handshake so
+  // Brave's response callbacks see the same data before establishment is
+  // forwarded. This matches WebRequestProxyingWebSocket.
+  if (receiver_as_header_client_.is_bound()) {
+    ContinueToCompleted();
+    return;
+  }
+
+  response_.headers =
+      base::MakeRefCounted<net::HttpResponseHeaders>(absl::StrFormat(
+          "HTTP/%d.%d %d %s", handshake_response_->http_version.major_value(),
+          handshake_response_->http_version.minor_value(),
+          handshake_response_->status_code, handshake_response_->status_text));
+  for (const auto& header : handshake_response_->headers) {
+    response_.headers->AddHeader(header->name, header->value);
+  }
+
+  ContinueToHeadersReceived();
 }
 
 template <template <typename> class T>
@@ -251,10 +275,6 @@ void BraveProxyingWebSocket<T>::OnAuthRequired(
     return;
   }
 
-  if (!proxy_auth_handler_.is_bound()) {
-    std::move(callback).Run(std::nullopt);
-    return;
-  }
   proxy_auth_handler_->OnAuthRequired(auth_info, headers, remote_endpoint,
                                       std::move(callback));
 }
@@ -280,6 +300,8 @@ void BraveProxyingWebSocket<T>::OnHeadersReceived(
   DCHECK(proxy_has_extra_headers());
 
   on_headers_received_callback_ = std::move(callback);
+  response_.remote_endpoint = remote_endpoint;
+  response_.ssl_info = ssl_info;
   response_.headers = base::MakeRefCounted<net::HttpResponseHeaders>(headers);
 
   ContinueToHeadersReceived();
@@ -410,16 +432,26 @@ void BraveProxyingWebSocket<T>::OnHeadersReceivedCompleteFromProxy(
     const std::optional<std::string>& headers,
     const std::optional<GURL>& url) {
   if (on_headers_received_callback_) {
-    std::move(on_headers_received_callback_)
-        .Run(net::OK, headers, std::nullopt);
+    std::move(on_headers_received_callback_).Run(error_code, headers, url);
+  }
+
+  if (error_code != net::OK) {
+    OnError(error_code);
+    return;
   }
 
   if (override_headers_) {
     response_.headers = override_headers_;
     override_headers_ = nullptr;
+  } else if (headers) {
+    response_.headers =
+        base::MakeRefCounted<net::HttpResponseHeaders>(*headers);
   }
 
   ResumeIncomingMethodCallProcessing();
+  if (!receiver_as_header_client_.is_bound()) {
+    ContinueToCompleted();
+  }
 }
 
 template <template <typename> class T>
@@ -429,21 +461,36 @@ void BraveProxyingWebSocket<T>::OnHeadersReceivedComplete(int error_code) {
     return;
   }
 
-  std::string headers;
-  if (override_headers_) {
-    headers = override_headers_->raw_headers();
-  }
-
-  if (proxy_has_extra_headers()) {
+  if (receiver_as_header_client_.is_bound()) {
     proxy_trusted_header_client_->OnHeadersReceived(
-        headers, remote_endpoint_, /*ssl_info=*/std::nullopt,
+        response_.headers->raw_headers(), response_.remote_endpoint,
+        response_.ssl_info,
         base::BindOnce(
             &BraveProxyingWebSocket::OnHeadersReceivedCompleteFromProxy,
             weak_factory_.GetWeakPtr()));
   } else {
-    OnHeadersReceivedCompleteFromProxy(
-        error_code, std::optional<std::string>(headers), std::nullopt);
+    std::optional<std::string> headers;
+    if (override_headers_) {
+      headers = override_headers_->raw_headers();
+    }
+    OnHeadersReceivedCompleteFromProxy(error_code, headers, std::nullopt);
   }
+}
+
+template <template <typename> class T>
+void BraveProxyingWebSocket<T>::ContinueToCompleted() {
+  // OnConnectionEstablished is delayed until Brave and any downstream
+  // TrustedHeaderClient have seen the response headers, matching Chromium's
+  // WebRequestProxyingWebSocket flow.
+  DCHECK(forwarding_handshake_client_);
+  DCHECK(handshake_response_);
+  forwarding_handshake_client_->OnConnectionEstablished(
+      std::move(websocket_), std::move(client_receiver_),
+      std::move(handshake_response_), std::move(readable_),
+      std::move(writable_));
+
+  // Deletes |this|.
+  std::move(on_disconnect_).Run(this);
 }
 
 template <template <typename> class T>

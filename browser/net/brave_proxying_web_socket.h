@@ -117,6 +117,7 @@ class BraveProxyingWebSocket
   void ContinueToStartRequest(int error_code);
   void OnHeadersReceivedComplete(int error_code);
   void ContinueToHeadersReceived();
+  void ContinueToCompleted();
   void OnBeforeSendHeadersCompleteFromProxy(
       int error_code,
       const std::optional<net::HttpRequestHeaders>& headers,
@@ -153,7 +154,11 @@ class BraveProxyingWebSocket
   network::ResourceRequest request_;
   network::mojom::URLResponseHead response_;
   scoped_refptr<net::HttpResponseHeaders> override_headers_;
-  net::IPEndPoint remote_endpoint_;
+  mojo::PendingRemote<network::mojom::WebSocket> websocket_;
+  mojo::PendingReceiver<network::mojom::WebSocketClient> client_receiver_;
+  network::mojom::WebSocketHandshakeResponsePtr handshake_response_;
+  mojo::ScopedDataPipeConsumerHandle readable_;
+  mojo::ScopedDataPipeProducerHandle writable_;
 
   GURL redirect_url_;
   bool is_done_ = false;
