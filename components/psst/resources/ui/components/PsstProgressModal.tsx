@@ -80,8 +80,6 @@ export const PsstProgressModal = () => {
     return hasFailures ? SettingState.Failed : SettingState.Completed
   })()
 
-  console.log('[PsstProgressModal] commonState:', SettingState[commonState], optionsStatuses)
-
   const { performPrivacyTuning } = api.usePerformPrivacyTuning()
 
   const siteName = siteData ? siteData.siteName : ''
@@ -102,7 +100,6 @@ export const PsstProgressModal = () => {
 
   // Handle request status updates
   api.useOnSetRequestStatus((requestUid, requestError) => {
-    console.log('[PsstProgressModal] useOnSetRequestStatus:', requestUid, requestError)
     updateAllMatchingOptionsStatuses((prevOptionsStatuses) => {
       if (!prevOptionsStatuses) return prevOptionsStatuses
 
@@ -223,7 +220,8 @@ export const PsstProgressModal = () => {
         }}
         onItemChecked={handleSettingItemCheck}
       />
-      {(commonState !== SettingState.Completed && commonState !== SettingState.Failed) ? (
+      {commonState !== SettingState.Completed
+      && commonState !== SettingState.Failed ? (
         <RightAlignedItem>
           <PsstDlgButton
             kind='outline'

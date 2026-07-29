@@ -139,7 +139,8 @@ ACTION_P(InsertPolicyScriptInPageCallback, future, value) {
 // can decide when (and after which navigations) it is invoked.
 ACTION_P(HoldInsertScriptInPageCallback, holder) {
   *holder = std::move(
-      const_cast<PsstTabWebContentsObserver::InsertScriptInPageCallback&>(arg1));
+      const_cast<PsstTabWebContentsObserver::InsertScriptInPageCallback&>(
+          arg1));
 }
 
 ACTION_P(ShowCallback, future, urls_to_skip) {
@@ -491,9 +492,9 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   // test harness, so no run loop is tied to a rule check for it. What matters
   // for this test is only that the back navigation commits.
   EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url_, _))
-      .WillOnce(CheckIfMatchCallback(
-          &first_nav_check_loop,
-          CreateMatchedRule(user_script_, policy_script_)))
+      .WillOnce(
+          CheckIfMatchCallback(&first_nav_check_loop,
+                               CreateMatchedRule(user_script_, policy_script_)))
       .WillRepeatedly(CheckIfMatchWithoutRule());
   EXPECT_CALL(psst_rule_registry(), CheckIfMatch(second_navigation_url, _))
       .WillOnce(CheckIfMatchFailsCallback(&second_nav_check_loop));
@@ -1115,7 +1116,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
                                             .Set("description", "settings"))));
 
   EXPECT_CALL(ui_delegate(),
-          GetPsstWebsiteSettings(url::Origin::Create(url_), user_id_))
+              GetPsstWebsiteSettings(url::Origin::Create(url_), user_id_))
       .WillOnce([&settings](const url::Origin&, const std::string&) {
         return settings.Clone();
       });
