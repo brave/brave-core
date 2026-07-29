@@ -14,6 +14,7 @@
 #include "brave/browser/misc_metrics/theme_metrics.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
+#include "brave/components/constants/pref_names.h"
 #include "brave/components/misc_metrics/autofill_metrics.h"
 #include "brave/components/misc_metrics/language_metrics.h"
 #include "brave/components/misc_metrics/page_metrics.h"
@@ -109,6 +110,10 @@ ProfileMiscMetricsService::ProfileMiscMetricsService(
         prefs::kSearchSuggestEnabled,
         base::BindRepeating(&ProfileMiscMetricsService::ReportSimpleMetrics,
                             base::Unretained(this)));
+    pref_change_registrar_.Add(
+        kNewTabPageShowSponsoredSites,
+        base::BindRepeating(&ProfileMiscMetricsService::ReportSimpleMetrics,
+                            base::Unretained(this)));
   }
 #endif
   auto* personal_data_manager =
@@ -161,6 +166,10 @@ void ProfileMiscMetricsService::ReportSimpleMetrics() {
       profile_prefs_->GetBoolean(brave_shields::prefs::kAdBlockDeveloperMode);
   UMA_HISTOGRAM_EXACT_LINEAR(kShieldsDevModeEnabledHistogramName,
                              shields_dev_mode_enabled ? 1 : INT_MAX - 1, 2);
+  bool show_sponsored_sites =
+      profile_prefs_->GetBoolean(kNewTabPageShowSponsoredSites);
+  UMA_HISTOGRAM_EXACT_LINEAR(kNewTabPageShowSponsoredSitesHistogramName,
+                             show_sponsored_sites ? INT_MAX - 1 : 0, 2);
 }
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
