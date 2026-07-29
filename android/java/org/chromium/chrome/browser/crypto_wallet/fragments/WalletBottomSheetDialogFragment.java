@@ -5,9 +5,11 @@
 
 package org.chromium.chrome.browser.crypto_wallet.fragments;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import org.chromium.brave_wallet.mojom.BraveWalletService;
@@ -19,6 +21,7 @@ import org.chromium.build.annotations.NullMarked;
 import org.chromium.chrome.browser.app.domain.KeyringModel;
 import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.crypto_wallet.observers.KeyringServiceObserverImpl;
+import org.chromium.chrome.browser.util.ConfigurationUtils;
 
 /**
  * Base class for {@code BottomSheetDialogFragment} with wallet specific implementation
@@ -75,6 +78,26 @@ public class WalletBottomSheetDialogFragment extends BottomSheetDialogFragment
         } else {
             throw new IllegalStateException("Host activity must implement WalletFragmentCallback.");
         }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // Tablets keep Material's default width.
+        if (ConfigurationUtils.isTablet(requireContext())) {
+            return;
+        }
+
+        final Dialog dialog = getDialog();
+        if (!(dialog instanceof BottomSheetDialog bottomSheetDialog)) {
+            return;
+        }
+
+        // Material's BottomSheetDialog caps the sheet width (640dp by default) and
+        // centers it on wide layouts, which leaves side gaps in landscape. On phones
+        // we want the sheet to span the full width.
+        bottomSheetDialog.getBehavior().setMaxWidth(-1);
     }
 
     @Override
