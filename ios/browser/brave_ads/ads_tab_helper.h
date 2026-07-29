@@ -76,6 +76,8 @@ class AdsTabHelper : public web::WebStateUserData<AdsTabHelper>,
   std::optional<int> http_status_code_;
   bool was_restored_ = false;
   bool is_new_navigation_ = false;
+  bool is_same_document_navigation_ = false;
+  bool has_page_loaded_ = false;
   bool is_web_state_visible_ = false;
 
   base::WeakPtrFactory<AdsTabHelper> weak_factory_{this};

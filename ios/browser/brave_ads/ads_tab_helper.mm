@@ -98,6 +98,7 @@ void AdsTabHelper::DidStartNavigation(
     web::NavigationContext* navigation_context) {
   redirect_chain_.clear();
   http_status_code_.reset();
+  is_same_document_navigation_ = false;
 
   if (web::NavigationManager* navigation_manager =
           web_state->GetNavigationManager()) {
@@ -119,6 +120,14 @@ void AdsTabHelper::DidFinishNavigation(
     web::NavigationContext* navigation_context) {
   if (!navigation_context->HasCommitted()) {
     return;
+  }
+
+  // Computed before the error page check below, so that `has_page_loaded_`
+  // is reset for a new document even if it fails to load, rather than
+  // keeping a stale value from whatever document was previously loaded.
+  is_same_document_navigation_ = navigation_context->IsSameDocument();
+  if (!is_same_document_navigation_) {
+    has_page_loaded_ = false;
   }
 
   if (net::HttpResponseHeaders* headers =
@@ -150,9 +159,11 @@ void AdsTabHelper::DidFinishNavigation(
 
   MaybeNotifyTabDidLoad();
 
-  if (navigation_context->IsSameDocument()) {
-    // Set `was_restored_` to `false` so that listeners are notified of tab
-    // changes after the tab is restored.
+  // Only reset `was_restored_` once the current document has finished
+  // loading, so that listeners are not notified of tab changes for a
+  // same-document navigation that occurs while the tab is still being
+  // restored.
+  if (is_same_document_navigation_ && has_page_loaded_) {
     was_restored_ = false;
   }
 }
@@ -160,6 +171,8 @@ void AdsTabHelper::DidFinishNavigation(
 void AdsTabHelper::PageLoaded(
     web::WebState* web_state,
     web::PageLoadCompletionStatus load_completion_status) {
+  has_page_loaded_ = true;
+
   MaybeNotifyTabTextContentDidChange();
 
   // Set `was_restored_` to `false` so that listeners are notified of tab
@@ -212,11 +225,15 @@ void AdsTabHelper::OnVisibilityChanged(bool is_visible) {
 bool AdsTabHelper::ShouldNotifyTabContentDidChange() const {
   // Don't notify about content changes if the ads service is not available, the
   // tab was restored, was a previously committed navigation, the web contents
-  // are still loading, or an error page was displayed. `http_status_code_` can
-  // be `std::nullopt` if the navigation never finishes, which can occur if the
-  // user constantly refreshes the page, or if the committed navigation was a
-  // network error page.
-  return !was_restored_ && is_new_navigation_ && !redirect_chain_.empty() &&
+  // are still loading, was a same-document navigation, or an error page was
+  // displayed. `http_status_code_` can be `std::nullopt` if the navigation
+  // never finishes, which can occur if the user constantly refreshes the page,
+  // or if the committed navigation was a network error page.
+  //
+  // Unlike desktop, `PageLoaded` also fires for same-document navigations, so
+  // this must be checked explicitly here.
+  return !was_restored_ && is_new_navigation_ &&
+         !is_same_document_navigation_ && !redirect_chain_.empty() &&
          http_status_code_ && !IsHttpErrorStatusCode(*http_status_code_);
 }
 
