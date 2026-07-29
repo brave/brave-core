@@ -367,6 +367,7 @@ struct TabGridView: View {
     HStack(spacing: 12) {
       if !viewModel.isSearching {
         moreMenu
+          .transition(.tabGridHeaderButtonLeading)
       }
       if !isSearchBarHidden {
         TabGridSearchBar(
@@ -380,8 +381,10 @@ struct TabGridView: View {
       }
       if !viewModel.isSearching, !viewModel.tabs.isEmpty {
         shredMenu
+          .transition(.tabGridHeaderButtonLeading)
       }
     }
+    .animation(.toolbarsSizeAnimation, value: viewModel.isSearching)
     .fixedSize(horizontal: false, vertical: true)
     .containerCornerOffset(.leading, sizeToFit: true)
     .foregroundStyle(Color(braveSystemName: .textSecondary))
@@ -878,6 +881,15 @@ extension Animation {
   /// entering multi-select mode
   static var toolbarsSizeAnimation: Animation {
     .spring(response: 0.3)
+  }
+}
+
+extension AnyTransition {
+  /// Exits toward the leading edge while shrinking
+  fileprivate static var tabGridHeaderButtonLeading: AnyTransition {
+    .move(edge: .leading)
+      .combined(with: .scale(scale: 0.1, anchor: .trailing))
+      .combined(with: .opacity)
   }
 }
 

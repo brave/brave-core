@@ -19,8 +19,10 @@ struct TabGridSearchBar: View {
       Representable(text: $text, isFocused: $isFocused)
       if isFocused {
         Button {
-          isFocused = false
-          text = ""
+          withAnimation(.toolbarsSizeAnimation) {
+            isFocused = false
+            text = ""
+          }
         } label: {
           Text(Strings.CancelString)
             .foregroundStyle(Color(braveSystemName: .textInteractive))
@@ -106,11 +108,15 @@ extension TabGridSearchBar {
       }
 
       public func textFieldDidBeginEditing(_ textField: UITextField) {
-        isFocused = true
+        withAnimation(.toolbarsSizeAnimation) {
+          isFocused = true
+        }
       }
 
       public func textFieldDidEndEditing(_ textField: UITextField) {
-        isFocused = false
+        withAnimation(.toolbarsSizeAnimation) {
+          isFocused = false
+        }
       }
 
       public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
