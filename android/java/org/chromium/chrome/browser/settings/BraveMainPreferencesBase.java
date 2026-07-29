@@ -401,6 +401,7 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         }
 
         if (IncognitoReauthManager.isIncognitoReauthFeatureAvailable()) {
+            setPreferenceVisibleIfPresent(PREF_BROWSER_LOCK, true);
             setPreferenceOrder(PREF_BROWSER_LOCK, ++generalOrder);
         } else {
             removePreferenceIfPresent(PREF_BROWSER_LOCK);
