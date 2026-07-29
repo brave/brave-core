@@ -1327,10 +1327,15 @@ void BraveContentBrowserClient::MaybeHideReferrer(
   }
 
   Profile* profile = Profile::FromBrowserContext(browser_context);
+  auto* settings_service =
+      BraveShieldsSettingsServiceFactory::GetForProfile(profile);
+  if (!settings_service) {
+    return;
+  }
+
   const bool allow_referrers = brave_shields::AreReferrersAllowed(
       HostContentSettingsMapFactory::GetForProfile(profile), document_url);
-  const bool shields_up = brave_shields::IsBraveShieldsEnabled(
-      HostContentSettingsMapFactory::GetForProfile(profile), document_url);
+  const bool shields_up = settings_service->GetBraveShieldsEnabled(document_url);
 
   content::Referrer new_referrer;
   if (brave_shields::MaybeChangeReferrer(allow_referrers, shields_up,
@@ -1511,19 +1516,16 @@ bool PreventDarkModeFingerprinting(WebContents* web_contents,
                                    WebPreferences* prefs) {
   Profile* profile =
       Profile::FromBrowserContext(web_contents->GetBrowserContext());
-  // The HostContentSettingsMap might be null for some irregular profiles, e.g.
-  // the System Profile.
-  auto* host_content_settings_map =
-      HostContentSettingsMapFactory::GetForProfile(profile);
-  if (!host_content_settings_map) {
+  auto* settings_service =
+      BraveShieldsSettingsServiceFactory::GetForProfile(profile);
+  if (!settings_service) {
     return false;
   }
+
   const GURL url =
       main_frame_site.GetSecurityPrincipal().GetDeprecatedSiteURL();
-  const bool shields_up =
-      brave_shields::IsBraveShieldsEnabled(host_content_settings_map, url);
-  auto fingerprinting_type = brave_shields::GetFingerprintingControlType(
-      host_content_settings_map, url);
+  const bool shields_up = settings_service->GetBraveShieldsEnabled(url);
+  auto fingerprinting_type = settings_service->GetFingerprintingControlType(url);
   // https://github.com/brave/brave-browser/issues/15265
   // Always use color scheme Light if fingerprinting mode strict
   if (base::FeatureList::IsEnabled(

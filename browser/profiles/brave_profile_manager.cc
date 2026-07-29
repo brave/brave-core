@@ -20,6 +20,7 @@
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_p3a.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/constants/brave_constants.h"
@@ -42,6 +43,7 @@
 #include "components/signin/public/base/signin_pref_names.h"
 #include "content/public/browser/browser_thread.h"
 #include "net/base/features.h"
+#include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/components/ai_chat/core/common/features.h"
@@ -114,11 +116,14 @@ void RecordInitialP3AValues(Profile* profile) {
   }
   ntp_background_images::RecordSponsoredImagesEnabledP3A(profile->GetPrefs());
   if (profile->IsRegularProfile()) {
+    auto* settings_service =
+      BraveShieldsSettingsServiceFactory::GetForProfile(profile);
+    DCHECK(settings_service);
     auto* map = HostContentSettingsMapFactory::GetForProfile(profile);
     MaybeRecordInitialShieldsSettings(
         g_browser_process->local_state(), profile->GetPrefs(), map,
         brave_shields::GetCosmeticFilteringControlType(map, GURL()),
-        brave_shields::GetFingerprintingControlType(map, GURL()));
+        settings_service->GetFingerprintingControlType(GURL()));
   }
 }
 

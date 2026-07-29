@@ -20,6 +20,7 @@
 #include "components/prefs/pref_service.h"
 #include "net/base/url_util.h"
 #include "url/gurl.h"
+#include "brave/components/brave_shields/core/common/shields_settings.mojom-shared.h"
 
 namespace brave_shields {
 
@@ -77,6 +78,20 @@ base::Token CreateProfileLevelFarblingToken() {
   return g_profile_token_for_testing.has_value()
              ? g_profile_token_for_testing.value()
              : base::Token::CreateRandom();
+}
+
+ContentSetting GetDefaultBlockFromControlType(ControlType type) {
+  if (type == ControlType::DEFAULT) {
+    return CONTENT_SETTING_DEFAULT;
+  }
+
+  return type == ControlType::ALLOW ? CONTENT_SETTING_ALLOW
+                                    : CONTENT_SETTING_BLOCK;
+}
+
+void RecordShieldsSettingChanged(PrefService* local_state) {
+  ::brave_shields::MaybeRecordShieldsUsageP3A(
+      ::brave_shields::kChangedPerSiteShields, local_state);
 }
 
 }  // namespace
@@ -195,8 +210,7 @@ void BraveShieldsSettingsService::SetFingerprintMode(
 
 mojom::FingerprintMode BraveShieldsSettingsService::GetFingerprintMode(
     const GURL& url) {
-  ControlType control_type = brave_shields::GetFingerprintingControlType(
-      &*host_content_settings_map_, url);
+  ControlType control_type = GetFingerprintingControlType(url);
 
   if (control_type == ControlType::ALLOW) {
     return mojom::FingerprintMode::ALLOW_MODE;
@@ -440,6 +454,71 @@ base::Token BraveShieldsSettingsService::GetFarblingToken(
   }
 
   return token;
+}
+
+void BraveShieldsSettingsService::SetFingerprintingControlType(ControlType type,
+                                  const GURL& url,
+                                  PrefService* local_state,
+                                  PrefService* profile_state) {
+  auto primary_pattern = GetPatternFromURL(url);
+
+  if (!primary_pattern.IsValid()) {
+    return;
+  }
+
+  ControlType prev_setting = GetFingerprintingControlType(url);
+  content_settings::SettingInfo setting_info;
+  base::Value web_setting = host_content_settings_map_->GetWebsiteSetting(
+      url, GURL(), ContentSettingsType::BRAVE_FINGERPRINTING_V2, &setting_info);
+  bool was_default =
+      web_setting.is_none() || setting_info.primary_pattern.MatchesAllHosts() ||
+      setting_info.source == content_settings::SettingSource::kRemoteList;
+
+  ContentSetting content_setting;
+  if (type == ControlType::DEFAULT || type == ControlType::BLOCK_THIRD_PARTY) {
+    type = ControlType::DEFAULT;
+    content_setting = CONTENT_SETTING_ASK;
+  } else {
+    content_setting = GetDefaultBlockFromControlType(type);
+  }
+
+  host_content_settings_map_->SetContentSettingCustomScope(
+      primary_pattern, ContentSettingsPattern::Wildcard(),
+      ContentSettingsType::BRAVE_FINGERPRINTING_V2, content_setting);
+  if (!host_content_settings_map_->IsOffTheRecord()) {
+    // Only report to P3A if not a guest/incognito profile
+    RecordShieldsSettingChanged(local_state);
+    if (url.is_empty()) {
+      // If global setting changed, report global setting and recalulate
+      // domain specific setting counts
+      RecordShieldsFingerprintSetting(type);
+      RecordShieldsDomainSettingCounts(profile_state, true, type);
+    } else {
+      // If domain specific setting changed, recalculate counts
+      ControlType global_setting = GetFingerprintingControlType(GURL());
+      RecordShieldsDomainSettingCountsWithChange(
+          profile_state, true, global_setting,
+          was_default ? nullptr : &prev_setting, type);
+    }
+  }
+}
+
+ControlType BraveShieldsSettingsService::GetFingerprintingControlType(const GURL& url) {
+  ContentSettingsForOneType fingerprinting_rules =
+      host_content_settings_map_->GetSettingsForOneType(ContentSettingsType::BRAVE_FINGERPRINTING_V2);
+
+  ContentSetting fp_setting =
+      GetBraveFPContentSettingFromRules(fingerprinting_rules, url);
+
+  if (fp_setting == CONTENT_SETTING_ASK ||
+      fp_setting == CONTENT_SETTING_DEFAULT ||
+      (!IsShowStrictFingerprintingModeEnabled() &&
+       fp_setting == CONTENT_SETTING_BLOCK)) {
+    return ControlType::DEFAULT;
+  }
+
+  return fp_setting == CONTENT_SETTING_ALLOW ? ControlType::ALLOW
+                                             : ControlType::BLOCK;
 }
 
 }  // namespace brave_shields

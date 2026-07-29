@@ -274,9 +274,11 @@ void DefaultBraveShieldsHandler::GetFingerprintingControlType(
     const base::ListValue& args) {
   CHECK_EQ(args.size(), 1U);
   CHECK(profile_);
+  auto* settings_service =
+      BraveShieldsSettingsServiceFactory::GetForProfile(profile_);
+  CHECK(settings_service);
 
-  ControlType setting = brave_shields::GetFingerprintingControlType(
-      HostContentSettingsMapFactory::GetForProfile(profile_), GURL());
+  ControlType setting = settings_service->GetFingerprintingControlType(GURL());
 
   AllowJavascript();
   ResolveJavascriptCallback(args[0], base::Value(ControlTypeToString(setting)));
@@ -299,8 +301,11 @@ void DefaultBraveShieldsHandler::GetFingerprintingBlockEnabled(
   CHECK_EQ(args.size(), 1U);
   CHECK(profile_);
 
-  ControlType setting = brave_shields::GetFingerprintingControlType(
-      HostContentSettingsMapFactory::GetForProfile(profile_), GURL());
+  auto* settings_service =
+      BraveShieldsSettingsServiceFactory::GetForProfile(profile_);
+  CHECK(settings_service);
+
+  ControlType setting = settings_service->GetFingerprintingControlType(GURL());
   bool result = setting != ControlType::ALLOW;
   AllowJavascript();
   ResolveJavascriptCallback(args[0], base::Value(result));

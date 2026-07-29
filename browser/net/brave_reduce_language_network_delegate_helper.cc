@@ -97,6 +97,9 @@ int OnBeforeStartTransaction_ReduceLanguageWork(
     T<BraveRequestInfo> ctx) {
   Profile* profile = Profile::FromBrowserContext(ctx->browser_context());
   DCHECK(profile);
+  auto* settings_service =
+      BraveShieldsSettingsServiceFactory::GetForProfile(profile);
+  DCHECK(settings_service);
   HostContentSettingsMap* content_settings =
       HostContentSettingsMapFactory::GetForProfile(profile);
   DCHECK(content_settings);
@@ -143,8 +146,7 @@ int OnBeforeStartTransaction_ReduceLanguageWork(
   }
 
   std::string accept_language_string;
-  switch (brave_shields::GetFingerprintingControlType(content_settings,
-                                                      origin_url)) {
+  switch (settings_service->GetFingerprintingControlType(origin_url)) {
     case ControlType::BLOCK: {
       // If fingerprint blocking is maximum, set Accept-Language header to
       // static value regardless of other preferences.

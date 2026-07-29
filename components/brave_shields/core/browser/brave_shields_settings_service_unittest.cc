@@ -188,8 +188,7 @@ TEST_F(BraveShieldsSettingsServiceTest, FingerprintMode) {
   // verify the initial values
   EXPECT_EQ(brave_shields_settings()->GetFingerprintMode(kTestUrl),
             FingerprintMode::STANDARD_MODE);
-  EXPECT_EQ(brave_shields::GetFingerprintingControlType(
-                GetHostContentSettingsMap(), kTestUrl),
+  EXPECT_EQ(brave_shields_settings()->GetFingerprintingControlType(kTestUrl),
             brave_shields::ControlType::DEFAULT);
 
   brave_shields_settings()->SetFingerprintMode(FingerprintMode::ALLOW_MODE,
@@ -197,8 +196,7 @@ TEST_F(BraveShieldsSettingsServiceTest, FingerprintMode) {
   EXPECT_EQ(brave_shields_settings()->GetFingerprintMode(kTestUrl),
             FingerprintMode::ALLOW_MODE);
   // verify underlying FingerprintingControlType is updated
-  EXPECT_EQ(brave_shields::GetFingerprintingControlType(
-                GetHostContentSettingsMap(), kTestUrl),
+  EXPECT_EQ(brave_shields_settings()->GetFingerprintingControlType(kTestUrl),
             brave_shields::ControlType::ALLOW);
 
   // iOS does not support FingerprintMode::STRICT_MODE
@@ -210,8 +208,7 @@ TEST_F(BraveShieldsSettingsServiceTest, FingerprintMode) {
   EXPECT_EQ(brave_shields_settings()->GetFingerprintMode(kTestUrl),
             FingerprintMode::STANDARD_MODE);
   // verify underlying FingerprintingControlType is updated
-  EXPECT_EQ(brave_shields::GetFingerprintingControlType(
-                GetHostContentSettingsMap(), kTestUrl),
+  EXPECT_EQ(brave_shields_settings()->GetFingerprintingControlType(kTestUrl),
             brave_shields::ControlType::DEFAULT);
 
   // enable kBraveShowStrictFingerprintingMode flag
@@ -224,8 +221,7 @@ TEST_F(BraveShieldsSettingsServiceTest, FingerprintMode) {
   EXPECT_EQ(brave_shields_settings()->GetFingerprintMode(kTestUrl),
             FingerprintMode::STRICT_MODE);
   // verify underlying FingerprintingControlType is updated
-  EXPECT_EQ(brave_shields::GetFingerprintingControlType(
-                GetHostContentSettingsMap(), kTestUrl),
+  EXPECT_EQ(brave_shields_settings()->GetFingerprintingControlType(kTestUrl),
             brave_shields::ControlType::BLOCK);
 #endif
 
@@ -234,8 +230,7 @@ TEST_F(BraveShieldsSettingsServiceTest, FingerprintMode) {
       brave_shields_settings()->GetFingerprintMode(GURL("https://example.com")),
       FingerprintMode::STANDARD_MODE);
   // verify underlying FingerprintingControlType is unchanged
-  EXPECT_EQ(brave_shields::GetFingerprintingControlType(
-                GetHostContentSettingsMap(), GURL("https://example.com")),
+  EXPECT_EQ(brave_shields_settings()->GetFingerprintingControlType(GURL("https://example.com")),
             brave_shields::ControlType::DEFAULT);
 }
 
@@ -247,8 +242,7 @@ TEST_F(BraveShieldsSettingsServiceTest, DefaultFingerprintMode) {
   // verify the initial default values
   EXPECT_EQ(brave_shields_settings()->GetDefaultFingerprintMode(),
             FingerprintMode::STANDARD_MODE);
-  EXPECT_EQ(brave_shields::GetFingerprintingControlType(
-                GetHostContentSettingsMap(), GURL()),
+  EXPECT_EQ(brave_shields_settings()->GetFingerprintingControlType(GURL()),
             brave_shields::ControlType::DEFAULT);
 
   brave_shields_settings()->SetDefaultFingerprintMode(
@@ -256,8 +250,7 @@ TEST_F(BraveShieldsSettingsServiceTest, DefaultFingerprintMode) {
   EXPECT_EQ(brave_shields_settings()->GetDefaultFingerprintMode(),
             FingerprintMode::ALLOW_MODE);
   // verify underlying FingerprintingControlType is updated
-  EXPECT_EQ(brave_shields::GetFingerprintingControlType(
-                GetHostContentSettingsMap(), GURL()),
+  EXPECT_EQ(brave_shields_settings()->GetFingerprintingControlType(GURL()),
             brave_shields::ControlType::ALLOW);
 
   EXPECT_EQ(
@@ -268,8 +261,7 @@ TEST_F(BraveShieldsSettingsServiceTest, DefaultFingerprintMode) {
   EXPECT_EQ(brave_shields_settings()->GetFingerprintMode(kTestUrl),
             FingerprintMode::STANDARD_MODE);
   // verify underlying FingerprintingControlType is unchanged
-  EXPECT_EQ(brave_shields::GetFingerprintingControlType(
-                GetHostContentSettingsMap(), kTestUrl),
+  EXPECT_EQ(brave_shields_settings()->GetFingerprintingControlType(kTestUrl),
             brave_shields::ControlType::DEFAULT);
 }
 

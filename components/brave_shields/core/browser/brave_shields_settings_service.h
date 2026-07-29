@@ -11,6 +11,7 @@
 #include "base/memory/raw_ref.h"
 #include "base/token.h"
 #include "brave/components/brave_shields/core/common/brave_shields_panel.mojom.h"
+#include "brave/components/brave_shields/core/common/brave_shields_settings_values.h"
 #include "brave/components/brave_shields/core/common/farbling_prng.h"
 #include "brave/components/brave_shields/core/common/shields_settings.mojom.h"
 #include "components/content_settings/core/browser/cookie_settings.h"
@@ -89,6 +90,12 @@ class BraveShieldsSettingsService : public KeyedService {
   // is enabled.
   base::Token GetFarblingToken(const GURL& url,
                                base::span<const uint8_t> additional_entropy);
+
+void SetFingerprintingControlType(ControlType type,
+                                  const GURL& url,
+                                  PrefService* local_state = nullptr,
+                                  PrefService* profile_state = nullptr);
+ControlType GetFingerprintingControlType(const GURL& url);
 
  private:
   const raw_ref<HostContentSettingsMap>
