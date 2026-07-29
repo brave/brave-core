@@ -222,6 +222,60 @@ public class BraveBrowserLockManagerTest {
     }
 
     @Test
+    public void preNativeOverlay_lockArmed_overlayShownOnActivityStart() {
+        mActivity = Robolectric.buildActivity(Activity.class).create().start().get();
+
+        TestManager manager = new TestManager(); // mProfile == null, no onNativeInitialized
+        manager.setLockArmedForTesting(true);
+
+        manager.onActivityStateChange(mActivity, ActivityState.STARTED);
+
+        assertTrue(manager.isPreNativeOverlayShownForTesting(mActivity));
+    }
+
+    @Test
+    public void preNativeOverlay_lockNotArmed_noOverlay() {
+        mActivity = Robolectric.buildActivity(Activity.class).create().start().get();
+
+        TestManager manager = new TestManager();
+        // mLockArmed stays false
+
+        manager.onActivityStateChange(mActivity, ActivityState.STARTED);
+
+        assertFalse(manager.isPreNativeOverlayShownForTesting(mActivity));
+    }
+
+    @Test
+    public void preNativeOverlay_removedOnNativeInitialized() {
+        ChromeSharedPreferences.getInstance()
+                .writeBoolean(BravePreferenceKeys.BRAVE_BROWSER_LOCK, true);
+        mActivity = Robolectric.buildActivity(Activity.class).create().start().get();
+
+        TestManager manager = new TestManager();
+        manager.setLockArmedForTesting(true);
+        manager.onActivityStateChange(mActivity, ActivityState.STARTED);
+        assertTrue(manager.isPreNativeOverlayShownForTesting(mActivity));
+
+        manager.onNativeInitialized(mProfile);
+
+        assertFalse(manager.isPreNativeOverlayShownForTesting(mActivity));
+    }
+
+    @Test
+    public void onNativeInitialized_featureUnavailable_clearsPhase1Arm() {
+        ChromeSharedPreferences.getInstance()
+                .writeBoolean(BravePreferenceKeys.BRAVE_BROWSER_LOCK, true);
+        IncognitoReauthManager.setIsIncognitoReauthFeatureAvailableForTesting(false);
+
+        BraveBrowserLockManager manager = new BraveBrowserLockManager();
+        manager.setLockArmedForTesting(true); // simulate Phase 1 pref-only arming
+
+        manager.onNativeInitialized(mProfile);
+
+        assertFalse(manager.isLockArmedForTesting());
+    }
+
+    @Test
     public void reauthNotPossible_clearsLockArmed() {
         ChromeSharedPreferences.getInstance()
                 .writeBoolean(BravePreferenceKeys.BRAVE_BROWSER_LOCK, true);
