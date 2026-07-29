@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+set -x
+
+git config user.name brave-builds
+git config user.email devops@brave.com
+git config push.default simple
+
+if ! grep -qix '[0-9a-f]\{40,40\}' <<<"$COMMIT_HASH"; then
+  echo "Provide a full commit hash; got: $COMMIT_HASH"
+  exit 1
+fi
+
+pr_number="${PR_NUMBER:-"$(gh pr list --search "$COMMIT_HASH" --json number -q '.[].number')"}"
+gh_pr_view=$(gh pr view "${pr_number:?}" --json baseRefName,headRefName,headRepository,headRepositoryOwner,id,isCrossRepository,url)
+
+JQ=(jq -e -r)
+baseRefName=$("${JQ[@]}" ".baseRefName" <<<"$gh_pr_view")
+headRefName=$("${JQ[@]}" ".headRefName" <<<"$gh_pr_view")
+headRepositoryName=$("${JQ[@]}" ".headRepository.name" <<<"$gh_pr_view")
+headRepositoryOwnerLogin=$("${JQ[@]}" ".headRepositoryOwner.login" <<<"$gh_pr_view")
+isCrossRepository=$("${JQ[@]}" ".isCrossRepository" <<<"$gh_pr_view")
+
+[[ "$isCrossRepository" = "true" ]] || { echo "PR is not cross repo. Exiting!"; exit 1; }
+
+git remote add contributor "https://github.com/$headRepositoryOwnerLogin/$headRepositoryName.git" || :
+contribHeadRefName="contributor-$headRepositoryOwnerLogin-$headRefName"
+git fetch --no-tags contributor +"$headRefName":"$contribHeadRefName"
+# Note we are checking out the provided commit hash instead of the pr-branch to avoid race condition
+# The author could have commited malicious code between the last review and the execution of this workflow
+git checkout "$COMMIT_HASH"
+git push -f origin HEAD:"refs/heads/$contribHeadRefName"
+
+existing_prs=$(gh pr list -H "$contribHeadRefName" --json number)
+if [[ "$existing_prs" = "[]" ]]; then
+  gh pr create \
+    --draft \
+    --base "$baseRefName" \
+    --head "$contribHeadRefName" \
+    --title "CI run for contributor PR #$pr_number" \
+    --body \
+"## Description
+This PR is created to run CI on the changes proposed in PR #$pr_number by @$headRepositoryOwnerLogin.
+
+**This PR should not be merged.**"
+fi
