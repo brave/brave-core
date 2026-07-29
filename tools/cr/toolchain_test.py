@@ -7,9 +7,8 @@
 
 Layers:
 
-* Pure helpers -- `_render_py_literal`, `RustToolchain._commit_title`,
-  `RustToolchain._load_extra_deps`, `XcodeToolchain._provenance_comment`, and
-  `get_assigned_value`.
+* Pure helpers -- `RustToolchain._commit_title`,
+  `XcodeToolchain._provenance_comment`, and `get_assigned_value`.
 
 * Detection / attribution -- `Toolchain.was_updated`, the unified
   `Toolchain.find_culprit`, `RustToolchain.is_published`, and `Toolchain.check`,
@@ -26,7 +25,6 @@ Layers:
 
 from __future__ import annotations
 
-import ast
 import shutil
 import stat
 import unittest
@@ -49,27 +47,6 @@ CHROMIUM_TAG = '150.0.7850.1'
 # Pure helpers.
 # ---------------------------------------------------------------------------
 
-NEW_ENTRY = {
-    'src/third_party/rust-toolchain': {
-        'bucket': 'https://example.invalid/rust-toolchain-aux/',
-        'condition': 'not rust_force_head_revision',
-        'objects': [
-            {
-                'object_name': 'linux-x64-rust-toolchain-2.tar.xz',
-                'sha256sum': 'newlinuxsha',
-                'size_bytes': 111,
-                'condition': 'host_os == "linux"',
-            },
-            {
-                'object_name': 'win-rust-toolchain-2.tar.xz',
-                'sha256sum': 'newwinsha',
-                'size_bytes': 222,
-                'condition': 'host_os == "win"',
-            },
-        ],
-    },
-}
-
 SAMPLE_INSTALLER = """\
 # Installer module.
 
@@ -89,38 +66,39 @@ extra_deps = {
         'condition': 'not rust_force_head_revision',
         'objects': [
             {
-                'object_name': 'old-linux-1.tar.xz',
+                'object_name': 'old-linux-x64-1.tar.xz',
                 'sha256sum': 'oldlinuxsha',
+                'size_bytes': 1,
+                'overlayed_on': 'Linux_x64/old-upstream.tar.xz',
                 'condition': 'host_os == "linux"',
+            },
+            {
+                'object_name': 'old-mac-arm64-1.tar.xz',
+                'sha256sum': 'oldmacarmsha',
+                'size_bytes': 1,
+                'overlayed_on': 'Mac_arm64/old-upstream.tar.xz',
+                'condition': 'host_os == "mac" and host_cpu == "arm64"',
+            },
+            {
+                'object_name': 'old-mac-1.tar.xz',
+                'sha256sum': 'oldmacsha',
+                'size_bytes': 1,
+                'overlayed_on': 'Mac/old-upstream.tar.xz',
+                'condition': 'host_os == "mac" and host_cpu == "x64"',
+            },
+            {
+                'object_name': 'old-win-1.tar.xz',
+                'sha256sum': 'oldwinsha',
+                'size_bytes': 1,
+                'overlayed_on': 'Win/old-upstream.tar.xz',
+                'condition': 'host_os == "win"',
             },
         ],
     },
 }
 
-
-def untouched():
-    return 1
+OTHER_CONSTANT = 1
 """
-
-
-class RenderLiteralTest(unittest.TestCase):
-    """Tests for `toolchain._render_py_literal`."""
-
-    def test_round_trips(self):
-        self.assertEqual(
-            ast.literal_eval(toolchain._render_py_literal(NEW_ENTRY)),
-            NEW_ENTRY)
-
-    def test_single_quoted_with_embedded_double_quotes(self):
-        rendered = toolchain._render_py_literal(
-            {'condition': 'host_os == "mac" and host_cpu == "arm64"'})
-        self.assertIn(
-            "    'condition': 'host_os == \"mac\" and host_cpu == \"arm64\"',",
-            rendered)
-
-    def test_empty_containers(self):
-        self.assertEqual(toolchain._render_py_literal({}), '{}')
-        self.assertEqual(toolchain._render_py_literal([]), '[]')
 
 
 class GetAssignedValueTest(unittest.TestCase):
@@ -150,44 +128,23 @@ class CommitTitleTest(unittest.TestCase):
     """Tests for `RustToolchain._commit_title`."""
 
     @staticmethod
-    def _entry(object_name: str) -> dict:
-        return {
-            'src/third_party/rust-toolchain': {
-                'objects': [{
-                    'object_name': object_name
-                }],
-            }
-        }
+    def _objects(object_name: str) -> list[dict]:
+        return [{'object_name': object_name}]
 
     def test_title_uses_upstream_rust_sub_revision(self):
         name = ('linux-x64-rust-toolchain-'
                 '4c4205163abcbd08948b3efab796c543ba1ea687-2-'
                 'llvmorg-23-init-10931-g20b6ec66-1.tar.xz')
-        title = toolchain.RustToolchain._commit_title(self._entry(name))
+        title = toolchain.RustToolchain._commit_title(self._objects(name))
         self.assertEqual(
             title, 'Rust/WASM toolchain (4c4205163abc-2, '
             'llvmorg-23-init-10931-g20b6ec66, sub 2)')
 
     def test_unparseable_name_falls_back_to_stem(self):
         title = toolchain.RustToolchain._commit_title(
-            self._entry('linux-x64-rust-toolchain-2.tar.xz'))
+            self._objects('linux-x64-rust-toolchain-2.tar.xz'))
         self.assertEqual(title,
                          'Rust/WASM toolchain linux-x64-rust-toolchain-2')
-
-
-class LoadExtraDepsTest(unittest.TestCase):
-    """Tests for `RustToolchain._load_extra_deps`."""
-
-    def test_returns_node_and_value(self):
-        node, value = toolchain.RustToolchain._load_extra_deps(
-            SAMPLE_INSTALLER)
-        self.assertEqual(node.targets[0].id, 'extra_deps')
-        self.assertIn('src/third_party/rust-toolchain', value)
-        self.assertIn('src/other-dep', value)
-
-    def test_missing_assignment_raises(self):
-        with self.assertRaises(toolchain.InvalidInputException):
-            toolchain.RustToolchain._load_extra_deps('X = 1\n')
 
 
 # Provenance-comment fixtures (shared with the xcode repin test).
@@ -332,14 +289,28 @@ class RustRepinTest(_FakeRepoTest):
 
     INSTALLER = 'EXTRA_DEPS'
 
+    # Matches the revision constants `_seed_rust_revision_bump` writes, via
+    # `RustToolchain._upstream_stem`.
+    UPSTREAM_STEM = 'rust-toolchain-abc123def-2-llvmorg-23-init-10931-g20b6ec66'
+    BRAVE_SUBREVISION = 1
+
+    @staticmethod
+    def _fake_archive_info(url: str) -> tuple[str, int]:
+        """A deterministic stand-in for a real download: derives a fake
+        `(sha256sum, size_bytes)` from the object name in `url`, so each
+        platform's fetched values are distinguishable without any network
+        access."""
+        name = url.rsplit('/', 1)[-1]
+        return f'sha-{name}', len(name)
+
     def setUp(self):
         super().setUp()
         self.rust = toolchain.RustToolchain()
         self._seed_installer()
-        patcher = patch.object(toolchain.build_rust_toolchain,
-                               'rust_toolchain_extra_dep',
-                               return_value=NEW_ENTRY)
-        self.builder = patcher.start()
+        patcher = patch.object(toolchain.RustToolchain,
+                               '_fetch_archive_info',
+                               side_effect=self._fake_archive_info)
+        self.fetch = patcher.start()
         self.addCleanup(patcher.stop)
 
     def _seed_installer(self, content: str = SAMPLE_INSTALLER) -> None:
@@ -370,17 +341,36 @@ class RustRepinTest(_FakeRepoTest):
     def _installer_text(self) -> str:
         return (self.repo.brave / self.INSTALLER).read_bytes().decode('utf-8')
 
+    def _repin(self, culprit: str | None) -> None:
+        self.rust.repin(Version(CHROMIUM_TAG),
+                        culprit=culprit,
+                        brave_subrevision=self.BRAVE_SUBREVISION)
+
     def test_updates_and_commits_with_auto_culprit(self):
         culprit = self._seed_rust_revision_bump()
 
-        self.rust.repin(Version(CHROMIUM_TAG), culprit=None)
+        self._repin(culprit=None)
 
         text = self._installer_text()
-        self.assertIn('linux-x64-rust-toolchain-2.tar.xz', text)
-        self.assertIn('win-rust-toolchain-2.tar.xz', text)
-        self.assertNotIn('old-linux-1.tar.xz', text)
+        linux_name = f'linux-x64-{self.UPSTREAM_STEM}-1.tar.xz'
+        win_name = f'win-{self.UPSTREAM_STEM}-1.tar.xz'
+        self.assertIn(linux_name, text)
+        self.assertIn(win_name, text)
+        self.assertIn(f'sha-{linux_name}', text)
+        self.assertIn(f'sha-{win_name}', text)
+        self.assertNotIn('old-linux-x64-1.tar.xz', text)
+        # The overlay base is repinned alongside the archive itself.
+        self.assertIn(f'Linux_x64/{self.UPSTREAM_STEM}.tar.xz', text)
+        self.assertIn(f'Win/{self.UPSTREAM_STEM}.tar.xz', text)
+        self.assertNotIn('old-upstream.tar.xz', text)
+        # Every platform is fetched straight from the bucket, no side index.
+        self.assertEqual(self.fetch.call_count, 4)
+        self.fetch.assert_any_call(
+            f'{toolchain.build_rust_toolchain.TOOLCHAIN_BUCKET_URL}/'
+            f'{linux_name}')
+        # Everything setdep does not touch survives byte for byte.
         self.assertIn("'src/other-dep'", text)
-        self.assertIn('def untouched():', text)
+        self.assertIn('OTHER_CONSTANT = 1', text)
 
         message = self._last_brave_message()
         subject = message.splitlines()[0]
@@ -399,7 +389,7 @@ class RustRepinTest(_FakeRepoTest):
         culprit = self.repo.commit('Unrelated chromium change',
                                    self.repo.chromium)
 
-        self.rust.repin(Version(CHROMIUM_TAG), culprit=culprit)
+        self._repin(culprit=culprit)
 
         message = self._last_brave_message()
         self.assertIn(
@@ -411,16 +401,22 @@ class RustRepinTest(_FakeRepoTest):
     def test_idempotent_second_run_does_not_commit(self):
         self._seed_rust_revision_bump()
 
-        self.rust.repin(Version(CHROMIUM_TAG), culprit=None)
+        self._repin(culprit=None)
         head_after_first = self._brave_head()
 
-        self.rust.repin(Version(CHROMIUM_TAG), culprit=None)
+        self._repin(culprit=None)
         self.assertEqual(self._brave_head(), head_after_first)
 
     def test_staged_files_block_the_update(self):
         self.repo.write_and_stage_file('staged.txt', 'wip\n', self.repo.brave)
         with self.assertRaises(toolchain.InvalidInputException):
-            self.rust.repin(Version(CHROMIUM_TAG), culprit='deadbeef')
+            self._repin(culprit='deadbeef')
+
+    def test_fetch_failure_raises(self):
+        self._seed_rust_revision_bump()
+        self.fetch.side_effect = toolchain.requests.RequestException('boom')
+        with self.assertRaises(toolchain.BadOutcomeException):
+            self._repin(culprit=None)
 
 
 # Fixtures for the xcode repin test.
@@ -726,7 +722,9 @@ class RecoverTest(unittest.TestCase):
         trigger.assert_called_once_with(self.version,
                                         watch=True,
                                         brave_subrevision=1)
-        repin.assert_called_once_with(self.version, 'culprithash')
+        repin.assert_called_once_with(self.version,
+                                      'culprithash',
+                                      brave_subrevision=1)
 
     def test_failed_build_keeps_advisory(self):
         with patch.object(self.rust, 'trigger', return_value=False), \

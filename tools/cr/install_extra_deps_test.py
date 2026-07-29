@@ -543,6 +543,15 @@ class ParseObjectSpecTest(unittest.TestCase):
                 'size_bytes': '42',
             })
 
+    def test_parses_a_quadruple_with_overlayed_on(self):
+        self.assertEqual(
+            m._parse_object_spec('pkg.tar.gz,abc123,42,upstream/pkg.tar.gz'), {
+                'object_name': 'pkg.tar.gz',
+                'sha256sum': 'abc123',
+                'size_bytes': '42',
+                'overlayed_on': 'upstream/pkg.tar.gz',
+            })
+
     def test_rejects_wrong_field_count(self):
         with self.assertRaises(ValueError):
             m._parse_object_spec('pkg.tar.gz,abc123')
@@ -556,12 +565,66 @@ class ParseObjectSpecTest(unittest.TestCase):
             m._parse_object_spec('pkg.tar.gz,abc123,huge')
 
 
+class FormatSetdepRevisionTest(unittest.TestCase):
+    """Tests for `format_setdep_revision`, the inverse of `_parse_object_spec`.
+    """
+
+    def test_formats_a_single_object_without_overlayed_on(self):
+        self.assertEqual(
+            m.format_setdep_revision('src/path/to/dep', [{
+                'object_name': 'pkg.tar.gz',
+                'sha256sum': 'abc123',
+                'size_bytes': 42,
+            }]), 'src/path/to/dep@pkg.tar.gz,abc123,42')
+
+    def test_formats_multiple_objects_with_overlayed_on(self):
+        objects = [
+            {
+                'object_name': 'linux.tar.xz',
+                'sha256sum': 'linuxsha',
+                'size_bytes': 1,
+                'overlayed_on': 'upstream/linux.tar.xz',
+                'condition': 'host_os == "linux"',
+            },
+            {
+                'object_name': 'win.tar.xz',
+                'sha256sum': 'winsha',
+                'size_bytes': 2,
+                'overlayed_on': 'upstream/win.tar.xz',
+                'condition': 'host_os == "win"',
+            },
+        ]
+        self.assertEqual(
+            m.format_setdep_revision('src/third_party/rust-toolchain',
+                                     objects),
+            'src/third_party/rust-toolchain@'
+            'linux.tar.xz,linuxsha,1,upstream/linux.tar.xz?'
+            'win.tar.xz,winsha,2,upstream/win.tar.xz')
+
+    def test_round_trips_through_parse_object_spec(self):
+        objects = [{
+            'object_name': 'pkg.tar.gz',
+            'sha256sum': 'abc123',
+            'size_bytes': 42,
+            'overlayed_on': 'upstream/pkg.tar.gz',
+        }]
+        revision = m.format_setdep_revision('src/path/to/dep', objects)
+        _, _, objects_spec = revision.partition('@')
+        self.assertEqual(
+            m._parse_object_spec(objects_spec), {
+                'object_name': 'pkg.tar.gz',
+                'sha256sum': 'abc123',
+                'size_bytes': '42',
+                'overlayed_on': 'upstream/pkg.tar.gz',
+            })
+
+
 class SetDepTest(unittest.TestCase):
     """Tests for `setdep`, the comment-preserving EXTRA_DEPS editor.
 
-    Each test points `EXTRA_DEPS_FILE` at a temp fixture and patches the loaded
-    `EXTRA_DEPS` table so path validation matches it, then checks the rendered
-    file byte-for-byte where it matters.
+    Each test points its own temp `EXTRA_DEPS` fixture, passed explicitly via
+    `extra_deps_file`, and checks the rendered file byte-for-byte where it
+    matters.
     """
 
     _SOURCE = '''\
@@ -580,6 +643,16 @@ extra_deps = {
             },
         ],
     },
+    'src/path/to/owned': {
+        'bucket': 'https://downloads.invalid/',
+        'objects': [
+            {
+                'object_name': 'owned-old.tar.gz',
+                'sha256sum': 'ownedoldsha',
+                'size_bytes': 1,
+            },
+        ],
+    },
 }
 '''
 
@@ -588,18 +661,11 @@ extra_deps = {
         self.addCleanup(tmp.cleanup)
         self._path = Path(tmp.name) / 'EXTRA_DEPS'
         self._path.write_text(self._SOURCE, encoding='utf-8')
-        # `setdep` reads/writes the file at `EXTRA_DEPS_FILE` and validates dep
-        # paths against `EXTRA_DEPS`; point both at the fixture. The table's
-        # values are unused (only membership is checked).
-        for patcher in (mock.patch.object(m, 'EXTRA_DEPS_FILE', self._path),
-                        mock.patch.object(m, 'EXTRA_DEPS',
-                                          {'src/path/to/dep': None})):
-            patcher.start()
-            self.addCleanup(patcher.stop)
 
     def test_updates_only_the_object_fields(self):
         """The three object fields change; comments and other keys are kept."""
-        m.setdep(['src/path/to/dep@new.tar.gz,newsha,222'])
+        m.setdep(['src/path/to/dep@new.tar.gz,newsha,222'],
+                 extra_deps_file=self._path)
         result = self._path.read_text(encoding='utf-8')
         self.assertIn("'object_name': 'new.tar.gz',", result)
         self.assertIn("'sha256sum': 'newsha',", result)
@@ -611,18 +677,57 @@ extra_deps = {
         self.assertIn("'overlayed_on': 'upstream/old.tar.gz',", result)
         self.assertIn("'bucket': 'https://downloads.invalid/',", result)
 
+    def test_updates_overlayed_on_when_given(self):
+        """A fourth field rewrites `overlayed_on` alongside the other three."""
+        m.setdep(['src/path/to/dep@new.tar.gz,newsha,222,upstream/new.tar.gz'],
+                 extra_deps_file=self._path)
+        result = self._path.read_text(encoding='utf-8')
+        self.assertIn("'overlayed_on': 'upstream/new.tar.gz',", result)
+        self.assertNotIn('upstream/old.tar.gz', result)
+
+    def test_owned_entry_without_overlayed_on_is_untouched_by_default(self):
+        """An owned entry (no `overlayed_on` in its schema) repins cleanly when
+        the revision omits the field too."""
+        m.setdep(['src/path/to/owned@owned-new.tar.gz,ownednewsha,2'],
+                 extra_deps_file=self._path)
+        result = self._path.read_text(encoding='utf-8')
+        self.assertIn("'object_name': 'owned-new.tar.gz',", result)
+        owned_entry = result[result.index("'src/path/to/owned'"):]
+        self.assertNotIn('overlayed_on', owned_entry)
+
+    def test_overlayed_on_for_an_object_without_the_key_raises(self):
+        """Supplying `overlayed_on` for an object whose schema has no such key
+        is rejected rather than silently dropped."""
+        with self.assertRaises(ValueError):
+            m.setdep([
+                'src/path/to/owned@owned-new.tar.gz,ownednewsha,2,'
+                'upstream/owned-new.tar.gz'
+            ],
+                     extra_deps_file=self._path)
+
     def test_rejects_an_unknown_entry_without_writing(self):
         with self.assertRaises(ValueError):
-            m.setdep(['src/does/not/exist@new.tar.gz,newsha,222'])
+            m.setdep(['src/does/not/exist@new.tar.gz,newsha,222'],
+                     extra_deps_file=self._path)
         self.assertEqual(self._path.read_text(encoding='utf-8'), self._SOURCE)
 
     def test_rejects_an_object_count_mismatch(self):
         with self.assertRaises(ValueError):
-            m.setdep(['src/path/to/dep@a.tar.gz,sa,1?b.tar.gz,sb,2'])
+            m.setdep(['src/path/to/dep@a.tar.gz,sa,1?b.tar.gz,sb,2'],
+                     extra_deps_file=self._path)
 
     def test_rejects_a_malformed_revision(self):
         with self.assertRaises(ValueError):
-            m.setdep(['src/path/to/dep'])  # Missing `@object,...`.
+            m.setdep(['src/path/to/dep'],
+                     extra_deps_file=self._path)  # Missing `@object,...`.
+
+    def test_defaults_to_the_module_extra_deps_file(self):
+        """With no `extra_deps_file` argument, `setdep` reads/writes the real
+        `EXTRA_DEPS_FILE` the module loaded at import time."""
+        with mock.patch.object(m, 'EXTRA_DEPS_FILE', self._path):
+            m.setdep(['src/path/to/dep@new.tar.gz,newsha,222'])
+        self.assertIn("'object_name': 'new.tar.gz',",
+                      self._path.read_text(encoding='utf-8'))
 
 
 if __name__ == '__main__':

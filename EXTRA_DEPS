@@ -16,9 +16,7 @@
 #                 * omitted      -- owns its destination (wiped each install).
 #
 # A single-object entry may omit its per-object `condition` and gate on the
-# dep-level one alone. This is a pure literal (parsed as data, not executed),
-# and is repinned textually -- keep it in the format `tools/cr/toolchain.py`'s
-# renderer emits.
+# dep-level one alone.
 
 extra_deps = {
     'src/third_party/rust-toolchain': {
