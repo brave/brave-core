@@ -92,19 +92,15 @@ Parse the review comments to understand what changes are requested:
    - Which comments are questions, the proposed answer for each one, and which
      question comments (if any) also contain an explicit change request
    - What changes you plan to make for each
-   - Ask for user confirmation before posting answers or proceeding with
-     implementation
+   - Ask for user confirmation before proceeding with implementation
 
 4. **Answer questions before implementation:**
 
-   - For question-only comments, draft the answer, ask for confirmation, post it
-     if confirmed, and do not make code changes
+   - For question-only comments, post the answer immediately and do not make
+     code changes
    - If a question also contains an explicit change request (for example, "Could
-     you change X?"), draft and confirm the answer first, post it if confirmed,
-     then follow the normal implementation confirmation flow for the requested
-     change
-   - If the user does not confirm posting an answer, do not implement any change
-     that depends on that unanswered question
+     you change X?"), post the answer first, then follow the normal
+     implementation confirmation flow for the requested change
 
 ### 5. Checkout the Branch
 
@@ -217,7 +213,8 @@ Output a summary to the user:
    changed
 4. **No attribution** — No `Co-Authored-By` lines in commits
 5. **User confirmation** — Present the plan before implementing, confirm before
-   committing, confirm before posting comments
+   committing, and confirm before posting summary comments; question answers do
+   not require confirmation
 6. **Preflight required** — All changes must pass preflight before pushing
 
 ---
