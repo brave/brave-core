@@ -128,17 +128,17 @@ class BraveChromeAutofillClient : public ChromeAutofillClient {
       const PasswordFormClassification& form_classification,
       const FormFieldData& field,
       std::vector<Suggestion>& chrome_suggestions) {
-    auto* profile =
-        Profile::FromBrowserContext(web_contents()->GetBrowserContext());
-    if (!profile->GetPrefs()->GetBoolean(
-            email_aliases::prefs::
-                kEmailAliasesNewAliasAutofillSuggestionEnabled)) {
-      return;
-    }
-
     email_aliases::EmailAliasesController* controller =
         GetEmailAliasesControllerFromWebContents(web_contents());
     if (controller) {
+      auto* profile =
+          Profile::FromBrowserContext(web_contents()->GetBrowserContext());
+      if (!profile->GetPrefs()->GetBoolean(
+              email_aliases::prefs::
+                  kEmailAliasesNewAliasAutofillSuggestionEnabled)) {
+        return;
+      }
+
       const bool contains_email_suggestion =
           std::ranges::find_if(chrome_suggestions, [](const auto& suggestion) {
             return suggestion.icon == autofill::Suggestion::Icon::kEmail;
