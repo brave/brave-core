@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_account/reset_password.h"
+#include "brave/components/brave_account/flows/reset_password.h"
 
 #include <utility>
 
@@ -29,9 +29,9 @@ ResetPassword::ResetPassword(StateBase& state) : state_(state) {}
 
 ResetPassword::~ResetPassword() = default;
 
-void ResetPassword::VerifyInit(
+void ResetPassword::Step1(
     const std::string& email,
-    mojom::Authentication::ResetPasswordVerifyInitCallback callback) {
+    mojom::Authentication::ResetPasswordStep1Callback callback) {
   CHECK(!email.empty());
 
   auto request = MakeRequest<endpoints::VerifyInit::Request>();
@@ -44,13 +44,13 @@ void ResetPassword::VerifyInit(
 
   state_->SendStateOwnedRequest<endpoints::VerifyInit>(
       std::move(request),
-      base::BindOnce(&ResetPassword::OnVerifyInit, weak_factory_.GetWeakPtr(),
+      base::BindOnce(&ResetPassword::OnStep1, weak_factory_.GetWeakPtr(),
                      std::move(callback)));
 }
 
-void ResetPassword::VerifyComplete(
+void ResetPassword::Step2(
     const std::string& code,
-    mojom::Authentication::ResetPasswordVerifyCompleteCallback callback) {
+    mojom::Authentication::ResetPasswordStep2Callback callback) {
   CHECK(!code.empty());
 
   auto verification_token =
@@ -68,13 +68,13 @@ void ResetPassword::VerifyComplete(
 
   state_->SendStateOwnedRequest<endpoints::VerifyComplete>(
       std::move(request),
-      base::BindOnce(&ResetPassword::OnVerifyComplete,
-                     weak_factory_.GetWeakPtr(), std::move(callback)));
+      base::BindOnce(&ResetPassword::OnStep2, weak_factory_.GetWeakPtr(),
+                     std::move(callback)));
 }
 
-void ResetPassword::PasswordInit(
+void ResetPassword::Step3(
     const std::string& blinded_message,
-    mojom::Authentication::ResetPasswordPasswordInitCallback callback) {
+    mojom::Authentication::ResetPasswordStep3Callback callback) {
   CHECK(!blinded_message.empty());
 
   auto verification_token =
@@ -95,14 +95,14 @@ void ResetPassword::PasswordInit(
 
   state_->SendStateOwnedRequest<endpoints::PasswordInit>(
       std::move(request),
-      base::BindOnce(&ResetPassword::OnPasswordInit, weak_factory_.GetWeakPtr(),
+      base::BindOnce(&ResetPassword::OnStep3, weak_factory_.GetWeakPtr(),
                      std::move(callback)));
 }
 
-void ResetPassword::PasswordFinalize(
+void ResetPassword::Step4(
     const std::string& serialized_record,
     const std::string& email,
-    mojom::Authentication::ResetPasswordPasswordFinalizeCallback callback) {
+    mojom::Authentication::ResetPasswordStep4Callback callback) {
   CHECK(!serialized_record.empty());
   CHECK(!email.empty());
 
@@ -122,12 +122,12 @@ void ResetPassword::PasswordFinalize(
 
   state_->SendStateOwnedRequest<endpoints::PasswordFinalize>(
       std::move(request),
-      base::BindOnce(&ResetPassword::OnPasswordFinalize,
-                     weak_factory_.GetWeakPtr(), std::move(callback), email));
+      base::BindOnce(&ResetPassword::OnStep4, weak_factory_.GetWeakPtr(),
+                     std::move(callback), email));
 }
 
-void ResetPassword::OnVerifyInit(
-    mojom::Authentication::ResetPasswordVerifyInitCallback callback,
+void ResetPassword::OnStep1(
+    mojom::Authentication::ResetPasswordStep1Callback callback,
     endpoints::VerifyInit::Response response) {
   if (!response.body) {
     return std::move(callback).Run(
@@ -148,31 +148,29 @@ void ResetPassword::OnVerifyInit(
             return MakeServerError<mojom::ResetPasswordError>(
                 status_code, std::move(error_body));
           })
-          // expected<[SuccessBody                     ], ResetPasswordErrorPtr>
-          // ==>
-          // expected<[ResetPasswordVerifyInitResultPtr], ResetPasswordErrorPtr>
-          .and_then(
-              [&](auto success_body)
-                  -> base::expected<mojom::ResetPasswordVerifyInitResultPtr,
-                                    mojom::ResetPasswordErrorPtr> {
-                if (success_body.verification_token.empty()) {
-                  return base::unexpected(MakeServerError<
-                                          mojom::ResetPasswordError>(
+          // expected<[SuccessBody                ], ResetPasswordErrorPtr> ==>
+          // expected<[ResetPasswordStep1ResultPtr], ResetPasswordErrorPtr>
+          .and_then([&](auto success_body)
+                        -> base::expected<mojom::ResetPasswordStep1ResultPtr,
+                                          mojom::ResetPasswordErrorPtr> {
+            if (success_body.verification_token.empty()) {
+              return base::unexpected(
+                  MakeServerError<mojom::ResetPasswordError>(
                       status_code,
                       mojom::ResetPasswordServerErrorCode::kInvalidResponse));
-                }
+            }
 
-                if (encrypted_verification_token =
-                        state_->Encrypt(success_body.verification_token);
-                    encrypted_verification_token.empty()) {
-                  return base::unexpected(
-                      MakeClientError<mojom::ResetPasswordError>(
-                          mojom::ResetPasswordClientErrorCode::
-                              kVerificationTokenEncryptionFailed));
-                }
+            if (encrypted_verification_token =
+                    state_->Encrypt(success_body.verification_token);
+                encrypted_verification_token.empty()) {
+              return base::unexpected(
+                  MakeClientError<mojom::ResetPasswordError>(
+                      mojom::ResetPasswordClientErrorCode::
+                          kVerificationTokenEncryptionFailed));
+            }
 
-                return mojom::ResetPasswordVerifyInitResult::New();
-              });
+            return mojom::ResetPasswordStep1Result::New();
+          });
 
   // See `StateBase`'s class comment on ordering.
   // LoggedOut ==> LoggedOutWithVerification (no state swap).
@@ -188,8 +186,8 @@ void ResetPassword::OnVerifyInit(
   }
 }
 
-void ResetPassword::OnVerifyComplete(
-    mojom::Authentication::ResetPasswordVerifyCompleteCallback callback,
+void ResetPassword::OnStep2(
+    mojom::Authentication::ResetPasswordStep2Callback callback,
     endpoints::VerifyComplete::Response response) {
   if (!response.body) {
     return std::move(callback).Run(
@@ -210,25 +208,22 @@ void ResetPassword::OnVerifyComplete(
             return MakeServerError<mojom::ResetPasswordError>(
                 status_code, std::move(error_body));
           })
-          // expected<[SuccessBody                         ],
-          //           ResetPasswordErrorPtr> ==>
-          // expected<[ResetPasswordVerifyCompleteResultPtr],
-          //           ResetPasswordErrorPtr>
-          .and_then(
-              [&](auto success_body)
-                  -> base::expected<mojom::ResetPasswordVerifyCompleteResultPtr,
-                                    mojom::ResetPasswordErrorPtr> {
-                if (success_body.email.empty()) {
-                  return base::unexpected(MakeServerError<
-                                          mojom::ResetPasswordError>(
+          // expected<[SuccessBody                ], ResetPasswordErrorPtr> ==>
+          // expected<[ResetPasswordStep2ResultPtr], ResetPasswordErrorPtr>
+          .and_then([&](auto success_body)
+                        -> base::expected<mojom::ResetPasswordStep2ResultPtr,
+                                          mojom::ResetPasswordErrorPtr> {
+            if (success_body.email.empty()) {
+              return base::unexpected(
+                  MakeServerError<mojom::ResetPasswordError>(
                       status_code,
                       mojom::ResetPasswordServerErrorCode::kInvalidResponse));
-                }
+            }
 
-                email = std::move(success_body.email);
+            email = std::move(success_body.email);
 
-                return mojom::ResetPasswordVerifyCompleteResult::New();
-              });
+            return mojom::ResetPasswordStep2Result::New();
+          });
 
   // See `StateBase`'s class comment on ordering.
   // LoggedOutWithVerification ==> LoggedOutWithVerification (no state swap):
@@ -242,8 +237,8 @@ void ResetPassword::OnVerifyComplete(
   }
 }
 
-void ResetPassword::OnPasswordInit(
-    mojom::Authentication::ResetPasswordPasswordInitCallback callback,
+void ResetPassword::OnStep3(
+    mojom::Authentication::ResetPasswordStep3Callback callback,
     endpoints::PasswordInit::Response response) {
   if (!response.body) {
     return std::move(callback).Run(
@@ -262,30 +257,27 @@ void ResetPassword::OnPasswordInit(
             return MakeServerError<mojom::ResetPasswordError>(
                 status_code, std::move(error_body));
           })
-          // expected<[SuccessBody                       ],
-          //           ResetPasswordErrorPtr> ==>
-          // expected<[ResetPasswordPasswordInitResultPtr],
-          //           ResetPasswordErrorPtr>
-          .and_then(
-              [&](auto success_body)
-                  -> base::expected<mojom::ResetPasswordPasswordInitResultPtr,
-                                    mojom::ResetPasswordErrorPtr> {
-                if (success_body.serialized_response.empty()) {
-                  return base::unexpected(MakeServerError<
-                                          mojom::ResetPasswordError>(
+          // expected<[SuccessBody                ], ResetPasswordErrorPtr> ==>
+          // expected<[ResetPasswordStep3ResultPtr], ResetPasswordErrorPtr>
+          .and_then([&](auto success_body)
+                        -> base::expected<mojom::ResetPasswordStep3ResultPtr,
+                                          mojom::ResetPasswordErrorPtr> {
+            if (success_body.serialized_response.empty()) {
+              return base::unexpected(
+                  MakeServerError<mojom::ResetPasswordError>(
                       status_code,
                       mojom::ResetPasswordServerErrorCode::kInvalidResponse));
-                }
+            }
 
-                return mojom::ResetPasswordPasswordInitResult::New(
-                    std::move(success_body.serialized_response));
-              });
+            return mojom::ResetPasswordStep3Result::New(
+                std::move(success_body.serialized_response));
+          });
 
   std::move(callback).Run(std::move(result));
 }
 
-void ResetPassword::OnPasswordFinalize(
-    mojom::Authentication::ResetPasswordPasswordFinalizeCallback callback,
+void ResetPassword::OnStep4(
+    mojom::Authentication::ResetPasswordStep4Callback callback,
     const std::string& email,
     endpoints::PasswordFinalize::Response response) {
   if (!response.body) {
@@ -307,14 +299,11 @@ void ResetPassword::OnPasswordFinalize(
             return MakeServerError<mojom::ResetPasswordError>(
                 status_code, std::move(error_body));
           })
-          // expected<[SuccessBody                           ],
-          //           ResetPasswordErrorPtr> ==>
-          // expected<[ResetPasswordPasswordFinalizeResultPtr],
-          //           ResetPasswordErrorPtr>
+          // expected<[SuccessBody                ], ResetPasswordErrorPtr> ==>
+          // expected<[ResetPasswordStep4ResultPtr], ResetPasswordErrorPtr>
           .and_then([&](auto success_body)
-                        -> base::expected<
-                            mojom::ResetPasswordPasswordFinalizeResultPtr,
-                            mojom::ResetPasswordErrorPtr> {
+                        -> base::expected<mojom::ResetPasswordStep4ResultPtr,
+                                          mojom::ResetPasswordErrorPtr> {
             if (!success_body.auth_token.is_string() ||
                 success_body.auth_token.GetString().empty()) {
               return base::unexpected(
@@ -332,7 +321,7 @@ void ResetPassword::OnPasswordFinalize(
                           kAuthenticationTokenEncryptionFailed));
             }
 
-            return mojom::ResetPasswordPasswordFinalizeResult::New();
+            return mojom::ResetPasswordStep4Result::New();
           });
 
   // See `StateBase`'s class comment on ordering.

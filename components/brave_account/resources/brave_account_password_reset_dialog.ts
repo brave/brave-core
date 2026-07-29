@@ -39,7 +39,7 @@ export class BraveAccountPasswordResetDialogElement extends CrLitElement {
 
   protected async onResetPasswordButtonClicked() {
     try {
-      await this.browserProxy.authentication.resetPasswordVerifyInit(this.email)
+      await this.browserProxy.authentication.resetPasswordStep1(this.email)
     } catch (e) {
       let error: ResetPasswordError
 

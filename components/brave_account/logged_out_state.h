@@ -12,8 +12,8 @@
 #include "brave/components/brave_account/brave_account_state_prefs.h"
 #include "brave/components/brave_account/flows/login.h"
 #include "brave/components/brave_account/flows/register.h"
+#include "brave/components/brave_account/flows/reset_password.h"
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
-#include "brave/components/brave_account/reset_password.h"
 #include "brave/components/brave_account/state_base.h"
 #include "components/os_crypt/async/common/encryptor.h"
 
@@ -65,22 +65,18 @@ class LoggedOutState : public StateBase {
   void RegisterStep3(const std::string& code,
                      RegisterStep3Callback callback) override;
 
-  void ResetPasswordVerifyInit(
-      const std::string& email,
-      ResetPasswordVerifyInitCallback callback) override;
+  void ResetPasswordStep1(const std::string& email,
+                          ResetPasswordStep1Callback callback) override;
 
-  void ResetPasswordVerifyComplete(
-      const std::string& code,
-      ResetPasswordVerifyCompleteCallback callback) override;
+  void ResetPasswordStep2(const std::string& code,
+                          ResetPasswordStep2Callback callback) override;
 
-  void ResetPasswordPasswordInit(
-      const std::string& blinded_message,
-      ResetPasswordPasswordInitCallback callback) override;
+  void ResetPasswordStep3(const std::string& blinded_message,
+                          ResetPasswordStep3Callback callback) override;
 
-  void ResetPasswordPasswordFinalize(
-      const std::string& serialized_record,
-      const std::string& email,
-      ResetPasswordPasswordFinalizeCallback callback) override;
+  void ResetPasswordStep4(const std::string& serialized_record,
+                          const std::string& email,
+                          ResetPasswordStep4Callback callback) override;
 
   Login login_{*this};
   Register register_{*this};
