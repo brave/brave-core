@@ -79,7 +79,7 @@ void PurchasedStateManager::Load(const std::string& domain) {
   // environment must authorize with SKUS from scratch.
   const std::string current_environment = GetCurrentEnvironment();
   if (current_environment == request_environment) {
-    if (credential_store_->HasValidSubscriberCredential()) {
+    if (credential_store_->GetValidSubscriberCredential().has_value()) {
       // Already purchased. Serving from cache settles the visible state
       // immediately, so any in-flight load for another environment is cancelled
       // rather than left to finish against a state that just changed under it.
@@ -89,30 +89,20 @@ void PurchasedStateManager::Load(const std::string& domain) {
       SetPurchasedState(request_environment, mojom::PurchasedState::PURCHASED);
       return;
     }
-    // The valid cached SKUS credential must have an expiration time, because
-    // the store only reports valid credentials. However, both GetSkusCredential
-    // and GetExpirationTime re-evaluate validity against current time, so a
-    // credential expiring between the two reads can make them disagree. We're
-    // checking for both valid credential and expiration time here to avoid
-    // TOCTOU issues.
-    const std::string skus_credential = credential_store_->GetSkusCredential();
-    const std::optional<base::Time> expiration_time =
-        credential_store_->GetExpirationTime();
-    if (!skus_credential.empty() && expiration_time.has_value()) {
+    if (std::optional<CredentialStore::Credential> cached_credential =
+            credential_store_->GetValidSkusCredential()) {
       // Previous attempt to exchange the skus credential for a subscriber
       // credential failed. Try again with the cached skus credential.
       VLOG(2) << "Trying to exchange cached skus credential for subscriber "
                  "credential";
       BeginLoad(request_environment);
 
-      // Exchange the cached SKUS credential for a subscriber credential. The
-      // valid cached SKUS credential must have an expiration time, because the
-      // store only reports valid SKUS credentials.
+      // Exchange the cached SKUS credential for a subscriber credential.
       api_client_->GetSubscriberCredentialV12(
           base::BindOnce(&PurchasedStateManager::OnGetSubscriberCredential,
                          weak_factory_.GetWeakPtr(), loading_sequence_, domain,
-                         *expiration_time),
-          skus_credential, loading_environment_);
+                         cached_credential->expiration),
+          cached_credential->value, loading_environment_);
       return;
     }
   }
@@ -167,14 +157,14 @@ void PurchasedStateManager::SetPurchasedState(
 }
 
 void PurchasedStateManager::CheckInitialState() {
-  if (credential_store_->HasValidSubscriberCredential()) {
+  if (credential_store_->GetValidSubscriberCredential().has_value()) {
     // Have a valid subscriber credential, so we are purchased. Schedule a
     // refresh of the credential before it expires.
     VLOG(2) << "Have valid subscriber credential, scheduling refresh";
     ScheduleSubscriberCredentialRefresh();
     SetPurchasedState(GetCurrentEnvironment(),
                       mojom::PurchasedState::PURCHASED);
-  } else if (credential_store_->HasValidSkusCredential()) {
+  } else if (credential_store_->GetValidSkusCredential().has_value()) {
     // There is a cached SKUS credential - exchange it for a subscriber
     // credential upfront.
     VLOG(2) << "Reloading purchased state due to cached SKUS credential";
@@ -377,7 +367,10 @@ void PurchasedStateManager::OnPrepareCredentialsPresentation(
   }
 
   // Update the cached skus credential and its expiration time.
-  credential_store_->SetSkusCredential(credential, time);
+  credential_store_->SetSkusCredential({
+      .value = credential,
+      .expiration = time,
+  });
 
   // We have successfully authorized with a new environment, now loading state
   // becomes visible.
@@ -447,7 +440,10 @@ void PurchasedStateManager::OnGetSubscriberCredential(
   }
 
   // Got a valid subscriber credential.
-  credential_store_->SetSubscriberCredential(result.value(), expiration_time);
+  credential_store_->SetSubscriberCredential({
+      .value = result.value(),
+      .expiration = expiration_time,
+  });
   ScheduleSubscriberCredentialRefresh();
   FinishLoad(loading_environment_, mojom::PurchasedState::PURCHASED);
 }
