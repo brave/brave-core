@@ -12,6 +12,7 @@ import android.view.View.OnLongClickListener;
 import androidx.annotation.ColorInt;
 
 import org.chromium.base.BraveReflectionUtil;
+import org.chromium.base.Log;
 import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.base.supplier.NonNullObservableSupplier;
 import org.chromium.base.supplier.NullableObservableSupplier;
@@ -60,6 +61,8 @@ import java.util.List;
 import java.util.function.Supplier;
 
 public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
+    private static final String TAG = "BraveToolbar";
+
     // To delete in bytecode. Variables from the parent class will be used instead.
     private OptionalBrowsingModeButtonController mOptionalButtonController;
 
@@ -174,6 +177,38 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
 
         if (isToolbarPhone()) {
             if (BraveDynamicColors.isDynamicColorsEnabled()) {
+                // Preserve and normalize the active dynamic NTP colors.
+                Object locationBarBackgroundColorForNtp =
+                        BraveReflectionUtil.getField(
+                                ToolbarPhone.class,
+                                "mLocationBarBackgroundColorForNtp",
+                                mBraveToolbarLayout);
+                Object toolbarBackgroundColorForNtp =
+                        BraveReflectionUtil.getField(
+                                ToolbarPhone.class,
+                                "mToolbarBackgroundColorForNtp",
+                                mBraveToolbarLayout);
+
+                assert locationBarBackgroundColorForNtp instanceof Integer;
+                assert toolbarBackgroundColorForNtp instanceof Integer;
+                if (!(locationBarBackgroundColorForNtp instanceof Integer)
+                        || !(toolbarBackgroundColorForNtp instanceof Integer)) {
+                    Log.e(TAG, "NTP toolbar colors unavailable");
+                    return;
+                }
+
+                // The translucent location bar overlaps Brave's toolbar button backgrounds.
+                // Flatten its color first so the overlap does not apply the NTP accent twice.
+                @ColorInt
+                int opaqueLocationBarBackgroundColorForNtp =
+                        ColorUtils.overlayColor(
+                                (Integer) toolbarBackgroundColorForNtp,
+                                (Integer) locationBarBackgroundColorForNtp);
+                BraveReflectionUtil.setField(
+                        ToolbarPhone.class,
+                        "mLocationBarBackgroundColorForNtp",
+                        mBraveToolbarLayout,
+                        opaqueLocationBarBackgroundColorForNtp);
             } else {
                 // Existing Brave NTP resource-color override.
                 // We basically do here what we must do at ToolbarPhone.ctor
