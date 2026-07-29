@@ -13,7 +13,7 @@ import {
 } from '../../common/conversation_history_utils'
 import * as Mojom from '../../common/mojom'
 import { useIsDragging } from '../hooks/useIsDragging'
-import { isLeoModel } from '../model_utils'
+import { getMaxInputCharLimit, isLeoModel } from '../model_utils'
 import { SelectedChatDetails } from './active_chat_context'
 import useSendFeedback, { SendFeedbackState } from './useSendFeedback'
 import { useAIChat } from './ai_chat_context'
@@ -22,9 +22,6 @@ import {
   makeEdit,
   stringifyContent,
 } from '../components/input_box/editable_content'
-
-const MAX_INPUT_CHAR = 20000
-const CHAR_LIMIT_THRESHOLD = MAX_INPUT_CHAR * 0.8
 
 export interface CharCountContext {
   isCharLimitExceeded: boolean
@@ -40,10 +37,14 @@ export const defaultCharCountContext: CharCountContext = {
   inputTextCharCountDisplay: '',
 }
 
-export function useCharCountInfo(inputText: string) {
-  const isCharLimitExceeded = inputText.length >= MAX_INPUT_CHAR
-  const isCharLimitApproaching = inputText.length >= CHAR_LIMIT_THRESHOLD
-  const inputTextCharCountDisplay = `${inputText.length} / ${MAX_INPUT_CHAR}`
+export function useCharCountInfo(
+  inputText: string,
+  currentModel?: Mojom.Model,
+): CharCountContext {
+  const maxInputChar = getMaxInputCharLimit(currentModel)
+  const isCharLimitExceeded = inputText.length >= maxInputChar
+  const isCharLimitApproaching = inputText.length >= maxInputChar * 0.8
+  const inputTextCharCountDisplay = `${inputText.length} / ${maxInputChar}`
 
   return {
     isCharLimitExceeded,
@@ -218,9 +219,11 @@ export function useProvideConversationContext(props: ConversationContextProps) {
       && currentModel?.options.leoModelOptions?.access
         === Mojom.ModelAccess.PREMIUM)
   )
-  const isCharLimitExceeded = inputText.length >= MAX_INPUT_CHAR
-  const isCharLimitApproaching = inputText.length >= CHAR_LIMIT_THRESHOLD
-  const inputTextCharCountDisplay = `${inputText.length} / ${MAX_INPUT_CHAR}`
+  const {
+    isCharLimitExceeded,
+    isCharLimitApproaching,
+    inputTextCharCountDisplay,
+  } = useCharCountInfo(stringifyContent(inputText), currentModel)
   const isCurrentModelLeo =
     currentModel !== undefined && isLeoModel(currentModel)
 
