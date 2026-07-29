@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/AndroidManifest.xml b/chrome/android/java/AndroidManifest.xml
-index e1bdd316d578ea9190a92ff12cde4124f1642ca7..e1e5091bbc750f9f0ca90fdfd949cc11d4b11d01 100644
+index c83d083df5aed486a8986aa8eb1c954ac49c7a3d..077081b6759e943a8ddc3034cf890612e0302918 100644
 --- a/chrome/android/java/AndroidManifest.xml
 +++ b/chrome/android/java/AndroidManifest.xml
 @@ -62,7 +62,9 @@ by a child template that "extends" this file.
@@ -7,7 +7,7 @@ index e1bdd316d578ea9190a92ff12cde4124f1642ca7..e1e5091bbc750f9f0ca90fdfd949cc11
                              android:usesPermissionFlags="neverForLocation"/>
  
 +<!--
-     <uses-permission-sdk-23 android:name="android.permission.READ_CONTACTS"/>
+     <uses-permission-sdk-23 android:name="android.permission.READ_CONTACTS" android:maxSdkVersion="36"/>
 +-->
      <uses-permission-sdk-23 android:name="android.permission.REORDER_TASKS"/>
  

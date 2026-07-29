@@ -1,17 +1,17 @@
 diff --git a/chrome/browser/ui/browser.h b/chrome/browser/ui/browser.h
-index 324951ceb77a20ed5eb85a736cd087166218b077..b353487c1cafdee06e7c1d38bfbdb18ea49772e5 100644
+index 6bf8eceb2f399dcc2da1ed6190f9d13a31e30c0e..7e322ddf40fc60dd02578a4326a8d4876e82c663 100644
 --- a/chrome/browser/ui/browser.h
 +++ b/chrome/browser/ui/browser.h
-@@ -559,6 +559,8 @@ class Browser : public TabStripModelObserver,
- #endif
+@@ -424,6 +424,8 @@ class Browser : public TabStripModelObserver,
+   void SynchronouslyDestroyBrowser();
  
   private:
 +  friend class BookmarkPrefsService;
 +  friend class BraveBrowser;
    friend class BrowserTest;
+   friend class BrowserWebContentsDelegate;
    friend class ExclusiveAccessTest;
-   friend class FullscreenControllerInteractiveTest;
-@@ -753,7 +755,7 @@ class Browser : public TabStripModelObserver,
+@@ -458,7 +460,7 @@ class Browser : public TabStripModelObserver,
  
    // Handle changes to tab strip model.
    void OnTabInsertedAt(content::WebContents* contents, int index);
@@ -20,7 +20,7 @@ index 324951ceb77a20ed5eb85a736cd087166218b077..b353487c1cafdee06e7c1d38bfbdb18e
    void OnTabDetached(tabs::TabInterface* tab,
                       bool was_active,
                       bool had_active_modal_dialog);
-@@ -788,7 +790,7 @@ class Browser : public TabStripModelObserver,
+@@ -493,7 +495,7 @@ class Browser : public TabStripModelObserver,
    //   updates), then scheduled_updates_ is updated for the |source| and update
    //   pair and a task is scheduled (assuming it isn't running already)
    //   that invokes ProcessPendingUIUpdates.

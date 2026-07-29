@@ -1,16 +1,16 @@
 diff --git a/chrome/browser/ui/BUILD.gn b/chrome/browser/ui/BUILD.gn
-index 4ecd2c257938e9bf2bc270da28f5fcee68617fe6..9d1c4e1b8817e24db5e3c16e93131e9a84377a0b 100644
+index b363da93e7ebc7abb5cc767d9a7276c576de06bf..b5361bce520ca1fd45085ee107b9791ad83c5dde 100644
 --- a/chrome/browser/ui/BUILD.gn
 +++ b/chrome/browser/ui/BUILD.gn
-@@ -1366,6 +1366,7 @@ static_library("ui") {
+@@ -1192,6 +1192,7 @@ static_library("ui") {
      # split out yet.
      "//chrome/browser/webauthn:impl",
    ]
 +  import("//brave/browser/sources.gni") public_deps += [ "//brave/browser/ui" ] deps += brave_chrome_browser_ui_allow_circular_includes_from + brave_chrome_browser_ui_deps allow_circular_includes_from += brave_chrome_browser_ui_allow_circular_includes_from
  
-   if (enable_vr && is_win) {
-     deps += [ "//chrome/browser/vr:vr_base" ]
-@@ -5269,6 +5270,7 @@ group("ui_public_dependencies") {
+   if (!is_android) {
+     deps += [
+@@ -3821,6 +3822,7 @@ group("ui_public_dependencies") {
      "//components/enterprise/buildflags",
      "//components/paint_preview/buildflags",
      "//components/safe_browsing:buildflags",
@@ -18,7 +18,7 @@ index 4ecd2c257938e9bf2bc270da28f5fcee68617fe6..9d1c4e1b8817e24db5e3c16e93131e9a
      "//components/segmentation_platform/public",
      "//components/sync",
      "//components/sync_user_events",
-@@ -5281,6 +5283,7 @@ group("ui_public_dependencies") {
+@@ -3833,6 +3835,7 @@ group("ui_public_dependencies") {
    if (enable_extensions_core) {
      public_deps += [ "//extensions/browser" ]
    }

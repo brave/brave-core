@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/devtools/features.cc b/chrome/browser/devtools/features.cc
-index a72845cdb5f373d49f6de976e1dc05e29859d396..282835a11993fe9ffc541675dea6e3f76f4c76d4 100644
+index 5ff9ec98540e3c45f6c5a7d74f1d50dcc903d2b5..2017fb6a2d82b33d138759473c78615a31cce45c 100644
 --- a/chrome/browser/devtools/features.cc
 +++ b/chrome/browser/devtools/features.cc
 @@ -11,7 +11,11 @@ namespace features {
@@ -15,7 +15,7 @@ index a72845cdb5f373d49f6de976e1dc05e29859d396..282835a11993fe9ffc541675dea6e3f7
      &kDevToolsConsoleInsights, "aida_model_id", /*default_value=*/""};
  const base::FeatureParam<double> kDevToolsConsoleInsightsTemperature{
 @@ -116,7 +120,8 @@ BASE_FEATURE(kDevToolsAiAssistanceStorageAgent,
-              base::FEATURE_DISABLED_BY_DEFAULT);
+              base::FEATURE_ENABLED_BY_DEFAULT);
  
  // Whether the DevTools AI Code Completion is enabled.
 -BASE_FEATURE(kDevToolsAiCodeCompletion, base::FEATURE_ENABLED_BY_DEFAULT);
@@ -34,7 +34,7 @@ index a72845cdb5f373d49f6de976e1dc05e29859d396..282835a11993fe9ffc541675dea6e3f7
  const base::FeatureParam<std::string> kDevToolsAiCodeGenerationModelId{
      &kDevToolsAiCodeGeneration, "aida_model_id",
      /*default_value=*/""};
-@@ -175,7 +181,8 @@ BASE_FEATURE(kDevToolsAiGeneratedTimelineLabels,
+@@ -170,7 +176,8 @@ BASE_FEATURE(kDevToolsAiGeneratedTimelineLabels,
               base::FEATURE_ENABLED_BY_DEFAULT);
  
  // Whether the DevTools AI generated annotation labels in timeline are enabled.
@@ -44,7 +44,7 @@ index a72845cdb5f373d49f6de976e1dc05e29859d396..282835a11993fe9ffc541675dea6e3f7
  
  // Whether DevTools drawer can be toggled to vertical orientation.
  BASE_FEATURE(kDevToolsVerticalDrawer, base::FEATURE_ENABLED_BY_DEFAULT);
-@@ -213,8 +220,9 @@ BASE_FEATURE(kDevToolsAcceptDebuggingConnections,
+@@ -208,8 +215,9 @@ BASE_FEATURE(kDevToolsAcceptDebuggingConnections,
  // TODO(crbug.com/442892562): Remove this flag once the feature is launched.
  BASE_FEATURE(kDevToolsShowPolicyDialog, base::FEATURE_ENABLED_BY_DEFAULT);
  
@@ -55,7 +55,7 @@ index a72845cdb5f373d49f6de976e1dc05e29859d396..282835a11993fe9ffc541675dea6e3f7
  
  // Whether Console Insights Teasers are enabled.
  BASE_FEATURE(kDevToolsConsoleInsightsTeasers,
-@@ -237,6 +245,7 @@ BASE_FEATURE(kDevToolsGeminiRebranding, base::FEATURE_DISABLED_BY_DEFAULT);
+@@ -232,6 +240,7 @@ BASE_FEATURE(kDevToolsGeminiRebranding, base::FEATURE_DISABLED_BY_DEFAULT);
  
  BASE_FEATURE(kDevToolsAiOriginTrialsApis, base::FEATURE_ENABLED_BY_DEFAULT);
  

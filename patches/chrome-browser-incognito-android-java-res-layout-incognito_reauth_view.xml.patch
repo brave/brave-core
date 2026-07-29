@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/incognito/android/java/res/layout/incognito_reauth_view.xml b/chrome/browser/incognito/android/java/res/layout/incognito_reauth_view.xml
-index 249326638c059c9b8b7f57107b6b05cf51b6e337..ef9abd56457adcd79deba951cb880fc25d9d7e9b 100644
+index 74fdfc22740d38f5c6a9838bff583be2eacd55a0..4961d532b20a8815c6773d8dc63e36ede54b62a4 100644
 --- a/chrome/browser/incognito/android/java/res/layout/incognito_reauth_view.xml
 +++ b/chrome/browser/incognito/android/java/res/layout/incognito_reauth_view.xml
 @@ -12,7 +12,7 @@ found in the LICENSE file.
@@ -13,7 +13,7 @@ index 249326638c059c9b8b7f57107b6b05cf51b6e337..ef9abd56457adcd79deba951cb880fc2
          android:id="@+id/incognito_reauth_menu_button"
 @@ -33,12 +33,11 @@ found in the LICENSE file.
  
-     <org.chromium.ui.widget.ChromeImageView
+     <ImageView
          android:id="@+id/incognito_reauth_icon"
 -        android:layout_width="72dp"
 -        android:layout_height="72dp"

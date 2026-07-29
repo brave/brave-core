@@ -1,10 +1,10 @@
 diff --git a/chrome/installer/mac/keystone_install.sh b/chrome/installer/mac/keystone_install.sh
-index 6404aa86e6f7aa76d7ecdcba9e90aa8019dc627e..fc7deff53e15d0f236eac10307ff617fd5a67b1d 100755
+index f7bc063859d65b10fd9f3833c5c4a4f65a8e2843..57a18793c79dca6619dc76462805fb44caafa14e 100755
 --- a/chrome/installer/mac/keystone_install.sh
 +++ b/chrome/installer/mac/keystone_install.sh
-@@ -489,9 +489,13 @@ main() {
- 
-   trap cleanup EXIT HUP INT QUIT TERM
+@@ -484,9 +484,13 @@ main() {
+     trap "handle_signal \"${exit_signal}\"" "${exit_signal}"
+   done
  
 -  readonly APP_DIR_NAMES=( "Google Chrome.app" "Google Chrome Beta.app"
 -                           "Google Chrome Dev.app" "Google Chrome Canary.app" )
@@ -19,7 +19,7 @@ index 6404aa86e6f7aa76d7ecdcba9e90aa8019dc627e..fc7deff53e15d0f236eac10307ff617f
    readonly FRAMEWORK_DIR="${FRAMEWORK_NAME}.framework"
    readonly CONTENTS_DIR="Contents"
    readonly APP_PLIST="${CONTENTS_DIR}/Info"
-@@ -814,7 +818,52 @@ main() {
+@@ -809,7 +813,52 @@ main() {
        rm -rf "${new_versioned_dir}"
      fi
  
