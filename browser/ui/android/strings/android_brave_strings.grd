@@ -747,6 +747,9 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_BRAVE_BROWSER_LOCK_PRIVATE_TABS" desc="Toggle label: lock private tabs.">
         Private tabs
       </message>
+      <message name="IDS_BRAVE_BROWSER_LOCK_PREVENT_CAPTURE" desc="Toggle label: block screenshots and screen recording for locked-down parts of the browser.">
+        Prevent screenshot/video capture
+      </message>
       <message name="IDS_SEND_P3A_ANALYTICS_TITLE" desc="Title for checkbox of send p3a analytics.">
         Allow privacy-preserving product analytics (P3A)
       </message>
@@ -3747,12 +3750,6 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_SAFEBROWSING_ERRORS_PREF" desc="A preferences to show Safe Browsing errors">
       Show Safe Browsing errors
-    </message>
-    <message name="IDS_PRIVATE_TAB_SCREENSHOT_TITLE" desc="A title to show private tab screenshot">
-      Allow screenshots in private tabs
-    </message>
-    <message name="IDS_PRIVATE_TAB_SCREENSHOT_SUMMARY" desc="A summary to show private tab screenshot">
-      If allowed, private tabs will also be visible when multiple apps are open.
     </message>
     <message name="IDS_BRAVE_HOMEPAGE_MOBILE_BOOKMARKS_TEXT" desc="Text for `Mobile bookmarks` setting in `Homepage` settings">
       Mobile bookmarks
