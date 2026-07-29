@@ -210,6 +210,16 @@ class VerticalTabNewTabButton : public BraveNewTabButton {
 
   ~VerticalTabNewTabButton() override = default;
 
+  void OnMouseEvent(ui::MouseEvent* event) override {
+    if (event->IsOnlyMiddleMouseButton() &&
+        event->type() == ui::EventType::kMousePressed) {
+      NotifyClick(*event);
+      event->SetHandled();
+      return;
+    }
+    BraveNewTabButton::OnMouseEvent(event);
+  }
+
   gfx::Insets GetInsets() const override {
     // This button doesn't need any insets. Invalidate parent's one.
     return gfx::Insets();
