@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/AndroidManifest.xml b/chrome/android/java/AndroidManifest.xml
-index f8574cef5cb32b99779aed0210eccee20cfc4ccb..dd2d4e0bd3fdc16eaa14c360fa1899a058fb6f37 100644
+index 96fac0c55282773872867b199fe6147ee2b52491..be111facf2d17fbdd23d017ebef66dbeb640438a 100644
 --- a/chrome/android/java/AndroidManifest.xml
 +++ b/chrome/android/java/AndroidManifest.xml
 @@ -62,7 +62,9 @@ by a child template that "extends" this file.
@@ -68,7 +68,7 @@ index f8574cef5cb32b99779aed0210eccee20cfc4ccb..dd2d4e0bd3fdc16eaa14c360fa1899a0
  
      <!-- Permission for using Android 14's credential management framework. -->
      <uses-permission android:name="android.permission.CREDENTIAL_MANAGER_QUERY_CANDIDATE_CREDENTIALS"/>
-@@ -161,7 +175,9 @@ by a child template that "extends" this file.
+@@ -164,7 +178,9 @@ by a child template that "extends" this file.
      <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
      <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT"/>
  
@@ -78,7 +78,7 @@ index f8574cef5cb32b99779aed0210eccee20cfc4ccb..dd2d4e0bd3fdc16eaa14c360fa1899a0
  
      <!-- Permission for using pinned windowing layer for document picture-in-picture. -->
      <uses-permission android:name="android.permission.USE_PINNED_WINDOWING_LAYER" />
-@@ -377,6 +393,7 @@ by a child template that "extends" this file.
+@@ -378,6 +394,7 @@ by a child template that "extends" this file.
              <intent-filter>
                  <action android:name="com.sec.android.airview.HOVER" />
              </intent-filter>
@@ -86,7 +86,7 @@ index f8574cef5cb32b99779aed0210eccee20cfc4ccb..dd2d4e0bd3fdc16eaa14c360fa1899a0
              <meta-data android:name="android.app.searchable"
                  android:resource="@xml/searchable" />
          </activity-alias>
-@@ -954,6 +971,7 @@ by a child template that "extends" this file.
+@@ -978,6 +995,7 @@ by a child template that "extends" this file.
          </service>
  
          <!-- Quick Action Search widget -->
@@ -94,7 +94,7 @@ index f8574cef5cb32b99779aed0210eccee20cfc4ccb..dd2d4e0bd3fdc16eaa14c360fa1899a0
          <receiver
              android:name="org.chromium.chrome.browser.quickactionsearchwidget.QuickActionSearchWidgetProvider$QuickActionSearchWidgetProviderSearch"
              android:label="@string/quick_action_search_widget_title"
-@@ -983,6 +1001,7 @@ by a child template that "extends" this file.
+@@ -1007,6 +1025,7 @@ by a child template that "extends" this file.
                  android:name="android.appwidget.provider"
                  android:resource="@xml/quick_action_search_widget_dino_info" />
          </receiver>
@@ -102,7 +102,7 @@ index f8574cef5cb32b99779aed0210eccee20cfc4ccb..dd2d4e0bd3fdc16eaa14c360fa1899a0
  
          <!-- Bookmarks widget -->
          <receiver android:name="com.google.android.apps.chrome.appwidget.bookmarks.BookmarkThumbnailWidgetProvider"
-@@ -1204,7 +1223,7 @@ by a child template that "extends" this file.
+@@ -1226,7 +1245,7 @@ by a child template that "extends" this file.
  
          <service android:name="org.chromium.chrome.browser.media.MediaCaptureNotificationService"
              {% if enable_screen_capture == "true" %}
@@ -111,7 +111,7 @@ index f8574cef5cb32b99779aed0210eccee20cfc4ccb..dd2d4e0bd3fdc16eaa14c360fa1899a0
              {% else %}
              android:foregroundServiceType="camera|microphone"
              {% endif %}
-@@ -1284,6 +1303,7 @@ by a child template that "extends" this file.
+@@ -1309,6 +1328,7 @@ by a child template that "extends" this file.
            </activity>
          {% endif %}
  

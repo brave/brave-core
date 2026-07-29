@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/unload_controller.cc b/chrome/browser/ui/unload_controller.cc
-index dc14258b1124f22278f2897d7bfe3e6c8b1792ad..a34c0d11814626f5f9ebb5b4bae267b555bde618 100644
+index 95415e5abb2105d9345c870fe2d8f24d1bb6eaff..1cc65659e2a244f60287c1e0768d596781a7f2dd 100644
 --- a/chrome/browser/ui/unload_controller.cc
 +++ b/chrome/browser/ui/unload_controller.cc
 @@ -174,6 +174,7 @@ void UnloadController::OnWindowClosing() {
@@ -36,7 +36,7 @@ index dc14258b1124f22278f2897d7bfe3e6c8b1792ad..a34c0d11814626f5f9ebb5b4bae267b5
    // Set is_attempting_to_close_browser_ here, so that extensions, etc, do not
    // attempt to add tabs to the browser before it closes.
    is_attempting_to_close_browser_ = true;
-@@ -919,6 +925,9 @@ void UnloadController::InProgressDownloadResponse(bool cancel_downloads) {
+@@ -921,6 +927,9 @@ void UnloadController::InProgressDownloadResponse(bool cancel_downloads) {
  }
  
  void UnloadController::FinishWarnBeforeClosing(WarnBeforeClosingResult result) {

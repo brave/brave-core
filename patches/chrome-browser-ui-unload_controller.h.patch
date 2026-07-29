@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/unload_controller.h b/chrome/browser/ui/unload_controller.h
-index 1d781413df777a7bd87f45c7de5c9893b3fbd664..6afd2124fff39b8c7a17db7e9262af9fe0417b5a 100644
+index 84bf3492e3b2afa89c40cc3c526fd08ba6ebe9f5..31e05989a00793d6300c7a8e9b9b5f6a1fb6beb6 100644
 --- a/chrome/browser/ui/unload_controller.h
 +++ b/chrome/browser/ui/unload_controller.h
 @@ -100,6 +100,9 @@ class UnloadController : public WebContentsCollection::Observer,
@@ -12,7 +12,7 @@ index 1d781413df777a7bd87f45c7de5c9893b3fbd664..6afd2124fff39b8c7a17db7e9262af9f
    // Returns true if |contents| can be cleanly closed. When |browser_| is being
    // closed, this function will return false to indicate |contents| should not
    // be cleanly closed, since the fast shutdown path will just kill its
-@@ -315,6 +318,10 @@ class UnloadController : public WebContentsCollection::Observer,
+@@ -363,6 +366,10 @@ class UnloadController : public WebContentsCollection::Observer,
  
    WarnBeforeClosingCallback warn_before_closing_callback_;
  

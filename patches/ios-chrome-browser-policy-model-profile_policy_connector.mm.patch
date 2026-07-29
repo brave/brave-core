@@ -1,5 +1,5 @@
 diff --git a/ios/chrome/browser/policy/model/profile_policy_connector.mm b/ios/chrome/browser/policy/model/profile_policy_connector.mm
-index bf211bcdd3d1f6566628d446817d3ce51bc8c714..125f91cc2343e7d244da7bf96432fc46fa73eb44 100644
+index 114a10e097f958d15243546627ac917cdc012819..ba99de2188a170999cbb989ec2a3e8ad13d3f16d 100644
 --- a/ios/chrome/browser/policy/model/profile_policy_connector.mm
 +++ b/ios/chrome/browser/policy/model/profile_policy_connector.mm
 @@ -50,6 +50,7 @@ void ProfilePolicyConnector::Init(

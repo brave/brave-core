@@ -1,8 +1,8 @@
 diff --git a/extensions/browser/install_prompt_data.cc b/extensions/browser/install_prompt_data.cc
-index 39f6bbbfb9d1497c10c0dd25fb558c97bad252de..b088ae466fd19be0fad82b003e78375daa907d89 100644
+index d99ed06b10c9c92969b72fe79719e9e4169afca7..834fd561a5ace8d08b2977affd85b2f62068c074 100644
 --- a/extensions/browser/install_prompt_data.cc
 +++ b/extensions/browser/install_prompt_data.cc
-@@ -73,6 +73,10 @@ void InstallPromptData::SetInitialExtensionsProviderName(
+@@ -72,6 +72,10 @@ void InstallPromptData::SetInitialExtensionsProviderName(
  }
  
  std::u16string InstallPromptData::GetDialogTitle() const {
