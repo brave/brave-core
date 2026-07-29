@@ -150,13 +150,13 @@ TEST_F(ZCashVerifyChainStateTaskTest, NoReorg) {
                         ZCashRpc::GetTreeStateCallback callback) {
         if (block->height == kLatestScannedBlock) {
           auto tree_state = zcash::mojom::TreeState::New(
-              chain_id, block->height, "aabb00", 0, "", "");
+              chain_id, block->height, "aabb00", 0, "", "", "");
           std::move(callback).Run(std::move(tree_state));
           return;
         }
         // Valid tree state
         auto tree_state = zcash::mojom::TreeState::New(chain_id, block->height,
-                                                       "aabb", 0, "", "");
+                                                       "aabb", 0, "", "", "");
         std::move(callback).Run(std::move(tree_state));
       });
 
@@ -199,20 +199,20 @@ TEST_F(ZCashVerifyChainStateTaskTest, Reorg_ChainTipBeforeLatestScannedBlock) {
                         ZCashRpc::GetTreeStateCallback callback) {
         if (block->height == kLatestScannedBlock - 100) {
           auto tree_state = zcash::mojom::TreeState::New(
-              chain_id, block->height, "aabb0022", 0, "", "");
+              chain_id, block->height, "aabb0022", 0, "", "", "");
           std::move(callback).Run(std::move(tree_state));
           return;
         }
         if (block->height == kLatestScannedBlock) {
           auto tree_state = zcash::mojom::TreeState::New(
-              chain_id, block->height, "aabb00", 0, "", "");
+              chain_id, block->height, "aabb00", 0, "", "", "");
           std::move(callback).Run(std::move(tree_state));
           return;
         }
 
         // Valid tree state
         auto tree_state = zcash::mojom::TreeState::New(chain_id, block->height,
-                                                       "aabb", 0, "", "");
+                                                       "aabb", 0, "", "", "");
         std::move(callback).Run(std::move(tree_state));
       });
 
@@ -259,7 +259,7 @@ TEST_F(ZCashVerifyChainStateTaskTest, Reorg_ChainTipAfterLatestScannedBlock) {
         if (block->height == kLatestScannedBlock) {
           // Hash differs from the latest scanned block hash
           auto tree_state = zcash::mojom::TreeState::New(
-              chain_id, block->height, "aabb0011", 0, "", "");
+              chain_id, block->height, "aabb0011", 0, "", "", "");
           std::move(callback).Run(std::move(tree_state));
           return;
         }
@@ -267,13 +267,13 @@ TEST_F(ZCashVerifyChainStateTaskTest, Reorg_ChainTipAfterLatestScannedBlock) {
         if (block->height == kLatestScannedBlock - 100) {
           // Hash differs from the latest scanned block hash
           auto tree_state = zcash::mojom::TreeState::New(
-              chain_id, block->height, "aabb0022", 0, "", "");
+              chain_id, block->height, "aabb0022", 0, "", "", "");
           std::move(callback).Run(std::move(tree_state));
           return;
         }
         // Valid tree state
         auto tree_state = zcash::mojom::TreeState::New(chain_id, block->height,
-                                                       "aabb", 0, "", "");
+                                                       "aabb", 0, "", "", "");
         std::move(callback).Run(std::move(tree_state));
       });
 
@@ -319,19 +319,19 @@ TEST_F(ZCashVerifyChainStateTaskTest, Reorg_LatestBlockHashChanged) {
                         ZCashRpc::GetTreeStateCallback callback) {
         if (block->height == kLatestScannedBlock - 100) {
           auto tree_state = zcash::mojom::TreeState::New(
-              chain_id, block->height, "1122", 0, "", "");
+              chain_id, block->height, "1122", 0, "", "", "");
           std::move(callback).Run(std::move(tree_state));
           return;
         }
         if (block->height == kLatestScannedBlock) {
           auto tree_state = zcash::mojom::TreeState::New(
-              chain_id, block->height, "aabb33", 0, "", "");
+              chain_id, block->height, "aabb33", 0, "", "", "");
           std::move(callback).Run(std::move(tree_state));
           return;
         }
         // Valid tree state
         auto tree_state = zcash::mojom::TreeState::New(chain_id, block->height,
-                                                       "aabb", 0, "", "");
+                                                       "aabb", 0, "", "", "");
         std::move(callback).Run(std::move(tree_state));
       });
 
@@ -377,13 +377,13 @@ TEST_F(ZCashVerifyChainStateTaskTest, Error_CheckpointIdFailed) {
                         ZCashRpc::GetTreeStateCallback callback) {
         if (block->height == kLatestScannedBlock) {
           auto tree_state = zcash::mojom::TreeState::New(
-              chain_id, block->height, "aabb33", 0, "", "");
+              chain_id, block->height, "aabb33", 0, "", "", "");
           std::move(callback).Run(std::move(tree_state));
           return;
         }
         // Valid tree state
         auto tree_state = zcash::mojom::TreeState::New(chain_id, block->height,
-                                                       "aabb", 0, "", "");
+                                                       "aabb", 0, "", "", "");
         std::move(callback).Run(std::move(tree_state));
       });
 
@@ -426,13 +426,13 @@ TEST_F(ZCashVerifyChainStateTaskTest, Error_NoCheckpointId) {
                         ZCashRpc::GetTreeStateCallback callback) {
         if (block->height == kLatestScannedBlock) {
           auto tree_state = zcash::mojom::TreeState::New(
-              chain_id, block->height, "aabb33", 0, "", "");
+              chain_id, block->height, "aabb33", 0, "", "", "");
           std::move(callback).Run(std::move(tree_state));
           return;
         }
         // Valid tree state
         auto tree_state = zcash::mojom::TreeState::New(chain_id, block->height,
-                                                       "aabb", 0, "", "");
+                                                       "aabb", 0, "", "", "");
         std::move(callback).Run(std::move(tree_state));
       });
 
@@ -475,19 +475,19 @@ TEST_F(ZCashVerifyChainStateTaskTest, Error_LatestBlockFailed) {
                         ZCashRpc::GetTreeStateCallback callback) {
         if (block->height == kLatestScannedBlock - 100) {
           auto tree_state = zcash::mojom::TreeState::New(
-              chain_id, block->height, "1122", 0, "", "");
+              chain_id, block->height, "1122", 0, "", "", "");
           std::move(callback).Run(std::move(tree_state));
           return;
         }
         if (block->height == kLatestScannedBlock) {
           auto tree_state = zcash::mojom::TreeState::New(
-              chain_id, block->height, "aabb00", 0, "", "");
+              chain_id, block->height, "aabb00", 0, "", "", "");
           std::move(callback).Run(std::move(tree_state));
           return;
         }
         // Valid tree state
         auto tree_state = zcash::mojom::TreeState::New(chain_id, block->height,
-                                                       "aabb", 0, "", "");
+                                                       "aabb", 0, "", "", "");
         std::move(callback).Run(std::move(tree_state));
       });
 

@@ -85,7 +85,7 @@ class ZCashBlocksBatchScanTest : public testing::Test {
                           ZCashRpc::GetTreeStateCallback callback) {
           // Valid tree state
           auto tree_state = zcash::mojom::TreeState::New(
-              chain_id, block->height, "aabb", 0, "", "");
+              chain_id, block->height, "aabb", 0, "", "", "");
           std::move(callback).Run(std::move(tree_state));
         });
 

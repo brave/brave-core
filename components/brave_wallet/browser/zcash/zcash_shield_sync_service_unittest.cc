@@ -245,7 +245,7 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
         EXPECT_EQ(chain_id, mojom::kZCashMainnet);
         // Valid tree state
         auto tree_state = zcash::mojom::TreeState::New(chain_id, block->height,
-                                                       "aabb", 0, "", "");
+                                                       "aabb", 0, "", "", "");
         std::move(callback).Run(std::move(tree_state));
       });
 
@@ -368,8 +368,8 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
         EXPECT_EQ(chain_id, mojom::kZCashMainnet);
         // Hash of the latest scanned block
         // Tree state has been changed
-        auto tree_state = zcash::mojom::TreeState::New(chain_id, block->height,
-                                                       "aabbccdd", 0, "", "");
+        auto tree_state = zcash::mojom::TreeState::New(
+            chain_id, block->height, "aabbccdd", 0, "", "", "");
         std::move(callback).Run(std::move(tree_state));
       });
 
@@ -434,8 +434,8 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
                         ZCashRpc::GetTreeStateCallback callback) {
         EXPECT_EQ(chain_id, mojom::kZCashMainnet);
         // Hash of the latest scanned block differs
-        auto tree_state = zcash::mojom::TreeState::New(chain_id, block->height,
-                                                       "aabbccddee", 0, "", "");
+        auto tree_state = zcash::mojom::TreeState::New(
+            chain_id, block->height, "aabbccddee", 0, "", "", "");
         std::move(callback).Run(std::move(tree_state));
       });
 
