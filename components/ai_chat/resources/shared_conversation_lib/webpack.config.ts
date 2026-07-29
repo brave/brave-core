@@ -110,6 +110,8 @@ export default async function (
       ),
       to: 'nala.css',
       transform: {
+        // TODO(https://github.com/brave/leo/issues/1433) Remove this transform
+        // when nala supports `:host`.
         transformer(content: Buffer, absoluteFrom: string) {
           return content.toString().replaceAll(':root', ':host')
         },
