@@ -5,6 +5,8 @@
 
 import {
   ColorScheme,
+  Feature,
+  FeatureVisibility,
   WelcomePageHandler,
   WelcomePageInterface,
   WelcomePageReceiver,
@@ -25,7 +27,15 @@ import { addWebUiListener, sendWithPromise } from 'chrome://resources/js/cr.js'
 import { createInterfaceApi, endpointsFor, state } from '$web-common/api'
 import { loadTimeData } from '$web-common/loadTimeData'
 
-export { ColorScheme, Theme, ChromeColor }
+export { ColorScheme, Feature, FeatureVisibility, Theme, ChromeColor }
+
+// Maps a feature onto the `FeatureVisibility` field that describes it.
+export const featureVisibilityKeys: Record<Feature, keyof FeatureVisibility> = {
+  [Feature.kAIChat]: 'aiChat',
+  [Feature.kWallet]: 'wallet',
+  [Feature.kRewards]: 'rewards',
+  [Feature.kVPN]: 'vpn',
+}
 
 // Type returned from requestDefaultBrowserState message.
 export interface DefaultBrowserInfo {
@@ -173,6 +183,24 @@ export function createWelcomeApi(init = defaultInit()) {
             api.getVerticalTabsEnabled.update(enabled)
           },
         },
+        getFeatureVisibility: {
+          response: (r) => r.visibility,
+          prefetchWithArgs: [],
+          placeholderData: {
+            aiChat: true,
+            wallet: true,
+            rewards: true,
+            vpn: true,
+          },
+        },
+        setFeatureVisible: {
+          mutationResponse: () => {},
+          onMutate: ([feature, visible]: [Feature, boolean]) => {
+            api.getFeatureVisibility.update({
+              [featureVisibilityKeys[feature]]: visible,
+            })
+          },
+        },
         setWebDiscoveryEnabled: {
           mutationResponse: () => {},
         },
@@ -228,6 +256,9 @@ export function createWelcomeApi(init = defaultInit()) {
     },
     onVerticalTabsEnabledChanged: () => {
       api.getVerticalTabsEnabled.invalidate()
+    },
+    onFeatureVisibilityChanged: () => {
+      api.getFeatureVisibility.invalidate()
     },
   })
 
