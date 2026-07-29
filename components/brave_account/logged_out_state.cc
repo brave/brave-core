@@ -36,27 +36,25 @@ void LoggedOutState::LoginStep2(const std::string& encrypted_login_token,
   login_.Step2(encrypted_login_token, client_mac, std::move(callback));
 }
 
-void LoggedOutState::RegisterPasswordInit(
-    mojom::Service initiating_service,
-    const std::string& email,
-    const std::string& blinded_message,
-    RegisterPasswordInitCallback callback) {
-  register_.PasswordInit(initiating_service, email, blinded_message,
-                         std::move(callback));
+void LoggedOutState::RegisterStep1(mojom::Service initiating_service,
+                                   const std::string& email,
+                                   const std::string& blinded_message,
+                                   RegisterStep1Callback callback) {
+  register_.Step1(initiating_service, email, blinded_message,
+                  std::move(callback));
 }
 
-void LoggedOutState::RegisterPasswordFinalize(
+void LoggedOutState::RegisterStep2(
     const std::string& encrypted_verification_token,
     const std::string& serialized_record,
-    RegisterPasswordFinalizeCallback callback) {
-  register_.PasswordFinalize(encrypted_verification_token, serialized_record,
-                             std::move(callback));
+    RegisterStep2Callback callback) {
+  register_.Step2(encrypted_verification_token, serialized_record,
+                  std::move(callback));
 }
 
-void LoggedOutState::RegisterVerifyComplete(
-    const std::string& code,
-    RegisterVerifyCompleteCallback callback) {
-  register_.VerifyComplete(code, std::move(callback));
+void LoggedOutState::RegisterStep3(const std::string& code,
+                                   RegisterStep3Callback callback) {
+  register_.Step3(code, std::move(callback));
 }
 
 void LoggedOutState::ResetPasswordVerifyInit(
