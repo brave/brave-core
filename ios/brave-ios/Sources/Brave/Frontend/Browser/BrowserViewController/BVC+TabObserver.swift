@@ -130,7 +130,6 @@ extension BrowserViewController: TabObserver {
   }
 
   public func tabDidCommitSameDocumentNavigation(_ tab: some TabState) {
-    tab.browserData?.resetExternalAlertProperties()
 
     if !Preferences.Privacy.privateBrowsingOnly.value,
       !tab.isPrivate || Preferences.Privacy.persistentPrivateBrowsing.value

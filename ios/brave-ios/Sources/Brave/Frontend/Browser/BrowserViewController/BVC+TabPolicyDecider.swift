@@ -87,22 +87,6 @@ extension BrowserViewController: TabPolicyDecider {
     }
     let isPrivateBrowsing = privateBrowsingManager.isPrivateBrowsing
 
-    if tab.isExternalAppAlertPresented == true {
-      // Some external-app schemes may fire the same request back-to-back.
-      // Don't tear down and re-present the alert for a request that matches
-      // the one it's already asking about, otherwise it can dismiss and
-      // presents repeatedly.
-      if tab.externalAppURL == requestURL {
-        return .cancel
-      }
-      tab.externalAppPopup?.dismissWithType(dismissType: .noAnimation)
-      tab.externalAppPopupContinuation?.resume(with: .success(false))
-      tab.externalAppPopupContinuation = nil
-      tab.externalAppPopup = nil
-      tab.externalAppURL = nil
-      tab.isExternalAppAlertPresented = false
-    }
-
     // Handle internal:// urls
     if InternalURL.isValid(url: requestURL) {
       // Requests for Internal pages have a 60s timeout by default
@@ -132,45 +116,6 @@ extension BrowserViewController: TabPolicyDecider {
       return .cancel
     }
 
-    // First special case are some schemes that are about Calling. We prompt the user to confirm this action. This
-    // gives us the exact same behaviour as Safari.
-    // tel:, facetime:, facetime-audio:, already has its own native alert displayed by the OS!
-    if ["sms", "mailto"].contains(requestURL.scheme) {
-      let shouldOpen = await handleExternalURL(
-        requestURL,
-        tab: tab,
-        requestInfo: requestInfo
-      )
-      return (shouldOpen ? .allow : .cancel)
-    }
-
-    // The system's prompt could handle these via UIApplication.shared.openURL.
-    // However, this can lead to a spoof if the prompt shows,
-    // then a new tab is opened while the prompt is showing.
-    // There is no way to dismiss the system prompt when navigation changes!
-    // So handle it manually
-    if ["tel", "facetime", "facetime-audio"].contains(requestURL.scheme) {
-      let shouldOpen = await handleExternalURL(
-        requestURL,
-        tab: tab,
-        requestInfo: requestInfo
-      )
-      return (shouldOpen ? .allow : .cancel)
-    }
-
-    // Second special case are a set of URLs that look like regular http links, but should be handed over to iOS
-    // instead of being loaded in the webview.
-    // In addition we are exchaging actual scheme with "maps" scheme
-    // So the Apple maps URLs will open properly
-    if let mapsURL = isAppleMapsURL(requestURL), mapsURL.enabled {
-      let shouldOpen = await handleExternalURL(
-        mapsURL.url,
-        tab: tab,
-        requestInfo: requestInfo
-      )
-      return shouldOpen ? .allow : .cancel
-    }
-
     if #available(iOS 17.4, *), !ProcessInfo.processInfo.isiOSAppOnVisionOS {
       // Accessing `MarketplaceKitURIScheme` on Vision OS results in a crash
       if requestURL.scheme == MarketplaceKitURIScheme {
@@ -188,13 +133,10 @@ extension BrowserViewController: TabPolicyDecider {
       }
     }
 
-    if isStoreURL(requestURL) {
-      let shouldOpen = await handleExternalURL(
-        requestURL,
-        tab: tab,
-        requestInfo: requestInfo
-      )
-      return shouldOpen ? .allow : .cancel
+    // URLs which are meant to be opened in another application are handled by
+    // `ExternalAppURLTabHelper`, which will prompt the user & decide the policy itself.
+    if tab.externalAppURLHelper?.handlesURL(requestURL) == true {
+      return .allow
     }
 
     // handles Decentralized DNS
@@ -401,81 +343,11 @@ extension BrowserViewController: TabPolicyDecider {
       return requestURL.host == "account" ? .cancel : .allow
     }
 
-    // Standard schemes are handled in previous if-case.
-    // This check handles custom app schemes to open external apps.
-    // Our own 'brave' scheme does not require the switch-app prompt.
-    // Do not allow opening external URLs from child tabs
-    let shouldOpen = await handleExternalURL(
-      requestURL,
-      tab: tab,
-      requestInfo: requestInfo
-    )
-    let isSyntheticClick = !requestInfo.isUserInitiated
-
-    // Do not show error message for JS navigated links or redirect
-    // as it's not the result of a user action.
-    if let tabData = tab.browserData, !shouldOpen,
-      requestInfo.navigationType == .linkActivated && !isSyntheticClick
-    {
-      if self.presentedViewController == nil && self.presentingViewController == nil
-        && !tabData.isExternalAppAlertPresented && !tabData.isExternalAppAlertSuppressed
-      {
-        return await withCheckedContinuation { continuation in
-          // This alert does not need to be a BrowserAlertController because we return a policy
-          // without waiting for user action
-          let alert = UIAlertController(
-            title: Strings.unableToOpenURLErrorTitle,
-            message: Strings.unableToOpenURLError,
-            preferredStyle: .alert
-          )
-          alert.addAction(UIAlertAction(title: Strings.OKString, style: .default, handler: nil))
-          self.present(alert, animated: true) {
-            continuation.resume(returning: shouldOpen ? .allow : .cancel)
-          }
-        }
-      }
-    }
-
-    return shouldOpen ? .allow : .cancel
+    return .allow
   }
 }
 
 extension BrowserViewController {
-  // Recognize an Apple Maps URL. This will trigger the native app. But only if a search query is present.
-  // Otherwise it could just be a visit to a regular page on maps.apple.com.
-  // Exchaging https/https scheme with maps in order to open URLS properly on Apple Maps
-  fileprivate func isAppleMapsURL(_ url: URL) -> (enabled: Bool, url: URL)? {
-    if url.scheme == "http" || url.scheme == "https" {
-      if url.host == "maps.apple.com" && url.query != nil {
-        guard var urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: false) else {
-          return nil
-        }
-        urlComponents.scheme = "maps"
-
-        if let url = urlComponents.url {
-          return (true, url)
-        }
-        return nil
-      }
-    }
-    return (false, url)
-  }
-
-  // Recognize a iTunes Store URL. These all trigger the native apps. Note that appstore.com and phobos.apple.com
-  // used to be in this list. I have removed them because they now redirect to itunes.apple.com. If we special case
-  // them then iOS will actually first open Safari, which then redirects to the app store. This works but it will
-  // leave a 'Back to Safari' button in the status bar, which we do not want.
-  fileprivate func isStoreURL(_ url: URL) -> Bool {
-    let isStoreScheme = ["itms-apps", "itms-appss", "itmss"].contains(url.scheme)
-    if isStoreScheme {
-      return true
-    }
-
-    let isHttpScheme = ["http", "https"].contains(url.scheme)
-    let isAppStoreHost = ["itunes.apple.com", "apps.apple.com", "appsto.re"].contains(url.host)
-    return isHttpScheme && isAppStoreHost
-  }
-
   /// Get a possible redirect request from debouncing or query param stripping
   func getInternalRedirect(
     from request: URLRequest,
@@ -672,175 +544,6 @@ extension BrowserViewController {
         httpsUpgradeService.allowHttp(forHost: host)
       }
       return originalRequest
-    }
-  }
-
-  func handleExternalURL(
-    _ url: URL,
-    tab: some TabState,
-    requestInfo: WebRequestInfo
-  ) async -> Bool {
-    // Do not open external links for child tabs automatically
-    // The user must tap on the link to open it.
-    if tab.opener != nil && requestInfo.navigationType != .linkActivated {
-      return false
-    }
-
-    // If the request is cross origin frame, block it.
-    // If the request is cross origin window, block it.
-    if requestInfo.isCrossOriginFrame || requestInfo.isCrossOriginWindow {
-      return false
-    }
-
-    // If the request is from a sub-frame and not user-initiated, block it.
-    if !requestInfo.isMainFrame && !requestInfo.isUserInitiated {
-      return false
-    }
-
-    // Check if the current url of the caller has changed
-    if let domain = tab.visibleURL?.baseDomain,
-      domain != tab.externalAppURLDomain
-    {
-      tab.externalAppAlertCounter = 0
-      tab.isExternalAppAlertSuppressed = false
-    }
-
-    tab.externalAppURLDomain = tab.lastCommittedURL?.baseDomain
-
-    // Do not try to present over existing warning
-    if let tabData = tab.browserData,
-      tabData.isExternalAppAlertPresented || tabData.isExternalAppAlertSuppressed
-    {
-      return false
-    }
-
-    // External dialog should not be shown for non-active tabs #6687 - #7835
-    if !tab.isVisible {
-      return false
-    }
-
-    var alertTitle = Strings.openExternalAppURLGenericTitle
-
-    if requestInfo.isMainFrame {
-      if case let origin = URLOrigin(url: url), !origin.isOpaque {
-        let displayHost =
-          "\(origin.scheme)://\(origin.host):\(origin.port)"
-        alertTitle = String(format: Strings.openExternalAppURLTitle, displayHost)
-      } else if let displayHost = tab.lastCommittedURL?.withoutWWW.host {
-        alertTitle = String(format: Strings.openExternalAppURLTitle, displayHost)
-      }
-    }
-
-    // Handling condition when Tab is empty when handling an external URL we should remove the tab once the user decides
-    let removeTabIfEmpty = { [weak self] in
-      if tab.visibleURL == nil {
-        self?.tabManager.removeTab(tab)
-      }
-    }
-
-    // Show the external sceheme invoke alert
-    @MainActor
-    func showExternalSchemeAlert(
-      for tab: some TabState,
-      isSuppressActive: Bool,
-      openedURLCompletionHandler: @escaping (Bool) -> Void
-    ) {
-      // Check if active controller is bvc otherwise do not show show external sceheme alerts
-      guard shouldShowExternalSchemeAlert() else {
-        openedURLCompletionHandler(false)
-        return
-      }
-
-      view.endEditing(true)
-      tab.isExternalAppAlertPresented = true
-      tab.externalAppURL = url
-
-      let popup = AlertPopupView(
-        imageView: nil,
-        title: alertTitle,
-        message: String(format: Strings.openExternalAppURLMessage, url.relativeString),
-        titleWeight: .semibold,
-        titleSize: 21
-      )
-
-      tab.externalAppPopup = popup
-
-      if isSuppressActive {
-        popup.addButton(title: Strings.suppressAlertsActionTitle, type: .destructive) {
-          [weak tab] () -> PopupViewDismissType in
-          openedURLCompletionHandler(false)
-          tab?.isExternalAppAlertSuppressed = true
-          return .flyDown
-        }
-      } else {
-        popup.addButton(title: Strings.openExternalAppURLDontAllow) {
-          [weak tab] () -> PopupViewDismissType in
-          openedURLCompletionHandler(false)
-          removeTabIfEmpty()
-          tab?.isExternalAppAlertPresented = false
-          tab?.externalAppURL = nil
-          return .flyDown
-        }
-      }
-      popup.addButton(title: Strings.openExternalAppURLAllow, type: .primary) {
-        [weak tab] () -> PopupViewDismissType in
-        UIApplication.shared.open(url, options: [:]) { didOpen in
-          openedURLCompletionHandler(!didOpen)
-        }
-        removeTabIfEmpty()
-        tab?.isExternalAppAlertPresented = false
-        tab?.externalAppURL = nil
-        return .flyDown
-      }
-      popup.showWithType(showType: .flyUp)
-    }
-
-    func shouldShowExternalSchemeAlert() -> Bool {
-      guard let rootVC = currentScene?.browserViewController else {
-        return false
-      }
-
-      func topViewController(startingFrom viewController: UIViewController) -> UIViewController {
-        var top = viewController
-        if let navigationController = top as? UINavigationController,
-          let vc = navigationController.visibleViewController
-        {
-          return topViewController(startingFrom: vc)
-        }
-        if let tabController = top as? UITabBarController,
-          let vc = tabController.selectedViewController
-        {
-          return topViewController(startingFrom: vc)
-        }
-        while let next = top.presentedViewController {
-          top = next
-        }
-        return top
-      }
-
-      let isTopController = self == topViewController(startingFrom: rootVC)
-      let isTopWindow = view.window?.isKeyWindow == true
-      return isTopController && isTopWindow
-    }
-
-    tab.browserData?.externalAppAlertCounter += 1
-
-    return await withTaskCancellationHandler {
-      return await withCheckedContinuation { [weak tab] continuation in
-        guard let tab else {
-          continuation.resume(returning: false)
-          return
-        }
-        tab.externalAppPopupContinuation = continuation
-        showExternalSchemeAlert(for: tab, isSuppressActive: tab.externalAppAlertCounter ?? 0 > 2) {
-          [weak tab] in
-          tab?.externalAppPopupContinuation = nil
-          continuation.resume(with: .success($0))
-        }
-      }
-    } onCancel: { [weak tab] in
-      tab?.externalAppPopupContinuation?.resume(with: .success(false))
-      tab?.externalAppPopupContinuation = nil
     }
   }
 
