@@ -592,6 +592,10 @@ extension QuickViewController: TabDelegate {
       actionProvider: actionProvider
     )
   }
+
+  func tabWebViewDidClose(_ tab: some TabState) {
+    dismiss(animated: true)
+  }
 }
 
 // MARK: - TabObserver
