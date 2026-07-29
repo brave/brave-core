@@ -15,7 +15,7 @@
 #include "base/strings/strcat.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
-#include "brave/browser/net/brave_request_handler.h"
+#include "brave/browser/net/brave_request_handler_impl.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/constants/network_constants.h"
 #include "chrome/test/base/testing_profile.h"
@@ -59,7 +59,8 @@ class BraveProxyingURLLoaderFactoryTest : public testing::Test {
   BraveProxyingURLLoaderFactoryTest() {
     feature_list_.InitAndDisableFeature(
         brave_shields::features::kBraveAdblockCspRules);
-    request_handler_ = std::make_unique<BraveRequestHandler<std::shared_ptr>>();
+    request_handler_ =
+        std::make_unique<BraveRequestHandlerImpl<std::shared_ptr>>();
     profile_ = TestingProfile::Builder().Build();
   }
 
@@ -101,7 +102,7 @@ class BraveProxyingURLLoaderFactoryTest : public testing::Test {
  protected:
   base::test::ScopedFeatureList feature_list_;
   content::BrowserTaskEnvironment task_environment_;
-  std::unique_ptr<BraveRequestHandler<std::shared_ptr>> request_handler_;
+  std::unique_ptr<BraveRequestHandlerImpl<std::shared_ptr>> request_handler_;
   std::unique_ptr<TestingProfile> profile_;
   network::TestURLLoaderFactory test_factory_;
   std::unique_ptr<BraveProxyingURLLoaderFactory<std::shared_ptr>> proxy_;

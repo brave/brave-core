@@ -18,7 +18,7 @@
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
-#include "brave/browser/net/brave_request_handler.h"
+#include "brave/browser/net/brave_request_handler_impl.h"
 #include "brave/browser/net/url_context.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "chrome/test/base/testing_profile.h"
@@ -133,7 +133,8 @@ class BraveProxyingWebSocketTest : public testing::Test {
 
     feature_list_.InitAndDisableFeature(
         brave_shields::features::kBraveAdblockCspRules);
-    request_handler_ = std::make_unique<BraveRequestHandler<std::shared_ptr>>();
+    request_handler_ =
+        std::make_unique<BraveRequestHandlerImpl<std::shared_ptr>>();
     profile_ = TestingProfile::Builder().Build();
 
     return std::make_unique<BraveProxyingWebSocket<std::shared_ptr>>(
@@ -144,7 +145,7 @@ class BraveProxyingWebSocketTest : public testing::Test {
 
   base::test::ScopedFeatureList feature_list_;
   content::BrowserTaskEnvironment task_environment_;
-  std::unique_ptr<BraveRequestHandler<std::shared_ptr>> request_handler_;
+  std::unique_ptr<BraveRequestHandlerImpl<std::shared_ptr>> request_handler_;
   std::unique_ptr<TestingProfile> profile_;
   mojo::Remote<network::mojom::TrustedHeaderClient> proxy_header_client_;
   mojo::Remote<network::mojom::WebSocketHandshakeClient>

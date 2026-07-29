@@ -1,9 +1,9 @@
-/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2026 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/net/brave_request_handler.h"
+#include "brave/browser/net/brave_request_handler_impl.h"
 
 #include <algorithm>
 #include <memory>
@@ -58,16 +58,16 @@ static bool IsInternalScheme(T<brave::BraveRequestInfo> ctx) {
 }
 
 template <template <typename> class T>
-BraveRequestHandler<T>::BraveRequestHandler() {
+BraveRequestHandlerImpl<T>::BraveRequestHandlerImpl() {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   SetupCallbacks();
 }
 
 template <template <typename> class T>
-BraveRequestHandler<T>::~BraveRequestHandler() = default;
+BraveRequestHandlerImpl<T>::~BraveRequestHandlerImpl() = default;
 
 template <template <typename> class T>
-void BraveRequestHandler<T>::SetupCallbacks() {
+void BraveRequestHandlerImpl<T>::SetupCallbacks() {
   brave::OnBeforeURLRequestCallback callback =
       base::BindRepeating(brave::OnBeforeURLRequest_SiteHacksWork<T>);
   before_url_request_callbacks_.push_back(callback);
@@ -129,13 +129,13 @@ void BraveRequestHandler<T>::SetupCallbacks() {
 }
 
 template <template <typename> class T>
-bool BraveRequestHandler<T>::IsRequestIdentifierValid(
+bool BraveRequestHandlerImpl<T>::IsRequestIdentifierValid(
     uint64_t request_identifier) {
   return callbacks_.contains(request_identifier);
 }
 
 template <template <typename> class T>
-int BraveRequestHandler<T>::OnBeforeURLRequest(
+int BraveRequestHandlerImpl<T>::OnBeforeURLRequest(
     T<brave::BraveRequestInfo> ctx,
     net::CompletionOnceCallback callback,
     GURL* new_url) {
@@ -151,7 +151,7 @@ int BraveRequestHandler<T>::OnBeforeURLRequest(
 }
 
 template <template <typename> class T>
-int BraveRequestHandler<T>::OnBeforeStartTransaction(
+int BraveRequestHandlerImpl<T>::OnBeforeStartTransaction(
     T<brave::BraveRequestInfo> ctx,
     net::CompletionOnceCallback callback,
     net::HttpRequestHeaders* headers) {
@@ -168,7 +168,7 @@ int BraveRequestHandler<T>::OnBeforeStartTransaction(
 }
 
 template <template <typename> class T>
-int BraveRequestHandler<T>::OnHeadersReceived(
+int BraveRequestHandlerImpl<T>::OnHeadersReceived(
     T<brave::BraveRequestInfo> ctx,
     net::CompletionOnceCallback callback,
     const net::HttpResponseHeaders* original_response_headers,
@@ -202,7 +202,7 @@ int BraveRequestHandler<T>::OnHeadersReceived(
 }
 
 template <template <typename> class T>
-void BraveRequestHandler<T>::OnURLRequestDestroyed(
+void BraveRequestHandlerImpl<T>::OnURLRequestDestroyed(
     T<brave::BraveRequestInfo> ctx) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   DCHECK(ctx);
@@ -213,7 +213,7 @@ void BraveRequestHandler<T>::OnURLRequestDestroyed(
 }
 
 template <template <typename> class T>
-void BraveRequestHandler<T>::RunCallbackForRequestIdentifier(
+void BraveRequestHandlerImpl<T>::RunCallbackForRequestIdentifier(
     uint64_t request_identifier,
     int rv) {
   std::map<uint64_t, net::CompletionOnceCallback>::iterator it =
@@ -227,7 +227,8 @@ void BraveRequestHandler<T>::RunCallbackForRequestIdentifier(
 // TODO(iefremov): Merge all callback containers into one and run only one loop
 // instead of many (issues/5574).
 template <template <typename> class T>
-void BraveRequestHandler<T>::RunNextCallback(T<brave::BraveRequestInfo> ctx) {
+void BraveRequestHandlerImpl<T>::RunNextCallback(
+    T<brave::BraveRequestInfo> ctx) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   if (!ctx) {
     return;
@@ -254,7 +255,7 @@ void BraveRequestHandler<T>::RunNextCallback(T<brave::BraveRequestInfo> ctx) {
       brave::OnBeforeURLRequestCallback callback =
           before_url_request_callbacks_[index];
       brave::ResponseCallback next_callback =
-          base::BindRepeating(&BraveRequestHandler::RunNextCallback,
+          base::BindRepeating(&BraveRequestHandlerImpl::RunNextCallback,
                               weak_factory_.GetWeakPtr(), ctx);
       rv = callback.Run(next_callback, ctx);
       if (rv == net::ERR_IO_PENDING) {
@@ -272,7 +273,7 @@ void BraveRequestHandler<T>::RunNextCallback(T<brave::BraveRequestInfo> ctx) {
       brave::OnBeforeStartTransactionCallback callback =
           before_start_transaction_callbacks_[index];
       brave::ResponseCallback next_callback =
-          base::BindRepeating(&BraveRequestHandler::RunNextCallback,
+          base::BindRepeating(&BraveRequestHandlerImpl::RunNextCallback,
                               weak_factory_.GetWeakPtr(), ctx);
       rv = callback.Run(ctx->headers(), next_callback, ctx);
       if (rv == net::ERR_IO_PENDING) {
@@ -290,7 +291,7 @@ void BraveRequestHandler<T>::RunNextCallback(T<brave::BraveRequestInfo> ctx) {
       brave::OnHeadersReceivedCallback callback =
           headers_received_callbacks_[index];
       brave::ResponseCallback next_callback =
-          base::BindRepeating(&BraveRequestHandler::RunNextCallback,
+          base::BindRepeating(&BraveRequestHandlerImpl::RunNextCallback,
                               weak_factory_.GetWeakPtr(), ctx);
       rv = callback.Run(ctx->original_response_headers(),
                         ctx->override_response_headers(),
@@ -327,5 +328,5 @@ void BraveRequestHandler<T>::RunNextCallback(T<brave::BraveRequestInfo> ctx) {
   RunCallbackForRequestIdentifier(ctx->request_identifier(), rv);
 }
 
-template class BraveRequestHandler<std::shared_ptr>;
-template class BraveRequestHandler<base::WeakPtr>;
+template class BraveRequestHandlerImpl<std::shared_ptr>;
+template class BraveRequestHandlerImpl<base::WeakPtr>;
