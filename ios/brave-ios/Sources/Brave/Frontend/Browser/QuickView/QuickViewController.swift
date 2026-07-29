@@ -37,7 +37,6 @@ class QuickViewController: UIViewController {
     estimatedTransitionDistance: 110
   )
   private var toolbarVisibilityCancellable: AnyCancellable?
-  private var toolbarBottomConstraint: Constraint?
   private let onOpenInNewTab: ((URLRequest, Bool) -> Void)?
   private let onOpenInNewWindow: ((URL, Bool) -> Void)?
   private let onAttachTab: ((any TabState) -> Void)?
