@@ -48,26 +48,6 @@
   border-radius: 8px;
 }
 
-.counterText {
-  font: var(--leo-font-small-regular);
-  color: var(--leo-color-systemfeedback-warning-icon);
-  padding: 3px 16px;
-  visibility: hidden;
-  opacity: 0;
-  transition:
-    visibility 0.2s linear,
-    opacity 0.2s linear;
-}
-
-.counterTextVisible {
-  visibility: visible;
-  opacity: 1;
-}
-
-.counterTextError {
-  color: var(--leo-color-systemfeedback-error-icon);
-}
-
 .toolsContainer {
   display: flex;
   align-items: center;
