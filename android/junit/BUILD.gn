@@ -350,6 +350,19 @@ if (is_android) {
   }
 
   robolectric_library(
+      "brave_junit_tests_org.chromium.chrome.browser.tabmodel") {
+    sources = [ "src/org/chromium/chrome/browser/tabmodel/BraveTabGroupHelperUnitTest.java" ]
+
+    deps = [
+      "//base:base_java",
+      "//chrome/android:chrome_java",
+      "//chrome/android/junit:chrome_junit_tests_helper",
+      "//chrome/browser/tabmodel:java",
+      "//chrome/browser/tabwindow:java",
+    ]
+  }
+
+  robolectric_library(
       "brave_junit_tests_org.chromium.chrome.browser.tasks.tab_management") {
     resources_package = "org.chromium.chrome.browser.tasks.tab_management"
     sources = [
