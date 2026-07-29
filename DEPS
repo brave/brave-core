@@ -83,8 +83,7 @@ hooks = [
     'condition': 'checkout_mac',
     'action': ['vpython3', 'build/download_dep.py',
                'omaha4/BraveUpdater-143.1.87.74.zip',
-               '//brave/third_party/updater/mac',
-               'BraveUpdater.app/'],
+               '//brave/third_party/updater/mac'],
   },
   {
     'name': 'update_pip',
