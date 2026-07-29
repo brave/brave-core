@@ -13,7 +13,7 @@ import {
 } from '../../common/conversation_history_utils'
 import * as Mojom from '../../common/mojom'
 import { useIsDragging } from '../hooks/useIsDragging'
-import { getMaxInputCharLimit, isLeoModel } from '../model_utils'
+import { isLeoModel } from '../model_utils'
 import { SelectedChatDetails } from './active_chat_context'
 import useSendFeedback, { SendFeedbackState } from './useSendFeedback'
 import { useAIChat } from './ai_chat_context'
@@ -23,35 +23,7 @@ import {
   stringifyContent,
 } from '../components/input_box/editable_content'
 
-export interface CharCountContext {
-  isCharLimitExceeded: boolean
-  isCharLimitApproaching: boolean
-  inputTextCharCountDisplay: string
-}
-
 export type UploadedImageData = Mojom.UploadedFile
-
-export const defaultCharCountContext: CharCountContext = {
-  isCharLimitApproaching: false,
-  isCharLimitExceeded: false,
-  inputTextCharCountDisplay: '',
-}
-
-export function useCharCountInfo(
-  inputText: string,
-  currentModel?: Mojom.Model,
-): CharCountContext {
-  const maxInputChar = getMaxInputCharLimit(currentModel)
-  const isCharLimitExceeded = inputText.length >= maxInputChar
-  const isCharLimitApproaching = inputText.length >= maxInputChar * 0.8
-  const inputTextCharCountDisplay = `${inputText.length} / ${maxInputChar}`
-
-  return {
-    isCharLimitExceeded,
-    isCharLimitApproaching,
-    inputTextCharCountDisplay,
-  }
-}
 
 // Each instance of ConversationContext should be provided with an API interface
 // connected to the relevant API endpoints.
@@ -219,11 +191,6 @@ export function useProvideConversationContext(props: ConversationContextProps) {
       && currentModel?.options.leoModelOptions?.access
         === Mojom.ModelAccess.PREMIUM)
   )
-  const {
-    isCharLimitExceeded,
-    isCharLimitApproaching,
-    inputTextCharCountDisplay,
-  } = useCharCountInfo(stringifyContent(inputText), currentModel)
   const isCurrentModelLeo =
     currentModel !== undefined && isLeoModel(currentModel)
 
@@ -285,7 +252,6 @@ export function useProvideConversationContext(props: ConversationContextProps) {
 
   const submitInputTextToAPI = () => {
     if (!inputText) return
-    if (isCharLimitExceeded) return
     if (shouldDisableUserInput) return
 
     if (!aiChat.isStorageNoticeDismissed && aiChat.hasAcceptedAgreement) {
@@ -732,9 +698,6 @@ export function useProvideConversationContext(props: ConversationContextProps) {
     selectedActionType,
     apiHasError,
     shouldDisableUserInput,
-    isCharLimitApproaching,
-    isCharLimitExceeded,
-    inputTextCharCountDisplay,
     isCurrentModelLeo,
     shouldShowLongConversationInfo,
     unassociatedTabs,
@@ -777,7 +740,6 @@ export const { useAPI: useConversation, Provider: ConversationProvider } =
   generateReactContext(useProvideConversationContext)
 
 export type ConversationContext = SendFeedbackState
-  & CharCountContext
   & ReturnType<typeof useProvideConversationContext>
 
 export function useConversationState() {
