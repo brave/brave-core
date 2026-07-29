@@ -384,10 +384,16 @@ void EthTxManager::OnSimulateEvmTransactionForUnapproved(
   if (!timed_out && ok && !calls.empty()) {
     findings = ScanAuthorizations(calls);
   }
-  // If simulation yielded no ApprovalForAll findings (either because it
-  // failed/timed out, or because the on-chain contract emits no events),
-  // fall back to scanning the raw calldata for the setApprovalForAll selector.
-  if (findings.empty()) {
+  // Fall back to scanning the raw calldata for the setApprovalForAll selector
+  // unless simulation already surfaced an approval-for-all grant. An unrelated
+  // ERC-20 Approval finding must not suppress the fallback: a transaction can
+  // bundle a token approve with a hidden setApprovalForAll grant, and trusting
+  // the non-empty (but approval-only) result would bypass the warning.
+  bool has_approval_for_all =
+      std::ranges::any_of(findings, [](const AuthorizationFinding& f) {
+        return f.kind == AuthorizationFinding::Kind::kApprovalForAll;
+      });
+  if (!has_approval_for_all) {
     auto operators = FindSetApprovalForAllOperatorsByByteScan(
         base::span(pending->tx->data()));
     for (const auto& op : operators) {

@@ -1613,6 +1613,96 @@ TEST_F(EthTxManagerUnitTest,
   EXPECT_EQ(tx1559->max_fee_per_gas(), 133ULL);  // 0x64 x 1.33
 }
 
+TEST_F(EthTxManagerUnitTest,
+       AddUnapprovedEvmTransactionErc20ApprovalDoesNotSuppressByteScan) {
+  constexpr char kOperator[] = "0x1111111111111111111111111111111111111111";
+  // multicall(bytes[]) wrapping one setApprovalForAll(kOperator, true) call.
+  std::vector<uint8_t> multicall_data;
+  ASSERT_TRUE(base::HexStringToBytes(
+      // multicall(bytes[]) selector
+      "ac9650d8"
+      // offset to bytes[] array
+      "0000000000000000000000000000000000000000000000000000000000000020"
+      // array length = 1
+      "0000000000000000000000000000000000000000000000000000000000000001"
+      // offset to element[0]
+      "0000000000000000000000000000000000000000000000000000000000000020"
+      // length of element[0] = 68 (4 + 32 + 32)
+      "0000000000000000000000000000000000000000000000000000000000000044"
+      // setApprovalForAll selector
+      "a22cb465"
+      // operator address (padded to 32 bytes)
+      "0000000000000000000000001111111111111111111111111111111111111111"
+      // approved = true
+      "0000000000000000000000000000000000000000000000000000000000000001",
+      &multicall_data));
+
+  // keccak256("Approval(address,address,uint256)")
+  constexpr char kErc20ApprovalTopic[] =
+      "0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925";
+
+  url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
+      [this, kErc20ApprovalTopic](const network::ResourceRequest& request) {
+        url_loader_factory_.ClearResponses();
+        std::string_view request_string(request.request_body->elements()
+                                            ->at(0)
+                                            .As<network::DataElementBytes>()
+                                            .AsStringPiece());
+        base::DictValue request_value = ParseJsonDict(request_string);
+        std::string* method = request_value.FindString("method");
+        ASSERT_TRUE(method);
+        if (*method == "eth_simulateV1") {
+          url_loader_factory_.AddResponse(
+              request.url.spec(),
+              "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":[{\"calls\":[{"
+              "\"status\":\"0x1\",\"logs\":[{\"address\":"
+              "\"0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48\",\"topics\":["
+              "\"" +
+                  std::string(kErc20ApprovalTopic) +
+                  "\","
+                  "\"0x000000000000000000000000be862ad9abfe6f22bcb087716c7d89"
+                  "a26051f74c\","
+                  "\"0x000000000000000000000000111111111111111111111111111111"
+                  "1111111111\"],"
+                  "\"data\":"
+                  "\"0x0000000000000000000000000000000000000000000000000de0b6"
+                  "b3a7640000\"}]}]}]}");
+        } else if (*method == "eth_gasPrice") {
+          url_loader_factory_.AddResponse(
+              request.url.spec(),
+              "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"0x1\"}");
+        } else if (*method == "eth_getTransactionCount") {
+          url_loader_factory_.AddResponse(
+              request.url.spec(),
+              "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"0x1\"}");
+        }
+      }));
+
+  const std::string gas_price = "0x1";
+  const std::string gas_limit = "0x974";
+  auto tx_data =
+      mojom::TxData::New("0x1", "0x1", gas_price, gas_limit,
+                         "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
+                         "0x016345785d8a0000", multicall_data);
+
+  bool callback_called = false;
+  std::string tx_meta_id;
+  AddUnapprovedEvmDappTransaction(
+      std::move(tx_data), from(),
+      base::BindOnce(&AddUnapprovedTransactionSuccessCallback, &callback_called,
+                     &tx_meta_id));
+
+  task_environment_.RunUntilIdle();
+  ASSERT_TRUE(callback_called);
+  auto tx_meta = eth_tx_manager()->GetTxForTesting(tx_meta_id);
+  ASSERT_TRUE(tx_meta);
+  auto tx_info = tx_meta->ToTransactionInfo();
+  EXPECT_EQ(tx_info->tx_type, mojom::TransactionType::ERC721SetApprovalForAll);
+  ASSERT_EQ(tx_info->tx_args.size(), 2u);
+  EXPECT_EQ(tx_info->tx_args[0], kOperator);
+  EXPECT_EQ(tx_info->tx_args[1], "0x1");
+}
+
 TEST_F(EthTxManagerUnitTest, AddUnapproved1559TransactionFeeHistoryFailed) {
   url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
       [this](const network::ResourceRequest& request) {
