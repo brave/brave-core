@@ -126,6 +126,16 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
 
       isTorManaged_: Boolean,
 
+      // PrefControlMixin checks for a pref being valid, so have to fake it,
+      // same as torEnabledPref_ below, since useBridges_ isn't backed by a
+      // real chrome.settingsPrivate pref.
+      useBridgesValuePref_: {
+        type: Object,
+        value() {
+          return {}
+        },
+      },
+
       torEnabledPref_: {
         type: Object,
         value() {
@@ -182,6 +192,7 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
   private declare requestedBridgesPlaceholder_: string
   private declare providedBridgesPlaceholder_: string
   private declare isTorManaged_: boolean
+  private declare useBridgesValuePref_: chrome.settingsPrivate.PrefObject
   private declare torEnabledPref_: chrome.settingsPrivate.PrefObject
   private declare torSnowflakeExtensionEnabledPref_: chrome.settingsPrivate.PrefObject
   private declare torSnowflakeExtensionAllowed_: boolean

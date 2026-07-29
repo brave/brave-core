@@ -64,7 +64,7 @@
   <cr-radio-group id="bridgesGroup" selectable-elements="settings-collapse-radio-button" selected="{{useBridgesValue_}}"
     on-selected-changed="onUseBridgesValueChanged_" hidden="[[!shouldShowBridgesGroup_]]">
     <settings-collapse-radio-button id="useBuiltIn" name="useBuiltIn" label="$i18n{torSelectBuiltInRadio}" no-collapse
-      no-automatic-collapse expanded>
+      no-automatic-collapse expanded pref="[[useBridgesValuePref_]]">
       <div slot="collapse" on-click="onSlotClick_">
         <select id="builtInBridgesType" class="md-select" on-change="onBuiltInBridgesSelect_"
           disabled="[[!usageEqual_('useBuiltIn', useBridgesValue_)]]">
@@ -77,7 +77,7 @@
       </div>
     </settings-collapse-radio-button>
     <settings-collapse-radio-button id="useRequested" name="useRequested" label="$i18n{torRequestBridgesRadio}"
-      no-collapse no-automatic-collapse expanded>
+      no-collapse no-automatic-collapse expanded pref="[[useBridgesValuePref_]]">
       <div slot="collapse" on-click="onSlotClick_">
         <textarea id="requestedBridges" multiline="true" rows="3" readonly="true" value="[[requestedBridges_]]"
           placeholder="[[requestedBridgesPlaceholder_]]"
@@ -87,7 +87,7 @@
       </div>
     </settings-collapse-radio-button>
     <settings-collapse-radio-button id="useProvided" name="useProvided" label="$i18n{torProvideBridgesRadio}" no-collapse
-      no-automatic-collapse expanded>
+      no-automatic-collapse expanded pref="[[useBridgesValuePref_]]">
       <div slot="collapse" on-click="onSlotClick_">
         <div>$i18n{torEnterBridgeInfoLabel}</div>
         <textarea id="providedBridges" multiline="true" rows="3" value="{{providedBridges_::input}}"
