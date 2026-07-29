@@ -13,11 +13,16 @@ import { fallback } from '../build/webpack/polyfill'
 import generatePathMap from '../build/webpack/path-map'
 import { withMockOverrides } from '../build/webpack/resolve'
 import { cssRules, tsLoaderRule, ifdefLoaderRule } from '../build/webpack/rules'
-import { provideNodeGlobals, chromePrefixReplacers } from '../build/webpack/plugins'
+import {
+  provideNodeGlobals,
+  chromePrefixReplacers,
+} from '../build/webpack/plugins'
 import { forkTsChecker } from './options'
 
 if (!fs.existsSync(genPath)) {
-  throw new Error("Failed to find build output 'gen' folder! Have you run a brave-core build yet with the specified (or default) configuration?")
+  throw new Error(
+    "Failed to find build output 'gen' folder! Have you run a brave-core build yet with the specified (or default) configuration?",
+  )
 }
 console.log(`Using brave-core generated dependency path of '${genPath}'`)
 
@@ -26,10 +31,12 @@ console.log(`Using brave-core generated dependency path of '${genPath}'`)
 const pathMap = withMockOverrides(generatePathMap(genPath), {
   chromeResourcesMockDir: path.resolve(__dirname, 'chrome-resources-mock'),
   webCommonMockDir: path.resolve(__dirname, 'web-common-mock'),
-  genPath
+  genPath,
 })
 
-const buildFlags = JSON.parse(fs.readFileSync(path.join(genPath, 'brave/build_flags.json'), 'utf8'))
+const buildFlags = JSON.parse(
+  fs.readFileSync(path.join(genPath, 'brave/build_flags.json'), 'utf8'),
+)
 buildFlags.is_storybook = true
 
 /**
@@ -54,7 +61,7 @@ function useMockedModules(moduleNames: string[]) {
       moduleNamesGroup //
     })(?:\.ts)?$).*\/(${
       moduleNamesGroup //
-    })(?:\.ts)?$`
+    })(?:\.ts)?$`,
   )
 
   return new webpack.NormalModuleReplacementPlugin(moduleRegex, (resource) => {
@@ -67,8 +74,19 @@ function useMockedModules(moduleNames: string[]) {
 }
 
 // Export a function. Accept the base config as the only param.
-export default async ({ config, mode }: { config: Configuration, mode: string }) => {
-  const tsConfigPath = await genTsConfig(genPath, 'tsconfig-storybook.json', genPath, path.resolve(__dirname, '../tsconfig-storybook.json'))
+export default async ({
+  config,
+  mode,
+}: {
+  config: Configuration
+  mode: string
+}) => {
+  const tsConfigPath = await genTsConfig(
+    genPath,
+    'tsconfig-storybook.json',
+    genPath,
+    path.resolve(__dirname, '../tsconfig-storybook.json'),
+  )
   console.log(`Using generated tsconfig path of '${tsConfigPath}'`)
   const isDevMode = mode.toLowerCase() === 'development'
   // Make whatever fine-grained changes you need
@@ -79,8 +97,8 @@ export default async ({ config, mode }: { config: Configuration, mode: string })
     ifdefLoaderRule(buildFlags),
     {
       test: /\.avif$/,
-      loader: 'file-loader'
-    }
+      loader: 'file-loader',
+    },
   )
 
   config.resolve!.alias = pathMap
@@ -89,7 +107,7 @@ export default async ({ config, mode }: { config: Configuration, mode: string })
   config.plugins!.push(
     provideNodeGlobals,
     useMockedModules(['bridge', 'brave_rewards_api_proxy']),
-    ...chromePrefixReplacers(pathMap)
+    ...chromePrefixReplacers(pathMap),
   )
 
   // By default, Webpack will use the "web" externals preset, which will include
@@ -104,12 +122,14 @@ export default async ({ config, mode }: { config: Configuration, mode: string })
   // ForkTsCheckerWebpackPlugin ensures the Typescript errors are still shown at
   // development time.
   if (forkTsChecker) {
-    config.plugins!.push(new ForkTsCheckerWebpackPlugin({
-      typescript: {
-        build: true,
-        configFile: tsConfigPath
-      }
-    }))
+    config.plugins!.push(
+      new ForkTsCheckerWebpackPlugin({
+        typescript: {
+          build: true,
+          configFile: tsConfigPath,
+        },
+      }),
+    )
   }
   config.resolve!.extensions!.push('.ts', '.tsx', '.scss')
   return config

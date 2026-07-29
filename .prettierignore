@@ -14,7 +14,6 @@
 /ios/brave-ios/
 /resources
 /test
-/.storybook/
 
 # Ignore external dependencies:
 /tools/crates/vendor/

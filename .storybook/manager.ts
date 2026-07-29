@@ -9,7 +9,7 @@ import { create } from '@storybook/theming'
 const braveTheme = create({
   base: 'dark',
   brandTitle: 'Brave Browser UI',
-  brandUrl: 'https://github.com/brave/brave-core'
+  brandUrl: 'https://github.com/brave/brave-core',
 })
 
 addons.setConfig({
@@ -17,5 +17,5 @@ addons.setConfig({
   showNav: true,
   showPanel: true,
   panelPosition: 'right',
-  theme: braveTheme
+  theme: braveTheme,
 })
