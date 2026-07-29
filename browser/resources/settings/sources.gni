@@ -79,8 +79,6 @@ brave_settings_ts_files = [
   "br/all_sites.ts",
   "br/about_page.ts",
   "br/autofill_page.ts",
-  "br/appearance_page.ts",
-  "br/appearance_page_index.ts",
   "br/basic_page.ts",
   "br/clear_browsing_data_dialog.ts",
   "br/clear_browsing_data_time_picker.ts",

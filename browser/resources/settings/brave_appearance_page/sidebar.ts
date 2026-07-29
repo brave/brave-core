@@ -6,16 +6,19 @@
 import '../settings_shared.css.js'
 import '../settings_vars.css.js'
 
-import {PrefsMixin, PrefsMixinInterface} from '/shared/settings/prefs/prefs_mixin.js';
+import {PrefServiceObserverMixin, PrefServiceObserverMixinInterface} from '/shared/settings/prefs2/pref_service_observer_mixin.js';
 import {I18nMixin, I18nMixinInterface} from 'chrome://resources/cr_elements/i18n_mixin.js'
 import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 import {loadTimeData} from '../i18n_setup.js'
 
 import {getTemplate} from './sidebar.html.js'
 
-const SettingsBraveAppearanceSidebarElementBase = PrefsMixin(I18nMixin(PolymerElement)) as {
-  new (): PolymerElement & I18nMixinInterface & PrefsMixinInterface
+const SettingsBraveAppearanceSidebarElementBase =
+    PrefServiceObserverMixin(I18nMixin(PolymerElement)) as {
+  new (): PolymerElement & I18nMixinInterface & PrefServiceObserverMixinInterface
 }
+
+const kSidebarShowOptionPrefName = 'brave.sidebar.sidebar_show_option'
 
 /**
  * 'settings-brave-appearance-sidebar' is the settings page area containing
@@ -62,21 +65,29 @@ export class SettingsBraveAppearanceSidebarElement extends SettingsBraveAppearan
           ]
         }
       },
+      sidebarShowOptionPref_: Object,
     }
   }
 
   static get observers() {
     return [
-      'onShowOptionChanged_(prefs.brave.sidebar.sidebar_show_option.value)',
+      'onShowOptionChanged_(sidebarShowOptionPref_.value)',
     ]
   }
 
   private declare sidebarShowOptions_:
     Array<{value: number, name: string}>
   private declare sidebarShowEnabledLabel_: string
+  private declare sidebarShowOptionPref_:
+      chrome.settingsPrivate.PrefObject<number>|undefined
+
+  override connectedCallback() {
+    super.connectedCallback()
+    this.mirrorPref(kSidebarShowOptionPrefName, 'sidebarShowOptionPref_')
+  }
 
   private onShowOptionChanged_() {
-    this.sidebarShowEnabledLabel_ = (this.get('prefs.brave.sidebar.sidebar_show_option.value') === 3)
+    this.sidebarShowEnabledLabel_ = (this.sidebarShowOptionPref_?.value === 3)
         ? this.i18n('appearanceSettingsSidebarDisabledDesc')
         : this.i18n('appearanceSettingsSidebarEnabledDesc')
   }
