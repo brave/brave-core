@@ -2964,11 +2964,8 @@ struct SignCardanoTransactionRequest {
 
   string raw_tx_data;
 
-  // Transaction inputs.
-  // Inputs that belong to the selected account has address and value filled.
-  array<CardanoTxInput> inputs;
-  // Transaction outputs.
-  array<CardanoTxOutput> outputs;
+  // Human-readable transaction summary for the signing UI.
+  string details_json;
 };
 
 enum ExternalWalletType {
