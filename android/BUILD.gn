@@ -478,6 +478,7 @@ android_resources("java_resources") {
     "java/brave-res/layout-land/activity_brave_vpn_profile.xml",
     "java/brave-res/layout-land/activity_vpn_paywall.xml",
     "java/brave-res/layout-land/approve_tx_bottom_sheet.xml",
+    "java/brave-res/layout-sw600dp-land/approve_tx_bottom_sheet.xml",
     "java/brave-res/layout-sw600dp/activity_welcome_onboarding.xml",
     "java/brave-res/layout/activity_account_selector.xml",
     "java/brave-res/layout/activity_add_account.xml",
