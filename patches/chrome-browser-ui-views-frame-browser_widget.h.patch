@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/frame/browser_widget.h b/chrome/browser/ui/views/frame/browser_widget.h
-index 470e63b9352a1641cab22f416810eec7cbc03ad9..0a2596231fa6f5760b6f6866d8b0fbcdd598bccb 100644
+index 8d886fa1501b48ae487b36cb70dd7d5f0c028e87..0ca395a6d23b31d72921ae17cd5b8a6cddd41967 100644
 --- a/chrome/browser/ui/views/frame/browser_widget.h
 +++ b/chrome/browser/ui/views/frame/browser_widget.h
 @@ -129,7 +129,7 @@ class BrowserWidget : public views::Widget,
@@ -16,6 +16,6 @@ index 470e63b9352a1641cab22f416810eec7cbc03ad9..0a2596231fa6f5760b6f6866d8b0fbcd
  
   private:
 +  friend class BraveBrowserWidget;
-   void OnTouchUiChanged();
+   const ui::ThemeProvider* GetBaseThemeProvider() const;
  
-   // Callback for MenuRunner.
+   void OnTouchUiChanged();

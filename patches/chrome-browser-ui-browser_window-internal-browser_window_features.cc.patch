@@ -1,11 +1,11 @@
 diff --git a/chrome/browser/ui/browser_window/internal/browser_window_features.cc b/chrome/browser/ui/browser_window/internal/browser_window_features.cc
-index 8efb317f70aded0e916ba991e9958238307d5f7f..4f8ebe585e3c8ba971426652ae5b6f157091fcd9 100644
+index 5f8b4d0531b7f4002a2136e38af54e95f80e9097..1182d7aa16632b7eedbbe88e372d910b46052b28 100644
 --- a/chrome/browser/ui/browser_window/internal/browser_window_features.cc
 +++ b/chrome/browser/ui/browser_window/internal/browser_window_features.cc
-@@ -302,7 +302,7 @@ void BrowserWindowFeatures::Init(BrowserWindowInterface* browser) {
-           *browser, fullscreen_controller_.get(), app_browser_controller_.get(),
-           browser->GetType(),
-           BrowserInitState::From(browser)->create_params().trusted_source,
+@@ -314,7 +314,7 @@ void BrowserWindowFeatures::Init(BrowserWindowInterface* browser) {
+           BrowserInitState::From(browser)
+               ->browser_window_create_params()
+               .is_trusted_source,
 -          browser->GetUnownedUserDataHost());
 +          browser->GetUnownedUserDataHost(), browser->GetFeatures().vertical_tab_controller()->GetWeakPtr());
  

@@ -1,8 +1,8 @@
 diff --git a/components/sync/base/features.cc b/components/sync/base/features.cc
-index 08cea18660669319011666947d34a0327b9793f3..c2057919be9ca716124874b8f10c4c91e94f4e03 100644
+index 245205cee06b8409560fbe42f8400296a302a985..f52833e68507356b6b7e327f5150beeb38faf972 100644
 --- a/components/sync/base/features.cc
 +++ b/components/sync/base/features.cc
-@@ -108,7 +108,7 @@ DEFINE_SYNC_AUTOFILL_AI_FEATURE(kSyncAccountSettings);
+@@ -118,7 +118,7 @@ DEFINE_SYNC_AUTOFILL_AI_FEATURE(kSyncAccountSettings);
  DEFINE_SYNC_AUTOFILL_AI_FEATURE(kSyncAutofillValuable);
  #endif
  
