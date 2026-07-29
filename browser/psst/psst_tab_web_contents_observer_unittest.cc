@@ -651,7 +651,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   const std::vector<std::string> expected_uids_to_perform = {"1"};
   EXPECT_CALL(ui_delegate(),
               Show(url::Origin::Create(url_),
-                   PsstWebsiteSettingsEq(ConsentStatus::kAsk, 1, user_id_,
+                   PsstWebsiteSettingsEq(ConsentStatus::kAsk, -1, user_id_,
                                          std::vector<std::string>()),
                    1, _, _))
       .WillOnce(ShowCallback(&user_accept_psst_settings_future,
@@ -764,7 +764,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   const std::vector<std::string> expected_uids_to_perform = {"1"};
   EXPECT_CALL(ui_delegate(),
               Show(url::Origin::Create(url_),
-                   PsstWebsiteSettingsEq(ConsentStatus::kAsk, 1, user_id_,
+                   PsstWebsiteSettingsEq(ConsentStatus::kAsk, -1, user_id_,
                                          std::vector<std::string>()),
                    1, _, _))
       .WillOnce(ShowCallback(&user_accept_psst_settings_future,
@@ -852,7 +852,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest, UiDelegateUpdateTasksCalled) {
   const std::vector<std::string> expected_uids_to_perform = {"1"};
   EXPECT_CALL(ui_delegate(),
               Show(url::Origin::Create(url_),
-                   PsstWebsiteSettingsEq(ConsentStatus::kAsk, 1, user_id_,
+                   PsstWebsiteSettingsEq(ConsentStatus::kAsk, -1, user_id_,
                                          std::vector<std::string>()),
                    1, _, _))
       .WillOnce(ShowCallback(&user_accept_psst_settings_future,
@@ -975,9 +975,9 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
                                             .Set("url", "https://example1.com")
                                             .Set("description", "settings"))));
 
-  ON_CALL(ui_delegate(),
+  EXPECT_CALL(ui_delegate(),
           GetPsstWebsiteSettings(url::Origin::Create(url_), user_id_))
-      .WillByDefault([&settings](const url::Origin&, const std::string&) {
+      .WillOnce([&settings](const url::Origin&, const std::string&) {
         return settings.Clone();
       });
 
