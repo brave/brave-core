@@ -58,9 +58,10 @@ export default function ShareConversationModal(props: Props) {
       // sees ciphertext. The decryption key stays on the client and is appended
       // to the returned viewer URL as a fragment, so the shared link is only
       // usable by whoever the user shares it with.
-      const json = serializeConversationForSharing(
-        conversationContext.api.getConversationHistory.current(),
-      )
+      const json = serializeConversationForSharing({
+        messages: conversationContext.api.getConversationHistory.current(),
+        title: conversationTitle,
+      })
       const { ciphertext, keyFragment } = await encryptForSharing(json)
       // The browser process combines the key fragment with the server's viewer
       // URL and copies the resulting shareable link to the clipboard, marked as

@@ -6,7 +6,13 @@
 import { loadTimeData } from '$web-common/loadTimeData'
 import * as Mojom from './mojom'
 
-type ConversationData = Mojom.ConversationTurn[]
+// This type is free to change - the same version of this code will be used to
+// serialize within the browser and deserialize within the shared conversation
+// viewer.
+export type ConversationData = {
+  messages: Mojom.ConversationTurn[]
+  title: string
+}
 
 export interface SerializedConversation {
   /**
