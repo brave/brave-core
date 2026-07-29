@@ -10,6 +10,10 @@ import {
   hasFeaturesAvailable,
   useProductFeatures,
 } from './use_product_features'
+import {
+  hasMetricsAvailable,
+  useAvailableMetrics,
+} from './use_available_metrics'
 
 const baseSteps = [
   'welcome',
@@ -25,6 +29,7 @@ export type Step = (typeof baseSteps)[number]
 export function useStepList() {
   const profiles = useImportableProfiles()
   const features = useProductFeatures()
+  const metrics = useAvailableMetrics()
 
   return React.useMemo(() => {
     const hidden = new Set<Step>()
@@ -37,6 +42,11 @@ export function useStepList() {
     // Hide the features step if there are no products to offer.
     if (!hasFeaturesAvailable(features)) {
       hidden.add('features')
+    }
+
+    // Hide the metrics step if there are no settable metrics.
+    if (!hasMetricsAvailable(metrics)) {
+      hidden.add('metrics')
     }
 
     return baseSteps.filter((step) => !hidden.has(step))

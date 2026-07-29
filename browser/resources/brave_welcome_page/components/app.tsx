@@ -57,12 +57,15 @@ export function App() {
   }
 
   function renderStep() {
+    const isLastStep = stepIndex >= steps.length - 1
+
     switch (currentStep) {
       case 'welcome':
         return (
           <WelcomeStep
             onNext={stepForward}
             onBack={stepBack}
+            isLastStep={isLastStep}
           />
         )
       case 'import':
@@ -70,6 +73,7 @@ export function App() {
           <ImportStep
             onNext={stepForward}
             onBack={stepBack}
+            isLastStep={isLastStep}
           />
         )
       case 'appearance':
@@ -77,6 +81,7 @@ export function App() {
           <AppearanceStep
             onNext={stepForward}
             onBack={stepBack}
+            isLastStep={isLastStep}
           />
         )
       case 'features':
@@ -84,6 +89,7 @@ export function App() {
           <FeaturesStep
             onNext={stepForward}
             onBack={stepBack}
+            isLastStep={isLastStep}
           />
         )
       case 'metrics':
@@ -91,6 +97,7 @@ export function App() {
           <MetricsStep
             onNext={stepForward}
             onBack={stepBack}
+            isLastStep={isLastStep}
           />
         )
     }
