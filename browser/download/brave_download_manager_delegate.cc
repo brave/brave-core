@@ -16,7 +16,6 @@
 #include "base/location.h"
 #include "base/logging.h"
 #include "base/memory/ptr_util.h"
-#include "base/supports_user_data.h"
 #include "base/task/task_traits.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/image_metadata_stripper/common/features.h"
@@ -24,6 +23,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "components/download/public/common/download_item.h"
 #include "content/public/browser/browser_thread.h"
+#include "content/public/browser/download_manager.h"
 
 BraveDownloadManagerDelegate::BraveDownloadManagerDelegate(Profile* profile)
     : ChromeDownloadManagerDelegate(profile) {}
@@ -66,7 +66,7 @@ bool BraveDownloadManagerDelegate::IsDownloadReadyForCompletion(
                       base::WrapUnique(state));
   }
 
-  if (!state->stripping_started) {
+  if (!state->stripping_started && !state->is_complete()) {
     // Initiate the stripping which is a I/O blocking task into a separate
     // thread which is not UI.
     base::ThreadPool::PostTaskAndReplyWithResult(
@@ -76,22 +76,42 @@ bool BraveDownloadManagerDelegate::IsDownloadReadyForCompletion(
         base::BindOnce(&image_metadata_stripper::RemoveIptcMetadata,
                        item->GetFullPath()),
         base::BindOnce(&BraveDownloadManagerDelegate::OnImageMetadataStripped,
-                       weak_ptr_factory_.GetWeakPtr(), state));
+                       weak_ptr_factory_.GetWeakPtr(), item->GetId()));
 
     state->stripping_started = true;
+    return false;
+  }
+
+  if (!state->is_complete()) {
+    // Stripping is still in flight, so keep blocking completion on the most
+    // recent callback.
+    state->set_callback(std::move(brave_callback));
     return false;
   }
 
   return true;
 }
 
-void BraveDownloadManagerDelegate::OnImageMetadataStripped(
-    IptcStrippingState* state,
-    bool success) {
+void BraveDownloadManagerDelegate::OnImageMetadataStripped(uint32_t download_id,
+                                                           bool success) {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+
   if (!success) {
     DVLOG(1) << "Failed to strip image metadata from download file.";
   }
 
+  // The download may have been removed while the stripping task was running, so
+  // the item and its keyed state have to be looked up again.
+  if (!download_manager_) {
+    return;
+  }
+  download::DownloadItem* item = download_manager_->GetDownload(download_id);
+  if (!item) {
+    return;
+  }
+
+  IptcStrippingState* state = static_cast<IptcStrippingState*>(
+      item->GetUserData(IptcStrippingState::kUserDataKey));
   if (state && !state->is_complete()) {
     DCHECK(state->stripping_started);
     state->CompleteDownload();
