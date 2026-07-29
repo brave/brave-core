@@ -1,8 +1,8 @@
 diff --git a/components/autofill/core/common/autofill_features.cc b/components/autofill/core/common/autofill_features.cc
-index 868fbb2cc14b19aec83d7cf1632f7952da87162e..db1279afc933394aa2500daedd9a0bbf999d954a 100644
+index 51f0600de1de06b2f1e275aa379603ca9ffd3360..732bff9c6626b9e578fd931237557af91f64421f 100644
 --- a/components/autofill/core/common/autofill_features.cc
 +++ b/components/autofill/core/common/autofill_features.cc
-@@ -276,7 +276,7 @@ BASE_FEATURE_PARAM(
+@@ -291,7 +291,7 @@ BASE_FEATURE_PARAM(
  
  // If enabled, the client may trigger the server model for AutofillAI type
  // predictions.
@@ -11,13 +11,3 @@ index 868fbb2cc14b19aec83d7cf1632f7952da87162e..db1279afc933394aa2500daedd9a0bbf
  
  // The maximum duration for which an AutofillAI server model response is kept in
  // the local cache. NOTE: It is advisable to choose a value that is at least as
-@@ -1056,7 +1056,8 @@ BASE_FEATURE(kUseSettingsAddressEditorInPaymentsRequest,
- 
- // Defines if the "Your Saved Info" page is eligible to be shown in Chrome
- // settings.
--BASE_FEATURE(kYourSavedInfoSettingsPage, base::FEATURE_ENABLED_BY_DEFAULT);
-+// kYourSavedInfoSettingsPage feature state is enforced via plaster rewrite.
-+BASE_FEATURE(kYourSavedInfoSettingsPage, base::FEATURE_DISABLED_BY_DEFAULT);
- 
- #undef WALLET_SUPPORTED_COUNTRIES
- #undef DEFINE_FEATURE_WITH_MOBILE_COUNTRY_RESTRICTION
