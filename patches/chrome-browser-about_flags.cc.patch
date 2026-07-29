@@ -1,9 +1,9 @@
 diff --git a/chrome/browser/about_flags.cc b/chrome/browser/about_flags.cc
-index ffdecc12e44c6b584a41a6df2a4dc2647b5f8ec6..ed868f5bdf15ae46132cf0ee15e776f3e6b14c69 100644
+index 9ba340c4a4628a64961ba6b5a3e9dbaea36d3206..cae7692e07ec34f194e000c3d1aafae5e7b9658e 100644
 --- a/chrome/browser/about_flags.cc
 +++ b/chrome/browser/about_flags.cc
-@@ -4864,6 +4864,7 @@ const FeatureEntry::FeatureVariation kDictationVariations[] = {
- //
+@@ -4923,6 +4923,7 @@ constexpr char kEnterpriseIsolatedModeInternalName[] =
+ 
  // When adding a new choice, add it to the end of the list.
  const FeatureEntry kFeatureEntries[] = {
 +    BRAVE_ABOUT_FLAGS_FEATURE_ENTRIES

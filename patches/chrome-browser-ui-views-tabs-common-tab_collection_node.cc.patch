@@ -1,16 +1,16 @@
 diff --git a/chrome/browser/ui/views/tabs/common/tab_collection_node.cc b/chrome/browser/ui/views/tabs/common/tab_collection_node.cc
-index 2f569c08d2d08bf6836cbee39cb028d4050b0073..655c5e4f015084a9e12d0e29e8222a0ef54a1eae 100644
+index afa40bfc3acb801c9745a05c5abdc72b685b6448..0abee71fb9873dc95edc8c1c8ac1a169e4d853cd 100644
 --- a/chrome/browser/ui/views/tabs/common/tab_collection_node.cc
 +++ b/chrome/browser/ui/views/tabs/common/tab_collection_node.cc
-@@ -35,6 +35,7 @@ TabCollectionNode::Type GetTypeFromNode(tabs::ConstChildPtr node_data_) {
+@@ -37,6 +37,7 @@ TabCollectionNode::Type GetTypeFromNode(tabs::ConstChildPtr node_data_) {
          return TabCollectionNode::Type::GROUP;
        case tabs::TabCollection::Type::SPLIT:
          return TabCollectionNode::Type::SPLIT;
 +      BRAVE_GET_TYPE_FROM_NODE
      }
    }
-   CHECK(std::holds_alternative<const tabs::TabInterface*>(node_data_));
-@@ -105,6 +106,7 @@ std::unique_ptr<views::View> TabCollectionNode::CreateViewForNode(
+   CHECK(std::holds_alternative<tabs::ConstDanglingUntriagedTabInterface>(
+@@ -110,6 +111,7 @@ std::unique_ptr<views::View> TabCollectionNode::CreateViewForNode(
        return std::make_unique<TabGroupView>(node_for_view);
      case Type::TAB:
        return std::make_unique<TabView>(node_for_view);
