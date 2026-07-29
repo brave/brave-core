@@ -1,0 +1,22 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Exclude failed test from chrome_junit_tests_helper
+
+      //chrome/android/junit:chrome_junit_tests_helper besides the helper classes
+      and resources contains actual test: native_page:junit, which started to
+      fail since 6f7810fe85fbee462bb95457be90a77879a97138 during
+      ChromeFeatureList.isEnabled(ChromeFeatureList.SETTINGS_IN_TAB) call,
+      not related to Brave's changes. Exclude it.
+
+    regex:
+      re_pattern:
+        '(robolectric_library\("chrome_junit_tests_helper"\) {[\s\S]*?)(  })'
+      re_flags: [MULTILINE]
+      replace:
+        '\1    import("//brave/android/junit/sources.gni") public_deps -=
+        brave_android_junit_chrome_junit_tests_helper_excluded_public_deps\n\2'
