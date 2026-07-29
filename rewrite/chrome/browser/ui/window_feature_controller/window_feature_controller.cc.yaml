@@ -40,7 +40,6 @@ substitutions:
         if (feature == WindowFeature::kFeatureTitleBar) {
           // In case of vertical tab strip is allowed, we need to have ability to
           // show title bar on Windows.
-          return vertical_tab_controller_->ShouldShowBraveVerticalTabs() &&
-                 vertical_tab_controller_->ShouldShowWindowTitleForVerticalTabs();
+          return BraveShouldShowTitlebar(base::to_address(vertical_tab_controller_));
         }
         #endif

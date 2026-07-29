@@ -11,3 +11,8 @@ bool BraveDisablesImmersiveFullscreenMode(
   return vertical_tab_controller->ShouldShowBraveVerticalTabs() ||
          tabs::UseCompactHorizontalTabs();
 }
+
+bool BraveShouldShowTitlebar(VerticalTabController* vertical_tab_controller) {
+  return vertical_tab_controller->ShouldShowBraveVerticalTabs() &&
+         vertical_tab_controller->ShouldShowWindowTitleForVerticalTabs();
+}

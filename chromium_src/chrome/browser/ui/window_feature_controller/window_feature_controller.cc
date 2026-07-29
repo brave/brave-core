@@ -11,6 +11,7 @@
 // impl target is //brave/browser/ui/window_feature_controller:chromium_impl.
 bool BraveDisablesImmersiveFullscreenMode(
     VerticalTabController* vertical_tab_controller);
+bool BraveShouldShowTitlebar(VerticalTabController* vertical_tab_controller);
 
 #if BUILDFLAG(IS_MAC)
 #define UsesImmersiveFullscreenMode UsesImmersiveFullscreenMode_ChromiumImpl
