@@ -86,6 +86,10 @@ test("brave_components_unittests") {
     ]
   }
 
+  if (enable_brave_vpn_v2) {
+    deps += [ "//brave/components/brave_vpn/browser/v2/api:unit_tests" ]
+  }
+
   if (enable_brave_vpn_v2_apps) {
     deps += [
       "//brave/components/brave_vpn/app/v2/agent:unit_tests",

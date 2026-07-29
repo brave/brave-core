@@ -36,11 +36,13 @@ static_library("browser") {
   ]
 
   deps = [
+    "api",
     "//base",
     "//brave/components/brave_vpn/common",
     "//brave/components/resources:strings",
     "//components/prefs",
     "//net",
+    "//services/network/public/cpp",
     "//ui/base",
     "//url",
   ]
@@ -59,9 +61,11 @@ source_set("unit_tests") {
 
   deps = [
     ":browser",
+    "api",
     "//base",
     "//base:i18n",
     "//base/test:test_support",
+    "//brave/components/brave_account/endpoint_client:test_support",
     "//brave/components/brave_vpn/common",
     "//brave/components/brave_vpn/common/mojom",
     "//brave/components/resources:strings",

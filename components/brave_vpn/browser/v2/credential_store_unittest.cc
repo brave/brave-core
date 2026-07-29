@@ -79,10 +79,16 @@ TEST_F(CredentialStoreTest, SkusCredentialRoundTripAndLastExpiryStamp) {
   EXPECT_EQ(prefs_.GetTime(prefs::kBraveVPNLastCredentialExpiry), Future());
 }
 
-TEST_F(CredentialStoreTest, ExpirationTimeRequiresSubscriberCredential) {
+TEST_F(CredentialStoreTest, ExpirationTimeRequiresValidCredential) {
+  ASSERT_FALSE(store_.GetExpirationTime().has_value());
+
   store_.SetSkusCredential(kTestSkusCredential, Future());
   EXPECT_TRUE(store_.HasValidSkusCredential());
-  EXPECT_FALSE(store_.GetExpirationTime().has_value());
+  EXPECT_TRUE(store_.GetExpirationTime().has_value());
+
+  store_.SetSubscriberCredential(kTestCredential, Future());
+  EXPECT_TRUE(store_.HasValidSubscriberCredential());
+  EXPECT_TRUE(store_.GetExpirationTime().has_value());
 }
 
 TEST_F(CredentialStoreTest, SettingSubscriberDropsSkus) {
