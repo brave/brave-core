@@ -13,6 +13,7 @@
 #include <string_view>
 #include <vector>
 
+#include "base/containers/span.h"
 #include "base/values.h"
 
 class PrefService;
@@ -29,6 +30,12 @@ inline constexpr size_t kMaxBridgeLines = 64;
 // argument of a control port SETCONF command. A line that fails this is both
 // unusable by Tor and unsafe to forward to it; see TorControl::SetupBridges().
 bool IsValidBridgeLine(std::string_view line);
+
+// Returns the entries of `bridges` that Tor can safely be configured with,
+// in their original order: anything IsValidBridgeLine() rejects is dropped,
+// and at most kMaxBridgeLines are kept. Rejections are logged at VLOG(1).
+std::vector<std::string> FilterBridgeLines(
+    base::span<const std::string> bridges);
 
 struct BridgesConfig {
   // This enum is used in prefs & UI. Be careful when editing.

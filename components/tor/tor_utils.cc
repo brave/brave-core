@@ -127,14 +127,15 @@ const std::vector<std::string>& GetBuiltinBridges(
 // Fingerprints are hex encoded SHA-1 digests of the bridge's identity key.
 constexpr size_t kFingerprintLength = 40;
 
-// Whether a list read out of prefs is filtered as it is loaded.
+// Whether a list read out of prefs is run through FilterBridgeLines() as it
+// is loaded.
 enum class Validation {
   // Store the list verbatim. Used for the user's own `provided_bridges`: the
   // settings page writes back whatever it reads, so dropping a line here would
   // erase it from the user's settings rather than merely ignore it.
   kNone,
-  // Drop anything IsValidBridgeLine() rejects. Used for the lists fetched from
-  // Tor's moat service, which no human will notice us discarding.
+  // Filter on load. Used for the lists fetched from Tor's moat service, which
+  // no human will notice us discarding.
   kEnforce,
 };
 
@@ -198,27 +199,14 @@ std::vector<std::string> LoadBridgesList(const base::ListValue* v,
   if (!v) {
     return result;
   }
-  result.reserve(validation == Validation::kEnforce
-                     ? std::min(v->size(), tor::kMaxBridgeLines)
-                     : v->size());
-
+  result.reserve(v->size());
   for (const auto& s : *v) {
-    const std::string* bridge = s.GetIfString();
-    if (!bridge) {
-      continue;
+    if (const std::string* bridge = s.GetIfString()) {
+      result.push_back(*bridge);
     }
-    if (validation == Validation::kEnforce) {
-      if (result.size() == tor::kMaxBridgeLines) {
-        VLOG(1) << "Ignoring Tor bridges beyond the first "
-                << tor::kMaxBridgeLines;
-        break;
-      }
-      if (!tor::IsValidBridgeLine(*bridge)) {
-        VLOG(1) << "Dropping malformed Tor bridge line: " << *bridge;
-        continue;
-      }
-    }
-    result.push_back(*bridge);
+  }
+  if (validation == Validation::kEnforce) {
+    return tor::FilterBridgeLines(result);
   }
   return result;
 }
@@ -269,6 +257,25 @@ bool IsValidBridgeLine(std::string_view line) {
 
   // Everything that is left has to be a transport argument.
   return std::ranges::all_of(token, tokens.end(), &IsValidTransportArg);
+}
+
+std::vector<std::string> FilterBridgeLines(
+    base::span<const std::string> bridges) {
+  std::vector<std::string> result;
+  result.reserve(std::min(bridges.size(), kMaxBridgeLines));
+
+  for (const auto& bridge : bridges) {
+    if (result.size() == kMaxBridgeLines) {
+      VLOG(1) << "Ignoring Tor bridges beyond the first " << kMaxBridgeLines;
+      break;
+    }
+    if (!IsValidBridgeLine(bridge)) {
+      VLOG(1) << "Dropping malformed Tor bridge line: " << bridge;
+      continue;
+    }
+    result.push_back(bridge);
+  }
+  return result;
 }
 
 BridgesConfig::BridgesConfig() = default;

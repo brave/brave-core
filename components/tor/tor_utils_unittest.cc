@@ -187,6 +187,47 @@ TEST(TorUtilsTest, HardcodedBuiltinBridgesPassValidation) {
   }
 }
 
+// -- Filtering ---------------------------------------------------------------
+
+TEST(TorUtilsTest, FilterBridgeLinesDropsInvalidEntriesInPlace) {
+  // Valid entries around an invalid one are kept, in order.
+  const std::vector<std::string> input = {kValidBridge, kInvalidBridge,
+                                          kAnotherValidBridge};
+  EXPECT_EQ(std::vector<std::string>({kValidBridge, kAnotherValidBridge}),
+            FilterBridgeLines(input));
+}
+
+TEST(TorUtilsTest, FilterBridgeLinesCapsTheList) {
+  // Ports differ so that the entries are distinguishable and order is checked.
+  std::vector<std::string> input;
+  for (size_t i = 0; i < kMaxBridgeLines * 2; ++i) {
+    input.push_back(
+        base::StrCat({"obfs4 192.0.2.1:", base::NumberToString(443 + i)}));
+  }
+  EXPECT_EQ(
+      std::vector<std::string>(input.begin(), input.begin() + kMaxBridgeLines),
+      FilterBridgeLines(input));
+}
+
+TEST(TorUtilsTest, FilterBridgeLinesCountsOnlyValidEntriesTowardsTheCap) {
+  // An invalid entry must not consume one of the kMaxBridgeLines slots.
+  std::vector<std::string> input;
+  for (size_t i = 0; i < kMaxBridgeLines; ++i) {
+    input.push_back(
+        base::StrCat({"obfs4 192.0.2.1:", base::NumberToString(443 + i)}));
+    input.push_back(kInvalidBridge);
+  }
+  EXPECT_EQ(kMaxBridgeLines, FilterBridgeLines(input).size());
+}
+
+TEST(TorUtilsTest, FilterBridgeLinesHandlesEmptyResult) {
+  const std::vector<std::string> empty;
+  EXPECT_TRUE(FilterBridgeLines(empty).empty());
+
+  const std::vector<std::string> all_invalid = {kInvalidBridge};
+  EXPECT_TRUE(FilterBridgeLines(all_invalid).empty());
+}
+
 // -- Pref loading ------------------------------------------------------------
 
 TEST(TorUtilsTest, UserProvidedBridgesAreStoredVerbatim) {
@@ -223,25 +264,6 @@ TEST(TorUtilsTest, NetworkSourcedBridgesAreFiltered) {
   ASSERT_TRUE(config);
   EXPECT_EQ(expected, config->requested_bridges);
   EXPECT_EQ(expected, config->GetBuiltinBridges());
-}
-
-TEST(TorUtilsTest, NetworkSourcedBridgeListIsCapped) {
-  // Ports differ so that the entries are distinguishable and order is checked.
-  std::vector<std::string> input;
-  for (size_t i = 0; i < kMaxBridgeLines * 2; ++i) {
-    input.push_back(
-        base::StrCat({"obfs4 192.0.2.1:", base::NumberToString(443 + i)}));
-  }
-
-  base::DictValue dict;
-  dict.Set("requested_bridges", MakeList(input));
-
-  auto config = BridgesConfig::FromDict(dict);
-  ASSERT_TRUE(config);
-  // The cap keeps the first kMaxBridgeLines entries, in order.
-  EXPECT_EQ(
-      std::vector<std::string>(input.begin(), input.begin() + kMaxBridgeLines),
-      config->requested_bridges);
 }
 
 TEST(TorUtilsTest, BuiltinBridgesFallBackWhenAllEntriesInvalid) {
