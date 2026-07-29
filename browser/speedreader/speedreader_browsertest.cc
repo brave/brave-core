@@ -1273,7 +1273,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderContentSpoofBrowserTest,
   // automatically and wait for the download itself instead. Same pattern as
   // DeAmpBrowserTest.ContentDispositionAttachment.
   browser()->GetProfile()->GetPrefs()->SetBoolean(prefs::kPromptForDownload,
-                                               false);
+                                                  false);
   content::DownloadTestObserverTerminal download_observer(
       browser()->GetProfile()->GetDownloadManager(), 1,
       content::DownloadTestObserver::ON_DANGEROUS_DOWNLOAD_ACCEPT);
