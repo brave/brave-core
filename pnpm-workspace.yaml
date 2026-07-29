@@ -9,19 +9,19 @@
 allowBuilds:
   '@brave/leo-sf-symbols@https://codeload.github.com/brave/leo-sf-symbols/tar.gz/f601277fdcd837c3e6b7239b73537603c7539119': true
   '@brave/leo@https://codeload.github.com/brave/leo/tar.gz/a9fe69615e3cc3d7f2388fac1ddfa3db1e12a30a': true
-  '@parcel/watcher': true
-  blake-hash: true
-  bufferutil: true
-  core-js: true
-  esbuild: true
-  keccak: true
-  protobufjs: true
-  secp256k1: true
-  svelte-preprocess: true
-  tiny-secp256k1: true
-  unrs-resolver: true
-  usb: true
-  utf-8-validate: true
+  '@parcel/watcher': false
+  blake-hash: false
+  bufferutil: false
+  core-js: false
+  esbuild: false
+  keccak: false
+  protobufjs: false
+  secp256k1: false
+  svelte-preprocess: false
+  tiny-secp256k1: false
+  unrs-resolver: false
+  usb: false
+  utf-8-validate: false
 
 catalog:
   '@types/react': '19.2.17'
