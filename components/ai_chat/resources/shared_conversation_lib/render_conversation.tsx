@@ -26,8 +26,7 @@ import {
   createMockUntrustedService,
   createMockUntrustedUIHandler,
 } from '../untrusted_conversation_frame/api/mock_interfaces'
-import { createNalaStyleElement } from './create_nala_style_element'
-import { addStyleTarget } from './style_loader'
+import setupRenderingElement from './setup_rendering_element'
 
 /**
  * Since the shared conversation viewer can read from different versions
@@ -89,13 +88,7 @@ export function renderConversation(
   api.getConversationHistory.update(conversation.messages)
 
   // Render to a shadow DOM to avoid style conflicts with the hosting page
-  const shadow = element.attachShadow({ mode: 'open' })
-  createNalaStyleElement(shadow)
-  addStyleTarget(shadow)
-  const container = document.createElement('div')
-  container.style.display = 'contents'
-  shadow.appendChild(container)
-
+  const container = setupRenderingElement(element)
   const root = createRoot(container)
 
   root.render(

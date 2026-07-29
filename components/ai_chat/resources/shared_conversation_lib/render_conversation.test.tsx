@@ -14,6 +14,11 @@ import { renderConversation } from './render_conversation'
 // irrelevant to these tests, so mock the module out (this is hoisted above the
 // render_conversation import below).
 jest.mock('./set_icon_base_path', () => ({}))
+// No shadow DOM support in tests
+jest.mock('./setup_rendering_element', () => ({
+  __esModule: true,
+  default: (element: HTMLElement) => element,
+}))
 
 // A real conversation exported from the AI Chat "Share conversation" action,
 // in the format expected by renderConversation (see conversation_serialization).
