@@ -16,8 +16,19 @@
 #define kColorTabForegroundInactiveFrameActive \
   kColorNewTabButtonCRForegroundFrameActive
 
+// Use the CR background tokens (transparent in Brave via
+// AddBravifiedTabStripColorMixer) so idle tab-strip control buttons —
+// workspaces and scroll chevrons — do not paint a solid frame-colored chip.
+// Matches TabStripComboButton / TabStripFlatEdgeButton.
+#define kColorNewTabButtonBackgroundFrameActive \
+  kColorNewTabButtonCRBackgroundFrameActive
+#define kColorNewTabButtonBackgroundFrameInactive \
+  kColorNewTabButtonCRBackgroundFrameInactive
+
 #include <chrome/browser/ui/views/tabs/tab_strip_control_button.cc>
 
+#undef kColorNewTabButtonBackgroundFrameInactive
+#undef kColorNewTabButtonBackgroundFrameActive
 #undef kColorTabForegroundInactiveFrameActive
 #undef TabStripControlButton
 
