@@ -1,4 +1,4 @@
-name: Sync and rebase PR from fork
+name: Sync PR from fork
 
 on:
   workflow_dispatch:
@@ -12,13 +12,14 @@ on:
 
 permissions:
   contents: write
+  issues: write
   pull-requests: write
 
 jobs:
   sync-pr-from-fork:
     runs-on: ubuntu-slim
     steps:
-      - name: Sync and rebase PR from fork
+      - name: Sync PR from fork
         env:
           GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           GH_REPO: ${{ github.repository }}
@@ -33,13 +34,14 @@ jobs:
           fi
 
           pr_number="${PR_NUMBER:-"$(gh pr list --search "$COMMIT_HASH" --json number -q '.[].number')"}"
-          gh_pr_view=$(gh pr view "${pr_number:?}" --json baseRefName,headRefName,headRepositoryOwner,isCrossRepository)
+          gh_pr_view=$(gh pr view "${pr_number:?}" --json baseRefName,headRefName,headRepositoryOwner,isCrossRepository,labels)
 
           JQ="jq -e -r"
           baseRefName=$($JQ ".baseRefName" <<<"$gh_pr_view")
           headRefName=$($JQ ".headRefName" <<<"$gh_pr_view")
           headRepositoryOwnerLogin=$($JQ ".headRepositoryOwner.login" <<<"$gh_pr_view")
           isCrossRepository=$($JQ ".isCrossRepository" <<<"$gh_pr_view")
+          labelsPayload=$($JQ '{labels: [.labels[].name]}' <<<"$gh_pr_view")
 
           [[ "$isCrossRepository" = "true" ]] || { echo "PR is not cross repo. Exiting!"; exit 1; }
 
@@ -52,8 +54,8 @@ jobs:
               --field ref="refs/heads/$contribHeadRefName" --field sha="$COMMIT_HASH"
           fi
 
-          existing_prs=$(gh pr list -H "$contribHeadRefName" --json number)
-          if [[ "$existing_prs" = "[]" ]]; then
+          ci_pr_number=$(gh pr list -H "$contribHeadRefName" --json number -q '.[0].number')
+          if [[ -z "$ci_pr_number" ]]; then
             gh pr create \
               --draft \
               --base "$baseRefName" \
@@ -64,4 +66,8 @@ jobs:
           This PR is created to run CI on the changes proposed in PR #$pr_number by @$headRepositoryOwnerLogin.
 
           **This PR should not be merged.**"
+            ci_pr_number=$(gh pr list -H "$contribHeadRefName" --json number -q '.[0].number')
           fi
+
+          gh api --method PUT "repos/${GITHUB_REPOSITORY}/issues/${ci_pr_number:?}/labels" \
+            --input - <<<"$labelsPayload"
