@@ -7,6 +7,6 @@ export async function createNalaStyleElement(shadow: ShadowRoot) {
   const style = document.createElement('style')
   const scriptUrl = import.meta.url
   const relativePathUrl = new URL('./nala.css', scriptUrl)
-  style.textContent = await fetch(relativePathUrl).then(res => res.text())
+  style.textContent = await fetch(relativePathUrl).then((res) => res.text())
   shadow.appendChild(style)
 }

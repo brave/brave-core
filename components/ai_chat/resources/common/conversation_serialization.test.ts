@@ -16,7 +16,7 @@ import {
   stringifyConversationData,
   parseConversationData,
   serializeConversationForSharing,
-  type ConversationData
+  type ConversationData,
 } from './conversation_serialization'
 
 const sampleSharedConversation: ConversationData = {

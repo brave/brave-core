@@ -11,7 +11,10 @@ import '../../../../ui/webui/resources/css/reset.css'
 import * as React from 'react'
 import { createRoot } from 'react-dom/client'
 import StyledComponentsProvider from '$web-common/StyledComponentsProvider'
-import { parseConversationData, type ConversationData } from '../common/conversation_serialization'
+import {
+  parseConversationData,
+  type ConversationData,
+} from '../common/conversation_serialization'
 import Conversation from '../untrusted_conversation_frame/components/conversation'
 import { UntrustedConversationContextProvider } from '../untrusted_conversation_frame/untrusted_conversation_context'
 import createUntrustedConversationApi, {
@@ -86,7 +89,7 @@ export function renderConversation(
   api.getConversationHistory.update(conversation.messages)
 
   // Render to a shadow DOM to avoid style conflicts with the hosting page
-  const shadow = element.attachShadow({ mode: "open" });
+  const shadow = element.attachShadow({ mode: 'open' })
   createNalaStyleElement(shadow)
   addStyleTarget(shadow)
   const container = document.createElement('div')
@@ -97,12 +100,12 @@ export function renderConversation(
 
   root.render(
     <StyledComponentsProvider>
-        <UntrustedConversationContextProvider
-          api={api}
-          isReadOnly
-        >
-          <Conversation />
-        </UntrustedConversationContextProvider>
+      <UntrustedConversationContextProvider
+        api={api}
+        isReadOnly
+      >
+        <Conversation />
+      </UntrustedConversationContextProvider>
     </StyledComponentsProvider>,
   )
 

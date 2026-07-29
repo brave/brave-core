@@ -52,11 +52,10 @@ const pathMap = withMockOverrides(generatePathMap(genPath), {
 // function cannot reference anything this bundle imports. ProvidePlugin bridges
 // the gap: it rewrites this free identifier, in each of those generated modules,
 // to style_loader.ts's default export.
-const insertStyleElementModule = path.join(
-  import.meta.dirname,
-  'style_loader.ts',
-)
-declare const INSERT_STYLE_ELEMENT: (element: HTMLStyleElement) => void
+// TODO(https://github.com/brave/brave-browser/issues/57626): Updated style-loader
+// might avoid the need for ProvidePlugin by insert being able to reference
+// a module.
+declare const _INSERT_STYLE_ELEMENT: (element: HTMLStyleElement) => void
 
 export default async function (
   env: any,
@@ -153,7 +152,10 @@ export default async function (
         patterns: copyPluginPatterns,
       }),
       new webpack.ProvidePlugin({
-        INSERT_STYLE_ELEMENT: [insertStyleElementModule, 'default'],
+        _INSERT_STYLE_ELEMENT: [
+          path.join(import.meta.dirname, 'style_loader.ts'),
+          'default',
+        ],
       }),
     ],
     module: {
@@ -170,7 +172,7 @@ export default async function (
           isDevMode,
           styleLoaderOptions: {
             insert: (element: HTMLStyleElement) =>
-              INSERT_STYLE_ELEMENT(element),
+              _INSERT_STYLE_ELEMENT(element),
           },
         }),
         tsLoaderRule({ configFile: tsConfigPath }),
