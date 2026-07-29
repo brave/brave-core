@@ -5,14 +5,12 @@
 
 import './load_time_data'
 import './set_icon_base_path'
-import '@brave/leo/tokens/css/variables.css'
 import '$web-common/defaultTrustedTypesPolicy'
 import '../../../../ui/webui/resources/css/reset.css'
 
 import * as React from 'react'
 import { createRoot } from 'react-dom/client'
 import StyledComponentsProvider from '$web-common/StyledComponentsProvider'
-import * as Mojom from '../common/mojom'
 import { parseConversationData, type ConversationData } from '../common/conversation_serialization'
 import Conversation from '../untrusted_conversation_frame/components/conversation'
 import { UntrustedConversationContextProvider } from '../untrusted_conversation_frame/untrusted_conversation_context'
@@ -25,6 +23,8 @@ import {
   createMockUntrustedService,
   createMockUntrustedUIHandler,
 } from '../untrusted_conversation_frame/api/mock_interfaces'
+import { createNalaStyleElement } from './create_nala_style_element'
+import { addStyleTarget } from './style_loader'
 
 /**
  * Since the shared conversation viewer can read from different versions
@@ -85,7 +85,15 @@ export function renderConversation(
 
   api.getConversationHistory.update(conversation.messages)
 
-  const root = createRoot(element)
+  // Render to a shadow DOM to avoid style conflicts with the hosting page
+  const shadow = element.attachShadow({ mode: "open" });
+  createNalaStyleElement(shadow)
+  addStyleTarget(shadow)
+  const container = document.createElement('div')
+  container.style.display = 'contents'
+  shadow.appendChild(container)
+
+  const root = createRoot(container)
 
   root.render(
     <StyledComponentsProvider>
