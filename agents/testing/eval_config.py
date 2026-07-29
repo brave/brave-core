@@ -21,6 +21,7 @@ import dataclasses
 import fnmatch
 import logging
 import pathlib
+from typing import Optional
 
 import yaml
 
@@ -37,7 +38,7 @@ class TestConfig:
     """
     test_file: pathlib.Path
     description: str = ""
-    owner: str = None
+    owner: Optional[str] = None
     runs_per_test: int = 1
     pass_k_threshold: int = 1
     precompile_targets: list = dataclasses.field(default_factory=list)

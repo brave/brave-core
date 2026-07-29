@@ -187,7 +187,13 @@ def main(argv):
     # returning only the requested --json fields (as real `gh` does).
     if argv[0] == 'pr' and len(argv) > 1 and argv[1] == 'view':
         number = _find_pr_number(argv)
-        pr = prs.get(str(number), {})
+        # Fail loudly on an unknown PR (as the `gh pr diff` path does above)
+        # rather than fabricating a default PR object, so a fixture typo is an
+        # obvious error instead of a confusing downstream eval failure.
+        if number is None or str(number) not in prs:
+            sys.stderr.write(f'fake_gh: no PR {number}\n')
+            return 1
+        pr = prs[str(number)]
         full = _pr_view_object(pr, number, repo)
         if '--json' in argv:
             i = argv.index('--json')

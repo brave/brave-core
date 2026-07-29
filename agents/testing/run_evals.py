@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env vpython3
 
 # Copyright (c) 2026 The Brave Authors. All rights reserved.
 # This Source Code Form is subject to the terms of the Mozilla Public
@@ -16,17 +16,20 @@ container sandbox; it just shells to a pinned promptfoo. The heavy lifting
 claude_provider.py, which each test wires in as its promptfoo provider.
 
 Usage (from src/brave):
-    python3 agents/testing/run_evals.py
-    python3 agents/testing/run_evals.py --tag-filter stable
-    python3 agents/testing/run_evals.py --list
+    vpython3 agents/testing/run_evals.py
+    vpython3 agents/testing/run_evals.py --tag-filter stable
+    vpython3 agents/testing/run_evals.py --list
     # one config directly, bypassing this runner:
     npx promptfoo eval -c agents/prompts/eval/review-prs/CS-003.promptfoo.yaml
 
-Requires: node/npx on PATH, the Claude Code CLI on PATH (or $CLAUDE_BIN), and
-whatever auth Claude Code needs for headless runs.
+Run under `vpython3` (not plain `python3`): eval_config.py imports `yaml`, which
+vpython provides. Also requires node/npx on PATH, the Claude Code CLI on PATH (or
+$CLAUDE_BIN), and whatever auth Claude Code needs for headless runs.
 """
 
 import argparse
+import os
+import re
 import subprocess
 import sys
 from pathlib import Path
@@ -43,9 +46,6 @@ _SETUP_PY = _BRAVE_SRC / 'agents' / 'skills' / 'setup.py'
 # Validate the env override — it becomes part of the subprocess argv
 # (`promptfoo@<version>`), so restrict it to a version spec / dist-tag rather
 # than trusting arbitrary environment data.
-import os
-import re
-
 _PROMPTFOO_VERSION_RE = re.compile(r'^[A-Za-z0-9][A-Za-z0-9.\-]*$')
 PROMPTFOO_VERSION = os.environ.get('PROMPTFOO_VERSION', '0.121.18')
 if not _PROMPTFOO_VERSION_RE.match(PROMPTFOO_VERSION):
@@ -88,6 +88,9 @@ def run_one(test):
     passes = 0
     for i in range(test.runs_per_test):
         print(f'    run {i + 1}/{test.runs_per_test} ...', flush=True)
+        # Ideally we would follow upstream and get promptfoo from the
+        # depot_tools CIPD package rather than fetching it via npx, but that
+        # package is currently linux-only, so we pin a version through npx here.
         proc = subprocess.run(
             [
                 'npx', '--yes', f'promptfoo@{PROMPTFOO_VERSION}', 'eval', '-c',
@@ -99,6 +102,13 @@ def run_one(test):
         )
         if proc.returncode == 0:
             passes += 1
+        # The pass/fail outcome is already decided once enough runs have passed
+        # (>= threshold) or too many have failed to still reach it — stop early
+        # to avoid burning tokens on runs that can't change the result.
+        remaining = test.runs_per_test - (i + 1)
+        if passes >= test.pass_k_threshold or (passes + remaining
+                                               < test.pass_k_threshold):
+            break
     return passes
 
 

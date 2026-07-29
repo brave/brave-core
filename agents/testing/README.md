@@ -10,6 +10,9 @@ It is **not** a per-PR gate — it spins a real agent and burns tokens. Run it
 path-filtered (when `agents/skills/**` or `agents/testing/**` changes), on a
 schedule, or on demand.
 
+**Owner:** @shisirbasel. Attribute an individual eval by setting `owner:` in its
+`*.promptfoo.yaml` (surfaced via `TestConfig.owner`).
+
 ## Layout
 
 ```
@@ -33,21 +36,23 @@ From the repo root (`src/brave`):
 
 ```bash
 # Run every discovered eval
-python3 agents/testing/run_evals.py
+vpython3 agents/testing/run_evals.py
 
 # Run only the stable-tagged set
-python3 agents/testing/run_evals.py --tag-filter stable
+vpython3 agents/testing/run_evals.py --tag-filter stable
 
 # List discovered tests without running
-python3 agents/testing/run_evals.py --list
+vpython3 agents/testing/run_evals.py --list
 
 # Run one config directly via promptfoo (from its own dir)
 cd agents/prompts/eval/review-prs && npx promptfoo eval -c CS-003.promptfoo.yaml
 npx promptfoo view          # inspect inputs/output/asserts in the web UI
 ```
 
-Requires `node`/`npx`, the Claude Code CLI on PATH (or `$CLAUDE_BIN`), and
-whatever auth Claude Code needs for headless runs.
+Run the harness under `vpython3` (not plain `python3`) — `eval_config.py`
+imports `yaml`, which vpython provides. Also requires `node`/`npx`, the Claude
+Code CLI on PATH (or `$CLAUDE_BIN`), and whatever auth Claude Code needs for
+headless runs.
 
 ## How a test works
 

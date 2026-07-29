@@ -140,7 +140,9 @@ def _write_fake_gh(fake_gh_cfg, run_dir):
             pr['diff_file'] = _resolve_diff_file(pr['diff_file'])
     data_file = run_dir / 'fake_gh_data.json'
     mut_file = run_dir / 'gh_mutations.jsonl'
-    with open(data_file, 'w', encoding='utf-8') as f:
+    # newline='\n' keeps these generated files LF on every platform (a CRLF
+    # `gh` shim would not run on Windows).
+    with open(data_file, 'w', encoding='utf-8', newline='\n') as f:
         json.dump(fake_gh_cfg, f)
     fake_gh_py = _TESTING_DIR / 'fake_gh.py'
     shim = bin_dir / 'gh'
@@ -150,7 +152,8 @@ def _write_fake_gh(fake_gh_cfg, run_dir):
         f'export FAKE_GH_MUTATIONS={shlex.quote(str(mut_file))}\n'
         f'exec {shlex.quote(sys.executable)} '
         f'{shlex.quote(str(fake_gh_py))} "$@"\n',
-        encoding='utf-8')
+        encoding='utf-8',
+        newline='\n')
     shim.chmod(0o755)
     return bin_dir, mut_file
 
@@ -173,7 +176,7 @@ def _harvest_results(run_dir):
         # keep the raw payload so string asserts (CS-003, symbol name) work.
         merged['violations'].append(data)
     out = _LAST_RUN_DIR / 'results.json'
-    with open(out, 'w', encoding='utf-8') as f:
+    with open(out, 'w', encoding='utf-8', newline='\n') as f:
         json.dump(merged, f, indent=2)
     return out, result_files
 
