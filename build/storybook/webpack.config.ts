@@ -3,20 +3,21 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import path from 'path'
-import webpack, { Configuration } from 'webpack'
-import fs from 'fs'
+import path from 'node:path'
+import webpack, { type Configuration } from 'webpack'
+import fs from 'node:fs'
 import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin'
-import { writeTsConfig } from '../build/webpack/ts-config'
-import { genPath } from '../build/commands/lib/guessConfig'
-import { fallback } from '../build/webpack/polyfill'
-import { generatePathMapWithWebMocks } from '../build/webpack/path-map'
-import { cssRules, tsLoaderRule, ifdefLoaderRule } from '../build/webpack/rules'
+import { writeTsConfig } from '../webpack/ts-config.ts'
+import { fallback } from '../webpack/polyfill.ts'
+import { generatePathMapWithWebMocks } from '../webpack/path-map.ts'
+import { cssRules, tsLoaderRule, ifdefLoaderRule } from '../webpack/rules.ts'
 import {
   provideNodeGlobals,
   chromePrefixReplacers,
-} from '../build/webpack/plugins'
-import { forkTsChecker } from './options'
+} from '../webpack/plugins.ts'
+import { forkTsChecker } from './options.ts'
+
+const genPath = process.env.ROOT_GEN_DIR as string
 
 if (!fs.existsSync(genPath)) {
   throw new Error(
@@ -28,7 +29,7 @@ console.log(`Using brave-core generated dependency path of '${genPath}'`)
 // Override the path map we use in the browser with some additional mock
 // directories, so that we can replace things in Storybook.
 const pathMap = generatePathMapWithWebMocks(genPath)
-pathMap['$storybook'] = path.resolve(__dirname, '../web/storybook')
+pathMap['$storybook'] = path.resolve(__dirname, '../../web/storybook')
 
 const buildFlags = JSON.parse(
   fs.readFileSync(path.join(genPath, 'brave/build_flags.json'), 'utf8'),
@@ -62,7 +63,7 @@ function useMockedModules(moduleNames: string[]) {
 
   return new webpack.NormalModuleReplacementPlugin(moduleRegex, (resource) => {
     const foldersAndFile = resource.request.split('/')
-    const fileName = foldersAndFile[foldersAndFile.length - 1]
+    const fileName = foldersAndFile[foldersAndFile.length - 1] as string
     const mockedFile = `__mocks__/${fileName}`
     // Modify the resource path
     resource.request = resource.request.replace(fileName, mockedFile)
@@ -81,7 +82,7 @@ export default async ({
     pathMap,
     genPath,
     'tsconfig-storybook.json',
-    path.resolve(__dirname, '../tsconfig-storybook.json'),
+    path.resolve(__dirname, 'tsconfig-storybook.json'),
   )
   console.log(`Using generated tsconfig path of '${tsConfigPath}'`)
   const isDevMode = mode.toLowerCase() === 'development'
@@ -98,7 +99,7 @@ export default async ({
   )
 
   config.resolve!.alias = pathMap
-  config.resolve!.fallback! = fallback
+  config.resolve!.fallback = fallback
 
   config.plugins!.push(
     provideNodeGlobals,

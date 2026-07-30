@@ -188,7 +188,7 @@ if (!is_ios) {
   }
 
   group("storybook") {
-    deps = [ "//brave/.storybook:storybook" ]
+    deps = [ "//brave/build/storybook:storybook_deps" ]
   }
 }
 
