@@ -1,0 +1,12 @@
+diff --git a/extensions/browser/blocklist.cc b/extensions/browser/blocklist.cc
+index 59f0cf7d1c6403aacd3ff031b2f07a7b77ba64c8..9a211d25f6055f4cdc40b94c9d13223168ba2c25 100644
+--- a/extensions/browser/blocklist.cc
++++ b/extensions/browser/blocklist.cc
+@@ -168,6 +168,7 @@ void Blocklist::GetBlocklistedIDs(const std::set<ExtensionId>& ids,
+                                   GetBlocklistedIDsCallback callback) {
+   DCHECK_CURRENTLY_ON(BrowserThread::UI);
+ 
++  BRAVE_GET_BLOCKLISTED_IDS
+   if (ids.empty() || !GetDatabaseManager().get()) {
+     base::SingleThreadTaskRunner::GetCurrentDefault()->PostTask(
+         FROM_HERE, base::BindOnce(std::move(callback), BlocklistStateMap()));
