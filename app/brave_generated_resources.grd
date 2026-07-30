@@ -1057,6 +1057,12 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         <message name="IDS_BOOKMARK_SELECTED_TABS_DIALOG_TITLE" desc="The title of the Bookmark Selected Tabs dialog.">
           Bookmark selected tabs
         </message>
+        <message name="IDS_TAB_CXMENU_SOUND_MUTE_TAB" desc="The label of the tab context menu item for muting one or more tabs. NOTE: If having no explicit # makes the phrasing awkward, feel free to add a # as necessary. [ICU Syntax]">
+          {NUM_TABS, plural, =1 {Mute tab} other {Mute tabs}}
+        </message>
+        <message name="IDS_TAB_CXMENU_SOUND_UNMUTE_TAB" desc="The label of the tab context menu item for unmuting one or more tabs. NOTE: If having no explicit # makes the phrasing awkward, feel free to add a # as necessary. [ICU Syntax]">
+          {NUM_TABS, plural, =1 {Unmute tab} other {Unmute tabs}}
+        </message>
         <message name="IDS_TAB_CXMENU_SHOW_VERTICAL_TABS" desc="The label of the tab context menu item for showing tabs vertically">
           Use vertical tabs
         </message>
@@ -1100,6 +1106,12 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         </message>
         <message name="IDS_BOOKMARK_SELECTED_TABS_DIALOG_TITLE" desc="In Title Case: The title of the Bookmark Selected Tabs dialog.">
           Bookmark Selected Tabs
+        </message>
+        <message name="IDS_TAB_CXMENU_SOUND_MUTE_TAB" desc="The label of the tab context menu item for muting one or more tabs. NOTE: If having no explicit # makes the phrasing awkward, feel free to add a # as necessary. [ICU Syntax]">
+          {NUM_TABS, plural, =1 {Mute Tab} other {Mute Tabs}}
+        </message>
+        <message name="IDS_TAB_CXMENU_SOUND_UNMUTE_TAB" desc="The label of the tab context menu item for unmuting one or more tabs. NOTE: If having no explicit # makes the phrasing awkward, feel free to add a # as necessary. [ICU Syntax]">
+          {NUM_TABS, plural, =1 {Unmute Tab} other {Unmute Tabs}}
         </message>
         <message name="IDS_TAB_CXMENU_SHOW_VERTICAL_TABS" desc="The label of the tab context menu item for showing tabs vertically">
           Use Vertical Tabs
