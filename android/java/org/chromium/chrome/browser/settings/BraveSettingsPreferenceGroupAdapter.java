@@ -15,8 +15,8 @@ import org.chromium.chrome.browser.theme.BraveDynamicColors;
 import org.chromium.components.browser_ui.settings.BraveSettingsIconTintUtils;
 
 @NullMarked
-class BraveSettingsPreferenceGroupAdapter extends PreferenceGroupAdapter {
-    BraveSettingsPreferenceGroupAdapter(PreferenceScreen preferenceScreen) {
+public class BraveSettingsPreferenceGroupAdapter extends PreferenceGroupAdapter {
+    public BraveSettingsPreferenceGroupAdapter(PreferenceScreen preferenceScreen) {
         super(preferenceScreen);
     }
 

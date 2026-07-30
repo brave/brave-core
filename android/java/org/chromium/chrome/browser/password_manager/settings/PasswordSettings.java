@@ -30,7 +30,6 @@ import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceGroup;
 import androidx.preference.PreferenceGroupAdapter;
 import androidx.preference.PreferenceScreen;
-import androidx.preference.PreferenceViewHolder;
 
 import org.chromium.base.DeviceInfo;
 import org.chromium.base.metrics.RecordHistogram;
@@ -48,13 +47,12 @@ import org.chromium.chrome.browser.password_manager.BravePasswordManagerHelper;
 import org.chromium.chrome.browser.password_manager.ManagePasswordsReferrer;
 import org.chromium.chrome.browser.preferences.Pref;
 import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.settings.BraveSettingsPreferenceGroupAdapter;
 import org.chromium.chrome.browser.settings.ChromeBaseSettingsFragment;
 import org.chromium.chrome.browser.settings.ChromeManagedPreferenceDelegate;
 import org.chromium.chrome.browser.settings.MainSettings;
 import org.chromium.chrome.browser.settings.search.ChromeBaseSearchIndexProvider;
-import org.chromium.chrome.browser.theme.BraveDynamicColors;
 import org.chromium.chrome.browser.ui.favicon.FaviconHelper;
-import org.chromium.components.browser_ui.settings.BraveSettingsIconTintUtils;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SearchUtils;
 import org.chromium.components.browser_ui.settings.SearchViewProvider;
@@ -141,14 +139,7 @@ public class PasswordSettings extends ChromeBaseSettingsFragment
     @Override
     protected @NonNull PreferenceGroupAdapter onCreateAdapter(
             @NonNull PreferenceScreen preferenceScreen) {
-        return new PreferenceGroupAdapter(preferenceScreen) {
-            @Override
-            public void onBindViewHolder(@NonNull PreferenceViewHolder holder, int position) {
-                super.onBindViewHolder(holder, position);
-                BraveSettingsIconTintUtils.applyIconTint(
-                        holder, BraveDynamicColors.isDynamicColorsEnabled());
-            }
-        };
+        return new BraveSettingsPreferenceGroupAdapter(preferenceScreen);
     }
 
     public ExportFlow getExportFlowForTesting() {
