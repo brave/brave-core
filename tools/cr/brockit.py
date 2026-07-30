@@ -223,6 +223,22 @@ Pass `--culprit=<hash>` to provide a specific culprit for the toolchain update.
 If none is provided, `brockit` determines the culprit by looking for the last
 commit that pinned the macOS SDK in `mac_sdk.gni` up to the `--to` ref.
 
+### `brockit.py update-windows-toolchain`
+This command repins the hermetic windows toolchain override in Brave.
+
+Pass `--to` with the Chromium reference whose pinned SDK/toolchain hash to
+repin against. It accepts a concrete version or the same `@latest-*` labels as
+`lift --to`:
+
+```sh
+tools/cr/brockit.py update-windows-toolchain --to=150.0.7850.1
+```
+
+Pass `--culprit=<hash>` to provide a specific culprit for the toolchain update.
+If none is provided, `brockit` determines the culprit by looking for the last
+commit that pinned the SDK/toolchain hash in `vs_toolchain.py` up to the `--to`
+ref.
+
 ### `brockit.py gen-{rust,xcode,windows}-toolchain`
 These commands trigger a toolchain's CI (Jenkins) pipeline(s) for a given
 Chromium tag.
@@ -2601,6 +2617,29 @@ def main():
         'to auto-detecting the culprit.',
         dest='culprit')
 
+    update_windows_parser = subparsers.add_parser(
+        'update-windows-toolchain',
+        parents=[global_parser],
+        formatter_class=argparse.RawTextHelpFormatter,
+        help='Pins the GYP_MSVS_HASH_* override in '
+        'build/commands/lib/config.ts to the published hermetic Windows '
+        'toolchain for a Chromium tag\'s pinned SDK/toolchain hash, and '
+        'commits the change.')
+    update_windows_parser.add_argument(
+        '--to',
+        required=True,
+        dest='to',
+        help=('The Chromium version whose pinned Windows SDK/toolchain hash '
+              'to repin\nagainst (e.g. 150.0.7850.1), or one of the @latest-* '
+              'labels accepted by\n`lift --to` (e.g. @latest-canary, '
+              '@latest-m150, @latest-for-branch,\n@latest-tag).'))
+    update_windows_parser.add_argument(
+        '--culprit',
+        default=None,
+        help='Chromium commit hash to reference in the commit body. Defaults '
+        'to auto-detecting the culprit.',
+        dest='culprit')
+
     def _add_gen_parser(command: str, description: str):
         """Adds a `gen-*-toolchain` subparser (a `tag` positional + `--watch`).
 
@@ -2733,6 +2772,9 @@ def main():
             Drop().run(change=args.change)
         if args.command == 'update-xcode-toolchain':
             _RepinToolchainTask(toolchain.XcodeToolchain()).run(
+                chromium_ref=args.to, culprit=args.culprit)
+        if args.command == 'update-windows-toolchain':
+            _RepinToolchainTask(toolchain.WindowsToolchain()).run(
                 chromium_ref=args.to, culprit=args.culprit)
         if args.command == 'update-rust-wasm-toolchain':
             _RepinToolchainTask(toolchain.RustToolchain()).run(

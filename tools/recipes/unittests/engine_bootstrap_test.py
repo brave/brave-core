@@ -93,10 +93,10 @@ class DeployRecipesTest(unittest.TestCase):
             # The spec is validated too, so it must exist alongside the engine.
             (engine_file.parent / bootstrap.VPYTHON_SPEC).write_text(
                 '', encoding='utf-8', newline='')
-            # rmtree is mocked, so the pre-created engine file survives the
+            # _rmtree is mocked, so the pre-created engine file survives the
             # is_file() check; _run is mocked so no real git runs.
             with mock.patch.object(bootstrap, '_run') as run, \
-                 mock.patch.object(bootstrap.shutil, 'rmtree') as rmtree:
+                 mock.patch.object(bootstrap, '_rmtree') as rmtree:
                 result = bootstrap._deploy_recipes(dest)
         rmtree.assert_called_once_with(dest.resolve())
         self.assertTrue(run.called)

@@ -61,7 +61,6 @@ The full download URL is logged at the end of a successful run:
 from __future__ import annotations
 
 import argparse
-import base64
 import gzip
 import logging
 import os
@@ -84,27 +83,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from cherry_picks import _check_call  # pylint: disable=wrong-import-position
 from ephemeral_xcode import (  # pylint: disable=wrong-import-position
-    HTTP_FETCH_TIMEOUT_SECS, EphemeralXcode, MacSdkInfo)
+    EphemeralXcode, MacSdkInfo)
+import gitiles  # pylint: disable=wrong-import-position
 from upload import sha256_file  # pylint: disable=wrong-import-position
-
-# Gitiles raw-text endpoint for `build/xcode_binaries.yaml` at a given
-# Chromium tag.
-PKG_DEF_URL_TEMPLATE = (
-    'https://chromium.googlesource.com/chromium/src/+/refs/tags/{tag}'
-    '/build/xcode_binaries.yaml?format=TEXT')
-
-# Gitiles raw-text endpoint for `build/config/mac/mac_sdk.gni` at a given
-# Chromium tag. Provides the macOS SDK version triple that Chromium expects
-# is using.
-MAC_SDK_GNI_URL_TEMPLATE = (
-    'https://chromium.googlesource.com/chromium/src/+/refs/tags/{tag}'
-    '/build/config/mac/mac_sdk.gni?format=TEXT')
-
-# Retry policy for gitiles fetches specifically: gitiles can flake on freshly
-# pushed tags and sometimes takes a while to answer requests about them. Other
-# small fetches (e.g. xcodereleases.com) are stable and are not retried.
-GITILES_FETCH_MAX_ATTEMPTS = 3
-GITILES_FETCH_RETRY_DELAY_SECS = 2
 
 # The base url used by brave to download the toolchain package. This is used in
 # this script only to produce a log line with resulting URL.
@@ -121,51 +102,6 @@ INDEX_LICENSE_HEADER_TEMPLATE = (
     '# License, v. 2.0. If a copy of the MPL was not distributed with this '
     'file,\n'
     '# You can obtain one at https://mozilla.org/MPL/2.0/.\n')
-
-
-def _fetch_gitiles_raw(url: str) -> str:
-    """Fetch *url* (a gitiles `?format=TEXT` link) and decode its body.
-
-    Gitiles' raw-text endpoint returns the requested file as a single
-    base64-encoded blob with no surrounding HTML or headers.
-
-    We attempt to recover a few times if gitlies is feeling temperamental.
-    """
-    for attempt in range(1, GITILES_FETCH_MAX_ATTEMPTS + 1):
-        logging.info('Fetching %s (attempt %d/%d)', url, attempt,
-                     GITILES_FETCH_MAX_ATTEMPTS)
-        is_last_attempt = attempt == GITILES_FETCH_MAX_ATTEMPTS
-        encoded: bytes | None = None
-        try:
-            with urllib.request.urlopen(
-                    url, timeout=HTTP_FETCH_TIMEOUT_SECS) as response:
-                encoded = response.read()
-            return base64.b64decode(encoded).decode('utf-8')
-        except urllib.error.HTTPError as e:
-            # `HTTPError.read()` returns the response body. Let's log it.
-            body = e.read().decode('utf-8', errors='replace')
-            logging.error('HTTP %s on %s; response body:\n%s', e.code, url,
-                          body)
-            if is_last_attempt:
-                raise
-        except (urllib.error.URLError, TimeoutError) as e:
-            # No response body for non-HTTP failures (DNS, connect timeout,
-            # read timeout). Just surface the underlying reason.
-            logging.error('Network error fetching %s: %s', url, e)
-            if is_last_attempt:
-                raise
-        except ValueError as e:
-            # Let's log the raw response whenever there are decoding issues.
-            preview = (encoded or b'').decode('utf-8', errors='replace')
-            logging.error('Decode failed for %s: %s; raw response:\n%s', url,
-                          e, preview)
-            if is_last_attempt:
-                raise
-        time.sleep(GITILES_FETCH_RETRY_DELAY_SECS)
-    # Unreachable: the final attempt's except handlers always re-raise.
-    # Present so every control-flow path honors the `-> str` signature
-    # (pylint inconsistent-return-statements).
-    raise RuntimeError(f'_fetch_gitiles_raw fell through retry loop: {url}')
 
 
 def _brave_core_commit() -> str:
@@ -190,7 +126,8 @@ def _remote_url_exists(url: str) -> bool:
     "absent".
     """
     try:
-        with urllib.request.urlopen(url, timeout=HTTP_FETCH_TIMEOUT_SECS):
+        with urllib.request.urlopen(url,
+                                    timeout=gitiles.HTTP_FETCH_TIMEOUT_SECS):
             return True
     except urllib.error.HTTPError as e:
         if e.code in (403, 404):
@@ -293,7 +230,8 @@ def fetch_published_index(sdk_info: MacSdkInfo) -> dict:
     logging.debug('Fetching hermetic Xcode toolchain index %s', index_url)
     try:
         with urllib.request.urlopen(
-                index_url, timeout=HTTP_FETCH_TIMEOUT_SECS) as response:
+                index_url,
+                timeout=gitiles.HTTP_FETCH_TIMEOUT_SECS) as response:
             return yaml.safe_load(response)
     except urllib.error.URLError as e:
         raise RuntimeError(
@@ -468,17 +406,17 @@ class ToolchainBuilder:
         `mac_sdk_official_version` and `mac_sdk_official_build_version`
         from these sources, storing them in their corresponding fields.
         """
-        url = MAC_SDK_GNI_URL_TEMPLATE.format(tag=self._chromium_tag)
-        self._upstream_mac_sdk_info = MacSdkInfo.from_gni(
-            _fetch_gitiles_raw(url))
+        text = gitiles.fetch_chromium_file(self._chromium_tag,
+                                           'build/config/mac/mac_sdk.gni')
+        self._upstream_mac_sdk_info = MacSdkInfo.from_gni(text)
         logging.info('Upstream macOS SDK version: %s (build %s)',
                      self._upstream_mac_sdk_info.sdk_version,
                      self._upstream_mac_sdk_info.product_build_version)
 
     def _fetch_pkg_def(self) -> str:
         """Fetch `xcode_binaries.yaml` from gitiles."""
-        return _fetch_gitiles_raw(
-            PKG_DEF_URL_TEMPLATE.format(tag=self._chromium_tag))
+        return gitiles.fetch_chromium_file(self._chromium_tag,
+                                           'build/xcode_binaries.yaml')
 
     def _read_entries(self) -> None:
         """Load the `data:` list from `xcode_binaries.yaml` in document order.
