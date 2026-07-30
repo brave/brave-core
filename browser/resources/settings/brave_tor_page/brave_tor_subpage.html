@@ -33,14 +33,12 @@
   }
 
   #invalidBridge {
-    color: var(--leo-color-systemfeedback-error-text);
-    padding-top: 8px;
+    padding-bottom: var(--cr-section-padding);
   }
 
   #invalidBridge .bridge-line {
     font-family: monospace;
     overflow-wrap: anywhere;
-    padding-top: 4px;
   }
 </style>
 
@@ -106,10 +104,10 @@
           disabled="[[!usageEqual_('useProvided', useBridgesValue_)]]"></textarea>
       </div>
     </settings-collapse-radio-button>
-    <div id="invalidBridge" hidden="[[!invalidBridge_]]" role="alert">
+    <leo-alert id="invalidBridge" hidden="[[!invalidBridge_]]" hideIcon="true" type="error">
       <div>$i18n{torInvalidBridgeError}</div>
       <div class="bridge-line">[[invalidBridge_]]</div>
-    </div>
+    </leo-alert>
   </cr-radio-group>
 
   <template is="dom-if" if="[[showRequestBridgesDialog_]]" restamp>
