@@ -13,3 +13,6 @@ cache_dir
 env_gn_args
 
 ai_chat_shared_conversation_lib
+
+# Supports passing a build config to the storybook commands.
+storybook_build_config

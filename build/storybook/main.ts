@@ -3,12 +3,12 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import path from 'path'
-import { forkTsChecker } from './options'
-import { StorybookConfig } from '@storybook/react-webpack5'
+import path from 'node:path'
+import { forkTsChecker } from './options.ts'
+import type { StorybookConfig } from '@storybook/react-webpack5'
 import type { Indexer } from '@storybook/types'
 import { loadCsf } from '@storybook/csf-tools'
-import { readFile } from 'fs/promises'
+import { readFile } from 'node:fs/promises'
 
 const slashStoriesIndexer: Indexer = {
   test: /stories\/.*\.tsx$/,
@@ -21,12 +21,12 @@ const slashStoriesIndexer: Indexer = {
 
 const config: StorybookConfig = {
   stories: process.env.STORYBOOK_STORYPATH
-    ? [`../${process.env.STORYBOOK_STORYPATH}`]
+    ? [`../../${process.env.STORYBOOK_STORYPATH}`]
     : [
-        '../components/**/stories/*.tsx',
-        '../components/**/*.stories.tsx',
-        '../browser/resources/**/stories/*.tsx',
-        '../browser/resources/**/*.stories.tsx',
+        '../../components/**/stories/*.tsx',
+        '../../components/**/*.stories.tsx',
+        '../../browser/resources/**/stories/*.tsx',
+        '../../browser/resources/**/*.stories.tsx',
       ],
   typescript: {
     check: false,
@@ -34,20 +34,20 @@ const config: StorybookConfig = {
     checkOptions: {
       async: forkTsChecker,
       typescript: {
-        configFile: path.resolve(__dirname, '..', 'tsconfig-storybook.json'),
+        configFile: path.resolve(__dirname, 'tsconfig-storybook.json'),
       },
     },
   },
   addons: ['@storybook/addon-knobs', '@storybook/addon-essentials'],
   framework: '@storybook/react-webpack5',
   staticDirs: [
-    { from: '../node_modules/@brave/leo/icons', to: 'icons/' },
+    { from: '../../node_modules/@brave/leo/icons', to: 'icons/' },
     {
-      from: '../components/playlist/content/browser/resources/stories/assets',
+      from: '../../components/playlist/content/browser/resources/stories/assets',
       to: 'playlist/',
     },
     {
-      from: '../browser/resources/brave_new_tab_page_refresh/stories/assets',
+      from: '../../browser/resources/brave_new_tab_page_refresh/stories/assets',
       to: 'ntp-assets/',
     },
   ],
@@ -58,8 +58,13 @@ const config: StorybookConfig = {
     ...config,
     NODE_ENV: 'test',
   }),
-  previewAnnotations: [path.resolve(__dirname, '../web/storybook/preview.tsx')],
-  experimental_indexers: async (existing) => [...existing, slashStoriesIndexer],
+  previewAnnotations: [
+    path.resolve(__dirname, '../../web/storybook/preview.tsx'),
+  ],
+  experimental_indexers: async (existing) => [
+    ...(existing ?? []),
+    slashStoriesIndexer,
+  ],
 }
 
 export default config
