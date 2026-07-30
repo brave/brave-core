@@ -5,6 +5,7 @@
 
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/containers/buildflags/buildflags.gni")
+import("//brave/components/playlist/core/common/buildflags/buildflags.gni")
 import("//brave/components/psst/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 
@@ -139,6 +140,26 @@ source_set("unit_tests") {
       "//chrome/browser/ui/page_action",
       "//chrome/browser/ui/page_action:test_support",
       "//components/prefs",
+      "//components/tabs:test_support",
+      "//content/test:test_support",
+      "//ui/actions",
+    ]
+  }
+
+  if (enable_playlist_webui) {
+    sources += [ "playlist_page_action_controller_unittest.cc" ]
+    deps += [
+      # PlaylistPageActionController itself lives in //brave/browser/ui; see
+      # the comment on that dep in browser/ui/tabs/BUILD.gn.
+      "//brave/browser/ui",
+      "//brave/components/playlist/content/browser",
+      "//brave/components/playlist/core/common",
+      "//chrome/browser/prefs",
+      "//chrome/browser/ui/page_action",
+      "//chrome/browser/ui/page_action:test_support",
+      "//components/pref_registry",
+      "//components/prefs",
+      "//components/sync_preferences",
       "//components/tabs:test_support",
       "//content/test:test_support",
       "//ui/actions",
