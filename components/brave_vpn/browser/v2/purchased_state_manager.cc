@@ -128,6 +128,12 @@ std::string PurchasedStateManager::GetCurrentEnvironment() const {
   return local_prefs_->GetString(prefs::kBraveVPNEnvironment);
 }
 
+std::optional<std::string> PurchasedStateManager::GetSubscriberCredential()
+    const {
+  return credential_store_->GetValidSubscriberCredential().transform(
+      [](const CredentialStore::Credential& data) { return data.value; });
+}
+
 void PurchasedStateManager::SetPurchasedState(
     const std::string& env,
     mojom::PurchasedState state,

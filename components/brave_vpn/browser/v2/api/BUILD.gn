@@ -13,6 +13,7 @@ source_set("api") {
     "brave_vpn_api_client.h",
     "error_body.h",
     "purchase_endpoints.h",
+    "raw_json_response_body.h",
   ]
 
   public_deps = [
@@ -43,6 +44,7 @@ source_set("unit_tests") {
     "//services/network:test_support",
     "//services/network/public/cpp",
     "//services/network/public/mojom",
+    "//testing/gmock",
     "//testing/gtest",
     "//url",
   ]
