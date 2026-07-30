@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2026 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/.
+-->
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/frag_siwe_fav_container"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:elevation="12dp"
+        app:cardCornerRadius="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:strokeColor="@color/brave_white"
+        app:strokeWidth="1dp">
+
+        <ImageView
+            android:id="@+id/frag_siwe_iv_fav"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/accessibility_wallet_dapp_panel_account"
+            tools:srcCompat="@drawable/ic_brave_logo" />
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/frag_siwe_cv_fav_nw_container"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:elevation="12dp"
+        android:translationZ="1dp"
+        android:visibility="gone"
+        app:cardCornerRadius="8dp"
+        app:layout_constraintBottom_toBottomOf="@id/frag_siwe_fav_container"
+        app:layout_constraintEnd_toEndOf="@id/frag_siwe_fav_container"
+        app:strokeColor="@color/brave_white"
+        app:strokeWidth="1dp">
+
+        <ImageView
+            android:id="@+id/frag_siwe_iv_fav_nw_icon"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/eth"
+            android:contentDescription="@null" />
+    </com.google.android.material.card.MaterialCardView>
+
+    <TextView
+        android:id="@+id/frag_siwe_tv_origin"
+        style="@style/BraveWalletTextView"
+        android:layout_width="0dp"
+        android:layout_marginVertical="4dp"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/frag_siwe_fav_container" />
+
+    <TextView
+        android:id="@+id/frag_siwe_tv_url"
+        style="@style/BraveWalletTextView"
+        android:layout_width="0dp"
+        android:layout_marginVertical="4dp"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/frag_siwe_tv_origin" />
+
+    <TextView
+        android:id="@+id/frag_siwe_msg_tv_network_name"
+        style="@style/BraveWalletTextView"
+        android:layout_width="0dp"
+        android:layout_marginVertical="4dp"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/frag_siwe_tv_url" />
+</androidx.constraintlayout.widget.ConstraintLayout>
