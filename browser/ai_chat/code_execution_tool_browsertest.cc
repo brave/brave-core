@@ -30,6 +30,7 @@
 #include "testing/gtest/include/gtest/gtest.h"
 
 using testing::HasSubstr;
+using testing::Not;
 
 namespace ai_chat {
 
@@ -240,17 +241,54 @@ IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest,
-                       NestedRealmNotReachable) {
+                       SetAndReadInnerHTML) {
   std::string script = R"(
-    const frame = document.createElement('iframe');
-    document.body.appendChild(frame);
-    console.log(typeof frame.contentWindow.RTCPeerConnection);
+    document.body.innerHTML = '<p id="greeting">hello dom</p>';
+    console.log(document.body.innerHTML);
+    console.log(document.getElementById('greeting') === null);
   )";
 
   std::string output;
   ExecuteCode(script, &output);
-  EXPECT_THAT(output, HasSubstr("SecurityError"));
-  EXPECT_THAT(output, HasSubstr("cross-origin"));
+  // The sandbox enforces Trusted Types, so raw string assignment to
+  // innerHTML is blocked: the attempted HTML is not present in the output.
+  EXPECT_THAT(output, HasSubstr("TrustedHTML"));
+  EXPECT_THAT(output, Not(HasSubstr("hello dom")));
+}
+
+IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest, CreateElement) {
+  std::string script = R"(
+    const el = document.createElement('p');
+    el.id = 'greeting';
+    el.textContent = 'hello dom';
+    document.body.appendChild(el);
+    console.log(document.body.innerHTML);
+    console.log(document.getElementById('greeting') === null);
+  )";
+
+  std::string output;
+  ExecuteCode(script, &output);
+  // The sandbox removes DOM construction APIs, so createElement is unavailable.
+  EXPECT_THAT(output, HasSubstr("document.createElement is not a function"));
+  EXPECT_THAT(output, Not(HasSubstr("hello dom")));
+}
+
+IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest,
+                       CreateElementViaPrototype) {
+  std::string script = R"(
+    const createElement = window.Document.prototype.createElement.bind(document);
+    const el = createElement('p');
+    el.id = 'greeting';
+    el.textContent = 'hello dom';
+    document.body.appendChild(el);
+    console.log(document.body.innerHTML);
+    console.log(document.getElementById('greeting') === null);
+  )";
+
+  std::string output;
+  ExecuteCode(script, &output);
+  EXPECT_THAT(output, HasSubstr("Cannot read properties of undefined"));
+  EXPECT_THAT(output, Not(HasSubstr("hello dom")));
 }
 
 IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest, SyntaxError) {

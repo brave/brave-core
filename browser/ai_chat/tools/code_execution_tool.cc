@@ -227,8 +227,8 @@ void CodeExecutionTool::ResolveRequest(
 CodeExecutionTool::CodeExecutionTool(content::BrowserContext* browser_context)
     : profile_(Profile::FromBrowserContext(browser_context)),
       execution_time_limit_(kExecutionTimeLimit) {
-  code_plugins_.push_back(std::make_unique<BigNumberCodePlugin>());
   code_plugins_.push_back(std::make_unique<InterfaceRemovalCodePlugin>());
+  code_plugins_.push_back(std::make_unique<BigNumberCodePlugin>());
   if (ChartCodePlugin::IsEnabled()) {
     code_plugins_.push_back(std::make_unique<ChartCodePlugin>());
   }
