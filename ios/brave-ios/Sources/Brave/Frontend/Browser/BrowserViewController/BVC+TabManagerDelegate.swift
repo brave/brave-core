@@ -355,7 +355,7 @@ extension BrowserViewController: TabManagerDelegate {
     updateToolbarUsingTabManager(tabManager)
     // tabDelegate is a weak ref (and the tab's webView may not be destroyed yet)
     // so we don't expcitly unset it.
-    topToolbar.leaveOverlayMode(didCancel: true)
+    dismissSearchInput()
     updateTabsBarVisibility()
     tab.removeObserver(self)
     tab.removePolicyDecider(self)

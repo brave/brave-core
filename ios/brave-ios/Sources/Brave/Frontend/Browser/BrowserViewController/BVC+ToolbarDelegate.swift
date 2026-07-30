@@ -28,7 +28,7 @@ import os.log
 
 // MARK: - TopToolbarDelegate
 
-extension BrowserViewController: TopToolbarDelegate {
+extension BrowserViewController: TopToolbarDelegate, SearchContainerViewControllerDelegate {
 
   func showTabTray() {
     if tabManager.tabsForCurrentMode.isEmpty {
@@ -221,33 +221,13 @@ extension BrowserViewController: TopToolbarDelegate {
     }
   }
 
-  func topToolbar(_ topToolbar: TopToolbarView, didEnterText text: String) {
-    guard let searchContainer else { return }
-
-    searchContainer.showSearchResults(!text.isEmpty)
-
-    if text.isEmpty {
-      searchContainer.setSearchQuery(query: "", showSearchSuggestions: false)
-      searchContainer.searchLoaderQuery = ""
-    } else {
-      let locationLastReplacement = topToolbar.locationLastReplacement
-      let isPasting = topToolbar.isPastingInURLBar
-      Task {
-        let shouldShowSearchSuggestions = await URLBarHelper.shared.shouldShowSearchSuggestions(
-          using: locationLastReplacement,
-          isPasting: isPasting
-        )
-        searchContainer.setSearchQuery(
-          query: text,
-          showSearchSuggestions: shouldShowSearchSuggestions
-        )
-      }
-      searchContainer.searchLoaderQuery = text.lowercased()
-    }
-  }
-
-  func topToolbar(_ topToolbar: TopToolbarView, didSubmitText text: String) {
-    processAddressBar(text: text)
+  func topToolbarDidRequestSearchInput(
+    _ topToolbar: TopToolbarView,
+    initialText: String?,
+    pasted: Bool,
+    search: Bool
+  ) {
+    presentSearchInput(initialText: initialText, pasted: pasted, search: search)
   }
 
   func processAddressBar(
@@ -302,7 +282,7 @@ extension BrowserViewController: TopToolbarDelegate {
   ) async -> Bool {
 
     if let url = URL(string: text), url.scheme == "brave" || url.scheme == "chrome" {
-      topToolbar.leaveOverlayMode()
+      dismissSearchInput()
       finishEditingAndSubmit(url, isUserDefinedURLNavigation: isUserDefinedURLNavigation)
       return true
     }
@@ -313,7 +293,7 @@ extension BrowserViewController: TopToolbarDelegate {
 
     // check text is decentralized DNS supported domain
     if let decentralizedDNSHelper = self.decentralizedDNSHelperFor(url: fixupURL) {
-      topToolbar.leaveOverlayMode()
+      dismissSearchInput()
       updateToolbarCurrentURL(fixupURL)
       topToolbar.locationView.loading = true
       let result = await decentralizedDNSHelper.lookup(
@@ -346,20 +326,121 @@ extension BrowserViewController: TopToolbarDelegate {
     return true
   }
 
-  func topToolbarDidEnterOverlayMode(_ topToolbar: TopToolbarView) {
-    updateTabsBarVisibility()
-    displaySearchContainer()
+  var isSearchContainerVisible: Bool {
+    searchContainer?.parent == self
   }
 
-  func topToolbarDidLeaveOverlayMode(_ topToolbar: TopToolbarView) {
-    hideSearchContainer()
+  /// Presents the fullscreen search input over the browser. The toolbar and web view remain static.
+  ///
+  /// - Parameters:
+  ///   - initialText: The text to seed the input field with (the current URL or search query).
+  ///   - pasted: Whether the `initialText` was pasted (avoids highlighting the whole entry).
+  ///   - search: Whether `initialText` should be treated as a search query.
+  func presentSearchInput(initialText: String?, pasted: Bool, search: Bool) {
+    if let searchContainer {
+      // Already editing - just seed the existing input (e.g. from a QR scan) and refocus.
+      searchContainer.applyExternalQuery(initialText ?? "", search: search)
+      searchContainer.inputBar.becomeFirstResponder()
+      return
+    }
+
+    let isPrivate = tabManager.selectedTab?.isPrivate ?? false
+    let container = SearchContainerViewController(
+      tabManager: tabManager,
+      bookmarkManager: bookmarkManager,
+      historyAPI: profileController.historyAPI,
+      searchEngines: profile.searchEngines,
+      privateBrowsingManager: privateBrowsingManager,
+      speechRecognizer: speechRecognizer,
+      isAIChatAvailable: !isPrivate && Preferences.AIChat.leoInQuickSearchBarEnabled.value
+        && AIChatUtils.isAIChatEnabled(for: profileController.profile.prefs),
+      isPlaylistAvailable: profileController.profile.prefs.isPlaylistAvailable,
+      searchDelegate: self,
+      delegate: self,
+      bookmarkAction: { [weak self] bookmark, action in
+        self?.handleFavoriteAction(favorite: bookmark, action: action)
+      },
+      recentSearchAction: { [weak self] recentSearch, shouldSubmitSearch in
+        self?.handleRecentSearch(recentSearch, shouldSubmitSearch: shouldSubmitSearch)
+      }
+    )
+    container.isUsingBottomBar = isUsingBottomBar
+    self.searchContainer = container
+
+    // Presented fullscreen above the toolbar so the toolbar and web view remain static, and so the
+    // browser is never visible behind it (including with a hardware keyboard connected).
+    addChild(container)
+    view.addSubview(container.view)
+    container.view.snp.makeConstraints {
+      $0.edges.equalTo(view)
+    }
+    container.didMove(toParent: self)
+    container.view.setNeedsLayout()
+    container.view.layoutIfNeeded()
+
+    container.view.alpha = 0
+    UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.1, delay: 0) {
+      container.view.alpha = 1
+    }
+
+    webViewContainer.accessibilityElementsHidden = true
+    UIAccessibility.post(notification: .screenChanged, argument: nil)
+
+    // Pasted content is treated as a search query so suggestions appear immediately, and is not
+    // selected (the cursor stays at the end).
+    container.beginEditing(
+      with: initialText,
+      search: pasted ? true : search,
+      selectAll: !pasted
+    )
+  }
+
+  /// Dismisses the fullscreen search input and restores the browsing UI.
+  func dismissSearchInput() {
+    guard isSearchContainerVisible else { return }
+
+    if let searchContainer {
+      searchContainer.inputBar.resignFirstResponder()
+      UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.05, delay: 0) {
+        searchContainer.view.alpha = 0
+      } completion: { _ in
+        searchContainer.willMove(toParent: nil)
+        searchContainer.view.removeFromSuperview()
+        searchContainer.removeFromParent()
+      }
+    }
+    searchContainer = nil
+
+    webViewContainer.accessibilityElementsHidden = false
+    UIAccessibility.post(notification: .screenChanged, argument: nil)
+
     updateScreenTimeUrl(tabManager.selectedTab?.visibleURL)
     updateInContentHomePanel(tabManager.selectedTab?.visibleURL as URL?)
     updateTabsBarVisibility()
-    if isUsingBottomBar {
-      updateViewConstraints()
-    }
+    topToolbar.updateViewsForOverlayModeAndToolbarChanges()
     activeNewTabPageViewController?.urlBarDidLeaveOverlayMode()
+  }
+
+  // MARK: - SearchContainerViewControllerDelegate
+
+  func searchContainer(_ container: SearchContainerViewController, didSubmitText text: String) {
+    processAddressBar(text: text)
+  }
+
+  func searchContainerDidCancel(_ container: SearchContainerViewController) {
+    dismissSearchInput()
+  }
+
+  func searchContainerDidTapPasteAndGo(_ container: SearchContainerViewController) {
+    topToolbarDidPressPasteAndGoButton(topToolbar)
+  }
+
+  func searchContainerDidTapQRCode(_ container: SearchContainerViewController) {
+    scanQRCode()
+  }
+
+  func searchContainerDidTapVoiceSearch(_ container: SearchContainerViewController) {
+    topToolbarDidPressVoiceSearchButton(topToolbar)
   }
 
   func topToolbarDidBeginDragInteraction(_ topToolbar: TopToolbarView) {
@@ -660,9 +741,6 @@ extension BrowserViewController: TopToolbarDelegate {
       let searchQuery = UIPasteboard.general.string
         ?? UIPasteboard.general.url?.absoluteString
     {
-      self.topToolbar.setLocation(searchQuery, search: false)
-      self.topToolbar(self.topToolbar, didEnterText: searchQuery)
-
       if let fixupURL = URIFixup.getURL(searchQuery) {
         finishEditingAndSubmit(fixupURL)
         return
@@ -694,19 +772,7 @@ extension BrowserViewController: TopToolbarDelegate {
     presentWalletPanel(from: origin, with: tabDappStore)
   }
 
-  func insertSearchContainerView(_ searchContainer: SearchContainerViewController) {
-    if let ntpController = self.activeNewTabPageViewController, ntpController.parent != nil {
-      view.insertSubview(searchContainer.view, aboveSubview: ntpController.view)
-    } else {
-      // Two different behaviors here:
-      // 1. For bottom bar we do not want to show the status bar color
-      // 2. For top bar we do so it matches the address bar background
-      let subview = isUsingBottomBar ? statusBarOverlay : footer
-      view.insertSubview(searchContainer.view, aboveSubview: subview)
-    }
-  }
-
-  /// Handles selection of a recent search in the favorites screen: seeds the URL bar and, when
+  /// Handles selection of a recent search in the favorites screen: seeds the input field and, when
   /// requested, navigates. Passed to the search container as its favorites `recentSearchAction`.
   private func handleRecentSearch(_ recentSearch: RecentSearch?, shouldSubmitSearch: Bool) {
     let submitSearch = { [weak self] (text: String) in
@@ -729,8 +795,7 @@ extension BrowserViewController: TopToolbarDelegate {
     switch searchType {
     case .text:
       if let text = recentSearch.text {
-        self.topToolbar.setLocation(text, search: false)
-        self.topToolbar(self.topToolbar, didEnterText: text)
+        searchContainer?.applyExternalQuery(text, search: true)
 
         if shouldSubmitSearch {
           submitSearch(text)
@@ -738,8 +803,7 @@ extension BrowserViewController: TopToolbarDelegate {
       }
     case .website:
       if let text = recentSearch.text {
-        self.topToolbar.setLocation(text, search: false)
-        self.topToolbar(self.topToolbar, didEnterText: text)
+        searchContainer?.applyExternalQuery(text, search: true)
 
         if shouldSubmitSearch {
           if let urlString = recentSearch.websiteUrl,
@@ -753,90 +817,19 @@ extension BrowserViewController: TopToolbarDelegate {
       }
     case .qrCode:
       if let text = recentSearch.text {
-        self.topToolbar.setLocation(text, search: false)
-        self.topToolbar(self.topToolbar, didEnterText: text)
+        searchContainer?.applyExternalQuery(text, search: true)
 
         if shouldSubmitSearch {
           submitSearch(text)
         }
       } else if let websiteUrl = recentSearch.websiteUrl {
-        self.topToolbar.setLocation(websiteUrl, search: false)
-        self.topToolbar(self.topToolbar, didEnterText: websiteUrl)
+        searchContainer?.applyExternalQuery(websiteUrl, search: true)
 
         if shouldSubmitSearch {
           submitSearch(websiteUrl)
         }
       }
     }
-  }
-
-  private func displaySearchContainer() {
-    if searchContainer == nil {
-      let isPrivate = tabManager.selectedTab?.isPrivate ?? false
-      let container = SearchContainerViewController(
-        tabManager: tabManager,
-        bookmarkManager: bookmarkManager,
-        historyAPI: profileController.historyAPI,
-        searchEngines: profile.searchEngines,
-        privateBrowsingManager: privateBrowsingManager,
-        isAIChatAvailable: !isPrivate && Preferences.AIChat.leoInQuickSearchBarEnabled.value
-          && AIChatUtils.isAIChatEnabled(for: profileController.profile.prefs),
-        isPlaylistAvailable: profileController.profile.prefs.isPlaylistAvailable,
-        searchDelegate: self,
-        autocompleteSuggestionHandler: { [weak self] completion in
-          self?.topToolbar.setAutocompleteSuggestion(completion)
-        },
-        bookmarkAction: { [weak self] bookmark, action in
-          self?.handleFavoriteAction(favorite: bookmark, action: action)
-        },
-        recentSearchAction: { [weak self] recentSearch, shouldSubmitSearch in
-          self?.handleRecentSearch(recentSearch, shouldSubmitSearch: shouldSubmitSearch)
-        }
-      )
-      container.isUsingBottomBar = isUsingBottomBar
-      self.searchContainer = container
-
-      addChild(container)
-      insertSearchContainerView(container)
-      container.didMove(toParent: self)
-
-      container.view.snp.makeConstraints {
-        $0.leading.trailing.equalTo(pageOverlayLayoutGuide)
-        $0.top.bottom.equalTo(view)
-      }
-      container.view.setNeedsLayout()
-      container.view.layoutIfNeeded()
-    }
-    guard let searchContainer else { return }
-    searchContainer.view.alpha = 0.0
-    let animator = UIViewPropertyAnimator(duration: 0.2, dampingRatio: 1.0) {
-      searchContainer.view.alpha = 1
-    }
-    animator.addCompletion { _ in
-      self.webViewContainer.accessibilityElementsHidden = true
-      UIAccessibility.post(notification: .screenChanged, argument: nil)
-    }
-    animator.startAnimation()
-  }
-
-  private func hideSearchContainer() {
-    guard let controller = searchContainer else { return }
-    self.searchContainer = nil
-    UIView.animate(
-      withDuration: 0.1,
-      delay: 0,
-      options: [.beginFromCurrentState],
-      animations: {
-        controller.view.alpha = 0.0
-      },
-      completion: { _ in
-        controller.willMove(toParent: nil)
-        controller.view.removeFromSuperview()
-        controller.removeFromParent()
-        self.webViewContainer.accessibilityElementsHidden = false
-        UIAccessibility.post(notification: .screenChanged, argument: nil)
-      }
-    )
   }
 
   func openAddBookmark() {
@@ -1092,7 +1085,7 @@ extension BrowserViewController: UIContextMenuInteractionDelegate {
         identifier: .pasteAndGo,
         handler: UIAction.deferredActionHandler { _ in
           if let pasteboardContents = UIPasteboard.general.string {
-            self.topToolbar(self.topToolbar, didSubmitText: pasteboardContents)
+            self.processAddressBar(text: pasteboardContents)
           }
         }
       ),
@@ -1100,7 +1093,7 @@ extension BrowserViewController: UIContextMenuInteractionDelegate {
         identifier: .paste,
         handler: UIAction.deferredActionHandler { _ in
           if let pasteboardContents = UIPasteboard.general.string {
-            self.topToolbar.enterOverlayMode(pasteboardContents, pasted: true, search: true)
+            self.presentSearchInput(initialText: pasteboardContents, pasted: true, search: true)
           }
         }
       ),

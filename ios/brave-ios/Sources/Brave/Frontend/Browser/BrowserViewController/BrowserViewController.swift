@@ -110,8 +110,8 @@ public class BrowserViewController: UIViewController {
   }()
 
   private(set) var toolbar: BottomToolbarView?
-  /// The favorites/search-results screens shown while editing the URL bar. Builds and owns the
-  /// favorites, search-results and search-loader instances.
+  /// The fullscreen editing surface (URL input + favorites/search screens) shown while editing the
+  /// URL. Builds and owns the favorites, search-results and search-loader instances.
   var searchContainer: SearchContainerViewController?
 
   /// All content that appears above the footer should be added to this view. (Find In Page/SnackBars)
@@ -193,6 +193,11 @@ public class BrowserViewController: UIViewController {
   var toolbarVisibilityCancellable: AnyCancellable?
 
   var keyboardState: KeyboardState?
+
+  /// Whether the keyboard currently up was presented by web content or find-in-page (as opposed to
+  /// the URL search input). In bottom-bar mode this drives collapsing the toolbar above the
+  /// keyboard; the search input never triggers it, keeping the toolbar and web view static.
+  var isBrowserContentKeyboardActive: Bool = false
 
   /// A toast that might be waiting for BVC to appear before displaying
   var pendingToast: Toast?
@@ -620,7 +625,7 @@ public class BrowserViewController: UIViewController {
     )
     notificationsHandler?.canShowNotifications = { [weak self] in
       guard let self = self else { return false }
-      return !self.privateBrowsingManager.isPrivateBrowsing && !self.topToolbar.inOverlayMode
+      return !self.privateBrowsingManager.isPrivateBrowsing && !self.isSearchContainerVisible
     }
     notificationsHandler?.actionOccured = { [weak self] ad, action in
       guard let self = self, let ad = ad else { return }
@@ -644,11 +649,6 @@ public class BrowserViewController: UIViewController {
       Preferences.General.isUsingBottomBar.value && traitCollection.horizontalSizeClass == .compact
       && traitCollection.verticalSizeClass == .regular
       && traitCollection.userInterfaceIdiom == .phone
-
-    // Reinserts the search container whose parent is based on bottom bar
-    if let searchContainer {
-      insertSearchContainerView(searchContainer)
-    }
   }
 
   public override func viewSafeAreaInsetsDidChange() {
@@ -742,7 +742,7 @@ public class BrowserViewController: UIViewController {
   }
 
   @objc private func tappedCollapsedURLBar() {
-    if keyboardState != nil && isUsingBottomBar && !topToolbar.inOverlayMode {
+    if keyboardState != nil && isUsingBottomBar && !isSearchContainerVisible {
       view.endEditing(true)
     } else {
       tappedTopArea()
@@ -1234,14 +1234,8 @@ public class BrowserViewController: UIViewController {
     // that safe area
     toolbarVisibilityViewModel.minimumCollapsableContentHeight =
       view.bounds.height - view.safeAreaInsets.top
-
-    var additionalInsets: UIEdgeInsets = .zero
-    if isUsingBottomBar {
-      additionalInsets = .init(top: 0, left: 0, bottom: topToolbar.bounds.height, right: 0)
-    } else {
-      additionalInsets = .init(top: header.bounds.height, left: 0, bottom: 0, right: 0)
-    }
-    searchContainer?.applyAdditionalSafeAreaInsets(additionalInsets)
+    // The favorites/search screens are hosted fullscreen by `searchContainer`, which manages their
+    // safe-area insets relative to the URL input bar.
   }
 
   override public var canBecomeFirstResponder: Bool {
@@ -1393,62 +1387,17 @@ public class BrowserViewController: UIViewController {
 
     header.snp.remakeConstraints { make in
       if self.isUsingBottomBar {
-        // Need to check Find In Page Bar is enabled in order to aligh it properly when bottom-bar is enabled
-        var shouldEvaluateKeyboardConstraints = false
-        var activeKeyboardHeight: CGFloat = 0
-        var searchEngineSettingsDismissed = false
-        var clearRecentSearchAlertDismissed = false
-
-        if let keyboardHeight = keyboardState?.intersectionHeightForView(self.view) {
-          activeKeyboardHeight = keyboardHeight
-        }
-
-        if let presentedNavigationController = presentedViewController
-          as? ModalSettingsNavigationController,
-          let presentedRootController = presentedNavigationController.viewControllers.first,
-          presentedRootController is SearchQuickEnginesViewController
+        // When web content or find-in-page presents the keyboard we collapse the URL bar and float
+        // it above the keyboard. The URL search input never triggers this, so the toolbar and web
+        // view stay static during URL editing.
+        let activeKeyboardHeight = keyboardState?.intersectionHeightForView(self.view) ?? 0
+        if isBrowserContentKeyboardActive, activeKeyboardHeight > 0, presentedViewController == nil
         {
-          searchEngineSettingsDismissed = true
-        }
-
-        if let alertController = presentedViewController
-          as? UIAlertController,
-          alertController.preferredStyle == .actionSheet,
-          let action = alertController.actions.first,
-          action.title == Strings.recentSearchClearAlertButton
-        {
-          clearRecentSearchAlertDismissed = true
-        }
-
-        // When the keyboard belongs to the browser (URL bar editing, or the collapsed keyboard
-        // mini-bar shown for web content / find-in-page), keep the bottom bar pinned above the
-        // keyboard even while an unrelated modal is presented (e.g. a download prompt or external
-        // app alert). Otherwise the bar drops back down underneath the keyboard and doesn't
-        // recover once the modal is dismissed.
-        let isBrowserKeyboardActive =
-          topToolbar.inOverlayMode || !toolbarVisibilityViewModel.isEnabled
-
-        shouldEvaluateKeyboardConstraints =
-          (activeKeyboardHeight > 0)
-          && (isBrowserKeyboardActive
-            || presentedViewController == nil
-            || searchEngineSettingsDismissed
-            || clearRecentSearchAlertDismissed
-            || presentedViewController is TabGridHostingController)
-
-        if shouldEvaluateKeyboardConstraints {
-          var offset = -activeKeyboardHeight
-          if !topToolbar.inOverlayMode {
-            // Showing collapsed URL bar while the keyboard is up
-            offset += toolbarVisibilityViewModel.transitionDistance
-          }
+          // Showing collapsed URL bar while the keyboard is up
+          let offset = -activeKeyboardHeight + toolbarVisibilityViewModel.transitionDistance
           make.bottom.equalTo(self.view).offset(offset)
         } else {
-          if topToolbar.inOverlayMode {
-            make.bottom.equalTo(self.view.safeArea.bottom)
-          } else {
-            make.bottom.equalTo(footer.snp.top)
-          }
+          make.bottom.equalTo(footer.snp.top)
         }
       } else {
         make.top.equalTo(toolbarLayoutGuide)
@@ -1511,11 +1460,6 @@ public class BrowserViewController: UIViewController {
         keyboardHeight > 0
       {
         if self.isUsingBottomBar {
-          var offset = -keyboardHeight
-          if !topToolbar.inOverlayMode {
-            // Showing collapsed URL bar while the keyboard is up
-            offset += toolbarVisibilityViewModel.transitionDistance
-          }
           make.bottom.equalTo(header.snp.top)
         } else {
           make.bottom.equalTo(self.view).offset(-keyboardHeight)
@@ -1626,7 +1570,7 @@ public class BrowserViewController: UIViewController {
       return false
     }()
 
-    if !topToolbar.inOverlayMode {
+    if !isSearchContainerVisible {
       guard let url = url else {
         hideActiveNewTabPageController()
         return
@@ -1664,7 +1608,7 @@ public class BrowserViewController: UIViewController {
         (tabManager.selectedTab?.webViewProxy?.isKeyboardVisible == true
           || tabManager.selectedTab?.isFindNavigatorVisible == true)
         && keyboardState?.isLocal == true
-      if isUsingBottomBar, topToolbar.inOverlayMode || isKeyboardActive {
+      if isUsingBottomBar, isKeyboardActive {
         return false
       }
       let tabCount = tabManager.tabsForCurrentMode.count
@@ -1749,7 +1693,7 @@ public class BrowserViewController: UIViewController {
   ///     user defined spot like Favourites or Bookmarks
   func finishEditingAndSubmit(_ url: URL, isUserDefinedURLNavigation: Bool = false) {
     if url.isBookmarklet {
-      topToolbar.leaveOverlayMode()
+      dismissSearchInput()
 
       guard let tab = tabManager.selectedTab else {
         return
@@ -1774,7 +1718,7 @@ public class BrowserViewController: UIViewController {
       }
     } else {
       updateToolbarCurrentURL(url)
-      topToolbar.leaveOverlayMode()
+      dismissSearchInput()
 
       guard let tab = tabManager.selectedTab else {
         return
@@ -1798,7 +1742,7 @@ public class BrowserViewController: UIViewController {
     if !profileController.braveWalletAPI.isAllowed {
       return
     }
-    topToolbar.leaveOverlayMode()
+    dismissSearchInput()
 
     guard let tab = tabManager.selectedTab,
       let encodedURL = originalURL.absoluteString.addingPercentEncoding(
@@ -1820,8 +1764,8 @@ public class BrowserViewController: UIViewController {
   }
 
   override public func accessibilityPerformEscape() -> Bool {
-    if topToolbar.inOverlayMode {
-      topToolbar.didClickCancel()
+    if isSearchContainerVisible {
+      dismissSearchInput()
       return true
     } else if let selectedTab = tabManager.selectedTab, selectedTab.canGoBack {
       selectedTab.goBack()
@@ -1936,7 +1880,7 @@ public class BrowserViewController: UIViewController {
   }
 
   func openURLInNewTab(_ url: URL?, isPrivate: Bool = false, isPrivileged: Bool) {
-    topToolbar.leaveOverlayMode(didCancel: true)
+    dismissSearchInput()
 
     if let selectedTab = tabManager.selectedTab {
       screenshotHelper.takeScreenshot(selectedTab)
@@ -1986,7 +1930,7 @@ public class BrowserViewController: UIViewController {
         // This let's the user spam the Cmd+T button without lots of responder changes.
         guard freshTab === self.tabManager.selectedTab else { return }
         if let text = searchText {
-          self.topToolbar.submitLocation(text)
+          self.processAddressBar(text: text)
         } else {
           self.focusURLBar()
         }
@@ -2061,8 +2005,8 @@ public class BrowserViewController: UIViewController {
 
     if currentViewController != self {
       _ = self.navigationController?.popViewController(animated: true)
-    } else if topToolbar.inOverlayMode {
-      topToolbar.didClickCancel()
+    } else if isSearchContainerVisible {
+      dismissSearchInput()
     }
   }
 
@@ -2301,7 +2245,7 @@ extension BrowserViewController {
     )
 
     popToBVC {
-      self.topToolbar.enterOverlayMode(overlayText, pasted: false, search: false)
+      self.presentSearchInput(initialText: overlayText, pasted: false, search: false)
     }
 
     if !url.isBookmarklet && !privateBrowsingManager.isPrivateBrowsing {
@@ -2404,7 +2348,7 @@ extension BrowserViewController: TabsBarViewControllerDelegate {
 
   func tabsBarDidSelectTab(_ tabsBarController: TabsBarViewController, _ tab: some TabState) {
     if tab === tabManager.selectedTab { return }
-    topToolbar.leaveOverlayMode(didCancel: true)
+    dismissSearchInput()
     tabManager.selectTab(tab)
   }
 
@@ -2551,7 +2495,7 @@ extension BrowserViewController: SearchViewControllerDelegate {
     didSubmit query: String,
     braveSearchPromotion: Bool
   ) {
-    topToolbar.leaveOverlayMode()
+    dismissSearchInput()
     processAddressBar(text: query, isBraveSearchPromotion: braveSearchPromotion)
   }
 
@@ -2588,7 +2532,7 @@ extension BrowserViewController: SearchViewControllerDelegate {
     _ searchViewController: SearchViewController,
     didLongPressSuggestion suggestion: String
   ) {
-    self.topToolbar.setLocation(suggestion, search: true)
+    searchContainer?.applyExternalQuery(suggestion, search: true)
   }
 
   func presentQuickSearchEnginesViewController() {
@@ -2600,14 +2544,14 @@ extension BrowserViewController: SearchViewControllerDelegate {
     didHighlightText text: String,
     search: Bool
   ) {
-    self.topToolbar.setLocation(text, search: search)
+    searchContainer?.applyExternalQuery(text, search: search)
   }
 
   func searchViewController(
     _ searchViewController: SearchViewController,
     shouldFindInPage query: String
   ) {
-    topToolbar.leaveOverlayMode()
+    dismissSearchInput()
     tabManager.selectedTab?.presentFindInteraction(with: query)
   }
 
@@ -2654,7 +2598,7 @@ extension BrowserViewController: ToolbarUrlActionsDelegate {
   }
 
   func openInNewTab(_ url: URL, isPrivate: Bool) {
-    topToolbar.leaveOverlayMode()
+    dismissSearchInput()
 
     select(url, action: .openInNewTab(isPrivate: isPrivate), isUserDefinedURLNavigation: false)
   }
@@ -2692,7 +2636,7 @@ extension BrowserViewController: ToolbarUrlActionsDelegate {
       } else {
         // If we are showing toptabs a user can just use the top tab bar
         // If in overlay mode switching doesnt correctly dismiss the homepanels
-        guard !topToolbar.inOverlayMode else {
+        guard !isSearchContainerVisible else {
           return
         }
         // We're not showing the top tabs; show a toast to quick switch to the fresh new tab.
@@ -2839,7 +2783,7 @@ extension BrowserViewController: NewTabPageDelegate {
 
   func showNewTabTakeoverInfoBarIfNeeded() {
     // do not show if topToobar is in overlay mode
-    guard !topToolbar.inOverlayMode,
+    guard !isSearchContainerVisible,
       rewards.ads.shouldDisplayNewTabTakeoverInfobar()
     else { return }
 
@@ -2860,7 +2804,7 @@ extension BrowserViewController: NewTabPageDelegate {
   }
 
   func isURLBarInOverlayMode() -> Bool {
-    return topToolbar.inOverlayMode
+    return isSearchContainerVisible
   }
 }
 

@@ -484,7 +484,7 @@ extension BrowserViewController {
     tabNavigationKeyCommands.forEach { $0.wantsPriorityOverSystemBehavior = true }
     additionalPriorityCommandKeys.forEach { $0.wantsPriorityOverSystemBehavior = true }
 
-    if topToolbar.inOverlayMode {
+    if isSearchContainerVisible {
       keyCommandList.append(contentsOf: searchLocationCommands)
     }
 
