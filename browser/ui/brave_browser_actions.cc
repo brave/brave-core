@@ -47,6 +47,11 @@
 #include "brave/components/playlist/core/browser/utils.h"
 #endif
 
+#if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
+#include "brave/browser/ui/tabs/public/brave_tab_features.h"
+#include "brave/browser/ui/views/page_action/playlist_page_action_controller.h"
+#endif
+
 #if BUILDFLAG(ENABLE_PSST)
 #include "brave/components/psst/core/common/features.h"
 #include "chrome/browser/ui/page_action/page_action_triggers.h"
@@ -118,6 +123,37 @@ void BraveBrowserActions::InitializeBrowserActions() {
             .Build());
   }
 #endif  // BUILDFLAG(ENABLE_PLAYLIST)
+
+#if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
+  if (bwi->GetType() == BrowserWindowInterface::TYPE_NORMAL &&
+      !profile_->IsOffTheRecord() &&
+      playlist::IsPlaylistAllowed(profile_->GetPrefs())) {
+    root_action_item_->AddChild(
+        actions::ActionItem::Builder(
+            base::BindRepeating(
+                [](BrowserWindowInterface* bwi, actions::ActionItem* item,
+                   actions::ActionInvocationContext context) {
+                  tabs::BraveTabFeatures* const brave_tab_features =
+                      tabs::BraveTabFeatures::FromTabFeatures(
+                          bwi->GetActiveTabInterface()->GetTabFeatures());
+                  CHECK(brave_tab_features);
+
+                  page_actions::PlaylistPageActionController* const controller =
+                      brave_tab_features->playlist_page_action_controller();
+                  CHECK(controller);
+                  controller->ExecuteAction();
+                },
+                bwi))
+            .SetActionId(kActionShowPlaylistPageAction)
+            .SetText(l10n_util::GetStringUTF16(IDS_SIDEBAR_PLAYLIST_ITEM_TITLE))
+            .SetTooltipText(
+                l10n_util::GetStringUTF16(IDS_SIDEBAR_PLAYLIST_ITEM_TITLE))
+            .SetImage(ui::ImageModel::FromVectorIcon(kLeoProductPlaylistAddIcon,
+                                                     ui::kColorIcon))
+            .SetEnabled(true)
+            .Build());
+  }
+#endif  // BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
   if (ai_chat::IsAIChatEnabled(profile_->GetPrefs())) {

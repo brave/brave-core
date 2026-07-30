@@ -6,6 +6,7 @@
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/containers/buildflags/buildflags.gni")
+import("//brave/components/playlist/core/common/buildflags/buildflags.gni")
 import("//brave/components/psst/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 
@@ -30,6 +31,7 @@ source_set("tabs_public") {
   deps = [
     "//brave/components/brave_wayback_machine/buildflags",
     "//brave/components/containers/buildflags",
+    "//brave/components/playlist/core/common/buildflags",
     "//brave/components/speedreader/common/buildflags",
   ]
 }
@@ -82,6 +84,15 @@ if (!is_android) {
 
     if (enable_brave_wayback_machine) {
       deps += [ "//brave/components/brave_wayback_machine" ]
+    }
+
+    if (enable_playlist_webui) {
+      # This is necessary for the time being, because
+      # PlaylistPageActionController lives in //brave/browser/ui as it needs
+      # PlaylistBubblesController dependency (and the rest of the Playlist
+      # bubble UI). A leaf node dependency will be added in the future to avoid
+      # this.
+      deps += [ "//brave/browser/ui" ]
     }
   }
 

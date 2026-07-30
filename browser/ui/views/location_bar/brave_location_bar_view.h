@@ -28,7 +28,6 @@ class BraveActionsContainerTest;
 class BraveShieldsPageInfoController;
 class PromotionButtonController;
 class PromotionButtonView;
-class PlaylistActionIconView;
 class RewardsBrowserTest;
 class SkPath;
 
@@ -39,18 +38,6 @@ class BraveNewsActionIconView;
 #if BUILDFLAG(ENABLE_TOR)
 class OnionLocationView;
 #endif
-
-namespace playlist {
-FORWARD_DECLARE_TEST(PlaylistBrowserTest, AddItemsToList);
-FORWARD_DECLARE_TEST(PlaylistBrowserTest, UIHiddenWhenDisabled);
-FORWARD_DECLARE_TEST(PlaylistBrowserTestWithSitesUsingMediaSource,
-                     MediaShouldBeExtractedFromBackground_SucceedInExtracting);
-FORWARD_DECLARE_TEST(PlaylistBrowserTestWithSitesUsingMediaSource,
-                     MediaShouldBeExtractedFromBackground_FailToExtract);
-FORWARD_DECLARE_TEST(
-    PlaylistBrowserTestWithSitesUsingMediaSource,
-    MediaShouldBeExtractedFromBackground_DynamicallyAddedMedia);
-}  // namespace playlist
 
 namespace policy {
 FORWARD_DECLARE_TEST(BraveRewardsPolicyTest, RewardsIconIsHidden);
@@ -122,26 +109,12 @@ class BraveLocationBarView : public LocationBarView {
   }
 
  private:
-  FRIEND_TEST_ALL_PREFIXES(playlist::PlaylistBrowserTest, AddItemsToList);
-  FRIEND_TEST_ALL_PREFIXES(playlist::PlaylistBrowserTest, UIHiddenWhenDisabled);
-  FRIEND_TEST_ALL_PREFIXES(
-      playlist::PlaylistBrowserTestWithSitesUsingMediaSource,
-      MediaShouldBeExtractedFromBackground_SucceedInExtracting);
-  FRIEND_TEST_ALL_PREFIXES(
-      playlist::PlaylistBrowserTestWithSitesUsingMediaSource,
-      MediaShouldBeExtractedFromBackground_FailToExtract);
-  FRIEND_TEST_ALL_PREFIXES(
-      playlist::PlaylistBrowserTestWithSitesUsingMediaSource,
-      MediaShouldBeExtractedFromBackground_DynamicallyAddedMedia);
   FRIEND_TEST_ALL_PREFIXES(policy::BraveRewardsPolicyTest, RewardsIconIsHidden);
   FRIEND_TEST_ALL_PREFIXES(BraveLocationBarViewBrowserTest,
                            SearchConversionButtonTest);
   friend class ::BraveActionsContainerTest;
   friend class ::RewardsBrowserTest;
 
-#if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
-  PlaylistActionIconView* GetPlaylistActionIconView();
-#endif
   void SetupShadow();
 
   // Prevent layout with invalid rect.
