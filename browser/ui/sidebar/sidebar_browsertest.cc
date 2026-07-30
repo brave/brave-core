@@ -132,14 +132,16 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, BasicTest) {
   // asynchronously. Toggling again before the panel is actually showing makes
   // SidePanelCoordinator::Toggle() re-show instead of close, so wait on both.
   auto* panel_ui = browser()->GetFeatures().side_panel_ui();
-  browser()->command_controller()->ExecuteCommand(IDC_TOGGLE_SIDEBAR);
+  chrome::BrowserCommandController::From(browser())->ExecuteCommand(
+      IDC_TOGGLE_SIDEBAR);
   WaitUntil(base::BindLambdaForTesting([&]() {
     return !!model()->active_index() && panel_ui->IsSidePanelShowing();
   }));
   // Check active index is non-null.
   EXPECT_THAT(model()->active_index(), Ne(std::nullopt));
 
-  browser()->command_controller()->ExecuteCommand(IDC_TOGGLE_SIDEBAR);
+  chrome::BrowserCommandController::From(browser())->ExecuteCommand(
+      IDC_TOGGLE_SIDEBAR);
   WaitUntil(base::BindLambdaForTesting([&]() {
     return !model()->active_index() && !panel_ui->IsSidePanelShowing();
   }));
@@ -1373,7 +1375,8 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, SidebarLayoutInRTLTest) {
             sidebar_container->GetMirroredBounds().x());
 
   // Open the side panel to verify panel/control positioning.
-  browser()->command_controller()->ExecuteCommand(IDC_TOGGLE_SIDEBAR);
+  chrome::BrowserCommandController::From(browser())->ExecuteCommand(
+      IDC_TOGGLE_SIDEBAR);
   RunScheduledLayouts();
   ASSERT_TRUE(base::test::RunUntil([&]() {
     // panel can have border insets.

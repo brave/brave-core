@@ -338,7 +338,8 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest,
 
   // Other paths that trigger the same command should also show the bubble and
   // reveal the button temporarily.
-  browser()->command_controller()->ExecuteCommand(IDC_SHARING_HUB_SCREENSHOT);
+  chrome::BrowserCommandController::From(browser())->ExecuteCommand(
+      IDC_SHARING_HUB_SCREENSHOT);
   EXPECT_TRUE(button->GetVisible());
 }
 
