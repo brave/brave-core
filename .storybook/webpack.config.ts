@@ -10,7 +10,7 @@ import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin'
 import { writeTsConfig } from '../build/webpack/ts-config'
 import { genPath } from '../build/commands/lib/guessConfig'
 import { fallback } from '../build/webpack/polyfill'
-import { generatePathMap, withMockOverrides } from '../build/webpack/path-map'
+import { generatePathMapWithWebMocks } from '../build/webpack/path-map'
 import { cssRules, tsLoaderRule, ifdefLoaderRule } from '../build/webpack/rules'
 import {
   provideNodeGlobals,
@@ -27,11 +27,8 @@ console.log(`Using brave-core generated dependency path of '${genPath}'`)
 
 // Override the path map we use in the browser with some additional mock
 // directories, so that we can replace things in Storybook.
-const pathMap = withMockOverrides(generatePathMap(genPath), {
-  chromeResourcesMockDir: path.resolve(__dirname, 'chrome-resources-mock'),
-  webCommonMockDir: path.resolve(__dirname, 'web-common-mock'),
-  genPath,
-})
+const pathMap = generatePathMapWithWebMocks(genPath)
+pathMap['$storybook'] = path.resolve(__dirname, '../web/storybook')
 
 const buildFlags = JSON.parse(
   fs.readFileSync(path.join(genPath, 'brave/build_flags.json'), 'utf8'),

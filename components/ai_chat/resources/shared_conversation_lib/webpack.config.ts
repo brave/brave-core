@@ -14,10 +14,7 @@ import {
   deterministicOptimization,
   deterministicIdsPlugins,
 } from '../../../../build/webpack/deterministic-output.ts'
-import {
-  generatePathMap,
-  withMockOverrides,
-} from '../../../../build/webpack/path-map.ts'
+import { generatePathMapWithWebMocks } from '../../../../build/webpack/path-map.ts'
 import {
   provideNodeGlobals,
   chromePrefixReplacers,
@@ -40,12 +37,7 @@ console.log(`Using brave-core generated dependency path of '${genPath}'`)
 // Mock browser-privileged functionality (e.g. string pluralization,
 // createSanitizedImageUrl) with the web-compatible implementations we share
 // with Storybook.
-const storybookDir = path.resolve(import.meta.dirname, '../../../../.storybook')
-const pathMap = withMockOverrides(generatePathMap(genPath), {
-  chromeResourcesMockDir: path.join(storybookDir, 'chrome-resources-mock'),
-  webCommonMockDir: path.join(storybookDir, 'web-common-mock'),
-  genPath,
-})
+const pathMap = generatePathMapWithWebMocks(genPath)
 
 // style-loader inlines the source of its `insert` option in to every generated
 // CSS module (it literally calls `.toString()` on the function), so that
