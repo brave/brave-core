@@ -7,6 +7,15 @@ import * as React from 'react'
 import { useLocation, useHistory } from 'react-router-dom'
 import NavigationMenu from '@brave/leo/react/navigationMenu'
 import NavigationItem from '@brave/leo/react/navigationItem'
+import Icon from '@brave/leo/react/icon'
+
+// Local Storage
+import {
+  useSyncedLocalStorage, //
+} from '../../../common/hooks/use_local_storage'
+import {
+  LOCAL_STORAGE_KEYS, //
+} from '../../../common/constants/local-storage-keys'
 
 // Hooks
 import { useRoute } from '../../../common/hooks/use_route'
@@ -37,13 +46,24 @@ import {
   PanelOptionsWrapper,
   LeoNavigation,
   WalletLogo,
+  SidePanelWrapper,
+  CloseButton,
+  Header,
+  BackgroundOverlay,
 } from './wallet-nav.style'
-import { Row, VerticalDivider } from '../../shared/style'
+import { Row, Text, VerticalDivider } from '../../shared/style'
 
 export const WalletNav = () => {
   // UI Selectors (safe)
   const isPanel = useSafeUISelector(UISelectors.isPanel)
+  const isSidePanel = useSafeUISelector(UISelectors.isSidePanel)
   const isIOS = useSafeUISelector(UISelectors.isIOS)
+
+  // Local Storage
+  const [isNavOpen, setIsNavOpen] = useSyncedLocalStorage(
+    LOCAL_STORAGE_KEYS.IS_NAVIGATION_OPEN,
+    false,
+  )
 
   // routing
   const history = useHistory()
@@ -56,6 +76,72 @@ export const WalletNav = () => {
   const walletActionOptions = isIOS
     ? BuySendSwapDepositIOSOptions
     : BuySendSwapDepositOptions
+
+  if (isSidePanel) {
+    return (
+      <>
+        <SidePanelWrapper isOpen={isNavOpen}>
+          <LeoNavigation>
+            <Header
+              justifyContent='flex-start'
+              padding='16px'
+              gap='12px'
+              slot='header'
+            >
+              <CloseButton
+                kind='plain-faint'
+                fab
+                onClick={() => setIsNavOpen(false)}
+              >
+                <Icon name='close' />
+              </CloseButton>
+              <Text
+                textColor='primary'
+                variant='heading.h4'
+              >
+                {getLocale('braveWalletTitle')}
+              </Text>
+            </Header>
+            <NavigationMenu>
+              {navigationOptions.map((option) => (
+                <NavigationItem
+                  key={option.id}
+                  icon={option.icon}
+                  isCurrent={walletLocation.includes(option.route)}
+                  onClick={() => {
+                    history.push(option.route)
+                    setIsNavOpen(false)
+                  }}
+                >
+                  {getLocale(option.name)}
+                </NavigationItem>
+              ))}
+              <Row>
+                <VerticalDivider />
+              </Row>
+              {walletActionOptions.map((option) => (
+                <NavigationItem
+                  key={option.id}
+                  icon={option.icon}
+                  isCurrent={walletLocation.includes(option.route)}
+                  onClick={() => {
+                    openOrPushRoute(option.route)
+                    setIsNavOpen(false)
+                  }}
+                >
+                  {getLocale(option.name)}
+                </NavigationItem>
+              ))}
+            </NavigationMenu>
+          </LeoNavigation>
+        </SidePanelWrapper>
+        <BackgroundOverlay
+          isOpen={isNavOpen}
+          onClick={() => setIsNavOpen(false)}
+        />
+      </>
+    )
+  }
 
   return (
     <Wrapper>

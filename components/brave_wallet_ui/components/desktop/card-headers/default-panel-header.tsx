@@ -5,6 +5,14 @@
 
 import * as React from 'react'
 
+// Local Storage
+import {
+  useSyncedLocalStorage, //
+} from '../../../common/hooks/use_local_storage'
+import {
+  LOCAL_STORAGE_KEYS, //
+} from '../../../common/constants/local-storage-keys'
+
 // Selectors
 import {
   useSafeUISelector, //
@@ -41,8 +49,19 @@ export const DefaultPanelHeader = (props: Props) => {
 
   // UI Selectors (safe)
   const isMobile = useSafeUISelector(UISelectors.isMobile)
+  const isSidePanel = useSafeUISelector(UISelectors.isSidePanel)
+
+  // Local Storage
+  const [_isNavOpen, setIsNavOpen] = useSyncedLocalStorage(
+    LOCAL_STORAGE_KEYS.IS_NAVIGATION_OPEN,
+    false,
+  )
 
   // Methods
+  const onClickToggleNav = React.useCallback(() => {
+    setIsNavOpen((prev) => !prev)
+  }, [setIsNavOpen])
+
   const onClickExpand = React.useCallback(() => {
     if (expandRoute) {
       openWalletRouteTab(expandRoute)
@@ -60,9 +79,14 @@ export const DefaultPanelHeader = (props: Props) => {
         width='unset'
         justifyContent='flex-start'
       >
-        {!isMobile && expandRoute && (
+        {!isMobile && expandRoute && !isSidePanel && (
           <Button onClick={onClickExpand}>
             <ButtonIcon name='expand' />
+          </Button>
+        )}
+        {isSidePanel && (
+          <Button onClick={onClickToggleNav}>
+            <ButtonIcon name='hamburger-menu' />
           </Button>
         )}
       </LeftRightContainer>
