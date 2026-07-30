@@ -8,9 +8,8 @@ import path from 'node:path'
 import type { PathMap } from './resolve.ts'
 
 /**
- * Generates a tsconfig.json file in the gen/ directory
- * so that typescript can import files from the current build's
- * gen/ directory (e.g. mojom-generated JS).
+ * Writes a tsconfig.json file so that typescript can import files from the
+ * current build's gen/ directory (e.g. mojom-generated JS).
  *
  * @param pathMap prepared webpack path aliases
  * @param genPath precompiled brave-core gen dir full path
@@ -18,7 +17,7 @@ import type { PathMap } from './resolve.ts'
  * @param extendsFrom full path of tsconfig to extend
  * @returns full path to created tsconfig file
  */
-export async function writeGenTsConfig(
+export async function writeTsConfig(
   pathMap: PathMap,
   genPath: string,
   name: string,

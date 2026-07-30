@@ -8,7 +8,7 @@ import fs from 'fs'
 import path from 'path'
 import webpack from 'webpack'
 import CopyPlugin from 'copy-webpack-plugin'
-import { writeGenTsConfig } from '../../../../build/webpack/ts-config.ts'
+import { writeTsConfig } from '../../../../build/webpack/ts-config.ts'
 import { genPath } from '../../../../build/commands/lib/guessConfig.js'
 import {
   deterministicOptimization,
@@ -68,7 +68,7 @@ export default async function (
     console.log('Output path is', outputPath)
   }
 
-  const tsConfigPath = await writeGenTsConfig(
+  const tsConfigPath = await writeTsConfig(
     pathMap,
     genPath,
     'tsconfig-ai-chat-shared-conversation.json',

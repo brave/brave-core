@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { program } from 'commander'
-import { writeGenTsConfig } from './ts-config.ts'
+import { writeTsConfig } from './ts-config.ts'
 import generatePathMap from './path-map.js'
 
 program
@@ -16,7 +16,7 @@ program
   )
   .action(async (options) => {
     const pathMap = generatePathMap(options.rootGenDir)
-    await writeGenTsConfig(
+    await writeTsConfig(
       pathMap,
       options.rootGenDir,
       options.name,
