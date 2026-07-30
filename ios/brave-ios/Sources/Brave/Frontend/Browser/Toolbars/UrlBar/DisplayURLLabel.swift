@@ -147,7 +147,7 @@ struct URLDisplayLabel: UIViewRepresentable {
   let textFont: UIFont
   let textColor: UIColor
   let gradientColors: [CGColor]
-  var isShrinkWrapped: Bool = false
+  var scaledToFit: Bool = false
 
   func makeUIView(context: Context) -> DisplayURLLabel {
     let urlLabel = DisplayURLLabel(frame: .zero)
@@ -168,7 +168,7 @@ struct URLDisplayLabel: UIViewRepresentable {
     uiView.font = textFont
     uiView.clippingFade.gradientLayer.colors = gradientColors
     uiView.setContentHuggingPriority(
-      isShrinkWrapped ? .defaultHigh : .defaultLow,
+      scaledToFit ? .defaultHigh : .defaultLow,
       for: .horizontal
     )
   }

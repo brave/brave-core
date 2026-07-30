@@ -112,7 +112,7 @@ struct QuickViewToolbarView: View {
         browserColors.chromeBackground.cgColor,
         browserColors.chromeBackground.withAlphaComponent(0.1).cgColor,
       ],
-      isShrinkWrapped: viewModel.secureContentState.shouldDisplayWarning
+      scaledToFit: viewModel.secureContentState.shouldDisplayWarning
     )
     .accessibilityLabel(viewModel.displayURL)
   }
@@ -125,13 +125,12 @@ struct QuickViewToolbarView: View {
       VStack(spacing: 12) {
         HStack(spacing: 8) {
           if viewModel.secureContentState.shouldDisplayWarning {
-            sslStatusButton.background(sslStatusBackgroundView)
+            sslStatusButton
           }
           addressView
         }
         .frame(
-          maxWidth: viewModel.secureContentState.shouldDisplayWarning ? .infinity : nil,
-          alignment: .center
+          maxWidth: viewModel.secureContentState.shouldDisplayWarning ? .infinity : nil
         )
         progressBar
           .hidden(isHidden: !viewModel.isLoading)
@@ -155,7 +154,7 @@ struct QuickViewToolbarView: View {
           browserColors.chromeBackground.cgColor,
           browserColors.chromeBackground.withAlphaComponent(0.1).cgColor,
         ],
-        isShrinkWrapped: viewModel.secureContentState.shouldDisplayWarning
+        scaledToFit: viewModel.secureContentState.shouldDisplayWarning
       )
       .accessibilityLabel(viewModel.displayURL)
       .fixedSize(horizontal: false, vertical: true)
@@ -215,6 +214,7 @@ struct QuickViewToolbarView: View {
         warningTitle
       }
     }
+    .background(sslStatusBackgroundView)
   }
 
   private var topRow: some View {

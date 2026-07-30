@@ -113,8 +113,7 @@ extension QuickViewToolbarModel: TabObserver {
     loadingCompletionTask = Task { @MainActor [weak self] in
       guard let self else { return }
       self.loadingProgress = 1.0
-      try? await Task.sleep(for: .milliseconds(300))
-      guard !Task.isCancelled else { return }
+      do { try await Task.sleep(for: .milliseconds(300)) } catch { return }
       self.isLoading = false
     }
   }
