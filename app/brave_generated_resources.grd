@@ -1052,7 +1052,7 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
           Bookmark tab
         </message>
         <message name="IDS_TAB_CXMENU_BOOKMARK_SELECTED_TABS" desc="The label of the tab context menu item for bookmarking multiple selected tabs.">
-          Bookmark selected tabs
+          Bookmark selected tabs...
         </message>
         <message name="IDS_TAB_CXMENU_SHOW_VERTICAL_TABS" desc="The label of the tab context menu item for showing tabs vertically">
           Use vertical tabs
@@ -1093,7 +1093,7 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
           Bookmark Tab
         </message>
         <message name="IDS_TAB_CXMENU_BOOKMARK_SELECTED_TABS" desc="In Title Case: The label of the tab context menu item for bookmarking multiple selected tabs.">
-          Bookmark Selected Tabs
+          Bookmark Selected Tabs...
         </message>
         <message name="IDS_TAB_CXMENU_SHOW_VERTICAL_TABS" desc="The label of the tab context menu item for showing tabs vertically">
           Use Vertical Tabs
