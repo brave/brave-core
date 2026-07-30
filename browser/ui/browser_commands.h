@@ -6,6 +6,8 @@
 #ifndef BRAVE_BROWSER_UI_BROWSER_COMMANDS_H_
 #define BRAVE_BROWSER_UI_BROWSER_COMMANDS_H_
 
+#include <vector>
+
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/commander/common/buildflags/buildflags.h"
@@ -78,6 +80,8 @@ void ToggleVerticalTabStripFloatingMode(Browser* browser);
 void ToggleVerticalTabStripExpanded(Browser* browser);
 
 void ToggleActiveTabAudioMute(Browser* browser);
+void BookmarkTabs(Browser* browser,
+                  const std::vector<content::WebContents*>& web_contentses);
 void ToggleSidebarPosition(Browser* browser);
 void ToggleSidebar(Browser* browser);
 

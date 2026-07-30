@@ -1048,20 +1048,17 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
 
       <!-- Brave's tab context menu -->
       <if expr="not use_titlecase">
-        <message name="IDS_TAB_CXMENU_BOOKMARK_ALL_TABS" desc="The label of the tab context menu item for creating a bookmark folder containing an entry for each open tab.">
-          Bookmark all tabs...
+        <message name="IDS_TAB_CXMENU_BOOKMARK_TAB" desc="The label of the tab context menu item for bookmarking the right-clicked tab.">
+          Bookmark tab
+        </message>
+        <message name="IDS_TAB_CXMENU_BOOKMARK_SELECTED_TABS" desc="The label of the tab context menu item for bookmarking multiple selected tabs.">
+          Bookmark selected tabs
         </message>
         <message name="IDS_TAB_CXMENU_SHOW_VERTICAL_TABS" desc="The label of the tab context menu item for showing tabs vertically">
           Use vertical tabs
         </message>
         <message name="IDS_SYSTEM_MENU_FOCUS_MODE" desc="The label of the system menu item for toggling focus mode">
           Focus mode
-        </message>
-        <message name="IDS_TAB_CXMENU_SOUND_MUTE_TAB" desc="The label of the tab context menu item for muting one or more tabs. NOTE: If having no explicit # makes the phrasing awkward, feel free to add a # as necessary. [ICU Syntax]">
-          {NUM_TABS, plural, =1 {Mute tab} other {Mute tabs}}
-        </message>
-        <message name="IDS_TAB_CXMENU_SOUND_UNMUTE_TAB" desc="The label of the tab context menu item for unmuting one or more tabs. NOTE: If having no explicit # makes the phrasing awkward, feel free to add a # as necessary. [ICU Syntax]">
-          {NUM_TABS, plural, =1 {Unmute tab} other {Unmute tabs}}
         </message>
         <message name="IDS_TAB_CXMENU_NEWTABTORIGHT_VERTICAL_TABS" desc="The label of the 'New Tab below' Tab context menu item for vertical tabs.">
           New tab below
@@ -1092,20 +1089,17 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         </message>
       </if>
       <if expr="use_titlecase">
-        <message name="IDS_TAB_CXMENU_BOOKMARK_ALL_TABS" desc="In Title Case: The label of the tab context menu item for creating a bookmark folder containing an entry for each open tab.">
-          Bookmark All Tabs...
+        <message name="IDS_TAB_CXMENU_BOOKMARK_TAB" desc="In Title Case: The label of the tab context menu item for bookmarking the right-clicked tab.">
+          Bookmark Tab
+        </message>
+        <message name="IDS_TAB_CXMENU_BOOKMARK_SELECTED_TABS" desc="In Title Case: The label of the tab context menu item for bookmarking multiple selected tabs.">
+          Bookmark Selected Tabs
         </message>
         <message name="IDS_TAB_CXMENU_SHOW_VERTICAL_TABS" desc="The label of the tab context menu item for showing tabs vertically">
           Use Vertical Tabs
         </message>
         <message name="IDS_SYSTEM_MENU_FOCUS_MODE" desc="The label of the system menu item for toggling focus mode">
           Focus Mode
-        </message>
-        <message name="IDS_TAB_CXMENU_SOUND_MUTE_TAB" desc="The label of the tab context menu item for muting one or more tabs. NOTE: If having no explicit # makes the phrasing awkward, feel free to add a # as necessary. [ICU Syntax]">
-          {NUM_TABS, plural, =1 {Mute Tab} other {Mute Tabs}}
-        </message>
-        <message name="IDS_TAB_CXMENU_SOUND_UNMUTE_TAB" desc="The label of the tab context menu item for unmuting one or more tabs. NOTE: If having no explicit # makes the phrasing awkward, feel free to add a # as necessary. [ICU Syntax]">
-          {NUM_TABS, plural, =1 {Unmute Tab} other {Unmute Tabs}}
         </message>
         <message name="IDS_TAB_CXMENU_NEWTABTORIGHT_VERTICAL_TABS" desc="The label of the 'New Tab below' Tab context menu item for vertical tabs.">
           New Tab Below

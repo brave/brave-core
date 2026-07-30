@@ -47,14 +47,19 @@
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/url_sanitizer/core/browser/url_sanitizer_service.h"
 #include "chrome/browser/bookmarks/bookmark_html_writer.h"
+#include "chrome/browser/bookmarks/bookmark_model_factory.h"
 #include "chrome/browser/browser_process.h"
+#include "chrome/browser/favicon/favicon_utils.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/profiles/profile_metrics.h"
 #include "chrome/browser/profiles/profile_window.h"
+#include "chrome/browser/ui/bookmarks/bookmark_stats.h"
+#include "chrome/browser/ui/bookmarks/bookmark_utils.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
+#include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
@@ -74,6 +79,8 @@
 #include "chrome/common/pref_names.h"
 #include "chrome/common/webui_url_constants.h"
 #include "chrome/grit/generated_resources.h"
+#include "components/bookmarks/browser/bookmark_model.h"
+#include "components/bookmarks/browser/bookmark_utils.h"
 #include "components/split_tabs/split_tab_visual_data.h"
 #include "components/tab_groups/tab_group_visual_data.h"
 #include "components/tabs/public/tab_group.h"
@@ -456,6 +463,69 @@ void ToggleActiveTabAudioMute(Browser* browser) {
   bool mute_tab = !contents->IsAudioMuted();
   SetTabAudioMuted(contents, mute_tab, TabMutedReason::kAudioIndicator,
                    std::string());
+}
+
+void BookmarkTabs(Browser* browser,
+                  const std::vector<content::WebContents*>& web_contentses) {
+  CHECK(browser);
+  if (web_contentses.empty()) {
+    return;
+  }
+
+  bookmarks::BookmarkModel* model =
+      BookmarkModelFactory::GetForBrowserContext(browser->profile());
+  if (!model || !model->loaded()) {
+    return;
+  }
+
+  bool added_any_bookmark = false;
+  GURL last_bookmarked_url;
+  bool last_was_bookmarked_by_user = false;
+  bool last_is_bookmarked_by_user = false;
+
+  for (WebContents* web_contents : web_contentses) {
+    CHECK(web_contents);
+
+    GURL url;
+    std::u16string title;
+    if (!chrome::GetURLAndTitleToBookmark(web_contents, &url, &title)) {
+      continue;
+    }
+
+    if (!model->IsBookmarked(url) &&
+        web_contents->GetBrowserContext()->IsOffTheRecord()) {
+      // If we're incognito the favicon may not have been saved. Save it now
+      // so that bookmarks have an icon for the page.
+      favicon::SaveFaviconEvenIfInIncognito(web_contents);
+    }
+
+    const bool was_bookmarked_by_user =
+        bookmarks::IsBookmarkedByUser(model, url);
+    bookmarks::AddIfNotBookmarked(model, url, title);
+    const bool is_bookmarked_by_user =
+        bookmarks::IsBookmarkedByUser(model, url);
+    if (!was_bookmarked_by_user && is_bookmarked_by_user) {
+      added_any_bookmark = true;
+    }
+
+    last_bookmarked_url = url;
+    last_was_bookmarked_by_user = was_bookmarked_by_user;
+    last_is_bookmarked_by_user = is_bookmarked_by_user;
+  }
+
+  // Show the bubble only when bookmarking a single tab, matching the star
+  // button. A bookmark isn't created if the url is invalid.
+  if (web_contentses.size() == 1 && browser->window()->IsActive() &&
+      last_is_bookmarked_by_user) {
+    // Only show the bubble if the window is active, otherwise we may get into
+    // weird situations where the bubble is deleted as soon as it is shown.
+    browser->window()->ShowBookmarkBubble(last_bookmarked_url,
+                                          last_was_bookmarked_by_user);
+  }
+
+  if (added_any_bookmark) {
+    RecordBookmarksAdded(browser->profile());
+  }
 }
 
 void ToggleSidebarPosition(Browser* browser) {
