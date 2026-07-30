@@ -132,6 +132,23 @@ source_set("unit_tests") {
     ]
   }
 
+  if (enable_psst) {
+    sources += [ "psst_action_controller_unittest.cc" ]
+    deps += [
+      ":page_action",
+      "//brave/app:brave_generated_resources_grit_grit",
+      "//brave/app:command_ids",
+      "//brave/components/psst/core/common",
+      "//chrome/browser/ui/page_action",
+      "//chrome/browser/ui/page_action:test_support",
+      "//components/tabs:test_support",
+      "//content/test:test_support",
+      "//ui/actions",
+      "//ui/base",
+      "//ui/menus",
+    ]
+  }
+
   if (enable_brave_wayback_machine) {
     sources += [ "wayback_machine_page_action_controller_unittest.cc" ]
     deps += [
