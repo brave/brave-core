@@ -11,6 +11,7 @@
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/containers/buildflags/buildflags.h"
+#include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/psst/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "chrome/browser/ui/tabs/public/tab_features.h"
@@ -39,6 +40,10 @@ class PartitionedStoragePageActionController;
 
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
 #include "brave/browser/ui/views/page_action/wayback_machine_page_action_controller.h"
+#endif
+
+#if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
+#include "brave/browser/ui/views/page_action/playlist_page_action_controller.h"
 #endif
 
 #if BUILDFLAG(ENABLE_PSST)
@@ -90,6 +95,13 @@ class BraveTabFeatures : public TabFeatures {
   }
 #endif
 
+#if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
+  page_actions::PlaylistPageActionController*
+  playlist_page_action_controller() {
+    return playlist_page_action_controller_.get();
+  }
+#endif
+
  private:
 #if BUILDFLAG(ENABLE_AI_CHAT)
   std::unique_ptr<ai_chat::TabDataWebContentsObserver> tab_data_observer_;
@@ -111,6 +123,10 @@ class BraveTabFeatures : public TabFeatures {
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
   std::unique_ptr<page_actions::WaybackMachinePageActionController>
       wayback_machine_page_action_controller_;
+#endif
+#if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
+  std::unique_ptr<page_actions::PlaylistPageActionController>
+      playlist_page_action_controller_;
 #endif
 };
 

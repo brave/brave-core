@@ -34,7 +34,6 @@
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_view.h"
 #include "chrome/browser/ui/views/omnibox/omnibox_view_views.h"
-#include "chrome/browser/ui/views/page_action/page_action_icon_controller.h"
 #include "chrome/grit/branded_strings.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/version_info/channel.h"
@@ -50,10 +49,11 @@
 #include "ui/gfx/paint_vector_icon.h"
 #include "ui/views/animation/ink_drop.h"
 #include "ui/views/controls/highlight_path_generator.h"
-#include "ui/views/view_utils.h"
 
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
-#include "brave/browser/ui/views/playlist/playlist_action_icon_view.h"
+#include "brave/browser/ui/tabs/public/brave_tab_features.h"
+#include "brave/browser/ui/views/page_action/playlist_page_action_controller.h"
+#include "components/tabs/public/tab_interface.h"
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
@@ -168,19 +168,22 @@ void BraveLocationBarView::Init() {
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
 void BraveLocationBarView::ShowPlaylistBubble(
     playlist::PlaylistBubblesController::BubbleType type) {
-  if (auto* playlist_action_icon_view = GetPlaylistActionIconView()) {
-    playlist_action_icon_view->ShowPlaylistBubble(type);
+  content::WebContents* const contents = GetWebContents();
+  if (!contents) {
+    return;
   }
-}
-
-PlaylistActionIconView* BraveLocationBarView::GetPlaylistActionIconView() {
-  auto* playlist_action_icon_view =
-      page_action_icon_controller()->GetPlaylistActionIconView();
-  if (!playlist_action_icon_view) {
-    return nullptr;
+  tabs::TabInterface* const tab =
+      tabs::TabInterface::MaybeGetFromContents(contents);
+  if (!tab) {
+    return;
   }
-
-  return views::AsViewClass<PlaylistActionIconView>(playlist_action_icon_view);
+  page_actions::PlaylistPageActionController* const controller =
+      tabs::BraveTabFeatures::FromTabFeatures(tab->GetTabFeatures())
+          ->playlist_page_action_controller();
+  if (!controller) {
+    return;
+  }
+  controller->ShowBubble(type);
 }
 #endif  // BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
 
