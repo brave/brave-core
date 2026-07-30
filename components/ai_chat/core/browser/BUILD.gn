@@ -96,6 +96,8 @@ static_library("browser") {
     "tools/chart_code_plugin.h",
     "tools/code_plugin.cc",
     "tools/code_plugin.h",
+    "tools/interface_removal_code_plugin.cc",
+    "tools/interface_removal_code_plugin.h",
     "tools/memory_storage_tool.cc",
     "tools/memory_storage_tool.h",
     "tools/tool.cc",

@@ -213,6 +213,46 @@ IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest, ExecutionTimeout) {
   EXPECT_EQ(output, "Error: Time limit exceeded");
 }
 
+IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest,
+                       WebRTCInterfaceRemoved) {
+  std::string script = "console.log(typeof RTCPeerConnection)";
+  std::string output;
+  ExecuteCode(script, &output);
+  EXPECT_EQ(output, "undefined");
+}
+
+// A script which breaks out of the wrapping closure should not regain access to
+// interfaces which were removed by the setup scripts.
+IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest,
+                       WebRTCInterfaceRemovedOutsideClosure) {
+  // Terminates the try block and the wrapping async closure, runs code in the
+  // top-level scope, then re-opens an equivalent closure so that the trailing
+  // wrapper code remains syntactically valid.
+  std::string script = R"(
+    } catch (e) {} return codeExecArtifacts; })();
+    console.log('escaped: ' + typeof RTCPeerConnection);
+    (async function() { let codeExecArtifacts = []; try {
+  )";
+
+  std::string output;
+  ExecuteCode(script, &output);
+  EXPECT_EQ(output, "escaped: undefined");
+}
+
+IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest,
+                       NestedRealmNotReachable) {
+  std::string script = R"(
+    const frame = document.createElement('iframe');
+    document.body.appendChild(frame);
+    console.log(typeof frame.contentWindow.RTCPeerConnection);
+  )";
+
+  std::string output;
+  ExecuteCode(script, &output);
+  EXPECT_THAT(output, HasSubstr("SecurityError"));
+  EXPECT_THAT(output, HasSubstr("cross-origin"));
+}
+
 IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest, SyntaxError) {
   std::string script = R"(
     let x = 'unclosed string;
