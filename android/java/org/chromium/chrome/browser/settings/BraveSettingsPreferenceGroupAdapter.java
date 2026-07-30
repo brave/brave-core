@@ -29,7 +29,8 @@ public class BraveSettingsPreferenceGroupAdapter extends PreferenceGroupAdapter 
         if (preference != null && shouldClearIconTint(preference)) {
             BraveSettingsIconTintUtils.clearIconTint(holder);
         } else {
-            BraveSettingsIconTintUtils.applyIconTint(holder, BraveDynamicColors.isDynamicColorsEnabled());
+            BraveSettingsIconTintUtils.applyIconTint(
+                    holder, BraveDynamicColors.isDynamicColorsEnabled());
         }
     }
 
