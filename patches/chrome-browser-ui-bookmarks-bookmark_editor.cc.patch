@@ -1,0 +1,14 @@
+diff --git a/chrome/browser/ui/bookmarks/bookmark_editor.cc b/chrome/browser/ui/bookmarks/bookmark_editor.cc
+index 7980d85b68ea01a9e6bdbd69492cbd44f17a491d..3be8ffdbcd69f8cfd4457781e8927db356fa07e5 100644
+--- a/chrome/browser/ui/bookmarks/bookmark_editor.cc
++++ b/chrome/browser/ui/bookmarks/bookmark_editor.cc
+@@ -127,6 +127,9 @@ bool BookmarkEditor::EditDetails::CanChangeUrl() const {
+ }
+ 
+ int BookmarkEditor::EditDetails::GetWindowTitleId() const {
++  if (window_title_id.has_value()) {
++    return *window_title_id;
++  }
+   int dialog_title = IDS_BOOKMARK_EDITOR_TITLE;
+   switch (type) {
+     case EditDetails::EXISTING_NODE:

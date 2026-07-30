@@ -1,0 +1,14 @@
+diff --git a/chrome/browser/ui/bookmarks/bookmark_editor.h b/chrome/browser/ui/bookmarks/bookmark_editor.h
+index 78362274209cf307589fc26b7ea9d1824b882ced..d15543b6a5bf305759d5a1ea1c92069fd5247a49 100644
+--- a/chrome/browser/ui/bookmarks/bookmark_editor.h
++++ b/chrome/browser/ui/bookmarks/bookmark_editor.h
+@@ -139,6 +139,9 @@ class BookmarkEditor {
+     // folders it should contain.
+     BookmarkData bookmark_data;
+ 
++    // When set, overrides GetWindowTitleId() (e.g. "Bookmark selected tabs").
++    std::optional<int> window_title_id;
++
+    private:
+     explicit EditDetails(Type node_type);
+   };
