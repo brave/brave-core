@@ -1,0 +1,15 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Expose cookieStoreId on chrome.tabs.Tab (Firefox-compatible name) so
+      extensions can pass it to chrome.cookies as storeId. Values are "0",
+      "1", or "containers:<uuid>".
+    regex:
+      pattern: '"sessionId": {"type": "string", "optional": true, "description": "The session ID used to uniquely identify a tab obtained from the $(ref:sessions) API."}'
+      replace: >-
+        "sessionId": {"type": "string", "optional": true, "description": "The session ID used to uniquely identify a tab obtained from the $(ref:sessions) API."},
+                  "cookieStoreId": {"type": "string", "optional": true, "description": "The cookie store of the tab. Use with $(ref:cookies) as <code>storeId</code>. Values are <code>\"0\"</code> (default), <code>\"1\"</code> (incognito), or <code>\"containers:&lt;uuid&gt;\"</code> for a Brave container tab."}

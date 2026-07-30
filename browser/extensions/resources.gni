@@ -3,7 +3,20 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # you can obtain one at http://mozilla.org/MPL/2.0/.
 
+import("//brave/components/containers/buildflags/buildflags.gni")
+
 brave_extensions_resources = [
   "//brave/browser/extensions/api:generated_api_registration",
   "//brave/browser/extensions:resources",
 ]
+
+# Cookies API container storeId helpers compile into chrome/browser/extensions
+# via chromium_src and need these targets at link time.
+if (enable_containers) {
+  brave_extensions_resources += [
+    "//brave/browser/containers",
+    "//brave/components/containers/content/browser",
+    "//brave/components/containers/core/browser",
+    "//brave/components/containers/core/common",
+  ]
+}

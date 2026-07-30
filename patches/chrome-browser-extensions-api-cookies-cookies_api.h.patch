@@ -1,0 +1,79 @@
+diff --git a/chrome/browser/extensions/api/cookies/cookies_api.h b/chrome/browser/extensions/api/cookies/cookies_api.h
+index efa7b0c339b27e2c4adab738e5321d8b82d856c3..6753d458dbb86c3edc6bffd4275833df38917bd5 100644
+--- a/chrome/browser/extensions/api/cookies/cookies_api.h
++++ b/chrome/browser/extensions/api/cookies/cookies_api.h
+@@ -8,6 +8,7 @@
+ #ifndef CHROME_BROWSER_EXTENSIONS_API_COOKIES_COOKIES_API_H_
+ #define CHROME_BROWSER_EXTENSIONS_API_COOKIES_COOKIES_API_H_
+ 
++#include <map>
+ #include <memory>
+ #include <optional>
+ #include <string>
+@@ -15,6 +16,7 @@
+ #include "base/gtest_prod_util.h"
+ #include "base/memory/raw_ptr.h"
+ #include "base/scoped_observation.h"
++#include "components/prefs/pref_change_registrar.h"
+ #include "base/values.h"
+ #include "chrome/browser/profiles/profile_observer.h"
+ #include "chrome/common/extensions/api/cookies.h"
+@@ -57,7 +59,8 @@ class CookiesEventRouter : public ProfileObserver {
+   // since it's not possible to tell the source from inside OnCookieChange().
+   class CookieChangeListener : public network::mojom::CookieChangeListener {
+    public:
+-    CookieChangeListener(CookiesEventRouter* router, bool otr);
++    CookieChangeListener(CookiesEventRouter* router,
++                     std::string store_id);
+ 
+     CookieChangeListener(const CookieChangeListener&) = delete;
+     CookieChangeListener& operator=(const CookieChangeListener&) = delete;
+@@ -69,7 +72,7 @@ class CookiesEventRouter : public ProfileObserver {
+ 
+    private:
+     raw_ptr<CookiesEventRouter> router_;
+-    bool otr_;
++    std::string store_id_;
+   };
+ 
+   void MaybeStartListening();
+@@ -78,7 +81,8 @@ class CookiesEventRouter : public ProfileObserver {
+       Profile* profile);
+   void OnConnectionError(
+       mojo::Receiver<network::mojom::CookieChangeListener>* receiver);
+-  void OnCookieChange(bool otr, const net::CookieChangeInfo& change);
++  void OnCookieChange(const std::string& store_id,
++                    const net::CookieChangeInfo& change);
+ 
+   // This method dispatches events to the extension message service.
+   void DispatchEvent(content::BrowserContext* context,
+@@ -96,12 +100,27 @@ class CookiesEventRouter : public ProfileObserver {
+   // To listen to cookie changes in both the original and the off the record
+   // profiles, we need a pair of bindings, as well as a pair of
+   // CookieChangeListener instances.
+-  CookieChangeListener listener_{this, false};
++  CookieChangeListener listener_{this, "0"};
+   mojo::Receiver<network::mojom::CookieChangeListener> receiver_{&listener_};
+ 
+-  CookieChangeListener otr_listener_{this, true};
++  CookieChangeListener otr_listener_{this, "1"};
+   mojo::Receiver<network::mojom::CookieChangeListener> otr_receiver_{
+       &otr_listener_};
++
++  void SyncContainerCookieListeners();
++
++  // Per-container cookie change listeners, keyed by store id
++  // ("containers:<uuid>").
++  struct ContainerListenerState {
++    ContainerListenerState(CookiesEventRouter* router,
++                           const std::string& store_id);
++    ~ContainerListenerState();
++    CookieChangeListener listener;
++    mojo::Receiver<network::mojom::CookieChangeListener> receiver;
++  };
++  std::map<std::string, std::unique_ptr<ContainerListenerState>>
++      container_listeners_;
++  PrefChangeRegistrar pref_change_registrar_;
+ };
+ 
+ // Implements the cookies.get() extension function.

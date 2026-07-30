@@ -1,0 +1,81 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Include map for container cookie listener map.
+    regex:
+      pattern: "#include <memory>\n#include <optional>\n#include <string>"
+      replace: |-
+        #include <map>
+        #include <memory>
+        #include <optional>
+        #include <string>
+
+  - description: |
+      Include PrefChangeRegistrar header.
+    regex:
+      pattern: '#include "base/scoped_observation.h"'
+      replace: |-
+        #include "base/scoped_observation.h"
+        #include "components/prefs/pref_change_registrar.h"
+
+  - description: |
+      CookieChangeListener carries an opaque storeId string so container
+      partitions can share the same listener type as profile stores "0"/"1".
+    regex:
+      pattern: 'CookieChangeListener(CookiesEventRouter* router, bool otr);'
+      replace: |-
+        CookieChangeListener(CookiesEventRouter* router,
+                             std::string store_id);
+
+  - description: |
+      CookieChangeListener stores store_id_ instead of otr_.
+    regex:
+      pattern: 'bool otr_;'
+      replace: 'std::string store_id_;'
+
+  - description: |
+      OnCookieChange takes storeId so container cookie events report the
+      correct chrome.cookies store id.
+    regex:
+      pattern: 'void OnCookieChange(bool otr, const net::CookieChangeInfo& change);'
+      replace: |-
+        void OnCookieChange(const std::string& store_id,
+                            const net::CookieChangeInfo& change);
+
+  - description: |
+      Initialize default/OTR listeners with profile store ids "0"/"1".
+    regex:
+      pattern: 'listener_{this, false};'
+      replace: 'listener_{this, "0"};'
+
+  - description: |
+      Initialize OTR listener with store id "1".
+    regex:
+      pattern: 'otr_listener_{this, true};'
+      replace: 'otr_listener_{this, "1"};'
+
+  - description: |
+      Add container cookie listener state after default/OTR listeners.
+    regex:
+      re_pattern: '(CookieChangeListener otr_listener_\{this, "1"\};\n  mojo::Receiver<network::mojom::CookieChangeListener> otr_receiver_\{\n      &otr_listener_\};\n)(\};)'
+      replace: |-
+        \1
+          void SyncContainerCookieListeners();
+
+          // Per-container cookie change listeners, keyed by store id
+          // ("containers:<uuid>").
+          struct ContainerListenerState {
+            ContainerListenerState(CookiesEventRouter* router,
+                                   const std::string& store_id);
+            ~ContainerListenerState();
+            CookieChangeListener listener;
+            mojo::Receiver<network::mojom::CookieChangeListener> receiver;
+          };
+          std::map<std::string, std::unique_ptr<ContainerListenerState>>
+              container_listeners_;
+          PrefChangeRegistrar pref_change_registrar_;
+        \2

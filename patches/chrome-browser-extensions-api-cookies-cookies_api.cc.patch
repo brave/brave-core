@@ -1,0 +1,143 @@
+diff --git a/chrome/browser/extensions/api/cookies/cookies_api.cc b/chrome/browser/extensions/api/cookies/cookies_api.cc
+index b605d8520b10243c1e22bc427c5a6a5d5a38b122..f274fbd369246097c03ae170ac49158afcbae09d 100644
+--- a/chrome/browser/extensions/api/cookies/cookies_api.cc
++++ b/chrome/browser/extensions/api/cookies/cookies_api.cc
+@@ -104,35 +104,21 @@ network::mojom::CookieManager* ParseStoreCookieManager(
+     bool include_incognito,
+     std::string* store_id,
+     std::string* error) {
+-  Profile* function_profile = Profile::FromBrowserContext(function_context);
+-  Profile* store_profile = nullptr;
+-  if (!store_id->empty()) {
+-    store_profile = cookies_helpers::ChooseProfileFromStoreId(
+-        *store_id, function_profile, include_incognito);
+-    if (!store_profile) {
+-      *error = ErrorUtils::FormatErrorMessage(kInvalidStoreIdError, *store_id);
+-      return nullptr;
+-    }
+-  } else {
+-    store_profile = function_profile;
+-    *store_id = cookies_helpers::GetStoreIdFromProfile(store_profile);
+-  }
+-
+-  return store_profile->GetDefaultStoragePartition()
+-      ->GetCookieManagerForBrowserProcess();
++  return brave_cookies_api_helpers::ParseStoreCookieManager(
++      function_context, include_incognito, store_id, error);
+ }
+ 
+ }  // namespace
+ 
+ CookiesEventRouter::CookieChangeListener::CookieChangeListener(
+     CookiesEventRouter* router,
+-    bool otr)
+-    : router_(router), otr_(otr) {}
++    std::string store_id)
++    : router_(router), store_id_(std::move(store_id)) {}
+ CookiesEventRouter::CookieChangeListener::~CookieChangeListener() = default;
+ 
+ void CookiesEventRouter::CookieChangeListener::OnCookieChange(
+     const net::CookieChangeInfo& change) {
+-  router_->OnCookieChange(otr_, change);
++  router_->OnCookieChange(store_id_, change);
+ }
+ 
+ CookiesEventRouter::CookiesEventRouter(content::BrowserContext* context)
+@@ -145,8 +131,9 @@ CookiesEventRouter::CookiesEventRouter(content::BrowserContext* context)
+ 
+ CookiesEventRouter::~CookiesEventRouter() = default;
+ 
+-void CookiesEventRouter::OnCookieChange(bool otr,
+-                                        const net::CookieChangeInfo& change) {
++void CookiesEventRouter::OnCookieChange(
++    const std::string& store_id,
++    const net::CookieChangeInfo& change) {
+   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+   // There is no way to represent non-serializable
+   // partition keys in JS so return to prevent a crash.
+@@ -163,15 +150,16 @@ void CookiesEventRouter::OnCookieChange(bool otr,
+                change.cause !=
+                    net::CookieChangeCause::INSERTED_NO_VALUE_CHANGE_OVERWRITE);
+ 
+-  Profile* profile =
+-      otr ? profile_->GetPrimaryOTRProfile(/*create_if_needed=*/false)
+-          : profile_->GetOriginalProfile();
+-  // TODO(407373848): OTR profile must exist when the cookie change event
+-  // arrived.
+-  CHECK(profile);
++const bool otr = (store_id == "1");
++Profile* profile =
++    otr ? profile_->GetPrimaryOTRProfile(/*create_if_needed=*/false)
++        : profile_->GetOriginalProfile();
++// TODO(407373848): OTR profile must exist when the cookie change event
++// arrived.
++CHECK(profile);
+ 
+-  api::cookies::Cookie cookie = cookies_helpers::CreateCookie(
+-      change.cookie, cookies_helpers::GetStoreIdFromProfile(profile));
++api::cookies::Cookie cookie =
++    cookies_helpers::CreateCookie(change.cookie, store_id);
+   dict.Set(kCookieKey, cookie.ToValue());
+ 
+   // Map the internal cause to an external string.
+@@ -244,6 +232,7 @@ void CookiesEventRouter::OnProfileWillBeDestroyed(Profile* profile) {
+ }
+ 
+ void CookiesEventRouter::MaybeStartListening() {
++  [&]() -> void {
+   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+   DCHECK(profile_);
+ 
+@@ -269,6 +258,8 @@ void CookiesEventRouter::MaybeStartListening() {
+   if (!otr_receiver_.is_bound() && otr_profile) {
+     BindToCookieManager(&otr_receiver_, otr_profile);
+   }
++  }();
++  SyncContainerCookieListeners();
+ }
+ 
+ void CookiesEventRouter::BindToCookieManager(
+@@ -868,40 +859,10 @@ ExtensionFunction::ResponseAction CookiesGetPartitionKeyFunction::Run() {
+ }
+ 
+ ExtensionFunction::ResponseAction CookiesGetAllCookieStoresFunction::Run() {
+-  Profile* original_profile = Profile::FromBrowserContext(browser_context());
+-  DCHECK(original_profile);
+-  base::ListValue original_tab_ids;
+-  Profile* incognito_profile = nullptr;
+-  base::ListValue incognito_tab_ids;
+-  if (include_incognito_information() &&
+-      original_profile->HasPrimaryOTRProfile()) {
+-    incognito_profile =
+-        original_profile->GetPrimaryOTRProfile(/*create_if_needed=*/true);
+-  }
+-  DCHECK(original_profile != incognito_profile);
+-
+-  // Iterate through all browser instances, and for each browser,
+-  // add its tab IDs to either the regular or incognito tab ID list depending
+-  // whether the browser is regular or incognito.
+-  for (WindowController* window : *WindowControllerList::GetInstance()) {
+-    if (window->profile() == original_profile) {
+-      cookies_helpers::AppendToTabIdList(window, original_tab_ids);
+-    } else if (window->profile() == incognito_profile) {
+-      cookies_helpers::AppendToTabIdList(window, incognito_tab_ids);
+-    }
+-  }
+-  // Return a list of all cookie stores with at least one open tab.
+-  std::vector<api::cookies::CookieStore> cookie_stores;
+-  if (!original_tab_ids.empty()) {
+-    cookie_stores.push_back(cookies_helpers::CreateCookieStore(
+-        original_profile, std::move(original_tab_ids)));
+-  }
+-  if (incognito_profile && !incognito_tab_ids.empty()) {
+-    cookie_stores.push_back(cookies_helpers::CreateCookieStore(
+-        incognito_profile, std::move(incognito_tab_ids)));
+-  }
+   return RespondNow(ArgumentList(
+-      api::cookies::GetAllCookieStores::Results::Create(cookie_stores)));
++      api::cookies::GetAllCookieStores::Results::Create(
++          brave_cookies_api_helpers::GetAllCookieStores(
++              browser_context(), include_incognito_information()))));
+ }
+ 
+ CookiesAPI::CookiesAPI(content::BrowserContext* context)

@@ -1,0 +1,11 @@
+include_rules = [
+  "+brave/browser/containers",
+  "+brave/components/containers/buildflags",
+  "+brave/components/containers/content/browser",
+  "+brave/components/containers/core/browser",
+  "+brave/components/containers/core/common",
+  "+brave/components/containers/core/mojom",
+  "+chrome/browser/extensions",
+  "+chrome/browser/profiles",
+  "+chrome/common/extensions/api",
+]

@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/extensions/extension_tab_util.cc b/chrome/browser/extensions/extension_tab_util.cc
+index 6238051f9a21504d35957c0208da8e60f5dbb43f..3cef522d10f8c922f8b08730b134e0d9929db409 100644
+--- a/chrome/browser/extensions/extension_tab_util.cc
++++ b/chrome/browser/extensions/extension_tab_util.cc
+@@ -424,6 +424,7 @@ api::tabs::Tab ExtensionTabUtil::CreateTabObject(
+   tab_object.muted_info = CreateMutedInfo(contents);
+ 
+   tab_object.incognito = contents->GetBrowserContext()->IsOffTheRecord();
++  tab_object.cookie_store_id = BraveGetCookieStoreIdForTab(contents);
+   gfx::Size contents_size = contents->GetContainerBounds().size();
+   tab_object.width = contents_size.width();
+   tab_object.height = contents_size.height();

@@ -1,0 +1,80 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Route ParseStoreCookieManager through Brave helper so container store
+      ids ("containers:<uuid>") resolve to the correct StoragePartition.
+    regex:
+      re_pattern: 'network::mojom::CookieManager\* ParseStoreCookieManager\([\s\S]*?\n\}'
+      replace: |-
+        network::mojom::CookieManager* ParseStoreCookieManager(
+            content::BrowserContext* function_context,
+            bool include_incognito,
+            std::string* store_id,
+            std::string* error) {
+          return brave_cookies_api_helpers::ParseStoreCookieManager(
+              function_context, include_incognito, store_id, error);
+        }
+
+  - description: |
+      CookieChangeListener stores store_id and forwards it on change.
+    regex:
+      pattern: "CookiesEventRouter::CookieChangeListener::CookieChangeListener(\n    CookiesEventRouter* router,\n    bool otr)\n    : router_(router), otr_(otr) {}"
+      replace: |-
+        CookiesEventRouter::CookieChangeListener::CookieChangeListener(
+            CookiesEventRouter* router,
+            std::string store_id)
+            : router_(router), store_id_(std::move(store_id)) {}
+
+  - description: |
+      Forward store_id from CookieChangeListener to the router.
+    regex:
+      pattern: 'router_->OnCookieChange(otr_, change);'
+      replace: 'router_->OnCookieChange(store_id_, change);'
+
+  - description: |
+      OnCookieChange uses the provided storeId for the Cookie object.
+    regex:
+      pattern: "void CookiesEventRouter::OnCookieChange(bool otr,\n                                        const net::CookieChangeInfo& change) {"
+      replace: |-
+        void CookiesEventRouter::OnCookieChange(
+            const std::string& store_id,
+            const net::CookieChangeInfo& change) {
+
+  - description: |
+      Select profile from store_id ("1" => OTR) and stamp Cookie.storeId.
+    regex:
+      pattern: "  Profile* profile =\n      otr ? profile_->GetPrimaryOTRProfile(/*create_if_needed=*/false)\n          : profile_->GetOriginalProfile();\n  // TODO(407373848): OTR profile must exist when the cookie change event\n  // arrived.\n  CHECK(profile);\n\n  api::cookies::Cookie cookie = cookies_helpers::CreateCookie(\n      change.cookie, cookies_helpers::GetStoreIdFromProfile(profile));"
+      replace: |-
+          const bool otr = (store_id == "1");
+          Profile* profile =
+              otr ? profile_->GetPrimaryOTRProfile(/*create_if_needed=*/false)
+                  : profile_->GetOriginalProfile();
+          // TODO(407373848): OTR profile must exist when the cookie change event
+          // arrived.
+          CHECK(profile);
+
+          api::cookies::Cookie cookie =
+              cookies_helpers::CreateCookie(change.cookie, store_id);
+
+  - description: |
+      After starting default/OTR listeners, sync container partition listeners.
+    after_function_impl:
+      function_name: CookiesEventRouter::MaybeStartListening
+      code: |-
+        SyncContainerCookieListeners();
+
+  - description: |
+      getAllCookieStores groups contained tabs under containers:<uuid>.
+    regex:
+      re_pattern: 'ExtensionFunction::ResponseAction CookiesGetAllCookieStoresFunction::Run\(\) \{[\s\S]*?\n\}'
+      replace: |-
+        ExtensionFunction::ResponseAction CookiesGetAllCookieStoresFunction::Run() {
+          return RespondNow(ArgumentList(
+              api::cookies::GetAllCookieStores::Results::Create(
+                  brave_cookies_api_helpers::GetAllCookieStores(
+                      browser_context(), include_incognito_information()))));
+        }

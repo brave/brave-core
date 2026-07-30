@@ -1,0 +1,7 @@
+include_rules = [
+  "+brave/browser/extensions/api/cookies",
+  "+brave/components/constants",
+  "+chrome/browser/extensions",
+  "+chrome/common/extensions/api",
+  "+extensions/test",
+]

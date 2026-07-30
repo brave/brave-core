@@ -1,0 +1,13 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Populate Tab.cookieStoreId from the tab's storage partition / container.
+    regex:
+      pattern: 'tab_object.incognito = contents->GetBrowserContext()->IsOffTheRecord();'
+      replace: |-
+        tab_object.incognito = contents->GetBrowserContext()->IsOffTheRecord();
+          tab_object.cookie_store_id = BraveGetCookieStoreIdForTab(contents);

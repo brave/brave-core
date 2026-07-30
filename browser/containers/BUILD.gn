@@ -17,6 +17,8 @@ source_set("containers") {
     "containers_service_delegate.h",
     "containers_service_factory.cc",
     "containers_service_factory.h",
+    "cookie_store_id.cc",
+    "cookie_store_id.h",
     "used_container_storage_partitions.cc",
     "used_container_storage_partitions.h",
   ]
@@ -39,10 +41,14 @@ source_set("containers") {
 source_set("browser_tests") {
   testonly = true
 
-  sources = [ "containers_browsertest.cc" ]
+  sources = [
+    "containers_browsertest.cc",
+    "cookies_api_browsertest.cc",
+  ]
 
   deps = [
     ":containers",
+    "//brave/components/constants",
     "//brave/components/containers/content/browser",
     "//brave/components/containers/core/browser",
     "//brave/components/containers/core/browser:test_support",
@@ -50,14 +56,19 @@ source_set("browser_tests") {
     "//brave/components/containers/core/mojom",
     "//chrome/browser",
     "//chrome/browser/browsing_data:constants",
+    "//chrome/browser/extensions",
     "//chrome/browser/prefs:util",
     "//chrome/browser/ui/views/page_action:page_action_test_support",
     "//chrome/browser/ui/zoom",
+    "//chrome/common/extensions/api",
     "//chrome/test:test_support",
     "//components/permissions",
     "//components/permissions:test_support",
     "//content/public/browser",
     "//content/test:test_support",
+    "//extensions:test_support",
+    "//extensions/browser",
+    "//extensions/browser:test_support",
     "//third_party/blink/public:blink_headers",
   ]
 
@@ -69,6 +80,7 @@ source_set("unit_tests") {
 
   sources = [
     "containers_service_delegate_unittest.cc",
+    "cookie_store_id_unittest.cc",
     "permission_util_containers_unittest.cc",
   ]
 

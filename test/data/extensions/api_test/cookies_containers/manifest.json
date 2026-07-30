@@ -1,0 +1,11 @@
+{
+  "name": "Container cookies API test",
+  "version": "1.0",
+  "manifest_version": 3,
+  "description": "Exercises chrome.cookies/tabs against Brave container stores",
+  "background": {
+    "service_worker": "background.js"
+  },
+  "permissions": ["cookies", "tabs"],
+  "host_permissions": ["<all_urls>"]
+}
