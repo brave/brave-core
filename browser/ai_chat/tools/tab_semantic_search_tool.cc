@@ -72,7 +72,7 @@ namespace internal {
 
 std::string BuildSemanticSearchResultsJson(
     const std::vector<history_embeddings::OpenTabInfo>& tabs) {
-  return SerializeTabsUnderKey("results", tabs);
+  return SerializeTabsUnderKey("tabs", tabs);
 }
 
 std::string BuildSemanticSearchTabSourcesJson(

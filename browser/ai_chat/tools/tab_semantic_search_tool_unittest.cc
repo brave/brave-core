@@ -124,7 +124,7 @@ TEST_F(TabSemanticSearchToolTest, NoOpenTabsReturnsEmptyResults) {
   // no browser windows, exercising the early-return JSON path.
   std::string output = RunTool(tool_.get(), kValidInput);
   EXPECT_EQ(base::test::ParseJsonDict(output),
-            base::test::ParseJsonDict(R"({"results":[]})"));
+            base::test::ParseJsonDict(R"({"tabs":[]})"));
 }
 
 TEST(TabSemanticSearchToolBuildResultsJsonTest, EmitsRankedTabs) {
@@ -136,7 +136,7 @@ TEST(TabSemanticSearchToolBuildResultsJsonTest, EmitsRankedTabs) {
   EXPECT_EQ(
       base::test::ParseJsonDict(internal::BuildSemanticSearchResultsJson(tabs)),
       base::test::ParseJsonDict(R"({
-        "results": [
+        "tabs": [
           {"tab_id": 22, "title": "Tab Two", "url": "https://two.example/"},
           {"tab_id": 11, "title": "Tab One", "url": "https://one.example/"}
         ]
@@ -146,7 +146,7 @@ TEST(TabSemanticSearchToolBuildResultsJsonTest, EmitsRankedTabs) {
 TEST(TabSemanticSearchToolBuildResultsJsonTest, EmptyTabsEmitsEmptyResults) {
   EXPECT_EQ(
       base::test::ParseJsonDict(internal::BuildSemanticSearchResultsJson({})),
-      base::test::ParseJsonDict(R"({"results":[]})"));
+      base::test::ParseJsonDict(R"({"tabs":[]})"));
 }
 
 TEST(TabSemanticSearchToolBuildTabSourcesJsonTest, EmitsRankedTabSources) {
