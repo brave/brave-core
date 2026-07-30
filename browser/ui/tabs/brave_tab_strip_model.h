@@ -43,9 +43,6 @@ class BraveTabStripModel : public TabStripModel {
   // Exposes a |TabStripModel| api to |BraveTabMenuModel|.
   std::vector<int> GetTabIndicesForCommandAt(int tab_index);
 
-  // Returns true if all tabs at the specified indices are muted.
-  bool GetAllTabsMuted(const std::vector<int>& indices) const;
-
   // Closes the tabs at the specified indices.
   void CloseTabs(
       base::span<int> indices,
