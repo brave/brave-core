@@ -250,9 +250,19 @@ export function AttachmentUploadItems(props: {
   onPreview: (file: Mojom.UploadedFile) => void
   chipClassName?: string
 }) {
-  // Calculate first full page screenshot index.
-  const firstFullPageScreenshotIndex =
-    props.uploadedFiles.findIndex(isFullPageScreenshot)
+  // We're only going to show 1 item for full-page screenshot,
+  // so find the index of the first one and sum the filesizes for accuracy
+  // of the context impact.
+  let firstFullPageScreenshotIndex = -1
+  let totalFullPageScreenshotFilesizes = 0
+  props.uploadedFiles.forEach((file, index) => {
+    if (isFullPageScreenshot(file)) {
+      if (firstFullPageScreenshotIndex === -1) {
+        firstFullPageScreenshotIndex = index
+      }
+      totalFullPageScreenshotFilesizes += file.filesize
+    }
+  })
 
   return (
     <>
@@ -267,6 +277,10 @@ export function AttachmentUploadItems(props: {
         .map((file) => {
           // Find the original index in the unfiltered array
           const originalIndex = props.uploadedFiles.indexOf(file)
+
+          if (isFullPageScreenshot(file)) {
+            file = { ...file, filesize: totalFullPageScreenshotFilesizes }
+          }
 
           return (
             <AttachmentUploadItem
