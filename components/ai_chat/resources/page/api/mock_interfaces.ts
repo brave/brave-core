@@ -233,6 +233,7 @@ export function createMockUIHandler(
         },
       }),
     getPluralString: () => Promise.resolve({ pluralString: '' }),
+    getFaviconDataURL: () => Promise.resolve({ dataUrl: null }),
     setChatUI: () => Promise.resolve({ isStandalone: false }),
 
     // Action methods - fire and forget stubs

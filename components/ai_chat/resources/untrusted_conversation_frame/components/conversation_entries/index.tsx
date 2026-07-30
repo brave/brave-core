@@ -409,6 +409,7 @@ function ConversationEntries(props: {
                                     key={c.contentId}
                                     url={c.url.url}
                                     title={c.title}
+                                    faviconUrl={c.faviconUrl}
                                   />
                                 ))}
                                 <AttachmentUploadItems

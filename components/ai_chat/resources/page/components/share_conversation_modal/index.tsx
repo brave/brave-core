@@ -12,6 +12,7 @@ import { serializeConversationForSharing } from '../../../common/conversation_se
 import { encryptForSharing } from '../../../common/conversation_share_encryption'
 import { useAIChat } from '../../state/ai_chat_context'
 import { useConversation } from '../../state/conversation_context'
+import { createSharedConversationPayload } from './create_shared_conversation_payload'
 import styles from './style.module.scss'
 
 interface Props {
@@ -58,10 +59,13 @@ export default function ShareConversationModal(props: Props) {
       // sees ciphertext. The decryption key stays on the client and is appended
       // to the returned viewer URL as a fragment, so the shared link is only
       // usable by whoever the user shares it with.
-      const json = serializeConversationForSharing({
-        messages: conversationContext.api.getConversationHistory.current(),
-        title: conversationTitle,
-      })
+      const json = serializeConversationForSharing(
+        await createSharedConversationPayload(
+          conversationContext,
+          aiChatContext,
+          conversationTitle,
+        ),
+      )
       const { ciphertext, keyFragment } = await encryptForSharing(json)
       // The browser process combines the key fragment with the server's viewer
       // URL and copies the resulting shareable link to the clipboard, marked as

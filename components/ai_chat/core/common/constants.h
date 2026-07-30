@@ -37,6 +37,12 @@ inline constexpr char kClaudeSonnetModelKey[] = "chat-claude-sonnet";
 inline constexpr char kCustomModelItemModelKey[] = "model_request_name";
 inline constexpr char kCustomModelItemEndpointUrlKey[] = "endpoint_url";
 
+// Size of the favicon images which mojom::AIChatUIHandler::GetFaviconDataURL
+// provides. They are displayed at icon size, and are embedded in data which we
+// want to keep small, so this only needs to be large enough for a high density
+// display.
+inline constexpr int kFaviconDataURLSizeInPixels = 64;
+
 }  // namespace ai_chat
 
 #endif  // BRAVE_COMPONENTS_AI_CHAT_CORE_COMMON_CONSTANTS_H_

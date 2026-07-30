@@ -39,6 +39,7 @@ source_set("ai_chat") {
     "//components/prefs",
     "//components/resources",
     "//ios/chrome/browser/bookmarks/model",
+    "//ios/chrome/browser/favicon/model",
     "//ios/chrome/browser/history/model",
     "//ios/chrome/browser/shared/model/profile",
     "//ios/components/webui:url_constants",
@@ -51,6 +52,7 @@ source_set("ai_chat") {
     "//mojo/public/cpp/bindings",
     "//mojo/public/js:resources",
     "//skia",
+    "//ui/base",
     "//ui/gfx/codec",
   ]
 }

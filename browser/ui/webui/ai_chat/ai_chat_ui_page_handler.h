@@ -105,6 +105,8 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
   void GetPluralString(const std::string& key,
                        int32_t count,
                        GetPluralStringCallback callback) override;
+  void GetFaviconDataURL(const GURL& page_url,
+                         GetFaviconDataURLCallback callback) override;
   void CloseUI() override;
   void SetChatUI(mojo::PendingRemote<mojom::ChatUI> chat_ui,
                  SetChatUICallback callback) override;
@@ -194,6 +196,9 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
 
   // DataDecoder instance for processing image data
   data_decoder::DataDecoder data_decoder_;
+
+  // Tracks in-progress favicon lookups so they are cancelled with `this`.
+  base::CancelableTaskTracker favicon_task_tracker_;
 
   // Active file extractors (owned until extraction completes)
   std::vector<std::unique_ptr<FileTextExtractorBase>> extractors_;

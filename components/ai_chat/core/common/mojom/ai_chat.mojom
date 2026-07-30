@@ -249,6 +249,14 @@ interface AIChatUIHandler {
   // Get a plural string for the given key and count.
   GetPluralString(string key, int32 count) => (string plural_string);
 
+  // Get the favicon which the browser has stored for a page as a data URL, so
+  // that it can be included in data which will be displayed outside of the
+  // browser, e.g. a shared conversation. Null if the browser doesn't have one.
+  // The UI renders favicons from the browser's favicon service directly
+  // (chrome://favicon2), so this is only needed when the image data itself is
+  // required.
+  GetFaviconDataURL(url.mojom.Url page_url) => (string? data_url);
+
   // This might be a no-op if the UI isn't closeable
   CloseUI();
 

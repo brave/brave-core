@@ -21,8 +21,20 @@ import {
   type ConversationData,
 } from './conversation_serialization'
 
+const sampleAssociatedContent: Mojom.AssociatedContent = {
+  uuid: 'assoc-1',
+  contentType: Mojom.ContentType.PageContent,
+  contentId: 1,
+  title: 'Sample page',
+  url: { url: 'https://example.com/1' },
+  contentUsedPercentage: 100,
+  conversationTurnUuid: '83f505d6-8fe6-448c-aabd-016ed1e2fa82',
+  toolsAttached: false,
+}
+
 const sampleSharedConversation: ConversationData = {
   messages: ComplexConversation,
+  associatedContent: [sampleAssociatedContent],
   title: 'sample title',
 }
 
