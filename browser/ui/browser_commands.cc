@@ -886,7 +886,7 @@ void BringAllTabs(Browser* browser) {
   }
 }
 
-bool HasDuplicateTabs(Browser* browser) {
+bool HasDuplicatesOfActiveTab(Browser* browser) {
   if (!browser) {
     return false;
   }
@@ -913,7 +913,7 @@ bool HasDuplicateTabs(Browser* browser) {
   return false;
 }
 
-void CloseDuplicateTabs(Browser* browser) {
+void CloseDuplicatesOfActiveTab(Browser* browser) {
   auto* tsm = browser->tab_strip_model();
   auto url = tsm->GetActiveWebContents()->GetVisibleURL();
 
@@ -928,6 +928,38 @@ void CloseDuplicateTabs(Browser* browser) {
       tab->Close();
     }
   }
+}
+
+bool HasAnyDuplicateTabs(Browser* browser) {
+  auto* tsm = browser->tab_strip_model();
+  base::flat_set<GURL> urls;
+  for (int i = 0; i < tsm->count(); ++i) {
+    auto* tab = tsm->GetWebContentsAt(i);
+    if (urls.contains(tab->GetVisibleURL())) {
+      return true;
+    }
+    urls.insert(tab->GetVisibleURL());
+  }
+
+  return false;
+}
+
+void CloseAllDuplicateTabs(Browser* browser) {
+  auto* tsm = static_cast<BraveTabStripModel*>(browser->tab_strip_model());
+  CHECK(tsm);
+
+  base::flat_set<GURL> urls;
+  std::vector<int> indices;
+  for (int i = 0; i < tsm->count(); ++i) {
+    auto* tab = tsm->GetWebContentsAt(i);
+    // Keep the first occurrence of each URL and mark the rest for closing.
+    if (!urls.insert(tab->GetVisibleURL()).second) {
+      indices.push_back(i);
+    }
+  }
+
+  tsm->CloseTabs(indices, TabCloseTypes::CLOSE_USER_GESTURE |
+                              TabCloseTypes::CLOSE_CREATE_HISTORICAL_TAB);
 }
 
 bool CanCloseTabsToLeft(Browser* browser) {
