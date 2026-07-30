@@ -7,15 +7,18 @@ package org.chromium.chrome.browser.compositor.layouts.phone;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.when;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.view.View;
 
+import androidx.annotation.ColorInt;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 
 import org.junit.After;
@@ -36,6 +39,9 @@ import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.toolbar.ToolbarManager;
+import org.chromium.chrome.browser.toolbar.ToolbarPositionController.ToolbarPositionAndSource;
+import org.chromium.chrome.browser.toolbar.settings.AddressBarPreference;
+import org.chromium.components.browser_ui.styles.ChromeColors;
 import org.chromium.ui.base.TestActivity;
 
 /**
@@ -45,7 +51,10 @@ import org.chromium.ui.base.TestActivity;
  * button when the top toolbar button is GONE (isBraveBottomControlsEnabled() is true).
  */
 @RunWith(BaseRobolectricTestRunner.class)
-@DisableFeatures(ChromeFeatureList.ANDROID_BOTTOM_BAR)
+@DisableFeatures({
+    ChromeFeatureList.ANDROID_BOTTOM_BAR,
+    ChromeFeatureList.CROSS_DEVICE_PREF_TRACKER_EXTRA_LOGS
+})
 public class BraveNewBackgroundTabAnimationDataUnitTest {
     @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
 
@@ -62,6 +71,7 @@ public class BraveNewBackgroundTabAnimationDataUnitTest {
     @Mock private View mBottomTabSwitcherButton;
 
     private BraveNewBackgroundTabAnimationData mData;
+    private Activity mActivity;
 
     private static final int BOTTOM_BUTTON_LEFT = 0;
     private static final int BOTTOM_BUTTON_TOP = 1800;
@@ -118,6 +128,7 @@ public class BraveNewBackgroundTabAnimationDataUnitTest {
                         });
 
         mData = new BraveNewBackgroundTabAnimationData(mAnimationHostView, mToolbarManager);
+        mActivity = activity;
     }
 
     private void enableBraveBottomControls() {
@@ -157,5 +168,49 @@ public class BraveNewBackgroundTabAnimationDataUnitTest {
 
         // Top button returns empty rect and Brave bottom controls are off — no fallback.
         assertTrue("Rect should be empty when Brave bottom toolbar is disabled", rect.isEmpty());
+    }
+
+    @Test
+    public void testGetPrimaryColor_braveBottomEnabled_addressbarTop_usesBottomToolbarColor() {
+        // The website / top-toolbar color that must NOT leak into the animation here.
+        when(mToolbarManager.getPrimaryColor()).thenReturn(Color.GREEN);
+        enableBraveBottomControls();
+        AddressBarPreference.setToolbarPositionAndSource(ToolbarPositionAndSource.TOP_SETTINGS);
+
+        mData.captureState(mTab, /* isRegularNtp= */ false, /* expectedToolbarTop= */ 0);
+
+        @ColorInt int color = mData.getPrimaryColor();
+
+        assertEquals(
+                "Should fill with the bottom toolbar's default theme color",
+                ChromeColors.getDefaultThemeColor(mActivity, /* isIncognito= */ false),
+                color);
+        assertEquals("Fill must be opaque to cover the real button", 0xFF, Color.alpha(color));
+        assertNotEquals("Fill must not use the website toolbar color", Color.GREEN, color);
+    }
+
+    @Test
+    public void testGetPrimaryColor_braveBottomDisabled_usesUpstreamToolbarColor() {
+        when(mToolbarManager.getPrimaryColor()).thenReturn(Color.GREEN);
+        disableBraveBottomControls();
+
+        mData.captureState(mTab, /* isRegularNtp= */ false, /* expectedToolbarTop= */ 0);
+
+        // Not the special config - falls back to the upstream (website/toolbar) primary color.
+        assertEquals(Color.GREEN, mData.getPrimaryColor());
+    }
+
+    @Test
+    public void testGetPrimaryColor_braveBottomEnabled_addressbarTop_incognito_usesUpstreamColor() {
+        when(mToolbarManager.getPrimaryColor()).thenReturn(Color.GREEN);
+        when(mTab.isIncognitoBranded()).thenReturn(true);
+        enableBraveBottomControls();
+        AddressBarPreference.setToolbarPositionAndSource(ToolbarPositionAndSource.TOP_SETTINGS);
+
+        mData.captureState(mTab, /* isRegularNtp= */ false, /* expectedToolbarTop= */ 0);
+
+        // In incognito the toolbar is not website-colored, so the override does not apply and the
+        // upstream (toolbar) primary color is used.
+        assertEquals(Color.GREEN, mData.getPrimaryColor());
     }
 }
