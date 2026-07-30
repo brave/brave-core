@@ -148,6 +148,16 @@ void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
     wayback_machine_page_action_controller_->Init();
   }
 #endif
+
+#if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
+  if (base::FeatureList::IsEnabled(features::kPageActionsMigration) &&
+      page_action_controller()->ActionExists(kActionShowPlaylistPageAction)) {
+    playlist_page_action_controller_ =
+        std::make_unique<page_actions::PlaylistPageActionController>(
+            tab, *page_action_controller());
+    playlist_page_action_controller_->Init();
+  }
+#endif
 }
 
 }  // namespace tabs

@@ -35,6 +35,7 @@ source_set("location_bar") {
     "//brave/browser/brave_shields",
     "//brave/browser/ui:brave_tab_prefs",
     "//brave/browser/ui/page_info",
+    "//brave/browser/ui/tabs:tabs_public",
     "//brave/browser/ui/views/page_info",
     "//brave/components/brave_search_conversion",
     "//brave/components/commander/browser",
