@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/ui/views/wayback_machine_bubble_view.h"
+#include "brave/browser/ui/views/page_action/wayback_machine_bubble_view.h"
 
 #include <memory>
 #include <optional>
@@ -12,13 +12,11 @@
 
 #include "base/check.h"
 #include "base/functional/bind.h"
-#include "brave/browser/ui/views/page_action/wayback_machine_action_icon_view.h"
 #include "brave/components/brave_wayback_machine/brave_wayback_machine_tab_helper.h"
 #include "brave/grit/brave_generated_resources.h"
-#include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
 #include "content/public/browser/web_contents.h"
+#include "ui/actions/actions.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/mojom/dialog_button.mojom.h"
@@ -44,12 +42,9 @@ gfx::FontList GetFont(int font_size, gfx::Font::Weight weight) {
 }  // namespace
 
 // static
-void WaybackMachineBubbleView::Show(Browser* browser, views::View* anchor) {
-  auto* web_contents = browser->tab_strip_model()->GetActiveWebContents();
-  if (!web_contents) {
-    return;
-  }
-
+void WaybackMachineBubbleView::Show(content::WebContents* web_contents,
+                                    views::View* anchor,
+                                    actions::ActionItem* item) {
   auto* tab_helper = GetTabHelper(web_contents);
   if (!tab_helper) {
     return;
@@ -62,16 +57,21 @@ void WaybackMachineBubbleView::Show(Browser* browser, views::View* anchor) {
 
   views::Widget* const widget = views::BubbleDialogDelegateView::CreateBubble(
       std::make_unique<WaybackMachineBubbleView>(web_contents->GetWeakPtr(),
-                                                 anchor));
+                                                 anchor, item));
   widget->Show();
   tab_helper->set_active_window(widget->GetNativeWindow());
 }
 
 WaybackMachineBubbleView::WaybackMachineBubbleView(
     base::WeakPtr<content::WebContents> web_contents,
-    views::View* anchor)
+    views::View* anchor,
+    actions::ActionItem* item)
     : BubbleDialogDelegateView(anchor, views::BubbleBorder::TOP_RIGHT),
-      web_contents_(web_contents) {
+      web_contents_(web_contents),
+      item_(item) {
+  if (item_) {
+    item_->SetIsShowingBubble(true);
+  }
   SetShowCloseButton(true);
   set_fixed_width(360);
   set_should_ignore_snapping(true);
@@ -128,15 +128,9 @@ WaybackMachineBubbleView::~WaybackMachineBubbleView() {
   if (auto* tab_helper = GetTabHelper(web_contents_.get())) {
     tab_helper->set_active_window(std::nullopt);
   }
-}
-
-void WaybackMachineBubbleView::OnWidgetVisibilityChanged(views::Widget* widget,
-                                                         bool visible) {
-  BubbleDialogDelegateView::OnWidgetVisibilityChanged(widget, visible);
-
-  // Use active icon color only when bubble is shown.
-  static_cast<WaybackMachineActionIconView*>(GetAnchorView())
-      ->SetActive(visible);
+  if (item_) {
+    item_->SetIsShowingBubble(false);
+  }
 }
 
 void WaybackMachineBubbleView::OnAccepted() {

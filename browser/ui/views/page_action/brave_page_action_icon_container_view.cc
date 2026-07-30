@@ -8,7 +8,6 @@
 #include <algorithm>
 
 #include "base/check_is_test.h"
-#include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -27,10 +26,6 @@ PageActionIconParams& ModifyIconParamsForBrave(PageActionIconParams& params) {
   if (!params.browser) {
     return params;
   }
-
-#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
-  params.types_enabled.push_back(brave::kWaybackMachineActionIconType);
-#endif
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
   // Browser could be null if the location bar was created for
