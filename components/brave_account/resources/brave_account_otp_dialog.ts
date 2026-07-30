@@ -110,9 +110,7 @@ export class BraveAccountOtpDialogElement extends CrLitElement {
 
   private async confirmResetPasswordCode() {
     try {
-      await this.browserProxy.authentication.resetPasswordVerifyComplete(
-        this.code,
-      )
+      await this.browserProxy.authentication.resetPasswordStep2(this.code)
     } catch (e) {
       let error: ResetPasswordError
 

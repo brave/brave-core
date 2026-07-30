@@ -57,30 +57,25 @@ void LoggedOutState::RegisterStep3(const std::string& code,
   register_.Step3(code, std::move(callback));
 }
 
-void LoggedOutState::ResetPasswordVerifyInit(
-    const std::string& email,
-    ResetPasswordVerifyInitCallback callback) {
-  reset_password_.VerifyInit(email, std::move(callback));
+void LoggedOutState::ResetPasswordStep1(const std::string& email,
+                                        ResetPasswordStep1Callback callback) {
+  reset_password_.Step1(email, std::move(callback));
 }
 
-void LoggedOutState::ResetPasswordVerifyComplete(
-    const std::string& code,
-    ResetPasswordVerifyCompleteCallback callback) {
-  reset_password_.VerifyComplete(code, std::move(callback));
+void LoggedOutState::ResetPasswordStep2(const std::string& code,
+                                        ResetPasswordStep2Callback callback) {
+  reset_password_.Step2(code, std::move(callback));
 }
 
-void LoggedOutState::ResetPasswordPasswordInit(
-    const std::string& blinded_message,
-    ResetPasswordPasswordInitCallback callback) {
-  reset_password_.PasswordInit(blinded_message, std::move(callback));
+void LoggedOutState::ResetPasswordStep3(const std::string& blinded_message,
+                                        ResetPasswordStep3Callback callback) {
+  reset_password_.Step3(blinded_message, std::move(callback));
 }
 
-void LoggedOutState::ResetPasswordPasswordFinalize(
-    const std::string& serialized_record,
-    const std::string& email,
-    ResetPasswordPasswordFinalizeCallback callback) {
-  reset_password_.PasswordFinalize(serialized_record, email,
-                                   std::move(callback));
+void LoggedOutState::ResetPasswordStep4(const std::string& serialized_record,
+                                        const std::string& email,
+                                        ResetPasswordStep4Callback callback) {
+  reset_password_.Step4(serialized_record, email, std::move(callback));
 }
 
 }  // namespace brave_account

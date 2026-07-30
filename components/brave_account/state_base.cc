@@ -138,31 +138,27 @@ void StateBase::CancelVerification(mojom::VerificationIntentPtr intent) {
   account_state_prefs_->ClearVerification();
 }
 
-void StateBase::ResetPasswordVerifyInit(
-    const std::string& email,
-    ResetPasswordVerifyInitCallback callback) {
+void StateBase::ResetPasswordStep1(const std::string& email,
+                                   ResetPasswordStep1Callback callback) {
   std::move(callback).Run(
       MakeCalledInWrongStateError<mojom::ResetPasswordError>());
 }
 
-void StateBase::ResetPasswordVerifyComplete(
-    const std::string& code,
-    ResetPasswordVerifyCompleteCallback callback) {
+void StateBase::ResetPasswordStep2(const std::string& code,
+                                   ResetPasswordStep2Callback callback) {
   std::move(callback).Run(
       MakeCalledInWrongStateError<mojom::ResetPasswordError>());
 }
 
-void StateBase::ResetPasswordPasswordInit(
-    const std::string& blinded_message,
-    ResetPasswordPasswordInitCallback callback) {
+void StateBase::ResetPasswordStep3(const std::string& blinded_message,
+                                   ResetPasswordStep3Callback callback) {
   std::move(callback).Run(
       MakeCalledInWrongStateError<mojom::ResetPasswordError>());
 }
 
-void StateBase::ResetPasswordPasswordFinalize(
-    const std::string& serialized_record,
-    const std::string& email,
-    ResetPasswordPasswordFinalizeCallback callback) {
+void StateBase::ResetPasswordStep4(const std::string& serialized_record,
+                                   const std::string& email,
+                                   ResetPasswordStep4Callback callback) {
   std::move(callback).Run(
       MakeCalledInWrongStateError<mojom::ResetPasswordError>());
 }

@@ -213,37 +213,37 @@ interface Authentication {
 
   // First step of the password reset process.
   // `email`: user's email address.
-  // Returns `ResetPasswordVerifyInitResult` on success, or
+  // Returns `ResetPasswordStep1Result` on success, or
   //         `ResetPasswordError` on failure.
-  ResetPasswordVerifyInit(string email)
-    => result<ResetPasswordVerifyInitResult, ResetPasswordError>;
+  ResetPasswordStep1(string email)
+    => result<ResetPasswordStep1Result, ResetPasswordError>;
 
   // Second step of the password reset process.
   // `code`: verification code sent to the user's email address,
   //         required to verify the email before a new password can be set.
-  // Returns `ResetPasswordVerifyCompleteResult` on success, or
+  // Returns `ResetPasswordStep2Result` on success, or
   //         `ResetPasswordError` on failure.
-  ResetPasswordVerifyComplete(string code)
-    => result<ResetPasswordVerifyCompleteResult, ResetPasswordError>;
+  ResetPasswordStep2(string code)
+    => result<ResetPasswordStep2Result, ResetPasswordError>;
 
   // Third step of the password reset process.
   // `blindedMessage`: initial blinded request
   //                   produced by the OPAQUE library,
   //                   to be sent to the server.
-  // Returns `ResetPasswordPasswordInitResult` on success, or
+  // Returns `ResetPasswordStep3Result` on success, or
   //         `ResetPasswordError` on failure.
-  ResetPasswordPasswordInit(string blindedMessage)
-    => result<ResetPasswordPasswordInitResult, ResetPasswordError>;
+  ResetPasswordStep3(string blindedMessage)
+    => result<ResetPasswordStep3Result, ResetPasswordError>;
 
   // Fourth step of the password reset process.
   // `serializedRecord`: final message produced by the OPAQUE library,
   //                     derived by unblinding `serializedResponse`,
   //                     to be sent to the server.
   // `email`: user's email address.
-  // Returns `ResetPasswordPasswordFinalizeResult` on success, or
+  // Returns `ResetPasswordStep4Result` on success, or
   //         `ResetPasswordError` on failure.
-  ResetPasswordPasswordFinalize(string serializedRecord, string email)
-    => result<ResetPasswordPasswordFinalizeResult, ResetPasswordError>;
+  ResetPasswordStep4(string serializedRecord, string email)
+    => result<ResetPasswordStep4Result, ResetPasswordError>;
 
   // First step of the login process.
   // `initiatingService`: the service that
