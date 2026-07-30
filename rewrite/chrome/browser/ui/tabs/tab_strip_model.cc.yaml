@@ -27,9 +27,9 @@ substitutions:
   - description: |
       Rename instances of `DraggingTabsSession` to `DraggingTabsSessionChromium`
       to avoid name collision with Brave's DraggingTabsSession class.
-    regex:
-      pattern: 'DraggingTabsSession'
-      replace: 'DraggingTabsSessionChromium'
+    rename_class:
+      class_name: DraggingTabsSession
+      rename: DraggingTabsSessionChromium
 
   - description: |
       When adding a new tab with a "TYPED" transition at the last index, set the

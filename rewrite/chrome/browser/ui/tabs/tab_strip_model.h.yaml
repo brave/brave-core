@@ -43,9 +43,9 @@ substitutions:
       Rename instances of `DraggingTabsSession` to `DraggingTabsSessionChromium`
       to avoid name collision with Brave's DraggingTabsSession class.
     count: 0
-    regex:
-      pattern: 'DraggingTabsSession'
-      replace: 'DraggingTabsSessionChromium'
+    rename_class:
+      class_name: DraggingTabsSession
+      rename: DraggingTabsSessionChromium
 
   - description: Let the Brave subclass reach private members.
     add_friend:
