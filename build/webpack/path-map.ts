@@ -61,3 +61,43 @@ export function generatePathMap(genPath: string): PathMap {
     ),
   }
 }
+
+/**
+ * Layers Storybook / standalone-library mock directories on top of the
+ * production path map, so browser-privileged modules resolve to web-compatible
+ * mocks first and fall back to the real generated files. Shared by the
+ * Storybook and AI Chat library builds.
+ *
+ * @param basePathMap The production path map from `generatePathMap`.
+ * @param mocks.chromeResourcesMockDir Directory of `chrome://resources` mocks.
+ * @param mocks.webCommonMockDir Directory of `$web-common` mocks.
+ * @param mocks.genPath The build output `gen` directory.
+ */
+export function withMockOverrides(
+  basePathMap: PathMap,
+  mocks: {
+    chromeResourcesMockDir: string
+    webCommonMockDir: string
+    genPath: string
+  },
+): PathMap {
+  return {
+    '//resources/mojo/mojo/public/js/bindings.js': path.join(
+      mocks.genPath,
+      'mojo/public/js/bindings.js',
+    ),
+    ...basePathMap,
+    'chrome://resources': [
+      mocks.chromeResourcesMockDir,
+      basePathMap['chrome://resources'] as string,
+      // Some mojo bindings have their JS code generated in the gen directory
+      // (bindings.js). The type definitions are in the same folder as all the
+      // other mojo bindings, so we only need this for mock builds.
+      mocks.genPath,
+    ],
+    '$web-common': [
+      mocks.webCommonMockDir,
+      basePathMap['$web-common'] as string,
+    ],
+  }
+}

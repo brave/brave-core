@@ -14,15 +14,15 @@ import {
   deterministicOptimization,
   deterministicIdsPlugins,
 } from '../../../../build/webpack/deterministic-output.ts'
-import { generatePathMap } from '../../../../build/webpack/path-map.ts'
+import {
+  generatePathMap,
+  withMockOverrides,
+} from '../../../../build/webpack/path-map.ts'
 import {
   provideNodeGlobals,
   chromePrefixReplacers,
 } from '../../../../build/webpack/plugins.ts'
-import {
-  baseResolve,
-  withMockOverrides,
-} from '../../../../build/webpack/resolve.ts'
+import { baseResolve } from '../../../../build/webpack/resolve.ts'
 import {
   cssRules,
   tsLoaderRule,
