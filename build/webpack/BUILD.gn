@@ -32,7 +32,7 @@ generated_file("build_flags_json") {
 }
 
 node_action("generate_tsconfig") {
-  script = "//brave/build/commands/scripts/genTsConfig.js"
+  script = "//brave/build/webpack/generate-ts-config.ts"
 
   deps = [
     ":build_flags_json",
@@ -45,11 +45,14 @@ node_action("generate_tsconfig") {
   inputs = [
     "$root_gen_dir/brave/components/common/package.json",
     "//brave/pnpm-lock.yaml",
-    "//brave/build/commands/lib/config.ts",
-    "//brave/build/commands/lib/genTsConfig.js",
-    "//brave/build/commands/scripts/genTsConfig.js",
-    "path-map.js",
+    "//brave/tsconfig-webpack.json",
+    "path-map.ts",
+    "ts-config.ts",
   ]
   outputs = [ "$root_gen_dir/tsconfig-webpack.json" ]
-  args = [ "--root-gen-dir=" + rebase_path(root_gen_dir) ]
+  args = [
+    "--root-gen-dir=" + rebase_path(root_gen_dir),
+    "--name=tsconfig-webpack.json",
+    "--extends-from=" + rebase_path("//brave/tsconfig-webpack.json"),
+  ]
 }

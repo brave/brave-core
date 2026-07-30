@@ -8,21 +8,21 @@ import fs from 'fs'
 import path from 'path'
 import webpack from 'webpack'
 import CopyPlugin from 'copy-webpack-plugin'
-import genTsConfig from '../../../../build/commands/lib/genTsConfig.js'
+import { writeTsConfig } from '../../../../build/webpack/ts-config.ts'
 import { genPath } from '../../../../build/commands/lib/guessConfig.js'
 import {
   deterministicOptimization,
   deterministicIdsPlugins,
 } from '../../../../build/webpack/deterministic-output.ts'
-import generatePathMap from '../../../../build/webpack/path-map.js'
+import {
+  generatePathMap,
+  withMockOverrides,
+} from '../../../../build/webpack/path-map.ts'
 import {
   provideNodeGlobals,
   chromePrefixReplacers,
 } from '../../../../build/webpack/plugins.ts'
-import {
-  baseResolve,
-  withMockOverrides,
-} from '../../../../build/webpack/resolve.ts'
+import { baseResolve } from '../../../../build/webpack/resolve.ts'
 import {
   cssRules,
   tsLoaderRule,
@@ -68,10 +68,10 @@ export default async function (
     console.log('Output path is', outputPath)
   }
 
-  const tsConfigPath = await genTsConfig(
+  const tsConfigPath = await writeTsConfig(
+    pathMap,
     genPath,
     'tsconfig-ai-chat-shared-conversation.json',
-    genPath,
     path.resolve(import.meta.dirname, '../../../../tsconfig-webpack.json'),
   )
 

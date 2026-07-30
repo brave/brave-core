@@ -6,17 +6,19 @@
 import path from 'node:path'
 import dirName from './dirName.cjs'
 
-const allPrefixes = (path, searchPaths) =>
-  ['chrome://', 'chrome-untrusted://', ''].reduce((acc, prefix) => {
-    acc[prefix + path] = searchPaths
+export type PathMap = Record<string, string | string[]>
+
+const allPrefixes = (resourcePath: string, searchPath: string): PathMap =>
+  ['chrome://', 'chrome-untrusted://', ''].reduce<PathMap>((acc, prefix) => {
+    acc[prefix + resourcePath] = searchPath
     return acc
   }, {})
 
 /**
- * @param {string} genPath The path to the generated files in the build output.
+ * @param genPath The path to the generated files in the build output.
  * @returns A map of path aliases
  */
-export default function (genPath) {
+export function generatePathMap(genPath: string): PathMap {
   return {
     // Find files in the current build configurations /gen directory
     'gen': genPath,
@@ -57,5 +59,45 @@ export default function (genPath) {
       dirName,
       '../../node_modules/decode-named-character-reference/index.js',
     ),
+  }
+}
+
+/**
+ * Layers Storybook / standalone-library mock directories on top of the
+ * production path map, so browser-privileged modules resolve to web-compatible
+ * mocks first and fall back to the real generated files. Shared by the
+ * Storybook and AI Chat library builds.
+ *
+ * @param basePathMap The production path map from `generatePathMap`.
+ * @param mocks.chromeResourcesMockDir Directory of `chrome://resources` mocks.
+ * @param mocks.webCommonMockDir Directory of `$web-common` mocks.
+ * @param mocks.genPath The build output `gen` directory.
+ */
+export function withMockOverrides(
+  basePathMap: PathMap,
+  mocks: {
+    chromeResourcesMockDir: string
+    webCommonMockDir: string
+    genPath: string
+  },
+): PathMap {
+  return {
+    '//resources/mojo/mojo/public/js/bindings.js': path.join(
+      mocks.genPath,
+      'mojo/public/js/bindings.js',
+    ),
+    ...basePathMap,
+    'chrome://resources': [
+      mocks.chromeResourcesMockDir,
+      basePathMap['chrome://resources'] as string,
+      // Some mojo bindings have their JS code generated in the gen directory
+      // (bindings.js). The type definitions are in the same folder as all the
+      // other mojo bindings, so we only need this for mock builds.
+      mocks.genPath,
+    ],
+    '$web-common': [
+      mocks.webCommonMockDir,
+      basePathMap['$web-common'] as string,
+    ],
   }
 }
