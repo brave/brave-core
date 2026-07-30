@@ -6,6 +6,7 @@
 #include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/run_loop.h"
+#include "base/test/run_until.h"
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/window_closing_confirm_dialog_view.h"
@@ -132,13 +133,23 @@ class WindowClosingConfirmBrowserTest : public InProcessBrowserTest,
   void OnWidgetDestroyed(views::Widget* widget) override {
     widget->RemoveObserver(this);
 
-    if (run_loop_)
-      run_loop_->Quit();
+    confirm_dialog_widget_destroyed_ = true;
   }
 
   void WaitTillConfirmDialogClosed() {
-    run_loop_ = std::make_unique<base::RunLoop>();
-    run_loop_->Run();
+    // Only record the destruction here and poll for it below, instead of
+    // quitting a RunLoop from OnWidgetDestroyed(). On macOS this dialog is a
+    // window-modal sheet, and its widget is destroyed from inside the nested
+    // native run loop that AppKit spins while it animates the sheet closed
+    // (see NativeWidgetNSWindowBridge::CloseWindow()). A RunLoop::Quit() issued
+    // from there can be missed, because the wake-up event
+    // MessagePumpNSApplication posts may be consumed by that nested loop,
+    // leaving Run() parked in -nextEventMatchingMask: forever on a bot that
+    // has no further input events. Polling also tolerates the widget being
+    // destroyed before the wait starts.
+    ASSERT_TRUE(
+        base::test::RunUntil([&] { return confirm_dialog_widget_destroyed_; }));
+    confirm_dialog_widget_destroyed_ = false;
   }
 
   // To detect the timing when BeforeUnloadFired() is called.
@@ -168,8 +179,8 @@ class WindowClosingConfirmBrowserTest : public InProcessBrowserTest,
   }
 
   bool closing_confirm_dialog_created_ = false;
+  bool confirm_dialog_widget_destroyed_ = false;
   bool allow_to_close_ = false;
-  std::unique_ptr<base::RunLoop> run_loop_;
   base::CallbackListSubscription closing_all_browsers_subscription_;
   bool closing_all_browsers_notified_ = false;
   std::unique_ptr<base::RunLoop> closing_all_browsers_run_loop_;
@@ -327,7 +338,7 @@ IN_PROC_BROWSER_TEST_F(WindowClosingConfirmBrowserTest, TestWithDownload) {
       << "CHECKPOINT 4: CloseWindow called with allow_to_close_ = false.";
   EXPECT_TRUE(closing_confirm_dialog_created_);
   EXPECT_TRUE(brave_browser->ShouldAskForBrowserClosingBeforeHandlers());
-  WaitTillConfirmDialogClosed();
+  ASSERT_NO_FATAL_FAILURE(WaitTillConfirmDialogClosed());
   LOG(ERROR) << "CHECKPOINT 5: WaitTillConfirmDialogClosed with "
                 "allow_to_close_ = false completed.";
 
@@ -340,7 +351,7 @@ IN_PROC_BROWSER_TEST_F(WindowClosingConfirmBrowserTest, TestWithDownload) {
   chrome::CloseWindow(brave_browser);
   LOG(ERROR) << "CHECKPOINT 6: CloseWindow called with allow_to_close_ = true.";
   EXPECT_TRUE(closing_confirm_dialog_created_);
-  WaitTillConfirmDialogClosed();
+  ASSERT_NO_FATAL_FAILURE(WaitTillConfirmDialogClosed());
   LOG(ERROR) << "CHECKPOINT 7: WaitTillConfirmDialogClosed with "
                 "allow_to_close_ = true completed.";
   SetClosingBrowserCallbackAndWait();
@@ -356,7 +367,7 @@ IN_PROC_BROWSER_TEST_F(WindowClosingConfirmBrowserTest, TestWithDownload) {
   LOG(ERROR) << "CHECKPOINT 9: CloseWindow called with allow_to_close_ = true "
                 "and SetDownloadConfirmReturn(true).";
   EXPECT_TRUE(closing_confirm_dialog_created_);
-  WaitTillConfirmDialogClosed();
+  ASSERT_NO_FATAL_FAILURE(WaitTillConfirmDialogClosed());
   LOG(ERROR)
       << "CHECKPOINT 10: WaitTillConfirmDialogClosed with "
          "allow_to_close_ = true and SetDownloadConfirmReturn(true) completed.";
