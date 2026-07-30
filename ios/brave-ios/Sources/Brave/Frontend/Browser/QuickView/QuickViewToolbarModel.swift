@@ -48,7 +48,7 @@ class QuickViewToolbarModel {
   var loadingProgress: Double = 0.0
   var onActionButton: ((QuickViewActionButton) -> Void)?
   var collapseProgress: CGFloat = 0.0
-  private var loadingCompletionTask: Task<Void, Never>?
+  private var loadingCompletionTask: Task<Void, Error>?
 
   init(
     url: URL,
@@ -113,7 +113,7 @@ extension QuickViewToolbarModel: TabObserver {
     loadingCompletionTask = Task { @MainActor [weak self] in
       guard let self else { return }
       self.loadingProgress = 1.0
-      do { try await Task.sleep(for: .milliseconds(300)) } catch { return }
+      try await Task.sleep(for: .milliseconds(300))
       self.isLoading = false
     }
   }
