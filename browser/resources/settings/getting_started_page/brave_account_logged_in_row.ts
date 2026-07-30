@@ -76,7 +76,7 @@ export class BraveAccountLoggedInRowElement extends
     let error: ChangePasswordError | undefined
 
     try {
-      await this.browserProxy.authentication.changePasswordVerifyInit(
+      await this.browserProxy.authentication.changePasswordStep1(
         this.state.email)
     } catch (e) {
       if (e && typeof e === 'object') {

@@ -129,9 +129,7 @@ export class BraveAccountOtpDialogElement extends CrLitElement {
 
   private async confirmChangePasswordCode() {
     try {
-      await this.browserProxy.authentication.changePasswordVerifyComplete(
-        this.code,
-      )
+      await this.browserProxy.authentication.changePasswordStep2(this.code)
     } catch (e) {
       let error: ChangePasswordError
 

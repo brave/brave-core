@@ -22,7 +22,7 @@ import org.chromium.brave_account.mojom.AuthenticationObserver;
 import org.chromium.brave_account.mojom.ChangePasswordError;
 import org.chromium.brave_account.mojom.ChangePasswordServerError;
 import org.chromium.brave_account.mojom.ChangePasswordServerErrorCode;
-import org.chromium.brave_account.mojom.ChangePasswordVerifyInitResult;
+import org.chromium.brave_account.mojom.ChangePasswordStep1Result;
 import org.chromium.brave_account.mojom.LoggedInState;
 import org.chromium.brave_account.mojom.LoggedInVerificationIntent;
 import org.chromium.brave_account.mojom.LoggedOutState;
@@ -216,10 +216,9 @@ public class BraveAccountSectionController
                                 preference -> {
                                     preference.setEnabled(false);
                                     assert mBraveAccountService != null;
-                                    mBraveAccountService.changePasswordVerifyInit(
+                                    mBraveAccountService.changePasswordStep1(
                                             loggedIn.email,
-                                            result ->
-                                                    onChangePasswordVerifyInit(preference, result));
+                                            result -> onChangePasswordStep1(preference, result));
                                     return true;
                                 });
                     }
@@ -530,9 +529,8 @@ public class BraveAccountSectionController
         showAlertDialog(preference, title, message);
     }
 
-    private void onChangePasswordVerifyInit(
-            Preference preference,
-            Result<ChangePasswordVerifyInitResult, ChangePasswordError> result) {
+    private void onChangePasswordStep1(
+            Preference preference, Result<ChangePasswordStep1Result, ChangePasswordError> result) {
         if (result.isSuccess()) {
             PostTask.postTask(
                     TaskTraits.UI_DEFAULT,

@@ -180,7 +180,7 @@ export class BraveAccountCredentialsDialogElement extends CrLitElement {
     try {
       const blindedMessage = this.registration.start(this.password)
       const { serializedResponse } =
-        await this.browserProxy.authentication.changePasswordPasswordInit(
+        await this.browserProxy.authentication.changePasswordStep3(
           blindedMessage,
         )
       const serializedRecord = this.registration.finish(
@@ -188,7 +188,7 @@ export class BraveAccountCredentialsDialogElement extends CrLitElement {
         this.password,
         this.getEmail(),
       )
-      await this.browserProxy.authentication.changePasswordPasswordFinalize(
+      await this.browserProxy.authentication.changePasswordStep4(
         serializedRecord,
       )
     } catch (e) {

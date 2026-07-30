@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_account/change_password.h"
+#include "brave/components/brave_account/flows/change_password.h"
 
 #include <utility>
 
@@ -29,9 +29,9 @@ ChangePassword::ChangePassword(StateBase& state) : state_(state) {}
 
 ChangePassword::~ChangePassword() = default;
 
-void ChangePassword::VerifyInit(
+void ChangePassword::Step1(
     const std::string& email,
-    mojom::Authentication::ChangePasswordVerifyInitCallback callback) {
+    mojom::Authentication::ChangePasswordStep1Callback callback) {
   CHECK(!email.empty());
 
   auto authentication_token =
@@ -52,13 +52,13 @@ void ChangePassword::VerifyInit(
 
   state_->SendStateOwnedRequest<endpoints::VerifyInit>(
       std::move(request),
-      base::BindOnce(&ChangePassword::OnVerifyInit, weak_factory_.GetWeakPtr(),
+      base::BindOnce(&ChangePassword::OnStep1, weak_factory_.GetWeakPtr(),
                      std::move(callback)));
 }
 
-void ChangePassword::VerifyComplete(
+void ChangePassword::Step2(
     const std::string& code,
-    mojom::Authentication::ChangePasswordVerifyCompleteCallback callback) {
+    mojom::Authentication::ChangePasswordStep2Callback callback) {
   CHECK(!code.empty());
 
   auto verification_token =
@@ -76,13 +76,13 @@ void ChangePassword::VerifyComplete(
 
   state_->SendStateOwnedRequest<endpoints::VerifyComplete>(
       std::move(request),
-      base::BindOnce(&ChangePassword::OnVerifyComplete,
-                     weak_factory_.GetWeakPtr(), std::move(callback)));
+      base::BindOnce(&ChangePassword::OnStep2, weak_factory_.GetWeakPtr(),
+                     std::move(callback)));
 }
 
-void ChangePassword::PasswordInit(
+void ChangePassword::Step3(
     const std::string& blinded_message,
-    mojom::Authentication::ChangePasswordPasswordInitCallback callback) {
+    mojom::Authentication::ChangePasswordStep3Callback callback) {
   CHECK(!blinded_message.empty());
 
   auto verification_token =
@@ -103,13 +103,13 @@ void ChangePassword::PasswordInit(
 
   state_->SendStateOwnedRequest<endpoints::PasswordInit>(
       std::move(request),
-      base::BindOnce(&ChangePassword::OnPasswordInit,
-                     weak_factory_.GetWeakPtr(), std::move(callback)));
+      base::BindOnce(&ChangePassword::OnStep3, weak_factory_.GetWeakPtr(),
+                     std::move(callback)));
 }
 
-void ChangePassword::PasswordFinalize(
+void ChangePassword::Step4(
     const std::string& serialized_record,
-    mojom::Authentication::ChangePasswordPasswordFinalizeCallback callback) {
+    mojom::Authentication::ChangePasswordStep4Callback callback) {
   CHECK(!serialized_record.empty());
 
   auto verification_token =
@@ -128,12 +128,12 @@ void ChangePassword::PasswordFinalize(
 
   state_->SendStateOwnedRequest<endpoints::PasswordFinalize>(
       std::move(request),
-      base::BindOnce(&ChangePassword::OnPasswordFinalize,
-                     weak_factory_.GetWeakPtr(), std::move(callback)));
+      base::BindOnce(&ChangePassword::OnStep4, weak_factory_.GetWeakPtr(),
+                     std::move(callback)));
 }
 
-void ChangePassword::OnVerifyInit(
-    mojom::Authentication::ChangePasswordVerifyInitCallback callback,
+void ChangePassword::OnStep1(
+    mojom::Authentication::ChangePasswordStep1Callback callback,
     endpoints::VerifyInit::Response response) {
   if (!response.body) {
     return std::move(callback).Run(
@@ -154,32 +154,31 @@ void ChangePassword::OnVerifyInit(
             return MakeServerError<mojom::ChangePasswordError>(
                 status_code, std::move(error_body));
           })
-          // expected<[SuccessBody                      ],
+          // expected<[SuccessBody                 ],
           //           ChangePasswordErrorPtr> ==>
-          // expected<[ChangePasswordVerifyInitResultPtr],
+          // expected<[ChangePasswordStep1ResultPtr],
           //           ChangePasswordErrorPtr>
-          .and_then(
-              [&](auto success_body)
-                  -> base::expected<mojom::ChangePasswordVerifyInitResultPtr,
-                                    mojom::ChangePasswordErrorPtr> {
-                if (success_body.verification_token.empty()) {
-                  return base::unexpected(MakeServerError<
-                                          mojom::ChangePasswordError>(
+          .and_then([&](auto success_body)
+                        -> base::expected<mojom::ChangePasswordStep1ResultPtr,
+                                          mojom::ChangePasswordErrorPtr> {
+            if (success_body.verification_token.empty()) {
+              return base::unexpected(
+                  MakeServerError<mojom::ChangePasswordError>(
                       status_code,
                       mojom::ChangePasswordServerErrorCode::kInvalidResponse));
-                }
+            }
 
-                if (encrypted_verification_token =
-                        state_->Encrypt(success_body.verification_token);
-                    encrypted_verification_token.empty()) {
-                  return base::unexpected(
-                      MakeClientError<mojom::ChangePasswordError>(
-                          mojom::ChangePasswordClientErrorCode::
-                              kVerificationTokenEncryptionFailed));
-                }
+            if (encrypted_verification_token =
+                    state_->Encrypt(success_body.verification_token);
+                encrypted_verification_token.empty()) {
+              return base::unexpected(
+                  MakeClientError<mojom::ChangePasswordError>(
+                      mojom::ChangePasswordClientErrorCode::
+                          kVerificationTokenEncryptionFailed));
+            }
 
-                return mojom::ChangePasswordVerifyInitResult::New();
-              });
+            return mojom::ChangePasswordStep1Result::New();
+          });
 
   // See `StateBase`'s class comment on ordering.
   // LoggedIn ==> LoggedInWithVerification (no state swap): attaches a
@@ -196,8 +195,8 @@ void ChangePassword::OnVerifyInit(
   }
 }
 
-void ChangePassword::OnVerifyComplete(
-    mojom::Authentication::ChangePasswordVerifyCompleteCallback callback,
+void ChangePassword::OnStep2(
+    mojom::Authentication::ChangePasswordStep2Callback callback,
     endpoints::VerifyComplete::Response response) {
   if (!response.body) {
     return std::move(callback).Run(
@@ -218,14 +217,13 @@ void ChangePassword::OnVerifyComplete(
             return MakeServerError<mojom::ChangePasswordError>(
                 status_code, std::move(error_body));
           })
-          // expected<[SuccessBody                          ],
+          // expected<[SuccessBody                 ],
           //           ChangePasswordErrorPtr> ==>
-          // expected<[ChangePasswordVerifyCompleteResultPtr],
+          // expected<[ChangePasswordStep2ResultPtr],
           //           ChangePasswordErrorPtr>
           .and_then([&](auto success_body)
-                        -> base::expected<
-                            mojom::ChangePasswordVerifyCompleteResultPtr,
-                            mojom::ChangePasswordErrorPtr> {
+                        -> base::expected<mojom::ChangePasswordStep2ResultPtr,
+                                          mojom::ChangePasswordErrorPtr> {
             if (success_body.email.empty()) {
               return base::unexpected(
                   MakeServerError<mojom::ChangePasswordError>(
@@ -235,7 +233,7 @@ void ChangePassword::OnVerifyComplete(
 
             email = std::move(success_body.email);
 
-            return mojom::ChangePasswordVerifyCompleteResult::New();
+            return mojom::ChangePasswordStep2Result::New();
           });
 
   // See `StateBase`'s class comment on ordering.
@@ -250,8 +248,8 @@ void ChangePassword::OnVerifyComplete(
   }
 }
 
-void ChangePassword::OnPasswordInit(
-    mojom::Authentication::ChangePasswordPasswordInitCallback callback,
+void ChangePassword::OnStep3(
+    mojom::Authentication::ChangePasswordStep3Callback callback,
     endpoints::PasswordInit::Response response) {
   if (!response.body) {
     return std::move(callback).Run(
@@ -270,30 +268,29 @@ void ChangePassword::OnPasswordInit(
             return MakeServerError<mojom::ChangePasswordError>(
                 status_code, std::move(error_body));
           })
-          // expected<[SuccessBody                        ],
+          // expected<[SuccessBody                 ],
           //           ChangePasswordErrorPtr> ==>
-          // expected<[ChangePasswordPasswordInitResultPtr],
+          // expected<[ChangePasswordStep3ResultPtr],
           //           ChangePasswordErrorPtr>
-          .and_then(
-              [&](auto success_body)
-                  -> base::expected<mojom::ChangePasswordPasswordInitResultPtr,
-                                    mojom::ChangePasswordErrorPtr> {
-                if (success_body.serialized_response.empty()) {
-                  return base::unexpected(MakeServerError<
-                                          mojom::ChangePasswordError>(
+          .and_then([&](auto success_body)
+                        -> base::expected<mojom::ChangePasswordStep3ResultPtr,
+                                          mojom::ChangePasswordErrorPtr> {
+            if (success_body.serialized_response.empty()) {
+              return base::unexpected(
+                  MakeServerError<mojom::ChangePasswordError>(
                       status_code,
                       mojom::ChangePasswordServerErrorCode::kInvalidResponse));
-                }
+            }
 
-                return mojom::ChangePasswordPasswordInitResult::New(
-                    std::move(success_body.serialized_response));
-              });
+            return mojom::ChangePasswordStep3Result::New(
+                std::move(success_body.serialized_response));
+          });
 
   std::move(callback).Run(std::move(result));
 }
 
-void ChangePassword::OnPasswordFinalize(
-    mojom::Authentication::ChangePasswordPasswordFinalizeCallback callback,
+void ChangePassword::OnStep4(
+    mojom::Authentication::ChangePasswordStep4Callback callback,
     endpoints::PasswordFinalize::Response response) {
   if (!response.body) {
     return std::move(callback).Run(
@@ -312,15 +309,14 @@ void ChangePassword::OnPasswordFinalize(
             return MakeServerError<mojom::ChangePasswordError>(
                 status_code, std::move(error_body));
           })
-          // expected<[SuccessBody                            ],
+          // expected<[SuccessBody                 ],
           //           ChangePasswordErrorPtr> ==>
-          // expected<[ChangePasswordPasswordFinalizeResultPtr],
+          // expected<[ChangePasswordStep4ResultPtr],
           //           ChangePasswordErrorPtr>
           .and_then([](auto success_body)
-                        -> base::expected<
-                            mojom::ChangePasswordPasswordFinalizeResultPtr,
-                            mojom::ChangePasswordErrorPtr> {
-            return mojom::ChangePasswordPasswordFinalizeResult::New();
+                        -> base::expected<mojom::ChangePasswordStep4ResultPtr,
+                                          mojom::ChangePasswordErrorPtr> {
+            return mojom::ChangePasswordStep4Result::New();
           });
 
   // See `StateBase`'s class comment on ordering.
