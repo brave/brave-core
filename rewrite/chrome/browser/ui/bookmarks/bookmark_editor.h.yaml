@@ -1,0 +1,16 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Allow callers to override the bookmark editor dialog title.
+
+      Used so "Bookmark selected tabs..." can show IDS_BOOKMARK_SELECTED_TABS_DIALOG_TITLE
+      instead of Chromium's NEW_FOLDER-with-children title ("Bookmark all tabs").
+    add_to_public:
+      class_name: EditDetails
+      code: |-
+        // When set, overrides GetWindowTitleId() (e.g. "Bookmark selected tabs").
+        std::optional<int> window_title_id;
