@@ -168,10 +168,9 @@ void TabSemanticSearchTool::UseTool(const std::string& input_json,
   auto* history_service = HistoryServiceFactory::GetForProfile(
       profile_, ServiceAccessType::EXPLICIT_ACCESS);
   if (!embeddings_search || !history_service) {
-    std::move(callback).Run(
-        CreateContentBlocksForText(
-            internal::BuildSemanticSearchResultsJson({})),
-        {});
+    std::move(callback).Run(CreateContentBlocksForText(
+                                internal::BuildSemanticSearchResultsJson({})),
+                            {});
     return;
   }
 
