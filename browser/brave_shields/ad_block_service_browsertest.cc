@@ -1890,8 +1890,8 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CspRule) {
   EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 }
 
-// Verify `$third-party` `$csp` matching uses `request_initiator` as
-// first_party_origin (falling back to the request URL when initiator is empty).
+// Main-frame documents always use the request URL as first_party_origin
+// (unless the initiator is opaque), so they are first-party for `$csp`.
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CspRuleThirdPartyLogic) {
   // Applied to third-party only.
   UpdateAdBlockInstanceWithRules(
@@ -1912,9 +1912,9 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CspRuleThirdPartyLogic) {
   }
 
   {
-    // Cross-origin renderer navigation (from a.com). Document is
-    // third-party relative to that origin, so the rule matches.
-    NavigateToURL(embedded_test_server()->GetURL("a.com", "/simple.html"));
+    // Cross-origin renderer navigation (from about:blank). Document is
+    // third-party relative the opaque origin, so the rule matches.
+    NavigateToURL(GURL("about:blank"));
     const GURL url =
         embedded_test_server()->GetURL("example.com", "/csp_rules.html");
     ASSERT_TRUE(content::NavigateToURLFromRenderer(web_contents(), url));

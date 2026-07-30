@@ -81,11 +81,15 @@ int OnHeadersReceived_AdBlockCspWork(
 
     (*override_response_headers)->RemoveHeader("Content-Security-Policy");
 
-    // Top-level document requests can be initiated from UI (the initiator is
-    // empty). In that case we set first_party_origin based on the request url.
+    // Use request initiator as the first party origin if it's a subframe or
+    // it's opaque.
+    const bool use_initiator_origin =
+        ctx->request_initiator() &&
+        (ctx->resource_type() != blink::mojom::ResourceType::kMainFrame ||
+         ctx->request_initiator()->opaque());
     const url::Origin& first_party_origin =
-        ctx->request_initiator() ? *ctx->request_initiator()
-                                 : url::Origin::Create(ctx->request_url());
+        use_initiator_origin ? *ctx->request_initiator()
+                             : url::Origin::Create(ctx->request_url());
 
     auto* ad_block_service = g_brave_browser_process->ad_block_service();
     ad_block_service->AsyncCallAndReplyWithResult<std::optional<std::string>>(
