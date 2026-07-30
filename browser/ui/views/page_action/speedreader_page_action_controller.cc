@@ -121,8 +121,8 @@ void SpeedreaderPageActionController::UpdatePageAction() {
   }
 
   const auto state = tab_helper->PageDistillState();
-  const bool is_distilled = speedreader::DistillStates::IsDistilled(state);
-  if (!is_distilled && !speedreader::DistillStates::IsDistillable(state)) {
+  const bool is_distilled = speedreader::IsDistilled(state);
+  if (!is_distilled && !speedreader::IsDistillable(state)) {
     page_action_controller_->Hide(kActionShowSpeedreader);
     return;
   }
