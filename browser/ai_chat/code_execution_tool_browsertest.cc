@@ -30,6 +30,7 @@
 #include "testing/gtest/include/gtest/gtest.h"
 
 using testing::HasSubstr;
+using testing::Not;
 
 namespace ai_chat {
 
@@ -211,6 +212,83 @@ IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest, ExecutionTimeout) {
   std::string output;
   ExecuteCode(script, &output);
   EXPECT_EQ(output, "Error: Time limit exceeded");
+}
+
+IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest,
+                       WebRTCInterfaceRemoved) {
+  std::string script = "console.log(typeof RTCPeerConnection)";
+  std::string output;
+  ExecuteCode(script, &output);
+  EXPECT_EQ(output, "undefined");
+}
+
+// A script which breaks out of the wrapping closure should not regain access to
+// interfaces which were removed by the setup scripts.
+IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest,
+                       WebRTCInterfaceRemovedOutsideClosure) {
+  // Terminates the try block and the wrapping async closure, runs code in the
+  // top-level scope, then re-opens an equivalent closure so that the trailing
+  // wrapper code remains syntactically valid.
+  std::string script = R"(
+    } catch (e) {} return codeExecArtifacts; })();
+    console.log('escaped: ' + typeof RTCPeerConnection);
+    (async function() { let codeExecArtifacts = []; try {
+  )";
+
+  std::string output;
+  ExecuteCode(script, &output);
+  EXPECT_EQ(output, "escaped: undefined");
+}
+
+IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest,
+                       SetAndReadInnerHTML) {
+  std::string script = R"(
+    document.body.innerHTML = '<p id="greeting">hello dom</p>';
+    console.log(document.body.innerHTML);
+    console.log(document.getElementById('greeting') === null);
+  )";
+
+  std::string output;
+  ExecuteCode(script, &output);
+  // The sandbox enforces Trusted Types, so raw string assignment to
+  // innerHTML is blocked: the attempted HTML is not present in the output.
+  EXPECT_THAT(output, HasSubstr("TrustedHTML"));
+  EXPECT_THAT(output, Not(HasSubstr("hello dom")));
+}
+
+IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest, CreateElement) {
+  std::string script = R"(
+    const el = document.createElement('p');
+    el.id = 'greeting';
+    el.textContent = 'hello dom';
+    document.body.appendChild(el);
+    console.log(document.body.innerHTML);
+    console.log(document.getElementById('greeting') === null);
+  )";
+
+  std::string output;
+  ExecuteCode(script, &output);
+  // The sandbox removes DOM construction APIs, so createElement is unavailable.
+  EXPECT_THAT(output, HasSubstr("document.createElement is not a function"));
+  EXPECT_THAT(output, Not(HasSubstr("hello dom")));
+}
+
+IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest,
+                       CreateElementViaPrototype) {
+  std::string script = R"(
+    const createElement = window.Document.prototype.createElement.bind(document);
+    const el = createElement('p');
+    el.id = 'greeting';
+    el.textContent = 'hello dom';
+    document.body.appendChild(el);
+    console.log(document.body.innerHTML);
+    console.log(document.getElementById('greeting') === null);
+  )";
+
+  std::string output;
+  ExecuteCode(script, &output);
+  EXPECT_THAT(output, HasSubstr("Cannot read properties of undefined"));
+  EXPECT_THAT(output, Not(HasSubstr("hello dom")));
 }
 
 IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest, SyntaxError) {
