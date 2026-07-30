@@ -11,7 +11,6 @@
 #include "base/functional/bind.h"
 #include "base/json/json_writer.h"
 #include "base/strings/strcat.h"
-#include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
@@ -23,7 +22,6 @@
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_controller.h"
-#include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/page.h"
 #include "content/public/browser/web_contents.h"
@@ -34,18 +32,11 @@ namespace psst {
 namespace {
 
 constexpr base::TimeDelta kScriptTimeout = base::Seconds(15);
-const char kShouldProcessKey[] = "should_process_key";
 
 const char kUserScriptResultTasksPropName[] = "tasks";
 const char kUserScriptResultTaskItemUidPropName[] = "uid";
 const char kUserScriptResultInitialExecutionPropName[] = "initial_execution";
-
-struct PsstNavigationData : public base::SupportsUserData::Data {
- public:
-  explicit PsstNavigationData(int id) : id(id) {}
-
-  int id;
-};
+constexpr int kUnsetScriptVersion = -1;
 
 // Adds the dictionary of parameters returned by the user.js script to the
 // policy.js script, before it is executed. In case when parameters dictionary
@@ -74,7 +65,6 @@ std::string MaybeAddParamsToScript(std::unique_ptr<MatchedRule> rule,
 }
 
 void PrepareParametersForPolicyExecution(
-    int navigation_id,
     base::DictValue& user_script_result,
     const std::vector<std::string>& perform_for_uids,
     const bool is_initial) {
@@ -183,66 +173,49 @@ PsstTabWebContentsObserver::AsWeakPtr() {
 
 void PsstTabWebContentsObserver::PrimaryPageChanged(content::Page& page) {
   script_injector_remote_.reset();
+  page_weak_factory_.InvalidateWeakPtrs();
+  should_process_current_page_ = false;
 }
 
 void PsstTabWebContentsObserver::DidFinishNavigation(
     content::NavigationHandle* handle) {
   if (!handle->IsInPrimaryMainFrame() || !handle->HasCommitted() ||
-      !handle->GetURL().SchemeIsHTTPOrHTTPS()) {
+      handle->IsSameDocument()) {
     return;
   }
 
-  auto* entry = handle->GetNavigationEntry();
-  if (!entry || handle->IsSameDocument() ||
-      handle->GetRestoreType() == content::RestoreType::kRestored ||
-      !prefs_->GetBoolean(prefs::kPsstEnabled)) {
-    return;
-  } else {
-    entry->SetUserData(kShouldProcessKey, std::make_unique<PsstNavigationData>(
-                                              entry->GetUniqueID()));
-  }
+  should_process_current_page_ =
+      handle->GetURL().SchemeIsHTTPOrHTTPS() &&
+      handle->GetRestoreType() != content::RestoreType::kRestored &&
+      prefs_->GetBoolean(prefs::kPsstEnabled);
 }
 
 void PsstTabWebContentsObserver::DocumentOnLoadCompletedInPrimaryMainFrame() {
-  int id =
-      web_contents()->GetController().GetLastCommittedEntry()->GetUniqueID();
-  if (!ShouldInsertScriptForPage(id)) {
+  if (!should_process_current_page_) {
     return;
   }
 
   registry_->CheckIfMatch(
       web_contents()->GetLastCommittedURL(),
       base::BindOnce(&PsstTabWebContentsObserver::InsertUserScript,
-                     weak_factory_.GetWeakPtr(), id));
-}
-
-bool PsstTabWebContentsObserver::ShouldInsertScriptForPage(int id) {
-  auto* entry = web_contents()->GetController().GetLastCommittedEntry();
-  auto* data = entry->GetUserData(kShouldProcessKey);
-  return data && static_cast<PsstNavigationData*>(data)->id == id;
+                     page_weak_factory_.GetWeakPtr()));
 }
 
 void PsstTabWebContentsObserver::InsertUserScript(
-    int id,
     std::unique_ptr<MatchedRule> rule) {
-  if (!rule || !ShouldInsertScriptForPage(id)) {
+  if (!rule) {
     return;
   }
   const std::string user_script = rule->user_script();
   RunWithTimeout(
-      id, user_script, false,
+      user_script, false,
       base::BindOnce(&PsstTabWebContentsObserver::OnUserScriptResult,
-                     weak_factory_.GetWeakPtr(), id, std::move(rule)));
+                     page_weak_factory_.GetWeakPtr(), std::move(rule)));
 }
 
 void PsstTabWebContentsObserver::OnUserScriptResult(
-    int id,
     std::unique_ptr<MatchedRule> rule,
     base::Value user_script_result) {
-  if (!ShouldInsertScriptForPage(id)) {
-    return;
-  }
-
   timeout_timer_.Stop();
 
   // We should break the flow in case of policy script is not available or user
@@ -279,7 +252,7 @@ void PsstTabWebContentsObserver::OnUserScriptResult(
     // If user accepted the consent dialog and it is not the initial iteration
     // (i.e. it is not the first applied PSST setting), we don't need to
     // show the dialog again.
-    OnUserAcceptedPsstSettings(id, false, std::move(rule),
+    OnUserAcceptedPsstSettings(false, std::move(rule),
                                user_script_result.Clone(),
                                psst_settings->uids_to_perform);
     return;
@@ -289,7 +262,8 @@ void PsstTabWebContentsObserver::OnUserScriptResult(
   if (!psst_settings) {
     psst_settings.emplace();
     psst_settings->consent_status = ConsentStatus::kAsk;
-    psst_settings->script_version = rule->version();
+    // Use a non-existent version to guarantee the icon is shown with a red dot.
+    psst_settings->script_version = kUnsetScriptVersion;
     psst_settings->user_id = user_script_result_parsed->user_id;
   }
 
@@ -298,38 +272,28 @@ void PsstTabWebContentsObserver::OnUserScriptResult(
       std::move(origin), std::move(*psst_settings), rule_version,
       std::move(user_script_result_parsed),
       base::BindOnce(&PsstTabWebContentsObserver::OnUserAcceptedPsstSettings,
-                     weak_factory_.GetWeakPtr(), id, true, std::move(rule),
+                     page_weak_factory_.GetWeakPtr(), true, std::move(rule),
                      std::move(user_script_result)));
 }
 
 void PsstTabWebContentsObserver::OnUserAcceptedPsstSettings(
-    int id,
     bool is_initial,
     std::unique_ptr<MatchedRule> rule,
     base::Value user_script_result,
     const std::vector<std::string>& perform_for_uids) {
-  if (!ShouldInsertScriptForPage(id)) {
-    return;
-  }
   auto user_script_result_dict = std::move(user_script_result).TakeDict();
-  PrepareParametersForPolicyExecution(id, user_script_result_dict,
-                                      perform_for_uids, is_initial);
+  PrepareParametersForPolicyExecution(user_script_result_dict, perform_for_uids,
+                                      is_initial);
   RunWithTimeout(
-      id,
       MaybeAddParamsToScript(std::move(rule),
                              std::move(user_script_result_dict)),
       true,
       base::BindOnce(&PsstTabWebContentsObserver::OnPolicyScriptResult,
-                     weak_factory_.GetWeakPtr(), id));
+                     page_weak_factory_.GetWeakPtr()));
 }
 
 void PsstTabWebContentsObserver::OnPolicyScriptResult(
-    int nav_entry_id,
     base::Value script_result) {
-  if (!ShouldInsertScriptForPage(nav_entry_id)) {
-    return;
-  }
-
   timeout_timer_.Stop();
   const auto script_result_parsed =
       PolicyScriptResult::FromValue(script_result);
@@ -359,14 +323,13 @@ void PsstTabWebContentsObserver::OnPolicyScriptResult(
 }
 
 void PsstTabWebContentsObserver::RunWithTimeout(
-    const int last_committed_entry_id,
     const std::string& script,
     bool is_async,
     InsertScriptInPageCallback callback) {
   timeout_timer_.Start(
       FROM_HERE, kScriptTimeout,
       base::BindOnce(&PsstTabWebContentsObserver::OnScriptTimeout,
-                     weak_factory_.GetWeakPtr(), last_committed_entry_id));
+                     page_weak_factory_.GetWeakPtr()));
   if (is_async) {
     inject_async_script_callback_.Run(script, std::move(callback));
   } else {
@@ -374,13 +337,9 @@ void PsstTabWebContentsObserver::RunWithTimeout(
   }
 }
 
-void PsstTabWebContentsObserver::OnScriptTimeout(int id) {
-  if (!ShouldInsertScriptForPage(id)) {
-    return;
-  }
-
+void PsstTabWebContentsObserver::OnScriptTimeout() {
   // Make sure any in-progress script that returns after the timeout is a no-op
-  weak_factory_.InvalidateWeakPtrs();
+  page_weak_factory_.InvalidateWeakPtrs();
 
   ui_delegate_->UpdateTasks(100, {}, mojom::PsstStatus::kFailed);
 }

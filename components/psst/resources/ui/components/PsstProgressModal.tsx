@@ -220,7 +220,8 @@ export const PsstProgressModal = () => {
         }}
         onItemChecked={handleSettingItemCheck}
       />
-      {commonState !== SettingState.Failed ? (
+      {commonState !== SettingState.Completed
+      && commonState !== SettingState.Failed ? (
         <RightAlignedItem>
           <PsstDlgButton
             kind='outline'
@@ -243,15 +244,17 @@ export const PsstProgressModal = () => {
         </RightAlignedItem>
       ) : (
         <RightAlignedItem>
-          <PsstDlgButton
-            kind='outline'
-            size='medium'
-            isDisabled={isInProgress}
-            isLoading={isInProgress}
-            onClick={api.reportFailedContent}
-          >
-            {getLocale(S.PSST_COMPLETE_CONSENT_DIALOG_REPORT_FAILED)}
-          </PsstDlgButton>
+          {commonState !== SettingState.Completed && (
+            <PsstDlgButton
+              kind='outline'
+              size='medium'
+              isDisabled={isInProgress}
+              isLoading={isInProgress}
+              onClick={api.reportFailedContent}
+            >
+              {getLocale(S.PSST_COMPLETE_CONSENT_DIALOG_REPORT_FAILED)}
+            </PsstDlgButton>
+          )}
           <PsstDlgButton
             kind='filled'
             size='medium'
