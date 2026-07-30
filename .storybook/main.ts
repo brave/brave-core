@@ -58,6 +58,7 @@ const config: StorybookConfig = {
     ...config,
     NODE_ENV: 'test',
   }),
+  previewAnnotations: [path.resolve(__dirname, '../web/storybook/preview.tsx')],
   experimental_indexers: async (existing) => [...existing, slashStoriesIndexer],
 }
 

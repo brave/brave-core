@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 import { Meta } from '@storybook/react'
-import { InferControlsFromArgs } from '../../../../../../.storybook/utils'
+import { InferControlsFromArgs } from '$storybook/utils'
 import * as Mojom from '../../../common/mojom'
 import { taskConversationEntries } from '../../../page/stories/story_utils/history'
 import MockContext from '../../mock_untrusted_conversation_context'

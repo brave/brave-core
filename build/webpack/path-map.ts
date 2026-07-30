@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import assert from 'node:assert'
 import path from 'node:path'
 import dirName from './dirName.cjs'
 
@@ -63,41 +64,37 @@ export function generatePathMap(genPath: string): PathMap {
 }
 
 /**
- * Layers Storybook / standalone-library mock directories on top of the
- * production path map, so browser-privileged modules resolve to web-compatible
- * mocks first and fall back to the real generated files. Shared by the
- * Storybook and AI Chat library builds.
- *
- * @param basePathMap The production path map from `generatePathMap`.
- * @param mocks.chromeResourcesMockDir Directory of `chrome://resources` mocks.
- * @param mocks.webCommonMockDir Directory of `$web-common` mocks.
- * @param mocks.genPath The build output `gen` directory.
+ * Builds the production path map for `genPath`, then layers web mock
+ * directories on top so browser-privileged modules resolve to web-compatible
+ * mocks first and fall back to the real generated files. Shared by Storybook
+ * and other non-browser webpack builds (e.g. AI Chat shared conversation lib).
  */
-export function withMockOverrides(
-  basePathMap: PathMap,
-  mocks: {
-    chromeResourcesMockDir: string
-    webCommonMockDir: string
-    genPath: string
-  },
-): PathMap {
+export const generatePathMapWithWebMocks = (genPath: string): PathMap => {
+  const basePathMap = generatePathMap(genPath)
+  const expandPathMap = (alias: string): string[] => {
+    const target = basePathMap[alias]
+    assert(target, `Path map alias ${alias} is not defined`)
+    return Array.isArray(target) ? target : [target]
+  }
+  const webMocksRoot = path.resolve(dirName, '../../web/mocks')
+
   return {
     '//resources/mojo/mojo/public/js/bindings.js': path.join(
-      mocks.genPath,
+      genPath,
       'mojo/public/js/bindings.js',
     ),
     ...basePathMap,
     'chrome://resources': [
-      mocks.chromeResourcesMockDir,
-      basePathMap['chrome://resources'] as string,
+      path.join(webMocksRoot, 'chrome-resources'),
+      ...expandPathMap('chrome://resources'),
       // Some mojo bindings have their JS code generated in the gen directory
       // (bindings.js). The type definitions are in the same folder as all the
       // other mojo bindings, so we only need this for mock builds.
-      mocks.genPath,
+      genPath,
     ],
     '$web-common': [
-      mocks.webCommonMockDir,
-      basePathMap['$web-common'] as string,
+      path.join(webMocksRoot, 'web-common'),
+      ...expandPathMap('$web-common'),
     ],
   }
 }

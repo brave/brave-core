@@ -8,13 +8,13 @@ import * as React from 'react'
 import { withKnobs, boolean } from '@storybook/addon-knobs'
 import { setIconBasePath } from '@brave/leo/react/icon'
 import { getString } from './locale'
-import ThemeProvider from '../components/common/BraveCoreThemeProvider'
-import StyledComponentsProvider from '../components/common/StyledComponentsProvider'
+import ThemeProvider from '$web-common/BraveCoreThemeProvider'
+import StyledComponentsProvider from '$web-common/StyledComponentsProvider'
 
 // Fonts
-import '../ui/webui/resources/fonts/poppins.css'
-import '../ui/webui/resources/fonts/manrope.css'
-import '../ui/webui/resources/fonts/inter.css'
+import '../../ui/webui/resources/fonts/poppins.css'
+import '../../ui/webui/resources/fonts/manrope.css'
+import '../../ui/webui/resources/fonts/inter.css'
 
 // Icon path
 // The storybook might be hosted at the root, but it might also be hosted
