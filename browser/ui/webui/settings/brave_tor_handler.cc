@@ -108,6 +108,22 @@ base::Value SolveCaptchaData(const std::string& challenge,
   return base::Value(std::move(result));
 }
 
+// Return the bridge list if user has chosen to requested one from torproject
+// OR if they provided their own. These are validated (see SetBridgesConfig).
+// Validation skipped if bridges not used OR built-in provider selected.
+base::span<const std::string> GetSubmittedBridges(
+    const tor::BridgesConfig& config) {
+  switch (config.use_bridges) {
+    case tor::BridgesConfig::Usage::kRequest:
+      return config.requested_bridges;
+    case tor::BridgesConfig::Usage::kProvide:
+      return config.provided_bridges;
+    case tor::BridgesConfig::Usage::kNotUsed:
+    case tor::BridgesConfig::Usage::kBuiltIn:
+      return {};
+  }
+}
+
 }  // namespace
 
 // Requests TOR bridges from moat API.
@@ -328,6 +344,7 @@ void BraveTorHandler::GetBridgesConfig(const base::ListValue& args) {
   ResolveJavascriptCallback(args[0], bridges_config.ToValue(false));
 }
 
+// Called from brave://settings/privacy when `Apply changes` is clicked.
 void BraveTorHandler::SetBridgesConfig(const base::ListValue& args) {
   CHECK_EQ(2u, args.size());
   CHECK(args[1].is_dict());
@@ -337,18 +354,14 @@ void BraveTorHandler::SetBridgesConfig(const base::ListValue& args) {
   const auto bridges_config = tor::BridgesConfig::FromValue(&args[1]);
   CHECK(bridges_config);
 
-  // This is the only place `provided_bridges` and `requested_bridges` are given
-  // new values, so it is where a line Tor cannot use gets reported back instead
-  // of being silently discarded somewhere the person who typed it will never
-  // see. Rejecting the whole submission leaves the pref, and the text in the
-  // settings page, exactly as they were.
-  for (const auto* bridges : {&bridges_config->provided_bridges,
-                              &bridges_config->requested_bridges}) {
-    for (const auto& bridge : *bridges) {
-      if (!tor::IsValidBridgeLine(bridge)) {
-        RejectJavascriptCallback(args[0], base::Value(bridge));
-        return;
-      }
+  // Validate the provided bridges. This could be either the ones requested
+  // from torproject.org or it could be the user-typed one. If the config is
+  // invalid, we can report the error back to settings screen by rejecting the
+  // submission. The pref won't be modified unless validation passes.
+  for (const auto& bridge : GetSubmittedBridges(*bridges_config)) {
+    if (!tor::IsValidBridgeLine(bridge)) {
+      RejectJavascriptCallback(args[0], base::Value(bridge));
+      return;
     }
   }
 

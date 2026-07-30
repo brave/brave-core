@@ -1356,7 +1356,7 @@
   <message name="IDS_SETTINGS_TOR_PROVIDED_BRIDGES_PLACEHOLDER" desc="">
     Type address:port (one per line)
   </message>
-  <message name="IDS_SETTINGS_TOR_INVALID_BRIDGE_ERROR" desc="Error shown when a bridge line the person typed fails validation. The bridge line itself is displayed below this message.">
+  <message name="IDS_SETTINGS_TOR_INVALID_BRIDGE_ERROR" desc="Error shown when a Tor bridge line the person typed fails validation. The bridge line itself is displayed below this message.">
     Tor can't use this bridge. Check it against the bridge you were given, then try again:
   </message>
   <message name="IDS_SETTINGS_TOR_REQUEST_BRIDGE_DIALOG_TITLE" desc="">
