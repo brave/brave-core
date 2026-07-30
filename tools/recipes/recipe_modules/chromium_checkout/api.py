@@ -355,7 +355,7 @@ class ChromiumCheckoutApi(RecipeApi):
             'git', 'cache', 'exists', '--quiet', '--cache-dir', git_cache_path,
             url
         ],
-                           capture_output=True).stdout.strip()
+                           stdout=self.m.raw_io.output_text()).stdout.strip()
 
     def _disable_git_gc(self, chromium_src: str | Path) -> None:
         """Disable background gc in *chromium_src*.

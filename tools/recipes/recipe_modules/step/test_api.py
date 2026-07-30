@@ -11,18 +11,14 @@ to other `api.step.*` fragments.
 
 from __future__ import annotations
 
-from recipe_test_api import RecipeTestApi, TestData
+from typing import Any
+
+from recipe_test_api import RecipeTestApi, StepTestData, TestData
 
 
 class StepTestApi(RecipeTestApi):
-    """Seed the simulated result (retcode / captured output) of a step."""
+    """Seed the simulated result (retcode / placeholder data) of a step."""
 
-    def data(self,
-             name: str,
-             retcode: int = 0,
-             stdout: str | None = None,
-             stderr: str | None = None) -> TestData:
-        return self.step_data(name,
-                              retcode=retcode,
-                              stdout=stdout,
-                              stderr=stderr)
+    def data(self, name: str, *data: StepTestData, **kwargs: Any) -> TestData:
+        """See `api.step_data`."""
+        return self.step_data(name, *data, **kwargs)

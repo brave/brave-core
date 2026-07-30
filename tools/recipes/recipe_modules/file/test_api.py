@@ -27,12 +27,13 @@ class FileTestApi(RecipeTestApi):
 
     def _ok(self, name: str, stdout: str = '') -> TestData:
         return self.step_data(name,
-                              stdout=stdout,
-                              stderr=json.dumps({
-                                  'ok': True,
-                                  'errno_name': '',
-                                  'message': '',
-                              }))
+                              stdout=self.m.raw_io.output_text(stdout),
+                              stderr=self.m.raw_io.output_text(
+                                  json.dumps({
+                                      'ok': True,
+                                      'errno_name': '',
+                                      'message': '',
+                                  })))
 
     def read_text(self, name: str, content: str = '') -> TestData:
         """Seed *name* to succeed, returning *content* as the file's text."""
@@ -72,8 +73,9 @@ class FileTestApi(RecipeTestApi):
               message: str = '') -> TestData:
         """Seed *name* to fail with *errno_name* (and optional *message*)."""
         return self.step_data(name,
-                              stderr=json.dumps({
-                                  'ok': False,
-                                  'errno_name': errno_name,
-                                  'message': message or errno_name,
-                              }))
+                              stderr=self.m.raw_io.output_text(
+                                  json.dumps({
+                                      'ok': False,
+                                      'errno_name': errno_name,
+                                      'message': message or errno_name,
+                                  })))

@@ -159,8 +159,8 @@ class BraveCoreCheckoutApi(RecipeApi):
             'sparse-checkout list',
             ['git', '-C', str(dest), 'sparse-checkout', 'list'],
             check=False,
-            capture_output=True)
-        if result.returncode != 0 or not result.stdout:
+            stdout=self.m.raw_io.output_text())
+        if result.retcode != 0 or not result.stdout:
             return set()
         return {
             line.strip()
