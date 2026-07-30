@@ -11,6 +11,7 @@
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/containers/buildflags/buildflags.h"
 #include "brave/components/psst/buildflags/buildflags.h"
+#include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "chrome/browser/ui/tabs/public/tab_features.h"
 
 class Profile;
@@ -29,6 +30,10 @@ class ContainerTabTracker;
 namespace page_actions {
 class PartitionedStoragePageActionController;
 }
+#endif
+
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+#include "brave/browser/ui/views/page_action/speedreader_page_action_controller.h"
 #endif
 
 #if BUILDFLAG(ENABLE_PSST)
@@ -66,6 +71,13 @@ class BraveTabFeatures : public TabFeatures {
   }
 #endif
 
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+  page_actions::SpeedreaderPageActionController*
+  speedreader_page_action_controller() {
+    return speedreader_page_action_controller_.get();
+  }
+#endif
+
  private:
 #if BUILDFLAG(ENABLE_AI_CHAT)
   std::unique_ptr<ai_chat::TabDataWebContentsObserver> tab_data_observer_;
@@ -79,6 +91,10 @@ class BraveTabFeatures : public TabFeatures {
   std::unique_ptr<containers::ContainerTabTracker> container_tab_tracker_;
   std::unique_ptr<page_actions::PartitionedStoragePageActionController>
       partitioned_storage_page_action_controller_;
+#endif
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+  std::unique_ptr<page_actions::SpeedreaderPageActionController>
+      speedreader_page_action_controller_;
 #endif
 };
 
