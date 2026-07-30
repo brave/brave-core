@@ -31,20 +31,8 @@ namespace ai_chat {
 
 namespace {
 
-std::string EmptyResultsJson() {
-  base::DictValue root;
-  root.Set("results", base::ListValue());
-  std::string serialized;
-  base::JSONWriter::Write(root, &serialized);
-  return serialized;
-}
-
 void OnRanked(Tool::UseToolCallback callback,
               std::vector<history_embeddings::OpenTabInfo> tabs) {
-  if (tabs.empty()) {
-    std::move(callback).Run(CreateContentBlocksForText(EmptyResultsJson()), {});
-    return;
-  }
   std::string serialized = internal::BuildSemanticSearchResultsJson(tabs);
   std::vector<mojom::ToolArtifactPtr> artifacts;
   std::string sources_json = internal::BuildSemanticSearchTabSourcesJson(tabs);
@@ -183,7 +171,10 @@ void TabSemanticSearchTool::UseTool(const std::string& input_json,
   auto* history_service = HistoryServiceFactory::GetForProfile(
       profile_, ServiceAccessType::EXPLICIT_ACCESS);
   if (!embeddings_search || !history_service) {
-    std::move(callback).Run(CreateContentBlocksForText(EmptyResultsJson()), {});
+    std::move(callback).Run(
+        CreateContentBlocksForText(
+            internal::BuildSemanticSearchResultsJson({})),
+        {});
     return;
   }
 
