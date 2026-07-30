@@ -16,6 +16,7 @@ import { useRewardsState } from '../../context/rewards_context'
 import { getString } from '../../lib/strings'
 import { inlineCSSVars } from '../../lib/inline_css_vars'
 import { BackgroundTypePanel } from './background_type_panel'
+import { SettingsPanel } from './settings_panel'
 import { Link } from '../common/link'
 import { formatString } from '$web-common/formatString'
 import { settingsURL } from '../../../../../components/brave_rewards/resources/shared/lib/rewards_urls'
@@ -45,17 +46,13 @@ export function BackgroundPanel() {
   const rewardsFeatureEnabled = useRewardsState((s) => s.rewardsFeatureEnabled)
   const rewardsEnabled = useRewardsState((s) => s.rewardsEnabled)
 
+  const [uploading, setUploading] = React.useState(false)
   const [panelType, setPanelType] =
     React.useState<SelectedBackgroundType | null>(null)
-  const [uploading, setUploading] = React.useState(false)
 
   React.useEffect(() => {
     setUploading(false)
   }, [selectedBackground, customBackgrounds])
-
-  function setPanel(type?: SelectedBackgroundType) {
-    setPanelType(type ?? null)
-  }
 
   function getTypePreviewValue(type: SelectedBackgroundType) {
     const isSelectedType = type === selectedBackground.type
@@ -130,79 +127,90 @@ export function BackgroundPanel() {
     if (customBackgrounds.length === 0) {
       showCustomBackgroundChooser()
     } else {
-      setPanel(SelectedBackgroundType.kCustom)
+      setPanelType(SelectedBackgroundType.kCustom)
+    }
+  }
+
+  function typePanelTitle(type: SelectedBackgroundType) {
+    switch (type) {
+      case SelectedBackgroundType.kCustom:
+        return getString(S.NEW_TAB_CUSTOM_BACKGROUND_LABEL)
+      case SelectedBackgroundType.kGradient:
+        return getString(S.NEW_TAB_GRADIENT_BACKGROUND_LABEL)
+      case SelectedBackgroundType.kSolid:
+        return getString(S.NEW_TAB_SOLID_BACKGROUND_LABEL)
+      default:
+        return ''
     }
   }
 
   if (panelType !== null) {
     return (
-      <div data-css-scope={style.scope}>
-        <BackgroundTypePanel
-          backgroundType={panelType}
-          renderUploadOption={() => (
-            <button onClick={showCustomBackgroundChooser}>
-              {renderUploadPreview()}
-            </button>
-          )}
-          onClose={() => setPanel()}
-        />
-      </div>
+      <SettingsPanel
+        title={typePanelTitle(panelType)}
+        onBack={() => setPanelType(null)}
+      >
+        <div data-css-scope={style.scope}>
+          <BackgroundTypePanel
+            backgroundType={panelType}
+            renderUploadOption={() => (
+              <button onClick={showCustomBackgroundChooser}>
+                {renderUploadPreview()}
+              </button>
+            )}
+          />
+        </div>
+      </SettingsPanel>
     )
   }
 
   return (
-    <div data-css-scope={style.scope}>
-      <Toggle
-        className='toggle-row'
-        size='small'
-        checked={backgroundsEnabled}
-        onChange={({ checked }) => {
-          actions.setBackgroundsEnabled(checked)
-        }}
-      >
-        <span className='label'>
-          {getString(S.NEW_TAB_SHOW_BACKGROUNDS_LABEL)}
-        </span>
-      </Toggle>
-      {backgroundsEnabled && rewardsFeatureEnabled && (
+    <SettingsPanel title={getString(S.NEW_TAB_BACKGROUND_SETTINGS_TITLE)}>
+      <div data-css-scope={style.scope}>
         <Toggle
           className='toggle-row'
           size='small'
-          checked={sponsoredImagesEnabled}
+          checked={backgroundsEnabled}
           onChange={({ checked }) => {
-            actions.setSponsoredImagesEnabled(checked)
+            actions.setBackgroundsEnabled(checked)
           }}
         >
           <span className='label'>
-            {getString(S.NEW_TAB_SHOW_SPONSORED_IMAGES_LABEL)}
-            <div className='subtext'>
-              {!rewardsEnabled
-                && formatString(
-                  getString(S.NEW_TAB_SHOW_SPONSORED_IMAGES_EARNING_TEXT),
-                  {
-                    $1: (content) => (
-                      <Link
-                        url={settingsURL}
-                        openInNewTab
-                      >
-                        {content}
-                      </Link>
-                    ),
-                  },
-                )}
-            </div>
+            {getString(S.NEW_TAB_SHOW_BACKGROUNDS_LABEL)}
           </span>
         </Toggle>
-      )}
-      {backgroundsEnabled && backgroundsCustomizable && (
-        <>
+        {backgroundsEnabled && rewardsFeatureEnabled && (
+          <Toggle
+            className='toggle-row'
+            size='small'
+            checked={sponsoredImagesEnabled}
+            onChange={({ checked }) => {
+              actions.setSponsoredImagesEnabled(checked)
+            }}
+          >
+            <span className='label'>
+              {getString(S.NEW_TAB_SHOW_SPONSORED_IMAGES_LABEL)}
+              <div className='subtext'>
+                {!rewardsEnabled
+                  && formatString(
+                    getString(S.NEW_TAB_SHOW_SPONSORED_IMAGES_EARNING_TEXT),
+                    {
+                      $1: (content) => (
+                        <Link
+                          url={settingsURL}
+                          openInNewTab
+                        >
+                          {content}
+                        </Link>
+                      ),
+                    },
+                  )}
+              </div>
+            </span>
+          </Toggle>
+        )}
+        {backgroundsEnabled && backgroundsCustomizable && (
           <div className='background-options'>
-            <div className='background-option'>
-              <button onClick={onCustomPreviewClick}>
-                {renderTypePreview(SelectedBackgroundType.kCustom)}
-                {getString(S.NEW_TAB_CUSTOM_BACKGROUND_LABEL)}
-              </button>
-            </div>
             <div className='background-option'>
               <button
                 onClick={() => {
@@ -214,22 +222,30 @@ export function BackgroundPanel() {
               </button>
             </div>
             <div className='background-option'>
-              <button onClick={() => setPanel(SelectedBackgroundType.kSolid)}>
+              <button onClick={onCustomPreviewClick}>
+                {renderTypePreview(SelectedBackgroundType.kCustom)}
+                {getString(S.NEW_TAB_CUSTOM_BACKGROUND_LABEL)}
+              </button>
+            </div>
+            <div className='background-option'>
+              <button
+                onClick={() => setPanelType(SelectedBackgroundType.kSolid)}
+              >
                 {renderTypePreview(SelectedBackgroundType.kSolid)}
                 {getString(S.NEW_TAB_SOLID_BACKGROUND_LABEL)}
               </button>
             </div>
             <div className='background-option'>
               <button
-                onClick={() => setPanel(SelectedBackgroundType.kGradient)}
+                onClick={() => setPanelType(SelectedBackgroundType.kGradient)}
               >
                 {renderTypePreview(SelectedBackgroundType.kGradient)}
                 {getString(S.NEW_TAB_GRADIENT_BACKGROUND_LABEL)}
               </button>
             </div>
           </div>
-        </>
-      )}
-    </div>
+        )}
+      </div>
+    </SettingsPanel>
   )
 }

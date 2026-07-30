@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
+import Button from '@brave/leo/react/button'
 import Dialog from '@brave/leo/react/dialog'
 import Icon from '@brave/leo/react/icon'
 import Navigation from '@brave/leo/react/navigation'
@@ -69,7 +70,7 @@ export function SettingsModal(props: Props) {
   }
 
   function renderPanel() {
-    if (!shouldShowView(currentView)) {
+    if (!props.isOpen || !shouldShowView(currentView)) {
       return null
     }
     switch (currentView) {
@@ -149,25 +150,34 @@ export function SettingsModal(props: Props) {
     <div data-css-scope={style.scope}>
       <Dialog
         isOpen={props.isOpen}
-        showClose
         onClose={() => props.onClose()}
         backdropClickCloses={!braveNews.customizePage}
       >
-        <h3>{getString(S.NEW_TAB_SETTINGS_TITLE)}</h3>
-        <div className='panel-body'>
-          <nav>
-            <Navigation>
-              {renderNavItem('background')}
-              {renderNavItem('search')}
-              {renderNavItem('top-sites')}
-              {renderNavItem('news')}
-              {renderNavItem('clock')}
-              {renderNavItem('widgets')}
-            </Navigation>
-          </nav>
-          <section>
-            <div>{renderPanel()}</div>
-          </section>
+        <div className='dialog-frame'>
+          <Button
+            className='close'
+            kind='plain-faint'
+            fab
+            onClick={props.onClose}
+          >
+            <Icon name='close' />
+          </Button>
+          <div className='panel'>
+            <nav>
+              <h3>{getString(S.NEW_TAB_SETTINGS_TITLE)}</h3>
+              <Navigation>
+                {renderNavItem('background')}
+                {renderNavItem('search')}
+                {renderNavItem('top-sites')}
+                {renderNavItem('news')}
+                {renderNavItem('clock')}
+                {renderNavItem('widgets')}
+              </Navigation>
+            </nav>
+            <section>
+              <div className='content'>{renderPanel()}</div>
+            </section>
+          </div>
         </div>
       </Dialog>
     </div>

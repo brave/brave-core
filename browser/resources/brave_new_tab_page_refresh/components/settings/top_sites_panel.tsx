@@ -13,6 +13,7 @@ import {
   useTopSitesActions,
 } from '../../context/top_sites_context'
 import { getString } from '../../lib/strings'
+import { SettingsPanel } from './settings_panel'
 import classNames from '$web-common/classnames'
 
 import { style } from './top_sites_panel.style'
@@ -36,67 +37,69 @@ export function TopSitesPanel() {
   }
 
   return (
-    <div data-css-scope={style.scope}>
-      <Toggle
-        className='toggle-row'
-        size='small'
-        checked={showTopSites}
-        onChange={({ checked }) => {
-          actions.setShowTopSites(checked)
-        }}
-      >
-        <span className='label'>
-          {getString(S.NEW_TAB_SHOW_TOP_SITES_LABEL)}
-        </span>
-      </Toggle>
-      {showTopSites && (
+    <SettingsPanel title={getString(S.NEW_TAB_TOP_SITES_SETTINGS_TITLE)}>
+      <div data-css-scope={style.scope}>
         <Toggle
           className='toggle-row'
           size='small'
-          checked={showSponsoredSites}
+          checked={showTopSites}
           onChange={({ checked }) => {
-            actions.setShowSponsoredSites(checked)
+            actions.setShowTopSites(checked)
           }}
         >
           <span className='label'>
-            {getString(S.NEW_TAB_SHOW_SPONSORED_SITES_LABEL)}
+            {getString(S.NEW_TAB_SHOW_TOP_SITES_LABEL)}
           </span>
         </Toggle>
-      )}
-      {showTopSites && (
-        <div className='list-view-options'>
-          <button
-            className={classNames({
-              'custom': true,
-              'active': listKind === TopSitesListKind.kCustom,
-            })}
-            onClick={() => {
-              actions.setTopSitesListKind(TopSitesListKind.kCustom)
+        {showTopSites && (
+          <Toggle
+            className='toggle-row'
+            size='small'
+            checked={showSponsoredSites}
+            onChange={({ checked }) => {
+              actions.setShowSponsoredSites(checked)
             }}
           >
-            <div className='list-view-image'>
-              {renderSelectedMarker(TopSitesListKind.kCustom)}
-            </div>
-            <h4>{getString(S.NEW_TAB_TOP_SITES_CUSTOM_OPTION_TITLE)}</h4>
-            <p>{getString(S.NEW_TAB_TOP_SITES_CUSTOM_OPTION_TEXT)}</p>
-          </button>
-          <button
-            className={classNames({
-              'most-visited': true,
-              'active': listKind === TopSitesListKind.kMostVisited,
-            })}
-            onClick={() => {
-              actions.setTopSitesListKind(TopSitesListKind.kMostVisited)
-            }}
-          >
-            <div className='list-view-image'>
-              {renderSelectedMarker(TopSitesListKind.kMostVisited)}
-            </div>
-            <h4>{getString(S.NEW_TAB_TOP_SITES_MOST_VISITED_OPTION_TITLE)}</h4>
-            <p>{getString(S.NEW_TAB_TOP_SITES_MOST_VISITED_OPTION_TEXT)}</p>
-          </button>
-        </div>
-      )}
-    </div>
+            <span className='label'>
+              {getString(S.NEW_TAB_SHOW_SPONSORED_SITES_LABEL)}
+            </span>
+          </Toggle>
+        )}
+        {showTopSites && (
+          <div className='list-view-options'>
+            <button
+              className={classNames({
+                'custom': true,
+                'active': listKind === TopSitesListKind.kCustom,
+              })}
+              onClick={() => {
+                actions.setTopSitesListKind(TopSitesListKind.kCustom)
+              }}
+            >
+              <div className='list-view-image'>
+                {renderSelectedMarker(TopSitesListKind.kCustom)}
+              </div>
+              <h4>{getString(S.NEW_TAB_TOP_SITES_CUSTOM_OPTION_TITLE)}</h4>
+              <p>{getString(S.NEW_TAB_TOP_SITES_CUSTOM_OPTION_TEXT)}</p>
+            </button>
+            <button
+              className={classNames({
+                'most-visited': true,
+                'active': listKind === TopSitesListKind.kMostVisited,
+              })}
+              onClick={() => {
+                actions.setTopSitesListKind(TopSitesListKind.kMostVisited)
+              }}
+            >
+              <div className='list-view-image'>
+                {renderSelectedMarker(TopSitesListKind.kMostVisited)}
+              </div>
+              <h4>{getString(S.NEW_TAB_TOP_SITES_MOST_VISITED_OPTION_TITLE)}</h4>
+              <p>{getString(S.NEW_TAB_TOP_SITES_MOST_VISITED_OPTION_TEXT)}</p>
+            </button>
+          </div>
+        )}
+      </div>
+    </SettingsPanel>
   )
 }
