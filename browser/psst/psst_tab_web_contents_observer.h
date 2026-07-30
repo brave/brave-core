@@ -86,24 +86,20 @@ class PsstTabWebContentsObserver : public tabs::ContentsObservingTabFeature {
                              PrefService* prefs,
                              std::unique_ptr<PsstUiDelegate> ui_delegate);
 
-  bool ShouldInsertScriptForPage(int page_id);
-  void InsertUserScript(int page_id, std::unique_ptr<MatchedRule> rule);
+  void InsertUserScript(std::unique_ptr<MatchedRule> rule);
 
-  void OnUserScriptResult(int page_id,
-                          std::unique_ptr<MatchedRule> rule,
+  void OnUserScriptResult(std::unique_ptr<MatchedRule> rule,
                           base::Value script_result);
   void OnUserAcceptedPsstSettings(
-      int page_id,
       bool is_initial,
       std::unique_ptr<MatchedRule> rule,
       base::Value user_script_result,
       const std::vector<std::string>& perform_for_uids);
-  void OnPolicyScriptResult(int page_id, base::Value script_result);
-  void RunWithTimeout(const int page_id,
-                      const std::string& script,
+  void OnPolicyScriptResult(base::Value script_result);
+  void RunWithTimeout(const std::string& script,
                       bool is_async,
                       InsertScriptInPageCallback callback);
-  void OnScriptTimeout(int id);
+  void OnScriptTimeout();
 
   // content::WebContentsObserver overrides
   void DocumentOnLoadCompletedInPrimaryMainFrame() override;
@@ -123,14 +119,16 @@ class PsstTabWebContentsObserver : public tabs::ContentsObservingTabFeature {
   std::unique_ptr<PsstUiDelegate> ui_delegate_;
   base::OneShotTimer timeout_timer_;
 
-  // Counter for the current primary page. Async script
-  // callbacks capture the value current at dispatch time; a mismatch means the
-  // page changed underneath and the callback must be dropped.
-  int current_page_id_ = 0;
-
   // Whether the currently committed primary page is eligible for PSST
   // processing. Recomputed on every cross-document primary main frame commit.
   bool should_process_current_page_ = false;
+
+  // Weak pointers scoped to the lifetime of the current primary document. Every
+  // step of the PSST flow (rule lookup, script results, consent callback,
+  // timeout) is bound to this factory, which is invalidated whenever the
+  // document is replaced. That makes stale callbacks no-ops by construction, so
+  // no step has to validate that its page is still current.
+  base::WeakPtrFactory<PsstTabWebContentsObserver> page_weak_factory_{this};
 
   base::WeakPtrFactory<PsstTabWebContentsObserver> weak_factory_{this};
 };

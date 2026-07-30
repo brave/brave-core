@@ -65,7 +65,6 @@ std::string MaybeAddParamsToScript(std::unique_ptr<MatchedRule> rule,
 }
 
 void PrepareParametersForPolicyExecution(
-    int navigation_id,
     base::DictValue& user_script_result,
     const std::vector<std::string>& perform_for_uids,
     const bool is_initial) {
@@ -174,7 +173,7 @@ PsstTabWebContentsObserver::AsWeakPtr() {
 
 void PsstTabWebContentsObserver::PrimaryPageChanged(content::Page& page) {
   script_injector_remote_.reset();
-  ++current_page_id_;
+  page_weak_factory_.InvalidateWeakPtrs();
   should_process_current_page_ = false;
 }
 
@@ -199,34 +198,24 @@ void PsstTabWebContentsObserver::DocumentOnLoadCompletedInPrimaryMainFrame() {
   registry_->CheckIfMatch(
       web_contents()->GetLastCommittedURL(),
       base::BindOnce(&PsstTabWebContentsObserver::InsertUserScript,
-                     weak_factory_.GetWeakPtr(), current_page_id_));
-}
-
-bool PsstTabWebContentsObserver::ShouldInsertScriptForPage(int page_id) {
-  return page_id == current_page_id_;
+                     page_weak_factory_.GetWeakPtr()));
 }
 
 void PsstTabWebContentsObserver::InsertUserScript(
-    int page_id,
     std::unique_ptr<MatchedRule> rule) {
-  if (!rule || !ShouldInsertScriptForPage(page_id)) {
+  if (!rule) {
     return;
   }
   const std::string user_script = rule->user_script();
   RunWithTimeout(
-      page_id, user_script, false,
+      user_script, false,
       base::BindOnce(&PsstTabWebContentsObserver::OnUserScriptResult,
-                     weak_factory_.GetWeakPtr(), page_id, std::move(rule)));
+                     page_weak_factory_.GetWeakPtr(), std::move(rule)));
 }
 
 void PsstTabWebContentsObserver::OnUserScriptResult(
-    int page_id,
     std::unique_ptr<MatchedRule> rule,
     base::Value user_script_result) {
-  if (!ShouldInsertScriptForPage(page_id)) {
-    return;
-  }
-
   timeout_timer_.Stop();
 
   // We should break the flow in case of policy script is not available or user
@@ -263,7 +252,7 @@ void PsstTabWebContentsObserver::OnUserScriptResult(
     // If user accepted the consent dialog and it is not the initial iteration
     // (i.e. it is not the first applied PSST setting), we don't need to
     // show the dialog again.
-    OnUserAcceptedPsstSettings(page_id, false, std::move(rule),
+    OnUserAcceptedPsstSettings(false, std::move(rule),
                                user_script_result.Clone(),
                                psst_settings->uids_to_perform);
     return;
@@ -283,38 +272,28 @@ void PsstTabWebContentsObserver::OnUserScriptResult(
       std::move(origin), std::move(*psst_settings), rule_version,
       std::move(user_script_result_parsed),
       base::BindOnce(&PsstTabWebContentsObserver::OnUserAcceptedPsstSettings,
-                     weak_factory_.GetWeakPtr(), page_id, true, std::move(rule),
+                     page_weak_factory_.GetWeakPtr(), true, std::move(rule),
                      std::move(user_script_result)));
 }
 
 void PsstTabWebContentsObserver::OnUserAcceptedPsstSettings(
-    int page_id,
     bool is_initial,
     std::unique_ptr<MatchedRule> rule,
     base::Value user_script_result,
     const std::vector<std::string>& perform_for_uids) {
-  if (!ShouldInsertScriptForPage(page_id)) {
-    return;
-  }
   auto user_script_result_dict = std::move(user_script_result).TakeDict();
-  PrepareParametersForPolicyExecution(page_id, user_script_result_dict,
-                                      perform_for_uids, is_initial);
+  PrepareParametersForPolicyExecution(user_script_result_dict, perform_for_uids,
+                                      is_initial);
   RunWithTimeout(
-      page_id,
       MaybeAddParamsToScript(std::move(rule),
                              std::move(user_script_result_dict)),
       true,
       base::BindOnce(&PsstTabWebContentsObserver::OnPolicyScriptResult,
-                     weak_factory_.GetWeakPtr(), page_id));
+                     weak_factory_.GetWeakPtr()));
 }
 
 void PsstTabWebContentsObserver::OnPolicyScriptResult(
-    int page_id,
     base::Value script_result) {
-  if (!ShouldInsertScriptForPage(page_id)) {
-    return;
-  }
-
   timeout_timer_.Stop();
   const auto script_result_parsed =
       PolicyScriptResult::FromValue(script_result);
@@ -344,14 +323,13 @@ void PsstTabWebContentsObserver::OnPolicyScriptResult(
 }
 
 void PsstTabWebContentsObserver::RunWithTimeout(
-    const int page_id,
     const std::string& script,
     bool is_async,
     InsertScriptInPageCallback callback) {
   timeout_timer_.Start(
       FROM_HERE, kScriptTimeout,
       base::BindOnce(&PsstTabWebContentsObserver::OnScriptTimeout,
-                     weak_factory_.GetWeakPtr(), page_id));
+                     page_weak_factory_.GetWeakPtr()));
   if (is_async) {
     inject_async_script_callback_.Run(script, std::move(callback));
   } else {
@@ -359,13 +337,9 @@ void PsstTabWebContentsObserver::RunWithTimeout(
   }
 }
 
-void PsstTabWebContentsObserver::OnScriptTimeout(int id) {
-  if (!ShouldInsertScriptForPage(id)) {
-    return;
-  }
-
+void PsstTabWebContentsObserver::OnScriptTimeout() {
   // Make sure any in-progress script that returns after the timeout is a no-op
-  weak_factory_.InvalidateWeakPtrs();
+  page_weak_factory_.InvalidateWeakPtrs();
 
   ui_delegate_->UpdateTasks(100, {}, mojom::PsstStatus::kFailed);
 }
