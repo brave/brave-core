@@ -1157,9 +1157,16 @@ source_set("ui") {
   }
 
   if (enable_speedreader) {
-    deps += [ "//brave/browser/ui/speedreader" ]
+    deps += [
+      "//brave/browser/ui/speedreader",
+      "//brave/browser/ui/tabs:tabs_public",
+      "//brave/components/speedreader/common",
+    ]
     if (toolkit_views) {
-      deps += [ "//brave/browser/ui/views/speedreader" ]
+      deps += [
+        "//brave/browser/ui/views/page_action",
+        "//brave/browser/ui/views/speedreader",
+      ]
     }
   }
 

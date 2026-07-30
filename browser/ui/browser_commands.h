@@ -179,39 +179,39 @@ void ForcePasteInWebContents(content::WebContents* contents);
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
 // Creates new tabs with the given tabs' URLs in the specified container.
-void OpenTabUrlsInContainer(BrowserWindowInterface* browser_window,
+void OpenTabUrlsInContainer(BrowserWindowInterface* bwi,
                             const std::vector<tabs::TabHandle>& tabs,
                             const containers::mojom::ContainerPtr& container);
 // Creates a new tab with the specified URL in the given container.
-void OpenUrlInContainer(BrowserWindowInterface* browser_window,
+void OpenUrlInContainer(BrowserWindowInterface* bwi,
                         const GURL& url,
                         const containers::mojom::ContainerPtr& container,
                         bool is_link = true);
 
 // Creates new tabs with the given tabs' URLs without a container.
-void OpenTabUrlsWithoutContainer(BrowserWindowInterface* browser_window,
+void OpenTabUrlsWithoutContainer(BrowserWindowInterface* bwi,
                                  const std::vector<tabs::TabHandle>& tabs);
-void OpenUrlWithoutContainer(BrowserWindowInterface* browser_window,
+void OpenUrlWithoutContainer(BrowserWindowInterface* bwi,
                              const GURL& url,
                              bool is_link = true);
 
 // Creates a new temporary container and opens the given tabs' URLs in it.
 void CreateTemporaryContainerAndOpenTabUrls(
-    BrowserWindowInterface* browser_window,
+    BrowserWindowInterface* bwi,
     const std::vector<tabs::TabHandle>& tabs);
 // Opens |url| in a new tab in a freshly created temporary container.
-void CreateTemporaryContainerAndOpenUrl(BrowserWindowInterface* browser_window,
+void CreateTemporaryContainerAndOpenUrl(BrowserWindowInterface* bwi,
                                         const GURL& url,
                                         bool is_link = true);
 
 // Opens the container menu on the page action view if the active tab is in a
 // container.
-void OpenContainerMenuOnPageActionView(BrowserWindowInterface* browser,
+void OpenContainerMenuOnPageActionView(BrowserWindowInterface* bwi,
                                        ::actions::ActionItem* item);
 #endif
 
 #if BUILDFLAG(ENABLE_PSST)
-void OpenPsstMenuOnPageActionView(BrowserWindowInterface* browser_window,
+void OpenPsstMenuOnPageActionView(BrowserWindowInterface* bwi,
                                   actions::ActionItem* item,
                                   int event_flags = ui::EF_NONE);
 #endif

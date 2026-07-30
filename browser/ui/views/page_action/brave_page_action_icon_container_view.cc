@@ -10,7 +10,6 @@
 #include "base/check_is_test.h"
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
-#include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/views/page_action/page_action_icon_params.h"
@@ -18,10 +17,6 @@
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
 #include "brave/components/playlist/core/browser/utils.h"
-#endif
-
-#if BUILDFLAG(ENABLE_SPEEDREADER)
-#include "brave/components/speedreader/common/features.h"
 #endif
 
 namespace {
@@ -46,20 +41,6 @@ PageActionIconParams& ModifyIconParamsForBrave(PageActionIconParams& params) {
     params.types_enabled.push_back(brave::kPlaylistPageActionIconType);
   }
 #endif  // BUILDFLAG(ENABLE_PLAYLIST)
-
-#if BUILDFLAG(ENABLE_SPEEDREADER)
-  if (base::FeatureList::IsEnabled(
-          speedreader::features::kSpeedreaderFeature)) {
-    if (params.browser) {
-      params.types_enabled.insert(
-          std::ranges::find(
-              params.types_enabled,
-              PageActionIconType::kFederation),  // The place where
-                                                 // kReaderMode was.
-          brave::kSpeedreaderPageActionIconType);
-    }
-  }
-#endif
 
   return params;
 }
