@@ -116,3 +116,7 @@ bool VerticalTabController::ShouldShowVerticalTabToggleButton() const {
 
   return prefs_->GetBoolean(brave_tabs::kVerticalTabsShowToggleButton);
 }
+
+base::WeakPtr<VerticalTabController> VerticalTabController::GetWeakPtr() {
+  return weak_ptr_factory_.GetWeakPtr();
+}
