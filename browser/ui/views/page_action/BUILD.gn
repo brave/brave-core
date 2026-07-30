@@ -132,6 +132,28 @@ source_set("unit_tests") {
     ]
   }
 
+  if (enable_containers) {
+    sources += [ "partitioned_storage_page_action_controller_unittest.cc" ]
+    deps += [
+      ":page_action",
+      "//brave/browser/containers",
+      "//brave/components/containers/content/browser",
+      "//brave/components/containers/core/browser",
+      "//brave/components/containers/core/browser:test_support",
+      "//brave/components/containers/core/common:features",
+      "//chrome/browser/prefs",
+      "//chrome/browser/profiles",
+      "//chrome/browser/ui/page_action",
+      "//chrome/browser/ui/page_action:test_support",
+      "//components/keyed_service/core",
+      "//components/pref_registry",
+      "//components/sync_preferences",
+      "//components/tabs:test_support",
+      "//content/test:test_support",
+      "//ui/actions",
+    ]
+  }
+
   if (enable_psst) {
     sources += [ "psst_action_controller_unittest.cc" ]
     deps += [
