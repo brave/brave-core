@@ -402,9 +402,6 @@ void BindBraveSearchFallbackHost(
   content::BrowserContext* context = render_process_host->GetBrowserContext();
   auto* backup_results_service =
       brave_search::BackupResultsServiceFactory::GetForBrowserContext(context);
-  if (!backup_results_service) {
-    return;
-  }
   mojo::MakeSelfOwnedReceiver(
       std::make_unique<brave_search::BraveSearchFallbackHost>(
           backup_results_service),
