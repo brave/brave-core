@@ -31,6 +31,8 @@
             android:elevation="12dp"
             android:padding="16dp"
             android:scrollbars="vertical"
+            android:fadeScrollbars="false"
+            android:scrollbarStyle="outsideOverlay"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
     </com.google.android.material.card.MaterialCardView>
 
