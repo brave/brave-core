@@ -13,12 +13,20 @@
 #include "base/functional/bind.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/webui/brave_welcome_page/welcome_page_features.h"
+#include "brave/components/brave_education/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/p3a/pref_names.h"
 #include "brave/components/web_discovery/buildflags/buildflags.h"
 #include "chrome/browser/metrics/metrics_reporting_state.h"
 #include "chrome/browser/themes/theme_service.h"
+#include "chrome/common/webui_url_constants.h"
 #include "components/prefs/pref_service.h"
+#include "url/gurl.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_EDUCATION)
+#include "brave/browser/ui/webui/brave_education/brave_education_server_checker.h"
+#include "brave/components/brave_education/education_urls.h"
+#endif
 
 namespace brave_welcome_page {
 
@@ -80,6 +88,13 @@ WelcomePageHandler::WelcomePageHandler(
 }
 
 WelcomePageHandler::~WelcomePageHandler() = default;
+
+#if BUILDFLAG(ENABLE_BRAVE_EDUCATION)
+void WelcomePageHandler::SetEducationServerChecker(
+    std::unique_ptr<brave_education::BraveEducationServerChecker> checker) {
+  education_server_checker_ = std::move(checker);
+}
+#endif
 
 void WelcomePageHandler::SetWelcomePage(
     mojo::PendingRemote<mojom::WelcomePage> page) {
@@ -157,6 +172,20 @@ void WelcomePageHandler::SetCrashReportsEnabled(
   std::move(callback).Run();
 }
 
+void WelcomePageHandler::GetWelcomeCompleteURL(
+    GetWelcomeCompleteURLCallback callback) {
+#if BUILDFLAG(ENABLE_BRAVE_EDUCATION)
+  if (education_server_checker_) {
+    education_server_checker_->IsServerPageAvailable(
+        brave_education::EducationPageType::kGettingStarted,
+        base::BindOnce(&WelcomePageHandler::OnGettingStartedServerCheck,
+                       weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+    return;
+  }
+#endif  // BUILDFLAG(ENABLE_BRAVE_EDUCATION)
+  std::move(callback).Run(chrome::kChromeUINewTabURL);
+}
+
 void WelcomePageHandler::OnThemeChanged() {
   if (page_) {
     page_->OnThemeChanged();
@@ -185,5 +214,17 @@ bool WelcomePageHandler::IsFeatureVisible(mojom::Feature feature) const {
     return prefs->GetBoolean(pref_name);
   });
 }
+
+#if BUILDFLAG(ENABLE_BRAVE_EDUCATION)
+void WelcomePageHandler::OnGettingStartedServerCheck(
+    GetWelcomeCompleteURLCallback callback,
+    bool available) {
+  GURL url = available
+                 ? brave_education::GetEducationPageBrowserURL(
+                       brave_education::EducationPageType::kGettingStarted)
+                 : GURL(chrome::kChromeUINewTabURL);
+  std::move(callback).Run(url.spec());
+}
+#endif  // BUILDFLAG(ENABLE_BRAVE_EDUCATION)
 
 }  // namespace brave_welcome_page

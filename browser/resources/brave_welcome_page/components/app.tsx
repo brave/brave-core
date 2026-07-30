@@ -5,6 +5,7 @@
 
 import * as React from 'react'
 
+import { useWelcomeApi } from '../api/welcome_api_context'
 import { useStepList } from './use_step_list'
 import { whenStepRendered } from './use_step_transition'
 import { WelcomeStep } from './welcome_step'
@@ -16,6 +17,7 @@ import { MetricsStep } from './metrics_step'
 import { style } from './app.style'
 
 export function App() {
+  const api = useWelcomeApi()
   const [stepIndex, setStepIndex] = React.useState(0)
   const steps = useStepList()
 
@@ -36,6 +38,11 @@ export function App() {
         : Math.max(0, stepIndex - 1)
 
     if (index === stepIndex) {
+      if (dir === 'forward') {
+        api.getWelcomeCompleteURL.fetch().then((url) => {
+          window.open(url, '_self', 'noopener')
+        })
+      }
       return
     }
 

@@ -7,13 +7,16 @@
 
 #include <utility>
 
+#include "base/check_deref.h"
 #include "base/containers/flat_set.h"
+#include "base/feature_list.h"
 #include "brave/browser/resources/brave_welcome_page/grit/brave_welcome_page_generated_map.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/browser/ui/webui/brave_welcome_page/brave_welcome_page.mojom.h"
 #include "brave/browser/ui/webui/brave_welcome_page/welcome_page_features.h"
 #include "brave/browser/ui/webui/brave_welcome_page/welcome_page_handler.h"
 #include "brave/browser/ui/webui/settings/brave_import_bulk_data_handler.h"
+#include "brave/components/brave_education/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/p3a/pref_names.h"
@@ -34,6 +37,12 @@
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/common/url_constants.h"
 #include "ui/webui/webui_util.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_EDUCATION)
+#include "brave/browser/ui/webui/brave_education/brave_education_server_checker.h"
+#include "brave/components/brave_education/features.h"
+#include "services/network/public/cpp/shared_url_loader_factory.h"
+#endif
 
 namespace {
 
@@ -96,6 +105,15 @@ void BraveWelcomePageUI::BindInterface(
       std::move(receiver), brave_welcome_page::GetAvailableFeatures(profile),
       ThemeServiceFactory::GetForProfile(profile), profile->GetPrefs(),
       g_browser_process->local_state());
+
+#if BUILDFLAG(ENABLE_BRAVE_EDUCATION)
+  if (base::FeatureList::IsEnabled(
+          brave_education::features::kShowGettingStartedPage)) {
+    page_handler_->SetEducationServerChecker(
+        std::make_unique<brave_education::BraveEducationServerChecker>(
+            CHECK_DEREF(profile->GetPrefs()), profile->GetURLLoaderFactory()));
+  }
+#endif  // BUILDFLAG(ENABLE_BRAVE_EDUCATION)
 }
 
 void BraveWelcomePageUI::BindInterface(

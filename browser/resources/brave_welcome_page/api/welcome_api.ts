@@ -210,6 +210,9 @@ export function createWelcomeApi(init = defaultInit()) {
         setCrashReportsEnabled: {
           mutationResponse: () => {},
         },
+        getWelcomeCompleteURL: {
+          response: (r) => r.url,
+        },
       }),
       ...endpointsFor(themeColorPickerHandler, {
         getChromeColors: {
