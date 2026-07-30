@@ -64,9 +64,11 @@ function parseSources(artifacts: Mojom.ToolArtifact[] | null | undefined) {
       continue
     }
     try {
-      const parsed = JSON.parse(artifact.contentJson) as {
-        sources?: TabSource[]
-      } | undefined
+      const parsed = JSON.parse(artifact.contentJson) as
+        | {
+            sources?: TabSource[]
+          }
+        | undefined
       if (Array.isArray(parsed?.sources)) {
         result.push(...parsed.sources)
       }
