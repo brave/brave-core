@@ -18,7 +18,6 @@
 #include "chrome/browser/ui/page_action/page_action_controller.h"
 #include "chrome/browser/ui/side_panel/side_panel_registry.h"
 #include "chrome/browser/ui/tabs/public/tab_features.h"
-#include "chrome/browser/ui/ui_features.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "components/tabs/public/tab_interface.h"
 
@@ -78,13 +77,10 @@ void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
 #endif
 
 #if BUILDFLAG(ENABLE_PSST)
-  // The page action controller can be null when features::kPageActionsMigration
-  // is disabled, and the PSST page action may be absent even when it exists
-  // (e.g. in unit tests that don't register the browser's action items), so
-  // guard on ActionExists() to avoid operating on an unregistered page action
-  // model.
-  if (base::FeatureList::IsEnabled(features::kPageActionsMigration) &&
-      base::FeatureList::IsEnabled(psst::features::kEnablePsst) &&
+  // The PSST page action may be absent even when it exists (e.g. in unit
+  // tests that don't register the browser's action items), so guard on
+  // ActionExists() to avoid operating on an unregistered page action model.
+  if (base::FeatureList::IsEnabled(psst::features::kEnablePsst) &&
       page_action_controller()->ActionExists(kActionShowPsstIcon)) {
     psst_action_controller_ =
         std::make_unique<page_actions::PsstActionController>(
@@ -110,15 +106,11 @@ void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
 #if BUILDFLAG(ENABLE_CONTAINERS)
   if (base::FeatureList::IsEnabled(containers::features::kContainers)) {
     container_tab_tracker_ = containers::ContainerTabTracker::MaybeCreate(tab);
-    // In case of features::kPageActionsMigration is disabled, this controller
-    // can be null. The feature is enabled by default. So note that we don't
-    // show the partitioned storage page action when the features is disabled
-    // by users. The page action itself may also be absent even when the
-    // controller exists (e.g. in unit tests that don't register the browser's
-    // action items), so guard on ActionExists() to avoid creating a controller
-    // that would operate on an unregistered page action model.
-    if (base::FeatureList::IsEnabled(features::kPageActionsMigration) &&
-        page_action_controller()->ActionExists(kActionShowPartitionedStorage)) {
+    // The page action may be absent even when the controller exists (e.g. in
+    // unit tests that don't register the browser's action items), so guard on
+    // ActionExists() to avoid creating a controller that would operate on an
+    // unregistered page action model.
+    if (page_action_controller()->ActionExists(kActionShowPartitionedStorage)) {
       partitioned_storage_page_action_controller_ = std::make_unique<
           page_actions::PartitionedStoragePageActionController>(
           tab, *page_action_controller());
@@ -130,7 +122,6 @@ void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   if (base::FeatureList::IsEnabled(
           speedreader::features::kSpeedreaderFeature) &&
-      base::FeatureList::IsEnabled(features::kPageActionsMigration) &&
       page_action_controller()->ActionExists(kActionShowSpeedreader)) {
     speedreader_page_action_controller_ =
         std::make_unique<page_actions::SpeedreaderPageActionController>(
@@ -140,8 +131,7 @@ void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
-  if (base::FeatureList::IsEnabled(features::kPageActionsMigration) &&
-      page_action_controller()->ActionExists(kActionShowWaybackMachine)) {
+  if (page_action_controller()->ActionExists(kActionShowWaybackMachine)) {
     wayback_machine_page_action_controller_ =
         std::make_unique<page_actions::WaybackMachinePageActionController>(
             tab, *page_action_controller());
@@ -150,8 +140,7 @@ void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
 #endif
 
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
-  if (base::FeatureList::IsEnabled(features::kPageActionsMigration) &&
-      page_action_controller()->ActionExists(kActionShowPlaylistPageAction)) {
+  if (page_action_controller()->ActionExists(kActionShowPlaylistPageAction)) {
     playlist_page_action_controller_ =
         std::make_unique<page_actions::PlaylistPageActionController>(
             tab, *page_action_controller());
