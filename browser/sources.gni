@@ -382,6 +382,7 @@ if (enable_brave_wallet) {
   if (!is_android) {
     brave_chrome_browser_deps += [
       "//brave/browser/brave_wallet/notifications",
+      "//brave/browser/ui/webui/brave_wallet/ledger",
       "//brave/browser/ui/webui/brave_wallet/wallet_panel",
     ]
   }
