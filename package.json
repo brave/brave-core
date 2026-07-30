@@ -211,7 +211,7 @@
     "@brave/brave-ui": "0.40.6",
     "@brave/leo": "github:brave/leo#a9fe69615e3cc3d7f2388fac1ddfa3db1e12a30a",
     "@brave/leo-sf-symbols": "github:brave/leo-sf-symbols#f601277fdcd837c3e6b7239b73537603c7539119",
-    "@brave/wallet-standard-brave": "0.0.16",
+    "@brave/wallet-standard-brave": "0.0.17",
     "@dnd-kit/core": "6.3.1",
     "@dnd-kit/sortable": "7.0.1",
     "@emotion/is-prop-valid": "1.4.0",
