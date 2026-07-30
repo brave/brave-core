@@ -2,18 +2,27 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
-"""Base class for Brave recipe modules.
+"""Base class for Brave recipe modules, plus the step placeholder protocol.
 
 A deliberately tiny base class. Every recipe module exposes exactly one
 `RecipeApi` subclass (in its `api.py`). After constructing it, the engine attaches the
 module's resolved `DEPS` onto `self.m`, which is the "module injection site",
 so a module reaches each dependency as `self.m.<dep_name>` (and itself as
 `self.m.<own_name>`).
+
+This is also where the `Placeholder` hierarchy lives. A placeholder stands in
+for a file that a step reads from or writes to: a module hands one to
+`api.step(...)`, the engine renders it into real command-line arguments just
+before the step runs, and (for outputs) reads the data back afterwards. See the
+"Getting data back from a step" section of README.md.
 """
 
 from __future__ import annotations
 
+from collections.abc import Callable
+import functools
 from pathlib import Path
+from typing import Any
 
 
 class ModuleInjectionSite:
@@ -30,6 +39,135 @@ class ModuleInjectionSite:
         # dynamic, so accessing an injected dep is not flagged as no-member.)
         raise AttributeError(
             f'{name!r} is not a declared dependency (add it to DEPS?)')
+
+
+class Placeholder:
+    """Base class for a step's command-line placeholders. Not used directly.
+
+    A placeholder is a stand-in for a file that only exists for the duration of
+    a step. Put one in a step's `cmd` (or pass it as the step's `stdin` /
+    `stdout` / `stderr`) and the engine will:
+
+      1. call `render()` just before the step runs, replacing the placeholder
+         with whatever command-line arguments it returns (usually a single
+         path), and
+      2. once the step is done, call `cleanup()` on an `InputPlaceholder`, or
+         `result()` on an `OutputPlaceholder` to read the data back.
+
+    Every placeholder has a `namespaces` pair, with the name of the module that
+    produced it and the name of the method that returned it, e.g.
+    `('json', 'output')` for `api.json.output()`. The `returns_placeholder`
+    decorator fills that in, and the engine uses it to file an output
+    placeholder's result onto the step's result as
+    `step_result.json.output`. A placeholder may additionally carry a
+    caller-chosen `name`, to tell several placeholders from the same method
+    apart (see `step_data.StepData`).
+    """
+
+    # Whether this placeholder stands for a single file, and so can be a step's
+    # `stdin`/`stdout`/`stderr`. False for the ones that stand for something
+    # else, like a whole directory of results.
+    is_file_backed = True
+
+    def __init__(self, name: str | None = None) -> None:
+        if name is not None and not isinstance(name, str):
+            raise ValueError('Expected a string name for a placeholder, but '
+                             f'got {name!r}')
+        self.name = name
+        # (module name, method name); filled in by `returns_placeholder`.
+        self.namespaces: tuple[str, str] | None = None
+
+    @property
+    def backing_file(self) -> str:
+        """The path of the file holding (or receiving) the data.
+
+        Only valid once `render` has been called. This is what the engine
+        redirects a step's std handle to when the placeholder is passed as
+        `stdin`/`stdout`/`stderr`.
+        """
+        raise NotImplementedError
+
+    def render(self, test) -> list[str]:
+        """Return the command-line arguments this placeholder expands to.
+
+        *test* is the `PlaceholderTestData` for this placeholder; when
+        `test.enabled` the placeholder must not touch the real filesystem.
+        """
+        raise NotImplementedError
+
+    @property
+    def label(self) -> str:
+        """A human-readable `<module>.<method>[<name>]` label."""
+        module, method = self.namespaces
+        if self.name is None:
+            return f'{module}.{method}'
+        return f'{module}.{method}[{self.name}]'
+
+    def __repr__(self) -> str:
+        namespaced = ('<unnamespaced>'
+                      if self.namespaces is None else self.label)
+        return f'{type(self).__name__}({namespaced})'
+
+
+class InputPlaceholder(Placeholder):
+    """A placeholder carrying data *into* a step. Not used directly."""
+
+    # Abstract base: concrete subclasses implement `render`/`backing_file`.
+    # pylint: disable=abstract-method
+
+    def cleanup(self, test_enabled: bool) -> None:
+        """Called once the step has finished, to drop the backing file."""
+
+
+class OutputPlaceholder(Placeholder):
+    """A placeholder carrying data *out of* a step. Not used directly."""
+
+    # Abstract base: concrete subclasses implement `render`/`backing_file`.
+    # pylint: disable=abstract-method
+
+    def result(self, test) -> Any:
+        """Called once the step has finished; the return value is the result.
+
+        The engine files it onto the step's `StepData` under this
+        placeholder's namespaces (so `api.json.output()`'s result shows up as
+        `step_result.json.output`).
+        """
+
+
+def _returns_placeholder(func: Callable[..., Placeholder],
+                         alternate_name: str | None = None):
+
+    @functools.wraps(func)
+    def inner(self, *args, **kwargs):
+        placeholder = func(self, *args, **kwargs)
+        assert isinstance(placeholder, Placeholder), (
+            f'{func.__name__} is decorated with returns_placeholder but '
+            f'returned {placeholder!r}')
+        placeholder.namespaces = (
+            self._module_name,
+            alternate_name  # pylint: disable=protected-access
+            or func.__name__)
+        return placeholder
+
+    return inner
+
+
+def returns_placeholder(func_or_name):
+    """Decorate a placeholder-returning `RecipeApi` method to namespace it.
+
+    The namespace defaults to `(<module name>, <method name>)`, which is what
+    the engine files an output placeholder's result under. Decorate as
+    `@returns_placeholder('other_name')` to substitute a different method name,
+    so several methods can produce placeholders that land in the same place.
+    """
+    if isinstance(func_or_name, str):
+        if not func_or_name:
+            raise ValueError('returns_placeholder needs a non-empty name')
+        return lambda func: _returns_placeholder(func, func_or_name)
+    if not callable(func_or_name):
+        raise ValueError('Expected either a function or a string; got '
+                         f'{func_or_name!r}')
+    return _returns_placeholder(func_or_name)
 
 
 class RecipeApi:
@@ -50,8 +188,14 @@ class RecipeApi:
         # touch the real machine. When set, they read/mutate this instead. Its
         # presence (`self._test is not None`) is the sole test-mode flag.
         self._test = None
-        # The module's name, seeded by the engine (used in config error text).
+        # The module's name, seeded by the engine (used in config error text
+        # and to namespace the placeholders this module hands out).
         self._module_name: str = type(self).__name__
+        # This module's own `TEST_API` instance (from its `test_api.py`), seeded
+        # by the engine, or None if the module has no test api. Modules use it
+        # to build the default simulated data for the steps they run, e.g.
+        # `step_test_data=self.test_api.errno`.
+        self.test_api = None
         # The module's configuration context (the `ConfigContext` from its
         # `config.py`), seeded by the engine, or None if the module has no
         # config. See `set_config`/`make_config`/`apply_config` below and the
