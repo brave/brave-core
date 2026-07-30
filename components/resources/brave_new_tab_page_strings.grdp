@@ -289,6 +289,10 @@
     Our new sponsored sites help us keep Brave free. If you use <ph name="SITE_NAME">$1<ex>Amazon</ex></ph> from your New Tab Page, you are supporting Brave's mission. You can hide or change it at any time. <ph name="LINK_BEGIN">$2</ph>Learn more<ph name="LINK_END">/$2</ph>.
   </message>
 
+  <message name="IDS_NEW_TAB_SPONSORED_SITES_DESCRIPTION" desc="Description shown below the toggle that controls sponsored site visibility in top sites, explaining what sponsored sites are." formatter_data="webui=BraveNewTabPage">
+    Occasionally shows a sponsored site among your top sites. <ph name="LINK_BEGIN">$1</ph>Learn more<ph name="LINK_END">/$1</ph>.
+  </message>
+
   <message name="IDS_NEW_TAB_STATS_ADS_BLOCKED_TEXT" desc="Text for trackers and ads blocked stat" formatter_data="webui=BraveNewTabPage">
     Trackers &amp; ads blocked
   </message>
