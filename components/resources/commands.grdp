@@ -34,6 +34,9 @@
   <message name="IDS_IDC_CLOSE_TAB">
     Close tab
   </message>
+  <message name="IDS_IDC_CLOSE_ALL_DUPLICATE_TABS">
+    Close all duplicate tabs
+  </message>
   <message name="IDS_IDC_SELECT_NEXT_TAB">
     Next tab
   </message>
