@@ -51,12 +51,13 @@ class EngineConsumerOAIRemote : public EngineConsumer {
   ~EngineConsumerOAIRemote() override;
 
   // EngineConsumer
+  using EngineConsumer::GenerateAssistantResponse;
   void GenerateQuestionSuggestions(
       PageContents page_contents,
       SuggestedQuestionsCallback callback) override;
   void GenerateAssistantResponse(
       PageContentsMap&& page_contents,
-      const ConversationHistory& conversation_history,
+      const ConversationHistoryView& conversation_history,
       bool is_temporary_chat,
       const std::vector<base::WeakPtr<Tool>>& tools,
       std::optional<std::string_view> preferred_tool_name,

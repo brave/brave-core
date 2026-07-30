@@ -9,6 +9,7 @@
 #include <string>
 
 #include "base/base64.h"
+#include "base/containers/to_vector.h"
 #include "base/json/json_reader.h"
 #include "base/strings/escape.h"
 #include "base/strings/strcat.h"
@@ -54,11 +55,11 @@ EngineConsumer::Error::Error(mojom::APIError api_error,
 
 // static
 std::string EngineConsumer::GetPromptForEntry(
-    const mojom::ConversationTurnPtr& entry) {
-  const mojom::ConversationTurnPtr& prompt_entry =
-      (entry->edits && !entry->edits->empty()) ? entry->edits->back() : entry;
+    const mojom::ConversationTurn& entry) {
+  const mojom::ConversationTurn& prompt_entry =
+      (entry.edits && !entry.edits->empty()) ? *entry.edits->back() : entry;
 
-  return prompt_entry->prompt.value_or(prompt_entry->text);
+  return prompt_entry.prompt.value_or(prompt_entry.text);
 }
 
 // static
@@ -91,12 +92,30 @@ std::string EngineConsumer::GetPdfDataURL(base::span<uint8_t> pdf_data) {
 }
 
 bool EngineConsumer::CanPerformCompletionRequest(
-    const ConversationHistory& conversation_history) const {
+    const ConversationHistoryView& conversation_history) const {
   if (conversation_history.empty()) {
     return false;
   }
 
   return true;
+}
+
+void EngineConsumer::GenerateAssistantResponse(
+    PageContentsMap&& page_contents,
+    const ConversationHistory& conversation_history,
+    bool is_temporary_chat,
+    const std::vector<base::WeakPtr<Tool>>& tools,
+    std::optional<std::string_view> preferred_tool_name,
+    const ConversationCapabilitySet& conversation_capabilities,
+    GenerationDataCallback data_received_callback,
+    GenerationCompletedCallback completed_callback) {
+  GenerateAssistantResponse(
+      std::move(page_contents),
+      base::ToVector<const mojom::ConversationTurn*>(
+          conversation_history,
+          [](const mojom::ConversationTurnPtr& turn) { return turn.get(); }),
+      is_temporary_chat, tools, preferred_tool_name, conversation_capabilities,
+      std::move(data_received_callback), std::move(completed_callback));
 }
 
 const std::string& EngineConsumer::GetModelName() const {

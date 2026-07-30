@@ -334,7 +334,7 @@ AIChatConversationUIBrowserTestBase::SetupMockGenerateAssistantResponse(
   }
   expectation.WillOnce(
       [future_ptr](PageContentsMap page_contents,
-                   const EngineConsumer::ConversationHistory& history,
+                   const EngineConsumer::ConversationHistoryView& history,
                    bool is_temporary,
                    const std::vector<base::WeakPtr<Tool>>& provided_tools,
                    std::optional<std::string_view> preferred_tool_name,
