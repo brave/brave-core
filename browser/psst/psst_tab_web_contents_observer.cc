@@ -262,7 +262,7 @@ void PsstTabWebContentsObserver::OnUserScriptResult(
   if (!psst_settings) {
     psst_settings.emplace();
     psst_settings->consent_status = ConsentStatus::kAsk;
-    // Use not existed version to guarantee that will be shown icon with red dot
+    // Use a non-existent version to guarantee the icon is shown with a red dot.
     psst_settings->script_version = kUnsetScriptVersion;
     psst_settings->user_id = user_script_result_parsed->user_id;
   }
