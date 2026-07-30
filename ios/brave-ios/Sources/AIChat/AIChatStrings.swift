@@ -252,14 +252,6 @@ extension Strings {
       value: "Chat",
       comment: "The title for intro message"
     )
-    public static let introMessageLlamaModelPurposeDescription = NSLocalizedString(
-      "aichat.introMessageLlamaModelPurposeDescription",
-      tableName: "BraveLeo",
-      bundle: .module,
-      value: "General purpose chat",
-      comment:
-        "The model's purpose - Describes what it can do best"
-    )
     public static let introMessageQwenModelPurposeDescription = NSLocalizedString(
       "aichat.introMessageQwenModelPurposeDescription",
       tableName: "BraveLeo",
@@ -283,14 +275,6 @@ extension Strings {
       value: "Balanced speed and intelligence",
       comment:
         "The model's purpose - Describes what it can do best"
-    )
-    public static let introMessageLlamaMessageDescription = NSLocalizedString(
-      "aichat.introMessageLlamaMessageDescription",
-      tableName: "BraveLeo",
-      bundle: .module,
-      value:
-        "Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by Llama 3.1 8B, a model created by Meta to be performant and applicable to many use cases. Llama is Brave-hosted through our own secure infrastructure.",
-      comment: "The model intro message when you first enter the chat assistant"
     )
     public static let introMessageQwenMessageDescription = NSLocalizedString(
       "aichat.introMessageQwenMessageDescription",

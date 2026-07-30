@@ -182,33 +182,6 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
 
     {
       auto options = mojom::LeoModelOptions::New();
-      options->display_maker = "Meta";
-      options->name = "llama-3-8b-instruct";
-      options->category = mojom::ModelCategory::CHAT;
-      options->access = features::kFreemiumAvailable.Get()
-                            ? mojom::ModelAccess::BASIC_AND_PREMIUM
-                            : mojom::ModelAccess::BASIC;
-      options->max_associated_content_length = 64000;
-      options->long_conversation_warning_character_limit = 9700;
-
-      auto model = mojom::Model::New();
-      model->key = "chat-basic";
-      model->display_name = "Llama 3.1 8B";
-      model->vision_support = false;
-      model->supports_tools = false;
-      model->supported_capabilities = {
-          mojom::ConversationCapability::CHAT,
-          mojom::ConversationCapability::DEEP_RESEARCH};
-      model->is_suggested_model = false;
-      model->is_near_model = false;
-      model->options =
-          mojom::ModelOptions::NewLeoModelOptions(std::move(options));
-
-      models.push_back(std::move(model));
-    }
-
-    {
-      auto options = mojom::LeoModelOptions::New();
       options->display_maker = "Alibaba Cloud";
       options->name = "qwen-14b-instruct";
       options->category = mojom::ModelCategory::CHAT;
@@ -699,7 +672,7 @@ void ModelService::MigrateProfilePrefs(PrefService* profile_prefs) {
     profile_prefs->ClearPref(prefs::kObseleteBraveChatAutoGenerateQuestions);
 
     // Migrate old model keys to "chat-automatic"
-    constexpr std::array<const char*, 11> kOldModelKeys = {
+    constexpr std::array<const char*, 12> kOldModelKeys = {
         // Added: June 6, 2024. Checks can be removed eventually
         "chat-default",
         // Added: May 28, 2025. Checks can be removed eventually
@@ -716,6 +689,8 @@ void ModelService::MigrateProfilePrefs(PrefService* profile_prefs) {
         "chat-gpt-oss-20b",
         "chat-gpt-oss-120b",
         "chat-qwen-3-coder-480b",
+        // Added: July 22, 2026. Checks can be removed eventually
+        "chat-basic",
     };
 
     if (auto* default_model_value =
@@ -869,10 +844,7 @@ ModelService::GetModelsWithSubtitles() {
     model_with_subtitle->model = model->Clone();
 
     if (model->options->is_leo_model_options()) {
-      if (model->key == "chat-basic") {
-        model_with_subtitle->subtitle =
-            l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_BASIC_SUBTITLE);
-      } else if (model->key == "chat-claude-instant") {
+      if (model->key == "chat-claude-instant") {
         model_with_subtitle->subtitle =
             l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_CLAUDE_INSTANT_SUBTITLE);
       } else if (model->key == "chat-claude-haiku") {
