@@ -22,7 +22,9 @@ export interface BridgesCaptchaResponse {
 
 export interface BraveTorBrowserProxy {
   getBridgesConfig: () => Promise<BridgesConfig>
-  setBridgesConfig: (config: BridgesConfig) => void
+  // Rejects with the first bridge line Tor cannot use, in which case nothing
+  // was stored.
+  setBridgesConfig: (config: BridgesConfig) => Promise<void>
   requestBridgesCaptcha: () => Promise<BridgesCaptcha>
   resolveBridgesCaptcha: (captcha: string) => Promise<BridgesCaptchaResponse>
   setTorEnabled: (value: boolean) => void
@@ -43,7 +45,7 @@ export class BraveTorBrowserProxyImpl implements BraveTorBrowserProxy {
   }
 
   setBridgesConfig(config: BridgesConfig) {
-    chrome.send('brave_tor.setBridgesConfig', [config])
+    return sendWithPromise<void>('brave_tor.setBridgesConfig', config)
   }
 
   requestBridgesCaptcha() {
