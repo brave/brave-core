@@ -106,9 +106,8 @@ std::string_view TabSemanticSearchTool::Description() const {
 
 std::optional<base::DictValue> TabSemanticSearchTool::InputProperties() const {
   return CreateInputProperties(
-      {{"query",
-        StringProperty(
-            "Natural-language query describing the tab to find by content.")}});
+      {{"query", StringProperty(
+                     "Natural-language query for finding a tab by content.")}});
 }
 
 std::optional<std::vector<std::string>>
