@@ -6,17 +6,19 @@
 import path from 'node:path'
 import dirName from './dirName.cjs'
 
-const allPrefixes = (path, searchPaths) =>
-  ['chrome://', 'chrome-untrusted://', ''].reduce((acc, prefix) => {
-    acc[prefix + path] = searchPaths
+export type PathMap = Record<string, string | string[]>
+
+const allPrefixes = (resourcePath: string, searchPath: string): PathMap =>
+  ['chrome://', 'chrome-untrusted://', ''].reduce<PathMap>((acc, prefix) => {
+    acc[prefix + resourcePath] = searchPath
     return acc
   }, {})
 
 /**
- * @param {string} genPath The path to the generated files in the build output.
+ * @param genPath The path to the generated files in the build output.
  * @returns A map of path aliases
  */
-export default function (genPath) {
+export function generatePathMap(genPath: string): PathMap {
   return {
     // Find files in the current build configurations /gen directory
     'gen': genPath,

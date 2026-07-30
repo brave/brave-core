@@ -10,7 +10,7 @@ import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin'
 import { writeTsConfig } from '../build/webpack/ts-config'
 import { genPath } from '../build/commands/lib/guessConfig'
 import { fallback } from '../build/webpack/polyfill'
-import generatePathMap from '../build/webpack/path-map'
+import { generatePathMap } from '../build/webpack/path-map'
 import { withMockOverrides } from '../build/webpack/resolve'
 import { cssRules, tsLoaderRule, ifdefLoaderRule } from '../build/webpack/rules'
 import {

@@ -5,7 +5,7 @@
 
 import { program } from 'commander'
 import { writeTsConfig } from './ts-config.ts'
-import generatePathMap from './path-map.js'
+import { generatePathMap } from './path-map.ts'
 
 program
   .requiredOption('--root-gen-dir <path>', 'path to the build gen directory')

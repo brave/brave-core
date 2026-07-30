@@ -14,7 +14,7 @@ import {
   deterministicOptimization,
   deterministicIdsPlugins,
 } from '../../../../build/webpack/deterministic-output.ts'
-import generatePathMap from '../../../../build/webpack/path-map.js'
+import { generatePathMap } from '../../../../build/webpack/path-map.ts'
 import {
   provideNodeGlobals,
   chromePrefixReplacers,

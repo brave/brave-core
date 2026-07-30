@@ -5,7 +5,7 @@
 
 import fs from 'node:fs/promises'
 import path from 'node:path'
-import type { PathMap } from './resolve.ts'
+import type { PathMap } from './path-map.ts'
 
 /**
  * Writes a tsconfig.json file so that typescript can import files from the
