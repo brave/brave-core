@@ -87,6 +87,15 @@ class SpeedreaderTabHelper
 
   DistillState PageDistillState() const { return distill_state_; }
 
+  // Sets the distill state directly, bypassing the state machine that
+  // Transit() normally enforces (e.g. ViewOriginal -> Distilling ->
+  // Distilled), navigation, and the real distillation pipeline. For unit
+  // tests only.
+  void SetDistillStateForTesting(const DistillState& state) {
+    distill_state_ = state;
+    UpdateUI();
+  }
+
   // returns nullptr if no bubble currently shown
   SpeedreaderBubbleView* speedreader_bubble_view() const;
 
