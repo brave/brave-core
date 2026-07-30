@@ -1890,27 +1890,40 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CspRule) {
   EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 }
 
-// Verify that `$csp` rules are applied correctly for top level navigation.
-// The destination document must be treated as first-party even if it was
-// initiated by another page.
-IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CspRuleAfterCrossOriginNavigation) {
-  // Applied only to first-party.
+// Verify `$third-party` `$csp` matching uses `request_initiator` as
+// first_party_origin (falling back to the request URL when initiator is empty).
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CspRuleThirdPartyLogic) {
+  // Applied to third-party only.
   UpdateAdBlockInstanceWithRules(
-      "||example.com^$~third-party,csp=script-src 'nonce-abcdef' "
+      "||example.com^$third-party,csp=script-src 'nonce-abcdef' "
       "'unsafe-eval' 'self'");
 
-  const GURL start_url =
-      embedded_test_server()->GetURL("a.com", "/simple.html");
-  NavigateToURL(start_url);
+  {
+    // Browser-initiated navigation (= no initiator). Document is first-party,
+    // so the rule does not match.
+    const GURL url =
+        embedded_test_server()->GetURL("example.com", "/csp_rules.html");
+    NavigateToURL(url);
+    content::WebContents* contents = web_contents();
 
-  const GURL url =
-      embedded_test_server()->GetURL("example.com", "/csp_rules.html");
-  ASSERT_TRUE(content::NavigateToURLFromRenderer(web_contents(), url));
-  content::WebContents* contents = web_contents();
+    ASSERT_TRUE(ExecJs(contents, "window.allLoaded"));
+    EXPECT_EQ(true, EvalJs(contents, "!!window.loadedNonceScript"));
+    EXPECT_EQ(true, EvalJs(contents, "!!window.loadedUnsafeInlineScript"));
+  }
 
-  ASSERT_TRUE(ExecJs(contents, "window.allLoaded"));
-  // Verify that the `$csp` rule was applied.
-  EXPECT_EQ(false, EvalJs(contents, "!!window.loadedUnsafeInlineScript"));
+  {
+    // Cross-origin renderer navigation (from a.com). Document is
+    // third-party relative to that origin, so the rule matches.
+    NavigateToURL(embedded_test_server()->GetURL("a.com", "/simple.html"));
+    const GURL url =
+        embedded_test_server()->GetURL("example.com", "/csp_rules.html");
+    ASSERT_TRUE(content::NavigateToURLFromRenderer(web_contents(), url));
+    content::WebContents* contents = web_contents();
+
+    ASSERT_TRUE(ExecJs(contents, "window.allLoaded"));
+    EXPECT_EQ(true, EvalJs(contents, "!!window.loadedNonceScript"));
+    EXPECT_EQ(false, EvalJs(contents, "!!window.loadedUnsafeInlineScript"));
+  }
 }
 
 // Verify that Content Security Policies from multiple `$csp` rules are

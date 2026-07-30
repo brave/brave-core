@@ -81,16 +81,11 @@ int OnHeadersReceived_AdBlockCspWork(
 
     (*override_response_headers)->RemoveHeader("Content-Security-Policy");
 
-    // Top-level document requests are always considered as first party, and
-    // requests from special schemes like file:// do not have host parts, so we
-    // use the request URL as first_party_origin.
-
-    const bool use_fallback_origin =
-        !ctx->request_initiator() || ctx->request_initiator()->host().empty() ||
-        ctx->resource_type() == blink::mojom::ResourceType::kMainFrame;
+    // Top-level document requests can be initiated from UI (the initiator is
+    // empty). In that case we set first_party_origin based on the request url.
     const url::Origin& first_party_origin =
-        use_fallback_origin ? url::Origin::Create(ctx->request_url())
-                            : *ctx->request_initiator();
+        ctx->request_initiator() ? *ctx->request_initiator()
+                                 : url::Origin::Create(ctx->request_url());
 
     auto* ad_block_service = g_brave_browser_process->ad_block_service();
     ad_block_service->AsyncCallAndReplyWithResult<std::optional<std::string>>(
