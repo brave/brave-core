@@ -9,8 +9,9 @@ substitutions:
 
       Used so "Bookmark selected tabs..." can show IDS_BOOKMARK_SELECTED_TABS_DIALOG_TITLE
       instead of Chromium's NEW_FOLDER-with-children title ("Bookmark all tabs").
-    add_to_public:
-      class_name: EditDetails
-      code: |-
-        // When set, overrides GetWindowTitleId() (e.g. "Bookmark selected tabs").
-        std::optional<int> window_title_id;
+
+      Uses regex rather than add_to_public so the patch does not add an empty
+      line at the hunk boundary (presubmit CheckPatchFile).
+    regex:
+      pattern: "    BookmarkData bookmark_data;\n\n   private:"
+      replace: "    BookmarkData bookmark_data;\n\n    // When set, overrides GetWindowTitleId() (e.g. \"Bookmark selected tabs\").\n    std::optional<int> window_title_id;\n   private:"
