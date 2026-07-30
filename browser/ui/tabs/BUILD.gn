@@ -6,6 +6,7 @@
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/containers/buildflags/buildflags.gni")
 import("//brave/components/psst/buildflags/buildflags.gni")
+import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 
 assert(is_win || is_mac || is_linux || is_chromeos || is_android)
 
@@ -25,7 +26,10 @@ source_set("tabs_public") {
     "//chrome/browser/ui/tabs:tabs_public",
   ]
 
-  deps = [ "//brave/components/containers/buildflags" ]
+  deps = [
+    "//brave/components/containers/buildflags",
+    "//brave/components/speedreader/common/buildflags",
+  ]
 }
 
 if (!is_android) {
@@ -68,6 +72,10 @@ if (!is_android) {
         "//brave/browser/psst",
         "//brave/components/psst/core/common",
       ]
+    }
+
+    if (enable_speedreader) {
+      deps += [ "//brave/components/speedreader/common" ]
     }
   }
 
