@@ -85,7 +85,8 @@ class OrchardSyncState {
 
   virtual base::expected<std::optional<SpendableNotesBundle>,
                          OrchardStorage::Error>
-  GetSpendableNotes(const mojom::AccountIdPtr& account_id,
+  GetSpendableNotes(OrchardPool pool,
+                    const mojom::AccountIdPtr& account_id,
                     const OrchardAddrRawPart& change_address);
 
   // Clears sync data related to the account. Updates account birthday if

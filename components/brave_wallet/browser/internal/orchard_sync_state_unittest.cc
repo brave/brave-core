@@ -320,7 +320,7 @@ TEST_F(OrchardSyncStateTest, GetSpendableNotes_NoRegisteredAccount) {
   OrchardAddrRawPart internal_addr;
   internal_addr.fill(3);
   auto get_spendable_notes_result =
-      sync_state()->GetSpendableNotes(account_id(), internal_addr);
+      sync_state()->GetSpendableNotes(OrchardPool::kOrchard, account_id(), internal_addr);
   EXPECT_TRUE(get_spendable_notes_result.has_value());
   EXPECT_FALSE(get_spendable_notes_result.value().has_value());
 }
@@ -362,7 +362,7 @@ TEST_F(OrchardSyncStateTest, GetSpendableNotes_FilterByAddress_And_Anchor) {
   }
 
   auto get_spendable_notes_result =
-      sync_state()->GetSpendableNotes(account_id(), internal_addr);
+      sync_state()->GetSpendableNotes(OrchardPool::kOrchard, account_id(), internal_addr);
   EXPECT_TRUE(get_spendable_notes_result.has_value());
   EXPECT_TRUE(get_spendable_notes_result.value().has_value());
   EXPECT_EQ(get_spendable_notes_result.value()->spendable_notes.size(), 26u);
@@ -401,7 +401,7 @@ TEST_F(OrchardSyncStateTest, GetSpendableNotes_FilterByAddress_External) {
   }
 
   auto get_spendable_notes_result =
-      sync_state()->GetSpendableNotes(account_id(), internal_addr);
+      sync_state()->GetSpendableNotes(OrchardPool::kOrchard, account_id(), internal_addr);
   EXPECT_TRUE(get_spendable_notes_result.has_value());
   EXPECT_TRUE(get_spendable_notes_result.value().has_value());
   EXPECT_EQ(get_spendable_notes_result.value()->spendable_notes.size(), 40u);
@@ -440,7 +440,7 @@ TEST_F(OrchardSyncStateTest, GetSpendableNotes_FilterByAddress_Internal) {
   }
 
   auto get_spendable_notes_result =
-      sync_state()->GetSpendableNotes(account_id(), internal_addr);
+      sync_state()->GetSpendableNotes(OrchardPool::kOrchard, account_id(), internal_addr);
   EXPECT_TRUE(get_spendable_notes_result.has_value());
   EXPECT_TRUE(get_spendable_notes_result.value().has_value());
   EXPECT_EQ(get_spendable_notes_result.value()->spendable_notes.size(), 46u);
@@ -473,7 +473,7 @@ TEST_F(OrchardSyncStateTest, GetSpendableNotes_NoAnchor) {
   }
 
   auto get_spendable_notes_result =
-      sync_state()->GetSpendableNotes(account_id(), internal_addr);
+      sync_state()->GetSpendableNotes(OrchardPool::kOrchard, account_id(), internal_addr);
   EXPECT_TRUE(get_spendable_notes_result.has_value());
   EXPECT_TRUE(get_spendable_notes_result.value().has_value());
   // Since no checkpoints were added we drop all notes we have.
@@ -601,11 +601,11 @@ TEST_F(OrchardSyncStateTest, Rewind_ToMarkedHeight) {
   }
 
   EXPECT_EQ(1u, sync_state()
-                    ->GetSpendableNotes(account_id(), {})
+                    ->GetSpendableNotes(OrchardPool::kOrchard, account_id(), {})
                     .value()
                     ->all_notes.size());
   EXPECT_EQ(2u, sync_state()
-                    ->GetSpendableNotes(account_id(), {})
+                    ->GetSpendableNotes(OrchardPool::kOrchard, account_id(), {})
                     .value()
                     ->all_notes[0]
                     .block_id);
@@ -619,11 +619,11 @@ TEST_F(OrchardSyncStateTest, Rewind_ToMarkedHeight) {
             sync_state()->Rewind(account_id(), 1, "1").value());
 
   EXPECT_EQ(1u, sync_state()
-                    ->GetSpendableNotes(account_id(), {})
+                    ->GetSpendableNotes(OrchardPool::kOrchard, account_id(), {})
                     .value()
                     ->all_notes.size());
   EXPECT_EQ(1u, sync_state()
-                    ->GetSpendableNotes(account_id(), {})
+                    ->GetSpendableNotes(OrchardPool::kOrchard, account_id(), {})
                     .value()
                     ->all_notes[0]
                     .block_id);
@@ -664,16 +664,16 @@ TEST_F(OrchardSyncStateTest, Rewind_ToMarkedHeight) {
   }
 
   EXPECT_EQ(2u, sync_state()
-                    ->GetSpendableNotes(account_id(), {})
+                    ->GetSpendableNotes(OrchardPool::kOrchard, account_id(), {})
                     .value()
                     ->all_notes.size());
   EXPECT_EQ(1u, sync_state()
-                    ->GetSpendableNotes(account_id(), {})
+                    ->GetSpendableNotes(OrchardPool::kOrchard, account_id(), {})
                     .value()
                     ->all_notes[0]
                     .block_id);
   EXPECT_EQ(2u, sync_state()
-                    ->GetSpendableNotes(account_id(), {})
+                    ->GetSpendableNotes(OrchardPool::kOrchard, account_id(), {})
                     .value()
                     ->all_notes[1]
                     .block_id);
@@ -745,14 +745,14 @@ TEST_F(OrchardSyncStateTest, Rewind) {
   }
 
   EXPECT_EQ(1u, sync_state()
-                    ->GetSpendableNotes(account_id(), {})
+                    ->GetSpendableNotes(OrchardPool::kOrchard, account_id(), {})
                     .value()
                     ->all_notes.size());
   EXPECT_EQ(OrchardStorage::Result::kSuccess,
             sync_state()->Rewind(account_id(), 2, "2").value());
   // Nullifier was deleted so we should have 2 spendable notes now.
   EXPECT_EQ(2u, sync_state()
-                    ->GetSpendableNotes(account_id(), {})
+                    ->GetSpendableNotes(OrchardPool::kOrchard, account_id(), {})
                     .value()
                     ->all_notes.size());
 

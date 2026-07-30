@@ -16,8 +16,12 @@
 #include "base/functional/callback_helpers.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_auto_sync_manager.h"
+#include "brave/components/brave_wallet/browser/zcash/zcash_create_ironwood_to_ironwood_transaction_task.h"
+#include "brave/components/brave_wallet/browser/zcash/zcash_create_ironwood_to_transparent_transaction_task.h"
+#include "brave/components/brave_wallet/browser/zcash/zcash_create_orchard_to_ironwood_transaction_task.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_create_orchard_to_orchard_transaction_task.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_create_orchard_to_transparent_transaction_task.h"
+#include "brave/components/brave_wallet/browser/zcash/zcash_create_transparent_to_ironwood_transaction_task.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_create_transparent_to_orchard_transaction_task.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_create_transparent_transaction_task.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_discover_next_unused_zcash_address_task.h"
@@ -391,12 +395,17 @@ void ZCashWalletService::AddObserver(
 
 base::expected<mojom::ZCashTxType, mojom::ZCashAddressError>
 ZCashWalletService::GetTransactionType(const mojom::AccountIdPtr& account_id,
-                                       bool use_shielded_pool,
+                                       mojom::ZCashTokenType from_token_type,
+                                       bool ironwood_active,
                                        const std::string& addr) {
   if (!IsZCashAccount(account_id)) {
     return base::unexpected(mojom::ZCashAddressError::kNotZCashAccount);
   }
   bool testnet = IsZCashTestnetKeyring(account_id->keyring_id);
+  const bool from_ironwood =
+      from_token_type == mojom::ZCashTokenType::kIronwood;
+  const bool use_shielded_pool =
+      from_ironwood || from_token_type == mojom::ZCashTokenType::kOrchard;
 
   if (IsZCashShieldedTransactionsEnabled()) {
     if (use_shielded_pool) {
@@ -404,7 +413,12 @@ ZCashWalletService::GetTransactionType(const mojom::AccountIdPtr& account_id,
       auto orchard_validation_result =
           ValidateOrchardRecipientAddress(testnet, addr);
       if (orchard_validation_result.has_value()) {
-        return base::ok(mojom::ZCashTxType::kOrchardToOrchard);
+        if (from_ironwood) {
+          return base::ok(mojom::ZCashTxType::kIronwoodToIronwood);
+        }
+        return base::ok(ironwood_active
+                            ? mojom::ZCashTxType::kOrchardToIronwood
+                            : mojom::ZCashTxType::kOrchardToOrchard);
       }
 
       // Check for known accounts.
@@ -417,18 +431,22 @@ ZCashWalletService::GetTransactionType(const mojom::AccountIdPtr& account_id,
             keyring_service_->GetZCashAccountInfo(account_info->account_id);
         if (zcash_account_info->next_transparent_receive_address
                 ->address_string == addr) {
-          return base::ok(mojom::ZCashTxType::kUnshielding);
+          return base::ok(from_ironwood
+                              ? mojom::ZCashTxType::kIronwoodToTransparent
+                              : mojom::ZCashTxType::kUnshielding);
         }
       }
 
       // Just validate that address is transparent correct address.
-      // If not Orchard, check if it's a transparent address (Orchard to
-      // Transparent)
+      // If not Orchard, check if it's a transparent address (Orchard/
+      // Ironwood to Transparent)
       auto transparent_validation_result =
           ValidateTransparentRecipientAddress(testnet, addr);
 
       if (transparent_validation_result.has_value()) {
-        return base::ok(mojom::ZCashTxType::kOrchardToTransparent);
+        return base::ok(from_ironwood
+                            ? mojom::ZCashTxType::kIronwoodToTransparent
+                            : mojom::ZCashTxType::kOrchardToTransparent);
       }
 
       return base::unexpected(orchard_validation_result.error());
@@ -443,10 +461,14 @@ ZCashWalletService::GetTransactionType(const mojom::AccountIdPtr& account_id,
         auto zcash_account_info =
             keyring_service_->GetZCashAccountInfo(account_info->account_id);
         if (zcash_account_info->orchard_internal_address == addr) {
-          return base::ok(mojom::ZCashTxType::kShielding);
+          return base::ok(ironwood_active
+                              ? mojom::ZCashTxType::kTransparentToIronwood
+                              : mojom::ZCashTxType::kShielding);
         }
       }
-      return base::ok(mojom::ZCashTxType::kTransparentToOrchard);
+      return base::ok(ironwood_active
+                          ? mojom::ZCashTxType::kTransparentToIronwood
+                          : mojom::ZCashTxType::kTransparentToOrchard);
     }
   }
 
@@ -464,10 +486,12 @@ ZCashWalletService::GetTransactionType(const mojom::AccountIdPtr& account_id,
 
 void ZCashWalletService::GetTransactionType(
     mojom::AccountIdPtr account_id,
-    bool use_shielded_pool,
+    mojom::ZCashTokenType from_token_type,
+    bool ironwood_active,
     const std::string& addr,
     GetTransactionTypeCallback callback) {
-  auto result = GetTransactionType(account_id, use_shielded_pool, addr);
+  auto result =
+      GetTransactionType(account_id, from_token_type, ironwood_active, addr);
   if (result.has_value()) {
     std::move(callback).Run(result.value(), mojom::ZCashAddressError::kNoError);
   } else {
@@ -796,6 +820,150 @@ void ZCashWalletService::OnCreateOrchardToTransparentTransactionTaskDone(
   CHECK(create_orchard_to_transparent_transaction_tasks_.erase(task));
 
   std::move(callback).Run(result);
+}
+
+void ZCashWalletService::CreateTransparentToIronwoodTransaction(
+    mojom::AccountIdPtr account_id,
+    const std::string& address_to,
+    uint64_t amount,
+    std::optional<OrchardMemo> memo,
+    CreateTransactionCallback callback) {
+  CHECK(IsZCashShieldedTransactionsEnabled());
+  auto receiver_addr = GetOrchardRawBytes(
+      address_to, IsZCashTestnetKeyring(account_id->keyring_id));
+  if (!receiver_addr) {
+    std::move(callback).Run(base::unexpected(WalletInternalErrorMessage()));
+    return;
+  }
+
+  auto [task_it, inserted] =
+      create_transparent_to_ironwood_transaction_tasks_.insert(
+          std::make_unique<ZCashCreateTransparentToIronwoodTransactionTask>(
+              base::PassKey<ZCashWalletService>(), *this,
+              CreateActionContext(account_id), *receiver_addr, std::move(memo),
+              amount));
+  CHECK(inserted);
+  auto* task_ptr = task_it->get();
+  task_ptr->Start(base::BindOnce(
+      &ZCashWalletService::OnCreateTransparentToIronwoodTransactionTaskDone,
+      weak_ptr_factory_.GetWeakPtr(), task_ptr, std::move(callback)));
+}
+
+void ZCashWalletService::OnCreateTransparentToIronwoodTransactionTaskDone(
+    ZCashCreateTransparentToIronwoodTransactionTask* task,
+    CreateTransactionCallback callback,
+    base::expected<ZCashTransaction, std::string> result) {
+  CHECK(create_transparent_to_ironwood_transaction_tasks_.erase(task));
+  std::move(callback).Run(result);
+}
+
+void ZCashWalletService::CreateIronwoodToIronwoodTransaction(
+    mojom::AccountIdPtr account_id,
+    const std::string& address_to,
+    uint64_t amount,
+    std::optional<OrchardMemo> memo,
+    CreateTransactionCallback callback) {
+  auto receiver_addr = GetOrchardRawBytes(
+      address_to, IsZCashTestnetKeyring(account_id->keyring_id));
+  if (!receiver_addr) {
+    std::move(callback).Run(base::unexpected(WalletInternalErrorMessage()));
+    return;
+  }
+
+  auto [task_it, inserted] =
+      create_ironwood_to_ironwood_transaction_tasks_.insert(
+          std::make_unique<ZCashCreateIronwoodToIronwoodTransactionTask>(
+              base::PassKey<ZCashWalletService>(), *this,
+              CreateActionContext(account_id), *receiver_addr, std::move(memo),
+              amount));
+  CHECK(inserted);
+  auto* task_ptr = task_it->get();
+  task_ptr->Start(base::BindOnce(
+      &ZCashWalletService::OnCreateIronwoodToIronwoodTransactionTaskDone,
+      weak_ptr_factory_.GetWeakPtr(), task_ptr, std::move(callback)));
+}
+
+void ZCashWalletService::OnCreateIronwoodToIronwoodTransactionTaskDone(
+    ZCashCreateIronwoodToIronwoodTransactionTask* task,
+    CreateTransactionCallback callback,
+    base::expected<ZCashTransaction, std::string> result) {
+  CHECK(create_ironwood_to_ironwood_transaction_tasks_.erase(task));
+  std::move(callback).Run(result);
+}
+
+void ZCashWalletService::CreateOrchardToIronwoodTransaction(
+    mojom::AccountIdPtr account_id,
+    const std::string& address_to,
+    uint64_t amount,
+    std::optional<OrchardMemo> memo,
+    CreateTransactionCallback callback) {
+  auto receiver_addr = GetOrchardRawBytes(
+      address_to, IsZCashTestnetKeyring(account_id->keyring_id));
+  if (!receiver_addr) {
+    std::move(callback).Run(base::unexpected(WalletInternalErrorMessage()));
+    return;
+  }
+
+  auto [task_it, inserted] =
+      create_orchard_to_ironwood_transaction_tasks_.insert(
+          std::make_unique<ZCashCreateOrchardToIronwoodTransactionTask>(
+              base::PassKey<ZCashWalletService>(), *this,
+              CreateActionContext(account_id), *receiver_addr, std::move(memo),
+              amount));
+  CHECK(inserted);
+  auto* task_ptr = task_it->get();
+  task_ptr->Start(base::BindOnce(
+      &ZCashWalletService::OnCreateOrchardToIronwoodTransactionTaskDone,
+      weak_ptr_factory_.GetWeakPtr(), task_ptr, std::move(callback)));
+}
+
+void ZCashWalletService::OnCreateOrchardToIronwoodTransactionTaskDone(
+    ZCashCreateOrchardToIronwoodTransactionTask* task,
+    CreateTransactionCallback callback,
+    base::expected<ZCashTransaction, std::string> result) {
+  CHECK(create_orchard_to_ironwood_transaction_tasks_.erase(task));
+  std::move(callback).Run(result);
+}
+
+void ZCashWalletService::CreateIronwoodToTransparentTransaction(
+    mojom::AccountIdPtr account_id,
+    const std::string& address_to,
+    uint64_t amount,
+    CreateTransactionCallback callback) {
+  CHECK(IsZCashShieldedTransactionsEnabled());
+
+  bool testnet = IsZCashTestnetKeyring(account_id->keyring_id);
+  auto validation_result =
+      ValidateTransparentRecipientAddress(testnet, address_to);
+  if (!validation_result.has_value()) {
+    std::move(callback).Run(base::unexpected(WalletInternalErrorMessage()));
+    return;
+  }
+
+  auto [task_it, inserted] =
+      create_ironwood_to_transparent_transaction_tasks_.insert(
+          std::make_unique<ZCashCreateIronwoodToTransparentTransactionTask>(
+              base::PassKey<ZCashWalletService>(), *this,
+              CreateActionContext(account_id), address_to, amount));
+  CHECK(inserted);
+  auto* task_ptr = task_it->get();
+  task_ptr->Start(base::BindOnce(
+      &ZCashWalletService::OnCreateIronwoodToTransparentTransactionTaskDone,
+      weak_ptr_factory_.GetWeakPtr(), task_ptr, std::move(callback)));
+}
+
+void ZCashWalletService::OnCreateIronwoodToTransparentTransactionTaskDone(
+    ZCashCreateIronwoodToTransparentTransactionTask* task,
+    CreateTransactionCallback callback,
+    base::expected<ZCashTransaction, std::string> result) {
+  CHECK(create_ironwood_to_transparent_transaction_tasks_.erase(task));
+  std::move(callback).Run(result);
+}
+
+void ZCashWalletService::GetLatestBlockForChain(
+    const std::string& chain_id,
+    ZCashRpc::GetLatestBlockCallback callback) {
+  zcash_rpc_->GetLatestBlock(chain_id, std::move(callback));
 }
 
 void ZCashWalletService::CreateShieldAllTransactionTaskDone(
