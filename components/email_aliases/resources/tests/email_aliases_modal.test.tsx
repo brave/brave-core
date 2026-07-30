@@ -270,6 +270,67 @@ describe('EmailAliasModal', () => {
     )
   })
 
+  it('does not show limit reached dialog in editing mode', async () => {
+    const atLimitAliases: Alias[] = Array.from({ length: 5 }, (_, i) => ({
+      email: `alias-${i}@bravealias.com`,
+      note: 'Existing Alias',
+      domains: undefined,
+    }))
+
+    const mockEditAlias: Alias = {
+      email: 'alias-0@bravealias.com',
+      note: 'Existing Alias',
+      domains: ['brave.com'],
+    }
+
+    render(
+      <EmailAliasModal
+        editing={true}
+        editAlias={mockEditAlias}
+        mainEmail={mockEmail}
+        aliases={atLimitAliases}
+        onReturnToMain={mockOnReturnToMain}
+        emailAliasesService={mockEmailAliasesService}
+      />,
+    )
+
+    // Check title
+    expect(
+      screen.getByText(S.SETTINGS_EMAIL_ALIASES_EDIT_ALIAS_TITLE),
+    ).toBeInTheDocument()
+
+    // Ensure limit-reached UI is not shown in editing mode
+    expect(
+      screen.queryByText(S.SETTINGS_EMAIL_ALIASES_LIMIT_REACHED_ALERT_TITLE),
+    ).not.toBeInTheDocument()
+    expect(mockEmailAliasesService.generateAlias).not.toHaveBeenCalled()
+
+    // Check that existing alias is displayed
+    expect(screen.getByText(/alias-0@bravealias\.com/)).toBeInTheDocument()
+    expect(
+      screen.getByPlaceholderText(
+        S.SETTINGS_EMAIL_ALIASES_EDIT_NOTE_PLACEHOLDER,
+      ),
+    ).toHaveValue('Existing Alias')
+
+    // Ensure the save button is enabled
+    const saveButton = screen.getByText(
+      S.SETTINGS_EMAIL_ALIASES_SAVE_ALIAS_BUTTON,
+    )
+    await waitFor(() => {
+      expect(saveButton).toHaveAttribute('isdisabled', 'false')
+    })
+
+    // Click save button
+    clickLeoButton(saveButton)
+
+    // Check that updateAlias was called
+    await waitFor(() => {
+      expect(mockEmailAliasesService.updateAlias).toHaveBeenCalled()
+      expect(mockOnReturnToMain).toHaveBeenCalled()
+    })
+  })
+
   it('shows loading state while generating alias', async () => {
     const aliasEmail = 'new@brave.com'
     mockEmailAliasesService.generateAlias = jest
