@@ -87,8 +87,6 @@ const CHANGE_PASSWORD_SERVER_ERROR_STRINGS: Partial<
     BraveAccountStrings.BRAVE_ACCOUNT_REGISTER_TOO_MANY_VERIFICATIONS,
   [ChangePasswordServerErrorCode.kDailyVerificationLimitReachedForEmail]:
     BraveAccountStrings.BRAVE_ACCOUNT_DAILY_VERIFICATION_LIMIT_REACHED_FOR_EMAIL,
-  [ChangePasswordServerErrorCode.kVerificationNotFoundOrInvalidIdOrCode]:
-    BraveAccountStrings.BRAVE_ACCOUNT_PASSWORD_RESET_VERIFICATION_NOT_FOUND_OR_INVALID_ID_OR_CODE,
   [ChangePasswordServerErrorCode.kEmailAlreadyVerified]:
     BraveAccountStrings.BRAVE_ACCOUNT_PASSWORD_RESET_EMAIL_ALREADY_VERIFIED,
   [ChangePasswordServerErrorCode.kMaximumCodeVerificationAttemptsExceeded]:
@@ -111,6 +109,8 @@ const LOGIN_SERVER_ERROR_STRINGS: Partial<
 > = {
   [LoginServerErrorCode.kEmailNotVerified]:
     BraveAccountStrings.BRAVE_ACCOUNT_LOGIN_EMAIL_NOT_VERIFIED,
+  [LoginServerErrorCode.kEmailDomainNotSupported]:
+    BraveAccountStrings.BRAVE_ACCOUNT_REGISTER_EMAIL_DOMAIN_NOT_SUPPORTED,
   [LoginServerErrorCode.kIncorrectEmail]:
     BraveAccountStrings.BRAVE_ACCOUNT_LOGIN_INCORRECT_EMAIL,
   [LoginServerErrorCode.kIncorrectPassword]:
@@ -130,8 +130,6 @@ const REGISTER_SERVER_ERROR_STRINGS: Partial<
     BraveAccountStrings.BRAVE_ACCOUNT_REGISTER_EMAIL_DOMAIN_NOT_SUPPORTED,
   [RegisterServerErrorCode.kTooManyVerifications]:
     BraveAccountStrings.BRAVE_ACCOUNT_REGISTER_TOO_MANY_VERIFICATIONS,
-  [RegisterServerErrorCode.kVerificationNotFoundOrInvalidIdOrCode]:
-    BraveAccountStrings.BRAVE_ACCOUNT_REGISTER_VERIFICATION_NOT_FOUND_OR_INVALID_ID_OR_CODE,
   [RegisterServerErrorCode.kMaximumCodeVerificationAttemptsExceeded]:
     BraveAccountStrings.BRAVE_ACCOUNT_REGISTER_MAXIMUM_CODE_VERIFICATION_ATTEMPTS_EXCEEDED,
   [RegisterServerErrorCode.kInvalidVerificationCode]:
@@ -172,12 +170,8 @@ const RESET_PASSWORD_SERVER_ERROR_STRINGS: Partial<
     BraveAccountStrings.BRAVE_ACCOUNT_ACCOUNT_DOES_NOT_EXIST,
   [ResetPasswordServerErrorCode.kEmailDomainNotSupported]:
     BraveAccountStrings.BRAVE_ACCOUNT_REGISTER_EMAIL_DOMAIN_NOT_SUPPORTED,
-  [ResetPasswordServerErrorCode.kFailedToSendEmailDueToInvalidFormat]:
-    BraveAccountStrings.BRAVE_ACCOUNT_FAILED_TO_SEND_EMAIL_DUE_TO_INVALID_FORMAT,
   [ResetPasswordServerErrorCode.kDailyVerificationLimitReachedForEmail]:
     BraveAccountStrings.BRAVE_ACCOUNT_DAILY_VERIFICATION_LIMIT_REACHED_FOR_EMAIL,
-  [ResetPasswordServerErrorCode.kVerificationNotFoundOrInvalidIdOrCode]:
-    BraveAccountStrings.BRAVE_ACCOUNT_PASSWORD_RESET_VERIFICATION_NOT_FOUND_OR_INVALID_ID_OR_CODE,
   [ResetPasswordServerErrorCode.kEmailAlreadyVerified]:
     BraveAccountStrings.BRAVE_ACCOUNT_PASSWORD_RESET_EMAIL_ALREADY_VERIFIED,
   [ResetPasswordServerErrorCode.kMaximumCodeVerificationAttemptsExceeded]:
