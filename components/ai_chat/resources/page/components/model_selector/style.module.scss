@@ -39,10 +39,11 @@
 }
 
 .buttonMenu {
-  --leo-menu-max-height: calc(100svh - 136px);
+  --leo-menu-max-height: min(500px, calc(100svh - 136px));
 }
 
 .menuBody {
+  // Leave room for the Leo popup chrome on viewport-constrained screens.
   --menu-body-max-height: min(500px, calc(100svh - 160px));
   --rail-button-size: 32px;
   // Detailed model row: 32px icon / 40px name+subtitle + item padding.
@@ -59,13 +60,6 @@
       var(--model-item-count, 0) * var(--model-row-height) +
       max(0, var(--model-item-count, 0) - 1) * var(--leo-spacing-s)
   );
-  // Fit the full filter rail and short model lists. Long model lists scroll
-  // once the menu reaches its 500px (or viewport-constrained) maximum.
-  --menu-body-height: min(
-    max(var(--rail-height), var(--model-list-height)),
-    var(--menu-body-max-height)
-  );
-
   display: flex;
   flex-direction: row;
   align-items: stretch;
@@ -73,7 +67,8 @@
   width: 320px;
   min-width: 320px;
   max-width: 320px;
-  height: var(--menu-body-height);
+  height: var(--model-list-height);
+  min-height: min(var(--rail-height), var(--menu-body-max-height));
   max-height: var(--menu-body-max-height);
   overflow: hidden;
   transition: height 250ms cubic-bezier(0.25, 1, 0.5, 1);
@@ -98,6 +93,7 @@
   border-inline-end: 1px solid var(--leo-color-divider-subtle);
   overflow-y: auto;
   box-sizing: border-box;
+  cursor: default;
 }
 
 .filterRailButton {
@@ -114,12 +110,7 @@
   color: inherit;
 
   &:hover {
-    background: var(--leo-color-container-interactive);
-
-    .filterRailIcon {
-      filter: none;
-      --leo-icon-color: var(--leo-color-icon-interactive);
-    }
+    background: var(--leo-color-container-highlight);
   }
 }
 
@@ -129,20 +120,22 @@
   // Brand SVGs are multicolor; grayscale keeps them monochrome until
   // hover/selected. Monochrome icons (pin, capabilities) are unaffected
   // in practice.
-  filter: grayscale(1);
   transition: filter 0.15s ease;
 }
 
 .filterRailButtonSelected {
-  background: var(--leo-color-primary-20);
+  background: var(--leo-color-container-interactive);
 
   &:hover {
-    background: var(--leo-color-primary-20);
+    background: var(--leo-color-container-highlight);
   }
 
   .filterRailIcon {
-    filter: none;
     --leo-icon-color: var(--leo-color-icon-interactive);
+
+    &:hover {
+      --leo-icon-color: var(--leo-color-icon-default);
+    }
   }
 }
 

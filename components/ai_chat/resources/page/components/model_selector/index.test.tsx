@@ -303,6 +303,12 @@ describe('ModelSelector', () => {
     renderModelSelector()
     await openMenu()
 
+    expect(
+      document.querySelector(
+        `button[data-testid="filter-rail-capability-${Mojom.ModelCapability.SEARCH}"]`,
+      ),
+    ).not.toBeInTheDocument()
+
     await clickRail(`capability-${Mojom.ModelCapability.FAST}`)
 
     await waitFor(() => {

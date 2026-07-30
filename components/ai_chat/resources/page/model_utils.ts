@@ -79,6 +79,9 @@ export function getRailEntries(models: Mojom.Model[]): RailEntry[] {
   ]
 
   for (const capability of getAvailableModelCapabilities(models)) {
+    if (capability === Mojom.ModelCapability.SEARCH) {
+      continue
+    }
     entries.push({
       key: `capability-${capability}`,
       label: getModelCapabilityLabel(capability),

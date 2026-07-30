@@ -32,7 +32,7 @@ export function FilterRail(props: Props) {
             text={entry.label}
             placement='top'
             positionStrategy='fixed'
-            mouseenterDelay={1000}
+            mouseenterDelay={1500}
           >
             <button
               type='button'
