@@ -10,6 +10,8 @@
 
 #include "build/build_config.h"
 
+class VerticalTabController;
+
 // Immersive mode requires special handling for vertical tabs, including
 // tracking the startup state of vertical tabs mode
 #if BUILDFLAG(IS_MAC)
