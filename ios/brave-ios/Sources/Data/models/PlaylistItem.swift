@@ -15,6 +15,7 @@ final public class PlaylistItem: NSManagedObject, CRUD, Identifiable {
   @NSManaged public var dateAdded: Date
   @NSManaged public var duration: TimeInterval
   @NSManaged public var lastPlayedOffset: TimeInterval
+  @NSManaged public var lastPlayedDate: Date?
   @NSManaged public var mediaSrc: String
   @NSManaged public var mimeType: String
   @NSManaged public var name: String
@@ -68,6 +69,7 @@ final public class PlaylistItem: NSManagedObject, CRUD, Identifiable {
     self.pageTitle = pageTitle
     self.pageSrc = pageSrc
     self.dateAdded = Date()
+    self.lastPlayedDate = self.dateAdded
     self.cachedData = cachedData
     self.duration = duration
     self.lastPlayedOffset = 0.0
@@ -382,6 +384,56 @@ final public class PlaylistItem: NSManagedObject, CRUD, Identifiable {
       }
       return false
     })
+  }
+
+  public static func updateLastPlayedDate(uuid: String, date: Date) {
+    guard itemExists(uuid: uuid) else { return }
+    DataController.perform(context: .new(inMemory: false), save: true) { context in
+      if let item = PlaylistItem.first(
+        where: NSPredicate(format: "uuid == %@", uuid),
+        context: context
+      ) {
+        item.lastPlayedDate = date
+      }
+    }
+  }
+
+  /// Sets `lastPlayedDate` to `dateAdded` for legacy rows that upgraded with a nil recency key.
+  /// `completion` is invoked on the main actor after the background write is completed; it receives `true`
+  /// only if fetch and save both succeeded (including the no-op case where nothing needed updating).
+  public static func migrateLastPlayedDate(completion: ((Bool) -> Void)? = nil) {
+    DataController.perform(context: .new(inMemory: false), save: false) { context in
+      var success = false
+      
+      defer {
+        if let completion {
+          Task { @MainActor in
+            completion(success)
+          }
+        }
+      }
+
+      do {
+        let request = NSFetchRequest<PlaylistItem>(entityName: "PlaylistItem")
+        request.predicate = NSPredicate(format: "lastPlayedDate == nil")
+        request.fetchBatchSize = 20
+        let items = try context.fetch(request)
+
+        for item in items {
+          item.lastPlayedDate = item.dateAdded
+        }
+
+        if context.hasChanges {
+          try context.save()
+        }
+
+        success = true
+      } catch {
+        Logger.module.error(
+          "PlaylistItem migrateLastPlayedDate failed: \(error.localizedDescription)"
+        )
+      }
+    }
   }
 
   public static func updateLastPlayed(

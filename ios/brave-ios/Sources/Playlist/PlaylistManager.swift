@@ -30,6 +30,7 @@ public class PlaylistManager: NSObject {
 
   private var _playbackTask: Task<Void, Error>?
 
+  public var currentlyPlayingItemIDProvider: (() -> String?)?
   public var playbackTask: Task<Void, Error>? {
     get {
       _playbackTask

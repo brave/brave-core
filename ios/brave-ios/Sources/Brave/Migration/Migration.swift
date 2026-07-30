@@ -321,6 +321,15 @@ extension Migration {
   /// Migrations that need to be run after data is loaded
   @MainActor public static func postDataLoadMigration() {
     migrateShieldLevel()
+    migratePlaylistLastPlayedDate()
+  }
+
+  @MainActor private static func migratePlaylistLastPlayedDate() {
+    guard !Preferences.Migration.playlistLastPlayedDateMigrationCompleted.value else { return }
+    PlaylistItem.migrateLastPlayedDate { success in
+      guard success else { return }
+      Preferences.Migration.playlistLastPlayedDateMigrationCompleted.value = true
+    }
   }
 
   /// Migrate the shield level from the previous on/off toggle to the new ShieldLevel picker
@@ -508,6 +517,12 @@ extension Preferences {
     /// Migrated sync passwords to enabled by default.
     static let syncPasswordsEnabledByDefault = Option<Bool>(
       key: "migration.sync-passwords-enabled-by-default",
+      default: false
+    )
+
+    /// Whether the one-time `lastPlayedDate` migration has completed after the Model36 upgrade.
+    static let playlistLastPlayedDateMigrationCompleted = Option<Bool>(
+      key: "migration.playlist-last-played-date-completed",
       default: false
     )
   }
