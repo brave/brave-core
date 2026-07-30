@@ -11,21 +11,31 @@
     }
 
     function install() {
-      function sendMessage(playing) {
-        webkit.messageHandlers.adsMediaReporting.postMessage({"securityToken": SECURITY_TOKEN, "data": {playing}});
+      // Identifies which video element a message is about, since a page can
+      // have more than one playing at once.
+      var nextPlayerId = 0;
+      var playerIds = new WeakMap();
+
+      function getPlayerId(video) {
+        var playerId = playerIds.get(video);
+        if (playerId === undefined) {
+          playerId = nextPlayerId++;
+          playerIds.set(video, playerId);
+        }
+        return playerId;
+      }
+
+      function sendMessage(playerId, playing) {
+        webkit.messageHandlers.adsMediaReporting.postMessage({"securityToken": SECURITY_TOKEN, "data": {playerId, playing}});
       }
 
       function checkVideoNode(node) {
         if (node.constructor.name == "HTMLVideoElement") {
-          hookVideoFunctions();
+          hookVideoElement(node);
         } else if (node instanceof HTMLElement) {
           // Some sites inject a container element that already has video
           // descendants, so the video itself is never a direct added node.
-          node.querySelectorAll('video').forEach(function(video) {
-            video.addEventListener('pause', mediaPaused, false);
-            video.addEventListener('playing', videoStateChanged, false);
-            video.addEventListener('volumechange', videoStateChanged, false);
-          });
+          node.querySelectorAll('video').forEach(hookVideoElement);
         }
       }
 
@@ -33,24 +43,26 @@
         return !video.paused && !video.muted;
       }
 
-      function mediaPaused() {
-        sendMessage(false)
+      function mediaPaused(event) {
+        sendMessage(getPlayerId(event.target), false)
       }
 
       function videoStateChanged(event) {
-        sendMessage(isPlayingVideoWithAudio(event.target))
+        sendMessage(getPlayerId(event.target), isPlayingVideoWithAudio(event.target))
       }
 
       function getVideoElements() {
         return document.querySelectorAll('video')
       }
 
+      function hookVideoElement(video) {
+        video.addEventListener('pause', mediaPaused, false);
+        video.addEventListener('playing', videoStateChanged, false);
+        video.addEventListener('volumechange', videoStateChanged, false);
+      }
+
       function hookVideoFunctions() {
-        getVideoElements().forEach(function (item) {
-          item.addEventListener('pause', mediaPaused, false);
-          item.addEventListener('playing', videoStateChanged, false);
-          item.addEventListener('volumechange', videoStateChanged, false);
-        });
+        getVideoElements().forEach(hookVideoElement);
       }
 
       var observer = new MutationObserver(function (mutations) {

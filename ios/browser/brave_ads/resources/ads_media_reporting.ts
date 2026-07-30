@@ -5,8 +5,25 @@
 
 import { sendWebKitMessage } from '//ios/web/public/js_messaging/resources/utils.js'
 
-function sendMessage(playing: boolean) {
-  sendWebKitMessage('AdsMediaReportingMessageHandler', { 'isPlaying': playing })
+// Identifies which video element a message is about, since a page can have
+// more than one playing at once.
+let nextPlayerId = 0
+const playerIds = new WeakMap<HTMLVideoElement, number>()
+
+function getPlayerId(video: HTMLVideoElement): number {
+  let playerId = playerIds.get(video)
+  if (playerId === undefined) {
+    playerId = nextPlayerId++
+    playerIds.set(video, playerId)
+  }
+  return playerId
+}
+
+function sendMessage(playerId: number, playing: boolean) {
+  sendWebKitMessage('AdsMediaReportingMessageHandler', {
+    'playerId': playerId,
+    'isPlaying': playing,
+  })
 }
 
 function isPlayingVideoWithAudio(video: HTMLVideoElement): boolean {
@@ -14,15 +31,16 @@ function isPlayingVideoWithAudio(video: HTMLVideoElement): boolean {
 }
 
 function hookVideoElement(video: HTMLVideoElement) {
-  video.addEventListener('pause', () => sendMessage(false), false)
+  const playerId = getPlayerId(video)
+  video.addEventListener('pause', () => sendMessage(playerId, false), false)
   video.addEventListener(
     'playing',
-    () => sendMessage(isPlayingVideoWithAudio(video)),
+    () => sendMessage(playerId, isPlayingVideoWithAudio(video)),
     false,
   )
   video.addEventListener(
     'volumechange',
-    () => sendMessage(isPlayingVideoWithAudio(video)),
+    () => sendMessage(playerId, isPlayingVideoWithAudio(video)),
     false,
   )
 }

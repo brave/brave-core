@@ -635,20 +635,20 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
 
 @implementation BraveWebView (AdsNotifier)
 
-- (void)notifyTabDidStartPlayingMedia {
+- (void)notifyTabDidStartPlayingMedia:(NSInteger)playerId {
   auto* adsTabHelper = brave_ads::AdsTabHelper::FromWebState(self.webState);
   if (!adsTabHelper) {
     return;
   }
-  adsTabHelper->NotifyTabDidStartPlayingMedia();
+  adsTabHelper->NotifyTabDidStartPlayingMedia(static_cast<int>(playerId));
 }
 
-- (void)notifyTabDidStopPlayingMedia {
+- (void)notifyTabDidStopPlayingMedia:(NSInteger)playerId {
   auto* adsTabHelper = brave_ads::AdsTabHelper::FromWebState(self.webState);
   if (!adsTabHelper) {
     return;
   }
-  adsTabHelper->NotifyTabDidStopPlayingMedia();
+  adsTabHelper->NotifyTabDidStopPlayingMedia(static_cast<int>(playerId));
 }
 
 @end
