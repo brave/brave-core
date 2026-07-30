@@ -7,6 +7,7 @@
 
 #include <optional>
 #include <string>
+#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -31,6 +32,25 @@ namespace ai_chat {
 
 namespace {
 
+// Serializes `tabs` as a list of {tab_id, title, url} dicts under `key`.
+std::string SerializeTabsUnderKey(
+    std::string_view key,
+    const std::vector<history_embeddings::OpenTabInfo>& tabs) {
+  base::ListValue list;
+  for (const auto& tab : tabs) {
+    base::DictValue entry;
+    entry.Set("tab_id", tab.tab_id);
+    entry.Set("title", tab.title);
+    entry.Set("url", tab.url.spec());
+    list.Append(std::move(entry));
+  }
+  base::DictValue root;
+  root.Set(key, std::move(list));
+  std::string serialized;
+  base::JSONWriter::Write(root, &serialized);
+  return serialized;
+}
+
 void OnRanked(Tool::UseToolCallback callback,
               std::vector<history_embeddings::OpenTabInfo> tabs) {
   std::string serialized = internal::BuildSemanticSearchResultsJson(tabs);
@@ -52,19 +72,7 @@ namespace internal {
 
 std::string BuildSemanticSearchResultsJson(
     const std::vector<history_embeddings::OpenTabInfo>& tabs) {
-  base::ListValue results_list;
-  for (const auto& tab : tabs) {
-    base::DictValue entry;
-    entry.Set("tab_id", tab.tab_id);
-    entry.Set("title", tab.title);
-    entry.Set("url", tab.url.spec());
-    results_list.Append(std::move(entry));
-  }
-  base::DictValue root;
-  root.Set("results", std::move(results_list));
-  std::string serialized;
-  base::JSONWriter::Write(root, &serialized);
-  return serialized;
+  return SerializeTabsUnderKey("results", tabs);
 }
 
 std::string BuildSemanticSearchTabSourcesJson(
