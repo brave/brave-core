@@ -25,17 +25,6 @@ substitutions:
               case brave::kPlaylistPageActionIconType:
                 break;
         #endif
-        #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
-              case brave::kWaybackMachineActionIconType:
-                AddPageActionIcon(
-                    type,
-                    std::make_unique<WaybackMachineActionIconView>(
-                        params.command_updater, params.browser,
-                        params.icon_label_bubble_delegate,
-                        params.page_action_icon_delegate),
-                    params);
-                break;
-        #endif
               case brave::kUndefinedPageActionIconType:
                 break;
 

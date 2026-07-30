@@ -63,6 +63,7 @@
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/devtools/devtools_ui_controller.h"
 #include "chrome/browser/devtools/devtools_window.h"
+#include "chrome/browser/ui/actions/chrome_action_id.h"
 #include "chrome/browser/ui/bookmarks/bookmark_tab_helper.h"
 #include "chrome/browser/ui/browser_actions.h"
 #include "chrome/browser/ui/browser_commands.h"
@@ -143,7 +144,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
-#include "brave/browser/ui/views/wayback_machine_bubble_view.h"
+#include "brave/browser/ui/views/page_action/wayback_machine_bubble_view.h"
 #endif
 
 namespace {
@@ -741,12 +742,18 @@ void BraveBrowserView::ShowPlaylistBubble() {
 
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
 void BraveBrowserView::ShowWaybackMachineBubble() {
-  if (auto* anchor = toolbar_button_provider()->GetPageActionIconView(
-          brave::kWaybackMachineActionIconType)) {
-    DCHECK(anchor->GetVisible());
-    // Launch bubble with this anchor.
-    WaybackMachineBubbleView::Show(browser(), anchor);
+  views::View* const anchor =
+      toolbar_button_provider()
+          ->GetPageActionBubbleAnchor(kActionShowWaybackMachine)
+          .GetIfView();
+  if (!anchor) {
+    return;
   }
+
+  auto* item = actions::ActionManager::Get().FindAction(
+      kActionShowWaybackMachine, browser()->GetActions()->root_action_item());
+  WaybackMachineBubbleView::Show(
+      browser()->tab_strip_model()->GetActiveWebContents(), anchor, item);
 }
 #endif
 
