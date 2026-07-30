@@ -16,8 +16,6 @@ import getBraveNewsController from './shared/api'
 import { BraveNewsContextProvider, useBraveNews } from './shared/Context'
 import './strings'
 
-setIconBasePath('//resources/brave-icons')
-
 const Root = styled(Variables)`
   /* Consumed by SidebarMenu to position its slide-out beneath the header. */
   --bn-top-bar-height: 56px;
@@ -83,6 +81,11 @@ export function Sidebar() {
 // module import-safe for Storybook, which renders <Sidebar /> directly.
 const root = document.getElementById('root')
 if (root) {
+  // Note: must stay inside the guard. The icon base path is global and applies
+  // retroactively to every mounted icon, so setting it on import would break
+  // icons for Storybook, which can't load `//resources` URLs.
+  setIconBasePath('//resources/brave-icons')
+
   createRoot(root).render(
     <StyledComponentsProvider>
       <BraveNewsContextProvider openArticlesInNewTab={false}>
