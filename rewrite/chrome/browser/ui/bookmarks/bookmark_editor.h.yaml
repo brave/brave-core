@@ -14,4 +14,7 @@ substitutions:
       line at the hunk boundary (presubmit CheckPatchFile).
     regex:
       pattern: "    BookmarkData bookmark_data;\n\n   private:"
-      replace: "    BookmarkData bookmark_data;\n\n    // When set, overrides GetWindowTitleId() (e.g. \"Bookmark selected tabs\").\n    std::optional<int> window_title_id;\n   private:"
+      replace:
+        "    BookmarkData bookmark_data;\n\n    // When set, overrides
+        GetWindowTitleId() (e.g. \"Bookmark selected
+        tabs\").\n    std::optional<int> window_title_id;\n   private:"
