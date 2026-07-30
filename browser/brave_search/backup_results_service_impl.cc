@@ -66,7 +66,7 @@
 #if BUILDFLAG(IS_ANDROID)
 #include "base/android/jni_android.h"
 #include "base/android/scoped_java_ref.h"
-#include "brave/build/android/jni_headers/BackupResultsWindowFactory_jni.h"
+#include "brave/android/java/org/chromium/chrome/browser/brave_search/jni_headers/BackupResultsWindowFactory_jni.h"
 #include "ui/android/view_android.h"
 #include "ui/android/window_android.h"
 #else
