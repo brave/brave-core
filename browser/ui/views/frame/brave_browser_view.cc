@@ -208,6 +208,35 @@ class BraveBrowserView::BrowserWindowMouseEventHandler
   // ui::EventObserver overrides:
   void OnEvent(const ui::Event& event) override {
     if (event.type() == ui::EventType::kMouseMoved) {
+      const gfx::PointF point_in_screen(
+          display::Screen::Get()->GetCursorScreenPoint());
+
+      gfx::NativeWindow window_under_cursor =
+          display::Screen::Get()->GetWindowAtScreenPoint(
+              gfx::ToFlooredPoint(point_in_screen));
+
+      if (window_under_cursor) {
+        views::Widget* top_level_widget =
+            views::Widget::GetTopLevelWidgetForNativeView(window_under_cursor);
+
+        bool is_our_widget = (top_level_widget == browser_view_->GetWidget());
+
+#if BUILDFLAG(IS_MAC)
+        if (!is_our_widget && browser_view_->immersive_mode_controller() &&
+            browser_view_->immersive_mode_controller()->IsEnabled()) {
+          views::Widget* overlay_widget =
+              browser_view_->immersive_mode_controller()->overlay_widget();
+          if (overlay_widget && top_level_widget == overlay_widget) {
+            is_our_widget = true;
+          }
+        }
+#endif
+
+        if (!is_our_widget) {
+          return;
+        }
+      }
+
       browser_view_->HandleBrowserWindowMouseEvent(*event.AsMouseEvent());
       return;
     }
