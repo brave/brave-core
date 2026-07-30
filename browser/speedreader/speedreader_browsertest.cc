@@ -1202,7 +1202,7 @@ class SpeedReaderContentSpoofBrowserTest : public SpeedReaderBrowserTest {
   // Turns the reader mode on. Speedreader distills the current document and
   // reloads the page to show the distilled content.
   void TurnOnReaderMode() {
-    browser()->command_controller()->ExecuteCommand(
+    chrome::BrowserCommandController::From(browser())->ExecuteCommand(
         IDC_SPEEDREADER_ICON_ONCLICK);
   }
 
