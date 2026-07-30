@@ -74,8 +74,6 @@ brave_settings_web_component_files = [
 
 brave_settings_ts_files = [
   "ad_block_only_mode_page/ad_block_only_mode_mixin.ts",
-  "br/a11y_page.ts",
-  "br/a11y_page_index.ts",
   "br/all_sites.ts",
   "br/about_page.ts",
   "br/autofill_page.ts",
