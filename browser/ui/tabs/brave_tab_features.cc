@@ -138,6 +138,16 @@ void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
     speedreader_page_action_controller_->Init();
   }
 #endif
+
+#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
+  if (base::FeatureList::IsEnabled(features::kPageActionsMigration) &&
+      page_action_controller()->ActionExists(kActionShowWaybackMachine)) {
+    wayback_machine_page_action_controller_ =
+        std::make_unique<page_actions::WaybackMachinePageActionController>(
+            tab, *page_action_controller());
+    wayback_machine_page_action_controller_->Init();
+  }
+#endif
 }
 
 }  // namespace tabs
