@@ -72,6 +72,7 @@ class BraveTabMenuModel : public TabMenuModel {
 
   raw_ptr<sessions::TabRestoreService> restore_service_ = nullptr;
   raw_ptr<VerticalTabController> vertical_tab_controller_ = nullptr;
+  bool all_muted_ = false;
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
   std::unique_ptr<containers::ContainersMenuModel::Delegate>
