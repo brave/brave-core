@@ -201,6 +201,22 @@ IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest,
   EXPECT_THAT(output, HasSubstr("Failed to fetch"));
 }
 
+IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest, WebRTCBlocked) {
+  std::string script = R"(
+    try {
+      new RTCPeerConnection();
+      console.log('RTCPeerConnection was not blocked');
+    } catch (e) {
+      console.log(e.name + ': ' + e.message);
+    }
+  )";
+
+  std::string output;
+  ExecuteCode(script, &output);
+  EXPECT_THAT(output,
+              HasSubstr("NotAllowedError: RTCPeerConnection is not allowed"));
+}
+
 IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest, ExecutionTimeout) {
   tool_->SetExecutionTimeLimitForTesting(base::Seconds(2));
 
