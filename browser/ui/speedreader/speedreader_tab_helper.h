@@ -59,6 +59,10 @@ class SpeedreaderTabHelper
 
     virtual void OnTuneBubbleClosed() {}
     virtual void OnContentsReady() {}
+
+    // Called whenever the tab's distill state may have changed, so observers
+    // can refresh anything derived from `PageDistillState()`.
+    virtual void OnDistillStateUpdated() {}
   };
 
   ~SpeedreaderTabHelper() override;

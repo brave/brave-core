@@ -24,6 +24,14 @@ bool IsPageActionMigrated(PageActionIconType page_action) {
     return true;
   }
 
+  if (page_action == brave::kSpeedreaderPageActionIconType ||
+      page_action == brave::kWaybackMachineActionIconType ||
+      page_action == brave::kPlaylistPageActionIconType) {
+    // Speedreader, Wayback Machine and Playlist page actions are based on the
+    // new framework for page action.
+    return true;
+  }
+
   if (page_action == PageActionIconType::kBookmarkStar) {
     // Brave hides the location bar bookmark star (we have our own bookmark
     // button in the toolbar). `kBookmarkStar` is now unconditionally on the new
