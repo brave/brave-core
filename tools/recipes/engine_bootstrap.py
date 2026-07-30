@@ -31,6 +31,7 @@ import logging
 import os
 from pathlib import Path
 import shutil
+import stat
 import subprocess
 import sys
 
@@ -62,6 +63,24 @@ def _run(*cmd: str | Path, cwd: str | Path | None = None) -> None:
     subprocess.run([str(arg) for arg in cmd], cwd=cwd, check=True)
 
 
+def _rmtree(path: str | Path) -> None:
+    """Remove *path* recursively, clearing the read-only bit first.
+
+    Plain `shutil.rmtree` fails on Windows for a git checkout's packed objects
+    (`.git/objects/pack/*.idx`/`*.pack`), which git writes read-only. A missing
+    *path* is a no-op.
+    """
+    path = Path(path)
+    if not path.exists():
+        return
+
+    def _make_writable_and_retry(func, target, _exc_info):
+        os.chmod(target, stat.S_IWRITE)
+        func(target)
+
+    shutil.rmtree(path, onerror=_make_writable_and_retry)
+
+
 def _deploy_recipes(dest: str | Path) -> Path:
     """Shallow-, sparse-clone brave-core's `tools/recipes/` into *dest*.
 
@@ -74,7 +93,7 @@ def _deploy_recipes(dest: str | Path) -> Path:
 
     if dest.exists():
         logging.info('Removing existing checkout at %s', dest)
-        shutil.rmtree(dest)
+        _rmtree(dest)
 
     dest.parent.mkdir(parents=True, exist_ok=True)
     _run('git', 'clone', '--depth', '2', '--filter=blob:none', '--sparse',
@@ -105,7 +124,7 @@ def _deploy_depot_tools(dest: str | Path) -> Path:
 
     if dest.exists():
         logging.info('Removing incomplete depot_tools at %s', dest)
-        shutil.rmtree(dest)
+        _rmtree(dest)
 
     dest.parent.mkdir(parents=True, exist_ok=True)
     _run('git', 'clone', '--depth', '1', DEPOT_TOOLS_URL, dest)

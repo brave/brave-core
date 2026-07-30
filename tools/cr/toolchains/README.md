@@ -5,13 +5,16 @@ This directory contains scripts for relating to the browser toolchains
 
 ## Scripts
 
-### `build_rust_toolchain.py`
+We have the following scripts to build toolchains that can be used during the
+build:
 
-Builds and packages a minimal Rust toolchain subset for Chromium: the `rust-lld`
-linker and the `wasm32-unknown-unknown` stage-1 standard-library sysroot. The
-output is a `.tar.xz` archive ready for upload to GCS.
-
-Pass `--help` for the full list of options.
+- `build_rust_toolchain.py`: The Rust/WASM toolchain, necessary to build the
+  code and the WASM bits.
+- `build_xcode_toolchain.py`: The Xcode toolchain, which can be optionally
+  provided to build Brave without having to install Xcode.
+- `build_windows_toolchain.py`: The Windows toolchain that can be optionally
+  used to build Brave without having a Visual Studio install, or to cross-
+  compile Brave.
 
 ### Reproducibility
 
@@ -37,15 +40,3 @@ the final section of the tarball filename, so bumping it produces a fresh URL.
 This control is important for cases where there are changes on our end for how
 the toolchain should be generated, and a new distinct archive is necessary for a
 toolchain already in use.
-
-### `build_xcode_toolchain.py`
-
-macOS-only. Builds a hermetic, reproducible Xcode toolchain archive from the
-local Xcode.app installation. The archive contains the subset of files listed in
-Chromium's `build/xcode_binaries.yaml` plus the on-demand Metal toolchain, with
-all archive metadata zeroed for reproducible builds.
-
-The output filename encodes the Xcode and SDK versions and is consumed by
-`brockit update-xcode-toolchain` to pin Brave's
-`build/mac/download_hermetic_xcode.py`. Pass `--help` for the full list of
-options. See the script's module docstring for the archive filename format.

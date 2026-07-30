@@ -21,7 +21,8 @@ from git_status import GitStatus
 import install_extra_deps
 import repository
 from terminal import terminal
-from toolchains import build_rust_toolchain, build_xcode_toolchain
+from toolchains import (build_rust_toolchain, build_windows_toolchain,
+                        build_xcode_toolchain)
 from versioning import Version
 
 # ---------------------------------------------------------------------------
@@ -54,13 +55,22 @@ TOOLCHAINS = {
             'keys': ('SDK_VERSION', 'TOOLCHAIN_HASH'),
         },
         'ci': {
-            'build_param': 'CHROMIUM_TAG',
             'jobs': ('https://ci.brave.com/view/toolchains/job/'
                      'windows-hermetic-toolchain-build/', ),
+            # The job takes no build parameter and instead reads a JSON
+            # PROPERTIES payload, like the Rust jobs; `chromium_ref` is
+            # auto-filled from the triggered version (see
+            # `Toolchain._properties_payload`).
+            'properties': ('chromium_ref', ),
         },
-        'advice': ('Contact DevOps regarding the new WinSDK for the hermetic '
-                   'toolchain. Update `env.GYP_MSVS_HASH_*` in '
-                   'build/commands/lib/config.js with correct hashes.'),
+        'repin': {
+            'script': 'build/commands/lib/config.ts',
+        },
+        'advice': ('Generate the new toolchain in '
+                   'https://ci.brave.com/view/toolchains/ (or via '
+                   '`brockit.py gen-windows-toolchain`), then call '
+                   '`brockit.py update-windows-toolchain --to=<chromium-ref>` '
+                   'to repin it.'),
     },
     'xcode': {
         'label': 'macOS SDK',
@@ -169,7 +179,8 @@ class ToolchainSpec:
 
     # Repin particulars (absent for toolchains with no automated repin):
     #   installer            -- Brave file whose pin the Rust `repin` rewrites.
-    #   script               -- Brave file whose pin the Xcode `repin` rewrites.
+    #   script               -- Brave file whose pin the Xcode/Windows `repin`
+    #                           rewrites.
     #   upstream_min_os_file -- Chromium file the Xcode `repin` mirrors the
     #                           `MAC_MINIMUM_OS_VERSION` block from.
     installer: str | None = None
@@ -810,11 +821,93 @@ class XcodeToolchain(Toolchain):
 class WindowsToolchain(Toolchain):
     """The hermetic Windows SDK / VS toolchain.
 
-    Detection and CI triggering are fully data-driven via the base class; the
-    in-tree pin lives in a Brave build script that has no automated repin, so
-    `repin` falls back to the base class's "not automated" error.
+    We rely on gclient's toolchain override with a
+    `env.GYP_MSVS_HASH_<TOOLCHAIN_HASH> = '<hash>'` entry in
+    `build/commands/lib/config.ts`.
     """
+
+    _GYP_MSVS_HASH_RE = re.compile(r"env\.GYP_MSVS_HASH_\w+ = '[^']*'")
 
     def __init__(self) -> None:
         super().__init__(
             ToolchainSpec.from_entry('windows', TOOLCHAINS['windows']))
+
+    def recover(self, target: Version, culprit: str) -> bool:
+        """Trigger the Windows toolchain job, watch it, and repin on success.
+        """
+        try:
+            if not self.trigger(target, watch=True):
+                return False
+            self.repin(target, culprit)
+        except (InvalidInputException, BadOutcomeException):
+            return False
+        return True
+
+    def _rewrite_config_ts(self, sdk_info: build_windows_toolchain.WinSdkInfo,
+                           index: dict) -> bool:
+        """Pins the `GYP_MSVS_HASH_<hash>` override in `config.ts`.
+
+        Returns True if the on-disk file actually changed, False when it was
+        already pinned to these exact values (so the caller can skip
+        committing).
+        """
+        script_path = repository.brave.root / self.spec.script
+        original = script_path.read_bytes().decode('utf-8')
+        replacement = (f"env.GYP_MSVS_HASH_{sdk_info.toolchain_hash} = "
+                       f"'{index['hash']}'")
+        content, count = self._GYP_MSVS_HASH_RE.subn(replacement,
+                                                     original,
+                                                     count=1)
+        if count == 0:
+            raise InvalidInputException(
+                'Could not find a `env.GYP_MSVS_HASH_<hash> = \'<hash>\'` '
+                f'override to rewrite in {self.spec.script}.')
+        if content == original:
+            return False
+
+        script_path.write_text(content, encoding='utf-8', newline='')
+        return True
+
+    # This toolchain takes no extra repin arguments, unlike the base's
+    # `**kwargs` catch-all; see the base `repin`'s docstring.
+    # pylint: disable=arguments-differ
+    def repin(self, version: Version, culprit: str | None = None) -> None:
+        """Repins `build/commands/lib/config.ts`'s `GYP_MSVS_HASH_*` override.
+
+        Reads the `SDK_VERSION`/`TOOLCHAIN_HASH`/packaged-VS pins from
+        Chromium's `build/vs_toolchain.py` at `version`, downloads the
+        matching published toolchain index, and rewrites the `GYP_MSVS_HASH_*`
+        override.
+        """
+        self._require_no_staged_files()
+
+        ref = str(version)
+        vs_toolchain_py = repository.chromium.read_file(self.spec.files[0],
+                                                        commit=ref)
+        try:
+            sdk_info = (build_windows_toolchain.WinSdkInfo.
+                        from_vs_toolchain_py(vs_toolchain_py))
+        except RuntimeError as e:
+            raise BadOutcomeException(str(e)) from e
+
+        try:
+            index = build_windows_toolchain.fetch_published_index(sdk_info)
+        except RuntimeError as e:
+            raise BadOutcomeException(str(e)) from e
+
+        if not self._rewrite_config_ts(sdk_info, index):
+            raise InvalidInputException(
+                f'{self.spec.script} is already pinned to these values; '
+                'nothing to commit.')
+
+        commit_hash = self.find_culprit(ref, culprit)
+        title = (f'Switch to Windows SDK {sdk_info.sdk_version_in_comment} '
+                 f'({index["installed_vs_display_name"]} '
+                 f'{index["installed_vs_version"]})')
+        repository.brave.run_git('add', self.spec.script)
+        repository.brave.git_commit(title,
+                                    env={
+                                        **os.environ,
+                                        'tags': 'toolchain',
+                                        'culprit': commit_hash,
+                                    })

@@ -244,9 +244,22 @@ class TriggerTest(unittest.TestCase):
                                                    brave_subrevision=1)
         launcher.trigger.assert_not_called()
 
-    def test_windows_triggers_single_job(self):
-        launcher = self._trigger(toolchain.WindowsToolchain())
-        self.assertEqual(len(launcher.trigger.call_args.args[0]), 1)
+    def test_windows_codifies_properties_and_no_build_param(self):
+        spec = toolchain.WindowsToolchain().spec
+        self.assertIsNone(spec.build_param)
+        self.assertEqual(spec.properties, ('chromium_ref', ))
+
+    def test_windows_triggers_single_job_with_properties_payload(self):
+        windows = toolchain.WindowsToolchain()
+        launcher = self._trigger(windows)
+        args, kwargs = launcher.trigger.call_args
+        self.assertEqual(args[0], windows.spec.job_urls)
+        self.assertEqual(len(args[0]), 1)
+        # Like Rust, Windows has no build parameter; the tag rides in the
+        # PROPERTIES payload instead, filled from the triggered version under
+        # the same `chromium_ref` name Rust uses.
+        self.assertEqual(kwargs['params'], {})
+        self.assertEqual(kwargs['properties'], {'chromium_ref': CHROMIUM_TAG})
 
 
 # ---------------------------------------------------------------------------
@@ -600,6 +613,206 @@ class XcodeRepinTest(_FakeRepoTest):
             self.xcode.repin(Version(CHROMIUM_TAG), culprit='deadbeef')
 
 
+# Fixtures for the windows repin test.
+CONFIG_TS_INITIAL = """\
+if (!this.useBraveHermeticToolchain) {
+  env.DEPOT_TOOLS_WIN_TOOLCHAIN = '0'
+} else {
+  env.USE_BRAVE_HERMETIC_TOOLCHAIN = '1'
+  env.DEPOT_TOOLS_WIN_TOOLCHAIN = '1'
+  env.GYP_MSVS_HASH_oldhash123a = 'oldhash123a'
+  env.DEPOT_TOOLS_WIN_TOOLCHAIN_BASE_URL = `${this.internalDepsUrl}/windows-hermetic-toolchain/`
+}
+"""
+
+VS_TOOLCHAIN_PY_INITIAL = """\
+# VS 2026 18 with 10.0.26100.0 SDK with ARM64 libraries and UWP support.
+TOOLCHAIN_HASH = 'oldhash123a'
+SDK_VERSION = '10.0.26100.0'
+
+MSVS_VERSIONS = collections.OrderedDict([
+    ('2026', '18.0'),  # The VS version in our packaged toolchain.
+    ('2022', '17.0'),
+])
+"""
+
+VS_TOOLCHAIN_PY_BUMPED = """\
+# VS 2026 18 with 10.0.28000.2270 SDK with ARM64 libraries and UWP support.
+TOOLCHAIN_HASH = '3bfcb536c8'
+SDK_VERSION = '10.0.28000.0'
+
+MSVS_VERSIONS = collections.OrderedDict([
+    ('2026', '18.0'),  # The VS version in our packaged toolchain.
+    ('2022', '17.0'),
+])
+"""
+
+# Deliberately distinct from the upstream `TOOLCHAIN_HASH` above (`3bfcb536c8`)
+# -- that's the whole point of the `GYP_MSVS_HASH_<upstream>` indirection:
+# Microsoft's own toolchain build is not always byte-reproducible, so Brave's
+# actual published hash can differ from what upstream produced for the same
+# pin.
+FAKE_WINDOWS_INDEX = {
+    'url': ('https://example.invalid/windows-hermetic-toolchain/'
+            'aaaa111122.zip'),
+    'sha256sum': 'c' * 64,
+    'size_bytes': 123456789,
+    'hash': 'aaaa111122',
+    'sdk_version': '10.0.28000.0',
+    'sdk_version_in_comment': '10.0.28000.2270',
+    'upstream_toolchain_hash': '3bfcb536c8',
+    'upstream_vs_version': '18.0',
+    'installed_vs_version': '18.2.34567.89',
+    'installed_vs_display_name': 'Visual Studio Community 2026',
+    'chromium_tag': CHROMIUM_TAG,
+    'brave_core_commit': 'deadbeef',
+}
+
+
+class WindowsRepinTest(_FakeRepoTest):
+    """End-to-end `WindowsToolchain.repin` against a `FakeChromiumRepo`."""
+
+    def setUp(self):
+        super().setUp()
+        self.windows = toolchain.WindowsToolchain()
+        self._seed_config_ts()
+        patcher = patch.object(toolchain.build_windows_toolchain,
+                               'fetch_published_index',
+                               return_value=FAKE_WINDOWS_INDEX)
+        self.fetch_index = patcher.start()
+        self.addCleanup(patcher.stop)
+
+    def _seed_config_ts(self, content: str = CONFIG_TS_INITIAL) -> None:
+        script_path = self.repo.brave / self.windows.spec.script
+        script_path.parent.mkdir(parents=True, exist_ok=True)
+        script_path.write_text(content, encoding='utf-8', newline='')
+        self.repo._run_git_command(['add', str(script_path)], self.repo.brave)
+        self.repo._run_git_command(
+            ['commit', '--no-verify', '-m', 'Seed config.ts'], self.repo.brave)
+
+    def _seed_vs_toolchain_bump(self) -> str:
+        vs_toolchain = self.repo.chromium / 'build' / 'vs_toolchain.py'
+        vs_toolchain.parent.mkdir(parents=True, exist_ok=True)
+        vs_toolchain.write_text(VS_TOOLCHAIN_PY_INITIAL,
+                                encoding='utf-8',
+                                newline='')
+        self.repo._run_git_command(['add', str(vs_toolchain)],
+                                   self.repo.chromium)
+        self.repo._run_git_command(['commit', '-m', 'win: initial SDK pin'],
+                                   self.repo.chromium)
+
+        vs_toolchain.write_text(VS_TOOLCHAIN_PY_BUMPED,
+                                encoding='utf-8',
+                                newline='')
+        self.repo._run_git_command(['add', str(vs_toolchain)],
+                                   self.repo.chromium)
+        culprit = self.repo.commit('win: Switch to SDK 10.0.28000.2270',
+                                   self.repo.chromium)
+        self.repo._run_git_command(['tag', CHROMIUM_TAG], self.repo.chromium)
+        return culprit
+
+    def _read_config_ts(self) -> str:
+        return (self.repo.brave /
+                self.windows.spec.script).read_text(encoding='utf-8')
+
+    def test_gyp_msvs_hash_rewritten_and_committed(self):
+        culprit = self._seed_vs_toolchain_bump()
+
+        self.windows.repin(Version(CHROMIUM_TAG), culprit=None)
+
+        config = self._read_config_ts()
+        self.assertIn("env.GYP_MSVS_HASH_3bfcb536c8 = 'aaaa111122'", config)
+        self.assertNotIn('GYP_MSVS_HASH_oldhash123a', config)
+        # Surrounding, untouched lines survive byte for byte.
+        self.assertIn('DEPOT_TOOLS_WIN_TOOLCHAIN_BASE_URL', config)
+        self.assertIn('USE_BRAVE_HERMETIC_TOOLCHAIN', config)
+
+        expected_sdk_info = toolchain.build_windows_toolchain.WinSdkInfo(
+            sdk_version='10.0.28000.0',
+            toolchain_hash='3bfcb536c8',
+            sdk_version_in_comment='10.0.28000.2270',
+            vs_year='2026',
+            vs_version='18.0')
+        self.assertEqual(self.fetch_index.call_args.args[0], expected_sdk_info)
+
+        message = self._last_brave_message()
+        subject = message.splitlines()[0]
+        self.assertIn('[cr150]', subject)
+        self.assertIn('[toolchain]', subject)
+        self.assertIn(
+            'Switch to Windows SDK 10.0.28000.2270 '
+            '(Visual Studio Community 2026 18.2.34567.89)', subject)
+        self.assertIn(
+            f'https://chromium.googlesource.com/chromium/src/+/{culprit}',
+            message)
+        self.assertIn('win: Switch to SDK 10.0.28000.2270', message)
+
+    def test_culprit_override_skips_auto_detection(self):
+        autodetect = self._seed_vs_toolchain_bump()
+        self.repo.write_and_stage_file('docs/unrelated.txt', 'noise\n',
+                                       self.repo.chromium)
+        override = self.repo.commit('Unrelated chromium change',
+                                    self.repo.chromium)
+
+        self.windows.repin(Version(CHROMIUM_TAG), culprit=override)
+
+        message = self._last_brave_message()
+        self.assertIn(
+            f'https://chromium.googlesource.com/chromium/src/+/{override}',
+            message)
+        self.assertIn('Unrelated chromium change', message)
+        self.assertNotIn(autodetect, message)
+
+    def test_already_pinned_second_run_raises(self):
+        self._seed_vs_toolchain_bump()
+
+        self.windows.repin(Version(CHROMIUM_TAG), culprit=None)
+        head_after_first = self._brave_head()
+
+        with self.assertRaises(toolchain.InvalidInputException):
+            self.windows.repin(Version(CHROMIUM_TAG), culprit=None)
+        self.assertEqual(self._brave_head(), head_after_first)
+
+    def test_index_fetch_failure_raises(self):
+        self._seed_vs_toolchain_bump()
+        self.fetch_index.side_effect = RuntimeError('index not found')
+        head_before = self._brave_head()
+
+        with self.assertRaises(toolchain.BadOutcomeException):
+            self.windows.repin(Version(CHROMIUM_TAG), culprit=None)
+        self.assertEqual(self._brave_head(), head_before)
+
+    def test_malformed_vs_toolchain_py_raises(self):
+        vs_toolchain = self.repo.chromium / 'build' / 'vs_toolchain.py'
+        vs_toolchain.parent.mkdir(parents=True, exist_ok=True)
+        vs_toolchain.write_text('# nothing useful here\n',
+                                encoding='utf-8',
+                                newline='')
+        self.repo._run_git_command(['add', str(vs_toolchain)],
+                                   self.repo.chromium)
+        self.repo.commit('win: malformed', self.repo.chromium)
+        self.repo._run_git_command(['tag', CHROMIUM_TAG], self.repo.chromium)
+        head_before = self._brave_head()
+
+        with self.assertRaises(toolchain.BadOutcomeException):
+            self.windows.repin(Version(CHROMIUM_TAG), culprit=None)
+        self.assertEqual(self._brave_head(), head_before)
+
+    def test_missing_gyp_msvs_hash_override_raises(self):
+        self._seed_config_ts(content='// no override here\n')
+        self._seed_vs_toolchain_bump()
+        head_before = self._brave_head()
+
+        with self.assertRaises(toolchain.InvalidInputException):
+            self.windows.repin(Version(CHROMIUM_TAG), culprit=None)
+        self.assertEqual(self._brave_head(), head_before)
+
+    def test_staged_files_block_the_update(self):
+        self.repo.write_and_stage_file('staged.txt', 'wip\n', self.repo.brave)
+        with self.assertRaises(toolchain.InvalidInputException):
+            self.windows.repin(Version(CHROMIUM_TAG), culprit='deadbeef')
+
+
 class DetectionTest(_FakeRepoTest):
     """`was_updated`, `find_culprit`, and `check` against a fake repo."""
 
@@ -707,10 +920,11 @@ class IsPublishedTest(unittest.TestCase):
 
 
 class RecoverTest(unittest.TestCase):
-    """`recover` closes the loop for Rust and is a no-op for the rest."""
+    """`recover` closes the loop for Rust/Windows and is a no-op for Xcode."""
 
     def setUp(self):
         self.rust = toolchain.RustToolchain()
+        self.windows = toolchain.WindowsToolchain()
         self.version = Version(CHROMIUM_TAG)
 
     def test_success_triggers_watches_and_repins(self):
@@ -750,6 +964,36 @@ class RecoverTest(unittest.TestCase):
         # A toolchain without an override never recovers, so its advisory
         # always survives for the user.
         self.assertFalse(toolchain.XcodeToolchain().recover(self.version, 'h'))
+
+    def test_windows_success_triggers_watches_and_repins(self):
+        with patch.object(self.windows, 'trigger',
+                          return_value=True) as trigger, \
+                patch.object(self.windows, 'repin') as repin:
+            recovered = self.windows.recover(self.version, 'culprithash')
+
+        self.assertTrue(recovered)
+        trigger.assert_called_once_with(self.version, watch=True)
+        repin.assert_called_once_with(self.version, 'culprithash')
+
+    def test_windows_failed_build_keeps_advisory(self):
+        with patch.object(self.windows, 'trigger', return_value=False), \
+                patch.object(self.windows, 'repin') as repin:
+            self.assertFalse(self.windows.recover(self.version, 'h'))
+        repin.assert_not_called()
+
+    def test_windows_missing_credentials_keeps_advisory(self):
+        with patch.object(
+                self.windows,
+                'trigger',
+                side_effect=toolchain.InvalidInputException('creds')):
+            self.assertFalse(self.windows.recover(self.version, 'h'))
+
+    def test_windows_repin_failure_keeps_advisory(self):
+        with patch.object(self.windows, 'trigger', return_value=True), \
+                patch.object(self.windows,
+                             'repin',
+                             side_effect=toolchain.BadOutcomeException('boom')):
+            self.assertFalse(self.windows.recover(self.version, 'h'))
 
 
 if __name__ == '__main__':
