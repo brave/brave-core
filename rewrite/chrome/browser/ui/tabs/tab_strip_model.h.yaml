@@ -5,7 +5,7 @@
 
 substitutions:
   - description: |
-      Add the Brave ContextMenuCommand , keeping CommandLast.
+      Add Brave-specific ContextMenuCommand entries, keeping CommandLast as max.
 
       CommandRestoreTab - Restores a recently closed tab from history
       CommandBookmarkAllTabs - Bookmarks all tabs in the current window
@@ -40,8 +40,9 @@ substitutions:
       method_name: 'SelectRelativeTab'
 
   - description: |
-      Rename instances of `DraggingTabsSession` to `DraggingTabsSessionChromium`
-      to avoid name collision with Brave's DraggingTabsSession class.
+      Rename `DraggingTabsSession` to `DraggingTabsSessionChromium`.
+
+      This avoids a name collision with Brave's `DraggingTabsSession` class.
     count: 0
     rename_class:
       class_name: DraggingTabsSession

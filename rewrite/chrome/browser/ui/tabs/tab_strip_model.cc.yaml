@@ -5,9 +5,9 @@
 
 substitutions:
   - description: |
-      Append Brave-specific entries to switch statements in
-      TabStripModel::ExecuteContextMenuCommand() in order to avoid enumeration
-      values not handled in switch error.
+      Append Brave-specific entries to switch statements in TabStripModel::ExecuteContextMenuCommand().
+
+      Avoids enumeration values not handled in switch error.
     regex:
       re_pattern: |
         (void\ TabStripModel::ExecuteContextMenuCommand\(.*switch\s*\(command_id\)\s*\{)
@@ -25,16 +25,18 @@ substitutions:
               NOTREACHED();\n
 
   - description: |
-      Rename instances of `DraggingTabsSession` to `DraggingTabsSessionChromium`
-      to avoid name collision with Brave's DraggingTabsSession class.
+      Rename `DraggingTabsSession` to `DraggingTabsSessionChromium`.
+
+      This avoids a name collision with Brave's `DraggingTabsSession` class.
     rename_class:
       class_name: DraggingTabsSession
       rename: DraggingTabsSessionChromium
 
   - description: |
-      When adding a new tab with a "TYPED" transition at the last index, set the
-      opener_was_set_for_empty_new_tab() flag to true to avoid creating a nested
-      tree node.
+      Set opener_was_set_for_empty_new_tab() flag for new tabs with TYPED transition at last index.
+
+      Avoids creating a nested tree node when a new tab is added via a typed
+      transition at the last index.
     regex:
       re_pattern: |
         (if\ \(ui::PageTransitionTypeIncludingQualifiersIs\(transition,\s*ui::PAGE_TRANSITION_TYPED\)\ &&\s*index\ ==\ count\(\)\)\ {)
@@ -43,14 +45,13 @@ substitutions:
             tab->set_opener_was_set_for_empty_new_tab();
 
   - description: |
-      Pass additional parameter for contents_data_->AddTabRecursive(). We need to
-      pass `opener` to AddTabRecursive() for tree tab support.
+      Pass `opener` to AddTabRecursive() for tree tab support.
 
-      In case of the new tab is created from a empty new tab, in which case
-      opener_was_set_for_empty_new_tab is true, passes nullptr.
+      Stores opener in a local variable before calling AddTabRecursive() since
+      tab_model will be moved.
 
-      Note that tab_model will be moved, we're storing opener in a local 
-      variable, before calling AddTabRecursive().
+      Passes nullptr when the new tab is created from an empty new tab, i.e.
+      when opener_was_set_for_empty_new_tab is true.
     regex:
       re_pattern: '(contents_data_->AddTabRecursive\(.*?)(\);)'
       re_flags: ['DOTALL']
