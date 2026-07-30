@@ -66,6 +66,7 @@ source_set("ui") {
     "//brave/browser:core",
     "//brave/browser/ui/tabs:impl",
     "//brave/browser/ui/views/frame:browser_tests",
+    "//brave/browser/ui/views/page_action:unit_tests",
     "//chrome/browser:core",
     "//chrome/browser/ui",
     "//chrome/browser/ui/webui:configs",
