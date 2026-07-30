@@ -82,16 +82,17 @@ void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
     psst_action_controller_ =
         std::make_unique<page_actions::PsstActionController>(
             tab, *page_action_controller());
+    auto* psst_settings_service =
+        PsstSettingsServiceFactory::GetForProfile(profile);
     psst_web_contents_observer_ =
         psst::PsstTabWebContentsObserver::MaybeCreateForWebContents(
             tab, profile,
             std::make_unique<psst::PsstUiDelegateImpl>(
-                PsstSettingsServiceFactory::GetForProfile(profile),
-                profile->GetPrefs(),
+                psst_settings_service, profile->GetPrefs(),
                 std::make_unique<psst::PsstUiDesktopPresenter>(
                     tab.GetContents()->GetWeakPtr(),
                     psst_action_controller_->AsWeakPtr())),
-            profile->GetPrefs(), ISOLATED_WORLD_ID_BRAVE_INTERNAL);
+            psst_settings_service, ISOLATED_WORLD_ID_BRAVE_INTERNAL);
   }
 #endif
 

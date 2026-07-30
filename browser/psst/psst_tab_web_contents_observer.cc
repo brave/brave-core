@@ -90,10 +90,10 @@ PsstTabWebContentsObserver::MaybeCreateForWebContents(
     tabs::TabInterface& tab,
     content::BrowserContext* browser_context,
     std::unique_ptr<PsstUiDelegate> ui_delegate,
-    PrefService* prefs,
+    PsstSettingsService* psst_settings_service,
     const int32_t world_id) {
   CHECK(browser_context);
-  CHECK(prefs);
+  CHECK(psst_settings_service);
   CHECK(ui_delegate);
 
   if (browser_context->IsOffTheRecord() ||
@@ -103,7 +103,8 @@ PsstTabWebContentsObserver::MaybeCreateForWebContents(
 
   auto observer = base::WrapUnique<PsstTabWebContentsObserver>(
       new PsstTabWebContentsObserver(tab, PsstRuleRegistry::GetInstance(),
-                                     prefs, std::move(ui_delegate)));
+                                     psst_settings_service,
+                                     std::move(ui_delegate)));
 
   auto inject_script_callback = base::BindRepeating(
       [](base::WeakPtr<PsstTabWebContentsObserver> self, int32_t world_id,
@@ -153,11 +154,11 @@ PsstTabWebContentsObserver::MaybeCreateForWebContents(
 PsstTabWebContentsObserver::PsstTabWebContentsObserver(
     tabs::TabInterface& tab,
     PsstRuleRegistry* registry,
-    PrefService* prefs,
+    PsstSettingsService* psst_settings_service,
     std::unique_ptr<PsstUiDelegate> ui_delegate)
     : tabs::ContentsObservingTabFeature(tab),
       registry_(registry),
-      prefs_(prefs),
+      psst_settings_service_(psst_settings_service),
       ui_delegate_(std::move(ui_delegate)) {}
 
 PsstTabWebContentsObserver::~PsstTabWebContentsObserver() = default;
@@ -187,7 +188,7 @@ void PsstTabWebContentsObserver::DidFinishNavigation(
   should_process_current_page_ =
       handle->GetURL().SchemeIsHTTPOrHTTPS() &&
       handle->GetRestoreType() != content::RestoreType::kRestored &&
-      prefs_->GetBoolean(prefs::kPsstEnabled);
+      psst_settings_service_->IsPsstEnabled();
 }
 
 void PsstTabWebContentsObserver::DocumentOnLoadCompletedInPrimaryMainFrame() {

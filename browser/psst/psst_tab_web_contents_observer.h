@@ -13,6 +13,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/timer/timer.h"
 #include "base/values.h"
+#include "brave/components/psst/core/browser/psst_settings_service.h"
 #include "brave/components/psst/core/common/psst_metadata_schema.h"
 #include "brave/components/psst/core/common/psst_script_responses.h"
 #include "brave/components/psst/core/common/psst_ui_common.mojom-shared.h"
@@ -67,7 +68,7 @@ class PsstTabWebContentsObserver : public tabs::ContentsObservingTabFeature {
       tabs::TabInterface& tab,
       content::BrowserContext* browser_context,
       std::unique_ptr<PsstUiDelegate> ui_delegate,
-      PrefService* prefs,
+      PsstSettingsService* psst_settings_service,
       const int32_t world_id);
 
   ~PsstTabWebContentsObserver() override;
@@ -83,7 +84,7 @@ class PsstTabWebContentsObserver : public tabs::ContentsObservingTabFeature {
 
   PsstTabWebContentsObserver(tabs::TabInterface& tab,
                              PsstRuleRegistry* registry,
-                             PrefService* prefs,
+                             PsstSettingsService* psst_settings_service,
                              std::unique_ptr<PsstUiDelegate> ui_delegate);
 
   void InsertUserScript(std::unique_ptr<MatchedRule> rule);
@@ -111,7 +112,7 @@ class PsstTabWebContentsObserver : public tabs::ContentsObservingTabFeature {
       InjectScriptAsyncCallback inject_async_script_callback);
 
   const raw_ptr<PsstRuleRegistry> registry_;
-  const raw_ptr<PrefService> prefs_;
+  const raw_ptr<PsstSettingsService> psst_settings_service_ = nullptr;
   InjectScriptCallback inject_script_callback_;
   mojo::AssociatedRemote<script_injector::mojom::ScriptInjector>
       script_injector_remote_;
