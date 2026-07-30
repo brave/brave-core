@@ -289,7 +289,7 @@ void PsstTabWebContentsObserver::OnUserAcceptedPsstSettings(
                              std::move(user_script_result_dict)),
       true,
       base::BindOnce(&PsstTabWebContentsObserver::OnPolicyScriptResult,
-                     weak_factory_.GetWeakPtr()));
+                     page_weak_factory_.GetWeakPtr()));
 }
 
 void PsstTabWebContentsObserver::OnPolicyScriptResult(
