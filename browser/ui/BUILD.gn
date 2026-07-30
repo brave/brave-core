@@ -55,6 +55,7 @@ source_set("ui") {
   visibility = [
     "//brave/browser:core",
     "//brave/browser/ui/tabs:impl",
+    "//brave/browser/ui/views/page_action:unit_tests",
     "//chrome/browser:core",
     "//chrome/browser/ui",
     "//chrome/browser/ui/webui:configs",
