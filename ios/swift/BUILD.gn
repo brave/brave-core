@@ -1,0 +1,28 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/build/ios/swift_framework.gni")
+
+ios_swift_framework_bundle("brave_core_swift") {
+  output_name = "BraveCoreSwift"
+  output_dir = root_out_dir
+  sources = [
+    "foo.swift"
+  ]
+  info_plist = "Info.plist"
+  deps = [
+    ":bar",
+    "//brave/ios:brave_core_ios_framework+link",
+  ]
+  cxx_import_deps = [
+    "//base/ios/swift_shims:sys_info"
+  ]
+}
+
+swift_source_set("bar") {
+  sources = [
+    "bar.swift"
+  ]
+}

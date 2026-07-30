@@ -4,6 +4,7 @@
 
 import AIChat
 import BraveCore
+import BraveCoreSwift
 import BraveNews
 import BraveShared
 import BraveShields
@@ -452,6 +453,8 @@ public class BrowserViewController: UIViewController {
   private var rewardsEnabledObserveration: NSKeyValueObservation?
 
   fileprivate func didInit() {
+    let a = FooClass()
+    
     updateApplicationShortcuts()
     tabManager.addDelegate(self)
     UserScriptManager.shared.fetchWalletScripts(from: profileController.braveWalletAPI)

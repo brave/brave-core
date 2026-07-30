@@ -71,6 +71,7 @@ config("internal_config") {
 
 group("brave_ios") {
   public_deps = [
+    ":brave_core_swift_xcframework",
     ":brave_core_xcframework",
     ":early_partition_alloc_xcframework",
     ":generated_xcconfig",
@@ -299,6 +300,11 @@ ios_create_xcframework("brave_core_xcframework") {
 ios_create_xcframework("nala_assets_xcframework") {
   framework_dir = "$root_build_dir/NalaAssets.framework"
   deps = [ "//brave/ios/nala:nala_assets_framework" ]
+}
+
+ios_create_xcframework("brave_core_swift_xcframework") {
+  framework_dir = "$root_build_dir/BraveCoreSwift.framework"
+  deps = [ "//brave/ios/swift:brave_core_swift" ]
 }
 
 # Generates an xcconfig based on GN args that are needed in the Xcode app build

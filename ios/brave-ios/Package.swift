@@ -124,6 +124,7 @@ var package = Package(
         "BraveShields",
         "BraveTalk",
         "Origin",
+        "BraveCoreSwift",
       ],
       exclude: [
         "Frontend/UserContent/UserScripts/AllFrames",
@@ -320,6 +321,10 @@ var package = Package(
       plugins: ["LeoAssetsPlugin"]
     ),
     .binaryTarget(name: "NalaAssets", path: "../../../out/ios_current_link/NalaAssets.xcframework"),
+    .binaryTarget(
+      name: "BraveCoreSwift",
+      path: "../../../out/ios_current_link/BraveCoreSwift.xcframework"
+    ),
     .binaryTarget(
       name: "PartitionAllocSupport",
       path: "../../../out/ios_current_link/PartitionAllocSupport.xcframework"
