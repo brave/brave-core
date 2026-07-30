@@ -19,10 +19,6 @@
 #include "brave/browser/ui/views/page_action/wayback_machine_action_icon_view.h"
 #endif
 
-#if BUILDFLAG(ENABLE_SPEEDREADER)
-#include "brave/browser/ui/views/speedreader/speedreader_icon_view.h"
-#endif
-
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
 #include "brave/browser/ui/views/playlist/playlist_action_icon_view.h"
 #endif

@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/brave_browser_actions.h"
 
+#include "base/check.h"
 #include "base/feature_list.h"
 #include "base/functional/callback_helpers.h"
 #include "base/types/to_address.h"
@@ -15,6 +16,7 @@
 #include "brave/components/containers/buildflags/buildflags.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/psst/buildflags/buildflags.h"
+#include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/actions/chrome_action_id.h"
@@ -46,6 +48,13 @@
 #if BUILDFLAG(ENABLE_PSST)
 #include "brave/components/psst/core/common/features.h"
 #include "chrome/browser/ui/page_action/page_action_triggers.h"
+#endif
+
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+#include "brave/browser/ui/tabs/public/brave_tab_features.h"
+#include "brave/browser/ui/views/page_action/speedreader_page_action_controller.h"
+#include "brave/components/speedreader/common/features.h"
+#include "components/tabs/public/tab_interface.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
@@ -156,6 +165,39 @@ void BraveBrowserActions::InitializeBrowserActions() {
             .Build());
   }
 #endif  // BUILDFLAG(ENABLE_PSST)
+
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+  if (base::FeatureList::IsEnabled(
+          speedreader::features::kSpeedreaderFeature)) {
+    root_action_item_->AddChild(
+        actions::ActionItem::Builder(
+            base::BindRepeating(
+                [](BrowserWindowInterface* bwi, actions::ActionItem* item,
+                   actions::ActionInvocationContext context) {
+                  tabs::BraveTabFeatures* const brave_tab_features =
+                      tabs::BraveTabFeatures::FromTabFeatures(
+                          bwi->GetActiveTabInterface()->GetTabFeatures());
+                  CHECK(brave_tab_features);
+
+                  page_actions::SpeedreaderPageActionController* const
+                      controller = brave_tab_features
+                                       ->speedreader_page_action_controller();
+                  CHECK(controller);
+                  controller->ExecuteAction(context.GetProperty(
+                      page_actions::kBravePageActionEventFlagKey));
+                },
+                bwi))
+            .SetActionId(kActionShowSpeedreader)
+            .SetText(l10n_util::GetStringUTF16(
+                IDS_SPEEDREADER_ICON_TURN_ON_READER_MODE))
+            .SetTooltipText(l10n_util::GetStringUTF16(
+                IDS_SPEEDREADER_ICON_TURN_ON_READER_MODE))
+            .SetImage(ui::ImageModel::FromVectorIcon(kLeoProductSpeedreaderIcon,
+                                                     ui::kColorIcon))
+            .SetEnabled(true)
+            .Build());
+  }
+#endif  // BUILDFLAG(ENABLE_SPEEDREADER)
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
   if (brave_wallet::IsAllowed(profile_->GetPrefs()) &&

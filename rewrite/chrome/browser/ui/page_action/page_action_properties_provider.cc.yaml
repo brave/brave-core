@@ -24,4 +24,25 @@ substitutions:
                 },
             },
             {
+                kActionShowSpeedreader,
+                {
+                    .histogram_name = "Speedreader",
+                    .type = brave::kSpeedreaderPageActionIconType,
+                },
+            },
+            {
+                kActionShowWaybackMachine,
+                {
+                    .histogram_name = "WaybackMachine",
+                    .type = brave::kWaybackMachineActionIconType,
+                },
+            },
+            {
+                kActionShowPlaylistPageAction,
+                {
+                    .histogram_name = "Playlist",
+                    .type = brave::kPlaylistPageActionIconType,
+                },
+            },
+            {
                 kActionVirtualCardEnroll,
