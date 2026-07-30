@@ -8,7 +8,7 @@ substitutions:
       Add Brave-specific ContextMenuCommand entries, keeping CommandLast as max.
 
       CommandRestoreTab - Restores a recently closed tab from history
-      CommandBookmarkAllTabs - Bookmarks all tabs in the current window
+      CommandBookmarkTab - Bookmarks the right-clicked tab
       CommandShowVerticalTabs - Toggles vertical tab strip display mode
       CommandToggleTabMuted - Toggles mute/unmute state of selected tabs
       CommandBringAllTabsToThisWindow
@@ -21,7 +21,7 @@ substitutions:
       max_value: CommandLast
       entries:
         - CommandRestoreTab
-        - CommandBookmarkAllTabs
+        - CommandBookmarkTab
         - CommandShowVerticalTabs
         - CommandToggleTabMuted
         - CommandBringAllTabsToThisWindow

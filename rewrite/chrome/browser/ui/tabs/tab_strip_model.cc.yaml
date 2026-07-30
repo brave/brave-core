@@ -15,7 +15,7 @@ substitutions:
       replace: |-
         \1
             case CommandRestoreTab:
-            case CommandBookmarkAllTabs:
+            case CommandBookmarkTab:
             case CommandShowVerticalTabs:
             case CommandToggleTabMuted:
             case CommandBringAllTabsToThisWindow:

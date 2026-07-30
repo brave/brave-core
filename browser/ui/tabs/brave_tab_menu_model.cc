@@ -5,7 +5,6 @@
 
 #include "brave/browser/ui/tabs/brave_tab_menu_model.h"
 
-#include <algorithm>
 #include <vector>
 
 #include "base/check.h"
@@ -54,7 +53,6 @@ BraveTabMenuModel::BraveTabMenuModel(
 
   auto* model = static_cast<BraveTabStripModel*>(tab_strip_model);
   auto indices = model->GetTabIndicesForCommandAt(index);
-  all_muted_ = model->GetAllTabsMuted(indices);
   Build(browser_window, tab_strip_model, index, indices);
 }
 
@@ -100,23 +98,12 @@ void BraveTabMenuModel::Build(BrowserWindowInterface* browser_window,
                               TabStripModel* tab_strip_model,
                               int selected_index,
                               const std::vector<int>& indices) {
-  auto selected_tab_count = indices.size();
-
   AddSeparator(ui::NORMAL_SEPARATOR);
-  auto mute_site_index =
-      GetIndexOfCommandId(TabStripModel::CommandToggleSiteMuted);
-
-  auto toggle_tab_mute_label = l10n_util::GetPluralStringFUTF16(
-      all_muted_ ? IDS_TAB_CXMENU_SOUND_UNMUTE_TAB
-                 : IDS_TAB_CXMENU_SOUND_MUTE_TAB,
-      selected_tab_count);
-  InsertItemAt(mute_site_index.value_or(GetItemCount()),
-               TabStripModel::CommandToggleTabMuted, toggle_tab_mute_label);
-
   AddItemWithStringId(TabStripModel::CommandRestoreTab,
                       GetRestoreTabCommandStringId());
-  AddItemWithStringId(TabStripModel::CommandBookmarkAllTabs,
-                      IDS_TAB_CXMENU_BOOKMARK_ALL_TABS);
+  AddItemWithStringId(TabStripModel::CommandBookmarkTab,
+                      indices.size() > 1 ? IDS_TAB_CXMENU_BOOKMARK_SELECTED_TABS
+                                         : IDS_TAB_CXMENU_BOOKMARK_TAB);
 
   // TODO(https://github.com/brave/brave-browser/issues/54241): Update
   // brave::CanBringAllTabs() to accept BrowserWindowInterface*.
