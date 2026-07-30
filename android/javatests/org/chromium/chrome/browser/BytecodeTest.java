@@ -2823,14 +2823,6 @@ public class BytecodeTest {
                         "mMoveToolbar"));
         Assert.assertTrue(
                 fieldExists(
-                        "org/chromium/chrome/browser/toolbar/top/ToolbarPhone",
-                        "mLocationBarBackgroundColorForNtp"));
-        Assert.assertTrue(
-                fieldExists(
-                        "org/chromium/chrome/browser/toolbar/top/ToolbarPhone",
-                        "mToolbarBackgroundColorForNtp"));
-        Assert.assertTrue(
-                fieldExists(
                         "org/chromium/chrome/browser/ui/system/StatusBarColorController",
                         "mBackgroundColorForNtp"));
         Assert.assertTrue(

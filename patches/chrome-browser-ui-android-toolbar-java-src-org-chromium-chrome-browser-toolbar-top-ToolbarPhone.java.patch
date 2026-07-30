@@ -1,7 +1,18 @@
 diff --git a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
-index 32041e70256cdcc770b1f9af7ab9cb7d2a0daeac..d29e73ada9cc7e614eff27da86565bb9ea48b6c1 100644
+index 32041e70256cdcc770b1f9af7ab9cb7d2a0daeac..1818cb639e1671efada8b623401efdf2d123aab2 100644
 --- a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
 +++ b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
+@@ -284,8 +284,8 @@ public class ToolbarPhone extends ToolbarLayout
+     private @Nullable PhoneCaptureStateToken mPhoneCaptureStateToken;
+     private @Nullable ButtonData mButtonData;
+ 
+-    private final @ColorInt int mToolbarBackgroundColorForNtp;
+-    private final @ColorInt int mLocationBarBackgroundColorForNtp;
++    @ColorInt int mToolbarBackgroundColorForNtp;
++    @ColorInt int mLocationBarBackgroundColorForNtp;
+     private boolean mUseAdjustedTintColorForNtp;
+     private boolean mIsToolbarExpandedOnNtp;
+ 
 @@ -595,6 +595,7 @@ public class ToolbarPhone extends ToolbarLayout
          if (mOptionalButtonCoordinator != null) {
              mOptionalButtonCoordinator.setBackgroundColorFilter(color);
