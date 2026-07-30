@@ -8,6 +8,7 @@ package org.chromium.components.browser_ui.settings;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertNull;
 
 import android.content.Context;
 import android.content.ContextWrapper;
@@ -61,6 +62,23 @@ public class BraveSettingsIconTintUtilsTest {
         assertEquals(
                 SemanticColorUtils.getDefaultIconColorAccent1(context),
                 actualTint.getColorForState(ENABLED_STATE_SET, actualTint.getDefaultColor()));
+    }
+
+    @Test
+    public void testClearIconTint_removesPreviouslyAppliedTint() {
+        Context context =
+                new DefaultTintContext(ApplicationProvider.getApplicationContext(), createDefaultTint());
+        TintCapturingImageView icon = new TintCapturingImageView(context);
+        BraveSettingsIconTintUtils.applyIconTint(icon, false);
+        icon.setColorFilter(0xffaabbcc);
+
+        assertNotNull(icon.getCapturedTint());
+        assertNotNull(icon.getColorFilter());
+
+        BraveSettingsIconTintUtils.clearIconTint(icon);
+
+        assertNull(icon.getCapturedTint());
+        assertNull(icon.getColorFilter());
     }
 
     private void assertUsesDefaultTint() {

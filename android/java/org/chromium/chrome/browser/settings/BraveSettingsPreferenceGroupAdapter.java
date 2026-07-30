@@ -5,12 +5,14 @@
 
 package org.chromium.chrome.browser.settings;
 
+import androidx.preference.Preference;
 import androidx.preference.PreferenceGroupAdapter;
 import androidx.preference.PreferenceScreen;
 import androidx.preference.PreferenceViewHolder;
 
 import org.chromium.build.annotations.NonNull;
 import org.chromium.build.annotations.NullMarked;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.theme.BraveDynamicColors;
 import org.chromium.components.browser_ui.settings.BraveSettingsIconTintUtils;
 
@@ -23,7 +25,16 @@ public class BraveSettingsPreferenceGroupAdapter extends PreferenceGroupAdapter 
     @Override
     public void onBindViewHolder(@NonNull PreferenceViewHolder holder, int position) {
         super.onBindViewHolder(holder, position);
-        BraveSettingsIconTintUtils.applyIconTint(
-                holder, BraveDynamicColors.isDynamicColorsEnabled());
+        @Nullable Preference preference = getItem(position);
+        if (preference != null && shouldClearIconTint(preference)) {
+            BraveSettingsIconTintUtils.clearIconTint(holder);
+        } else {
+            BraveSettingsIconTintUtils.applyIconTint(holder, BraveDynamicColors.isDynamicColorsEnabled());
+        }
+    }
+
+    /** Returns whether the adapter must clear tint from this preference's icon. */
+    protected boolean shouldClearIconTint(@NonNull Preference preference) {
+        return false;
     }
 }

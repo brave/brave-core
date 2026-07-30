@@ -35,6 +35,11 @@ public final class BraveSettingsIconTintUtils {
         applyIconTint(holder.findViewById(android.R.id.icon), dynamicColorsEnabled);
     }
 
+    /** Clears an icon tint from the standard preference icon in {@code holder}. */
+    public static void clearIconTint(PreferenceViewHolder holder) {
+        clearIconTint(holder.findViewById(android.R.id.icon));
+    }
+
     /**
      * Applies an icon tint to {@code view} when it is an {@link ImageView}.
      *
@@ -52,6 +57,14 @@ public final class BraveSettingsIconTintUtils {
                             ? createDynamicColorsIconTint(context, defaultIconTint)
                             : defaultIconTint;
             icon.setImageTintList(iconTint);
+        }
+    }
+
+    /** Clears an icon tint from {@code view} when it is an {@link ImageView}. */
+    public static void clearIconTint(@Nullable View view) {
+        if (view instanceof ImageView icon) {
+            icon.setImageTintList(null);
+            icon.clearColorFilter();
         }
     }
 

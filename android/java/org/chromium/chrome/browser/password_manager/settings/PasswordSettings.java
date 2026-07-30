@@ -139,7 +139,12 @@ public class PasswordSettings extends ChromeBaseSettingsFragment
     @Override
     protected @NonNull PreferenceGroupAdapter onCreateAdapter(
             @NonNull PreferenceScreen preferenceScreen) {
-        return new BraveSettingsPreferenceGroupAdapter(preferenceScreen);
+        return new BraveSettingsPreferenceGroupAdapter(preferenceScreen) {
+            @Override
+            protected boolean shouldClearIconTint(@NonNull Preference preference) {
+                return preference instanceof PasswordEntryPreference;
+            }
+        };
     }
 
     public ExportFlow getExportFlowForTesting() {
