@@ -122,14 +122,18 @@ const std::vector<std::string>& GetBuiltinBridges(
 //
 //   - BraveTorHandler::SetBridgesConfig() rejects a submission containing one,
 //     so the person who typed it is told rather than having it discarded. It is
-//     the only way `provided_bridges` and `requested_bridges` are ever written.
+//     the only place `provided_bridges` and `requested_bridges` are given new
+//     values.
 //   - UpdateBuiltinBridges() filters, because `builtin_bridges` arrives from
 //     Tor's moat service with nobody to report a bad line to.
 //   - TorControl::SetupBridges() filters again as the last line of defence,
 //     covering a hand-edited pref file or a list stored by an older build.
 //
-// Loading a list out of prefs is therefore verbatim: filtering here would erase
-// what the user typed, since the settings page writes back whatever it reads.
+// Loading a list out of prefs is therefore verbatim. Filtering here would not
+// merely ignore a line, it would delete it: the settings page writes back
+// whatever it reads, and TorProfileServiceImpl::OnBuiltinBridgesResponse()
+// rewrites the whole pref once a day to store a refreshed built-in list, which
+// would drop the other two lists on the floor as a side effect.
 
 // Fingerprints are hex encoded SHA-1 digests of the bridge's identity key.
 constexpr size_t kFingerprintLength = 40;

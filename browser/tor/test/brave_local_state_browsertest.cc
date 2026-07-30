@@ -73,14 +73,17 @@ IN_PROC_BROWSER_TEST_F(BraveLocalStateBrowserTest, UpdateBuiltin) {
   EXPECT_EQ(bridges_config.ToValue(),
             TorProfileServiceFactory::GetTorBridgesConfig().ToValue());
   EXPECT_EQ(bridges_config.builtin_bridges.size(), 3u);
-  EXPECT_EQ(bridges_config.builtin_bridges[BuiltinType::kSnowflake].size(), 1u);
+  // ASSERT rather than EXPECT: UpdateBuiltinBridges() drops lines it rejects,
+  // and `builtin_bridges` is a map, so a rejected entry leaves operator[]
+  // returning an empty vector that the [0] accesses would read out of bounds.
+  ASSERT_EQ(bridges_config.builtin_bridges[BuiltinType::kSnowflake].size(), 1u);
   EXPECT_EQ(bridges_config.builtin_bridges[BuiltinType::kSnowflake][0],
             kSnowflake);
 
-  EXPECT_EQ(bridges_config.builtin_bridges[BuiltinType::kObfs4].size(), 1u);
+  ASSERT_EQ(bridges_config.builtin_bridges[BuiltinType::kObfs4].size(), 1u);
   EXPECT_EQ(bridges_config.builtin_bridges[BuiltinType::kObfs4][0], kObfs4);
 
-  EXPECT_EQ(bridges_config.builtin_bridges[BuiltinType::kMeekAzure].size(), 1u);
+  ASSERT_EQ(bridges_config.builtin_bridges[BuiltinType::kMeekAzure].size(), 1u);
   EXPECT_EQ(bridges_config.builtin_bridges[BuiltinType::kMeekAzure][0],
             kMeekAzure);
 }

@@ -580,10 +580,11 @@ void TorControl::SetupBridges(const std::vector<std::string>& bridges,
   }
   DCHECK_CALLED_ON_VALID_SEQUENCE(io_sequence_checker_);
 
-  // Every bridge list reaches the control port through here, whatever its
-  // source, so this is where the lines are vetted. Each one is interpolated
-  // verbatim into the quoted SETCONF argument below, where a stray quote,
-  // backslash or newline would alter the command or append a second one.
+  // Each line is interpolated verbatim into a quoted `Bridge="..."` argument of
+  // the SETCONF command this builds, where a stray quote, backslash or newline
+  // would alter the command or append a second one. Submissions are already
+  // vetted by BraveTorHandler::SetBridgesConfig(), but every list reaches the
+  // control port through here whatever its source, so this is the backstop.
   const std::vector<std::string> usable = FilterBridgeLines(bridges);
 
   // Also covers an empty `bridges`. Enabling UseBridges with no usable bridge

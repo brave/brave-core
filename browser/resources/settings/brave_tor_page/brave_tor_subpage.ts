@@ -124,8 +124,8 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
         computed: 'computeProvidedBridgesPlaceholder_(useBridges_, providedBridges_)'
       },
 
-      // The bridge line the browser refused, or '' when the last submission
-      // was accepted.
+      // The bridge line the browser refused, or '' if the last submission was
+      // accepted or none has been made yet.
       invalidBridge_: {
         type: String,
         value: ''

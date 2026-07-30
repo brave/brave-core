@@ -337,10 +337,10 @@ void BraveTorHandler::SetBridgesConfig(const base::ListValue& args) {
   const auto bridges_config = tor::BridgesConfig::FromValue(&args[1]);
   CHECK(bridges_config);
 
-  // This is the only way `provided_bridges` and `requested_bridges` are ever
-  // written, so it is where a line Tor cannot use gets reported back instead of
-  // being silently discarded somewhere the person who typed it will never see.
-  // Rejecting the whole submission leaves the pref, and the text in the
+  // This is the only place `provided_bridges` and `requested_bridges` are given
+  // new values, so it is where a line Tor cannot use gets reported back instead
+  // of being silently discarded somewhere the person who typed it will never
+  // see. Rejecting the whole submission leaves the pref, and the text in the
   // settings page, exactly as they were.
   for (const auto* bridges : {&bridges_config->provided_bridges,
                               &bridges_config->requested_bridges}) {
