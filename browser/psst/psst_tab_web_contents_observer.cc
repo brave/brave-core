@@ -36,7 +36,7 @@ constexpr base::TimeDelta kScriptTimeout = base::Seconds(15);
 const char kUserScriptResultTasksPropName[] = "tasks";
 const char kUserScriptResultTaskItemUidPropName[] = "uid";
 const char kUserScriptResultInitialExecutionPropName[] = "initial_execution";
-const int kUnsetScriptVersion = -1;
+constexpr int kUnsetScriptVersion = -1;
 
 // Adds the dictionary of parameters returned by the user.js script to the
 // policy.js script, before it is executed. In case when parameters dictionary
