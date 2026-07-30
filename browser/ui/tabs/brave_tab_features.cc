@@ -42,6 +42,10 @@
 #include "brave/components/psst/core/common/features.h"
 #endif
 
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+#include "brave/components/speedreader/common/features.h"
+#endif
+
 namespace tabs {
 
 // static
@@ -113,6 +117,18 @@ void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
           tab, *page_action_controller());
       partitioned_storage_page_action_controller_->Init();
     }
+  }
+#endif
+
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+  if (base::FeatureList::IsEnabled(
+          speedreader::features::kSpeedreaderFeature) &&
+      base::FeatureList::IsEnabled(features::kPageActionsMigration) &&
+      page_action_controller()->ActionExists(kActionShowSpeedreader)) {
+    speedreader_page_action_controller_ =
+        std::make_unique<page_actions::SpeedreaderPageActionController>(
+            tab, *page_action_controller());
+    speedreader_page_action_controller_->Init();
   }
 #endif
 }
