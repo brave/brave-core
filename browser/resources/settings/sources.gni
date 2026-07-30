@@ -114,7 +114,6 @@ brave_settings_ts_files = [
   "br/site_details.ts",
   "br/site_list_entry.ts",
   "br/site_list.ts",
-  "br/system_page.ts",
   "br/add_site_dialog.ts",
   "br/site_settings_page.ts",
   "br/sync_account_control.ts",

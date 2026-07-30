@@ -326,7 +326,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 "===================================================================
 --- ../chrome/browser/resources/settings/appearance_page/appearance_page.html.ts
 +++ gen/chrome/browser/resources/settings/preprocessed/appearance_page/appearance_page.html.ts
-@@ -6,50 +6,23 @@
+@@ -6,28 +6,14 @@
    // clang-format off
    return html\`<!--_html_template_start_-->
  <settings-section page-title="$i18n{appearancePageTitle}">
@@ -338,40 +338,34 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 -          label="$i18n{themes}" sub-label="\${this.themeSublabel_}"
 -          @click="\${this.onThemeClick_}" external></cr-link-row>
 -<if expr="not is_linux">
+-      \${this.themeIdPref_?.value ? html\`
 +    <div class="settings-row first" id="themeRow" ?hidden="\${!this.pageVisibility_.setTheme}">
 +      <cr-link-row id="openTheme" class="first" ?hidden="\${!this.pageVisibility_.setTheme}" label="$i18n{themes}" sub-label="\${this.themeSublabel_}" @click="\${this.onThemeClick_}" external=""></cr-link-row>
 +
-       \${this.themeIdPref_?.value ? html\`
++
++      <div class="settings-row continuation" ?hidden="\${!this.showThemesSecondary_()}" id="themesSecondaryActions">
          <div class="separator"></div>
-         <cr-button id="useDefault" @click="\${this.onUseDefaultClick_}"
-             aria-label="$i18n{resetToDefaultTheme}">
-           $i18n{resetToDefault}
-         </cr-button>
-       \` : ''}
+-        <cr-button id="useDefault" @click="\${this.onUseDefaultClick_}"
+-            aria-label="$i18n{resetToDefaultTheme}">
+-          $i18n{resetToDefault}
+-        </cr-button>
+-      \` : ''}
 -</if>
 -<if expr="is_linux">
 -      <div class="settings-row continuation"
 -          ?hidden="\${!this.showThemesSecondary_()}"
 -          id="themesSecondaryActions">
 -        <div class="separator"></div>
--        \${this.showUseClassic_() ? html\`
--          <cr-button id="useDefault" @click="\${this.onUseDefaultClick_}">
--            $i18n{useClassicTheme}
--          </cr-button>
--        \` : ''}
--        \${this.showUseGtk_() ? html\`
--          <cr-button id="useGtk" @click="\${this.onUseGtkClick_}">
--            $i18n{useGtkTheme}
--          </cr-button>
--        \` : ''}
--        \${this.showUseQt_() ? html\`
--          <cr-button id="useQt" @click="\${this.onUseQtClick_}">
--            $i18n{useQtTheme}
--          </cr-button>
--        \` : ''}
--      </div>
+         \${this.showUseClassic_() ? html\`
+           <cr-button id="useDefault" @click="\${this.onUseDefaultClick_}">
+             $i18n{useClassicTheme}
+           </cr-button>
+@@ -42,14 +28,12 @@
+             $i18n{useQtTheme}
+           </cr-button>
+         \` : ''}
+       </div>
 -</if>
-+
 +
      </div>
      <div id="toolbarRow" class="settings-row">
@@ -383,7 +377,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
        \${this.showResetPinnedActionsButton_ ? html\`
          <div class="separator"></div>
          <cr-button id="resetPinnedToolbarActions"
-@@ -58,75 +31,26 @@
+@@ -58,75 +42,26 @@
            $i18n{resetToDefault}
          </cr-button>
        \` : ''}
@@ -467,7 +461,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
        <div class="cr-row" ?hidden="\${!this.pageVisibility_.bookmarksBar}">
          <div class="flex cr-padded-text" aria-hidden="true">
            $i18n{bookmarksBar}
-@@ -139,23 +63,9 @@
+@@ -139,23 +74,9 @@
          </settings-dropdown-menu>
        </div>
      \` : ''}
@@ -492,7 +486,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
  
      \${this.showVerticalTabsEnabled_ ? html\`
        <div class="cr-row">
-@@ -196,144 +106,54 @@
+@@ -196,144 +117,58 @@
          \` : ''}
        </div>
      \` : ''}
@@ -589,14 +583,16 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 -    \` : ''}
  
 -<if expr="is_linux">
--    <div class="hr" ?hidden="\${!this.pageVisibility_.bookmarksBar}"></div>
+     <div class="hr" ?hidden="\${!this.pageVisibility_.bookmarksBar}"></div>
 -    <settings-toggle-button
 -        ?hidden="\${!this.showCustomChromeFrame_}"
 -        pref-key="browser.custom_chrome_frame"
 -        label="$i18n{showWindowDecorations}"
 -        inverted>
--    </settings-toggle-button>
++    <settings-toggle-button ?hidden="\${!this.showCustomChromeFrame_}" pref-key="browser.custom_chrome_frame" label="$i18n{showWindowDecorations}" inverted="">
+     </settings-toggle-button>
 -</if>
++
      <div class="cr-row">
        <div class="flex cr-padded-text" aria-hidden="true">
          $i18n{fontSize}
@@ -679,6 +675,149 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 +     </settings-brave-appearance-tabs>
 +     <settings-brave-appearance-sidebar id="sidebar" slot="view">
 +     </settings-brave-appearance-sidebar></cr-view-manager>
+ <!--_html_template_end_-->\`;
+   // clang-format on
+ }
+"
+`;
+
+exports[`mangled files should have up to date snapshots ./chromium_src/chrome/browser/resources/settings/system_page/system_page.html.ts.lit_mangler.ts should match snapshot 1`] = `
+"===================================================================
+--- ../chrome/browser/resources/settings/system_page/system_page.html.ts
++++ gen/chrome/browser/resources/settings/preprocessed/system_page/system_page.html.ts
+@@ -5,95 +5,54 @@
+ 
+ export function getHtml(this: SettingsSystemPageElement) {
+   // clang-format off
+   return html\`<!--_html_template_start_-->
+-<settings-section page-title="$i18n{systemPageTitle}"
+-    class="cr-centered-card-container">
+-<if expr="not is_macosx">
+-  <settings-toggle-button
+-      pref-key="background_mode.enabled"
+-      label="$i18n{backgroundAppsLabel}">
++<settings-section page-title="$i18n{systemPageTitle}" class=""><cr-link-row id="shortcutsButton" class="hr" ?hidden="\${!this.shortcutsSupported_}" label="$i18n{braveShortcutsPage}" role-description="$i18n{subpageArrowRoleDescription}" @click="\${this.onShortcutsClick_}">
++     </cr-link-row>
++
++  <settings-toggle-button pref-key="background_mode.enabled" label="$i18n{backgroundAppsLabel}">
+   </settings-toggle-button>
+   <div class="hr"></div>
+-</if>
+-  <settings-toggle-button id="hardwareAcceleration"
+-      pref-key="hardware_acceleration_mode.enabled"
+-      label="$i18n{hardwareAccelerationLabel}">
++
++  <settings-toggle-button id="hardwareAcceleration" pref-key="hardware_acceleration_mode.enabled" label="$i18n{hardwareAccelerationLabel}">
+     \${this.shouldShowRestart_() ? html\`
+       <cr-button @click="\${this.onRestartClick_}" slot="more-actions">
+         $i18n{restart}
+       </cr-button>
+     \` : ''}
+   </settings-toggle-button>
+-<if expr="is_win">
+-  \${this.showProcessIsolationSetting_ ? html\`
+-    <div class="hr"></div>
+-    <settings-toggle-button id="isolationState"
+-        pref-key="isolation_state.enabled"
+-        label="$i18n{isolationStateLabel}"
+-        sub-label="$i18n{isolationStateSubLabel}"
+-        learn-more-url="$i18n{isolationStateLearnMoreUrl}">
+-      \${this.shouldShowIsolationRestart_() ? html\`
+-        <cr-button @click="\${this.onRestartClick_}" slot="more-actions">
+-          $i18n{restart}
+-        </cr-button>
+-      \` : ''}
+-    </settings-toggle-button>
+-  \` : ''}
+-</if>
+ 
+-<if expr="_google_chrome and is_win">
+-  \${this.showFeatureNotificationsSetting_ ? html\`
+-    <div class="hr"></div>
+-    <settings-toggle-button id="featureNotificationsEnabled"
+-        @settings-boolean-control-change="\${
+-            this.onFeatureNotificationsSettingsBooleanControlChange_}"
+-        pref-key="feature_notifications_enabled"
+-        label="$i18n{featureNotificationsLabel}">
+-    </settings-toggle-button>
+-  \` : ''}
+-</if>
+ 
+-  <div id="proxy" class="cr-row" @click="\${this.onProxyClick_}"
+-      ?actionable="\${this.isProxyDefault_}">
+-    <div id="proxy-single-source-container"
+-        ?hidden="\${this.isProxyEnforcedByMultipleSources_}">
++
++
++  <div id="proxy" class="cr-row" @click="\${this.onProxyClick_}" ?actionable="\${this.isProxyDefault_}">
++    <div id="proxy-single-source-container" ?hidden="\${this.isProxyEnforcedByMultipleSources_}">
+       <div class="flex cr-row-text" ?hidden="\${!this.isProxyDefault_}">
+         $i18n{proxySettingsLabel}
+       </div>
+-      <div class="flex cr-row-text"
+-          ?hidden="\${!this.proxyPref_?.extensionId}">
++      <div class="flex cr-row-text" ?hidden="\${!this.proxyPref_?.extensionId}">
+         $i18n{proxySettingsExtensionLabel}
+       </div>
+-      <div class="flex cr-row-text"
+-          ?hidden="\${!this.isProxyEnforcedByPolicy_}">
++      <div class="flex cr-row-text" ?hidden="\${!this.isProxyEnforcedByPolicy_}">
+         $i18n{proxySettingsPolicyLabel}
+       </div>
+-      <cr-icon-button class="icon-external"
+-          ?hidden="\${!this.isProxyDefault_}"
+-          aria-label="$i18n{proxySettingsLabel}"></cr-icon-button>
++      <cr-icon-button class="icon-external" ?hidden="\${!this.isProxyDefault_}" aria-label="$i18n{proxySettingsLabel}"></cr-icon-button>
+       \${this.isProxyEnforcedByPolicy_ ? html\`
+         <cr-policy-pref-indicator .pref="\${this.proxyPref_}"
+             icon-aria-label="$i18n{proxySettingsLabel}">
+         </cr-policy-pref-indicator>
+       \` : ''}
+     </div>
+-    <div id="proxyMultipleSourcesLabel"
+-        ?hidden="\${!this.isProxyEnforcedByMultipleSources_}">
++    <div id="proxyMultipleSourcesLabel" ?hidden="\${!this.isProxyEnforcedByMultipleSources_}">
+       $i18n{proxySettingsMultipleSourcesLabel}
+     </div>
+   </div>
+-  <div id="proxyMultipleSources"
+-      ?hidden="\${!this.isProxyEnforcedByMultipleSources_}">
+-    <div id="proxyDeviceSettings" class="cr-row continuation"
+-        ?hidden="\${!this.isProxyDefault_}" @click="\${this.onProxyClick_}"
+-        ?actionable="\${this.isProxyDefault_}">
++  <div id="proxyMultipleSources" ?hidden="\${!this.isProxyEnforcedByMultipleSources_}">
++    <div id="proxyDeviceSettings" class="cr-row continuation" ?hidden="\${!this.isProxyDefault_}" @click="\${this.onProxyClick_}" ?actionable="\${this.isProxyDefault_}">
+       <div class="flex cr-row-text proxy-multisource-padding">
+         $i18n{proxySettingsYourDevice}
+       </div>
+-      <cr-icon-button class="icon-external"
+-          ?hidden="\${!this.isProxyDefault_}"
+-          aria-label="$i18n{proxySettingsLabel}"></cr-icon-button>
++      <cr-icon-button class="icon-external" ?hidden="\${!this.isProxyDefault_}" aria-label="$i18n{proxySettingsLabel}"></cr-icon-button>
+     </div>
+     \${!this.proxyOverrideRulesPref_?.extensionId ? html\`
+       <div class="cr-row continuation">
+         <div class="flex cr-row-text proxy-multisource-padding">
+@@ -131,8 +90,21 @@
+     <relaunch-confirmation-dialog .restartType="\${RestartType.RESTART}"
+         @close="\${this.onRelaunchDialogClose}">
+     </relaunch-confirmation-dialog>
+   \` : ''}
+-</settings-section>
++<div class="hr"></div>
++     <settings-toggle-button pref-key="brave.enable_closing_last_tab" label="$i18n{braveClosingLastTab}">
++     </settings-toggle-button>
++     <div class="hr"></div>
++     <settings-toggle-button pref-key="brave.enable_window_closing_confirm" label="$i18n{braveWarnBeforeClosingWindow}">
++     </settings-toggle-button>
++     \${this.isMac_ ? html\`
++       <div class="hr"></div>
++       <settings-toggle-button pref-key="browser.confirm_to_quit" label="\${this.warnBeforeQuittingLabel_}">
++       </settings-toggle-button>
++     \` : ''}
++     <div class="hr"></div>
++     <settings-toggle-button pref-key="brave.show_fullscreen_reminder" label="$i18n{braveShowFullscreenReminder}">
++     </settings-toggle-button></settings-section>
  <!--_html_template_end_-->\`;
    // clang-format on
  }
