@@ -102,6 +102,7 @@ source_set("ui") {
     "//chrome/browser/ui/startup",
     "//chrome/browser/ui/tabs:tabs_public",
     "//chrome/browser/ui/toolbar",
+    "//chrome/browser/ui/webui:chrome_web_ui_controller_factory",
     "//media",
   ]
 
