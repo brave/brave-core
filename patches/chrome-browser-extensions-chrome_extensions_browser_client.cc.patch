@@ -1,0 +1,22 @@
+diff --git a/chrome/browser/extensions/chrome_extensions_browser_client.cc b/chrome/browser/extensions/chrome_extensions_browser_client.cc
+index 4b0af6a64cc1d96db4ba5f37214de75c78488ce3..c28de24ab7d71eb4f542c673d9ecab0b6bced42a 100644
+--- a/chrome/browser/extensions/chrome_extensions_browser_client.cc
++++ b/chrome/browser/extensions/chrome_extensions_browser_client.cc
+@@ -262,7 +262,7 @@ bool RegisterTransformers() {
+ ChromeExtensionsBrowserClient::ChromeExtensionsBrowserClient()
+     : resource_manager_(
+           std::make_unique<ChromeComponentExtensionResourceManager>()),
+-      api_client_(std::make_unique<ChromeExtensionsAPIClient>()),
++      api_client_(std::make_unique<BraveExtensionsAPIClient>()),
+       event_router_forwarder_(base::MakeRefCounted<EventRouterForwarder>()) {
+   AddAPIProvider(std::make_unique<CoreExtensionsBrowserAPIProvider>());
+   AddAPIProvider(std::make_unique<ChromeExtensionsBrowserAPIProvider>());
+@@ -682,7 +682,7 @@ ChromeExtensionsBrowserClient::CreateUpdateClientConfigurator(
+       override_url = update_url;
+     }
+   }
+-  return ChromeUpdateClientConfig::Create(context, override_url);
++  return BraveUpdateClientConfig::Create(context, override_url);
+ }
+ 
+ std::unique_ptr<ScopedBrowserContextKeepAlive>
