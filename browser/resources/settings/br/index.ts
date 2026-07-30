@@ -11,8 +11,6 @@
 
 import './config.js'
 import '../site_settings/constants.js'
-import './a11y_page.js'
-import './a11y_page_index.js'
 import './all_sites.js'
 import './about_page.js'
 import './autofill_page.js'
