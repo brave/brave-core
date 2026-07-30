@@ -504,17 +504,17 @@ extension TabBrowserData: BraveWalletEventsListener {
       return
     }
 
-    // Turn an optional value into a string (or quoted string in case of the value being a string) or
-    // return `undefined`
-    func valueOrUndefined<T>(_ value: T?) -> String {
-      switch value {
-      case .some(let string as String):
-        return "\"\(string)\""
-      case .some(let value):
-        return "\(value)"
-      case .none:
+    // Turn an optional value into a JavaScript literal (JSON encoded so that any value coming
+    // from the provider cannot escape the assignment and execute arbitrary script), or return
+    // `undefined` when there is no value or it cannot be encoded
+    func valueOrUndefined(_ value: Any?) -> String {
+      guard let value,
+        let data = try? JSONSerialization.data(withJSONObject: value, options: [.fragmentsAllowed]),
+        let literal = String(data: data, encoding: .utf8)
+      else {
         return "undefined"
       }
+      return literal
     }
     guard tab.isWebViewCreated, let provider = walletEthProvider else {
       return
@@ -522,14 +522,16 @@ extension TabBrowserData: BraveWalletEventsListener {
 
     let chainId = await provider.chainId()
     _ = try? await tab.evaluateJavaScript(
-      functionName: "window.ethereum.chainId = \"\(chainId)\"",
+      functionName: "window.ethereum.chainId = \(valueOrUndefined(chainId))",
       contentWorld: EthereumProviderScriptHandler.scriptSandbox,
       asFunction: false
     )
 
-    let networkVersion = valueOrUndefined(Int(chainId.removingHexPrefix, radix: 16))
+    let networkVersion = valueOrUndefined(
+      Int(chainId.removingHexPrefix, radix: 16).map { String($0) }
+    )
     _ = try? await tab.evaluateJavaScript(
-      functionName: "window.ethereum.networkVersion = \"\(networkVersion)\"",
+      functionName: "window.ethereum.networkVersion = \(networkVersion)",
       contentWorld: EthereumProviderScriptHandler.scriptSandbox,
       asFunction: false
     )
@@ -539,7 +541,7 @@ extension TabBrowserData: BraveWalletEventsListener {
     if isKeyringLocked {
       // Check for locked status before assigning account address.
       // `getAllowedAccounts` is not async, can't check locked status.
-      selectedAccount = valueOrUndefined(Optional<String>.none)
+      selectedAccount = valueOrUndefined(nil)
     } else {
       let allAccounts = await keyringService.allAccounts()
       let allEthAccounts = allAccounts.accounts.filter { $0.coin == .eth }
@@ -551,7 +553,7 @@ extension TabBrowserData: BraveWalletEventsListener {
         )
         selectedAccount = valueOrUndefined(filteredAllowedAccounts.first)
       } else {
-        selectedAccount = valueOrUndefined(Optional<String>.none)
+        selectedAccount = valueOrUndefined(nil)
       }
     }
     _ = try? await tab.evaluateJavaScript(
