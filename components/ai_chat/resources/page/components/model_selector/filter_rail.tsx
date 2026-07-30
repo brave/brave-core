@@ -7,20 +7,19 @@ import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 import Tooltip from '@brave/leo/react/tooltip'
 import classnames from '$web-common/classnames'
-import { getVendorIcon } from '../../../common/vendor_icon_map'
-import { VendorRailEntry } from '../../model_utils'
+import { RailEntry } from '../../model_utils'
 import styles from './style.module.scss'
 
 interface Props {
-  entries: VendorRailEntry[]
+  entries: RailEntry[]
   selectedKey: string
   onSelect: (key: string) => void
 }
 
-export function VendorRail(props: Props) {
+export function FilterRail(props: Props) {
   return (
     <div
-      className={styles.vendorRail}
+      className={styles.filterRail}
       role='tablist'
       aria-orientation='vertical'
     >
@@ -40,18 +39,18 @@ export function VendorRail(props: Props) {
               role='tab'
               aria-selected={isSelected}
               aria-label={entry.label}
-              data-testid={`vendor-rail-${entry.key}`}
+              data-testid={`filter-rail-${entry.key}`}
               className={classnames({
-                [styles.vendorRailButton]: true,
-                [styles.vendorRailButtonSelected]: isSelected,
+                [styles.filterRailButton]: true,
+                [styles.filterRailButtonSelected]: isSelected,
               })}
               onClick={() => {
                 props.onSelect(entry.key)
               }}
             >
               <Icon
-                name={getVendorIcon(entry.key)}
-                className={styles.vendorRailIcon}
+                name={entry.icon}
+                className={styles.filterRailIcon}
               />
             </button>
           </Tooltip>

@@ -19,7 +19,8 @@ export function ModelSearch(props: Props) {
     <div className={styles.searchInput}>
       <Input
         type='search'
-        size='small'
+        size='normal'
+        mode='outline'
         placeholder={getLocale(S.CHAT_UI_SEARCH_MODELS_PLACEHOLDER)}
         value={props.value}
         data-testid='model-search-input'

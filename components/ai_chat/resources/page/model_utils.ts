@@ -6,8 +6,13 @@
 import * as React from 'react'
 import { getLocale } from '$web-common/locale'
 import * as Mojom from '../common/mojom'
-import { LOCAL_VENDOR_KEY, PINNED_VENDOR_KEY } from '../common/vendor_icon_map'
-import { AUTOMATIC_MODEL_KEY } from '../common/constants'
+import {
+  ALL_RAIL_KEY,
+  LOCAL_RAIL_KEY,
+  OLLAMA_RAIL_KEY,
+  PINNED_RAIL_KEY,
+  getRailIcon,
+} from '../common/model_rail_keys'
 
 export function isLeoModel(model: Mojom.Model) {
   return !!model.options.leoModelOptions
@@ -40,69 +45,61 @@ export function isCustomModel(model: Mojom.Model) {
   return !!model.options.customModelOptions
 }
 
-/** Vendor key used for grouping: Local for custom models, else displayMaker. */
-export function getModelVendorKey(model: Mojom.Model): string {
-  if (isCustomModel(model)) {
-    return LOCAL_VENDOR_KEY
-  }
-  const maker = model.options.leoModelOptions?.displayMaker
-  return maker && maker.length > 0 ? maker : 'Brave'
+export function isOllamaModel(model: Mojom.Model) {
+  return (
+    model.options.customModelOptions?.endpoint.url === Mojom.OLLAMA_ENDPOINT
+  )
 }
 
-export type VendorRailEntry = {
-  key: string
-  label: string
-}
+export type RailEntry =
+  | { key: string; label: string; icon: string; capability?: undefined }
+  | {
+      key: string
+      label: string
+      icon: string
+      capability: Mojom.ModelCapability
+    }
 
 /**
- * Builds the vendor rail: Pinned first, then unique makers for Leo models,
- * then Local if any custom models exist (always include Local so empty state
- * can be shown).
+ * Builds the filter rail: Pinned, All models, available capabilities,
+ * Local (always), and Ollama when any Ollama models exist.
  */
-export function getVendorRailEntries(models: Mojom.Model[]): VendorRailEntry[] {
-  const makers = new Set<string>()
-  let hasCustom = false
-  for (const model of models) {
-    if (isCustomModel(model)) {
-      hasCustom = true
-      continue
-    }
-    // Automatic has no maker; skip it for the vendor rail.
-    if (model.key === AUTOMATIC_MODEL_KEY) {
-      continue
-    }
-    makers.add(getModelVendorKey(model))
-  }
-
-  const entries: VendorRailEntry[] = [
+export function getRailEntries(models: Mojom.Model[]): RailEntry[] {
+  const entries: RailEntry[] = [
     {
-      key: PINNED_VENDOR_KEY,
+      key: PINNED_RAIL_KEY,
       label: getLocale(S.CHAT_UI_PINNED_MODELS_LABEL),
+      icon: getRailIcon(PINNED_RAIL_KEY),
+    },
+    {
+      key: ALL_RAIL_KEY,
+      label: getLocale(S.CHAT_UI_ALL_MODELS_LABEL),
+      icon: getRailIcon(ALL_RAIL_KEY),
     },
   ]
 
-  // Stable-ish order based on appearance in the models list.
-  const orderedMakers: string[] = []
-  for (const model of models) {
-    if (isCustomModel(model) || model.key === AUTOMATIC_MODEL_KEY) {
-      continue
-    }
-    const key = getModelVendorKey(model)
-    if (makers.has(key) && !orderedMakers.includes(key)) {
-      orderedMakers.push(key)
-    }
+  for (const capability of getAvailableModelCapabilities(models)) {
+    entries.push({
+      key: `capability-${capability}`,
+      label: getModelCapabilityLabel(capability),
+      icon: getModelCapabilityIcon(capability),
+      capability,
+    })
   }
 
-  for (const maker of orderedMakers) {
-    entries.push({ key: maker, label: maker })
-  }
-
-  // Always show Local so users can discover local-model empty state.
   entries.push({
-    key: LOCAL_VENDOR_KEY,
+    key: LOCAL_RAIL_KEY,
     label: getLocale(S.CHAT_UI_LOCAL_MODELS_RAIL_LABEL),
+    icon: getRailIcon(LOCAL_RAIL_KEY),
   })
-  void hasCustom
+
+  if (models.some(isOllamaModel)) {
+    entries.push({
+      key: OLLAMA_RAIL_KEY,
+      label: getLocale(S.CHAT_UI_MODEL_OLLAMA_LABEL),
+      icon: getRailIcon(OLLAMA_RAIL_KEY),
+    })
+  }
 
   return entries
 }
@@ -184,15 +181,4 @@ export function formatModelCapabilitiesSubtitle(
     return ''
   }
   return capabilities.map(getModelCapabilityLabel).filter(Boolean).join(' · ')
-}
-
-export function modelHasAllCapabilities(
-  model: Mojom.Model,
-  required: Mojom.ModelCapability[],
-): boolean {
-  if (!required.length) {
-    return true
-  }
-  const caps = model.capabilities ?? []
-  return required.every((cap) => caps.includes(cap))
 }

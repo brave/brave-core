@@ -11,9 +11,11 @@ import '@testing-library/jest-dom'
 import { MockContext } from '../../state/mock_context'
 import { clearAllDataForTesting } from '$web-common/api'
 import {
-  LOCAL_VENDOR_KEY,
-  PINNED_VENDOR_KEY,
-} from '../../../common/vendor_icon_map'
+  ALL_RAIL_KEY,
+  LOCAL_RAIL_KEY,
+  OLLAMA_RAIL_KEY,
+  PINNED_RAIL_KEY,
+} from '../../../common/model_rail_keys'
 
 function withCapabilities(
   model: Mojom.Model,
@@ -216,13 +218,33 @@ describe('ModelSelector', () => {
   }
 
   const openMenu = async () => {
-    const anchorButton = getAnchorButton()
+    getAnchorButton()
+    const menu = getMenu() as HTMLDivElement & {
+      onChange?: (detail: { isOpen: boolean }) => void
+    }
     await act(async () => {
-      anchorButton?.shadowRoot?.querySelector('button')?.click()
+      // ButtonMenu is controlled by ModelSelector. Invoke the forwarded Leo
+      // callback directly because clicks inside its shadow root do not cross
+      // the React/custom-element boundary in Jest.
+      menu.onChange?.({ isOpen: true })
     })
-    const menu = getMenu()
     expect(menu).toHaveAttribute('isOpen', 'true')
     return menu
+  }
+
+  const getModelKeys = () =>
+    Array.from(
+      document.querySelectorAll<HTMLElement>('leo-menu-item[data-key]'),
+    ).map((item) => item.getAttribute('data-key'))
+
+  const clickRail = async (key: string) => {
+    const button = document.querySelector<HTMLButtonElement>(
+      `button[data-testid="filter-rail-${key}"]`,
+    )
+    expect(button).toBeInTheDocument()
+    await act(async () => {
+      button?.click()
+    })
   }
 
   const renderModelSelector = (
@@ -264,10 +286,6 @@ describe('ModelSelector', () => {
     await openMenu()
 
     // Pinned view: Auto + pinned keys
-    const menuItems = document.querySelectorAll<HTMLElement>(
-      '.modelList leo-menu-item, [class*="modelList"] leo-menu-item',
-    )
-    // Fallback: all leo-menu-item that are models (exclude capability filter)
     const modelItems = Array.from(
       document.querySelectorAll<HTMLElement>('leo-menu-item[data-key]'),
     )
@@ -281,32 +299,37 @@ describe('ModelSelector', () => {
     ).toBe(true)
   })
 
-  it('filters models by vendor from the rail', async () => {
+  it('filters models by capability from the rail', async () => {
     renderModelSelector()
     await openMenu()
 
-    const anthropicButton = document.querySelector<HTMLButtonElement>(
-      `button[data-testid="vendor-rail-Anthropic"]`,
-    )
-    expect(anthropicButton).toBeInTheDocument()
-    await act(async () => {
-      anthropicButton?.click()
-    })
+    await clickRail(`capability-${Mojom.ModelCapability.FAST}`)
 
     await waitFor(() => {
-      const modelItems = Array.from(
-        document.querySelectorAll<HTMLElement>('leo-menu-item[data-key]'),
+      expect(getModelKeys()).toEqual(['chat-basic'])
+    })
+  })
+
+  it('shows all selectable models from the All models rail', async () => {
+    renderModelSelector()
+    await openMenu()
+
+    await clickRail(ALL_RAIL_KEY)
+
+    await waitFor(() => {
+      const keys = getModelKeys()
+      expect(keys[0]).toBe('chat-automatic')
+      expect(keys).toEqual(
+        expect.arrayContaining([
+          'chat-automatic',
+          'chat-basic',
+          'another-chat-basic',
+          'chat-premium',
+          'another-chat-premium',
+          'chat-custom',
+        ]),
       )
-      expect(modelItems.map((i) => i.getAttribute('data-key'))).toEqual(
-        expect.arrayContaining(['chat-basic', 'another-chat-premium']),
-      )
-      expect(
-        modelItems.every(
-          (i) =>
-            i.getAttribute('data-key') === 'chat-basic'
-            || i.getAttribute('data-key') === 'another-chat-premium',
-        ),
-      ).toBe(true)
+      expect(keys).not.toContain('chat-brave-summary')
     })
   })
 
@@ -352,18 +375,73 @@ describe('ModelSelector', () => {
     })
     await openMenu()
 
-    const localButton = document.querySelector<HTMLButtonElement>(
-      `button[data-testid="vendor-rail-${LOCAL_VENDOR_KEY}"]`,
-    )
-    expect(localButton).toBeInTheDocument()
-    await act(async () => {
-      localButton?.click()
-    })
+    await clickRail(LOCAL_RAIL_KEY)
 
     await waitFor(() => {
       expect(
         document.querySelector('[data-testid="model-selector-empty"]'),
       ).toHaveTextContent('CHAT_UI_LOCAL_MODELS_EMPTY')
+    })
+  })
+
+  it('hides Ollama rail when no Ollama models exist', async () => {
+    renderModelSelector()
+    await openMenu()
+
+    expect(
+      document.querySelector(
+        `button[data-testid="filter-rail-${OLLAMA_RAIL_KEY}"]`,
+      ),
+    ).not.toBeInTheDocument()
+  })
+
+  it('shows Ollama models on the Ollama rail and excludes them from Local', async () => {
+    const ollamaModel = withCapabilities({
+      key: 'chat-ollama',
+      displayName: 'Ollama Model',
+      isNearModel: false,
+      visionSupport: false,
+      supportsTools: false,
+      supportedCapabilities: [Mojom.ConversationCapability.CHAT],
+      isSuggestedModel: false,
+      options: {
+        leoModelOptions: undefined,
+        customModelOptions: {
+          modelRequestName: 'llama3',
+          contextSize: 3,
+          apiKey: '',
+          modelSystemPrompt: '',
+          longConversationWarningCharacterLimit: 1,
+          maxAssociatedContentLength: 2,
+          endpoint: {
+            url: Mojom.OLLAMA_ENDPOINT,
+          },
+        },
+      },
+    })
+    renderModelSelector({
+      initialState: {
+        conversationState: {
+          allModels: [...mockModels, ollamaModel],
+          currentModelKey: 'chat-basic',
+        },
+        serviceState: {
+          pinnedModelKeys: ['chat-basic'],
+        },
+      },
+    })
+    await openMenu()
+
+    await clickRail(OLLAMA_RAIL_KEY)
+    await waitFor(() => {
+      expect(getModelKeys()).toEqual(['chat-ollama'])
+    })
+
+    await clickRail(LOCAL_RAIL_KEY)
+    await waitFor(() => {
+      const keys = getModelKeys()
+      expect(keys).toContain('chat-custom')
+      expect(keys).not.toContain('chat-ollama')
     })
   })
 
@@ -450,7 +528,7 @@ describe('ModelSelector', () => {
         },
         serviceState: {
           // Keep premium in the default pinned view so its options
-          // control is in the DOM without switching vendors.
+          // control is in the DOM without switching rails.
           pinnedModelKeys: ['chat-basic', 'chat-premium'],
         },
       },
@@ -538,8 +616,16 @@ describe('ModelSelector', () => {
     renderModelSelector()
     await openMenu()
     const pinned = document.querySelector(
-      `button[data-testid="vendor-rail-${PINNED_VENDOR_KEY}"]`,
+      `button[data-testid="filter-rail-${PINNED_RAIL_KEY}"]`,
     )
     expect(pinned).toHaveAttribute('aria-selected', 'true')
+  })
+
+  it('does not render the capability filter button', async () => {
+    renderModelSelector()
+    await openMenu()
+    expect(
+      document.querySelector('[data-testid="capability-filter-button"]'),
+    ).not.toBeInTheDocument()
   })
 })

@@ -16,24 +16,24 @@ import {
   NEAR_AI_LEARN_MORE_URL,
 } from '../../../common/constants'
 import {
-  LOCAL_VENDOR_KEY,
-  PINNED_VENDOR_KEY,
-} from '../../../common/vendor_icon_map'
+  ALL_RAIL_KEY,
+  LOCAL_RAIL_KEY,
+  OLLAMA_RAIL_KEY,
+  PINNED_RAIL_KEY,
+} from '../../../common/model_rail_keys'
 import { useAIChat } from '../../state/ai_chat_context'
 import { useConversation } from '../../state/conversation_context'
 import {
-  getAvailableModelCapabilities,
-  getVendorRailEntries,
+  getRailEntries,
+  isOllamaModel,
   isSelectableModel,
-  modelHasAllCapabilities,
 } from '../../model_utils'
 import { ModelMenuItem } from '../model_menu_item/model_menu_item'
 import { NearIcon } from '../near_label/near_label'
 import { FuzzyFinder } from '../filter_menu/fuzzy_finder'
 import { matches } from '../filter_menu/query'
-import { CapabilityFilter } from './capability_filter'
 import { ModelSearch } from './model_search'
-import { VendorRail } from './vendor_rail'
+import { FilterRail } from './filter_rail'
 import styles from './style.module.scss'
 
 function matchesModelQuery(query: string, model: Mojom.Model) {
@@ -54,36 +54,16 @@ export function ModelSelector() {
   const conversationContext = useConversation()
 
   const [isOpen, setIsOpen] = React.useState(false)
-  const [selectedVendorKey, setSelectedVendorKey] =
-    React.useState(PINNED_VENDOR_KEY)
+  const [selectedRailKey, setSelectedRailKey] = React.useState(PINNED_RAIL_KEY)
   const [searchQuery, setSearchQuery] = React.useState('')
-  const [capabilityFilters, setCapabilityFilters] = React.useState<
-    Mojom.ModelCapability[]
-  >([])
-  // Only one nested popover (filter or a model's options) can be open.
-  const [openPopover, setOpenPopover] = React.useState<
-    null | { kind: 'filter' } | { kind: 'model-options'; modelKey: string }
+  const [openModelOptionsKey, setOpenModelOptionsKey] = React.useState<
+    string | null
   >(null)
 
   const selectableModels = React.useMemo(
     () => conversationContext.allModels.filter(isSelectableModel),
     [conversationContext.allModels],
   )
-
-  const availableCapabilities = React.useMemo(
-    () => getAvailableModelCapabilities(selectableModels),
-    [selectableModels],
-  )
-
-  // Drop selections for capabilities that no longer appear on any model.
-  React.useEffect(() => {
-    setCapabilityFilters((prev) => {
-      const next = prev.filter((capability) =>
-        availableCapabilities.includes(capability),
-      )
-      return next.length === prev.length ? prev : next
-    })
-  }, [availableCapabilities])
 
   const pinnedModelKeys = React.useMemo(() => {
     const keys = aiChatContext.pinnedModelKeys ?? []
@@ -138,38 +118,33 @@ export function ModelSelector() {
     [pinnedModelKeys],
   )
 
-  const vendorEntries = React.useMemo(
-    () => getVendorRailEntries(selectableModels),
+  const railEntries = React.useMemo(
+    () => getRailEntries(selectableModels),
     [selectableModels],
   )
 
-  // Count models shown on the pinned tab; drives the fixed menu height so
-  // the panel grows with pins up to the max without resizing on vendor change.
-  const pinnedItemCount = React.useMemo(() => {
-    let count = 0
-    if (selectableModels.some((model) => model.key === AUTOMATIC_MODEL_KEY)) {
-      count++
+  const selectedRailEntry = React.useMemo(
+    () => railEntries.find((entry) => entry.key === selectedRailKey),
+    [railEntries, selectedRailKey],
+  )
+
+  // If the selected rail entry disappears (e.g. Ollama models removed),
+  // fall back to Pinned.
+  React.useEffect(() => {
+    if (!selectedRailEntry) {
+      setSelectedRailKey(PINNED_RAIL_KEY)
     }
-    for (const key of pinnedModelKeys) {
-      if (key === AUTOMATIC_MODEL_KEY) {
-        continue
-      }
-      if (selectableModels.some((model) => model.key === key)) {
-        count++
-      }
-    }
-    return count
-  }, [selectableModels, pinnedModelKeys])
+  }, [selectedRailEntry])
 
   const models = React.useMemo(() => {
     const query = searchQuery.trim()
 
-    // Search is global across all models; vendor rail only scopes the list
+    // Search is global across all models; filter rail only scopes the list
     // when the search box is empty.
     let list: Mojom.Model[] = []
     if (query) {
       list = selectableModels.slice()
-    } else if (selectedVendorKey === PINNED_VENDOR_KEY) {
+    } else if (selectedRailKey === PINNED_RAIL_KEY) {
       const autoModel = selectableModels.find(
         (model) => model.key === AUTOMATIC_MODEL_KEY,
       )
@@ -185,26 +160,18 @@ export function ModelSelector() {
           list.push(model)
         }
       }
-    } else if (selectedVendorKey === LOCAL_VENDOR_KEY) {
+    } else if (selectedRailKey === ALL_RAIL_KEY) {
+      list = selectableModels.slice()
+    } else if (selectedRailKey === LOCAL_RAIL_KEY) {
       list = selectableModels.filter(
-        (model) => !!model.options.customModelOptions,
+        (model) => !!model.options.customModelOptions && !isOllamaModel(model),
       )
-    } else {
-      list = selectableModels.filter(
-        (model) =>
-          model.options.leoModelOptions?.displayMaker === selectedVendorKey,
-      )
-    }
-
-    if (capabilityFilters.length > 0) {
-      // Keep Automatic visible on the pinned tab even when it has no
-      // matching capability tags.
-      list = list.filter(
-        (model) =>
-          (selectedVendorKey === PINNED_VENDOR_KEY
-            && !query
-            && model.key === AUTOMATIC_MODEL_KEY)
-          || modelHasAllCapabilities(model, capabilityFilters),
+    } else if (selectedRailKey === OLLAMA_RAIL_KEY) {
+      list = selectableModels.filter(isOllamaModel)
+    } else if (selectedRailEntry?.capability !== undefined) {
+      const capability = selectedRailEntry.capability
+      list = selectableModels.filter((model) =>
+        (model.capabilities ?? []).includes(capability),
       )
     }
 
@@ -223,10 +190,10 @@ export function ModelSelector() {
 
     return list
   }, [
-    selectedVendorKey,
+    selectedRailKey,
+    selectedRailEntry,
     selectableModels,
     pinnedModelKeys,
-    capabilityFilters,
     searchQuery,
   ])
 
@@ -239,17 +206,16 @@ export function ModelSelector() {
   const handleClose = React.useCallback(() => {
     setIsOpen(false)
     setSearchQuery('')
-    setCapabilityFilters([])
-    setSelectedVendorKey(PINNED_VENDOR_KEY)
-    setOpenPopover(null)
+    setSelectedRailKey(PINNED_RAIL_KEY)
+    setOpenModelOptionsKey(null)
   }, [])
 
   const emptyMessage = React.useMemo(() => {
-    if (selectedVendorKey === LOCAL_VENDOR_KEY && !searchQuery) {
+    if (selectedRailKey === LOCAL_RAIL_KEY && !searchQuery) {
       return getLocale(S.CHAT_UI_LOCAL_MODELS_EMPTY)
     }
     return getLocale(S.CHAT_UI_NO_MODELS_FOUND)
-  }, [selectedVendorKey, searchQuery])
+  }, [selectedRailKey, searchQuery])
 
   return (
     <ButtonMenu
@@ -310,30 +276,21 @@ export function ModelSelector() {
         className={styles.menuBody}
         style={
           {
-            '--vendor-rail-count': vendorEntries.length,
-            '--pinned-item-count': pinnedItemCount,
+            '--rail-item-count': railEntries.length,
+            '--model-item-count': models.length,
           } as React.CSSProperties
         }
       >
-        <VendorRail
-          entries={vendorEntries}
-          selectedKey={selectedVendorKey}
-          onSelect={setSelectedVendorKey}
+        <FilterRail
+          entries={railEntries}
+          selectedKey={selectedRailKey}
+          onSelect={setSelectedRailKey}
         />
         <div className={styles.mainPane}>
-          <div className={styles.searchAndFilters}>
+          <div className={styles.searchRow}>
             <ModelSearch
               value={searchQuery}
               onChange={setSearchQuery}
-            />
-            <CapabilityFilter
-              available={availableCapabilities}
-              selected={capabilityFilters}
-              onChange={setCapabilityFilters}
-              isOpen={openPopover?.kind === 'filter'}
-              onOpenChange={(open) =>
-                setOpenPopover(open ? { kind: 'filter' } : null)
-              }
             />
           </div>
           <div className={styles.modelList}>
@@ -362,16 +319,9 @@ export function ModelSelector() {
                     showDetails={true}
                     showCapabilitySubtitle={true}
                     isMobile={aiChatContext.isMobile}
-                    isOptionsOpen={
-                      openPopover?.kind === 'model-options'
-                      && openPopover.modelKey === model.key
-                    }
+                    isOptionsOpen={openModelOptionsKey === model.key}
                     onOptionsOpenChange={(open) =>
-                      setOpenPopover(
-                        open
-                          ? { kind: 'model-options', modelKey: model.key }
-                          : null,
-                      )
+                      setOpenModelOptionsKey(open ? model.key : null)
                     }
                     onClick={() => {
                       conversationContext.setCurrentModel(model)

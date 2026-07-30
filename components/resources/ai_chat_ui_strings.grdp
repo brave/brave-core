@@ -177,14 +177,14 @@
   <message name="IDS_CHAT_UI_PINNED_MODELS_LABEL" desc="Label for the pinned models section in the model selector" formatter_data="webui=AiChat">
     Pinned
   </message>
-  <message name="IDS_CHAT_UI_LOCAL_MODELS_RAIL_LABEL" desc="Label for the local models section in the model selector vendor rail" formatter_data="webui=AiChat">
+  <message name="IDS_CHAT_UI_ALL_MODELS_LABEL" desc="Label for the all models section in the model selector filter rail" formatter_data="webui=AiChat">
+    All models
+  </message>
+  <message name="IDS_CHAT_UI_LOCAL_MODELS_RAIL_LABEL" desc="Label for the local models section in the model selector filter rail" formatter_data="webui=AiChat">
     Local
   </message>
   <message name="IDS_CHAT_UI_SEARCH_MODELS_PLACEHOLDER" desc="Placeholder text for the model search input" formatter_data="webui=AiChat">
     Search models
-  </message>
-  <message name="IDS_CHAT_UI_FILTER_MODELS_BUTTON" desc="Button label to open the model capability filter menu" formatter_data="webui=AiChat">
-    Filter
   </message>
   <message name="IDS_CHAT_UI_MODEL_CAPABILITY_FAST" desc="Model capability filter label for fast models" formatter_data="webui=AiChat">
     Fast
