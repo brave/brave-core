@@ -47,6 +47,11 @@ class BraveWaybackMachineTabHelper
   }
   WaybackState wayback_state() const { return wayback_state_; }
 
+  // Sets the wayback state directly and notifies the registered callback (see
+  // SetWaybackStateChangedCallback()), bypassing navigation and the real
+  // wayback-machine lookup. For unit tests only.
+  void SetWaybackStateForTesting(WaybackState state) { SetWaybackState(state); }
+
   void FetchWaybackURL();
 
  private:
