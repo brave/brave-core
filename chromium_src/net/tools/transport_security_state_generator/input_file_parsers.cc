@@ -303,6 +303,11 @@ constexpr std::string_view kBraveHstsJson = R"brave_hsts_json({
       "mode": "force-https",
       "policy": "custom"
     },
+    {
+      "name": "webcompat.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
 
     // Creators
     {
