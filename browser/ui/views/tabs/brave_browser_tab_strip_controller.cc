@@ -26,6 +26,7 @@
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/tabs/split_tab_util.h"
+#include "chrome/browser/ui/tabs/tab_muted_utils.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/tabs/browser_tab_strip_controller.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
@@ -150,6 +151,23 @@ void BraveBrowserTabStripController::ExecuteContextMenuCommand(
     return;
   }
 
+  if (command_id == TabStripModel::CommandToggleTabMuted) {
+    auto* model = static_cast<BraveTabStripModel*>(model_.get());
+    auto indices = model->GetTabIndicesForCommandAt(index);
+    std::vector<content::WebContents*> contentses;
+    contentses.reserve(indices.size());
+    for (int tab_index : indices) {
+      contentses.push_back(model->GetWebContentsAt(tab_index));
+    }
+
+    const auto all_muted = model->GetAllTabsMuted(indices);
+    for (auto* contents : contentses) {
+      SetTabAudioMuted(contents, !all_muted, TabMutedReason::kAudioIndicator,
+                       /*extension_id=*/std::string());
+    }
+    return;
+  }
+
   if (command_id == TabStripModel::CommandShowVerticalTabs) {
     brave::ToggleVerticalTabStrip(GetBrowserWindowInterface());
     BrowserView::GetBrowserViewForBrowser(GetBrowserWindowInterface())
@@ -199,6 +217,16 @@ bool BraveBrowserTabStripController::IsContextMenuCommandEnabled(
 
   if (command_id == TabStripModel::CommandBookmarkTab) {
     return chrome::CanBookmarkCurrentTab(GetBrowserWindowInterface());
+  }
+
+  if (command_id == TabStripModel::CommandToggleTabMuted) {
+    auto* model = static_cast<BraveTabStripModel*>(model_.get());
+    for (const auto& i : model->GetTabIndicesForCommandAt(index)) {
+      if (!model_->GetWebContentsAt(i)->GetLastCommittedURL().is_empty()) {
+        return true;
+      }
+    }
+    return false;
   }
 
   if (command_id == TabStripModel::CommandCloseDuplicateTabs) {
