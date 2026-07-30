@@ -9,4 +9,4 @@ Covers every operation that doesn't need to inject arbitrary file content
 into the step (see `api.py` for what that excludes and why).
 """
 
-DEPS = ['depot_tools', 'step']
+DEPS = ['depot_tools', 'raw_io', 'step']

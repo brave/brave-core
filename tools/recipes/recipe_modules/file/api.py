@@ -65,7 +65,8 @@ class FileApi(RecipeApi):
         """
         vpython3 = self.m.depot_tools.vpython3()
         result = self.m.step(name, [vpython3, '-u', _FILEUTIL, *args],
-                             capture_output=True)
+                             stdout=self.m.raw_io.output_text(),
+                             stderr=self.m.raw_io.output_text())
         status = (json.loads(result.stderr) if result.stderr else {
             'ok': True,
             'errno_name': '',

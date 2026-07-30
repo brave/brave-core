@@ -8,7 +8,7 @@ from __future__ import annotations
 
 import post_process
 
-DEPS = ['brave_core_checkout', 'path', 'step']
+DEPS = ['brave_core_checkout', 'path', 'raw_io', 'step']
 
 
 def RunSteps(api):
@@ -52,8 +52,9 @@ def GenTests(api):
         'already deployed',
         api.path.files('brave-browser/src/brave/third_party/node',
                        'brave-browser/src/brave/tools/cr/bootstrap'),
-        api.step_data('sparse-checkout list',
-                      stdout='third_party/node\ntools/cr\n'),
+        api.step_data(
+            'sparse-checkout list',
+            stdout=api.raw_io.output_text('third_party/node\ntools/cr\n')),
         api.post_process(post_process.DoesNotRun, 'sparse-checkout add'),
         api.post_process(post_process.MustRun, 'npm version'),
         api.post_process(post_process.StatusSuccess),

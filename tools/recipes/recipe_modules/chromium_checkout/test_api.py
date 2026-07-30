@@ -38,7 +38,8 @@ class ChromiumCheckoutTestApi(RecipeTestApi):
         Both `clone` and `checkout_ref` run a `git cache exists` step to
         resolve the mirror directory `git cache populate` just fetched into;
         required whenever either of them runs, since the simulated stdout is
-        `None` (not an empty string) unless seeded.
+        an empty string unless seeded.
         """
-        return (self.step_data('git cache exists', stdout=mirror_dir) +
-                self.step_data('git cache exists for ref', stdout=mirror_dir))
+        stdout = self.m.raw_io.output_text(mirror_dir)
+        return (self.step_data('git cache exists', stdout=stdout) +
+                self.step_data('git cache exists for ref', stdout=stdout))
