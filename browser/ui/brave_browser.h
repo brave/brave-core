@@ -6,10 +6,7 @@
 #ifndef BRAVE_BROWSER_UI_BRAVE_BROWSER_H_
 #define BRAVE_BROWSER_UI_BRAVE_BROWSER_H_
 
-#include <string>
-
 #include "base/containers/flat_set.h"
-#include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "chrome/browser/ui/browser.h"
 
@@ -32,26 +29,10 @@ class BraveBrowser : public Browser {
       TabStripModel* tab_strip_model,
       const TabStripModelChange& change,
       const TabStripSelectionChange& selection) override;
-  void BeforeUnloadFired(content::WebContents* source,
-                         bool proceed,
-                         bool* proceed_to_fire_unload) override;
-  void UpdateTargetURL(content::WebContents* source, const GURL& url) override;
-  content::WebContents* AddNewContents(
-      content::WebContents* source,
-      std::unique_ptr<content::WebContents> new_contents,
-      const GURL& target_url,
-      WindowOpenDisposition disposition,
-      const blink::mojom::WindowFeatures& window_features,
-      bool user_gesture,
-      bool* was_blocked) override;
 
   void OnTabClosing(tabs::TabInterface* tab,
                     bool* had_active_modal_dialog) override;
   void TabStripEmpty() override;
-
-  void RunFileChooser(content::RenderFrameHost* render_frame_host,
-                      scoped_refptr<content::FileSelectListener> listener,
-                      const blink::mojom::FileChooserParams& params) override;
 
   // Returns true when we should ask browser closing to users before handling
   // any warning/onbeforeunload handlers.
@@ -60,6 +41,11 @@ class BraveBrowser : public Browser {
   // Allows ignoring onbeforeunload handlers when closing selected tabs.
   void SetTabsToIgnoreBeforeUnloadHandlers(
       const base::flat_set<tabs::TabHandle>& for_contents);
+
+  // Used by the BrowserWebContentsDelegate override (see
+  // brave/chromium_src/chrome/browser/ui/browser_web_contents_delegate) to
+  // suppress before-unload dialogs for tabs being moved to another window.
+  bool ShouldIgnoreBeforeUnloadHandlerForTab(tabs::TabHandle handle) const;
 
   void set_ignore_enable_closing_last_tab_pref() {
     ignore_enable_closing_last_tab_pref_ = true;
@@ -74,8 +60,6 @@ class BraveBrowser : public Browser {
   static void SuppressBrowserWindowClosingDialogForTesting(bool suppress);
 
   bool AreAllTabsSharedPinnedTabs();
-
-  bool ShouldSuppressDialogs(content::WebContents* source) override;
 
   // When "kEnableClosingLastTab" is false, browser will try to add new tab in
   // TabStripEmpty() if there is no tab. But, in some cases, we should not add
