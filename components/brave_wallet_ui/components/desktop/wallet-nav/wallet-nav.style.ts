@@ -6,12 +6,14 @@
 import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css/variables'
 import Navigation from '@brave/leo/react/navigation'
+import Button from '@brave/leo/react/button'
 
 // Assets
 import WalletLogoLight from '../../../assets/svg-icons/wallet_logo_light.svg'
 import WalletLogoDark from '../../../assets/svg-icons/wallet_logo_dark.svg'
 
 // Shared Styles
+import { Row } from '../../shared/style'
 import {
   layoutSmallWidth,
   navWidth,
@@ -42,6 +44,23 @@ export const Wrapper = styled.div`
     align-items: center;
     justify-content: center;
   }
+`
+
+export const SidePanelWrapper = styled.div<{ isOpen: boolean }>`
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-direction: column;
+  position: absolute;
+  background-color: ${leo.color.container.background};
+  top: 0px;
+  bottom: 0px;
+  left: ${(p) => (p.isOpen ? 0 : -navWidth)}px;
+  z-index: 100;
+  width: ${navWidth}px;
+  transition: all 0.3s ease-in-out;
+  border-radius: 0px 16px 16px 0px;
+  overflow: hidden;
 `
 
 export const Section = styled.div<{ showBorder?: boolean }>`
@@ -91,4 +110,26 @@ export const WalletLogo = styled.div`
 
 export const LeoNavigation = styled(Navigation)`
   width: 100%;
+`
+
+export const Header = styled(Row)`
+  background-color: ${leo.color.page.background};
+`
+
+export const CloseButton = styled(Button)`
+  --leo-button-color: ${leo.color.icon.default};
+  flex-grow: 0;
+`
+
+export const BackgroundOverlay = styled.div<{ isOpen: boolean }>`
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(30px);
+  opacity: ${(p) => (p.isOpen ? 1 : 0)};
+  transition: all 0.3s ease-in-out;
+  z-index: 99;
+  pointer-events: ${(p) => (p.isOpen ? 'auto' : 'none')};
 `

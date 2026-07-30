@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 export const LOCAL_STORAGE_KEYS = {
+  IS_NAVIGATION_OPEN: 'BRAVE_WALLET_IS_NAVIGATION_OPEN',
   IS_PORTFOLIO_OVERVIEW_GRAPH_HIDDEN:
     'BRAVE_WALLET_IS_WALLET_PORTFOLIO_OVERVIEW_GRAPH_HIDDEN2',
   IS_PORTFOLIO_OVERVIEW_DISTRIBUTION_HIDDEN:
