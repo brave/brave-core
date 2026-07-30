@@ -404,7 +404,7 @@ final public class PlaylistItem: NSManagedObject, CRUD, Identifiable {
   public static func migrateLastPlayedDate(completion: ((Bool) -> Void)? = nil) {
     DataController.perform(context: .new(inMemory: false), save: false) { context in
       var success = false
-      
+
       defer {
         if let completion {
           Task { @MainActor in
