@@ -21,8 +21,6 @@
 
 namespace speedreader {
 
-namespace DistillStates {
-
 ViewOriginal::ViewOriginal() = default;
 
 ViewOriginal::ViewOriginal(ViewOriginal::Reason reason, bool was_auto_distilled)
@@ -49,43 +47,41 @@ DistillReverting::DistillReverting(const Distilled& state,
                                    DistillReverting::Reason reason)
     : ViewOriginal(reason, state.reason == Distilled::Reason::kAutomatic) {}
 
-bool IsViewOriginal(const State& state) {
+bool IsViewOriginal(const DistillState& state) {
   return std::holds_alternative<ViewOriginal>(state);
 }
 
-bool IsDistilling(const State& state) {
+bool IsDistilling(const DistillState& state) {
   return std::holds_alternative<Distilling>(state);
 }
 
-bool IsDistilled(const State& state) {
+bool IsDistilled(const DistillState& state) {
   return std::holds_alternative<Distilled>(state);
 }
 
-bool IsDistillReverting(const State& state) {
+bool IsDistillReverting(const DistillState& state) {
   return std::holds_alternative<DistillReverting>(state);
 }
 
-bool IsNotDistillable(const State& state) {
-  return IsViewOriginal(state) &&
-         std::get<DistillStates::ViewOriginal>(state).reason ==
-             DistillStates::ViewOriginal::Reason::kNotDistillable;
+bool IsNotDistillable(const DistillState& state) {
+  return IsViewOriginal(state) && std::get<ViewOriginal>(state).reason ==
+                                      ViewOriginal::Reason::kNotDistillable;
 }
 
-bool IsDistillable(const State& state) {
-  return IsViewOriginal(state) &&
-         std::get<DistillStates::ViewOriginal>(state).reason !=
-             DistillStates::ViewOriginal::Reason::kNotDistillable;
+bool IsDistillable(const DistillState& state) {
+  return IsViewOriginal(state) && std::get<ViewOriginal>(state).reason !=
+                                      ViewOriginal::Reason::kNotDistillable;
 }
 
-bool IsDistilledAutomatically(const State& state) {
+bool IsDistilledAutomatically(const DistillState& state) {
   if (const auto* d = std::get_if<Distilled>(&state)) {
     return d->reason == Distilled::Reason::kAutomatic;
   }
   return false;
 }
 
-bool Transit(State& state, const State& desired) {
-  if (std::holds_alternative<None>(state)) {
+bool Transit(DistillState& state, const DistillState& desired) {
+  if (std::holds_alternative<std::monostate>(state)) {
     state = desired;
     return false;
   }
@@ -151,8 +147,6 @@ bool Transit(State& state, const State& desired) {
 
   NOTREACHED();
 }
-
-}  // namespace DistillStates
 
 void DistillPage(const GURL& url,
                  std::string body,
