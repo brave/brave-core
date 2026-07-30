@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/page_action/page_action_icon_controller.cc b/chrome/browser/ui/views/page_action/page_action_icon_controller.cc
-index a9fa015f80544352f24d72369c537f58bb0d3f40..124d9f22af2407685bb7434429c072076eef1008 100644
+index a9fa015f80544352f24d72369c537f58bb0d3f40..162bae1fe5be83ea3ba31ba87db2b306867f1eeb 100644
 --- a/chrome/browser/ui/views/page_action/page_action_icon_controller.cc
 +++ b/chrome/browser/ui/views/page_action/page_action_icon_controller.cc
-@@ -61,6 +61,33 @@ void PageActionIconController::Init(const PageActionIconParams& params,
+@@ -61,6 +61,22 @@ void PageActionIconController::Init(const PageActionIconParams& params,
        continue;
      }
      switch (type) {
@@ -20,23 +20,12 @@ index a9fa015f80544352f24d72369c537f58bb0d3f40..124d9f22af2407685bb7434429c07207
 +      case brave::kPlaylistPageActionIconType:
 +        break;
 +#endif
-+#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
-+      case brave::kWaybackMachineActionIconType:
-+        AddPageActionIcon(
-+            type,
-+            std::make_unique<WaybackMachineActionIconView>(
-+                params.command_updater, params.browser,
-+                params.icon_label_bubble_delegate,
-+                params.page_action_icon_delegate),
-+            params);
-+        break;
-+#endif
 +      case brave::kUndefinedPageActionIconType:
 +        break;
        case PageActionIconType::kOptimizationGuide:
        case PageActionIconType::kFind:
        case PageActionIconType::kFederation:
-@@ -245,6 +272,7 @@ void PageActionIconController::RecordOverallMetrics() {
+@@ -245,6 +261,7 @@ void PageActionIconController::RecordOverallMetrics() {
  void PageActionIconController::RecordIndividualMetrics(
      PageActionIconType type,
      PageActionIconView* view) const {

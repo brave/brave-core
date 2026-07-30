@@ -1352,7 +1352,12 @@ test("brave_browser_tests") {
 
   if (enable_brave_wayback_machine) {
     sources += [ "//brave/components/brave_wayback_machine/brave_wayback_machine_browsertest.cc" ]
-    deps += [ "//brave/components/brave_wayback_machine" ]
+    deps += [
+      "//brave/components/brave_wayback_machine",
+      "//chrome/browser/ui/actions",
+      "//chrome/browser/ui/views/page_action:page_action_test_support",
+      "//ui/views:test_support",
+    ]
   }
 
   if (enable_speedreader) {

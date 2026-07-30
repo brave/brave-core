@@ -5,9 +5,7 @@
 
 #include "chrome/browser/ui/views/page_action/page_action_icon_controller.h"
 
-#include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
-#include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "chrome/browser/ui/page_action/page_action_icon_type.h"
 #include "chrome/browser/ui/views/page_action/page_action_icon_container.h"
 #include "chrome/browser/ui/views/page_action/page_action_icon_params.h"
@@ -15,19 +13,14 @@
 #include "chrome/browser/ui/views/toolbar/toolbar_icon_container_view.h"
 #include "ui/views/animation/ink_drop.h"
 
-#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
-#include "brave/browser/ui/views/page_action/wayback_machine_action_icon_view.h"
-#endif
-
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
 #include "brave/browser/ui/views/playlist/playlist_action_icon_view.h"
 #endif
 
 // Mirrors the `add_page_action_icon` lambda that upstream used to declare
 // locally in `Init()`, removed along with `kOptimizationGuide` (its last
-// caller) in cr152. The Speedreader/Wayback Machine/Playlist cases plastered
-// into `Init()`'s switch (see the matching .cc.yaml) call this to register
-// their icon views.
+// caller) in cr152. The Playlist case plastered into `Init()`'s switch (see
+// the matching .cc.yaml) calls this to register its icon view.
 PageActionIconView* PageActionIconController::AddPageActionIcon(
     PageActionIconType type,
     std::unique_ptr<PageActionIconView> icon,
