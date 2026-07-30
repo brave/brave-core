@@ -42,7 +42,8 @@ ZCashShieldSyncService::OrchardBlockScannerProxy::ScanBlocksInBackground(
     OrchardTreeState tree_state,
     std::vector<zcash::mojom::CompactBlockPtr> blocks) {
   OrchardBlockScanner scanner(full_view_key);
-  return scanner.ScanBlocks(tree_state, std::move(blocks));
+  return scanner.ScanBlocks(tree_state, std::move(blocks), std::nullopt,
+                            0xFFFFFFFF);
 }
 
 void ZCashShieldSyncService::OrchardBlockScannerProxy::ScanBlocks(
@@ -259,7 +260,7 @@ void ZCashShieldSyncService::UpdateSpendableNotes(
   }
   sync_state()
       .AsyncCall(&OrchardSyncState::GetSpendableNotes)
-      .WithArgs(context_.account_id.Clone(),
+      .WithArgs(OrchardPool::kOrchard, context_.account_id.Clone(),
                 context_.account_internal_addr.value())
       .Then(base::BindOnce(&ZCashShieldSyncService::OnGetSpendableNotes,
                            weak_ptr_factory_.GetWeakPtr(),
