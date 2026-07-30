@@ -1273,7 +1273,7 @@ dependencies = [
 
 [[package]]
 name = "libc"
-version = "0.2.186"
+version = "0.2.189"
 
 [[package]]
 name = "libm"
@@ -1357,7 +1357,7 @@ dependencies = [
 
 [[package]]
 name = "memchr"
-version = "2.8.2"
+version = "2.8.3"
 
 [[package]]
 name = "memuse"
@@ -1676,6 +1676,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 [[package]]
 name = "proc-macro-error-attr2"
 version = "2.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -1684,6 +1685,7 @@ dependencies = [
 [[package]]
 name = "proc-macro-error2"
 version = "2.0.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "proc-macro-error-attr2",
  "proc-macro2",
@@ -1693,7 +1695,7 @@ dependencies = [
 
 [[package]]
 name = "proc-macro2"
-version = "1.0.106"
+version = "1.0.107"
 dependencies = [
  "unicode-ident",
 ]
@@ -1709,7 +1711,7 @@ dependencies = [
 
 [[package]]
 name = "quote"
-version = "1.0.46"
+version = "1.0.47"
 dependencies = [
  "proc-macro2",
 ]
@@ -2595,7 +2597,7 @@ dependencies = [
 
 [[package]]
 name = "zeroize_derive"
-version = "1.4.3"
+version = "1.5.0"
 dependencies = [
  "proc-macro2",
  "quote",
