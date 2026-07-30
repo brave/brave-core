@@ -9,6 +9,7 @@ import Button from '@brave/leo/react/button'
 import { useStepTransition } from './use_step_transition'
 import { useProductFeatures } from './use_product_features'
 import { getString } from '../lib/strings'
+import { StepComponentProps } from './step_component_props'
 import { StepHeader } from './step_header'
 import { ProductCard } from './product_card'
 
@@ -19,12 +20,7 @@ import web3Image from '../assets/web3.svg'
 import rewardsImage from '../assets/rewards.svg'
 import vpnImage from '../assets/vpn.svg'
 
-interface Props {
-  onBack: () => void
-  onNext: () => void
-}
-
-export function FeaturesStep(props: Props) {
+export function FeaturesStep(props: StepComponentProps) {
   const features = useProductFeatures()
 
   useStepTransition()
@@ -99,7 +95,9 @@ export function FeaturesStep(props: Props) {
             size='large'
             onClick={props.onNext}
           >
-            {getString('WELCOME_PAGE_CONTINUE_BUTTON_LABEL')}
+            {props.isLastStep
+              ? getString('WELCOME_PAGE_START_BROWSING_BUTTON_LABEL')
+              : getString('WELCOME_PAGE_CONTINUE_BUTTON_LABEL')}
           </Button>
         </div>
       </footer>
