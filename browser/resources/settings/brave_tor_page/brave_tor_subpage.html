@@ -104,10 +104,12 @@
           disabled="[[!usageEqual_('useProvided', useBridgesValue_)]]"></textarea>
       </div>
     </settings-collapse-radio-button>
-    <leo-alert id="invalidBridge" hidden="[[!invalidBridge_]]" hideIcon="true" type="error">
+<template is="dom-if" if="[[invalidBridge_]]">
+    <leo-alert id="invalidBridge" hideIcon="true" type="error">
       <div>$i18n{torInvalidBridgeError}</div>
       <div class="bridge-line">[[invalidBridge_]]</div>
     </leo-alert>
+  </template>
   </cr-radio-group>
 
   <template is="dom-if" if="[[showRequestBridgesDialog_]]" restamp>
