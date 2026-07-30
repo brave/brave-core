@@ -10,11 +10,11 @@
 
 // Allow callers to override the dialog window title resource id (e.g. use
 // "Bookmark selected tabs" instead of Chromium's "Bookmark all tabs").
-#define bookmark_data                 \
-  bookmark_data;                      \
+#define bookmark_data \
+  bookmark_data;      \
   std::optional<int> window_title_id
 
-#define GetWindowTitleId              \
+#define GetWindowTitleId                 \
   GetWindowTitleId_ChromiumImpl() const; \
   int GetWindowTitleId
 
