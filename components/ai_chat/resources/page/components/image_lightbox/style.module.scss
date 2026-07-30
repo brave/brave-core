@@ -9,6 +9,34 @@
   --leo-dialog-background: transparent;
   background: transparent;
   box-shadow: none;
+  overflow: visible;
+
+  // Leo Dialog is a web component; className lands on the host. Pin the
+  // slotted content width so a long filename cannot expand the dialog past
+  // --leo-dialog-width (which is only applied as max-width inside the
+  // shadow tree).
+  & > * {
+    width: min(var(--leo-dialog-width), 100%);
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  // 8px gap between the close control and the top of the card.
+  gap: var(--leo-spacing-m);
+  overflow: hidden;
+}
+
+.closeButton {
+  --leo-icon-color: var(--leo-color-icon-default);
+
+  align-self: flex-end;
+  flex-shrink: 0;
+  color: var(--leo-color-white);
 }
 
 .card {
@@ -16,6 +44,7 @@
   flex-direction: column;
   overflow: hidden;
   width: 100%;
+  min-width: 0;
   border-radius: var(--leo-radius-xl);
   background-color: var(--leo-color-container-background);
 }
@@ -23,6 +52,8 @@
 .imageContainer {
   // Width follows the dialog; height comes from the image aspect ratio.
   width: 100%;
+  min-width: 0;
+  overflow: hidden;
 }
 
 .image {
@@ -39,14 +70,27 @@
   gap: var(--leo-spacing-l);
   padding: var(--leo-spacing-xl);
   background-color: var(--leo-color-container-background);
+  min-width: 0;
+  width: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
 .info {
   display: flex;
+  flex: 1 1 auto;
   flex-direction: column;
   gap: var(--leo-spacing-xs);
   min-width: 0;
-  flex: 1 1 auto;
+  overflow: hidden;
+}
+
+// Same pattern as attachment_item: a grid wrapper is needed for reliable
+// text-overflow ellipsis inside flex layouts.
+.forEllipsis {
+  display: grid;
+  width: 100%;
+  min-width: 0;
 }
 
 .title {

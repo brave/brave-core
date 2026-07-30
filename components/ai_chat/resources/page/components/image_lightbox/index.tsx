@@ -174,7 +174,6 @@ export default function ImageLightbox(props: Props) {
   return (
     <Dialog
       isOpen={!!file}
-      showClose
       escapeCloses
       backdropClickCloses
       onClose={onClose}
@@ -182,51 +181,72 @@ export default function ImageLightbox(props: Props) {
       style={dialogStyle}
     >
       {file && (
-        <div className={styles.card}>
-          <div className={styles.imageContainer}>
-            {dataUrl && (
-              <img
-                className={styles.image}
-                src={dataUrl}
-                alt={title}
-                onLoad={handleImageLoad}
-              />
-            )}
-          </div>
-          <div className={styles.footer}>
-            <div className={styles.info}>
-              <span className={styles.title}>{title}</span>
-              <span className={styles.subtitle}>{filesize}</span>
+        <div className={styles.wrapper}>
+          <Button
+            fab
+            kind='plain-faint'
+            className={styles.closeButton}
+            title={getLocale(S.CHAT_UI_LABEL_CLOSE)}
+            aria-label={getLocale(S.CHAT_UI_LABEL_CLOSE)}
+            onClick={onClose}
+          >
+            <Icon name='close' />
+          </Button>
+          <div className={styles.card}>
+            <div className={styles.imageContainer}>
+              {dataUrl && (
+                <img
+                  className={styles.image}
+                  src={dataUrl}
+                  alt={title}
+                  onLoad={handleImageLoad}
+                />
+              )}
             </div>
-            <div className={styles.actions}>
-              <Button
-                fab
-                kind='outline'
-                className={
-                  isCopySuccess ? styles.copyButtonSuccess : styles.actionButton
-                }
-                title={getLocale(S.CHAT_UI_IMAGE_LIGHTBOX_COPY_BUTTON_LABEL)}
-                aria-label={getLocale(
-                  S.CHAT_UI_IMAGE_LIGHTBOX_COPY_BUTTON_LABEL,
-                )}
-                onClick={handleCopy}
-              >
-                <Icon name={isCopySuccess ? 'check-normal' : 'copy'} />
-              </Button>
-              <Button
-                fab
-                kind='outline'
-                className={styles.actionButton}
-                title={getLocale(
-                  S.CHAT_UI_IMAGE_LIGHTBOX_DOWNLOAD_BUTTON_LABEL,
-                )}
-                aria-label={getLocale(
-                  S.CHAT_UI_IMAGE_LIGHTBOX_DOWNLOAD_BUTTON_LABEL,
-                )}
-                onClick={handleDownload}
-              >
-                <Icon name='download' />
-              </Button>
+            <div className={styles.footer}>
+              <div className={styles.info}>
+                <div className={styles.forEllipsis}>
+                  <span
+                    className={styles.title}
+                    title={title}
+                  >
+                    {title}
+                  </span>
+                </div>
+                <span className={styles.subtitle}>{filesize}</span>
+              </div>
+              <div className={styles.actions}>
+                <Button
+                  fab
+                  kind='outline'
+                  className={
+                    isCopySuccess
+                      ? styles.copyButtonSuccess
+                      : styles.actionButton
+                  }
+                  title={getLocale(S.CHAT_UI_IMAGE_LIGHTBOX_COPY_BUTTON_LABEL)}
+                  aria-label={getLocale(
+                    S.CHAT_UI_IMAGE_LIGHTBOX_COPY_BUTTON_LABEL,
+                  )}
+                  onClick={handleCopy}
+                >
+                  <Icon name={isCopySuccess ? 'check-normal' : 'copy'} />
+                </Button>
+                <Button
+                  fab
+                  kind='outline'
+                  className={styles.actionButton}
+                  title={getLocale(
+                    S.CHAT_UI_IMAGE_LIGHTBOX_DOWNLOAD_BUTTON_LABEL,
+                  )}
+                  aria-label={getLocale(
+                    S.CHAT_UI_IMAGE_LIGHTBOX_DOWNLOAD_BUTTON_LABEL,
+                  )}
+                  onClick={handleDownload}
+                >
+                  <Icon name='download' />
+                </Button>
+              </div>
             </div>
           </div>
         </div>
