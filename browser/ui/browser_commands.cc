@@ -465,15 +465,16 @@ void ToggleActiveTabAudioMute(Browser* browser) {
                    std::string());
 }
 
-void BookmarkTabs(Browser* browser,
+void BookmarkTabs(BrowserWindowInterface* browser,
                   const std::vector<content::WebContents*>& web_contentses) {
   CHECK(browser);
   if (web_contentses.empty()) {
     return;
   }
 
-  bookmarks::BookmarkModel* model =
-      BookmarkModelFactory::GetForBrowserContext(browser->profile());
+  // Use ::bookmarks to avoid colliding with brave::bookmarks.
+  ::bookmarks::BookmarkModel* model =
+      BookmarkModelFactory::GetForBrowserContext(browser->GetProfile());
   if (!model || !model->loaded()) {
     return;
   }
@@ -500,10 +501,10 @@ void BookmarkTabs(Browser* browser,
     }
 
     const bool was_bookmarked_by_user =
-        bookmarks::IsBookmarkedByUser(model, url);
-    bookmarks::AddIfNotBookmarked(model, url, title);
+        ::bookmarks::IsBookmarkedByUser(model, url);
+    ::bookmarks::AddIfNotBookmarked(model, url, title);
     const bool is_bookmarked_by_user =
-        bookmarks::IsBookmarkedByUser(model, url);
+        ::bookmarks::IsBookmarkedByUser(model, url);
     if (!was_bookmarked_by_user && is_bookmarked_by_user) {
       added_any_bookmark = true;
     }
@@ -515,16 +516,16 @@ void BookmarkTabs(Browser* browser,
 
   // Show the bubble only when bookmarking a single tab, matching the star
   // button. A bookmark isn't created if the url is invalid.
-  if (web_contentses.size() == 1 && browser->window()->IsActive() &&
+  if (web_contentses.size() == 1 && browser->GetWindow()->IsActive() &&
       last_is_bookmarked_by_user) {
     // Only show the bubble if the window is active, otherwise we may get into
     // weird situations where the bubble is deleted as soon as it is shown.
-    browser->window()->ShowBookmarkBubble(last_bookmarked_url,
-                                          last_was_bookmarked_by_user);
+    BrowserWindow::FromBrowser(browser)->ShowBookmarkBubble(
+        last_bookmarked_url, last_was_bookmarked_by_user);
   }
 
   if (added_any_bookmark) {
-    RecordBookmarksAdded(browser->profile());
+    RecordBookmarksAdded(browser->GetProfile());
   }
 }
 

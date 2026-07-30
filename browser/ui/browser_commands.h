@@ -80,7 +80,7 @@ void ToggleVerticalTabStripFloatingMode(Browser* browser);
 void ToggleVerticalTabStripExpanded(Browser* browser);
 
 void ToggleActiveTabAudioMute(Browser* browser);
-void BookmarkTabs(Browser* browser,
+void BookmarkTabs(BrowserWindowInterface* browser,
                   const std::vector<content::WebContents*>& web_contentses);
 void ToggleSidebarPosition(Browser* browser);
 void ToggleSidebar(Browser* browser);
