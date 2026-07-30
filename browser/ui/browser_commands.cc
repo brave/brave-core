@@ -48,6 +48,7 @@
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/url_sanitizer/core/browser/url_sanitizer_service.h"
+#include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/bookmarks/bookmark_html_writer.h"
 #include "chrome/browser/bookmarks/bookmark_model_factory.h"
 #include "chrome/browser/browser_process.h"
@@ -493,6 +494,7 @@ void BookmarkTabs(BrowserWindowInterface* browser,
     BookmarkEditor::EditDetails details =
         BookmarkEditor::EditDetails::AddFolder(parent,
                                                parent->children().size());
+    details.window_title_id = IDS_BOOKMARK_SELECTED_TABS_DIALOG_TITLE;
 
     std::vector<std::pair<GURL, std::u16string>> tab_entries;
     base::flat_map<int, ::bookmarks::TabGroupData> groups_by_index;
