@@ -54,6 +54,7 @@ source_set("ui") {
   # Depend on //chrome/browser/ui instead of //brave/browser/ui.
   visibility = [
     "//brave/browser:core",
+    "//brave/browser/ui/tabs:impl",
     "//chrome/browser:core",
     "//chrome/browser/ui",
     "//chrome/browser/ui/webui:configs",
@@ -1404,10 +1405,10 @@ source_set("ui") {
       "playlist/playlist_browser_finder.h",
       "playlist/playlist_dialogs.cc",
       "playlist/playlist_dialogs.h",
+      "views/page_action/playlist_page_action_controller.cc",
+      "views/page_action/playlist_page_action_controller.h",
       "views/playlist/playlist_action_dialogs.cc",
       "views/playlist/playlist_action_dialogs.h",
-      "views/playlist/playlist_action_icon_view.cc",
-      "views/playlist/playlist_action_icon_view.h",
       "views/playlist/playlist_add_bubble_view.cc",
       "views/playlist/playlist_add_bubble_view.h",
       "views/playlist/playlist_browser_finder_views.cc",
@@ -1433,10 +1434,15 @@ source_set("ui") {
       "webui/playlist_ui.h",
     ]
     deps += [
+      "//brave/browser/ui/tabs:tabs_public",
       "//brave/components/playlist/content/browser",
       "//brave/components/playlist/content/browser/resources:generated_resources",
       "//chrome/browser/picture_in_picture",
+      "//chrome/browser/ui/actions",
       "//chrome/browser/ui/exclusive_access",
+      "//chrome/browser/ui/page_action",
+      "//chrome/browser/ui/views/frame:toolbar_button_provider",
+      "//components/tabs:public",
       "//components/user_prefs",
     ]
   }
