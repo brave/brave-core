@@ -424,7 +424,7 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, PlaylistTabHelper) {
   EXPECT_TRUE(playlist_tab_helper->found_items().empty());
 
   // 'Back' should be observed
-  browser()->command_controller()->ExecuteCommand(IDC_BACK);
+  chrome::BrowserCommandController::From(browser())->ExecuteCommand(IDC_BACK);
   WaitUntil(base::BindLambdaForTesting(
       [&]() { return playlist_tab_helper->found_items().size() > 0; }));
 
@@ -443,7 +443,8 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, PlaylistTabHelper) {
       [&]() { return playlist_tab_helper->saved_items().size() == 0; }));
 
   // 'Forward' should be observed
-  browser()->command_controller()->ExecuteCommand(IDC_FORWARD);
+  chrome::BrowserCommandController::From(browser())->ExecuteCommand(
+      IDC_FORWARD);
   WaitUntil(base::BindLambdaForTesting(
       [&]() { return playlist_tab_helper->found_items().size() == 0; }));
 }

@@ -1007,7 +1007,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ExpandedState) {
   EXPECT_EQ(State::kCollapsed, region_view_2->state());
 
   // Check expanded state is toggled via command.
-  auto* command_controller = browser()->command_controller();
+  auto* command_controller = chrome::BrowserCommandController::From(browser());
   command_controller->ExecuteCommandWithDisposition(
       IDC_TOGGLE_VERTICAL_TABS_EXPANDED, WindowOpenDisposition::CURRENT_TAB);
   EXPECT_EQ(State::kCollapsed, region_view_1->state());
