@@ -41,10 +41,12 @@ BackupResultsNavigationThrottle::WillStartRequest() {
   }
 
   auto* web_contents = navigation_handle()->GetWebContents();
+  auto* profile = Profile::FromBrowserContext(web_contents->GetBrowserContext())
+                      ->GetOriginalProfile();
   auto* backup_results_service =
-      BackupResultsServiceFactory::GetForBrowserContext(
-          web_contents->GetBrowserContext());
-  if (backup_results_service->HandleWebContentsStartRequest(
+      BackupResultsServiceFactory::GetForBrowserContext(profile);
+  if (!backup_results_service ||
+      backup_results_service->HandleWebContentsStartRequest(
           web_contents, navigation_handle()->GetURL())) {
     return content::NavigationThrottle::PROCEED;
   }
