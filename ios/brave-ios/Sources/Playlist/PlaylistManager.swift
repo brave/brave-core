@@ -27,6 +27,8 @@ public class PlaylistManager: NSObject {
   /// In-flight download work keyed by item id. Holds the `Task` doing mime-type probing (which eventually kicks off the URLSession download)
   /// so duplicate requests are rejected and cancellation stops probe work that hasn't reached `cacheManager` yet.
   @MainActor private var pendingDownloadTasks = [String: (id: UUID, task: Task<Void, Never>)]()
+  /// Item ids that already received a single out-of-space download retry for the current attempt.
+  @MainActor private var itemsRetriedAfterOutOfSpace = Set<String>()
 
   private var _playbackTask: Task<Void, Error>?
 
@@ -338,30 +340,44 @@ public class PlaylistManager: NSObject {
   }
 
   public func download(item: PlaylistInfo) {
+    Task { @MainActor in
+      _ = await scheduleDownload(item: item, isOutOfSpaceRetry: false)
+    }
+  }
+
+  /// Reclaims space if needed and enqueues a download when none is already in flight.
+  /// Returns `true` when a new download task was registered.
+  @MainActor
+  @discardableResult
+  private func scheduleDownload(item: PlaylistInfo, isOutOfSpaceRetry: Bool) async -> Bool {
     guard
       FeatureList.kPlaylistOfflineCacheEnabled.enabled
         || FeatureList.kPlaylistCacheFirstEnabled.enabled,
       let assetUrl = URL(string: item.src)
-    else { return }
+    else { return false }
 
     let itemId = item.tagId
-    Task { @MainActor in
-      guard pendingDownloadTasks[itemId] == nil,
-        cacheManager.downloadTask(for: itemId) == nil
-      else { return }
-
-      let registrationId = UUID()
-      let downloadTask = Task { [weak self] in
-        guard let self else { return }
-        await self.downloadItem(
-          item,
-          assetUrl: assetUrl,
-          itemId: itemId,
-          registrationId: registrationId
-        )
-      }
-      pendingDownloadTasks[itemId] = (registrationId, downloadTask)
+    if !isOutOfSpaceRetry {
+      itemsRetriedAfterOutOfSpace.remove(itemId)
     }
+    await reclaimSpaceIfNeeded()
+
+    guard pendingDownloadTasks[itemId] == nil,
+      cacheManager.downloadTask(for: itemId) == nil
+    else { return false }
+
+    let registrationId = UUID()
+    let downloadTask = Task { [weak self] in
+      guard let self else { return }
+      await self.downloadItem(
+        item,
+        assetUrl: assetUrl,
+        itemId: itemId,
+        registrationId: registrationId
+      )
+    }
+    pendingDownloadTasks[itemId] = (registrationId, downloadTask)
+    return true
   }
 
   private func downloadItem(
@@ -715,6 +731,34 @@ public class PlaylistManager: NSObject {
     }
   }
 
+  private var isCacheReclamationEnabled: Bool {
+    FeatureList.kPlaylistCacheFirstEnabled.enabled
+      || FeatureList.kPlaylistOfflineCacheEnabled.enabled
+  }
+
+  @MainActor
+  func reclaimSpaceIfNeeded() async {
+    guard isCacheReclamationEnabled else { return }
+    guard isDiskSpaceEncumbered() else { return }
+
+    let currentlyPlayingID = currentlyPlayingItemIDProvider?()
+    let request = NSFetchRequest<PlaylistItem>(entityName: "PlaylistItem")
+    request.predicate = NSPredicate(format: "cachedData != nil")
+    request.sortDescriptors = [
+      NSSortDescriptor(key: #keyPath(PlaylistItem.lastPlayedDate), ascending: true)
+    ]
+    request.fetchBatchSize = 20
+    let candidates = (try? DataController.swiftUIContext.fetch(request)) ?? []
+
+    for item in candidates {
+      guard let itemId = item.uuid else { continue }
+      if itemId == currentlyPlayingID { continue }
+      if await cacheState(for: itemId) == .inProgress { continue }
+      await deleteCache(item: PlaylistInfo(item: item))
+      if !isDiskSpaceEncumbered() { break }
+    }
+  }
+
   public func isDiskSpaceEncumbered() -> Bool {
     let freeSpace = availableDiskSpace() ?? 0
     let totalSpace = totalDiskSpace() ?? 0
@@ -804,7 +848,52 @@ extension PlaylistManager: PlaylistDownloadManagerDelegate {
     displayName: String?,
     error: Error?
   ) {
+    if state == .cached {
+      Task { @MainActor in
+        itemsRetriedAfterOutOfSpace.remove(id)
+      }
+    }
+
+    if state == .invalid, let error, isOutOfSpaceError(error) {
+      Task { @MainActor in
+        let shouldSuppressFailure = await handleOutOfSpaceDownloadFailure(itemId: id)
+        if !shouldSuppressFailure {
+          onDownloadStateChanged.send(
+            (id: id, state: state, displayName: displayName, error: error)
+          )
+        }
+      }
+      return
+    }
+
     onDownloadStateChanged.send((id: id, state: state, displayName: displayName, error: error))
+  }
+
+  /// Reclaims cold cache space and retries the caching it again once. Returns `true` when the initial
+  /// failure notification should be suppressed because a retry was scheduled.
+  @MainActor
+  private func handleOutOfSpaceDownloadFailure(itemId: String) async -> Bool {
+    guard isCacheReclamationEnabled else { return false }
+    guard !itemsRetriedAfterOutOfSpace.contains(itemId) else { return false }
+
+    itemsRetriedAfterOutOfSpace.insert(itemId)
+
+    guard let item = PlaylistItem.getItem(uuid: itemId) else { return false }
+    return await scheduleDownload(item: PlaylistInfo(item: item), isOutOfSpaceRetry: true)
+  }
+
+  private func isOutOfSpaceError(_ error: Error) -> Bool {
+    let nsError = error as NSError
+    if nsError.domain == NSCocoaErrorDomain, nsError.code == NSFileWriteOutOfSpaceError {
+      return true
+    }
+    if nsError.domain == NSPOSIXErrorDomain, nsError.code == 28 {
+      return true
+    }
+    if let underlying = nsError.userInfo[NSUnderlyingErrorKey] as? NSError {
+      return isOutOfSpaceError(underlying)
+    }
+    return false
   }
 }
 
