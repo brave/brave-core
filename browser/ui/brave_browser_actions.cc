@@ -6,6 +6,7 @@
 #include "brave/browser/ui/brave_browser_actions.h"
 
 #include "base/check.h"
+#include "base/check_deref.h"
 #include "base/feature_list.h"
 #include "base/functional/callback_helpers.h"
 #include "base/types/to_address.h"
@@ -13,6 +14,7 @@
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+#include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/containers/buildflags/buildflags.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/psst/buildflags/buildflags.h"
@@ -54,6 +56,15 @@
 #include "brave/browser/ui/tabs/public/brave_tab_features.h"
 #include "brave/browser/ui/views/page_action/speedreader_page_action_controller.h"
 #include "brave/components/speedreader/common/features.h"
+#include "components/tabs/public/tab_interface.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
+#include "brave/browser/ui/tabs/public/brave_tab_features.h"
+#include "brave/browser/ui/views/page_action/wayback_machine_page_action_controller.h"
+#include "brave/grit/brave_generated_resources.h"
+#include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/frame/toolbar_button_provider.h"
 #include "components/tabs/public/tab_interface.h"
 #endif
 
@@ -198,6 +209,39 @@ void BraveBrowserActions::InitializeBrowserActions() {
             .Build());
   }
 #endif  // BUILDFLAG(ENABLE_SPEEDREADER)
+
+#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
+  root_action_item_->AddChild(
+      actions::ActionItem::Builder(
+          base::BindRepeating(
+              [](BrowserWindowInterface* bwi, actions::ActionItem* item,
+                 actions::ActionInvocationContext context) {
+                BrowserView& browser_view =
+                    CHECK_DEREF(BrowserView::GetBrowserViewForBrowser(bwi));
+
+                tabs::BraveTabFeatures* const brave_tab_features =
+                    tabs::BraveTabFeatures::FromTabFeatures(
+                        bwi->GetActiveTabInterface()->GetTabFeatures());
+                CHECK(brave_tab_features);
+
+                page_actions::WaybackMachinePageActionController* const
+                    controller = brave_tab_features
+                                     ->wayback_machine_page_action_controller();
+                CHECK(controller);
+                controller->ExecuteAction(
+                    browser_view.toolbar_button_provider(), item);
+              },
+              bwi))
+          .SetActionId(kActionShowWaybackMachine)
+          .SetText(
+              l10n_util::GetStringUTF16(IDS_BRAVE_WAYBACK_MACHINE_ICON_TOOLTIP))
+          .SetTooltipText(
+              l10n_util::GetStringUTF16(IDS_BRAVE_WAYBACK_MACHINE_ICON_TOOLTIP))
+          .SetImage(
+              ui::ImageModel::FromVectorIcon(kLeoHistoryIcon, ui::kColorIcon))
+          .SetEnabled(true)
+          .Build());
+#endif  // BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
   if (brave_wallet::IsAllowed(profile_->GetPrefs()) &&
