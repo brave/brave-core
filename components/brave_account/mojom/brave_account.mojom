@@ -172,12 +172,12 @@ interface Authentication {
   // `blindedMessage`: initial blinded request
   //                   produced by the OPAQUE library,
   //                   to be sent to the server.
-  // Returns `RegisterPasswordInitResult` on success, or
+  // Returns `RegisterStep1Result` on success, or
   //         `RegisterError` on failure.
-  RegisterPasswordInit(Service initiatingService,
-                       string email,
-                       string blindedMessage)
-    => result<RegisterPasswordInitResult, RegisterError>;
+  RegisterStep1(Service initiatingService,
+                string email,
+                string blindedMessage)
+    => result<RegisterStep1Result, RegisterError>;
 
   // Second step of the registration process.
   // `encryptedVerificationToken`: verification token from the backend,
@@ -187,19 +187,19 @@ interface Authentication {
   // `serializedRecord`: final message produced by the OPAQUE library,
   //                     derived by unblinding `serializedResponse`,
   //                     to be sent to the server.
-  // Returns `RegisterPasswordFinalizeResult` on success, or
+  // Returns `RegisterStep2Result` on success, or
   //         `RegisterError` on failure.
-  RegisterPasswordFinalize(string encryptedVerificationToken,
-                           string serializedRecord)
-    => result<RegisterPasswordFinalizeResult, RegisterError>;
+  RegisterStep2(string encryptedVerificationToken,
+                string serializedRecord)
+    => result<RegisterStep2Result, RegisterError>;
 
   // Third step of the registration process.
   // `code`: verification code sent to the user's email address,
   //         required to verify the email and complete the registration.
-  // Returns `RegisterVerifyCompleteResult` on success, or
+  // Returns `RegisterStep3Result` on success, or
   //         `RegisterError` on failure.
-  RegisterVerifyComplete(string code)
-    => result<RegisterVerifyCompleteResult, RegisterError>;
+  RegisterStep3(string code)
+    => result<RegisterStep3Result, RegisterError>;
 
   // Resends the verification email for the verification selected by
   // `intent`.

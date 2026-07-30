@@ -26,24 +26,23 @@ class MockBraveAccountAuthentication : public mojom::Authentication {
               (override));
 
   MOCK_METHOD(void,
-              RegisterPasswordInit,
+              RegisterStep1,
               (mojom::Service initiating_service,
                const std::string& email,
                const std::string& blinded_message,
-               RegisterPasswordInitCallback callback),
+               RegisterStep1Callback callback),
               (override));
 
   MOCK_METHOD(void,
-              RegisterPasswordFinalize,
+              RegisterStep2,
               (const std::string& encrypted_verification_token,
                const std::string& serialized_record,
-               RegisterPasswordFinalizeCallback callback),
+               RegisterStep2Callback callback),
               (override));
 
   MOCK_METHOD(void,
-              RegisterVerifyComplete,
-              (const std::string& code,
-               RegisterVerifyCompleteCallback callback),
+              RegisterStep3,
+              (const std::string& code, RegisterStep3Callback callback),
               (override));
 
   MOCK_METHOD(void,

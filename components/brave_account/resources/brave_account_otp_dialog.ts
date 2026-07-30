@@ -91,7 +91,7 @@ export class BraveAccountOtpDialogElement extends CrLitElement {
 
   private async confirmRegistrationCode() {
     try {
-      await this.browserProxy.authentication.registerVerifyComplete(this.code)
+      await this.browserProxy.authentication.registerStep3(this.code)
     } catch (e) {
       let error: RegisterError
 

@@ -11,8 +11,8 @@
 #include "base/memory/scoped_refptr.h"
 #include "brave/components/brave_account/brave_account_state_prefs.h"
 #include "brave/components/brave_account/flows/login.h"
+#include "brave/components/brave_account/flows/register.h"
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
-#include "brave/components/brave_account/register.h"
 #include "brave/components/brave_account/reset_password.h"
 #include "brave/components/brave_account/state_base.h"
 #include "components/os_crypt/async/common/encryptor.h"
@@ -53,18 +53,17 @@ class LoggedOutState : public StateBase {
                   const std::string& client_mac,
                   LoginStep2Callback callback) override;
 
-  void RegisterPasswordInit(mojom::Service initiating_service,
-                            const std::string& email,
-                            const std::string& blinded_message,
-                            RegisterPasswordInitCallback callback) override;
+  void RegisterStep1(mojom::Service initiating_service,
+                     const std::string& email,
+                     const std::string& blinded_message,
+                     RegisterStep1Callback callback) override;
 
-  void RegisterPasswordFinalize(
-      const std::string& encrypted_verification_token,
-      const std::string& serialized_record,
-      RegisterPasswordFinalizeCallback callback) override;
+  void RegisterStep2(const std::string& encrypted_verification_token,
+                     const std::string& serialized_record,
+                     RegisterStep2Callback callback) override;
 
-  void RegisterVerifyComplete(const std::string& code,
-                              RegisterVerifyCompleteCallback callback) override;
+  void RegisterStep3(const std::string& code,
+                     RegisterStep3Callback callback) override;
 
   void ResetPasswordVerifyInit(
       const std::string& email,
