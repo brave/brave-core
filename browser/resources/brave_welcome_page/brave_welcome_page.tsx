@@ -5,8 +5,8 @@
 
 import * as React from 'react'
 import { createRoot } from 'react-dom/client'
-import StyledComponentsProvider from '$web-common/StyledComponentsProvider'
 import { setIconBasePath } from '@brave/leo/react/icon'
+import { ColorChangeUpdater } from 'chrome://resources/cr_components/color_change_listener/colors_css_updater.js'
 
 import { App } from './components/app'
 import { createWelcomeApi } from './api/welcome_api'
@@ -14,10 +14,10 @@ import { WelcomeApiProvider } from './api/welcome_api_context'
 
 setIconBasePath('chrome://resources/brave-icons')
 
+ColorChangeUpdater.forDocument().start()
+
 createRoot(document.getElementById('root')!).render(
-  <StyledComponentsProvider>
-    <WelcomeApiProvider {...createWelcomeApi()}>
-      <App />
-    </WelcomeApiProvider>
-  </StyledComponentsProvider>,
+  <WelcomeApiProvider {...createWelcomeApi()}>
+    <App />
+  </WelcomeApiProvider>,
 )
