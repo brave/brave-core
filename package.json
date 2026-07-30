@@ -116,7 +116,7 @@
     "@types/async": "3.2.20",
     "@types/bs58": "4.0.4",
     "@types/chrome": "0.0.241",
-    "@types/diff": "7.0.1",
+    "@types/diff": "7.0.2",
     "@types/dom-navigation": "1.0.3",
     "@types/hast": "3.0.5",
     "@types/history": "4.7.11",
