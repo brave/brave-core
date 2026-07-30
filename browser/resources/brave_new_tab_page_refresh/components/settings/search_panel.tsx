@@ -36,7 +36,8 @@ export function SearchPanel() {
         }}
       >
         <span className='label'>
-          {getString(S.NEW_TAB_SHOW_SEARCH_BOX_LABEL)}
+          <Icon name='search' />
+          <span>{getString(S.NEW_TAB_SHOW_SEARCH_BOX_LABEL)}</span>
         </span>
       </Toggle>
       {aiChatInputEnabled && (
@@ -49,7 +50,8 @@ export function SearchPanel() {
           }}
         >
           <span className='label'>
-            {getString(S.NEW_TAB_SHOW_CHAT_INPUT_LABEL)}
+            <Icon name='product-brave-leo' />
+            <span>{getString(S.NEW_TAB_SHOW_CHAT_INPUT_LABEL)}</span>
           </span>
         </Toggle>
       )}
@@ -60,6 +62,7 @@ export function SearchPanel() {
             {searchEngines.map((engine) => (
               <Checkbox
                 key={engine.host}
+                className='search-engine'
                 checked={enabledSearchEngines.has(engine.host)}
                 onChange={({ checked }) => {
                   actions.setSearchEngineEnabled(engine.host, checked)

@@ -29,7 +29,12 @@ import {
 
 import { style } from './background_panel.style'
 
-export function BackgroundPanel() {
+interface Props {
+  panelType: SelectedBackgroundType | null
+  onPanelTypeChange: (type: SelectedBackgroundType | null) => void
+}
+
+export function BackgroundPanel(props: Props) {
   const actions = useBackgroundActions()
 
   const backgroundsEnabled = useBackgroundState((s) => s.backgroundsEnabled)
@@ -45,8 +50,6 @@ export function BackgroundPanel() {
   const rewardsFeatureEnabled = useRewardsState((s) => s.rewardsFeatureEnabled)
   const rewardsEnabled = useRewardsState((s) => s.rewardsEnabled)
 
-  const [panelType, setPanelType] =
-    React.useState<SelectedBackgroundType | null>(null)
   const [uploading, setUploading] = React.useState(false)
 
   React.useEffect(() => {
@@ -54,7 +57,7 @@ export function BackgroundPanel() {
   }, [selectedBackground, customBackgrounds])
 
   function setPanel(type?: SelectedBackgroundType) {
-    setPanelType(type ?? null)
+    props.onPanelTypeChange(type ?? null)
   }
 
   function getTypePreviewValue(type: SelectedBackgroundType) {
@@ -134,17 +137,16 @@ export function BackgroundPanel() {
     }
   }
 
-  if (panelType !== null) {
+  if (props.panelType !== null) {
     return (
       <div data-css-scope={style.scope}>
         <BackgroundTypePanel
-          backgroundType={panelType}
+          backgroundType={props.panelType}
           renderUploadOption={() => (
             <button onClick={showCustomBackgroundChooser}>
               {renderUploadPreview()}
             </button>
           )}
-          onClose={() => setPanel()}
         />
       </div>
     )
@@ -198,12 +200,6 @@ export function BackgroundPanel() {
         <>
           <div className='background-options'>
             <div className='background-option'>
-              <button onClick={onCustomPreviewClick}>
-                {renderTypePreview(SelectedBackgroundType.kCustom)}
-                {getString(S.NEW_TAB_CUSTOM_BACKGROUND_LABEL)}
-              </button>
-            </div>
-            <div className='background-option'>
               <button
                 onClick={() => {
                   actions.selectBackground(SelectedBackgroundType.kBrave, '')
@@ -211,6 +207,12 @@ export function BackgroundPanel() {
               >
                 {renderTypePreview(SelectedBackgroundType.kBrave)}
                 {getString(S.NEW_TAB_BRAVE_BACKGROUND_LABEL)}
+              </button>
+            </div>
+            <div className='background-option'>
+              <button onClick={onCustomPreviewClick}>
+                {renderTypePreview(SelectedBackgroundType.kCustom)}
+                {getString(S.NEW_TAB_CUSTOM_BACKGROUND_LABEL)}
               </button>
             </div>
             <div className='background-option'>

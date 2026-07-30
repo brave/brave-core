@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
+import Icon from '@brave/leo/react/icon'
 import Toggle from '@brave/leo/react/toggle'
 
 import { useBraveNews } from '../../../../../components/brave_news/browser/resources/shared/Context'
@@ -43,7 +44,10 @@ export function WidgetsPanel() {
           newTabActions.setShowShieldsStats(checked)
         }}
       >
-        <span className='label'>{getString(S.NEW_TAB_SHOW_STATS_LABEL)}</span>
+        <span className='label'>
+          <Icon name='shield-done' />
+          <span>{getString(S.NEW_TAB_SHOW_STATS_LABEL)}</span>
+        </span>
       </Toggle>
       {vpnFeatureEnabled && (
         <Toggle
@@ -55,7 +59,8 @@ export function WidgetsPanel() {
           }}
         >
           <span className='label'>
-            {getString(S.NEW_TAB_SHOW_VPN_WIDGET_LABEL)}
+            <Icon name='product-vpn' />
+            <span>{getString(S.NEW_TAB_SHOW_VPN_WIDGET_LABEL)}</span>
           </span>
         </Toggle>
       )}
@@ -69,7 +74,8 @@ export function WidgetsPanel() {
           }}
         >
           <span className='label'>
-            {getString(S.NEW_TAB_SHOW_REWARDS_WIDGET_LABEL)}
+            <Icon name='product-bat-outline' />
+            <span>{getString(S.NEW_TAB_SHOW_REWARDS_WIDGET_LABEL)}</span>
           </span>
         </Toggle>
       )}
@@ -83,7 +89,8 @@ export function WidgetsPanel() {
           }}
         >
           <span className='label'>
-            {getString(S.NEW_TAB_SHOW_TALK_WIDGET_LABEL)}
+            <Icon name='product-brave-talk' />
+            <span>{getString(S.NEW_TAB_SHOW_TALK_WIDGET_LABEL)}</span>
           </span>
         </Toggle>
       )}
@@ -97,7 +104,8 @@ export function WidgetsPanel() {
           }}
         >
           <span className='label'>
-            {getString(S.NEW_TAB_SHOW_NEWS_WIDGET_LABEL)}
+            <Icon name='product-brave-news' />
+            <span>{getString(S.NEW_TAB_SHOW_NEWS_WIDGET_LABEL)}</span>
           </span>
         </Toggle>
       )}
