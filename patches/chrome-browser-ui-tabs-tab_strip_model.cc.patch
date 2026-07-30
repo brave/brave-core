@@ -39,7 +39,7 @@ index 54ac67e058d8aa5a7d7820ea2399c394a8affcd3..a11218e459b3f16cc404b69653aaed48
    }
    switch (command_id) {
 +    case CommandRestoreTab:
-+    case CommandBookmarkAllTabs:
++    case CommandBookmarkTab:
 +    case CommandShowVerticalTabs:
 +    case CommandToggleTabMuted:
 +    case CommandBringAllTabsToThisWindow:

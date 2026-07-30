@@ -61,7 +61,7 @@ index 87ad841b0a938250b5531965b9f48382232cff5f..75731aba03c5d70a33f96065ada3af62
      CommandGlicSwitchToRecentConversation,
      CommandGlicUnshare,
 +    CommandRestoreTab,
-+    CommandBookmarkAllTabs,
++    CommandBookmarkTab,
 +    CommandShowVerticalTabs,
 +    CommandToggleTabMuted,
 +    CommandBringAllTabsToThisWindow,
