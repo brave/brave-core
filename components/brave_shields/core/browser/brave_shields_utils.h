@@ -47,7 +47,7 @@ void SetBraveShieldsEnabled(HostContentSettingsMap* map,
                             bool enable,
                             const GURL& url,
                             PrefService* local_state = nullptr);
-bool GetBraveShieldsEnabled(HostContentSettingsMap* map, const GURL& url);
+bool IsBraveShieldsEnabled(HostContentSettingsMap* map, const GURL& url);
 
 void SetAdControlType(HostContentSettingsMap* map,
                       ControlType type,

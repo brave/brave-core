@@ -183,7 +183,7 @@ void LaunchContentPicker(BrowserWindowInterface* browser) {
   // Element blocking requires Shields (and ad blocking) to be enabled.
   auto* shields =
       brave_shields::BraveShieldsTabHelper::FromWebContents(contents);
-  if (!shields || !shields->GetBraveShieldsEnabled() ||
+  if (!shields || !shields->IsBraveShieldsEnabled() ||
       shields->GetAdBlockMode() == brave_shields::mojom::AdBlockMode::ALLOW) {
     return;
   }

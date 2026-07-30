@@ -44,7 +44,7 @@ public class BraveShieldsContentSettingsResetTest {
 
     @Test
     public void testResetSiteToDefaults_appliesAllGlobalDefaultsToSite() {
-        when(mNatives.getBraveShieldsEnabled("", mProfile)).thenReturn(true);
+        when(mNatives.isBraveShieldsEnabled("", mProfile)).thenReturn(true);
         when(mNatives.getNoScriptControlType("", mProfile)).thenReturn("block");
         when(mNatives.getForgetFirstPartyStorageEnabled("", mProfile)).thenReturn(false);
         when(mNatives.getFingerprintingControlType("", mProfile)).thenReturn("block");
@@ -68,7 +68,7 @@ public class BraveShieldsContentSettingsResetTest {
 
     @Test
     public void testResetSiteToDefaults_callsHttpsUpgradeWhenDefaultIsDefault() {
-        when(mNatives.getBraveShieldsEnabled("", mProfile)).thenReturn(true);
+        when(mNatives.isBraveShieldsEnabled("", mProfile)).thenReturn(true);
         when(mNatives.getNoScriptControlType("", mProfile)).thenReturn("block");
         when(mNatives.getForgetFirstPartyStorageEnabled("", mProfile)).thenReturn(false);
         when(mNatives.getFingerprintingControlType("", mProfile)).thenReturn("default");
@@ -87,7 +87,7 @@ public class BraveShieldsContentSettingsResetTest {
 
     @Test
     public void testResetSiteToDefaults_setsHttpsUpgradeWhenDefaultIsAllow() {
-        when(mNatives.getBraveShieldsEnabled("", mProfile)).thenReturn(false);
+        when(mNatives.isBraveShieldsEnabled("", mProfile)).thenReturn(false);
         when(mNatives.getNoScriptControlType("", mProfile)).thenReturn("allow");
         when(mNatives.getForgetFirstPartyStorageEnabled("", mProfile)).thenReturn(true);
         when(mNatives.getFingerprintingControlType("", mProfile)).thenReturn("allow");

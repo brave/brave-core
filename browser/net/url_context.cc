@@ -522,7 +522,7 @@ std::unique_ptr<brave::BraveRequestInfo> BraveRequestInfo::MakeCTX(
   Profile* profile = Profile::FromBrowserContext(browser_context);
   auto* map = HostContentSettingsMapFactory::GetForProfile(profile);
   ctx->set_allow_brave_shields(
-      map ? brave_shields::GetBraveShieldsEnabled(map, ctx->tab_origin())
+      map ? brave_shields::IsBraveShieldsEnabled(map, ctx->tab_origin())
           : true);
   ctx->set_allow_ads(map &&
                      brave_shields::GetAdControlType(map, ctx->tab_origin()) ==

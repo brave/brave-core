@@ -127,7 +127,6 @@ const gfx::VectorIcon* BraveLocationBarModelDelegate::GetVectorIconOverride()
   }
 
   // Return the appropriate shields icon based on the Shields status.
-  return shields_helper->GetBraveShieldsEnabled()
-             ? &kLeoShieldDoneIcon
-             : &kLeoShieldDisableFilledIcon;
+  return shields_helper->IsBraveShieldsEnabled() ? &kLeoShieldDoneIcon
+                                                 : &kLeoShieldDisableFilledIcon;
 }

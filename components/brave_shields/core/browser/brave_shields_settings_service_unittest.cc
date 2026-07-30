@@ -80,20 +80,20 @@ class BraveShieldsSettingsServiceTest : public testing::Test {
 
 TEST_F(BraveShieldsSettingsServiceTest, BraveShieldsEnabled) {
   // verify the initial values
-  EXPECT_TRUE(brave_shields_settings()->GetBraveShieldsEnabled(kTestUrl));
-  EXPECT_TRUE(brave_shields::GetBraveShieldsEnabled(GetHostContentSettingsMap(),
-                                                    kTestUrl));
+  EXPECT_TRUE(brave_shields_settings()->IsBraveShieldsEnabled(kTestUrl));
+  EXPECT_TRUE(brave_shields::IsBraveShieldsEnabled(GetHostContentSettingsMap(),
+                                                   kTestUrl));
 
   brave_shields_settings()->SetBraveShieldsEnabled(false, kTestUrl);
-  EXPECT_FALSE(brave_shields_settings()->GetBraveShieldsEnabled(kTestUrl));
-  // verify underlying value GetBraveShieldsEnabled is updated
-  EXPECT_FALSE(brave_shields::GetBraveShieldsEnabled(
-      GetHostContentSettingsMap(), kTestUrl));
+  EXPECT_FALSE(brave_shields_settings()->IsBraveShieldsEnabled(kTestUrl));
+  // verify underlying value IsBraveShieldsEnabled is updated
+  EXPECT_FALSE(brave_shields::IsBraveShieldsEnabled(GetHostContentSettingsMap(),
+                                                    kTestUrl));
 
   // verify other urls unchanged
-  EXPECT_TRUE(brave_shields_settings()->GetBraveShieldsEnabled(
+  EXPECT_TRUE(brave_shields_settings()->IsBraveShieldsEnabled(
       GURL("https://example.com")));
-  EXPECT_TRUE(brave_shields::GetBraveShieldsEnabled(
+  EXPECT_TRUE(brave_shields::IsBraveShieldsEnabled(
       GetHostContentSettingsMap(), GURL("https://example.com")));
 }
 

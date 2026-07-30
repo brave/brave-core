@@ -722,7 +722,7 @@ void RenderViewContextMenu::AppendDeveloperItems() {
       brave_shields::BraveShieldsTabHelper::FromWebContents(
           source_web_contents_);
   bool add_block_elements = shields_tab_helper &&
-                            shields_tab_helper->GetBraveShieldsEnabled() &&
+                            shields_tab_helper->IsBraveShieldsEnabled() &&
                             shields_tab_helper->GetAdBlockMode() !=
                                 brave_shields::mojom::AdBlockMode::ALLOW;
   add_block_elements &=

@@ -64,7 +64,7 @@ class BraveShieldsTabHelper
   std::vector<GURL> GetBlockedJsList();
   std::vector<GURL> GetAllowedJsList();
   std::vector<GURL> GetFingerprintsList();
-  bool GetBraveShieldsEnabled();
+  bool IsBraveShieldsEnabled();
   void SetBraveShieldsEnabled(bool is_enabled);
   bool IsBraveShieldsAdBlockOnlyModeEnabled();
   void SetBraveShieldsAdBlockOnlyModeEnabled(bool is_enabled);
