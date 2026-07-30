@@ -17,6 +17,7 @@ from dataclasses import dataclass
 import hashlib
 import json
 import shutil
+import subprocess
 import sys
 import tarfile
 import tempfile
@@ -223,10 +224,7 @@ class TarballInstaller:
         `tar.getnames()`), recorded in the `_content_names` sidecar.
         """
         if zipfile.is_zipfile(archive_path):
-            with zipfile.ZipFile(archive_path) as archive:
-                names = archive.namelist()
-                archive.extractall(path=self.dest_dir)
-                return names
+            return self._extract_zip(archive_path)
         with tarfile.open(archive_path, mode='r:*') as tar:
             names = tar.getnames()
             # The `filter='data'` extraction guard (PEP 706) only exists on
@@ -239,6 +237,33 @@ class TarballInstaller:
             else:
                 tar.extractall(path=self.dest_dir)
             return names
+
+    def _extract_zip(self, archive_path: Path) -> list[str]:
+        """Extract a zip archive into `dest_dir`, keeping modes and symlinks.
+
+        `zipfile.extractall` ignores the Unix permission bits zip stores in
+        the high 16 bits of `external_attr` and writes symlink entries out as
+        plain files holding the link target as text, silently turning an
+        executable or a symlink into neither. Shelling out to `unzip`
+        restores both, the same way `script/lib/util.extract_zip` does; on
+        Windows neither concept applies to the extracted tree, so `zipfile`
+        is kept there (and `unzip` may not even be on PATH).
+        """
+        with zipfile.ZipFile(archive_path) as archive:
+            names = archive.namelist()
+            if sys.platform == 'win32':
+                archive.extractall(path=self.dest_dir)
+                return names
+        # `unzip -d` only creates a single missing directory level, unlike
+        # `zipfile.extractall`, which makes the whole path -- so make sure
+        # `dest_dir` (freshly wiped for an owned dep) exists first.
+        self.dest_dir.mkdir(parents=True, exist_ok=True)
+        subprocess.run(
+            ['unzip', '-o', '-q',
+             str(archive_path), '-d',
+             str(self.dest_dir)],
+            check=True)
+        return names
 
     def _write_sidecars(self, member_names: list[str]) -> None:
         """Write the sidecar set, each with a `.stamp` tail."""
