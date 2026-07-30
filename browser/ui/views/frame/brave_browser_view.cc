@@ -156,7 +156,9 @@ std::optional<bool> g_download_confirm_return_allow_for_testing;
 
 bool IsUnsupportedCommand(int command_id, Browser* browser) {
   return IsRunningInForcedAppMode() &&
-         !IsCommandAllowedInAppMode(command_id, browser->is_type_popup());
+         !IsCommandAllowedInAppMode(
+             command_id,
+             browser->GetType() == BrowserWindowInterface::Type::TYPE_POPUP);
 }
 
 // A view that paints a background under the content area of the browser view so
