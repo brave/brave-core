@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/containers/buildflags/buildflags.gni")
 import("//brave/components/psst/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
@@ -69,6 +70,29 @@ source_set("page_action") {
       "//chrome/browser/ui/color:mixers",
       "//components/prefs",
       "//ui/base",
+    ]
+  }
+
+  if (enable_brave_wayback_machine) {
+    sources += [
+      "wayback_machine_bubble_view.cc",
+      "wayback_machine_bubble_view.h",
+      "wayback_machine_page_action_controller.cc",
+      "wayback_machine_page_action_controller.h",
+    ]
+
+    deps += [
+      "//brave/app:brave_generated_resources_grit_grit",
+      "//brave/components/brave_wayback_machine",
+      "//brave/components/vector_icons",
+      "//chrome/browser/ui/actions",
+      "//chrome/browser/ui/color:mixers",
+      "//chrome/browser/ui/views:layout_provider",
+      "//chrome/browser/ui/views/frame:toolbar_button_provider",
+      "//components/user_prefs",
+      "//ui/actions",
+      "//ui/base",
+      "//ui/views",
     ]
   }
 }
