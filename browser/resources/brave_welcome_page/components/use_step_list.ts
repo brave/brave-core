@@ -50,5 +50,5 @@ export function useStepList() {
     }
 
     return baseSteps.filter((step) => !hidden.has(step))
-  }, [profiles, features])
+  }, [profiles, features, metrics])
 }

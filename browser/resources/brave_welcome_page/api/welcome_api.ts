@@ -7,6 +7,7 @@ import {
   ColorScheme,
   Feature,
   FeatureVisibility,
+  OnboardingPhase,
   WelcomePageHandler,
   WelcomePageInterface,
   WelcomePageReceiver,
@@ -27,7 +28,14 @@ import { addWebUiListener, sendWithPromise } from 'chrome://resources/js/cr.js'
 import { createInterfaceApi, endpointsFor, state } from '$web-common/api'
 import { loadTimeData } from '$web-common/loadTimeData'
 
-export { ColorScheme, Feature, FeatureVisibility, Theme, ChromeColor }
+export {
+  ColorScheme,
+  Feature,
+  FeatureVisibility,
+  OnboardingPhase,
+  Theme,
+  ChromeColor,
+}
 
 // Maps a feature onto the `FeatureVisibility` field that describes it.
 export const featureVisibilityKeys: Record<Feature, keyof FeatureVisibility> = {
@@ -212,6 +220,9 @@ export function createWelcomeApi(init = defaultInit()) {
         },
         getWelcomeCompleteURL: {
           response: (r) => r.url,
+        },
+        setOnboardingPhase: {
+          mutationResponse: () => {},
         },
       }),
       ...endpointsFor(themeColorPickerHandler, {
