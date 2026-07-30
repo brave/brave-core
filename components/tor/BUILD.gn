@@ -1,3 +1,8 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//chrome/common/features.gni")
 
@@ -89,6 +94,7 @@ source_set("common") {
     "//base",
     "//chrome/common:constants",
     "//components/prefs",
+    "//net",
   ]
 }
 
@@ -102,11 +108,13 @@ source_set("tor_unit_tests") {
   sources = [
     "tor_control_unittest.cc",
     "tor_file_watcher_unittest.cc",
+    "tor_utils_unittest.cc",
   ]
 
   deps = [
     "//base/test:test_support",
     "//brave/components/tor",
+    "//brave/components/tor:common",
     "//content/public/browser",
     "//content/test:test_support",
     "//testing/gtest",
