@@ -229,7 +229,7 @@ class SpeedReaderBrowserTest : public InProcessBrowserTest {
   bool ClickReaderButton() {
     const auto was_distilled =
         speedreader::IsDistilled(tab_helper()->PageDistillState());
-    browser()->command_controller()->ExecuteCommand(
+    chrome::BrowserCommandController::From(browser())->ExecuteCommand(
         IDC_SPEEDREADER_ICON_ONCLICK);
     if (!was_distilled) {
       if (!WaitDistilled()) {
