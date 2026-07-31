@@ -9,7 +9,6 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/test/bind.h"
-#include "base/test/scoped_feature_list.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
@@ -21,7 +20,6 @@
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/test_utils.h"
 #include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
@@ -191,7 +189,7 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
     https_server_for_rpc()->SetSSLConfig(net::EmbeddedTestServer::CERT_OK);
     https_server_for_rpc()->RegisterRequestHandler(callback);
     ASSERT_TRUE(https_server_for_rpc()->Start());
-    SetNetworkForTesting(mojom::kLocalhostChainId, std::nullopt);
+    SetNetworkForTesting(mojom::kPolygonMainnetChainId, std::nullopt);
   }
 
   content::WebContents* web_contents() {
@@ -385,7 +383,7 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
       const std::string& test_method,
       const std::string& data = "",
       bool skip_restore = false,
-      const std::string& chain_id = mojom::kLocalhostChainId) {
+      const std::string& chain_id = mojom::kPolygonMainnetChainId) {
     if (!skip_restore) {
       RestoreWallet();
     }
@@ -455,7 +453,7 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
   void TestUserRejected(
       bool sign_only,
       const std::string& test_method,
-      const std::string& chain_id = mojom::kLocalhostChainId) {
+      const std::string& chain_id = mojom::kPolygonMainnetChainId) {
     RestoreWallet();
     GURL url = https_server_for_files()->GetURL(
         "a.com", "/send_or_sign_transaction.html");
@@ -491,7 +489,7 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
                     ->tx_data_union->get_eth_tx_data_1559()
                     ->base_data->nonce.empty());
 
-    RejectTransaction(mojom::kLocalhostChainId, infos[0]->id);
+    RejectTransaction(mojom::kPolygonMainnetChainId, infos[0]->id);
 
     infos = GetAllTransactionInfo(chain_id);
     EXPECT_EQ(1UL, infos.size());
@@ -936,7 +934,7 @@ IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest,
                        EthSendTransactionLegacyTx) {
-  SetNetworkForTesting(mojom::kLocalhostChainId, std::nullopt);
+  SetNetworkForTesting(mojom::kPolygonMainnetChainId, std::nullopt);
   observer()->SetExpectEip1559Tx(false);
   TestUserApproved(std::nullopt, "request");
 }
@@ -969,7 +967,7 @@ IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest,
                        EthSignTransactionLegacyTx) {
-  SetNetworkForTesting(mojom::kLocalhostChainId, std::nullopt);  // localhost
+  SetNetworkForTesting(mojom::kPolygonMainnetChainId, std::nullopt);
   observer()->SetExpectEip1559Tx(false);
   TestUserApproved(kSignedTransaction, "request");
 }

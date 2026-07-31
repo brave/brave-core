@@ -95,19 +95,16 @@ base::DictValue GetDefaultHiddenNetworks() {
 
   base::ListValue eth_hidden;
   eth_hidden.Append(mojom::kSepoliaChainId);
-  eth_hidden.Append(mojom::kLocalhostChainId);
   eth_hidden.Append(mojom::kFilecoinEthereumTestnetChainId);
   hidden_networks.Set(kEthereumPrefKey, std::move(eth_hidden));
 
   base::ListValue fil_hidden;
   fil_hidden.Append(mojom::kFilecoinTestnet);
-  fil_hidden.Append(mojom::kLocalhostChainId);
   hidden_networks.Set(kFilecoinPrefKey, std::move(fil_hidden));
 
   base::ListValue sol_hidden;
   sol_hidden.Append(mojom::kSolanaDevnet);
   sol_hidden.Append(mojom::kSolanaTestnet);
-  sol_hidden.Append(mojom::kLocalhostChainId);
   hidden_networks.Set(kSolanaPrefKey, std::move(sol_hidden));
 
   base::ListValue btc_hidden;

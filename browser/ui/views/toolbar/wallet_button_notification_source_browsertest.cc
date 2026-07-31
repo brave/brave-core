@@ -12,18 +12,16 @@
 #include "base/test/values_test_util.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
-#include "brave/components/brave_wallet/browser/network_manager.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
-#include "net/dns/mock_host_resolver.h"
+#include "content/public/test/content_mock_cert_verifier.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
+#include "services/network/public/cpp/network_switches.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_wallet {
@@ -33,8 +31,6 @@ class WalletButtonNotificationSourceTest : public InProcessBrowserTest {
   WalletButtonNotificationSourceTest() = default;
 
   void SetUpOnMainThread() override {
-    host_resolver()->AddRule("*", "127.0.0.1");
-
     json_rpc_service()->SetGasPriceForTesting("0x123");
     WaitForTxStorageInitialized(tx_service()->GetTxStorageForTesting());
 
@@ -45,13 +41,28 @@ class WalletButtonNotificationSourceTest : public InProcessBrowserTest {
 
   ~WalletButtonNotificationSourceTest() override = default;
 
+  void SetUpCommandLine(base::CommandLine* command_line) override {
+    InProcessBrowserTest::SetUpCommandLine(command_line);
+    mock_cert_verifier_.SetUpCommandLine(command_line);
+
+    command_line->AppendSwitchASCII(
+        network::switches::kHostResolverRules,
+        "MAP * " + https_server_for_rpc_.host_port_pair().ToString());
+  }
+
+  void SetUpInProcessBrowserTestFixture() override {
+    InProcessBrowserTest::SetUpInProcessBrowserTestFixture();
+    mock_cert_verifier_.SetUpInProcessBrowserTestFixture();
+  }
+
+  void TearDownInProcessBrowserTestFixture() override {
+    mock_cert_verifier_.TearDownInProcessBrowserTestFixture();
+    InProcessBrowserTest::TearDownInProcessBrowserTestFixture();
+  }
+
   BraveWalletService* brave_wallet_service() {
     return BraveWalletServiceFactory::GetServiceForContext(
         browser()->GetProfile());
-  }
-
-  NetworkManager* network_manager() {
-    return brave_wallet_service()->network_manager();
   }
 
   KeyringService* keyring_service() {
@@ -64,13 +75,10 @@ class WalletButtonNotificationSourceTest : public InProcessBrowserTest {
 
   TxService* tx_service() { return brave_wallet_service()->tx_service(); }
 
-  brave_wallet::AccountUtils GetAccountUtils() {
-    return brave_wallet::AccountUtils(keyring_service());
-  }
+  AccountUtils GetAccountUtils() { return AccountUtils(keyring_service()); }
 
   void CreateWallet() {
-    GetAccountUtils().CreateWallet(brave_wallet::kMnemonicDripCaution,
-                                   brave_wallet::kTestWalletPassword);
+    GetAccountUtils().CreateWallet(kMnemonicDripCaution, kTestWalletPassword);
   }
 
   std::unique_ptr<net::test_server::HttpResponse> HandleRequest(
@@ -175,38 +183,8 @@ class WalletButtonNotificationSourceTest : public InProcessBrowserTest {
 
   void StartRPCServer(
       const net::EmbeddedTestServer::HandleRequestCallback& callback) {
-    https_server_for_rpc()->SetSSLConfig(net::EmbeddedTestServer::CERT_OK);
     https_server_for_rpc()->RegisterRequestHandler(callback);
     ASSERT_TRUE(https_server_for_rpc()->Start());
-
-    // Update rpc url for kLocalhostChainId
-    brave_wallet::mojom::NetworkInfoPtr chain;
-    json_rpc_service()->SetNetwork(brave_wallet::mojom::kLocalhostChainId,
-                                   brave_wallet::mojom::CoinType::SOL,
-                                   std::nullopt);
-    base::RunLoop run_loop;
-    json_rpc_service()->GetNetwork(
-        brave_wallet::mojom::CoinType::SOL, std::nullopt,
-        base::BindLambdaForTesting(
-            [&](brave_wallet::mojom::NetworkInfoPtr info) {
-              chain = info.Clone();
-              run_loop.Quit();
-            }));
-    run_loop.Run();
-    base::RunLoop run_loop1;
-    chain->rpc_endpoints =
-        std::vector<GURL>({https_server_for_rpc()->base_url()});
-    json_rpc_service()->AddChain(
-        std::move(chain),
-        base::BindLambdaForTesting([&](const std::string& chain_id,
-                                       brave_wallet::mojom::ProviderError error,
-                                       const std::string& error_message) {
-          ASSERT_EQ(chain_id, brave_wallet::mojom::kLocalhostChainId);
-          ASSERT_EQ(error, brave_wallet::mojom::ProviderError::kSuccess);
-          ASSERT_TRUE(error_message.empty());
-          run_loop1.Quit();
-        }));
-    run_loop1.Run();
   }
 
   net::EmbeddedTestServer* https_server_for_rpc() {
@@ -215,6 +193,7 @@ class WalletButtonNotificationSourceTest : public InProcessBrowserTest {
 
  private:
   net::test_server::EmbeddedTestServer https_server_for_rpc_;
+  content::ContentMockCertVerifier mock_cert_verifier_;
 };
 
 IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
@@ -334,18 +313,15 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
 
     const auto from_account = GetAccountUtils().EnsureFilTestAccount(0);
     const std::string to_account = "t1lqarsh4nkg545ilaoqdsbtj4uofplt6sto26ziy";
-    auto fil_tx_data = brave_wallet::mojom::FilTxData::New(
+    auto fil_tx_data = mojom::FilTxData::New(
         "" /* nonce */, "10" /* gas_premium */, "10" /* gas_fee_cap */,
         "100" /* gas_limit */, "" /* max_fee */, to_account, "11");
-    auto chain_id = network_manager()->GetCurrentChainId(
-        brave_wallet::mojom::CoinType::FIL, std::nullopt);
-    EXPECT_EQ(chain_id, "t");
     EXPECT_EQ(from_account->account_id->unique_key,
               "461_3_0_t17otcil7bookogjy3ywoslq5gf5tbisdkcfui2iq");
 
     tx_service()->AddUnapprovedFilecoinTransaction(
-        std::move(fil_tx_data), chain_id, from_account->account_id.Clone(),
-        nullptr,
+        std::move(fil_tx_data), mojom::kFilecoinTestnet,
+        from_account->account_id.Clone(), nullptr,
         base::BindLambdaForTesting([&](bool success, const std::string& id,
                                        const std::string& err_message) {
           first_tx_meta_id = id;
@@ -383,7 +359,7 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
     const auto from_account = GetAccountUtils().EnsureEthAccount(0);
     const std::string to_account = "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c";
 
-    auto params = brave_wallet::mojom::NewEvmTransactionParams::New(
+    auto params = mojom::NewEvmTransactionParams::New(
         "0x06", from_account->account_id.Clone(),
         "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c", "0x016345785d8a0000", "",
         std::vector<uint8_t>(), nullptr);
@@ -409,34 +385,30 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
     const std::vector<uint8_t> data = {2,   0, 0, 0, 128, 150,
                                        152, 0, 0, 0, 0,   0};
 
-    std::vector<brave_wallet::mojom::SolanaAccountMetaPtr> account_metas;
-    auto account_meta1 = brave_wallet::mojom::SolanaAccountMeta::New(
-        from_account->address, nullptr, true, true);
-    auto account_meta2 = brave_wallet::mojom::SolanaAccountMeta::New(
-        to_account, nullptr, false, true);
+    std::vector<mojom::SolanaAccountMetaPtr> account_metas;
+    auto account_meta1 = mojom::SolanaAccountMeta::New(from_account->address,
+                                                       nullptr, true, true);
+    auto account_meta2 =
+        mojom::SolanaAccountMeta::New(to_account, nullptr, false, true);
     account_metas.push_back(std::move(account_meta1));
     account_metas.push_back(std::move(account_meta2));
 
-    auto instruction = brave_wallet::mojom::SolanaInstruction::New(
-        brave_wallet::mojom::kSolanaSystemProgramId, std::move(account_metas),
-        data, nullptr);
-    std::vector<brave_wallet::mojom::SolanaInstructionPtr> instructions;
+    auto instruction = mojom::SolanaInstruction::New(
+        mojom::kSolanaSystemProgramId, std::move(account_metas), data, nullptr);
+    std::vector<mojom::SolanaInstructionPtr> instructions;
     instructions.push_back(std::move(instruction));
-    auto tx_data = brave_wallet::mojom::SolanaTxData::New(
+    auto tx_data = mojom::SolanaTxData::New(
         "", 0, from_account->address, to_account, "", 10000000, 0,
-        brave_wallet::mojom::TransactionType::SolanaSystemTransfer,
-        std::move(instructions),
-        brave_wallet::mojom::SolanaMessageVersion::kLegacy,
-        brave_wallet::mojom::SolanaMessageHeader::New(1, 0, 1),
-        std::vector<std::string>({from_account->address, to_account,
-                                  brave_wallet::mojom::kSolanaSystemProgramId}),
-        std::vector<brave_wallet::mojom::SolanaMessageAddressTableLookupPtr>(),
-        nullptr, nullptr, nullptr);
+        mojom::TransactionType::SolanaSystemTransfer, std::move(instructions),
+        mojom::SolanaMessageVersion::kLegacy,
+        mojom::SolanaMessageHeader::New(1, 0, 1),
+        std::vector<std::string>(
+            {from_account->address, to_account, mojom::kSolanaSystemProgramId}),
+        std::vector<mojom::SolanaMessageAddressTableLookupPtr>(), nullptr,
+        nullptr, nullptr);
 
     tx_service()->AddUnapprovedSolanaTransaction(
-        std::move(tx_data),
-        network_manager()->GetCurrentChainId(brave_wallet::mojom::CoinType::SOL,
-                                             std::nullopt),
+        std::move(tx_data), brave_wallet::mojom::kSolanaMainnet,
         from_account->account_id.Clone(), nullptr,
         base::BindLambdaForTesting([&](bool success, const std::string& id,
                                        const std::string& err_message) {
@@ -458,10 +430,8 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
   {
     base::RunLoop run_loop;
     tx_service()->RejectTransaction(
-        brave_wallet::mojom::CoinType::FIL,
-        network_manager()->GetCurrentChainId(brave_wallet::mojom::CoinType::FIL,
-                                             std::nullopt),
-        first_tx_meta_id, base::BindLambdaForTesting([&](bool result) {
+        mojom::CoinType::FIL, mojom::kFilecoinMainnet, first_tx_meta_id,
+        base::BindLambdaForTesting([&](bool result) {
           EXPECT_TRUE(result);
           run_loop.Quit();
         }));
@@ -478,10 +448,8 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
   {
     base::RunLoop run_loop;
     tx_service()->RejectTransaction(
-        brave_wallet::mojom::CoinType::ETH,
-        network_manager()->GetCurrentChainId(brave_wallet::mojom::CoinType::ETH,
-                                             std::nullopt),
-        second_tx_meta_id, base::BindLambdaForTesting([&](bool result) {
+        mojom::CoinType::ETH, mojom::kMainnetChainId, second_tx_meta_id,
+        base::BindLambdaForTesting([&](bool result) {
           EXPECT_TRUE(result);
           run_loop.Quit();
         }));
@@ -498,10 +466,8 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
   {
     base::RunLoop run_loop;
     tx_service()->RejectTransaction(
-        brave_wallet::mojom::CoinType::SOL,
-        network_manager()->GetCurrentChainId(brave_wallet::mojom::CoinType::SOL,
-                                             std::nullopt),
-        third_tx_meta_id, base::BindLambdaForTesting([&](bool result) {
+        mojom::CoinType::SOL, mojom::kSolanaMainnet, third_tx_meta_id,
+        base::BindLambdaForTesting([&](bool result) {
           EXPECT_TRUE(result);
           run_loop.Quit();
         }));
@@ -526,15 +492,12 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
 
     const auto from_account = GetAccountUtils().EnsureFilTestAccount(0);
     const std::string to_account = "t1lqarsh4nkg545ilaoqdsbtj4uofplt6sto26ziy";
-    auto fil_tx_data = brave_wallet::mojom::FilTxData::New(
+    auto fil_tx_data = mojom::FilTxData::New(
         "" /* nonce */, "10" /* gas_premium */, "10" /* gas_fee_cap */,
         "100" /* gas_limit */, "" /* max_fee */, to_account, "11");
-    auto chain_id = network_manager()->GetCurrentChainId(
-        brave_wallet::mojom::CoinType::FIL, std::nullopt);
-    EXPECT_EQ(chain_id, "t");
     tx_service()->AddUnapprovedFilecoinTransaction(
-        std::move(fil_tx_data), chain_id, from_account->account_id.Clone(),
-        nullptr,
+        std::move(fil_tx_data), mojom::kFilecoinTestnet,
+        from_account->account_id.Clone(), nullptr,
         base::BindLambdaForTesting([&](bool success, const std::string& id,
                                        const std::string& err_message) {
           tx_meta_id = id;

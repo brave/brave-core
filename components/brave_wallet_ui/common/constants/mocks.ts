@@ -43,14 +43,14 @@ type EIP1559SerializableTransactionInfo = SerializableTransactionInfo & {
 export const getMockedTransactionInfo =
   (): EIP1559SerializableTransactionInfo => {
     return {
-      chainId: BraveWallet.LOCALHOST_CHAIN_ID,
+      chainId: BraveWallet.MAINNET_CHAIN_ID,
       id: '1',
       fromAccountId: mockEthAccount.accountId,
       txHash: '',
       txDataUnion: {
         ethTxData1559: {
           baseData: {
-            chainId: BraveWallet.LOCALHOST_CHAIN_ID,
+            chainId: BraveWallet.MAINNET_CHAIN_ID,
             to: '0x8b52c24d6e2600bdb8dbb6e8da849ed38ab7e81f',
             value: '0x01706a99bf354000', // 103700000000000000 wei (0.1037 ETH)
             // data: new Uint8Array(0),
@@ -789,7 +789,6 @@ export const mockNativeBalanceRegistry: NativeAssetBalanceRegistry = {
     [BraveWallet.ZK_SYNC_ERA_CHAIN_ID]: '2621',
     // Test Networks
     [BraveWallet.FILECOIN_ETHEREUM_TESTNET_CHAIN_ID]: '0',
-    [BraveWallet.LOCALHOST_CHAIN_ID]: '133',
     [BraveWallet.SEPOLIA_CHAIN_ID]: '7798',
     // Other
     [BraveWallet.GODWOKEN_CHAIN_ID]: '777',
@@ -818,7 +817,6 @@ export const mockNativeBalanceRegistry: NativeAssetBalanceRegistry = {
     [BraveWallet.ZK_SYNC_ERA_CHAIN_ID]: '5377',
     // Test Networks
     [BraveWallet.FILECOIN_ETHEREUM_TESTNET_CHAIN_ID]: '1',
-    [BraveWallet.LOCALHOST_CHAIN_ID]: '3',
     [BraveWallet.SEPOLIA_CHAIN_ID]: '9',
     // Other
     [BraveWallet.GODWOKEN_CHAIN_ID]: '727',
@@ -840,7 +838,6 @@ export const mockNativeBalanceRegistry: NativeAssetBalanceRegistry = {
     [BraveWallet.POLYGON_MAINNET_CHAIN_ID]: '330',
     // Test Networks
     [BraveWallet.FILECOIN_ETHEREUM_TESTNET_CHAIN_ID]: '220',
-    [BraveWallet.LOCALHOST_CHAIN_ID]: '11110',
     [BraveWallet.SEPOLIA_CHAIN_ID]: '5550',
     // Other
     [BraveWallet.GODWOKEN_CHAIN_ID]: '40',
@@ -856,7 +853,6 @@ export const mockNativeBalanceRegistry: NativeAssetBalanceRegistry = {
     [BraveWallet.POLYGON_MAINNET_CHAIN_ID]: '30',
     // Test Networks
     [BraveWallet.FILECOIN_ETHEREUM_TESTNET_CHAIN_ID]: '20',
-    [BraveWallet.LOCALHOST_CHAIN_ID]: '110',
     [BraveWallet.SEPOLIA_CHAIN_ID]: '50',
     // Other
     [BraveWallet.GODWOKEN_CHAIN_ID]: '4',
