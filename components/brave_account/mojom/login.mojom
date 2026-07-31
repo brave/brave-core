@@ -42,6 +42,7 @@ enum LoginServerErrorCode {
   // - internal: -
   // - user-facing:
   kEmailNotVerified               = 11003,
+  kEmailDomainNotSupported        = 13006,
   // /v2/auth/login/finalize:
   // - internal:
   kInterimPasswordStateNotFound   = 14001,

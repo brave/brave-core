@@ -745,8 +745,6 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
           .BRAVE_ACCOUNT_REGISTER_TOO_MANY_VERIFICATIONS,
         .dailyVerificationLimitReachedForEmail:
           .BRAVE_ACCOUNT_DAILY_VERIFICATION_LIMIT_REACHED_FOR_EMAIL,
-        .verificationNotFoundOrInvalidIdOrCode:
-          .BRAVE_ACCOUNT_PASSWORD_RESET_VERIFICATION_NOT_FOUND_OR_INVALID_ID_OR_CODE,
         .emailAlreadyVerified:
           .BRAVE_ACCOUNT_PASSWORD_RESET_EMAIL_ALREADY_VERIFIED,
         .maximumCodeVerificationAttemptsExceeded:
