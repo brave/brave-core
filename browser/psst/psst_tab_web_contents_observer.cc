@@ -159,9 +159,13 @@ PsstTabWebContentsObserver::PsstTabWebContentsObserver(
     : tabs::ContentsObservingTabFeature(tab),
       registry_(registry),
       psst_settings_service_(psst_settings_service),
-      ui_delegate_(std::move(ui_delegate)) {}
+      ui_delegate_(std::move(ui_delegate)) {
+  psst_settings_service_->AddObserver(this);
+}
 
-PsstTabWebContentsObserver::~PsstTabWebContentsObserver() = default;
+PsstTabWebContentsObserver::~PsstTabWebContentsObserver() {
+  psst_settings_service_->RemoveObserver(this);
+}
 
 PsstTabWebContentsObserver::PsstUiDelegate*
 PsstTabWebContentsObserver::GetPsstUiDelegate() const {
@@ -173,9 +177,7 @@ PsstTabWebContentsObserver::AsWeakPtr() {
 }
 
 void PsstTabWebContentsObserver::PrimaryPageChanged(content::Page& page) {
-  script_injector_remote_.reset();
-  page_weak_factory_.InvalidateWeakPtrs();
-  should_process_current_page_ = false;
+  CancelInFlightFlow();
 }
 
 void PsstTabWebContentsObserver::DidFinishNavigation(
@@ -355,6 +357,19 @@ void PsstTabWebContentsObserver::SetInjectAsyncScriptCallback(
     InjectScriptAsyncCallback inject_async_script_callback) {
   CHECK(!inject_async_script_callback.is_null());
   inject_async_script_callback_ = std::move(inject_async_script_callback);
+}
+
+void PsstTabWebContentsObserver::CancelInFlightFlow() {
+  script_injector_remote_.reset();
+  page_weak_factory_.InvalidateWeakPtrs();
+  should_process_current_page_ = false;
+}
+
+void PsstTabWebContentsObserver::OnPsstEnableChange(bool new_value) {
+  if (new_value) {
+    return;
+  }
+  CancelInFlightFlow();
 }
 
 }  // namespace psst

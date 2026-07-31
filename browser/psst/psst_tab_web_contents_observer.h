@@ -26,7 +26,8 @@ namespace psst {
 class MatchedRule;
 class PsstRuleRegistry;
 
-class PsstTabWebContentsObserver : public tabs::ContentsObservingTabFeature {
+class PsstTabWebContentsObserver : public tabs::ContentsObservingTabFeature,
+                                   public PsstSettingsService::Observer {
  public:
   using InsertScriptInPageCallback = base::OnceCallback<void(base::Value)>;
   using InsertScriptInPageTimeoutCallback =
@@ -108,6 +109,10 @@ class PsstTabWebContentsObserver : public tabs::ContentsObservingTabFeature {
   void SetInjectScriptCallback(InjectScriptCallback inject_script_callback);
   void SetInjectAsyncScriptCallback(
       InjectScriptAsyncCallback inject_async_script_callback);
+  void CancelInFlightFlow();
+
+  // PsstSettingsService::Observer
+  void OnPsstEnableChange(bool new_value) override;
 
   const raw_ptr<PsstRuleRegistry> registry_;
   const raw_ptr<PsstSettingsService> psst_settings_service_ = nullptr;
