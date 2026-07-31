@@ -7,8 +7,21 @@
   --leo-dialog-padding: 0;
   --leo-dialog-width: min(90vw, 720px);
   --leo-dialog-background: transparent;
+  // Colors the built-in showClose plain-faint button (inherits into shadow DOM).
+  --leo-button-color: var(--leo-color-white);
   background: transparent;
   box-shadow: none;
+
+  // Leo Dialog is a web component; className lands on the host. Pin the
+  // slotted content width so a long filename cannot expand the dialog past
+  // --leo-dialog-width (which is only applied as max-width inside the
+  // shadow tree).
+  & > * {
+    width: min(var(--leo-dialog-width), 100%);
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+  }
 }
 
 .card {
@@ -16,6 +29,7 @@
   flex-direction: column;
   overflow: hidden;
   width: 100%;
+  min-width: 0;
   border-radius: var(--leo-radius-xl);
   background-color: var(--leo-color-container-background);
 }
@@ -23,6 +37,9 @@
 .imageContainer {
   // Width follows the dialog; height comes from the image aspect ratio.
   width: 100%;
+  min-width: 0;
+  overflow: hidden;
+  background-color: var(--leo-color-black);
 }
 
 .image {
@@ -39,14 +56,27 @@
   gap: var(--leo-spacing-l);
   padding: var(--leo-spacing-xl);
   background-color: var(--leo-color-container-background);
+  min-width: 0;
+  width: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
 .info {
   display: flex;
+  flex: 1 1 auto;
   flex-direction: column;
   gap: var(--leo-spacing-xs);
   min-width: 0;
-  flex: 1 1 auto;
+  overflow: hidden;
+}
+
+// Same pattern as attachment_item: a grid wrapper is needed for reliable
+// text-overflow ellipsis inside flex layouts.
+.forEllipsis {
+  display: grid;
+  width: 100%;
+  min-width: 0;
 }
 
 .title {
