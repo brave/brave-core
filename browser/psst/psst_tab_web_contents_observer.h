@@ -21,8 +21,6 @@
 #include "chrome/browser/ui/tabs/contents_observing_tab_feature.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"
 
-class PrefService;
-
 namespace psst {
 
 class MatchedRule;
