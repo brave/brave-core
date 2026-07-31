@@ -450,7 +450,7 @@ extension Preferences {
   }
 
   /// Migration preferences
-  fileprivate final class Migration {
+  internal final class Migration {
     static let completed = Option<Bool>(key: "migration.completed", default: false)
 
     /// A new preference key will be introduced in 1.44.x, indicates if Wallet Preferences migration has completed
