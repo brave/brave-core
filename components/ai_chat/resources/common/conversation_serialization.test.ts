@@ -12,6 +12,7 @@
 
 import { describe, it, expect } from '@jest/globals'
 import ComplexConversation from '../page/stories/conversations/multi_tool_multi_turn'
+import * as Mojom from './mojom'
 import { createConversationTurnWithDefaults } from './test_data_utils'
 import {
   stringifyConversationData,
