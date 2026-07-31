@@ -291,7 +291,8 @@
       "--brave-subrevision",
       "1",
       "--clear",
-      "--no-full-toolchain"
+      "--no-full-toolchain",
+      "--upload"
     ],
     "name": "build rust toolchain"
   },

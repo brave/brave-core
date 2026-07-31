@@ -68,20 +68,16 @@ import shutil
 import stat
 import subprocess
 import sys
-import time
-import urllib.error
 import urllib.request
 from pathlib import Path
-
-import yaml
 
 # This is necessary because these scripts are used by brockit too.
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from cherry_picks import _check_call  # pylint: disable=wrong-import-position
 import gitiles  # pylint: disable=wrong-import-position
-from upload import (  # pylint: disable=wrong-import-position
-    S3Uploader, sha256_file, summarise)
+import toolchain_publish  # pylint: disable=wrong-import-position
+from upload import sha256_file  # pylint: disable=wrong-import-position
 
 TOOLCHAIN_BUCKET = 'brave-build-deps-internal'
 TOOLCHAIN_BUCKET_PREFIX = 'windows-hermetic-toolchain'
@@ -133,47 +129,6 @@ VSWHERE_PATH = Path(
 DEPOT_TOOLS_PYTHON3 = 'vpython3.bat'
 PACKAGE_FROM_INSTALLED_RELPATH = (Path('win_toolchain') /
                                   'package_from_installed.py')
-
-# License headers used in the index.
-INDEX_LICENSE_HEADER_TEMPLATE = (
-    '# Copyright (c) {year} The Brave Authors. All rights reserved.\n'
-    '# This Source Code Form is subject to the terms of the Mozilla Public\n'
-    '# License, v. 2.0. If a copy of the MPL was not distributed with this '
-    'file,\n'
-    '# You can obtain one at https://mozilla.org/MPL/2.0/.\n')
-
-
-def _remote_url_exists(url: str) -> bool:
-    """Return whether *url* already resolves to a published object.
-
-    Treats HTTP 403/404 as "not published" -- the download bucket's CDN
-    sometimes returns 403 where a 404 is expected. Any other HTTP status or a
-    network error propagates, so a transient failure is never mistaken for
-    "absent".
-    """
-    try:
-        with urllib.request.urlopen(url,
-                                    timeout=gitiles.HTTP_FETCH_TIMEOUT_SECS):
-            return True
-    except urllib.error.HTTPError as e:
-        if e.code in (403, 404):
-            return False
-        raise
-
-
-def _brave_core_commit() -> str:
-    """Return the brave-core HEAD commit this script was run from.
-
-    This script lives in brave-core, so its repository HEAD identifies the
-    exact version that produced the archive -- recorded in the index for
-    provenance.
-    """
-    return _check_call('git',
-                       'rev-parse',
-                       'HEAD',
-                       cwd=Path(__file__).resolve().parent,
-                       capture_output=True).stdout.strip()
-
 
 def _resolve_windows_sdk_installer_url(build: str) -> str:
     """Resolve the standalone installer URL for an exact Windows SDK *build*.
@@ -316,16 +271,8 @@ def fetch_published_index(sdk_info: WinSdkInfo) -> dict:
         RuntimeError: if the index cannot be fetched.
     """
     index_url = PACKAGE_DOWNLOAD_URL_BASE + toolchain_index_name(sdk_info)
-    logging.debug('Fetching hermetic Windows toolchain index %s', index_url)
-    try:
-        with urllib.request.urlopen(
-                index_url,
-                timeout=gitiles.HTTP_FETCH_TIMEOUT_SECS) as response:
-            return yaml.safe_load(response)
-    except urllib.error.URLError as e:
-        raise RuntimeError(
-            f'Failed to fetch hermetic Windows toolchain index {index_url}: '
-            f'{e}') from e
+    return toolchain_publish.fetch_index(index_url,
+                                         'hermetic Windows toolchain')
 
 
 class ToolchainBuilder:
@@ -618,7 +565,7 @@ class ToolchainBuilder:
         """
         assert self._upstream_sdk_info is not None
         index_url = PACKAGE_DOWNLOAD_URL_BASE + self._index_path.name
-        if _remote_url_exists(index_url):
+        if toolchain_publish.remote_url_exists(index_url):
             raise RuntimeError(
                 f'{index_url} already exists; a toolchain for upstream hash '
                 f'{self._upstream_sdk_info.toolchain_hash} is already '
@@ -646,29 +593,16 @@ class ToolchainBuilder:
             'installed_vs_display_name': vswhere_instance['displayName'],
             'chromium_tag': self._chromium_tag,
         }
-        index['brave_core_commit'] = _brave_core_commit()
+        index['brave_core_commit'] = toolchain_publish.brave_core_commit()
 
-        index_yaml = yaml.safe_dump(index,
-                                    sort_keys=False,
-                                    default_flow_style=False)
-        license_header = INDEX_LICENSE_HEADER_TEMPLATE.format(
-            year=time.gmtime().tm_year)
-        index_path = self._index_path
-        index_path.write_text(f'{license_header}\n{index_yaml}',
-                              encoding='utf-8',
-                              newline='')
-        logging.info('Wrote toolchain index %s:', index_path)
-        print(index_path.read_bytes().decode('utf-8'))
+        toolchain_publish.write_index_file(self._index_path, index)
 
     def _upload(self, archive: Path) -> None:
         """Upload the archive and its sibling index to the internal bucket.
         """
-        uploader = S3Uploader(bucket=TOOLCHAIN_BUCKET)
-        for path in (archive, self._index_path):
-            result = uploader.upload(path,
-                                     prefix=TOOLCHAIN_BUCKET_PREFIX,
-                                     sign=False)
-            logging.info('Uploaded %s:\n%s', path.name, summarise(result))
+        toolchain_publish.upload_files(TOOLCHAIN_BUCKET,
+                                       TOOLCHAIN_BUCKET_PREFIX,
+                                       (archive, self._index_path))
 
     def run(self, clear: bool = False, upload: bool = False) -> None:
         """Execute the full inspect-install-pack-index-upload pipeline.

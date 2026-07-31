@@ -60,7 +60,8 @@
       "[WORKSPACE]/out",
       "--chromium-tag",
       "150.0.7841.1",
-      "--clear"
+      "--clear",
+      "--upload"
     ],
     "name": "build xcode toolchain"
   },

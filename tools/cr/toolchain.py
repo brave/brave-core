@@ -8,7 +8,6 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-import hashlib
 import os
 import re
 import textwrap
@@ -57,10 +56,6 @@ TOOLCHAINS = {
         'ci': {
             'jobs': ('https://ci.brave.com/view/toolchains/job/'
                      'windows-hermetic-toolchain-build/', ),
-            # The job takes no build parameter and instead reads a JSON
-            # PROPERTIES payload, like the Rust jobs; `chromium_ref` is
-            # auto-filled from the triggered version (see
-            # `Toolchain._properties_payload`).
             'properties': ('chromium_ref', ),
         },
         'repin': {
@@ -80,9 +75,9 @@ TOOLCHAINS = {
                      'mac_sdk_official_build_version'),
         },
         'ci': {
-            'build_param': 'CHROMIUM_TAG',
             'jobs': ('https://ci.brave.com/view/toolchains/job/'
                      'xcode-hermetic-toolchain-build/', ),
+            'properties': ('chromium_tag', ),
         },
         'repin': {
             'script': 'build/mac/download_hermetic_xcode.py',
@@ -421,10 +416,11 @@ class Toolchain:
                             provided: dict) -> dict | None:
         """Builds the `PROPERTIES` payload, checking every field is provided.
 
-        `chromium_ref` (when the toolchain declares it) defaults to the
-        triggered version; all other declared fields must come from `provided`.
-        Raises if a toolchain that takes no properties is given any, or if the
-        supplied fields don't match exactly what the toolchain declares.
+        `chromium_ref`/`chromium_tag` (whichever the toolchain declares)
+        defaults to the triggered version; all other declared fields must come
+        from `provided`. Raises if a toolchain that takes no properties is
+        given any, or if the supplied fields don't match exactly what the
+        toolchain declares.
         """
         if self.spec.properties is None:
             if provided:
@@ -435,6 +431,8 @@ class Toolchain:
         payload = dict(provided)
         if 'chromium_ref' in self.spec.properties:
             payload.setdefault('chromium_ref', str(version))
+        if 'chromium_tag' in self.spec.properties:
+            payload.setdefault('chromium_tag', str(version))
         if set(payload) != set(self.spec.properties):
             raise InvalidInputException(
                 f'The {self.spec.label} toolchain requires the properties '
@@ -593,21 +591,6 @@ class RustToolchain(Toolchain):
         return (f'Rust/WASM toolchain ({match["rust"][:12]}-{match["sub"]}, '
                 f'{match["clang"]}, sub {match["sub"]})')
 
-    @staticmethod
-    def _fetch_archive_info(url: str) -> tuple[str, int]:
-        """Download `url` and return its `(sha256sum, size_bytes)`.
-
-        `setdep` values are read straight off the published archive.
-        """
-        digest = hashlib.sha256()
-        size = 0
-        with requests.get(url, stream=True, timeout=60) as response:
-            response.raise_for_status()
-            for chunk in response.iter_content(chunk_size=1 << 20):
-                digest.update(chunk)
-                size += len(chunk)
-        return digest.hexdigest(), size
-
     # `brave_subrevision` is required here (unlike the base's `**kwargs`
     # catch-all) since this toolchain has no side index to auto-discover it
     # from; see the base `repin`'s docstring.
@@ -623,9 +606,9 @@ class RustToolchain(Toolchain):
         this Chromium tag's Rust+Clang revision (e.g. `1` for a fresh
         Chromium-version bump, or whatever `gen-rust-toolchain
         --brave-subrevision` last built) -- there is no side index to
-        auto-discover it from; every object name and its overlay base are
-        derived deterministically and fetched straight from the bucket, like
-        `tools/clang/scripts/sync_deps.py`'s `GetDepsObjectInfo`.
+        auto-discover it from; every platform's object is read straight from
+        its sibling index (see
+        `build_rust_toolchain.rust_toolchain_extra_dep`).
         """
         self._require_no_staged_files()
 
@@ -634,25 +617,13 @@ class RustToolchain(Toolchain):
                                                       commit=ref)
         upstream_stem = self._upstream_stem(revision_text)
 
-        objects = []
-        platform_conditions = build_rust_toolchain.SUPPORTED_PLATFORM_CONDITIONS
-        for platform_prefix in platform_conditions:
-            object_name = (f'{platform_prefix}-{upstream_stem}-'
-                           f'{brave_subrevision}.tar.xz')
-            url = f'{build_rust_toolchain.TOOLCHAIN_BUCKET_URL}/{object_name}'
-            try:
-                sha256sum, size_bytes = self._fetch_archive_info(url)
-            except requests.RequestException as e:
-                raise BadOutcomeException(
-                    f'Could not fetch published toolchain {url}: {e}') from e
-            host_os = build_rust_toolchain.PLATFORM_PREFIX_TO_CHROMIUM_HOST_OS[
-                platform_prefix]
-            objects.append({
-                'object_name': object_name,
-                'sha256sum': sha256sum,
-                'size_bytes': size_bytes,
-                'overlayed_on': f'{host_os}/{upstream_stem}.tar.xz',
-            })
+        try:
+            extra_dep = build_rust_toolchain.rust_toolchain_extra_dep(
+                upstream_stem, brave_subrevision)
+        except RuntimeError as e:
+            raise BadOutcomeException(str(e)) from e
+        objects = extra_dep[
+            build_rust_toolchain.RUST_TOOLCHAIN_DEP_PATH]['objects']
 
         installer = self.spec.installer
         path = repository.brave.root / installer

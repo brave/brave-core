@@ -39,9 +39,10 @@ def _check_call(*command,
                 capture_output=False):
     """Run *command* as a subprocess, logging the invocation.
 
-    Shared subprocess helper for the toolchain build scripts in this directory
-    (`build_rust_toolchain`, `build_xcode_toolchain`, `ephemeral_xcode`), which
-    all import it rather than carrying their own copy.
+    Shared subprocess helper for every script in this directory that shells
+    out (`build_windows_toolchain`, `build_xcode_toolchain`,
+    `build_rust_toolchain`, `ephemeral_xcode`, `toolchain_publish`), which all
+    import it rather than carrying their own copy.
 
     Logs the full command string at INFO level before executing it.  Stdout
     and stderr are inherited from the parent process (so subprocess output
