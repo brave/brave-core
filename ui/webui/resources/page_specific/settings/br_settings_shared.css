@@ -16,6 +16,6 @@ a[href] {
 }
 
 .settings-box {
-  border-top: none;
+  border-top: none !important;
 }
 
