@@ -5,11 +5,12 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 """Utility exporting basic filesystem operations, run as a recipe step.
 
-Covers every operation that doesn't need to inject arbitrary file *content*
-(e.g. `write_text` -- this engine has no stdin/output-placeholder primitive
-to carry that through a step yet), reporting a shared `{ok, errno_name,
-message}` result on stderr, since several operations here (`read_text`,
-`glob`, ...) already need stdout for their actual return value.
+Every operation reports a shared `{ok, errno_name, message}` result as JSON to
+the file named by `--json-output`, leaving stdout free for the operations that
+have an actual value to return (`glob`, `listdir`, ...). Reading and writing
+file content needs no operation of its own: `copy` does both, given a path that
+the recipe engine has filled in (or will read back) for it -- see the
+"Getting data back from a step" section of ../../../README.md.
 """
 
 from __future__ import annotations
@@ -25,11 +26,6 @@ import os
 import shutil
 import sys
 import tempfile
-
-
-def _read_text(source: str) -> str:
-    with open(source, encoding='utf-8') as f:
-        return f.read()
 
 
 def _copy(source: str, dest: str) -> None:
@@ -231,7 +227,6 @@ def _is_executable(path: str) -> str:
 # parsed `argparse.Namespace` and returns the string to print to stdout (or
 # None, for operations with nothing to report beyond ok/errno_name/message).
 _OPERATIONS = {
-    'read_text': lambda o: _read_text(o.source),
     'copy': lambda o: _copy(o.source, o.dest),
     'copytree': lambda o: _copytree(o.source, o.dest, o.symlinks, o.hardlink, o
                                     .allow_override),
@@ -261,10 +256,12 @@ def _octal(value: str) -> int:
 
 def main(argv: list[str]) -> int:
     parser = argparse.ArgumentParser()
+    parser.add_argument('--json-output',
+                        required=True,
+                        type=argparse.FileType('w'),
+                        help='Where to write the {ok, errno_name, message} '
+                        'result of the operation.')
     subparsers = parser.add_subparsers(dest='command', required=True)
-
-    p = subparsers.add_parser('read_text', help='Read a file as UTF-8 text.')
-    p.add_argument('source')
 
     p = subparsers.add_parser('copy',
                               help='Copy a file. Behaves like shutil.copy().')
@@ -373,7 +370,8 @@ def main(argv: list[str]) -> int:
         result['message'] = f'UNKNOWN: {e}'
 
     sys.stdout.write(output)
-    print(json.dumps(result), file=sys.stderr)
+    with opts.json_output as json_output:
+        json.dump(result, json_output)
     # Success/failure is reported in `result`, not the exit code: `file/api.py`
     # inspects `result['ok']` itself.
     return 0

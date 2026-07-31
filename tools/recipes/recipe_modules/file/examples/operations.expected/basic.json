@@ -21,23 +21,8 @@
       "[WORKSPACE]/brave-browser/src/third_party/depot_tools/vpython3",
       "-u",
       "[RECIPES_ROOT]/recipe_modules/file/resources/fileutil.py",
-      "read_text",
-      "/etc/config.json"
-    ],
-    "name": "read config"
-  },
-  {
-    "cmd": [
-      "echo",
-      "{'key': 'value'}"
-    ],
-    "name": "echo json"
-  },
-  {
-    "cmd": [
-      "[WORKSPACE]/brave-browser/src/third_party/depot_tools/vpython3",
-      "-u",
-      "[RECIPES_ROOT]/recipe_modules/file/resources/fileutil.py",
+      "--json-output",
+      "/path/to/tmp/json",
       "copy",
       "/src/a.txt",
       "/dst/a.txt"
@@ -49,6 +34,8 @@
       "[WORKSPACE]/brave-browser/src/third_party/depot_tools/vpython3",
       "-u",
       "[RECIPES_ROOT]/recipe_modules/file/resources/fileutil.py",
+      "--json-output",
+      "/path/to/tmp/json",
       "copytree",
       "--symlinks",
       "--hardlink",
@@ -63,6 +50,8 @@
       "[WORKSPACE]/brave-browser/src/third_party/depot_tools/vpython3",
       "-u",
       "[RECIPES_ROOT]/recipe_modules/file/resources/fileutil.py",
+      "--json-output",
+      "/path/to/tmp/json",
       "move",
       "/src/b.txt",
       "/dst/b.txt"
@@ -74,6 +63,8 @@
       "[WORKSPACE]/brave-browser/src/third_party/depot_tools/vpython3",
       "-u",
       "[RECIPES_ROOT]/recipe_modules/file/resources/fileutil.py",
+      "--json-output",
+      "/path/to/tmp/json",
       "chmod",
       "/dst/a.txt",
       "--mode",
@@ -87,6 +78,8 @@
       "[WORKSPACE]/brave-browser/src/third_party/depot_tools/vpython3",
       "-u",
       "[RECIPES_ROOT]/recipe_modules/file/resources/fileutil.py",
+      "--json-output",
+      "/path/to/tmp/json",
       "remove",
       "/dst/a.txt"
     ],
@@ -97,6 +90,8 @@
       "[WORKSPACE]/brave-browser/src/third_party/depot_tools/vpython3",
       "-u",
       "[RECIPES_ROOT]/recipe_modules/file/resources/fileutil.py",
+      "--json-output",
+      "/path/to/tmp/json",
       "rmtree",
       "/dst/dir"
     ],
@@ -107,6 +102,8 @@
       "[WORKSPACE]/brave-browser/src/third_party/depot_tools/vpython3",
       "-u",
       "[RECIPES_ROOT]/recipe_modules/file/resources/fileutil.py",
+      "--json-output",
+      "/path/to/tmp/json",
       "rmcontents",
       "/dst"
     ],
@@ -117,6 +114,8 @@
       "[WORKSPACE]/brave-browser/src/third_party/depot_tools/vpython3",
       "-u",
       "[RECIPES_ROOT]/recipe_modules/file/resources/fileutil.py",
+      "--json-output",
+      "/path/to/tmp/json",
       "rmglob",
       "/dst",
       "**/*.txt",
@@ -129,6 +128,8 @@
       "[WORKSPACE]/brave-browser/src/third_party/depot_tools/vpython3",
       "-u",
       "[RECIPES_ROOT]/recipe_modules/file/resources/fileutil.py",
+      "--json-output",
+      "/path/to/tmp/json",
       "glob",
       "/src",
       "*.py",
@@ -148,6 +149,8 @@
       "[WORKSPACE]/brave-browser/src/third_party/depot_tools/vpython3",
       "-u",
       "[RECIPES_ROOT]/recipe_modules/file/resources/fileutil.py",
+      "--json-output",
+      "/path/to/tmp/json",
       "listdir",
       "/src",
       "--recursive"
@@ -166,6 +169,8 @@
       "[WORKSPACE]/brave-browser/src/third_party/depot_tools/vpython3",
       "-u",
       "[RECIPES_ROOT]/recipe_modules/file/resources/fileutil.py",
+      "--json-output",
+      "/path/to/tmp/json",
       "ensure_directory",
       "/newdir",
       "--mode",
@@ -178,6 +183,8 @@
       "[WORKSPACE]/brave-browser/src/third_party/depot_tools/vpython3",
       "-u",
       "[RECIPES_ROOT]/recipe_modules/file/resources/fileutil.py",
+      "--json-output",
+      "/path/to/tmp/json",
       "filesizes",
       "/a.txt",
       "/b.txt"
@@ -196,6 +203,8 @@
       "[WORKSPACE]/brave-browser/src/third_party/depot_tools/vpython3",
       "-u",
       "[RECIPES_ROOT]/recipe_modules/file/resources/fileutil.py",
+      "--json-output",
+      "/path/to/tmp/json",
       "symlink",
       "/target",
       "/link"
@@ -207,6 +216,8 @@
       "[WORKSPACE]/brave-browser/src/third_party/depot_tools/vpython3",
       "-u",
       "[RECIPES_ROOT]/recipe_modules/file/resources/fileutil.py",
+      "--json-output",
+      "/path/to/tmp/json",
       "truncate",
       "/big.bin",
       "10"
@@ -218,6 +229,8 @@
       "[WORKSPACE]/brave-browser/src/third_party/depot_tools/vpython3",
       "-u",
       "[RECIPES_ROOT]/recipe_modules/file/resources/fileutil.py",
+      "--json-output",
+      "/path/to/tmp/json",
       "flatten_single_directories",
       "/nested"
     ],
@@ -228,6 +241,8 @@
       "[WORKSPACE]/brave-browser/src/third_party/depot_tools/vpython3",
       "-u",
       "[RECIPES_ROOT]/recipe_modules/file/resources/fileutil.py",
+      "--json-output",
+      "/path/to/tmp/json",
       "compute_hash",
       "/base",
       "a.txt",
@@ -247,6 +262,8 @@
       "[WORKSPACE]/brave-browser/src/third_party/depot_tools/vpython3",
       "-u",
       "[RECIPES_ROOT]/recipe_modules/file/resources/fileutil.py",
+      "--json-output",
+      "/path/to/tmp/json",
       "file_hash",
       "/a.txt"
     ],
@@ -264,6 +281,8 @@
       "[WORKSPACE]/brave-browser/src/third_party/depot_tools/vpython3",
       "-u",
       "[RECIPES_ROOT]/recipe_modules/file/resources/fileutil.py",
+      "--json-output",
+      "/path/to/tmp/json",
       "is_executable",
       "/a.txt"
     ],
