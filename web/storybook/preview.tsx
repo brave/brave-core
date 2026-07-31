@@ -11,6 +11,12 @@ import { getString } from './locale'
 import ThemeProvider from '$web-common/BraveCoreThemeProvider'
 import StyledComponentsProvider from '$web-common/StyledComponentsProvider'
 
+// Nala design tokens (the `--leo-*` custom properties). In the browser these
+// come from `chrome://resources/brave/css/nala.css`, which Storybook can't
+// load, so pull in the static token stylesheet globally here. It defines both
+// the light and dark values, keyed off `prefers-color-scheme`.
+import '@brave/leo/tokens/css/variables.css'
+
 // Fonts
 import '../../ui/webui/resources/fonts/poppins.css'
 import '../../ui/webui/resources/fonts/manrope.css'
@@ -21,6 +27,12 @@ import '../../ui/webui/resources/fonts/inter.css'
 // somewhere deep. The icons will be hosted in the relative path of the
 // storybook. Let's find the relative path we're at, and give that to
 // Nala icons.
+//
+// Note: the base path is global and is applied retroactively to every mounted
+// icon, so the *last* caller wins. Page entry points set it to a `chrome://`
+// path that can't be loaded on the web, so they must only do so when actually
+// mounting the page - never at module scope, where merely importing them from a
+// story would clobber this.
 if (!document.location.pathname.endsWith('/iframe.html')) {
   // Perhaps storybook was upgraded and this changed?
   console.error(
