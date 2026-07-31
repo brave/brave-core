@@ -132,15 +132,15 @@ export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
   }
   // Autofill route is moved to advanced,
   // otherwise its sections won't show up when opened.
-  if (r.AUTOFILL && r.ADVANCED) {
-    r.AUTOFILL.parent = r.ADVANCED
+  if (r.YOUR_SAVED_INFO && r.ADVANCED) {
+    r.YOUR_SAVED_INFO.parent = r.ADVANCED
   } else if (!isGuest) {
     console.error(
       '[Settings] Could not move autofill route to advanced route', r)
   }
   // <if expr="enable_email_aliases">
-  if (loadTimeData.getBoolean('isEmailAliasesEnabled') && r.AUTOFILL) {
-    r.EMAIL_ALIASES = r.AUTOFILL.createChild('/email-aliases')
+  if (loadTimeData.getBoolean('isEmailAliasesEnabled') && r.YOUR_SAVED_INFO) {
+    r.EMAIL_ALIASES = r.YOUR_SAVED_INFO.createChild('/email-aliases')
   }
   // </if>
   // Delete performance menu - system menu includes it instead.
