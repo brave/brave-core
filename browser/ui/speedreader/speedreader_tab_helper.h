@@ -184,7 +184,7 @@ class SpeedreaderTabHelper
 
   std::string single_show_content_;
 
-  DistillState distill_state_{DistillStates::ViewOriginal()};
+  DistillState distill_state_{ViewOriginal()};
 
   raw_ref<SpeedreaderService> speedreader_service_;
 

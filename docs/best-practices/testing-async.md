@@ -146,7 +146,7 @@ tests:
 
 ```cpp
 ASSERT_TRUE(base::test::RunUntil([th]() {
-  return speedreader::DistillStates::IsDistilled(th->PageDistillState());
+  return speedreader::IsDistilled(th->PageDistillState());
 }));
 ```
 

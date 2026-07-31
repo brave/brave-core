@@ -142,7 +142,7 @@ void ReaderModeBubble::Init() {
       DistillState state = tab_helper_->PageDistillState();
       if (IsDistilledAutomatically(state)) {
         site_toggle_->SetIsOn(true);
-      } else if (DistillStates::IsDistillable(state)) {
+      } else if (IsDistillable(state)) {
         site_toggle_->SetIsOn(false);
       }
     }
