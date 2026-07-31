@@ -214,18 +214,61 @@ void BraveNewsController::GetFeed(GetFeedCallback callback) {
 
 void BraveNewsController::GetFollowingFeed(GetFollowingFeedCallback callback) {
   DVLOG(1) << __FUNCTION__;
+  if (!pref_manager_.IsEnabled()) {
+    std::move(callback).Run(mojom::FeedV2::New());
+    return;
+  }
+
+  // Note: If we've only recently opted-in but we haven't yet finished adding
+  // the top sources subscription (via the async functions in MaybeInitPrefs),
+  // we need to wait for that to complete. Otherwise we'd build the feed from
+  // an empty set of subscriptions and report it as empty to the UI, which
+  // wouldn't be corrected until the feed was requested again.
+  if (!initialization_promise_.complete()) {
+    initialization_promise_.OnceInitialized(
+        base::BindOnce(&BraveNewsController::GetFollowingFeed,
+                       weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+    return;
+  }
+
   IN_ENGINE(GetFollowingFeed, std::move(callback));
 }
 
 void BraveNewsController::GetChannelFeed(const std::string& channel,
                                          GetChannelFeedCallback callback) {
   DVLOG(1) << __FUNCTION__;
+  if (!pref_manager_.IsEnabled()) {
+    std::move(callback).Run(mojom::FeedV2::New());
+    return;
+  }
+
+  // See the note in GetFollowingFeed.
+  if (!initialization_promise_.complete()) {
+    initialization_promise_.OnceInitialized(base::BindOnce(
+        &BraveNewsController::GetChannelFeed, weak_ptr_factory_.GetWeakPtr(),
+        channel, std::move(callback)));
+    return;
+  }
+
   IN_ENGINE(GetChannelFeed, std::move(callback), channel);
 }
 
 void BraveNewsController::GetPublisherFeed(const std::string& publisher_id,
                                            GetPublisherFeedCallback callback) {
   DVLOG(1) << __FUNCTION__;
+  if (!pref_manager_.IsEnabled()) {
+    std::move(callback).Run(mojom::FeedV2::New());
+    return;
+  }
+
+  // See the note in GetFollowingFeed.
+  if (!initialization_promise_.complete()) {
+    initialization_promise_.OnceInitialized(base::BindOnce(
+        &BraveNewsController::GetPublisherFeed, weak_ptr_factory_.GetWeakPtr(),
+        publisher_id, std::move(callback)));
+    return;
+  }
+
   IN_ENGINE(GetPublisherFeed, std::move(callback), publisher_id);
 }
 
@@ -259,9 +302,12 @@ void BraveNewsController::EnsureFeedV2IsUpdating() {
 
 void BraveNewsController::GetFeedV2(GetFeedV2Callback callback) {
   DVLOG(1) << __FUNCTION__;
-  // If we're only recently opted-in but we haven't yet finished adding the
-  // top sources subscription (via the async functions in MaybeInitPrefs), we
-  // need to wait for that to complete before we can fetch the feed.
+  if (!pref_manager_.IsEnabled()) {
+    std::move(callback).Run(mojom::FeedV2::New());
+    return;
+  }
+
+  // See the note in GetFollowingFeed.
   if (!initialization_promise_.complete()) {
     initialization_promise_.OnceInitialized(
         base::BindOnce(&BraveNewsController::GetFeedV2,

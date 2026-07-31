@@ -13,6 +13,7 @@ source_set("brave_news_unit_tests") {
   testonly = true
   sources = [
     "//brave/components/brave_news/browser/background_history_querier_unittest.cc",
+    "//brave/components/brave_news/browser/brave_news_controller_unittest.cc",
     "//brave/components/brave_news/browser/brave_news_p3a_unittest.cc",
     "//brave/components/brave_news/browser/brave_news_pref_manager_unittest.cc",
     "//brave/components/brave_news/browser/channels_controller_unittest.cc",
@@ -41,10 +42,12 @@ source_set("brave_news_unit_tests") {
     "//brave/components/brave_news/browser:unit_tests",
     "//brave/components/brave_news/common",
     "//brave/components/brave_news/common:mojom",
+    "//brave/components/brave_policy:policy_initialization_waiter",
     "//brave/components/brave_rewards/core",
     "//brave/components/l10n/common:test_support",
     "//brave/components/time_period_storage",
     "//components/history/core/browser",
+    "//components/history/core/test",
     "//components/prefs",
     "//components/prefs:test_support",
     "//components/sync_preferences:test_support",
