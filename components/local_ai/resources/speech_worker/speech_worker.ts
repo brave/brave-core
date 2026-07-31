@@ -44,14 +44,21 @@ class AsrStreamInputAdapter implements AsrStreamInputInterface {
     responder: AsrStreamResponderRemote,
     onClose: () => void,
   ) {
+    const onResult = (text: string, isFinal: boolean) => {
+      // Empty transcript means nothing was recognized. Send an empty
+      // vector rather than a bogus [FINAL] "" (still ends the session).
+      responder.onResponse(text ? [{ transcript: text, isFinal }] : [])
+    }
+
+    // AsrStreamResponder carries results only, so a closed pipe is how the
+    // engine learns inference was aborted and ends the recognition in error.
+    const onError = () => responder.$.close()
+
     this.session = new NemotronStreamSession(
       model,
       sampleRateHz,
-      (text, isFinal) => {
-        // Empty transcript means nothing was recognized. Send an empty
-        // vector rather than a bogus [FINAL] "" (still ends the session).
-        responder.onResponse(text ? [{ transcript: text, isFinal }] : [])
-      },
+      onResult,
+      onError,
     )
     this.receiver = new AsrStreamInputReceiver(this)
     this.receiver.$.bindHandle(pending.handle)
@@ -107,15 +114,25 @@ class SpeechRecognitionFactoryImpl
   ) {
     if (!this.model) {
       console.error('[speech-worker] createAsrStream before init')
+      responder.$.close()
       return
     }
-    const adapter = new AsrStreamInputAdapter(
-      this.model,
-      options.sampleRateHz,
-      stream,
-      responder,
-      () => this.streams.delete(adapter),
-    )
+
+    let adapter: AsrStreamInputAdapter
+    try {
+      adapter = new AsrStreamInputAdapter(
+        this.model,
+        options.sampleRateHz,
+        stream,
+        responder,
+        () => this.streams.delete(adapter),
+      )
+    } catch (error) {
+      console.error('[speech-worker] createAsrStream failed:', error)
+      responder.$.close()
+      return
+    }
+
     this.streams.add(adapter)
   }
 }
