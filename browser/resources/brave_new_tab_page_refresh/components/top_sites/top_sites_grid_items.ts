@@ -84,6 +84,9 @@ function sponsoredSitesMatchingTopSites(
   sponsoredSites: SponsoredSite[],
 ): SponsoredSite[] {
   return sponsoredSites.filter((sponsoredSite) => {
+    if (!sponsoredSite.hasGenuineVisit) {
+      return false
+    }
     const domain = advertiserDomain(sponsoredSite)
     return (
       domain !== null
