@@ -192,6 +192,12 @@ class ZCashWalletServiceUnitTest : public testing::Test {
           auto response = zcash::mojom::LightdInfo::New("c2d6d0b4");
           std::move(callback).Run(std::move(response));
         });
+
+    ON_CALL(mock_orchard_sync_state(), GetSpendableNotes(_, _, _))
+        .WillByDefault([](OrchardPool pool, const mojom::AccountIdPtr&,
+                          const OrchardAddrRawPart&) {
+          return OrchardSyncState::SpendableNotesBundle();
+        });
   }
 
   AccountUtils GetAccountUtils() {
@@ -237,7 +243,8 @@ TEST_F(ZCashWalletServiceUnitTest, GetBalance) {
   base::test::ScopedFeatureList feature_list;
   feature_list.InitAndEnableFeatureWithParameters(
       features::kBraveWalletZCashFeature,
-      {{"zcash_shielded_transactions_enabled", "false"}});
+      {{"zcash_shielded_transactions_enabled", "false"},
+       {"zcash_ironwood_enabled", "false"}});
   auto account =
       GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashMainnet, 1);
   keyring_service()->UpdateNextUnusedAddressForZCashAccount(account->account_id,
@@ -330,7 +337,7 @@ TEST_F(ZCashWalletServiceUnitTest, GetBalance) {
                     std::optional<std::string> error) {
         EXPECT_EQ(balance->total_balance, 50u);
         EXPECT_EQ(balance->transparent_balance, 50u);
-        EXPECT_EQ(balance->shielded_balance, 0u);
+        EXPECT_EQ(balance->orchard_balance, 0u);
       });
 
   zcash_wallet_service_->GetBalance(account->account_id.Clone(),
@@ -400,6 +407,9 @@ TEST_F(ZCashWalletServiceUnitTest, GetBalanceWithShielded) {
   ON_CALL(mock_orchard_sync_state(), GetSpendableNotes(_, _, _))
       .WillByDefault([](OrchardPool pool, const mojom::AccountIdPtr& account_id,
                         const OrchardAddrRawPart& internal_addr) {
+        if (pool != OrchardPool::kOrchard) {
+          return OrchardSyncState::SpendableNotesBundle();
+        }
         OrchardSyncState::SpendableNotesBundle spendable_notes_bundle;
         {
           OrchardNote note;
@@ -423,8 +433,8 @@ TEST_F(ZCashWalletServiceUnitTest, GetBalanceWithShielded) {
                     std::optional<std::string> error) {
         EXPECT_EQ(balance->total_balance, 20u);
         EXPECT_EQ(balance->transparent_balance, 10u);
-        EXPECT_EQ(balance->shielded_balance, 10u);
-        EXPECT_EQ(balance->shielded_pending_balance, 20u);
+        EXPECT_EQ(balance->orchard_balance, 10u);
+        EXPECT_EQ(balance->orchard_pending_balance, 20u);
       });
   zcash_wallet_service_->GetBalance(account->account_id.Clone(),
                                     balance_callback.Get());
@@ -435,7 +445,8 @@ TEST_F(ZCashWalletServiceUnitTest, GetBalanceWithShielded_FeatureDisabled) {
   base::test::ScopedFeatureList feature_list;
   feature_list.InitAndEnableFeatureWithParameters(
       features::kBraveWalletZCashFeature,
-      {{"zcash_shielded_transactions_enabled", "false"}});
+      {{"zcash_shielded_transactions_enabled", "false"},
+       {"zcash_ironwood_enabled", "false"}});
   keyring_service()->Reset();
   keyring_service()->RestoreWallet(kMnemonicDivideCruise, kTestWalletPassword,
                                    false, base::DoNothing());
@@ -514,11 +525,123 @@ TEST_F(ZCashWalletServiceUnitTest, GetBalanceWithShielded_FeatureDisabled) {
                     std::optional<std::string> error) {
         EXPECT_EQ(balance->total_balance, 10u);
         EXPECT_EQ(balance->transparent_balance, 10u);
-        EXPECT_EQ(balance->shielded_balance, 0u);
+        EXPECT_EQ(balance->orchard_balance, 0u);
       });
   zcash_wallet_service_->GetBalance(account->account_id.Clone(),
                                     balance_callback.Get());
   task_environment_.RunUntilIdle();
+}
+
+TEST_F(ZCashWalletServiceUnitTest, GetBalanceWithShielded_IronwoodEnabled) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeatureWithParameters(
+      features::kBraveWalletZCashFeature,
+      {{"zcash_shielded_transactions_enabled", "true"},
+       {"zcash_ironwood_enabled", "true"}});
+  keyring_service()->Reset();
+  keyring_service()->RestoreWallet(kMnemonicDivideCruise, kTestWalletPassword,
+                                   false, base::DoNothing());
+
+  auto account =
+      GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashMainnet, 1);
+  keyring_service()->UpdateNextUnusedAddressForZCashAccount(account->account_id,
+                                                            1, 0);
+
+  ON_CALL(zcash_rpc(), GetLatestBlock(_, _))
+      .WillByDefault(  //
+          [&](const std::string& chain_id,
+              ZCashRpc::GetLatestBlockCallback callback) {
+            auto response = zcash::mojom::BlockID::New(
+                2625446u,
+                *PrefixedHexStringToBytes("0x0000000001a01b5fd794e4b071443974c8"
+                                          "35b3e0ff8f96bf3600e07afdbf89c5"));
+            std::move(callback).Run(std::move(response));
+          });
+
+  ON_CALL(zcash_rpc(), IsKnownAddress(_, _, _, _, _))
+      .WillByDefault([](const std::string& chain_id, const std::string& addr,
+                        uint64_t block_start, uint64_t block_end,
+                        ZCashRpc::IsKnownAddressCallback callback) {
+        // Receiver addresses
+        if (addr == "t1ShtibD2UJkYTeGPxeLrMf3jvE11S4Lpwj") {
+          std::move(callback).Run(true);
+          return;
+        }
+        std::move(callback).Run(false);
+      });
+
+  ON_CALL(zcash_rpc(), GetUtxoList(_, _, _))
+      .WillByDefault(  //
+          [&](const std::string& chain_id, const std::string& address,
+              ZCashRpc::GetUtxoListCallback callback) {
+            std::vector<zcash::mojom::ZCashUtxoPtr> utxos;
+            if (address == "t1ShtibD2UJkYTeGPxeLrMf3jvE11S4Lpwj") {
+              auto utxo = zcash::mojom::ZCashUtxo::New(
+                  "t1aFpD4qebqwbSAZLF4E8ZGmrTk36b1cocZ" /* address */,
+                  *PrefixedHexStringToBytes(
+                      "0x1b7a7109cec77ae38e57f4f0ec53a4046b08361abb92c62d9567ac"
+                      "e684f633ab") /* tx id */,
+                  0u /* index */,
+                  *PrefixedHexStringToBytes("0x76a914b3b55981e7bf53e10fe51aa4f4"
+                                            "5fdef06dec783d88ac") /*script*/,
+                  10u /* amount */, 2468320u /* block */);
+              utxos.push_back(std::move(utxo));
+            }
+            auto response =
+                zcash::mojom::GetAddressUtxosResponse::New(std::move(utxos));
+            std::move(callback).Run(std::move(response));
+          });
+
+  ON_CALL(mock_orchard_sync_state(), GetSpendableNotes(_, _, _))
+      .WillByDefault([](OrchardPool pool, const mojom::AccountIdPtr& account_id,
+                        const OrchardAddrRawPart& internal_addr) {
+        OrchardSyncState::SpendableNotesBundle spendable_notes_bundle;
+        if (pool == OrchardPool::kIronwood) {
+          {
+            OrchardNote note;
+            note.amount = 7u;
+            note.note_version = 3;
+            spendable_notes_bundle.all_notes.push_back(note);
+            spendable_notes_bundle.spendable_notes.push_back(note);
+          }
+          {
+            OrchardNote note;
+            note.amount = 13u;
+            note.note_version = 3;
+            spendable_notes_bundle.all_notes.push_back(note);
+          }
+          return spendable_notes_bundle;
+        }
+        {
+          OrchardNote note;
+          note.amount = 10u;
+          note.note_version = 2;
+          spendable_notes_bundle.all_notes.push_back(note);
+          spendable_notes_bundle.spendable_notes.push_back(note);
+        }
+        {
+          OrchardNote note;
+          note.amount = 20u;
+          note.note_version = 2;
+          spendable_notes_bundle.all_notes.push_back(note);
+        }
+        return spendable_notes_bundle;
+      });
+
+  base::test::TestFuture<mojom::ZCashBalancePtr, std::optional<std::string>>
+      balance_future;
+  zcash_wallet_service_->GetBalance(
+      account->account_id.Clone(),
+      balance_future.GetCallback<mojom::ZCashBalancePtr,
+                                 const std::optional<std::string>&>());
+
+  const auto& balance = balance_future.Get<0>();
+  EXPECT_EQ(balance->transparent_balance, 10u);
+  EXPECT_EQ(balance->orchard_balance, 10u);
+  EXPECT_EQ(balance->orchard_pending_balance, 20u);
+  EXPECT_EQ(balance->ironwood_balance, 7u);
+  EXPECT_EQ(balance->ironwood_pending_balance, 13u);
+  EXPECT_EQ(balance->total_balance, 27u);
 }
 
 // https://zcashblockexplorer.com/transactions/3bc513afc84befb9774f667eb4e63266a7229ab1fdb43476dd7c3a33d16b3101/raw
