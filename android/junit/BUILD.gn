@@ -289,7 +289,10 @@ if (is_android) {
 
   robolectric_library(
       "brave_junit_tests_org.chromium.chrome.browser.ui.messages.snackbar") {
-    sources = [ "src/org/chromium/chrome/browser/ui/messages/snackbar/BraveSnackbarManagerNewTabTakeoverTest.java" ]
+    sources = [
+      "src/org/chromium/chrome/browser/ui/messages/snackbar/BraveSnackbarManagerNewTabTakeoverTest.java",
+      "src/org/chromium/chrome/browser/ui/messages/snackbar/BraveSnackbarViewTest.java",
+    ]
 
     deps = [
       "//chrome/android:chrome_java",
