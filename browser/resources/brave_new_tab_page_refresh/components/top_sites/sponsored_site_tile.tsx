@@ -15,8 +15,11 @@ import { formatString } from '$web-common/formatString'
 import { getString } from '../../lib/strings'
 import { Link } from '../common/link'
 
-const tooltipHideDelay = 0
-const tooltipShowDelay = 200
+// Avoids showing the tooltip for a pointer that's just passing over the tile.
+const tooltipShowDelay = 500
+
+// Gives the pointer time to reach "Learn more" without the tooltip closing.
+const tooltipHideDelay = 500
 
 interface Props {
   site: SponsoredSite
@@ -26,13 +29,53 @@ interface Props {
 export function SponsoredSitesTile(props: Props) {
   const { relativeImageUrl, title, adDisclosure, targetUrl } = props.site
 
+  const [tooltipVisible, setTooltipVisible] = React.useState(false)
+  const tooltipShowTimer = React.useRef<number | undefined>(undefined)
+
+  React.useEffect(() => {
+    return () => window.clearTimeout(tooltipShowTimer.current)
+  }, [])
+
+  function scheduleShowTooltip() {
+    window.clearTimeout(tooltipShowTimer.current)
+    tooltipShowTimer.current = window.setTimeout(
+      () => setTooltipVisible(true),
+      tooltipShowDelay,
+    )
+  }
+
+  function cancelScheduledShow() {
+    window.clearTimeout(tooltipShowTimer.current)
+  }
+
+  // Keeps the tooltip open when focus moves to its "Learn more" link, since
+  // that link sits outside Leo's trigger element and would otherwise be
+  // treated as a blur.
+  function handleBlur(e: React.FocusEvent) {
+    const host = e.currentTarget.closest('leo-tooltip')
+    if (host && host.contains(e.relatedTarget as Node | null)) {
+      setTooltipVisible(true)
+    } else {
+      setTooltipVisible(false)
+    }
+  }
+
+  // Tooltip wraps the whole tile rather than just the disclosure label below,
+  // since scoping it to the label would nest the tooltip's "Learn more" link
+  // inside the tile's own anchor, which is invalid HTML and breaks keyboard
+  // access to the link.
   return (
     <Tooltip
-      mode='default'
+      mode='mini'
       placement='bottom'
       positionStrategy='fixed'
       mouseleaveTimeout={tooltipHideDelay}
-      mouseenterDelay={tooltipShowDelay}
+      visible={tooltipVisible}
+      onVisibilityChange={({ visible }) => {
+        if (!visible) {
+          setTooltipVisible(false)
+        }
+      }}
     >
       <a
         className='top-site-tile'
@@ -45,7 +88,16 @@ export function SponsoredSitesTile(props: Props) {
         </span>
         <span className='top-site-title'>{title}</span>
         {adDisclosure && (
-          <span className='top-site-ad-disclosure'>{adDisclosure}</span>
+          <span
+            className='top-site-ad-disclosure'
+            tabIndex={0}
+            onMouseEnter={scheduleShowTooltip}
+            onMouseLeave={cancelScheduledShow}
+            onFocus={() => setTooltipVisible(true)}
+            onBlur={handleBlur}
+          >
+            {adDisclosure}
+          </span>
         )}
       </a>
       <div
@@ -58,6 +110,7 @@ export function SponsoredSitesTile(props: Props) {
             <Link
               url={sponsoredSiteLearnMoreURL}
               openInNewTab
+              onBlur={handleBlur}
             >
               {content}
             </Link>
