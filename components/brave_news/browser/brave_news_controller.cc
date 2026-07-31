@@ -394,6 +394,13 @@ void BraveNewsController::SetChannelSubscribed(
 void BraveNewsController::SubscribeToNewDirectFeed(
     const GURL& feed_url,
     SubscribeToNewDirectFeedCallback callback) {
+  SubscribeToNewDirectFeed(feed_url, std::nullopt, std::move(callback));
+}
+
+void BraveNewsController::SubscribeToNewDirectFeed(
+    const GURL& feed_url,
+    const std::optional<url::Origin>& initiator_origin,
+    SubscribeToNewDirectFeedCallback callback) {
   VLOG(1) << __FUNCTION__ << ": " << feed_url.spec();
   // Verify the url points at a valid feed
   if (!feed_url.is_valid()) {
@@ -401,7 +408,7 @@ void BraveNewsController::SubscribeToNewDirectFeed(
     return;
   }
   direct_feed_controller_.VerifyFeedUrl(
-      feed_url,
+      feed_url, initiator_origin,
       base::BindOnce(&BraveNewsController::OnVerifiedDirectFeedUrl,
                      base::Unretained(this), feed_url, std::move(callback)));
 }
