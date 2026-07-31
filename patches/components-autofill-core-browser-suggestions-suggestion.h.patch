@@ -1,0 +1,12 @@
+diff --git a/components/autofill/core/browser/suggestions/suggestion.h b/components/autofill/core/browser/suggestions/suggestion.h
+index 6ce9ebf463541f467886e8bedeb809dd91546eab..234327bc0d14ebee312a62b9a7abea1314974f6a 100644
+--- a/components/autofill/core/browser/suggestions/suggestion.h
++++ b/components/autofill/core/browser/suggestions/suggestion.h
+@@ -660,6 +660,7 @@ struct Suggestion {
+   // Returns whether the user will see the suggestion in
+   // a "disabled and grayed-out" form.
+   bool HasDeactivatedStyle() const;
++  bool brave_new_email_alias_suggestion = false;
+ };
+ 
+ void PrintTo(const Suggestion& suggestion, std::ostream* os);

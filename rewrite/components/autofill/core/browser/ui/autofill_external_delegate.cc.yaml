@@ -1,0 +1,30 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Let Brave add extra suggestions when displaying autofill suggestions.
+    regex:
+      pattern:
+        'InsertDataListValues(last_query_.field_datalist_options, suggestions);'
+      replace: |-
+        InsertDataListValues(last_query_.field_datalist_options, suggestions);
+
+          if (trigger_field.has_value()) {
+            manager_->client().BraveAddSuggestions(
+                manager_->client().ClassifyAsPasswordForm(
+                    *manager_, last_query_.form_id, last_query_.field_id),
+                *trigger_field, suggestions);
+          }
+
+  - description: |-
+      Let Brave intercept a suggestion before the normal accept handling runs.
+    preempt_function_impl:
+      function_name: AutofillExternalDelegate::DidAcceptSuggestion
+      code: |-
+        if (manager_->client().BraveHandleSuggestion(suggestion,
+                                                      last_query_.field_id)) {
+          return;
+        }
