@@ -546,7 +546,7 @@ public class BravePrivacySettings extends PrivacySettings {
         if (PREF_HTTPS_FIRST_MODE.equals(key)) {
             UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
                     .setBoolean(Pref.HTTPS_ONLY_MODE_ENABLED, (boolean) newValue);
-        }  else if (PREF_DE_AMP.equals(key)) {
+        } else if (PREF_DE_AMP.equals(key)) {
             UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
                     .setBoolean(BravePref.DE_AMP_PREF_ENABLED, (boolean) newValue);
         } else if (PREF_DEBOUNCE.equals(key)) {
