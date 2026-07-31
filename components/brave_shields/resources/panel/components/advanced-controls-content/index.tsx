@@ -54,13 +54,53 @@ const httpsUpgradeModeOptions = [
   { value: HttpsUpgradeMode.DISABLED_MODE, text: getLocale('braveShieldsHttpsUpgradeModeDisabled') }
 ]
 
+function isSettingsPageTab(tab: chrome.tabs.Tab, pagePath: string) {
+  const tabUrl = tab.pendingUrl ?? tab.url
+  if (!tabUrl) {
+    return false
+  }
+
+  try {
+    const parsedUrl = new URL(tabUrl)
+    return (
+      (parsedUrl.protocol === 'chrome:' || parsedUrl.protocol === 'brave:') &&
+      parsedUrl.hostname === 'settings' &&
+      parsedUrl.pathname === pagePath
+    )
+  } catch {
+    return false
+  }
+}
+
+function openOrFocusSettingsPage(pagePath: string) {
+  const url = `chrome://settings${pagePath}`
+  chrome.tabs.query({}, (tabs) => {
+    if (chrome.runtime.lastError) {
+      chrome.tabs.create({ url, active: true })
+      return
+    }
+
+    const existingTab = tabs.find((tab) => isSettingsPageTab(tab, pagePath))
+    if (existingTab?.id === undefined) {
+      chrome.tabs.create({ url, active: true })
+      return
+    }
+
+    if (existingTab.windowId !== undefined) {
+      chrome.windows.update(existingTab.windowId, { focused: true })
+    }
+
+    chrome.tabs.update(existingTab.id, { active: true })
+  })
+}
+
 interface Props {
   showAdblockLists: boolean
 }
 
 export function GlobalSettings(props: Props) {
   const onAdBlockListsClick = () => {
-    chrome.tabs.create({ url: 'chrome://settings/shields/filters', active: true })
+    openOrFocusSettingsPage('/shields/filters')
   }
 
   const onSettingsClick = () => {
