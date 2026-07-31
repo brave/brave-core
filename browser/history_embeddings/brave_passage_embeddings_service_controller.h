@@ -26,16 +26,14 @@
 
 namespace passage_embeddings {
 
-// Runs the passage embeddings model in-process rather than in a sandboxed
-// utility process, because Brave serves embeddings from its own local AI
-// service.
-//
-// A single instance is shared across profiles, accessed via Get(), to avoid
-// loading the model more than once.
+// Runs EmbeddingGemma through the native LiteRT embedder in the sandboxed
+// passage embeddings utility process. A single instance is shared across
+// profiles, accessed via Get(), to avoid loading the model more than once.
 //
 // Brave does not use the optimization guide tflite model that upstream's
-// embedder relies on, so the model metadata and download paths are overridden
-// to no-ops.
+// embedder relies on; the model is delivered by the local AI component updater
+// (LocalModelsUpdaterState) and its file paths are resolved in
+// OnLocalModelsReady.
 class BravePassageEmbeddingsServiceController
     : public PassageEmbeddingsServiceController,
       public ProfileObserver,
@@ -69,12 +67,8 @@ class BravePassageEmbeddingsServiceController
 
   // PassageEmbeddingsServiceController:
   // Swallow optimization_guide updates. Upstream's PassageEmbedderModelObserver
-  // (created per-profile by PassageEmbedderModelObserverFactory) calls this
-  // whenever the tflite model component changes; the base implementation
-  // clears model paths and resets embedder_remote_ without touching service_,
-  // which leaves the next GetEmbeddings to fail the new embedder against a
-  // still-bound batch_embedder_ on the old service_. We don't use the
-  // upstream model at all, so the notification is noise.
+  // calls this whenever the tflite model component changes; we don't use that
+  // model at all, so the notification is noise.
   bool MaybeUpdateModelInfo(
       base::optional_ref<const optimization_guide::ModelInfo> model_info)
       override;
@@ -86,15 +80,18 @@ class BravePassageEmbeddingsServiceController
 
   bool IsModelAvailable() override;
   EmbedderMetadata GetEmbedderMetadata() override;
-  void GetEmbeddings(std::vector<std::string> passages,
-                     PassagePriority priority,
-                     GetEmbeddingsResultCallback callback) override;
 
   // ProfileObserver:
   void OnProfileWillBeDestroyed(Profile* profile) override;
 
   // local_ai::LocalModelsUpdaterState::Observer:
   void OnLocalModelsReady(const base::FilePath& install_dir) override;
+
+  // Reply for the OnLocalModelsReady existence check: records the LiteRT model
+  // paths and notifies observers only when both files are actually on disk.
+  void OnLitertModelChecked(const base::FilePath& embeddings_model_path,
+                            const base::FilePath& sp_model_path,
+                            bool models_exist);
 
   // Posts the disk read for the five EmbeddingGemma files. Wired to
   // OnLocalModelFilesLoaded; the receiver waits on the mojo pipe until
@@ -112,9 +109,8 @@ class BravePassageEmbeddingsServiceController
                           local_ai::LocalModelsUpdaterState::Observer>
       updater_state_observation_{this};
 
-  // Set true when LocalModelsUpdaterState reports the EmbeddingGemma
-  // component is installed. Required for IsModelAvailable() to return
-  // true.
+  // Whether LocalModelsUpdaterState reports the EmbeddingGemma component as
+  // installed.
   bool model_dir_ready_ = false;
 
   base::WeakPtrFactory<BravePassageEmbeddingsServiceController>

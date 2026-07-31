@@ -134,5 +134,7 @@ source_set("history_embeddings") {
     "//chrome/browser:browser_public_dependencies",
     "//chrome/browser/profiles",
     "//components/history_embeddings/core",
+    "//components/optimization_guide/proto:optimization_guide_proto",
+    "//content/public/browser",
   ]
 }

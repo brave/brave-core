@@ -1,0 +1,12 @@
+diff --git a/third_party/tflite/BUILD.gn b/third_party/tflite/BUILD.gn
+index a918b05fa880884ae8c59c886ddfca9711969982..d4554431b5f5e6022c916e8584b77bfcb29814f0 100644
+--- a/third_party/tflite/BUILD.gn
++++ b/third_party/tflite/BUILD.gn
+@@ -379,6 +379,7 @@ if (!use_litert_tflite) {
+ 
+     visibility = [
+       ":tflite_benchmark",
++      "//brave/services/passage_embeddings/*",
+       "//components/optimization_guide/internal/*",
+       "//modules/*",
+       "//services/webnn/*",
