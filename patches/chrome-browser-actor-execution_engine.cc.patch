@@ -1,22 +1,29 @@
 diff --git a/chrome/browser/actor/execution_engine.cc b/chrome/browser/actor/execution_engine.cc
-index 35e37f311442bc291ac87d68417f6a14eb50c581..eae379d82bc81de6af939abf9ffa64e7c5cbc451 100644
+index f91b6908efb97f54dbd3b27fdc15552cdc16a7be..cbb7c4f4f1c7046f75a1a71f8f5eed177df66070 100644
 --- a/chrome/browser/actor/execution_engine.cc
 +++ b/chrome/browser/actor/execution_engine.cc
-@@ -1248,6 +1248,9 @@ void ExecutionEngine::SafetyChecksForNextAction() {
+@@ -1295,6 +1295,16 @@ void ExecutionEngine::SafetyChecksForNextAction() {
    // TODO(mcnee): Add UMA for the outcomes.
    content::WebContents& web_contents = *(tab->GetContents());
    const GURL& url = web_contents.GetPrimaryMainFrame()->GetLastCommittedURL();
-+  BRAVE_MAY_ACT_ON_URL_INTERNAL(base::BindOnce(
-+      &ExecutionEngine::OnMayActOnTabDecision, GetActionSequenceWeakPtr(),
-+      tab->GetContents()->GetPrimaryMainFrame()->GetLastCommittedOrigin()))
++  BRAVE_MAY_ACT_ON_URL_INTERNAL(
++      base::BindOnce([](MayActOnUrlBlockReason block_reason) {
++        return BlockReasonToResultCode(block_reason,
++                                       /*for_navigation=*/false);
++      })
++          .Then(base::BindOnce(&ExecutionEngine::DidFinishAsyncSafetyChecks,
++                               GetActionSequenceWeakPtr(),
++                               tab->GetContents()
++                                   ->GetPrimaryMainFrame()
++                                   ->GetLastCommittedOrigin())))
    auto event = GateableEvent::kPageAction;
    origin_gating_checker_.ComputeGatingDecision(
        std::make_unique<PageActionGatingContext>(web_contents.GetWeakPtr()),
-@@ -1582,6 +1585,7 @@ const EnterprisePolicyChecker& ExecutionEngine::GetEnterprisePolicyChecker()
+@@ -1608,6 +1618,7 @@ const EnterprisePolicyChecker& ExecutionEngine::GetEnterprisePolicyChecker()
  void ExecutionEngine::IsAcceptableNavigationDestination(
      const GURL& url,
      DecisionCallbackWithReason callback) {
 +  BRAVE_MAY_ACT_ON_URL_INTERNAL(std::move(callback))
    auto event = GateableEvent::kNavigationRequest;
    origin_gating_checker_.ComputeGatingDecision(
-       /*context=*/nullptr, event, /*source=*/GURL(), url,
+       std::make_unique<OriginGatingDecisionContext>(), event, /*source=*/GURL(),
