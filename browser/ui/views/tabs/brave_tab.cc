@@ -31,6 +31,7 @@
 #include "chrome/browser/ui/views/tabs/tab/tab_close_button.h"
 #include "chrome/browser/ui/views/tabs/tab_slot_controller.h"
 #include "components/vector_icons/vector_icons.h"
+#include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/models/image_model.h"
 #include "ui/compositor/compositor.h"
 #include "ui/compositor/layer.h"
