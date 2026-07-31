@@ -56,10 +56,6 @@
 #include "components/tabs/public/tab_interface.h"
 #endif
 
-#if BUILDFLAG(ENABLE_TOR)
-#include "brave/browser/ui/views/location_bar/onion_location_view.h"
-#endif
-
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)
 #include "brave/browser/ui/views/brave_news/brave_news_action_icon_view.h"
 #endif
@@ -136,10 +132,6 @@ void BraveLocationBarView::Init() {
         ->SetVisibleOpacity(GetPageActionInkDropVisibleOpacity());
   }
 #endif  // BUILDFLAG(ENABLE_BRAVE_NEWS)
-#if BUILDFLAG(ENABLE_TOR)
-  onion_location_view_ = AddChildView(
-      std::make_unique<OnionLocationView>(browser_->GetProfile(), this, this));
-#endif
 
   if (PromotionButtonController::PromotionEnabled(GetProfile()->GetPrefs())) {
     promotion_button_ = AddChildView(std::make_unique<PromotionButtonView>());
@@ -194,12 +186,6 @@ void BraveLocationBarView::Update(content::WebContents* contents) {
     brave_actions_->Update();
   }
 
-#if BUILDFLAG(ENABLE_TOR)
-  if (onion_location_view_) {
-    onion_location_view_->Update();
-  }
-#endif
-
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)
   if (brave_news_action_icon_view_) {
     brave_news_action_icon_view_->Update();
@@ -247,12 +233,6 @@ void BraveLocationBarView::OnChanged() {
   if (brave_actions_) {
     brave_actions_->SetShouldHide(hide_page_actions);
   }
-#if BUILDFLAG(ENABLE_TOR)
-  if (onion_location_view_) {
-    onion_location_view_->Update();
-  }
-#endif
-
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)
   if (brave_news_action_icon_view_) {
     brave_news_action_icon_view_->Update();
@@ -282,16 +262,6 @@ std::vector<views::View*> BraveLocationBarView::GetRightMostTrailingViews() {
     views.push_back(brave_actions_);
   }
 
-  return views;
-}
-
-std::vector<views::View*> BraveLocationBarView::GetLeftMostTrailingViews() {
-  std::vector<views::View*> views;
-#if BUILDFLAG(ENABLE_TOR)
-  if (onion_location_view_) {
-    views.push_back(onion_location_view_);
-  }
-#endif
   return views;
 }
 
@@ -327,11 +297,6 @@ int BraveLocationBarView::GetMinimumTrailingWidth() const {
         brave_news_action_icon_view_->GetMinimumSize().width() + elem_pad;
   }
 
-#endif
-#if BUILDFLAG(ENABLE_TOR)
-  if (onion_location_view_ && onion_location_view_->GetVisible()) {
-    trailing_width += onion_location_view_->GetMinimumSize().width() + elem_pad;
-  }
 #endif
 
   return trailing_width;
@@ -389,14 +354,6 @@ gfx::Size BraveLocationBarView::CalculatePreferredSize(
     min_size.Enlarge(extra_width, 0);
   }
 #endif  // BUILDFLAG(ENABLE_BRAVE_NEWS)
-#if BUILDFLAG(ENABLE_TOR)
-  if (onion_location_view_ && onion_location_view_->GetVisible()) {
-    const int extra_width =
-        GetLayoutConstant(LayoutConstant::kLocationBarElementPadding) +
-        onion_location_view_->GetMinimumSize().width();
-    min_size.Enlarge(extra_width, 0);
-  }
-#endif
 
   return min_size;
 }
