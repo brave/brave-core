@@ -17,10 +17,15 @@
     flex-direction: column;
   }
 
-  .required::after {
-    content: '*';
-    margin: 0 2px;
-    color: var(--leo-color-systemfeedback-error-icon);
+  .label-text {
+    display: flex;
+    gap: var(--leo-spacing-s);
+    align-items: center;
+  }
+
+  .required {
+    color: var(--leo-color-systemfeedback-error-text);
+    font: var(--leo-font-small-regular);
   }
 
   .helper-text {
@@ -85,7 +90,10 @@
   <div class="container">
     <div class="input-container">
       <div class="custom-label">
-        <span class="required">$i18n{braveLeoAssistantInputModelLabel}</span>
+        <div class="label-text">
+          <span>$i18n{braveLeoAssistantInputModelLabel}</span>
+          <span class="required">$i18n{braveLeoAssistantRequiredLabel}</span>
+        </div>
       </div>
       <leo-input
         required
@@ -100,9 +108,10 @@
     </div>
     <div class="input-container">
       <div class="custom-label">
-        <span class="required"
-          >$i18n{braveLeoAssistantInputModelRequestName}</span
-        >
+        <div class="label-text">
+          <span>$i18n{braveLeoAssistantInputModelRequestName}</span>
+          <span class="required">$i18n{braveLeoAssistantRequiredLabel}</span>
+        </div>
       </div>
       <leo-input
         required
@@ -117,9 +126,10 @@
     </div>
     <div class="input-container">
       <div class="custom-label">
-        <span class="required"
-          >$i18n{braveLeoAssistantInputModelServerEndpoint}</span
-        >
+        <div class="label-text">
+          <span>$i18n{braveLeoAssistantInputModelServerEndpoint}</span>
+          <span class="required">$i18n{braveLeoAssistantRequiredLabel}</span>
+        </div>
       </div>
       <leo-input
         id="endpointInput"
@@ -226,7 +236,7 @@
 
     <div class="actions-container">
       <leo-button
-        disabled="[[!saveEnabled_(label, modelRequestName, endpointUrl)]]"
+        isDisabled$="[[!saveEnabled_(label, modelRequestName, endpointUrl, isUrlInvalid)]]"
         on-click="handleClick_"
       >
         [[buttonLabel_]]
