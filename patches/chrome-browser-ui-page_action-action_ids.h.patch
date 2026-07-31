@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/page_action/action_ids.h b/chrome/browser/ui/page_action/action_ids.h
-index e55f65d47b1a0cc3fcb185ae142afc1b917f88c2..4c509349144b12dfa7557c955bb89191f1d1102f 100644
+index e55f65d47b1a0cc3fcb185ae142afc1b917f88c2..3851e6bd3848aada1fe541ff9597cd36603fe91d 100644
 --- a/chrome/browser/ui/page_action/action_ids.h
 +++ b/chrome/browser/ui/page_action/action_ids.h
-@@ -22,6 +22,11 @@ namespace page_actions {
+@@ -22,6 +22,12 @@ namespace page_actions {
  // LINT.IfChange(kActionIds)
  inline constexpr auto kActionIds = std::to_array<actions::ActionId>({
      kActionAiMode,
@@ -11,6 +11,7 @@ index e55f65d47b1a0cc3fcb185ae142afc1b917f88c2..4c509349144b12dfa7557c955bb89191
 +    kActionShowSpeedreader,
 +    kActionShowWaybackMachine,
 +    kActionShowPlaylistPageAction,
++    kActionShowOnionLocation,
      kActionSidePanelShowLensOverlayResults,
      kActionLensOverlayHomework,
      kActionShowTranslate,
