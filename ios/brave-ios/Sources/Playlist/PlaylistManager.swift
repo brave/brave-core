@@ -28,7 +28,7 @@ public class PlaylistManager: NSObject {
   /// so duplicate requests are rejected and cancellation stops probe work that hasn't reached `cacheManager` yet.
   @MainActor private var pendingDownloadTasks = [String: (id: UUID, task: Task<Void, Never>)]()
   /// Item ids that already received a single out-of-space download retry for the current attempt.
-  @MainActor private var itemsRetriedAfterOutOfSpace = Set<String>()
+  @MainActor internal var itemsRetriedAfterOutOfSpace = Set<String>()
 
   private var _playbackTask: Task<Void, Error>?
 
@@ -731,7 +731,7 @@ public class PlaylistManager: NSObject {
     }
   }
 
-  private var isCacheReclamationEnabled: Bool {
+  internal var isCacheReclamationEnabled: Bool {
     FeatureList.kPlaylistCacheFirstEnabled.enabled
       || FeatureList.kPlaylistOfflineCacheEnabled.enabled
   }
@@ -760,6 +760,10 @@ public class PlaylistManager: NSObject {
   }
 
   public func isDiskSpaceEncumbered() -> Bool {
+    if Self.isSimulatingDiskSpaceEncumbered {
+      return true
+    }
+
     let freeSpace = availableDiskSpace() ?? 0
     let totalSpace = totalDiskSpace() ?? 0
     let usedSpace = totalSpace - freeSpace
