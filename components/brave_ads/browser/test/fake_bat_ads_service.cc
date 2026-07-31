@@ -17,10 +17,12 @@ namespace brave_ads::test {
 
 FakeBatAdsService::FakeBatAdsService(base::RepeatingClosure initialize_callback,
                                      base::RepeatingClosure shutdown_callback,
-                                     bool simulate_initialization_failure)
+                                     bool simulate_initialization_failure,
+                                     bool simulate_shutdown_disconnect)
     : shutdown_callback_(std::move(shutdown_callback)),
       bat_ads_(std::move(initialize_callback),
-               simulate_initialization_failure) {}
+               simulate_initialization_failure,
+               simulate_shutdown_disconnect) {}
 
 FakeBatAdsService::~FakeBatAdsService() = default;
 

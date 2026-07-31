@@ -5,10 +5,11 @@
 
 #include "brave/browser/ui/webui/settings/brave_clear_browsing_data_handler.h"
 
+#include <utility>
+
 #include "base/check.h"
 #include "base/check_op.h"
 #include "base/functional/bind.h"
-#include "base/functional/callback_helpers.h"
 #include "base/values.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
@@ -67,11 +68,33 @@ void BraveClearBrowsingDataHandler::HandleGetBraveRewardsEnabled(
 
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
 void BraveClearBrowsingDataHandler::HandleClearBraveAdsData(
-    const base::ListValue& /*args*/) {
-  if (auto* ads_service =
-          brave_ads::AdsServiceFactory::GetForProfile(profile_)) {
-    ads_service->ClearData(/*intentional*/ base::DoNothing());
+    const base::ListValue& args) {
+  CHECK_EQ(args.size(), 1U);
+
+  AllowJavascript();
+
+  base::Value callback_id = args[0].Clone();
+
+  auto* const ads_service =
+      brave_ads::AdsServiceFactory::GetForProfile(profile_);
+  if (!ads_service) {
+    OnClearBraveAdsDataComplete(std::move(callback_id), /*success=*/false);
+    return;
   }
+
+  ads_service->ClearData(base::BindOnce(
+      &BraveClearBrowsingDataHandler::OnClearBraveAdsDataComplete,
+      weak_ptr_factory_.GetWeakPtr(), std::move(callback_id)));
+}
+
+void BraveClearBrowsingDataHandler::OnClearBraveAdsDataComplete(
+    base::Value callback_id,
+    bool success) {
+  if (!IsJavascriptAllowed()) {
+    return;
+  }
+
+  ResolveJavascriptCallback(callback_id, base::Value(success));
 }
 #endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 

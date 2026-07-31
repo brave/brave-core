@@ -15,6 +15,7 @@
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
+#include "base/test/test_future.h"
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/browser/test/fake_ads_service_delegate.h"
@@ -124,6 +125,10 @@ class BraveAdsAdsServiceImplTest : public testing::Test {
   }
 
   void Shutdown() { ads_service_->Shutdown(); }
+
+  void ClearData(ResultCallback callback) {
+    ads_service_->ClearData(std::move(callback));
+  }
 
   void NotifyBrowserWillShutdown() {
     shutdown_monitor_->NotifyAppTerminating();
@@ -737,5 +742,23 @@ TEST_F(BraveAdsAdsServiceImplTest,
                         base::Value(true));
 }
 #endif  // !BUILDFLAG(IS_ANDROID)
+
+TEST_F(BraveAdsAdsServiceImplTest,
+       ClearDataReportsFailureWhenBatAdsDisconnectsDuringShutdown) {
+  // Arrange
+  prefs_.SetBoolean(prefs::kOptedInToSearchResultAds, true);
+  bat_ads_service_factory_->set_simulate_shutdown_disconnect();
+  Startup();
+  ASSERT_TRUE(base::test::RunUntil(
+      [&] { return bat_ads_service_factory_->initialize_count() == 1U; }));
+
+  base::test::TestFuture<bool> test_future;
+
+  // Act
+  ClearData(test_future.GetCallback());
+
+  // Assert
+  EXPECT_FALSE(test_future.Get());
+}
 
 }  // namespace brave_ads
