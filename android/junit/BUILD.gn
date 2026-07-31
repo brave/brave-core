@@ -288,10 +288,7 @@ if (is_android) {
   robolectric_library(
       "brave_junit_tests_org.chromium.chrome.browser.compositor") {
     resources_package = "org.chromium.chrome"
-    sources = [
-      "src/org/chromium/chrome/browser/compositor/layouts/phone/BraveNewBackgroundTabAnimationDataUnitTest.java",
-      "src/org/chromium/chrome/browser/compositor/layouts/phone/BraveNewTabAnimationLayoutUnitTest.java",
-    ]
+    sources = [ "src/org/chromium/chrome/browser/compositor/layouts/phone/BraveNewBackgroundTabAnimationDataUnitTest.java" ]
 
     deps = [ "//chrome/android/junit:chrome_junit_tests_helper" ]
   }
