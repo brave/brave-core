@@ -11,6 +11,7 @@ import Toggle from '@brave/leo/react/toggle'
 import { useSearchState, useSearchActions } from '../../context/search_context'
 import { useNewTabState } from '../../context/new_tab_context'
 import { getString } from '../../lib/strings'
+import { SettingsPanel } from './settings_panel'
 import { EngineIcon } from '../search/engine_icon'
 import { Link } from '../common/link'
 
@@ -26,61 +27,63 @@ export function SearchPanel() {
   const aiChatInputEnabled = useNewTabState((s) => s.aiChatInputEnabled)
 
   return (
-    <div data-css-scope={style.scope}>
-      <Toggle
-        className='toggle-row'
-        size='small'
-        checked={showSearchBox}
-        onChange={({ checked }) => {
-          actions.setShowSearchBox(checked)
-        }}
-      >
-        <span className='label'>
-          {getString(S.NEW_TAB_SHOW_SEARCH_BOX_LABEL)}
-        </span>
-      </Toggle>
-      {aiChatInputEnabled && (
+    <SettingsPanel>
+      <div data-css-scope={style.scope}>
         <Toggle
           className='toggle-row'
           size='small'
-          checked={showChatInput}
+          checked={showSearchBox}
           onChange={({ checked }) => {
-            actions.setShowChatInput(checked)
+            actions.setShowSearchBox(checked)
           }}
         >
           <span className='label'>
-            {getString(S.NEW_TAB_SHOW_CHAT_INPUT_LABEL)}
+            {getString(S.NEW_TAB_SHOW_SEARCH_BOX_LABEL)}
           </span>
         </Toggle>
-      )}
-      {showSearchBox && (
-        <div className='search-engines'>
-          <h4>{getString(S.NEW_TAB_ENABLED_SEARCH_ENGINES_LABEL)}</h4>
-          <div className='search-engine-list'>
-            {searchEngines.map((engine) => (
-              <Checkbox
-                key={engine.host}
-                checked={enabledSearchEngines.has(engine.host)}
-                onChange={({ checked }) => {
-                  actions.setSearchEngineEnabled(engine.host, checked)
-                }}
+        {aiChatInputEnabled && (
+          <Toggle
+            className='toggle-row'
+            size='small'
+            checked={showChatInput}
+            onChange={({ checked }) => {
+              actions.setShowChatInput(checked)
+            }}
+          >
+            <span className='label'>
+              {getString(S.NEW_TAB_SHOW_CHAT_INPUT_LABEL)}
+            </span>
+          </Toggle>
+        )}
+        {showSearchBox && (
+          <div className='search-engines'>
+            <h4>{getString(S.NEW_TAB_ENABLED_SEARCH_ENGINES_LABEL)}</h4>
+            <div className='search-engine-list'>
+              {searchEngines.map((engine) => (
+                <Checkbox
+                  key={engine.host}
+                  checked={enabledSearchEngines.has(engine.host)}
+                  onChange={({ checked }) => {
+                    actions.setSearchEngineEnabled(engine.host, checked)
+                  }}
+                >
+                  <span className='engine-name'>{engine.name}</span>
+                  <EngineIcon engine={engine} />
+                </Checkbox>
+              ))}
+            </div>
+            <div>
+              <Link
+                className='customize-link'
+                url='chrome://settings/searchEngines'
               >
-                <span className='engine-name'>{engine.name}</span>
-                <EngineIcon engine={engine} />
-              </Checkbox>
-            ))}
+                {getString(S.NEW_TAB_CUSTOMIZE_SEARCH_ENGINES_LINK)}
+                <Icon name='launch' />
+              </Link>
+            </div>
           </div>
-          <div>
-            <Link
-              className='customize-link'
-              url='chrome://settings/searchEngines'
-            >
-              {getString(S.NEW_TAB_CUSTOMIZE_SEARCH_ENGINES_LINK)}
-              <Icon name='launch' />
-            </Link>
-          </div>
-        </div>
-      )}
-    </div>
+        )}
+      </div>
+    </SettingsPanel>
   )
 }

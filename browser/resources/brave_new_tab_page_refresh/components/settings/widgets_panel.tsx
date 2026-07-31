@@ -15,6 +15,7 @@ import {
   useRewardsActions,
 } from '../../context/rewards_context'
 import { useVpnState, useVpnActions } from '../../context/vpn_context'
+import { SettingsPanel } from './settings_panel'
 
 import { style } from './widgets_panel.style'
 
@@ -34,73 +35,75 @@ export function WidgetsPanel() {
   const showVpnWidget = useVpnState((s) => s.showVpnWidget)
 
   return (
-    <div data-css-scope={style.scope}>
-      <Toggle
-        className='toggle-row'
-        size='small'
-        checked={showStats}
-        onChange={({ checked }) => {
-          newTabActions.setShowShieldsStats(checked)
-        }}
-      >
-        <span className='label'>{getString(S.NEW_TAB_SHOW_STATS_LABEL)}</span>
-      </Toggle>
-      {vpnFeatureEnabled && (
+    <SettingsPanel>
+      <div data-css-scope={style.scope}>
         <Toggle
           className='toggle-row'
           size='small'
-          checked={showVpnWidget}
+          checked={showStats}
           onChange={({ checked }) => {
-            vpnActions.setShowVpnWidget(checked)
+            newTabActions.setShowShieldsStats(checked)
           }}
         >
-          <span className='label'>
-            {getString(S.NEW_TAB_SHOW_VPN_WIDGET_LABEL)}
-          </span>
+          <span className='label'>{getString(S.NEW_TAB_SHOW_STATS_LABEL)}</span>
         </Toggle>
-      )}
-      {rewardsFeatureEnabled && (
-        <Toggle
-          className='toggle-row'
-          size='small'
-          checked={showRewardsWidget}
-          onChange={({ checked }) => {
-            rewardsActions.setShowRewardsWidget(checked)
-          }}
-        >
-          <span className='label'>
-            {getString(S.NEW_TAB_SHOW_REWARDS_WIDGET_LABEL)}
-          </span>
-        </Toggle>
-      )}
-      {talkFeatureEnabled && (
-        <Toggle
-          className='toggle-row'
-          size='small'
-          checked={showTalkWidget}
-          onChange={({ checked }) => {
-            newTabActions.setShowTalkWidget(checked)
-          }}
-        >
-          <span className='label'>
-            {getString(S.NEW_TAB_SHOW_TALK_WIDGET_LABEL)}
-          </span>
-        </Toggle>
-      )}
-      {newsFeatureEnabled && (
-        <Toggle
-          className='toggle-row'
-          size='small'
-          checked={braveNews.isShowOnNTPPrefEnabled}
-          onChange={({ checked }) => {
-            braveNews.toggleBraveNewsOnNTP(checked)
-          }}
-        >
-          <span className='label'>
-            {getString(S.NEW_TAB_SHOW_NEWS_WIDGET_LABEL)}
-          </span>
-        </Toggle>
-      )}
-    </div>
+        {vpnFeatureEnabled && (
+          <Toggle
+            className='toggle-row'
+            size='small'
+            checked={showVpnWidget}
+            onChange={({ checked }) => {
+              vpnActions.setShowVpnWidget(checked)
+            }}
+          >
+            <span className='label'>
+              {getString(S.NEW_TAB_SHOW_VPN_WIDGET_LABEL)}
+            </span>
+          </Toggle>
+        )}
+        {rewardsFeatureEnabled && (
+          <Toggle
+            className='toggle-row'
+            size='small'
+            checked={showRewardsWidget}
+            onChange={({ checked }) => {
+              rewardsActions.setShowRewardsWidget(checked)
+            }}
+          >
+            <span className='label'>
+              {getString(S.NEW_TAB_SHOW_REWARDS_WIDGET_LABEL)}
+            </span>
+          </Toggle>
+        )}
+        {talkFeatureEnabled && (
+          <Toggle
+            className='toggle-row'
+            size='small'
+            checked={showTalkWidget}
+            onChange={({ checked }) => {
+              newTabActions.setShowTalkWidget(checked)
+            }}
+          >
+            <span className='label'>
+              {getString(S.NEW_TAB_SHOW_TALK_WIDGET_LABEL)}
+            </span>
+          </Toggle>
+        )}
+        {newsFeatureEnabled && (
+          <Toggle
+            className='toggle-row'
+            size='small'
+            checked={braveNews.isShowOnNTPPrefEnabled}
+            onChange={({ checked }) => {
+              braveNews.toggleBraveNewsOnNTP(checked)
+            }}
+          >
+            <span className='label'>
+              {getString(S.NEW_TAB_SHOW_NEWS_WIDGET_LABEL)}
+            </span>
+          </Toggle>
+        )}
+      </div>
+    </SettingsPanel>
   )
 }

@@ -11,6 +11,7 @@ import { useNewTabState, useNewTabActions } from '../../context/new_tab_context'
 import { ClockFormat } from '../../state/new_tab_store'
 import { getString } from '../../lib/strings'
 import { formatString } from '$web-common/formatString'
+import { SettingsPanel } from './settings_panel'
 
 import { style } from './clock_panel.style'
 
@@ -41,32 +42,34 @@ export function ClockPanel() {
   }
 
   return (
-    <div data-css-scope={style.scope}>
-      <Toggle
-        className='toggle-row'
-        size='small'
-        checked={showClock}
-        onChange={({ checked }) => {
-          actions.setShowClock(checked)
-        }}
-      >
-        <span className='label'>{getString(S.NEW_TAB_SHOW_CLOCK_LABEL)}</span>
-      </Toggle>
-      <div className='control-row'>
-        <label>{getString(S.NEW_TAB_CLOCK_FORMAT_LABEL)}</label>
-        <DropDown
-          value={String(clockFormat)}
-          positionStrategy='fixed'
-          onChange={(detail) => {
-            actions.setClockFormat(Number(detail.value) || (0 as ClockFormat))
+    <SettingsPanel>
+      <div data-css-scope={style.scope}>
+        <Toggle
+          className='toggle-row'
+          size='small'
+          checked={showClock}
+          onChange={({ checked }) => {
+            actions.setShowClock(checked)
           }}
         >
-          <span slot='value'>{formatOptionText(clockFormat)}</span>
-          {renderFormatOption(ClockFormat.kAuto)}
-          {renderFormatOption(ClockFormat.k12)}
-          {renderFormatOption(ClockFormat.k24)}
-        </DropDown>
+          <span className='label'>{getString(S.NEW_TAB_SHOW_CLOCK_LABEL)}</span>
+        </Toggle>
+        <div className='control-row'>
+          <label>{getString(S.NEW_TAB_CLOCK_FORMAT_LABEL)}</label>
+          <DropDown
+            value={String(clockFormat)}
+            positionStrategy='fixed'
+            onChange={(detail) => {
+              actions.setClockFormat(Number(detail.value) || (0 as ClockFormat))
+            }}
+          >
+            <span slot='value'>{formatOptionText(clockFormat)}</span>
+            {renderFormatOption(ClockFormat.kAuto)}
+            {renderFormatOption(ClockFormat.k12)}
+            {renderFormatOption(ClockFormat.k24)}
+          </DropDown>
+        </div>
       </div>
-    </div>
+    </SettingsPanel>
   )
 }

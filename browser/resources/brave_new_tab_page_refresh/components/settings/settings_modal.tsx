@@ -166,7 +166,7 @@ export function SettingsModal(props: Props) {
             </Navigation>
           </nav>
           <section>
-            <div>{renderPanel()}</div>
+            {renderPanel()}
           </section>
         </div>
       </Dialog>
