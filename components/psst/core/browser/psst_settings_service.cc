@@ -56,11 +56,11 @@ PsstSettingsService::PsstSettingsService(
 
 PsstSettingsService::~PsstSettingsService() = default;
 
-void PsstSettingsService::AddObserver(Observer* observer) {
+void PsstSettingsService::AddObserver(PrefObserver* observer) {
   observers_.AddObserver(observer);
 }
 
-void PsstSettingsService::RemoveObserver(Observer* observer) {
+void PsstSettingsService::RemoveObserver(PrefObserver* observer) {
   observers_.RemoveObserver(observer);
 }
 
@@ -137,7 +137,7 @@ void PsstSettingsService::SetPsstEnabled(bool enabled) {
 
 void PsstSettingsService::OnPreferenceChanged(const std::string& pref_name) {
   if (pref_name == prefs::kPsstEnabled) {
-    observers_.Notify(&Observer::OnPsstEnableChange, IsPsstEnabled());
+    observers_.Notify(&PrefObserver::OnPsstEnableChange, IsPsstEnabled());
     return;
   }
 }

@@ -23,7 +23,7 @@ class PrefService;
 namespace psst {
 
 class PsstUiDelegateImpl : public PsstTabWebContentsObserver::PsstUiDelegate,
-                           public PsstSettingsService::Observer {
+                           public PsstSettingsService::PrefObserver {
  public:
   class Observer : public base::CheckedObserver {
    public:

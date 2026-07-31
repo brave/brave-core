@@ -24,12 +24,12 @@ namespace psst {
 
 class PsstSettingsService : public KeyedService {
  public:
-  class Observer : public base::CheckedObserver {
+  class PrefObserver : public base::CheckedObserver {
    public:
     virtual void OnPsstEnableChange(bool new_value) {}
 
    protected:
-    ~Observer() override = default;
+    ~PrefObserver() override = default;
   };
 
   explicit PsstSettingsService(
@@ -37,8 +37,8 @@ class PsstSettingsService : public KeyedService {
       PrefService* prefs);
   ~PsstSettingsService() override;
 
-  void AddObserver(Observer* observer);
-  void RemoveObserver(Observer* observer);
+  void AddObserver(PrefObserver* observer);
+  void RemoveObserver(PrefObserver* observer);
 
   // Saves the PSST metadata for the (origin, user_id) pair with the given
   // details.
@@ -65,7 +65,7 @@ class PsstSettingsService : public KeyedService {
   const raw_ref<HostContentSettingsMap>
       host_content_settings_map_;         // NOT OWNED
   raw_ptr<PrefService> prefs_ = nullptr;  // NOT OWNED
-  base::ObserverList<Observer> observers_;
+  base::ObserverList<PrefObserver> observers_;
   PrefChangeRegistrar pref_change_registrar_;
   base::WeakPtrFactory<PsstSettingsService> weak_ptr_factory_{this};
 };

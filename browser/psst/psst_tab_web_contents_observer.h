@@ -27,7 +27,7 @@ class MatchedRule;
 class PsstRuleRegistry;
 
 class PsstTabWebContentsObserver : public tabs::ContentsObservingTabFeature,
-                                   public PsstSettingsService::Observer {
+                                   public PsstSettingsService::PrefObserver {
  public:
   using InsertScriptInPageCallback = base::OnceCallback<void(base::Value)>;
   using InsertScriptInPageTimeoutCallback =
