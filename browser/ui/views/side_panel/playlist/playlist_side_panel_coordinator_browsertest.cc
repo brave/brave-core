@@ -99,8 +99,17 @@ IN_PROC_BROWSER_TEST_F(PlaylistCoordinatorBrowserTest,
   EXPECT_FALSE(popup->GetFeatures().playlist_side_panel_coordinator());
 }
 
+#if BUILDFLAG(IS_MAC)
+// Leaks resources on Mac CI. See https://github.com/brave/devops/issues/16445.
+#define MAYBE_ControllerNotCreatedForDesktopPWA \
+  DISABLED_ControllerNotCreatedForDesktopPWA
+#else
+#define MAYBE_ControllerNotCreatedForDesktopPWA \
+  ControllerNotCreatedForDesktopPWA
+#endif
+
 IN_PROC_BROWSER_TEST_F(PlaylistCoordinatorBrowserTest,
-                       ControllerNotCreatedForDesktopPWA) {
+                       MAYBE_ControllerNotCreatedForDesktopPWA) {
   BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
   ASSERT_TRUE(embedded_test_server()->Start());
 
