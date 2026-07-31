@@ -1,0 +1,31 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Allow chrome-untrusted:// WebUI documents to use the Model Context (WebMCP)
+      API.
+
+      The Leo "workspace" tools run on a hidden chrome-untrusted://workspace page
+      and register themselves via navigator.modelContext. IsModelContextAllowed()
+      otherwise requires an origin-keyed agent cluster, which WebUI origins can't
+      have (origin-keying requires an http/https origin). A chrome-untrusted host
+      is served from its own isolated origin and process and does not use
+      document.domain, so the cross-document concern that check guards against
+      does not apply.
+    regex:
+      re_pattern: '(!document_->GetSettings\(\)->GetWebSecurityEnabled\(\)\));'
+      replace: |-
+        \1 ||
+                 // Brave: allow chrome-untrusted:// WebUI documents (e.g. the
+                 // chrome-untrusted://workspace page that hosts Leo's local
+                 // tools) to use the Model Context API. Such origins can't be
+                 // placed in an origin-keyed agent cluster (that requires an
+                 // http/https origin), but each chrome-untrusted host is served
+                 // from its own isolated origin and process and does not use
+                 // document.domain, so the cross-document concern the
+                 // origin-keyed check guards against does not apply.
+                 document_->GetExecutionContext()->GetSecurityOrigin()->Protocol() ==
+                     "chrome-untrusted";
