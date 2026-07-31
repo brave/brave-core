@@ -16,6 +16,7 @@
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/focus_mode/focus_mode_controller.h"
 #include "brave/browser/ui/focus_mode/focus_mode_features.h"
+#include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_account/features.h"
@@ -717,15 +718,16 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
                        BraveCommandsToggleVerticalTabs) {
   auto* command_controller = browser()->command_controller();
   EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_TOGGLE_VERTICAL_TABS));
-  ASSERT_FALSE(tabs::utils::ShouldShowBraveVerticalTabs(browser()));
+  auto* vtc = VerticalTabController::FromBrowser(browser());
+  ASSERT_FALSE(vtc->ShouldShowBraveVerticalTabs());
 
   // Enable Vertical tabs
   command_controller->ExecuteCommand(IDC_TOGGLE_VERTICAL_TABS);
-  ASSERT_TRUE(tabs::utils::ShouldShowBraveVerticalTabs(browser()));
+  ASSERT_TRUE(vtc->ShouldShowBraveVerticalTabs());
 
   // Toggle back
   command_controller->ExecuteCommand(IDC_TOGGLE_VERTICAL_TABS);
-  ASSERT_FALSE(tabs::utils::ShouldShowBraveVerticalTabs(browser()));
+  ASSERT_FALSE(vtc->ShouldShowBraveVerticalTabs());
 }
 
 #if BUILDFLAG(IS_MAC)
@@ -754,8 +756,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
 class BraveBrowserCommandControllerWithSideBySideTest
     : public BraveBrowserCommandControllerTest {
  public:
-  BraveBrowserCommandControllerWithSideBySideTest() {
-  }
+  BraveBrowserCommandControllerWithSideBySideTest() {}
   ~BraveBrowserCommandControllerWithSideBySideTest() override = default;
 
   TabStripModel* tab_strip_model() { return browser()->tab_strip_model(); }
