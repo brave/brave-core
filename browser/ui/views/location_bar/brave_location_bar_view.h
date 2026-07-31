@@ -15,7 +15,6 @@
 #include "brave/browser/ui/views/view_shadow.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
-#include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_view.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 
@@ -33,10 +32,6 @@ class SkPath;
 
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)
 class BraveNewsActionIconView;
-#endif
-
-#if BUILDFLAG(ENABLE_TOR)
-class OnionLocationView;
 #endif
 
 namespace policy {
@@ -62,15 +57,10 @@ class BraveLocationBarView : public LocationBarView {
   void Update(content::WebContents* contents) override;
   void OnChanged() override;
   BraveActionsContainer* GetBraveActionsContainer() { return brave_actions_; }
-#if BUILDFLAG(ENABLE_TOR)
-  OnionLocationView* GetOnionLocationView() { return onion_location_view_; }
-#endif
 
   // LocationBarView:
   // Views that locates at right side of upstream's trailing views.
   std::vector<views::View*> GetRightMostTrailingViews() override;
-  // Views that locates at left side of upstream's trailing views.
-  std::vector<views::View*> GetLeftMostTrailingViews() override;
   views::View* GetSearchPromotionButton() const override;
   void RefreshBackground() override;
   void OnOmniboxBlurred() override;
@@ -129,9 +119,6 @@ class BraveLocationBarView : public LocationBarView {
   std::unique_ptr<PromotionButtonController> promotion_controller_;
   raw_ptr<PromotionButtonView> promotion_button_ = nullptr;
   std::unique_ptr<BraveShieldsPageInfoController> shields_page_info_controller_;
-#if BUILDFLAG(ENABLE_TOR)
-  raw_ptr<OnionLocationView> onion_location_view_ = nullptr;
-#endif
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_LOCATION_BAR_BRAVE_LOCATION_BAR_VIEW_H_

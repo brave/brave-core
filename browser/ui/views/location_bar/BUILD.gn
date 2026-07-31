@@ -4,7 +4,6 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/components/brave_news/common/buildflags/buildflags.gni")
-import("//brave/components/tor/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 
 assert(toolkit_views)
@@ -23,10 +22,7 @@ source_set("location_bar") {
     "brave_shields_page_info_controller.h",
   ]
 
-  public_deps = [
-    "//brave/components/brave_news/common/buildflags",
-    "//brave/components/tor/buildflags",
-  ]
+  public_deps = [ "//brave/components/brave_news/common/buildflags" ]
 
   deps = [
     "//brave/app:brave_generated_resources_grit",
@@ -62,18 +58,6 @@ source_set("location_bar") {
     "//ui/gfx",
     "//ui/views",
   ]
-
-  if (enable_tor) {
-    sources += [
-      "onion_location_view.cc",
-      "onion_location_view.h",
-    ]
-
-    deps += [
-      "//brave/browser/tor",
-      "//brave/components/tor",
-    ]
-  }
 }
 
 source_set("browser_tests") {

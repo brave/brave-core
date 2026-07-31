@@ -38,6 +38,9 @@ inline constexpr PageActionIconType kPartitionedStorageActionIconType =
 inline constexpr PageActionIconType kPsstIconActionIconType =
     static_cast<PageActionIconType>(-7);
 
+inline constexpr PageActionIconType kOnionLocationPageActionIconType =
+    static_cast<PageActionIconType>(-8);
+
 }  // namespace brave
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_PAGE_ACTION_PAGE_ACTION_ICON_TYPE_H_
