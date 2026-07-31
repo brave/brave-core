@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/page_action/page_action_properties_provider.cc b/chrome/browser/ui/page_action/page_action_properties_provider.cc
-index 4d9ec05d2d72cbec3d4c3d193c0864a4487e0076..3f66a7b9bc9127ba1b923668cb07c67f91179616 100644
+index 4d9ec05d2d72cbec3d4c3d193c0864a4487e0076..66fb6290e9c5d2e867955ab3595f7fb739975aab 100644
 --- a/chrome/browser/ui/page_action/page_action_properties_provider.cc
 +++ b/chrome/browser/ui/page_action/page_action_properties_provider.cc
-@@ -227,6 +227,41 @@ constexpr auto kPageActionProperties = base::MakeFixedFlatMap<
+@@ -227,6 +227,48 @@ constexpr auto kPageActionProperties = base::MakeFixedFlatMap<
              .element_identifier = kAutofillAddressPageActionElementId,
          },
      },
@@ -39,6 +39,13 @@ index 4d9ec05d2d72cbec3d4c3d193c0864a4487e0076..3f66a7b9bc9127ba1b923668cb07c67f
 +        {
 +            .histogram_name = "Playlist",
 +            .type = brave::kPlaylistPageActionIconType,
++        },
++    },
++    {
++        kActionShowOnionLocation,
++        {
++            .histogram_name = "OnionLocation",
++            .type = brave::kOnionLocationPageActionIconType,
 +        },
 +    },
      {

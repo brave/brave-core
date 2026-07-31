@@ -16,3 +16,4 @@ substitutions:
             kActionShowSpeedreader,
             kActionShowWaybackMachine,
             kActionShowPlaylistPageAction,
+            kActionShowOnionLocation,
