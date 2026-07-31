@@ -772,6 +772,15 @@ public class PlaylistManager: NSObject {
     return totalSpace == 0 || (Double(usedSpace) / Double(totalSpace)) * 100.0 >= 90.0
   }
 
+  /// Returns whether storage is still encumbered after running LRU reclamation when storage is encumbered
+  @MainActor
+  public func isDiskSpaceEncumberedAfterReclamation() async -> Bool {
+    if isDiskSpaceEncumbered() {
+      await reclaimSpaceIfNeeded()
+    }
+    return isDiskSpaceEncumbered()
+  }
+
   private func availableDiskSpace() -> Int64? {
     do {
       return try URL(fileURLWithPath: NSHomeDirectory() as String).resourceValues(forKeys: [
@@ -886,7 +895,7 @@ extension PlaylistManager: PlaylistDownloadManagerDelegate {
     return await scheduleDownload(item: PlaylistInfo(item: item), isOutOfSpaceRetry: true)
   }
 
-  private func isOutOfSpaceError(_ error: Error) -> Bool {
+  func isOutOfSpaceError(_ error: Error) -> Bool {
     let nsError = error as NSError
     if nsError.domain == NSCocoaErrorDomain, nsError.code == NSFileWriteOutOfSpaceError {
       return true
