@@ -247,6 +247,13 @@ extension URL {
     return baseDomain.replacingOccurrences(of: ".\(publicSuffix)", with: "")
   }
 
+  /// Checks if the URL is a YouTube URL.
+  public var isYouTubeURL: Bool {
+    guard let baseDomain else { return false }
+    let youTubeDomains: Set<String> = ["youtube.com", "youtu.be"]
+    return youTubeDomains.contains(baseDomain)
+  }
+
   // Check if the website is supporting showing Add To playlist toast
   public var isPlaylistSupportedSiteURL: Bool {
     let urlHost = self.host ?? self.hostSLD
