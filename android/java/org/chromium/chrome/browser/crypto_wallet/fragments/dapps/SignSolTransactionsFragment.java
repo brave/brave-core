@@ -9,8 +9,6 @@ import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.text.Spanned;
-import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -141,17 +139,11 @@ public class SignSolTransactionsFragment extends WalletBottomSheetDialogFragment
     private void initComponents() {
         updateTxPanelPerStep();
         fetchSignRequestData();
-        Spanned associatedSPLTokenAccountInfo =
-                Utils.createSpanForSurroundedPhrase(
-                        requireContext(),
-                        R.string.learn_more,
-                        (v) -> {
-                            TabUtils.openUrlInNewTab(
-                                    false, WalletConstants.URL_SIGN_TRANSACTION_REQUEST);
-                            TabUtils.bringChromeTabbedActivityToTheTop(getActivity());
-                        });
-        mTxLearnMore.setMovementMethod(LinkMovementMethod.getInstance());
-        mTxLearnMore.setText(associatedSPLTokenAccountInfo);
+        mTxLearnMore.setOnClickListener(
+                v -> {
+                    TabUtils.openUrlInNewTab(false, WalletConstants.URL_SIGN_TRANSACTION_REQUEST);
+                    TabUtils.bringChromeTabbedActivityToTheTop(getActivity());
+                });
 
         mBtSign.setOnClickListener(v -> processRequest(true));
         mBtCancel.setOnClickListener(v -> processRequest(false));
