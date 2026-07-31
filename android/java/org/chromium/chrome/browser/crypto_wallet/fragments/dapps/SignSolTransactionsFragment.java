@@ -57,6 +57,19 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ * Bottom sheet for reviewing and approving or rejecting a dApp request to sign one or more Solana
+ * transactions ({@code signTransaction} / {@code signAllTransactions}). The transactions are only
+ * signed here, never broadcast.
+ *
+ * <p>Pending {@link SignSolTransactionsRequest}s are observed from the {@code DappsModel} and shown
+ * as a queue: the counter and "Next" control page through them ("N of M"), and each request is
+ * approved or rejected individually.
+ *
+ * <p>Each request uses a two-step flow: a risk-acknowledgment panel first (the primary button reads
+ * "Continue"), then the transaction step, which lists the decoded Solana instructions in the
+ * "Details" pager and signs on confirmation.
+ */
 @NullMarked
 public class SignSolTransactionsFragment extends WalletBottomSheetDialogFragment {
     private List<NavigationItem> mTabTitles;
