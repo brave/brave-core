@@ -7,9 +7,10 @@
   --leo-dialog-padding: 0;
   --leo-dialog-width: min(90vw, 720px);
   --leo-dialog-background: transparent;
+  // Colors the built-in showClose plain-faint button (inherits into shadow DOM).
+  --leo-button-color: var(--leo-color-white);
   background: transparent;
   box-shadow: none;
-  overflow: visible;
 
   // Leo Dialog is a web component; className lands on the host. Pin the
   // slotted content width so a long filename cannot expand the dialog past
@@ -21,23 +22,6 @@
     min-width: 0;
     box-sizing: border-box;
   }
-}
-
-.wrapper {
-  display: flex;
-  flex-direction: column;
-  // 8px gap between the close control and the top of the card.
-  gap: var(--leo-spacing-m);
-  overflow: hidden;
-}
-
-.closeButton {
-  --leo-icon-color: var(--leo-color-icon-default);
-  --leo-button-color: var(--leo-color-icon-default);
-
-  align-self: flex-end;
-  flex-shrink: 0;
-  color: var(--leo-color-white);
 }
 
 .card {
