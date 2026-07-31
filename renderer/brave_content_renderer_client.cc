@@ -19,7 +19,6 @@
 #include "brave/components/cosmetic_filters/renderer/cosmetic_filters_js_render_frame_observer.h"
 #include "brave/components/misc_metrics/renderer/web3_metrics_render_frame_observer.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
-#include "brave/components/safe_builtins/renderer/safe_builtins.h"
 #include "brave/components/script_injector/renderer/script_injector_render_frame_observer.h"
 #include "brave/components/skus/common/features.h"
 #include "brave/components/skus/renderer/skus_render_frame_observer.h"
@@ -36,7 +35,6 @@
 #include "third_party/blink/public/common/features.h"
 #include "third_party/blink/public/platform/web_runtime_features.h"
 #include "third_party/blink/public/web/modules/service_worker/web_service_worker_context_proxy.h"
-#include "third_party/blink/public/web/web_script_controller.h"
 #include "third_party/widevine/cdm/buildflags.h"
 #include "url/gurl.h"
 
@@ -167,9 +165,6 @@ void BraveContentRendererClient::RenderThreadStarted() {
   content::RenderThread::Get()->AddObserver(brave_observer_.get());
   brave_search_service_worker_holder_.SetBrowserInterfaceBrokerProxy(
       browser_interface_broker_.get());
-
-  blink::WebScriptController::RegisterExtension(
-      brave::SafeBuiltins::CreateV8Extension());
 }
 
 void BraveContentRendererClient::RenderFrameCreated(
