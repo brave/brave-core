@@ -1,0 +1,20 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Construct BraveChromeAutofillClient instead of ChromeAutofillClient.
+
+      BraveChromeAutofillClient is defined earlier in the chromium_src
+      override, ahead of this file's #include of the upstream .cc.
+    preempt_function_impl:
+      function_name: ChromeAutofillClient::CreateForWebContents
+      code: |-
+        if (!FromWebContents(web_contents)) {
+          web_contents->SetUserData(
+              UserDataKey(),
+              base::WrapUnique(new BraveChromeAutofillClient(web_contents)));
+        }
+        return;

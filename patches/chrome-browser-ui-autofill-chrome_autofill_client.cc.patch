@@ -1,0 +1,17 @@
+diff --git a/chrome/browser/ui/autofill/chrome_autofill_client.cc b/chrome/browser/ui/autofill/chrome_autofill_client.cc
+index d70314612e28ac0f6fe004e2255d0ff9da38c4d0..15ec244410366838598fe863827a4c5a4d5db34c 100644
+--- a/chrome/browser/ui/autofill/chrome_autofill_client.cc
++++ b/chrome/browser/ui/autofill/chrome_autofill_client.cc
+@@ -306,6 +306,12 @@ bool CanTriggerAutofillAiSavePromptSurveyForEntityType(EntityType type) {
+ // static
+ void ChromeAutofillClient::CreateForWebContents(
+     content::WebContents* web_contents) {
++  if (!FromWebContents(web_contents)) {
++    web_contents->SetUserData(
++        UserDataKey(),
++        base::WrapUnique(new BraveChromeAutofillClient(web_contents)));
++  }
++  return;
+   DCHECK(web_contents);
+   if (!FromWebContents(web_contents)) {
+     web_contents->SetUserData(

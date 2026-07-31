@@ -5,45 +5,6 @@
 
 #include "components/autofill/core/browser/ui/autofill_external_delegate.h"
 
-#include <ranges>
-#include <vector>
-
-#include "base/containers/map_util.h"
-#include "components/autofill/core/browser/foundations/autofill_driver.h"
-#include "components/autofill/core/browser/foundations/autofill_manager.h"
 #include "components/autofill/core/browser/integrators/password_form_classification.h"
-#include "components/autofill/core/browser/suggestions/suggestion.h"
-
-// This patch allows us to add the additional autofill suggestions.
-// BraveAddSuggestions accepts the form classification, the field data and the
-// reference to chromium suggestions.
-
-#define BRAVE_AUTOFILL_EXTERNAL_DELEGATE_ATTEMPT_TO_DISPLAY_AUTOFILL_SUGGESTIONS \
-  if (trigger_field.has_value()) {                                               \
-    manager_->client().BraveAddSuggestions(                                      \
-        manager_->client().ClassifyAsPasswordForm(                               \
-            *manager_, last_query_.form_id, last_query_.field_id),               \
-        *trigger_field, suggestions);                                            \
-  }
-
-#define DidAcceptSuggestion(...) DidAcceptSuggestion_ChromiumImpl(__VA_ARGS__)
 
 #include <components/autofill/core/browser/ui/autofill_external_delegate.cc>
-
-#undef BRAVE_AUTOFILL_EXTERNAL_DELEGATE_ATTEMPT_TO_DISPLAY_AUTOFILL_SUGGESTIONS
-#undef DidAcceptSuggestion
-
-namespace autofill {
-
-void AutofillExternalDelegate::DidAcceptSuggestion(
-    const Suggestion& suggestion,
-    const SuggestionMetadata& metadata) {
-  if (manager_->client().BraveHandleSuggestion(suggestion,
-                                               last_query_.field_id)) {
-    return;
-  }
-
-  DidAcceptSuggestion_ChromiumImpl(suggestion, metadata);
-}
-
-}  // namespace autofill

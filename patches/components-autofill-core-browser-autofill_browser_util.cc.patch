@@ -1,0 +1,21 @@
+diff --git a/components/autofill/core/browser/autofill_browser_util.cc b/components/autofill/core/browser/autofill_browser_util.cc
+index 9212d19e00faa0e4add181b8bcbde74778e855b8..350c4c790b15a900c23bf4bc120c383bf3a77d0c 100644
+--- a/components/autofill/core/browser/autofill_browser_util.cc
++++ b/components/autofill/core/browser/autofill_browser_util.cc
+@@ -16,8 +16,16 @@
+ namespace autofill {
+ 
+ bool IsFormMixedContent(const AutofillClient& client, const FormData& form) {
++  bool is_mixed_content = [&]() -> bool {
+   return client.IsContextSecure() && form.action().is_valid() &&
+          security_interstitials::IsInsecureFormAction(form.action());
++  }();
++  if (is_mixed_content) {
++    return true;
++  }
++  return net::IsOnion(client.GetLastCommittedPrimaryMainFrameOrigin()) &&
++         (form.action().is_valid() &&
++          security_interstitials::IsInsecureFormAction(form.action()));
+ }
+ 
+ bool IsFormStructurePerfectlyFilled(const FormStructure& form) {
