@@ -133,9 +133,11 @@ export class OrtNemotronModel {
 // One Nemotron ASR session. Uses an incremental streaming mel frontend:
 // raw samples are appended, only newly stable mel frames are computed, and
 // fixed 65-frame encoder chunks are packed from cached mel frames. Mojo-free:
-// transcripts are delivered through the onResult callback.
+// transcripts are delivered through the onResult callback and failures
+// through onError.
 export class NemotronStreamSession {
   private readonly onResult: (text: string, isFinal: boolean) => void
+  private readonly onError: () => void
   private readonly model: OrtNemotronModel
   private readonly sampleRateHz: number
   private readonly frontend: StreamingMelFrontend
@@ -168,8 +170,9 @@ export class NemotronStreamSession {
   // Hypothesis token IDs.
   private readonly hyp: number[] = []
 
-  // ASR stream is closed once finish() is called. After that, addAudio() no-ops.
-  private closed = false
+  // Audio is accepted only while streaming. The final flush runs in finishing
+  // and can still fail. ended is terminal and fires onResult or onError once.
+  private state: 'streaming' | 'finishing' | 'ended' = 'streaming'
 
   // Prevents overlapping async inference calls within the same stream.
   private inflight: Promise<void> = Promise.resolve()
@@ -181,13 +184,17 @@ export class NemotronStreamSession {
     model: OrtNemotronModel,
     sampleRateHz: number,
     onResult: (text: string, isFinal: boolean) => void,
+    onError: () => void,
   ) {
     this.model = model
     if (sampleRateHz !== config.TARGET_SAMPLE_RATE) {
-      throw new Error(`Unsupported sample rate for Nemotron: ${sampleRateHz} Hz`)
+      throw new Error(
+        `Unsupported sample rate for Nemotron: ${sampleRateHz} Hz`,
+      )
     }
     this.sampleRateHz = sampleRateHz
     this.onResult = onResult
+    this.onError = onError
     this.frontend = new StreamingMelFrontend(
       model.fbank,
       model.hann,
@@ -197,11 +204,16 @@ export class NemotronStreamSession {
   }
 
   addAudio(samples: Float32Array): void {
-    if (this.closed) {
+    if (this.state !== 'streaming') {
       return
     }
 
-    this.frontend.appendAudioSamples(samples)
+    try {
+      this.frontend.appendAudioSamples(samples)
+    } catch (error) {
+      this.fail(error)
+      return
+    }
 
     if (config.DEBUG) {
       this.debug('audio appended', {
@@ -211,7 +223,9 @@ export class NemotronStreamSession {
       })
     }
 
-    this.inflight = this.inflight.then(() => this.processAvailable(false))
+    this.inflight = this.inflight
+      .then(() => this.processAvailable(false))
+      .catch((error) => this.fail(error))
   }
 
   // Flush the trailing words and emit the final transcript. Appends silence
@@ -219,16 +233,21 @@ export class NemotronStreamSession {
   // 65-frame chunks. Idempotent: after the first call addAudio() no-ops, so
   // the final flush runs exactly once.
   finish(): void {
-    if (this.closed) {
+    if (this.state !== 'streaming') {
       return
     }
 
-    this.closed = true
+    this.state = 'finishing'
 
     const flush =
       config.SILENCE_FLUSH_CHUNKS * config.NEMO_CHUNK * config.HOP_LENGTH
 
-    this.frontend.appendAudioSamples(new Float32Array(flush))
+    try {
+      this.frontend.appendAudioSamples(new Float32Array(flush))
+    } catch (error) {
+      this.fail(error)
+      return
+    }
 
     if (config.DEBUG) {
       this.debug('finish requested, appended silence', {
@@ -240,13 +259,30 @@ export class NemotronStreamSession {
 
     this.inflight = this.inflight
       .then(() => this.processAvailable(true))
-      .then(() => this.wipe())
+      .then(() => {
+        this.state = 'ended'
+        this.wipe()
+      })
+      .catch((error) => this.fail(error))
+  }
+
+  // Single terminal path for a failure. Every error ends the recognition,
+  // since the browser cannot be told more than that no result is coming.
+  private fail(error: unknown): void {
+    if (this.state === 'ended') {
+      return
+    }
+
+    this.state = 'ended'
+    console.error('[speech-worker] inference failed:', error)
+    this.wipe()
+    this.onError()
   }
 
   // Zero every per-session buffer holding audio, acoustic features, or
-  // transcript once the final result has emitted, so the utterance does not
-  // linger in the JS heap until garbage collection. The shared model weights
-  // are untouched.
+  // transcript once the recognition has ended, whether it emitted a final
+  // result or failed, so the utterance does not linger in the JS heap until
+  // garbage collection. The shared model weights are untouched.
   private wipe(): void {
     this.frontend.wipe()
     this.hyp.fill(0)
