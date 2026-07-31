@@ -41,6 +41,9 @@ inline constexpr PageActionIconType kPsstIconActionIconType =
 inline constexpr PageActionIconType kOnionLocationPageActionIconType =
     static_cast<PageActionIconType>(-8);
 
+inline constexpr PageActionIconType kBraveNewsPageActionIconType =
+    static_cast<PageActionIconType>(-9);
+
 }  // namespace brave
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_PAGE_ACTION_PAGE_ACTION_ICON_TYPE_H_

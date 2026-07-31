@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/actions/chrome_action_id.h b/chrome/browser/ui/actions/chrome_action_id.h
-index 56eaf2a93294191b1a3f7170bf23746dd821a0b6..17ec0ae44da2f7aed2fb60b57d7efde242622cbc 100644
+index 56eaf2a93294191b1a3f7170bf23746dd821a0b6..c7c7b18f9c2af4d9dcdb61166a0467774863b903 100644
 --- a/chrome/browser/ui/actions/chrome_action_id.h
 +++ b/chrome/browser/ui/actions/chrome_action_id.h
 @@ -467,6 +467,10 @@
@@ -13,7 +13,7 @@ index 56eaf2a93294191b1a3f7170bf23746dd821a0b6..17ec0ae44da2f7aed2fb60b57d7efde2
    /* Side Panel items */ \
    E(kActionSidePanelShowAboutThisSite) \
    E(kActionSidePanelShowAssistant) \
-@@ -495,6 +499,12 @@
+@@ -495,6 +499,13 @@
      IDC_SHOW_TABS_FROM_OTHER_DEVICES_SIDE_PANEL)
  
  #define TOOLBAR_PINNABLE_ACTION_IDS \
@@ -23,6 +23,7 @@ index 56eaf2a93294191b1a3f7170bf23746dd821a0b6..17ec0ae44da2f7aed2fb60b57d7efde2
 +  E(kActionShowWaybackMachine) \
 +  E(kActionShowPlaylistPageAction) \
 +  E(kActionShowOnionLocation) \
++  E(kActionShowBraveNews) \
    E(kActionHome, IDC_HOME) \
    E(kActionForward, IDC_FORWARD) \
    E(kActionNewIncognitoWindow, IDC_NEW_INCOGNITO_WINDOW) \

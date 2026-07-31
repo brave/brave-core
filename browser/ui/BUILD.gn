@@ -1055,8 +1055,6 @@ source_set("ui") {
 
   if (enable_brave_news && toolkit_views) {
     sources += [
-      "views/brave_news/brave_news_action_icon_view.cc",
-      "views/brave_news/brave_news_action_icon_view.h",
       "views/brave_news/brave_news_bubble_controller.cc",
       "views/brave_news/brave_news_bubble_controller.h",
       "views/brave_news/brave_news_bubble_view.cc",
@@ -1065,10 +1063,17 @@ source_set("ui") {
       "views/brave_news/brave_news_feed_item_view.h",
       "views/brave_news/brave_news_feeds_container_view.cc",
       "views/brave_news/brave_news_feeds_container_view.h",
+      "views/page_action/brave_news_page_action_controller.cc",
+      "views/page_action/brave_news_page_action_controller.h",
     ]
     deps += [
       "//brave/browser/ui/views/side_panel/brave_news",
       "//brave/components/brave_news/browser",
+      "//chrome/browser/ui/actions",
+      "//chrome/browser/ui/page_action",
+      "//chrome/browser/ui/views/frame:toolbar_button_provider",
+      "//components/tabs:public",
+      "//ui/actions",
       "//ui/base/metadata",
     ]
   }
