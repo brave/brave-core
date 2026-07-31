@@ -203,24 +203,4 @@ CreateBraveChromeAutofillClientForTesting(  // IN-TEST
 
 }  // namespace autofill
 
-#define WrapUnique WrapUnique(new autofill::BraveChromeAutofillClient(web_contents))); \
-  if (0) std::unique_ptr<autofill::ChromeAutofillClient> dummy(
 #include <chrome/browser/ui/autofill/chrome_autofill_client.cc>
-#undef WrapUnique
-
-namespace autofill {
-
-AutofillOptimizationGuideDecider*
-ChromeAutofillClient::GetAutofillOptimizationGuideDecider_Unused() const {
-  return nullptr;
-}
-
-bool ChromeAutofillClient::IsAutofillEnabled_Unused() const {
-  return false;
-}
-
-bool ChromeAutofillClient::IsAutocompleteEnabled_Unused() const {
-  return false;
-}
-
-}  // namespace autofill

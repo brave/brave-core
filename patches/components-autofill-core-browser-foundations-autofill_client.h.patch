@@ -1,0 +1,17 @@
+diff --git a/components/autofill/core/browser/foundations/autofill_client.h b/components/autofill/core/browser/foundations/autofill_client.h
+index d7337f4ca20d934f068455a694efec25a9b1e8f3..93e998e7d411a02d24a8b6effd3e8f119c33f8e0 100644
+--- a/components/autofill/core/browser/foundations/autofill_client.h
++++ b/components/autofill/core/browser/foundations/autofill_client.h
+@@ -882,6 +882,12 @@ class AutofillClient {
+ 
+   // Returns the AutofillManager instance for the current frame/tab.
+   virtual AutofillManager* GetAutofillManagerForPrimaryMainFrame();
++  virtual void BraveAddSuggestions(
++      const PasswordFormClassification& form_classification,
++      const FormFieldData& field,
++      std::vector<Suggestion>& chromium_suggestions);
++  virtual bool BraveHandleSuggestion(const Suggestion& suggestion,
++                                      const autofill::FieldGlobalId& field);
+ };
+ 
+ }  // namespace autofill
