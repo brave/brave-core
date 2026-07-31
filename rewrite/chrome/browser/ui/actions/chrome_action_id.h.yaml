@@ -24,3 +24,4 @@ substitutions:
           E(kActionShowWaybackMachine) \
           E(kActionShowPlaylistPageAction) \
           E(kActionShowOnionLocation) \
+          E(kActionShowBraveNews) \

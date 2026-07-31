@@ -20,7 +20,6 @@
 #include "brave/browser/ui/views/location_bar/brave_search_conversion/promotion_button_view.h"
 #include "brave/browser/ui/views/location_bar/brave_shields_page_info_controller.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
-#include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/commander/common/buildflags/buildflags.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/grit/brave_theme_resources.h"
@@ -47,17 +46,12 @@
 #include "ui/gfx/geometry/skia_conversions.h"
 #include "ui/gfx/image/image_skia.h"
 #include "ui/gfx/paint_vector_icon.h"
-#include "ui/views/animation/ink_drop.h"
 #include "ui/views/controls/highlight_path_generator.h"
 
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
 #include "brave/browser/ui/tabs/public/brave_tab_features.h"
 #include "brave/browser/ui/views/page_action/playlist_page_action_controller.h"
 #include "components/tabs/public/tab_interface.h"
-#endif
-
-#if BUILDFLAG(ENABLE_BRAVE_NEWS)
-#include "brave/browser/ui/views/brave_news/brave_news_action_icon_view.h"
 #endif
 
 #if BUILDFLAG(ENABLE_COMMANDER)
@@ -122,17 +116,6 @@ void BraveLocationBarView::Init() {
     }
   }
 
-#if BUILDFLAG(ENABLE_BRAVE_NEWS)
-  if (!browser_->GetProfile()->IsOffTheRecord()) {
-    brave_news_action_icon_view_ =
-        AddChildView(std::make_unique<BraveNewsActionIconView>(
-            browser_->GetProfile(), this, this));
-    brave_news_action_icon_view_->SetVisible(false);
-    views::InkDrop::Get(brave_news_action_icon_view_)
-        ->SetVisibleOpacity(GetPageActionInkDropVisibleOpacity());
-  }
-#endif  // BUILDFLAG(ENABLE_BRAVE_NEWS)
-
   if (PromotionButtonController::PromotionEnabled(GetProfile()->GetPrefs())) {
     promotion_button_ = AddChildView(std::make_unique<PromotionButtonView>());
     promotion_controller_ = std::make_unique<PromotionButtonController>(
@@ -186,12 +169,6 @@ void BraveLocationBarView::Update(content::WebContents* contents) {
     brave_actions_->Update();
   }
 
-#if BUILDFLAG(ENABLE_BRAVE_NEWS)
-  if (brave_news_action_icon_view_) {
-    brave_news_action_icon_view_->Update();
-  }
-#endif
-
   if (shields_page_info_controller_) {
     shields_page_info_controller_->UpdateWebContents(contents);
   }
@@ -233,11 +210,6 @@ void BraveLocationBarView::OnChanged() {
   if (brave_actions_) {
     brave_actions_->SetShouldHide(hide_page_actions);
   }
-#if BUILDFLAG(ENABLE_BRAVE_NEWS)
-  if (brave_news_action_icon_view_) {
-    brave_news_action_icon_view_->Update();
-  }
-#endif
 
   if (promotion_controller_) {
     const bool show_button =
@@ -252,12 +224,6 @@ void BraveLocationBarView::OnChanged() {
 
 std::vector<views::View*> BraveLocationBarView::GetRightMostTrailingViews() {
   std::vector<views::View*> views;
-#if BUILDFLAG(ENABLE_BRAVE_NEWS)
-  if (brave_news_action_icon_view_) {
-    views.push_back(brave_news_action_icon_view_);
-  }
-#endif
-
   if (brave_actions_) {
     views.push_back(brave_actions_);
   }
@@ -289,15 +255,6 @@ int BraveLocationBarView::GetMinimumTrailingWidth() const {
   if (brave_actions_ && brave_actions_->GetVisible()) {
     trailing_width += brave_actions_->GetMinimumSize().width() + elem_pad;
   }
-
-#if BUILDFLAG(ENABLE_BRAVE_NEWS)
-  if (brave_news_action_icon_view_ &&
-      brave_news_action_icon_view_->GetVisible()) {
-    trailing_width +=
-        brave_news_action_icon_view_->GetMinimumSize().width() + elem_pad;
-  }
-
-#endif
 
   return trailing_width;
 }
@@ -345,15 +302,6 @@ gfx::Size BraveLocationBarView::CalculatePreferredSize(
         GetLayoutConstant(LayoutConstant::kLocationBarElementPadding);
     min_size.Enlarge(extra_width, 0);
   }
-#if BUILDFLAG(ENABLE_BRAVE_NEWS)
-  if (brave_news_action_icon_view_ &&
-      brave_news_action_icon_view_->GetVisible()) {
-    const int extra_width =
-        GetLayoutConstant(LayoutConstant::kLocationBarElementPadding) +
-        brave_news_action_icon_view_->GetMinimumSize().width();
-    min_size.Enlarge(extra_width, 0);
-  }
-#endif  // BUILDFLAG(ENABLE_BRAVE_NEWS)
 
   return min_size;
 }
