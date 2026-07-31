@@ -813,9 +813,10 @@ IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
   ASSERT_TRUE(confirm_delegate);
   EXPECT_EQ(confirm_delegate->GetIdentifier(),
             infobars::InfoBarDelegate::BRAVE_PSST_INFOBAR_DELEGATE);
+  // Dismissing the infobar disables PSST, which in turn removes the infobar.
   confirm_delegate->InfoBarDismissed();
-  manager->RemoveInfoBar(psst_infobar);
   ASSERT_TRUE(infobar_observer.WaitForInfobarRemoved());
+  EXPECT_FALSE(GetPsstInfobar(manager));
 
   // Wait for console message only from user script
   ASSERT_TRUE(console_observer.Wait());
