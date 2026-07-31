@@ -51,6 +51,10 @@
 #include "brave/browser/ui/views/page_action/onion_location_page_action_controller.h"
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+#include "brave/browser/ui/views/page_action/brave_news_page_action_controller.h"
+#endif
+
 namespace tabs {
 
 // static
@@ -155,6 +159,16 @@ void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
         std::make_unique<page_actions::OnionLocationPageActionController>(
             tab, *page_action_controller());
     onion_location_page_action_controller_->Init();
+  }
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+  if (!profile->IsOffTheRecord() &&
+      page_action_controller()->ActionExists(kActionShowBraveNews)) {
+    brave_news_page_action_controller_ =
+        std::make_unique<page_actions::BraveNewsPageActionController>(
+            tab, *page_action_controller());
+    brave_news_page_action_controller_->Init();
   }
 #endif
 }

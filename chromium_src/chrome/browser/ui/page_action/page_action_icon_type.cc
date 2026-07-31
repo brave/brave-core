@@ -32,9 +32,10 @@ bool IsPageActionMigrated(PageActionIconType page_action) {
     return true;
   }
 
-  if (page_action == brave::kOnionLocationPageActionIconType) {
-    // Onion Location page action is based on the new framework for page
-    // action.
+  if (page_action == brave::kOnionLocationPageActionIconType ||
+      page_action == brave::kBraveNewsPageActionIconType) {
+    // Onion Location and Brave News page actions are based on the new
+    // framework for page action.
     return true;
   }
 

@@ -3,7 +3,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import("//brave/components/brave_news/common/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 
 assert(toolkit_views)
@@ -21,8 +20,6 @@ source_set("location_bar") {
     "brave_shields_page_info_controller.cc",
     "brave_shields_page_info_controller.h",
   ]
-
-  public_deps = [ "//brave/components/brave_news/common/buildflags" ]
 
   deps = [
     "//brave/app:brave_generated_resources_grit",

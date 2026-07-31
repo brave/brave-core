@@ -9,9 +9,9 @@
 
 #include "base/check.h"
 #include "base/memory/ptr_util.h"
-#include "brave/browser/ui/views/brave_news/brave_news_action_icon_view.h"
 #include "brave/browser/ui/views/brave_news/brave_news_bubble_view.h"
 #include "ui/views/bubble/bubble_dialog_delegate_view.h"
+#include "ui/views/view.h"
 
 namespace brave_news {
 // static
@@ -25,13 +25,12 @@ BraveNewsBubbleController::CreateOrGetFromWebContents(
 
 BraveNewsBubbleController::~BraveNewsBubbleController() = default;
 
-void BraveNewsBubbleController::ShowBubble(
-    base::WeakPtr<BraveNewsActionIconView> anchor_view) {
+void BraveNewsBubbleController::ShowBubble(views::View* anchor_view) {
   if (!anchor_view) {
     return;
   }
 
-  bubble_ = new BraveNewsBubbleView(anchor_view.get(), web_contents_);
+  bubble_ = new BraveNewsBubbleView(anchor_view, web_contents_);
   views::BubbleDialogDelegateView::CreateBubble(
       base::WrapUnique(
           static_cast<views::BubbleDialogDelegateView*>(bubble_.get())))
