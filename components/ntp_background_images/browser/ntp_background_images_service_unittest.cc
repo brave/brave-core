@@ -23,6 +23,7 @@
 #include "base/test/run_until.h"
 #include "base/test/task_environment.h"
 #include "base/test/values_test_util.h"
+#include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_component_updater/browser/mock_on_demand_updater.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_images_data.h"
@@ -206,6 +207,7 @@ constexpr char kTestSponsoredImagesWithMissingImageUrl[] = R"(
       ]
     })";
 
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
 constexpr char kSponsoredImageContentWithNonHttpsSchemeTargetUrl[] = R"(
     {
       "schemaVersion": 2,
@@ -224,7 +226,7 @@ constexpr char kSponsoredImageContentWithNonHttpsSchemeTargetUrl[] = R"(
                   "targetUrl": "http://basicattentiontoken.org",
                   "wallpaper": {
                     "type": "image",
-                    "missing_relativeUrl": "3b36d1b7-5c9b-4625-9227-7c8e9fe6e0b4/background.jpg",
+                    "relativeUrl": "3b36d1b7-5c9b-4625-9227-7c8e9fe6e0b4/background.jpg",
                     "focalPoint": {
                       "x": 25,
                       "y": 50
@@ -242,6 +244,7 @@ constexpr char kSponsoredImageContentWithNonHttpsSchemeTargetUrl[] = R"(
         }
       ]
     })";
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
 constexpr char
     kSponsoredImageContentWithWallpaperRelativeUrlReferencingParent[] = R"(
@@ -809,6 +812,7 @@ TEST_F(NTPBackgroundImagesServiceTest, MultipleCampaignsTest) {
             campaign_1.creatives[0].file_path.BaseName());
 }
 
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
 TEST_F(NTPBackgroundImagesServiceTest,
        DoNotGetSponsoredImageContentForNonHttpsSchemeTargetUrl) {
   Init();
@@ -826,6 +830,7 @@ TEST_F(NTPBackgroundImagesServiceTest,
   EXPECT_THAT(service_->sponsored_images_data_->campaigns,
               ::testing::IsEmpty());
 }
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
 TEST_F(NTPBackgroundImagesServiceTest,
        DoNotGetSponsoredImageContentIfWallpaperUrlReferencesParent) {
