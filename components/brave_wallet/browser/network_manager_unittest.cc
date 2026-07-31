@@ -73,7 +73,7 @@ TEST_F(NetworkManagerUnitTest, KnownChainExists) {
   network_manager()->AddCustomNetwork(chain);
 
   auto known_chains = NetworkManager::GetAllKnownChains(mojom::CoinType::ETH);
-  EXPECT_EQ(known_chains.size(), 11u);
+  EXPECT_EQ(known_chains.size(), 10u);
   for (auto& known_chain : known_chains) {
     EXPECT_TRUE(network_manager()->KnownChainExists(known_chain->chain_id,
                                                     mojom::CoinType::ETH));
@@ -94,16 +94,12 @@ TEST_F(NetworkManagerUnitTest, KnownChainExists) {
                                                   mojom::CoinType::FIL));
   EXPECT_TRUE(network_manager()->KnownChainExists(mojom::kFilecoinTestnet,
                                                   mojom::CoinType::FIL));
-  EXPECT_TRUE(network_manager()->KnownChainExists(mojom::kLocalhostChainId,
-                                                  mojom::CoinType::FIL));
 
   EXPECT_TRUE(network_manager()->KnownChainExists(mojom::kSolanaMainnet,
                                                   mojom::CoinType::SOL));
   EXPECT_TRUE(network_manager()->KnownChainExists(mojom::kSolanaTestnet,
                                                   mojom::CoinType::SOL));
   EXPECT_TRUE(network_manager()->KnownChainExists(mojom::kSolanaDevnet,
-                                                  mojom::CoinType::SOL));
-  EXPECT_TRUE(network_manager()->KnownChainExists(mojom::kLocalhostChainId,
                                                   mojom::CoinType::SOL));
 
   EXPECT_TRUE(network_manager()->KnownChainExists(mojom::kBitcoinMainnet,
@@ -263,7 +259,7 @@ TEST_F(NetworkManagerUnitTest, GetAllChainsTest) {
        features::kBraveWalletPolkadotFeature},
       {});
 
-  EXPECT_EQ(network_manager()->GetAllChains().size(), 29u);
+  EXPECT_EQ(network_manager()->GetAllChains().size(), 26u);
   for (auto& chain : network_manager()->GetAllChains()) {
     EXPECT_TRUE(chain->rpc_endpoints[0].is_valid());
     EXPECT_EQ(chain->active_rpc_endpoint_index, 0);
@@ -314,12 +310,11 @@ TEST_F(NetworkManagerUnitTest, GetAllChainsTest) {
   network_manager()->AddCustomNetwork(sol_main_custom);
 
   auto sol_chains = get_all_chains_for_coin(mojom::CoinType::SOL);
-  ASSERT_EQ(sol_chains.size(), 4u);
+  ASSERT_EQ(sol_chains.size(), 3u);
   EXPECT_EQ(sol_chains[0]->chain_id, mojom::kSolanaMainnet);
   EXPECT_EQ(sol_chains[0]->decimals, 123);
   EXPECT_EQ(sol_chains[1]->chain_id, mojom::kSolanaTestnet);
   EXPECT_EQ(sol_chains[2]->chain_id, mojom::kSolanaDevnet);
-  EXPECT_EQ(sol_chains[3]->chain_id, mojom::kLocalhostChainId);
 
   for (auto& sol_chain : sol_chains) {
     EXPECT_THAT(sol_chain->supported_keyrings,
@@ -333,16 +328,13 @@ TEST_F(NetworkManagerUnitTest, GetAllChainsTest) {
   network_manager()->AddCustomNetwork(fil_main_custom);
 
   auto fil_chains = get_all_chains_for_coin(mojom::CoinType::FIL);
-  ASSERT_EQ(fil_chains.size(), 3u);
+  ASSERT_EQ(fil_chains.size(), 2u);
   EXPECT_EQ(fil_chains[0]->chain_id, mojom::kFilecoinMainnet);
   EXPECT_EQ(fil_chains[0]->decimals, 123);
   EXPECT_EQ(fil_chains[1]->chain_id, mojom::kFilecoinTestnet);
-  EXPECT_EQ(fil_chains[2]->chain_id, mojom::kLocalhostChainId);
   EXPECT_THAT(fil_chains[0]->supported_keyrings,
               ElementsAreArray({mojom::KeyringId::kFilecoin}));
   EXPECT_THAT(fil_chains[1]->supported_keyrings,
-              ElementsAreArray({mojom::KeyringId::kFilecoinTestnet}));
-  EXPECT_THAT(fil_chains[2]->supported_keyrings,
               ElementsAreArray({mojom::KeyringId::kFilecoinTestnet}));
 
   // Bitcoin
@@ -748,7 +740,7 @@ TEST_F(NetworkManagerUnitTest, Eip1559Chain) {
       {mojom::kBnbSmartChainMainnetChainId, false},
       {mojom::kBaseMainnetChainId, true},
       {mojom::kNeonEVMMainnetChainId, false},
-      {mojom::kLocalhostChainId, false}};
+  };
   for (auto& [chain_id, value] : known_states) {
     EXPECT_EQ(network_manager()->IsEip1559Chain(chain_id), value);
   }
@@ -932,17 +924,15 @@ TEST_F(NetworkManagerUnitTest, RemoveCustomNetworkRemovesEip1559) {
 }
 
 TEST_F(NetworkManagerUnitTest, HiddenNetworks) {
-  EXPECT_THAT(network_manager()->GetHiddenNetworks(mojom::CoinType::ETH),
-              ElementsAreArray<std::string>(
-                  {mojom::kSepoliaChainId, mojom::kLocalhostChainId,
-                   mojom::kFilecoinEthereumTestnetChainId}));
+  EXPECT_THAT(
+      network_manager()->GetHiddenNetworks(mojom::CoinType::ETH),
+      ElementsAreArray<std::string>(
+          {mojom::kSepoliaChainId, mojom::kFilecoinEthereumTestnetChainId}));
   EXPECT_THAT(network_manager()->GetHiddenNetworks(mojom::CoinType::FIL),
-              ElementsAreArray<std::string>(
-                  {mojom::kFilecoinTestnet, mojom::kLocalhostChainId}));
+              ElementsAreArray<std::string>({mojom::kFilecoinTestnet}));
   EXPECT_THAT(network_manager()->GetHiddenNetworks(mojom::CoinType::SOL),
-              ElementsAreArray<std::string>({mojom::kSolanaDevnet,
-                                             mojom::kSolanaTestnet,
-                                             mojom::kLocalhostChainId}));
+              ElementsAreArray<std::string>(
+                  {mojom::kSolanaDevnet, mojom::kSolanaTestnet}));
   EXPECT_THAT(network_manager()->GetHiddenNetworks(mojom::CoinType::BTC),
               ElementsAreArray<std::string>({mojom::kBitcoinTestnet}));
   EXPECT_THAT(network_manager()->GetHiddenNetworks(mojom::CoinType::ZEC),
@@ -1003,7 +993,6 @@ TEST_F(NetworkManagerUnitTest, GetAndSetCurrentChainId) {
   static_assert(AllCoinsTested<7>());
 
   for (const auto coin_type : kAllCoins) {
-    // TODO(apaymyshev): make this test working for BTC which has no localhost
     if (coin_type == mojom::CoinType::BTC ||
         coin_type == mojom::CoinType::ZEC ||
         coin_type == mojom::CoinType::ADA ||
@@ -1035,13 +1024,12 @@ TEST_F(NetworkManagerUnitTest, GetAndSetCurrentChainId) {
                                                       "0x5566"));
     EXPECT_EQ(network_manager()->GetCurrentChainId(coin_type, std::nullopt),
               default_chain_ids.at(coin_type));
-
     EXPECT_TRUE(network_manager()->SetCurrentChainId(
         coin_type, url::Origin::Create(GURL("https://a.com")),
-        mojom::kLocalhostChainId));
+        new_default_chain_ids.at(coin_type)));
     EXPECT_EQ(network_manager()->GetCurrentChainId(
                   coin_type, url::Origin::Create(GURL("https://a.com"))),
-              mojom::kLocalhostChainId);
+              new_default_chain_ids.at(coin_type));
     // other origin still use default
     EXPECT_EQ(network_manager()->GetCurrentChainId(
                   coin_type, url::Origin::Create(GURL("https://b.com"))),
@@ -1049,10 +1037,10 @@ TEST_F(NetworkManagerUnitTest, GetAndSetCurrentChainId) {
 
     // opaque cannot change the default
     EXPECT_FALSE(network_manager()->SetCurrentChainId(
-        coin_type, url::Origin(), mojom::kLocalhostChainId));
+        coin_type, url::Origin(), new_default_chain_ids.at(coin_type)));
     EXPECT_FALSE(network_manager()->SetCurrentChainId(
         coin_type, url::Origin::Create(GURL("about:blank")),
-        mojom::kLocalhostChainId));
+        new_default_chain_ids.at(coin_type)));
     EXPECT_EQ(network_manager()->GetCurrentChainId(coin_type, std::nullopt),
               default_chain_ids.at(coin_type));
 
@@ -1064,7 +1052,7 @@ TEST_F(NetworkManagerUnitTest, GetAndSetCurrentChainId) {
     // should not affect per origin pref
     EXPECT_EQ(network_manager()->GetCurrentChainId(
                   coin_type, url::Origin::Create(GURL("https://a.com"))),
-              mojom::kLocalhostChainId);
+              new_default_chain_ids.at(coin_type));
 
     // non http/https scheme will change the default
     EXPECT_TRUE(network_manager()->SetCurrentChainId(

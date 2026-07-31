@@ -22,7 +22,6 @@ import { UISelectors, WalletSelectors } from '../../../common/selectors'
 // Types
 import {
   BraveWallet,
-  CoinTypesMap,
   WalletRoutes,
   AccountModalTypes,
   AccountPageTabs,
@@ -353,38 +352,15 @@ export const AccountDetails = () => {
     if (!selectedAccount) {
       return []
     }
-    // Since LOCALHOST's chainId is shared between coinType's
-    // this check will make sure we are returning the correct
-    // LOCALHOST asset for each account.
-    const hasLocalHostNetwork = networkList.some(
-      (network) =>
-        network.chainId === BraveWallet.LOCALHOST_CHAIN_ID
-        && network.coin === selectedAccount.accountId.coin,
-    )
-    const coinName = CoinTypesMap[selectedAccount.accountId.coin]
-    const localHostCoins = userVisibleTokensInfo.filter(
-      (token) => token.chainId === BraveWallet.LOCALHOST_CHAIN_ID,
-    )
-    const accountsLocalHost = localHostCoins.find(
-      (token) => token.symbol.toUpperCase() === coinName,
-    )
+
     const chainList = filterNetworksForAccount(
       networkList,
       selectedAccount.accountId,
     ).map((network) => network.chainId)
     const list =
-      userVisibleTokensInfo.filter(
-        (token) =>
-          chainList.includes(token?.chainId ?? '')
-          && token.chainId !== BraveWallet.LOCALHOST_CHAIN_ID,
+      userVisibleTokensInfo.filter((token) =>
+        chainList.includes(token?.chainId ?? ''),
       ) ?? []
-    if (
-      accountsLocalHost
-      && hasLocalHostNetwork
-      && selectedAccount.accountId.keyringId !== BraveWallet.KeyringId.kFilecoin
-    ) {
-      return [...list, accountsLocalHost]
-    }
     return list
   }, [userVisibleTokensInfo, selectedAccount, networkList])
 

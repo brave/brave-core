@@ -209,7 +209,7 @@ class FilTxManagerUnitTest : public testing::Test {
     base::ReplaceSubstringsAfterOffset(&gas_response, 0, "{to}", to_account);
     base::ReplaceSubstringsAfterOffset(&gas_response, 0, "{from}",
                                        from_account->address);
-    SetInterceptor(GetNetwork(mojom::kLocalhostChainId, mojom::CoinType::FIL),
+    SetInterceptor(GetNetwork(mojom::kFilecoinTestnet, mojom::CoinType::FIL),
                    "Filecoin.GasEstimateMessageGas", gas_response);
   }
 
@@ -236,12 +236,12 @@ TEST_F(FilTxManagerUnitTest, SubmitTransactions) {
   auto tx = FilTransaction::FromTxData(false, tx_data.Clone());
 
   std::string meta_id1;
-  AddUnapprovedTransaction(mojom::kLocalhostChainId, tx_data.Clone(),
+  AddUnapprovedTransaction(mojom::kFilecoinTestnet, tx_data.Clone(),
                            from_account, std::nullopt, &meta_id1);
 
   auto tx_meta1 = fil_tx_manager()->GetTxForTesting(meta_id1);
   EXPECT_TRUE(tx_meta1);
-  EXPECT_EQ(tx_meta1->chain_id(), mojom::kLocalhostChainId);
+  EXPECT_EQ(tx_meta1->chain_id(), mojom::kFilecoinTestnet);
 
   EXPECT_EQ(tx_meta1->tx()->gas_fee_cap(), "100820");
   EXPECT_EQ(tx_meta1->tx()->gas_limit(), 598585);
@@ -250,15 +250,15 @@ TEST_F(FilTxManagerUnitTest, SubmitTransactions) {
   EXPECT_EQ(tx_meta1->status(), mojom::TransactionStatus::Unapproved);
 
   std::string meta_id2;
-  AddUnapprovedTransaction(mojom::kLocalhostChainId, tx_data.Clone(),
+  AddUnapprovedTransaction(mojom::kFilecoinTestnet, tx_data.Clone(),
                            from_account, std::nullopt, &meta_id2);
   auto tx_meta2 = fil_tx_manager()->GetTxForTesting(meta_id2);
   ASSERT_TRUE(tx_meta2);
-  EXPECT_EQ(tx_meta2->chain_id(), mojom::kLocalhostChainId);
+  EXPECT_EQ(tx_meta2->chain_id(), mojom::kFilecoinTestnet);
   EXPECT_EQ(tx_meta2->from(), from_account);
   EXPECT_EQ(tx_meta2->status(), mojom::TransactionStatus::Unapproved);
 
-  SetInterceptor(GetNetwork(mojom::kLocalhostChainId, mojom::CoinType::FIL),
+  SetInterceptor(GetNetwork(mojom::kFilecoinTestnet, mojom::CoinType::FIL),
                  "Filecoin.MpoolGetNonce",
                  R"({ "jsonrpc": "2.0", "id": 1, "result": 1 })");
   AddInterceptorResponse("Filecoin.StateSearchMsgLimited",
@@ -305,7 +305,7 @@ TEST_F(FilTxManagerUnitTest, SubmitTransactionError) {
   auto tx = FilTransaction::FromTxData(false, tx_data.Clone());
 
   std::string meta_id1;
-  AddUnapprovedTransaction(mojom::kLocalhostChainId, tx_data.Clone(),
+  AddUnapprovedTransaction(mojom::kFilecoinTestnet, tx_data.Clone(),
                            from_account, std::nullopt, &meta_id1);
 
   auto tx_meta1 = fil_tx_manager()->GetTxForTesting(meta_id1);
@@ -317,7 +317,7 @@ TEST_F(FilTxManagerUnitTest, SubmitTransactionError) {
   EXPECT_EQ(tx_meta1->from(), from_account);
   EXPECT_EQ(tx_meta1->status(), mojom::TransactionStatus::Unapproved);
 
-  SetInterceptor(GetNetwork(mojom::kLocalhostChainId, mojom::CoinType::FIL),
+  SetInterceptor(GetNetwork(mojom::kFilecoinTestnet, mojom::CoinType::FIL),
                  "Filecoin.MpoolGetNonce",
                  R"({ "jsonrpc": "2.0", "id": 1, "result": 1 })");
 
@@ -355,12 +355,12 @@ TEST_F(FilTxManagerUnitTest, SubmitTransactionConfirmed) {
   auto tx = FilTransaction::FromTxData(false, tx_data.Clone());
 
   std::string meta_id1;
-  AddUnapprovedTransaction(mojom::kLocalhostChainId, tx_data.Clone(),
+  AddUnapprovedTransaction(mojom::kFilecoinTestnet, tx_data.Clone(),
                            from_account, std::nullopt, &meta_id1);
 
   auto tx_meta1 = fil_tx_manager()->GetTxForTesting(meta_id1);
   EXPECT_TRUE(tx_meta1);
-  EXPECT_EQ(tx_meta1->chain_id(), mojom::kLocalhostChainId);
+  EXPECT_EQ(tx_meta1->chain_id(), mojom::kFilecoinTestnet);
 
   EXPECT_EQ(tx_meta1->tx()->gas_fee_cap(), "100820");
   EXPECT_EQ(tx_meta1->tx()->gas_limit(), 598585);
@@ -368,7 +368,7 @@ TEST_F(FilTxManagerUnitTest, SubmitTransactionConfirmed) {
   EXPECT_EQ(tx_meta1->from(), from_account);
   EXPECT_EQ(tx_meta1->status(), mojom::TransactionStatus::Unapproved);
 
-  SetInterceptor(GetNetwork(mojom::kLocalhostChainId, mojom::CoinType::FIL),
+  SetInterceptor(GetNetwork(mojom::kFilecoinTestnet, mojom::CoinType::FIL),
                  "Filecoin.MpoolGetNonce",
                  R"({ "jsonrpc": "2.0", "id": 1, "result": 1 })");
   AddInterceptorResponse("Filecoin.StateSearchMsgLimited",
@@ -412,12 +412,12 @@ TEST_F(FilTxManagerUnitTest, WalletOrigin) {
                                        "" /* gas_fee_cap */, "" /* gas_limit */,
                                        "" /* max_fee */, to_account, "11");
   std::string meta_id;
-  AddUnapprovedTransaction(mojom::kLocalhostChainId, std::move(tx_data),
+  AddUnapprovedTransaction(mojom::kFilecoinTestnet, std::move(tx_data),
                            from_account, std::nullopt, &meta_id);
 
   auto tx_meta = fil_tx_manager()->GetTxForTesting(meta_id);
   ASSERT_TRUE(tx_meta);
-  EXPECT_EQ(tx_meta->chain_id(), mojom::kLocalhostChainId);
+  EXPECT_EQ(tx_meta->chain_id(), mojom::kFilecoinTestnet);
 
   EXPECT_EQ(tx_meta->origin(), url::Origin::Create(GURL("chrome://wallet")));
 }
@@ -431,14 +431,14 @@ TEST_F(FilTxManagerUnitTest, SomeSiteOrigin) {
                                        "" /* max_fee */, to_account, "11");
   std::string meta_id;
   AddUnapprovedTransaction(
-      mojom::kLocalhostChainId, std::move(tx_data), from_account,
+      mojom::kFilecoinTestnet, std::move(tx_data), from_account,
       url::Origin::Create(GURL("https://some.site.com")), &meta_id);
 
   auto tx_meta = fil_tx_manager()->GetTxForTesting(meta_id);
   ASSERT_TRUE(tx_meta);
   EXPECT_EQ(tx_meta->origin(),
             url::Origin::Create(GURL("https://some.site.com")));
-  EXPECT_EQ(tx_meta->chain_id(), mojom::kLocalhostChainId);
+  EXPECT_EQ(tx_meta->chain_id(), mojom::kFilecoinTestnet);
 }
 
 TEST_F(FilTxManagerUnitTest, GetFilTransactionMessageToSign) {
@@ -451,11 +451,11 @@ TEST_F(FilTxManagerUnitTest, GetFilTransactionMessageToSign) {
         "1" /* nonce */, "2" /* gas_premium */, "3" /* gas_fee_cap */,
         "4" /* gas_limit */, "" /* max_fee */, to_account, "11");
     std::string meta_id;
-    AddUnapprovedTransaction(mojom::kLocalhostChainId, std::move(tx_data),
+    AddUnapprovedTransaction(mojom::kFilecoinTestnet, std::move(tx_data),
                              from_account, std::nullopt, &meta_id);
     auto tx_meta = fil_tx_manager()->GetTxForTesting(meta_id);
     ASSERT_TRUE(tx_meta);
-    EXPECT_EQ(tx_meta->chain_id(), mojom::kLocalhostChainId);
+    EXPECT_EQ(tx_meta->chain_id(), mojom::kFilecoinTestnet);
     EXPECT_EQ(tx_meta->from(), from_account);
     EXPECT_EQ(tx_meta->status(), mojom::TransactionStatus::Unapproved);
     GetFilTransactionMessageToSign(meta_id, R"(
@@ -475,7 +475,7 @@ TEST_F(FilTxManagerUnitTest, GetFilTransactionMessageToSign) {
   }
   // empty nonce
   {
-    SetInterceptor(GetNetwork(mojom::kLocalhostChainId, mojom::CoinType::FIL),
+    SetInterceptor(GetNetwork(mojom::kFilecoinTestnet, mojom::CoinType::FIL),
                    "Filecoin.MpoolGetNonce",
                    R"({ "jsonrpc": "2.0", "id": 1, "result": 5 })");
 
@@ -483,11 +483,11 @@ TEST_F(FilTxManagerUnitTest, GetFilTransactionMessageToSign) {
         "" /* nonce */, "2" /* gas_premium */, "3" /* gas_fee_cap */,
         "4" /* gas_limit */, "" /* max_fee */, to_account, "11");
     std::string meta_id;
-    AddUnapprovedTransaction(mojom::kLocalhostChainId, std::move(tx_data),
+    AddUnapprovedTransaction(mojom::kFilecoinTestnet, std::move(tx_data),
                              from_account, std::nullopt, &meta_id);
     auto tx_meta = fil_tx_manager()->GetTxForTesting(meta_id);
     ASSERT_TRUE(tx_meta);
-    EXPECT_EQ(tx_meta->chain_id(), mojom::kLocalhostChainId);
+    EXPECT_EQ(tx_meta->chain_id(), mojom::kFilecoinTestnet);
     EXPECT_EQ(tx_meta->from(), from_account);
     EXPECT_EQ(tx_meta->status(), mojom::TransactionStatus::Unapproved);
     GetFilTransactionMessageToSign(meta_id, R"(
@@ -518,18 +518,18 @@ TEST_F(FilTxManagerUnitTest, ProcessHardwareSignature) {
       "1" /* nonce */, "2" /* gas_premium */, "3" /* gas_fee_cap */,
       "4" /* gas_limit */, "" /* max_fee */, to_account, "11");
   std::string meta_id;
-  AddUnapprovedTransaction(mojom::kLocalhostChainId, std::move(tx_data),
+  AddUnapprovedTransaction(mojom::kFilecoinTestnet, std::move(tx_data),
                            from_account, std::nullopt, &meta_id);
   auto tx_meta = fil_tx_manager()->GetTxForTesting(meta_id);
   ASSERT_TRUE(tx_meta);
-  EXPECT_EQ(tx_meta->chain_id(), mojom::kLocalhostChainId);
+  EXPECT_EQ(tx_meta->chain_id(), mojom::kFilecoinTestnet);
   EXPECT_EQ(tx_meta->from(), from_account);
   EXPECT_EQ(tx_meta->status(), mojom::TransactionStatus::Unapproved);
   auto signed_message =
       GetSignedMessage(*tx_meta->tx()->GetMessageToSignJson(
                            FilAddress::FromAddress(from_account->address)),
                        "data");
-  SetInterceptor(GetNetwork(mojom::kLocalhostChainId, mojom::CoinType::FIL),
+  SetInterceptor(GetNetwork(mojom::kFilecoinTestnet, mojom::CoinType::FIL),
                  "Filecoin.MpoolPush",
                  R"({
             "id": 1,
@@ -585,11 +585,11 @@ TEST_F(FilTxManagerUnitTest, ProcessHardwareSignatureError) {
       "1" /* nonce */, "2" /* gas_premium */, "3" /* gas_fee_cap */,
       "4" /* gas_limit */, "" /* max_fee */, to_account, "11");
   std::string meta_id;
-  AddUnapprovedTransaction(mojom::kLocalhostChainId, std::move(tx_data),
+  AddUnapprovedTransaction(mojom::kFilecoinTestnet, std::move(tx_data),
                            from_account, std::nullopt, &meta_id);
   auto tx_meta = fil_tx_manager()->GetTxForTesting(meta_id);
   ASSERT_TRUE(tx_meta);
-  EXPECT_EQ(tx_meta->chain_id(), mojom::kLocalhostChainId);
+  EXPECT_EQ(tx_meta->chain_id(), mojom::kFilecoinTestnet);
   EXPECT_EQ(tx_meta->from(), from_account);
   EXPECT_EQ(tx_meta->status(), mojom::TransactionStatus::Unapproved);
   auto signed_message =
@@ -627,7 +627,7 @@ TEST_F(FilTxManagerUnitTest, RestrictedFromAddress) {
       unapproved_future;
 
   tx_service_->AddUnapprovedFilecoinTransaction(
-      std::move(fil_tx_data), mojom::kLocalhostChainId, from_account->Clone(),
+      std::move(fil_tx_data), mojom::kFilecoinTestnet, from_account->Clone(),
       nullptr, unapproved_future.GetCallback());
 
   const auto& [success, tx_meta_id, err_str] = unapproved_future.Take();
