@@ -115,7 +115,6 @@
 #include "components/content_settings/browser/page_specific_content_settings.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/embedder_support/switches.h"
-#include "components/history_embeddings/core/history_embeddings_features.h"
 #include "components/prefs/pref_service.h"
 #include "components/services/heap_profiling/public/mojom/heap_profiling_client.mojom.h"
 #include "components/user_prefs/user_prefs.h"
@@ -172,10 +171,8 @@
 #endif  // !BUILDFLAG(IS_ANDROID)
 
 #if BUILDFLAG(ENABLE_LOCAL_AI)
-#include "brave/browser/ui/webui/local_ai/local_ai_ui.h"
 #include "brave/browser/ui/webui/local_ai/on_device_speech_recognition_worker_ui.h"
 #include "brave/components/local_ai/core/features.h"
-#include "brave/components/local_ai/core/local_ai.mojom.h"
 #include "brave/components/local_ai/core/on_device_speech_recognition.mojom.h"
 #endif
 
@@ -996,10 +993,6 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
   map->Add<skus::mojom::SkusService>(
       base::BindRepeating(&MaybeBindSkusSdkImpl));
 #if BUILDFLAG(ENABLE_LOCAL_AI)
-  if (base::FeatureList::IsEnabled(history_embeddings::kHistoryEmbeddings)) {
-    content::RegisterWebUIControllerInterfaceBinder<
-        local_ai::mojom::LocalAIService, local_ai::UntrustedLocalAIUI>(map);
-  }
   if (base::FeatureList::IsEnabled(local_ai::kBraveOnDeviceSpeechRecognition)) {
     content::RegisterWebUIControllerInterfaceBinder<
         local_ai::mojom::SpeechRecognitionFactoryHost,
