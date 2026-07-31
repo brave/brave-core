@@ -22,7 +22,8 @@ class PrefService;
 
 namespace psst {
 
-class PsstUiDelegateImpl : public PsstTabWebContentsObserver::PsstUiDelegate {
+class PsstUiDelegateImpl : public PsstTabWebContentsObserver::PsstUiDelegate,
+                           public PsstSettingsService::PrefObserver {
  public:
   class Observer : public base::CheckedObserver {
    public:
@@ -64,6 +65,7 @@ class PsstUiDelegateImpl : public PsstTabWebContentsObserver::PsstUiDelegate {
   void OnUserAcceptedInfobar(const bool is_accepted);
   void OnDontShowForThisSite();
   void OnDisablePrivacySettingsTuning();
+  void OnPsstEnableChange(bool new_value) override;
 
   std::unique_ptr<PsstUiPresenter> ui_presenter_;
   std::optional<PsstWebsiteSettings> dialog_data_;

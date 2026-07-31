@@ -13,6 +13,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/timer/timer.h"
 #include "base/values.h"
+#include "brave/components/psst/core/browser/psst_settings_service.h"
 #include "brave/components/psst/core/common/psst_metadata_schema.h"
 #include "brave/components/psst/core/common/psst_script_responses.h"
 #include "brave/components/psst/core/common/psst_ui_common.mojom-shared.h"
@@ -20,14 +21,13 @@
 #include "chrome/browser/ui/tabs/contents_observing_tab_feature.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"
 
-class PrefService;
-
 namespace psst {
 
 class MatchedRule;
 class PsstRuleRegistry;
 
-class PsstTabWebContentsObserver : public tabs::ContentsObservingTabFeature {
+class PsstTabWebContentsObserver : public tabs::ContentsObservingTabFeature,
+                                   public PsstSettingsService::PrefObserver {
  public:
   using InsertScriptInPageCallback = base::OnceCallback<void(base::Value)>;
   using InsertScriptInPageTimeoutCallback =
@@ -67,7 +67,7 @@ class PsstTabWebContentsObserver : public tabs::ContentsObservingTabFeature {
       tabs::TabInterface& tab,
       content::BrowserContext* browser_context,
       std::unique_ptr<PsstUiDelegate> ui_delegate,
-      PrefService* prefs,
+      PsstSettingsService* psst_settings_service,
       const int32_t world_id);
 
   ~PsstTabWebContentsObserver() override;
@@ -83,7 +83,7 @@ class PsstTabWebContentsObserver : public tabs::ContentsObservingTabFeature {
 
   PsstTabWebContentsObserver(tabs::TabInterface& tab,
                              PsstRuleRegistry* registry,
-                             PrefService* prefs,
+                             PsstSettingsService* psst_settings_service,
                              std::unique_ptr<PsstUiDelegate> ui_delegate);
 
   void InsertUserScript(std::unique_ptr<MatchedRule> rule);
@@ -109,9 +109,13 @@ class PsstTabWebContentsObserver : public tabs::ContentsObservingTabFeature {
   void SetInjectScriptCallback(InjectScriptCallback inject_script_callback);
   void SetInjectAsyncScriptCallback(
       InjectScriptAsyncCallback inject_async_script_callback);
+  void CancelInFlightFlow();
+
+  // PsstSettingsService::Observer
+  void OnPsstEnableChange(bool new_value) override;
 
   const raw_ptr<PsstRuleRegistry> registry_;
-  const raw_ptr<PrefService> prefs_;
+  const raw_ptr<PsstSettingsService> psst_settings_service_ = nullptr;
   InjectScriptCallback inject_script_callback_;
   mojo::AssociatedRemote<script_injector::mojom::ScriptInjector>
       script_injector_remote_;

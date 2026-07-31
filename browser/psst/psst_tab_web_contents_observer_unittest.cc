@@ -23,6 +23,7 @@
 #include "base/test/test_future.h"
 #include "base/time/time.h"
 #include "base/values.h"
+#include "brave/browser/psst/psst_settings_service_factory.h"
 #include "brave/components/psst/core/browser/pref_names.h"
 #include "brave/components/psst/core/browser/psst_rule_registry.h"
 #include "brave/components/psst/core/common/features.h"
@@ -221,8 +222,12 @@ class PsstTabWebContentsObserverUnitTestBase
     ON_CALL(mock_tab, GetContents())
         .WillByDefault(testing::Return(web_contents()));
 
+    psst_settings_service_ =
+        PsstSettingsServiceFactory::GetInstance()->GetForProfile(profile());
+
     psst_web_contents_observer_ = base::WrapUnique<PsstTabWebContentsObserver>(
-        new PsstTabWebContentsObserver(mock_tab, rule_registry_.get(), &prefs_,
+        new PsstTabWebContentsObserver(mock_tab, rule_registry_.get(),
+                                       psst_settings_service_,
                                        std::move(ui_delegate)));
     psst_web_contents_observer_->SetInjectScriptCallback(
         inject_script_callback_.Get());
@@ -231,12 +236,13 @@ class PsstTabWebContentsObserverUnitTestBase
   }
 
   void TearDown() override {
-    ChromeRenderViewHostTestHarness::TearDown();
     ui_delegate_ = nullptr;
+    psst_web_contents_observer_.reset();
+    psst_settings_service_ = nullptr;
+    ChromeRenderViewHostTestHarness::TearDown();
   }
 
   MockPsstRuleRegistry& psst_rule_registry() { return *rule_registry_.get(); }
-  PrefService* prefs() { return &prefs_; }
 
   MatchedRule* CreateMatchedRule(const std::string& user_script,
                                  const std::string& policy_script,
@@ -258,6 +264,10 @@ class PsstTabWebContentsObserverUnitTestBase
 
   tabs::MockTabInterface& mock_tab_interface() { return mock_tab; }
 
+  PsstSettingsService* psst_settings_service() {
+    return psst_settings_service_;
+  }
+
  protected:
   base::test::ScopedFeatureList feature_list_;
 
@@ -270,6 +280,7 @@ class PsstTabWebContentsObserverUnitTestBase
   std::unique_ptr<MockPsstRuleRegistry> rule_registry_;
   std::unique_ptr<PsstTabWebContentsObserver> psst_web_contents_observer_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
+  raw_ptr<PsstSettingsService> psst_settings_service_;
   tabs::MockTabInterface mock_tab;
 };
 
@@ -293,7 +304,7 @@ class PsstTabWebContentsObserverUnitTest
 TEST_F(PsstTabWebContentsObserverUnitTest, CreateForRegularBrowserContext) {
   EXPECT_NE(PsstTabWebContentsObserver::MaybeCreateForWebContents(
                 mock_tab_interface(), browser_context(),
-                std::make_unique<MockUiDelegate>(), prefs(), 2),
+                std::make_unique<MockUiDelegate>(), psst_settings_service(), 2),
             nullptr);
 }
 
@@ -307,7 +318,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
 
   EXPECT_EQ(PsstTabWebContentsObserver::MaybeCreateForWebContents(
                 mock_tab_interface(), otr_profile,
-                std::make_unique<MockUiDelegate>(), prefs(), 2),
+                std::make_unique<MockUiDelegate>(), psst_settings_service(), 2),
             nullptr);
 }
 
@@ -633,7 +644,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest, DefaultPrefEnabledShouldProcess) {
 }
 
 TEST_F(PsstTabWebContentsObserverUnitTest, PrefDisabledDontProcess) {
-  prefs()->SetBoolean(prefs::kPsstEnabled, false);
+  psst_settings_service()->SetPsstEnabled(false);
   EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url_, _)).Times(0);
   DocumentOnLoadObserver observer(web_contents());
   content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
@@ -1190,7 +1201,7 @@ class PsstTabWebContentsObserverFeatureDisabledUnitTest
 TEST_F(PsstTabWebContentsObserverFeatureDisabledUnitTest, DontCreate) {
   EXPECT_EQ(PsstTabWebContentsObserver::MaybeCreateForWebContents(
                 mock_tab_interface(), browser_context(),
-                std::make_unique<MockUiDelegate>(), prefs(), 2),
+                std::make_unique<MockUiDelegate>(), psst_settings_service(), 2),
             nullptr);
 }
 
