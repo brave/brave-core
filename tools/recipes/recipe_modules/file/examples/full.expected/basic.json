@@ -21,8 +21,11 @@
       "[WORKSPACE]/brave-browser/src/third_party/depot_tools/vpython3",
       "-u",
       "[RECIPES_ROOT]/recipe_modules/file/resources/fileutil.py",
-      "read_text",
-      "/etc/greeting"
+      "--json-output",
+      "/path/to/tmp/json",
+      "copy",
+      "/etc/greeting",
+      "/path/to/tmp/"
     ],
     "name": "read greeting"
   },
@@ -32,6 +35,138 @@
       "hello\n"
     ],
     "name": "echo"
+  },
+  {
+    "cmd": [
+      "[WORKSPACE]/brave-browser/src/third_party/depot_tools/vpython3",
+      "-u",
+      "[RECIPES_ROOT]/recipe_modules/file/resources/fileutil.py",
+      "--json-output",
+      "/path/to/tmp/json",
+      "copy",
+      "/etc/greeting",
+      "/path/to/tmp/"
+    ],
+    "name": "read raw greeting"
+  },
+  {
+    "cmd": [
+      "echo",
+      "hello bytes"
+    ],
+    "name": "echo raw"
+  },
+  {
+    "cmd": [
+      "[WORKSPACE]/brave-browser/src/third_party/depot_tools/vpython3",
+      "-u",
+      "[RECIPES_ROOT]/recipe_modules/file/resources/fileutil.py",
+      "--json-output",
+      "/path/to/tmp/json",
+      "copy",
+      "/etc/config.json",
+      "/path/to/tmp/"
+    ],
+    "name": "read config"
+  },
+  {
+    "cmd": [
+      "echo",
+      "{'key': 'value'}"
+    ],
+    "name": "echo config"
+  },
+  {
+    "cmd": [
+      "[WORKSPACE]/brave-browser/src/third_party/depot_tools/vpython3",
+      "-u",
+      "[RECIPES_ROOT]/recipe_modules/file/resources/fileutil.py",
+      "--json-output",
+      "/path/to/tmp/json",
+      "copy",
+      "/etc/greeting.json",
+      "/path/to/tmp/json"
+    ],
+    "name": "read proto greeting"
+  },
+  {
+    "cmd": [
+      "echo",
+      "hello proto"
+    ],
+    "name": "echo proto"
+  },
+  {
+    "cmd": [
+      "[WORKSPACE]/brave-browser/src/third_party/depot_tools/vpython3",
+      "-u",
+      "[RECIPES_ROOT]/recipe_modules/file/resources/fileutil.py",
+      "--json-output",
+      "/path/to/tmp/json",
+      "copy",
+      "/etc/empty.json",
+      "/path/to/tmp/json"
+    ],
+    "name": "read empty proto"
+  },
+  {
+    "cmd": [
+      "echo",
+      "''"
+    ],
+    "name": "echo empty proto"
+  },
+  {
+    "cmd": [
+      "[WORKSPACE]/brave-browser/src/third_party/depot_tools/vpython3",
+      "-u",
+      "[RECIPES_ROOT]/recipe_modules/file/resources/fileutil.py",
+      "--json-output",
+      "/path/to/tmp/json",
+      "copy",
+      "hello again\n",
+      "/tmp/greeting"
+    ],
+    "name": "write greeting"
+  },
+  {
+    "cmd": [
+      "[WORKSPACE]/brave-browser/src/third_party/depot_tools/vpython3",
+      "-u",
+      "[RECIPES_ROOT]/recipe_modules/file/resources/fileutil.py",
+      "--json-output",
+      "/path/to/tmp/json",
+      "copy",
+      "\u0000binary",
+      "/tmp/greeting.bin"
+    ],
+    "name": "write raw greeting"
+  },
+  {
+    "cmd": [
+      "[WORKSPACE]/brave-browser/src/third_party/depot_tools/vpython3",
+      "-u",
+      "[RECIPES_ROOT]/recipe_modules/file/resources/fileutil.py",
+      "--json-output",
+      "/path/to/tmp/json",
+      "copy",
+      "{\n  \"key\": \"value\"\n}",
+      "/tmp/config.json"
+    ],
+    "name": "write config"
+  },
+  {
+    "cmd": [
+      "[WORKSPACE]/brave-browser/src/third_party/depot_tools/vpython3",
+      "-u",
+      "[RECIPES_ROOT]/recipe_modules/file/resources/fileutil.py",
+      "--json-output",
+      "/path/to/tmp/json",
+      "copy",
+      "{\n  \"text\": \"bye proto\"\n}",
+      "/tmp/greeting.json"
+    ],
+    "name": "write proto greeting"
   },
   {
     "name": "$result"
