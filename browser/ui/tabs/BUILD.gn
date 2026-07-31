@@ -33,6 +33,7 @@ source_set("tabs_public") {
     "//brave/components/containers/buildflags",
     "//brave/components/playlist/core/common/buildflags",
     "//brave/components/speedreader/common/buildflags",
+    "//brave/components/tor/buildflags",
   ]
 }
 
