@@ -21,6 +21,8 @@ import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.autofill.brave.R;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.settings.ChromeBaseSettingsFragment;
+import org.chromium.chrome.browser.theme.BraveDynamicColors;
+import org.chromium.components.browser_ui.settings.BraveSettingsIconTintUtils;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.user_prefs.UserPrefs;
 
@@ -123,6 +125,8 @@ public abstract class BraveAutofillOptionsFragmentBase extends ChromeBaseSetting
         @Override
         public void onBindViewHolder(PreferenceViewHolder holder) {
             super.onBindViewHolder(holder);
+            BraveSettingsIconTintUtils.applyIconTint(
+                    holder, BraveDynamicColors.isDynamicColorsEnabled());
 
             View iconFrame =
                     holder.findViewById(
