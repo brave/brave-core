@@ -424,8 +424,8 @@ void BraveHorizontalTabStripRegionView::Layout(PassKey) {
     return;
   }
 
-  UpdateTabStripMargin();
   UpdateScrollButtonsVisibility();
+  UpdateTabStripMargin();
 
   if (!VerticalTabController::FromBrowser(
            tab_strip_->GetBrowserWindowInterface())
@@ -438,7 +438,9 @@ void BraveHorizontalTabStripRegionView::Layout(PassKey) {
     // the overflow state of tab container. In this case, schedule layout.
     if (HaveScrollButtons() && ShouldShowHorizontalScrollButton() !=
                                    tab_scroll_next_button_->GetVisible()) {
-      InvalidateLayout();
+      UpdateScrollButtonsVisibility();
+      UpdateTabStripMargin();
+      LayoutSuperclass<HorizontalTabStripRegionView>(this);
     }
 
     // NTB is ignored by flex (`kViewIgnoredByLayoutKey`) and positioned
@@ -509,8 +511,6 @@ void BraveHorizontalTabStripRegionView::UpdateTabStripMargin() {
       VerticalTabController::FromBrowser(browser_window_interface)
           ->ShouldShowBraveVerticalTabs();
 
-  UpdateTrailingScrollButtonMargin(vertical_tabs);
-
   gfx::Insets margins;
 
   // In horizontal mode, take the current right margin. It is required so that
@@ -547,6 +547,12 @@ void BraveHorizontalTabStripRegionView::UpdateTabStripMargin() {
   }
 
   tab_strip_->SetProperty(views::kMarginsKey, margins);
+  tab_strip_->InvalidateLayout();
+
+  // This will move the right margin to the trailing scroll button when it is
+  // visible. So this should be called after the right margin for tab strip is
+  // set.
+  UpdateTrailingScrollButtonMargin(vertical_tabs);
 }
 
 void BraveHorizontalTabStripRegionView::UpdateTrailingScrollButtonMargin(
@@ -575,6 +581,7 @@ void BraveHorizontalTabStripRegionView::UpdateTrailingScrollButtonMargin(
 
   const bool scroll_active = container->ShouldShowHorizontalScrollButton() &&
                              *show_horizontal_tab_scroll_buttons_;
+  CHECK_EQ(scroll_active, tab_scroll_next_button_->GetVisible());
 
   if (scroll_active) {
     // Upstream reserves a right margin on the tab strip so the layered NTB can
@@ -585,12 +592,14 @@ void BraveHorizontalTabStripRegionView::UpdateTrailingScrollButtonMargin(
     if (auto* current = tab_strip_->GetProperty(views::kMarginsKey)) {
       upstream_right = current->right();
     }
+    upstream_right -= tab_scroll_next_button_->GetPreferredSize().width();
     tab_scroll_next_button_->SetProperty(
         views::kMarginsKey, gfx::Insets::TLBR(0, 0, 0, upstream_right));
     // Clear the strip's right margin so tabs extend to the trailing button.
     if (auto* current = tab_strip_->GetProperty(views::kMarginsKey)) {
       tab_strip_->SetProperty(views::kMarginsKey,
                               gfx::Insets::TLBR(0, current->left(), 0, 0));
+      tab_strip_->InvalidateLayout();
     }
   } else {
     tab_scroll_next_button_->ClearProperty(views::kMarginsKey);
