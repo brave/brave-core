@@ -19,6 +19,8 @@ source_set("ai_chat") {
     "chart_display_ui.h",
     "code_sandbox_ui.cc",
     "code_sandbox_ui.h",
+    "leo_workspace_ui.cc",
+    "leo_workspace_ui.h",
   ]
 
   deps = [
