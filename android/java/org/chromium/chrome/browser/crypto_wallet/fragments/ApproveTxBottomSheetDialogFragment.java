@@ -139,6 +139,7 @@ public class ApproveTxBottomSheetDialogFragment extends WalletBottomSheetDialogF
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         mRejectAllTx = view.findViewById(R.id.btn_reject_transactions);
 
         if (mTxInfo == null) {

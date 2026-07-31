@@ -15,9 +15,6 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
@@ -76,30 +73,6 @@ public class TwoLineItemBottomSheetFragment extends WalletBottomSheetDialogFragm
             @Nullable ViewGroup container,
             @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_two_line_item_sheet, container, false);
-
-        // Phones drop the Material width cap (WalletBottomSheetDialogFragment.onStart), so the
-        // sheet is full-width and can run under a display cutout; keep its contents clear of it.
-        // The cutout's left/right insets are already orientation-aware (zero unless the cutout is
-        // on a vertical edge), so no orientation check is needed. Tablets keep the centered,
-        // width-limited sheet, which never reaches a screen-edge cutout, so they are excluded.
-        // BottomSheetBehavior already applies the system-bar insets, so only the cutout is here.
-        final int basePaddingLeft = view.getPaddingLeft();
-        final int basePaddingRight = view.getPaddingRight();
-        ViewCompat.setOnApplyWindowInsetsListener(
-                view,
-                (v, insets) -> {
-                    int left = basePaddingLeft;
-                    int right = basePaddingRight;
-                    if (!ConfigurationUtils.isTablet(v.getContext())) {
-                        final Insets cutout =
-                                insets.getInsets(WindowInsetsCompat.Type.displayCutout());
-                        left += cutout.left;
-                        right += cutout.right;
-                    }
-                    v.setPadding(left, v.getPaddingTop(), right, v.getPaddingBottom());
-                    return insets;
-                });
-
         RecyclerView recyclerView = view.findViewById(R.id.frag_two_line_sheet_list);
         if (mAdapter != null) {
             recyclerView.setAdapter(mAdapter);

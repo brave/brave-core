@@ -8,6 +8,12 @@ package org.chromium.chrome.browser.crypto_wallet.fragments;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Bundle;
+import android.view.View;
+
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
@@ -18,6 +24,7 @@ import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.build.annotations.EnsuresNonNull;
 import org.chromium.build.annotations.MonotonicNonNull;
 import org.chromium.build.annotations.NullMarked;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.app.domain.KeyringModel;
 import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.crypto_wallet.observers.KeyringServiceObserverImpl;
@@ -78,6 +85,35 @@ public class WalletBottomSheetDialogFragment extends BottomSheetDialogFragment
         } else {
             throw new IllegalStateException("Host activity must implement WalletFragmentCallback.");
         }
+    }
+
+    /**
+     * Pads the sheet contents by the display-cutout insets so that, when the sheet is full-width in
+     * landscape, its contents stay clear of a cutout (e.g. a camera hole). The cutout's left/right
+     * insets are already orientation-aware (zero unless the cutout is on a vertical edge), and
+     * tablets keep the centered, width-limited sheet, so the padding is applied for phones only.
+     * {@code BottomSheetBehavior} already handles the system-bar insets.
+     */
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        final int basePaddingLeft = view.getPaddingLeft();
+        final int basePaddingRight = view.getPaddingRight();
+        ViewCompat.setOnApplyWindowInsetsListener(
+                view,
+                (v, insets) -> {
+                    int left = basePaddingLeft;
+                    int right = basePaddingRight;
+                    if (!ConfigurationUtils.isTablet(v.getContext())) {
+                        final Insets cutout =
+                                insets.getInsets(WindowInsetsCompat.Type.displayCutout());
+                        left += cutout.left;
+                        right += cutout.right;
+                    }
+                    v.setPadding(left, v.getPaddingTop(), right, v.getPaddingBottom());
+                    return insets;
+                });
     }
 
     @Override
