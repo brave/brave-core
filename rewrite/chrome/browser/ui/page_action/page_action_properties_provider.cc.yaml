@@ -52,4 +52,11 @@ substitutions:
                 },
             },
             {
+                kActionShowBraveNews,
+                {
+                    .histogram_name = "BraveNews",
+                    .type = brave::kBraveNewsPageActionIconType,
+                },
+            },
+            {
                 kActionVirtualCardEnroll,

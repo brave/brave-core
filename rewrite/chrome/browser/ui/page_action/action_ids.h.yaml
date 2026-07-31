@@ -17,3 +17,4 @@ substitutions:
             kActionShowWaybackMachine,
             kActionShowPlaylistPageAction,
             kActionShowOnionLocation,
+            kActionShowBraveNews,
