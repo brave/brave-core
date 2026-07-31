@@ -47,10 +47,19 @@ public class BraveSnackbarView extends SnackbarView {
     @SuppressWarnings({"UnusedVariable", "HidingField"})
     protected @Nullable ViewGroup mContainerView;
 
-    // Flag to track if we've already restructured the view hierarchy
-    private boolean mViewRestructured;
-    // Reference to the title TextView we add programmatically
+    // Reference to the title TextView we add programmatically. Non-null only while the custom-text
+    // layout is applied.
     private @Nullable TextView mTitleTextView;
+    // The horizontal row holding the snackbar's own children (favicon, message, action button) in
+    // the custom-text layout, below the title. Non-null only while that layout is applied; tracked
+    // so it can be reverted when this (reused) SnackbarView is updated for a different snackbar.
+    private @Nullable LinearLayout mContentRow;
+    // The custom-text layout follows the snackbar that requested it, not this (reused) view: it is
+    // re-applied when that snackbar is shown and reverted for any other snackbar.
+    private @Nullable Snackbar mCustomTextSnackbar;
+    private String mCustomTextTitle = "";
+    private String mCustomTextPageTitle = "";
+    private String mCustomTextUrl = "";
     // The end-aligned row holding the action button (and optional close button) in the
     // action-below-message layout. Non-null only while that layout is applied; tracked so it can be
     // reverted when this (reused) SnackbarView is updated for a different snackbar.
@@ -156,17 +165,24 @@ public class BraveSnackbarView extends SnackbarView {
 
     /**
      * The {@link SnackbarView} is reused across snackbars (the manager updates it in place rather
-     * than recreating it). After the base class repopulates the view, re-apply the
-     * action-below-message layout if this is the snackbar that requested it, otherwise revert it so
-     * the stacked layout and close button don't leak into an unrelated snackbar.
+     * than recreating it). After the base class repopulates the view, re-apply the custom layout
+     * this snackbar asked for, and revert the ones it didn't so they don't leak into an unrelated
+     * snackbar. Both layouts reparent the same views, so every revert runs before any apply.
      */
     @Override
     boolean update(Snackbar snackbar) {
         boolean result = super.update(snackbar);
+        if (snackbar != mActionBelowSnackbar) {
+            resetActionBelowMessage();
+        }
+        if (snackbar != mCustomTextSnackbar) {
+            resetViewHierarchy();
+        }
+        if (snackbar == mCustomTextSnackbar) {
+            applyCustomText();
+        }
         if (snackbar == mActionBelowSnackbar) {
             applyActionBelowMessage();
-        } else {
-            resetActionBelowMessage();
         }
         return result;
     }
@@ -229,8 +245,12 @@ public class BraveSnackbarView extends SnackbarView {
         rowParams.gravity = android.view.Gravity.END;
         actionRow.setLayoutParams(rowParams);
 
-        // Move the existing action button into the row.
-        snackbarLayout.removeView(buttonView);
+        // Move the existing action button into the row. It is a direct child of the snackbar
+        // layout in the stock layout but a child of the content row in the custom-text layout, and
+        // removeView() only removes direct children, so detach it from its actual parent.
+        if (buttonView.getParent() instanceof ViewGroup) {
+            ((ViewGroup) buttonView.getParent()).removeView(buttonView);
+        }
         buttonView.setLayoutParams(
                 new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -275,13 +295,18 @@ public class BraveSnackbarView extends SnackbarView {
             return;
         }
 
-        // Pull the action button back out of our row so it becomes a direct child again.
+        // Pull the action button back out of our row so it rejoins the row it came from.
         View buttonView = mActionRow.findViewById(R.id.snackbar_button);
         mActionRow.removeAllViews();
-        snackbarLayout.removeView(mActionRow);
+        if (mActionRow.getParent() instanceof ViewGroup) {
+            ((ViewGroup) mActionRow.getParent()).removeView(mActionRow);
+        }
         mActionRow = null;
 
-        snackbarLayout.setOrientation(LinearLayout.HORIZONTAL);
+        // The custom-text layout owns the vertical orientation; leave it alone while it is applied.
+        if (mContentRow == null) {
+            snackbarLayout.setOrientation(LinearLayout.HORIZONTAL);
+        }
 
         if (buttonView != null) {
             LinearLayout.LayoutParams buttonLp =
@@ -290,7 +315,10 @@ public class BraveSnackbarView extends SnackbarView {
                             LinearLayout.LayoutParams.WRAP_CONTENT);
             buttonLp.gravity = android.view.Gravity.CENTER_VERTICAL;
             buttonView.setLayoutParams(buttonLp);
-            snackbarLayout.addView(buttonView);
+            // The button is a child of the content row while the custom-text layout is applied,
+            // and a direct child of the snackbar layout otherwise.
+            ViewGroup buttonParent = mContentRow != null ? mContentRow : snackbarLayout;
+            buttonParent.addView(buttonView);
         }
 
         // Restore the message's original width/weight (matching floating_snackbar.xml); its margins
@@ -316,26 +344,36 @@ public class BraveSnackbarView extends SnackbarView {
      * @param url The URL to display
      */
     public void setCustomText(String title, String pageTitle, String url) {
+        // Remember the request so it can follow this snackbar across view reuse (see update()).
+        mCustomTextSnackbar = mSnackbar;
+        mCustomTextTitle = title;
+        mCustomTextPageTitle = pageTitle;
+        mCustomTextUrl = url;
+        applyCustomText();
+    }
+
+    /** Applies the text last passed to {@link #setCustomText} to the current view hierarchy. */
+    private void applyCustomText() {
         if (mContainerView == null) {
-            Log.e(TAG, "setCustomText: mContainerView is null");
+            Log.e(TAG, "applyCustomText: mContainerView is null");
             return;
         }
 
-        // Restructure the view hierarchy to add title on top (only once)
-        if (!mViewRestructured) {
+        // Restructure the view hierarchy to add title on top, unless it already is restructured.
+        if (mContentRow == null) {
             restructureViewHierarchy();
         }
 
         // Set the title text
-        if (mTitleTextView != null && !title.isEmpty()) {
-            mTitleTextView.setText(title);
+        if (mTitleTextView != null && !mCustomTextTitle.isEmpty()) {
+            mTitleTextView.setText(mCustomTextTitle);
             mTitleTextView.setVisibility(View.VISIBLE);
         }
 
         // Find the TextView that displays the message
         TextView messageTextView = findMessageTextView(mContainerView);
         if (messageTextView == null) {
-            Log.e(TAG, "setCustomText: Could not find message TextView");
+            Log.e(TAG, "applyCustomText: Could not find message TextView");
             return;
         }
 
@@ -358,16 +396,25 @@ public class BraveSnackbarView extends SnackbarView {
         }
 
         // Build and set formatted text
-        buildFormattedText(messageTextView, pageTitle, url, availableWidth);
+        buildFormattedText(messageTextView, mCustomTextPageTitle, mCustomTextUrl, availableWidth);
 
         // If TextView wasn't measured yet, update text after layout
         if (messageTextView.getWidth() <= 0) {
             messageTextView.post(
                     () -> {
+                        // This view is reused: don't overwrite the message of a snackbar that has
+                        // taken it over in the meantime.
+                        if (mSnackbar != mCustomTextSnackbar) {
+                            return;
+                        }
                         // Re-measure and update text with correct truncation
                         int measuredWidth = messageTextView.getWidth();
                         if (measuredWidth > 0) {
-                            buildFormattedText(messageTextView, pageTitle, url, measuredWidth);
+                            buildFormattedText(
+                                    messageTextView,
+                                    mCustomTextPageTitle,
+                                    mCustomTextUrl,
+                                    measuredWidth);
                         }
                     });
         }
@@ -387,18 +434,11 @@ public class BraveSnackbarView extends SnackbarView {
      * </pre>
      */
     private void restructureViewHierarchy() {
-        if (mContainerView == null) {
+        LinearLayout snackbarLayout = getSnackbarLayout();
+        if (snackbarLayout == null) {
+            Log.e(TAG, "restructureViewHierarchy: snackbar layout not found");
             return;
         }
-
-        // Find the snackbar LinearLayout (R.id.snackbar)
-        View snackbarView = mContainerView.findViewById(R.id.snackbar);
-        if (!(snackbarView instanceof LinearLayout)) {
-            Log.e(TAG, "restructureViewHierarchy: snackbar view is not a LinearLayout");
-            return;
-        }
-
-        LinearLayout snackbarLayout = (LinearLayout) snackbarView;
 
         // Save the original children
         int childCount = snackbarLayout.getChildCount();
@@ -456,7 +496,44 @@ public class BraveSnackbarView extends SnackbarView {
         // Add content row as second child
         snackbarLayout.addView(contentRow);
 
-        mViewRestructured = true;
+        mContentRow = contentRow;
+    }
+
+    /**
+     * Undoes {@link #restructureViewHierarchy()}, moving the snackbar's own children back out of
+     * the content row and dropping the title, so the stock single-row layout is restored.
+     */
+    private void resetViewHierarchy() {
+        LinearLayout contentRow = mContentRow;
+        if (contentRow == null) {
+            return;
+        }
+        mContentRow = null;
+
+        LinearLayout snackbarLayout = getSnackbarLayout();
+        if (snackbarLayout == null) {
+            mTitleTextView = null;
+            return;
+        }
+
+        // Save the children so they can be re-added to the snackbar layout in their original order.
+        int childCount = contentRow.getChildCount();
+        View[] rowChildren = new View[childCount];
+        for (int i = 0; i < childCount; i++) {
+            rowChildren[i] = contentRow.getChildAt(i);
+        }
+        contentRow.removeAllViews();
+
+        snackbarLayout.removeView(contentRow);
+        if (mTitleTextView != null) {
+            snackbarLayout.removeView(mTitleTextView);
+            mTitleTextView = null;
+        }
+
+        snackbarLayout.setOrientation(LinearLayout.HORIZONTAL);
+        for (View child : rowChildren) {
+            snackbarLayout.addView(child);
+        }
     }
 
     /**
