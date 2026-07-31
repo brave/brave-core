@@ -1,12 +1,63 @@
 diff --git a/chrome/browser/ui/tabs/tab_strip_model.h b/chrome/browser/ui/tabs/tab_strip_model.h
-index cf144a90c3a881225aea35ba65fa82283cb3a9f6..a08a7285f85a7193d201e7dcfdbd90fcecac370a 100644
+index cf144a90c3a881225aea35ba65fa82283cb3a9f6..ad0622d400fc828e5481ad2f4bd35fbcd67f393c 100644
 --- a/chrome/browser/ui/tabs/tab_strip_model.h
 +++ b/chrome/browser/ui/tabs/tab_strip_model.h
-@@ -211,6 +211,7 @@ class TabStripModel {
+@@ -42,7 +42,7 @@
+ #error This file should only be included on desktop.
+ #endif
+ 
+-class DraggingTabsSession;
++class DraggingTabsSessionChromium;
+ class Profile;
+ class TabGroupModel;
+ class TabStripModelDelegate;
+@@ -211,7 +211,7 @@ class TabStripModel {
    TabStripModel(const TabStripModel&) = delete;
    TabStripModel& operator=(const TabStripModel&) = delete;
  
-+  virtual
-   ~TabStripModel();
+-  ~TabStripModel();
++  virtual ~TabStripModel();
  
    // Retrieves the TabStripModelDelegate associated with this TabStripModel.
+   TabStripModelDelegate* delegate() const { return delegate_; }
+@@ -612,7 +612,7 @@ class TabStripModel {
+   // returns the index of the tabs in the current model that would end up being
+   // the adjacent tabs of the selected unpinned tabs post move operation.
+   std::pair<std::optional<int>, std::optional<int>>
+-  GetAdjacentTabsAfterSelectedMove(base::PassKey<DraggingTabsSession>,
++  GetAdjacentTabsAfterSelectedMove(base::PassKey<DraggingTabsSessionChromium>,
+                                    int destination_index);
+ 
+   // Updates the layout for the tabs with `split_id` and notifies observers.
+@@ -769,6 +769,14 @@ class TabStripModel {
+     CommandGlicCreateNewChat,
+     CommandGlicSwitchToRecentConversation,
+     CommandGlicUnshare,
++    CommandRestoreTab,
++    CommandBookmarkAllTabs,
++    CommandShowVerticalTabs,
++    CommandToggleTabMuted,
++    CommandBringAllTabsToThisWindow,
++    CommandCloseDuplicateTabs,
++    CommandOpenInContainer,
++    CommandRenameTab,
+     CommandLast
+   };
+   // LINT.ThenChange(//tools/metrics/histograms/metadata/tab/histograms.xml:TabContextMenuCommand)
+@@ -897,6 +905,7 @@ class TabStripModel {
+       const content::WebContents* contents) const;
+ 
+  private:
++  friend class BraveTabStripModel;
+   FRIEND_TEST_ALL_PREFIXES(TabStripModelTest, GetIndicesClosedByCommand);
+   // Temporary private API.
+   FRIEND_TEST_ALL_PREFIXES(TabStripModelTest, FindGroupIdFor);
+@@ -1174,7 +1183,7 @@ class TabStripModel {
+   };
+ 
+   // Selects either the next tab (kNext), or the previous tab (kPrevious).
+-  void SelectRelativeTab(TabRelativeDirection direction,
++  virtual void SelectRelativeTab(TabRelativeDirection direction,
+                          TabStripUserGestureDetails detail);
+ 
+   // Moves the active tab (or its split if it is in one) into the next slot
