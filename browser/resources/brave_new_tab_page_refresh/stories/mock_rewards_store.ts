@@ -11,7 +11,7 @@ export function createRewardsStore() {
   store.update({
     initialized: true,
     rewardsFeatureEnabled: true,
-    rewardsEnabled: true,
+    rewardsEnabled: false,
     showRewardsWidget: true,
     rewardsBalance: null,
     rewardsExchangeRate: 1,

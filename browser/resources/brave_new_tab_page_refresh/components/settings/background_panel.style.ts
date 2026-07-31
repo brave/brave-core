@@ -11,6 +11,7 @@ import {
   radius,
   spacing,
 } from '@brave/leo/tokens/css/variables'
+
 import { scoped } from '$web-common/scoped_css'
 
 export const style = scoped.css`
@@ -19,7 +20,7 @@ export const style = scoped.css`
     flex-direction: column;
   }
 
-  label .subtext {
+  .label .subtext {
     font: ${font.small.regular};
     color: ${color.text.secondary};
 
@@ -33,15 +34,6 @@ export const style = scoped.css`
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: ${spacing.xl};
-
-    > button,
-    .background-option > button:first-child {
-      display: flex;
-      flex-direction: column;
-      width: 100%;
-      gap: ${spacing.m};
-      padding-bottom: ${spacing.m};
-    }
   }
 
   .preview {
@@ -56,7 +48,7 @@ export const style = scoped.css`
     height: auto;
     aspect-ratio: 4 / 3;
 
-    &:has(.selected-marker) {
+    &.selected {
       box-shadow: ${effect.elevation['01']};
     }
   }
@@ -65,9 +57,19 @@ export const style = scoped.css`
     position: relative;
     text-align: center;
 
-    &:hover .remove-image,
-    &:focus-within .remove-image {
-      visibility: visible;
+    > button:first-child {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      gap: ${spacing.m};
+      padding-bottom: ${spacing.m};
+    }
+
+    &:hover,
+    &:focus-within {
+      .remove-image {
+        visibility: visible;
+      }
     }
   }
 
@@ -85,7 +87,6 @@ export const style = scoped.css`
     height: ${icon.l};
     background-color: ${color.white};
     border-radius: ${radius.full};
-    padding: 0;
     visibility: hidden;
   }
 
@@ -101,5 +102,4 @@ export const style = scoped.css`
     border: solid 2px ${color.divider.faint};
     font: ${font.small.regular};
   }
-
 `

@@ -16,6 +16,7 @@ import {
   useRewardsActions,
 } from '../../context/rewards_context'
 import { useVpnState, useVpnActions } from '../../context/vpn_context'
+import { SettingsPanel } from './settings_panel'
 
 import { style } from './widgets_panel.style'
 
@@ -35,7 +36,10 @@ export function WidgetsPanel() {
   const showVpnWidget = useVpnState((s) => s.showVpnWidget)
 
   return (
-    <div data-css-scope={style.scope}>
+    <SettingsPanel
+      cssScope={style.scope}
+      title={getString(S.NEW_TAB_WIDGET_SETTINGS_TITLE)}
+    >
       <Toggle
         className='toggle-row'
         size='small'
@@ -46,7 +50,7 @@ export function WidgetsPanel() {
       >
         <span className='label'>
           <Icon name='shield-done' />
-          <span>{getString(S.NEW_TAB_SHOW_STATS_LABEL)}</span>
+          {getString(S.NEW_TAB_SHOW_STATS_LABEL)}
         </span>
       </Toggle>
       {vpnFeatureEnabled && (
@@ -60,7 +64,7 @@ export function WidgetsPanel() {
         >
           <span className='label'>
             <Icon name='product-vpn' />
-            <span>{getString(S.NEW_TAB_SHOW_VPN_WIDGET_LABEL)}</span>
+            {getString(S.NEW_TAB_SHOW_VPN_WIDGET_LABEL)}
           </span>
         </Toggle>
       )}
@@ -75,7 +79,7 @@ export function WidgetsPanel() {
         >
           <span className='label'>
             <Icon name='product-bat-outline' />
-            <span>{getString(S.NEW_TAB_SHOW_REWARDS_WIDGET_LABEL)}</span>
+            {getString(S.NEW_TAB_SHOW_REWARDS_WIDGET_LABEL)}
           </span>
         </Toggle>
       )}
@@ -90,7 +94,7 @@ export function WidgetsPanel() {
         >
           <span className='label'>
             <Icon name='product-brave-talk' />
-            <span>{getString(S.NEW_TAB_SHOW_TALK_WIDGET_LABEL)}</span>
+            {getString(S.NEW_TAB_SHOW_TALK_WIDGET_LABEL)}
           </span>
         </Toggle>
       )}
@@ -105,10 +109,10 @@ export function WidgetsPanel() {
         >
           <span className='label'>
             <Icon name='product-brave-news' />
-            <span>{getString(S.NEW_TAB_SHOW_NEWS_WIDGET_LABEL)}</span>
+            {getString(S.NEW_TAB_SHOW_NEWS_WIDGET_LABEL)}
           </span>
         </Toggle>
       )}
-    </div>
+    </SettingsPanel>
   )
 }

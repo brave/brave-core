@@ -16,8 +16,10 @@ import { useRewardsState } from '../../context/rewards_context'
 import { getString } from '../../lib/strings'
 import { inlineCSSVars } from '../../lib/inline_css_vars'
 import { BackgroundTypePanel } from './background_type_panel'
+import { SettingsPanel } from './settings_panel'
 import { Link } from '../common/link'
 import { formatString } from '$web-common/formatString'
+import classnames from '$web-common/classnames'
 import { settingsURL } from '../../../../../components/brave_rewards/resources/shared/lib/rewards_urls'
 
 import {
@@ -29,12 +31,7 @@ import {
 
 import { style } from './background_panel.style'
 
-interface Props {
-  panelType: SelectedBackgroundType | null
-  onPanelTypeChange: (type: SelectedBackgroundType | null) => void
-}
-
-export function BackgroundPanel(props: Props) {
+export function BackgroundPanel() {
   const actions = useBackgroundActions()
 
   const backgroundsEnabled = useBackgroundState((s) => s.backgroundsEnabled)
@@ -50,15 +47,13 @@ export function BackgroundPanel(props: Props) {
   const rewardsFeatureEnabled = useRewardsState((s) => s.rewardsFeatureEnabled)
   const rewardsEnabled = useRewardsState((s) => s.rewardsEnabled)
 
+  const [panelType, setPanelType] =
+    React.useState<SelectedBackgroundType | null>(null)
   const [uploading, setUploading] = React.useState(false)
 
   React.useEffect(() => {
     setUploading(false)
   }, [selectedBackground, customBackgrounds])
-
-  function setPanel(type?: SelectedBackgroundType) {
-    props.onPanelTypeChange(type ?? null)
-  }
 
   function getTypePreviewValue(type: SelectedBackgroundType) {
     const isSelectedType = type === selectedBackground.type
@@ -102,9 +97,10 @@ export function BackgroundPanel(props: Props) {
     ) {
       return renderUploadPreview()
     }
+    const selected = type === selectedBackground.type
     return (
       <div
-        className='preview'
+        className={classnames({ preview: true, selected })}
         style={inlineCSSVars({
           '--preview-background': backgroundCSSValue(
             type,
@@ -112,7 +108,7 @@ export function BackgroundPanel(props: Props) {
           ),
         })}
       >
-        {type === selectedBackground.type && (
+        {selected && (
           <span className='selected-marker'>
             <Icon name='check-normal' />
           </span>
@@ -133,27 +129,47 @@ export function BackgroundPanel(props: Props) {
     if (customBackgrounds.length === 0) {
       showCustomBackgroundChooser()
     } else {
-      setPanel(SelectedBackgroundType.kCustom)
+      setPanelType(SelectedBackgroundType.kCustom)
     }
   }
 
-  if (props.panelType !== null) {
+  function subPanelTitle(type: SelectedBackgroundType) {
+    switch (type) {
+      case SelectedBackgroundType.kCustom:
+        return getString(S.NEW_TAB_CUSTOM_BACKGROUND_LABEL)
+      case SelectedBackgroundType.kGradient:
+        return getString(S.NEW_TAB_GRADIENT_BACKGROUND_LABEL)
+      case SelectedBackgroundType.kSolid:
+        return getString(S.NEW_TAB_SOLID_BACKGROUND_LABEL)
+      default:
+        return ''
+    }
+  }
+
+  if (panelType !== null) {
     return (
-      <div data-css-scope={style.scope}>
+      <SettingsPanel
+        cssScope={style.scope}
+        title={subPanelTitle(panelType)}
+        onBack={() => setPanelType(null)}
+      >
         <BackgroundTypePanel
-          backgroundType={props.panelType}
+          backgroundType={panelType}
           renderUploadOption={() => (
             <button onClick={showCustomBackgroundChooser}>
               {renderUploadPreview()}
             </button>
           )}
         />
-      </div>
+      </SettingsPanel>
     )
   }
 
   return (
-    <div data-css-scope={style.scope}>
+    <SettingsPanel
+      cssScope={style.scope}
+      title={getString(S.NEW_TAB_BACKGROUND_SETTINGS_TITLE)}
+    >
       <Toggle
         className='toggle-row'
         size='small'
@@ -176,22 +192,25 @@ export function BackgroundPanel(props: Props) {
           }}
         >
           <span className='label'>
-            {getString(S.NEW_TAB_SHOW_SPONSORED_IMAGES_LABEL)}
-            <div className='subtext'>
-              {!rewardsEnabled
-                && formatString(
-                  getString(S.NEW_TAB_SHOW_SPONSORED_IMAGES_EARNING_TEXT),
-                  {
-                    $1: (content) => (
-                      <Link
-                        url={settingsURL}
-                        openInNewTab
-                      >
-                        {content}
-                      </Link>
-                    ),
-                  },
-                )}
+            <div>
+              {getString(S.NEW_TAB_SHOW_SPONSORED_IMAGES_LABEL)}
+              {!rewardsEnabled && (
+                <div className='subtext'>
+                  {formatString(
+                    getString(S.NEW_TAB_SHOW_SPONSORED_IMAGES_EARNING_TEXT),
+                    {
+                      $1: (content) => (
+                        <Link
+                          url={settingsURL}
+                          openInNewTab
+                        >
+                          {content}
+                        </Link>
+                      ),
+                    },
+                  )}
+                </div>
+              )}
             </div>
           </span>
         </Toggle>
@@ -216,14 +235,16 @@ export function BackgroundPanel(props: Props) {
               </button>
             </div>
             <div className='background-option'>
-              <button onClick={() => setPanel(SelectedBackgroundType.kSolid)}>
+              <button
+                onClick={() => setPanelType(SelectedBackgroundType.kSolid)}
+              >
                 {renderTypePreview(SelectedBackgroundType.kSolid)}
                 {getString(S.NEW_TAB_SOLID_BACKGROUND_LABEL)}
               </button>
             </div>
             <div className='background-option'>
               <button
-                onClick={() => setPanel(SelectedBackgroundType.kGradient)}
+                onClick={() => setPanelType(SelectedBackgroundType.kGradient)}
               >
                 {renderTypePreview(SelectedBackgroundType.kGradient)}
                 {getString(S.NEW_TAB_GRADIENT_BACKGROUND_LABEL)}
@@ -232,6 +253,6 @@ export function BackgroundPanel(props: Props) {
           </div>
         </>
       )}
-    </div>
+    </SettingsPanel>
   )
 }
