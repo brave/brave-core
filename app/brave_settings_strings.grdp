@@ -1752,6 +1752,9 @@
   <message name="IDS_SETTINGS_LEO_ASSISTANT_EDIT_MODEL_LABEL" desc="A title for adding a custom model">
     Edit model
   </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_REQUIRED_LABEL" desc="A label indicating that a form field is required">
+    Required
+  </message>
   <message name="IDS_SETTINGS_LEO_ASSISTANT_INPUT_MODEL_LABEL" desc="An input title for adding a custom model">
     Label
   </message>
