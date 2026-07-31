@@ -1,0 +1,21 @@
+diff --git a/base/strings/to_string.h b/base/strings/to_string.h
+index bfd24406c4086ad35dc8b5170aba9d23f7c57ae4..ea14c5f7e9e96c3ba23c7e6beeefd214ced5f416 100644
+--- a/base/strings/to_string.h
++++ b/base/strings/to_string.h
+@@ -75,14 +75,13 @@ struct ToStringHelper<T> {
+ 
+ // Integral types that can't stream, like char16_t.
+ template <typename T>
+-  requires(!SupportsOstreamOperator<const T&> && std::is_integral_v<T>)
++  requires(!SupportsOstreamOperator<const T&> && std::is_integral_v<T> &&
++           sizeof(T) <= 8)
+ struct ToStringHelper<T> {
+   static void Stringify(const T& v, std::ostringstream& ss) {
+     if constexpr (std::is_signed_v<T>) {
+-      static_assert(sizeof(T) <= 8);
+       ss << static_cast<int64_t>(v);
+     } else {
+-      static_assert(sizeof(T) <= 8);
+       ss << static_cast<uint64_t>(v);
+     }
+   }
