@@ -10,21 +10,13 @@ import {
   radius,
   spacing,
 } from '@brave/leo/tokens/css/variables'
+
 import { scoped } from '$web-common/scoped_css'
 
 export const style = scoped.css`
   & {
     display: flex;
     flex-direction: column;
-  }
-
-  .toggle-row .label {
-    --leo-icon-size: ${icon.m};
-
-    display: flex;
-    align-items: center;
-    gap: ${spacing.xl};
-    color: ${color.text.primary};
   }
 
   .search-engines {
@@ -44,16 +36,15 @@ export const style = scoped.css`
     display: flex;
     flex-direction: column;
     margin: 0 ${spacing.xl};
-    overflow: hidden;
     border: solid 1px ${color.divider.subtle};
     border-radius: ${radius.m};
-  }
 
-  .search-engine {
-    padding: ${spacing.l} ${spacing.xl};
-    border-bottom: solid 1px ${color.divider.subtle};
+    > * {
+      padding: ${spacing.l} ${spacing.xl};
+      border-bottom: solid 1px ${color.divider.subtle};
+    }
 
-    &:last-child {
+    > :last-child {
       border-bottom: none;
     }
   }
@@ -71,11 +62,6 @@ export const style = scoped.css`
     font: ${font.default.semibold};
   }
 
-  .divider {
-    height: 1px;
-    background: ${color.divider.subtle};
-  }
-
   .customize-link {
     --leo-icon-size: ${icon.m};
 
@@ -85,7 +71,6 @@ export const style = scoped.css`
     gap: ${spacing.m};
     width: 100%;
     padding: ${spacing.xl} ${spacing['2Xl']};
-    box-sizing: border-box;
     text-decoration: none;
     color: ${color.text.primary};
   }

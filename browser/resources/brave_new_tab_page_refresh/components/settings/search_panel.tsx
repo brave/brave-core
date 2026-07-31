@@ -12,6 +12,7 @@ import { useSearchState, useSearchActions } from '../../context/search_context'
 import { useNewTabState } from '../../context/new_tab_context'
 import { getString } from '../../lib/strings'
 import { EngineIcon } from '../search/engine_icon'
+import { SettingsPanel } from './settings_panel'
 import { Link } from '../common/link'
 
 import { style } from './search_panel.style'
@@ -26,7 +27,14 @@ export function SearchPanel() {
   const aiChatInputEnabled = useNewTabState((s) => s.aiChatInputEnabled)
 
   return (
-    <div data-css-scope={style.scope}>
+    <SettingsPanel
+      cssScope={style.scope}
+      title={
+        aiChatInputEnabled
+          ? getString(S.NEW_TAB_SEARCH_AND_CHAT_SETTINGS_TITLE)
+          : getString(S.NEW_TAB_SEARCH_SETTINGS_TITLE)
+      }
+    >
       <Toggle
         className='toggle-row'
         size='small'
@@ -37,7 +45,7 @@ export function SearchPanel() {
       >
         <span className='label'>
           <Icon name='search' />
-          <span>{getString(S.NEW_TAB_SHOW_SEARCH_BOX_LABEL)}</span>
+          {getString(S.NEW_TAB_SHOW_SEARCH_BOX_LABEL)}
         </span>
       </Toggle>
       {aiChatInputEnabled && (
@@ -51,7 +59,7 @@ export function SearchPanel() {
         >
           <span className='label'>
             <Icon name='product-brave-leo' />
-            <span>{getString(S.NEW_TAB_SHOW_CHAT_INPUT_LABEL)}</span>
+            {getString(S.NEW_TAB_SHOW_CHAT_INPUT_LABEL)}
           </span>
         </Toggle>
       )}
@@ -62,7 +70,6 @@ export function SearchPanel() {
             {searchEngines.map((engine) => (
               <Checkbox
                 key={engine.host}
-                className='search-engine'
                 checked={enabledSearchEngines.has(engine.host)}
                 onChange={({ checked }) => {
                   actions.setSearchEngineEnabled(engine.host, checked)
@@ -84,6 +91,6 @@ export function SearchPanel() {
           </div>
         </div>
       )}
-    </div>
+    </SettingsPanel>
   )
 }

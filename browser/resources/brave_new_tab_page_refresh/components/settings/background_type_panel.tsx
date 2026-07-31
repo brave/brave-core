@@ -9,7 +9,6 @@ import Toggle from '@brave/leo/react/toggle'
 
 import { getString } from '../../lib/strings'
 import { inlineCSSVars } from '../../lib/inline_css_vars'
-import classNames from '$web-common/classnames'
 
 import {
   SelectedBackgroundType,
@@ -84,7 +83,9 @@ export function BackgroundTypePanel(props: Props) {
         />
       </div>
       <div className='background-options'>
-        {type === SelectedBackgroundType.kCustom && props.renderUploadOption()}
+        {type === SelectedBackgroundType.kCustom && (
+          <div className='background-option'>{props.renderUploadOption()}</div>
+        )}
         {values.map((value) => {
           const isSelected =
             selectedBackground.type === type
@@ -93,10 +94,7 @@ export function BackgroundTypePanel(props: Props) {
           return (
             <div
               key={value}
-              className={classNames({
-                'background-option': true,
-                'can-remove': type === SelectedBackgroundType.kCustom,
-              })}
+              className='background-option'
             >
               <button
                 onClick={() => {

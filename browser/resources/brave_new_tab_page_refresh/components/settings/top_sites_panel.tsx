@@ -13,6 +13,7 @@ import {
   useTopSitesActions,
 } from '../../context/top_sites_context'
 import { getString } from '../../lib/strings'
+import { SettingsPanel } from './settings_panel'
 import classNames from '$web-common/classnames'
 
 import { style } from './top_sites_panel.style'
@@ -36,7 +37,10 @@ export function TopSitesPanel() {
   }
 
   return (
-    <div data-css-scope={style.scope}>
+    <SettingsPanel
+      cssScope={style.scope}
+      title={getString(S.NEW_TAB_TOP_SITES_SETTINGS_TITLE)}
+    >
       <Toggle
         className='toggle-row'
         size='small'
@@ -97,6 +101,6 @@ export function TopSitesPanel() {
           </button>
         </div>
       )}
-    </div>
+    </SettingsPanel>
   )
 }

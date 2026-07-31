@@ -4,7 +4,6 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import Button from '@brave/leo/react/button'
 import Dialog from '@brave/leo/react/dialog'
 import Icon from '@brave/leo/react/icon'
 import Navigation from '@brave/leo/react/navigation'
@@ -14,13 +13,13 @@ import { useBraveNews } from '../../../../../components/brave_news/browser/resou
 
 import { useNewTabState } from '../../context/new_tab_context'
 import { useSearchState } from '../../context/search_context'
-import { SelectedBackgroundType } from '../../state/background_store'
 import { BackgroundPanel } from './background_panel'
 import { SearchPanel } from './search_panel'
 import { TopSitesPanel } from './top_sites_panel'
 import { ClockPanel } from './clock_panel'
 import { WidgetsPanel } from './widgets_panel'
 import { getString } from '../../lib/strings'
+import { useAnimatedResize } from '../../lib/animated_resize'
 
 import { style } from './settings_modal.style'
 
@@ -40,8 +39,7 @@ interface Props {
 
 export function SettingsModal(props: Props) {
   const braveNews = useBraveNews()
-  const panelRef = React.useRef<HTMLDivElement>(null)
-  const previousPanelHeight = React.useRef<number | null>(null)
+  const panelBodyRef = React.useRef<HTMLDivElement>(null)
   const searchFeatureEnabled = useSearchState((s) => s.searchFeatureEnabled)
   const aiChatInputEnabled = useNewTabState((s) => s.aiChatInputEnabled)
   const newsFeatureEnabled = useNewTabState((s) => s.newsFeatureEnabled)
@@ -49,58 +47,19 @@ export function SettingsModal(props: Props) {
   const [currentView, setCurrentView] = React.useState<SettingsView>(
     props.initialView || 'background',
   )
-  const [backgroundPanelType, setBackgroundPanelType] =
-    React.useState<SelectedBackgroundType | null>(null)
 
-  React.useLayoutEffect(() => {
-    const panel = panelRef.current
-    const previousHeight = previousPanelHeight.current
-    if (
-      !panel
-      || previousHeight === null
-      || matchMedia('(prefers-reduced-motion: reduce)').matches
-    ) {
-      return
-    }
-
-    const nextHeight = panel.getBoundingClientRect().height
-    if (Math.abs(previousHeight - nextHeight) < 1) {
-      return
-    }
-
-    panel.getAnimations().forEach((animation) => animation.cancel())
-    panel.animate(
-      [{ height: `${previousHeight}px` }, { height: `${nextHeight}px` }],
-      {
-        duration: 180,
-        easing: 'ease-out',
-      },
-    )
-  }, [currentView, backgroundPanelType])
+  useAnimatedResize(panelBodyRef)
 
   React.useEffect(() => {
     if (props.isOpen) {
-      setBackgroundPanelType(null)
       if (props.initialView === 'news') {
         braveNews.setCustomizePage('news')
         setCurrentView('background')
       } else {
         setCurrentView(props.initialView ?? 'background')
       }
-    } else {
-      previousPanelHeight.current = null
     }
   }, [props.isOpen, props.initialView])
-
-  function capturePanelHeight() {
-    previousPanelHeight.current =
-      panelRef.current?.getBoundingClientRect().height ?? null
-  }
-
-  function changeBackgroundPanelType(type: SelectedBackgroundType | null) {
-    capturePanelHeight()
-    setBackgroundPanelType(type)
-  }
 
   function shouldShowView(view: SettingsView) {
     switch (view) {
@@ -114,17 +73,12 @@ export function SettingsModal(props: Props) {
   }
 
   function renderPanel() {
-    if (!shouldShowView(currentView)) {
+    if (!props.isOpen || !shouldShowView(currentView)) {
       return null
     }
     switch (currentView) {
       case 'background':
-        return (
-          <BackgroundPanel
-            panelType={backgroundPanelType}
-            onPanelTypeChange={changeBackgroundPanelType}
-          />
-        )
+        return <BackgroundPanel />
       case 'search':
         return <SearchPanel />
       case 'top-sites':
@@ -174,19 +128,6 @@ export function SettingsModal(props: Props) {
     }
   }
 
-  function getSectionTitle() {
-    switch (backgroundPanelType) {
-      case SelectedBackgroundType.kCustom:
-        return getString(S.NEW_TAB_CUSTOM_BACKGROUND_LABEL)
-      case SelectedBackgroundType.kGradient:
-        return getString(S.NEW_TAB_GRADIENT_BACKGROUND_LABEL)
-      case SelectedBackgroundType.kSolid:
-        return getString(S.NEW_TAB_SOLID_BACKGROUND_LABEL)
-      default:
-        return getNavItemText(currentView)
-    }
-  }
-
   function renderNavItem(view: SettingsView) {
     if (!shouldShowView(view)) {
       return null
@@ -198,8 +139,6 @@ export function SettingsModal(props: Props) {
           if (view === 'news') {
             braveNews.setCustomizePage('news')
           } else {
-            capturePanelHeight()
-            setBackgroundPanelType(null)
             setCurrentView(view)
           }
         }}
@@ -214,52 +153,28 @@ export function SettingsModal(props: Props) {
     <div data-css-scope={style.scope}>
       <Dialog
         isOpen={props.isOpen}
+        showClose
         onClose={() => props.onClose()}
-        backdropClickCloses={!braveNews.customizePage}
+        backdropClickCloses={false}
       >
-        <div className='dialog-frame'>
-          <Button
-            className='close'
-            kind='plain-faint'
-            fab
-            onClick={props.onClose}
-          >
-            <Icon name='close' />
-          </Button>
-          <div
-            className='panel'
-            ref={panelRef}
-          >
-            <nav>
-              <h3>{getString(S.NEW_TAB_SETTINGS_TITLE)}</h3>
-              <Navigation>
-                {renderNavItem('background')}
-                {renderNavItem('search')}
-                {renderNavItem('top-sites')}
-                {renderNavItem('news')}
-                {renderNavItem('clock')}
-                {renderNavItem('widgets')}
-              </Navigation>
-            </nav>
-            <section>
-              <div className='content'>
-                <h4>
-                  {backgroundPanelType === null ? (
-                    getSectionTitle()
-                  ) : (
-                    <button
-                      className='section-title'
-                      onClick={() => changeBackgroundPanelType(null)}
-                    >
-                      <Icon name='arrow-left' />
-                      {getSectionTitle()}
-                    </button>
-                  )}
-                </h4>
-                <div className='settings-group'>{renderPanel()}</div>
-              </div>
-            </section>
-          </div>
+        <div
+          className='panel-body'
+          ref={panelBodyRef}
+        >
+          <nav>
+            <h4>{getString(S.NEW_TAB_SETTINGS_TITLE)}</h4>
+            <Navigation>
+              {renderNavItem('background')}
+              {renderNavItem('search')}
+              {renderNavItem('top-sites')}
+              {renderNavItem('news')}
+              {renderNavItem('clock')}
+              {renderNavItem('widgets')}
+            </Navigation>
+          </nav>
+          <section>
+            <div>{renderPanel()}</div>
+          </section>
         </div>
       </Dialog>
     </div>
