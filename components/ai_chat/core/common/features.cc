@@ -74,6 +74,11 @@ bool IsAIChatFirstEnabled() {
 
 BASE_FEATURE(kAIChatUserChoiceTool, base::FEATURE_DISABLED_BY_DEFAULT);
 
+// Enables experimental "workspace" local coding-agent tools that let Leo view,
+// search, and edit files within a user-selected local folder.
+// See https://github.com/brave/brave-browser/issues/57388.
+BASE_FEATURE(kAIChatWorkspaceTools, base::FEATURE_DISABLED_BY_DEFAULT);
+
 BASE_FEATURE(kAIChatAgentProfile, base::FEATURE_DISABLED_BY_DEFAULT);
 
 bool IsAIChatAgentProfileEnabled() {
