@@ -48,6 +48,10 @@
 #include "brave/components/speedreader/common/features.h"
 #endif
 
+#if BUILDFLAG(ENABLE_TOR)
+#include "brave/browser/ui/views/page_action/onion_location_page_action_controller.h"
+#endif
+
 namespace tabs {
 
 // static
@@ -145,6 +149,15 @@ void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
         std::make_unique<page_actions::PlaylistPageActionController>(
             tab, *page_action_controller());
     playlist_page_action_controller_->Init();
+  }
+#endif
+
+#if BUILDFLAG(ENABLE_TOR)
+  if (page_action_controller()->ActionExists(kActionShowOnionLocation)) {
+    onion_location_page_action_controller_ =
+        std::make_unique<page_actions::OnionLocationPageActionController>(
+            tab, *page_action_controller());
+    onion_location_page_action_controller_->Init();
   }
 #endif
 }

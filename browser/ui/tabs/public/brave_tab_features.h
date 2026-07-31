@@ -14,6 +14,7 @@
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/psst/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
+#include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/ui/tabs/public/tab_features.h"
 
 class Profile;
@@ -51,6 +52,10 @@ class PartitionedStoragePageActionController;
 namespace psst {
 class PsstTabWebContentsObserver;
 }
+#endif
+
+#if BUILDFLAG(ENABLE_TOR)
+#include "brave/browser/ui/views/page_action/onion_location_page_action_controller.h"
 #endif
 
 namespace tabs {
@@ -102,6 +107,13 @@ class BraveTabFeatures : public TabFeatures {
   }
 #endif
 
+#if BUILDFLAG(ENABLE_TOR)
+  page_actions::OnionLocationPageActionController*
+  onion_location_page_action_controller() {
+    return onion_location_page_action_controller_.get();
+  }
+#endif
+
  private:
 #if BUILDFLAG(ENABLE_AI_CHAT)
   std::unique_ptr<ai_chat::TabDataWebContentsObserver> tab_data_observer_;
@@ -127,6 +139,10 @@ class BraveTabFeatures : public TabFeatures {
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
   std::unique_ptr<page_actions::PlaylistPageActionController>
       playlist_page_action_controller_;
+#endif
+#if BUILDFLAG(ENABLE_TOR)
+  std::unique_ptr<page_actions::OnionLocationPageActionController>
+      onion_location_page_action_controller_;
 #endif
 };
 

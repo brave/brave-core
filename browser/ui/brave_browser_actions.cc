@@ -19,6 +19,7 @@
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/psst/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
+#include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/actions/chrome_action_id.h"
@@ -71,6 +72,11 @@
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/toolbar_button_provider.h"
 #include "components/tabs/public/tab_interface.h"
+#endif
+
+#if BUILDFLAG(ENABLE_TOR)
+#include "brave/browser/ui/tabs/public/brave_tab_features.h"
+#include "brave/browser/ui/views/page_action/onion_location_page_action_controller.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
@@ -278,6 +284,29 @@ void BraveBrowserActions::InitializeBrowserActions() {
           .SetEnabled(true)
           .Build());
 #endif  // BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
+
+#if BUILDFLAG(ENABLE_TOR)
+  root_action_item_->AddChild(
+      actions::ActionItem::Builder(
+          base::BindRepeating(
+              [](BrowserWindowInterface* bwi, actions::ActionItem* item,
+                 actions::ActionInvocationContext context) {
+                tabs::BraveTabFeatures* const brave_tab_features =
+                    tabs::BraveTabFeatures::FromTabFeatures(
+                        bwi->GetActiveTabInterface()->GetTabFeatures());
+                CHECK(brave_tab_features);
+
+                page_actions::OnionLocationPageActionController* const
+                    controller = brave_tab_features
+                                     ->onion_location_page_action_controller();
+                CHECK(controller);
+                controller->ExecuteAction();
+              },
+              bwi))
+          .SetActionId(kActionShowOnionLocation)
+          .SetEnabled(true)
+          .Build());
+#endif  // BUILDFLAG(ENABLE_TOR)
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
   if (brave_wallet::IsAllowed(profile_->GetPrefs()) &&

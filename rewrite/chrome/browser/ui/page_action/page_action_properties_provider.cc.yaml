@@ -45,4 +45,11 @@ substitutions:
                 },
             },
             {
+                kActionShowOnionLocation,
+                {
+                    .histogram_name = "OnionLocation",
+                    .type = brave::kOnionLocationPageActionIconType,
+                },
+            },
+            {
                 kActionVirtualCardEnroll,
