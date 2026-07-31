@@ -15,7 +15,10 @@ import './a11y_page.js'
 import './a11y_page_index.js'
 import './all_sites.js'
 import './about_page.js'
-import './autofill_page.js'
+import './autofill_section.js'
+// Must come before './settings_ui.js', which transitively defines the
+// your-saved-info components this modifies.
+import './your_saved_info_page.js'
 import './appearance_page.js'
 import './appearance_page_index.js'
 import './basic_page.js'
