@@ -5,13 +5,19 @@
 
 package org.chromium.chrome.browser.compositor.layouts.phone;
 
+import android.content.res.ColorStateList;
 import android.graphics.Rect;
 import android.view.View;
 
+import androidx.annotation.ColorInt;
+
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.theme.ThemeUtils;
 import org.chromium.chrome.browser.toolbar.ToolbarManager;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
+import org.chromium.chrome.browser.ui.theme.BrandedColorScheme;
+import org.chromium.components.browser_ui.styles.ChromeColors;
 
 /**
  * Brave extension of NewBackgroundTabAnimationData.
@@ -59,5 +65,51 @@ public class BraveNewBackgroundTabAnimationData extends NewBackgroundTabAnimatio
             }
         }
         return rect;
+    }
+
+    @Override
+    @ColorInt
+    /* package */ int getPrimaryColor() {
+        if (shouldUseBottomToolbarColor()) {
+            // The animated tab-switcher button sits over Brave's bottom toolbar, which is not
+            // website-colored. Fill it with the bottom toolbar's own (default theme) background so
+            // it covers the real button underneath and blends with the bar - rather than the
+            // website color.
+            return ChromeColors.getDefaultThemeColor(
+                    mBraveAnimationHostView.getContext(), /* isIncognito= */ false);
+        }
+        return super.getPrimaryColor();
+    }
+
+    // Base has no incognito getter, but its computed branded scheme encodes it.
+    private boolean isIncognitoAnimation() {
+        return super.getBrandedColorScheme() == BrandedColorScheme.INCOGNITO;
+    }
+
+    @Override
+    @BrandedColorScheme
+    /* package */ int getBrandedColorScheme() {
+        if (shouldUseBottomToolbarColor()) {
+            // The animated button belongs to Brave's bottom toolbar, which uses the default app
+            // theme (not the website color), so style the tab-count icon for the default scheme.
+            return BrandedColorScheme.APP_DEFAULT;
+        }
+        return super.getBrandedColorScheme();
+    }
+
+    @Override
+    /* package */ ColorStateList getIconTint() {
+        if (shouldUseBottomToolbarColor()) {
+            return ThemeUtils.getThemedToolbarIconTint(
+                    mBraveAnimationHostView.getContext(), BrandedColorScheme.APP_DEFAULT);
+        }
+        return super.getIconTint();
+    }
+
+    // In incognito the toolbar is never website-colored
+    private boolean shouldUseBottomToolbarColor() {
+        return BottomToolbarConfiguration.isBraveBottomControlsEnabled()
+                && BottomToolbarConfiguration.isToolbarTopAnchored()
+                && !isIncognitoAnimation();
     }
 }
