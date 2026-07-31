@@ -3,7 +3,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { color, font } from '@brave/leo/tokens/css/variables'
+import {
+  color,
+  font,
+  icon,
+  radius,
+  spacing,
+} from '@brave/leo/tokens/css/variables'
+
 import { scoped } from '$web-common/scoped_css'
 
 export const style = scoped.css`
@@ -13,18 +20,33 @@ export const style = scoped.css`
   }
 
   .search-engines {
-    padding: 24px;
+    display: flex;
+    flex-direction: column;
+
+    > h4 {
+      padding: ${spacing['2Xl']};
+    }
   }
 
   .search-engine-list {
     --leo-checkbox-flex-direction: row-reverse;
-    --leo-checkbox-label-gap: 16px;
-    --leo-icon-size: 20px;
+    --leo-checkbox-label-gap: ${spacing.xl};
+    --leo-icon-size: ${icon.s};
 
-    padding: 24px 0;
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    margin: 0 ${spacing.xl};
+    border: solid 1px ${color.divider.subtle};
+    border-radius: ${radius.m};
+
+    > * {
+      padding: ${spacing.l} ${spacing.xl};
+      border-bottom: solid 1px ${color.divider.subtle};
+    }
+
+    > :last-child {
+      border-bottom: none;
+    }
   }
 
   .engine-name {
@@ -32,26 +54,23 @@ export const style = scoped.css`
   }
 
   .engine-icon {
-    width: 20px;
-    height: 20px;
+    width: ${icon.s};
+    height: ${icon.s};
   }
 
   h4 {
     font: ${font.default.semibold};
   }
 
-  .divider {
-    height: 1px;
-    background: ${color.divider.subtle};
-  }
-
   .customize-link {
-    --leo-icon-size: 20px;
+    --leo-icon-size: ${icon.m};
 
-    margin-top: 16px;
-    display: inline-flex;
+    display: flex;
     align-items: center;
-    gap: 8px;
+    justify-content: space-between;
+    gap: ${spacing.m};
+    width: 100%;
+    padding: ${spacing.xl} ${spacing['2Xl']};
     text-decoration: none;
     color: ${color.text.primary};
   }

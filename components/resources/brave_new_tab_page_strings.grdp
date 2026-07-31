@@ -226,7 +226,7 @@
   </message>
 
   <message name="IDS_NEW_TAB_SETTINGS_TITLE" desc="Title for settings dialog" formatter_data="webui=BraveNewTabPage">
-    Customize New Tab Page
+    Customize
   </message>
 
   <message name="IDS_NEW_TAB_SHOW_BACKGROUNDS_LABEL" desc="Text for settings background option" formatter_data="webui=BraveNewTabPage">
