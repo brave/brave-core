@@ -40,10 +40,10 @@ async function gzipCompress(
   const reader = stream.readable.getReader()
   const chunks: Uint8Array[] = []
   let length = 0
-  for (;;) {
-    const { done, value } = await reader.read()
-    if (done) {
-      break
+  let done, value
+  while ((({ done, value } = await reader.read()), !done)) {
+    if (!value) {
+      continue
     }
     chunks.push(value)
     length += value.length
