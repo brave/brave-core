@@ -226,9 +226,6 @@
       "chromium_src/components/search_engines/brave_template_url_prepopulate_data_unittest\\.cc",
       "components/brave_shields/browser/ad_block_engine\\.cc",
     ],
-    "/v8::Extension\\(": [
-      "components/safe_builtins/renderer/safe_builtins\\.cc",
-    ],
     "StringFromGUID2": [
       "chromium_src/chrome/install_static/brave_install_util_unittest\\.cc",
     ],
