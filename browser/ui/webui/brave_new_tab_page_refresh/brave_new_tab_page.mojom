@@ -63,7 +63,8 @@ struct SponsoredSite {
   string ad_disclosure;
   string target_url;
   // Whether the user has genuinely visited this site's domain in Brave,
-  // rather than only added it as a Favorite.
+  // rather than only added it as a Favorite or had it added via imported
+  // history.
   bool has_genuine_visit;
 };
 

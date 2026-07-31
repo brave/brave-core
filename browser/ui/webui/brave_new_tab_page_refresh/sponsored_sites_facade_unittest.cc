@@ -105,6 +105,8 @@ class SponsoredSitesFacadeTest : public testing::Test {
     ntp_background_images::RegisterProfilePrefs(profile_prefs_.registry());
     profile_prefs_.registry()->RegisterBooleanPref(
         kNewTabPageShowSponsoredSites, true);
+    profile_prefs_.registry()->RegisterTimePref(kLastImportCompletedTime,
+                                                base::Time());
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
     brave_rewards::RegisterProfilePrefs(profile_prefs_.registry());
 #endif  // BUILDFLAG(ENABLE_BRAVE_REWARDS)
@@ -271,6 +273,31 @@ TEST_F(SponsoredSitesFacadeTest, PreservesGenuineVisitAcrossRoutineRefresh) {
   auto sites = GetSites(*facade);
   ASSERT_EQ(sites.size(), 1u);
   EXPECT_TRUE(sites[0]->has_genuine_visit);
+}
+
+TEST_F(SponsoredSitesFacadeTest, NoGenuineVisitWhenOnlyVisitedBeforeImport) {
+  history_service_->AddPage(GURL("https://foo.com/"),
+                            base::Time::Now() - base::Seconds(1),
+                            history::VisitSource::SOURCE_CHROME_IMPORTED);
+  profile_prefs_.SetTime(kLastImportCompletedTime, base::Time::Now());
+
+  auto facade = CreateFacade();
+
+  EXPECT_FALSE(GetHasGenuineVisit(*facade, "https://foo.com"));
+}
+
+TEST_F(SponsoredSitesFacadeTest, GenuineVisitWhenVisitedAgainAfterImport) {
+  history_service_->AddPage(GURL("https://foo.com/"),
+                            base::Time::Now() - base::Seconds(1),
+                            history::VisitSource::SOURCE_CHROME_IMPORTED);
+  profile_prefs_.SetTime(kLastImportCompletedTime, base::Time::Now());
+
+  auto facade = CreateFacade();
+  history_service_->AddPage(GURL("https://foo.com/"),
+                            base::Time::Now() + base::Seconds(1),
+                            history::VisitSource::SOURCE_BROWSED);
+
+  EXPECT_TRUE(GetHasGenuineVisit(*facade, "https://foo.com"));
 }
 
 }  // namespace brave_new_tab_page_refresh

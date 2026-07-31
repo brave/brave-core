@@ -6,10 +6,14 @@
 #include "brave/browser/importer/brave_external_process_importer_host.h"
 
 #include "base/check.h"
+#include "base/time/time.h"
 #include "brave/browser/importer/brave_importer_p3a.h"
 #include "brave/browser/importer/extensions_import_helpers.h"
+#include "brave/components/constants/pref_names.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/importer/importer_lock_dialog.h"
+#include "chrome/browser/profiles/profile.h"
+#include "components/prefs/pref_service.h"
 
 BraveExternalProcessImporterHost::BraveExternalProcessImporterHost()
     : weak_ptr_factory_(this) {}
@@ -18,6 +22,7 @@ BraveExternalProcessImporterHost::~BraveExternalProcessImporterHost() = default;
 void BraveExternalProcessImporterHost::NotifyImportEnded() {
   if (!cancelled_) {
     RecordImporterP3A(source_profile_.importer_type);
+    profile_->GetPrefs()->SetTime(kLastImportCompletedTime, base::Time::Now());
   }
 
   // If user chooses extension importing, start importing extensions.

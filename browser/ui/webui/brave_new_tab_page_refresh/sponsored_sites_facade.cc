@@ -144,6 +144,8 @@ bool SponsoredSitesFacade::IsRewardsWalletConnected() const {
 void SponsoredSitesFacade::QueryGenuineVisits(
     const std::vector<mojom::SponsoredSitePtr>& sites) {
   history_task_tracker_.TryCancelAll();
+  // Excludes replayed browser-import history from counting as a visit.
+  base::Time import_time = pref_service_->GetTime(kLastImportCompletedTime);
   for (auto& site : sites) {
     if (site->has_genuine_visit) {
       continue;
@@ -158,7 +160,7 @@ void SponsoredSitesFacade::QueryGenuineVisits(
     const std::string domain = AdvertiserDomain(target_url);
     for (auto& host : HostVariants(domain)) {
       history_service_->GetLastVisitToHost(
-          host, base::Time(), base::Time::Max(),
+          host, import_time, base::Time::Max(),
           history::VisitQuery404sPolicy::kInclude404s,
           base::BindOnce(&SponsoredSitesFacade::OnGenuineVisitQueried,
                          weak_factory_.GetWeakPtr(), domain),
