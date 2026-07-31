@@ -1,0 +1,21 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Add Brave hooks for suggestion filtering.
+
+      BraveAddSuggestions lets Brave append additional suggestions;
+      BraveHandleSuggestion lets Brave intercept a suggestion before the
+      normal autofill handling runs. Defined in the chromium_src override.
+    add_to_public:
+      class_name: AutofillClient
+      code: |-
+        virtual void BraveAddSuggestions(
+            const PasswordFormClassification& form_classification,
+            const FormFieldData& field,
+            std::vector<Suggestion>& chromium_suggestions);
+        virtual bool BraveHandleSuggestion(const Suggestion& suggestion,
+                                            const autofill::FieldGlobalId& field);

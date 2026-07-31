@@ -1,0 +1,20 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Add a flag identifying a new-email-alias suggestion.
+
+      Set and read in brave/chromium_src/chrome/browser/ui/autofill/
+      chrome_autofill_client.cc and .../views/autofill/popup/
+      popup_row_factory_utils.cc. Suggestion is a plain struct with no
+      explicit `public:` label for add_to_public to anchor on, so this
+      uses a direct regex instead, appending as the struct's last field.
+    regex:
+      re_pattern: '(struct Suggestion \{.+?\n)\};'
+      re_flags: [DOTALL]
+      replace: |-
+        \1  bool brave_new_email_alias_suggestion = false;
+        };
