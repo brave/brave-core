@@ -14,3 +14,7 @@ a[href] {
 .content-settings-header {
   padding-top: var(--leo-spacing-2xl) !important;
 }
+
+.settings-box {
+  border-top: none;
+}
