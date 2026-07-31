@@ -5,7 +5,10 @@
 
 #include "brave/components/psst/core/browser/psst_settings_service.h"
 
+#include "base/check.h"
+#include "base/functional/bind.h"
 #include "brave/components/psst/core/browser/pref_names.h"
+#include "components/prefs/pref_service.h"
 #include "url/gurl.h"
 
 namespace psst {
