@@ -79,6 +79,13 @@
 #include "brave/browser/ui/views/page_action/onion_location_page_action_controller.h"
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+#include "brave/browser/ui/tabs/public/brave_tab_features.h"
+#include "brave/browser/ui/views/page_action/brave_news_page_action_controller.h"
+#include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/frame/toolbar_button_provider.h"
+#endif
+
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/features.h"
@@ -307,6 +314,39 @@ void BraveBrowserActions::InitializeBrowserActions() {
           .SetEnabled(true)
           .Build());
 #endif  // BUILDFLAG(ENABLE_TOR)
+
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+  if (!profile_->IsOffTheRecord()) {
+    root_action_item_->AddChild(
+        actions::ActionItem::Builder(
+            base::BindRepeating(
+                [](BrowserWindowInterface* bwi, actions::ActionItem* item,
+                   actions::ActionInvocationContext context) {
+                  BrowserView& browser_view =
+                      CHECK_DEREF(BrowserView::GetBrowserViewForBrowser(bwi));
+
+                  tabs::BraveTabFeatures* const brave_tab_features =
+                      tabs::BraveTabFeatures::FromTabFeatures(
+                          bwi->GetActiveTabInterface()->GetTabFeatures());
+                  CHECK(brave_tab_features);
+
+                  page_actions::BraveNewsPageActionController* const
+                      controller = brave_tab_features
+                                       ->brave_news_page_action_controller();
+                  CHECK(controller);
+                  controller->ExecuteAction(
+                      browser_view.toolbar_button_provider(), item);
+                },
+                bwi))
+            .SetActionId(kActionShowBraveNews)
+            .SetTooltipText(
+                l10n_util::GetStringUTF16(IDS_BRAVE_NEWS_ACTION_VIEW_TOOLTIP))
+            .SetImage(
+                ui::ImageModel::FromVectorIcon(kLeoRssIcon, ui::kColorIcon))
+            .SetEnabled(true)
+            .Build());
+  }
+#endif  // BUILDFLAG(ENABLE_BRAVE_NEWS)
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
   if (brave_wallet::IsAllowed(profile_->GetPrefs()) &&
