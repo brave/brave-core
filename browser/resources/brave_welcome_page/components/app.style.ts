@@ -26,7 +26,8 @@ export const style = scoped.css`
   .welcome-container {
     position: relative;
     max-width: 1130px;
-    max-height: 700px;
+    min-width: min-content;
+    max-height: 720px;
     width: 100%;
     height: calc(100dvh - 2 * ${spacing.xl});
     background-color: ${color.material.thick};
