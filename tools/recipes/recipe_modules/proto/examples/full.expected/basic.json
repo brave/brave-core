@@ -1,0 +1,89 @@
+[
+  {
+    "cmd": [
+      "cat",
+      "{\n  \"jobs\": 8,\n  \"name\": \"release\"\n}"
+    ],
+    "name": "cat json"
+  },
+  {
+    "cmd": [
+      "cat",
+      "name: \"release\"\njobs: 8\n"
+    ],
+    "name": "cat text"
+  },
+  {
+    "cmd": [
+      "cat",
+      "\n\u0007release\u0010\b"
+    ],
+    "name": "cat binary"
+  },
+  {
+    "cmd": [
+      "read",
+      "/path/to/tmp/json"
+    ],
+    "name": "read JSONPB"
+  },
+  {
+    "cmd": [
+      "read",
+      "/path/to/tmp/tpb"
+    ],
+    "name": "read TEXTPB"
+  },
+  {
+    "cmd": [
+      "read",
+      "/path/to/tmp/pb"
+    ],
+    "name": "read BINARY"
+  },
+  {
+    "cmd": [
+      "read",
+      "/path/to/tmp/json",
+      "/path/to/tmp/json"
+    ],
+    "name": "read two"
+  },
+  {
+    "cmd": [
+      "read",
+      "/path/to/tmp/json"
+    ],
+    "name": "read garbage"
+  },
+  {
+    "cmd": [
+      "read",
+      "[WORKSPACE]/config.json"
+    ],
+    "name": "read nothing"
+  },
+  {
+    "cmd": [
+      "cat",
+      "{\n  \"jobs\": 8,\n  \"name\": \"release\"\n}"
+    ],
+    "name": "cat camel"
+  },
+  {
+    "cmd": [
+      "read",
+      "/path/to/tmp/json"
+    ],
+    "name": "read strict"
+  },
+  {
+    "cmd": [
+      "read"
+    ],
+    "name": "read stdout"
+  },
+  {
+    "name": "$result"
+  }
+]
