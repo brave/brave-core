@@ -8,6 +8,7 @@ import("//brave/components/containers/buildflags/buildflags.gni")
 import("//brave/components/playlist/core/common/buildflags/buildflags.gni")
 import("//brave/components/psst/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
+import("//brave/components/tor/buildflags/buildflags.gni")
 
 source_set("page_action") {
   # TODO(https://github.com/brave/brave-browser/issues/52829)
@@ -71,6 +72,27 @@ source_set("page_action") {
       "//chrome/browser/ui/color:mixers",
       "//components/prefs",
       "//ui/base",
+    ]
+  }
+
+  if (enable_tor) {
+    sources += [
+      "onion_location_page_action_controller.cc",
+      "onion_location_page_action_controller.h",
+    ]
+
+    deps += [
+      "//brave/app:brave_generated_resources_grit_grit",
+      "//brave/browser/tor",
+      "//brave/components/tor",
+      "//brave/components/vector_icons",
+      "//chrome/browser/profiles",
+      "//chrome/browser/ui/actions",
+      "//chrome/browser/ui/color:mixers",
+      "//content/public/browser",
+      "//ui/base",
+      "//ui/color",
+      "//url",
     ]
   }
 
