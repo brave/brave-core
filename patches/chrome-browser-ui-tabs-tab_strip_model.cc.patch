@@ -59,14 +59,13 @@ index 54ac67e058d8aa5a7d7820ea2399c394a8affcd3..a11218e459b3f16cc404b69653aaed48
      int destination_index) {
    const int pinned_tab_count = IndexOfFirstNonPinnedTab();
    const std::vector<int> pinned_selected_indices = GetSelectedPinnedTabs();
-@@ -4500,7 +4518,9 @@ void TabStripModel::InsertTabAtIndexImpl(
+@@ -4500,7 +4518,8 @@ void TabStripModel::InsertTabAtIndexImpl(
    }
  
    tabs::TabInterface* old_active_tab = GetActiveTab();
 -  contents_data_->AddTabRecursive(std::move(tab_model), index, group, pin);
 +  auto* opener = tab_model->opener_was_set_for_empty_new_tab() ? nullptr : tab_model->opener();
 +  contents_data_->AddTabRecursive(std::move(tab_model), index, group, pin, opener);
-+
    selection_model_.InvalidateListSelectionModel(base::PassKey<TabStripModel>());
  
    // Start computing selection change after updating the indices in
