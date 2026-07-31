@@ -266,7 +266,7 @@
 
       <!-- chrome://crashes strings -->
       <message name="IDS_CRASH_DISABLED_MESSAGE" desc="The explanatory message for chrome://crashes when crash reporting is disabled">
-        Crash reporting is not available in Brave.
+        Crash reporting is not available in Brave. Change these choices at any time in Brave at brave://settings/privacy.
       </message>
 
       <!-- Version UI -->
