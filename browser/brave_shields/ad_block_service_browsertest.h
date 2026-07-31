@@ -13,6 +13,7 @@
 #include "base/files/scoped_temp_dir.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/test/metrics/histogram_tester.h"
+#include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_shields/content/test/test_filters_provider.h"
 #include "chrome/test/base/platform_browser_test.h"
 #include "content/public/test/content_mock_cert_verifier.h"
@@ -87,6 +88,13 @@ class AdBlockServiceTest : public PlatformBrowserTest {
   net::EmbeddedTestServer https_server_;
 
   const base::HistogramTester histogram_tester_;
+
+ private:
+  // These tests assume the initial filter set load is not suppressed by the
+  // DAT cache. Disable the feature here so the base test setup can wait for
+  // that load; DAT-cache-specific tests re-enable it in their own feature
+  // lists (which nest on top of this one).
+  base::test::ScopedFeatureList disable_dat_cache_feature_list_;
 };
 
 #endif  // BRAVE_BROWSER_BRAVE_SHIELDS_AD_BLOCK_SERVICE_BROWSERTEST_H_

@@ -136,7 +136,10 @@ void WaitForSelectorBlocked(const content::ToRenderFrameHost& target,
 }  // namespace
 
 AdBlockServiceTest::AdBlockServiceTest()
-    : https_server_(net::EmbeddedTestServer::Type::TYPE_HTTPS) {}
+    : https_server_(net::EmbeddedTestServer::Type::TYPE_HTTPS) {
+  disable_dat_cache_feature_list_.InitAndDisableFeature(
+      brave_shields::features::kAdblockDATCache);
+}
 AdBlockServiceTest::~AdBlockServiceTest() = default;
 
 void AdBlockServiceTest::SetUpCommandLine(base::CommandLine* command_line) {
