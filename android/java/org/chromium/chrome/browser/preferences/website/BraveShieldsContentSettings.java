@@ -272,8 +272,9 @@ public class BraveShieldsContentSettings {
     public static String getShieldsValue(Profile profile, String host, String resourceIndentifier) {
         String settings = BLOCK_RESOURCE;
         if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_FINGERPRINTING)) {
-            settings = BraveShieldsContentSettingsJni.get().getFingerprintingControlType(
-                    host, profile);
+            settings =
+                    BraveShieldsContentSettingsJni.get()
+                            .getFingerprintingControlType(host, profile);
         } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_COOKIES)) {
             settings = BraveShieldsContentSettingsJni.get().getCookieControlType(host, profile);
         } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_TRACKERS)) {
@@ -416,6 +417,7 @@ public class BraveShieldsContentSettings {
     @NativeMethods
     interface Natives {
         void init(BraveShieldsContentSettings self);
+
         void destroy(long nativeBraveShieldsContentSettings);
 
         void setBraveShieldsEnabled(boolean enabled, String url, Profile profile);
