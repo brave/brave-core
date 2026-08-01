@@ -251,6 +251,21 @@ auto settings_map = base::MakeRefCounted<HostContentSettingsMap>(
 accessor** returning a reference instead of adding multiple `FRIEND_TEST`
 macros.
 
+Preference order, per
+[Chromium C++ testing best practices](https://www.chromium.org/chromium-os/developer-library/guides/testing/cpp-writing-tests/)
+("attempt testing with public members before resorting to friend declarations"):
+
+1. Test through the public API ([TI-002](#TI-002)) — no access bypass at all.
+2. A `*_for_testing()` / `*ForTesting()` accessor for the one member the test
+   needs.
+3. A `friend` declaration ([ARCH-020](architecture.md#ARCH-020)) — last resort,
+   and the right tool when the access can't be narrowed to an accessor (e.g.
+   granting an entire helper class access, or piggybacking onto an upstream
+   class via `chromium_src`).
+
+Never widen a member to `public`/`protected` just to make it reachable from a
+test.
+
 ```cpp
 // ❌ WRONG - proliferating FRIEND_TEST macros
 class BraveTab {
@@ -967,3 +982,60 @@ Practical notes:
 
 Related: [TI-041](#TI-041) covers the multi-flag case, where a class is affected
 by several features and you want all 2^N combinations.
+
+---
+
+<a id="TI-043"></a>
+
+## ✅ Keep Test-Only Code Out of Production Targets
+
+**Test-only functions need a testing suffix; test-only classes need a
+`testonly = true` target.** Both are how Chromium keeps test scaffolding from
+being reachable by production code, and the suffix is enforced at presubmit.
+
+- Functions: suffix with `ForTesting` (the conventional spelling; `ForTest` is
+  also accepted). Presubmit checks that they're only called from test files.
+- Classes: put them in a GN target marked `testonly = true`. Tests may depend on
+  such a target; production code cannot.
+- Support code for `testonly` targets belongs in a `test/` subdirectory (e.g.
+  `//mojo/core/core_unittest.cc` uses `//mojo/core/test/mojo_test_base.cc`).
+  Test classes shared across directories are clearer in a nested `test`
+  namespace.
+- Where a testing suffix isn't possible, instrument the path with
+  `CHECK_IS_TEST()`, which crashes outside of tests.
+
+```gn
+# ✅ CORRECT - test scaffolding can't be linked into production
+source_set("test_support") {
+  testonly = true
+  sources = [ "test/fake_wallet_service.cc" ]
+}
+```
+
+Prefer avoiding test-only code paths in production entirely — use dependency
+injection and fakes instead ([TI-001](#TI-001),
+[CSA-035](coding-standards-apis.md#CSA-035)). See
+[Chromium C++ style guide](https://chromium.googlesource.com/chromium/src/+/HEAD/styleguide/c++/c++.md).
+
+---
+
+<a id="TI-044"></a>
+
+## ✅ Name and Place Test Files by Chromium Convention
+
+**Chromium keeps the `_unittest.cc` suffix that Google style deprecated,
+specifically to distinguish unit tests from browser tests.** Browser tests use
+`_browsertest.cc`. Put unit tests and performance tests in the same directory as
+the code they cover, not in a separate tests tree.
+
+```
+# ❌ WRONG
+brave/components/foo/tests/foo_service_test.cc
+
+# ✅ CORRECT
+brave/components/foo/foo_service_unittest.cc     # unit test
+brave/components/foo/foo_service_browsertest.cc  # browser test
+```
+
+See
+[Chromium C++ style guide](https://chromium.googlesource.com/chromium/src/+/HEAD/styleguide/c++/c++.md).
