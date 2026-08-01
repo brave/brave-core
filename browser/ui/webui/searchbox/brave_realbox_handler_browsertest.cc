@@ -4,10 +4,14 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 #include <memory>
+#include <optional>
 #include <string>
 
 #include "base/test/bind.h"
+#include "base/test/scoped_feature_list.h"
 #include "base/time/time.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/brave_search/common/features.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "chrome/browser/ui/browser.h"
@@ -29,6 +33,15 @@
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/page_transition_types.h"
 #include "ui/base/window_open_disposition.h"
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/ai_chat/core/common/features.h"
+#endif
+
+struct NewTabSourceTestParams {
+  const std::string source;
+  const std::optional<base::test::FeatureRef> enabled_feature;
+};
 
 class BraveRealboxHandlerTest : public InProcessBrowserTest {
  public:
@@ -75,16 +88,46 @@ class BraveRealboxHandlerTest : public InProcessBrowserTest {
   }
 };
 
-IN_PROC_BROWSER_TEST_F(BraveRealboxHandlerTest, BraveSearchUsesNewTabSource) {
+class BraveRealboxHandlerSourceTest
+    : public BraveRealboxHandlerTest,
+      public testing::WithParamInterface<NewTabSourceTestParams> {
+ public:
+  BraveRealboxHandlerSourceTest() {
+    if (GetParam().enabled_feature) {
+      scoped_feature_list_.InitWithFeatures({*GetParam().enabled_feature}, {});
+    }
+  }
+
+ protected:
+  base::test::ScopedFeatureList scoped_feature_list_;
+};
+
+IN_PROC_BROWSER_TEST_P(BraveRealboxHandlerSourceTest,
+                       BraveSearchUsesNewTabSource) {
   EXPECT_EQ(GURL("about:blank"), contents()->GetVisibleURL());
   EXPECT_TRUE(VerifyTemplateURLServiceLoad());
 
   OnAutocompleteAccept(
       GURL("https://search.brave.com/search?q=hello+world&source=desktop"),
       u":br");
-  EXPECT_EQ(GURL("https://search.brave.com/search?q=hello+world&source=newtab"),
+  EXPECT_EQ(GURL("https://search.brave.com/search?q=hello+world&source=" +
+                 GetParam().source),
             contents()->GetLastCommittedURL());
 }
+
+INSTANTIATE_TEST_SUITE_P(
+    ,
+    BraveRealboxHandlerSourceTest,
+    testing::Values(
+        NewTabSourceTestParams{"newtab", std::nullopt},
+        NewTabSourceTestParams{"newtab_v1",
+                               brave_search::features::kSearchNewTabV1Source}
+#if BUILDFLAG(ENABLE_AI_CHAT)
+        ,
+        NewTabSourceTestParams{"newtab_v2",
+                               ai_chat::features::kShowAIChatInputOnNewTabPage}
+#endif
+        ));
 
 IN_PROC_BROWSER_TEST_F(BraveRealboxHandlerTest,
                        BraveSearchNoKeywordIsUnaffected) {
