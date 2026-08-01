@@ -181,11 +181,9 @@ void BraveProxyingURLLoaderFactory<T>::InProgressRequest::UpdateRequestInfo() {
 template <>
 void BraveProxyingURLLoaderFactory<
     std::shared_ptr>::InProgressRequest::CreateBraveRequestInfo() {
-  network::ResourceRequest request_for_info = request_;
-  request_for_info.request_initiator = original_initiator_;
   ctx_ = brave::BraveRequestInfo::MakeCTX(
-      request_for_info, render_frame_token_, request_id_, browser_context_,
-      ctx_.get(), factory_->url_loader_factory_type_,
+      request_, render_frame_token_, request_id_, browser_context_, ctx_.get(),
+      original_initiator_, factory_->url_loader_factory_type_,
       factory_->request_initiator_, factory_->isolation_info_);
 }
 
@@ -195,11 +193,9 @@ void BraveProxyingURLLoaderFactory<
   if (ctx_) {
     factory_->request_handler_->OnURLRequestDestroyed(ctx_);
   }
-  network::ResourceRequest request_for_info = request_;
-  request_for_info.request_initiator = original_initiator_;
   ctx_owned_ = brave::BraveRequestInfo::MakeCTX(
-      request_for_info, render_frame_token_, request_id_, browser_context_,
-      ctx_owned_.get(), factory_->url_loader_factory_type_,
+      request_, render_frame_token_, request_id_, browser_context_,
+      ctx_owned_.get(), original_initiator_, factory_->url_loader_factory_type_,
       factory_->request_initiator_, factory_->isolation_info_);
   ctx_ = ctx_owned_->AsWeakPtr();
 }
