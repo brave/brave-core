@@ -15,6 +15,7 @@ mojom("mojom") {
     "change_password.mojom",
     "login.mojom",
     "register.mojom",
+    "resend_verification_email.mojom",
     "reset_password.mojom",
   ]
 
@@ -39,6 +40,7 @@ if (is_ios) {
       "change_password.mojom",
       "login.mojom",
       "register.mojom",
+      "resend_verification_email.mojom",
       "reset_password.mojom",
     ]
   }

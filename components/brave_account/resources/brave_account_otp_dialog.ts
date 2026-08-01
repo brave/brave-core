@@ -16,8 +16,6 @@ import { getHtml } from './brave_account_otp_dialog.html.js'
 import {
   LoggedInVerificationIntent,
   LoggedOutVerificationIntent,
-  ResendConfirmationEmailClientErrorCode,
-  ResendConfirmationEmailError,
   VerificationIntent,
   VerificationIntentFieldTags,
   whichVerificationIntent,
@@ -30,6 +28,10 @@ import {
   RegisterClientErrorCode,
   RegisterError,
 } from './register.mojom-webui.js'
+import {
+  ResendVerificationEmailClientErrorCode,
+  ResendVerificationEmailError,
+} from './resend_verification_email.mojom-webui.js'
 import {
   ResetPasswordClientErrorCode,
   ResetPasswordError,
@@ -150,7 +152,7 @@ export class BraveAccountOtpDialogElement extends CrLitElement {
     if (this.isResendingConfirmationEmail) return
     this.isResendingConfirmationEmail = true
 
-    let error: ResendConfirmationEmailError | undefined
+    let error: ResendVerificationEmailError | undefined
 
     try {
       await this.browserProxy.authentication.resendVerificationEmail(
@@ -158,12 +160,12 @@ export class BraveAccountOtpDialogElement extends CrLitElement {
       )
     } catch (e) {
       if (e && typeof e === 'object') {
-        error = e as ResendConfirmationEmailError
+        error = e as ResendVerificationEmailError
       } else {
         console.error('Unexpected error:', e)
         error = {
           clientError: {
-            errorCode: ResendConfirmationEmailClientErrorCode.kUnexpected,
+            errorCode: ResendVerificationEmailClientErrorCode.kUnexpected,
           },
         }
       }
@@ -171,7 +173,7 @@ export class BraveAccountOtpDialogElement extends CrLitElement {
 
     if (error) {
       showError(
-        { kind: 'resendConfirmationEmail', details: error },
+        { kind: 'resendVerificationEmail', details: error },
         BraveAccountStrings.BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_ERROR_TITLE,
       )
     } else {
