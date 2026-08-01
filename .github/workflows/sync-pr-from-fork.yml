@@ -63,9 +63,9 @@ jobs:
           git checkout "$COMMIT_HASH"
           git push -f origin HEAD:"refs/heads/$contribHeadRefName"
 
-          existing_prs=$(gh pr list -H "$contribHeadRefName" --json number)
-          if [[ "$existing_prs" = "[]" ]]; then
-            gh pr create \
+          ci_pr_url=$(gh pr list -H "$contribHeadRefName" --json url -q '.[0].url // ""')
+          if [[ -z "$ci_pr_url" ]]; then
+            ci_pr_url=$(gh pr create \
               --draft \
               --base "$baseRefName" \
               --head "$contribHeadRefName" \
@@ -74,5 +74,17 @@ jobs:
           "## Description
           This PR is created to run CI on the changes proposed in PR #$pr_number by @$headRepositoryOwnerLogin.
 
-          **This PR should not be merged.**"
+          **This PR should not be merged.**")
+          fi
+
+          resolves="Resolves $ci_pr_url"
+          body_file=$(mktemp)
+          trap 'rm -f "$body_file"' EXIT
+          gh pr view "$pr_number" --json body | jq -j '.body // ""' > "$body_file"
+          if ! grep -Fxq "$resolves" "$body_file"; then
+            if [[ -s "$body_file" ]]; then
+              printf '\n\n' >> "$body_file"
+            fi
+            printf '%s\n' "$resolves" >> "$body_file"
+            gh pr edit "$pr_number" --body-file "$body_file"
           fi
