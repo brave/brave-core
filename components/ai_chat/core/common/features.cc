@@ -7,12 +7,15 @@
 
 #include <string>
 
+#include "base/check.h"
 #include "base/feature_list.h"
 #include "base/metrics/field_trial_params.h"
 #include "base/time/time.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/ai_chat/core/common/constants.h"
+#include "brave/components/ai_chat/core/common/pref_names.h"
 #include "build/build_config.h"
+#include "components/prefs/pref_service.h"
 
 namespace ai_chat::features {
 
@@ -208,8 +211,28 @@ bool IsAIChatWebUIEnabled() {
 
 BASE_FEATURE(kShowAIChatInputOnNewTabPage, base::FEATURE_DISABLED_BY_DEFAULT);
 
-bool IsShowAIChatInputOnNewTabPageEnabled() {
-  return base::FeatureList::IsEnabled(features::kShowAIChatInputOnNewTabPage);
+const base::FeatureParam<bool> kShowAIChatInputOnNewTabPageDayZero{
+    &kShowAIChatInputOnNewTabPage, "day_zero", false};
+
+bool IsShowAIChatInputOnNewTabPageEnabled(PrefService* local_state,
+                                          bool is_first_run) {
+  CHECK(local_state);
+  // If feature was enabled via day zero experiment at install time, leave
+  // the feature enabled forever.
+  if (local_state->GetBoolean(ai_chat::prefs::kNtpInputDayZeroEnabled)) {
+    return true;
+  }
+  if (!base::FeatureList::IsEnabled(features::kShowAIChatInputOnNewTabPage)) {
+    return false;
+  }
+  if (kShowAIChatInputOnNewTabPageDayZero.Get()) {
+    if (!is_first_run) {
+      // Existing users are not included in the day zero study.
+      return false;
+    }
+    local_state->SetBoolean(ai_chat::prefs::kNtpInputDayZeroEnabled, true);
+  }
+  return true;
 }
 
 BASE_FEATURE(kAIChatDeepResearch,
