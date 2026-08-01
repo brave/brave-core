@@ -50,6 +50,7 @@ source_set("brave_new_tab_page_refresh") {
   deps = [
     ":mojom",
     "//brave/browser:browser_process",
+    "//brave/browser/brave_stats:first_run_util",
     "//brave/browser/misc_metrics",
     "//brave/browser/ntp_background",
     "//brave/browser/resources/brave_new_tab_page_refresh:generated_resources",

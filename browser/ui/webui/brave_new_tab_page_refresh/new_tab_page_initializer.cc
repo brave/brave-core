@@ -27,6 +27,7 @@
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/ntp_background_images/browser/ntp_custom_images_source.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/regional_capabilities/regional_capabilities_service_factory.h"
 #include "chrome/browser/themes/theme_syncable_service.h"
@@ -52,6 +53,7 @@
 #include "ui/webui/webui_util.h"
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/browser/brave_stats/first_run_util.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #endif
@@ -244,7 +246,9 @@ void NewTabPageInitializer::AddLoadTimeValues() {
 #if BUILDFLAG(ENABLE_AI_CHAT)
   ai_chat_input_enabled =
       ai_chat::IsAIChatEnabled(profile->GetPrefs()) &&
-      ai_chat::features::IsShowAIChatInputOnNewTabPageEnabled();
+      ai_chat::features::IsShowAIChatInputOnNewTabPageEnabled(
+          g_browser_process->local_state(),
+          brave_stats::IsFirstRun(g_browser_process->local_state()));
 
   // Required by Brave AI Chat UI.
   source_->AddBoolean("isMobile", false);
