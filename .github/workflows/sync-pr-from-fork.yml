@@ -54,15 +54,16 @@ jobs:
               --field ref="refs/heads/$contribHeadRefName" --field sha="$COMMIT_HASH"
           fi
 
-          ci_prs=$(gh pr list -H "$contribHeadRefName" --json number)
+          ci_prs=$(gh pr list -H "$contribHeadRefName" --json number,url)
           ci_pr_count=$($JQ 'length' <<<"$ci_prs")
           if (( ci_pr_count > 1 )); then
             echo "Expected at most one PR for branch '$contribHeadRefName'; found $ci_pr_count"
             exit 1
           fi
           ci_pr_number=$($JQ '.[0].number // ""' <<<"$ci_prs")
-          if [[ -z "$ci_pr_number" ]]; then
-            gh pr create \
+          ci_pr_url=$($JQ '.[0].url // ""' <<<"$ci_prs")
+          if [[ -z "$ci_pr_url" ]]; then
+            ci_pr_url=$(gh pr create \
               --draft \
               --base "$baseRefName" \
               --head "$contribHeadRefName" \
@@ -71,8 +72,20 @@ jobs:
           "## Description
           This PR is created to run CI on the changes proposed in PR #$pr_number by @$headRepositoryOwnerLogin.
 
-          **This PR should not be merged.**"
-            ci_pr_number=$(gh pr list -H "$contribHeadRefName" --json number -q '.[0].number')
+          **This PR should not be merged.**")
+            ci_pr_number=$(gh pr view "$ci_pr_url" --json number -q '.number')
+          fi
+
+          resolves="Resolves $ci_pr_url"
+          body_file=$(mktemp)
+          trap 'rm -f "$body_file"' EXIT
+          gh pr view "$pr_number" --json body | jq -j '.body // ""' > "$body_file"
+          if ! grep -Fxq "$resolves" "$body_file"; then
+            if [[ -s "$body_file" ]]; then
+              printf '\n\n' >> "$body_file"
+            fi
+            printf '%s\n' "$resolves" >> "$body_file"
+            gh pr edit "$pr_number" --body-file "$body_file"
           fi
 
           gh api --method PUT "repos/${GITHUB_REPOSITORY}/issues/${ci_pr_number:?}/labels" \
