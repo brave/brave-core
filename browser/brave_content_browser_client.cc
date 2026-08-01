@@ -29,6 +29,7 @@
 #include "brave/browser/brave_search/backup_results_service_factory.h"
 #include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
+#include "brave/browser/brave_stats/first_run_util.h"
 #include "brave/browser/cosmetic_filters/cosmetic_filters_tab_helper.h"
 #include "brave/browser/debounce/debounce_service_factory.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
@@ -757,7 +758,9 @@ void BraveContentBrowserClient::RegisterTrustedWebUIInterfaceBrokers(
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
   if (ai_chat::features::IsAIChatEnabled() &&
-      ai_chat::features::IsShowAIChatInputOnNewTabPageEnabled()) {
+      ai_chat::features::IsShowAIChatInputOnNewTabPageEnabled(
+          g_browser_process->local_state(),
+          brave_stats::IsFirstRun(g_browser_process->local_state()))) {
     ntp_refresh_registration.Add<ai_chat::mojom::AIChatUIHandler>()
         .Add<ai_chat::mojom::Service>()
         .Add<ai_chat::mojom::TabTrackerService>()

@@ -93,6 +93,9 @@ extern const base::FeatureParam<std::string> kBackupResultsRendererLanguages;
 // Same value format as kBackupResultsRendererLanguages.
 extern const base::FeatureParam<std::string> kBackupResultsLanguagesHeader;
 
+BASE_DECLARE_FEATURE(kSearchNewTabV1Source);
+bool IsSearchNewTabV1SourceEnabled();
+
 }  // namespace features
 }  // namespace brave_search
 
