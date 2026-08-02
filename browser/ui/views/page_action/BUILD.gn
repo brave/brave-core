@@ -226,4 +226,19 @@ source_set("unit_tests") {
       "//ui/actions",
     ]
   }
+
+  if (enable_tor) {
+    sources += [ "onion_location_page_action_controller_unittest.cc" ]
+    deps += [
+      ":page_action",
+      "//brave/components/tor",
+      "//chrome/browser/ui/page_action",
+      "//chrome/browser/ui/page_action:test_support",
+      "//components/tabs:test_support",
+      "//content/test:test_support",
+      "//ui/actions",
+      "//ui/base",
+      "//url",
+    ]
+  }
 }
