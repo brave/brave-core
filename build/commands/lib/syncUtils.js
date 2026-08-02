@@ -226,6 +226,10 @@ function syncChromium(program) {
   }
 
   if (program.bootstrap === false) {
+    if (isCI) {
+      Log.error('--no-boostrap is not allowed on CI')
+      process.exit(1)
+    }
     args.push('--no-bootstrap')
   }
 
