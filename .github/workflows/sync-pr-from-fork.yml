@@ -63,13 +63,20 @@ jobs:
           git checkout "$COMMIT_HASH"
           git push -f origin HEAD:"refs/heads/$contribHeadRefName"
 
-          ci_pr_url=$(gh pr list -H "$contribHeadRefName" --json url -q '.[0].url // ""')
+          ci_pr_title="CI run for contributor PR #$pr_number"
+          existing_prs=$(gh pr list -H "$contribHeadRefName" --json isDraft,title,url)
+          ci_pr_url=""
+          if [[ "$existing_prs" != "[]" ]]; then
+            ci_pr_url=$(jq -r --arg title "$ci_pr_title" \
+              'map(select(.isDraft and .title == $title)) | first | .url // ""' \
+              <<<"$existing_prs")
+          fi
           if [[ -z "$ci_pr_url" ]]; then
             ci_pr_url=$(gh pr create \
               --draft \
               --base "$baseRefName" \
               --head "$contribHeadRefName" \
-              --title "CI run for contributor PR #$pr_number" \
+              --title "$ci_pr_title" \
               --body \
           "## Description
           This PR is created to run CI on the changes proposed in PR #$pr_number by @$headRepositoryOwnerLogin.
