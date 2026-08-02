@@ -134,8 +134,8 @@ Ensure you're on the correct branch and up to date with the remote.
 ### 7. Run Preflight Checks
 
 **If the `--skip-preflight` argument was provided:** Skip the preflight checks
-  and continue at the next step. Do not require preflight checks for success
-  when this flag is supplied
+and continue at the next step. Do not require preflight checks for success when
+this flag is supplied
 
 Invoke the preflight skill to validate all changes:
 

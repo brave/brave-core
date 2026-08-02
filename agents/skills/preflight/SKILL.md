@@ -57,9 +57,9 @@ skip this step.
 
 ### 5. Build
 
-**If the `skip-build` argument was provided:** Stop here and do not run the build
-  or tests. Do not require build or tests to pass preflight if this argument is
-  supplied
+**If the `--skip-build` argument was provided:** Stop here and do not run the
+build or tests. Do not require build or tests to pass preflight if this argument
+is supplied
 
 Run `pnpm run build` to make sure the code builds. If it fails, fix the build
 errors, amend the commit, and retry.
