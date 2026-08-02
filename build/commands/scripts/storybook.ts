@@ -24,6 +24,7 @@ program
   .option('-C <build_dir>', 'build directory, relative to out/ or absolute')
   .option('--target_arch <target_arch>', 'target architecture')
   .option('--target_os <target_os>', 'target OS')
+  .option('-B, --build_deps', 'build Storybook GN deps')
   .allowExcessArguments(true)
   .allowUnknownOption(true)
   .action(async (mode, buildConfig, options) => {
@@ -47,9 +48,13 @@ program
     }
 
     config.update(options)
-    config.buildTargets = ['brave/build/storybook:storybook_deps']
 
-    await util.buildTargets(config.buildTargets, config.defaultOptions)
+    if (mode === 'build' || options.build_deps) {
+      config.buildTargets = ['brave/build/storybook:storybook_deps']
+      await util.buildTargets(config.buildTargets, config.defaultOptions)
+    } else {
+      console.log('Skipping build of Storybook GN deps, pass -B to build them')
+    }
 
     const storybookArgs = [
       mode,
