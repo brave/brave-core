@@ -50,7 +50,7 @@ TEST_F(BraveRequestInfoTest,
 
   auto ctx = BraveRequestInfo::MakeCTX(
       request, content::GlobalRenderFrameHostToken(), 1, &profile,
-      /*old_ctx=*/nullptr,
+      /*old_ctx=*/nullptr, /*original_request_initiator=*/std::nullopt,
       content::ContentBrowserClient::URLLoaderFactoryType::kWorkerSubResource,
       factory_initiator, factory_isolation_info);
 
@@ -59,6 +59,46 @@ TEST_F(BraveRequestInfoTest,
   EXPECT_EQ(factory_top_frame_origin.GetURL(), ctx->tab_origin());
   EXPECT_EQ(ctx->network_anonymization_key(),
             factory_isolation_info.network_anonymization_key());
+}
+
+// The request intentionally omits both initiator sources available after
+// construction so only the worker factory initiator can populate the context.
+TEST_F(BraveRequestInfoTest, WorkerRequestFallsBackToFactoryInitiator) {
+  TestingProfile profile;
+  network::ResourceRequest request;
+  request.url = GURL("https://worker.example/fetch");
+  ASSERT_FALSE(request.request_initiator);
+
+  const url::Origin factory_initiator =
+      url::Origin::Create(GURL("https://factory-initiator.example"));
+
+  auto ctx = BraveRequestInfo::MakeCTX(
+      request, content::GlobalRenderFrameHostToken(), 1, &profile,
+      /*old_ctx=*/nullptr, /*original_request_initiator=*/std::nullopt,
+      content::ContentBrowserClient::URLLoaderFactoryType::kWorkerSubResource,
+      factory_initiator);
+
+  ASSERT_TRUE(ctx->request_initiator());
+  EXPECT_EQ(factory_initiator, *ctx->request_initiator());
+}
+
+TEST_F(BraveRequestInfoTest, OriginalInitiatorOverridesRequestInitiator) {
+  TestingProfile profile;
+  const url::Origin original_request_initiator =
+      url::Origin::Create(GURL("https://original-initiator.example"));
+  network::ResourceRequest request;
+  request.url = GURL("https://document.example/fetch");
+  request.request_initiator =
+      url::Origin::Create(GURL("https://request-initiator.example"));
+
+  auto ctx = BraveRequestInfo::MakeCTX(
+      request, content::GlobalRenderFrameHostToken(), 1, &profile,
+      /*old_ctx=*/nullptr, original_request_initiator);
+
+  ASSERT_TRUE(ctx->request_initiator()) << "Request URL: " << request.url;
+  EXPECT_EQ(original_request_initiator, *ctx->request_initiator())
+      << "Request URL: " << request.url
+      << ", request initiator: " << *request.request_initiator;
 }
 
 TEST_F(BraveRequestInfoTest, RequestContextOverridesFactoryContext) {
@@ -81,7 +121,7 @@ TEST_F(BraveRequestInfoTest, RequestContextOverridesFactoryContext) {
 
   auto ctx = BraveRequestInfo::MakeCTX(
       request, content::GlobalRenderFrameHostToken(), 1, &profile,
-      /*old_ctx=*/nullptr,
+      /*old_ctx=*/nullptr, /*original_request_initiator=*/std::nullopt,
       content::ContentBrowserClient::URLLoaderFactoryType::kWorkerSubResource,
       factory_initiator, MakeIsolationInfo(factory_top_frame_origin));
 
@@ -107,7 +147,7 @@ TEST_F(BraveRequestInfoTest,
 
   auto ctx = BraveRequestInfo::MakeCTX(
       request, content::GlobalRenderFrameHostToken(), 1, &profile,
-      /*old_ctx=*/nullptr,
+      /*old_ctx=*/nullptr, /*original_request_initiator=*/std::nullopt,
       content::ContentBrowserClient::URLLoaderFactoryType::kDocumentSubResource,
       factory_initiator, MakeIsolationInfo(factory_top_frame_origin));
 
