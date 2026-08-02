@@ -3,6 +3,7 @@ name: preflight
 description:
   'Run all preflight checks (format, gn_check, presubmit, build, tests) to make
   sure the current work is ready for review.'
+argument-hint: '[--skip-build] [all]'
 disable-model-invocation: true
 ---
 
@@ -13,9 +14,11 @@ Execute each step sequentially and stop immediately if any step fails.
 
 ## Arguments
 
-- **`all`** — Run all test suites (brave_browser_tests, brave_unit_tests,
+- **`[all]`** — Run all test suites (brave_browser_tests, brave_unit_tests,
   brave_component_unittests) without filters, instead of only running tests
   affected by the change. Usage: `/preflight all`
+- **`[--skip-build]`** - Do not run build or test steps. Only run
+  format/gn_check/presubmit
 
 ## Current State
 
@@ -53,6 +56,10 @@ should be short and succinct, describing what was done. If there are no changes,
 skip this step.
 
 ### 5. Build
+
+**If the `skip-build` argument was provided:** Stop here and do not run the build
+  or tests. Do not require build or tests to pass preflight if this argument is
+  supplied
 
 Run `pnpm run build` to make sure the code builds. If it fails, fix the build
 errors, amend the commit, and retry.
