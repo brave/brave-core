@@ -58,9 +58,9 @@ enum RegisterServerErrorCode {
   // - user-facing: -
   // /v2/verify/complete:
   // - internal:
+  kVerificationNotFoundOrInvalidIdOrCode              = 13002,
   kEmailAlreadyVerified                               = 13009,
   // - user-facing:
-  kVerificationNotFoundOrInvalidIdOrCode              = 13002,
   kMaximumCodeVerificationAttemptsExceeded            = 13010,
   kInvalidVerificationCode                            = 13011,
   kTokenHasExpired                                    = 14014,
