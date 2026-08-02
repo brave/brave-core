@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/brave_news/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/containers/buildflags/buildflags.gni")
 import("//brave/components/playlist/core/common/buildflags/buildflags.gni")
@@ -238,6 +239,26 @@ source_set("unit_tests") {
       "//content/test:test_support",
       "//ui/actions",
       "//ui/base",
+      "//url",
+    ]
+  }
+
+  if (enable_brave_news) {
+    sources += [ "brave_news_page_action_controller_unittest.cc" ]
+    deps += [
+      "//brave/browser/brave_news",
+      "//brave/browser/brave_news:impl",
+      "//brave/browser/ui",
+      "//brave/components/brave_news/common",
+      "//brave/components/brave_news/common:mojom",
+      "//chrome/browser/ui:test_support",
+      "//chrome/browser/ui/page_action",
+      "//chrome/browser/ui/page_action:test_support",
+      "//components/prefs",
+      "//components/tabs:test_support",
+      "//content/test:test_support",
+      "//testing/gmock",
+      "//ui/actions",
       "//url",
     ]
   }
