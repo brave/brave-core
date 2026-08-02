@@ -1924,6 +1924,21 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CspRuleThirdPartyLogic) {
     EXPECT_EQ(true, EvalJs(contents, "!!window.loadedNonceScript"));
     EXPECT_EQ(false, EvalJs(contents, "!!window.loadedUnsafeInlineScript"));
   }
+
+  {
+    // Renderer-initiated cross-origin navigation from a regular site.
+    // Such a navigation is always considered first-party and the rule does
+    // not match.
+    NavigateToURL(embedded_test_server()->GetURL("a.com", "/simple.html"));
+    const GURL url =
+        embedded_test_server()->GetURL("example.com", "/csp_rules.html");
+    ASSERT_TRUE(content::NavigateToURLFromRenderer(web_contents(), url));
+    content::WebContents* contents = web_contents();
+
+    ASSERT_TRUE(ExecJs(contents, "window.allLoaded"));
+    EXPECT_EQ(true, EvalJs(contents, "!!window.loadedNonceScript"));
+    EXPECT_EQ(true, EvalJs(contents, "!!window.loadedUnsafeInlineScript"));
+  }
 }
 
 // Verify that Content Security Policies from multiple `$csp` rules are

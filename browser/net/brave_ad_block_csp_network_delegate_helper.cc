@@ -83,6 +83,8 @@ int OnHeadersReceived_AdBlockCspWork(
 
     // Use request initiator as the first party origin if it's a subframe or
     // it's opaque.
+    // TODO(https://brave.dev/b/57775): Move first_party_origin to
+    // BraveRequestInfo.
     const bool use_initiator_origin =
         ctx->request_initiator() &&
         (ctx->resource_type() != blink::mojom::ResourceType::kMainFrame ||
