@@ -14,14 +14,23 @@ DEPS = ['chromium_checkout', 'env', 'platform', 'step']
 
 PROPERTIES = InputProperties
 
+# An arbitrary stand-in for a real `TOOLCHAIN_HASH` pin, only used to compute
+# the `GYP_MSVS_HASH_*` key `win_toolchain_hash_env` below looks up -- a real
+# recipe never knows this value ahead of time, since it comes back from the
+# `resolve win toolchain hash` step itself.
+_TEST_TOOLCHAIN_HASH = 'deadbeef00'
+
 
 def RunSteps(api, properties):
     api.chromium_checkout.ensure_checkout(ref=properties.chromium_ref)
-    # Surface the otherwise-internal hermetic toolchain env as a step so a test
-    # can assert `checkout_ref` set it on Windows.
+    # Surface otherwise-internal hermetic-toolchain env as steps so a test can
+    # assert `checkout_ref` set them on Windows.
     toolchain = api.env.get('DEPOT_TOOLS_WIN_TOOLCHAIN_BASE_URL')
     if toolchain:
         api.step('win toolchain env', ['echo', toolchain])
+    gyp_hash = api.env.get(f'GYP_MSVS_HASH_{_TEST_TOOLCHAIN_HASH}')
+    if gyp_hash:
+        api.step('win toolchain hash env', ['echo', gyp_hash])
 
 
 def GenTests(api):
@@ -67,7 +76,10 @@ def GenTests(api):
         api.post_process(post_process.DropExpectation),
         status='EXCEPTION',
     )
-    # On Windows, checkout_ref sets the hermetic toolchain base URL
+    # On Windows, checkout_ref sets the hermetic toolchain base URL. No
+    # toolchain index published for the upstream hash yet (the default,
+    # unseeded `resolve win toolchain hash` result) -> GYP_MSVS_HASH_* stays
+    # unset.
     yield api.test(
         'windows hermetic toolchain',
         api.platform.name('win'),
@@ -81,5 +93,23 @@ def GenTests(api):
                 'https://vhemnu34de4lf5cj6bx2wwshyy0egdxk.lambda-url.us-west-'
                 '2.on.aws/windows-hermetic-toolchain/'
             ]),
+        api.post_process(post_process.MustRun, 'resolve win toolchain hash'),
+        api.post_process(post_process.DoesNotRun, 'win toolchain hash env'),
+        api.post_process(post_process.StatusSuccess),
+    )
+    # Brave has already republished a toolchain for the upstream hash ->
+    # GYP_MSVS_HASH_<upstream hash> gets pinned to the published one.
+    yield api.test(
+        'windows toolchain hash pinned',
+        api.platform.name('win'),
+        api.chromium_checkout.with_git_cache(),
+        api.chromium_checkout.existing_checkout(),
+        api.chromium_checkout.git_cache_populated(),
+        api.chromium_checkout.win_toolchain_published(_TEST_TOOLCHAIN_HASH,
+                                                      'cafef00dcafe'),
+        api.properties(chromium_ref='main'),
+        api.post_process(post_process.MustRun, 'win toolchain hash env'),
+        api.post_process(post_process.StepCommandContains,
+                         'win toolchain hash env', ['cafef00dcafe']),
         api.post_process(post_process.StatusSuccess),
     )
