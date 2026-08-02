@@ -14,10 +14,10 @@ Execute each step sequentially and stop immediately if any step fails.
 
 ## Arguments
 
-- **`[all]`** — Run all test suites (brave_browser_tests, brave_unit_tests,
-  brave_component_unittests) without filters, instead of only running tests
-  affected by the change. Usage: `/preflight all`
-- **`[--skip-build]`** - Do not run build or test steps. Only run
+- **`[all]`** (optional) — Run all test suites (brave_browser_tests,
+  brave_unit_tests, brave_component_unittests) without filters, instead of only
+  running tests affected by the change. Usage: `/preflight all`
+- **`[--skip-build]`** (optional) - Do not run build or test steps. Only run
   format/gn_check/presubmit
 
 ## Current State
