@@ -225,6 +225,10 @@ function syncChromium(program) {
     args.push('--force')
   }
 
+  if (program.bootstrap === false) {
+    args.push('--no-bootstrap')
+  }
+
   if (program.history === false) {
     args.push('--no-history')
   }
