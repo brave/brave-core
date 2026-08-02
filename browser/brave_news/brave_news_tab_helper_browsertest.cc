@@ -16,12 +16,14 @@
 #include "base/path_service.h"
 #include "base/run_loop.h"
 #include "base/scoped_observation.h"
-#include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
+#include "base/test/test_future.h"
 #include "brave/browser/brave_news/brave_news_controller_factory.h"
 #include "brave/components/brave_news/browser/brave_news_controller.h"
+#include "brave/components/brave_news/browser/brave_news_pref_manager.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_news/common/pref_names.h"
+#include "brave/components/brave_news/common/subscriptions_snapshot.h"
 #include "brave/components/brave_news/common/types.h"
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/profiles/profile.h"
@@ -141,6 +143,7 @@ class BraveNewsTabHelperTest : public InProcessBrowserTest {
   }
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
+    InProcessBrowserTest::SetUpCommandLine(command_line);
     command_line->AppendSwitch(switches::kAllowRunningInsecureContent);
     cert_verifier_.SetUpCommandLine(command_line);
     // Everything resolves to 127.0.0.1 in browser tests, which means every test
@@ -413,24 +416,23 @@ IN_PROC_BROWSER_TEST_F(BraveNewsTabHelperTest,
   const GURL feed_url =
       local_network_server()->GetURL("feed.example.com", "/page_with_rss.xml");
 
-  auto subscribe = [&](std::optional<url::Origin> initiator) {
-    base::RunLoop run_loop;
-    bool succeeded = false;
-    controller()->SubscribeToNewDirectFeed(
-        feed_url, std::move(initiator),
-        base::BindLambdaForTesting(
-            [&](bool success, bool is_duplicate,
-                std::optional<brave_news::MojomPublishers> publishers) {
-              succeeded = success;
-              run_loop.Quit();
-            }));
-    run_loop.Run();
-    return succeeded;
+  auto subscribe = [&](const std::optional<url::Origin>& initiator) {
+    base::test::TestFuture<bool, bool,
+                           std::optional<brave_news::MojomPublishers>>
+        future;
+    controller()->SubscribeToNewDirectFeed(feed_url, initiator,
+                                           future.GetCallback());
+    return future.Get<0>();
   };
 
-  // On behalf of the page: blocked.
+  // On behalf of the page: blocked, and nothing gets added to the user's
+  // subscriptions.
   EXPECT_FALSE(subscribe(initiator_origin));
+  EXPECT_TRUE(controller()->prefs().GetSubscriptions().direct_feeds().empty());
 
-  // Added by the user: allowed.
+  // Added by the user: allowed, and the feed shows up in the subscriptions.
   EXPECT_TRUE(subscribe(std::nullopt));
+  const auto subscriptions = controller()->prefs().GetSubscriptions();
+  ASSERT_EQ(1u, subscriptions.direct_feeds().size());
+  EXPECT_EQ(feed_url, subscriptions.direct_feeds()[0].url);
 }

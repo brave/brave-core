@@ -15,6 +15,7 @@
 #include "base/logging.h"
 #include "base/run_loop.h"
 #include "base/test/bind.h"
+#include "base/test/test_future.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/net/system_network_context_manager.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -25,7 +26,6 @@
 #include "net/test/embedded_test_server/http_request.h"
 #include "net/test/embedded_test_server/http_response.h"
 #include "services/network/public/cpp/ip_address_space_overrides_test_utils.h"
-#include "services/network/public/mojom/ip_address_space.mojom.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 #include "url/origin.h"
@@ -119,6 +119,16 @@ class DirectFeedFetcherBrowserTest : public InProcessBrowserTest {
     public_server_.StartAcceptingConnections();
   }
 
+  // Fetches the feed at |url| on behalf of |initiator_origin| (or on behalf of
+  // the user, if it's unset), returning whether the fetch succeeded.
+  bool DownloadFeed(const GURL& url,
+                    std::optional<url::Origin> initiator_origin) {
+    base::test::TestFuture<DirectFeedResponse> future;
+    fetcher_->DownloadFeed(url, std::move(initiator_origin), "test_publisher",
+                           future.GetCallback());
+    return std::holds_alternative<DirectFeedResult>(future.Get().result);
+  }
+
  protected:
   class MockDelegate : public DirectFeedFetcher::Delegate {
    public:
@@ -176,33 +186,19 @@ IN_PROC_BROWSER_TEST_F(DirectFeedFetcherBrowserTest,
   // This looks like a regular internet host, but resolves to 127.0.0.1.
   const GURL local_feed_url = https_server_.GetURL("feed.example.com", "/feed");
 
-  auto download_feed = [&](const GURL& url,
-                           std::optional<url::Origin> initiator_origin) {
-    base::RunLoop run_loop;
-    bool succeeded = false;
-    fetcher_->DownloadFeed(
-        url, std::move(initiator_origin), "test_publisher",
-        base::BindLambdaForTesting([&](DirectFeedResponse response) {
-          succeeded = std::holds_alternative<DirectFeedResult>(response.result);
-          run_loop.Quit();
-        }));
-    run_loop.Run();
-    return succeeded;
-  };
-
   const auto initiator_origin =
       url::Origin::Create(public_server_.GetURL("example.com", "/"));
 
   // A feed the user asked for directly (no initiator origin) is allowed to be
   // on the local network.
-  EXPECT_TRUE(download_feed(local_feed_url, std::nullopt));
+  EXPECT_TRUE(DownloadFeed(local_feed_url, std::nullopt));
 
   // The same feed must not be fetchable on behalf of a page.
-  EXPECT_FALSE(download_feed(local_feed_url, initiator_origin));
+  EXPECT_FALSE(DownloadFeed(local_feed_url, initiator_origin));
 
   // Non-local feeds are still fetchable on behalf of a page.
-  EXPECT_TRUE(download_feed(public_server_.GetURL("feed.example.com", "/feed"),
-                            initiator_origin));
+  EXPECT_TRUE(DownloadFeed(public_server_.GetURL("feed.example.com", "/feed"),
+                           initiator_origin));
 }
 
 }  // namespace brave_news

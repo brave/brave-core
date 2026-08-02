@@ -134,7 +134,8 @@ class BraveNewsController
       const GURL& feed_url,
       SubscribeToNewDirectFeedCallback callback) override;
   // Variant of SubscribeToNewDirectFeed used by the toolbar action view. See
-  // the FindFeeds variant above for the meaning of |initiator_origin|.
+  // the |FindFeeds| overload taking |initiator_origin|, which has the same
+  // meaning here.
   void SubscribeToNewDirectFeed(
       const GURL& feed_url,
       const std::optional<url::Origin>& initiator_origin,
