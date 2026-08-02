@@ -29,7 +29,7 @@ program
   .option('--init', 'initialize all dependencies')
   .option('--force', 'force reset all projects to origin/ref')
   .option('--no-history', 'performs a shallow clone') // NOTE: sets program.history = false
-  .option('--no-bootstrap', 'Don\'t bootstrap from Google Storage.')
+  .option('--no-bootstrap', "Don't bootstrap from Google Storage.")
   .option('--fetch_all', 'fetch all tags and branch heads')
   .option(
     '-C, --sync_chromium [arg]',
