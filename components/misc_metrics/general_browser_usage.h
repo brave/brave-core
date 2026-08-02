@@ -23,6 +23,7 @@ inline constexpr char kWeeklyUseHistogramName[] = "Brave.Core.WeeklyUsage";
 inline constexpr char kProfileCountHistogramName[] = "Brave.Core.ProfileCount";
 
 inline constexpr char kDayZeroVariantHistogramName[] = "Brave.DayZero.Variant";
+inline constexpr char kDayZeroAttributeName[] = "day_zero";
 
 // TODO(djandries): remove this metric when Nebula experiment is over
 inline constexpr char kWeeklyUseNebulaHistogramName[] =
