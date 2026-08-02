@@ -83,12 +83,8 @@ jobs:
 
           **This PR should not be merged.**")
 
-            body_file=$(mktemp)
-            trap 'rm -f "$body_file"' EXIT
-            gh pr view "$pr_number" --json body | jq -j '.body // ""' > "$body_file"
-            if [[ -s "$body_file" ]]; then
-              printf '\n\n' >> "$body_file"
-            fi
-            printf 'Resolves %s\n' "$ci_pr_url" >> "$body_file"
-            gh pr edit "$pr_number" --body-file "$body_file"
+            gh pr edit "$pr_number" --body \
+          "$(gh pr view "$pr_number" --json body -q '.body // ""')
+
+          Resolves $ci_pr_url"
           fi
