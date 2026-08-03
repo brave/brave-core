@@ -77,6 +77,26 @@ describe('getCurrentBackground', () => {
     })
   })
 
+  it('should keep the current Brave background when a different image is disabled', () => {
+    // randomValue 0.5 maps to index 1 in the full 3-image catalog.
+    const before = getCurrentBackground(
+      createState({ backgroundRandomValue: 0.5 }),
+    )
+    expect(before).toEqual({
+      type: 'brave',
+      ...braveBackgrounds[1],
+    })
+
+    const after = getCurrentBackground(
+      createState({
+        disabledBraveBackgrounds: [braveBackgrounds[0].imageUrl],
+        backgroundRandomValue: 0.5,
+      }),
+    )
+
+    expect(after).toEqual(before)
+  })
+
   it('should fall back to the full Brave list when every image is disabled', () => {
     const background = getCurrentBackground(
       createState({

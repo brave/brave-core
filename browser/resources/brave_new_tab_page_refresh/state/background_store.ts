@@ -152,6 +152,33 @@ function chooseIndex<T>(list: T[], index: number): T | null {
   return list[index % list.length]
 }
 
+// Picks a Brave background using a seed into the full catalog, then skips any
+// disabled entries. Indexing the full list (not the filtered one) keeps the
+// current NTP image stable when the user disables a different image.
+function chooseBraveBackground(
+  braveBackgrounds: BraveBackground[],
+  disabledBraveBackgrounds: string[],
+  randomValue: number,
+): BraveBackground | null {
+  if (braveBackgrounds.length === 0) {
+    return null
+  }
+
+  const disabled = new Set(disabledBraveBackgrounds)
+  const start = Math.floor(randomValue * braveBackgrounds.length)
+
+  for (let offset = 0; offset < braveBackgrounds.length; offset++) {
+    const candidate =
+      braveBackgrounds[(start + offset) % braveBackgrounds.length]
+    if (!disabled.has(candidate.imageUrl)) {
+      return candidate
+    }
+  }
+
+  // Every image is disabled — fall back to the seeded entry in the full list.
+  return braveBackgrounds[start]
+}
+
 const defaultBackground: Background = {
   type: 'color',
   cssValue: gradientPreviewBackground,
@@ -200,11 +227,9 @@ export function getCurrentBackground(
           return { type: 'brave', ...pinned }
         }
       }
-      const enabled = braveBackgrounds.filter(
-        (b) => !disabledBraveBackgrounds.includes(b.imageUrl),
-      )
-      const braveBackground = chooseRandom(
-        enabled.length ? enabled : braveBackgrounds,
+      const braveBackground = chooseBraveBackground(
+        braveBackgrounds,
+        disabledBraveBackgrounds,
         randomValue,
       )
       return braveBackground ? { type: 'brave', ...braveBackground } : null
