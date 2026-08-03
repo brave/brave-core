@@ -10,7 +10,7 @@ export const style = scoped.css`
   & {
     display: flex;
     flex-direction: column;
-    padding: 0 ${spacing.m};
+    padding: 0 ${spacing.xl};
   }
 
   .heading {
