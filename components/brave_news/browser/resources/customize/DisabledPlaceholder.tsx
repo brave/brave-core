@@ -7,18 +7,16 @@ import * as React from 'react'
 import styled from 'styled-components'
 import { getLocale, formatLocale } from '$web-common/locale'
 import Flex from '$web-common/Flex'
-import { color } from '@brave/leo/tokens/css/variables'
+import { color, font, spacing } from '@brave/leo/tokens/css/variables'
 
 const Container = styled(Flex)`
-  padding: 24px 0;
+  padding: ${spacing['2Xl']} 0;
 `
 
 const Header = styled.h3`
   padding: 0;
   margin: 0;
-  font-size: 24px;
-  font-weight: 500;
-  line-height: 1.2;
+  font: ${font.heading.h2};
   color: ${color.text.secondary};
 `
 
@@ -27,12 +25,11 @@ const Subtitle = styled.p`
   margin: 0;
   max-width: 66ch;
   text-align: center;
-  font-size: 14px;
-  font-weight: 500;
+  font: ${font.default.regular};
   color: ${color.text.secondary};
 
   & + & {
-    margin-top: 12px;
+    margin-top: ${spacing.l};
   }
 
   a {
@@ -48,7 +45,7 @@ const description = formatLocale(S.BRAVE_NEWS_INTRO_DESCRIPTION_TWO, {
 
 export default function DisabledPlaceholder() {
   return (
-    <Container align="center" justify="center" direction="column" gap={26}>
+    <Container align="center" justify="center" direction="column" gap={spacing['2Xl']}>
       <Header>
         {getLocale(S.BRAVE_NEWS_INTRO_TITLE)}
       </Header>

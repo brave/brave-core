@@ -1,12 +1,12 @@
-// Copyright (c) 2022 The Brave Authors. All rights reserved.
-// This Source Code Form is subject to the terms of the Mozilla Public
-// License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// You can obtain one at https://mozilla.org/MPL/2.0/.
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import Flex from '$web-common/Flex'
 import { getLocale } from '$web-common/locale'
 import Icon from '@brave/leo/react/icon'
-import { color, icon, spacing } from '@brave/leo/tokens/css/variables'
+import { color, effect, font, icon, radius, spacing } from '@brave/leo/tokens/css/variables'
 import * as React from 'react'
 import styled from 'styled-components'
 import { useChannelSubscribed, usePublisher, usePublisherFollowed } from '../shared/Context'
@@ -28,15 +28,14 @@ const RemoveButton = styled.button`
   cursor: pointer;
   color: ${color.icon.default};
   padding: ${spacing.s};
+  border-radius: ${radius.s};
 
   &:hover {
     color: ${color.icon.interactive};
   }
 
   &:focus-visible {
-    outline: 2px solid ${color.primary[40]};
-    outline-offset: 2px;
-    border-radius: 4px;
+    outline: ${effect.focusState};
   }
 `
 
@@ -50,10 +49,10 @@ const Container = styled(Flex)`
 `
 
 const FavIconContainer = styled.div`
-  flex: 0 0 24px;
-  height: 24px;
+  flex: 0 0 ${icon.l};
+  height: ${icon.l};
   flex-shrink: 0;
-  border-radius: 100px;
+  border-radius: ${radius.full};
   color: ${color.icon.default};
 
   img {
@@ -68,12 +67,12 @@ const Text = styled.span`
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-size: 14px;
-  font-weight: 500;
+  font: ${font.default.regular};
+  color: ${color.text.primary};
 `
 
 const ChannelNameText = styled(Text)`
-  font-weight: 600;
+  font: ${font.default.semibold};
 `
 
 function FavIcon (props: { publisherId: string }) {
@@ -98,7 +97,7 @@ export function FeedListEntry (props: Props) {
   const unfollowLabel = getLocale(S.BRAVE_NEWS_FOLLOW_BUTTON_FOLLOWING)
 
   return (
-    <Container direction="row" justify="space-between" align='center' gap={8}>
+    <Container direction="row" justify="space-between" align='center' gap={spacing.m}>
       <FavIcon publisherId={props.publisherId} />
       <Text title={publisher.publisherName}>{publisher.publisherName}</Text>
       <RemoveButton
@@ -118,7 +117,7 @@ export function ChannelListEntry (props: { channelName: string }) {
   const unfollowLabel = getLocale(S.BRAVE_NEWS_FOLLOW_BUTTON_FOLLOWING)
 
   return (
-    <Container direction="row" justify='space-between' align='center' gap={8}>
+    <Container direction="row" justify='space-between' align='center' gap={spacing.m}>
       <FavIconContainer>
         {ChannelIcons[props.channelName] ?? ChannelIcons.default}
       </FavIconContainer>

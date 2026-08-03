@@ -32,7 +32,7 @@ const Links = styled.div`
 // fixed-position alert anchored to the bottom of the (modal) dialog.
 const StatusContainer = styled.div`
   position: fixed;
-  bottom: 24px;
+  bottom: ${spacing['2Xl']};
   left: 50%;
   transform: translateX(-50%);
   z-index: 1;

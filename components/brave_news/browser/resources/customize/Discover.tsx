@@ -1,7 +1,7 @@
-// Copyright (c) 2022 The Brave Authors. All rights reserved.
-// This Source Code Form is subject to the terms of the Mozilla Public
-// License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// You can obtain one at https://mozilla.org/MPL/2.0/.
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import Flex from '$web-common/Flex'
 import { getLocale } from '$web-common/locale'
@@ -9,6 +9,7 @@ import Button from '@brave/leo/react/button'
 import * as React from 'react'
 import { useState } from 'react'
 import styled from 'styled-components'
+import { font, spacing } from '@brave/leo/tokens/css/variables'
 import { useBraveNews, useChannels } from '../shared/Context'
 import ChannelCard from './ChannelCard'
 import DiscoverSection from './DiscoverSection'
@@ -19,16 +20,15 @@ import useSearch from './useSearch'
 import Input from '@brave/leo/react/input'
 
 const Header = styled.span`
-  font-size: 24px;
-  font-weight: 600;
-  padding: 12px 0;
+  font: ${font.heading.h2};
+  padding: ${spacing.l} 0;
 `
 
 export default function Discover () {
   const [query, setQuery] = useState('')
 
   return <Flex direction='column'>
-    <Header>Discover</Header>
+    <Header>{getLocale(S.BRAVE_NEWS_DISCOVER_TITLE)}</Header>
     <Input type="search" placeholder={getLocale(S.BRAVE_NEWS_SEARCH_PLACEHOLDER_LABEL)} value={query} onInput={e => setQuery(e.value)} />
     { query.length
       ? <SearchResults query={query} />
