@@ -127,4 +127,64 @@ describe('getCurrentBackground', () => {
       ...braveBackgrounds[0],
     })
   })
+
+  it('should keep the current custom background when a different image is removed', () => {
+    const customBackgrounds = [
+      'chrome://custom-wallpaper/a.jpg',
+      'chrome://custom-wallpaper/b.jpg',
+      'chrome://custom-wallpaper/c.jpg',
+    ]
+    const before = getCurrentBackground(
+      createState({
+        selectedBackground: {
+          type: SelectedBackgroundType.kCustom,
+          value: '',
+        },
+        customBackgrounds,
+        backgroundRotateIndex: 1,
+        customBackgroundStickyUrl: customBackgrounds[1],
+      }),
+    )
+    expect(before).toEqual({
+      type: 'custom',
+      imageUrl: customBackgrounds[1],
+    })
+
+    // Removing an earlier list entry used to remap rotateIndex % length.
+    const after = getCurrentBackground(
+      createState({
+        selectedBackground: {
+          type: SelectedBackgroundType.kCustom,
+          value: '',
+        },
+        customBackgrounds: [customBackgrounds[1], customBackgrounds[2]],
+        backgroundRotateIndex: 1,
+        customBackgroundStickyUrl: customBackgrounds[1],
+      }),
+    )
+    expect(after).toEqual(before)
+  })
+
+  it('should pick a new custom background when the sticky image is removed', () => {
+    const remaining = [
+      'chrome://custom-wallpaper/a.jpg',
+      'chrome://custom-wallpaper/c.jpg',
+    ]
+    const background = getCurrentBackground(
+      createState({
+        selectedBackground: {
+          type: SelectedBackgroundType.kCustom,
+          value: '',
+        },
+        customBackgrounds: remaining,
+        backgroundRotateIndex: 1,
+        customBackgroundStickyUrl: 'chrome://custom-wallpaper/b.jpg',
+      }),
+    )
+
+    expect(background).toEqual({
+      type: 'custom',
+      imageUrl: remaining[1],
+    })
+  })
 })
