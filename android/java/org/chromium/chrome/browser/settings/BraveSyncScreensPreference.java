@@ -1505,6 +1505,9 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
         if (null != mScrollViewSyncDone) {
             mScrollViewSyncDone.setVisibility(View.GONE);
         }
+        if (null != mAddDeviceTab) {
+            mAddDeviceTab.setVisibility(View.GONE);
+        }
         adjustImageButtons(
                 getActivity()
                         .getApplicationContext()
