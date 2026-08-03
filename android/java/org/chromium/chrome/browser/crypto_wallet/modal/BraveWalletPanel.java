@@ -295,7 +295,9 @@ public class BraveWalletPanel implements DialogInterface {
 
         int yOffset = 0;
         if (BottomToolbarConfiguration.isToolbarBottomAnchored()) {
-            mPopupView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+            mPopupView.measure(
+                    View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
+                    View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
             yOffset = (mPopupView.getMeasuredHeight() + mAnchorViewHost.getHeight()) * -1;
         }
         mPopupWindow.showAsDropDown(mAnchorViewHost, 0, yOffset);
