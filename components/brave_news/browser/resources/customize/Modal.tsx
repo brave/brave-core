@@ -8,6 +8,7 @@ import Dialog from '@brave/leo/react/dialog'
 import ProgressRing from '@brave/leo/react/progressRing'
 import { useBraveNews } from '../shared/Context'
 
+import { isCustomizeDialogCloseSuppressed } from './dialogCloseGuard'
 import { style } from './Modal.style'
 
 const Configure = React.lazy(() => import('./Configure'))
@@ -15,13 +16,31 @@ const Configure = React.lazy(() => import('./Configure'))
 export default function BraveNewsModal() {
   const { customizePage, setCustomizePage } = useBraveNews()
   const shouldRender = !!customizePage
+  // Bumped to remount Leo Dialog when a suppressed close already tore it down
+  // (e.g. native file picker firing `cancel` on the <dialog>).
+  const [dialogKey, setDialogKey] = React.useState(0)
 
-  return shouldRender ? (
+  if (!shouldRender) {
+    return null
+  }
+
+  return (
     <div data-css-scope={style.scope}>
       <Dialog
-        isOpen={shouldRender}
-        onClose={() => setCustomizePage(null)}
-        backdropClickCloses
+        key={dialogKey}
+        isOpen
+        showClose
+        // Programmatic OPML export clicks and the native file picker synthesize
+        // events Leo would otherwise treat as an outside/escape close.
+        backdropClickCloses={false}
+        escapeCloses={false}
+        onClose={() => {
+          if (isCustomizeDialogCloseSuppressed()) {
+            setDialogKey((key) => key + 1)
+            return
+          }
+          setCustomizePage(null)
+        }}
       >
         <React.Suspense
           fallback={
@@ -34,5 +53,5 @@ export default function BraveNewsModal() {
         </React.Suspense>
       </Dialog>
     </div>
-  ) : null
+  )
 }

@@ -31,7 +31,7 @@ export const style = scoped.css`
     display: flex;
     align-items: center;
     gap: ${spacing.s};
-    padding: 0 ${spacing['2Xl']};
+    padding: 0 ${spacing['xl']};
     color: ${color.text.primary};
     font: inherit;
     background: none;
