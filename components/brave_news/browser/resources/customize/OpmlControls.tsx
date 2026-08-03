@@ -1,7 +1,7 @@
-// Copyright (c) 2026 The Brave Authors. All rights reserved.
-// This Source Code Form is subject to the terms of the Mozilla Public
-// License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// You can obtain one at https://mozilla.org/MPL/2.0/.
+/* Copyright (c) 2026 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import Alert from '@brave/leo/react/alert'
 import Button from '@brave/leo/react/button'
@@ -18,8 +18,8 @@ import { downloadOpml, importOpml } from './opml'
 const Links = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: ${spacing.m};
+  flex-wrap: wrap;
 
   & leo-button {
     flex: 0 0 auto;
@@ -81,8 +81,8 @@ export default function OpmlControls() {
           ChannelsCachingWrapper.getInstance().setChannelSubscribed(
             loc,
             name,
-            true
-          )
+            true,
+          ),
       })
       setStatus({
         type: 'success',
@@ -90,14 +90,14 @@ export default function OpmlControls() {
           $1: String(result.subscribedPublishers),
           $2: String(result.addedDirectFeeds),
           $3: String(result.subscribedChannels),
-          $4: String(result.skipped)
-        })
+          $4: String(result.skipped),
+        }),
       })
     } catch (err) {
       console.error('Brave News: failed to import OPML', err)
       setStatus({
         type: 'error',
-        content: getLocale(S.BRAVE_NEWS_OPML_IMPORT_ERROR)
+        content: getLocale(S.BRAVE_NEWS_OPML_IMPORT_ERROR),
       })
     }
   }
@@ -105,10 +105,14 @@ export default function OpmlControls() {
   return (
     <>
       <Links>
-        <Button kind='plain-faint' size='small' onClick={() => inputRef.current?.click()}>
+        <Button
+          kind='outline'
+          size='small'
+          onClick={() => inputRef.current?.click()}
+        >
           {getLocale(S.BRAVE_NEWS_OPML_IMPORT)}
         </Button>
-        <Button kind='plain-faint' size='small' onClick={onExport}>
+        <Button kind='outline' size='small' onClick={onExport}>
           {getLocale(S.BRAVE_NEWS_OPML_EXPORT)}
         </Button>
       </Links>
