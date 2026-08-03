@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 import styled from 'styled-components'
-import { getLocale, formatLocale } from '$web-common/locale'
+import { getLocale } from '$web-common/locale'
 import Flex from '$web-common/Flex'
 import { color, font, spacing } from '@brave/leo/tokens/css/variables'
 
@@ -27,21 +27,7 @@ const Subtitle = styled.p`
   text-align: center;
   font: ${font.default.regular};
   color: ${color.text.secondary};
-
-  & + & {
-    margin-top: ${spacing.l};
-  }
-
-  a {
-    color: inherit;
-  }
 `
-
-const description = formatLocale(S.BRAVE_NEWS_INTRO_DESCRIPTION_TWO, {
-  $1: content => <a href='https://brave.com/privacy/browser/'>
-    {content}
-  </a>
-})
 
 export default function DisabledPlaceholder() {
   return (
@@ -49,14 +35,9 @@ export default function DisabledPlaceholder() {
       <Header>
         {getLocale(S.BRAVE_NEWS_INTRO_TITLE)}
       </Header>
-      <div>
-        <Subtitle>
-          {getLocale(S.BRAVE_NEWS_INTRO_DESCRIPTION)}
-        </Subtitle>
-        <Subtitle>
-          {description}
-        </Subtitle>
-      </div>
+      <Subtitle>
+        {getLocale(S.BRAVE_NEWS_INTRO_DESCRIPTION)}
+      </Subtitle>
     </Container>
   )
 }

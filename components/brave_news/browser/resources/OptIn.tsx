@@ -8,8 +8,7 @@ import styled from 'styled-components'
 import Button from '@brave/leo/react/button'
 import { color, font } from '@brave/leo/tokens/css/variables'
 
-import SecureLink from '$web-common/SecureLink'
-import { getLocale, formatLocale } from '$web-common/locale'
+import { getLocale } from '$web-common/locale'
 import { useBraveNews } from './shared/Context'
 import { NEWS_FEED_CLASS } from './Feed'
 
@@ -45,10 +44,6 @@ const Container = styled.div`
     margin: 0;
   }
 
-  a {
-    color: inherit;
-  }
-
   .graphic {
     background-image: url(${optInImage});
     background-size: contain;
@@ -57,12 +52,6 @@ const Container = styled.div`
     height: 60px;
   }
 `
-
-const description = formatLocale(S.BRAVE_NEWS_INTRO_DESCRIPTION_TWO, {
-  $1: (content) => (
-    <SecureLink href='https://brave.com/privacy/browser/'>{content}</SecureLink>
-  )
-})
 
 export default function OptIn() {
   const { toggleBraveNewsOnNTP } = useBraveNews()
@@ -73,7 +62,6 @@ export default function OptIn() {
       <h3>{getLocale(S.BRAVE_NEWS_INTRO_TITLE)}</h3>
       <div>
         <p>{getLocale(S.BRAVE_NEWS_INTRO_DESCRIPTION)}</p>
-        <p>{description}</p>
       </div>
       <div>
         <Button
