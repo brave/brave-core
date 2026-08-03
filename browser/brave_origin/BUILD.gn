@@ -46,6 +46,8 @@ source_set("brave_origin") {
     "//brave/components/local_ai/buildflags",
     "//brave/components/p3a",
     "//brave/components/playlist/core/common/buildflags",
+    "//brave/components/psst/buildflags",
+    "//brave/components/psst/core/browser",
     "//brave/components/speedreader/common/buildflags",
     "//brave/components/tor/buildflags",
     "//chrome/browser:browser_process",
