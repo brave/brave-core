@@ -15,13 +15,12 @@ substitutions:
         import org.chromium.components.browser_ui.settings.BraveSettingsIconTintUtils;
 
   - description: |
-      Apply the Dynamic Colors tint to the Settings search icon before the
-      search query view is initialized.
+      Apply the Dynamic Colors tint to the Settings search icon, right after the
+      statement in which upstream first resolves it.
     regex:
       re_pattern:
-        '(initializeSearchUi\s*\([^)]*\)\s*\{.*?)(^[ \t]*)(View query =
-        mActivity\.findViewById\(R\.id\.search_query_container\);)'
-      re_flags: [DOTALL, MULTILINE]
+        '(^([ \t]*)[^;]*?(searchBox\.\w+ViewById\(R\.id\.search_icon\))[^;]*;)'
+      re_flags: [MULTILINE]
       replace: |-
-        \1\2BraveSettingsIconTintUtils.applyIconTint(searchBox.findViewById(R.id.search_icon), BraveDynamicColors.isDynamicColorsEnabled());
-        \2\3
+        \1
+        \2BraveSettingsIconTintUtils.applyIconTint(\3, BraveDynamicColors.isDynamicColorsEnabled());
