@@ -13,6 +13,7 @@ import getBraveNewsController from '../shared/api'
 import { ChannelsCachingWrapper } from '../shared/channelsCache'
 import { useBraveNews } from '../shared/Context'
 import { PublishersCachingWrapper } from '../shared/publishersCache'
+import { runWithCustomizeDialogCloseSuppressed } from './dialogCloseGuard'
 import { downloadOpml, importOpml } from './opml'
 
 const Links = styled.div`
@@ -55,7 +56,9 @@ export default function OpmlControls() {
   }, [status])
 
   const onExport = () => {
-    downloadOpml(Object.values(publishers), Object.values(channels), locale)
+    runWithCustomizeDialogCloseSuppressed(() => {
+      downloadOpml(Object.values(publishers), Object.values(channels), locale)
+    })
   }
 
   const onFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -108,7 +111,14 @@ export default function OpmlControls() {
         <Button
           kind='outline'
           size='small'
-          onClick={() => inputRef.current?.click()}
+          onClick={() => {
+            runWithCustomizeDialogCloseSuppressed(
+              () => {
+                inputRef.current?.click()
+              },
+              { waitForWindowFocus: true },
+            )
+          }}
         >
           {getLocale(S.BRAVE_NEWS_OPML_IMPORT)}
         </Button>
