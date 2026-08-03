@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/geo/GeolocationHeader.java b/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/geo/GeolocationHeader.java
-index b7dc84e7decbcc7444d3c3d13240a15554d9b233..b5705dd2d4d631fbed17271507007efa3210c6e2 100644
+index b7dc84e7decbcc7444d3c3d13240a15554d9b233..a53fb67d690283312acf905f2a5aea69e12bba00 100644
 --- a/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/geo/GeolocationHeader.java
 +++ b/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/geo/GeolocationHeader.java
 @@ -211,6 +211,9 @@ public class GeolocationHeader {
@@ -12,3 +12,11 @@ index b7dc84e7decbcc7444d3c3d13240a15554d9b233..b5705dd2d4d631fbed17271507007efa
          return geoHeaderStateForUrl(
                  profile, templateService, templateService.getUrlForSearchQuery(DUMMY_URL_QUERY));
      }
+@@ -224,6 +227,7 @@ public class GeolocationHeader {
+ 
+             // Only send X-Geo to search engines associated with the current profile.
+             if (profile == null || service == null) return HeaderState.UNSUITABLE_URL;
++            if (!service.hasNativeService()) return HeaderState.UNSUITABLE_URL;
+ 
+             // Only send X-Geo in normal mode.
+             if (profile.isOffTheRecord()) return HeaderState.INCOGNITO;
