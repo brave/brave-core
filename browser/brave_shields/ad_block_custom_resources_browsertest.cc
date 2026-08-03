@@ -3,7 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include <string>
+#include <string_view>
+
 #include "base/base64.h"
+#include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/test_future.h"
@@ -143,18 +147,29 @@ bool ClickSaveCustomScriptlet(content::WebContents* web_contents,
   return true;
 }
 
-bool ClickCustomScriplet(content::WebContents* web_contents,
-                         const std::string& name,
-                         const std::string& button) {
+// Evaluates |expression| with |b| bound to the |button| control of the
+// scriptlet row named |name|.
+content::EvalJsResult EvalOnCustomScriptletButton(
+    content::WebContents* web_contents,
+    const std::string& name,
+    const std::string& button,
+    std::string_view expression) {
   AwaitElement(web_contents, "adblockScriptletList", name);
-  constexpr const char kClick[] = R"js(
+  const std::string script = base::StrCat({R"js(
      (function() {
        const e = window.testing.adblockScriptletList.getElementById($1);
        const b = e.querySelector($2);
-       b.click();
+       return )js",
+                                           expression, R"js(;
      })();
-  )js";
-  return EvalJs(web_contents, content::JsReplace(kClick, name, "." + button))
+  )js"});
+  return EvalJs(web_contents, content::JsReplace(script, name, "." + button));
+}
+
+bool ClickCustomScriplet(content::WebContents* web_contents,
+                         const std::string& name,
+                         const std::string& button) {
+  return EvalOnCustomScriptletButton(web_contents, name, button, "b.click()")
       .is_ok();
 }
 
@@ -163,14 +178,14 @@ bool WaitForCustomScriptletOrder(content::WebContents* web_contents,
   AwaitRoot(web_contents, "adblockScriptletList");
   constexpr const char kScript[] = R"js(
     (async () => {
-      const expected = JSON.parse($1);
+      const expected = JSON.stringify(JSON.parse($1));
       const getOrder = () => {
-        return Array.from(window.testing.adblockScriptletList
+        return JSON.stringify(Array.from(window.testing.adblockScriptletList
             .querySelectorAll('.scriptlet .label'))
-          .map((element) => element.textContent.trim());
+          .map((element) => element.textContent.trim()));
       };
       const deadline = Date.now() + 5000;
-      while (JSON.stringify(getOrder()) !== JSON.stringify(expected)) {
+      while (getOrder() !== expected) {
         if (Date.now() >= deadline) {
           return false;
         }
@@ -179,21 +194,14 @@ bool WaitForCustomScriptletOrder(content::WebContents* web_contents,
       return true;
     })();
   )js";
-  return EvalJs(web_contents,
-                content::JsReplace(kScript, expected_json)).ExtractBool();
+  return EvalJs(web_contents, content::JsReplace(kScript, expected_json))
+      .ExtractBool();
 }
 
 bool IsCustomScriptletButtonDisabled(content::WebContents* web_contents,
                                      const std::string& name,
                                      const std::string& button) {
-  AwaitElement(web_contents, "adblockScriptletList", name);
-  constexpr const char kScript[] = R"js(
-     (function() {
-       const e = window.testing.adblockScriptletList.getElementById($1);
-       return e.querySelector($2).disabled;
-     })();
-  )js";
-  return EvalJs(web_contents, content::JsReplace(kScript, name, "." + button))
+  return EvalOnCustomScriptletButton(web_contents, name, button, "b.disabled")
       .ExtractBool();
 }
 
@@ -227,6 +235,18 @@ class AdblockCustomResourcesTest : public AdBlockServiceTest {
               *custom_scriptlet.GetDict().FindString("content"));
     EXPECT_EQ("application/javascript",
               *custom_scriptlet.GetDict().FindStringByDottedPath("kind.mime"));
+  }
+
+  void AddCustomResource(const std::string& name, const std::string& content) {
+    base::test::TestFuture<
+        brave_shields::AdBlockCustomResourceProvider::ErrorCode>
+        result;
+    g_brave_browser_process->ad_block_service()
+        ->custom_resource_provider()
+        ->AddResource(profile()->GetPrefs(), CreateResource(name, content),
+                      result.GetCallback());
+    EXPECT_EQ(brave_shields::AdBlockCustomResourceProvider::ErrorCode::kOk,
+              result.Get());
   }
 
   base::Value GetCustomResources() {
@@ -315,42 +335,16 @@ IN_PROC_BROWSER_TEST_F(AdblockCustomResourcesTest, MAYBE_Reorder) {
 
   NavigateToURL(GURL("brave://settings/shields/filters"));
 
-  base::test::TestFuture<
-      brave_shields::AdBlockCustomResourceProvider::ErrorCode>
-      result_1;
-  g_brave_browser_process->ad_block_service()
-      ->custom_resource_provider()
-      ->AddResource(profile()->GetPrefs(), CreateResource("user-1.js", "1"),
-                    result_1.GetCallback());
-  EXPECT_EQ(brave_shields::AdBlockCustomResourceProvider::ErrorCode::kOk,
-            result_1.Get());
-
-  base::test::TestFuture<
-      brave_shields::AdBlockCustomResourceProvider::ErrorCode>
-      result_2;
-  g_brave_browser_process->ad_block_service()
-      ->custom_resource_provider()
-      ->AddResource(profile()->GetPrefs(), CreateResource("user-2.js", "2"),
-                    result_2.GetCallback());
-  EXPECT_EQ(brave_shields::AdBlockCustomResourceProvider::ErrorCode::kOk,
-            result_2.Get());
-
-  base::test::TestFuture<
-      brave_shields::AdBlockCustomResourceProvider::ErrorCode>
-      result_3;
-  g_brave_browser_process->ad_block_service()
-      ->custom_resource_provider()
-      ->AddResource(profile()->GetPrefs(), CreateResource("user-3.js", "3"),
-                    result_3.GetCallback());
-  EXPECT_EQ(brave_shields::AdBlockCustomResourceProvider::ErrorCode::kOk,
-            result_3.Get());
+  AddCustomResource("user-1.js", "1");
+  AddCustomResource("user-2.js", "2");
+  AddCustomResource("user-3.js", "3");
 
   ASSERT_TRUE(WaitForCustomScriptletOrder(
       web_contents(), R"(["user-1.js","user-2.js","user-3.js"])"));
-  EXPECT_TRUE(IsCustomScriptletButtonDisabled(web_contents(), "user-1.js",
-                                             "move-up"));
+  EXPECT_TRUE(
+      IsCustomScriptletButtonDisabled(web_contents(), "user-1.js", "move-up"));
   EXPECT_TRUE(IsCustomScriptletButtonDisabled(web_contents(), "user-3.js",
-                                             "move-down"));
+                                              "move-down"));
 
   ASSERT_TRUE(ClickCustomScriplet(web_contents(), "user-2.js", "move-up"));
   ASSERT_TRUE(WaitForCustomScriptletOrder(

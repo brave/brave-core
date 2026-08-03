@@ -100,37 +100,28 @@ class AdblockScriptletList extends AdblockScriptletListBase {
   }
 
   handleMoveUp_(e: Event & {model: {index: number}}) {
-    this.moveScriptlet_(e.model.index, -1)
-  }
-
-  handleMoveDown_(e: Event & {model: {index: number}}) {
-    this.moveScriptlet_(e.model.index, 1)
-  }
-
-  moveScriptlet_(index: number, offset: number) {
     this.browserProxy_.moveCustomScriptlet(
-      this.customScriptletsList_[index].name,
-      offset,
+      this.customScriptletsList_[e.model.index].name,
+      -1,
     )
   }
 
-  isFirstScriptlet_(index: number) {
-    return index === 0
-  }
-
-  isLastScriptlet_(index: number, list: Scriptlet[]) {
-    return index === list.length - 1
+  handleMoveDown_(e: Event & {model: {index: number}}) {
+    this.browserProxy_.moveCustomScriptlet(
+      this.customScriptletsList_[e.model.index].name,
+      1,
+    )
   }
 
   isMoveUpDisabled_(developerModeEnabled: boolean, index: number) {
-    return !developerModeEnabled || this.isFirstScriptlet_(index)
+    return !developerModeEnabled || index === 0
   }
 
   isMoveDownDisabled_(
       developerModeEnabled: boolean,
       index: number,
       list: Scriptlet[]) {
-    return !developerModeEnabled || this.isLastScriptlet_(index, list)
+    return !developerModeEnabled || index === list.length - 1
   }
 
   scriptletEditorClosed_(_: Event) {

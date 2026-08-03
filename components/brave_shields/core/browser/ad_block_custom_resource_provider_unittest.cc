@@ -326,23 +326,21 @@ TEST_F(AdBlockCustomResourceProviderTest, MoveResource) {
   {
     EXPECT_EQ(AdBlockCustomResourceProvider::ErrorCode::kOk,
               MoveResource("user-2.js", -1));
-    EXPECT_EQ(
-        base::ListValue()
-            .Append(CreateResource("user-2.js", "user-2"))
-            .Append(CreateResource("user-1.js", "user-1"))
-            .Append(CreateResource("user-3.js", "user-3")),
-        GetResources());
+    EXPECT_EQ(base::ListValue()
+                  .Append(CreateResource("user-2.js", "user-2"))
+                  .Append(CreateResource("user-1.js", "user-1"))
+                  .Append(CreateResource("user-3.js", "user-3")),
+              GetResources());
   }
 
   {
     EXPECT_EQ(AdBlockCustomResourceProvider::ErrorCode::kOk,
               MoveResource("user-1.js", 1));
-    EXPECT_EQ(
-        base::ListValue()
-            .Append(CreateResource("user-2.js", "user-2"))
-            .Append(CreateResource("user-3.js", "user-3"))
-            .Append(CreateResource("user-1.js", "user-1")),
-        GetResources());
+    EXPECT_EQ(base::ListValue()
+                  .Append(CreateResource("user-2.js", "user-2"))
+                  .Append(CreateResource("user-3.js", "user-3"))
+                  .Append(CreateResource("user-1.js", "user-1")),
+              GetResources());
   }
 }
 
