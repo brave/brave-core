@@ -44,6 +44,10 @@ class BraveMultiContentsView : public MultiContentsView {
 
   void set_web_panel_active(bool active) { is_web_panel_active_ = active; }
 
+  // Notifies the multi-contents view that the browser's active content domain
+  // display state has changed.
+  void OnShowActiveContentsDomainChanged();
+
   // MultiContentsView:
   // Give web panel's ContentsContainerView/ContentsWebView if
   // |is_web_panel_active_| is true.

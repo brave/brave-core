@@ -20,6 +20,16 @@ class BraveMultiContentsViewMiniToolbar : public MultiContentsViewMiniToolbar {
   static BraveMultiContentsViewMiniToolbar* From(
       MultiContentsViewMiniToolbar* toolbar);
 
+  // Keeps the favicon and domain visible while this toolbar's contents area is
+  // active. By default they are shown only while it is inactive. Takes effect
+  // on the next `UpdateState()` call.
+  void SetAlwaysShowDomain(bool always_show_domain);
+
+  // Sets whether this toolbar meets a split view border, as opposed to the
+  // thinner contents outline drawn around a contents area that stands alone.
+  // Defaults to true. Takes effect on the next `UpdateState()` call.
+  void SetUsesSplitBorder(bool uses_split_border);
+
   // View:
   void OnBoundsChanged(const gfx::Rect& previous_bounds) override;
 
@@ -28,13 +38,19 @@ class BraveMultiContentsViewMiniToolbar : public MultiContentsViewMiniToolbar {
   void UpdateState(bool is_active, bool is_highlighted) override;
   void OnPaint(gfx::Canvas* canvas) override;
 
+  // Permanently removes the menu button from this toolbar.
   void HideMenuButton();
 
  private:
   int GetOutlineThickness() const;
+  int GetContainerBorderThickness() const;
   SkPath GetPath(bool border_stroke_only) const;
+  void UpdateClipPath();
 
   bool is_active_ = false;
+  bool always_show_domain_ = false;
+  bool uses_split_border_ = true;
+  bool has_menu_button_ = true;
   ui::ColorId stroke_color_ = kColorBraveSplitViewInactiveWebViewBorder;
 };
 

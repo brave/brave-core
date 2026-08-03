@@ -149,6 +149,22 @@ const flags_ui::FeatureEntry::FeatureVariation kZCashFeatureVariations[] = {
     {"- Shielded support enabled", kZCashShieldedTransactionsEnabled, nullptr}};
 #endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 
+#if defined(TOOLKIT_VIEWS)
+const flags_ui::FeatureEntry::FeatureParam kFocusModeUrlInTitleBar[] = {
+    {"url-display", "title-bar"}};
+
+const flags_ui::FeatureEntry::FeatureParam kFocusModeUrlInMiniToolbar[] = {
+    {"url-display", "mini-toolbar"}};
+
+const flags_ui::FeatureEntry::FeatureParam kFocusModeNoUrl[] = {
+    {"url-display", "none"}};
+
+const flags_ui::FeatureEntry::FeatureVariation kBraveFocusModeVariations[] = {
+    {"- URL in title bar", kFocusModeUrlInTitleBar, nullptr},
+    {"- URL in mini-toolbar", kFocusModeUrlInMiniToolbar, nullptr},
+    {"- No URL display", kFocusModeNoUrl, nullptr}};
+#endif  // defined(TOOLKIT_VIEWS)
+
 namespace {
 const char* const kBraveSyncImplLink[1] = {"https://github.com/brave/go-sync"};
 }  // namespace
@@ -575,7 +591,9 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
       "Enables Focus Mode, which hides browser chrome and provides " \
       "hover-to-reveal access to hidden UI elements",                \
       kOsWin | kOsMac | kOsLinux,                                    \
-      FEATURE_VALUE_TYPE(features::kBraveFocusMode),                 \
+      FEATURE_WITH_PARAMS_VALUE_TYPE(features::kBraveFocusMode,      \
+                                     kBraveFocusModeVariations,      \
+                                     "BraveFocusMode"),              \
   })
 #else
 #define BRAVE_FOCUS_MODE_FEATURE_ENTRIES

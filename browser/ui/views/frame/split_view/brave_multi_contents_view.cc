@@ -81,6 +81,10 @@ void BraveMultiContentsView::SetWebPanelOnLeft(bool left) {
   InvalidateLayout();
 }
 
+void BraveMultiContentsView::OnShowActiveContentsDomainChanged() {
+  UpdateContentsBorderAndOverlay();
+}
+
 views::ProposedLayout BraveMultiContentsView::CalculateProposedLayout(
     const views::SizeBounds& size_bounds) const {
   if (!size_bounds.is_fully_bounded()) {

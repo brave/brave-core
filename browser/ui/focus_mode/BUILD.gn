@@ -21,10 +21,14 @@ source_set("focus_mode") {
 source_set("unit_tests") {
   testonly = true
 
-  sources = [ "focus_mode_controller_unittest.cc" ]
+  sources = [
+    "focus_mode_controller_unittest.cc",
+    "focus_mode_features_unittest.cc",
+  ]
 
   deps = [
     ":focus_mode",
+    "//base/test:test_support",
     "//testing/gtest",
   ]
 }
