@@ -1,9 +1,8 @@
-// Copyright (c) 2022 The Brave Authors. All rights reserved.
-// This Source Code Form is subject to the terms of the Mozilla Public
-// License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// You can obtain one at https://mozilla.org/MPL/2.0/.
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import Button from '@brave/leo/react/button'
 import * as React from 'react'
 import styled from 'styled-components'
 import { getLocale, formatLocale } from '$web-common/locale'
@@ -22,7 +21,7 @@ const TodayGraphic = <svg width="370" height="80" viewBox="0 0 370 80" fill="non
 </svg>
 
 const Container = styled(Flex)`
-  height: 100%;
+  padding: 24px 0;
 `
 
 const Header = styled.h3`
@@ -52,19 +51,13 @@ const Subtitle = styled.p`
   }
 `
 
-const EnableButton = styled(Button)`
-  margin-top: 16px;
-  // Move the centered content up a bit.
-  margin-bottom: 48px;
-`
-
 const description = formatLocale(S.BRAVE_NEWS_INTRO_DESCRIPTION_TWO, {
   $1: content => <a href='https://brave.com/privacy/browser/'>
     {content}
   </a>
 })
 
-export default function DisabledPlaceholder (props: { enableBraveNews: () => void }) {
+export default function DisabledPlaceholder() {
   return (
     <Container align="center" justify="center" direction="column" gap={26}>
       {TodayGraphic}
@@ -79,9 +72,6 @@ export default function DisabledPlaceholder (props: { enableBraveNews: () => voi
           {description}
         </Subtitle>
       </div>
-      <EnableButton onClick={props.enableBraveNews}>
-        {getLocale(S.BRAVE_NEWS_OPT_IN_ACTION_LABEL)}
-      </EnableButton>
     </Container>
   )
 }
