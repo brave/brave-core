@@ -46,7 +46,7 @@ from recipe_test_api import (DisabledTestData, PostprocessHookContext,
 # Fixed synthetic locations used in test mode. They are never touched on disk;
 # they exist only so module-derived paths are deterministic, and are rewritten
 # to tokens in expectations so goldens are machine-independent.
-SIM_WORKSPACE = PurePosixPath('/b/s')
+SIM_WORKSPACE = PurePosixPath('/b/w')
 SIM_HOME = PurePosixPath('/b/home')
 
 WORKSPACE_TOKEN = '[WORKSPACE]'

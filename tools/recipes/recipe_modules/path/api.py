@@ -100,8 +100,12 @@ class PathApi(RecipeApi):
 
     @property
     def chromium_src(self) -> Path:
-        """Chromium `src/` checkout: `<workspace>/brave-browser/src`."""
-        return self._workspace / 'brave-browser' / 'src'
+        """Chromium `src/` checkout: `<workspace>/b/src`.
+
+        Named `b` to keep paths short on Windows, as long paths on Windows can
+        cause linking errors for code we have no control over (e.g. LLVM).
+        """
+        return self._workspace / 'b' / 'src'
 
     @property
     def brave_core(self) -> Path:

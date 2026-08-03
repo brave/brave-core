@@ -131,21 +131,21 @@ class TestContextTest(unittest.TestCase):
         self.assertEqual(ctx.which_map['gclient'], '/g')
         # Relative seed resolves under the simulated workspace.
         self.assertTrue(
-            ctx.fs.is_file('/b/s/brave-browser/src/chrome/VERSION'))
+            ctx.fs.is_file('/b/w/brave-browser/src/chrome/VERSION'))
 
 
 class ExpectationTest(unittest.TestCase):
 
     def test_stabilize_tokens(self):
         ctx = simulation.TestContext()
-        self.assertEqual(simulation.stabilize('/b/s/out/x', ctx),
+        self.assertEqual(simulation.stabilize('/b/w/out/x', ctx),
                          '[WORKSPACE]/out/x')
         self.assertEqual(simulation.stabilize('/b/home/.cache', ctx),
                          '[HOME]/.cache')
 
     def test_build_steps_success_result(self):
         runner = simulation.SimulationStepRunner()
-        _run(runner, {'name': 'a', 'cmd': ['/b/s/out/tool']})
+        _run(runner, {'name': 'a', 'cmd': ['/b/w/out/tool']})
         steps = simulation.build_steps(runner, None, simulation.TestContext())
         self.assertEqual(steps['a']['cmd'], ['[WORKSPACE]/out/tool'])
         # A successful run's $result carries no failure key.
@@ -153,7 +153,7 @@ class ExpectationTest(unittest.TestCase):
 
     def test_build_steps_failure_result_stabilizes_reason(self):
         runner = simulation.SimulationStepRunner()
-        failure = {'humanReason': 'boom at /b/s/out/tool'}
+        failure = {'humanReason': 'boom at /b/w/out/tool'}
         steps = simulation.build_steps(runner, failure,
                                        simulation.TestContext())
         # An infra failure carries only humanReason (paths stabilized).

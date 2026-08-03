@@ -233,10 +233,8 @@ class WorkspaceTest(unittest.TestCase):
             path = eng._instantiate_module('path', [])
             workspace = Path(tmp).resolve()
             self.assertEqual(path.workspace, workspace)
-            self.assertEqual(path.chromium_src,
-                             workspace / 'brave-browser/src')
-            self.assertEqual(path.brave_core,
-                             workspace / 'brave-browser/src/brave')
+            self.assertEqual(path.chromium_src, workspace / 'b/src')
+            self.assertEqual(path.brave_core, workspace / 'b/src/brave')
             self.assertEqual(path.out, workspace / 'out')
             self.assertEqual(Path.cwd(), workspace)
 

@@ -196,8 +196,8 @@ class _Engine:
         # in test mode: it seeds this onto every module (so the seam modules
         # simulate I/O) and does not touch the real cwd.
         self._test = test
-        # Root directory the job runs in. Recipe paths (brave-browser/src,
-        # out, ...) are derived from it by the `path` module.
+        # Root directory the job runs in. Recipe paths (b/src, out, ...) are
+        # derived from it by the `path` module.
         if self._test is not None:
             # Fixed synthetic workspace so module-derived paths are
             # deterministic; never chdir'd into (nothing runs on disk).
@@ -451,7 +451,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument('--workspace',
                         default=None,
                         help='Root directory the job runs in; recipe paths '
-                        '(brave-browser/src, out, ...) are relative to it '
+                        '(b/src, out, ...) are relative to it '
                         '(default: current directory)')
     parser.add_argument('--brave-core-ref',
                         default='master',
