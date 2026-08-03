@@ -9,10 +9,12 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -445,10 +447,13 @@ public class BraveWalletPanel implements DialogInterface {
                     0);
         }
 
-        int deviceWidth = ConfigurationUtils.getDisplayMetrics(mActivity).get("width");
-        boolean isTablet = DeviceFormFactor.isNonMultiDisplayContextOnTablet(mActivity);
+        final Configuration configuration = mActivity.getResources().getConfiguration();
+        final boolean landscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE;
+        final DisplayMetrics displayMetrics = mActivity.getResources().getDisplayMetrics();
+        final int deviceWidth = Math.round(configuration.screenWidthDp * displayMetrics.density);
+        final boolean isTablet = ConfigurationUtils.isTablet(mActivity);
 
-        mPopupWindow.setWidth((int) (isTablet ? (deviceWidth * 0.6) : (deviceWidth * 0.95)));
+        mPopupWindow.setWidth((int) (isTablet || landscape ? (deviceWidth * 0.6) : (deviceWidth * 0.95)));
 
         mExpandWalletImage = mPopupView.findViewById(R.id.iv_dapp_panel_expand);
         if (mShowExpandButton) {
