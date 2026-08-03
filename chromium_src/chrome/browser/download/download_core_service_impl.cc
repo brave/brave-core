@@ -3,9 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/download/brave_download_manager_delegate.h"
+#include <memory>
+
+class ChromeDownloadManagerDelegate;
+class Profile;
+
+std::unique_ptr<ChromeDownloadManagerDelegate>
+CreateBraveDownloadManagerDelegate(Profile* profile);
 
 #define BRAVE_CREATE_DOWNLOAD_MANAGER_DELEGATE \
-  manager_delegate_ = std::make_unique<BraveDownloadManagerDelegate>(profile_);
+  manager_delegate_ = CreateBraveDownloadManagerDelegate(profile_);
 #include <chrome/browser/download/download_core_service_impl.cc>
 #undef BRAVE_CREATE_DOWNLOAD_MANAGER_DELEGATE

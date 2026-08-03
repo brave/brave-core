@@ -19,19 +19,24 @@
 #include "base/test/test_future.h"
 #include "base/threading/thread_restrictions.h"
 #include "brave/components/image_metadata_stripper/common/features.h"
+#include "chrome/browser/download/download_core_service.h"
+#include "chrome/browser/download/download_core_service_factory.h"
 #include "chrome/browser/download/download_prefs.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/common/pref_names.h"
-#include "chrome/test/base/in_process_browser_test.h"
-#include "chrome/test/base/ui_test_utils.h"
+#include "chrome/test/base/chrome_test_utils.h"
+#include "chrome/test/base/platform_browser_test.h"
+#include "components/download/public/common/download_item.h"
 #include "components/prefs/pref_service.h"
+#include "content/public/browser/download_manager.h"
 #include "content/public/test/browser_test.h"
+#include "content/public/test/download_test_observer.h"
 #include "net/http/http_status_code.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "net/test/embedded_test_server/http_request.h"
 #include "net/test/embedded_test_server/http_response.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "url/gurl.h"
 
 namespace {
 
@@ -72,45 +77,47 @@ std::unique_ptr<net::test_server::HttpResponse> HandleDownloadRequest(
   return response;
 }
 
-// Installs a test only callback which is fired once the iptc stripping of a
-// download item has finished, and clears it again on destruction.
-class ScopedImageMetadataStrippedCallbackForTesting {
+// Observes OnImageMetadataStripped() without a production-side test hook.
+class TestBraveDownloadManagerDelegate : public BraveDownloadManagerDelegate {
  public:
-  explicit ScopedImageMetadataStrippedCallbackForTesting(
-      base::OnceClosure callback)
-      : callback_(std::move(callback)) {
-    BraveDownloadManagerDelegate::SetOnImageMetadataStrippedCallbackForTesting(
-        &callback_);
+  explicit TestBraveDownloadManagerDelegate(Profile* profile)
+      : BraveDownloadManagerDelegate(profile) {}
+
+  void SetOnImageMetadataStrippedCallback(base::OnceClosure callback) {
+    on_image_metadata_stripped_callback_ = std::move(callback);
   }
 
-  ~ScopedImageMetadataStrippedCallbackForTesting() {
-    BraveDownloadManagerDelegate::SetOnImageMetadataStrippedCallbackForTesting(
-        nullptr);
+ protected:
+  void OnImageMetadataStripped(uint32_t download_id, bool success) override {
+    BraveDownloadManagerDelegate::OnImageMetadataStripped(download_id, success);
+    if (on_image_metadata_stripped_callback_) {
+      std::move(on_image_metadata_stripped_callback_).Run();
+    }
   }
-
-  ScopedImageMetadataStrippedCallbackForTesting(
-      const ScopedImageMetadataStrippedCallbackForTesting&) = delete;
-  ScopedImageMetadataStrippedCallbackForTesting& operator=(
-      const ScopedImageMetadataStrippedCallbackForTesting&) = delete;
 
  private:
-  base::OnceClosure callback_;
+  base::OnceClosure on_image_metadata_stripped_callback_;
 };
 
 }  // namespace
 
-class BraveDownloadManagerDelegateBrowserTestBase
-    : public InProcessBrowserTest {
+class BraveDownloadManagerDelegateBrowserTestBase : public PlatformBrowserTest {
  public:
   void SetUpOnMainThread() override {
-    InProcessBrowserTest::SetUpOnMainThread();
+    PlatformBrowserTest::SetUpOnMainThread();
 
     ASSERT_TRUE(downloads_directory_.CreateUniqueTempDir());
-    browser()->profile()->GetPrefs()->SetBoolean(prefs::kPromptForDownload,
-                                                 false);
-    DownloadPrefs::FromDownloadManager(
-        browser()->profile()->GetDownloadManager())
+    Profile* profile = chrome_test_utils::GetProfile(this);
+    profile->GetPrefs()->SetBoolean(prefs::kPromptForDownload, false);
+    DownloadPrefs::FromDownloadManager(profile->GetDownloadManager())
         ->SetDownloadPath(downloads_directory());
+
+    auto test_delegate =
+        std::make_unique<TestBraveDownloadManagerDelegate>(profile);
+    test_delegate->GetDownloadIdReceiverCallback().Run(
+        download::DownloadItem::kInvalidId + 1);
+    DownloadCoreServiceFactory::GetForBrowserContext(profile)
+        ->SetDownloadManagerDelegateForTesting(std::move(test_delegate));
 
     embedded_test_server()->RegisterRequestHandler(
         base::BindRepeating(&HandleDownloadRequest));
@@ -119,6 +126,27 @@ class BraveDownloadManagerDelegateBrowserTestBase
 
   const base::FilePath& downloads_directory() const {
     return downloads_directory_.GetPath();
+  }
+
+  TestBraveDownloadManagerDelegate* GetDownloadManagerDelegate() {
+    return static_cast<TestBraveDownloadManagerDelegate*>(
+        DownloadCoreServiceFactory::GetForBrowserContext(
+            chrome_test_utils::GetProfile(this))
+            ->GetDownloadManagerDelegate());
+  }
+
+  // Cross-platform stand-in for ui_test_utils::DownloadURL (desktop-only).
+  void DownloadURL(const GURL& download_url) {
+    content::DownloadManager* const download_manager =
+        chrome_test_utils::GetProfile(this)->GetDownloadManager();
+    content::DownloadTestObserverTerminal observer(
+        download_manager, 1,
+        content::DownloadTestObserver::ON_DANGEROUS_DOWNLOAD_ACCEPT);
+
+    // Attachment downloads may not report a successful document navigation.
+    std::ignore = chrome_test_utils::NavigateToURL(
+        chrome_test_utils::GetActiveWebContents(this), download_url);
+    observer.WaitForFinished();
   }
 
   void AssertFileWasDownloaded(std::string_view file_name) {
@@ -158,11 +186,10 @@ class BraveDownloadManagerDelegateFeatureDisabledBrowserTest
 IN_PROC_BROWSER_TEST_F(BraveDownloadManagerDelegateBrowserTest,
                        StripsMetadataFromDownloadedPngImage) {
   base::test::TestFuture<void> iptc_metadata_stripper_future;
-  ScopedImageMetadataStrippedCallbackForTesting scoped_callback(
+  GetDownloadManagerDelegate()->SetOnImageMetadataStrippedCallback(
       iptc_metadata_stripper_future.GetCallback());
 
-  ui_test_utils::DownloadURL(
-      browser(),
+  DownloadURL(
       embedded_test_server()->GetURL(std::string("/") + kPngImageFileName));
 
   // RemoveIptcMetadata() ran for the download, and the download still made it
@@ -175,11 +202,10 @@ IN_PROC_BROWSER_TEST_F(BraveDownloadManagerDelegateBrowserTest,
 IN_PROC_BROWSER_TEST_F(BraveDownloadManagerDelegateBrowserTest,
                        StripsMetadataFromDownloadedJpegImage) {
   base::test::TestFuture<void> iptc_metadata_stripper_future;
-  ScopedImageMetadataStrippedCallbackForTesting scoped_callback(
+  GetDownloadManagerDelegate()->SetOnImageMetadataStrippedCallback(
       iptc_metadata_stripper_future.GetCallback());
 
-  ui_test_utils::DownloadURL(
-      browser(),
+  DownloadURL(
       embedded_test_server()->GetURL(std::string("/") + kJpegImageFileName));
 
   // RemoveIptcMetadata() ran for the download, and the download still made it
@@ -192,11 +218,10 @@ IN_PROC_BROWSER_TEST_F(BraveDownloadManagerDelegateBrowserTest,
 IN_PROC_BROWSER_TEST_F(BraveDownloadManagerDelegateBrowserTest,
                        DoesNotStripMetadataFromNonImageDownload) {
   base::test::TestFuture<void> iptc_metadata_stripper_future;
-  ScopedImageMetadataStrippedCallbackForTesting scoped_callback(
+  GetDownloadManagerDelegate()->SetOnImageMetadataStrippedCallback(
       iptc_metadata_stripper_future.GetCallback());
 
-  ui_test_utils::DownloadURL(browser(), embedded_test_server()->GetURL(
-                                            std::string("/") + kTextFileName));
+  DownloadURL(embedded_test_server()->GetURL(std::string("/") + kTextFileName));
 
   // Ensure the callback inside the iptc_metadata_stripper_future was never
   // fired as the file's MIME type didn't correspond to image.
@@ -209,11 +234,10 @@ IN_PROC_BROWSER_TEST_F(BraveDownloadManagerDelegateBrowserTest,
 IN_PROC_BROWSER_TEST_F(BraveDownloadManagerDelegateFeatureDisabledBrowserTest,
                        DoesNotStripMetadataWhenFeatureDisabled) {
   base::test::TestFuture<void> iptc_metadata_stripper_future;
-  ScopedImageMetadataStrippedCallbackForTesting scoped_callback(
+  GetDownloadManagerDelegate()->SetOnImageMetadataStrippedCallback(
       iptc_metadata_stripper_future.GetCallback());
 
-  ui_test_utils::DownloadURL(
-      browser(),
+  DownloadURL(
       embedded_test_server()->GetURL(std::string("/") + kPngImageFileName));
 
   EXPECT_FALSE(iptc_metadata_stripper_future.IsReady());

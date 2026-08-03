@@ -29,8 +29,8 @@ bool RemoveIptcMetadata(const base::FilePath& file_path) {
 
   // TODO(https://github.com/brave/brave-browser/issues/5238): Add the core
   // logic to remove the IPTC metadata here.
-
-  return true;
+  DVLOG(1) << "IPTC strip skipped; not implemented yet: " << file_path;
+  return false;
 }
 
 }  // namespace image_metadata_stripper
