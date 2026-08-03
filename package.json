@@ -10,6 +10,7 @@
     "audit_deps": "node ./build/commands/scripts/audit.js -- --audit_dev_deps",
     "init": "pnpm install --frozen-lockfile && node ./build/commands/scripts/sync.js --init",
     "sync": "pnpm install --frozen-lockfile && node ./build/commands/scripts/sync.js",
+    "get_build_var": "node ./build/commands/scripts/getBuildVar.ts",
     "delete_string_translations": "node ./build/commands/scripts/commands.js delete_string_translations",
     "create_dist": "node ./build/commands/scripts/commands.js build --target=create_dist",
     "gclient": "node ./build/commands/scripts/gclient.js",
