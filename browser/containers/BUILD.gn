@@ -87,4 +87,9 @@ source_set("unit_tests") {
     "//testing/gmock",
     "//testing/gtest",
   ]
+
+  if (is_win || is_mac) {
+    sources += [ "platform_auth_navigation_throttle_containers_unittest.cc" ]
+    deps += [ "//chrome/browser/enterprise/platform_auth:test_utils" ]
+  }
 }
