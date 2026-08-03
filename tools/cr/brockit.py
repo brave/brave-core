@@ -361,7 +361,10 @@ from vscode import VsCodeIpcConnection
 PINSLIST_TIMESTAMP_FILE = (
     'chromium_src/net/tools/transport_security_state_generator/'
     'input_file_parsers.cc')
-VERSION_UPGRADE_FILE = Path('.version_upgrade')
+# The continuation file for an in-progress lift. Resolved against the
+# brave-core root (rather than the current directory) because both `--continue`
+# and `npm run update_patches` look for it there.
+VERSION_UPGRADE_FILE = repository.brave.root / '.version_upgrade'
 
 # Commit subject prefixes that identify brockit-managed upgrade commits.
 # Patches whose most recent branch commit carries one of these subjects are
@@ -1242,10 +1245,8 @@ class Upgrade(Versioned):
         package = versioning.load_package_file('HEAD')
         package['config']['projects']['chrome']['tag'] = str(
             self.target_version)
-        with Path(versioning.PACKAGE_FILE).open('w',
-                                                encoding='utf-8',
-                                                newline='') as package_file:
-            package_file.write(json.dumps(package, indent=2) + '\n')
+        (repository.brave.root / versioning.PACKAGE_FILE).write_text(
+            json.dumps(package, indent=2) + '\n', encoding='utf-8', newline='')
 
         repository.brave.run_git('add', versioning.PACKAGE_FILE)
 
