@@ -1,21 +1,23 @@
 diff --git a/chrome/browser/download/download_core_service_impl.cc b/chrome/browser/download/download_core_service_impl.cc
-index 083d3105be565327b7be2d167145eaec48d1e0b2..3e93064fefecaf5b520f570fd8ec0a30ffeedf00 100644
+index 083d3105be565327b7be2d167145eaec48d1e0b2..7275cfb6637a9958dae3fd8d13790def4838795b 100644
 --- a/chrome/browser/download/download_core_service_impl.cc
 +++ b/chrome/browser/download/download_core_service_impl.cc
-@@ -56,9 +56,13 @@ DownloadCoreServiceImpl::GetDownloadManagerDelegate() {
+@@ -42,6 +42,9 @@ DownloadCoreServiceImpl::DownloadCoreServiceImpl(Profile* profile)
  
-   // In case the delegate has already been set by
+ DownloadCoreServiceImpl::~DownloadCoreServiceImpl() = default;
+ 
++std::unique_ptr<ChromeDownloadManagerDelegate>
++CreateBraveDownloadManagerDelegate(Profile* profile);
++
+ ChromeDownloadManagerDelegate*
+ DownloadCoreServiceImpl::GetDownloadManagerDelegate() {
+   DownloadManager* manager = profile_->GetDownloadManager();
+@@ -58,7 +61,7 @@ DownloadCoreServiceImpl::GetDownloadManagerDelegate() {
    // SetDownloadManagerDelegateForTesting.
--  if (!manager_delegate_.get())
--    manager_delegate_ =
+   if (!manager_delegate_.get())
+     manager_delegate_ =
 -        std::make_unique<ChromeDownloadManagerDelegate>(profile_);
-+  if (!manager_delegate_.get()) {
-+    #if defined(BRAVE_CREATE_DOWNLOAD_MANAGER_DELEGATE)
-+        BRAVE_CREATE_DOWNLOAD_MANAGER_DELEGATE
-+    #else
-+        manager_delegate_ = std::make_unique<ChromeDownloadManagerDelegate>(profile_);
-+    #endif
-+  }
++        CreateBraveDownloadManagerDelegate(profile_);
  
    manager_delegate_->SetDownloadManager(manager);
  
