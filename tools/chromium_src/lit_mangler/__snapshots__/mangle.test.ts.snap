@@ -1348,15 +1348,17 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 "===================================================================
 --- ../chrome/browser/resources/side_panel/customize_chrome/appearance.html.ts
 +++ gen/chrome/browser/resources/side_panel/customize_chrome/preprocessed/appearance.html.ts
-@@ -4,80 +4,52 @@
+@@ -4,82 +4,52 @@
  
  export function getHtml(this: AppearanceElement) {
    // clang-format off
    return html\`<!--_html_template_start_-->
 -<customize-chrome-theme-snapshot id="themeSnapshot"
+-    role="button" tabindex="0"
+-    @keydown="\${this.onThemeSnapshotKeydown_}"
 -    @edit-theme-click="\${this.onEditThemeClick_}"
 -    ?hidden="\${!this.showThemeSnapshot_}">
-+<customize-chrome-theme-snapshot id="themeSnapshot" @edit-theme-click="\${this.onEditThemeClick_}" ?hidden="\${!this.showThemeSnapshot_}" style="display: none">
++<customize-chrome-theme-snapshot id="themeSnapshot" role="button" tabindex="0" @keydown="\${this.onThemeSnapshotKeydown_}" @edit-theme-click="\${this.onEditThemeClick_}" ?hidden="\${!this.showThemeSnapshot_}" style="display: none">
  </customize-chrome-theme-snapshot>
 -<customize-chrome-hover-button id="thirdPartyThemeLinkButton"
 -    class="link-out-button theme-button"
