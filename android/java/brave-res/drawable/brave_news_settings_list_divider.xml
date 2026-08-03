@@ -6,5 +6,5 @@
 -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android" >
   <size android:height="1dp" />
-  <solid android:color="@color/news_settings_divider_color" />
+  <solid android:color="?attr/colorOutline" />
 </shape>

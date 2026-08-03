@@ -18,7 +18,7 @@
         android:layout_marginHorizontal="8dp"
         android:hint="@string/custom_filter_list_url"
         app:layout_constraintTop_toTopOf="parent"
-        app:boxStrokeColor="@color/add_custom_filter_text_input_stroke_color"
+        app:boxStrokeColor="?attr/colorOutline"
         app:hintTextColor="@color/add_custom_filter_text_input_hint_color">
 
         <com.google.android.material.textfield.TextInputEditText
