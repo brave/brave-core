@@ -272,9 +272,11 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
       });
 
   {
-    EXPECT_CALL(zcash_wallet_service(), OnSyncFinished(EqualsMojo(account())));
+    base::test::TestFuture<void> sync_finished_future;
+    EXPECT_CALL(zcash_wallet_service(), OnSyncFinished(EqualsMojo(account())))
+        .WillOnce([&] { sync_finished_future.SetValue(); });
     sync_service()->StartSyncing(std::nullopt);
-    task_environment_.RunUntilIdle();
+    EXPECT_TRUE(sync_finished_future.Wait());
 
     auto sync_status = sync_service()->GetSyncStatus();
     EXPECT_EQ(sync_status->spendable_balance, 30u);
@@ -284,7 +286,6 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
 
   // Resume scanning
   ResetSyncService();
-  task_environment_.RunUntilIdle();
 
   ON_CALL(zcash_rpc(), GetLatestBlock(_, _))
       .WillByDefault([](const std::string& chain_id,
@@ -344,9 +345,11 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
 
   // Continue scanning
   {
-    EXPECT_CALL(zcash_wallet_service(), OnSyncFinished(EqualsMojo(account())));
+    base::test::TestFuture<void> sync_finished_future;
+    EXPECT_CALL(zcash_wallet_service(), OnSyncFinished(EqualsMojo(account())))
+        .WillOnce([&] { sync_finished_future.SetValue(); });
     sync_service()->StartSyncing(std::nullopt);
-    task_environment_.RunUntilIdle();
+    EXPECT_TRUE(sync_finished_future.Wait());
 
     auto sync_status = sync_service()->GetSyncStatus();
     EXPECT_EQ(sync_status->spendable_balance, 180u);
@@ -412,9 +415,11 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
           })));
 
   {
-    EXPECT_CALL(zcash_wallet_service(), OnSyncFinished(EqualsMojo(account())));
+    base::test::TestFuture<void> sync_finished_future;
+    EXPECT_CALL(zcash_wallet_service(), OnSyncFinished(EqualsMojo(account())))
+        .WillOnce([&] { sync_finished_future.SetValue(); });
     sync_service()->StartSyncing(std::nullopt);
-    task_environment_.RunUntilIdle();
+    EXPECT_TRUE(sync_finished_future.Wait());
 
     auto sync_status = sync_service()->GetSyncStatus();
     EXPECT_EQ(sync_status->spendable_balance, 200u);
@@ -484,9 +489,11 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
           })));
 
   {
-    EXPECT_CALL(zcash_wallet_service(), OnSyncFinished(EqualsMojo(account())));
+    base::test::TestFuture<void> sync_finished_future;
+    EXPECT_CALL(zcash_wallet_service(), OnSyncFinished(EqualsMojo(account())))
+        .WillOnce([&] { sync_finished_future.SetValue(); });
     sync_service()->StartSyncing(std::nullopt);
-    task_environment_.RunUntilIdle();
+    EXPECT_TRUE(sync_finished_future.Wait());
 
     auto sync_status = sync_service()->GetSyncStatus();
     EXPECT_TRUE(sync_status);
