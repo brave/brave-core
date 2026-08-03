@@ -92,6 +92,7 @@ android_resources("java_resources") {
     "java/brave-res/color/advanced_options_toggle_color.xml",
     "java/brave-res/color/brave_checkbox_background_color_selector.xml",
     "java/brave-res/color/brave_checkbox_color_selector.xml",
+    "java/brave-res/color/brave_news_settings_follow_button_text_color.xml",
     "java/brave-res/color/brave_switch_stroke_color.xml",
     "java/brave-res/color/crypto_wallet_onboarding_button_text_color.xml",
     "java/brave-res/color/wallet_checkbox_background_color_selector.xml",

@@ -17,7 +17,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.RequestManager;
@@ -366,16 +365,17 @@ public class BraveNewsPreferencesTypeAdapter extends RecyclerView.Adapter<Recycl
 
     private void displayFollowButton(
             boolean isFollowing, int textId, NewsPreferencesViewHolder holder) {
+        holder.mBtnText.setSelected(isFollowing);
+        holder.mBtnText.setTextColor(
+                holder.mBtnText
+                        .getContext()
+                        .getColorStateList(R.color.brave_news_settings_follow_button_text_color));
         if (isFollowing) {
             holder.mBtnFollow.setBackgroundResource(R.drawable.brave_news_settings_unfollow_bg);
-            holder.mBtnText.setTextColor(
-                    ContextCompat.getColor(mContext, R.color.button_background));
-            BraveDynamicColors.applyToOutlinedButtonIfEnabled(holder.mBtnFollow, holder.mBtnText);
+            BraveDynamicColors.applyToOutlinedButtonIfEnabled(holder.mBtnFollow);
         } else {
             holder.mBtnFollow.setBackgroundResource(R.drawable.themed_button_48_rounded_bg);
-            holder.mBtnText.setTextColor(
-                    ContextCompat.getColor(mContext, R.color.schemes_on_primary));
-            BraveDynamicColors.applyToFilledButtonIfEnabled(holder.mBtnFollow, holder.mBtnText);
+            BraveDynamicColors.applyToFilledButtonIfEnabled(holder.mBtnFollow);
         }
 
         if (mBraveNewsPreferencesSearchType == BraveNewsPreferencesSearchType.GettingFeed) {
