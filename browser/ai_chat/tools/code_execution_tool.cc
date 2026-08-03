@@ -306,6 +306,10 @@ void CodeExecutionTool::AddCodePluginForTesting(
   code_plugins_.push_back(std::move(plugin));
 }
 
+void CodeExecutionTool::ClearCodePluginsForTesting() {
+  code_plugins_.clear();
+}
+
 std::string CodeExecutionTool::WrapScript(const std::string& script) {
   std::vector<std::string_view> plugin_scripts;
   for (const auto& plugin : code_plugins_) {

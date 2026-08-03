@@ -201,7 +201,14 @@ IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest,
   EXPECT_THAT(output, HasSubstr("Failed to fetch"));
 }
 
+// WebRTC is blocked by two independent layers: the sandbox setup scripts
+// remove the RTC* globals (see WebRTCInterfaceRemoved), and Blink refuses to
+// construct an RTCPeerConnection inside the code sandbox's frame tree. Clear
+// the plugins so the browser-side guard is exercised on its own, rather than
+// being masked by the JS interface removal.
 IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest, WebRTCBlocked) {
+  tool_->ClearCodePluginsForTesting();
+
   std::string script = R"(
     try {
       new RTCPeerConnection();
@@ -213,8 +220,9 @@ IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest, WebRTCBlocked) {
 
   std::string output;
   ExecuteCode(script, &output);
-  EXPECT_THAT(output,
-              HasSubstr("NotAllowedError: RTCPeerConnection is not allowed"));
+  // Blink prefixes the DOMException message with the construction context.
+  EXPECT_THAT(output, HasSubstr("NotAllowedError: "));
+  EXPECT_THAT(output, HasSubstr("RTCPeerConnection is not allowed"));
 }
 
 IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest, ExecutionTimeout) {
