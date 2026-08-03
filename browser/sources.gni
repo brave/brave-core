@@ -842,7 +842,6 @@ if (enable_brave_wallet) {
 
 brave_chrome_browser_allow_circular_includes_from += [
   "//brave/browser/brave_shields:brave_shields_impl",
-  "//brave/browser/download",
   "//brave/browser/ui",
   "//brave/browser/brave_stats",
   "//brave/browser/ntp_background",

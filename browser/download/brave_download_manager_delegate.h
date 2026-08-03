@@ -8,7 +8,6 @@
 
 #include <stdint.h>
 
-#include "base/functional/callback_forward.h"
 #include "base/memory/weak_ptr.h"
 #include "chrome/browser/download/chrome_download_manager_delegate.h"
 
@@ -38,18 +37,16 @@ class BraveDownloadManagerDelegate : public ChromeDownloadManagerDelegate {
       delete;
   ~BraveDownloadManagerDelegate() override;
 
-  // A test only method to set a callback which would be fired once the iptc
-  // stripping of a download item has finished.
-  static void SetOnImageMetadataStrippedCallbackForTesting(
-      base::OnceClosure* callback = nullptr);
+ protected:
+  // Marks the download as completed once the iptc metadata is stripped. Virtual
+  // for testing purposes.
+  virtual void OnImageMetadataStripped(uint32_t download_id, bool success);
 
  private:
   // ChromeDownloadManagerDelegate override.
   bool IsDownloadReadyForCompletion(
       download::DownloadItem* item,
       base::OnceClosure internal_complete_callback) override;
-  // Marks the download as completed once the iptc metadata is stripped.
-  void OnImageMetadataStripped(uint32_t download_id, bool success);
 
   base::WeakPtrFactory<BraveDownloadManagerDelegate> weak_ptr_factory_{this};
 };
