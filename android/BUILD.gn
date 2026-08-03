@@ -459,6 +459,7 @@ android_resources("java_resources") {
     "java/brave-res/drawable/sync_code_countdown_bg.xml",
     "java/brave-res/drawable/sync_code_expired_bg.xml",
     "java/brave-res/drawable/tab_gradient_separator.xml",
+    "java/brave-res/drawable/themed_button_48_rounded_bg.xml",
     "java/brave-res/drawable/timer_rounded_bottomsheet.xml",
     "java/brave-res/drawable/unified_panel_background.xml",
     "java/brave-res/drawable/vpn_install_phone.xml",

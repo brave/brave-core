@@ -372,7 +372,7 @@ public class BraveNewsPreferencesTypeAdapter extends RecyclerView.Adapter<Recycl
                     ContextCompat.getColor(mContext, R.color.button_background));
             BraveDynamicColors.applyToOutlinedButtonIfEnabled(holder.mBtnFollow, holder.mBtnText);
         } else {
-            holder.mBtnFollow.setBackgroundResource(R.drawable.blue_48_rounded_bg);
+            holder.mBtnFollow.setBackgroundResource(R.drawable.themed_button_48_rounded_bg);
             holder.mBtnText.setTextColor(
                     ContextCompat.getColor(mContext, R.color.schemes_on_primary));
             BraveDynamicColors.applyToFilledButtonIfEnabled(holder.mBtnFollow, holder.mBtnText);
