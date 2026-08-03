@@ -41,7 +41,11 @@ const StatusContainer = styled.div`
 
 type Status = { type: 'success' | 'error'; content: string }
 
-export default function OpmlControls() {
+interface Props {
+  disabled?: boolean
+}
+
+export default function OpmlControls(props: Props) {
   const { publishers, channels, locale } = useBraveNews()
   const inputRef = React.useRef<HTMLInputElement>(null)
   const [status, setStatus] = React.useState<Status | null>(null)
@@ -56,6 +60,9 @@ export default function OpmlControls() {
   }, [status])
 
   const onExport = () => {
+    if (props.disabled) {
+      return
+    }
     runWithCustomizeDialogCloseSuppressed(() => {
       downloadOpml(Object.values(publishers), Object.values(channels), locale)
     })
@@ -66,7 +73,7 @@ export default function OpmlControls() {
     const file = input.files?.[0]
     // Reset so selecting the same file again re-triggers the change event.
     input.value = ''
-    if (!file) {
+    if (!file || props.disabled) {
       return
     }
 
@@ -111,7 +118,11 @@ export default function OpmlControls() {
         <Button
           kind='outline'
           size='small'
+          isDisabled={props.disabled}
           onClick={() => {
+            if (props.disabled) {
+              return
+            }
             runWithCustomizeDialogCloseSuppressed(
               () => {
                 inputRef.current?.click()
@@ -122,7 +133,12 @@ export default function OpmlControls() {
         >
           {getLocale(S.BRAVE_NEWS_OPML_IMPORT)}
         </Button>
-        <Button kind='outline' size='small' onClick={onExport}>
+        <Button
+          kind='outline'
+          size='small'
+          isDisabled={props.disabled}
+          onClick={onExport}
+        >
           {getLocale(S.BRAVE_NEWS_OPML_EXPORT)}
         </Button>
       </Links>
@@ -131,6 +147,7 @@ export default function OpmlControls() {
         type='file'
         accept='.opml,.xml,text/xml,application/xml,text/x-opml'
         hidden
+        disabled={props.disabled}
         onChange={onFileChange}
       />
       {status && (
@@ -141,3 +158,4 @@ export default function OpmlControls() {
     </>
   )
 }
+

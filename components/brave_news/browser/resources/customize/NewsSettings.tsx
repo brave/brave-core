@@ -26,6 +26,7 @@ export default function NewsSettings() {
   const feedV2Enabled = loadTimeData.getBoolean(
     'featureFlagBraveNewsFeedV2Enabled',
   )
+  const controlsDisabled = !isShowOnNTPPrefEnabled
 
   return (
     <SettingsPanel
@@ -50,6 +51,7 @@ export default function NewsSettings() {
           <DropDown
             value={openArticlesInNewTab ? 'true' : 'false'}
             positionStrategy='fixed'
+            disabled={controlsDisabled}
             onChange={(detail) => {
               setOpenArticlesInNewTab(detail.value === 'true')
             }}
@@ -69,8 +71,9 @@ export default function NewsSettings() {
         </div>
       )}
       <div className='control-row'>
-        <OpmlControls />
+        <OpmlControls disabled={controlsDisabled} />
       </div>
     </SettingsPanel>
   )
 }
+
