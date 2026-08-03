@@ -15,10 +15,12 @@
 #include "base/functional/callback_helpers.h"
 #include "base/memory/weak_ptr.h"
 #include "base/test/bind.h"
+#include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_news/browser/direct_feed_fetcher.h"
 #include "brave/components/brave_news/browser/test/wait_for_callback.h"
 #include "brave/components/brave_news/browser/urls.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
+#include "brave/components/brave_news/common/features.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_policy/policy_initialization_waiter.h"
 #include "brave/components/l10n/common/test/scoped_default_locale.h"
@@ -80,7 +82,12 @@ class TestControllerDelegate : public BraveNewsController::Delegate {
 
 class BraveNewsControllerTest : public testing::Test {
  public:
-  BraveNewsControllerTest() = default;
+  BraveNewsControllerTest() {
+    // These tests exercise the FeedV2 code paths, which are gated behind
+    // |kBraveNewsFeedUpdate|. That feature is disabled by default on Android,
+    // so enable it explicitly to keep the tests platform independent.
+    feature_list_.InitAndEnableFeature(features::kBraveNewsFeedUpdate);
+  }
   ~BraveNewsControllerTest() override = default;
 
   void SetUp() override {
@@ -144,6 +151,10 @@ class BraveNewsControllerTest : public testing::Test {
   bool HasInitialSubscriptions() {
     return controller_->prefs().GetSubscriptions().channels().contains(kLocale);
   }
+
+  // Declared before |task_environment_| so that it outlives the threads which
+  // read the feature state.
+  base::test::ScopedFeatureList feature_list_;
 
   // Declared before |task_environment_| so that it outlives it: destroying the
   // task environment flushes the thread pool, which is what lets the history
