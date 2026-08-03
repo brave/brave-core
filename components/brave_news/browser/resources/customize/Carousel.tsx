@@ -48,7 +48,7 @@ const ScrollButtonRight = styled(ScrollButton)`
 `
 
 const Container = styled(Flex)`
-  padding: ${spacing.xl} 0;
+  padding: ${spacing.xl} 0 0 0;
   max-width: calc(${CARD_SIZE_PX} * 3 + ${spacing.xl} * 2);
   container-name: carousel;
   container-type: inline-size;
