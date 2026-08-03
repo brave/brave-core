@@ -124,24 +124,18 @@ class ZCashBlocksBatchScanTest : public testing::Test {
 
   testing::NiceMock<MockZCashRPC>& zcash_rpc() { return zcash_rpc_; }
 
-  base::test::TaskEnvironment& task_environment() { return task_environment_; }
-
   base::expected<std::optional<OrchardSyncState::SpendableNotesBundle>,
                  OrchardStorage::Error>
   GetSpendableNotes() {
-    std::optional<
+    base::test::TestFuture<
         base::expected<std::optional<OrchardSyncState::SpendableNotesBundle>,
                        OrchardStorage::Error>>
-        result;
+        future;
     sync_state_.AsyncCall(&OrchardSyncState::GetSpendableNotes)
         .WithArgs(OrchardPool::kOrchard, account_id_.Clone(),
                   OrchardAddrRawPart({}))
-        .Then(base::BindLambdaForTesting(
-            [&](base::expected<
-                std::optional<OrchardSyncState::SpendableNotesBundle>,
-                OrchardStorage::Error> r) { result = std::move(r); }));
-    task_environment().RunUntilIdle();
-    return std::move(result.value());
+        .Then(future.GetCallback());
+    return future.Take();
   }
 
   std::unique_ptr<MockOrchardBlockScannerProxy>
