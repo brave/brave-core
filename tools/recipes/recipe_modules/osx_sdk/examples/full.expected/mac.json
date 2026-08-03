@@ -72,7 +72,8 @@
       "--sdk-build",
       "25F70",
       "--json-output",
-      "/path/to/tmp/json"
+      "/path/to/tmp/json",
+      "--no-developer-mode-check"
     ],
     "name": "install xcode"
   },

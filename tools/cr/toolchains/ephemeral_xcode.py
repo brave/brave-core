@@ -77,19 +77,26 @@ LICENSE_ACCEPT_TIMEOUT_SECS = 60
 RUN_FIRST_LAUNCH_TIMEOUT_SECS = 120
 
 
-def _check_developer_mode() -> None:
+def _check_developer_mode(*, warn_only: bool = False) -> None:
     """Fail fast with a clear message if Developer Mode is disabled.
 
     Without it, later `xcodebuild`/`xcode-select` steps fail with an obscure
     error instead of this actionable one.
+
+    Args:
+        warn_only: Log a warning instead of raising when Developer Mode is
+            disabled.
     """
     output = _check_call('/usr/sbin/DevToolsSecurity',
                          '-status',
                          capture_output=True).stdout
     if 'Developer mode is currently enabled.' not in output:
-        raise RuntimeError(
-            'Developer mode is disabled on this host. Enable it with `sudo '
-            '/usr/sbin/DevToolsSecurity -enable` before deploying an Xcode.')
+        message = ('Developer mode is currently disabled! Please use `sudo '
+                   '/usr/sbin/DevToolsSecurity -enable` to enable.')
+        if warn_only:
+            logging.warning(message)
+        else:
+            raise RuntimeError(message)
 
 
 def _macos_major_version() -> int:
@@ -262,7 +269,12 @@ class EphemeralXcode:
         return self._release
 
     @contextmanager
-    def deploy(self, mac_sdk_info: MacSdkInfo) -> Iterator[EphemeralXcode]:
+    def deploy(
+            self,
+            mac_sdk_info: MacSdkInfo,
+            *,
+            skip_developer_mode_check: bool = False
+    ) -> Iterator[EphemeralXcode]:
         """Resolve, install, and select the Xcode for an SDK pin, then reset.
 
         A context manager. Resolves the released Xcode that ships
@@ -275,18 +287,25 @@ class EphemeralXcode:
         Args:
             mac_sdk_info: The macOS SDK version/build the deployed Xcode must
                 ship (typically Chromium's `mac_sdk.gni` pin).
+            skip_developer_mode_check: Warn instead of raising when the
+                `DevToolsSecurity -status` check finds Developer Mode
+                disabled.
 
         Yields:
             This `EphemeralXcode`, with `app`/`release` populated.
         """
         self._resolve_release(mac_sdk_info)
         app_path = self._install()
-        with self._select(app_path):
+        with self._select(app_path,
+                          skip_developer_mode_check=skip_developer_mode_check):
             self._locate_app()
             self._verify_versions(mac_sdk_info)
             yield self
 
-    def install_and_select(self, mac_sdk_info: MacSdkInfo) -> Path:
+    def install_and_select(self,
+                           mac_sdk_info: MacSdkInfo,
+                           *,
+                           skip_developer_mode_check: bool = False) -> Path:
         """Resolve, install, and select the Xcode for an SDK pin; no revert.
 
         Unlike `deploy()`, this leaves the resolved Xcode selected once it
@@ -297,13 +316,17 @@ class EphemeralXcode:
         Args:
             mac_sdk_info: The macOS SDK version/build the deployed Xcode must
                 ship (typically Chromium's `mac_sdk.gni` pin).
+            skip_developer_mode_check: Warn instead of raising when the
+                `DevToolsSecurity -status` check finds Developer Mode
+                disabled.
 
         Returns:
             The absolute path to the selected `Xcode.app`.
         """
         self._resolve_release(mac_sdk_info)
         app_path = self._install()
-        self._switch(app_path)
+        self._switch(app_path,
+                     skip_developer_mode_check=skip_developer_mode_check)
         self._locate_app()
         self._verify_versions(mac_sdk_info)
         return app_path
@@ -484,12 +507,15 @@ class EphemeralXcode:
             f'Could not download a verified Xcode archive. Tried {urls}'
         ) from last_error
 
-    def _switch(self, app_path: Path) -> None:
+    def _switch(self,
+                app_path: Path,
+                *,
+                skip_developer_mode_check: bool = False) -> None:
         """Make *app_path* the active Xcode until something else selects/resets.
 
         Switches the developer dir with `sudo xcode-select -s`:
         """
-        _check_developer_mode()
+        _check_developer_mode(warn_only=skip_developer_mode_check)
 
         _check_call('sudo', '/usr/bin/xcode-select', '-s', str(app_path))
 
@@ -514,14 +540,18 @@ class EphemeralXcode:
         _check_call('xcrun', 'simctl', 'list')
 
     @contextmanager
-    def _select(self, app_path: Path) -> Iterator[None]:
+    def _select(self,
+                app_path: Path,
+                *,
+                skip_developer_mode_check: bool = False) -> Iterator[None]:
         """Make *app_path* the active Xcode for the duration of the context.
 
         On exit always reverts back to the default installation via
         `reset()`, so the machine is never left pointing at this ephemeral
         Xcode.
         """
-        self._switch(app_path)
+        self._switch(app_path,
+                     skip_developer_mode_check=skip_developer_mode_check)
         try:
             yield
         finally:
@@ -641,6 +671,11 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument('--verbose',
                         action='store_true',
                         help='Log every step at DEBUG level.')
+    parser.add_argument(
+        '--no-developer-mode-check',
+        action='store_true',
+        help='Warn instead of raising when the `DevToolsSecurity -status` '
+        'check finds Developer Mode disabled')
     args = parser.parse_args(argv)
 
     logging.basicConfig(level=logging.DEBUG if args.verbose else logging.INFO,
@@ -649,7 +684,8 @@ def main(argv: list[str] | None = None) -> int:
     mac_sdk_info = MacSdkInfo(sdk_version=args.sdk_version,
                               product_build_version=args.sdk_build)
     xcode = EphemeralXcode()
-    app_path = xcode.install_and_select(mac_sdk_info)
+    app_path = xcode.install_and_select(
+        mac_sdk_info, skip_developer_mode_check=args.no_developer_mode_check)
 
     with args.json_output as f:
         json.dump(
