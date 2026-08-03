@@ -48,6 +48,7 @@
 #include "brave/components/email_aliases/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
+#include "brave/components/psst/buildflags/buildflags.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -67,7 +68,6 @@
 #include "content/public/common/content_features.h"
 #include "extensions/buildflags/buildflags.h"
 #include "net/base/features.h"
-#include "brave/components/psst/buildflags/buildflags.h"
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/browser/ai_chat/ai_chat_settings_helper.h"
@@ -307,9 +307,8 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
       base::FeatureList::IsEnabled(psst::features::kEnablePsst));
 #endif
 #if BUILDFLAG(ENABLE_PSST)
-  html_source->AddBoolean(
-      "isPsstEnabled",
-      base::FeatureList::IsEnabled(psst::features::kEnablePsst));
+  html_source->AddBoolean("isPsstEnabled", base::FeatureList::IsEnabled(
+                                               psst::features::kEnablePsst));
 #endif
 #if BUILDFLAG(ENABLE_CONTAINERS)
   html_source->AddBoolean(

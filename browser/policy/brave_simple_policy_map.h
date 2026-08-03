@@ -12,7 +12,6 @@
 #include "brave/components/brave_shields/core/common/pref_names.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_talk/buildflags/buildflags.h"
-#include "brave/components/psst/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
@@ -25,6 +24,7 @@
 #include "brave/components/local_ai/buildflags/buildflags.h"
 #include "brave/components/p3a/pref_names.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
+#include "brave/components/psst/buildflags/buildflags.h"
 #include "brave/components/query_filter/common/pref_names.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -158,8 +158,8 @@ inline constexpr PolicyToPreferenceMapEntry kBraveSimplePolicyMap[] = {
      email_aliases::prefs::kEmailAliasesEnabled, base::Value::Type::BOOLEAN},
 #endif
 #if BUILDFLAG(ENABLE_PSST)
-    {policy::key::kPsstEnabled,
-     psst::prefs::kPsstEnabled, base::Value::Type::BOOLEAN},
+    {policy::key::kPsstEnabled, psst::prefs::kPsstEnabled,
+     base::Value::Type::BOOLEAN},
 #endif
     {policy::key::kBraveReduceLanguageEnabled,
      brave_shields::prefs::kReduceLanguageEnabled, base::Value::Type::BOOLEAN},
