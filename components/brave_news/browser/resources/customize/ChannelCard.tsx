@@ -25,7 +25,7 @@ const Container = styled(Flex)`
   border-radius: ${radius.m};
   padding: ${spacing.xl};
   position: relative;
-  box-shadow: ${effect.elevation['01']};
+  box-shadow: ${effect.elevation['02']};
   border: 1px solid ${color.divider.subtle};
   background: ${color.container.background};
 
