@@ -49,7 +49,8 @@ public class DAppsWalletController implements ConnectionErrorHandler {
     private BraveWalletPanel mBraveWalletPanel;
     private DialogInterface.OnDismissListener mOnDismissListener;
     // True while refreshVisibleWalletPopup rebuilds the popup in place. The rebuild dismisses the
-    // current popup first, which would otherwise notify mOnDismissListener that the popup closed for
+    // current popup first, which would otherwise notify mOnDismissListener that the popup closed
+    // for
     // good (the host drops its reference to this controller). See refreshVisibleWalletPopup.
     private boolean mRebuildingPopup;
     private final AppCompatActivity mActivity;
@@ -138,10 +139,10 @@ public class DAppsWalletController implements ConnectionErrorHandler {
 
     /**
      * Re-creates the currently visible wallet popup, if any, by dismissing it and showing the same
-     * kind again: the onboarding/unlock {@link DAppsDialog} or the {@link BraveWalletPanel}. Because
-     * the popup is rebuilt, it re-reads state that only takes effect when it is (re)shown, such as
-     * the dialog's TOP/BOTTOM placement or the panel's anchor, expand button and orientation-based
-     * width. Does nothing when neither is showing.
+     * kind again: the onboarding/unlock {@link DAppsDialog} or the {@link BraveWalletPanel}.
+     * Because the popup is rebuilt, it re-reads state that only takes effect when it is (re)shown,
+     * such as the dialog's TOP/BOTTOM placement or the panel's anchor, expand button and
+     * orientation-based width. Does nothing when neither is showing.
      */
     public void refreshVisibleWalletPopup() {
         // The rebuild below dismisses the current popup, which synchronously fires

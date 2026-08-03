@@ -997,7 +997,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         if (mDAppsWalletController != null) {
             mDAppsWalletController.refreshVisibleWalletPopup();
         }
-
     }
 
     private void addSavedBandwidthToDb(long savings) {

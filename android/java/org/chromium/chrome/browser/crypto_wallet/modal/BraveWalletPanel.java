@@ -60,7 +60,6 @@ import org.chromium.chrome.browser.custom_layout.popup_window_tooltip.PopupWindo
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.components.embedder_support.util.UrlConstants;
-import org.chromium.ui.base.DeviceFormFactor;
 import org.chromium.url.GURL;
 
 import java.util.ArrayList;
@@ -453,7 +452,8 @@ public class BraveWalletPanel implements DialogInterface {
         final int deviceWidth = Math.round(configuration.screenWidthDp * displayMetrics.density);
         final boolean isTablet = ConfigurationUtils.isTablet(mActivity);
 
-        mPopupWindow.setWidth((int) (isTablet || landscape ? (deviceWidth * 0.6) : (deviceWidth * 0.95)));
+        mPopupWindow.setWidth(
+                (int) (isTablet || landscape ? (deviceWidth * 0.6) : (deviceWidth * 0.95)));
 
         mExpandWalletImage = mPopupView.findViewById(R.id.iv_dapp_panel_expand);
         if (mShowExpandButton) {
