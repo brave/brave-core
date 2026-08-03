@@ -6,7 +6,12 @@
 package org.chromium.chrome.browser.theme;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.res.ColorStateList;
+import android.content.res.TypedArray;
 import android.os.Build;
+import android.view.View;
+import android.widget.TextView;
 
 import com.google.android.material.color.DynamicColors;
 import com.google.android.material.color.DynamicColorsOptions;
@@ -14,9 +19,11 @@ import com.google.android.material.color.DynamicColorsOptions;
 import org.chromium.base.BraveFeatureList;
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.build.annotations.NullMarked;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.flags.ChromeFeatureMap;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.components.cached_flags.CachedFlag;
+import org.chromium.ui.R;
 
 /** Controls Brave's runtime use of Material dynamic colors. */
 @NullMarked
@@ -89,5 +96,58 @@ public final class BraveDynamicColors {
         }
 
         DynamicColors.applyToActivityIfAvailable(activity, dynamicColorsOptions);
+    }
+
+    /**
+     * Applies the active theme's {@code globalFilledButtonBgColor} state list when dynamic colors
+     * are enabled.
+     *
+     * <p>Call this after setting a custom filled-button background. This is a no-op when dynamic
+     * colors are disabled or the theme has no filled-button color list.
+     *
+     * @param button view with a custom filled-button background to tint
+     */
+    public static void applyToFilledButtonIfEnabled(View button, TextView text) {
+        applyButtonColorsIfEnabled(
+                button, text, R.attr.globalFilledButtonBgColor, R.attr.globalFilledButtonTextColor);
+    }
+
+    /**
+     * Applies the active theme's {@code globalTextButtonTextColor} state list as an outlined
+     * button background tint when dynamic colors are enabled.
+     *
+     * <p>Call this after setting a custom outlined-button background. This is a no-op when dynamic
+     * colors are disabled or the theme has no text-button color list.
+     *
+     * @param button view with a custom outlined-button background to tint
+     */
+    public static void applyToOutlinedButtonIfEnabled(View button, TextView text) {
+        applyButtonColorsIfEnabled(
+                button, text, R.attr.globalTextButtonTextColor, R.attr.globalTextButtonTextColor);
+    }
+
+    private static void applyButtonColorsIfEnabled(
+            View button, TextView text, int backgroundColorAttr, int textColorAttr) {
+        if (!isDynamicColorsEnabled()) {
+            return;
+        }
+
+        Context context = button.getContext();
+        ColorStateList backgroundColor = getThemeColorStateList(context, backgroundColorAttr);
+        if (backgroundColor != null) {
+            button.setBackgroundTintList(backgroundColor);
+        }
+
+        ColorStateList textColor = getThemeColorStateList(context, textColorAttr);
+        if (textColor != null) {
+            text.setTextColor(textColor);
+        }
+    }
+
+    private static @Nullable ColorStateList getThemeColorStateList(Context context, int attr) {
+        TypedArray attributes = context.obtainStyledAttributes(new int[] {attr});
+        ColorStateList colors = attributes.getColorStateList(0);
+        attributes.recycle();
+        return colors;
     }
 }

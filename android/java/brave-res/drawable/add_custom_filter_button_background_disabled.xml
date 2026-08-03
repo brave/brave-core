@@ -6,6 +6,6 @@
 -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
-    <solid android:color="@color/add_custom_filter_button_disabled_color" />
+    <solid android:color="@color/button_disabled" />
     <corners android:radius="48dp" />
 </shape>

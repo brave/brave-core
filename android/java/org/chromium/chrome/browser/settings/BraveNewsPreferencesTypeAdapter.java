@@ -30,6 +30,7 @@ import org.chromium.brave_news.mojom.PublisherType;
 import org.chromium.brave_news.mojom.UserEnabled;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.brave_news.BraveNewsUtils;
+import org.chromium.chrome.browser.theme.BraveDynamicColors;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -368,10 +369,13 @@ public class BraveNewsPreferencesTypeAdapter extends RecyclerView.Adapter<Recycl
         if (isFollowing) {
             holder.mBtnFollow.setBackgroundResource(R.drawable.brave_news_settings_unfollow_bg);
             holder.mBtnText.setTextColor(
-                    ContextCompat.getColor(mContext, R.color.news_settings_unfollow_color));
+                    ContextCompat.getColor(mContext, R.color.button_background));
+            BraveDynamicColors.applyToOutlinedButtonIfEnabled(holder.mBtnFollow, holder.mBtnText);
         } else {
             holder.mBtnFollow.setBackgroundResource(R.drawable.blue_48_rounded_bg);
-            holder.mBtnText.setTextColor(ContextCompat.getColor(mContext, android.R.color.white));
+            holder.mBtnText.setTextColor(
+                    ContextCompat.getColor(mContext, R.color.schemes_on_primary));
+            BraveDynamicColors.applyToFilledButtonIfEnabled(holder.mBtnFollow, holder.mBtnText);
         }
 
         if (mBraveNewsPreferencesSearchType == BraveNewsPreferencesSearchType.GettingFeed) {
