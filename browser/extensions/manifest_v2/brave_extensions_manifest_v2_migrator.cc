@@ -305,7 +305,7 @@ void ExtensionsManifestV2Migrator::OnExtensionInstalled(
     content::BrowserContext* browser_context,
     const extensions::Extension* extension,
     bool is_updates) {
-  if (is_updates) {
+  if (is_updates || extension->manifest_version() >= 3) {
     return;
   }
 
