@@ -24,26 +24,14 @@
 namespace brave {
 
 std::optional<std::string> GetCspDirectivesOnTaskRunner(
-    const GURL& initiator_url,
+    const url::Origin& first_party_origin,
     const GURL& request_url,
     blink::mojom::ResourceType resource_type,
     const std::string& method,
     std::optional<std::string> original_csp,
     brave_shields::AdBlockEngineWrapper* engine_wrapper) {
-  std::string source_host;
-  if (initiator_url.is_valid() && !initiator_url.host().empty()) {
-    source_host = initiator_url.host();
-  } else if (request_url.is_valid()) {
-    // Top-level document requests do not have a valid initiator URL, and
-    // requests from special schemes like file:// do not have host parts, so we
-    // use the request URL as the initiator.
-    source_host = request_url.host();
-  } else {
-    return std::nullopt;
-  }
-
   std::optional<std::string> csp_directives = engine_wrapper->GetCspDirectives(
-      request_url, resource_type, source_host, method);
+      request_url, resource_type, first_party_origin, method);
 
   brave_shields::MergeCspDirectiveInto(original_csp, &csp_directives);
   return csp_directives;
@@ -93,11 +81,21 @@ int OnHeadersReceived_AdBlockCspWork(
 
     (*override_response_headers)->RemoveHeader("Content-Security-Policy");
 
+    // Use request initiator as the first party origin if it's a subframe or
+    // it's opaque.
+    // TODO(https://brave.dev/b/57775): Move first_party_origin to
+    // BraveRequestInfo.
+    const bool use_initiator_origin =
+        ctx->request_initiator() &&
+        (ctx->resource_type() != blink::mojom::ResourceType::kMainFrame ||
+         ctx->request_initiator()->opaque());
+    const url::Origin& first_party_origin =
+        use_initiator_origin ? *ctx->request_initiator()
+                             : url::Origin::Create(ctx->request_url());
+
     auto* ad_block_service = g_brave_browser_process->ad_block_service();
-    const GURL initiator_url =
-        ctx->request_initiator().value_or(url::Origin()).GetURL();
     ad_block_service->AsyncCallAndReplyWithResult<std::optional<std::string>>(
-        base::BindOnce(&GetCspDirectivesOnTaskRunner, initiator_url,
+        base::BindOnce(&GetCspDirectivesOnTaskRunner, first_party_origin,
                        ctx->request_url(), ctx->resource_type(), ctx->method(),
                        std::move(original_csp)),
         base::BindOnce(&OnReceiveCspDirectives, next_callback,

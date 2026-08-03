@@ -148,15 +148,15 @@ DATFileDataBuffer AdBlockEngineWrapper::Serialize(bool is_default_engine) {
 std::optional<std::string> AdBlockEngineWrapper::GetCspDirectives(
     const GURL& url,
     blink::mojom::ResourceType resource_type,
-    const std::string& tab_host,
+    const url::Origin& first_party_origin,
     const std::string& method) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   TRACE_EVENT("brave.adblock", "GetCspDirectives", "url", url);
-  auto csp_directives =
-      default_engine_->GetCspDirectives(url, resource_type, tab_host, method);
+  auto csp_directives = default_engine_->GetCspDirectives(
+      url, resource_type, first_party_origin, method);
 
   const auto additional_csp = additional_filters_engine_->GetCspDirectives(
-      url, resource_type, tab_host, method);
+      url, resource_type, first_party_origin, method);
   MergeCspDirectiveInto(additional_csp, &csp_directives);
 
   return csp_directives;

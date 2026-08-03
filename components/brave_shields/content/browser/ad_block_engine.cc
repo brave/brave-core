@@ -130,17 +130,15 @@ adblock::BlockerResult AdBlockEngine::ShouldStartRequest(
 std::optional<std::string> AdBlockEngine::GetCspDirectives(
     const GURL& url,
     blink::mojom::ResourceType resource_type,
-    const std::string& tab_host,
+    const url::Origin& first_party_origin,
     const std::string& method) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   // Determine third-party here so the library doesn't need to figure it out.
-  // CreateFromNormalizedTuple is needed because SameDomainOrHost needs
-  // a URL or origin and not a string to a host name.
-  bool is_third_party = !SameDomainOrHost(
-      url, url::Origin::CreateFromNormalizedTuple("https", tab_host, 80),
-      INCLUDE_PRIVATE_REGISTRIES);
+  bool is_third_party =
+      !SameDomainOrHost(url, first_party_origin, INCLUDE_PRIVATE_REGISTRIES);
+
   auto result = ad_block_client_->get_csp_directives(
-      url.spec(), std::string(url.host()), tab_host,
+      url.spec(), std::string(url.host()), first_party_origin.host(),
       ResourceTypeToString(resource_type), is_third_party, method);
 
   if (result.empty()) {

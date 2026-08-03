@@ -52,7 +52,7 @@ class AdBlockEngine {
   std::optional<std::string> GetCspDirectives(
       const GURL& url,
       blink::mojom::ResourceType resource_type,
-      const std::string& tab_host,
+      const url::Origin& first_party_origin,
       const std::string& method);
   void UseResources(const adblock::BraveCoreResourceStorage& storage);
 
