@@ -265,16 +265,6 @@ public class NetworkModel implements JsonRpcServiceObserver {
                 networks -> {
                     List<NetworkInfo> networkInfoList = new ArrayList<>();
                     networkInfoList.addAll(Arrays.asList(networks));
-                    if (!AndroidUtils.isDebugBuild()) {
-                        networkInfoList =
-                                networkInfoList.stream()
-                                        .filter(
-                                                networkInfo ->
-                                                        !NetworkUtils.Filters.isLocalNetwork(
-                                                                networkInfo))
-                                        .collect(Collectors.toList());
-                    }
-
                     networkInfoList.sort(NetworkUtils.sSortNetworkByPriority);
                     callback.call(networkInfoList);
                 });
@@ -289,15 +279,8 @@ public class NetworkModel implements JsonRpcServiceObserver {
             // Mark hidden networks as visible in preferences.
             for (Map.Entry<String, Integer> entry :
                     WalletConstants.KNOWN_TEST_CHAINS_MAP.entrySet()) {
-                if (!AndroidUtils.isDebugBuild()
-                        && entry.getKey().equals(BraveWalletConstants.LOCALHOST_CHAIN_ID)) {
-                    // Hide local host for non-debug builds.
-                    mJsonRpcService.addHiddenNetwork(
-                            entry.getValue(), entry.getKey(), result -> {/* No-op. */});
-                } else {
-                    mJsonRpcService.removeHiddenNetwork(
-                            entry.getValue(), entry.getKey(), result -> {/* No-op. */});
-                }
+                mJsonRpcService.removeHiddenNetwork(
+                        entry.getValue(), entry.getKey(), result -> {/* No-op. */});
             }
 
             getAllNetworks(

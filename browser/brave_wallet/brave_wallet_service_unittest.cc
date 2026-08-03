@@ -1870,17 +1870,19 @@ TEST_F(BraveWalletServiceUnitTest, AddCustomNetworkTwice) {
       features::kBraveWalletZCashFeature,
       {{"zcash_shielded_transactions_enabled", "false"}});
 
+  constexpr size_t kDefaultAssetCount = 20u;
+
   json_rpc_service_->SetSkipEthChainIdValidationForTesting(true);
 
   mojom::NetworkInfo chain1 = GetTestNetworkInfo1();
 
   auto assets = GetAllUserAssets(GetPrefs());
-  EXPECT_EQ(23u, assets.size());
+  EXPECT_EQ(kDefaultAssetCount, assets.size());
 
   json_rpc_service_->AddChain(chain1.Clone(), base::DoNothing());
 
   assets = GetAllUserAssets(GetPrefs());
-  EXPECT_EQ(24u, assets.size());
+  EXPECT_EQ(kDefaultAssetCount + 1, assets.size());
 
   EXPECT_EQ(assets.back()->name, chain1.symbol_name);
   EXPECT_TRUE(assets.back()->visible);
@@ -1894,14 +1896,14 @@ TEST_F(BraveWalletServiceUnitTest, AddCustomNetworkTwice) {
                                  base::DoNothing());
   // TODO(apaymyshev): Maybe we should remove such assets.
   assets = GetAllUserAssets(GetPrefs());
-  EXPECT_EQ(24u, assets.size());
+  EXPECT_EQ(kDefaultAssetCount + 1, assets.size());
   EXPECT_EQ(assets.back()->name, chain1.symbol_name);
   EXPECT_FALSE(assets.back()->visible);
 
   // Network added again. No duplicate assets.
   json_rpc_service_->AddChain(chain1.Clone(), base::DoNothing());
   assets = GetAllUserAssets(GetPrefs());
-  EXPECT_EQ(24u, assets.size());
+  EXPECT_EQ(kDefaultAssetCount + 1, assets.size());
   EXPECT_EQ(assets.back()->name, chain1.symbol_name);
   EXPECT_TRUE(assets.back()->visible);
 }

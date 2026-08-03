@@ -63,8 +63,8 @@ std::unique_ptr<net::test_server::HttpResponse> HandleRequest(
 
 constexpr char kSignedTransaction[] =
     "0xf8688296048525f38e9e0082960494084dcb94038af1715963f149079ce011c4b2296211"
-    "80820a95a0c58904f26f5ac0e86a292d9a832bbb56ab8d7bfb9f74a5eafa99778bf059ea93"
-    "a07db1772583c02ae58637916c03a3a1d9fd98044dd83c52da6870fee25a8575e1";
+    "80820135a0a1816813f50a34074d948e38405afca1efc3b3b656d9bf5430dc457f6a845491"
+    "a001e969580492a64d11967ba507dcb5436f11795a207171cded8b363a718aed87";
 
 }  // namespace
 
@@ -701,8 +701,8 @@ IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest,
                        UserApprovedSend1Data0xSign) {
   TestUserApproved(
       "0xf8688296048525f38e9e0082960494084dcb94038af1715963f149079ce011c4b22962"
-      "1101820a95a0ea3d09b65bb17424978c9ec3c9319c157523374dde70025b52034ae33f85"
-      "82a8a02a879841219186d6d1029d674a6ad428e5e6693ac6b92304905fcaae533d69a3",
+      "1101820136a0a05ea78a4bb565339f7c51a3d0c5526f9ffb1f9c3996054231f18300dc94"
+      "aa4da046426e4cc0948ebe5f99aa48d2f7eb6f5e76cdf968fd8758b270cf9ebb5dd651",
       "send1", "0x1");
 }
 
@@ -710,8 +710,8 @@ IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest,
                        UserApprovedSend2Data0xSign) {
   TestUserApproved(
       "0xf8688296048525f38e9e0082960494084dcb94038af1715963f149079ce011c4b22962"
-      "1111820a96a0fe7acb8944ff3223ddb123ac046129093998087d9895203cb472ed865b6a"
-      "7213a071581e1fd537e114e7416322c06857f38df4e1f91e1abc9adb7cfb5840eaabca",
+      "1111820135a03af5edf4bfb8a376bf4cf70847a627e4ae37adbd370ad0d9cad1204c1904"
+      "636da00e71b124873cd1c70c08c5746af102d994a1fb2dda9926a1e38d6d27ddcb7046",
       "send2", "0x11");
 }
 
