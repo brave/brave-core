@@ -481,6 +481,7 @@ source_set("ui") {
       "//chrome/browser/ui:chrome_pages",
       "//chrome/browser/ui:layout_constants",
       "//chrome/browser/ui:session_crashed_bubble",
+      "//chrome/browser/ui:tab_modal_confirm_dialog",
       "//chrome/browser/ui:url_identity",
       "//chrome/browser/ui/browser_web_contents_delegate",
       "//chrome/browser/ui/content_settings",
