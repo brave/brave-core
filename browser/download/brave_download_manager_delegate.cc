@@ -25,11 +25,9 @@
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/download_manager.h"
 
-// Concrete implementation of the method declaration in
-// download_core_service_impl.cc to avoid including
-// brave/../brave_download_manager_delegate.h there so as not to pull Brave
-// into chrome/browser/download’s dependency graph. See
-// https://github.com/brave/brave-core/blob/master/docs/best-practices/chromium-src-overrides.md#-chromium_src-should-avoid-depending-on-brave-targets
+// Factory used by the plastered download_core_service_impl.cc construction
+// site. Keeping the Brave header out of chrome/browser/download avoids pulling
+// Brave into that target's dependency graph.
 std::unique_ptr<ChromeDownloadManagerDelegate>
 CreateBraveDownloadManagerDelegate(Profile* profile) {
   return std::make_unique<BraveDownloadManagerDelegate>(profile);
