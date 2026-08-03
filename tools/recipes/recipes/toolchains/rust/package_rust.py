@@ -15,7 +15,8 @@ if TYPE_CHECKING:
     from engine import RecipeScriptApi
 
 DEPS = [
-    'path', 'step', 'depot_tools', 'chromium_checkout', 'brave_core_checkout'
+    'path', 'step', 'depot_tools', 'chromium_checkout', 'brave_core_checkout',
+    'osx_sdk', 'platform'
 ]
 
 PROPERTIES = InputProperties
@@ -32,37 +33,40 @@ def RunSteps(api: RecipeScriptApi, properties: InputProperties,
     brave_core_root = api.brave_core_checkout.deploy('tools/cr/toolchains')
 
     vpython3 = api.depot_tools.vpython3()
-    # `--clear` wipes any prior output so every run starts from a clean out
-    # dir. `--upload` publishes the archive + sibling index to the public
-    # build-deps bucket.
-    api.step('build rust toolchain', [
-        vpython3,
-        brave_core_root / 'tools/cr/toolchains/build_rust_toolchain.py',
-        '--out-dir',
-        api.path.out,
-        '--chromium-src',
-        chromium_src,
-        '--brave-subrevision',
-        str(properties.brave_subrevision),
-        '--clear',
-        '--no-full-toolchain',
-        '--upload',
-    ])
+    with api.osx_sdk.ensure(chromium_src):
+        api.step('build rust toolchain', [
+            vpython3,
+            brave_core_root / 'tools/cr/toolchains/build_rust_toolchain.py',
+            '--out-dir',
+            api.path.out,
+            '--chromium-src',
+            chromium_src,
+            '--brave-subrevision',
+            str(properties.brave_subrevision),
+            '--clear',
+            '--no-full-toolchain',
+            '--upload',
+        ])
 
 
 def GenTests(api):
     # Happy path: checkout (with a seeded git cache), deploy the build scripts,
     # then build. `with_git_cache`/`deployed` seed chromium_checkout's and
-    # brave_core_checkout's preconditions.
+    # brave_core_checkout's preconditions. Non-mac: osx_sdk.ensure() is a
+    # no-op, so no Xcode install/reset around the build step.
     yield api.test(
         'linux',
+        api.platform.name('linux'),
         api.chromium_checkout.with_git_cache(),
         api.chromium_checkout.git_cache_populated(),
         api.brave_core_checkout.deployed('tools/cr/toolchains'),
         api.properties(brave_subrevision=1, chromium_ref='151.0.7917.1'),
         api.post_process(post_process.MustRun, 'clone from git cache'),
         api.post_process(post_process.MustRun, 'fetch tag'),
+        api.post_process(post_process.DoesNotRun, 'read mac_sdk.gni'),
+        api.post_process(post_process.DoesNotRun, 'install xcode'),
         api.post_process(post_process.MustRun, 'build rust toolchain'),
+        api.post_process(post_process.DoesNotRun, 'reset xcode'),
         api.post_process(post_process.StepCommandContains,
                          'build rust toolchain', ['--brave-subrevision', '1']),
         api.post_process(post_process.StepCommandContains,
@@ -71,6 +75,21 @@ def GenTests(api):
                          'git cache populate', ['--depth', '1']),
         api.post_process(post_process.StepCommandContains,
                          'git cache populate for ref', ['--depth', '1']),
+        api.post_process(post_process.StatusSuccess),
+    )
+    # On mac, the checkout's pinned Xcode is installed/selected around the
+    # build step, then reset afterward.
+    yield api.test(
+        'mac',
+        api.platform.name('mac'),
+        api.chromium_checkout.with_git_cache(),
+        api.chromium_checkout.git_cache_populated(),
+        api.brave_core_checkout.deployed('tools/cr/toolchains'),
+        api.osx_sdk.installed(),
+        api.properties(brave_subrevision=1, chromium_ref='151.0.7917.1'),
+        api.post_process(post_process.MustRun, 'install xcode'),
+        api.post_process(post_process.MustRun, 'build rust toolchain'),
+        api.post_process(post_process.MustRun, 'reset xcode'),
         api.post_process(post_process.StatusSuccess),
     )
     # Without a git cache, the checkout refuses to run.

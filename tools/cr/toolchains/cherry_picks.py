@@ -36,7 +36,8 @@ def _check_call(*command,
                 cwd=None,
                 env=None,
                 check=True,
-                capture_output=False):
+                capture_output=False,
+                timeout=None):
     """Run *command* as a subprocess, logging the invocation.
 
     Shared subprocess helper for every script in this directory that shells
@@ -60,6 +61,8 @@ def _check_call(*command,
         check: Raise `CalledProcessError` on a non-zero exit when True.
         capture_output: Capture stdout/stderr (as text) instead of inheriting
             the parent's streams.
+        timeout: Optional number of seconds to allow the subprocess to run
+            before it is killed. `None` (the default) waits indefinitely.
 
     Returns:
         The `subprocess.CompletedProcess` for the invocation.  When
@@ -69,6 +72,8 @@ def _check_call(*command,
     Raises:
         subprocess.CalledProcessError: If `check` is True and the process exits
             with a non-zero return code.
+        subprocess.TimeoutExpired: If `timeout` is given and the process is
+            still running once it elapses.
         RuntimeError: On Windows, if the command cannot be resolved to an
         executable path.
     """
@@ -89,6 +94,7 @@ def _check_call(*command,
                           env=env,
                           check=check,
                           capture_output=capture_output,
+                          timeout=timeout,
                           text=True,
                           errors='replace')
 
