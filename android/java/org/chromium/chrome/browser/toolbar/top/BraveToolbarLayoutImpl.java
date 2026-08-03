@@ -994,7 +994,10 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         }
         dismissShieldsTooltip();
         reopenShieldsPanel();
-        // TODO: show wallet panel
+        if (mDAppsWalletController != null) {
+            mDAppsWalletController.refreshVisibleWalletPopup();
+        }
+
     }
 
     private void addSavedBandwidthToDb(long savings) {
