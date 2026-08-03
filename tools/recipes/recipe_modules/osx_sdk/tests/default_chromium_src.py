@@ -24,9 +24,8 @@ def GenTests(api):
         api.platform.name('mac'),
         api.brave_core_checkout.deployed('tools/cr/toolchains'),
         api.osx_sdk.installed(),
-        api.post_process(
-            post_process.StepCommandContains, 'read mac_sdk.gni',
-            ['[WORKSPACE]/brave-browser/src/build/config/mac/mac_sdk.gni']),
+        api.post_process(post_process.StepCommandContains, 'read mac_sdk.gni',
+                         ['[WORKSPACE]/b/src/build/config/mac/mac_sdk.gni']),
         api.post_process(post_process.StatusSuccess),
         api.post_process(post_process.DropExpectation),
     )

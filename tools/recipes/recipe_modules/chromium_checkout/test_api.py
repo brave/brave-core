@@ -30,7 +30,7 @@ class ChromiumCheckoutTestApi(RecipeTestApi):
 
     def existing_checkout(self) -> TestData:
         """Simulate a valid existing checkout (`chrome/VERSION` present)."""
-        return self.m.path.files('brave-browser/src/chrome/VERSION')
+        return self.m.path.files('b/src/chrome/VERSION')
 
     def git_cache_populated(self, mirror_dir: str = _MIRROR_DIR) -> TestData:
         """Seed `clone`/`checkout_ref`'s `git cache exists` lookups.

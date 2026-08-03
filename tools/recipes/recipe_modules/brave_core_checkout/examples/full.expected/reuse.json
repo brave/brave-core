@@ -3,7 +3,7 @@
     "cmd": [
       "git",
       "-C",
-      "[WORKSPACE]/brave-browser/src/brave",
+      "[WORKSPACE]/b/src/brave",
       "fetch",
       "--depth",
       "2",
@@ -16,7 +16,7 @@
     "cmd": [
       "git",
       "-C",
-      "[WORKSPACE]/brave-browser/src/brave",
+      "[WORKSPACE]/b/src/brave",
       "checkout",
       "--force",
       "FETCH_HEAD"
@@ -27,7 +27,7 @@
     "cmd": [
       "git",
       "-C",
-      "[WORKSPACE]/brave-browser/src/brave",
+      "[WORKSPACE]/b/src/brave",
       "sparse-checkout",
       "list"
     ],
@@ -37,7 +37,7 @@
     "cmd": [
       "git",
       "-C",
-      "[WORKSPACE]/brave-browser/src/brave",
+      "[WORKSPACE]/b/src/brave",
       "sparse-checkout",
       "add",
       "tools/cr/bootstrap"
@@ -51,7 +51,7 @@
     ],
     "env_prefixes": {
       "PATH": [
-        "[WORKSPACE]/brave-browser/src/brave/tools/cr/bootstrap"
+        "[WORKSPACE]/b/src/brave/tools/cr/bootstrap"
       ]
     },
     "name": "npm version"

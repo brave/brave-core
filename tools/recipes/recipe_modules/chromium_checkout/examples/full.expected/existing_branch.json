@@ -6,7 +6,7 @@
       "--depth",
       "1",
       "https://chromium.googlesource.com/chromium/tools/depot_tools",
-      "[WORKSPACE]/brave-browser/src/third_party/depot_tools"
+      "[WORKSPACE]/b/src/third_party/depot_tools"
     ],
     "env": {
       "CHROME_HEADLESS": "1"
@@ -30,7 +30,7 @@
       "--oneline",
       "chrome/VERSION"
     ],
-    "cwd": "[WORKSPACE]/brave-browser/src",
+    "cwd": "[WORKSPACE]/b/src",
     "env": {
       "CHROME_HEADLESS": "1"
     },
@@ -75,7 +75,7 @@
       "origin",
       "/b/cache/chromium.googlesource.com-chromium-src"
     ],
-    "cwd": "[WORKSPACE]/brave-browser/src",
+    "cwd": "[WORKSPACE]/b/src",
     "env": {
       "CHROME_HEADLESS": "1"
     },
@@ -90,7 +90,7 @@
       "origin",
       "https://chromium.googlesource.com/chromium/src.git"
     ],
-    "cwd": "[WORKSPACE]/brave-browser/src",
+    "cwd": "[WORKSPACE]/b/src",
     "env": {
       "CHROME_HEADLESS": "1"
     },
@@ -103,7 +103,7 @@
       "origin",
       "main"
     ],
-    "cwd": "[WORKSPACE]/brave-browser/src",
+    "cwd": "[WORKSPACE]/b/src",
     "env": {
       "CHROME_HEADLESS": "1"
     },
@@ -116,7 +116,7 @@
       "--force",
       "FETCH_HEAD"
     ],
-    "cwd": "[WORKSPACE]/brave-browser/src",
+    "cwd": "[WORKSPACE]/b/src",
     "env": {
       "CHROME_HEADLESS": "1"
     },
@@ -129,7 +129,7 @@
       "--force",
       "-D"
     ],
-    "cwd": "[WORKSPACE]/brave-browser/src",
+    "cwd": "[WORKSPACE]/b/src",
     "env": {
       "CHROME_HEADLESS": "1"
     },

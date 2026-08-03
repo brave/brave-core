@@ -36,7 +36,7 @@ def GenTests(api):
         'already deployed',
         api.platform.name('linux'),
         # A standalone depot_tools already sits inside the Chromium checkout.
-        api.path.files('brave-browser/src/third_party/depot_tools/gclient'),
+        api.path.files('b/src/third_party/depot_tools/gclient'),
         api.post_process(post_process.DoesNotRun, 'clone depot_tools'),
         api.post_process(post_process.MustRun, 'verify gclient'),
         api.post_process(post_process.StatusSuccess),

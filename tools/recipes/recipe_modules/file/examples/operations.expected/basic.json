@@ -6,7 +6,7 @@
       "--depth",
       "1",
       "https://chromium.googlesource.com/chromium/tools/depot_tools",
-      "[WORKSPACE]/brave-browser/src/third_party/depot_tools"
+      "[WORKSPACE]/b/src/third_party/depot_tools"
     ],
     "name": "clone depot_tools"
   },
@@ -18,7 +18,7 @@
   },
   {
     "cmd": [
-      "[WORKSPACE]/brave-browser/src/third_party/depot_tools/vpython3",
+      "[WORKSPACE]/b/src/third_party/depot_tools/vpython3",
       "-u",
       "[RECIPES_ROOT]/recipe_modules/file/resources/fileutil.py",
       "--json-output",
@@ -31,7 +31,7 @@
   },
   {
     "cmd": [
-      "[WORKSPACE]/brave-browser/src/third_party/depot_tools/vpython3",
+      "[WORKSPACE]/b/src/third_party/depot_tools/vpython3",
       "-u",
       "[RECIPES_ROOT]/recipe_modules/file/resources/fileutil.py",
       "--json-output",
@@ -47,7 +47,7 @@
   },
   {
     "cmd": [
-      "[WORKSPACE]/brave-browser/src/third_party/depot_tools/vpython3",
+      "[WORKSPACE]/b/src/third_party/depot_tools/vpython3",
       "-u",
       "[RECIPES_ROOT]/recipe_modules/file/resources/fileutil.py",
       "--json-output",
@@ -60,7 +60,7 @@
   },
   {
     "cmd": [
-      "[WORKSPACE]/brave-browser/src/third_party/depot_tools/vpython3",
+      "[WORKSPACE]/b/src/third_party/depot_tools/vpython3",
       "-u",
       "[RECIPES_ROOT]/recipe_modules/file/resources/fileutil.py",
       "--json-output",
@@ -75,7 +75,7 @@
   },
   {
     "cmd": [
-      "[WORKSPACE]/brave-browser/src/third_party/depot_tools/vpython3",
+      "[WORKSPACE]/b/src/third_party/depot_tools/vpython3",
       "-u",
       "[RECIPES_ROOT]/recipe_modules/file/resources/fileutil.py",
       "--json-output",
@@ -87,7 +87,7 @@
   },
   {
     "cmd": [
-      "[WORKSPACE]/brave-browser/src/third_party/depot_tools/vpython3",
+      "[WORKSPACE]/b/src/third_party/depot_tools/vpython3",
       "-u",
       "[RECIPES_ROOT]/recipe_modules/file/resources/fileutil.py",
       "--json-output",
@@ -99,7 +99,7 @@
   },
   {
     "cmd": [
-      "[WORKSPACE]/brave-browser/src/third_party/depot_tools/vpython3",
+      "[WORKSPACE]/b/src/third_party/depot_tools/vpython3",
       "-u",
       "[RECIPES_ROOT]/recipe_modules/file/resources/fileutil.py",
       "--json-output",
@@ -111,7 +111,7 @@
   },
   {
     "cmd": [
-      "[WORKSPACE]/brave-browser/src/third_party/depot_tools/vpython3",
+      "[WORKSPACE]/b/src/third_party/depot_tools/vpython3",
       "-u",
       "[RECIPES_ROOT]/recipe_modules/file/resources/fileutil.py",
       "--json-output",
@@ -125,7 +125,7 @@
   },
   {
     "cmd": [
-      "[WORKSPACE]/brave-browser/src/third_party/depot_tools/vpython3",
+      "[WORKSPACE]/b/src/third_party/depot_tools/vpython3",
       "-u",
       "[RECIPES_ROOT]/recipe_modules/file/resources/fileutil.py",
       "--json-output",
@@ -146,7 +146,7 @@
   },
   {
     "cmd": [
-      "[WORKSPACE]/brave-browser/src/third_party/depot_tools/vpython3",
+      "[WORKSPACE]/b/src/third_party/depot_tools/vpython3",
       "-u",
       "[RECIPES_ROOT]/recipe_modules/file/resources/fileutil.py",
       "--json-output",
@@ -166,7 +166,7 @@
   },
   {
     "cmd": [
-      "[WORKSPACE]/brave-browser/src/third_party/depot_tools/vpython3",
+      "[WORKSPACE]/b/src/third_party/depot_tools/vpython3",
       "-u",
       "[RECIPES_ROOT]/recipe_modules/file/resources/fileutil.py",
       "--json-output",
@@ -180,7 +180,7 @@
   },
   {
     "cmd": [
-      "[WORKSPACE]/brave-browser/src/third_party/depot_tools/vpython3",
+      "[WORKSPACE]/b/src/third_party/depot_tools/vpython3",
       "-u",
       "[RECIPES_ROOT]/recipe_modules/file/resources/fileutil.py",
       "--json-output",
@@ -200,7 +200,7 @@
   },
   {
     "cmd": [
-      "[WORKSPACE]/brave-browser/src/third_party/depot_tools/vpython3",
+      "[WORKSPACE]/b/src/third_party/depot_tools/vpython3",
       "-u",
       "[RECIPES_ROOT]/recipe_modules/file/resources/fileutil.py",
       "--json-output",
@@ -213,7 +213,7 @@
   },
   {
     "cmd": [
-      "[WORKSPACE]/brave-browser/src/third_party/depot_tools/vpython3",
+      "[WORKSPACE]/b/src/third_party/depot_tools/vpython3",
       "-u",
       "[RECIPES_ROOT]/recipe_modules/file/resources/fileutil.py",
       "--json-output",
@@ -226,7 +226,7 @@
   },
   {
     "cmd": [
-      "[WORKSPACE]/brave-browser/src/third_party/depot_tools/vpython3",
+      "[WORKSPACE]/b/src/third_party/depot_tools/vpython3",
       "-u",
       "[RECIPES_ROOT]/recipe_modules/file/resources/fileutil.py",
       "--json-output",
@@ -238,7 +238,7 @@
   },
   {
     "cmd": [
-      "[WORKSPACE]/brave-browser/src/third_party/depot_tools/vpython3",
+      "[WORKSPACE]/b/src/third_party/depot_tools/vpython3",
       "-u",
       "[RECIPES_ROOT]/recipe_modules/file/resources/fileutil.py",
       "--json-output",
@@ -259,7 +259,7 @@
   },
   {
     "cmd": [
-      "[WORKSPACE]/brave-browser/src/third_party/depot_tools/vpython3",
+      "[WORKSPACE]/b/src/third_party/depot_tools/vpython3",
       "-u",
       "[RECIPES_ROOT]/recipe_modules/file/resources/fileutil.py",
       "--json-output",
@@ -278,7 +278,7 @@
   },
   {
     "cmd": [
-      "[WORKSPACE]/brave-browser/src/third_party/depot_tools/vpython3",
+      "[WORKSPACE]/b/src/third_party/depot_tools/vpython3",
       "-u",
       "[RECIPES_ROOT]/recipe_modules/file/resources/fileutil.py",
       "--json-output",
