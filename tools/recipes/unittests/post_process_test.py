@@ -87,6 +87,14 @@ class CommandTest(unittest.TestCase):
             _run(pp.StepCommandContains, _steps(), 'compile',
                  ['out', 'ninja'])[0], 1)  # wrong order
 
+    def test_command_does_not_contain_subsequence(self):
+        self.assertEqual(
+            _run(pp.StepCommandDoesNotContain, _steps(), 'compile',
+                 ['-C', 'missing'])[0], 0)
+        self.assertEqual(
+            _run(pp.StepCommandDoesNotContain, _steps(), 'compile',
+                 ['ninja', 'out'])[0], 1)
+
     def test_command_re(self):
         self.assertEqual(
             _run(pp.StepCommandRE, _steps(), 'compile',

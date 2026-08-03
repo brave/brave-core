@@ -46,9 +46,7 @@
       "/b/cache",
       "https://chromium.googlesource.com/chromium/src.git",
       "--reset-fetch-config",
-      "--no-fetch-tags",
-      "--depth",
-      "1"
+      "--no-fetch-tags"
     ],
     "env": {
       "CHROME_HEADLESS": "1"
@@ -77,6 +75,8 @@
       "--no-checkout",
       "--local",
       "--shared",
+      "--depth",
+      "1",
       "/b/cache/chromium.googlesource.com-chromium-src",
       "[WORKSPACE]/brave-browser/src"
     ],
@@ -149,9 +149,7 @@
       "--reset-fetch-config",
       "--no-fetch-tags",
       "--ref",
-      "refs/tags/151.0.7917.1",
-      "--depth",
-      "1"
+      "refs/tags/151.0.7917.1"
     ],
     "env": {
       "CHROME_HEADLESS": "1"

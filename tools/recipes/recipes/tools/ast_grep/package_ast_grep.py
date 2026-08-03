@@ -55,9 +55,5 @@ def GenTests(api):
         api.properties(chromium_ref='151.0.7917.1'),
         api.post_process(post_process.MustRun, 'clone from git cache'),
         api.post_process(post_process.MustRun, 'package ast-grep'),
-        api.post_process(post_process.StepCommandContains,
-                         'git cache populate', ['--depth', '1']),
-        api.post_process(post_process.StepCommandContains,
-                         'git cache populate for ref', ['--depth', '1']),
         api.post_process(post_process.StatusSuccess),
     )
