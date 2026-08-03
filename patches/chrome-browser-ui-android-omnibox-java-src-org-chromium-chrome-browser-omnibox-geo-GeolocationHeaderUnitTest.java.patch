@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/geo/GeolocationHeaderUnitTest.java b/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/geo/GeolocationHeaderUnitTest.java
+index 9706c3148685a9e657499bd2f17fd7a9ca87177f..92f4ed3bc5b2a515db22884ecc9f6abb475e3372 100644
+--- a/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/geo/GeolocationHeaderUnitTest.java
++++ b/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/geo/GeolocationHeaderUnitTest.java
+@@ -109,6 +109,7 @@ public class GeolocationHeaderUnitTest {
+ 
+     @Before
+     public void setUp() {
++        when(mTemplateUrlServiceMock.hasNativeService()).thenReturn(true);
+         WebsitePreferenceBridgeJni.setInstanceForTesting(mWebsitePreferenceBridgeJniMock);
+         Location location = generateMockLocation("should_not_matter", LOCATION_TIME);
+         GeolocationTracker.setLocationForTesting(location, null);

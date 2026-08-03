@@ -9,7 +9,8 @@ substitutions:
       TemplateUrlService has no native object.
 
       Android can recreate an activity while this Java object remains after
-      native code clears its pointer. Return UNSUITABLE_URL before calling JNI.
+      native code clears its pointer. Return UNSUITABLE_URL before calling JNI
+      methods such as getUrlForSearchQuery.
     count: 1
     regex:
       re_pattern: '(geoHeaderStateForDse\s*\([^)]*\)\s*\{)'
@@ -18,3 +19,16 @@ substitutions:
                 if (!templateService.hasNativeService()) {
                     return HeaderState.UNSUITABLE_URL;
                 }
+  - description: |
+      Do not call TemplateUrlService JNI from geoHeaderStateForUrl when the
+      native object is gone.
+
+      Omnibox URL loads use getGeoHeader, which reaches this path without going
+      through geoHeaderStateForDse. The Java TemplateUrlService can outlive
+      native teardown during activity recreation.
+    count: 1
+    regex:
+      re_pattern: '(if\s*\(\s*profile\s*==\s*null\s*\|\|\s*service\s*==\s*null\s*\)\s*return\s+HeaderState\.UNSUITABLE_URL;)'
+      replace: |-
+        \1
+                    if (!service.hasNativeService()) return HeaderState.UNSUITABLE_URL;
