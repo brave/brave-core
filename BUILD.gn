@@ -577,10 +577,10 @@ template("create_dist_template") {
       file_inputs += [ rebase_path(input, brave_dist_dir) ]
     }
 
-    rebase_base_dir = rebase_path(brave_dist_dir)
+    rebase_base_dir = rebase_path(brave_dist_dir, root_build_dir)
 
     outputs = [ invoker.output ]
-    rebase_output = rebase_path(invoker.output)
+    rebase_output = rebase_path(invoker.output, rebase_base_dir)
 
     dir_inputs = invoker.dir_inputs
 
@@ -695,7 +695,7 @@ action("create_dist_zips") {
     dir_inputs = []
     if (is_mac) {
       dir_inputs += [ brave_exe ]
-      rebase_base_dir = rebase_path(root_out_dir)
+      rebase_base_dir = root_out_dir
       deps += [ "//chrome:chrome_app" ]
     } else {
       rebase_base_dir = rebase_path(brave_dist_dir, root_out_dir)
@@ -712,7 +712,7 @@ action("create_dist_zips") {
       }
     }
 
-    rebase_output = rebase_path(output)
+    rebase_output = rebase_path(output, rebase_base_dir)
     args = [
       "--base-dir=$rebase_base_dir",
       "--inputs=$file_inputs",
