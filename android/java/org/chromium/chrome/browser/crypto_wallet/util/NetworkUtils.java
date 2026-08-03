@@ -48,10 +48,6 @@ public class NetworkUtils {
         public static boolean isSameNetwork(NetworkInfo network1, NetworkInfo network2) {
             return isSameNetwork(network1, network2.chainId, network2.coin);
         }
-
-        public static boolean isLocalNetwork(NetworkInfo network) {
-            return network.chainId.equals(BraveWalletConstants.LOCALHOST_CHAIN_ID);
-        }
     }
 
     /**
