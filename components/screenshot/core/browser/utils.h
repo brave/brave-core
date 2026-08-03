@@ -10,9 +10,11 @@
 
 namespace screenshot {
 
-// Scales `bitmap` so it fits within 1024x768 while preserving aspect ratio,
-// centering the result on a transparent canvas. Bitmaps already within those
-// bounds are returned unchanged.
+// Scales `bitmap` down so it fits within 1024x768 while preserving aspect
+// ratio, so only one dimension reaches those bounds. Bitmaps already within
+// them are returned unchanged, and the result is never upscaled. Safe to call
+// on any platform, including iOS. Returns an empty bitmap if `bitmap` is not
+// N32.
 SkBitmap ScaleDownBitmap(const SkBitmap& bitmap);
 
 }  // namespace screenshot
