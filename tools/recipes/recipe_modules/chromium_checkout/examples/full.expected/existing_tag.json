@@ -47,7 +47,7 @@
       "--reset-fetch-config",
       "--no-fetch-tags",
       "--ref",
-      "main"
+      "refs/tags/151.0.7917.1"
     ],
     "env": {
       "CHROME_HEADLESS": "1"
@@ -102,14 +102,15 @@
     "cmd": [
       "git",
       "fetch",
+      "--no-tags",
       "origin",
-      "main"
+      "refs/tags/151.0.7917.1:refs/tags/151.0.7917.1"
     ],
     "cwd": "[WORKSPACE]/b/src",
     "env": {
       "CHROME_HEADLESS": "1"
     },
-    "name": "fetch ref"
+    "name": "fetch tag"
   },
   {
     "cmd": [

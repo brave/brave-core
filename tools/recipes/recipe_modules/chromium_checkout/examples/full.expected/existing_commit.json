@@ -46,8 +46,8 @@
       "https://chromium.googlesource.com/chromium/src.git",
       "--reset-fetch-config",
       "--no-fetch-tags",
-      "--ref",
-      "main"
+      "--commit",
+      "ef35003457e93c278f911a334b06e4a5f8967e06"
     ],
     "env": {
       "CHROME_HEADLESS": "1"
@@ -103,13 +103,13 @@
       "git",
       "fetch",
       "origin",
-      "main"
+      "ef35003457e93c278f911a334b06e4a5f8967e06"
     ],
     "cwd": "[WORKSPACE]/b/src",
     "env": {
       "CHROME_HEADLESS": "1"
     },
-    "name": "fetch ref"
+    "name": "fetch commit"
   },
   {
     "cmd": [

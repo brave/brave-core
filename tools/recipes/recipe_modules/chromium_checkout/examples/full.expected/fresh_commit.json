@@ -47,8 +47,8 @@
       "https://chromium.googlesource.com/chromium/src.git",
       "--reset-fetch-config",
       "--no-fetch-tags",
-      "--ref",
-      "refs/tags/151.0.7917.1"
+      "--commit",
+      "ef35003457e93c278f911a334b06e4a5f8967e06"
     ],
     "env": {
       "CHROME_HEADLESS": "1"
@@ -77,8 +77,6 @@
       "--no-checkout",
       "--local",
       "--shared",
-      "--depth",
-      "1",
       "/b/cache/chromium.googlesource.com-chromium-src",
       "[WORKSPACE]/b/src"
     ],
@@ -131,14 +129,14 @@
       "git",
       "checkout",
       "--force",
-      "refs/tags/151.0.7917.1",
+      "ef35003457e93c278f911a334b06e4a5f8967e06",
       "--"
     ],
     "cwd": "[WORKSPACE]/b/src",
     "env": {
       "CHROME_HEADLESS": "1"
     },
-    "name": "checkout tag"
+    "name": "checkout commit"
   },
   {
     "cmd": [
@@ -167,58 +165,6 @@
       "CHROME_HEADLESS": "1"
     },
     "name": "gclient sync"
-  },
-  {
-    "cmd": [
-      "git",
-      "clone",
-      "--depth",
-      "2",
-      "--filter=blob:none",
-      "--sparse",
-      "--branch",
-      "master",
-      "git@github.com:brave/brave-core.git",
-      "[WORKSPACE]/b/src/brave"
-    ],
-    "name": "clone brave-core (shallow, sparse)"
-  },
-  {
-    "cmd": [
-      "git",
-      "-C",
-      "[WORKSPACE]/b/src/brave",
-      "sparse-checkout",
-      "list"
-    ],
-    "name": "sparse-checkout list"
-  },
-  {
-    "cmd": [
-      "git",
-      "-C",
-      "[WORKSPACE]/b/src/brave",
-      "sparse-checkout",
-      "add",
-      "tools/cr/toolchains"
-    ],
-    "name": "sparse-checkout add"
-  },
-  {
-    "cmd": [
-      "[WORKSPACE]/b/src/third_party/depot_tools/vpython3",
-      "[WORKSPACE]/b/src/brave/tools/cr/toolchains/build_rust_toolchain.py",
-      "--out-dir",
-      "[WORKSPACE]/out",
-      "--chromium-src",
-      "[WORKSPACE]/b/src",
-      "--brave-subrevision",
-      "1",
-      "--clear",
-      "--no-full-toolchain",
-      "--upload"
-    ],
-    "name": "build rust toolchain"
   },
   {
     "name": "$result"
