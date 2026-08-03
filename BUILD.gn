@@ -780,10 +780,10 @@ if (current_toolchain == host_toolchain) {
     outputs = [ output ]
 
     args = [
-      "--source_root=" + rebase_path("//brave"),
+      "--source_root=" + rebase_path("//brave", root_build_dir),
       "--cargo_audit_exe=" +
-          rebase_path("$root_build_dir/cargo-audit$host_exe_suffix"),
-      "--output=" + rebase_path(output),
+          rebase_path("$root_build_dir/cargo-audit$host_exe_suffix", root_build_dir),
+      "--output=" + rebase_path(output, root_build_dir),
     ]
 
     if (audit_dev_deps) {
