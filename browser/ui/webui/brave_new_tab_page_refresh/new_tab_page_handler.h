@@ -78,6 +78,8 @@ class NewTabPageHandler : public mojom::NewTabPageHandler {
       SetSponsoredImagesEnabledCallback callback) override;
   void GetBraveBackgrounds(GetBraveBackgroundsCallback callback) override;
   void GetCustomBackgrounds(GetCustomBackgroundsCallback callback) override;
+  void GetDisabledBraveBackgrounds(
+      GetDisabledBraveBackgroundsCallback callback) override;
   void GetSelectedBackground(GetSelectedBackgroundCallback callback) override;
   void GetSponsoredImageBackground(
       GetSponsoredImageBackgroundCallback callback) override;
@@ -87,6 +89,10 @@ class NewTabPageHandler : public mojom::NewTabPageHandler {
       ShowCustomBackgroundChooserCallback callback) override;
   void RemoveCustomBackground(const std::string& background_url,
                               RemoveCustomBackgroundCallback callback) override;
+  void SetBraveBackgroundEnabled(
+      const std::string& background_url,
+      bool enabled,
+      SetBraveBackgroundEnabledCallback callback) override;
   void NotifySponsoredImageLogoClicked(
       const std::string& wallpaper_id,
       const std::string& creative_instance_id,

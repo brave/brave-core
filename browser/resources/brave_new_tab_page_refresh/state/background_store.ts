@@ -40,6 +40,7 @@ export interface BackgroundState {
   sponsoredImagesEnabled: boolean
   braveBackgrounds: BraveBackground[]
   customBackgrounds: string[]
+  disabledBraveBackgrounds: string[]
   selectedBackground: SelectedBackground
   backgroundRotateIndex: number
   backgroundRandomValue: number
@@ -100,6 +101,7 @@ export function defaultBackgroundStore(): BackgroundStore {
     sponsoredImagesEnabled: true,
     braveBackgrounds: [],
     customBackgrounds: [],
+    disabledBraveBackgrounds: [],
     selectedBackground: {
       type: SelectedBackgroundType.kGradient,
       value: gradientPreviewBackground,
@@ -116,6 +118,7 @@ export function defaultBackgroundStore(): BackgroundStore {
         return false
       },
       async removeCustomBackground(background) {},
+      setBraveBackgroundEnabled(background, enabled) {},
       notifySponsoredImageLoadError() {},
       notifySponsoredImageLogoClicked() {},
       notifySponsoredRichMediaEvent(type) {},
@@ -129,6 +132,7 @@ export interface BackgroundActions {
   selectBackground: (type: SelectedBackgroundType, value: string) => void
   showCustomBackgroundChooser: () => Promise<boolean>
   removeCustomBackground: (background: string) => Promise<void>
+  setBraveBackgroundEnabled: (background: string, enabled: boolean) => void
   notifySponsoredImageLoadError: () => void
   notifySponsoredImageLogoClicked: () => void
   notifySponsoredRichMediaEvent: (type: NewTabPageAdEventType) => void
@@ -161,6 +165,7 @@ export function getCurrentBackground(
     backgroundsEnabled,
     braveBackgrounds,
     customBackgrounds,
+    disabledBraveBackgrounds,
     selectedBackground,
     backgroundRandomValue: randomValue,
     backgroundRotateIndex: rotateIndex,
@@ -189,7 +194,19 @@ export function getCurrentBackground(
 
   switch (type) {
     case SelectedBackgroundType.kBrave: {
-      const braveBackground = chooseRandom(braveBackgrounds, randomValue)
+      if (value) {
+        const pinned = braveBackgrounds.find((b) => b.imageUrl === value)
+        if (pinned) {
+          return { type: 'brave', ...pinned }
+        }
+      }
+      const enabled = braveBackgrounds.filter(
+        (b) => !disabledBraveBackgrounds.includes(b.imageUrl),
+      )
+      const braveBackground = chooseRandom(
+        enabled.length ? enabled : braveBackgrounds,
+        randomValue,
+      )
       return braveBackground ? { type: 'brave', ...braveBackground } : null
     }
     case SelectedBackgroundType.kCustom: {

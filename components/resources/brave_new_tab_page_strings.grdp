@@ -53,12 +53,20 @@
     Customize available engines
   </message>
 
+  <message name="IDS_NEW_TAB_DISABLE_BACKGROUND_LABEL" desc="Label for button that hides a Brave background from the rotation" formatter_data="webui=BraveNewTabPage">
+    Hide this background
+  </message>
+
   <message name="IDS_NEW_TAB_EDIT_TOP_SITE_LABEL" desc="Label for button that opens the Edit Site dialog" formatter_data="webui=BraveNewTabPage">
     Edit site
   </message>
 
   <message name="IDS_NEW_TAB_EDIT_TOP_SITE_TITLE" desc="Title of the Edit Site dialog" formatter_data="webui=BraveNewTabPage">
     Edit site
+  </message>
+
+  <message name="IDS_NEW_TAB_ENABLE_BACKGROUND_LABEL" desc="Label for button that shows a Brave background in the rotation" formatter_data="webui=BraveNewTabPage">
+    Show this background
   </message>
 
   <message name="IDS_NEW_TAB_ENABLED_SEARCH_ENGINES_LABEL" desc="Label for the list of search engines" formatter_data="webui=BraveNewTabPage">

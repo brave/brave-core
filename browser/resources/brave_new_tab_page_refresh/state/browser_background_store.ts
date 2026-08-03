@@ -8,7 +8,11 @@ import { SponsoredRichMediaAdEventHandler } from 'gen/brave/components/ntp_backg
 import { NewTabPageProxy } from './new_tab_page_proxy'
 import { debounce } from '$web-common/debounce'
 import { preloadedBackgrounds } from './background_images/preloaded'
-import { BackgroundActions, defaultBackgroundStore } from './background_store'
+import {
+  BackgroundActions,
+  SelectedBackgroundType,
+  defaultBackgroundStore,
+} from './background_store'
 
 export function createBackgroundStore() {
   const store = defaultBackgroundStore()
@@ -58,6 +62,11 @@ export function createBackgroundStore() {
     store.update({ customBackgrounds: backgrounds })
   }
 
+  async function updateDisabledBraveBackgrounds() {
+    const { backgroundUrls } = await handler.getDisabledBraveBackgrounds()
+    store.update({ disabledBraveBackgrounds: backgroundUrls })
+  }
+
   async function updateSponsoredImageBackground() {
     const { background } = await handler.getSponsoredImageBackground()
     store.update({ sponsoredImageBackground: background ?? null })
@@ -65,7 +74,11 @@ export function createBackgroundStore() {
 
   newTabProxy.addListeners({
     onBackgroundsUpdated: debounce(async () => {
-      await Promise.all([updateCustomBackgrounds(), updateSelectedBackground()])
+      await Promise.all([
+        updateCustomBackgrounds(),
+        updateDisabledBraveBackgrounds(),
+        updateSelectedBackground(),
+      ])
     }, 10),
   })
 
@@ -75,6 +88,7 @@ export function createBackgroundStore() {
       updateSponsoredImagesEnabled(),
       updateBraveBackgrounds(),
       updateCustomBackgrounds(),
+      updateDisabledBraveBackgrounds(),
       updateSelectedBackground(),
       updateSponsoredImageBackground(),
     ])
@@ -110,6 +124,33 @@ export function createBackgroundStore() {
 
     async removeCustomBackground(background) {
       await handler.removeCustomBackground(background)
+    },
+
+    setBraveBackgroundEnabled(background, enabled) {
+      store.update((state) => {
+        const disabled = new Set(state.disabledBraveBackgrounds)
+        if (enabled) {
+          disabled.delete(background)
+        } else {
+          disabled.add(background)
+        }
+        const nextState: Partial<typeof state> = {
+          disabledBraveBackgrounds: [...disabled],
+        }
+        if (
+          !enabled
+          && state.selectedBackground.type === SelectedBackgroundType.kBrave
+          && state.selectedBackground.value === background
+        ) {
+          nextState.selectedBackground = {
+            type: SelectedBackgroundType.kBrave,
+            value: '',
+          }
+          nextState.backgroundRandomValue = Math.random()
+        }
+        return nextState
+      })
+      handler.setBraveBackgroundEnabled(background, enabled)
     },
 
     notifySponsoredImageLoadError() {

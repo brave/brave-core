@@ -9,6 +9,7 @@ import Toggle from '@brave/leo/react/toggle'
 
 import { getString } from '../../lib/strings'
 import { inlineCSSVars } from '../../lib/inline_css_vars'
+import classnames from '$web-common/classnames'
 
 import {
   SelectedBackgroundType,
@@ -33,12 +34,18 @@ export function BackgroundTypePanel(props: Props) {
 
   const selectedBackground = useBackgroundState((s) => s.selectedBackground)
   const customBackgrounds = useBackgroundState((s) => s.customBackgrounds)
+  const braveBackgrounds = useBackgroundState((s) => s.braveBackgrounds)
+  const disabledBraveBackgrounds = useBackgroundState(
+    (s) => s.disabledBraveBackgrounds,
+  )
   const currentBackground = useCurrentBackground()
 
   const type = props.backgroundType
 
   function panelValues() {
     switch (type) {
+      case SelectedBackgroundType.kBrave:
+        return braveBackgrounds.map((background) => background.imageUrl)
       case SelectedBackgroundType.kCustom:
         return customBackgrounds
       case SelectedBackgroundType.kGradient:
@@ -55,6 +62,9 @@ export function BackgroundTypePanel(props: Props) {
       actions.selectBackground(type, '')
     } else if (currentBackground) {
       switch (currentBackground.type) {
+        case 'brave':
+          actions.selectBackground(type, currentBackground.imageUrl)
+          break
         case 'custom':
           actions.selectBackground(type, currentBackground.imageUrl)
           break
@@ -68,6 +78,11 @@ export function BackgroundTypePanel(props: Props) {
   }
 
   const values = panelValues()
+  const enabledBraveCount =
+    type === SelectedBackgroundType.kBrave
+      ? values.filter((value) => !disabledBraveBackgrounds.includes(value))
+          .length
+      : 0
 
   return (
     <>
@@ -90,19 +105,35 @@ export function BackgroundTypePanel(props: Props) {
           const isSelected =
             selectedBackground.type === type
             && selectedBackground.value === value
+          const isDisabled =
+            type === SelectedBackgroundType.kBrave
+            && disabledBraveBackgrounds.includes(value)
+          const hasPinnedSelection =
+            selectedBackground.type === type && !!selectedBackground.value
+          // Dim non-selected tiles when one image is pinned, and always dim
+          // disabled Brave backgrounds.
+          const isInactive = isDisabled || (hasPinnedSelection && !isSelected)
+          const canDisable = enabledBraveCount > 1
 
           return (
             <div
               key={value}
-              className='background-option'
+              className={classnames({
+                'background-option': true,
+                disabled: isDisabled,
+              })}
             >
               <button
+                disabled={isDisabled}
                 onClick={() => {
                   actions.selectBackground(type, value)
                 }}
               >
                 <div
-                  className='preview'
+                  className={classnames({
+                    preview: true,
+                    inactive: isInactive,
+                  })}
                   style={inlineCSSVars({
                     '--preview-background': backgroundCSSValue(type, value),
                   })}
@@ -116,12 +147,33 @@ export function BackgroundTypePanel(props: Props) {
               </button>
               {type === SelectedBackgroundType.kCustom && (
                 <button
-                  className='remove-image'
+                  className='overlay-button remove-image'
                   onClick={() => {
                     actions.removeCustomBackground(value)
                   }}
                 >
                   <Icon name='close' />
+                </button>
+              )}
+              {type === SelectedBackgroundType.kBrave && (
+                <button
+                  className='overlay-button toggle-image'
+                  title={getString(
+                    isDisabled
+                      ? S.NEW_TAB_ENABLE_BACKGROUND_LABEL
+                      : S.NEW_TAB_DISABLE_BACKGROUND_LABEL,
+                  )}
+                  aria-label={getString(
+                    isDisabled
+                      ? S.NEW_TAB_ENABLE_BACKGROUND_LABEL
+                      : S.NEW_TAB_DISABLE_BACKGROUND_LABEL,
+                  )}
+                  disabled={!isDisabled && !canDisable}
+                  onClick={() => {
+                    actions.setBraveBackgroundEnabled(value, isDisabled)
+                  }}
+                >
+                  <Icon name={isDisabled ? 'eye-off' : 'eye-on'} />
                 </button>
               )}
             </div>

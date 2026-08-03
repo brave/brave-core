@@ -112,6 +112,32 @@ export function createBackgroundStore() {
       }))
     },
 
+    setBraveBackgroundEnabled(background, enabled) {
+      store.update((state) => {
+        const disabled = new Set(state.disabledBraveBackgrounds)
+        if (enabled) {
+          disabled.delete(background)
+        } else {
+          disabled.add(background)
+        }
+        const nextState: Partial<typeof state> = {
+          disabledBraveBackgrounds: [...disabled],
+        }
+        if (
+          !enabled
+          && state.selectedBackground.type === SelectedBackgroundType.kBrave
+          && state.selectedBackground.value === background
+        ) {
+          nextState.selectedBackground = {
+            type: SelectedBackgroundType.kBrave,
+            value: '',
+          }
+          nextState.backgroundRandomValue = Math.random()
+        }
+        return nextState
+      })
+    },
+
     notifySponsoredImageLoadError() {},
 
     notifySponsoredImageLogoClicked() {},
