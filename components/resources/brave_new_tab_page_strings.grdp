@@ -21,6 +21,10 @@
     Brave backgrounds
   </message>
 
+  <message name="IDS_NEW_TAB_BRAVE_BACKGROUNDS_DESCRIPTION" desc="Description shown above the Brave backgrounds image grid explaining rotation and disable behavior" formatter_data="webui=BraveNewTabPage">
+    Brave backgrounds rotate randomly on each New Tab. You can remove specific images from the rotation by clicking the hide button on any of them.
+  </message>
+
   <message name="IDS_NEW_TAB_CANCEL_BUTTON_LABEL" desc="Label for cancel button" formatter_data="webui=BraveNewTabPage">
     Cancel
   </message>

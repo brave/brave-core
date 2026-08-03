@@ -29,6 +29,13 @@ export const style = scoped.css`
     }
   }
 
+  .brave-backgrounds-description {
+    margin: 0;
+    padding: ${spacing['2Xl']} ${spacing['2Xl']} 0;
+    font: ${font.small.regular};
+    color: ${color.text.secondary};
+  }
+
   .background-options {
     padding: ${spacing['2Xl']};
     display: grid;

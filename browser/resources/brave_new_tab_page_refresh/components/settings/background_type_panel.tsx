@@ -95,6 +95,11 @@ export function BackgroundTypePanel(props: Props) {
           />
         </div>
       )}
+      {isBravePanel && (
+        <p className='brave-backgrounds-description'>
+          {getString(S.NEW_TAB_BRAVE_BACKGROUNDS_DESCRIPTION)}
+        </p>
+      )}
       <div className='background-options'>
         {type === SelectedBackgroundType.kCustom && (
           <div className='background-option'>{props.renderUploadOption()}</div>

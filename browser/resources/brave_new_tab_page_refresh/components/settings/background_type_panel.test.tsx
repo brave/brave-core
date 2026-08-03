@@ -82,6 +82,13 @@ function renderPanel(
 }
 
 describe('BackgroundTypePanel Brave backgrounds', () => {
+  it('should show a description about rotation and disabling images', () => {
+    renderPanel()
+    expect(
+      screen.getByText('NEW_TAB_BRAVE_BACKGROUNDS_DESCRIPTION'),
+    ).toBeInTheDocument()
+  })
+
   it('should not show the refresh toggle', () => {
     renderPanel()
     expect(
