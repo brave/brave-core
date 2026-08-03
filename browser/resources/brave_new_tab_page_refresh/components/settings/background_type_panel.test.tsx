@@ -37,6 +37,7 @@ function createStore(
     sponsoredImagesEnabled: false,
     braveBackgrounds,
     customBackgrounds: [],
+    customBackgroundStickyUrl: null,
     disabledBraveBackgrounds: [],
     selectedBackground: {
       type: SelectedBackgroundType.kBrave,

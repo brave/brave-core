@@ -40,6 +40,10 @@ export interface BackgroundState {
   sponsoredImagesEnabled: boolean
   braveBackgrounds: BraveBackground[]
   customBackgrounds: string[]
+  // Keeps the random custom background stable for this NTP while the list
+  // changes (e.g. the user removes a different image). Cleared/reassigned when
+  // that sticky URL is removed or a new tab rotates the index.
+  customBackgroundStickyUrl: string | null
   disabledBraveBackgrounds: string[]
   selectedBackground: SelectedBackground
   backgroundRotateIndex: number
@@ -101,6 +105,7 @@ export function defaultBackgroundStore(): BackgroundStore {
     sponsoredImagesEnabled: true,
     braveBackgrounds: [],
     customBackgrounds: [],
+    customBackgroundStickyUrl: null,
     disabledBraveBackgrounds: [],
     selectedBackground: {
       type: SelectedBackgroundType.kGradient,
@@ -152,6 +157,19 @@ function chooseIndex<T>(list: T[], index: number): T | null {
   return list[index % list.length]
 }
 
+// Prefer the sticky URL when it is still in the list so removing a different
+// custom image does not remapped rotateIndex to a new background mid-session.
+export function resolveCustomBackgroundUrl(
+  customBackgrounds: string[],
+  rotateIndex: number,
+  stickyUrl: string | null,
+): string | null {
+  if (stickyUrl && customBackgrounds.includes(stickyUrl)) {
+    return stickyUrl
+  }
+  return chooseIndex(customBackgrounds, rotateIndex)
+}
+
 // Picks a Brave background using a seed into the full catalog, then skips any
 // disabled entries. Indexing the full list (not the filtered one) keeps the
 // current NTP image stable when the user disables a different image.
@@ -192,6 +210,7 @@ export function getCurrentBackground(
     backgroundsEnabled,
     braveBackgrounds,
     customBackgrounds,
+    customBackgroundStickyUrl,
     disabledBraveBackgrounds,
     selectedBackground,
     backgroundRandomValue: randomValue,
@@ -235,7 +254,13 @@ export function getCurrentBackground(
       return braveBackground ? { type: 'brave', ...braveBackground } : null
     }
     case SelectedBackgroundType.kCustom: {
-      const imageUrl = value || chooseIndex(customBackgrounds, rotateIndex)
+      const imageUrl =
+        value
+        || resolveCustomBackgroundUrl(
+          customBackgrounds,
+          rotateIndex,
+          customBackgroundStickyUrl,
+        )
       return imageUrl ? { type: 'custom', imageUrl } : null
     }
     case SelectedBackgroundType.kSolid: {

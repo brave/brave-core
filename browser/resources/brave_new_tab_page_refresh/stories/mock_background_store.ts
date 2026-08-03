@@ -105,11 +105,22 @@ export function createBackgroundStore() {
     },
 
     async removeCustomBackground(background) {
-      store.update((state) => ({
-        customBackgrounds: state.customBackgrounds.filter(
+      store.update((state) => {
+        const customBackgrounds = state.customBackgrounds.filter(
           (elem) => elem !== background,
-        ),
-      }))
+        )
+        const sticky =
+          state.customBackgroundStickyUrl === background
+            ? null
+            : state.customBackgroundStickyUrl
+        return {
+          customBackgrounds,
+          customBackgroundStickyUrl:
+            sticky && customBackgrounds.includes(sticky)
+              ? sticky
+              : (customBackgrounds[0] ?? null),
+        }
+      })
     },
 
     setBraveBackgroundEnabled(background, enabled) {

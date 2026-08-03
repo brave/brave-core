@@ -12,6 +12,7 @@ import {
   BackgroundActions,
   SelectedBackgroundType,
   defaultBackgroundStore,
+  resolveCustomBackgroundUrl,
 } from './background_store'
 
 export function createBackgroundStore() {
@@ -59,7 +60,14 @@ export function createBackgroundStore() {
 
   async function updateCustomBackgrounds() {
     const { backgrounds } = await handler.getCustomBackgrounds()
-    store.update({ customBackgrounds: backgrounds })
+    store.update((state) => ({
+      customBackgrounds: backgrounds,
+      customBackgroundStickyUrl: resolveCustomBackgroundUrl(
+        backgrounds,
+        state.backgroundRotateIndex,
+        state.customBackgroundStickyUrl,
+      ),
+    }))
   }
 
   async function updateDisabledBraveBackgrounds() {
@@ -110,10 +118,24 @@ export function createBackgroundStore() {
     },
 
     selectBackground(type, value) {
-      store.update({ selectedBackground: { type, value } })
-      if (!value) {
-        store.update({ backgroundRandomValue: Math.random() })
-      }
+      store.update((state) => {
+        const nextState: Partial<typeof state> = {
+          selectedBackground: { type, value },
+        }
+        if (!value) {
+          nextState.backgroundRandomValue = Math.random()
+          if (type === SelectedBackgroundType.kCustom) {
+            // Re-resolve sticky for random custom mode so refresh-on picks a
+            // stable image for this tab.
+            nextState.customBackgroundStickyUrl = resolveCustomBackgroundUrl(
+              state.customBackgrounds,
+              state.backgroundRotateIndex,
+              null,
+            )
+          }
+        }
+        return nextState
+      })
       handler.selectBackground({ type, value })
     },
 
@@ -123,6 +145,21 @@ export function createBackgroundStore() {
     },
 
     async removeCustomBackground(background) {
+      store.update((state) => {
+        const customBackgrounds = state.customBackgrounds.filter(
+          (elem) => elem !== background,
+        )
+        return {
+          customBackgrounds,
+          customBackgroundStickyUrl: resolveCustomBackgroundUrl(
+            customBackgrounds,
+            state.backgroundRotateIndex,
+            state.customBackgroundStickyUrl === background
+              ? null
+              : state.customBackgroundStickyUrl,
+          ),
+        }
+      })
       await handler.removeCustomBackground(background)
     },
 
