@@ -4,7 +4,6 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { getLocale } from '$web-common/locale'
-import Icon from '@brave/leo/react/icon'
 import * as React from 'react'
 import { useBraveNews } from '../shared/Context'
 import DisabledPlaceholder from './DisabledPlaceholder'
@@ -18,7 +17,6 @@ import { style } from './Configure.style'
 
 export default function Configure() {
   const {
-    setCustomizePage,
     customizePage,
     isOptInPrefEnabled,
     isShowOnNTPPrefEnabled,
@@ -44,13 +42,7 @@ export default function Configure() {
     <div data-css-scope={style.scope} id='brave-news-configure'>
       <div className='panel-body'>
         <nav>
-          <button
-            className='back-button'
-            onClick={() => setCustomizePage(null)}
-          >
-            <Icon name='arrow-left' />
-            {getLocale(S.BRAVE_NEWS_SETTINGS_TITLE)}
-          </button>
+          <h4>{getLocale(S.BRAVE_NEWS_SETTINGS_TITLE)}</h4>
           <SourcesList />
           {!isBraveNewsFullyEnabled && <div className='nav-overlay' />}
         </nav>

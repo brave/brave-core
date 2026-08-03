@@ -5,10 +5,10 @@
 
 import * as React from 'react'
 import Dialog from '@brave/leo/react/dialog'
-import ProgressRing from '@brave/leo/react/progressRing'
 import { useBraveNews } from '../shared/Context'
 
 import { isCustomizeDialogCloseSuppressed } from './dialogCloseGuard'
+import Loading from './Loading'
 import { style } from './Modal.style'
 
 const Configure = React.lazy(() => import('./Configure'))
@@ -42,13 +42,7 @@ export default function BraveNewsModal() {
           setCustomizePage(null)
         }}
       >
-        <React.Suspense
-          fallback={
-            <div className='loading'>
-              <ProgressRing />
-            </div>
-          }
-        >
+        <React.Suspense fallback={<Loading fill />}>
           <Configure />
         </React.Suspense>
       </Dialog>

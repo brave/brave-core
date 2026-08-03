@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { color, icon, radius, spacing } from '@brave/leo/tokens/css/variables'
+import { color, radius, spacing } from '@brave/leo/tokens/css/variables'
 import { scoped } from '$web-common/scoped_css'
 
 export const style = scoped.css`
@@ -17,26 +17,18 @@ export const style = scoped.css`
     flex: 0 0 228px;
     display: flex;
     flex-direction: column;
-    gap: ${spacing.xl};
+    gap: ${spacing['2Xl']};
     padding: ${spacing['2Xl']} 0;
     min-height: 0;
     overflow: auto;
     overscroll-behavior: contain;
     scrollbar-width: thin;
+    white-space: nowrap;
   }
 
-  .back-button {
-    --leo-icon-size: ${icon.m};
-
-    display: flex;
-    align-items: center;
-    gap: ${spacing.s};
-    padding: 0 ${spacing['xl']};
+  h4 {
     color: ${color.text.primary};
-    font: inherit;
-    background: none;
-    border: none;
-    cursor: pointer;
+    padding: 0 ${spacing['2Xl']};
   }
 
   .nav-overlay {

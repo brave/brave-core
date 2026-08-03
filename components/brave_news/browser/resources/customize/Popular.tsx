@@ -1,7 +1,7 @@
-// Copyright (c) 2022 The Brave Authors. All rights reserved.
-// This Source Code Form is subject to the terms of the Mozilla Public
-// License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// You can obtain one at https://mozilla.org/MPL/2.0/.
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import Flex from '$web-common/Flex'
 import { getLocale } from '$web-common/locale'
@@ -11,6 +11,7 @@ import Carousel from './Carousel'
 import CustomizeLink from './CustomizeLink'
 import CustomizePage from './CustomizePage'
 import DiscoverSection from './DiscoverSection'
+import Loading from './Loading'
 import PublisherCard from '../shared/PublisherCard'
 
 const usePopularPublisherIds = () => {
@@ -46,10 +47,15 @@ export function PopularCarousel () {
 }
 
 export function PopularPage () {
+  const { publishersLoaded } = useBraveNews()
   const popularPublisherIds = usePopularPublisherIds()
   return <CustomizePage title={getLocale(S.BRAVE_NEWS_POPULAR_TITLE)}>
-    <DiscoverSection>
-      {popularPublisherIds.map(p => <PublisherCard key={p} publisherId={p} />)}
-    </DiscoverSection>
+    {publishersLoaded ? (
+      <DiscoverSection>
+        {popularPublisherIds.map(p => <PublisherCard key={p} publisherId={p} />)}
+      </DiscoverSection>
+    ) : (
+      <Loading />
+    )}
   </CustomizePage>
 }
