@@ -1,0 +1,13 @@
+diff --git a/chrome/common/media/cdm_host_file_path.cc b/chrome/common/media/cdm_host_file_path.cc
+index e6cea8c3ff8da1e931835285ca6de0773db0c7e6..226dc64ad454e1f084f215614e899e60fa30dc6b 100644
+--- a/chrome/common/media/cdm_host_file_path.cc
++++ b/chrome/common/media/cdm_host_file_path.cc
+@@ -19,7 +19,7 @@
+ #include "base/apple/bundle_locations.h"
+ #endif
+ 
+-#if BUILDFLAG(GOOGLE_CHROME_BRANDING)
++#if 1  // Always take the real path below; see description.
+ 
+ namespace {
+ 
