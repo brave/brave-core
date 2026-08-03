@@ -8,17 +8,8 @@ substitutions:
       Construct the Brave download manager delegate. A factory is
       used so that chrome/browser/download does not have to include
       Brave headers, and therefore does not depend on Brave targets.
+      The factory is declared in
+      chromium_src/chrome/browser/download/download_core_service_impl.cc.
     regex:
       pattern: 'std::make_unique<ChromeDownloadManagerDelegate>'
       replace: 'CreateBraveDownloadManagerDelegate'
-
-  - description: |
-      Declare CreateBraveDownloadManagerDelegate above its only caller.
-      The factory is defined in brave/browser/download/brave_download_manager_delegate.cc.
-    regex:
-      re_pattern: '(ChromeDownloadManagerDelegate\*\s+DownloadCoreServiceImpl::GetDownloadManagerDelegate\(\))'
-      replace: |-
-        std::unique_ptr<ChromeDownloadManagerDelegate>
-        CreateBraveDownloadManagerDelegate(Profile* profile);
-
-        \1

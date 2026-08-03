@@ -1,18 +1,8 @@
 diff --git a/chrome/browser/download/download_core_service_impl.cc b/chrome/browser/download/download_core_service_impl.cc
-index 083d3105be565327b7be2d167145eaec48d1e0b2..7275cfb6637a9958dae3fd8d13790def4838795b 100644
+index 083d3105be565327b7be2d167145eaec48d1e0b2..fc01f1a10ab9574f1f1b57117c7fbff897934ad7 100644
 --- a/chrome/browser/download/download_core_service_impl.cc
 +++ b/chrome/browser/download/download_core_service_impl.cc
-@@ -42,6 +42,9 @@ DownloadCoreServiceImpl::DownloadCoreServiceImpl(Profile* profile)
- 
- DownloadCoreServiceImpl::~DownloadCoreServiceImpl() = default;
- 
-+std::unique_ptr<ChromeDownloadManagerDelegate>
-+CreateBraveDownloadManagerDelegate(Profile* profile);
-+
- ChromeDownloadManagerDelegate*
- DownloadCoreServiceImpl::GetDownloadManagerDelegate() {
-   DownloadManager* manager = profile_->GetDownloadManager();
-@@ -58,7 +61,7 @@ DownloadCoreServiceImpl::GetDownloadManagerDelegate() {
+@@ -58,7 +58,7 @@ DownloadCoreServiceImpl::GetDownloadManagerDelegate() {
    // SetDownloadManagerDelegateForTesting.
    if (!manager_delegate_.get())
      manager_delegate_ =
