@@ -136,6 +136,11 @@ void NewTabPageHandler::GetCustomBackgrounds(
   std::move(callback).Run(background_facade_->GetCustomBackgrounds());
 }
 
+void NewTabPageHandler::GetDisabledBraveBackgrounds(
+    GetDisabledBraveBackgroundsCallback callback) {
+  std::move(callback).Run(background_facade_->GetDisabledBraveBackgrounds());
+}
+
 void NewTabPageHandler::GetSelectedBackground(
     GetSelectedBackgroundCallback callback) {
   std::move(callback).Run(background_facade_->GetSelectedBackground());
@@ -188,6 +193,14 @@ void NewTabPageHandler::RemoveCustomBackground(
     RemoveCustomBackgroundCallback callback) {
   background_facade_->RemoveCustomBackground(background_url,
                                              std::move(callback));
+}
+
+void NewTabPageHandler::SetBraveBackgroundEnabled(
+    const std::string& background_url,
+    bool enabled,
+    SetBraveBackgroundEnabledCallback callback) {
+  background_facade_->SetBraveBackgroundEnabled(background_url, enabled);
+  std::move(callback).Run();
 }
 
 void NewTabPageHandler::NotifySponsoredImageLogoClicked(

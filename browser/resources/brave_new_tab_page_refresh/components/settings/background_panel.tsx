@@ -59,6 +59,9 @@ export function BackgroundPanel() {
     const isSelectedType = type === selectedBackground.type
     switch (type) {
       case SelectedBackgroundType.kBrave:
+        if (isSelectedType && selectedBackground.value) {
+          return selectedBackground.value
+        }
         return braveBackgrounds[0]?.imageUrl ?? ''
       case SelectedBackgroundType.kCustom:
         if (isSelectedType && selectedBackground.value) {
@@ -135,6 +138,8 @@ export function BackgroundPanel() {
 
   function subPanelTitle(type: SelectedBackgroundType) {
     switch (type) {
+      case SelectedBackgroundType.kBrave:
+        return getString(S.NEW_TAB_BRAVE_BACKGROUND_LABEL)
       case SelectedBackgroundType.kCustom:
         return getString(S.NEW_TAB_CUSTOM_BACKGROUND_LABEL)
       case SelectedBackgroundType.kGradient:
@@ -220,9 +225,7 @@ export function BackgroundPanel() {
           <div className='background-options'>
             <div className='background-option'>
               <button
-                onClick={() => {
-                  actions.selectBackground(SelectedBackgroundType.kBrave, '')
-                }}
+                onClick={() => setPanelType(SelectedBackgroundType.kBrave)}
               >
                 {renderTypePreview(SelectedBackgroundType.kBrave)}
                 {getString(S.NEW_TAB_BRAVE_BACKGROUND_LABEL)}
