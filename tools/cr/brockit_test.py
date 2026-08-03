@@ -6,20 +6,19 @@
 
 from __future__ import annotations
 
-import json
 import os
 import subprocess
 import unittest
 from pathlib import Path
 import shutil
 from datetime import datetime
-from types import SimpleNamespace
 from unittest.mock import MagicMock, patch
 
 import brockit
 from brockit import ApplyPatchesRecord
 
 from test.fake_chromium_repo import FakeChromiumRepo
+from test.fake_gh import FakeGh, ISSUE_URL, PR_URL
 
 
 class BrockitTest(unittest.TestCase):
@@ -763,9 +762,6 @@ class MarkChangeTaskTest(unittest.TestCase):
             brockit.Drop().execute(change='HEAD')
 
 
-ISSUE_URL = 'https://github.com/brave/brave-browser/issues/4242'
-PR_URL = 'https://github.com/brave/brave-core/pull/123'
-
 # The CI labels every PR opened by `GitHubIssue` must carry. They are stored
 # exactly as the command passes them to `gh` (i.e. wrapped in double quotes).
 REQUIRED_CI_LABELS = [
@@ -779,72 +775,6 @@ REQUIRED_CI_LABELS = [
 def _values_after(cmd: list[str], flag: str) -> list[str]:
     """Returns every argument that immediately follows `flag` in `cmd`."""
     return [cmd[i + 1] for i, arg in enumerate(cmd) if arg == flag]
-
-
-class _FakeGh:
-    """Stand-in for `terminal.run` that answers the `gh` calls `GitHubIssue`
-    makes.
-
-    Every invocation is recorded in `self.calls`, and the canned responses are
-    configured through the constructor so each test can drive a specific code
-    path without touching the network or the real `gh` CLI.
-    """
-
-    def __init__(self,
-                 *,
-                 logged_in: bool = True,
-                 issue_list: list | None = None,
-                 issue_create_url: str = ISSUE_URL,
-                 pr_list: list | None = None,
-                 pr_create_url: str = PR_URL,
-                 pr_create_error: Exception | None = None,
-                 milestones: list | None = None) -> None:
-        self.logged_in = logged_in
-        self.issue_list = issue_list if issue_list is not None else []
-        self.issue_create_url = issue_create_url
-        self.pr_list = pr_list if pr_list is not None else []
-        self.pr_create_url = pr_create_url
-        self.pr_create_error = pr_create_error
-        self.milestones = milestones if milestones is not None else []
-        self.calls: list[list[str]] = []
-
-    def __call__(self, cmd, **kwargs) -> SimpleNamespace:
-        cmd = [str(x) for x in cmd]
-        self.calls.append(cmd)
-        verb = cmd[1:3]
-        if verb == ['auth', 'status']:
-            if not self.logged_in:
-                raise subprocess.CalledProcessError(1, cmd, stderr='no auth')
-            return SimpleNamespace(
-                stdout='Logged in to github.com account fake')
-        if verb == ['issue', 'list']:
-            return SimpleNamespace(stdout=json.dumps(self.issue_list))
-        if verb == ['issue', 'create']:
-            return SimpleNamespace(stdout=f'{self.issue_create_url}\n')
-        if verb == ['issue', 'edit']:
-            return SimpleNamespace(stdout='')
-        if verb == ['pr', 'list']:
-            return SimpleNamespace(stdout=json.dumps(self.pr_list))
-        if verb == ['pr', 'create']:
-            if self.pr_create_error is not None:
-                raise self.pr_create_error
-            return SimpleNamespace(stdout=f'{self.pr_create_url}\n')
-        if cmd[1] == 'api':
-            if cmd[2] == '-X':  # PATCH to set the milestone.
-                return SimpleNamespace(stdout='')
-            return SimpleNamespace(stdout=json.dumps(self.milestones))
-        raise AssertionError(f'Unexpected gh call: {cmd}')
-
-    def call_matching(self, *prefix: str) -> list[str] | None:
-        """Returns the first recorded call whose start matches `prefix`."""
-        prefix = list(prefix)
-        return next((c for c in self.calls if c[:len(prefix)] == prefix), None)
-
-    def pr_create_cmd(self) -> list[str] | None:
-        return self.call_matching('gh', 'pr', 'create')
-
-    def issue_create_cmd(self) -> list[str] | None:
-        return self.call_matching('gh', 'issue', 'create')
 
 
 class GitHubIssueTest(unittest.TestCase):
@@ -865,7 +795,7 @@ class GitHubIssueTest(unittest.TestCase):
         return brockit.GitHubIssue(base_version=brockit.Version(base),
                                    target_version=brockit.Version(target))
 
-    def _patch_gh(self, fake: _FakeGh) -> _FakeGh:
+    def _patch_gh(self, fake: FakeGh) -> FakeGh:
         patcher = patch.object(brockit.terminal, 'run', side_effect=fake)
         patcher.start()
         self.addCleanup(patcher.stop)
@@ -917,7 +847,7 @@ class GitHubIssueTest(unittest.TestCase):
     def test_lookup_issue_found(self):
         title = 'Upgrade from Chromium 134.0.7035.0 to Chromium 134.0.7037.1'
         gh = self._patch_gh(
-            _FakeGh(issue_list=[{
+            FakeGh(issue_list=[{
                 'number': 1,
                 'title': 'Some other issue',
                 'url': 'u1',
@@ -938,7 +868,7 @@ class GitHubIssueTest(unittest.TestCase):
     def test_lookup_issue_not_found_when_title_differs(self):
         # `gh` does fuzzy matching, so an exact-title check is applied locally.
         self._patch_gh(
-            _FakeGh(issue_list=[{
+            FakeGh(issue_list=[{
                 'number': 1,
                 'title': 'A close but different title',
                 'url': 'u1',
@@ -947,7 +877,7 @@ class GitHubIssueTest(unittest.TestCase):
         self.assertIsNone(self._make_issue().lookup_issue('Exact title'))
 
     def test_lookup_issue_empty(self):
-        self._patch_gh(_FakeGh(issue_list=[]))
+        self._patch_gh(FakeGh(issue_list=[]))
         self.assertIsNone(self._make_issue().lookup_issue('Any title'))
 
     ############################################################################
@@ -975,7 +905,7 @@ class GitHubIssueTest(unittest.TestCase):
     def test_create_push_request_skips_when_pr_exists(self):
         """An already-open PR for the branch short-circuits creation."""
         self._patch_branch(upstream='origin/master')
-        gh = self._patch_gh(_FakeGh(pr_list=[{'number': 9, 'url': PR_URL}]))
+        gh = self._patch_gh(FakeGh(pr_list=[{'number': 9, 'url': PR_URL}]))
 
         self._make_issue().create_push_request(ISSUE_URL)
 
@@ -983,7 +913,7 @@ class GitHubIssueTest(unittest.TestCase):
 
     def test_create_push_request_minor_on_master(self):
         self._patch_branch(upstream='origin/master', uplift_branch='134.0.x')
-        gh = self._patch_gh(_FakeGh())
+        gh = self._patch_gh(FakeGh())
 
         self._make_issue('134.0.7035.0',
                          '134.0.7037.1').create_push_request(ISSUE_URL)
@@ -1015,7 +945,7 @@ class GitHubIssueTest(unittest.TestCase):
 
     def test_create_push_request_major_is_draft_with_extra_labels(self):
         self._patch_branch(upstream='origin/master', uplift_branch='135.0.x')
-        gh = self._patch_gh(_FakeGh())
+        gh = self._patch_gh(FakeGh())
 
         self._make_issue('134.0.7035.0',
                          '135.0.7037.1').create_push_request(ISSUE_URL)
@@ -1035,7 +965,7 @@ class GitHubIssueTest(unittest.TestCase):
     def test_create_push_request_uplift_sets_milestone(self):
         self._patch_branch(upstream='origin/1.70.x', uplift_branch='1.70.x')
         gh = self._patch_gh(
-            _FakeGh(milestones=[{
+            FakeGh(milestones=[{
                 'number': 77,
                 'title': '1.70.x - Some release'
             }, {
@@ -1066,7 +996,7 @@ class GitHubIssueTest(unittest.TestCase):
 
     def test_create_push_request_uplift_no_milestones_raises(self):
         self._patch_branch(upstream='origin/1.70.x', uplift_branch='1.70.x')
-        self._patch_gh(_FakeGh(milestones=[]))
+        self._patch_gh(FakeGh(milestones=[]))
 
         with self.assertRaises(brockit.BadOutcomeException):
             self._make_issue().create_push_request(ISSUE_URL)
@@ -1074,7 +1004,7 @@ class GitHubIssueTest(unittest.TestCase):
     def test_create_push_request_uplift_milestone_not_found_raises(self):
         self._patch_branch(upstream='origin/1.70.x', uplift_branch='1.70.x')
         self._patch_gh(
-            _FakeGh(milestones=[{
+            FakeGh(milestones=[{
                 'number': 1,
                 'title': '1.69.x - Older release'
             }]))
@@ -1085,7 +1015,7 @@ class GitHubIssueTest(unittest.TestCase):
     def test_create_push_request_pr_creation_failure_raises(self):
         self._patch_branch(upstream='origin/master', uplift_branch='134.0.x')
         self._patch_gh(
-            _FakeGh(pr_create_error=subprocess.CalledProcessError(
+            FakeGh(pr_create_error=subprocess.CalledProcessError(
                 1, ['gh', 'pr', 'create'], stderr='gh blew up')))
 
         with self.assertRaises(brockit.BadOutcomeException):
@@ -1095,7 +1025,7 @@ class GitHubIssueTest(unittest.TestCase):
     #### create_or_update_version_issue
 
     def test_create_or_update_creates_new_issue(self):
-        gh = self._patch_gh(_FakeGh(issue_list=[]))
+        gh = self._patch_gh(FakeGh(issue_list=[]))
 
         with patch.object(brockit.GitHubIssue,
                           'create_push_request') as mock_push:
@@ -1113,7 +1043,7 @@ class GitHubIssueTest(unittest.TestCase):
         mock_push.assert_not_called()
 
     def test_create_or_update_creates_issue_and_pushes_pr(self):
-        self._patch_gh(_FakeGh(issue_list=[]))
+        self._patch_gh(FakeGh(issue_list=[]))
 
         with patch.object(brockit.GitHubIssue,
                           'create_push_request') as mock_push:
@@ -1129,7 +1059,7 @@ class GitHubIssueTest(unittest.TestCase):
             from_version=str(issue.base_version))
         # The existing body already points at the current diff link.
         gh = self._patch_gh(
-            _FakeGh(issue_list=[{
+            FakeGh(issue_list=[{
                 'number': 5,
                 'title': title,
                 'url': ISSUE_URL,
@@ -1149,7 +1079,7 @@ class GitHubIssueTest(unittest.TestCase):
         stale_link = ('https://chromium.googlesource.com/chromium/src/+log/'
                       '111.0.0.0..112.0.0.0')
         gh = self._patch_gh(
-            _FakeGh(issue_list=[{
+            FakeGh(issue_list=[{
                 'number': 5,
                 'title': title,
                 'url': ISSUE_URL,
@@ -1169,13 +1099,13 @@ class GitHubIssueTest(unittest.TestCase):
     #### execute
 
     def test_execute_raises_when_not_logged_in(self):
-        self._patch_gh(_FakeGh(logged_in=False))
+        self._patch_gh(FakeGh(logged_in=False))
 
         with self.assertRaises(brockit.BadOutcomeException):
             self._make_issue().execute()
 
     def test_execute_creates_issue_with_pr_when_logged_in(self):
-        self._patch_gh(_FakeGh(logged_in=True))
+        self._patch_gh(FakeGh(logged_in=True))
 
         with patch.object(brockit.GitHubIssue,
                           'create_or_update_version_issue') as mock_create:
