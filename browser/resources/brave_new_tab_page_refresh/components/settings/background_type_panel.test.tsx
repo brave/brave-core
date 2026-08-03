@@ -82,31 +82,22 @@ function renderPanel(
 }
 
 describe('BackgroundTypePanel Brave backgrounds', () => {
-  it('should pin the current Brave background when randomize is turned off', () => {
+  it('should not show the refresh toggle', () => {
+    renderPanel()
+    expect(
+      screen.queryByText('NEW_TAB_RANDOMIZE_BACKGROUND_LABEL'),
+    ).not.toBeInTheDocument()
+    expect(document.querySelector('leo-toggle')).toBeNull()
+  })
+
+  it('should not select a Brave background when its preview is clicked', () => {
     const selectBackground = jest.fn()
-    renderPanel(
-      {
-        selectedBackground: {
-          type: SelectedBackgroundType.kBrave,
-          value: '',
-        },
-        backgroundRandomValue: 0,
-      },
-      { selectBackground },
-    )
+    renderPanel({}, { selectBackground })
 
-    const toggle = document.querySelector('leo-toggle') as HTMLElement & {
-      checked?: boolean
-      onChange?: (detail: { checked: boolean }) => void
-    }
-    expect(toggle).toBeTruthy()
-    expect(toggle.checked).toBe(true)
-    toggle.onChange?.({ checked: false })
-
-    expect(selectBackground).toHaveBeenCalledWith(
-      SelectedBackgroundType.kBrave,
-      braveBackgrounds[0].imageUrl,
-    )
+    // Brave tiles are not selection buttons — clicking the preview area should
+    // not change the selected background.
+    fireEvent.click(document.querySelectorAll('.preview')[0])
+    expect(selectBackground).not.toHaveBeenCalled()
   })
 
   it('should disable a Brave background when the eye button is clicked', () => {
