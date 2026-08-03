@@ -6,10 +6,13 @@
 #ifndef BRAVE_BROWSER_UI_SIDE_PANEL_AI_CHAT_AI_CHAT_SIDE_PANEL_UTILS_H_
 #define BRAVE_BROWSER_UI_SIDE_PANEL_AI_CHAT_AI_CHAT_SIDE_PANEL_UTILS_H_
 
+#include <string>
+
 #include "content/public/browser/web_contents.h"
 #include "url/gurl.h"
 
 class Browser;
+class BrowserWindowInterface;
 class Profile;
 
 namespace ai_chat {
@@ -48,6 +51,16 @@ void ClosePanelIfChatActive(content::WebContents* web_contents);
 // Returns true if the side panel should be global for all tabs in a tab strip,
 // or false if it should be per-tab.
 bool ShouldSidePanelBeGlobal(Profile* profile);
+
+// Returns the live top-level `WebContents` of the side panel WebUI view
+// currently hosted in `browser`, or nullptr if the panel has no such view.
+content::WebContents* GetSidePanelWebContents(BrowserWindowInterface* browser);
+
+// Opens (or focuses) the global AI Chat side panel in the most recently active
+// normal browser window for `profile` and shows the conversation identified by
+// `conversation_uuid`.
+void OpenConversationInSidePanel(Profile* profile,
+                                 const std::string& conversation_uuid);
 
 }  // namespace ai_chat
 
