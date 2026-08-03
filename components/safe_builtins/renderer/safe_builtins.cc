@@ -9,9 +9,8 @@
 #include <string>
 #include <tuple>
 
-#include "base/check.h"
 #include "base/containers/heap_array.h"
-#include "base/debug/dump_without_crashing.h"
+#include "base/notreached.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "v8/include/v8-context.h"
 #include "v8/include/v8-exception.h"
@@ -222,14 +221,15 @@ void EnsureSetUp(v8::Local<v8::Context> context) {
            context, &source, v8::ScriptCompiler::kNoCompileOptions,
            v8::ScriptCompiler::NoCacheReason::kNoCacheBecauseInlineScript)
            .ToLocal(&script)) {
-    base::debug::DumpWithoutCrashing();
+    DUMP_WILL_BE_NOTREACHED() << "Failed to compile safe_builtins script";
     return;
   }
 
   v8::Local<v8::Value> func_as_value;
   if (!script->Run(context).ToLocal(&func_as_value) ||
       !func_as_value->IsFunction()) {
-    base::debug::DumpWithoutCrashing();
+    DUMP_WILL_BE_NOTREACHED()
+        << "safe_builtins script did not return a function";
     return;
   }
 
