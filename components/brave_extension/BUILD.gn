@@ -22,7 +22,7 @@ action("web_discovery_project_resources") {
   args = [
     "--build",
     "--output_path",
-    rebase_path(gen_build_dir),
+    rebase_path(gen_build_dir, root_build_dir),
   ]
 
   inputs = [
