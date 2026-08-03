@@ -10,11 +10,11 @@
 #include "base/feature_list.h"
 #include "base/functional/callback_helpers.h"
 #include "base/json/json_writer.h"
-#include "base/strings/pattern.h"
 #include "base/strings/strcat.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/values.h"
-#include "brave/browser/ai_chat/web_mcp_injection/web_mcp_injection_rule.h"
+#include "brave/components/web_mcp/core/browser/web_mcp_injection_rule.h"
+#include "brave/components/web_mcp/core/browser/web_mcp_rule_registry.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
@@ -35,7 +35,7 @@ constexpr int32_t kMainWorldId = 0;
 // Builds a self-contained script that registers `rule` as a WebMCP tool. The
 // script is a no-op when the WebMCP runtime feature is not enabled on the page
 // (navigator.modelContext is then undefined).
-std::string BuildRegisterToolScript(const WebMcpInjectionRule& rule) {
+std::string BuildRegisterToolScript(const web_mcp::WebMcpInjectionRule& rule) {
   // base::WriteJson produces a safely-escaped JS/JSON string literal.
   const std::string name_literal =
       base::WriteJson(base::Value(rule.tool_name)).value_or("\"\"");
@@ -72,9 +72,10 @@ std::string BuildRegisterToolScript(const WebMcpInjectionRule& rule) {
 std::unique_ptr<WebMcpInjector> WebMcpInjector::MaybeCreate(
     content::WebContents* web_contents) {
   // kWebMCP's base::Feature gates the runtime feature; if it is force-disabled
-  // there is no point injecting.
-  if (!base::FeatureList::IsEnabled(blink::features::kWebMCP) ||
-      GetWebMcpInjectionRules().empty()) {
+  // there is no point injecting. Rules arrive asynchronously from the component
+  // updater, so an empty registry here is expected and not a reason to skip
+  // creating the injector.
+  if (!base::FeatureList::IsEnabled(blink::features::kWebMCP)) {
     return nullptr;
   }
   return std::make_unique<WebMcpInjector>(web_contents);
@@ -93,9 +94,8 @@ void WebMcpInjector::DocumentOnLoadCompletedInPrimaryMainFrame() {
     return;
   }
 
-  for (const auto& rule : GetWebMcpInjectionRules()) {
-    // Glob match (base::MatchPattern '*'/'?' wildcards) against the full URL.
-    if (base::MatchPattern(url.spec(), rule.url_pattern)) {
+  for (const auto& rule : web_mcp::WebMcpRuleRegistry::GetInstance()->rules()) {
+    if (rule.Matches(url)) {
       InjectScript(BuildRegisterToolScript(rule));
     }
   }
