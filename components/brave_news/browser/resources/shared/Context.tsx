@@ -36,7 +36,11 @@ interface BraveNewsContext {
   subscribedPublisherIds: string[]
   // Publishers to suggest to the user.
   suggestedPublisherIds: string[]
-  updateSuggestedPublisherIds: () => void
+  updateSuggestedPublisherIds: () => Promise<void>
+  // True once publishers/channels have been hydrated from the backend (the
+  // caches may still be empty, e.g. a fresh profile with no follows).
+  publishersLoaded: boolean
+  channelsLoaded: boolean
   isOptInPrefEnabled: boolean | undefined
   isShowOnNTPPrefEnabled: boolean | undefined
   toggleBraveNewsOnNTP: (enabled: boolean) => void
@@ -66,7 +70,9 @@ export const BraveNewsContext = React.createContext<BraveNewsContext>({
   subscribedPublisherIds: [],
   channels: {},
   suggestedPublisherIds: [],
-  updateSuggestedPublisherIds: () => { },
+  updateSuggestedPublisherIds: async () => { },
+  publishersLoaded: false,
+  channelsLoaded: false,
   isOptInPrefEnabled: undefined,
   isShowOnNTPPrefEnabled: undefined,
   toggleBraveNewsOnNTP: (enabled: boolean) => { },
@@ -107,6 +113,8 @@ export function BraveNewsContextProvider(props: BraveNewsContextProviderProps) {
   const [customizePage, setCustomizePage] = useState<NewsPage>(null)
   const [channels, setChannels] = useState<Channels>({})
   const [publishers, setPublishers] = useState<Publishers>({})
+  const [publishersLoaded, setPublishersLoaded] = useState(false)
+  const [channelsLoaded, setChannelsLoaded] = useState(false)
   const [suggestedPublisherIds, setSuggestedPublisherIds] = useState<string[]>([])
   const [shouldRenderImages, setShouldRenderImages] = useState(false)
 
@@ -116,7 +124,17 @@ export function BraveNewsContextProvider(props: BraveNewsContextProviderProps) {
   }, [configuration.isOptedIn, configuration.showOnNTP])
 
   React.useEffect(() => {
-    const handler = (channels: Channels) => setChannels(channels)
+    // addListener fires once with the current cache, then again on mojo
+    // updates. Mark loaded once we have entries or after the first update past
+    // the initial sync callback.
+    let callCount = 0
+    const handler = (next: Channels) => {
+      callCount++
+      setChannels(next)
+      if (callCount > 1 || Object.keys(next).length > 0) {
+        setChannelsLoaded(true)
+      }
+    }
 
     channelsCache.addListener(handler)
     return () => channelsCache.removeListener(handler)
@@ -134,7 +152,14 @@ export function BraveNewsContextProvider(props: BraveNewsContextProviderProps) {
   }, [])
 
   React.useEffect(() => {
-    const handler = (publishers: Publishers) => setPublishers(publishers)
+    let callCount = 0
+    const handler = (next: Publishers) => {
+      callCount++
+      setPublishers(next)
+      if (callCount > 1 || Object.keys(next).length > 0) {
+        setPublishersLoaded(true)
+      }
+    }
     publishersCache.addListener(handler)
     return () => { publishersCache.removeListener(handler) }
   }, [])
@@ -211,6 +236,8 @@ export function BraveNewsContextProvider(props: BraveNewsContextProviderProps) {
     filteredPublisherIds,
     subscribedPublisherIds,
     updateSuggestedPublisherIds,
+    publishersLoaded,
+    channelsLoaded,
     isOptInPrefEnabled: configuration.isOptedIn,
     isShowOnNTPPrefEnabled: configuration.showOnNTP,
     toggleBraveNewsOnNTP,
@@ -221,7 +248,7 @@ export function BraveNewsContextProvider(props: BraveNewsContextProviderProps) {
     reportSidebarFilterUsage,
     reportSessionStart,
     shouldRenderImages,
-  }), [customizePage, setFeedView, feedV2, feedV2UpdatesAvailable, channels, publishers, suggestedPublisherIds, filteredPublisherIds, updateSuggestedPublisherIds, configuration, props.openArticlesInNewTab, toggleBraveNewsOnNTP, reportSidebarFilterUsage, reportViewCount, reportVisit, reportSessionStart, shouldRenderImages])
+  }), [customizePage, setFeedView, feedV2, feedV2UpdatesAvailable, channels, publishers, publishersLoaded, channelsLoaded, suggestedPublisherIds, filteredPublisherIds, updateSuggestedPublisherIds, configuration, props.openArticlesInNewTab, toggleBraveNewsOnNTP, reportSidebarFilterUsage, reportViewCount, reportVisit, reportSessionStart, shouldRenderImages])
 
   return <BraveNewsContext.Provider value={context}>
     {props.children}

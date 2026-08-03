@@ -18,7 +18,7 @@ export const style = scoped.css`
     align-items: center;
     justify-content: space-between;
     gap: ${spacing.m};
-    padding: ${spacing.m} ${spacing.l};
+    padding: ${spacing.m};
   }
 
   .title {

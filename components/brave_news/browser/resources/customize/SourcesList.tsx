@@ -8,13 +8,15 @@ import usePromise from '$web-common/usePromise'
 import { PluralStringProxyImpl } from 'chrome://resources/js/plural_string_proxy.js'
 import * as React from 'react'
 import { useBraveNews, useChannels } from '../shared/Context'
+import Loading from './Loading'
 import { ChannelListEntry, FeedListEntry } from './SourcesListEntry'
 
 import { style } from './SourcesList.style'
 
 export default function SourcesList() {
-  const { subscribedPublisherIds } = useBraveNews()
+  const { subscribedPublisherIds, publishersLoaded, channelsLoaded } = useBraveNews()
   const channels = useChannels({ subscribedOnly: true })
+  const isLoading = !publishersLoaded || !channelsLoaded
 
   const { result: sourcesCount } = usePromise(
     async () =>
@@ -29,15 +31,21 @@ export default function SourcesList() {
     <div data-css-scope={style.scope}>
       <div className='heading'>
         <span className='title'>{getLocale(S.BRAVE_NEWS_FEEDS_HEADING)}</span>
-        <span className='count'>{sourcesCount}</span>
+        {!isLoading && <span className='count'>{sourcesCount}</span>}
       </div>
       <div className='list'>
-        {channels.map((c) => (
-          <ChannelListEntry key={c.channelName} channelName={c.channelName} />
-        ))}
-        {subscribedPublisherIds.map((p) => (
-          <FeedListEntry key={p} publisherId={p} />
-        ))}
+        {isLoading ? (
+          <Loading />
+        ) : (
+          <>
+            {channels.map((c) => (
+              <ChannelListEntry key={c.channelName} channelName={c.channelName} />
+            ))}
+            {subscribedPublisherIds.map((p) => (
+              <FeedListEntry key={p} publisherId={p} />
+            ))}
+          </>
+        )}
       </div>
     </div>
   )

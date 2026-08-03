@@ -1,7 +1,7 @@
-// Copyright (c) 2022 The Brave Authors. All rights reserved.
-// This Source Code Form is subject to the terms of the Mozilla Public
-// License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// You can obtain one at https://mozilla.org/MPL/2.0/.
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import Flex from '$web-common/Flex'
 import { getLocale } from '$web-common/locale'
@@ -11,6 +11,7 @@ import Carousel from './Carousel'
 import CustomizeLink from './CustomizeLink'
 import CustomizePage from './CustomizePage'
 import DiscoverSection from './DiscoverSection'
+import Loading from './Loading'
 import PublisherCard from '../shared/PublisherCard'
 
 export function SuggestionsCarousel () {
@@ -28,10 +29,33 @@ export function SuggestionsCarousel () {
 }
 
 export function SuggestionsPage () {
-  const { suggestedPublisherIds } = useBraveNews()
+  const { suggestedPublisherIds, updateSuggestedPublisherIds } = useBraveNews()
+  const [loading, setLoading] = React.useState(suggestedPublisherIds.length === 0)
+
+  React.useEffect(() => {
+    if (suggestedPublisherIds.length > 0) {
+      setLoading(false)
+      return
+    }
+    let cancelled = false
+    setLoading(true)
+    updateSuggestedPublisherIds().finally(() => {
+      if (!cancelled) {
+        setLoading(false)
+      }
+    })
+    return () => {
+      cancelled = true
+    }
+  }, [suggestedPublisherIds.length, updateSuggestedPublisherIds])
+
   return <CustomizePage title={getLocale(S.BRAVE_NEWS_SUGGESTIONS_TITLE)}>
-    <DiscoverSection>
-      {suggestedPublisherIds.map(p => <PublisherCard key={p} publisherId={p} />)}
-    </DiscoverSection>
+    {loading ? (
+      <Loading />
+    ) : (
+      <DiscoverSection>
+        {suggestedPublisherIds.map(p => <PublisherCard key={p} publisherId={p} />)}
+      </DiscoverSection>
+    )}
   </CustomizePage>
 }

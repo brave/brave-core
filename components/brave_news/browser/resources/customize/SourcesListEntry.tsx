@@ -71,10 +71,6 @@ const Text = styled.span`
   color: ${color.text.primary};
 `
 
-const ChannelNameText = styled(Text)`
-  font: ${font.default.semibold};
-`
-
 function FavIcon (props: { publisherId: string }) {
   const publisher = usePublisher(props.publisherId)
   const faviconUrl = publisher.faviconUrl?.url
@@ -121,7 +117,7 @@ export function ChannelListEntry (props: { channelName: string }) {
       <FavIconContainer>
         {ChannelIcons[props.channelName] ?? ChannelIcons.default}
       </FavIconContainer>
-      <ChannelNameText title={channelName}>{channelName}</ChannelNameText>
+      <Text title={channelName}>{channelName}</Text>
       <RemoveButton
         onClick={() => setSubscribed(false)}
         title={unfollowLabel}

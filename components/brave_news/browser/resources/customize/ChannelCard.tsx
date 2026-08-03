@@ -27,7 +27,7 @@ const Container = styled(Flex)`
   position: relative;
   box-shadow: ${effect.elevation['01']};
   border: 1px solid ${color.divider.subtle};
-  background: ${color.page.background};
+  background: ${color.container.background};
 
   &[data-channel-card-is-followed=true] {
     &:not(:hover, :has(:focus-visible)) ${SubscribeButton} {
