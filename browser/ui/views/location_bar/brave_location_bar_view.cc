@@ -20,6 +20,7 @@
 #include "brave/browser/ui/views/location_bar/brave_search_conversion/promotion_button_view.h"
 #include "brave/browser/ui/views/location_bar/brave_shields_page_info_controller.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
+#include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/commander/common/buildflags/buildflags.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
@@ -32,6 +33,7 @@
 #include "chrome/browser/ui/omnibox/omnibox_theme.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
+#include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_view.h"
 #include "chrome/browser/ui/views/omnibox/omnibox_view_views.h"
 #include "chrome/browser/ui/views/page_action/page_action_icon_controller.h"
@@ -221,6 +223,11 @@ void BraveLocationBarView::OnOmniboxBlurred() {
   }
 #endif
   LocationBarView::OnOmniboxBlurred();
+
+  // If the location bar was temporarily revealed in fullscreen, restore it.
+  if (is_temporarily_visible_in_fullscreen_) {
+    SetTemporaryVisibilityInFullscreen(false);
+  }
 }
 
 void BraveLocationBarView::Layout(PassKey) {
@@ -472,6 +479,25 @@ ContentSettingImageView*
 BraveLocationBarView::GetContentSettingsImageViewForTesting(size_t idx) {
   DCHECK(idx < content_setting_views_.size());
   return content_setting_views_[idx];
+}
+
+void BraveLocationBarView::SetTemporaryVisibilityInFullscreen(bool visible) {
+  if (!browser_ || !browser_->window() ||
+      !browser_->window()->IsFullscreen()) {
+    return;
+  }
+
+  is_temporarily_visible_in_fullscreen_ = visible;
+
+  BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser_);
+  if (!browser_view) {
+    return;
+  }
+
+  auto* brave_browser_view = BraveBrowserView::From(browser_view);
+  if (brave_browser_view) {
+    brave_browser_view->SetToolbarTemporarilyVisibleInFullscreen(visible);
+  }
 }
 
 BEGIN_METADATA(BraveLocationBarView)

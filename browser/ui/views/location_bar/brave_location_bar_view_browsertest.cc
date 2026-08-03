@@ -19,6 +19,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/omnibox/omnibox_controller.h"
 #include "chrome/browser/ui/omnibox/omnibox_edit_model.h"
 #include "chrome/browser/ui/omnibox/omnibox_view.h"
@@ -30,6 +31,7 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/interactive_test_utils.h"
 #include "chrome/test/base/search_test_utils.h"
+#include "chrome/test/base/ui_test_utils.h"
 #include "components/search_engines/template_url.h"
 #include "components/search_engines/template_url_data_util.h"
 #include "components/search_engines/template_url_service.h"
@@ -246,4 +248,29 @@ IN_PROC_BROWSER_TEST_F(BraveLocationBarViewBrowserTest,
   toolbar()->SetBoundsRect(toolbar_bounds);
 
   EXPECT_EQ(1, observer.bounds_changed_count_);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveLocationBarViewBrowserTest,
+                       FocusLocationBarInFullscreenTest) {
+  // Enter fullscreen mode.
+  ui_test_utils::ToggleFullscreenModeAndWait(browser());
+  ASSERT_TRUE(browser()->window()->IsFullscreen());
+
+  // The location bar should not be temporarily visible initially.
+  EXPECT_FALSE(location_bar()->is_temporarily_visible_in_fullscreen_);
+
+  // Trigger IDC_FOCUS_LOCATION (simulating Ctrl+L in fullscreen).
+  chrome::ExecuteCommand(browser(), IDC_FOCUS_LOCATION);
+
+  // The toolbar should now be revealed and the omnibox focused.
+  EXPECT_TRUE(location_bar()->is_temporarily_visible_in_fullscreen_);
+  EXPECT_TRUE(toolbar()->GetVisible());
+  EXPECT_TRUE(omnibox_view()->HasFocus());
+
+  // Blur the omnibox by focusing the web contents.
+  web_contents()->Focus();
+
+  // Toolbar should return to hidden state.
+  EXPECT_FALSE(location_bar()->is_temporarily_visible_in_fullscreen_);
+  EXPECT_FALSE(toolbar()->GetVisible());
 }
