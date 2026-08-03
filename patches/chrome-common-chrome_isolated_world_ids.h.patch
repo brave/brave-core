@@ -1,0 +1,12 @@
+diff --git a/chrome/common/chrome_isolated_world_ids.h b/chrome/common/chrome_isolated_world_ids.h
+index 846e4777c4d2e983078ad629621a3eb3acf780e4..10d40d91228bb9a00fd3fe3fca6ed6ef48fe0a2c 100644
+--- a/chrome/common/chrome_isolated_world_ids.h
++++ b/chrome/common/chrome_isolated_world_ids.h
+@@ -27,6 +27,7 @@ enum ChromeIsolatedWorldIDs {
+   // Numbers for isolated worlds for extensions are set in
+   // extensions/renderer/script_injection.cc, and are are greater than or equal
+   // to this number.
++  ISOLATED_WORLD_ID_BRAVE_INTERNAL,
+   ISOLATED_WORLD_ID_EXTENSIONS
+ };
+ // LINT.ThenChange(//chrome/android/java/src/org/chromium/chrome/browser/common/ChromeIsolatedWorldIds.java)
