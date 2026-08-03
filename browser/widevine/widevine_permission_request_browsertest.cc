@@ -26,8 +26,11 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "chrome/test/permissions/permission_request_manager_test_api.h"
+#include "components/permissions/permission_request.h"
+#include "components/permissions/request_type.h"
 #include "components/prefs/pref_service.h"
 #include "components/update_client/crx_update_item.h"
+#include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
@@ -88,6 +91,14 @@ class WidevinePermissionRequestBrowserTest
     return BraveDrmTabHelper::FromWebContents(GetActiveWebContents());
   }
 
+  // BraveDrmTabHelper::OnWidevineKeySystemAccessRequest() can only resolve the
+  // requesting frame while a mojo message is being dispatched, so tests that
+  // don't go through the renderer name the frame explicitly.
+  void SimulateWidevineKeySystemAccessRequest() {
+    GetBraveDrmTabHelper()->OnWidevineKeySystemAccessRequestForFrame(
+        GetActiveWebContents()->GetPrimaryMainFrame());
+  }
+
   TestObserver observer;
   std::unique_ptr<test::PermissionRequestManagerTestApi> test_api_;
 };
@@ -95,16 +106,15 @@ class WidevinePermissionRequestBrowserTest
 IN_PROC_BROWSER_TEST_F(WidevinePermissionRequestBrowserTest, VisibilityTest) {
   GetPermissionRequestManager()->set_auto_response_for_test(
       permissions::PermissionRequestManager::DISMISS);
-  auto* drm_tab_helper = GetBraveDrmTabHelper();
 
   // Check permission bubble is visible.
-  drm_tab_helper->OnWidevineKeySystemAccessRequest();
+  SimulateWidevineKeySystemAccessRequest();
   content::RunAllTasksUntilIdle();
   EXPECT_TRUE(observer.bubble_added_);
 
   // Check permission is not requested again for same site.
   observer.bubble_added_ = false;
-  drm_tab_helper->OnWidevineKeySystemAccessRequest();
+  SimulateWidevineKeySystemAccessRequest();
   content::RunAllTasksUntilIdle();
   EXPECT_FALSE(observer.bubble_added_);
 
@@ -112,7 +122,7 @@ IN_PROC_BROWSER_TEST_F(WidevinePermissionRequestBrowserTest, VisibilityTest) {
   observer.bubble_added_ = false;
   EXPECT_TRUE(content::NavigateToURL(GetActiveWebContents(),
                                      GURL("chrome://newtab/")));
-  drm_tab_helper->OnWidevineKeySystemAccessRequest();
+  SimulateWidevineKeySystemAccessRequest();
   content::RunAllTasksUntilIdle();
   EXPECT_TRUE(observer.bubble_added_);
 
@@ -123,7 +133,7 @@ IN_PROC_BROWSER_TEST_F(WidevinePermissionRequestBrowserTest, VisibilityTest) {
       ->SetBoolean(kAskEnableWidvine, false);
   EXPECT_TRUE(content::NavigateToURL(GetActiveWebContents(),
                                      GURL("chrome://newtab/")));
-  drm_tab_helper->OnWidevineKeySystemAccessRequest();
+  SimulateWidevineKeySystemAccessRequest();
   content::RunAllTasksUntilIdle();
   EXPECT_FALSE(observer.bubble_added_);
 
@@ -134,7 +144,7 @@ IN_PROC_BROWSER_TEST_F(WidevinePermissionRequestBrowserTest, VisibilityTest) {
       ->SetBoolean(kAskEnableWidvine, true);
   EXPECT_TRUE(content::NavigateToURL(GetActiveWebContents(),
                                      GURL("chrome://newtab/")));
-  drm_tab_helper->OnWidevineKeySystemAccessRequest();
+  SimulateWidevineKeySystemAccessRequest();
   content::RunAllTasksUntilIdle();
   EXPECT_TRUE(observer.bubble_added_);
 }
@@ -144,7 +154,7 @@ IN_PROC_BROWSER_TEST_F(WidevinePermissionRequestBrowserTest, BubbleTest) {
   auto* permission_request_manager =
       GetPermissionRequestManager();
   EXPECT_FALSE(permission_request_manager->IsRequestInProgress());
-  GetBraveDrmTabHelper()->OnWidevineKeySystemAccessRequest();
+  SimulateWidevineKeySystemAccessRequest();
   content::RunAllTasksUntilIdle();
   EXPECT_TRUE(permission_request_manager->IsRequestInProgress());
 
@@ -169,8 +179,7 @@ IN_PROC_BROWSER_TEST_F(WidevinePermissionRequestBrowserTest,
 
   GetPermissionRequestManager()->set_auto_response_for_test(
       permissions::PermissionRequestManager::ACCEPT_ALL);
-  auto* drm_tab_helper = GetBraveDrmTabHelper();
-  drm_tab_helper->OnWidevineKeySystemAccessRequest();
+  SimulateWidevineKeySystemAccessRequest();
   content::RunAllTasksUntilIdle();
 
   // After we allow, opted in pref should be true
@@ -179,7 +188,7 @@ IN_PROC_BROWSER_TEST_F(WidevinePermissionRequestBrowserTest,
 
   // Reset observer and check permission bubble isn't created again.
   observer.bubble_added_ = false;
-  drm_tab_helper->OnWidevineKeySystemAccessRequest();
+  SimulateWidevineKeySystemAccessRequest();
   content::RunAllTasksUntilIdle();
   EXPECT_FALSE(observer.bubble_added_);
 }
@@ -194,7 +203,7 @@ IN_PROC_BROWSER_TEST_F(WidevinePermissionRequestBrowserTest,
   permission_request_manager->set_auto_response_for_test(
       permissions::PermissionRequestManager::ACCEPT_ALL);
 
-  GetBraveDrmTabHelper()->OnWidevineKeySystemAccessRequest();
+  SimulateWidevineKeySystemAccessRequest();
   content::RunAllTasksUntilIdle();
 
   WidevinePermissionRequest::is_test_ = true;
@@ -316,4 +325,57 @@ IN_PROC_BROWSER_TEST_F(ScriptTriggerWidevinePermissionRequestBrowserTest,
               content::EvalJsResult::ErrorIs(testing::Eq(js_error)));
   content::RunAllTasksUntilIdle();
   EXPECT_TRUE(IsPermissionBubbleShown());
+}
+
+// A request from a cross-origin subframe must be attributed to that subframe's
+// origin, not to the top level page.
+IN_PROC_BROWSER_TEST_F(ScriptTriggerWidevinePermissionRequestBrowserTest,
+                       PermissionIsAttributedToRequestingSubframeOrigin) {
+  const GURL main_url = https_server_.GetURL("a.com", "/simple.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), main_url));
+  EXPECT_FALSE(IsPermissionBubbleShown());
+
+  // `encrypted-media` has a default allowlist of `self`, so without the
+  // `allow` grant requestMediaKeySystemAccess() throws a SecurityError before
+  // Brave is ever notified. The attribute is set before the frame is inserted
+  // because the container policy is computed when the frame navigates.
+  const GURL subframe_url = https_server_.GetURL("b.com", "/simple.html");
+  const std::string add_subframe_js = R"(
+      new Promise(resolve => {
+        const iframe = document.createElement('iframe');
+        iframe.setAttribute('allow', 'encrypted-media');
+        iframe.src = $1;
+        iframe.onload = () => resolve();
+        document.body.appendChild(iframe);
+      }))";
+  ASSERT_TRUE(content::ExecJs(
+      active_contents(), content::JsReplace(add_subframe_js, subframe_url)));
+
+  content::RenderFrameHost* subframe =
+      content::ChildFrameAt(active_contents()->GetPrimaryMainFrame(), 0);
+  ASSERT_TRUE(subframe);
+  ASSERT_EQ(subframe_url.DeprecatedGetOriginAsURL(),
+            subframe->GetLastCommittedOrigin().GetURL());
+
+  // Whether the promise resolves depends on whether a CDM is available, which
+  // varies by platform and build config. Brave is notified synchronously inside
+  // requestMediaKeySystemAccess() either way, so swallow the rejection rather
+  // than asserting on it. A synchronous throw still fails the test, which is
+  // what should happen if the permissions policy grant above stops working.
+  ASSERT_TRUE(content::ExecJs(subframe, R"(
+      var config = [{initDataTypes: ['cenc']}];
+      navigator.requestMediaKeySystemAccess('com.widevine.alpha', config)
+          .catch(() => {});)"));
+  content::RunAllTasksUntilIdle();
+
+  ASSERT_TRUE(IsPermissionBubbleShown());
+  const auto& requests = GetPermissionRequestManager()->Requests();
+  ASSERT_EQ(1u, requests.size());
+  EXPECT_EQ(permissions::RequestType::kWidevine, requests[0]->request_type());
+  EXPECT_EQ(subframe_url.DeprecatedGetOriginAsURL(),
+            requests[0]->requesting_origin());
+  // Spelled out separately because the top level origin is the specific wrong
+  // answer this test exists to catch: the helper used to pass the tab's URL.
+  EXPECT_NE(main_url.DeprecatedGetOriginAsURL(),
+            requests[0]->requesting_origin());
 }

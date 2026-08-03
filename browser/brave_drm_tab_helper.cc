@@ -17,10 +17,12 @@
 #include "chrome/browser/browser_process_impl.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/permissions/permission_request_manager.h"
+#include "components/permissions/permission_util.h"
 #include "components/prefs/pref_service.h"
 #include "components/update_client/crx_update_item.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/navigation_handle.h"
+#include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
 
 #if !BUILDFLAG(IS_ANDROID)
@@ -33,6 +35,23 @@
 using component_updater::ComponentUpdateService;
 
 namespace {
+
+// The permission prompt renders this with
+// url_formatter::FormatUrlForSecurityDisplay(), i.e. scheme/host/port only.
+// Prefer the frame's origin: an about:blank or srcdoc subframe inherits a
+// meaningful origin while its URL would display as "about:blank". Fall back to
+// the frame's URL for a sandboxed subframe, whose opaque origin would otherwise
+// leave the prompt naming no site at all. Two levels cover everything reachable
+// here, because requestMediaKeySystemAccess() is gated on a secure context.
+GURL GetRequestingOriginForPrompt(content::RenderFrameHost* requesting_frame) {
+  GURL origin = permissions::PermissionUtil::GetLastCommittedOriginAsURL(
+      requesting_frame);
+  if (origin.is_empty()) {
+    origin = requesting_frame->GetLastCommittedURL().DeprecatedGetOriginAsURL();
+  }
+  return origin;
+}
+
 #if !BUILDFLAG(IS_ANDROID)
 bool IsAlreadyRegistered(ComponentUpdateService* cus) {
   return std::ranges::contains(cus->GetComponentIDs(), kWidevineComponentId);
@@ -119,6 +138,22 @@ void BraveDrmTabHelper::DidStartNavigation(
 }
 
 void BraveDrmTabHelper::OnWidevineKeySystemAccessRequest() {
+  OnWidevineKeySystemAccessRequestForFrame(
+      brave_drm_receivers_.GetCurrentTargetFrame());
+}
+
+void BraveDrmTabHelper::OnWidevineKeySystemAccessRequestForFrame(
+    content::RenderFrameHost* requesting_frame) {
+  CHECK(requesting_frame);
+
+  // A frame that is prerendering, in the back/forward cache or pending deletion
+  // must not drive UI or this tab's Widevine state: the prompt (and the
+  // component update follow-up in OnEvent()) would otherwise be attributed to
+  // whatever page is currently committed in this tab.
+  if (!requesting_frame->IsActive()) {
+    return;
+  }
+
   is_widevine_requested_ = true;
 #if BUILDFLAG(IS_ANDROID)
   bool for_restart = true;
@@ -132,10 +167,10 @@ void BraveDrmTabHelper::OnWidevineKeySystemAccessRequest() {
         Profile::FromBrowserContext(web_contents()->GetBrowserContext())
             ->GetPrefs();
     permissions::PermissionRequestManager::FromWebContents(web_contents())
-        ->AddRequest(
-            web_contents()->GetPrimaryMainFrame(),
-            std::make_unique<WidevinePermissionRequest>(
-                prefs, web_contents()->GetLastCommittedURL(), for_restart));
+        ->AddRequest(requesting_frame,
+                     std::make_unique<WidevinePermissionRequest>(
+                         prefs, GetRequestingOriginForPrompt(requesting_frame),
+                         for_restart));
   }
 }
 
