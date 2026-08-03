@@ -5,6 +5,8 @@
 
 import Flex from '$web-common/Flex'
 import { getLocale } from '$web-common/locale'
+import Icon from '@brave/leo/react/icon'
+import { color, icon, spacing } from '@brave/leo/tokens/css/variables'
 import * as React from 'react'
 import styled from 'styled-components'
 import { useChannelSubscribed, usePublisher, usePublisherFollowed } from '../shared/Context'
@@ -15,27 +17,34 @@ interface Props {
   publisherId: string
 }
 
-const ToggleButton = styled.button`
+const RemoveButton = styled.button`
   all: unset;
+  --leo-icon-size: ${icon.m};
+
   flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
-  color: var(--brave-color-text02);
+  color: ${color.icon.default};
+  padding: ${spacing.s};
+
   &:hover {
-    text-decoration: underline;
+    color: ${color.icon.interactive};
   }
-  &:active {
-    color: var(--brave-color-interactive08);
-  }
+
   &:focus-visible {
-    outline: 1px solid var(--brave-color-focusBorder);
-    outline-offset: 4px;
+    outline: 2px solid ${color.primary[40]};
+    outline-offset: 2px;
+    border-radius: 4px;
   }
 `
 
 const Container = styled(Flex)`
-  padding: 10px 0;
+  padding: ${spacing.m} 0;
+  min-width: 0;
 
-  &:not(:hover, :has(:focus-visible)) ${ToggleButton} {
+  &:not(:hover, :has(:focus-visible)) ${RemoveButton} {
     opacity: 0;
   }
 `
@@ -45,7 +54,7 @@ const FavIconContainer = styled.div`
   height: 24px;
   flex-shrink: 0;
   border-radius: 100px;
-  color: #6B7084;
+  color: ${color.icon.default};
 
   img {
     width: 100%;
@@ -55,7 +64,10 @@ const FavIconContainer = styled.div`
 
 const Text = styled.span`
   flex: 1 1 0;
-  word-break: break-word;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   font-size: 14px;
   font-weight: 500;
 `
@@ -83,30 +95,41 @@ function FavIcon (props: { publisherId: string }) {
 export function FeedListEntry (props: Props) {
   const publisher = usePublisher(props.publisherId)
   const { setFollowed } = usePublisherFollowed(props.publisherId)
+  const unfollowLabel = getLocale(S.BRAVE_NEWS_FOLLOW_BUTTON_FOLLOWING)
 
   return (
     <Container direction="row" justify="space-between" align='center' gap={8}>
       <FavIcon publisherId={props.publisherId} />
-      <Text>{publisher.publisherName}</Text>
-      <ToggleButton onClick={() => setFollowed(false)}>
-        {getLocale(S.BRAVE_NEWS_FOLLOW_BUTTON_FOLLOWING)}
-      </ToggleButton>
+      <Text title={publisher.publisherName}>{publisher.publisherName}</Text>
+      <RemoveButton
+        onClick={() => setFollowed(false)}
+        title={unfollowLabel}
+        aria-label={unfollowLabel}
+      >
+        <Icon name='trash' />
+      </RemoveButton>
     </Container>
   )
 }
 
 export function ChannelListEntry (props: { channelName: string }) {
   const { setSubscribed } = useChannelSubscribed(props.channelName)
+  const channelName = getTranslatedChannelName(props.channelName)
+  const unfollowLabel = getLocale(S.BRAVE_NEWS_FOLLOW_BUTTON_FOLLOWING)
 
   return (
     <Container direction="row" justify='space-between' align='center' gap={8}>
       <FavIconContainer>
         {ChannelIcons[props.channelName] ?? ChannelIcons.default}
       </FavIconContainer>
-      <ChannelNameText>{getTranslatedChannelName(props.channelName)}</ChannelNameText>
-      <ToggleButton onClick={() => setSubscribed(false)}>
-        {getLocale(S.BRAVE_NEWS_FOLLOW_BUTTON_FOLLOWING)}
-      </ToggleButton>
+      <ChannelNameText title={channelName}>{channelName}</ChannelNameText>
+      <RemoveButton
+        onClick={() => setSubscribed(false)}
+        title={unfollowLabel}
+        aria-label={unfollowLabel}
+      >
+        <Icon name='trash' />
+      </RemoveButton>
     </Container>
   )
 }
