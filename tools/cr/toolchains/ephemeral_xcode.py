@@ -149,6 +149,16 @@ def _sha1_of_file(path: Path) -> str:
     return digest.hexdigest()
 
 
+def _version_sort_key(version: str) -> tuple[int, ...]:
+    """Parse a marketing version string like `26.5` into a sortable tuple.
+
+    Numeric comparison, not the build-number string's own (lexicographic and
+    thus chronologically unreliable -- e.g. `'17F42' > '17F113'` as strings,
+    even though 17F42 is the older build).
+    """
+    return tuple(int(part) for part in version.split('.') if part.isdigit())
+
+
 @dataclasses.dataclass(frozen=True)
 class MacSdkInfo:
     """macOS SDK version triple reported by `xcodebuild -version -sdk macosx`.
@@ -325,7 +335,9 @@ class EphemeralXcode:
             # (`{'rc': N}`), GM seeds, etc. all lack it and are skipped.
             if not (version.get('release') or {}).get('release'):
                 continue
-            macos_sdks = entry['sdks']['macOS']
+            # Xcode releases from before the catalog tracked bundled SDKs at
+            # all (Xcode 2.x-6.x) have no `sdks` key whatsoever.
+            macos_sdks = (entry.get('sdks') or {}).get('macOS') or []
             if not any(sdk.get('build') == target_build for sdk in macos_sdks):
                 continue
             url = ((entry.get('links') or {}).get('download') or {}).get('url')
@@ -348,10 +360,15 @@ class EphemeralXcode:
                 f'No released Xcode on {XCODE_RELEASES_API_URL} bundles macOS '
                 f'SDK build {target_build}')
         if len(chosen) > 1:
-            names = ', '.join(c.xip_filename for c in chosen)
-            raise RuntimeError(
-                'Ambiguous Xcode release: multiple released archives bundle '
-                f'macOS SDK build {target_build}: {names}')
+            # Apple sometimes ships a point release (e.g. 26.6) that bundles
+            # the exact same SDK build as its predecessor (26.5) without
+            # bumping it. Conservatively prefer the oldest release as that is
+            # the one used to bundle the hermetic toolchain originally.
+            chosen.sort(key=lambda c: _version_sort_key(c.version))
+            logging.info(
+                'Multiple released Xcode versions bundle macOS SDK build %s '
+                '(%s); using the oldest, %s.', target_build,
+                ', '.join(c.xip_filename for c in chosen), chosen[0].version)
         self._release = chosen[0]
         logging.info('Resolved Xcode %s (build %s) -> %s (sha1 %s)',
                      self._release.version, self._release.build,
