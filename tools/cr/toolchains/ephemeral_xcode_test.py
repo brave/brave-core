@@ -185,6 +185,25 @@ class CheckDeveloperModeTest(unittest.TestCase):
                 m._check_developer_mode()
         self.assertIn('DevToolsSecurity -enable', str(ctx.exception))
 
+    def test_warns_instead_of_raising_when_disabled_and_warn_only(self):
+        with mock.patch.object(
+                m, '_check_call',
+                return_value=_completed(
+                    'Developer mode is currently disabled.\n')), \
+             mock.patch.object(m.logging, 'warning') as warning:
+            m._check_developer_mode(warn_only=True)  # does not raise
+        warning.assert_called_once()
+        self.assertIn('DevToolsSecurity -enable', warning.call_args.args[0])
+
+    def test_does_not_warn_when_enabled_and_warn_only(self):
+        with mock.patch.object(
+                m, '_check_call',
+                return_value=_completed(
+                    'Developer mode is currently enabled.\n')), \
+             mock.patch.object(m.logging, 'warning') as warning:
+            m._check_developer_mode(warn_only=True)  # does not raise
+        warning.assert_not_called()
+
 
 class MacosMajorVersionTest(unittest.TestCase):
     """Tests for `_macos_major_version`."""
@@ -595,11 +614,19 @@ class SwitchTest(unittest.TestCase):
 
     def test_checks_developer_mode_before_switching(self):
         dev_mode, check_call = self._run(macos_major=14)
-        dev_mode.assert_called_once_with()
+        dev_mode.assert_called_once_with(warn_only=False)
         self.assertEqual(
             check_call.call_args_list[0],
             mock.call('sudo', '/usr/bin/xcode-select', '-s',
                       str(self.APP_PATH)))
+
+    def test_skip_developer_mode_check_makes_the_preflight_warn_only(self):
+        xcode = m.EphemeralXcode()
+        with mock.patch.object(m, '_check_developer_mode') as dev_mode, \
+             mock.patch.object(m, '_macos_major_version', return_value=14), \
+             mock.patch.object(m, '_check_call', return_value=_completed()):
+            xcode._switch(self.APP_PATH, skip_developer_mode_check=True)
+        dev_mode.assert_called_once_with(warn_only=True)
 
     def test_stops_before_any_check_call_when_developer_mode_check_fails(self):
         xcode = m.EphemeralXcode()
@@ -653,7 +680,7 @@ class SelectContextManagerTest(unittest.TestCase):
         calls = []
         with mock.patch.object(
                 xcode, '_switch',
-                side_effect=lambda _p: calls.append('switch')), \
+                side_effect=lambda _p, **_kwargs: calls.append('switch')), \
              mock.patch.object(
                  xcode, 'reset', side_effect=lambda: calls.append('reset')):
             with xcode._select(Path('/Applications/xcode.app')):
@@ -762,7 +789,7 @@ class InstallAndSelectTest(unittest.TestCase):
                  side_effect=lambda: calls.append('install') or app_path), \
              mock.patch.object(
                  xcode, '_switch',
-                 side_effect=lambda _p: calls.append('switch')), \
+                 side_effect=lambda _p, **_kwargs: calls.append('switch')), \
              mock.patch.object(
                  xcode, '_locate_app',
                  side_effect=lambda: calls.append('locate')), \
@@ -791,9 +818,10 @@ class DeployTest(unittest.TestCase):
             mock.patch.object(m.EphemeralXcode,
                               '_install',
                               return_value=app_path),
-            mock.patch.object(m.EphemeralXcode,
-                              '_switch',
-                              side_effect=lambda _p: calls.append('switch')),
+            mock.patch.object(
+                m.EphemeralXcode,
+                '_switch',
+                side_effect=lambda _p, **_kwargs: calls.append('switch')),
             mock.patch.object(m.EphemeralXcode,
                               'reset',
                               side_effect=lambda: calls.append('reset')),
@@ -883,7 +911,7 @@ class MainTest(unittest.TestCase):
             ])
         self.assertEqual(returncode, 0)
         fake_xcode.install_and_select.assert_called_once_with(
-            m.MacSdkInfo('26.5', '25F70'))
+            m.MacSdkInfo('26.5', '25F70'), skip_developer_mode_check=False)
         self.assertEqual(
             json.loads(self.json_path.read_text()), {
                 'app': str(app_path),
@@ -892,6 +920,18 @@ class MainTest(unittest.TestCase):
                 'sdk_version': '26.5',
                 'sdk_build_version': '25F70',
             })
+
+    def test_no_developer_mode_check_flag_is_threaded_through(self):
+        app_path = Path('/Applications/xcode_17f42.app')
+        fake_xcode = self._fake_xcode(app_path)
+        with mock.patch.object(m, 'EphemeralXcode', return_value=fake_xcode):
+            m.main([
+                '--sdk-version', '26.5', '--sdk-build', '25F70',
+                '--json-output',
+                str(self.json_path), '--no-developer-mode-check'
+            ])
+        fake_xcode.install_and_select.assert_called_once_with(
+            m.MacSdkInfo('26.5', '25F70'), skip_developer_mode_check=True)
 
     def test_missing_required_arguments_exits_nonzero(self):
         with contextlib.redirect_stderr(io.StringIO()):

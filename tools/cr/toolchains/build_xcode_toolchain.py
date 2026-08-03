@@ -568,7 +568,8 @@ class ToolchainBuilder:
         assert self._upstream_mac_sdk_info is not None
         # The deployed Xcode is the active one only inside this block; on exit
         # `deploy()` always reverts the selection with `xcode-select --reset`.
-        with self._xcode.deploy(self._upstream_mac_sdk_info):
+        with self._xcode.deploy(self._upstream_mac_sdk_info,
+                                skip_developer_mode_check=True):
             self._stage_xcode()
             self._add_metal_toolchain()
             self._read_entries()

@@ -72,7 +72,7 @@ class OSXSDKApi(RecipeApi):
             result = self.m.step('install xcode', [
                 vpython3, script, '--sdk-version', sdk_version, '--sdk-build',
                 sdk_build_version, '--json-output',
-                self.m.json.output()
+                self.m.json.output(), '--no-developer-mode-check'
             ])
             yield result.json.output
         finally:
