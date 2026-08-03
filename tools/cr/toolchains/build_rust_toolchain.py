@@ -211,23 +211,9 @@ VPYTHON_PATH = Path('third_party/depot_tools') / (
 # it is one of those reliable files that are always present in any version.
 CHROME_VERSION_FILE = Path('chrome/VERSION')
 
-# Upstream cherry-picks applied onto the checkout for the build's duration (see
-# `cherry_picks`). Each is skipped automatically if the active Chromium ref
-# already contains it, so commits can stay listed here across version bumps
-# until they age out of the picks we still need.
-#
-#   * a710d2e1475f4c224290ce22f1a21c42d5fad900 — upstream's reproducibility fix
-#     for the committer details used in a cherry-pick commit. See
-#     https://crrev.com/c/7914461. This CL was provided once we reported to them
-#     mismatches on the `rustc` hash between our toolchain and theirs due to
-#     cherry-picks.
-#   * 0210b44659fd7251672077e9ab83b5324db0c08e — adds `--skip-test` to
-#     `package_rust.py` (plumbed into `build_rust.py`) so the packaging step can
-#     skip the rustc/libstd test suites. See https://crrev.com/c/7984649.
-CLANG_CHERRY_PICK_COMMITS = [
-    'a710d2e1475f4c224290ce22f1a21c42d5fad900',
-    '0210b44659fd7251672077e9ab83b5324db0c08e',
-]
+# Upstream cherry-picks applied onto the checkout for the build's duration.
+# Empty for now.
+CLANG_CHERRY_PICK_COMMITS = []
 
 # The bucket + key prefix in our infra where the rust toolchain is archived.
 TOOLCHAIN_BUCKET = 'brave-build-deps-public'
