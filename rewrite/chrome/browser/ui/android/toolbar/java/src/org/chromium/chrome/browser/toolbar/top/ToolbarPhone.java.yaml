@@ -1,0 +1,70 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Update Brave's modern location bar color after Chromium updates it.
+
+      Run Brave's color update after the Chromium location bar and optional
+      button backgrounds use the new color.
+    regex:
+      re_pattern:
+        '(private\s+void\s+updateModernLocationBarColor\([^)]*\)\s*\{.*?mOptionalButtonCoordinator\.setBackgroundColorFilter\(color\);\s*\}\n)([
+        \t]*)(\})'
+      re_flags: [DOTALL]
+      replace: |-
+        \1        BraveToolbarLayout.class.cast(this).updateModernLocationBarColorImpl(color);
+        \2\3
+  - description: |
+      Skip location bar layout when the Brave location bar is unavailable.
+
+      Check the Brave location bar at the start of the expansion-layout update.
+    regex:
+      re_pattern: '(private\s+void\s+updateLocationBarLayoutForExpansionAnimation\(\)\s*\{)'
+      replace: |-
+        \1
+                if (!BraveToolbarLayout.class.cast(this).isLocationBarValid(mLocationBar)) return;
+  - description: |
+      Draw Brave's toolbar animation overlay with the Chromium toolbar buttons.
+
+      Place the overlay before the tab-switcher button in the toolbar's custom draw pass.
+    regex:
+      re_pattern:
+        '(void\s+drawWithoutBackground\(Canvas\s+canvas\)\s*\{.*?\n[ \t]*\n)([
+        \t]*// Draw the tab stack button and associated text if necessary\.)'
+      re_flags: [DOTALL]
+      replace: |-
+        \1        BraveToolbarLayout.class.cast(this).drawAnimationOverlay(mToolbarButtonsContainer, canvas);
+        \2
+  - description: |
+      Keep the home button disabled in the Brave phone toolbar.
+
+      Override Chromium's home-button state before updating button visibility.
+    regex:
+      re_pattern: '(public\s+void\s+onHomeButtonIsEnabledUpdate\(boolean\s+(\w+)\)\s*\{\s*)mIsHomeButtonEnabled\s*=\s*\2;'
+      replace: '\1mIsHomeButtonEnabled = false;'
+  - description: |
+      Skip legacy focus animations when the Brave location bar is unavailable.
+
+      Check the Brave location bar at the start of the legacy focus-animation setup.
+    regex:
+      re_pattern: '(private\s+void\s+createAndRunFocusAnimatorLegacy\([^)]*\)\s*\{)'
+      replace: |-
+        \1
+                if (!BraveToolbarLayout.class.cast(this).isLocationBarValid(mLocationBar)) return;
+  - description: |
+      Let Brave update the NTP toolbar background color.
+
+      The coordinator is in the same Java package, so package-private mutable access is sufficient.
+    regex:
+      re_pattern: '\bprivate\s+final\s+(@ColorInt\s+int\s+mToolbarBackgroundColorForNtp\b)'
+      replace: '\1'
+  - description: |
+      Let Brave update the NTP location bar background color.
+
+      The coordinator is in the same Java package, so package-private mutable access is sufficient.
+    regex:
+      re_pattern: '\bprivate\s+final\s+(@ColorInt\s+int\s+mLocationBarBackgroundColorForNtp\b)'
+      replace: '\1'
