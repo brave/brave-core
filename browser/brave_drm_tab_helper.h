@@ -9,6 +9,7 @@
 #include "base/scoped_observation.h"
 #include "brave/components/brave_drm/brave_drm.mojom.h"
 #include "components/component_updater/component_updater_service.h"
+#include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/render_frame_host_receiver_set.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
@@ -33,8 +34,17 @@ class BraveDrmTabHelper final
   void DidStartNavigation(
       content::NavigationHandle* navigation_handle) override;
 
-  // blink::mojom::BraveDRM
+  // brave_drm::mojom::BraveDRM
+  // Must only be called while a BraveDRM message is being dispatched, as it
+  // resolves the sending frame from `brave_drm_receivers_` and forwards to the
+  // method below.
   void OnWidevineKeySystemAccessRequest() override;
+
+  // Handles a Widevine key system access request originating from
+  // `requesting_frame`. Exposed so that tests can drive this helper without a
+  // renderer dispatching a mojo message.
+  void OnWidevineKeySystemAccessRequestForFrame(
+      content::RenderFrameHost* requesting_frame);
 
   // component_updater::ComponentUpdateService::Observer
   void OnEvent(const update_client::CrxUpdateItem& item) override;
