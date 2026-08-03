@@ -6,12 +6,14 @@
 // Check environment before doing anything.
 import '../lib/checkEnvironment.js'
 
+import { spawnSync } from 'node:child_process'
+import fs from 'node:fs'
+import path from 'node:path'
+import process from 'node:process'
 import { Argument, program } from 'commander'
 import { createBuildConfigArgument } from '../lib/commandsUtils.ts'
-import path from 'node:path'
 import config from '../lib/config.ts'
 import util from '../lib/util.js'
-import { storybookCommand } from '../../storybook/storybook_command.ts'
 
 program
   .description(
@@ -40,7 +42,6 @@ program
       // run storybook without specifying a build config, but still use the
       // right build output path.
       await import('../lib/guessConfig.js').then(({ outputPath }) => {
-        console.log(`Using build output path from guessConfig: ${outputPath}`)
         options.C = outputPath
       })
     } else {
@@ -52,30 +53,67 @@ program
     if (mode === 'build' || options.build_deps) {
       config.buildTargets = ['brave/build/storybook:storybook_deps']
       await util.buildTargets(config.buildTargets, config.defaultOptions)
-    } else {
-      console.log('Skipping build of Storybook GN deps, pass -B to build them')
     }
 
-    const storybookArgs = [
+    const rootGenDir = path.join(config.outputDir, 'gen')
+    if (!fs.existsSync(rootGenDir)) {
+      program.error(
+        `Failed to find build output 'gen' folder at '${rootGenDir}'. `
+          + 'Have you run a brave-core build yet with the specified '
+          + '(or default) configuration?',
+      )
+    }
+
+    const storybookCli = path.join(
+      config.braveCoreDir,
+      'node_modules',
+      'storybook',
+      'bin',
+      'index.cjs',
+    )
+    const storybookConfigDir = path.join(
+      config.braveCoreDir,
+      'build',
+      'storybook',
+    )
+
+    const nodeArgs = [
+      // Fix occasional webpack build failures by increasing the V8's old memory
+      // section size.
+      '--max-old-space-size=8192',
+      storybookCli,
       mode,
-      `--root-gen-dir=${path.join(config.outputDir, 'gen')}`,
+      '-c',
+      storybookConfigDir,
     ]
 
-    if (mode === 'build') {
-      // If no build config was provided, use brave/.storybook-out directory.
-      // This is a fallback for CI to generate storybook at the CI-expected
-      // output path.
-      const outputDir = buildConfigProvided
-        ? path.join(config.outputDir, 'storybook')
-        : path.join(config.braveCoreDir, '.storybook-out')
-      storybookArgs.push(`--output-dir=${outputDir}`)
+    switch (mode) {
+      case 'build':
+        // If no build config was provided, use brave/.storybook-out directory.
+        // This is a fallback for CI to generate storybook at the CI-expected
+        // output path.
+        const outputDir = buildConfigProvided
+          ? path.join(config.outputDir, 'storybook')
+          : path.join(config.braveCoreDir, '.storybook-out')
+        nodeArgs.push('-o', outputDir)
+        break
+      case 'dev':
+        // Pass through any additional arguments in dev mode.
+        nodeArgs.push(...program.args)
+        break
     }
 
-    if (mode === 'dev') {
-      // Pass through any additional arguments in dev mode.
-      storybookArgs.push(...program.args)
-    }
+    const result = spawnSync(process.execPath, nodeArgs, {
+      env: {
+        ...process.env,
+        ROOT_GEN_DIR: rootGenDir,
+      },
+      stdio: 'inherit',
+      cwd: config.braveCoreDir,
+    })
 
-    await storybookCommand.parseAsync(storybookArgs, { from: 'user' })
+    if (result.status !== 0) {
+      process.exit(result.status ?? 1)
+    }
   })
   .parseAsync()
