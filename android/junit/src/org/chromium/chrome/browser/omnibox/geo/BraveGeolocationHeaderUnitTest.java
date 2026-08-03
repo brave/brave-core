@@ -41,8 +41,7 @@ public class BraveGeolocationHeaderUnitTest {
     public void getGeoHeader_withoutNativeService_returnsNullWithoutJni() {
         when(mTemplateUrlServiceMock.hasNativeService()).thenReturn(false);
 
-        assertNull(
-                GeolocationHeader.getGeoHeader(TEST_URL, mProfileMock, mTemplateUrlServiceMock));
+        assertNull(GeolocationHeader.getGeoHeader(TEST_URL, mProfileMock, mTemplateUrlServiceMock));
 
         verify(mTemplateUrlServiceMock, never())
                 .isSearchResultsPageFromDefaultSearchProvider(any());
