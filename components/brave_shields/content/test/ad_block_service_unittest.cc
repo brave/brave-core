@@ -184,12 +184,9 @@ class AdBlockServiceTestBase : public testing::Test {
   std::unique_ptr<AdBlockSubscriptionDownloadManager> download_manager_;
 };
 
+// kAdblockDATCache is enabled by default, so this fixture exercises the
+// caching path without touching the feature list.
 class AdBlockServiceTest : public AdBlockServiceTestBase {
- public:
-  AdBlockServiceTest() {
-    feature_list_.InitAndEnableFeature(features::kAdblockDATCache);
-  }
-
  protected:
   std::unique_ptr<AdBlockService> CreateService() {
     return CreateServiceWithTaskRunner(
@@ -197,18 +194,6 @@ class AdBlockServiceTest : public AdBlockServiceTestBase {
   }
 
   base::test::TaskEnvironment task_environment_;
-};
-
-class AdBlockServiceQueuedTest : public AdBlockServiceTestBase {
- public:
-  AdBlockServiceQueuedTest() {
-    feature_list_.InitAndEnableFeature(features::kAdblockDATCache);
-  }
-
- protected:
-  base::test::TaskEnvironment task_environment_{
-      base::test::TaskEnvironment::TimeSource::MOCK_TIME,
-      base::test::TaskEnvironment::ThreadPoolExecutionMode::QUEUED};
 };
 
 class AdBlockServiceDATCacheDisabledTest : public AdBlockServiceTestBase {

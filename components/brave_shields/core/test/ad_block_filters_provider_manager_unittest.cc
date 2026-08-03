@@ -22,6 +22,21 @@ class FiltersProviderManagerTestObserver
   int changed_count = 0;
 };
 
+namespace {
+
+// kAdblockDATCache is enabled by default, so the manager suppresses the first
+// change notification for each engine at startup. Tests that exercise the
+// steady-state notification logic consume that suppression up front with a
+// throwaway observer, so their expectations don't depend on the feature state.
+void ConsumeStartupChangeNotification(
+    brave_shields::AdBlockFiltersProviderManager& manager,
+    bool is_for_default_engine) {
+  FiltersProviderManagerTestObserver unused_observer;
+  manager.ForceNotifyObserver(unused_observer, is_for_default_engine);
+}
+
+}  // namespace
+
 TEST(AdBlockFiltersProviderManagerTest, MaybeNotifyObserverNotifiesWhenReady) {
   brave_shields::AdBlockFiltersProviderManager m;
 
@@ -38,6 +53,7 @@ TEST(AdBlockFiltersProviderManagerTest, MaybeNotifyObserverNotifiesWhenReady) {
 TEST(AdBlockFiltersProviderManagerTest,
      ForceNotifyObserverDoesNotNotifyWhenNoProviders) {
   brave_shields::AdBlockFiltersProviderManager m;
+  ConsumeStartupChangeNotification(m, true);
 
   FiltersProviderManagerTestObserver observer;
   m.ForceNotifyObserver(observer, true);
@@ -48,6 +64,8 @@ TEST(AdBlockFiltersProviderManagerTest,
 
 TEST(AdBlockFiltersProviderManagerTest, ForceNotifyObserverRespectsEngineType) {
   brave_shields::AdBlockFiltersProviderManager m;
+  ConsumeStartupChangeNotification(m, true);
+  ConsumeStartupChangeNotification(m, false);
 
   brave_shields::TestFiltersProvider default_provider("default_rules", true, 0);
   default_provider.RegisterAsSourceProvider(&m);
@@ -68,6 +86,7 @@ TEST(AdBlockFiltersProviderManagerTest, ForceNotifyObserverRespectsEngineType) {
 TEST(AdBlockFiltersProviderManagerTest,
      OnChangedWaitsForAllProvidersInitialized) {
   brave_shields::AdBlockFiltersProviderManager m;
+  ConsumeStartupChangeNotification(m, true);
 
   FiltersProviderManagerTestObserver observer;
   m.AddObserver(&observer);
