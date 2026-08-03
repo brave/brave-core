@@ -9,11 +9,10 @@
 #include <string>
 #include <utility>
 
-#include "base/check.h"
+#include "base/files/scoped_temp_dir.h"
 #include "base/functional/callback_helpers.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
-#include "base/path_service.h"
 #include "base/task/single_thread_task_runner.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/brave_browser_process.h"
@@ -26,7 +25,6 @@
 #include "brave/components/brave_shields/content/test/test_filters_provider.h"
 #include "brave/test/base/testing_brave_browser_process.h"
 #include "chrome/browser/net/system_network_context_manager.h"
-#include "chrome/common/chrome_paths.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "components/prefs/testing_pref_service.h"
 #include "content/public/test/browser_task_environment.h"
@@ -111,14 +109,17 @@ class BraveAdBlockTPNetworkDelegateHelperTest : public testing::Test {
         std::make_unique<TestingBraveComponentUpdaterDelegate>(
             TestingBrowserProcess::GetGlobal()->GetTestingLocalState());
 
-    base::FilePath user_data_dir;
-    DCHECK(base::PathService::Get(chrome::DIR_USER_DATA, &user_data_dir));
+    // Use a temp dir as the profile dir: the adblock DAT cache lives there and
+    // pointing it at the real user data dir would both pollute it and let a
+    // DAT written by one test run be loaded by the next, suppressing the
+    // filter set build that the rules in these tests rely on.
+    ASSERT_TRUE(profile_dir_.CreateUniqueTempDir());
     auto adblock_service = std::make_unique<brave_shields::AdBlockService>(
         brave_component_updater_delegate_->local_state(),
         brave_component_updater_delegate_->locale(), nullptr,
         brave_component_updater_delegate_->GetTaskRunner(),
         base::BindOnce(&FakeAdBlockSubscriptionDownloadManagerGetter),
-        user_data_dir);
+        profile_dir_.GetPath());
 
     TestingBraveBrowserProcess::GetGlobal()->SetAdBlockService(
         std::move(adblock_service));
@@ -187,6 +188,8 @@ class BraveAdBlockTPNetworkDelegateHelperTest : public testing::Test {
 
   std::unique_ptr<TestingBraveComponentUpdaterDelegate>
       brave_component_updater_delegate_;
+
+  base::ScopedTempDir profile_dir_;
 
   content::BrowserTaskEnvironment task_environment_;
 
