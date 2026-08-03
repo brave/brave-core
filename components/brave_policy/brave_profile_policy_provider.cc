@@ -10,6 +10,7 @@
 #include "base/values.h"
 #include "brave/components/brave_origin/brave_origin_utils.h"
 #include "brave/components/brave_policy/ad_block_only_mode/ad_block_only_mode_policy_manager.h"
+#include "brave/components/brave_policy/brave_profile_policy_provider-forward.inc"
 #include "build/build_config.h"
 #include "components/policy/core/common/policy_bundle.h"
 #include "components/policy/core/common/policy_map.h"

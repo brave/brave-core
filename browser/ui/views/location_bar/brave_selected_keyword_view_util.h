@@ -6,8 +6,7 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_LOCATION_BAR_BRAVE_SELECTED_KEYWORD_VIEW_UTIL_H_
 #define BRAVE_BROWSER_UI_VIEWS_LOCATION_BAR_BRAVE_SELECTED_KEYWORD_VIEW_UTIL_H_
 
+#include "brave/browser/ui/views/location_bar/brave_selected_keyword_view_util-forward.inc"
 #include "ui/gfx/vector_icon_types.h"
-
-const gfx::VectorIcon& GetAskBraveSearchStarterPackIcon();
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_LOCATION_BAR_BRAVE_SELECTED_KEYWORD_VIEW_UTIL_H_

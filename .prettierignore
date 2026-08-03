@@ -25,6 +25,9 @@
 # Ignore github .yml files:
 .github/**/*.yml
 
+# Ignore *.inc files.
+*.inc
+
 # Ignore some markdown files:
 .github/PULL_REQUEST_TEMPLATE.md
 CONTRIBUTING.md

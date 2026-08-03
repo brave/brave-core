@@ -673,6 +673,42 @@ def CheckJson5ParseErrors(input_api, output_api):
     return results
 
 
+def CheckBraveForwardIncHasNoIncludes(input_api, output_api):
+    """*-forward.inc files may only use system / base / build includes.
+
+    These files provide Brave helper decls without adding Brave deps to
+    upstream GN targets. Quoted includes other than base/* and build/*
+    would reintroduce that coupling. System includes (#include <...>)
+    and #include "base/..." / "build/..." are allowed.
+    """
+    quoted_include_pattern = input_api.re.compile(
+        r'^\s*#\s*include\s*"([^"]*)"')
+    allowed_quoted_prefixes = ('base/', 'build/')
+
+    def _is_forward_inc(affected_file):
+        return affected_file.LocalPath().replace('\\',
+                                                 '/').endswith('-forward.inc')
+
+    problems = []
+    for f in input_api.AffectedFiles(file_filter=_is_forward_inc,
+                                     include_deletes=False):
+        for line_num, line in enumerate(f.NewContents(), start=1):
+            match = quoted_include_pattern.search(line)
+            if match and not match.group(1).startswith(
+                    allowed_quoted_prefixes):
+                problems.append(f'{f.LocalPath()}:{line_num}: {line.strip()}')
+
+    if problems:
+        return [
+            output_api.PresubmitError(
+                '*-forward.inc files must not contain quoted #include '
+                'directives other than "base/..." and "build/...". System '
+                'includes (#include <...>) are also allowed. See '
+                'docs/patching_and_chromium_src.md#forward-inc.', problems)
+        ]
+    return []
+
+
 # DON'T ADD NEW BRAVE CHECKS AFTER THIS LINE.
 #
 # This call inlines Chromium checks into current scope from src/PRESUBMIT.py. We

@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "base/files/file_path.h"
+#include "brave/components/brave_policy/brave_policy_profile_id-forward.inc"
 #include "chrome/browser/policy/profile_policy_connector.h"
 
 #define CreateProfilePolicyConnectorForBrowserContext \
@@ -12,13 +13,6 @@
 #include <chrome/browser/policy/profile_policy_connector_builder.cc>  // IWYU pragma: export
 
 #undef CreateProfilePolicyConnectorForBrowserContext
-
-namespace brave_policy {
-class BraveProfilePolicyProvider;
-void SetBraveProfilePolicyProviderProfileID(
-    policy::ConfigurationPolicyProvider* provider,
-    const base::FilePath& profile_path);
-}  // namespace brave_policy
 
 namespace policy {
 

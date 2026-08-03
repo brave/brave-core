@@ -5,14 +5,7 @@
 
 #include "ios/chrome/browser/policy/model/browser_policy_connector_ios.h"
 
-// Forward declare functions that will be implemented in
-// brave_browser_policy_provider.cc This is done so that we don't need to depend
-// on anything in the brave layer here. Otherwise we'd have a circular
-// dependency.
-namespace brave_policy {
-std::unique_ptr<policy::ConfigurationPolicyProvider>
-CreateBraveBrowserPolicyProvider();
-}  // namespace brave_policy
+#include "brave/components/brave_policy/brave_browser_policy_provider-forward.inc"
 
 #define CreatePolicyProviders CreatePolicyProviders_ChromiumImpl
 

@@ -5,13 +5,11 @@
 
 #include "chrome/browser/ui/views/location_bar/selected_keyword_view.h"
 
+#include "brave/browser/ui/views/location_bar/brave_selected_keyword_view_util-forward.inc"
 #include "chrome/browser/extensions/api/omnibox/omnibox_api.h"
 #include "components/search_engines/template_url.h"
 #include "components/search_engines/template_url_starter_pack_data.h"
 #include "ui/gfx/vector_icon_types.h"
-
-// Defined in brave/browser/ui/views/location_bar.
-const gfx::VectorIcon& GetAskBraveSearchStarterPackIcon();
 
 // Sets the icon that is displayed when a Brave-defined starter pack engine is
 // active.

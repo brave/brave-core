@@ -302,16 +302,22 @@ patched target's dependency graph, and forces us to patch Brave deps into the
 upstream GN config.
 
 Prefer keeping the override minimal: **forward-declare a free function** (or
-factory) in the override and call it. Put the hook implementation in a matching
-Brave source file outside `chromium_src` (for example,
+factory) via a dedicated
+[`*-forward.inc`](../patching_and_chromium_src.md#forward-inc) and call it. Put
+the hook implementation in a matching Brave source file outside `chromium_src`
+(for example,
 `brave/browser/ui/window_feature_controller/window_feature_controller.cc`) and
 put that source in a dedicated Brave target in the same directory. That target
 owns the Brave `#include` and its implementation dependencies. Finally, make the
 relevant existing top-level Brave target (for example, `//brave/browser:core`)
 depend on the dedicated implementation target so the hook is linked into the
 same binary as the upstream target. The override itself should include no Brave
-header and the upstream target should not need a patched dependency on Brave
-implementation details.
+implementation header and the upstream target should not need a patched
+dependency on Brave implementation details.
+
+See
+[Forward-declaring Brave helpers (`*-forward.inc`)](../patching_and_chromium_src.md#forward-inc)
+for the full pattern.
 
 **BAD:**
 
@@ -348,31 +354,28 @@ bool WindowFeatureController::UsesImmersiveFullscreenMode() const {
 **GOOD:**
 
 ```cpp
-// ✅ CORRECT - the override calls a forward-declared hook
+// ✅ CORRECT - the override includes a *-forward.inc and calls the hook
 // chromium_src/chrome/browser/ui/window_feature_controller/window_feature_controller.cc
-class Browser;
-
-std::optional<bool> BraveUsesImmersiveFullscreenMode(bool disabled_at_startup,
-                                                     Browser* browser);
+#include "brave/browser/ui/window_feature_controller/window_feature_controller-forward.inc"
 
 bool WindowFeatureController::UsesImmersiveFullscreenMode() const {
-  if (auto result =
-          BraveUsesImmersiveFullscreenMode(disabled_at_startup_, browser_)) {
-    return *result;
+  if (BraveDisablesImmersiveFullscreenMode(vertical_tab_controller_)) {
+    return false;
   }
   return WindowFeatureController::UsesImmersiveFullscreenMode_ChromiumImpl();
 }
 
+// brave/browser/ui/window_feature_controller/window_feature_controller-forward.inc
+bool BraveDisablesImmersiveFullscreenMode(
+    const base::WeakPtr<VerticalTabController>& vertical_tab_controller);
+
 // brave/browser/ui/window_feature_controller/window_feature_controller.cc
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
+#include "brave/browser/ui/window_feature_controller/window_feature_controller-forward.inc"
 
-std::optional<bool> BraveUsesImmersiveFullscreenMode(bool disabled_at_startup,
-                                                     Browser* browser) {
-  if (!disabled_at_startup &&
-      tabs::utils::ShouldUseImmersiveFullscreen(browser)) {
-    return true;
-  }
-  return std::nullopt;
+bool BraveDisablesImmersiveFullscreenMode(
+    const base::WeakPtr<VerticalTabController>& vertical_tab_controller) {
+  // ...
 }
 ```
 
