@@ -13,6 +13,10 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.tab.EmptyTabObserver;
+import org.chromium.chrome.browser.tab.Tab;
+import org.chromium.chrome.browser.tab.TabHidingType;
+import org.chromium.chrome.browser.tab.TabObserver;
 import org.chromium.chrome.browser.ui.messages.snackbar.BraveSnackbarManager;
 import org.chromium.chrome.browser.ui.messages.snackbar.Snackbar;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
@@ -35,14 +39,22 @@ public class BraveNewTabTakeoverInfobar {
             "https://support.brave.app/hc/en-us/articles/35182999599501";
     private final Profile mProfile;
 
+    // The tab the notice belongs to, observed only while the notice is outstanding so it can be
+    // dismissed once that tab stops being visible (see mTabObserver). Both are null otherwise.
+    private @Nullable Tab mTab;
+    private @Nullable TabObserver mTabObserver;
+
     public BraveNewTabTakeoverInfobar(Profile profile) {
         mProfile = profile;
     }
 
-    public void maybeDisplayAndIncrementCounter(Activity activity, WebContents webContents) {
+    public void maybeDisplayAndIncrementCounter(Activity activity, Tab tab) {
         if (!shouldDisplayInfobar()) {
             return;
         }
+
+        WebContents webContents = tab.getWebContents();
+        if (webContents == null) return;
 
         WindowAndroid windowAndroid = webContents.getTopLevelNativeWindow();
         if (windowAndroid == null) return;
@@ -68,6 +80,7 @@ public class BraveNewTabTakeoverInfobar {
                     @Override
                     public void onAction(@Nullable Object actionData) {
                         braveSnackbarManager.clearNewTabTakeoverInfobar();
+                        stopObservingTab();
                         // Pressing `Learn more` opens the support page and stops the notice from
                         // showing again.
                         suppressInfobar();
@@ -79,8 +92,25 @@ public class BraveNewTabTakeoverInfobar {
                         // Single choke point for every non-action dismissal: close button, swipe,
                         // replacement, queue overflow, and the activity stop/destroy clears.
                         braveSnackbarManager.clearNewTabTakeoverInfobar();
+                        stopObservingTab();
                     }
                 };
+
+        // The snackbar is window-scoped while the notice belongs to this NTP, so it would keep
+        // showing on top of whatever replaces the NTP on screen: another tab, or the tab switcher.
+        // Dismiss it as soon as the tab stops being visible. The display was already counted, so
+        // the notice simply gets its next chance on a later NTP.
+        mTab = tab;
+        mTabObserver =
+                new EmptyTabObserver() {
+                    @Override
+                    public void onHidden(Tab hiddenTab, @TabHidingType int type) {
+                        // Dismissing invokes controller.onDismissNoAction(), which removes this
+                        // observer.
+                        braveSnackbarManager.dismissSnackbars(controller);
+                    }
+                };
+        mTab.addObserver(mTabObserver);
 
         String actionLabel =
                 activity.getString(R.string.new_tab_takeover_infobar_learn_more_opt_out_choices);
@@ -108,6 +138,13 @@ public class BraveNewTabTakeoverInfobar {
                     // remembered notice from the manager.
                     braveSnackbarManager.dismissSnackbars(controller);
                 });
+    }
+
+    private void stopObservingTab() {
+        if (mTab == null || mTabObserver == null) return;
+        mTab.removeObserver(mTabObserver);
+        mTab = null;
+        mTabObserver = null;
     }
 
     private boolean shouldDisplayInfobar() {
