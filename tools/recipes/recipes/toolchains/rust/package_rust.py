@@ -32,6 +32,9 @@ def RunSteps(api: RecipeScriptApi, properties: InputProperties,
     brave_core_root = api.brave_core_checkout.deploy('tools/cr/toolchains')
 
     vpython3 = api.depot_tools.vpython3()
+    # `--clear` wipes any prior output so every run starts from a clean out
+    # dir. `--upload` publishes the archive + sibling index to the public
+    # build-deps bucket.
     api.step('build rust toolchain', [
         vpython3,
         brave_core_root / 'tools/cr/toolchains/build_rust_toolchain.py',
@@ -43,6 +46,7 @@ def RunSteps(api: RecipeScriptApi, properties: InputProperties,
         str(properties.brave_subrevision),
         '--clear',
         '--no-full-toolchain',
+        '--upload',
     ])
 
 
@@ -61,6 +65,8 @@ def GenTests(api):
         api.post_process(post_process.MustRun, 'build rust toolchain'),
         api.post_process(post_process.StepCommandContains,
                          'build rust toolchain', ['--brave-subrevision', '1']),
+        api.post_process(post_process.StepCommandContains,
+                         'build rust toolchain', ['--upload']),
         api.post_process(post_process.StepCommandContains,
                          'git cache populate', ['--depth', '1']),
         api.post_process(post_process.StepCommandContains,

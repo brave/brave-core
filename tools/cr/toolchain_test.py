@@ -229,14 +229,24 @@ class TriggerTest(unittest.TestCase):
                 toolchain.RustToolchain().trigger(Version(CHROMIUM_TAG))
         launcher.trigger.assert_not_called()
 
-    def test_xcode_triggers_single_job_with_build_param(self):
-        launcher = self._trigger(toolchain.XcodeToolchain())
-        args, kwargs = launcher.trigger.call_args
-        self.assertEqual(len(args[0]), 1)
-        self.assertEqual(kwargs['params'], {'CHROMIUM_TAG': CHROMIUM_TAG})
-        self.assertIsNone(kwargs['properties'])
+    def test_xcode_codifies_properties_and_no_build_param(self):
+        spec = toolchain.XcodeToolchain().spec
+        self.assertIsNone(spec.build_param)
+        self.assertEqual(spec.properties, ('chromium_tag', ))
 
-    def test_build_param_toolchain_rejects_properties(self):
+    def test_xcode_triggers_single_job_with_properties_payload(self):
+        xcode = toolchain.XcodeToolchain()
+        launcher = self._trigger(xcode)
+        args, kwargs = launcher.trigger.call_args
+        self.assertEqual(args[0], xcode.spec.job_urls)
+        self.assertEqual(len(args[0]), 1)
+        # Like Windows and Rust, Xcode has no build parameter; the tag rides
+        # in the PROPERTIES payload instead, filled from the triggered
+        # version under the `chromium_tag` name its recipe expects.
+        self.assertEqual(kwargs['params'], {})
+        self.assertEqual(kwargs['properties'], {'chromium_tag': CHROMIUM_TAG})
+
+    def test_xcode_rejects_unexpected_extra_properties(self):
         launcher = MagicMock()
         with patch('toolchain.JenkinsCi.from_config', return_value=launcher):
             with self.assertRaises(toolchain.InvalidInputException):
@@ -308,21 +318,41 @@ class RustRepinTest(_FakeRepoTest):
     BRAVE_SUBREVISION = 1
 
     @staticmethod
-    def _fake_archive_info(url: str) -> tuple[str, int]:
-        """A deterministic stand-in for a real download: derives a fake
-        `(sha256sum, size_bytes)` from the object name in `url`, so each
-        platform's fetched values are distinguishable without any network
-        access."""
-        name = url.rsplit('/', 1)[-1]
-        return f'sha-{name}', len(name)
+    def _fake_extra_dep(upstream_stem: str, brave_subrevision: int) -> dict:
+        """A deterministic stand-in for
+        `build_rust_toolchain.rust_toolchain_extra_dep`: derives a fake
+        `sha256sum`/`size_bytes` per platform from its object name, so each
+        platform's values are distinguishable without any network access."""
+        build_rust_toolchain = toolchain.build_rust_toolchain
+        objects = []
+        for platform_prefix, condition in (
+                build_rust_toolchain.SUPPORTED_PLATFORM_CONDITIONS.items()):
+            object_name = (f'{platform_prefix}-{upstream_stem}-'
+                           f'{brave_subrevision}.tar.xz')
+            host_os = build_rust_toolchain.PLATFORM_PREFIX_TO_CHROMIUM_HOST_OS[
+                platform_prefix]
+            objects.append({
+                'object_name': object_name,
+                'sha256sum': f'sha-{object_name}',
+                'size_bytes': len(object_name),
+                'overlayed_on': f'{host_os}/{upstream_stem}.tar.xz',
+                'condition': condition,
+            })
+        return {
+            build_rust_toolchain.RUST_TOOLCHAIN_DEP_PATH: {
+                'bucket': f'{build_rust_toolchain.TOOLCHAIN_BUCKET_URL}/',
+                'condition': build_rust_toolchain.RUST_TOOLCHAIN_DEP_CONDITION,
+                'objects': objects,
+            }
+        }
 
     def setUp(self):
         super().setUp()
         self.rust = toolchain.RustToolchain()
         self._seed_installer()
-        patcher = patch.object(toolchain.RustToolchain,
-                               '_fetch_archive_info',
-                               side_effect=self._fake_archive_info)
+        patcher = patch.object(toolchain.build_rust_toolchain,
+                               'rust_toolchain_extra_dep',
+                               side_effect=self._fake_extra_dep)
         self.fetch = patcher.start()
         self.addCleanup(patcher.stop)
 
@@ -376,11 +406,9 @@ class RustRepinTest(_FakeRepoTest):
         self.assertIn(f'Linux_x64/{self.UPSTREAM_STEM}.tar.xz', text)
         self.assertIn(f'Win/{self.UPSTREAM_STEM}.tar.xz', text)
         self.assertNotIn('old-upstream.tar.xz', text)
-        # Every platform is fetched straight from the bucket, no side index.
-        self.assertEqual(self.fetch.call_count, 4)
-        self.fetch.assert_any_call(
-            f'{toolchain.build_rust_toolchain.TOOLCHAIN_BUCKET_URL}/'
-            f'{linux_name}')
+        # Every platform's object is read from its sibling index in one call.
+        self.fetch.assert_called_once_with(self.UPSTREAM_STEM,
+                                           self.BRAVE_SUBREVISION)
         # Everything setdep does not touch survives byte for byte.
         self.assertIn("'src/other-dep'", text)
         self.assertIn('OTHER_CONSTANT = 1', text)
@@ -427,7 +455,7 @@ class RustRepinTest(_FakeRepoTest):
 
     def test_fetch_failure_raises(self):
         self._seed_rust_revision_bump()
-        self.fetch.side_effect = toolchain.requests.RequestException('boom')
+        self.fetch.side_effect = RuntimeError('boom')
         with self.assertRaises(toolchain.BadOutcomeException):
             self._repin(culprit=None)
 

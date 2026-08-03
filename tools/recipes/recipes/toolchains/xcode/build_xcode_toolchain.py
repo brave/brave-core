@@ -32,7 +32,9 @@ def RunSteps(api: RecipeScriptApi, properties: InputProperties) -> None:
     brave_core_root = api.brave_core_checkout.deploy('tools/cr/toolchains')
 
     vpython3 = api.depot_tools.vpython3()
-    # `--clear` wipes any prior output so every run starts from a clean out dir.
+    # `--clear` wipes any prior output so every run starts from a clean out
+    # dir. `--upload` publishes the archive + index to the internal build-deps
+    # bucket.
     cmd = [
         vpython3,
         brave_core_root / 'tools/cr/toolchains/build_xcode_toolchain.py',
@@ -41,9 +43,8 @@ def RunSteps(api: RecipeScriptApi, properties: InputProperties) -> None:
         '--chromium-tag',
         properties.chromium_tag,
         '--clear',
+        '--upload',
     ]
-    if properties.force_overwrite:
-        cmd.append('--force-overwrite')
     api.step('build xcode toolchain', cmd)
 
 
@@ -61,16 +62,7 @@ def GenTests(api):
                          ['--chromium-tag', '150.0.7841.1']),
         api.post_process(post_process.StepCommandContains,
                          'build xcode toolchain', ['--clear']),
-        api.post_process(post_process.StatusSuccess),
-    )
-    # `force_overwrite` appends `--force-overwrite` to the build command.
-    yield api.test(
-        'force overwrite',
-        api.platform.name('mac'),
-        api.brave_core_checkout.deployed('tools/cr/toolchains'),
-        api.properties(chromium_tag='150.0.7841.1', force_overwrite=True),
         api.post_process(post_process.StepCommandContains,
-                         'build xcode toolchain', ['--force-overwrite']),
+                         'build xcode toolchain', ['--upload']),
         api.post_process(post_process.StatusSuccess),
-        api.post_process(post_process.DropExpectation),
     )
