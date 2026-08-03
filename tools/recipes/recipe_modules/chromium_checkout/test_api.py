@@ -43,3 +43,27 @@ class ChromiumCheckoutTestApi(RecipeTestApi):
         stdout = self.m.raw_io.output_text(mirror_dir)
         return (self.step_data('git cache exists', stdout=stdout) +
                 self.step_data('git cache exists for ref', stdout=stdout))
+
+    def win_toolchain_hash(self,
+                           toolchain_hash: str = '',
+                           published_hash: str | None = None) -> TestData:
+        """Seed `_pin_win_toolchain_hash`'s lookup result.
+
+        This is `checkout_ref`'s own default for the `resolve win toolchain
+        hash` step (via `step_test_data`): with no *published_hash*, nothing
+        is published yet for the upstream hash, so `GYP_MSVS_HASH_*` stays
+        unset -- matching what an unseeded step should report.
+        """
+        return self.m.json.output({
+            'toolchain_hash': toolchain_hash,
+            'published_hash': published_hash,
+        })
+
+    def win_toolchain_published(self, toolchain_hash: str,
+                                published_hash: str) -> TestData:
+        """Simulate Brave having already republished a toolchain for the
+        upstream *toolchain_hash*, resolving to *published_hash*.
+        """
+        return self.step_data(
+            'resolve win toolchain hash',
+            self.win_toolchain_hash(toolchain_hash, published_hash))

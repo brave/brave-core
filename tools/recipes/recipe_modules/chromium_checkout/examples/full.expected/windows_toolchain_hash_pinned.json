@@ -158,6 +158,13 @@
     "name": "win toolchain env"
   },
   {
+    "cmd": [
+      "echo",
+      "cafef00dcafe"
+    ],
+    "name": "win toolchain hash env"
+  },
+  {
     "name": "$result"
   }
 ]

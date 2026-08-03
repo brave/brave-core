@@ -28,6 +28,11 @@ WIN_HERMETIC_TOOLCHAIN_BASE_URL = (
 # The URL for Chromium's googlesource.
 CHROMIUM_URL = 'https://chromium.googlesource.com/chromium/src.git'
 
+# Resolves the `GYP_MSVS_HASH_<hash>` override for the hermetic Windows
+# toolchain. See `_pin_win_toolchain_hash`.
+_WIN_TOOLCHAIN_HASH_SCRIPT = (Path(__file__).resolve().parent / 'resources' /
+                              'win_toolchain_hash.py')
+
 
 class ChromiumCheckoutApi(RecipeApi):
     """Clones, syncs, and validates a Chromium `src/` checkout."""
@@ -245,9 +250,12 @@ class ChromiumCheckoutApi(RecipeApi):
         """Check out *ref* in *chromium_src* and resync dependencies."""
         chromium_src = Path(chromium_src)
         logging.info('Checking out Chromium ref %s', ref)
-        if (self.m.platform.is_win
-                and 'DEPOT_TOOLS_WIN_TOOLCHAIN' not in self.m.env):
-            # Build hermetically without a local VS install.
+        # Build hermetically without a local VS install, unless the caller has
+        # already made an explicit choice about the toolchain.
+        using_hermetic_win_toolchain = (self.m.platform.is_win
+                                        and 'DEPOT_TOOLS_WIN_TOOLCHAIN'
+                                        not in self.m.env)
+        if using_hermetic_win_toolchain:
             self.m.env.set('DEPOT_TOOLS_WIN_TOOLCHAIN_BASE_URL',
                            WIN_HERMETIC_TOOLCHAIN_BASE_URL)
 
@@ -307,8 +315,40 @@ class ChromiumCheckoutApi(RecipeApi):
         self.m.step('checkout FETCH_HEAD',
                     ['git', 'checkout', '--force', 'FETCH_HEAD'],
                     cwd=chromium_src)
+
+        if using_hermetic_win_toolchain:
+            # This is used by `gclient runhooks`.
+            self._pin_win_toolchain_hash(chromium_src)
+
         self.m.step('gclient sync', ['gclient', 'sync', '--force', '-D'],
                     cwd=chromium_src)
+
+    def _pin_win_toolchain_hash(self, chromium_src: Path) -> None:
+        """Point `GYP_MSVS_HASH_<hash>` at Brave's republished toolchain.
+
+        `build/vs_toolchain.py` pins a `TOOLCHAIN_HASH`, which the
+        `win_toolchain` gclient hook resolves to `<TOOLCHAIN_HASH>.zip` on
+        Google's own toolchain bucket. Overriding
+        `DEPOT_TOOLS_WIN_TOOLCHAIN_BASE_URL` points the hook at our own bucket.
+        `GYP_MSVS_HASH_<TOOLCHAIN_HASH>` is the override
+        `_GetDesiredVsToolchainHashes` (in `build/vs_toolchain.py`) reads to
+        substitute a different hash, so setting it to the hash Brave actually
+        published the archive under.
+
+        Nothing is set if an index with cannot be found with a redirect.
+        """
+        vpython3 = self.m.depot_tools.vpython3()
+        result = self.m.step('resolve win toolchain hash', [
+            vpython3, '-u', _WIN_TOOLCHAIN_HASH_SCRIPT,
+            chromium_src / 'build' / 'vs_toolchain.py',
+            WIN_HERMETIC_TOOLCHAIN_BASE_URL, '--json-output',
+            self.m.json.output()
+        ],
+                             step_test_data=self.test_api.win_toolchain_hash)
+        info = result.json.output
+        if info['published_hash']:
+            self.m.env.set(f"GYP_MSVS_HASH_{info['toolchain_hash']}",
+                           info['published_hash'])
 
     def _populate_git_cache(self,
                             git_cache_path: str | Path,
