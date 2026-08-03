@@ -87,9 +87,10 @@ class ChromiumCheckoutApi(RecipeApi):
             git_cache: Optional explicit git cache directory. When given it sets
                 `GIT_CACHE_PATH`; otherwise an existing `GIT_CACHE_PATH` in the
                 environment is used as-is.
-            depth: Optional history depth for the shared git-cache mirror (see
-                `clone`/`checkout_ref`). `None` fetches full history, matching
-                `git cache populate`'s own default.
+            depth: Optional history depth for this working checkout (see
+                `clone`/`checkout_ref`). The shared git-cache mirror is always
+                populated with full history regardless; `None` here checks out
+                full history too.
 
         Returns:
             The resolved absolute `src/` path.
@@ -226,16 +227,16 @@ class ChromiumCheckoutApi(RecipeApi):
         mirror_dir = self._populate_git_cache(
             git_cache_path,
             CHROMIUM_URL,
-            depth=depth,
             populate_step='git cache populate',
             exists_step='git cache exists')
         # `--local --shared`: a same-volume, hardlink-sharing clone of the
         # mirror, effectively free compared to a network clone. `origin` ends up
         # pointing at `mirror_dir` (the clone source), which is exactly what we
         # want for `checkout_ref`'s subsequent fetches to stay local too.
+        depth_args = ['--depth', str(depth)] if depth else []
         self.m.step('clone from git cache', [
-            'git', 'clone', '--no-checkout', '--local', '--shared', mirror_dir,
-            chromium_src
+            'git', 'clone', '--no-checkout', '--local', '--shared',
+            *depth_args, mirror_dir, chromium_src
         ])
         self._disable_git_gc(chromium_src)
         self.m.step('checkout origin/HEAD',
@@ -269,7 +270,6 @@ class ChromiumCheckoutApi(RecipeApi):
             git_cache_path,
             CHROMIUM_URL,
             ref=f'refs/tags/{ref}' if is_tag else None,
-            depth=depth,
             populate_step='git cache populate for ref',
             exists_step='git cache exists for ref')
 
@@ -286,15 +286,13 @@ class ChromiumCheckoutApi(RecipeApi):
             ['git', 'remote', 'set-url', '--push', 'origin', CHROMIUM_URL],
             cwd=chromium_src)
 
-        # `--depth` here (not just on the `populate` above) matters whenever
-        # *chromium_src* is already shallow at a different commit than the
-        # mirror's current one for this ref (e.g. re-checking out a branch
-        # after it moved on): a plain `git fetch` tries to extend the
-        # existing shallow history and fails outright ("did not send all
-        # necessary objects") once the mirror can no longer connect the two.
-        # Passing `--depth` here instead negotiates a fresh, self-contained
-        # shallow window for the requested ref, which doesn't depend on that
-        # connection at all.
+        # `chromium_src` may already be shallow at a different commit than
+        # this ref (e.g. re-checking out a branch after it moved on): a plain
+        # `git fetch` tries to extend the existing shallow history and fails
+        # outright ("did not send all necessary objects") once the
+        # (fully-populated) mirror can no longer connect the two. Passing
+        # `--depth` here instead negotiates a fresh, self-contained shallow
+        # window for the requested ref, independent of that connection.
         depth_args = ['--depth', str(depth)] if depth else []
         if is_tag:
             # Chromium release tag (e.g. `150.0.7850.1`): fetch it as a tag so
@@ -355,7 +353,6 @@ class ChromiumCheckoutApi(RecipeApi):
                             url: str,
                             *,
                             ref: str | None = None,
-                            depth: int | None = None,
                             populate_step: str,
                             exists_step: str) -> str:
         """Populate (or refresh) the shared bare mirror for *url*.
@@ -374,7 +371,6 @@ class ChromiumCheckoutApi(RecipeApi):
             url: The repo to mirror.
             ref: An additional fully-qualified ref (e.g. `refs/tags/<tag>`) to
                 fetch into the mirror, beyond its default `refs/heads/*`.
-            depth: Optional history depth; `None` fetches full history.
             populate_step: Step name for the `git cache populate` call.
             exists_step: Step name for the `git cache exists` call.
 
@@ -387,8 +383,6 @@ class ChromiumCheckoutApi(RecipeApi):
         ]
         if ref:
             populate_cmd.extend(['--ref', ref])
-        if depth:
-            populate_cmd.extend(['--depth', str(depth)])
         self.m.step(populate_step, populate_cmd)
 
         return self.m.step(exists_step, [

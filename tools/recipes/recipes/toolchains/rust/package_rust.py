@@ -71,10 +71,6 @@ def GenTests(api):
                          'build rust toolchain', ['--brave-subrevision', '1']),
         api.post_process(post_process.StepCommandContains,
                          'build rust toolchain', ['--upload']),
-        api.post_process(post_process.StepCommandContains,
-                         'git cache populate', ['--depth', '1']),
-        api.post_process(post_process.StepCommandContains,
-                         'git cache populate for ref', ['--depth', '1']),
         api.post_process(post_process.StatusSuccess),
     )
     # On mac, the checkout's pinned Xcode is installed/selected around the
