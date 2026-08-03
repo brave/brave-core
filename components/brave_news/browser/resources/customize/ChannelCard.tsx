@@ -1,35 +1,33 @@
-// Copyright (c) 2022 The Brave Authors. All rights reserved.
-// This Source Code Form is subject to the terms of the Mozilla Public
-// License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// You can obtain one at https://mozilla.org/MPL/2.0/.
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import Flex from '$web-common/Flex'
 import * as React from 'react'
 import styled from 'styled-components'
+import { color, effect, font, radius, spacing } from '@brave/leo/tokens/css/variables'
 import { useChannelSubscribed } from '../shared/Context'
 import { channelIcons } from '../shared/Icons'
 import FollowButton from '../shared/FollowButton'
 import { getTranslatedChannelName } from '../shared/channel'
 
 const SubscribeButton = styled(FollowButton)`
-    position: absolute;
-    top: 8px;
-    right: 8px;
+  position: absolute;
+  top: ${spacing.m};
+  right: ${spacing.m};
 `
 
 const Container = styled(Flex)`
   height: 80px;
-  font-weight: 600;
-  font-size: 14px;
-  border-radius: 8px;
-  padding: 16px 20px;
+  font: ${font.default.semibold};
+  color: ${color.text.primary};
+  border-radius: ${radius.m};
+  padding: ${spacing.xl};
   position: relative;
-  box-shadow: 0px 2px 8px -1px rgba(0, 0, 0, 0.08), 0px 0.4px 1.5px rgba(0, 0, 0, 0.02);
-  border: 1px solid rgba(0, 0, 0, 0.08);
-
-  @media (prefers-color-scheme: dark) {
-    border: 1px solid rgba(255, 255, 255, 0.08);
-  }
+  box-shadow: ${effect.elevation['01']};
+  border: 1px solid ${color.divider.subtle};
+  background: ${color.page.background};
 
   &[data-channel-card-is-followed=true] {
     &:not(:hover, :has(:focus-visible)) ${SubscribeButton} {
@@ -39,14 +37,14 @@ const Container = styled(Flex)`
 `
 
 const IconContainer = styled.div`
-  --leo-icon-size: 16px;
+  --leo-icon-size: ${spacing.xl};
 
-  width: 32px;
-  height: 32px;
-  padding: 8px;
-  border-radius: 100px;
-  background: rgba(0,0,0,0.2);
-  color: #6B7084;
+  width: ${spacing['3Xl']};
+  height: ${spacing['3Xl']};
+  padding: ${spacing.m};
+  border-radius: ${radius.full};
+  background: ${color.container.highlight};
+  color: ${color.icon.default};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -62,7 +60,7 @@ export default function ChannelCard({ channelName }: Props) {
     direction='column'
     justify='center'
     align='start'
-    gap={4}
+    gap={spacing.s}
     data-channel-card-is-followed={subscribed}
   >
     <SubscribeButton following={subscribed} onClick={() => setSubscribed(!subscribed)} />
