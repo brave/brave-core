@@ -1082,7 +1082,8 @@ public class BytecodeTest {
                         String.class,
                         Bundle.class,
                         boolean.class,
-                        String.class));
+                        String.class,
+                        boolean.class));
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/components/browser_ui/media/MediaSessionHelper",
