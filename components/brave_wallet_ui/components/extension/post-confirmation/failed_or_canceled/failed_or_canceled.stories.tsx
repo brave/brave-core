@@ -41,10 +41,7 @@ export const _TransactionFailedOrCanceled = {
 
     return (
       <WalletPanelStory>
-        <PanelWrapper
-          width={390}
-          height={650}
-        >
+        <PanelWrapper>
           <LongWrapper padding='0px'>
             <TransactionFailedOrCanceled
               transaction={transaction}

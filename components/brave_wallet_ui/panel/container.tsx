@@ -31,7 +31,7 @@ import {
   DecryptMessageRequestPanel, //
 } from '../components/extension/public_encryption_key_panels/decrypt_message_request_panel'
 
-import { LongWrapper, ConnectWithSiteWrapper } from '../stories/style'
+import { ConnectWithSiteWrapper } from '../stories/style'
 import { PanelWrapper } from './style'
 import { FullScreenWrapper } from '../page/screens/page-screen.styles'
 
@@ -153,10 +153,7 @@ function Container() {
   // render
   if (!hasInitialized || isLoadingPendingActions) {
     return (
-      <PanelWrapper
-        height={650}
-        isSidePanel={isSidePanel}
-      >
+      <PanelWrapper isSidePanel={isSidePanel}>
         <FullScreenWrapper>
           <ProgressRing mode='indeterminate' />
         </FullScreenWrapper>
@@ -166,10 +163,7 @@ function Container() {
 
   if (!isWalletCreated) {
     return (
-      <PanelWrapper
-        height={650}
-        isSidePanel={isSidePanel}
-      >
+      <PanelWrapper isSidePanel={isSidePanel}>
         <WelcomePanel />
       </PanelWrapper>
     )
@@ -177,10 +171,7 @@ function Container() {
 
   if (isWalletLocked) {
     return (
-      <PanelWrapper
-        height={650}
-        isSidePanel={isSidePanel}
-      >
+      <PanelWrapper isSidePanel={isSidePanel}>
         <PageContainer />
       </PanelWrapper>
     )
@@ -195,7 +186,7 @@ function Container() {
       }
     })
     return (
-      <PanelWrapper height={600}>
+      <PanelWrapper>
         <ConnectWithSiteWrapper>
           <ConnectWithSite
             originInfo={connectToSiteOrigin}
@@ -213,7 +204,7 @@ function Container() {
       || signSolTransactionsRequests?.length)
   ) {
     return (
-      <PanelWrapper height={650}>
+      <PanelWrapper>
         <ConnectHardwareWalletPanel hardwareWalletCode={hardwareWalletCode} />
       </PanelWrapper>
     )
@@ -221,7 +212,7 @@ function Container() {
 
   if (addChainRequest) {
     return (
-      <PanelWrapper height={650}>
+      <PanelWrapper>
         <AllowAddChangeNetworkPanel addChainRequest={addChainRequest} />
       </PanelWrapper>
     )
@@ -229,7 +220,7 @@ function Container() {
 
   if (switchChainRequest) {
     return (
-      <PanelWrapper height={650}>
+      <PanelWrapper>
         <AllowAddChangeNetworkPanel switchChainRequest={switchChainRequest} />
       </PanelWrapper>
     )
@@ -237,7 +228,7 @@ function Container() {
 
   if (signMessageErrorData?.length) {
     return (
-      <PanelWrapper height={650}>
+      <PanelWrapper>
         <SignInWithEthereumError />
       </PanelWrapper>
     )
@@ -245,7 +236,7 @@ function Container() {
 
   if (signMessageData?.length && signMessageData[0].signData.ethSiweData) {
     return (
-      <PanelWrapper height={650}>
+      <PanelWrapper>
         <SignInWithEthereum data={signMessageData[0]} />
       </PanelWrapper>
     )
@@ -253,7 +244,7 @@ function Container() {
 
   if (getEncryptionPublicKeyRequest) {
     return (
-      <PanelWrapper height={650}>
+      <PanelWrapper>
         <ProvidePublicEncryptionKeyPanel
           payload={getEncryptionPublicKeyRequest}
         />
@@ -263,7 +254,7 @@ function Container() {
 
   if (decryptRequest) {
     return (
-      <PanelWrapper height={650}>
+      <PanelWrapper>
         <DecryptMessageRequestPanel payload={decryptRequest} />
       </PanelWrapper>
     )
@@ -271,21 +262,19 @@ function Container() {
 
   if (signMessageData?.length) {
     return (
-      <PanelWrapper isLonger={true}>
-        <LongWrapper>
-          <SignPanel
-            signMessageData={signMessageData}
-            // Pass a boolean here if the signing method is risky
-            showWarning={false}
-          />
-        </LongWrapper>
+      <PanelWrapper>
+        <SignPanel
+          signMessageData={signMessageData}
+          // Pass a boolean here if the signing method is risky
+          showWarning={false}
+        />
       </PanelWrapper>
     )
   }
 
   if (addTokenRequests.length) {
     return (
-      <PanelWrapper height={650}>
+      <PanelWrapper>
         <AddSuggestedTokenPanel />
       </PanelWrapper>
     )
@@ -297,10 +286,8 @@ function Container() {
     && !submittingTransaction
   ) {
     return (
-      <PanelWrapper height={650}>
-        <LongWrapper padding='0px'>
-          <TransactionStatus transactionLookup={selectedTransactionId} />
-        </LongWrapper>
+      <PanelWrapper>
+        <TransactionStatus transactionLookup={selectedTransactionId} />
       </PanelWrapper>
     )
   }
@@ -310,7 +297,7 @@ function Container() {
 
   if (pendingOrConfirmingTransaction) {
     return (
-      <PanelWrapper height={650}>
+      <PanelWrapper>
         <PendingTransactionPanel
           selectedPendingTransaction={pendingOrConfirmingTransaction}
         />
@@ -320,29 +307,22 @@ function Container() {
 
   if (signSolTransactionsRequests?.length) {
     return (
-      <PanelWrapper isLonger={true}>
-        <LongWrapper padding='0px'>
-          <PendingSignSolanaTransactionsRequestsPanel />
-        </LongWrapper>
+      <PanelWrapper>
+        <PendingSignSolanaTransactionsRequestsPanel />
       </PanelWrapper>
     )
   }
 
   if (signCardanoTransactionRequests?.length) {
     return (
-      <PanelWrapper isLonger={true}>
-        <LongWrapper padding='0px'>
-          <PendingSignCardanoTransactionRequestsPanel />
-        </LongWrapper>
+      <PanelWrapper>
+        <PendingSignCardanoTransactionRequestsPanel />
       </PanelWrapper>
     )
   }
 
   return (
-    <PanelWrapper
-      height={650}
-      isSidePanel={isSidePanel}
-    >
+    <PanelWrapper isSidePanel={isSidePanel}>
       <PageContainer />
     </PanelWrapper>
   )

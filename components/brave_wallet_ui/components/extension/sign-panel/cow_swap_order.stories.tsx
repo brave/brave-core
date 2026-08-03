@@ -18,7 +18,7 @@ export const _SignCowSwapOrder = {
   render: () => {
     return (
       <WalletPanelStory>
-        <PanelWrapper isLonger>
+        <PanelWrapper>
           <LongWrapper>
             <SignCowSwapOrder
               data={mockSignMessageRequest}
