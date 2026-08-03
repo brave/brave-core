@@ -128,11 +128,22 @@ export function BackgroundPanel() {
     })
   }
 
+  function openBackgroundTypePanel(type: SelectedBackgroundType) {
+    // Default to "Refresh on every new tab" when entering a type panel,
+    // unless a specific value of that type is already pinned.
+    const hasPinnedValue =
+      selectedBackground.type === type && !!selectedBackground.value
+    if (!hasPinnedValue) {
+      actions.selectBackground(type, '')
+    }
+    setPanelType(type)
+  }
+
   function onCustomPreviewClick() {
     if (customBackgrounds.length === 0) {
       showCustomBackgroundChooser()
     } else {
-      setPanelType(SelectedBackgroundType.kCustom)
+      openBackgroundTypePanel(SelectedBackgroundType.kCustom)
     }
   }
 
@@ -225,7 +236,9 @@ export function BackgroundPanel() {
           <div className='background-options'>
             <div className='background-option'>
               <button
-                onClick={() => setPanelType(SelectedBackgroundType.kBrave)}
+                onClick={() =>
+                  openBackgroundTypePanel(SelectedBackgroundType.kBrave)
+                }
               >
                 {renderTypePreview(SelectedBackgroundType.kBrave)}
                 {getString(S.NEW_TAB_BRAVE_BACKGROUND_LABEL)}
@@ -239,7 +252,9 @@ export function BackgroundPanel() {
             </div>
             <div className='background-option'>
               <button
-                onClick={() => setPanelType(SelectedBackgroundType.kSolid)}
+                onClick={() =>
+                  openBackgroundTypePanel(SelectedBackgroundType.kSolid)
+                }
               >
                 {renderTypePreview(SelectedBackgroundType.kSolid)}
                 {getString(S.NEW_TAB_SOLID_BACKGROUND_LABEL)}
@@ -247,7 +262,9 @@ export function BackgroundPanel() {
             </div>
             <div className='background-option'>
               <button
-                onClick={() => setPanelType(SelectedBackgroundType.kGradient)}
+                onClick={() =>
+                  openBackgroundTypePanel(SelectedBackgroundType.kGradient)
+                }
               >
                 {renderTypePreview(SelectedBackgroundType.kGradient)}
                 {getString(S.NEW_TAB_GRADIENT_BACKGROUND_LABEL)}

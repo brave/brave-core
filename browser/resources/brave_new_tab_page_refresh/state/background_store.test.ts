@@ -28,7 +28,9 @@ const braveBackgrounds = [
   },
 ]
 
-function createState(overrides: Partial<BackgroundState> = {}): BackgroundState {
+function createState(
+  overrides: Partial<BackgroundState> = {},
+): BackgroundState {
   return {
     ...defaultBackgroundStore().getState(),
     initialized: true,
