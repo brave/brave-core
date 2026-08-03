@@ -1,0 +1,12 @@
+diff --git a/chrome/common/chrome_paths_linux.cc b/chrome/common/chrome_paths_linux.cc
+index 5575c049b222f52b529ded1a6e7f739eba68e33b..801d506cab5b328ee9bfdb214ee54ad1d4225982 100644
+--- a/chrome/common/chrome_paths_linux.cc
++++ b/chrome/common/chrome_paths_linux.cc
+@@ -78,6 +78,7 @@ bool GetUserMediaDirectory(const std::string& xdg_name,
+ // for a spec on where config files go.  Using ~/.config also helps us sidestep
+ // issues with other apps grabbing ~/.chromium .
+ bool GetDefaultUserDataDirectory(base::FilePath* result) {
++  return BraveGetDefaultUserDataDirectory(result);
+   std::unique_ptr<base::Environment> env(base::Environment::Create());
+   base::FilePath config_dir;
+   std::optional<std::string> chrome_config_home_str =

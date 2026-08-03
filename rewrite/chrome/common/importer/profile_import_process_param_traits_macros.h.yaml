@@ -1,0 +1,24 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Track Brave's added ImporterType value in the Windows IPC bounds
+
+      chromium_src/components/user_data_importer/common/importer_type.h
+      appends TYPE_BRAVE as the new last ImporterType value on Windows; the
+      IPC bounds here must track it instead of upstream's own last value.
+    regex:
+      re_pattern: 'user_data_importer::TYPE_EDGE\)'
+      replace: 'user_data_importer::TYPE_BRAVE)'
+
+  - description: |
+      Track Brave's added ImporterType value in the non-Windows IPC bounds
+
+      Same as the Windows substitution above, for the non-Windows branch,
+      whose upstream last value is TYPE_BOOKMARKS_FILE instead of TYPE_EDGE.
+    regex:
+      re_pattern: 'user_data_importer::TYPE_BOOKMARKS_FILE\)'
+      replace: 'user_data_importer::TYPE_BRAVE)'
