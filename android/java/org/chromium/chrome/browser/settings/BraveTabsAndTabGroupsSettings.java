@@ -30,6 +30,7 @@ import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.settings.search.ChromeBaseSearchIndexProvider;
 import org.chromium.chrome.browser.sync.SyncServiceFactory;
 import org.chromium.chrome.browser.tab.TabArchiveSettings;
+import org.chromium.chrome.browser.tab_group_sync.BraveSyncedTabGroupHelper;
 import org.chromium.chrome.browser.tab_group_sync.TabGroupSyncFeatures;
 import org.chromium.chrome.browser.tabmodel.BraveTabGroupHelper;
 import org.chromium.chrome.browser.tasks.tab_management.BraveTabUiFeatureUtilities;
@@ -60,8 +61,7 @@ public class BraveTabsAndTabGroupsSettings extends BravePreferenceFragment {
     static final String PREF_ENABLE_TAB_GROUPS_SWITCH = "enable_tab_groups";
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    static final String PREF_AUTO_OPEN_SYNCED_TAB_GROUPS_SWITCH =
-            "auto_open_synced_tab_groups_switch";
+    static final String PREF_SHOW_SYNCED_TAB_GROUPS_SWITCH = "show_synced_tab_groups_switch";
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     static final String PREF_TAB_GROUPS_BAR_SWITCH = "tab_groups_bar_switch";
@@ -92,7 +92,7 @@ public class BraveTabsAndTabGroupsSettings extends BravePreferenceFragment {
         mPageTitle.set(getString(R.string.tabs_settings_title));
 
         configureEnableTabGroupsSwitch();
-        configureAutoOpenSyncedTabGroupsSwitch();
+        configureShowSyncedTabGroupsSwitch();
         configureTabGroupsBarSwitch();
         configureOpenLinksInCurrentTabGroupSwitch();
         configureClosingAllTabsClosesBraveSwitch();
@@ -138,6 +138,8 @@ public class BraveTabsAndTabGroupsSettings extends BravePreferenceFragment {
     private void setTabGroupsEnabled(boolean enabled) {
         BraveTabUiFeatureUtilities.setTabGroupsEnabled(enabled);
         updateTabGroupDependentPreferences();
+        // Disabling tab groups hides the synced ones, enabling them brings them back.
+        BraveSyncedTabGroupHelper.notifySettingsChanged();
     }
 
     private void showDisableTabGroupsDialog(ChromeSwitchPreference enableTabGroupsSwitch) {
@@ -193,19 +195,26 @@ public class BraveTabsAndTabGroupsSettings extends BravePreferenceFragment {
         ResettersForTesting.register(() -> sTabGroupSyncActiveForTesting = null);
     }
 
-    private void configureAutoOpenSyncedTabGroupsSwitch() {
-        ChromeSwitchPreference autoOpenSyncedTabGroupsSwitch =
-                assertNonNull(findPreference(PREF_AUTO_OPEN_SYNCED_TAB_GROUPS_SWITCH));
-        if (!isTabGroupSyncAutoOpenConfigurable(getProfile())) {
-            autoOpenSyncedTabGroupsSwitch.setVisible(false);
+    /**
+     * Configures the "Show synced tab groups" switch. It is independent of the "Enable tab groups"
+     * master switch: with tab groups disabled the synced tab groups are still shown while this
+     * switch is on, and stay hidden while it is off. The switch is backed by the upstream {@link
+     * Pref#AUTO_OPEN_SYNCED_TAB_GROUPS} pref, which is what decides whether a synced tab group gets
+     * opened in this browser.
+     */
+    private void configureShowSyncedTabGroupsSwitch() {
+        ChromeSwitchPreference showSyncedTabGroupsSwitch =
+                assertNonNull(findPreference(PREF_SHOW_SYNCED_TAB_GROUPS_SWITCH));
+        if (!isTabGroupSyncConfigurable(getProfile())) {
+            showSyncedTabGroupsSwitch.setVisible(false);
             return;
         }
 
-        autoOpenSyncedTabGroupsSwitch.setVisible(true);
+        showSyncedTabGroupsSwitch.setVisible(true);
         PrefService prefService = UserPrefs.get(getProfile());
-        autoOpenSyncedTabGroupsSwitch.setChecked(
+        showSyncedTabGroupsSwitch.setChecked(
                 prefService.getBoolean(Pref.AUTO_OPEN_SYNCED_TAB_GROUPS));
-        autoOpenSyncedTabGroupsSwitch.setOnPreferenceChangeListener(
+        showSyncedTabGroupsSwitch.setOnPreferenceChangeListener(
                 (preference, newValue) -> {
                     boolean enabled = (boolean) newValue;
                     prefService.setBoolean(Pref.AUTO_OPEN_SYNCED_TAB_GROUPS, enabled);
@@ -269,7 +278,6 @@ public class BraveTabsAndTabGroupsSettings extends BravePreferenceFragment {
 
     private void updateTabGroupDependentPreferences() {
         boolean tabGroupsEnabled = BraveTabUiFeatureUtilities.isTabGroupsEnabled();
-        setPreferenceEnabled(PREF_AUTO_OPEN_SYNCED_TAB_GROUPS_SWITCH, tabGroupsEnabled);
         setPreferenceEnabled(PREF_TAB_GROUPS_BAR_SWITCH, tabGroupsEnabled);
         setPreferenceEnabled(PREF_OPEN_LINKS_IN_CURRENT_TAB_GROUP_SWITCH, tabGroupsEnabled);
     }
@@ -310,7 +318,7 @@ public class BraveTabsAndTabGroupsSettings extends BravePreferenceFragment {
         return resources.getString(neverSummaryId);
     }
 
-    private static boolean isTabGroupSyncAutoOpenConfigurable(Profile profile) {
+    private static boolean isTabGroupSyncConfigurable(Profile profile) {
         return TabGroupSyncFeatures.isTabGroupSyncEnabled(profile);
     }
 
@@ -413,8 +421,8 @@ public class BraveTabsAndTabGroupsSettings extends BravePreferenceFragment {
                                         .build());
                     }
 
-                    if (!isTabGroupSyncAutoOpenConfigurable(profile)) {
-                        indexData.removeEntry(getUniqueId(PREF_AUTO_OPEN_SYNCED_TAB_GROUPS_SWITCH));
+                    if (!isTabGroupSyncConfigurable(profile)) {
+                        indexData.removeEntry(getUniqueId(PREF_SHOW_SYNCED_TAB_GROUPS_SWITCH));
                     }
                 }
             };

@@ -71,9 +71,9 @@ public class BraveTabsAndTabGroupsSettingsTest {
         ChromeSwitchPreference enableTabGroupsSwitch =
                 mSettings.findPreference(
                         BraveTabsAndTabGroupsSettings.PREF_ENABLE_TAB_GROUPS_SWITCH);
-        Preference autoOpenSyncedTabGroupsSwitch =
+        Preference showSyncedTabGroupsSwitch =
                 mSettings.findPreference(
-                        BraveTabsAndTabGroupsSettings.PREF_AUTO_OPEN_SYNCED_TAB_GROUPS_SWITCH);
+                        BraveTabsAndTabGroupsSettings.PREF_SHOW_SYNCED_TAB_GROUPS_SWITCH);
         ChromeSwitchPreference tabGroupsBarSwitch =
                 mSettings.findPreference(BraveTabsAndTabGroupsSettings.PREF_TAB_GROUPS_BAR_SWITCH);
         ChromeSwitchPreference openLinksInCurrentTabGroupSwitch =
@@ -89,7 +89,7 @@ public class BraveTabsAndTabGroupsSettingsTest {
                         BraveTabsAndTabGroupsSettings.PREF_SHOW_UNDO_WHEN_TABS_CLOSED);
 
         assertNotNull(enableTabGroupsSwitch);
-        assertNotNull(autoOpenSyncedTabGroupsSwitch);
+        assertNotNull(showSyncedTabGroupsSwitch);
         assertNotNull(tabGroupsBarSwitch);
         assertNotNull(openLinksInCurrentTabGroupSwitch);
         assertNotNull(archiveSettings);
@@ -103,9 +103,8 @@ public class BraveTabsAndTabGroupsSettingsTest {
         enableTabGroupsSwitch.onClick();
 
         assertFalse(enableTabGroupsSwitch.isChecked());
-        if (autoOpenSyncedTabGroupsSwitch.isVisible()) {
-            assertFalse(autoOpenSyncedTabGroupsSwitch.isEnabled());
-        }
+        // "Show synced tab groups" is independent of the master switch, so it stays usable.
+        assertTrue(showSyncedTabGroupsSwitch.isEnabled());
         assertTrue(tabGroupsBarSwitch.isVisible());
         assertFalse(tabGroupsBarSwitch.isEnabled());
         assertTrue(tabGroupsBarSwitch.isChecked());
@@ -119,9 +118,7 @@ public class BraveTabsAndTabGroupsSettingsTest {
         enableTabGroupsSwitch.onClick();
 
         assertTrue(enableTabGroupsSwitch.isChecked());
-        if (autoOpenSyncedTabGroupsSwitch.isVisible()) {
-            assertTrue(autoOpenSyncedTabGroupsSwitch.isEnabled());
-        }
+        assertTrue(showSyncedTabGroupsSwitch.isEnabled());
         assertTrue(tabGroupsBarSwitch.isEnabled());
         assertTrue(openLinksInCurrentTabGroupSwitch.isEnabled());
     }
