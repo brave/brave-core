@@ -418,6 +418,7 @@ leo_icons_sources = [
   "protocol-handler.svg",
   "qr-code-alternative.svg",
   "qr-code.svg",
+  "psst.svg",
   "qwant-color.svg",
   "qwen-color.svg",
   "radio-checked.svg",

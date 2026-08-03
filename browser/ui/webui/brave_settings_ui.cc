@@ -67,6 +67,7 @@
 #include "content/public/common/content_features.h"
 #include "extensions/buildflags/buildflags.h"
 #include "net/base/features.h"
+#include "brave/components/psst/buildflags/buildflags.h"
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/browser/ai_chat/ai_chat_settings_helper.h"
@@ -136,6 +137,10 @@
 #include "brave/components/email_aliases/email_aliases.mojom.h"
 #include "brave/components/email_aliases/email_aliases_service.h"
 #include "brave/components/email_aliases/features.h"
+#endif
+
+#if BUILDFLAG(ENABLE_PSST)
+#include "brave/components/psst/core/common/features.h"
 #endif
 
 namespace {
@@ -299,9 +304,12 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
   html_source->AddBoolean(
       "isEmailAliasesEnabled",
-      email_aliases::features::IsEmailAliasesEnabled() &&
-          email_aliases::EmailAliasesServiceFactory::GetServiceForProfile(
-              profile));
+      base::FeatureList::IsEnabled(psst::features::kEnablePsst));
+#endif
+#if BUILDFLAG(ENABLE_PSST)
+  html_source->AddBoolean(
+      "isPsstEnabled",
+      base::FeatureList::IsEnabled(psst::features::kEnablePsst));
 #endif
 #if BUILDFLAG(ENABLE_CONTAINERS)
   html_source->AddBoolean(
