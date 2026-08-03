@@ -41,6 +41,7 @@ export function BackgroundTypePanel(props: Props) {
   const currentBackground = useCurrentBackground()
 
   const type = props.backgroundType
+  const isBravePanel = type === SelectedBackgroundType.kBrave
 
   function panelValues() {
     switch (type) {
@@ -62,9 +63,6 @@ export function BackgroundTypePanel(props: Props) {
       actions.selectBackground(type, '')
     } else if (currentBackground) {
       switch (currentBackground.type) {
-        case 'brave':
-          actions.selectBackground(type, currentBackground.imageUrl)
-          break
         case 'custom':
           actions.selectBackground(type, currentBackground.imageUrl)
           break
@@ -78,42 +76,62 @@ export function BackgroundTypePanel(props: Props) {
   }
 
   const values = panelValues()
-  const enabledBraveCount =
-    type === SelectedBackgroundType.kBrave
-      ? values.filter((value) => !disabledBraveBackgrounds.includes(value))
-          .length
-      : 0
+  const enabledBraveCount = isBravePanel
+    ? values.filter((value) => !disabledBraveBackgrounds.includes(value)).length
+    : 0
 
   return (
     <>
-      <div className='control-row'>
-        <label>{getString(S.NEW_TAB_RANDOMIZE_BACKGROUND_LABEL)}</label>
-        <Toggle
-          size='small'
-          checked={
-            selectedBackground.type === type && !selectedBackground.value
-          }
-          disabled={values.length === 0}
-          onChange={onRandomizeToggle}
-        />
-      </div>
+      {!isBravePanel && (
+        <div className='control-row'>
+          <label>{getString(S.NEW_TAB_RANDOMIZE_BACKGROUND_LABEL)}</label>
+          <Toggle
+            size='small'
+            checked={
+              selectedBackground.type === type && !selectedBackground.value
+            }
+            disabled={values.length === 0}
+            onChange={onRandomizeToggle}
+          />
+        </div>
+      )}
       <div className='background-options'>
         {type === SelectedBackgroundType.kCustom && (
           <div className='background-option'>{props.renderUploadOption()}</div>
         )}
         {values.map((value) => {
           const isSelected =
-            selectedBackground.type === type
+            !isBravePanel
+            && selectedBackground.type === type
             && selectedBackground.value === value
           const isDisabled =
-            type === SelectedBackgroundType.kBrave
-            && disabledBraveBackgrounds.includes(value)
+            isBravePanel && disabledBraveBackgrounds.includes(value)
           const hasPinnedSelection =
-            selectedBackground.type === type && !!selectedBackground.value
+            !isBravePanel
+            && selectedBackground.type === type
+            && !!selectedBackground.value
           // Dim non-selected tiles when one image is pinned, and always dim
           // disabled Brave backgrounds.
           const isInactive = isDisabled || (hasPinnedSelection && !isSelected)
           const canDisable = enabledBraveCount > 1
+
+          const preview = (
+            <div
+              className={classnames({
+                preview: true,
+                inactive: isInactive,
+              })}
+              style={inlineCSSVars({
+                '--preview-background': backgroundCSSValue(type, value),
+              })}
+            >
+              {isSelected && (
+                <span className='selected-marker'>
+                  <Icon name='check-normal' />
+                </span>
+              )}
+            </div>
+          )
 
           return (
             <div
@@ -123,28 +141,17 @@ export function BackgroundTypePanel(props: Props) {
                 disabled: isDisabled,
               })}
             >
-              <button
-                disabled={isDisabled}
-                onClick={() => {
-                  actions.selectBackground(type, value)
-                }}
-              >
-                <div
-                  className={classnames({
-                    preview: true,
-                    inactive: isInactive,
-                  })}
-                  style={inlineCSSVars({
-                    '--preview-background': backgroundCSSValue(type, value),
-                  })}
+              {isBravePanel ? (
+                preview
+              ) : (
+                <button
+                  onClick={() => {
+                    actions.selectBackground(type, value)
+                  }}
                 >
-                  {isSelected && (
-                    <span className='selected-marker'>
-                      <Icon name='check-normal' />
-                    </span>
-                  )}
-                </div>
-              </button>
+                  {preview}
+                </button>
+              )}
               {type === SelectedBackgroundType.kCustom && (
                 <button
                   className='overlay-button remove-image'
@@ -155,7 +162,7 @@ export function BackgroundTypePanel(props: Props) {
                   <Icon name='close' />
                 </button>
               )}
-              {type === SelectedBackgroundType.kBrave && (
+              {isBravePanel && (
                 <button
                   className='overlay-button toggle-image'
                   title={getString(

@@ -59,9 +59,7 @@ export function BackgroundPanel() {
     const isSelectedType = type === selectedBackground.type
     switch (type) {
       case SelectedBackgroundType.kBrave:
-        if (isSelectedType && selectedBackground.value) {
-          return selectedBackground.value
-        }
+        // Brave backgrounds always rotate — preview the first available image.
         return braveBackgrounds[0]?.imageUrl ?? ''
       case SelectedBackgroundType.kCustom:
         if (isSelectedType && selectedBackground.value) {
@@ -129,6 +127,13 @@ export function BackgroundPanel() {
   }
 
   function openBackgroundTypePanel(type: SelectedBackgroundType) {
+    // Brave backgrounds always rotate; the sub page only manages enable/disable.
+    if (type === SelectedBackgroundType.kBrave) {
+      actions.selectBackground(type, '')
+      setPanelType(type)
+      return
+    }
+
     // Default to "Refresh on every new tab" when entering a type panel,
     // unless a specific value of that type is already pinned.
     const hasPinnedValue =
