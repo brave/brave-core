@@ -92,11 +92,6 @@ BraveContentsContainerView::BraveContentsContainerView(
       std::make_unique<BraveContentsContainerOutline>(mini_toolbar_));
   capture_contents_border_view_ =
       AddChildView(std::make_unique<ContentsCaptureBorderView>(mini_toolbar_));
-
-  if (for_web_panel_) {
-    // tool bar's menu button is only valid for split view.
-    BraveMultiContentsViewMiniToolbar::From(mini_toolbar_)->HideMenuButton();
-  }
 }
 
 BraveContentsContainerView::~BraveContentsContainerView() = default;
@@ -113,6 +108,15 @@ bool BraveContentsContainerView::IsActive() const {
 void BraveContentsContainerView::UpdateBorderAndOverlay(bool is_in_split,
                                                         bool is_active,
                                                         bool is_highlighted) {
+  // Configure the mini toolbar before the base class updates its state.
+  using ToolbarStyle = BraveMultiContentsViewMiniToolbar::Style;
+  const bool show_domain = ShouldAlwaysShowDomain();
+  auto* mini_toolbar = BraveMultiContentsViewMiniToolbar::From(mini_toolbar_);
+  mini_toolbar->SetAlwaysShowDomain(show_domain);
+  mini_toolbar->SetStyle(for_web_panel_ ? ToolbarStyle::kWebPanel
+                         : is_in_split  ? ToolbarStyle::kSplit
+                                        : ToolbarStyle::kStandalone);
+
   // We don't use highlighted state as we're always using thicker border
   // for highlighting active split tab.
   ContentsContainerView::UpdateBorderAndOverlay(is_in_split, is_active,
@@ -123,6 +127,14 @@ void BraveContentsContainerView::UpdateBorderAndOverlay(bool is_in_split,
   UpdateBorderRoundedCorners();
 
   if (!is_in_split && !for_web_panel_) {
+    // Outside of a split, the mini toolbar is shown only to display the
+    // domain.
+    if (show_domain) {
+      mini_toolbar_->UpdateState(is_active, /*is_highlighted*/ false);
+    } else {
+      mini_toolbar_->SetVisible(false);
+    }
+
     // Not in split view: draw a subtle 1px outline instead of the
     // active/inactive split borders below. GetCornerRadius() returns all-zero
     // corners whenever rounded corners aren't applicable here (feature
@@ -235,12 +247,26 @@ void BraveContentsContainerView::OnReaderModeToolbarActivate(
 }
 #endif
 
-gfx::RoundedCornersF BraveContentsContainerView::GetCornerRadius(
-    int border_thickness) const {
+bool BraveContentsContainerView::ShouldAlwaysShowDomain() const {
+  if (for_web_panel_ || !IsActive() || IsTabFullscreen()) {
+    return false;
+  }
+
+  auto* brave_browser_view = BraveBrowserView::From(&browser_view_.get());
+  return brave_browser_view &&
+         brave_browser_view->show_active_contents_domain_in_mini_toolbar();
+}
+
+bool BraveContentsContainerView::IsTabFullscreen() const {
   auto* exclusive_access_manager =
       browser_view_->browser()->GetFeatures().exclusive_access_manager();
-  if (exclusive_access_manager &&
-      exclusive_access_manager->fullscreen_controller()->IsTabFullscreen()) {
+  return exclusive_access_manager &&
+         exclusive_access_manager->fullscreen_controller()->IsTabFullscreen();
+}
+
+gfx::RoundedCornersF BraveContentsContainerView::GetCornerRadius(
+    int border_thickness) const {
+  if (IsTabFullscreen()) {
     return {};
   }
 

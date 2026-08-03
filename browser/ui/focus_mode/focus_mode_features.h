@@ -12,6 +12,18 @@ namespace features {
 
 BASE_DECLARE_FEATURE(kBraveFocusMode);
 
+// The UI used to display the active tab's URL while Focus Mode is enabled.
+enum class FocusModeUrlDisplay {
+  // The URL is not displayed.
+  kNone,
+  // The URL is displayed in a title bar along the top of the browser window.
+  kTitleBar,
+  // The URL is displayed in a mini-toolbar in the corner of the contents area.
+  kMiniToolbar,
+};
+
+BASE_DECLARE_FEATURE_PARAM(FocusModeUrlDisplay, kFocusModeUrlDisplay);
+
 }  // namespace features
 
 #endif  // BRAVE_BROWSER_UI_FOCUS_MODE_FOCUS_MODE_FEATURES_H_
