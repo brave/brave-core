@@ -1,0 +1,64 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Let tests control the fake's close-button and tab-width state.
+
+      FakeTabSlotController is a test double; these fields back the setters
+      below so tests can force the return value of the TabSlotController
+      queries they control.
+    add_to_protected:
+      class_name: FakeTabSlotController
+      code: |-
+        bool should_always_hide_close_button_ = false;
+        bool can_close_tab_via_middle_button_click_ = true;
+        brave_tabs::TabMinWidthMode tab_min_width_mode_ =
+            brave_tabs::TabMinWidthMode::kDefault;
+        bool horizontal_scrolling_enabled_ = false;
+
+  - description: |-
+      Add setters for the state above, and override the queries they control.
+
+      Covers the TabSlotController queries Brave added: close button,
+      vertical tabs, tab accent, middle-click-close, tree tabs, and tab
+      min-width mode.
+    add_to_public:
+      class_name: FakeTabSlotController
+      code: |-
+        void set_should_always_hide_close_button(bool hide) {
+          should_always_hide_close_button_ = hide;
+        }
+        void set_can_close_tab_via_middle_button_click(bool enabled) {
+          can_close_tab_via_middle_button_click_ = enabled;
+        }
+        bool ShouldAlwaysHideCloseButton() const override;
+
+        bool IsVerticalTabsFloating() const override;
+        bool IsVerticalTabsAnimatingButNotFinalState() const override;
+
+        bool ShouldPaintTabAccent(const Tab* tab) const override;
+        std::optional<TabAccentColors> GetTabAccentColors(
+            const Tab* tab) const override;
+        ui::ImageModel GetTabAccentIcon(const Tab* tab) const override;
+        bool ShouldAlwaysShowMiniTabAccent() const override;
+        bool CanCloseTabViaMiddleButtonClick() const override;
+
+        int GetTreeHeight(const tree_tab::TreeTabNodeId& id) const override;
+        const tabs::TreeTabNode* GetTreeTabNode(
+            const tree_tab::TreeTabNodeId& id) const override;
+        void SetTreeTabNodeCollapsed(const tree_tab::TreeTabNodeId& id,
+                                     bool collapsed) override;
+        bool IsInCollapsedTreeTabNode(
+            const tree_tab::TreeTabNodeId& id) const override;
+
+        void set_tab_min_width_mode(brave_tabs::TabMinWidthMode mode) {
+          tab_min_width_mode_ = mode;
+        }
+        void set_horizontal_scrolling_enabled(bool enabled) {
+          horizontal_scrolling_enabled_ = enabled;
+        }
+        brave_tabs::TabMinWidthMode GetTabMinWidthMode() const override;
+        bool IsHorizontalScrollingEnabled() const override;
