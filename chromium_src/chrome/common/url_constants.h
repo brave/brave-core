@@ -437,6 +437,11 @@ inline constexpr char kSafeBrowsingHelpCenterURL[] =
     "https://support.brave.app/hc/en-us/articles/"
     "15222663599629-Safe-Browsing-in-Brave";
 
+// "Learn more" URL for unsafe site warnings.
+inline constexpr char kUnsafeSiteWarningHelpCenterURL[] =
+    "https://support.brave.app/hc/en-us/articles/"
+    "15222663599629-Safe-Browsing-in-Brave";
+
 // Updated "Info icon" URL for Safebrowsing
 inline constexpr char kSafeBrowsingHelpCenterUpdatedURL[] =
     "https://support.brave.app/";
