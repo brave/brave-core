@@ -6,6 +6,7 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import argparse
+import os
 import subprocess
 import sys
 
@@ -28,18 +29,25 @@ def Main():
     group_algorithm.add_argument("--eddsa", action="store_true", help='Use EdDSA')
     args = parser.parse_args()
 
+    sign_update_path = os.path.abspath(args.sign_update_path)
+    target = os.path.abspath(args.target)
+    output = os.path.abspath(args.output)
+
     # sign file with the specified algorithm
-    with open(args.output, 'w') as file:
+    with open(output, 'w') as file:
         if args.dsa:
             if not args.sign_key_file:
                 print('--sign-key-file argument is required with --dsa.', file=sys.stderr)
                 return 1
-            command = [args.sign_update_path, args.target, args.sign_key_file]
+            command = [
+                sign_update_path, target,
+                os.path.abspath(args.sign_key_file)
+            ]
         if args.eddsa:
             if not args.sign_key:
                 print('--sign-key argument is required with --eddsa.', file=sys.stderr)
                 return 1
-            command = [args.sign_update_path, '-s', args.sign_key, args.target]
+            command = [sign_update_path, '-s', args.sign_key, target]
         try:
             subprocess.check_call(command, stdout=file)
         except subprocess.CalledProcessError as e:
