@@ -821,6 +821,7 @@ if (!is_android) {
       "//chrome/test/base:chrome_test_launcher",
       "//ui/base/interaction",
       "//ui/compositor",
+      "//ui/linux:display_server_utils",
     ]
 
     if (is_win) {
