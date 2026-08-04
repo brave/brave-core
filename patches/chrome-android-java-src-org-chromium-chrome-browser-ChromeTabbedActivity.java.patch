@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
-index 16d169846ff81de0dc0111f5fcb1692db3117426..87695bed2bf0c28bb4440339486f57d59326fb06 100644
+index 84655d565c836c92aa4222891012b3873e7fb136..49d58aa0349b15b2dbd09870168e918be2595243 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
 @@ -154,7 +154,7 @@ import org.chromium.chrome.browser.history.HistoryManagerUtils;
@@ -11,7 +11,7 @@ index 16d169846ff81de0dc0111f5fcb1692db3117426..87695bed2bf0c28bb4440339486f57d5
  import org.chromium.chrome.browser.hub.HubColorMixer.OverviewModeAlphaObserver;
  import org.chromium.chrome.browser.hub.HubLayoutDependencyHolder;
  import org.chromium.chrome.browser.hub.HubManager;
-@@ -952,6 +952,14 @@ public class ChromeTabbedActivity extends ChromeActivity implements PreAttachInt
+@@ -954,6 +954,14 @@ public class ChromeTabbedActivity extends ChromeActivity implements PreAttachInt
  
                          private void closeIfNoTabsAndHomepageEnabled(
                                  boolean isPendingClosure, boolean shouldRemoveWindowWithZeroTabs) {
@@ -26,7 +26,7 @@ index 16d169846ff81de0dc0111f5fcb1692db3117426..87695bed2bf0c28bb4440339486f57d5
                              if (getTabModelSelector().getTotalTabCount() == 0) {
                                  if (shouldRemoveWindowWithZeroTabs) {
                                      mMultiInstanceManager.closeChromeWindowIfEmpty(mWindowId);
-@@ -1244,7 +1252,7 @@ public class ChromeTabbedActivity extends ChromeActivity implements PreAttachInt
+@@ -1246,7 +1254,7 @@ public class ChromeTabbedActivity extends ChromeActivity implements PreAttachInt
                  new HubProvider(
                          this,
                          getProfileProviderSupplier(),
@@ -35,7 +35,7 @@ index 16d169846ff81de0dc0111f5fcb1692db3117426..87695bed2bf0c28bb4440339486f57d5
                          mBackPressManager,
                          getMenuOrKeyboardActionController(),
                          this::getSnackbarManager,
-@@ -3802,6 +3810,11 @@ public class ChromeTabbedActivity extends ChromeActivity implements PreAttachInt
+@@ -3804,6 +3812,11 @@ public class ChromeTabbedActivity extends ChromeActivity implements PreAttachInt
                  new TabModelSelectorObserver() {
                      @Override
                      public void onTabStateInitialized() {

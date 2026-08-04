@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/settings/search/SettingsSearchCoordinator.java b/chrome/android/java/src/org/chromium/chrome/browser/settings/search/SettingsSearchCoordinator.java
-index c8264df9bda937b587f83f5bacee651d8961a3fa..e1af9d3c5bfc50999453a2372cf5b43aa2948a5d 100644
+index aac4e48853baee53702aa4ccdf9c5c83488b0f1e..ccea81f115e816e352d1a6cb2f8aaa9c7d3d52f6 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/settings/search/SettingsSearchCoordinator.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/settings/search/SettingsSearchCoordinator.java
 @@ -4,6 +4,8 @@

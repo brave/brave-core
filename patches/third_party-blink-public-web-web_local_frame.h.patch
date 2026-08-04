@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/public/web/web_local_frame.h b/third_party/blink/public/web/web_local_frame.h
-index b478029ace67b51478d3bbc45bbf96b6a93ddc6e..242f5a6be956d86c6c5a66b7967816e4f7568e6c 100644
+index 00874d58bfdecf91d6447245df1e54b7a515ecdf..3fc5cddf3660d7549f926eb9a611692933faa858 100644
 --- a/third_party/blink/public/web/web_local_frame.h
 +++ b/third_party/blink/public/web/web_local_frame.h
 @@ -131,6 +131,8 @@ enum class TreeScopeType;

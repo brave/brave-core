@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/toolbar/toolbar_view.cc b/chrome/browser/ui/views/toolbar/toolbar_view.cc
-index 28ccd33c17acf053d77243b0750b8d1371772b68..1d56ee8b81fe1e72ee3bb46ce6b4c1c81a870543 100644
+index 3d6325eccfdec54e7d310ad472a18262a874e866..bd5e1f45c44cba75dca70e1338f6c439ada46c29 100644
 --- a/chrome/browser/ui/views/toolbar/toolbar_view.cc
 +++ b/chrome/browser/ui/views/toolbar/toolbar_view.cc
 @@ -313,7 +313,7 @@ void ToolbarView::Init() {
@@ -20,7 +20,7 @@ index 28ccd33c17acf053d77243b0750b8d1371772b68..1d56ee8b81fe1e72ee3bb46ce6b4c1c8
          browser_, browser_->GetProfile(),
          chrome::BrowserCommandController::From(browser_), this,
          display_mode_ != DisplayMode::kNormal);
-@@ -577,7 +577,7 @@ void ToolbarView::Init() {
+@@ -576,7 +576,7 @@ void ToolbarView::Init() {
  
    if (!features::IsWebUIAvatarButtonEnabled()) {
      avatar_ =
@@ -29,7 +29,7 @@ index 28ccd33c17acf053d77243b0750b8d1371772b68..1d56ee8b81fe1e72ee3bb46ce6b4c1c8
      bool show_avatar_toolbar_button =
          AvatarToolbarButtonInterface::CanShowForProfile(browser_->GetProfile());
      avatar_->SetVisible(show_avatar_toolbar_button);
-@@ -594,7 +594,7 @@ void ToolbarView::Init() {
+@@ -593,7 +593,7 @@ void ToolbarView::Init() {
    // WebUI app menu button handles these internally, so no need to set these
    // properties here, and the control is added as part of the WebUI toolbar.
    if (!features::IsWebUIAppMenuButtonEnabled()) {
