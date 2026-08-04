@@ -245,18 +245,20 @@ void WalletPanelUI::BindInterface(
 
 void WalletPanelUI::BindLedgerBridge(
     mojo::PendingRemote<brave_wallet::mojom::LedgerBridge> bridge) {
-  ledger_bridge_ = std::move(bridge);
-  MaybeRespondWithBridge();
+  ledger_bridge_remote_ = std::move(bridge);
+  MaybeFuseLedgerBridge();
 }
 
-void WalletPanelUI::GetLedgerBridge(GetLedgerBridgeCallback callback) {
-  ledger_bridge_callback_ = std::move(callback);
-  MaybeRespondWithBridge();
+void WalletPanelUI::BindLedgerBridge(
+    mojo::PendingReceiver<brave_wallet::mojom::LedgerBridge> receiver) {
+  ledger_bridge_receiver_ = std::move(receiver);
+  MaybeFuseLedgerBridge();
 }
 
-void WalletPanelUI::MaybeRespondWithBridge() {
-  if (ledger_bridge_callback_ && ledger_bridge_) {
-    std::move(ledger_bridge_callback_).Run(std::move(ledger_bridge_));
+void WalletPanelUI::MaybeFuseLedgerBridge() {
+  if (ledger_bridge_remote_ && ledger_bridge_receiver_) {
+    mojo::FusePipes(std::move(ledger_bridge_receiver_),
+                    std::move(ledger_bridge_remote_));
   }
 }
 

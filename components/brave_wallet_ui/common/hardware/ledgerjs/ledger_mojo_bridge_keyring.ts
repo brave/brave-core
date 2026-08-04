@@ -31,7 +31,7 @@ import BitcoinLedgerBridgeKeyring from './btc_ledger_bridge_keyring'
 // transport is in use. The inherited postMessage plumbing (createBridge /
 // sendCommand) is never exercised because every public method is overridden.
 
-function getBridge(): Promise<LedgerMojom.LedgerBridgeRemote> {
+function getBridge(): LedgerMojom.LedgerBridgeRemote {
   return ledgerBridgeRegistry.getBridge()
 }
 
@@ -42,13 +42,13 @@ function toHardwareError(
 }
 
 async function mojoUnlock(): Promise<HardwareOperationResult> {
-  const bridge = await getBridge()
+  const bridge = getBridge()
   const { error } = await bridge.unlock()
   return error ? toHardwareError(error) : { success: true }
 }
 
 async function mojoGetDeviceName(): Promise<HardwareOperationResultDeviceName> {
-  const bridge = await getBridge()
+  const bridge = getBridge()
   const { result } = await bridge.getDeviceName()
   if (result.error) {
     return toHardwareError(result.error)
@@ -80,7 +80,7 @@ export class EthereumLedgerMojoBridgeKeyring extends EthereumLedgerBridgeKeyring
     if (!unlockResult.success) {
       return unlockResult
     }
-    const bridge = await getBridge()
+    const bridge = getBridge()
     const accounts: AccountFromDevice[] = []
     for (let i = 0; i < count; i++) {
       const path = scheme.pathTemplate(from + i)
@@ -101,7 +101,7 @@ export class EthereumLedgerMojoBridgeKeyring extends EthereumLedgerBridgeKeyring
     if (!unlockResult.success) {
       return unlockResult
     }
-    const bridge = await getBridge()
+    const bridge = getBridge()
     const { result } = await bridge.ethSignTransaction(path, rawTxHex)
     if (result.error) {
       return toHardwareError(result.error)
@@ -118,7 +118,7 @@ export class EthereumLedgerMojoBridgeKeyring extends EthereumLedgerBridgeKeyring
       return unlockResult
     }
     const messageHex = Buffer.from(message).toString('hex')
-    const bridge = await getBridge()
+    const bridge = getBridge()
     const { result } = await bridge.ethSignPersonalMessage(path, messageHex)
     if (result.error) {
       return toHardwareError(result.error)
@@ -135,7 +135,7 @@ export class EthereumLedgerMojoBridgeKeyring extends EthereumLedgerBridgeKeyring
     if (!unlockResult.success) {
       return unlockResult
     }
-    const bridge = await getBridge()
+    const bridge = getBridge()
     const { result } = await bridge.ethSignEip712Message(
       path,
       domainSeparatorHex,
@@ -167,7 +167,7 @@ export class SolanaLedgerMojoBridgeKeyring extends SolanaLedgerBridgeKeyring {
         ? [scheme.pathTemplate(0)]
         : Array.from({ length: count }, (_, i) => scheme.pathTemplate(from + i))
 
-    const bridge = await getBridge()
+    const bridge = getBridge()
     const accounts: AccountFromDevice[] = []
     for (const path of paths) {
       const { result } = await bridge.solGetAccount(path)
@@ -190,7 +190,7 @@ export class SolanaLedgerMojoBridgeKeyring extends SolanaLedgerBridgeKeyring {
     if (!unlockResult.success) {
       return unlockResult
     }
-    const bridge = await getBridge()
+    const bridge = getBridge()
     const { result } = await bridge.solSignTransaction(path, [...rawTxBytes])
     if (result.error) {
       return toHardwareError(result.error)
@@ -214,7 +214,7 @@ export class FilecoinLedgerMojoBridgeKeyring extends FilecoinLedgerBridgeKeyring
     }
     const isTestnet =
       scheme.derivationScheme === DerivationSchemes.FilLedgerTestnet
-    const bridge = await getBridge()
+    const bridge = getBridge()
     const { result } = await bridge.filGetAccount(from, count, isTestnet)
     if (result.error) {
       return toHardwareError(result.error)
@@ -235,7 +235,7 @@ export class FilecoinLedgerMojoBridgeKeyring extends FilecoinLedgerBridgeKeyring
     if (!unlockResult.success) {
       return unlockResult
     }
-    const bridge = await getBridge()
+    const bridge = getBridge()
     const { result } = await bridge.filSignTransaction(message)
     if (result.error) {
       return toHardwareError(result.error)
@@ -261,7 +261,7 @@ export class BitcoinLedgerMojoBridgeKeyring extends BitcoinLedgerBridgeKeyring {
       scheme.derivationScheme === DerivationSchemes.BtcLedgerMainnet
         ? 0x0488b21e // xpub
         : 0x043587cf // tpub
-    const bridge = await getBridge()
+    const bridge = getBridge()
     const accounts: AccountFromDevice[] = []
     for (let i = 0; i < count; i++) {
       const path = scheme.pathTemplate(from + i)
@@ -288,7 +288,7 @@ export class BitcoinLedgerMojoBridgeKeyring extends BitcoinLedgerBridgeKeyring {
     if (!unlockResult.success) {
       return unlockResult
     }
-    const bridge = await getBridge()
+    const bridge = getBridge()
     const { result } = await bridge.btcSignTransaction(
       inputTransactions.map((i) => ({
         txBytes: [...i.txBytes],

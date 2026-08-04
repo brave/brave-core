@@ -32,9 +32,7 @@ class WebContents;
 }  // namespace content
 
 class WalletPanelUI : public TopChromeWebUIController,
-#if !BUILDFLAG(IS_ANDROID)
                       public brave_wallet::mojom::LedgerBridgeService,
-#endif
                       public brave_wallet::mojom::PanelHandlerFactory {
  public:
   explicit WalletPanelUI(content::WebUI* web_ui);
@@ -47,7 +45,6 @@ class WalletPanelUI : public TopChromeWebUIController,
   void BindInterface(
       mojo::PendingReceiver<brave_wallet::mojom::PanelHandlerFactory> receiver);
 
-#if !BUILDFLAG(IS_ANDROID)
   // Binds the `LedgerBridgeService` requested by the trusted renderer.
   void BindInterface(
       mojo::PendingReceiver<brave_wallet::mojom::LedgerBridgeService> receiver);
@@ -55,7 +52,6 @@ class WalletPanelUI : public TopChromeWebUIController,
   // Called with `LedgerBridge` coming from untrusted subframe.
   void BindLedgerBridge(
       mojo::PendingRemote<brave_wallet::mojom::LedgerBridge> bridge);
-#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   void BindInterface(
@@ -111,9 +107,10 @@ class WalletPanelUI : public TopChromeWebUIController,
           meld_integration_service) override;
 
   // mojom::LedgerBridgeService:
-  void GetLedgerBridge(GetLedgerBridgeCallback callback) override;
+  void BindLedgerBridge(mojo::PendingReceiver<brave_wallet::mojom::LedgerBridge>
+                            receiver) override;
 
-  void MaybeRespondWithBridge();
+  void MaybeFuseLedgerBridge();
 
   std::unique_ptr<WalletPanelHandler> panel_handler_;
   std::unique_ptr<brave_wallet::WalletHandler> wallet_handler_;
@@ -122,8 +119,9 @@ class WalletPanelUI : public TopChromeWebUIController,
 #endif
   base::WeakPtr<content::WebContents> active_web_contents_;
 
-  mojo::PendingRemote<brave_wallet::mojom::LedgerBridge> ledger_bridge_;
-  GetLedgerBridgeCallback ledger_bridge_callback_;
+  mojo::PendingRemote<brave_wallet::mojom::LedgerBridge> ledger_bridge_remote_;
+  mojo::PendingReceiver<brave_wallet::mojom::LedgerBridge>
+      ledger_bridge_receiver_;
 
   mojo::Receiver<brave_wallet::mojom::LedgerBridgeService> service_receiver_{
       this};

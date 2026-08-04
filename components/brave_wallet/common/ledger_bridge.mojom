@@ -144,15 +144,17 @@ interface LedgerBridge {
 
 // Implemented by the browser (the UntrustedLedgerUI controller).
 interface LedgerBridgeUIHandler {
-  // The child passes the remote end of its LedgerBridge; the browser routes it
-  // to the parent wallet page/panel controller.
+  // The child passes the remote end of its LedgerBridge; the browser fuses it
+  // with the receiver end passed by the parent to `LedgerBridgeService`,
+  // splicing the two pipes into one that connects the parent and child
+  // renderers directly.
   BindLedgerBridge(pending_remote<LedgerBridge> bridge);
 };
 
-// Implemented by the browser the wallet page/panel controller (via
-// `LedgerBridgeBroker`).
+// Implemented by the browser (the wallet page/panel controller).
 interface LedgerBridgeService {
-  // Wallet's page/panel js calls this to get the LedgerBridge remote from the
-  // untrusted child frame.
-  GetLedgerBridge() => (pending_remote<LedgerBridge> bridge);
+  // The parent passes the receiver end of its LedgerBridge; the browser fuses
+  // it with the remote end passed by the untrusted child frame to
+  // `LedgerBridgeUIHandler`.
+  BindLedgerBridge(pending_receiver<LedgerBridge> bridge);
 };

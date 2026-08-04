@@ -81,12 +81,13 @@ class WalletPageUI : public ui::MojoWebUIController,
           meld_integration_service) override;
 
   // mojom::LedgerBridgeService:
-  void GetLedgerBridge(GetLedgerBridgeCallback callback) override;
+  void BindLedgerBridge(
+      mojo::PendingReceiver<mojom::LedgerBridge> receiver) override;
 
-  void MaybeRespondWithBridge();
+  void MaybeFuseLedgerBridge();
 
-  mojo::PendingRemote<mojom::LedgerBridge> ledger_bridge_;
-  GetLedgerBridgeCallback ledger_bridge_callback_;
+  mojo::PendingRemote<mojom::LedgerBridge> ledger_bridge_remote_;
+  mojo::PendingReceiver<mojom::LedgerBridge> ledger_bridge_receiver_;
 
   std::unique_ptr<WalletPageHandler> page_handler_;
   std::unique_ptr<WalletHandler> wallet_handler_;
