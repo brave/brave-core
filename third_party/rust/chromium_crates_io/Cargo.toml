@@ -277,6 +277,10 @@ package = "strsim"
 path = "../../../../third_party/rust/chromium_crates_io/vendor/syn-v2"
 package = "syn"
 
+[patch.crates-io.syn_v3]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/syn-v3"
+package = "syn"
+
 [patch.crates-io.termcolor]
 path = "../../../../third_party/rust/chromium_crates_io/vendor/termcolor-v1"
 package = "termcolor"
