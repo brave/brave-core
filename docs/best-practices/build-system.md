@@ -1109,3 +1109,31 @@ Only fall back to `brave_chrome_browser_ui_allow_circular_includes_from` /
 `sources.gni` as a temporary last resort, and never use `check_includes = false`
 to suppress circular include errors. See [`gni_sources.md`](../gni_sources.md)
 (Circular dependencies).
+
+<a id="BS-058"></a>
+
+## ❌ Don't Use One-Argument `rebase_path()` for Build Command Paths
+
+**When passing a path to a build command, don't call `rebase_path()` with only
+the input. Pass the command's expected working directory as `new_base`—usually
+`root_build_dir` for GN actions—so the generated command line uses a relative,
+relocatable path.**
+
+```gn
+# ❌ WRONG - the default empty new_base produces a system-absolute path
+args = [ "--output=" + rebase_path(output) ]
+
+# ✅ CORRECT - rebase relative to the command's working directory
+args = [ "--output=" + rebase_path(output, root_build_dir) ]
+```
+
+One-argument `rebase_path()` is appropriate only when the consumer explicitly
+requires a system-absolute path. Otherwise it embeds a checkout-specific path in
+the command line, which can interfere with remote build execution and fail when
+build artifacts are reused from a cloned or relocated checkout. If a tool
+changes its working directory, rebase to that directory rather than blindly
+using `root_build_dir`. See GN's
+[`rebase_path()` reference](https://gn.googlesource.com/gn/+/master/docs/reference.md#func_rebase_path)
+for the complete API contract.
+
+---
