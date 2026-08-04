@@ -19,7 +19,7 @@ export const _EnableTransactionSimulations = {
   render: () => {
     return (
       <WalletPanelStory walletApiDataOverrides={{}}>
-        <PanelWrapper isLonger={true}>
+        <PanelWrapper>
           <LongWrapper padding='0px'>
             <EnableTransactionSimulations />
           </LongWrapper>

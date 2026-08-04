@@ -69,7 +69,7 @@ export const _SignPanel = {
   render: () => {
     return (
       <WalletPageStory>
-        <PanelWrapper isLonger>
+        <PanelWrapper>
           <LongWrapper>
             <SignPanel
               showWarning={true}
@@ -120,7 +120,7 @@ export const _SignData = {
 
     return (
       <WalletPanelStory>
-        <PanelWrapper isLonger={true}>
+        <PanelWrapper>
           <LongWrapper>
             <SignPanel
               signMessageData={signMessageDataPayload}
