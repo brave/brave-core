@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/ntp/RecentTabsPage.java b/chrome/android/java/src/org/chromium/chrome/browser/ntp/RecentTabsPage.java
-index f712c324f25ceb0cf24c163e55fda5788b719c59..7c3350b49237172dbca07e1601a7ba5a7806d5bc 100644
+index 394fd2b10ed607d8ff0f9aa505eb6f252de2d15f..ce88acafffeb90437807031d289fd79c337f6dad 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/ntp/RecentTabsPage.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/ntp/RecentTabsPage.java
-@@ -105,7 +105,7 @@ public class RecentTabsPage
+@@ -114,7 +114,7 @@ public class RecentTabsPage
          mListView = mView.findViewById(R.id.odp_listview);
  
          mContextMenuManager =

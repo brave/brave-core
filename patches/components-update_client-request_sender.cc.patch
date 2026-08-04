@@ -1,8 +1,8 @@
 diff --git a/components/update_client/request_sender.cc b/components/update_client/request_sender.cc
-index aae294dfe6cdbf1ed5b09aaee6265c3870a57523..ca29ade0217c97ee0cfb1ee7fcaca6d2a357c435 100644
+index a1a02bde1e4790ed712374c6898679bc0fff3804..34d2988ff29f8cb80ed111a439be65df780bc386 100644
 --- a/components/update_client/request_sender.cc
 +++ b/components/update_client/request_sender.cc
-@@ -189,6 +189,8 @@ const std::string& SelectCupServerProof(
+@@ -191,6 +191,8 @@ const std::string& SelectCupServerProof(
  }
  
  client_update_protocol::Cup BuildSigner() {

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/BUILD.gn b/chrome/browser/BUILD.gn
-index bfc8555485593dc25c72fa74f20a70ce70ea6598..d0e2d3e9d83b3daeb0e11eb98cdc145a231f12af 100644
+index 147de9967aee1ecc53987d7a038c42f609351801..1b4605173d2bda9b0937107870fb827e787a79a9 100644
 --- a/chrome/browser/BUILD.gn
 +++ b/chrome/browser/BUILD.gn
-@@ -4600,6 +4600,7 @@ source_set("browser") {
+@@ -4607,6 +4607,7 @@ source_set("browser") {
    if (!is_android) {
      deps += [ "//chrome/browser/contextual_cueing/internals" ]
    }
@@ -10,7 +10,7 @@ index bfc8555485593dc25c72fa74f20a70ce70ea6598..d0e2d3e9d83b3daeb0e11eb98cdc145a
  
    # This target intentionally has no sources of its own and no
    # allow_circular_includes_from; it only aggregates dependencies. Do NOT add
-@@ -4771,6 +4772,7 @@ group("browser_public_dependencies") {
+@@ -4776,6 +4777,7 @@ group("browser_public_dependencies") {
        "//components/offline_pages/core/background:background_offliner",
      ]
    }

@@ -1,5 +1,5 @@
 diff --git a/components/omnibox/browser/omnibox_popup_selection.cc b/components/omnibox/browser/omnibox_popup_selection.cc
-index 85ecfaced51d2956aaa20d7e24eb5a7adf2ab97c..f3dc8de9287953035b6e5de9e3d99315f37039dc 100644
+index ad19d469fff611a5c05d281ccf1171477cff5cb2..dabe3c2acc6e4ebed73dccb96094ff02cc55e7b9 100644
 --- a/components/omnibox/browser/omnibox_popup_selection.cc
 +++ b/components/omnibox/browser/omnibox_popup_selection.cc
 @@ -68,6 +68,7 @@ bool OmniboxPopupSelection::IsControlPresentOnMatch(
