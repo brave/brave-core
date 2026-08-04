@@ -246,7 +246,7 @@ int BraveBrowserFrameViewMac::NonClientHitTest(const gfx::Point& point) {
   auto* browser = browser_view->browser();
   if (!ImmersiveModeController::From(browser)->IsEnabled()) {
     auto* non_client_hit_test_helper =
-        browser->browser_window_features()->brave_non_client_hit_test_helper();
+        browser->GetFeatures().brave_non_client_hit_test_helper();
     if (auto res =
             non_client_hit_test_helper->NonClientHitTest(browser_view, point);
         res != HTNOWHERE) {
