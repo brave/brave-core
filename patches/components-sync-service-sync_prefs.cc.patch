@@ -1,8 +1,8 @@
 diff --git a/components/sync/service/sync_prefs.cc b/components/sync/service/sync_prefs.cc
-index 5c1b24b12197ed0724d720d3cdc97e2f16f6a659..658ff120d26100646559a36e5f1be5000f901aed 100644
+index 0d20f0b7789965ad1d92fde58a0b8667ef067ecb..2b140a320cbfd197e457748bd737106fbc3c032e 100644
 --- a/components/sync/service/sync_prefs.cc
 +++ b/components/sync/service/sync_prefs.cc
-@@ -702,6 +702,8 @@ const char* SyncPrefs::GetPrefNameForType(UserSelectableType type) {
+@@ -700,6 +700,8 @@ const char* SyncPrefs::GetPrefNameForType(UserSelectableType type) {
        return prefs::internal::kSyncProductComparison;
      case UserSelectableType::kCookies:
        return prefs::internal::kSyncCookies;
@@ -11,7 +11,7 @@ index 5c1b24b12197ed0724d720d3cdc97e2f16f6a659..658ff120d26100646559a36e5f1be500
    }
    NOTREACHED();
  }
-@@ -788,6 +790,8 @@ bool SyncPrefs::IsTypeSupportedInTransportMode(UserSelectableType type) {
+@@ -786,6 +788,8 @@ bool SyncPrefs::IsTypeSupportedInTransportMode(UserSelectableType type) {
        // ChromeOS-only type.
        return false;
  #endif
@@ -20,7 +20,7 @@ index 5c1b24b12197ed0724d720d3cdc97e2f16f6a659..658ff120d26100646559a36e5f1be500
    }
    NOTREACHED();
  }
-@@ -1182,6 +1186,8 @@ bool SyncPrefs::IsTypeSelectedByDefaultInTransportMode(
+@@ -1180,6 +1184,8 @@ bool SyncPrefs::IsTypeSelectedByDefaultInTransportMode(
        // All other types are always enabled by default with
        // kReplaceSyncPromosWithSignInPromos.
        return IsReplaceSyncPromosWithSignInPromosEnabled();

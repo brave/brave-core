@@ -14,12 +14,12 @@ void AddIconToDock(base::OnceCallback<void(bool)> result_callback) {
   dock::AddIcon([base::apple::MainBundle() bundlePath], nullptr);
 
   std::move(result_callback)
-      .Run(dock::ChromeIsInTheDock() == dock::ChromeInDockTrue);
+      .Run(dock::ChromeIsInTheDock() == dock::ChromeInDockStatus::kPresent);
 }
 
 void IsIconAddedToDock(base::OnceCallback<void(bool)> result_callback) {
   std::move(result_callback)
-      .Run(dock::ChromeIsInTheDock() == dock::ChromeInDockTrue);
+      .Run(dock::ChromeIsInTheDock() == dock::ChromeInDockStatus::kPresent);
 }
 
 }  // namespace shell_integration::mac

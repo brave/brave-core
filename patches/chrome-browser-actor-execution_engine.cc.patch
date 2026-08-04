@@ -1,0 +1,20 @@
+diff --git a/chrome/browser/actor/execution_engine.cc b/chrome/browser/actor/execution_engine.cc
+index 89ba31846dff029d2655f0455ca667170fc415fe..72cca42b1721f473df9d6a4f6e7386b8fa9b7b13 100644
+--- a/chrome/browser/actor/execution_engine.cc
++++ b/chrome/browser/actor/execution_engine.cc
+@@ -1310,6 +1310,7 @@ void ExecutionEngine::SafetyChecksForNextAction() {
+   // TODO(mcnee): Add UMA for the outcomes.
+   content::WebContents& web_contents = *(tab->GetContents());
+   const GURL& url = web_contents.GetPrimaryMainFrame()->GetLastCommittedURL();
++  BRAVE_MAY_ACT_ON_URL_INTERNAL(std::make_unique<DecisionWrapper>(*journal_, url, task_->id(), "MayActOnTab", base::BindOnce(&ExecutionEngine::OnMayActOnTabDecision, GetActionSequenceWeakPtr(), tab->GetContents()->GetPrimaryMainFrame()->GetLastCommittedOrigin())));
+   auto event = GateableEvent::kPageAction;
+   origin_gating_checker_.ComputeGatingDecision(
+       std::make_unique<PageActionGatingContext>(web_contents.GetWeakPtr()),
+@@ -1645,6 +1646,7 @@ void ExecutionEngine::IsAcceptableNavigationDestination(
+     DecisionCallbackWithReason callback) {
+   auto decision_wrapper = std::make_unique<DecisionWrapper>(
+       *journal_, url, task_->id(), "MayActOnUrl", std::move(callback));
++  BRAVE_MAY_ACT_ON_URL_INTERNAL(decision_wrapper)
+   auto event = GateableEvent::kNavigationRequest;
+   origin_gating_checker_.ComputeGatingDecision(
+       /*context=*/nullptr, event, /*source=*/GURL(), url,

@@ -1,8 +1,16 @@
 diff --git a/chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.cc b/chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.cc
-index 7c991f9d6181ae649b1dc92d2b4466bba37ffc22..849dc45aa0bc3a8601e8dc7b9d1f9987c55531f0 100644
+index f994a992e8eaa8124d8633239ec3f13cd43c4b62..def06d8fca1bfa6f91c7078cb70182235e46546f 100644
 --- a/chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.cc
 +++ b/chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.cc
-@@ -153,14 +153,14 @@ std::unique_ptr<TabStrip> CreateTabStrip(
+@@ -86,6 +86,7 @@ class FrameGrabHandle : public views::View {
+   void Layout(PassKey) override {
+     LayoutSuperclass<views::View>(this);
+ 
++    if (!dialog_anchor_) { return; }
+     int x = width() * 0.4;
+     int y = height() * 0.7;
+     dialog_anchor_->MaybeUpdateAnchor(gfx::Rect(x, y, 0, 0));
+@@ -148,14 +149,14 @@ std::unique_ptr<TabStrip> CreateTabStrip(
              ->GetTabMenuModelFactory();
    }
  
@@ -21,7 +29,7 @@ index 7c991f9d6181ae649b1dc92d2b4466bba37ffc22..849dc45aa0bc3a8601e8dc7b9d1f9987
                                                std::move(hover_card_controller));
    return tab_strip;
  }
-@@ -237,7 +237,7 @@ HorizontalTabStripRegionView::HorizontalTabStripRegionView(
+@@ -232,7 +233,7 @@ HorizontalTabStripRegionViewOld::HorizontalTabStripRegionViewOld(
  
    if (ShouldShowNewTabButton(browser)) {
      std::unique_ptr<TabStripControlButton> tab_strip_control_button =
@@ -30,7 +38,7 @@ index 7c991f9d6181ae649b1dc92d2b4466bba37ffc22..849dc45aa0bc3a8601e8dc7b9d1f9987
              base::BindRepeating(&TabStrip::NewTabButtonPressed,
                                  base::Unretained(tab_strip_)),
              features::IsRoundedIconsEnabled() ? vector_icons::kAddWeight500Icon
-@@ -494,14 +494,14 @@ void HorizontalTabStripRegionView::InitializeTabStrip() {
+@@ -476,14 +477,14 @@ void HorizontalTabStripRegionViewOld::InitializeTabStrip() {
    }
  
    tab_strip_->Initialize();
@@ -40,14 +48,14 @@ index 7c991f9d6181ae649b1dc92d2b4466bba37ffc22..849dc45aa0bc3a8601e8dc7b9d1f9987
    tab_strip_set_ = true;
  }
  
- void HorizontalTabStripRegionView::ResetTabStrip() {
+ void HorizontalTabStripRegionViewOld::ResetTabStrip() {
    tab_strip_set_ = false;
 -  static_cast<BrowserTabStripController*>(tab_strip_->controller())->Reset();
 +  static_cast<BraveBrowserTabStripController*>(tab_strip_->controller())->Reset();
    tab_strip_->Reset();
  }
  
-@@ -617,7 +617,7 @@ void HorizontalTabStripRegionView::UpdateButtonBorders() {
+@@ -606,7 +607,7 @@ void HorizontalTabStripRegionViewOld::UpdateButtonBorders() {
    const int extra_vertical_space =
        GetLayoutConstant(LayoutConstant::kTabStripHeight) -
        GetLayoutConstant(LayoutConstant::kTabstripToolbarOverlap) -
@@ -56,3 +64,23 @@ index 7c991f9d6181ae649b1dc92d2b4466bba37ffc22..849dc45aa0bc3a8601e8dc7b9d1f9987
    const int top_inset = extra_vertical_space / 2;
    const int bottom_inset =
        extra_vertical_space - top_inset +
+@@ -899,13 +900,16 @@ void HorizontalTabStripRegionViewNew::OnTabStripViewSet() {
+   ReorderChildView(tab_strip_view(), index);
+ }
+ 
+-BEGIN_METADATA(HorizontalTabStripRegionViewNew)
+-END_METADATA
+-
+ std::unique_ptr<TabStripRegionView> CreateHorizontalTabStripRegionView(
+     BrowserView* browser_view) {
++  if (!base::FeatureList::IsEnabled(tabs::kTabStripUnification)) {
++    return std::make_unique<BraveHorizontalTabStripRegionView>(browser_view);
++  }
+   if (base::FeatureList::IsEnabled(tabs::kTabStripUnification)) {
+     return std::make_unique<HorizontalTabStripRegionViewNew>(browser_view);
+   }
+   return std::make_unique<HorizontalTabStripRegionViewOld>(browser_view);
+ }
++
++BEGIN_METADATA(HorizontalTabStripRegionViewNew)
++END_METADATA

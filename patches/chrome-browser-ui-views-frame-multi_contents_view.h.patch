@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/frame/multi_contents_view.h b/chrome/browser/ui/views/frame/multi_contents_view.h
-index 12511f171b46863215e3904361dd39f0f8392816..f1a3b8a502edf0f09b23b156c30b9404150403fc 100644
+index 15f578411f9e877b296f81b589fa4631cfccdad4..f2e395e82e225fe307a6a2725ec32fbc6fe34079 100644
 --- a/chrome/browser/ui/views/frame/multi_contents_view.h
 +++ b/chrome/browser/ui/views/frame/multi_contents_view.h
 @@ -63,7 +63,7 @@ class MultiContentsView
@@ -37,7 +37,7 @@ index 12511f171b46863215e3904361dd39f0f8392816..f1a3b8a502edf0f09b23b156c30b9404
        base::RepeatingCallback<void(ContentsWebView*)> callback);
  
    // If in a split view, swaps the positions of the two active tabs.
-@@ -215,7 +215,10 @@ class MultiContentsView
+@@ -216,7 +216,10 @@ class MultiContentsView
    const FocusableViewMap* GetFocusableViewsMapFor(
        const ContentsContainerView* container) const;
  
@@ -48,7 +48,7 @@ index 12511f171b46863215e3904361dd39f0f8392816..f1a3b8a502edf0f09b23b156c30b9404
    FRIEND_TEST_ALL_PREFIXES(MultiContentsViewBrowserTest, DropTargetLayout);
    FRIEND_TEST_ALL_PREFIXES(MultiContentsViewBrowserTest,
                             LeadingSeparatorLayout);
-@@ -257,7 +260,7 @@ class MultiContentsView
+@@ -258,7 +261,7 @@ class MultiContentsView
  
    int GetInactiveIndex() const;
  
@@ -57,7 +57,7 @@ index 12511f171b46863215e3904361dd39f0f8392816..f1a3b8a502edf0f09b23b156c30b9404
    void OnNtpFooterFocused(views::WebView*);
    void OnActorOverlayFocused(views::WebView*);
    void OnReadAnythingOverlayFocused(ContentsContainerView* container,
-@@ -274,7 +277,7 @@ class MultiContentsView
+@@ -275,7 +278,7 @@ class MultiContentsView
    // `MultiContentsView`. Returns 0 if not in a split view.
    int GetMinViewSize(gfx::Rect available_space) const;
  

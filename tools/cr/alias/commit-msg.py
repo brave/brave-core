@@ -88,6 +88,7 @@ PREFIXES_FOR_UPGRADE_COMMITS = [
 GOOGLESOURCE_URLS = {
     '': 'https://chromium.googlesource.com/chromium/src',
     'v8/src': 'https://chromium.googlesource.com/v8/v8',
+    'third_party/boringssl/src': 'https://boringssl.googlesource.com/boringssl',
 }
 
 

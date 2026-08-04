@@ -54,7 +54,7 @@ class EphemeralStorageBlinkMemoryCacheBrowserTestBase
   void ClearHttpCache() {
     base::RunLoop run_loop;
     browser()
-        ->profile()
+        ->GetProfile()
         ->GetDefaultStoragePartition()
         ->GetNetworkContext()
         ->ClearHttpCache(base::Time(), base::Time(), nullptr,

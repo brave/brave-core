@@ -1,5 +1,5 @@
 diff --git a/chrome/app/android/chrome_main_delegate_android.h b/chrome/app/android/chrome_main_delegate_android.h
-index c38ecc722b98539c9e9d33644ecb36c4cdeae370..c1d10cd33457e357af5203ca4d26686ecec53490 100644
+index 3632cb7c50e26a205edb8bf6724ff0ae0adbbb41..57bceba519fa3889679b7a0f67f7d0142f80c1ff 100644
 --- a/chrome/app/android/chrome_main_delegate_android.h
 +++ b/chrome/app/android/chrome_main_delegate_android.h
 @@ -14,7 +14,7 @@
@@ -9,5 +9,5 @@ index c38ecc722b98539c9e9d33644ecb36c4cdeae370..c1d10cd33457e357af5203ca4d26686e
 -class ChromeMainDelegateAndroid : public ChromeMainDelegate {
 +class ChromeMainDelegateAndroid : public BraveMainDelegate {
   public:
-   static void SecureDataDirectory();  // visible for testing
+   ChromeMainDelegateAndroid();
  

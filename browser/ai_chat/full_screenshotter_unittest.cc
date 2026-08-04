@@ -244,6 +244,7 @@ class FullScreenshotterTest : public ChromeRenderViewHostTestHarness {
     SetView(original_rwhv_);
     original_rwhv_ = nullptr;
     full_screenshotter_.reset();
+    rwhv_.reset();
     ChromeRenderViewHostTestHarness::TearDown();
   }
 

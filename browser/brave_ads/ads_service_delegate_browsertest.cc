@@ -52,7 +52,7 @@ class AdsServiceDelegateBrowserTest : public InProcessBrowserTest {
   AdsServiceDelegate& delegate() {
     if (!delegate_) {
       delegate_ = std::make_unique<AdsServiceDelegate>(
-          *browser()->profile(), *g_browser_process->local_state(),
+          *browser()->GetProfile(), *g_browser_process->local_state(),
           /*adaptive_captcha_service=*/nullptr);
     }
 

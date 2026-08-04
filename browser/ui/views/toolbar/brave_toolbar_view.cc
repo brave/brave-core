@@ -231,7 +231,7 @@ void BraveToolbarView::Init() {
     return;
   }
 
-  Profile* profile = browser()->profile();
+  Profile* profile = browser()->GetProfile();
 
   // We don't use divider between extensions container and other toolbar
   // buttons. Upstream conditionally creates |toolbar_divider_|, they check
@@ -253,27 +253,28 @@ void BraveToolbarView::Init() {
       base::BindRepeating(&BraveToolbarView::OnEditBookmarksEnabledChanged,
                           base::Unretained(this)));
   show_bookmarks_button_.Init(
-      kShowBookmarksButton, browser_->profile()->GetPrefs(),
+      kShowBookmarksButton, browser_->GetProfile()->GetPrefs(),
       base::BindRepeating(&BraveToolbarView::OnShowBookmarksButtonChanged,
                           base::Unretained(this)));
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
   show_wallet_button_.Init(
-      brave_wallet::kShowWalletIconOnToolbar, browser_->profile()->GetPrefs(),
+      brave_wallet::kShowWalletIconOnToolbar,
+      browser_->GetProfile()->GetPrefs(),
       base::BindRepeating(&BraveToolbarView::UpdateWalletButtonVisibility,
                           base::Unretained(this)));
 
   wallet_disabled_by_policy_.Init(
       brave_wallet::kBraveWalletDisabledByPolicy,
-      browser_->profile()->GetPrefs(),
+      browser_->GetProfile()->GetPrefs(),
       base::BindRepeating(&BraveToolbarView::UpdateWalletButtonVisibility,
                           base::Unretained(this)));
 
-  if (browser_->profile()->IsIncognitoProfile() &&
-      !browser_->profile()->IsTor()) {
+  if (browser_->GetProfile()->IsIncognitoProfile() &&
+      !browser_->GetProfile()->IsTor()) {
     wallet_private_window_enabled_.Init(
         brave_wallet::kBraveWalletPrivateWindowsEnabled,
-        browser_->profile()->GetPrefs(),
+        browser_->GetProfile()->GetPrefs(),
         base::BindRepeating(&BraveToolbarView::UpdateWalletButtonVisibility,
                             base::Unretained(this)));
   }
@@ -391,13 +392,13 @@ void BraveToolbarView::Init() {
 #if BUILDFLAG(ENABLE_AI_CHAT)
   // Don't check policy status since we're going to
   // setup a watcher for policy pref.
-  if (ai_chat::IsAllowedForContext(browser_->profile(), false)) {
+  if (ai_chat::IsAllowedForContext(browser_->GetProfile(), false)) {
     ai_chat_button_ = AddChildViewAt(std::make_unique<AIChatButton>(browser()),
                                      *GetIndexOf(app_menu_button_) - 1);
     SetBraveButtonFlexBehavior(ai_chat_button_);
     show_ai_chat_button_.Init(
         ai_chat::prefs::kBraveAIChatShowToolbarButton,
-        browser_->profile()->GetPrefs(),
+        browser_->GetProfile()->GetPrefs(),
         base::BindRepeating(&BraveToolbarView::UpdateAIChatButtonVisibility,
                             base::Unretained(this)));
     hide_ai_chat_button_by_policy_.Init(
@@ -541,7 +542,7 @@ void BraveToolbarView::Update(content::WebContents* tab) {
   auto* avatar_button =
       static_cast<AvatarToolbarButton*>(GetAvatarToolbarButtonInterface());
   if (avatar_button) {
-    auto* profile = browser_->profile();
+    auto* profile = browser_->GetProfile();
     const bool should_show_profile =
         !IsAvatarButtonHideable(profile) || HasMultipleUserProfiles();
     avatar_button->SetVisible(should_show_profile);
@@ -698,7 +699,7 @@ void BraveToolbarView::ResetBookmarkButtonBounds() {
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 void BraveToolbarView::UpdateAIChatButtonVisibility() {
-  bool should_show = ai_chat::IsAllowedForContext(browser()->profile()) &&
+  bool should_show = ai_chat::IsAllowedForContext(browser()->GetProfile()) &&
                      show_ai_chat_button_.GetValue();
   ai_chat_button_->SetVisible(should_show);
 }
@@ -706,7 +707,7 @@ void BraveToolbarView::UpdateAIChatButtonVisibility() {
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 void BraveToolbarView::UpdateWalletButtonVisibility() {
-  Profile* profile = browser()->profile();
+  Profile* profile = browser()->GetProfile();
   if (brave_wallet::IsAllowedForContext(profile)) {
     // Hide all if user wants to hide.
     if (!show_wallet_button_.GetValue()) {
@@ -821,7 +822,7 @@ void BraveToolbarView::CreateWorkspaceButtonIfNeeded() {
   // browser window (not private, not PWA/popup/PIP/etc).
   if (!base::FeatureList::IsEnabled(features::kWorkspaces) ||
       browser_->GetType() != BrowserWindowInterface::Type::TYPE_NORMAL ||
-      browser_->profile()->IsOffTheRecord()) {
+      browser_->GetProfile()->IsOffTheRecord()) {
     return;
   }
 
@@ -845,7 +846,7 @@ void BraveToolbarView::OnWorkspacesButtonPressed() {
   auto* controller =
       browser_->browser_window_features()->workspaces_bubble_controller();
   CHECK(controller);
-  controller->ShowBubble(workspaces_button_, browser_->profile());
+  controller->ShowBubble(workspaces_button_, browser_->GetProfile());
 }
 
 void BraveToolbarView::UpdateWorkspaceButtonVisibility() {

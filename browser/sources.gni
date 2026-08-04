@@ -276,6 +276,7 @@ brave_chrome_browser_deps = [
   "//chrome/browser/infobars",
   "//chrome/browser/lifetime",
   "//chrome/browser/metrics",
+  "//chrome/browser/new_tab_page/prefs",
   "//chrome/browser/obsolete_system",
   "//chrome/browser/prefetch",
   "//chrome/browser/prefs:util",

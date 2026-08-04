@@ -1,22 +1,21 @@
 diff --git a/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate.h b/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate.h
-index 08d26d7a25127ded01a4e61f3b8e778e56b9aaf7..ea6d58708815122ad1b553ec33062d9993c7fdaf 100644
+index 8024fdfff0e211bb3b42dd906648f2c157e363e2..1377dba115f08dd0601ab4dbeda99375ba72d058 100644
 --- a/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate.h
 +++ b/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate.h
-@@ -91,6 +91,7 @@ class ChromeBrowsingDataRemoverDelegate
-   void OverrideDomainReliabilityClearerForTesting(
+@@ -92,6 +92,7 @@ class ChromeBrowsingDataRemoverDelegate
        DomainReliabilityClearer clearer);
  
-+  BRAVE_CHROME_BROWSING_DATA_REMOVER_DELEGATE_H
   private:
++  friend class BraveBrowsingDataRemoverDelegate;
    using WebRtcEventLogManager = webrtc_event_logging::WebRtcEventLogManager;
  
-@@ -146,8 +147,9 @@ class ChromeBrowsingDataRemoverDelegate
-     kMediaDeviceSalts = 45,
-     // See also kDisableAutoSigninForProfilePasswords.
+   // For debugging purposes. Please add new deletion tasks at the end.
+@@ -148,7 +149,8 @@ class ChromeBrowsingDataRemoverDelegate
      kDisableAutoSigninForAccountPasswords = 46,
-+    kIPFSCache = 47,
+     kPrivateVerificationTokens = 47,
  
--    kMaxValue = kDisableAutoSigninForAccountPasswords,
+-    kMaxValue = kPrivateVerificationTokens,
++    kIPFSCache = kPrivateVerificationTokens + 1,
 +    kMaxValue = kIPFSCache,
    };
    // LINT.ThenChange(//tools/metrics/histograms/metadata/history/enums.xml:ChromeBrowsingDataRemoverTasks)

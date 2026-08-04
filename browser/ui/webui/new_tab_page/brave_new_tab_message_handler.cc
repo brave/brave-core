@@ -277,7 +277,7 @@ void BraveNewTabMessageHandler::OnJavascriptAllowed() {
       base::BindRepeating(&BraveNewTabMessageHandler::OnStatsChanged,
                           base::Unretained(this)));
   pref_change_registrar_.Add(
-      kHttpsUpgrades,
+      kHttpsUpgradesStat,
       base::BindRepeating(&BraveNewTabMessageHandler::OnStatsChanged,
                           base::Unretained(this)));
   pref_change_registrar_.Add(

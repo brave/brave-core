@@ -30,7 +30,7 @@
 
 namespace {
 sidebar::SidebarService* GetSidebarService(Browser* browser) {
-  return sidebar::SidebarServiceFactory::GetForProfile(browser->profile());
+  return sidebar::SidebarServiceFactory::GetForProfile(browser->GetProfile());
 }
 
 gfx::FontList GetFont(int font_size, gfx::Font::Weight weight) {
@@ -65,7 +65,7 @@ SidebarEditItemBubbleDelegateView::SidebarEditItemBubbleDelegateView(
     views::View* anchor_view)
     : BubbleDialogDelegateView(
           anchor_view,
-          sidebar::GetBubbleArrowForSidebar(browser->profile()->GetPrefs()),
+          sidebar::GetBubbleArrowForSidebar(browser->GetProfile()->GetPrefs()),
           views::BubbleBorder::STANDARD_SHADOW),
       target_item_(item),
       browser_(browser) {

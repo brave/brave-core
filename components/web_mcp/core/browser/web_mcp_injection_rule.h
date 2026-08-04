@@ -17,7 +17,7 @@ namespace web_mcp {
 
 // A single WebMCP tool that Brave injects into pages whose URL matches one of
 // `url_patterns`. The injected tool is registered on the page via
-// `navigator.modelContext.registerTool(...)` and is then discovered by the
+// `document.modelContext.registerTool(...)` and is then discovered by the
 // existing ContentTool pipeline, so Brave's AI Chat can use it like any
 // page-registered tool.
 //

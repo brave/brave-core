@@ -79,9 +79,20 @@ void BrowsingHistoryCleaner::OnQueryComplete(
     base::OnceClosure continuation_closure) {
   const auto search_domain = base::UTF16ToUTF8(query_results_info.search_text);
   HistoryEntryRequests list_to_remove;
-  for (auto& entry : query_results) {
-    if (net::URLToEphemeralStorageDomain(entry.url) == search_domain) {
-      list_to_remove.emplace_back(std::move(entry));
+  for (const auto& entry : query_results) {
+    // `entry` can represent multiple same-day, same-host URLs merged together
+    // by `BrowsingHistoryService::GroupSimilarVisits()`, tracked via separate
+    // keys in |all_timestamps|. `BrowsingHistoryService::RemoveVisits` only
+    // expires the first URL it finds in that map, so split each match into its
+    // own single-URL `HistoryEntry` to make sure every matching URL actually
+    // gets removed.
+    for (const auto& [url, timestamps] : entry.all_timestamps) {
+      if (net::URLToEphemeralStorageDomain(url) != search_domain) {
+        continue;
+      }
+      auto& split_entry = list_to_remove.emplace_back(entry);
+      split_entry.url = url;
+      split_entry.all_timestamps = {{url, timestamps}};
     }
   }
 

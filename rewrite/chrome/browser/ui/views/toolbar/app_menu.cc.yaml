@@ -1,0 +1,54 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Use a smaller corner radius for menu-row backgrounds.
+
+      Shrink the kBackgroundCornerRadius passed to
+      MenuItemView::MenuItemBackground by 6px versus upstream's default.
+    regex:
+      re_pattern: |-
+        (MenuItemView::MenuItemBackground\(.*?kBackgroundCornerRadius)
+      re_flags: [DOTALL]
+      replace: |-
+        \1 - 6
+
+  - description: |
+      Do not declare `target_profile_row_height` at function scope.
+
+      This value goes unused due to our changes, and we want to avoid a build
+      warning for that. Scoped to AppMenu::PopulateMenu.
+    regex:
+      re_pattern: |-
+        (void AppMenu::PopulateMenu\(.*?)int target_profile_row_height =
+      re_flags: [DOTALL]
+      replace: |-
+        \g<1>if ((false)) [[maybe_unused]] int target_profile_row_height =
+
+  - description: |
+      Do not declare `icon_height` at function scope.
+
+      This value goes unused due to our changes, and we want to avoid a build
+      warning for that. Scoped to AppMenu::PopulateMenu.
+    regex:
+      re_pattern: |-
+        (void AppMenu::PopulateMenu\(.*?)int icon_height =
+      re_flags: [DOTALL]
+      replace: |-
+        \g<1>if ((false)) [[maybe_unused]] int icon_height =
+
+  - description: |
+      Pin every menu-row vertical margin to 8px.
+
+      Brave uses a fixed vertical margin regardless of the value upstream
+      computes, at both set_vertical_margin() call sites.
+    count: 2
+    regex:
+      re_pattern: |-
+        set_vertical_margin\(.*?\);
+      re_flags: [DOTALL]
+      replace: |-
+        set_vertical_margin(8);

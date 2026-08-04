@@ -174,7 +174,7 @@ void BraveBrowserProcessImpl::Init() {
   // initialized at the very end of BrowserProcessImpl::Init.
   std::ignore =
       extensions_browser_client_->GetComponentExtensionResourceManager()
-          ->GetTemplateReplacementsForExtension("");
+          ->GetTemplateReplacementsForExtension("", nullptr);
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)

@@ -170,7 +170,7 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
 
   void SetUpOnMainThread() override {
     brave_wallet::SetDefaultEthereumWallet(
-        browser()->profile()->GetPrefs(),
+        browser()->GetProfile()->GetPrefs(),
         brave_wallet::mojom::DefaultWallet::BraveWallet);
     mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
     host_resolver()->AddRule("*", "127.0.0.1");
@@ -200,7 +200,7 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
 
   BraveWalletService* brave_wallet_service() {
     return BraveWalletServiceFactory::GetServiceForContext(
-        browser()->profile());
+        browser()->GetProfile());
   }
 
   KeyringService* keyring_service() {
@@ -218,7 +218,8 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
   TxService* tx_service() { return brave_wallet_service()->tx_service(); }
 
   HostContentSettingsMap* host_content_settings_map() {
-    return HostContentSettingsMapFactory::GetForProfile(browser()->profile());
+    return HostContentSettingsMapFactory::GetForProfile(
+        browser()->GetProfile());
   }
 
   net::EmbeddedTestServer* https_server_for_files() {
@@ -332,7 +333,7 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
 
   void AddEthereumPermission(const mojom::AccountIdPtr& account_id) {
     EXPECT_TRUE(permissions::BraveWalletPermissionContext::AddPermission(
-        blink::PermissionType::BRAVE_ETHEREUM, browser()->profile(),
+        blink::PermissionType::BRAVE_ETHEREUM, browser()->GetProfile(),
         web_contents()->GetPrimaryMainFrame()->GetLastCommittedOrigin(),
         account_id->address));
   }
@@ -564,7 +565,8 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
     run_loop.Run();
     if (chain && !skip_rpc_url_override) {
       base::RunLoop run_loop1;
-      browser()->profile()->GetPrefs()->ClearPref(kBraveWalletCustomNetworks);
+      browser()->GetProfile()->GetPrefs()->ClearPref(
+          kBraveWalletCustomNetworks);
       chain->rpc_endpoints =
           std::vector<GURL>({https_server_for_rpc()->base_url()});
       json_rpc_service()->AddChain(

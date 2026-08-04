@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/tabs/tab_strip_model.h b/chrome/browser/ui/tabs/tab_strip_model.h
-index cf144a90c3a881225aea35ba65fa82283cb3a9f6..ad0622d400fc828e5481ad2f4bd35fbcd67f393c 100644
+index 87ad841b0a938250b5531965b9f48382232cff5f..3ae539a28b13073b5a68fa043e1b17c224823603 100644
 --- a/chrome/browser/ui/tabs/tab_strip_model.h
 +++ b/chrome/browser/ui/tabs/tab_strip_model.h
-@@ -42,7 +42,7 @@
+@@ -43,7 +43,7 @@
  #error This file should only be included on desktop.
  #endif
  
@@ -11,7 +11,7 @@ index cf144a90c3a881225aea35ba65fa82283cb3a9f6..ad0622d400fc828e5481ad2f4bd35fbc
  class Profile;
  class TabGroupModel;
  class TabStripModelDelegate;
-@@ -211,7 +211,7 @@ class TabStripModel {
+@@ -212,7 +212,7 @@ class TabStripModel {
    TabStripModel(const TabStripModel&) = delete;
    TabStripModel& operator=(const TabStripModel&) = delete;
  
@@ -20,7 +20,7 @@ index cf144a90c3a881225aea35ba65fa82283cb3a9f6..ad0622d400fc828e5481ad2f4bd35fbc
  
    // Retrieves the TabStripModelDelegate associated with this TabStripModel.
    TabStripModelDelegate* delegate() const { return delegate_; }
-@@ -612,7 +612,7 @@ class TabStripModel {
+@@ -620,7 +620,7 @@ class TabStripModel {
    // returns the index of the tabs in the current model that would end up being
    // the adjacent tabs of the selected unpinned tabs post move operation.
    std::pair<std::optional<int>, std::optional<int>>
@@ -29,7 +29,7 @@ index cf144a90c3a881225aea35ba65fa82283cb3a9f6..ad0622d400fc828e5481ad2f4bd35fbc
                                     int destination_index);
  
    // Updates the layout for the tabs with `split_id` and notifies observers.
-@@ -769,6 +769,14 @@ class TabStripModel {
+@@ -777,6 +777,14 @@ class TabStripModel {
      CommandGlicCreateNewChat,
      CommandGlicSwitchToRecentConversation,
      CommandGlicUnshare,
@@ -44,7 +44,7 @@ index cf144a90c3a881225aea35ba65fa82283cb3a9f6..ad0622d400fc828e5481ad2f4bd35fbc
      CommandLast
    };
    // LINT.ThenChange(//tools/metrics/histograms/metadata/tab/histograms.xml:TabContextMenuCommand)
-@@ -897,6 +905,7 @@ class TabStripModel {
+@@ -905,6 +913,7 @@ class TabStripModel {
        const content::WebContents* contents) const;
  
   private:
@@ -52,7 +52,7 @@ index cf144a90c3a881225aea35ba65fa82283cb3a9f6..ad0622d400fc828e5481ad2f4bd35fbc
    FRIEND_TEST_ALL_PREFIXES(TabStripModelTest, GetIndicesClosedByCommand);
    // Temporary private API.
    FRIEND_TEST_ALL_PREFIXES(TabStripModelTest, FindGroupIdFor);
-@@ -1174,7 +1183,7 @@ class TabStripModel {
+@@ -1187,7 +1196,7 @@ class TabStripModel {
    };
  
    // Selects either the next tab (kNext), or the previous tab (kPrevious).

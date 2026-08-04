@@ -31,7 +31,7 @@ PlaylistActionIconView::PlaylistActionIconView(
                          /*ephemeral=*/false) {
   playlist_enabled_.Init(
       playlist::kPlaylistEnabledPref,
-      user_prefs::UserPrefs::Get(browser->profile()),
+      user_prefs::UserPrefs::Get(browser->GetProfile()),
       base::BindRepeating(&PlaylistActionIconView::UpdateState,
                           weak_ptr_factory_.GetWeakPtr()));
   SetVisible(false);

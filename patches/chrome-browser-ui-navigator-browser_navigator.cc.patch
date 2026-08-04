@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/ui/navigator/browser_navigator.cc b/chrome/browser/ui/navigator/browser_navigator.cc
-index 67fde190279e188b4c2200cbbac9771ccbc426ec..e93d3e748003229116dce230f2cee40a2a535e2d 100644
+index a3a2000fe57f7095a85dbbcbbff473d41fdb83b5..8de83a4b8fe01622a9e5e41c90a0b805b547cd88 100644
 --- a/chrome/browser/ui/navigator/browser_navigator.cc
 +++ b/chrome/browser/ui/navigator/browser_navigator.cc
-@@ -574,6 +574,7 @@ base::WeakPtr<content::NavigationHandle> Navigate(NavigateParams* params) {
-       return nullptr;
-     }
+@@ -616,6 +616,7 @@ base::WeakPtr<content::NavigationHandle> NavigateImpl(
    }
-+  BRAVE_ADJUST_NAVIGATE_PARAMS_FOR_URL
+ #endif  // BUILDFLAG(IS_CHROMEOS)
  
++BRAVE_ADJUST_NAVIGATE_PARAMS_FOR_URL
    // Open System Apps in their standalone window if necessary.
    // TODO(crbug.com/40136163): Remove this code after we integrate with intent
+   // handling.

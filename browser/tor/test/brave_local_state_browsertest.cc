@@ -14,7 +14,8 @@ using BraveLocalStateBrowserTest = InProcessBrowserTest;
 
 IN_PROC_BROWSER_TEST_F(BraveLocalStateBrowserTest, BasicTest) {
   // Tor is enabled by default.
-  EXPECT_FALSE(TorProfileServiceFactory::IsTorDisabled(browser()->profile()));
+  EXPECT_FALSE(
+      TorProfileServiceFactory::IsTorDisabled(browser()->GetProfile()));
 
   // No bridges by default.
   auto bridges_config = TorProfileServiceFactory::GetTorBridgesConfig();
@@ -24,10 +25,11 @@ IN_PROC_BROWSER_TEST_F(BraveLocalStateBrowserTest, BasicTest) {
 
 IN_PROC_BROWSER_TEST_F(BraveLocalStateBrowserTest, TorEnableDisable) {
   TorProfileServiceFactory::SetTorDisabled(true);
-  EXPECT_TRUE(TorProfileServiceFactory::IsTorDisabled(browser()->profile()));
+  EXPECT_TRUE(TorProfileServiceFactory::IsTorDisabled(browser()->GetProfile()));
 
   TorProfileServiceFactory::SetTorDisabled(false);
-  EXPECT_FALSE(TorProfileServiceFactory::IsTorDisabled(browser()->profile()));
+  EXPECT_FALSE(
+      TorProfileServiceFactory::IsTorDisabled(browser()->GetProfile()));
 }
 
 IN_PROC_BROWSER_TEST_F(BraveLocalStateBrowserTest, ChangeBridges) {

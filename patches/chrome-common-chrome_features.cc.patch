@@ -1,8 +1,8 @@
 diff --git a/chrome/common/chrome_features.cc b/chrome/common/chrome_features.cc
-index 4f211d1504e7a770e5c1697980f6a711f2fd8c3d..326ffda13b28e4e105580ea12f01f1bd7d625e49 100644
+index 2e3c31bcaf054b978dfd20200c98edabf35f7507..4019591744cac47f4a19950e1f529cfc137d30d5 100644
 --- a/chrome/common/chrome_features.cc
 +++ b/chrome/common/chrome_features.cc
-@@ -319,7 +319,7 @@ const char kGlicActorUiDebounceTimerName[] = "glic-actor-ui-debounce-timer";
+@@ -377,7 +377,7 @@ const char kGlicActorUiDebounceTimerName[] = "glic-actor-ui-debounce-timer";
  
  // Controls whether the task icon in the actor ui is enabled.
  const base::FeatureParam<bool> kGlicActorUiTaskIcon{

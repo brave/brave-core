@@ -175,13 +175,14 @@ class EphemeralStorageQaBrowserTest : public InProcessBrowserTest {
   }
 
   HostContentSettingsMap* content_settings() {
-    return HostContentSettingsMapFactory::GetForProfile(browser()->profile());
+    return HostContentSettingsMapFactory::GetForProfile(
+        browser()->GetProfile());
   }
 
   net::EmbeddedTestServer* embedded_test_server() { return &https_server_; }
 
   void SetThirdPartyCookiePref(bool setting) {
-    browser()->profile()->GetPrefs()->SetInteger(
+    browser()->GetProfile()->GetPrefs()->SetInteger(
         prefs::kCookieControlsMode,
         std::to_underlying(
             setting ? content_settings::CookieControlsMode::kBlockThirdParty
@@ -189,13 +190,13 @@ class EphemeralStorageQaBrowserTest : public InProcessBrowserTest {
   }
 
   void SetCookiePref(ContentSetting setting) {
-    browser()->profile()->GetPrefs()->SetInteger(
+    browser()->GetProfile()->GetPrefs()->SetInteger(
         "profile.default_content_setting_values.cookies", setting);
   }
 
   void SetCookieControlType(brave_shields::ControlType control_type) {
     brave_shields::SetCookieControlType(
-        content_settings(), browser()->profile()->GetPrefs(), control_type,
+        content_settings(), browser()->GetProfile()->GetPrefs(), control_type,
         embedded_test_server()->GetURL("dev-pages.brave.software",
                                        kEphemeralStorageTestPage));
   }
@@ -406,7 +407,7 @@ class EphemeralStorageQaBrowserTest : public InProcessBrowserTest {
     ASSERT_EQ(previous_tab_count - 1, browser()->tab_strip_model()->count());
 
     EphemeralStorageServiceFactory::GetInstance()
-        ->GetForContext(browser()->profile())
+        ->GetForContext(browser()->GetProfile())
         ->FireCleanupTimersForTesting();
 
     ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL(target)));

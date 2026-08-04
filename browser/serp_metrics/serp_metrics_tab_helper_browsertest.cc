@@ -787,7 +787,7 @@ IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest,
   ASSERT_TRUE(incognito_browser);
 
   SerpMetricsService* serp_metrics_service =
-      SerpMetricsServiceFactory::GetFor(incognito_browser->profile());
+      SerpMetricsServiceFactory::GetFor(incognito_browser->GetProfile());
   EXPECT_FALSE(serp_metrics_service);
 
   SerpMetricsTabHelper* serp_metrics_tab_helper =
@@ -802,7 +802,7 @@ IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest,
   ASSERT_TRUE(guest_browser);
 
   SerpMetricsService* serp_metrics_service =
-      SerpMetricsServiceFactory::GetFor(guest_browser->profile());
+      SerpMetricsServiceFactory::GetFor(guest_browser->GetProfile());
   EXPECT_FALSE(serp_metrics_service);
 
   SerpMetricsTabHelper* serp_metrics_tab_helper =

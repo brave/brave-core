@@ -68,15 +68,15 @@ IN_PROC_BROWSER_TEST_F(BraveAutofillBrowserTest,
       embedded_test_server()->GetURL("example.com", "/brave_scheme_load.html"));
 
   // Disable autofill in private windows.
-  browser()->profile()->GetPrefs()->SetBoolean(kBraveAutofillPrivateWindows,
-                                               false);
+  browser()->GetProfile()->GetPrefs()->SetBoolean(kBraveAutofillPrivateWindows,
+                                                  false);
   TestAutofillInWindow(browser(), url, true);
   Browser* private_browser = CreateIncognitoBrowser(nullptr);
   TestAutofillInWindow(private_browser, url, false);
 
   // Enable autofill in private windows.
-  browser()->profile()->GetPrefs()->SetBoolean(kBraveAutofillPrivateWindows,
-                                               true);
+  browser()->GetProfile()->GetPrefs()->SetBoolean(kBraveAutofillPrivateWindows,
+                                                  true);
   TestAutofillInWindow(browser(), url, true);
   TestAutofillInWindow(private_browser, url, true);
 

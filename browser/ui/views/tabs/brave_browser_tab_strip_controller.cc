@@ -206,7 +206,7 @@ bool BraveBrowserTabStripController::IsContextMenuCommandEnabled(
   // Use if clause to prevent enumeration values not handled in switch errors.
   if (command_id == TabStripModel::CommandRestoreTab) {
     auto* restore_service =
-        TabRestoreServiceFactory::GetForProfile(browser()->profile());
+        TabRestoreServiceFactory::GetForProfile(browser()->GetProfile());
     return restore_service && (!restore_service->IsLoaded() ||
                                !restore_service->entries().empty());
   }

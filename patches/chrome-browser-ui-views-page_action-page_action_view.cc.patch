@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/page_action/page_action_view.cc b/chrome/browser/ui/views/page_action/page_action_view.cc
-index 9de212e49bb02246978b8dd74d008c0a21036e3e..36ed447a649d10fc2876f034adb212c62e523177 100644
+index ad5d3f6cc1ff686ba5e1a20af4afbadcd211f671..58946e68b01e7b67e07714d3299c4ffb0959f699 100644
 --- a/chrome/browser/ui/views/page_action/page_action_view.cc
 +++ b/chrome/browser/ui/views/page_action/page_action_view.cc
-@@ -238,7 +238,7 @@ void PageActionView::HandleSlideAndCrossfadeTransition(
+@@ -244,7 +244,7 @@ void PageActionView::HandleSlideAndCrossfadeTransition(
  
  void PageActionView::HandleSuggestionChipTransition(
      const PageActionModelInterface& model) {
@@ -11,7 +11,7 @@ index 9de212e49bb02246978b8dd74d008c0a21036e3e..36ed447a649d10fc2876f034adb212c6
      if (model.GetShouldAnimateChipIn()) {
        AnimateIn(/*string_id=*/std::nullopt);
      } else {
-@@ -310,6 +310,7 @@ void PageActionView::UpdateBorder() {
+@@ -316,6 +316,7 @@ void PageActionView::UpdateBorder() {
        !observation_.GetSource()->GetImage().IsVectorIcon()) {
      border_insets = GetInsetsForNonVectorIcon();
    }
@@ -19,16 +19,17 @@ index 9de212e49bb02246978b8dd74d008c0a21036e3e..36ed447a649d10fc2876f034adb212c6
    SetBorder(views::CreateEmptyBorder(border_insets));
  }
  
-@@ -356,6 +357,8 @@ void PageActionView::NotifyClick(const ui::Event& event) {
-               kPageActionEntryPointKey,
-               static_cast<std::underlying_type_t<PageActionEntryPoint>>(
-                   PageActionEntryPoint::kSuggestionChip))
-+          .SetProperty(kBravePageActionEventFlagKey,
-+                      event.IsMouseEvent() ? event.flags() : ui::EF_NONE)
-           .Build());
+@@ -362,6 +363,9 @@ void PageActionView::NotifyClick(const ui::Event& event) {
+     builder = std::move(builder).SetProperty(kSidePanelOpenTriggerKey,
+                                              *side_panel_trigger);
+   }
++  builder = std::move(builder).SetProperty(
++      kBravePageActionEventFlagKey,
++      event.IsMouseEvent() ? event.flags() : ui::EF_NONE);
+   action_item_->InvokeAction(std::move(builder).Build());
  }
  
-@@ -639,6 +642,9 @@ void PageActionView::MaybeRecordCollapsedMetrics(int label_width) {
+@@ -687,6 +691,9 @@ void PageActionView::MaybeRecordCollapsedMetrics(int label_width) {
  }
  
  SkColor PageActionView::GetBackgroundColor() const {

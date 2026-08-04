@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/settings/search/SearchIndexProviderRegistry.java b/chrome/android/java/src/org/chromium/chrome/browser/settings/search/SearchIndexProviderRegistry.java
-index 1077426a3061fd7f4fcc6ea1a6c5693d79293f6d..11d992ac8081114dd7fa498a9095326ba7bceec9 100644
+index a0e827c068d03b2f027f2f40d2fed33a2b6044a7..6a9ba3ec54e386771f8affadeb76a5ea8b2c3978 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/settings/search/SearchIndexProviderRegistry.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/settings/search/SearchIndexProviderRegistry.java
 @@ -7,7 +7,6 @@ package org.chromium.chrome.browser.settings.search;
@@ -7,10 +7,10 @@ index 1077426a3061fd7f4fcc6ea1a6c5693d79293f6d..11d992ac8081114dd7fa498a9095326b
  import org.chromium.chrome.browser.about_settings.AboutChromeSettings;
  import org.chromium.chrome.browser.about_settings.LegalInformationSettings;
 -import org.chromium.chrome.browser.appearance.settings.AppearanceSettingsFragment;
- import org.chromium.chrome.browser.autofill.options.AutofillOptionsFragment;
- import org.chromium.chrome.browser.autofill.personal_context.AutofillPersonalContextFragment;
+ import org.chromium.chrome.browser.appearance.settings.BookmarkBarSettingsFragment;
  import org.chromium.chrome.browser.autofill.settings.AndroidPaymentAppsFragment;
-@@ -28,12 +27,10 @@ import org.chromium.chrome.browser.download.settings.DownloadSettings;
+ import org.chromium.chrome.browser.autofill.settings.AutofillAndPasswordsFragment;
+@@ -29,12 +28,10 @@ import org.chromium.chrome.browser.download.settings.DownloadSettings;
  import org.chromium.chrome.browser.glic.GlicSettings;
  import org.chromium.chrome.browser.homepage.settings.HomepageSettings;
  import org.chromium.chrome.browser.image_descriptions.ImageDescriptionsSettings;
@@ -23,7 +23,7 @@ index 1077426a3061fd7f4fcc6ea1a6c5693d79293f6d..11d992ac8081114dd7fa498a9095326b
  import org.chromium.chrome.browser.privacy_sandbox.AdMeasurementFragment;
  import org.chromium.chrome.browser.privacy_sandbox.FledgeAllSitesFragment;
  import org.chromium.chrome.browser.privacy_sandbox.FledgeBlockedSitesFragment;
-@@ -49,7 +46,6 @@ import org.chromium.chrome.browser.safety_check.SafetyCheckSettingsFragment;
+@@ -50,7 +47,6 @@ import org.chromium.chrome.browser.safety_check.SafetyCheckSettingsFragment;
  import org.chromium.chrome.browser.safety_hub.SafetyHubFragment;
  import org.chromium.chrome.browser.search_engines.settings.SearchEngineSettings;
  import org.chromium.chrome.browser.search_engines.settings.SiteSearchSettings;
@@ -31,7 +31,7 @@ index 1077426a3061fd7f4fcc6ea1a6c5693d79293f6d..11d992ac8081114dd7fa498a9095326b
  import org.chromium.chrome.browser.ssl.HttpsFirstModeSettingsFragment;
  import org.chromium.chrome.browser.sync.settings.AccountManagementFragment;
  import org.chromium.chrome.browser.sync.settings.GoogleServicesSettings;
-@@ -92,7 +88,7 @@ public final class SearchIndexProviderRegistry {
+@@ -93,7 +89,7 @@ public final class SearchIndexProviderRegistry {
                      // MainSettings always comes at the top. This fixes the order of the header
                      // groups in which they will be shown in the search results since the index
                      // uses LinkedHashMap internally.
@@ -40,15 +40,15 @@ index 1077426a3061fd7f4fcc6ea1a6c5693d79293f6d..11d992ac8081114dd7fa498a9095326b
                      AboutChromeSettings.SEARCH_INDEX_DATA_PROVIDER,
                      AdaptiveToolbarSettingsFragment.SEARCH_INDEX_DATA_PROVIDER,
                      AutofillOptionsFragment.SEARCH_INDEX_DATA_PROVIDER,
-@@ -131,7 +127,6 @@ public final class SearchIndexProviderRegistry {
+@@ -132,7 +128,6 @@ public final class SearchIndexProviderRegistry {
                      SafetyHubFragment.SEARCH_INDEX_DATA_PROVIDER,
                      AccountManagementFragment.SEARCH_INDEX_DATA_PROVIDER,
                      AndroidPaymentAppsFragment.SEARCH_INDEX_DATA_PROVIDER,
 -                    AppearanceSettingsFragment.SEARCH_INDEX_DATA_PROVIDER,
+                     BookmarkBarSettingsFragment.SEARCH_INDEX_DATA_PROVIDER,
+                     AutofillAndPasswordsFragment.SEARCH_INDEX_DATA_PROVIDER,
                      AutofillBuyNowPayLaterFragment.SEARCH_INDEX_DATA_PROVIDER,
-                     AutofillCardBenefitsFragment.SEARCH_INDEX_DATA_PROVIDER,
-                     AutofillIdentityDocsFragment.SEARCH_INDEX_DATA_PROVIDER,
-@@ -145,10 +140,8 @@ public final class SearchIndexProviderRegistry {
+@@ -147,10 +142,8 @@ public final class SearchIndexProviderRegistry {
                      FinancialAccountsManagementFragment.SEARCH_INDEX_DATA_PROVIDER,
                      GoogleServicesSettings.SEARCH_INDEX_DATA_PROVIDER,
                      HttpsFirstModeSettingsFragment.SEARCH_INDEX_DATA_PROVIDER,
@@ -59,7 +59,7 @@ index 1077426a3061fd7f4fcc6ea1a6c5693d79293f6d..11d992ac8081114dd7fa498a9095326b
                      SafetyCheckSettingsFragment.SEARCH_INDEX_DATA_PROVIDER,
                      TabsSettings.SEARCH_INDEX_DATA_PROVIDER,
                      ManageSyncSettings.SEARCH_INDEX_DATA_PROVIDER,
-@@ -157,5 +150,35 @@ public final class SearchIndexProviderRegistry {
+@@ -159,5 +152,35 @@ public final class SearchIndexProviderRegistry {
                      DownloadSettings.SEARCH_INDEX_DATA_PROVIDER,
                      DeveloperSettings.SEARCH_INDEX_DATA_PROVIDER,
                      TracingSettings.SEARCH_INDEX_DATA_PROVIDER,

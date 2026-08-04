@@ -1,0 +1,30 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Add AddPageActionIcon().
+
+      We need to add extra switch cases into `Init()` (Speedreader, Wayback
+      Machine, Playlist) for icon views that haven't migrated yet, and those
+      need the same icon-registration logic that used to be in place before.
+    add_to_protected:
+      class_name: PageActionIconController
+      code: |-
+        PageActionIconView* AddPageActionIcon(
+            PageActionIconType type,
+            std::unique_ptr<PageActionIconView> icon,
+            const PageActionIconParams& params);
+
+        // A direct reference to `PlaylistActionIconView`, avoiding `GetIconView() lookup.`
+        raw_ptr<PageActionIconView> playlist_action_icon_view_ = nullptr;
+
+  - description: |
+      Expose GetPlaylistActionIconView() as public API.
+
+      Accessor for `playlist_action_icon_view_`.
+    add_to_public:
+      class_name: PageActionIconController
+      code: 'PageActionIconView* GetPlaylistActionIconView();'

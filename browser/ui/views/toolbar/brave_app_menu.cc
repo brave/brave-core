@@ -122,7 +122,7 @@ SidebarShowOptionInMenuButton::SidebarShowOptionInMenuButton(
   SetFocusBehavior(FocusBehavior::ALWAYS);
 
   auto* service = sidebar::SidebarServiceFactory::GetForProfile(
-      app_menu_->browser()->profile());
+      app_menu_->browser()->GetProfile());
   CHECK(service);
 
   sidebar_service_observation_.Observe(service);
@@ -214,8 +214,9 @@ void BraveAppMenu::ExecuteCommand(int command_id, int mouse_event_flags) {
   // See
   // https://github.com/brave/brave-browser/issues/37862#issuecomment-2078553575
   if (!IsBookmarkCommand(command_id) && !IsTabGroupsCommand(command_id) &&
-      command_id != IDC_CREATE_NEW_TAB_GROUP && command_id != IDC_EDIT_MENU &&
-      command_id != IDC_ZOOM_MENU &&
+      command_id != IDC_CREATE_NEW_TAB_GROUP &&
+      command_id != AppMenuModel::kEditMenuPlaceholder &&
+      command_id != AppMenuModel::kZoomMenuPlaceholder &&
       command_id_to_entry_.find(command_id) == command_id_to_entry_.end()) {
     LOG(ERROR) << __func__ << " entry should exist for " << command_id;
     SCOPED_CRASH_KEY_NUMBER("BraveAppMenu", "command_id", command_id);
@@ -244,7 +245,7 @@ void BraveAppMenu::RecordMenuUsage(int command_id) {
   if (command_id == IDC_TOGGLE_AI_CHAT) {
     auto* profile_metrics =
         misc_metrics::ProfileMiscMetricsServiceFactory::GetServiceForContext(
-            browser_->profile());
+            browser_->GetProfile());
     if (profile_metrics) {
       auto* ai_chat_metrics = profile_metrics->GetAIChatMetrics();
       CHECK(ai_chat_metrics);
