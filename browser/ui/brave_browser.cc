@@ -63,7 +63,8 @@ BraveBrowser::BraveBrowser(const CreateParams& params) : Browser(params) {
         BraveBrowserWindow::FromBrowser(this)->InitSidebar());
   }
 
-  if (webui_browser::IsWebUIBrowserEnabled() && is_type_normal()) {
+  if (webui_browser::IsWebUIBrowserEnabled() &&
+      GetType() == BrowserWindowInterface::Type::TYPE_NORMAL) {
     // WebUIBrowserWindow was created in Browser's c'tor (in
     // BrowserWindow::CreateBrowserWindow), not a BraveBrowserWindow.
     return;
@@ -139,7 +140,8 @@ void BraveBrowser::OnTabClosing(tabs::TabInterface* tab,
 
 void BraveBrowser::TabStripEmpty() {
   if (GetProfile()->GetPrefs()->GetBoolean(kEnableClosingLastTab) ||
-      !is_type_normal() || ignore_enable_closing_last_tab_pref_) {
+      GetType() != BrowserWindowInterface::Type::TYPE_NORMAL ||
+      ignore_enable_closing_last_tab_pref_) {
     Browser::TabStripEmpty();
     return;
   }
@@ -230,7 +232,7 @@ bool BraveBrowser::AreAllTabsSharedPinnedTabs() {
     return false;
   }
 
-  if (!is_type_normal()) {
+  if (GetType() != BrowserWindowInterface::Type::TYPE_NORMAL) {
     return false;
   }
 
