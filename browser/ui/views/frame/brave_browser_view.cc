@@ -324,7 +324,7 @@ BraveBrowserView* BraveBrowserView::GetBrowserViewForBrowser(
 
 bool BraveBrowserView::ShouldUseBraveWebViewRoundedCornersForContents(
     const BrowserWindowInterface* browser) {
-  if (browser->GetType() != BrowserWindowInterface::TYPE_NORMAL) {
+  if (browser->GetType() != BrowserWindowInterface::Type::TYPE_NORMAL) {
     return false;
   }
 
@@ -353,7 +353,7 @@ BraveBrowserView::BraveBrowserView(Browser* browser) : BrowserView(browser) {
   // default via WindowFeatureController::SupportsWindowfeatures. In brave, we
   // support kFeatureTitleBar so it's set to true when browser is launched with
   // vertical tab mode. Set to false as we don't want to icon in title bar.
-  if (browser_->is_type_normal()) {
+  if (browser_->GetType() == BrowserWindowInterface::Type::TYPE_NORMAL) {
     SetShowIcon(false);
   }
 
