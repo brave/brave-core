@@ -13,6 +13,10 @@ include_rules = [
 ]
 
 specific_include_rules = {
+  "brave_news_controller_unittest\.cc": [
+    "+brave/components/l10n/common/test/scoped_default_locale.h",
+    "+components/history/core/test/history_service_test_util.h",
+  ],
   "direct_feed_fetcher\.cc": [
     "+third_party/rust/cxx/v1/cxx.h",
   ],
