@@ -119,12 +119,6 @@ utility through the standard `LoadModels` mojo call.
   — Override to use `BravePassageEmbeddingsServiceController` and
   `BraveHistoryEmbeddingsService`.
 
-- **`rewrite/components/passage_embeddings/core/passage_embeddings_service_controller.h.yaml`**
-  — Plaster adding `virtual` to `GetEmbeddings`. The controller needs nothing
-  else from the base header: `MaybeUpdateModelInfo` is already virtual upstream,
-  and going through it leaves the paths, metadata and observer notification to
-  the base class.
-
 - **`chromium_src/services/passage_embeddings/passage_embedder_impl.cc`** —
   Injects the LiteRT runner at the top of
   `PassageEmbedderImpl::BuildExecutionTask` (via a
