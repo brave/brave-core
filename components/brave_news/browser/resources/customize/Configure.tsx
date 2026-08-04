@@ -104,7 +104,8 @@ export default function Configure() {
         </Sidebar>
         <Content>
           <ContentCard>
-            <NewsSettings />
+            {customizePage !== 'suggestions' && customizePage !== 'popular' &&
+              <NewsSettings />}
             {content}
           </ContentCard>
         </Content>
