@@ -5,12 +5,12 @@
 
 substitutions:
   - description: |
-      Do not calculate the location header for the default search engine when
-      TemplateUrlService has no native object.
+      Guard default search engine geolocation after native teardown.
 
       Android can recreate an activity while this Java object remains after
-      native code clears its pointer. Return UNSUITABLE_URL before calling JNI
-      methods such as getUrlForSearchQuery.
+      native code clears its pointer. Do not calculate the location header for the
+      default search engine when TemplateUrlService has no native object. Return
+      UNSUITABLE_URL before calling JNI methods such as getUrlForSearchQuery.
     count: 1
     regex:
       re_pattern: '(geoHeaderStateForDse\s*\([^)]*\)\s*\{)'
@@ -20,12 +20,12 @@ substitutions:
                     return HeaderState.UNSUITABLE_URL;
                 }
   - description: |
-      Do not call TemplateUrlService JNI from geoHeaderStateForUrl when the
-      native object is gone.
+      Guard URL geolocation after TemplateUrlService native teardown.
 
       Omnibox URL loads use getGeoHeader, which reaches this path without going
       through geoHeaderStateForDse. The Java TemplateUrlService can outlive
-      native teardown during activity recreation.
+      native teardown during activity recreation. Do not call TemplateUrlService
+      JNI from geoHeaderStateForUrl when the native object is gone.
     count: 1
     regex:
       re_pattern: '(if\s*\(\s*profile\s*==\s*null\s*\|\|\s*service\s*==\s*null\s*\)\s*return\s+HeaderState\.UNSUITABLE_URL;)'
