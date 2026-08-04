@@ -255,4 +255,6 @@ const base::FeatureParam<std::string> kAIChatConversationShareBaseUrl{
     &kAIChatConversationShare, "viewer_base_url",
     "https://leo-ai.brave.app/shared/"};
 
+BASE_FEATURE(kAIChatExportJSON, base::FEATURE_DISABLED_BY_DEFAULT);
+
 }  // namespace ai_chat::features

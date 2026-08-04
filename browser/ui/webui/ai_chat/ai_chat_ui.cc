@@ -106,6 +106,9 @@ AIChatUI::AIChatUI(content::WebUI* web_ui)
   source->AddBoolean("isConversationShareEnabled",
                      base::FeatureList::IsEnabled(
                          ai_chat::features::kAIChatConversationShare));
+  source->AddBoolean(
+      "isAIChatExportJSONEnabled",
+      base::FeatureList::IsEnabled(ai_chat::features::kAIChatExportJSON));
   // Brave client version, used to tag serialized conversations for sharing.
   source->AddString("braveVersion",
                     version_info::GetBraveVersionWithoutChromiumMajorVersion());

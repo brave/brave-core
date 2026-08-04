@@ -11,13 +11,15 @@ import Toggle from '@brave/leo/react/toggle'
 import { showAlert } from '@brave/leo/react/alertCenter'
 import classnames from '$web-common/classnames'
 import { getLocale } from '$web-common/locale'
-import { useAIChat } from '../../state/ai_chat_context'
-import { useConversation } from '../../state/conversation_context'
-import styles from './style.module.scss'
-import useHasConversationStarted from '../../hooks/useHasConversationStarted'
 import {
   formatConversationForClipboard, //
 } from '../../../common/conversation_history_utils'
+import { serializeConversationForSharing } from '../../../common/conversation_serialization'
+import useHasConversationStarted from '../../hooks/useHasConversationStarted'
+import { useAIChat } from '../../state/ai_chat_context'
+import { useConversation } from '../../state/conversation_context'
+import { createSharedConversationPayload } from '../share_conversation_modal/create_shared_conversation_payload'
+import styles from './style.module.scss'
 
 export interface Props {
   setIsConversationsListOpen?: (value: boolean) => unknown
@@ -43,12 +45,32 @@ export default function FeatureMenu(props: Props) {
     conversationContext.setTemporary(detail.checked)
   }
 
-  const copyEntireConversation = async () => {
-    const conversationHistory =
-      conversationContext.api.getConversationHistory.current()
-    const formattedConversation =
-      formatConversationForClipboard(conversationHistory)
-    navigator.clipboard.writeText(formattedConversation).then(() => {
+  const copyEntireConversation = async (e: MouseEvent) => {
+    let textToCopy: string
+
+    if (aiChatContext.isAIChatExportJSONEnabled && e.altKey && e.metaKey) {
+      const conversationTitle =
+        aiChatContext.api.getConversations
+          .current()
+          .find(
+            (c) =>
+              c.uuid
+              === conversationContext.api.getState.current().conversationUuid,
+          )?.title || ''
+      textToCopy = serializeConversationForSharing(
+        await createSharedConversationPayload(
+          conversationContext,
+          aiChatContext,
+          conversationTitle,
+        ),
+      )
+    } else {
+      const conversationHistory =
+        conversationContext.api.getConversationHistory.current()
+      textToCopy = formatConversationForClipboard(conversationHistory)
+    }
+
+    navigator.clipboard.writeText(textToCopy).then(() => {
       showAlert({
         type: 'info',
         content: getLocale(S.CHAT_UI_CONVERSATION_COPIED),
@@ -95,7 +117,7 @@ export default function FeatureMenu(props: Props) {
       )}
 
       {hasConversationStarted && (
-        <leo-menu-item onClick={() => copyEntireConversation()}>
+        <leo-menu-item onClick={(e) => copyEntireConversation(e)}>
           <div
             className={classnames(
               styles.menuItemWithIcon,
