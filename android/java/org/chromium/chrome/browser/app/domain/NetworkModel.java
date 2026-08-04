@@ -20,7 +20,6 @@ import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.JsonRpcServiceObserver;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
-import org.chromium.chrome.browser.crypto_wallet.util.AndroidUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.JavaUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.NetworkUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletConstants;
@@ -280,7 +279,11 @@ public class NetworkModel implements JsonRpcServiceObserver {
             for (Map.Entry<String, Integer> entry :
                     WalletConstants.KNOWN_TEST_CHAINS_MAP.entrySet()) {
                 mJsonRpcService.removeHiddenNetwork(
-                        entry.getValue(), entry.getKey(), result -> {/* No-op. */});
+                        entry.getValue(),
+                        entry.getKey(),
+                        result -> {
+                            /* No-op. */
+                        });
             }
 
             getAllNetworks(

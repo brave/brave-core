@@ -9,7 +9,6 @@
 #include <string>
 
 #include "base/files/scoped_temp_dir.h"
-#include "base/test/bind.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
@@ -22,11 +21,9 @@
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/browser/tx_meta.h"
-#include "brave/components/brave_wallet/browser/tx_storage.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
-#include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
@@ -103,20 +100,12 @@ TEST_F(EthNonceTrackerUnitTest, GetNonce) {
                     mojom::AccountKind::kDerived,
                     "0x2f015c60e0be116b1f0cd534704db9c92118fb6a"));
 
-  // uint256_t can't be used as a TestFuture type because base::ToString
-  // doesn't support 256-bit integers, so the nonce is converted to hex.
-  base::test::TestFuture<bool, std::string> future;
-  auto get_next_nonce_callback = [&] {
-    return base::BindLambdaForTesting([&](bool success, uint256_t nonce) {
-      future.SetValue(success, Uint256ValueToHex(nonce));
-    });
-  };
+  base::test::TestFuture<bool, uint256_t> future;
 
   // tx count: 2, confirmed: null, pending: null
   nonce_tracker.GetNextNonce(mojom::kMainnetChainId, eth_acc,
-                             get_next_nonce_callback());
-  EXPECT_EQ(future.Take(),
-            std::make_tuple(true, Uint256ValueToHex(uint256_t(2))));
+                             future.GetCallback());
+  EXPECT_EQ(future.Take(), std::make_tuple(true, uint256_t{2}));
 
   // tx count: 2, confirmed: [2], pending: null
   EthTxMeta meta(eth_acc, std::make_unique<EthTransaction>());
@@ -127,9 +116,8 @@ TEST_F(EthNonceTrackerUnitTest, GetNonce) {
   ASSERT_TRUE(tx_state_manager.AddOrUpdateTx(meta));
 
   nonce_tracker.GetNextNonce(mojom::kMainnetChainId, eth_acc,
-                             get_next_nonce_callback());
-  EXPECT_EQ(future.Take(),
-            std::make_tuple(true, Uint256ValueToHex(uint256_t(3))));
+                             future.GetCallback());
+  EXPECT_EQ(future.Take(), std::make_tuple(true, uint256_t{3}));
 
   // tx count: 2, confirmed: [2, 3], pending: null
   meta.set_id(TxMeta::GenerateMetaID());
@@ -138,9 +126,8 @@ TEST_F(EthNonceTrackerUnitTest, GetNonce) {
   ASSERT_TRUE(tx_state_manager.AddOrUpdateTx(meta));
 
   nonce_tracker.GetNextNonce(mojom::kMainnetChainId, eth_acc,
-                             get_next_nonce_callback());
-  EXPECT_EQ(future.Take(),
-            std::make_tuple(true, Uint256ValueToHex(uint256_t(4))));
+                             future.GetCallback());
+  EXPECT_EQ(future.Take(), std::make_tuple(true, uint256_t{4}));
 
   // tx count: 2, confirmed: [2, 3], pending: [4, 4]
   meta.set_status(mojom::TransactionStatus::Submitted);
@@ -151,9 +138,8 @@ TEST_F(EthNonceTrackerUnitTest, GetNonce) {
   ASSERT_TRUE(tx_state_manager.AddOrUpdateTx(meta));
 
   nonce_tracker.GetNextNonce(mojom::kMainnetChainId, eth_acc,
-                             get_next_nonce_callback());
-  EXPECT_EQ(future.Take(),
-            std::make_tuple(true, Uint256ValueToHex(uint256_t(5))));
+                             future.GetCallback());
+  EXPECT_EQ(future.Take(), std::make_tuple(true, uint256_t{5}));
 
   // tx count: 2, confirmed: [2, 3], pending: [4, 4], sign: [5]
   meta.set_status(mojom::TransactionStatus::Signed);
@@ -161,15 +147,13 @@ TEST_F(EthNonceTrackerUnitTest, GetNonce) {
   ASSERT_TRUE(tx_state_manager.AddOrUpdateTx(meta));
 
   nonce_tracker.GetNextNonce(mojom::kMainnetChainId, eth_acc,
-                             get_next_nonce_callback());
-  EXPECT_EQ(future.Take(),
-            std::make_tuple(true, Uint256ValueToHex(uint256_t(5))));
+                             future.GetCallback());
+  EXPECT_EQ(future.Take(), std::make_tuple(true, uint256_t{5}));
 
-  // tx count: 2, confirmed: null, pending: null (plygon)
+  // tx count: 2, confirmed: null, pending: null (polygon)
   nonce_tracker.GetNextNonce(mojom::kPolygonMainnetChainId, eth_acc,
-                             get_next_nonce_callback());
-  EXPECT_EQ(future.Take(),
-            std::make_tuple(true, Uint256ValueToHex(uint256_t(2))));
+                             future.GetCallback());
+  EXPECT_EQ(future.Take(), std::make_tuple(true, uint256_t{2}));
 }
 
 }  // namespace brave_wallet
