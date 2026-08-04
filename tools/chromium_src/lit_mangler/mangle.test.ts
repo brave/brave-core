@@ -89,6 +89,7 @@ const skippedManglers = [
   'chromium_src/chrome/browser/resources/settings/a11y_page/a11y_page.html.ts.lit_mangler.ts',
   'chromium_src/chrome/browser/resources/settings/a11y_page/a11y_page_index.html.ts.lit_mangler.ts',
   'chromium_src/chrome/browser/resources/settings/appearance_page/appearance_page.html.ts.lit_mangler.ts',
+  'chromium_src/chrome/browser/resources/settings/on_startup_page/on_startup_page.html.ts.lit_mangler.ts',
   'chromium_src/chrome/browser/resources/settings/system_page/system_page.html.ts.lit_mangler.ts',
 ]
 
