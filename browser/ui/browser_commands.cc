@@ -148,7 +148,7 @@ namespace brave {
 namespace {
 
 bool CanTakeTabs(const Browser* from, const Browser* to) {
-  return from != to && from->type() == Browser::TYPE_NORMAL &&
+  return from != to && from->GetType() == Browser::TYPE_NORMAL &&
          !UnloadController::From(from)->is_attempting_to_close_browser() &&
          !from->IsDeleteScheduled() && to->GetProfile() == from->GetProfile();
 }
