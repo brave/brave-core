@@ -37,43 +37,6 @@ struct ControllableCloseButtonState final {
   bool showing_close_button = false;
 };
 
-#define kMinimumContentsWidthForCloseButtons      \
-  kMinimumContentsWidthForCloseButtons = 55;      \
-  bool IsTabMuteIndicatorNotClickable() override; \
-  friend class ::BraveTabTest;                    \
-  friend class ::BraveTab;                        \
-  static constexpr int kMinimumContentsWidthForCloseButtons_UnUsed
-
-#define GetWidthOfLargestSelectableRegion \
-  virtual GetWidthOfLargestSelectableRegion
-
-// Add a method to resets tab_style_views_ so that it can have correct style for
-// orientation.
-#define UpdateInsets()                                     \
-  ResetTabStyle(std::unique_ptr<TabStyleViews> new_style); \
-  void UpdateInsets()
-
-#define OnTabDataChanged virtual OnTabDataChanged
-#define ActiveStateChanged virtual ActiveStateChanged
-#define GetGroupColor virtual GetGroupColor
-#define UpdateIconVisibility virtual UpdateIconVisibility
-#define ShouldRenderAsNormalTab virtual ShouldRenderAsNormalTab
-#define MaybeAdjustLeftForPinnedTab virtual MaybeAdjustLeftForPinnedTab
-#define IsActive virtual IsActive
-#define MaybeUpdateHoverStatus virtual MaybeUpdateHoverStatus
-
 #include <chrome/browser/ui/views/tabs/tab.h>  // IWYU pragma: export
-
-#undef MaybeUpdateHoverStatus
-#undef IsActive
-#undef MaybeAdjustLeftForPinnedTab
-#undef ShouldRenderAsNormalTab
-#undef UpdateIconVisibility
-#undef GetGroupColor
-#undef ActiveStateChanged
-#undef UpdateInsets
-#undef GetWidthOfLargestSelectableRegion
-#undef kMinimumContentsWidthForCloseButtons
-#undef OnTabDataChanged
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_TAB_H_
