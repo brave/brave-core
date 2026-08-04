@@ -18,7 +18,17 @@ import os
 import subprocess
 import shlex
 import sys
+from pathlib import Path
 
+
+def is_path(value):
+    path = Path(value)
+
+    # path.name gets the filename. If it matches the whole string it's not a path
+    if path.name == value:
+        return False
+
+    return path.exists()
 
 def main():
     if len(sys.argv) < 2:
@@ -36,11 +46,20 @@ def main():
 
     args = shlex.split(content)
 
+    # convert any argument paths to absolute paths
+    for index, arg in enumerate(args):
+        if is_path(arg):
+            args[index] = os.path.abspath(arg)
+
+
     # Parse environment variables from command line arguments.
     env_vars = {}
     for arg in args:
         if '=' in arg:
             name, value = arg.split('=', 1)
+            # Convert any env paths to absolute paths
+            if is_path(value):
+                value = os.path.abspath(value)
             env_vars[name] = value
         else:
             break
@@ -56,6 +75,8 @@ def main():
     args = [path] + args[len(env_vars) + 1:]
 
     env = os.environ.copy()
+    # Include the current directory in the path
+    env['PATH'] = env['PATH'] + os.pathsep + os.path.abspath('./')
     env.update(env_vars)
 
     ret = subprocess.call(args, env=env)
