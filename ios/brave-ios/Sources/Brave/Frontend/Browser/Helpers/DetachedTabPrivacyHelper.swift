@@ -49,6 +49,7 @@ class DetachedTabPrivacyHelper: TabPolicyDecider {
       RequestBlockingContentScriptHandler(),
       SiteStateListenerScriptHandler(),
       CosmeticFiltersScriptHandler(),
+      URLPartinessScriptHandler(),
     ]
     if let contentBlocker = tab.browserData?.contentBlocker {
       privacyRelatedScripts.append(contentBlocker)
