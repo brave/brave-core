@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <array>
 #include <cstdint>
+#include <ranges>
 #include <string>
 #include <string_view>
 #include <utility>
@@ -17,7 +18,6 @@
 #include "base/functional/bind.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
-#include "base/types/zip.h"
 #include "content/public/browser/browser_thread.h"
 #include "crypto/hmac.h"
 
@@ -179,7 +179,8 @@ constexpr bool HasNoSubmaskingOnInvalidAddresses() {
   }
 
   const auto next_in_range = base::span(kInvalidMacAddresses).subspan<1U>();
-  for (const auto [it, next] : base::zip(kInvalidMacAddresses, next_in_range)) {
+  for (const auto [it, next] :
+       std::views::zip(kInvalidMacAddresses, next_in_range)) {
     if (it.mask() ==
         next.mask().first(std::min(it.mask().size(), next.mask().size()))) {
       return false;
