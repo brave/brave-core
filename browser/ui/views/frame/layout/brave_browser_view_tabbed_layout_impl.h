@@ -62,8 +62,6 @@ class BraveBrowserViewTabbedLayoutImpl : public BrowserViewTabbedLayoutImpl {
       int full_window_width,
       std::optional<gfx::Insets> vtab_insets);
 
-  views::View* contents_container() { return views().contents_container; }
-
   // Returns the ideal sidebar width, given the current available width. Used
   // for determining the target width in sidebar width animations.
   int GetIdealSideBarWidth() const;
