@@ -182,14 +182,13 @@ template("transpile_web_ui") {
 
     outputs = [ grd_path ]
 
-    webpack_context_dir = rebase_path("//brave", root_build_dir)
     # Base script arguments:
     #  - resource (compiled) output destination
     #  - GRD summary of output files destination
     #  - unique name to stamp in GRD file
     #  - depfile summary of input files destination
     args = [
-      "--webpack_context_dir=$webpack_context_dir",
+      "--webpack_context_dir=" + rebase_path("//brave", root_build_dir),
       "--root_src_dir=" + rebase_path("//", root_build_dir),
       "--root_gen_dir=" + rebase_path(root_gen_dir, root_build_dir),
       "--output_dir=" + rebase_path(gen_output_dir, root_build_dir),
@@ -216,7 +215,8 @@ template("transpile_web_ui") {
 
     # support multiple entry points and named bundle JS filename
     foreach(entry_point, invoker.entry_points) {
-      args += [ "--entry=" + entry_point[0] + "=./" + rebase_path(entry_point[1], "//brave") ]
+      args += [ "--entry=" + entry_point[0] + "=./" +
+                rebase_path(entry_point[1], "//brave") ]
       inputs += [ entry_point[1] ]
     }
 
