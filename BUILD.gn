@@ -781,9 +781,7 @@ if (current_toolchain == host_toolchain) {
 
     args = [
       "--source_root=" + rebase_path("//brave", root_build_dir),
-      "--cargo_audit_exe=" +
-          rebase_path("$root_build_dir/cargo-audit$host_exe_suffix",
-                      root_build_dir),
+      "--cargo_audit_exe=./cargo-audit$host_exe_suffix",
       "--output=" + rebase_path(output, root_build_dir),
     ]
 
