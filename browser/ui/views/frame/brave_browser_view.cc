@@ -33,8 +33,6 @@
 #include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
 #include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
 #include "brave/browser/ui/views/brave_help_bubble/brave_help_bubble_host_view.h"
-#include "brave/browser/ui/views/frame/brave_contents_layout_manager.h"
-#include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "brave/browser/ui/views/frame/focus_mode_title_bar_view.h"
 #include "brave/browser/ui/views/frame/focus_mode_top_overlay.h"
 #include "brave/browser/ui/views/frame/split_view/brave_contents_container_view.h"
@@ -71,7 +69,6 @@
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
-#include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
 #include "chrome/browser/ui/frame/window_frame_util.h"
 #include "chrome/browser/ui/side_panel/side_panel_entry.h"
 #include "chrome/browser/ui/side_panel/side_panel_ui.h"
@@ -79,7 +76,6 @@
 #include "chrome/browser/ui/views/frame/browser_frame_view.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/browser_widget.h"
-#include "chrome/browser/ui/views/frame/contents_layout_manager.h"
 #include "chrome/browser/ui/views/frame/contents_web_view.h"
 #include "chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.h"
 #include "chrome/browser/ui/views/frame/layout/browser_view_layout.h"
@@ -107,11 +103,9 @@
 #include "ui/base/hit_test.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
-#include "ui/compositor/layer.h"
 #include "ui/display/screen.h"
 #include "ui/events/event.h"
 #include "ui/events/event_observer.h"
-#include "ui/gfx/geometry/rounded_corners_f.h"
 #include "ui/views/border.h"
 #include "ui/views/bubble/bubble_dialog_delegate_view.h"
 #include "ui/views/controls/native/native_view_host.h"
@@ -1441,30 +1435,8 @@ BraveBrowser* BraveBrowserView::GetBraveBrowser() const {
 }
 
 void BraveBrowserView::UpdateWebViewRoundedCorners() {
-  gfx::RoundedCornersF corners;
-
-  if (ShouldUseBraveWebViewRoundedCornersForContents(browser_.get())) {
-    corners = BraveContentsViewUtil::GetRoundedCornersForContentsView(browser_,
-                                                                      nullptr);
-  }
-
-  // In fullscreen-for-tab mode (e.g. full-screen video), no corners should be
-  // rounded.
-  if (auto* exclusive_access_manager =
-          browser_->GetFeatures().exclusive_access_manager()) {
-    if (auto* controller = exclusive_access_manager->fullscreen_controller()) {
-      if (controller->IsWindowFullscreenForTabOrPending()) {
-        corners = gfx::RoundedCornersF(0);
-      }
-    }
-  }
-
-  // Set the appropriate corner radius for the view that contains both the web
-  // contents and devtools.
-  if (contents_container_->layer()) {
-    contents_container_->layer()->SetRoundedCornerRadius(corners);
-  }
-
+  // Each contents container view computes its own corner radius, which also
+  // accounts for rounded corners being disabled (ex. fullscreen-for-tab).
   GetBraveMultiContentsView()->UpdateCornerRadius();
 }
 
