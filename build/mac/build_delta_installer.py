@@ -71,22 +71,28 @@ def Main(argv):
         print(parser.get_usage())
         return 1
 
-    old_dmg_mount_point = os.path.join(options.root_out_dir_path,
+    binary_delta_path = os.path.abspath(options.binary_delta_path)
+    root_out_dir_path = os.path.abspath(options.root_out_dir_path)
+    old_dmg_path = os.path.abspath(options.old_dmg_path)
+    new_dmg_path = os.path.abspath(options.new_dmg_path)
+    delta_output_path = os.path.abspath(options.delta_output_path)
+
+    old_dmg_mount_point = os.path.join(root_out_dir_path,
                                        'old_dmg_mount_for_delta')
-    mount_dmg(options.old_dmg_path, old_dmg_mount_point)
+    mount_dmg(old_dmg_path, old_dmg_mount_point)
     old_app_path, = glob.glob(os.path.join(old_dmg_mount_point, '*.app'))
 
-    new_dmg_mount_point = os.path.join(options.root_out_dir_path,
+    new_dmg_mount_point = os.path.join(root_out_dir_path,
                                        'new_dmg_mount_for_delta')
-    mount_dmg(options.new_dmg_path, new_dmg_mount_point)
+    mount_dmg(new_dmg_path, new_dmg_mount_point)
     new_app_path, = glob.glob(os.path.join(new_dmg_mount_point, '*.app'))
 
     # generate delta file
     print('-> generate delta file from ' + old_app_path + ' and ' +
           new_app_path)
     command = [
-        options.binary_delta_path, 'create', old_app_path, new_app_path,
-        options.delta_output_path
+        binary_delta_path, 'create', old_app_path, new_app_path,
+        delta_output_path
     ]
     try:
         subprocess.check_call(command)
