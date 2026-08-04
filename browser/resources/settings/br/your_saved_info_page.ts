@@ -13,7 +13,7 @@ import { YourSavedInfoDataChip } from '../metrics_browser_proxy.js'
 import { routes } from '../route.js'
 import { Router } from '../router.js'
 import type { Route } from '../router.js'
-import type { DataChip } from '../your_saved_info_page/your_saved_info_page.js'
+import type { DataChip } from '../autofill_page/your_saved_info_page.js'
 
 // <if expr="enable_email_aliases">
 import '../email_aliases_page/email_aliases_page.js'
