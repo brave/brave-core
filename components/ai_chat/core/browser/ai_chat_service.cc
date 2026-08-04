@@ -1381,7 +1381,11 @@ bool AIChatService::IsPremiumStatus() {
 }
 
 std::unique_ptr<EngineConsumer> AIChatService::GetDefaultAIEngine() {
-  return GetEngineForModel(model_service_->GetDefaultModelKey());
+  std::string model_key = model_service_->GetDefaultModelKey();
+  if (!model_service_->GetModel(model_key)) {
+    model_key = features::kAIModelsDefaultKey.Get();
+  }
+  return GetEngineForModel(model_key);
 }
 
 std::unique_ptr<EngineConsumer> AIChatService::GetEngineForModel(
