@@ -30,6 +30,7 @@
 #include "components/prefs/pref_member.h"
 #include "ui/base/accelerators/accelerator.h"
 #include "ui/base/metadata/metadata_header_macros.h"
+#include "ui/gfx/geometry/rounded_corners_f.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/ui/views/toolbar/brave_vpn_panel_controller.h"
@@ -117,7 +118,6 @@ class BraveBrowserView : public BrowserView,
 #endif
 
   // BrowserView overrides:
-  void Layout(PassKey) override;
   void StartTabCycling() override;
   views::View* GetAnchorViewForBraveVPNPanel();
   gfx::Rect GetShieldsBubbleRect() override;
@@ -166,6 +166,11 @@ class BraveBrowserView : public BrowserView,
   void OnFocusModeToggled(bool enabled) override;
 
   BraveMultiContentsView* GetBraveMultiContentsView() const;
+
+  // Applies the contents area corner radii computed by the layout. Called at
+  // the end of every layout pass.
+  void SetContentsCornerRadii(const gfx::RoundedCornersF& corner_radii);
+
   void UpdateRoundedCornersUI();
   void UpdateVerticalTabStripBorder();
   void UpdateSidebarBorder();
@@ -281,7 +286,6 @@ class BraveBrowserView : public BrowserView,
   void OnPreferenceChanged(const std::string& pref_name);
   void OnWindowClosingConfirmResponse(bool allowed_to_close);
   BraveBrowser* GetBraveBrowser() const;
-  void UpdateWebViewRoundedCorners();
   void UpdateFocusModeState();
   bool ShouldDisableFocusModeForActiveTab() const;
 

@@ -34,7 +34,6 @@
 #include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
 #include "brave/browser/ui/views/brave_help_bubble/brave_help_bubble_host_view.h"
 #include "brave/browser/ui/views/frame/brave_contents_layout_manager.h"
-#include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "brave/browser/ui/views/frame/focus_mode_title_bar_view.h"
 #include "brave/browser/ui/views/frame/focus_mode_top_overlay.h"
 #include "brave/browser/ui/views/frame/split_view/brave_contents_container_view.h"
@@ -69,7 +68,6 @@
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
-#include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
 #include "chrome/browser/ui/frame/window_frame_util.h"
 #include "chrome/browser/ui/side_panel/side_panel_entry.h"
 #include "chrome/browser/ui/side_panel/side_panel_ui.h"
@@ -796,8 +794,6 @@ void BraveBrowserView::AddedToWidget() {
   GetBrowserViewLayout()->set_contents_background(contents_background_view_);
   GetBrowserViewLayout()->set_sidebar_container(sidebar_container_view_);
 
-  UpdateWebViewRoundedCorners();
-
   if (vertical_tab_strip_host_view_) {
     vertical_tab_strip_container_view_ =
         AddChildView(std::make_unique<BraveVerticalTabStripContainerView>(
@@ -980,7 +976,9 @@ bool BraveBrowserView::MaybeUpdateDevtools(content::WebContents* web_contents) {
 
   bool result = BrowserView::MaybeUpdateDevtools(web_contents);
 
-  UpdateWebViewRoundedCorners();
+  // The devtools web view shares the contents area's corner radii, which are
+  // applied at the end of a layout pass.
+  InvalidateLayout();
   return result;
 }
 
@@ -1131,8 +1129,8 @@ bool BraveBrowserView::ShouldShowWindowTitle() const {
 }
 
 void BraveBrowserView::UpdateRoundedCornersUI() {
-  // Update various UI that can be affected by rounded corners.
-  UpdateWebViewRoundedCorners();
+  // Update various UI that can be affected by rounded corners. The contents
+  // corner radii themselves are applied by the layout.
   UpdateVerticalTabStripBorder();
   UpdateSidebarBorder();
   InvalidateLayout();
@@ -1384,32 +1382,14 @@ BraveBrowser* BraveBrowserView::GetBraveBrowser() const {
   return static_cast<BraveBrowser*>(browser_.get());
 }
 
-void BraveBrowserView::UpdateWebViewRoundedCorners() {
-  gfx::RoundedCornersF corners;
-
-  if (ShouldUseBraveWebViewRoundedCornersForContents(browser_.get())) {
-    corners = BraveContentsViewUtil::GetRoundedCornersForContentsView(browser_,
-                                                                      nullptr);
-  }
-
-  // In fullscreen-for-tab mode (e.g. full-screen video), no corners should be
-  // rounded.
-  if (auto* exclusive_access_manager =
-          browser_->GetFeatures().exclusive_access_manager()) {
-    if (auto* controller = exclusive_access_manager->fullscreen_controller()) {
-      if (controller->IsWindowFullscreenForTabOrPending()) {
-        corners = gfx::RoundedCornersF(0);
-      }
-    }
-  }
-
-  // Set the appropriate corner radius for the view that contains both the web
-  // contents and devtools.
+void BraveBrowserView::SetContentsCornerRadii(
+    const gfx::RoundedCornersF& corner_radii) {
+  // The contents container hosts both the web contents and devtools.
   if (contents_container_->layer()) {
-    contents_container_->layer()->SetRoundedCornerRadius(corners);
+    contents_container_->layer()->SetRoundedCornerRadius(corner_radii);
   }
 
-  GetBraveMultiContentsView()->UpdateCornerRadius();
+  GetBraveMultiContentsView()->SetContentsCornerRadii(corner_radii);
 }
 
 void BraveBrowserView::UpdateFocusModeState() {
@@ -1459,11 +1439,6 @@ bool BraveBrowserView::ShouldDisableFocusModeForActiveTab() const {
   }
   auto level = model->GetSecurityLevel();
   return level != security_state::SecurityLevel::SECURE;
-}
-
-void BraveBrowserView::Layout(PassKey) {
-  LayoutSuperclass<BrowserView>(this);
-  UpdateWebViewRoundedCorners();
 }
 
 void BraveBrowserView::StartTabCycling() {

@@ -445,9 +445,6 @@ IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
                                          ->GetActiveContentsContainerView()
                                          ->contents_view()
                                          ->GetBackgroundRadii();
-    EXPECT_EQ(BraveContentsViewUtil::GetRoundedCornersForContentsView(browser(),
-                                                                      nullptr),
-              contents_view_radii);
     EXPECT_EQ(rounded_corners_border_radius, contents_view_radii.upper_left());
     EXPECT_EQ(rounded_corners_border_radius, contents_view_radii.upper_right());
 
@@ -492,7 +489,7 @@ IN_PROC_BROWSER_TEST_P(
   auto* prefs = browser()->profile()->GetPrefs();
 
   // Hide the sidebar so IsSidebarVisible() returns false, isolating the
-  // side_panel()->GetVisible() branch of GetRoundedCornersForContentsView().
+  // side panel branch of the layout's contents corner radii calculation.
   sidebar::SidebarServiceFactory::GetForProfile(browser()->profile())
       ->SetSidebarShowOption(
           sidebar::SidebarService::ShowSidebarOption::kShowNever);
@@ -618,13 +615,6 @@ IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
   // Verify behavior returns to normal after exiting split mode
   if (IsRoundedCornersEnabled()) {
     ExpectContentsContainerMargins(contents_container, rounded_corners_margin);
-    const auto contents_view_radii = browser_view()
-                                         ->GetActiveContentsContainerView()
-                                         ->contents_view()
-                                         ->GetBackgroundRadii();
-    EXPECT_EQ(BraveContentsViewUtil::GetRoundedCornersForContentsView(browser(),
-                                                                      nullptr),
-              contents_view_radii);
     ExpectContentsViewRadii(rounded_corners_border_radius,
                             rounded_corners_border_radius,
                             rounded_corners_border_radius_at_window_corner,
