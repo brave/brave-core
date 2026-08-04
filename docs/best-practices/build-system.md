@@ -1112,12 +1112,12 @@ to suppress circular include errors. See [`gni_sources.md`](../gni_sources.md)
 
 <a id="BS-058"></a>
 
-## ❌ Don't Use One-Argument `rebase_path()` for Build Command Paths
+## ❌ Don't Use System-Absolute Paths in Ninja Arguments
 
-**When passing a path to a build command, don't call `rebase_path()` with only
-the input. Pass the command's expected working directory as `new_base`—usually
-`root_build_dir` for GN actions—so the generated command line uses a relative,
-relocatable path.**
+**Never use a system-absolute path for anything that will appear in Ninja
+arguments. When calling `rebase_path()`, pass the path's expected base as
+`new_base`—usually `root_build_dir` for GN actions—so the generated Ninja file
+uses a relative, relocatable path.**
 
 ```gn
 # ❌ WRONG - the default empty new_base produces a system-absolute path
@@ -1127,12 +1127,11 @@ args = [ "--output=" + rebase_path(output) ]
 args = [ "--output=" + rebase_path(output, root_build_dir) ]
 ```
 
-One-argument `rebase_path()` is appropriate only when the consumer explicitly
-requires a system-absolute path. Otherwise it embeds a checkout-specific path in
-the command line, which can interfere with remote build execution and fail when
-build artifacts are reused from a cloned or relocated checkout. If a tool
-changes its working directory, rebase to that directory rather than blindly
-using `root_build_dir`. See GN's
+One-argument `rebase_path()` produces a system-absolute, checkout-specific path,
+so never use it for a value that will appear in Ninja arguments. Such paths can
+interfere with remote build execution and fail when build artifacts are reused
+from a cloned or relocated checkout. If a tool changes its working directory,
+rebase to that directory rather than blindly using `root_build_dir`. See GN's
 [`rebase_path()` reference](https://gn.googlesource.com/gn/+/master/docs/reference.md#func_rebase_path)
 for the complete API contract.
 
