@@ -31,6 +31,16 @@
     overflow-wrap: normal;
     overflow-x: scroll;
   }
+
+  #invalidBridge {
+    padding-bottom: var(--cr-section-padding);
+  }
+
+  #invalidBridge .bridge-line {
+    font-family: monospace;
+    font-size: var(--leo-font-monospace-small);
+    overflow-wrap: anywhere;
+  }
 </style>
 
 <settings-section page-title="$i18n{braveTor}">
@@ -95,6 +105,12 @@
           disabled="[[!usageEqual_('useProvided', useBridgesValue_)]]"></textarea>
       </div>
     </settings-collapse-radio-button>
+<template is="dom-if" if="[[invalidBridge_]]">
+    <leo-alert id="invalidBridge" hideIcon="true" type="error">
+      <div>$i18n{torInvalidBridgeError}</div>
+      <div class="bridge-line">[[invalidBridge_]]</div>
+    </leo-alert>
+  </template>
   </cr-radio-group>
 
   <template is="dom-if" if="[[showRequestBridgesDialog_]]" restamp>
