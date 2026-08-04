@@ -25,6 +25,10 @@
 
 namespace brave_wallet {
 
+bool IsFilecoinLedgerEnabled() {
+  return base::FeatureList::IsEnabled(features::kBraveWalletFilecoinLedger);
+}
+
 bool IsBitcoinEnabled() {
   return base::FeatureList::IsEnabled(features::kBraveWalletBitcoinFeature);
 }

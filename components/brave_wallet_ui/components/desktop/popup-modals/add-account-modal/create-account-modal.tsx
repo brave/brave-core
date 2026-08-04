@@ -95,6 +95,7 @@ export const CreateAccountModal = () => {
   const createAccountOptions = React.useMemo(() => {
     return CreateAccountOptions({
       visibleNetworks,
+      isFilecoinEnabled: true,
       isBitcoinEnabled,
       isZCashEnabled,
       isCardanoEnabled,

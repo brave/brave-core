@@ -89,4 +89,6 @@ BASE_FEATURE(kBraveWalletSnapsFeature,
 
 BASE_FEATURE(kBraveWalletSidePanel, base::FEATURE_DISABLED_BY_DEFAULT);
 
+BASE_FEATURE(kBraveWalletFilecoinLedger, base::FEATURE_ENABLED_BY_DEFAULT);
+
 }  // namespace brave_wallet::features

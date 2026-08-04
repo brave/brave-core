@@ -49,6 +49,9 @@ export const AddHardwareAccountModal = ({ onSelectAccountType }: Props) => {
   const history = useHistory()
   const { accountTypeName } = useParams<Params>()
 
+  const isFilecoinLedgerEnabled = useSafeWalletSelector(
+    WalletSelectors.isFilecoinLedgerEnabled,
+  )
   const isBitcoinLedgerEnabled = useSafeWalletSelector(
     WalletSelectors.isBitcoinLedgerEnabled,
   )
@@ -60,6 +63,7 @@ export const AddHardwareAccountModal = ({ onSelectAccountType }: Props) => {
   const createAccountOptions = React.useMemo(() => {
     return CreateAccountOptions({
       visibleNetworks,
+      isFilecoinEnabled: isFilecoinLedgerEnabled,
       isBitcoinEnabled: isBitcoinLedgerEnabled,
       isZCashEnabled: false, // No zcash hardware accounts by now.
       isCardanoEnabled: false, // No cardano hardware accounts by now.
