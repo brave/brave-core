@@ -304,6 +304,31 @@ public class PasswordSettingsSearchTest {
         onView(withId(R.id.menu_id_search)).check(matches(isDisplayed()));
     }
 
+    /**
+     * Check that the system back gesture/button (not the toolbar arrow) collapses the search and
+     * brings back all non-password prefs. Unlike the up-arrow, this routes through the fragment's
+     * OnBackPressedCallback, which is the path that regressed.
+     */
+    @Test
+    @SmallTest
+    @Feature({"Preferences"})
+    public void testSystemBackRestoresGeneralPrefs() {
+        mTestHelper.setPasswordSourceWithMultipleEntries(GREEK_GODS);
+        mTestHelper.startPasswordSettingsFromMainSettings(mSettingsActivityTestRule);
+
+        onView(withSearchMenuIdOrText()).perform(click());
+        onView(withId(R.id.search_src_text)).perform(click(), typeText("Zeu"), closeSoftKeyboard());
+
+        onView(withText(R.string.password_settings_save_passwords)).check(doesNotExist());
+
+        Espresso.pressBack();
+        onViewWaiting(allOf(withText(R.string.password_settings_save_passwords), isDisplayed()));
+
+        onView(withText(R.string.password_settings_save_passwords)).check(matches(isDisplayed()));
+
+        onView(withId(R.id.menu_id_search)).check(matches(isDisplayed()));
+    }
+
     /** Check that clearing the search also hides the clear button. */
     @Test
     @SmallTest
