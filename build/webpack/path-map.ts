@@ -54,6 +54,7 @@ export function generatePathMap(genPath: string): PathMap {
     // TODO(petemill): Rename 'brave/components/common' dir to
     // 'brave/components/web-common'
     '$web-common': path.resolve(dirName, '../../components/common'),
+    '$wallet': path.resolve(dirName, '../../components/brave_wallet_ui'),
     // react-markdown uses this deep in its tree, and the browser variant uses innerHTML, conflicting with WebUIs that requires Trusted Types
     // We redirect to an alternative implementation that uses a lookup table to decode named chars instead of innerHTML
     'decode-named-character-reference': path.resolve(

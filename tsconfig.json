@@ -83,6 +83,7 @@
       ],
       "$storybook/*": ["web/storybook/*"],
       "$web-common/*": ["components/common/*"],
+      "$wallet/*": ["components/brave_wallet_ui/*"],
     },
     "typeRoots": ["./node_modules/@types", "./components/definitions"],
     // optional
