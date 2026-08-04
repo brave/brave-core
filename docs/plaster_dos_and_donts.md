@@ -106,6 +106,43 @@ reader assumes are common causes for bugs. Wrong assumptions about what some
 `#define` statements do are not uncommon, due to how hard it is to reason about
 code relying on them.
 
+## Write the `description:` to document what and why
+
+A `description:` is read by a reviewer at the time of the change, and later by
+whoever is staring at a failed match during a rebase, serving as an important
+clue as to what the substitution was for. A good description does two things.
+First, a short subject line conveys, at a glance, the high-level view of what
+the substitution does. Second, where the _why_ is not obvious from the _what_, a
+blank line followed by one paragraph or more that elaborates on the reasoning
+behind the change.
+
+Do:
+
+```yaml
+substitutions:
+  - description: |-
+      Force ranker querying off.
+
+      Brave never downloads or uses a translate ranker model, regardless of
+      the upstream field trial state, so RankerModelLoaderImpl must never be
+      reached.
+    ...
+```
+
+Don't:
+
+```yaml
+substitutions:
+  - description: |-
+      Force ranker querying off: Brave never downloads or uses a translate
+      ranker model, regardless of the upstream field trial state.
+    ...
+```
+
+A subject line on its own is fine where there is genuinely nothing more to say.
+Do not pollute the descript with long paragraphs explaining **how** a certain
+substitution ended up on its final state.
+
 ## Prefer a rewriter over a regex
 
 AST rewriters have some conceptual understanding of the code syntax, and
