@@ -96,6 +96,24 @@ describe('TopSitesPanel', () => {
     )
   })
 
+  it('should stop the learn more link click from reaching the toggle', () => {
+    // The Toggle wraps its label content in a native <label>, which
+    // forwards an unstopped click to its associated control. Rather than
+    // relying on jsdom to replicate that native label activation
+    // behavior (uncertain in this test environment), this verifies the
+    // fix's actual mechanism directly: the click must not bubble past the
+    // description's wrapping element.
+    renderPanel({ showTopSites: true })
+    const onDocumentClick = jest.fn()
+    document.addEventListener('click', onDocumentClick)
+    try {
+      screen.getByRole('link', { name: 'Learn more' }).click()
+    } finally {
+      document.removeEventListener('click', onDocumentClick)
+    }
+    expect(onDocumentClick).not.toHaveBeenCalled()
+  })
+
   it('should update the sponsored sites setting when its toggle changes', () => {
     const setShowSponsoredSites = jest.fn()
     renderPanel(

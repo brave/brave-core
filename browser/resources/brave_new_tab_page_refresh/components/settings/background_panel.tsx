@@ -31,6 +31,9 @@ import {
 
 import { style } from './background_panel.style'
 
+const sponsoredImageLearnMoreURL =
+  'https://support.brave.app/hc/en-us/articles/35182999599501'
+
 export function BackgroundPanel() {
   const actions = useBackgroundActions()
 
@@ -192,25 +195,33 @@ export function BackgroundPanel() {
           }}
         >
           <span className='label'>
-            <div>
-              {getString(S.NEW_TAB_SHOW_SPONSORED_IMAGES_LABEL)}
-              {!rewardsEnabled && (
-                <div className='subtext'>
-                  {formatString(
-                    getString(S.NEW_TAB_SHOW_SPONSORED_IMAGES_EARNING_TEXT),
-                    {
-                      $1: (content) => (
-                        <Link
-                          url={settingsURL}
-                          openInNewTab
-                        >
-                          {content}
-                        </Link>
-                      ),
-                    },
-                  )}
-                </div>
-              )}
+            {getString(S.NEW_TAB_SHOW_SPONSORED_IMAGES_LABEL)}
+            <div
+              className='subtext'
+              onClick={(e) => e.stopPropagation()}
+            >
+              {!rewardsEnabled
+                && formatString(
+                  getString(S.NEW_TAB_SHOW_SPONSORED_IMAGES_EARNING_TEXT),
+                  {
+                    $1: (content) => (
+                      <Link
+                        url={settingsURL}
+                        openInNewTab
+                      >
+                        {content}
+                      </Link>
+                    ),
+                    $2: (content) => (
+                      <Link
+                        url={sponsoredImageLearnMoreURL}
+                        openInNewTab
+                      >
+                        {content}
+                      </Link>
+                    ),
+                  },
+                )}
             </div>
           </span>
         </Toggle>
