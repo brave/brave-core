@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { color, radius, spacing } from '@brave/leo/tokens/css/variables'
+import { color, font, radius, spacing } from '@brave/leo/tokens/css/variables'
 import { scoped } from '$web-common/scoped_css'
 
 export const style = scoped.css`
@@ -53,6 +53,15 @@ export const style = scoped.css`
       padding: ${spacing['4Xl']};
       border-radius: ${radius.xl};
       background: ${color.page.background};
+    }
+  }
+
+  .label .subtext {
+    font: ${font.small.regular};
+    color: ${color.text.secondary};
+
+    a {
+      color: inherit;
     }
   }
 `
