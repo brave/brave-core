@@ -64,11 +64,6 @@ void BravePrivacySandboxSettings::SetTopicAllowed(
     const privacy_sandbox::CanonicalTopic& topic,
     bool allowed) {}
 
-bool BravePrivacySandboxSettings::IsTopicPrioritized(
-    const privacy_sandbox::CanonicalTopic& topic) {
-  return false;
-}
-
 void BravePrivacySandboxSettings::ClearTopicSettings(base::Time start_time,
                                                      base::Time end_time) {}
 
