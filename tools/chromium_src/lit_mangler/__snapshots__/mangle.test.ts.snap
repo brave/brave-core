@@ -854,6 +854,143 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 "
 `;
 
+exports[`mangled files should have up to date snapshots ./chromium_src/chrome/browser/resources/settings/default_browser_page/default_browser_page.html.ts.lit_mangler.ts should match snapshot 1`] = `
+"===================================================================
+--- ../chrome/browser/resources/settings/default_browser_page/default_browser_page.html.ts
++++ gen/chrome/browser/resources/settings/preprocessed/default_browser_page/default_browser_page.html.ts
+@@ -4,12 +4,11 @@
+ 
+ export function getHtml(this: SettingsDefaultBrowserPageElement) {
+   // clang-format off
+   return html\`<!--_html_template_start_-->
+-<settings-section page-title="$i18n{defaultBrowser}"
+-    class="cr-centered-card-container">
++
+   \${this.maySetDefaultBrowser_ ? html\`
+-    <div class="cr-row first">
++    <div class="cr-row">
+       <div class="flex cr-padded-text">
+         <div id="canBeDefaultBrowser">$i18n{defaultBrowser}</div>
+         <div class="secondary" id="makeDefaultLabel">
+           \${this.getMakeDefaultLabel()}
+@@ -20,36 +19,31 @@
+         $i18n{defaultBrowserMakeDefaultButton}
+       </cr-button>
+     </div>
+   \` : html\`
+-    <div class="cr-row first">
+-      <div class="flex cr-padded-text" ?hidden="\${!this.isDefault_}"
+-          id="isDefault">
++    <div class="cr-row">
++      <div class="flex cr-padded-text" ?hidden="\${!this.isDefault_}" id="isDefault">
+         <!--
+           Shows a more user-centric string when the
+           UserValueDefaultBrowserStrings feature is enabled.
+           TODO(crbug.com/459593729): Clean up by removing the old string
+           and this conditional logic after the feature is launched.
+         -->
+-        <span id="defaultString"
+-            ?hidden="\${this.userValueDefaultBrowserStringsEnabled_}">
++        <span id="defaultString" ?hidden="\${this.userValueDefaultBrowserStringsEnabled_}">
+           $i18n{defaultBrowserDefault}
+         </span>
+-        <span id="defaultStringThankYou"
+-            ?hidden="\${!this.userValueDefaultBrowserStringsEnabled_}">
++        <span id="defaultStringThankYou" ?hidden="\${!this.userValueDefaultBrowserStringsEnabled_}">
+           $i18n{defaultBrowserDefaultThankYou}
+         </span>
+       </div>
+-      <div class="flex cr-padded-text" ?hidden="\${!this.isSecondaryInstall_}"
+-          id="isSecondaryInstall">
++      <div class="flex cr-padded-text" ?hidden="\${!this.isSecondaryInstall_}" id="isSecondaryInstall">
+         $i18n{defaultBrowserSecondary}
+       </div>
+-      <div class="cr-padded-text" ?hidden="\${!this.isUnknownError_}"
+-          id="isUnknownError">
++      <div class="cr-padded-text" ?hidden="\${!this.isUnknownError_}" id="isUnknownError">
+         $i18n{defaultBrowserError}
+       </div>
+     </div>
+   \`}
+-</settings-section>
++
+ <!--_html_template_end_-->\`;
+   // clang-format on
+ }
+"
+`;
+
+exports[`mangled files should have up to date snapshots ./chromium_src/chrome/browser/resources/settings/on_startup_page/on_startup_page.html.ts.lit_mangler.ts should match snapshot 1`] = `
+"===================================================================
+--- ../chrome/browser/resources/settings/on_startup_page/on_startup_page.html.ts
++++ gen/chrome/browser/resources/settings/preprocessed/on_startup_page/on_startup_page.html.ts
+@@ -4,54 +4,39 @@
+ import {PrefValues} from './on_startup_page.js';
+ 
+ export function getHtml(this: SettingsOnStartupPageElement) {
+   return html\`<!--_html_template_start_-->
+-<settings-section page-title="$i18n{onStartup}"
+-    class="cr-centered-card-container">
++
+   <div class="cr-row first">
+-    <settings-radio-group id="onStartupRadioGroup"
+-        class="flex"
+-        pref-key="session.restore_on_startup"
+-        group-aria-label="$i18n{onStartup}">
+-      <controlled-radio-button name="\${PrefValues.OPEN_NEW_TAB}"
+-          pref-key="session.restore_on_startup"
+-          label="$i18n{onStartupOpenNewTab}"
+-          no-extension-indicator>
++    <settings-radio-group id="onStartupRadioGroup" class="flex" pref-key="session.restore_on_startup" group-aria-label="$i18n{onStartup}">
++      <controlled-radio-button name="\${PrefValues.OPEN_NEW_TAB}" pref-key="session.restore_on_startup" label="$i18n{onStartupOpenNewTab}" no-extension-indicator="">
+       </controlled-radio-button>
+       \${this.ntpExtension_ ? html\`
+         <extension-controlled-indicator
+             .extensionId="\${this.ntpExtension_.id}"
+             .extensionName="\${this.ntpExtension_.name}"
+             .extensionCanBeDisabled="\${this.ntpExtension_.canBeDisabled}">
+         </extension-controlled-indicator>
+       \` : ''}
+-      <controlled-radio-button name="\${PrefValues.CONTINUE}"
+-          pref-key="session.restore_on_startup"
+-          label="$i18n{onStartupContinue}">
++      <controlled-radio-button name="\${PrefValues.CONTINUE}" pref-key="session.restore_on_startup" label="$i18n{onStartupContinue}">
+       </controlled-radio-button>
+-      <controlled-radio-button name="\${PrefValues.OPEN_SPECIFIC}"
+-          pref-key="session.restore_on_startup"
+-          label="$i18n{onStartupOpenSpecific}">
++      <controlled-radio-button name="\${PrefValues.OPEN_SPECIFIC}" pref-key="session.restore_on_startup" label="$i18n{onStartupOpenSpecific}">
+       </controlled-radio-button>
+-      <controlled-radio-button
+-          name="\${PrefValues.CONTINUE_AND_OPEN_SPECIFIC}"
+-          pref-key="session.restore_on_startup"
+-          label="$i18n{onStartupContinueAndOpenSpecific}"
+-          ?hidden="\${!this.showContinueAndOpenSpecific_()}">
++      <controlled-radio-button name="\${PrefValues.CONTINUE_AND_OPEN_SPECIFIC}" pref-key="session.restore_on_startup" label="$i18n{onStartupContinueAndOpenSpecific}" ?hidden="\${!this.showContinueAndOpenSpecific_()}">
+       </controlled-radio-button>
+     </settings-radio-group>
+   </div>
+   \${this.showStartupUrls_() ? html\`
+     <settings-startup-urls-page></settings-startup-urls-page>
+   \` : ''}
+-<if expr="is_win">
++
+   \${this.isForegroundLaunchFeatureEnabled_ ? html\`
+     <settings-toggle-button class="hr" id="foregroundLaunchOnStartup"
+         pref-key="launch_on_login.foreground.enabled"
+         label="$i18n{onStartupForegroundLaunchOnStartupLabel}"
+         sub-label="$i18n{onStartupForegroundLaunchOnStartupSubLabel}">
+     </settings-toggle-button>
+   \` : ''}
+-</if>
+-</settings-section>
++
++
+ <!--_html_template_end_-->\`;
+ }
+"
+`;
+
 exports[`mangled files should have up to date snapshots ./chromium_src/chrome/browser/resources/settings/system_page/system_page.html.ts.lit_mangler.ts should match snapshot 1`] = `
 "===================================================================
 --- ../chrome/browser/resources/settings/system_page/system_page.html.ts
