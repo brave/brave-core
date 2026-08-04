@@ -105,6 +105,12 @@ export function AttachmentSpinnerItem(props: {
 export function AttachmentPageItem(props: {
   title: string
   url: string
+  /**
+   * Optional URL (probably a data URI) for the favicon image.
+   * Without being specified, the browser favicon service will be used
+   * to lookup via the url.
+   */
+  faviconUrl?: string
   remove?: () => void
   className?: string
 }) {
@@ -116,7 +122,10 @@ export function AttachmentPageItem(props: {
       icon={
         <div className={styles.favicon}>
           <img
-            src={`//favicon2?size=256&pageUrl=${encodeURIComponent(props.url)}&allowGoogleServerFallback=0`}
+            src={
+              props.faviconUrl
+              ?? `//favicon2?size=256&pageUrl=${encodeURIComponent(props.url)}&allowGoogleServerFallback=0`
+            }
           />
         </div>
       }
@@ -250,9 +259,19 @@ export function AttachmentUploadItems(props: {
   onPreview: (file: Mojom.UploadedFile) => void
   chipClassName?: string
 }) {
-  // Calculate first full page screenshot index.
-  const firstFullPageScreenshotIndex =
-    props.uploadedFiles.findIndex(isFullPageScreenshot)
+  // We're only going to show 1 item for full-page screenshot,
+  // so find the index of the first one and sum the filesizes for accuracy
+  // of the context impact.
+  let firstFullPageScreenshotIndex = -1
+  let totalFullPageScreenshotFilesizes = 0
+  props.uploadedFiles.forEach((file, index) => {
+    if (isFullPageScreenshot(file)) {
+      if (firstFullPageScreenshotIndex === -1) {
+        firstFullPageScreenshotIndex = index
+      }
+      totalFullPageScreenshotFilesizes += file.filesize
+    }
+  })
 
   return (
     <>
@@ -267,6 +286,10 @@ export function AttachmentUploadItems(props: {
         .map((file) => {
           // Find the original index in the unfiltered array
           const originalIndex = props.uploadedFiles.indexOf(file)
+
+          if (isFullPageScreenshot(file)) {
+            file = { ...file, filesize: totalFullPageScreenshotFilesizes }
+          }
 
           return (
             <AttachmentUploadItem

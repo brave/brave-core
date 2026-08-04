@@ -95,13 +95,6 @@ brave-core based android builds should use
 want to build for) brave-core based iOS builds should use
 `pnpm run init --target_os=ios`
 
-You can also set the target_os and target_arch for init and build using:
-
-```
-npm config set target_os android
-npm config set target_arch arm
-```
-
 Additional config needed to build are documented at
 https://github.com/brave/brave-browser/wiki/Build-configuration
 
@@ -125,8 +118,7 @@ pnpm run build Release
 ```
 
 brave-core based android builds should use
-`pnpm run build --target_os=android --target_arch=arm` or set the npm config
-variables as specified above for `init`
+`pnpm run build --target_os=android --target_arch=arm`
 
 brave-core based iOS builds should use the Xcode project found in
 `ios/brave-ios/App`. You can open this project directly or run
@@ -158,7 +150,7 @@ memory, it could potentially take a few hours.
 
 To start the build:
 
-`npm start [Release|Component|Static|Debug]`
+`pnpm start [Release|Component|Static|Debug]`
 
 ## Update Brave
 
@@ -173,7 +165,7 @@ commit local changes before running this**
    (e.g. tag or branch)
 2. 🤕 Apply patches
 3. 🔄 Update gclient DEPS dependencies
-4. ⏩ Run hooks (e.g. to perform `npm install` on child projects)
+4. ⏩ Run hooks
 
 | flag                           | Description                                                                                                                                                                                                                                                                                                                                                                |
 | ------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

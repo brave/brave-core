@@ -2,13 +2,11 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
-import { provideStrings } from '../../../.storybook/locale'
+import { provideStrings } from '$storybook/locale'
 
 provideStrings({
   // Entities
   braveWalletContract: 'Contract',
-  braveWalletStaker: 'Staker',
-  braveWalletWithdrawer: 'Withdrawer',
 
   // Search Text
   braveWalletSearchText: 'Search',
@@ -613,7 +611,6 @@ provideStrings({
   braveWalletChooseChainsToUse:
     'Choose which blockchains to use in your wallet.',
   braveWalletShowTestnets: 'Show testnets',
-  braveWalletSeeAvailableNetworks: 'See available networks',
 
   // Grouping Labels
   braveWalletFeatured: 'Featured',
@@ -787,6 +784,11 @@ provideStrings({
   braveWalletOutput: 'Output',
   braveWalletInputs: 'Inputs',
   braveWalletOutputs: 'Outputs',
+  braveWalletMint: 'Mint',
+  braveWalletWithdrawals: 'Withdrawals',
+  braveWalletCollateral: 'Collateral',
+  braveWalletCollateralReturn: 'Collateral Return',
+  braveWalletTotalCollateral: 'Total Collateral',
   braveWalletValue: 'Value',
 
   // Encryption Key Panel
@@ -972,91 +974,9 @@ provideStrings({
   + 'WithAssociatedTokenAccountCreation']:
     'SPL Token Transfer With Associated Token Account Creation',
 
-  // Transaction Simulation
-  braveWalletScanningTransaction: 'Scanning transaction',
-  braveWalletTransactionPreviewFailed: 'Transaction preview failed',
-
-  // Transaction Simulation Event Grouping Headers
-  braveWalletEstimatedBalanceChange: 'Estimated balance change',
-  braveWalletApprovalDetails: 'Approval details',
-  braveWalletAuthorityChange: 'Authority change',
-  braveWalletOwnershipChange: 'Account ownership change',
-
-  // Transaction Simulation Events
+  // Shared labels used by confirmation / portfolio UIs
   braveWalletReceive: 'Receive',
   braveWalletFrom: 'From',
-  braveWalletUnlimitedAssetAmount: 'Unlimited $1',
-  braveWalletTokenIsUnverified: 'This token is unverified',
-  braveWalletTokenIsVerified: 'This token is verified',
-  braveWalletTokenIsVerifiedByLists: 'This token is verified on $1 lists',
-  braveWalletSpenderAddress: 'Spender: $1',
-  braveWalletNoChangesDetected: 'No changes detected',
-
-  // Transaction Simulation Warnings
-  braveWalletSimulationWarningApprovalToEoa:
-    'You’re giving someone else permission to transfer tokens on your behalf.',
-  braveWalletSimulationWarningBulkApprovalsRequest:
-    'This requests permission to transfer many tokens, '
-    + 'which is usually an attempt at theft.',
-  braveWalletSimulationWarningCopyCatDomain: 'This site may be a fake.',
-  braveWalletSimulationWarningDanglingApproval:
-    'This DApp will be able to move tokens from your account later on.',
-  braveWalletSimulationWarningKnownMalicious:
-    'This site is flagged as high risk and will '
-    + 'likely attempt to steal your funds.',
-  braveWalletSimulationWarningNewDomain:
-    'This domain hasn’t been verified yet. '
-    + 'Continue only if you trust the site.',
-  braveWalletSimulationWarningPoisonedAddress:
-    'Double-check this address'
-    + ' as it may be impersonating a previous contact of yours.',
-  braveWalletSimulationWarningSetOwnerAuthority:
-    'This transfers ownership of your token balance to someone else.',
-  braveWalletSimulationWarningSuspectedMalicious:
-    'This site is flagged as unsafe and/or malicious. '
-    + 'Continuing may result in losses.',
-  braveWalletSimulationWarningTooManyTransactionsCritical:
-    'This will approve over 200 actions. '
-    + 'Unless planned, this may be malicious.',
-  braveWalletSimulationWarningTooManyTransactions:
-    'This requests over 200 approvals'
-    + '; which is usually an attempt to drain your balances.',
-  braveWalletSimulationWarningTradeForNothing:
-    'You’re exchanging tokens for nothing in return. '
-    + 'This is likely a mistake.',
-  braveWalletSimulationWarningTransferringErc20ToOwnContract:
-    'You’re sending funds to a token’s own address'
-    + ' where they’ll be lost forever.',
-  braveWalletSimulationWarningUserAccountOwnerChange:
-    'This transfers ownership of your account and balances to someone else.',
-  braveWalletTransactionSimulationNotAvailableForNetwork:
-    'Transaction preview is not supported on this network.',
-  braveWalletTransactionSimulationOptedInNotice:
-    "You're seeing this message because "
-    + 'you opted into the transaction preview service.',
-
-  // Transaction Simulation Errors
-  braveWalletSimulationErrorInsufficientFundsForFee:
-    'Insufficient funds to cover the network gas fee.',
-  braveWalletSimulationErrorInsufficientFunds:
-    'Insufficient funds to complete the transaction.',
-  braveWalletSimulationErrorTransactionReverted:
-    'Transaction is likely to fail and revert. '
-    + 'Attempting will still incur gas costs.',
-  braveWalletSimulationUnexpectedError:
-    'Unexpected error with transaction preview. ' + 'Approving may be unsafe.',
-
-  // Sign Message Simulation/Scanning
-  braveWalletEvmMessageScanningNotSupported:
-    'EVM message scanning is not currently supported',
-  braveWalletWhatIsMessageScanning: "What's EVM message scanning?",
-  braveWalletEvmMessageScanningFeatureSafetyExplanation:
-    'It ensures safety and accuracy by examining '
-    + 'the messages sent from the Ethereum Virtual Machine '
-    + 'that interact with your smart contract or any actions.',
-  braveWalletEvmMessageScanningFeatureAccuracyExplanation:
-    "It's like double-checking a letter "
-    + "to make sure it's just right before signing it.",
 
   // Asset Detail Accounts (Empty)
   braveWalletNoAccountsWithABalance: 'No available accounts',
@@ -1557,23 +1477,6 @@ provideStrings({
   braveWalletPlatforms: 'Platforms',
   braveWalletTestNetworkAccount: 'Test Network Account',
 
-  // Transaction Simulations Opt-in
-  braveWalletEnableTransactionSimulation: 'Enable transaction simulation',
-  braveWalletTransactionSimulationFeatureDescription:
-    'Simulate how a transaction will behave before authorizing it',
-  braveWalletTransactionSimulationSeeEstimates:
-    'Preview your estimated balance change',
-  braveWalletTransactionSimulationDetectMalicious:
-    'Identify potentially malicious transactions',
-  braveWalletTransactionSimulationDetectPhishing:
-    'Help detect phishing attempts',
-  braveWalletTransactionSimulationTerms:
-    'This service is provided by $1Blowfish.xyz$2 and is subject to their $3Terms '
-    + 'of Service$4 and $5Privacy Policy$6.',
-
-  // Settings
-  braveWalletChangeAnytimeInSettings: 'Change anytime in $1Settings$2.',
-
   // Balance Details Modal
   braveWalletAvailable: 'Available',
   braveWalletAvailableBalanceDescription: 'Funds available for you to use.',
@@ -1588,14 +1491,7 @@ provideStrings({
   braveWalletExempliGratia: 'e.g $1',
 
   // Explore
-  braveWalletWeb3: 'Web3',
   braveWalletTopNavExplore: 'Explore',
-  braveWalletNoDappsFound: 'No DApps found',
-  braveWalletActiveWallets: 'Active wallets',
-  braveWalletVisitDapp: 'Visit $1',
-  braveWalletFilters: 'Filters',
-  braveWalletClearFilters: 'Clear filters',
-  braveWalletShowMore: 'Show more',
   braveWalletDetails: 'Details',
 
   // ZCash

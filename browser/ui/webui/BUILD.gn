@@ -5,6 +5,7 @@
 
 import("//brave/browser/updater/buildflags.gni")
 import("//brave/build/config.gni")
+import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 
 source_set("browser_tests") {
   testonly = true
@@ -34,9 +35,15 @@ source_set("browser_tests") {
     ]
 
     deps += [
+      "//brave/components/ai_chat/core/common/buildflags",
+      "//brave/components/brave_search/common",
       "//chrome/browser/ui/webui/searchbox",
       "//chrome/browser/ui/webui/searchbox:searchbox_test_utils",
     ]
+
+    if (enable_ai_chat) {
+      deps += [ "//brave/components/ai_chat/core/common" ]
+    }
   }
 }
 

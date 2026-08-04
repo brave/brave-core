@@ -782,16 +782,12 @@ void AdsServiceImpl::OnAdsPrefChanged(const std::string& path) {
     return ShutdownAdsService();
   }
 
-  if (bat_ads_service_remote_.is_bound() &&
-      path == prefs::kOptedInToNotificationAds) {
-    if (UserHasOptedInToNotificationAds()) {
-      // Register now that the user has opted in.
-      RegisterLanguageResourceComponent();
+  if (path == prefs::kOptedInToNotificationAds &&
+      bat_ads_service_remote_.is_bound()) {
+    RegisterOrUnregisterLanguageResourceComponent();
 
+    if (UserHasOptedInToNotificationAds()) {
       delegate_->MaybeInitNotificationHelper();
-    } else {
-      // Unregister now that the user has opted out.
-      UnregisterLanguageResourceComponent();
     }
   }
 
@@ -956,6 +952,16 @@ void AdsServiceImpl::CloseAllNotificationAds() {
   prefs_->SetList(prefs::kNotificationAds, {});
 }
 
+void AdsServiceImpl::RegisterOrUnregisterLanguageResourceComponent() {
+  if (UserHasOptedInToNotificationAds()) {
+    // Only utilized for text classification, which requires the user to have
+    // joined Brave Rewards and opted into notification ads.
+    RegisterLanguageResourceComponent();
+  } else {
+    UnregisterLanguageResourceComponent();
+  }
+}
+
 void AdsServiceImpl::MaybeOpenNewTabWithAd() {
   if (!retry_opening_new_tab_for_ad_with_placement_id_) {
     return;
@@ -1035,8 +1041,10 @@ void AdsServiceImpl::ShutdownAds(ResultCallback callback) {
   // Use `weak_ptr_factory_` because `bat_ads_service_weak_ptr_factory_` is
   // invalidated to cancel pending startups; this callback must always fire.
   bat_ads_associated_remote_->Shutdown(
-      base::BindOnce(&AdsServiceImpl::ShutdownAdsCallback,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+      mojo::WrapCallbackWithDefaultInvokeIfNotRun(
+          base::BindOnce(&AdsServiceImpl::ShutdownAdsCallback,
+                         weak_ptr_factory_.GetWeakPtr(), std::move(callback)),
+          /*success=*/false));
 }
 
 void AdsServiceImpl::ShutdownAdsCallback(ResultCallback callback,

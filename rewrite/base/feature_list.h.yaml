@@ -1,0 +1,16 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# This is necessary because of the use of `BASE_EXPORT` in the class
+# declaration.
+blank_macros_for_ast_parsing: true
+
+substitutions:
+  - description: |-
+      Insert FeatureList::GetCompileTimeFeatureState as a static
+    add_to_public:
+      class_name: FeatureList
+      code: |-
+        static FeatureState GetCompileTimeFeatureState(const Feature& feature);

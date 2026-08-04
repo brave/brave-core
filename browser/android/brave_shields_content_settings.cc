@@ -103,11 +103,11 @@ void JNI_BraveShieldsContentSettings_SetBraveShieldsEnabled(
       g_browser_process->local_state());
 }
 
-jboolean JNI_BraveShieldsContentSettings_GetBraveShieldsEnabled(
+bool JNI_BraveShieldsContentSettings_IsBraveShieldsEnabled(
     JNIEnv* env,
     const base::android::JavaRef<jstring>& url,
     const base::android::JavaRef<jobject>& j_profile) {
-  return brave_shields::GetBraveShieldsEnabled(
+  return brave_shields::IsBraveShieldsEnabled(
       HostContentSettingsMapFactory::GetForProfile(
           Profile::FromJavaObject(j_profile)),
       GURL(base::android::ConvertJavaStringToUTF8(env, url)));

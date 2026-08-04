@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/zcash/zcash_wallet_service.h"
 
 #include <array>
+#include <limits>
 #include <memory>
 #include <optional>
 #include <string>
@@ -125,15 +126,17 @@ class MockOrchardSyncState : public OrchardSyncState {
   using OrchardSyncState::OrchardSyncState;
   ~MockOrchardSyncState() override {}
 
-  MOCK_METHOD2(
+  MOCK_METHOD3(
       GetSpendableNotes,
       base::expected<std::optional<OrchardSyncState::SpendableNotesBundle>,
                      OrchardStorage::Error>(
+          OrchardPool pool,
           const mojom::AccountIdPtr& account_id,
           const OrchardAddrRawPart& internal_addr));
 
-  MOCK_METHOD3(CalculateWitnessForCheckpoint,
+  MOCK_METHOD4(CalculateWitnessForCheckpoint,
                base::expected<std::vector<OrchardInput>, OrchardStorage::Error>(
+                   OrchardPool pool,
                    const mojom::AccountIdPtr& account_id,
                    const std::vector<OrchardInput>& notes,
                    uint32_t checkpoint_position));
@@ -190,6 +193,12 @@ class ZCashWalletServiceUnitTest : public testing::Test {
           auto response = zcash::mojom::LightdInfo::New("c2d6d0b4");
           std::move(callback).Run(std::move(response));
         });
+
+    ON_CALL(mock_orchard_sync_state(), GetSpendableNotes(_, _, _))
+        .WillByDefault([](OrchardPool pool, const mojom::AccountIdPtr&,
+                          const OrchardAddrRawPart&) {
+          return OrchardSyncState::SpendableNotesBundle();
+        });
   }
 
   AccountUtils GetAccountUtils() {
@@ -235,7 +244,8 @@ TEST_F(ZCashWalletServiceUnitTest, GetBalance) {
   base::test::ScopedFeatureList feature_list;
   feature_list.InitAndEnableFeatureWithParameters(
       features::kBraveWalletZCashFeature,
-      {{"zcash_shielded_transactions_enabled", "false"}});
+      {{"zcash_shielded_transactions_enabled", "false"},
+       {"zcash_ironwood_enabled", "false"}});
   auto account =
       GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashMainnet, 1);
   keyring_service()->UpdateNextUnusedAddressForZCashAccount(account->account_id,
@@ -328,7 +338,7 @@ TEST_F(ZCashWalletServiceUnitTest, GetBalance) {
                     std::optional<std::string> error) {
         EXPECT_EQ(balance->total_balance, 50u);
         EXPECT_EQ(balance->transparent_balance, 50u);
-        EXPECT_EQ(balance->shielded_balance, 0u);
+        EXPECT_EQ(balance->orchard_balance, 0u);
       });
 
   zcash_wallet_service_->GetBalance(account->account_id.Clone(),
@@ -395,9 +405,12 @@ TEST_F(ZCashWalletServiceUnitTest, GetBalanceWithShielded) {
             std::move(callback).Run(std::move(response));
           });
 
-  ON_CALL(mock_orchard_sync_state(), GetSpendableNotes(_, _))
-      .WillByDefault([](const mojom::AccountIdPtr& account_id,
+  ON_CALL(mock_orchard_sync_state(), GetSpendableNotes(_, _, _))
+      .WillByDefault([](OrchardPool pool, const mojom::AccountIdPtr& account_id,
                         const OrchardAddrRawPart& internal_addr) {
+        if (pool != OrchardPool::kOrchard) {
+          return OrchardSyncState::SpendableNotesBundle();
+        }
         OrchardSyncState::SpendableNotesBundle spendable_notes_bundle;
         {
           OrchardNote note;
@@ -421,8 +434,8 @@ TEST_F(ZCashWalletServiceUnitTest, GetBalanceWithShielded) {
                     std::optional<std::string> error) {
         EXPECT_EQ(balance->total_balance, 20u);
         EXPECT_EQ(balance->transparent_balance, 10u);
-        EXPECT_EQ(balance->shielded_balance, 10u);
-        EXPECT_EQ(balance->shielded_pending_balance, 20u);
+        EXPECT_EQ(balance->orchard_balance, 10u);
+        EXPECT_EQ(balance->orchard_pending_balance, 20u);
       });
   zcash_wallet_service_->GetBalance(account->account_id.Clone(),
                                     balance_callback.Get());
@@ -433,7 +446,8 @@ TEST_F(ZCashWalletServiceUnitTest, GetBalanceWithShielded_FeatureDisabled) {
   base::test::ScopedFeatureList feature_list;
   feature_list.InitAndEnableFeatureWithParameters(
       features::kBraveWalletZCashFeature,
-      {{"zcash_shielded_transactions_enabled", "false"}});
+      {{"zcash_shielded_transactions_enabled", "false"},
+       {"zcash_ironwood_enabled", "false"}});
   keyring_service()->Reset();
   keyring_service()->RestoreWallet(kMnemonicDivideCruise, kTestWalletPassword,
                                    false, base::DoNothing());
@@ -496,8 +510,8 @@ TEST_F(ZCashWalletServiceUnitTest, GetBalanceWithShielded_FeatureDisabled) {
 
   OrchardBlockScanner::Result result = CreateResultForTesting(
       OrchardTreeState(), std::vector<OrchardCommitment>(), 50000, "hash50000");
-  result.discovered_notes = std::vector<OrchardNote>({note});
-  result.found_spends = std::vector<OrchardNoteSpend>();
+  result.orchard.discovered_notes = std::vector<OrchardNote>({note});
+  result.orchard.found_spends = std::vector<OrchardNoteSpend>();
 
   zcash_wallet_service_->sync_state()
       .AsyncCall(&OrchardSyncState::ApplyScanResults)
@@ -512,11 +526,198 @@ TEST_F(ZCashWalletServiceUnitTest, GetBalanceWithShielded_FeatureDisabled) {
                     std::optional<std::string> error) {
         EXPECT_EQ(balance->total_balance, 10u);
         EXPECT_EQ(balance->transparent_balance, 10u);
-        EXPECT_EQ(balance->shielded_balance, 0u);
+        EXPECT_EQ(balance->orchard_balance, 0u);
       });
   zcash_wallet_service_->GetBalance(account->account_id.Clone(),
                                     balance_callback.Get());
   task_environment_.RunUntilIdle();
+}
+
+TEST_F(ZCashWalletServiceUnitTest, GetBalanceWithShielded_IronwoodEnabled) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeatureWithParameters(
+      features::kBraveWalletZCashFeature,
+      {{"zcash_shielded_transactions_enabled", "true"},
+       {"zcash_ironwood_enabled", "true"}});
+  keyring_service()->Reset();
+  keyring_service()->RestoreWallet(kMnemonicDivideCruise, kTestWalletPassword,
+                                   false, base::DoNothing());
+
+  auto account =
+      GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashMainnet, 1);
+  keyring_service()->UpdateNextUnusedAddressForZCashAccount(account->account_id,
+                                                            1, 0);
+
+  ON_CALL(zcash_rpc(), GetLatestBlock(_, _))
+      .WillByDefault(  //
+          [&](const std::string& chain_id,
+              ZCashRpc::GetLatestBlockCallback callback) {
+            auto response = zcash::mojom::BlockID::New(
+                2625446u,
+                *PrefixedHexStringToBytes("0x0000000001a01b5fd794e4b071443974c8"
+                                          "35b3e0ff8f96bf3600e07afdbf89c5"));
+            std::move(callback).Run(std::move(response));
+          });
+
+  ON_CALL(zcash_rpc(), IsKnownAddress(_, _, _, _, _))
+      .WillByDefault([](const std::string& chain_id, const std::string& addr,
+                        uint64_t block_start, uint64_t block_end,
+                        ZCashRpc::IsKnownAddressCallback callback) {
+        // Receiver addresses
+        if (addr == "t1ShtibD2UJkYTeGPxeLrMf3jvE11S4Lpwj") {
+          std::move(callback).Run(true);
+          return;
+        }
+        std::move(callback).Run(false);
+      });
+
+  ON_CALL(zcash_rpc(), GetUtxoList(_, _, _))
+      .WillByDefault(  //
+          [&](const std::string& chain_id, const std::string& address,
+              ZCashRpc::GetUtxoListCallback callback) {
+            std::vector<zcash::mojom::ZCashUtxoPtr> utxos;
+            if (address == "t1ShtibD2UJkYTeGPxeLrMf3jvE11S4Lpwj") {
+              auto utxo = zcash::mojom::ZCashUtxo::New(
+                  "t1aFpD4qebqwbSAZLF4E8ZGmrTk36b1cocZ" /* address */,
+                  *PrefixedHexStringToBytes(
+                      "0x1b7a7109cec77ae38e57f4f0ec53a4046b08361abb92c62d9567ac"
+                      "e684f633ab") /* tx id */,
+                  0u /* index */,
+                  *PrefixedHexStringToBytes("0x76a914b3b55981e7bf53e10fe51aa4f4"
+                                            "5fdef06dec783d88ac") /*script*/,
+                  10u /* amount */, 2468320u /* block */);
+              utxos.push_back(std::move(utxo));
+            }
+            auto response =
+                zcash::mojom::GetAddressUtxosResponse::New(std::move(utxos));
+            std::move(callback).Run(std::move(response));
+          });
+
+  ON_CALL(mock_orchard_sync_state(), GetSpendableNotes(_, _, _))
+      .WillByDefault([](OrchardPool pool, const mojom::AccountIdPtr& account_id,
+                        const OrchardAddrRawPart& internal_addr) {
+        OrchardSyncState::SpendableNotesBundle spendable_notes_bundle;
+        if (pool == OrchardPool::kIronwood) {
+          {
+            OrchardNote note;
+            note.amount = 7u;
+            note.note_version = 3;
+            spendable_notes_bundle.all_notes.push_back(note);
+            spendable_notes_bundle.spendable_notes.push_back(note);
+          }
+          {
+            OrchardNote note;
+            note.amount = 13u;
+            note.note_version = 3;
+            spendable_notes_bundle.all_notes.push_back(note);
+          }
+          return spendable_notes_bundle;
+        }
+        {
+          OrchardNote note;
+          note.amount = 10u;
+          note.note_version = 2;
+          spendable_notes_bundle.all_notes.push_back(note);
+          spendable_notes_bundle.spendable_notes.push_back(note);
+        }
+        {
+          OrchardNote note;
+          note.amount = 20u;
+          note.note_version = 2;
+          spendable_notes_bundle.all_notes.push_back(note);
+        }
+        return spendable_notes_bundle;
+      });
+
+  base::test::TestFuture<mojom::ZCashBalancePtr, std::optional<std::string>>
+      balance_future;
+  zcash_wallet_service_->GetBalance(
+      account->account_id.Clone(),
+      balance_future.GetCallback<mojom::ZCashBalancePtr,
+                                 const std::optional<std::string>&>());
+
+  const auto& balance = balance_future.Get<0>();
+  EXPECT_EQ(balance->transparent_balance, 10u);
+  EXPECT_EQ(balance->orchard_balance, 10u);
+  EXPECT_EQ(balance->orchard_pending_balance, 20u);
+  EXPECT_EQ(balance->ironwood_balance, 7u);
+  EXPECT_EQ(balance->ironwood_pending_balance, 13u);
+  EXPECT_EQ(balance->total_balance, 27u);
+}
+
+TEST_F(ZCashWalletServiceUnitTest, GetBalance_OrchardNotesOverflow) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeatureWithParameters(
+      features::kBraveWalletZCashFeature,
+      {{"zcash_shielded_transactions_enabled", "true"},
+       {"zcash_ironwood_enabled", "false"}});
+  keyring_service()->Reset();
+  keyring_service()->RestoreWallet(kMnemonicDivideCruise, kTestWalletPassword,
+                                   false, base::DoNothing());
+
+  auto account =
+      GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashMainnet, 1);
+  keyring_service()->UpdateNextUnusedAddressForZCashAccount(account->account_id,
+                                                            1, 0);
+
+  ON_CALL(zcash_rpc(), GetLatestBlock(_, _))
+      .WillByDefault(  //
+          [&](const std::string& chain_id,
+              ZCashRpc::GetLatestBlockCallback callback) {
+            auto response = zcash::mojom::BlockID::New(
+                2625446u,
+                *PrefixedHexStringToBytes("0x0000000001a01b5fd794e4b071443974c8"
+                                          "35b3e0ff8f96bf3600e07afdbf89c5"));
+            std::move(callback).Run(std::move(response));
+          });
+
+  ON_CALL(zcash_rpc(), IsKnownAddress(_, _, _, _, _))
+      .WillByDefault([](const std::string& chain_id, const std::string& addr,
+                        uint64_t block_start, uint64_t block_end,
+                        ZCashRpc::IsKnownAddressCallback callback) {
+        std::move(callback).Run(false);
+      });
+
+  ON_CALL(zcash_rpc(), GetUtxoList(_, _, _))
+      .WillByDefault(  //
+          [&](const std::string& chain_id, const std::string& address,
+              ZCashRpc::GetUtxoListCallback callback) {
+            auto response = zcash::mojom::GetAddressUtxosResponse::New(
+                std::vector<zcash::mojom::ZCashUtxoPtr>());
+            std::move(callback).Run(std::move(response));
+          });
+
+  ON_CALL(mock_orchard_sync_state(), GetSpendableNotes(_, _, _))
+      .WillByDefault([](OrchardPool pool, const mojom::AccountIdPtr& account_id,
+                        const OrchardAddrRawPart& internal_addr) {
+        OrchardSyncState::SpendableNotesBundle spendable_notes_bundle;
+        if (pool != OrchardPool::kOrchard) {
+          return spendable_notes_bundle;
+        }
+        {
+          OrchardNote note;
+          note.amount = std::numeric_limits<uint64_t>::max();
+          note.note_version = 2;
+          spendable_notes_bundle.all_notes.push_back(note);
+        }
+        {
+          OrchardNote note;
+          note.amount = 1u;
+          note.note_version = 2;
+          spendable_notes_bundle.all_notes.push_back(note);
+        }
+        return spendable_notes_bundle;
+      });
+
+  base::test::TestFuture<mojom::ZCashBalancePtr, std::optional<std::string>>
+      balance_future;
+  zcash_wallet_service_->GetBalance(
+      account->account_id.Clone(),
+      balance_future.GetCallback<mojom::ZCashBalancePtr,
+                                 const std::optional<std::string>&>());
+
+  EXPECT_FALSE(balance_future.Get<0>());
+  EXPECT_EQ(balance_future.Get<1>(), "Pending balance error");
 }
 
 // https://zcashblockexplorer.com/transactions/3bc513afc84befb9774f667eb4e63266a7229ab1fdb43476dd7c3a33d16b3101/raw
@@ -1258,7 +1459,7 @@ TEST_F(ZCashWalletServiceUnitTest, AutoSync) {
                 "main" /* network */,
                 100000u - kChainReorgBlockDelta /* height */,
                 "hexhexhex2" /* hash */, 123 /* time */, "" /* sapling tree */,
-                "" /* orchard tree */);
+                "" /* orchard tree */, "" /* ironwood tree */);
             std::move(callback).Run(std::move(tree_state));
           });
 
@@ -1536,7 +1737,7 @@ TEST_F(ZCashWalletServiceUnitTest, MakeAccountShielded) {
                 "main" /* network */,
                 100000u - kChainReorgBlockDelta /* height */,
                 "hexhexhex2" /* hash */, 123 /* time */, "" /* sapling tree */,
-                "" /* orchard tree */);
+                "" /* orchard tree */, "" /* ironwood tree */);
             std::move(callback).Run(std::move(tree_state));
           });
 
@@ -1614,7 +1815,7 @@ TEST_F(ZCashWalletServiceUnitTest, ResetSyncStateWithAccountBirthday) {
                 "main" /* network */,
                 100000u - kChainReorgBlockDelta /* height */,
                 "new_hash" /* hash */, 123 /* time */, "" /* sapling tree */,
-                "" /* orchard tree */);
+                "" /* orchard tree */, "" /* ironwood tree */);
             std::move(callback).Run(std::move(tree_state));
           });
 
@@ -1832,12 +2033,14 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_ShieldFunds) {
             "0aa1e9e1598d35470810012dcc4273c8a0ed2337ecf7879380a07e7d427c7f9d82"
             "e538002bd1442978402c01daf63debf5b40df902dae98dadc029f281474d190cdd"
             "ecef1b10653248a234150001e2bca6a8d987d668defba89dc082196a922634ed88"
-            "e065c669e526bb8815ee1b000000000000" /* orchard tree */);
+            "e065c669e526bb8815ee1b000000000000" /* orchard tree */,
+            "" /* ironwood tree */);
         std::move(callback).Run(std::move(tree_state));
       });
 
-  ON_CALL(mock_orchard_sync_state(), GetSpendableNotes(_, _))
-      .WillByDefault([&](const mojom::AccountIdPtr& account_id,
+  ON_CALL(mock_orchard_sync_state(), GetSpendableNotes(_, _, _))
+      .WillByDefault([&](OrchardPool pool,
+                         const mojom::AccountIdPtr& account_id,
                          const OrchardAddrRawPart& internal_addr) {
         OrchardSyncState::SpendableNotesBundle spendable_notes_bundle;
         return spendable_notes_bundle;
@@ -2249,7 +2452,8 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_ShieldAllFunds) {
                 "0810012dcc4273c8a0ed2337ecf7879380a07e7d427c7f9d82e538002bd144"
                 "2978402c01daf63debf5b40df902dae98dadc029f281474d190cddecef1b10"
                 "653248a234150001e2bca6a8d987d668defba89dc082196a922634ed88e065"
-                "c669e526bb8815ee1b000000000000" /* orchard tree */);
+                "c669e526bb8815ee1b000000000000" /* orchard tree */,
+                "" /* ironwood tree */);
             std::move(callback).Run(std::move(tree_state));
           });
 
@@ -2593,8 +2797,9 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_SendShieldedFunds) {
         std::move(callback).Run(std::move(response));
       });
 
-  ON_CALL(mock_orchard_sync_state(), GetSpendableNotes(_, _))
-      .WillByDefault([&](const mojom::AccountIdPtr& account_id,
+  ON_CALL(mock_orchard_sync_state(), GetSpendableNotes(_, _, _))
+      .WillByDefault([&](OrchardPool pool,
+                         const mojom::AccountIdPtr& account_id,
                          const OrchardAddrRawPart& internal_addr) {
         OrchardSyncState::SpendableNotesBundle spendable_notes_bundle;
         {
@@ -2643,8 +2848,9 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_SendShieldedFunds) {
         return spendable_notes_bundle;
       });
 
-  ON_CALL(mock_orchard_sync_state(), CalculateWitnessForCheckpoint(_, _, _))
-      .WillByDefault([&](const mojom::AccountIdPtr& account_id,
+  ON_CALL(mock_orchard_sync_state(), CalculateWitnessForCheckpoint(_, _, _, _))
+      .WillByDefault([&](OrchardPool pool,
+                         const mojom::AccountIdPtr& account_id,
                          const std::vector<OrchardInput>& notes,
                          uint32_t checkpoint_position) {
         std::vector<OrchardInput> notes_with_witness = notes;
@@ -2919,7 +3125,8 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_SendShieldedFunds) {
                 "e1598d35470810012dcc4273c8a0ed2337ecf7879380a07e7d427c7f9d82e5"
                 "38002bd1442978402c01daf63debf5b40df902dae98dadc029f281474d190c"
                 "ddecef1b10653248a234150001e2bca6a8d987d668defba89dc082196a9226"
-                "34ed88e065c669e526bb8815ee1b000000000000");
+                "34ed88e065c669e526bb8815ee1b000000000000",
+                "" /* ironwood tree */);
             std::move(callback).Run(std::move(tree_state));
           });
 
@@ -3245,8 +3452,9 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_UnshieldFunds) {
         std::move(callback).Run(std::move(response));
       });
 
-  ON_CALL(mock_orchard_sync_state(), GetSpendableNotes(_, _))
-      .WillByDefault([&](const mojom::AccountIdPtr& account_id,
+  ON_CALL(mock_orchard_sync_state(), GetSpendableNotes(_, _, _))
+      .WillByDefault([&](OrchardPool pool,
+                         const mojom::AccountIdPtr& account_id,
                          const OrchardAddrRawPart& internal_addr) {
         OrchardSyncState::SpendableNotesBundle spendable_notes_bundle;
         {
@@ -3294,8 +3502,9 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_UnshieldFunds) {
         spendable_notes_bundle.anchor_block_id = 3373024u;
         return spendable_notes_bundle;
       });
-  ON_CALL(mock_orchard_sync_state(), CalculateWitnessForCheckpoint(_, _, _))
-      .WillByDefault([&](const mojom::AccountIdPtr& account_id,
+  ON_CALL(mock_orchard_sync_state(), CalculateWitnessForCheckpoint(_, _, _, _))
+      .WillByDefault([&](OrchardPool pool,
+                         const mojom::AccountIdPtr& account_id,
                          const std::vector<OrchardInput>& notes,
                          uint32_t checkpoint_position) {
         std::vector<OrchardInput> notes_with_witness = notes;
@@ -3564,7 +3773,8 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_UnshieldFunds) {
             "e1598d35470810012dcc4273c8a0ed2337ecf7879380a07e7d427c7f9d82e5"
             "38002bd1442978402c01daf63debf5b40df902dae98dadc029f281474d190c"
             "ddecef1b10653248a234150001e2bca6a8d987d668defba89dc082196a9226"
-            "34ed88e065c669e526bb8815ee1b000000000000");
+            "34ed88e065c669e526bb8815ee1b000000000000",
+            "" /* ironwood tree */);
         std::move(callback).Run(std::move(tree_state));
       });
 

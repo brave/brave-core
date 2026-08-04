@@ -89,10 +89,19 @@ const base::FeatureParam<bool> kBackupResultsHistorySeed{&kBackupResults,
 const base::FeatureParam<bool> kBackupResultsZeroSize{&kBackupResults,
                                                       "zero_size", false};
 
+const base::FeatureParam<bool> kBackupResultsCleanUrl{&kBackupResults,
+                                                      "clean_url", false};
+
 const base::FeatureParam<std::string> kBackupResultsRendererLanguages{
     &kBackupResults, "renderer_languages", ""};
 
 const base::FeatureParam<std::string> kBackupResultsLanguagesHeader{
     &kBackupResults, "languages_header", ""};
+
+BASE_FEATURE(kSearchNewTabV1Source, base::FEATURE_DISABLED_BY_DEFAULT);
+
+bool IsSearchNewTabV1SourceEnabled() {
+  return base::FeatureList::IsEnabled(kSearchNewTabV1Source);
+}
 
 }  // namespace brave_search::features

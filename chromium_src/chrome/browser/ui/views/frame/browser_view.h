@@ -12,9 +12,9 @@
 #include "chrome/browser/ui/exclusive_access/exclusive_access_context.h"
 #include "chrome/browser/ui/views/frame/shadow_overlay_view.h"
 
-#define BrowserViewLayoutDelegateImplOld                        \
-  BrowserViewLayoutDelegateImplOld;                             \
-  friend class BraveBrowserView;                                \
+#define BrowserViewLayoutDelegateImplOld \
+  BrowserViewLayoutDelegateImplOld;      \
+  friend class BraveBrowserView;         \
   virtual bool IsWebPanelContents(content::WebContents* contents)
 
 #define BrowserWindow BraveBrowserWindow

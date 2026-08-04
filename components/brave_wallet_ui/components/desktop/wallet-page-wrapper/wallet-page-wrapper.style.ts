@@ -47,6 +47,7 @@ export const LayoutCardWrapper = styled.div<{
   hideCardHeader?: boolean
   headerHeight: number
   padding?: string
+  isSidePanel?: boolean
 }>`
   --header-top-position: calc(
     var(--layout-top-position) + ${(p) => p.headerHeight}px
@@ -88,7 +89,7 @@ export const LayoutCardWrapper = styled.div<{
       ? 'var(--left-padding-without-nav)'
       : 'var(--left-padding-with-nav)'};
   @media screen and (max-width: ${layoutSmallWidth}px) {
-    bottom: var(--bottom-position);
+    bottom: ${(p) => (p.isSidePanel ? 0 : 'var(--bottom-position)')};
     padding: 0px 32px 32px 32px;
     align-items: center;
   }

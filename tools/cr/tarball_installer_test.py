@@ -16,6 +16,7 @@ import contextlib
 import hashlib
 import io
 import json
+import os
 import sys
 import tarfile
 import tempfile
@@ -50,6 +51,19 @@ def _make_zip(members: list[tuple[str, bytes]]):
     with zipfile.ZipFile(buf, 'w') as archive:
         for name, content in members:
             archive.writestr(name, content)
+    return buf.getvalue()
+
+
+def _make_zip_with_unix_modes(members: list[tuple[str, bytes, int]]):
+    """A zip whose entries carry the given Unix `st_mode` (e.g. `0o100755`
+    for an executable file, `0o120777` for a symlink), packed into the high
+    16 bits of `external_attr` the way `zip`/`unzip` do."""
+    buf = io.BytesIO()
+    with zipfile.ZipFile(buf, 'w') as archive:
+        for name, content, mode in members:
+            info = zipfile.ZipInfo(name)
+            info.external_attr = mode << 16
+            archive.writestr(info, content)
     return buf.getvalue()
 
 
@@ -139,6 +153,35 @@ class TarballInstallerTest(unittest.TestCase):
         self.assertTrue(installer.install(self._download(data)))
         self.assertEqual((self.dest / 'node.exe').read_bytes(), b'MZ')
         self.assertEqual((self.dest / 'LICENSE').read_bytes(), b'mpl')
+
+    @unittest.skipIf(sys.platform == 'win32', 'unzip is not used on Windows')
+    def test_install_extracts_zip_preserves_mode_bits_and_symlinks(self):
+        # `zipfile.extractall` drops the Unix permission bits zip stores in
+        # `external_attr` and writes symlinks out as regular files holding the
+        # link target as text -- exactly what BraveUpdater-*.zip needs kept
+        # (mode-0755 executables plus a `ksadmin` symlink) for the updater
+        # bundle to still run after extraction.
+        data = _make_zip_with_unix_modes([
+            ('bin/tool', b'#!/bin/sh\n', 0o100755),
+            ('bin/link', b'tool', 0o120777),
+        ])
+        installer = self._installer(data, object_name='pkg.zip')
+        self.assertTrue(installer.install(self._download(data)))
+        tool = self.dest / 'bin/tool'
+        link = self.dest / 'bin/link'
+        self.assertTrue(os.access(tool, os.X_OK))
+        self.assertTrue(link.is_symlink())
+        self.assertEqual(os.readlink(link), 'tool')
+
+    def test_install_extracts_zip_creates_missing_nested_dest(self):
+        # `unzip -d` (unlike `zipfile.extractall`) only creates a single
+        # missing directory level, so a `dest_dir` nested under parents that
+        # don't exist yet must be created before `unzip` runs.
+        self.dest = self.root / 'nested' / 'missing' / 'dest'
+        data = _make_zip([('f', b'x')])
+        installer = self._installer(data, object_name='pkg.zip')
+        self.assertTrue(installer.install(self._download(data)))
+        self.assertEqual((self.dest / 'f').read_bytes(), b'x')
 
     def test_install_is_idempotent(self):
         data = _make_tar([('f', b'x')])

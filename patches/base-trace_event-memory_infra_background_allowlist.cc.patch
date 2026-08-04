@@ -1,0 +1,14 @@
+diff --git a/base/trace_event/memory_infra_background_allowlist.cc b/base/trace_event/memory_infra_background_allowlist.cc
+index b4699089312f4cab3aaaba13df31a6b106397b13..a7d238b4fcf613cc328ded832ea167cabd79a50d 100644
+--- a/base/trace_event/memory_infra_background_allowlist.cc
++++ b/base/trace_event/memory_infra_background_allowlist.cc
+@@ -380,6 +380,9 @@ bool IsMemoryDumpProviderInAllowlist(const char* mdp_name) {
+ }
+ 
+ bool IsMemoryAllocatorDumpNameInAllowlist(const std::string& name) {
++  if (IsMemoryAllocatorDumpNameInBraveAllowlist(name)) {
++    return true;
++  }
+   // Global dumps that are of hex digits are all allowed for background use.
+   if (base::StartsWith(name, "global/", CompareCase::SENSITIVE)) {
+     for (size_t i = strlen("global/"); i < name.size(); i++) {

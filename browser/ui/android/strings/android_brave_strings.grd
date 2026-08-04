@@ -2649,6 +2649,18 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_TAB_GROUPS_ENABLE_TITLE" desc="Title for a setting that enables or disables tab groups.">
       Enable tab groups
     </message>
+    <message name="IDS_TAB_GROUPS_DISABLE_DIALOG_TITLE" desc="Title of the dialog that asks the user to confirm turning off the tab groups setting.">
+      Disable tab groups?
+    </message>
+    <message name="IDS_TAB_GROUPS_DISABLE_DIALOG_MESSAGE" desc="Body of the dialog that asks the user to confirm turning off the tab groups setting. It explains that the existing tab groups are removed and their tabs stay open on their own.">
+      Any existing groups will be deleted, and the tabs within those groups will become open, ungrouped tabs in your browser window. Are you sure you want to continue?
+    </message>
+    <message name="IDS_TAB_GROUPS_DISABLE_DIALOG_CONFIRM_BUTTON" desc="Label of the button that confirms turning off the tab groups setting.">
+      Disable
+    </message>
+    <message name="IDS_TAB_GROUPS_SHOW_SYNCED_TITLE" desc="Title for a setting that controls whether the tab groups synced from the user's other devices are shown in this browser.">
+      Show synced tab groups
+    </message>
     <message name="IDS_TAB_GROUPS_BAR_TITLE" desc="Title for a setting that enables the tab groups bottom bar.">
       Tab groups bar
     </message>

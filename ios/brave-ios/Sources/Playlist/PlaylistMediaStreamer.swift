@@ -64,7 +64,8 @@ public class PlaylistMediaStreamer {
     // Cache-first: the stored URL is still valid, so `streamingFallback` (which would otherwise kick off caching via `autoDownload`)
     // isn't reached. Start a background cache here so the item is available locally next time. Gated on the kPlaylistCacheFirstEnabled
     // flag so the kPlaylistOfflineCacheEnabled offline-cache path  is unaffected.
-    if FeatureList.kPlaylistCacheFirstEnabled.enabled {
+    // Skip if a download is already pending or in progress (e.g. triggered when the item was added).
+    if FeatureList.kPlaylistCacheFirstEnabled.enabled, cacheState == .invalid {
       PlaylistManager.shared.autoDownload(item: item)
     }
 

@@ -7,6 +7,7 @@ import config from './config.ts'
 import os from 'node:os'
 import path from 'node:path/posix'
 import fs from 'node:fs'
+import rootDir from './rootDir.cjs'
 
 const buildConfigs = ['Component', 'Static', 'Debug', 'Release']
 const extraArchitectures = ['arm64', 'x86']
@@ -34,16 +35,16 @@ let outputPath = config.outputDir
 function getBuildOutputPathList() {
   if (os.platform() === 'win32') {
     return buildConfigs.flatMap((config) => [
-      path.win32.resolve(__dirname, `..\\..\\..\\..\\out\\${config}`),
+      path.win32.resolve(rootDir, `src\\out\\${config}`),
       ...extraArchitectures.map((arch) =>
-        path.win32.resolve(__dirname, `..\\..\\..\\..\\out\\${config}_${arch}`),
+        path.win32.resolve(rootDir, `src\\out\\${config}_${arch}`),
       ),
     ])
   } else {
     return buildConfigs.flatMap((config) => [
-      path.resolve(__dirname, `../../../../out/${config}`),
+      path.resolve(rootDir, `src/out/${config}`),
       ...extraArchitectures.map((arch) =>
-        path.resolve(__dirname, `../../../../out/${config}_${arch}`),
+        path.resolve(rootDir, `src/out/${config}_${arch}`),
       ),
     ])
   }

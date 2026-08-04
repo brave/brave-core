@@ -29,7 +29,8 @@ class FakeBatAdsService : public bat_ads::mojom::BatAdsService {
  public:
   FakeBatAdsService(base::RepeatingClosure initialize_callback,
                     base::RepeatingClosure shutdown_callback,
-                    bool simulate_initialization_failure);
+                    bool simulate_initialization_failure,
+                    bool simulate_shutdown_disconnect);
 
   FakeBatAdsService(const FakeBatAdsService&) = delete;
   FakeBatAdsService& operator=(const FakeBatAdsService&) = delete;

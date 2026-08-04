@@ -105,7 +105,8 @@ class BraveNewsDirectFeedControllerTest : public testing::Test {
   std::tuple<bool, std::string> VerifyFeedUrl(GURL feed_url) {
     return WaitForCallback(base::BindOnce(
         &DirectFeedController::VerifyFeedUrl,
-        base::Unretained(&direct_feed_controller_), std::move(feed_url)));
+        base::Unretained(&direct_feed_controller_), std::move(feed_url),
+        /*initiator_origin=*/std::nullopt));
   }
 
   std::vector<mojom::FeedSearchResultItemPtr> FindFeeds(

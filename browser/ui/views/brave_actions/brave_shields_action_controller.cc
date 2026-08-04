@@ -181,7 +181,7 @@ BraveShieldsActionController::GetImageSource(
       badge_text = count > 99 ? "99+" : base::NumberToString(count);
     }
 
-    is_enabled = shields_data_controller->GetBraveShieldsEnabled() &&
+    is_enabled = shields_data_controller->IsBraveShieldsEnabled() &&
                  !IsPageInReaderMode(web_contents);
 
     if (!badge_text.empty()) {
@@ -239,8 +239,7 @@ bool BraveShieldsActionController::IsPageInReaderMode(
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   if (auto* speedreader_tab_helper =
           speedreader::SpeedreaderTabHelper::FromWebContents(web_contents)) {
-    return speedreader::DistillStates::IsDistilled(
-        speedreader_tab_helper->PageDistillState());
+    return speedreader::IsDistilled(speedreader_tab_helper->PageDistillState());
   }
 #endif
   return false;

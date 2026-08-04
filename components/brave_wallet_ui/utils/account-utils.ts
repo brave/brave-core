@@ -4,7 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { assertNotReached } from 'chrome://resources/js/assert.js'
-import { getLocale } from '../../common/locale'
+import { getLocale } from '$web-common/locale'
 
 // types
 import {

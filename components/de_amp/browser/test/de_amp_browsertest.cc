@@ -26,6 +26,7 @@
 #include "components/keep_alive_registry/scoped_keep_alive.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/navigation_controller.h"
+#include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/reload_type.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
@@ -55,6 +56,7 @@ constexpr char kTestRedirectingAmpPage1[] = "/redirecting_amp_page_1";
 constexpr char kTestRedirectingAmpPage2[] = "/redirecting_amp_page_2";
 constexpr char kTestSimpleNonAmpPage[] = "/simple_page";
 constexpr char kTestCanonicalPage[] = "/simple_canonical_page";
+constexpr char kTestHungCanonicalPage[] = "/hung_canonical_page";
 constexpr char kTestAmpBodyScaffolding[] =
     R"(
     <html amp>
@@ -191,6 +193,19 @@ class DeAmpBrowserTest : public InProcessBrowserTest {
                             custom_headers, content_type));
   }
 
+  void SetHungRequestHandler(const std::string& page_path) {
+    https_server_->RegisterRequestHandler(base::BindRepeating(
+        [](const std::string& page_path,
+           const net::test_server::HttpRequest& request)
+            -> std::unique_ptr<net::test_server::HttpResponse> {
+          if (request.relative_url != page_path) {
+            return nullptr;
+          }
+          return std::make_unique<net::test_server::HungResponse>();
+        },
+        page_path));
+  }
+
   void TogglePref(const bool on) {
     prefs_->SetBoolean(de_amp::kDeAmpPrefEnabled, on);
     web_contents()->GetController().Reload(content::ReloadType::NORMAL, false);
@@ -247,6 +262,34 @@ IN_PROC_BROWSER_TEST_F(DeAmpBrowserTest, SimpleDeAmp) {
   // Non-HTML page should not be De-AMPed.
   NavigateToURLAndWaitForRedirects(kTestRedirectingAmpPage1,
                                    kTestRedirectingAmpPage1);
+}
+
+// Regression test: a pending canonical navigation must not update the omnibox,
+// otherwise a renderer-initiated navigation could spoof the address bar.
+IN_PROC_BROWSER_TEST_F(DeAmpBrowserTest, PendingCanonicalDoesNotSpoofOmnibox) {
+  TogglePref(true);
+  SetRequestHandler(kTestSimpleNonAmpPage, Canonical());
+  SetRequestHandler(kTestAmpPage, Amp(kTestHungCanonicalPage));
+  SetHungRequestHandler(kTestHungCanonicalPage);
+  StartServer();
+
+  const GURL simple = https_server_->GetURL(kTestHost, kTestSimpleNonAmpPage);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), simple));
+
+  const GURL amp_url = https_server_->GetURL(kTestHost, kTestAmpPage);
+  const GURL hung_canonical_url(Location(kTestHungCanonicalPage));
+
+  content::TestNavigationManager canonical_manager(web_contents(),
+                                                   hung_canonical_url);
+  ASSERT_TRUE(content::ExecJs(web_contents(),
+                              content::JsReplace("location.href = $1", amp_url),
+                              content::EXECUTE_SCRIPT_NO_USER_GESTURE));
+  ASSERT_TRUE(canonical_manager.WaitForRequestStart());
+
+  EXPECT_EQ(web_contents()->GetController().GetVisibleEntry()->GetURL(),
+            simple);
+  EXPECT_NE(web_contents()->GetController().GetVisibleEntry()->GetURL(),
+            hung_canonical_url);
 }
 
 IN_PROC_BROWSER_TEST_F(DeAmpBrowserTest, ContentDispositionAttachment) {

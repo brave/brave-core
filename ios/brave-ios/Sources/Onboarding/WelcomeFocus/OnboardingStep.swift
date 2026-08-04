@@ -42,7 +42,7 @@ extension [any OnboardingStep] {
     if AddToDockEligibility.isEligible {
       steps.append(.addToDock)
     }
-    steps.append(contentsOf: [.blockInterruptions, .p3aOptIn])
+    steps.append(contentsOf: [.blockInterruptions, .metricsOptIn])
     return steps
   }
   /// A subset of steps if the user is already the default browser on first launch
@@ -51,7 +51,7 @@ extension [any OnboardingStep] {
     if AddToDockEligibility.isEligible {
       steps.append(.addToDock)
     }
-    steps.append(contentsOf: [.blockInterruptions, .p3aOptIn])
+    steps.append(contentsOf: [.blockInterruptions, .metricsOptIn])
     return steps
   }
 }

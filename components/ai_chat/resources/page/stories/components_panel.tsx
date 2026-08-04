@@ -10,7 +10,7 @@ import { useArgs } from '@storybook/preview-api'
 import { Meta, StoryObj } from '@storybook/react'
 import '@brave/leo/tokens/css/variables.css'
 import { getKeysForMojomEnum } from '$web-common/mojomUtils'
-import { InferControlsFromArgs } from '../../../../../.storybook/utils'
+import { InferControlsFromArgs } from '$storybook/utils'
 import * as Mojom from '../../common/mojom'
 import FullPage from '../components/full_page'
 import Loading from '../components/loading'
@@ -649,6 +649,7 @@ function StoryContext(
         isMobile: args.isMobile,
         isHistoryFeatureEnabled: args.isHistoryEnabled,
         isConversationShareEnabled: true,
+        isAIChatExportJSONEnabled: true,
         skillDialog: args.skillDialog,
       }}
       conversationOverrides={{

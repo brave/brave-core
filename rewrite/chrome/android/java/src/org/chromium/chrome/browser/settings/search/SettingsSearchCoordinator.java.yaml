@@ -1,0 +1,27 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description:
+      'Add Brave imports beneath the Settings search package declaration.'
+    regex:
+      re_pattern: '^(package [^;]+;\n)'
+      re_flags: [MULTILINE]
+      replace: |-
+        \1
+        import org.chromium.chrome.browser.theme.BraveDynamicColors;
+        import org.chromium.components.browser_ui.settings.BraveSettingsIconTintUtils;
+
+  - description: |
+      Apply the Dynamic Colors tint to the Settings search icon before the
+      search query view is initialized.
+    regex:
+      re_pattern:
+        '(initializeSearchUi\s*\([^)]*\)\s*\{.*?)(^[ \t]*)(View query =
+        mActivity\.findViewById\(R\.id\.search_query_container\);)'
+      re_flags: [DOTALL, MULTILINE]
+      replace: |-
+        \1\2BraveSettingsIconTintUtils.applyIconTint(searchBox.findViewById(R.id.search_icon), BraveDynamicColors.isDynamicColorsEnabled());
+        \2\3

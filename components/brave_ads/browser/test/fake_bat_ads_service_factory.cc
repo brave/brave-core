@@ -59,7 +59,7 @@ mojo::Remote<bat_ads::mojom::BatAdsService> FakeBatAdsServiceFactory::Launch()
                           base::Unretained(this)),
       base::BindRepeating(&FakeBatAdsServiceFactory::OnShutdown,
                           base::Unretained(this)),
-      simulate_initialization_failure_);
+      simulate_initialization_failure_, simulate_shutdown_disconnect_);
   bat_ads_service_->BindReceiver(
       bat_ads_service_remote.BindNewPipeAndPassReceiver());
 

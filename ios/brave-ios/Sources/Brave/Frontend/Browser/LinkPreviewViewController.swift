@@ -15,12 +15,22 @@ class LinkPreviewViewController: UIViewController {
   private let url: URL
   private weak var parentTab: (any TabState)?
   private var currentTab: (any TabState)?
-  private weak var browserController: BrowserViewController?
+  private weak var policyDecider: (any TabPolicyDecider)?
+  private weak var tabDelegate: (any TabDelegate)?
+  private weak var downloadDelegate: (any TabDownloadDelegate)?
 
-  init(url: URL, for tab: some TabState, browserController: BrowserViewController) {
+  init(
+    url: URL,
+    for tab: some TabState,
+    policyDecider: (any TabPolicyDecider)?,
+    tabDelegate: any TabDelegate,
+    downloadDelegate: (any TabDownloadDelegate)?
+  ) {
     self.url = url
     self.parentTab = tab
-    self.browserController = browserController
+    self.policyDecider = policyDecider
+    self.tabDelegate = tabDelegate
+    self.downloadDelegate = downloadDelegate
     super.init(nibName: nil, bundle: nil)
   }
 
@@ -28,7 +38,7 @@ class LinkPreviewViewController: UIViewController {
   required init?(coder aDecoder: NSCoder) { fatalError() }
 
   override func viewDidLoad() {
-    guard let browserController, let parentTab else {
+    guard let parentTab else {
       return
     }
 
@@ -42,15 +52,17 @@ class LinkPreviewViewController: UIViewController {
       with: .init(profile: parentTab.profile, initialConfiguration: initialConfiguration)
     )
     tab.createWebView()
-    tab.addPolicyDecider(browserController)
+    if let policyDecider {
+      tab.addPolicyDecider(policyDecider)
+    }
     let braveShieldsTabHelper: BraveShieldsTabHelper = .init(
       tab: tab,
       braveShieldsSettings: BraveShieldsSettingsServiceFactory.get(profile: tab.profile)
     )
     tab.braveShieldsHelper = braveShieldsTabHelper
     tab.addPolicyDecider(braveShieldsTabHelper)
-    tab.delegate = browserController
-    tab.downloadDelegate = browserController
+    tab.delegate = tabDelegate
+    tab.downloadDelegate = downloadDelegate
     tab.webViewProxy?.scrollView?.layer.masksToBounds = true
     tab.isVisible = true
     self.currentTab = tab
@@ -80,8 +92,8 @@ class LinkPreviewViewController: UIViewController {
   }
 
   deinit {
-    if let browserController {
-      currentTab?.removePolicyDecider(browserController)
+    if let policyDecider {
+      currentTab?.removePolicyDecider(policyDecider)
     }
     self.currentTab = nil
   }

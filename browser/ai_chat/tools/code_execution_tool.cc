@@ -19,6 +19,7 @@
 #include "brave/common/webui_url_constants.h"
 #include "brave/components/ai_chat/core/browser/tools/bignumber_code_plugin.h"
 #include "brave/components/ai_chat/core/browser/tools/chart_code_plugin.h"
+#include "brave/components/ai_chat/core/browser/tools/interface_removal_code_plugin.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_input_properties.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
@@ -226,6 +227,7 @@ void CodeExecutionTool::ResolveRequest(
 CodeExecutionTool::CodeExecutionTool(content::BrowserContext* browser_context)
     : profile_(Profile::FromBrowserContext(browser_context)),
       execution_time_limit_(kExecutionTimeLimit) {
+  code_plugins_.push_back(std::make_unique<InterfaceRemovalCodePlugin>());
   code_plugins_.push_back(std::make_unique<BigNumberCodePlugin>());
   if (ChartCodePlugin::IsEnabled()) {
     code_plugins_.push_back(std::make_unique<ChartCodePlugin>());

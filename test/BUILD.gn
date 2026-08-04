@@ -172,6 +172,7 @@ test("brave_unit_tests") {
     "//brave/browser:unit_tests",
     "//brave/browser/brave_account:unit_tests",
     "//brave/browser/brave_origin:unit_tests",
+    "//brave/browser/brave_search:unit_tests",
     "//brave/browser/brave_shields:brave_shields_impl",
     "//brave/browser/brave_shields:unit_tests",
     "//brave/browser/brave_stats:unit_tests",
@@ -400,9 +401,9 @@ test("brave_unit_tests") {
 
   if (enable_local_ai) {
     deps += [
-      "//brave/browser/history_embeddings:unit_tests",
       "//brave/browser/local_ai:unit_tests",
       "//brave/browser/speech:unit_tests",
+      "//brave/services/passage_embeddings:unit_tests",
     ]
   }
 
@@ -1026,6 +1027,7 @@ test("brave_browser_tests") {
     "//brave/browser/test:browser_tests",
     "//brave/browser/themes",
     "//brave/browser/ui:browser_tests",
+    "//brave/browser/ui/tabs:tabs_public",
     "//brave/browser/ui/tabs/test:browser_tests",
     "//brave/browser/ui/views/tabs:browser_tests",
     "//brave/browser/ui/webui:browser_tests",
@@ -1789,6 +1791,7 @@ if (is_android) {
       "//brave/android/junit:brave_junit_tests_org.chromium.chrome.browser.messages",
       "//brave/android/junit:brave_junit_tests_org.chromium.chrome.browser.native_page",
       "//brave/android/junit:brave_junit_tests_org.chromium.chrome.browser.ntp",
+      "//brave/android/junit:brave_junit_tests_org.chromium.chrome.browser.omnibox.geo",
       "//brave/android/junit:brave_junit_tests_org.chromium.chrome.browser.preferences.website",
       "//brave/android/junit:brave_junit_tests_org.chromium.chrome.browser.quick_search_engines",
       "//brave/android/junit:brave_junit_tests_org.chromium.chrome.browser.rate",
@@ -1798,6 +1801,7 @@ if (is_android) {
       "//brave/android/junit:brave_junit_tests_org.chromium.chrome.browser.suggestions",
       "//brave/android/junit:brave_junit_tests_org.chromium.chrome.browser.tab_group_sync",
       "//brave/android/junit:brave_junit_tests_org.chromium.chrome.browser.tabbed_mode",
+      "//brave/android/junit:brave_junit_tests_org.chromium.chrome.browser.tabmodel",
       "//brave/android/junit:brave_junit_tests_org.chromium.chrome.browser.tasks",
       "//brave/android/junit:brave_junit_tests_org.chromium.chrome.browser.tasks.tab_management",
       "//brave/android/junit:brave_junit_tests_org.chromium.chrome.browser.toolbar",

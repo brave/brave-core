@@ -66,6 +66,14 @@ class Database final : public base::MemoryPressureListener {
 
   void ErrorCallback(int error, sql::Statement* statement);
 
+  // Attaches the last SQLite result to `mojom_db_transaction_result` so that
+  // callers can surface it in crash reports for diagnostic purposes. No-op if
+  // already set. Best-effort: a `db_.Raze()` failure may originate on an
+  // internal temporary connection that never touches `db_`, so the captured
+  // result can occasionally be stale/unrelated for `kFailedToRazeDatabase`.
+  void SetSqliteResult(
+      const mojom::DBTransactionResultInfoPtr& mojom_db_transaction_result);
+
   // base::MemoryPressureListener:
   void OnMemoryPressure(base::MemoryPressureLevel level) override;
 

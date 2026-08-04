@@ -33,6 +33,7 @@ from google.protobuf import json_format as jsonpb
 
 import proto_support
 from recipe_api import RecipeApi
+from recipe_test_api import RecipeTestApi
 
 # Root of the recipes tree (this file's directory). Recipe modules live under
 # `recipe_modules/<name>/` and recipes under `recipes/<name>.py`.
@@ -97,6 +98,65 @@ def _find_api_class(api_module: types.ModuleType,
     return classes[0]
 
 
+def _find_test_api_class(test_module: types.ModuleType,
+                         module_name: str) -> type[RecipeTestApi]:
+    """Return the single `RecipeTestApi` subclass in *test_module*, if any."""
+    classes = [
+        value for value in vars(test_module).values()
+        if isinstance(value, type) and issubclass(value, RecipeTestApi) and
+        value is not RecipeTestApi and value.__module__ == test_module.__name__
+    ]
+    if len(classes) > 1:
+        raise RuntimeError(
+            f"recipe module '{module_name}' defines {len(classes)} "
+            'RecipeTestApi subclasses in test_api.py; expected at most one')
+    return classes[0] if classes else RecipeTestApi
+
+
+def instantiate_test_module(name: str, chain: list[str],
+                            cache: dict[str, RecipeTestApi]) -> RecipeTestApi:
+    """Instantiate a module's TEST_API, wiring its DEPS onto `.m` (cached).
+
+    Every run builds these, not just simulated ones: a module reaches its own
+    test api as `self.test_api` to describe what its steps should return under
+    simulation (`step_test_data=`), so the attribute has to be there in
+    production too.
+    """
+    if name in cache:
+        return cache[name]
+    if name in chain:
+        cycle = ' -> '.join(chain + [name])
+        raise RuntimeError(f'cyclical DEPS detected: {cycle}')
+
+    _ensure_protos()
+    package = importlib.import_module(f'{MODULES_PKG}.{name}')
+    deps = list(getattr(package, 'DEPS', []))
+
+    if (RECIPES_ROOT / MODULES_PKG / name / 'test_api.py').exists():
+        test_module = importlib.import_module(f'{MODULES_PKG}.{name}.test_api')
+        api_class = _find_test_api_class(test_module, name)
+    else:
+        # Modules without a test_api.py contribute the base api (no helpers).
+        api_class = RecipeTestApi
+
+    inst = api_class(module=name)
+    for dep_name in deps:
+        setattr(inst.m, dep_name,
+                instantiate_test_module(dep_name, chain + [name], cache))
+    setattr(inst.m, name, inst)
+    cache[name] = inst
+    return inst
+
+
+def build_root_test_api(deps: list[str]) -> RecipeTestApi:
+    """Build the `api` passed to `GenTests`, with each DEP injected by name."""
+    root = RecipeTestApi(module=None)
+    cache: dict[str, RecipeTestApi] = {}
+    for dep_name in deps:
+        setattr(root, dep_name, instantiate_test_module(dep_name, [], cache))
+    return root
+
+
 def _load_config_ctx(module_name: str):
     """Return the `ConfigContext` from a module's `config.py`, or None.
 
@@ -136,8 +196,8 @@ class _Engine:
         # in test mode: it seeds this onto every module (so the seam modules
         # simulate I/O) and does not touch the real cwd.
         self._test = test
-        # Root directory the job runs in. Recipe paths (brave-browser/src,
-        # out, ...) are derived from it by the `path` module.
+        # Root directory the job runs in. Recipe paths (b/src, out, ...) are
+        # derived from it by the `path` module.
         if self._test is not None:
             # Fixed synthetic workspace so module-derived paths are
             # deterministic; never chdir'd into (nothing runs on disk).
@@ -163,6 +223,9 @@ class _Engine:
         self._environ: Mapping[str, str] = {}
         # module name -> instantiated RecipeApi (one instance per run).
         self._cache: dict[str, RecipeApi] = {}
+        # module name -> instantiated RecipeTestApi, attached to each module as
+        # its `test_api` (see `instantiate_test_module`).
+        self._test_api_cache: dict[str, RecipeTestApi] = {}
 
     def _module_property_args(self, name: str,
                               package: types.ModuleType) -> list[object]:
@@ -234,6 +297,7 @@ class _Engine:
         setattr(inst, '_brave_core_ref', self._brave_core_ref)
         setattr(inst, '_module_name', name)
         setattr(inst, '_config_ctx', _load_config_ctx(name))
+        inst.test_api = instantiate_test_module(name, [], self._test_api_cache)
         for dep_name in deps:
             setattr(inst.m, dep_name,
                     self._instantiate_module(dep_name, chain + [name]))
@@ -387,7 +451,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument('--workspace',
                         default=None,
                         help='Root directory the job runs in; recipe paths '
-                        '(brave-browser/src, out, ...) are relative to it '
+                        '(b/src, out, ...) are relative to it '
                         '(default: current directory)')
     parser.add_argument('--brave-core-ref',
                         default='master',

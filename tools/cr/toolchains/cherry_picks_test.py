@@ -22,6 +22,9 @@ Coverage:
 * `MetadataTest` — the committer identity and date are pinned (author is left as
   the original, matching `git cherry-pick` semantics) and the override table is
   configurable.
+* `ShallowCloneTest` — a commit already folded into the tree is still skipped
+  when the checkout is shallow, where its object is absent and its commit-graph
+  ancestry can't be determined at all.
 """
 
 from __future__ import annotations
@@ -252,6 +255,54 @@ class MetadataTest(_RepoTestCase):
         self.assertEqual(got['committer_name'], 'Custom Person')
         self.assertEqual(got['committer_email'], 'custom@example.com')
         self.assertIn('2001', got['committer_date'])
+
+
+class ShallowCloneTest(_RepoTestCase):
+    """A shallow checkout can't see ancestry, but content skipping still works.
+
+    `chromium_checkout.checkout_ref` clones with `depth=1`, so the checkout's
+    HEAD has no recorded parent at all. `git merge-base --is-ancestor` can
+    only walk parent pointers, so on a checkout like this it reports every
+    commit as a non-ancestor -- including ones actually folded into the tree
+    long before the shallow tip. `cherry_picks` must not rely on that check.
+    """
+
+    def test_shallow_clone_skips_commit_already_folded_into_tree(self) -> None:
+        origin = self._new_repo('origin')
+        # The "upstream fix": lands first, then further history accumulates on
+        # top of it, exactly like a real cherry-pick candidate that long ago
+        # made it into a release branch.
+        fix = _commit_file(origin, 'base.txt', 'base\nfixed\n', 'the fix')
+        _commit_file(origin, 'other.txt', 'other\n',
+                     'later, unrelated commit (becomes the shallow tip)')
+
+        local = self.root / 'local'
+        # `file://` forces real fetch negotiation for `--depth`; a same-
+        # filesystem path clone hardlinks the whole object database and
+        # ignores `--depth` entirely (per `git help clone`).
+        _git(self.root, 'clone', '-q', '--depth', '1', f'file://{origin}',
+             str(local))
+        _git(local, 'config', 'user.name', 'Test')
+        _git(local, 'config', 'user.email', 'test@example.com')
+        self.assertEqual(_git(local, 'rev-parse', '--is-shallow-repository'),
+                         'true')
+        # The fix's own commit object isn't present at all -- the shallow
+        # clone only carries the tip.
+        self.assertNotEqual(
+            subprocess.run(('git', '-C', str(local), 'cat-file', '-e',
+                            f'{fix}^{{commit}}'),
+                           check=False,
+                           capture_output=True).returncode, 0)
+
+        local_head = self._head(local)
+        with m.cherry_picks(local, [fix]):
+            # HEAD is checked *inside* the context: `cherry_picks` always
+            # restores HEAD on exit, cherry-picked or not, so only an
+            # assertion here can tell a real skip from a redundant re-pick
+            # that happens to reproduce the same content.
+            self.assertEqual(self._head(local), local_head)
+            self.assertEqual((local / 'base.txt').read_text(), 'base\nfixed\n')
+        self.assertEqual(self._head(local), local_head)
 
 
 if __name__ == '__main__':

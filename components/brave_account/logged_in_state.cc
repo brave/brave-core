@@ -45,28 +45,24 @@ LoggedInState::LoggedInState(
 
 LoggedInState::~LoggedInState() = default;
 
-void LoggedInState::ChangePasswordVerifyInit(
-    const std::string& email,
-    ChangePasswordVerifyInitCallback callback) {
-  change_password_.VerifyInit(email, std::move(callback));
+void LoggedInState::ChangePasswordStep1(const std::string& email,
+                                        ChangePasswordStep1Callback callback) {
+  change_password_.Step1(email, std::move(callback));
 }
 
-void LoggedInState::ChangePasswordVerifyComplete(
-    const std::string& code,
-    ChangePasswordVerifyCompleteCallback callback) {
-  change_password_.VerifyComplete(code, std::move(callback));
+void LoggedInState::ChangePasswordStep2(const std::string& code,
+                                        ChangePasswordStep2Callback callback) {
+  change_password_.Step2(code, std::move(callback));
 }
 
-void LoggedInState::ChangePasswordPasswordInit(
-    const std::string& blinded_message,
-    ChangePasswordPasswordInitCallback callback) {
-  change_password_.PasswordInit(blinded_message, std::move(callback));
+void LoggedInState::ChangePasswordStep3(const std::string& blinded_message,
+                                        ChangePasswordStep3Callback callback) {
+  change_password_.Step3(blinded_message, std::move(callback));
 }
 
-void LoggedInState::ChangePasswordPasswordFinalize(
-    const std::string& serialized_record,
-    ChangePasswordPasswordFinalizeCallback callback) {
-  change_password_.PasswordFinalize(serialized_record, std::move(callback));
+void LoggedInState::ChangePasswordStep4(const std::string& serialized_record,
+                                        ChangePasswordStep4Callback callback) {
+  change_password_.Step4(serialized_record, std::move(callback));
 }
 
 void LoggedInState::LogOut() {

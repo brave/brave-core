@@ -15,6 +15,7 @@ import {
   splitImportProfileName,
 } from '../lib/import_profile_helper'
 import { useImportableProfiles } from './use_importable_profiles'
+import { StepComponentProps } from './step_component_props'
 import { StepHeader } from './step_header'
 import { ImportProfileSelector } from './import_profile_selector'
 import { ImportProfileDetail } from './import_profile_detail'
@@ -22,12 +23,7 @@ import { ImportStatusView } from './import_status_view'
 
 import { style } from './import_step.style'
 
-interface Props {
-  onBack: () => void
-  onNext: () => void
-}
-
-export function ImportStep(props: Props) {
+export function ImportStep(props: StepComponentProps) {
   useStepTransition()
 
   const api = useWelcomeApi()
@@ -154,7 +150,9 @@ export function ImportStep(props: Props) {
               onClick={props.onNext}
               isDisabled={false}
             >
-              {getString('WELCOME_PAGE_CONTINUE_BUTTON_LABEL')}
+              {props.isLastStep
+                ? getString('WELCOME_PAGE_START_BROWSING_BUTTON_LABEL')
+                : getString('WELCOME_PAGE_CONTINUE_BUTTON_LABEL')}
             </Button>
           ) : (
             <Button

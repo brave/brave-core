@@ -4,7 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import { render, screen } from '@testing-library/react'
+import { act, fireEvent, render, screen } from '@testing-library/react'
 import { SponsoredSite } from '../../state/top_sites_store'
 import { SponsoredSitesTile } from './sponsored_site_tile'
 
@@ -26,8 +26,12 @@ function getTileLink() {
 // set directly on the element, not as HTML attributes.
 function getTooltipElement() {
   return document.querySelector('leo-tooltip') as
-    | (HTMLElement & { mouseenterDelay?: number; mouseleaveTimeout?: number })
+    | (HTMLElement & { visible?: boolean; mouseleaveTimeout?: number })
     | null
+}
+
+function getAdDisclosure() {
+  return screen.getByText('bar')
 }
 
 function createSite(overrides: Partial<SponsoredSite> = {}): SponsoredSite {
@@ -55,6 +59,16 @@ describe('SponsoredSitesTile', () => {
       'src',
       'chrome://branded-wallpaper/sponsored-images/foo',
     )
+  })
+
+  it('should give a grace period before hiding on mouse leave, so a pointer moving toward "Learn more" across the gap between the tile and the tooltip is not cut off', () => {
+    render(
+      <SponsoredSitesTile
+        site={createSite()}
+        onContextMenu={() => {}}
+      />,
+    )
+    expect(getTooltipElement()?.mouseleaveTimeout).toBe(500)
   })
 
   it('should omit the ad disclosure when the site does not have one', () => {
@@ -95,24 +109,111 @@ describe('SponsoredSitesTile', () => {
     },
   )
 
-  it('should open its tooltip on a delay rather than immediately on hover', () => {
-    render(
-      <SponsoredSitesTile
-        site={createSite()}
-        onContextMenu={() => {}}
-      />,
-    )
-    expect(getTooltipElement()?.mouseenterDelay).toBe(200)
-  })
+  describe('tooltip visibility', () => {
+    beforeEach(() => {
+      jest.useFakeTimers()
+    })
 
-  it('should close its tooltip immediately when the pointer leaves', () => {
-    render(
-      <SponsoredSitesTile
-        site={createSite()}
-        onContextMenu={() => {}}
-      />,
-    )
-    expect(getTooltipElement()?.mouseleaveTimeout).toBe(0)
+    afterEach(() => {
+      jest.useRealTimers()
+    })
+
+    it('should not show the tooltip immediately on hover', () => {
+      render(
+        <SponsoredSitesTile
+          site={createSite()}
+          onContextMenu={() => {}}
+        />,
+      )
+      fireEvent.mouseEnter(getAdDisclosure())
+      expect(getTooltipElement()?.visible).toBe(false)
+    })
+
+    it('should show the tooltip after a delay on hover', () => {
+      render(
+        <SponsoredSitesTile
+          site={createSite()}
+          onContextMenu={() => {}}
+        />,
+      )
+      fireEvent.mouseEnter(getAdDisclosure())
+      act(() => {
+        jest.advanceTimersByTime(500)
+      })
+      expect(getTooltipElement()?.visible).toBe(true)
+    })
+
+    it('should not show the tooltip if the pointer leaves before the delay elapses', () => {
+      render(
+        <SponsoredSitesTile
+          site={createSite()}
+          onContextMenu={() => {}}
+        />,
+      )
+      fireEvent.mouseEnter(getAdDisclosure())
+      act(() => {
+        jest.advanceTimersByTime(300)
+      })
+      fireEvent.mouseLeave(getAdDisclosure())
+      act(() => {
+        jest.advanceTimersByTime(500)
+      })
+      expect(getTooltipElement()?.visible).toBe(false)
+    })
+
+    it('should show the tooltip immediately on focus', () => {
+      render(
+        <SponsoredSitesTile
+          site={createSite()}
+          onContextMenu={() => {}}
+        />,
+      )
+      fireEvent.focus(getAdDisclosure())
+      expect(getTooltipElement()?.visible).toBe(true)
+    })
+
+    it('should keep the tooltip open when focus moves to the learn more link', () => {
+      render(
+        <SponsoredSitesTile
+          site={createSite()}
+          onContextMenu={() => {}}
+        />,
+      )
+      // Uses real .focus() calls, not fireEvent with a fake relatedTarget,
+      // since only a real focus transfer updates document.activeElement
+      // and gives the resulting blur event a genuine relatedTarget.
+      act(() => getAdDisclosure().focus())
+      act(() => screen.getByRole('link', { name: 'Learn more' }).focus())
+      expect(getTooltipElement()?.visible).toBe(true)
+    })
+
+    it('should close the tooltip when focus moves away from it entirely', () => {
+      render(
+        <SponsoredSitesTile
+          site={createSite()}
+          onContextMenu={() => {}}
+        />,
+      )
+      act(() => getAdDisclosure().focus())
+      const elsewhere = document.createElement('button')
+      document.body.appendChild(elsewhere)
+      act(() => elsewhere.focus())
+      expect(getTooltipElement()?.visible).toBe(false)
+    })
+
+    it('should not show the tooltip when hovering the icon or title', () => {
+      render(
+        <SponsoredSitesTile
+          site={createSite()}
+          onContextMenu={() => {}}
+        />,
+      )
+      fireEvent.mouseEnter(screen.getByText('foo'))
+      act(() => {
+        jest.advanceTimersByTime(500)
+      })
+      expect(getTooltipElement()?.visible).toBe(false)
+    })
   })
 
   it('should not be draggable', () => {

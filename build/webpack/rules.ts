@@ -24,9 +24,11 @@ const ifdefLoaderPath = path.join(dirName, 'plugins', 'ifdef-loader.ts')
 export function cssRules({
   isDevMode,
   test = /\.s?css$/,
+  styleLoaderOptions = {},
 }: {
   isDevMode: boolean
   test?: RegExp
+  styleLoaderOptions?: Record<string, any>
 }): RuleSetRule[] {
   return [
     {
@@ -42,7 +44,7 @@ export function cssRules({
       exclude: [/\.global\./, /node_modules/],
       use: [
         // Injects the result into the DOM as a style block.
-        { loader: 'style-loader' },
+        { loader: 'style-loader', options: styleLoaderOptions },
         // Converts the resulting CSS to Javascript to be bundled (modules:true to
         // rename CSS classes in output to cryptic identifiers, except if wrapped
         // in a :global(...) pseudo class).

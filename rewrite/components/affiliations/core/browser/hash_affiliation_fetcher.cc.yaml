@@ -1,0 +1,26 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Stub off the network fetcher's StartRequest.
+
+      The callback must actually run: AffiliationFetcherManager keeps this
+      fetcher alive in its `fetchers_` vector until the callback fires and
+      erases it. Discarding the callback without running it leaks the fetcher
+      for as long as the manager is alive.
+
+      `result_callback_` is assigned so that `~HashAffiliationFetcher()` can run
+      it before going out of scope, but the callback should normally be run
+      asynchronously via CompleteStubbedRequest().
+    preempt_function_impl:
+      function_name: HashAffiliationFetcher::StartRequest
+      code: |-
+        result_callback_ = std::move(result_callback);
+        base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+            FROM_HERE,
+            base::BindOnce(&HashAffiliationFetcher::CompleteStubbedRequest,
+                           weak_ptr_factory_.GetWeakPtr()));
+        return;

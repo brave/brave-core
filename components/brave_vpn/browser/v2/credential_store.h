@@ -51,9 +51,8 @@ class CredentialStore final {
   // True if anything at all is cached, valid or not.
   bool HasAnyCredential() const;
 
-  // Expiration of the currently cached subscriber credential, used to drive the
-  // refresh timer. Returns nullopt unless a valid subscriber credential is
-  // present.
+  // Expiration of the currently cached credential, used to drive the refresh
+  // timer. Returns nullopt unless any valid credential is present.
   std::optional<base::Time> GetExpirationTime() const;
 
   // Drops the cached credential only. Delegates to the common utility

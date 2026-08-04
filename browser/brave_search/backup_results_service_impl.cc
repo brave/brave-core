@@ -15,6 +15,7 @@
 #include "base/functional/bind.h"
 #include "base/json/json_reader.h"
 #include "base/rand_util.h"
+#include "base/strings/strcat.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "base/time/time.h"
@@ -48,6 +49,7 @@
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
+#include "net/base/url_util.h"
 #include "net/cookies/site_for_cookies.h"
 #include "net/http/http_util.h"
 #include "services/network/public/cpp/header_util.h"
@@ -62,7 +64,11 @@
 #include "ui/gfx/geometry/size.h"
 
 #if BUILDFLAG(IS_ANDROID)
+#include "base/android/jni_android.h"
+#include "base/android/scoped_java_ref.h"
+#include "brave/android/java/org/chromium/chrome/browser/brave_search/jni_headers/BackupResultsWindowFactory_jni.h"
 #include "ui/android/view_android.h"
+#include "ui/android/window_android.h"
 #else
 #include "ui/gfx/geometry/rect.h"
 #endif
@@ -101,6 +107,26 @@ constexpr base::TimeDelta kLoadAfterRestoreTimeout = base::Seconds(12);
 constexpr char kPrimarySingle[] = "primary_single";
 constexpr char kPrimaryMultiple[] = "primary_multiple";
 constexpr char kOriginal[] = "original";
+
+constexpr char kQueryParam[] = "q";
+
+std::optional<GURL> MaybeCleanUrl(const GURL& url) {
+  if (!features::kBackupResultsCleanUrl.Get()) {
+    return url;
+  }
+  for (net::QueryIterator it(url); !it.IsAtEnd(); it.Advance()) {
+    if (it.GetKey() != kQueryParam) {
+      continue;
+    }
+    // Use the raw, still percent-encoded value to avoid altering the query.
+    const std::string query = base::StrCat({kQueryParam, "=", it.GetValue()});
+    GURL::Replacements replacements;
+    replacements.SetQueryStr(query);
+    replacements.ClearRef();
+    return url.ReplaceComponents(replacements);
+  }
+  return std::nullopt;
+}
 
 class BackupResultsWebContentsObserver
     : public content::WebContentsObserver,
@@ -176,6 +202,12 @@ void BackupResultsServiceImpl::FetchBackupResults(
     std::optional<net::HttpRequestHeaders> headers,
     BackupResultsCallback callback,
     bool low_latency_required) {
+  auto target_url = MaybeCleanUrl(url);
+  if (!target_url) {
+    std::move(callback).Run(std::nullopt);
+    return;
+  }
+
   if (!profile_ || !base::FeatureList::IsEnabled(features::kBackupResults) ||
       UpdateDailyRequestCount()) {
     std::move(callback).Run(std::nullopt);
@@ -189,7 +221,8 @@ void BackupResultsServiceImpl::FetchBackupResults(
     auto* host_content_settings_map =
         HostContentSettingsMapFactory::GetForProfile(profile_);
     if (host_content_settings_map &&
-        brave_shields::GetNoScriptControlType(host_content_settings_map, url) ==
+        brave_shields::GetNoScriptControlType(host_content_settings_map,
+                                              *target_url) ==
             brave_shields::ControlType::BLOCK) {
       std::move(callback).Run(std::nullopt);
       return;
@@ -200,9 +233,12 @@ void BackupResultsServiceImpl::FetchBackupResults(
       Profile::OTRProfileID::CreateUniqueForSearchBackupResults();
   auto* otr_profile = profile_->GetOffTheRecordProfile(otr_profile_id, true);
 
-  MaybeConfigureFarblingAndAcceptLanguage(otr_profile, url);
+  MaybeConfigureFarblingAndAcceptLanguage(otr_profile, *target_url);
 
   std::unique_ptr<content::WebContents> web_contents;
+#if BUILDFLAG(IS_ANDROID)
+  ui::WindowAndroid* window_android = nullptr;
+#endif
 
   if (should_render) {
     auto create_params = content::WebContents::CreateParams(otr_profile);
@@ -227,6 +263,14 @@ void BackupResultsServiceImpl::FetchBackupResults(
     }
 #if BUILDFLAG(IS_ANDROID)
     auto* native_view = web_contents->GetNativeView();
+    // Root the view tree in a window so that window.outerWidth/outerHeight
+    // report the device window bounds rather than the view bounds.
+    JNIEnv* env = base::android::AttachCurrentThread();
+    window_android = ui::WindowAndroid::FromJavaWindowAndroid(
+        Java_BackupResultsWindowFactory_create(env));
+    if (window_android) {
+      window_android->AddChild(native_view);
+    }
     float dip_scale = native_view->GetDipScale();
     native_view->OnSizeChanged(
         static_cast<int>(view_size.width() * dip_scale),
@@ -242,7 +286,7 @@ void BackupResultsServiceImpl::FetchBackupResults(
     MaybeConfigureRendererLanguages(*web_contents);
 
     if (features::kBackupResultsHistorySeed.Get()) {
-      SeedNavigationHistory(*web_contents, url);
+      SeedNavigationHistory(*web_contents, *target_url);
     }
 
     BackupResultsWebContentsObserver::CreateForWebContents(
@@ -250,13 +294,16 @@ void BackupResultsServiceImpl::FetchBackupResults(
   }
 
   auto request = pending_requests_.emplace(
-      pending_requests_.end(), std::move(web_contents), headers, otr_profile,
-      low_latency_required, std::move(callback));
+      pending_requests_.end(), std::move(web_contents), headers, profile_,
+      otr_profile, low_latency_required, std::move(callback));
+#if BUILDFLAG(IS_ANDROID)
+  request->window_android = window_android;
+#endif
 
   if (should_render) {
     const bool load_after_restore =
         features::kBackupResultsLoadAfterRestore.Get();
-    request->target_url = url;
+    request->target_url = *target_url;
     if (!load_after_restore) {
       if (!LoadTargetUrl(request)) {
         return;
@@ -269,13 +316,14 @@ void BackupResultsServiceImpl::FetchBackupResults(
         base::BindOnce(&BackupResultsServiceImpl::CleanupAndDispatchResult,
                        base::Unretained(this), request, std::nullopt));
   } else {
-    MakeSimpleURLLoaderRequest(request, url);
+    MakeSimpleURLLoaderRequest(request, *target_url);
   }
 }
 
 BackupResultsServiceImpl::PendingRequest::PendingRequest(
     std::unique_ptr<content::WebContents> web_contents,
     std::optional<net::HttpRequestHeaders> headers,
+    Profile* original_profile,
     Profile* otr_profile,
     bool low_latency_required,
     BackupResultsCallback callback)
@@ -283,9 +331,23 @@ BackupResultsServiceImpl::PendingRequest::PendingRequest(
       callback(std::move(callback)),
       low_latency_required(low_latency_required),
       web_contents(std::move(web_contents)),
+      original_profile(original_profile),
       otr_profile(otr_profile) {}
 
-BackupResultsServiceImpl::PendingRequest::~PendingRequest() = default;
+BackupResultsServiceImpl::PendingRequest::~PendingRequest() {
+  web_contents = nullptr;
+#if BUILDFLAG(IS_ANDROID)
+  if (window_android) {
+    auto java_window = window_android->GetJavaObject();
+    window_android = nullptr;
+    Java_BackupResultsWindowFactory_destroy(
+        base::android::AttachCurrentThread(), java_window);
+  }
+#endif
+  auto* profile_to_destroy = otr_profile.get();
+  otr_profile = nullptr;
+  original_profile->DestroyOffTheRecordProfile(profile_to_destroy);
+}
 
 BackupResultsServiceImpl::PendingRequestList::iterator
 BackupResultsServiceImpl::FindPendingRequest(
@@ -639,17 +701,11 @@ void BackupResultsServiceImpl::HandleWebContentsContentExtraction(
 void BackupResultsServiceImpl::CleanupAndDispatchResult(
     PendingRequestList::iterator pending_request,
     std::optional<BackupResults> result) {
-  auto* otr_profile = pending_request->otr_profile.get();
-
   // Track query result (failure if result is nullopt, success otherwise)
   backup_results_metrics_.RecordQuery(!result);
 
   std::move(pending_request->callback).Run(result);
   pending_requests_.erase(pending_request);
-
-  if (profile_) {
-    profile_->DestroyOffTheRecordProfile(otr_profile);
-  }
 }
 
 bool BackupResultsServiceImpl::UpdateDailyRequestCount() {
@@ -685,12 +741,6 @@ void BackupResultsServiceImpl::OnProfileWillBeDestroyed(Profile* profile) {
 void BackupResultsServiceImpl::Shutdown() {
   if (profile_) {
     profile_->RemoveObserver(this);
-    for (auto& request : pending_requests_) {
-      request.web_contents = nullptr;
-      auto* otr_profile = request.otr_profile.get();
-      request.otr_profile = nullptr;
-      profile_->DestroyOffTheRecordProfile(otr_profile);
-    }
     pending_requests_.clear();
     profile_ = nullptr;
   }

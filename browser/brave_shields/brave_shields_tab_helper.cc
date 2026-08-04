@@ -266,8 +266,8 @@ BraveShieldsTabHelper::GetInvokedWebcompatFeatures() {
   return webcompat_features_invoked_;
 }
 
-bool BraveShieldsTabHelper::GetBraveShieldsEnabled() {
-  return brave_shields_settings_->GetBraveShieldsEnabled(GetCurrentSiteURL());
+bool BraveShieldsTabHelper::IsBraveShieldsEnabled() {
+  return brave_shields_settings_->IsBraveShieldsEnabled(GetCurrentSiteURL());
 }
 
 bool BraveShieldsTabHelper::GetAllowElementBlockerInPrivateModeEnabled() {

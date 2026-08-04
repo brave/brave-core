@@ -149,7 +149,7 @@ void OnboardingTabHelper::PerformBraveShieldsChecksAndShowHelpBubble() {
       brave_shields::BraveShieldsTabHelper::FromWebContents(web_contents());
   DCHECK(shields_data_controller);
 
-  if (shields_data_controller->GetBraveShieldsEnabled() &&
+  if (shields_data_controller->IsBraveShieldsEnabled() &&
       shields_data_controller->GetTotalBlockedCount() > 0 &&
       CanHighlightBraveShields()) {
     ShowBraveHelpBubbleView();

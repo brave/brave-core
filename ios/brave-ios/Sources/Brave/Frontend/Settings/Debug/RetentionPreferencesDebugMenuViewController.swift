@@ -114,7 +114,7 @@ private struct OnboardingRepresentable: UIViewControllerRepresentable {
     }
     steps.append(.blockInterruptions)
     if !p3aUtilities.isP3APreferenceManaged {
-      steps.append(.p3aOptIn)
+      steps.append(.metricsOptIn)
     }
     return OnboardingController(environment: env, steps: steps)
   }

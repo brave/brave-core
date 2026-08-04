@@ -30,6 +30,10 @@ def RunSteps(api):
         api.chromium_checkout.validate_git_cache()
     elif mode == 'invalid_checkout':
         api.chromium_checkout.ensure_checkout(ref='main')
+    elif mode == 'should_clone_false':
+        api.chromium_checkout.checkout_ref(api.path.chromium_src,
+                                           ref='main',
+                                           should_clone=False)
 
 
 def GenTests(api):
@@ -38,8 +42,9 @@ def GenTests(api):
         'ensure with cache',
         api.env.set('MODE', 'with_cache'),
         api.path.dirs('/b/cache'),
-        api.path.files('brave-browser/src/chrome/VERSION'),
+        api.path.files('b/src/chrome/VERSION'),
         api.env.on_path('gclient', '/dt/gclient'),
+        api.chromium_checkout.git_cache_populated(),
         api.post_process(post_process.StatusSuccess),
         api.post_process(post_process.DropExpectation),
     )
@@ -84,10 +89,21 @@ def GenTests(api):
         api.env.set('MODE', 'invalid_checkout'),
         api.chromium_checkout.with_git_cache(),
         api.chromium_checkout.existing_checkout(),
+        api.chromium_checkout.git_cache_populated(),
         api.env.on_path('gclient', '/dt/gclient'),
         api.step.data('check chrome/VERSION', retcode=1),
         api.post_process(post_process.MustRun, 'check chrome/VERSION'),
-        api.post_process(post_process.MustRun, 'fetch chromium'),
+        api.post_process(post_process.MustRun, 'gclient config'),
+        api.post_process(post_process.MustRun, 'clone from git cache'),
         api.post_process(post_process.StatusSuccess),
         api.post_process(post_process.DropExpectation),
+    )
+    # should_clone=False refuses to clone a missing checkout.
+    yield api.test(
+        'should_clone false without existing checkout',
+        api.env.set('MODE', 'should_clone_false'),
+        api.chromium_checkout.with_git_cache(),
+        api.post_process(post_process.StatusException),
+        api.post_process(post_process.DropExpectation),
+        status='EXCEPTION',
     )

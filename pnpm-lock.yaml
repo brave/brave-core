@@ -11,20 +11,20 @@ catalogs:
       version: 6.4.3
 
 overrides:
+  '@brave/brave-ui>styled-components': 6.4.3
+  '@types/react': 19.2.17
+  '@types/react-dom': 19.2.3
+  react: 19.2.7
+  react-dom: 19.2.7
   axios: 1.18.0
   elliptic: 6.6.1
   esbuild: 0.28.1
   http-proxy-middleware: 2.0.10
-  postcss: 8.5.18
+  postcss: 8.5.23
   prismjs: 1.30.0
   protobufjs: 7.6.5
   tiny-secp256k1: 1.1.7
   uuid: 14.0.0
-  react: 19.2.7
-  react-dom: 19.2.7
-  '@types/react': 19.2.17
-  '@types/react-dom': 19.2.3
-  '@brave/brave-ui>styled-components': 6.4.3
 
 importers:
 
@@ -35,7 +35,7 @@ importers:
         version: 0.40.6(react@19.2.7)(styled-components@6.4.3(react-dom@19.2.7(react@19.2.7))(react@19.2.7))
       '@brave/leo':
         specifier: github:brave/leo#a9fe69615e3cc3d7f2388fac1ddfa3db1e12a30a
-        version: https://codeload.github.com/brave/leo/tar.gz/a9fe69615e3cc3d7f2388fac1ddfa3db1e12a30a(@babel/core@7.29.7(supports-color@8.1.1))(@typescript-eslint/types@8.54.0)(less@3.13.1)(postcss-load-config@6.0.1(jiti@1.21.7)(postcss@8.5.18)(tsx@4.19.2))(postcss@8.5.18)(react@19.2.7)(sass@1.77.2)(storybook@8.6.17(bufferutil@4.1.0)(prettier@3.5.3)(supports-color@8.1.1)(utf-8-validate@5.0.10))(stylus@0.62.0(supports-color@8.1.1))(tsx@4.19.2)(typescript@5.9.3)
+        version: https://codeload.github.com/brave/leo/tar.gz/a9fe69615e3cc3d7f2388fac1ddfa3db1e12a30a(@babel/core@7.29.7(supports-color@8.1.1))(@typescript-eslint/types@8.54.0)(less@3.13.1)(postcss-load-config@6.0.1(jiti@1.21.7)(postcss@8.5.23)(tsx@4.19.2))(postcss@8.5.23)(react@19.2.7)(sass@1.77.2)(storybook@8.6.17(bufferutil@4.1.0)(prettier@3.5.3)(supports-color@8.1.1)(utf-8-validate@5.0.10))(stylus@0.62.0(supports-color@8.1.1))(tsx@4.19.2)(typescript@5.9.3)
       '@brave/leo-sf-symbols':
         specifier: github:brave/leo-sf-symbols#f601277fdcd837c3e6b7239b73537603c7539119
         version: https://codeload.github.com/brave/leo-sf-symbols/tar.gz/f601277fdcd837c3e6b7239b73537603c7539119
@@ -4314,8 +4314,8 @@ packages:
   fast-stable-stringify@1.0.0:
     resolution: {integrity: sha512-wpYMUmFu5f00Sm0cj2pfivpmawLZ0NKdviQ4w9zJeR8JVtOpOxHmLaJuj0vxvGqMJQWyP/COUkF75/57OKyRag==}
 
-  fast-uri@3.1.2:
-    resolution: {integrity: sha512-rVjf7ArG3LTk+FS6Yw81V1DLuZl1bRbNrev6Tmd/9RaroeeRRJhAt7jg/6YFxbvAQXUCavSoZhPPj6oOx+5KjQ==}
+  fast-uri@3.1.5:
+    resolution: {integrity: sha512-gHwA1O9LDIcKunMKhObS/HimwtehO1nPUECKAu5TpKgaO19fcWEl4bliWe1jWxVFvIXztJjjQ4L8XQ1EU9f7Jw==}
 
   fastest-levenshtein@1.0.16:
     resolution: {integrity: sha512-eRnCtTTtGZFpQCwhJiUOuxPQWRXVKYDn0b2PeHfXL6/Zi53SLAzAHfVhVWK2AryC/WH05kGfxhFIPvTF0SXQzg==}
@@ -4752,7 +4752,7 @@ packages:
     resolution: {integrity: sha512-soFhflCVWLfRNOPU3iv5Z9VUdT44xFRbzjLsEzSr5AQmgqPMTHdU3PMT1Cf1ssx8fLNJDA1juftYl+PUcv3MqA==}
     engines: {node: ^10 || ^12 || >= 14}
     peerDependencies:
-      postcss: 8.5.18
+      postcss: 8.5.23
 
   identity-obj-proxy@3.0.0:
     resolution: {integrity: sha512-00n6YnVHKrinT9t0d9+5yZC6UBNJANpYEQvL2LlX6Ab9lnmxzIRcEmTPuyGScvl1+jKuCICX1Z0Ab1pPKKdikA==}
@@ -4831,8 +4831,8 @@ packages:
   invariant@2.2.4:
     resolution: {integrity: sha512-phJfQVBuaJM5raOpJjSfkiD6BpbCE4Ns//LaXl6wGYtUBY83nWS6Rf9tXm2e8VaK60JEjYldbPif/A2B1C2gNA==}
 
-  ip-address@10.2.0:
-    resolution: {integrity: sha512-/+S6j4E9AHvW9SWMSEY9Xfy66O5PWvVEJ08O0y5JGyEKQpojb0K0GKpz/v5HJ/G0vi3D2sjGK78119oXZeE0qA==}
+  ip-address@10.4.0:
+    resolution: {integrity: sha512-oSK96Grm3aP6OrS263xVxbNDGVL7rzBtYdpGqlDG8iQdoenDoTs/nkki+DflYbAEE8Xl6o5YxhxlrKvI3nqKXQ==}
     engines: {node: '>= 12'}
 
   ipaddr.js@1.9.1:
@@ -6099,19 +6099,19 @@ packages:
     resolution: {integrity: sha512-hpr+J05B2FVYUAXHeK1YyI267J/dDDhMU6B6civm8hSY1jYJnBXxzKDKDswzJmtLHryrjhnDjqqp/49t8FALew==}
     engines: {node: '>=14.0.0'}
     peerDependencies:
-      postcss: 8.5.18
+      postcss: 8.5.23
 
   postcss-js@4.1.0:
     resolution: {integrity: sha512-oIAOTqgIo7q2EOwbhb8UalYePMvYoIeRY2YKntdpFQXNosSu3vLrniGgmH9OKs/qAkfoj5oB3le/7mINW1LCfw==}
     engines: {node: ^12 || ^14 || >= 16}
     peerDependencies:
-      postcss: 8.5.18
+      postcss: 8.5.23
 
   postcss-load-config@3.1.4:
     resolution: {integrity: sha512-6DiM4E7v4coTE4uzA8U//WhtPwyhiim3eyjEMFCnUpzbrkK9wJHgKDT2mR+HbtSrd/NubVaYTOpSpjUl8NQeRg==}
     engines: {node: '>= 10'}
     peerDependencies:
-      postcss: 8.5.18
+      postcss: 8.5.23
       ts-node: '>=9.0.0'
     peerDependenciesMeta:
       postcss:
@@ -6124,7 +6124,7 @@ packages:
     engines: {node: '>= 18'}
     peerDependencies:
       jiti: '>=1.21.0'
-      postcss: 8.5.18
+      postcss: 8.5.23
       tsx: ^4.8.1
       yaml: ^2.4.2
     peerDependenciesMeta:
@@ -6141,31 +6141,31 @@ packages:
     resolution: {integrity: sha512-k3kNe0aNFQDAZGbin48pL2VNidTF0w4/eASDsxlyspobzU3wZQLOGj7L9gfRe0Jo9/4uud09DsjFNH7winGv8Q==}
     engines: {node: ^10 || ^12 || >= 14}
     peerDependencies:
-      postcss: 8.5.18
+      postcss: 8.5.23
 
   postcss-modules-local-by-default@4.0.5:
     resolution: {integrity: sha512-6MieY7sIfTK0hYfafw1OMEG+2bg8Q1ocHCpoWLqOKj3JXlKu4G7btkmM/B7lFubYkYWmRSPLZi5chid63ZaZYw==}
     engines: {node: ^10 || ^12 || >= 14}
     peerDependencies:
-      postcss: 8.5.18
+      postcss: 8.5.23
 
   postcss-modules-scope@3.2.0:
     resolution: {integrity: sha512-oq+g1ssrsZOsx9M96c5w8laRmvEu9C3adDSjI8oTcbfkrTE8hx/zfyobUoWIxaKPO8bt6S62kxpw5GqypEw1QQ==}
     engines: {node: ^10 || ^12 || >= 14}
     peerDependencies:
-      postcss: 8.5.18
+      postcss: 8.5.23
 
   postcss-modules-values@4.0.0:
     resolution: {integrity: sha512-RDxHkAiEGI78gS2ofyvCsu7iycRv7oqw5xMWn9iMoR0N/7mf9D50ecQqUo5BZ9Zh2vH4bCUR/ktCqbB9m8vJjQ==}
     engines: {node: ^10 || ^12 || >= 14}
     peerDependencies:
-      postcss: 8.5.18
+      postcss: 8.5.23
 
   postcss-nested@6.2.0:
     resolution: {integrity: sha512-HQbt28KulC5AJzG+cZtj9kvKB93CFCdLvog1WFLf1D+xmMvPGlBstkpTEZfK5+AN9hfJocyBFCNiqyS48bpgzQ==}
     engines: {node: '>=12.0'}
     peerDependencies:
-      postcss: 8.5.18
+      postcss: 8.5.23
 
   postcss-selector-parser@6.1.2:
     resolution: {integrity: sha512-Q8qQfPiZ+THO/3ZrOrO0cJJKfpYCagtMUkXbnEfmgUjwXg6z/WBeOyS9APBBPCTSiDV+s4SwQGu8yFsiMRIudg==}
@@ -6174,8 +6174,8 @@ packages:
   postcss-value-parser@4.2.0:
     resolution: {integrity: sha512-1NNCs6uurfkVbeXG4S8JFT9t19m45ICnif8zWLd5oPSZ50QnwMfK+H3jv408d4jw/7Bttv5axS5IiHoLaVNHeQ==}
 
-  postcss@8.5.18:
-    resolution: {integrity: sha512-xdB1oSLHbz1vRWgCDalrCqEFTWzFlhqFC5tIHLMOSUIjhm3XXQ1qrFy8S/ESr1JYRRXqM3c1QFiMZUJdUTqyMQ==}
+  postcss@8.5.23:
+    resolution: {integrity: sha512-g50586zr4bZmwFiTlflMu8E0bDTb5I5gertgwAKmsdUlTQIhZtunzUlD1WSzwcVWPoAVpsrA6vlfCD7oXvRwgg==}
     engines: {node: ^10 || ^12 || >=14}
 
   prelude-ls@1.2.1:
@@ -7020,7 +7020,7 @@ packages:
       '@babel/core': ^7.10.2
       coffeescript: ^2.5.1
       less: ^3.11.3 || ^4.0.0
-      postcss: 8.5.18
+      postcss: 8.5.23
       postcss-load-config: '>=3'
       pug: ^3.0.0
       sass: ^1.26.8
@@ -8001,11 +8001,11 @@ snapshots:
 
   '@brave/leo-sf-symbols@https://codeload.github.com/brave/leo-sf-symbols/tar.gz/f601277fdcd837c3e6b7239b73537603c7539119': {}
 
-  '@brave/leo@https://codeload.github.com/brave/leo/tar.gz/a9fe69615e3cc3d7f2388fac1ddfa3db1e12a30a(@babel/core@7.29.7(supports-color@8.1.1))(@typescript-eslint/types@8.54.0)(less@3.13.1)(postcss-load-config@6.0.1(jiti@1.21.7)(postcss@8.5.18)(tsx@4.19.2))(postcss@8.5.18)(react@19.2.7)(sass@1.77.2)(storybook@8.6.17(bufferutil@4.1.0)(prettier@3.5.3)(supports-color@8.1.1)(utf-8-validate@5.0.10))(stylus@0.62.0(supports-color@8.1.1))(tsx@4.19.2)(typescript@5.9.3)':
+  '@brave/leo@https://codeload.github.com/brave/leo/tar.gz/a9fe69615e3cc3d7f2388fac1ddfa3db1e12a30a(@babel/core@7.29.7(supports-color@8.1.1))(@typescript-eslint/types@8.54.0)(less@3.13.1)(postcss-load-config@6.0.1(jiti@1.21.7)(postcss@8.5.23)(tsx@4.19.2))(postcss@8.5.23)(react@19.2.7)(sass@1.77.2)(storybook@8.6.17(bufferutil@4.1.0)(prettier@3.5.3)(supports-color@8.1.1)(utf-8-validate@5.0.10))(stylus@0.62.0(supports-color@8.1.1))(tsx@4.19.2)(typescript@5.9.3)':
     dependencies:
       '@storybook/test': 8.6.15(storybook@8.6.17(bufferutil@4.1.0)(prettier@3.5.3)(supports-color@8.1.1)(utf-8-validate@5.0.10))
       svelte: 5.55.7(@typescript-eslint/types@8.54.0)
-      svelte-preprocess: 6.0.3(@babel/core@7.29.7(supports-color@8.1.1))(less@3.13.1)(postcss-load-config@6.0.1(jiti@1.21.7)(postcss@8.5.18)(tsx@4.19.2))(postcss@8.5.18)(sass@1.77.2)(stylus@0.62.0(supports-color@8.1.1))(svelte@5.55.7(@typescript-eslint/types@8.54.0))(typescript@5.9.3)
+      svelte-preprocess: 6.0.3(@babel/core@7.29.7(supports-color@8.1.1))(less@3.13.1)(postcss-load-config@6.0.1(jiti@1.21.7)(postcss@8.5.23)(tsx@4.19.2))(postcss@8.5.23)(sass@1.77.2)(stylus@0.62.0(supports-color@8.1.1))(svelte@5.55.7(@typescript-eslint/types@8.54.0))(typescript@5.9.3)
       tailwindcss: 3.4.19(tsx@4.19.2)
       tslib: 2.8.1
     optionalDependencies:
@@ -10521,11 +10521,11 @@ snapshots:
 
   '@types/postcss-modules-local-by-default@4.0.2':
     dependencies:
-      postcss: 8.5.18
+      postcss: 8.5.23
 
   '@types/postcss-modules-scope@3.0.4':
     dependencies:
-      postcss: 8.5.18
+      postcss: 8.5.23
 
   '@types/qr-image@3.2.5':
     dependencies:
@@ -11022,7 +11022,7 @@ snapshots:
   ajv@8.20.0:
     dependencies:
       fast-deep-equal: 3.1.3
-      fast-uri: 3.1.2
+      fast-uri: 3.1.5
       json-schema-traverse: 1.0.0
       require-from-string: 2.0.2
 
@@ -11821,13 +11821,13 @@ snapshots:
 
   css-loader@5.2.7(webpack@5.105.0):
     dependencies:
-      icss-utils: 5.1.0(postcss@8.5.18)
+      icss-utils: 5.1.0(postcss@8.5.23)
       loader-utils: 2.0.4
-      postcss: 8.5.18
-      postcss-modules-extract-imports: 3.1.0(postcss@8.5.18)
-      postcss-modules-local-by-default: 4.0.5(postcss@8.5.18)
-      postcss-modules-scope: 3.2.0(postcss@8.5.18)
-      postcss-modules-values: 4.0.0(postcss@8.5.18)
+      postcss: 8.5.23
+      postcss-modules-extract-imports: 3.1.0(postcss@8.5.23)
+      postcss-modules-local-by-default: 4.0.5(postcss@8.5.23)
+      postcss-modules-scope: 3.2.0(postcss@8.5.23)
+      postcss-modules-values: 4.0.0(postcss@8.5.23)
       postcss-value-parser: 4.2.0
       schema-utils: 3.3.0
       semver: 7.7.4
@@ -11835,12 +11835,12 @@ snapshots:
 
   css-loader@6.11.0(webpack@5.105.0):
     dependencies:
-      icss-utils: 5.1.0(postcss@8.5.18)
-      postcss: 8.5.18
-      postcss-modules-extract-imports: 3.1.0(postcss@8.5.18)
-      postcss-modules-local-by-default: 4.0.5(postcss@8.5.18)
-      postcss-modules-scope: 3.2.0(postcss@8.5.18)
-      postcss-modules-values: 4.0.0(postcss@8.5.18)
+      icss-utils: 5.1.0(postcss@8.5.23)
+      postcss: 8.5.23
+      postcss-modules-extract-imports: 3.1.0(postcss@8.5.23)
+      postcss-modules-local-by-default: 4.0.5(postcss@8.5.23)
+      postcss-modules-scope: 3.2.0(postcss@8.5.23)
+      postcss-modules-values: 4.0.0(postcss@8.5.23)
       postcss-value-parser: 4.2.0
       semver: 7.6.2
     optionalDependencies:
@@ -12678,7 +12678,7 @@ snapshots:
 
   fast-stable-stringify@1.0.0: {}
 
-  fast-uri@3.1.2: {}
+  fast-uri@3.1.5: {}
 
   fastest-levenshtein@1.0.16: {}
 
@@ -13190,9 +13190,9 @@ snapshots:
     dependencies:
       safer-buffer: 2.1.2
 
-  icss-utils@5.1.0(postcss@8.5.18):
+  icss-utils@5.1.0(postcss@8.5.23):
     dependencies:
-      postcss: 8.5.18
+      postcss: 8.5.23
 
   identity-obj-proxy@3.0.0:
     dependencies:
@@ -13254,7 +13254,7 @@ snapshots:
     dependencies:
       loose-envify: 1.4.0
 
-  ip-address@10.2.0: {}
+  ip-address@10.4.0: {}
 
   ipaddr.js@1.9.1: {}
 
@@ -14946,57 +14946,57 @@ snapshots:
 
   possible-typed-array-names@1.0.0: {}
 
-  postcss-import@15.1.0(postcss@8.5.18):
+  postcss-import@15.1.0(postcss@8.5.23):
     dependencies:
-      postcss: 8.5.18
+      postcss: 8.5.23
       postcss-value-parser: 4.2.0
       read-cache: 1.0.0
       resolve: 1.22.8
 
-  postcss-js@4.1.0(postcss@8.5.18):
+  postcss-js@4.1.0(postcss@8.5.23):
     dependencies:
       camelcase-css: 2.0.1
-      postcss: 8.5.18
+      postcss: 8.5.23
 
-  postcss-load-config@3.1.4(postcss@8.5.18):
+  postcss-load-config@3.1.4(postcss@8.5.23):
     dependencies:
       lilconfig: 2.0.6
       yaml: 1.10.3
     optionalDependencies:
-      postcss: 8.5.18
+      postcss: 8.5.23
 
-  postcss-load-config@6.0.1(jiti@1.21.7)(postcss@8.5.18)(tsx@4.19.2):
+  postcss-load-config@6.0.1(jiti@1.21.7)(postcss@8.5.23)(tsx@4.19.2):
     dependencies:
       lilconfig: 3.1.3
     optionalDependencies:
       jiti: 1.21.7
-      postcss: 8.5.18
+      postcss: 8.5.23
       tsx: 4.19.2
 
-  postcss-modules-extract-imports@3.1.0(postcss@8.5.18):
+  postcss-modules-extract-imports@3.1.0(postcss@8.5.23):
     dependencies:
-      postcss: 8.5.18
+      postcss: 8.5.23
 
-  postcss-modules-local-by-default@4.0.5(postcss@8.5.18):
+  postcss-modules-local-by-default@4.0.5(postcss@8.5.23):
     dependencies:
-      icss-utils: 5.1.0(postcss@8.5.18)
-      postcss: 8.5.18
+      icss-utils: 5.1.0(postcss@8.5.23)
+      postcss: 8.5.23
       postcss-selector-parser: 6.1.2
       postcss-value-parser: 4.2.0
 
-  postcss-modules-scope@3.2.0(postcss@8.5.18):
+  postcss-modules-scope@3.2.0(postcss@8.5.23):
     dependencies:
-      postcss: 8.5.18
+      postcss: 8.5.23
       postcss-selector-parser: 6.1.2
 
-  postcss-modules-values@4.0.0(postcss@8.5.18):
+  postcss-modules-values@4.0.0(postcss@8.5.23):
     dependencies:
-      icss-utils: 5.1.0(postcss@8.5.18)
-      postcss: 8.5.18
+      icss-utils: 5.1.0(postcss@8.5.23)
+      postcss: 8.5.23
 
-  postcss-nested@6.2.0(postcss@8.5.18):
+  postcss-nested@6.2.0(postcss@8.5.23):
     dependencies:
-      postcss: 8.5.18
+      postcss: 8.5.23
       postcss-selector-parser: 6.1.2
 
   postcss-selector-parser@6.1.2:
@@ -15006,7 +15006,7 @@ snapshots:
 
   postcss-value-parser@4.2.0: {}
 
-  postcss@8.5.18:
+  postcss@8.5.23:
     dependencies:
       nanoid: 3.3.16
       picocolors: 1.1.1
@@ -15791,7 +15791,7 @@ snapshots:
 
   socks@2.8.7:
     dependencies:
-      ip-address: 10.2.0
+      ip-address: 10.4.0
       smart-buffer: 4.2.0
 
   sodium-native@4.3.3:
@@ -16033,14 +16033,14 @@ snapshots:
 
   supports-preserve-symlinks-flag@1.0.0: {}
 
-  svelte-preprocess@6.0.3(@babel/core@7.29.7(supports-color@8.1.1))(less@3.13.1)(postcss-load-config@6.0.1(jiti@1.21.7)(postcss@8.5.18)(tsx@4.19.2))(postcss@8.5.18)(sass@1.77.2)(stylus@0.62.0(supports-color@8.1.1))(svelte@5.55.7(@typescript-eslint/types@8.54.0))(typescript@5.9.3):
+  svelte-preprocess@6.0.3(@babel/core@7.29.7(supports-color@8.1.1))(less@3.13.1)(postcss-load-config@6.0.1(jiti@1.21.7)(postcss@8.5.23)(tsx@4.19.2))(postcss@8.5.23)(sass@1.77.2)(stylus@0.62.0(supports-color@8.1.1))(svelte@5.55.7(@typescript-eslint/types@8.54.0))(typescript@5.9.3):
     dependencies:
       svelte: 5.55.7(@typescript-eslint/types@8.54.0)
     optionalDependencies:
       '@babel/core': 7.29.7(supports-color@8.1.1)
       less: 3.13.1
-      postcss: 8.5.18
-      postcss-load-config: 6.0.1(jiti@1.21.7)(postcss@8.5.18)(tsx@4.19.2)
+      postcss: 8.5.23
+      postcss-load-config: 6.0.1(jiti@1.21.7)(postcss@8.5.23)(tsx@4.19.2)
       sass: 1.77.2
       stylus: 0.62.0(supports-color@8.1.1)
       typescript: 5.9.3
@@ -16088,11 +16088,11 @@ snapshots:
       normalize-path: 3.0.0
       object-hash: 3.0.0
       picocolors: 1.1.1
-      postcss: 8.5.18
-      postcss-import: 15.1.0(postcss@8.5.18)
-      postcss-js: 4.1.0(postcss@8.5.18)
-      postcss-load-config: 6.0.1(jiti@1.21.7)(postcss@8.5.18)(tsx@4.19.2)
-      postcss-nested: 6.2.0(postcss@8.5.18)
+      postcss: 8.5.23
+      postcss-import: 15.1.0(postcss@8.5.23)
+      postcss-js: 4.1.0(postcss@8.5.23)
+      postcss-load-config: 6.0.1(jiti@1.21.7)(postcss@8.5.23)(tsx@4.19.2)
+      postcss-nested: 6.2.0(postcss@8.5.23)
       postcss-selector-parser: 6.1.2
       resolve: 1.22.8
       sucrase: 3.35.1
@@ -16369,14 +16369,14 @@ snapshots:
       '@types/postcss-modules-local-by-default': 4.0.2
       '@types/postcss-modules-scope': 3.0.4
       dotenv: 16.4.5
-      icss-utils: 5.1.0(postcss@8.5.18)
+      icss-utils: 5.1.0(postcss@8.5.23)
       less: 4.2.0
       lodash.camelcase: 4.3.0
-      postcss: 8.5.18
-      postcss-load-config: 3.1.4(postcss@8.5.18)
-      postcss-modules-extract-imports: 3.1.0(postcss@8.5.18)
-      postcss-modules-local-by-default: 4.0.5(postcss@8.5.18)
-      postcss-modules-scope: 3.2.0(postcss@8.5.18)
+      postcss: 8.5.23
+      postcss-load-config: 3.1.4(postcss@8.5.23)
+      postcss-modules-extract-imports: 3.1.0(postcss@8.5.23)
+      postcss-modules-local-by-default: 4.0.5(postcss@8.5.23)
+      postcss-modules-scope: 3.2.0(postcss@8.5.23)
       reserved-words: 0.1.2
       sass: 1.77.2
       source-map-js: 1.2.1

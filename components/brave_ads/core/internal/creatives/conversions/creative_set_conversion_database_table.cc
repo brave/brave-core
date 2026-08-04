@@ -96,24 +96,6 @@ void GetCallback(
   std::move(callback).Run(/*success=*/true, creative_set_conversions);
 }
 
-void MigrateToV35(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
-  CHECK(mojom_db_transaction);
-
-  // Optimize database query for `GetUnexpired`.
-  CreateTableIndex(mojom_db_transaction,
-                   /*table_name=*/"creative_set_conversions",
-                   /*columns=*/{"expire_at"});
-}
-
-void MigrateToV43(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
-  CHECK(mojom_db_transaction);
-
-  // Optimize database query for `database::table::AdEvents`.
-  CreateTableIndex(mojom_db_transaction,
-                   /*table_name=*/"creative_set_conversions",
-                   /*columns=*/{"creative_set_id"});
-}
-
 std::string BuildInsertSql(
     const mojom::DBActionInfoPtr& mojom_db_action,
     const CreativeSetConversionList& creative_set_conversions) {
@@ -306,16 +288,6 @@ void CreativeSetConversions::Migrate(
   CHECK(mojom_db_transaction);
 
   switch (to_version) {
-    case 35: {
-      MigrateToV35(mojom_db_transaction);
-      break;
-    }
-
-    case 43: {
-      MigrateToV43(mojom_db_transaction);
-      break;
-    }
-
     case 55: {
       MigrateToV55(mojom_db_transaction);
       break;

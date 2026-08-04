@@ -14,6 +14,7 @@
 
 #include "base/barrier_callback.h"
 #include "base/check.h"
+#include "base/containers/span.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_forward.h"
 #include "base/strings/utf_string_conversions.h"
@@ -29,6 +30,7 @@
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/ai_chat_urls.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/ai_chat/core/common/constants.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
@@ -39,7 +41,9 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/singleton_tabs.h"
 #include "components/favicon/core/favicon_service.h"
+#include "components/favicon_base/favicon_types.h"
 #include "components/grit/brave_components_webui_strings.h"
+#include "components/keyed_service/core/service_access_type.h"
 #include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_controller.h"
@@ -54,6 +58,7 @@
 #include "third_party/skia/include/core/SkBitmap.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/page_transition_types.h"
+#include "ui/base/webui/web_ui_util.h"
 #include "ui/gfx/codec/png_codec.h"
 #include "ui/gfx/geometry/size.h"
 
@@ -180,6 +185,18 @@ void ProcessImageData(
       data_decoder, image_data, data_decoder::mojom::ImageCodec::kDefault, true,
       data_decoder::kDefaultMaxSizeInBytes, gfx::Size(),
       base::BindOnce(&OnImageDecoded, std::move(callback)));
+}
+
+void OnFaviconRawBitmapAvailable(
+    mojom::AIChatUIHandler::GetFaviconDataURLCallback callback,
+    const favicon_base::FaviconRawBitmapResult& result) {
+  if (!result.is_valid()) {
+    std::move(callback).Run(std::nullopt);
+    return;
+  }
+  // Favicons are always stored as PNG (see FaviconSource::GetMimeType).
+  std::move(callback).Run(
+      webui::GetPngDataUrl(base::span<const uint8_t>(*result.bitmap_data)));
 }
 
 }  // namespace
@@ -362,6 +379,26 @@ void AIChatUIPageHandler::GetPluralString(const std::string& key,
   std::move(callback).Run(l10n_util::GetPluralStringFUTF8(iter->id, count));
 }
 
+void AIChatUIPageHandler::GetFaviconDataURL(
+    const GURL& page_url,
+    GetFaviconDataURLCallback callback) {
+  favicon::FaviconService* favicon_service =
+      FaviconServiceFactory::GetForProfile(profile_,
+                                           ServiceAccessType::EXPLICIT_ACCESS);
+  if (!favicon_service) {
+    std::move(callback).Run(std::nullopt);
+    return;
+  }
+
+  favicon_service->GetRawFaviconForPageURL(
+      page_url, {favicon_base::IconType::kFavicon}, kFaviconDataURLSizeInPixels,
+      // Matches what the UI displays, which comes from the local-storage-only
+      // path of FaviconSource (see FaviconSource::StartDataRequest).
+      /*fallback_to_host=*/true,
+      base::BindOnce(&OnFaviconRawBitmapAvailable, std::move(callback)),
+      &favicon_task_tracker_);
+}
+
 void AIChatUIPageHandler::OpenAIChatSettings() {
 #if !BUILDFLAG(IS_ANDROID)
   const GURL url(kAIChatSettingsURL);
@@ -423,11 +460,12 @@ void AIChatUIPageHandler::OpenURL(const GURL& url) {
     return;
   }
 
-  // A frontend link was clicked inside the conversation. If AI Chat is a full
-  // browser tab, move the live conversation into the side panel and open the
-  // link in a tab in its place. No-op unless the feature is enabled and AI
-  // Chat is a full tab; internal chrome/UI links use OpenURLInNewTab directly
-  // and never reach here.
+  // A link in the AI Chat UI was clicked. If AI Chat is a full browser tab,
+  // move the live conversation into the side panel and open the link in a tab
+  // in its place. No-op unless the feature is enabled and AI Chat is a full
+  // tab. Neither the links AI Chat opens itself (`GoPremium` and friends, which
+  // use OpenURLInNewTab directly) nor the anchors a conversation renders (which
+  // the browser opens, and `AIChatFullPageLinkObserver` moves for) reach here.
   ai_chat::MaybeMoveFullPageChatToSidePanel(owner_web_contents_);
 
   OpenURLInNewTab(url);
@@ -694,6 +732,13 @@ void AIChatUIPageHandler::BindParentUIFrameFromChildFrame(
     return;
   }
   chat_ui_->OnChildFrameBound(std::move(receiver));
+}
+
+void AIChatUIPageHandler::SetDisplayMode(bool is_standalone) {
+  if (!chat_ui_.is_bound()) {
+    return;
+  }
+  chat_ui_->OnDisplayModeChanged(is_standalone);
 }
 
 }  // namespace ai_chat

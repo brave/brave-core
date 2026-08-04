@@ -236,7 +236,7 @@ extension BrowserViewController {
       steps.insert(.defaultBrowsing, at: 0)
     }
     if !braveCore.p3aUtils.isP3APreferenceManaged {
-      steps.append(.p3aOptIn)
+      steps.append(.metricsOptIn)
     }
 
     let controller = OnboardingController(

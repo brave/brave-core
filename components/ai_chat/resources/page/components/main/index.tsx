@@ -148,7 +148,9 @@ function Main() {
 
   return (
     <main
-      data-testid='main'
+      data-testid={
+        aiChatContext.isStandalone ? 'standalone-main' : 'sidepanel-main'
+      }
       className={classnames({
         [styles.main]: true,
         [styles.mainPanel]: !aiChatContext.isStandalone,

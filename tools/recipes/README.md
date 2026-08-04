@@ -369,6 +369,287 @@ def GenTests(api):
     )
 ```
 
+## Getting data back from a step
+
+Consider this recipe:
+
+```python
+# recipes/shake.py
+import post_process
+
+DEPS = ['path', 'step']
+
+def RunSteps(api):
+    result = api.step('determine blue moon',
+                      [api.path.workspace / 'is_blue_moon.sh'],
+                      check=False)
+    if result.retcode == 0:
+        api.step('HARLEM SHAKE!',
+                 [api.path.workspace / 'do_the_harlem_shake.sh'])
+    else:
+        api.step('boring', [api.path.workspace / 'its_a_small_world.sh'])
+
+def GenTests(api):
+    yield api.test(
+        'harlem',
+        api.step_data('determine blue moon', retcode=0),
+        api.post_process(post_process.MustRun, 'HARLEM SHAKE!'),
+        api.post_process(post_process.DropExpectation),
+    )
+    yield api.test(
+        'boring',
+        api.step_data('determine blue moon', retcode=1),
+        api.post_process(post_process.MustRun, 'boring'),
+        api.post_process(post_process.DropExpectation),
+    )
+```
+
+The `check=False` is what makes reacting to a retcode possible at all: by
+default any non-zero exit raises `subprocess.CalledProcessError` and the recipe
+is over.
+
+See how `result` carries the outcome of the step that just ran? What you get
+back is a `step_data.StepData`, and these members are always there:
+
+- **`name`** -- the step's name.
+- **`retcode`** -- pretty much what you think.
+- **`stdout`** / **`stderr`** -- the result of the step's `stdout`/`stderr`
+  placeholder, or `None` when the step didn't redirect that handle (see below).
+
+This is pretty neat... but it turns out retcodes are a miserable way to
+communicate anything more than "did it work". `api.json.output()` to the rescue:
+
+```python
+# recipes/war.py
+import post_process
+
+DEPS = ['json', 'path', 'step']
+
+def RunSteps(api):
+    result = api.step(
+        'run tests',
+        [api.path.workspace / 'do_test_things.sh', api.json.output()])
+    num_passed = result.json.output['num_passed']
+    if num_passed > 500:
+        api.step('victory', [api.path.workspace / 'do_a_dance.sh'])
+    elif num_passed > 200:
+        api.step('not defeated', [api.path.workspace / 'woohoo.sh'])
+    else:
+        api.step('deads!', [api.path.workspace / 'you_r_deads.sh'])
+
+def GenTests(api):
+    for name, passed in (('winning', 791), ('not_dead_yet', 302),
+                         ('noooooo', 10)):
+        yield api.test(
+            name,
+            api.step_data('run tests', api.json.output({'num_passed':
+                                                        passed})),
+            api.post_process(post_process.StatusSuccess),
+            api.post_process(post_process.DropExpectation),
+        )
+```
+
+### How does THAT work!?
+
+`api.json.output()` returns a [placeholder](#placeholders), which is meant to be
+dropped into a step's command list. When the step runs, the placeholder is
+_rendered_ into some strings (here, something like `/tmp/some392ra8`). When the
+step finishes, the placeholder reads that file back and adds the parsed data to
+the step's `StepData`, filed under the module and method that produced it -- so
+the `json` module's `output` method lands at `result.json.output`. Do take a
+peek at `recipe_modules/json/api.py`; it is short.
+
+### Example: read a step's standard output as JSON
+
+```python
+result = api.step(..., stdout=api.json.output())
+# result.stdout is a parsed JSON value, such as a dict.
+```
+
+### Example: read a step's standard output as text
+
+```python
+result = api.step(..., stdout=api.raw_io.output_text())
+mirror_dir = result.stdout.strip()
+```
+
+Also see [`raw_io`'s example](recipe_modules/raw_io/examples/full.py).
+
+### Example: write to a step's standard input
+
+```python
+api.step(..., stdin=api.raw_io.input_text('test input'))
+```
+
+### Example: write to a step's standard input as JSON
+
+```python
+api.step(..., stdin=api.json.input({'value': 1}))
+```
+
+Also see [`json`'s example](recipe_modules/json/examples/full.py).
+
+### Example: several outputs from one step
+
+Give each placeholder a `name` and they are told apart on the result, under the
+plural of the method that made them:
+
+```python
+result = api.step('run tests', [
+    script,
+    api.json.output(name='fast'),
+    api.json.output(name='slow'),
+])
+result.json.outputs['fast']  # and ['slow']
+```
+
+### Example: simulated step output
+
+This specifies the output a step should be seen to produce when it runs in
+simulation. It is the usual way to keep test data next to the code that knows
+what the step does, instead of spelling it out in every `GenTests` case:
+
+```python
+api.step(..., step_test_data=lambda: api.raw_io.test_api.stream_output_text(
+    'test data'))
+```
+
+A step's own default is _merged under_ whatever a test seeds for it, so a test
+can leave it alone, add to it, or replace it outright with
+`api.override_step_data`.
+
+### Example: simulated step output for a test case
+
+```python
+yield api.test(
+    'my_test',
+    api.step_data('step_name', stdout=api.raw_io.output_text('test data')),
+)
+```
+
+### Example: a whole directory of output
+
+When a step produces more than one file, `api.raw_io.output_dir()` hands it a
+directory and gives you back a mapping of relative path to content. The files
+are read lazily, so a step is free to leave more behind than the recipe looks
+at:
+
+```python
+result = api.step('dump', ['dump_files', api.raw_io.output_dir()])
+outdir = result.raw_io.output_dir
+
+set(outdir)                # every path the step wrote
+outdir['some/file']        # read now, cached from here on
+del outdir['some/file']    # hand that memory back
+```
+
+Seed it in a test with the files the step should be seen to have written:
+
+```python
+api.step_data('dump', api.raw_io.output_dir({'some/file': b'contents'})),
+```
+
+The directory itself comes from `api.path.mkdtemp()`, under
+`api.path.cleanup_dir` (`<workspace>/rc`) -- treat everything there as
+disposable. Pass `leak_to` to use a directory of your own choosing instead.
+
+### Example: leaving the file behind
+
+An output placeholder normally writes to a temporary file that is deleted once
+the step is done. Pass `leak_to` and it writes to a path you choose and stays
+there, so a later step can pick it up:
+
+```python
+config = api.path.out / 'config.json'
+api.step('write config', ['generate', api.json.output(leak_to=config)])
+api.step('use config', ['build', '--config', config])
+```
+
+## <a name="placeholders"></a>What are placeholders and how do they work?
+
+Placeholders are wrappers around the inputs and outputs of recipe steps. They
+give you somewhere to put data-processing (JSON parsing, proto decoding) and,
+just as importantly, a seam to mock in tests.
+
+### Example
+
+```python
+result = api.step('run a cool script',
+                  ['really_cool_script.py', '--json-output-file',
+                   api.json.output()],
+                  check=False)
+print(result.json.output)
+```
+
+There is a fair bit going on under those two lines. Let's dig in.
+
+`api.json.output()` returns a `JsonOutputPlaceholder`, a subclass of
+`recipe_api.OutputPlaceholder`, which has two methods that matter here:
+`render()` and `result()`. The engine replaces each placeholder in the command
+list with whatever `render()` returns. `JsonOutputPlaceholder` picks a file name
+and returns it; say `render()` gives us `/tmp/output.json`.
+
+So what actually gets executed is:
+
+```sh
+really_cool_script.py --json-output-file /tmp/output.json
+```
+
+When the program returns, the engine calls `JsonOutputPlaceholder.result()` and
+files what it hands back into `result.json.output`. Here `json` is the name of
+the recipe module and `output` is the name of the method that returned the
+placeholder. `JsonOutputPlaceholder.result()`, for its part, parses the JSON out
+of `/tmp/output.json`.
+
+Where a result is filed depends on whether the placeholder was given a `name`:
+
+| Placeholders on the step               | Where their results land                                      |
+| -------------------------------------- | ------------------------------------------------------------- |
+| `api.json.output()`                    | `result.json.output`                                          |
+| `api.json.output(name='cfg')`          | `result.json.outputs['cfg']`, and also `result.json.output`   |
+| `output(name='a')`, `output(name='b')` | `result.json.outputs['a']` and `['b']` -- there is no default |
+| two unnamed `api.json.output()`        | an error: nothing tells them apart                            |
+
+A placeholder passed as a step's `stdin`/`stdout`/`stderr` is not in the command
+list, so there is nothing to render into it; the engine redirects the handle at
+the placeholder's file instead, and an output placeholder's result becomes
+`result.stdout`/`result.stderr`. A placeholder that doesn't stand for a single
+file -- `api.raw_io.output_dir()` -- says so with `is_file_backed = False`, and
+is rejected on a std handle.
+
+### Tests and mocks
+
+```python
+yield api.test(
+    'test really_cool_script.py',
+    api.step_data('run a cool script', api.json.output({'json': 'object'})),
+)
+```
+
+This test case stubs out the actual invocation of `really_cool_script.py` and
+feeds that dictionary straight into `result.json.output`.
+
+Behind the scenes this works because the `json` module also has a `test_api.py`
+with an `output` method on it. The `api.json.output` in `GenTests` is a
+different function from the `api.json.output` the recipe calls -- one seeds the
+data, the other creates the placeholder that hands it back -- and they find each
+other because both are registered under the same module and method name (see
+`recipe_api.returns_placeholder` and `recipe_test_api.placeholder_step_data`).
+
+### The modules that provide placeholders
+
+| Module   | Input                                | Output                                                            |
+| -------- | ------------------------------------ | ----------------------------------------------------------------- |
+| `raw_io` | `input` (bytes), `input_text`        | `output` (bytes), `output_text`, `output_dir` (a whole directory) |
+| `json`   | `input`                              | `output` (parsed with `json.loads`)                               |
+| `proto`  | `input` (`BINARY`/`JSONPB`/`TEXTPB`) | `output` (decoded into a message class)                           |
+
+`raw_io` is the bottom of the stack -- the other two are it wearing a codec --
+so a new one is mostly a `render`/`result` pair delegating to a `raw_io`
+placeholder. The `file` module is a worked example of using them: reading a file
+is a step that copies it _into_ an output placeholder, and writing one is a step
+that copies _from_ an input placeholder.
+
 ## Testing
 
 Recipes and recipe modules are tested by _simulation_: a recipe declares
@@ -412,9 +693,25 @@ def GenTests(api):
 ```
 
 Fragment builders live on the root api (`api.test`, `api.properties`,
-`api.step_data`, `api.post_process`) and on each DEPS module's `TEST_API`
-(`api.platform.name('mac')`, `api.path.files(...)`, `api.env.set(...)`, and
-module-specific precondition helpers).
+`api.step_data`, `api.override_step_data`, `api.post_process`) and on each DEPS
+module's `TEST_API` (`api.platform.name('mac')`, `api.path.files(...)`,
+`api.env.set(...)`, and module-specific precondition helpers).
+
+`api.step_data(name, ...)` is how a step's simulated result is seeded: a
+retcode, the data its output placeholders hand back, and what it wrote on
+`stdout`/`stderr`. See
+[Getting data back from a step](#getting-data-back-from-a-step) for the whole
+picture; the short version is:
+
+```python
+api.step_data('flaky', retcode=1),
+api.step_data('run tests', api.json.output({'num_passed': 791})),
+api.step_data('git cache exists', stdout=api.raw_io.output_text('/b/cache/x')),
+```
+
+A step can also carry its own default simulated result via `step_test_data=`, so
+the common case needs no per-test seeding at all; `api.override_step_data`
+replaces that default rather than merging into it.
 
 `post_process` checks run against the recorded steps after simulation, each
 registered with `api.post_process(<check>, <args...>)`. A failing check does not

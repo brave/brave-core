@@ -149,6 +149,7 @@ export interface UIState {
   selectedPendingTransactionId?: string | undefined
   transactionProviderErrorRegistry: TransactionProviderErrorRegistry
   isPanel: boolean
+  isSidePanel: boolean
   isMobile: boolean
   isIOS: boolean
 }
@@ -480,9 +481,6 @@ export enum WalletRoutes {
   // market
   Market = '/crypto/explore/market',
   MarketSub = '/crypto/explore/market/:coingeckoId?',
-
-  // Web3
-  Web3 = '/crypto/explore/web3',
 
   // accounts
   Accounts = '/crypto/accounts',
@@ -858,7 +856,6 @@ export type NavIDTypes =
   | 'available_assets'
   | 'bridge'
   | 'explore'
-  | 'web3'
   | 'connections'
 
 export type AccountPageTabs =

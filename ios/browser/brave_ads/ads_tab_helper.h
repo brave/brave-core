@@ -6,6 +6,7 @@
 #ifndef BRAVE_IOS_BROWSER_BRAVE_ADS_ADS_TAB_HELPER_H_
 #define BRAVE_IOS_BROWSER_BRAVE_ADS_ADS_TAB_HELPER_H_
 
+#include "base/containers/flat_set.h"
 #include "base/memory/raw_ptr.h"
 #include "ios/web/public/web_state_observer.h"
 #include "ios/web/public/web_state_user_data.h"
@@ -34,8 +35,8 @@ class AdsTabHelper : public web::WebStateUserData<AdsTabHelper>,
 
   static void MaybeCreateForWebState(web::WebState* web_state);
 
-  void NotifyTabDidStartPlayingMedia();
-  void NotifyTabDidStopPlayingMedia();
+  void NotifyTabDidStartPlayingMedia(int player_id);
+  void NotifyTabDidStopPlayingMedia(int player_id);
 
   // web::WebStateObserver
   void WasShown(web::WebState* web_state) override;
@@ -60,6 +61,9 @@ class AdsTabHelper : public web::WebStateUserData<AdsTabHelper>,
   void MaybeNotifyTabDidChange();
   void MaybeNotifyTabDidLoad();
   void MaybeNotifyTabDidFailToLoad();
+  void MaybeNotifyTabDidStartPlayingMedia();
+  void MaybeNotifyTabDidStopPlayingMedia();
+  bool IsPlayingMediaWithAudio(int player_id) const;
   void OnVisibilityChanged(bool is_visible);
   void MaybeNotifyTabTextContentDidChange();
   bool UserHasOptedInToNotificationAds() const;
@@ -76,7 +80,13 @@ class AdsTabHelper : public web::WebStateUserData<AdsTabHelper>,
   std::optional<int> http_status_code_;
   bool was_restored_ = false;
   bool is_new_navigation_ = false;
+  bool is_same_document_navigation_ = false;
+  bool has_page_loaded_ = false;
   bool is_web_state_visible_ = false;
+
+  // Tracks media players that are currently playing with audio to determine
+  // when to send start and stop playing notifications.
+  base::flat_set<int> media_players_with_audio_;
 
   base::WeakPtrFactory<AdsTabHelper> weak_factory_{this};
 };

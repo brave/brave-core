@@ -6,12 +6,18 @@
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui_page_handler.h"
 
 #include <memory>
+#include <optional>
 #include <string>
+#include <string_view>
+#include <vector>
 
+#include "base/base64.h"
 #include "base/memory/raw_ptr.h"
+#include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/test_future.h"
+#include "base/time/time.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
@@ -19,18 +25,28 @@
 #include "brave/components/ai_chat/content/browser/associated_url_content.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
+#include "brave/components/ai_chat/core/common/constants.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "build/build_config.h"
+#include "chrome/browser/favicon/favicon_service_factory.h"
+#include "chrome/browser/history/history_service_factory.h"
 #include "chrome/test/base/chrome_render_view_host_test_harness.h"
+#include "components/favicon/core/favicon_service.h"
+#include "components/favicon_base/favicon_types.h"
+#include "components/history/core/browser/history_service.h"
+#include "components/history/core/browser/history_types.h"
+#include "components/keyed_service/core/service_access_type.h"
 #include "content/public/test/web_contents_tester.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "pdf/buildflags.h"
 #include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/skia/include/core/SkBitmap.h"
 #include "ui/gfx/codec/png_codec.h"
+#include "ui/gfx/image/image.h"
 #include "ui/gfx/image/image_unittest_util.h"
 #include "url/gurl.h"
 
@@ -64,6 +80,18 @@ class AIChatUIPageHandlerTest : public ChromeRenderViewHostTestHarness {
     service_ = nullptr;
     page_handler_.reset();
     ChromeRenderViewHostTestHarness::TearDown();
+  }
+
+  // The favicon service, and the history service it stores favicons in, are not
+  // part of a TestingProfile by default.
+  TestingProfile::TestingFactories GetTestingFactories() const override {
+    TestingProfile::TestingFactories factories =
+        ChromeRenderViewHostTestHarness::GetTestingFactories();
+    factories.emplace_back(HistoryServiceFactory::GetInstance(),
+                           HistoryServiceFactory::GetDefaultFactory());
+    factories.emplace_back(FaviconServiceFactory::GetInstance(),
+                           FaviconServiceFactory::GetDefaultFactory());
+    return factories;
   }
 
   AIChatService* service() { return service_; }
@@ -226,6 +254,44 @@ TEST_F(AIChatUIPageHandlerTest, ProcessPdfFile_LooksLikePdfRejection) {
 }
 #endif  // BUILDFLAG(ENABLE_PDF)
 
+TEST_F(AIChatUIPageHandlerTest, GetFaviconDataURL) {
+  const GURL page_url("https://example.com/page");
+  HistoryServiceFactory::GetForProfile(profile(),
+                                       ServiceAccessType::EXPLICIT_ACCESS)
+      ->AddPage(page_url, base::Time::Now(), history::SOURCE_BROWSED);
+  FaviconServiceFactory::GetForProfile(profile(),
+                                       ServiceAccessType::EXPLICIT_ACCESS)
+      ->SetFavicons(
+          {page_url}, GURL("https://example.com/icon.png"),
+          favicon_base::IconType::kFavicon,
+          gfx::Image::CreateFrom1xBitmap(gfx::test::CreateBitmap(16)));
+
+  base::test::TestFuture<const std::optional<std::string>&> future;
+  page_handler()->GetFaviconDataURL(page_url, future.GetCallback());
+
+  const std::optional<std::string>& data_url = future.Get();
+  ASSERT_TRUE(data_url);
+  constexpr std::string_view kPngDataUrlPrefix = "data:image/png;base64,";
+  ASSERT_TRUE(base::StartsWith(*data_url, kPngDataUrlPrefix));
+
+  // The stored favicon should have been resized to the size the UI asks for.
+  std::optional<std::vector<uint8_t>> png = base::Base64Decode(
+      std::string_view(*data_url).substr(kPngDataUrlPrefix.size()));
+  ASSERT_TRUE(png);
+  SkBitmap decoded = gfx::PNGCodec::Decode(*png);
+  EXPECT_EQ(decoded.width(), kFaviconDataURLSizeInPixels);
+  EXPECT_EQ(decoded.height(), kFaviconDataURLSizeInPixels);
+}
+
+TEST_F(AIChatUIPageHandlerTest, GetFaviconDataURL_NoFavicon) {
+  // Nothing is stored for the page, so there is no data URL to provide. The
+  // callback must still run, otherwise the UI would wait forever.
+  base::test::TestFuture<const std::optional<std::string>&> future;
+  page_handler()->GetFaviconDataURL(GURL("https://example.com/no-favicon"),
+                                    future.GetCallback());
+  EXPECT_FALSE(future.Get());
+}
+
 #if !BUILDFLAG(IS_ANDROID)
 
 namespace {
@@ -238,6 +304,7 @@ class FakeChatUI : public mojom::ChatUI {
   }
   void OnChildFrameBound(
       mojo::PendingReceiver<mojom::ParentUIFrame> receiver) override {}
+  void OnDisplayModeChanged(bool is_standalone) override {}
 
   std::optional<int32_t> last_content_id_;
   int call_count_ = 0;

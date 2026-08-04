@@ -120,6 +120,7 @@ export default function createUntrustedConversationApi(
         isLeoModel: true,
         allModels: [],
         currentModelKey: '',
+        defaultModelKey: '',
         contentUsedPercentage: undefined,
         visualContentUsedPercentage: undefined,
         trimmedTokens: BigInt(0),
@@ -132,6 +133,10 @@ export default function createUntrustedConversationApi(
         currentErrorDetails: undefined,
         isTemporary: false,
       }),
+
+      // Duplicate the result of the `associatedContentChanged` event so that
+      // we can optionally provide favicon URLs.
+      associatedContent: state<Mojom.AssociatedContentWithFavicon[]>([]),
 
       // Service state (profile-level) - updated via UntrustedServiceObserver
       serviceState: state<Mojom.ServiceState>({
@@ -216,7 +221,10 @@ export default function createUntrustedConversationApi(
             api.state.update(state)
           },
 
-          associatedContentChanged(content) {},
+          associatedContentChanged(content) {
+            // Provide to our wrapper
+            api.associatedContent.update(content)
+          },
         },
         (observer) => {
           conversationObserver = observer

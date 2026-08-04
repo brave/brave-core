@@ -100,9 +100,24 @@ BraveVPNController* BrowserWindowFeatures::brave_vpn_controller() {
 }
 
 void BrowserWindowFeatures::Init(BrowserWindowInterface* browser) {
-  BrowserWindowFeatures_ChromiumImpl::Init(browser);
-
   auto* profile = browser->GetProfile();
+
+  // Initialize vertical tab controller first because WindowFeatureController
+  // needs it to determine whether immersive fullscreen is supported.
+  // The WindowFeatureController takes vertical tab controller via constructor
+  // and it's initialized in BrowserWindowFeatures_ChromiumImpl::Init().
+
+  if (BrowserSupportsFocusMode(browser)) {
+    focus_mode_controller_ = std::make_unique<FocusModeController>();
+  }
+
+  // VerticalTabController should be constructed in Init() instead of
+  // InitPostBrowserViewConstruction() because it would be referenced by many
+  // views.
+  vertical_tab_controller_ = std::make_unique<VerticalTabController>(
+      browser->GetType(), profile->GetPrefs(), focus_mode_controller_.get());
+
+  BrowserWindowFeatures_ChromiumImpl::Init(browser);
 
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   if (brave_rewards::RewardsServiceFactory::GetForProfile(profile)) {
@@ -122,16 +137,6 @@ void BrowserWindowFeatures::Init(BrowserWindowInterface* browser) {
     tree_tab_session_manager_ = std::make_unique<TreeTabSessionManager>(
         profile, browser->GetTabStripModel(), browser->GetSessionID());
   }
-
-  if (BrowserSupportsFocusMode(browser)) {
-    focus_mode_controller_ = std::make_unique<FocusModeController>();
-  }
-
-  // VerticalTabController should be constructed in Init() instead of
-  // InitPostBrowserViewConstruction() because it would be referenced by many
-  // views.
-  vertical_tab_controller_ = std::make_unique<VerticalTabController>(
-      browser->GetType(), profile->GetPrefs(), focus_mode_controller_.get());
 }
 
 void BrowserWindowFeatures::InitPostBrowserViewConstruction(

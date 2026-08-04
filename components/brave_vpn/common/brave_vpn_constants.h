@@ -69,9 +69,7 @@ inline constexpr char kCredentialSummaryActiveKey[] = "active";
 inline constexpr char kCredentialSummaryRemainingCredentialCountKey[] =
     "remaining_credential_count";
 
-#if !BUILDFLAG(IS_ANDROID)
 inline constexpr char kTokenNoLongerValid[] = "Token No Longer Valid";
-#endif  // !BUILDFLAG(IS_ANDROID)
 
 }  // namespace brave_vpn
 

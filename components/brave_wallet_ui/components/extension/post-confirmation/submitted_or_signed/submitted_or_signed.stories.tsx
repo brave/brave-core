@@ -41,10 +41,7 @@ export const _TransactionSubmittedOrSigned = {
 
     return (
       <WalletPanelStory>
-        <PanelWrapper
-          width={390}
-          height={650}
-        >
+        <PanelWrapper>
           <LongWrapper padding='0px'>
             <TransactionSubmittedOrSigned
               onClose={() => alert('Close panel screen clicked.')}

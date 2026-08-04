@@ -6,7 +6,18 @@
 import { loadTimeData } from '$web-common/loadTimeData'
 import * as Mojom from './mojom'
 
-type ConversationData = Mojom.ConversationTurn[]
+// This type is free to change - the same version of this code will be used to
+// serialize within the browser and deserialize within the shared conversation
+// viewer.
+export type ConversationData = {
+  messages: Mojom.ConversationTurn[]
+  // Favicons are provided by the client which serialized the conversation,
+  // since the viewer has no access to the browser's favicon service. They are
+  // optional because a favicon may not have been retrievable, and because
+  // conversations shared before they were included don't have them.
+  associatedContent: Mojom.AssociatedContentWithFavicon[]
+  title: string
+}
 
 export interface SerializedConversation {
   /**
@@ -15,7 +26,8 @@ export interface SerializedConversation {
   version: string
 
   /**
-   * A JSON string of ConversationData, which may contain bigint fields
+   * A JSON string of ConversationData, in which bigint and byte array fields
+   * are represented as tagged objects (see the replacer below).
    */
   data: string
 }
@@ -26,18 +38,87 @@ export interface SerializedConversation {
 // when it exceeds Number.MAX_SAFE_INTEGER.
 const BIGINT_TAG = '$bigint'
 
-function bigIntReplacer(_key: string, value: unknown) {
-  return typeof value === 'bigint' ? { [BIGINT_TAG]: value.toString() } : value
+// Mojom byte arrays (`array<uint8>`, e.g. UploadedFile.data holding image,
+// screenshot and PDF bytes) arrive as number[], which JSON writes as one
+// decimal per byte plus a separator - about 3.6x the raw size for the
+// high-entropy bytes of an already-compressed image ("137,80,78,71,"). base64
+// is a flat 1.33x and its alphabet needs no JSON string escaping, so tagging
+// and encoding byte arrays makes the attachments which dominate a shared
+// conversation around 2.7x smaller.
+const BYTES_TAG = '$bytes'
+
+// Byte arrays shorter than this are left as numbers: the tag object and base64
+// padding cost more than they save, and it keeps short number arrays which
+// aren't really bytes out of the encoder.
+const MIN_ENCODED_BYTE_LENGTH = 64
+
+// btoa() takes a "binary string" of one character per byte, which we build with
+// the variadic String.fromCharCode. Chunk the calls so a multi-megabyte
+// attachment doesn't exceed the engine's argument count limit.
+const FROM_CHAR_CODE_CHUNK_SIZE = 8192
+
+/**
+ * Identifies arrays which can be represented as bytes. This is a shape check
+ * rather than a list of known mojom fields so that any future byte array is
+ * encoded too. Encoding is symmetric with decoding, so a number array which
+ * isn't really bytes but matches anyway still round-trips to an identical
+ * value - the only cost of a false positive is a different wire
+ * representation.
+ */
+function isByteArray(value: unknown): value is number[] {
+  if (!Array.isArray(value) || value.length < MIN_ENCODED_BYTE_LENGTH) {
+    return false
+  }
+  // Indexed access rather than every(), which skips holes in sparse arrays -
+  // here a hole reads as undefined and disqualifies the array, so it keeps
+  // being serialized as JSON's null.
+  for (let i = 0; i < value.length; i++) {
+    const byte = value[i]
+    if (!Number.isInteger(byte) || byte < 0 || byte > 255) {
+      return false
+    }
+  }
+  return true
 }
 
-function bigIntReviver(_key: string, value: unknown) {
-  if (
-    value
-    && typeof value === 'object'
-    && BIGINT_TAG in value
-    && Object.keys(value).length === 1
-  ) {
-    return BigInt((value as Record<string, string>)[BIGINT_TAG])
+function bytesToBase64(bytes: number[]): string {
+  let binary = ''
+  for (let i = 0; i < bytes.length; i += FROM_CHAR_CODE_CHUNK_SIZE) {
+    binary += String.fromCharCode(
+      ...bytes.slice(i, i + FROM_CHAR_CODE_CHUNK_SIZE),
+    )
+  }
+  return btoa(binary)
+}
+
+function base64ToBytes(base64: string): number[] {
+  const binary = atob(base64)
+  const bytes = new Array<number>(binary.length)
+  for (let i = 0; i < binary.length; i++) {
+    bytes[i] = binary.charCodeAt(i)
+  }
+  return bytes
+}
+
+function conversationReplacer(_key: string, value: unknown) {
+  if (typeof value === 'bigint') {
+    return { [BIGINT_TAG]: value.toString() }
+  }
+  if (isByteArray(value)) {
+    return { [BYTES_TAG]: bytesToBase64(value) }
+  }
+  return value
+}
+
+function conversationReviver(_key: string, value: unknown) {
+  if (value && typeof value === 'object' && Object.keys(value).length === 1) {
+    const tagged = value as Record<string, unknown>
+    if (typeof tagged[BIGINT_TAG] === 'string') {
+      return BigInt(tagged[BIGINT_TAG])
+    }
+    if (typeof tagged[BYTES_TAG] === 'string') {
+      return base64ToBytes(tagged[BYTES_TAG])
+    }
   }
   return value
 }
@@ -47,15 +128,15 @@ function bigIntReviver(_key: string, value: unknown) {
  * with parseConversationData. This is a lossless serialization.
  */
 export function stringifyConversationData(data: ConversationData): string {
-  return JSON.stringify(data, bigIntReplacer)
+  return JSON.stringify(data, conversationReplacer)
 }
 
 /**
  * Parses a JSON string produced by stringifyConversationData and restores
- * the original conversation data, including bigint fields.
+ * the original conversation data, including bigint and byte array fields.
  */
 export function parseConversationData(dataJson: string): ConversationData {
-  return JSON.parse(dataJson, bigIntReviver) as ConversationData
+  return JSON.parse(dataJson, conversationReviver) as ConversationData
 }
 
 /**

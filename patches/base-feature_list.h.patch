@@ -1,0 +1,13 @@
+diff --git a/base/feature_list.h b/base/feature_list.h
+index 883b54a45a7f1e722f361fe1e980503f6a0d1007..de4312eef20ee334b8d85dbdd02ef8c274ea166e 100644
+--- a/base/feature_list.h
++++ b/base/feature_list.h
+@@ -458,6 +458,8 @@ class BASE_EXPORT FeatureList {
+   static void VisitFeaturesAndParams(FeatureVisitor& visitor,
+                                      std::string_view filter_prefix = "");
+ 
++  static FeatureState GetCompileTimeFeatureState(const Feature& feature);
++
+  private:
+   FRIEND_TEST_ALL_PREFIXES(FeatureListTest, CheckFeatureIdentity);
+   FRIEND_TEST_ALL_PREFIXES(FeatureListTest,

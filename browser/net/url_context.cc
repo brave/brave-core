@@ -8,6 +8,7 @@
 #include <memory>
 #include <string>
 
+#include "base/notreached.h"
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
@@ -21,6 +22,35 @@
 namespace brave {
 
 namespace {
+
+// Worker URLLoader factories cover worker script loads and fetch/XHR-style
+// requests made by workers. Worker WebSocket handshakes are handled by
+// BraveProxyingWebSocket instead. These URLLoader factories can be created
+// without a RenderFrameHost, and requests made through them do not always carry
+// TrustedParams. Use the context captured when those factories were created as
+// a fallback. Other factory types already get their context from the request or
+// frame; retaining that path avoids changing their behavior when a factory is
+// reused or a request redirects.
+bool ShouldUseFactoryURLLoaderContext(
+    content::ContentBrowserClient::URLLoaderFactoryType type) {
+  using URLLoaderFactoryType =
+      content::ContentBrowserClient::URLLoaderFactoryType;
+  switch (type) {
+    case URLLoaderFactoryType::kWorkerMainResource:
+    case URLLoaderFactoryType::kWorkerSubResource:
+    case URLLoaderFactoryType::kServiceWorkerScript:
+    case URLLoaderFactoryType::kServiceWorkerSubResource:
+      return true;
+    case URLLoaderFactoryType::kNavigation:
+    case URLLoaderFactoryType::kDownload:
+    case URLLoaderFactoryType::kDocumentSubResource:
+    case URLLoaderFactoryType::kPrefetch:
+    case URLLoaderFactoryType::kDevTools:
+    case URLLoaderFactoryType::kEarlyHints:
+      return false;
+  }
+  NOTREACHED();
+}
 
 std::string GetUploadData(const network::ResourceRequest& request) {
   std::string upload_data;
@@ -93,14 +123,15 @@ void BraveRequestInfo::set_tab_url(const GURL& value) {
   tab_url_ = value;
 }
 
-const GURL& BraveRequestInfo::initiator_url() const {
+const std::optional<url::Origin>& BraveRequestInfo::request_initiator() const {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  return initiator_url_;
+  return request_initiator_;
 }
 
-void BraveRequestInfo::set_initiator_url(const GURL& value) {
+void BraveRequestInfo::set_request_initiator(
+    const std::optional<url::Origin>& value) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  initiator_url_ = value;
+  request_initiator_ = value;
 }
 
 bool BraveRequestInfo::internal_redirect() const {
@@ -424,14 +455,26 @@ std::unique_ptr<brave::BraveRequestInfo> BraveRequestInfo::MakeCTX(
     content::GlobalRenderFrameHostToken render_frame_token,
     uint64_t request_identifier,
     content::BrowserContext* browser_context,
-    brave::BraveRequestInfo* old_ctx) {
+    brave::BraveRequestInfo* old_ctx,
+    base::optional_ref<const url::Origin> original_request_initiator,
+    std::optional<content::ContentBrowserClient::URLLoaderFactoryType>
+        url_loader_factory_type,
+    base::optional_ref<const url::Origin> factory_request_initiator,
+    base::optional_ref<const net::IsolationInfo> factory_isolation_info) {
   auto ctx = std::make_unique<brave::BraveRequestInfo>();
   ctx->set_request_identifier(request_identifier);
   ctx->set_method(request.method);
   ctx->set_request_url(request.url);
-  // TODO(iefremov): Replace GURL with Origin
-  ctx->set_initiator_url(
-      request.request_initiator.value_or(url::Origin()).GetURL());
+  const bool use_factory_context =
+      url_loader_factory_type &&
+      ShouldUseFactoryURLLoaderContext(*url_loader_factory_type);
+  std::optional<url::Origin> request_initiator =
+      original_request_initiator ? *original_request_initiator
+                                 : request.request_initiator;
+  if (!request_initiator && use_factory_context && factory_request_initiator) {
+    request_initiator = *factory_request_initiator;
+  }
+  ctx->set_request_initiator(request_initiator);
 
   ctx->set_referrer(request.referrer);
   ctx->set_referrer_policy(request.referrer_policy);
@@ -443,17 +486,24 @@ std::unique_ptr<brave::BraveRequestInfo> BraveRequestInfo::MakeCTX(
 
   // TODO(iefremov): remove tab_url. Change tab_origin from GURL to Origin.
   // ctx->set_tab_url(request.top_frame_origin);
+  const net::IsolationInfo* isolation_info = nullptr;
   if (request.trusted_params) {
+    isolation_info = &request.trusted_params->isolation_info;
+  } else if (use_factory_context && factory_isolation_info) {
+    // Worker factories do not have a frame token and their ResourceRequests may
+    // not carry TrustedParams. The factory-level IsolationInfo is the only
+    // place where the top-frame origin is still available.
+    isolation_info = &*factory_isolation_info;
+  }
+  if (isolation_info) {
     // TODO(iefremov): Turns out it provides us a not expected value for
     // cross-site top-level navigations. Fortunately for now it is not a problem
     // for shields functionality. We should reconsider this machinery, also
     // given that this is always empty for subresources.
     ctx->set_network_anonymization_key(
-        request.trusted_params->isolation_info.network_anonymization_key());
+        isolation_info->network_anonymization_key());
     ctx->set_tab_origin(
-        request.trusted_params->isolation_info.top_frame_origin()
-            .value_or(url::Origin())
-            .GetURL());
+        isolation_info->top_frame_origin().value_or(url::Origin()).GetURL());
   }
   // TODO(iefremov): We still need this for WebSockets, currently
   // |AddChannelRequest| provides only old-fashioned |site_for_cookies|.
@@ -475,7 +525,7 @@ std::unique_ptr<brave::BraveRequestInfo> BraveRequestInfo::MakeCTX(
   Profile* profile = Profile::FromBrowserContext(browser_context);
   auto* map = HostContentSettingsMapFactory::GetForProfile(profile);
   ctx->set_allow_brave_shields(
-      map ? brave_shields::GetBraveShieldsEnabled(map, ctx->tab_origin())
+      map ? brave_shields::IsBraveShieldsEnabled(map, ctx->tab_origin())
           : true);
   ctx->set_allow_ads(map &&
                      brave_shields::GetAdControlType(map, ctx->tab_origin()) ==

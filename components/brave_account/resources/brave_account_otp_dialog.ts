@@ -91,7 +91,7 @@ export class BraveAccountOtpDialogElement extends CrLitElement {
 
   private async confirmRegistrationCode() {
     try {
-      await this.browserProxy.authentication.registerVerifyComplete(this.code)
+      await this.browserProxy.authentication.registerStep3(this.code)
     } catch (e) {
       let error: RegisterError
 
@@ -110,9 +110,7 @@ export class BraveAccountOtpDialogElement extends CrLitElement {
 
   private async confirmResetPasswordCode() {
     try {
-      await this.browserProxy.authentication.resetPasswordVerifyComplete(
-        this.code,
-      )
+      await this.browserProxy.authentication.resetPasswordStep2(this.code)
     } catch (e) {
       let error: ResetPasswordError
 
@@ -131,9 +129,7 @@ export class BraveAccountOtpDialogElement extends CrLitElement {
 
   private async confirmChangePasswordCode() {
     try {
-      await this.browserProxy.authentication.changePasswordVerifyComplete(
-        this.code,
-      )
+      await this.browserProxy.authentication.changePasswordStep2(this.code)
     } catch (e) {
       let error: ChangePasswordError
 

@@ -14,6 +14,7 @@
 #include "base/time/time.h"
 #include "base/uuid.h"
 #include "brave/components/ai_chat/core/browser/associated_content_manager.h"
+#include "brave/components/ai_chat/core/common/constants.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/ai_chat/core/common/test_utils.h"
@@ -64,9 +65,11 @@ void ExpectConversationEquals(base::Location location,
     // has_content is not persisted
     a->has_content = false;
     b->has_content = false;
-    // Date is not persisted
-    a->updated_time = base::Time::Now();
-    b->updated_time = base::Time::Now();
+    // Date is not persisted. Use a single timestamp for both so the clones
+    // compare equal regardless of any clock tick between the assignments.
+    const base::Time now = base::Time::Now();
+    a->updated_time = now;
+    b->updated_time = now;
     // content_id is not persisted
     for (auto& content : a->associated_content) {
       content->content_id = 0;
@@ -185,8 +188,8 @@ std::vector<mojom::ConversationTurnPtr> CreateSampleChatHistory(
         mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE, "",
         std::nullopt /* prompt */, std::nullopt, std::move(events),
         now + base::Seconds((i * 60) + 30) + base::Hours(future_hours),
-        std::nullopt, std::nullopt, nullptr /* skill */, false, "chat-basic",
-        nullptr));
+        std::nullopt, std::nullopt, nullptr /* skill */, false,
+        kChatAutomaticModelKey, nullptr));
   }
   return history;
 }

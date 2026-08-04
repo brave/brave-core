@@ -26,6 +26,7 @@
 
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
 #include "brave/browser/ui/email_aliases/email_aliases_controller.h"
+#include "brave/components/email_aliases/pref_names.h"
 #endif
 
 namespace autofill {
@@ -130,6 +131,14 @@ class BraveChromeAutofillClient : public ChromeAutofillClient {
     email_aliases::EmailAliasesController* controller =
         GetEmailAliasesControllerFromWebContents(web_contents());
     if (controller) {
+      auto* profile =
+          Profile::FromBrowserContext(web_contents()->GetBrowserContext());
+      if (!profile->GetPrefs()->GetBoolean(
+              email_aliases::prefs::
+                  kEmailAliasesNewAliasAutofillSuggestionEnabled)) {
+        return;
+      }
+
       const bool contains_email_suggestion =
           std::ranges::find_if(chrome_suggestions, [](const auto& suggestion) {
             return suggestion.icon == autofill::Suggestion::Icon::kEmail;
@@ -194,24 +203,4 @@ CreateBraveChromeAutofillClientForTesting(  // IN-TEST
 
 }  // namespace autofill
 
-#define WrapUnique WrapUnique(new autofill::BraveChromeAutofillClient(web_contents))); \
-  if (0) std::unique_ptr<autofill::ChromeAutofillClient> dummy(
 #include <chrome/browser/ui/autofill/chrome_autofill_client.cc>
-#undef WrapUnique
-
-namespace autofill {
-
-AutofillOptimizationGuideDecider*
-ChromeAutofillClient::GetAutofillOptimizationGuideDecider_Unused() const {
-  return nullptr;
-}
-
-bool ChromeAutofillClient::IsAutofillEnabled_Unused() const {
-  return false;
-}
-
-bool ChromeAutofillClient::IsAutocompleteEnabled_Unused() const {
-  return false;
-}
-
-}  // namespace autofill

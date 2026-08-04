@@ -32,7 +32,7 @@ https://docs.google.com/document/d/1ccnBWBV_KkknZpZYxcOXTwtfIiaSzeLS5dMd08N2pbs/
    - takes the first URL (URL_1) and marks it as current;
    - navigates to that URL;
    - returns the progress and applied tasks list to the back-end:
-     `PsstTabWebContentsObserver::OnPolicyScriptResult(int nav_entry_id,base::Value script_result)`</br>
+     `PsstTabWebContentsObserver::OnPolicyScriptResult(base::Value script_result)`</br>
      where after deserialization and validation, we update the flow's status on
      the consent dialog, by calling the UI delegate's method:</br>
      `UpdateTasks(long progress,const std::vector<PolicyTask>& applied_tasks)`</br>
@@ -70,13 +70,12 @@ seconds):
 
 ```
 void PsstTabWebContentsObserver::RunWithTimeout(
-    const int last_committed_entry_id,
     const std::string& script,
     InsertScriptInPageCallback callback) {
   timeout_timer_.Start(
       FROM_HERE, kScriptTimeout,
       base::BindOnce(&PsstTabWebContentsObserver::OnScriptTimeout,
-                     weak_factory_.GetWeakPtr(), last_committed_entry_id));
+                     page_weak_factory_.GetWeakPtr()));
   inject_script_callback_.Run(script, std::move(callback));
 }
 
@@ -89,7 +88,7 @@ script result once it executes;
 
 The `PsstTabWebContentsObserver::OnScriptTimeout` is special timeout handler,
 which stops the other script execution result handlers by calling the
-`weak_factory_.InvalidateWeakPtrs();`
+`page_weak_factory_.InvalidateWeakPtrs();`
 
 # PSST CRX Component
 
@@ -98,7 +97,7 @@ Contains set of rules and scripts for small number of very popular sites
 open source (similar to https://github.com/brave/adblock-lists), and shipped
 daily to users.
 
-- Component ID: `lhhcaamjbmbijmjbnnodjaknblkiagon`
+- Component ID: `bchfnigamfmpeanhekjggkphjfobpipo`
 - Component version: `1`
 
 ### Component's folder structure:

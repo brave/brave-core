@@ -96,6 +96,8 @@ static_library("browser") {
     "tools/chart_code_plugin.h",
     "tools/code_plugin.cc",
     "tools/code_plugin.h",
+    "tools/interface_removal_code_plugin.cc",
+    "tools/interface_removal_code_plugin.h",
     "tools/memory_storage_tool.cc",
     "tools/memory_storage_tool.h",
     "tools/tool.cc",
@@ -292,6 +294,7 @@ source_set("test_support") {
 
   deps = [
     "//brave/components/ai_chat/core/browser",
+    "//brave/components/ai_chat/core/common",
     "//brave/components/ai_chat/core/common:test_support",
     "//brave/components/ai_chat/core/common/mojom",
     "//services/network/public/cpp",

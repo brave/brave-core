@@ -5,11 +5,15 @@
 
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_images_data.h"
 
+#include <string_view>
+
+#include "base/check_deref.h"
 #include "base/dcheck_is_on.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/test/values_test_util.h"
+#include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/gfx/geometry/point.h"
@@ -144,6 +148,20 @@ constexpr char
         }
       ]
     })JSON";
+
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+void SetCreativeTargetUrls(base::DictValue& dict, std::string_view target_url) {
+  for (base::Value& campaign : CHECK_DEREF(dict.FindList("campaigns"))) {
+    for (base::Value& creative_set :
+         CHECK_DEREF(campaign.GetDict().FindList("creativeSets"))) {
+      for (base::Value& creative :
+           CHECK_DEREF(creative_set.GetDict().FindList("creatives"))) {
+        creative.GetDict().Set("targetUrl", target_url);
+      }
+    }
+  }
+}
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
 }  // namespace
 
@@ -286,5 +304,34 @@ TEST(NTPSponsoredImagesDataTest,
   FilterCampaigns(dict, installed_dir.GetPath());
   EXPECT_THAT(dict.FindList("campaigns"), testing::Pointee(testing::SizeIs(1)));
 }
+
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+TEST(NTPSponsoredImagesDataTest, RejectsCreativeWithHttpTargetUrl) {
+  base::DictValue dict =
+      base::test::ParseJsonDict(kTestSponsoredImagesCampaign);
+  SetCreativeTargetUrls(dict, "http://basicattentiontoken.org");
+  NTPSponsoredImagesData data(
+      dict, base::FilePath(FILE_PATH_LITERAL("ntp_sponsored_images_data")));
+  EXPECT_THAT(data.campaigns, testing::IsEmpty());
+}
+
+TEST(NTPSponsoredImagesDataTest, RejectsCreativeWithJavascriptTargetUrl) {
+  base::DictValue dict =
+      base::test::ParseJsonDict(kTestSponsoredImagesCampaign);
+  SetCreativeTargetUrls(dict, "javascript:alert(1)");
+  NTPSponsoredImagesData data(
+      dict, base::FilePath(FILE_PATH_LITERAL("ntp_sponsored_images_data")));
+  EXPECT_THAT(data.campaigns, testing::IsEmpty());
+}
+
+TEST(NTPSponsoredImagesDataTest, RejectsCreativeWithMalformedTargetUrl) {
+  base::DictValue dict =
+      base::test::ParseJsonDict(kTestSponsoredImagesCampaign);
+  SetCreativeTargetUrls(dict, "MALFORMED_TARGET_URL");
+  NTPSponsoredImagesData data(
+      dict, base::FilePath(FILE_PATH_LITERAL("ntp_sponsored_images_data")));
+  EXPECT_THAT(data.campaigns, testing::IsEmpty());
+}
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
 }  // namespace ntp_background_images

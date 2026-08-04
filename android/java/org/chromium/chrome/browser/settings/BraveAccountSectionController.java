@@ -22,7 +22,7 @@ import org.chromium.brave_account.mojom.AuthenticationObserver;
 import org.chromium.brave_account.mojom.ChangePasswordError;
 import org.chromium.brave_account.mojom.ChangePasswordServerError;
 import org.chromium.brave_account.mojom.ChangePasswordServerErrorCode;
-import org.chromium.brave_account.mojom.ChangePasswordVerifyInitResult;
+import org.chromium.brave_account.mojom.ChangePasswordStep1Result;
 import org.chromium.brave_account.mojom.LoggedInState;
 import org.chromium.brave_account.mojom.LoggedInVerificationIntent;
 import org.chromium.brave_account.mojom.LoggedOutState;
@@ -57,9 +57,6 @@ public class BraveAccountSectionController
                     R.string.brave_account_register_too_many_verifications,
                     ChangePasswordServerErrorCode.DAILY_VERIFICATION_LIMIT_REACHED_FOR_EMAIL,
                     R.string.brave_account_daily_verification_limit_reached_for_email,
-                    ChangePasswordServerErrorCode.VERIFICATION_NOT_FOUND_OR_INVALID_ID_OR_CODE,
-                    R.string
-                            .brave_account_password_reset_verification_not_found_or_invalid_id_or_code,
                     ChangePasswordServerErrorCode.EMAIL_ALREADY_VERIFIED,
                     R.string.brave_account_password_reset_email_already_verified,
                     ChangePasswordServerErrorCode.MAXIMUM_CODE_VERIFICATION_ATTEMPTS_EXCEEDED,
@@ -216,10 +213,9 @@ public class BraveAccountSectionController
                                 preference -> {
                                     preference.setEnabled(false);
                                     assert mBraveAccountService != null;
-                                    mBraveAccountService.changePasswordVerifyInit(
+                                    mBraveAccountService.changePasswordStep1(
                                             loggedIn.email,
-                                            result ->
-                                                    onChangePasswordVerifyInit(preference, result));
+                                            result -> onChangePasswordStep1(preference, result));
                                     return true;
                                 });
                     }
@@ -530,9 +526,8 @@ public class BraveAccountSectionController
         showAlertDialog(preference, title, message);
     }
 
-    private void onChangePasswordVerifyInit(
-            Preference preference,
-            Result<ChangePasswordVerifyInitResult, ChangePasswordError> result) {
+    private void onChangePasswordStep1(
+            Preference preference, Result<ChangePasswordStep1Result, ChangePasswordError> result) {
         if (result.isSuccess()) {
             PostTask.postTask(
                     TaskTraits.UI_DEFAULT,

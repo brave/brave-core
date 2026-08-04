@@ -123,6 +123,9 @@ inline constexpr char kBraveAIChatTabOrganizationEnabled[] =
 inline constexpr char kBraveAIChatTabOrganizationModelKey[] =
     "brave.ai_chat.tab_organization_model_key";
 
+inline constexpr char kNtpInputDayZeroEnabled[] =
+    "brave.ai_chat.ntp_input_day_zero_enabled";
+
 inline constexpr char kBraveAIChatUserCustomizationEnabled[] =
     "brave.ai_chat.user_customization_enabled";
 inline constexpr char kBraveAIChatUserCustomizations[] =

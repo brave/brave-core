@@ -40,9 +40,6 @@ const CHANGE_PASSWORD_SERVER_ERROR_STRINGS: Partial<
   [ChangePasswordServerErrorCode.kDailyVerificationLimitReachedForEmail]:
     BraveAccountSettingsStrings
       .BRAVE_ACCOUNT_DAILY_VERIFICATION_LIMIT_REACHED_FOR_EMAIL,
-  [ChangePasswordServerErrorCode.kVerificationNotFoundOrInvalidIdOrCode]:
-    BraveAccountSettingsStrings
-      .BRAVE_ACCOUNT_PASSWORD_RESET_VERIFICATION_NOT_FOUND_OR_INVALID_ID_OR_CODE,
   [ChangePasswordServerErrorCode.kEmailAlreadyVerified]:
     BraveAccountSettingsStrings
       .BRAVE_ACCOUNT_PASSWORD_RESET_EMAIL_ALREADY_VERIFIED,

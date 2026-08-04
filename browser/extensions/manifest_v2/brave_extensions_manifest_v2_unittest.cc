@@ -222,6 +222,7 @@ TEST_P(BraveExtensionsManifestV2SettingsBackupTest, BackupSettings) {
     auto extension =
         extensions::ExtensionBuilder("test")
             .SetID(extensions_mv2::kWebStoreUBlockId)
+            .SetManifestVersion(2)
             .SetVersion("1.65.0")
             .AddFlags(extensions::Extension::FROM_WEBSTORE)
             .SetLocation(extensions::mojom::ManifestLocation::kExternalPolicy)
@@ -263,6 +264,7 @@ TEST_P(BraveExtensionsManifestV2SettingsBackupTest, BackupSettings) {
     auto extension =
         extensions::ExtensionBuilder("test")
             .SetID(extensions_mv2::kUBlockId)
+            .SetManifestVersion(2)
             .SetVersion("1.65.0")
             .AddFlags(extensions::Extension::FROM_WEBSTORE)
             .SetLocation(extensions::mojom::ManifestLocation::kExternalPolicy)
@@ -340,39 +342,62 @@ TEST_P(BraveExtensionsManifestV2SettingsBackupTest, BackupSettingsOnInstall) {
 
   base::ScopedAllowBlockingForTesting allow_io;
 
-  // Install uBlock from CWS.
-  auto extension =
-      extensions::ExtensionBuilder("test")
-          .SetID(extensions_mv2::kWebStoreUBlockId)
-          .SetVersion("1.65.0")
-          .AddFlags(extensions::Extension::FROM_WEBSTORE)
-          .SetLocation(extensions::mojom::ManifestLocation::kExternalPolicy)
-          .Build();
-  registrar()->AddExtension(extension);
-  extensions::ExtensionPrefs::Get(profile())->UpdateExtensionPref(
-      extensions_mv2::kWebStoreUBlockId, "manifest.version",
-      base::Value("1.65.0"));
-  CopyTestIndexedDB(extensions_mv2::kWebStoreUBlockId);
-  CopyTestLocalSettings(extensions_mv2::kWebStoreUBlockId);
-
-  // The extension being installed (without ever being disabled) triggers the
-  // migrator to back up its settings.
-  registry()->TriggerOnInstalled(extension.get(), /*is_update=*/false);
-  WaitForExtensionsFileOperations();
-
-  if (GetParam().backup_enabled) {
-    std::string version;
-    base::ReadFileToString(GetBackupPath("version"), &version);
-    EXPECT_EQ("1.65.0", version);
-    EXPECT_TRUE(
-        AreDirectoriesEqual(profile()->GetPath().AppendASCII("IndexedDB"),
-                            GetBackupPath("IndexedDB")));
-    EXPECT_TRUE(AreDirectoriesEqual(
-        profile()->GetPath().Append(
-            extensions::kLocalExtensionSettingsDirectoryName),
-        GetBackupPath(extensions::kLocalExtensionSettingsDirectoryName)));
-  } else {
+  {
+    // Install mv3 from CWS
+    auto extension =
+        extensions::ExtensionBuilder("test")
+            .SetID(extensions_mv2::kWebStoreUBlockId)
+            .SetManifestVersion(3)
+            .SetVersion("1.65.0")
+            .AddFlags(extensions::Extension::FROM_WEBSTORE)
+            .SetLocation(extensions::mojom::ManifestLocation::kExternalPolicy)
+            .Build();
+    registrar()->AddExtension(extension);
+    extensions::ExtensionPrefs::Get(profile())->UpdateExtensionPref(
+        extensions_mv2::kWebStoreUBlockId, "manifest.version",
+        base::Value("1.65.0"));
+    registry()->TriggerOnInstalled(extension.get(), /*is_update=*/false);
+    WaitForExtensionsFileOperations();
     EXPECT_FALSE(
         base::PathExists(profile()->GetPath().AppendASCII("MV2Backup")));
+  }
+
+  {
+    // Install uBlock from CWS.
+    auto extension =
+        extensions::ExtensionBuilder("test")
+            .SetID(extensions_mv2::kWebStoreUBlockId)
+            .SetManifestVersion(2)
+            .SetVersion("1.65.0")
+            .AddFlags(extensions::Extension::FROM_WEBSTORE)
+            .SetLocation(extensions::mojom::ManifestLocation::kExternalPolicy)
+            .Build();
+    registrar()->AddExtension(extension);
+    extensions::ExtensionPrefs::Get(profile())->UpdateExtensionPref(
+        extensions_mv2::kWebStoreUBlockId, "manifest.version",
+        base::Value("1.65.0"));
+    CopyTestIndexedDB(extensions_mv2::kWebStoreUBlockId);
+    CopyTestLocalSettings(extensions_mv2::kWebStoreUBlockId);
+
+    // The extension being installed (without ever being disabled) triggers the
+    // migrator to back up its settings.
+    registry()->TriggerOnInstalled(extension.get(), /*is_update=*/false);
+    WaitForExtensionsFileOperations();
+
+    if (GetParam().backup_enabled) {
+      std::string version;
+      base::ReadFileToString(GetBackupPath("version"), &version);
+      EXPECT_EQ("1.65.0", version);
+      EXPECT_TRUE(
+          AreDirectoriesEqual(profile()->GetPath().AppendASCII("IndexedDB"),
+                              GetBackupPath("IndexedDB")));
+      EXPECT_TRUE(AreDirectoriesEqual(
+          profile()->GetPath().Append(
+              extensions::kLocalExtensionSettingsDirectoryName),
+          GetBackupPath(extensions::kLocalExtensionSettingsDirectoryName)));
+    } else {
+      EXPECT_FALSE(
+          base::PathExists(profile()->GetPath().AppendASCII("MV2Backup")));
+    }
   }
 }

@@ -60,8 +60,6 @@ void RegisterProfilePrefs() {
   RegisterProfileListPref(prefs::kSaveAds);
   RegisterProfileListPref(prefs::kMarkedAsInappropriate);
 
-  RegisterProfileBooleanPref(prefs::kHasMigratedClientState, true);
-
   RegisterProfileStringPref(prefs::kBrowserVersionNumber, "");
 
   // Rewards prefs.

@@ -11,13 +11,13 @@ export const style = scoped.css`
     display: flex;
     gap: ${spacing['2Xl']};
     align-items: center;
-    padding: ${spacing['2Xl']};
+    padding: ${spacing.xl};
     border-radius: ${radius.xl};
     background: ${color.material.regular};
   }
 
   img {
-    width: 120px;
+    width: 101px;
     height: auto;
     border-radius: ${radius.l};
   }

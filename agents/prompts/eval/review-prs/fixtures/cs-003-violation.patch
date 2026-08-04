@@ -1,0 +1,63 @@
+diff --git a/components/tor/tor_prefs.h b/components/tor/tor_prefs.h
+new file mode 100644
+index 0000000000000..1111111111111
+--- /dev/null
++++ b/components/tor/tor_prefs.h
+@@ -0,0 +1,26 @@
++/* Copyright (c) 2026 The Brave Authors. All rights reserved.
++ * This Source Code Form is subject to the terms of the Mozilla Public
++ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
++ * You can obtain one at https://mozilla.org/MPL/2.0/. */
++
++#ifndef BRAVE_COMPONENTS_TOR_TOR_PREFS_H_
++#define BRAVE_COMPONENTS_TOR_TOR_PREFS_H_
++
++class PrefRegistrySimple;
++
++namespace tor {
++
++// Pref controlling whether Tor is turned off for this profile.
++inline constexpr char kTorDisabled[] = "brave.tor.disabled";
++
++void RegisterTorPrefs(PrefRegistrySimple* registry);
++
++// Returns true when the user or policy has turned Tor off.
++bool IsTorDisabled();
++
++// Sets the disabled state for Tor.
++void SetTorDisabled(bool disabled);
++
++}  // namespace tor
++
++#endif  // BRAVE_COMPONENTS_TOR_TOR_PREFS_H_
+diff --git a/components/tor/tor_prefs.cc b/components/tor/tor_prefs.cc
+new file mode 100644
+index 0000000000000..2222222222222
+--- /dev/null
++++ b/components/tor/tor_prefs.cc
+@@ -0,0 +1,24 @@
++/* Copyright (c) 2026 The Brave Authors. All rights reserved.
++ * This Source Code Form is subject to the terms of the Mozilla Public
++ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
++ * You can obtain one at https://mozilla.org/MPL/2.0/. */
++
++#include "brave/components/tor/tor_prefs.h"
++
++#include "components/prefs/pref_registry_simple.h"
++#include "components/prefs/pref_service.h"
++
++namespace tor {
++
++void RegisterTorPrefs(PrefRegistrySimple* registry) {
++  registry->RegisterBooleanPref(kTorDisabled, false);
++}
++
++bool IsTorDisabled() {
++  return GetPrefService()->GetBoolean(kTorDisabled);
++}
++
++void SetTorDisabled(bool disabled) {
++  GetPrefService()->SetBoolean(kTorDisabled, disabled);
++}
++
++}  // namespace tor

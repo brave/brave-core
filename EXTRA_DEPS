@@ -16,9 +16,7 @@
 #                 * omitted      -- owns its destination (wiped each install).
 #
 # A single-object entry may omit its per-object `condition` and gate on the
-# dep-level one alone. This is a pure literal (parsed as data, not executed),
-# and is repinned textually -- keep it in the format `tools/cr/toolchain.py`'s
-# renderer emits.
+# dep-level one alone.
 
 extra_deps = {
     'src/third_party/rust-toolchain': {
@@ -150,6 +148,46 @@ extra_deps = {
                 'object_name': 'ast-grep-0.44.1-win.tar.gz',
                 'sha256sum': 'c1e06394908573ddf334f41809b63e9b80122b11048412c41c2b66c52106ea47',
                 'size_bytes': 7667559,
+            },
+        ],
+    },
+    'src/build/mac_files/sparkle_binaries': {
+        'bucket': 'https://brave-build-deps-public.s3.brave.com/sparkle/',
+        'objects': [
+            {
+                'object_name': 'sparkle-1.24.4.tar.gz',
+                'sha256sum': '45fbd10cda63195cf2dfd32bc6bfe24c550cd00d419fc5039052507c6d9986f7',
+                'size_bytes': 1404428,
+            },
+        ],
+    },
+    'src/brave/third_party/updater/mac': {
+        'bucket': 'https://brave-build-deps-public.s3.brave.com/omaha4/',
+        'objects': [
+            {
+                'object_name': 'BraveUpdater-143.1.87.74.zip',
+                'sha256sum': 'ca3255dca4dd0e197a6f1a2d57456d0ce33ac4f62c95664a7c32671397fe00a6',
+                'size_bytes': 10989909,
+            },
+        ],
+    },
+    'src/brave/third_party/brave-vpn-wireguard-nt-dlls': {
+        'bucket': 'https://brave-build-deps-public.s3.brave.com/brave-vpn-wireguard-dlls/',
+        'objects': [
+            {
+                'object_name': 'brave-vpn-wireguard-nt-dlls-0.10.1.zip',
+                'sha256sum': '31ed28a2b7178d51ece415bfc2fdde546ed76325b4153067204524e3c37a5326',
+                'size_bytes': 1309246,
+            },
+        ],
+    },
+    'src/brave/third_party/brave-vpn-wireguard-tunnel-dlls': {
+        'bucket': 'https://brave-build-deps-public.s3.brave.com/brave-vpn-wireguard-dlls/',
+        'objects': [
+            {
+                'object_name': 'brave-vpn-wireguard-tunnel-dlls-v0.5.3.zip',
+                'sha256sum': '316db78a5a090e013f980b7068e3a1182e18da10e14159b7f5ef80699ce79c98',
+                'size_bytes': 3593760,
             },
         ],
     },

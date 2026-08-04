@@ -8,21 +8,18 @@ import fs from 'fs'
 import path from 'path'
 import webpack from 'webpack'
 import CopyPlugin from 'copy-webpack-plugin'
-import genTsConfig from '../../../../build/commands/lib/genTsConfig.js'
+import { writeTsConfig } from '../../../../build/webpack/ts-config.ts'
 import { genPath } from '../../../../build/commands/lib/guessConfig.js'
 import {
   deterministicOptimization,
   deterministicIdsPlugins,
 } from '../../../../build/webpack/deterministic-output.ts'
-import generatePathMap from '../../../../build/webpack/path-map.js'
+import { generatePathMapWithWebMocks } from '../../../../build/webpack/path-map.ts'
 import {
   provideNodeGlobals,
   chromePrefixReplacers,
 } from '../../../../build/webpack/plugins.ts'
-import {
-  baseResolve,
-  withMockOverrides,
-} from '../../../../build/webpack/resolve.ts'
+import { baseResolve } from '../../../../build/webpack/resolve.ts'
 import {
   cssRules,
   tsLoaderRule,
@@ -40,12 +37,17 @@ console.log(`Using brave-core generated dependency path of '${genPath}'`)
 // Mock browser-privileged functionality (e.g. string pluralization,
 // createSanitizedImageUrl) with the web-compatible implementations we share
 // with Storybook.
-const storybookDir = path.resolve(import.meta.dirname, '../../../../.storybook')
-const pathMap = withMockOverrides(generatePathMap(genPath), {
-  chromeResourcesMockDir: path.join(storybookDir, 'chrome-resources-mock'),
-  webCommonMockDir: path.join(storybookDir, 'web-common-mock'),
-  genPath,
-})
+const pathMap = generatePathMapWithWebMocks(genPath)
+
+// style-loader inlines the source of its `insert` option in to every generated
+// CSS module (it literally calls `.toString()` on the function), so that
+// function cannot reference anything this bundle imports. ProvidePlugin bridges
+// the gap: it rewrites this free identifier, in each of those generated modules,
+// to style_loader.ts's default export.
+// TODO(https://github.com/brave/brave-browser/issues/57626): Updated style-loader
+// might avoid the need for ProvidePlugin by insert being able to reference
+// a module.
+declare const _INSERT_STYLE_ELEMENT: (element: HTMLStyleElement) => void
 
 export default async function (
   env: any,
@@ -58,10 +60,10 @@ export default async function (
     console.log('Output path is', outputPath)
   }
 
-  const tsConfigPath = await genTsConfig(
+  const tsConfigPath = await writeTsConfig(
+    pathMap,
     genPath,
     'tsconfig-ai-chat-shared-conversation.json',
-    genPath,
     path.resolve(import.meta.dirname, '../../../../tsconfig-webpack.json'),
   )
 
@@ -92,6 +94,20 @@ export default async function (
     {
       from: path.join(genPath, 'brave/ui/webui/resources/icons'),
       to: 'nala-icons',
+    },
+    {
+      from: path.resolve(
+        import.meta.dirname,
+        '../../../../node_modules/@brave/leo/tokens/css/variables.css',
+      ),
+      to: 'nala.css',
+      transform: {
+        // TODO(https://github.com/brave/leo/issues/1433): Remove this transform
+        // when nala supports `:host`.
+        transformer(content: Buffer, absoluteFrom: string) {
+          return content.toString().replaceAll(':root', ':host')
+        },
+      },
     },
   ]
 
@@ -129,6 +145,12 @@ export default async function (
       new CopyPlugin({
         patterns: copyPluginPatterns,
       }),
+      new webpack.ProvidePlugin({
+        _INSERT_STYLE_ELEMENT: [
+          path.join(import.meta.dirname, 'style_loader.ts'),
+          'default',
+        ],
+      }),
     ],
     module: {
       parser: {
@@ -140,7 +162,13 @@ export default async function (
         },
       },
       rules: [
-        ...cssRules({ isDevMode }),
+        ...cssRules({
+          isDevMode,
+          styleLoaderOptions: {
+            insert: (element: HTMLStyleElement) =>
+              _INSERT_STYLE_ELEMENT(element),
+          },
+        }),
         tsLoaderRule({ configFile: tsConfigPath }),
         fileLoaderRule(),
         htmlAssetRule,

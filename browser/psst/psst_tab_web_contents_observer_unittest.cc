@@ -23,6 +23,7 @@
 #include "base/test/test_future.h"
 #include "base/time/time.h"
 #include "base/values.h"
+#include "brave/browser/psst/psst_settings_service_factory.h"
 #include "brave/components/psst/core/browser/pref_names.h"
 #include "brave/components/psst/core/browser/psst_rule_registry.h"
 #include "brave/components/psst/core/common/features.h"
@@ -113,6 +114,12 @@ ACTION_P(CheckIfMatchFailsCallback, loop) {
   loop->Quit();
 }
 
+ACTION(CheckIfMatchWithoutRule) {
+  std::move(
+      const_cast<base::OnceCallback<void(std::unique_ptr<MatchedRule>)>&>(arg1))
+      .Run(nullptr);
+}
+
 // testing::InvokeArgument<N> does not work with base::OnceCallback, so we
 // define our own gMock action to run the 2nd argument.
 ACTION_P(InsertScriptInPageCallback, future, value) {
@@ -127,6 +134,14 @@ ACTION_P(InsertPolicyScriptInPageCallback, future, value) {
       const_cast<PsstTabWebContentsObserver::InsertScriptInPageCallback&>(arg1))
       .Run(value.Clone());
   future->SetValue(value.Clone());
+}
+
+// Captures the script result callback instead of running it, so that the test
+// can decide when (and after which navigations) it is invoked.
+ACTION_P(HoldInsertScriptInPageCallback, holder) {
+  *holder = std::move(
+      const_cast<PsstTabWebContentsObserver::InsertScriptInPageCallback&>(
+          arg1));
 }
 
 ACTION_P(ShowCallback, future, urls_to_skip) {
@@ -207,8 +222,12 @@ class PsstTabWebContentsObserverUnitTestBase
     ON_CALL(mock_tab, GetContents())
         .WillByDefault(testing::Return(web_contents()));
 
+    psst_settings_service_ =
+        PsstSettingsServiceFactory::GetInstance()->GetForProfile(profile());
+
     psst_web_contents_observer_ = base::WrapUnique<PsstTabWebContentsObserver>(
-        new PsstTabWebContentsObserver(mock_tab, rule_registry_.get(), &prefs_,
+        new PsstTabWebContentsObserver(mock_tab, rule_registry_.get(),
+                                       psst_settings_service_,
                                        std::move(ui_delegate)));
     psst_web_contents_observer_->SetInjectScriptCallback(
         inject_script_callback_.Get());
@@ -217,12 +236,13 @@ class PsstTabWebContentsObserverUnitTestBase
   }
 
   void TearDown() override {
-    ChromeRenderViewHostTestHarness::TearDown();
     ui_delegate_ = nullptr;
+    psst_web_contents_observer_.reset();
+    psst_settings_service_ = nullptr;
+    ChromeRenderViewHostTestHarness::TearDown();
   }
 
   MockPsstRuleRegistry& psst_rule_registry() { return *rule_registry_.get(); }
-  PrefService* prefs() { return &prefs_; }
 
   MatchedRule* CreateMatchedRule(const std::string& user_script,
                                  const std::string& policy_script,
@@ -244,6 +264,10 @@ class PsstTabWebContentsObserverUnitTestBase
 
   tabs::MockTabInterface& mock_tab_interface() { return mock_tab; }
 
+  PsstSettingsService* psst_settings_service() {
+    return psst_settings_service_;
+  }
+
  protected:
   base::test::ScopedFeatureList feature_list_;
 
@@ -256,6 +280,7 @@ class PsstTabWebContentsObserverUnitTestBase
   std::unique_ptr<MockPsstRuleRegistry> rule_registry_;
   std::unique_ptr<PsstTabWebContentsObserver> psst_web_contents_observer_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
+  raw_ptr<PsstSettingsService> psst_settings_service_;
   tabs::MockTabInterface mock_tab;
 };
 
@@ -279,7 +304,7 @@ class PsstTabWebContentsObserverUnitTest
 TEST_F(PsstTabWebContentsObserverUnitTest, CreateForRegularBrowserContext) {
   EXPECT_NE(PsstTabWebContentsObserver::MaybeCreateForWebContents(
                 mock_tab_interface(), browser_context(),
-                std::make_unique<MockUiDelegate>(), prefs(), 2),
+                std::make_unique<MockUiDelegate>(), psst_settings_service(), 2),
             nullptr);
 }
 
@@ -293,7 +318,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
 
   EXPECT_EQ(PsstTabWebContentsObserver::MaybeCreateForWebContents(
                 mock_tab_interface(), otr_profile,
-                std::make_unique<MockUiDelegate>(), prefs(), 2),
+                std::make_unique<MockUiDelegate>(), psst_settings_service(), 2),
             nullptr);
 }
 
@@ -402,6 +427,132 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   EXPECT_EQ(base::Value(), second_nav_user_script_insert_future.Take());
 }
 
+// The user script runs asynchronously in the renderer, so its result can come
+// back after the user has already navigated elsewhere. The result must be
+// dropped: no UI update and no policy script injection into the new page.
+TEST_F(PsstTabWebContentsObserverUnitTest,
+       UserScriptResultArrivingAfterNavigationIsDropped) {
+  const GURL second_navigation_url("https://example2.com");
+
+  base::RunLoop first_nav_check_loop;
+  base::RunLoop second_nav_check_loop;
+  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url_, _))
+      .WillOnce(CheckIfMatchCallback(
+          &first_nav_check_loop,
+          CreateMatchedRule(user_script_, policy_script_)));
+  // The second page has no matching rule, so it starts no flow of its own and
+  // anything observed afterwards can only come from the stale first flow.
+  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(second_navigation_url, _))
+      .WillOnce(CheckIfMatchFailsCallback(&second_nav_check_loop));
+
+  // Hold the user script result until after the second navigation commits.
+  PsstTabWebContentsObserver::InsertScriptInPageCallback
+      held_user_script_callback;
+  EXPECT_CALL(inject_script_callback(), Run(user_script_, _))
+      .WillOnce(HoldInsertScriptInPageCallback(&held_user_script_callback));
+
+  // The stale result must not reach the UI or trigger the policy script.
+  EXPECT_CALL(ui_delegate(), GetPsstWebsiteSettings).Times(0);
+  EXPECT_CALL(ui_delegate(), Show).Times(0);
+  EXPECT_CALL(ui_delegate(), UpdateTasks).Times(0);
+  EXPECT_CALL(inject_async_script_callback(), Run).Times(0);
+
+  {
+    DocumentOnLoadObserver observer(web_contents());
+    content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
+                                                               url_);
+    observer.Wait();
+  }
+  first_nav_check_loop.Run();
+  ASSERT_FALSE(held_user_script_callback.is_null());
+
+  {
+    DocumentOnLoadObserver observer(web_contents());
+    content::NavigationSimulator::NavigateAndCommitFromBrowser(
+        web_contents(), second_navigation_url);
+    observer.Wait();
+  }
+  second_nav_check_loop.Run();
+
+  // A result that would otherwise drive the whole flow: it has a user id and
+  // tasks, so on a still-current page it would show the consent dialog and run
+  // the policy script.
+  std::move(held_user_script_callback)
+      .Run(base::Value(
+          base::DictValue()
+              .Set("initial_execution", true)
+              .Set("user_id", user_id_)
+              .Set("site_name", "example")
+              .Set("tasks", base::ListValue().Append(
+                                base::DictValue()
+                                    .Set("uid", "1")
+                                    .Set("url", url_.spec())
+                                    .Set("description", "settings")))));
+}
+
+// A back navigation re-commits an already visited entry as a new page, so a
+// user script result held from that entry's earlier visit is still stale and
+// must be dropped.
+TEST_F(PsstTabWebContentsObserverUnitTest,
+       UserScriptResultArrivingAfterBackNavigationToSameEntryIsDropped) {
+  const GURL second_navigation_url("https://example2.com");
+
+  base::RunLoop first_nav_check_loop;
+  base::RunLoop second_nav_check_loop;
+  // The back navigation may or may not reach DocumentOnLoadCompleted in the
+  // test harness, so no run loop is tied to a rule check for it. What matters
+  // for this test is only that the back navigation commits.
+  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url_, _))
+      .WillOnce(
+          CheckIfMatchCallback(&first_nav_check_loop,
+                               CreateMatchedRule(user_script_, policy_script_)))
+      .WillRepeatedly(CheckIfMatchWithoutRule());
+  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(second_navigation_url, _))
+      .WillOnce(CheckIfMatchFailsCallback(&second_nav_check_loop));
+
+  PsstTabWebContentsObserver::InsertScriptInPageCallback
+      held_user_script_callback;
+  EXPECT_CALL(inject_script_callback(), Run(user_script_, _))
+      .WillOnce(HoldInsertScriptInPageCallback(&held_user_script_callback));
+
+  EXPECT_CALL(ui_delegate(), GetPsstWebsiteSettings).Times(0);
+  EXPECT_CALL(ui_delegate(), Show).Times(0);
+  EXPECT_CALL(ui_delegate(), UpdateTasks).Times(0);
+  EXPECT_CALL(inject_async_script_callback(), Run).Times(0);
+
+  {
+    DocumentOnLoadObserver observer(web_contents());
+    content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
+                                                               url_);
+    observer.Wait();
+  }
+  first_nav_check_loop.Run();
+  ASSERT_FALSE(held_user_script_callback.is_null());
+
+  {
+    DocumentOnLoadObserver observer(web_contents());
+    content::NavigationSimulator::NavigateAndCommitFromBrowser(
+        web_contents(), second_navigation_url);
+    observer.Wait();
+  }
+  second_nav_check_loop.Run();
+
+  content::NavigationSimulator::GoBack(web_contents());
+  ASSERT_EQ(url_, web_contents()->GetLastCommittedURL());
+
+  std::move(held_user_script_callback)
+      .Run(base::Value(
+          base::DictValue()
+              .Set("initial_execution", true)
+              .Set("user_id", user_id_)
+              .Set("site_name", "example")
+              .Set("tasks", base::ListValue().Append(
+                                base::DictValue()
+                                    .Set("uid", "1")
+                                    .Set("url", url_.spec())
+                                    .Set("description", "settings")))));
+}
+
 TEST_F(PsstTabWebContentsObserverUnitTest, ShouldProcessRedirectsNavigations) {
   const GURL redirect_target("https://redirect.example1.com/");
 
@@ -493,7 +644,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest, DefaultPrefEnabledShouldProcess) {
 }
 
 TEST_F(PsstTabWebContentsObserverUnitTest, PrefDisabledDontProcess) {
-  prefs()->SetBoolean(prefs::kPsstEnabled, false);
+  psst_settings_service()->SetPsstEnabled(false);
   EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url_, _)).Times(0);
   DocumentOnLoadObserver observer(web_contents());
   content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
@@ -651,7 +802,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   const std::vector<std::string> expected_uids_to_perform = {"1"};
   EXPECT_CALL(ui_delegate(),
               Show(url::Origin::Create(url_),
-                   PsstWebsiteSettingsEq(ConsentStatus::kAsk, 1, user_id_,
+                   PsstWebsiteSettingsEq(ConsentStatus::kAsk, -1, user_id_,
                                          std::vector<std::string>()),
                    1, _, _))
       .WillOnce(ShowCallback(&user_accept_psst_settings_future,
@@ -764,7 +915,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   const std::vector<std::string> expected_uids_to_perform = {"1"};
   EXPECT_CALL(ui_delegate(),
               Show(url::Origin::Create(url_),
-                   PsstWebsiteSettingsEq(ConsentStatus::kAsk, 1, user_id_,
+                   PsstWebsiteSettingsEq(ConsentStatus::kAsk, -1, user_id_,
                                          std::vector<std::string>()),
                    1, _, _))
       .WillOnce(ShowCallback(&user_accept_psst_settings_future,
@@ -852,7 +1003,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest, UiDelegateUpdateTasksCalled) {
   const std::vector<std::string> expected_uids_to_perform = {"1"};
   EXPECT_CALL(ui_delegate(),
               Show(url::Origin::Create(url_),
-                   PsstWebsiteSettingsEq(ConsentStatus::kAsk, 1, user_id_,
+                   PsstWebsiteSettingsEq(ConsentStatus::kAsk, -1, user_id_,
                                          std::vector<std::string>()),
                    1, _, _))
       .WillOnce(ShowCallback(&user_accept_psst_settings_future,
@@ -975,9 +1126,9 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
                                             .Set("url", "https://example1.com")
                                             .Set("description", "settings"))));
 
-  ON_CALL(ui_delegate(),
-          GetPsstWebsiteSettings(url::Origin::Create(url_), user_id_))
-      .WillByDefault([&settings](const url::Origin&, const std::string&) {
+  EXPECT_CALL(ui_delegate(),
+              GetPsstWebsiteSettings(url::Origin::Create(url_), user_id_))
+      .WillOnce([&settings](const url::Origin&, const std::string&) {
         return settings.Clone();
       });
 
@@ -1050,7 +1201,7 @@ class PsstTabWebContentsObserverFeatureDisabledUnitTest
 TEST_F(PsstTabWebContentsObserverFeatureDisabledUnitTest, DontCreate) {
   EXPECT_EQ(PsstTabWebContentsObserver::MaybeCreateForWebContents(
                 mock_tab_interface(), browser_context(),
-                std::make_unique<MockUiDelegate>(), prefs(), 2),
+                std::make_unique<MockUiDelegate>(), psst_settings_service(), 2),
             nullptr);
 }
 

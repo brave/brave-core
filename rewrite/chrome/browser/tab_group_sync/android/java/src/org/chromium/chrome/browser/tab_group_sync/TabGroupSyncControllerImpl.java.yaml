@@ -5,10 +5,9 @@
 
 substitutions:
   - description: |-
-      Use Brave's observer, which does not auto-open synced tab groups while the
-      "Enable tab groups" master switch is off.
+      Allow BraveTabGroupSyncControllerImpl to subclass this controller.
     regex:
       re_pattern: |-
-        new (TabGroupSyncRemoteObserver\()
+        public final (class TabGroupSyncControllerImpl)
       replace: |-
-        new Brave\1
+        public \1

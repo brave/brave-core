@@ -64,22 +64,22 @@ inline const std::string& EncryptedVerificationToken() {
 struct AuthenticationObserverTestCase;
 struct AuthValidateTestCase;
 struct CancelVerificationTestCase;
-struct ChangePasswordPasswordFinalizeTestCase;
-struct ChangePasswordPasswordInitTestCase;
-struct ChangePasswordVerifyCompleteTestCase;
-struct ChangePasswordVerifyInitTestCase;
+struct ChangePasswordStep1TestCase;
+struct ChangePasswordStep2TestCase;
+struct ChangePasswordStep3TestCase;
+struct ChangePasswordStep4TestCase;
 struct GetServiceTokenTestCase;
-struct LoginFinalizeTestCase;
-struct LoginInitializeTestCase;
+struct LoginStep1TestCase;
+struct LoginStep2TestCase;
 struct LogOutTestCase;
-struct RegisterPasswordFinalizeTestCase;
-struct RegisterPasswordInitTestCase;
-struct RegisterVerifyCompleteTestCase;
+struct RegisterStep1TestCase;
+struct RegisterStep2TestCase;
+struct RegisterStep3TestCase;
 struct ResendVerificationEmailTestCase;
-struct ResetPasswordPasswordFinalizeTestCase;
-struct ResetPasswordPasswordInitTestCase;
-struct ResetPasswordVerifyCompleteTestCase;
-struct ResetPasswordVerifyInitTestCase;
+struct ResetPasswordStep1TestCase;
+struct ResetPasswordStep2TestCase;
+struct ResetPasswordStep3TestCase;
+struct ResetPasswordStep4TestCase;
 
 template <typename TestCase>
 class BraveAccountServiceTest : public testing::TestWithParam<const TestCase*> {
@@ -120,22 +120,21 @@ class BraveAccountServiceTest : public testing::TestWithParam<const TestCase*> {
       }
     }
 
-    if constexpr (
-        std::is_same_v<TestCase, ChangePasswordPasswordFinalizeTestCase> ||
-        std::is_same_v<TestCase, ChangePasswordPasswordInitTestCase> ||
-        std::is_same_v<TestCase, ChangePasswordVerifyCompleteTestCase> ||
-        std::is_same_v<TestCase, ChangePasswordVerifyInitTestCase> ||
-        std::is_same_v<TestCase, GetServiceTokenTestCase> ||
-        std::is_same_v<TestCase, LoginFinalizeTestCase> ||
-        std::is_same_v<TestCase, LoginInitializeTestCase> ||
-        std::is_same_v<TestCase, RegisterPasswordFinalizeTestCase> ||
-        std::is_same_v<TestCase, RegisterPasswordInitTestCase> ||
-        std::is_same_v<TestCase, RegisterVerifyCompleteTestCase> ||
-        std::is_same_v<TestCase, ResendVerificationEmailTestCase> ||
-        std::is_same_v<TestCase, ResetPasswordPasswordFinalizeTestCase> ||
-        std::is_same_v<TestCase, ResetPasswordPasswordInitTestCase> ||
-        std::is_same_v<TestCase, ResetPasswordVerifyCompleteTestCase> ||
-        std::is_same_v<TestCase, ResetPasswordVerifyInitTestCase>) {
+    if constexpr (std::is_same_v<TestCase, ChangePasswordStep1TestCase> ||
+                  std::is_same_v<TestCase, ChangePasswordStep2TestCase> ||
+                  std::is_same_v<TestCase, ChangePasswordStep3TestCase> ||
+                  std::is_same_v<TestCase, ChangePasswordStep4TestCase> ||
+                  std::is_same_v<TestCase, GetServiceTokenTestCase> ||
+                  std::is_same_v<TestCase, LoginStep1TestCase> ||
+                  std::is_same_v<TestCase, LoginStep2TestCase> ||
+                  std::is_same_v<TestCase, RegisterStep1TestCase> ||
+                  std::is_same_v<TestCase, RegisterStep2TestCase> ||
+                  std::is_same_v<TestCase, RegisterStep3TestCase> ||
+                  std::is_same_v<TestCase, ResendVerificationEmailTestCase> ||
+                  std::is_same_v<TestCase, ResetPasswordStep1TestCase> ||
+                  std::is_same_v<TestCase, ResetPasswordStep2TestCase> ||
+                  std::is_same_v<TestCase, ResetPasswordStep3TestCase> ||
+                  std::is_same_v<TestCase, ResetPasswordStep4TestCase>) {
       base::test::TestFuture<typename TestCase::MojoExpected> future;
       TestCase::Run(test_case, pref_service_, task_environment_,
                     authentication_, future.GetCallback());

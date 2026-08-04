@@ -1,0 +1,32 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Check for the compile-time override of a feature's default state.
+    count: 2
+    regex:
+      pattern: 'feature.default_state == FEATURE_ENABLED_BY_DEFAULT'
+      replace: 'GetCompileTimeFeatureState(feature)'
+
+  - description: Extend `IsFeatureOverridden` for Brave-specific values.
+    after_function_impl:
+      function_name: FeatureList::IsFeatureOverridden
+      result_var: 'result'
+      code: |-
+        if (result) {
+          return result;
+        }
+        return internal::IsFeatureOverridden(feature_name);
+
+  - description: Extend `GetStateIfOverridden` for Brave-specific values.
+    after_function_impl:
+      function_name: FeatureList::GetStateIfOverridden
+      result_var: result
+      code: |-
+        if (result.has_value()) {
+          return result;
+        }
+        return internal::GetStateIfOverridden(feature);

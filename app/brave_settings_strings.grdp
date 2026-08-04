@@ -872,6 +872,12 @@
   <message name="IDS_SETTINGS_CLEAR_BRAVE_ADS_DATA" desc="The label for the link to clear 'Brave Ads' data">
     Clear Brave Ads data...
   </message>
+  <message name="IDS_SETTINGS_CLEAR_BRAVE_ADS_DATA_TOAST_LABEL" desc="The label for the toast shown after Brave Ads data is cleared">
+    Brave Ads data cleared
+  </message>
+  <message name="IDS_SETTINGS_CLEAR_BRAVE_ADS_DATA_ERROR_TOAST_LABEL" desc="The label for the toast shown when clearing Brave Ads data fails">
+    Couldn't clear Brave Ads data. Try again.
+  </message>
   <message name="IDS_SETTINGS_RESET_REWARDS_DATA" desc="The label for opening rewards manage wallet dialog">
     Reset Brave Rewards data...
   </message>
@@ -1356,6 +1362,9 @@
   <message name="IDS_SETTINGS_TOR_PROVIDED_BRIDGES_PLACEHOLDER" desc="">
     Type address:port (one per line)
   </message>
+  <message name="IDS_SETTINGS_TOR_INVALID_BRIDGE_ERROR" desc="Error shown when a Tor bridge line the person typed fails validation. The bridge line itself is displayed below this message.">
+    Tor can't use this bridge. Check it against the bridge you were given, then try again:
+  </message>
   <message name="IDS_SETTINGS_TOR_REQUEST_BRIDGE_DIALOG_TITLE" desc="">
     Request Bridge
   </message>
@@ -1742,6 +1751,9 @@
   </message>
   <message name="IDS_SETTINGS_LEO_ASSISTANT_EDIT_MODEL_LABEL" desc="A title for adding a custom model">
     Edit model
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_REQUIRED_LABEL" desc="A label indicating that a form field is required">
+    Required
   </message>
   <message name="IDS_SETTINGS_LEO_ASSISTANT_INPUT_MODEL_LABEL" desc="An input title for adding a custom model">
     Label

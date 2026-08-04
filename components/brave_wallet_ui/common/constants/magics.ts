@@ -5,12 +5,6 @@
 export const MAX_UINT256 =
   '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'
 
-/**
- * Blowfish's value for "Unlimited" is lower than our known max (MAX_UINT256)
- */
-export const BLOWFISH_UNLIMITED_VALUE =
-  '0xffffffffffffffffffffffffffffffffffffffffffffffffe43e9298b137ffff'
-
 // Placeholder contract address used for native asset (ETH, BNB, XDAI) by 0x,
 // CoW protocol, etc.
 export const NATIVE_EVM_ASSET_CONTRACT_ADDRESS =

@@ -2124,9 +2124,10 @@ struct ZCashKeyId {
 struct ZCashBalance {
   uint64 total_balance;
   uint64 transparent_balance;
-  // Orchrad balance, Ironwood balance TBD.
-  uint64 shielded_balance;
-  uint64 shielded_pending_balance;
+  uint64 orchard_balance;
+  uint64 orchard_pending_balance;
+  uint64 ironwood_balance;
+  uint64 ironwood_pending_balance;
   // Transparent balances
   map<string, uint64> balances;  // address -> balance of that address(sum of all related utxos)
 };
@@ -2964,11 +2965,8 @@ struct SignCardanoTransactionRequest {
 
   string raw_tx_data;
 
-  // Transaction inputs.
-  // Inputs that belong to the selected account has address and value filled.
-  array<CardanoTxInput> inputs;
-  // Transaction outputs.
-  array<CardanoTxOutput> outputs;
+  // Human-readable transaction summary for the signing UI.
+  string details_json;
 };
 
 enum ExternalWalletType {

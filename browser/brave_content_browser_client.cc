@@ -29,6 +29,7 @@
 #include "brave/browser/brave_search/backup_results_service_factory.h"
 #include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
+#include "brave/browser/brave_stats/first_run_util.h"
 #include "brave/browser/cosmetic_filters/cosmetic_filters_tab_helper.h"
 #include "brave/browser/debounce/debounce_service_factory.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
@@ -115,7 +116,6 @@
 #include "components/content_settings/browser/page_specific_content_settings.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/embedder_support/switches.h"
-#include "components/history_embeddings/core/history_embeddings_features.h"
 #include "components/prefs/pref_service.h"
 #include "components/services/heap_profiling/public/mojom/heap_profiling_client.mojom.h"
 #include "components/user_prefs/user_prefs.h"
@@ -172,10 +172,8 @@
 #endif  // !BUILDFLAG(IS_ANDROID)
 
 #if BUILDFLAG(ENABLE_LOCAL_AI)
-#include "brave/browser/ui/webui/local_ai/local_ai_ui.h"
 #include "brave/browser/ui/webui/local_ai/on_device_speech_recognition_worker_ui.h"
 #include "brave/components/local_ai/core/features.h"
-#include "brave/components/local_ai/core/local_ai.mojom.h"
 #include "brave/components/local_ai/core/on_device_speech_recognition.mojom.h"
 #endif
 
@@ -213,8 +211,8 @@
 using blink::web_pref::WebPreferences;
 using brave_shields::BraveShieldsWebContentsObserver;
 using brave_shields::ControlType;
-using brave_shields::GetBraveShieldsEnabled;
 using brave_shields::GetFingerprintingControlType;
+using brave_shields::IsBraveShieldsEnabled;
 using content::BrowserThread;
 using content::ContentBrowserClient;
 using content::RenderFrameHost;
@@ -402,9 +400,6 @@ void BindBraveSearchFallbackHost(
   content::BrowserContext* context = render_process_host->GetBrowserContext();
   auto* backup_results_service =
       brave_search::BackupResultsServiceFactory::GetForBrowserContext(context);
-  if (!backup_results_service) {
-    return;
-  }
   mojo::MakeSelfOwnedReceiver(
       std::make_unique<brave_search::BraveSearchFallbackHost>(
           backup_results_service),
@@ -760,7 +755,9 @@ void BraveContentBrowserClient::RegisterTrustedWebUIInterfaceBrokers(
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
   if (ai_chat::features::IsAIChatEnabled() &&
-      ai_chat::features::IsShowAIChatInputOnNewTabPageEnabled()) {
+      ai_chat::features::IsShowAIChatInputOnNewTabPageEnabled(
+          g_browser_process->local_state(),
+          brave_stats::IsFirstRun(g_browser_process->local_state()))) {
     ntp_refresh_registration.Add<ai_chat::mojom::AIChatUIHandler>()
         .Add<ai_chat::mojom::Service>()
         .Add<ai_chat::mojom::TabTrackerService>()
@@ -999,10 +996,6 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
   map->Add<skus::mojom::SkusService>(
       base::BindRepeating(&MaybeBindSkusSdkImpl));
 #if BUILDFLAG(ENABLE_LOCAL_AI)
-  if (base::FeatureList::IsEnabled(history_embeddings::kHistoryEmbeddings)) {
-    content::RegisterWebUIControllerInterfaceBinder<
-        local_ai::mojom::LocalAIService, local_ai::UntrustedLocalAIUI>(map);
-  }
   if (base::FeatureList::IsEnabled(local_ai::kBraveOnDeviceSpeechRecognition)) {
     content::RegisterWebUIControllerInterfaceBinder<
         local_ai::mojom::SpeechRecognitionFactoryHost,
@@ -1167,7 +1160,7 @@ BraveContentBrowserClient::CreateURLLoaderThrottles(
 
       auto producer =
           speedreader::SpeedreaderDistilledPageProducer::MaybeCreate(
-              tab_helper->GetWeakPtr());
+              request.url, tab_helper->GetWeakPtr());
       if (producer) {
         body_sniffer_throttle->SetBodyProducer(std::move(producer));
       }
@@ -1220,15 +1213,15 @@ void BraveContentBrowserClient::WillCreateURLLoaderFactory(
   // TODO(iefremov): Skip proxying for certain requests?
   if (base::FeatureList::IsEnabled(features::kBraveRequestInfoUniquePtr)) {
     BraveProxyingURLLoaderFactory<base::WeakPtr>::MaybeProxyRequest(
-        browser_context, frame, factory_builder,
-        navigation_response_task_runner);
+        browser_context, frame, factory_builder, type, request_initiator,
+        isolation_info, navigation_response_task_runner);
   } else {
     // Ignore shared_ptr presubmit error, this is old code we are trying to
     // convert to unique_ptr/WeakPtr
     BraveProxyingURLLoaderFactory<
         std::shared_ptr>::MaybeProxyRequest(  // nocheck
-        browser_context, frame, factory_builder,
-        navigation_response_task_runner);
+        browser_context, frame, factory_builder, type, request_initiator,
+        isolation_info, navigation_response_task_runner);
   }
 
   ChromeContentBrowserClient::WillCreateURLLoaderFactory(
@@ -1258,7 +1251,7 @@ void BraveContentBrowserClient::CreateChromeWebSocket(
         frame, proxy->CreateWebSocketFactory(), url, site_for_cookies,
         user_agent, std::move(handshake_client), std::move(options));
   } else {
-    proxy->Start(std::move(handshake_client));
+    proxy->Start(std::move(handshake_client), std::move(options.header_client));
   }
 }
 void BraveContentBrowserClient::CreateWebSocket(
@@ -1323,7 +1316,7 @@ void BraveContentBrowserClient::MaybeHideReferrer(
   Profile* profile = Profile::FromBrowserContext(browser_context);
   const bool allow_referrers = brave_shields::AreReferrersAllowed(
       HostContentSettingsMapFactory::GetForProfile(profile), document_url);
-  const bool shields_up = brave_shields::GetBraveShieldsEnabled(
+  const bool shields_up = brave_shields::IsBraveShieldsEnabled(
       HostContentSettingsMapFactory::GetForProfile(profile), document_url);
 
   content::Referrer new_referrer;
@@ -1515,7 +1508,7 @@ bool PreventDarkModeFingerprinting(WebContents* web_contents,
   const GURL url =
       main_frame_site.GetSecurityPrincipal().GetDeprecatedSiteURL();
   const bool shields_up =
-      brave_shields::GetBraveShieldsEnabled(host_content_settings_map, url);
+      brave_shields::IsBraveShieldsEnabled(host_content_settings_map, url);
   auto fingerprinting_type = brave_shields::GetFingerprintingControlType(
       host_content_settings_map, url);
   // https://github.com/brave/brave-browser/issues/15265

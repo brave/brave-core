@@ -1,0 +1,21 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/settings/search/SettingsSearchCoordinator.java b/chrome/android/java/src/org/chromium/chrome/browser/settings/search/SettingsSearchCoordinator.java
+index 89c6d58897b21cbfc1f2b9831f65e9617a80c7d7..9738f200c8f577977f11620d1e3547aac3170563 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/settings/search/SettingsSearchCoordinator.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/settings/search/SettingsSearchCoordinator.java
+@@ -4,6 +4,8 @@
+ 
+ package org.chromium.chrome.browser.settings.search;
+ 
++import org.chromium.chrome.browser.theme.BraveDynamicColors;
++import org.chromium.components.browser_ui.settings.BraveSettingsIconTintUtils;
+ import static androidx.annotation.VisibleForTesting.PRIVATE;
+ 
+ import static org.chromium.base.CallbackUtils.emptyRunnable;
+@@ -272,6 +274,7 @@ public class SettingsSearchCoordinator
+                 searchBox.findViewById(R.id.search_icon),
+                 mActivity.getString(R.string.search_in_settings_hint));
+ 
++        BraveSettingsIconTintUtils.applyIconTint(searchBox.findViewById(R.id.search_icon), BraveDynamicColors.isDynamicColorsEnabled());
+         View query = mActivity.findViewById(R.id.search_query_container);
+         Drawable bg = ContextCompat.getDrawable(mActivity, R.drawable.pill_background);
+         int tint = SemanticColorUtils.getSettingsContainerBackgroundColor(mActivity);

@@ -29,7 +29,7 @@
                android:layout_height="0px"
                android:layout_weight="3"
                app:srcCompat="@drawable/brave_sync"
-               android:scaleType="center"
+               android:scaleType="centerInside"
                android:contentDescription="@null" />
 
            <TextView android:id="@+id/brave_sync_text_initial"
@@ -156,6 +156,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     app:srcCompat="@drawable/brave_sync_btn_mobile"
+                    android:scaleType="centerInside"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="44dp"
+                    android:paddingHorizontal="12dp"
                     android:contentDescription="@string/brave_sync_btn_mobile"
                     android:background="@drawable/brave_sync_image_btn" />
 

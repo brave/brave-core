@@ -7,12 +7,18 @@ import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 import Toggle from '@brave/leo/react/toggle'
 
-import { TopSitesListKind } from '../../state/top_sites_store'
+import {
+  TopSitesListKind,
+  sponsoredSiteLearnMoreURL,
+} from '../../state/top_sites_store'
 import {
   useTopSitesState,
   useTopSitesActions,
 } from '../../context/top_sites_context'
 import { getString } from '../../lib/strings'
+import { SettingsPanel } from './settings_panel'
+import { formatString } from '$web-common/formatString'
+import { Link } from '../common/link'
 import classNames from '$web-common/classnames'
 
 import { style } from './top_sites_panel.style'
@@ -36,7 +42,10 @@ export function TopSitesPanel() {
   }
 
   return (
-    <div data-css-scope={style.scope}>
+    <SettingsPanel
+      cssScope={style.scope}
+      title={getString(S.NEW_TAB_TOP_SITES_SETTINGS_TITLE)}
+    >
       <Toggle
         className='toggle-row'
         size='small'
@@ -60,6 +69,21 @@ export function TopSitesPanel() {
         >
           <span className='label'>
             {getString(S.NEW_TAB_SHOW_SPONSORED_SITES_LABEL)}
+            <div
+              className='subtext'
+              onClick={(e) => e.stopPropagation()}
+            >
+              {formatString(getString(S.NEW_TAB_SPONSORED_SITES_DESCRIPTION), {
+                $1: (content) => (
+                  <Link
+                    url={sponsoredSiteLearnMoreURL}
+                    openInNewTab
+                  >
+                    {content}
+                  </Link>
+                ),
+              })}
+            </div>
           </span>
         </Toggle>
       )}
@@ -97,6 +121,6 @@ export function TopSitesPanel() {
           </button>
         </div>
       )}
-    </div>
+    </SettingsPanel>
   )
 }

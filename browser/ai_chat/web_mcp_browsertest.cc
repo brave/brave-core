@@ -177,21 +177,20 @@ IN_PROC_BROWSER_TEST_F(WebMcpBrowserTest,
   auto tools = RefreshAndGetTools(manager);
   ASSERT_EQ(2u, tools.size());
 
-  // Names are prefixed with the sanitized host and path
-  // ("a.com/web_mcp_tools.html" → "a_com_web_mcp_tools_html") to disambiguate
-  // page-defined tools across origins and pages.
+  // Names are prefixed with the sanitized host ("a.com" → "a_com"). Only the
+  // host is used (not the full path) to keep the name within Bedrock's 64-char
+  // tool-name limit.
   std::set<std::string> tool_names;
   for (const auto& tool : tools) {
     ASSERT_TRUE(tool);
     tool_names.insert(std::string(tool->Name()));
   }
   EXPECT_THAT(tool_names,
-              ::testing::UnorderedElementsAre("a_com_web_mcp_tools_html_echo",
-                                              "a_com_web_mcp_tools_html_ping"));
+              ::testing::UnorderedElementsAre("a_com_echo", "a_com_ping"));
 
   // Sanity check on metadata for the richer tool.
   for (const auto& tool : tools) {
-    if (tool->Name() == "a_com_web_mcp_tools_html_echo") {
+    if (tool->Name() == "a_com_echo") {
       // The description embeds the full page URL and the page-provided
       // description.
       std::string description(tool->Description());

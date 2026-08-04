@@ -11,22 +11,12 @@ enum NTPWallpaper {
   case image(NTPBackgroundImage)
   case sponsoredMedia(NTPSponsoredImageBackground, BraveAds.NewTabPageAdInfo)
 
-  var backgroundVideoPath: URL? {
-    if case .sponsoredMedia(let background, _) = self {
-      return background.isVideoFile ? background.imagePath : nil
-    }
-    return nil
-  }
-
   var backgroundImage: UIImage? {
     let imagePath: URL
     switch self {
     case .image(let background):
       imagePath = background.imagePath
     case .sponsoredMedia(let background, _):
-      if background.isVideoFile {
-        return nil
-      }
       imagePath = background.imagePath
     }
     return UIImage(contentsOfFile: imagePath.path)
@@ -104,9 +94,6 @@ public class NTPDataSource {
     guard let sponsoredImageData = service.sponsoredImageData
     else { return nil }
 
-    let isSponsoredVideoAllowed =
-      Preferences.NewTabPage.backgroundMediaType == .sponsoredImagesAndVideos
-
     for campaign in sponsoredImageData.campaigns {
       if campaign.campaignId != newTabPageAd.campaignId {
         continue
@@ -115,7 +102,6 @@ public class NTPDataSource {
       for creative in campaign.backgrounds {
         if creative.logo.imagePath != nil
           && creative.creativeInstanceId == newTabPageAd.creativeInstanceId
-          && (!creative.isVideoFile || isSponsoredVideoAllowed)
         {
           return .sponsoredMedia(creative, newTabPageAd)
         }
@@ -213,10 +199,4 @@ extension NTPBackgroundImage {
     author: "Corwin Prescott",
     link: URL(string: "https://www.brave.com")!
   )
-}
-
-extension NTPSponsoredImageBackground {
-  var isVideoFile: Bool {
-    imagePath.pathExtension == "mp4"
-  }
 }

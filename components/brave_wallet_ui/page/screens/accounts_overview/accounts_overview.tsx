@@ -8,40 +8,38 @@ import { useHistory } from 'react-router'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // selectors
-import { useSafeWalletSelector } from '../../../common/hooks/use-safe-selector'
-import { WalletSelectors } from '../../../common/selectors'
+import { useSafeWalletSelector } from '$wallet/common/hooks/use-safe-selector'
+import { WalletSelectors } from '$wallet/common/selectors'
 
 // constants
-import { BraveWallet, AccountPageTabs } from '../../../constants/types'
-import {
-  querySubscriptionOptions60s, //
-} from '../../../common/slices/constants'
-import { emptyRewardsInfo } from '../../../common/async/base-query-cache'
+import { BraveWallet, AccountPageTabs } from '$wallet/constants/types'
+import { querySubscriptionOptions60s } from '$wallet/common/slices/constants'
+import { emptyRewardsInfo } from '$wallet/common/async/base-query-cache'
 
 // utils
-import { getLocale } from '../../../../common/locale'
+import { getLocale } from '$web-common/locale'
 import {
   groupAccountsById,
   sortAccountsByName,
-} from '../../../utils/account-utils'
-import { makeAccountRoute } from '../../../utils/routes-utils'
-import { getPriceRequestsForTokens } from '../../../utils/pricing-utils'
+} from '$wallet/utils/account-utils'
+import { makeAccountRoute } from '$wallet/utils/routes-utils'
+import { getPriceRequestsForTokens } from '$wallet/utils/pricing-utils'
 
 // Styled Components
 import { AccountsListWrapper } from './accounts_overview.style'
-import { Column, Row, Text } from '../../../components/shared/style'
+import { Column, Row, Text } from '$wallet/components/shared/style'
 
 // Components
-import AccountListItem from '../../../components/desktop/account-list-item'
+import AccountListItem from '$wallet/components/desktop/account-list-item'
 import {
   WalletPageWrapper, //
-} from '../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper'
-import { AccountsHeader } from '../../../components/desktop/card-headers/accounts-header'
+} from '$wallet/components/desktop/wallet-page-wrapper/wallet-page-wrapper'
+import AccountsHeader from '$wallet/components/desktop/card-headers/accounts-header'
 
 // Hooks
 import {
   useBalancesFetcher, //
-} from '../../../common/hooks/use-balances-fetcher'
+} from '$wallet/common/hooks/use-balances-fetcher'
 import {
   useGetDefaultFiatCurrencyQuery,
   useGetHiddenAccountsQuery,
@@ -49,11 +47,11 @@ import {
   useGetRewardsInfoQuery,
   useGetUserTokensRegistryQuery,
   useGetIsShieldingAvailableQuery,
-} from '../../../common/slices/api.slice'
-import { useAccountsQuery } from '../../../common/slices/api.slice.extra'
+} from '$wallet/common/slices/api.slice'
+import { useAccountsQuery } from '$wallet/common/slices/api.slice.extra'
 import {
   usePersistedTokenSpotPricesQuery, //
-} from '../../../common/hooks/use-persisted-spot-prices'
+} from '$wallet/common/hooks/use-persisted-spot-prices'
 
 export const AccountsOverview = () => {
   // routing

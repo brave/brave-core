@@ -6,7 +6,7 @@
 import styled from 'styled-components'
 
 // Shared Styles
-import { layoutPanelWidth } from '../desktop/wallet-page-wrapper/wallet-page-wrapper.style'
+import { layoutPanelWidth } from '$wallet/components/desktop/wallet-page-wrapper/wallet-page-wrapper.style'
 import { Text } from '../shared/style'
 
 export const StyledWrapper = styled.div`

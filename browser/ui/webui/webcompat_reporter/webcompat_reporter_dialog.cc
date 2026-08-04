@@ -167,7 +167,7 @@ void OpenReporterDialog(content::WebContents* initiator, UISource source) {
   brave_shields::BraveShieldsTabHelper* shields_data_controller =
       brave_shields::BraveShieldsTabHelper::FromWebContents(initiator);
   if (shields_data_controller != nullptr) {
-    shields_enabled = shields_data_controller->GetBraveShieldsEnabled();
+    shields_enabled = shields_data_controller->IsBraveShieldsEnabled();
     fp_block_mode = shields_data_controller->GetFingerprintMode();
     ad_block_mode = shields_data_controller->GetAdBlockMode();
   }

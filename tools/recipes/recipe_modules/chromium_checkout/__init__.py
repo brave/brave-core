@@ -4,4 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 """`chromium_checkout` module: clone / sync / validate a Chromium src/ tree."""
 
-DEPS = ['path', 'step', 'depot_tools', 'env', 'platform']
+DEPS = [
+    'path', 'raw_io', 'json', 'step', 'context', 'depot_tools', 'env',
+    'platform'
+]

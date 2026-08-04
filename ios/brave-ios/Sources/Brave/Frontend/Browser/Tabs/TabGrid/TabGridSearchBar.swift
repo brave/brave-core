@@ -19,8 +19,10 @@ struct TabGridSearchBar: View {
       Representable(text: $text, isFocused: $isFocused)
       if isFocused {
         Button {
-          isFocused = false
-          text = ""
+          withAnimation(.toolbarsSizeAnimation) {
+            isFocused = false
+            text = ""
+          }
         } label: {
           Text(Strings.CancelString)
             .foregroundStyle(Color(braveSystemName: .textInteractive))
@@ -82,7 +84,10 @@ extension TabGridSearchBar {
       uiView: UISearchTextField,
       context: Context
     ) -> CGSize? {
-      return .init(width: proposal.replacingUnspecifiedDimensions().width, height: 36.0)
+      if #unavailable(iOS 26.0) {
+        return .init(width: proposal.replacingUnspecifiedDimensions().width, height: 36)
+      }
+      return nil
     }
 
     public func makeCoordinator() -> Coordinator {
@@ -103,11 +108,15 @@ extension TabGridSearchBar {
       }
 
       public func textFieldDidBeginEditing(_ textField: UITextField) {
-        isFocused = true
+        withAnimation(.toolbarsSizeAnimation) {
+          isFocused = true
+        }
       }
 
       public func textFieldDidEndEditing(_ textField: UITextField) {
-        isFocused = false
+        withAnimation(.toolbarsSizeAnimation) {
+          isFocused = false
+        }
       }
 
       public func textFieldShouldReturn(_ textField: UITextField) -> Bool {

@@ -102,6 +102,8 @@ source_set("unit_tests") {
     "//base",
     "//base/test:test_support",
     "//brave/components/misc_metrics",
+    "//brave/components/p3a_utils",
+    "//brave/components/p3a_utils:test_support",
     "//brave/components/search_engines",
     "//components/language/core/browser",
     "//components/prefs:test_support",

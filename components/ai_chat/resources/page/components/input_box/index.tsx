@@ -43,9 +43,6 @@ type Props = Pick<
   | 'inputText'
   | 'setInputText'
   | 'submitInputTextToAPI'
-  | 'isCharLimitApproaching'
-  | 'isCharLimitExceeded'
-  | 'inputTextCharCountDisplay'
   | 'isToolsMenuOpen'
   | 'setIsToolsMenuOpen'
   | 'toolUseTaskState'
@@ -410,18 +407,6 @@ const InputBox = React.forwardRef<InputBoxHandle, InputBoxProps>(
             }}
             onPaste={handleOnPaste}
           />
-          {props.context.isCharLimitApproaching && (
-            <div
-              className={classnames({
-                [styles.counterText]: true,
-                [styles.counterTextVisible]:
-                  props.context.isCharLimitApproaching,
-                [styles.counterTextError]: props.context.isCharLimitExceeded,
-              })}
-            >
-              {props.context.inputTextCharCountDisplay}
-            </div>
-          )}
           <div className={styles.toolsContainer}>
             <div className={styles.tools}>
               <Button

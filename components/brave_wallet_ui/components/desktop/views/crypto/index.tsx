@@ -31,7 +31,7 @@ import {
 } from '../../popup-modals/edit-visible-assets-modal/index'
 import { PortfolioOverview } from '../../../../page/screens/portfolio_overview/portfolio_overview'
 import { FungibleAssetDetails } from '../../../../page/screens/fungible_asset_details/fungible_asset_details'
-import { PortfolioNftAsset } from '../portfolio/portfolio-nft-asset'
+import { NFTAssetDetails } from '../../../../page/screens/nft_asset_details/nft_asset_details'
 import { MarketView } from '../../../../page/screens/market/market'
 import { AccountsOverview } from '../../../../page/screens/accounts_overview/accounts_overview'
 import { AccountDetails } from '../../../../page/screens/account_details/account_details'
@@ -124,7 +124,7 @@ export const CryptoView = ({ sessionRoute }: Props) => {
           path={WalletRoutes.PortfolioNFTAsset}
           exact
         >
-          <PortfolioNftAsset />
+          <NFTAssetDetails />
         </Route>
 
         <Route

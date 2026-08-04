@@ -63,6 +63,7 @@ class DetachedTabPrivacyHelper: TabPolicyDecider {
     let shieldsHelper = BraveShieldsTabHelper(tab: tab, braveShieldsSettings: shieldsSettings)
     tab.braveShieldsHelper = shieldsHelper
     tab.addPolicyDecider(shieldsHelper)
+    tab.cosmeticFilteringTabHelper = .init(tab: tab)
   }
 
   // MARK: - TabPolicyDecider

@@ -733,6 +733,15 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
           "Enables sharing a conversation from the conversation header.",      \
           kOsWin | kOsMac | kOsLinux | kOsAndroid,                             \
           FEATURE_VALUE_TYPE(ai_chat::features::kAIChatConversationShare),     \
+      },                                                                       \
+      {                                                                        \
+          "brave-ai-chat-export-json",                                         \
+          "Brave AI Chat Export JSON",                                         \
+          "Enables copying serialized conversation data as JSON to the "       \
+          "clipboard when using the alt+meta key and the \"Copy entire "       \
+          "conversation\" menu option.",                                       \
+          kOsWin | kOsMac | kOsLinux | kOsAndroid,                             \
+          FEATURE_VALUE_TYPE(ai_chat::features::kAIChatExportJSON),            \
       })
 #else
 #define BRAVE_AI_CHAT_FEATURE_ENTRIES
@@ -1419,12 +1428,10 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
       },                                                                       \
       {                                                                        \
           "brave-ad-block-only-mode",                                          \
-          "Enable Adblock-Only Mode",                                          \
-          "Adblock-Only mode retains core ad blocking rules of Brave "         \
-          "Shields. Warning: removes all privacy protections. Please note "    \
-          "that for individual websites broken by Brave's privacy "            \
-          "protections, you can set Shields to DOWN. This is an experimental " \
-          "mode.",                                                             \
+          "Adblock-Only mode availability",                                    \
+          "Adds an option in settings for Adblock-Only mode, which retains "   \
+          "core ad blocking rules of Brave Shields. This is an experimental "  \
+          "mode, go to brave://settings/shields to enable.",                   \
           kOsWin | kOsLinux | kOsMac,                                          \
           FEATURE_VALUE_TYPE(brave_shields::features::kAdblockOnlyMode),       \
       },                                                                       \

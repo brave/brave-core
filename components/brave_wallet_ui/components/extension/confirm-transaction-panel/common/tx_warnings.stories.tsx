@@ -4,61 +4,55 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { TransactionWarnings } from './tx_warnings'
-import { BraveWallet } from '../../../../constants/types'
-// import { Column } from '../../../shared/style'
+import { TransactionWarnings, TransactionWarning } from './tx_warnings'
 
-const warnings: Array<
-  Pick<BraveWallet.BlowfishWarning, 'message' | 'severity'>
-> = [
+const warnings: TransactionWarning[] = [
   {
     message: 'An example warning',
-    severity: BraveWallet.BlowfishWarningSeverity.kWarning,
+    severity: 'warning',
   },
   {
     message: 'Another example warning',
-    severity: BraveWallet.BlowfishWarningSeverity.kWarning,
+    severity: 'warning',
   },
   {
     message: 'Additional example warning',
-    severity: BraveWallet.BlowfishWarningSeverity.kWarning,
+    severity: 'warning',
   },
   {
     message: 'Yet another example warning',
-    severity: BraveWallet.BlowfishWarningSeverity.kWarning,
+    severity: 'warning',
   },
   {
     message: 'Yet another example warning',
-    severity: BraveWallet.BlowfishWarningSeverity.kWarning,
+    severity: 'warning',
   },
   {
     message: 'Yet another example warning',
-    severity: BraveWallet.BlowfishWarningSeverity.kWarning,
+    severity: 'warning',
   },
   {
     message: 'Yet another example warning',
-    severity: BraveWallet.BlowfishWarningSeverity.kWarning,
+    severity: 'warning',
   },
   {
     message: 'Yet another example warning',
-    severity: BraveWallet.BlowfishWarningSeverity.kWarning,
+    severity: 'warning',
   },
   {
     message: 'Yet another example warning',
-    severity: BraveWallet.BlowfishWarningSeverity.kWarning,
+    severity: 'warning',
   },
 ]
 
-const criticalWarnings: Array<
-  Pick<BraveWallet.BlowfishWarning, 'message' | 'severity'>
-> = [
+const criticalWarnings: TransactionWarning[] = [
   {
     message: 'An example critical warning',
-    severity: BraveWallet.BlowfishWarningSeverity.kCritical,
+    severity: 'critical',
   },
   {
     message: 'Another example critical warning',
-    severity: BraveWallet.BlowfishWarningSeverity.kCritical,
+    severity: 'critical',
   },
 ]
 

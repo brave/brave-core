@@ -144,7 +144,7 @@ void ZCashVerifyChainStateTask::OnGetChainTipBlock(
 
 void ZCashVerifyChainStateTask::GetMinCheckpointId() {
   context_->sync_state->AsyncCall(&OrchardSyncState::GetMinCheckpointId)
-      .WithArgs(context_->account_id.Clone())
+      .WithArgs(OrchardPool::kOrchard, context_->account_id.Clone())
       .Then(base::BindOnce(&ZCashVerifyChainStateTask::OnGetMinCheckpointId,
                            weak_ptr_factory_.GetWeakPtr()));
 }

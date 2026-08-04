@@ -19,7 +19,6 @@ import {
 
 // api
 import { createWalletApiBase } from './api-base.slice'
-import { transactionSimulationEndpoints } from './endpoints/tx-simulation.endpoints'
 import { braveRewardsApiEndpoints } from './endpoints/rewards.endpoints'
 import { pricingEndpoints } from './endpoints/pricing.endpoints'
 import { nftsEndpoints } from './endpoints/nfts.endpoints'
@@ -45,7 +44,6 @@ import { transactionEndpoints } from './endpoints/transaction.endpoints'
 import { swapEndpoints } from './endpoints/swap.endpoints'
 import { encryptionEndpoints } from './endpoints/encryption.endpoints'
 import { signingEndpoints } from './endpoints/signing.endpoints'
-import { dappRadarEndpoints } from './endpoints/dapp_radar.endpoints'
 import { meldIntegrationEndpoints } from './endpoints/meld_integration.endpoints'
 import { zcashEndpoints } from './endpoints/zcash.endpoints'
 
@@ -114,8 +112,6 @@ export function createWalletApi() {
       .injectEndpoints({ endpoints: tokenBalancesEndpoints })
       // brave rewards endpoints
       .injectEndpoints({ endpoints: braveRewardsApiEndpoints })
-      // tx simulation
-      .injectEndpoints({ endpoints: transactionSimulationEndpoints })
       // price history endpoints
       .injectEndpoints({ endpoints: pricingEndpoints })
       // nfts endpoints
@@ -150,8 +146,6 @@ export function createWalletApi() {
       .injectEndpoints({ endpoints: encryptionEndpoints })
       // Message Signing endpoints
       .injectEndpoints({ endpoints: signingEndpoints })
-      // dApp Radar Endpoints
-      .injectEndpoints({ endpoints: dappRadarEndpoints })
       // meld integration endpoints
       .injectEndpoints({ endpoints: meldIntegrationEndpoints })
       // zcash endpoints
@@ -207,12 +201,10 @@ export const {
   useGetERC20AllowanceQuery,
   useGetEthAddressChecksumQuery,
   useGetEthNftOwnerQuery,
-  useGetEVMTransactionSimulationQuery,
   useGetFVMAddressQuery,
   useGetGasEstimation1559Query,
   useGetHardwareAccountDiscoveryBalanceQuery,
   useGetHiddenAccountsQuery,
-  useGetHasTransactionSimulationSupportQuery,
   useGetIpfsGatewayTranslatedNftUrlQuery,
   useGetIsBase58EncodedSolPubkeyQuery,
   useGetIsMetaMaskInstalledQuery,
@@ -220,7 +212,6 @@ export const {
   useGetIsShieldingAvailableQuery,
   useGetIsSyncInProgressQuery,
   useGetIsTokenOwnedByUserQuery,
-  useGetIsTxSimulationOptInStatusQuery,
   useGetIsWalletBackedUpQuery,
   useGetNetworksRegistryQuery,
   useGetNftAssetIdsByCollectionRegistryQuery,
@@ -249,8 +240,6 @@ export const {
   useGetNetworkForAccountOnActiveOriginQuery,
   useGetSimpleHashSpamNftsQuery,
   useGetSolanaEstimatedFeeQuery,
-  useGetSolanaTransactionSimulationQuery,
-  useGetSolanaSignTransactionsRequestSimulationQuery,
   useGetSwapStatusQuery,
   useGetSwapSupportedNetworksQuery,
   useGetTokenBalancesForChainIdQuery,
@@ -258,7 +247,6 @@ export const {
   useGetTokenInfoQuery,
   useGetTokenSpotPricesQuery,
   useGetTokensRegistryQuery,
-  useGetTopDappsQuery,
   useGetTransactionQuery,
   useGetTransactionsQuery,
   useGetUserTokensRegistryQuery,
@@ -286,9 +274,7 @@ export const {
   useLazyGetChainTipStatusQuery,
   useLazyGetDefaultFiatCurrencyQuery,
   useLazyGetERC20AllowanceQuery,
-  useLazyGetEVMTransactionSimulationQuery,
   useLazyGetGasEstimation1559Query,
-  useLazyGetIsTxSimulationOptInStatusQuery,
   useLazyGetIsShieldingAvailableQuery,
   useLazyGetNetworksRegistryQuery,
   useLazyGetNftDiscoveryEnabledStatusQuery,
@@ -297,7 +283,6 @@ export const {
   useLazyGetSelectedChainQuery,
   useLazyGetSellAssetUrlQuery,
   useLazyGetSolanaEstimatedFeeQuery,
-  useLazyGetSolanaTransactionSimulationQuery,
   useLazyGetSwapSupportedNetworksQuery,
   useLazyGetTokenBalancesForChainIdQuery,
   useLazyGetTokenBalancesRegistryQuery,
@@ -344,7 +329,6 @@ export const {
   useSendPolkadotTransactionMutation,
   useSetAutoLockMinutesMutation,
   useSetDefaultFiatCurrencyMutation,
-  useSetIsTxSimulationOptInStatusMutation,
   useSetNetworkMutation,
   useSetNetworkForAccountOnActiveOriginMutation,
   useSetNftDiscoveryEnabledMutation,

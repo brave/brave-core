@@ -17,6 +17,33 @@
 # These tests fail because we override Prefetch methods to do nothing.
 -AffiliationServiceImplTest.*
 
+# These tests fail because RankerURLFetcher::Request no longer performs a
+# real network fetch; it synchronously returns false and never invokes its
+# callback, see
+# brave/chromium_src/components/assist_ranker/ranker_url_fetcher.cc. This
+# also covers our own RankerModelLoaderImplTest.LoadRemoteRankerNoFetch in
+# brave/components/assist_ranker/ranker_model_loader_impl_unittest.cc, which
+# shares the fixture name with the upstream tests below.
+-RankerModelLoaderImplTest.*
+
+# `HashAffiliationFetcher::StartRequest` is stubbed off in Brave (see
+# chromium_src/components/affiliations/core/browser/hash_affiliation_fetcher.cc),
+# so none of this fixture's tests exercise real behavior any more. Covered
+# instead by DisabledHashAffiliationFetcherTest in
+# chromium_src/components/affiliations/core/browser/hash_affiliation_fetcher_unittest.cc.
+-HashAffiliationFetcherTest.*
+
+# These AffiliationFetcherManagerTest cases exercise the same stubbed
+# `HashAffiliationFetcher::StartRequest` indirectly via
+# AffiliationFetcherManager::Fetch, so they no longer see a real network
+# request or real response data.
+-AffiliationFetcherManagerTest.OneFetchCallCreatesOneFetcher
+-AffiliationFetcherManagerTest.MultipleFetchCallsCreateMultipleFetchers
+-AffiliationFetcherManagerTest.CompletionClosureInvokedOnFetchCompletion
+-AffiliationFetcherManagerTest.CompletionClosureInvokedOnMultipleFetchCompletions
+-AffiliationFetcherManagerTest.DelegateInvokedOnFetchSuccess
+-AffiliationFetcherManagerTest.DelegateInvokedOnAllPossibleResponses
+
 # This test fails because we use a different sync server endpoint.
 -HistoryNoticeUtilsTest.WebHistoryStates
 
@@ -270,7 +297,6 @@
 -PrimaryAccountManagerTest.*
 -PrimaryAccountMutatorTest.RevokeSyncConsent
 -PrivacySandboxSettingsSharedStorageDebugTest.NoEnrollments
--RankerModelLoaderImplTest.*
 -RealTimePolicyEngineTest.TestCanPerformFullURLLookupWithToken_ClientControlledWithEnhancedProtection
 -RealTimePolicyEngineTest.TestCanPerformFullURLLookup_EnhancedProtection
 -RealTimePolicyEngineTest.TestCanPerformFullURLLookup_RTLookupForEpEnabled_WithTokenDisabled

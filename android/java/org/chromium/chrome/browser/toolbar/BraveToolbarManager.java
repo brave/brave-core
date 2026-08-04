@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewStub;
 
+import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.chromium.base.BravePreferenceKeys;
@@ -104,6 +105,7 @@ import org.chromium.components.browser_ui.desktop_windowing.DesktopWindowStateMa
 import org.chromium.components.browser_ui.device_lock.DeviceLockActivityLauncher;
 import org.chromium.components.browser_ui.widget.scrim.ScrimManager;
 import org.chromium.components.embedder_support.contextmenu.ContextMenuPopulatorFactory;
+import org.chromium.components.embedder_support.util.UrlUtilities;
 import org.chromium.components.omnibox.AutocompleteInput;
 import org.chromium.content_public.browser.selection.SelectionDropdownMenuDelegate;
 import org.chromium.misc_metrics.mojom.MiscAndroidMetrics;
@@ -613,6 +615,34 @@ public class BraveToolbarManager extends ToolbarManager
 
     protected void updateReloadState(boolean tabCrashed) {
         assert false;
+    }
+
+    @Override
+    protected boolean shouldSuppressToolbarLongPress() {
+        return shouldSuppressToolbarLongPressForTab(
+                super.shouldSuppressToolbarLongPress(), mLocationBarModel.getTab());
+    }
+
+    /**
+     * Upstream suppresses the address bar long press menu on the standard NTP, where the address
+     * bar is replaced by the NTP fakebox. Brave's NTP keeps the real address bar, so the menu - and
+     * with it the "Move address bar to the bottom/top" item - stays available there.
+     *
+     * @param suppressedByUpstream what {@link ToolbarManager#shouldSuppressToolbarLongPress()}
+     *     decided for the current state.
+     * @param tab the tab the address bar is currently showing, may be null.
+     * @return whether the address bar long press menu should be suppressed.
+     */
+    @VisibleForTesting
+    static boolean shouldSuppressToolbarLongPressForTab(
+            boolean suppressedByUpstream, @Nullable Tab tab) {
+        if (suppressedByUpstream
+                && tab != null
+                && tab.getUrl() != null
+                && UrlUtilities.isNtpUrl(tab.getUrl())) {
+            return false;
+        }
+        return suppressedByUpstream;
     }
 
     private void setBraveBottomControlsVisible(boolean visible) {

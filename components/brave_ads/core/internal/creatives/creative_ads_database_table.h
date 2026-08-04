@@ -31,7 +31,6 @@ class CreativeAds final : public TableInterface {
                int to_version) override;
 
  private:
-  void MigrateToV48(const mojom::DBTransactionInfoPtr& mojom_db_transaction);
   void MigrateToV54(const mojom::DBTransactionInfoPtr& mojom_db_transaction);
 };
 

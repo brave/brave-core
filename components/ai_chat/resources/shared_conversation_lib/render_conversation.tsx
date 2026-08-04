@@ -5,15 +5,16 @@
 
 import './load_time_data'
 import './set_icon_base_path'
-import '@brave/leo/tokens/css/variables.css'
 import '$web-common/defaultTrustedTypesPolicy'
 import '../../../../ui/webui/resources/css/reset.css'
 
 import * as React from 'react'
 import { createRoot } from 'react-dom/client'
 import StyledComponentsProvider from '$web-common/StyledComponentsProvider'
-import * as Mojom from '../common/mojom'
-import { parseConversationData } from '../common/conversation_serialization'
+import {
+  parseConversationData,
+  type ConversationData,
+} from '../common/conversation_serialization'
 import Conversation from '../untrusted_conversation_frame/components/conversation'
 import { UntrustedConversationContextProvider } from '../untrusted_conversation_frame/untrusted_conversation_context'
 import createUntrustedConversationApi, {
@@ -25,6 +26,17 @@ import {
   createMockUntrustedService,
   createMockUntrustedUIHandler,
 } from '../untrusted_conversation_frame/api/mock_interfaces'
+import setupRenderingElement from './setup_rendering_element'
+
+/**
+ * Since the shared conversation viewer can read from different versions
+ * of this code, we should try to retain backwards-compatibility with these
+ * fields.
+ */
+type RenderConversationResult = {
+  conversationTitle?: string
+  isError: boolean
+}
 
 /**
  * Create a minimal local-only read-only version of the AI Chat API interfaces.
@@ -60,31 +72,41 @@ const api = createLocalConversationApi()
 export function renderConversation(
   conversationDataRaw: string,
   element: HTMLElement,
-) {
-  let conversation: Mojom.ConversationTurn[]
+): RenderConversationResult {
+  let conversation: ConversationData
 
   try {
     conversation = parseConversationData(conversationDataRaw)
   } catch (e) {
     console.error('Failed to parse conversation data', e)
     element.textContent = 'Failed to load conversation'
-    return
+    return {
+      isError: true,
+    }
   }
 
-  api.getConversationHistory.update(conversation)
+  api.getConversationHistory.update(conversation.messages)
+  // Conversations shared before associated content was included in the payload
+  // don't have the property.
+  api.associatedContent.update(conversation.associatedContent ?? [])
 
-  const root = createRoot(element)
+  // Render to a shadow DOM to avoid style conflicts with the hosting page
+  const container = setupRenderingElement(element)
+  const root = createRoot(container)
 
   root.render(
     <StyledComponentsProvider>
-      <div style={{ backgroundColor: 'var(--leo-color-container-background)' }}>
-        <UntrustedConversationContextProvider
-          api={api}
-          isReadOnly
-        >
-          <Conversation />
-        </UntrustedConversationContextProvider>
-      </div>
+      <UntrustedConversationContextProvider
+        api={api}
+        isReadOnly
+      >
+        <Conversation />
+      </UntrustedConversationContextProvider>
     </StyledComponentsProvider>,
   )
+
+  return {
+    conversationTitle: conversation.title,
+    isError: false,
+  }
 }

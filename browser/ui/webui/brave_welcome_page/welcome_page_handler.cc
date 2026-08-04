@@ -5,18 +5,28 @@
 
 #include "brave/browser/ui/webui/brave_welcome_page/welcome_page_handler.h"
 
+#include <algorithm>
 #include <utility>
 
 #include "base/check.h"
 #include "base/check_deref.h"
 #include "base/functional/bind.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
+#include "brave/browser/ui/webui/brave_welcome_page/welcome_page_features.h"
+#include "brave/components/brave_education/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/p3a/pref_names.h"
 #include "brave/components/web_discovery/buildflags/buildflags.h"
 #include "chrome/browser/metrics/metrics_reporting_state.h"
 #include "chrome/browser/themes/theme_service.h"
+#include "chrome/common/webui_url_constants.h"
 #include "components/prefs/pref_service.h"
+#include "url/gurl.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_EDUCATION)
+#include "brave/browser/ui/webui/brave_education/brave_education_server_checker.h"
+#include "brave/components/brave_education/education_urls.h"
+#endif
 
 namespace brave_welcome_page {
 
@@ -50,6 +60,7 @@ ThemeService::BrowserColorScheme ToBrowserColorScheme(
 
 WelcomePageHandler::WelcomePageHandler(
     mojo::PendingReceiver<mojom::WelcomePageHandler> receiver,
+    const base::flat_set<mojom::Feature>& available_features,
     ThemeService* theme_service,
     PrefService* prefs,
     PrefService* local_state)
@@ -64,9 +75,26 @@ WelcomePageHandler::WelcomePageHandler(
       brave_tabs::kVerticalTabsEnabled,
       base::BindRepeating(&WelcomePageHandler::OnVerticalTabsEnabledChanged,
                           base::Unretained(this)));
+
+  for (auto feature : available_features) {
+    for (std::string_view pref_name : GetFeatureVisibilityPrefs(feature)) {
+      feature_visibility_prefs_[feature].push_back(pref_name);
+      pref_change_registrar_.Add(
+          pref_name,
+          base::BindRepeating(&WelcomePageHandler::OnFeatureVisibilityChanged,
+                              base::Unretained(this)));
+    }
+  }
 }
 
 WelcomePageHandler::~WelcomePageHandler() = default;
+
+#if BUILDFLAG(ENABLE_BRAVE_EDUCATION)
+void WelcomePageHandler::SetEducationServerChecker(
+    std::unique_ptr<brave_education::BraveEducationServerChecker> checker) {
+  education_server_checker_ = std::move(checker);
+}
+#endif
 
 void WelcomePageHandler::SetWelcomePage(
     mojo::PendingRemote<mojom::WelcomePage> page) {
@@ -99,6 +127,28 @@ void WelcomePageHandler::SetVerticalTabsEnabled(
   std::move(callback).Run();
 }
 
+void WelcomePageHandler::GetFeatureVisibility(
+    GetFeatureVisibilityCallback callback) {
+  auto visibility = mojom::FeatureVisibility::New();
+  visibility->ai_chat = IsFeatureVisible(mojom::Feature::kAIChat);
+  visibility->wallet = IsFeatureVisible(mojom::Feature::kWallet);
+  visibility->rewards = IsFeatureVisible(mojom::Feature::kRewards);
+  visibility->vpn = IsFeatureVisible(mojom::Feature::kVPN);
+  std::move(callback).Run(std::move(visibility));
+}
+
+void WelcomePageHandler::SetFeatureVisible(mojom::Feature feature,
+                                           bool visible,
+                                           SetFeatureVisibleCallback callback) {
+  auto iter = feature_visibility_prefs_.find(feature);
+  if (iter != feature_visibility_prefs_.end()) {
+    for (std::string_view pref_name : iter->second) {
+      pref_change_registrar_.prefs()->SetBoolean(pref_name, visible);
+    }
+  }
+  std::move(callback).Run();
+}
+
 void WelcomePageHandler::SetWebDiscoveryEnabled(
     [[maybe_unused]] bool enabled,
     SetWebDiscoveryEnabledCallback callback) {
@@ -122,6 +172,20 @@ void WelcomePageHandler::SetCrashReportsEnabled(
   std::move(callback).Run();
 }
 
+void WelcomePageHandler::GetWelcomeCompleteURL(
+    GetWelcomeCompleteURLCallback callback) {
+#if BUILDFLAG(ENABLE_BRAVE_EDUCATION)
+  if (education_server_checker_) {
+    education_server_checker_->IsServerPageAvailable(
+        brave_education::EducationPageType::kGettingStarted,
+        base::BindOnce(&WelcomePageHandler::OnGettingStartedServerCheck,
+                       weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+    return;
+  }
+#endif  // BUILDFLAG(ENABLE_BRAVE_EDUCATION)
+  std::move(callback).Run(chrome::kChromeUINewTabURL);
+}
+
 void WelcomePageHandler::OnThemeChanged() {
   if (page_) {
     page_->OnThemeChanged();
@@ -133,5 +197,34 @@ void WelcomePageHandler::OnVerticalTabsEnabledChanged() {
     page_->OnVerticalTabsEnabledChanged();
   }
 }
+
+void WelcomePageHandler::OnFeatureVisibilityChanged() {
+  if (page_) {
+    page_->OnFeatureVisibilityChanged();
+  }
+}
+
+bool WelcomePageHandler::IsFeatureVisible(mojom::Feature feature) const {
+  auto iter = feature_visibility_prefs_.find(feature);
+  if (iter == feature_visibility_prefs_.end()) {
+    return false;
+  }
+  auto* prefs = pref_change_registrar_.prefs();
+  return std::ranges::any_of(iter->second, [prefs](std::string_view pref_name) {
+    return prefs->GetBoolean(pref_name);
+  });
+}
+
+#if BUILDFLAG(ENABLE_BRAVE_EDUCATION)
+void WelcomePageHandler::OnGettingStartedServerCheck(
+    GetWelcomeCompleteURLCallback callback,
+    bool available) {
+  GURL url = available
+                 ? brave_education::GetEducationPageBrowserURL(
+                       brave_education::EducationPageType::kGettingStarted)
+                 : GURL(chrome::kChromeUINewTabURL);
+  std::move(callback).Run(url.spec());
+}
+#endif  // BUILDFLAG(ENABLE_BRAVE_EDUCATION)
 
 }  // namespace brave_welcome_page

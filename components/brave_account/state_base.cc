@@ -16,6 +16,7 @@
 #include "brave/components/brave_account/endpoint_client/with_headers.h"
 #include "brave/components/brave_account/endpoints/verify_delete.h"
 #include "brave/components/brave_account/mojom/change_password.mojom.h"
+#include "brave/components/brave_account/mojom/login.mojom.h"
 #include "brave/components/brave_account/mojom/register.mojom.h"
 #include "brave/components/brave_account/mojom/reset_password.mojom.h"
 #include "brave/components/brave_account/state_internal.h"
@@ -70,23 +71,21 @@ void StateBase::AddObserver(
   add_observer_.Run(std::move(observer));
 }
 
-void StateBase::RegisterPasswordInit(mojom::Service initiating_service,
-                                     const std::string& email,
-                                     const std::string& blinded_message,
-                                     RegisterPasswordInitCallback callback) {
+void StateBase::RegisterStep1(mojom::Service initiating_service,
+                              const std::string& email,
+                              const std::string& blinded_message,
+                              RegisterStep1Callback callback) {
   std::move(callback).Run(MakeCalledInWrongStateError<mojom::RegisterError>());
 }
 
-void StateBase::RegisterPasswordFinalize(
-    const std::string& encrypted_verification_token,
-    const std::string& serialized_record,
-    RegisterPasswordFinalizeCallback callback) {
+void StateBase::RegisterStep2(const std::string& encrypted_verification_token,
+                              const std::string& serialized_record,
+                              RegisterStep2Callback callback) {
   std::move(callback).Run(MakeCalledInWrongStateError<mojom::RegisterError>());
 }
 
-void StateBase::RegisterVerifyComplete(
-    const std::string& code,
-    RegisterVerifyCompleteCallback callback) {
+void StateBase::RegisterStep3(const std::string& code,
+                              RegisterStep3Callback callback) {
   std::move(callback).Run(MakeCalledInWrongStateError<mojom::RegisterError>());
 }
 
@@ -139,72 +138,64 @@ void StateBase::CancelVerification(mojom::VerificationIntentPtr intent) {
   account_state_prefs_->ClearVerification();
 }
 
-void StateBase::ResetPasswordVerifyInit(
-    const std::string& email,
-    ResetPasswordVerifyInitCallback callback) {
+void StateBase::ResetPasswordStep1(const std::string& email,
+                                   ResetPasswordStep1Callback callback) {
   std::move(callback).Run(
       MakeCalledInWrongStateError<mojom::ResetPasswordError>());
 }
 
-void StateBase::ResetPasswordVerifyComplete(
-    const std::string& code,
-    ResetPasswordVerifyCompleteCallback callback) {
+void StateBase::ResetPasswordStep2(const std::string& code,
+                                   ResetPasswordStep2Callback callback) {
   std::move(callback).Run(
       MakeCalledInWrongStateError<mojom::ResetPasswordError>());
 }
 
-void StateBase::ResetPasswordPasswordInit(
-    const std::string& blinded_message,
-    ResetPasswordPasswordInitCallback callback) {
+void StateBase::ResetPasswordStep3(const std::string& blinded_message,
+                                   ResetPasswordStep3Callback callback) {
   std::move(callback).Run(
       MakeCalledInWrongStateError<mojom::ResetPasswordError>());
 }
 
-void StateBase::ResetPasswordPasswordFinalize(
-    const std::string& serialized_record,
-    const std::string& email,
-    ResetPasswordPasswordFinalizeCallback callback) {
+void StateBase::ResetPasswordStep4(const std::string& serialized_record,
+                                   const std::string& email,
+                                   ResetPasswordStep4Callback callback) {
   std::move(callback).Run(
       MakeCalledInWrongStateError<mojom::ResetPasswordError>());
 }
 
-void StateBase::LoginInitialize(mojom::Service,
-                                const std::string&,
-                                const std::string&,
-                                LoginInitializeCallback callback) {
+void StateBase::LoginStep1(mojom::Service initiating_service,
+                           const std::string& email,
+                           const std::string& serialized_ke1,
+                           LoginStep1Callback callback) {
   std::move(callback).Run(MakeCalledInWrongStateError<mojom::LoginError>());
 }
 
-void StateBase::LoginFinalize(const std::string&,
-                              const std::string&,
-                              LoginFinalizeCallback callback) {
+void StateBase::LoginStep2(const std::string& encrypted_login_token,
+                           const std::string& client_mac,
+                           LoginStep2Callback callback) {
   std::move(callback).Run(MakeCalledInWrongStateError<mojom::LoginError>());
 }
 
-void StateBase::ChangePasswordVerifyInit(
-    const std::string& email,
-    ChangePasswordVerifyInitCallback callback) {
+void StateBase::ChangePasswordStep1(const std::string& email,
+                                    ChangePasswordStep1Callback callback) {
   std::move(callback).Run(
       MakeCalledInWrongStateError<mojom::ChangePasswordError>());
 }
 
-void StateBase::ChangePasswordVerifyComplete(
-    const std::string& code,
-    ChangePasswordVerifyCompleteCallback callback) {
+void StateBase::ChangePasswordStep2(const std::string& code,
+                                    ChangePasswordStep2Callback callback) {
   std::move(callback).Run(
       MakeCalledInWrongStateError<mojom::ChangePasswordError>());
 }
 
-void StateBase::ChangePasswordPasswordInit(
-    const std::string& blinded_message,
-    ChangePasswordPasswordInitCallback callback) {
+void StateBase::ChangePasswordStep3(const std::string& blinded_message,
+                                    ChangePasswordStep3Callback callback) {
   std::move(callback).Run(
       MakeCalledInWrongStateError<mojom::ChangePasswordError>());
 }
 
-void StateBase::ChangePasswordPasswordFinalize(
-    const std::string& serialized_record,
-    ChangePasswordPasswordFinalizeCallback callback) {
+void StateBase::ChangePasswordStep4(const std::string& serialized_record,
+                                    ChangePasswordStep4Callback callback) {
   std::move(callback).Run(
       MakeCalledInWrongStateError<mojom::ChangePasswordError>());
 }

@@ -725,6 +725,21 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ServiceWorkerRequest) {
   // EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
 }
 
+// A service worker request should use the controlling page's Shields setting.
+// Regression test for https://github.com/brave/brave-browser/issues/57535.
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ServiceWorkerRequestShieldsOff) {
+  UpdateAdBlockInstanceWithRules("adbanner.js");
+
+  const GURL url = embedded_test_server()->GetURL(kAdBlockTestPage);
+  brave_shields::SetBraveShieldsEnabled(content_settings(), false, url);
+  NavigateToURL(url);
+
+  ASSERT_EQ(true, EvalJs(web_contents(),
+                         "setExpectations(0, 0, 1, 0);"
+                         "installBlockingServiceWorker()"));
+  EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+}
+
 // See crbug.com/1372291.
 #if BUILDFLAG(IS_ANDROID)
 #define MAYBE_WebSocketBlocking DISABLED_WebSocketBlocking
@@ -1402,6 +1417,24 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, FrameSourceURL) {
   EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
 }
 
+// The requests from sandboxed iframes also must be checked by adblock
+// even though they have an opaque request_initiator.
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SandboxedIframeRequestsBlocked) {
+  UpdateAdBlockInstanceWithRules("adbanner.js");
+
+  NavigateToURL(embedded_test_server()->GetURL("a.com", kAdBlockTestPage));
+  ASSERT_EQ(true, EvalJs(web_contents(),
+                         "addFrame('/blocking.html', 'allow-scripts')"));
+
+  content::RenderFrameHost* frame = ChildFrameAt(web_contents(), 0);
+  ASSERT_TRUE(frame->GetLastCommittedOrigin().opaque());
+
+  EXPECT_EQ(true, EvalJs(frame,
+                         "setExpectations(0, 0, 0, 1);"
+                         "xhr('adbanner.js')"));
+  EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
+}
+
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
                        SocialMediaBlockingPrefsToggleLists) {
   // kTwitterEmbedListConstants UUID (enabled by default)
@@ -1855,6 +1888,57 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CspRule) {
 
   // Violations of injected CSP directives do not increment the Shields counter
   EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+}
+
+// Main-frame documents always use the request URL as first_party_origin
+// (unless the initiator is opaque), so they are first-party for `$csp`.
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CspRuleThirdPartyLogic) {
+  // Applied to third-party only.
+  UpdateAdBlockInstanceWithRules(
+      "||example.com^$third-party,csp=script-src 'nonce-abcdef' "
+      "'unsafe-eval' 'self'");
+
+  {
+    // Browser-initiated navigation (= no initiator). Document is first-party,
+    // so the rule does not match.
+    const GURL url =
+        embedded_test_server()->GetURL("example.com", "/csp_rules.html");
+    NavigateToURL(url);
+    content::WebContents* contents = web_contents();
+
+    ASSERT_TRUE(ExecJs(contents, "window.allLoaded"));
+    EXPECT_EQ(true, EvalJs(contents, "!!window.loadedNonceScript"));
+    EXPECT_EQ(true, EvalJs(contents, "!!window.loadedUnsafeInlineScript"));
+  }
+
+  {
+    // Cross-origin renderer navigation (from about:blank). Document is
+    // third-party relative the opaque origin, so the rule matches.
+    NavigateToURL(GURL("about:blank"));
+    const GURL url =
+        embedded_test_server()->GetURL("example.com", "/csp_rules.html");
+    ASSERT_TRUE(content::NavigateToURLFromRenderer(web_contents(), url));
+    content::WebContents* contents = web_contents();
+
+    ASSERT_TRUE(ExecJs(contents, "window.allLoaded"));
+    EXPECT_EQ(true, EvalJs(contents, "!!window.loadedNonceScript"));
+    EXPECT_EQ(false, EvalJs(contents, "!!window.loadedUnsafeInlineScript"));
+  }
+
+  {
+    // Renderer-initiated cross-origin navigation from a regular site.
+    // Such a navigation is always considered first-party and the rule does
+    // not match.
+    NavigateToURL(embedded_test_server()->GetURL("a.com", "/simple.html"));
+    const GURL url =
+        embedded_test_server()->GetURL("example.com", "/csp_rules.html");
+    ASSERT_TRUE(content::NavigateToURLFromRenderer(web_contents(), url));
+    content::WebContents* contents = web_contents();
+
+    ASSERT_TRUE(ExecJs(contents, "window.allLoaded"));
+    EXPECT_EQ(true, EvalJs(contents, "!!window.loadedNonceScript"));
+    EXPECT_EQ(true, EvalJs(contents, "!!window.loadedUnsafeInlineScript"));
+  }
 }
 
 // Verify that Content Security Policies from multiple `$csp` rules are

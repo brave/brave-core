@@ -186,6 +186,14 @@ void SetBraveButtonFlexBehavior(views::View* btn) {
   btn->SetProperty(views::kFlexBehaviorKey, kBraveButtonFlex);
 }
 
+bool SupportsBraveVerticalTabs(BrowserWindowInterface* browser) {
+  if (!browser) {
+    return false;
+  }
+  auto* vtc = VerticalTabController::FromBrowser(browser);
+  return vtc && vtc->SupportsBraveVerticalTabs();
+}
+
 }  // namespace
 
 class BraveToolbarView::LayoutGuard {
@@ -282,7 +290,7 @@ void BraveToolbarView::Init() {
       base::BindRepeating(&BraveToolbarView::OnCompactModePrefChanged,
                           base::Unretained(this)));
 
-  if (tabs::utils::SupportsBraveVerticalTabs(browser_)) {
+  if (SupportsBraveVerticalTabs(browser_)) {
     show_vertical_tabs_.Init(brave_tabs::kVerticalTabsEnabled,
                              profile->GetPrefs(),
                              base::BindRepeating(
@@ -327,7 +335,7 @@ void BraveToolbarView::Init() {
   };
 
   // Add vertical tab toggle button to the left of the back button.
-  if (tabs::utils::SupportsBraveVerticalTabs(browser_)) {
+  if (SupportsBraveVerticalTabs(browser_)) {
     auto back_button_index = GetIndexOf(back_);
     vertical_tab_toggle_ =
         AddChildViewAt(std::make_unique<ToolbarButton>(base::BindRepeating(
@@ -435,7 +443,7 @@ void BraveToolbarView::Init() {
     ReorderChildView(avatar_button, *GetIndexOf(app_menu_button_) - 1);
   }
 
-  if (tabs::utils::SupportsBraveVerticalTabs(browser_)) {
+  if (SupportsBraveVerticalTabs(browser_)) {
     UpdateVerticalTabTogglePlacement();
   }
 
@@ -562,8 +570,12 @@ void BraveToolbarView::UpdateHorizontalPadding() {
   // shown, or when the top container is hosted in the Focus Mode top overlay.
   // In the latter case, upstream's "top container reparented" layout branch
   // takes care of the insets.
-  if (!tabs::utils::ShouldShowBraveVerticalTabs(browser()) ||
-      tabs::utils::ShouldShowWindowTitleForVerticalTabs(browser()) ||
+  auto* vtc = VerticalTabController::FromBrowser(browser_);
+  const bool should_show_vertical_tabs =
+      vtc && vtc->ShouldShowBraveVerticalTabs();
+  const bool should_show_title_bar_for_vertical_tabs =
+      vtc && vtc->ShouldShowWindowTitleForVerticalTabs();
+  if (!should_show_vertical_tabs || should_show_title_bar_for_vertical_tabs ||
       IsFocusModeOverlayActive()) {
     SetBorder(nullptr);
     return;
@@ -740,8 +752,9 @@ void BraveToolbarView::UpdateVerticalTabTogglePlacement() {
   // (logical index 0 renders on the visual right). To keep the toggle on the
   // same physical side as the strip, invert the placement choice when the UI
   // is RTL.
+  auto* vtc = VerticalTabController::FromBrowser(browser_);
   const bool place_near_app_menu =
-      tabs::utils::IsVerticalTabOnRight(browser_) != base::i18n::IsRTL();
+      vtc && vtc->IsVerticalTabOnRight() != base::i18n::IsRTL();
 
   size_t target_idx = 0;
   if (place_near_app_menu) {
@@ -875,7 +888,8 @@ void BraveToolbarView::UpdateComboButtonState() {
     return;
   }
 
-  combo_button_->SetVisible(tabs::utils::ShouldShowBraveVerticalTabs(browser_));
+  auto* vtc = VerticalTabController::FromBrowser(browser_);
+  combo_button_->SetVisible(vtc && vtc->ShouldShowBraveVerticalTabs());
 }
 
 bool BraveToolbarView::IsFocusModeOverlayActive() const {

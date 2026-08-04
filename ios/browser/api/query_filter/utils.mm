@@ -5,10 +5,13 @@
 
 #include "brave/ios/browser/api/query_filter/utils.h"
 
+#include <optional>
+
 #include "base/strings/sys_string_conversions.h"
 #include "brave/components/query_filter/browser/utils.h"
 #import "net/base/apple/url_conversions.h"
 #include "url/gurl.h"
+#include "url/origin.h"
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)
 #error "This file requires ARC support."
@@ -27,12 +30,12 @@
                                  isInternalRedirect:(BOOL)isInternalRedirect {
   // Create new fake gurls because thats what
   // `query_filter::MaybeApplyQueryStringFilter` expects
-  GURL initiatorGURL;
   GURL redirectSourceGurl;
+  std::optional<url::Origin> request_initiator;
 
   // Set the actual initiator and redirect source urls if we have them
   if (initiatorURL != nil) {
-    initiatorGURL = net::GURLWithNSURL(initiatorURL);
+    request_initiator = url::Origin::Create(net::GURLWithNSURL(initiatorURL));
   }
   if (redirectSourceURL != nil) {
     redirectSourceGurl = net::GURLWithNSURL(redirectSourceURL);
@@ -42,7 +45,7 @@
   const auto method = base::SysNSStringToUTF8(requestMethod);
 
   auto filteredGURL = query_filter::MaybeApplyQueryStringFilter(
-      initiatorGURL, redirectSourceGurl, requestGurl, method,
+      request_initiator, redirectSourceGurl, requestGurl, method,
       isInternalRedirect);
 
   if (!filteredGURL.has_value()) {
