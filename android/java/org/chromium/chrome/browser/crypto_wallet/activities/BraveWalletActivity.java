@@ -6,14 +6,10 @@
 package org.chromium.chrome.browser.crypto_wallet.activities;
 
 import android.content.Intent;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.viewpager2.widget.ViewPager2;
 
 import org.chromium.base.Log;
@@ -27,10 +23,7 @@ import org.chromium.chrome.browser.crypto_wallet.adapters.WalletOnboardingPagerA
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnNextPage;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletUtils;
-import org.chromium.chrome.browser.settings.BraveWalletPreferences;
-import org.chromium.chrome.browser.settings.SettingsNavigationFactory;
 import org.chromium.components.browser_ui.modaldialog.AppModalPresenter;
-import org.chromium.components.browser_ui.settings.SettingsNavigation;
 import org.chromium.ui.base.ActivityWindowAndroid;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 
@@ -56,33 +49,6 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
     private boolean mRestartSetupAction;
     private boolean mRestartRestoreAction;
     private boolean mBackupWallet;
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.wallet_search, menu);
-
-        if (menu instanceof MenuBuilder) {
-            ((MenuBuilder) menu).setOptionalIconsVisible(true);
-        }
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.settings) {
-            SettingsNavigation settingsLauncher =
-                    SettingsNavigationFactory.createSettingsNavigation();
-            settingsLauncher.startSettings(this, BraveWalletPreferences.class);
-            return true;
-        } else if (item.getItemId() == R.id.lock) {
-            if (mKeyringService != null) {
-                mKeyringService.lock();
-            }
-        } else if (item.getItemId() == R.id.help_center) {
-            WalletUtils.openWalletHelpCenter(this);
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
     @Override
     protected void triggerLayoutInflation() {

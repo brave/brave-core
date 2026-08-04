@@ -686,7 +686,6 @@ android_resources("java_resources") {
     "java/brave-res/menu/new_tab_menu.xml",
     "java/brave-res/menu/save_password_preferences_action_bar_menu.xml",
     "java/brave-res/menu/split_tunnel_menu.xml",
-    "java/brave-res/menu/wallet_search.xml",
     "java/brave-res/values-h500dp/dimens.xml",
     "java/brave-res/values-h568dp/dimens.xml",
     "java/brave-res/values-h748dp/dimens.xml",
