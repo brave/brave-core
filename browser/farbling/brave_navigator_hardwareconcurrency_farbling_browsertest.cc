@@ -94,11 +94,17 @@ class BraveNavigatorHardwareConcurrencyFarblingBrowserTest
     return browser()->tab_strip_model()->GetActiveWebContents();
   }
 
+ protected:
+  static const size_t kMinProcessorsForFarbling;
+
  private:
   base::test::ScopedFeatureList scoped_feature_list_;
   GURL top_level_page_url_;
   GURL farbling_url_;
 };
+
+// static
+const size_t BraveNavigatorHardwareConcurrencyFarblingBrowserTest::kMinProcessorsForFarbling = 4;
 
 // Tests results of farbling known values
 IN_PROC_BROWSER_TEST_F(BraveNavigatorHardwareConcurrencyFarblingBrowserTest,
@@ -117,12 +123,10 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorHardwareConcurrencyFarblingBrowserTest,
   int fake_value =
       content::EvalJs(contents(), kHardwareConcurrencyScript).ExtractInt();
 
-  const int min_processors_for_farbling = 4;
-
-  if (real_value < min_processors_for_farbling) {
+  if (real_value < static_cast<int>(kMinProcessorsForFarbling)) {
     EXPECT_EQ(real_value, fake_value);
   } else {
-    EXPECT_GE(fake_value, std::min(4, real_value));
+    EXPECT_GE(fake_value, static_cast<int>(kMinProcessorsForFarbling));
     EXPECT_LE(fake_value, real_value);
   }
 
@@ -177,12 +181,10 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorHardwareConcurrencyFarblingBrowserTest,
   base::StringToInt(content::EvalJs(contents(), kTitleScript).ExtractString(),
                     &fake_value);
 
-  const int min_processors_for_farbling = 4;
-
-  if (real_value < min_processors_for_farbling) {
+  if (real_value < static_cast<int>(kMinProcessorsForFarbling)) {
     EXPECT_EQ(real_value, fake_value);
   } else {
-    EXPECT_GE(fake_value, std::min(4, real_value));
+    EXPECT_GE(fake_value, static_cast<int>(kMinProcessorsForFarbling));
     EXPECT_LE(fake_value, real_value);
   }
 
