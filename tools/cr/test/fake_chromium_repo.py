@@ -166,8 +166,10 @@ class FakeChromiumRepo:
         self._run_git_command(['add', 'README.md'], path)
         self._run_git_command(['config', 'user.name', 'Fake User'], path)
         self._run_git_command(['config', 'user.email', 'fake@brave.com'], path)
-        # Prevent background gc from writing to objects/pack/ during cleanup.
-        self._run_git_command(['config', 'gc.auto', '0'], path)
+        # Disable background gc to avoid failures cleaning up these repos during
+        # teardown.
+        for key in ('gc.auto', 'gc.autodetach', 'gc.autopacklimit'):
+            self._run_git_command(['config', key, '0'], path)
         self._run_git_command(['commit', '-m', 'Initial commit'], path)
         self._repos.append(path)
 
