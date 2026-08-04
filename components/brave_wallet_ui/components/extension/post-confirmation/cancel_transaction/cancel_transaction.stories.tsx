@@ -23,10 +23,7 @@ export const _CancelTransaction = {
   render: () => {
     return (
       <WalletPanelStory>
-        <PanelWrapper
-          width={390}
-          height={650}
-        >
+        <PanelWrapper>
           <LongWrapper padding='0px'>
             <CancelTransaction
               onBack={() => alert('Back clicked')}
