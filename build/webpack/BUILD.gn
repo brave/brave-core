@@ -53,6 +53,7 @@ node_action("generate_tsconfig") {
   args = [
     "--root-gen-dir=" + rebase_path(root_gen_dir),
     "--name=tsconfig-webpack.json",
-    "--extends-from=" + rebase_path("//brave/tsconfig-webpack.json"),
+    "--extends-from=" +
+        rebase_path("//brave/tsconfig-webpack.json", root_build_dir),
   ]
 }
