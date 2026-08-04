@@ -5,7 +5,7 @@ description:
   reviewer-requested changes, runs preflight, commits, and pushes. Triggers on:
   impl-review, implement review, implement review feedback, address review
   comments.'
-argument-hint: '<pr-number>'
+argument-hint: '[--skip-build] [--skip-preflight] <pr-number> [org-repo]'
 disable-model-invocation: true
 ---
 
@@ -16,8 +16,13 @@ commit, and push.
 
 ## Arguments
 
-- **`<pr-number>`** (required) — The PR number in brave/brave-core to implement
-  review feedback for.
+- **`[--skip-preflight]`** (optional) — Skip the preflight checks and do not
+  require them for success
+- **`[--skip-build]`** (optional) — Pass the --skip-build flag to /preflight and
+  do not require build/test steps for success
+- **`<pr-number>`** (required) — The PR number to implement review feedback for.
+- **`[org-repo]`** (optional) - The organization and repo to use instead of
+  brave/brave-core. The default is brave/brave-core
 
 ## Confirmation
 
@@ -127,6 +132,10 @@ Ensure you're on the correct branch and up to date with the remote.
 - Apply the same coding standards as the rest of the codebase
 
 ### 7. Run Preflight Checks
+
+**If the `--skip-preflight` argument was provided:** Skip the preflight checks
+and continue at the next step. Do not require preflight checks for success when
+this flag is supplied
 
 Invoke the preflight skill to validate all changes:
 
