@@ -104,7 +104,8 @@ class BraveNavigatorHardwareConcurrencyFarblingBrowserTest
 };
 
 // static
-const size_t BraveNavigatorHardwareConcurrencyFarblingBrowserTest::kMinProcessorsForFarbling = 4;
+const size_t BraveNavigatorHardwareConcurrencyFarblingBrowserTest::
+    kMinProcessorsForFarbling = 4;
 
 // Tests results of farbling known values
 IN_PROC_BROWSER_TEST_F(BraveNavigatorHardwareConcurrencyFarblingBrowserTest,
