@@ -147,10 +147,11 @@ void LocalModelsUpdaterState::SetInstallDir(const base::FilePath& install_dir) {
   }
   install_dir_ = install_dir;
   if (install_dir.empty()) {
-    embeddinggemma_model_dir_ = base::FilePath();
+    embeddinggemma_litert_dir_ = base::FilePath();
     return;
   }
-  embeddinggemma_model_dir_ = install_dir_.AppendASCII(kEmbeddingGemmaModelDir);
+  embeddinggemma_litert_dir_ = install_dir_.AppendASCII(kEmbeddingGemmaModelDir)
+                                   .AppendASCII(kEmbeddingGemmaLitertDir);
 
   observers_.Notify(&Observer::OnLocalModelsReady, install_dir_);
 }
@@ -159,9 +160,9 @@ const base::FilePath& LocalModelsUpdaterState::GetInstallDir() const {
   return install_dir_;
 }
 
-const base::FilePath& LocalModelsUpdaterState::GetEmbeddingGemmaModelDir()
+const base::FilePath& LocalModelsUpdaterState::GetEmbeddingGemmaLitertDir()
     const {
-  return embeddinggemma_model_dir_;
+  return embeddinggemma_litert_dir_;
 }
 
 LocalModelsUpdaterState::LocalModelsUpdaterState() = default;

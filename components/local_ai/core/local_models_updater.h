@@ -34,6 +34,10 @@ class ComponentUpdateService;
 namespace local_ai {
 
 inline constexpr char kEmbeddingGemmaModelDir[] = "embeddinggemma-300m";
+// The LiteRT model files sit in a subdir of the model dir, and stay there: the
+// component keeps shipping the files at the top level for the older Brave
+// versions that still read them.
+inline constexpr char kEmbeddingGemmaLitertDir[] = "litert";
 
 // Exposed for testing - follows upstream Chromium pattern.
 class LocalModelsComponentInstallerPolicy
@@ -85,7 +89,9 @@ class LocalModelsUpdaterState {
   void SetInstallDir(const base::FilePath& install_dir);
   const base::FilePath& GetInstallDir() const;
 
-  const base::FilePath& GetEmbeddingGemmaModelDir() const;
+  // Dir the LiteRT EmbeddingGemma model ships in, holding model.tflite,
+  // model-info.pb and the SentencePiece model.
+  const base::FilePath& GetEmbeddingGemmaLitertDir() const;
 
  private:
   friend base::NoDestructor<LocalModelsUpdaterState>;
@@ -93,7 +99,7 @@ class LocalModelsUpdaterState {
   ~LocalModelsUpdaterState();
 
   base::FilePath install_dir_;
-  base::FilePath embeddinggemma_model_dir_;
+  base::FilePath embeddinggemma_litert_dir_;
 
   base::ObserverList<Observer> observers_;
 

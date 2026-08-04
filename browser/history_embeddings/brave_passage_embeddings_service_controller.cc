@@ -23,10 +23,6 @@ namespace passage_embeddings {
 
 namespace {
 
-// The LiteRT model files ship in the shared EmbeddingGemma component, under a
-// litert/ subdir of its model dir.
-constexpr char kLitertModelSubdir[] = "litert";
-
 // Launches the sandboxed Passage Embeddings utility process, whose LoadModels
 // is chromium_src-overridden to run EmbeddingGemma on LiteRT's CompiledModel
 // inside that process.
@@ -77,12 +73,12 @@ bool BravePassageEmbeddingsServiceController::MaybeUpdateModelInfo(
 
 void BravePassageEmbeddingsServiceController::OnLocalModelsReady(
     const base::FilePath& install_dir) {
-  // The component ships the LiteRT model under a litert/ subdir, laid out the
-  // way optimization guide expects: model.tflite, model-info.pb, and the
-  // SentencePiece model listed in its additional_files. Loading it here reads
-  // the version and the embedder metadata from the component rather than
-  // hard-coding them, and reports no model at all when an older component (or
-  // a withheld download) leaves any of those files missing.
+  // The component ships the LiteRT model in optimization guide's own layout:
+  // model.tflite, model-info.pb, and the SentencePiece model listed in its
+  // additional_files. Loading it here reads the version and the embedder
+  // metadata from the component rather than hard-coding them, and reports no
+  // model at all when an older component (or a withheld download) leaves any
+  // of those files missing.
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE,
       {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
@@ -91,8 +87,7 @@ void BravePassageEmbeddingsServiceController::OnLocalModelsReady(
           &optimization_guide::LoadAndVerifyModelInfoOffThread,
           optimization_guide::proto::OPTIMIZATION_TARGET_PASSAGE_EMBEDDER,
           local_ai::LocalModelsUpdaterState::GetInstance()
-              ->GetEmbeddingGemmaModelDir()
-              .AppendASCII(kLitertModelSubdir)),
+              ->GetEmbeddingGemmaLitertDir()),
       base::BindOnce(
           &BravePassageEmbeddingsServiceController::OnLitertModelInfoLoaded,
           base::Unretained(this)));

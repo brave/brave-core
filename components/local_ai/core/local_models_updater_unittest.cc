@@ -97,7 +97,7 @@ TEST_F(LocalModelsUpdaterUnitTest, Register) {
   run_loop.Run();
 }
 
-// Tests that ComponentReady sets up the install directory and model dir.
+// Tests that ComponentReady sets up the install directory and the model dir.
 TEST_F(LocalModelsUpdaterUnitTest, ComponentReady) {
   LocalModelsComponentInstallerPolicy policy;
   policy.ComponentReady(base::Version("1.0.0"), install_dir_,
@@ -107,8 +107,9 @@ TEST_F(LocalModelsUpdaterUnitTest, ComponentReady) {
   ASSERT_TRUE(base::test::RunUntil(
       [&]() { return state->GetInstallDir() == install_dir_; }));
   EXPECT_EQ(state->GetInstallDir(), install_dir_);
-  EXPECT_EQ(state->GetEmbeddingGemmaModelDir(),
-            install_dir_.AppendASCII(kEmbeddingGemmaModelDir));
+  EXPECT_EQ(state->GetEmbeddingGemmaLitertDir(),
+            install_dir_.AppendASCII(kEmbeddingGemmaModelDir)
+                .AppendASCII(kEmbeddingGemmaLitertDir));
 }
 
 // Tests that the component directory is deleted when the feature is disabled.
