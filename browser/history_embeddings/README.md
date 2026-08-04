@@ -56,30 +56,31 @@ service creation, so changes take effect on restart.
 any work, and the base controller opens the model files the paths point at.
 Brave's model is delivered by the local AI component updater, so the controller
 observes `LocalModelsUpdaterState`: when the EmbeddingGemma component is
-installed, `OnLocalModelsReady` resolves
-`embeddings_model_path_`/`sp_model_path_` from the component's `litert/` subdir
-and fires `EmbedderMetadataUpdated`; `IsModelAvailable()` is true once those
-paths are set. The metadata is otherwise static (`version=2`, `output_size=768`,
-`threshold=0.45`); the version differs from the previous WASM embedder's so
-`SqlDatabase` re-embeds stored history rather than mixing vector spaces.
+installed, `OnLocalModelsReady` loads the component's `litert/` subdir with
+`optimization_guide::LoadAndVerifyModelInfoOffThread` and hands the resulting
+`ModelInfo` to `PassageEmbeddingsServiceController::MaybeUpdateModelInfo`, which
+validates the metadata, records the paths and fires `EmbedderMetadataUpdated`.
 
-The `chromium_src` include shim declares
-`BravePassageEmbeddingsServiceController` as a `friend class` on the base so we
-can set the model paths/metadata and reach `observer_list_` without touching the
-upstream header (see
-[`chromium_src/.../passage_embeddings_service_controller.h`](../../chromium_src/components/passage_embeddings/core/passage_embeddings_service_controller.h)).
+That subdir is a model dir in optimization guide's own layout — `model.tflite`,
+`model-info.pb`, and the SentencePiece model listed in the latter's
+`additional_files` — so the version, `input_window_size`, `output_size` and
+`score_threshold` travel with the model instead of being hard-coded here. A
+component that ships none of this loads as no model rather than failing later,
+and bumping the version in `model-info.pb` is what makes `SqlDatabase` re-embed
+stored history rather than mix vector spaces. The file is generated in
+[`brave/leo-local-models`](https://github.com/brave/leo-local-models).
 
 ## Key Files
 
 - **`brave_passage_embeddings_service_controller.{h,cc}`** — Singleton subclass
   of `PassageEmbeddingsServiceController`. Provides `LitertServiceLauncher`,
   which launches the real sandboxed Passage Embeddings utility process. Observes
-  `LocalModelsUpdaterState` and resolves the model paths from the component's
-  `litert/` subdir in `OnLocalModelsReady`, publishes the LiteRT metadata, and
-  swallows `optimization_guide` model updates (`MaybeUpdateModelInfo`) since
-  Brave doesn't use that model. `GetEmbeddings` is the base implementation: the
-  upstream launch + `LoadModels` flow opens the model files and drives the
-  embedder in the utility.
+  `LocalModelsUpdaterState` and loads the component's `litert/` model dir in
+  `OnLocalModelsReady`, and ignores `optimization_guide` model updates
+  (`MaybeUpdateModelInfo`) since Brave doesn't use that model — the component's
+  own `ModelInfo` reaches the base implementation directly. `GetEmbeddings` is
+  the base implementation: the upstream launch + `LoadModels` flow opens the
+  model files and drives the embedder in the utility.
 
 - **`open_tab_search.{h,cc}`** — Standalone util, unrelated to the embedder
   above: it powers on-device "search my open tabs by content".
@@ -118,13 +119,11 @@ utility through the standard `LoadModels` mojo call.
   — Override to use `BravePassageEmbeddingsServiceController` and
   `BraveHistoryEmbeddingsService`.
 
-- **`chromium_src/components/passage_embeddings/core/passage_embeddings_service_controller.h`**
-  — Chromium_src include shim. Adds `virtual` to
-  `IsModelAvailable`/`GetEmbedderMetadata`/`MaybeUpdateModelInfo` via
-  `#define`s, and declares
-  `friend class BravePassageEmbeddingsServiceController` by macro-injecting it
-  through the `EmbedderRunning` anchor (same idiom as
-  `chromium_src/ui/android/view_android.h`).
+- **`rewrite/components/passage_embeddings/core/passage_embeddings_service_controller.h.yaml`**
+  — Plaster adding `virtual` to `GetEmbeddings`. The controller needs nothing
+  else from the base header: `MaybeUpdateModelInfo` is already virtual upstream,
+  and going through it leaves the paths, metadata and observer notification to
+  the base class.
 
 - **`chromium_src/services/passage_embeddings/passage_embedder_impl.cc`** —
   Injects the LiteRT runner at the top of

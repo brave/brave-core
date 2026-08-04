@@ -6,6 +6,8 @@
 #ifndef BRAVE_BROWSER_HISTORY_EMBEDDINGS_BRAVE_PASSAGE_EMBEDDINGS_SERVICE_CONTROLLER_H_
 #define BRAVE_BROWSER_HISTORY_EMBEDDINGS_BRAVE_PASSAGE_EMBEDDINGS_SERVICE_CONTROLLER_H_
 
+#include <memory>
+
 #include "base/files/file_path.h"
 #include "base/no_destructor.h"
 #include "base/scoped_observation.h"
@@ -21,9 +23,10 @@ namespace passage_embeddings {
 // profiles, accessed via Get(), to avoid loading the model more than once.
 //
 // Brave does not use the optimization guide tflite model that upstream's
-// embedder relies on; the model is delivered by the local AI component updater
-// (LocalModelsUpdaterState) and its file paths are resolved in
-// OnLocalModelsReady.
+// embedder relies on. The model is delivered by the local AI component updater
+// (LocalModelsUpdaterState) as a model dir laid out the way optimization guide
+// expects, so OnLocalModelsReady loads its model-info.pb into a ModelInfo and
+// feeds that to the base class.
 class BravePassageEmbeddingsServiceController
     : public PassageEmbeddingsServiceController,
       public local_ai::LocalModelsUpdaterState::Observer {
@@ -42,23 +45,21 @@ class BravePassageEmbeddingsServiceController
   ~BravePassageEmbeddingsServiceController() override;
 
   // PassageEmbeddingsServiceController:
-  // Swallow optimization_guide updates. Upstream's PassageEmbedderModelObserver
+  // Ignores optimization_guide updates. Upstream's PassageEmbedderModelObserver
   // calls this whenever the tflite model component changes; we don't use that
-  // model at all, so the notification is noise.
+  // model at all, so the notification is noise. The component's own model info
+  // reaches the base implementation from OnLitertModelInfoLoaded().
   bool MaybeUpdateModelInfo(
       base::optional_ref<const optimization_guide::ModelInfo> model_info)
       override;
-  bool IsModelAvailable() override;
-  EmbedderMetadata GetEmbedderMetadata() override;
 
   // local_ai::LocalModelsUpdaterState::Observer:
   void OnLocalModelsReady(const base::FilePath& install_dir) override;
 
-  // Reply for the OnLocalModelsReady existence check: records the LiteRT model
-  // paths and notifies observers only when both files are actually on disk.
-  void OnLitertModelChecked(const base::FilePath& embeddings_model_path,
-                            const base::FilePath& sp_model_path,
-                            bool models_exist);
+  // Reply for the model dir load posted by OnLocalModelsReady. `model_info` is
+  // null when the component ships no usable model.
+  void OnLitertModelInfoLoaded(
+      std::unique_ptr<optimization_guide::ModelInfo> model_info);
 
   base::ScopedObservation<local_ai::LocalModelsUpdaterState,
                           local_ai::LocalModelsUpdaterState::Observer>
