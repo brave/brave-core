@@ -9,7 +9,7 @@ import * as React from 'react'
 import {
   WalletPanelStory, //
 } from '../../../../../../stories/wrappers/wallet-panel-story-wrapper'
-import { PanelWrapper } from '../../../../../../panel/style'
+import { PanelWrapper } from '../../../../../../panel/panel_wrapper/panel_wrapper'
 import { NFTGridViewItem } from './nft-grid-view-item'
 
 // mocks

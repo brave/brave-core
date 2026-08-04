@@ -8,7 +8,7 @@ import * as React from 'react'
 import {
   WalletPanelStory, //
 } from '../../../stories/wrappers/wallet-panel-story-wrapper'
-import { PanelWrapper } from '../../../panel/style'
+import { PanelWrapper } from '../../../panel/panel_wrapper/panel_wrapper'
 import { LongWrapper } from '../../../stories/style'
 import { SignCowSwapOrder } from './cow_swap_order'
 
