@@ -1,0 +1,17 @@
+diff --git a/content/browser/client_hints/critical_client_hints_throttle.h b/content/browser/client_hints/critical_client_hints_throttle.h
+index 19d2e3b54409a166ac95db896ecebc907b74d51f..e7b79b00865b943273b238cdadd901685f05a68a 100644
+--- a/content/browser/client_hints/critical_client_hints_throttle.h
++++ b/content/browser/client_hints/critical_client_hints_throttle.h
+@@ -57,8 +57,10 @@ class CriticalClientHintsThrottle : public blink::URLLoaderThrottle {
+       const network::mojom::URLResponseHead& response_head,
+       RestartWithURLReset* restart_with_url_reset);
+ 
+-  raw_ptr<BrowserContext> context_;
+-  raw_ptr<ClientHintsControllerDelegate> client_hint_delegate_;
++  // https://issues.chromium.org/issues/428146684
++  raw_ptr<BrowserContext, DisableDanglingPtrDetection> context_;
++  raw_ptr<ClientHintsControllerDelegate, DisableDanglingPtrDetection>
++      client_hint_delegate_;
+   FrameTreeNodeId frame_tree_node_id_;
+ 
+   // Ensure that there's only one restart per origin
