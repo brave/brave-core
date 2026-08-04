@@ -62,7 +62,7 @@ def GenTests(api):
         api.brave_core_checkout.deployed('tools/cr/toolchains'),
         api.properties(brave_subrevision=1, chromium_ref='151.0.7917.1'),
         api.post_process(post_process.MustRun, 'clone from git cache'),
-        api.post_process(post_process.MustRun, 'fetch tag'),
+        api.post_process(post_process.MustRun, 'checkout tag'),
         api.post_process(post_process.DoesNotRun, 'read mac_sdk.gni'),
         api.post_process(post_process.DoesNotRun, 'install xcode'),
         api.post_process(post_process.MustRun, 'build rust toolchain'),

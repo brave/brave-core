@@ -46,7 +46,9 @@
       "/b/cache",
       "https://chromium.googlesource.com/chromium/src.git",
       "--reset-fetch-config",
-      "--no-fetch-tags"
+      "--no-fetch-tags",
+      "--ref",
+      "refs/tags/151.0.7917.1"
     ],
     "env": {
       "CHROME_HEADLESS": "1"
@@ -127,61 +129,14 @@
       "git",
       "checkout",
       "--force",
-      "origin/HEAD",
+      "refs/tags/151.0.7917.1",
       "--"
     ],
     "cwd": "[WORKSPACE]/b/src",
     "env": {
       "CHROME_HEADLESS": "1"
     },
-    "name": "checkout origin/HEAD"
-  },
-  {
-    "cmd": [
-      "git",
-      "cache",
-      "populate",
-      "--cache-dir",
-      "/b/cache",
-      "https://chromium.googlesource.com/chromium/src.git",
-      "--reset-fetch-config",
-      "--no-fetch-tags",
-      "--ref",
-      "refs/tags/151.0.7917.1"
-    ],
-    "env": {
-      "CHROME_HEADLESS": "1"
-    },
-    "name": "git cache populate for ref"
-  },
-  {
-    "cmd": [
-      "git",
-      "cache",
-      "exists",
-      "--quiet",
-      "--cache-dir",
-      "/b/cache",
-      "https://chromium.googlesource.com/chromium/src.git"
-    ],
-    "env": {
-      "CHROME_HEADLESS": "1"
-    },
-    "name": "git cache exists for ref"
-  },
-  {
-    "cmd": [
-      "git",
-      "remote",
-      "set-url",
-      "origin",
-      "/b/cache/chromium.googlesource.com-chromium-src"
-    ],
-    "cwd": "[WORKSPACE]/b/src",
-    "env": {
-      "CHROME_HEADLESS": "1"
-    },
-    "name": "point origin at git cache"
+    "name": "checkout tag"
   },
   {
     "cmd": [
@@ -197,33 +152,6 @@
       "CHROME_HEADLESS": "1"
     },
     "name": "restore origin push url"
-  },
-  {
-    "cmd": [
-      "git",
-      "fetch",
-      "--no-tags",
-      "origin",
-      "refs/tags/151.0.7917.1:refs/tags/151.0.7917.1"
-    ],
-    "cwd": "[WORKSPACE]/b/src",
-    "env": {
-      "CHROME_HEADLESS": "1"
-    },
-    "name": "fetch tag"
-  },
-  {
-    "cmd": [
-      "git",
-      "checkout",
-      "--force",
-      "FETCH_HEAD"
-    ],
-    "cwd": "[WORKSPACE]/b/src",
-    "env": {
-      "CHROME_HEADLESS": "1"
-    },
-    "name": "checkout FETCH_HEAD"
   },
   {
     "cmd": [
