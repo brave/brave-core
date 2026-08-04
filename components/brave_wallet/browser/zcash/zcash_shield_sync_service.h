@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "base/gtest_prod_util.h"
+#include "base/numerics/checked_math.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_wallet/browser/internal/orchard_block_scanner.h"
 #include "brave/components/brave_wallet/browser/internal/orchard_sync_state.h"
@@ -72,10 +73,12 @@ class ZCashShieldSyncService {
 
   class OrchardBlockScannerProxy {
    public:
-    explicit OrchardBlockScannerProxy(OrchardFullViewKey full_view_key);
+    OrchardBlockScannerProxy(OrchardFullViewKey full_view_key,
+                             uint32_t ironwood_activation_height);
     virtual ~OrchardBlockScannerProxy();
     virtual void ScanBlocks(
         OrchardTreeState tree_state,
+        std::optional<OrchardTreeState> ironwood_tree_state,
         std::vector<zcash::mojom::CompactBlockPtr> blocks,
         base::OnceCallback<void(base::expected<OrchardBlockScanner::Result,
                                                OrchardBlockScanner::ErrorCode>)>
@@ -85,9 +88,12 @@ class ZCashShieldSyncService {
     static base::expected<OrchardBlockScanner::Result,
                           OrchardBlockScanner::ErrorCode>
     ScanBlocksInBackground(OrchardFullViewKey full_view_key,
+                           uint32_t ironwood_activation_height,
                            OrchardTreeState tree_state,
+                           std::optional<OrchardTreeState> ironwood_tree_state,
                            std::vector<zcash::mojom::CompactBlockPtr> blocks);
     OrchardFullViewKey full_view_key_;
+    uint32_t ironwood_activation_height_ = 0;
     scoped_refptr<base::TaskRunner> task_runner_;
 
     base::WeakPtrFactory<OrchardBlockScannerProxy> weak_ptr_factory_{this};
@@ -113,6 +119,16 @@ class ZCashShieldSyncService {
                            ReorgEvent_ChainTipAfter);
   FRIEND_TEST_ALL_PREFIXES(ZCashShieldSyncServiceTest,
                            ReorgEvent_ChainTipBelow);
+  FRIEND_TEST_ALL_PREFIXES(ZCashShieldSyncServiceTest,
+                           ScanBlocks_IronwoodEnabled);
+  FRIEND_TEST_ALL_PREFIXES(ZCashShieldSyncServiceTest,
+                           ScanBlocks_IronwoodDisabled);
+  FRIEND_TEST_ALL_PREFIXES(ZCashShieldSyncServiceTest,
+                           GetSpendableBalance_IncludesIronwoodNotes);
+  FRIEND_TEST_ALL_PREFIXES(ZCashShieldSyncServiceTest,
+                           GetSpendableBalance_IronwoodDisabled);
+  FRIEND_TEST_ALL_PREFIXES(ZCashShieldSyncServiceTest,
+                           GetSpendableBalance_IronwoodMissingBundle);
 
   void SetOrchardBlockScannerProxyForTesting(
       std::unique_ptr<OrchardBlockScannerProxy> block_scanner);
@@ -136,11 +152,12 @@ class ZCashShieldSyncService {
   void OnChainStateVerified(
       base::expected<bool, ZCashShieldSyncService::Error> result);
 
-  uint32_t GetSpendableBalance();
+  base::CheckedNumeric<uint64_t> GetSpendableBalance();
 
   // Update spendable notes state
   void UpdateSpendableNotes(const ScanRangeResult& scan_range_result);
   void OnGetSpendableNotes(
+      OrchardPool pool,
       const ScanRangeResult& scan_range_result,
       base::expected<std::optional<OrchardSyncState::SpendableNotesBundle>,
                      OrchardStorage::Error> result);
@@ -174,8 +191,13 @@ class ZCashShieldSyncService {
   std::unique_ptr<ZCashScanBlocksTask> scan_blocks_task_;
   std::optional<ScanRangeResult> latest_scanned_block_result_;
 
-  // Local cache of spendable notes to fast check on discovered nullifiers
-  std::optional<OrchardSyncState::SpendableNotesBundle> spendable_notes_bundle_;
+  // Local cache of spendable notes to fast check on discovered nullifiers.
+  // Always populated for the Orchard pool; additionally populated for the
+  // Ironwood pool when IsZCashIronwoodEnabled() is true.
+  std::optional<OrchardSyncState::SpendableNotesBundle>
+      orchard_spendable_notes_bundle_;
+  std::optional<OrchardSyncState::SpendableNotesBundle>
+      ironwood_spendable_notes_bundle_;
   std::optional<Error> error_;
 
   mojom::ZCashShieldSyncStatusPtr current_sync_status_;

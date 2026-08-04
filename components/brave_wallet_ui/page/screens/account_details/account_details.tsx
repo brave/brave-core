@@ -710,11 +710,15 @@ export const AccountDetails = () => {
             <div>
               {accountsTokensList
                 && zcashBalance
-                && zcashBalance.shieldedPendingBalance > 0
+                && (zcashBalance.orchardPendingBalance > 0
+                  || zcashBalance.ironwoodPendingBalance > 0)
                 && getLocale('braveWalletZCashPendingBalanceTitle').replace(
                   '$1',
                   formatTokenBalanceWithSymbol(
-                    (zcashBalance?.shieldedPendingBalance || 0).toString(),
+                    (
+                      zcashBalance.orchardPendingBalance
+                      + zcashBalance.ironwoodPendingBalance
+                    ).toString(),
                     accountsTokensList[0].decimals,
                     accountsTokensList[0].symbol,
                   ),
