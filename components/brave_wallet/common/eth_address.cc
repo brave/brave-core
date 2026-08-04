@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/common/eth_address.h"
 
 #include <algorithm>
+#include <ranges>
 #include <string>
 #include <tuple>
 
@@ -13,7 +14,6 @@
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
-#include "base/types/zip.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 
@@ -152,7 +152,7 @@ std::string EthAddress::ToChecksumAddress(uint256_t eip1191_chaincode) const {
   result.append("0x");
 
   for (const auto [address_char, hash_char] :
-       base::zip(address_str, hash_str)) {
+       std::views::zip(address_str, hash_str)) {
     // Uppercase address letter if corresponding hash nibble ≥ 8.
     const bool should_uppercase = !base::IsAsciiDigit(address_char) &&
                                   base::HexDigitToInt(hash_char) >= 8;
