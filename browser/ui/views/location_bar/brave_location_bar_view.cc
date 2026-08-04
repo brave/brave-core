@@ -276,7 +276,7 @@ gfx::Size BraveLocationBarView::GetMinimumSize() const {
   // requested width is no longer valid for the actual (larger) window, causing
   // the popup to extend partially outside the work area. Verified by
   // PopupTest.OpenClampedToCurrentDisplay.
-  if (!browser_->is_type_normal()) {
+  if (browser_->GetType() != BrowserWindowInterface::Type::TYPE_NORMAL) {
     return min_size;
   }
 

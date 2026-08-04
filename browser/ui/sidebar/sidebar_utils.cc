@@ -104,7 +104,7 @@ bool HiddenDefaultSidebarItemsContains(SidebarService* service,
 
 bool CanUseSidebar(Browser* browser) {
   DCHECK(browser);
-  return browser->is_type_normal();
+  return browser->GetType() == BrowserWindowInterface::Type::TYPE_NORMAL;
 }
 
 // If url is relavant with bulitin items, use builtin item's url.
