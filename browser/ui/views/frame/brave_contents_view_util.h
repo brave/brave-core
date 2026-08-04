@@ -11,11 +11,6 @@
 #include "ui/gfx/geometry/rounded_corners_f.h"
 
 class Browser;
-class BrowserWindowInterface;
-
-namespace tabs {
-class TabInterface;
-}  // namespace tabs
 
 namespace ui {
 class ColorProvider;
@@ -36,11 +31,6 @@ class BraveContentsViewUtil {
   // get the shadow to display properly. Otherwise 0.
   static int GetRoundedCornersWebViewMargin(Browser* browser);
   static int GetRoundedCornersWebViewMargin(const Browser* browser);
-
-  // Pass content's tab to |tab| if it needs to consider split view state.
-  static gfx::RoundedCornersF GetRoundedCornersForContentsView(
-      BrowserWindowInterface* browser_window_interface,
-      tabs::TabInterface* tab);
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_CONTENTS_VIEW_UTIL_H_

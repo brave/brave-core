@@ -29,6 +29,7 @@
 #include "chrome/browser/ui/views/infobars/infobar_container_view.h"
 #include "chrome/browser/ui/views/side_panel/side_panel.h"
 #include "ui/views/border.h"
+#include "ui/views/layout/layout_provider.h"
 #include "ui/views/view_class_properties.h"
 
 BraveBrowserViewTabbedLayoutImpl::BraveBrowserViewTabbedLayoutImpl(
@@ -307,6 +308,7 @@ void BraveBrowserViewTabbedLayoutImpl::DoPostLayoutVisualAdjustments(
     const BrowserLayoutParams& params) {
   BrowserViewTabbedLayoutImpl::DoPostLayoutVisualAdjustments(params);
   UpdateInsetsForVerticalTabStrip();
+  delegate().UpdateContentsCornerRadii(CalculateContentsCornerRadii());
 
   if (delegate().ShouldDrawVerticalTabStrip()) {
     return;
@@ -630,46 +632,128 @@ gfx::Insets BraveBrowserViewTabbedLayoutImpl::GetContentsMargins() const {
 
   gfx::Insets margins(kRoundedCornersContentsViewMargin);
 
-  auto contents_at_top_edge = [&]() {
-    if (delegate().IsInfobarVisible()) {
-      return false;
-    }
-    if (IsParentedToAndVisible(views().focus_mode_title_bar,
-                               views().browser_view)) {
-      return false;
-    }
-    // In focus mode the top container is reparented out of the browser view, so
-    // the top chrome no longer pushes the contents down. Only treat top UI as
-    // occupying the top edge when the top container is still a child of the
-    // browser view.
-    if (IsParentedTo(views().top_container, views().browser_view)) {
-      if (delegate().ShouldDrawTabStrip() || delegate().IsToolbarVisible() ||
-          delegate().IsBookmarkBarVisible()) {
-        return false;
-      }
-    }
-
-#if BUILDFLAG(IS_MAC)
-    // In this mode, top_container is in overlay widget but top_container is
-    // positioned above the browser view.
-    if (delegate().GetBrowserWindowState() ==
-        WindowState::kFullscreenWithToolbar) {
-      return false;
-    }
-#endif
-    return true;
-  };
-
-  if (!contents_at_top_edge()) {
+  if (!IsContentsAtTopEdge()) {
     margins.set_top(0);
   }
 
   return margins;
 }
 
+bool BraveBrowserViewTabbedLayoutImpl::IsContentsAtTopEdge() const {
+  if (delegate().IsInfobarVisible()) {
+    return false;
+  }
+  if (IsParentedToAndVisible(views().focus_mode_title_bar,
+                             views().browser_view)) {
+    return false;
+  }
+  // In focus mode the top container is reparented out of the browser view, so
+  // the top chrome no longer pushes the contents down. Only treat top UI as
+  // occupying the top edge when the top container is still a child of the
+  // browser view.
+  if (IsParentedTo(views().top_container, views().browser_view)) {
+    if (delegate().ShouldDrawTabStrip() || delegate().IsToolbarVisible() ||
+        delegate().IsBookmarkBarVisible()) {
+      return false;
+    }
+  }
+
+#if BUILDFLAG(IS_MAC)
+  // In this mode, top_container is in overlay widget but top_container is
+  // positioned above the browser view.
+  if (delegate().GetBrowserWindowState() ==
+      WindowState::kFullscreenWithToolbar) {
+    return false;
+  }
+#endif
+  return true;
+}
+
+bool BraveBrowserViewTabbedLayoutImpl::IsVerticalTabStripAtContentsEdge()
+    const {
+  // A vertical tab strip that reports no width floats above the contents
+  // instead of sitting beside it. This is the same test used to decide whether
+  // the contents are inset for it.
+  return delegate().ShouldShowVerticalTabs() &&
+         views().vertical_tab_strip_host &&
+         views().vertical_tab_strip_host->GetPreferredSize().width() != 0;
+}
+
+bool BraveBrowserViewTabbedLayoutImpl::IsSidebarAtContentsEdge() const {
+  // Checking the sidebar control view alone is not sufficient, because a panel
+  // can be visible while the control view is hidden.
+  return (views().sidebar_container &&
+          views().sidebar_container->IsSidebarVisible()) ||
+         (views().side_panel && views().side_panel->GetVisible());
+}
+
+gfx::RoundedCornersF
+BraveBrowserViewTabbedLayoutImpl::CalculateContentsCornerRadii() const {
+  if (!delegate().ShouldUseBraveWebViewRoundedCornersForContents() ||
+      delegate().IsFullscreenForTab()) {
+    return {};
+  }
+
+  auto* layout_provider = views::LayoutProvider::Get();
+  const float window_corner_radius = layout_provider->GetCornerRadiusMetric(
+      views::ShapeContextTokensOverride::
+          kRoundedCornersBorderRadiusAtWindowCorner);
+  const float border_corner_radius = layout_provider->GetCornerRadiusMetric(
+      views::ShapeContextTokensOverride::kRoundedCornersBorderRadius);
+
+  bool has_left_ui = false;
+  bool has_right_ui = false;
+
+  if (IsVerticalTabStripAtContentsEdge()) {
+    if (delegate().IsVerticalTabOnRight()) {
+      has_right_ui = true;
+    } else {
+      has_left_ui = true;
+    }
+  }
+
+  if (IsSidebarAtContentsEdge()) {
+    bool on_left = false;
+    if (views().sidebar_container) {
+      on_left = views().sidebar_container->sidebar_on_left();
+    } else if (views().side_panel) {
+      on_left = !views().side_panel->IsRightAligned();
+    }
+    if (on_left) {
+      has_left_ui = true;
+    } else {
+      has_right_ui = true;
+    }
+  }
+
+  const bool at_top_edge = IsContentsAtTopEdge();
+
+  gfx::RoundedCornersF corner_radii(window_corner_radius);
+  if (has_left_ui || !at_top_edge) {
+    corner_radii.set_upper_left(border_corner_radius);
+  }
+  if (has_right_ui || !at_top_edge) {
+    corner_radii.set_upper_right(border_corner_radius);
+  }
+  if (has_left_ui) {
+    corner_radii.set_lower_left(border_corner_radius);
+  }
+  if (has_right_ui) {
+    corner_radii.set_lower_right(border_corner_radius);
+  }
+
+  return corner_radii;
+}
+
 gfx::Insets BraveBrowserViewTabbedLayoutImpl::GetContentsMarginsForTesting()
     const {
   return GetContentsMargins();
+}
+
+gfx::RoundedCornersF
+BraveBrowserViewTabbedLayoutImpl::CalculateContentsCornerRadiiForTesting()
+    const {
+  return CalculateContentsCornerRadii();
 }
 
 bool BraveBrowserViewTabbedLayoutImpl::ShouldPushBookmarkBarForVerticalTabs()
