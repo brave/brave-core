@@ -28,14 +28,6 @@ substitutions:
       method_name: IsHovering
 
   - description: |-
-      Virtualise GetStrokeThickness for BraveVerticalTabStyle.
-
-      Virtualising it to return 0 for vertical/horizontal-update tabs.
-    make_virtual:
-      class_name: TabStyleViewsImpl
-      method_name: GetStrokeThickness
-
-  - description: |-
       Virtualise GetSeparatorOpacity for BraveVerticalTabStyle.
 
       Virtualising to tweak separator visibility for vertical tabs and split
