@@ -224,7 +224,7 @@ export class StreamingMelFrontend {
   consumeChunk(): void {
     if (!this.hasFullChunk()) {
       throw new Error('Cannot consume an incomplete mel chunk')
-    }  
+    }
     this.nextChunkFrame += config.NEMO_CHUNK
     this.trimOldBuffers()
   }
