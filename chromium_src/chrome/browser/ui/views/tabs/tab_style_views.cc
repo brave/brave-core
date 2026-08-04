@@ -8,6 +8,7 @@
 #include "base/check.h"
 #include "base/dcheck_is_on.h"
 #include "base/logging.h"
+#include "base/memory/raw_ptr.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
 #include "brave/browser/ui/views/tabs/brave_tab.h"
@@ -86,6 +87,11 @@ class BraveVerticalTabStyle : public TabStyleViewsImpl {
       bool hovered) const override;
 
  private:
+  // Returns the concrete Tab this style belongs to. TabStyleViewsImpl only
+  // keeps the abstract TabStyleViewDelegate, so Brave's subclass needs its
+  // own pointer for the tab-specific state it relies on below.
+  const Tab* tab() const { return tab_; }
+
   bool ShouldShowVerticalTabs() const;
 
   // true when |tab| is shown in the split view(with SideBySide or brave split
@@ -110,10 +116,12 @@ class BraveVerticalTabStyle : public TabStyleViewsImpl {
   // ScaleAndAlignBounds() to inset the bounds for Tab Accent icon area.
   gfx::RectF InsetAlignedBoundsForTabAccent(const gfx::RectF& bounds,
                                             float scale) const;
+
+  const raw_ptr<const Tab> tab_;
 };
 
 BraveVerticalTabStyle::BraveVerticalTabStyle(Tab* tab)
-    : TabStyleViewsImpl(tab) {}
+    : TabStyleViewsImpl(Tab::CreateStyleDelegate(tab)), tab_(tab) {}
 
 bool BraveVerticalTabStyle::IsHovering() const {
   // Upstream gives true when the tab is in split tab and another tab is
@@ -378,8 +386,8 @@ float BraveVerticalTabStyle::GetSeparatorOpacity(bool for_layout,
     return 0;
   }
 
-  const float visible_opacity =
-      GetHoverInterpolatedSeparatorOpacity(for_layout, next_tab);
+  const float visible_opacity = GetHoverInterpolatedSeparatorOpacity(
+      for_layout, next_tab ? next_tab->tab_style_views()->delegate() : nullptr);
 
   // Show separator if this is the last tab (and is therefore followed by the
   // new tab icon).
