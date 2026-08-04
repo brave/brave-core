@@ -920,6 +920,70 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 "
 `;
 
+exports[`mangled files should have up to date snapshots ./chromium_src/chrome/browser/resources/settings/search_page/search_page.html.ts.lit_mangler.ts should match snapshot 1`] = `
+"===================================================================
+--- ../chrome/browser/resources/settings/search_page/search_page.html.ts
++++ gen/chrome/browser/resources/settings/preprocessed/search_page/search_page.html.ts
+@@ -7,16 +7,11 @@
+ <settings-section page-title="\${this.searchPageTitle_}">
+   <div route-path="default">
+     <!-- Omnibox search engine -->
+     <div class="cr-row first">
+-      <div class="default-search-engine flex">
+-        \${this.searchPageTitle_}
+-        <div class="secondary">
++      <div class="default-search-engine flex">$i18n{normalSearchEnginesSiteSearchEngineHeading}<div class="secondary">
+           $i18n{searchEngineChoiceEntryPointSubtitle}
+-          <a href="$i18n{searchExplanationLearnMoreURL}"
+-              aria-description="$i18n{opensInNewTab}"
+-              aria-label="$i18n{searchExplanationLearnMoreA11yLabel}"
+-              target="_blank">
++          <a href="$i18n{searchExplanationLearnMoreURL}" aria-description="$i18n{opensInNewTab}" aria-label="$i18n{searchExplanationLearnMoreA11yLabel}" target="_blank">
+             $i18n{learnMore}
+           </a>
+         </div>
+         <div class="cr-row first">
+@@ -27,21 +22,15 @@
+             <cr-policy-pref-indicator
+                 .pref="\${this.defaultSearchProviderDataPref_}">
+             </cr-policy-pref-indicator>
+           \` : ''}
+-          <cr-button id="openDialogButton"
+-              @click="\${this.onOpenDialogButtonClick_}"
+-              ?disabled="\${this.isDefaultSearchEngineEnforced_()}">
++          <cr-button id="openDialogButton" @click="\${this.onOpenDialogButtonClick_}" ?disabled="\${this.isDefaultSearchEngineEnforced_()}">
+             $i18n{searchEnginesChange}
+           </cr-button>
+         </div>
+       </div>
+       \${this.showSearchEngineListDialog_ ? html\`
+-        <settings-search-engine-list-dialog
+-            .searchEngines="\${this.searchEngines_}"
+-            @close="\${this.onSearchEngineListDialogClose_}"
+-            @search-engine-changed="\${this.onSearchEngineChanged_}">
+-        </settings-search-engine-list-dialog>
++        <settings-normal-search-engine-list-dialog .searchEngines="\${this.searchEngines_}" @close="\${this.onSearchEngineListDialogClose_}" @search-engine-changed="\${this.onSearchEngineChanged_}"></settings-normal-search-engine-list-dialog>
+       \` : ''}
+       <cr-toast id="confirmationToast" duration="10000">
+         <div>\${this.confirmationToastLabel_}</div>
+       </cr-toast>
+@@ -75,12 +64,9 @@
+     \` : ''}
+ 
+     \${!this.searchSettingsUpdateEnabled_ ? html\`
+       <!-- Manage search engines -->
+-      <cr-link-row class="hr" id="enginesSubpageTrigger"
+-          label="$i18n{searchEnginesManageSiteSearch}"
+-          @click="\${this.onManageSearchEnginesClick_}"
+-          role-description="$i18n{subpageArrowRoleDescription}"></cr-link-row>
++      \${this.bravePrefs_ ? html\`<settings-brave-search-page .prefs="\${this.bravePrefs_}"></settings-brave-search-page>\` : ''}<cr-link-row class="hr" id="enginesSubpageTrigger" label="$i18n{searchEnginesManageSiteSearch}" @click="\${this.onManageSearchEnginesClick_}" role-description="$i18n{subpageArrowRoleDescription}"></cr-link-row>
+     \` : ''}
+   </div>
+ </settings-section>
+ <!--_html_template_end_-->\`;
+"
+`;
+
 exports[`mangled files should have up to date snapshots ./chromium_src/chrome/browser/resources/settings/system_page/system_page.html.ts.lit_mangler.ts should match snapshot 1`] = `
 "===================================================================
 --- ../chrome/browser/resources/settings/system_page/system_page.html.ts
