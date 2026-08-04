@@ -9,6 +9,7 @@ import { getCreateAccountLogo } from './asset-options'
 
 export const CreateAccountOptions = (options: {
   visibleNetworks: BraveWallet.NetworkInfo[]
+  isFilecoinEnabled: boolean
   isBitcoinEnabled: boolean
   isZCashEnabled: boolean
   isCardanoEnabled: boolean
@@ -39,27 +40,31 @@ export const CreateAccountOptions = (options: {
     chainIcons: ['sol-color'],
   })
 
-  accounts.push({
-    description: getLocale(S.BRAVE_WALLET_CREATE_ACCOUNT_FILECOIN_DESCRIPTION),
-    name: 'Filecoin',
-    coin: BraveWallet.CoinType.FIL,
-    fixedNetwork: BraveWallet.FILECOIN_MAINNET,
-    icon: getCreateAccountLogo(BraveWallet.CoinType.FIL),
-    chainIcons: ['filecoin-color'],
-  })
-  if (
-    isNetworkVisible(BraveWallet.CoinType.FIL, BraveWallet.FILECOIN_TESTNET)
-  ) {
-    testnetAccounts.push({
+  if (options.isFilecoinEnabled) {
+    accounts.push({
       description: getLocale(
-        S.BRAVE_WALLET_CREATE_ACCOUNT_FILECOIN_TESTNET_DESCRIPTION,
+        S.BRAVE_WALLET_CREATE_ACCOUNT_FILECOIN_DESCRIPTION,
       ),
-      name: 'Filecoin Testnet',
+      name: 'Filecoin',
       coin: BraveWallet.CoinType.FIL,
-      fixedNetwork: BraveWallet.FILECOIN_TESTNET,
+      fixedNetwork: BraveWallet.FILECOIN_MAINNET,
       icon: getCreateAccountLogo(BraveWallet.CoinType.FIL),
       chainIcons: ['filecoin-color'],
     })
+    if (
+      isNetworkVisible(BraveWallet.CoinType.FIL, BraveWallet.FILECOIN_TESTNET)
+    ) {
+      testnetAccounts.push({
+        description: getLocale(
+          S.BRAVE_WALLET_CREATE_ACCOUNT_FILECOIN_TESTNET_DESCRIPTION,
+        ),
+        name: 'Filecoin Testnet',
+        coin: BraveWallet.CoinType.FIL,
+        fixedNetwork: BraveWallet.FILECOIN_TESTNET,
+        icon: getCreateAccountLogo(BraveWallet.CoinType.FIL),
+        chainIcons: ['filecoin-color'],
+      })
+    }
   }
 
   if (options.isBitcoinEnabled) {
