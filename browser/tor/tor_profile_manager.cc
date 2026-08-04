@@ -25,6 +25,7 @@
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/browser_window/public/browser_collection_observer.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+#include "chrome/browser/ui/browser_window/public/create_browser_window.h"
 #include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
 #include "chrome/browser/ui/browser_window/public/profile_browser_collection.h"
 #include "chrome/common/pref_names.h"
@@ -202,7 +203,7 @@ Browser* TorProfileManager::SwitchToTorProfile(
   auto* tabbed_browser = collection ? collection->FindTabbedBrowser() : nullptr;
   auto* browser =
       tabbed_browser ? tabbed_browser->GetBrowserForMigrationOnly() : nullptr;
-  if (!browser && Browser::GetCreationStatusForProfile(tor_profile) ==
+  if (!browser && GetBrowserWindowCreationStatusForProfile(*tor_profile) ==
                       Browser::CreationStatus::kOk) {
     browser = Browser::Create(Browser::CreateParams(tor_profile, true));
   }
