@@ -34,6 +34,7 @@ bool IsAddressAllowed(const std::string&) {
 
 TEST(ZCashV5SerializerTest, HashHeader) {
   ZCashTransaction zcash_transaciton;
+  zcash_transaciton.init_v5_part();
   zcash_transaciton.set_consensus_brach_id(0xc2d6d0b4);
   zcash_transaciton.set_expiry_height(10000);
   zcash_transaciton.set_locktime(1);
@@ -44,6 +45,7 @@ TEST(ZCashV5SerializerTest, HashHeader) {
 
 TEST(ZCashV5SerializerTest, TxId_TransparentOnly) {
   ZCashTransaction tx;
+  tx.init_v5_part();
   tx.set_consensus_brach_id(0xc2d6d0b4);
   tx.set_expiry_height(2283846);
   tx.set_locktime(2283826);
@@ -127,6 +129,7 @@ TEST(ZCashV5SerializerTest, OrchardToTransparentBundle) {
 
   keyring.AddNewHDAccount(0u);
   ZCashTransaction tx;
+  tx.init_v5_part();
   tx.set_consensus_brach_id(1307332080);
   tx.set_expiry_height(3667223u);
   tx.set_locktime(3667203u);
@@ -977,6 +980,7 @@ TEST(ZCashV5SerializerTest, OrchardBundle) {
   auto key_id = mojom::ZCashKeyId::New(0, 0, 0);
   auto address = keyring.GetTransparentAddress(*key_id)->address_string;
   ZCashTransaction tx;
+  tx.init_v5_part();
   tx.set_consensus_brach_id(0xc2d6d0b4);
   tx.set_expiry_height(1687144);
   tx.set_locktime(0);

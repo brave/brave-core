@@ -29,6 +29,7 @@ ZCashCreateTransparentTransactionTask::ZCashCreateTransparentTransactionTask(
     : zcash_wallet_service_(zcash_wallet_service),
       context_(std::move(context)),
       amount_(amount) {
+  transaction_.init_v5_part();
   transaction_.set_to(address_to);
   transaction_.set_amount(amount);
 }

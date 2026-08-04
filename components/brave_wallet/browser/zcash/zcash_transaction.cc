@@ -10,6 +10,7 @@
 #include <string>
 #include <string_view>
 #include <utility>
+#include <variant>
 
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_serializer.h"
@@ -76,6 +77,62 @@ ZCashTransaction::ShieldedPool::TotalOutputsAmount() const {
   return result;
 }
 
+base::DictValue ZCashTransaction::ShieldedPool::ToValue() const {
+  base::DictValue dict;
+  auto& inputs_value = dict.Set("inputs", base::ListValue())->GetList();
+  for (auto& input : inputs) {
+    inputs_value.Append(input.ToValue());
+  }
+  auto& outputs_value = dict.Set("outputs", base::ListValue())->GetList();
+  for (auto& output : outputs) {
+    outputs_value.Append(output.ToValue());
+  }
+  if (anchor_block_height) {
+    dict.Set("anchor_block_height", base::NumberToString(*anchor_block_height));
+  }
+  return dict;
+}
+
+// static
+std::optional<ZCashTransaction::ShieldedPool>
+ZCashTransaction::ShieldedPool::FromValue(const base::DictValue& dict) {
+  ShieldedPool pool;
+  auto* inputs_list = dict.FindList("inputs");
+  if (inputs_list) {
+    for (auto& item : *inputs_list) {
+      if (!item.is_dict()) {
+        return std::nullopt;
+      }
+      auto input_opt = OrchardInput::FromValue(item.GetDict());
+      if (!input_opt) {
+        return std::nullopt;
+      }
+      pool.inputs.push_back(std::move(*input_opt));
+    }
+  }
+  auto* outputs_list = dict.FindList("outputs");
+  if (outputs_list) {
+    for (auto& item : *outputs_list) {
+      if (!item.is_dict()) {
+        return std::nullopt;
+      }
+      auto output_opt = OrchardOutput::FromValue(item.GetDict());
+      if (!output_opt) {
+        return std::nullopt;
+      }
+      pool.outputs.push_back(std::move(*output_opt));
+    }
+  }
+  if (dict.Find("anchor_block_height")) {
+    uint32_t height = 0;
+    if (!ReadUint32StringTo(dict, "anchor_block_height", height)) {
+      return std::nullopt;
+    }
+    pool.anchor_block_height = height;
+  }
+  return pool;
+}
+
 ZCashTransaction::V5Part::V5Part() = default;
 ZCashTransaction::V5Part::~V5Part() = default;
 ZCashTransaction::V5Part::V5Part(V5Part&& other) = default;
@@ -96,21 +153,27 @@ base::CheckedNumeric<uint64_t> ZCashTransaction::V5Part::TotalOutputsAmount()
   return orchard.TotalOutputsAmount();
 }
 
-void ZCashTransaction::V5Part::WriteTopLevel(base::DictValue& dict) const {
-  auto& orchard_inputs_value =
-      dict.Set("orchard_inputs", base::ListValue())->GetList();
-  for (auto& input : orchard.inputs) {
-    orchard_inputs_value.Append(input.ToValue());
+base::DictValue ZCashTransaction::V5Part::ToValue() const {
+  base::DictValue dict;
+  dict.Set("orchard", orchard.ToValue());
+  return dict;
+}
+
+// static
+std::optional<ZCashTransaction::V5Part> ZCashTransaction::V5Part::FromValue(
+    const base::DictValue& value) {
+  auto* orchard_dict = value.FindDict("orchard");
+  if (!orchard_dict) {
+    return std::nullopt;
   }
-  auto& orchard_outputs_value =
-      dict.Set("orchard_outputs", base::ListValue())->GetList();
-  for (auto& output : orchard.outputs) {
-    orchard_outputs_value.Append(output.ToValue());
+  auto orchard = ShieldedPool::FromValue(*orchard_dict);
+  if (!orchard) {
+    return std::nullopt;
   }
-  if (orchard.anchor_block_height) {
-    dict.Set("anchor_block_height",
-             base::NumberToString(orchard.anchor_block_height.value()));
-  }
+
+  V5Part result;
+  result.orchard = std::move(*orchard);
+  return result;
 }
 
 // static
@@ -151,6 +214,67 @@ std::optional<ZCashTransaction::V5Part> ZCashTransaction::V5Part::ReadTopLevel(
     }
     result.orchard.anchor_block_height = anchor_block_height;
   }
+  return result;
+}
+
+ZCashTransaction::V6Part::V6Part() = default;
+ZCashTransaction::V6Part::~V6Part() = default;
+ZCashTransaction::V6Part::V6Part(V6Part&& other) = default;
+ZCashTransaction::V6Part::V6Part(const V6Part& other) = default;
+ZCashTransaction::V6Part& ZCashTransaction::V6Part::operator=(V6Part&& other) =
+    default;
+ZCashTransaction::V6Part& ZCashTransaction::V6Part::operator=(
+    const V6Part& other) = default;
+bool ZCashTransaction::V6Part::operator==(const V6Part& other) const = default;
+
+base::CheckedNumeric<uint64_t> ZCashTransaction::V6Part::TotalInputsAmount()
+    const {
+  return legacy_orchard.TotalInputsAmount() + ironwood.TotalInputsAmount();
+}
+
+base::CheckedNumeric<uint64_t> ZCashTransaction::V6Part::TotalOutputsAmount()
+    const {
+  return legacy_orchard.TotalOutputsAmount() + ironwood.TotalOutputsAmount();
+}
+
+base::DictValue ZCashTransaction::V6Part::ToValue() const {
+  base::DictValue dict;
+  dict.Set("zip233_amount", base::NumberToString(zip233_amount));
+  dict.Set("legacy_orchard", legacy_orchard.ToValue());
+  dict.Set("ironwood", ironwood.ToValue());
+  return dict;
+}
+
+// static
+std::optional<ZCashTransaction::V6Part> ZCashTransaction::V6Part::FromValue(
+    const base::DictValue& value) {
+  V6Part result;
+  auto* zip233_amount_str = value.FindString("zip233_amount");
+  if (!zip233_amount_str ||
+      !base::StringToInt64(*zip233_amount_str, &result.zip233_amount)) {
+    return std::nullopt;
+  }
+
+  auto* legacy_dict = value.FindDict("legacy_orchard");
+  if (!legacy_dict) {
+    return std::nullopt;
+  }
+  auto legacy = ShieldedPool::FromValue(*legacy_dict);
+  if (!legacy) {
+    return std::nullopt;
+  }
+  result.legacy_orchard = std::move(*legacy);
+
+  auto* ironwood_dict = value.FindDict("ironwood");
+  if (!ironwood_dict) {
+    return std::nullopt;
+  }
+  auto ironwood = ShieldedPool::FromValue(*ironwood_dict);
+  if (!ironwood) {
+    return std::nullopt;
+  }
+  result.ironwood = std::move(*ironwood);
+
   return result;
 }
 
@@ -332,7 +456,12 @@ base::DictValue ZCashTransaction::ToValue() const {
     outputs_value.Append(output.ToValue());
   }
 
-  v5_part_.WriteTopLevel(dict);
+  if (is_v5()) {
+    dict.Set("v5_part", v5_part().ToValue());
+  } else {
+    CHECK(is_v6());
+    dict.Set("v6_part", v6_part().ToValue());
+  }
 
   dict.Set("locktime", base::NumberToString(locktime_));
   dict.Set("to", to_);
@@ -351,9 +480,12 @@ std::optional<ZCashTransaction> ZCashTransaction::FromValue(
     const base::DictValue& value) {
   ZCashTransaction result;
 
+  auto* v6_dict = value.FindDict("v6_part");
+  auto* v5_dict = value.FindDict("v5_part");
+
   auto* inputs_list = value.FindList("inputs");
   auto* orchard_inputs_list = value.FindList("orchard_inputs");
-  if (!inputs_list && !orchard_inputs_list) {
+  if (!inputs_list && !orchard_inputs_list && !v5_dict && !v6_dict) {
     return std::nullopt;
   }
   if (inputs_list) {
@@ -371,7 +503,7 @@ std::optional<ZCashTransaction> ZCashTransaction::FromValue(
 
   auto* outputs_list = value.FindList("outputs");
   auto* orchard_outputs_list = value.FindList("orchard_outputs");
-  if (!outputs_list && !orchard_outputs_list) {
+  if (!outputs_list && !orchard_outputs_list && !v5_dict && !v6_dict) {
     return std::nullopt;
   }
   if (outputs_list) {
@@ -387,11 +519,25 @@ std::optional<ZCashTransaction> ZCashTransaction::FromValue(
     }
   }
 
-  auto v5 = V5Part::ReadTopLevel(value);
-  if (!v5) {
-    return std::nullopt;
+  if (v6_dict) {
+    auto v6 = V6Part::FromValue(*v6_dict);
+    if (!v6) {
+      return std::nullopt;
+    }
+    result.version_part_ = std::move(*v6);
+  } else if (v5_dict) {
+    auto v5 = V5Part::FromValue(*v5_dict);
+    if (!v5) {
+      return std::nullopt;
+    }
+    result.version_part_ = std::move(*v5);
+  } else {
+    auto v5 = V5Part::ReadTopLevel(value);
+    if (!v5) {
+      return std::nullopt;
+    }
+    result.version_part_ = std::move(*v5);
   }
-  result.v5_part_ = std::move(*v5);
 
   if (!ReadUint32StringTo(value, "locktime", result.locktime_)) {
     return std::nullopt;
@@ -435,7 +581,11 @@ base::CheckedNumeric<uint64_t> ZCashTransaction::TotalInputsAmount() const {
   for (auto& input : transparent_part_.inputs) {
     result += input.utxo_value;
   }
-  result += v5_part_.TotalInputsAmount();
+  if (is_v5()) {
+    result += v5_part().TotalInputsAmount();
+  } else if (is_v6()) {
+    result += v6_part().TotalInputsAmount();
+  }
   return result;
 }
 
@@ -455,8 +605,13 @@ bool ZCashTransaction::ValidateAmounts() {
     outputs_sum += output.amount;
   }
 
-  inputs_sum += v5_part_.TotalInputsAmount();
-  outputs_sum += v5_part_.TotalOutputsAmount();
+  if (is_v5()) {
+    inputs_sum += v5_part().TotalInputsAmount();
+    outputs_sum += v5_part().TotalOutputsAmount();
+  } else if (is_v6()) {
+    inputs_sum += v6_part().TotalInputsAmount();
+    outputs_sum += v6_part().TotalOutputsAmount();
+  }
 
   outputs_sum += fee_;
 

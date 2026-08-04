@@ -85,6 +85,7 @@ void ZCashCreateTransparentToOrchardTransactionTask::WorkOnTask() {
 void ZCashCreateTransparentToOrchardTransactionTask::CreateTransaction() {
   CHECK(utxo_map_);
   ZCashTransaction zcash_transaction;
+  zcash_transaction.init_v5_part();
 
   auto pick_transparent_inputs_result = PickZCashTransparentInputs(
       *utxo_map_, amount_, ZCashTargetOutputType::kOrchard);

@@ -741,15 +741,19 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
         {
           if network.coin == .zec {
             // need to fetch and check correct transparent/shielded ZEC balance based on
-            // zecTxData.useShieldedPool value
+            // zecTxData.zcashTokenType value
             if let zecBalance = zecGasTokenBalanceCache,
               let zecTxData = activeParsedTransaction.transaction.txDataUnion.zecTxData
             {
-              let correctZecBalance: Double =
-                Double(
-                  zecTxData.useShieldedPool
-                    ? zecBalance.orchardBalance : zecBalance.transparentBalance
-                ) / 100_000_000
+              let balanceInSatoshi: UInt64
+              if zecTxData.zcashTokenType == .orchard {
+                balanceInSatoshi = zecBalance.orchardBalance
+              } else if zecTxData.zcashTokenType == .ironwood {
+                balanceInSatoshi = zecBalance.ironwoodBalance
+              } else {
+                balanceInSatoshi = zecBalance.transparentBalance
+              }
+              let correctZecBalance = Double(balanceInSatoshi) / 100_000_000
               isBalanceSufficient = BDouble(correctZecBalance) >= gasValue + fromValue
             } else if shouldFetchGasTokenBalance || zecGasTokenBalanceCache == nil {
               isBalanceSufficient = false
@@ -1257,9 +1261,12 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
       return
     }
 
+    let useShieldedPool =
+      zecTxData.zcashTokenType == .orchard
+      || zecTxData.zcashTokenType == .ironwood
     let (zecTxType, zecAddressError) = await zcashWalletService.transactionType(
       accountId: activeParsedTransaction.fromAccountInfo.accountId,
-      useShieldedPool: zecTxData.useShieldedPool,
+      useShieldedPool: useShieldedPool,
       recipient: activeParsedTransaction.toAddress
     )
 

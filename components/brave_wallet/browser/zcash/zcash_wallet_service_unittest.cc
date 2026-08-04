@@ -730,6 +730,7 @@ TEST_F(ZCashWalletServiceUnitTest, SignAndPostTransaction) {
   }
 
   ZCashTransaction zcash_transaction;
+  zcash_transaction.init_v5_part();
   zcash_transaction.set_locktime(2286687);
   {
     ZCashTransaction::TxInput input;
@@ -829,6 +830,7 @@ TEST_F(ZCashWalletServiceUnitTest, SignTransparentPartV5) {
   // This transaction is the transparent signing vector used by
   // SignAndPostTransaction above.
   ZCashTransaction tx;
+  tx.init_v5_part();
   tx.set_consensus_brach_id(0xc2d6d0b4);
   tx.set_locktime(2286687);
   tx.set_expiry_height(2286707);
@@ -4164,6 +4166,7 @@ TEST_F(ZCashWalletServiceUnitTest,
        OnCompleteTransactionTaskDone_InvalidTransaction) {
   // Create an invalid transaction where inputs != outputs + fee
   ZCashTransaction invalid_tx;
+  invalid_tx.init_v5_part();
   invalid_tx.set_fee(5000u);
 
   // Add transparent input
@@ -4205,6 +4208,7 @@ TEST_F(ZCashWalletServiceUnitTest,
 TEST_F(ZCashWalletServiceUnitTest,
        OnCompleteTransactionTaskDone_InvalidResultTransaction) {
   ZCashTransaction valid_tx;
+  valid_tx.init_v5_part();
   {
     valid_tx.set_fee(5000u);
     auto& input = valid_tx.transparent_part().inputs.emplace_back();
