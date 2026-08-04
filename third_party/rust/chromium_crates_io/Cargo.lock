@@ -2222,7 +2222,6 @@ dependencies = [
 [[package]]
 name = "syn"
 version = "3.0.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "proc-macro2",
  "quote",
