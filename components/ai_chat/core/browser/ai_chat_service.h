@@ -138,6 +138,10 @@ class AIChatService : public KeyedService,
   // mojom::TabDataObserver
   void TabDataChanged(std::vector<mojom::TabDataPtr> tab_data) override;
 
+  // Persists |model_key| as the conversation's model key immediately.
+  void PersistConversationModelKey(const std::string& conversation_uuid,
+                                   const std::optional<std::string>& model_key);
+
   // Adds new conversation and returns the handler
   ConversationHandler* CreateConversation();
 

@@ -23,12 +23,12 @@
 #include "base/containers/span.h"
 #include "base/containers/to_vector.h"
 #include "base/debug/crash_logging.h"
-#include "base/debug/dump_without_crashing.h"
 #include "base/files/file_path.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
 #include "base/logging.h"
 #include "base/memory/weak_ptr.h"
+#include "base/notreached.h"
 #include "base/numerics/safe_math.h"
 #include "base/rand_util.h"
 #include "base/strings/strcat.h"
@@ -47,6 +47,7 @@
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
 #include "brave/components/ai_chat/core/browser/types.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
+#include "brave/components/ai_chat/core/common/constants.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
@@ -384,22 +385,22 @@ void ConversationHandler::InitEngine() {
   if (!model_key_.empty()) {
     model = model_service_->GetModel(model_key_);
   }
-  // Make sure we get a valid model, defaulting to static default or first.
+
+  // Model was deleted/retired since this conversation last used it. Fall
+  // back to the configured default, then the automatic model.
+  bool used_fallback_model = false;
   if (!model) {
-    // It is unexpected that we get here. Dump a call stack
-    // to help figure out why it happens.
-    SCOPED_CRASH_KEY_STRING1024("BraveAIChatModel", "key", model_key_);
-    base::debug::DumpWithoutCrashing();
-    // Use default
+    used_fallback_model = true;
     model = model_service_->GetModel(features::kAIModelsDefaultKey.Get());
-    if (!model) {
-      SCOPED_CRASH_KEY_STRING1024("BraveAIChatModel", "key",
-                                  features::kAIModelsDefaultKey.Get());
-      base::debug::DumpWithoutCrashing();
-      const auto& all_models = model_service_->GetModels();
-      // Use first if given bad default value
-      model = all_models.at(0).get();
-    }
+  }
+  if (!model) {
+    // default_model is read live from config; failing here means it's
+    // currently misconfigured.
+    SCOPED_CRASH_KEY_STRING1024("BraveAIChatModel", "key",
+                                features::kAIModelsDefaultKey.Get());
+    DUMP_WILL_BE_NOTREACHED();
+    model = model_service_->GetModel(kChatAutomaticModelKey);
+    CHECK(model) << "Automatic model missing from model list";
   }
 
   // Model's key might not be the same as what we asked for (e.g. if the model
@@ -411,6 +412,13 @@ void ConversationHandler::InitEngine() {
     metadata_->model_key = model_key_;
   } else {
     metadata_->model_key = std::nullopt;
+  }
+
+  if (used_fallback_model) {
+    // Persist immediately so a stale key isn't silently re-resolved every
+    // time this conversation is reopened.
+    ai_chat_service_->PersistConversationModelKey(metadata_->uuid,
+                                                  metadata_->model_key);
   }
 
   engine_ = model_service_->GetEngineForModel(model_key_, url_loader_factory_,
@@ -435,11 +443,15 @@ void ConversationHandler::InitEngine() {
 const mojom::Model& ConversationHandler::GetCurrentModel() {
   const mojom::Model* model = model_service_->GetModel(model_key_);
   if (!model) {
-    // Model no longer exists (e.g., custom model was deleted)
-    // Fall back to the automatic model
     DVLOG(1) << "Model " << model_key_
-             << " no longer exists, falling back to automatic model";
+             << " no longer exists, falling back to default model";
     model_key_ = features::kAIModelsDefaultKey.Get();
+    model = model_service_->GetModel(model_key_);
+  }
+  if (!model) {
+    DVLOG(1) << "Default model " << model_key_
+             << " no longer exists, falling back to automatic model";
+    model_key_ = kChatAutomaticModelKey;
     model = model_service_->GetModel(model_key_);
   }
   CHECK(model);

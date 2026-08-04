@@ -1273,6 +1273,31 @@ void AIChatService::OnConversationTitleChanged(
   }
 }
 
+void AIChatService::PersistConversationModelKey(
+    const std::string& conversation_uuid,
+    const std::optional<std::string>& model_key) {
+  auto conversation_it = conversations_.find(conversation_uuid);
+  if (conversation_it == conversations_.end()) {
+    DLOG(ERROR) << "Conversation not found for model key change";
+    return;
+  }
+
+  auto& conversation_metadata = conversation_it->second;
+
+  if (ai_chat_db_ && !conversation_metadata->temporary) {
+    ai_chat_db_
+        .AsyncCall(
+            base::IgnoreResult(&AIChatDatabase::UpdateConversationModelKey))
+        .WithArgs(conversation_uuid, model_key);
+    if (sync_backend_) {
+      CHECK_DEREF(db_task_runner_)
+          .PostTask(FROM_HERE,
+                    base::BindOnce(&AIChatSyncBackend::OnConversationModified,
+                                   sync_backend_, conversation_uuid));
+    }
+  }
+}
+
 void AIChatService::OnConversationTokenInfoChanged(
     const std::string& conversation_uuid,
     uint64_t total_tokens,

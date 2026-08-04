@@ -1542,6 +1542,101 @@ TEST_P(AIChatServiceUnitTest, TemporaryConversation_NoDatabaseInteraction) {
 }
 
 TEST_P(AIChatServiceUnitTest,
+       PersistConversationModelKey_PersistsImmediatelyForNonTemporary) {
+  if (!IsAIChatHistoryEnabled()) {
+    return;
+  }
+
+  auto mock_db = base::SequenceBound<NiceMock<MockAIChatDatabase>>(
+      task_environment_.GetMainThreadTaskRunner());
+  MockAIChatDatabase* mock_db_ptr = nullptr;
+  mock_db.PostTaskWithThisObject(base::BindLambdaForTesting(
+      [&](NiceMock<MockAIChatDatabase>* db) { mock_db_ptr = db; }));
+  ASSERT_TRUE(base::test::RunUntil([&] { return mock_db_ptr != nullptr; }));
+  ai_chat_service_->SetDatabaseForTesting(std::move(mock_db));
+
+  ConversationHandler* conversation_handler = CreateConversation();
+  const std::string uuid = conversation_handler->get_conversation_uuid();
+
+  bool persisted = false;
+  EXPECT_CALL(*mock_db_ptr,
+              UpdateConversationModelKey(
+                  std::string_view(uuid),
+                  std::optional<std::string>("chat-claude-sonnet")))
+      .WillOnce([&persisted](std::string_view, std::optional<std::string>) {
+        persisted = true;
+        return true;
+      });
+
+  ai_chat_service_->PersistConversationModelKey(uuid, "chat-claude-sonnet");
+
+  ASSERT_TRUE(base::test::RunUntil([&] { return persisted; }));
+  testing::Mock::VerifyAndClearExpectations(mock_db_ptr);
+}
+
+TEST_P(AIChatServiceUnitTest,
+       PersistConversationModelKey_NoOpForTemporaryConversation) {
+  if (!IsAIChatHistoryEnabled()) {
+    return;
+  }
+
+  auto mock_db = base::SequenceBound<NiceMock<MockAIChatDatabase>>(
+      task_environment_.GetMainThreadTaskRunner());
+  MockAIChatDatabase* mock_db_ptr = nullptr;
+  mock_db.PostTaskWithThisObject(base::BindLambdaForTesting(
+      [&](NiceMock<MockAIChatDatabase>* db) { mock_db_ptr = db; }));
+  ASSERT_TRUE(base::test::RunUntil([&] { return mock_db_ptr != nullptr; }));
+  ai_chat_service_->SetDatabaseForTesting(std::move(mock_db));
+
+  ConversationHandler* conversation_handler = CreateConversation();
+  conversation_handler->SetTemporary(true);
+  const std::string uuid = conversation_handler->get_conversation_uuid();
+
+  EXPECT_CALL(*mock_db_ptr, UpdateConversationModelKey).Times(0);
+
+  // Temporary check happens synchronously, before any AsyncCall — nothing
+  // to pump.
+  ai_chat_service_->PersistConversationModelKey(uuid, "chat-claude-sonnet");
+
+  testing::Mock::VerifyAndClearExpectations(mock_db_ptr);
+}
+
+TEST_P(AIChatServiceUnitTest, InitEngineFallbackPersistsModelKeyImmediately) {
+  if (!IsAIChatHistoryEnabled()) {
+    return;
+  }
+
+  auto mock_db = base::SequenceBound<NiceMock<MockAIChatDatabase>>(
+      task_environment_.GetMainThreadTaskRunner());
+  MockAIChatDatabase* mock_db_ptr = nullptr;
+  mock_db.PostTaskWithThisObject(base::BindLambdaForTesting(
+      [&](NiceMock<MockAIChatDatabase>* db) { mock_db_ptr = db; }));
+  ASSERT_TRUE(base::test::RunUntil([&] { return mock_db_ptr != nullptr; }));
+  ai_chat_service_->SetDatabaseForTesting(std::move(mock_db));
+
+  ConversationHandler* conversation_handler = CreateConversation();
+  const std::string uuid = conversation_handler->get_conversation_uuid();
+
+  // Force InitEngine() to see a stale model_key_: ChangeModel() only
+  // overwrites model_key_ on success, so calling it with the same
+  // already-set bad key leaves model_key_ untouched and re-runs InitEngine().
+  conversation_handler->SetModelKeyForTesting("this-model-key-does-not-exist");
+
+  bool persisted = false;
+  EXPECT_CALL(*mock_db_ptr,
+              UpdateConversationModelKey(std::string_view(uuid), _))
+      .WillOnce([&persisted](std::string_view, std::optional<std::string>) {
+        persisted = true;
+        return true;
+      });
+
+  conversation_handler->ChangeModel("this-model-key-does-not-exist");
+
+  ASSERT_TRUE(base::test::RunUntil([&] { return persisted; }));
+  testing::Mock::VerifyAndClearExpectations(mock_db_ptr);
+}
+
+TEST_P(AIChatServiceUnitTest,
        OnConversationEntryAdded_GetsLatestAssociatedContent) {
   NiceMock<MockAssociatedContent> associated_content;
   associated_content.SetUrl(GURL("https://example.com"));
