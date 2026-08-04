@@ -26,6 +26,7 @@
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/custom_corners_background.h"
 #include "chrome/browser/ui/views/frame/layout/browser_view_layout_delegate.h"
+#include "chrome/browser/ui/views/frame/multi_contents_view.h"
 #include "chrome/browser/ui/views/infobars/infobar_container_view.h"
 #include "chrome/browser/ui/views/side_panel/side_panel.h"
 #include "ui/views/border.h"
@@ -135,7 +136,7 @@ int BraveBrowserViewTabbedLayoutImpl::GetIdealSideBarWidth() const {
     return 0;
   }
 
-  return GetIdealSideBarWidth(views().contents_container->width() +
+  return GetIdealSideBarWidth(views().multi_contents_view->width() +
                               GetContentsMargins().width() +
                               views().sidebar_container->width());
 }
@@ -195,7 +196,7 @@ BraveBrowserViewTabbedLayoutImpl::CalculateProposedLayout(
   }
 
   // Retrieve contents container proposed bounds.
-  auto* contents_layout = layout.GetLayoutFor(views().contents_container);
+  auto* contents_layout = layout.GetLayoutFor(views().multi_contents_view);
   CHECK(contents_layout);
 
   // Handle contents background - contents background should be laid out before
@@ -375,7 +376,7 @@ void BraveBrowserViewTabbedLayoutImpl::CalculateBraveVerticalTabStripLayout(
     // contents bounds so it stays full-height and the revealed top views
     // overlay it.
     if (!IsParentedTo(views().top_container, views().browser_view)) {
-      auto* contents_layout = layout.GetLayoutFor(views().contents_container);
+      auto* contents_layout = layout.GetLayoutFor(views().multi_contents_view);
       CHECK(contents_layout);
       return contents_layout->bounds.y();
     }
@@ -423,7 +424,7 @@ void BraveBrowserViewTabbedLayoutImpl::CalculateSideBarLayout(
     return;
   }
 
-  auto* contents_layout = layout.GetLayoutFor(views().contents_container);
+  auto* contents_layout = layout.GetLayoutFor(views().multi_contents_view);
   CHECK(contents_layout);
 
   gfx::Rect contents_bounds = contents_layout->bounds;
@@ -519,7 +520,7 @@ void BraveBrowserViewTabbedLayoutImpl::CalculateSideBarLayout(
 
 void BraveBrowserViewTabbedLayoutImpl::InsetContentsContainerBounds(
     ProposedLayout& layout) const {
-  auto* contents_layout = layout.GetLayoutFor(views().contents_container);
+  auto* contents_layout = layout.GetLayoutFor(views().multi_contents_view);
   if (!contents_layout) {
     return;
   }
