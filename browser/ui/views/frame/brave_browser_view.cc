@@ -745,7 +745,8 @@ void BraveBrowserView::ShowWaybackMachineBubble() {
   }
 
   auto* item = actions::ActionManager::Get().FindAction(
-      kActionShowWaybackMachine, browser()->GetActions()->root_action_item());
+      kActionShowWaybackMachine,
+      BrowserActions::From(browser())->root_action_item());
   WaybackMachineBubbleView::Show(
       browser()->tab_strip_model()->GetActiveWebContents(), anchor, item);
 }
@@ -1130,7 +1131,7 @@ void BraveBrowserView::UpdateTabSearchBubbleHost() {
   BrowserView::UpdateTabSearchBubbleHost();
 
   auto* tab_search_action = actions::ActionManager::Get().FindAction(
-      kActionTabSearch, browser_->GetActions()->root_action_item());
+      kActionTabSearch, BrowserActions::From(browser_)->root_action_item());
   CHECK(tab_search_action);
 
   // As we use toolbar's combo button in vertical tab mode, host should be
