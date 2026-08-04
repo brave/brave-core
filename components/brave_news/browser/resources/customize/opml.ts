@@ -232,6 +232,10 @@ export function downloadOpml(
   a.download = `brave-news-subscriptions-${new Date().toISOString()}.opml`
   a.href = url
 
+  // Stop the click from bubbling to Leo's backdrop handler, which would
+  // otherwise treat the programmatic click as a backdrop click on the
+  // customize dialog and close it.
+  a.addEventListener('click', (e) => e.stopPropagation())
   document.body.appendChild(a)
   a.click()
   a.remove()

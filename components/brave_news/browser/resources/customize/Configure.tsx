@@ -4,7 +4,13 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { getLocale } from '$web-common/locale'
+import {
+  color,
+  radius,
+  spacing,
+} from '@brave/leo/tokens/css/variables'
 import * as React from 'react'
+import styled from 'styled-components'
 import { useBraveNews } from '../shared/Context'
 import DisabledPlaceholder from './DisabledPlaceholder'
 import Discover from './Discover'
@@ -13,7 +19,57 @@ import { PopularPage } from './Popular'
 import SourcesList from './SourcesList'
 import { SuggestionsPage } from './Suggestions'
 
-import { style } from './Configure.style'
+const PanelBody = styled.div`
+  display: flex;
+  max-height: calc(100vh - ${spacing['4Xl']});
+`
+
+const Sidebar = styled.nav`
+  position: relative;
+  flex: 0 0 228px;
+  display: flex;
+  flex-direction: column;
+  gap: ${spacing['2Xl']};
+  padding: ${spacing['2Xl']} 0;
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  white-space: nowrap;
+`
+
+const SidebarTitle = styled.h4`
+  color: ${color.text.primary};
+  padding: 0 ${spacing['2Xl']};
+`
+
+const SidebarOverlay = styled.div`
+  position: absolute;
+  inset: 0;
+  background: ${color.container.background};
+  opacity: 0.7;
+`
+
+const Content = styled.section`
+  flex: 1 1 auto;
+  min-height: 0;
+  padding: ${spacing.m} ${spacing.m} ${spacing.m} 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  display: flex;
+  flex-direction: column;
+`
+
+const ContentCard = styled.div`
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: ${spacing['2Xl']};
+  padding: ${spacing['4Xl']};
+  border-radius: ${radius.xl};
+  background: ${color.page.background};
+`
 
 export default function Configure() {
   const {
@@ -39,20 +95,20 @@ export default function Configure() {
   }
 
   return (
-    <div data-css-scope={style.scope} id='brave-news-configure'>
-      <div className='panel-body'>
-        <nav>
-          <h4>{getLocale(S.BRAVE_NEWS_SETTINGS_TITLE)}</h4>
+    <div id='brave-news-configure'>
+      <PanelBody>
+        <Sidebar>
+          <SidebarTitle>{getLocale(S.BRAVE_NEWS_SETTINGS_TITLE)}</SidebarTitle>
           <SourcesList />
-          {!isBraveNewsFullyEnabled && <div className='nav-overlay' />}
-        </nav>
-        <section>
-          <div>
+          {!isBraveNewsFullyEnabled && <SidebarOverlay />}
+        </Sidebar>
+        <Content>
+          <ContentCard>
             <NewsSettings />
             {content}
-          </div>
-        </section>
-      </div>
+          </ContentCard>
+        </Content>
+      </PanelBody>
     </div>
   )
 }

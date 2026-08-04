@@ -5,47 +5,42 @@
 
 import * as React from 'react'
 import Dialog from '@brave/leo/react/dialog'
+import { color } from '@brave/leo/tokens/css/variables'
+import styled from 'styled-components'
 import { useBraveNews } from '../shared/Context'
 
-import { isCustomizeDialogCloseSuppressed } from './dialogCloseGuard'
 import Loading from './Loading'
-import { style } from './Modal.style'
 
 const Configure = React.lazy(() => import('./Configure'))
+
+const StyledDialog = styled(Dialog)`
+  --leo-dialog-width: 860px;
+  --leo-dialog-padding: 0;
+  --leo-dialog-background: ${color.container.background};
+`
 
 export default function BraveNewsModal() {
   const { customizePage, setCustomizePage } = useBraveNews()
   const shouldRender = !!customizePage
-  // Bumped to remount Leo Dialog when a suppressed close already tore it down
-  // (e.g. native file picker firing `cancel` on the <dialog>).
-  const [dialogKey, setDialogKey] = React.useState(0)
 
   if (!shouldRender) {
     return null
   }
 
   return (
-    <div data-css-scope={style.scope}>
-      <Dialog
-        key={dialogKey}
-        isOpen
-        showClose
-        // Programmatic OPML export clicks and the native file picker synthesize
-        // events Leo would otherwise treat as an outside/escape close.
-        backdropClickCloses={false}
-        escapeCloses={false}
-        onClose={() => {
-          if (isCustomizeDialogCloseSuppressed()) {
-            setDialogKey((key) => key + 1)
-            return
-          }
-          setCustomizePage(null)
-        }}
-      >
-        <React.Suspense fallback={<Loading fill />}>
-          <Configure />
-        </React.Suspense>
-      </Dialog>
-    </div>
+    <StyledDialog
+      isOpen
+      showClose
+      // Programmatic OPML export clicks bubble to Leo's backdrop handler and
+      // would be treated as an outside close, so backdrop clicks are disabled.
+      // The file picker's spurious `cancel` event is stopped at the source in
+      // OpmlControls, so Escape still closes the dialog.
+      backdropClickCloses={false}
+      onClose={() => setCustomizePage(null)}
+    >
+      <React.Suspense fallback={<Loading fill />}>
+        <Configure />
+      </React.Suspense>
+    </StyledDialog>
   )
 }

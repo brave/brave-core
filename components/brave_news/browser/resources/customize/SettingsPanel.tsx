@@ -3,24 +3,39 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+import {
+  color,
+  effect,
+  radius,
+  spacing,
+} from '@brave/leo/tokens/css/variables'
 import * as React from 'react'
+import styled from 'styled-components'
 
-import { style } from './SettingsPanel.style'
+const Panel = styled.div`
+  h4 {
+    padding-bottom: ${spacing.xl};
+    color: ${color.text.primary};
+  }
+
+  .content {
+    background: ${color.container.background};
+    box-shadow: ${effect.elevation['01']};
+    border-radius: ${radius.xl};
+  }
+`
 
 interface Props {
   title: string
-  cssScope: string
   children: React.ReactNode
 }
 
 // A titled group of settings displayed within the Brave News customize dialog.
 export function SettingsPanel(props: Props) {
   return (
-    <div data-css-scope={style.scope}>
+    <Panel>
       <h4>{props.title}</h4>
-      <div className='content'>
-        <div data-css-scope={props.cssScope}>{props.children}</div>
-      </div>
-    </div>
+      <div className='content'>{props.children}</div>
+    </Panel>
   )
 }
