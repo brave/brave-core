@@ -202,6 +202,12 @@ BASE_DECLARE_FEATURE(kAIChatConversationShare);
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 extern const base::FeatureParam<std::string> kAIChatConversationShareBaseUrl;
 
+// Enables copying serialized conversation data as JSON to the clipboard when
+// using the alt+meta modifier keys and the "Copy entire conversation" menu
+// option.
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+BASE_DECLARE_FEATURE(kAIChatExportJSON);
+
 }  // namespace ai_chat::features
 
 #endif  // BRAVE_COMPONENTS_AI_CHAT_CORE_COMMON_FEATURES_H_

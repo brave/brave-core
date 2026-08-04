@@ -733,6 +733,15 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
           "Enables sharing a conversation from the conversation header.",      \
           kOsWin | kOsMac | kOsLinux | kOsAndroid,                             \
           FEATURE_VALUE_TYPE(ai_chat::features::kAIChatConversationShare),     \
+      },                                                                       \
+      {                                                                        \
+          "brave-ai-chat-export-json",                                         \
+          "Brave AI Chat Export JSON",                                         \
+          "Enables copying serialized conversation data as JSON to the "       \
+          "clipboard when using the alt+meta key and the \"Copy entire "       \
+          "conversation\" menu option.",                                       \
+          kOsWin | kOsMac | kOsLinux | kOsAndroid,                             \
+          FEATURE_VALUE_TYPE(ai_chat::features::kAIChatExportJSON),            \
       })
 #else
 #define BRAVE_AI_CHAT_FEATURE_ENTRIES
