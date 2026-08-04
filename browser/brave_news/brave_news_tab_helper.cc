@@ -30,9 +30,30 @@
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
-#include "net/base/url_util.h"
+#include "services/network/public/cpp/ip_address_space_util.h"
+#include "services/network/public/mojom/ip_address_space.mojom.h"
 #include "url/gurl.h"
 #include "url/origin.h"
+
+namespace {
+
+// Returns true if |url| can be determined, from the URL alone, to point at the
+// loopback or local network (i.e. it isn't a public address). This catches IP
+// literals (in any of their forms, including 0.0.0.0 and IPv4-mapped IPv6
+// addresses), `localhost` and `.local` hostnames.
+//
+// Note that a hostname can also resolve to a local address without it being
+// apparent from the URL, so this is not sufficient on its own. Fetches of
+// page-provided feed URLs are additionally blocked after DNS resolution by the
+// network service - see DirectFeedFetcher.
+bool IsKnownLocalNetworkUrl(const GURL& url) {
+  auto address_space = network::GetAddressSpaceFromUrl(url);
+  return address_space.has_value() &&
+         network::IsLessPublicAddressSpace(
+             *address_space, network::mojom::IPAddressSpace::kPublic);
+}
+
+}  // namespace
 
 BraveNewsTabHelper::FeedDetails::FeedDetails() = default;
 BraveNewsTabHelper::FeedDetails::~FeedDetails() = default;
@@ -78,12 +99,6 @@ const std::vector<GURL> BraveNewsTabHelper::GetAvailableFeedUrls() {
 
   for (const auto& rss_feed : rss_page_feeds_) {
     if (seen_feeds.contains(rss_feed.feed_url)) {
-      continue;
-    }
-
-    // Don't include localhost feeds as it would allows sites to trigger
-    // requests to localhost.
-    if (net::IsLocalhost(rss_feed.feed_url)) {
       continue;
     }
 
@@ -158,11 +173,18 @@ std::string BraveNewsTabHelper::GetTitleForFeedUrl(const GURL& feed_url) {
 
 void BraveNewsTabHelper::ToggleSubscription(const GURL& feed_url) {
   bool subscribed = IsSubscribed(feed_url);
+  // Use the active tab's origin as the request initiator. As well as making the
+  // request carry an appropriate Sec-Fetch-Site header, this marks the request
+  // as being made on behalf of a web page, which prevents it from reaching the
+  // local network.
+  const auto initiator_origin =
+      web_contents()->GetPrimaryMainFrame()->GetLastCommittedOrigin();
   controller_->GetPublisherForFeed(
       feed_url,
       base::BindOnce(
           [](base::WeakPtr<BraveNewsTabHelper> tab_helper, bool subscribed,
-             GURL feed_url, brave_news::mojom::PublisherPtr publisher) {
+             GURL feed_url, url::Origin initiator_origin,
+             brave_news::mojom::PublisherPtr publisher) {
             if (!tab_helper) {
               return;
             }
@@ -174,12 +196,13 @@ void BraveNewsTabHelper::ToggleSubscription(const GURL& feed_url) {
                              : brave_news::mojom::UserEnabled::ENABLED);
             } else {
               tab_helper->controller_->SubscribeToNewDirectFeed(
-                  feed_url, base::DoNothing());
+                  feed_url, initiator_origin, base::DoNothing());
             }
 
             tab_helper->OnPublishersChanged();
           },
-          weak_ptr_factory_.GetWeakPtr(), subscribed, feed_url));
+          weak_ptr_factory_.GetWeakPtr(), subscribed, feed_url,
+          initiator_origin));
 }
 
 void BraveNewsTabHelper::OnReceivedRssUrls(const GURL& site_url,
@@ -190,6 +213,14 @@ void BraveNewsTabHelper::OnReceivedRssUrls(const GURL& site_url,
 
   // For each feed, we need to check if its a combined feed.
   for (const auto& feed_url : feed_urls) {
+    // Ignore feeds which point at the local network, as offering them would
+    // allow sites to trigger requests to services running on the user's machine
+    // or local network. Users can still add these feeds manually from the Brave
+    // News settings.
+    if (IsKnownLocalNetworkUrl(feed_url)) {
+      continue;
+    }
+
     controller_->GetPublisherForFeed(
         feed_url,
         base::BindOnce(

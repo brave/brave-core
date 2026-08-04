@@ -180,8 +180,10 @@ void DirectFeedController::OnFindFeedsImplResponse(
   }
 }
 
-void DirectFeedController::VerifyFeedUrl(const GURL& feed_url,
-                                         IsValidCallback callback) {
+void DirectFeedController::VerifyFeedUrl(
+    const GURL& feed_url,
+    const std::optional<url::Origin>& initiator_origin,
+    IsValidCallback callback) {
   // Download the feed and once it's done, see if there's any content.
   // This verifies that the URL is reachable, that it has content,
   // and that the content has the correct fields for Brave News.
@@ -189,7 +191,7 @@ void DirectFeedController::VerifyFeedUrl(const GURL& feed_url,
   // will likely add to their user feed sources. Unless this is already
   // cached via network service?
   fetcher_.DownloadFeed(
-      feed_url, std::nullopt, "",
+      feed_url, initiator_origin, "",
       base::BindOnce(
           [](IsValidCallback callback, DirectFeedResponse response) {
             // Handle response
