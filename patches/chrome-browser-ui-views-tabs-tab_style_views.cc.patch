@@ -1,16 +1,7 @@
 diff --git a/chrome/browser/ui/views/tabs/tab_style_views.cc b/chrome/browser/ui/views/tabs/tab_style_views.cc
-index 5ae142a178b4109ead0cbdffacf62a54f707bfc6..031082331f19b18671cbdf30d4997ff5a4cc04ea 100644
+index 5ae142a178b4109ead0cbdffacf62a54f707bfc6..eba6a82c362c9167cdbb101c5e89ebe445740851 100644
 --- a/chrome/browser/ui/views/tabs/tab_style_views.cc
 +++ b/chrome/browser/ui/views/tabs/tab_style_views.cc
-@@ -54,7 +54,7 @@ class TabStyleViewsImpl : public TabStyleViews {
-   TabStyleViewsImpl(const TabStyleViewsImpl&) = delete;
-   TabStyleViewsImpl& operator=(const TabStyleViewsImpl&) = delete;
- 
--  int GetStrokeThickness() const override;
-+  virtual int GetStrokeThickness() const override;
-   const TabStyleViewDelegate* delegate() const override {
-     return delegate_.get();
-   }
 @@ -77,11 +77,12 @@ class TabStyleViewsImpl : public TabStyleViews {
    }
  
