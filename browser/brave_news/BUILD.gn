@@ -63,6 +63,8 @@ source_set("impl") {
     "//components/policy/core/common",
     "//content/public/browser",
     "//mojo/public/cpp/bindings",
+    "//services/network/public/cpp",
+    "//services/network/public/mojom",
     "//services/service_manager/public/cpp",
     "//url",
   ]
@@ -108,6 +110,8 @@ source_set("browser_tests") {
       "//chrome/test:test_support_ui",
       "//content/test:test_support",
       "//net:test_support",
+      "//services/network/public/cpp:ip_address_space_overrides_test_utils",
+      "//services/network/public/mojom",
       "//testing/gmock",
       "//testing/gtest",
     ]
