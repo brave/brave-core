@@ -1,8 +1,102 @@
 diff --git a/chrome/browser/ui/views/tabs/tab.h b/chrome/browser/ui/views/tabs/tab.h
-index 190d0cd9fd770f71cd47c65a31c26b5c5bea8f9e..3f2454a9ab472886caf9df52f201ee7d28329257 100644
+index 6e336546c1d865b040e8837acd3de7e8faf9c06c..01dc6ef1f9aefe7c0087fc42d1af78982adaf348 100644
 --- a/chrome/browser/ui/views/tabs/tab.h
 +++ b/chrome/browser/ui/views/tabs/tab.h
-@@ -312,7 +312,7 @@ class Tab : public gfx::AnimationDelegate,
+@@ -75,7 +75,7 @@ class Tab : public gfx::AnimationDelegate,
+   // When the content's width of the tab shrinks to below this size we should
+   // hide the close button on inactive tabs. Any smaller and they're too easy
+   // to hit on accident.
+-  static constexpr int kMinimumContentsWidthForCloseButtons = 68;
++  static constexpr int kMinimumContentsWidthForCloseButtons = 55;
+   static constexpr int kTouchMinimumContentsWidthForCloseButtons = 100;
+ 
+   // Sets whether hover cards should appear on mouse hover. Used in browser
+@@ -87,7 +87,7 @@ class Tab : public gfx::AnimationDelegate,
+   Tab& operator=(const Tab&) = delete;
+   ~Tab() override;
+ 
+-  bool IsActive() const;
++  virtual bool IsActive() const;
+ 
+   // gfx::AnimationDelegate:
+   void AnimationEnded(const gfx::Animation* animation) override;
+@@ -134,7 +134,7 @@ class Tab : public gfx::AnimationDelegate,
+   bool closing() const { return closing_; }
+ 
+   // Returns the color for the tab's group, if any.
+-  std::optional<SkColor> GetGroupColor() const;
++  virtual std::optional<SkColor> GetGroupColor() const;
+ 
+   const tabs::TabData& data() const { return data_; }
+ 
+@@ -146,7 +146,7 @@ class Tab : public gfx::AnimationDelegate,
+ 
+   // Notifies the AlertIndicatorButton that the active state of this tab has
+   // changed.
+-  void ActiveStateChanged();
++  virtual void ActiveStateChanged();
+ 
+   // AlertIndicatorButton::Delegate
+   bool ShouldEnableMuteToggle(int required_width) override;
+@@ -238,7 +238,15 @@ class Tab : public gfx::AnimationDelegate,
+     return glic_tab_underline_view_;
+   }
+ 
++  bool IsTabMuteIndicatorNotClickable() override;
++
++  void ResetTabStyle(std::unique_ptr<TabStyleViews> new_style);
++
++  int GetTabHeight() const;
++
+  private:
++  friend class ::BraveTabTest;
++  friend class ::BraveTab;
+   class TabCloseButtonObserver;
+   friend class TabContentsTest;
+   friend class TabTest;
+@@ -257,15 +265,15 @@ class Tab : public gfx::AnimationDelegate,
+   // Invoked from Layout to adjust the position of the favicon or alert
+   // indicator for pinned tabs. The visual_width parameter is how wide the
+   // icon looks (rather than how wide the bounds are).
+-  void MaybeAdjustLeftForPinnedTab(gfx::Rect* bounds, int visual_width) const;
++  virtual void MaybeAdjustLeftForPinnedTab(gfx::Rect* bounds, int visual_width) const;
+ 
+   // Computes which icons are visible in the tab. Should be called everytime
+   // before layout is performed.
+-  void UpdateIconVisibility();
++  virtual void UpdateIconVisibility();
+ 
+   // Returns whether the tab should be rendered as a normal tab as opposed to a
+   // pinned tab.
+-  bool ShouldRenderAsNormalTab() const;
++  virtual bool ShouldRenderAsNormalTab() const;
+ 
+   // Updates the attention state of the `icon_`. This only updates state; it is
+   // the responsibility of the caller to request a paint.
+@@ -273,7 +281,7 @@ class Tab : public gfx::AnimationDelegate,
+ 
+   // Returns the width of the largest part of the tab that is available for the
+   // user to click to select/activate the tab.
+-  int GetWidthOfLargestSelectableRegion() const;
++  virtual int GetWidthOfLargestSelectableRegion() const;
+ 
+   // Selects, generates, and applies colors for various foreground elements to
+   // ensure proper contrast. Elements affected include title text, close button
+@@ -283,11 +291,11 @@ class Tab : public gfx::AnimationDelegate,
+   // Considers switching to hovered mode or [re-]showing the hover card based on
+   // the mouse moving over the tab. If the tab is already hovered or mouse
+   // events are disabled because of touch input, this is a no-op.
+-  void MaybeUpdateHoverStatus(const ui::MouseEvent& event);
++  virtual void MaybeUpdateHoverStatus(const ui::MouseEvent& event);
+ 
+   void CloseButtonPressed(const ui::Event& event);
+ 
+-  void OnTabDataChanged(TabChangeType tab_change_type,
++  virtual void OnTabDataChanged(TabChangeType tab_change_type,
+                         const tabs::TabData& tab_data);
+ 
+   static std::unique_ptr<TabStyleViewDelegate> CreateStyleDelegate(
+@@ -336,7 +344,7 @@ class Tab : public gfx::AnimationDelegate,
  
    // Whether we are showing the close button. It is cached so that we can
    // detect when it changes and layout appropriately.
