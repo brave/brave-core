@@ -5,13 +5,46 @@
 
 import { getLocale } from '$web-common/locale'
 import usePromise from '$web-common/usePromise'
+import {
+  color,
+  font,
+  spacing,
+} from '@brave/leo/tokens/css/variables'
 import { PluralStringProxyImpl } from 'chrome://resources/js/plural_string_proxy.js'
 import * as React from 'react'
+import styled from 'styled-components'
 import { useBraveNews, useChannels } from '../shared/Context'
 import Loading from './Loading'
 import { ChannelListEntry, FeedListEntry } from './SourcesListEntry'
 
-import { style } from './SourcesList.style'
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 0 ${spacing.xl};
+`
+
+const Heading = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: ${spacing.m};
+  padding: ${spacing.m};
+`
+
+const Title = styled.span`
+  font: ${font.default.semibold};
+  color: ${color.text.primary};
+`
+
+const Count = styled.span`
+  font: ${font.small.regular};
+  color: ${color.text.tertiary};
+`
+
+const List = styled.div`
+  display: flex;
+  flex-direction: column;
+`
 
 export default function SourcesList() {
   const { subscribedPublisherIds, publishersLoaded, channelsLoaded } = useBraveNews()
@@ -28,12 +61,12 @@ export default function SourcesList() {
   )
 
   return (
-    <div data-css-scope={style.scope}>
-      <div className='heading'>
-        <span className='title'>{getLocale(S.BRAVE_NEWS_FEEDS_HEADING)}</span>
-        {!isLoading && <span className='count'>{sourcesCount}</span>}
-      </div>
-      <div className='list'>
+    <Container>
+      <Heading>
+        <Title>{getLocale(S.BRAVE_NEWS_FEEDS_HEADING)}</Title>
+        {!isLoading && <Count>{sourcesCount}</Count>}
+      </Heading>
+      <List>
         {isLoading ? (
           <Loading />
         ) : (
@@ -46,7 +79,7 @@ export default function SourcesList() {
             ))}
           </>
         )}
-      </div>
-    </div>
+      </List>
+    </Container>
   )
 }

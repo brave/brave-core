@@ -13,7 +13,6 @@ import getBraveNewsController from '../shared/api'
 import { ChannelsCachingWrapper } from '../shared/channelsCache'
 import { useBraveNews } from '../shared/Context'
 import { PublishersCachingWrapper } from '../shared/publishersCache'
-import { runWithCustomizeDialogCloseSuppressed } from './dialogCloseGuard'
 import { downloadOpml, importOpml } from './opml'
 
 const Links = styled.div`
@@ -50,6 +49,23 @@ export default function OpmlControls(props: Props) {
   const inputRef = React.useRef<HTMLInputElement>(null)
   const [status, setStatus] = React.useState<Status | null>(null)
 
+  // When the file picker is dismissed without selecting a file, Chromium fires
+  // a `cancel` event on the file input which bubbles up to the modal <dialog>
+  // and closes it (https://issues.chromium.org/issues/1449848). Stop the event
+  // at the source so the dialog stays open.
+  React.useEffect(() => {
+    const input = inputRef.current
+    if (!input) {
+      return
+    }
+    const onCancel = (e: Event) => {
+      e.preventDefault()
+      e.stopPropagation()
+    }
+    input.addEventListener('cancel', onCancel)
+    return () => input.removeEventListener('cancel', onCancel)
+  }, [])
+
   // Auto-dismiss the status alert.
   React.useEffect(() => {
     if (!status) {
@@ -63,9 +79,7 @@ export default function OpmlControls(props: Props) {
     if (props.disabled) {
       return
     }
-    runWithCustomizeDialogCloseSuppressed(() => {
-      downloadOpml(Object.values(publishers), Object.values(channels), locale)
-    })
+    downloadOpml(Object.values(publishers), Object.values(channels), locale)
   }
 
   const onFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -123,12 +137,7 @@ export default function OpmlControls(props: Props) {
             if (props.disabled) {
               return
             }
-            runWithCustomizeDialogCloseSuppressed(
-              () => {
-                inputRef.current?.click()
-              },
-              { waitForWindowFocus: true },
-            )
+            inputRef.current?.click()
           }}
         >
           {getLocale(S.BRAVE_NEWS_OPML_IMPORT)}
