@@ -35,7 +35,7 @@ export function useProvideUntrustedConversationContext(
   const serviceState = api.useServiceState().data
   const conversationHistory = api.useGetConversationHistoryData()
 
-  const associatedContent = api.useCurrentAssociatedContentChanged().data?.[0]
+  const associatedContent = api.useAssociatedContentData()
   const contentTaskTabId = api.useCurrentContentTaskStarted().data?.[0]
 
   return {
@@ -123,8 +123,7 @@ export function useProvideUntrustedConversationContext(
     isHistoryFeatureEnabled: IS_HISTORY_FEATURE_ENABLED,
 
     /**
-     * @deprecated Use `api.useCurrentAssociatedContentChanged().data` or
-     * subscribe to `api.useAssociatedContentChanged()` directly.
+     * @deprecated Use `api.useAssociatedContentData()` instead
      */
     associatedContent,
 

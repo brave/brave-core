@@ -86,6 +86,9 @@ export function renderConversation(
   }
 
   api.getConversationHistory.update(conversation.messages)
+  // Conversations shared before associated content was included in the payload
+  // don't have the property.
+  api.associatedContent.update(conversation.associatedContent ?? [])
 
   // Render to a shadow DOM to avoid style conflicts with the hosting page
   const container = setupRenderingElement(element)

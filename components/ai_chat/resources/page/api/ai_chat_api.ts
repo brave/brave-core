@@ -107,6 +107,9 @@ export default function createAIChatApi(
         getPluralString: {
           response: (result) => result.pluralString,
         },
+        getFaviconDataURL: {
+          response: (result) => result.dataUrl,
+        },
       }),
 
       ...endpointsFor(bookmarksService, {

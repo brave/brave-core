@@ -105,6 +105,12 @@ export function AttachmentSpinnerItem(props: {
 export function AttachmentPageItem(props: {
   title: string
   url: string
+  /**
+   * Optional URL (probably a data URI) for the favicon image.
+   * Without being specified, the browser favicon service will be used
+   * to lookup via the url.
+   */
+  faviconUrl?: string
   remove?: () => void
   className?: string
 }) {
@@ -116,7 +122,10 @@ export function AttachmentPageItem(props: {
       icon={
         <div className={styles.favicon}>
           <img
-            src={`//favicon2?size=256&pageUrl=${encodeURIComponent(props.url)}&allowGoogleServerFallback=0`}
+            src={
+              props.faviconUrl
+              ?? `//favicon2?size=256&pageUrl=${encodeURIComponent(props.url)}&allowGoogleServerFallback=0`
+            }
           />
         </div>
       }

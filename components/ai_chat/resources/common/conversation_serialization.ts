@@ -11,6 +11,11 @@ import * as Mojom from './mojom'
 // viewer.
 export type ConversationData = {
   messages: Mojom.ConversationTurn[]
+  // Favicons are provided by the client which serialized the conversation,
+  // since the viewer has no access to the browser's favicon service. They are
+  // optional because a favicon may not have been retrievable, and because
+  // conversations shared before they were included don't have them.
+  associatedContent: Mojom.AssociatedContentWithFavicon[]
   title: string
 }
 
