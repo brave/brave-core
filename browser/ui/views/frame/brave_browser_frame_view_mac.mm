@@ -170,7 +170,8 @@ bool BraveBrowserFrameViewMac::ShouldShowWindowTitleForVerticalTabs() const {
 }
 
 void BraveBrowserFrameViewMac::UpdateWindowTitleVisibility() {
-  if (!GetBrowserView()->browser()->is_type_normal()) {
+  if (GetBrowserView()->browser()->GetType() !=
+      BrowserWindowInterface::Type::TYPE_NORMAL) {
     return;
   }
 
@@ -179,7 +180,8 @@ void BraveBrowserFrameViewMac::UpdateWindowTitleVisibility() {
 }
 
 void BraveBrowserFrameViewMac::UpdateWindowTitleColor() {
-  if (!GetBrowserView()->browser()->is_type_normal()) {
+  if (GetBrowserView()->browser()->GetType() !=
+      BrowserWindowInterface::Type::TYPE_NORMAL) {
     return;
   }
 
