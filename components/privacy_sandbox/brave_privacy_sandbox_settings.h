@@ -46,8 +46,6 @@ class BravePrivacySandboxSettings
   bool IsTopicAllowed(const privacy_sandbox::CanonicalTopic& topic) override;
   void SetTopicAllowed(const privacy_sandbox::CanonicalTopic& topic,
                        bool allowed) override;
-  bool IsTopicPrioritized(
-      const privacy_sandbox::CanonicalTopic& topic) override;
   void ClearTopicSettings(base::Time start_time, base::Time end_time) override;
   base::Time TopicsDataAccessibleSince() const override;
   void SetFledgeJoiningAllowed(const std::string& top_frame_etld_plus1,
