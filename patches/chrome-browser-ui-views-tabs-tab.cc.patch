@@ -1,24 +1,30 @@
 diff --git a/chrome/browser/ui/views/tabs/tab.cc b/chrome/browser/ui/views/tabs/tab.cc
-index 1364fdce7fd71de5a3dcffb63acbe5e122476bfb..d81b2341b9e156ce1ee9c16837d3a337fb96ba3e 100644
+index d39d0f06826d7aa072a915d2b3c091ce72f4e37d..7fbe24d2db23b2943890e4a924123dbe1c5300fe 100644
 --- a/chrome/browser/ui/views/tabs/tab.cc
 +++ b/chrome/browser/ui/views/tabs/tab.cc
-@@ -377,6 +377,7 @@ void Tab::Layout(PassKey) {
+@@ -484,6 +484,8 @@ void Tab::Layout(PassKey) {
    // indicator, but visually it will be smaller at kFaviconSize wide.
    gfx::Rect favicon_bounds(start, contents_rect.y(), 0, 0);
    if (showing_icon_) {
-+    BRAVE_UI_VIEWS_TABS_TAB_LAYOUT_ADJUST_ICON_POSITION
++    favicon_bounds.set_y(contents_rect.y() +
++                     Center(contents_rect.height(), gfx::kFaviconSize));
      if (center_icon_) {
        // When centering the favicon, the favicon is allowed to escape the normal
        // contents rect.
-@@ -481,6 +482,7 @@ void Tab::Layout(PassKey) {
+@@ -588,6 +590,12 @@ void Tab::Layout(PassKey) {
      int title_right = contents_rect.right();
      if (showing_alert_indicator_) {
        title_right = alert_indicator_button_->x() - after_title_padding;
-+      BRAVE_UI_VIEWS_TABS_TAB_ALERT_INDICATOR_POSITION
++      alert_indicator_button_->SetX(title_left - after_title_padding);
++      title_right = close_x - after_title_padding;
++      if (showing_close_button_)
++        title_right = close_x - after_title_padding;
++      title_left = alert_indicator_button_->x() +
++                   alert_indicator_button_->width() + after_title_padding;
      } else if (showing_close_button_) {
        // Allow the title to overlay the close button's empty border padding.
        title_right = close_x - after_title_padding;
-@@ -628,7 +630,7 @@ void Tab::OnMouseReleased(const ui::MouseEvent& event) {
+@@ -742,7 +750,7 @@ void Tab::OnMouseReleased(const ui::MouseEvent& event) {
    // Close tab on middle click, but only if the button is released over the tab
    // (normal windows behavior is to discard presses of a UI element where the
    // releases happen off the element).
@@ -27,3 +33,21 @@ index 1364fdce7fd71de5a3dcffb63acbe5e122476bfb..d81b2341b9e156ce1ee9c16837d3a337
      if (HitTestPoint(event.location())) {
        controller_->CloseTab(this, CloseTabSource::kFromMouse);
      } else if (closing_) {
+@@ -852,7 +860,7 @@ void Tab::OnGestureEvent(ui::GestureEvent* event) {
+ gfx::Size Tab::CalculatePreferredSize(
+     const views::SizeBounds& available_size) const {
+   return gfx::Size(GetTabSizeInfo().standard_width,
+-                   GetLayoutConstant(LayoutConstant::kTabHeight));
++                   GetTabHeight());
+ }
+ 
+ void Tab::PaintChildren(const views::PaintInfo& info) {
+@@ -1236,7 +1244,7 @@ void Tab::UpdateIconVisibility() {
+   showing_icon_ = showing_alert_indicator_ = false;
+   extra_alert_indicator_padding_ = false;
+ 
+-  if (height() < GetLayoutConstant(LayoutConstant::kTabHeight)) {
++  if (height() < GetTabHeight()) {
+     return;
+   }
+ 
