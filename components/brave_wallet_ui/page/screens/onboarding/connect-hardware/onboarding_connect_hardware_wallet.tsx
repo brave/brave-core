@@ -39,6 +39,9 @@ export const OnboardingConnectHardwareWallet = () => {
   const history = useHistory()
 
   // redux
+  const isFilecoinLedgerEnabled = useSafeWalletSelector(
+    WalletSelectors.isFilecoinLedgerEnabled,
+  )
   const isBitcoinLedgerEnabled = useSafeWalletSelector(
     WalletSelectors.isBitcoinLedgerEnabled,
   )
@@ -48,6 +51,7 @@ export const OnboardingConnectHardwareWallet = () => {
 
   const accountOptions = CreateAccountOptions({
     visibleNetworks,
+    isFilecoinEnabled: isFilecoinLedgerEnabled,
     isBitcoinEnabled: isBitcoinLedgerEnabled,
     isZCashEnabled: false, // No zcash hardware accounts by now.
     isCardanoEnabled: false, // No cardano hardware accounts by now.

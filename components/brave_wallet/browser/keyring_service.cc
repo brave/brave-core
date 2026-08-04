@@ -2330,6 +2330,11 @@ std::vector<mojom::AccountInfoPtr> KeyringService::GetHardwareAccountsSync(
     if (!account_value) {
       continue;
     }
+
+    if (IsFilecoinKeyring(keyring_id) && !IsFilecoinLedgerEnabled()) {
+      continue;
+    }
+
     SerializeHardwareAccounts(id, account_value, keyring_id, &accounts);
   }
 

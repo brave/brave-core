@@ -89,4 +89,7 @@ BASE_FEATURE(kBraveWalletSidePanel, base::FEATURE_DISABLED_BY_DEFAULT);
 #if BUILDFLAG(IS_IOS)
 BASE_FEATURE(kBraveWalletWebUIFeature, base::FEATURE_ENABLED_BY_DEFAULT);
 #endif
+
+BASE_FEATURE(kBraveWalletFilecoinLedger, base::FEATURE_ENABLED_BY_DEFAULT);
+
 }  // namespace brave_wallet::features

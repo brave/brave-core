@@ -156,6 +156,7 @@ export interface UIState {
 
 export interface WalletState {
   hasInitialized: boolean
+  isFilecoinLedgerEnabled: boolean
   isBitcoinEnabled: boolean
   isBitcoinImportEnabled: boolean
   isBitcoinLedgerEnabled: boolean
