@@ -98,6 +98,13 @@
   <message name="IDS_AUTOFILL_REMOVE_ACCOUNT_NAME_AND_EMAIL_PROFILE_SUGGESTION_CONFIRMATION_BODY" desc="Title in a dialog to confirm that the user wants to delete their account name and email address from Autofill." formatter_data="android_java">
     You can edit your name in your <ph name="BEGIN_LINK">&lt;link&gt;</ph>Brave sync chain<ph name="END_LINK">&lt;/link&gt;</ph> <ph name="ACCOUNT">$1<ex>example@gmail.com</ex></ph>
   </message>
+  <message name="IDS_AUTOFILL_REMOVE_VERIFIED_EMAIL_TITLE" desc="Title in a dialog to confirm that the user wants to delete a verified email address." formatter_data="android_java">
+    Remove verified email?
+  </message>
+  <message name="IDS_AUTOFILL_REMOVE_VERIFIED_EMAIL_BODY" desc="Text in a dialog to confirm that the user wants to delete a verified email address." formatter_data="android_java">
+    Brave will stop automatically confirming this email on supported sites.
+  </message>
+
   <message name="IDS_AUTOFILL_REMOVE_SUGGESTION_BUTTON" desc="Text in a remove button for Autofill suggestion." formatter_data="android_java">
     Remove
   </message>
@@ -402,14 +409,17 @@
   <message name="IDS_AUTOFILL_ADDRESSES_SETTINGS_TITLE" desc="Title for the Autofill settings page that allows user to manage their list of saved addresses and Autofill preferences for addresses. Sentence-Cased." formatter_data="android_java">
     Addresses and more
   </message>
-  <message name="IDS_AUTOFILL_SETTINGS_EMAIL_VERIFICATION_LABEL" desc="Label for a toggle that allows users to control whether email addresses should be automatically confirmed on supported sites.">
+  <message name="IDS_AUTOFILL_SETTINGS_EMAIL_VERIFICATION_LABEL" desc="Label for a toggle that allows users to control whether email addresses should be automatically confirmed on supported sites." formatter_data="android_java">
     Automatically confirm your emails
   </message>
-  <message name="IDS_AUTOFILL_SETTINGS_EMAIL_VERIFICATION_SECTION_TITLE" desc="Title for the email verification section in settings.">
+  <message name="IDS_AUTOFILL_SETTINGS_EMAIL_VERIFICATION_SECTION_TITLE" desc="Title for the email verification section in settings." formatter_data="android_java">
     Verified Email
   </message>
-  <message name="IDS_AUTOFILL_SETTINGS_EMAIL_VERIFICATION_EMPTY_LABEL" desc="Label shown when no verified email addresses are stored.">
+  <message name="IDS_AUTOFILL_SETTINGS_EMAIL_VERIFICATION_EMPTY_LABEL" desc="Label shown when no verified email addresses are stored." formatter_data="android_java">
     Verified email addresses will appear here
+  </message>
+  <message name="IDS_AUTOFILL_SETTINGS_EMAIL_VERIFICATION_SUMMARY" desc="Text shown below a verified email address indicating which identity provider verified it." formatter_data="android_java">
+    Verified by <ph name="IDP_ORIGIN">%1$s<ex>accounts.google.com</ex></ph>
   </message>
   <!-- TODO(crbug.com/447113309): will no longer be used for title, update desc -->
   <message name="IDS_AUTOFILL_PAYMENT_METHODS" desc="Title for the list of saved payment methods that can be used to fill in forms. Also used as the title for the Autofill settings page that allows user to manage their list of saved payment methods and Autofill preferences for payment methods. Sentence-Cased." formatter_data="android_java">
@@ -823,10 +833,16 @@
   <message name="IDS_AUTOFILL_AT_MEMORY_GENERIC_ERROR" desc="Message shown when @memory search fails due to a generic or internal error." translateable="false">
     Something went wrong
   </message>
+  <message name="IDS_AUTOFILL_AT_MEMORY_FETCH_ERROR_NOTIFICATION" desc="A toast message appearing at the top of the screen when fetching AtMemory information fails." translateable="false">
+    Something went wrong. Try again
+  </message>
   <message name="IDS_AUTOFILL_AT_MEMORY_SEARCH_AFFORDANCE_TITLE" desc="Title of the AtMemory search trigger affordance." translateable="false">
     Try searching in Brave Memory
   </message>
   <message name="IDS_AUTOFILL_AT_MEMORY_SEARCH_AFFORDANCE_SUBTITLE" desc="Descriptor under the query for enhanced autofill. 'Gemini' is a brand name and should match standard branding guidelines across languages.">
+    Find and fill with Gemini
+  </message>
+  <message name="IDS_AUTOFILL_AT_MEMORY_FETCHING" desc="Descriptor for the loading state when enhanced autofill is fetching results. 'Gemini' is a brand name and should match standard branding guidelines across languages.">
     Find and fill with Gemini
   </message>
   <message name="IDS_AUTOFILL_AT_MEMORY_UNSUPPORTED_QUERY_TITLE" desc="This error message is to help users understand that enhanced autofill wasn't able to find and fill relevant info. The technical reason is that the query is not supported by enhanced autofill. It appears on the query results empty state.">
@@ -848,14 +864,20 @@
     <message name="IDS_AUTOFILL_AT_MEMORY_ZERO_STATE_SUBTITLE" desc="Subtitle text shown in zero state when there are no autofill suggestions in the bottom sheet." formatter_data="android_java" translateable="false">
       Type what you need to find and fill info from your Connected Apps
     </message>
-    <message name="IDS_AT_MEMORY_NOTICE_TITLE" desc="Title for the notice shown in the @memory bottom sheet." formatter_data="android_java">
+    <message name="IDS_AT_MEMORY_NOTICE_TITLE" desc="Headline of an informational notice introducing a new enhanced autofill feature. 'Gmail' is a proper branding name and should remain unlocalized and match standard guidelines across languages." formatter_data="android_java">
       Now you can find and fill info from Gmail and more
     </message>
-    <message name="IDS_AT_MEMORY_NOTICE_TEXT" desc="Text for the notice shown in the @memory bottom sheet." formatter_data="android_java">
+    <message name="IDS_AT_MEMORY_NOTICE_TEXT" desc="Body text of an informational notice introducing a new enhanced autofill feature. 'Personal Intelligence' and 'Gemini' are proper branding names and should remain unlocalized and match standard guidelines across languages. 'Manage settings' is a hyperlink that navigates the user to the Brave settings page to adjust their preferences." formatter_data="android_java">
       Powered by Personal Intelligence with Gemini. Your requests, page titles, and URLs may be reviewed to improve enhanced autofill. <ph name="BEGIN_LINK">&lt;link&gt;</ph>Manage settings<ph name="END_LINK">&lt;/link&gt;</ph>
     </message>
-    <message name="IDS_AT_MEMORY_NOTICE_OK_BUTTON" desc="Button text to acknowledge the notice in the @memory bottom sheet." formatter_data="android_java">
+    <message name="IDS_AT_MEMORY_NOTICE_TEXT_NO_LOGGING" desc="Body text of an informational notice introducing a new enhanced autofill feature. 'Personal Intelligence' and 'Gemini' are proper branding names and should remain unlocalized and match standard guidelines across languages. 'Manage settings' is a hyperlink that navigates the user to the Brave settings page to adjust their preferences." formatter_data="android_java">
+      Powered by Personal Intelligence with Gemini. <ph name="BEGIN_LINK">&lt;link&gt;</ph>Manage settings<ph name="END_LINK">&lt;/link&gt;</ph>
+    </message>
+    <message name="IDS_AT_MEMORY_NOTICE_OK_BUTTON" desc="Standard acknowledgment button label to dismiss the informational notice." formatter_data="android_java">
       OK
+    </message>
+    <message name="IDS_AT_MEMORY_AI_DISCLOSURE" desc="The text shown at the bottom of the @memory bottom sheet to set user expectations regarding potential incorrect suggestions." formatter_data="android_java" translateable="false">
+      Gemini is AI and can make mistakes. <ph name="BEGIN_LINK">&lt;link&gt;</ph>More about relevant data sent to Brave<ph name="END_LINK">&lt;/link&gt;</ph>
     </message>
   </if>
    <message name="IDS_AUTOFILL_AT_MEMORY_SUGGESTION_SOURCE_TEXT" desc="The label for a text in the At Memory flyout that shows the source of the autofill suggestion." formatter_data="android_java" translateable="false">
@@ -1711,16 +1733,16 @@
   <message name="IDS_AUTOFILL_PERSONAL_CONTEXT_NOTICE_SHEET_CLOSED" desc="Accessibility string read upon closing the autofill personal context notice sheet." formatter_data="android_java">
     Autofill from Gmail and more notice closed
   </message>
-  <message name="IDS_AUTOFILL_PERSONAL_CONTEXT_NOTICE_TITLE" desc="Headline of an informational notice or consent dialog introducing a new autofill feature. 'Gmail' is a Brave product name and must remain unlocalized." formatter_data="android_java">
+  <message name="IDS_AUTOFILL_PERSONAL_CONTEXT_NOTICE_TITLE" desc="Headline of an informational notice introducing a new autofill feature. 'Gmail' is a Brave product name and must remain unlocalized." formatter_data="android_java">
     Now you can find and fill info from Gmail and more
   </message>
-  <message name="IDS_AUTOFILL_PERSONAL_CONTEXT_NOTICE_DESCRIPTION" desc="Body text of the feature notice. 'Personal Intelligence' and 'Gemini' are proper branding names and should match standard branding guidelines across languages." formatter_data="android_java">
+  <message name="IDS_AUTOFILL_PERSONAL_CONTEXT_NOTICE_DESCRIPTION" desc="Body text of an informational notice introducing a new autofill feature. 'Personal Intelligence' and 'Gemini' are proper branding names and should match standard branding guidelines across languages." formatter_data="android_java">
     Powered by Personal Intelligence with Gemini. Manage your choices in settings.
   </message>
-  <message name="IDS_AUTOFILL_PERSONAL_CONTEXT_NOTICE_OK_BUTTON" desc="Label for the OK button on the autofill notice sheet." formatter_data="android_java">
+  <message name="IDS_AUTOFILL_PERSONAL_CONTEXT_NOTICE_OK_BUTTON" desc="Acknowledgment button label to dismiss the informational notice." formatter_data="android_java">
     OK
   </message>
-  <message name="IDS_AUTOFILL_PERSONAL_CONTEXT_NOTICE_SETTINGS_LINK" desc="Label for the Manage settings link on the autofill notice sheet." formatter_data="android_java">
+  <message name="IDS_AUTOFILL_PERSONAL_CONTEXT_NOTICE_SETTINGS_LINK" desc="Standard navigation button label to open the Brave settings menu." formatter_data="android_java">
     Settings
   </message>
 </grit-part>

@@ -317,5 +317,14 @@
   <message name="IDS_HISTORY_ACTOR_TASK_TOOLTIP_GEMINI" desc="This string indicates entries in Brave history that are the result of Gemini in Brave browsing while performing a task for the user. When users view their Brave history, this string appears as a tooltip on a Gemini history entry." translateable="false">
     Gemini task
   </message>
+  <message name="IDS_HISTORY_REVIEW_GEMINI_ACTIVITY" desc="Command in the history entry drop-down menu. Opens Gemini Apps Activity page." translateable="false">
+    Review Gemini activity
+  </message>
+  <message name="IDS_HISTORY_OTHER_FORMS_OF_HISTORY_GMA_AND_GAA_CRITICAL_ACTIONS" desc="The notification at the bottom of the history page indicating that deleting Brave browsing history will not delete other forms of history stored at Brave My Activity and Gemini Apps Activity, shown when critical actions are enabled." translateable="false">
+    Your Brave sync chain may have other forms of browsing history at <ph name="BEGIN_LINK_GMA">&lt;a target="_blank" id="footerBraveMyActivityLink" href="$1"&gt;</ph>myactivity.google.com<ph name="END_LINK_GMA">&lt;/a&gt;</ph>, such as auto browse visits in your <ph name="BEGIN_LINK_GAA">&lt;a target="_blank" id="footerGeminiAppsActivityLink" href="$2"&gt;</ph>Gemini Apps Activity<ph name="END_LINK_GAA">&lt;/a&gt;</ph>
+  </message>
+  <message name="IDS_HISTORY_GEMINI_KEY_BROWSING_ACTIONS_TITLE" desc="Tooltip text for the expand button on history items for Gemini actor visits." translateable="false">
+    Gemini key browsing actions
+  </message>
 
 </grit-part>

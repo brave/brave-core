@@ -300,6 +300,9 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
           </message>
         </else>
       </if>
+      <message name="IDS_APP_MENU_YOUR_CHROME_HEADER" desc="Header title for the Your Brave section in the main App Menu">
+        Your Brave
+      </message>
       <if expr="is_win">
         <message name="IDS_SXS_SHORTCUT_NAME">Brave Origin Nightly</message>
         <message name="IDS_SHORTCUT_NAME_BETA">Brave Origin Beta</message>

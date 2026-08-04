@@ -681,9 +681,6 @@ are declared in tools/grit/grit_args.gni.
           <message name="IDS_CONTENT_CONTEXT_READING_MODE" desc="Context menu menuitem to open page in reading mode view">
            Open in reading mode
           </message>
-          <message name="IDS_CONTENT_CONTEXT_READING_MODE_SELECTION" desc="Context menu menuitem to open selected text in reading mode view">
-           Open “<ph name="SELECTION">$1<ex>text</ex></ph>” in reading mode
-          </message>
           <message name="IDS_CONTENT_CONTEXT_LISTEN_TO_THIS_PAGE" desc="Context menu item to listen to this page">
            Listen to this page
           </message>
@@ -938,8 +935,14 @@ are declared in tools/grit/grit_args.gni.
           <message name="IDS_CONTENT_CONTEXT_PARTIAL_TRANSLATE" desc="The name of the Partial Translate command in the content area context menu">
             &amp;Translate selection to <ph name="LANGUAGE">$1<ex>English</ex></ph>
           </message>
+          <message name="IDS_CONTENT_CONTEXT_PARTIAL_TRANSLATE_V2" desc="The name of the Partial Translate command in the content area context menu when simplified menu is enabled and there is no specific selection text to display.">
+            &amp;Translate selection
+          </message>
           <message name="IDS_CONTENT_CONTEXT_PARTIAL_TRANSLATE_SELECTION" desc="The name of the Translate command in the content area context menu when there is a text selection.">
             &amp;Translate “<ph name="SELECTION">$1<ex>text</ex></ph>” to <ph name="LANGUAGE">$2<ex>English</ex></ph>
+          </message>
+          <message name="IDS_CONTENT_CONTEXT_PARTIAL_TRANSLATE_SELECTION_V2" desc="The name of the Translate command in the content area context menu when there is a text selection and menu simplification is enabled.">
+            &amp;Translate “<ph name="SELECTION">$1<ex>text</ex></ph>”
           </message>
           <message name="IDS_CONTENT_CONTEXT_SEARCHWEBFOR" desc="The name of the Search the Web for “string” command in the content area context menu">
             &amp;Search <ph name="SEARCH_ENGINE">$1<ex>Brave</ex></ph> for “<ph name="SEARCH_TERMS">$2<ex>flowers</ex></ph>”
@@ -1021,9 +1024,6 @@ are declared in tools/grit/grit_args.gni.
           </message>
           <message name="IDS_CONTENT_CONTEXT_READING_MODE" desc="Context menu menuitem to open page in reading mode view">
            Open in Reading Mode
-          </message>
-          <message name="IDS_CONTENT_CONTEXT_READING_MODE_SELECTION" desc="In Title Case: Context menu menuitem to open selected text in reading mode view">
-           Open “<ph name="SELECTION">$1<ex>text</ex></ph>” in Reading Mode
           </message>
           <message name="IDS_CONTENT_CONTEXT_LISTEN_TO_THIS_PAGE" desc="In Title Case: Context menu item to listen to this page">
            Listen to This Page
@@ -1297,8 +1297,11 @@ are declared in tools/grit/grit_args.gni.
           <message name="IDS_CONTENT_CONTEXT_PARTIAL_TRANSLATE" desc="In Title Case: The name of the Partial Translate command in the content area context menu">
             &amp;Translate Selection to <ph name="LANGUAGE">$1<ex>English</ex></ph>
           </message>
-          <message name="IDS_CONTENT_CONTEXT_PARTIAL_TRANSLATE_SELECTION" desc="In Title Case: The name of the Translate command in the content area context menu when there is a text selection.">
-            &amp;Translate “<ph name="SELECTION">$1<ex>text</ex></ph>” to <ph name="LANGUAGE">$2<ex>English</ex></ph>
+          <message name="IDS_CONTENT_CONTEXT_PARTIAL_TRANSLATE_V2" desc="In Title Case: The name of the Partial Translate command in the content area context menu when simplified menu is enabled and there is no specific selection text to display.">
+            &amp;Translate Selection
+          </message>
+          <message name="IDS_CONTENT_CONTEXT_PARTIAL_TRANSLATE_SELECTION_V2" desc="In Title Case: The name of the Translate command in the content area context menu when there is a text selection and menu simplification is enabled.">
+            &amp;Translate “<ph name="SELECTION">$1<ex>text</ex></ph>”
           </message>
           <message name="IDS_CONTENT_CONTEXT_SEARCHWEBFOR" desc="In Title Case: The name of the Search the Web for “string” command in the content area context menu">
             &amp;Search <ph name="SEARCH_ENGINE">$1<ex>Brave</ex></ph> for “<ph name="SEARCH_TERMS">$2<ex>flowers</ex></ph>”
@@ -1398,6 +1401,9 @@ are declared in tools/grit/grit_args.gni.
 
       <!-- Page menu. Android has separate strings for its menu -->
       <if expr="not is_android">
+        <message name="IDS_APP_MENU_TOOLS_AND_ACTIONS_HEADER" desc="Header title for the Tools and Actions section in the main App Menu">
+          Tools and Actions
+        </message>
         <message name="IDS_PROFILE_ROW_VERIFY_MESSAGE" desc="A label to indicate that the profile needs credential verification (reauthentication). This is a shorter version of 'Verify it's you' that is used in other places.">
           Verify
         </message>
@@ -1433,6 +1439,9 @@ are declared in tools/grit/grit_args.gni.
           </message>
           <message name="IDS_NEW_INCOGNITO_WINDOW" desc="The text label of a menu item for opening a new Private window">
             New &amp;Private window
+          </message>
+          <message name="IDS_NEW_ISOLATED_WINDOW" desc="The text label of a menu item for opening a new Isolated window">
+            New &amp;Isolated window
           </message>
           <message name="IDS_PROFILE_ROW_SIGNED_IN_MESSAGE_WITH_EMAIL" desc="Label that lets the user know what email they are signed into their profile as.">
             Signed in as <ph name="EMAIL">$1<ex>user@gmail.com</ex></ph>
@@ -1575,6 +1584,9 @@ are declared in tools/grit/grit_args.gni.
           </message>
           <message name="IDS_NEW_INCOGNITO_WINDOW" desc="In Title Case: The text label of a menu item for opening a new Private window">
             New &amp;Private Window
+          </message>
+          <message name="IDS_NEW_ISOLATED_WINDOW" desc="In Title Case: The text label of a menu item for opening a new Isolated window">
+            New &amp;Isolated Window
           </message>
           <message name="IDS_PROFILE_ROW_SIGNED_IN_MESSAGE_WITH_EMAIL" desc="In Title Case: Label that lets the user know what email they are signed into their profile as.">
             Signed in as <ph name="EMAIL">$1<ex>user@gmail.com</ex></ph>
@@ -4788,11 +4800,6 @@ are declared in tools/grit/grit_args.gni.
           </message>
         </if>
       </if>
-      <if expr="enable_extensions or is_android">
-        <message name="IDS_UTILITY_PROCESS_MEDIA_GALLERY_UTILITY_NAME" desc="The name of the utility process used for checking media files.">
-          Media File Checker
-        </message>
-      </if>
       <message name="IDS_UTILITY_PROCESS_NOOP_SERVICE_NAME" desc="The name of the utility process which does nothing, used for experimentation.">
         No-op Service
       </message>
@@ -4950,6 +4957,15 @@ are declared in tools/grit/grit_args.gni.
         </message>
         <message name="IDS_EXTENSION_PROMPT_WARNING_BLUETOOTH_DEVICES" desc="Permission string for implementing Bluetooth profiles.">
           Send messages to and receive messages from Bluetooth devices.
+        </message>
+        <message name="IDS_EXTENSION_PROMPT_WARNING_BLUETOOTH_DEVICES_SOCKET" desc="Permission string for accessing Bluetooth devices via sockets.">
+          Send messages to and receive messages from Bluetooth devices using sockets.
+        </message>
+        <message name="IDS_EXTENSION_PROMPT_WARNING_BLUETOOTH_DEVICES_LOW_ENERGY" desc="Permission string for accessing Bluetooth devices via Low Energy.">
+          Send messages to and receive messages from Bluetooth devices using Low Energy.
+        </message>
+        <message name="IDS_EXTENSION_PROMPT_WARNING_BLUETOOTH_DEVICES_PERIPHERAL" desc="Permission string for allowing nearby Bluetooth devices to discover and connect.">
+          Allow nearby Bluetooth devices to discover and connect to this device.
         </message>
         <message name="IDS_EXTENSION_PROMPT_WARNING_BLUETOOTH_PRIVATE" desc="Permission string for Bluetooth Private API.">
           Control Bluetooth adapter state and pairing
@@ -8446,7 +8462,108 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_PROMPT_28" desc="Text shown on the composebox searchbox on click of the brainstorm chip on the NTP.">
         Find family-friendly restaurants that take reservations. Must have a kids menu and a casual atmosphere
       </message>
-
+      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_SHORT_PROMPT_1" desc="Suggestion shown on the NTP searchbox dropdown">
+        Curate a playlist based on my mood
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_SHORT_PROMPT_2" desc="Suggestion shown on the NTP searchbox dropdown">
+        Brainstorm with me
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_SHORT_PROMPT_3" desc="Suggestion shown on the NTP searchbox dropdown">
+        Help me solve a problem
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_SHORT_PROMPT_4" desc="Suggestion shown on the NTP searchbox dropdown">
+        Brainstorm unique gift ideas
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_SHORT_PROMPT_5" desc="Suggestion shown on the NTP searchbox dropdown">
+        Help me prepare for a tough conversation
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_SHORT_PROMPT_6" desc="Suggestion shown on the NTP searchbox dropdown">
+        Compare health plan options
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_SHORT_PROMPT_7" desc="Suggestion shown on the NTP searchbox dropdown">
+        Design a custom fitness routine
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_SHORT_PROMPT_8" desc="Suggestion shown on the NTP searchbox dropdown">
+        Create a packing list for my trip
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_SHORT_PROMPT_9" desc="Suggestion shown on the NTP searchbox dropdown">
+        Make me a to-do list
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_SHORT_PROMPT_10" desc="Suggestion shown on the NTP searchbox dropdown">
+        Create a grocery list
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_SHORT_PROMPT_11" desc="Suggestion shown on the NTP searchbox dropdown">
+        Make a deep-clean checklist for my home
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_SHORT_PROMPT_12" desc="Suggestion shown on the NTP searchbox dropdown">
+        Help me plan a digital detox
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_SHORT_PROMPT_13" desc="Suggestion shown on the NTP searchbox dropdown">
+        Draft an 8-week training schedule for a 5k
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_SHORT_PROMPT_14" desc="Suggestion shown on the NTP searchbox dropdown">
+        Create a study schedule for me
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_SHORT_PROMPT_15" desc="Suggestion shown on the NTP searchbox dropdown">
+        Draft a lesson plan
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_SHORT_PROMPT_16" desc="Suggestion shown on the NTP searchbox dropdown">
+        Look for openings at trending restaurants
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_SHORT_PROMPT_17" desc="Suggestion shown on the NTP searchbox dropdown">
+        Find me a quiet cafe
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_SHORT_PROMPT_18" desc="Suggestion shown on the NTP searchbox dropdown">
+        Find me a last-minute reservations at nearby restaurants tonight
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_SHORT_PROMPT_19" desc="Suggestion shown on the NTP searchbox dropdown">
+        Find family-friendly restaurants with kids' menus
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_HELP_ME_LEARN_SHORT_PROMPT_1" desc="Suggestion shown on the NTP searchbox dropdown">
+        Teach me how to code
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_HELP_ME_LEARN_SHORT_PROMPT_2" desc="Suggestion shown on the NTP searchbox dropdown">
+        Quiz me on a topic
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_HELP_ME_LEARN_SHORT_PROMPT_3" desc="Suggestion shown on the NTP searchbox dropdown">
+        Teach me about the stars
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_HELP_ME_LEARN_SHORT_PROMPT_4" desc="Suggestion shown on the NTP searchbox dropdown">
+        Map out the lifecycle of a star
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_HELP_ME_LEARN_SHORT_PROMPT_5" desc="Suggestion shown on the NTP searchbox dropdown">
+        Teach me a new language
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_HELP_ME_LEARN_SHORT_PROMPT_6" desc="Suggestion shown on the NTP searchbox dropdown">
+        Calculate my weighted GPA
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_HELP_ME_LEARN_SHORT_PROMPT_7" desc="Suggestion shown on the NTP searchbox dropdown">
+        Visualize a mathematical equation for me
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_WRITE_EDIT_SHORT_PROMPT_1" desc="Suggestion shown on the NTP searchbox dropdown">
+        Rewrite my email to be more persuasive
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_WRITE_EDIT_SHORT_PROMPT_2" desc="Suggestion shown on the NTP searchbox dropdown">
+        Help me rewrite some text to sound more professional
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_WRITE_EDIT_SHORT_PROMPT_3" desc="Suggestion shown on the NTP searchbox dropdown">
+        Help me draft a reply
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_WRITE_EDIT_SHORT_PROMPT_4" desc="Suggestion shown on the NTP searchbox dropdown">
+        Rewrite my bio to sound more professional
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_WRITE_EDIT_SHORT_PROMPT_5" desc="Suggestion shown on the NTP searchbox dropdown">
+        Shorten my email
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_WRITE_EDIT_SHORT_PROMPT_6" desc="Suggestion shown on the NTP searchbox dropdown">
+        Draft an outline
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_WRITE_EDIT_SHORT_PROMPT_7" desc="Suggestion shown on the NTP searchbox dropdown">
+        How can I decline plans in a polite way?
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_WRITE_EDIT_SHORT_PROMPT_8" desc="Suggestion shown on the NTP searchbox dropdown">
+        Write my cover letter
+      </message>
 
       <!-- NTP Modules -->
       <message name="IDS_NTP_MODULES_SETUP_LIST_DISABLE_TOAST_MESSAGE" desc="Text shown in the toast confirming a module has been disabled.">
@@ -10021,6 +10138,12 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_SPLIT_VIEW_RESIZE_BOTTOM_SIDE_ACCESSIBLE_ALERT" is_accessibility_with_no_ui="true" desc="Accessible alert text used in IDS_SPLIT_VIEW_RESIZE_ACCESSIBLE_ALERT for which side the window/pane is seen on.">
                Bottom
+      </message>
+      <message name="IDS_SPLIT_VIEW_HORIZONTAL_INDIRECT_ACCESS_IPH_TITLE" desc="The title for horizontal split view indirect access snooze IPH.">
+        Try stacked split view
+      </message>
+      <message name="IDS_SPLIT_VIEW_HORIZONTAL_INDIRECT_ACCESS_IPH_BODY" desc="The body for horizontal split view indirect access snooze IPH.">
+        Use the split view menu to switch between side by side and stacked layouts.
       </message>
 
       <!-- Vertical Tab Strings -->
@@ -13641,18 +13764,6 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         <message name="IDS_CONTENT_CONTEXT_SHARING_CLICK_TO_CALL_SINGLE_DEVICE" desc="The label of item for click to call in context menu for showing device name when one device is available.">
           Call from <ph name="DEVICE_NAME">$1<ex>Jimmy's Pixel</ex></ph>
         </message>
-        <message name="IDS_CONTENT_CONTEXT_SHARING_SHARED_CLIPBOARD_NOTIFICATION_TITLE_UNKNOWN_DEVICE" desc="Title text displayed in a shared clipboard notification when the source device name is unknown.">
-          Text shared from other device
-        </message>
-        <message name="IDS_CONTENT_CONTEXT_SHARING_SHARED_CLIPBOARD_NOTIFICATION_TITLE" desc="The title of the notification shown when a clipboard was shared.">
-          Text shared from <ph name="DEVICE_NAME">$1<ex>Jimmy's Pixel</ex></ph>
-        </message>
-        <message name="IDS_CONTENT_CONTEXT_SHARING_SHARED_CLIPBOARD_NOTIFICATION_DESCRIPTION" desc="The description of the notification shown when a clipboard was shared.">
-          Copied to your clipboard
-        </message>
-        <message name="IDS_OMNIBOX_TOOLTIP_SHARED_CLIPBOARD" desc="The tooltip for the shared clipboard omnibox icon.">
-          Copy to your device
-        </message>
       </if>
 
       <if expr="use_titlecase">
@@ -13661,18 +13772,6 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         </message>
         <message name="IDS_CONTENT_CONTEXT_SHARING_CLICK_TO_CALL_SINGLE_DEVICE" desc="In Title Case: The label of item for click to call in context menu when single device is available.">
           Call from <ph name="DEVICE_NAME">$1<ex>Jimmy's Pixel</ex></ph>
-        </message>
-        <message name="IDS_CONTENT_CONTEXT_SHARING_SHARED_CLIPBOARD_NOTIFICATION_TITLE_UNKNOWN_DEVICE" desc="Title text displayed in a shared clipboard notification when the source device name is unknown.">
-          Text shared from Other Device
-        </message>
-        <message name="IDS_CONTENT_CONTEXT_SHARING_SHARED_CLIPBOARD_NOTIFICATION_TITLE" desc="In Title Case: The title of the notification shown when a clipboard was shared.">
-          Text shared from <ph name="DEVICE_NAME">$1<ex>Jimmy's Pixel</ex></ph>
-        </message>
-        <message name="IDS_CONTENT_CONTEXT_SHARING_SHARED_CLIPBOARD_NOTIFICATION_DESCRIPTION" desc="In Title Case: The description of the notification shown when a clipboard was shared.">
-          Copied to Your Clipboard
-        </message>
-        <message name="IDS_OMNIBOX_TOOLTIP_SHARED_CLIPBOARD" desc="The tooltip for the shared clipboard omnibox icon.">
-          Copy to Your Device
         </message>
       </if>
 
@@ -15282,6 +15381,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
         </message>
         <message name="IDS_NEW_INCOGNITO_WINDOW_MAC" desc="In Title Case: The Mac menu item for opening a new Private window in the file menu.">
           New Private Window
+        </message>
+        <message name="IDS_NEW_ISOLATED_WINDOW_MAC" desc="In Title Case: The Mac menu item for opening a new Isolated window in the file menu.">
+          New Isolated Window
         </message>
         <message name="IDS_REOPEN_CLOSED_TABS_MAC" desc="In Title Case: The Mac menu item reopen recently closed tabs in the file menu.">
           Reopen Closed Tab
@@ -18740,8 +18842,10 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_READING_LIST_TOAST_BUTTON" desc="Button on a toast notification that allows a user to open a reading list entry.">
         Open
       </message>
-      <message name="IDS_CLOSE_PINNED_TAB_TOAST_BODY" desc="Text on a toast notification that is shown when a pinned tab is being closed.">
-        Press <ph name="SHORTCUT_TEXT">$1<ex>⌘ + W</ex></ph> again to close the pinned tab
+      <message name="IDS_CLOSE_PINNED_TAB_TOAST_BODY" desc="Text on a toast notification that is shown when one or more pinned tabs are being closed. [ICU Syntax]">
+        {NUM_TABS, plural,
+          =1 {Press <ph name="SHORTCUT_TEXT">$1<ex>⌘ + W</ex></ph> again to close the pinned tab}
+          other {Press <ph name="SHORTCUT_TEXT">$1<ex>⌘ + W</ex></ph> again to close the pinned tabs}}
       </message>
       <message name="IDS_TOAST_CLOSE_TOOLTIP" desc="Tooltip for the X button on a toast notification that closes the toast.">
         Close

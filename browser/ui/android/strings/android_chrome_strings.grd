@@ -962,6 +962,12 @@ For more settings that use data to improve your Brave experience, go to <ph name
       <message name="IDS_BOOKMARK_BAR_SETTING" desc="Title for the bookmark bar setting.">
         Show bookmarks bar
       </message>
+      <message name="IDS_BOOKMARK_BAR_SETTING_ALWAYS_SHOW" desc="Title for option to always show the bookmark bar." translateable="false">
+        Always show
+      </message>
+      <message name="IDS_BOOKMARK_BAR_SETTING_ALWAYS_HIDE" desc="Title for option to always hide the bookmark bar." translateable="false">
+        Always hide
+      </message>
       <message name="IDS_BOOKMARK_BAR_SETTING_SUBTITLE" desc="Subtitle hint for the bookmark bar setting.">
         Hidden on narrow screens
       </message>
@@ -994,12 +1000,6 @@ For more settings that use data to improve your Brave experience, go to <ph name
       </message>
       <message name="IDS_SECURITY_SECTION_TITLE" desc="Title for the Security settings section.">
         Security
-      </message>
-      <message name="IDS_AD_PRIVACY_LINK_ROW_LABEL" desc="A new label that appears on the Privacy and security page (chrome://settings/privacy) between 'Third-party cookies' and 'Security'. This same text is used as a page title for the new Ad privacy section. This same pair of words is used in the Consent and Notice flow and must be consistently translated in both contexts. We mean privacy associated with ads, and not privacy from ads. **** CONTEXT PRIVACY SANDBOX **** Brave’s Privacy Sandbox initiative 1) deprecates third-party cookies in Brave, 2) supports free and open content on the web (by finding better ways to support ads online), 3) while providing stronger privacy protections for users. You can see a high-level description of this public project at www.privacysanbox.com. **** NEW SETTINGS SECTION IN CHROME **** 3 new ad-specific settings appear on an “Ad privacy” page in Brave settings. For an equivalent structure, see “Security” on chrome://settings/privacy that opens chrome://settings/security. Likewise, “Ad privacy” on chrome://settings/privacy will open chrome://settings/AdPrivacy.">
-        Ad privacy
-      </message>
-      <message name="IDS_AD_PRIVACY_LINK_ROW_SUB_LABEL" desc="A string that describes 'Ad privacy', the label that appears just above it. For context, this new 'Ad privacy' / 'Customize the info...' pair of strings is similar to the existing 'Clear browsing data' / 'Clear history, cookies...' that you find on chrome://settings/privacy. * 'Customize': From our word list: 'This word describes user agency in refining their personalized recommendations, elements of the experience, or sometimes products'. Please don't confuse with 'personalize', which we reserve to mean: '...when Brave provides recommendations and other content for users based on their data'. **** CONTEXT PRIVACY SANDBOX **** Brave’s Privacy Sandbox initiative 1) deprecates third-party cookies in Brave, 2) supports free and open content on the web (by finding better ways to support ads online), 3) while providing stronger privacy protections for users. You can see a high-level description of this public project at www.privacysanbox.com. **** NEW SETTINGS SECTION IN CHROME **** 3 new ad-specific settings appear on an “Ad privacy” page in Brave settings. For an equivalent structure, see “Security” on chrome://settings/privacy that opens chrome://settings/security. Likewise, “Ad privacy” on chrome://settings/privacy will open chrome://settings/AdPrivacy.">
-        Customize the info used by sites to show you ads
       </message>
       <message name="IDS_CONTEXTUAL_SEARCH_TITLE" desc="Name for the Contextual Search feature, which allows users to search for a term in a web page by tapping on it.">
         Touch to Search
@@ -1041,143 +1041,6 @@ For example, some websites may respond to this request by showing you ads that a
       </message>
       <message name="IDS_CAN_MAKE_PAYMENT_TITLE" desc="Title for preference to allow websites to know whether you have payment methods available through PaymentRequest.CanMakePayment interface">
         Access payment methods
-      </message>
-
-      <!-- Privacy Sandbox Settings. Used by //chrome/browser/privacy_sandbox. -->
-      <message name="IDS_PRIVACY_SANDBOX_SNACKBAR_MESSAGE" desc="The text displayed in the snackbar, which gives the user an option to navigate to the Privacy Sandbox settings page. 'Privacy sandbox' has TC ID 5753235213964358658.">
-        Learn about and control new technologies that aim to replace third-party cookies
-      </message>
-      <message name="IDS_SETTINGS_AD_PRIVACY_RESTRICTED_LINK_ROW_SUB_LABEL" desc="A string that describes 'Ad privacy', the label that appears just above it. This is the version of IDS_SETTINGS_AD_PRIVACY_PAGE_TOPICS_LINK_ROW_LABEL for restricted users.">
-        Manage info used by sites to measure ad performance
-      </message>
-      <message name="IDS_PRIVACY_SANDBOX_ADD_INTEREST_BUTTON_DESCRIPTION" desc="Content description for button that adds an ad interest for the Topics API of the Privacy Sandbox.">
-        Add <ph name="INTEREST">%1$s<ex>Acting and Theater</ex></ph>
-      </message>
-      <message name="IDS_PRIVACY_SANDBOX_REMOVE_INTEREST_BUTTON_DESCRIPTION" desc="Content description for button that removes an ad interest for the Topics API of the Privacy Sandbox.">
-        Remove <ph name="INTEREST">%1$s<ex>Acting and Theater</ex></ph>
-      </message>
-
-      <!-- Privacy Sandbox v4 - Ad Privacy Page -->
-      <message name="IDS_AD_PRIVACY_PAGE_TITLE" desc="A new page title for a page that includes 3 settings. This same text appears as a label on chrome://settings/privacy between 'Third-party cookies' and 'Security'. This same pair of words is used in the Consent and Notice flow and must be consistently translated in both contexts. We mean privacy associated with ads, and not privacy from ads. **** CONTEXT PRIVACY SANDBOX **** Brave’s Privacy Sandbox initiative 1) deprecates third-party cookies in Brave, 2) supports free and open content on the web (by finding better ways to support ads online), 3) while providing stronger privacy protections for users. You can see a high-level description of this public project at www.privacysanbox.com. **** NEW SETTINGS SECTION IN CHROME **** 3 new ad-specific settings appear on an “Ad privacy” page in Brave settings. For an equivalent structure, see “Security” on chrome://settings/privacy that opens chrome://settings/security. Likewise, “Ad privacy” on chrome://settings/privacy will open chrome://settings/AdPrivacy.">
-        Ad privacy
-      </message>
-      <message name="IDS_AD_PRIVACY_PAGE_TOPICS_LINK_ROW_LABEL" desc="The name of a new setting. This setting is described to users in the Consent moment as: Ad topics help sites show you relevant ads while protecting your browsing history and identity. Brave can note topics of interest based on your recent browsing history. Later, a site you visit can ask Brave for relevant topics to personalize the ads you see. **** CONTEXT PRIVACY SANDBOX **** Brave’s Privacy Sandbox initiative 1) deprecates third-party cookies in Brave, 2) supports free and open content on the web (by finding better ways to support ads online), 3) while providing stronger privacy protections for users. You can see a high-level description of this public project at www.privacysanbox.com. **** NEW SETTINGS SECTION IN CHROME **** 3 new ad-specific settings appear on an “Ad privacy” page in Brave settings. For an equivalent structure, see “Security” on chrome://settings/privacy that opens chrome://settings/security. Likewise, “Ad privacy” on chrome://settings/privacy will open chrome://settings/AdPrivacy.">
-        Ad topics
-      </message>
-      <message name="IDS_AD_PRIVACY_PAGE_TOPICS_LINK_ROW_SUB_LABEL_ENABLED" desc="Ad topics are derived from the user's browsing history. This help-center article explains 'browsing history' to users: https://support.google.com/chrome/answer/95589. This setting is described to users in the Consent moment as: Ad topics help sites show you relevant ads while protecting your browsing history and identity. Brave can note topics of interest based on your recent browsing history. Later, a site you visit can ask Brave for relevant topics to personalize the ads you see.">
-        Based on your browsing history. This setting is on.
-      </message>
-      <message name="IDS_AD_PRIVACY_PAGE_TOPICS_LINK_ROW_SUB_LABEL_DISABLED" desc="Ad topics are derived from the user's browsing history. This help-center article explains 'browsing history' to users: https://support.google.com/chrome/answer/95589. This setting is described to users in the Consent moment as: Ad topics help sites show you relevant ads while protecting your browsing history and identity. Brave can note topics of interest based on your recent browsing history. Later, a site you visit can ask Brave for relevant topics to personalize the ads you see.">
-        Based on your browsing history. This setting is off.
-      </message>
-      <message name="IDS_AD_PRIVACY_PAGE_FLEDGE_LINK_ROW_LABEL" desc="The name of a new setting. This setting is described to users in the Notice moment as: Site-suggested ads help protect your browsing history and identity while enabling sites to show you relevant ads. Based on your activity, a site you visited can suggest related ads as you continue browsing. You can see a list of these sites and block the ones you don’t want in settings. **** CONTEXT PRIVACY SANDBOX **** Brave’s Privacy Sandbox initiative 1) deprecates third-party cookies in Brave, 2) supports free and open content on the web (by finding better ways to support ads online), 3) while providing stronger privacy protections for users. You can see a high-level description of this public project at www.privacysanbox.com. **** NEW SETTINGS SECTION IN CHROME **** 3 new ad-specific settings appear on an “Ad privacy” page in Brave settings. For an equivalent structure, see “Security” on chrome://settings/privacy that opens chrome://settings/security. Likewise, “Ad privacy” on chrome://settings/privacy will open chrome://settings/AdPrivacy.">
-        Site-suggested ads
-      </message>
-      <message name="IDS_AD_PRIVACY_PAGE_FLEDGE_LINK_ROW_SUB_LABEL_ENABLED" desc="A site can suggest ads for a user based on the user's activity on their site. This setting is described to users in the Notice moment as: Site-suggested ads help protect your browsing history and identity while enabling sites to show you relevant ads. Based on your activity, a site you visited can suggest related ads as you continue browsing. You can see a list of these sites and block the ones you don’t want in settings.">
-        Based on your activity on a site. This setting is on.
-      </message>
-      <message name="IDS_AD_PRIVACY_PAGE_FLEDGE_LINK_ROW_SUB_LABEL_DISABLED" desc="A site can suggest ads for a user based on the user's activity on their site. This setting is described to users in the Notice moment as: Site-suggested ads help protect your browsing history and identity while enabling sites to show you relevant ads. Based on your activity, a site you visited can suggest related ads as you continue browsing. You can see a list of these sites and block the ones you don’t want in settings.">
-        Based on your activity on a site. This setting is off.
-      </message>
-      <message name="IDS_AD_PRIVACY_PAGE_AD_MEASUREMENT_LINK_ROW_LABEL" desc="The name of a new setting. This setting is described to users in the Notice moment as: With ad measurement, limited types of data are shared between sites to measure the performance of their ads, such as the time of day an ad was shown to you. **** CONTEXT PRIVACY SANDBOX **** Brave’s Privacy Sandbox initiative 1) deprecates third-party cookies in Brave, 2) supports free and open content on the web (by finding better ways to support ads online), 3) while providing stronger privacy protections for users. You can see a high-level description of this public project at www.privacysanbox.com. **** NEW SETTINGS SECTION IN CHROME **** 3 new ad-specific settings appear on an “Ad privacy” page in Brave settings. For an equivalent structure, see “Security” on chrome://settings/privacy that opens chrome://settings/security. Likewise, “Ad privacy” on chrome://settings/privacy will open chrome://settings/AdPrivacy.">
-        Ad measurement
-      </message>
-      <message name="IDS_AD_PRIVACY_PAGE_AD_MEASUREMENT_LINK_ROW_SUB_LABEL_ENABLED" desc="The name of a new setting. This setting is described to users in the Notice moment as: With ad measurement, limited types of data are shared between sites to measure the performance of their ads, such as the time of day an ad was shown to you.">
-        Sites and advertisers can understand how ads perform. This setting is on.
-      </message>
-      <message name="IDS_AD_PRIVACY_PAGE_AD_MEASUREMENT_LINK_ROW_SUB_LABEL_DISABLED" desc="The name of a new setting. This setting is described to users in the Notice moment as: With ad measurement, limited types of data are shared between sites to measure the performance of their ads, such as the time of day an ad was shown to you.">
-        Sites and advertisers can understand how ads perform. This setting is off.
-      </message>
-
-      <!-- Privacy Sandbox v4 - Topics Page -->
-      <!-- Where possible, these strings have been unified on Desktop & Android in privacy_sandox_strings.grdp. The strings here either only appear on one platform, or have platform specific requirements, e.g. the format of placeholders, and so cannot be unified. For the latter case, they have corresponding _CANONICAL representations used when consent is recorded on either platform, and so they must stay in sync -->
-      <message name="IDS_SETTINGS_TOPICS_PAGE_BLOCK_TOPIC_SNACKBAR" desc="A confirmation that appears after a user blocks a topic. This page is only applicable if the user has the Ad topics setting turned on. If they do, Brave estimates the user's topics of interests and then sites can ask for topics to help personalize ads. If a user dosn't like a specific topic, they can block it.">
-        Blocked topic
-      </message>
-
-      <!-- Privacy Sandbox v4 - Fledge Page -->
-      <message name="IDS_SETTINGS_FLEDGE_PAGE_TITLE" desc="A page title and the name of a new setting. **** CONTEXT PRIVACY SANDBOX **** Brave’s Privacy Sandbox initiative 1) deprecates third-party cookies in Brave, 2) supports free and open content on the web (by finding better ways to support ads online), 3) while providing stronger privacy protections for users. You can see a high-level description of this public project at www.privacysanbox.com. **** NEW SETTINGS SECTION IN CHROME **** 3 new ad-specific settings appear on an “Ad privacy” page in Brave settings. For an equivalent structure, see “Security” on chrome://settings/privacy that opens chrome://settings/security. Likewise, “Ad privacy” on chrome://settings/privacy will open chrome://settings/AdPrivacy.">
-        Site-suggested ads
-      </message>
-      <message name="IDS_SETTINGS_FLEDGE_PAGE_TOGGLE_LABEL" desc="The label for a new setting.">
-        Site-suggested ads
-      </message>
-      <message name="IDS_SETTINGS_FLEDGE_PAGE_CURRENT_SITES_HEADING" desc="A label for a list of sites the user has visited. The list of sites looks similar to the user's browsing history, but this is a distinct list. * 'browsing history' is a list of the sites the user has visited. See the Help-center definition here: https://support.google.com/chrome/answer/95589 * This list of 'Sites' is a subset of the user's browsing history. 1) Only sites that use the 'Site-suggested ads' API (https://developer.chrome.com/docs/privacy-sandbox/fledge/) can appear on this list. 2) This list is based on recent sites the user has visited and sites older than 4 weeks are regularly deleted.">
-        Sites
-      </message>
-      <message name="IDS_SETTINGS_FLEDGE_PAGE_CURRENT_SITES_DESCRIPTION_DISABLED" desc="1 of 3 possible descriptions that appear beneath the 'Sites' title. If this setting is off, no sites appear. The link opens a dialog box that provides more information about Site-suggested ads.">
-        When on, a list of sites you visit that guess your interests appears here
-      </message>
-      <message name="IDS_SETTINGS_FLEDGE_PAGE_CURRENT_SITES_DESCRIPTION_EMPTY" desc="1 of 3 possible descriptions that appear beneath the 'Sites' title. This setting could be on but no topics appear in the list. This text explains why.">
-        No sites to show right now
-      </message>
-      <message name="IDS_SETTINGS_FLEDGE_PAGE_SEE_ALL_SITES_LABEL" desc="Text that serves as a button. Because the list of sites might be long, we only show the most recent sites. This button allows the user to browse all sites (because sites are auto-deleted every 4 weeks, the list is never older than 4 weeks).">
-        See all sites
-      </message>
-      <message name="IDS_SETTINGS_FLEDGE_PAGE_BLOCKED_SITES_HEADING" desc="A label that serves as a button to open the 'Sites you blocked' page.">
-        Sites you blocked
-      </message>
-      <message name="IDS_SETTINGS_FLEDGE_ALL_SITES_SUB_PAGE_TITLE" desc="The page title that shows all sites. This is a subpage.">
-        All sites
-      </message>
-      <message name="IDS_SETTINGS_FLEDGE_PAGE_BLOCKED_SITES_SUB_PAGE_TITLE" desc="The page title that shows blocked sites. This is a subpage.">
-        Sites you blocked
-      </message>
-      <message name="IDS_SETTINGS_FLEDGE_PAGE_BLOCKED_SITES_DESCRIPTION" desc="1 of 2 possible descriptions that appear beneath the 'Sites you blocked' title. In this case, the user has previously blocked sites. * 'pool of sites': We want to express that by clicking 'Add', the user is making a site eligible again for consideration.">
-        Add a site back if you want it in the pool of sites that can guess what you like
-      </message>
-      <message name="IDS_SETTINGS_FLEDGE_PAGE_BLOCKED_SITES_DESCRIPTION_EMPTY" desc="1 of 2 possible descriptions beneath the 'Sites you blocked' title. In this case, the list is empty (the user hasn't blocked any sites).">
-        Blocked sites appear here
-      </message>
-      <message name="IDS_SETTINGS_FLEDGE_PAGE_LEARN_MORE_HEADING" desc="The title of a dialog box that explains site-suggested ads in more detail.">
-        More about site-suggested ads
-      </message>
-      <message name="IDS_SETTINGS_FLEDGE_PAGE_BLOCK_SITE_A11Y_LABEL" desc="A button label read by screen readers that indicates which site will get blocked. The list is of sites the user has recently visited and that use the Site-suggested ads API to suggest ads to other sites as the user continues browsing.">
-        Block <ph name="DOMAIN">%1$s<ex>example.com</ex></ph>
-      </message>
-      <message name="IDS_SETTINGS_FLEDGE_PAGE_ALLOW_SITE_A11Y_LABEL" desc="A button label read by screen readers that indicates which site will get added back to the pool of potential sites.">
-        Add <ph name="DOMAIN">%1$s<ex>example.com</ex></ph>
-      </message>
-      <message name="IDS_SETTINGS_FLEDGE_PAGE_BLOCK_SITE_SNACKBAR" desc="A confirmation that appears after a user blocks a site. This page is only applicable if the user has the Site-suggested ads setting turned on. If they do, a site can choose ads that they later suggest to other sites. If a user dosn't want a site to suggest ads for them, they can block a site.">
-        Blocked site
-      </message>
-      <message name="IDS_SETTINGS_FLEDGE_PAGE_ADD_SITE_SNACKBAR" desc="A confirmation that appears after a user unblocks a site. This page is only applicable if the user has the Site-suggested ads setting turned on. If they do, a site can choose ads that they later suggest to other sites. If a user dosn't want a site to suggest ads for them, they can block a site. **** The user can also unblock a site. The language is important, because 'unblocking' doesn't bring the site back to the list of active sites. It simply makes a site eligible again to suggest ads, but the user would need to visit that site to trigger it again and have it appear in the list.">
-        Added site back to potential sites
-      </message>
-
-      <!-- Privacy Sandbox v4 - Ad Measurement Page -->
-      <message name="IDS_SETTINGS_AD_MEASUREMENT_PAGE_TITLE" desc="A page title and the name of a new setting. **** CONTEXT PRIVACY SANDBOX **** Brave’s Privacy Sandbox initiative 1) deprecates third-party cookies in Brave, 2) supports free and open content on the web (by finding better ways to support ads online), 3) while providing stronger privacy protections for users. You can see a high-level description of this public project at www.privacysanbox.com. **** NEW SETTINGS SECTION IN CHROME **** 3 new ad-specific settings appear on an “Ad privacy” page in Brave settings. For an equivalent structure, see “Security” on chrome://settings/privacy that opens chrome://settings/security. Likewise, “Ad privacy” on chrome://settings/privacy will open chrome://settings/AdPrivacy.">
-        Ad measurement
-      </message>
-      <message name="IDS_SETTINGS_AD_MEASUREMENT_PAGE_TOGGLE_LABEL" desc="The label for a new setting. ">
-        Ad measurement
-      </message>
-      <message name="IDS_SETTINGS_AD_MEASUREMENT_PAGE_TOGGLE_SUB_LABEL" desc="A description of the new Ad measurement setting. This text appears beneath the name of the new setting, 'Ad measurement', and is associated with the control that a user can turn on or off. **** CONTEXT PRIVACY SANDBOX **** Brave’s Privacy Sandbox initiative 1) deprecates third-party cookies in Brave, 2) supports free and open content on the web (by finding better ways to support ads online), 3) while providing stronger privacy protections for users. You can see a high-level description of this public project at www.privacysanbox.com. **** NEW SETTINGS SECTION IN CHROME **** 3 new ad-specific settings appear on an “Ad privacy” page in Brave settings. For an equivalent structure, see “Security” on chrome://settings/privacy that opens chrome://settings/security. Likewise, “Ad privacy” on chrome://settings/privacy will open chrome://settings/AdPrivacy.">
-        Sites and advertisers can measure the performance of their ads
-      </message>
-      <message name="IDS_SETTINGS_AD_MEASUREMENT_PAGE_ENABLED_HEADING" desc="A label above bullet points that explain the functionality of this setting.">
-        When on
-      </message>
-      <message name="IDS_SETTINGS_AD_MEASUREMENT_PAGE_CONSIDER_HEADING" desc="A label above bullet points that note things the user might want to consider when turning this setting on or off.">
-        Things to consider
-      </message>
-      <message name="IDS_SETTINGS_AD_MEASUREMENT_PAGE_ENABLED_BULLET_1" desc="1 of 3 bullets in the 'When on' section that describes the Ad measurement setting. * 'Limited types of data': The Ad measurement API (for developers) and the Ad measurement control (for users) is offered by Brave. But Brave is a 'pass through', helping one site communicate information to another about the performance of an ad. That's where this passive construction comes from. Brave facilitates, but shouldn't be seen as a major actor here. And we don't want to suggest anything like 'Brave limits the types of data shared between sites,' because Brave can't do that. Any 2 sites can have a side agreement to share as much info as they like. ">
-        Limited types of data are shared between sites to measure the performance of their ads, such as whether you made a purchase after visiting a site
-      </message>
-      <message name="IDS_SETTINGS_AD_MEASUREMENT_PAGE_ENABLED_BULLET_2" desc="2 of 3 bullets in the 'When on' section that describes the Ad measurement setting.">
-        Ad-measurement data is deleted regularly from your device
-      </message>
-      <message name="IDS_SETTINGS_AD_MEASUREMENT_PAGE_ENABLED_BULLET_3" desc="3 of 3 bullets in the 'When on' section that describes the Ad measurement setting. If reports were instantaneous, a site could receive a report and then consult which visitors most recently visited the site.">
-        Your browsing history is kept private on your device and reports are sent with a delay to protect your identity
-      </message>
-      <message name="IDS_SETTINGS_AD_MEASUREMENT_PAGE_CONSIDER_BULLET_1" desc="1 or 3 bullets in the 'Things to consider section that describes the Ad measurement setting.">
-        You can always delete ad-measurement data by deleting your browsing data
-      </message>
-      <message name="IDS_SETTINGS_AD_MEASUREMENT_PAGE_CONSIDER_BULLET_2" desc="2 or 3 bullets in the 'Things to consider section that describes the Ad measurement setting.">
-        Brave limits the total amount of data that sites can share through the browser to measure ad performance
-      </message>
-      <message name="IDS_SETTINGS_AD_MEASUREMENT_PAGE_CONSIDER_BULLET_3" desc="3 or 3 bullets in the 'Things to consider section that describes the Ad measurement setting.">
-        Your Android device may include a similar setting. If Ad measurement is turned on in Brave and on your Android device, a company may be able to measure the effectiveness of an ad across web sites you visit and apps you use.
       </message>
 
       <!-- Secure DNS Settings.  Used by //chrome/browser/privacy. -->
@@ -3593,6 +3456,30 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_SAFETY_FRE_PROMO_START_BROWSING_BUTTON" desc="Text on the button to start browsing from the Safety Promo screen of the First Run Experience.">
         Start browsing
       </message>
+      <message name="IDS_SAFETY_FRE_PROMO_PASSWORD_MANAGER_TITLE" desc="Title of the Brave Password Manager card on the Safety Promo screen of the First Run Experience.">
+        Brave Password Manager
+      </message>
+      <message name="IDS_SAFETY_FRE_PROMO_PASSWORD_MANAGER_SUBTITLE" desc="Subtitle of the Brave Password Manager card on the Safety Promo screen of the First Run Experience.">
+        Create, save, and autofill strong passwords
+      </message>
+      <message name="IDS_SAFETY_FRE_PROMO_HISTORY_QUICK_DELETE_TITLE" desc="Title of the Quick Delete History card on the Safety Promo screen of the First Run Experience.">
+        Quickly delete your history
+      </message>
+      <message name="IDS_SAFETY_FRE_PROMO_HISTORY_QUICK_DELETE_SUBTITLE" desc="Subtitle of the Quick Delete History card on the Safety Promo screen of the First Run Experience.">
+        Delete your browsing history with one tap
+      </message>
+      <message name="IDS_SAFETY_FRE_PROMO_ENHANCED_SAFE_BROWSING_TITLE" desc="Title of the Enhanced Safe Browsing card on the Safety Promo screen of the First Run Experience.">
+        Enhanced Safe Browsing
+      </message>
+      <message name="IDS_SAFETY_FRE_PROMO_ENHANCED_SAFE_BROWSING_SUBTITLE" desc="Subtitle of the Enhanced Safe Browsing card on the Safety Promo screen of the First Run Experience.">
+        Brave’s highest level of protection against online threats
+      </message>
+      <message name="IDS_SAFETY_FRE_PROMO_INCOGNITO_TITLE" desc="Title of the Locked Private card on the Safety Promo screen of the First Run Experience.">
+        Locked Private mode
+      </message>
+      <message name="IDS_SAFETY_FRE_PROMO_INCOGNITO_SUBTITLE" desc="Subtitle of the Locked Private card on the Safety Promo screen of the First Run Experience.">
+        Keep your private tabs locked
+      </message>
       <message name="IDS_LIGHTWEIGHT_FRE_ASSOCIATED_APP_TOS" desc="Message explaining that use of Brave is governed by Brave's terms of service.">
         <ph name="APP_NAME">%1$s<ex>Brave Maps</ex></ph> will open in Brave. By continuing, you agree to the <ph name="BEGIN_LINK1">&lt;LINK1&gt;</ph>Brave Terms of Service<ph name="END_LINK1">&lt;/LINK1&gt;</ph>, and the <ph name="BEGIN_LINK2">&lt;LINK2&gt;</ph>Brave and ChromeOS Additional Terms of Service<ph name="END_LINK2">&lt;/LINK2&gt;</ph>.
       </message>
@@ -3624,6 +3511,9 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_SIGNIN_FRE_FOOTER_METRICS_REPORTING" desc="The text is displayed in a footer on the very first screen of Brave. Preferably, ensure consistency with the “Usage statistics and crash reports” section of the Brave Privacy Policy (google.com/chrome/privacy).">
         To help improve the app, Brave sends usage and crash data to Brave. <ph name="BEGIN_UMA_LINK">&lt;UMA_LINK&gt;</ph>Manage<ph name="END_UMA_LINK">&lt;/UMA_LINK&gt;</ph>
+      </message>
+      <message name="IDS_SIGNIN_FRE_FOOTER_METRICS_REPORTING_SETTINGS" is_accessibility_with_no_ui="true" desc="The content description for the manage button to access usage and crash data settings. Used with the string IDS_SIGNIN_FRE_FOOTER_METRICS_REPORTING.">
+        Manage usage and crash data settings
       </message>
       <message name="IDS_SIGNIN_FRE_UMA_DIALOG_TITLE" desc="Title of the dialog where users can change their Brave metric sharing settings, like usage data. This appears when they open the Brave app for the first time on their phone.">
         Make Brave better
@@ -5615,9 +5505,6 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_UNSUPPORTED_NUMBER_OF_WINDOWS" desc="Popup message for when the user has tried to start too many concurrent versions of Brave.">
         Unsupported number of Brave instances.
       </message>
-      <message name="IDS_MAX_NUMBER_OF_WINDOWS" desc="Toast message for when the user has tried to start more than 5 instances of Brave window.">
-        You can have up to <ph name="MAX_WINDOW_COUNT">%1$d</ph> windows.
-      </message>
       <message name="IDS_MAX_NUMBER_OF_WINDOWS_INSTANCE_SWITCHER_ACTIVE_TAB" desc="Message to notify the user that a new window cannot be created because the total number of persisted instances exceeds the window limit.">
         To open a new window, reduce the total number of active windows to <ph name="MAX_WINDOW_COUNT_MINUS_ONE">%1$d</ph> or fewer.
       </message>
@@ -6143,7 +6030,7 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
         Right click here to show tabs vertically
       </message>
       <message name="IDS_IPH_GLIC_PROMO_TEXT" desc="The in-product-help promotion message to try Glic.">
-        Try Gemini in Brave to get answers, key takeaways and more
+        Get the best of Gemini from your Brave toolbar. Long-press to customize.
       </message>
       <message name="IDS_IPH_GLIC_PROMO_ACCESSIBILITY_TEXT" desc="The in-product-help accessibility text to try Glic.">
         Gemini is now on your toolbar. To change your pinned tool anytime, long-press the icon.
@@ -6334,8 +6221,10 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_SEND_TAB_TO_SELF_TOAST" desc="Text for a toast indicating that the tab is being shared on the user's other synced devices.">
         Sending to <ph name="device_name">%1$s<ex>Tanya's Pixel 2</ex></ph>...
       </message>
-      <message name="IDS_SEND_TAB_TO_SELF_MESSAGE_BANNER_TITLE" desc="The title for the message banner shown on Android when links are received in the background.">
-        Links received
+      <message name="IDS_SEND_TAB_TO_SELF_MESSAGE_BANNER_TITLE" desc="The title for the message banner shown on Android when links are received in the background. [ICU Syntax]">
+        {NUM_TABS, plural,
+          =1 {Link received}
+          other {# links received}}
       </message>
       <message name="IDS_SEND_TAB_TO_SELF_MESSAGE_BANNER_SUBTITLE" desc="The subtitle for the message banner shown on Android indicating the sender device.">
         From <ph name="DEVICE_NAME">%1$s<ex>Tanya's Pixel 10a</ex></ph>
@@ -7906,6 +7795,38 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <!-- Graceful Shutdown strings -->
       <message name="IDS_GRACEFUL_SHUTDOWN_TITLE" desc="Title of the notification shown when Brave is finishing shutting down.">
         Finishing shut down
+      </message>
+
+      <!-- Enterprise Signals Disclaimer strings -->
+      <message name="IDS_ENTERPRISE_SIGNALS_DISCLAIMER_TITLE" desc="Title of the enterprise signals disclaimer dialog.">
+        Your work secured on Brave
+      </message>
+      <message name="IDS_ENTERPRISE_SIGNALS_DISCLAIMER_DESCRIPTION" desc="Description of the enterprise signals disclaimer dialog.">
+        To secure your work on Brave, your organization will be able to view or manage certain information when you’re signed-in to Brave. Learn more
+      </message>
+      <message name="IDS_ENTERPRISE_SIGNALS_DISCLAIMER_PROFILE_INFORMATION_TITLE" desc="Title of the profile information section in the enterprise signals disclaimer dialog.">
+        Profile information
+      </message>
+      <message name="IDS_ENTERPRISE_SIGNALS_DISCLAIMER_PROFILE_INFORMATION_DETAILS" desc="Details of the profile information section in the enterprise signals disclaimer dialog.">
+        Your organization may need to see and manage browsing data in your work profile, such as your browsing history and passwords
+      </message>
+      <message name="IDS_ENTERPRISE_SIGNALS_DISCLAIMER_DEVICE_INFORMATION_TITLE" desc="Title of the device information section in the enterprise signals disclaimer dialog.">
+        Device information
+      </message>
+      <message name="IDS_ENTERPRISE_SIGNALS_DISCLAIMER_DEVICE_INFORMATION_DETAILS" desc="Details of the device information section in the enterprise signals disclaimer dialog.">
+        To make sure this device can be used safely, your organization may need to see information about its operating system, browser, settings, and what software is installed on the device
+      </message>
+      <message name="IDS_ENTERPRISE_SIGNALS_DISCLAIMER_ACCEPT_BUTTON_TEXT" desc="Accept button text of the enterprise signals disclaimer dialog.">
+        Got it
+      </message>
+      <message name="IDS_ENTERPRISE_SIGNALS_DISCLAIMER_CANCEL_BUTTON_TEXT" desc="Cancel button text of the enterprise signals disclaimer dialog.">
+        Sign out
+      </message>
+      <message name="IDS_ENTERPRISE_SIGNALS_DISCLAIMER_SHEET_FULL_HEIGHT" desc="Accessibility string read when the Enterprise Signals Disclaimer bottom sheet is opened at full height.">
+        Enterprise signals disclaimer bottom sheet opened at full height
+      </message>
+      <message name="IDS_ENTERPRISE_SIGNALS_DISCLAIMER_SHEET_CLOSED" desc="Accessibility string read when the Enterprise Signals Disclaimer bottom sheet is closed.">
+        Enterprise signals disclaimer bottom sheet is closed
       </message>
     </messages>
   </release>
