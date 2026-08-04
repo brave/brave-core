@@ -203,7 +203,7 @@ IN_PROC_BROWSER_TEST_F(CustomizeChromeSidePanelBrowserTest,
 
   // Set visibility of devtools to false, and...
   actions::ActionItem* const scope_action =
-      BrowserActions::From(browser())->root_action_item();
+      browser()->browser_actions()->root_action_item();
   actions::ActionItem* const devtools_action_item =
       actions::ActionManager::Get().FindAction(kActionDevTools, scope_action);
   ASSERT_TRUE(devtools_action_item);
