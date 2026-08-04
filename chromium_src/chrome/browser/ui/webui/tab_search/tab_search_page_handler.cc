@@ -251,7 +251,7 @@ void TabSearchPageHandler::UndoFocusTabs(UndoFocusTabsCallback callback) {
             return true;
           }
 
-          if (browser->session_id() == iter.first) {
+          if (browser->GetSessionID() == iter.first) {
             target = browser;
           }
           return target == nullptr;
