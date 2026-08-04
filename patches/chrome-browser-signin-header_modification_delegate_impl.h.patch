@@ -1,0 +1,14 @@
+diff --git a/chrome/browser/signin/header_modification_delegate_impl.h b/chrome/browser/signin/header_modification_delegate_impl.h
+index f0773a62c1f44d92c5ba53168bd9d8b0803ad7d1..dbb1b18c52ef539c289c64207f5f68ea2d74fcca 100644
+--- a/chrome/browser/signin/header_modification_delegate_impl.h
++++ b/chrome/browser/signin/header_modification_delegate_impl.h
+@@ -54,7 +54,8 @@ class HeaderModificationDelegateImpl : public HeaderModificationDelegate {
+ #endif
+ 
+  private:
+-  raw_ptr<Profile> profile_;
++  // https://issues.chromium.org/issues/428146684
++  raw_ptr<Profile, DisableDanglingPtrDetection> profile_;
+   scoped_refptr<content_settings::CookieSettings> cookie_settings_;
+ 
+ #if BUILDFLAG(IS_ANDROID)
