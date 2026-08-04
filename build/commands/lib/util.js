@@ -793,7 +793,7 @@ const util = {
       }
 
       if (isCI) {
-        const idleTimeoutMs = 60 * 60 * 1000 // 60 minutes
+        const idleTimeoutMs = config.autoninjaIdleTimeoutMs
         lastBuildLogTime = Date.now()
         buildIdleWatchdogInterval = setInterval(() => {
           if (Date.now() - lastBuildLogTime <= idleTimeoutMs) {

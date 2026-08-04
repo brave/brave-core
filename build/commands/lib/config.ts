@@ -107,6 +107,7 @@ export class Config {
   is_msan: boolean | undefined
   is_ubsan: boolean | undefined
   use_no_gn_gen?: boolean | undefined
+  readonly autoninjaIdleTimeoutMs: number
 
   chromiumCustomDeps: Record<string, any>
   chromiumCustomVars: Record<string, any>
@@ -274,6 +275,10 @@ export class Config {
     this.is_msan = envConfig.getBoolean(['is_msan'])
     this.is_ubsan = envConfig.getBoolean(['is_ubsan'])
     this.use_no_gn_gen = envConfig.getBoolean(['use_no_gn_gen'])
+    this.autoninjaIdleTimeoutMs = envConfig.getNumber(
+      ['autoninja_idle_timeout_ms'],
+      90 * 60 * 1000, // 90 minutes
+    )
 
     this.chromiumCustomDeps = envConfig.getMergedObject([
       'projects',
