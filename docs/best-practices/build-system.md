@@ -1112,12 +1112,12 @@ to suppress circular include errors. See [`gni_sources.md`](../gni_sources.md)
 
 <a id="BS-058"></a>
 
-## ❌ Don't Use System-Absolute Paths in Ninja Arguments
+## ❌ Don't Use System-Absolute Paths in GN
 
-**Targets that are part of the Brave build must never use a system-absolute
-path in Ninja arguments. When calling `rebase_path()`, pass the path's expected
-base as `new_base`—usually `root_build_dir` for GN actions—so the generated
-Ninja file uses a relative, relocatable path.**
+**Targets that are part of the Brave build must never use system-absolute paths
+in GN. When calling `rebase_path()`, pass the path's expected base as
+`new_base`—usually `root_build_dir` for GN actions—so the generated Ninja file
+uses a relative, relocatable path.**
 
 ```gn
 # ❌ WRONG - the default empty new_base produces a system-absolute path
@@ -1128,9 +1128,9 @@ args = [ "--output=" + rebase_path(output, root_build_dir) ]
 ```
 
 One-argument `rebase_path()` produces a system-absolute, checkout-specific path,
-so never use it in Ninja arguments for a target that is part of the Brave build.
-Such paths can interfere with remote build execution and fail when build
-artifacts are reused from a cloned or relocated checkout. The exceptions are
+so never use it for a target that is part of the Brave build. Such paths can
+interfere with remote build execution and fail when build artifacts are reused
+from a cloned or relocated checkout. The exceptions are
 host-side tooling and targets that generate wrapper scripts or configuration
 exclusively for local developer use and never run on a remote bot worker. If a
 tool changes its working directory, rebase to that directory rather than
