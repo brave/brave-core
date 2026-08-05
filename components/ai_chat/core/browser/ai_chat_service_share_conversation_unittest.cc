@@ -117,7 +117,8 @@ class AIChatServiceShareConversationTest : public testing::Test {
         base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
             &url_loader_factory_);
     model_service_ = std::make_unique<ModelService>(
-        &prefs_, os_crypt_.get(), network::NetworkContextGetter());
+        &prefs_, os_crypt_.get(), network::NetworkContextGetter(),
+        /*url_loader_factory=*/nullptr, base::FilePath());
     tab_tracker_service_ = std::make_unique<TabTrackerService>();
 
     auto credential_manager =

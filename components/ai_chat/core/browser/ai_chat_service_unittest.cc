@@ -279,7 +279,8 @@ class AIChatServiceUnitTest : public testing::Test,
             &url_loader_factory_);
 
     model_service_ = std::make_unique<ModelService>(
-        &prefs_, os_crypt_.get(), network::NetworkContextGetter());
+        &prefs_, os_crypt_.get(), network::NetworkContextGetter(),
+        /*url_loader_factory=*/nullptr, base::FilePath());
     tab_tracker_service_ = std::make_unique<TabTrackerService>();
 
     CreateService();
@@ -529,18 +530,17 @@ TEST_P(AIChatServiceUnitTest,
                     base::OnceCallback<void(
                         base::expected<EngineConsumer::GenerationResultData,
                                        EngineConsumer::Error>)> done_callback) {
-        resolve =
-            base::BindOnce(
-                [](base::OnceCallback<void(
-                       base::expected<EngineConsumer::GenerationResultData,
-                                      EngineConsumer::Error>)> done_callback) {
-                  std::move(done_callback)
-                      .Run(base::ok(EngineConsumer::GenerationResultData(
-                          mojom::ConversationEntryEvent::NewCompletionEvent(
-                              mojom::CompletionEvent::New("")),
-                          std::nullopt /* model_key */)));
-                },
-                std::move(done_callback));
+        resolve = base::BindOnce(
+            [](base::OnceCallback<void(
+                   base::expected<EngineConsumer::GenerationResultData,
+                                  EngineConsumer::Error>)> done_callback) {
+              std::move(done_callback)
+                  .Run(base::ok(EngineConsumer::GenerationResultData(
+                      mojom::ConversationEntryEvent::NewCompletionEvent(
+                          mojom::CompletionEvent::New("")),
+                      std::nullopt /* model_key */)));
+            },
+            std::move(done_callback));
       });
 
   // Conversation should exist in memory.
