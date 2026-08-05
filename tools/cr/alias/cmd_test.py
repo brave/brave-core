@@ -27,6 +27,7 @@ import unittest
 from pathlib import Path
 
 import _boot  # noqa: F401
+from alias.base import WINDOWS_SHIM
 from test.fake_chromium_repo import FakeChromiumRepo
 
 CMD_SCRIPT: Path = Path(__file__).parent / 'cmd.py'
@@ -139,14 +140,18 @@ class _Sandbox:
 
         By default a symlink is created (mirroring 'gc install-hook').
         Pass as_copy=True to simulate a manually-copied (potentially
-        stale) hook.
+        stale) hook. On Windows, _check_hook_ready() only accepts a file
+        whose bytes exactly match WINDOWS_SHIM, so the shim is written
+        directly there regardless of as_copy.
         """
         hooks_dir = self.root / '.git' / 'hooks'
         hooks_dir.mkdir(exist_ok=True)
         dest = self.hook_dest
         if dest.exists() or dest.is_symlink():
             dest.unlink()
-        if as_copy:
+        if platform.system() == 'Windows':
+            dest.write_bytes(WINDOWS_SHIM)
+        elif as_copy:
             shutil.copy2(HOOK_SOURCE, dest)
         else:
             dest.symlink_to(HOOK_SOURCE)
@@ -204,9 +209,25 @@ class _Sandbox:
 
 def _fake_global_env(hooks_dir: Path) -> dict[str, str]:
     """Return env overrides that point git's global config to a temp gitconfig
-    with core.hooksPath set to hooks_dir, without touching ~/.gitconfig."""
+    with core.hooksPath set to hooks_dir, without touching ~/.gitconfig.
+
+    Also carries over safe.directory = * : swapping out GIT_CONFIG_GLOBAL
+    entirely drops whatever the host's real global config sets there, and CI
+    runners (notably Windows, where the checkout can be owned by a different
+    account than the one running tests) rely on it to avoid git's dubious-
+    ownership check failing every git invocation in the sandbox.
+
+    hooks_dir is written as a posix path: git config values treat backslash
+    as an escape character, so a native Windows path (e.g. '...\\AppData')
+    can put invalid escapes in the file and make every git invocation that
+    reads it fail with a config-parse error. Git accepts forward slashes in
+    path values on Windows too, so this side-steps the issue entirely.
+    """
     cfg = hooks_dir.parent / 'gitconfig'
-    cfg.write_text(f'[core]\n\thooksPath = {hooks_dir}\n', encoding='utf-8')
+    cfg.write_text(
+        f'[core]\n\thooksPath = {hooks_dir.as_posix()}\n'
+        '[safe]\n\tdirectory = *\n',
+        encoding='utf-8')
     return {'GIT_CONFIG_GLOBAL': str(cfg)}
 
 
@@ -280,7 +301,8 @@ class TestInstallHook(unittest.TestCase):
         self.assertEqual(dest.resolve(), HOOK_SOURCE.resolve())
 
     def test_overwrites_existing_hook(self) -> None:
-        """install-hook replaces an existing hook file with a symlink."""
+        """install-hook replaces an existing hook file (symlink on POSIX,
+        shim on Windows)."""
         dest = self._sandbox.hook_dest
         dest.parent.mkdir(exist_ok=True)
         if dest.exists() or dest.is_symlink():
@@ -289,7 +311,11 @@ class TestInstallHook(unittest.TestCase):
 
         result = self._run()
         self.assertEqual(result.returncode, 0)
-        self.assertTrue(dest.is_symlink())
+        if platform.system() == 'Windows':
+            self.assertFalse(dest.is_symlink())
+            self.assertNotEqual(dest.read_text(encoding='utf-8'), 'old hook\n')
+        else:
+            self.assertTrue(dest.is_symlink())
 
     def test_hook_source_is_executable_after_install(self) -> None:
         """The hook source file is executable after install-hook runs."""
