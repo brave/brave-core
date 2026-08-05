@@ -394,6 +394,7 @@ IN_PROC_BROWSER_TEST_F(BraveExtensionsManifestV2ReplaceBrowserTest,
                        AutoReplaceWithBraveHosted) {
   auto extension =
       extensions::ExtensionBuilder("test")
+          .SetManifestVersion(2)
           .SetID(extensions_mv2::kWebStoreNoScriptId)
           .AddFlags(extensions::Extension::FROM_WEBSTORE)
           .SetLocation(extensions::mojom::ManifestLocation::kExternalPolicy)

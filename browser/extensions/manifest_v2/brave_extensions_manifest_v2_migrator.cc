@@ -26,7 +26,9 @@
 #include "extensions/browser/extension_registry_factory.h"
 #include "extensions/browser/extension_util.h"
 #include "extensions/common/constants.h"
+#include "extensions/common/extension.h"
 #include "extensions/common/extension_features.h"
+#include "extensions/common/manifest_constants.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
 namespace {
@@ -180,6 +182,33 @@ bool MoveExtensionSettings(const extensions::ExtensionId& source_extension_id,
   return error;
 }
 
+// Returns true if the extension installed under `extension_id` is a Manifest V2
+// extension.
+// The migration is triggered by the extension being installed rather than by it
+// being disabled with DISABLE_UNSUPPORTED_MANIFEST_VERSION, and the latter used
+// to be the only thing guaranteeing that the extension actually was MV2. A
+// known WebStore-hosted id may well refer to an up-to-date MV3 build of the
+// same extension, which is fully supported and must not be replaced with the
+// older Brave-hosted MV2 one.
+bool IsInstalledManifestV2Extension(
+    Profile* profile,
+    const extensions::ExtensionId& extension_id) {
+  if (const auto* extension =
+          extensions::ExtensionRegistry::Get(profile)->GetInstalledExtension(
+              extension_id)) {
+    return extension->manifest_version() == 2;
+  }
+
+  // The registry is still empty while the migrator is being created during
+  // profile initialization, so fall back to the manifest stored in prefs.
+  const auto extension_info =
+      extensions::ExtensionPrefs::Get(profile)->GetInstalledExtensionInfo(
+          extension_id);
+  return extension_info && extension_info->extension_manifest &&
+         extension_info->extension_manifest->FindInt(
+             extensions::manifest_keys::kManifestVersion) == 2;
+}
+
 base::Version BackupExtensionSettingsOnFileThread(
     const extensions::ExtensionId& webstore_extension_id,
     const base::Version& version,
@@ -256,10 +285,11 @@ ExtensionsManifestV2Migrator::ExtensionsManifestV2Migrator(Profile* profile)
   // Since cr151 Brave re-allows MV2 extensions, Chromium no longer disables
   // known WebStore-hosted MV2 extensions with
   // DISABLE_UNSUPPORTED_MANIFEST_VERSION. Detect any that are already installed
-  // by presence and start their migration. Extensions installed while running
-  // are handled in OnExtensionInstalled(), and any that still get disabled for
-  // the unsupported-manifest reason are handled in
-  // OnExtensionDisableReasonsChanged().
+  // by presence and start their migration. The manifest version is checked
+  // separately in MaybeBackupWebStoreExtension(), since presence alone doesn't
+  // tell an MV2 build from an MV3 one. Extensions installed while running are
+  // handled in OnExtensionInstalled(), and any that still get disabled for the
+  // unsupported-manifest reason are handled in
   for (const auto webstore_extension : kWebStoreHosted) {
     const extensions::ExtensionId webstore_extension_id(
         webstore_extension.first);
@@ -304,7 +334,7 @@ void ExtensionsManifestV2Migrator::OnExtensionInstalled(
     content::BrowserContext* browser_context,
     const extensions::Extension* extension,
     bool is_updates) {
-  if (is_updates) {
+  if (is_updates || extension->manifest_version() >= 3) {
     return;
   }
 
@@ -336,6 +366,11 @@ void ExtensionsManifestV2Migrator::MaybeBackupWebStoreExtension(
     const extensions::ExtensionId& webstore_extension_id) {
   if (!features::IsSettingsBackupEnabled() ||
       !IsKnownWebStoreHostedExtension(webstore_extension_id)) {
+    return;
+  }
+
+  // Only MV2 builds get replaced by their Brave-hosted equivalents.
+  if (!IsInstalledManifestV2Extension(profile_, webstore_extension_id)) {
     return;
   }
 
