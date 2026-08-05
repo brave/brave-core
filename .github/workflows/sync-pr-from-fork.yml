@@ -65,7 +65,6 @@ jobs:
 
           ci_pr_title="CI run for contributor PR #$pr_number"
           existing_prs=$(gh pr list -H "$contribHeadRefName" --json isDraft,title,url)
-          ci_pr_url=""
           if [[ "$existing_prs" != "[]" ]]; then
             ci_pr_url=$(jq -r --arg title "$ci_pr_title" \
               'map(select(.isDraft and .title == $title)) | first | .url // ""' \
