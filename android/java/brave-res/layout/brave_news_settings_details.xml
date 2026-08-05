@@ -13,7 +13,7 @@
         android:id="@+id/search_divider"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/news_settings_divider_color"
+        android:background="?attr/colorOutline"
         android:visibility="gone"/>
 
     <androidx.recyclerview.widget.RecyclerView

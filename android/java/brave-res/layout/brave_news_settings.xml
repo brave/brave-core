@@ -120,7 +120,7 @@
                android:layout_width="match_parent"
                android:layout_height="1dp"
                android:layout_marginTop="6dp"
-               android:background="@color/news_settings_divider_color"/>
+               android:background="?attr/colorOutline"/>
 
           <TextView
                android:id="@+id/tv_search"
