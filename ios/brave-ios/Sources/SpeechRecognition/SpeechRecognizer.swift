@@ -117,16 +117,11 @@ public class SpeechRecognizer: ObservableObject {
 
           if let result, !isFinal {
             let formattedTranscript = result.bestTranscription.formattedString
-            let transcriptComponents = formattedTranscript.components(
-              separatedBy: .whitespacesAndNewlines
-            )
-            let formattedWords = transcriptComponents.filter { !$0.isEmpty }
 
             // SpeechRecognitionMetadata is the key to detect speaking finalized
             isFinal =
               result.isFinal
               || result.speechRecognitionMetadata != nil
-              || formattedWords.count >= 15
 
             if !formattedTranscript.isEmpty {
               self.transcribe(formattedTranscript)
