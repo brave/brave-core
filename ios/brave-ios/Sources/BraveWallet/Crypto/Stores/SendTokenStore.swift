@@ -1035,7 +1035,7 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
         amount: amountInSatoshi,
         sendingMaxAmount: isSendingMaxValue,
         memo: nil,
-        useShieldedPool: false,
+        zcashTokenType: token.zcashTokenType,
         swapInfo: nil
       )
     ) { success, txMetaId, errorMessage in

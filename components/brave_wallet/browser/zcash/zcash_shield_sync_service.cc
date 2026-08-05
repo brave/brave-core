@@ -27,10 +27,8 @@ int GetCode(ZCashShieldSyncService::ErrorCode error) {
 }  // namespace
 
 ZCashShieldSyncService::OrchardBlockScannerProxy::OrchardBlockScannerProxy(
-    OrchardFullViewKey full_view_key,
-    uint32_t ironwood_activation_height)
-    : full_view_key_(full_view_key),
-      ironwood_activation_height_(ironwood_activation_height) {
+    OrchardFullViewKey full_view_key)
+    : full_view_key_(full_view_key) {
   task_runner_ = base::ThreadPool::CreateTaskRunner(
       {base::MayBlock(), base::TaskPriority::BEST_EFFORT});
 }
@@ -42,15 +40,13 @@ ZCashShieldSyncService::OrchardBlockScannerProxy::~OrchardBlockScannerProxy() =
 base::expected<OrchardBlockScanner::Result, OrchardBlockScanner::ErrorCode>
 ZCashShieldSyncService::OrchardBlockScannerProxy::ScanBlocksInBackground(
     OrchardFullViewKey full_view_key,
-    uint32_t ironwood_activation_height,
     OrchardTreeState tree_state,
     std::optional<OrchardTreeState> ironwood_tree_state,
     std::vector<zcash::mojom::CompactBlockPtr> blocks) {
   OrchardBlockScanner scanner(full_view_key);
   return scanner.ScanBlocks(
       tree_state, std::move(blocks),
-      ironwood_tree_state ? &ironwood_tree_state.value() : nullptr,
-      ironwood_activation_height);
+      ironwood_tree_state ? &ironwood_tree_state.value() : nullptr);
 }
 
 void ZCashShieldSyncService::OrchardBlockScannerProxy::ScanBlocks(
@@ -63,9 +59,8 @@ void ZCashShieldSyncService::OrchardBlockScannerProxy::ScanBlocks(
   task_runner_->PostTaskAndReplyWithResult(
       FROM_HERE,
       base::BindOnce(&OrchardBlockScannerProxy::ScanBlocksInBackground,
-                     full_view_key_, ironwood_activation_height_,
-                     std::move(tree_state), std::move(ironwood_tree_state),
-                     std::move(blocks)),
+                     full_view_key_, std::move(tree_state),
+                     std::move(ironwood_tree_state), std::move(blocks)),
       std::move(callback));
 }
 
@@ -79,8 +74,7 @@ ZCashShieldSyncService::ZCashShieldSyncService(
       context_(std::move(context)),
       account_birthday_(account_birthday.Clone()),
       observer_(std::move(observer)) {
-  block_scanner_ = std::make_unique<OrchardBlockScannerProxy>(
-      fvk, GetIronwoodActivationHeight(context_.chain_id));
+  block_scanner_ = std::make_unique<OrchardBlockScannerProxy>(fvk);
 }
 
 ZCashShieldSyncService::~ZCashShieldSyncService() = default;

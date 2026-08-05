@@ -218,10 +218,16 @@ void ZCashBlocksBatchScanTask::ScanBlocks() {
     tree_state.frontier = std::move(frontier_bytes);
   }
 
+  const uint32_t ironwood_activation_height =
+      context_->chain_id == mojom::kZCashTestnet
+          ? kIronwoodActivationHeightTestnet
+          : kIronwoodActivationHeightMainnet;
+
   std::optional<OrchardTreeState> ironwood_tree_state;
+  // Supply Ironwood tree state only when the scanned batch ends at or after
+  // the activation height.
   if (IsZCashIronwoodEnabled() &&
-      IsIronwoodActive(context_->chain_id,
-                       downloaded_blocks_->back()->height)) {
+      downloaded_blocks_->back()->height >= ironwood_activation_height) {
     std::vector<uint8_t> ironwood_frontier_bytes;
     // Allow an empty ironwood tree to simplify testing, matching the orchard
     // handling above.
@@ -237,21 +243,9 @@ void ZCashBlocksBatchScanTask::ScanBlocks() {
 
     OrchardTreeState state;
     state.block_height = frontier_block_.value()->height;
-    const uint32_t ironwood_activation =
-        GetIronwoodActivationHeight(context_->chain_id);
-    if (frontier_block_.value()->height < ironwood_activation) {
-      // The Ironwood tree does not exist before activation, so the first
-      // decoded commitment must land at position 0 with no prior frontier.
-      DCHECK_EQ(frontier_block_.value()
-                    ->chain_metadata->ironwood_commitment_tree_size,
-                0u);
-      state.tree_size = 0;
-      state.frontier = {};
-    } else {
-      state.tree_size = frontier_block_.value()
-                            ->chain_metadata->ironwood_commitment_tree_size;
-      state.frontier = std::move(ironwood_frontier_bytes);
-    }
+    state.tree_size =
+        frontier_block_.value()->chain_metadata->ironwood_commitment_tree_size;
+    state.frontier = std::move(ironwood_frontier_bytes);
     ironwood_tree_state = std::move(state);
   }
 
