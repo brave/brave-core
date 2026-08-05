@@ -1,4 +1,4 @@
-name: Auto Assign on license-update labels for Sanctions Compliance
+name: Tag license-reviewer team for Sanctions Compliance
 
 on:
   pull_request:
@@ -8,11 +8,11 @@ permissions:
   pull-requests: write
 
 jobs:
-  assign-user:
+  tag-team:
     runs-on: ubuntu-slim
     if: github.event.label.name == 'license-update'
     steps:
-      - name: Auto Assign on license-update labels for Sanctions Compliance
+      - name: Tag license-reviewer team for Sanctions Compliance
         uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
         with:
           script: |
