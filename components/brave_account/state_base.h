@@ -178,18 +178,19 @@ class StateBase : public mojom::Authentication {
   // Flow helpers, each owned by one state and implementing that state's
   // flow overrides on its owner's behalf: `Login`, `Register`, and
   // `ResetPassword` owned by `LoggedOutState` (the `LoginStep*`, `Register*`,
-  // and `ResetPassword*` overrides), `ChangePassword` and `GetServiceToken`
-  // owned by `LoggedInState` (the `ChangePassword*` and `GetServiceToken`
-  // overrides). `ResendVerificationEmail` is the exception: it is owned by
-  // `StateBase` itself (see `resend_verification_email_` below), because its
-  // override is valid in both states. They are friended on `StateBase` (not
-  // on the owning state) because the plumbing they borrow through their
-  // back-reference - request lifetime (`in_flight_`,
-  // `SendStateOwnedRequest()`), crypto, and `account_state_prefs_` - is bound
-  // to `StateBase` and can't move out.
+  // and `ResetPassword*` overrides), `ChangePassword`, `GetServiceToken`, and
+  // `LogOut` owned by `LoggedInState` (the `ChangePassword*`,
+  // `GetServiceToken`, and `LogOut` overrides). `ResendVerificationEmail` is
+  // the exception: it is owned by `StateBase` itself (see
+  // `resend_verification_email_` below), because its override is valid in both
+  // states. They are friended on `StateBase` (not on the owning state) because
+  // the plumbing they borrow through their back-reference - request lifetime
+  // (`in_flight_`, `SendStateOwnedRequest()`), crypto, and
+  // `account_state_prefs_` - is bound to `StateBase` and can't move out.
   friend class ChangePassword;
   friend class GetServiceToken;
   friend class Login;
+  friend class LogOut;
   friend class Register;
   friend class ResendVerificationEmail;
   friend class ResetPassword;

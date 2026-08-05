@@ -11,7 +11,6 @@
 #include "base/location.h"
 #include "brave/components/brave_account/brave_account_service_constants.h"
 #include "brave/components/brave_account/endpoint_client/with_headers.h"
-#include "brave/components/brave_account/endpoints/auth_logout.h"
 #include "brave/components/brave_account/state_internal.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
@@ -20,7 +19,6 @@ namespace brave_account {
 using endpoint_client::RequestHandle;
 using endpoint_client::SetBearerToken;
 using endpoint_client::WithHeaders;
-using endpoints::AuthLogout;
 using endpoints::AuthValidate;
 using internal::MakeRequest;
 
@@ -59,21 +57,7 @@ void LoggedInState::ChangePasswordStep4(const std::string& serialized_record,
 }
 
 void LoggedInState::LogOut() {
-  // Best-effort notification to the server, since server side will clean up
-  // authentication tokens automatically (currently in 6 months of inactivity).
-  // Not adopted into the state's in-flight bag:
-  // best-effort with no callback that touches state.
-  if (const auto authentication_token = GetDecryptedAuthenticationToken();
-      !authentication_token.empty()) {
-    auto request = MakeRequest<WithHeaders<AuthLogout::Request>>();
-    SetBearerToken(request, authentication_token);
-
-    SendUnownedRequest<AuthLogout>(std::move(request));
-  }
-
-  // See `StateBase`'s class comment on ordering.
-  // LoggedIn ==> LoggedOut (state swap).
-  account_state_prefs_->SetLoggedOut();
+  log_out_();
 }
 
 void LoggedInState::GetServiceToken(mojom::Service service,
