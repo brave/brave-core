@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
-index 32041e70256cdcc770b1f9af7ab9cb7d2a0daeac..061400f3b5d4743d278f431f396eadf37dd9ce80 100644
+index d37ff62c679fad216ab67b913bdaf7f4940816e8..d264dec0ef857422a4cf5dd7275924c2c4918fc1 100644
 --- a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
 +++ b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
-@@ -284,8 +284,8 @@ public class ToolbarPhone extends ToolbarLayout
+@@ -281,8 +281,8 @@ public class ToolbarPhone extends ToolbarLayout
      private @Nullable PhoneCaptureStateToken mPhoneCaptureStateToken;
      private @Nullable ButtonData mButtonData;
  
@@ -13,7 +13,7 @@ index 32041e70256cdcc770b1f9af7ab9cb7d2a0daeac..061400f3b5d4743d278f431f396eadf3
      private boolean mUseAdjustedTintColorForNtp;
      private boolean mIsToolbarExpandedOnNtp;
  
-@@ -595,6 +595,7 @@ public class ToolbarPhone extends ToolbarLayout
+@@ -573,6 +573,7 @@ public class ToolbarPhone extends ToolbarLayout
          if (mOptionalButtonCoordinator != null) {
              mOptionalButtonCoordinator.setBackgroundColorFilter(color);
          }
@@ -21,7 +21,7 @@ index 32041e70256cdcc770b1f9af7ab9cb7d2a0daeac..061400f3b5d4743d278f431f396eadf3
      }
  
      private void updateModernLocationBarCorners() {
-@@ -1285,6 +1286,7 @@ public class ToolbarPhone extends ToolbarLayout
+@@ -1266,6 +1267,7 @@ public class ToolbarPhone extends ToolbarLayout
       * Tab Page.
       */
      private void updateLocationBarLayoutForExpansionAnimation() {
@@ -29,7 +29,7 @@ index 32041e70256cdcc770b1f9af7ab9cb7d2a0daeac..061400f3b5d4743d278f431f396eadf3
          TraceEvent.begin("ToolbarPhone.updateLocationBarLayoutForExpansionAnimation");
          if (isInTabSwitcherMode()) return;
  
-@@ -1702,6 +1704,7 @@ public class ToolbarPhone extends ToolbarLayout
+@@ -1682,6 +1684,7 @@ public class ToolbarPhone extends ToolbarLayout
              }
          }
  
@@ -37,7 +37,7 @@ index 32041e70256cdcc770b1f9af7ab9cb7d2a0daeac..061400f3b5d4743d278f431f396eadf3
          // Draw the tab stack button and associated text if necessary.
          ToggleTabStackButtonCoordinator tabSwitcherButtonCoordinator =
                  getTabSwitcherButtonCoordinator();
-@@ -2093,7 +2096,7 @@ public class ToolbarPhone extends ToolbarLayout
+@@ -2073,7 +2076,7 @@ public class ToolbarPhone extends ToolbarLayout
  
      @Override
      public void onHomeButtonIsEnabledUpdate(boolean homeButtonEnabled) {
@@ -46,7 +46,7 @@ index 32041e70256cdcc770b1f9af7ab9cb7d2a0daeac..061400f3b5d4743d278f431f396eadf3
          updateButtonVisibility();
      }
  
-@@ -2498,6 +2501,7 @@ public class ToolbarPhone extends ToolbarLayout
+@@ -2478,6 +2481,7 @@ public class ToolbarPhone extends ToolbarLayout
      }
  
      private void createAndRunFocusAnimatorLegacy(boolean hasFocus, boolean shouldShowKeyboard) {

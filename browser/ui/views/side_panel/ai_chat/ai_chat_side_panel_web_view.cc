@@ -16,6 +16,7 @@
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_web_contents_delegate/browser_web_contents_delegate.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"
 #include "chrome/browser/ui/navigator/browser_navigator.h"
@@ -162,9 +163,8 @@ content::WebContents* AIChatSidePanelWebView::AddNewContents(
   auto* browser = browser_view->browser();
 
   // If AI Chat is not open in the side panel, don't open the tab.
-  if (browser->browser_window_features()
-          ->side_panel_ui()
-          ->GetCurrentEntryId() != SidePanelEntryId::kChatUI) {
+  if (browser->GetFeatures().side_panel_ui()->GetCurrentEntryId() !=
+      SidePanelEntryId::kChatUI) {
     return nullptr;
   }
 
@@ -198,7 +198,7 @@ void AIChatSidePanelWebView::RunFileChooser(
   auto* browser_view = BrowserView::GetBrowserViewForNativeWindow(
       GetWidget()->GetNativeWindow());
   if (browser_view) {
-    static_cast<content::WebContentsDelegate*>(browser_view->browser())
+    BrowserWebContentsDelegate::From(browser_view->browser())
         ->RunFileChooser(render_frame_host, std::move(listener), params);
   } else {
     listener->FileSelectionCanceled();

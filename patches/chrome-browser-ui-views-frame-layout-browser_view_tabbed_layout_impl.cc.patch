@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/frame/layout/browser_view_tabbed_layout_impl.cc b/chrome/browser/ui/views/frame/layout/browser_view_tabbed_layout_impl.cc
-index 64cc69c116d30c7f922adf9e67232f4507780d54..5782e4eb0e20207a87e29cf0d0d57704274f6da0 100644
+index 47926a58b6721e5650caaa4fb2a707de6a00d99a..27bed249b17ab428be637ee24bb679432472f387 100644
 --- a/chrome/browser/ui/views/frame/layout/browser_view_tabbed_layout_impl.cc
 +++ b/chrome/browser/ui/views/frame/layout/browser_view_tabbed_layout_impl.cc
-@@ -685,7 +685,7 @@ BrowserViewTabbedLayoutImpl::CalculateProposedLayout(
+@@ -691,7 +691,7 @@ BrowserViewTabbedLayoutImpl::CalculateProposedLayout(
    }
  
    BrowserLayoutParams params = layout_data_->revised_params;

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/navigator/browser_navigator.cc b/chrome/browser/ui/navigator/browser_navigator.cc
-index a3a2000fe57f7095a85dbbcbbff473d41fdb83b5..8de83a4b8fe01622a9e5e41c90a0b805b547cd88 100644
+index 22962d8ca22d899060c179a8549c54b54a74044a..0bcf53c0d5724e35f992e6a69a012a3d4b334100 100644
 --- a/chrome/browser/ui/navigator/browser_navigator.cc
 +++ b/chrome/browser/ui/navigator/browser_navigator.cc
-@@ -616,6 +616,7 @@ base::WeakPtr<content::NavigationHandle> NavigateImpl(
+@@ -639,6 +639,7 @@ base::WeakPtr<content::NavigationHandle> NavigateImpl(
    }
  #endif  // BUILDFLAG(IS_CHROMEOS)
  

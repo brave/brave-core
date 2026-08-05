@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate.cc b/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate.cc
-index 43697fcb28fcd0a6e5d9321cb25ec90d227fd7a9..d3f328474aed23a86d58e0258fed38a161dfc8fb 100644
+index 43c2bd65f886b73e1d363db08d3b30dcb5bfad1b..a81baff250aaa0a330818e78859a9abf2d5db14b 100644
 --- a/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate.cc
 +++ b/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate.cc
-@@ -1598,6 +1598,8 @@ void ChromeBrowsingDataRemoverDelegate::OnTaskComplete(
+@@ -1606,6 +1606,8 @@ void ChromeBrowsingDataRemoverDelegate::OnTaskComplete(
  const char* ChromeBrowsingDataRemoverDelegate::GetHistogramSuffix(
      TracingDataType task) {
    switch (task) {

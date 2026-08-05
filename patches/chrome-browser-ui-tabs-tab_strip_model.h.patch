@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/tabs/tab_strip_model.h b/chrome/browser/ui/tabs/tab_strip_model.h
-index 87ad841b0a938250b5531965b9f48382232cff5f..3ae539a28b13073b5a68fa043e1b17c224823603 100644
+index cad35db1603008790d8ea6a63fc0cc624c895235..af98f62b3bf4c32f4ef94ec9eb635dbe00a8f8ad 100644
 --- a/chrome/browser/ui/tabs/tab_strip_model.h
 +++ b/chrome/browser/ui/tabs/tab_strip_model.h
 @@ -43,7 +43,7 @@
@@ -44,7 +44,7 @@ index 87ad841b0a938250b5531965b9f48382232cff5f..3ae539a28b13073b5a68fa043e1b17c2
      CommandLast
    };
    // LINT.ThenChange(//tools/metrics/histograms/metadata/tab/histograms.xml:TabContextMenuCommand)
-@@ -905,6 +913,7 @@ class TabStripModel {
+@@ -903,6 +911,7 @@ class TabStripModel {
        const content::WebContents* contents) const;
  
   private:
@@ -52,7 +52,7 @@ index 87ad841b0a938250b5531965b9f48382232cff5f..3ae539a28b13073b5a68fa043e1b17c2
    FRIEND_TEST_ALL_PREFIXES(TabStripModelTest, GetIndicesClosedByCommand);
    // Temporary private API.
    FRIEND_TEST_ALL_PREFIXES(TabStripModelTest, FindGroupIdFor);
-@@ -1187,7 +1196,7 @@ class TabStripModel {
+@@ -1185,7 +1194,7 @@ class TabStripModel {
    };
  
    // Selects either the next tab (kNext), or the previous tab (kPrevious).

@@ -178,17 +178,10 @@ base::expected<base::FilePath, InstallStatus> UnpackChromeArchive(
       return base::unexpected(UNSUPPORTED_OPTION);
     }
     base::Version previous_version;
-    if (cmd_line.HasSwitch(switches::kPreviousVersion)) {
-      previous_version = base::Version(
-          cmd_line.GetSwitchValueASCII(switches::kPreviousVersion));
-    }
-
     std::unique_ptr<ArchivePatchHelper> archive_helper(
-        CreateChromeArchiveHelper(
-            setup_exe, install_archive, installer_state, unpack_path,
-            (previous_version.IsValid()
-                 ? UnPackConsumer::UNCOMPRESSED_CHROME_ARCHIVE
-                 : UnPackConsumer::COMPRESSED_CHROME_ARCHIVE)));
+        CreateChromeArchiveHelper(setup_exe, install_archive, installer_state,
+                                  unpack_path,
+                                  UnPackConsumer::COMPRESSED_CHROME_ARCHIVE));
     if (archive_helper) {
       VLOG(1) << "Installing Chrome from compressed archive "
               << archive_helper->compressed_archive().value();

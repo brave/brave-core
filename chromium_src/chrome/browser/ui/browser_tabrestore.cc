@@ -21,7 +21,7 @@ content::WebContents* MaybeRestoreTabTreeHierarchy(
     content::WebContents* restored_web_contents,
     const std::map<std::string, std::string>& extra_data) {
   if (auto* tree_tab_session_manager =
-          browser->browser_window_features()->GetTreeTabSessionManager()) {
+          browser->GetFeatures().GetTreeTabSessionManager()) {
     // tree tab session manager is only available when the browser is normal
     // browser.
     tree_tab_session_manager->MaybeRestoreTabTreeHierarchy(

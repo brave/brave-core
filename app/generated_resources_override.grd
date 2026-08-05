@@ -466,8 +466,6 @@ are declared in tools/grit/grit_args.gni.
         <if expr="not reven">
           </if>
       </if>
-      <if expr="enable_extensions or is_android">
-        </if>
       <if expr="enable_extensions_core">
         </if>
 

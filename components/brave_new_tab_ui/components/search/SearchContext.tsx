@@ -12,6 +12,7 @@ import { ContextUploadErrorType, ContextUploadStatus } from 'gen/components/omni
 import { InputState } from 'gen/ui/webui/resources/tsc/mojo/components/omnibox/composebox/composebox_query.mojom-webui';
 import { WindowOpenDisposition } from 'gen/ui/webui/resources/tsc/mojo/ui/base/mojom/window_open_disposition.mojom-webui';
 import { Size } from 'gen/ui/webui/resources/tsc/mojo/ui/gfx/geometry/mojom/geometry.mojom-webui';
+import { Url } from 'gen/ui/webui/resources/tsc/mojo/url/mojom/url.mojom-webui';
 
 interface Context {
   open: boolean,
@@ -102,6 +103,7 @@ class SearchPage implements PageInterface {
   setRestoredTabIds(tabIds: number[]): void { }
   setAimThreadRestoredTabs(tabs: TabInfo[]): void { }
   updateSmartTabSharingActive(active: boolean): void { }
+  setAimButtonConfig(text: string, tooltip: string, a11yLabel: string, iconUrl: Url): void { }
 }
 
 export const search = new SearchPage()

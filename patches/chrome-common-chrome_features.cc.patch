@@ -1,5 +1,5 @@
 diff --git a/chrome/common/chrome_features.cc b/chrome/common/chrome_features.cc
-index 2e3c31bcaf054b978dfd20200c98edabf35f7507..4019591744cac47f4a19950e1f529cfc137d30d5 100644
+index 86c3a6b34a40e8d9e6d71d1b41ab84983bc9a216..120a8ba279270366d4ed7f838f4886736736c73e 100644
 --- a/chrome/common/chrome_features.cc
 +++ b/chrome/common/chrome_features.cc
 @@ -377,7 +377,7 @@ const char kGlicActorUiDebounceTimerName[] = "glic-actor-ui-debounce-timer";

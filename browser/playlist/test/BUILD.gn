@@ -26,7 +26,12 @@ source_set("browser_tests") {
       "playlist_browsertest.cc",
     ]
 
-    deps += [ "//brave/browser/ui/sidebar:sidebar_impl" ]
+    deps += [
+      "//brave/browser/ui/sidebar:sidebar_impl",
+      "//chrome/browser/ui/actions",
+      "//chrome/browser/ui/views/frame:toolbar_button_provider",
+      "//chrome/browser/ui/views/page_action:page_action_test_support",
+    ]
   }
 
   deps += [

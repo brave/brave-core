@@ -90,6 +90,8 @@
     </message>
     <if expr="is_chromeos">
       </if>
+    <if expr="is_win or is_macosx">
+      </if>
     <if expr="is_chromeos or is_win">
       </if>
     <if expr="is_win and _google_chrome">

@@ -10,6 +10,10 @@
 
 #include "chrome/browser/ui/content_settings/content_setting_image_model.h"
 
+namespace content {
+class Page;
+}
+
 class BraveAutoplayBlockedImageModel : public ContentSettingSimpleImageModel {
  public:
   BraveAutoplayBlockedImageModel();
@@ -20,7 +24,7 @@ class BraveAutoplayBlockedImageModel : public ContentSettingSimpleImageModel {
   bool UpdateAndGetVisibility(content::WebContents* web_contents) override;
   std::unique_ptr<ContentSettingBubbleModel> CreateBubbleModelImpl(
       ContentSettingBubbleModel::Delegate* delegate,
-      content::WebContents* web_contents) override;
+      content::Page& page) override;
 };
 
 #endif  // BRAVE_BROWSER_UI_CONTENT_SETTINGS_BRAVE_AUTOPLAY_BLOCKED_IMAGE_MODEL_H_

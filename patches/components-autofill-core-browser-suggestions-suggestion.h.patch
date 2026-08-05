@@ -1,11 +1,11 @@
 diff --git a/components/autofill/core/browser/suggestions/suggestion.h b/components/autofill/core/browser/suggestions/suggestion.h
-index 5499e8e16750c155fda74b48941080ccb26fc36c..6690a9ea522619c5c1c6e1daa65a95a547e60a23 100644
+index 7c23945b87cd41d20e49de19d6bd7bbb01dbe87e..3595a62d067076ecb3ac3ce8f803078509e4e6d0 100644
 --- a/components/autofill/core/browser/suggestions/suggestion.h
 +++ b/components/autofill/core/browser/suggestions/suggestion.h
-@@ -696,6 +696,7 @@ struct Suggestion {
-   // Returns whether the user will see the suggestion in
-   // a "disabled and grayed-out" form.
-   bool HasDeactivatedStyle() const;
+@@ -694,6 +694,7 @@ struct Suggestion {
+ 
+   // Returns whether the user is able to focus or select the suggestion.
+   bool IsSelectable() const;
 +  bool brave_new_email_alias_suggestion = false;
  };
  
