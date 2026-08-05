@@ -48,7 +48,6 @@ public class BraveBottomControlsMediatorTest {
     @Mock private KeyboardVisibilityDelegate mKeyboardVisibilityDelegate;
     @Mock private BottomControlsStacker mBottomControlsStacker;
     @Mock private BrowserControlsStateProvider mBrowserControlsStateProvider;
-    @Mock private BrowserStateBrowserControlsVisibilityDelegate mBrowserControlsVisibilityDelegate;
     @Mock private FullscreenManager mFullscreenManager;
     @Mock private OneshotSupplier<BottomControlsContentDelegate> mContentDelegateSupplier;
     @Mock private TabObscuringHandler mTabObscuringHandler;
@@ -67,7 +66,10 @@ public class BraveBottomControlsMediatorTest {
                         mWindowAndroid,
                         mModel,
                         mBottomControlsStacker,
-                        mBrowserControlsVisibilityDelegate,
+                        // Not a mock: NullableObservableSupplier is @DoNotMock, so supply the
+                        // persistent fullscreen state instead.
+                        new BrowserStateBrowserControlsVisibilityDelegate(
+                                ObservableSuppliers.createNonNull(false)),
                         mFullscreenManager,
                         LayerType.BOTTOM_TOOLBAR,
                         mContentDelegateSupplier,
