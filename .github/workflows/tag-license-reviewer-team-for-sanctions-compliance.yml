@@ -2,7 +2,7 @@ name: Tag license-reviewer team for Sanctions Compliance
 
 on:
   pull_request:
-    types: labeled
+    types: [labeled]
 
 permissions:
   pull-requests: write
