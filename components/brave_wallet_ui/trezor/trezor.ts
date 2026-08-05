@@ -30,7 +30,16 @@ import {
   GetDeviceNameResponse,
 } from '../common/hardware/trezor/trezor-messages'
 import { addTrezorCommandHandler } from '../common/hardware/trezor/trezor-command-handler'
+import { loadTimeData } from '../../common/loadTimeData'
+import { setupTrezorBridge } from './trezor_bridge'
 
+if (loadTimeData.getBoolean('isTrezorMojoBridgeEnabled')) {
+  setupTrezorBridge()
+} else {
+  setupPostMessageBridge()
+}
+
+function setupPostMessageBridge() {
 const hexPad = (hexString: string) => {
   if (hexString.length % 2 === 1) {
     return `0${hexString}`
@@ -239,3 +248,4 @@ addTrezorCommandHandler(
     })
   },
 )
+}
