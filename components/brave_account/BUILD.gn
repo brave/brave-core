@@ -29,6 +29,8 @@ source_set("brave_account") {
     "flows/resend_verification_email.h",
     "flows/reset_password.cc",
     "flows/reset_password.h",
+    "flows/update_email.cc",
+    "flows/update_email.h",
     "logged_in_state.cc",
     "logged_in_state.h",
     "logged_out_state.cc",
@@ -137,6 +139,7 @@ source_set("unit_tests") {
     "flows/register_unittest.cc",
     "flows/resend_verification_email_unittest.cc",
     "flows/reset_password_unittest.cc",
+    "flows/update_email_unittest.cc",
     "prefs_unittest.cc",
     "state_base_unittest.cc",
   ]

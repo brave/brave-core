@@ -74,7 +74,7 @@ class BraveAccountService : public KeyedService {
   void BindInterface(
       mojo::PendingReceiver<mojom::Authentication> pending_receiver);
 
-  base::OneShotTimer* AuthValidateTimerForTesting();
+  base::OneShotTimer* UpdateEmailTimerForTesting();
 
  private:
   void FinishInitialization(scoped_refptr<os_crypt_async::Encryptor> encryptor);

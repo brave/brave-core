@@ -183,10 +183,13 @@ class StateBase : public mojom::Authentication {
   // `GetServiceToken`, and `LogOut` overrides). `ResendVerificationEmail` is
   // the exception: it is owned by `StateBase` itself (see
   // `resend_verification_email_` below), because its override is valid in both
-  // states. They are friended on `StateBase` (not on the owning state) because
-  // the plumbing they borrow through their back-reference - request lifetime
-  // (`in_flight_`, `SendStateOwnedRequest()`), crypto, and
-  // `account_state_prefs_` - is bound to `StateBase` and can't move out.
+  // states. `UpdateEmail`, owned by `LoggedInState`, implements no mojom
+  // override at all: it drives itself, polling in the background to refresh
+  // the stored email. They are friended on `StateBase` (not on the owning
+  // state) because the plumbing they borrow through their back-reference -
+  // request lifetime (`in_flight_`, `SendStateOwnedRequest()`,
+  // `SendCallerOwnedRequest()`), crypto, and `account_state_prefs_` - is bound
+  // to `StateBase` and can't move out.
   friend class ChangePassword;
   friend class GetServiceToken;
   friend class Login;
@@ -194,6 +197,7 @@ class StateBase : public mojom::Authentication {
   friend class Register;
   friend class ResendVerificationEmail;
   friend class ResetPassword;
+  friend class UpdateEmail;
 
   void AddObserver(
       mojo::PendingRemote<mojom::AuthenticationObserver> observer) final;
