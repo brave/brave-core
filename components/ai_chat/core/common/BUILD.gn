@@ -10,7 +10,6 @@ component("common") {
   sources = [
     "ai_chat_urls.cc",
     "ai_chat_urls.h",
-    "constants.h",
     "features.cc",
     "features.h",
     "pref_names.cc",
@@ -23,6 +22,8 @@ component("common") {
     "utils.h",
   ]
 
+  public_deps = [ ":constants" ]
+
   deps = [
     "//base",
     "//brave/brave_domains",
@@ -31,6 +32,18 @@ component("common") {
     "//brave/components/ai_chat/core/proto",
     "//brave/components/constants",
     "//components/prefs",
+    "//url",
+  ]
+}
+
+# Renderer-safe header-only target exposing constants (e.g. the code sandbox
+# WebUI host) so that blink renderer code can depend on the constants without
+# pulling in the rest of //brave/components/ai_chat/core/common.
+source_set("constants") {
+  sources = [ "constants.h" ]
+
+  deps = [
+    "//base",
     "//url",
   ]
 }

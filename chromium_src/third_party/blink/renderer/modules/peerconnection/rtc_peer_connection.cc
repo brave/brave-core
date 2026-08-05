@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/ai_chat/core/common/constants.h"
 #include "third_party/blink/renderer/core/frame/local_dom_window.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/messaging/message_port.h"
@@ -16,19 +17,17 @@ namespace {
 // chrome-untrusted://aichat-code-sandbox executes untrusted AI-generated code
 // in a sandboxed iframe which runs with an opaque origin. CSP cannot block
 // WebRTC (ICE uses UDP), so block RTCPeerConnection for the page's entire
-// frame tree by checking the local frame root's origin.
-// Keep the host in sync with kAIChatCodeSandboxUIHost in
-// brave/common/webui_url_constants.h.
+// frame tree by checking the top-level frame's origin. The top-level frame may
+// live in another renderer process, so resolve it via Frame::Top() rather than
+// LocalFrameRoot() (which is only the top of the current renderer).
 bool IsInAIChatCodeSandbox(LocalDOMWindow* window) {
   if (!window || !window->GetFrame()) {
     return false;
   }
-  LocalDOMWindow* root_window =
-      window->GetFrame()->LocalFrameRoot().DomWindow();
-  const SecurityOrigin* root_origin =
-      root_window ? root_window->GetSecurityOrigin() : nullptr;
-  return root_origin && root_origin->Protocol() == "chrome-untrusted" &&
-         root_origin->Host() == "aichat-code-sandbox";
+  const SecurityOrigin* top_origin =
+      window->GetFrame()->Top()->GetSecurityContext()->GetSecurityOrigin();
+  return top_origin && top_origin->Protocol() == "chrome-untrusted" &&
+         top_origin->Host() == ai_chat::kAIChatCodeSandboxUIHost;
 }
 
 }  // namespace
