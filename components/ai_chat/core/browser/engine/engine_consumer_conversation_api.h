@@ -55,7 +55,6 @@ class EngineConsumerConversationAPI : public EngineConsumer {
   ~EngineConsumerConversationAPI() override;
 
   // EngineConsumer
-  using EngineConsumer::GenerateAssistantResponse;
   void GenerateQuestionSuggestions(
       PageContents page_contents,
       SuggestedQuestionsCallback callback) override;

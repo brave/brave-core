@@ -51,7 +51,6 @@ class EngineConsumerOAIRemote : public EngineConsumer {
   ~EngineConsumerOAIRemote() override;
 
   // EngineConsumer
-  using EngineConsumer::GenerateAssistantResponse;
   void GenerateQuestionSuggestions(
       PageContents page_contents,
       SuggestedQuestionsCallback callback) override;

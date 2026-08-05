@@ -41,13 +41,6 @@ struct RewriteActionTestParam {
   std::optional<mojom::SimpleRequestType> expected_simple_request_type;
 };
 
-EngineConsumer::ConversationHistoryView ToHistoryView(
-    const EngineConsumer::ConversationHistory& owning) {
-  return base::ToVector<const mojom::ConversationTurn*>(
-      owning,
-      [](const mojom::ConversationTurnPtr& turn) { return turn.get(); });
-}
-
 // Creates a WebSourcesContentBlock. If any |page_content_sizes| element has
 // a value, the source includes page_content, extra_snippets, and rich_results
 // are populated; otherwise those fields are nullopt/empty (stripped).
@@ -119,9 +112,9 @@ class OAIMessageUtilsTest : public testing::Test {
     history.pop_back();  // Remove assistant turn
 
     // Call BuildOAIMessages
-    std::vector<OAIMessage> messages =
-        BuildOAIMessages(PageContentsMap(), ToHistoryView(history), prefs,
-                         exclude_memory, 10000, [](std::string&) {});
+    std::vector<OAIMessage> messages = BuildOAIMessages(
+        PageContentsMap(), EngineConsumer::ToHistoryView(history), prefs,
+        exclude_memory, 10000, [](std::string&) {});
 
     // Verify: Should have 1 human message with NO memory block
     ASSERT_EQ(messages.size(), 1u);
@@ -278,8 +271,8 @@ TEST_F(OAIMessageUtilsTest, BuildOAIMessages) {
 
   bool sanitize_input_called = false;
   std::vector<OAIMessage> messages = BuildOAIMessages(
-      std::move(page_contents_map), ToHistoryView(history), nullptr, true,
-      10000,
+      std::move(page_contents_map), EngineConsumer::ToHistoryView(history),
+      nullptr, true, 10000,
       [&sanitize_input_called](std::string&) { sanitize_input_called = true; });
 
   EXPECT_TRUE(sanitize_input_called);
@@ -350,9 +343,9 @@ TEST_F(OAIMessageUtilsTest, BuildOAIMessages_ContentTruncation) {
   history.push_back(std::move(turn2));
 
   // Set max_length to fit newer content but not both
-  std::vector<OAIMessage> messages =
-      BuildOAIMessages(std::move(page_contents_map), ToHistoryView(history),
-                       nullptr, true, 11, [](std::string&) {});
+  std::vector<OAIMessage> messages = BuildOAIMessages(
+      std::move(page_contents_map), EngineConsumer::ToHistoryView(history),
+      nullptr, true, 11, [](std::string&) {});
 
   // Should have 2 messages
   ASSERT_EQ(messages.size(), 2u);
@@ -450,9 +443,9 @@ TEST_F(OAIMessageUtilsTest, BuildOAIMessages_UploadedFiles) {
   history[9]->text = "response4";
 
   // Build OAI messages
-  std::vector<OAIMessage> messages =
-      BuildOAIMessages(std::move(page_contents_map), ToHistoryView(history),
-                       nullptr, true, 10000, [](std::string&) {});
+  std::vector<OAIMessage> messages = BuildOAIMessages(
+      std::move(page_contents_map), EngineConsumer::ToHistoryView(history),
+      nullptr, true, 10000, [](std::string&) {});
 
   // Should have 10 messages (5 human, 5 assistant)
   ASSERT_EQ(messages.size(), 10u);
@@ -575,9 +568,9 @@ TEST_F(OAIMessageUtilsTest, BuildOAIMessages_PdfExtractedTextPreferred) {
   history[0]->uploaded_files = std::move(pdfs);
 
   PageContentsMap page_contents_map;
-  std::vector<OAIMessage> messages =
-      BuildOAIMessages(std::move(page_contents_map), ToHistoryView(history),
-                       nullptr, true, 10000, [](std::string&) {});
+  std::vector<OAIMessage> messages = BuildOAIMessages(
+      std::move(page_contents_map), EngineConsumer::ToHistoryView(history),
+      nullptr, true, 10000, [](std::string&) {});
 
   ASSERT_EQ(messages.size(), 2u);
   EXPECT_EQ(messages[0].role, "user");
@@ -612,9 +605,9 @@ TEST_F(OAIMessageUtilsTest, BuildOAIMessages_TextFileExtractedText) {
   history[0]->uploaded_files = std::move(text_files);
 
   PageContentsMap page_contents_map;
-  std::vector<OAIMessage> messages =
-      BuildOAIMessages(std::move(page_contents_map), ToHistoryView(history),
-                       nullptr, true, 10000, [](std::string&) {});
+  std::vector<OAIMessage> messages = BuildOAIMessages(
+      std::move(page_contents_map), EngineConsumer::ToHistoryView(history),
+      nullptr, true, 10000, [](std::string&) {});
 
   ASSERT_EQ(messages.size(), 2u);
   EXPECT_EQ(messages[0].role, "user");
@@ -640,9 +633,9 @@ TEST_F(OAIMessageUtilsTest, BuildOAIMessages_TextFileDefaultFilename) {
   history[0]->uploaded_files = std::move(text_files);
 
   PageContentsMap page_contents_map;
-  std::vector<OAIMessage> messages =
-      BuildOAIMessages(std::move(page_contents_map), ToHistoryView(history),
-                       nullptr, true, 10000, [](std::string&) {});
+  std::vector<OAIMessage> messages = BuildOAIMessages(
+      std::move(page_contents_map), EngineConsumer::ToHistoryView(history),
+      nullptr, true, 10000, [](std::string&) {});
 
   ASSERT_EQ(messages.size(), 2u);
   ASSERT_EQ(messages[0].content.size(), 3u);
@@ -707,9 +700,9 @@ TEST_F(OAIMessageUtilsTest, BuildOAIMessages_Memory) {
   history[2]->selected_text = "Selected excerpt";
 
   // Call BuildOAIMessages
-  std::vector<OAIMessage> messages =
-      BuildOAIMessages(std::move(page_contents_map), ToHistoryView(history),
-                       &prefs_, false, 10000, [](std::string&) {});
+  std::vector<OAIMessage> messages = BuildOAIMessages(
+      std::move(page_contents_map), EngineConsumer::ToHistoryView(history),
+      &prefs_, false, 10000, [](std::string&) {});
 
   // Should have 3 messages
   ASSERT_EQ(messages.size(), 3u);
@@ -765,9 +758,9 @@ TEST_F(OAIMessageUtilsTest, BuildOAIMessages_Memory_HTMLEscaping) {
   history.pop_back();
 
   // Call BuildOAIMessages
-  std::vector<OAIMessage> messages =
-      BuildOAIMessages(PageContentsMap(), ToHistoryView(history), &prefs_,
-                       false, 10000, [](std::string&) {});
+  std::vector<OAIMessage> messages = BuildOAIMessages(
+      PageContentsMap(), EngineConsumer::ToHistoryView(history), &prefs_, false,
+      10000, [](std::string&) {});
 
   // Should have 1 human message
   ASSERT_EQ(messages.size(), 1u);
@@ -815,9 +808,9 @@ TEST_F(OAIMessageUtilsTest, BuildOAIMessages_Skills) {
   page_contents_map[*history[0]->uuid] = {std::cref(page_content)};
 
   // Call BuildOAIMessages
-  std::vector<OAIMessage> messages =
-      BuildOAIMessages(std::move(page_contents_map), ToHistoryView(history),
-                       nullptr, false, 10000, [](std::string&) {});
+  std::vector<OAIMessage> messages = BuildOAIMessages(
+      std::move(page_contents_map), EngineConsumer::ToHistoryView(history),
+      nullptr, false, 10000, [](std::string&) {});
 
   // Should have 4 OAI messages (2 human + 2 assistant)
   ASSERT_EQ(messages.size(), 4u);
@@ -1340,9 +1333,9 @@ TEST_F(OAIMessageUtilsTest, BuildOAIMessages_StripWebSourcesOutputs) {
     history[1]->events = std::move(events);
   }
 
-  std::vector<OAIMessage> messages =
-      BuildOAIMessages(PageContentsMap(), ToHistoryView(history), nullptr, true,
-                       100000, [](std::string&) {});
+  std::vector<OAIMessage> messages = BuildOAIMessages(
+      PageContentsMap(), EngineConsumer::ToHistoryView(history), nullptr, true,
+      100000, [](std::string&) {});
 
   std::vector<const OAIMessage*> tool_msgs;
   for (const auto& m : messages) {
@@ -1431,9 +1424,9 @@ TEST_F(OAIMessageUtilsTest, BuildOAIMessages_DropLargeToolResults) {
     history[1]->events = std::move(events);
   }
 
-  std::vector<OAIMessage> messages =
-      BuildOAIMessages(PageContentsMap(), ToHistoryView(history), nullptr, true,
-                       100000, [](std::string&) {});
+  std::vector<OAIMessage> messages = BuildOAIMessages(
+      PageContentsMap(), EngineConsumer::ToHistoryView(history), nullptr, true,
+      100000, [](std::string&) {});
 
   std::vector<const OAIMessage*> tool_msgs;
   for (const auto& m : messages) {
@@ -1565,9 +1558,9 @@ TEST_F(OAIMessageUtilsTest, BuildOAIMessages_MixedLargeToolOutputs) {
     history[3]->events = std::move(events);
   }
 
-  std::vector<OAIMessage> messages =
-      BuildOAIMessages(PageContentsMap(), ToHistoryView(history), nullptr, true,
-                       100000, [](std::string&) {});
+  std::vector<OAIMessage> messages = BuildOAIMessages(
+      PageContentsMap(), EngineConsumer::ToHistoryView(history), nullptr, true,
+      100000, [](std::string&) {});
 
   // Collect tool-role messages.
   std::vector<const OAIMessage*> tool_msgs;

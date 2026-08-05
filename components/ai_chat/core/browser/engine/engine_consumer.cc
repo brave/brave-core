@@ -100,22 +100,12 @@ bool EngineConsumer::CanPerformCompletionRequest(
   return true;
 }
 
-void EngineConsumer::GenerateAssistantResponse(
-    PageContentsMap&& page_contents,
-    const ConversationHistory& conversation_history,
-    bool is_temporary_chat,
-    const std::vector<base::WeakPtr<Tool>>& tools,
-    std::optional<std::string_view> preferred_tool_name,
-    const ConversationCapabilitySet& conversation_capabilities,
-    GenerationDataCallback data_received_callback,
-    GenerationCompletedCallback completed_callback) {
-  GenerateAssistantResponse(
-      std::move(page_contents),
-      base::ToVector<const mojom::ConversationTurn*>(
-          conversation_history,
-          [](const mojom::ConversationTurnPtr& turn) { return turn.get(); }),
-      is_temporary_chat, tools, preferred_tool_name, conversation_capabilities,
-      std::move(data_received_callback), std::move(completed_callback));
+// static
+EngineConsumer::ConversationHistoryView EngineConsumer::ToHistoryView(
+    const ConversationHistory& conversation_history) {
+  return base::ToVector<const mojom::ConversationTurn*>(
+      conversation_history,
+      [](const mojom::ConversationTurnPtr& turn) { return turn.get(); });
 }
 
 const std::string& EngineConsumer::GetModelName() const {
