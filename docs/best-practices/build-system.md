@@ -1109,3 +1109,35 @@ Only fall back to `brave_chrome_browser_ui_allow_circular_includes_from` /
 `sources.gni` as a temporary last resort, and never use `check_includes = false`
 to suppress circular include errors. See [`gni_sources.md`](../gni_sources.md)
 (Circular dependencies).
+
+<a id="BS-058"></a>
+
+## ❌ Don't Use System-Absolute Paths in GN
+
+**Targets that are part of the Brave build must never use system-absolute paths
+in GN. When calling `rebase_path()`, pass the path's expected base as
+`new_base`—usually `root_build_dir` for GN actions—so the generated Ninja file
+uses a relative, relocatable path.**
+
+```gn
+# ❌ WRONG - the default empty new_base produces a system-absolute path
+args = [ "--output=" + rebase_path(output) ]
+
+# ✅ CORRECT - rebase relative to the command's working directory
+args = [ "--output=" + rebase_path(output, root_build_dir) ]
+```
+
+One-argument `rebase_path()` produces a system-absolute, checkout-specific path,
+so never use it for a target that is part of the Brave build. Such paths can
+interfere with remote build execution and fail when build artifacts are reused
+from a cloned or relocated checkout. The exceptions are host-side tooling and
+targets that generate wrapper scripts or configuration exclusively for local
+developer use and never run on a remote bot worker. If a tool changes its
+working directory, rebase to that directory rather than blindly using
+`root_build_dir`. When a tool requires an absolute path, invoke it through a
+wrapper script that receives relative path arguments and converts them to
+absolute paths at runtime. See GN's
+[`rebase_path()` reference](https://gn.googlesource.com/gn/+/master/docs/reference.md#func_rebase_path)
+for the complete API contract.
+
+---
