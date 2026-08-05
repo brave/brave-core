@@ -20,15 +20,13 @@ import shlex
 import sys
 from pathlib import Path
 
-
-def is_path(value):
-    path = Path(value)
-
-    # path.name gets the filename. If it matches the whole string it's not a path
-    if path.name == value:
-        return False
-
-    return path.exists()
+# Paths prefixed with abs@ will be converted to absolute paths
+def maybe_abspath(value):
+    split = value.split("abs@", 1)
+    if len(split) == 2:
+      return split[0] + os.path.abspath(split[1])
+    else:
+      return value
 
 def main():
     if len(sys.argv) < 2:
@@ -46,33 +44,21 @@ def main():
 
     args = shlex.split(content)
 
-    # convert any argument paths to absolute paths
+    # Convert any abs@ arguments
     for index, arg in enumerate(args):
-        if is_path(arg):
-            args[index] = os.path.abspath(arg)
-
-
+        args[index] = maybe_abspath(arg)
     # Parse environment variables from command line arguments.
     env_vars = {}
     for arg in args:
         if '=' in arg:
             name, value = arg.split('=', 1)
-            # Convert any env paths to absolute paths
-            if is_path(value):
-                value = os.path.abspath(value)
             env_vars[name] = value
         else:
             break
 
-    # This script is designed to run binaries produced by the current build. We
-    # may prefix it with "./" to avoid picking up system versions that might
-    # also be on the path.
-    path = args[len(env_vars)]
-    if not os.path.isabs(path):
-        path = './' + path
 
     # The rest of the arguments are passed directly to the executable.
-    args = [path] + args[len(env_vars) + 1:]
+    args = args[len(env_vars):]
 
     env = os.environ.copy()
     # Include the current directory in the path
