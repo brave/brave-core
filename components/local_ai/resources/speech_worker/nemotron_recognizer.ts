@@ -297,7 +297,7 @@ export class NemotronStreamSession {
 
   private async processAvailable(final: boolean): Promise<void> {
     const { ort, tokens } = this.model
-    let emitted = false
+    let atLeastOneChunkProcessed = false
 
     while (this.frontend.hasFullChunk()) {
       const chunkIdx = this.chunkIdx++
@@ -424,8 +424,6 @@ export class NemotronStreamSession {
 
           const tok = argmax(
             dout.outputs.data as Float32Array,
-            0,
-            config.NEMO_VOCAB,
           )
 
           if (tok !== config.NEMO_BLANK) {
@@ -488,10 +486,10 @@ export class NemotronStreamSession {
         })
       }
 
-      emitted = true
+      atLeastOneChunkProcessed = true
     }
 
-    if (emitted || final) {
+    if (atLeastOneChunkProcessed || final) {
       const text = this.hyp
         .map((id) => tokens[id] ?? '')
         .join('')
