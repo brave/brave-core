@@ -66,9 +66,14 @@ jobs:
           ci_pr_title="CI run for contributor PR #$pr_number"
           existing_prs=$(gh pr list -H "$contribHeadRefName" --json isDraft,title,url)
           if [[ "$existing_prs" != "[]" ]]; then
-            ci_pr_url=$(jq -r --arg title "$ci_pr_title" \
-              'map(select(.isDraft and .title == $title)) | first | .url // ""' \
-              <<<"$existing_prs")
+            ci_pr_url=$(jq -r --arg title "$ci_pr_title" '
+              map(select(.isDraft and .title == $title)) |
+              if length > 1 then
+                error("Multiple draft PRs match title: \($title)")
+              else
+                .[0].url // ""
+              end
+            ' <<<"$existing_prs")
           fi
           if [[ -z "$ci_pr_url" ]]; then
             ci_pr_url=$(gh pr create \
