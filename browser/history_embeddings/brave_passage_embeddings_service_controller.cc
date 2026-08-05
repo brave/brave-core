@@ -5,16 +5,16 @@
 
 #include "brave/browser/history_embeddings/brave_passage_embeddings_service_controller.h"
 
+#include <memory>
 #include <utility>
 
-#include "base/files/file_util.h"
 #include "base/functional/bind.h"
 #include "base/logging.h"
 #include "base/no_destructor.h"
 #include "base/task/task_traits.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/local_ai/core/local_models_updater.h"
-#include "components/optimization_guide/proto/passage_embeddings_model_metadata.pb.h"
+#include "components/optimization_guide/proto/models.pb.h"
 #include "components/passage_embeddings/core/passage_embeddings_service_launcher.h"
 #include "content/public/browser/service_process_host.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
@@ -26,18 +26,6 @@ namespace {
 // The LiteRT model files ship in the shared EmbeddingGemma component, under a
 // litert/ subdir of its model dir.
 constexpr char kLitertModelSubdir[] = "litert";
-// Named after optimization guide's convention for the model in a model dir, so
-// the component can later ship a model-info.pb carrying this metadata without
-// publishing the model under a second name.
-constexpr char kLitertModelName[] = "model.tflite";
-constexpr char kSentencePieceModelName[] = "sentencepiece.model";
-// Matches the input window of the model the component ships. The embedder
-// derives the actual window from the model's input tensor, so this only feeds
-// the metadata the controller reports.
-constexpr uint32_t kLitertInputWindowSize = 512;
-constexpr int kLitertOutputSize = 768;
-constexpr double kLitertScoreThreshold = 0.45;
-constexpr int kLitertModelVersion = 2;
 
 // Launches the sandboxed Passage Embeddings utility process, whose LoadModels
 // is chromium_src-overridden to run EmbeddingGemma on LiteRT's CompiledModel
@@ -72,18 +60,8 @@ BravePassageEmbeddingsServiceController::Get() {
 BravePassageEmbeddingsServiceController::
     BravePassageEmbeddingsServiceController()
     : PassageEmbeddingsServiceController(LitertServiceLauncher::Create()) {
-  // Report the LiteRT model's metadata; the model file paths are resolved from
-  // the component in OnLocalModelsReady once it is installed.
-  optimization_guide::proto::PassageEmbeddingsModelMetadata metadata;
-  metadata.set_input_window_size(kLitertInputWindowSize);
-  metadata.set_output_size(kLitertOutputSize);
-  metadata.set_score_threshold(kLitertScoreThreshold);
-  model_metadata_ = std::move(metadata);
-  model_version_ = kLitertModelVersion;
-
   // AddObserver re-fires OnLocalModelsReady synchronously if the component is
-  // already installed; our handler resolves the model paths and notifies
-  // observer_list_ once the files are confirmed on disk.
+  // already installed, so this also covers a model installed before startup.
   updater_state_observation_.Observe(
       local_ai::LocalModelsUpdaterState::GetInstance());
 }
@@ -97,73 +75,39 @@ bool BravePassageEmbeddingsServiceController::MaybeUpdateModelInfo(
   return false;
 }
 
-bool BravePassageEmbeddingsServiceController::IsModelAvailable() {
-  // The model paths are resolved from the component in OnLocalModelsReady.
-  return !embeddings_model_path_.empty();
-}
-
 void BravePassageEmbeddingsServiceController::OnLocalModelsReady(
     const base::FilePath& install_dir) {
-  if (install_dir.empty()) {
-    // Component uninstall (or test reset) cleared the dir; drop the resolved
-    // model paths so IsModelAvailable() reports unavailable.
-    embeddings_model_path_ = base::FilePath();
-    sp_model_path_ = base::FilePath();
-    return;
-  }
-  // The LiteRT .tflite + SentencePiece model ship in the EmbeddingGemma
-  // component under a litert/ subdir. They may be absent (an older component,
-  // or the download withheld), so confirm both are on disk before reporting the
-  // model available -- the base-class LoadModels flow opens them
-  // unconditionally and would crash serializing a missing (null) file.
-  const base::FilePath litert_dir =
-      local_ai::LocalModelsUpdaterState::GetInstance()
-          ->GetEmbeddingGemmaModelDir()
-          .AppendASCII(kLitertModelSubdir);
-  const base::FilePath embeddings_model_path =
-      litert_dir.AppendASCII(kLitertModelName);
-  const base::FilePath sp_model_path =
-      litert_dir.AppendASCII(kSentencePieceModelName);
+  // The component ships the LiteRT model under a litert/ subdir, laid out the
+  // way optimization guide expects: model.tflite, model-info.pb, and the
+  // SentencePiece model listed in its additional_files. Loading it here reads
+  // the version and the embedder metadata from the component rather than
+  // hard-coding them, and reports no model at all when an older component (or
+  // a withheld download) leaves any of those files missing.
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE,
       {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
        base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN},
       base::BindOnce(
-          [](const base::FilePath& embeddings, const base::FilePath& sp) {
-            return base::PathExists(embeddings) && base::PathExists(sp);
-          },
-          embeddings_model_path, sp_model_path),
+          &optimization_guide::LoadAndVerifyModelInfoOffThread,
+          optimization_guide::proto::OPTIMIZATION_TARGET_PASSAGE_EMBEDDER,
+          local_ai::LocalModelsUpdaterState::GetInstance()
+              ->GetEmbeddingGemmaModelDir()
+              .AppendASCII(kLitertModelSubdir)),
       base::BindOnce(
-          &BravePassageEmbeddingsServiceController::OnLitertModelChecked,
-          base::Unretained(this), embeddings_model_path, sp_model_path));
+          &BravePassageEmbeddingsServiceController::OnLitertModelInfoLoaded,
+          base::Unretained(this)));
 }
 
-void BravePassageEmbeddingsServiceController::OnLitertModelChecked(
-    const base::FilePath& embeddings_model_path,
-    const base::FilePath& sp_model_path,
-    bool models_exist) {
-  if (!models_exist) {
-    VLOG(1) << "LiteRT model files missing under "
-            << embeddings_model_path.DirName()
-            << "; passage embeddings disabled until the component ships them";
-    return;
+void BravePassageEmbeddingsServiceController::OnLitertModelInfoLoaded(
+    std::unique_ptr<optimization_guide::ModelInfo> model_info) {
+  if (!model_info) {
+    VLOG(1) << "No usable LiteRT model in the EmbeddingGemma component; "
+               "passage embeddings disabled until it ships one";
   }
-  embeddings_model_path_ = embeddings_model_path;
-  sp_model_path_ = sp_model_path;
-  // SchedulingEmbedder is the only observer and SubmitWorkToEmbedder()
-  // short-circuits if work is already in flight, so re-firing on repeated
-  // component-updater notifications is harmless.
-  observer_list_.Notify(&EmbedderMetadataObserver::EmbedderMetadataUpdated,
-                        GetEmbedderMetadata());
-}
-
-EmbedderMetadata
-BravePassageEmbeddingsServiceController::GetEmbedderMetadata() {
-  // A distinct model_version from the previous WASM embedder so SqlDatabase
-  // re-embeds stored history rather than mixing vector spaces.
-  return EmbedderMetadata(kLitertModelVersion,
-                          /*output_size=*/kLitertOutputSize,
-                          /*search_score_threshold=*/kLitertScoreThreshold);
+  // Upstream validates the metadata, records the model paths and notifies
+  // observers. With no model info it clears the model recorded before, whose
+  // dir the component updater removes once this version is installed.
+  PassageEmbeddingsServiceController::MaybeUpdateModelInfo(model_info.get());
 }
 
 }  // namespace passage_embeddings
