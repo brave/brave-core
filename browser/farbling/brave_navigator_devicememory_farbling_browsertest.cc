@@ -18,6 +18,7 @@
 #include "chrome/browser/extensions/extension_browsertest.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/omnibox/omnibox_next_features.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/network_session_configurator/common/network_switches.h"
@@ -42,7 +43,15 @@ class BraveDeviceMemoryFarblingBrowserTest : public InProcessBrowserTest {
             brave_shields::features::kBraveShowStrictFingerprintingMode,
             webcompat::features::kBraveWebcompatExceptionsService,
         },
-        {});
+        {
+            // This test runs with --single-process (see SetUpCommandLine), so
+            // the omnibox popup WebUI shares the renderer process with the test
+            // page and grants that process WebUI bindings. Requests from the
+            // test page are then seen as coming from a WebUI renderer, which
+            // trips a DCHECK in WebRequestPermissions::HideRequest.
+            omnibox::internal::kWebUIOmniboxPopup,
+            omnibox::internal::kWebUIOmniboxAimPopup,
+        });
   }
 
   BraveDeviceMemoryFarblingBrowserTest(
