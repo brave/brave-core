@@ -23,6 +23,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
+import androidx.activity.OnBackPressedCallback;
+import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentManager;
 import androidx.preference.Preference;
@@ -131,6 +133,25 @@ public class PasswordSettings extends ChromeBaseSettingsFragment
     private final ImportFlow mImportFlow = new ImportFlow();
 
     private @MonotonicNonNull SearchViewProvider.Observer mSearchViewObserver;
+
+    private final OnBackPressedCallback mBackPressedCallback =
+            new OnBackPressedCallback(/* enabled= */ false) {
+                @Override
+                public void handleOnBackPressed() {
+                    SearchView searchView =
+                            mSearchItem == null ? null : (SearchView) mSearchItem.getActionView();
+                    if (searchView != null && !searchView.isIconified()) {
+                        // The toolbar search view is open, return to the full Password Manager
+                        // passwords list
+                        searchView.setQuery("", false);
+                        searchView.setIconified(true);
+                        // Exit search mode entirely (query = null, not ""), so Save passwords /
+                        // Auto sign-in switches and Import/Export are restored, not just the
+                        // empty-query list.
+                        filterPasswords(null);
+                    }
+                }
+            };
 
     public ExportFlow getExportFlowForTesting() {
         return mExportFlow;
@@ -327,11 +348,21 @@ public class PasswordSettings extends ChromeBaseSettingsFragment
 
         // Disable animations of preference changes.
         getListView().setItemAnimator(null);
+        requireActivity()
+                .getOnBackPressedDispatcher()
+                .addCallback(getViewLifecycleOwner(), mBackPressedCallback);
     }
 
     @Override
     public void setSearchViewObserver(SearchViewProvider.Observer observer) {
-        mSearchViewObserver = observer;
+        // Enable the back callback exactly while the local search view is open, so back collapses
+        // the search instead of exiting the fragment (see mBackPressedCallback). SearchUtils drives
+        // this observer: onUpdated(true) on open, onUpdated(false) on close.
+        mSearchViewObserver =
+                visible -> {
+                    mBackPressedCallback.setEnabled(visible);
+                    observer.onUpdated(visible);
+                };
     }
 
     @Initializer
