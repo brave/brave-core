@@ -14,8 +14,8 @@
 #include "brave/components/brave_account/brave_account_utils.h"
 #include "brave/components/brave_account/endpoint_client/with_headers.h"
 #include "brave/components/brave_account/mojom/register.mojom.h"
-#include "brave/components/brave_account/state_base.h"
 #include "brave/components/brave_account/state_internal.h"
+#include "services/network/public/cpp/shared_url_loader_factory.h"
 
 namespace brave_account {
 
@@ -25,7 +25,11 @@ using internal::MakeClientError;
 using internal::MakeRequest;
 using internal::MakeServerError;
 
-Register::Register(StateBase& state) : state_(state) {}
+Register::Register(
+    AccountStatePrefs& account_state_prefs,
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+    const os_crypt_async::Encryptor& encryptor)
+    : FlowBase(account_state_prefs, std::move(url_loader_factory), encryptor) {}
 
 Register::~Register() = default;
 
@@ -43,7 +47,7 @@ void Register::Step1(mojom::Service initiating_service,
   request.body.new_account_email = email;
   request.body.serialize_response = true;
 
-  state_->SendStateOwnedRequest<endpoints::PasswordInit>(
+  SendStateOwnedRequest<endpoints::PasswordInit>(
       std::move(request),
       base::BindOnce(&Register::OnStep1, weak_factory_.GetWeakPtr(),
                      std::move(callback)));
@@ -55,8 +59,7 @@ void Register::Step2(const std::string& encrypted_verification_token,
   CHECK(!encrypted_verification_token.empty());
   CHECK(!serialized_record.empty());
 
-  const std::string verification_token =
-      state_->Decrypt(encrypted_verification_token);
+  const std::string verification_token = Decrypt(encrypted_verification_token);
   if (verification_token.empty()) {
     return std::move(callback).Run(base::unexpected(MakeClientError<
                                                     mojom::RegisterError>(
@@ -68,7 +71,7 @@ void Register::Step2(const std::string& encrypted_verification_token,
   SetBearerToken(request, verification_token);
   request.body.serialized_record = serialized_record;
 
-  state_->SendStateOwnedRequest<endpoints::PasswordFinalize>(
+  SendStateOwnedRequest<endpoints::PasswordFinalize>(
       std::move(request),
       base::BindOnce(&Register::OnStep2, weak_factory_.GetWeakPtr(),
                      std::move(callback), encrypted_verification_token));
@@ -78,10 +81,9 @@ void Register::Step3(const std::string& code,
                      mojom::Authentication::RegisterStep3Callback callback) {
   CHECK(!code.empty());
 
-  auto verification_token =
-      state_->GetDecryptedVerificationToken<mojom::RegisterError>(
-          mojom::VerificationIntent::NewLoggedOutIntent(
-              mojom::LoggedOutVerificationIntent::kRegistration));
+  auto verification_token = GetDecryptedVerificationToken<mojom::RegisterError>(
+      mojom::VerificationIntent::NewLoggedOutIntent(
+          mojom::LoggedOutVerificationIntent::kRegistration));
   if (!verification_token.has_value()) {
     return std::move(callback).Run(
         base::unexpected(std::move(verification_token).error()));
@@ -91,7 +93,7 @@ void Register::Step3(const std::string& code,
   SetBearerToken(request, *verification_token);
   request.body.code = code;
 
-  state_->SendStateOwnedRequest<endpoints::VerifyComplete>(
+  SendStateOwnedRequest<endpoints::VerifyComplete>(
       std::move(request),
       base::BindOnce(&Register::OnStep3, weak_factory_.GetWeakPtr(),
                      std::move(callback)));
@@ -130,7 +132,7 @@ void Register::OnStep1(mojom::Authentication::RegisterStep1Callback callback,
             }
 
             std::string encrypted_verification_token =
-                state_->Encrypt(*success_body.verification_token);
+                Encrypt(*success_body.verification_token);
             if (encrypted_verification_token.empty()) {
               return base::unexpected(MakeClientError<mojom::RegisterError>(
                   mojom::RegisterClientErrorCode::
@@ -179,7 +181,7 @@ void Register::OnStep2(mojom::Authentication::RegisterStep2Callback callback,
   std::move(callback).Run(std::move(result));
 
   if (success) {
-    state_->account_state_prefs_->AddVerification(
+    account_state_prefs_->AddVerification(
         encrypted_verification_token,
         mojom::VerificationIntent::NewLoggedOutIntent(
             mojom::LoggedOutVerificationIntent::kRegistration));
@@ -222,7 +224,7 @@ void Register::OnStep3(mojom::Authentication::RegisterStep3Callback callback,
             }
 
             if (encrypted_authentication_token =
-                    state_->Encrypt(success_body.auth_token.GetString());
+                    Encrypt(success_body.auth_token.GetString());
                 encrypted_authentication_token.empty()) {
               return base::unexpected(MakeClientError<mojom::RegisterError>(
                   mojom::RegisterClientErrorCode::
@@ -242,8 +244,7 @@ void Register::OnStep3(mojom::Authentication::RegisterStep3Callback callback,
   if (success) {
     CHECK(!email.empty());
     CHECK(!encrypted_authentication_token.empty());
-    state_->account_state_prefs_->SetLoggedIn(email,
-                                              encrypted_authentication_token);
+    account_state_prefs_->SetLoggedIn(email, encrypted_authentication_token);
   }
 }
 

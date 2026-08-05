@@ -6,11 +6,19 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ACCOUNT_FLOWS_LOG_OUT_H_
 #define BRAVE_COMPONENTS_BRAVE_ACCOUNT_FLOWS_LOG_OUT_H_
 
-#include "base/memory/raw_ref.h"
+#include "base/memory/scoped_refptr.h"
+#include "brave/components/brave_account/brave_account_state_prefs.h"
+#include "brave/components/brave_account/flows/flow_base.h"
+
+namespace network {
+class SharedURLLoaderFactory;
+}  // namespace network
+
+namespace os_crypt_async {
+class Encryptor;
+}  // namespace os_crypt_async
 
 namespace brave_account {
-
-class StateBase;
 
 // Owns the log-out of the logged-in `mojom::Authentication` surface.
 // `LoggedInState` holds a `LogOut` member and forwards the single mojom
@@ -19,11 +27,13 @@ class StateBase;
 //
 //   operator()() -> /v2/auth/logout
 //
-// The request is sent through the owning state's `StateBase` helpers, so its
-// lifetime is tied to that state (see `StateBase::SendUnownedRequest`).
-class LogOut {
+// The request is sent through the inherited `FlowBase` helpers, so its
+// lifetime is tied to this flow (see `FlowBase::SendUnownedRequest`).
+class LogOut : public FlowBase {
  public:
-  explicit LogOut(StateBase& state);
+  LogOut(AccountStatePrefs& account_state_prefs,
+         scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+         const os_crypt_async::Encryptor& encryptor);
 
   LogOut(const LogOut&) = delete;
   LogOut& operator=(const LogOut&) = delete;
@@ -31,9 +41,6 @@ class LogOut {
   ~LogOut();
 
   void operator()();
-
- private:
-  const raw_ref<StateBase> state_;
 };
 
 }  // namespace brave_account

@@ -3,12 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_account/state_base.h"
+#include "brave/components/brave_account/flows/flow_base.h"
 
 #include <memory>
 #include <utility>
 
-#include "base/functional/callback_helpers.h"
 #include "base/location.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/run_loop.h"
@@ -42,29 +41,27 @@ struct TestEndpoint {
   static GURL URL() { return GURL("https://example.com/api/query"); }
 };
 
-class TestState : public StateBase {
+class TestFlow : public FlowBase {
  public:
-  TestState(AccountStatePrefs& account_state_prefs,
-            scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-            const os_crypt_async::Encryptor& encryptor,
-            AddObserverCallback add_observer)
-      : StateBase(account_state_prefs,
-                  std::move(url_loader_factory),
-                  encryptor,
-                  std::move(add_observer)) {}
+  TestFlow(AccountStatePrefs& account_state_prefs,
+           scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+           const os_crypt_async::Encryptor& encryptor)
+      : FlowBase(account_state_prefs,
+                 std::move(url_loader_factory),
+                 encryptor) {}
 
-  using StateBase::SendStateOwnedRequest;
+  using FlowBase::SendStateOwnedRequest;
 };
 
-class StateBaseTest : public testing::Test {
+class FlowBaseTest : public testing::Test {
  protected:
   void SetUp() override {
     prefs::RegisterPrefs(pref_service_.registry());
     account_state_prefs_ = std::make_unique<AccountStatePrefs>(pref_service_);
     encryptor_ = os_crypt_async::GetTestEncryptorForTesting();
-    state_ = std::make_unique<TestState>(
+    flow_ = std::make_unique<TestFlow>(
         *account_state_prefs_, test_url_loader_factory_.GetSafeWeakWrapper(),
-        *encryptor_, base::DoNothing());
+        *encryptor_);
   }
 
   base::test::TaskEnvironment task_environment_;
@@ -72,7 +69,7 @@ class StateBaseTest : public testing::Test {
   std::unique_ptr<AccountStatePrefs> account_state_prefs_;
   network::TestURLLoaderFactory test_url_loader_factory_;
   scoped_refptr<os_crypt_async::Encryptor> encryptor_;
-  std::unique_ptr<TestState> state_;
+  std::unique_ptr<TestFlow> flow_;
 };
 
 }  // namespace
@@ -80,25 +77,25 @@ class StateBaseTest : public testing::Test {
 // Happy path: the user callback fires with the response.
 // Smoke test that the `.Then(RemoveRequestHandle)` continuation doesn't
 // break delivery.
-TEST_F(StateBaseTest, StateOwnedRequest_DeliversResponse) {
+TEST_F(FlowBaseTest, StateOwnedRequest_DeliversResponse) {
   endpoint_client::MockResponseFor<TestEndpoint>(test_url_loader_factory_,
                                                  TestEndpoint::Response{
                                                      .net_error = net::OK,
                                                  });
   base::test::TestFuture<TestEndpoint::Response> future;
-  state_->SendStateOwnedRequest<TestEndpoint>(TestEndpoint::Request(),
-                                              future.GetCallback());
+  flow_->SendStateOwnedRequest<TestEndpoint>(TestEndpoint::Request(),
+                                             future.GetCallback());
   EXPECT_TRUE(future.Wait());
 }
 
-// `~StateBase` must cancel still-pending state-owned requests:
-// no response is registered, so the loader hangs until the state is
+// `~FlowBase` must cancel still-pending state-owned requests:
+// no response is registered, so the loader hangs until the flow is
 // destroyed, and the user callback must never run.
-TEST_F(StateBaseTest, StateOwnedRequest_DestructionCancelsPendingRequest) {
+TEST_F(FlowBaseTest, StateOwnedRequest_DestructionCancelsPendingRequest) {
   base::test::TestFuture<TestEndpoint::Response> future;
-  state_->SendStateOwnedRequest<TestEndpoint>(TestEndpoint::Request(),
-                                              future.GetCallback());
-  state_.reset();
+  flow_->SendStateOwnedRequest<TestEndpoint>(TestEndpoint::Request(),
+                                             future.GetCallback());
+  flow_.reset();
   base::RunLoop run_loop;
   base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
       FROM_HERE, run_loop.QuitClosure());

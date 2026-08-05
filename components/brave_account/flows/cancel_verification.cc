@@ -10,8 +10,8 @@
 #include "base/check.h"
 #include "brave/components/brave_account/endpoint_client/with_headers.h"
 #include "brave/components/brave_account/endpoints/verify_delete.h"
-#include "brave/components/brave_account/state_base.h"
 #include "brave/components/brave_account/state_internal.h"
+#include "services/network/public/cpp/shared_url_loader_factory.h"
 
 namespace brave_account {
 
@@ -20,7 +20,11 @@ using endpoint_client::WithHeaders;
 using endpoints::VerifyDelete;
 using internal::MakeRequest;
 
-CancelVerification::CancelVerification(StateBase& state) : state_(state) {}
+CancelVerification::CancelVerification(
+    AccountStatePrefs& account_state_prefs,
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+    const os_crypt_async::Encryptor& encryptor)
+    : FlowBase(account_state_prefs, std::move(url_loader_factory), encryptor) {}
 
 CancelVerification::~CancelVerification() = default;
 
@@ -35,18 +39,18 @@ void CancelVerification::operator()(mojom::VerificationIntentPtr intent) {
     // Not adopted into the state's in-flight bag:
     // best-effort with no callback that touches state.
     if (const auto verification_token =
-            state_->GetDecryptedVerificationToken(std::move(intent));
+            GetDecryptedVerificationToken(std::move(intent));
         !verification_token.empty()) {
       auto request = MakeRequest<WithHeaders<VerifyDelete::Request>>();
       SetBearerToken(request, verification_token);
 
-      state_->SendUnownedRequest<VerifyDelete>(std::move(request));
+      SendUnownedRequest<VerifyDelete>(std::move(request));
     }
   }
 
   // LoggedOutWithVerification ==> LoggedOut (no state swap), or
   // LoggedInWithVerification ==> LoggedIn (no state swap).
-  state_->account_state_prefs_->ClearVerification();
+  account_state_prefs_->ClearVerification();
 }
 
 }  // namespace brave_account

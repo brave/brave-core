@@ -8,14 +8,22 @@
 
 #include <string>
 
-#include "base/memory/raw_ref.h"
+#include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
+#include "brave/components/brave_account/brave_account_state_prefs.h"
 #include "brave/components/brave_account/endpoints/service_token.h"
+#include "brave/components/brave_account/flows/flow_base.h"
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
 
-namespace brave_account {
+namespace network {
+class SharedURLLoaderFactory;
+}  // namespace network
 
-class StateBase;
+namespace os_crypt_async {
+class Encryptor;
+}  // namespace os_crypt_async
+
+namespace brave_account {
 
 // Owns the service-token half of the logged-in `mojom::Authentication`
 // surface. `LoggedInState` holds a `GetServiceToken` member and forwards the
@@ -25,11 +33,14 @@ class StateBase;
 //
 //   operator()() -> /v2/auth/service_token
 //
-// Requests are sent through the owning state's `StateBase` helpers, so their
-// lifetime is tied to that state (see `StateBase::SendStateOwnedRequest`).
-class GetServiceToken {
+// Requests are sent through the inherited `FlowBase` helpers, so their
+// lifetime is tied to this flow (see `FlowBase::SendStateOwnedRequest`).
+class GetServiceToken : public FlowBase {
  public:
-  explicit GetServiceToken(StateBase& state);
+  GetServiceToken(
+      AccountStatePrefs& account_state_prefs,
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+      const os_crypt_async::Encryptor& encryptor);
 
   GetServiceToken(const GetServiceToken&) = delete;
   GetServiceToken& operator=(const GetServiceToken&) = delete;
@@ -43,8 +54,6 @@ class GetServiceToken {
   void OnResponse(const std::string& service_name,
                   mojom::Authentication::GetServiceTokenCallback callback,
                   endpoints::ServiceToken::Response response);
-
-  const raw_ref<StateBase> state_;
 
   base::WeakPtrFactory<GetServiceToken> weak_factory_{this};
 };

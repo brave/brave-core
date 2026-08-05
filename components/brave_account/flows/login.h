@@ -8,15 +8,23 @@
 
 #include <string>
 
-#include "base/memory/raw_ref.h"
+#include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
+#include "brave/components/brave_account/brave_account_state_prefs.h"
 #include "brave/components/brave_account/endpoints/login_finalize.h"
 #include "brave/components/brave_account/endpoints/login_init.h"
+#include "brave/components/brave_account/flows/flow_base.h"
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
 
-namespace brave_account {
+namespace network {
+class SharedURLLoaderFactory;
+}  // namespace network
 
-class StateBase;
+namespace os_crypt_async {
+class Encryptor;
+}  // namespace os_crypt_async
+
+namespace brave_account {
 
 // Owns the login half of the logged-out `mojom::Authentication` surface.
 // `LoggedOutState` holds a `Login` member and forwards the two mojom
@@ -26,11 +34,13 @@ class StateBase;
 //   Step1 -> /v2/auth/login/init
 //   Step2 -> /v2/auth/login/finalize
 //
-// Requests are sent through the owning state's `StateBase` helpers, so their
-// lifetime is tied to that state (see `StateBase::SendStateOwnedRequest`).
-class Login {
+// Requests are sent through the inherited `FlowBase` helpers, so their
+// lifetime is tied to this flow (see `FlowBase::SendStateOwnedRequest`).
+class Login : public FlowBase {
  public:
-  explicit Login(StateBase& state);
+  Login(AccountStatePrefs& account_state_prefs,
+        scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+        const os_crypt_async::Encryptor& encryptor);
 
   Login(const Login&) = delete;
   Login& operator=(const Login&) = delete;
@@ -52,8 +62,6 @@ class Login {
 
   void OnStep2(mojom::Authentication::LoginStep2Callback callback,
                endpoints::LoginFinalize::Response response);
-
-  const raw_ref<StateBase> state_;
 
   base::WeakPtrFactory<Login> weak_factory_{this};
 };
