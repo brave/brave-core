@@ -13,7 +13,7 @@
         android:id="@+id/search_divider"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@drawable/brave_settings_outline_divider"
+        android:background="?attr/colorOutline"
         android:visibility="gone"/>
 
     <androidx.recyclerview.widget.RecyclerView

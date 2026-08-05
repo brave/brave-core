@@ -223,7 +223,6 @@ android_resources("java_resources") {
     "java/brave-res/drawable/brave_rating_rate_now_bg.xml",
     "java/brave-res/drawable/brave_rewards_circle.xml",
     "java/brave-res/drawable/brave_rewards_rectangle.xml",
-    "java/brave-res/drawable/brave_settings_outline_divider.xml",
     "java/brave-res/drawable/brave_stats_radio_button_normal.xml",
     "java/brave-res/drawable/brave_stats_radio_button_selected.xml",
     "java/brave-res/drawable/brave_stats_radio_button_selector.xml",
