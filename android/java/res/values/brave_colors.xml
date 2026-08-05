@@ -116,7 +116,6 @@
 
     <color name="onboarding_welcome_text_color">#F0F2FF</color>
     <color name="onboarding_card_bg_color">@android:color/white</color>
-    <color name="onboarding_negative_button_color">#4C54D2</color>
 
     <color name="scan_qr_code_text_color">#212529</color>
     <color name="scan_qr_code_bg_color">@android:color/white</color>
@@ -135,8 +134,6 @@
     <color name="brave_sync_border_color">@color/primitive_neutral_95</color>
     <color name="brave_sync_bg_secondary_color">@android:color/white</color>
     <color name="brave_sync_main_button_color">@color/button_background</color>
-    <color name="brave_sync_copy_words_text_color">@color/text_secondary</color>
-    <color name="brave_sync_btn_transparent_text_color">@color/text_interactive</color>
 
     <color name="brave_set_default_dialog_text_color">@color/primitive_neutral_30</color>
 

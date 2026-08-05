@@ -61,6 +61,7 @@ import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.gms.ChromiumPlayServicesAvailability;
 import org.chromium.ui.text.ChromeClickableSpan;
 import org.chromium.ui.text.SpanApplier;
+import org.chromium.ui.util.AttrUtils;
 import org.chromium.webcompat_reporter.mojom.WebcompatReporterHandler;
 
 /** Fragment to keep track of the all the brave privacy related preferences. */
@@ -337,7 +338,7 @@ public class BravePrivacySettings extends PrivacySettings {
                                     "<LINK_1>",
                                     "</LINK_1>",
                                     new ChromeClickableSpan(
-                                            requireContext().getColor(R.color.brave_link),
+                                            requireContext(),
                                             result -> {
                                                 TabUtils.openUrlInCustomTab(
                                                         requireContext(),
@@ -441,7 +442,11 @@ public class BravePrivacySettings extends PrivacySettings {
         SpannableString spannableString =
                 new SpannableString(getContext().getString(R.string.survey_panelist_learn_more));
         spannableString.setSpan(
-                new ForegroundColorSpan(getContext().getColor(R.color.brave_link)),
+                new ForegroundColorSpan(
+                        AttrUtils.resolveColor(
+                                requireContext().getTheme(),
+                                org.chromium.ui.R.attr.globalLinkTextColor,
+                                requireContext().getColor(R.color.brave_link))),
                 0,
                 spannableString.length(),
                 0);

@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.preference.Preference;
+import androidx.preference.PreferenceViewHolder;
 
 import org.chromium.brave_wallet.mojom.TxService;
 import org.chromium.chrome.R;
@@ -48,6 +49,13 @@ public class BraveWalletResetTxHistoryAndNoncePreference extends Preference
     public boolean onPreferenceClick(Preference preference) {
         showBraveWalletResetTxHistoryAndNonceDialog();
         return true;
+    }
+
+    @Override
+    public void onBindViewHolder(PreferenceViewHolder holder) {
+        super.onBindViewHolder(holder);
+        TextView titleView = (TextView) holder.findViewById(android.R.id.title);
+        titleView.setTextColor(getContext().getColor(R.color.wallet_error_text_color));
     }
 
     @Override

@@ -67,6 +67,7 @@ import org.chromium.chrome.browser.share.qrcode.QRCodeGenerator;
 import org.chromium.chrome.browser.sync.BraveSyncDevices;
 import org.chromium.chrome.browser.sync.SyncServiceFactory;
 import org.chromium.chrome.browser.sync.settings.BraveManageSyncSettings;
+import org.chromium.chrome.browser.theme.BraveDynamicColors;
 import org.chromium.components.browser_ui.settings.SettingsNavigation;
 import org.chromium.components.browser_ui.settings.search.BaseSearchIndexProvider;
 import org.chromium.components.browser_ui.widget.displaystyle.UiConfig;
@@ -522,6 +523,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
         mScanChainCodeButton = getView().findViewById(R.id.brave_sync_btn_scan_chain_code);
         if (mScanChainCodeButton != null) {
             mScanChainCodeButton.setOnClickListener(this);
+            BraveDynamicColors.applyToFilledButtonIfEnabled(mScanChainCodeButton);
         }
 
         mStartNewChainButton = getView().findViewById(R.id.brave_sync_btn_start_new_chain);
@@ -541,11 +543,13 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
         mDoneButton = getView().findViewById(R.id.brave_sync_btn_done);
         if (mDoneButton != null) {
             mDoneButton.setOnClickListener(this);
+            BraveDynamicColors.applyToFilledButtonIfEnabled(mDoneButton);
         }
 
         mDoneLaptopButton = getView().findViewById(R.id.brave_sync_btn_add_laptop_done);
         if (mDoneLaptopButton != null) {
             mDoneLaptopButton.setOnClickListener(this);
+            BraveDynamicColors.applyToFilledButtonIfEnabled(mDoneLaptopButton);
         }
 
         mUseCameraButton = getView().findViewById(R.id.brave_sync_btn_use_camera);
@@ -556,6 +560,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
         mConfirmCodeWordsButton = getView().findViewById(R.id.brave_sync_confirm_code_words);
         if (mConfirmCodeWordsButton != null) {
             mConfirmCodeWordsButton.setOnClickListener(this);
+            BraveDynamicColors.applyToFilledButtonIfEnabled(mConfirmCodeWordsButton);
         }
 
         mMobileButton = getView().findViewById(R.id.brave_sync_btn_mobile);
@@ -593,6 +598,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
         mAddDeviceButton = getView().findViewById(R.id.brave_sync_btn_add_device);
         if (null != mAddDeviceButton) {
             mAddDeviceButton.setOnClickListener(this);
+            BraveDynamicColors.applyToFilledButtonIfEnabled(mAddDeviceButton);
         }
 
         mDeleteAccountButton = getView().findViewById(R.id.brave_sync_btn_delete_account);
@@ -612,10 +618,12 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
         mNewCodeWordsButton = getView().findViewById(R.id.brave_sync_btn_add_laptop_new_code);
         assert mNewCodeWordsButton != null;
         mNewCodeWordsButton.setOnClickListener(this);
+        BraveDynamicColors.applyToOutlinedButtonIfEnabled(mNewCodeWordsButton);
 
         mNewQrCodeButton = getView().findViewById(R.id.brave_sync_btn_add_mobile_new_code);
         assert mNewQrCodeButton != null;
         mNewQrCodeButton.setOnClickListener(this);
+        BraveDynamicColors.applyToOutlinedButtonIfEnabled(mNewQrCodeButton);
 
         mTabLayout = getView().findViewById(R.id.tab_layout);
         mTabLayout.addOnTabSelectedListener(

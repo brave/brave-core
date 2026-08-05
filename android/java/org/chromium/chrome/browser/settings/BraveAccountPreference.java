@@ -23,7 +23,7 @@ import org.chromium.components.browser_ui.settings.ChromeBasePreference;
 /** A preference for Brave Account that supports customizing title and summary text colors. */
 @NullMarked
 public class BraveAccountPreference extends ChromeBasePreference {
-    private final int mTitleTextColorResId;
+    private final @Nullable ColorStateList mTitleTextColor;
     private final boolean mTitleTruncateMiddle;
     private final int mSummaryTextColorResId;
 
@@ -31,8 +31,8 @@ public class BraveAccountPreference extends ChromeBasePreference {
         super(context, attrs);
 
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.brave_account_preference);
-        mTitleTextColorResId =
-                a.getResourceId(R.styleable.brave_account_preference_title_text_color, 0);
+        mTitleTextColor =
+                a.getColorStateList(R.styleable.brave_account_preference_title_text_color);
         mTitleTruncateMiddle =
                 a.getBoolean(R.styleable.brave_account_preference_title_truncate_middle, false);
         mSummaryTextColorResId =
@@ -46,7 +46,7 @@ public class BraveAccountPreference extends ChromeBasePreference {
         super.onBindViewHolder(holder);
 
         if (holder.findViewById(android.R.id.icon) instanceof ImageView imageView) {
-            setTintFromRes(imageView, mTitleTextColorResId);
+            setTint(imageView, mTitleTextColor);
         }
 
         if (holder.findViewById(android.R.id.title) instanceof TextView titleView) {
@@ -57,7 +57,7 @@ public class BraveAccountPreference extends ChromeBasePreference {
                 // Use tertiary text color when preference is disabled.
                 setColorFromRes(titleView, R.color.text_tertiary);
             } else {
-                setColorFromRes(titleView, mTitleTextColorResId);
+                setColor(titleView, mTitleTextColor);
             }
 
             if (mTitleTruncateMiddle) {
@@ -71,11 +71,17 @@ public class BraveAccountPreference extends ChromeBasePreference {
         }
     }
 
+    private void setColor(TextView textView, @Nullable ColorStateList color) {
+        if (color != null) {
+            textView.setTextColor(color);
+        }
+    }
+
     private void setColorFromAttr(TextView textView, int attr) {
         TypedArray ta = getContext().obtainStyledAttributes(new int[] {attr});
-        int color = ta.getColor(0, textView.getCurrentTextColor());
+        ColorStateList color = ta.getColorStateList(0);
         ta.recycle();
-        textView.setTextColor(color);
+        setColor(textView, color);
     }
 
     private void setColorFromRes(TextView textView, int colorResId) {
@@ -84,9 +90,9 @@ public class BraveAccountPreference extends ChromeBasePreference {
         }
     }
 
-    private void setTintFromRes(ImageView imageView, int colorResId) {
-        if (colorResId != 0) {
-            imageView.setImageTintList(ColorStateList.valueOf(getContext().getColor(colorResId)));
+    private void setTint(ImageView imageView, @Nullable ColorStateList color) {
+        if (color != null) {
+            imageView.setImageTintList(color);
         }
     }
 }

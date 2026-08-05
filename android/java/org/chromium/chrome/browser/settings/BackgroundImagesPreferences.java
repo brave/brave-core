@@ -39,6 +39,7 @@ import org.chromium.components.browser_ui.settings.search.SettingsIndexData;
 import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.misc_metrics.mojom.MiscAndroidMetrics;
 import org.chromium.misc_metrics.mojom.OpeningScreenSwitchType;
+import org.chromium.ui.util.AttrUtils;
 
 /** Fragment to keep track of all the display related preferences. */
 @NullMarked
@@ -112,7 +113,11 @@ public class BackgroundImagesPreferences extends BravePreferenceFragment
                     new SpannableString(
                             getContext().getString(R.string.sponsored_images_learn_more));
             spannableString.setSpan(
-                    new ForegroundColorSpan(getContext().getColor(R.color.brave_link)),
+                    new ForegroundColorSpan(
+                            AttrUtils.resolveColor(
+                                    requireContext().getTheme(),
+                                    org.chromium.ui.R.attr.globalLinkTextColor,
+                                    requireContext().getColor(R.color.brave_link))),
                     0,
                     spannableString.length(),
                     0);
