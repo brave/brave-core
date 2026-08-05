@@ -42,6 +42,7 @@
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/de_amp/common/pref_names.h"
 #include "brave/components/debounce/core/browser/debounce_service.h"
+#include "brave/components/email_aliases/buildflags/buildflags.h"
 #include "brave/components/global_privacy_control/pref_names.h"
 #include "brave/components/ipfs/ipfs_prefs.h"
 #include "brave/components/local_ai/buildflags/buildflags.h"
@@ -99,6 +100,10 @@
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
+#include "brave/components/email_aliases/email_aliases_service.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
@@ -570,6 +575,15 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 #if BUILDFLAG(ENABLE_AI_CHAT)
   ai_chat::prefs::RegisterProfilePrefs(registry);
   ai_chat::ModelService::RegisterProfilePrefs(registry);
+#endif
+
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
+  // Registered unconditionally so the prefs exist even when the kEmailAliases
+  // feature is disabled at runtime. The Brave Origin settings page gates the
+  // Email Aliases toggle on the build flag alone and writes
+  // kEmailAliasesEnabled, which would otherwise hit an unregistered-pref
+  // NOTREACHED.
+  email_aliases::EmailAliasesService::RegisterProfilePrefs(registry);
 #endif
 
 #if BUILDFLAG(ENABLE_LOCAL_AI)
