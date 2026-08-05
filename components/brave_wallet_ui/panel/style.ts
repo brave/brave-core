@@ -3,23 +3,6 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import styled from 'styled-components'
-import * as leo from '@brave/leo/tokens/css/variables'
-
-export const PanelWrapper = styled.div<{
-  isSidePanel?: boolean
-}>`
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 390px;
-  height: 650px;
-  background-color: ${leo.color.page.background};
-  /* Cr151+ bubble autosize uses document scrollWidth; clip overflow so
-     absolute/fixed children cannot inflate the panel beyond its set size. */
-  overflow: ${(p) => (p.isSidePanel ? 'unset' : 'hidden')};
-  contain: ${(p) => (p.isSidePanel ? 'unset' : 'layout')};
-`
 
 export const SendWrapper = styled.div`
   flex: 1;

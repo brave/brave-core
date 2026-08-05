@@ -25,7 +25,7 @@ import { TransactionFailedOrCanceled } from './failed_or_canceled'
 
 // Styled Components
 import { LongWrapper } from '../../../../stories/style'
-import { PanelWrapper } from '../../../../panel/style'
+import { PanelWrapper } from '../../../../panel/panel_wrapper/panel_wrapper'
 
 export const _TransactionFailedOrCanceled = {
   render: (args: StorybookTransactionArgs) => {
