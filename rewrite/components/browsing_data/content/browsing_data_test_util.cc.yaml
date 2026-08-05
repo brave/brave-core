@@ -1,0 +1,20 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Verify a cookie write landed before SetDataForType(WebContents*) returns.
+
+      Brave disables Chromium's cookie IPC cache optimization (Ephemeral
+      Storage can switch the cookie backend at runtime), so document.cookie
+      always goes through IPC. Without a round trip through
+      RestrictedCookieManager, a set() immediately followed by a read on a
+      different Mojo pipe has no ordering guarantee and flakes.
+    regex:
+      re_pattern:
+        '(SetDataForType\(type, web_contents->GetPrimaryMainFrame\(\)\);)'
+      replace: |-
+        \1
+          EXPECT_TRUE(HasDataForType(type, web_contents));

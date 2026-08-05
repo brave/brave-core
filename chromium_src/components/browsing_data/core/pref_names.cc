@@ -5,25 +5,33 @@
 
 #include "brave/chromium_src/components/browsing_data/core/pref_names.h"
 
-#define RegisterBrowserUserPrefs RegisterBrowserUserPrefs_ChromiumImpl
-#include <components/browsing_data/core/pref_names.cc>
-#undef RegisterBrowserUserPrefs
+#include "components/pref_registry/pref_registry_syncable.h"
 
-namespace browsing_data::prefs {
+namespace {
 
-void RegisterBrowserUserPrefs(user_prefs::PrefRegistrySyncable* registry) {
-  RegisterBrowserUserPrefs_ChromiumImpl(registry);
-
-  registry->RegisterBooleanPref(kDeleteBrowsingHistoryOnExit, false);
-  registry->RegisterBooleanPref(kDeleteDownloadHistoryOnExit, false);
-  registry->RegisterBooleanPref(kDeleteCacheOnExit, false);
-  registry->RegisterBooleanPref(kDeleteCookiesOnExit, false);
-  registry->RegisterBooleanPref(kDeletePasswordsOnExit, false);
-  registry->RegisterBooleanPref(kDeleteFormDataOnExit, false);
-  registry->RegisterBooleanPref(kDeleteHostedAppsDataOnExit, false);
-  registry->RegisterBooleanPref(kDeleteSiteSettingsOnExit, false);
-  registry->RegisterBooleanPref(kDeleteBraveLeoHistory, false);
-  registry->RegisterBooleanPref(kDeleteBraveLeoHistoryOnExit, false);
+void RegisterBraveUserPrefs(user_prefs::PrefRegistrySyncable* registry) {
+  registry->RegisterBooleanPref(
+      browsing_data::prefs::kDeleteBrowsingHistoryOnExit, false);
+  registry->RegisterBooleanPref(
+      browsing_data::prefs::kDeleteDownloadHistoryOnExit, false);
+  registry->RegisterBooleanPref(browsing_data::prefs::kDeleteCacheOnExit,
+                                false);
+  registry->RegisterBooleanPref(browsing_data::prefs::kDeleteCookiesOnExit,
+                                false);
+  registry->RegisterBooleanPref(browsing_data::prefs::kDeletePasswordsOnExit,
+                                false);
+  registry->RegisterBooleanPref(browsing_data::prefs::kDeleteFormDataOnExit,
+                                false);
+  registry->RegisterBooleanPref(
+      browsing_data::prefs::kDeleteHostedAppsDataOnExit, false);
+  registry->RegisterBooleanPref(browsing_data::prefs::kDeleteSiteSettingsOnExit,
+                                false);
+  registry->RegisterBooleanPref(browsing_data::prefs::kDeleteBraveLeoHistory,
+                                false);
+  registry->RegisterBooleanPref(
+      browsing_data::prefs::kDeleteBraveLeoHistoryOnExit, false);
 }
 
-}  // namespace browsing_data::prefs
+}  // namespace
+
+#include <components/browsing_data/core/pref_names.cc>

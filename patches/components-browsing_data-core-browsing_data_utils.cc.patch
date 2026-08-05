@@ -1,0 +1,29 @@
+diff --git a/components/browsing_data/core/browsing_data_utils.cc b/components/browsing_data/core/browsing_data_utils.cc
+index 719853994a76580bc071ad2d3c5795d57b2797bb..e919bff83e9d4137bee2b9d62d94250317119cb5 100644
+--- a/components/browsing_data/core/browsing_data_utils.cc
++++ b/components/browsing_data/core/browsing_data_utils.cc
+@@ -387,6 +387,11 @@ bool GetDeletionPreferenceFromDataType(
+     BrowsingDataType data_type,
+     std::string* out_pref) {
+   switch (data_type) {
++#if BUILDFLAG(ENABLE_AI_CHAT)
++    case BrowsingDataType::BRAVE_AI_CHAT:
++      *out_pref = prefs::kDeleteBraveLeoHistory;
++      return true;
++#endif
+     case BrowsingDataType::HISTORY:
+       *out_pref = prefs::kDeleteBrowsingHistory;
+       return true;
+@@ -420,6 +425,12 @@ bool GetDeletionPreferenceFromDataType(
+ 
+ std::optional<BrowsingDataType> GetDataTypeFromDeletionPreference(
+     const std::string& pref_name) {
++  #if BUILDFLAG(ENABLE_AI_CHAT)
++  if (auto data_type =
++          GetAIChatDataTypeFromDeletionPreference(pref_name)) {
++    return data_type;
++  }
++  #endif
+   using DataTypeMap = base::flat_map<std::string, BrowsingDataType>;
+   static base::NoDestructor<DataTypeMap> preference_to_datatype(
+       std::initializer_list<DataTypeMap::value_type>{

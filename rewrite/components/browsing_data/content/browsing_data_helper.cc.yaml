@@ -1,0 +1,16 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Clear Brave-specific site settings data alongside Chromium's.
+
+      BraveRemoveSiteSettingsData clears content-settings types Brave adds on
+      top of upstream's own site-settings cleanup.
+    after_function_impl:
+      function_name: RemoveSiteSettingsData
+      code: |-
+        BraveRemoveSiteSettingsData(delete_begin, delete_end,
+                                     host_content_settings_map);
