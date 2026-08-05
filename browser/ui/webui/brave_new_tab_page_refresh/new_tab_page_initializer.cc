@@ -276,6 +276,7 @@ void NewTabPageInitializer::AddLoadTimeValues() {
 }
 
 void NewTabPageInitializer::AddStrings() {
+  source_->AddLocalizedString("title", IDS_NEW_TAB_TITLE);
   source_->AddLocalizedStrings(webui::kBraveNewTabPageStrings);
   source_->AddLocalizedStrings(webui::kBraveNewsStrings);
   source_->AddLocalizedStrings(webui::kBraveRewardsStrings);
