@@ -164,7 +164,6 @@ public class BraveUnifiedPanelHandler {
     private @Nullable View mHardwareButtonMenuAnchor;
     private @Nullable GURL mUrl;
     private View mMainPanelContainer;
-    private View mHttpsPanelContainer;
     private View mTrackersPanelContainer;
     private View mCookiesPanelContainer;
     private View mShredPanelContainer;
@@ -454,7 +453,6 @@ public class BraveUnifiedPanelHandler {
         Context context = assumeNonNull(mContext);
 
         mMainPanelContainer = popupView.findViewById(R.id.main_panel_container);
-        mHttpsPanelContainer = popupView.findViewById(R.id.https_panel_container);
         mTrackersPanelContainer = popupView.findViewById(R.id.trackers_panel_container);
         mCookiesPanelContainer = popupView.findViewById(R.id.cookies_panel_container);
         mShredPanelContainer = popupView.findViewById(R.id.shred_panel_container);
@@ -530,11 +528,6 @@ public class BraveUnifiedPanelHandler {
 
     private void setupAdvancedOptionsListeners() {
         if (mAdvancedOptionsContent == null) return;
-
-        View httpsUpgradeItem = mAdvancedOptionsContent.findViewById(R.id.https_upgrade_item);
-        if (httpsUpgradeItem != null) {
-            httpsUpgradeItem.setOnClickListener(v -> showHttpsUpgradePanel());
-        }
 
         View trackersItem = mAdvancedOptionsContent.findViewById(R.id.trackers_item);
         if (trackersItem != null) {
@@ -1241,7 +1234,6 @@ public class BraveUnifiedPanelHandler {
             return;
         }
 
-        mHttpsPanelContainer.setVisibility(View.GONE);
         mTrackersPanelContainer.setVisibility(View.GONE);
         mCookiesPanelContainer.setVisibility(View.GONE);
         if (mShredPanelContainer != null) {
@@ -1260,108 +1252,6 @@ public class BraveUnifiedPanelHandler {
         }
 
         updateResetButtonState();
-    }
-
-    private void showHttpsUpgradePanel() {
-        if (mMainPanelContainer == null || mHttpsPanelContainer == null) {
-            return;
-        }
-
-        if (mHttpsPanelContainer instanceof ScrollView) {
-            ScrollView scrollView = (ScrollView) mHttpsPanelContainer;
-            if (scrollView.getChildCount() > 0) {
-                View httpsPanel = scrollView.getChildAt(0);
-                setupHttpsUpgradePanel(httpsPanel);
-            }
-        }
-
-        mMainPanelContainer.setVisibility(View.GONE);
-        mHttpsPanelContainer.setVisibility(View.VISIBLE);
-    }
-
-    private void setupHttpsUpgradePanel(View panel) {
-        if (mUrl == null || mProfile == null) return;
-
-        ImageView backButton = panel.findViewById(R.id.https_back_button);
-        if (backButton != null) {
-            backButton.setOnClickListener(v -> showMainPanel());
-        }
-
-        AppCompatRadioButton strictRadio = panel.findViewById(R.id.https_strict_radio);
-        AppCompatRadioButton defaultRadio = panel.findViewById(R.id.https_default_radio);
-        AppCompatRadioButton disabledRadio = panel.findViewById(R.id.https_disabled_radio);
-
-        if (strictRadio == null || defaultRadio == null || disabledRadio == null) {
-            return;
-        }
-
-        String currentSetting =
-                BraveShieldsContentSettings.getShieldsValue(
-                        mProfile,
-                        mUrl.getSpec(),
-                        BraveShieldsContentSettings.RESOURCE_IDENTIFIER_HTTPS_UPGRADE);
-
-        strictRadio.setChecked(false);
-        defaultRadio.setChecked(false);
-        disabledRadio.setChecked(false);
-
-        if (currentSetting.equals(BraveShieldsContentSettings.BLOCK_RESOURCE)) {
-            strictRadio.setChecked(true);
-        } else if (currentSetting.equals(BraveShieldsContentSettings.ALLOW_RESOURCE)) {
-            disabledRadio.setChecked(true);
-        } else {
-            // Both "default" (no per-site override) and "block_third_party" (standard mode)
-            // correspond to the standard "upgrade when possible" option.
-            defaultRadio.setChecked(true);
-        }
-
-        View strictOption = panel.findViewById(R.id.https_strict_option);
-        View defaultOption = panel.findViewById(R.id.https_default_option);
-        View disabledOption = panel.findViewById(R.id.https_disabled_option);
-
-        if (strictOption != null) {
-            strictOption.setOnClickListener(
-                    v -> {
-                        strictRadio.setChecked(true);
-                        defaultRadio.setChecked(false);
-                        disabledRadio.setChecked(false);
-                        setHttpsUpgradeSetting(BraveShieldsContentSettings.BLOCK_RESOURCE);
-                    });
-        }
-
-        if (defaultOption != null) {
-            defaultOption.setOnClickListener(
-                    v -> {
-                        defaultRadio.setChecked(true);
-                        strictRadio.setChecked(false);
-                        disabledRadio.setChecked(false);
-                        setHttpsUpgradeSetting(
-                                BraveShieldsContentSettings.BLOCK_THIRDPARTY_RESOURCE);
-                    });
-        }
-
-        if (disabledOption != null) {
-            disabledOption.setOnClickListener(
-                    v -> {
-                        disabledRadio.setChecked(true);
-                        strictRadio.setChecked(false);
-                        defaultRadio.setChecked(false);
-                        setHttpsUpgradeSetting(BraveShieldsContentSettings.ALLOW_RESOURCE);
-                    });
-        }
-    }
-
-    private void setHttpsUpgradeSetting(String value) {
-        if (mUrl == null || mProfile == null) {
-            return;
-        }
-
-        BraveShieldsContentSettings.setShieldsValue(
-                mProfile,
-                mUrl.getSpec(),
-                BraveShieldsContentSettings.RESOURCE_IDENTIFIER_HTTPS_UPGRADE,
-                value,
-                false);
     }
 
     private void showTrackersAdsPanel() {
