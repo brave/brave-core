@@ -4,7 +4,6 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "base/test/test_future.h"
-#include "brave/components/brave_ads/core/internal/ad_units/search_result_ad/search_result_ad_handler.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/search_result_ads/test/creative_search_result_ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/test/permission_rules_test_util.h"
@@ -53,30 +52,6 @@ TEST_F(BraveAdsSearchResultAdForNonRewardsIntegrationTest,
 }
 
 TEST_F(BraveAdsSearchResultAdForNonRewardsIntegrationTest,
-       DoNotTriggerDeferredViewedEvents) {
-  // Arrange
-  SearchResultAdHandler::DeferTriggeringAdViewedEventForTesting();
-
-  TriggerSearchResultAdEventAndVerifyExpectations(
-      // This viewed impression ad event will be deferred.
-      test::BuildCreativeSearchResultAdWithConversion(
-          /*use_random_uuids=*/true),
-      mojom::SearchResultAdEventType::kViewedImpression,
-      /*should_fire_event=*/false);
-
-  // Act & Assert
-  TriggerSearchResultAdEventAndVerifyExpectations(
-      // This viewed impression ad event will be deferred as the previous viewed
-      // impression ad event has not fired.
-      test::BuildCreativeSearchResultAdWithConversion(
-          /*use_random_uuids=*/true),
-      mojom::SearchResultAdEventType::kViewedImpression,
-      /*should_fire_event=*/false);
-
-  SearchResultAdHandler::TriggerDeferredAdViewedEventForTesting();
-}
-
-TEST_F(BraveAdsSearchResultAdForNonRewardsIntegrationTest,
        TriggerClickedEvent) {
   // Arrange
   const mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad =
@@ -87,6 +62,29 @@ TEST_F(BraveAdsSearchResultAdForNonRewardsIntegrationTest,
   TriggerSearchResultAdEventAndVerifyExpectations(
       mojom_creative_ad.Clone(), mojom::SearchResultAdEventType::kClicked,
       /*should_fire_event=*/true);
+}
+
+TEST_F(BraveAdsSearchResultAdForNonRewardsIntegrationTest,
+       DoNotTriggerDuplicateClickedEvent) {
+  // Arrange
+  const mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad =
+      test::BuildCreativeSearchResultAdWithConversion(
+          /*use_random_uuids=*/true);
+
+  // Act
+  base::test::TestFuture<bool> clicked_future;
+  GetAds().TriggerSearchResultAdEvent(mojom_creative_ad.Clone(),
+                                      mojom::SearchResultAdEventType::kClicked,
+                                      clicked_future.GetCallback());
+
+  base::test::TestFuture<bool> duplicate_clicked_future;
+  GetAds().TriggerSearchResultAdEvent(mojom_creative_ad.Clone(),
+                                      mojom::SearchResultAdEventType::kClicked,
+                                      duplicate_clicked_future.GetCallback());
+
+  // Assert
+  EXPECT_TRUE(clicked_future.Get());
+  EXPECT_FALSE(duplicate_clicked_future.Get());
 }
 
 }  // namespace brave_ads

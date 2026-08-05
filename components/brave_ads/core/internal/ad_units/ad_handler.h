@@ -22,6 +22,7 @@
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/resource/text_classification_resource.h"
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/text_classification_processor.h"
 #include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_task_queue.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversions.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversions_observer.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/site_visit/site_visit.h"
@@ -106,8 +107,13 @@ class AdHandler final : public ConversionsObserver, SiteVisitObserver {
   TextClassificationProcessor text_classification_processor_;
 
   NewTabPageAdHandler new_tab_page_ad_handler_;
+  AdEventTaskQueue new_tab_page_ad_event_task_queue_;
+
   NotificationAdHandler notification_ad_handler_;
+  AdEventTaskQueue notification_ad_event_task_queue_;
+
   SearchResultAdHandler search_result_ad_handler_;
+  AdEventTaskQueue search_result_ad_event_task_queue_;
 };
 
 }  // namespace brave_ads
