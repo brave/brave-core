@@ -314,11 +314,12 @@ IN_PROC_BROWSER_TEST_P(BraveWebGLExtensionFarblingTest,
   GURL url =
       embedded_test_server()->GetURL(domain, "/getSupportedExtensions.html");
   const std::string kSupportedExtensionsMax = "WEBGL_debug_renderer_info";
+  const std::string kGetWebGL1Extensions = "getWebGL1SupportedExtensions()";
   // Farbling level: maximum
   // WebGL getSupportedExtensions returns abbreviated list
   BlockFingerprinting(domain);
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-  EXPECT_EQ(EvalJs(contents(), kTitleScript).ExtractString(),
+  EXPECT_EQ(EvalJs(contents(), kGetWebGL1Extensions).ExtractString(),
             kSupportedExtensionsMax);
 
   // Farbling level: off
@@ -326,14 +327,14 @@ IN_PROC_BROWSER_TEST_P(BraveWebGLExtensionFarblingTest,
   AllowFingerprinting(domain);
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   std::string actual_value_off =
-      EvalJs(contents(), kTitleScript).ExtractString();
+      EvalJs(contents(), kGetWebGL1Extensions).ExtractString();
   EXPECT_NE(actual_value_off, kSupportedExtensionsMax);
 
   // Farbling level: balanced (default)
   SetFingerprintingDefault(domain);
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   const auto actual_balanced_value =
-      EvalJs(contents(), kTitleScript).ExtractString();
+      EvalJs(contents(), kGetWebGL1Extensions).ExtractString();
   VerifyBalancedFarblingExtensions(actual_value_off, actual_balanced_value,
                                    GetParam());
 }
@@ -389,4 +390,165 @@ IN_PROC_BROWSER_TEST_P(BraveWebGLExtensionFarblingTest,
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   ASSERT_TRUE(ExecJs(contents(), "getExtensionWithInvalidName()"));
   EXPECT_EQ(EvalJs(contents(), kTitleScript).ExtractString(), "null");
+}
+
+IN_PROC_BROWSER_TEST_P(BraveWebGLExtensionFarblingTest,
+                       FarbleGetSupportedExtensionsWebGL2) {
+  std::string domain = "a.com";
+  GURL url =
+      embedded_test_server()->GetURL(domain, "/getSupportedExtensions.html");
+  const std::string kSupportedExtensionsMax = "WEBGL_debug_renderer_info";
+  const std::string kGetWebGL2Extensions = "getWebGL2SupportedExtensions()";
+  // Farbling level: maximum
+  // WebGL2 getSupportedExtensions returns abbreviated list
+  BlockFingerprinting(domain);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  EXPECT_EQ(EvalJs(contents(), kGetWebGL2Extensions).ExtractString(),
+            kSupportedExtensionsMax);
+
+  // Farbling level: off
+  // WebGL2 getSupportedExtensions is real
+  AllowFingerprinting(domain);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  std::string actual_value_off =
+      EvalJs(contents(), kGetWebGL2Extensions).ExtractString();
+  ASSERT_FALSE(actual_value_off.empty());
+  EXPECT_NE(actual_value_off, kSupportedExtensionsMax);
+
+  // Farbling level: balanced (default)
+  SetFingerprintingDefault(domain);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  const auto actual_balanced_value =
+      EvalJs(contents(), kGetWebGL2Extensions).ExtractString();
+  VerifyBalancedFarblingExtensions(actual_value_off, actual_balanced_value,
+                                   GetParam());
+}
+
+// Regression test for https://github.com/brave/brave-browser/issues/57736
+IN_PROC_BROWSER_TEST_P(BraveWebGLExtensionFarblingTest,
+                       WebGL1ExtensionsNotContaminatedByWebGL2) {
+  const std::string domain = "a.com";
+  const GURL url =
+      embedded_test_server()->GetURL(domain, "/getSupportedExtensions.html");
+
+  AllowFingerprinting(domain);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+
+  // Baseline: WebGL1 alone should expose ANGLE_instanced_arrays on desktop.
+  const std::string baseline =
+      EvalJs(contents(), "getWebGL1SupportedExtensions()").ExtractString();
+  ASSERT_FALSE(baseline.empty());
+  ASSERT_NE(baseline.find("ANGLE_instanced_arrays"), std::string::npos)
+      << "Baseline WebGL1 extensions: " << baseline;
+
+  // Fresh document: probe WebGL2 first, then inspect WebGL1.
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  ASSERT_FALSE(EvalJs(contents(), "getWebGL2SupportedExtensions()")
+                   .ExtractString()
+                   .empty());
+  const std::string extensions =
+      EvalJs(contents(), "getWebGL1SupportedExtensions()").ExtractString();
+  ASSERT_FALSE(extensions.empty());
+
+  EXPECT_NE(extensions.find("ANGLE_instanced_arrays"), std::string::npos)
+      << "WebGL1 lost ANGLE_instanced_arrays after a WebGL2 probe. "
+         "extensions="
+      << extensions;
+  EXPECT_EQ(extensions.find("EXT_disjoint_timer_query_webgl2"),
+            std::string::npos)
+      << "WebGL1 exposed a WebGL2-only extension after a WebGL2 probe. "
+         "extensions="
+      << extensions;
+}
+
+// Regression test for https://github.com/brave/brave-browser/issues/57736
+IN_PROC_BROWSER_TEST_P(BraveWebGLExtensionFarblingTest,
+                       WebGL2ExtensionsNotContaminatedByWebGL1) {
+  const std::string domain = "a.com";
+  const GURL url =
+      embedded_test_server()->GetURL(domain, "/getSupportedExtensions.html");
+
+  AllowFingerprinting(domain);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+
+  // Baseline: WebGL2 alone should expose a WebGL2-only extension on desktop.
+  const std::string baseline =
+      EvalJs(contents(), "getWebGL2SupportedExtensions()").ExtractString();
+  ASSERT_FALSE(baseline.empty());
+  ASSERT_NE(baseline.find("EXT_disjoint_timer_query_webgl2"), std::string::npos)
+      << "Baseline WebGL2 extensions: " << baseline;
+
+  // Fresh document: probe WebGL1 first, then inspect WebGL2.
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  ASSERT_FALSE(EvalJs(contents(), "getWebGL1SupportedExtensions()")
+                   .ExtractString()
+                   .empty());
+  const std::string extensions =
+      EvalJs(contents(), "getWebGL2SupportedExtensions()").ExtractString();
+  ASSERT_FALSE(extensions.empty());
+
+  EXPECT_NE(extensions.find("EXT_disjoint_timer_query_webgl2"),
+            std::string::npos)
+      << "WebGL2 lost EXT_disjoint_timer_query_webgl2 after a WebGL1 probe. "
+         "extensions="
+      << extensions;
+  EXPECT_EQ(extensions.find("ANGLE_instanced_arrays"), std::string::npos)
+      << "WebGL2 exposed a WebGL1-only extension after a WebGL1 probe. "
+         "extensions="
+      << extensions;
+}
+
+// BRAVE_WEBCOMPAT_WEBGL and BRAVE_WEBCOMPAT_WEBGL2 exceptions must apply only
+// to their respective API versions.
+IN_PROC_BROWSER_TEST_P(BraveWebGLExtensionFarblingTest,
+                       WebcompatExceptionsAreIndependentPerWebGLVersion) {
+  const std::string domain = "a.com";
+  const GURL url =
+      embedded_test_server()->GetURL(domain, "/getSupportedExtensions.html");
+  const std::string kSupportedExtensionsMax = "WEBGL_debug_renderer_info";
+  const std::string kGetWebGL1Extensions = "getWebGL1SupportedExtensions()";
+  const std::string kGetWebGL2Extensions = "getWebGL2SupportedExtensions()";
+
+  // Real (unfarbled) baselines.
+  AllowFingerprinting(domain);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  const std::string webgl1_off =
+      EvalJs(contents(), kGetWebGL1Extensions).ExtractString();
+  const std::string webgl2_off =
+      EvalJs(contents(), kGetWebGL2Extensions).ExtractString();
+  ASSERT_FALSE(webgl1_off.empty());
+  ASSERT_FALSE(webgl2_off.empty());
+  ASSERT_NE(webgl1_off, kSupportedExtensionsMax);
+  ASSERT_NE(webgl2_off, kSupportedExtensionsMax);
+
+  // Maximum farbling: both versions abbreviated.
+  BlockFingerprinting(domain);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  EXPECT_EQ(EvalJs(contents(), kGetWebGL1Extensions).ExtractString(),
+            kSupportedExtensionsMax);
+  EXPECT_EQ(EvalJs(contents(), kGetWebGL2Extensions).ExtractString(),
+            kSupportedExtensionsMax);
+
+  // Exception for WebGL1 only: WebGL1 unfarbled, WebGL2 still maximum.
+  brave_shields::SetWebcompatEnabled(content_settings(),
+                                     ContentSettingsType::BRAVE_WEBCOMPAT_WEBGL,
+                                     true, url, nullptr);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  EXPECT_EQ(EvalJs(contents(), kGetWebGL1Extensions).ExtractString(),
+            webgl1_off);
+  EXPECT_EQ(EvalJs(contents(), kGetWebGL2Extensions).ExtractString(),
+            kSupportedExtensionsMax);
+
+  // Exception for WebGL2 only: WebGL2 unfarbled, WebGL1 still maximum.
+  brave_shields::SetWebcompatEnabled(content_settings(),
+                                     ContentSettingsType::BRAVE_WEBCOMPAT_WEBGL,
+                                     false, url, nullptr);
+  brave_shields::SetWebcompatEnabled(
+      content_settings(), ContentSettingsType::BRAVE_WEBCOMPAT_WEBGL2, true,
+      url, nullptr);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  EXPECT_EQ(EvalJs(contents(), kGetWebGL1Extensions).ExtractString(),
+            kSupportedExtensionsMax);
+  EXPECT_EQ(EvalJs(contents(), kGetWebGL2Extensions).ExtractString(),
+            webgl2_off);
 }
