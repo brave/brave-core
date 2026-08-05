@@ -31,6 +31,7 @@
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_shields/ad_block_browser_test_helper.h"
 #include "brave/browser/net/brave_ad_block_tp_network_delegate_helper.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_shields/content/browser/ad_block_custom_filters_provider.h"
 #include "brave/components/brave_shields/content/browser/ad_block_engine.h"
 #include "brave/components/brave_shields/content/browser/ad_block_engine_wrapper.h"
@@ -87,6 +88,14 @@
 #include "brave/components/playlist/content/browser/playlist_service.h"
 #include "brave/components/playlist/core/common/features.h"
 #endif  // BUILDFLAG(ENABLE_PLAYLIST)
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "base/functional/bind.h"
+#include "base/run_loop.h"
+#include "brave/browser/brave_tab_helpers.h"
+#include "brave/components/ai_chat/content/browser/associated_url_content.h"
+#include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 constexpr char kAdBlockTestPage[] = "/blocking.html";
 
@@ -2115,6 +2124,40 @@ IN_PROC_BROWSER_TEST_F(CosmeticFilteringPlaylistFlagEnabledTest,
                           "checkSelector('#ad-banner', 'display', 'block')"));
 }
 #endif  // BUILDFLAG(ENABLE_PLAYLIST)
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+// Verify that cosmetic filtering is applied to the background WebContents
+// created by AssociatedURLContent (used when attaching history/bookmark URLs to
+// Leo). Previously, PageSpecificContentSettings was not attached to these
+// background WebContents, so RendererContentSettingRules were never delivered
+// to the renderer, causing IsCosmeticFilteringEnabled() to return false.
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
+                       CosmeticFilteringAppliedToAssociatedURLContent) {
+  UpdateAdBlockInstanceWithRules("b.com###ad-banner");
+
+  GURL url =
+      embedded_test_server()->GetURL("b.com", "/cosmetic_filtering.html");
+
+  auto associated_content = std::make_unique<ai_chat::AssociatedURLContent>(
+      url, u"Test Page", profile(),
+      base::BindOnce(&brave::AttachPrivacySensitiveTabHelpers));
+
+  // Trigger the navigation by requesting content.
+  base::RunLoop run_loop;
+  associated_content->GetContent(base::BindOnce(
+      [](base::RunLoop* loop, ai_chat::PageContent) { loop->Quit(); },
+      &run_loop));
+
+  content::WebContents* bg_web_contents =
+      associated_content->GetWebContentsForTesting();
+  ASSERT_TRUE(bg_web_contents);
+  EXPECT_TRUE(content::WaitForLoadStop(bg_web_contents));
+
+  // The #ad-banner element should be hidden by the cosmetic filter rule.
+  EXPECT_EQ(false, EvalJs(bg_web_contents,
+                          "checkSelector('#ad-banner', 'display', 'block')"));
+}
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 // Ensure no cosmetic filtering occurs when the shields setting is disabled
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringDisabled) {

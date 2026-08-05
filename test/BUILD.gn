@@ -1301,6 +1301,7 @@ test("brave_browser_tests") {
   if (enable_ai_chat) {
     deps += [
       "//brave/browser/ui/webui/ai_chat:browser_tests",
+      "//brave/components/ai_chat/content/browser",
       "//brave/components/ai_chat/core/browser",
       "//brave/components/ai_chat/core/common",
       "//brave/components/ai_chat/renderer:browser_tests",
