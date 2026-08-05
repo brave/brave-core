@@ -5,6 +5,7 @@
 
 #include "brave/components/ai_chat/core/browser/model_service.h"
 
+#include <algorithm>
 #include <array>
 #include <string>
 #include <string_view>
@@ -17,6 +18,7 @@
 #include "base/numerics/safe_math.h"
 #include "base/run_loop.h"
 #include "base/scoped_observation.h"
+#include "base/strings/string_util.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
@@ -26,6 +28,7 @@
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
+#include "components/grit/brave_components_webui_strings.h"
 #include "components/os_crypt/async/browser/os_crypt_async.h"
 #include "components/os_crypt/async/browser/test_utils.h"
 #include "components/prefs/testing_pref_service.h"
@@ -575,6 +578,21 @@ TEST_F(ModelServiceTest, DeleteCustomModelsByEndpoint_WithDefaultModel) {
   // Default model should be reset to the platform default
   EXPECT_NE(GetService()->GetDefaultModelKey(), custom_model_key);
   EXPECT_EQ(GetService()->GetDefaultModelKey(), expected_default);
+}
+
+TEST_F(ModelServiceTest, LeoModelsHaveWebUIStrings) {
+  for (const auto& model : GetService()->GetModels()) {
+    if (!model->options->is_leo_model_options()) {
+      continue;
+    }
+    std::string key = base::ToUpperASCII(model->key);
+    base::ReplaceChars(key, "-", "_", &key);
+    const std::string intro = "CHAT_UI_INTRO_MESSAGE_" + key;
+    EXPECT_NE(std::ranges::find(webui::kAiChatStrings, intro,
+                                &webui::LocalizedString::name),
+              webui::kAiChatStrings.end())
+        << intro << " missing for model key " << model->key;
+  }
 }
 
 TEST_F(ModelServiceTest, GetCustomModels) {

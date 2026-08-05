@@ -30,6 +30,23 @@ source_set("open_tab_search") {
   ]
 }
 
+source_set("unit_tests") {
+  testonly = true
+  sources = [ "brave_passage_embeddings_service_controller_unittest.cc" ]
+
+  deps = [
+    ":history_embeddings",
+    "//base",
+    "//base/test:test_support",
+    "//brave/components/local_ai/core",
+    "//components/optimization_guide/core",
+    "//components/optimization_guide/proto:optimization_guide_proto",
+    "//components/passage_embeddings/core",
+    "//content/test:test_support",
+    "//testing/gtest",
+  ]
+}
+
 source_set("browser_tests") {
   testonly = true
   sources = [ "open_tab_search_browsertest.cc" ]
@@ -85,6 +102,7 @@ source_set("history_embeddings") {
     "//chrome/browser:browser_public_dependencies",
     "//chrome/browser/profiles",
     "//components/history_embeddings/core",
+    "//components/optimization_guide/core",
     "//components/optimization_guide/proto:optimization_guide_proto",
     "//content/public/browser",
   ]

@@ -16,8 +16,8 @@
 #include "brave/components/brave_account/brave_account_state_prefs.h"
 #include "brave/components/brave_account/endpoint_client/request_handle.h"
 #include "brave/components/brave_account/endpoints/auth_validate.h"
-#include "brave/components/brave_account/endpoints/service_token.h"
 #include "brave/components/brave_account/flows/change_password.h"
+#include "brave/components/brave_account/flows/get_service_token.h"
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
 #include "brave/components/brave_account/state_base.h"
 #include "components/os_crypt/async/common/encryptor.h"
@@ -28,11 +28,11 @@ class SharedURLLoaderFactory;
 
 namespace brave_account {
 
-// `mojom::Authentication` surface available after login: `LogOut()` and
-// `GetServiceToken()`, plus the password-change steps, which are delegated to
-// the `change_password_` helper. Also periodically refreshes the stored email
-// via `ScheduleAuthValidate()`/`AuthValidate()`, driven by
-// `auth_validate_timer_`. `ResendVerificationEmail()` and
+// `mojom::Authentication` surface available after login: `LogOut()`, plus the
+// password-change and service-token steps, which are delegated to the
+// `change_password_` and `get_service_token_` helpers. Also periodically
+// refreshes the stored email via `ScheduleAuthValidate()`/`AuthValidate()`,
+// driven by `auth_validate_timer_`. `ResendVerificationEmail()` and
 // `CancelVerification()` are fully handled by `StateBase` for both states.
 // All other methods inherit `StateBase`'s wrong-state default.
 class LoggedInState : public StateBase {
@@ -71,10 +71,6 @@ class LoggedInState : public StateBase {
   void GetServiceToken(mojom::Service service,
                        GetServiceTokenCallback callback) override;
 
-  void OnGetServiceToken(const std::string& service_name,
-                         GetServiceTokenCallback callback,
-                         endpoints::ServiceToken::Response response);
-
   void ScheduleAuthValidate(
       base::TimeDelta delay = base::Seconds(0),
       endpoint_client::RequestHandle current_auth_validate_request = {});
@@ -85,6 +81,7 @@ class LoggedInState : public StateBase {
   void OnAuthValidate(endpoints::AuthValidate::Response response);
 
   ChangePassword change_password_{*this};
+  class GetServiceToken get_service_token_{*this};
 
   base::OneShotTimer auth_validate_timer_;
   base::WeakPtrFactory<LoggedInState> weak_factory_{this};

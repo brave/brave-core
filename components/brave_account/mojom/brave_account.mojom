@@ -6,8 +6,10 @@
 module brave_account.mojom;
 
 import "brave/components/brave_account/mojom/change_password.mojom";
+import "brave/components/brave_account/mojom/get_service_token.mojom";
 import "brave/components/brave_account/mojom/login.mojom";
 import "brave/components/brave_account/mojom/register.mojom";
+import "brave/components/brave_account/mojom/resend_verification_email.mojom";
 import "brave/components/brave_account/mojom/reset_password.mojom";
 
 // These enum values are persisted to Preferences. Never reorder, repurpose,
@@ -56,49 +58,6 @@ union AccountState {
   LoggedInState logged_in;
 };
 
-struct ResendConfirmationEmailResult {
-  // Currently empty, serves as a placeholder for success.
-};
-
-enum ResendConfirmationEmailClientErrorCode {
-  kCalledInWrongState,
-  kUnexpected,
-  kVerificationTokenDecryptionFailed,
-};
-
-struct ResendConfirmationEmailClientError {
-  ResendConfirmationEmailClientErrorCode error_code;
-};
-
-enum ResendConfirmationEmailServerErrorCode {
-  // Sentinel: server returned a malformed response
-  // (e.g. success body missing required fields).
-  kInvalidResponse                  = -1,
-  // Sentinel: server returned "code": null in the JSON body.
-  kNull                             = 0,
-  // Sentinel: server returned an unrecognized "code" in the JSON body.
-  kUnknown                          = 1,
-  // /v2/verify/resend:
-  // - internal: -
-  // - user-facing:
-  kMaximumEmailSendAttemptsExceeded = 13008,
-  kEmailAlreadyVerified             = 13009,
-  kTokenHasExpired                  = 14014,
-};
-
-struct ResendConfirmationEmailServerError {
-  // < 0: network error code (net_error_list.h)
-  // >= 0: HTTP status code (http_status_code_list.h) if available,
-  //       otherwise net::OK
-  int32 net_error_or_http_status;
-  ResendConfirmationEmailServerErrorCode error_code;
-};
-
-union ResendConfirmationEmailError {
-  ResendConfirmationEmailClientError client_error;
-  ResendConfirmationEmailServerError server_error;
-};
-
 // Services that depend on Brave Account.
 // Note: do not assign explicit values to enumerators,
 // as kMaxValue is used to validate that all services are handled.
@@ -107,53 +66,6 @@ enum Service {
   kEmailAliases,
   kPremium,
   kSync,
-};
-
-struct GetServiceTokenResult {
-  // Short-lived authentication token that allows a dependent service's backend
-  // to identify the user. Returned from prefs cache if available and not
-  // expired, otherwise fetched from /v2/auth/service_token.
-  string serviceToken;
-};
-
-enum GetServiceTokenClientErrorCode {
-  kCalledInWrongState,
-  kUnexpected,
-  kAuthenticationTokenDecryptionFailed,
-  kServiceTokenEncryptionFailed,
-};
-
-struct GetServiceTokenClientError {
-  GetServiceTokenClientErrorCode error_code;
-};
-
-enum GetServiceTokenServerErrorCode {
-  // Sentinel: server returned a malformed response
-  // (e.g. success body missing required fields).
-  kInvalidResponse         = -1,
-  // Sentinel: server returned "code": null in the JSON body.
-  kNull                    = 0,
-  // Sentinel: server returned an unrecognized "code" in the JSON body.
-  kUnknown                 = 1,
-  // /v2/auth/service_token:
-  // - internal:
-  kEmailDomainNotSupported = 13006,
-  kIncorrectCredentials    = 14004,
-  kInvalidTokenAudience    = 14007,
-  // - user-facing: -
-};
-
-struct GetServiceTokenServerError {
-  // < 0: network error code (net_error_list.h)
-  // >= 0: HTTP status code (http_status_code_list.h) if available,
-  //       otherwise net::OK
-  int32 net_error_or_http_status;
-  GetServiceTokenServerErrorCode error_code;
-};
-
-union GetServiceTokenError {
-  GetServiceTokenClientError client_error;
-  GetServiceTokenServerError server_error;
 };
 
 interface AuthenticationObserver {
@@ -203,10 +115,10 @@ interface Authentication {
 
   // Resends the verification email for the verification selected by
   // `intent`.
-  // Returns `ResendConfirmationEmailResult` on success, or
-  //         `ResendConfirmationEmailError` on failure.
+  // Returns `ResendVerificationEmailResult` on success, or
+  //         `ResendVerificationEmailError` on failure.
   ResendVerificationEmail(VerificationIntent intent)
-    => result<ResendConfirmationEmailResult, ResendConfirmationEmailError>;
+    => result<ResendVerificationEmailResult, ResendVerificationEmailError>;
 
   // Cancels the verification selected by `intent`.
   CancelVerification(VerificationIntent intent);

@@ -27,10 +27,10 @@ import org.chromium.brave_account.mojom.LoggedInState;
 import org.chromium.brave_account.mojom.LoggedInVerificationIntent;
 import org.chromium.brave_account.mojom.LoggedOutState;
 import org.chromium.brave_account.mojom.LoggedOutVerificationIntent;
-import org.chromium.brave_account.mojom.ResendConfirmationEmailError;
-import org.chromium.brave_account.mojom.ResendConfirmationEmailResult;
-import org.chromium.brave_account.mojom.ResendConfirmationEmailServerError;
-import org.chromium.brave_account.mojom.ResendConfirmationEmailServerErrorCode;
+import org.chromium.brave_account.mojom.ResendVerificationEmailError;
+import org.chromium.brave_account.mojom.ResendVerificationEmailResult;
+import org.chromium.brave_account.mojom.ResendVerificationEmailServerError;
+import org.chromium.brave_account.mojom.ResendVerificationEmailServerErrorCode;
 import org.chromium.brave_account.mojom.VerificationIntent;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
@@ -72,11 +72,11 @@ public class BraveAccountSectionController
 
     private static final Map<Integer, Integer> RESEND_CONFIRMATION_EMAIL_SERVER_ERROR_STRINGS =
             Map.of(
-                    ResendConfirmationEmailServerErrorCode.MAXIMUM_EMAIL_SEND_ATTEMPTS_EXCEEDED,
+                    ResendVerificationEmailServerErrorCode.MAXIMUM_EMAIL_SEND_ATTEMPTS_EXCEEDED,
                     R.string.brave_account_resend_confirmation_email_maximum_send_attempts_exceeded,
-                    ResendConfirmationEmailServerErrorCode.EMAIL_ALREADY_VERIFIED,
+                    ResendVerificationEmailServerErrorCode.EMAIL_ALREADY_VERIFIED,
                     R.string.brave_account_resend_confirmation_email_already_verified,
-                    ResendConfirmationEmailServerErrorCode.TOKEN_HAS_EXPIRED,
+                    ResendVerificationEmailServerErrorCode.TOKEN_HAS_EXPIRED,
                     R.string.brave_account_resend_confirmation_email_token_has_expired);
 
     private static final String PREF_BRAVE_ACCOUNT_SECTION = "brave_account_section";
@@ -498,8 +498,8 @@ public class BraveAccountSectionController
 
     private void onResendVerificationEmail(
             Preference preference,
-            Result<ResendConfirmationEmailResult, ResendConfirmationEmailError> result) {
-        ResendConfirmationEmailError error = result.isSuccess() ? null : result.getError();
+            Result<ResendVerificationEmailResult, ResendVerificationEmailError> result) {
+        ResendVerificationEmailError error = result.isSuccess() ? null : result.getError();
 
         String title =
                 mFragment.getString(
@@ -511,8 +511,8 @@ public class BraveAccountSectionController
         if (error == null) {
             message = mFragment.getString(R.string.brave_account_resend_confirmation_email_success);
         } else {
-            boolean isClientError = error.which() == ResendConfirmationEmailError.Tag.ClientError;
-            ResendConfirmationEmailServerError serverError =
+            boolean isClientError = error.which() == ResendVerificationEmailError.Tag.ClientError;
+            ResendVerificationEmailServerError serverError =
                     isClientError ? null : error.getServerError();
             message =
                     getAlertMessage(

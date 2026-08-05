@@ -11,21 +11,21 @@ import { leoShowAlert } from '//resources/brave/leo.bundle.js'
 
 import { BraveAccountBrowserProxy } from './brave_account_browser_proxy.js'
 import { BraveAccountSettingsStrings } from '../brave_components_webui_strings.js'
-import {
-  ResendConfirmationEmailClientErrorCode,
-  ResendConfirmationEmailError,
-  ResendConfirmationEmailServerErrorCode,
-  VerificationIntent,
-} from '../brave_account.mojom-webui.js'
+import { VerificationIntent } from '../brave_account.mojom-webui.js'
 import {
   ChangePasswordClientErrorCode,
   ChangePasswordError,
   ChangePasswordServerErrorCode,
 } from '../change_password.mojom-webui.js'
+import {
+  ResendVerificationEmailClientErrorCode,
+  ResendVerificationEmailError,
+  ResendVerificationEmailServerErrorCode,
+} from '../resend_verification_email.mojom-webui.js'
 
 type Error =
   | { kind: 'changePassword'; details: ChangePasswordError }
-  | { kind: 'resendConfirmationEmail'; details: ResendConfirmationEmailError }
+  | { kind: 'resendVerificationEmail'; details: ResendVerificationEmailError }
 
 const CHANGE_PASSWORD_CLIENT_ERROR_STRINGS: Partial<
   Record<ChangePasswordClientErrorCode, string>
@@ -54,20 +54,20 @@ const CHANGE_PASSWORD_SERVER_ERROR_STRINGS: Partial<
       .BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_TOKEN_HAS_EXPIRED,
 }
 
-const RESEND_CONFIRMATION_EMAIL_CLIENT_ERROR_STRINGS: Partial<
-  Record<ResendConfirmationEmailClientErrorCode, string>
+const RESEND_VERIFICATION_EMAIL_CLIENT_ERROR_STRINGS: Partial<
+  Record<ResendVerificationEmailClientErrorCode, string>
 > = {}
 
-const RESEND_CONFIRMATION_EMAIL_SERVER_ERROR_STRINGS: Partial<
-  Record<ResendConfirmationEmailServerErrorCode, string>
+const RESEND_VERIFICATION_EMAIL_SERVER_ERROR_STRINGS: Partial<
+  Record<ResendVerificationEmailServerErrorCode, string>
 > = {
-  [ResendConfirmationEmailServerErrorCode.kMaximumEmailSendAttemptsExceeded]:
+  [ResendVerificationEmailServerErrorCode.kMaximumEmailSendAttemptsExceeded]:
     BraveAccountSettingsStrings
       .BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_MAXIMUM_SEND_ATTEMPTS_EXCEEDED,
-  [ResendConfirmationEmailServerErrorCode.kEmailAlreadyVerified]:
+  [ResendVerificationEmailServerErrorCode.kEmailAlreadyVerified]:
     BraveAccountSettingsStrings
       .BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_ALREADY_VERIFIED,
-  [ResendConfirmationEmailServerErrorCode.kTokenHasExpired]:
+  [ResendVerificationEmailServerErrorCode.kTokenHasExpired]:
     BraveAccountSettingsStrings
       .BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_TOKEN_HAS_EXPIRED,
 }
@@ -107,7 +107,7 @@ export abstract class BraveAccountRowBaseElement<
     if (this.isResendingConfirmationEmail) return
     this.isResendingConfirmationEmail = true
 
-    let error: ResendConfirmationEmailError | undefined
+    let error: ResendVerificationEmailError | undefined
 
     assert(this.state.verification)
     try {
@@ -115,12 +115,12 @@ export abstract class BraveAccountRowBaseElement<
         this.makeVerificationIntent(this.state.verification.intent))
     } catch (e) {
       if (e && typeof e === 'object') {
-        error = e as ResendConfirmationEmailError
+        error = e as ResendVerificationEmailError
       } else {
         console.error('Unexpected error:', e)
         error = {
           clientError: {
-            errorCode: ResendConfirmationEmailClientErrorCode.kUnexpected,
+            errorCode: ResendVerificationEmailClientErrorCode.kUnexpected,
           },
         }
       }
@@ -135,7 +135,7 @@ export abstract class BraveAccountRowBaseElement<
                      .BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_SUCCESS_TITLE),
       content: error
         ? this.getErrorMessage(
-              { kind: 'resendConfirmationEmail', details: error })
+              { kind: 'resendVerificationEmail', details: error })
         : this.i18n(
               BraveAccountSettingsStrings
                    .BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_SUCCESS)
@@ -162,10 +162,10 @@ export abstract class BraveAccountRowBaseElement<
           CHANGE_PASSWORD_SERVER_ERROR_STRINGS,
           error.details,
         )
-      case 'resendConfirmationEmail':
+      case 'resendVerificationEmail':
         return this.getErrorMessageImpl(
-          RESEND_CONFIRMATION_EMAIL_CLIENT_ERROR_STRINGS,
-          RESEND_CONFIRMATION_EMAIL_SERVER_ERROR_STRINGS,
+          RESEND_VERIFICATION_EMAIL_CLIENT_ERROR_STRINGS,
+          RESEND_VERIFICATION_EMAIL_SERVER_ERROR_STRINGS,
           error.details,
         )
     }
@@ -174,10 +174,10 @@ export abstract class BraveAccountRowBaseElement<
   private getErrorMessageImpl<
     ClientErrorCode extends
       | ChangePasswordClientErrorCode
-      | ResendConfirmationEmailClientErrorCode,
+      | ResendVerificationEmailClientErrorCode,
     ServerErrorCode extends
       | ChangePasswordServerErrorCode
-      | ResendConfirmationEmailServerErrorCode,
+      | ResendVerificationEmailServerErrorCode,
   >(
     clientErrorStrings: Partial<Record<ClientErrorCode, string>>,
     serverErrorStrings: Partial<Record<ServerErrorCode, string>>,

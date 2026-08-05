@@ -666,7 +666,7 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
   }
 
   private func resendConfirmationEmailAlertTitle(
-    failure: BraveAccount.ResendConfirmationEmailError?
+    failure: BraveAccount.ResendVerificationEmailError?
   ) -> String {
     return L10nUtils.string(
       messageId: failure == nil
@@ -714,7 +714,7 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
   }
 
   private func resendConfirmationEmailAlertMessage(
-    failure: BraveAccount.ResendConfirmationEmailError
+    failure: BraveAccount.ResendVerificationEmailError
   ) -> String {
     return braveAccountAlertMessage(
       clientErrorStrings: [:],

@@ -86,7 +86,7 @@
 "CustomFiltersInvalidRuleError" = "Regla no válida \"%1$@\" en la línea %2$i";
 
 /* A placeholder when custom filter lists are empty */
-"CustomFiltersPlaceholder" = "Añada aquí tus filtros personalizados, cada uno en una línea.";
+"CustomFiltersPlaceholder" = "Agregar filtros personalizados";
 
 /* An error message telling the user that they crossed the line limit */
 "CustomFiltersTooManyLinesError" = "El límite de líneas para los filtros personalizados es %i";
@@ -111,6 +111,9 @@
 
 /* A tab title for the warning page that appears when a page was blocked */
 "DomainBlockedTitle" = "Dominio bloqueado";
+
+/* A placeholder when custom filter lists are empty */
+"EditCustomFiltersLabel" = "Editar filtros personalizados";
 
 /* A description of what the Enable GPC toggle does */
 "EnableGPCDescription" = "Pide a los sitios web que no vendan ni compartan tus datos. [Más información](https://support.brave.app/hc/en-us/articles/360017989132-How-do-I-change-my-Privacy-Settings#h_01HHFRRT6B5YTRREA4ZDARGTWM)";

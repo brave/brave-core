@@ -34,6 +34,12 @@
 /* Title for Brave News widgets that display the top news */
 "widgets.newsClusteringWidgetTitle" = "ข่าวยอดนิยม";
 
+/* Displayed on a news widget wont load due to admin policies */
+"widgets.newsUnavailableByPolicy" = "Brave News ถูกปิดใช้งาน";
+
+/* Displayed on a news widget wont load due to admin policies */
+"widgets.newsUnavailableByPolicyDescription" = "ปิดใช้งานโดยนโยบายขององค์กรของคุณ";
+
 /* This shows when you add a widget but have no favorites added in your app */
 "widgets.noFavoritesFound" = "โปรดเปิด Brave เพื่อดูรายการโปรดของคุณที่นี่";
 

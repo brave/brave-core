@@ -2177,7 +2177,13 @@
 "wallet.txStatusViewInActivity" = "アクティビティを表示";
 
 /* Description displayed when users chose Brave to ask them if they want the Unstoppable Domains to be resolved every time they enter one. The first '%@' will be replaced with a list of supported TLDs like '.x' or '.bitcoin'. The second '%@' be replaced with a link to Chainstack's terms of use page. The third '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The fourth '%@' will be replaced with a link to Chainstack's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'. */
-"wallet.udDomainInterstitialPageDescription" = "Braveは、設定されたEthereum RPCサービス (デフォルトはChainstack) を使用して、Unstoppable Domainsに登録されている.crypto (および%1$@) ドメイン名を解決します。BraveではIPアドレスが非表示になります。これを有効にすると、Chainstack側で分かるのはあるユーザーがこれらのドメインを訪問しようとしていることのみです。Chainstackの<a href=%2$@>%3$@</a>と<a href=%4$@>%5$@</a>もご覧ください。";
+"wallet.udDomainInterstitialPageDescription" = "Unstoppable Domainsにあるドメイン名。BraveはあなたのIPアドレスを隠します。これを有効にすると、Chainstackは誰かがこれらのドメインを訪問しようとしていることを確認しますが、それ以外は何もしません。Chainstackの<a href=%1$@>%2$@</a>および<a href=%3$@>%4$@</a>を参照してください。";
+
+/* The intro displayed below `udDomainInterstitialPageTitle`. */
+"wallet.udDomainInterstitialPageIntro" = "Braveは、以下を解決するために、デフォルトでChainstackに設定されたEthereum RPCサービスになります:";
+
+/* The title of the button that user can tap to reveal more unstoppable domain extensions we support to resolve. */
+"wallet.udDomainInterstitialPageMore" = "+ もっと見る";
 
 /* Title displayed when users chose Brave to ask them if they want the Unstoppable Domains domain to be resolved every time they enter one. */
 "wallet.udDomainInterstitialPageTitle" = "Braveで「Unstoppable Domains」のサポートを有効にしますか？";

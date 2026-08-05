@@ -86,7 +86,7 @@
 "CustomFiltersInvalidRuleError" = "Peraturan tidak sah `%1$@` pada baris %2$i";
 
 /* A placeholder when custom filter lists are empty */
-"CustomFiltersPlaceholder" = "Tambah penapis tersuai anda di sini, satu bagi setiap baris.";
+"CustomFiltersPlaceholder" = "Tambah Penapis Tersuai";
 
 /* An error message telling the user that they crossed the line limit */
 "CustomFiltersTooManyLinesError" = "Penapis tersuai tidak menyokong lebih daripada %i baris";
@@ -111,6 +111,9 @@
 
 /* A tab title for the warning page that appears when a page was blocked */
 "DomainBlockedTitle" = "Domain Disekat";
+
+/* A placeholder when custom filter lists are empty */
+"EditCustomFiltersLabel" = "Edit Penapis Tersuai";
 
 /* A description of what the Enable GPC toggle does */
 "EnableGPCDescription" = "Minta laman web agar tidak menjual atau kongsikan data anda. [Ketahui lebih lanjut](https://support.brave.app/hc/en-us/articles/360017989132-How-do-I-change-my-Privacy-Settings#h_01HHFRRT6B5YTRREA4ZDARGTWM)";
