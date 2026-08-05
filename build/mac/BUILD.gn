@@ -108,23 +108,23 @@ action("generate_dsa_sig_for_dmg") {
 
   args = [
     "--sign-update",
-    rebase_path("$sign_update_path", root_build_dir),
+    rebase_path(sign_update_path, root_build_dir),
     "--sign-key-file",
     "$sparkle_dsa_private_key_file",
     "--target",
     rebase_path(dmg_path, root_build_dir),
     "--output",
-    rebase_path("$output_dmg_dsa_path", root_build_dir),
+    rebase_path(output_dmg_dsa_path, root_build_dir),
     "--dsa",
   ]
 
   inputs = [
     script,
-    "$sign_update_path",
+    sign_update_path,
     dmg_path,
   ]
 
-  outputs = [ "$output_dmg_dsa_path" ]
+  outputs = [ output_dmg_dsa_path ]
 
   deps = [ ":package" ]
 
@@ -148,17 +148,17 @@ action("generate_eddsa_sig_for_dmg") {
     "--sign-update",
     rebase_path("$sign_update_path", root_build_dir),
     "--sign-key",
-    "$sparkle_eddsa_private_key",
+    sparkle_eddsa_private_key,
     "--target",
     rebase_path(dmg_path, root_build_dir),
     "--output",
-    rebase_path("$output_dmg_eddsa_path", root_build_dir),
+    rebase_path(output_dmg_eddsa_path, root_build_dir),
     "--eddsa",
   ]
 
   inputs = [
     script,
-    "$sign_update_path",
+    sign_update_path,
     dmg_path,
   ]
 
