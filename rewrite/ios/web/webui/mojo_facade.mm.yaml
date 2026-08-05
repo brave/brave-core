@@ -1,0 +1,115 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Record which frame created a watch, so OnWatcherCallback (patched
+      below) can route the eventual notification back to it instead of
+      always the main frame.
+    after_function_impl:
+      function_name: MojoFacade::HandleMojoHandleWatch
+      result_var: result
+      code: |-
+        if (const std::string* frame_id = args.FindString("frameId")) {
+          if (std::optional<int> watch_id = result.GetIfInt()) {
+            watch_id_to_frame_id_[*watch_id] = *frame_id;
+          }
+        }
+        return result;
+
+  - description: 'Clean up the frame mapping for a canceled watch.'
+    preempt_function_impl:
+      function_name: MojoFacade::HandleMojoWatcherCancel
+      code: |-
+        if (std::optional<int> watch_id = FindIntOrDoubleAsInt(args, "watchId")) {
+          watch_id_to_frame_id_.erase(*watch_id);
+        }
+
+  - description: |-
+      Start polling any newly-available sub-frame for mojo messages too.
+
+      Chromium only ever polls the main frame; Brave's AI Chat embeds an
+      untrusted conversation-entries iframe inside the main WebUI page that
+      also binds mojo interfaces, so it needs its own poll loop. Gated the
+      same way upstream gates the main frame's own AwaitNextMessage() call
+      (constructor, above): only once the page isn't mid-load and something
+      has actually registered an interface. Without this gate, a frame that
+      never uses mojo (e.g. any FakeWebFrame in a unit test, or an ordinary
+      iframe in production) would still get polled forever, since
+      OnAwaitNextMessageForFrameCompleted unconditionally retries on error.
+    after_function_impl:
+      function_name: MojoFacade::WebFrameBecameAvailable
+      code: |-
+        if (web_frame && !web_frame->IsMainFrame() &&
+            !web_state_->IsLoading() &&
+            web_state_->GetInterfaceBinderForMainFrame()
+                ->HasRegisteredInterfaces()) {
+          AwaitNextMessageForFrame(web_frame->GetFrameId());
+        }
+
+  - description: |-
+      Stop polling a sub-frame once it goes away, and erase any watch it
+      created.
+
+      Without this, a watch created by a sub-frame (e.g. AI Chat's
+      untrusted conversation-entries iframe) outlives the frame: watchers_
+      keeps armed-and-watching indefinitely, and a later notification for
+      it gets misdirected to the main frame instead of dropped, since
+      GetFrameForWatch falls back to the main frame when the original
+      frame can no longer be found.
+    after_function_impl:
+      function_name: MojoFacade::WebFrameBecameUnavailable
+      code: |-
+        extra_polling_frame_ids_.erase(frame_id);
+        EraseWatchersForFrame(frame_id);
+
+  - description: |-
+      Reset Brave's sub-frame routing state alongside upstream's own reset.
+
+      Upstream's own reset calls weak_ptr_factory_.InvalidateWeakPtrs(),
+      which would otherwise silently strand an in-flight extra-frame poll
+      loop, leaving extra_polling_frame_ids_ stuck believing it's still
+      polling.
+    preempt_function_impl:
+      function_name: MojoFacade::PageLoaded
+      code: |-
+        extra_polling_frame_ids_.clear();
+        watch_id_to_frame_id_.clear();
+
+  - description: 'Reset Brave sub-frame routing state on teardown too.'
+    preempt_function_impl:
+      function_name: MojoFacade::WebStateDestroyed
+      code: |-
+        extra_polling_frame_ids_.clear();
+        watch_id_to_frame_id_.clear();
+
+  - description: |-
+      Gate Mojo.bindInterface against Brave's chrome-untrusted:// per-origin
+      interface allowlist.
+
+      Upstream doesn't check origin at all here; see
+      InterfaceBinder::IsAllowedForOrigin in
+      brave/chromium_src/ios/web/public/web_state.h for the allowlist itself.
+    preempt_function_impl:
+      function_name: MojoFacade::HandleMojoBindInterface
+      return_if: '!IsBindInterfaceAllowedForFrame(args)'
+
+  - description: |-
+      Route watch callbacks to the frame that created the watch (see
+      HandleMojoHandleWatch's after_function_impl above), falling back to
+      the main frame exactly as upstream does when unknown. Needed so
+      sub-frames (e.g. AI Chat's untrusted conversation-entries iframe) get
+      their own watch notifications instead of everything going to the main
+      frame.
+
+      Scoped to this one call site (rather than a #define on
+      GetMainWebFrame(), which is also called from its own definition and
+      from AwaitNextMessage()) by anchoring on the enclosing function name.
+    regex:
+      re_pattern:
+        '(MojoFacade::OnWatcherCallback\([^)]*\)\s*\{\s*WebFrame\* main_frame =
+        )GetMainWebFrame\(\);'
+      re_flags: [DOTALL]
+      replace: '\1GetFrameForWatch(watch_id);'
