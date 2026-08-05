@@ -4,11 +4,14 @@ grade: stable
 architectures:
   - build-on: amd64
   - build-on: arm64
-summary: Browse faster and safer with Brave.
+summary: Fast Internet, AI, Adblock
 description: |
-  The Brave browser automatically blocks ads and trackers, making it
-  faster and safer than your current browser. Start supporting publishers
-  today with Brave Rewards.
+  Brave is on a mission to fix the web by giving users a safer, faster and
+  better browsing experience while growing support for content creators
+  through a new attention-based ecosystem of rewards.
+
+  Browse faster by blocking ads and trackers that violate your privacy and
+  cost you time and money.
 source-code: https://github.com/brave/brave-browser
 confinement: strict
 base: core24
