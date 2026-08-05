@@ -10,7 +10,6 @@
 #include "base/test/bind.h"
 #include "base/test/gtest_util.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
-#include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/test/base/platform_browser_test.h"
@@ -94,18 +93,27 @@ IN_PROC_BROWSER_TEST_F(BraveSyncNetworkTimeHelperBrowserTest, DidntCrash) {
   EXPECT_TRUE(true);
 }
 
-using BraveSyncNetworkTimeHelperBrowserDeathTest =
-    BraveSyncNetworkTimeHelperBrowserTest;
+// Deliberately does NOT derive from BraveSyncNetworkTimeHelperBrowserTest: the
+// death test only needs `NetworkTimeHelper`, which is owned by the browser
+// process and is initialized independently of sync, in
+// BraveBrowserProcessImpl::PreMainMessageLoopRun(). Configuring a sync chain
+// here would start the sync engine, whose
+// `HttpBridge::MakeSynchronousPost()` blocks one `MayBlock()` ThreadPool
+// sequence until a second ThreadPool sequence completes the request. Death
+// tests run in the "threadsafe" style, so `EXPECT_DEATH` re-executes the test
+// binary and blocks until that second browser process dies; while it starts
+// up, the sequence that would complete the request can be starved for tens of
+// seconds (~33s in the reported runs). That is long enough for the blocked
+// sync task to exceed `TaskEnvironment`'s 30s `action_max_timeout()` per-task
+// watchdog, which fails this test with "RunTask took more than 30 seconds.
+// Posted from TrySyncCycleJob". The request itself is never slow: browser
+// tests already fail external DNS instantly via content::TestHostResolver.
+// See https://github.com/brave/brave-browser/issues/50706 and
+// https://github.com/brave/brave-browser/issues/57184
+using BraveSyncNetworkTimeHelperBrowserDeathTest = PlatformBrowserTest;
 
-// There is a CI report about this test failure on Windows x64,
-// See https://github.com/brave/brave-browser/issues/50706
-#if BUILDFLAG(IS_WIN) && defined(ARCH_CPU_X86_64)
-#define MAYBE_CrashNoUiTaskRunner DISABLED_CrashNoUiTaskRunner
-#else
-#define MAYBE_CrashNoUiTaskRunner CrashNoUiTaskRunner
-#endif
 IN_PROC_BROWSER_TEST_F(BraveSyncNetworkTimeHelperBrowserDeathTest,
-                       MAYBE_CrashNoUiTaskRunner) {
+                       CrashNoUiTaskRunner) {
   brave_sync::NetworkTimeHelper::GetInstance()->SetNetworkTimeTracker(
       g_browser_process->network_time_tracker(), nullptr);
 
