@@ -1537,7 +1537,7 @@
 /* Title for the Playlist Settings Option for Enable/Disable Auto-Play */
 "playlist.playlistAutoPlaySettingsOptionTitle" = "ऑटो-प्ले";
 
-/* Auto Download turn Off Option */
+/* Auto Cache turn Off Option */
 "playlist.playlistAutoSaveOptionOff" = "बंद";
 
 /* Auto Save turn On Option */
@@ -1546,10 +1546,10 @@
 /* Option Text for Auto Save Only Wi-Fi Option */
 "playlist.playlistAutoSaveOptionOnlyWifi" = "सिर्फ़ वाई-फ़ाई";
 
-/* Description for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
-"playlist.playlistAutoSaveSettingsDescription" = "ऑफ़लाइन इस्तेमाल के लिए वीडियो और ऑडियो फ़ाइलें जोड़ने से, आपके डिवाइस की बहुत सारी स्टोरेज और आपका मोबाइल डेटा इस्तेमाल हो सकता है";
+/* Description for the Playlist Settings Option for Auto Caching media (Off/On/Only Wi-fi) */
+"playlist.playlistAutoSaveSettingsDescription" = "वीडियो और ऑडियो फ़ाइलों को कैश करने से आपके डिवाइस पर सेल्युलर डेटा और स्टोरेज स्पेस दोनों की खपत हो सकती है";
 
-/* Footer Text for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi)) */
+/* Footer Text for the Playlist Settings Option for media Auto Cache (Off/On/Only Wi-fi)) */
 "playlist.playlistAutoSaveSettingsFooterText" = "आपके प्लेलिस्ट में कॉन्टेंट खोलने पर, यह विकल्प आपके डिवाइस पर प्लेलिस्ट के आइटम खुले रखेगा, ताकि आप बिना इंटरनेट कनेक्शन के उन्हें चला सकें।";
 
 /* Title for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
@@ -1559,7 +1559,7 @@
 "playlist.playlistDiskSpaceAddAnywayButtonTitle" = "वैसे भी जोड़ें";
 
 /* When the user's disk space is almost full */
-"playlist.playlistDiskSpaceWarningMessage" = "आपके device पर स्पेस कम है। इस वीडियो को प्लेलिस्ट में जोड़ने से डाउनलोड विफल हो सकते हैं या अन्य डाउनलोड प्रभावित हो सकते हैं।";
+"playlist.playlistDiskSpaceWarningMessage" = "आपके डिवाइस पर स्पेस कम है। इस वीडियो को प्लेलिस्ट में जोड़ना विफल हो सकता है या अन्य कैश किए गए वीडियो प्रभावित हो सकते हैं।";
 
 /* When the user's disk space is almost full */
 "playlist.playlistDiskSpaceWarningTitle" = "स्टोरेज लगभग पूरी भरी है";
@@ -1570,14 +1570,17 @@
 /* Title for the Playlist Settings Option for long press gesture */
 "playlist.playlistLongPressSettingsOptionTitle" = "लंबे समय तक दबाने की सुविधा चालू करें";
 
+/* Text for Playlist Data Toggle for clearing the cache in settings */
+"playlist.playlistOfflineDataToggleOption" = "प्लेलिस्ट डेटा";
+
 /* Title of a button displayed when first adding some media to Playlist. Its shown next to the name of a folder that the item is recently added to to imply that you are changing the folder it was saved to */
 "playlist.playlistPopoverChangeFoldersButtonTitle" = "बदलें";
 
-/* The title for the alert that shows up when removing all videos and their offline mode storage. */
+/* The title for the alert that shows up when removing all playlist data. */
 "playList.playlistResetAlertTitle" = "रीसेट करें";
 
 /* Footer Text for the Playlist Settings Option for resetting Playlist. */
-"playlist.playlistResetPlaylistOptionFooterText" = "यह विकल्प प्लेलिस्ट के साथ-साथ ऑफ़लाइन मोड स्टोरेज से भी सभी वीडियो हटा देगा।";
+"playlist.playlistResetPlaylistOptionFooterText" = "यह विकल्प सभी प्लेलिस्ट डेटा को हटा देगा।";
 
 /* Title Playlist (used for back button, and playlist settings) */
 "playList.playListSettingTitle" = "प्लेलिस्ट";
@@ -1588,7 +1591,7 @@
 /* Title for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
 "playlist.playlistStartPlaybackSettingsOptionTitle" = "फ़ाइल की प्लेबैक की स्थिति को याद रखें";
 
-/* Title for removing offline mode storage */
+/* Title for removing cached media from the playlist */
 "playList.removeActionButtonTitle" = "हटाएं";
 
 /* A message shown when the user removes media from the playlist. '%@' will be replaced by the folder it was added to. Example: 'Removed from Play Later' */
@@ -1608,9 +1611,6 @@
 
 /* The title for the toast that shows up on a page containing a playlist item */
 "playList.toastAddToPlaylistTitle" = "प्लेलिस्ट में जोड़ें";
-
-/* The title for the toast that shows up on a page when an item that has already been added, was updated. */
-"playList.toastExitingItemPlaylistTitle" = "Brave Playlist में देखें";
 
 /* A button title that when tapped will re-add the media item (undo the removal) that the user recently removed. */
 "playList.undoRemoveButtonTitle" = "अनकिया करें";
@@ -3162,6 +3162,12 @@
 
 /* The title of the toggle for user to turn on auto-open keyboard when creating a new tab. */
 "tabs.settings.autoOpenKeyboardTitle" = "कीबोर्ड अपने-आप खोलें";
+
+/* The description of the toggle for user to turn on open link in quick view mode. */
+"tabs.settings.openLinkInQuickViewModeDescription" = "Ask Brave और Brave Search से लिंक प्रीव्यू टैब में खोलें";
+
+/* The title of the toggle for user to turn on open link in quick view mode. */
+"tabs.settings.openLinkInQuickViewModeTitle" = "Quickview टैब चालू करें";
 
 /* No comment provided by engineer. */
 "tabs.settings.persistentPrivateBrowsingDescription" = "ऐप बंद करने पर प्राइवेट ब्राउज़िंग टैब्स खुले रखें, ताकि प्राइवेट ब्राउज़िंग सेशन बिना परेशानी के जारी रहें।";

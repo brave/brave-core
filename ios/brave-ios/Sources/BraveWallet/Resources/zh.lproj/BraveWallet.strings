@@ -2177,7 +2177,13 @@
 "wallet.txStatusViewInActivity" = "在活动中查看";
 
 /* Description displayed when users chose Brave to ask them if they want the Unstoppable Domains to be resolved every time they enter one. The first '%@' will be replaced with a list of supported TLDs like '.x' or '.bitcoin'. The second '%@' be replaced with a link to Chainstack's terms of use page. The third '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The fourth '%@' will be replaced with a link to Chainstack's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'. */
-"wallet.udDomainInterstitialPageDescription" = "Brave 将使用配置的以太坊 RPC 服务（默认为 Chainstack）来解析 Unstoppable Domains 上的 .crypto（以及 %1$@）域名。Brave 将隐藏你的 IP 地址。如果你启用此功能，Chainstack 将看到有人试图访问这些域名，但看不到其他内容。查看 Chainstack 的 <a href=%2$@>%3$@</a> 和 <a href=%4$@>%5$@</a>。";
+"wallet.udDomainInterstitialPageDescription" = "是位于 Unstoppable Domains 上的域名。Brave 将隐藏您的 IP 地址。如果您启用这项功能，Chainstack 只会看到有人正在尝试访问这些域，不会看到其他信息。查看 Chainstack 的<a href=%1$@>%2$@</a>和<a href=%3$@>%4$@</a>。";
+
+/* The intro displayed below `udDomainInterstitialPageTitle`. */
+"wallet.udDomainInterstitialPageIntro" = "Brave 将成为已配置的以太坊 RPC 服务，默认使用 Chainstack 来解析：";
+
+/* The title of the button that user can tap to reveal more unstoppable domain extensions we support to resolve. */
+"wallet.udDomainInterstitialPageMore" = "+ 更多";
 
 /* Title displayed when users chose Brave to ask them if they want the Unstoppable Domains domain to be resolved every time they enter one. */
 "wallet.udDomainInterstitialPageTitle" = "是否在 Brave 中启用对不可阻挡域的支持？";

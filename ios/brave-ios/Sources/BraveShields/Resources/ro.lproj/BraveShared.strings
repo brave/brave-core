@@ -86,7 +86,7 @@
 "CustomFiltersInvalidRuleError" = "Regulă invalidă `%1$@` pe linia %2$i";
 
 /* A placeholder when custom filter lists are empty */
-"CustomFiltersPlaceholder" = "Adaugă-ți filtrele personalizate aici, câte unul pe rând.";
+"CustomFiltersPlaceholder" = "Adaugă filtre personalizate";
 
 /* An error message telling the user that they crossed the line limit */
 "CustomFiltersTooManyLinesError" = "Filtrele personalizate nu permit mai mult de %i rânduri";
@@ -111,6 +111,9 @@
 
 /* A tab title for the warning page that appears when a page was blocked */
 "DomainBlockedTitle" = "Domeniu blocat";
+
+/* A placeholder when custom filter lists are empty */
+"EditCustomFiltersLabel" = "Editați filtrele personalizate";
 
 /* A description of what the Enable GPC toggle does */
 "EnableGPCDescription" = "Solicită site-urilor web să nu vândă sau să-ți partajeze datele. [Află mai multe](https://support.brave.app/hc/en-us/articles/360017989132-How-do-I-change-my-Privacy-Settings#h_01HHFRRT6B5YTRREA4ZDARGTWM)";

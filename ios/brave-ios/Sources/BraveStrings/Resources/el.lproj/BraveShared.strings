@@ -1537,7 +1537,7 @@
 /* Title for the Playlist Settings Option for Enable/Disable Auto-Play */
 "playlist.playlistAutoPlaySettingsOptionTitle" = "Αυτόματη αναπαραγωγή";
 
-/* Auto Download turn Off Option */
+/* Auto Cache turn Off Option */
 "playlist.playlistAutoSaveOptionOff" = "Απενεργοποιημένο";
 
 /* Auto Save turn On Option */
@@ -1546,10 +1546,10 @@
 /* Option Text for Auto Save Only Wi-Fi Option */
 "playlist.playlistAutoSaveOptionOnlyWifi" = "Μόνο Wi-Fi";
 
-/* Description for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
-"playlist.playlistAutoSaveSettingsDescription" = "Η προσθήκη αρχείων βίντεο και ήχου για χρήση εκτός σύνδεσης μπορεί να χρησιμοποιήσει πολύ χώρο αποθήκευσης στη συσκευή σας, καθώς και να χρησιμοποιήσει τα δεδομένα κινητής τηλεφωνίας σας";
+/* Description for the Playlist Settings Option for Auto Caching media (Off/On/Only Wi-fi) */
+"playlist.playlistAutoSaveSettingsDescription" = "Η προσωρινή αποθήκευση αρχείων βίντεο και ήχου μπορεί να καταναλώσει τόσο δεδομένα κινητής τηλεφωνίας όσο και χώρο αποθήκευσης στη συσκευή σας";
 
-/* Footer Text for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi)) */
+/* Footer Text for the Playlist Settings Option for media Auto Cache (Off/On/Only Wi-fi)) */
 "playlist.playlistAutoSaveSettingsFooterText" = "Μόλις ανοίξετε περιεχόμενο στη λίστα αναπαραγωγής, αυτή η επιλογή θα διατηρήσει τα στοιχεία της λίστας αναπαραγωγής που ανοίξατε στη συσκευή σας, ώστε να μπορείτε να τα αναπαράγετε χωρίς σύνδεση στο διαδίκτυο.";
 
 /* Title for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
@@ -1559,7 +1559,7 @@
 "playlist.playlistDiskSpaceAddAnywayButtonTitle" = "Προσθήκη Ούτως ή άλλως";
 
 /* When the user's disk space is almost full */
-"playlist.playlistDiskSpaceWarningMessage" = "Η συσκευή σας έχει χαμηλό χώρο. Η προσθήκη αυτού του βίντεο στη Λίστα αναπαραγωγής ενδέχεται να αποτύχει ή να επηρεάσει άλλες λήψεις.";
+"playlist.playlistDiskSpaceWarningMessage" = "Η συσκευή σας έχει χαμηλό χώρο. Η προσθήκη αυτού του βίντεο στη Λίστα αναπαραγωγής ενδέχεται να αποτύχει ή να επηρεάσει άλλα προσωρινά αποθηκευμένα βίντεο.";
 
 /* When the user's disk space is almost full */
 "playlist.playlistDiskSpaceWarningTitle" = "Ο χώρος αποθήκευσης είναι σχεδόν πλήρης";
@@ -1570,14 +1570,17 @@
 /* Title for the Playlist Settings Option for long press gesture */
 "playlist.playlistLongPressSettingsOptionTitle" = "Ενεργοποίηση παρατεταμένου πατήματος";
 
+/* Text for Playlist Data Toggle for clearing the cache in settings */
+"playlist.playlistOfflineDataToggleOption" = "Δεδομένα λίστας αναπαραγωγής";
+
 /* Title of a button displayed when first adding some media to Playlist. Its shown next to the name of a folder that the item is recently added to to imply that you are changing the folder it was saved to */
 "playlist.playlistPopoverChangeFoldersButtonTitle" = "Αλλαγή";
 
-/* The title for the alert that shows up when removing all videos and their offline mode storage. */
+/* The title for the alert that shows up when removing all playlist data. */
 "playList.playlistResetAlertTitle" = "Επαναφορά";
 
 /* Footer Text for the Playlist Settings Option for resetting Playlist. */
-"playlist.playlistResetPlaylistOptionFooterText" = "Αυτή η επιλογή θα καταργήσει όλα τα βίντεο από τη Λίστα αναπαραγωγής, καθώς και από τον χώρο αποθήκευσης της λειτουργίας εκτός σύνδεσης.";
+"playlist.playlistResetPlaylistOptionFooterText" = "Αυτή η επιλογή θα αφαιρέσει όλα τα δεδομένα της Λίστας αναπαραγωγής.";
 
 /* Title Playlist (used for back button, and playlist settings) */
 "playList.playListSettingTitle" = "Λίστα αναπαραγωγής";
@@ -1588,7 +1591,7 @@
 /* Title for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
 "playlist.playlistStartPlaybackSettingsOptionTitle" = "Απομνημόνευση θέσης αναπαραγωγής αρχείων";
 
-/* Title for removing offline mode storage */
+/* Title for removing cached media from the playlist */
 "playList.removeActionButtonTitle" = "Κατάργηση";
 
 /* A message shown when the user removes media from the playlist. '%@' will be replaced by the folder it was added to. Example: 'Removed from Play Later' */
@@ -1608,9 +1611,6 @@
 
 /* The title for the toast that shows up on a page containing a playlist item */
 "playList.toastAddToPlaylistTitle" = "Προσθήκη στη Λίστα αναπαραγωγής";
-
-/* The title for the toast that shows up on a page when an item that has already been added, was updated. */
-"playList.toastExitingItemPlaylistTitle" = "Προβολή στη Λίστα αναπαραγωγής Brave";
 
 /* A button title that when tapped will re-add the media item (undo the removal) that the user recently removed. */
 "playList.undoRemoveButtonTitle" = "Αναίρεση";
@@ -3162,6 +3162,12 @@
 
 /* The title of the toggle for user to turn on auto-open keyboard when creating a new tab. */
 "tabs.settings.autoOpenKeyboardTitle" = "Αυτόματο άνοιγμα πληκτρολογίου";
+
+/* The description of the toggle for user to turn on open link in quick view mode. */
+"tabs.settings.openLinkInQuickViewModeDescription" = "Άνοιγμα συνδέσμων από την Ask Brave και την Αναζήτηση Brave σε καρτέλες προεπισκόπησης";
+
+/* The title of the toggle for user to turn on open link in quick view mode. */
+"tabs.settings.openLinkInQuickViewModeTitle" = "Ενεργοποίηση καρτελών Quickview";
 
 /* No comment provided by engineer. */
 "tabs.settings.persistentPrivateBrowsingDescription" = "Διατηρήστε ανοιχτές τις καρτέλες ιδιωτικής περιήγησης όταν κλείνετε την εφαρμογή, εξασφαλίζοντας ότι οι περίοδοι σύνδεσης ιδιωτικής περιήγησης θα συνεχίζονται απρόσκοπτα.";

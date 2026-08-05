@@ -2177,7 +2177,13 @@
 "wallet.txStatusViewInActivity" = "Ansicht in Aktivität";
 
 /* Description displayed when users chose Brave to ask them if they want the Unstoppable Domains to be resolved every time they enter one. The first '%@' will be replaced with a list of supported TLDs like '.x' or '.bitcoin'. The second '%@' be replaced with a link to Chainstack's terms of use page. The third '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The fourth '%@' will be replaced with a link to Chainstack's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'. */
-"wallet.udDomainInterstitialPageDescription" = "Brave wird der konfigurierte Ethereum-RPC-Dienst sein, der standardmäßig Chainstack ist, um .crypto- (und auch %1$@-)Domainnamen aufzulösen, die sich auf Unstoppable Domains befinden. Brave verbirgt Ihre IP-Adresse. Wenn Sie dies aktivieren, sieht Chainstack, dass jemand versucht, diese Domains zu besuchen, aber sonst nichts. Siehe die <a href=%2$@>%3$@</a> und die <a href=%4$@>%5$@</a> von Chainstack.";
+"wallet.udDomainInterstitialPageDescription" = "Domainnamen, die auf Unstoppable Domains registriert sind. Brave verbirgt Ihre IP-Adresse. Wenn Sie dies aktivieren, sieht Chainstack, dass jemand versucht, diese Domains zu besuchen, aber sonst nichts. Siehe die <a href=%1$@>%2$@</a> und die <a href=%3$@>%4$@</a> von Chainstack.";
+
+/* The intro displayed below `udDomainInterstitialPageTitle`. */
+"wallet.udDomainInterstitialPageIntro" = "Brave verwendet den konfigurierten Ethereum-RPC-Dienst, der standardmäßig Chainstack ist, zur Auflösung von:";
+
+/* The title of the button that user can tap to reveal more unstoppable domain extensions we support to resolve. */
+"wallet.udDomainInterstitialPageMore" = "+ mehr";
 
 /* Title displayed when users chose Brave to ask them if they want the Unstoppable Domains domain to be resolved every time they enter one. */
 "wallet.udDomainInterstitialPageTitle" = "Unterstützung für unaufhaltsame Domains in Brave aktivieren?";

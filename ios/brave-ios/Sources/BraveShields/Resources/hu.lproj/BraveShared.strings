@@ -86,7 +86,7 @@
 "CustomFiltersInvalidRuleError" = "Érvénytelen szabály - `%1$@` - a következő sorban: %2$i";
 
 /* A placeholder when custom filter lists are empty */
-"CustomFiltersPlaceholder" = "Itt adja hozzá az egyéni szűrőket, soronként egyet.";
+"CustomFiltersPlaceholder" = "Egyéni szűrők hozzáadása";
 
 /* An error message telling the user that they crossed the line limit */
 "CustomFiltersTooManyLinesError" = "Az egyéni szűrők esetén legfeljebb %i sor támogatott.";
@@ -111,6 +111,9 @@
 
 /* A tab title for the warning page that appears when a page was blocked */
 "DomainBlockedTitle" = "Domén blokkolva";
+
+/* A placeholder when custom filter lists are empty */
+"EditCustomFiltersLabel" = "Egyéni szűrők szerkesztése";
 
 /* A description of what the Enable GPC toggle does */
 "EnableGPCDescription" = "Kérje meg a weboldalakat, hogy ne adják el vagy osszák meg az adatait. [További információk](https://support.brave.app/hc/en-us/articles/360017989132-How-do-I-change-my-Privacy-Settings#h_01HHFRRT6B5YTRREA4ZDARGTWM)";
