@@ -493,8 +493,9 @@ TEST_F(EngineConsumerOAIUnitTest,
 
   // Initiate the test
   engine_->GenerateAssistantResponse(
-      {{{"turn-1", {page_content}}}}, history, false, {}, std::nullopt,
-      {mojom::ConversationCapability::CHAT}, base::DoNothing(),
+      {{{"turn-1", {page_content}}}}, EngineConsumer::ToHistoryView(history),
+      false, {}, std::nullopt, {mojom::ConversationCapability::CHAT},
+      base::DoNothing(),
       base::BindLambdaForTesting([&run_loop, &assistant_response](
                                      EngineConsumer::GenerationResult result) {
         EXPECT_EQ(result.value(),
@@ -570,7 +571,8 @@ TEST_F(EngineConsumerOAIUnitTest,
             run_loop->Quit();
           });
 
-  engine_->GenerateAssistantResponse({}, history, false, {}, std::nullopt,
+  engine_->GenerateAssistantResponse({}, EngineConsumer::ToHistoryView(history),
+                                     false, {}, std::nullopt,
                                      {mojom::ConversationCapability::CHAT},
                                      base::DoNothing(), base::DoNothing());
 
@@ -654,7 +656,7 @@ TEST_F(EngineConsumerOAIUnitTest,
   }
 
   engine_->GenerateAssistantResponse(
-      {}, history, false, {}, std::nullopt,
+      {}, EngineConsumer::ToHistoryView(history), false, {}, std::nullopt,
       {mojom::ConversationCapability::CHAT}, base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult result) {
@@ -711,8 +713,9 @@ TEST_F(EngineConsumerOAIUnitTest,
           });
 
   engine_->GenerateAssistantResponse(
-      {}, GetHistoryWithModifiedReply(), false, {}, std::nullopt,
-      {mojom::ConversationCapability::CHAT}, base::DoNothing(),
+      {}, EngineConsumer::ToHistoryView(GetHistoryWithModifiedReply()), false,
+      {}, std::nullopt, {mojom::ConversationCapability::CHAT},
+      base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult result) {
             run_loop->Quit();
@@ -748,8 +751,9 @@ TEST_F(EngineConsumerOAIUnitTest, ShouldCallSanitizeInputOnPageContent) {
     history.push_back(std::move(turn));
     mock_engine_consumer->GenerateAssistantResponse(
         {{{history.back()->uuid.value(), {page_content_1, page_content_2}}}},
-        history, false, {}, std::nullopt, {mojom::ConversationCapability::CHAT},
-        base::DoNothing(), base::DoNothing());
+        EngineConsumer::ToHistoryView(history), false, {}, std::nullopt,
+        {mojom::ConversationCapability::CHAT}, base::DoNothing(),
+        base::DoNothing());
     testing::Mock::VerifyAndClearExpectations(mock_engine_consumer.get());
   }
 
@@ -812,7 +816,7 @@ TEST_F(EngineConsumerOAIUnitTest,
           });
 
   engine_->GenerateAssistantResponse(
-      {}, history, false, {}, std::nullopt,
+      {}, EngineConsumer::ToHistoryView(history), false, {}, std::nullopt,
       {mojom::ConversationCapability::CHAT}, base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
@@ -905,7 +909,7 @@ TEST_F(EngineConsumerOAIUnitTest,
           });
 
   engine_->GenerateAssistantResponse(
-      {}, history, false, {}, std::nullopt,
+      {}, EngineConsumer::ToHistoryView(history), false, {}, std::nullopt,
       {mojom::ConversationCapability::CHAT}, base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
@@ -984,7 +988,7 @@ TEST_F(EngineConsumerOAIUnitTest,
           });
 
   engine_->GenerateAssistantResponse(
-      {}, history,
+      {}, EngineConsumer::ToHistoryView(history),
       true,  // is_temporary_chat = true
       {}, std::nullopt, {mojom::ConversationCapability::CHAT},
       base::DoNothing(),
@@ -2121,7 +2125,8 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateAssistantResponse_WithTools) {
       std::nullopt, nullptr));
 
   engine_->GenerateAssistantResponse(
-      {}, history, false, {mock_tool->GetWeakPtr()}, std::nullopt,
+      {}, EngineConsumer::ToHistoryView(history), false,
+      {mock_tool->GetWeakPtr()}, std::nullopt,
       {mojom::ConversationCapability::CHAT}, base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
