@@ -1,0 +1,170 @@
+diff --git a/net/test/python_utils_unittest.cc b/net/test/python_utils_unittest.cc
+index 6edabe8d0322f58e1da276d76624ca46720b95a0..b86ff912bc0254f075712c3e60377abb786b4356 100644
+--- a/net/test/python_utils_unittest.cc
++++ b/net/test/python_utils_unittest.cc
+@@ -6,13 +6,20 @@
+ 
+ #include <memory>
+ #include <string>
++#include <string_view>
+ 
+ #include "base/command_line.h"
+ #include "base/environment.h"
+ #include "base/files/file_path.h"
++#include "base/logging.h"
++#include "base/process/kill.h"
+ #include "base/process/launch.h"
++#include "base/process/process.h"
++#include "base/process/process_handle.h"
++#include "base/strings/string_split.h"
+ #include "base/strings/string_util.h"
+ #include "base/strings/stringprintf.h"
++#include "base/time/time.h"
+ #include "build/build_config.h"
+ #include "testing/gtest/include/gtest/gtest.h"
+ 
+@@ -32,7 +39,20 @@ TEST(PythonUtils, SetPythonPathInEnvironment) {
+             env[FILE_PATH_LITERAL("VPYTHON_CLEAR_PYTHONPATH")]);
+ }
+ 
+-TEST(PythonUtils, Python3RunTime) {
++// PythonUtils.Python3RunTime has been observed hanging on Win x64 CI (not
++// isolated to a particular bot) until the test-launcher's 45s per-test
++// timeout kills the whole net_unittests.exe process tree. Disabled here
++// while PathResolutionDiagnostic/Python3HangSniffer below gather data on
++// why the vpython3.bat child never exits.
++// TODO(crbug.com/TBD): Remove this and MAYBE_Python3RunTime once the hang
++// is understood and fixed.
++#if BUILDFLAG(IS_WIN)
++#define MAYBE_Python3RunTime DISABLED_Python3RunTime
++#else
++#define MAYBE_Python3RunTime Python3RunTime
++#endif
++
++TEST(PythonUtils, MAYBE_Python3RunTime) {
+   base::CommandLine cmd_line(base::CommandLine::NO_PROGRAM);
+   EXPECT_TRUE(GetPython3Command(&cmd_line));
+ 
+@@ -47,3 +67,122 @@ TEST(PythonUtils, Python3RunTime) {
+   base::TrimWhitespaceASCII(output, base::TRIM_TRAILING, &output);
+   EXPECT_EQ(input, output);
+ }
++
++#if BUILDFLAG(IS_WIN)
++
++// Logs how `python3`/`vpython3.bat` resolve on this bot's PATH, and which
++// depot_tools copy (and CIPD-pinned vpython3 revision) backs whichever
++// `vpython3.bat` is actually picked. Always runs and always completes
++// quickly. Helps distinguish "wrong/stale depot_tools copy selected" from
++// "right copy, but its venv cache is cold" as the cause of a hang, and also
++// catches a resolution to the Microsoft Store `python3.exe`
++// AppExecutionAlias stub, which is known to stall indefinitely on machines
++// without Store access.
++TEST(PythonUtils, PathResolutionDiagnostic) {
++  auto run = [](const std::string& description, const std::string& command) {
++    base::CommandLine cmd(base::FilePath(FILE_PATH_LITERAL("cmd.exe")));
++    cmd.AppendArg("/c");
++    cmd.AppendArg(command);
++    std::string output;
++    base::GetAppOutput(cmd, &output);
++    LOG(WARNING) << "[python-hang-diagnostic] " << description << ":\n"
++                 << output;
++  };
++
++  run("where python3", "where python3 2>&1");
++  run("where vpython3.bat", "where vpython3.bat 2>&1");
++  run("PATH", "echo %PATH%");
++  run("VPYTHON_VIRTUALENV_ROOT env",
++      "echo VPYTHON_VIRTUALENV_ROOT=%VPYTHON_VIRTUALENV_ROOT%");
++  run("default vpython cache dir listing",
++      "dir /b \"%LOCALAPPDATA%\\vpython-root\" 2>&1");
++
++  // For every vpython3.bat found on PATH, print the depot_tools copy's
++  // last-modified time and the exact CIPD revision it pins for
++  // infra/tools/luci/vpython3 -- a stale/differently-pinned copy earlier on
++  // PATH than expected is the simplest way to end up resolving a vpython3
++  // engine whose venv cache key nothing on this bot has ever warmed.
++  std::string where_output;
++  {
++    base::CommandLine where_cmd(base::FilePath(FILE_PATH_LITERAL("cmd.exe")));
++    where_cmd.AppendArg("/c");
++    where_cmd.AppendArg("where vpython3.bat 2>nul");
++    base::GetAppOutput(where_cmd, &where_output);
++  }
++  for (const auto& line :
++       base::SplitString(where_output, "\r\n", base::TRIM_WHITESPACE,
++                          base::SPLIT_WANT_NONEMPTY)) {
++    base::FilePath depot_tools_dir =
++        base::FilePath::FromUTF8Unsafe(line).DirName();
++    base::FilePath manifest =
++        depot_tools_dir.Append(FILE_PATH_LITERAL(".cipd_bin"))
++            .Append(FILE_PATH_LITERAL(".cipd_manifest.txt"));
++    run("dir " + line, "dir \"" + line + "\" 2>&1");
++    run("vpython3 CIPD pin for " + line,
++        "findstr /i \"vpython3\" \"" + manifest.AsUTF8Unsafe() + "\" 2>&1");
++  }
++}
++
++// Reproduces the exact PythonUtils.Python3RunTime invocation, but bounded by
++// an explicit C++-level timeout instead of relying on the test-launcher's
++// 45s process-tree kill. If the launched vpython3.bat process is still
++// running when the timeout elapses, dumps a full `tasklist /v` snapshot and
++// the child's PID so the process tree can be inspected in CI logs, then
++// terminates the leaked process.
++TEST(PythonUtils, Python3HangSniffer) {
++  base::CommandLine python_cmd(base::CommandLine::NO_PROGRAM);
++  ASSERT_TRUE(GetPython3Command(&python_cmd));
++  python_cmd.AppendArg("-c");
++  python_cmd.AppendArg("print('PythonUtilsTest');");
++
++  base::ProcessId child_pid = base::kNullProcessId;
++  auto capture_pid = [&child_pid](const base::Process& process,
++                                   std::string_view partial_output) {
++    if (child_pid == base::kNullProcessId) {
++      child_pid = process.Pid();
++      LOG(WARNING) << "[python-hang-diagnostic] launched pid=" << child_pid;
++    }
++    if (!partial_output.empty()) {
++      LOG(WARNING) << "[python-hang-diagnostic] partial output: "
++                    << partial_output;
++    }
++  };
++
++  std::string output;
++  int exit_code = 0;
++  base::TerminationStatus final_status = base::TERMINATION_STATUS_MAX_ENUM;
++  base::GetAppOutputWithExitCodeAndTimeout(
++      python_cmd.GetCommandLineString(), /*include_stderr=*/true, &output,
++      &exit_code, base::Seconds(20), base::LaunchOptions(), capture_pid,
++      &final_status);
++
++  if (final_status != base::TERMINATION_STATUS_STILL_RUNNING) {
++    LOG(WARNING) << "[python-hang-diagnostic] finished normally, status="
++                 << final_status << " exit_code=" << exit_code
++                 << " output=" << output;
++    return;
++  }
++
++  LOG(ERROR) << "[python-hang-diagnostic] REPRODUCED: pid=" << child_pid
++             << " did not exit within timeout";
++
++  base::CommandLine tasklist(base::FilePath(FILE_PATH_LITERAL("cmd.exe")));
++  tasklist.AppendArg("/c");
++  tasklist.AppendArg("tasklist /v");
++  std::string tasklist_output;
++  base::GetAppOutput(tasklist, &tasklist_output);
++  LOG(ERROR) << "[python-hang-diagnostic] tasklist /v snapshot:\n"
++             << tasklist_output;
++
++  if (child_pid != base::kNullProcessId) {
++    base::Process leaked = base::Process::Open(child_pid);
++    if (leaked.IsValid()) {
++      leaked.Terminate(1, false);
++    }
++  }
++
++  ADD_FAILURE() << "[python-hang-diagnostic] vpython3 invocation hung; see "
++                   "tasklist snapshot above";
++}
++
++#endif  // BUILDFLAG(IS_WIN)
