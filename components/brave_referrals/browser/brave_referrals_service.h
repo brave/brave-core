@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REFERRALS_BROWSER_BRAVE_REFERRALS_SERVICE_H_
 #define BRAVE_COMPONENTS_BRAVE_REFERRALS_BROWSER_BRAVE_REFERRALS_SERVICE_H_
 
+#include <stdint.h>
+
 #include <memory>
 #include <optional>
 #include <string>
@@ -16,6 +18,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
 #include "base/task/sequenced_task_runner.h"
+#include "base/time/time.h"
 #include "base/timer/timer.h"
 #include "build/build_config.h"
 
@@ -75,6 +78,11 @@ class BraveReferralsService {
   static void SetPromoFilePathForTesting(const base::FilePath& path);
 
   static bool IsDefaultReferralCode(const std::string& code);
+
+  // Returns the interval to use for the periodic finalization checks timer for
+  // a randomized draw of `random_seconds`, clamped to a non-zero minimum so
+  // that the timer can never refire immediately and forever.
+  static base::TimeDelta GetFinalizationChecksInterval(uint64_t random_seconds);
 
  private:
   void GetFirstRunTime();

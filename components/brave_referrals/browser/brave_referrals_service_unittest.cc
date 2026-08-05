@@ -13,6 +13,7 @@
 #include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/test/bind.h"
+#include "base/time/time.h"
 #include "brave/components/brave_referrals/common/pref_names.h"
 #include "brave/components/constants/pref_names.h"
 #include "components/prefs/pref_registry_simple.h"
@@ -190,6 +191,23 @@ TEST_F(BraveReferralsServiceTest, StatsDisabledAfterInit) {
   task_environment_.FastForwardBy(base::Days(35));
 
   EXPECT_GE(request_count_, 1u);
+}
+
+// The finalization checks timer interval is drawn from a geometric
+// distribution, which can return 0 or a handful of seconds. Such an interval
+// would make the repeating timer refire immediately (and, for 0, forever), so
+// it has to be clamped to a non-zero minimum.
+TEST(BraveReferralsServiceIntervalTest, FinalizationChecksIntervalIsClamped) {
+  EXPECT_EQ(BraveReferralsService::GetFinalizationChecksInterval(0),
+            base::Hours(1));
+  EXPECT_EQ(BraveReferralsService::GetFinalizationChecksInterval(1),
+            base::Hours(1));
+  EXPECT_EQ(BraveReferralsService::GetFinalizationChecksInterval(
+                base::Hours(1).InSeconds() - 1),
+            base::Hours(1));
+  EXPECT_EQ(BraveReferralsService::GetFinalizationChecksInterval(
+                base::Days(1).InSeconds()),
+            base::Days(1));
 }
 
 }  // namespace brave

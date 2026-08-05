@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
 
+#include <algorithm>
 #include <memory>
 #include <type_traits>
 #include <vector>
@@ -42,6 +43,16 @@
 
 // Perform finalization checks once a day.
 constexpr int kFinalizationChecksFrequency = 60 * 60 * 24;
+
+// Lower bound for the randomized finalization checks interval.
+// `brave_base::random::Geometric()` is supported on nonnegative integers, so it
+// can return 0 (with probability ~1/86400 for a one day period) or a handful of
+// seconds. A zero interval makes the repeating timer refire immediately and
+// forever, spinning the thread it runs on. Finalization checks are separately
+// rate limited to one per 24 hours in MaybeCheckForReferralFinalization(), so
+// clamping the timer interval here does not change how often the referral
+// endpoint is contacted.
+constexpr base::TimeDelta kMinFinalizationChecksInterval = base::Hours(1);
 
 // Report initialization once a day (after initial failure).
 constexpr int kReportInitializationFrequency = 60 * 60 * 24;
@@ -170,7 +181,7 @@ void BraveReferralsService::Start() {
   finalization_checks_timer_ = std::make_unique<base::RepeatingTimer>();
   finalization_checks_timer_->Start(
       FROM_HERE,
-      base::Seconds(
+      GetFinalizationChecksInterval(
           brave_base::random::Geometric(kFinalizationChecksFrequency)),
       this, &BraveReferralsService::OnFinalizationChecksTimerFired);
   DCHECK(finalization_checks_timer_->IsRunning());
@@ -215,6 +226,13 @@ void BraveReferralsService::SetReferralInitializedCallbackForTesting(
 // static
 bool BraveReferralsService::IsDefaultReferralCode(const std::string& code) {
   return code == kDefaultPromoCode;
+}
+
+// static
+base::TimeDelta BraveReferralsService::GetFinalizationChecksInterval(
+    uint64_t random_seconds) {
+  return std::max(kMinFinalizationChecksInterval,
+                  base::Seconds(random_seconds));
 }
 
 void BraveReferralsService::OnFinalizationChecksTimerFired() {
