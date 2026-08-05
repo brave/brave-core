@@ -12,7 +12,6 @@
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
-#include "base/functional/callback_helpers.h"
 #include "base/location.h"
 #include "base/logging.h"
 #include "base/memory/ptr_util.h"
@@ -49,11 +48,35 @@ bool BraveDownloadManagerDelegate::IsDownloadReadyForCompletion(
         item, std::move(internal_complete_callback));
   }
 
-  // Split the completion callback so we can either:
-  // - return true and let |chromium_callback| complete the download
-  // immediately,
-  // - or store |brave_callback| and invoke it after metadata stripping
-  // finishes.
+  // IPTC metadata stripping only available for png/jpeg types. So, for non
+  // types rely on upstream flow.
+  const std::string mime_type = item->GetMimeType();
+  if (mime_type != "image/png" && mime_type != "image/jpeg") {
+    return ChromeDownloadManagerDelegate::IsDownloadReadyForCompletion(
+        item, std::move(internal_complete_callback));
+  }
+
+  // IPTC metadata stripping begins. This state similar to upstream
+  // SafeBrowsingState, helps to let the callers know when the metadata
+  // stripping is completed to unblock the download flow.
+  IptcStrippingState* state = static_cast<IptcStrippingState*>(
+      item->GetUserData(IptcStrippingState::kUserDataKey));
+
+  // Second pass after OnImageMetadataStripped(): stripping only starts after
+  // upstream already returned true, so do not call upstream again.
+  if (state && state->is_complete()) {
+    return true;
+  }
+
+  // Stripping already in flight: refresh the resume callback and keep
+  // blocking. Upstream has already returned ready on a prior pass.
+  if (state && state->stripping_started) {
+    state->set_callback(std::move(internal_complete_callback));
+    return false;
+  }
+
+  // First pass for a strippable image: require upstream readiness, then take
+  // over completion for metadata stripping.
   auto [chromium_callback, brave_callback] =
       base::SplitOnceCallback(std::move(internal_complete_callback));
   if (!ChromeDownloadManagerDelegate::IsDownloadReadyForCompletion(
@@ -61,46 +84,23 @@ bool BraveDownloadManagerDelegate::IsDownloadReadyForCompletion(
     return false;
   }
 
-  // Perform iptc scrubbing on jpeg/png formats.
-  const std::string mime_type = item->GetMimeType();
-  if (mime_type != "image/png" && mime_type != "image/jpeg") {
-    return true;
-  }
+  DCHECK(!state);
+  state = new IptcStrippingState();
+  state->set_callback(std::move(brave_callback));
+  item->SetUserData(IptcStrippingState::kUserDataKey, base::WrapUnique(state));
 
-  // This keyed state helps to ensure we do the stripping only once.
-  IptcStrippingState* state = static_cast<IptcStrippingState*>(
-      item->GetUserData(IptcStrippingState::kUserDataKey));
-  if (!state) {
-    state = new IptcStrippingState();
-    state->set_callback(std::move(brave_callback));
-    item->SetUserData(IptcStrippingState::kUserDataKey,
-                      base::WrapUnique(state));
-  }
+  // I/O-blocking IPTC scrub off the UI thread.
+  base::ThreadPool::PostTaskAndReplyWithResult(
+      FROM_HERE,
+      {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
+       base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN},
+      base::BindOnce(&image_metadata_stripper::RemoveIptcMetadata,
+                     item->GetFullPath()),
+      base::BindOnce(&BraveDownloadManagerDelegate::OnImageMetadataStripped,
+                     weak_ptr_factory_.GetWeakPtr(), item->GetId()));
 
-  if (!state->stripping_started && !state->is_complete()) {
-    // Initiate the stripping which is a I/O blocking task into a separate
-    // thread which is not UI.
-    base::ThreadPool::PostTaskAndReplyWithResult(
-        FROM_HERE,
-        {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
-         base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN},
-        base::BindOnce(&image_metadata_stripper::RemoveIptcMetadata,
-                       item->GetFullPath()),
-        base::BindOnce(&BraveDownloadManagerDelegate::OnImageMetadataStripped,
-                       weak_ptr_factory_.GetWeakPtr(), item->GetId()));
-
-    state->stripping_started = true;
-    return false;
-  }
-
-  if (!state->is_complete()) {
-    // Stripping is still in flight, so keep blocking completion on the most
-    // recent callback.
-    state->set_callback(std::move(brave_callback));
-    return false;
-  }
-
-  return true;
+  state->stripping_started = true;
+  return false;
 }
 
 void BraveDownloadManagerDelegate::OnImageMetadataStripped(uint32_t download_id,
