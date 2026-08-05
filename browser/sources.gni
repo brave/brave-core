@@ -737,6 +737,10 @@ if (is_win) {
   ]
 }
 
+if (is_win || is_mac || is_android) {
+  brave_chrome_browser_deps += [ "//brave/browser/enterprise" ]
+}
+
 if (is_win || is_android) {
   brave_chrome_browser_sources += [
     "//brave/browser/day_zero_browser_ui_expt/day_zero_browser_ui_expt_manager.cc",
