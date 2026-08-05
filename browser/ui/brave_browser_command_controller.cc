@@ -370,14 +370,14 @@ void BraveBrowserCommandController::InitBraveCommandState() {
 #endif
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
-  auto* containers_service = 
-	ContainersServiceFactory::GetForProfile(browser_->profile());
+  auto* containers_service =
+      ContainersServiceFactory::GetForProfile(browser_->profile());
 
   UpdateCommandEnabled(IDC_NEW_TEMPORARY_CONTAINER,
-		       containers_service != nullptr);
+                       containers_service != nullptr);
 
-  for (int id = IDC_NEW_TAB_IN_CONTAINER_1;
-      id <= IDC_NEW_TAB_IN_CONTAINER_9; ++id){
+  for (int id = IDC_NEW_TAB_IN_CONTAINER_1; id <= IDC_NEW_TAB_IN_CONTAINER_9;
+       ++id) {
     UpdateCommandEnabled(id, containers_service != nullptr);
   }
 #endif
@@ -816,30 +816,27 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
     case IDC_NEW_TAB_IN_CONTAINER_7:
     case IDC_NEW_TAB_IN_CONTAINER_8:
     case IDC_NEW_TAB_IN_CONTAINER_9: {
+      int index = id - IDC_NEW_TAB_IN_CONTAINER_1;
 
-       int index = id - IDC_NEW_TAB_IN_CONTAINER_1;
+      auto* containers_service =
+          ContainersServiceFactory::GetForProfile(browser_->profile());
 
-       auto* containers_service =
-	  ContainersServiceFactory::GetForProfile(browser_->profile());
-
-       if (!containers_service) {
-         break;
-       }
-
-       auto containers = containers_service->GetContainers();
-
-       if (index >= static_cast<int>(containers.size())) {
-	 break;
-       }
-
-       brave::OpenUrlInContainer(
-	   base::to_address(browser_),
-	   browser_->GetNewTabURL(),
-	   containers[index],
-	   /*is_link=*/false);
-
-       break;
+      if (!containers_service) {
+        break;
       }
+
+      auto containers = containers_service->GetContainers();
+
+      if (index >= static_cast<int>(containers.size())) {
+        break;
+      }
+
+      brave::OpenUrlInContainer(base::to_address(browser_),
+                                browser_->GetNewTabURL(), containers[index],
+                                /*is_link=*/false);
+
+      break;
+    }
 
     case IDC_NEW_TEMPORARY_CONTAINER:
       brave::CreateTemporaryContainerAndOpenUrl(base::to_address(browser_),
