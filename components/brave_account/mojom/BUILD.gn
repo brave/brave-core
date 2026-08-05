@@ -13,6 +13,7 @@ mojom("mojom") {
   sources = [
     "brave_account.mojom",
     "change_password.mojom",
+    "get_service_token.mojom",
     "login.mojom",
     "register.mojom",
     "resend_verification_email.mojom",
@@ -38,6 +39,7 @@ if (is_ios) {
     sources = [
       "brave_account.mojom",
       "change_password.mojom",
+      "get_service_token.mojom",
       "login.mojom",
       "register.mojom",
       "resend_verification_email.mojom",
