@@ -133,7 +133,7 @@
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/themes/pref_names.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
-#include "brave/browser/ui/webui/welcome_page/brave_welcome_ui_prefs.h"
+#include "brave/browser/ui/webui/brave_welcome_page/brave_welcome_page_prefs.h"
 #include "brave/components/brave_private_new_tab_ui/common/pref_names.h"
 #include "chrome/browser/ui/webui/bookmarks/bookmark_prefs.h"
 #include "chrome/browser/ui/webui/side_panel/bookmarks/bookmarks.mojom.h"
@@ -564,7 +564,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
   brave_tabs::RegisterBraveProfilePrefs(registry);
 
-  welcome_ui::prefs::RegisterProfilePrefs(registry);
+  brave_welcome_page::prefs::RegisterProfilePrefs(registry);
 #endif  // !BUILDFLAG(IS_ANDROID)
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
