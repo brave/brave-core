@@ -15,6 +15,7 @@
 #include <string_view>
 #include <vector>
 
+#include "base/files/file_path.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
@@ -28,13 +29,10 @@
 #include "components/os_crypt/async/common/encryptor.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "services/network/public/cpp/network_context_getter.h"
+#include "services/network/public/cpp/shared_url_loader_factory.h"
 
 class PrefRegistrySimple;
 class PrefService;
-
-namespace network {
-class SharedURLLoaderFactory;
-}
 
 namespace os_crypt_async {
 class OSCryptAsync;
@@ -43,8 +41,10 @@ class OSCryptAsync;
 namespace ai_chat {
 class EngineConsumer;
 class AIChatCredentialManager;
+class RemoteModelsProvider;
 
-// Owns the AI chat model catalog: built-in Leo models and user-defined
+// Owns the AI chat model catalog: built-in Leo models (optionally replaced
+// via a remote config fetch, see `OnRemoteModelsReady()`) and user-defined
 // custom models.
 //
 // `ModelService` loads its model list synchronously in the constructor, so
@@ -70,13 +70,19 @@ class ModelService : public KeyedService {
                                        const std::string& new_key) {}
   };
 
-  ModelService(PrefService* prefs_service,
-               os_crypt_async::OSCryptAsync* os_crypt_async,
-               network::NetworkContextGetter network_context_getter);
+  ModelService(
+      PrefService* prefs_service,
+      os_crypt_async::OSCryptAsync* os_crypt_async,
+      network::NetworkContextGetter network_context_getter,
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+      base::FilePath profile_path);
   ~ModelService() override;
 
   ModelService(const ModelService&) = delete;
   ModelService& operator=(const ModelService&) = delete;
+
+  // KeyedService:
+  void Shutdown() override;
 
   static void RegisterProfilePrefs(PrefRegistrySimple* registry);
   static void MigrateProfilePrefs(PrefService* profile_prefs);
@@ -124,12 +130,24 @@ class ModelService : public KeyedService {
   static const mojom::Model* GetModelForTesting(std::string_view key);
   void SetDefaultModelKeyWithoutValidationForTesting(
       const std::string& model_key);
+  RemoteModelsProvider* GetRemoteModelsProviderForTesting() {
+    return remote_models_provider_.get();
+  }
+  void OnRemoteModelsReadyForTesting(std::vector<mojom::ModelPtr> models) {
+    OnRemoteModelsReady(std::move(models));
+  }
 
  private:
   void OnEncryptorReady(scoped_refptr<os_crypt_async::Encryptor> encryptor);
   void InitModels();
+  // Merges a freshly fetched remote model list into `leo_models_`: every
+  // existing entry except `kChatAutomaticModelKey` is dropped, then every
+  // fetched entry is upserted by key. Keys present before the merge but
+  // absent afterward fire `OnModelRemoved()`/`OnDefaultModelChanged()`. A
+  // no-op if `fetched_models` is empty (fetch failure).
+  void OnRemoteModelsReady(std::vector<mojom::ModelPtr> fetched_models);
   // Walks the custom-model prefs and updates the `api_key` on each
-  // already-loaded entry in `models_`. Called from `OnEncryptorReady()` to
+  // already-loaded entry in `all_models_`. Called from `OnEncryptorReady()` to
   // populate keys that decrypted to empty strings during initial sync load.
   void RefreshCustomModelApiKeys();
 
@@ -140,10 +158,17 @@ class ModelService : public KeyedService {
   base::DictValue CustomModelToPrefDict(mojom::ModelPtr model) const;
 
   base::ObserverList<Observer> observers_;
-  std::vector<ai_chat::mojom::ModelPtr> models_;
+  // The full catalog returned by `GetModels()`: `leo_models_` plus custom
+  // models, rebuilt from both on every `InitModels()` call.
+  std::vector<ai_chat::mojom::ModelPtr> all_models_;
+  // Built-in Leo models, replaced wholesale by `OnRemoteModelsReady()` when
+  // remote config is enabled. Kept separate from `all_models_` so the merge
+  // logic never has to distinguish Leo entries from custom ones.
+  std::vector<ai_chat::mojom::ModelPtr> leo_models_;
   raw_ptr<PrefService> pref_service_;
   network::NetworkContextGetter network_context_getter_;
   scoped_refptr<os_crypt_async::Encryptor> encryptor_;
+  std::unique_ptr<RemoteModelsProvider> remote_models_provider_;
   bool is_migrating_claude_instant_ = false;
 
   base::WeakPtrFactory<ModelService> weak_ptr_factory_{this};

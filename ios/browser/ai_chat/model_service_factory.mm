@@ -42,6 +42,7 @@ std::unique_ptr<KeyedService> ModelServiceFactory::BuildServiceInstanceFor(
       GetApplicationContext()->GetOSCryptAsync(),
       base::BindRepeating(
           [](ProfileIOS* profile) { return profile->GetNetworkContext(); },
-          base::Unretained(profile)));
+          base::Unretained(profile)),
+      profile->GetSharedURLLoaderFactory(), profile->GetStatePath());
 }
 }  // namespace ai_chat
