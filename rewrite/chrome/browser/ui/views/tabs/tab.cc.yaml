@@ -30,8 +30,7 @@ substitutions:
       Position the alert indicator at the start of the title, moving the
       title after it, respecting the close button's space.
     regex:
-      re_pattern:
-        '(if\s*\(showing_alert_indicator_\)\s*\{\n\s*title_right\s*=\s*alert_indicator_button_->x\(\)\s*-\s*after_title_padding;)'
+      re_pattern: '(if\s*\(showing_alert_indicator_\)\s*\{\n\s*title_right\s*=\s*alert_indicator_button_->x\(\)\s*-\s*after_title_padding;)'
       replace: |-
         \1
               alert_indicator_button_->SetX(title_left - after_title_padding);
