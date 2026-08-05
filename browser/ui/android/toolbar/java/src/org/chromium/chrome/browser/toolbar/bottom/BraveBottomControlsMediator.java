@@ -102,6 +102,15 @@ class BraveBottomControlsMediator extends BottomControlsMediator {
         return mTabGroupUiVisibleSupplier;
     }
 
+    /**
+     * Re-applies the visibility last requested by the tab group UI, so that toggling the tab groups
+     * switches in settings shows/hides the tab groups bar right away instead of only on the next
+     * tab switch. Called when one of those switches changes.
+     */
+    public void onTabGroupsSettingsChanged() {
+        setBottomControlsVisible(mTabGroupUiRequestedVisible);
+    }
+
     private void updateYOffset() {
         // This indicates that both controls are visible, but bottom toolbar has already been
         // scrolled down, so we move scroll further for tab groups control.

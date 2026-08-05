@@ -7,6 +7,7 @@ package org.chromium.chrome.browser.tasks.tab_management;
 
 import org.chromium.base.BraveFeatureList;
 import org.chromium.base.BravePreferenceKeys;
+import org.chromium.base.ObserverList;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
@@ -16,6 +17,29 @@ import org.chromium.ui.modelutil.MVCListAdapter;
 
 @NullMarked
 public class BraveTabUiFeatureUtilities {
+    private static final ObserverList<Runnable> sSettingsObservers = new ObserverList<>();
+
+    /**
+     * Registers {@code observer} to be run when one of the tab groups switches changes. The
+     * switches live in shared preferences, which cannot be observed through {@link
+     * org.chromium.base.shared_preferences.SharedPreferencesManager}, so the setters below report
+     * the change through here instead.
+     */
+    public static void addSettingsObserver(Runnable observer) {
+        sSettingsObservers.addObserver(observer);
+    }
+
+    /** Stops running {@code observer}, which must have been added by the call above. */
+    public static void removeSettingsObserver(Runnable observer) {
+        sSettingsObservers.removeObserver(observer);
+    }
+
+    private static void notifySettingsChanged() {
+        for (Runnable observer : sSettingsObservers) {
+            observer.run();
+        }
+    }
+
     public static boolean isTabGroupsEnabled() {
         return ChromeSharedPreferences.getInstance()
                 .readBoolean(BravePreferenceKeys.BRAVE_TAB_GROUPS_FEATURE_ENABLED, true);
@@ -24,6 +48,7 @@ public class BraveTabUiFeatureUtilities {
     public static void setTabGroupsEnabled(boolean enabled) {
         ChromeSharedPreferences.getInstance()
                 .writeBoolean(BravePreferenceKeys.BRAVE_TAB_GROUPS_FEATURE_ENABLED, enabled);
+        notifySettingsChanged();
     }
 
     public static boolean isBraveTabGroupsEnabled() {
@@ -53,6 +78,7 @@ public class BraveTabUiFeatureUtilities {
     public static void setTabGroupsBarEnabled(boolean enabled) {
         ChromeSharedPreferences.getInstance()
                 .writeBoolean(BravePreferenceKeys.BRAVE_TAB_GROUPS_BAR_ENABLED, enabled);
+        notifySettingsChanged();
     }
 
     public static boolean isBraveAndroidTabGroupsSettingsFeatureEnabled() {
