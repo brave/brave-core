@@ -2177,7 +2177,13 @@
 "wallet.txStatusViewInActivity" = "Zobrazit v aktivitě";
 
 /* Description displayed when users chose Brave to ask them if they want the Unstoppable Domains to be resolved every time they enter one. The first '%@' will be replaced with a list of supported TLDs like '.x' or '.bitcoin'. The second '%@' be replaced with a link to Chainstack's terms of use page. The third '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The fourth '%@' will be replaced with a link to Chainstack's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'. */
-"wallet.udDomainInterstitialPageDescription" = "Brave bude nakonfigurovanou službou RPC pro Ethereum, která ve výchozím nastavení používá Chainstack k vyřešení názvů domén .crypto (a také %1$@), které jsou na Unstoppable Domains. Brave skryje vaši IP adresu. Pokud to povolíte, Chainstack uvidí, že se někdo pokouší navštívit tyto domény, ale nic jiného. Viz <a href=%2$@>%3$@</a> a <a href=%4$@>%5$@</a> od Chainstack.";
+"wallet.udDomainInterstitialPageDescription" = "názvy domén, které jsou na Unstoppable Domains. Brave skryje vaši IP adresu. Pokud to povolíte, Chainstack uvidí, že se někdo pokouší navštívit tyto domény, ale nic jiného. Viz <a href=%1$@>%2$@</a> a <a href=%3$@>%4$@</a> platformy Chainstack.";
+
+/* The intro displayed below `udDomainInterstitialPageTitle`. */
+"wallet.udDomainInterstitialPageIntro" = "Brave bude nakonfigurovanou službou Ethereum RPC, která ve výchozím nastavení používá Chainstack k vyřešení:";
+
+/* The title of the button that user can tap to reveal more unstoppable domain extensions we support to resolve. */
+"wallet.udDomainInterstitialPageMore" = "+ více";
 
 /* Title displayed when users chose Brave to ask them if they want the Unstoppable Domains domain to be resolved every time they enter one. */
 "wallet.udDomainInterstitialPageTitle" = "Chcete povolit podporu služby Unstoppable Domains v prohlížeči Brave?";

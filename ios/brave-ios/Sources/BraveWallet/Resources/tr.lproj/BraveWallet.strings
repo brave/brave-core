@@ -2177,7 +2177,13 @@
 "wallet.txStatusViewInActivity" = "Etkinlikte Görüntüle";
 
 /* Description displayed when users chose Brave to ask them if they want the Unstoppable Domains to be resolved every time they enter one. The first '%@' will be replaced with a list of supported TLDs like '.x' or '.bitcoin'. The second '%@' be replaced with a link to Chainstack's terms of use page. The third '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The fourth '%@' will be replaced with a link to Chainstack's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'. */
-"wallet.udDomainInterstitialPageDescription" = "Brave, Unstoppable Domains'te yer alan .crypto (ve aynı zamanda %1$@) alan adlarını çözmek için, varsayılan olarak Chainstack olan yapılandırılmış Ethereum RPC hizmeti olacaktır. Brave, IP adresinizi saklar. Bu özelliği açarsanız Chainstack, birilerinin bu alan adlarını ziyaret etmeye çalıştığını görür, ancak başka hiçbir veriyi görmez. Chainstack'in <a href=%2$@>%3$@</a> ve <a href=%4$@>%5$@</a> belgelerine bakın.";
+"wallet.udDomainInterstitialPageDescription" = "Unstoppable Domains üzerindeki alan adları. Brave, IP adresinizi gizler. Bunu etkinleştirirseniz, Chainstack birilerinin bu alanları ziyaret etmeye çalıştığını görecek fakat başka bir şey göremeyecektir. Chainstack'in <a href=%1$@>%2$@</a> ve <a href=%3$@>%4$@</a> bölümlerine bakın.";
+
+/* The intro displayed below `udDomainInterstitialPageTitle`. */
+"wallet.udDomainInterstitialPageIntro" = "Brave, çözümleme yapmak için varsayılan olarak Chainstack'i kullanan yapılandırılmış Ethereum RPC hizmeti olacak:";
+
+/* The title of the button that user can tap to reveal more unstoppable domain extensions we support to resolve. */
+"wallet.udDomainInterstitialPageMore" = "+ daha fazla";
 
 /* Title displayed when users chose Brave to ask them if they want the Unstoppable Domains domain to be resolved every time they enter one. */
 "wallet.udDomainInterstitialPageTitle" = "Brave'de Unstoppable Domains desteği etkinleştirilsin mi?";

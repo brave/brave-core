@@ -86,7 +86,7 @@
 "CustomFiltersInvalidRuleError" = "Nevaljano pravilo „%1$@” u %2$i. retku";
 
 /* A placeholder when custom filter lists are empty */
-"CustomFiltersPlaceholder" = "Ovdje dodajte prilagođene filtre, jedan po retku.";
+"CustomFiltersPlaceholder" = "Dodaj prilagođene filtre";
 
 /* An error message telling the user that they crossed the line limit */
 "CustomFiltersTooManyLinesError" = "Prilagođeni filtri ne podržavaju više od %i r.";
@@ -111,6 +111,9 @@
 
 /* A tab title for the warning page that appears when a page was blocked */
 "DomainBlockedTitle" = "Blokirana domena";
+
+/* A placeholder when custom filter lists are empty */
+"EditCustomFiltersLabel" = "Uredi prilagođene filtre";
 
 /* A description of what the Enable GPC toggle does */
 "EnableGPCDescription" = "Zatražite da internetske stranice ne prodaju ili dijele vaše podatke. [Doznajte više](https://support.brave.app/hc/en-us/articles/360017989132-How-do-I-change-my-Privacy-Settings#h_01HHFRRT6B5YTRREA4ZDARGTWM)";

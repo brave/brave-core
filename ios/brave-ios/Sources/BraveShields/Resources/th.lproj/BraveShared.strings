@@ -86,7 +86,7 @@
 "CustomFiltersInvalidRuleError" = "กฎ `%1$@` ไม่ถูกต้องบนบรรทัด %2$i";
 
 /* A placeholder when custom filter lists are empty */
-"CustomFiltersPlaceholder" = "เพิ่มตัวกรองแบบกำหนดเองที่นี่ หนึ่ง URL ต่อบรรทัด";
+"CustomFiltersPlaceholder" = "เพิ่มตัวกรองแบบกำหนดเอง";
 
 /* An error message telling the user that they crossed the line limit */
 "CustomFiltersTooManyLinesError" = "ตัวกรองแบบกำหนดเองไม่รองรับ URL ที่มากกว่า %i บรรทัด";
@@ -111,6 +111,9 @@
 
 /* A tab title for the warning page that appears when a page was blocked */
 "DomainBlockedTitle" = "โดเมนถูกบล็อค";
+
+/* A placeholder when custom filter lists are empty */
+"EditCustomFiltersLabel" = "แก้ไขตัวกรองแบบกำหนดเอง";
 
 /* A description of what the Enable GPC toggle does */
 "EnableGPCDescription" = "ขอให้เว็บไซต์ต่าง ๆ ห้ามขายหรือแชร์ข้อมูลของคุณ [เรียนรู้เพิ่มเติม] (https://support.brave.app/hc/en-us/articles/360017989132-How-do-I-change-my-Privacy-Settings#h_01HHFRRT6B5YTRREA4ZDARGTWM)";
