@@ -21,6 +21,7 @@
 #include "base/check.h"
 #include "base/check_deref.h"
 #include "base/containers/checked_iterators.h"
+#include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/logging.h"
 #include "base/memory/scoped_refptr.h"
@@ -38,6 +39,7 @@
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer_oai.h"
 #include "brave/components/ai_chat/core/browser/engine/oblivious_http_config_manager.h"
 #include "brave/components/ai_chat/core/browser/model_validator.h"
+#include "brave/components/ai_chat/core/browser/remote_models_provider.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/constants.h"
 #include "brave/components/ai_chat/core/common/features.h"
@@ -515,6 +517,16 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
   return *kModels;
 }
 
+std::vector<mojom::ModelPtr> CloneModelList(
+    const std::vector<mojom::ModelPtr>& models) {
+  std::vector<mojom::ModelPtr> result;
+  result.reserve(models.size());
+  for (const auto& model : models) {
+    result.push_back(model.Clone());
+  }
+  return result;
+}
+
 }  // namespace
 
 // TODO(nullhook): Handle encryption/decryption failures
@@ -593,12 +605,22 @@ base::DictValue ModelService::CustomModelToPrefDict(
   return model_dict;
 }
 
-ModelService::ModelService(PrefService* prefs_service,
-                           os_crypt_async::OSCryptAsync* os_crypt_async,
-                           network::NetworkContextGetter network_context_getter)
-    : pref_service_(prefs_service),
+ModelService::ModelService(
+    PrefService* prefs_service,
+    os_crypt_async::OSCryptAsync* os_crypt_async,
+    network::NetworkContextGetter network_context_getter,
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+    base::FilePath profile_path)
+    : leo_models_(CloneModelList(GetLeoModels())),
+      pref_service_(prefs_service),
       network_context_getter_(std::move(network_context_getter)) {
   ObliviousHttpConfigManager::DeleteExpiredKeyConfigs(pref_service_);
+
+  if (base::FeatureList::IsEnabled(features::kAIChatRemoteModelsConfig)) {
+    remote_models_provider_ = std::make_unique<RemoteModelsProvider>(
+        std::move(url_loader_factory), pref_service_, std::move(profile_path));
+  }
+
   // Load the model list synchronously so callers can resolve a default
   // model immediately after construction. Custom-model API keys decrypt
   // to empty strings until `OnEncryptorReady()` delivers the `Encryptor`;
@@ -808,16 +830,16 @@ void ModelService::OnPremiumStatus(mojom::PremiumStatus status) {
 }
 
 void ModelService::InitModels() {
-  // Get leo and custom models
-  const std::vector<mojom::ModelPtr>& leo_models = GetLeoModels();
+  // Get custom models; leo_models_ is already populated (hardcoded at
+  // construction, merged with remote entries thereafter)
   const std::vector<mojom::ModelPtr> custom_models = GetCustomModels();
 
   // Reserve space in the combined models vector
   models_.clear();
-  models_.reserve(leo_models.size() + custom_models.size());
+  models_.reserve(leo_models_.size() + custom_models.size());
 
   // Ensure we return only in intended display order
-  std::transform(leo_models.cbegin(), leo_models.cend(),
+  std::transform(leo_models_.cbegin(), leo_models_.cend(),
                  std::back_inserter(models_),
                  [](const mojom::ModelPtr& model) { return model.Clone(); });
 
@@ -827,6 +849,74 @@ void ModelService::InitModels() {
 
   for (auto& obs : observers_) {
     obs.OnModelListUpdated();
+  }
+}
+
+void ModelService::OnRemoteModelsReady(
+    std::vector<mojom::ModelPtr> fetched_models) {
+  if (fetched_models.empty()) {
+    return;
+  }
+
+  std::vector<std::string> previous_keys;
+  previous_keys.reserve(leo_models_.size());
+  for (const auto& model : leo_models_) {
+    previous_keys.push_back(model->key);
+  }
+
+  mojom::ModelPtr automatic_model;
+  auto automatic_it =
+      std::ranges::find_if(leo_models_, [](const mojom::ModelPtr& model) {
+        return model->key == kChatAutomaticModelKey;
+      });
+  if (automatic_it != leo_models_.end()) {
+    automatic_model = std::move(*automatic_it);
+  }
+
+  leo_models_.clear();
+  if (automatic_model) {
+    leo_models_.push_back(std::move(automatic_model));
+  }
+
+  for (auto& fetched_model : fetched_models) {
+    auto existing = std::ranges::find_if(
+        leo_models_, [&fetched_model](const mojom::ModelPtr& model) {
+          return model->key == fetched_model->key;
+        });
+    if (existing != leo_models_.end()) {
+      *existing = std::move(fetched_model);
+    } else {
+      leo_models_.push_back(std::move(fetched_model));
+    }
+  }
+
+  std::vector<std::string> removed_keys;
+  for (const auto& previous_key : previous_keys) {
+    bool still_exists = std::ranges::any_of(
+        leo_models_, [&previous_key](const mojom::ModelPtr& model) {
+          return model->key == previous_key;
+        });
+    if (!still_exists) {
+      removed_keys.push_back(previous_key);
+    }
+  }
+
+  auto current_default_key = GetDefaultModelKey();
+  for (const auto& removed_key : removed_keys) {
+    if (current_default_key == removed_key) {
+      pref_service_->ClearPref(kDefaultModelKey);
+      for (auto& obs : observers_) {
+        obs.OnDefaultModelChanged(removed_key, GetDefaultModelKey());
+      }
+    }
+  }
+
+  InitModels();
+
+  for (const auto& removed_key : removed_keys) {
+    for (auto& obs : observers_) {
+      obs.OnModelRemoved(removed_key);
+    }
   }
 }
 
@@ -919,15 +1009,13 @@ const mojom::Model* ModelService::GetModel(std::string_view key) {
 
 std::optional<std::string> ModelService::GetLeoModelKeyByName(
     std::string_view name) {
-  const std::vector<mojom::ModelPtr>& leo_models = GetLeoModels();
-
   auto match_iter = std::find_if(
-      leo_models.cbegin(), leo_models.cend(),
+      leo_models_.cbegin(), leo_models_.cend(),
       [name](const mojom::ModelPtr& model) {
         CHECK(model->options->is_leo_model_options());
         return model->options->get_leo_model_options()->name == name;
       });
-  if (match_iter != leo_models.cend()) {
+  if (match_iter != leo_models_.cend()) {
     return (*match_iter)->key;
   }
 
@@ -936,12 +1024,10 @@ std::optional<std::string> ModelService::GetLeoModelKeyByName(
 
 std::optional<std::string> ModelService::GetLeoModelNameByKey(
     std::string_view key) {
-  const std::vector<mojom::ModelPtr>& leo_models = GetLeoModels();
-
   auto match_iter = std::find_if(
-      leo_models.cbegin(), leo_models.cend(),
+      leo_models_.cbegin(), leo_models_.cend(),
       [key](const mojom::ModelPtr& model) { return model->key == key; });
-  if (match_iter != leo_models.cend()) {
+  if (match_iter != leo_models_.cend()) {
     CHECK((*match_iter)->options->is_leo_model_options());
     return (*match_iter)->options->get_leo_model_options()->name;
   }
