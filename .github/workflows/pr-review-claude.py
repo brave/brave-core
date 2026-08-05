@@ -342,31 +342,26 @@ def run_review(
 
 
 def _strip_optional_code_fence(text: str) -> str:
-    """If the model wrapped content in markdown fences, extract the inner part.
+    """If the model wrapped the whole response in an outer markdown fence, unwrap it.
 
-    Tolerant of a missing closing fence (use find, not index; never raise ValueError).
+    Only strips when the response *starts* with a fence. Embedded fences inside JSON
+    string values (e.g. markdown in `body`) must be left alone so parsing succeeds.
+    Tolerant of a missing closing fence (never raise ValueError).
     """
     t = text.strip()
-    if "```json" in t:
-        key = "```json"
-        start = t.find(key)
-        if start == -1:
-            return t
-        i = start + len(key)
-        end = t.find("```", i)
-        if end != -1:
-            return t[i:end].strip()
-        return t[i:].strip()
-    if "```" in t:
-        start = t.find("```")
-        if start == -1:
-            return t
-        i = start + 3
-        end = t.find("```", i)
-        if end != -1:
-            return t[i:end].strip()
-        return t[i:].strip()
-    return t
+    if not t.startswith("```"):
+        return t
+    # Drop the opening fence line (``` or ```json, etc.).
+    first_nl = t.find("\n")
+    if first_nl == -1:
+        return t
+    inner = t[first_nl + 1 :]
+    # Only treat a trailing fence as the outer closer. Do not rfind/find inside
+    # the payload — that would truncate on legitimate ``` in markdown bodies.
+    if inner.rstrip().endswith("```"):
+        end = inner.rstrip().rfind("```")
+        return inner.rstrip()[:end].strip()
+    return inner.strip()
 
 
 def _parse_review_response(raw: str) -> tuple[str, list[dict]]:
@@ -415,10 +410,16 @@ def post_review(
     head_sha: str = "",
 ) -> None:
     """Post as a GitHub pull request review (always /reviews so commit_id dedup applies)."""
+    if not head_sha:
+        raise ValueError(
+            "head_sha (commit_id) is required to create a pull request review"
+        )
     posted_body = _body_for_posting(body, has_inline_comments=bool(comments))
-    payload: dict = {"event": "COMMENT", "body": posted_body}
-    if head_sha:
-        payload["commit_id"] = head_sha
+    payload: dict = {
+        "event": "COMMENT",
+        "body": posted_body,
+        "commit_id": head_sha,
+    }
     if comments:
         payload["comments"] = comments
     cmd = [
