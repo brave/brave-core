@@ -38,11 +38,12 @@ blink::ScriptValue GetWebGLDebugInfoValue(
     blink::ScriptState* script_state,
     blink::CanvasRenderingContextHost* host,
     const WebGLDebugRendererInfoType type,
-    const blink::String original_string_value) {
+    const blink::String original_string_value,
+    bool is_webgl2) {
   auto level = brave::GetBraveFarblingLevelFor(
       host->GetTopExecutionContext(),
-      host->IsWebGL() ? ContentSettingsType::BRAVE_WEBCOMPAT_WEBGL
-                      : ContentSettingsType::BRAVE_WEBCOMPAT_WEBGL2,
+      is_webgl2 ? ContentSettingsType::BRAVE_WEBCOMPAT_WEBGL2
+                : ContentSettingsType::BRAVE_WEBCOMPAT_WEBGL,
       BraveFarblingLevel::OFF);
   blink::ScriptValue original_script_value =
       blink::WebGLAny(script_state, original_string_value);
@@ -111,13 +112,13 @@ blink::ScriptValue GetWebGLDebugInfoValue(
   if (ExtensionEnabled(kWebGLDebugRendererInfoName))                \
     return GetWebGLDebugInfoValue(                                  \
         script_state, Host(), WebGLDebugRendererInfoType::RENDERER, \
-        String(ContextGL()->GetString(GL_RENDERER)));
+        String(ContextGL()->GetString(GL_RENDERER)), IsWebGL2());
 
-#define BRAVE_WEBGL_GET_PARAMETER_UNMASKED_VENDOR                     \
-  if (ExtensionEnabled(kWebGLDebugRendererInfoName))                  \
-    return GetWebGLDebugInfoValue(script_state, Host(),               \
-                                  WebGLDebugRendererInfoType::VENDOR, \
-                                  String(ContextGL()->GetString(GL_VENDOR)));
+#define BRAVE_WEBGL_GET_PARAMETER_UNMASKED_VENDOR                 \
+  if (ExtensionEnabled(kWebGLDebugRendererInfoName))              \
+    return GetWebGLDebugInfoValue(                                \
+        script_state, Host(), WebGLDebugRendererInfoType::VENDOR, \
+        String(ContextGL()->GetString(GL_VENDOR)), IsWebGL2());
 
 #define getExtension getExtension_ChromiumImpl
 #define getSupportedExtensions getSupportedExtensions_ChromiumImpl

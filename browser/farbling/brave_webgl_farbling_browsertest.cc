@@ -267,14 +267,14 @@ IN_PROC_BROWSER_TEST_P(BraveWebGLExtensionFarblingTest,
                        FarbleVendorAndRendererDebugInfoWebGL) {
   std::string domain = "a.com";
   GURL url = embedded_test_server()->GetURL(domain, "/getParameter.html");
+  const std::string kGetWebGL1 = "getWebGL1UnmaskedVendorAndRenderer()";
 
   // Farbling level: off
   // This is tested below in relation with "maximum" and "balanced"
   // farbling.
   AllowFingerprinting(domain);
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-  std::string actual_value_off =
-      EvalJs(contents(), kTitleScript).ExtractString();
+  std::string actual_value_off = EvalJs(contents(), kGetWebGL1).ExtractString();
 
   // Farbling level: maximum
   // pseudo-random data with no relation to original data
@@ -283,13 +283,13 @@ IN_PROC_BROWSER_TEST_P(BraveWebGLExtensionFarblingTest,
   const std::string expected_value_maximum =
       GetExpectedString(TestFarblingLevel::MAXIMUM);
   std::string actual_value_maximum =
-      EvalJs(contents(), kTitleScript).ExtractString();
+      EvalJs(contents(), kGetWebGL1).ExtractString();
   EXPECT_EQ(expected_value_maximum, actual_value_maximum);
   // second time, same as the first (tests that results are consistent for the
   // lifetime of a session, and that the PRNG properly resets itself at the
   // beginning of each calculation)
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-  actual_value_maximum = EvalJs(contents(), kTitleScript).ExtractString();
+  actual_value_maximum = EvalJs(contents(), kGetWebGL1).ExtractString();
   EXPECT_EQ(expected_value_maximum, actual_value_maximum);
   // Check never same as the "off" state.
   EXPECT_NE(actual_value_off, actual_value_maximum);
@@ -299,7 +299,7 @@ IN_PROC_BROWSER_TEST_P(BraveWebGLExtensionFarblingTest,
   SetFingerprintingDefault(domain);
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   std::string actual_value_balanced =
-      EvalJs(contents(), kTitleScript).ExtractString();
+      EvalJs(contents(), kGetWebGL1).ExtractString();
   auto expected_value_balanced = GetExpectedString(
       TestFarblingLevel::BALANCED, /*expected_override= */
       GetParam() ? std::nullopt : std::optional<std::string>(actual_value_off));
@@ -551,4 +551,55 @@ IN_PROC_BROWSER_TEST_P(BraveWebGLExtensionFarblingTest,
             kSupportedExtensionsMax);
   EXPECT_EQ(EvalJs(contents(), kGetWebGL2Extensions).ExtractString(),
             webgl2_off);
+}
+
+// BRAVE_WEBCOMPAT_WEBGL and BRAVE_WEBCOMPAT_WEBGL2 must independently control
+// UNMASKED_VENDOR_WEBGL / UNMASKED_RENDERER_WEBGL farbling.
+IN_PROC_BROWSER_TEST_P(
+    BraveWebGLExtensionFarblingTest,
+    DebugInfoWebcompatExceptionsAreIndependentPerWebGLVersion) {
+  // Balanced "Brave" farbling only applies when the feature is enabled.
+  if (!GetParam()) {
+    GTEST_SKIP() << "Requires kWebGLBalancedFingerprintingProtection";
+  }
+
+  const std::string domain = "a.com";
+  const GURL url = embedded_test_server()->GetURL(domain, "/getParameter.html");
+  const std::string kBraveDebugInfo = "Brave,Brave";
+  const std::string kGetWebGL1 = "getWebGL1UnmaskedVendorAndRenderer()";
+  const std::string kGetWebGL2 = "getWebGL2UnmaskedVendorAndRenderer()";
+
+  AllowFingerprinting(domain);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  const std::string webgl1_off = EvalJs(contents(), kGetWebGL1).ExtractString();
+  const std::string webgl2_off = EvalJs(contents(), kGetWebGL2).ExtractString();
+  ASSERT_FALSE(webgl1_off.empty());
+  ASSERT_FALSE(webgl2_off.empty());
+  ASSERT_NE(webgl1_off, kBraveDebugInfo);
+  ASSERT_NE(webgl2_off, kBraveDebugInfo);
+
+  // Default farbling: both versions report "Brave".
+  SetFingerprintingDefault(domain);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  EXPECT_EQ(EvalJs(contents(), kGetWebGL1).ExtractString(), kBraveDebugInfo);
+  EXPECT_EQ(EvalJs(contents(), kGetWebGL2).ExtractString(), kBraveDebugInfo);
+
+  // Exception for WebGL1 only: WebGL1 real, WebGL2 still "Brave".
+  brave_shields::SetWebcompatEnabled(content_settings(),
+                                     ContentSettingsType::BRAVE_WEBCOMPAT_WEBGL,
+                                     true, url, nullptr);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  EXPECT_EQ(EvalJs(contents(), kGetWebGL1).ExtractString(), webgl1_off);
+  EXPECT_EQ(EvalJs(contents(), kGetWebGL2).ExtractString(), kBraveDebugInfo);
+
+  // Exception for WebGL2 only: WebGL2 real, WebGL1 still "Brave".
+  brave_shields::SetWebcompatEnabled(content_settings(),
+                                     ContentSettingsType::BRAVE_WEBCOMPAT_WEBGL,
+                                     false, url, nullptr);
+  brave_shields::SetWebcompatEnabled(
+      content_settings(), ContentSettingsType::BRAVE_WEBCOMPAT_WEBGL2, true,
+      url, nullptr);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  EXPECT_EQ(EvalJs(contents(), kGetWebGL1).ExtractString(), kBraveDebugInfo);
+  EXPECT_EQ(EvalJs(contents(), kGetWebGL2).ExtractString(), webgl2_off);
 }
