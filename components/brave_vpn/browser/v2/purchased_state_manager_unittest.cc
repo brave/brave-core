@@ -9,6 +9,7 @@
 #include <memory>
 #include <optional>
 #include <string>
+#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -32,6 +33,7 @@
 #include "brave/components/brave_account/endpoint_client/test_support.h"
 #include "brave/components/brave_vpn/browser/v2/api/brave_vpn_api_client.h"
 #include "brave/components/brave_vpn/browser/v2/credential_store.h"
+#include "brave/components/brave_vpn/browser/v2/credential_store_test_util.h"
 #include "brave/components/brave_vpn/browser/v2/skus_service_client.h"
 #include "brave/components/brave_vpn/common/brave_vpn_constants.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
@@ -52,11 +54,15 @@
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/l10n/l10n_util.h"
 
 namespace brave_vpn::v2 {
 namespace {
+using Credential = CredentialStore::Credential;
+using test::CredentialIs;
+
 constexpr char kTestSkusCredential[] = "test-skus-credential";
 constexpr char kTestSubscriberCredential[] = "test-subscriber-credential";
 constexpr char kNonVpnDomain[] = "talk.brave.com";
@@ -366,11 +372,12 @@ class PurchasedStateManagerTest : public testing::Test {
   }
 
   void SeedSubscriberCredential(base::Time expiration) {
-    credential_store_.SetSubscriberCredential(kTestSubscriberCredential,
-                                              expiration);
+    credential_store_.SetSubscriberCredential(
+        {.value = kTestSubscriberCredential, .expiration = expiration});
   }
   void SeedSkusCredential(base::Time expiration) {
-    credential_store_.SetSkusCredential(kTestSkusCredential, expiration);
+    credential_store_.SetSkusCredential(
+        {.value = kTestSkusCredential, .expiration = expiration});
   }
   bool HasAnyStoredCredential() const {
     return credential_store_.HasAnyCredential();
@@ -671,12 +678,11 @@ TEST_F(PurchasedStateManagerTest, ExchangeSuccessCachesSubscriberAndPurchases) {
 
   EXPECT_TRUE(loading_environment().empty());
   EXPECT_TRUE(manager_->IsPurchased());
-  EXPECT_EQ(credential_store_.GetSubscriberCredential(),
-            kTestSubscriberCredential);
-  ASSERT_TRUE(credential_store_.GetExpirationTime().has_value());
-  EXPECT_EQ(*credential_store_.GetExpirationTime(),
-            expiry);                                         // Borrowed expiry.
-  EXPECT_FALSE(credential_store_.HasValidSkusCredential());  // Slot replaced.
+  // Subscriber credential borrows the SKUS credential's expiry.
+  EXPECT_THAT(credential_store_.GetValidSubscriberCredential(),
+              CredentialIs(kTestSubscriberCredential, expiry));
+  EXPECT_FALSE(credential_store_.GetValidSkusCredential()
+                   .has_value());  // Slot replaced.
   collector_.WaitForChangeCount(2);
   EXPECT_EQ(collector_.changes()[1].first, mojom::PurchasedState::PURCHASED);
 }
@@ -694,8 +700,8 @@ TEST_F(PurchasedStateManagerTest,
 
   EXPECT_TRUE(loading_environment().empty());
   EXPECT_EQ(manager_->GetInfo().state, mojom::PurchasedState::FAILED);
-  EXPECT_TRUE(
-      credential_store_.HasValidSkusCredential());  // Preserved for retry.
+  EXPECT_TRUE(credential_store_.GetValidSkusCredential()
+                  .has_value());  // Preserved for retry.
   collector_.WaitForChangeCount(2);
   EXPECT_EQ(collector_.changes()[1].second,
             l10n_util::GetStringUTF8(
@@ -757,8 +763,8 @@ TEST_F(PurchasedStateManagerTest, StaleExchangeResponseIsDropped) {
   api_client_.ResolveExchange(base::ok(std::string(kTestSubscriberCredential)));
 
   EXPECT_FALSE(manager_->IsPurchased());
-  EXPECT_FALSE(credential_store_.HasValidSubscriberCredential());
-  EXPECT_TRUE(credential_store_.HasValidSkusCredential());
+  EXPECT_FALSE(credential_store_.GetValidSubscriberCredential().has_value());
+  EXPECT_TRUE(credential_store_.GetValidSkusCredential().has_value());
   EXPECT_EQ(manager_->GetInfo().state, mojom::PurchasedState::FAILED);
 }
 
@@ -888,7 +894,7 @@ TEST_F(PurchasedStateManagerTest, ExpiredCredentialCookieFailsLoad) {
   EXPECT_EQ(
       collector_.changes()[1].second,
       l10n_util::GetStringUTF8(IDS_BRAVE_VPN_PURCHASE_CREDENTIALS_EXPIRED));
-  EXPECT_FALSE(credential_store_.HasValidSkusCredential());
+  EXPECT_FALSE(credential_store_.GetValidSkusCredential().has_value());
 }
 
 TEST_F(PurchasedStateManagerTest, EmptyCredentialCookieValueMeansNotPurchased) {
@@ -920,8 +926,8 @@ TEST_F(PurchasedStateManagerTest, ValidCookieCachesSkusCredential) {
       SkusOkResult(
           BuildTestCookie(base::Time::Now() + base::Days(30), "test%3D")));
 
-  EXPECT_TRUE(credential_store_.HasValidSkusCredential());
-  EXPECT_EQ(credential_store_.GetSkusCredential(), "test=");
+  EXPECT_THAT(credential_store_.GetValidSkusCredential(),
+              CredentialIs("test="));
   EXPECT_EQ(manager_->GetCurrentEnvironment(), CurrentEnvironment());
   EXPECT_EQ(loading_sequence(), sequence);
   EXPECT_EQ(loading_environment(), CurrentEnvironment());
@@ -943,7 +949,7 @@ TEST_F(PurchasedStateManagerTest, ValidCookieCommitsEnvironmentSwitch) {
       SkusOkResult(BuildTestCookie(base::Time::Now() + base::Days(30))));
 
   EXPECT_EQ(manager_->GetCurrentEnvironment(), other_env);
-  EXPECT_TRUE(credential_store_.HasValidSkusCredential());
+  EXPECT_TRUE(credential_store_.GetValidSkusCredential().has_value());
   // The load is now visible and still in flight for the new environment.
   EXPECT_EQ(loading_environment(), other_env);
   EXPECT_EQ(manager_->GetInfo().state, mojom::PurchasedState::LOADING);
@@ -1207,8 +1213,10 @@ TEST_F(PurchasedStateManagerWithRealSkusServiceTest,
   WaitForCommitOrTerminalOutcome(2);  // LOADING + terminal.
 
   ASSERT_EQ(url_loader_factory_.NumPending(), 0);
-  EXPECT_TRUE(credential_store_.HasValidSkusCredential());
-  EXPECT_FALSE(credential_store_.GetSkusCredential().empty());
+  const std::optional<Credential> skus =
+      credential_store_.GetValidSkusCredential();
+  ASSERT_TRUE(skus.has_value());
+  EXPECT_FALSE(skus->value.empty());
   EXPECT_EQ(manager_->GetCurrentEnvironment(), CurrentEnvironment());
   EXPECT_TRUE(loading_environment().empty());
   EXPECT_EQ(manager_->GetInfo().state, mojom::PurchasedState::FAILED);
@@ -1229,8 +1237,10 @@ TEST_F(PurchasedStateManagerWithRealSkusServiceTest,
 
   manager_->Load(CurrentDomain());
   WaitForCommitOrTerminalOutcome(2);  // LOADING + terminal.
-  ASSERT_TRUE(credential_store_.HasValidSkusCredential());
-  const std::string first_credential = credential_store_.GetSkusCredential();
+  const std::optional<Credential> first =
+      credential_store_.GetValidSkusCredential();
+  ASSERT_TRUE(first.has_value());
+  const std::string first_credential = first->value;
 
   // Release the in-flight load (FAILED preserves the cache), then clear the
   // store so the next Load() runs the full chain instead of the fast paths.
@@ -1240,8 +1250,8 @@ TEST_F(PurchasedStateManagerWithRealSkusServiceTest,
   // Changes so far: LOADING, FAILED, LOADING(new load). The commit's LOADING
   // is value-deduped, so the terminal fallback is change #4.
   WaitForCommitOrTerminalOutcome(4);
-  ASSERT_TRUE(credential_store_.HasValidSkusCredential());
-  EXPECT_EQ(credential_store_.GetSkusCredential(), first_credential);
+  EXPECT_THAT(credential_store_.GetValidSkusCredential(),
+              CredentialIs(first_credential));
 
   base::test::TestFuture<skus::mojom::SkusResultPtr> after;
   skus_service_->CredentialSummary(CurrentDomain(), after.GetCallback());
@@ -1282,7 +1292,7 @@ TEST_F(PurchasedStateManagerWithRealSkusServiceTest,
 
   ASSERT_EQ(url_loader_factory_.NumPending(), 0);
   EXPECT_EQ(manager_->GetCurrentEnvironment(), other_env);
-  EXPECT_TRUE(credential_store_.HasValidSkusCredential());
+  EXPECT_TRUE(credential_store_.GetValidSkusCredential().has_value());
   EXPECT_TRUE(loading_environment().empty());
   EXPECT_EQ(manager_->GetInfo().state, mojom::PurchasedState::FAILED);
 }
@@ -1299,8 +1309,8 @@ TEST_F(PurchasedStateManagerWithRealSkusServiceTest,
 
   EXPECT_EQ(url_loader_factory_.NumPending(), 0);
   EXPECT_TRUE(manager_->IsPurchased());
-  EXPECT_EQ(credential_store_.GetSubscriberCredential(),
-            kTestSubscriberCredential);
+  EXPECT_THAT(credential_store_.GetValidSubscriberCredential(),
+              CredentialIs(kTestSubscriberCredential));
   EXPECT_TRUE(loading_environment().empty());
 }
 
@@ -1345,9 +1355,8 @@ TEST_F(PurchasedStateManagerWithRealSkusServiceTest,
 
   EXPECT_EQ(url_loader_factory_.NumPending(), 0);
   EXPECT_TRUE(manager_->IsPurchased());
-  EXPECT_TRUE(credential_store_.HasValidSubscriberCredential());
-  EXPECT_EQ(credential_store_.GetSubscriberCredential(),
-            kTestSubscriberCredential);
+  EXPECT_THAT(credential_store_.GetValidSubscriberCredential(),
+              CredentialIs(kTestSubscriberCredential));
   EXPECT_TRUE(loading_environment().empty());
 }
 
