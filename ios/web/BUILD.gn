@@ -14,6 +14,7 @@ test("ios_brave_web_unittests") {
 
     # Add individual test source_set targets here.
     "//brave/ios/web/js_messaging:unittests",
+    "//brave/ios/web/webui:ios_web_webui_unittests",
   ]
 }
 
