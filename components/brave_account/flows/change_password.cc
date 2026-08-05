@@ -13,9 +13,10 @@
 #include "base/types/expected.h"
 #include "brave/components/brave_account/brave_account_utils.h"
 #include "brave/components/brave_account/endpoint_client/with_headers.h"
+#include "brave/components/brave_account/flows/make_request.h"
 #include "brave/components/brave_account/mojom/change_password.mojom.h"
-#include "brave/components/brave_account/state_base.h"
 #include "brave/components/brave_account/state_internal.h"
+#include "services/network/public/cpp/shared_url_loader_factory.h"
 
 namespace brave_account {
 
@@ -25,7 +26,11 @@ using internal::MakeClientError;
 using internal::MakeRequest;
 using internal::MakeServerError;
 
-ChangePassword::ChangePassword(StateBase& state) : state_(state) {}
+ChangePassword::ChangePassword(
+    AccountStatePrefs& account_state_prefs,
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+    const os_crypt_async::Encryptor& encryptor)
+    : FlowBase(account_state_prefs, std::move(url_loader_factory), encryptor) {}
 
 ChangePassword::~ChangePassword() = default;
 
@@ -35,7 +40,7 @@ void ChangePassword::Step1(
   CHECK(!email.empty());
 
   auto authentication_token =
-      state_->GetDecryptedAuthenticationToken<mojom::ChangePasswordError>();
+      GetDecryptedAuthenticationToken<mojom::ChangePasswordError>();
   if (!authentication_token.has_value()) {
     return std::move(callback).Run(
         base::unexpected(std::move(authentication_token).error()));
@@ -50,7 +55,7 @@ void ChangePassword::Step1(
   request.body.locale = "";
   request.body.service = kServiceToString.at(mojom::Service::kAccounts);
 
-  state_->SendStateOwnedRequest<endpoints::VerifyInit>(
+  SendFlowOwnedRequest<endpoints::VerifyInit>(
       std::move(request),
       base::BindOnce(&ChangePassword::OnStep1, weak_factory_.GetWeakPtr(),
                      std::move(callback)));
@@ -62,7 +67,7 @@ void ChangePassword::Step2(
   CHECK(!code.empty());
 
   auto verification_token =
-      state_->GetDecryptedVerificationToken<mojom::ChangePasswordError>(
+      GetDecryptedVerificationToken<mojom::ChangePasswordError>(
           mojom::VerificationIntent::NewLoggedInIntent(
               mojom::LoggedInVerificationIntent::kChangePassword));
   if (!verification_token.has_value()) {
@@ -74,7 +79,7 @@ void ChangePassword::Step2(
   SetBearerToken(request, *verification_token);
   request.body.code = code;
 
-  state_->SendStateOwnedRequest<endpoints::VerifyComplete>(
+  SendFlowOwnedRequest<endpoints::VerifyComplete>(
       std::move(request),
       base::BindOnce(&ChangePassword::OnStep2, weak_factory_.GetWeakPtr(),
                      std::move(callback)));
@@ -86,7 +91,7 @@ void ChangePassword::Step3(
   CHECK(!blinded_message.empty());
 
   auto verification_token =
-      state_->GetDecryptedVerificationToken<mojom::ChangePasswordError>(
+      GetDecryptedVerificationToken<mojom::ChangePasswordError>(
           mojom::VerificationIntent::NewLoggedInIntent(
               mojom::LoggedInVerificationIntent::kChangePassword));
   if (!verification_token.has_value()) {
@@ -101,7 +106,7 @@ void ChangePassword::Step3(
       kServiceToString.at(mojom::Service::kAccounts);
   request.body.serialize_response = true;
 
-  state_->SendStateOwnedRequest<endpoints::PasswordInit>(
+  SendFlowOwnedRequest<endpoints::PasswordInit>(
       std::move(request),
       base::BindOnce(&ChangePassword::OnStep3, weak_factory_.GetWeakPtr(),
                      std::move(callback)));
@@ -113,7 +118,7 @@ void ChangePassword::Step4(
   CHECK(!serialized_record.empty());
 
   auto verification_token =
-      state_->GetDecryptedVerificationToken<mojom::ChangePasswordError>(
+      GetDecryptedVerificationToken<mojom::ChangePasswordError>(
           mojom::VerificationIntent::NewLoggedInIntent(
               mojom::LoggedInVerificationIntent::kChangePassword));
   if (!verification_token.has_value()) {
@@ -126,7 +131,7 @@ void ChangePassword::Step4(
   SetBearerToken(request, *verification_token);
   request.body.serialized_record = serialized_record;
 
-  state_->SendStateOwnedRequest<endpoints::PasswordFinalize>(
+  SendFlowOwnedRequest<endpoints::PasswordFinalize>(
       std::move(request),
       base::BindOnce(&ChangePassword::OnStep4, weak_factory_.GetWeakPtr(),
                      std::move(callback)));
@@ -169,7 +174,7 @@ void ChangePassword::OnStep1(
             }
 
             if (encrypted_verification_token =
-                    state_->Encrypt(success_body.verification_token);
+                    Encrypt(success_body.verification_token);
                 encrypted_verification_token.empty()) {
               return base::unexpected(
                   MakeClientError<mojom::ChangePasswordError>(
@@ -188,7 +193,7 @@ void ChangePassword::OnStep1(
 
   if (success) {
     CHECK(!encrypted_verification_token.empty());
-    state_->account_state_prefs_->AddVerification(
+    account_state_prefs_->AddVerification(
         encrypted_verification_token,
         mojom::VerificationIntent::NewLoggedInIntent(
             mojom::LoggedInVerificationIntent::kChangePassword));
@@ -244,7 +249,7 @@ void ChangePassword::OnStep2(
 
   if (success) {
     CHECK(!email.empty());
-    state_->account_state_prefs_->SetVerificationVerifiedEmail(email);
+    account_state_prefs_->SetVerificationVerifiedEmail(email);
   }
 }
 
@@ -326,7 +331,7 @@ void ChangePassword::OnStep4(
   std::move(callback).Run(std::move(result));
 
   if (success) {
-    state_->account_state_prefs_->ClearVerification();
+    account_state_prefs_->ClearVerification();
   }
 }
 

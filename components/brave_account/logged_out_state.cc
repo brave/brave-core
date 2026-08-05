@@ -16,12 +16,22 @@ LoggedOutState::LoggedOutState(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     const os_crypt_async::Encryptor& encryptor,
     AddObserverCallback add_observer)
-    : StateBase(account_state_prefs,
-                std::move(url_loader_factory),
-                encryptor,
-                std::move(add_observer)) {}
+    : StateBase(std::move(add_observer)),
+      cancel_verification_(account_state_prefs, url_loader_factory, encryptor),
+      login_(account_state_prefs, url_loader_factory, encryptor),
+      register_(account_state_prefs, url_loader_factory, encryptor),
+      resend_verification_email_(account_state_prefs,
+                                 url_loader_factory,
+                                 encryptor),
+      reset_password_(account_state_prefs,
+                      std::move(url_loader_factory),
+                      encryptor) {}
 
 LoggedOutState::~LoggedOutState() = default;
+
+void LoggedOutState::CancelVerification(mojom::VerificationIntentPtr intent) {
+  cancel_verification_(std::move(intent));
+}
 
 void LoggedOutState::LoginStep1(mojom::Service initiating_service,
                                 const std::string& email,
@@ -55,6 +65,12 @@ void LoggedOutState::RegisterStep2(
 void LoggedOutState::RegisterStep3(const std::string& code,
                                    RegisterStep3Callback callback) {
   register_.Step3(code, std::move(callback));
+}
+
+void LoggedOutState::ResendVerificationEmail(
+    mojom::VerificationIntentPtr intent,
+    ResendVerificationEmailCallback callback) {
+  resend_verification_email_(std::move(intent), std::move(callback));
 }
 
 void LoggedOutState::ResetPasswordStep1(const std::string& email,
