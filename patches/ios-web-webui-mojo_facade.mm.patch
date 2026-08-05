@@ -1,0 +1,94 @@
+diff --git a/ios/web/webui/mojo_facade.mm b/ios/web/webui/mojo_facade.mm
+index 97dab8dd796c873558cda9aa06613656dc0f710e..231b748bcd97aba4b5f09261fcc9b4a411db06bf 100644
+--- a/ios/web/webui/mojo_facade.mm
++++ b/ios/web/webui/mojo_facade.mm
+@@ -228,6 +228,7 @@ void MojoFacade::HandleMojoMessage(
+ }
+ 
+ void MojoFacade::HandleMojoBindInterface(const base::DictValue& args) {
++  if (!IsBindInterfaceAllowedForFrame(args)) return;
+   const std::string* interface_name = args.FindString("interfaceName");
+   CHECK(interface_name);
+ 
+@@ -342,7 +343,7 @@ void MojoFacade::OnWatcherCallback(int callback_id,
+                                    int watch_id,
+                                    int pipe_id,
+                                    MojoResult result) {
+-  WebFrame* main_frame = GetMainWebFrame();
++  WebFrame* main_frame = GetFrameForWatch(watch_id);
+   if (!main_frame) {
+     return;
+   }
+@@ -377,6 +378,7 @@ void MojoFacade::OnWatcherCallback(int callback_id,
+ }
+ 
+ base::Value MojoFacade::HandleMojoHandleWatch(const base::DictValue& args) {
++  base::Value result = [&]() -> base::Value {
+   std::optional<int> pipe_id = FindIntOrDoubleAsInt(args, "handle");
+   CHECK(pipe_id.has_value());
+   std::optional<int> signals = FindIntOrDoubleAsInt(args, "signals");
+@@ -398,9 +400,19 @@ base::Value MojoFacade::HandleMojoHandleWatch(const base::DictValue& args) {
+   watcher->ArmOrNotify();
+   watchers_.insert(std::make_pair(watch_id, std::move(watcher)));
+   return base::Value(watch_id);
++  }();
++  if (const std::string* frame_id = args.FindString("frameId")) {
++    if (std::optional<int> watch_id = result.GetIfInt()) {
++      watch_id_to_frame_id_[*watch_id] = *frame_id;
++    }
++  }
++  return result;
+ }
+ 
+ void MojoFacade::HandleMojoWatcherCancel(const base::DictValue& args) {
++  if (std::optional<int> watch_id = FindIntOrDoubleAsInt(args, "watchId")) {
++    watch_id_to_frame_id_.erase(*watch_id);
++  }
+   std::optional<int> watch_id = FindIntOrDoubleAsInt(args, "watchId");
+   CHECK(watch_id.has_value());
+   watchers_.erase(*watch_id);
+@@ -434,14 +446,20 @@ mojo::ScopedMessagePipeHandle MojoFacade::TakePipeFromId(int id) {
+ 
+ void MojoFacade::WebFrameBecameAvailable(WebFramesManager* web_frames_manager,
+                                          WebFrame* web_frame) {
++  [&]() -> void {
+   DCHECK_CURRENTLY_ON(WebThread::UI);
+   if (web_frame && web_frame->IsMainFrame()) {
+     main_frame_ = web_frame->AsWeakPtr();
+   }
++  }();
++  if (web_frame && !web_frame->IsMainFrame()) {
++    AwaitNextMessageForFrame(web_frame->GetFrameId());
++  }
+ }
+ 
+ void MojoFacade::WebFrameBecameUnavailable(WebFramesManager* web_frames_manager,
+                                            const std::string& frame_id) {
++  [&]() -> void {
+   DCHECK_CURRENTLY_ON(WebThread::UI);
+   if (main_frame_ && main_frame_->GetFrameId() == frame_id) {
+     main_frame_.reset();
+@@ -450,10 +468,14 @@ void MojoFacade::WebFrameBecameUnavailable(WebFramesManager* web_frames_manager,
+     is_awaiting_message_ = false;
+     weak_ptr_factory_.InvalidateWeakPtrs();
+   }
++  }();
++  extra_polling_frame_ids_.erase(frame_id);
+ }
+ 
+ void MojoFacade::PageLoaded(WebState* web_state,
+                             PageLoadCompletionStatus load_completion_status) {
++  extra_polling_frame_ids_.clear();
++  watch_id_to_frame_id_.clear();
+   DCHECK_CURRENTLY_ON(WebThread::UI);
+   DCHECK_EQ(web_state_, web_state);
+   if (load_completion_status == PageLoadCompletionStatus::SUCCESS &&
+@@ -469,6 +491,8 @@ void MojoFacade::PageLoaded(WebState* web_state,
+ }
+ 
+ void MojoFacade::WebStateDestroyed(WebState* web_state) {
++  extra_polling_frame_ids_.clear();
++  watch_id_to_frame_id_.clear();
+   DCHECK_CURRENTLY_ON(WebThread::UI);
+   DCHECK_EQ(web_state_, web_state);
+ 
