@@ -15,6 +15,7 @@ import { provideNodeGlobals, chromePrefixReplacers } from './plugins.ts'
 import { baseResolve } from './resolve.ts'
 import {
   cssRules,
+  katexCssRule,
   tsLoaderRule,
   ifdefLoaderRule,
   fileLoaderRule,
@@ -142,6 +143,7 @@ export function createWebpackConfig(
     module: {
       rules: [
         ...cssRules({ isDevMode }),
+        katexCssRule(),
         tsLoaderRule({ configFile: tsConfigPath }),
         ifdefLoaderRule(buildFlags),
         onnxRuntimeWorkerJsRule(),

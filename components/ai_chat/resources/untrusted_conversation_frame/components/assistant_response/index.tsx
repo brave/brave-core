@@ -17,6 +17,7 @@ import styles from './style.module.scss'
 import {
   findTaskCheckboxBracketOffsets,
   normalizeCitationSpacing,
+  normalizeMathDelimiters,
   removeCitationsWithMissingLinks,
   removeReasoning,
 } from '../conversation_entries/conversation_entries_utils'
@@ -58,7 +59,12 @@ function AssistantEvent(
 
     const processedCompletion = normalizeCitationSpacing(filteredCompletion)
 
-    const fullText = `${numberedLinks}${removeReasoning(processedCompletion)}`
+    // Math delimiters are normalized only for display. `processedCompletion`
+    // below is what gets written back to the conversation, so rewriting `\(…\)`
+    // into `$$…$$` must not leak into the stored text.
+    const fullText = normalizeMathDelimiters(
+      `${numberedLinks}${removeReasoning(processedCompletion)}`,
+    )
 
     // Persist a checkbox toggle back to the conversation. The renderer
     // identifies the checkbox by its position among GFM task items in

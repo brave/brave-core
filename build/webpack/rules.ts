@@ -13,6 +13,38 @@ import dirName from './dirName.cjs'
 const ifdefLoaderPath = path.join(dirName, 'plugins', 'ifdef-loader.ts')
 
 /**
+ * KaTeX's stylesheet declares each of its 20 fonts with a `.woff2` source
+ * followed by `.woff` and `.ttf` fallbacks. Chromium has supported woff2 since
+ * M36, so those fallbacks would add ~876KB of resources that are never
+ * requested — a font `src` list only advances past an entry that fails to load,
+ * and woff2 is listed first.
+ *
+ * Filtered `url()`s are left in the emitted CSS exactly as authored rather than
+ * resolved to a bundled asset, so the files stay out of the build entirely.
+ */
+const katexCss = /katex[\\/]dist[\\/]katex\.css$/
+const isLegacyFontUrl = (url: string) => /\.(?:woff|ttf)$/i.test(url)
+
+export function katexCssRule({
+  styleLoaderOptions = {},
+}: {
+  styleLoaderOptions?: Record<string, any>
+} = {}): RuleSetRule {
+  return {
+    test: katexCss,
+    use: [
+      { loader: 'style-loader', options: styleLoaderOptions },
+      {
+        loader: 'css-loader',
+        // css-loader 5 takes `url` as the filter predicate itself; the
+        // `{ filter }` object form is only available from v6.
+        options: { url: (url: string) => !isLegacyFontUrl(url) },
+      },
+    ],
+  }
+}
+
+/**
  * Loaders for SASS / CSS. `.global.` files and anything from `node_modules` are
  * injected verbatim as a style block; source-tree styles additionally go
  * through CSS modules (class names are renamed unless wrapped in `:global(...)`).
@@ -36,6 +68,8 @@ export function cssRules({
       // css converted to JS and injected to style elements.
       test,
       include: [/\.global\./, /node_modules/],
+      // Handled by katexCssRule, which drops its dead font fallbacks.
+      exclude: [katexCss],
       use: [{ loader: 'style-loader' }, { loader: 'css-loader' }],
     },
     {

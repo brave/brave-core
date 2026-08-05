@@ -162,7 +162,10 @@
     "includes": [53720]
   },
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-ai_chat_ui/ai_chat_ui.grd": {
-    "META": {"sizes": {"includes": [20]}},
+    # Math rendering adds 22 resources: the 20 KaTeX woff2 fonts plus the
+    # lazily loaded KaTeX chunks. Sized with headroom so further code splitting
+    # doesn't need another bump.
+    "META": {"sizes": {"includes": [60]}},
     "includes": [53740],
   },
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-skus_internals/skus_internals.grd": {
