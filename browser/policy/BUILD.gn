@@ -44,10 +44,10 @@ source_set("brave_simple_policy_map") {
     "//brave/components/p3a",
     "//brave/components/playlist/core/common/buildflags",
     "//brave/components/psst/buildflags",
+    "//brave/components/psst/core/browser",
     "//brave/components/query_filter/common",
     "//brave/components/speedreader/common/buildflags",
     "//brave/components/tor/buildflags",
-    "//brave/components/psst/core/browser",
     "//components/policy/core/browser",
     "//components/policy/core/common:common_constants",
   ]
