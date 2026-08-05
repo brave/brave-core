@@ -17,6 +17,11 @@ from unittest.mock import MagicMock, patch
 from vscode import (VsCodeIpcConnection, _NamedPipeSocket,
                     _PosixVsCodeIpcConnection, _WinVsCodeIpcConnection)
 
+# On Windows, Path.resolve() is relative to the current drive, i.e. D: or C:.
+# Internally, we call Path.resolve().as_uri() which will include the drive
+# letter when running on Windows platforms, so it's important for the tests
+# using `payload['fileURIs']` that we have this constant available.
+_TEST_PATH = Path('/path/to/file.cc').resolve()
 
 class PosixVsCodeIpcConnectionTest(unittest.TestCase):
     """Tests for _PosixVsCodeIpcConnection."""
@@ -40,6 +45,8 @@ class PosixVsCodeIpcConnectionTest(unittest.TestCase):
             conn = _PosixVsCodeIpcConnection()
             self.assertEqual(conn._socket_path, '')
 
+    @unittest.skipIf(platform.system() == 'Windows',
+                     'socket.AF_UNIX does not exist on Windows')
     def test_connect_creates_unix_socket(self):
         """connect() opens an AF_UNIX socket and connects to _socket_path."""
         with patch.dict(os.environ, {'VSCODE_IPC_HOOK_CLI': self.sock_path}):
@@ -79,15 +86,14 @@ class PosixVsCodeIpcConnectionTest(unittest.TestCase):
             mock_response.read.return_value = b''
             with patch.object(conn, 'request') as mock_request, \
                  patch.object(conn, 'getresponse', return_value=mock_response):
-                conn.open_file([Path('/path/to/file.cc')])
+                conn.open_file([_TEST_PATH])
                 mock_request.assert_called_once()
                 method, path, body, headers = mock_request.call_args[0]
                 self.assertEqual(method, 'POST')
                 self.assertEqual(path, '/')
                 payload = json.loads(body)
                 self.assertEqual(payload['type'], 'open')
-                self.assertEqual(payload['fileURIs'],
-                                 ['file:///path/to/file.cc'])
+                self.assertEqual(payload['fileURIs'], [_TEST_PATH.as_uri()])
                 self.assertTrue(payload['forceReuseWindow'])
                 self.assertEqual(headers['Content-Type'], 'application/json')
 
@@ -202,15 +208,14 @@ class WinVsCodeIpcConnectionTest(unittest.TestCase):
             mock_response.read.return_value = b''
             with patch.object(conn, 'request') as mock_request, \
                  patch.object(conn, 'getresponse', return_value=mock_response):
-                conn.open_file([Path('/path/to/file.cc')])
+                conn.open_file([_TEST_PATH])
                 mock_request.assert_called_once()
                 method, path, body, headers = mock_request.call_args[0]
                 self.assertEqual(method, 'POST')
                 self.assertEqual(path, '/')
                 payload = json.loads(body)
                 self.assertEqual(payload['type'], 'open')
-                self.assertEqual(payload['fileURIs'],
-                                 ['file:///path/to/file.cc'])
+                self.assertEqual(payload['fileURIs'], [_TEST_PATH.as_uri()])
                 self.assertTrue(payload['forceReuseWindow'])
                 self.assertEqual(headers['Content-Type'], 'application/json')
 

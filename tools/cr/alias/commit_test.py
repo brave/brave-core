@@ -19,7 +19,7 @@ import unittest
 from pathlib import Path
 
 import _boot  # noqa: F401
-from cmd_test import (CMD_SCRIPT, _GIT_ENV_OVERRIDES, _Sandbox)
+from cmd_test import (CMD_SCRIPT, _GIT_ENV_OVERRIDES, _TEXT_IO, _Sandbox)
 from alias.commit import _MarkChangeShortcut
 
 # ---------------------------------------------------------------------------
@@ -357,11 +357,11 @@ class TestReassignFixup(unittest.TestCase):
             subprocess.check_output(
                 ['git', 'rev-list', '--count', 'HEAD'],
                 cwd=self._sandbox.root,
-                text=True,
                 env={
                     **os.environ,
                     **_GIT_ENV_OVERRIDES
                 },
+                **_TEXT_IO,
             ).strip())
 
     def test_joined_form_creates_reassign_commit(self) -> None:
@@ -507,8 +507,19 @@ class TestGracefulExit(unittest.TestCase):
     def tearDown(self) -> None:
         self._sandbox.__exit__(None, None, None)
 
+    @unittest.skipIf(
+        platform.system() == 'Windows',
+        'SIGINT cannot be delivered to a child process on Windows')
     def test_no_traceback_on_keyboard_interrupt(self) -> None:
-        """Sending SIGINT produces exit code 130 with no traceback."""
+        """Sending SIGINT produces exit code 130 with no traceback.
+
+        POSIX-only. Popen.send_signal on Windows accepts just SIGTERM,
+        CTRL_C_EVENT and CTRL_BREAK_EVENT, and neither Ctrl event can be
+        aimed at one child: Windows disables Ctrl-C for a process group and
+        CTRL_BREAK_EVENT raises SIGBREAK, which Python does not translate to
+        KeyboardInterrupt. Sending either would signal the test runner's own
+        console group rather than exercise cmd.py's handler.
+        """
         import signal
 
         proc = subprocess.Popen(
@@ -517,11 +528,11 @@ class TestGracefulExit(unittest.TestCase):
             cwd=self._sandbox.root,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
-            text=True,
             env={
                 **os.environ,
                 **_GIT_ENV_OVERRIDES
             },
+            **_TEXT_IO,
         )
         try:
             proc.send_signal(signal.SIGINT)

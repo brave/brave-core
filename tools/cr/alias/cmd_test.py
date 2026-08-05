@@ -27,10 +27,18 @@ import unittest
 from pathlib import Path
 
 import _boot  # noqa: F401
+from alias.base import WINDOWS_SHIM
 from test.fake_chromium_repo import FakeChromiumRepo
 
 CMD_SCRIPT: Path = Path(__file__).parent / 'cmd.py'
 HOOK_SOURCE: Path = Path(__file__).parent / 'commit-msg.py'
+
+# Subprocess text-decoding options. `text=True` alone decodes with the locale
+# encoding, which on Windows is the ANSI code page (e.g. cp1252) and cannot
+# decode the UTF-8 that git and tools/cr emit. Left at the default, non-ASCII
+# output raises UnicodeDecodeError inside subprocess's reader thread, where it
+# is swallowed and silently truncates the captured output.
+_TEXT_IO: dict[str, str] = {'encoding': 'utf-8', 'errors': 'replace'}
 
 # Minimal git environment that suppresses GPG signing and user-config lookup.
 _GIT_ENV_OVERRIDES: dict[str, str] = {
@@ -70,11 +78,11 @@ def _git(cwd: Path, *args: str) -> subprocess.CompletedProcess:
         cwd=cwd,
         check=True,
         capture_output=True,
-        text=True,
         env={
             **os.environ,
             **_GIT_ENV_OVERRIDES
         },
+        **_TEXT_IO,
     )
 
 
@@ -92,9 +100,9 @@ def _run_gc(
         cwd=cwd,
         env=full_env,
         capture_output=True,
-        text=True,
         check=False,
         input=stdin,
+        **_TEXT_IO,
     )
 
 
@@ -137,7 +145,8 @@ class _Sandbox:
     def install_hook(self, *, as_copy: bool = False) -> None:
         """Put commit-msg.py in .git/hooks/commit-msg.
 
-        By default a symlink is created (mirroring 'gc install-hook').
+        By default this mirrors 'gc install-hook': a symlink on POSIX, the
+        bash shim on Windows.
         Pass as_copy=True to simulate a manually-copied (potentially
         stale) hook.
         """
@@ -148,6 +157,8 @@ class _Sandbox:
             dest.unlink()
         if as_copy:
             shutil.copy2(HOOK_SOURCE, dest)
+        elif platform.system() == 'Windows':
+            dest.write_bytes(WINDOWS_SHIM)
         else:
             dest.symlink_to(HOOK_SOURCE)
         # Ensure the hook (and source) are executable.
@@ -167,11 +178,11 @@ class _Sandbox:
         return subprocess.check_output(
             ['git', 'log', '-1', '--format=%B'],
             cwd=self.root,
-            text=True,
             env={
                 **os.environ,
                 **_GIT_ENV_OVERRIDES
             },
+            **_TEXT_IO,
         ).strip()
 
     def run_gc(
@@ -192,7 +203,7 @@ class _Sandbox:
             cwd=self.root,
             capture_output=True,
             check=False,
-            text=True,
+            **_TEXT_IO,
         )
         return result.stdout.strip()
 
@@ -206,7 +217,8 @@ def _fake_global_env(hooks_dir: Path) -> dict[str, str]:
     """Return env overrides that point git's global config to a temp gitconfig
     with core.hooksPath set to hooks_dir, without touching ~/.gitconfig."""
     cfg = hooks_dir.parent / 'gitconfig'
-    cfg.write_text(f'[core]\n\thooksPath = {hooks_dir}\n', encoding='utf-8')
+    cfg.write_text(f'[core]\n\thooksPath = {hooks_dir.as_posix()}\n',
+                   encoding='utf-8')
     return {'GIT_CONFIG_GLOBAL': str(cfg)}
 
 
@@ -280,7 +292,11 @@ class TestInstallHook(unittest.TestCase):
         self.assertEqual(dest.resolve(), HOOK_SOURCE.resolve())
 
     def test_overwrites_existing_hook(self) -> None:
-        """install-hook replaces an existing hook file with a symlink."""
+        """install-hook replaces an existing hook file.
+
+        On POSIX the replacement is a symlink; on Windows it is the bash
+        shim cmd_install_hook writes instead.
+        """
         dest = self._sandbox.hook_dest
         dest.parent.mkdir(exist_ok=True)
         if dest.exists() or dest.is_symlink():
@@ -288,8 +304,12 @@ class TestInstallHook(unittest.TestCase):
         dest.write_text('old hook\n', encoding='utf-8')
 
         result = self._run()
-        self.assertEqual(result.returncode, 0)
-        self.assertTrue(dest.is_symlink())
+        self.assertEqual(result.returncode, 0, msg=f'stderr: {result.stderr}')
+        if platform.system() == 'Windows':
+            self.assertNotIn('old hook', dest.read_text(encoding='utf-8'))
+            self.assertIn('commit-msg.py', dest.read_text(encoding='utf-8'))
+        else:
+            self.assertTrue(dest.is_symlink())
 
     def test_hook_source_is_executable_after_install(self) -> None:
         """The hook source file is executable after install-hook runs."""
@@ -351,7 +371,6 @@ class TestSetupAlias(unittest.TestCase):
             ['git', 'cr', 'commit', '-m', 'Alias end-to-end'],
             cwd=self._sandbox.root,
             capture_output=True,
-            text=True,
             check=False,
             env={
                 **os.environ,
@@ -361,6 +380,7 @@ class TestSetupAlias(unittest.TestCase):
                 # prefer over the .git/config alias.
                 'PATH': _path_without_git_cr_shim(),
             },
+            **_TEXT_IO,
         )
         self.assertEqual(result.returncode, 0, msg=f'stderr: {result.stderr}')
         self.assertIn('Alias end-to-end', self._sandbox.last_commit_message())

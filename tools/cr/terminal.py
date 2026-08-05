@@ -26,6 +26,19 @@ KEEP_ALIVE_PING_ART = [
     '(-_-)', '(⊙_⊙)', '(¬_¬)', '(－‸ლ)', '(◎_◎;)', '(⌐■_■)', '(•‿•)', '(≖_≖)'
 ]
 
+if platform.system() == 'Windows':
+    # Python uses UTF-8 for real Windows console handles, but falls back to the
+    # locale's ANSI code page (e.g. cp1252) once stdout is a pipe or a file.
+    # That code page cannot encode the non-ASCII output produced here and by
+    # callers (spinner art above, brockit's banners), so any tools/cr command
+    # that works interactively dies with UnicodeEncodeError the moment its
+    # output is redirected or captured by a test harness.
+    for _stream in (sys.stdout, sys.stderr):
+        try:
+            _stream.reconfigure(encoding='utf-8', errors='replace')
+        except (AttributeError, OSError, ValueError):
+            pass  # Not a reconfigurable TextIOWrapper; nothing to harden.
+
 # The rich console used for all terminal output. Defined here (rather than
 # at the end of the file) so that the import-time logging preset below can
 # route through it.
