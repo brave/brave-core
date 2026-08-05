@@ -15,7 +15,7 @@ a[href] {
   padding-top: var(--leo-spacing-2xl) !important;
 }
 
-.settings-box {
+.settings-box :first-child {
   border-top: none !important;
 }
 
