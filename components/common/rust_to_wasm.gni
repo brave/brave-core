@@ -70,19 +70,19 @@ template("rust_to_wasm") {
       wasm_pack_target,
       "--out-dir",
       "abs@" + rebase_path(
-          "$root_gen_dir/{{source_root_relative_dir}}/$wasm_pack_target/pkg",
-          root_build_dir),
+              "$root_gen_dir/{{source_root_relative_dir}}/$wasm_pack_target/pkg",
+              root_build_dir),
       "--out-name",
       "index",
       "--",
       "--quiet",
       "--config",
       "abs@" + rebase_path("//{{source_root_relative_dir}}/.cargo/config.toml",
-          root_build_dir),
+                           root_build_dir),
       "--target-dir",
       "abs@" + rebase_path(
-          "$root_gen_dir/{{source_root_relative_dir}}/$wasm_pack_target/target",
-          root_build_dir),
+              "$root_gen_dir/{{source_root_relative_dir}}/$wasm_pack_target/target",
+              root_build_dir),
       "--frozen",
     ]
 

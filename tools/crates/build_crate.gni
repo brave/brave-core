@@ -54,6 +54,7 @@ template("build_crate") {
       cargo_toml,
       config_toml,
     ]
+
     # To avoid irreproducible builds,
     # `build_crate`s MUST always build with `cargo vendor`ed deps,
     # hence they always have to pass:

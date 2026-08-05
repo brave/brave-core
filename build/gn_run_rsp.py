@@ -20,13 +20,14 @@ import shlex
 import sys
 from pathlib import Path
 
+
 # Paths prefixed with abs@ will be converted to absolute paths
 def maybe_abspath(value):
     split = value.split("abs@", 1)
     if len(split) == 2:
-      return split[0] + os.path.abspath(split[1])
-    else:
-      return value
+        return split[0] + os.path.abspath(split[1])
+
+    return value
 
 def main():
     if len(sys.argv) < 2:
@@ -44,9 +45,10 @@ def main():
 
     args = shlex.split(content)
 
-    # Convert any abs@ arguments
+    # Resolve any abs@ paths
     for index, arg in enumerate(args):
         args[index] = maybe_abspath(arg)
+
     # Parse environment variables from command line arguments.
     env_vars = {}
     for arg in args:
