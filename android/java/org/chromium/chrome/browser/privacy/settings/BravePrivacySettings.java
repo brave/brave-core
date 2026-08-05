@@ -5,8 +5,6 @@
 
 package org.chromium.chrome.browser.privacy.settings;
 
-import static org.chromium.build.NullUtil.assumeNonNull;
-
 import android.content.Context;
 import android.os.Bundle;
 import android.text.SpannableString;
@@ -285,17 +283,6 @@ public class BravePrivacySettings extends PrivacySettings {
             mDebouncePref.setOnPreferenceChangeListener(this);
         } else {
             removePreferenceIfPresent(PREF_DEBOUNCE);
-        }
-
-        boolean httpsByDefaultIsEnabled =
-                ChromeFeatureList.isEnabled(BraveFeatureList.HTTPS_BY_DEFAULT);
-        if (!ChromeFeatureList.isEnabled(ChromeFeatureList.HTTPS_FIRST_BALANCED_MODE)) {
-            mHttpsFirstModePrefLegacy =
-                    (ChromeSwitchPreference) findPreference(PREF_HTTPS_FIRST_MODE_LEGACY);
-            mHttpsFirstModePrefLegacy.setVisible(!httpsByDefaultIsEnabled);
-        } else {
-            mHttpsFirstModePref = (Preference) findPreference(PREF_HTTPS_FIRST_MODE);
-            mHttpsFirstModePref.setVisible(!httpsByDefaultIsEnabled);
         }
 
         mCanMakePayment = (ChromeSwitchPreference) findPreference(PREF_CAN_MAKE_PAYMENT);
@@ -745,20 +732,6 @@ public class BravePrivacySettings extends PrivacySettings {
         String fingerprintingPref = BraveShieldsContentSettings.getFingerprintingPref();
 
         mBlockScriptsPref.setChecked(BraveShieldsContentSettings.getJavascriptPref());
-
-        // HTTPS only mode
-        boolean httpsByDefaultIsEnabled =
-                ChromeFeatureList.isEnabled(BraveFeatureList.HTTPS_BY_DEFAULT);
-        if (!ChromeFeatureList.isEnabled(ChromeFeatureList.HTTPS_FIRST_BALANCED_MODE)) {
-            assumeNonNull(mHttpsFirstModePrefLegacy);
-            mHttpsFirstModePrefLegacy.setVisible(!httpsByDefaultIsEnabled);
-            mHttpsFirstModePrefLegacy.setChecked(
-                    UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
-                            .getBoolean(Pref.HTTPS_ONLY_MODE_ENABLED));
-        } else {
-            assumeNonNull(mHttpsFirstModePref);
-            mHttpsFirstModePref.setVisible(!httpsByDefaultIsEnabled);
-        }
 
         if (blockAdTrackersPref.equals(BraveShieldsContentSettings.BLOCK_RESOURCE)) {
             mAdsTrakersBlockPref.setCheckedIndex(0);
