@@ -58,7 +58,7 @@
         android:enabled="false"
         android:text="@string/brave_wallet_add_network_add"
         android:textAllCaps="false"
-        android:textColor="@color/schemes_on_primary"
+        android:textColor="?attr/globalFilledButtonTextColor"
         android:textSize="16sp"
         android:paddingVertical="4dp"
         android:minHeight="0dp"

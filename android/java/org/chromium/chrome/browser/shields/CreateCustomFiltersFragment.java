@@ -98,7 +98,7 @@ public class CreateCustomFiltersFragment extends BravePreferenceFragment {
         }
 
         Button saveBtn = getView().findViewById(R.id.btn_save);
-        BraveDynamicColors.applyToFilledButtonIfEnabled(saveBtn, saveBtn);
+        BraveDynamicColors.applyToFilledButtonIfEnabled(saveBtn);
         saveBtn.setOnClickListener(
                 view -> {
                     updateCustomFilters();

@@ -57,7 +57,7 @@ public class AddCustomFilterListsFragment extends BravePreferenceFragment {
     private void setData() {
         initFilterListAndroidHandler();
         Button addBtn = getView().findViewById(R.id.btn_add);
-        BraveDynamicColors.applyToFilledButtonIfEnabled(addBtn, addBtn);
+        BraveDynamicColors.applyToFilledButtonIfEnabled(addBtn);
         TextInputEditText urlEditText = getView().findViewById(R.id.enter_url_edittext);
         urlEditText.requestFocus();
         urlEditText.addTextChangedListener(

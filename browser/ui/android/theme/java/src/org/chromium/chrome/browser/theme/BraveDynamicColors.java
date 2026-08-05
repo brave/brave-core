@@ -11,7 +11,6 @@ import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.os.Build;
 import android.view.View;
-import android.widget.TextView;
 
 import com.google.android.material.color.DynamicColors;
 import com.google.android.material.color.DynamicColorsOptions;
@@ -107,9 +106,8 @@ public final class BraveDynamicColors {
      *
      * @param button view with a custom filled-button background to tint
      */
-    public static void applyToFilledButtonIfEnabled(View button, TextView text) {
-        applyButtonColorsIfEnabled(
-                button, text, R.attr.globalFilledButtonBgColor, R.attr.globalFilledButtonTextColor);
+    public static void applyToFilledButtonIfEnabled(View button) {
+        applyButtonBackgroundColorIfEnabled(button, R.attr.globalFilledButtonBgColor);
     }
 
     /**
@@ -121,13 +119,11 @@ public final class BraveDynamicColors {
      *
      * @param button view with a custom outlined-button background to tint
      */
-    public static void applyToOutlinedButtonIfEnabled(View button, TextView text) {
-        applyButtonColorsIfEnabled(
-                button, text, R.attr.globalTextButtonTextColor, R.attr.globalTextButtonTextColor);
+    public static void applyToOutlinedButtonIfEnabled(View button) {
+        applyButtonBackgroundColorIfEnabled(button, R.attr.globalTextButtonTextColor);
     }
 
-    private static void applyButtonColorsIfEnabled(
-            View button, TextView text, int backgroundColorAttr, int textColorAttr) {
+    private static void applyButtonBackgroundColorIfEnabled(View button, int backgroundColorAttr) {
         if (!isDynamicColorsEnabled()) {
             return;
         }
@@ -136,11 +132,6 @@ public final class BraveDynamicColors {
         ColorStateList backgroundColor = getThemeColorStateList(context, backgroundColorAttr);
         if (backgroundColor != null) {
             button.setBackgroundTintList(backgroundColor);
-        }
-
-        ColorStateList textColor = getThemeColorStateList(context, textColorAttr);
-        if (textColor != null) {
-            text.setTextColor(textColor);
         }
     }
 

@@ -48,7 +48,7 @@
         app:backgroundTint="@null"
         android:text="@string/save_changes"
         android:textAllCaps="false"
-        android:textColor="@color/schemes_on_primary"
+        android:textColor="?attr/globalFilledButtonTextColor"
         android:textSize="16sp"
         android:paddingVertical="4dp"
         android:minHeight="0dp"
