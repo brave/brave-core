@@ -5,12 +5,22 @@
     <meta charset="utf-8">
   </head>
   <body>
-    <canvas id="test" width="8" height="8"></canvas>
     <script>
-      var canvas = document.getElementById("test");
-      var gl = canvas.getContext("webgl");
-      var ext_list = gl.getSupportedExtensions();
-      document.title = ext_list.join(",");
+      function getWebGL1SupportedExtensions() {
+        const gl = document.createElement('canvas').getContext('webgl');
+        if (!gl) {
+          return '';
+        }
+        return (gl.getSupportedExtensions() || []).join(',');
+      }
+
+      function getWebGL2SupportedExtensions() {
+        const gl = document.createElement('canvas').getContext('webgl2');
+        if (!gl) {
+          return '';
+        }
+        return (gl.getSupportedExtensions() || []).join(',');
+      }
     </script>
   </body>
 </html>
