@@ -197,7 +197,8 @@ import UIKit
     }
 
     let ty = pan.yTranslation
-    let normalizedOffset = snapshot.contentOffset.y + snapshot.contentInset.top
+    let contentInsetTop = initialSnapshot?.contentInset.top ?? snapshot.contentInset.top
+    let normalizedOffset = snapshot.contentOffset.y + contentInsetTop
     let isRubberBandingBottomEdge =
       snapshot.contentOffset.y + snapshot.frameHeight > snapshot.contentHeight
     // If we're not starting from 0 and are expanded then we actually want to handle it the same way as from
@@ -243,7 +244,7 @@ import UIKit
       return
     }
 
-    let normalizedOffset = snapshot.contentOffset.y + snapshot.contentInset.top
+    let normalizedOffset = snapshot.contentOffset.y + initialSnapshot.contentInset.top
     let velocity = pan.yVelocity
     let projectedDelta = project(
       initialVelocity: velocity,
