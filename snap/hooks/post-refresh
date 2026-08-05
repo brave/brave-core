@@ -1,0 +1,40 @@
+#!/bin/sh
+
+# Set up $SNAP_COMMON/snap-hunspell with symlinks to primed dictionaries that
+# match what the host has installed. Adapted from the Firefox snap.
+# https://github.com/canonical/firefox-snap/blob/stable/snap/hooks/post-refresh
+
+host_hunspell=/var/lib/snapd/hostfs/usr/share/hunspell
+
+if [ ! -d "$host_hunspell" ]; then
+  echo "No host hunspell, skipping"
+  exit 0
+fi
+
+DICPATH=$SNAP_COMMON/snap-hunspell
+
+if [ -d "$DICPATH" ]; then
+  # Clean up on each refresh to ensure we have an up-to-date list
+  # of host dictionaries.
+  find "$DICPATH" -type l \( -name "*.dic" -o -name "*.aff" \) -delete
+else
+  mkdir -p "$DICPATH"
+fi
+
+# We deliberately don't directly use the host dictionary files.
+# Instead, we use their names to know which ones the user has
+# installed on their system, and we use the corresponding ones
+# we primed in '$SNAP/usr/share/hunspell' in our 'hunspell' part.
+for dic in "$host_hunspell"/*.dic; do
+  [ -e "$dic" ] || continue
+  dic_file=$(basename "$dic")
+  aff_file="${dic_file%.dic}.aff"
+  # Some dic/aff files in hunspell are themselves symlinks to other files,
+  # e.g. /usr/share/hunspell/fr_CH.dic -> fr.dic. Resolve to the real file.
+  if [ -e "$SNAP/usr/share/hunspell/${dic_file}" ]; then
+    ln -s "$(readlink -e "$SNAP/usr/share/hunspell/${dic_file}")" "$DICPATH/${dic_file}"
+  fi
+  if [ -e "$SNAP/usr/share/hunspell/${aff_file}" ]; then
+    ln -s "$(readlink -e "$SNAP/usr/share/hunspell/${aff_file}")" "$DICPATH/${aff_file}"
+  fi
+done

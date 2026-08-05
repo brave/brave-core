@@ -1,0 +1,45 @@
+Description: Ignore non-existent includedirs instead of bailing out.
+ .
+ The snap sandbox does not contain /var/lib/ which is a default includedir
+ in sssd-krb5.
+ .
+Author: Nathan Pratta Teodosio <nteodosio@ubuntu.com>
+Bug-Ubuntu: https://launchpad.net/bugs/2122317
+Origin: https://git.launchpad.net/~chromium-team/chromium-browser/+git/snap-from-source/plain/patches/krb/ignore-failed-includedirs?h=stable
+
+--- krb5/src/util/profile/prof_parse.c
++++ krb5/src/util/profile/prof_parse.c
+@@ -254,7 +254,12 @@ static errcode_t parse_include_dir(const
+ 	errcode_t retval = 0;
+ 	char **fnames, *pathname;
+ 	int i;
+-
++	char *snap_ok_dir = "/etc/krb5.conf.d";
++	if (strncmp(dirname, snap_ok_dir, strlen(snap_ok_dir)) != 0) {
++		fprintf(stderr, "Kerberos: Ignoring directive 'includedir %s', as %s is"
++			"not reachable in the snap sandbox.", dirname, dirname);
++		return 0;
++	}
+ 	if (k5_dir_filenames(dirname, &fnames) != 0)
+ 		return PROF_FAIL_INCLUDE_DIR;
+ 
+
+The change causes the profile-related tests to understandably fail.
+We do not need to worry about the tests as we're pulling Kerberos packages
+from the Ubuntu archive, which already carries the tests out.
+
+--- krb5/debian/rules
++++ krb5/debian/rules
+@@ -52,5 +52,4 @@
+ # Build the documentation in a separate directory, since otherwise we'll
+ # overwrite the info pages provided upstream and then debian/rules clean won't
+-build-indep: build-indep-stamp
+ # build-indep should not need to depend on build-arch, but currently it does at least to populate build/doc
+ # Add the dependency until we get a chance to make it work properly
+@@ -148,5 +148,5 @@
+ 
+ override_dh_auto_test:
+-	dh_auto_test $(DH_BUILD_OPTS) --no-parallel
++	:
+ 
+ %:

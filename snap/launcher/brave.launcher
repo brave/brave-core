@@ -1,0 +1,152 @@
+#!/bin/sh
+
+# Move an existing profile directory over to $SNAP_USER_COMMON, which is shared
+# across revisions of the snap. This addresses profile corruption when the snap
+# is refreshed while running, until a proper solution is implemented in snapd.
+# Ref: https://launchpad.net/bugs/1616650
+#
+# Brave uses XDG_CONFIG_HOME (it does not honor CHROME_CONFIG_HOME). Point
+# config at $SNAP_USER_COMMON so the profile survives refreshes.
+# HOME is also set to $SNAP_USER_COMMON in snapcraft.yaml (Firefox approach)
+# so non-XDG writes under $HOME persist across refreshes too.
+export XDG_CONFIG_HOME="$SNAP_USER_COMMON"
+export HOME="${HOME:-$SNAP_USER_COMMON}"
+
+BRAVE_PROFILE_ROOT="$SNAP_USER_COMMON/BraveSoftware"
+if [ ! -d "$BRAVE_PROFILE_ROOT" ]; then
+  if [ -d "$SNAP_USER_DATA/.config/BraveSoftware" ]; then
+    mv "$SNAP_USER_DATA/.config/BraveSoftware" "$SNAP_USER_COMMON/"
+  fi
+fi
+
+# When running the snap for the first time, try and locate an existing Brave
+# config in the real home, and import it if it was created by an older version
+# of Brave (the profile data format is not guaranteed to be forward-compatible).
+# This requires the personal-files plug to be connected.
+# Ref: https://launchpad.net/bugs/1888380
+if [ ! -d "$BRAVE_PROFILE_ROOT" ]; then
+  BRAVE_CONFIG="$SNAP_REAL_HOME/.config/BraveSoftware"
+  if [ -d "$BRAVE_CONFIG" ]; then
+    PREF_FILE=""
+    for candidate in \
+        "$BRAVE_CONFIG/Brave-Browser/Default/Preferences" \
+        "$BRAVE_CONFIG/Brave-Browser-Beta/Default/Preferences" \
+        "$BRAVE_CONFIG/Brave-Browser-Dev/Default/Preferences" \
+        "$BRAVE_CONFIG/Brave-Browser-Nightly/Default/Preferences"; do
+      if [ -r "$candidate" ]; then
+        PREF_FILE="$candidate"
+        break
+      fi
+    done
+    if [ -n "$PREF_FILE" ]; then
+      VERSION=$(sed -e 's/.*"last_chrome_version":"\([0-9\.]\+\)".*/\1/' "$PREF_FILE")
+      if [ -n "$VERSION" ]; then
+        OLD=$(printf "%s\n%s" "$VERSION" "$SNAP_VERSION" | sort -V | head -1)
+        if [ "$OLD" = "$VERSION" ]; then
+          SIZE=$(du -sb "$BRAVE_CONFIG" | cut -f 1)
+          AVAILABLE_BLOCKS=$(stat -f -c %a "$SNAP_USER_COMMON")
+          BLOCK_SIZE=$(stat -f -c %s "$SNAP_USER_COMMON")
+          AVAILABLE_SIZE=$((AVAILABLE_BLOCKS * BLOCK_SIZE))
+          if [ "$AVAILABLE_SIZE" -gt "$SIZE" ]; then
+            printf "Importing existing Brave profile from %s (version %s)\n" \
+              "$BRAVE_CONFIG" "$VERSION"
+            cp -R "$BRAVE_CONFIG" "$SNAP_USER_COMMON/"
+            printf "Import done\n"
+          else
+            printf "Not importing existing Brave profile from %s (version %s) " \
+              "$BRAVE_CONFIG" "$VERSION"
+            printf "because there is not enough available space in %s " \
+              "$SNAP_USER_COMMON"
+            printf "(required: %s bytes / available: %s bytes)\n" \
+              "$SIZE" "$AVAILABLE_SIZE"
+          fi
+        fi
+      fi
+    fi
+  fi
+fi
+
+# Warn the user if policies are found in more than one place.
+# Ref: https://launchpad.net/bugs/1714244
+# Ref: https://launchpad.net/bugs/1866732
+SNAP_POLICIES="$SNAP_DATA/policies"
+if [ -d "$SNAP_POLICIES" ]; then
+  OLD_POLICIES="/etc/brave/policies"
+  if [ -d "$OLD_POLICIES" ]; then
+    printf "Warning: existing Brave policies in %s will be shadowed by new policies found in %s\n" \
+      "$OLD_POLICIES" "$SNAP_POLICIES"
+  fi
+fi
+
+# Specify that no encrypted password store (keyring) should be used when the
+# password-manager-service interface is not plugged, because Chromium won't
+# fall back to the basic store (no encryption) if it fails to talk to the
+# default password store for the current desktop environment.
+# Ref: https://launchpad.net/bugs/1763829
+if snapctl is-connected password-manager-service; then
+  PASSWORD_STORE= # detect the store based on the current DE
+else
+  PASSWORD_STORE=basic
+fi
+
+# Custom version string for brave://version
+export CHROME_VERSION_EXTRA=snap
+
+# Mark that we are running as a Snap (desktop file / integration).
+export BRAVE_SNAP=1
+export BRAVE_DESKTOP=brave.desktop
+
+# Configuration for the "man" binary, which is invoked when Brave is called
+# with the "-h" (or "--help") argument (see https://launchpad.net/bugs/1848083)
+export MAN_TEST_DISABLE_SYSTEM_CONFIG=1
+export MANPATH=$SNAP
+export GROFF_FONT_PATH=$SNAP/usr/share/groff/current/font
+export GROFF_TMAC_PATH=$SNAP/usr/share/groff/current/tmac
+
+# This convinces the browser that it is running from /snap/bin instead of the
+# unconfined path. As a result, it creates desktop files with an appropriate
+# Exec= line.
+export CHROME_WRAPPER=/snap/bin/$SNAP_INSTANCE_NAME
+
+WANT_TEMP_PROFILE=0
+for arg in "$@"; do
+  shift
+  if [ "$arg" = "--temp-profile" ]; then
+    WANT_TEMP_PROFILE=1
+    continue
+  fi
+  set -- "$@" "$arg"
+done
+
+case "$BRAVE_FLAGS" in
+  *\ *)
+    1>&2 printf '%s\n' \
+      "Warning: Do not pass arguments with spaces via BRAVE_FLAGS." \
+      "See https://launchpad.net/bugs/1514484 for context."
+    ;;
+esac
+
+# Allows translation of pages in foreign languages.
+# Refer to https://bugs.archlinux.org/task/76268.
+BRAVE_FLAGS="$BRAVE_FLAGS --disable-features=TFLiteLanguageDetectionEnabled"
+
+# Use GTK3. LP:2106312, LP:2106342.
+BRAVE_FLAGS="--gtk-version=3 $BRAVE_FLAGS"
+
+# Also honor CHROMIUM_FLAGS for familiarity with the Chromium snap.
+BRAVE_FLAGS="$BRAVE_FLAGS $CHROMIUM_FLAGS"
+
+if [ "$WANT_TEMP_PROFILE" -eq 0 ]; then
+  # Intentionally unquoted $PASSWORD_STORE / $BRAVE_FLAGS to match Chromium's launcher:
+  # an empty password store means "detect from the current DE".
+  # shellcheck disable=SC2086
+  exec "$SNAP/opt/brave.com/brave/brave" --password-store=$PASSWORD_STORE $BRAVE_FLAGS "$@"
+else
+  TEMP_PROFILE=$(mktemp -d)
+  trap 'rm -rf "$TEMP_PROFILE"' EXIT
+  # we can't exec here as we need to clean-up the temporary profile
+  # shellcheck disable=SC2086
+  "$SNAP/opt/brave.com/brave/brave" \
+    --user-data-dir="$TEMP_PROFILE" \
+    --password-store=$PASSWORD_STORE $BRAVE_FLAGS "$@"
+fi

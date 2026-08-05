@@ -6,70 +6,133 @@ architectures:
   - build-on: arm64
 summary: Browse faster and safer with Brave.
 description: |
- The new Brave browser automatically blocks ads and trackers, making it
- faster and safer than your current browser. Start supporting publishers
- today with our new Brave Payments system.
+  The Brave browser automatically blocks ads and trackers, making it
+  faster and safer than your current browser. Start supporting publishers
+  today with Brave Rewards.
+source-code: https://github.com/brave/brave-browser
 confinement: strict
+base: core24
+assumes:
+  - snapd2.55 # >=2.55 needed for the cups interface
 compression: lzo
-base: core22
+
 apps:
   brave:
-    command: opt/brave.com/brave/brave-browser
+    extensions: [gnome]
+    command: bin/brave.launcher
     desktop: usr/share/applications/brave.desktop
-    extensions:
-      - gnome
+    common-id: brave-browser.desktop
     environment:
-      GTK_USE_PORTAL: 1
       BRAVE_SNAP: 1
       BRAVE_DESKTOP: brave.desktop
-      BRAVE_CONFIG_HOME: $SNAP_USER_COMMON
-      MAN_TEST_DISABLE_SYSTEM_CONFIG: 1
-      MANPATH: $SNAP/usr/share/man
-      GROFF_FONT_PATH: $SNAP/usr/share/groff/current/font
-      GROFF_TMAC_PATH: $SNAP/usr/share/groff/current/tmac
+      # Keep profile and other $HOME writes across snap refreshes (Firefox approach).
+      HOME: $SNAP_USER_COMMON
+      GTK_USE_PORTAL: 1
+      # Spellcheck dictionaries selected from the host (see snap/hooks).
+      DICPATH: $SNAP_COMMON/snap-hunspell
+      SPEECHD_ADDRESS: unix_socket:/run/user/$SNAP_UID/speech-dispatcher/speechd.sock
     plugs:
+      - alsa
       - audio-playback
       - audio-record
-      - bluez
+      - avahi-observe
+      - bluez # for Web Bluetooth (https://launchpad.net/bugs/1887201)
+      - browser-sandbox
       - camera
-      - cups-control
+      - cups
       - hardware-observe
+      - hidraw
       - home
+      - host-usr-share-hunspell
       - joystick
+      - kerberos-tickets
+      - login-session-observe
       - mount-observe
       - network
-      - network-bind
       - network-manager
-      - opengl
+      - network-observe
       - password-manager-service
-      - pulseaudio
-      - raw-usb
+      - pcscd
+      - raw-usb # for WebUSB (https://launchpad.net/bugs/1780678)
       - removable-media
       - screen-inhibit-control
+      - serial-port
       - system-packages-doc
+      - timezone-control
       - u2f-devices
-      - unity7
+      - unity7 # required for xdg-open to work
       - upower-observe
     slots:
       - mpris
+
 plugs:
+  # This is not used or needed for anything other than to trigger automatic
+  # installation of the cups snap via "default-provider: cups"
+  install-cups-runtime-dependency:
+    interface: content
+    content: foo
+    default-provider: cups
+    target: $SNAP_DATA/foo
   browser-sandbox:
     interface: browser-support
     allow-sandbox: true
+  dot-local-share-applications:
+    interface: personal-files
+    write: [$HOME/.local/share/applications]
+  dot-local-share-icons:
+    interface: personal-files
+    write: [$HOME/.local/share/icons]
+  brave-config:
+    interface: personal-files
+    read: [$HOME/.config/BraveSoftware]
+  etc-brave-policies:
+    interface: system-files
+    read: [/etc/brave/policies]
+  # Used by install/post-refresh hooks to discover which dictionaries the host
+  # has installed (Firefox approach).
+  host-usr-share-hunspell:
+    interface: system-files
+    read:
+      - /var/lib/snapd/hostfs/usr/share/hunspell
+
 slots:
   mpris:
     interface: mpris
     name: brave
+
+layout:
+  /usr/lib/man-db:
+    bind: $SNAP/usr/lib/man-db
+  /usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/opensc-pkcs11.so:
+    bind-file: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/opensc-pkcs11.so
+
+hooks:
+  install:
+    plugs: [host-usr-share-hunspell]
+  post-refresh:
+    plugs: [host-usr-share-hunspell]
+
 parts:
   brave:
     plugin: dump
+    after:
+      - hunspell
+      - launcher
+      - manpage
+      - va-drivers
     source: https://github.com/brave/brave-browser/releases/download/v$SNAPCRAFT_PROJECT_VERSION/brave-browser_$SNAPCRAFT_PROJECT_VERSION_$SNAPCRAFT_TARGET_ARCH.deb
+    stage-packages:
+      - libpci3
+      - libspeechd2
+      - opensc-pkcs11
     override-pull: |
       set -eu
       craftctl default
+      # Fix setuid bits on the sandbox executable
+      # (ref: https://forum.snapcraft.io/t/call-for-testing-chromium-snap/1714/16)
       chmod 4555 ./opt/brave.com/brave/chrome-sandbox
       rm -rf etc/cron.daily/ usr/bin/brave-browser usr/bin/brave-browser-stable
-      sed -i 's|Icon=brave-browser|Icon=/opt/brave.com/brave/product_logo_128\.png|g' usr/share/applications/brave-browser.desktop
+      sed -i 's|^Icon=brave-browser|Icon=/opt/brave.com/brave/product_logo_128.png|g' usr/share/applications/brave-browser.desktop
       mv usr/share/applications/brave-browser.desktop usr/share/applications/brave.desktop
     prime:
       - -etc/gss
@@ -102,31 +165,46 @@ parts:
     organize:
       usr/share/man/man1/brave-browser.1.gz: usr/share/man/man1/brave.1.gz
 
-  # Create a symlink xdg-email -> xdg-open, as the latter is perfectly able to
-  # handle mailto: URLs (see https://launchpad.net/bugs/1849774).
-  # xdg-open is a wrapper provided by the core snap.
-  xdg-email:
+  # Workaround for LP: #2016358: create mount points for the gnome content
+  # interface, while a proper fix is implemented in snapd (Firefox approach).
+  gnome-mountpoints:
     plugin: nil
-    override-pull: "" 
     override-prime: |
       set -eux
-      mkdir -p usr/bin
-      cp /snap/core22/current/usr/bin/xdg-open usr/bin
-      cd usr/bin
-      ln -s xdg-open xdg-email
+      mkdir -p gpu-2404 data-dir/icons data-dir/sounds data-dir/themes
 
+  launcher:
+    plugin: dump
+    source: snap/launcher
+    organize:
+      '*': bin/
+
+  # Bundle hunspell dictionaries. Install/post-refresh hooks then symlink only
+  # the ones present on the host into $SNAP_COMMON/snap-hunspell (Firefox).
+  hunspell:
+    plugin: nil
+    override-build: |
+      craftctl default
+      set -eu
+      apt download $(apt-cache search '^hunspell-.*$' |
+        awk '!/myspell|dbgsym|tools|transitional|dependency/{printf "%s ", $1}')
+      find . -name "*.deb" -exec dpkg-deb -x {} "$CRAFT_PART_INSTALL" \;
+    prime:
+      - usr/share/hunspell
+
+  # Stage packages required for the "man" binary, which is invoked when
+  # Brave is called with the "-h" (or "--help") argument
+  # (see https://launchpad.net/bugs/1848083).
   manpage:
     plugin: nil
     stage-packages:
       - groff-base
-      - libgdbm6
+      - libgdbm6t64
       - libpipeline1
       - man-db
     prime:
       - -etc
       - -usr/lib/tmpfiles.d
-      - -usr/lib/mime
-      - -usr/lib/groff
       - -usr/share/bug
       - -usr/share/calendar
       - -usr/share/doc
@@ -135,5 +213,67 @@ parts:
       - -usr/share/man
       - -usr/share/man-db
       - -var
-    organize:
-      usr/lib/man-db: usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR
+
+  # Create a symlink xdg-email -> xdg-open, as the latter is perfectly able to
+  # handle mailto: URLs (see https://launchpad.net/bugs/1849774).
+  # xdg-open is a wrapper provided by the core snap.
+  xdg-email:
+    plugin: nil
+    override-pull: ""
+    override-prime: |
+      set -eux
+      mkdir -p usr/bin
+      cd usr/bin
+      ln -s /usr/bin/xdg-open xdg-email
+
+  # So that Brave can install icons for progressive web applications.
+  xdg-icon-resource:
+    plugin: nil
+    stage-packages: [xdg-utils]
+    stage: [usr/bin/xdg-icon-resource]
+    override-prime: |
+      sed -i '/^xdg_user_dir="$XDG_DATA_HOME"$/s|".*"|$SNAP_REAL_HOME/.local/share|' $CRAFT_STAGE/usr/bin/xdg-icon-resource
+      craftctl default
+
+  # Bundle patched Kerberos library that ignores failed includedirs (LP:2122317)
+  #
+  # We need to untangle this part from Gnome extension's idiosyncrasies,
+  # as they cause cryptic errors including but not limited to
+  #
+  # > relocation R_X86_64_TPOFF32 against `buffer' can not be used when making
+  # > a shared object; recompile with -fPIC"
+  kerberos:
+    plugin: nil
+    build-packages:
+      - ubuntu-dev-tools
+      - python3-lxml # Missing from Krb5 build-dependencies?
+    build-environment:
+      - DEB_BUILD_OPTIONS: nodoc
+      # Delete Gnome extension's injections in this variable
+      - PKG_CONFIG_PATH: $CRAFT_STAGE/usr/share/pkgconfig
+    override-build: |
+      # Delete Gnome extension's injections in this variable
+      export PATH=${PATH#/snap*:}
+
+      # Fetch, patch and build Kerberos
+      releasePocket=$(lsb_release -c | cut -f2)
+      pull-lp-source krb5 "$releasePocket"
+      cd krb5*/
+      apt build-dep -y .
+      patch -p1 < "$CRAFT_PROJECT_DIR/snap/patches/krb/ignore-failed-includedirs"
+      ./debian/rules build
+
+      # Prime its resultant relevant libraries
+      mkdir -p "$CRAFT_PRIME/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR"
+      cp build/lib/*krb5*.so.? "$CRAFT_PRIME/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR"
+
+  # VA-API drivers for HW-accelerated video decoding
+  va-drivers:
+    plugin: nil
+    stage-packages:
+      - mesa-va-drivers
+      - on amd64:
+        - i965-va-driver
+        - intel-media-va-driver
+    stage:
+      - usr/lib/*/dri/*_video.so
