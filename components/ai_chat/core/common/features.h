@@ -15,6 +15,8 @@
 
 static_assert(BUILDFLAG(ENABLE_AI_CHAT));
 
+class PrefService;
+
 namespace ai_chat::features {
 
 COMPONENT_EXPORT(AI_CHAT_COMMON) BASE_DECLARE_FEATURE(kAIChat);
@@ -168,7 +170,9 @@ COMPONENT_EXPORT(AI_CHAT_COMMON) bool IsAIChatWebUIEnabled();
 
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 BASE_DECLARE_FEATURE(kShowAIChatInputOnNewTabPage);
-COMPONENT_EXPORT(AI_CHAT_COMMON) bool IsShowAIChatInputOnNewTabPageEnabled();
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+bool IsShowAIChatInputOnNewTabPageEnabled(PrefService* local_state,
+                                          bool is_first_run);
 
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 BASE_DECLARE_FEATURE(kAIChatDeepResearch);

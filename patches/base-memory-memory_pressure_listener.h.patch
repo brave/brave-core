@@ -1,0 +1,13 @@
+diff --git a/base/memory/memory_pressure_listener.h b/base/memory/memory_pressure_listener.h
+index 0337198f1239d09c53998eeb5b208d29691d944f..34459d539d6ca454809de330265c03c512010f25 100644
+--- a/base/memory/memory_pressure_listener.h
++++ b/base/memory/memory_pressure_listener.h
+@@ -101,6 +101,8 @@ enum class MemoryPressureListenerTag {
+   kGrShaderCache = 68,
+   kMemoryPressureListenerPolicy = 69,
+   kLongScreenshotsTabService = 70,
++  kRewardsDatabase = 1000,
++  kAdsDatabase = 1001,
+ };
+ 
+ // base::MemoryPressureListener is deprecated. Use base::MemoryConsumer instead.

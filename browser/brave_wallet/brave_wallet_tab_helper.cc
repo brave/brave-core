@@ -28,14 +28,9 @@
 #include "content/public/browser/web_contents.h"
 #include "url/gurl.h"
 
-// TODO(https://github.com/brave/brave-browser/issues/55073): Fix nogncheck by
-// splitting this tab helper.
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/brave_wallet/wallet_bubble_manager_delegate.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"  // nogncheck
-#include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"  // nogncheck
-#include "chrome/browser/ui/tabs/tab_strip_model.h"
-#include "ui/views/widget/widget.h"
+#include "components/tabs/public/tab_interface.h"
 #endif
 
 namespace brave_wallet {
@@ -51,10 +46,8 @@ std::unique_ptr<BraveWalletProviderDelegate> CreateDelegate(
 
 #if !BUILDFLAG(IS_ANDROID)
 bool IsWebContentsActive(content::WebContents& web_contents) {
-  if (auto* bwi = GetLastActiveBrowserWindowInterfaceWithAnyProfile()) {
-    return bwi->GetTabStripModel()->GetActiveWebContents() == &web_contents;
-  }
-  return false;
+  auto* tab = tabs::TabInterface::MaybeGetFromContents(&web_contents);
+  return tab && tab->IsActivated();
 }
 #endif
 
@@ -209,12 +202,13 @@ void BraveWalletTabHelper::ClearSolanaConnectedAccounts(
 
 #if !BUILDFLAG(IS_ANDROID)
 void BraveWalletTabHelper::ShowBubbleImpl(GURL url) {
+  // Dapp requests always use the bubble for this PoC. Contextual side panel
+  // hosting is limited to the base wallet panel URL (no in-panel navigation).
   wallet_bubble_manager_delegate_ =
       WalletBubbleManagerDelegate::MaybeCreate(&GetWebContents(), url);
   if (!wallet_bubble_manager_delegate_) {
     return;
   }
-  // Suppress request if not from active web_contents.
   if (!IsWebContentsActive(GetWebContents())) {
     return;
   }

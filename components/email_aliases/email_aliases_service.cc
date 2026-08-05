@@ -124,6 +124,8 @@ void EmailAliasesService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(prefs::kEmailAliasesEnabled, true);
   registry->RegisterBooleanPref(prefs::kPromoShown, false);
 
+  registry->RegisterBooleanPref(
+      prefs::kEmailAliasesNewAliasAutofillSuggestionEnabled, true);
   EmailAliasesMetrics::RegisterProfilePrefs(registry);
   EmailAliasesNotes::RegisterProfilePrefs(registry);
 }

@@ -10,11 +10,14 @@ import android.os.Build;
 import android.os.Bundle;
 
 import androidx.preference.Preference;
+import androidx.preference.PreferenceGroupAdapter;
+import androidx.preference.PreferenceScreen;
 
 import org.chromium.base.BraveFeatureList;
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.ContextUtils;
 import org.chromium.brave.browser.customize_menu.CustomizeBraveMenu;
+import org.chromium.build.annotations.NonNull;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveFeatureUtil;
@@ -69,6 +72,12 @@ public class AppearancePreferences extends AppearanceSettingsFragment
     /* package */ static final String PREF_BRAVE_CUSTOMIZE_MENU = "brave_customize_menu";
 
     private BraveRewardsNativeWorker mBraveRewardsNativeWorker;
+
+    @Override
+    protected @NonNull PreferenceGroupAdapter onCreateAdapter(
+            @NonNull PreferenceScreen preferenceScreen) {
+        return new BraveSettingsPreferenceGroupAdapter(preferenceScreen);
+    }
 
     @Override
     public void onCreatePreferences(@Nullable Bundle savedInstanceState, @Nullable String rootKey) {

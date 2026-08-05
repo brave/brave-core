@@ -43,6 +43,7 @@ import org.chromium.base.test.util.Features.DisableFeatures;
 import org.chromium.base.test.util.Features.EnableFeatures;
 import org.chromium.brave.browser.customize_menu.CustomizeBraveMenu;
 import org.chromium.brave.browser.customize_menu.MenuItemData;
+import org.chromium.chrome.browser.BraveRewardsPolicy;
 import org.chromium.chrome.browser.flags.ChromeSwitches;
 import org.chromium.chrome.browser.tracing.settings.DeveloperSettings;
 import org.chromium.chrome.browser.widget.quickactionsearchandbookmark.utils.BraveSearchWidgetUtils;
@@ -128,7 +129,7 @@ public class BraveSettingsSearchTest {
         // assertSearchResult("Sync");
 
         clearAndTypeIntoSearch("Privacy Report");
-        assertSearchResult("Privacy Report");
+        assertOneOfSearchResultsIs("Privacy Report", "General");
 
         // Disabled — result appears under "Advanced" instead of "General"; see
         // https://github.com/brave/brave-browser/issues/57198
@@ -416,23 +417,24 @@ public class BraveSettingsSearchTest {
      * Verifies that key Brave-specific settings entries appear in the `Privacy Report` Settings
      * search results.
      */
-    // Disabled: BraveStatsPreferences has no search index provider.
-    // TODO(https://github.com/brave/brave-browser/issues/57183)
-    // @Test
-    // @SmallTest
-    // @Feature({"Preferences"})
-    // public void testPrivacyReportSettingsAreSearchable() {
-    //     mSettingsActivityTestRule.startSettingsActivity();
+    @Test
+    @SmallTest
+    @Feature({"Preferences"})
+    public void testPrivacyReportSettingsAreSearchable() {
+        mSettingsActivityTestRule.startSettingsActivity();
 
-    //     typeIntoSearch("Privacy Report");
-    //     assertSearchResult("Privacy Report", "Privacy Report");
+        // "Privacy Report" matches two result titles: the General-section entry that links to this
+        // screen, and the brave_stats switch inside the screen itself. Scope the assertion to the
+        // "Privacy Report" section so the duplicate title is not ambiguous.
+        typeIntoSearch("Privacy Report");
+        assertOneOfSearchResultsIs("Privacy Report", "Privacy Report");
 
-    //     clearAndTypeIntoSearch("Privacy Report Notification");
-    //     assertSearchResult("Privacy Report Notification");
+        clearAndTypeIntoSearch("Privacy Report Notification");
+        assertSearchResult("Privacy Report Notification");
 
-    //     clearAndTypeIntoSearch("Clear all privacy reports data");
-    //     assertSearchResult("Clear all privacy reports data");
-    // }
+        clearAndTypeIntoSearch("Clear all privacy reports data");
+        assertSearchResult("Clear all privacy reports data");
+    }
 
     /**
      * Verifies that key Brave-specific settings entries appear in the `Site settings` Settings
@@ -775,35 +777,55 @@ public class BraveSettingsSearchTest {
         assertSearchResult("Show undo button when tabs are closed");
     }
 
-    // Disabled: BackgroundImagesPreferences has no search index provider.
-    // TODO(https://github.com/brave/brave-browser/issues/57182)
-    // /**
-    //  * Verifies that key Brave-specific settings entries appear in the `New tab page` Settings
-    //  * search results.
-    //  */
-    // @Test
-    // @SmallTest
-    // @Feature({"Preferences"})
-    // public void testNewTabPageSettingsAreSearchable() {
-    //     mSettingsActivityTestRule.startSettingsActivity();
+    /**
+     * Verifies that key Brave-specific settings entries appear in the `New tab page` Settings
+     * search results.
+     */
+    @Test
+    @SmallTest
+    @Feature({"Preferences"})
+    public void testNewTabPageSettingsAreSearchable() {
+        mSettingsActivityTestRule.startSettingsActivity();
 
-    //     // Background images
-    //     typeIntoSearch("Show Background Images");
-    //     assertSearchResult("Show Background Images");
+        // Background images
+        typeIntoSearch("Show Background Images");
+        assertSearchResult("Show Background Images");
 
-    //     clearAndTypeIntoSearch("Show New Tab Page Ads");
-    //     assertSearchResult("Show New Tab Page Ads");
+        clearAndTypeIntoSearch("Show New Tab Page Ads");
+        assertSearchResult("Show New Tab Page Ads");
 
-    //     clearAndTypeIntoSearch("Learn more about new tab page ads");
-    //     assertSearchResult("Learn more about new tab page ads");
+        clearAndTypeIntoSearch("Learn more about new tab page ads");
+        assertSearchResult("Learn more about new tab page ads");
 
-    //     // Widgets
-    //     clearAndTypeIntoSearch("Show Top Sites");
-    //     assertSearchResult("Show Top Sites");
+        // Widgets
+        clearAndTypeIntoSearch("Show Top Sites");
+        assertSearchResult("Show Top Sites");
 
-    //     clearAndTypeIntoSearch("Show Brave Stats");
-    //     assertSearchResult("Show Brave Stats");
-    // }
+        clearAndTypeIntoSearch("Show Brave Stats");
+        assertSearchResult("Show Brave Stats");
+    }
+
+    /**
+     * Verifies that the sponsored-images New Tab Page entries are not searchable when Brave Rewards
+     * is disabled by policy, while the remaining New Tab Page entries stay searchable.
+     */
+    @Test
+    @SmallTest
+    @Feature({"Preferences"})
+    public void testNewTabPageSponsoredImagesNotSearchable_RewardsDisabledByPolicy() {
+        BraveRewardsPolicy.setDisabledByPolicyForTesting(true);
+        mSettingsActivityTestRule.startSettingsActivity();
+
+        typeIntoSearch("Show New Tab Page Ads");
+        assertSearchResultEmpty();
+
+        clearAndTypeIntoSearch("Learn more about new tab page ads");
+        assertSearchResultEmpty();
+
+        // The non-sponsored entries remain searchable.
+        clearAndTypeIntoSearch("Show Background Images");
+        assertSearchResult("Show Background Images");
+    }
 
     /**
      * Verifies that key Brave-specific settings entries appear in the Accessibility Settings search

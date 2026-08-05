@@ -5,19 +5,15 @@
 
 package org.chromium.chrome.browser.settings;
 
-import static org.chromium.build.NullUtil.assertNonNull;
-
 import android.content.Context;
 import android.util.AttributeSet;
-import android.widget.ImageView;
 
-import androidx.appcompat.content.res.AppCompatResources;
-import androidx.core.widget.ImageViewCompat;
 import androidx.preference.PreferenceViewHolder;
 
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
-import org.chromium.chrome.R;
+import org.chromium.chrome.browser.theme.BraveDynamicColors;
+import org.chromium.components.browser_ui.settings.BraveSettingsIconTintUtils;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 
 /** A Brave switch preference that tints its icon for enabled and disabled states. */
@@ -30,13 +26,7 @@ public class BraveTintedIconSwitchPreference extends ChromeSwitchPreference {
     @Override
     public void onBindViewHolder(PreferenceViewHolder holder) {
         super.onBindViewHolder(holder);
-
-        if (holder.findViewById(android.R.id.icon) instanceof ImageView icon) {
-            ImageViewCompat.setImageTintList(
-                    icon,
-                    assertNonNull(
-                            AppCompatResources.getColorStateList(
-                                    getContext(), R.color.default_icon_color_tint_list)));
-        }
+        BraveSettingsIconTintUtils.applyIconTint(
+                holder, BraveDynamicColors.isDynamicColorsEnabled());
     }
 }

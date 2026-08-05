@@ -3,24 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#define IsFormMixedContent IsFormMixedContent_ChromiumImpl
-#include <components/autofill/core/browser/autofill_browser_util.cc>
-#undef IsFormMixedContent
+#include "components/autofill/core/browser/autofill_browser_util.h"
 
 #include "net/base/url_util.h"
 
-namespace autofill {
-
-bool IsFormMixedContent(const AutofillClient& client, const FormData& form) {
-  if (IsFormMixedContent_ChromiumImpl(client, form)) {
-    return true;
-  }
-
-  // We only need to handle top-level .onion pages since nested cases
-  // are already handled correctly in Chromium.
-  return net::IsOnion(client.GetLastCommittedPrimaryMainFrameOrigin()) &&
-         (form.action().is_valid() &&
-          security_interstitials::IsInsecureFormAction(form.action()));
-}
-
-}  // namespace autofill
+#include <components/autofill/core/browser/autofill_browser_util.cc>

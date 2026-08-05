@@ -54,6 +54,7 @@ if (is_android) {
     resources_package = "org.chromium.chrome.browser.toolbar"
     sources = [
       "src/org/chromium/chrome/browser/toolbar/BraveToolbarLongPressMenuHandlerUnitTest.java",
+      "src/org/chromium/chrome/browser/toolbar/BraveToolbarManagerUnitTest.java",
       "src/org/chromium/chrome/browser/toolbar/adaptive/settings/BraveAdaptiveToolbarSettingsFragmentTest.java",
       "src/org/chromium/chrome/browser/toolbar/top/BraveTabSwitcherActionMenuCoordinatorTest.java",
     ]
@@ -127,11 +128,17 @@ if (is_android) {
 
   robolectric_library(
       "brave_junit_tests_org.chromium.chrome.browser.settings") {
-    sources = [ "src/org/chromium/chrome/browser/settings/BraveSearchEngineUtilsTest.java" ]
+    sources = [
+      "src/org/chromium/chrome/browser/settings/BraveSearchEngineUtilsTest.java",
+      "src/org/chromium/chrome/browser/settings/BraveSettingsLauncherImplTest.java",
+      "src/org/chromium/components/browser_ui/settings/BraveSettingsIconTintUtilsTest.java",
+    ]
 
     deps = [
       "//brave/android/java/org/chromium/chrome/browser/search_engines:java",
+      "//brave/components/browser_ui/settings/android:java",
       "//chrome/android/junit:chrome_junit_tests_helper",
+      "//chrome/browser/safe_browsing/android:java",
     ]
   }
 
@@ -245,14 +252,18 @@ if (is_android) {
 
   robolectric_library("brave_junit_tests_org.chromium.chrome.browser.hub") {
     sources = [
+      "src/org/chromium/chrome/browser/hub/BraveDefaultPaneOrderControllerUnitTest.java",
       "src/org/chromium/chrome/browser/hub/BraveHubToolbarViewUnitTest.java",
     ]
 
     deps = [
       "//brave/browser/brave_shields/android:java",
+      "//brave/browser/hub/android:java",
       "//chrome/android:chrome_java",
       "//chrome/android/junit:chrome_junit_tests_helper",
+      "//chrome/browser/hub:java",
       "//chrome/browser/hub/internal:java",
+      "//third_party/android_deps:guava_android_java",
     ]
   }
 
@@ -345,6 +356,7 @@ if (is_android) {
     resources_package = "org.chromium.chrome.browser.tasks.tab_management"
     sources = [
       "src/org/chromium/chrome/browser/tasks/tab_management/BraveTabGridContextMenuCoordinatorTest.java",
+      "src/org/chromium/chrome/browser/tasks/tab_management/BraveTabGridItemTouchHelperCallbackTest.java",
       "src/org/chromium/chrome/browser/tasks/tab_management/BraveTabUiFeatureUtilitiesUnitTest.java",
       "src/org/chromium/chrome/browser/tasks/tab_management/pinned_tabs_strip/BravePinnedTabStripItemContextMenuCoordinatorTest.java",
     ]
