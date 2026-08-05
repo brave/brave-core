@@ -658,6 +658,7 @@ export const transactionEndpoints = ({
             sendingMaxAmount: payload.sendingMaxAmount,
             memo: payload.memo,
             useShieldedPool: payload.useShieldedPool,
+            zcashTokenType: payload.zcashTokenType,
             swapInfo: payload.swapInfo,
           }
 

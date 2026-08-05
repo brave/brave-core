@@ -27,7 +27,6 @@ import { getCoinFromTxDataUnion } from '../../../../utils/network-utils'
 import { getAddressLabel } from '../../../../utils/account-utils'
 import { openTab } from '../../../../utils/routes-utils'
 import Amount from '../../../../utils/amount'
-import { isShieldedToken } from '../../../../utils/asset-utils'
 
 // Queries
 import {
@@ -102,19 +101,23 @@ export const TransactionIntent = (props: Props) => {
       && txAccount
       && txToAddress
       ? {
-          chainId: transactionNetwork.chainId,
           accountId: txAccount.accountId,
-          useShieldedPool: isShieldedToken(transactionsToken),
+          fromTokenType: transactionsToken.zcashTokenType,
           address: txToAddress,
         }
       : skipToken,
   )
 
   const isShieldingFunds =
-    getZCashTransactionTypeResult.txType === BraveWallet.ZCashTxType.kShielding
+    getZCashTransactionTypeResult.txType
+      === BraveWallet.ZCashTxType.kShieldingIronwood
+    || getZCashTransactionTypeResult.txType
+      === BraveWallet.ZCashTxType.kTransparentToIronwood
   const isUnshieldingFunds =
     getZCashTransactionTypeResult.txType
-    === BraveWallet.ZCashTxType.kUnshielding
+      === BraveWallet.ZCashTxType.kUnshieldingOrchard
+    || getZCashTransactionTypeResult.txType
+      === BraveWallet.ZCashTxType.kIronwoodToTransparent
 
   // Custom Hooks
   const onClickViewOnBlockExplorer = useExplorer(transactionNetwork)

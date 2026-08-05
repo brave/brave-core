@@ -63,6 +63,11 @@ class ZCashTxManager : public TxManager, public ZCashBlockTracker::Observer {
   void UpdatePendingTransactions(
       const std::optional<std::string>& chain_id) override;
 
+  void ContinueAddUnapprovedTransactionWithHeight(
+      mojom::NewZCashTransactionParamsPtr params,
+      AddUnapprovedZCashTransactionCallback callback,
+      base::expected<zcash::mojom::BlockIDPtr, std::string> latest_block);
+
   void ContinueAddUnapprovedTransaction(
       const mojom::AccountIdPtr& from,
       const std::optional<url::Origin>& origin,
