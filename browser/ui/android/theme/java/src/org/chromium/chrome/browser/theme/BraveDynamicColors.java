@@ -111,8 +111,8 @@ public final class BraveDynamicColors {
     }
 
     /**
-     * Applies the active theme's {@code globalTextButtonTextColor} state list as an outlined
-     * button background tint when dynamic colors are enabled.
+     * Applies the active theme's {@code globalTextButtonTextColor} state list as an outlined button
+     * background tint when dynamic colors are enabled.
      *
      * <p>Call this after setting a custom outlined-button background. This is a no-op when dynamic
      * colors are disabled or the theme has no text-button color list.

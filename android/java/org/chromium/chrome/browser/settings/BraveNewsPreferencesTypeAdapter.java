@@ -363,6 +363,8 @@ public class BraveNewsPreferencesTypeAdapter extends RecyclerView.Adapter<Recycl
                 });
     }
 
+    // Reapply the state list at bind time so its theme attributes use the active theme.
+    @SuppressWarnings("checkstyle:SetTextColorAndSetTextSizeCheck")
     private void displayFollowButton(
             boolean isFollowing, int textId, NewsPreferencesViewHolder holder) {
         holder.mBtnText.setSelected(isFollowing);
