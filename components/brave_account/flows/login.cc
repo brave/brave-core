@@ -14,8 +14,8 @@
 #include "brave/components/brave_account/brave_account_utils.h"
 #include "brave/components/brave_account/endpoint_client/with_headers.h"
 #include "brave/components/brave_account/mojom/login.mojom.h"
-#include "brave/components/brave_account/state_base.h"
 #include "brave/components/brave_account/state_internal.h"
+#include "services/network/public/cpp/shared_url_loader_factory.h"
 
 namespace brave_account {
 
@@ -25,7 +25,10 @@ using internal::MakeClientError;
 using internal::MakeRequest;
 using internal::MakeServerError;
 
-Login::Login(StateBase& state) : state_(state) {}
+Login::Login(AccountStatePrefs& account_state_prefs,
+             scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+             const os_crypt_async::Encryptor& encryptor)
+    : FlowBase(account_state_prefs, std::move(url_loader_factory), encryptor) {}
 
 Login::~Login() = default;
 
@@ -42,7 +45,7 @@ void Login::Step1(mojom::Service initiating_service,
       kServiceToString.at(initiating_service);
   request.body.serialized_ke1 = serialized_ke1;
 
-  state_->SendStateOwnedRequest<endpoints::LoginInit>(
+  SendStateOwnedRequest<endpoints::LoginInit>(
       std::move(request),
       base::BindOnce(&Login::OnStep1, weak_factory_.GetWeakPtr(),
                      std::move(callback)));
@@ -54,7 +57,7 @@ void Login::Step2(const std::string& encrypted_login_token,
   CHECK(!encrypted_login_token.empty());
   CHECK(!client_mac.empty());
 
-  const std::string login_token = state_->Decrypt(encrypted_login_token);
+  const std::string login_token = Decrypt(encrypted_login_token);
   if (login_token.empty()) {
     return std::move(callback).Run(
         base::unexpected(MakeClientError<mojom::LoginError>(
@@ -65,7 +68,7 @@ void Login::Step2(const std::string& encrypted_login_token,
   SetBearerToken(request, login_token);
   request.body.client_mac = client_mac;
 
-  state_->SendStateOwnedRequest<endpoints::LoginFinalize>(
+  SendStateOwnedRequest<endpoints::LoginFinalize>(
       std::move(request),
       base::BindOnce(&Login::OnStep2, weak_factory_.GetWeakPtr(),
                      std::move(callback)));
@@ -102,7 +105,7 @@ void Login::OnStep1(mojom::Authentication::LoginStep1Callback callback,
             }
 
             std::string encrypted_login_token =
-                state_->Encrypt(success_body.login_token);
+                Encrypt(success_body.login_token);
             if (encrypted_login_token.empty()) {
               return base::unexpected(MakeClientError<mojom::LoginError>(
                   mojom::LoginClientErrorCode::kLoginTokenEncryptionFailed));
@@ -149,7 +152,7 @@ void Login::OnStep2(mojom::Authentication::LoginStep2Callback callback,
             }
 
             if (encrypted_authentication_token =
-                    state_->Encrypt(success_body.auth_token);
+                    Encrypt(success_body.auth_token);
                 encrypted_authentication_token.empty()) {
               return base::unexpected(MakeClientError<mojom::LoginError>(
                   mojom::LoginClientErrorCode::
@@ -169,8 +172,7 @@ void Login::OnStep2(mojom::Authentication::LoginStep2Callback callback,
   if (success) {
     CHECK(!email.empty());
     CHECK(!encrypted_authentication_token.empty());
-    state_->account_state_prefs_->SetLoggedIn(email,
-                                              encrypted_authentication_token);
+    account_state_prefs_->SetLoggedIn(email, encrypted_authentication_token);
   }
 }
 

@@ -14,8 +14,8 @@
 #include "brave/components/brave_account/brave_account_utils.h"
 #include "brave/components/brave_account/endpoint_client/with_headers.h"
 #include "brave/components/brave_account/mojom/get_service_token.mojom.h"
-#include "brave/components/brave_account/state_base.h"
 #include "brave/components/brave_account/state_internal.h"
+#include "services/network/public/cpp/shared_url_loader_factory.h"
 
 namespace brave_account {
 
@@ -26,7 +26,11 @@ using internal::MakeClientError;
 using internal::MakeRequest;
 using internal::MakeServerError;
 
-GetServiceToken::GetServiceToken(StateBase& state) : state_(state) {}
+GetServiceToken::GetServiceToken(
+    AccountStatePrefs& account_state_prefs,
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+    const os_crypt_async::Encryptor& encryptor)
+    : FlowBase(account_state_prefs, std::move(url_loader_factory), encryptor) {}
 
 GetServiceToken::~GetServiceToken() = default;
 
@@ -35,15 +39,15 @@ void GetServiceToken::operator()(
     mojom::Authentication::GetServiceTokenCallback callback) {
   CHECK(service != mojom::Service::kAccounts);
   std::string service_name(kServiceToString.at(service));
-  if (auto service_token = state_->Decrypt(
-          state_->account_state_prefs_->GetCachedServiceToken(service_name));
+  if (auto service_token =
+          Decrypt(account_state_prefs_->GetCachedServiceToken(service_name));
       !service_token.empty()) {
     return std::move(callback).Run(
         mojom::GetServiceTokenResult::New(std::move(service_token)));
   }
 
   auto authentication_token =
-      state_->GetDecryptedAuthenticationToken<mojom::GetServiceTokenError>();
+      GetDecryptedAuthenticationToken<mojom::GetServiceTokenError>();
   if (!authentication_token.has_value()) {
     return std::move(callback).Run(
         base::unexpected(std::move(authentication_token).error()));
@@ -53,7 +57,7 @@ void GetServiceToken::operator()(
   SetBearerToken(request, *authentication_token);
   request.body.service = service_name;
 
-  state_->SendStateOwnedRequest<ServiceToken>(
+  SendStateOwnedRequest<ServiceToken>(
       std::move(request),
       base::BindOnce(&GetServiceToken::OnResponse, weak_factory_.GetWeakPtr(),
                      std::move(service_name), std::move(callback)));
@@ -92,8 +96,7 @@ void GetServiceToken::OnResponse(
                       mojom::GetServiceTokenServerErrorCode::kInvalidResponse));
             }
 
-            auto encrypted_service_token =
-                state_->Encrypt(success_body.auth_token);
+            auto encrypted_service_token = Encrypt(success_body.auth_token);
             if (encrypted_service_token.empty()) {
               return base::unexpected(
                   MakeClientError<mojom::GetServiceTokenError>(
@@ -101,7 +104,7 @@ void GetServiceToken::OnResponse(
                           kServiceTokenEncryptionFailed));
             }
 
-            state_->account_state_prefs_->CacheServiceToken(
+            account_state_prefs_->CacheServiceToken(
                 service_name, std::move(encrypted_service_token));
 
             return mojom::GetServiceTokenResult::New(

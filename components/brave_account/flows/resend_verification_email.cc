@@ -13,9 +13,9 @@
 #include "brave/components/brave_account/brave_account_service_constants.h"
 #include "brave/components/brave_account/endpoint_client/with_headers.h"
 #include "brave/components/brave_account/mojom/resend_verification_email.mojom.h"
-#include "brave/components/brave_account/state_base.h"
 #include "brave/components/brave_account/state_internal.h"
 #include "net/http/http_status_code.h"
+#include "services/network/public/cpp/shared_url_loader_factory.h"
 
 namespace brave_account {
 
@@ -25,8 +25,11 @@ using endpoints::VerifyResend;
 using internal::MakeRequest;
 using internal::MakeServerError;
 
-ResendVerificationEmail::ResendVerificationEmail(StateBase& state)
-    : state_(state) {}
+ResendVerificationEmail::ResendVerificationEmail(
+    AccountStatePrefs& account_state_prefs,
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+    const os_crypt_async::Encryptor& encryptor)
+    : FlowBase(account_state_prefs, std::move(url_loader_factory), encryptor) {}
 
 ResendVerificationEmail::~ResendVerificationEmail() = default;
 
@@ -34,9 +37,8 @@ void ResendVerificationEmail::operator()(
     mojom::VerificationIntentPtr intent,
     mojom::Authentication::ResendVerificationEmailCallback callback) {
   auto verification_token =
-      state_
-          ->GetDecryptedVerificationToken<mojom::ResendVerificationEmailError>(
-              std::move(intent));
+      GetDecryptedVerificationToken<mojom::ResendVerificationEmailError>(
+          std::move(intent));
   if (!verification_token.has_value()) {
     return std::move(callback).Run(
         base::unexpected(std::move(verification_token).error()));
@@ -49,7 +51,7 @@ void ResendVerificationEmail::operator()(
   request.body.locale = "";
   request.timeout_duration = kVerifyResendTimeout;
 
-  state_->SendStateOwnedRequest<VerifyResend>(
+  SendStateOwnedRequest<VerifyResend>(
       std::move(request),
       base::BindOnce(&ResendVerificationEmail::OnResponse,
                      weak_factory_.GetWeakPtr(), std::move(callback)));

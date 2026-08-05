@@ -11,8 +11,8 @@
 #include "base/location.h"
 #include "brave/components/brave_account/brave_account_service_constants.h"
 #include "brave/components/brave_account/endpoint_client/with_headers.h"
-#include "brave/components/brave_account/state_base.h"
 #include "brave/components/brave_account/state_internal.h"
+#include "services/network/public/cpp/shared_url_loader_factory.h"
 
 namespace brave_account {
 
@@ -22,7 +22,11 @@ using endpoint_client::WithHeaders;
 using endpoints::AuthValidate;
 using internal::MakeRequest;
 
-UpdateEmail::UpdateEmail(StateBase& state) : state_(state) {
+UpdateEmail::UpdateEmail(
+    AccountStatePrefs& account_state_prefs,
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+    const os_crypt_async::Encryptor& encryptor)
+    : FlowBase(account_state_prefs, std::move(url_loader_factory), encryptor) {
   ScheduleRequest();
 }
 
@@ -38,7 +42,7 @@ void UpdateEmail::ScheduleRequest(base::TimeDelta delay,
 void UpdateEmail::SendRequest(RequestHandle current_request) {
   current_request.reset();
 
-  const auto authentication_token = state_->GetDecryptedAuthenticationToken();
+  const auto authentication_token = GetDecryptedAuthenticationToken();
   if (authentication_token.empty()) {
     return;
   }
@@ -50,7 +54,7 @@ void UpdateEmail::SendRequest(RequestHandle current_request) {
   // the request handle is passed forward into the next scheduled
   // `SendRequest`, which resets it (cancelling any still-pending previous
   // attempt) before issuing the new one.
-  current_request = state_->SendCallerOwnedRequest<AuthValidate>(
+  current_request = SendCallerOwnedRequest<AuthValidate>(
       std::move(request),
       base::BindOnce(&UpdateEmail::OnResponse, weak_factory_.GetWeakPtr()));
 
@@ -67,14 +71,14 @@ void UpdateEmail::OnResponse(AuthValidate::Response response) {
                                    : "";
 
   if (!email.empty()) {
-    state_->account_state_prefs_->UpdateEmail(email);
+    account_state_prefs_->UpdateEmail(email);
   } else if (response.status_code >= 400 && response.status_code < 500) {
     // Force logged-out (and stop polling) to prevent presenting invalid state
     // to the user and issuing invalid requests.
     //
     // See `StateBase`'s class comment on ordering.
     // LoggedIn ==> LoggedOut (state swap).
-    return state_->account_state_prefs_->SetLoggedOut();
+    return account_state_prefs_->SetLoggedOut();
   }
 
   // Replace watchdog timer with the normal cadence.

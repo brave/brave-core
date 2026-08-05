@@ -8,17 +8,25 @@
 
 #include <string>
 
-#include "base/memory/raw_ref.h"
+#include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
+#include "brave/components/brave_account/brave_account_state_prefs.h"
 #include "brave/components/brave_account/endpoints/password_finalize.h"
 #include "brave/components/brave_account/endpoints/password_init.h"
 #include "brave/components/brave_account/endpoints/verify_complete.h"
 #include "brave/components/brave_account/endpoints/verify_init.h"
+#include "brave/components/brave_account/flows/flow_base.h"
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
 
-namespace brave_account {
+namespace network {
+class SharedURLLoaderFactory;
+}  // namespace network
 
-class StateBase;
+namespace os_crypt_async {
+class Encryptor;
+}  // namespace os_crypt_async
+
+namespace brave_account {
 
 // Owns the password-change half of the logged-in `mojom::Authentication`
 // surface. `LoggedInState` holds a `ChangePassword` member and forwards the
@@ -30,11 +38,14 @@ class StateBase;
 //   Step3 -> /v2/accounts/password/init
 //   Step4 -> /v2/accounts/password/finalize
 //
-// Requests are sent through the owning state's `StateBase` helpers, so their
-// lifetime is tied to that state (see `StateBase::SendStateOwnedRequest`).
-class ChangePassword {
+// Requests are sent through the inherited `FlowBase` helpers, so their
+// lifetime is tied to this flow (see `FlowBase::SendStateOwnedRequest`).
+class ChangePassword : public FlowBase {
  public:
-  explicit ChangePassword(StateBase& state);
+  ChangePassword(
+      AccountStatePrefs& account_state_prefs,
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+      const os_crypt_async::Encryptor& encryptor);
 
   ChangePassword(const ChangePassword&) = delete;
   ChangePassword& operator=(const ChangePassword&) = delete;
@@ -65,8 +76,6 @@ class ChangePassword {
 
   void OnStep4(mojom::Authentication::ChangePasswordStep4Callback callback,
                endpoints::PasswordFinalize::Response response);
-
-  const raw_ref<StateBase> state_;
 
   base::WeakPtrFactory<ChangePassword> weak_factory_{this};
 };

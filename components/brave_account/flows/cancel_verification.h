@@ -6,12 +6,20 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ACCOUNT_FLOWS_CANCEL_VERIFICATION_H_
 #define BRAVE_COMPONENTS_BRAVE_ACCOUNT_FLOWS_CANCEL_VERIFICATION_H_
 
-#include "base/memory/raw_ref.h"
+#include "base/memory/scoped_refptr.h"
+#include "brave/components/brave_account/brave_account_state_prefs.h"
+#include "brave/components/brave_account/flows/flow_base.h"
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
 
-namespace brave_account {
+namespace network {
+class SharedURLLoaderFactory;
+}  // namespace network
 
-class StateBase;
+namespace os_crypt_async {
+class Encryptor;
+}  // namespace os_crypt_async
+
+namespace brave_account {
 
 // Owns the verification cancellation of the `mojom::Authentication` surface.
 // Like `ResendVerificationEmail`, this one is held by `StateBase` itself, since
@@ -22,11 +30,14 @@ class StateBase;
 //
 //   operator()() -> /v2/verify/delete
 //
-// The request is sent through the owning state's `StateBase` helpers, so its
-// lifetime is tied to that state (see `StateBase::SendUnownedRequest`).
-class CancelVerification {
+// The request is sent through the inherited `FlowBase` helpers, so its
+// lifetime is tied to this flow (see `FlowBase::SendUnownedRequest`).
+class CancelVerification : public FlowBase {
  public:
-  explicit CancelVerification(StateBase& state);
+  CancelVerification(
+      AccountStatePrefs& account_state_prefs,
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+      const os_crypt_async::Encryptor& encryptor);
 
   CancelVerification(const CancelVerification&) = delete;
   CancelVerification& operator=(const CancelVerification&) = delete;
@@ -34,9 +45,6 @@ class CancelVerification {
   ~CancelVerification();
 
   void operator()(mojom::VerificationIntentPtr intent);
-
- private:
-  const raw_ref<StateBase> state_;
 };
 
 }  // namespace brave_account
