@@ -7,5 +7,5 @@ substitutions:
   - description: |-
       Let subclasses update the drag layout after construction.
     regex:
-      pattern: 'private final @TabListLayoutType int mLayoutType;'
-      replace: 'protected @TabListLayoutType int mLayoutType;'
+      re_pattern: 'private final (@TabListLayoutType int mLayoutType;)'
+      replace: 'protected \1'
