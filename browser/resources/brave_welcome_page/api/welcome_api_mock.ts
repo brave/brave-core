@@ -115,6 +115,7 @@ export function createWelcomeApiMock(): WelcomeApi {
       setP3AEnabled: async (enabled) => {},
       setWebDiscoveryEnabled: async (enabled) => {},
       getWelcomeCompleteURL: async () => ({ url: 'chrome://newtab' }),
+      setOnboardingPhase: (phase) => {},
     },
     bindWelcomePageHandler: (page) => {},
     themeColorPickerHandler: {

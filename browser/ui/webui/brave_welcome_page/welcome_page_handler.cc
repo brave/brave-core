@@ -11,6 +11,7 @@
 #include "base/check.h"
 #include "base/check_deref.h"
 #include "base/functional/bind.h"
+#include "base/metrics/histogram_macros.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/webui/brave_welcome_page/welcome_page_features.h"
 #include "brave/components/brave_education/buildflags.h"
@@ -31,6 +32,33 @@
 namespace brave_welcome_page {
 
 namespace {
+
+constexpr char kOnboardingHistogramName[] = "Brave.Welcome.InteractionStatus.2";
+constexpr int kOnboardingHistogramBucketCount = 4;
+
+// What was the last screen that you viewed during the browser onboarding
+// process?
+// 0. Only viewed the welcome screen, performed no action
+// 1. Viewed the profile import screen
+// 2. Viewed the diagnostic/analytics consent screen
+// 3. Finished the onboarding process
+int ToHistogramValue(mojom::OnboardingPhase phase) {
+  switch (phase) {
+    case mojom::OnboardingPhase::kWelcome:
+      return 0;
+    case mojom::OnboardingPhase::kImport:
+      return 1;
+    case mojom::OnboardingPhase::kMetrics:
+      return 2;
+    case mojom::OnboardingPhase::kFinished:
+      return 3;
+  }
+}
+
+void RecordOnboardingPhase(mojom::OnboardingPhase phase) {
+  UMA_HISTOGRAM_EXACT_LINEAR(kOnboardingHistogramName, ToHistogramValue(phase),
+                             kOnboardingHistogramBucketCount);
+}
 
 mojom::ColorScheme ToColorScheme(
     ThemeService::BrowserColorScheme browser_color_scheme) {
@@ -87,7 +115,9 @@ WelcomePageHandler::WelcomePageHandler(
   }
 }
 
-WelcomePageHandler::~WelcomePageHandler() = default;
+WelcomePageHandler::~WelcomePageHandler() {
+  RecordOnboardingPhase(onboarding_phase_);
+}
 
 #if BUILDFLAG(ENABLE_BRAVE_EDUCATION)
 void WelcomePageHandler::SetEducationServerChecker(
@@ -184,6 +214,11 @@ void WelcomePageHandler::GetWelcomeCompleteURL(
   }
 #endif  // BUILDFLAG(ENABLE_BRAVE_EDUCATION)
   std::move(callback).Run(chrome::kChromeUINewTabURL);
+}
+
+void WelcomePageHandler::SetOnboardingPhase(mojom::OnboardingPhase phase) {
+  onboarding_phase_ = std::max(onboarding_phase_, phase);
+  RecordOnboardingPhase(onboarding_phase_);
 }
 
 void WelcomePageHandler::OnThemeChanged() {
