@@ -38,8 +38,8 @@ namespace ai_chat {
 namespace {
 
 // Test pages served from test/data/leo/. The tool-registering page uses
-// navigator.modelContext, which is only available on secure contexts when
-// blink::features::kWebMCPTesting is enabled (which implies kWebMCP).
+// document.modelContext, which is only available on secure contexts when
+// blink::features::kWebMCP is enabled.
 constexpr char kPageWithToolsPath[] = "/web_mcp_tools.html";
 // A basic existing page that registers no tools.
 constexpr char kPageWithoutToolsPath[] = "/dummy.html";
@@ -49,11 +49,11 @@ constexpr char kPageWithoutToolsPath[] = "/dummy.html";
 class WebMcpBrowserTest : public InProcessBrowserTest {
  public:
   WebMcpBrowserTest() : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
-    // navigator.modelContext is gated by kWebMCPTesting (which implies
-    // kWebMCP). The base::Feature flips on the runtime-enabled feature in
-    // every renderer the browser spawns during this test.
+    // document.modelContext is gated by kWebMCP. The base::Feature flips on the
+    // runtime-enabled feature in every renderer the browser spawns during this
+    // test.
     scoped_feature_list_.InitWithFeatures(
-        /*enabled_features=*/{blink::features::kWebMCPTesting},
+        /*enabled_features=*/{blink::features::kWebMCP},
         /*disabled_features=*/{});
   }
 
@@ -73,11 +73,11 @@ class WebMcpBrowserTest : public InProcessBrowserTest {
   void SetUpCommandLine(base::CommandLine* command_line) override {
     InProcessBrowserTest::SetUpCommandLine(command_line);
     mock_cert_verifier_.SetUpCommandLine(command_line);
-    // The runtime-enabled feature gating navigator.modelContext is marked
+    // The runtime-enabled feature gating document.modelContext is marked
     // "experimental" in runtime_enabled_features.json5 so the base::Feature
     // toggle alone isn't enough; the blink-feature switch turns it on in
     // every renderer for the duration of this test.
-    command_line->AppendSwitchASCII("enable-blink-features", "WebMCPTesting");
+    command_line->AppendSwitchASCII("enable-blink-features", "WebMCP");
   }
 
   void SetUpInProcessBrowserTestFixture() override {
@@ -100,6 +100,16 @@ class WebMcpBrowserTest : public InProcessBrowserTest {
     return helper ? &helper->web_contents_content() : nullptr;
   }
 
+  // Blocks until the tool-registering page has finished its async
+  // registerTool() calls, and evaluates to the number of tools the page itself
+  // sees via document.modelContext.getTools(). Callers should check this before
+  // probing the browser side, both to avoid racing registration and so that a
+  // page-side failure is reported here (as a promise rejection) rather than
+  // showing up as a confusing "zero tools" further down.
+  content::EvalJsResult WaitForPageToolCount() {
+    return content::EvalJs(GetActiveWebContents(), "__webmcpReady");
+  }
+
   // Drives an empty new-generation-loop on the manager so it re-fetches the
   // current set of tools, then returns them.
   std::vector<base::WeakPtr<Tool>> RefreshAndGetTools(
@@ -118,7 +128,7 @@ class WebMcpBrowserTest : public InProcessBrowserTest {
   net::EmbeddedTestServer https_server_;
 };
 
-// Registering tools via navigator.modelContext on the active page should be
+// Registering tools via document.modelContext on the active page should be
 // observable through AssociatedContentManager::GetTools() once a generation
 // loop runs.
 // Diagnostic: confirms the renderer-side path returns script tools to brave's
@@ -127,9 +137,7 @@ IN_PROC_BROWSER_TEST_F(WebMcpBrowserTest,
                        AssociatedWebContentsContent_DirectFetch) {
   ASSERT_TRUE(ui_test_utils::NavigateToURL(
       browser(), https_server()->GetURL("a.com", kPageWithToolsPath)));
-  ASSERT_EQ(
-      2, content::EvalJs(GetActiveWebContents(),
-                         "navigator.modelContextTesting.listTools().length"));
+  ASSERT_EQ(2, WaitForPageToolCount());
 
   AssociatedContentDelegate* content = GetActiveContent();
   ASSERT_TRUE(content);
@@ -144,19 +152,10 @@ IN_PROC_BROWSER_TEST_F(WebMcpBrowserTest,
   ASSERT_TRUE(ui_test_utils::NavigateToURL(
       browser(), https_server()->GetURL("a.com", kPageWithToolsPath)));
 
-  // Make sure the WebMCP runtime feature is actually present in the renderer
-  // and the page-side registration didn't throw; without this the rest of the
-  // test would just see zero tools and the failure would be hard to diagnose.
-  EXPECT_EQ(true,
-            content::EvalJs(GetActiveWebContents(),
-                            "typeof navigator.modelContext === 'object'"));
-  EXPECT_EQ("null", content::EvalJs(GetActiveWebContents(),
-                                    "String(window.__webmcpRegisterError)"));
-  // Sanity check directly with the renderer that the tools are registered on
-  // navigator.modelContext at the moment the manager will fetch them.
-  ASSERT_EQ(
-      2, content::EvalJs(GetActiveWebContents(),
-                         "navigator.modelContextTesting.listTools().length"));
+  // Confirm the page-side registration completed before probing the browser
+  // side; without this the rest of the test would just see zero tools and the
+  // failure would be hard to diagnose.
+  ASSERT_EQ(2, WaitForPageToolCount());
 
   AssociatedContentDelegate* content = GetActiveContent();
   ASSERT_TRUE(content);
@@ -237,6 +236,7 @@ IN_PROC_BROWSER_TEST_F(WebMcpBrowserTest,
 
   ASSERT_TRUE(ui_test_utils::NavigateToURL(
       browser(), https_server()->GetURL("a.com", kPageWithToolsPath)));
+  ASSERT_EQ(2, WaitForPageToolCount());
   auto* content = GetActiveContent();
   manager->AddContent(content);
   // Wait for the async tool-detection probe to attach the content before the
