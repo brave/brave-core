@@ -1134,7 +1134,9 @@ from a cloned or relocated checkout. The exceptions are host-side tooling and
 targets that generate wrapper scripts or configuration exclusively for local
 developer use and never run on a remote bot worker. If a tool changes its
 working directory, rebase to that directory rather than blindly using
-`root_build_dir`. See GN's
+`root_build_dir`. When a tool requires an absolute path, invoke it through a
+wrapper script that receives relative path arguments and converts them to
+absolute paths at runtime. See GN's
 [`rebase_path()` reference](https://gn.googlesource.com/gn/+/master/docs/reference.md#func_rebase_path)
 for the complete API contract.
 
