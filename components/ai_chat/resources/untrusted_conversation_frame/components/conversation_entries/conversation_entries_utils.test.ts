@@ -10,6 +10,7 @@ import {
   removeReasoning,
   removeCitationsWithMissingLinks,
   normalizeCitationSpacing,
+  normalizeMathDelimiters,
   groupConversationEntries,
   isAssistantGroupTask,
   replaceCitationsWithUrlsExcludingCode,
@@ -241,6 +242,67 @@ describe('normalizeCitationSpacing', () => {
   it('does not insert a space inside inline code', () => {
     expect(normalizeCitationSpacing('Use `arr[1]` then Japan[1].')).toBe(
       'Use `arr[1]` then Japan [1].',
+    )
+  })
+})
+
+describe('normalizeMathDelimiters', () => {
+  it('converts an inline \\(...\\) expression to $$...$$', () => {
+    expect(normalizeMathDelimiters('the area is \\(\\pi r^2\\) exactly')).toBe(
+      'the area is $$\\pi r^2$$ exactly',
+    )
+  })
+
+  it('converts multiple inline expressions on one line', () => {
+    expect(normalizeMathDelimiters('\\(a\\) and \\(b\\)')).toBe(
+      '$$a$$ and $$b$$',
+    )
+  })
+
+  it('collapses whitespace inside an inline expression', () => {
+    expect(normalizeMathDelimiters('x is \\( a +\n  b \\) here')).toBe(
+      'x is $$a + b$$ here',
+    )
+  })
+
+  it('converts a \\[...\\] expression on its own line to a $$ fence', () => {
+    expect(normalizeMathDelimiters('before\n\\[x^2\\]\nafter')).toBe(
+      'before\n\n\n$$\nx^2\n$$\n\n\nafter',
+    )
+  })
+
+  it('converts a multi-line \\[...\\] expression to a $$ fence', () => {
+    expect(normalizeMathDelimiters('\\[\n  a = b\n\\]')).toBe(
+      '\n\n$$\na = b\n$$\n\n',
+    )
+  })
+
+  // A fence needs blank lines around it, and injecting those mid-paragraph
+  // would split the paragraph apart.
+  it('keeps a mid-line \\[...\\] expression inline', () => {
+    expect(normalizeMathDelimiters('the value \\[x^2\\] shown')).toBe(
+      'the value $$x^2$$ shown',
+    )
+  })
+
+  it('leaves an unterminated expression alone so streaming does not flicker', () => {
+    expect(normalizeMathDelimiters('partial \\(x^')).toBe('partial \\(x^')
+    expect(normalizeMathDelimiters('partial \\[x^')).toBe('partial \\[x^')
+  })
+
+  it('leaves prose without math delimiters unchanged', () => {
+    const input = 'costs $5 and $10, see arr[1] and f(x)'
+    expect(normalizeMathDelimiters(input)).toBe(input)
+  })
+
+  it('does not rewrite delimiters inside fenced code blocks', () => {
+    const input = '```tex\n\\(x^2\\)\n```'
+    expect(normalizeMathDelimiters(input)).toBe(input)
+  })
+
+  it('does not rewrite delimiters inside inline code', () => {
+    expect(normalizeMathDelimiters('use `\\(x\\)` or \\(y\\)')).toBe(
+      'use `\\(x\\)` or $$y$$',
     )
   })
 })

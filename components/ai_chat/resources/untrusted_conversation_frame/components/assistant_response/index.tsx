@@ -17,9 +17,11 @@ import styles from './style.module.scss'
 import {
   findTaskCheckboxBracketOffsets,
   normalizeCitationSpacing,
+  normalizeMathDelimiters,
   removeCitationsWithMissingLinks,
   removeReasoning,
 } from '../conversation_entries/conversation_entries_utils'
+import { IS_MATH_RENDERING_ENABLED } from '../markdown_renderer/remark_math'
 import RichSearchWidget from './rich_search_widget'
 import AssistantResponseContextProvider from './assistant_response_context'
 
@@ -58,7 +60,16 @@ function AssistantEvent(
 
     const processedCompletion = normalizeCitationSpacing(filteredCompletion)
 
-    const fullText = `${numberedLinks}${removeReasoning(processedCompletion)}`
+    // Math delimiters are normalized only for display. `processedCompletion`
+    // below is what gets written back to the conversation, so rewriting `\(…\)`
+    // into `$$…$$` must not leak into the stored text. Skipped when the kill
+    // switch is off so that responses take exactly the pre-feature path.
+    const withReasoningRemoved = `${numberedLinks}${removeReasoning(
+      processedCompletion,
+    )}`
+    const fullText = IS_MATH_RENDERING_ENABLED
+      ? normalizeMathDelimiters(withReasoningRemoved)
+      : withReasoningRemoved
 
     // Persist a checkbox toggle back to the conversation. The renderer
     // identifies the checkbox by its position among GFM task items in
