@@ -57,7 +57,8 @@ export const LayoutCardWrapper = styled.div<{
     p.hideCardHeader
       ? 'var(--no-header-top-position)'
       : 'var(--header-top-position)'};
-  --bottom-position: ${(p) => (p.hideNav ? 0 : layoutSmallCardBottom)}px;
+  --bottom-position: ${(p) =>
+    p.hideNav || p.isSidePanel ? 0 : layoutSmallCardBottom}px;
   /*
     (100vw / 2) - (${maxCardWidth}px / 2) makes the card body perfectly centered
     horizontally in the browser window.
@@ -89,7 +90,7 @@ export const LayoutCardWrapper = styled.div<{
       ? 'var(--left-padding-without-nav)'
       : 'var(--left-padding-with-nav)'};
   @media screen and (max-width: ${layoutSmallWidth}px) {
-    bottom: ${(p) => (p.isSidePanel ? 0 : 'var(--bottom-position)')};
+    bottom: var(--bottom-position);
     padding: 0px 32px 32px 32px;
     align-items: center;
   }
