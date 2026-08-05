@@ -16,6 +16,8 @@ name: PR review (Claude)
 
 on:
   pull_request_target:
+    # "labeled" is intentional so adding review/claude triggers a run without a
+    # new push; the job if-condition ignores other label changes.
     types: [opened, reopened, synchronize, labeled]
 
 # One run at a time per PR so labeled + synchronize in the same push do not post twice.
@@ -23,10 +25,15 @@ concurrency:
   group: pr-review-claude-${{ github.event.pull_request.number }}
   cancel-in-progress: true
 
+# Reviews are posted with PR_REVIEW_BOT_GITHUB_TOKEN inside the container, not
+# GITHUB_TOKEN — keep workflow token scopes minimal on pull_request_target.
 permissions:
   contents: read
-  pull-requests: write
   packages: read
+
+env:
+  # Override to a build SHA tag (from the docker-build workflow) to pin the reviewer.
+  PR_REVIEW_IMAGE_TAG: latest
 
 jobs:
   review:
@@ -35,6 +42,8 @@ jobs:
     if: >-
       github.event.pull_request.head.repo.full_name == github.repository
       && contains(github.event.pull_request.labels.*.name, 'review/claude')
+      && (github.event.action != 'labeled'
+      || github.event.label.name == 'review/claude')
       && (github.event.pull_request.author_association == 'MEMBER'
       || github.event.pull_request.author_association == 'OWNER')
     steps:
@@ -46,7 +55,14 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Pull review image
-        run: docker pull ghcr.io/${{ github.repository }}/pr-review-claude:latest
+        id: image
+        run: |
+          IMAGE="ghcr.io/${{ github.repository }}/pr-review-claude:${{ env.PR_REVIEW_IMAGE_TAG }}"
+          docker pull "$IMAGE"
+          # Pin this job to the digest that was actually pulled (immutable for the run).
+          DIGEST="$(docker inspect --format='{{index .RepoDigests 0}}' "$IMAGE")"
+          echo "ref=${DIGEST}" >> "$GITHUB_OUTPUT"
+          echo "Using image ${DIGEST}"
 
       # No checkout / volume: the image contains the trusted script + skill from master (see Dockerfile COPY).
       # Secrets are piped on stdin (-i) so they are not visible in docker inspect, container env, or ps for docker.
@@ -54,5 +70,5 @@ jobs:
         run: |
           printf '%s\n%s\n' "${{ secrets.PR_REVIEW_BOT_GITHUB_TOKEN }}" "${{ secrets.PR_REVIEW_BOT_ANTHROPIC_API_KEY }}" | \
             docker run -i --rm \
-            ghcr.io/${{ github.repository }}/pr-review-claude:latest \
+            "${{ steps.image.outputs.ref }}" \
             "${{ github.event.pull_request.number }}" "${{ github.repository }}"

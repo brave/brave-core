@@ -1,10 +1,20 @@
-# Build and push the Claude PR review Docker image to ghcr.io (manual only).
-# Run from Actions → "Build PR review image" → Run workflow.
+# Build and push the Claude PR review Docker image to ghcr.io.
+# Also runs on relevant path changes and weekly so the image stays current.
 # The PR review workflow (pr-review-claude.yml) pulls this image when present.
 name: Build PR review image
 
 on:
   workflow_dispatch:
+  push:
+    branches: [master]
+    paths:
+      - .github/workflows/pr-review-claude.dockerfile
+      - .github/workflows/pr-review-claude-docker-build.yml
+      - .github/workflows/pr-review-claude.py
+      - agents/skills/review-prs/SKILL.md
+  schedule:
+    # Weekly refresh so the baked skill/script and base packages do not rot.
+    - cron: "0 6 * * 1"
 
 permissions:
   contents: read
@@ -21,7 +31,7 @@ jobs:
           sparse-checkout: |
             .github/workflows/pr-review-claude.dockerfile
             .github/workflows/pr-review-claude.py
-            .claude/skills/review-prs/SKILL.md
+            agents/skills/review-prs/SKILL.md
           sparse-checkout-cone-mode: false
 
       - name: Log in to GitHub Container Registry
@@ -37,6 +47,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@d08e5c354a6adb9ed34480a06d141179aa583294 # v7.0.0
         with:
+          context: .
           file: .github/workflows/pr-review-claude.dockerfile
           push: true
           tags: |

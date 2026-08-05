@@ -6,7 +6,7 @@
 """Run Claude-driven PR review in CI (Docker/GitHub Actions).
 
 Fetches PR context and diff via gh, sends to Anthropic API with the **review-prs**
-skill instructions (.claude/skills/review-prs/SKILL.md), and posts the result as
+skill instructions (agents/skills/review-prs/SKILL.md), and posts the result as
 a GitHub review: one summary body plus multiple inline comments (when the model
 provides them).
 
@@ -34,6 +34,7 @@ Idempotency:
 import argparse
 import json
 import os
+import re
 import shlex
 import subprocess
 import sys
@@ -68,8 +69,11 @@ def _skill_path() -> Path:
     bundled = Path("/opt/pr-review-claude/skills/review-prs/SKILL.md")
     if bundled.exists():
         return bundled
-    # Local dev: script at .github/workflows/pr-review-claude.py → repo root is .parent.parent.parent
+    # Local dev: script at .github/workflows/pr-review-claude.py → repo root is parents[2]
     repo_root = Path(__file__).resolve().parent.parent.parent
+    agents_skill = repo_root / "agents" / "skills" / "review-prs" / "SKILL.md"
+    if agents_skill.exists():
+        return agents_skill
     return repo_root / ".claude" / "skills" / "review-prs" / "SKILL.md"
 
 
@@ -95,7 +99,7 @@ def _body_for_posting(body: str, *, has_inline_comments: bool) -> str:
         return finalized
     if has_inline_comments:
         return REVIEW_DISCLAIMER + "See inline comments."
-    return "No review content."
+    return REVIEW_DISCLAIMER + "No review content."
 
 
 def _cmd_error_detail(stderr: str | None, stdout: str | None) -> str:
@@ -180,28 +184,30 @@ def already_reviewed_current_head(
     me = _bot_login(gh_token=gh_token)
     if not me:
         return False
-    out = _run_gh_command(
-        [
-            "gh",
-            "api",
-            f"repos/{repo}/pulls/{pr_number}/reviews?per_page=100",
-        ],
+    # gh paginates; prefer pr view --json reviews over raw REST.
+    out = run_gh(
+        "pr", "view", pr_number, "--json", "reviews",
+        repo=repo,
         gh_token=gh_token,
-        capture=True,
     )
-    reviews = json.loads(out)
+    reviews = json.loads(out).get("reviews") or []
     if not isinstance(reviews, list):
         return False
     for r in reviews:
         if not isinstance(r, dict):
             continue
-        user = r.get("user")
-        login = (user or {}).get("login") if isinstance(user, dict) else None
+        author = r.get("author")
+        login = (author or {}).get("login") if isinstance(author, dict) else None
         if login != me:
             continue
-        if r.get("commit_id") != head_sha:
+        commit = r.get("commit")
+        oid = (commit or {}).get("oid") if isinstance(commit, dict) else None
+        # Older gh shapes may expose commit_id at the top level.
+        if oid is None:
+            oid = r.get("commit_id")
+        if oid != head_sha:
             continue
-        if r.get("state") == "PENDING":
+        if str(r.get("state") or "").upper() == "PENDING":
             continue
         return True
     return False
@@ -213,6 +219,75 @@ def load_skill_content() -> str:
     if not path.exists():
         return ""
     return path.read_text(encoding="utf-8", errors="replace")
+
+
+def _diff_line_ranges(diff: str) -> dict[str, list[tuple[int, int]]]:
+    """Parse unified diff into {path: [(start, end), ...]} for RIGHT-side lines."""
+    ranges: dict[str, list[tuple[int, int]]] = {}
+    current_file: str | None = None
+    for line in (diff or "").splitlines():
+        if line.startswith("+++ b/"):
+            current_file = line[6:]
+            ranges.setdefault(current_file, [])
+        elif line.startswith("@@ ") and current_file:
+            m = re.search(r"\+(\d+)(?:,(\d+))?", line)
+            if not m:
+                continue
+            start = int(m.group(1))
+            count = int(m.group(2)) if m.group(2) else 1
+            if count > 0:
+                ranges[current_file].append((start, start + count - 1))
+    return ranges
+
+
+def _correct_line_for_diff(
+    ranges: dict[str, list[tuple[int, int]]],
+    file_path: str,
+    line: int,
+) -> int | None:
+    """Return line if commentable, else nearest hunk edge, else None if file absent."""
+    file_ranges = ranges.get(file_path)
+    if not file_ranges:
+        return None
+    for start, end in file_ranges:
+        if start <= line <= end:
+            return line
+    best_line = None
+    best_dist = float("inf")
+    for start, end in file_ranges:
+        for candidate in (start, end):
+            dist = abs(candidate - line)
+            if dist < best_dist:
+                best_dist = dist
+                best_line = candidate
+    return best_line
+
+
+def filter_comments_to_diff(comments: list[dict], diff: str) -> list[dict]:
+    """Drop/correct inline comments so they land on commentable diff lines."""
+    ranges = _diff_line_ranges(diff)
+    out: list[dict] = []
+    for c in comments:
+        path = c.get("path")
+        line = c.get("line")
+        if not path or line is None:
+            continue
+        corrected = _correct_line_for_diff(ranges, str(path), int(line))
+        if corrected is None:
+            print(
+                f"Dropping inline comment on {path}:{line} (not in diff)",
+                flush=True,
+            )
+            continue
+        if corrected != int(line):
+            print(
+                f"Correcting inline comment {path}:{line} -> {path}:{corrected}",
+                flush=True,
+            )
+        fixed = dict(c)
+        fixed["line"] = corrected
+        out.append(fixed)
+    return out
 
 
 def run_review(
@@ -303,16 +378,27 @@ def _parse_review_response(raw: str) -> tuple[str, list[dict]]:
         comments = data.get("comments") or []
         if not isinstance(comments, list):
             comments = []
-        # Normalize: each comment needs path, line (int), body; add side for API
+        # Normalize: each comment needs path, line (int), body; add side for API.
+        # Validate per comment so one bad entry does not discard the rest.
         out = []
         for c in comments:
-            if isinstance(c, dict) and c.get("path") and c.get("line") is not None and c.get("body"):
-                out.append({
-                    "path": str(c["path"]).strip(),
-                    "line": int(c["line"]),
-                    "side": "RIGHT",
-                    "body": str(c["body"]).strip()[:65535],
-                })
+            if not isinstance(c, dict):
+                continue
+            path = c.get("path")
+            line = c.get("line")
+            body_text = c.get("body")
+            if not path or line is None or not body_text:
+                continue
+            try:
+                line_int = int(line)
+            except (TypeError, ValueError):
+                continue
+            out.append({
+                "path": str(path).strip(),
+                "line": line_int,
+                "side": "RIGHT",
+                "body": str(body_text).strip()[:65535],
+            })
         body = _finalize_review_body(body)
         return body, out
     except (json.JSONDecodeError, ValueError, TypeError):
@@ -326,10 +412,13 @@ def post_review(
     comments: list[dict],
     *,
     gh_token: str,
+    head_sha: str = "",
 ) -> None:
     """Post as a GitHub pull request review (always /reviews so commit_id dedup applies)."""
     posted_body = _body_for_posting(body, has_inline_comments=bool(comments))
     payload: dict = {"event": "COMMENT", "body": posted_body}
+    if head_sha:
+        payload["commit_id"] = head_sha
     if comments:
         payload["comments"] = comments
     cmd = [
@@ -363,11 +452,19 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     return parser.parse_args(argv)
 
 
+def _env_force_enabled() -> bool:
+    """Return True if PR_REVIEW_CLAUDE_FORCE is set to a truthy value (1/true/yes)."""
+    value = os.environ.get("PR_REVIEW_CLAUDE_FORCE")
+    if value is None:
+        return False
+    return value.strip().lower() in {"1", "true", "yes"}
+
+
 def Main(argv: list[str] | None = None) -> int:
     args = _parse_args(argv)
     pr_number = args.pr_number.strip()
     repo = args.repo.strip()
-    force = bool(args.force or os.environ.get("PR_REVIEW_CLAUDE_FORCE"))
+    force = bool(args.force or _env_force_enabled())
 
     gh_token, api_key = _resolve_credentials()
     if not gh_token:
@@ -402,7 +499,15 @@ def Main(argv: list[str] | None = None) -> int:
             pr_number, repo, gh_token=gh_token, api_key=api_key, ctx=ctx
         )
         body, comments = _parse_review_response(raw)
-        post_review(pr_number, repo, body, comments, gh_token=gh_token)
+        comments = filter_comments_to_diff(comments, ctx.get("diff") or "")
+        post_review(
+            pr_number,
+            repo,
+            body,
+            comments,
+            gh_token=gh_token,
+            head_sha=head_sha,
+        )
         if comments:
             print(f"Posted review with {len(comments)} inline comment(s) on PR #{pr_number}")
         else:
