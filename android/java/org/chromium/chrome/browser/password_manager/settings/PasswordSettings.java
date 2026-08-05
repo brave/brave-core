@@ -551,6 +551,13 @@ public class PasswordSettings extends ChromeBaseSettingsFragment
     public void passwordListAvailable(int count) {
         resetList(PREF_KEY_CATEGORY_SAVED_PASSWORDS);
         resetNoEntriesTextMessage();
+        if (mSearchQuery != null) {
+            // In search mode the results are added directly to the preference screen (there is no
+            // saved-passwords category), so resetList() above does not remove them. Clear them here
+            // so repeated password-store updates (e.g. OnLoginsRetained) don't accumulate duplicate
+            // rows.
+            getPreferenceScreen().removeAll();
+        }
 
         mNoPasswords = count == 0;
         if (mNoPasswords) {
