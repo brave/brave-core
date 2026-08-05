@@ -71,8 +71,8 @@ def _to_alias_path(p: Path) -> str:
 _SCRIPT_PATH: str = _to_alias_path(Path(__file__).resolve())
 
 # `vpython3` invocation for the alias body. `VPYTHON3_PATH` is either a bare
-# `Path('vpython3')` (when depot_tools is on PATH) or an absolute path to
-# Chromium's bundled `third_party/depot_tools/vpython3` (when it isn't).
+# `Path('vpython3')` (when depot_tools is on PATH) or an absolute path to the
+# vendored `vendor/depot_tools/vpython3` (when it isn't).
 _VPYTHON3_PATH: str = _to_alias_path(VPYTHON3_PATH)
 
 

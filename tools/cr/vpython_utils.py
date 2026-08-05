@@ -12,7 +12,9 @@ from pathlib import Path
 import platform
 import shutil
 
-import repository
+# Using absolute path so tests don't try to resolve `vpython3` via a repo CWD
+# resolution.
+_BRAVE_ROOT: Path = Path(__file__).resolve().parents[2]
 
 
 def _compute_vpython3_path() -> Path:
@@ -25,14 +27,14 @@ def _compute_vpython3_path() -> Path:
          by `shutil.which`, because git's bundled bash (used to execute
          `!`-prefixed aliases) doesn't reliably resolve `.bat` wrappers
          like `vpython3.bat` via `$PATH`.
-      3. Neither — the chromium-bundled `third_party/depot_tools/vpython3`,
-         resolved to absolute at module import so later cwd changes (e.g.
-         `FakeChromiumRepo.setup()`) don't invalidate it.
+      3. Neither — the vendored `vendor/depot_tools/vpython3`
+         (`vpython3.bat` on Windows), already absolute since it's derived
+         from `_BRAVE_ROOT`.
     """
     found = shutil.which('vpython3')
     if found is None:
-        return (repository.chromium.root / 'third_party' / 'depot_tools' /
-                'vpython3').resolve()
+        name = 'vpython3.bat' if platform.system() == 'Windows' else 'vpython3'
+        return _BRAVE_ROOT / 'vendor' / 'depot_tools' / name
     if platform.system() == 'Windows':
         return Path(found)
     return Path('vpython3')
@@ -47,7 +49,7 @@ def is_found_in_path_variable() -> bool:
     A PATH-resolved value is a bare command name like `Path('vpython3')`,
     which has no parent directory (`parent == Path('.')`); shell and
     subprocess machinery look it up via `$PATH` at invocation time. The
-    chromium-bundled fallback, by contrast, is an absolute path with a
-    real parent directory.
+    vendored fallback, by contrast, is an absolute path with a real parent
+    directory.
     """
     return VPYTHON3_PATH.parent == Path('.')
