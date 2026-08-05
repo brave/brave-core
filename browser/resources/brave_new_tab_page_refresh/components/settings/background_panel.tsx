@@ -62,6 +62,7 @@ export function BackgroundPanel() {
     const isSelectedType = type === selectedBackground.type
     switch (type) {
       case SelectedBackgroundType.kBrave:
+        // Brave backgrounds always rotate — preview the first available image.
         return braveBackgrounds[0]?.imageUrl ?? ''
       case SelectedBackgroundType.kCustom:
         if (isSelectedType && selectedBackground.value) {
@@ -128,16 +129,36 @@ export function BackgroundPanel() {
     })
   }
 
+  function openBackgroundTypePanel(type: SelectedBackgroundType) {
+    // Brave backgrounds always rotate; the sub page only manages enable/disable.
+    if (type === SelectedBackgroundType.kBrave) {
+      actions.selectBackground(type, '')
+      setPanelType(type)
+      return
+    }
+
+    // Default to "Refresh on every new tab" when entering a type panel,
+    // unless a specific value of that type is already pinned.
+    const hasPinnedValue =
+      selectedBackground.type === type && !!selectedBackground.value
+    if (!hasPinnedValue) {
+      actions.selectBackground(type, '')
+    }
+    setPanelType(type)
+  }
+
   function onCustomPreviewClick() {
     if (customBackgrounds.length === 0) {
       showCustomBackgroundChooser()
     } else {
-      setPanelType(SelectedBackgroundType.kCustom)
+      openBackgroundTypePanel(SelectedBackgroundType.kCustom)
     }
   }
 
   function subPanelTitle(type: SelectedBackgroundType) {
     switch (type) {
+      case SelectedBackgroundType.kBrave:
+        return getString(S.NEW_TAB_BRAVE_BACKGROUND_LABEL)
       case SelectedBackgroundType.kCustom:
         return getString(S.NEW_TAB_CUSTOM_BACKGROUND_LABEL)
       case SelectedBackgroundType.kGradient:
@@ -231,9 +252,9 @@ export function BackgroundPanel() {
           <div className='background-options'>
             <div className='background-option'>
               <button
-                onClick={() => {
-                  actions.selectBackground(SelectedBackgroundType.kBrave, '')
-                }}
+                onClick={() =>
+                  openBackgroundTypePanel(SelectedBackgroundType.kBrave)
+                }
               >
                 {renderTypePreview(SelectedBackgroundType.kBrave)}
                 {getString(S.NEW_TAB_BRAVE_BACKGROUND_LABEL)}
@@ -247,7 +268,9 @@ export function BackgroundPanel() {
             </div>
             <div className='background-option'>
               <button
-                onClick={() => setPanelType(SelectedBackgroundType.kSolid)}
+                onClick={() =>
+                  openBackgroundTypePanel(SelectedBackgroundType.kSolid)
+                }
               >
                 {renderTypePreview(SelectedBackgroundType.kSolid)}
                 {getString(S.NEW_TAB_SOLID_BACKGROUND_LABEL)}
@@ -255,7 +278,9 @@ export function BackgroundPanel() {
             </div>
             <div className='background-option'>
               <button
-                onClick={() => setPanelType(SelectedBackgroundType.kGradient)}
+                onClick={() =>
+                  openBackgroundTypePanel(SelectedBackgroundType.kGradient)
+                }
               >
                 {renderTypePreview(SelectedBackgroundType.kGradient)}
                 {getString(S.NEW_TAB_GRADIENT_BACKGROUND_LABEL)}

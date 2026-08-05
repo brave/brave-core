@@ -118,6 +118,10 @@ interface NewTabPageHandler {
   // Returns the list of custom background images supplied by the user.
   GetCustomBackgrounds() => (array<string> backgrounds);
 
+  // Returns the image URLs of Brave backgrounds the user has disabled. Disabled
+  // backgrounds are excluded from the random background rotation.
+  GetDisabledBraveBackgrounds() => (array<string> background_urls);
+
   // Returns the user-selected or default background.
   GetSelectedBackground() => (SelectedBackground? background);
 
@@ -137,6 +141,9 @@ interface NewTabPageHandler {
   // Removes the specified custom image background from the list of available
   // backgrounds.
   RemoveCustomBackground(string background_url) => ();
+
+  // Enables or disables an individual Brave background image.
+  SetBraveBackgroundEnabled(string background_url, bool enabled) => ();
 
   // Notifies the browser that the user has clicked the sponsored image logo.
   NotifySponsoredImageLogoClicked(string wallpaper_id,
