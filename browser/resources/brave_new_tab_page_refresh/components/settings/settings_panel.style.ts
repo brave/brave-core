@@ -6,6 +6,7 @@
 import {
   color,
   effect,
+  font,
   icon,
   radius,
   spacing,
@@ -86,6 +87,15 @@ style.passthrough.css`
       align-items: center;
       gap: ${spacing.xl};
       color: ${color.text.primary};
+    }
+
+    .subtext {
+      font: ${font.small.regular};
+      color: ${color.text.secondary};
+
+      a {
+        color: inherit;
+      }
     }
   }
 `

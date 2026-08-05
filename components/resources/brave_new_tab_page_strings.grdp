@@ -230,7 +230,7 @@
   </message>
 
   <message name="IDS_NEW_TAB_SHOW_BACKGROUNDS_LABEL" desc="Text for settings background option" formatter_data="webui=BraveNewTabPage">
-    Show Background Images
+    Show background images
   </message>
 
   <message name="IDS_NEW_TAB_SHOW_CHAT_INPUT_LABEL" desc="Label for enabling the Leo AI chat input on the NTP" formatter_data="webui=BraveNewTabPage">
@@ -254,7 +254,7 @@
   </message>
 
   <message name="IDS_NEW_TAB_SHOW_SPONSORED_IMAGES_EARNING_TEXT" desc="Text describing earning for new tab page ads" formatter_data="webui=BraveNewTabPage">
-    With <ph name="REWARDS_LINK_BEGIN">$1</ph>Brave Rewards<ph name="REWARDS_LINK_END">/$1</ph>, you can earn for seeing new tab page ads. <ph name="LEARN_MORE_LINK_BEGIN">$2</ph>Learn more<ph name="LEARN_MORE_LINK_END">/$2</ph>.
+    With <ph name="REWARDS_LINK_BEGIN">$1</ph>Brave Rewards<ph name="REWARDS_LINK_END">/$1</ph>, you can earn for seeing New Tab Page ads. <ph name="LEARN_MORE_LINK_BEGIN">$2</ph>Learn more<ph name="LEARN_MORE_LINK_END">/$2</ph>.
   </message>
 
   <message name="IDS_NEW_TAB_SHOW_SPONSORED_IMAGES_LABEL" desc="Text for setting to opt-in to Branded Wallpapers on New Tab Page" formatter_data="webui=BraveNewTabPage">
@@ -290,7 +290,7 @@
   </message>
 
   <message name="IDS_NEW_TAB_SPONSORED_SITES_DESCRIPTION" desc="Description shown below the toggle that controls sponsored site visibility in top sites, explaining what sponsored sites are." formatter_data="webui=BraveNewTabPage">
-    Sponsored sites help keep Brave free. If you use them, you're supporting Brave's mission. Disable them anytime. <ph name="LINK_BEGIN">$1</ph>Learn more<ph name="LINK_END">/$1</ph>.
+    Sponsored sites help keep Brave free. If you use them, you're supporting Brave's mission. <ph name="LINK_BEGIN">$1</ph>Learn more<ph name="LINK_END">/$1</ph>.
   </message>
 
   <message name="IDS_NEW_TAB_STATS_ADS_BLOCKED_TEXT" desc="Text for trackers and ads blocked stat" formatter_data="webui=BraveNewTabPage">

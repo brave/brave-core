@@ -67,24 +67,29 @@ export function TopSitesPanel() {
             actions.setShowSponsoredSites(checked)
           }}
         >
-          <span className='label'>
-            {getString(S.NEW_TAB_SHOW_SPONSORED_SITES_LABEL)}
-            <div
-              className='subtext'
-              onClick={(e) => e.stopPropagation()}
-            >
-              {formatString(getString(S.NEW_TAB_SPONSORED_SITES_DESCRIPTION), {
-                $1: (content) => (
-                  <Link
-                    url={sponsoredSiteLearnMoreURL}
-                    openInNewTab
-                  >
-                    {content}
-                  </Link>
-                ),
-              })}
+          <div className='label'>
+            <div>
+              {getString(S.NEW_TAB_SHOW_SPONSORED_SITES_LABEL)}
+              <div
+                className='subtext'
+                onClick={(e) => e.stopPropagation()}
+              >
+                {formatString(
+                  getString(S.NEW_TAB_SPONSORED_SITES_DESCRIPTION),
+                  {
+                    $1: (content) => (
+                      <Link
+                        url={sponsoredSiteLearnMoreURL}
+                        openInNewTab
+                      >
+                        {content}
+                      </Link>
+                    ),
+                  },
+                )}
+              </div>
             </div>
-          </span>
+          </div>
         </Toggle>
       )}
       {showTopSites && (
