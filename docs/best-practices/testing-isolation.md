@@ -764,6 +764,12 @@ ensure that new logic, branches, and edge cases have corresponding tests. This
 applies to all PRs, not just bug fixes. Don't be overly strict — use judgment —
 but flag obvious gaps where meaningful test coverage is missing.
 
+As an anchor, the
+[Chromium testing guide](https://www.chromium.org/chromium-os/developer-library/guides/testing/cpp-writing-tests/)
+targets **at least 80% coverage, preferably 90%.** Chasing beyond 90% is often
+counterproductive — code guarded by `NOTREACHED()`/`LOG(FATAL)` rarely needs
+coverage. Treat this as a guideline, not a gate.
+
 **Exception:** Don't require a dedicated test when the change is trivial UI with
 no meaningful logic to test (e.g. a toggle wired to a pref), or when it follows
 an existing untested pattern in the surrounding code.
