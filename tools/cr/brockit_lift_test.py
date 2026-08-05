@@ -79,6 +79,17 @@ FOO_PATCH = 'patches/chrome-browser-foo.cc.patch'
 BAR_PATCH = 'patches/chrome-common-bar.cc.patch'
 BAZ_PATCH = 'patches/v8/src-baz.cc.patch'
 
+
+def _native(path: str) -> str:
+    """`path` rendered the way brockit prints a `Patchfile.path`/`.source`:
+    as a real `Path`, so separators match the host platform.
+
+    Unlike git-plumbing output (always '/') or the `.as_posix()`-normalised
+    continuation-file records, these console lines come from f-string'ing a
+    `Path` object directly, which is backslash-separated on Windows.
+    """
+    return str(Path(path))
+
 # The line each source carries the symbol brave rewrites on, and the upstream
 # and brave spellings of that symbol. A patch generated from a change on line 2
 # has a hunk covering lines 1 to 5, which is what makes the upstream edits below
@@ -1061,8 +1072,8 @@ class LiftConflictResolutionTest(LiftTestCase):
                 f'* ✔️  <hash> Update from Chromium {BASE_VERSION} to Chromium '
                 f'{MAJOR_TARGET}.',
                 '* Reapplying patch files with --3way:',
-                f'    * {FOO_PATCH}',
-                f'    * {BAR_PATCH}',
+                f'    * {_native(FOO_PATCH)}',
+                f'    * {_native(BAR_PATCH)}',
                 '* Manually resolve conflicts for (action needed):',
                 f'    ✘ {self.env.source_path(FOO)}',
                 '👋 (Address all sections with (action needed) above, and then '
@@ -1260,7 +1271,7 @@ class LiftConflictResolutionTest(LiftTestCase):
 
         run = self.env.run_lift(f'--to={MAJOR_TARGET}')
 
-        self.assert_output_has(run, f'    * {BAZ_PATCH}',
+        self.assert_output_has(run, f'    * {_native(BAZ_PATCH)}',
                                f'    ✘ {self.env.source_path(BAZ, V8)}')
 
         self.env.resolve_conflict(BAZ, V8)
@@ -1315,7 +1326,7 @@ class LiftDeletedSourceTest(LiftTestCase):
         self.assertEqual(run.exit_code, 1)
         self.assert_output_has(
             run, '* Files that cannot be patched anymore (action needed):',
-            f'    ✘ {BAR} (deleted)', f'        Remove {BAR}',
+            f'    ✘ {_native(BAR)} (deleted)', f'        Remove {BAR}',
             '👋 (Address all sections with (action needed) above, and then '
             'rerun 🚀Brockit! with --continue)')
         # Nothing is decided for the user: the patch is still there.
@@ -1445,7 +1456,7 @@ class LiftBrokenPatchTest(LiftTestCase):
         self.assert_output_has(
             run, '* Broken patches that fail to apply entirely '
             '(action needed):',
-            f'    ✘ {FOO_PATCH} ➜ {self.env.source_path(FOO)}')
+            f'    ✘ {_native(FOO_PATCH)} ➜ {self.env.source_path(FOO)}')
         record = self.env.continuation(MAJOR_TARGET).apply_record
         self.assertEqual(
             [patch.path.as_posix() for patch in record.broken_patches],
@@ -1563,7 +1574,8 @@ class LiftPlasterTest(LiftTestCase):
         # The patch is marked as plaster-managed in the reapply list, and the
         # fix it produced is committed under its own subject.
         self.assert_output_has(
-            run, f'    * {FOO_PATCH} 🩹', 'Apply-fixed 🩹 patches from Chromium '
+            run, f'    * {_native(FOO_PATCH)} 🩹',
+            'Apply-fixed 🩹 patches from Chromium '
             f'{BASE_VERSION} to Chromium {MAJOR_TARGET}.')
         self.assertEqual(self.env.files_in(self.env.commit_for('Apply-fixed')),
                          [FOO_PATCH])
@@ -1666,7 +1678,7 @@ class LiftPlasterTest(LiftTestCase):
 
         self.assert_failed(
             run, 'Plaster file was deleted but patch still exists: '
-            f'{FOO_PATCH}')
+            f'{_native(FOO_PATCH)}')
 
     def test_continue_after_fixing_the_plaster_finishes(self):
         self.env.add_plaster_for_foo()
