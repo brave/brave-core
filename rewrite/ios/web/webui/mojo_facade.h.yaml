@@ -1,0 +1,48 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Add sub-frame Mojo routing to MojoFacade.
+
+      Chromium's MojoFacade only ever polls/responds to a WebState's main
+      frame. Brave's AI Chat embeds an untrusted chrome-untrusted:// iframe
+      inside the main WebUI page to render conversation entries (see
+      brave/ios/browser/ui/webui/ai_chat/ai_chat_untrusted_conversation_ui.mm,
+      which binds its own mojom handlers via AddUntrustedInterface), so that
+      sub-frame needs its own poll loop and its watches need to be routed
+      back to it instead of always the main frame. See the corresponding
+      mojo_facade.mm plaster for how these are wired up.
+    add_to_protected:
+      class_name: MojoFacade
+      code: |-
+        void AwaitNextMessageForFrame(const std::string& frame_id);
+        void OnAwaitNextMessageForFrameCompleted(const std::string& frame_id,
+                                                 const base::Value* value,
+                                                 NSError* error);
+        // Resolves which frame a watch's callback should be delivered to,
+        // falling back to the main frame exactly as upstream's own
+        // GetMainWebFrame() call in OnWatcherCallback would.
+        web::WebFrame* GetFrameForWatch(int watch_id);
+
+        // Frame ids of sub-frames (other than the main frame, already
+        // covered by upstream's own is_awaiting_message_) currently being
+        // polled. A std::map<std::string, bool> stands in for a set since
+        // <set> isn't included here and this is the only place that needs
+        // one.
+        std::map<std::string, bool> extra_polling_frame_ids_;
+        // Maps an active watch_id to the frame id that created it via
+        // MojoHandle.watch.
+        std::map<int, std::string> watch_id_to_frame_id_;
+
+  - description: |-
+      Declare the chrome-untrusted:// per-origin interface allowlist check.
+
+      See InterfaceBinder::IsAllowedForOrigin in
+      brave/chromium_src/ios/web/public/web_state.h for the allowlist itself.
+    add_to_protected:
+      class_name: MojoFacade
+      code: |-
+        bool IsBindInterfaceAllowedForFrame(const base::DictValue& args);
