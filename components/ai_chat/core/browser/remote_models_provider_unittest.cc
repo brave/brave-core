@@ -75,36 +75,33 @@ class RemoteModelsProviderTest : public testing::Test {
   void SetUp() override {
     ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
     prefs::RegisterProfilePrefs(pref_service_.registry());
-  }
-
-  std::unique_ptr<RemoteModelsProvider> MakeProvider() {
-    auto provider = std::make_unique<RemoteModelsProvider>(
-        nullptr, &pref_service_, temp_dir_.GetPath());
-    provider->GetFetcherForTesting().SetAPIRequestHelperForTesting(
+    provider_ = std::make_unique<RemoteModelsProvider>(nullptr, &pref_service_,
+                                                       temp_dir_.GetPath());
+    provider_->GetFetcherForTesting().SetAPIRequestHelperForTesting(
         std::make_unique<testing::NiceMock<MockAPIRequestHelper>>(
             TRAFFIC_ANNOTATION_FOR_TESTS, nullptr));
-    return provider;
   }
 
-  MockAPIRequestHelper* GetMockAPIRequestHelper(
-      RemoteModelsProvider& provider) {
+  MockAPIRequestHelper* GetMockAPIRequestHelper() {
     return static_cast<MockAPIRequestHelper*>(
-        provider.GetFetcherForTesting().GetAPIRequestHelperForTesting());
+        provider_->GetFetcherForTesting().GetAPIRequestHelperForTesting());
   }
 
-  std::vector<mojom::ModelPtr> GetModels(RemoteModelsProvider& provider) {
+  std::vector<mojom::ModelPtr> GetModels() {
     base::test::TestFuture<std::vector<mojom::ModelPtr>> future;
-    provider.GetModels(future.GetCallback());
+    provider_->GetModels(future.GetCallback());
     return future.Take();
   }
 
-  void RespondWithModels(RemoteModelsProvider& provider,
-                         const std::vector<mojom::ModelPtr>& models) {
-    std::string response = MakeModelsResponse(models);
-    EXPECT_CALL(*GetMockAPIRequestHelper(provider),
-                Request(_, _, _, _, _, _, _, _))
+  // Simulates the fetcher's HTTP response. If |models| is non-null, responds
+  // successfully with its serialized contents; otherwise simulates an HTTP
+  // error.
+  void RespondWith(const std::vector<mojom::ModelPtr>* models) {
+    std::string response = models ? MakeModelsResponse(*models) : "";
+    int http_code = models ? net::HTTP_OK : net::HTTP_INTERNAL_SERVER_ERROR;
+    EXPECT_CALL(*GetMockAPIRequestHelper(), Request(_, _, _, _, _, _, _, _))
         .WillOnce(
-            [response](
+            [response, http_code](
                 const std::string& method, const GURL& url,
                 const std::string& body, const std::string& content_type,
                 ResultCallback result_callback,
@@ -112,29 +109,13 @@ class RemoteModelsProviderTest : public testing::Test {
                 const api_request_helper::APIRequestOptions& options,
                 api_request_helper::APIRequestHelper::ResponseConversionCallback
                     conversion_callback) {
+              base::Value response_body = response.empty()
+                                              ? base::Value()
+                                              : base::test::ParseJson(response);
               std::move(result_callback)
                   .Run(api_request_helper::APIRequestResult(
-                      net::HTTP_OK, base::test::ParseJson(response), {},
-                      net::OK, GURL()));
-              return Ticket();
-            });
-  }
-
-  void RespondWithError(RemoteModelsProvider& provider) {
-    EXPECT_CALL(*GetMockAPIRequestHelper(provider),
-                Request(_, _, _, _, _, _, _, _))
-        .WillOnce(
-            [](const std::string& method, const GURL& url,
-               const std::string& body, const std::string& content_type,
-               ResultCallback result_callback,
-               const base::flat_map<std::string, std::string>& headers,
-               const api_request_helper::APIRequestOptions& options,
-               api_request_helper::APIRequestHelper::ResponseConversionCallback
-                   conversion_callback) {
-              std::move(result_callback)
-                  .Run(api_request_helper::APIRequestResult(
-                      net::HTTP_INTERNAL_SERVER_ERROR, base::Value(), {},
-                      net::OK, GURL()));
+                      http_code, std::move(response_body), {}, net::OK,
+                      GURL()));
               return Ticket();
             });
   }
@@ -143,28 +124,25 @@ class RemoteModelsProviderTest : public testing::Test {
       base::test::TaskEnvironment::TimeSource::MOCK_TIME};
   base::ScopedTempDir temp_dir_;
   TestingPrefServiceSimple pref_service_;
+  std::unique_ptr<RemoteModelsProvider> provider_;
 };
 
 TEST_F(RemoteModelsProviderTest, FetchesWhenCacheEmpty) {
-  auto provider = MakeProvider();
-
   std::vector<mojom::ModelPtr> server_models;
   server_models.push_back(MakeTestModel("model-a"));
-  RespondWithModels(*provider, server_models);
+  RespondWith(&server_models);
 
-  auto result = GetModels(*provider);
+  auto result = GetModels();
   ASSERT_EQ(result.size(), 1u);
   EXPECT_EQ(result[0]->key, "model-a");
 }
 
 TEST_F(RemoteModelsProviderTest, ReturnsCachedModelsWithoutFetch) {
-  auto provider = MakeProvider();
-
   // First call fetches and caches.
   std::vector<mojom::ModelPtr> server_models;
   server_models.push_back(MakeTestModel("model-a"));
-  RespondWithModels(*provider, server_models);
-  GetModels(*provider);
+  RespondWith(&server_models);
+  GetModels();
 
   // Wait for OnWriteComplete to set the pref timestamp before the second call
   // checks the cache.
@@ -173,18 +151,16 @@ TEST_F(RemoteModelsProviderTest, ReturnsCachedModelsWithoutFetch) {
   }));
 
   // Second call within TTL — no new network request should be needed.
-  auto result = GetModels(*provider);
+  auto result = GetModels();
   ASSERT_EQ(result.size(), 1u);
   EXPECT_EQ(result[0]->key, "model-a");
 }
 
 TEST_F(RemoteModelsProviderTest, ExpiredCacheTriggersRefetch) {
-  auto provider = MakeProvider();
-
   std::vector<mojom::ModelPtr> first;
   first.push_back(MakeTestModel("old-model"));
-  RespondWithModels(*provider, first);
-  GetModels(*provider);
+  RespondWith(&first);
+  GetModels();
 
   // Wait for OnWriteComplete to set the pref timestamp before advancing the
   // clock past TTL.
@@ -197,17 +173,16 @@ TEST_F(RemoteModelsProviderTest, ExpiredCacheTriggersRefetch) {
 
   std::vector<mojom::ModelPtr> second;
   second.push_back(MakeTestModel("new-model"));
-  RespondWithModels(*provider, second);
+  RespondWith(&second);
 
-  auto result = GetModels(*provider);
+  auto result = GetModels();
   ASSERT_EQ(result.size(), 1u);
   EXPECT_EQ(result[0]->key, "new-model");
 }
 
 TEST_F(RemoteModelsProviderTest, FetchFailureReturnsEmptyVector) {
-  auto provider = MakeProvider();
-  RespondWithError(*provider);
-  auto result = GetModels(*provider);
+  RespondWith(nullptr);
+  auto result = GetModels();
   EXPECT_TRUE(result.empty());
 }
 

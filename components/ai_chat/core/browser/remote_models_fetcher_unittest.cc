@@ -170,11 +170,16 @@ class RemoteModelsFetcherTest : public testing::Test {
         fetcher_->GetAPIRequestHelperForTesting());
   }
 
-  // Simulates a successful HTTP fetch whose body is |json_response|.
-  void SimulateSuccessfulFetch(const std::string& json_response) {
+  // Simulates the API request helper's response to a fetch. |json_response|
+  // is parsed as the response body when non-empty, otherwise an empty
+  // (NONE-type) Value is used, matching APIRequestHelper's behavior when the
+  // body fails to parse as JSON.
+  void SimulateFetch(const std::string& json_response,
+                     int http_code = net::HTTP_OK,
+                     net::Error net_error = net::OK) {
     EXPECT_CALL(*GetMockAPIRequestHelper(), Request(_, _, _, _, _, _, _, _))
         .WillOnce(
-            [json_response](
+            [json_response, http_code, net_error](
                 const std::string& method, const GURL& url,
                 const std::string& body, const std::string& content_type,
                 ResultCallback result_callback,
@@ -182,52 +187,19 @@ class RemoteModelsFetcherTest : public testing::Test {
                 const api_request_helper::APIRequestOptions& options,
                 api_request_helper::APIRequestHelper::ResponseConversionCallback
                     conversion_callback) {
+              base::Value response_body =
+                  json_response.empty() ? base::Value()
+                                        : base::test::ParseJson(json_response);
               std::move(result_callback)
                   .Run(api_request_helper::APIRequestResult(
-                      net::HTTP_OK, base::test::ParseJson(json_response), {},
-                      net::OK, GURL()));
-              return Ticket();
-            });
-  }
-
-  void SimulateHTTPError(int http_code) {
-    EXPECT_CALL(*GetMockAPIRequestHelper(), Request(_, _, _, _, _, _, _, _))
-        .WillOnce(
-            [http_code](
-                const std::string& method, const GURL& url,
-                const std::string& body, const std::string& content_type,
-                ResultCallback result_callback,
-                const base::flat_map<std::string, std::string>& headers,
-                const api_request_helper::APIRequestOptions& options,
-                api_request_helper::APIRequestHelper::ResponseConversionCallback
-                    conversion_callback) {
-              std::move(result_callback)
-                  .Run(api_request_helper::APIRequestResult(
-                      http_code, base::Value(), {}, net::OK, GURL()));
-              return Ticket();
-            });
-  }
-
-  void SimulateNetworkError() {
-    EXPECT_CALL(*GetMockAPIRequestHelper(), Request(_, _, _, _, _, _, _, _))
-        .WillOnce(
-            [](const std::string& method, const GURL& url,
-               const std::string& body, const std::string& content_type,
-               ResultCallback result_callback,
-               const base::flat_map<std::string, std::string>& headers,
-               const api_request_helper::APIRequestOptions& options,
-               api_request_helper::APIRequestHelper::ResponseConversionCallback
-                   conversion_callback) {
-              std::move(result_callback)
-                  .Run(api_request_helper::APIRequestResult(
-                      -1, base::Value(), {}, net::ERR_CONNECTION_REFUSED,
+                      http_code, std::move(response_body), {}, net_error,
                       GURL()));
               return Ticket();
             });
   }
 
   void ExpectEmptyResult(const std::string& json) {
-    SimulateSuccessfulFetch(json);
+    SimulateFetch(json);
     base::test::TestFuture<std::vector<mojom::ModelPtr>> future;
     fetcher_->FetchModels(future.GetCallback());
     EXPECT_TRUE(future.Get().empty());
@@ -238,7 +210,7 @@ class RemoteModelsFetcherTest : public testing::Test {
 };
 
 TEST_F(RemoteModelsFetcherTest, SuccessfulFetch) {
-  SimulateSuccessfulFetch(kValidModelsJSON);
+  SimulateFetch(kValidModelsJSON);
 
   base::test::TestFuture<std::vector<mojom::ModelPtr>> future;
   fetcher_->FetchModels(future.GetCallback());
@@ -300,7 +272,7 @@ TEST_F(RemoteModelsFetcherTest, SuccessfulFetch) {
 }
 
 TEST_F(RemoteModelsFetcherTest, HTTPError500) {
-  SimulateHTTPError(500);
+  SimulateFetch("", 500);
 
   base::test::TestFuture<std::vector<mojom::ModelPtr>> future;
   fetcher_->FetchModels(future.GetCallback());
@@ -308,7 +280,7 @@ TEST_F(RemoteModelsFetcherTest, HTTPError500) {
 }
 
 TEST_F(RemoteModelsFetcherTest, NetworkError) {
-  SimulateNetworkError();
+  SimulateFetch("", -1, net::ERR_CONNECTION_REFUSED);
 
   base::test::TestFuture<std::vector<mojom::ModelPtr>> future;
   fetcher_->FetchModels(future.GetCallback());
@@ -316,23 +288,10 @@ TEST_F(RemoteModelsFetcherTest, NetworkError) {
 }
 
 TEST_F(RemoteModelsFetcherTest, InvalidJSON) {
-  // APIRequestHelper leaves value_body() as a default (NONE-type) Value when
-  // the response body fails to parse as JSON, while still reporting a 2XX
-  // response code.
-  EXPECT_CALL(*GetMockAPIRequestHelper(), Request(_, _, _, _, _, _, _, _))
-      .WillOnce(
-          [](const std::string& method, const GURL& url,
-             const std::string& body, const std::string& content_type,
-             ResultCallback result_callback,
-             const base::flat_map<std::string, std::string>& headers,
-             const api_request_helper::APIRequestOptions& options,
-             api_request_helper::APIRequestHelper::ResponseConversionCallback
-                 conversion_callback) {
-            std::move(result_callback)
-                .Run(api_request_helper::APIRequestResult(
-                    net::HTTP_OK, base::Value(), {}, net::OK, GURL()));
-            return Ticket();
-          });
+  // An empty response body reproduces APIRequestHelper leaving value_body()
+  // as a default (NONE-type) Value, which happens when the response body
+  // fails to parse as JSON while still reporting a 2XX response code.
+  SimulateFetch("");
 
   base::test::TestFuture<std::vector<mojom::ModelPtr>> future;
   fetcher_->FetchModels(future.GetCallback());
@@ -369,7 +328,7 @@ TEST_F(RemoteModelsFetcherTest, ValidModelsReturnedWhenSomeFail) {
       }
     ])";
 
-  SimulateSuccessfulFetch(kMixedModelsJSON);
+  SimulateFetch(kMixedModelsJSON);
 
   base::test::TestFuture<std::vector<mojom::ModelPtr>> future;
   fetcher_->FetchModels(future.GetCallback());
@@ -433,7 +392,7 @@ TEST_F(RemoteModelsFetcherTest, NoCategoryCapability) {
 }
 
 TEST_F(RemoteModelsFetcherTest, EmptyResponse) {
-  SimulateSuccessfulFetch("[]");
+  SimulateFetch("[]");
 
   base::test::TestFuture<std::vector<mojom::ModelPtr>> future;
   fetcher_->FetchModels(future.GetCallback());
@@ -513,7 +472,7 @@ TEST_F(RemoteModelsFetcherTest, SkipsUnknownCapabilities) {
       }
     ])";
 
-  SimulateSuccessfulFetch(kUnknownCapabilityJSON);
+  SimulateFetch(kUnknownCapabilityJSON);
 
   base::test::TestFuture<std::vector<mojom::ModelPtr>> future;
   fetcher_->FetchModels(future.GetCallback());
