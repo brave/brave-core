@@ -2177,7 +2177,13 @@
 "wallet.txStatusViewInActivity" = "Bekijk in Activiteit";
 
 /* Description displayed when users chose Brave to ask them if they want the Unstoppable Domains to be resolved every time they enter one. The first '%@' will be replaced with a list of supported TLDs like '.x' or '.bitcoin'. The second '%@' be replaced with a link to Chainstack's terms of use page. The third '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The fourth '%@' will be replaced with a link to Chainstack's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'. */
-"wallet.udDomainInterstitialPageDescription" = "Brave wordt de geconfigureerde Ethereum RPC-service, die standaard Chainstack is, voor het herleiden van domeinnamen eindigend op .crypto (en ook %1$@) die behoren tot Unstoppable Domains. Brave verbergt je IP-adres. Als je deze optie inschakelt, ziet Chainstack alleen dat iemand deze domeinen wil bezoeken. Lees de <a href=%2$@>%3$@</a> en het <a href=%4$@>%5$@</a> van Chainstack.";
+"wallet.udDomainInterstitialPageDescription" = "domeinnamen die behoren tot Unstoppable Domains. Brave verbergt je IP-adres. Als je deze optie inschakelt, ziet Chainstack alleen dat iemand deze domeinen wil bezoeken. Lees de <a href=%1$@>%2$@</a> en het <a href=%3$@>%4$@</a> van Chainstack.";
+
+/* The intro displayed below `udDomainInterstitialPageTitle`. */
+"wallet.udDomainInterstitialPageIntro" = "Brave wordt de geconfigureerde Ethereum RPC-service die standaard Chainstack gebruikt voor het herleiden van:";
+
+/* The title of the button that user can tap to reveal more unstoppable domain extensions we support to resolve. */
+"wallet.udDomainInterstitialPageMore" = "+ meer";
 
 /* Title displayed when users chose Brave to ask them if they want the Unstoppable Domains domain to be resolved every time they enter one. */
 "wallet.udDomainInterstitialPageTitle" = "Ondersteuning voor Unstoppable Domains in Brave inschakelen?";

@@ -86,7 +86,7 @@
 "CustomFiltersInvalidRuleError" = "Μη έγκυρος κανόνας `%1$@` στη γράμμη %2$i";
 
 /* A placeholder when custom filter lists are empty */
-"CustomFiltersPlaceholder" = "Προσθέστε εδώ τα προσαρμοσμένα φίλτρα σας, ένα ανά γραμμή.";
+"CustomFiltersPlaceholder" = "Προσθήκη προσαρμοσμένων φίλτρων";
 
 /* An error message telling the user that they crossed the line limit */
 "CustomFiltersTooManyLinesError" = "Τα προσαρμοσμένα φίλτρα δεν υποστηρίζουν πάνω από μία γραμμές %i";
@@ -111,6 +111,9 @@
 
 /* A tab title for the warning page that appears when a page was blocked */
 "DomainBlockedTitle" = "Ο Τομέας αποκλείστηκε";
+
+/* A placeholder when custom filter lists are empty */
+"EditCustomFiltersLabel" = "Επεξεργασία προσαρμοσμένων φίλτρων";
 
 /* A description of what the Enable GPC toggle does */
 "EnableGPCDescription" = "Ζήτα από τους ιστότοπους να μην πωλούν ή μοιράζονται τα δεδομένα σου. [Μάθε περισσότερα](https://support.brave.app/hc/en-us/articles/360017989132-How-do-I-change-my-Privacy-Settings#h_01HHFRRT6B5YTRREA4ZDARGTWM)";

@@ -34,6 +34,12 @@
 /* Title for Brave News widgets that display the top news */
 "widgets.newsClusteringWidgetTitle" = "बड़ी ख़बरें";
 
+/* Displayed on a news widget wont load due to admin policies */
+"widgets.newsUnavailableByPolicy" = "Brave News अक्षम है";
+
+/* Displayed on a news widget wont load due to admin policies */
+"widgets.newsUnavailableByPolicyDescription" = "आपके संगठन की पॉलिसी द्वारा बंद कर दिया गया";
+
 /* This shows when you add a widget but have no favorites added in your app */
 "widgets.noFavoritesFound" = "यहाँ अपने पसंदीदा देखने के लिए, कृपया Brave खोलें";
 

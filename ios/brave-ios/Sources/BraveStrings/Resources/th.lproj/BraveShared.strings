@@ -1537,7 +1537,7 @@
 /* Title for the Playlist Settings Option for Enable/Disable Auto-Play */
 "playlist.playlistAutoPlaySettingsOptionTitle" = "เล่นอัตโนมัติ";
 
-/* Auto Download turn Off Option */
+/* Auto Cache turn Off Option */
 "playlist.playlistAutoSaveOptionOff" = "ปิด";
 
 /* Auto Save turn On Option */
@@ -1546,10 +1546,10 @@
 /* Option Text for Auto Save Only Wi-Fi Option */
 "playlist.playlistAutoSaveOptionOnlyWifi" = "เฉพาะ Wi-Fi เท่านั้น";
 
-/* Description for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
-"playlist.playlistAutoSaveSettingsDescription" = "การเพิ่มไฟล์วิดีโอและเสียงสำหรับการใช้งานแบบออฟไลน์อาจใช้พื้นที่เก็บข้อมูลจำนวนมากบนอุปกรณ์ของคุณ รวมถึงใช้ข้อมูลมือถือของคุณด้วย";
+/* Description for the Playlist Settings Option for Auto Caching media (Off/On/Only Wi-fi) */
+"playlist.playlistAutoSaveSettingsDescription" = "การแคชไฟล์วิดีโอและเสียงอาจใช้ทั้งข้อมูลเซลลูลาร์และพื้นที่จัดเก็บบนอุปกรณ์ของคุณ";
 
-/* Footer Text for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi)) */
+/* Footer Text for the Playlist Settings Option for media Auto Cache (Off/On/Only Wi-fi)) */
 "playlist.playlistAutoSaveSettingsFooterText" = "เมื่อคุณเปิดเนื้อหาในเพลย์ลิสต์ ตัวเลือกนี้จะทำให้รายการในเพลย์ลิสต์ที่เปิดอยู่ยังคงอยู่ในอุปกรณ์ของคุณเพื่อให้คุณสามารถเล่นได้โดยไม่ต้องเชื่อมต่ออินเทอร์เน็ต";
 
 /* Title for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
@@ -1559,7 +1559,7 @@
 "playlist.playlistDiskSpaceAddAnywayButtonTitle" = "เพิ่มอยู่ดี";
 
 /* When the user's disk space is almost full */
-"playlist.playlistDiskSpaceWarningMessage" = "อุปกรณ์ของคุณเหลือพื้นที่น้อย การเพิ่มวิดีโอนี้ไปยังเพลย์ลิสต์อาจล้มเหลวหรือส่งผลกระทบต่อการดาวน์โหลดอื่น";
+"playlist.playlistDiskSpaceWarningMessage" = "อุปกรณ์ของคุณเหลือพื้นที่น้อย การเพิ่มวิดีโอนี้ไปยังเพลย์ลิสต์อาจล้มเหลวหรือส่งผลกระทบต่อวิดีโอที่แคชไว้อื่น";
 
 /* When the user's disk space is almost full */
 "playlist.playlistDiskSpaceWarningTitle" = "พื้นที่จัดเก็บใกล้เต็มแล้ว";
@@ -1570,14 +1570,17 @@
 /* Title for the Playlist Settings Option for long press gesture */
 "playlist.playlistLongPressSettingsOptionTitle" = "เปิดใช้งานการกดค้าง";
 
+/* Text for Playlist Data Toggle for clearing the cache in settings */
+"playlist.playlistOfflineDataToggleOption" = "ข้อมูลเพลย์ลิสต์";
+
 /* Title of a button displayed when first adding some media to Playlist. Its shown next to the name of a folder that the item is recently added to to imply that you are changing the folder it was saved to */
 "playlist.playlistPopoverChangeFoldersButtonTitle" = "เปลี่ยน";
 
-/* The title for the alert that shows up when removing all videos and their offline mode storage. */
+/* The title for the alert that shows up when removing all playlist data. */
 "playList.playlistResetAlertTitle" = "รีเซ็ต";
 
 /* Footer Text for the Playlist Settings Option for resetting Playlist. */
-"playlist.playlistResetPlaylistOptionFooterText" = "ตัวเลือกนี้จะลบวิดีโอทั้งหมดจากเพลย์ลิสต์ รวมถึงการจัดเก็บโหมดออฟไลน์อีกด้วย";
+"playlist.playlistResetPlaylistOptionFooterText" = "ตัวเลือกนี้จะลบข้อมูลเพลย์ลิสต์ทั้งหมด";
 
 /* Title Playlist (used for back button, and playlist settings) */
 "playList.playListSettingTitle" = "เพลย์ลิสต์";
@@ -1588,7 +1591,7 @@
 /* Title for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
 "playlist.playlistStartPlaybackSettingsOptionTitle" = "จำตำแหน่งการเล่นไฟล์";
 
-/* Title for removing offline mode storage */
+/* Title for removing cached media from the playlist */
 "playList.removeActionButtonTitle" = "นำออก";
 
 /* A message shown when the user removes media from the playlist. '%@' will be replaced by the folder it was added to. Example: 'Removed from Play Later' */
@@ -1608,9 +1611,6 @@
 
 /* The title for the toast that shows up on a page containing a playlist item */
 "playList.toastAddToPlaylistTitle" = "เพิ่มไปยังเพลย์ลิสต์";
-
-/* The title for the toast that shows up on a page when an item that has already been added, was updated. */
-"playList.toastExitingItemPlaylistTitle" = "ดูใน Brave Playlist";
 
 /* A button title that when tapped will re-add the media item (undo the removal) that the user recently removed. */
 "playList.undoRemoveButtonTitle" = "เลิกทำ";
@@ -3162,6 +3162,12 @@
 
 /* The title of the toggle for user to turn on auto-open keyboard when creating a new tab. */
 "tabs.settings.autoOpenKeyboardTitle" = "เปิดคีย์บอร์ดโดยอัตโนมัติ";
+
+/* The description of the toggle for user to turn on open link in quick view mode. */
+"tabs.settings.openLinkInQuickViewModeDescription" = "เปิดลิงก์จาก Ask Brave และ Brave Search ในแท็บแสดงตัวอย่าง";
+
+/* The title of the toggle for user to turn on open link in quick view mode. */
+"tabs.settings.openLinkInQuickViewModeTitle" = "เปิดใช้งานแท็บ Quickview";
 
 /* No comment provided by engineer. */
 "tabs.settings.persistentPrivateBrowsingDescription" = "เปิดแท็บการท่องเว็บแบบส่วนตัวเอาไว้เมื่อคุณปิดแอป เพื่อให้แน่ใจว่าเซสชันการท่องเว็บแบบส่วนตัวจะดำเนินต่อไปได้อย่างราบรื่น";

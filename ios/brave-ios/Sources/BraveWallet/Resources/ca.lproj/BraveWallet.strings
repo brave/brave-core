@@ -2177,7 +2177,13 @@
 "wallet.txStatusViewInActivity" = "Veure a Activitat";
 
 /* Description displayed when users chose Brave to ask them if they want the Unstoppable Domains to be resolved every time they enter one. The first '%@' will be replaced with a list of supported TLDs like '.x' or '.bitcoin'. The second '%@' be replaced with a link to Chainstack's terms of use page. The third '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The fourth '%@' will be replaced with a link to Chainstack's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'. */
-"wallet.udDomainInterstitialPageDescription" = "Brave serà el servei RPC d'Ethereum configurat, que per defecte és Chainstack, per resoldre els noms de domini .crypto (i també %1$@) que es troben a Unstoppable Domains. Brave amaga la teva adreça IP. Si actives això, Chainstack veurà que algú està intentant visitar aquests dominis però res més. Consulta <a href=%2$@>%3$@</a> i <a href=%4$@>%5$@</a> de Chainstack.";
+"wallet.udDomainInterstitialPageDescription" = "noms de domini que són a Unstoppable Domains. Brave amaga la teva adreça IP. Si actives això, Chainstack veurà que algú està intentant visitar aquests dominis però res més. Mostra els <a href=%1$@>%2$@</a> i <a href=%3$@>%4$@</a> de Chainstack.";
+
+/* The intro displayed below `udDomainInterstitialPageTitle`. */
+"wallet.udDomainInterstitialPageIntro" = "Brave serà el servei RPC d'Ethereum configurat que per defecte utilitza Chainstack per resoldre:";
+
+/* The title of the button that user can tap to reveal more unstoppable domain extensions we support to resolve. */
+"wallet.udDomainInterstitialPageMore" = "+ més";
 
 /* Title displayed when users chose Brave to ask them if they want the Unstoppable Domains domain to be resolved every time they enter one. */
 "wallet.udDomainInterstitialPageTitle" = "Vols habilitar el suport d'Unstoppable Domains a Brave?";

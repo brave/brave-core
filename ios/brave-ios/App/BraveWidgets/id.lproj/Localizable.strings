@@ -34,6 +34,12 @@
 /* Title for Brave News widgets that display the top news */
 "widgets.newsClusteringWidgetTitle" = "Berita Terpopuler";
 
+/* Displayed on a news widget wont load due to admin policies */
+"widgets.newsUnavailableByPolicy" = "Brave Berita Dinonaktifkan";
+
+/* Displayed on a news widget wont load due to admin policies */
+"widgets.newsUnavailableByPolicyDescription" = "Dinonaktifkan oleh kebijakan organisasi Anda";
+
 /* This shows when you add a widget but have no favorites added in your app */
 "widgets.noFavoritesFound" = "Silakan buka Brave untuk melihat favorit Anda di sini";
 
