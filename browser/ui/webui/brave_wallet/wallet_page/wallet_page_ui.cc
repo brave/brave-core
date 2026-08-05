@@ -120,6 +120,8 @@ WalletPageUI::WalletPageUI(content::WebUI* web_ui)
   source->AddBoolean("rewardsFeatureEnabled", IsRewardsFeatureEnabled(profile));
   source->AddBoolean("isLedgerMojoBridgeEnabled",
                      IsMojoForHardwareWalletEnabled());
+  source->AddBoolean("isTrezorMojoBridgeEnabled",
+                     IsMojoForHardwareWalletEnabled());
   source->AddBoolean("walletDebug", IsWalletDebugEnabled());
 
 #if !BUILDFLAG(IS_ANDROID)
@@ -231,8 +233,14 @@ void WalletPageUI::CreatePageHandler(
 
 void WalletPageUI::BindInterface(
     mojo::PendingReceiver<mojom::LedgerBridgeService> receiver) {
-  service_receiver_.reset();
-  service_receiver_.Bind(std::move(receiver));
+  ledger_bridge_service_receiver_.reset();
+  ledger_bridge_service_receiver_.Bind(std::move(receiver));
+}
+
+void WalletPageUI::BindInterface(
+    mojo::PendingReceiver<mojom::TrezorBridgeService> receiver) {
+  trezor_bridge_service_receiver_.reset();
+  trezor_bridge_service_receiver_.Bind(std::move(receiver));
 }
 
 void WalletPageUI::BindLedgerBridge(
@@ -251,6 +259,25 @@ void WalletPageUI::MaybeFuseLedgerBridge() {
   if (ledger_bridge_remote_ && ledger_bridge_receiver_) {
     mojo::FusePipes(std::move(ledger_bridge_receiver_),
                     std::move(ledger_bridge_remote_));
+  }
+}
+
+void WalletPageUI::BindTrezorBridge(
+    mojo::PendingRemote<mojom::TrezorBridge> bridge) {
+  trezor_bridge_remote_ = std::move(bridge);
+  MaybeFuseTrezorBridge();
+}
+
+void WalletPageUI::BindTrezorBridge(
+    mojo::PendingReceiver<mojom::TrezorBridge> receiver) {
+  trezor_bridge_receiver_ = std::move(receiver);
+  MaybeFuseTrezorBridge();
+}
+
+void WalletPageUI::MaybeFuseTrezorBridge() {
+  if (trezor_bridge_remote_ && trezor_bridge_receiver_) {
+    mojo::FusePipes(std::move(trezor_bridge_receiver_),
+                    std::move(trezor_bridge_remote_));
   }
 }
 
