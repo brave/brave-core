@@ -12,7 +12,7 @@ from pathlib import Path
 import platform
 import shutil
 
-_CHROMIUM_SRC_ROOT = Path(__file__).resolve().parents[3]
+import repository
 
 
 def _compute_vpython3_path() -> Path:
@@ -26,13 +26,13 @@ def _compute_vpython3_path() -> Path:
          `!`-prefixed aliases) doesn't reliably resolve `.bat` wrappers
          like `vpython3.bat` via `$PATH`.
       3. Neither — the chromium-bundled `third_party/depot_tools/vpython3`,
-         derived from this file's own location so it stays valid regardless
-         of cwd.
+         resolved to absolute at module import so later cwd changes (e.g.
+         `FakeChromiumRepo.setup()`) don't invalidate it.
     """
     found = shutil.which('vpython3')
     if found is None:
-        return (_CHROMIUM_SRC_ROOT / 'third_party' / 'depot_tools' /
-                'vpython3')
+        return (repository.chromium.root / 'third_party' / 'depot_tools' /
+                'vpython3').resolve()
     if platform.system() == 'Windows':
         return Path(found)
     return Path('vpython3')
