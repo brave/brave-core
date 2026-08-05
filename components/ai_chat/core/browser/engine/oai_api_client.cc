@@ -448,7 +448,7 @@ void OAIAPIClient::OnQueryDataReceived(
   }
 
   for (auto& tool_result :
-       ParseToolCallsFromOAIResponse(result_dict, std::nullopt)) {
+       ParseToolCallsFromOAIResponse(result_dict, model_key)) {
     callback.Run(std::move(tool_result));
   }
 }
