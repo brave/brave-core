@@ -86,7 +86,7 @@
 "CustomFiltersInvalidRuleError" = "Ugyldig regel `%1$@` på linje %2$i";
 
 /* A placeholder when custom filter lists are empty */
-"CustomFiltersPlaceholder" = "Tilføj dine brugerdefinerede filtre her, ét per linje.";
+"CustomFiltersPlaceholder" = "Tilføj tilpassede filtre";
 
 /* An error message telling the user that they crossed the line limit */
 "CustomFiltersTooManyLinesError" = "Brugerdefinerede filtre understøtter højst %i linjer";
@@ -111,6 +111,9 @@
 
 /* A tab title for the warning page that appears when a page was blocked */
 "DomainBlockedTitle" = "Domæne blokeret";
+
+/* A placeholder when custom filter lists are empty */
+"EditCustomFiltersLabel" = "Redigér tilpassede filtre";
 
 /* A description of what the Enable GPC toggle does */
 "EnableGPCDescription" = "Bed hjemmesider om ikke at sælge eller dele dine data. [Få mere at vide](https://support.brave.app/hc/en-us/articles/360017989132-How-do-I-change-my-Privacy-Settings#h_01HHFRRT6B5YTRREA4ZDARGTWM)";

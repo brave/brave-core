@@ -623,7 +623,7 @@
 "defaultBrowserCallout.introPrimaryText" = "Для безопасности открывайте ссылки с помощью Brave";
 
 /* Secondary text on default browser popup. */
-"defaultBrowserCallout.introSecondaryText" = "Brave Shields блокирует трекеры & рекламу, сохраняет данные и экономит ваше время на каждом посещаемом вами сайте";
+"defaultBrowserCallout.introSecondaryText" = "Brave Shields блокирует трекеры и рекламу, сохраняет данные и экономит ваше время на каждом посещаемом вами сайте";
 
 /* Tertiary text on default browser popup screen */
 "defaultBrowserCallout.introTertiaryText" = "Откройте настройки, нажмите «Браузерное приложение по умолчанию» и выберите Brave.";
@@ -956,7 +956,7 @@
 "login.loginListEmptyScreenTitle" = "Учетные данные не найдены";
 
 /* Title for navigation bar of the login list screen */
-"login.loginListNavigationTitle" = "Логины & пароли";
+"login.loginListNavigationTitle" = "Логины и пароли";
 
 /* The header title displayed over the never saved login list entry */
 "login.loginListNeverSavedHeaderTitle" = "Сайты, пароли для которых не сохраняются";
@@ -1537,7 +1537,7 @@
 /* Title for the Playlist Settings Option for Enable/Disable Auto-Play */
 "playlist.playlistAutoPlaySettingsOptionTitle" = "Автовоспроизведение";
 
-/* Auto Download turn Off Option */
+/* Auto Cache turn Off Option */
 "playlist.playlistAutoSaveOptionOff" = "ВЫКЛ";
 
 /* Auto Save turn On Option */
@@ -1546,10 +1546,10 @@
 /* Option Text for Auto Save Only Wi-Fi Option */
 "playlist.playlistAutoSaveOptionOnlyWifi" = "Только по Wi-Fi";
 
-/* Description for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
-"playlist.playlistAutoSaveSettingsDescription" = "Сохраненные файлы занимают место в хранилище устройства. Кроме того, при скачивании аудио и видео может использоваться мобильный интернет.";
+/* Description for the Playlist Settings Option for Auto Caching media (Off/On/Only Wi-fi) */
+"playlist.playlistAutoSaveSettingsDescription" = "Кэширование видео- и аудиофайлов может расходовать как мобильный трафик, так и место в хранилище на вашем устройстве";
 
-/* Footer Text for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi)) */
+/* Footer Text for the Playlist Settings Option for media Auto Cache (Off/On/Only Wi-fi)) */
 "playlist.playlistAutoSaveSettingsFooterText" = "Как только вы откроете контент в плейлисте, эта опция сохранит открытые элементы плейлиста на вашем устройстве, чтобы воспроизвести их без подключения к Интернету.";
 
 /* Title for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
@@ -1559,7 +1559,7 @@
 "playlist.playlistDiskSpaceAddAnywayButtonTitle" = "Добавить в любом случае";
 
 /* When the user's disk space is almost full */
-"playlist.playlistDiskSpaceWarningMessage" = "На вашем устройстве заканчивается место. Добавление этого видео в Плейлист может не удаться или повлиять на другие загрузки.";
+"playlist.playlistDiskSpaceWarningMessage" = "На вашем устройстве заканчивается место. Добавление этого видео в Плейлист может не удаться или повлиять на другие кэшированные видео.";
 
 /* When the user's disk space is almost full */
 "playlist.playlistDiskSpaceWarningTitle" = "Хранилище почти заполнено";
@@ -1570,14 +1570,17 @@
 /* Title for the Playlist Settings Option for long press gesture */
 "playlist.playlistLongPressSettingsOptionTitle" = "Включить долгое нажатие";
 
+/* Text for Playlist Data Toggle for clearing the cache in settings */
+"playlist.playlistOfflineDataToggleOption" = "Данные Плейлиста";
+
 /* Title of a button displayed when first adding some media to Playlist. Its shown next to the name of a folder that the item is recently added to to imply that you are changing the folder it was saved to */
 "playlist.playlistPopoverChangeFoldersButtonTitle" = "Изменить";
 
-/* The title for the alert that shows up when removing all videos and their offline mode storage. */
+/* The title for the alert that shows up when removing all playlist data. */
 "playList.playlistResetAlertTitle" = "Сброс";
 
 /* Footer Text for the Playlist Settings Option for resetting Playlist. */
-"playlist.playlistResetPlaylistOptionFooterText" = "Этот параметр позволяет удалить все видео из плейлиста и очистить офлайн-хранилище.";
+"playlist.playlistResetPlaylistOptionFooterText" = "Эта опция удалит все данные Плейлиста.";
 
 /* Title Playlist (used for back button, and playlist settings) */
 "playList.playListSettingTitle" = "Brave Плейлист";
@@ -1588,7 +1591,7 @@
 /* Title for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
 "playlist.playlistStartPlaybackSettingsOptionTitle" = "Запоминание позиции в плейлисте";
 
-/* Title for removing offline mode storage */
+/* Title for removing cached media from the playlist */
 "playList.removeActionButtonTitle" = "Удалить";
 
 /* A message shown when the user removes media from the playlist. '%@' will be replaced by the folder it was added to. Example: 'Removed from Play Later' */
@@ -1608,9 +1611,6 @@
 
 /* The title for the toast that shows up on a page containing a playlist item */
 "playList.toastAddToPlaylistTitle" = "Добавить в плейлист";
-
-/* The title for the toast that shows up on a page when an item that has already been added, was updated. */
-"playList.toastExitingItemPlaylistTitle" = "Посмотреть в плейлисте Brave";
 
 /* A button title that when tapped will re-add the media item (undo the removal) that the user recently removed. */
 "playList.undoRemoveButtonTitle" = "Отменить";
@@ -1673,13 +1673,13 @@
 "privacyHub.allTimeListTrackersHeaderTitle" = "Вы можете использовать Brave VPN максимум на пяти устройствах Android, iOS и компьютерах. Для этого привяжите подписку App Store к аккаунту Brave.";
 
 /* Header title for a list of websites with ads and trackers. */
-"privacyHub.allTimeListWebsitesHeaderTitle" = "Наиболее часто встречающиеся трекеры & реклама на сайтах, которые ты посещаешь.";
+"privacyHub.allTimeListWebsitesHeaderTitle" = "Наиболее часто встречающиеся трекеры и реклама на сайтах, которые ты посещаешь.";
 
 /* Displays a number of websites on which we blocked trackers, example usage: '23 sites' */
 "privacyHub.allTimeSitesCount" = "Сайтов: %lld";
 
 /* Displays a number of trackers we blocked on a particular website, example usage: '23 trackers & ads' */
-"privacyHub.allTimeTrackersCount" = "%lld трекеры & реклама";
+"privacyHub.allTimeTrackersCount" = "%lld трекеры и реклама";
 
 /* Title under which we display most name of the most blocked tracker or ad. */
 "privacyHub.allTimeTrackerTitle" = "Трекер & Реклама";
@@ -2537,7 +2537,7 @@
 "shieldEducation.trackerCountShareSubtitle" = "Поздравляем! Отличный результат!";
 
 /* Title for Shield Education Tracker Count Share. The parameter substituted for "%ld" is the count of the trackers and ads blocked in total until present. E.g.: 5000 trackers & ads blocked */
-"shieldEducation.trackerCountShareTitle" = "%ld трекеры & реклама заблокирована!";
+"shieldEducation.trackerCountShareTitle" = "%ld трекеры и реклама заблокирована!";
 
 /* Subtitle for Shield Education Tracker Video Ad Block */
 "shieldEducation.videoAdBlockSubtitle" = "Видео без рекламы используют меньше данных.";
@@ -3162,6 +3162,12 @@
 
 /* The title of the toggle for user to turn on auto-open keyboard when creating a new tab. */
 "tabs.settings.autoOpenKeyboardTitle" = "Автоматически открывать клавиатуру";
+
+/* The description of the toggle for user to turn on open link in quick view mode. */
+"tabs.settings.openLinkInQuickViewModeDescription" = "Открывать ссылки из «Спросить Brave» и Поиска Brave в предварительных вкладках";
+
+/* The title of the toggle for user to turn on open link in quick view mode. */
+"tabs.settings.openLinkInQuickViewModeTitle" = "Включить вкладки быстрого просмотра";
 
 /* No comment provided by engineer. */
 "tabs.settings.persistentPrivateBrowsingDescription" = "Приватные вкладки будут оставаться открытыми при закрытии приложения, сохраняя возможность продолжить сеанс.";

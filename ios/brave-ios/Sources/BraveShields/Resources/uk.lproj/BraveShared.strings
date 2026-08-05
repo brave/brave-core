@@ -86,7 +86,7 @@
 "CustomFiltersInvalidRuleError" = "Недійсне правило «%1$@» у рядку %2$i";
 
 /* A placeholder when custom filter lists are empty */
-"CustomFiltersPlaceholder" = "Додайте користувацькі фільтри, один на рядок.";
+"CustomFiltersPlaceholder" = "Додавання користувацьких фільтрів";
 
 /* An error message telling the user that they crossed the line limit */
 "CustomFiltersTooManyLinesError" = "Користувацькі фільтри не підтримують більше %i рядків";
@@ -111,6 +111,9 @@
 
 /* A tab title for the warning page that appears when a page was blocked */
 "DomainBlockedTitle" = "Домен заблоковано";
+
+/* A placeholder when custom filter lists are empty */
+"EditCustomFiltersLabel" = "Редагувати користувацькі фільтри";
 
 /* A description of what the Enable GPC toggle does */
 "EnableGPCDescription" = "Забороніть сайтам продавати або передавати ваші дані. [Дізнатися більше] (https://support.brave.app/hc/en-us/articles/360017989132-How-do-I-change-my-Privacy-Settings#h_01HHFRRT6B5YTRREA4ZDARGTWM)";

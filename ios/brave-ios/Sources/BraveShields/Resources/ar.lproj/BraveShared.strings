@@ -86,7 +86,7 @@
 "CustomFiltersInvalidRuleError" = "قاعدة غير صالحة \"%1$@\" في السطر %2$i";
 
 /* A placeholder when custom filter lists are empty */
-"CustomFiltersPlaceholder" = "أضف الفلاتر المخصصة الخاصة بك هنا، واحدًا لكل سطر.";
+"CustomFiltersPlaceholder" = "إضافة تصفيات مخصصة";
 
 /* An error message telling the user that they crossed the line limit */
 "CustomFiltersTooManyLinesError" = "لا تدعم الفلاتر المخصصة أكثر من %i من السطور";
@@ -111,6 +111,9 @@
 
 /* A tab title for the warning page that appears when a page was blocked */
 "DomainBlockedTitle" = "نطاق تم حظره";
+
+/* A placeholder when custom filter lists are empty */
+"EditCustomFiltersLabel" = "تحرير عوامل التصفية المخصصة";
 
 /* A description of what the Enable GPC toggle does */
 "EnableGPCDescription" = "اطلب من المواقع الإلكترونية عدم بيع بياناتك أو مشاركتها. [اعرف المزيد] (https://support.brave.app/hc/en-us/articles/360017989132-How-do-I-change-my-Privacy-Settings#h_01HHFRRT6B5YTRREA4ZDARGTWM)";

@@ -86,7 +86,7 @@
 "CustomFiltersInvalidRuleError" = "行 %2$i 命令 `%1$@` 无效";
 
 /* A placeholder when custom filter lists are empty */
-"CustomFiltersPlaceholder" = "请在此添加您的自定义筛选条件，每行一条。";
+"CustomFiltersPlaceholder" = "添加自定义筛选器";
 
 /* An error message telling the user that they crossed the line limit */
 "CustomFiltersTooManyLinesError" = "自定义筛选条件不可超过 %i 行";
@@ -111,6 +111,9 @@
 
 /* A tab title for the warning page that appears when a page was blocked */
 "DomainBlockedTitle" = "已被阻止的域";
+
+/* A placeholder when custom filter lists are empty */
+"EditCustomFiltersLabel" = "编辑自定义筛选器";
 
 /* A description of what the Enable GPC toggle does */
 "EnableGPCDescription" = "要求网站不出售或共享您的数据。[了解更多](https://support.brave.app/hc/en-us/articles/360017989132-How-do-I-change-my-Privacy-Settings#h_01HHFRRT6B5YTRREA4ZDARGTWM)";

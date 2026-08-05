@@ -34,6 +34,12 @@
 /* Title for Brave News widgets that display the top news */
 "widgets.newsClusteringWidgetTitle" = "Principais notícias";
 
+/* Displayed on a news widget wont load due to admin policies */
+"widgets.newsUnavailableByPolicy" = "O Brave Novidades está desativado";
+
+/* Displayed on a news widget wont load due to admin policies */
+"widgets.newsUnavailableByPolicyDescription" = "Desativado pela política da sua organização";
+
 /* This shows when you add a widget but have no favorites added in your app */
 "widgets.noFavoritesFound" = "Abra o Brave para ver seus favoritos aqui";
 

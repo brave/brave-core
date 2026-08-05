@@ -2177,7 +2177,13 @@
 "wallet.txStatusViewInActivity" = "Прикажи у активностима";
 
 /* Description displayed when users chose Brave to ask them if they want the Unstoppable Domains to be resolved every time they enter one. The first '%@' will be replaced with a list of supported TLDs like '.x' or '.bitcoin'. The second '%@' be replaced with a link to Chainstack's terms of use page. The third '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The fourth '%@' will be replaced with a link to Chainstack's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'. */
-"wallet.udDomainInterstitialPageDescription" = "Brave ће бити подешена Ethereum RPC услуга, која је подразумевано Chainstack, за разрешавање назива домена .crypto (као и %1$@) који се налазе у систему Unstoppable Domains. Brave скрива вашу IP адресу. Ако активирате ову опцију, Chainstack ће видети да неко покушава да посети те домене, али ништа друго. Погледајте документе сервера Chainstack: <a href=%2$@>%3$@</a> и <a href=%4$@>%5$@</a>.";
+"wallet.udDomainInterstitialPageDescription" = "назива домена који се налазе у систему Unstoppable Domains. Brave скрива вашу IP адресу. Ако активирате ову опцију, Chainstack ће видети да неко покушава да посети те домене, али ништа друго. Погледајте документе сервера Chainstack: <a href=%1$@>%2$@</a> и <a href=%3$@>%4$@</a>.";
+
+/* The intro displayed below `udDomainInterstitialPageTitle`. */
+"wallet.udDomainInterstitialPageIntro" = "Brave ће бити конфигурисани Ethereum RPC сервис који подразумевано користи Chainstack за разрешавање:";
+
+/* The title of the button that user can tap to reveal more unstoppable domain extensions we support to resolve. */
+"wallet.udDomainInterstitialPageMore" = "+ више";
 
 /* Title displayed when users chose Brave to ask them if they want the Unstoppable Domains domain to be resolved every time they enter one. */
 "wallet.udDomainInterstitialPageTitle" = "Желите ли да активирате Unstoppable Domains у Brave-у?";

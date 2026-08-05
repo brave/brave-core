@@ -34,6 +34,12 @@
 /* Title for Brave News widgets that display the top news */
 "widgets.newsClusteringWidgetTitle" = "Популярні новини";
 
+/* Displayed on a news widget wont load due to admin policies */
+"widgets.newsUnavailableByPolicy" = "Brave Новини вимкнено";
+
+/* Displayed on a news widget wont load due to admin policies */
+"widgets.newsUnavailableByPolicyDescription" = "Вимкнено політикою вашої організації";
+
 /* This shows when you add a widget but have no favorites added in your app */
 "widgets.noFavoritesFound" = "Відкрийте Brave, щоб переглянути свій перелік вибраного";
 
