@@ -149,13 +149,6 @@ public class BraveShieldsContentSettings {
             return false;
         }
         if (!BraveShieldsContentSettingsJni.get()
-                .getHttpsUpgradeControlType(siteUrl, profile)
-                .equals(
-                        BraveShieldsContentSettingsJni.get()
-                                .getHttpsUpgradeControlType("", profile))) {
-            return false;
-        }
-        if (!BraveShieldsContentSettingsJni.get()
                 .getCookieControlType(siteUrl, profile)
                 .equals(BraveShieldsContentSettingsJni.get().getCookieControlType("", profile))) {
             return false;
@@ -200,11 +193,6 @@ public class BraveShieldsContentSettings {
                 BraveShieldsContentSettingsJni.get().getFingerprintingControlType("", profile);
         BraveShieldsContentSettingsJni.get()
                 .setFingerprintingControlType(defaultFingerprinting, siteUrl, profile);
-
-        String defaultHttpsUpgrade =
-                BraveShieldsContentSettingsJni.get().getHttpsUpgradeControlType("", profile);
-        BraveShieldsContentSettingsJni.get()
-                .setHttpsUpgradeControlType(defaultHttpsUpgrade, siteUrl, profile);
 
         String defaultCookies =
                 BraveShieldsContentSettingsJni.get().getCookieControlType("", profile);
