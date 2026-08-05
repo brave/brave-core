@@ -47,6 +47,13 @@ template("build_crate") {
 
     outputs = executable_output_paths
 
+    cargo_toml = "//brave/tools/crates/Cargo.toml"
+    config_toml = "//brave/tools/crates/.cargo/config.toml"
+
+    inputs += [
+      cargo_toml,
+      config_toml,
+    ]
     # To avoid irreproducible builds,
     # `build_crate`s MUST always build with `cargo vendor`ed deps,
     # hence they always have to pass:
@@ -54,30 +61,30 @@ template("build_crate") {
     #   --frozen (--locked + --offline)
     # when running `cargo build`.
     response_file_contents = [
-      "TMPDIR=" + rebase_path(cargo_target_dir, root_build_dir),
-      "TEMP=" + rebase_path(cargo_target_dir, root_build_dir),
-      "TMP=" + rebase_path(cargo_target_dir, root_build_dir),
+      "TMPDIR=abs@" + rebase_path(cargo_target_dir, root_build_dir),
+      "TEMP=abs@" + rebase_path(cargo_target_dir, root_build_dir),
+      "TMP=abs@" + rebase_path(cargo_target_dir, root_build_dir),
 
-      "CARGO_HOME=" +
+      "CARGO_HOME=abs@" +
           rebase_path("//third_party/rust-toolchain/bin", root_build_dir),
-      "RUSTC=" +
+      "RUSTC=abs@" +
           rebase_path("//third_party/rust-toolchain/bin/rustc", root_build_dir),
     ]
 
     response_file_contents += rust_host_response_file_contents
 
     response_file_contents += [
-      rebase_path(cargo_exe, root_build_dir),
+      "abs@" + rebase_path(cargo_exe, root_build_dir),
       "build",
       "--quiet",
       "--profile",
       cargo_profile,
       "--manifest-path",
-      rebase_path("//brave/tools/crates/Cargo.toml", root_build_dir),
+      "abs@" + rebase_path(cargo_toml, root_build_dir),
       "--config",
-      rebase_path("//brave/tools/crates/.cargo/config.toml", root_build_dir),
+      "abs@" + rebase_path(config_toml, root_build_dir),
       "--target-dir",
-      rebase_path(cargo_target_dir, root_build_dir),
+      "abs@" + rebase_path(cargo_target_dir, root_build_dir),
       "--frozen",
     ]
     foreach(crate, crates) {
