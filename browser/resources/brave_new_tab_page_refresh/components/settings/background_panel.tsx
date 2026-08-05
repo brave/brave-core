@@ -194,36 +194,38 @@ export function BackgroundPanel() {
             actions.setSponsoredImagesEnabled(checked)
           }}
         >
-          <span className='label'>
-            {getString(S.NEW_TAB_SHOW_SPONSORED_IMAGES_LABEL)}
-            <div
-              className='subtext'
-              onClick={(e) => e.stopPropagation()}
-            >
-              {!rewardsEnabled
-                && formatString(
-                  getString(S.NEW_TAB_SHOW_SPONSORED_IMAGES_EARNING_TEXT),
-                  {
-                    $1: (content) => (
-                      <Link
-                        url={settingsURL}
-                        openInNewTab
-                      >
-                        {content}
-                      </Link>
-                    ),
-                    $2: (content) => (
-                      <Link
-                        url={sponsoredImageLearnMoreURL}
-                        openInNewTab
-                      >
-                        {content}
-                      </Link>
-                    ),
-                  },
-                )}
+          <div className='label'>
+            <div>
+              {getString(S.NEW_TAB_SHOW_SPONSORED_IMAGES_LABEL)}
+              <div
+                className='subtext'
+                onClick={(e) => e.stopPropagation()}
+              >
+                {!rewardsEnabled
+                  && formatString(
+                    getString(S.NEW_TAB_SHOW_SPONSORED_IMAGES_EARNING_TEXT),
+                    {
+                      $1: (content) => (
+                        <Link
+                          url={settingsURL}
+                          openInNewTab
+                        >
+                          {content}
+                        </Link>
+                      ),
+                      $2: (content) => (
+                        <Link
+                          url={sponsoredImageLearnMoreURL}
+                          openInNewTab
+                        >
+                          {content}
+                        </Link>
+                      ),
+                    },
+                  )}
+              </div>
             </div>
-          </span>
+          </div>
         </Toggle>
       )}
       {backgroundsEnabled && backgroundsCustomizable && (
