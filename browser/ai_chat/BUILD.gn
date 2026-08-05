@@ -476,7 +476,10 @@ source_set("browser_tests") {
         "//components/policy/core/common:common_constants",
       ]
 
-      data += [ "//chrome/test/data/actor/" ]
+      data += [
+        "//chrome/test/data/actor/",
+        "//components/test/data/actor/",
+      ]
     }
 
     if (enable_screen_ai_browsertests) {
