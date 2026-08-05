@@ -132,6 +132,7 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
       scoped_refptr<base::SequencedTaskRunner> navigation_response_task_runner)
       override;
 
+  bool HasWebRequestAPIProxy(content::BrowserContext* browser_context) override;
   bool WillInterceptWebSocket(content::RenderFrameHost* frame) override;
   void CreateWebSocket(
       content::RenderFrameHost* frame,
@@ -141,7 +142,9 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
       const std::optional<std::string>& user_agent,
       mojo::PendingRemote<network::mojom::WebSocketHandshakeClient>
           handshake_client,
-      content::ContentBrowserClient::WebSocketOptions options) override;
+      content::ContentBrowserClient::WebSocketOptions options,
+      std::optional<content::GlobalRenderFrameHostId> frame_id,
+      std::optional<url::Origin> initiator_origin) override;
 
   void MaybeHideReferrer(content::BrowserContext* browser_context,
                          const GURL& request_url,

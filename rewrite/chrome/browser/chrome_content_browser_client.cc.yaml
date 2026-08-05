@@ -1,0 +1,17 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description:
+      'Accept the optional WebSocket request context in
+      ChromeContentBrowserClient.'
+    regex:
+      re_pattern:
+        '(void ChromeContentBrowserClient::CreateWebSocket\([^{}]*?)(\)\s*\{)'
+      re_flags: [DOTALL]
+      replace: |-
+        \1,
+            std::optional<content::GlobalRenderFrameHostId>,
+            std::optional<url::Origin>\2

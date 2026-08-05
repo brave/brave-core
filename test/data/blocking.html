@@ -152,6 +152,16 @@ function checkWebsocketConnection(url) {
     return false;
   });
 }
+
+function checkSharedWorkerWebsocketConnection(url) {
+  return new Promise(resolve => {
+    const worker = new SharedWorker(
+        './shared_worker_websocket.js', `websocket-${crypto.randomUUID()}`);
+    worker.port.onmessage = event => resolve(event.data);
+    worker.onerror = () => resolve(false);
+    worker.port.postMessage(url);
+  });
+}
 </script>
 </head>
 <body>
