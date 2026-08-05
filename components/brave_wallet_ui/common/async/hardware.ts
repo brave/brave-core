@@ -18,7 +18,6 @@ import {
   getHardwareKeyring,
   getLedgerBitcoinHardwareKeyring,
   getLedgerEthereumHardwareKeyring,
-  getLedgerFilecoinHardwareKeyring,
   getLedgerSolanaHardwareKeyring,
 } from '../api/hardware_keyrings'
 
@@ -34,7 +33,6 @@ import {
 import {
   LedgerBitcoinKeyring,
   LedgerEthereumKeyring,
-  LedgerFilecoinKeyring,
   LedgerSolanaKeyring,
 } from '../hardware/interfaces'
 import { LedgerBridgeErrorCodes } from '../hardware/ledgerjs/ledger-messages'
@@ -179,44 +177,6 @@ export async function signLedgerEthereumTransaction(
     }
   }
   const result = await apiProxy.ethTxManagerProxy.processEthHardwareSignature(
-    txMetaId,
-    signed.signature,
-  )
-  if (!result || !result.status) {
-    return {
-      success: false,
-      error: getLocale('braveWalletProcessTransactionError'),
-      code: undefined,
-    }
-  }
-  return { success: true }
-}
-
-export async function signLedgerFilecoinTransaction(
-  apiProxy: WalletApiProxy,
-  txMetaId: string,
-  deviceKeyring: LedgerFilecoinKeyring = getLedgerFilecoinHardwareKeyring(),
-): Promise<HardwareOperationResult> {
-  const { jsonMessage } =
-    await apiProxy.filTxManagerProxy.getFilTransactionMessageToSign(txMetaId)
-  if (!jsonMessage) {
-    return {
-      success: false,
-      error: getLocale('braveWalletNoMessageToSignError'),
-      code: undefined,
-    }
-  }
-
-  const signed = await deviceKeyring.signTransaction(jsonMessage)
-  if (!signed.success) {
-    return {
-      success: false,
-      error: signed.error ?? getLocale('braveWalletSignOnDeviceError'),
-      code: signed.code ?? '',
-    }
-  }
-
-  const result = await apiProxy.filTxManagerProxy.processFilHardwareSignature(
     txMetaId,
     signed.signature,
   )

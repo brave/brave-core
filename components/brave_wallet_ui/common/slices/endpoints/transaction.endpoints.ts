@@ -52,7 +52,6 @@ import { TX_CACHE_TAGS } from '../../../utils/query-cache-utils'
 import { sortTransactionByDate } from '../../../utils/tx-utils'
 import {
   signLedgerEthereumTransaction,
-  signLedgerFilecoinTransaction,
   signLedgerSolanaTransaction,
   dialogErrorFromLedgerErrorCode,
   signTrezorTransaction,
@@ -1214,12 +1213,6 @@ export const transactionEndpoints = ({
                 result = await signLedgerEthereumTransaction(
                   apiProxy,
                   hardwareAccount.path,
-                  txInfo.id,
-                )
-                break
-              case BraveWallet.CoinType.FIL:
-                result = await signLedgerFilecoinTransaction(
-                  apiProxy,
                   txInfo.id,
                 )
                 break

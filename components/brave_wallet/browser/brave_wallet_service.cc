@@ -436,12 +436,6 @@ void BraveWalletService::Bind(
 
 template <>
 void BraveWalletService::Bind(
-    mojo::PendingReceiver<mojom::FilTxManagerProxy> receiver) {
-  tx_service()->Bind(std::move(receiver));
-}
-
-template <>
-void BraveWalletService::Bind(
     mojo::PendingReceiver<mojom::BtcTxManagerProxy> receiver) {
   tx_service()->Bind(std::move(receiver));
 }

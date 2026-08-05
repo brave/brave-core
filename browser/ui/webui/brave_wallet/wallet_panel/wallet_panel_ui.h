@@ -85,8 +85,6 @@ class WalletPanelUI : public TopChromeWebUIController,
           eth_tx_manager_proxy,
       mojo::PendingReceiver<brave_wallet::mojom::SolanaTxManagerProxy>
           solana_tx_manager_proxy,
-      mojo::PendingReceiver<brave_wallet::mojom::FilTxManagerProxy>
-          fil_tx_manager_proxy,
       mojo::PendingReceiver<brave_wallet::mojom::BtcTxManagerProxy>
           bitcoin_tx_manager_proxy_receiver,
       mojo::PendingReceiver<brave_wallet::mojom::BraveWalletService>

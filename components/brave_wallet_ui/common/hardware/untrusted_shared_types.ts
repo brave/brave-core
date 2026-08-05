@@ -8,7 +8,6 @@
 export const BridgeTypes = {
   EthLedger: 'EthLedger',
   SolLedger: 'SolLedger',
-  FilLedger: 'FilLedger',
   BtcLedger: 'BtcLedger',
   EthTrezor: 'EthTrezor',
 } as const

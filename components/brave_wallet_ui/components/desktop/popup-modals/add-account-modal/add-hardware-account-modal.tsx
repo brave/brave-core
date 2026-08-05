@@ -14,6 +14,7 @@ import { CreateAccountOptions } from '../../../../options/create-account-options
 
 // types
 import {
+  BraveWallet,
   CreateAccountOptionsType,
   WalletRoutes,
 } from '../../../../constants/types'
@@ -64,7 +65,7 @@ export const AddHardwareAccountModal = ({ onSelectAccountType }: Props) => {
       isZCashEnabled: false, // No zcash hardware accounts by now.
       isCardanoEnabled: false, // No cardano hardware accounts by now.
       isPolkadotEnabled: false, // No cardano hardware accounts by now.
-    })
+    }).filter((opt) => opt.coin !== BraveWallet.CoinType.FIL)
   }, [visibleNetworks, isBitcoinLedgerEnabled])
 
   const selectedAccountType: CreateAccountOptionsType | undefined =

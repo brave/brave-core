@@ -107,26 +107,6 @@ export const SolLedgerBip44RootHardwareImportScheme: HardwareImportScheme = {
   pathTemplate: (index) => `44'/501'`,
 }
 
-export const FilLedgerMainnetHardwareImportScheme: HardwareImportScheme = {
-  derivationScheme: DerivationSchemes.FilLedgerMainnet,
-  coin: BraveWallet.CoinType.FIL,
-  keyringId: BraveWallet.KeyringId.kFilecoin,
-  vendor: BraveWallet.HardwareVendor.kLedger,
-  name: 'Default',
-  fixedNetwork: BraveWallet.FILECOIN_MAINNET,
-  pathTemplate: (index) => `m/44'/461'/0'/0/${index}`,
-}
-
-export const FilLedgerTestnetHardwareImportScheme: HardwareImportScheme = {
-  derivationScheme: DerivationSchemes.FilLedgerTestnet,
-  coin: BraveWallet.CoinType.FIL,
-  keyringId: BraveWallet.KeyringId.kFilecoinTestnet,
-  vendor: BraveWallet.HardwareVendor.kLedger,
-  name: 'Default',
-  fixedNetwork: BraveWallet.FILECOIN_TESTNET,
-  pathTemplate: (index) => `m/44'/1'/0'/0/${index}`,
-}
-
 export const BtcLedgerMainnetHardwareImportScheme: HardwareImportScheme = {
   derivationScheme: DerivationSchemes.BtcLedgerMainnet,
   coin: BraveWallet.CoinType.BTC,
@@ -165,9 +145,6 @@ export const AllHardwareImportSchemes: HardwareImportScheme[] = [
   SolLedgerLiveHardwareImportScheme,
   SolLedgerBip44RootHardwareImportScheme,
 
-  FilLedgerMainnetHardwareImportScheme,
-  FilLedgerTestnetHardwareImportScheme,
-
   BtcLedgerMainnetHardwareImportScheme,
   BtcLedgerTestnetHardwareImportScheme,
 
@@ -191,10 +168,6 @@ export type HardwareOperationResultEthereumSignatureBytes =
 
 export type HardwareOperationResultSolanaSignature = HardwareOperationResult<{
   signature: BraveWallet.SolanaSignature
-}>
-
-export type HardwareOperationResultFilecoinSignature = HardwareOperationResult<{
-  signature: BraveWallet.FilecoinSignature
 }>
 
 export type HardwareOperationResultBitcoinSignature = HardwareOperationResult<{

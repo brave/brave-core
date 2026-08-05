@@ -46,7 +46,6 @@ class PolkadotTxManager;
 class TxService : public mojom::TxService,
                   public mojom::EthTxManagerProxy,
                   public mojom::SolanaTxManagerProxy,
-                  public mojom::FilTxManagerProxy,
                   public mojom::BtcTxManagerProxy {
  public:
   TxService(JsonRpcService* json_rpc_service,
@@ -255,15 +254,6 @@ class TxService : public mojom::TxService,
       mojom::SolanaSignaturePtr hw_signature,
       ProcessSolanaHardwareSignatureCallback callback) override;
 
-  // mojom::FilTxManagerProxy
-  void GetFilTransactionMessageToSign(
-      const std::string& tx_meta_id,
-      GetFilTransactionMessageToSignCallback callback) override;
-  void ProcessFilHardwareSignature(
-      const std::string& tx_meta_id,
-      mojom::FilecoinSignaturePtr hw_signature,
-      ProcessFilHardwareSignatureCallback callback) override;
-
   // mojom::BtcTxManagerProxy
   void GetBtcHardwareTransactionSignData(
       const std::string& tx_meta_id,
@@ -306,7 +296,6 @@ class TxService : public mojom::TxService,
   mojo::ReceiverSet<mojom::TxService> tx_service_receivers_;
   mojo::ReceiverSet<mojom::EthTxManagerProxy> eth_tx_manager_receivers_;
   mojo::ReceiverSet<mojom::SolanaTxManagerProxy> solana_tx_manager_receivers_;
-  mojo::ReceiverSet<mojom::FilTxManagerProxy> fil_tx_manager_receivers_;
   mojo::ReceiverSet<mojom::BtcTxManagerProxy> btc_tx_manager_receivers_;
 
   base::WeakPtrFactory<TxService> weak_factory_{this};

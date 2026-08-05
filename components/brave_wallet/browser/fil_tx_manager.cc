@@ -275,61 +275,8 @@ void FilTxManager::RetryTransaction(const std::string& tx_meta_id,
   NOTIMPLEMENTED();
 }
 
-void FilTxManager::GetFilTransactionMessageToSign(
-    const std::string& tx_meta_id,
-    GetFilTransactionMessageToSignCallback callback) {
-  std::unique_ptr<FilTxMeta> meta = GetFilTxStateManager().GetFilTx(tx_meta_id);
-  if (!meta || !meta->tx()) {
-    std::move(callback).Run(std::nullopt);
-    return;
-  }
-  if (!meta->tx()->nonce()) {
-    auto from = meta->from().Clone();
-    auto chain_id = meta->chain_id();
-    nonce_tracker_->GetNextNonce(
-        chain_id, from,
-        base::BindOnce(&FilTxManager::OnGetNextNonceForHardware,
-                       weak_factory_.GetWeakPtr(), std::move(meta),
-                       std::move(callback)));
-  } else {
-    uint64_t nonce = meta->tx()->nonce().value();
-    OnGetNextNonceForHardware(std::move(meta), std::move(callback), true,
-                              nonce);
-  }
-}
-
 mojom::CoinType FilTxManager::GetCoinType() const {
   return mojom::CoinType::FIL;
-}
-
-void FilTxManager::OnGetNextNonceForHardware(
-    std::unique_ptr<FilTxMeta> meta,
-    GetFilTransactionMessageToSignCallback callback,
-    bool success,
-    uint256_t nonce) {
-  if (!success) {
-    meta->set_status(mojom::TransactionStatus::Error);
-    tx_state_manager().AddOrUpdateTx(*meta);
-    std::move(callback).Run(std::nullopt);
-    return;
-  }
-  // DCHECK_LE will eventually be expanded into `CheckOpValueStr` which doesn't
-  // have uint256_t overload.
-  DCHECK(nonce <= static_cast<uint256_t>(UINT64_MAX));
-  meta->tx()->set_nonce(static_cast<uint64_t>(nonce));
-  meta->set_status(mojom::TransactionStatus::Approved);
-  if (!tx_state_manager().AddOrUpdateTx(*meta)) {
-    std::move(callback).Run(std::nullopt);
-    return;
-  }
-
-  auto fil_address = FilAddress::FromAddress(meta->from()->address);
-  if (fil_address.IsEmpty()) {
-    std::move(callback).Run(std::nullopt);
-    return;
-  }
-
-  std::move(callback).Run(meta->tx()->GetMessageToSignJson(fil_address));
 }
 
 void FilTxManager::Reset() {
@@ -400,37 +347,6 @@ void FilTxManager::OnLatestHeightUpdated(const std::string& chain_id,
 
 FilBlockTracker& FilTxManager::GetFilBlockTracker() {
   return static_cast<FilBlockTracker&>(block_tracker());
-}
-
-void FilTxManager::ProcessFilHardwareSignature(
-    const std::string& tx_meta_id,
-    const mojom::FilecoinSignaturePtr& hw_signature,
-    ProcessFilHardwareSignatureCallback callback) {
-  std::unique_ptr<FilTxMeta> meta = GetFilTxStateManager().GetFilTx(tx_meta_id);
-  if (!meta) {
-    std::move(callback).Run(
-        false,
-        mojom::ProviderErrorUnion::NewFilecoinProviderError(
-            mojom::FilecoinProviderError::kInternalError),
-        l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_TRANSACTION_NOT_FOUND));
-    return;
-  }
-
-  meta->set_status(mojom::TransactionStatus::Approved);
-  if (!tx_state_manager().AddOrUpdateTx(*meta)) {
-    std::move(callback).Run(
-        false,
-        mojom::ProviderErrorUnion::NewFilecoinProviderError(
-            mojom::FilecoinProviderError::kInternalError),
-        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
-    return;
-  }
-
-  json_rpc_service_->SendFilecoinTransaction(
-      meta->chain_id(), hw_signature->signed_message_json,
-      base::BindOnce(&FilTxManager::OnSendFilecoinTransaction,
-                     weak_factory_.GetWeakPtr(), meta->id(),
-                     std::move(callback)));
 }
 
 }  // namespace brave_wallet

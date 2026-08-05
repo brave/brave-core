@@ -10,7 +10,6 @@ import {
 import { LedgerUntrustedMessagingTransport } from '../common/hardware/ledgerjs/ledger-untrusted-transport'
 import { SolanaLedgerUntrustedMessagingTransport } from '../common/hardware/ledgerjs/sol-ledger-untrusted-transport'
 import { EthereumLedgerUntrustedMessagingTransport } from '../common/hardware/ledgerjs/eth-ledger-untrusted-transport'
-import { FilecoinLedgerUntrustedMessagingTransport } from '../common/hardware/ledgerjs/fil-ledger-untrusted-transport'
 import { BitcoinLedgerUntrustedMessagingTransport } from '../common/hardware/ledgerjs/btc_ledger_untrusted_transport'
 
 // Security: URL sanitization function to validate targetUrl
@@ -37,11 +36,6 @@ const setupUntrustedMessagingTransport = (
       )
     case BridgeTypes.EthLedger:
       return new EthereumLedgerUntrustedMessagingTransport(
-        window.parent,
-        targetUrl,
-      )
-    case BridgeTypes.FilLedger:
-      return new FilecoinLedgerUntrustedMessagingTransport(
         window.parent,
         targetUrl,
       )

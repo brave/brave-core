@@ -11,7 +11,6 @@ import {
   HardwareOperationResultAccounts,
   HardwareOperationResultEthereumSignatureBytes,
   HardwareOperationResultSolanaSignature,
-  HardwareOperationResultFilecoinSignature,
   HardwareOperationResultBitcoinSignature,
   HardwareOperationResultDeviceName,
 } from './types'
@@ -65,12 +64,6 @@ export abstract class LedgerEthereumKeyring extends HardwareKeyring {
     domainSeparatorHex: string,
     hashStructMessageHex: string,
   ): Promise<HardwareOperationResultEthereumSignatureBytes>
-}
-
-export abstract class LedgerFilecoinKeyring extends HardwareKeyring {
-  abstract signTransaction(
-    message: string,
-  ): Promise<HardwareOperationResultFilecoinSignature>
 }
 
 export abstract class LedgerBitcoinKeyring extends HardwareKeyring {

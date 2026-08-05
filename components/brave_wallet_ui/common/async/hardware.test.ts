@@ -7,7 +7,6 @@ import { BraveWallet, emptyProviderErrorCodeUnion } from '../../constants/types'
 import {
   signTrezorTransaction,
   signLedgerEthereumTransaction,
-  signLedgerFilecoinTransaction,
   signLedgerSolanaTransaction,
 } from './hardware'
 import WalletApiProxy from '../../common/wallet_api_proxy'
@@ -17,12 +16,10 @@ import {
   HardwareOperationError,
   HardwareOperationResult,
   HardwareOperationResultEthereumSignatureVRS,
-  HardwareOperationResultFilecoinSignature,
   HardwareOperationResultSolanaSignature,
 } from '../hardware/types'
 import LedgerBridgeKeyring from '../hardware/ledgerjs/eth_ledger_bridge_keyring'
 import TrezorBridgeKeyring from '../hardware/trezor/trezor_bridge_keyring'
-import FilecoinLedgerBridgeKeyring from '../hardware/ledgerjs/fil_ledger_bridge_keyring'
 import SolanaLedgerBridgeKeyring from '../hardware/ledgerjs/sol_ledger_bridge_keyring'
 
 const mockEthereumSignatureVRS: BraveWallet.EthereumSignatureVRS = {
@@ -54,33 +51,6 @@ const getMockedLedgerEthKeyring = (args: {
           error: 'braveWalletSignOnDeviceError',
           code: undefined,
         }
-      }
-    },
-  }
-}
-
-const getMockedLedgerFilKeyring = (args: {
-  expectedMessage: string
-  mockSignature?: BraveWallet.FilecoinSignature
-}) => {
-  return {
-    type: (): BraveWallet.HardwareVendor => {
-      return BraveWallet.HardwareVendor.kLedger
-    },
-    signTransaction: async (
-      message: string,
-    ): Promise<HardwareOperationResultFilecoinSignature> => {
-      expect(message).toStrictEqual(args.expectedMessage)
-      if (args.mockSignature) {
-        return {
-          success: true,
-          signature: args.mockSignature,
-        }
-      }
-      return {
-        success: false,
-        error: 'braveWalletSignOnDeviceError',
-        code: undefined,
       }
     },
   }
@@ -179,24 +149,6 @@ const getMockedProxyServices = (args: {
         })
       },
     },
-    filTxManagerProxy: {
-      getFilTransactionMessageToSign: (id: string) => {
-        expect(id).toStrictEqual(args.expectedId)
-        return Promise.resolve({ jsonMessage: args.filMessageToSign! })
-      },
-      processFilHardwareSignature: (
-        id: string,
-        hwSignature: BraveWallet.FilecoinSignature,
-      ) => {
-        expect(id).toStrictEqual(args.expectedId)
-        expect(hwSignature).toStrictEqual(args.expectedFilSignedTransaction)
-        return Promise.resolve({
-          status: !!args.processHardwareSignatureResult,
-          errorUnion: emptyProviderErrorCodeUnion,
-          errorMessage: '',
-        })
-      },
-    },
     btcTxManagerProxy: {
       getBtcTransactionMessageToSign: (id: string) => {
         expect(id).toStrictEqual(args.expectedId)
@@ -290,31 +242,6 @@ const signSolTransactionWithLedger = (args: {
     expectedPath,
     txInfo.id,
     mockedKeyring as unknown as SolanaLedgerBridgeKeyring,
-  )
-}
-
-const signFilTransactionWithLedger = (args: {
-  mockSignature: BraveWallet.FilecoinSignature
-  processHardwareSignatureResult?: boolean
-}): Promise<HardwareOperationResult> => {
-  const txInfo = getMockedTransactionInfo()
-  const expectedData = 'raw_message_to_sign'
-  const messageToSign = expectedData
-  const mockedKeyring = getMockedLedgerFilKeyring({
-    expectedMessage: expectedData,
-    mockSignature: args.mockSignature,
-  })
-  const apiProxy = getMockedProxyServices({
-    expectedChainId: txInfo.chainId,
-    expectedId: txInfo.id,
-    filMessageToSign: messageToSign,
-    processHardwareSignatureResult: args.processHardwareSignatureResult,
-    expectedFilSignedTransaction: args.mockSignature,
-  })
-  return signLedgerFilecoinTransaction(
-    apiProxy as unknown as WalletApiProxy,
-    txInfo.id,
-    mockedKeyring as unknown as FilecoinLedgerBridgeKeyring,
   )
 }
 
