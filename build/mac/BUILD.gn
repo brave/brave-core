@@ -27,8 +27,20 @@ dmg_path = "$packaged_basename.dmg"
 zip_path = "$packaged_basename.zip"
 
 if (is_universal_binary) {
-  assert(target_cpu == "arm64")
-  x64_arch_app_path = "$root_out_dir/x64/$brave_exe"
+  # The universal build is driven from one architecture (target_cpu, the
+  # "primary", built locally by //chrome:chrome_app) and merged with the other
+  # architecture's prebuilt app, expected in a sibling output dir. Output dirs
+  # are named "Release" for x64 and "Release_arm64" for arm64, so the sibling
+  # dir is derived by adding or removing the "_arm64" suffix.
+  if (target_cpu == "arm64") {
+    other_cpu = "x64"
+    other_root_out_dir = string_replace(root_out_dir, "_arm64", "")
+  } else {
+    other_cpu = "arm64"
+    other_root_out_dir = "${root_out_dir}_arm64"
+  }
+
+  other_arch_app_path = "$root_out_dir/$other_cpu/$brave_exe"
   universal_dir = "$root_out_dir/universal"
   universal_app_path = "$universal_dir/$brave_exe"
 
@@ -36,7 +48,7 @@ if (is_universal_binary) {
     script = "//chrome/installer/mac/universalizer.py"
 
     args = [
-      rebase_path(x64_arch_app_path),
+      rebase_path(other_arch_app_path),
       rebase_path(unsigned_app_path),
       rebase_path(universal_app_path),
     ]
@@ -44,35 +56,34 @@ if (is_universal_binary) {
     inputs = [
       script,
       unsigned_app_path,
-      x64_arch_app_path,
+      other_arch_app_path,
     ]
 
     outputs = [ universal_app_path ]
 
     public_deps = [
-      ":copy_x64",
+      ":copy_other_arch",
       "//chrome:chrome_app",
     ]
   }
 
   # placeholder script to allow manual copying of binary into output dir
-  action("copy_x64") {
-    script = "//brave/installer/mac/copy_x64_binary.py"
+  action("copy_other_arch") {
+    script = "//brave/installer/mac/copy_other_arch_binary.py"
 
-    x64_root_out_dir = string_replace(root_out_dir, "_arm64", "")
-    x64_arch_src_path = "$x64_root_out_dir/$brave_exe"
+    other_arch_src_path = "$other_root_out_dir/$brave_exe"
 
     args = [
-      rebase_path(x64_arch_src_path),
-      rebase_path(x64_arch_app_path),
+      rebase_path(other_arch_src_path),
+      rebase_path(other_arch_app_path),
     ]
 
     inputs = [
       script,
-      x64_arch_src_path,
+      other_arch_src_path,
     ]
 
-    outputs = [ x64_arch_app_path ]
+    outputs = [ other_arch_app_path ]
   }
 }
 
