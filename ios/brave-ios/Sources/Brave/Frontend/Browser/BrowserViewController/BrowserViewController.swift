@@ -110,9 +110,9 @@ public class BrowserViewController: UIViewController {
   }()
 
   private(set) var toolbar: BottomToolbarView?
-  var searchLoader: SearchLoader?
-  var searchController: SearchViewController?
-  var favoritesController: FavoritesViewController?
+  /// The favorites/search-results screens shown while editing the URL bar. Builds and owns the
+  /// favorites, search-results and search-loader instances.
+  var searchContainer: SearchContainerViewController?
 
   /// All content that appears above the footer should be added to this view. (Find In Page/SnackBars)
   let alertStackView: UIStackView = {
@@ -645,9 +645,9 @@ public class BrowserViewController: UIViewController {
       && traitCollection.verticalSizeClass == .regular
       && traitCollection.userInterfaceIdiom == .phone
 
-    // Reinserts the fav controller whos parent is based on bottom bar
-    if let favoritesController {
-      insertFavoritesControllerView(favoritesController: favoritesController)
+    // Reinserts the search container whose parent is based on bottom bar
+    if let searchContainer {
+      insertSearchContainerView(searchContainer)
     }
   }
 
@@ -766,8 +766,7 @@ public class BrowserViewController: UIViewController {
       webViewContainerBackdrop.alpha = 1
       webViewContainer.alpha = 0
       activeNewTabPageViewController?.view.alpha = 0
-      favoritesController?.view.alpha = 0
-      searchController?.view.alpha = 0
+      searchContainer?.view.alpha = 0
       header.contentView.alpha = 0
       presentedViewController?.popoverPresentationController?.containerView?.alpha = 0
       presentedViewController?.view.alpha = 0
@@ -824,8 +823,7 @@ public class BrowserViewController: UIViewController {
         self.webViewContainer.alpha = 1
         self.header.contentView.alpha = 1
         self.activeNewTabPageViewController?.view.alpha = 1
-        self.favoritesController?.view.alpha = 1
-        self.searchController?.view.alpha = 1
+        self.searchContainer?.view.alpha = 1
         self.presentedViewController?.popoverPresentationController?.containerView?.alpha = 1
         self.presentedViewController?.view.alpha = 1
         self.view.backgroundColor = .clear
@@ -840,7 +838,7 @@ public class BrowserViewController: UIViewController {
     didSet {
       header.isUsingBottomBar = isUsingBottomBar
       collapsedURLBarView.isUsingBottomBar = isUsingBottomBar
-      searchController?.isUsingBottomBar = isUsingBottomBar
+      searchContainer?.isUsingBottomBar = isUsingBottomBar
       bottomBarKeyboardBackground.isHidden = !isUsingBottomBar
       topToolbar.displayTabTraySwipeGestureRecognizer?.isEnabled = isUsingBottomBar
       updateTabsBarVisibility()
@@ -1243,8 +1241,7 @@ public class BrowserViewController: UIViewController {
     } else {
       additionalInsets = .init(top: header.bounds.height, left: 0, bottom: 0, right: 0)
     }
-    searchController?.additionalSafeAreaInsets = additionalInsets
-    favoritesController?.additionalSafeAreaInsets = additionalInsets
+    searchContainer?.applyAdditionalSafeAreaInsets(additionalInsets)
   }
 
   override public var canBecomeFirstResponder: Bool {
@@ -2595,19 +2592,7 @@ extension BrowserViewController: SearchViewControllerDelegate {
   }
 
   func presentQuickSearchEnginesViewController() {
-    let quickSearchEnginesViewController = SearchQuickEnginesViewController(profile: profile)
-    quickSearchEnginesViewController.navigationItem.leftBarButtonItem =
-      UIBarButtonItem(
-        title: Strings.close,
-        style: .done,
-        target: self,
-        action: #selector(dismissQuickSearchEngines)
-      )
-    quickSearchEnginesViewController.delegate = searchController
-    let navVC = ModalSettingsNavigationController(
-      rootViewController: quickSearchEnginesViewController
-    )
-    self.present(navVC, animated: true, completion: nil)
+    searchContainer?.presentQuickSearchEnginesViewController(profile: profile)
   }
 
   func searchViewController(
@@ -2632,13 +2617,6 @@ extension BrowserViewController: SearchViewControllerDelegate {
 
   func searchViewControllerHasPendingWidgetSearchAttribution(_: SearchViewController) -> Bool {
     tabManager.selectedTab?.widgetSearchTabHelper != nil
-  }
-
-  @objc private func dismissQuickSearchEngines() {
-    dismiss(animated: true) { [weak self] in
-      self?.updateViewConstraints()
-      self?.searchController?.layoutSearchEngineScrollView()
-    }
   }
 }
 
