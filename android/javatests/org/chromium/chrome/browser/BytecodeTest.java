@@ -1826,8 +1826,7 @@ public class BytecodeTest {
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/omnibox/suggestions/OmniboxViewHolderFactory",
-                        "org/chromium/chrome/browser/omnibox/suggestions/BraveOmniboxViewHolderFactory",
-                        OmniboxResourceProvider.class));
+                        "org/chromium/chrome/browser/omnibox/suggestions/BraveOmniboxViewHolderFactory")); // presubmit: ignore-long-line
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/multiwindow/MultiInstanceManagerApi31",
@@ -1898,7 +1897,8 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/omnibox/suggestions/BraveDropdownItemViewInfoListManager", // presubmit: ignore-long-line
                         ModelList.class,
                         Context.class,
-                        NonNullObservableSupplier.class));
+                        NonNullObservableSupplier.class,
+                        OmniboxResourceProvider.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/omnibox/LocationBarCoordinator",
