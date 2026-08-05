@@ -34,6 +34,12 @@
 /* Title for Brave News widgets that display the top news */
 "widgets.newsClusteringWidgetTitle" = "Horké novinky";
 
+/* Displayed on a news widget wont load due to admin policies */
+"widgets.newsUnavailableByPolicy" = "Zprávy Brave jsou vypnuté";
+
+/* Displayed on a news widget wont load due to admin policies */
+"widgets.newsUnavailableByPolicyDescription" = "Vypnuto zásadami vaší organizace";
+
 /* This shows when you add a widget but have no favorites added in your app */
 "widgets.noFavoritesFound" = "Otevřít Brave a zobrazit tam své oblíbené";
 

@@ -2177,7 +2177,13 @@
 "wallet.txStatusViewInActivity" = "Προβολή στη δραστηριότητα";
 
 /* Description displayed when users chose Brave to ask them if they want the Unstoppable Domains to be resolved every time they enter one. The first '%@' will be replaced with a list of supported TLDs like '.x' or '.bitcoin'. The second '%@' be replaced with a link to Chainstack's terms of use page. The third '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The fourth '%@' will be replaced with a link to Chainstack's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'. */
-"wallet.udDomainInterstitialPageDescription" = "Το Brave θα είναι η ρυθμισμένη υπηρεσία RPC του Ethereum, η οποία από προεπιλογή είναι το Chainstack, για την επίλυση ονομάτων τομέα .crypto (καθώς και %1$@) που βρίσκονται στο Unstoppable Domains. Το Brave αποκρύπτει τη διεύθυνση IP σας. Εάν ενεργοποιήσετε αυτή την επιλογή, το Chainstack θα βλέπει ότι κάποιος προσπαθεί να επισκεφτεί αυτούς τους τομείς, αλλά τίποτε άλλο. Ανατρέξτε στις ενότητες <a href=%2$@>%3$@</a> και <a href=%4$@>%5$@</a> του Chainstack.";
+"wallet.udDomainInterstitialPageDescription" = "ονόματα τομέα που βρίσκονται στο Unstoppable Domains. Το Brave αποκρύπτει τη διεύθυνση IP σας. Εάν ενεργοποιήσετε αυτή την επιλογή, το Chainstack θα βλέπει ότι κάποιος προσπαθεί να επισκεφτεί αυτούς τους τομείς, αλλά τίποτε άλλο. Ανατρέξτε στις ενότητες <a href=%1$@>%2$@</a> και <a href=%3$@>%4$@</a> του Chainstack.";
+
+/* The intro displayed below `udDomainInterstitialPageTitle`. */
+"wallet.udDomainInterstitialPageIntro" = "Το Brave θα είναι η ρυθμισμένη υπηρεσία Ethereum RPC, η οποία χρησιμοποιεί ως προεπιλογή το Chainstack για την επίλυση:";
+
+/* The title of the button that user can tap to reveal more unstoppable domain extensions we support to resolve. */
+"wallet.udDomainInterstitialPageMore" = "+ περισσότερα";
 
 /* Title displayed when users chose Brave to ask them if they want the Unstoppable Domains domain to be resolved every time they enter one. */
 "wallet.udDomainInterstitialPageTitle" = "Ενεργοποιήστε την υποστήριξη των Ασταμάτητων τομέων στο Brave;";

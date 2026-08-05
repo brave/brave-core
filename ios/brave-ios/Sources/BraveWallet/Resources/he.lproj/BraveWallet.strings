@@ -2177,7 +2177,13 @@
 "wallet.txStatusViewInActivity" = "הצגה בפעילות";
 
 /* Description displayed when users chose Brave to ask them if they want the Unstoppable Domains to be resolved every time they enter one. The first '%@' will be replaced with a list of supported TLDs like '.x' or '.bitcoin'. The second '%@' be replaced with a link to Chainstack's terms of use page. The third '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The fourth '%@' will be replaced with a link to Chainstack's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'. */
-"wallet.udDomainInterstitialPageDescription" = "Brave יהיה שירות ה-RPC של Ethereum שהוגדר, שהוא Chainstack כברירת מחדל, כדי לפתור שמות דומיין של .crypto (וגם %1$@) שנמצאים ב-Unstoppable Domains. Brave מסתיר את כתובת ה-IP שלך. אם תאפשר/י זאת, Chainstack יראו שמישהו מנסה לבקר בדומיינים האלה, אבל לא שום דבר מעבר. אפשר לעיין ב<a href=%2$@>%3$@</a> וב<a href=%4$@>%5$@</a> של Chainstack.";
+"wallet.udDomainInterstitialPageDescription" = "שמות דומיין שנמצאים ב-Unstoppable Domains. Brave מסתיר את כתובת ה-IP שלך. אם תאפשר/י זאת, Chainstack יראו שמישהו מנסה לבקר בדומיינים האלה, אבל לא שום דבר מעבר. אפשר לעיין ב<a href=%1$@>%2$@</a> ו<a href=%3$@>%4$@</a> של Chainstack.";
+
+/* The intro displayed below `udDomainInterstitialPageTitle`. */
+"wallet.udDomainInterstitialPageIntro" = "Brave יהיה שירות ה-RPC של Ethereum המוגדר, שכברירת מחדל משתמש ב-Chainstack כדי לפתור:";
+
+/* The title of the button that user can tap to reveal more unstoppable domain extensions we support to resolve. */
+"wallet.udDomainInterstitialPageMore" = "+ עוד";
 
 /* Title displayed when users chose Brave to ask them if they want the Unstoppable Domains domain to be resolved every time they enter one. */
 "wallet.udDomainInterstitialPageTitle" = "לאפשר תמיכה בדומיינים בלתי ניתנים לעצירה ב-Brave?";

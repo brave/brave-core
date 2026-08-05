@@ -1537,7 +1537,7 @@
 /* Title for the Playlist Settings Option for Enable/Disable Auto-Play */
 "playlist.playlistAutoPlaySettingsOptionTitle" = "Lecture automatique";
 
-/* Auto Download turn Off Option */
+/* Auto Cache turn Off Option */
 "playlist.playlistAutoSaveOptionOff" = "Désactivé";
 
 /* Auto Save turn On Option */
@@ -1546,10 +1546,10 @@
 /* Option Text for Auto Save Only Wi-Fi Option */
 "playlist.playlistAutoSaveOptionOnlyWifi" = "Wi-Fi uniquement";
 
-/* Description for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
-"playlist.playlistAutoSaveSettingsDescription" = "L'ajout de fichiers vidéo et audio pour une utilisation hors ligne peut nécessiter un espace de stockage important sur votre appareil ainsi qu'une utilisation de vos données cellulaires";
+/* Description for the Playlist Settings Option for Auto Caching media (Off/On/Only Wi-fi) */
+"playlist.playlistAutoSaveSettingsDescription" = "La mise en cache des fichiers vidéo et audio peut consommer à la fois des données cellulaires et de l'espace de stockage sur votre appareil";
 
-/* Footer Text for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi)) */
+/* Footer Text for the Playlist Settings Option for media Auto Cache (Off/On/Only Wi-fi)) */
 "playlist.playlistAutoSaveSettingsFooterText" = "Cette option permet de conserver le contenu multimédia ouvert de votre playlist sur votre appareil afin de pouvoir les lire hors ligne.";
 
 /* Title for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
@@ -1559,7 +1559,7 @@
 "playlist.playlistDiskSpaceAddAnywayButtonTitle" = "Ajouter quand même";
 
 /* When the user's disk space is almost full */
-"playlist.playlistDiskSpaceWarningMessage" = "Votre appareil manque d'espace. L'ajout de cette vidéo à la Playlist risque d'échouer ou d'affecter d'autres téléchargements.";
+"playlist.playlistDiskSpaceWarningMessage" = "Votre appareil manque d'espace. L'ajout de cette vidéo à la Playlist risque d'échouer ou d'affecter d'autres vidéos mises en cache.";
 
 /* When the user's disk space is almost full */
 "playlist.playlistDiskSpaceWarningTitle" = "Stockage presque plein";
@@ -1570,14 +1570,17 @@
 /* Title for the Playlist Settings Option for long press gesture */
 "playlist.playlistLongPressSettingsOptionTitle" = "Activer l'appui long";
 
+/* Text for Playlist Data Toggle for clearing the cache in settings */
+"playlist.playlistOfflineDataToggleOption" = "Données Playlist";
+
 /* Title of a button displayed when first adding some media to Playlist. Its shown next to the name of a folder that the item is recently added to to imply that you are changing the folder it was saved to */
 "playlist.playlistPopoverChangeFoldersButtonTitle" = "Modifier";
 
-/* The title for the alert that shows up when removing all videos and their offline mode storage. */
+/* The title for the alert that shows up when removing all playlist data. */
 "playList.playlistResetAlertTitle" = "Réinitialiser";
 
 /* Footer Text for the Playlist Settings Option for resetting Playlist. */
-"playlist.playlistResetPlaylistOptionFooterText" = "Cette option supprime toutes les vidéos de la playlist ainsi que les données hors ligne.";
+"playlist.playlistResetPlaylistOptionFooterText" = "Cette option supprimera toutes les données de la Playlist.";
 
 /* Title Playlist (used for back button, and playlist settings) */
 "playList.playListSettingTitle" = "Playlist";
@@ -1588,7 +1591,7 @@
 /* Title for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
 "playlist.playlistStartPlaybackSettingsOptionTitle" = "Se souvenir de la position de lecture du fichier";
 
-/* Title for removing offline mode storage */
+/* Title for removing cached media from the playlist */
 "playList.removeActionButtonTitle" = "Retirer";
 
 /* A message shown when the user removes media from the playlist. '%@' will be replaced by the folder it was added to. Example: 'Removed from Play Later' */
@@ -1608,9 +1611,6 @@
 
 /* The title for the toast that shows up on a page containing a playlist item */
 "playList.toastAddToPlaylistTitle" = "Ajouter à la playlist";
-
-/* The title for the toast that shows up on a page when an item that has already been added, was updated. */
-"playList.toastExitingItemPlaylistTitle" = "Afficher dans Brave Playlist";
 
 /* A button title that when tapped will re-add the media item (undo the removal) that the user recently removed. */
 "playList.undoRemoveButtonTitle" = "Annuler";
@@ -3162,6 +3162,12 @@
 
 /* The title of the toggle for user to turn on auto-open keyboard when creating a new tab. */
 "tabs.settings.autoOpenKeyboardTitle" = "Ouverture automatique du clavier";
+
+/* The description of the toggle for user to turn on open link in quick view mode. */
+"tabs.settings.openLinkInQuickViewModeDescription" = "Ouvrir les liens d'Ask Brave et du moteur de recherche Brave dans des onglets de prévisualisation";
+
+/* The title of the toggle for user to turn on open link in quick view mode. */
+"tabs.settings.openLinkInQuickViewModeTitle" = "Activer les onglets Quickview";
 
 /* No comment provided by engineer. */
 "tabs.settings.persistentPrivateBrowsingDescription" = "Conserve les onglets de navigation privée ouverts lorsque vous fermez l’application pour reprendre votre navigation plus tard.";

@@ -2177,7 +2177,13 @@
 "wallet.txStatusViewInActivity" = "Vizualizare în activitate";
 
 /* Description displayed when users chose Brave to ask them if they want the Unstoppable Domains to be resolved every time they enter one. The first '%@' will be replaced with a list of supported TLDs like '.x' or '.bitcoin'. The second '%@' be replaced with a link to Chainstack's terms of use page. The third '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The fourth '%@' will be replaced with a link to Chainstack's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'. */
-"wallet.udDomainInterstitialPageDescription" = "Brave va fi serviciul RPC Ethereum configurat, care este implicit Chainstack, pentru a rezolva numele de domenii .crypto (și de asemenea %1$@) care sunt pe Unstoppable Domains. Brave ascunde adresa ta IP. Dacă activezi această opțiune, Chainstack va vedea că cineva încearcă să viziteze aceste domenii, dar nu va vedea alte informații. Vezi <a href=%2$@>%3$@</a> și <a href=%4$@>%5$@</a> de la Chainstack.";
+"wallet.udDomainInterstitialPageDescription" = "nume de domenii ce sunt găzduite pe Unstoppable Domains. Brave îți ascunde adresa IP. Dacă activezi această funcție, Chainstack va vedea că cineva încearcă să viziteze aceste domenii însă nimic altceva. Consultați <a href=%1$@>%2$@</a> și <a href=%3$@>%4$@</a> de la Chainstack.";
+
+/* The intro displayed below `udDomainInterstitialPageTitle`. */
+"wallet.udDomainInterstitialPageIntro" = "Brave va fi serviciul RPC Ethereum configurat, care implicit este Chainstack, pentru a rezolva:";
+
+/* The title of the button that user can tap to reveal more unstoppable domain extensions we support to resolve. */
+"wallet.udDomainInterstitialPageMore" = "+ mai multe";
 
 /* Title displayed when users chose Brave to ask them if they want the Unstoppable Domains domain to be resolved every time they enter one. */
 "wallet.udDomainInterstitialPageTitle" = "Activează Unstoppable Domains în Brave?";

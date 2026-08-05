@@ -1537,7 +1537,7 @@
 /* Title for the Playlist Settings Option for Enable/Disable Auto-Play */
 "playlist.playlistAutoPlaySettingsOptionTitle" = "Automatska reprodukcija";
 
-/* Auto Download turn Off Option */
+/* Auto Cache turn Off Option */
 "playlist.playlistAutoSaveOptionOff" = "isključeno";
 
 /* Auto Save turn On Option */
@@ -1546,10 +1546,10 @@
 /* Option Text for Auto Save Only Wi-Fi Option */
 "playlist.playlistAutoSaveOptionOnlyWifi" = "Samo mreža Wi-Fi";
 
-/* Description for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
-"playlist.playlistAutoSaveSettingsDescription" = "Dodavanjem videozapisa i zvučnih datoteka za izvanmrežnu upotrebu može se zauzeti mnogo prostora za pohranu na vašem uređaju, a i mogu se potrošiti mobilni podatci";
+/* Description for the Playlist Settings Option for Auto Caching media (Off/On/Only Wi-fi) */
+"playlist.playlistAutoSaveSettingsDescription" = "Predmemoriranje video i audio datoteka može trošiti i mobilne podatke i prostor za pohranu na vašem uređaju";
 
-/* Footer Text for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi)) */
+/* Footer Text for the Playlist Settings Option for media Auto Cache (Off/On/Only Wi-fi)) */
 "playlist.playlistAutoSaveSettingsFooterText" = "Nakon što otvorite sadržaj u Popisu za reprodukciju ova će opcija nastaviti otvarati medije na vašem uređaju kako biste ih mogli reproducirati bez internetske veze.";
 
 /* Title for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
@@ -1559,7 +1559,7 @@
 "playlist.playlistDiskSpaceAddAnywayButtonTitle" = "Dodaj ionako";
 
 /* When the user's disk space is almost full */
-"playlist.playlistDiskSpaceWarningMessage" = "Vaš uređaj ima malo slobodnog prostora. Dodavanje ovog videa u Plalisti može neuspjeti ili utjecati na druge preuzimanja.";
+"playlist.playlistDiskSpaceWarningMessage" = "Vaš uređaj ima malo slobodnog prostora. Dodavanje ovog videa u Playlistu može neuspjeti ili utjecati na druge predmemorirane videe.";
 
 /* When the user's disk space is almost full */
 "playlist.playlistDiskSpaceWarningTitle" = "Pohrana je skoro puna";
@@ -1570,14 +1570,17 @@
 /* Title for the Playlist Settings Option for long press gesture */
 "playlist.playlistLongPressSettingsOptionTitle" = "Omogućivanje duljeg pritiska";
 
+/* Text for Playlist Data Toggle for clearing the cache in settings */
+"playlist.playlistOfflineDataToggleOption" = "Podaci Playliste";
+
 /* Title of a button displayed when first adding some media to Playlist. Its shown next to the name of a folder that the item is recently added to to imply that you are changing the folder it was saved to */
 "playlist.playlistPopoverChangeFoldersButtonTitle" = "Promijeni";
 
-/* The title for the alert that shows up when removing all videos and their offline mode storage. */
+/* The title for the alert that shows up when removing all playlist data. */
 "playList.playlistResetAlertTitle" = "Ponovo postavite";
 
 /* Footer Text for the Playlist Settings Option for resetting Playlist. */
-"playlist.playlistResetPlaylistOptionFooterText" = "Ovom se mogućnosti uklanjaju svi videozapisi s popisa za reprodukciju i iz pohrane izvanmrežnog načina rada.";
+"playlist.playlistResetPlaylistOptionFooterText" = "Ova opcija će ukloniti sve podatke Playliste.";
 
 /* Title Playlist (used for back button, and playlist settings) */
 "playList.playListSettingTitle" = "Popis za reprodukciju";
@@ -1588,7 +1591,7 @@
 /* Title for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
 "playlist.playlistStartPlaybackSettingsOptionTitle" = "Zapamti položaj reprodukcije datoteke";
 
-/* Title for removing offline mode storage */
+/* Title for removing cached media from the playlist */
 "playList.removeActionButtonTitle" = "Uklonite";
 
 /* A message shown when the user removes media from the playlist. '%@' will be replaced by the folder it was added to. Example: 'Removed from Play Later' */
@@ -1608,9 +1611,6 @@
 
 /* The title for the toast that shows up on a page containing a playlist item */
 "playList.toastAddToPlaylistTitle" = "Dodaj na popis za reprodukciju";
-
-/* The title for the toast that shows up on a page when an item that has already been added, was updated. */
-"playList.toastExitingItemPlaylistTitle" = "Prikaz na popisu za reprodukciju preglednika Brave";
 
 /* A button title that when tapped will re-add the media item (undo the removal) that the user recently removed. */
 "playList.undoRemoveButtonTitle" = "Poništi";
@@ -3162,6 +3162,12 @@
 
 /* The title of the toggle for user to turn on auto-open keyboard when creating a new tab. */
 "tabs.settings.autoOpenKeyboardTitle" = "Automatski otvaraj tipkovnicu";
+
+/* The description of the toggle for user to turn on open link in quick view mode. */
+"tabs.settings.openLinkInQuickViewModeDescription" = "Otvaranje poveznica iz značajki Ask Brave i Brave Tražilica u karticama pretpregleda";
+
+/* The title of the toggle for user to turn on open link in quick view mode. */
+"tabs.settings.openLinkInQuickViewModeTitle" = "Omogući kartice brzog pregleda";
 
 /* No comment provided by engineer. */
 "tabs.settings.persistentPrivateBrowsingDescription" = "Držite kartice privatnog pregledavanja otvorenima kada zatvorite aplikaciju kako biste zajamčili nesmetan nastavak sesija privatnog pregledavanja.";

@@ -1537,7 +1537,7 @@
 /* Title for the Playlist Settings Option for Enable/Disable Auto-Play */
 "playlist.playlistAutoPlaySettingsOptionTitle" = "נגינה אוטומטית";
 
-/* Auto Download turn Off Option */
+/* Auto Cache turn Off Option */
 "playlist.playlistAutoSaveOptionOff" = "כבוי";
 
 /* Auto Save turn On Option */
@@ -1546,10 +1546,10 @@
 /* Option Text for Auto Save Only Wi-Fi Option */
 "playlist.playlistAutoSaveOptionOnlyWifi" = "רק Wi-Fi";
 
-/* Description for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
-"playlist.playlistAutoSaveSettingsDescription" = "הוספת קובצי שמע ווידאו עבור שימוש לא מקוון עלולה לעשות שימוש בנפח אחסון רב במכשיר שלך, כמו גם בנתונים ניידים";
+/* Description for the Playlist Settings Option for Auto Caching media (Off/On/Only Wi-fi) */
+"playlist.playlistAutoSaveSettingsDescription" = "שמירה במטמון של קובצי וידאו ואודיו עלולה לצרוך גם נתונים סלולריים וגם שטח אחסון בהתקן שלך";
 
-/* Footer Text for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi)) */
+/* Footer Text for the Playlist Settings Option for media Auto Cache (Off/On/Only Wi-fi)) */
 "playlist.playlistAutoSaveSettingsFooterText" = "ברגע שפתחת תוכן בתוך פלייליסט, האפשרות הזו תשמור פריטי פלייליסט פתוחים במכשיר שלך כך שתהיה לך אפשרות לנגן אותם ללא חיבור לאינטרנט.";
 
 /* Title for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
@@ -1559,7 +1559,7 @@
 "playlist.playlistDiskSpaceAddAnywayButtonTitle" = "הוסף בכל זאת";
 
 /* When the user's disk space is almost full */
-"playlist.playlistDiskSpaceWarningMessage" = "ההתקן שלך חסר מקום. הוספת סרטון זה ל-פלייליסט עלולה להיכשל או להשפיע על הורדות אחרות.";
+"playlist.playlistDiskSpaceWarningMessage" = "ההתקן שלך חסר מקום. הוספת סרטון זה ל-פלייליסט עלולה להיכשל או להשפיע על סרטונים אחרים ששמורים במטמון.";
 
 /* When the user's disk space is almost full */
 "playlist.playlistDiskSpaceWarningTitle" = "האחסון כמעט מלא";
@@ -1570,14 +1570,17 @@
 /* Title for the Playlist Settings Option for long press gesture */
 "playlist.playlistLongPressSettingsOptionTitle" = "הפעלת לחיצה ארוכה";
 
+/* Text for Playlist Data Toggle for clearing the cache in settings */
+"playlist.playlistOfflineDataToggleOption" = "נתוני פלייליסט";
+
 /* Title of a button displayed when first adding some media to Playlist. Its shown next to the name of a folder that the item is recently added to to imply that you are changing the folder it was saved to */
 "playlist.playlistPopoverChangeFoldersButtonTitle" = "שנה";
 
-/* The title for the alert that shows up when removing all videos and their offline mode storage. */
+/* The title for the alert that shows up when removing all playlist data. */
 "playList.playlistResetAlertTitle" = "איפוס";
 
 /* Footer Text for the Playlist Settings Option for resetting Playlist. */
-"playlist.playlistResetPlaylistOptionFooterText" = "האפשרות הזו תסיר את כל הסרטונים מהפלייליסט, כמו גם מהאחסון של מצב לא מקוון.";
+"playlist.playlistResetPlaylistOptionFooterText" = "אפשרות זו תסיר את כל נתוני הפלייליסט.";
 
 /* Title Playlist (used for back button, and playlist settings) */
 "playList.playListSettingTitle" = "רשימת השמעה";
@@ -1588,7 +1591,7 @@
 /* Title for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
 "playlist.playlistStartPlaybackSettingsOptionTitle" = "זכירת מיקום הפעלה בקובץ";
 
-/* Title for removing offline mode storage */
+/* Title for removing cached media from the playlist */
 "playList.removeActionButtonTitle" = "הסר";
 
 /* A message shown when the user removes media from the playlist. '%@' will be replaced by the folder it was added to. Example: 'Removed from Play Later' */
@@ -1608,9 +1611,6 @@
 
 /* The title for the toast that shows up on a page containing a playlist item */
 "playList.toastAddToPlaylistTitle" = "הוסף לרשימת השמעה";
-
-/* The title for the toast that shows up on a page when an item that has already been added, was updated. */
-"playList.toastExitingItemPlaylistTitle" = "הצגה בפלייליסט Brave";
 
 /* A button title that when tapped will re-add the media item (undo the removal) that the user recently removed. */
 "playList.undoRemoveButtonTitle" = "ביטול הפעולה";
@@ -3162,6 +3162,12 @@
 
 /* The title of the toggle for user to turn on auto-open keyboard when creating a new tab. */
 "tabs.settings.autoOpenKeyboardTitle" = "פתיחה אוטומטית של מקלדת";
+
+/* The description of the toggle for user to turn on open link in quick view mode. */
+"tabs.settings.openLinkInQuickViewModeDescription" = "פתיחת קישורים מ-Ask Brave ומחיפוש Brave בלשוניות תצוגה מקדימה";
+
+/* The title of the toggle for user to turn on open link in quick view mode. */
+"tabs.settings.openLinkInQuickViewModeTitle" = "הפעלת לשוניות תצוגה מהירה";
 
 /* No comment provided by engineer. */
 "tabs.settings.persistentPrivateBrowsingDescription" = "משאיר את כרטיסיות הגלישה הפרטית פתוחות בעת סגירת האפליקציה, מה שמבטיח שסשנים של גלישה פרטית ימשיכו ללא הפרעות.";
