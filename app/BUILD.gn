@@ -139,6 +139,7 @@ source_set("unit_tests") {
     "//chrome/browser/preloading",
     "//chrome/browser/ui",
     "//chrome/browser/ui:ui_features",
+    "//chrome/browser/ui/omnibox",
     "//components/aggregation_service",
     "//components/attribution_reporting",
     "//components/autofill/core/common",
