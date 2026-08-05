@@ -6,13 +6,16 @@
 package org.chromium.chrome.browser.crypto_wallet.activities;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
+import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.widget.ViewPager2;
 
 import org.chromium.base.Log;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.domain.KeyringModel;
@@ -21,6 +24,7 @@ import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletOnboardingPagerAdapter;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletOnboardingPagerAdapter.WalletAction;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnNextPage;
+import org.chromium.chrome.browser.crypto_wallet.model.OnboardingViewModel;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletUtils;
 import org.chromium.components.browser_ui.modaldialog.AppModalPresenter;
@@ -49,10 +53,22 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
     private boolean mRestartSetupAction;
     private boolean mRestartRestoreAction;
     private boolean mBackupWallet;
+    private OnboardingViewModel mOnboardingViewModel;
+
+    @Override
+    protected @Nullable Bundle transformSavedInstanceStateForOnCreate(
+            @Nullable Bundle savedInstanceState) {
+        // Returning null drops the FragmentManager's restored fragment state.
+        // finishNativeInitialization builds a fresh adapter and restores the onboarding position
+        // from OnboardingViewModel; the pager's own restored adapter state is dropped separately by
+        // setSaveEnabled(false).
+        return null;
+    }
 
     @Override
     protected void triggerLayoutInflation() {
         setContentView(R.layout.activity_brave_wallet);
+        mOnboardingViewModel = new ViewModelProvider(this).get(OnboardingViewModel.class);
         mIsFromDapps = false;
         final Intent intent = getIntent();
         if (intent != null) {
@@ -72,6 +88,9 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
 
         mCryptoOnboardingLayout = findViewById(R.id.crypto_onboarding_layout);
         mCryptoWalletOnboardingViewPager = findViewById(R.id.crypto_wallet_onboarding_viewpager);
+        // Drops the pager's own restored adapter state.
+        // The onboarding position is restored from OnboardingViewModel.
+        mCryptoWalletOnboardingViewPager.setSaveEnabled(false);
         mCryptoWalletOnboardingViewPager.setUserInputEnabled(false);
         mCryptoWalletOnboardingViewPager.setOffscreenPageLimit(1);
         mCryptoWalletOnboardingViewPager.registerOnPageChangeCallback(
@@ -111,6 +130,19 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
                 new WalletOnboardingPagerAdapter(this, mRestartSetupAction, mRestartRestoreAction);
         mCryptoWalletOnboardingViewPager.setAdapter(mWalletOnboardingPagerAdapter);
 
+        // Restore an onboarding flow that was in progress before a recreation (rotation/theme
+        // switch). The action and page are kept on OnboardingViewModel which survives the
+        // recreation.
+        final WalletAction savedAction = mOnboardingViewModel.getOnboardingWalletAction();
+        if (savedAction != null) {
+            mCryptoOnboardingLayout.setVisibility(View.VISIBLE);
+            mWalletOnboardingPagerAdapter.setWalletAction(savedAction);
+            mCryptoWalletOnboardingViewPager.setCurrentItem(
+                    mOnboardingViewModel.getOnboardingPage(), false);
+            addRemoveSecureFlag(true);
+            return;
+        }
+
         if (Utils.shouldShowCryptoOnboarding()) {
             mCryptoOnboardingLayout.setVisibility(View.VISIBLE);
             mWalletOnboardingPagerAdapter.setWalletAction(WalletAction.ONBOARDING);
@@ -130,6 +162,28 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
                             showMainLayout(false);
                         }
                     });
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        // Snapshot the current onboarding position onto OnboardingViewModel (which outlives this
+        // recreation) so finishNativeInitialization can restore it. Only while the onboarding UI is
+        // actually shown; otherwise clear it, so a completed or unlocked state is not later
+        // restored
+        // as onboarding.
+        if (mOnboardingViewModel == null) {
+            return;
+        }
+        if (mCryptoOnboardingLayout != null
+                && mCryptoOnboardingLayout.getVisibility() == View.VISIBLE
+                && mWalletOnboardingPagerAdapter != null) {
+            mOnboardingViewModel.setOnboardingProgress(
+                    mWalletOnboardingPagerAdapter.getWalletAction(),
+                    mCryptoWalletOnboardingViewPager.getCurrentItem());
+        } else {
+            mOnboardingViewModel.clearOnboardingProgress();
         }
     }
 
