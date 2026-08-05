@@ -13,9 +13,11 @@
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/p3a/pref_names.h"
 #include "chrome/test/base/testing_browser_process.h"
+#include "chrome/test/base/testing_profile.h"
 #include "chrome/test/base/testing_profile_manager.h"
 #include "components/policy/core/common/policy_details.h"
 #include "components/policy/policy_constants.h"
+#include "components/prefs/pref_service.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -232,6 +234,27 @@ TEST_F(BraveOriginServiceFactoryProfileTest, NoServiceForGuestProfile) {
   // Verify that BraveOriginService is not created for guest profiles
   auto* service = BraveOriginServiceFactory::GetForProfile(guest_profile);
   EXPECT_EQ(service, nullptr);
+}
+
+// Every pref that Brave Origin claims as a profile policy must be registered
+// on a real profile. Brave Origin shows its settings toggles (and writes these
+// prefs via SetPolicyValue) gated only on build flags, so a pref registered
+// solely behind a runtime feature flag would hit an unregistered-pref
+// NOTREACHED when toggled with the feature off. Registering these prefs
+// unconditionally in brave::RegisterProfilePrefs keeps them in sync.
+TEST_F(BraveOriginServiceFactoryProfileTest, ProfilePolicyPrefsAreRegistered) {
+  auto* profile = profile_manager_.CreateTestingProfile("test");
+  auto* prefs = profile->GetPrefs();
+
+  for (const auto& [policy_key, info] :
+       BraveOriginServiceFactory::GetProfilePolicyDefinitions()) {
+    EXPECT_NE(prefs->FindPreference(info.pref_name), nullptr)
+        << "Profile policy " << policy_key << " references pref "
+        << info.pref_name
+        << " which is not registered. Register it unconditionally in "
+           "brave::RegisterProfilePrefs (brave/browser/brave_profile_prefs.cc) "
+           "so it exists regardless of any runtime feature flag.";
+  }
 }
 
 }  // namespace brave_origin
