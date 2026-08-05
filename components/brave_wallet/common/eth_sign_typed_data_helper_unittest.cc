@@ -37,19 +37,19 @@ TEST(EthSignedTypedDataHelperUnitTest, EncodeTypes) {
       EthSignTypedDataHelper::Create(types_value.GetDict().Clone(),
                                      EthSignTypedDataHelper::Version::kV4);
   ASSERT_TRUE(helper);
-  const std::string encoded_types_v4 = helper->EncodeTypes("Mail");
+  const std::string encoded_types_v4 = *helper->EncodeTypes("Mail");
   EXPECT_EQ(encoded_types_v4,
             "Mail(Person from,Person to,string contents)Person(string "
             "name,address wallet)");
-  auto typed_hash_v4 = helper->GetTypeHash("Mail");
+  auto typed_hash_v4 = *helper->GetTypeHash("Mail");
   EXPECT_EQ(base::HexEncodeLower(typed_hash_v4),
             "a0cedeb2dc280ba39b857546d74f5549c3a1d7bdc2dd96bf881f76108e23dac2");
 
   // v3 should be same as v4
   helper->SetVersion(EthSignTypedDataHelper::Version::kV3);
-  const std::string encoded_types_v3 = helper->EncodeTypes("Mail");
+  const std::string encoded_types_v3 = *helper->EncodeTypes("Mail");
   EXPECT_EQ(encoded_types_v4, encoded_types_v3);
-  auto typed_hash_v3 = helper->GetTypeHash("Mail");
+  auto typed_hash_v3 = *helper->GetTypeHash("Mail");
   EXPECT_EQ(typed_hash_v3, typed_hash_v4);
 
   // When depended type is not valid
@@ -66,8 +66,7 @@ TEST(EthSignedTypedDataHelperUnitTest, EncodeTypes) {
   helper = EthSignTypedDataHelper::Create(types_value.GetDict().Clone(),
                                           EthSignTypedDataHelper::Version::kV4);
   ASSERT_TRUE(helper);
-  EXPECT_EQ(helper->EncodeTypes("Mail"),
-            "Mail(Person from,Person to,string contents)");
+  EXPECT_EQ(helper->EncodeTypes("Mail"), std::nullopt);
 }
 
 TEST(EthSignedTypedDataHelperUnitTest, InvalidEncodeTypes) {
@@ -98,9 +97,7 @@ TEST(EthSignedTypedDataHelperUnitTest, InvalidEncodeTypes) {
     std::unique_ptr<EthSignTypedDataHelper> invalid_types_helper =
         EthSignTypedDataHelper::Create(invalid_value.GetDict().Clone(),
                                        EthSignTypedDataHelper::Version::kV4);
-    const std::string invalid_encoded_types_v4 =
-        invalid_types_helper->EncodeTypes("Domain");
-    EXPECT_EQ(invalid_encoded_types_v4, "");
+    EXPECT_EQ(invalid_types_helper->EncodeTypes("Domain"), std::nullopt);
   }
 }
 
@@ -121,18 +118,18 @@ TEST(EthSignedTypedDataHelperUnitTest, EncodeTypesArrays) {
       EthSignTypedDataHelper::Create(types_value.GetDict().Clone(),
                                      EthSignTypedDataHelper::Version::kV4);
   ASSERT_TRUE(helper);
-  const std::string encoded_types_v4 = helper->EncodeTypes("Mail");
+  const std::string encoded_types_v4 = *helper->EncodeTypes("Mail");
   EXPECT_EQ(encoded_types_v4,
             "Mail(Person[] to)Person(string name,address wallet)");
-  auto typed_hash_v4 = helper->GetTypeHash("Mail");
+  auto typed_hash_v4 = *helper->GetTypeHash("Mail");
   EXPECT_EQ(base::HexEncodeLower(typed_hash_v4),
             "08dde06d30a2d7c005e313f9d36bef353674e06b4ae1a923fb086f2da5b40cce");
 
   // v3 should be same as v4
   helper->SetVersion(EthSignTypedDataHelper::Version::kV3);
-  const std::string encoded_types_v3 = helper->EncodeTypes("Mail");
+  const std::string encoded_types_v3 = *helper->EncodeTypes("Mail");
   EXPECT_EQ(encoded_types_v4, encoded_types_v3);
-  auto typed_hash_v3 = helper->GetTypeHash("Mail");
+  auto typed_hash_v3 = *helper->GetTypeHash("Mail");
   EXPECT_EQ(typed_hash_v3, typed_hash_v4);
 }
 
