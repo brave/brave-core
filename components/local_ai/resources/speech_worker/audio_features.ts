@@ -82,11 +82,7 @@ export function initFftPower(n: FftSize): FftState {
 
 // Compute power spectrum from a real-valued N_FFT frame.
 function fftPower(fft: FftState): Float32Array {
-  const n = fft.n
-  const real = fft.real
-  const imag = fft.imag
-  const bitRev = fft.bitRev
-  const frame = fft.frame
+  const { n, real, imag, bitRev, frame } = fft
 
   // Bit-reversed copy of real input.
   // frame is expected to have length N_FFT.
@@ -158,7 +154,7 @@ export class StreamingMelFrontend {
     return this.freeMelFrames.pop() ?? new Float32Array(config.N_MELS)
   }
 
-  private releaseMelFrame(frame: Float32Array): void {
+  private releaseMelFrame(frame: Float32Array) {
     frame.fill(0)
     this.freeMelFrames.push(frame)
   }
@@ -174,7 +170,7 @@ export class StreamingMelFrontend {
     private readonly sampleRateHz: number,
   ) {}
 
-  appendAudioSamples(samples: Float32Array): void {
+  appendAudioSamples(samples: Float32Array) {
     for (let i = 0; i < samples.length; i++) {
       this.rawAudio.push(samples[i])
     }
@@ -184,7 +180,7 @@ export class StreamingMelFrontend {
     this.trimOldBuffers()
   }
 
-  hasFullChunk(): boolean {
+  hasFullChunk() {
     return this.nextMelFrame - this.nextChunkFrame >= config.NEMO_CHUNK
   }
 
@@ -221,7 +217,7 @@ export class StreamingMelFrontend {
     return chunk
   }
 
-  consumeChunk(): void {
+  consumeChunk() {
     if (!this.hasFullChunk()) {
       throw new Error('Cannot consume an incomplete mel chunk')
     }
@@ -232,7 +228,7 @@ export class StreamingMelFrontend {
   // Zero every buffer holding audio or acoustic features and reset the
   // frontend to empty. Called at session end so the utterance does not
   // persist in the JS heap until garbage collection.
-  wipe(): void {
+  wipe() {
     this.rawAudio.fill(0)
     this.rawAudio.length = 0
     for (const frame of this.melFrames) {
@@ -270,7 +266,7 @@ export class StreamingMelFrontend {
     }
   }
 
-  private appendStableMelFrames(): void {
+  private appendStableMelFrames() {
     // By 'stable' mel frame, we mean a mel frame whose required raw audio
     // samples are already available, including its right-side context.
     const stableFrames = this.stableMelFrameCountForSamples(
@@ -386,13 +382,13 @@ export class StreamingMelFrontend {
     chunk: Float32Array,
     chunkFrameOffset: number,
     melFrame: Float32Array,
-  ): void {
+  ) {
     for (let m = 0; m < config.N_MELS; m++) {
       chunk[m * config.NEMO_FRAMES + chunkFrameOffset] = melFrame[m]
     }
   }
 
-  private trimOldBuffers(): void {
+  private trimOldBuffers() {
     // Keep only mel frames needed for the next encoder input's 9-frame
     // pre-encode cache.
     const keepFromFrame = Math.max(
