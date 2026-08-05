@@ -14,6 +14,7 @@
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/bookmarks_page_handler.h"
 #include "brave/components/ai_chat/core/browser/history_ui_handler.h"
+#include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/browser/tab_tracker_service.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
@@ -28,8 +29,10 @@
 #include "brave/ios/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/ios/browser/ai_chat/ai_chat_ui_handler_bridge.h"
 #include "brave/ios/browser/ai_chat/ai_chat_ui_handler_bridge_holder.h"
+#include "brave/ios/browser/ai_chat/model_service_factory.h"
 #include "brave/ios/browser/ai_chat/tab_tracker_service_factory.h"
 #include "brave/ios/browser/api/web_view/brave_web_view.h"
+#include "brave/ios/browser/ui/webui/ai_chat/ai_chat_remote_models_visibility_observer.h"
 #include "brave/ios/browser/ui/webui/ai_chat/ai_chat_ui_page_handler.h"
 #include "brave/ios/browser/ui/webui/favicon_source.h"
 #include "brave/ios/web/webui/brave_web_ui_ios_data_source.h"
@@ -128,6 +131,13 @@ AIChatUI::AIChatUI(web::WebUIIOS* web_ui, const GURL& url)
   web_ui->GetWebState()->GetInterfaceBinderForMainFrame()->AddInterface(
       base::BindRepeating(&AIChatUI::BindInterfaceTabTrackerService,
                           base::Unretained(this)));
+
+  // Tells `ModelService` when this surface is visible, so it knows when to
+  // fetch/refresh the remote model list.
+  remote_models_visibility_observer_ =
+      std::make_unique<ai_chat::AIChatRemoteModelsVisibilityObserver>(
+          web_ui->GetWebState(),
+          ai_chat::ModelServiceFactory::GetForProfile(profile_));
 }
 
 AIChatUI::~AIChatUI() {

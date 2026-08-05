@@ -9,6 +9,8 @@ assert(enable_ai_chat)
 
 source_set("ai_chat") {
   sources = [
+    "ai_chat_remote_models_visibility_observer.cc",
+    "ai_chat_remote_models_visibility_observer.h",
     "ai_chat_ui.cc",
     "ai_chat_ui.h",
     "ai_chat_ui_page_handler.cc",

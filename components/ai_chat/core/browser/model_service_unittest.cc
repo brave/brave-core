@@ -11,7 +11,9 @@
 #include <string_view>
 #include <utility>
 
+#include "base/files/scoped_temp_dir.h"
 #include "base/functional/callback.h"
+#include "base/json/json_writer.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/raw_ref.h"
 #include "base/metrics/field_trial_params.h"
@@ -20,19 +22,28 @@
 #include "base/scoped_observation.h"
 #include "base/strings/string_util.h"
 #include "base/test/bind.h"
+#include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
+#include "base/test/values_test_util.h"
+#include "base/time/time.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/model_validator.h"
+#include "brave/components/ai_chat/core/browser/remote_models_provider.h"
+#include "brave/components/ai_chat/core/browser/remote_models_serialization.h"
 #include "brave/components/ai_chat/core/common/constants.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
+#include "brave/components/api_request_helper/api_request_helper.h"
+#include "brave/components/api_request_helper/mock_api_request_helper.h"
 #include "components/grit/brave_components_webui_strings.h"
 #include "components/os_crypt/async/browser/os_crypt_async.h"
 #include "components/os_crypt/async/browser/test_utils.h"
 #include "components/prefs/testing_pref_service.h"
+#include "net/http/http_status_code.h"
+#include "net/traffic_annotation/network_traffic_annotation_test_helper.h"
 #include "services/network/public/cpp/network_context_getter.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -42,8 +53,11 @@
 namespace ai_chat {
 
 namespace {
+using api_request_helper::MockAPIRequestHelper;
 using ::testing::_;
 using ::testing::NiceMock;
+using ResultCallback = api_request_helper::APIRequestHelper::ResultCallback;
+using Ticket = api_request_helper::APIRequestHelper::Ticket;
 
 class MockModelServiceObserver : public ModelService::Observer {
  public:
@@ -106,6 +120,11 @@ mojom::ModelPtr MakeRemoteTestModel(const std::string& key) {
   model->supported_capabilities = {mojom::ConversationCapability::CHAT};
   model->options = mojom::ModelOptions::NewLeoModelOptions(std::move(leo_opts));
   return model;
+}
+
+// Builds a server-format JSON response containing |models|.
+std::string MakeModelsResponse(const std::vector<mojom::ModelPtr>& models) {
+  return base::WriteJson(SerializeModels(models)).value_or("");
 }
 
 }  // namespace
@@ -872,6 +891,217 @@ TEST_F(ModelServiceTest, GetLeoModelKeyAndNameByKeyReflectMergedList) {
   EXPECT_FALSE(
       service->GetLeoModelNameByKey(kClaudeSonnetModelKey).has_value());
   EXPECT_FALSE(service->GetLeoModelKeyByName(*sonnet_name).has_value());
+}
+
+// Exercises `OnRemoteModelsSurfaceVisible()`/`OnRemoteModelsSurfaceHidden()`
+// and the self-rescheduling refresh timer against a real `ModelService` +
+// `RemoteModelsProvider`, mocking only the network layer (mirrors
+// `RemoteModelsProviderTest`'s approach in remote_models_provider_unittest.cc).
+class ModelServiceRemoteModelsRefreshTest : public ::testing::Test {
+ public:
+  void SetUp() override {
+    feature_list_.InitAndEnableFeatureWithParameters(
+        features::kAIChatRemoteModelsConfig, {{"cache_ttl", "24h"}});
+    ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
+    prefs::RegisterProfilePrefs(pref_service_.registry());
+    prefs::RegisterProfilePrefsForMigration(pref_service_.registry());
+    ModelService::RegisterProfilePrefs(pref_service_.registry());
+
+    service_ = std::make_unique<ModelService>(
+        &pref_service_, os_crypt_async_.get(), network::NetworkContextGetter(),
+        /*url_loader_factory=*/nullptr, temp_dir_.GetPath());
+    service_->GetRemoteModelsProviderForTesting()
+        ->GetFetcherForTesting()
+        .SetAPIRequestHelperForTesting(
+            std::make_unique<NiceMock<MockAPIRequestHelper>>(
+                TRAFFIC_ANNOTATION_FOR_TESTS, nullptr));
+  }
+
+  ModelService* service() { return service_.get(); }
+
+  MockAPIRequestHelper* GetMockAPIRequestHelper() {
+    return static_cast<MockAPIRequestHelper*>(
+        service_->GetRemoteModelsProviderForTesting()
+            ->GetFetcherForTesting()
+            .GetAPIRequestHelperForTesting());
+  }
+
+  // Sets up the next network fetch to respond with |models|, or a server
+  // error if |models| is null. Expects exactly one such fetch.
+  void RespondWith(const std::vector<mojom::ModelPtr>* models) {
+    std::string response = models ? MakeModelsResponse(*models) : "";
+    int http_code = models ? net::HTTP_OK : net::HTTP_INTERNAL_SERVER_ERROR;
+    EXPECT_CALL(*GetMockAPIRequestHelper(), Request(_, _, _, _, _, _, _, _))
+        .WillOnce(
+            [response, http_code](
+                const std::string& method, const GURL& url,
+                const std::string& body, const std::string& content_type,
+                ResultCallback result_callback,
+                const base::flat_map<std::string, std::string>& headers,
+                const api_request_helper::APIRequestOptions& options,
+                api_request_helper::APIRequestHelper::ResponseConversionCallback
+                    conversion_callback) {
+              base::Value response_body = response.empty()
+                                              ? base::Value()
+                                              : base::test::ParseJson(response);
+              std::move(result_callback)
+                  .Run(api_request_helper::APIRequestResult(
+                      http_code, std::move(response_body), {}, net::OK,
+                      GURL()));
+              return Ticket();
+            });
+  }
+
+ protected:
+  base::test::TaskEnvironment task_environment_{
+      base::test::TaskEnvironment::TimeSource::MOCK_TIME};
+  base::test::ScopedFeatureList feature_list_;
+  base::ScopedTempDir temp_dir_;
+  TestingPrefServiceSimple pref_service_;
+  std::unique_ptr<os_crypt_async::OSCryptAsync> os_crypt_async_ =
+      os_crypt_async::GetTestOSCryptAsyncForTesting(
+          /*is_sync_for_unittests=*/true);
+
+ private:
+  std::unique_ptr<ModelService> service_;
+};
+
+TEST_F(ModelServiceRemoteModelsRefreshTest,
+       NoFetchOrTimerWhileNoSurfaceVisible) {
+  EXPECT_CALL(*GetMockAPIRequestHelper(), Request(_, _, _, _, _, _, _, _))
+      .Times(0);
+
+  EXPECT_EQ(service()->GetRemoteModelsVisibleSurfaceCountForTesting(), 0u);
+  EXPECT_FALSE(service()->IsRemoteModelsRefreshTimerRunningForTesting());
+
+  task_environment_.FastForwardBy(base::Days(2));
+
+  EXPECT_FALSE(service()->IsRemoteModelsRefreshTimerRunningForTesting());
+}
+
+TEST_F(ModelServiceRemoteModelsRefreshTest,
+       FirstVisibleSurfaceTriggersImmediateFetchAndStartsTimer) {
+  std::vector<mojom::ModelPtr> models;
+  models.push_back(MakeRemoteTestModel("remote-model-1"));
+  RespondWith(&models);
+
+  // The mocked fetch resolves synchronously, so no wait is needed.
+  service()->OnRemoteModelsSurfaceVisible();
+
+  EXPECT_TRUE(service()->GetModel("remote-model-1"));
+  EXPECT_TRUE(service()->IsRemoteModelsRefreshTimerRunningForTesting());
+}
+
+TEST_F(ModelServiceRemoteModelsRefreshTest,
+       LastSurfaceHiddenStopsTimerWithNoFurtherRequests) {
+  std::vector<mojom::ModelPtr> models;
+  models.push_back(MakeRemoteTestModel("remote-model-1"));
+  RespondWith(&models);
+
+  service()->OnRemoteModelsSurfaceVisible();
+  ASSERT_TRUE(service()->IsRemoteModelsRefreshTimerRunningForTesting());
+
+  service()->OnRemoteModelsSurfaceHidden();
+  EXPECT_FALSE(service()->IsRemoteModelsRefreshTimerRunningForTesting());
+
+  // No further requests should fire even well past the TTL, since nothing
+  // is visible.
+  EXPECT_CALL(*GetMockAPIRequestHelper(), Request(_, _, _, _, _, _, _, _))
+      .Times(0);
+  task_environment_.FastForwardBy(base::Days(2));
+}
+
+TEST_F(ModelServiceRemoteModelsRefreshTest,
+       SecondVisibleSurfaceDoesNotStartSecondFetchOrTimer) {
+  std::vector<mojom::ModelPtr> models;
+  models.push_back(MakeRemoteTestModel("remote-model-1"));
+  RespondWith(&models);  // Expects exactly one fetch.
+
+  service()->OnRemoteModelsSurfaceVisible();
+  service()->OnRemoteModelsSurfaceVisible();
+
+  EXPECT_TRUE(service()->GetModel("remote-model-1"));
+  EXPECT_EQ(service()->GetRemoteModelsVisibleSurfaceCountForTesting(), 2u);
+  EXPECT_TRUE(service()->IsRemoteModelsRefreshTimerRunningForTesting());
+}
+
+TEST_F(ModelServiceRemoteModelsRefreshTest,
+       TimerDelayReflectsCacheTimestampNotSurfaceOpenTime) {
+  NiceMock<MockModelServiceObserver> observer;
+  observer.Observe(service());
+
+  std::vector<mojom::ModelPtr> models;
+  models.push_back(MakeRemoteTestModel("remote-model-1"));
+  RespondWith(&models);
+
+  // Hide immediately to stop the freshly-armed refresh timer before waiting
+  // on the disk write below: under MOCK_TIME, RunUntil() fast-forwards
+  // through an armed timer to reach an idle point, firing it prematurely.
+  service()->OnRemoteModelsSurfaceVisible();
+  service()->OnRemoteModelsSurfaceHidden();
+  ASSERT_TRUE(base::test::RunUntil([&] {
+    return !pref_service_.GetTime(prefs::kRemoteModelsCachedAt).is_null();
+  }));
+
+  // An hour passes with nothing visible, so the cache is now an hour old
+  // (but still within the 24h TTL) by the time the next surface opens.
+  task_environment_.FastForwardBy(base::Hours(1));
+
+  // Cache hit: no network fetch, and the cache timestamp stays ~1h old
+  // (unchanged). Waits via OnModelListUpdated() + RunLoop rather than
+  // RunUntil() on the timer's state, for the same MOCK_TIME reason as
+  // above -- this fires before the next timer gets (re)armed.
+  EXPECT_CALL(*GetMockAPIRequestHelper(), Request(_, _, _, _, _, _, _, _))
+      .Times(0);
+  base::RunLoop run_loop;
+  EXPECT_CALL(observer, OnModelListUpdated()).WillOnce([&] {
+    run_loop.Quit();
+  });
+  service()->OnRemoteModelsSurfaceVisible();
+  run_loop.Run();
+  EXPECT_TRUE(service()->IsRemoteModelsRefreshTimerRunningForTesting());
+  testing::Mock::VerifyAndClearExpectations(GetMockAPIRequestHelper());
+  testing::Mock::VerifyAndClearExpectations(&observer);
+
+  // A fixed-TTL-from-here reschedule would fire around T0+25h; deriving the
+  // delay from the cache timestamp instead fires around T0+24h, well before
+  // this checkpoint.
+  std::vector<mojom::ModelPtr> refreshed;
+  refreshed.push_back(MakeRemoteTestModel("remote-model-2"));
+  RespondWith(&refreshed);
+  base::RunLoop run_loop2;
+  EXPECT_CALL(observer, OnModelListUpdated()).WillOnce([&] {
+    run_loop2.Quit();
+  });
+  task_environment_.FastForwardBy(base::Hours(23) + base::Minutes(30));
+  run_loop2.Run();
+  EXPECT_TRUE(service()->GetModel("remote-model-2"));
+}
+
+TEST_F(ModelServiceRemoteModelsRefreshTest,
+       FailedRefreshReschedulesAtFullTTLRatherThanRetryingImmediately) {
+  RespondWith(nullptr);
+
+  // Resolves synchronously; a failed fetch never writes the disk cache, so
+  // waiting via RunUntil() here would fast-forward through the now-armed
+  // refresh timer instead (see the MOCK_TIME note above).
+  service()->OnRemoteModelsSurfaceVisible();
+  ASSERT_TRUE(service()->IsRemoteModelsRefreshTimerRunningForTesting());
+
+  // Shortly before a full TTL has elapsed since the failed attempt, no retry
+  // should have fired yet.
+  EXPECT_CALL(*GetMockAPIRequestHelper(), Request(_, _, _, _, _, _, _, _))
+      .Times(0);
+  task_environment_.FastForwardBy(base::Hours(24) - base::Minutes(1));
+  testing::Mock::VerifyAndClearExpectations(GetMockAPIRequestHelper());
+
+  // Past the full TTL, the timer fires and retries synchronously as part of
+  // FastForwardBy() running the due task.
+  std::vector<mojom::ModelPtr> retry_models;
+  retry_models.push_back(MakeRemoteTestModel("remote-model-1"));
+  RespondWith(&retry_models);
+  task_environment_.FastForwardBy(base::Minutes(2));
+  EXPECT_TRUE(service()->GetModel("remote-model-1"));
 }
 
 }  // namespace ai_chat

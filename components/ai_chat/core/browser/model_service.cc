@@ -31,6 +31,7 @@
 #include "base/numerics/safe_math.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
+#include "base/time/time.h"
 #include "base/uuid.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
@@ -918,6 +919,77 @@ void ModelService::OnRemoteModelsReady(
       obs.OnModelRemoved(removed_key);
     }
   }
+}
+
+void ModelService::OnRemoteModelsSurfaceVisible() {
+  ++remote_models_visible_surface_count_;
+  // `remote_models_refresh_in_flight_` guards against a hide/show race: if
+  // this surface reappears before an earlier request finished, let it finish
+  // rather than starting an overlapping one.
+  if (remote_models_visible_surface_count_ == 1 &&
+      !remote_models_refresh_in_flight_) {
+    RequestRemoteModelsRefresh();
+  }
+}
+
+void ModelService::OnRemoteModelsSurfaceHidden() {
+  DCHECK_GT(remote_models_visible_surface_count_, 0u);
+  --remote_models_visible_surface_count_;
+  if (remote_models_visible_surface_count_ == 0) {
+    remote_models_refresh_timer_.Stop();
+  }
+}
+
+void ModelService::RequestRemoteModelsRefresh() {
+  if (!remote_models_provider_) {
+    return;
+  }
+  DCHECK(!remote_models_refresh_in_flight_)
+      << "RequestRemoteModelsRefresh called while a request is in flight";
+
+  remote_models_refresh_in_flight_ = true;
+  remote_models_provider_->GetModels(
+      base::BindOnce(&ModelService::OnRemoteModelsRefreshComplete,
+                     weak_ptr_factory_.GetWeakPtr()));
+}
+
+void ModelService::OnRemoteModelsRefreshComplete(
+    std::vector<mojom::ModelPtr> fetched_models) {
+  remote_models_refresh_in_flight_ = false;
+  const bool succeeded = !fetched_models.empty();
+  OnRemoteModelsReady(std::move(fetched_models));
+
+  // A surface that went hidden while this request was in flight already
+  // stopped the timer; don't restart it here.
+  if (remote_models_visible_surface_count_ > 0) {
+    ScheduleNextRemoteModelsRefresh(succeeded);
+  }
+}
+
+void ModelService::ScheduleNextRemoteModelsRefresh(
+    bool last_attempt_succeeded) {
+  const base::TimeDelta ttl = features::kRemoteModelsCacheTTL.Get();
+  base::TimeDelta delay = ttl;
+  if (last_attempt_succeeded) {
+    const base::Time cached_at =
+        pref_service_->GetTime(prefs::kRemoteModelsCachedAt);
+    const base::TimeDelta elapsed = base::Time::Now() - cached_at;
+    // A fresh fetch's own disk write is posted asynchronously, so
+    // `cached_at` may still be the previous, expired entry here. Falling
+    // through to the full-TTL default below is correct in that case too.
+    if (!cached_at.is_null() && elapsed < ttl) {
+      delay = ttl - elapsed;
+    }
+  }
+
+  remote_models_refresh_timer_.Start(
+      FROM_HERE, delay,
+      base::BindOnce(&ModelService::OnRemoteModelsRefreshTimerFired,
+                     weak_ptr_factory_.GetWeakPtr()));
+}
+
+void ModelService::OnRemoteModelsRefreshTimerFired() {
+  RequestRemoteModelsRefresh();
 }
 
 const std::vector<mojom::ModelPtr>& ModelService::GetModels() {

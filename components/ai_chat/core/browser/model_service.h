@@ -21,6 +21,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
 #include "base/observer_list_types.h"
+#include "base/timer/timer.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
@@ -132,6 +133,21 @@ class ModelService : public KeyedService {
   void OnRemoteModelsReadyForTesting(std::vector<mojom::ModelPtr> models) {
     OnRemoteModelsReady(std::move(models));
   }
+  bool IsRemoteModelsRefreshTimerRunningForTesting() const {
+    return remote_models_refresh_timer_.IsRunning();
+  }
+  size_t GetRemoteModelsVisibleSurfaceCountForTesting() const {
+    return remote_models_visible_surface_count_;
+  }
+
+  // Called by the small `WebContentsObserver` helper owned by `AIChatUI`
+  // (desktop) and its iOS equivalent whenever a Leo surface's visibility
+  // changes. Ref-counted rather than boolean, since a side panel in one
+  // window and a full-page tab in another can be visible simultaneously. On
+  // a 0->1 transition, fetches immediately and starts a self-rescheduling
+  // refresh timer; on a 1->0 transition, stops it.
+  void OnRemoteModelsSurfaceVisible();
+  void OnRemoteModelsSurfaceHidden();
 
  private:
   void OnEncryptorReady(scoped_refptr<os_crypt_async::Encryptor> encryptor);
@@ -147,6 +163,20 @@ class ModelService : public KeyedService {
   // populate keys that decrypted to empty strings during initial sync load.
   void RefreshCustomModelApiKeys();
 
+  // Requests a fresh model list via `remote_models_provider_` (cache-first).
+  // A no-op if the feature is disabled. Callers must not invoke this while a
+  // request is already in flight.
+  void RequestRemoteModelsRefresh();
+  void OnRemoteModelsRefreshComplete(
+      std::vector<mojom::ModelPtr> fetched_models);
+  // Starts `remote_models_refresh_timer_` with a delay computed from
+  // `kRemoteModelsCachedAt`/`kRemoteModelsCacheTTL`, so the next refresh
+  // lands close to actual cache expiry rather than a fixed interval from
+  // surface-open time. Falls back to a full TTL interval after a failed
+  // attempt, rather than retrying quickly.
+  void ScheduleNextRemoteModelsRefresh(bool last_attempt_succeeded);
+  void OnRemoteModelsRefreshTimerFired();
+
   std::string EncryptAPIKey(const std::string& api_key) const;
   std::string DecryptAPIKey(const std::string& encoded_api_key) const;
   // Returns the dict-shaped representation of `model` used to persist a
@@ -160,6 +190,9 @@ class ModelService : public KeyedService {
   network::NetworkContextGetter network_context_getter_;
   scoped_refptr<os_crypt_async::Encryptor> encryptor_;
   std::unique_ptr<RemoteModelsProvider> remote_models_provider_;
+  size_t remote_models_visible_surface_count_ = 0;
+  bool remote_models_refresh_in_flight_ = false;
+  base::OneShotTimer remote_models_refresh_timer_;
   bool is_migrating_claude_instant_ = false;
 
   base::WeakPtrFactory<ModelService> weak_ptr_factory_{this};

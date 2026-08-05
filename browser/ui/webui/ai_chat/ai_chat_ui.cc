@@ -13,14 +13,17 @@
 #include "base/check_op.h"
 #include "base/feature_list.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
+#include "brave/browser/ai_chat/model_service_factory.h"
 #include "brave/browser/ai_chat/tab_tracker_service_factory.h"
 #include "brave/browser/ui/side_panel/ai_chat/ai_chat_full_page_link_observer.h"
 #include "brave/browser/ui/side_panel/ai_chat/ai_chat_side_panel_utils.h"
+#include "brave/browser/ui/webui/ai_chat/ai_chat_remote_models_visibility_observer.h"
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui_page_handler.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/bookmarks_page_handler.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
+#include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/browser/tab_tracker_service.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
@@ -147,6 +150,13 @@ AIChatUI::AIChatUI(content::WebUI* web_ui)
         std::make_unique<ai_chat::AIChatFullPageLinkObserver>(
             web_ui->GetWebContents());
   }
+
+  // Tells `ModelService` when this surface is visible, so it knows when to
+  // fetch/refresh the remote model list.
+  remote_models_visibility_observer_ =
+      std::make_unique<ai_chat::AIChatRemoteModelsVisibilityObserver>(
+          web_ui->GetWebContents(),
+          ai_chat::ModelServiceFactory::GetForBrowserContext(profile_));
 }
 
 AIChatUI::~AIChatUI() = default;

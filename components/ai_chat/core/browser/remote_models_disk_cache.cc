@@ -85,7 +85,7 @@ void RemoteModelsDiskCache::Load(LoadCallback callback) {
   const base::TimeDelta ttl = features::kRemoteModelsCacheTTL.Get();
   const base::Time cached_at =
       pref_service_->GetTime(prefs::kRemoteModelsCachedAt);
-  if (cached_at.is_null() || base::Time::Now() - cached_at > ttl) {
+  if (cached_at.is_null() || base::Time::Now() - cached_at >= ttl) {
     DVLOG(1) << "RemoteModelsDiskCache: cache absent or expired";
     std::move(callback).Run(std::nullopt);
     return;

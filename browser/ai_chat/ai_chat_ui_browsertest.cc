@@ -16,9 +16,11 @@
 #include "base/test/scoped_feature_list.h"
 #include "base/test/test_future.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
+#include "brave/browser/ai_chat/model_service_factory.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
 #include "brave/components/ai_chat/content/browser/associated_web_contents_content.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
+#include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/browser/types.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/constants/brave_paths.h"
@@ -38,6 +40,7 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/prefs/pref_service.h"
+#include "content/public/browser/visibility.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
@@ -166,15 +169,28 @@ class AIChatUIBrowserTest : public InProcessBrowserTest {
   void OpenAIChatSidePanel() {
     auto* side_panel_ui = browser()->GetFeatures().side_panel_ui();
     side_panel_ui->Show(SidePanelEntryId::kChatUI);
-    auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
-    auto* side_panel = browser_view->side_panel();
-    auto* ai_chat_side_panel =
-        side_panel->GetViewByID(SidePanelWebUIView::kSidePanelWebViewId);
-    ASSERT_TRUE(ai_chat_side_panel);
-    auto* side_panel_web_contents =
-        (static_cast<views::WebView*>(ai_chat_side_panel))->web_contents();
+    auto* side_panel_web_contents = GetSidePanelWebContents();
     ASSERT_TRUE(side_panel_web_contents);
     content::WaitForLoadStop(side_panel_web_contents);
+  }
+
+  // Returns the `WebContents` backing whichever side panel entry is
+  // currently attached to the window, or null if the side panel isn't
+  // showing one (e.g. the entry is cached but not the active one).
+  content::WebContents* GetSidePanelWebContents() {
+    auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
+    auto* side_panel = browser_view->side_panel();
+    auto* view =
+        side_panel->GetViewByID(SidePanelWebUIView::kSidePanelWebViewId);
+    if (!view) {
+      return nullptr;
+    }
+    return static_cast<views::WebView*>(view)->web_contents();
+  }
+
+  ai_chat::ModelService* GetModelService() {
+    return ai_chat::ModelServiceFactory::GetForBrowserContext(
+        browser()->profile());
   }
 
   void FetchPageContent(const base::Location& location,
@@ -367,6 +383,56 @@ IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, WebContentsShouldBeFocused) {
   const auto has_focus = content::EvalJs(
       side_panel_web_contents->GetPrimaryMainFrame(), "document.hasFocus()");
   EXPECT_TRUE(has_focus.ExtractBool());
+}
+
+// `SetUpOnMainThread()` already opened the AI Chat side panel; its
+// `WebContentsObserver` helper should have told `ModelService` it's visible.
+IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest,
+                       SidePanelVisibleIncrementsRemoteModelsSurfaceCount) {
+  auto* model_service = GetModelService();
+  ASSERT_TRUE(model_service);
+
+  ASSERT_TRUE(base::test::RunUntil([&] {
+    return model_service->GetRemoteModelsVisibleSurfaceCountForTesting() == 1u;
+  }));
+}
+
+// Switching the side panel to a different entry caches the AI Chat
+// `WebContents` alive rather than destroying it
+// (`SidePanelEntry::CacheView()`), so `~AIChatUI()` doesn't run and can't be
+// relied on to signal "no longer visible" -- only `OnVisibilityChanged()`
+// does. This is the scenario Phase 3's visibility-based (not
+// construction/destruction-based) design exists for.
+IN_PROC_BROWSER_TEST_F(
+    AIChatUIBrowserTest,
+    SwitchingSidePanelEntryHidesSurfaceWithoutDestroyingWebContents) {
+  auto* model_service = GetModelService();
+  ASSERT_TRUE(model_service);
+  ASSERT_TRUE(base::test::RunUntil([&] {
+    return model_service->GetRemoteModelsVisibleSurfaceCountForTesting() == 1u;
+  }));
+
+  content::WebContents* ai_chat_web_contents = GetSidePanelWebContents();
+  ASSERT_TRUE(ai_chat_web_contents);
+
+  auto* side_panel_ui = browser()->GetFeatures().side_panel_ui();
+  side_panel_ui->Show(SidePanelEntryId::kBookmarks);
+  ASSERT_TRUE(base::test::RunUntil([&] {
+    return model_service->GetRemoteModelsVisibleSurfaceCountForTesting() == 0u;
+  }));
+
+  // Still alive and still backed by the same AIChatUI: calling into it below
+  // doesn't crash, and it reports itself as hidden rather than gone.
+  EXPECT_TRUE(ai_chat_web_contents->GetWebUI());
+  EXPECT_EQ(ai_chat_web_contents->GetVisibility(), content::Visibility::HIDDEN);
+
+  // Switching back re-shows the cached `WebContents` -- it is not
+  // reconstructed -- and the surface count goes back up.
+  side_panel_ui->Show(SidePanelEntryId::kChatUI);
+  ASSERT_TRUE(base::test::RunUntil([&] {
+    return model_service->GetRemoteModelsVisibleSurfaceCountForTesting() == 1u;
+  }));
+  EXPECT_EQ(GetSidePanelWebContents(), ai_chat_web_contents);
 }
 
 #if BUILDFLAG(ENABLE_SCREEN_AI_BROWSERTESTS) && !BUILDFLAG(USE_FAKE_SCREEN_AI)

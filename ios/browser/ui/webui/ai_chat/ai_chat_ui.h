@@ -23,6 +23,7 @@ class WebUIIOS;
 }
 
 namespace ai_chat {
+class AIChatRemoteModelsVisibilityObserver;
 class AIChatUIPageHandler;
 class BookmarksPageHandler;
 class HistoryUIHandler;
@@ -54,6 +55,12 @@ class AIChatUI : public web::WebUIIOSController {
   std::unique_ptr<ai_chat::AIChatUIPageHandler> page_handler_;
   std::unique_ptr<ai_chat::HistoryUIHandler> history_ui_handler_;
   std::unique_ptr<ai_chat::BookmarksPageHandler> bookmarks_page_handler_;
+
+  // Tells `ModelService` when this surface is visible, so it knows when to
+  // fetch/refresh the remote model list.
+  std::unique_ptr<ai_chat::AIChatRemoteModelsVisibilityObserver>
+      remote_models_visibility_observer_;
+
   raw_ptr<ProfileIOS> profile_ = nullptr;
 };
 

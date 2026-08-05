@@ -369,6 +369,7 @@ source_set("browser_tests") {
       "ai_chat_ui_browsertest.cc",
       "code_execution_tool_browsertest.cc",
       "page_content_fetcher_browsertest.cc",
+      "remote_models_integration_browsertest.cc",
       "text_file_extractor_browsertest.cc",
       "web_mcp_browsertest.cc",
     ]
