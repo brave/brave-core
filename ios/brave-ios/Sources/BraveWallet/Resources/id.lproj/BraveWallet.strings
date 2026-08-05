@@ -2177,7 +2177,13 @@
 "wallet.txStatusViewInActivity" = "Lihat di Aktivitas";
 
 /* Description displayed when users chose Brave to ask them if they want the Unstoppable Domains to be resolved every time they enter one. The first '%@' will be replaced with a list of supported TLDs like '.x' or '.bitcoin'. The second '%@' be replaced with a link to Chainstack's terms of use page. The third '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The fourth '%@' will be replaced with a link to Chainstack's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'. */
-"wallet.udDomainInterstitialPageDescription" = "Brave akan menjadi layanan RPC Ethereum yang dikonfigurasikan yang secara bawaan menggunakan Chainstack untuk menyelesaikan nama domain .crypto (dan juga %1$@) yang berada di Unstoppable Domains. Brave menyembunyikan alamat IP Anda. Jika Anda mengaktifkannya, Chainstack akan melihat bahwa seseorang sedang mencoba mengunjungi domain-domain ini, namun hanya itu. Lihat <a href=%2$@>%3$@</a> dan <a href=%4$@>%5$@</a> Chainstack.";
+"wallet.udDomainInterstitialPageDescription" = "nama domain yang ada di Unstoppable Domains. Brave menyembunyikan alamat IP Anda. Jika Anda mengaktifkannya, Chainstack akan melihat bahwa seseorang sedang mencoba mengunjungi domain-domain ini, namun hanya itu. Lihat <a href=%1$@>%2$@</a> dan <a href=%3$@>%4$@</a> Chainstack.";
+
+/* The intro displayed below `udDomainInterstitialPageTitle`. */
+"wallet.udDomainInterstitialPageIntro" = "Brave akan menjadi layanan RPC Ethereum yang dikonfigurasi yang secara default menggunakan Chainstack untuk menyelesaikan:";
+
+/* The title of the button that user can tap to reveal more unstoppable domain extensions we support to resolve. */
+"wallet.udDomainInterstitialPageMore" = "+ lainnya";
 
 /* Title displayed when users chose Brave to ask them if they want the Unstoppable Domains domain to be resolved every time they enter one. */
 "wallet.udDomainInterstitialPageTitle" = "Aktifkan dukungan Unstoppable Domains di Brave?";

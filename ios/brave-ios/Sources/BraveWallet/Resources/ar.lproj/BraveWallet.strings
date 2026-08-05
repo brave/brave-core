@@ -2177,7 +2177,13 @@
 "wallet.txStatusViewInActivity" = "العرض في الأنشطة";
 
 /* Description displayed when users chose Brave to ask them if they want the Unstoppable Domains to be resolved every time they enter one. The first '%@' will be replaced with a list of supported TLDs like '.x' or '.bitcoin'. The second '%@' be replaced with a link to Chainstack's terms of use page. The third '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The fourth '%@' will be replaced with a link to Chainstack's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'. */
-"wallet.udDomainInterstitialPageDescription" = "سيكون Brave خدمة RPC المُهيأة لـ Ethereum، والتي تكون Chainstack افتراضيًا، لحل أسماء النطاقات .crypto (وأيضًا %1$@) الموجودة على Unstoppable Domains. يخفي Brave عنوان بروتوكول الإنترنت الخاص بك. إذا قمت بتمكين ذلك، فسيرى Chainstack أن شخصًا ما يحاول زيارة هذه النطاقات ولكن لا شيء آخر. انظر <a href=%2$@>%3$@</a> و<a href=%4$@>%5$@</a> من Chainstack.";
+"wallet.udDomainInterstitialPageDescription" = "أسماء النطاقات الموجودة على Unstoppable Domains. يخفي Brave عنوان بروتوكول الإنترنت الخاص بك. إذا قمت بتمكين ذلك، فسيرى Chainstack أن شخصًا ما يحاول زيارة هذه النطاقات ولكن لا شيء آخر. انظر <a href=%1$@>%2$@</a> و<a href=%3$@>%4$@</a> من Chainstack.";
+
+/* The intro displayed below `udDomainInterstitialPageTitle`. */
+"wallet.udDomainInterstitialPageIntro" = "سيكون Brave هو خدمة Ethereum RPC المُهيأة والتي تعتمد افتراضيًا على Chainstack للحل:";
+
+/* The title of the button that user can tap to reveal more unstoppable domain extensions we support to resolve. */
+"wallet.udDomainInterstitialPageMore" = "+ المزيد";
 
 /* Title displayed when users chose Brave to ask them if they want the Unstoppable Domains domain to be resolved every time they enter one. */
 "wallet.udDomainInterstitialPageTitle" = "هل تريد تمكين دعم النطاقات التي لا يمكن إيقافها في Brave؟";
