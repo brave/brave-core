@@ -53,12 +53,12 @@ export function readBigBuffer(buffer: BigBuffer, name: string): Uint8Array {
 
 // Argmax over a sub-range [start, end) of a flat array; returns the index
 // relative to `start`.
-export function argmax(a: Float32Array, start: number, end: number): number {
-  let best = start
-  for (let i = start + 1; i < end; i++) {
+export function argmax(a: Float32Array): number {
+  let best = 0
+  for (let i = 1; i < a.length; i++) {
     if (a[i] > a[best]) {
       best = i
     }
   }
-  return best - start
+  return best
 }
