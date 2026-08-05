@@ -228,7 +228,7 @@ void ObliviousHttpAPIClient::PerformRequest(
 
   const bool is_streaming_enabled = IsStreamingEnabled(data_received_callback);
 
-  if (features::kNEARModelsEncryptionSearch.Get() && is_streaming_enabled) {
+  if (is_streaming_enabled) {
     if (!oai_tool_definitions.has_value()) {
       oai_tool_definitions = base::ListValue();
     }
