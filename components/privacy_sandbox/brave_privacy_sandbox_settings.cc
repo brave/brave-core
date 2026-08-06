@@ -9,7 +9,6 @@
 #include <string>
 #include <utility>
 
-#include "components/browsing_topics/common/common_types.h"
 #include "components/content_settings/core/browser/cookie_settings.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/prefs/pref_service.h"
@@ -52,11 +51,6 @@ bool BravePrivacySandboxSettings::IsTopicsAllowedForContext(
     const url::Origin& top_frame_origin,
     const GURL& url,
     content::RenderFrameHost* console_frame) const {
-  return false;
-}
-
-bool BravePrivacySandboxSettings::IsTopicAllowed(
-    const privacy_sandbox::CanonicalTopic& topic) {
   return false;
 }
 
