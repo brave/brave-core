@@ -143,7 +143,7 @@ class ObliviousHttpAPIClientUnitTest : public testing::Test,
     if (enable_data_received_callback) {
       data_received_callback = base::BindLambdaForTesting(
           [&](EngineConsumer::GenerationResultData data) {
-            received_chunks_.push_back(std::move(data.event));
+            received_chunks_.push_back(std::move(data));
           });
     }
 
@@ -182,7 +182,7 @@ class ObliviousHttpAPIClientUnitTest : public testing::Test,
   std::unique_ptr<base::RunLoop> run_loop_;
   EngineConsumer::GenerationResult result_ =
       base::unexpected(mojom::APIError::None);
-  std::vector<mojom::ConversationEntryEventPtr> received_chunks_;
+  std::vector<EngineConsumer::GenerationResultData> received_chunks_;
   network::mojom::ObliviousHttpRequestPtr last_request_;
   mojo::Remote<network::mojom::ObliviousHttpClient> completion_client_;
   mojo::Remote<network::mojom::ObliviousHttpChunkClient> chunk_client_;
@@ -217,10 +217,12 @@ TEST_F(ObliviousHttpAPIClientUnitTest,
   run_loop_->Run();
 
   ASSERT_EQ(2u, received_chunks_.size());
-  ASSERT_TRUE(received_chunks_[0]->is_completion_event());
-  EXPECT_EQ("part1", received_chunks_[0]->get_completion_event()->completion);
-  ASSERT_TRUE(received_chunks_[1]->is_completion_event());
-  EXPECT_EQ("part2", received_chunks_[1]->get_completion_event()->completion);
+  ASSERT_TRUE(received_chunks_[0].event->is_completion_event());
+  EXPECT_EQ("part1",
+            received_chunks_[0].event->get_completion_event()->completion);
+  ASSERT_TRUE(received_chunks_[1].event->is_completion_event());
+  EXPECT_EQ("part2",
+            received_chunks_[1].event->get_completion_event()->completion);
 
   ASSERT_TRUE(result_.has_value());
   ASSERT_TRUE(result_->event->is_completion_event());
@@ -244,12 +246,15 @@ TEST_F(ObliviousHttpAPIClientUnitTest,
   run_loop_->Run();
 
   ASSERT_EQ(3u, received_chunks_.size());
-  ASSERT_TRUE(received_chunks_[0]->is_completion_event());
-  EXPECT_EQ("good1", received_chunks_[0]->get_completion_event()->completion);
-  ASSERT_TRUE(received_chunks_[1]->is_completion_event());
-  EXPECT_EQ("good2", received_chunks_[1]->get_completion_event()->completion);
-  ASSERT_TRUE(received_chunks_[2]->is_completion_event());
-  EXPECT_EQ("good3", received_chunks_[2]->get_completion_event()->completion);
+  ASSERT_TRUE(received_chunks_[0].event->is_completion_event());
+  EXPECT_EQ("good1",
+            received_chunks_[0].event->get_completion_event()->completion);
+  ASSERT_TRUE(received_chunks_[1].event->is_completion_event());
+  EXPECT_EQ("good2",
+            received_chunks_[1].event->get_completion_event()->completion);
+  ASSERT_TRUE(received_chunks_[2].event->is_completion_event());
+  EXPECT_EQ("good3",
+            received_chunks_[2].event->get_completion_event()->completion);
 }
 
 TEST_F(ObliviousHttpAPIClientUnitTest,
@@ -331,16 +336,18 @@ TEST_F(ObliviousHttpAPIClientUnitTest,
   ASSERT_EQ(2u, received_chunks_.size());
 
   // First event: tool call request.
-  ASSERT_TRUE(received_chunks_[0]->is_tool_use_event());
-  const auto& tool_call = received_chunks_[0]->get_tool_use_event();
+  ASSERT_TRUE(received_chunks_[0].event->is_tool_use_event());
+  const auto& tool_call = received_chunks_[0].event->get_tool_use_event();
   EXPECT_EQ("web_context_search", tool_call->tool_name);
   EXPECT_EQ("call_abc", tool_call->id);
   EXPECT_EQ("{\"query\":\"brave browser\"}", tool_call->arguments_json);
   EXPECT_FALSE(tool_call->is_server_result);
+  ASSERT_TRUE(received_chunks_[0].model_key.has_value());
+  EXPECT_EQ("chat-test-model", *received_chunks_[0].model_key);
 
   // Second event: nearai server tool result.
-  ASSERT_TRUE(received_chunks_[1]->is_tool_use_event());
-  const auto& tool_result = received_chunks_[1]->get_tool_use_event();
+  ASSERT_TRUE(received_chunks_[1].event->is_tool_use_event());
+  const auto& tool_result = received_chunks_[1].event->get_tool_use_event();
   EXPECT_EQ("call_abc", tool_result->id);
   EXPECT_TRUE(tool_result->is_server_result);
   ASSERT_TRUE(tool_result->output.has_value());
@@ -348,6 +355,8 @@ TEST_F(ObliviousHttpAPIClientUnitTest,
   ASSERT_TRUE((*tool_result->output)[0]->is_text_content_block());
   EXPECT_EQ("Brave is a privacy-focused browser.",
             (*tool_result->output)[0]->get_text_content_block()->text);
+  ASSERT_TRUE(received_chunks_[1].model_key.has_value());
+  EXPECT_EQ("chat-test-model", *received_chunks_[1].model_key);
 }
 
 TEST_F(ObliviousHttpAPIClientUnitTest, PerformRequest_BadOuterResponseCode) {
