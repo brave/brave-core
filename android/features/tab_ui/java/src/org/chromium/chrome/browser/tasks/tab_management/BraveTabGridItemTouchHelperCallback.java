@@ -7,6 +7,8 @@ package org.chromium.chrome.browser.tasks.tab_management;
 
 import android.content.Context;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.tabmodel.TabModel;
@@ -21,6 +23,8 @@ import java.util.function.Supplier;
  */
 @NullMarked
 public class BraveTabGridItemTouchHelperCallback extends TabGridItemTouchHelperCallback {
+    private final @TabListLayoutType int mUpstreamLayoutType;
+
     public BraveTabGridItemTouchHelperCallback(
             Context context,
             TabGroupCreationDialogManager tabGroupCreationDialogManager,
@@ -39,12 +43,30 @@ public class BraveTabGridItemTouchHelperCallback extends TabGridItemTouchHelperC
                 tabClosedListener,
                 tabGridDialogHandler,
                 componentName,
-                // Use the FLAT (non-grouping) drag layout while the "Enable tab groups" master
-                // switch is off: tabs can still be reordered by dragging, but dragging one tab over
-                // another does nothing (no hover-to-merge, no group creation).
-                BraveTabUiFeatureUtilities.isTabGroupsEnabled()
-                        ? layoutType
-                        : TabListLayoutType.FLAT,
+                layoutType,
                 onDragStateChangedListener);
+        mUpstreamLayoutType = layoutType;
+        updateLayoutType();
+    }
+
+    @Override
+    public void onSelectedChanged(RecyclerView.@Nullable ViewHolder viewHolder, int actionState) {
+        updateLayoutType();
+        super.onSelectedChanged(viewHolder, actionState);
+    }
+
+    /**
+     * Uses the FLAT (non-grouping) drag layout while the "Enable tab groups" master switch is off:
+     * tabs can still be reordered by dragging, but dragging one tab over another does nothing (no
+     * hover-to-merge, no group creation).
+     *
+     * <p>The preference is re-read for every drag instead of only in the constructor, so toggling
+     * the switch in settings applies to the next drag without a browser restart.
+     */
+    private void updateLayoutType() {
+        mLayoutType =
+                BraveTabUiFeatureUtilities.isTabGroupsEnabled()
+                        ? mUpstreamLayoutType
+                        : TabListLayoutType.FLAT;
     }
 }
