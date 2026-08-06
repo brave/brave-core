@@ -22,6 +22,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
+#include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/browser_window/public/browser_collection_observer.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
@@ -169,7 +170,7 @@ class TorTabNavigator final : public content::WebContentsObserver,
   static content::WebContents* FindNTPTab(Browser* tor_browser) {
     for (int i = 0; i < tor_browser->tab_strip_model()->count(); ++i) {
       auto* tab = tor_browser->tab_strip_model()->GetWebContentsAt(i);
-      if (tab->GetURL() == tor_browser->GetNewTabURL()) {
+      if (tab->GetURL() == chrome::GetNewTabURL(tor_browser)) {
         return tab;
       }
     }

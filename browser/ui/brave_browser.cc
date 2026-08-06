@@ -151,7 +151,7 @@ void BraveBrowser::TabStripEmpty() {
                      [](base::WeakPtr<BraveBrowser> browser) {
                        if (browser) {
                          chrome::AddTabAt(browser.get(),
-                                          browser->GetNewTabURL(),
+                                          chrome::GetNewTabURL(browser.get()),
                                           /*index=*/-1, /*foreground=*/true,
                                           /*group=*/std::nullopt,
                                           /*pinned=*/false);
