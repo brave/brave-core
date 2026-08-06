@@ -9,11 +9,10 @@
 #include <string>
 #include <utility>
 
-#include "base/check.h"
+#include "base/files/scoped_temp_dir.h"
 #include "base/functional/callback_helpers.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
-#include "base/path_service.h"
 #include "base/task/single_thread_task_runner.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/brave_browser_process.h"
@@ -24,9 +23,9 @@
 #include "brave/components/brave_shields/content/browser/ad_block_subscription_download_manager.h"
 #include "brave/components/brave_shields/content/test/ad_block_unit_test_helper.h"
 #include "brave/components/brave_shields/content/test/test_filters_provider.h"
+#include "brave/components/brave_shields/core/common/features.h"
 #include "brave/test/base/testing_brave_browser_process.h"
 #include "chrome/browser/net/system_network_context_manager.h"
-#include "chrome/common/chrome_paths.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "components/prefs/testing_pref_service.h"
 #include "content/public/test/browser_task_environment.h"
@@ -107,18 +106,33 @@ template <typename PtrStrategy>
 class BraveAdBlockTPNetworkDelegateHelperTest : public testing::Test {
  protected:
   void SetUp() override {
+    // Pin every feature this fixture depends on, rather than relying on the
+    // compiled-in defaults. kAdblockDATCache has to be set before the
+    // AdBlockService below is constructed, because
+    // AdBlockFiltersProviderManager reads the feature state in its
+    // constructor.
+    const bool use_weak_ptr = std::is_same_v<
+        typename PtrStrategy::template Ptr<brave::BraveRequestInfo>,
+        base::WeakPtr<brave::BraveRequestInfo>>;
+    scoped_feature_list_.InitWithFeatureStates(
+        {{features::kBraveRequestInfoUniquePtr, use_weak_ptr},
+         {brave_shields::features::kAdblockDATCache, true}});
+
     brave_component_updater_delegate_ =
         std::make_unique<TestingBraveComponentUpdaterDelegate>(
             TestingBrowserProcess::GetGlobal()->GetTestingLocalState());
 
-    base::FilePath user_data_dir;
-    DCHECK(base::PathService::Get(chrome::DIR_USER_DATA, &user_data_dir));
+    // Use a temp dir as the profile dir: the adblock DAT cache lives there and
+    // pointing it at the real user data dir would both pollute it and let a
+    // DAT written by one test run be loaded by the next, suppressing the
+    // filter set build that the rules in these tests rely on.
+    ASSERT_TRUE(profile_dir_.CreateUniqueTempDir());
     auto adblock_service = std::make_unique<brave_shields::AdBlockService>(
         brave_component_updater_delegate_->local_state(),
         brave_component_updater_delegate_->locale(), nullptr,
         brave_component_updater_delegate_->GetTaskRunner(),
         base::BindOnce(&FakeAdBlockSubscriptionDownloadManagerGetter),
-        user_data_dir);
+        profile_dir_.GetPath());
 
     TestingBraveBrowserProcess::GetGlobal()->SetAdBlockService(
         std::move(adblock_service));
@@ -134,14 +148,6 @@ class BraveAdBlockTPNetworkDelegateHelperTest : public testing::Test {
         TestingBrowserProcess::GetGlobal()->GetTestingLocalState());
     SystemNetworkContextManager::set_stub_resolver_config_reader_for_testing(
         stub_resolver_config_reader_.get());
-
-    // Enable feature flag if using WeakPtrStrategy, disable if
-    // SharedPtrStrategy
-    bool enable_flag = std::is_same_v<
-        typename PtrStrategy::template Ptr<brave::BraveRequestInfo>,
-        base::WeakPtr<brave::BraveRequestInfo>>;
-    scoped_feature_list_.InitWithFeatureState(
-        features::kBraveRequestInfoUniquePtr, enable_flag);
   }
 
   void TearDown() override {
@@ -187,6 +193,8 @@ class BraveAdBlockTPNetworkDelegateHelperTest : public testing::Test {
 
   std::unique_ptr<TestingBraveComponentUpdaterDelegate>
       brave_component_updater_delegate_;
+
+  base::ScopedTempDir profile_dir_;
 
   content::BrowserTaskEnvironment task_environment_;
 
