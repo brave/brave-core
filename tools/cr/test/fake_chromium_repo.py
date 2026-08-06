@@ -8,12 +8,8 @@ from __future__ import annotations
 from pathlib import Path
 import json
 import os
-import platform
-import stat
 import subprocess
 import tempfile
-
-import vpython_utils
 
 CHROME_VERSION_TEMPLATE: str = """MAJOR={major}
 MINOR={minor}
@@ -72,8 +68,6 @@ class FakeChromiumRepo:
         (self.brave / 'chromium_src').mkdir(exist_ok=True)
         (self.brave / 'rewrite').mkdir(exist_ok=True)
         (self.brave / 'patches').mkdir(exist_ok=True)
-
-        self.install_vpython3_shim()
 
         # `FakeChromiumRepo` will change the current directory to a mirro path
         # inside the fake brave repo, relative to the cwd in brave-core when
@@ -212,34 +206,6 @@ class FakeChromiumRepo:
              str(dep_path), relative_path], self.chromium)
         self._run_git_command(
             ['commit', '-m', f'Add submodule {relative_path}'], self.chromium)
-
-    def install_vpython3_shim(self) -> Path | None:
-        """Populates `chromium/third_party/depot_tools/vpython3` for tests.
-
-        No-op when `vpython_utils.is_found_in_path_variable()` reports that
-        `VPYTHON3_PATH` resolves via `$PATH` at invocation time: the alias
-        body and subprocesses then never reach the chromium-bundled
-        location, so the shim is unnecessary.
-
-        Otherwise installs a shim at the bundled location pointing at
-        whatever `vpython_utils.VPYTHON3_PATH` already resolved to (which,
-        in this branch, is always an absolute path). POSIX uses a symlink;
-        Windows writes a `.bat` shim because symlinks there need elevated
-        privileges.
-        """
-        if vpython_utils.is_found_in_path_variable():
-            return None
-        depot_tools = self.chromium / 'third_party' / 'depot_tools'
-        depot_tools.mkdir(parents=True, exist_ok=True)
-        if platform.system() == 'Windows':
-            shim = depot_tools / 'vpython3.bat'
-            shim.write_text('@echo off\r\nvpython3 %*\r\n', encoding='utf-8')
-            shim.chmod(shim.stat().st_mode | stat.S_IXUSR | stat.S_IXGRP
-                       | stat.S_IXOTH)
-        else:
-            shim = depot_tools / 'vpython3'
-            shim.symlink_to(vpython_utils.VPYTHON3_PATH)
-        return shim
 
     def add_tag(self, version: str) -> None:
         """Adds a git tag to the repository.

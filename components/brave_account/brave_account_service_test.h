@@ -106,6 +106,12 @@ class BraveAccountServiceTest : public testing::TestWithParam<const TestCase*> {
   }
 
   void TearDown() override {
+    // Destroy the service while `task_environment_` is still alive.
+    // `RequestHandleDeleter` posts `DeleteSoon(SimpleURLLoader)` and LSAN
+    // will consider them as leaks if the task environment is destroyed before.
+    brave_account_service_.reset();
+    task_environment_.RunUntilIdle();
+
     BraveAccountEncryption::SetOSCryptCallbacksForTesting(base::NullCallback(),
                                                           base::NullCallback());
   }

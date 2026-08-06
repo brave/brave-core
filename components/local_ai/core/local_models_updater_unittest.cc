@@ -97,7 +97,7 @@ TEST_F(LocalModelsUpdaterUnitTest, Register) {
   run_loop.Run();
 }
 
-// Tests that ComponentReady sets up the install directory and model paths.
+// Tests that ComponentReady sets up the install directory and the model dir.
 TEST_F(LocalModelsUpdaterUnitTest, ComponentReady) {
   LocalModelsComponentInstallerPolicy policy;
   policy.ComponentReady(base::Version("1.0.0"), install_dir_,
@@ -107,23 +107,9 @@ TEST_F(LocalModelsUpdaterUnitTest, ComponentReady) {
   ASSERT_TRUE(base::test::RunUntil(
       [&]() { return state->GetInstallDir() == install_dir_; }));
   EXPECT_EQ(state->GetInstallDir(), install_dir_);
-
-  // Verify embeddinggemma paths are set correctly
-  base::FilePath expected_model_dir =
-      install_dir_.AppendASCII(kEmbeddingGemmaModelDir);
-  EXPECT_EQ(state->GetEmbeddingGemmaModelDir(), expected_model_dir);
-
-  base::FilePath expected_model =
-      expected_model_dir.AppendASCII(kEmbeddingGemmaModelFile);
-  EXPECT_EQ(state->GetEmbeddingGemmaModel(), expected_model);
-
-  base::FilePath expected_config =
-      expected_model_dir.AppendASCII(kEmbeddingGemmaConfigFile);
-  EXPECT_EQ(state->GetEmbeddingGemmaConfig(), expected_config);
-
-  base::FilePath expected_tokenizer =
-      expected_model_dir.AppendASCII(kEmbeddingGemmaTokenizerFile);
-  EXPECT_EQ(state->GetEmbeddingGemmaTokenizer(), expected_tokenizer);
+  EXPECT_EQ(state->GetEmbeddingGemmaLitertDir(),
+            install_dir_.AppendASCII(kEmbeddingGemmaModelDir)
+                .AppendASCII(kEmbeddingGemmaLitertDir));
 }
 
 // Tests that the component directory is deleted when the feature is disabled.

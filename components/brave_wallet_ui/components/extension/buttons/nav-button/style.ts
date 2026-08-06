@@ -59,7 +59,7 @@ const StyledButtonCssMixin = (p: StyledButtonProps) => {
             || p.buttonType === 'sign'
           ? leo.color.primitive.primary[40]
           : p.buttonType === 'danger'
-            ? leo.color.systemfeedback.errorBackground
+            ? leo.color.button.errorBackground
             : 'transparent'};
 
     border: ${(p) =>
@@ -97,7 +97,9 @@ export const ButtonText = styled(Text)<{
     || p.buttonType === 'reject'
     || p.buttonType === 'cancel'
       ? leo.color.text.secondary
-      : leo.color.white};
+      : p.buttonType === 'danger'
+        ? leo.color.button.errorText
+        : leo.color.white};
 `
 
 export const RejectIcon = styled.div`

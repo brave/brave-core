@@ -20,15 +20,6 @@ export const style = scoped.css`
     flex-direction: column;
   }
 
-  .label .subtext {
-    font: ${font.small.regular};
-    color: ${color.text.secondary};
-
-    a {
-      color: inherit;
-    }
-  }
-
   .background-options {
     padding: ${spacing['2Xl']};
     display: grid;

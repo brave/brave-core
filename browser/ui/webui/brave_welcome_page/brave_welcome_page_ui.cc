@@ -10,9 +10,14 @@
 #include "base/check_deref.h"
 #include "base/containers/flat_set.h"
 #include "base/feature_list.h"
+#include "base/functional/bind.h"
+#include "base/memory/weak_ptr.h"
+#include "base/task/single_thread_task_runner.h"
+#include "base/time/time.h"
 #include "brave/browser/resources/brave_welcome_page/grit/brave_welcome_page_generated_map.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/browser/ui/webui/brave_welcome_page/brave_welcome_page.mojom.h"
+#include "brave/browser/ui/webui/brave_welcome_page/brave_welcome_page_prefs.h"
 #include "brave/browser/ui/webui/brave_welcome_page/welcome_page_features.h"
 #include "brave/browser/ui/webui/brave_welcome_page/welcome_page_handler.h"
 #include "brave/browser/ui/webui/settings/brave_import_bulk_data_handler.h"
@@ -27,16 +32,22 @@
 #include "chrome/browser/themes/theme_service_factory.h"
 #include "chrome/browser/ui/webui/cr_components/theme_color_picker/theme_color_picker_handler.h"
 #include "chrome/browser/ui/webui/settings/settings_default_browser_handler.h"
+#include "components/country_codes/country_codes.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/grit/brave_components_webui_strings.h"
 #include "components/metrics/metrics_pref_names.h"
 #include "components/prefs/pref_service.h"
+#include "components/regional_capabilities/regional_capabilities_prefs.h"
+#include "content/public/browser/page_navigator.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/common/url_constants.h"
+#include "ui/base/page_transition_types.h"
+#include "ui/base/window_open_disposition.h"
 #include "ui/webui/webui_util.h"
+#include "url/gurl.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_EDUCATION)
 #include "brave/browser/ui/webui/brave_education/brave_education_server_checker.h"
@@ -47,6 +58,26 @@
 namespace {
 
 inline constexpr char kBraveWelcomePageHost[] = "welcome-new";
+
+inline constexpr char kJapanWelcomeURL[] =
+    "https://brave.com/ja/desktop-ntp-tutorial";
+
+void OpenJapanWelcomePage(base::WeakPtr<content::WebContents> web_contents) {
+  if (!web_contents) {
+    return;
+  }
+  web_contents->OpenURL(
+      content::OpenURLParams(GURL(kJapanWelcomeURL), content::Referrer(),
+                             WindowOpenDisposition::NEW_BACKGROUND_TAB,
+                             ui::PAGE_TRANSITION_AUTO_TOPLEVEL, false),
+      /*navigation_handle_callback=*/{});
+}
+
+bool IsJapanCountryId(PrefService* prefs) {
+  auto country_id = country_codes::CountryId::Deserialize(
+      prefs->GetInteger(regional_capabilities::prefs::kCountryIDAtInstall));
+  return country_id == country_codes::CountryId("JP");
+}
 
 }  // namespace
 
@@ -93,6 +124,17 @@ BraveWelcomePageUI::BraveWelcomePageUI(content::WebUI* web_ui)
   source->AddBoolean("rewardsFeatureEnabled",
                      features.contains(Feature::kRewards));
   source->AddBoolean("vpnFeatureEnabled", features.contains(Feature::kVPN));
+
+  PrefService* prefs = profile->GetPrefs();
+  if (!prefs->GetBoolean(brave_welcome_page::prefs::kHasSeenBraveWelcomePage) &&
+      IsJapanCountryId(prefs)) {
+    base::SingleThreadTaskRunner::GetCurrentDefault()->PostDelayedTask(
+        FROM_HERE,
+        base::BindOnce(&OpenJapanWelcomePage,
+                       web_ui->GetWebContents()->GetWeakPtr()),
+        base::Seconds(3));
+  }
+  prefs->SetBoolean(brave_welcome_page::prefs::kHasSeenBraveWelcomePage, true);
 }
 
 BraveWelcomePageUI::~BraveWelcomePageUI() = default;

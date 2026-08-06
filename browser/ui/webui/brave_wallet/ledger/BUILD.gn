@@ -14,11 +14,17 @@ source_set("ledger") {
     "ledger_ui.h",
   ]
   deps = [
+    "//brave/browser/ui/webui/brave_wallet/wallet_page",
+    "//brave/browser/ui/webui/brave_wallet/wallet_panel",
+    "//brave/components/brave_wallet/common",
     "//brave/components/brave_wallet/common:common_constants",
+    "//brave/components/brave_wallet/common:mojom",
     "//brave/components/brave_wallet_ui:resources",
     "//brave/components/brave_wallet_ui/ledger:ledger_bridge_generated",
     "//brave/components/resources:static_resources_grit",
     "//content/public/browser",
+    "//mojo/public/cpp/bindings",
+    "//services/network/public/mojom",
     "//ui/webui",
     "//ui/webui/resources:resources_grit",
   ]

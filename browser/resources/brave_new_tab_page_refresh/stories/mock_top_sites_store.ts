@@ -53,7 +53,11 @@ export function createTopSitesStore() {
         return {
           topSites: [
             ...topSites,
-            { url, title, favicon: 'https://brave.com/favicon.ico' },
+            {
+              url,
+              title,
+              favicon: 'https://brave.com/favicon.ico',
+            },
           ],
         }
       })

@@ -12,6 +12,15 @@ enum ColorScheme {
   kDark,
 };
 
+// A point in the onboarding flow that the user can reach. Values are ordered
+// by progression through the flow.
+enum OnboardingPhase {
+  kWelcome,
+  kImport,
+  kMetrics,
+  kFinished,
+};
+
 // A browser feature that can be displayed to the user on the welcome page.
 enum Feature {
   kAIChat,
@@ -76,4 +85,8 @@ interface WelcomePageHandler {
 
   // Returns the URL to navigate to once onboarding is complete.
   GetWelcomeCompleteURL() => (string url);
+
+  // Reports the furthest point that the user has reached in the onboarding
+  // flow. Phases that precede the furthest reported phase are ignored.
+  SetOnboardingPhase(OnboardingPhase phase);
 };

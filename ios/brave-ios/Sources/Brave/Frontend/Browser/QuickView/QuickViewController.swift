@@ -76,7 +76,7 @@ class QuickViewController: UIViewController {
     self.onOpenInNewWindow = onOpenInNewWindow
     self.onAttachTab = onAttachTab
     super.init(nibName: nil, bundle: nil)
-    modalPresentationStyle = .fullScreen
+    modalPresentationStyle = .pageSheet
   }
 
   @available(*, unavailable)
@@ -116,6 +116,17 @@ class QuickViewController: UIViewController {
     tab.addObserver(toolbarViewModel)
     tab.addObserver(self)
     tab.browserData = TabBrowserData(tab: tab)
+    if FeatureList.kUseProfileWebViewConfiguration.enabled {
+      let braveShieldsHelper: BraveShieldsTabHelper = .init(
+        tab: tab,
+        braveShieldsSettings: BraveShieldsSettingsServiceFactory.get(profile: tab.profile)
+      )
+      tab.braveShieldsHelper = braveShieldsHelper
+      tab.addPolicyDecider(braveShieldsHelper)
+      tab.requestBlockingTabHelper = .init(tab: tab)
+      tab.cosmeticFilteringTabHelper = .init(tab: tab)
+    }
+    tab.protectionStats = .init(tab: tab)
     tab.readerMode = .init(tab: tab, readerModeCache: ReaderModeScriptHandler.cache(for: tab))
     tab.readerMode?.onStateChanged = { [weak self, weak tab] in
       self?.toolbarViewModel.readerModeState = tab?.readerMode?.state ?? .unavailable
@@ -725,9 +736,9 @@ extension QuickViewController: TabDelegate {
 
 extension QuickViewController: TabObserver {
   func tabDidCreateWebView(_ tab: some TabState) {
-    if let detachedTabPrivacyHelper = DetachedTabPrivacyHelper(
-      tab: tab
-    ) {
+    if !FeatureList.kUseProfileWebViewConfiguration.enabled,
+      let detachedTabPrivacyHelper = DetachedTabPrivacyHelper(tab: tab)
+    {
       tab.detachedPrivacyHelper = detachedTabPrivacyHelper
     }
   }

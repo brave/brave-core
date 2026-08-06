@@ -109,7 +109,7 @@
             android:text="@string/add_search_engine"
             android:textAllCaps="false"
             android:padding="12dp"
-            android:textColor="@color/brave_button_text_color"
+            android:textColor="?attr/globalFilledButtonTextColor"
             android:letterSpacing="0"
             app:backgroundTint="@color/add_search_engine_button_bg_tint"
             app:cornerRadius="1000dp"

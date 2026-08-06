@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+import { loadTimeData } from '../../common/loadTimeData'
 import {
   BridgeType,
   BridgeTypes,
@@ -12,6 +13,7 @@ import { SolanaLedgerUntrustedMessagingTransport } from '../common/hardware/ledg
 import { EthereumLedgerUntrustedMessagingTransport } from '../common/hardware/ledgerjs/eth-ledger-untrusted-transport'
 import { FilecoinLedgerUntrustedMessagingTransport } from '../common/hardware/ledgerjs/fil-ledger-untrusted-transport'
 import { BitcoinLedgerUntrustedMessagingTransport } from '../common/hardware/ledgerjs/btc_ledger_untrusted_transport'
+import { setupLedgerBridge } from './ledger_bridge'
 
 // Security: URL sanitization function to validate targetUrl
 const checkWebuiScheme = (url: string): string | null => {
@@ -55,12 +57,16 @@ const setupUntrustedMessagingTransport = (
   }
 }
 
-const params = new URLSearchParams(window.location.search)
-const targetUrl = params.get('targetUrl')
-const bridgeType = params.get('bridgeType')
-if (targetUrl && bridgeType) {
-  const sanitizedUrl = checkWebuiScheme(targetUrl)
-  if (sanitizedUrl) {
-    setupUntrustedMessagingTransport(bridgeType, sanitizedUrl)
+if (loadTimeData.getBoolean('isLedgerMojoBridgeEnabled')) {
+  setupLedgerBridge()
+} else {
+  const params = new URLSearchParams(window.location.search)
+  const targetUrl = params.get('targetUrl')
+  const bridgeType = params.get('bridgeType')
+  if (targetUrl && bridgeType) {
+    const sanitizedUrl = checkWebuiScheme(targetUrl)
+    if (sanitizedUrl) {
+      setupUntrustedMessagingTransport(bridgeType, sanitizedUrl)
+    }
   }
 }

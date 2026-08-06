@@ -26,6 +26,8 @@ namespace views {
 class ScrollView;
 }  // namespace views
 
+class BraveVerticalTabStripRegionView;
+
 class BraveTabContainer : public TabContainerImpl,
                           public views::ScrollBarController {
   METADATA_HEADER(BraveTabContainer, TabContainerImpl)
@@ -45,6 +47,12 @@ class BraveTabContainer : public TabContainerImpl,
 
   // Returns the ScrollBarMode for the scroll view used in vertical tab strip.
   views::ScrollView::ScrollBarMode GetScrollBarMode() const;
+
+  // Injected by BraveVerticalTabStripRegionView so this container can query
+  // the vertical tab strip's collapsed/expanded/floating state without
+  // depending on Browser/BrowserView lookups. Pass nullptr on teardown.
+  void SetVerticalTabStripRegionView(
+      BraveVerticalTabStripRegionView* region_view);
 
   // Returns the scroll direction if scrolling is enabled. Returns nullopt if
   // browser is null or scrolling is not enabled.
@@ -313,7 +321,14 @@ class BraveTabContainer : public TabContainerImpl,
   BooleanPrefMember show_vertical_tabs_;
   BooleanPrefMember tree_tabs_enabled_;
   BooleanPrefMember should_show_scroll_bar_;
+  BooleanPrefMember floating_mode_pref_;
   BooleanPrefMember scrollable_horizontal_tab_strip_;
+
+  // Injected via SetVerticalTabStripRegionView() by the
+  // BraveVerticalTabStripRegionView wrapping this tab strip. Used to look up
+  // the vertical tab strip's collapsed/expanded state.
+  raw_ptr<BraveVerticalTabStripRegionView> vertical_tab_strip_region_view_ =
+      nullptr;
 
   bool layout_locked_ = false;
 

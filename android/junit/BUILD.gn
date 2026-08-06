@@ -56,6 +56,7 @@ if (is_android) {
       "src/org/chromium/chrome/browser/toolbar/BraveToolbarLongPressMenuHandlerUnitTest.java",
       "src/org/chromium/chrome/browser/toolbar/BraveToolbarManagerUnitTest.java",
       "src/org/chromium/chrome/browser/toolbar/adaptive/settings/BraveAdaptiveToolbarSettingsFragmentTest.java",
+      "src/org/chromium/chrome/browser/toolbar/bottom/BraveBottomControlsMediatorTest.java",
       "src/org/chromium/chrome/browser/toolbar/top/BraveTabSwitcherActionMenuCoordinatorTest.java",
     ]
 
@@ -65,7 +66,9 @@ if (is_android) {
       "//brave/browser/ui/android/toolbar:java",
       "//chrome/android:chrome_java",
       "//chrome/android/junit:chrome_junit_tests_helper",
+      "//chrome/browser/browser_controls/android:java",
       "//chrome/browser/flags:java",
+      "//chrome/browser/fullscreen/android:java",
       "//chrome/browser/glic:public_java",
       "//chrome/browser/glic/android:jni_headers_java",
       "//chrome/browser/incognito:java",
@@ -73,6 +76,7 @@ if (is_android) {
       "//chrome/browser/settings:java",
       "//chrome/browser/tab:java",
       "//chrome/browser/tabmodel:java",
+      "//chrome/browser/ui/android/overlay_panel:java",
       "//chrome/browser/ui/android/toolbar:adaptive_features_java",
       "//chrome/browser/ui/android/toolbar:java",
       "//ui/android:ui_no_recycler_view_java",

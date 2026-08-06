@@ -23,7 +23,7 @@ namespace ai_chat {
 // Injects Component-provided WebMCP tools into pages whose URL matches a rule.
 // The rules are delivered by the component updater and held in
 // web_mcp::WebMcpRuleRegistry. The injected script calls
-// `navigator.modelContext.registerTool(...)` in the page's main world; the
+// `document.modelContext.registerTool(...)` in the page's main world; the
 // existing ContentTool pipeline then discovers the tool automatically.
 //
 // One instance is scoped to a single tab's WebContents. It is owned by
@@ -32,7 +32,7 @@ class WebMcpInjector : public content::WebContentsObserver {
  public:
   // Creates an injector for `web_contents`, or returns nullptr when the WebMCP
   // runtime feature is disabled. The injected script also guards against a
-  // missing navigator.modelContext, so this is a cheap early-out.
+  // missing document.modelContext, so this is a cheap early-out.
   static std::unique_ptr<WebMcpInjector> MaybeCreate(
       content::WebContents* web_contents);
 

@@ -364,7 +364,9 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/browser/ui/webui/brave_wallet/wallet_page/wallet_page_ui.h"
 #if !BUILDFLAG(IS_ANDROID)
+#include "brave/browser/ui/webui/brave_wallet/ledger/ledger_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_panel/wallet_panel_ui.h"
+#include "brave/components/brave_wallet/common/ledger_bridge.mojom.h"
 #endif
 #endif
 
@@ -718,6 +720,9 @@ void BraveContentBrowserClient::RegisterTrustedWebUIInterfaceBrokers(
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
   registry.ForWebUI<brave_wallet::WalletPageUI>()
       .Add<brave_wallet::mojom::PageHandlerFactory>()
+#if !BUILDFLAG(IS_ANDROID)
+      .Add<brave_wallet::mojom::LedgerBridgeService>()
+#endif  // !BUILDFLAG(IS_ANDROID)
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
       .Add<brave_rewards::mojom::RewardsPageHandler>()
 #endif  // BUILDFLAG(ENABLE_BRAVE_REWARDS)
@@ -725,6 +730,7 @@ void BraveContentBrowserClient::RegisterTrustedWebUIInterfaceBrokers(
 #if !BUILDFLAG(IS_ANDROID)
   registry.ForWebUI<WalletPanelUI>()
       .Add<brave_wallet::mojom::PanelHandlerFactory>()
+      .Add<brave_wallet::mojom::LedgerBridgeService>()
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
       .Add<brave_rewards::mojom::RewardsPageHandler>()
 #endif  // BUILDFLAG(ENABLE_BRAVE_REWARDS)
@@ -849,6 +855,13 @@ void BraveContentBrowserClient::RegisterUntrustedWebUIInterfaceBrokers(
   if (base::FeatureList::IsEnabled(brave_news::features::kBraveNewsSidebar)) {
     registry.ForWebUI<BraveNewsUI>()
         .Add<brave_news::mojom::BraveNewsController>();
+  }
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET) && !BUILDFLAG(IS_ANDROID)
+  if (brave_wallet::IsMojoForHardwareWalletEnabled()) {
+    registry.ForWebUI<ledger::UntrustedLedgerUI>()
+        .Add<brave_wallet::mojom::LedgerBridgeUIHandler>();
   }
 #endif
 }

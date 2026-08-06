@@ -62,6 +62,11 @@ class CodeExecutionTool : public Tool {
 
   void SetExecutionTimeLimitForTesting(base::TimeDelta time_limit);
   void AddCodePluginForTesting(std::unique_ptr<CodePlugin> plugin);
+  // Removes every registered plugin, including the always-injected
+  // InterfaceRemovalCodePlugin. Allows tests to exercise the browser-side
+  // sandbox restrictions in isolation, without the JS interface removal layer
+  // masking them.
+  void ClearCodePluginsForTesting();
 
  private:
   class CodeExecutionRequest : public content::WebContentsObserver {

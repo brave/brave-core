@@ -35,6 +35,7 @@ bool IsAnkrBalancesEnabled();
 bool IsTransactionSimulationsEnabled();
 bool IsAccountHidingEnabled();
 bool IsWalletDebugEnabled();
+bool IsMojoForHardwareWalletEnabled();
 #if BUILDFLAG(IS_IOS)
 bool IsWalletWebUIEnabled();
 #endif

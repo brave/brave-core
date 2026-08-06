@@ -3,12 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/ui/webui/welcome_page/brave_welcome_ui_prefs.h"
+#include "brave/browser/ui/webui/brave_welcome_page/brave_welcome_page_prefs.h"
 
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 
-namespace brave::welcome_ui::prefs {
+namespace brave_welcome_page::prefs {
 
 namespace {
 
@@ -28,4 +28,4 @@ void MigratePrefs(PrefService* prefs) {
   }
 }
 
-}  // namespace brave::welcome_ui::prefs
+}  // namespace brave_welcome_page::prefs

@@ -7,7 +7,6 @@
 // a preprocess_if_expr step in //brave/browser/resources/settings/BUILD.gn.
 export const modelIcons: Record<string, string> = {
   'chat-automatic': 'product-brave-leo',
-  'chat-near-glm-5': 'zai-color',
   'chat-near-glm-5-1': 'zai-color',
   'chat-claude-instant': 'anthropic-color',
   'chat-claude-haiku': 'anthropic-color',

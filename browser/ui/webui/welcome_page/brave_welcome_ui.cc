@@ -15,9 +15,9 @@
 #include "base/task/single_thread_task_runner.h"
 #include "brave/browser/brave_browser_features.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
+#include "brave/browser/ui/webui/brave_welcome_page/brave_welcome_page_prefs.h"
 #include "brave/browser/ui/webui/settings/brave_import_bulk_data_handler.h"
 #include "brave/browser/ui/webui/settings/brave_search_engines_handler.h"
-#include "brave/browser/ui/webui/welcome_page/brave_welcome_ui_prefs.h"
 #include "brave/browser/ui/webui/welcome_page/welcome_dom_handler.h"
 #include "brave/components/brave_welcome/common/features.h"
 #include "brave/components/brave_welcome/resources/grit/brave_welcome_generated_map.h"
@@ -149,7 +149,7 @@ BraveWelcomeUI::BraveWelcomeUI(content::WebUI* web_ui, std::string_view name)
           regional_capabilities::prefs::kCountryIDAtInstall));
   const bool is_jpn = country_id == country_codes::CountryId("JP");
   if (!profile->GetPrefs()->GetBoolean(
-          brave::welcome_ui::prefs::kHasSeenBraveWelcomePage)) {
+          brave_welcome_page::prefs::kHasSeenBraveWelcomePage)) {
     if (is_jpn) {
       base::SingleThreadTaskRunner::GetCurrentDefault()->PostDelayedTask(
           FROM_HERE, base::BindOnce(&OpenJapanWelcomePage, profile),
@@ -188,7 +188,7 @@ BraveWelcomeUI::BraveWelcomeUI(content::WebUI* web_ui, std::string_view name)
                      local_state->IsManagedPreference(p3a::kP3AEnabled));
 
   profile->GetPrefs()->SetBoolean(
-      brave::welcome_ui::prefs::kHasSeenBraveWelcomePage, true);
+      brave_welcome_page::prefs::kHasSeenBraveWelcomePage, true);
 
   AddBackgroundColorToSource(source, web_ui->GetWebContents());
 

@@ -68,6 +68,9 @@ BASE_FEATURE(kBraveWalletTransactionSimulationsFeature,
              "BraveWalletTransactionSimulations",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
+BASE_FEATURE(kBraveWalletMojoForHardwareWalletFeature,
+             base::FEATURE_DISABLED_BY_DEFAULT);
+
 BASE_FEATURE(kBraveWalletAccountHidingFeature,
              "BraveWalletAccountHiding",
 #if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)

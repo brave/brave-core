@@ -17,6 +17,7 @@
 #include "brave/components/brave_shields/core/browser/ad_block_list_p3a.h"
 #include "brave/components/brave_shields/core/browser/ad_block_resource_provider.h"
 #include "brave/components/brave_shields/core/browser/filter_list_catalog_entry.h"
+#include "brave/components/cosmetic_filters/common/scriptlet_constants.h"
 #include "brave/components/cosmetic_filters/resources/grit/cosmetic_filters_generated.h"
 #include "brave/ios/browser/api/brave_shields/adblock_filter_list_catalog_entry+private.h"
 #include "brave/ios/browser/api/brave_shields/adblock_service+private.h"
@@ -224,6 +225,12 @@ void AdBlockResourceObserver::OnResourcesLoaded(
         IDR_COSMETIC_FILTERS_CONTENT_COSMETIC_IOS_BUNDLE_JS));
   }
   return base::SysUTF8ToNSString(resource_string);
+}
+
++ (NSString*)scriptletGlobalsScriptWithDeAmpEnabled:(bool)isDeAmpEnabled {
+  // iOS doesn't support the canDebug flag, so just keep as false.
+  return base::SysUTF8ToNSString(cosmetic_filters::GetScriptletGlobalsScript(
+      isDeAmpEnabled, /*can_debug=*/false));
 }
 
 @end

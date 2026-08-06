@@ -32,17 +32,16 @@ import {
 } from '../components/extension/public_encryption_key_panels/decrypt_message_request_panel'
 
 import { ConnectWithSiteWrapper } from '../stories/style'
-import { PanelWrapper } from './style'
+import { PanelWrapper } from './panel_wrapper/panel_wrapper'
 import { FullScreenWrapper } from '../page/screens/page-screen.styles'
 
 import { TransactionStatus } from '../components/extension/post-confirmation'
 import {
   useSafePanelSelector,
-  useSafeUISelector,
   useSafeWalletSelector,
   useUnsafePanelSelector,
 } from '../common/hooks/use-safe-selector'
-import { UISelectors, WalletSelectors } from '../common/selectors'
+import { WalletSelectors } from '../common/selectors'
 import { PanelSelectors } from './selectors'
 import {
   useGetPendingAddChainRequestQuery,
@@ -86,9 +85,6 @@ function Container() {
   const hasInitialized = useSafeWalletSelector(WalletSelectors.hasInitialized)
   const isWalletCreated = useSafeWalletSelector(WalletSelectors.isWalletCreated)
   const isWalletLocked = useSafeWalletSelector(WalletSelectors.isWalletLocked)
-
-  // ui selectors (safe)
-  const isSidePanel = useSafeUISelector(UISelectors.isSidePanel)
 
   // panel selectors (safe)
   const selectedPanel = useSafePanelSelector(PanelSelectors.selectedPanel)
@@ -153,7 +149,7 @@ function Container() {
   // render
   if (!hasInitialized || isLoadingPendingActions) {
     return (
-      <PanelWrapper isSidePanel={isSidePanel}>
+      <PanelWrapper>
         <FullScreenWrapper>
           <ProgressRing mode='indeterminate' />
         </FullScreenWrapper>
@@ -163,7 +159,7 @@ function Container() {
 
   if (!isWalletCreated) {
     return (
-      <PanelWrapper isSidePanel={isSidePanel}>
+      <PanelWrapper>
         <WelcomePanel />
       </PanelWrapper>
     )
@@ -171,7 +167,7 @@ function Container() {
 
   if (isWalletLocked) {
     return (
-      <PanelWrapper isSidePanel={isSidePanel}>
+      <PanelWrapper>
         <PageContainer />
       </PanelWrapper>
     )
@@ -322,7 +318,7 @@ function Container() {
   }
 
   return (
-    <PanelWrapper isSidePanel={isSidePanel}>
+    <PanelWrapper>
       <PageContainer />
     </PanelWrapper>
   )

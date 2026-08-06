@@ -73,6 +73,7 @@ class WelcomePageHandler : public mojom::WelcomePageHandler,
   void SetCrashReportsEnabled(bool enabled,
                               SetCrashReportsEnabledCallback callback) override;
   void GetWelcomeCompleteURL(GetWelcomeCompleteURLCallback callback) override;
+  void SetOnboardingPhase(mojom::OnboardingPhase phase) override;
 
   // ThemeServiceObserver:
   void OnThemeChanged() override;
@@ -97,6 +98,8 @@ class WelcomePageHandler : public mojom::WelcomePageHandler,
   base::flat_map<mojom::Feature, std::vector<std::string_view>>
       feature_visibility_prefs_;
   PrefChangeRegistrar pref_change_registrar_;
+
+  mojom::OnboardingPhase onboarding_phase_ = mojom::OnboardingPhase::kWelcome;
 
 #if BUILDFLAG(ENABLE_BRAVE_EDUCATION)
   std::unique_ptr<brave_education::BraveEducationServerChecker>

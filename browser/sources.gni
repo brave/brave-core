@@ -382,6 +382,7 @@ if (enable_brave_wallet) {
   if (!is_android) {
     brave_chrome_browser_deps += [
       "//brave/browser/brave_wallet/notifications",
+      "//brave/browser/ui/webui/brave_wallet/ledger",
       "//brave/browser/ui/webui/brave_wallet/wallet_panel",
     ]
   }
@@ -735,6 +736,10 @@ if (is_win) {
     "//chrome/install_static:install_static_util",
     "//chrome/installer/util:with_no_strings",
   ]
+}
+
+if (is_win || is_mac || is_android) {
+  brave_chrome_browser_deps += [ "//brave/browser/enterprise" ]
 }
 
 if (is_win || is_android) {

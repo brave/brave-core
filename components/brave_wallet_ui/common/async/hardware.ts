@@ -51,8 +51,8 @@ export function dialogErrorFromLedgerErrorCode(
   }
 
   if (
-    code === LedgerBridgeErrorCodes.CommandInProgress
-    || code === LedgerBridgeErrorCodes.BridgeNotReady
+    Number(code) === LedgerBridgeErrorCodes.CommandInProgress
+    || Number(code) === LedgerBridgeErrorCodes.BridgeNotReady
   ) {
     return 'deviceBusy'
   }

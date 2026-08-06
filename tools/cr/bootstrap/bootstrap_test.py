@@ -199,10 +199,12 @@ class ResolveVpython3Test(unittest.TestCase):
 
     def test_resolves_to_a_vpython3_interpreter(self):
         # pylint: disable=protected-access
-        # Whether found on $PATH or via the chromium-bundled fallback, the
+        # Whether found on $PATH or via the vendored depot_tools fallback, the
         # resolved interpreter is always a vpython3 (vpython3.bat on Windows).
+        # shutil.which() mirrors the case of the matched PATHEXT entry (often
+        # ".BAT" on Windows), so compare case-insensitively.
         resolved = launcher._resolve_vpython3(Path('/home/dev/src/brave'))
-        self.assertIn(resolved.name, ('vpython3', 'vpython3.bat'))
+        self.assertIn(resolved.name.lower(), ('vpython3', 'vpython3.bat'))
 
 
 class FindBraveCheckoutTest(unittest.TestCase):
@@ -653,14 +655,16 @@ class ResolveInvocationTest(unittest.TestCase):
             launcher.resolve_invocation('bogus', None, True)
 
     def _make_installer(self, checkout: Path) -> None:
-        """Create an empty tarball_installer.py so the bootstrap is attempted."""
+        """Create an empty tarball_installer.py so the bootstrap is
+        attempted."""
         installer = checkout / 'tools' / 'cr' / 'tarball_installer.py'
         installer.parent.mkdir(parents=True, exist_ok=True)
         installer.write_text('', encoding='utf-8', newline='')
 
     def test_bootstraps_missing_node_then_resolves(self):
-        # A missing node target with a known self_update_extra_dep_entry triggers a download
-        # (install_extra_deps.py), after which the vendored node resolves.
+        # A missing node target with a known self_update_extra_dep_entry
+        # triggers a download (install_extra_deps.py), after which the
+        # vendored node resolves.
         with tempfile.TemporaryDirectory() as tmp:
             root, key = Path(tmp), self._key()
             checkout = self._checkout(root)
@@ -745,8 +749,9 @@ class ResolveInvocationTest(unittest.TestCase):
             self.assertEqual(invocation.argv, ['/usr/bin/node'])
 
     def test_vpython_tool_not_bootstrapped(self):
-        # Only node/npm carry an self_update_extra_dep_entry; a missing vpython tool is never
-        # bootstrapped (it ships in the repo, it is not downloaded).
+        # Only node/npm carry an self_update_extra_dep_entry; a missing
+        # vpython tool is never bootstrapped (it ships in the repo, it is
+        # not downloaded).
         with tempfile.TemporaryDirectory() as tmp:
             with mock.patch.object(launcher.subprocess, 'call') as call:
                 launcher.resolve_invocation('brockit',
@@ -1084,7 +1089,8 @@ class ArgumentForwardingTest(unittest.TestCase):
                          (True, 'node', ['build.js']))
 
     def test_allow_fallback_after_tool_is_forwarded(self):
-        # After TOOL, the identical flag is the tool's — forwarded, not acted on.
+        # After TOOL, the identical flag is the tool's — forwarded, not
+        # acted on.
         self.assertEqual(self._split(['brockit', '--allow-fallback', 'foo']),
                          (False, 'brockit', ['--allow-fallback', 'foo']))
 

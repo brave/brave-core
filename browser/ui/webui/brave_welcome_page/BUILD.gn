@@ -18,6 +18,8 @@ mojom("mojom") {
 
 source_set("brave_welcome_page") {
   sources = [
+    "brave_welcome_page_prefs.cc",
+    "brave_welcome_page_prefs.h",
     "brave_welcome_page_ui.cc",
     "brave_welcome_page_ui.h",
     "welcome_page_features.cc",
@@ -55,8 +57,11 @@ source_set("brave_welcome_page") {
     "//chrome/browser/search/background",
     "//chrome/browser/ui/webui:webui_util",
     "//chrome/browser/ui/webui/cr_components/theme_color_picker:impl",
+    "//components/country_codes",
+    "//components/regional_capabilities",
     "//content/public/browser",
     "//mojo/public/cpp/bindings",
+    "//ui/base",
     "//ui/webui",
   ]
 

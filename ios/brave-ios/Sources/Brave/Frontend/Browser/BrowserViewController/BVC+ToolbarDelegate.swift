@@ -215,31 +215,34 @@ extension BrowserViewController: TopToolbarDelegate {
   }
 
   func topToolbarDidPressScrollToTop(_ topToolbar: TopToolbarView) {
-    if let selectedTab = tabManager.selectedTab, favoritesController == nil {
+    if let selectedTab = tabManager.selectedTab, searchContainer == nil {
       // Only scroll to top if we are not showing the home view controller
       selectedTab.webViewProxy?.scrollView?.setContentOffset(CGPoint.zero, animated: true)
     }
   }
 
   func topToolbar(_ topToolbar: TopToolbarView, didEnterText text: String) {
-    if text.isEmpty {
-      hideSearchController()
-    } else {
-      showSearchController()
+    guard let searchContainer else { return }
 
+    searchContainer.showSearchResults(!text.isEmpty)
+
+    if text.isEmpty {
+      searchContainer.setSearchQuery(query: "", showSearchSuggestions: false)
+      searchContainer.searchLoaderQuery = ""
+    } else {
       let locationLastReplacement = topToolbar.locationLastReplacement
       let isPasting = topToolbar.isPastingInURLBar
       Task {
-        await searchController?.setSearchQuery(
+        let shouldShowSearchSuggestions = await URLBarHelper.shared.shouldShowSearchSuggestions(
+          using: locationLastReplacement,
+          isPasting: isPasting
+        )
+        searchContainer.setSearchQuery(
           query: text,
-          showSearchSuggestions: URLBarHelper.shared.shouldShowSearchSuggestions(
-            using: locationLastReplacement,
-            isPasting: isPasting
-          )
+          showSearchSuggestions: shouldShowSearchSuggestions
         )
       }
-
-      searchLoader?.query = text.lowercased()
+      searchContainer.searchLoaderQuery = text.lowercased()
     }
   }
 
@@ -345,12 +348,11 @@ extension BrowserViewController: TopToolbarDelegate {
 
   func topToolbarDidEnterOverlayMode(_ topToolbar: TopToolbarView) {
     updateTabsBarVisibility()
-    displayFavoritesController()
+    displaySearchContainer()
   }
 
   func topToolbarDidLeaveOverlayMode(_ topToolbar: TopToolbarView) {
-    hideSearchController()
-    hideFavoritesController()
+    hideSearchContainer()
     updateScreenTimeUrl(tabManager.selectedTab?.visibleURL)
     updateInContentHomePanel(tabManager.selectedTab?.visibleURL as URL?)
     updateTabsBarVisibility()
@@ -692,170 +694,123 @@ extension BrowserViewController: TopToolbarDelegate {
     presentWalletPanel(from: origin, with: tabDappStore)
   }
 
-  private func hideSearchController() {
-    if let searchController = searchController {
-      searchController.willMove(toParent: nil)
-      searchController.view.removeFromSuperview()
-      searchController.removeFromParent()
-      self.searchController = nil
-      searchLoader = nil
-      favoritesController?.view.isHidden = false
-    }
-  }
-
-  private func showSearchController() {
-    if searchController != nil { return }
-
-    // Setting up data source for SearchSuggestions
-    let isPrivate = tabManager.selectedTab?.isPrivate ?? false
-    let searchDataSource = SearchSuggestionDataSource(
-      isPrivate: isPrivate,
-      isAIChatAvailable: !isPrivate && Preferences.AIChat.leoInQuickSearchBarEnabled.value
-        && AIChatUtils.isAIChatEnabled(for: profileController.profile.prefs),
-      isPlaylistAvailable: profileController.profile.prefs.isPlaylistAvailable,
-      searchEngines: profile.searchEngines
-    )
-
-    // Setting up controller for SearchSuggestions
-    searchController = SearchViewController(
-      with: searchDataSource,
-      browserColors: privateBrowsingManager.browserColors
-    )
-    searchController?.isUsingBottomBar = isUsingBottomBar
-    guard let searchController = searchController else { return }
-    searchController.setupSearchEngineList()
-    searchController.searchDelegate = self
-
-    searchLoader = SearchLoader(
-      historyAPI: profileController.historyAPI,
-      bookmarkManager: bookmarkManager,
-      tabManager: tabManager
-    )
-    searchLoader?.addListener(searchController)
-    searchLoader?.autocompleteSuggestionHandler = { [weak self] completion in
-      self?.topToolbar.setAutocompleteSuggestion(completion)
-    }
-
-    addChild(searchController)
-    if let favoritesController = favoritesController {
-      view.insertSubview(searchController.view, aboveSubview: favoritesController.view)
-    } else {
-      view.insertSubview(searchController.view, belowSubview: header)
-    }
-    searchController.view.snp.makeConstraints {
-      $0.edges.equalTo(view)
-    }
-    searchController.didMove(toParent: self)
-    searchController.view.setNeedsLayout()
-    searchController.view.layoutIfNeeded()
-
-    favoritesController?.view.isHidden = true
-  }
-
-  func insertFavoritesControllerView(favoritesController: FavoritesViewController) {
+  func insertSearchContainerView(_ searchContainer: SearchContainerViewController) {
     if let ntpController = self.activeNewTabPageViewController, ntpController.parent != nil {
-      view.insertSubview(favoritesController.view, aboveSubview: ntpController.view)
+      view.insertSubview(searchContainer.view, aboveSubview: ntpController.view)
     } else {
       // Two different behaviors here:
       // 1. For bottom bar we do not want to show the status bar color
       // 2. For top bar we do so it matches the address bar background
       let subview = isUsingBottomBar ? statusBarOverlay : footer
-      view.insertSubview(favoritesController.view, aboveSubview: subview)
+      view.insertSubview(searchContainer.view, aboveSubview: subview)
     }
   }
 
-  private func displayFavoritesController() {
-    if favoritesController == nil {
-      let dse = profile.searchEngines.defaultEngine(
-        forType: privateBrowsingManager.isPrivateBrowsing ? .privateMode : .standard
-      )
-      let favoritesController = FavoritesViewController(
+  /// Handles selection of a recent search in the favorites screen: seeds the URL bar and, when
+  /// requested, navigates. Passed to the search container as its favorites `recentSearchAction`.
+  private func handleRecentSearch(_ recentSearch: RecentSearch?, shouldSubmitSearch: Bool) {
+    let submitSearch = { [weak self] (text: String) in
+      if let fixupURL = URIFixup.getURL(text) {
+        self?.finishEditingAndSubmit(fixupURL)
+        return
+      }
+
+      self?.submitSearchText(text)
+    }
+
+    guard let recentSearch = recentSearch,
+      let searchType = RecentSearchType(rawValue: recentSearch.searchType)
+    else { return }
+
+    if shouldSubmitSearch {
+      recentSearch.update(dateAdded: Date())
+    }
+
+    switch searchType {
+    case .text:
+      if let text = recentSearch.text {
+        self.topToolbar.setLocation(text, search: false)
+        self.topToolbar(self.topToolbar, didEnterText: text)
+
+        if shouldSubmitSearch {
+          submitSearch(text)
+        }
+      }
+    case .website:
+      if let text = recentSearch.text {
+        self.topToolbar.setLocation(text, search: false)
+        self.topToolbar(self.topToolbar, didEnterText: text)
+
+        if shouldSubmitSearch {
+          if let urlString = recentSearch.websiteUrl,
+            let url = URL(string: urlString)
+          {
+            finishEditingAndSubmit(url)
+          } else {
+            submitSearch(text)
+          }
+        }
+      }
+    case .qrCode:
+      if let text = recentSearch.text {
+        self.topToolbar.setLocation(text, search: false)
+        self.topToolbar(self.topToolbar, didEnterText: text)
+
+        if shouldSubmitSearch {
+          submitSearch(text)
+        }
+      } else if let websiteUrl = recentSearch.websiteUrl {
+        self.topToolbar.setLocation(websiteUrl, search: false)
+        self.topToolbar(self.topToolbar, didEnterText: websiteUrl)
+
+        if shouldSubmitSearch {
+          submitSearch(websiteUrl)
+        }
+      }
+    }
+  }
+
+  private func displaySearchContainer() {
+    if searchContainer == nil {
+      let isPrivate = tabManager.selectedTab?.isPrivate ?? false
+      let container = SearchContainerViewController(
+        tabManager: tabManager,
+        bookmarkManager: bookmarkManager,
+        historyAPI: profileController.historyAPI,
+        searchEngines: profile.searchEngines,
         privateBrowsingManager: privateBrowsingManager,
-        defaultSearchEngine: dse,
+        isAIChatAvailable: !isPrivate && Preferences.AIChat.leoInQuickSearchBarEnabled.value
+          && AIChatUtils.isAIChatEnabled(for: profileController.profile.prefs),
+        isPlaylistAvailable: profileController.profile.prefs.isPlaylistAvailable,
+        searchDelegate: self,
+        autocompleteSuggestionHandler: { [weak self] completion in
+          self?.topToolbar.setAutocompleteSuggestion(completion)
+        },
         bookmarkAction: { [weak self] bookmark, action in
           self?.handleFavoriteAction(favorite: bookmark, action: action)
         },
         recentSearchAction: { [weak self] recentSearch, shouldSubmitSearch in
-          guard let self = self else { return }
-
-          let submitSearch = { [weak self] (text: String) in
-            if let fixupURL = URIFixup.getURL(text) {
-              self?.finishEditingAndSubmit(fixupURL)
-              return
-            }
-
-            self?.submitSearchText(text)
-          }
-
-          if let recentSearch = recentSearch,
-            let searchType = RecentSearchType(rawValue: recentSearch.searchType)
-          {
-            if shouldSubmitSearch {
-              recentSearch.update(dateAdded: Date())
-            }
-
-            switch searchType {
-            case .text:
-              if let text = recentSearch.text {
-                self.topToolbar.setLocation(text, search: false)
-                self.topToolbar(self.topToolbar, didEnterText: text)
-
-                if shouldSubmitSearch {
-                  submitSearch(text)
-                }
-              }
-            case .website:
-              if let text = recentSearch.text {
-                self.topToolbar.setLocation(text, search: false)
-                self.topToolbar(self.topToolbar, didEnterText: text)
-
-                if shouldSubmitSearch {
-                  if let urlString = recentSearch.websiteUrl,
-                    let url = URL(string: urlString)
-                  {
-                    finishEditingAndSubmit(url)
-                  } else {
-                    submitSearch(text)
-                  }
-                }
-              }
-            case .qrCode:
-              if let text = recentSearch.text {
-                self.topToolbar.setLocation(text, search: false)
-                self.topToolbar(self.topToolbar, didEnterText: text)
-
-                if shouldSubmitSearch {
-                  submitSearch(text)
-                }
-              } else if let websiteUrl = recentSearch.websiteUrl {
-                self.topToolbar.setLocation(websiteUrl, search: false)
-                self.topToolbar(self.topToolbar, didEnterText: websiteUrl)
-
-                if shouldSubmitSearch {
-                  submitSearch(websiteUrl)
-                }
-              }
-            }
-          }
+          self?.handleRecentSearch(recentSearch, shouldSubmitSearch: shouldSubmitSearch)
         }
       )
-      self.favoritesController = favoritesController
+      container.isUsingBottomBar = isUsingBottomBar
+      self.searchContainer = container
 
-      addChild(favoritesController)
-      insertFavoritesControllerView(favoritesController: favoritesController)
-      favoritesController.didMove(toParent: self)
+      addChild(container)
+      insertSearchContainerView(container)
+      container.didMove(toParent: self)
 
-      favoritesController.view.snp.makeConstraints {
+      container.view.snp.makeConstraints {
         $0.leading.trailing.equalTo(pageOverlayLayoutGuide)
         $0.top.bottom.equalTo(view)
       }
-      favoritesController.view.setNeedsLayout()
-      favoritesController.view.layoutIfNeeded()
+      container.view.setNeedsLayout()
+      container.view.layoutIfNeeded()
     }
-    guard let favoritesController = favoritesController else { return }
-    favoritesController.view.alpha = 0.0
+    guard let searchContainer else { return }
+    searchContainer.view.alpha = 0.0
     let animator = UIViewPropertyAnimator(duration: 0.2, dampingRatio: 1.0) {
-      favoritesController.view.alpha = 1
+      searchContainer.view.alpha = 1
     }
     animator.addCompletion { _ in
       self.webViewContainer.accessibilityElementsHidden = true
@@ -864,9 +819,9 @@ extension BrowserViewController: TopToolbarDelegate {
     animator.startAnimation()
   }
 
-  private func hideFavoritesController() {
-    guard let controller = favoritesController else { return }
-    self.favoritesController = nil
+  private func hideSearchContainer() {
+    guard let controller = searchContainer else { return }
+    self.searchContainer = nil
     UIView.animate(
       withDuration: 0.1,
       delay: 0,

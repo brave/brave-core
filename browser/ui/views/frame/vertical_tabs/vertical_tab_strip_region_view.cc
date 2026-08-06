@@ -29,6 +29,7 @@
 #include "brave/browser/ui/views/frame/brave_non_client_hit_test_helper.h"
 #include "brave/browser/ui/views/frame/tab_strip_placement_coordinator.h"
 #include "brave/browser/ui/views/tabs/brave_new_tab_button.h"
+#include "brave/browser/ui/views/tabs/brave_tab_container.h"
 #include "brave/browser/ui/views/tabs/brave_tab_strip_layout_helper.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/vector_icons/vector_icons.h"
@@ -301,6 +302,11 @@ BraveVerticalTabStripRegionView::BraveVerticalTabStripRegionView(
   SetMirrored(false);
   SetNotifyEnterExitOnChild(true);
 
+  auto* container =
+      views::AsViewClass<BraveTabContainer>(tab_strip()->tab_container_);
+  CHECK(container);
+  container->SetVerticalTabStripRegionView(this);
+
   // The default state is kExpanded, so reset animation state to 1.0.
   width_animation_.Reset(1.0);
 
@@ -411,6 +417,12 @@ BraveVerticalTabStripRegionView::BraveVerticalTabStripRegionView(
 }
 
 BraveVerticalTabStripRegionView::~BraveVerticalTabStripRegionView() {
+  auto* container =
+      views::AsViewClass<BraveTabContainer>(tab_strip()->tab_container_);
+  CHECK(container);
+  // This view can be destroyed before the tab container is destroyed.
+  container->SetVerticalTabStripRegionView(nullptr);
+
   // We need to move tab strip region to its original parent to avoid crash
   // during drag and drop session.
   if (auto* coordinator = GetPlacementCoordinator(browser_view_)) {
