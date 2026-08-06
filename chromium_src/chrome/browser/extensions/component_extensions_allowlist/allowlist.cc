@@ -6,6 +6,7 @@
 #include "chrome/browser/extensions/component_extensions_allowlist/allowlist.h"
 
 #include "brave/components/brave_extension/grit/brave_extension.h"
+#include "chrome/common/extensions/extension_constants.h"
 #include "components/grit/brave_components_resources.h"
 #include "extensions/common/constants.h"
 
@@ -17,6 +18,18 @@ bool IsComponentExtensionAllowlistedBraveImpl(const std::string& extension_id) {
   const char* const kAllowed[] = {brave_extension_id};
 
   for (const auto* id : kAllowed) {
+    if (extension_id == id) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+bool IsComponentExtensionDenylistedBraveImpl(const std::string& extension_id) {
+  const char* const kDenied[] = {extension_misc::kGlicExtensionId};
+
+  for (const auto* id : kDenied) {
     if (extension_id == id) {
       return true;
     }
