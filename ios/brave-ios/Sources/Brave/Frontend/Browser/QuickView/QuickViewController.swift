@@ -76,7 +76,7 @@ class QuickViewController: UIViewController {
     self.onOpenInNewWindow = onOpenInNewWindow
     self.onAttachTab = onAttachTab
     super.init(nibName: nil, bundle: nil)
-    modalPresentationStyle = .fullScreen
+    modalPresentationStyle = .pageSheet
   }
 
   @available(*, unavailable)
