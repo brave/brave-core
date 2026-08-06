@@ -29,6 +29,8 @@ public class PlaylistManager: NSObject {
   @MainActor private var pendingDownloadTasks = [String: (id: UUID, task: Task<Void, Never>)]()
   /// Item ids that already received a single out-of-space download retry for the current attempt.
   @MainActor internal var itemsRetriedAfterOutOfSpace = Set<String>()
+  /// Coalesces concurrent reclaim passes so rapid download scheduling shares one LRU eviction run.
+  @MainActor private var reclaimTask: Task<Void, Never>?
 
   private var _playbackTask: Task<Void, Error>?
 
@@ -739,6 +741,24 @@ public class PlaylistManager: NSObject {
   @MainActor
   func reclaimSpaceIfNeeded() async {
     guard isCacheReclamationEnabled else { return }
+
+    if let reclaimTask {
+      await reclaimTask.value
+      return
+    }
+
+    guard isDiskSpaceEncumbered() else { return }
+
+    let task = Task { @MainActor in
+      await self.performReclaimSpaceIfNeeded()
+    }
+    reclaimTask = task
+    await task.value
+    reclaimTask = nil
+  }
+
+  @MainActor
+  private func performReclaimSpaceIfNeeded() async {
     guard isDiskSpaceEncumbered() else { return }
 
     let currentlyPlayingID = currentlyPlayingItemIDProvider?()
