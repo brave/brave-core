@@ -70,6 +70,37 @@ class PlasterTest(unittest.TestCase):
                     f'File {committed_file_path} does not match '
                     f'expected {expected_file}')
 
+    def test_sharing_hub_copy_clean_link_precedes_upstream_copy_link(self):
+        """The production plaster inserts without rewriting Chromium's label."""
+        fixture_dir = Path(__file__).parent / 'test/plasters'
+        source = Path('chrome/browser/sharing_hub/sharing_hub_model.cc')
+        original = fixture_dir / 'sharing_hub_model-original.cc'
+        expected = fixture_dir / 'sharing_hub_model-expected.cc'
+
+        self.fake_chromium_src.write_and_stage_file(
+            relative_path=source,
+            content=original.read_bytes().decode('utf-8'),
+            repo_path=self.fake_chromium_src.chromium)
+        self.fake_chromium_src.commit(
+            commit_message=f'Add {source}',
+            repo_path=self.fake_chromium_src.chromium)
+
+        production_plaster = (
+            Path(__file__).resolve().parents[2] / 'rewrite' /
+            f'{source}.yaml')
+        rewrite_path = plaster.PLASTER_FILES_PATH / f'{source}.yaml'
+        rewrite_path.parent.mkdir(parents=True, exist_ok=True)
+        rewrite_path.write_text(
+            production_plaster.read_bytes().decode('utf-8'),
+            encoding='utf-8',
+            newline='')
+
+        plaster.PlasterFile(rewrite_path).apply()
+
+        rewritten = self.fake_chromium_src.chromium / source
+        self.assertEqual(rewritten.read_bytes().decode('utf-8'),
+                         expected.read_bytes().decode('utf-8'))
+
     def test_plaster_patchinfo_creation(self):
         """Test the patchinfo creation mechanics."""
         test_file_chromium = Path(
