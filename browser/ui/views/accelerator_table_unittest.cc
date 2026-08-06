@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "brave/app/brave_command_ids.h"
+#include "chrome/app/chrome_command_ids.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace {
@@ -26,4 +27,5 @@ bool HasCommandID(int command_id) {
 TEST(AcceleratorTableTest, CheckBraveAccelerators) {
   EXPECT_TRUE(HasCommandID(IDC_NEW_OFFTHERECORD_WINDOW_TOR));
   EXPECT_TRUE(HasCommandID(IDC_TOGGLE_SIDEBAR));
+  EXPECT_TRUE(HasCommandID(IDC_NEW_SPLIT_TAB));
 }
