@@ -25,7 +25,6 @@ const PanelBody = styled.div`
 `
 
 const Sidebar = styled.nav`
-  position: relative;
   flex: 0 0 228px;
   display: flex;
   flex-direction: column;
@@ -41,13 +40,6 @@ const Sidebar = styled.nav`
 const SidebarTitle = styled.h4`
   color: ${color.text.primary};
   padding: 0 ${spacing['2Xl']};
-`
-
-const SidebarOverlay = styled.div`
-  position: absolute;
-  inset: 0;
-  background: ${color.container.background};
-  opacity: 0.7;
 `
 
 const Content = styled.section`
@@ -99,8 +91,7 @@ export default function Configure() {
       <PanelBody>
         <Sidebar>
           <SidebarTitle>{getLocale(S.BRAVE_NEWS_SETTINGS_TITLE)}</SidebarTitle>
-          <SourcesList />
-          {!isBraveNewsFullyEnabled && <SidebarOverlay />}
+          {isBraveNewsFullyEnabled && <SourcesList />}
         </Sidebar>
         <Content>
           <ContentCard>
