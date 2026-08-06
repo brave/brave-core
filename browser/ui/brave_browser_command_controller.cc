@@ -42,6 +42,7 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_command_controller.h"
 #include "chrome/browser/ui/browser_commands.h"
+#include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/tabs/features.h"
@@ -811,9 +812,9 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
 #endif
 #if BUILDFLAG(ENABLE_CONTAINERS)
     case IDC_NEW_TEMPORARY_CONTAINER:
-      brave::CreateTemporaryContainerAndOpenUrl(base::to_address(browser_),
-                                                browser_->GetNewTabURL(),
-                                                /*is_link=*/false);
+      brave::CreateTemporaryContainerAndOpenUrl(
+          base::to_address(browser_), chrome::GetNewTabURL(&*browser_),
+          /*is_link=*/false);
       break;
 #endif
     case IDC_WINDOW_GROUP_UNGROUPED_TABS:
