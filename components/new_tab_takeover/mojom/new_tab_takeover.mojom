@@ -14,6 +14,20 @@ interface NewTabTakeoverPage {
   SetSafeArea(gfx.mojom.RectF safe_area);
 };
 
+// A Brave Search autocomplete suggestion. Only the fields consumed by the
+// New Tab Takeover rich media postMessage protocol are included; this is
+// intentionally not the full upstream searchbox.mojom.AutocompleteMatch,
+// whose remaining fields only have meaning in the context of the omnibox
+// popup UI (which New Tab Takeover does not have).
+struct AutocompleteMatch {
+  string contents;
+  string description;
+  url.mojom.Url destination_url;
+  url.mojom.Url icon_url;
+  url.mojom.Url image_url;
+  bool allowed_to_be_default_match;
+};
+
 interface NewTabTakeover {
   SetPage(pending_remote<NewTabTakeoverPage> page);
 
@@ -26,4 +40,10 @@ interface NewTabTakeover {
        url.mojom.Url? target_url);
 
   NavigateToUrl(url.mojom.Url url);
+
+  QueryAutocomplete(string input) => (array<AutocompleteMatch> matches);
+
+  // `success` is false if Brave Search is not present in the user's search
+  // engine choice list for their region.
+  SetDefaultSearchEngineAsBraveSearch() => (bool success);
 };
