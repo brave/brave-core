@@ -387,7 +387,6 @@ final public class PlaylistItem: NSManagedObject, CRUD, Identifiable {
   }
 
   public static func updateLastPlayedDate(uuid: String, date: Date) {
-    guard itemExists(uuid: uuid) else { return }
     DataController.perform(context: .new(inMemory: false), save: true) { context in
       if let item = PlaylistItem.first(
         where: NSPredicate(format: "uuid == %@", uuid),
