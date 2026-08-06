@@ -9,6 +9,8 @@
 
 #include "base/check.h"
 #include "base/command_line.h"
+#include "base/files/file.h"
+#include "base/files/memory_mapped_file.h"
 #include "base/path_service.h"
 #include "build/build_config.h"
 #include "ui/base/resource/resource_bundle.h"
@@ -25,11 +27,12 @@
 
 #if BUILDFLAG(IS_ANDROID)
 #include "base/android/jni_android.h"
-#include "base/files/file.h"
-#include "base/files/memory_mapped_file.h"
-#include "base/posix/global_descriptors.h"
 #include "chrome/common/chrome_descriptors_android.h"
 #include "ui/base/resource/resource_bundle_android.h"
+#endif
+
+#if BUILDFLAG(IS_POSIX)
+#include "base/posix/global_descriptors.h"
 #endif
 
 namespace {
