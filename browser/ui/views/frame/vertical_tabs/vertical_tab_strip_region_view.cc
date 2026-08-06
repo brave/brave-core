@@ -302,10 +302,10 @@ BraveVerticalTabStripRegionView::BraveVerticalTabStripRegionView(
   SetMirrored(false);
   SetNotifyEnterExitOnChild(true);
 
-  if (auto* container =
-          views::AsViewClass<BraveTabContainer>(tab_strip()->tab_container_)) {
-    container->SetVerticalTabStripRegionView(this);
-  }
+  auto* container =
+      views::AsViewClass<BraveTabContainer>(tab_strip()->tab_container_);
+  CHECK(container);
+  container->SetVerticalTabStripRegionView(this);
 
   // The default state is kExpanded, so reset animation state to 1.0.
   width_animation_.Reset(1.0);
@@ -417,11 +417,12 @@ BraveVerticalTabStripRegionView::BraveVerticalTabStripRegionView(
 }
 
 BraveVerticalTabStripRegionView::~BraveVerticalTabStripRegionView() {
-  if (auto* container =
-          views::AsViewClass<BraveTabContainer>(tab_strip()->tab_container_)) {
-    // This view can be destroyed before the tab container is destroyed.
-    container->SetVerticalTabStripRegionView(nullptr);
-  }
+  auto* container =
+      views::AsViewClass<BraveTabContainer>(tab_strip()->tab_container_);
+  CHECK(container);
+  // This view can be destroyed before the tab container is destroyed.
+  container->SetVerticalTabStripRegionView(nullptr);
+
   // We need to move tab strip region to its original parent to avoid crash
   // during drag and drop session.
   if (auto* coordinator = GetPlacementCoordinator(browser_view_)) {

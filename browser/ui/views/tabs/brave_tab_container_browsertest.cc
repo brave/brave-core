@@ -12,9 +12,13 @@
 #include "base/task/sequenced_task_runner.h"
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
+#include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
+#include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/brave_tab_strip_region_view.h"
+#include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_container_view.h"
+#include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
 #include "brave/browser/ui/views/tabs/brave_tab_strip.h"
 #include "chrome/browser/defaults.h"
 #include "chrome/browser/profiles/profile.h"
@@ -774,4 +778,118 @@ IN_PROC_BROWSER_TEST_F(HorizontalScrollableTabStripBrowserTest,
   ASSERT_EQ(back->GetState(), views::Button::STATE_NORMAL);
   EXPECT_EQ(views::InkDrop::Get(back)->GetMode(),
             views::InkDropHost::InkDropMode::ON);
+}
+
+class VerticalTabsScrollBarModeBrowserTest : public InProcessBrowserTest {
+ public:
+  BraveBrowserView* browser_view() {
+    return static_cast<BraveBrowserView*>(browser()->window());
+  }
+
+  BraveTabContainer* container() {
+    return views::AsViewClass<BraveTabContainer>(
+        views::AsViewClass<BraveTabStrip>(
+            browser_view()->horizontal_tab_strip_for_testing())
+            ->GetTabContainerForTesting());
+  }
+
+  BraveVerticalTabStripRegionView* region_view() {
+    auto* container_view = browser_view()->vertical_tab_strip_container_view();
+    return container_view ? container_view->vertical_tab_strip_region_view()
+                          : nullptr;
+  }
+
+  void ToggleVerticalTabStrip() { brave::ToggleVerticalTabStrip(browser()); }
+};
+
+// When the vertical tab strip is collapsed while floating mode is enabled,
+// the scrollbar shouldn't be shown since hovering over it would expand the
+// strip anyway.
+IN_PROC_BROWSER_TEST_F(VerticalTabsScrollBarModeBrowserTest,
+                       ScrollBarHiddenWhenCollapsedWithFloatingMode) {
+  ToggleVerticalTabStrip();
+
+  auto* prefs = browser()->profile()->GetPrefs();
+  prefs->SetBoolean(brave_tabs::kVerticalTabsShowScrollbar, true);
+
+  auto* vtc = VerticalTabController::FromBrowser(browser());
+  ASSERT_TRUE(vtc);
+  ASSERT_TRUE(vtc->IsFloatingVerticalTabsEnabled())
+      << "Floating mode is enabled by default";
+
+  auto* container_view = container();
+  ASSERT_TRUE(container_view);
+  auto* region = region_view();
+  ASSERT_TRUE(region);
+
+  using State = BraveVerticalTabStripRegionView::State;
+  ASSERT_EQ(State::kExpanded, region->state());
+  EXPECT_EQ(views::ScrollView::ScrollBarMode::kEnabled,
+            container_view->GetScrollBarMode())
+      << "Scrollbar should be shown while expanded, even in floating mode";
+
+  // Collapse the strip while floating mode is still enabled.
+  prefs->SetBoolean(brave_tabs::kVerticalTabsCollapsed, true);
+  ASSERT_EQ(State::kCollapsed, region->state());
+  EXPECT_EQ(views::ScrollView::ScrollBarMode::kHiddenButEnabled,
+            container_view->GetScrollBarMode())
+      << "Scrollbar should be hidden while collapsed in floating mode";
+
+  // Re-expanding should bring the scrollbar back.
+  prefs->SetBoolean(brave_tabs::kVerticalTabsCollapsed, false);
+  ASSERT_EQ(State::kExpanded, region->state());
+  EXPECT_EQ(views::ScrollView::ScrollBarMode::kEnabled,
+            container_view->GetScrollBarMode());
+}
+
+// When floating mode is disabled, collapsing the vertical tab strip doesn't
+// hide the tabs behind a hover-to-expand affordance, so the scrollbar should
+// remain visible.
+IN_PROC_BROWSER_TEST_F(VerticalTabsScrollBarModeBrowserTest,
+                       ScrollBarVisibleWhenCollapsedWithoutFloatingMode) {
+  ToggleVerticalTabStrip();
+
+  auto* prefs = browser()->profile()->GetPrefs();
+  prefs->SetBoolean(brave_tabs::kVerticalTabsShowScrollbar, true);
+  prefs->SetBoolean(brave_tabs::kVerticalTabsFloatingEnabled, false);
+
+  auto* vtc = VerticalTabController::FromBrowser(browser());
+  ASSERT_TRUE(vtc);
+  ASSERT_FALSE(vtc->IsFloatingVerticalTabsEnabled());
+
+  auto* container_view = container();
+  ASSERT_TRUE(container_view);
+  auto* region = region_view();
+  ASSERT_TRUE(region);
+
+  using State = BraveVerticalTabStripRegionView::State;
+  prefs->SetBoolean(brave_tabs::kVerticalTabsCollapsed, true);
+  ASSERT_EQ(State::kCollapsed, region->state());
+  EXPECT_EQ(views::ScrollView::ScrollBarMode::kEnabled,
+            container_view->GetScrollBarMode())
+      << "Without floating mode, collapsing shouldn't hide the scrollbar";
+}
+
+// When the scrollbar pref itself is off, collapsing/floating state shouldn't
+// matter: GetScrollBarMode() should stay kHiddenButEnabled.
+IN_PROC_BROWSER_TEST_F(VerticalTabsScrollBarModeBrowserTest,
+                       ScrollBarStaysHiddenWhenPrefOffRegardlessOfState) {
+  ToggleVerticalTabStrip();
+
+  auto* prefs = browser()->profile()->GetPrefs();
+  ASSERT_FALSE(prefs->GetBoolean(brave_tabs::kVerticalTabsShowScrollbar));
+
+  auto* container_view = container();
+  ASSERT_TRUE(container_view);
+  auto* region = region_view();
+  ASSERT_TRUE(region);
+
+  using State = BraveVerticalTabStripRegionView::State;
+  EXPECT_EQ(views::ScrollView::ScrollBarMode::kHiddenButEnabled,
+            container_view->GetScrollBarMode());
+
+  prefs->SetBoolean(brave_tabs::kVerticalTabsCollapsed, true);
+  ASSERT_EQ(State::kCollapsed, region->state());
+  EXPECT_EQ(views::ScrollView::ScrollBarMode::kHiddenButEnabled,
+            container_view->GetScrollBarMode());
 }
