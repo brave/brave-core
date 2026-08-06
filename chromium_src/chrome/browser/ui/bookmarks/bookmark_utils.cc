@@ -5,9 +5,11 @@
 
 #include "chrome/browser/ui/bookmarks/bookmark_utils.h"
 
-#include "base/strings/string_util.h"
+#include <string>
+
 #include "brave/browser/resources/bookmark_icon/grit/bookmark_icon_resources.h"
 #include "brave/browser/ui/bookmark/bookmark_helper.h"
+#include "brave/browser/ui/brave_scheme_utils.h"
 #include "brave/browser/ui/brave_ui_features.h"
 #include "brave/components/constants/pref_names.h"
 #include "build/build_config.h"
@@ -84,14 +86,13 @@ bool ShouldShowAppsShortcutInBookmarkBar(Profile* profile) {
   return false;
 }
 
+// WebUI bookmarks are stored as chrome:// but displayed as brave://. Editing a
+// bookmark rewrites the stored URL to brave://, since the editor re-parses this
+// text via FixupURL(); browser_about_handler maps it back on navigation.
 std::u16string FormatBookmarkURLForDisplay(const GURL& url) {
-  GURL replaced_url = url;
-  if (url.SchemeIs(content::kChromeUIScheme)) {
-    GURL::Replacements replacements;
-    replacements.SetSchemeStr(content::kBraveUIScheme);
-    replaced_url = url.ReplaceComponents(replacements);
-  }
-  return chrome::FormatBookmarkURLForDisplay_ChromiumImpl(replaced_url);
+  std::u16string url_string = FormatBookmarkURLForDisplay_ChromiumImpl(url);
+  brave_utils::ReplaceChromeToBraveScheme(url_string);
+  return url_string;
 }
 
 #if defined(TOOLKIT_VIEWS)
