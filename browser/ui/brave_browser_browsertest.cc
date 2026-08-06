@@ -123,18 +123,18 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserBrowserTest, OpenNewTabWhenTabStripIsEmpty) {
   ASSERT_EQ(1, tab_strip->count());
 
   // Expecting a new tab is opened.
-  EXPECT_EQ(new_browser->GetNewTabURL(),
+  EXPECT_EQ(chrome::GetNewTabURL(new_browser),
             tab_strip->GetWebContentsAt(0)->GetURL().possibly_invalid_spec());
   // No reentrancy for Ctrl+W
   tab_strip->CloseSelectedTabs();
   base::RunLoop().RunUntilIdle();
   // Expecting a new tab is opened.
-  EXPECT_EQ(new_browser->GetNewTabURL(),
+  EXPECT_EQ(chrome::GetNewTabURL(new_browser),
             tab_strip->GetWebContentsAt(0)->GetURL().possibly_invalid_spec());
 
   // Add a couple of more tabs.
-  chrome::AddTabAt(new_browser, new_browser->GetNewTabURL(), -1, true);
-  chrome::AddTabAt(new_browser, new_browser->GetNewTabURL(), -1, true);
+  chrome::AddTabAt(new_browser, chrome::GetNewTabURL(new_browser), -1, true);
+  chrome::AddTabAt(new_browser, chrome::GetNewTabURL(new_browser), -1, true);
   ASSERT_EQ(3, tab_strip->count());
   EXPECT_EQ(GlobalBrowserCollection::GetInstance()->GetSize(), 2u);
   // Close the browser window.
@@ -222,7 +222,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserBrowserTest,
   // Wait till another new tab is opened.
   EXPECT_TRUE(
       base::test::RunUntil([tab_strip] { return tab_strip->count() == 1; }));
-  EXPECT_EQ(browser()->GetNewTabURL(),
+  EXPECT_EQ(chrome::GetNewTabURL(browser()),
             tab_strip->GetWebContentsAt(0)->GetURL().possibly_invalid_spec());
 
   ui_test_utils::NavigateToURLWithDisposition(
