@@ -530,8 +530,7 @@ export const findTransactionToken = <
         && t.coin === tx.fromAccountId.coin
         && (zcashTokenType !== undefined
           ? t.zcashTokenType === zcashTokenType
-          : t.zcashTokenType === BraveWallet.ZCashTokenType.kNone
-            || t.zcashTokenType === BraveWallet.ZCashTokenType.kTransparent),
+          : t.zcashTokenType === BraveWallet.ZCashTokenType.kNone),
     )
   }
 

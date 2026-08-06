@@ -745,15 +745,15 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
             if let zecBalance = zecGasTokenBalanceCache,
               let zecTxData = activeParsedTransaction.transaction.txDataUnion.zecTxData
             {
-              let balanceInSatoshi: UInt64
+              let balanceInZatoshi: UInt64
               if zecTxData.zcashTokenType == .orchard {
-                balanceInSatoshi = zecBalance.orchardBalance
+                balanceInZatoshi = zecBalance.orchardBalance
               } else if zecTxData.zcashTokenType == .ironwood {
-                balanceInSatoshi = zecBalance.ironwoodBalance
+                balanceInZatoshi = zecBalance.ironwoodBalance
               } else {
-                balanceInSatoshi = zecBalance.transparentBalance
+                balanceInZatoshi = zecBalance.transparentBalance
               }
-              let correctZecBalance = Double(balanceInSatoshi) / 100_000_000
+              let correctZecBalance = Double(balanceInZatoshi) / 100_000_000
               isBalanceSufficient = BDouble(correctZecBalance) >= gasValue + fromValue
             } else if shouldFetchGasTokenBalance || zecGasTokenBalanceCache == nil {
               isBalanceSufficient = false

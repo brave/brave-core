@@ -61,8 +61,8 @@ mojom::ZecTxDataPtr ToZecTxData(const std::string& chain_id,
     AppendShieldedPool(chain_id, tx.v6_part().ironwood,
                        mojom::ZCashTokenType::kIronwood, mojom_inputs,
                        mojom_outputs);
-    DCHECK(tx.v6_part().legacy_orchard.inputs.empty() ||
-           tx.v6_part().ironwood.inputs.empty())
+    CHECK(tx.v6_part().legacy_orchard.inputs.empty() ||
+          tx.v6_part().ironwood.inputs.empty())
         << "ZecTxData can represent only one source shielded pool";
     if (!tx.v6_part().ironwood.inputs.empty()) {
       zcash_token_type = mojom::ZCashTokenType::kIronwood;

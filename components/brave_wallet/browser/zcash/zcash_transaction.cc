@@ -10,7 +10,6 @@
 #include <string>
 #include <string_view>
 #include <utility>
-#include <variant>
 
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_serializer.h"
@@ -239,7 +238,6 @@ base::CheckedNumeric<uint64_t> ZCashTransaction::V6Part::TotalOutputsAmount()
 
 base::DictValue ZCashTransaction::V6Part::ToValue() const {
   base::DictValue dict;
-  dict.Set("zip233_amount", base::NumberToString(zip233_amount));
   dict.Set("legacy_orchard", legacy_orchard.ToValue());
   dict.Set("ironwood", ironwood.ToValue());
   return dict;
@@ -249,11 +247,6 @@ base::DictValue ZCashTransaction::V6Part::ToValue() const {
 std::optional<ZCashTransaction::V6Part> ZCashTransaction::V6Part::FromValue(
     const base::DictValue& value) {
   V6Part result;
-  auto* zip233_amount_str = value.FindString("zip233_amount");
-  if (!zip233_amount_str ||
-      !base::StringToInt64(*zip233_amount_str, &result.zip233_amount)) {
-    return std::nullopt;
-  }
 
   auto* legacy_dict = value.FindDict("legacy_orchard");
   if (!legacy_dict) {
@@ -444,6 +437,8 @@ std::optional<ZCashTransaction::TxOutput> ZCashTransaction::TxOutput::FromValue(
 }
 
 base::DictValue ZCashTransaction::ToValue() const {
+  CHECK(is_v5() || is_v6());
+
   base::DictValue dict;
 
   auto& inputs_value = dict.Set("inputs", base::ListValue())->GetList();
@@ -459,7 +454,6 @@ base::DictValue ZCashTransaction::ToValue() const {
   if (is_v5()) {
     dict.Set("v5_part", v5_part().ToValue());
   } else {
-    CHECK(is_v6());
     dict.Set("v6_part", v6_part().ToValue());
   }
 
@@ -483,6 +477,7 @@ std::optional<ZCashTransaction> ZCashTransaction::FromValue(
   auto* v6_dict = value.FindDict("v6_part");
   auto* v5_dict = value.FindDict("v5_part");
 
+  // Legacy format was placed top-level.
   auto* inputs_list = value.FindList("inputs");
   auto* orchard_inputs_list = value.FindList("orchard_inputs");
   if (!inputs_list && !orchard_inputs_list && !v5_dict && !v6_dict) {
@@ -532,6 +527,7 @@ std::optional<ZCashTransaction> ZCashTransaction::FromValue(
     }
     result.version_part_ = std::move(*v5);
   } else {
+    // Legacy format.
     auto v5 = V5Part::ReadTopLevel(value);
     if (!v5) {
       return std::nullopt;
@@ -577,6 +573,8 @@ bool ZCashTransaction::IsTransparentPartSigned() const {
 }
 
 base::CheckedNumeric<uint64_t> ZCashTransaction::TotalInputsAmount() const {
+  CHECK(is_v5() || is_v6());
+
   base::CheckedNumeric<uint64_t> result = 0;
   for (auto& input : transparent_part_.inputs) {
     result += input.utxo_value;
@@ -595,6 +593,8 @@ uint8_t ZCashTransaction::sighash_type() const {
 }
 
 bool ZCashTransaction::ValidateAmounts() {
+  CHECK(is_v5() || is_v6());
+
   base::CheckedNumeric<uint64_t> inputs_sum = 0;
   base::CheckedNumeric<uint64_t> outputs_sum = 0;
 

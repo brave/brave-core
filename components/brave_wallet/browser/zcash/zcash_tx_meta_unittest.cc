@@ -189,6 +189,9 @@ TEST(ZCashTxMeta, ToTransactionInfo_ShieldedInputs) {
   EXPECT_EQ(tx_data->outputs[1]->value, 10000u);
 }
 
+// A v6 transaction spends a legacy Orchard note and pays transparent and
+// Ironwood outputs. Its transaction metadata must identify Orchard as the
+// source pool and preserve each output pool.
 TEST(ZCashTxMeta, ToTransactionInfo_V6MixedPools) {
   auto zec_account_id = MakeIndexBasedAccountId(
       mojom::CoinType::ZEC, mojom::KeyringId::kZCashMainnet,
@@ -230,8 +233,6 @@ TEST(ZCashTxMeta, ToTransactionInfo_V6MixedPools) {
   ZCashTxMeta meta(zec_account_id, std::move(tx));
   meta.set_chain_id(mojom::kZCashMainnet);
 
-  // This previously crashed: ToZecTxData() called v5_part(), which CHECK-
-  // fails on a v6 transaction.
   mojom::TransactionInfoPtr ti = meta.ToTransactionInfo();
   ASSERT_TRUE(ti->tx_data_union->is_zec_tx_data());
   const auto& tx_data = ti->tx_data_union->get_zec_tx_data();
@@ -255,6 +256,8 @@ TEST(ZCashTxMeta, ToTransactionInfo_V6MixedPools) {
   EXPECT_EQ(tx_data->outputs[1]->value, 10000u);
 }
 
+// A v6 transaction that spends only an Ironwood note must identify Ironwood
+// as its source pool in the transaction metadata.
 TEST(ZCashTxMeta, ToTransactionInfo_V6IronwoodInputs) {
   auto zec_account_id = MakeIndexBasedAccountId(
       mojom::CoinType::ZEC, mojom::KeyringId::kZCashMainnet,

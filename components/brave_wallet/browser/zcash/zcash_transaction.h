@@ -23,10 +23,6 @@ namespace brave_wallet {
 
 class ZCashTransaction {
  public:
-  struct Void {
-    bool operator==(const Void& other) const = default;
-  };
-
   struct Outpoint {
     Outpoint();
     ~Outpoint();
@@ -168,10 +164,6 @@ class ZCashTransaction {
     base::CheckedNumeric<uint64_t> TotalInputsAmount() const;
     base::CheckedNumeric<uint64_t> TotalOutputsAmount() const;
 
-    // ZIP 233: value removed from circulation. u64 LE on the wire; stored as
-    // int64_t to match rust's Zatoshis/ZatBalance i64 domain.
-    int64_t zip233_amount = 0;
-
     ShieldedPool legacy_orchard;  // OrchardPool::kOrchard
     ShieldedPool ironwood;        // OrchardPool::kIronwood
 
@@ -251,7 +243,7 @@ class ZCashTransaction {
 
  private:
   TransparentPart transparent_part_;
-  std::variant<Void, V5Part, V6Part> version_part_;
+  std::variant<std::monostate, V5Part, V6Part> version_part_;
 
   uint32_t locktime_ = 0;
   uint32_t expiry_height_ = 0;
