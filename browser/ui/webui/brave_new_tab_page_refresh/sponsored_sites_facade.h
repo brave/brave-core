@@ -6,16 +6,25 @@
 #ifndef BRAVE_BROWSER_UI_WEBUI_BRAVE_NEW_TAB_PAGE_REFRESH_SPONSORED_SITES_FACADE_H_
 #define BRAVE_BROWSER_UI_WEBUI_BRAVE_NEW_TAB_PAGE_REFRESH_SPONSORED_SITES_FACADE_H_
 
+#include <string>
 #include <vector>
 
+#include "base/containers/flat_set.h"
 #include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/raw_ref.h"
+#include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
+#include "base/task/cancelable_task_tracker.h"
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/brave_new_tab_page.mojom.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 
 class PrefService;
+
+namespace history {
+class HistoryService;
+struct HistoryLastVisitResult;
+}  // namespace history
 
 namespace brave_new_tab_page_refresh {
 
@@ -26,7 +35,8 @@ class SponsoredSitesFacade
  public:
   SponsoredSitesFacade(PrefService& pref_service,
                        ntp_background_images::NTPBackgroundImagesService*
-                           background_images_service);
+                           background_images_service,
+                       history::HistoryService& history_service);
 
   SponsoredSitesFacade(const SponsoredSitesFacade&) = delete;
   SponsoredSitesFacade& operator=(const SponsoredSitesFacade&) = delete;
@@ -40,6 +50,10 @@ class SponsoredSitesFacade
 
   void SetSitesUpdatedCallback(base::RepeatingClosure callback);
 
+  bool HasPendingGenuineVisitQueriesForTesting() const {
+    return history_task_tracker_.HasTrackedTasks();
+  }
+
  private:
   // NTPBackgroundImagesService::Observer:
   void OnSponsoredSitesDataDidUpdate() override;
@@ -48,15 +62,22 @@ class SponsoredSitesFacade
   bool IsEnabled() const;
   bool IsNewTabPageAdsEnabled() const;
   bool IsRewardsWalletConnected() const;
+  void QueryGenuineVisits(const std::vector<mojom::SponsoredSitePtr>& sites);
+  void OnGenuineVisitQueried(const std::string& advertiser_domain,
+                             history::HistoryLastVisitResult result);
 
   raw_ref<PrefService> pref_service_;
   raw_ptr<ntp_background_images::NTPBackgroundImagesService>
       background_images_service_;
+  raw_ref<history::HistoryService> history_service_;
+  base::CancelableTaskTracker history_task_tracker_;
+  base::flat_set<std::string> genuine_visit_domains_;
   base::RepeatingClosure updated_callback_;
   base::ScopedObservation<
       ntp_background_images::NTPBackgroundImagesService,
       ntp_background_images::NTPBackgroundImagesService::Observer>
       ntp_background_images_service_observation_{this};
+  base::WeakPtrFactory<SponsoredSitesFacade> weak_factory_{this};
 };
 
 }  // namespace brave_new_tab_page_refresh
