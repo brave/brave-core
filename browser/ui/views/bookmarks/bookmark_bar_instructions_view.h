@@ -17,7 +17,7 @@ class Label;
 class Link;
 }  // namespace views
 
-class Browser;
+class BrowserWindowInterface;
 
 // BookmarkBarInstructionsView is a child of the bookmark bar that is visible
 // when the user has no bookmarks on the bookmark bar.
@@ -28,7 +28,7 @@ class BookmarkBarInstructionsView : public views::View,
                                     public views::ContextMenuController {
   METADATA_HEADER(BookmarkBarInstructionsView, views::View)
  public:
-  explicit BookmarkBarInstructionsView(Browser* browser);
+  explicit BookmarkBarInstructionsView(BrowserWindowInterface* browser);
   BookmarkBarInstructionsView(const BookmarkBarInstructionsView&) = delete;
   BookmarkBarInstructionsView& operator=(const BookmarkBarInstructionsView&) =
       delete;
@@ -53,7 +53,7 @@ class BookmarkBarInstructionsView : public views::View,
   raw_ptr<views::Label> instructions_ = nullptr;
   raw_ptr<views::Link> import_link_ = nullptr;
 
-  raw_ptr<Browser> browser_ = nullptr;
+  raw_ptr<BrowserWindowInterface> browser_ = nullptr;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_BOOKMARKS_BOOKMARK_BAR_INSTRUCTIONS_VIEW_H_
