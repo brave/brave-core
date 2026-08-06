@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/overlay/video_overlay_window_views.cc b/chrome/browser/ui/views/overlay/video_overlay_window_views.cc
-index 7859a17de762489b4e12c2d07efd436c0af74a49..89506c5f84edb65c85942ab2b323d5fac88d7c6d 100644
+index 7859a17de762489b4e12c2d07efd436c0af74a49..dbe27d4f05a8a2379d953d1d3d0583eee8fa76e5 100644
 --- a/chrome/browser/ui/views/overlay/video_overlay_window_views.cc
 +++ b/chrome/browser/ui/views/overlay/video_overlay_window_views.cc
 @@ -323,7 +323,7 @@ std::unique_ptr<VideoOverlayWindowViews> VideoOverlayWindowViews::Create(
@@ -11,7 +11,15 @@ index 7859a17de762489b4e12c2d07efd436c0af74a49..89506c5f84edb65c85942ab2b323d5fa
  
    overlay_window->SetColorModeOverride(ui::ColorProviderKey::ColorMode::kDark);
  
-@@ -979,6 +979,7 @@ void VideoOverlayWindowViews::UpdateMaxSize(const gfx::Rect& work_area) {
+@@ -365,6 +365,7 @@ std::unique_ptr<VideoOverlayWindowViews> VideoOverlayWindowViews::Create(
+       gfx::RoundedCornersF(chromeos::kPipRoundedCornerRadius);
+ #endif
+ 
++  BRAVE_VIDEO_OVERLAY_WINDOW_VIEWS_CREATE
+   overlay_window->Init(std::move(params));
+   overlay_window->OnRootViewReady();
+ 
+@@ -979,6 +980,7 @@ void VideoOverlayWindowViews::UpdateMaxSize(const gfx::Rect& work_area) {
  
    max_size_ = new_max_size;
  
