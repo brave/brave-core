@@ -807,6 +807,7 @@ TEST_F(OAIAPIUnitTest, PerformRequest_WithToolUseResponse) {
         ASSERT_TRUE(result.event->is_completion_event());
         EXPECT_EQ(result.event->get_completion_event()->completion,
                   "Let me check the weather.");
+        EXPECT_FALSE(result.model_key.has_value());
       });
 
   EXPECT_CALL(mock_callbacks, OnDataReceived(_))
@@ -819,6 +820,7 @@ TEST_F(OAIAPIUnitTest, PerformRequest_WithToolUseResponse) {
         EXPECT_EQ(tool_event->id, "call_abc");
         EXPECT_EQ(tool_event->arguments_json, R"({"location":"New York"})");
         EXPECT_FALSE(tool_event->is_server_result);
+        EXPECT_FALSE(result.model_key.has_value());
       });
 
   EXPECT_CALL(mock_callbacks, OnCompleted(_))
