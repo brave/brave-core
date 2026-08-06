@@ -238,7 +238,7 @@ constexpr auto kBraveOriginProfileMetadata =
              /*user_settable=*/false)},
 #endif
 #if BUILDFLAG(ENABLE_PSST)
-        // Email Aliases preferences
+        // PSST preferences
         {psst::prefs::kPsstEnabled,
          BraveOriginServiceFactory::BraveOriginPrefMetadata(
              false,
