@@ -80,4 +80,6 @@ substitutions:
       re_pattern:
         '(if \(tab_restore_service && notify_restore_service\) [\s\S]+?\n  \}\n)'
       replace: |
-        \1  BRAVE_UNLOAD_CONTROLLER_ON_WINDOW_CLOSING
+        \1  if (MaybeHandleSharedPinnedTabsClosing(browser_)) {
+            return;
+          }
