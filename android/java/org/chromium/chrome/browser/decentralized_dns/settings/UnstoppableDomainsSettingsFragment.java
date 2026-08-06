@@ -18,6 +18,7 @@ import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.settings.ChromeBaseSettingsFragment;
 import org.chromium.components.browser_ui.settings.SettingsFragment.AnimationType;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
+import org.chromium.components.browser_ui.settings.search.BaseSearchIndexProvider;
 
 public class UnstoppableDomainsSettingsFragment extends ChromeBaseSettingsFragment {
     static final String PREF_UNSTOPPABLE_DOMAINS_RESOLVE_METHOD =
@@ -56,4 +57,11 @@ public class UnstoppableDomainsSettingsFragment extends ChromeBaseSettingsFragme
     public @AnimationType int getAnimationType() {
         return AnimationType.PROPERTY;
     }
+
+    // The resolve-method screen is a custom radio-button widget with no static titled preferences.
+    // The entry itself is indexed from the parent Brave Shields & privacy screen, so opt out here.
+    public static final BaseSearchIndexProvider SEARCH_INDEX_DATA_PROVIDER =
+            new BaseSearchIndexProvider(
+                    UnstoppableDomainsSettingsFragment.class.getName(),
+                    BaseSearchIndexProvider.INDEX_OPT_OUT);
 }

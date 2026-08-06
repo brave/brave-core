@@ -234,6 +234,15 @@ public class BraveSettingsSearchTest {
     public void testBraveShieldsAndPrivacySettingsAreSearchable() {
         mSettingsActivityTestRule.startSettingsActivity();
 
+        typeIntoSearch("Unstoppable Domains");
+        assertSearchResult("Unstoppable Domains");
+
+        clearAndTypeIntoSearch("Ethereum Name Service");
+        assertSearchResult("Ethereum Name Service");
+
+        clearAndTypeIntoSearch("Solana Name Service");
+        assertSearchResult("Solana Name Service");
+
         // Disabled — see https://github.com/brave/brave-browser/issues/57186
         // typeIntoSearch("Safe Browsing");
         // assertSearchResult("Safe Browsing");

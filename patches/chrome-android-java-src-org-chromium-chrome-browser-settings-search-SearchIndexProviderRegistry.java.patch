@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/settings/search/SearchIndexProviderRegistry.java b/chrome/android/java/src/org/chromium/chrome/browser/settings/search/SearchIndexProviderRegistry.java
-index 1077426a3061fd7f4fcc6ea1a6c5693d79293f6d..11d992ac8081114dd7fa498a9095326ba7bceec9 100644
+index 1077426a3061fd7f4fcc6ea1a6c5693d79293f6d..b8cbeceef076337c3adbcb3f2f45ae7f4bbbe265 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/settings/search/SearchIndexProviderRegistry.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/settings/search/SearchIndexProviderRegistry.java
 @@ -7,7 +7,6 @@ package org.chromium.chrome.browser.settings.search;
@@ -59,7 +59,7 @@ index 1077426a3061fd7f4fcc6ea1a6c5693d79293f6d..11d992ac8081114dd7fa498a9095326b
                      SafetyCheckSettingsFragment.SEARCH_INDEX_DATA_PROVIDER,
                      TabsSettings.SEARCH_INDEX_DATA_PROVIDER,
                      ManageSyncSettings.SEARCH_INDEX_DATA_PROVIDER,
-@@ -157,5 +150,35 @@ public final class SearchIndexProviderRegistry {
+@@ -157,5 +150,38 @@ public final class SearchIndexProviderRegistry {
                      DownloadSettings.SEARCH_INDEX_DATA_PROVIDER,
                      DeveloperSettings.SEARCH_INDEX_DATA_PROVIDER,
                      TracingSettings.SEARCH_INDEX_DATA_PROVIDER,
@@ -82,6 +82,9 @@ index 1077426a3061fd7f4fcc6ea1a6c5693d79293f6d..11d992ac8081114dd7fa498a9095326b
 +                    org.chromium.chrome.browser.settings.BraveWalletNetworksPreferenceFragment.SEARCH_INDEX_DATA_PROVIDER,
 +                    org.chromium.chrome.browser.settings.BraveWalletPreferences.SEARCH_INDEX_DATA_PROVIDER,
 +                    org.chromium.chrome.browser.settings.BraveWebrtcPolicyPreferencesFragment.SEARCH_INDEX_DATA_PROVIDER,
++                    org.chromium.chrome.browser.decentralized_dns.settings.UnstoppableDomainsSettingsFragment.SEARCH_INDEX_DATA_PROVIDER,
++                    org.chromium.chrome.browser.decentralized_dns.settings.ENSSettingsFragment.SEARCH_INDEX_DATA_PROVIDER,
++                    org.chromium.chrome.browser.decentralized_dns.settings.SnsSettingsFragment.SEARCH_INDEX_DATA_PROVIDER,
 +                    org.chromium.chrome.browser.settings.developer.BraveQAPreferences.SEARCH_INDEX_DATA_PROVIDER,
 +                    org.chromium.chrome.browser.site_settings.BraveWalletEthereumConnectedSites.SEARCH_INDEX_DATA_PROVIDER,
 +                    org.chromium.chrome.browser.site_settings.BraveWalletSolanaConnectedSites.SEARCH_INDEX_DATA_PROVIDER,
