@@ -410,6 +410,16 @@ class ChromiumCheckoutApi(RecipeApi):
             self.m.env.set(f"GYP_MSVS_HASH_{info['toolchain_hash']}",
                            info['published_hash'])
 
+    def fetch_tags(self, chromium_src: str | Path) -> None:
+        """Fetch every tag from origin into the *chromium_src* checkout.
+
+        Args:
+            chromium_src: Path to the Chromium `src/` directory.
+        """
+        chromium_src = self.m.path.abs(chromium_src)
+        self.m.step('fetch tags', ['git', 'fetch', '--tags', 'origin'],
+                    cwd=chromium_src)
+
     def _populate_git_cache(self,
                             git_cache_path: str | Path,
                             url: str,
