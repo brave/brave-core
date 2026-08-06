@@ -6,9 +6,14 @@
 import * as React from 'react'
 import ProgressRing from '@brave/leo/react/progressRing'
 import { spacing } from '@brave/leo/tokens/css/variables'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
-const LoadingContainer = styled.div`
+interface Props {
+  // When true, fill a larger area suitable for the dialog Suspense fallback.
+  fill?: boolean
+}
+
+const LoadingContainer = styled.div<{ $fill?: boolean }>`
   --leo-progressring-size: ${spacing['4Xl']};
 
   display: flex;
@@ -16,26 +21,18 @@ const LoadingContainer = styled.div`
   justify-content: center;
   padding: ${spacing['4Xl']};
   min-height: 120px;
+
+  ${p => p.$fill && css`
+    --leo-progressring-size: 50px;
+    min-height: 400px;
+    height: 100%;
+  `}
 `
-
-const FillLoadingContainer = styled(LoadingContainer)`
-  --leo-progressring-size: 50px;
-
-  min-height: 400px;
-  height: 100%;
-  padding: ${spacing['4Xl']};
-`
-
-interface Props {
-  // When true, fill a larger area suitable for the dialog Suspense fallback.
-  fill?: boolean
-}
 
 export default function Loading(props: Props) {
-  const Container = props.fill ? FillLoadingContainer : LoadingContainer
   return (
-    <Container>
+    <LoadingContainer $fill={props.fill}>
       <ProgressRing />
-    </Container>
+    </LoadingContainer>
   )
 }

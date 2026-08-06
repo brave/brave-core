@@ -18,11 +18,14 @@ import { SettingsPanel } from './SettingsPanel'
 const Container = styled.div`
   display: flex;
   flex-direction: column;
+
+  & > *:not(:last-child) {
+    border-bottom: solid 1px ${color.divider.subtle};
+  }
 `
 
 const ControlRow = styled.div`
   padding: ${spacing.l} ${spacing['2Xl']};
-  border-bottom: solid 1px ${color.divider.subtle};
 
   display: flex;
   align-items: center;
@@ -31,18 +34,13 @@ const ControlRow = styled.div`
   label {
     flex: 1 1 auto;
   }
-
-  &:last-child {
-    border-bottom: none;
-  }
 `
 
 const EnableRow = styled(Toggle)`
-  padding: ${spacing.l} ${spacing['2Xl']};
-  border-bottom: solid 1px ${color.divider.subtle};
-
   --leo-toggle-label-flex-direction: row-reverse;
   --leo-toggle-label-gap: ${spacing.xl};
+
+  padding: ${spacing.l} ${spacing['2Xl']};
 
   .label {
     --leo-icon-size: ${icon.m};
@@ -52,10 +50,6 @@ const EnableRow = styled(Toggle)`
     align-items: center;
     gap: ${spacing.xl};
     color: ${color.text.primary};
-  }
-
-  &:last-child {
-    border-bottom: none;
   }
 `
 
@@ -90,7 +84,7 @@ export default function NewsSettings() {
           <ControlRow>
             <label>{getLocale(S.BRAVE_NEWS_OPEN_ARTICLES_IN)}</label>
             <DropDown
-              value={openArticlesInNewTab ? 'true' : 'false'}
+              value={openArticlesInNewTab.toString()}
               positionStrategy='fixed'
               disabled={controlsDisabled}
               onChange={(detail) => {

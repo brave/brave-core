@@ -1,7 +1,7 @@
-/* Copyright (c) 2026 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at https://mozilla.org/MPL/2.0/. */
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Alert from '@brave/leo/react/alert'
 import Button from '@brave/leo/react/button'
@@ -49,23 +49,6 @@ export default function OpmlControls(props: Props) {
   const inputRef = React.useRef<HTMLInputElement>(null)
   const [status, setStatus] = React.useState<Status | null>(null)
 
-  // When the file picker is dismissed without selecting a file, Chromium fires
-  // a `cancel` event on the file input which bubbles up to the modal <dialog>
-  // and closes it (https://issues.chromium.org/issues/1449848). Stop the event
-  // at the source so the dialog stays open.
-  React.useEffect(() => {
-    const input = inputRef.current
-    if (!input) {
-      return
-    }
-    const onCancel = (e: Event) => {
-      e.preventDefault()
-      e.stopPropagation()
-    }
-    input.addEventListener('cancel', onCancel)
-    return () => input.removeEventListener('cancel', onCancel)
-  }, [])
-
   // Auto-dismiss the status alert.
   React.useEffect(() => {
     if (!status) {
@@ -76,9 +59,6 @@ export default function OpmlControls(props: Props) {
   }, [status])
 
   const onExport = () => {
-    if (props.disabled) {
-      return
-    }
     downloadOpml(Object.values(publishers), Object.values(channels), locale)
   }
 
@@ -87,7 +67,7 @@ export default function OpmlControls(props: Props) {
     const file = input.files?.[0]
     // Reset so selecting the same file again re-triggers the change event.
     input.value = ''
-    if (!file || props.disabled) {
+    if (!file) {
       return
     }
 
@@ -133,12 +113,7 @@ export default function OpmlControls(props: Props) {
           kind='outline'
           size='small'
           isDisabled={props.disabled}
-          onClick={() => {
-            if (props.disabled) {
-              return
-            }
-            inputRef.current?.click()
-          }}
+          onClick={() => inputRef.current?.click()}
         >
           {getLocale(S.BRAVE_NEWS_OPML_IMPORT)}
         </Button>

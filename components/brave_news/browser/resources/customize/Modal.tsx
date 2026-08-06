@@ -1,7 +1,7 @@
-/* Copyright (c) 2022 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at https://mozilla.org/MPL/2.0/. */
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
 import Dialog from '@brave/leo/react/dialog'
@@ -31,10 +31,6 @@ export default function BraveNewsModal() {
     <StyledDialog
       isOpen
       showClose
-      // Programmatic OPML export clicks bubble to Leo's backdrop handler and
-      // would be treated as an outside close, so backdrop clicks are disabled.
-      // The file picker's spurious `cancel` event is stopped at the source in
-      // OpmlControls, so Escape still closes the dialog.
       backdropClickCloses={false}
       onClose={() => setCustomizePage(null)}
     >
