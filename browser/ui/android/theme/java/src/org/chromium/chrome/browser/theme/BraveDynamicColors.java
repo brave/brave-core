@@ -23,6 +23,7 @@ import org.chromium.chrome.browser.flags.ChromeFeatureMap;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.components.cached_flags.CachedFlag;
 import org.chromium.ui.R;
+import org.chromium.ui.util.AttrUtils;
 
 /** Controls Brave's runtime use of Material dynamic colors. */
 @NullMarked
@@ -121,6 +122,18 @@ public final class BraveDynamicColors {
      */
     public static void applyToOutlinedButtonIfEnabled(View button) {
         applyButtonBackgroundColorIfEnabled(button, R.attr.globalTextButtonTextColor);
+    }
+
+    /**
+     * Returns the active text-button color or the supplied Nala fallback when dynamic colors are
+     * disabled.
+     */
+    public static int getTextButtonColor(Context context, int fallbackColor) {
+        if (!isDynamicColorsEnabled()) {
+            return fallbackColor;
+        }
+
+        return AttrUtils.resolveColor(context.getTheme(), R.attr.globalTextButtonTextColor);
     }
 
     private static void applyButtonBackgroundColorIfEnabled(View button, int backgroundColorAttr) {
