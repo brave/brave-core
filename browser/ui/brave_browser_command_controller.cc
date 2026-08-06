@@ -145,9 +145,8 @@ BraveBrowserCommandController::BraveBrowserCommandController(
 BraveBrowserCommandController::~BraveBrowserCommandController() = default;
 
 void BraveBrowserCommandController::OnTabChangedAt(tabs::TabInterface* tab,
-                                                   int index,
                                                    TabChangeType change_type) {
-  BrowserCommandController::OnTabChangedAt(tab, index, change_type);
+  BrowserCommandController::OnTabChangedAt(tab, change_type);
   UpdateCommandEnabled(IDC_CLOSE_DUPLICATE_TABS,
                        brave::HasDuplicatesOfActiveTab(&*browser_));
   UpdateCommandEnabled(IDC_CLOSE_ALL_DUPLICATE_TABS,
