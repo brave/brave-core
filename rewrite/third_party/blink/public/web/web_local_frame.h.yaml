@@ -13,4 +13,5 @@ substitutions:
       clear-window-name check.
     add_to_public:
       class_name: WebLocalFrame
-      code: 'virtual void SetOriginForClearWindowNameCheck(const url::Origin&) = 0;'
+      code:
+        'virtual void SetOriginForClearWindowNameCheck(const url::Origin&) = 0;'
