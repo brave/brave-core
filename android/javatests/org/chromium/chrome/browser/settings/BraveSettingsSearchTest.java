@@ -385,8 +385,8 @@ public class BraveSettingsSearchTest {
         clearAndTypeIntoSearch("Private Tab");
         assertSearchResult("Private Tab");
 
-        clearAndTypeIntoSearch("Quick-Search");
-        assertSearchResult("Quick-Search Engines");
+        clearAndTypeIntoSearch("Quick search");
+        assertSearchResult("Quick search engines");
 
         // Sub-section, custom layout — see
         // https://github.com/brave/brave-browser/issues/57189
@@ -1237,7 +1237,7 @@ public class BraveSettingsSearchTest {
 
             // ...and must NOT navigate to the Search engines screen.
             assertSearchResultDoesNotContain("Standard Tab");
-            assertSearchResultDoesNotContain("Quick-Search Engines");
+            assertSearchResultDoesNotContain("Quick search engines");
         } finally {
             BraveSearchWidgetUtils.setRequestPinAppWidgetForTesting(null);
         }
