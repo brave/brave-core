@@ -17,12 +17,12 @@ const Panel = styled.div`
     padding-bottom: ${spacing.xl};
     color: ${color.text.primary};
   }
+`
 
-  .content {
-    background: ${color.container.background};
-    box-shadow: ${effect.elevation['01']};
-    border-radius: ${radius.xl};
-  }
+const Content = styled.div`
+  background: ${color.container.background};
+  box-shadow: ${effect.elevation['01']};
+  border-radius: ${radius.xl};
 `
 
 interface Props {
@@ -30,12 +30,11 @@ interface Props {
   children: React.ReactNode
 }
 
-// A titled group of settings displayed within the Brave News customize dialog.
 export function SettingsPanel(props: Props) {
   return (
     <Panel>
       <h4>{props.title}</h4>
-      <div className='content'>{props.children}</div>
+      <Content>{props.children}</Content>
     </Panel>
   )
 }

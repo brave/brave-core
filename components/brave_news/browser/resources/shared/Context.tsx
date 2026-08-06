@@ -113,10 +113,11 @@ export function BraveNewsContextProvider(props: BraveNewsContextProviderProps) {
   const [customizePage, setCustomizePage] = useState<NewsPage>(null)
   const [channels, setChannels] = useState<Channels>({})
   const [publishers, setPublishers] = useState<Publishers>({})
-  const [publishersLoaded, setPublishersLoaded] = useState(false)
-  const [channelsLoaded, setChannelsLoaded] = useState(false)
   const [suggestedPublisherIds, setSuggestedPublisherIds] = useState<string[]>([])
   const [shouldRenderImages, setShouldRenderImages] = useState(false)
+
+  const publishersLoaded = publishersCache.connected
+  const channelsLoaded = channelsCache.connected
 
   // Get the default locale on load.
   useEffect(() => {
@@ -124,18 +125,7 @@ export function BraveNewsContextProvider(props: BraveNewsContextProviderProps) {
   }, [configuration.isOptedIn, configuration.showOnNTP])
 
   React.useEffect(() => {
-    // addListener fires once with the current cache, then again on mojo
-    // updates. Mark loaded once we have entries or after the first update past
-    // the initial sync callback.
-    let callCount = 0
-    const handler = (next: Channels) => {
-      callCount++
-      setChannels(next)
-      if (callCount > 1 || Object.keys(next).length > 0) {
-        setChannelsLoaded(true)
-      }
-    }
-
+    const handler = (next: Channels) => setChannels(next)
     channelsCache.addListener(handler)
     return () => channelsCache.removeListener(handler)
   }, [])
@@ -152,16 +142,9 @@ export function BraveNewsContextProvider(props: BraveNewsContextProviderProps) {
   }, [])
 
   React.useEffect(() => {
-    let callCount = 0
-    const handler = (next: Publishers) => {
-      callCount++
-      setPublishers(next)
-      if (callCount > 1 || Object.keys(next).length > 0) {
-        setPublishersLoaded(true)
-      }
-    }
+    const handler = (next: Publishers) => setPublishers(next)
     publishersCache.addListener(handler)
-    return () => { publishersCache.removeListener(handler) }
+    return () => publishersCache.removeListener(handler)
   }, [])
 
   React.useEffect(() => {

@@ -1,7 +1,7 @@
-/* Copyright (c) 2022 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at https://mozilla.org/MPL/2.0/. */
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { getLocale } from '$web-common/locale'
 import usePromise from '$web-common/usePromise'
@@ -52,7 +52,7 @@ export default function SourcesList() {
   const isLoading = !publishersLoaded || !channelsLoaded
 
   const { result: sourcesCount } = usePromise(
-    async () =>
+    () =>
       PluralStringProxyImpl.getInstance().getPluralString(
         S.BRAVE_NEWS_SOURCE_COUNT,
         subscribedPublisherIds.length + channels.length,
@@ -67,18 +67,15 @@ export default function SourcesList() {
         {!isLoading && <Count>{sourcesCount}</Count>}
       </Heading>
       <List>
-        {isLoading ? (
-          <Loading />
-        ) : (
-          <>
-            {channels.map((c) => (
-              <ChannelListEntry key={c.channelName} channelName={c.channelName} />
-            ))}
-            {subscribedPublisherIds.map((p) => (
-              <FeedListEntry key={p} publisherId={p} />
-            ))}
-          </>
-        )}
+        {isLoading && <Loading />}
+        {channelsLoaded &&
+          channels.map((c) => (
+            <ChannelListEntry key={c.channelName} channelName={c.channelName} />
+          ))}
+        {publishersLoaded &&
+          subscribedPublisherIds.map((p) => (
+            <FeedListEntry key={p} publisherId={p} />
+          ))}
       </List>
     </Container>
   )

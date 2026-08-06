@@ -1,7 +1,7 @@
-/* Copyright (c) 2022 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at https://mozilla.org/MPL/2.0/. */
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Flex from '$web-common/Flex'
 import { getLocale } from '$web-common/locale'
@@ -30,24 +30,11 @@ export function SuggestionsCarousel () {
 
 export function SuggestionsPage () {
   const { suggestedPublisherIds, updateSuggestedPublisherIds } = useBraveNews()
-  const [loading, setLoading] = React.useState(suggestedPublisherIds.length === 0)
+  const loading = suggestedPublisherIds.length === 0
 
   React.useEffect(() => {
-    if (suggestedPublisherIds.length > 0) {
-      setLoading(false)
-      return
-    }
-    let cancelled = false
-    setLoading(true)
-    updateSuggestedPublisherIds().finally(() => {
-      if (!cancelled) {
-        setLoading(false)
-      }
-    })
-    return () => {
-      cancelled = true
-    }
-  }, [suggestedPublisherIds.length, updateSuggestedPublisherIds])
+    updateSuggestedPublisherIds()
+  }, [updateSuggestedPublisherIds])
 
   return <CustomizePage title={getLocale(S.BRAVE_NEWS_SUGGESTIONS_TITLE)}>
     {loading ? (
