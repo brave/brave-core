@@ -3,6 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+#include <algorithm>
+
 #include "base/files/file_enumerator.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
@@ -23,6 +25,7 @@
 #include "extensions/browser/install_verifier.h"
 #include "extensions/browser/manifest_v2_handler.h"
 #include "extensions/browser/mv2_deprecation_impact_checker.h"
+#include "extensions/browser/pref_names.h"
 #include "extensions/common/constants.h"
 #include "extensions/common/extension_builder.h"
 #include "extensions/common/extension_features.h"
@@ -204,7 +207,7 @@ class BraveExtensionsManifestV2SettingsBackupTest
 INSTANTIATE_TEST_SUITE_P(,
                          BraveExtensionsManifestV2SettingsBackupTest,
                          testing::Values(TestCase{false, false, false},
-                                         TestCase{true, false, true},
+                                         TestCase{true, false, false},
                                          TestCase{true, false, true},
                                          TestCase{true, true, false},
                                          TestCase{true, true, true}));
@@ -399,5 +402,111 @@ TEST_P(BraveExtensionsManifestV2SettingsBackupTest, BackupSettingsOnInstall) {
       EXPECT_FALSE(
           base::PathExists(profile()->GetPath().AppendASCII("MV2Backup")));
     }
+  }
+}
+
+TEST_P(BraveExtensionsManifestV2SettingsBackupTest, CopyBrowserLevelSettings) {
+  base::ScopedAllowBlockingForTesting allow_io;
+
+  auto* prefs = extensions::ExtensionPrefs::Get(profile());
+
+  // Install uBlock from CWS and configure browser-level prefs.
+  auto webstore_extension =
+      extensions::ExtensionBuilder("test")
+          .SetID(extensions_mv2::kWebStoreUBlockId)
+          .SetManifestVersion(2)
+          .SetVersion("1.65.0")
+          .AddFlags(extensions::Extension::FROM_WEBSTORE)
+          .SetLocation(extensions::mojom::ManifestLocation::kExternalPolicy)
+          .Build();
+  registrar()->AddExtension(webstore_extension);
+  prefs->UpdateExtensionPref(extensions_mv2::kWebStoreUBlockId,
+                             "manifest.version", base::Value("1.65.0"));
+
+  prefs->SetWithholdingPermissions(extensions_mv2::kWebStoreUBlockId, true);
+  prefs->SetIsIncognitoEnabled(extensions_mv2::kWebStoreUBlockId, true);
+  prefs->SetAllowFileAccess(extensions_mv2::kWebStoreUBlockId, true);
+  prefs->SetPinnedExtensions({extensions_mv2::kWebStoreUBlockId});
+
+  base::ListValue explicit_hosts_list;
+  explicit_hosts_list.Append("https://example.com/*");
+  base::DictValue permissions;
+  permissions.Set("explicit_host", std::move(explicit_hosts_list));
+
+  prefs->UpdateExtensionPref(extensions_mv2::kWebStoreUBlockId,
+                             "active_permissions",
+                             base::Value(permissions.Clone()));
+  prefs->UpdateExtensionPref(extensions_mv2::kWebStoreUBlockId,
+                             "runtime_granted_permissions",
+                             base::Value(permissions.Clone()));
+  prefs->UpdateExtensionPref(extensions_mv2::kWebStoreUBlockId,
+                             "granted_permissions",
+                             base::Value(std::move(permissions)));
+
+  prefs->UpdateExtensionPref(
+      extensions_mv2::kWebStoreUBlockId, "disable_reasons",
+      base::Value(
+          base::ListValue()
+              .Append(extensions::disable_reason::DisableReason::
+                          DISABLE_USER_ACTION)
+              .Append(extensions::disable_reason::DisableReason::
+                          DISABLE_UNSUPPORTED_MANIFEST_VERSION)
+              .Append(
+                  extensions::disable_reason::DisableReason::DISABLE_RELOAD)));
+
+  auto brave_extension =
+      extensions::ExtensionBuilder("test")
+          .SetID(extensions_mv2::kUBlockId)
+          .SetManifestVersion(2)
+          .SetVersion("1.65.0")
+          .AddFlags(extensions::Extension::FROM_WEBSTORE)
+          .SetLocation(extensions::mojom::ManifestLocation::kExternalPolicy)
+          .Build();
+  registrar()->AddExtension(brave_extension);
+  prefs->UpdateExtensionPref(extensions_mv2::kUBlockId, "manifest.version",
+                             base::Value("1.65.0"));
+  registry()->TriggerOnInstalled(brave_extension.get(), /*is_update=*/false);
+  WaitForExtensionsFileOperations();
+
+  const bool should_migrate =
+      extensions_mv2::features::IsSettingsImportEnabled();
+
+  EXPECT_EQ(should_migrate,
+            prefs->GetWithholdingPermissions(extensions_mv2::kUBlockId));
+  EXPECT_EQ(should_migrate,
+            prefs->IsIncognitoEnabled(extensions_mv2::kUBlockId));
+  EXPECT_EQ(should_migrate, prefs->AllowFileAccess(extensions_mv2::kUBlockId));
+
+  const base::DictValue* brave_prefs =
+      prefs->pref_service()
+          ->GetDict(extensions::pref_names::kExtensions)
+          .FindDict(extensions_mv2::kUBlockId);
+  ASSERT_TRUE(brave_prefs);
+  const base::DictValue* copied_granted =
+      brave_prefs->FindDict("granted_permissions");
+  ASSERT_TRUE(copied_granted);
+  const base::ListValue* explicit_hosts =
+      copied_granted->FindList("explicit_host");
+  ASSERT_TRUE(explicit_hosts);
+  if (should_migrate) {
+    ASSERT_EQ(1u, explicit_hosts->size());
+    EXPECT_EQ("https://example.com/*", (*explicit_hosts)[0].GetString());
+  } else {
+    ASSERT_EQ(0u, explicit_hosts->size());
+  }
+
+  const extensions::ExtensionIdList pinned = prefs->GetPinnedExtensions();
+  EXPECT_EQ(should_migrate,
+            std::ranges::contains(pinned, extensions_mv2::kUBlockId));
+  auto disable_reasons = prefs->GetDisableReasons(extensions_mv2::kUBlockId);
+
+  if (should_migrate) {
+    EXPECT_EQ(1u, disable_reasons.size());
+    // Unsupported manifest version and reload disable reasons should be
+    // cleared.
+    EXPECT_TRUE(disable_reasons.contains(
+        extensions::disable_reason::DisableReason::DISABLE_USER_ACTION));
+  } else {
+    EXPECT_TRUE(disable_reasons.empty());
   }
 }
