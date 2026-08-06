@@ -199,7 +199,7 @@ class ResolveVpython3Test(unittest.TestCase):
 
     def test_resolves_to_a_vpython3_interpreter(self):
         # pylint: disable=protected-access
-        # Whether found on $PATH or via the chromium-bundled fallback, the
+        # Whether found on $PATH or via the vendored depot_tools fallback, the
         # resolved interpreter is always a vpython3 (vpython3.bat on Windows).
         # shutil.which() mirrors the case of the matched PATHEXT entry (often
         # ".BAT" on Windows), so compare case-insensitively.

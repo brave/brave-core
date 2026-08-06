@@ -145,14 +145,13 @@ def find_shim_target(tool: str) -> Shim:
     raise UnknownShimError(tool)
 
 
-def _resolve_vpython3(src: Path) -> Path:
-    """The `vpython3` to run tools with: one on `$PATH`, else the depot_tools
-    copy under `src` (mirrors `vpython_utils._compute_vpython3_path`)."""
+def _resolve_vpython3(checkout: Path) -> Path:
+    """Resolves `vpython3` either from path, or the one vendored."""
     found = shutil.which('vpython3')
     if found is not None:
         return Path(found)
     name = 'vpython3.bat' if platform.system() == 'Windows' else 'vpython3'
-    return src / 'third_party' / 'depot_tools' / name
+    return checkout / 'vendor' / 'depot_tools' / name
 
 
 # TODO(https://brave.dev/b/57477): this `npm_wrapper` special-casing exists
@@ -337,7 +336,7 @@ def resolve_invocation(tool: str, checkout: Path | None,
         if target.is_file():
             if shim.runtime == 'vpython':
                 invocation = Invocation(
-                    [str(_resolve_vpython3(checkout.parent)),
+                    [str(_resolve_vpython3(checkout)),
                      str(target)])
             elif shim.runtime == 'node':
                 # Run with whatever `node` is on $PATH (our node shim, which
