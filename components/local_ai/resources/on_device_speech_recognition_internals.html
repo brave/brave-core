@@ -47,6 +47,20 @@
         Transcribe WAV File
       </button>
     </div>
+    <h2>Model</h2>
+    <p>The model is delivered by the component updater, but registration is
+      gated on the first <code>SpeechRecognition.install()</code> call. On a
+      profile that has never asked, <code>available()</code> reports
+      <code>downloadable</code> and Web Speech recognition below is a silent
+      no-op &mdash; the mic opens and ends with no result and no error.</p>
+    <div>
+      <button id="avail-btn">
+        Check Availability
+      </button>
+      <button id="install-btn">
+        Install Model
+      </button>
+    </div>
     <h2>Web Speech API</h2>
     <p>Test the Web Speech API (uses microphone):</p>
     <div>

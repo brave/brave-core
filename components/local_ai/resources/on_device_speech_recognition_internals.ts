@@ -161,21 +161,87 @@ async function testWavFile() {
   }
 }
 
+// --- Model availability / install ---
+
+// The component is only registered once kBraveOnDeviceSpeechModelEnabled is
+// set, and that pref only flips on the first install() call. Until then
+// GetInstallDir() is empty, so GetAsrSession() hands back an invalid remote and
+// the engine stays silent by design. Expose the handshake here so that state is
+// visible instead of looking like a broken mic.
+const MODEL_OPTS = {
+  langs: ['en-US'],
+  processLocally: true,
+  quality: 'command',
+}
+
+function getSpeechRecognition(): any {
+  return (
+    (window as any).SpeechRecognition
+    || (window as any).webkitSpeechRecognition
+  )
+}
+
+async function checkAvailability(): Promise<string | null> {
+  const SpeechRecognition = getSpeechRecognition()
+  if (!SpeechRecognition?.available) {
+    output('ERROR: SpeechRecognition.available() not exposed')
+    return null
+  }
+  const status = await SpeechRecognition.available(MODEL_OPTS)
+  output(`available(en-US, command): ${status}`)
+  return status
+}
+
+async function installModel() {
+  try {
+    const SpeechRecognition = getSpeechRecognition()
+    if (!SpeechRecognition?.install) {
+      output('ERROR: SpeechRecognition.install() not exposed')
+      return
+    }
+
+    output('--- Install model ---')
+    // Called straight from the button click so install() still has the
+    // transient user activation it requires.
+    const startTime = performance.now()
+    const installed = await SpeechRecognition.install(MODEL_OPTS)
+    const elapsed = (performance.now() - startTime) / 1000
+    output(`install(): ${installed} (${elapsed.toFixed(0)}s)`)
+    await checkAvailability()
+  } catch (e) {
+    output(`ERROR: ${e}`)
+    console.error('installModel failed:', e)
+  }
+}
+
 // --- Web Speech API test ---
 
 let activeRecognition: any = null
 
 function testWebSpeech() {
   try {
-    const SpeechRecognition =
-      (window as any).SpeechRecognition
-      || (window as any).webkitSpeechRecognition
+    const SpeechRecognition = getSpeechRecognition()
     if (!SpeechRecognition) {
       output('ERROR: SpeechRecognition API ' + 'not available on this page')
       return
     }
 
     output('--- Web Speech API ---')
+
+    // Deliberately not awaited: recognition.start() must stay on the click's
+    // user activation. This only annotates the log, so a missing model reads as
+    // "not installed" rather than as a mic that captured nothing.
+    if (SpeechRecognition.available) {
+      SpeechRecognition.available(MODEL_OPTS).then((status: string) => {
+        if (status !== 'available') {
+          output(
+            `WARNING: model is "${status}" - no result will be produced. `
+              + 'Use "Install Model" above first.',
+          )
+        }
+      })
+    }
+
     const recognition = new SpeechRecognition()
     recognition.continuous = true
     recognition.interimResults = true
@@ -251,6 +317,10 @@ function stopWebSpeech() {
 
 document.getElementById('test-btn')!.addEventListener('click', testSilence)
 document.getElementById('test-wav-btn')!.addEventListener('click', testWavFile)
+document
+  .getElementById('avail-btn')!
+  .addEventListener('click', checkAvailability)
+document.getElementById('install-btn')!.addEventListener('click', installModel)
 document
   .getElementById('webspeech-btn')!
   .addEventListener('click', testWebSpeech)
