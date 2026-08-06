@@ -6,6 +6,7 @@
 #include "brave/browser/speech/on_device_speech_recognition_controller.h"
 
 #include <memory>
+#include <optional>
 #include <utility>
 
 #include "base/files/file_path.h"
@@ -25,7 +26,9 @@
 #include "brave/components/local_ai/core/on_device_speech_models_state.h"
 #include "brave/components/local_ai/core/on_device_speech_recognition.mojom.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
+#include "chrome/test/base/testing_profile_manager.h"
 #include "content/public/test/browser_task_environment.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
@@ -130,6 +133,10 @@ class OnDeviceSpeechRecognitionControllerTest : public testing::Test {
 
   void SetUp() override {
     ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
+    // A real ProfileManager, so the boot flow's observation of it is registered
+    // rather than skipped by its null guard.
+    profile_manager_.emplace(TestingBrowserProcess::GetGlobal());
+    ASSERT_TRUE(profile_manager_->SetUp());
     controller_ = OnDeviceSpeechRecognitionController::CreateForTesting(
         base::BindRepeating(
             &OnDeviceSpeechRecognitionControllerTest::CreateFakeBwc,
@@ -287,6 +294,9 @@ class OnDeviceSpeechRecognitionControllerTest : public testing::Test {
   }
 
   content::BrowserTaskEnvironment task_environment_;
+  // Optional so that a test can destroy it, which is what fires
+  // `OnProfileManagerDestroying`.
+  std::optional<TestingProfileManager> profile_manager_;
   // The guest OTR profile the fake reports as the worker's home. A non-null
   // profile lets the boot flow proceed.
   TestingProfile otr_profile_;
@@ -400,6 +410,20 @@ TEST_F(OnDeviceSpeechRecognitionControllerTest,
   // callback directly exercises the controller's response without dragging in
   // real profile-destruction machinery.
   controller_->OnProfileWillBeDestroyed(&otr_profile_);
+  EXPECT_EQ(nullptr, last_bwc_.get());
+}
+
+// Browser shutdown destroys the profile manager without necessarily telling the
+// OTR profile first, so the worker has to be released from here too. Destroying
+// the real ProfileManager rather than calling the callback directly is what
+// makes this cover the observation itself, not just the response to it.
+TEST_F(OnDeviceSpeechRecognitionControllerTest,
+       ProfileManagerDestructionTearsDown) {
+  SetInstalled(true);
+  Session s = StartSession();
+  ASSERT_NE(nullptr, last_bwc_.get());
+
+  profile_manager_.reset();
   EXPECT_EQ(nullptr, last_bwc_.get());
 }
 

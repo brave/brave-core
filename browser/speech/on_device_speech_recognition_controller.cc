@@ -21,6 +21,7 @@
 #include "brave/components/local_ai/core/url_constants.h"
 #include "brave/components/local_ai/core/utils.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "mojo/public/cpp/base/big_buffer.h"
 #include "services/network/public/mojom/web_sandbox_flags.mojom-shared.h"
@@ -232,6 +233,10 @@ void OnDeviceSpeechRecognitionController::OnProfileWillBeDestroyed(
   TearDown();
 }
 
+void OnDeviceSpeechRecognitionController::OnProfileManagerDestroying() {
+  TearDown();
+}
+
 void OnDeviceSpeechRecognitionController::StartWorker() {
   if (state_ != State::kIdle) {
     return;
@@ -276,6 +281,9 @@ void OnDeviceSpeechRecognitionController::OnBackgroundContentsCreated(
   // destruction so the WebContents never outlives its BrowserContext (which
   // would trip BrowserContextImpl's rph_with_bc_reference NOTREACHED).
   profile_observation_.Observe(otr_profile);
+  if (auto* profile_manager = g_browser_process->profile_manager()) {
+    profile_manager_observation_.Observe(profile_manager);
+  }
 }
 
 void OnDeviceSpeechRecognitionController::LoadOrtModel() {
@@ -381,6 +389,7 @@ void OnDeviceSpeechRecognitionController::TearDown() {
   factory_.reset();
   background_web_contents_.reset();
   profile_observation_.Reset();
+  profile_manager_observation_.Reset();
   otr_profile_ = nullptr;
   pending_sessions_.clear();
   asr_session_receivers_.Clear();
