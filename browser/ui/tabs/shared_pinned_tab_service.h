@@ -81,7 +81,6 @@ class SharedPinnedTabService : public KeyedService,
       const TabStripSelectionChange& selection) override;
   void OnTabPinnedStateChanged(tabs::TabInterface* tab, int index) override;
   void OnTabChangedAt(tabs::TabInterface* tab,
-                      int index,
                       TabChangeType change_type) override;
 
   // ProfileWillBeDestroyed;
