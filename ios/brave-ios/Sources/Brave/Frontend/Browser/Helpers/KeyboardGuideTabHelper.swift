@@ -42,7 +42,7 @@ extension TabDataValues {
 /// ## Caveats
 ///
 /// This layout guide relies on activating the constraints only when the keyboard is actually
-/// associated with the web view, which we check using `TabState.isKeyboardVisible`. This is a
+/// associated with the web view, which we check using `WebViewProxy.isKeyboardVisible`. This is a
 /// Chromium function which does a first responder `inputAccessoryView` null check and iPads do not
 /// show an `inputAccessoryView` so this will always be false.
 ///
@@ -58,7 +58,9 @@ class KeyboardLayoutTabHelper: TabObserver {
     didSet {
       NSLayoutConstraint.deactivate(inactiveKeyboardConstraints)
       inactiveKeyboardConstraints = makeInactiveKeyboardConstraints()
-      NSLayoutConstraint.activate(inactiveKeyboardConstraints)
+      if !isWebViewKeyboardActive {
+        NSLayoutConstraint.activate(inactiveKeyboardConstraints)
+      }
     }
   }
 
@@ -125,10 +127,6 @@ class KeyboardLayoutTabHelper: TabObserver {
   }
   private var activeKeyboardConstraints: VisibleConstraints?
   private var inactiveKeyboardConstraints: [NSLayoutConstraint] = []
-  private var animations: [(Bool) -> Void] = []
-
-  private let keyboardDebugView = UIView()
-  private let constrainedKeyboardDebugView = UIView()
 
   private func makeInactiveKeyboardConstraints() -> [NSLayoutConstraint] {
     guard let tab else { return [] }
@@ -150,7 +148,7 @@ class KeyboardLayoutTabHelper: TabObserver {
     guard let tab else { return }
     let keyboardFrame =
       (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect) ?? .zero
-    let frame = tab.view.convert(keyboardFrame, from: UIScreen.main.coordinateSpace)
+    let frame = tab.view.convert(keyboardFrame, from: nil)
     activeKeyboardConstraints?.leading.constant = frame.minX
     activeKeyboardConstraints?.top.constant = frame.minY
     activeKeyboardConstraints?.width.constant = frame.width
@@ -189,24 +187,27 @@ class KeyboardLayoutTabHelper: TabObserver {
 
   @objc private func keyboardWillHide(_ notification: Notification) {
     guard let tab else { return }
-    updateActiveConstraintsForKeyboard(notification: notification)
+    let handleNotification = { [weak self] in
+      guard let self else { return }
+      updateActiveConstraintsForKeyboard(notification: notification)
+      isWebViewKeyboardActive = isWebViewInputActive(notification: notification)
+      animateKeyboardChanges(notification: notification)
+    }
     if tab.isFindNavigatorVisible == true {
       // Defer one run loop: isFindNavigatorVisible is unreliable synchronously
       guard isWebViewKeyboardActive else { return }
-      DispatchQueue.main.async { [weak self] in
-        guard let self else { return }
-        isWebViewKeyboardActive = isWebViewInputActive(notification: notification)
-        animateKeyboardChanges(notification: notification)
+      DispatchQueue.main.async {
+        handleNotification()
       }
       return
     }
-    isWebViewKeyboardActive = isWebViewInputActive(notification: notification)
-    animateKeyboardChanges(notification: notification)
+    handleNotification()
   }
 
   // MARK: - TabObserver
 
   func tabWasShown(_ tab: some TabState) {
+    NotificationCenter.default.removeObserver(self)
     NotificationCenter.default.addObserver(
       self,
       selector: #selector(keyboardWillShow(_:)),
@@ -226,6 +227,7 @@ class KeyboardLayoutTabHelper: TabObserver {
   }
 
   func tabWillBeDestroyed(_ tab: some TabState) {
+    NotificationCenter.default.removeObserver(self)
     tab.removeObserver(self)
   }
 }
