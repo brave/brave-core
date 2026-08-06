@@ -180,9 +180,13 @@ IN_PROC_BROWSER_TEST_P(AdBlockDATCacheBrowserTest, DATCacheLoadedOnRestart) {
 // Test fixture for DAT cache fallback when DAT files are corrupted. The
 // filter list should load as a fallback. Missing files are covered by the
 // default DATCacheLoadedOnRestart test (no PRE_ DAT files on first run).
-// kAdblockDATCache is enabled by default, so no feature list setup is needed.
 class AdBlockDATCacheCorruptBrowserTest : public AdBlockServiceTest {
  public:
+  AdBlockDATCacheCorruptBrowserTest() {
+    feature_list_.InitAndEnableFeature(
+        brave_shields::features::kAdblockDATCache);
+  }
+
   void PreRunTestOnMainThread() override {
     PlatformBrowserTest::PreRunTestOnMainThread();
 
@@ -201,6 +205,9 @@ class AdBlockDATCacheCorruptBrowserTest : public AdBlockServiceTest {
 
     ASSERT_TRUE(brave_shields::WaitForAdBlockServiceThreads());
   }
+
+ private:
+  base::test::ScopedFeatureList feature_list_;
 };
 
 // When DAT files are corrupt, the fallback should load filter lists and

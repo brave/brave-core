@@ -160,7 +160,9 @@ class AdBlockComponentServiceManagerGatesTest
 
 TEST_P(AdBlockComponentServiceManagerGatesTest,
        GatesDoNotTriggerOnChangedUntilProvidersCreated) {
-  // kAdblockDATCache is enabled by default, so the gates are always created.
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeature(features::kAdblockDATCache);
+
   TestingPrefServiceSimple prefs;
   RegisterPrefsForAdBlockService(prefs.registry());
 
