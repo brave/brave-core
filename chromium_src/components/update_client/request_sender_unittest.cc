@@ -6,15 +6,7 @@
 #include "base/functional/bind.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-// We use our own hardcoded CUP signing key (see
-// chromium_src/components/update_client/request_sender.cc), bypassing
-// upstream's ECDSA/ML-DSA-44 (PQC) key-selection logic entirely, so this
-// assertion of upstream key selection never holds in our builds.
-#define CupKeySelection DISABLED_CupKeySelection
-
 #include <components/update_client/request_sender_unittest.cc>
-
-#undef CupKeySelection
 
 namespace update_client {
 
