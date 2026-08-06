@@ -922,6 +922,45 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest, AddTabRecursive) {
             &unpinned_collection());
 }
 
+// When a saved tab group is restored, Navigate() sets each
+// restored tab's opener to whatever tab happened to be active in the browser
+// at the time (see SavedTabGroupUtils::OpenTabInBrowser()), which isn't a
+// real opener relationship. To avoid nesting restored tabs under that
+// unrelated tab's tree, browser_navigator.cc marks the opener via
+// TabModel::set_opener_was_set_for_empty_new_tab()
+IN_PROC_BROWSER_TEST_F(
+    TreeTabsBrowserTest,
+    AddTabRecursive_OpenerMarkedForEmptyNewTab_DoesNotJoinOpenerTree) {
+  SetTreeTabsEnabled(true);
+
+  tabs::TabInterface* const opener_tab =
+      tab_strip_model().GetTabAtIndex(tab_strip_model().count() - 1);
+  ASSERT_EQ(opener_tab->GetParentCollection()->type(),
+            tabs::TabCollection::Type::TREE_NODE);
+
+  auto tab_interface =
+      std::make_unique<tabs::TabModel>(CreateWebContents(), &tab_strip_model());
+  tab_interface->set_opener(opener_tab);
+  tab_interface->set_opener_was_set_for_empty_new_tab();
+
+  tab_strip_model().AddTab(std::move(tab_interface), -1 /*to the last*/,
+                           ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
+
+  auto* added_tab =
+      tab_strip_model().GetTabAtIndex(tab_strip_model().count() - 1);
+
+  // The opener relationship itself is preserved.
+  // But unlike a normal opener-driven add the tab should not be nested under
+  // opener.
+  EXPECT_EQ(opener_tab, static_cast<tabs::TabModel*>(added_tab)->opener());
+  EXPECT_EQ(added_tab->GetParentCollection()->type(),
+            tabs::TabCollection::Type::TREE_NODE);
+  EXPECT_NE(added_tab->GetParentCollection(),
+            opener_tab->GetParentCollection());
+  EXPECT_EQ(added_tab->GetParentCollection()->GetParentCollection(),
+            &unpinned_collection());
+}
+
 // Regression: opening into the tabbed browser from a popup or app (PWA-like)
 // window can pass an opener tab that belongs to another TabStripModel.
 // https://github.com/brave/brave-browser/issues/54334
