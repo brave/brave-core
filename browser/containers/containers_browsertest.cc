@@ -1562,8 +1562,8 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest, ShouldShowTabAccent) {
   auto animation_resetter = gfx::AnimationTestApi::SetRichAnimationRenderMode(
       gfx::Animation::RichAnimationRenderMode::FORCE_DISABLED);
   auto* tab_strip_model = browser()->tab_strip_model();
-  auto* tab_strip =
-      browser()->GetBrowserView().horizontal_tab_strip_for_testing();
+  auto* tab_strip = BrowserView::GetBrowserViewForBrowser(browser())
+                        ->horizontal_tab_strip_for_testing();
   ASSERT_FALSE(tab_strip->ShouldPaintTabAccent(tab_strip->tab_at(0)));
 
   const GURL url("https://a.test/simple.html");
@@ -1608,8 +1608,8 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest, SmallAccentIconViewVisibility) {
   auto animation_resetter = gfx::AnimationTestApi::SetRichAnimationRenderMode(
       gfx::Animation::RichAnimationRenderMode::FORCE_DISABLED);
   auto* tab_strip_model = browser()->tab_strip_model();
-  auto* tab_strip =
-      browser()->GetBrowserView().horizontal_tab_strip_for_testing();
+  auto* tab_strip = BrowserView::GetBrowserViewForBrowser(browser())
+                        ->horizontal_tab_strip_for_testing();
 
   const GURL url("https://a.test/simple.html");
   auto container = containers::mojom::Container::New();
@@ -1662,8 +1662,8 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
   auto animation_resetter = gfx::AnimationTestApi::SetRichAnimationRenderMode(
       gfx::Animation::RichAnimationRenderMode::FORCE_DISABLED);
   auto* tab_strip_model = browser()->tab_strip_model();
-  auto* tab_strip =
-      browser()->GetBrowserView().horizontal_tab_strip_for_testing();
+  auto* tab_strip = BrowserView::GetBrowserViewForBrowser(browser())
+                        ->horizontal_tab_strip_for_testing();
 
   const GURL url("https://a.test/simple.html");
   auto container = containers::mojom::Container::New();
@@ -1826,9 +1826,8 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
 
   IconLabelBubbleView* partitioned_storage_view =
       page_actions::GetIconLabelBubbleViewForTesting(
-          browser()
-              ->GetBrowserView()
-              .toolbar_button_provider()
+          BrowserView::GetBrowserViewForBrowser(browser())
+              ->toolbar_button_provider()
               ->GetPageActionViewInterface(kActionShowPartitionedStorage),
           kActionShowPartitionedStorage);
   ASSERT_NE(nullptr, partitioned_storage_view);
@@ -1872,9 +1871,8 @@ IN_PROC_BROWSER_TEST_F(
 
   IconLabelBubbleView* const partitioned_storage_view =
       page_actions::GetIconLabelBubbleViewForTesting(
-          browser()
-              ->GetBrowserView()
-              .toolbar_button_provider()
+          BrowserView::GetBrowserViewForBrowser(browser())
+              ->toolbar_button_provider()
               ->GetPageActionViewInterface(kActionShowPartitionedStorage),
           kActionShowPartitionedStorage);
   ASSERT_NE(nullptr, partitioned_storage_view);
