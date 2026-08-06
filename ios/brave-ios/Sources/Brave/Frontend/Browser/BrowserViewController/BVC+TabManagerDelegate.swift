@@ -172,6 +172,11 @@ extension BrowserViewController: TabManagerDelegate {
           self.tabManager.selectTab(tab)
         }
       )
+      if let sheet = quickViewController.sheetPresentationController {
+        sheet.prefersGrabberVisible = true
+        sheet.detents = [.large()]
+        sheet.prefersEdgeAttachedInCompactHeight = true
+      }
       self.present(quickViewController, animated: true)
     }
   }
