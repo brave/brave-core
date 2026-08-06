@@ -45,6 +45,16 @@ if TYPE_CHECKING:
 # -- Recipe discovery ---------------------------------------------------------
 
 
+def _is_resource(path: Path) -> bool:
+    """Whether *path* sits under a `<name>.resources/` directory.
+
+    A `.resources` sibling holds standalone scripts a recipe or module shells
+    out to directly (e.g. via `vpython3`) -- ordinary Python files, not
+    recipes/modules themselves, so discovery must not try to import them.
+    """
+    return any(part.endswith('.resources') for part in path.parts)
+
+
 def _iter_recipe_ids() -> list[str]:
     """Every candidate recipe id, from `recipes/` and module examples/tests."""
     root = engine.RECIPES_ROOT
@@ -52,7 +62,7 @@ def _iter_recipe_ids() -> list[str]:
 
     recipes_root = root / engine.RECIPES_PKG
     for path in sorted(recipes_root.rglob('*.py')):
-        if path.name == '__init__.py':
+        if path.name == '__init__.py' or _is_resource(path):
             continue
         ids.append(path.relative_to(recipes_root).with_suffix('').as_posix())
 
@@ -63,7 +73,7 @@ def _iter_recipe_ids() -> list[str]:
             if not directory.is_dir():
                 continue
             for path in sorted(directory.rglob('*.py')):
-                if path.name == '__init__.py':
+                if path.name == '__init__.py' or _is_resource(path):
                     continue
                 ids.append(
                     path.relative_to(modules_root).with_suffix('').as_posix())
