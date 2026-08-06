@@ -13,11 +13,9 @@ substitutions:
       PrintPreviewDone() dialog flow that normally sets `print_preview_rfh_`, so
       expose a narrow pair of public accessors it can use to satisfy that
       requirement.
-    regex:
-      re_pattern: '(  ~PrintViewManager\(\) override;)'
-      replace: |-
-        \1
-
-          void SetPrintPreviewRenderFrameHostForExtraction(
-              content::RenderFrameHost* rfh);
-          void ClearPrintPreviewRenderFrameHostForExtraction();
+    add_to_public:
+      class_name: PrintViewManager
+      code: |-
+        void SetPrintPreviewRenderFrameHostForExtraction(
+            content::RenderFrameHost* rfh);
+        void ClearPrintPreviewRenderFrameHostForExtraction();
