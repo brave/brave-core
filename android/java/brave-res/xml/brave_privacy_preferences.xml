@@ -200,7 +200,7 @@
             android:summary="@string/survey_panelist_summary"
             android:defaultValue="false"
             android:visibility="gone" />
-        <org.chromium.components.browser_ui.settings.ChromeBasePreference
+        <org.chromium.chrome.browser.settings.BraveTextButtonPreference
             android:key="survey_panelist_learn_more"
             android:visibility="gone" />
 </PreferenceScreen>

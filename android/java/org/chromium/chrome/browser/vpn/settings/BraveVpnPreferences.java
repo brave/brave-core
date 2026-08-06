@@ -13,8 +13,6 @@ import android.net.NetworkCapabilities;
 import android.net.NetworkRequest;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.SpannableString;
-import android.text.style.ForegroundColorSpan;
 import android.util.Pair;
 
 import androidx.appcompat.app.AlertDialog;
@@ -178,15 +176,6 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
 
         Preference resetConfigurationPreference = findPreference(PREF_SERVER_RESET_CONFIGURATION);
         if (resetConfigurationPreference != null) {
-            SpannableString resetConfigurationTitle =
-                    new SpannableString(getString(R.string.reset_configuration));
-            resetConfigurationTitle.setSpan(
-                    new ForegroundColorSpan(
-                            requireContext().getColor(R.color.systemfeedback_error_text)),
-                    0,
-                    resetConfigurationTitle.length(),
-                    0);
-            resetConfigurationPreference.setTitle(resetConfigurationTitle);
             resetConfigurationPreference.setOnPreferenceClickListener(
                     new Preference.OnPreferenceClickListener() {
                         @Override
