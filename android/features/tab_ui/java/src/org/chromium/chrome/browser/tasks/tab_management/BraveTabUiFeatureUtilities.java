@@ -9,6 +9,7 @@ import org.chromium.base.BraveFeatureList;
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.ObserverList;
 import org.chromium.build.annotations.NullMarked;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.ui.listmenu.ListItemType;
@@ -17,7 +18,11 @@ import org.chromium.ui.modelutil.MVCListAdapter;
 
 @NullMarked
 public class BraveTabUiFeatureUtilities {
-    private static final ObserverList<Runnable> sSettingsObservers = new ObserverList<>();
+    // Created when the first observer is added, not at class initialization: an ObserverList takes
+    // the thread it was created on as the only thread it may be used from, and this class is a
+    // static utility that gets touched from the instrumentation thread in tests. The observers
+    // themselves are only ever added, removed and run on the UI thread.
+    private static @Nullable ObserverList<Runnable> sSettingsObservers;
 
     /**
      * Registers {@code observer} to be run when one of the tab groups switches changes. The
@@ -26,15 +31,20 @@ public class BraveTabUiFeatureUtilities {
      * the change through here instead.
      */
     public static void addSettingsObserver(Runnable observer) {
+        if (sSettingsObservers == null) {
+            sSettingsObservers = new ObserverList<>();
+        }
         sSettingsObservers.addObserver(observer);
     }
 
     /** Stops running {@code observer}, which must have been added by the call above. */
     public static void removeSettingsObserver(Runnable observer) {
+        if (sSettingsObservers == null) return;
         sSettingsObservers.removeObserver(observer);
     }
 
     private static void notifySettingsChanged() {
+        if (sSettingsObservers == null) return;
         for (Runnable observer : sSettingsObservers) {
             observer.run();
         }
