@@ -104,7 +104,6 @@ class BraveContentSettingsAgentImplBrowserTest : public InProcessBrowserTest {
       : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
     feature_list_.InitWithFeatures(
         {
-            brave_shields::features::kBraveShowStrictFingerprintingMode,
             webcompat::features::kBraveWebcompatExceptionsService,
         },
         {});
@@ -256,11 +255,6 @@ class BraveContentSettingsAgentImplBrowserTest : public InProcessBrowserTest {
   void AllowFingerprinting() {
     brave_shields::SetFingerprintingControlType(
         content_settings(), ControlType::ALLOW, top_level_page_url());
-  }
-
-  void BlockFingerprinting() {
-    brave_shields::SetFingerprintingControlType(
-        content_settings(), ControlType::BLOCK, top_level_page_url());
   }
 
   void BlockThirdPartyFingerprinting() {
@@ -431,12 +425,6 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
   std::string origin = "a.test";
   std::string path = "/webgl/readpixels.html";
 
-  // Farbling level: maximum
-  // WebGL readPixels(): blocked
-  BlockFingerprinting();
-  NavigateToURLUntilLoadStop(origin, path);
-  EXPECT_EQ(content::EvalJs(contents(), kTitleScript), "1");
-
   // Farbling level: balanced (default)
   // WebGL readPixels(): allowed
   SetFingerprintingDefault();
@@ -452,14 +440,6 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
                        CanvasIsPointInPath) {
-  // Farbling level: maximum
-  // Canvas isPointInPath(): blocked
-  BlockFingerprinting();
-  NavigateToPageWithIframe();
-  EXPECT_EQ(false, content::EvalJs(contents(), kPointInPathScript));
-  NavigateIframe(cross_site_url());
-  EXPECT_EQ(false, content::EvalJs(child_frame(), kPointInPathScript));
-
   // Farbling level: balanced (default)
   // Canvas isPointInPath(): allowed
   SetFingerprintingDefault();
@@ -478,7 +458,6 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
 
   // Shields: down
   // Canvas isPointInPath(): allowed
-  BlockFingerprinting();
   ShieldsDown();
   AllowFingerprinting();
   NavigateToPageWithIframe();

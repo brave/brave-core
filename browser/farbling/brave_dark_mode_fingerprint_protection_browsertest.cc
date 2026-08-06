@@ -38,14 +38,10 @@ using brave_shields::features::kBraveDarkModeBlock;
 constexpr char kEmbeddedTestServerDirectory[] = "dark_mode_block";
 constexpr char kMatchDarkModeFormatString[] =
     "window.matchMedia('(prefers-color-scheme: %s)').matches;";
-
+// TODO(https://github.com/brave/brave-browser/issues/57901): Remove this test
+// once |kBraveDarkModeBlock| feature flag is removed.
 class BraveDarkModeFingerprintProtectionTest : public InProcessBrowserTest {
  public:
-  BraveDarkModeFingerprintProtectionTest() {
-    feature_list_.InitAndEnableFeature(
-        brave_shields::features::kBraveShowStrictFingerprintingMode);
-  }
-
   class MockColorProviderSource : public ui::ColorProviderSource {
    public:
     explicit MockColorProviderSource(bool is_dark) {
@@ -108,11 +104,6 @@ class BraveDarkModeFingerprintProtectionTest : public InProcessBrowserTest {
         content_settings(), ControlType::ALLOW, top_level_page_url_);
   }
 
-  void BlockFingerprinting() {
-    brave_shields::SetFingerprintingControlType(
-        content_settings(), ControlType::BLOCK, top_level_page_url_);
-  }
-
   void SetFingerprintingDefault() {
     brave_shields::SetFingerprintingControlType(
         content_settings(), ControlType::DEFAULT, top_level_page_url_);
@@ -166,7 +157,6 @@ class BraveDarkModeFingerprintProtectionTest : public InProcessBrowserTest {
  private:
   GURL top_level_page_url_;
   GURL dark_mode_url_;
-  base::test::ScopedFeatureList feature_list_;
 };
 
 IN_PROC_BROWSER_TEST_F(BraveDarkModeFingerprintProtectionTest, DarkModeCheck) {
@@ -181,11 +171,6 @@ IN_PROC_BROWSER_TEST_F(BraveDarkModeFingerprintProtectionTest, DarkModeCheck) {
   SetFingerprintingDefault();
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), dark_mode_url()));
   ASSERT_TRUE(IsReportingDarkMode());
-
-  // On fingerprinting block, should return light
-  BlockFingerprinting();
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), dark_mode_url()));
-  ASSERT_FALSE(IsReportingDarkMode());
 }
 
 IN_PROC_BROWSER_TEST_F(BraveDarkModeFingerprintProtectionTest,
@@ -202,22 +187,6 @@ IN_PROC_BROWSER_TEST_F(BraveDarkModeFingerprintProtectionTest,
   SetFingerprintingDefault();
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), dark_mode_url()));
   ASSERT_FALSE(IsReportingDarkMode());
-
-  // Fingerprinting strict/block
-  BlockFingerprinting();
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), dark_mode_url()));
-  ASSERT_FALSE(IsReportingDarkMode());
-}
-
-IN_PROC_BROWSER_TEST_F(BraveDarkModeFingerprintProtectionTest,
-                       SettingsPagesCheck) {
-  // On settings page should get dark mode with fingerprinting strict
-  SetDarkMode(true);
-
-  BlockFingerprinting();
-  ASSERT_TRUE(
-      ui_test_utils::NavigateToURL(browser(), GURL("brave://settings")));
-  ASSERT_TRUE(IsReportingDarkMode());
 }
 
 IN_PROC_BROWSER_TEST_F(BraveDarkModeFingerprintProtectionTest,
@@ -258,12 +227,6 @@ IN_PROC_BROWSER_TEST_F(BraveDarkModeFingerprintProtectionFlagDisabledTest,
 
   // On fingerprinting default, should return dark mode
   SetFingerprintingDefault();
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), dark_mode_url()));
-  ASSERT_TRUE(IsReportingDarkMode());
-
-  // On fingerprinting block, should still return dark due to the
-  // BraveDarkModeBlock feature being disabled for this test.
-  BlockFingerprinting();
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), dark_mode_url()));
   ASSERT_TRUE(IsReportingDarkMode());
 }

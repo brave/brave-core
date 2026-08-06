@@ -52,7 +52,6 @@ class BraveWebGPUFarblingBrowserTest : public InProcessBrowserTest {
       : https_server_(net::test_server::EmbeddedTestServer::TYPE_HTTPS) {
     scoped_feature_list_.InitWithFeatures(
         {
-            brave_shields::features::kBraveShowStrictFingerprintingMode,
             webcompat::features::kBraveWebcompatExceptionsService,
         },
         {});
@@ -98,12 +97,6 @@ class BraveWebGPUFarblingBrowserTest : public InProcessBrowserTest {
   void AllowFingerprinting(const std::string& domain) {
     brave_shields::SetFingerprintingControlType(
         content_settings(), ControlType::ALLOW,
-        https_server_.GetURL(domain, "/"));
-  }
-
-  void BlockFingerprinting(const std::string& domain) {
-    brave_shields::SetFingerprintingControlType(
-        content_settings(), ControlType::BLOCK,
         https_server_.GetURL(domain, "/"));
   }
 
@@ -184,13 +177,6 @@ IN_PROC_BROWSER_TEST_P(BraveWebGPUAdapterInfoTest,
   const std::string actual_off =
       EvalJs(contents(), kGPUAdapterInfoScript).ExtractString();
 
-  // Farbling level: maximum (BlockFingerprinting → BraveFarblingLevel::MAXIMUM)
-  // All three adapter info fields must be empty regardless of the feature flag.
-  BlockFingerprinting(domain);
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-  EXPECT_EQ(EvalJs(contents(), kGPUAdapterInfoScript).ExtractString(),
-            kEmptyAdapterInfo);
-
   // Farbling level: balanced (SetFingerprintingDefault →
   // BraveFarblingLevel::BALANCED). Behaviour depends on the feature flag.
   SetFingerprintingDefault(domain);
@@ -221,13 +207,6 @@ IN_PROC_BROWSER_TEST_P(BraveWebGPUAdapterInfoTest,
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   const std::string actual_off =
       EvalJs(contents(), kGPUAdapterInfoScript).ExtractString();
-
-  // Farbling level: maximum (BlockFingerprinting → BraveFarblingLevel::MAXIMUM)
-  // All three adapter info fields must be empty regardless of the feature flag.
-  BlockFingerprinting(domain);
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-  EXPECT_EQ(EvalJs(contents(), kGPUAdapterInfoScript).ExtractString(),
-            kEmptyAdapterInfo);
 
   // Farbling level: balanced (SetFingerprintingDefault →
   // BraveFarblingLevel::BALANCED). Behaviour depends on the feature flag.
@@ -260,14 +239,6 @@ IN_PROC_BROWSER_TEST_F(BraveWebGPUDeveloperFeaturesTest,
 
   // Developer features expose real values, so the baseline must not be empty.
   ASSERT_NE(actual_off, kEmptyAdapterInfo);
-
-  // Farbling level: maximum (BlockFingerprinting →
-  // BraveFarblingLevel::MAXIMUM). Developer features bypass scrubbing, so the
-  // info must match the baseline.
-  BlockFingerprinting(domain);
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-  EXPECT_EQ(EvalJs(contents(), kGPUAdapterInfoScript).ExtractString(),
-            actual_off);
 }
 
 // Tests that device.adapterInfo fields (vendor, architecture, device) are NOT
@@ -285,12 +256,4 @@ IN_PROC_BROWSER_TEST_F(BraveWebGPUDeveloperFeaturesTest,
 
   // Developer features expose real values, so the baseline must not be empty.
   ASSERT_NE(actual_off, kEmptyAdapterInfo);
-
-  // Farbling level: maximum (BlockFingerprinting →
-  // BraveFarblingLevel::MAXIMUM). Developer features bypass scrubbing, so the
-  // info must match the baseline.
-  BlockFingerprinting(domain);
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-  EXPECT_EQ(EvalJs(contents(), kGPUAdapterInfoScript).ExtractString(),
-            actual_off);
 }

@@ -49,7 +49,6 @@ class BraveNavigatorPluginsFarblingBrowserTest : public InProcessBrowserTest {
   BraveNavigatorPluginsFarblingBrowserTest() {
     scoped_feature_list_.InitWithFeatures(
         {
-            brave_shields::features::kBraveShowStrictFingerprintingMode,
             webcompat::features::kBraveWebcompatExceptionsService,
         },
         {});
@@ -80,11 +79,6 @@ class BraveNavigatorPluginsFarblingBrowserTest : public InProcessBrowserTest {
   void AllowFingerprinting() {
     brave_shields::SetFingerprintingControlType(
         content_settings(), ControlType::ALLOW, top_level_page_url_);
-  }
-
-  void BlockFingerprinting() {
-    brave_shields::SetFingerprintingControlType(
-        content_settings(), ControlType::BLOCK, top_level_page_url_);
   }
 
   void SetFingerprintingDefault() {
@@ -127,36 +121,6 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorPluginsFarblingBrowserTest,
   int balanced_length =
       content::EvalJs(contents(), kPluginsLengthScript).ExtractInt();
   EXPECT_EQ(balanced_length, off_length + 2);
-
-  // Farbling level: maximum
-  // navigator.plugins should contain no real plugins, only 2 fake ones
-  BlockFingerprinting();
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), farbling_url()));
-  int maximum_length =
-      content::EvalJs(contents(), kPluginsLengthScript).ExtractInt();
-  EXPECT_EQ(maximum_length, 2);
-  EXPECT_EQ(content::EvalJs(contents(), "navigator.plugins[0].name;"),
-            "HqVxgvf");
-  EXPECT_EQ(content::EvalJs(contents(), "navigator.plugins[0].filename;"),
-            "tiRnTJjZMGi47lS");
-  EXPECT_EQ(content::EvalJs(contents(), "navigator.plugins[0].description;"),
-            "8Hi47dt9e2bVSJr89HqdWTw3bVKs1Dg");
-  EXPECT_EQ(content::EvalJs(contents(), "navigator.plugins[0].length;"), 2);
-  EXPECT_EQ(content::EvalJs(contents(), "navigator.plugins[0][0].type;"), "");
-  EXPECT_EQ(content::EvalJs(contents(), "navigator.plugins[0][0].description;"),
-            "78e2j47laVKs9eu268e2bVSJr0iZUp7G");
-  EXPECT_EQ(content::EvalJs(contents(), "navigator.plugins[0][1].type;"), "");
-  EXPECT_EQ(content::EvalJs(contents(), "navigator.plugins[1].name;"),
-            "4cOuf2jw");
-  EXPECT_EQ(content::EvalJs(contents(), "navigator.plugins[1].filename;"),
-            "p78mTJjZUpzZrVp7");
-  EXPECT_EQ(content::EvalJs(contents(), "navigator.plugins[1].description;"),
-            "x3bNteXq8Hi4FCgYrdOm6dt1DgYz4cWT");
-  EXPECT_EQ(content::EvalJs(contents(), "navigator.plugins[1].length;"), 2);
-  EXPECT_EQ(content::EvalJs(contents(), "navigator.plugins[1][0].type;"), "");
-  EXPECT_EQ(content::EvalJs(contents(), "navigator.plugins[1][0].description;"),
-            "jwgvf2bNl5kxBIjRvAfPHLkaNteXq899");
-  EXPECT_EQ(content::EvalJs(contents(), "navigator.plugins[1][1].type;"), "");
 
   // Farbling level: default, but webcompat exception enabled
   // get real length of navigator.plugins
