@@ -10,11 +10,8 @@ substitutions:
       Upstream's BuildSigner() selects between Google's ECDSA and ML-DSA-44 keys
       based on a feature flag. Brave has its own CUP key, so early-return the
       signer built from `kBraveKeyVersion` / `kBravePublicKey`.
-    regex:
-      re_pattern: |-
-        (client_update_protocol::Cup BuildSigner\(\).*?\{)
-      re_flags: [DOTALL]
-      replace: |-
-        \1
-          return client_update_protocol::Cup(kBraveKeyVersion,
-                                             base::as_byte_span(kBravePublicKey));
+    preempt_function_impl:
+      function_name: BuildSigner
+      code: |-
+        if ((true)) return client_update_protocol::Cup(kBraveKeyVersion,
+                                           base::as_byte_span(kBravePublicKey));
