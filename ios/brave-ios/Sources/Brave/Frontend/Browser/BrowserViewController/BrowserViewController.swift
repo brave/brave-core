@@ -1234,8 +1234,8 @@ public class BrowserViewController: UIViewController {
     // that safe area
     toolbarVisibilityViewModel.minimumCollapsableContentHeight =
       view.bounds.height - view.safeAreaInsets.top
-    // The favorites/search screens are hosted fullscreen by `searchContainer`, which manages their
-    // safe-area insets relative to the URL input bar.
+    toolbarVisibilityViewModel.minimumCollapsableTransitionDistance =
+      header.bounds.height + footer.bounds.height
   }
 
   override public var canBecomeFirstResponder: Bool {
