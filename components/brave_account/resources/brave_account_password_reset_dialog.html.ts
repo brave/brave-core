@@ -28,7 +28,7 @@ export function getHtml(this: BraveAccountPasswordResetDialogElement) {
       </div>
       <leo-button
         slot="buttons"
-        ?isDisabled=${!this.isEmailValid}
+        ?isDisabled=${!this.isEmailValid || this.isSubmitting}
         @click=${this.onResetPasswordButtonClicked}
       >
         $i18n{BRAVE_ACCOUNT_RESET_PASSWORD_BUTTON_LABEL}
