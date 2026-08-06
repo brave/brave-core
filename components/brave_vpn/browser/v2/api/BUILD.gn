@@ -33,7 +33,10 @@ source_set("api") {
 source_set("unit_tests") {
   testonly = true
 
-  sources = [ "brave_vpn_api_client_unittest.cc" ]
+  sources = [
+    "brave_vpn_api_client_unittest.cc",
+    "purchase_endpoints_unittest.cc",
+  ]
 
   deps = [
     ":api",
@@ -44,7 +47,6 @@ source_set("unit_tests") {
     "//services/network:test_support",
     "//services/network/public/cpp",
     "//services/network/public/mojom",
-    "//testing/gmock",
     "//testing/gtest",
     "//url",
   ]

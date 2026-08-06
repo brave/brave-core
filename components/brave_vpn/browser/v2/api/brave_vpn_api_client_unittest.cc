@@ -6,14 +6,11 @@
 #include "brave/components/brave_vpn/browser/v2/api/brave_vpn_api_client.h"
 
 #include <string>
-#include <string_view>
-#include <tuple>
 #include <utility>
 #include <vector>
 
 #include "base/containers/extend.h"
 #include "base/functional/callback.h"
-#include "base/test/bind.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
 #include "base/types/expected.h"
@@ -25,14 +22,11 @@
 #include "net/http/http_status_code.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
-#include "services/network/test/test_utils.h"
-#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 namespace brave_vpn::v2 {
 namespace {
-using brave_account::endpoint_client::MatchesEndpoint;
 using brave_account::endpoint_client::MockResponseFor;
 
 constexpr char kTestProductType[] = "test-product-type";
@@ -51,7 +45,8 @@ constexpr char kTestSuccessJson[] = R"({"receipt":"valid"})";
 constexpr char kTestErrorJson[] = R"({"error":"invalid"})";
 }  // namespace
 
-class BraveVpnApiClientTestBase : public testing::Test {
+template <typename TestCase>
+class BraveVpnApiClientTest : public testing::TestWithParam<TestCase> {
  public:
   // Fires a client API method and blocks until its callback runs, returning the
   // result the callback was invoked with. Works for any method shaped like
@@ -68,119 +63,11 @@ class BraveVpnApiClientTestBase : public testing::Test {
     return future.Take();
   }
 
-  // Capture the outgoing request. SetInterceptor is orthogonal to the
-  // AddResponse-style matching MockResponseFor uses, so both fire.
-  void CaptureRequests() {
-    url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
-        [this](const network::ResourceRequest& request) {
-          last_request_ = request;
-          got_request_ = true;
-        }));
-  }
-
  protected:
   base::test::TaskEnvironment task_environment_;
   network::TestURLLoaderFactory url_loader_factory_;
   BraveVpnApiClient client_{url_loader_factory_.GetSafeWeakWrapper()};
-  network::ResourceRequest last_request_;
-  bool got_request_ = false;
 };
-
-TEST_F(BraveVpnApiClientTestBase, GetSubscriberCredentialSerializesRequest) {
-  CaptureRequests();
-  MockResponseFor<endpoints::GetSubscriberCredential>(
-      url_loader_factory_,
-      {.net_error = net::OK,
-       .status_code = net::HTTP_OK,
-       .body = endpoints::GetSubscriberCredentialSuccessBody{
-           .subscriber_credential = "ignored"}});
-
-  std::ignore = CallClientApi(
-      &BraveVpnApiClient::GetSubscriberCredential, kTestProductType,
-      kTestProductId, kTestValidationMethod, kTestPurchaseToken, kTestBundleId);
-
-  ASSERT_TRUE(got_request_);
-  EXPECT_TRUE(
-      MatchesEndpoint<endpoints::GetSubscriberCredential>(last_request_));
-
-  auto body = base::JSONReader::ReadDict(network::GetUploadData(last_request_),
-                                         base::JSON_PARSE_RFC);
-  ASSERT_TRUE(body);
-  EXPECT_EQ(body->size(), 5u);
-  EXPECT_THAT(body->FindString(endpoints::kProductTypeKey),
-              testing::Pointee(std::string(kTestProductType)));
-  EXPECT_THAT(body->FindString(endpoints::kProductIdKey),
-              testing::Pointee(std::string(kTestProductId)));
-  EXPECT_THAT(body->FindString(endpoints::kValidationMethodKey),
-              testing::Pointee(std::string(kTestValidationMethod)));
-  EXPECT_THAT(body->FindString(endpoints::kPurchaseTokenKey),
-              testing::Pointee(std::string(kTestPurchaseToken)));
-  EXPECT_THAT(body->FindString(endpoints::kBundleIdKey),
-              testing::Pointee(std::string(kTestBundleId)));
-}
-
-TEST_F(BraveVpnApiClientTestBase, GetSubscriberCredentialV12SerializesRequest) {
-  CaptureRequests();
-  MockResponseFor<endpoints::GetSubscriberCredentialV12>(
-      url_loader_factory_,
-      {.net_error = net::OK,
-       .status_code = net::HTTP_OK,
-       .body = endpoints::GetSubscriberCredentialSuccessBody{
-           .subscriber_credential = "ignored"}});
-
-  std::ignore = CallClientApi(&BraveVpnApiClient::GetSubscriberCredentialV12,
-                              kTestSkusCredential, kTestEnvironment);
-
-  ASSERT_TRUE(got_request_);
-  EXPECT_TRUE(
-      MatchesEndpoint<endpoints::GetSubscriberCredentialV12>(last_request_));
-
-  auto body = base::JSONReader::ReadDict(network::GetUploadData(last_request_),
-                                         base::JSON_PARSE_RFC);
-  ASSERT_TRUE(body);
-  EXPECT_EQ(body->size(), 2u);
-  EXPECT_THAT(body->FindString(endpoints::kSkusCredentialKey),
-              testing::Pointee(std::string(kTestSkusCredential)));
-  EXPECT_THAT(
-      body->FindString(endpoints::kValidationMethodKey),
-      testing::Pointee(std::string(endpoints::kValidationMethodDefaultValue)));
-  EXPECT_THAT(last_request_.headers.GetHeader(
-                  endpoints::kHeaderBravePaymentsEnvironment),
-              testing::Optional(std::string(kTestEnvironment)));
-}
-
-TEST_F(BraveVpnApiClientTestBase, VerifyPurchaseTokenSerializesRequest) {
-  CaptureRequests();
-  MockResponseFor<endpoints::VerifyPurchaseToken>(
-      url_loader_factory_,
-      {.net_error = net::OK,
-       .status_code = net::HTTP_OK,
-       .body = base::ok(endpoints::RawJsonResponseBody{.json = "{}"})});
-
-  std::ignore =
-      CallClientApi(&BraveVpnApiClient::VerifyPurchaseToken, kTestPurchaseToken,
-                    kTestProductId, kTestProductType, kTestBundleId);
-
-  ASSERT_TRUE(got_request_);
-  EXPECT_TRUE(MatchesEndpoint<endpoints::VerifyPurchaseToken>(last_request_));
-
-  auto body = base::JSONReader::ReadDict(network::GetUploadData(last_request_),
-                                         base::JSON_PARSE_RFC);
-  ASSERT_TRUE(body);
-  EXPECT_EQ(body->size(), 4u);
-  EXPECT_THAT(body->FindString(endpoints::kPurchaseTokenKey),
-              testing::Pointee(std::string(kTestPurchaseToken)));
-  EXPECT_THAT(body->FindString(endpoints::kProductTypeKey),
-              testing::Pointee(std::string(kTestProductType)));
-  EXPECT_THAT(body->FindString(endpoints::kProductIdKey),
-              testing::Pointee(std::string(kTestProductId)));
-  EXPECT_THAT(body->FindString(endpoints::kBundleIdKey),
-              testing::Pointee(std::string(kTestBundleId)));
-}
-
-template <typename TestCase>
-class BraveVpnApiClientTest : public BraveVpnApiClientTestBase,
-                              public testing::WithParamInterface<TestCase> {};
 
 // The two "unrecoverable response" cases are identical for every endpoint.
 template <typename TestCase>
