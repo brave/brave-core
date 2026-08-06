@@ -1,0 +1,24 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//ios/web/public/js_messaging/optimize_ts.gni")
+
+source_set("fullscreen") {
+  sources = [
+    "fullscreen_helper_javascript_feature.h",
+    "fullscreen_helper_javascript_feature.mm",
+  ]
+  deps = [ ":fullscreen_helper_js" ]
+  public_deps = [
+    "//base",
+    "//ios/web/public/js_messaging",
+  ]
+}
+
+optimize_ts("fullscreen_helper_js") {
+  visibility = [ ":fullscreen" ]
+
+  sources = [ "resources/fullscreen_helper.ts" ]
+}
