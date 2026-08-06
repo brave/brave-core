@@ -1,0 +1,12 @@
+diff --git a/components/webui/version/resources/about_version.html b/components/webui/version/resources/about_version.html
+--- a/components/webui/version/resources/about_version.html
++++ b/components/webui/version/resources/about_version.html
+@@ -71,7 +71,7 @@
+         <tr>
+           <td class="label">$i18n{revision}</td>
+           <td class="version">
+-            <span>$i18n{cl}</span>
++            <span id="copy-revision-content">$i18n{cl}</span>
+           </td>
+         </tr>
+ <if expr="not is_chromeos">
