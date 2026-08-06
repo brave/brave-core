@@ -7,7 +7,6 @@
 
 #include "base/auto_reset.h"
 #include "base/command_line.h"
-#include "base/logging.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/permission_utils.h"
 #include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
