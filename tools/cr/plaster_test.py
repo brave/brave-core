@@ -2557,6 +2557,85 @@ class RewriterFormsTest(unittest.TestCase):
             result, 'enum class Kind {\n  kA,\n  kB,\n};\n\n'
             'enum class Other {\n  kA,\n};\n')
 
+    def test_add_enum_entries_appends_to_anonymous_enum(self):
+        # Omitting enum_name selects the anonymous enum without broadening the
+        # match to its named sibling.
+        result = self._apply(
+            'enum_anonymous.h', 'enum class Named {\n  kNamed,\n};\n\n'
+            'enum {\n  kA,\n};\n', 'substitutions:\n'
+            '  - description: extend the anonymous enum\n'
+            '    add_enum_entries:\n'
+            '      entries: kB\n')
+        self.assertEqual(
+            result, 'enum class Named {\n  kNamed,\n};\n\n'
+            'enum {\n  kA,\n  kB,\n};\n')
+
+    def test_add_enum_entries_extends_typed_anonymous_enum(self):
+        result = self._apply(
+            'enum_anonymous_base.h', 'enum : unsigned {\n  kA,\n};\n',
+            'substitutions:\n'
+            '  - description: extend the typed anonymous enum\n'
+            '    add_enum_entries:\n'
+            '      entries: kB\n')
+        self.assertEqual(result, 'enum : unsigned {\n  kA,\n  kB,\n};\n')
+
+    def test_add_enum_entries_repoints_anonymous_enum_max_value(self):
+        result = self._apply(
+            'enum_anonymous_max.h', 'enum {\n'
+            '  kA,\n'
+            '  kMaxValue = kA,\n'
+            '};\n', 'substitutions:\n'
+            '  - description: extend the anonymous enum range\n'
+            '    add_enum_entries:\n'
+            '      max_value: kMaxValue\n'
+            '      entries: kB\n')
+        self.assertEqual(
+            result, 'enum {\n'
+            '  kA,\n'
+            '  kB,\n'
+            '  kMaxValue = kB,\n'
+            '};\n')
+
+    def test_add_enum_entries_two_anonymous_enums_fail(self):
+        # With no name to disambiguate, exact-one matching intentionally fails.
+        with self.assertRaises(plaster.PlasterApplyError):
+            self._apply(
+                'enum_anonymous_ambiguous.h', 'enum {\n  kA,\n};\n'
+                'enum {\n  kX,\n};\n', 'substitutions:\n'
+                '  - description: ambiguous anonymous enum\n'
+                '    add_enum_entries:\n'
+                '      entries: kB\n')
+
+    def test_add_enum_entries_ambiguous_anonymous_max_fails_by_count(self):
+        # Ambiguity is diagnosed before inspecting either enum's max entry, so
+        # source order cannot change the reported failure.
+        with self.assertRaises(plaster.PlasterApplyError) as ctx:
+            self._apply(
+                'enum_anonymous_ambiguous_max.h', 'enum {\n  kExtra,\n};\n'
+                'enum {\n  kA,\n  kMaxValue = kA,\n};\n', 'substitutions:\n'
+                '  - description: ambiguous anonymous enum with max\n'
+                '    add_enum_entries:\n'
+                '      max_value: kMaxValue\n'
+                '      entries: kB\n')
+        self.assertIn('Unexpected number of matches (2 vs 1)',
+                      str(ctx.exception))
+
+    def test_add_enum_entries_anonymous_max_value_not_last_fails(self):
+        with self.assertRaises(plaster.PlasterApplyError) as ctx:
+            self._apply(
+                'enum_anonymous_moved_max.h', 'enum {\n'
+                '  kA,\n'
+                '  kMaxValue = kA,\n'
+                '  kExtra,\n'
+                '};\n', 'substitutions:\n'
+                '  - description: anonymous max is no longer last\n'
+                '    add_enum_entries:\n'
+                '      max_value: kMaxValue\n'
+                '      entries: kB\n')
+        self.assertIn(
+            'Anonymous enum ends in `kExtra`, not in the declared `max_value` '
+            'entry `kMaxValue`', str(ctx.exception))
+
     def test_add_enum_entries_extends_an_enum_with_a_base_clause(self):
         # An underlying type on the enum head does not get in the way of the
         # body's entries.
@@ -2636,6 +2715,15 @@ class RewriterFormsTest(unittest.TestCase):
             '  - description: missing entries\n'
             '    add_enum_entries:\n'
             '      enum_name: Kind\n', 'add_enum_entries requires arg')
+
+    def test_add_enum_entries_explicit_null_name_rejected(self):
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: null is not omission\n'
+            '    add_enum_entries:\n'
+            '      enum_name: null\n'
+            '      entries: kB\n',
+            'add_enum_entries `enum_name` must be a non-empty string')
 
     def test_add_enum_entries_empty_entry_list_rejected(self):
         self._expect_value_error(
