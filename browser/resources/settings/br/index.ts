@@ -15,8 +15,8 @@ import './all_sites.js'
 import './about_page.js'
 import './autofill_section.js'
 // Must come before './settings_ui.js', which transitively defines the
-// your-saved-info components this modifies.
-import './your_saved_info_page.js'
+// autofill-page components this modifies.
+import './autofill_page.js'
 import './basic_page.js'
 import './clear_browsing_data_dialog.js'
 import './clear_browsing_data_time_picker.js'
