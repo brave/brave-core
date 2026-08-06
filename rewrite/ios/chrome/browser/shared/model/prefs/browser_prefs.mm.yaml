@@ -10,11 +10,11 @@ substitutions:
       Call into Brave's local state pref registration at the end of the
       upstream `RegisterLocalStatePrefs`.
     regex:
-      re_pattern: '(void RegisterLocalStatePrefs\([^)]*\) \{.+?\n)\}'
+      re_pattern: '(void RegisterLocalStatePrefs\([^)]*\) \{.+?\n)(\})'
       re_flags: [DOTALL]
       replace: |-
         \1  brave::RegisterLocalStatePrefs(registry);
-        }
+        \2
 
   - description: |
       Register Brave profile prefs
@@ -22,11 +22,11 @@ substitutions:
       Call into Brave's profile (browser state) pref registration at the end of
       the upstream `RegisterProfilePrefs`.
     regex:
-      re_pattern: '(void RegisterProfilePrefs\([^)]*\) \{.+?\n)\}'
+      re_pattern: '(void RegisterProfilePrefs\([^)]*\) \{.+?\n)(\})'
       re_flags: [DOTALL]
       replace: |-
         \1  brave::RegisterBrowserStatePrefs(registry);
-        }
+        \2
 
   - description: |
       Migrate obsolete Brave local state prefs
@@ -34,11 +34,11 @@ substitutions:
       Call into Brave's local state migration as the last statement of the
       upstream `MigrateObsoleteLocalStatePrefs`.
     regex:
-      re_pattern: '(void MigrateObsoleteLocalStatePrefs\([^)]*\) \{.+?\n)\}'
+      re_pattern: '(void MigrateObsoleteLocalStatePrefs\([^)]*\) \{.+?\n)(\})'
       re_flags: [DOTALL]
       replace: |-
         \1  brave::MigrateObsoleteLocalStatePrefs(prefs);
-        }
+        \2
 
   - description: |
       Migrate obsolete Brave profile prefs
@@ -46,8 +46,8 @@ substitutions:
       Call into Brave's profile migration as the last statement of the upstream
       `MigrateObsoleteProfilePrefs`.
     regex:
-      re_pattern: '(void MigrateObsoleteProfilePrefs\([^)]*\) \{.+?\n)\}'
+      re_pattern: '(void MigrateObsoleteProfilePrefs\([^)]*\) \{.+?\n)(\})'
       re_flags: [DOTALL]
       replace: |-
         \1  brave::MigrateObsoleteProfilePrefs(prefs);
-        }
+        \2
