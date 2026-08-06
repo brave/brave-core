@@ -52,6 +52,15 @@ IN_PROC_BROWSER_TEST_F(PwaShieldsBrowserTest,
   EXPECT_TRUE(shields->GetVisible());
 }
 
+#if BUILDFLAG(IS_MAC)
+// Flaky on Mac CI
+#define MAYBE_ShieldsButtonNotDuplicatedWhenToolbarReparented \
+  DISABLED_ShieldsButtonNotDuplicatedWhenToolbarReparented
+#else
+#define MAYBE_ShieldsButtonNotDuplicatedWhenToolbarReparented \
+  ShieldsButtonNotDuplicatedWhenToolbarReparented
+#endif
+
 // Regression test for https://github.com/brave/brave-browser/issues/57349:
 // macOS immersive fullscreen reparents the web app toolbar (moving it into a
 // separate overlay widget), which re-triggers
@@ -62,7 +71,7 @@ IN_PROC_BROWSER_TEST_F(PwaShieldsBrowserTest,
 // should remain 2 (1 for the page action view, 1 for the toolbar button) even
 // after the reparenting.
 IN_PROC_BROWSER_TEST_F(PwaShieldsBrowserTest,
-                       ShieldsButtonNotDuplicatedWhenToolbarReparented) {
+                       MAYBE_ShieldsButtonNotDuplicatedWhenToolbarReparented) {
   const webapps::AppId app_id = InstallPWA(GetInstallableAppURL());
   Browser* app_browser = LaunchWebAppBrowser(app_id);
   ASSERT_TRUE(app_browser);
