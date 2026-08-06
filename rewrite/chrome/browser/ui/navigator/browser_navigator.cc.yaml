@@ -1,0 +1,44 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Call UpdateParams to adjust the navigation parameters for the given URL.
+    preempt_function_impl:
+      function_name: AdjustNavigateParamsForURL
+      code: |-
+        UpdateParams(params);
+
+  - description: |
+      Mark a tab opened from a empty new tab when the opener is set from sync.
+
+      For instance, tabs opened from a saved tab group get `source_contents` set
+      to whatever tab happened to be active in the target browser, which is not 
+      a real opener relationship. In this case, marks the opener as 
+      "for an empty new tab" so the tree tab feature doesn't place these tabs 
+      under that unrelated tab, while still keeping the opener for other
+      purposes
+    count: 2
+    regex:
+      re_pattern: '(tab_to_insert->set_opener\(.*?\);)'
+      re_flags: [DOTALL]
+      replace: |-
+        \1
+              if (params->navigation_initiated_from_sync) {            
+                tab_to_insert->set_opener_was_set_for_empty_new_tab(); 
+              }
+
+  - description: |
+      Pass additional parameter to GetSiteInstanceForNewTab()
+    count: 0
+    regex:
+      re_pattern: 'GetSiteInstanceForNewTab\((.*?)\);'
+      re_flags: [DOTALL]
+      replace: |-
+        GetSiteInstanceForNewTab(\1
+        #if BUILDFLAG(ENABLE_CONTAINERS)
+                                  , GetStoragePartitionConfigToInherit(params)
+        #endif  // BUILDFLAG(ENABLE_CONTAINERS)
+        );

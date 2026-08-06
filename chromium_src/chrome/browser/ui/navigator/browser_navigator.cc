@@ -64,29 +64,4 @@ GetStoragePartitionConfigToInherit(const NavigateParams& params) {
 
 }  // namespace
 
-#define BRAVE_ADJUST_NAVIGATE_PARAMS_FOR_URL UpdateParams(params);
-
-// Tabs opened from a saved tab group get `source_contents` set to whatever
-// tab happened to be active in the target browser, which is not a real
-// opener relationship. Mark the opener as "for an empty new tab" so the tree
-// tab feature doesn't place these tabs under that unrelated tab, while still
-// keeping the opener for other purposes (e.g. reactivating it on close).
-#define BRAVE_NAVIGATE_MARK_OPENER_FOR_SYNC_NAVIGATION     \
-  if (params->navigation_initiated_from_sync) {            \
-    tab_to_insert->set_opener_was_set_for_empty_new_tab(); \
-  }
-
-#if BUILDFLAG(ENABLE_CONTAINERS)
-#define GetSiteInstanceForNewTab(...)   \
-  GetSiteInstanceForNewTab(__VA_ARGS__, \
-                           GetStoragePartitionConfigToInherit(params))
-#endif  // BUILDFLAG(ENABLE_CONTAINERS)
-
 #include <chrome/browser/ui/navigator/browser_navigator.cc>
-
-#if BUILDFLAG(ENABLE_CONTAINERS)
-#undef GetSiteInstanceForNewTab
-#endif  // BUILDFLAG(ENABLE_CONTAINERS)
-
-#undef BRAVE_ADJUST_NAVIGATE_PARAMS_FOR_URL
-#undef BRAVE_NAVIGATE_MARK_OPENER_FOR_SYNC_NAVIGATION
