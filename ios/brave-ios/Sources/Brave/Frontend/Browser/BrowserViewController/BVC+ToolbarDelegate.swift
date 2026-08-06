@@ -417,8 +417,8 @@ extension BrowserViewController: TopToolbarDelegate, SearchContainerViewControll
     updateScreenTimeUrl(tabManager.selectedTab?.visibleURL)
     updateInContentHomePanel(tabManager.selectedTab?.visibleURL as URL?)
     updateTabsBarVisibility()
-    topToolbar.updateViewsForOverlayModeAndToolbarChanges()
-    activeNewTabPageViewController?.urlBarDidLeaveOverlayMode()
+    topToolbar.updateViewsForToolbarChanges()
+    activeNewTabPageViewController?.searchContainerDidDismiss()
   }
 
   // MARK: - SearchContainerViewControllerDelegate

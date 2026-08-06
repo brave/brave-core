@@ -603,7 +603,7 @@ public class BrowserViewController: UIViewController {
       if let originService = BraveOriginServiceFactory.get(profile: profileController.profile),
         await originService.checkPurchaseState()
       {
-        topToolbar.updateViewsForOverlayModeAndToolbarChanges()
+        topToolbar.updateViewsForToolbarChanges()
       }
     }
 
@@ -2635,7 +2635,7 @@ extension BrowserViewController: ToolbarUrlActionsDelegate {
         tabManager.selectTab(tab)
       } else {
         // If we are showing toptabs a user can just use the top tab bar
-        // If in overlay mode switching doesnt correctly dismiss the homepanels
+        // If the search container is visible switching doesnt correctly dismiss the homepanels
         guard !isSearchContainerVisible else {
           return
         }
@@ -2782,7 +2782,7 @@ extension BrowserViewController: NewTabPageDelegate {
   }
 
   func showNewTabTakeoverInfoBarIfNeeded() {
-    // do not show if topToobar is in overlay mode
+    // do not show if NTP is occluded by search
     guard !isSearchContainerVisible,
       rewards.ads.shouldDisplayNewTabTakeoverInfobar()
     else { return }
@@ -2803,7 +2803,7 @@ extension BrowserViewController: NewTabPageDelegate {
     self.show(toast: newTabTakeoverInfoBar, duration: nil)
   }
 
-  func isURLBarInOverlayMode() -> Bool {
+  func isNewTabPageOccluded() -> Bool {
     return isSearchContainerVisible
   }
 }

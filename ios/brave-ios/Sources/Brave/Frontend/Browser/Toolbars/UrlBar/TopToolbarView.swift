@@ -79,7 +79,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
   weak var delegate: TopToolbarDelegate? {
     didSet {
       guard delegate !== oldValue else { return }
-      updateViewsForOverlayModeAndToolbarChanges()
+      updateViewsForToolbarChanges()
     }
   }
   weak var tabToolbarDelegate: ToolbarDelegate?
@@ -327,8 +327,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
 
     Preferences.General.toolbarShortcutButton.observe(from: self)
 
-    // Make sure we hide any views that shouldn't be showing in non-overlay mode.
-    updateViewsForOverlayModeAndToolbarChanges()
+    updateViewsForToolbarChanges()
 
     privateBrowsingManager
       .$isPrivateBrowsing
@@ -457,7 +456,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
     if !toolbarIsShowing {
       updateConstraintsIfNeeded()
     }
-    updateViewsForOverlayModeAndToolbarChanges()
+    updateViewsForToolbarChanges()
   }
 
   func currentProgress() -> Float {
@@ -506,7 +505,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
     }
   }
 
-  func updateViewsForOverlayModeAndToolbarChanges() {
+  func updateViewsForToolbarChanges() {
     backButton.stackViewAnimationSafeIsHidden = toolbarIsShowing
     forwardButton.stackViewAnimationSafeIsHidden = toolbarIsShowing
     shareButton.stackViewAnimationSafeIsHidden = toolbarIsShowing
@@ -582,7 +581,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
 
 extension TopToolbarView: PreferencesObserver {
   func preferencesDidChange(for key: String) {
-    updateViewsForOverlayModeAndToolbarChanges()
+    updateViewsForToolbarChanges()
   }
 }
 

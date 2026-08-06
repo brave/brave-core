@@ -46,7 +46,7 @@ public class AutocompleteTextField: UITextField, UITextFieldDelegate {
   }
 
   // This variable is a solution to get the right behavior for refocusing
-  // the AutocompleteTextField. The initial transition into Overlay Mode
+  // the AutocompleteTextField. The initial transition into the search container
   // doesn't involve the user interacting with AutocompleteTextField.
   // Thus, we update shouldApplyCompletion in touchesBegin() to reflect whether
   // the highlight is active and then the text field is updated accordingly

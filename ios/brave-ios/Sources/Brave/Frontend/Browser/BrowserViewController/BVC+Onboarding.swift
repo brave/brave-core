@@ -64,7 +64,7 @@ extension BrowserViewController {
     }
 
     // If a controller is already presented (such as menu), do not show onboarding
-    // It also includes the case for overlay mode and tabtray opened
+    // It also includes the case for search visibility and tabtray opened
     guard presentedViewController == nil, !isSearchContainerVisible, !isTabTrayActive else {
       return
     }
