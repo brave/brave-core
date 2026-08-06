@@ -6,6 +6,6 @@
 
 <resources>
     <style name="AddCustomSearchEngineItemTitle" parent="LargeRegular">
-        <item name="android:textColor">?attr/globalLinkTextColor</item>
+        <item name="android:textColor">?attr/globalTextButtonTextColor</item>
     </style>
 </resources>

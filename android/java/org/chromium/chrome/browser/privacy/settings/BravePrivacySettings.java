@@ -9,6 +9,7 @@ import static org.chromium.build.NullUtil.assumeNonNull;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.text.Spanned;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 
@@ -50,6 +51,7 @@ import org.chromium.chrome.browser.settings.BravePreferenceDialogFragment;
 import org.chromium.chrome.browser.settings.BraveWebrtcPolicyPreference;
 import org.chromium.chrome.browser.settings.search.ChromeBaseSearchIndexProvider;
 import org.chromium.chrome.browser.shields.FilterListServiceFactory;
+import org.chromium.chrome.browser.theme.BraveDynamicColors;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.chrome.browser.webcompat_reporter.WebcompatReporterServiceFactory;
 import org.chromium.components.browser_ui.settings.ChromeBasePreference;
@@ -61,7 +63,6 @@ import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.gms.ChromiumPlayServicesAvailability;
 import org.chromium.ui.text.ChromeClickableSpan;
 import org.chromium.ui.text.SpanApplier;
-import org.chromium.ui.util.AttrUtils;
 import org.chromium.webcompat_reporter.mojom.WebcompatReporterHandler;
 
 /** Fragment to keep track of the all the brave privacy related preferences. */
@@ -338,7 +339,9 @@ public class BravePrivacySettings extends PrivacySettings {
                                     "<LINK_1>",
                                     "</LINK_1>",
                                     new ChromeClickableSpan(
-                                            requireContext(),
+                                            BraveDynamicColors.getTextButtonColor(
+                                                    requireContext(),
+                                                    requireContext().getColor(R.color.brave_link)),
                                             result -> {
                                                 TabUtils.openUrlInCustomTab(
                                                         requireContext(),
@@ -443,13 +446,11 @@ public class BravePrivacySettings extends PrivacySettings {
                 new SpannableString(getContext().getString(R.string.survey_panelist_learn_more));
         spannableString.setSpan(
                 new ForegroundColorSpan(
-                        AttrUtils.resolveColor(
-                                requireContext().getTheme(),
-                                org.chromium.ui.R.attr.globalLinkTextColor,
-                                requireContext().getColor(R.color.brave_link))),
+                        BraveDynamicColors.getTextButtonColor(
+                                requireContext(), requireContext().getColor(R.color.brave_link))),
                 0,
                 spannableString.length(),
-                0);
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         mSurveyPanelistLearnMore.setTitle(spannableString);
         mSurveyPanelistLearnMore.setOnPreferenceClickListener(
                 preference -> {

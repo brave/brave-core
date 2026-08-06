@@ -7,6 +7,7 @@ package org.chromium.chrome.browser.settings;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.text.Spanned;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 
@@ -31,6 +32,7 @@ import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.settings.search.ChromeBaseSearchIndexProvider;
+import org.chromium.chrome.browser.theme.BraveDynamicColors;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.components.browser_ui.settings.ChromeBasePreference;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
@@ -39,7 +41,6 @@ import org.chromium.components.browser_ui.settings.search.SettingsIndexData;
 import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.misc_metrics.mojom.MiscAndroidMetrics;
 import org.chromium.misc_metrics.mojom.OpeningScreenSwitchType;
-import org.chromium.ui.util.AttrUtils;
 
 /** Fragment to keep track of all the display related preferences. */
 @NullMarked
@@ -114,13 +115,12 @@ public class BackgroundImagesPreferences extends BravePreferenceFragment
                             getContext().getString(R.string.sponsored_images_learn_more));
             spannableString.setSpan(
                     new ForegroundColorSpan(
-                            AttrUtils.resolveColor(
-                                    requireContext().getTheme(),
-                                    org.chromium.ui.R.attr.globalLinkTextColor,
+                            BraveDynamicColors.getTextButtonColor(
+                                    requireContext(),
                                     requireContext().getColor(R.color.brave_link))),
                     0,
                     spannableString.length(),
-                    0);
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             mLearnMorePreference.setTitle(spannableString);
             mLearnMorePreference.setOnPreferenceClickListener(
                     preference -> {

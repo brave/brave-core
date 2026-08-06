@@ -28,6 +28,7 @@ import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.crypto_wallet.BraveWalletServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletConstants;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
+import org.chromium.chrome.browser.theme.BraveDynamicColors;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.components.browser_ui.settings.ChromeBasePreference;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
@@ -36,7 +37,6 @@ import org.chromium.components.browser_ui.settings.search.BaseSearchIndexProvide
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
 import org.chromium.ui.text.SpanApplier;
-import org.chromium.ui.util.AttrUtils;
 
 @NullMarked
 public class BraveWalletPreferences extends BravePreferenceFragment
@@ -200,9 +200,8 @@ public class BraveWalletPreferences extends BravePreferenceFragment
                                     "<LINK_1>",
                                     "</LINK_1>",
                                     new ForegroundColorSpan(
-                                            AttrUtils.resolveColor(
-                                                    requireContext().getTheme(),
-                                                    org.chromium.ui.R.attr.globalLinkTextColor,
+                                            BraveDynamicColors.getTextButtonColor(
+                                                    requireContext(),
                                                     requireContext()
                                                             .getColor(R.color.brave_link))))));
             learnMorePreference.setOnPreferenceClickListener(
