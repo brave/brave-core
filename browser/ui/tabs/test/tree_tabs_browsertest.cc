@@ -169,7 +169,8 @@ class TreeTabsBrowserTest : public InProcessBrowserTest {
   TabStripController* controller() { return tab_strip()->controller(); }
 
   TabStrip* tab_strip() {
-    return browser()->GetBrowserView().horizontal_tab_strip_for_testing();
+    return BrowserView::GetBrowserViewForBrowser(browser())
+        ->horizontal_tab_strip_for_testing();
   }
 
   // Simulates clicking |model_index| with a plain (unmodified) left click,
