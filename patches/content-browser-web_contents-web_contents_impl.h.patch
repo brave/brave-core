@@ -1,0 +1,13 @@
+diff --git a/content/browser/web_contents/web_contents_impl.h b/content/browser/web_contents/web_contents_impl.h
+index a611af68804665d9baa0d256060b769073dc290c..09013efa194c83aece83b6b42286e7e11cfbc3a2 100644
+--- a/content/browser/web_contents/web_contents_impl.h
++++ b/content/browser/web_contents/web_contents_impl.h
+@@ -1686,6 +1686,8 @@ class CONTENT_EXPORT WebContentsImpl
+   // changed.
+   void OnCapturerCountChanged();
+ 
++  bool GetShouldDoLearningForTesting() override;
++
+  private:
+   using FrameTreeIterationCallback = base::FunctionRef<void(FrameTree&)>;
+   using RenderViewHostIterationCallback =
