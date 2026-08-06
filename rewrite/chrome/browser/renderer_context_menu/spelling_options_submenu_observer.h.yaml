@@ -5,10 +5,11 @@
 
 substitutions:
   - description: |
-      Befriend BraveSpellingOptionsSubMenuObserver
+      Let BraveSpellingOptionsSubMenuObserver access private submenu state
 
-      The Brave subclass reaches into the private members it needs to override
-      the submenu behaviour.
+      Its `InitMenu()` override reaches into the private `submenu_model_`,
+      `proxy_`, and `use_spelling_service_` directly, to drop a trailing
+      separator and disable the submenu when it ends up empty.
     add_friend:
       class_name: SpellingOptionsSubMenuObserver
       friend_type: class BraveSpellingOptionsSubMenuObserver
