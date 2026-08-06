@@ -55,7 +55,7 @@ void MojoFacade::AwaitNextMessageForFrame(const std::string& frame_id) {
 
   auto callback =
       base::BindOnce(&MojoFacade::OnAwaitNextMessageForFrameCompleted,
-                      weak_ptr_factory_.GetWeakPtr(), frame_id);
+                     weak_ptr_factory_.GetWeakPtr(), frame_id);
 
   std::u16string fetch_next_message =
       u"return await Mojo.internal.fetchNextMessageFromJS();";
@@ -137,8 +137,8 @@ bool MojoFacade::IsBindInterfaceAllowedForFrame(const base::DictValue& args) {
   }
   const std::string* interface_name = args.FindString("interfaceName");
   return interface_name &&
-        web_state_->GetInterfaceBinderForMainFrame()->IsAllowedForOrigin(
-            origin, *interface_name);
+         web_state_->GetInterfaceBinderForMainFrame()->IsAllowedForOrigin(
+             origin, *interface_name);
 }
 
 }  // namespace web
