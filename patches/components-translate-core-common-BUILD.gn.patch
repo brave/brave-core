@@ -1,5 +1,5 @@
 diff --git a/components/translate/core/common/BUILD.gn b/components/translate/core/common/BUILD.gn
-index 19174e8fa01bd70436649731d2ef32d1d6b72bef..1b1aa7e18002fb9d86b8d66db3fa4abc761532ee 100644
+index a5ff6bb9f0e16fc4d6f746203c17d519ced0df0e..4d782f761d2672d738f7cba5150a7fb8274dac62 100644
 --- a/components/translate/core/common/BUILD.gn
 +++ b/components/translate/core/common/BUILD.gn
 @@ -32,6 +32,8 @@ static_library("common") {
@@ -7,7 +7,7 @@ index 19174e8fa01bd70436649731d2ef32d1d6b72bef..1b1aa7e18002fb9d86b8d66db3fa4abc
      "//url",
    ]
 +
-+  import("//brave/components/translate/core/common/sources.gni") sources += brave_components_translate_core_common_sources public_deps = brave_components_translate_core_common_public_deps
++  import("//brave/components/translate/core/common/sources.gni") sources += brave_components_translate_core_common_sources public_deps += brave_components_translate_core_common_public_deps
  }
  
  source_set("unit_tests") {
