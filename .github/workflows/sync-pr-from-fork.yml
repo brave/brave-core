@@ -63,16 +63,39 @@ jobs:
           git checkout "$COMMIT_HASH"
           git push -f origin HEAD:"refs/heads/$contribHeadRefName"
 
-          existing_prs=$(gh pr list -H "$contribHeadRefName" --json number)
-          if [[ "$existing_prs" = "[]" ]]; then
-            gh pr create \
+          ci_pr_title="CI run for contributor PR #$pr_number"
+          existing_prs=$(gh pr list -H "$contribHeadRefName" --json isDraft,title,url)
+          if [[ "$existing_prs" != "[]" ]]; then
+            ci_pr_url=$(jq -r --arg title "$ci_pr_title" '
+              map(select(.isDraft and .title == $title)) |
+              if length > 1 then
+                error("Multiple draft PRs match title: \($title)")
+              else
+                .[0].url // ""
+              end
+            ' <<<"$existing_prs")
+          fi
+          if [[ -z "$ci_pr_url" ]]; then
+            ci_pr_url=$(gh pr create \
               --draft \
               --base "$baseRefName" \
               --head "$contribHeadRefName" \
-              --title "CI run for contributor PR #$pr_number" \
+              --title "$ci_pr_title" \
               --body \
           "## Description
           This PR is created to run CI on the changes proposed in PR #$pr_number by @$headRepositoryOwnerLogin.
 
-          **This PR should not be merged.**"
+          **This PR should not be merged.**")
+
+            if ! pr_body=$(gh pr view "$pr_number" --json body -q '.body // ""'); then
+              echo "Failed to get body for PR #$pr_number"
+              exit 1
+            fi
+            if ! gh pr edit "$pr_number" --body \
+          "$pr_body
+
+          Resolves $ci_pr_url"; then
+              echo "Failed to add CI PR link to PR #$pr_number"
+              exit 1
+            fi
           fi
