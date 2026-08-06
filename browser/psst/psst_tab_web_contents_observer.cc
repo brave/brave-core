@@ -19,7 +19,10 @@
 #include "brave/components/psst/core/browser/psst_rule.h"
 #include "brave/components/psst/core/browser/psst_rule_registry.h"
 #include "brave/components/psst/core/common/features.h"
+#include "chrome/browser/profiles/profile.h"
+#include "components/country_codes/country_codes.h"
 #include "components/prefs/pref_service.h"
+#include "components/regional_capabilities/regional_capabilities_prefs.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/navigation_handle.h"
@@ -36,6 +39,7 @@ constexpr base::TimeDelta kScriptTimeout = base::Seconds(15);
 const char kUserScriptResultTasksPropName[] = "tasks";
 const char kUserScriptResultTaskItemUidPropName[] = "uid";
 const char kUserScriptResultInitialExecutionPropName[] = "initial_execution";
+const char kUserScriptParamCountryIdPropName[] = "countryId";
 constexpr int kUnsetScriptVersion = -1;
 
 // Adds the dictionary of parameters returned by the user.js script to the
@@ -50,18 +54,16 @@ constexpr int kUnsetScriptVersion = -1;
 // };
 // <policy script, which uses parameters to apply PSST settings selected by the
 // user>;
-std::string MaybeAddParamsToScript(std::unique_ptr<MatchedRule> rule,
+std::string MaybeAddParamsToScript(const std::string& script,
                                    base::DictValue params_dict) {
   std::optional<std::string> params_json = base::WriteJsonWithOptions(
       params_dict, base::JSONWriter::OPTIONS_PRETTY_PRINT);
   if (!params_json) {
-    VLOG(1) << "PSST: failed to serialize params for rule " << rule->name()
-            << " (version " << rule->version() << ")";
-    return rule->policy_script();
+    VLOG(1) << "PSST: failed to serialize params for rule";
+    return script;
   }
 
-  return base::StrCat(
-      {"const params = ", *params_json, ";\n", rule->policy_script()});
+  return base::StrCat({"const params = ", *params_json, ";\n", script});
 }
 
 void PrepareParametersForPolicyExecution(
@@ -80,6 +82,21 @@ void PrepareParametersForPolicyExecution(
   }
 
   user_script_result.Set(kUserScriptResultInitialExecutionPropName, is_initial);
+}
+
+std::optional<std::string> GetCountryCode(Profile* profile) {
+  if (!profile) {
+    return std::nullopt;
+  }
+
+  const auto country_id =
+      country_codes::CountryId::Deserialize(profile->GetPrefs()->GetInteger(
+          regional_capabilities::prefs::kCountryIDAtInstall));
+  if (!country_id.IsValid()) {
+    return std::nullopt;
+  }
+
+  return std::string(country_id.CountryCode());
 }
 
 }  // namespace
@@ -209,9 +226,14 @@ void PsstTabWebContentsObserver::InsertUserScript(
   if (!rule) {
     return;
   }
-  const std::string user_script = rule->user_script();
+  base::DictValue params_dict;
+  if (auto country_code = GetCountryCode(tab().GetProfile())) {
+    params_dict.Set(kUserScriptParamCountryIdPropName, *country_code);
+  }
+  const std::string user_script_with_param =
+      MaybeAddParamsToScript(rule->user_script(), std::move(params_dict));
   RunWithTimeout(
-      user_script, false,
+      user_script_with_param, false,
       base::BindOnce(&PsstTabWebContentsObserver::OnUserScriptResult,
                      page_weak_factory_.GetWeakPtr(), std::move(rule)));
 }
@@ -288,7 +310,7 @@ void PsstTabWebContentsObserver::OnUserAcceptedPsstSettings(
   PrepareParametersForPolicyExecution(user_script_result_dict, perform_for_uids,
                                       is_initial);
   RunWithTimeout(
-      MaybeAddParamsToScript(std::move(rule),
+      MaybeAddParamsToScript(rule->policy_script(),
                              std::move(user_script_result_dict)),
       true,
       base::BindOnce(&PsstTabWebContentsObserver::OnPolicyScriptResult,
