@@ -84,10 +84,6 @@ if (!is_android) {
       "//ui/gfx/geometry",
     ]
 
-    if (enable_brave_ads) {
-      deps += [ "//brave/components/brave_ads/core/public:headers" ]
-    }
-
     defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
   }
 }

@@ -37,7 +37,6 @@
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
-#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
@@ -357,7 +356,8 @@ IN_PROC_BROWSER_TEST_F(BraveSearchTestDisabled, DefaultAPIInvisibleKnownHost) {
 }
 
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
-IN_PROC_BROWSER_TEST_F(BraveSearchTest, SearchAdsHeader) {
+IN_PROC_BROWSER_TEST_F(BraveSearchTest,
+                       SearchAdsHeaderWhenRewardsEnabledAndConnected) {
   base::RunLoop run_loop;
   SetRequestExpectationsCallback(base::BindRepeating(
       [](base::OnceClosure loop_closure,
@@ -374,7 +374,7 @@ IN_PROC_BROWSER_TEST_F(BraveSearchTest, SearchAdsHeader) {
 
   PrefService* prefs = browser()->profile()->GetPrefs();
   prefs->SetBoolean(brave_rewards::prefs::kEnabled, true);
-  prefs->SetBoolean(brave_ads::prefs::kOptedInToSearchResultAds, false);
+  prefs->SetString(brave_rewards::prefs::kExternalWalletType, "connected");
 
   const GURL url = https_server()->GetURL(kAllowedDomain, kBraveSearchPath);
   EXPECT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
@@ -382,7 +382,7 @@ IN_PROC_BROWSER_TEST_F(BraveSearchTest, SearchAdsHeader) {
   run_loop.Run();
 }
 
-IN_PROC_BROWSER_TEST_F(BraveSearchTest, SearchAdsHeaderRewardsDisabled) {
+IN_PROC_BROWSER_TEST_F(BraveSearchTest, SearchAdsHeaderWhenRewardsDisabled) {
   base::RunLoop run_loop;
   SetRequestExpectationsCallback(base::BindRepeating(
       [](base::OnceClosure loop_closure,
@@ -404,7 +404,7 @@ IN_PROC_BROWSER_TEST_F(BraveSearchTest, SearchAdsHeaderRewardsDisabled) {
   run_loop.Run();
 }
 
-IN_PROC_BROWSER_TEST_F(BraveSearchTest, SearchAdsSearchResultAdsEnabled) {
+IN_PROC_BROWSER_TEST_F(BraveSearchTest, SearchAdsHeaderForNotAllowedDomain) {
   base::RunLoop run_loop;
   SetRequestExpectationsCallback(base::BindRepeating(
       [](base::OnceClosure loop_closure,
@@ -419,30 +419,7 @@ IN_PROC_BROWSER_TEST_F(BraveSearchTest, SearchAdsSearchResultAdsEnabled) {
 
   PrefService* prefs = browser()->profile()->GetPrefs();
   prefs->SetBoolean(brave_rewards::prefs::kEnabled, true);
-  prefs->SetBoolean(brave_ads::prefs::kOptedInToSearchResultAds, true);
-
-  const GURL url = https_server()->GetURL(kAllowedDomain, kBraveSearchPath);
-  EXPECT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-
-  run_loop.Run();
-}
-
-IN_PROC_BROWSER_TEST_F(BraveSearchTest, SearchAdsHeaderNotAllowedDomain) {
-  base::RunLoop run_loop;
-  SetRequestExpectationsCallback(base::BindRepeating(
-      [](base::OnceClosure loop_closure,
-         const net::test_server::HttpRequest& request) {
-        const GURL url = request.GetURL();
-        EXPECT_FALSE(request.headers.contains(kSearchAdsHeader));
-        if (request.GetURL().path() == kBraveSearchPath) {
-          std::move(loop_closure).Run();
-        }
-      },
-      run_loop.QuitClosure()));
-
-  PrefService* prefs = browser()->profile()->GetPrefs();
-  prefs->SetBoolean(brave_rewards::prefs::kEnabled, true);
-  prefs->SetBoolean(brave_ads::prefs::kOptedInToSearchResultAds, false);
+  prefs->SetString(brave_rewards::prefs::kExternalWalletType, "connected");
 
   const GURL url = https_server()->GetURL(kNotAllowedDomain, kBraveSearchPath);
   EXPECT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
@@ -453,7 +430,7 @@ IN_PROC_BROWSER_TEST_F(BraveSearchTest, SearchAdsHeaderNotAllowedDomain) {
 IN_PROC_BROWSER_TEST_F(BraveSearchTest, SearchAdsHeaderForFetchRequest) {
   PrefService* prefs = browser()->profile()->GetPrefs();
   prefs->SetBoolean(brave_rewards::prefs::kEnabled, true);
-  prefs->SetBoolean(brave_ads::prefs::kOptedInToSearchResultAds, false);
+  prefs->SetString(brave_rewards::prefs::kExternalWalletType, "connected");
 
   GURL url = https_server()->GetURL(kAllowedDomain, "/");
   EXPECT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
@@ -484,7 +461,7 @@ IN_PROC_BROWSER_TEST_F(BraveSearchTest, SearchAdsHeaderForFetchRequest) {
 IN_PROC_BROWSER_TEST_F(BraveSearchTest, FetchRequestForNonBraveSearchTab) {
   PrefService* prefs = browser()->profile()->GetPrefs();
   prefs->SetBoolean(brave_rewards::prefs::kEnabled, true);
-  prefs->SetBoolean(brave_ads::prefs::kOptedInToSearchResultAds, false);
+  prefs->SetString(brave_rewards::prefs::kExternalWalletType, "connected");
 
   GURL url = https_server()->GetURL(kNotAllowedDomain, "/");
   EXPECT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
@@ -511,7 +488,7 @@ IN_PROC_BROWSER_TEST_F(BraveSearchTest, FetchRequestForNonBraveSearchTab) {
   run_loop.Run();
 }
 
-IN_PROC_BROWSER_TEST_F(BraveSearchTest, SearchAdsHeaderIncognitoBrowser) {
+IN_PROC_BROWSER_TEST_F(BraveSearchTest, SearchAdsHeaderForIncognitoBrowser) {
   base::RunLoop run_loop;
   SetRequestExpectationsCallback(base::BindRepeating(
       [](base::OnceClosure loop_closure,
@@ -525,6 +502,7 @@ IN_PROC_BROWSER_TEST_F(BraveSearchTest, SearchAdsHeaderIncognitoBrowser) {
 
   PrefService* prefs = browser()->profile()->GetPrefs();
   prefs->SetBoolean(brave_rewards::prefs::kEnabled, false);
+  prefs->SetString(brave_rewards::prefs::kExternalWalletType, "connected");
 
   const GURL url = https_server()->GetURL(kAllowedDomain, kBraveSearchPath);
   OpenURLOffTheRecord(browser()->profile(), url);
