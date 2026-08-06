@@ -22,7 +22,7 @@
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
-#include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_container_view.h"
+#include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
 #include "brave/browser/ui/views/tabs/brave_tab.h"
 #include "brave/browser/ui/views/tabs/brave_tab_group_header.h"
 #include "brave/browser/ui/views/tabs/brave_tab_strip.h"
@@ -128,6 +128,10 @@ BraveTabContainer::BraveTabContainer(
       brave_tabs::kVerticalTabsShowScrollbar, prefs,
       base::BindRepeating(&BraveTabContainer::UpdateScrollBarVisibility,
                           base::Unretained(this)));
+  floating_mode_pref_.Init(
+      brave_tabs::kVerticalTabsFloatingEnabled, prefs,
+      base::BindRepeating(&BraveTabContainer::UpdateScrollBarVisibility,
+                          base::Unretained(this)));
 
   // Create separator view between pinned and unpinned tabs
   separator_ = AddChildView(std::make_unique<views::View>());
@@ -169,14 +173,34 @@ bool BraveTabContainer::ShouldShowVerticalTabs() const {
   return vtc && vtc->ShouldShowBraveVerticalTabs();
 }
 
+void BraveTabContainer::SetVerticalTabStripRegionView(
+    BraveVerticalTabStripRegionView* region_view) {
+  vertical_tab_strip_region_view_ = region_view;
+}
+
 views::ScrollView::ScrollBarMode BraveTabContainer::GetScrollBarMode() const {
   if (!ShouldShowVerticalTabs()) {
     return views::ScrollView::ScrollBarMode::kDisabled;
   }
 
-  return *should_show_scroll_bar_
-             ? views::ScrollView::ScrollBarMode::kEnabled
-             : views::ScrollView::ScrollBarMode::kHiddenButEnabled;
+  if (!*should_show_scroll_bar_) {
+    return views::ScrollView::ScrollBarMode::kHiddenButEnabled;
+  }
+
+  // Even when the scroll bar pref is on, don't show it while the vertical
+  // tab strip is collapsed to a floating mode. It's because when a user tries
+  // to grab the scrollbar, vertical tab will be expanded so showing scroll bar
+  // has no point.
+  auto* vtc = VerticalTabController::FromBrowser(
+      tab_slot_controller_->GetBrowserWindowInterface());
+  if (vtc && vtc->IsFloatingVerticalTabsEnabled() &&
+      vertical_tab_strip_region_view_ &&
+      vertical_tab_strip_region_view_->state() ==
+          BraveVerticalTabStripRegionView::State::kCollapsed) {
+    return views::ScrollView::ScrollBarMode::kHiddenButEnabled;
+  }
+
+  return views::ScrollView::ScrollBarMode::kEnabled;
 }
 
 gfx::Size BraveTabContainer::CalculatePreferredSize(
