@@ -23,6 +23,7 @@
 #include "brave/components/brave_shields/content/browser/ad_block_subscription_download_manager.h"
 #include "brave/components/brave_shields/content/test/ad_block_unit_test_helper.h"
 #include "brave/components/brave_shields/content/test/test_filters_provider.h"
+#include "brave/components/brave_shields/core/common/features.h"
 #include "brave/test/base/testing_brave_browser_process.h"
 #include "chrome/browser/net/system_network_context_manager.h"
 #include "chrome/test/base/testing_browser_process.h"
@@ -105,6 +106,18 @@ template <typename PtrStrategy>
 class BraveAdBlockTPNetworkDelegateHelperTest : public testing::Test {
  protected:
   void SetUp() override {
+    // Pin every feature this fixture depends on, rather than relying on the
+    // compiled-in defaults. kAdblockDATCache has to be set before the
+    // AdBlockService below is constructed, because
+    // AdBlockFiltersProviderManager reads the feature state in its
+    // constructor.
+    const bool use_weak_ptr = std::is_same_v<
+        typename PtrStrategy::template Ptr<brave::BraveRequestInfo>,
+        base::WeakPtr<brave::BraveRequestInfo>>;
+    scoped_feature_list_.InitWithFeatureStates(
+        {{features::kBraveRequestInfoUniquePtr, use_weak_ptr},
+         {brave_shields::features::kAdblockDATCache, true}});
+
     brave_component_updater_delegate_ =
         std::make_unique<TestingBraveComponentUpdaterDelegate>(
             TestingBrowserProcess::GetGlobal()->GetTestingLocalState());
@@ -135,14 +148,6 @@ class BraveAdBlockTPNetworkDelegateHelperTest : public testing::Test {
         TestingBrowserProcess::GetGlobal()->GetTestingLocalState());
     SystemNetworkContextManager::set_stub_resolver_config_reader_for_testing(
         stub_resolver_config_reader_.get());
-
-    // Enable feature flag if using WeakPtrStrategy, disable if
-    // SharedPtrStrategy
-    bool enable_flag = std::is_same_v<
-        typename PtrStrategy::template Ptr<brave::BraveRequestInfo>,
-        base::WeakPtr<brave::BraveRequestInfo>>;
-    scoped_feature_list_.InitWithFeatureState(
-        features::kBraveRequestInfoUniquePtr, enable_flag);
   }
 
   void TearDown() override {

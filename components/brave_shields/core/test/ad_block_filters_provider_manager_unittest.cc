@@ -22,95 +22,6 @@ class FiltersProviderManagerTestObserver
   int changed_count = 0;
 };
 
-namespace {
-
-// kAdblockDATCache is enabled by default, so the manager suppresses the first
-// change notification for each engine at startup. Tests that exercise the
-// steady-state notification logic consume that suppression up front with a
-// throwaway observer, so their expectations don't depend on the feature state.
-void ConsumeStartupChangeNotification(
-    brave_shields::AdBlockFiltersProviderManager& manager,
-    bool is_for_default_engine) {
-  FiltersProviderManagerTestObserver unused_observer;
-  manager.ForceNotifyObserver(unused_observer, is_for_default_engine);
-}
-
-}  // namespace
-
-TEST(AdBlockFiltersProviderManagerTest, MaybeNotifyObserverNotifiesWhenReady) {
-  brave_shields::AdBlockFiltersProviderManager m;
-
-  brave_shields::TestFiltersProvider provider1("rules_a", true, 0);
-  provider1.RegisterAsSourceProvider(&m);
-
-  FiltersProviderManagerTestObserver observer;
-  m.MaybeNotifyObserver(observer, true);
-  EXPECT_EQ(observer.changed_count, 1);
-
-  EXPECT_EQ(m.GetProviders(true).size(), 1u);
-}
-
-TEST(AdBlockFiltersProviderManagerTest,
-     ForceNotifyObserverDoesNotNotifyWhenNoProviders) {
-  brave_shields::AdBlockFiltersProviderManager m;
-  ConsumeStartupChangeNotification(m, true);
-
-  FiltersProviderManagerTestObserver observer;
-  m.ForceNotifyObserver(observer, true);
-
-  // Should not be notified when there are no providers.
-  EXPECT_EQ(observer.changed_count, 0);
-}
-
-TEST(AdBlockFiltersProviderManagerTest, ForceNotifyObserverRespectsEngineType) {
-  brave_shields::AdBlockFiltersProviderManager m;
-  ConsumeStartupChangeNotification(m, true);
-  ConsumeStartupChangeNotification(m, false);
-
-  brave_shields::TestFiltersProvider default_provider("default_rules", true, 0);
-  default_provider.RegisterAsSourceProvider(&m);
-
-  brave_shields::TestFiltersProvider additional_provider("additional_rules",
-                                                         false, 0);
-  additional_provider.RegisterAsSourceProvider(&m);
-
-  FiltersProviderManagerTestObserver default_observer;
-  m.ForceNotifyObserver(default_observer, true);
-  EXPECT_EQ(default_observer.changed_count, 1);
-
-  FiltersProviderManagerTestObserver additional_observer;
-  m.ForceNotifyObserver(additional_observer, false);
-  EXPECT_EQ(additional_observer.changed_count, 1);
-}
-
-TEST(AdBlockFiltersProviderManagerTest,
-     OnChangedWaitsForAllProvidersInitialized) {
-  brave_shields::AdBlockFiltersProviderManager m;
-  ConsumeStartupChangeNotification(m, true);
-
-  FiltersProviderManagerTestObserver observer;
-  m.AddObserver(&observer);
-
-  // Register provider1 — it initializes, OnChanged fires, observer notified.
-  brave_shields::TestFiltersProvider provider1("rules_a", true, 0);
-  provider1.RegisterAsSourceProvider(&m);
-  EXPECT_EQ(observer.changed_count, 1);
-
-  // Add provider2 without initializing it.
-  brave_shields::TestFiltersProvider provider2("rules_b", true, 0);
-  m.AddProvider(&provider2, true);
-  EXPECT_EQ(observer.changed_count, 1);
-
-  // Force a notification attempt. provider2 is not initialized,
-  // so the manager should NOT propagate to the observer.
-  m.ForceNotifyObserver(observer, true);
-  EXPECT_EQ(observer.changed_count, 1);
-
-  // Initialize provider2 — all providers initialized, observer notified.
-  provider2.Initialize();
-  EXPECT_EQ(observer.changed_count, 2);
-}
-
 class AdBlockFiltersProviderManagerDATCacheTest
     : public testing::TestWithParam<bool> {
  protected:
@@ -181,6 +92,90 @@ TEST_P(AdBlockFiltersProviderManagerDATCacheTest,
 
   provider.Initialize();
   EXPECT_EQ(observer.changed_count, 1);
+}
+
+// MaybeNotifyObserver never consumes the engine's suppressed startup
+// notification, so the observer is notified for both feature states.
+TEST_P(AdBlockFiltersProviderManagerDATCacheTest,
+       MaybeNotifyObserverNotifiesWhenReady) {
+  brave_shields::AdBlockFiltersProviderManager m;
+
+  brave_shields::TestFiltersProvider provider1("rules_a", true, 0);
+  provider1.RegisterAsSourceProvider(&m);
+
+  FiltersProviderManagerTestObserver observer;
+  m.MaybeNotifyObserver(observer, true);
+  EXPECT_EQ(observer.changed_count, 1);
+
+  EXPECT_EQ(m.GetProviders(true).size(), 1u);
+}
+
+// There are no providers, so there is nothing to notify about. When the DAT
+// cache is enabled the call additionally consumes the engine's suppressed
+// startup notification and returns early, which is also silent.
+TEST_P(AdBlockFiltersProviderManagerDATCacheTest,
+       ForceNotifyObserverDoesNotNotifyWhenNoProviders) {
+  brave_shields::AdBlockFiltersProviderManager m;
+
+  FiltersProviderManagerTestObserver observer;
+  m.ForceNotifyObserver(observer, true);
+
+  // Should not be notified when there are no providers.
+  EXPECT_EQ(observer.changed_count, 0);
+}
+
+// Registering a provider already consumes that engine's suppressed startup
+// notification, so ForceNotifyObserver notifies for both feature states.
+TEST_P(AdBlockFiltersProviderManagerDATCacheTest,
+       ForceNotifyObserverRespectsEngineType) {
+  brave_shields::AdBlockFiltersProviderManager m;
+
+  brave_shields::TestFiltersProvider default_provider("default_rules", true, 0);
+  default_provider.RegisterAsSourceProvider(&m);
+
+  brave_shields::TestFiltersProvider additional_provider("additional_rules",
+                                                         false, 0);
+  additional_provider.RegisterAsSourceProvider(&m);
+
+  FiltersProviderManagerTestObserver default_observer;
+  m.ForceNotifyObserver(default_observer, true);
+  EXPECT_EQ(default_observer.changed_count, 1);
+
+  FiltersProviderManagerTestObserver additional_observer;
+  m.ForceNotifyObserver(additional_observer, false);
+  EXPECT_EQ(additional_observer.changed_count, 1);
+}
+
+// The manager waits for every provider of the engine to be initialized before
+// propagating, for both feature states. Enabling the DAT cache only shifts the
+// counts down by one, because the first notification is suppressed.
+TEST_P(AdBlockFiltersProviderManagerDATCacheTest,
+       OnChangedWaitsForAllProvidersInitialized) {
+  const bool dat_cache_enabled = GetParam();
+  brave_shields::AdBlockFiltersProviderManager m;
+
+  FiltersProviderManagerTestObserver observer;
+  m.AddObserver(&observer);
+
+  // Register provider1 — it initializes and OnChanged fires. That first
+  // notification is the suppressed one when the DAT cache is enabled.
+  brave_shields::TestFiltersProvider provider1("rules_a", true, 0);
+  provider1.RegisterAsSourceProvider(&m);
+  EXPECT_EQ(observer.changed_count, dat_cache_enabled ? 0 : 1);
+
+  // Add provider2 without initializing it.
+  brave_shields::TestFiltersProvider provider2("rules_b", true, 0);
+  m.AddProvider(&provider2, true);
+  EXPECT_EQ(observer.changed_count, dat_cache_enabled ? 0 : 1);
+
+  // Force a notification attempt. provider2 is not initialized,
+  // so the manager should NOT propagate to the observer.
+  m.ForceNotifyObserver(observer, true);
+  EXPECT_EQ(observer.changed_count, dat_cache_enabled ? 0 : 1);
+
+  // Initialize provider2 — all providers initialized, observer notified.
+  provider2.Initialize();
+  EXPECT_EQ(observer.changed_count, dat_cache_enabled ? 1 : 2);
 }
 
 INSTANTIATE_TEST_SUITE_P(All,
