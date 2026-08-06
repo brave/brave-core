@@ -1190,7 +1190,7 @@ class PurchasedStateManagerWithRealSkusServiceTest
       kExchangeSuccessResponse{
           .net_error = net::OK,
           .status_code = net::HTTP_OK,
-          .body = endpoints::GetSubscriberCredentialV12SuccessBody{
+          .body = endpoints::GetSubscriberCredentialSuccessBody{
               .subscriber_credential = std::string(kTestSubscriberCredential)}};
 
   base::test::ScopedFeatureList scoped_feature_list_;
