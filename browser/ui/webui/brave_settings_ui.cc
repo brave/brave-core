@@ -304,7 +304,9 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
   html_source->AddBoolean(
       "isEmailAliasesEnabled",
-      base::FeatureList::IsEnabled(psst::features::kEnablePsst));
+      email_aliases::features::IsEmailAliasesEnabled() &&
+          email_aliases::EmailAliasesServiceFactory::GetServiceForProfile(
+              profile));
 #endif
 #if BUILDFLAG(ENABLE_PSST)
   html_source->AddBoolean("isPsstEnabled", base::FeatureList::IsEnabled(
