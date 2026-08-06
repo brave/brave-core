@@ -8,19 +8,26 @@ package org.chromium.chrome.browser.decentralized_dns.settings;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
-import androidx.preference.PreferenceFragmentCompat;
 
+import org.chromium.base.supplier.MonotonicObservableSupplier;
+import org.chromium.base.supplier.ObservableSuppliers;
+import org.chromium.base.supplier.SettableMonotonicObservableSupplier;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveLocalState;
 import org.chromium.chrome.browser.preferences.BravePref;
+import org.chromium.chrome.browser.settings.ChromeBaseSettingsFragment;
+import org.chromium.components.browser_ui.settings.SettingsFragment.AnimationType;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
 
-public class SnsSettingsFragment extends PreferenceFragmentCompat {
+public class SnsSettingsFragment extends ChromeBaseSettingsFragment {
     static final String PREF_SNS_RESOLVE_METHOD = "sns_resolve_method";
+
+    private final SettableMonotonicObservableSupplier<String> mPageTitle =
+            ObservableSuppliers.createMonotonic();
 
     @Override
     public void onCreatePreferences(@Nullable Bundle savedInstanceState, String rootKey) {
-        getActivity().setTitle(R.string.sns_title);
+        mPageTitle.set(getString(R.string.sns_title));
         SettingsUtils.addPreferencesFromResource(this, R.xml.sns_preferences);
 
         RadioButtonGroupDDnsResolveMethodPreference radioButtonGroupDDnsResolveMethodPreference =
@@ -36,5 +43,15 @@ public class SnsSettingsFragment extends PreferenceFragmentCompat {
                     BraveLocalState.get().setInteger(BravePref.SNS_RESOLVE_METHOD, method);
                     return true;
                 });
+    }
+
+    @Override
+    public MonotonicObservableSupplier<String> getPageTitle() {
+        return mPageTitle;
+    }
+
+    @Override
+    public @AnimationType int getAnimationType() {
+        return AnimationType.PROPERTY;
     }
 }
