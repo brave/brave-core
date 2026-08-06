@@ -139,6 +139,9 @@
   <message name="IDS_BRAVE_NEWS_CHANNEL_GAMING" desc="Translation of the 'Gaming' channel" formatter_data="webui=BraveNews">
     Gaming
   </message>
+  <message name="IDS_BRAVE_NEWS_CHANNEL_GOVERNMENT" desc="Translation of the 'Government' channel" formatter_data="webui=BraveNews">
+    Government
+  </message>
   <message name="IDS_BRAVE_NEWS_CHANNEL_HEALTH" desc="Translation of the 'Health' channel" formatter_data="webui=BraveNews">
     Health
   </message>
@@ -147,6 +150,9 @@
   </message>
   <message name="IDS_BRAVE_NEWS_CHANNEL_LIFESTYLE" desc="Translation of the 'Lifestyle' channel" formatter_data="webui=BraveNews">
     Lifestyle
+  </message>
+  <message name="IDS_BRAVE_NEWS_CHANNEL_LOCAL_NEWS" desc="Translation of the 'Local News' channel" formatter_data="webui=BraveNews">
+    Local News
   </message>
   <message name="IDS_BRAVE_NEWS_CHANNEL_MUSIC" desc="Translation of the 'Music' channel" formatter_data="webui=BraveNews">
     Music
