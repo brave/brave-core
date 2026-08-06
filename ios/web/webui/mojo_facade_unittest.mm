@@ -357,7 +357,8 @@ class MojoFacadeBindInterfaceOriginTest : public MojoFacadeTest {
 
   // Attempts Mojo.bindInterface for `interface_name` from `frame`, and
   // reports whether the interface's registered callback actually ran.
-  bool TryBindInterface(FakeWebFrame* frame, const std::string& interface_name) {
+  bool TryBindInterface(FakeWebFrame* frame,
+                        const std::string& interface_name) {
     uint32_t handle0, handle1;
     CreateMessagePipe(&handle0, &handle1);
 
@@ -381,7 +382,7 @@ class MojoFacadeBindInterfaceOriginTest : public MojoFacadeTest {
             origin,
             base::BindRepeating(
                 [](bool* bound_flag,
-                  mojo::PendingReceiver<web::mojom::TestUIHandlerMojo>) {
+                   mojo::PendingReceiver<web::mojom::TestUIHandlerMojo>) {
                   *bound_flag = true;
                 },
                 &interface_bound_));
