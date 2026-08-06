@@ -18,14 +18,14 @@ namespace content_settings {
 // between Chromium's and Brave's histograms. This value must be less than 1000
 // as upstream performs a sanity check that the total number of buckets isn't
 // unreasonably large.
-inline constexpr int kBraveValuesStart = 900;
+inline constexpr int kBraveHistogramValuesStart = 900;
 
-inline constexpr int brave_value(int incr) {
-  return kBraveValuesStart + incr;
+inline constexpr int GetBraveHistogramValue(int incr) {
+  return kBraveHistogramValuesStart + incr;
 }
 
 static_assert(static_cast<int>(ContentSettingsType::kMaxValue) <
-                  kBraveValuesStart,
+                  kBraveHistogramValuesStart,
               "There must a gap between the histograms used by Chromium, and "
               "the ones used by Brave.");
 
