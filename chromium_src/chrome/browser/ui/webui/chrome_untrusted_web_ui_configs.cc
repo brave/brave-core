@@ -27,6 +27,7 @@
 #include "brave/browser/ui/webui/ai_chat/ai_chat_untrusted_conversation_ui.h"
 #include "brave/browser/ui/webui/ai_chat/chart_display_ui.h"
 #include "brave/browser/ui/webui/ai_chat/code_sandbox_ui.h"
+#include "brave/browser/ui/webui/ai_chat/leo_workspace_ui.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #endif
 
@@ -106,6 +107,8 @@ void RegisterChromeUntrustedWebUIConfigs() {
         std::make_unique<ai_chat::ChartDisplayUIConfig>());
     content::WebUIConfigMap::GetInstance().AddUntrustedWebUIConfig(
         std::make_unique<ai_chat::CodeSandboxUIConfig>());
+    content::WebUIConfigMap::GetInstance().AddUntrustedWebUIConfig(
+        std::make_unique<ai_chat::LeoWorkspaceUIConfig>());
   }
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
 #if BUILDFLAG(ENABLE_BRAVE_NEWS) && !BUILDFLAG(IS_ANDROID)
