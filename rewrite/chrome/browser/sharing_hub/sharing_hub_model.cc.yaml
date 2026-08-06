@@ -5,7 +5,8 @@
 
 substitutions:
   - description: 'Add Copy Clean Link before the upstream Copy Link action.'
-    preempt_function_impl:
-      function_name: SharingHubModel::PopulateFirstPartyActions
-      code: |-
-        MaybeAddCopyCleanLinkItem(context_, &first_party_action_list_);
+    regex:
+      re_pattern: '(void SharingHubModel::PopulateFirstPartyActions\(\)\s*\{\s*DCHECK_CALLED_ON_VALID_SEQUENCE\(sequence_checker_\);)'
+      replace: |-
+        \1
+          MaybeAddCopyCleanLinkItem(context_, &first_party_action_list_);

@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/sharing_hub/sharing_hub_model.cc b/chrome/browser/sharing_hub/sharing_hub_model.cc
-index 556ab711674dd9680f9b228aaa6ff7215929fd60..d0b93f68ecda1238df3c095969de9f03804bf24c 100644
+index 556ab711674dd9680f9b228aaa6ff7215929fd60..22a5066d9611328b9c4bf061488aa60e766857cf 100644
 --- a/chrome/browser/sharing_hub/sharing_hub_model.cc
 +++ b/chrome/browser/sharing_hub/sharing_hub_model.cc
-@@ -93,6 +93,7 @@ std::vector<SharingHubAction> SharingHubModel::GetFirstPartyActionList(
- }
+@@ -94,6 +94,7 @@ std::vector<SharingHubAction> SharingHubModel::GetFirstPartyActionList(
  
  void SharingHubModel::PopulateFirstPartyActions() {
-+  MaybeAddCopyCleanLinkItem(context_, &first_party_action_list_);
    DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
++  MaybeAddCopyCleanLinkItem(context_, &first_party_action_list_);
  
    first_party_action_list_.emplace_back(
+       IDC_COPY_URL, l10n_util::GetStringUTF16(IDS_SHARING_HUB_COPY_LINK_LABEL),
