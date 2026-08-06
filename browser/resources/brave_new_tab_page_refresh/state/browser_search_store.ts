@@ -220,6 +220,7 @@ export function createSearchStore() {
         query.length,
         SuggestInventory.kDefault,
         query.length === 0,
+        /*keyword*/ '',
       )
     },
 
