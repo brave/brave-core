@@ -745,7 +745,8 @@ public class PlaylistManager: NSObject {
     let request = NSFetchRequest<PlaylistItem>(entityName: "PlaylistItem")
     request.predicate = NSPredicate(format: "cachedData != nil")
     request.sortDescriptors = [
-      NSSortDescriptor(key: #keyPath(PlaylistItem.lastPlayedDate), ascending: true)
+      NSSortDescriptor(key: #keyPath(PlaylistItem.lastPlayedDate), ascending: true),
+      NSSortDescriptor(key: #keyPath(PlaylistItem.dateAdded), ascending: true),
     ]
     request.fetchBatchSize = 20
     let candidates = (try? DataController.swiftUIContext.fetch(request)) ?? []
