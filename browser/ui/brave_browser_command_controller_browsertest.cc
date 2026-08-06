@@ -205,8 +205,9 @@ class BraveBrowserCommandControllerTest : public InProcessBrowserTest {
 #if defined(TOOLKIT_VIEWS)
   void WaitForSidePanelClose() {
     ASSERT_TRUE(base::test::RunUntil([&]() {
-      return browser()->GetBrowserView().side_panel()->state() ==
-             SidePanel::State::kClosed;
+      return BrowserView::GetBrowserViewForBrowser(browser())
+                 ->side_panel()
+                 ->state() == SidePanel::State::kClosed;
     }));
   }
 #endif  // #if defined(TOOLKIT_VIEWS)
@@ -689,8 +690,9 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
       SidePanelEntry::Key(SidePanelEntryId::kChatUI);
   auto* side_panel_coordinator = SidePanelCoordinator::From(browser());
   ASSERT_TRUE(base::test::RunUntil([&]() {
-    return browser()->GetBrowserView().side_panel()->state() ==
-           SidePanel::State::kClosed;
+    return BrowserView::GetBrowserViewForBrowser(browser())
+               ->side_panel()
+               ->state() == SidePanel::State::kClosed;
   }));
 
   // initially no panel is showing
