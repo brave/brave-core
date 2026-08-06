@@ -19,6 +19,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -27,6 +28,7 @@ import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.helpers.Api33AndPlusBackPressHelper;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnNextPage;
+import org.chromium.chrome.browser.crypto_wallet.model.OnboardingViewModel;
 import org.chromium.chrome.browser.crypto_wallet.util.KeystoreHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.ui.base.BraveClipboardHelper;
@@ -42,6 +44,7 @@ public class UnlockWalletFragment extends BaseWalletNextPageFragment
     private TextView mUnlockWalletRestoreButton;
     private ImageView mBiometricUnlockButton;
     @Nullable private Cipher mCipher;
+    private OnboardingViewModel mOnboardingViewModel;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -51,6 +54,10 @@ public class UnlockWalletFragment extends BaseWalletNextPageFragment
                     this, (FragmentActivity) requireActivity(), () -> requireActivity().finish());
         }
         mCipher = KeystoreHelper.getCipherForDecryption();
+        // Shared with the host activity; survives configuration changes, so it carries the unlock
+        // password and keyboard state across a rotation (the fragment is recreated fresh).
+        mOnboardingViewModel =
+                new ViewModelProvider(requireActivity()).get(OnboardingViewModel.class);
     }
 
     @Override
@@ -89,6 +96,7 @@ public class UnlockWalletFragment extends BaseWalletNextPageFragment
                     public void onTextChanged(CharSequence text, int start, int before, int count) {
                         mUnlockButton.setEnabled(text.length() != 0);
                         mUnlockWalletPasswordLayout.setError(null);
+                        mOnboardingViewModel.setUnlockPassword(text.toString());
                     }
 
                     @Override
@@ -96,6 +104,13 @@ public class UnlockWalletFragment extends BaseWalletNextPageFragment
                         /* Not used. */
                     }
                 });
+
+        // Restore the password entered before a configuration change such as a rotation.
+        final String savedPassword = mOnboardingViewModel.getUnlockPassword();
+        if (savedPassword != null) {
+            mUnlockWalletPassword.setText(savedPassword);
+            mUnlockWalletPassword.setSelection(savedPassword.length());
+        }
 
         mUnlockButton.setOnClickListener(
                 v -> {

@@ -13,7 +13,6 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModel;
 
 import org.chromium.brave_wallet.mojom.NetworkInfo;
-import org.chromium.chrome.browser.crypto_wallet.adapters.WalletOnboardingPagerAdapter.WalletAction;
 import org.chromium.chrome.browser.crypto_wallet.fragments.onboarding.OnboardingVerifyRecoveryPhraseFragment.VerificationStep;
 
 import java.util.ArrayList;
@@ -32,46 +31,19 @@ public class OnboardingViewModel extends ViewModel {
     @NonNull final Set<NetworkInfo> mAvailableNetworks = new HashSet<>();
     @NonNull final SparseArray<String> mVerificationWords = new SparseArray<>(3);
 
-    // The current onboarding position, retained across configuration changes.
-    // A null action means no onboarding is in progress.
-    @Nullable private WalletAction mOnboardingWalletAction;
-    private int mOnboardingPage;
+    // The unlock password, retained across configuration changes so the fragment (recreated fresh
+    // after a rotation) can restore it.
+    @Nullable private String mUnlockPassword;
 
-    /**
-     * Stores the current onboarding position so it can be restored after a configuration change
-     * such as a rotation.
-     *
-     * @param walletAction the onboarding action currently shown.
-     * @param page the current page within that action.
-     */
-    public void setOnboardingProgress(@NonNull final WalletAction walletAction, final int page) {
-        mOnboardingWalletAction = walletAction;
-        mOnboardingPage = page;
+    /** Stores the unlock password text so it survives a configuration change such as a rotation. */
+    public void setUnlockPassword(@Nullable final String unlockPassword) {
+        mUnlockPassword = unlockPassword;
     }
 
-    /** Clears the stored onboarding position, marking that no onboarding is in progress. */
-    public void clearOnboardingProgress() {
-        mOnboardingWalletAction = null;
-        mOnboardingPage = 0;
-    }
-
-    /**
-     * Returns the onboarding action to restore after a configuration change.
-     *
-     * @return the stored {@link WalletAction}, or {@code null} if no onboarding is in progress.
-     */
+    /** Returns the unlock password to restore, or {@code null} if none is stored. */
     @Nullable
-    public WalletAction getOnboardingWalletAction() {
-        return mOnboardingWalletAction;
-    }
-
-    /**
-     * Returns the onboarding page to restore after a configuration change.
-     *
-     * @return the stored page within the current action, or {@code 0} if none is stored.
-     */
-    public int getOnboardingPage() {
-        return mOnboardingPage;
+    public String getUnlockPassword() {
+        return mUnlockPassword;
     }
 
     public void setLegacyRestoreEnabled(final boolean legacyRestoreEnabled) {
