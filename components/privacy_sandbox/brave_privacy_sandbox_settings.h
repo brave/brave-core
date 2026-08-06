@@ -43,7 +43,6 @@ class BravePrivacySandboxSettings
       const url::Origin& top_frame_origin,
       const GURL& url,
       content::RenderFrameHost* console_frame = nullptr) const override;
-  bool IsTopicAllowed(const privacy_sandbox::CanonicalTopic& topic) override;
   void SetTopicAllowed(const privacy_sandbox::CanonicalTopic& topic,
                        bool allowed) override;
   void ClearTopicSettings(base::Time start_time, base::Time end_time) override;

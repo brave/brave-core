@@ -10,7 +10,6 @@ source_set("privacy_sandbox") {
   ]
 
   deps = [
-    "//components/browsing_topics/common",
     "//components/content_settings/core/browser",
     "//components/content_settings/core/browser:cookie_settings",
     "//components/prefs",
