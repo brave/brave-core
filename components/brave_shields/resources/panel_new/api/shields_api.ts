@@ -50,7 +50,6 @@ function moveArrayItems<T, U>(
 export interface LoadTimeState {
   isHttpsByDefaultEnabled: boolean
   isTorProfile: boolean
-  showStrictFingerprintingMode: boolean
   isWebcompatExceptionsServiceEnabled: boolean
   isBraveForgetFirstPartyStorageFeatureEnabled: boolean
   repeatedReloadsDetected: boolean
@@ -218,9 +217,6 @@ export function createShieldsApi(opts: {
 
       isHttpsByDefaultEnabled: state(loadTimeState.isHttpsByDefaultEnabled),
       isTorProfile: state(loadTimeState.isTorProfile),
-      showStrictFingerprintingMode: state(
-        loadTimeState.showStrictFingerprintingMode,
-      ),
       isWebcompatExceptionsServiceEnabled: state(
         loadTimeState.isWebcompatExceptionsServiceEnabled,
       ),
