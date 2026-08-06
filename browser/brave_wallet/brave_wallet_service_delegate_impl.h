@@ -12,7 +12,6 @@
 
 #include "base/containers/flat_map.h"
 #include "base/memory/weak_ptr.h"
-#include "base/observer_list.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_delegate_base.h"
 #include "brave/browser/brave_wallet/external_wallets_importer.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service_delegate.h"
@@ -61,9 +60,6 @@ class BraveWalletServiceDelegateImpl : public BraveWalletServiceDelegateBase,
                              const std::string& tx_id,
                              const GURL& tx_url) override;
 
-  void AddObserver(BraveWalletServiceDelegate::Observer* observer) override;
-  void RemoveObserver(BraveWalletServiceDelegate::Observer* observer) override;
-
   // TabStripModelObserver:
   void OnTabStripModelChanged(
       TabStripModel* tab_strip_model,
@@ -95,7 +91,6 @@ class BraveWalletServiceDelegateImpl : public BraveWalletServiceDelegateBase,
       importers_;
 
   BrowserTabStripTracker browser_tab_strip_tracker_;
-  base::ObserverList<BraveWalletServiceDelegate::Observer> observer_list_;
 
   base::WeakPtrFactory<BraveWalletServiceDelegateImpl> weak_ptr_factory_;
 };

@@ -769,6 +769,20 @@ void EthereumProviderImpl::OnSignMessageRequestProcessed(
     return;
   }
 
+  // Re-validate that the origin is still authorized to use this account.
+  // Permission may have been revoked while the request was queued.
+  const auto allowed_accounts = GetAllowedAccounts(false);
+  if (!allowed_accounts ||
+      !CheckAccountAllowed(account_id, *allowed_accounts)) {
+    base::Value formed_response = GetProviderErrorDictionary(
+        mojom::ProviderError::kUnauthorized,
+        l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED));
+    reject = true;
+    std::move(callback).Run(mojom::EthereumProviderResponse::New(
+        std::move(id), std::move(formed_response), reject, "", false));
+    return;
+  }
+
   base::Value formed_response;
   if (account_id->kind != mojom::AccountKind::kHardware) {
     auto signature = keyring_service_->SignMessageByDefaultKeyring(

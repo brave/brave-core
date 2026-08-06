@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "base/containers/flat_map.h"
+#include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
 #include "brave/components/brave_wallet/browser/tx_storage.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -20,6 +21,7 @@
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
 #include "mojo/public/cpp/bindings/remote_set.h"
+#include "url/origin.h"
 
 static_assert(BUILDFLAG(ENABLE_BRAVE_WALLET));
 class PrefService;
@@ -275,6 +277,15 @@ class TxService : public mojom::TxService,
 
   TxStorage* GetTxStorageForTesting();
 
+  using OriginPermissionChecker =
+      base::RepeatingCallback<bool(const url::Origin&,
+                                   const mojom::AccountIdPtr&)>;
+  void SetOriginPermissionChecker(OriginPermissionChecker checker);
+  bool HasOriginPermission(const url::Origin& origin,
+                           const mojom::AccountIdPtr& account_id);
+
+  void RejectUnapprovedTransactionsWithoutPermission();
+
  private:
   friend class EthereumProviderImplUnitTest;
   friend class EthTxManagerUnitTest;
@@ -301,6 +312,7 @@ class TxService : public mojom::TxService,
   std::unique_ptr<TxStorage> tx_storage_;
   std::unique_ptr<AccountResolverDelegate> account_resolver_delegate_;
   base::flat_map<mojom::CoinType, std::unique_ptr<TxManager>> tx_manager_map_;
+  OriginPermissionChecker origin_permission_checker_;
 
   mojo::RemoteSet<mojom::TxServiceObserver> observers_;
   mojo::ReceiverSet<mojom::TxService> tx_service_receivers_;

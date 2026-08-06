@@ -44,6 +44,7 @@ class BraveWalletServiceDelegate {
    public:
     virtual void OnActiveOriginChanged(
         const mojom::OriginInfoPtr& origin_info) {}
+    virtual void OnWalletContentSettingChanged() {}
   };
   virtual void AddObserver(Observer* observer) {}
   virtual void RemoveObserver(Observer* observer) {}
