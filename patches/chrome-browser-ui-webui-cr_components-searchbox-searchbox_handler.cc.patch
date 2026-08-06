@@ -1,12 +1,13 @@
 diff --git a/chrome/browser/ui/webui/cr_components/searchbox/searchbox_handler.cc b/chrome/browser/ui/webui/cr_components/searchbox/searchbox_handler.cc
-index 6e771163b7fe58d34803bc1eef5b19f1525846e0..26c5f5115e703c4cec1b58593b8e91c890e9b5ca 100644
+index af4b729f0f567d073b3302e2b9fd2acb9d31c4c7..5fc76da999243ed6d7cd25c6e453a51e5047fa57 100644
 --- a/chrome/browser/ui/webui/cr_components/searchbox/searchbox_handler.cc
 +++ b/chrome/browser/ui/webui/cr_components/searchbox/searchbox_handler.cc
-@@ -770,6 +770,15 @@ std::string SearchboxHandler::AutocompleteIconToResourceName(
-   // TODO(446953331): It's error-prone to keep the above if's up to date. When
-   //   omnibox input and popup views are replaced with webUI, matches and
-   //   actions can store an icon enum instead of `VectorIcon`.
-+  if (icon.name == kLeoWindowTabNewIcon.name) {
+@@ -764,7 +764,16 @@ std::string SearchboxHandler::AutocompleteIconToResourceName(
+ #endif
+ 
+   if (resource_name.empty()) {
+-    DUMP_WILL_BE_NOTREACHED()
++    if (icon.name == kLeoWindowTabNewIcon.name) {
 +    return kLeoWindowTabNewIconResourceName;
 +  } else if (icon.name == kLeoMessageBubbleAskIcon.name) {
 +    return kLeoMessageBubbleAskIconResourceName;
@@ -15,15 +16,16 @@ index 6e771163b7fe58d34803bc1eef5b19f1525846e0..26c5f5115e703c4cec1b58593b8e91c8
 +  // Brave, so its okay to disable the DUMP_WILL_BE_NOTREACHED() check
 +  // here and use the default icon instead.
 +  if ((true)) return "";
-   DUMP_WILL_BE_NOTREACHED()
-       << "Every autocomplete icon must have an equivalent SVG "
-          "resource for the NTP Realbox. icon.name: '"
-@@ -1109,7 +1118,7 @@ void SearchboxHandler::QueryAutocomplete(
++  DUMP_WILL_BE_NOTREACHED()
+         << "Every autocomplete icon must have an equivalent SVG "
+            "resource for the NTP Realbox. icon.name: '"
+         << icon.name << "'";
+@@ -1149,7 +1158,7 @@ void SearchboxHandler::QueryAutocomplete(
    current_query_id_ = query_id;
  
    std::u16string input_with_keyword = input;
 -  bool is_keyword_selected = false;
 +  bool is_keyword_selected = true;
+   const TemplateURL* template_url = nullptr;
    if (!keyword.empty()) {
      TemplateURLService* service =
-         client() ? client()->GetTemplateURLService() : nullptr;
