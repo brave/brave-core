@@ -1,13 +1,13 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/base/SplitChromeApplication.java b/chrome/android/java/src/org/chromium/chrome/browser/base/SplitChromeApplication.java
-index 66969159e6c0d53902695f3daacdc7138607474a..3b2750c9645c5a4c668f8bb28ad1d68f1ed12adb 100644
+index cea3d55b55f61c7ee1c3a7244b3b28ded53bd9bd..dfba9aecbcd7dc88fb863ce4b98b40578fc5887d 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/base/SplitChromeApplication.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/base/SplitChromeApplication.java
-@@ -243,7 +243,7 @@ public class SplitChromeApplication extends SplitCompatApplication {
-                     // fieldtrial_testing_config.json.
-                     ContextUtils.sDoFeatureListInitHookForTesting =
-                             InitializeFeatureList::initializeFeatureList;
--                } else if (!BuildConfig.IS_CHROME_BRANDED
-+                } else if (!true /* BuildConfig.IS_CHROME_BRANDED override for Brave */
-                         || !VariationsSeedFetcher.shouldFetchSeed()) {
-                     // For non-Chrome branded builds, we should initialize the feature list early to
-                     // apply the fieldtrial_testing_config.json. Otherwise, we should initialize the
+@@ -239,7 +239,7 @@ public class SplitChromeApplication extends SplitCompatApplication {
+                 // fieldtrial_testing_config.json.
+                 ContextUtils.sDoFeatureListInitHookForTesting =
+                         InitializeFeatureList::initializeFeatureList;
+-            } else if (!BuildConfig.IS_CHROME_BRANDED || !VariationsSeedFetcher.shouldFetchSeed()) {
++            } else if (!true /* BuildConfig.IS_CHROME_BRANDED override for Brave */ || !VariationsSeedFetcher.shouldFetchSeed()) {
+                 // For non-Chrome branded builds, we should initialize the feature list early to
+                 // apply the fieldtrial_testing_config.json. Otherwise, we should initialize the
+                 // feature list early in non-first run when we are not fetching the first run
