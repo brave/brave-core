@@ -49,11 +49,6 @@ ContainersSettingsHandler::ContainersSettingsHandler(PrefService* prefs)
       base::BindRepeating(
           &ContainersSettingsHandler::OnContainersEnabledPrefChanged,
           base::Unretained(this)));
-  pref_change_registrar_.Add(
-      kAlwaysUseMiniAccentIconPrefName,
-      base::BindRepeating(
-          &ContainersSettingsHandler::OnContainersOnlyUseMiniIconPrefChanged,
-          base::Unretained(this)));
 }
 
 ContainersSettingsHandler::~ContainersSettingsHandler() {}
@@ -141,16 +136,6 @@ void ContainersSettingsHandler::SetContainersEnabled(bool enabled) {
   prefs_->SetBoolean(prefs::kContainersEnabled, enabled);
 }
 
-void ContainersSettingsHandler::GetContainersOnlyUseMiniIcon(
-    GetContainersOnlyUseMiniIconCallback callback) {
-  std::move(callback).Run(prefs_->GetBoolean(kAlwaysUseMiniAccentIconPrefName));
-}
-
-void ContainersSettingsHandler::SetContainersOnlyUseMiniIcon(
-    bool only_use_mini_icon) {
-  prefs_->SetBoolean(kAlwaysUseMiniAccentIconPrefName, only_use_mini_icon);
-}
-
 // static
 std::optional<mojom::ContainerOperationError>
 ContainersSettingsHandler::ValidateEditableContainerProperties(
@@ -181,13 +166,6 @@ void ContainersSettingsHandler::OnContainersEnabledPrefChanged() {
   if (ui_) {
     ui_->OnContainersEnabledChanged(
         prefs_->GetBoolean(prefs::kContainersEnabled));
-  }
-}
-
-void ContainersSettingsHandler::OnContainersOnlyUseMiniIconPrefChanged() {
-  if (ui_) {
-    ui_->OnContainersOnlyUseMiniIconChanged(
-        prefs_->GetBoolean(kAlwaysUseMiniAccentIconPrefName));
   }
 }
 

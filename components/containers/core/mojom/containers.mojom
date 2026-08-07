@@ -87,12 +87,6 @@ interface ContainersSettingsHandler {
 
   // Updates whether the Containers feature is enabled.
   SetContainersEnabled(bool enabled);
-
-  // Whether container tabs should always show the mini container icon.
-  GetContainersOnlyUseMiniIcon() => (bool only_use_mini_icon);
-
-  // Updates whether container tabs should always show the mini container icon.
-  SetContainersOnlyUseMiniIcon(bool only_use_mini_icon);
 };
 
 // Interface for browser -> settings UI communication. This interface allows the
@@ -106,8 +100,4 @@ interface ContainersSettingsUI {
 
   // Notifies the settings UI when `brave.containers.enabled` changes.
   OnContainersEnabledChanged(bool enabled);
-
-  // Notifies the settings UI when `brave.containers.only_use_mini_icon`
-  // changes.
-  OnContainersOnlyUseMiniIconChanged(bool only_use_mini_icon);
 };
