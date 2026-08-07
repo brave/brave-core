@@ -6,7 +6,6 @@
 #include "brave/browser/net/search_ads_header_network_delegate_helper.h"
 
 #include "base/check.h"
-#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/brave_search/common/brave_search_utils.h"
 #include "chrome/browser/profiles/profile.h"
@@ -29,9 +28,8 @@ bool ShouldSetHeaderForProfile(Profile* profile) {
   }
 
   if (prefs->GetString(brave_rewards::prefs::kExternalWalletType).empty()) {
-    // If Rewards is enabled but not connected, show search ads only if the user
-    // has opted in.
-    return !prefs->GetBoolean(brave_ads::prefs::kOptedInToSearchResultAds);
+    // If Rewards is enabled but not connected, show search ads.
+    return false;
   }
 
   // If Rewards is enabled and connected, hide search ads.
@@ -49,9 +47,7 @@ int OnBeforeStartTransaction_SearchAdsHeader(
     T<BraveRequestInfo> request) {
   CHECK(request);
   // The header should be set if (to disable search ads):
-  // - any of the following are true:
-  //   - Rewards is enabled and not connected, and opted out of search ads.
-  //   - Rewards is enabled and connected.
+  // - Rewards is enabled and connected.
   // - and all of the following are true:
   //   - The current tab is not in a Private browser window.
   //   - `request_url` host is allowed.
@@ -61,7 +57,7 @@ int OnBeforeStartTransaction_SearchAdsHeader(
   // allow search ads):
   // - The current tab is in a Private browser window.
   // - Rewards is disabled.
-  // - Rewards is enabled and not connected, and opted-in to search ads.
+  // - Rewards is enabled and not connected.
   // - `request_url` host is disallowed.
   // - `tab_origin` and `request_initiator` hosts are disallowed.
 
