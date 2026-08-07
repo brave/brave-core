@@ -49,7 +49,6 @@ const List = styled.div`
 export default function SourcesList() {
   const { subscribedPublisherIds, publishersLoaded, channelsLoaded } = useBraveNews()
   const channels = useChannels({ subscribedOnly: true })
-  const isLoading = !publishersLoaded || !channelsLoaded
 
   const { result: sourcesCount } = usePromise(
     () =>
@@ -64,10 +63,10 @@ export default function SourcesList() {
     <Container>
       <Heading>
         <Title>{getLocale(S.BRAVE_NEWS_FEEDS_HEADING)}</Title>
-        {!isLoading && <Count>{sourcesCount}</Count>}
+        {publishersLoaded && channelsLoaded && <Count>{sourcesCount}</Count>}
       </Heading>
       <List>
-        {isLoading && <Loading />}
+        {!channelsLoaded && !publishersLoaded && <Loading />}
         {channelsLoaded &&
           channels.map((c) => (
             <ChannelListEntry key={c.channelName} channelName={c.channelName} />
