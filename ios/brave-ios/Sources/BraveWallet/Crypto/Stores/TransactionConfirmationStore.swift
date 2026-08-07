@@ -753,7 +753,7 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
               } else {
                 balanceInZatoshi = zecBalance.transparentBalance
               }
-              let correctZecBalance = Double(balanceInZatoshi) / 100_000_000
+              let correctZecBalance = Double(balanceInZatoshi) / 100_000_000.0
               isBalanceSufficient = BDouble(correctZecBalance) >= gasValue + fromValue
             } else if shouldFetchGasTokenBalance || zecGasTokenBalanceCache == nil {
               isBalanceSufficient = false
