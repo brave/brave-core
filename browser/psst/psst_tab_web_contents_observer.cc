@@ -46,7 +46,7 @@ constexpr int kUnsetScriptVersion = -1;
 // policy.js script, before it is executed. In case when parameters dictionary
 // cannot be serialized to JSON, means that script should be executed without
 // any parameters. In case of success, the function returns:
-// const params = {
+// window.params = {
 //    "tasks": [ {
 //       "description": "Ads Preferences",
 //       "url": "https://a.test/settings/ads_preferences"
@@ -63,7 +63,7 @@ std::string MaybeAddParamsToScript(const std::string& script,
     return script;
   }
 
-  return base::StrCat({"const params = ", *params_json, ";\n", script});
+  return base::StrCat({"window.params = ", *params_json, ";\n", script});
 }
 
 void PrepareParametersForPolicyExecution(
