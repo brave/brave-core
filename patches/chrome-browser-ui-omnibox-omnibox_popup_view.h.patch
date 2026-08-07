@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/omnibox/omnibox_popup_view.h b/chrome/browser/ui/omnibox/omnibox_popup_view.h
-index e640a481777ff43e2dcafbf9a86fe817572e9285..4b934dc07b26beb7ddf25395d2b2bc5fd6bdb880 100644
+index 95c7dc653156559d4fd123c51da33b2082f776ed..7fa8ad685e9586a8a1cfb5a83e0be273784946ad 100644
 --- a/chrome/browser/ui/omnibox/omnibox_popup_view.h
 +++ b/chrome/browser/ui/omnibox/omnibox_popup_view.h
 @@ -99,6 +99,7 @@ class OmniboxPopupView {

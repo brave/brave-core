@@ -46,8 +46,9 @@ MockGenerateCallbacks& MockGenerateCallbacks::operator=(
 void AIChatConversationUIBrowserTestBase::SetUpOnMainThread() {
   InProcessBrowserTest::SetUpOnMainThread();
   // Opt-in to AI Chat
-  SetUserOptedIn(browser()->profile()->GetPrefs(), true);
-  service_ = AIChatServiceFactory::GetForBrowserContext(browser()->profile());
+  SetUserOptedIn(browser()->GetProfile()->GetPrefs(), true);
+  service_ =
+      AIChatServiceFactory::GetForBrowserContext(browser()->GetProfile());
   ASSERT_TRUE(service_);
 }
 

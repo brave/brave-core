@@ -172,8 +172,8 @@ class BraveTorBrowserTest : public InProcessBrowserTest {
 
   Profile* OpenTorWindow() {
     Browser* tor_browser =
-        TorProfileManager::SwitchToTorProfile(browser()->profile());
-    return tor_browser ? tor_browser->profile() : nullptr;
+        TorProfileManager::SwitchToTorProfile(browser()->GetProfile());
+    return tor_browser ? tor_browser->GetProfile() : nullptr;
   }
 
   TorInfo WaitForTorLaunched() {
@@ -228,7 +228,8 @@ class BraveTorBrowserTest : public InProcessBrowserTest {
 };
 
 IN_PROC_BROWSER_TEST_F(BraveTorBrowserTest, OpenCloseDisableTorWindow) {
-  EXPECT_FALSE(TorProfileServiceFactory::IsTorDisabled(browser()->profile()));
+  EXPECT_FALSE(
+      TorProfileServiceFactory::IsTorDisabled(browser()->GetProfile()));
   DownloadTorClient();
 
   // Open Tor window, wait for the Tor process to start.
@@ -249,7 +250,8 @@ IN_PROC_BROWSER_TEST_F(BraveTorBrowserTest, OpenCloseDisableTorWindow) {
   // Disable tor, expect executables are removed.
   {
     TorProfileServiceFactory::SetTorDisabled(true);
-    EXPECT_TRUE(TorProfileServiceFactory::IsTorDisabled(browser()->profile()));
+    EXPECT_TRUE(
+        TorProfileServiceFactory::IsTorDisabled(browser()->GetProfile()));
 
     WaitForUpdaterThread(g_brave_browser_process->tor_client_updater());
     content::RunAllTasksUntilIdle();
@@ -284,7 +286,8 @@ class BraveTorWithCustomProfileBrowserTest : public BraveTorBrowserTest {
 #endif
 IN_PROC_BROWSER_TEST_F(BraveTorWithCustomProfileBrowserTest,
                        MAYBE_PRE_SetupBridges) {
-  EXPECT_FALSE(TorProfileServiceFactory::IsTorDisabled(browser()->profile()));
+  EXPECT_FALSE(
+      TorProfileServiceFactory::IsTorDisabled(browser()->GetProfile()));
   DownloadTorClient();
 
   // No bridges by default.
@@ -335,7 +338,7 @@ IN_PROC_BROWSER_TEST_F(BraveTorWithCustomProfileBrowserTest,
 
   // Disable tor.
   TorProfileServiceFactory::SetTorDisabled(true);
-  EXPECT_TRUE(TorProfileServiceFactory::IsTorDisabled(browser()->profile()));
+  EXPECT_TRUE(TorProfileServiceFactory::IsTorDisabled(browser()->GetProfile()));
   WaitForUpdaterThread(g_brave_browser_process->tor_client_updater());
   WaitForUpdaterThread(
       g_brave_browser_process->tor_pluggable_transport_updater());
@@ -362,8 +365,9 @@ IN_PROC_BROWSER_TEST_F(BraveTorWithCustomProfileBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(BraveTorWithCustomProfileBrowserTest, Incognito) {
-  EXPECT_FALSE(TorProfileServiceFactory::IsTorDisabled(browser()->profile()));
-  EXPECT_FALSE(TorProfileServiceFactory::IsTorManaged(browser()->profile()));
+  EXPECT_FALSE(
+      TorProfileServiceFactory::IsTorDisabled(browser()->GetProfile()));
+  EXPECT_FALSE(TorProfileServiceFactory::IsTorManaged(browser()->GetProfile()));
 
   content::WebContents* web_contents = nullptr;
 
@@ -383,11 +387,11 @@ IN_PROC_BROWSER_TEST_F(BraveTorWithCustomProfileBrowserTest, Incognito) {
 
   // Disable incognito mode for this profile.
   IncognitoModePrefs::SetAvailability(
-      browser()->profile()->GetPrefs(),
+      browser()->GetProfile()->GetPrefs(),
       policy::IncognitoModeAvailability::kDisabled);
 
-  EXPECT_TRUE(TorProfileServiceFactory::IsTorDisabled(browser()->profile()));
-  EXPECT_TRUE(TorProfileServiceFactory::IsTorManaged(browser()->profile()));
+  EXPECT_TRUE(TorProfileServiceFactory::IsTorDisabled(browser()->GetProfile()));
+  EXPECT_TRUE(TorProfileServiceFactory::IsTorManaged(browser()->GetProfile()));
 
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(),
                                            GURL("brave://settings/privacy")));
@@ -405,17 +409,17 @@ IN_PROC_BROWSER_TEST_F(BraveTorWithCustomProfileBrowserTest, Incognito) {
 
   // Force incognito mode.
   IncognitoModePrefs::SetAvailability(
-      browser()->profile()->GetPrefs(),
+      browser()->GetProfile()->GetPrefs(),
       policy::IncognitoModeAvailability::kForced);
-  EXPECT_TRUE(TorProfileServiceFactory::IsTorDisabled(browser()->profile()));
-  EXPECT_TRUE(TorProfileServiceFactory::IsTorManaged(browser()->profile()));
+  EXPECT_TRUE(TorProfileServiceFactory::IsTorDisabled(browser()->GetProfile()));
+  EXPECT_TRUE(TorProfileServiceFactory::IsTorManaged(browser()->GetProfile()));
 
   tor_profile = OpenTorWindow();
   EXPECT_EQ(nullptr, tor_profile);
 
   // Allow incognito.
   IncognitoModePrefs::SetAvailability(
-      browser()->profile()->GetPrefs(),
+      browser()->GetProfile()->GetPrefs(),
       policy::IncognitoModeAvailability::kEnabled);
   tor_profile = OpenTorWindow();
   EXPECT_NE(nullptr, tor_profile);
@@ -435,8 +439,8 @@ IN_PROC_BROWSER_TEST_F(BraveTorWithCustomProfileBrowserTest, Incognito) {
 IN_PROC_BROWSER_TEST_F(BraveTorWithCustomProfileBrowserTest, Autofill) {
   GURL fake_url("http://brave.com/");
   // Disable autofill in private windows.
-  browser()->profile()->GetPrefs()->SetBoolean(kBraveAutofillPrivateWindows,
-                                               false);
+  browser()->GetProfile()->GetPrefs()->SetBoolean(kBraveAutofillPrivateWindows,
+                                                  false);
   auto* tor_profile = OpenTorWindow();
   EXPECT_NE(nullptr, tor_profile);
   EXPECT_TRUE(tor_profile->IsTor());
@@ -447,8 +451,8 @@ IN_PROC_BROWSER_TEST_F(BraveTorWithCustomProfileBrowserTest, Autofill) {
   TestAutofillInWindow(web_contents, fake_url, false);
 
   // Enable autofill in private windows.
-  browser()->profile()->GetPrefs()->SetBoolean(kBraveAutofillPrivateWindows,
-                                               true);
+  browser()->GetProfile()->GetPrefs()->SetBoolean(kBraveAutofillPrivateWindows,
+                                                  true);
   web_contents->GetController().Reload(content::ReloadType::NORMAL, true);
   EXPECT_TRUE(content::WaitForLoadStop(web_contents));
   TestAutofillInWindow(web_contents, fake_url, true);
@@ -460,7 +464,8 @@ IN_PROC_BROWSER_TEST_F(BraveTorWithCustomProfileBrowserTest, Autofill) {
 #define MAYBE_PRE_ResetBridges PRE_ResetBridges
 #endif
 IN_PROC_BROWSER_TEST_F(BraveTorBrowserTest, MAYBE_PRE_ResetBridges) {
-  EXPECT_FALSE(TorProfileServiceFactory::IsTorDisabled(browser()->profile()));
+  EXPECT_FALSE(
+      TorProfileServiceFactory::IsTorDisabled(browser()->GetProfile()));
   DownloadTorClient();
   DownloadTorPluggableTransports();
 
@@ -500,21 +505,22 @@ IN_PROC_BROWSER_TEST_F(BraveTorBrowserTest, MAYBE_ResetBridges) {
 
 IN_PROC_BROWSER_TEST_F(BraveTorBrowserTest, HttpAllowlistIsolation) {
   // Normal window
-  Profile* main_profile = browser()->profile();
+  Profile* main_profile = browser()->GetProfile();
   auto* main_storage_partition = main_profile->GetDefaultStoragePartition();
   content::SSLHostStateDelegate* main_state =
       main_profile->GetSSLHostStateDelegate();
 
   // Incognito window
   Browser* incognito_browser = CreateIncognitoBrowser(nullptr);
-  Profile* incognito_profile = incognito_browser->profile();
+  Profile* incognito_profile = incognito_browser->GetProfile();
   auto* incognito_storage_partition =
       incognito_profile->GetDefaultStoragePartition();
   content::SSLHostStateDelegate* incognito_state =
       incognito_profile->GetSSLHostStateDelegate();
 
   // Tor window
-  EXPECT_FALSE(TorProfileServiceFactory::IsTorDisabled(browser()->profile()));
+  EXPECT_FALSE(
+      TorProfileServiceFactory::IsTorDisabled(browser()->GetProfile()));
   DownloadTorClient();
   auto tor = WaitForTorLaunched();
   Profile* tor_profile = tor.tor_profile;
@@ -580,7 +586,8 @@ class BraveTorBrowserTest_EnableTorHttpsOnlyFlag
 
 IN_PROC_BROWSER_TEST_P(BraveTorBrowserTest_EnableTorHttpsOnlyFlag,
                        TorWindowHttpsOnly) {
-  EXPECT_FALSE(TorProfileServiceFactory::IsTorDisabled(browser()->profile()));
+  EXPECT_FALSE(
+      TorProfileServiceFactory::IsTorDisabled(browser()->GetProfile()));
   DownloadTorClient();
 
   Profile* tor_profile = OpenTorWindow();
@@ -601,8 +608,8 @@ IN_PROC_BROWSER_TEST_F(BraveTorBrowserTest,
   TorProfileServiceFactory::SetTorDisabled(true);
 
   // Verify Tor is disabled but NOT managed by policy
-  EXPECT_TRUE(TorProfileServiceFactory::IsTorDisabled(browser()->profile()));
-  EXPECT_FALSE(TorProfileServiceFactory::IsTorManaged(browser()->profile()));
+  EXPECT_TRUE(TorProfileServiceFactory::IsTorDisabled(browser()->GetProfile()));
+  EXPECT_FALSE(TorProfileServiceFactory::IsTorManaged(browser()->GetProfile()));
 
   // Navigate to settings page
   ASSERT_TRUE(

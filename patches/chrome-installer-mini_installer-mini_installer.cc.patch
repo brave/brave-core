@@ -1,8 +1,8 @@
 diff --git a/chrome/installer/mini_installer/mini_installer.cc b/chrome/installer/mini_installer/mini_installer.cc
-index 6aae112356a1a1fd619055817675dc24ea845330..c952529a46d5931689f12c7d724c86a0e164534e 100644
+index 6c1cf196a2fbec57de2e4a301ad213de8158d2ac..1662019b86a67267aee7f733d790e2031f3264bf 100644
 --- a/chrome/installer/mini_installer/mini_installer.cc
 +++ b/chrome/installer/mini_installer/mini_installer.cc
-@@ -462,6 +462,7 @@ ProcessExitResult UnpackBinaryResources(HMODULE module,
+@@ -459,6 +459,7 @@ ProcessExitResult UnpackBinaryResources(HMODULE module,
    }
  #endif  // defined(COMPONENT_BUILD)
  
@@ -10,7 +10,7 @@ index 6aae112356a1a1fd619055817675dc24ea845330..c952529a46d5931689f12c7d724c86a0
    return exit_code;
  }
  
-@@ -475,6 +476,7 @@ ProcessExitResult RunSetup(const Configuration& configuration,
+@@ -472,6 +473,7 @@ ProcessExitResult RunSetup(const Configuration& configuration,
    if (!setup_exe.assign(setup_path)) {
      return ProcessExitResult(COMMAND_STRING_OVERFLOW);
    }
@@ -18,7 +18,7 @@ index 6aae112356a1a1fd619055817675dc24ea845330..c952529a46d5931689f12c7d724c86a0
  
    // There could be three full paths in the command line for setup.exe (path
    // to exe itself, path to archive and path to log file), so we declare
-@@ -499,6 +501,7 @@ ProcessExitResult RunSetup(const Configuration& configuration,
+@@ -496,6 +498,7 @@ ProcessExitResult RunSetup(const Configuration& configuration,
    // on to setup.exe
    AppendCommandLineFlags(configuration.command_line(), &cmd_line);
  
@@ -26,7 +26,7 @@ index 6aae112356a1a1fd619055817675dc24ea845330..c952529a46d5931689f12c7d724c86a0
    return RunProcessAndWait(setup_exe.get(), cmd_line.get(),
                             RUN_SETUP_FAILED_FILE_NOT_FOUND,
                             RUN_SETUP_FAILED_PATH_NOT_FOUND,
-@@ -729,6 +732,7 @@ ProcessExitResult WMain(HMODULE module) {
+@@ -726,6 +729,7 @@ ProcessExitResult WMain(HMODULE module) {
    if (!GetWorkDir(module, &base_path, &exit_code)) {
      return exit_code;
    }
@@ -34,7 +34,7 @@ index 6aae112356a1a1fd619055817675dc24ea845330..c952529a46d5931689f12c7d724c86a0
  
    int max_delete_attempts = 0;
    PathString setup_path;
-@@ -738,6 +742,7 @@ ProcessExitResult WMain(HMODULE module) {
+@@ -735,6 +739,7 @@ ProcessExitResult WMain(HMODULE module) {
    exit_code =
        UnpackBinaryResources(module, base_path.get(), setup_path, archive_path,
                              archive_type, max_delete_attempts);

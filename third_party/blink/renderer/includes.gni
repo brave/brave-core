@@ -69,6 +69,12 @@ brave_static_idl_files_in_modules = [
   "//brave/third_party/blink/renderer/modules/global_privacy_control/worker_navigator_global_privacy_control.idl",
 ]
 
+# We ship our own Navigator/WorkerNavigator globalPrivacyControl bindings which
+# are gated on the user-facing GPC setting rather than upstream's feature flag,
+# so we drop the upstream mixin IDL to avoid duplicate generated attribute
+# callbacks.
+brave_static_idl_files_to_exclude_in_modules = [ "//third_party/blink/renderer/modules/global_privacy_control/navigator_global_privacy_control.idl" ]
+
 # common includes which can help minimize patches for
 # third_party/blink/renderer/bindings/generated_in_modules.gni
 brave_generated_interface_sources_in_modules = [

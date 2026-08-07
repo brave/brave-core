@@ -4,6 +4,42 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 substitutions:
-  - description: 'Remove final from AppMenu to allow subclassing'
+  - description: |
+      Drop `final` from AppMenu.
+
+      Brave subclasses AppMenu as BraveAppMenu, so the class can't be final.
     drop_final:
       class_name: AppMenu
+
+  - description: |
+      Make RunMenu virtual.
+
+      BraveAppMenu overrides RunMenu to record menu usage for P3A. Both
+      overloads must be virtual.
+    count: 2
+    make_virtual:
+      class_name: AppMenu
+      method_name: RunMenu
+
+  - description: |
+      Befriend BraveAppMenu.
+
+      Lets the Brave subclass reach AppMenu internals.
+    add_friend:
+      class_name: AppMenu
+      friend_type: class BraveAppMenu
+
+  - description: |
+      Declare Brave's in-menu button background helper on AppMenu.
+
+      BraveAppMenu's sidebar rows call
+      CreateInMenuButtonBackgroundWithLeadingBorder() (defined in the
+      chromium_src override) to build a leading-border background.
+    regex:
+      re_pattern: |-
+        ~AppMenu\(\) override;
+      replace: |-
+        ~AppMenu() override;
+
+          std::unique_ptr<views::Background>
+          CreateInMenuButtonBackgroundWithLeadingBorder();

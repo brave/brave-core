@@ -30,24 +30,16 @@ public class WalletUtils {
     private static final String TAG = "WalletUtils";
 
     private static String getNewAccountPrefixForCoin(@CoinType.EnumType final int coinType) {
-        switch (coinType) {
-            case CoinType.ETH -> {
-                return "Ethereum";
-            }
-            case CoinType.SOL -> {
-                return "Solana";
-            }
-            case CoinType.FIL -> {
-                return "Filecoin";
-            }
-            case CoinType.BTC -> {
-                return "Bitcoin";
-            }
+        return switch (coinType) {
+            case CoinType.ETH -> "Ethereum";
+            case CoinType.SOL -> "Solana";
+            case CoinType.FIL -> "Filecoin";
+            case CoinType.BTC -> "Bitcoin";
             default -> {
                 assert false;
-                return "";
+                yield "";
             }
-        }
+        };
     }
 
     /**

@@ -20,6 +20,18 @@
   <message name="IDS_PAGE_INFO_SAFE_BROWSING_SUMMARY" desc="A one-line summary at the top of the Page Info bubble (which shows when you click the security indicator) if the current website has been flagged as unsafe.">
     Dangerous site
   </message>
+  <message name="IDS_PAGE_INFO_SUSPICIOUS_SITE_SUMMARY" desc="Title of the page info bubble for a suspicious site (e.g. associated with phishing or malware).">
+    Be careful on this site
+  </message>
+  <message name="IDS_PAGE_INFO_SUSPICIOUS_SITE_DETAILS" desc="Description of the page info bubble for a suspicious site.">
+    Brave has detected details that are common on sites associated with phishing, malware, or scams. <ph name="BEGIN_LINK">&lt;link&gt;<ex>&lt;link&gt;</ex></ph>Learn more<ph name="END_LINK">&lt;/link&gt;<ex>&lt;/link&gt;</ex></ph>
+  </message>
+  <message name="IDS_PAGE_INFO_SUSPICIOUS_SITE_BUTTON_MARK_AS_SAFE" desc="Button text to mark a suspicious site as safe." formatter_data="android_java">
+    Mark as safe
+  </message>
+  <message name="IDS_PAGE_INFO_SUSPICIOUS_SITE_BUTTON_BACK_TO_SAFETY" desc="Button text to leave a suspicious site." formatter_data="android_java">
+    Back to safety
+  </message>
 
   <!-- Internal page summary strings -->
   <!-- Note: IDS_PAGE_INFO_INTERNAL_PAGE would be here, but it is in components_{chromium,google_chrome}_strings.grd because it uses the browser name. -->
@@ -775,20 +787,44 @@
     <message name="IDS_CERT_EKU_TIME_STAMPING" desc="description of extended key usage Time Stamping">
       Time Stamping
     </message>
-    <message name="IDS_CERT_EKU_TLS_WEB_SERVER_AUTHENTICATION" desc="description of extended key usage TLS WWW Server Authentication">
-      TLS WWW Server Authentication
-    </message>
-    <message name="IDS_CERT_EKU_TLS_WEB_CLIENT_AUTHENTICATION" desc="description of extended key usage TLS WWW Client Authentication">
-      TLS WWW Client Authentication
-    </message>
-    <message name="IDS_CERT_EKU_OCSP_SIGNING" desc="description of extended key usage Signing OCSP Responses">
-      Signing OCSP Responses
-    </message>
+    <if expr="is_ios">
+      <then>
+        <message name="IDS_CERT_EKU_TLS_WEB_SERVER_AUTHENTICATION" desc="description of extended key usage Server Authentication">
+          Server Authentication
+        </message>
+        <message name="IDS_CERT_EKU_TLS_WEB_CLIENT_AUTHENTICATION" desc="description of extended key usage Client Authentication">
+          Client Authentication
+        </message>
+        <message name="IDS_CERT_EKU_OCSP_SIGNING" desc="description of extended key usage OCSP Signing">
+          OCSP Signing
+        </message>
+      </then>
+      <else>
+        <message name="IDS_CERT_EKU_TLS_WEB_SERVER_AUTHENTICATION" desc="description of extended key usage TLS WWW Server Authentication">
+          TLS WWW Server Authentication
+        </message>
+        <message name="IDS_CERT_EKU_TLS_WEB_CLIENT_AUTHENTICATION" desc="description of extended key usage TLS WWW Client Authentication">
+          TLS WWW Client Authentication
+        </message>
+        <message name="IDS_CERT_EKU_OCSP_SIGNING" desc="description of extended key usage Signing OCSP Responses">
+          Signing OCSP Responses
+        </message>
+      </else>
+    </if>
 
     <!-- Certificate Key Usage strings shared across platforms -->
-    <message name="IDS_CERT_X509_KEY_USAGE_SIGNING" desc="description of certificate usage Signing">
-      Signing
-    </message>
+    <if expr="is_ios">
+      <then>
+        <message name="IDS_CERT_X509_KEY_USAGE_SIGNING" desc="description of certificate usage Digital Signature">
+          Digital Signature
+        </message>
+      </then>
+      <else>
+        <message name="IDS_CERT_X509_KEY_USAGE_SIGNING" desc="description of certificate usage Signing">
+          Signing
+        </message>
+      </else>
+    </if>
     <message name="IDS_CERT_X509_KEY_USAGE_NONREP" desc="description of certificate usage Non-repudiation">
       Non-repudiation
     </message>
@@ -903,9 +939,6 @@
   </message>
   <message name="IDS_PAGE_INFO_COOKIES_SITE_NOT_WORKING_TITLE" desc="A heading in the page info bubble guiding the user where to go if the site they're on appears broken because of a third-party cookie dependency">
     Site not working?
-  </message>
-  <message name="IDS_PAGE_INFO_TRACKING_PROTECTION_SITE_NOT_WORKING_DESCRIPTION_TEMPORARY" desc="Descriptive text in the page info bubble explaining the trade-off of temporarily allowing third-party cookies for this site, a change that will automatically expire in the future.">
-    Try temporarily allowing third-party cookies, which means less browsing protection but site features are more likely to work as expected.
   </message>
   <message name="IDS_PAGE_INFO_COOKIES_SITE_NOT_WORKING_DESCRIPTION_PERMANENT" desc="Descriptive text in the page info third-party cookies subpage explaining the trade-off of allowing third-party cookies for this site.">
     Try allowing third-party cookies, which means less browsing protection but site features are more likely to work as expected.

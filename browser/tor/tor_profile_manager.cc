@@ -208,8 +208,8 @@ Browser* TorProfileManager::SwitchToTorProfile(
   }
   if (browser) {
     TorTabNavigator::Navigate(browser, url, initiator_origin);
-    browser->window()->Activate();
-    browser->window()->Show();
+    BrowserWindow::FromBrowser(browser)->Activate();
+    BrowserWindow::FromBrowser(browser)->Show();
   }
   return browser;
 }

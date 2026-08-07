@@ -79,17 +79,17 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderP3ATest, DefaultSearchEngineP3A) {
                                         INT_MAX - 1, 1);
 
   auto* service =
-      TemplateURLServiceFactory::GetForProfile(browser()->profile());
+      TemplateURLServiceFactory::GetForProfile(browser()->GetProfile());
   search_test_utils::WaitForTemplateURLServiceToLoad(service);
 
   auto regional_engines =
       regional_capabilities::RegionalCapabilitiesServiceFactory::GetForProfile(
-          browser()->profile())
+          browser()->GetProfile())
           ->GetRegionalPrepopulatedEngines();
 
   // Check that changing the default engine triggers emitting of a new value.
   auto ddg_data = TemplateURLPrepopulateData::GetPrepopulatedEngine(
-      *browser()->profile()->GetPrefs(), regional_engines,
+      *browser()->GetProfile()->GetPrefs(), regional_engines,
       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO);
   TemplateURL ddg_url(*ddg_data);
 
@@ -105,7 +105,7 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderP3ATest, DefaultSearchEngineP3A) {
                                         INT_MAX - 1, 2);
 
   // Enable Rewards and check metrics switch
-  PrefService* prefs = browser()->profile()->GetPrefs();
+  PrefService* prefs = browser()->GetProfile()->GetPrefs();
   prefs->SetBoolean(brave_rewards::prefs::kEnabled, true);
 
   // Now Rewards metric should have the value and NonRewards should be
@@ -127,7 +127,7 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderP3ATest, DefaultSearchEngineP3A) {
 
   // Check switching back to original engine.
   auto brave_data = TemplateURLPrepopulateData::GetPrepopulatedEngine(
-      *browser()->profile()->GetPrefs(), regional_engines,
+      *browser()->GetProfile()->GetPrefs(), regional_engines,
       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE);
   TemplateURL brave_url(*brave_data);
   service->SetUserSelectedDefaultSearchProvider(&brave_url);
@@ -175,16 +175,16 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderP3ATest, SwitchSearchEngineP3A) {
 
   // Load service for switching the default search engine.
   auto* service =
-      TemplateURLServiceFactory::GetForProfile(browser()->profile());
+      TemplateURLServiceFactory::GetForProfile(browser()->GetProfile());
   search_test_utils::WaitForTemplateURLServiceToLoad(service);
 
   auto regional_engines =
       regional_capabilities::RegionalCapabilitiesServiceFactory::GetForProfile(
-          browser()->profile())
+          browser()->GetProfile())
           ->GetRegionalPrepopulatedEngines();
   // Check that changing the default engine triggers emission of a new value.
   auto ddg_data = TemplateURLPrepopulateData::GetPrepopulatedEngine(
-      *browser()->profile()->GetPrefs(), regional_engines,
+      *browser()->GetProfile()->GetPrefs(), regional_engines,
       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO);
   TemplateURL ddg_url(*ddg_data);
 
@@ -195,7 +195,7 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderP3ATest, SwitchSearchEngineP3A) {
 
   // Check additional changes.
   auto brave_data = TemplateURLPrepopulateData::GetPrepopulatedEngine(
-      *browser()->profile()->GetPrefs(), regional_engines,
+      *browser()->GetProfile()->GetPrefs(), regional_engines,
       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE);
   TemplateURL brave_url(*brave_data);
 
@@ -205,7 +205,7 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderP3ATest, SwitchSearchEngineP3A) {
 
   // Check additional changes.
   auto bing_data = TemplateURLPrepopulateData::GetPrepopulatedEngine(
-      *browser()->profile()->GetPrefs(), regional_engines,
+      *browser()->GetProfile()->GetPrefs(), regional_engines,
       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BING);
   TemplateURL bing_url(*bing_data);
 
@@ -234,7 +234,7 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderP3ATest, WebDiscoveryEnabledP3A) {
   histogram_tester_->ExpectUniqueSample(kWebDiscoveryDefaultEngineMetric,
                                         INT_MAX - 1, 1);
 
-  PrefService* prefs = browser()->profile()->GetPrefs();
+  PrefService* prefs = browser()->GetProfile()->GetPrefs();
   prefs->SetBoolean(kWebDiscoveryEnabled, true);
 
   histogram_tester_->ExpectBucketCount(kWebDiscoveryEnabledMetric, 1, 1);
@@ -243,16 +243,16 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderP3ATest, WebDiscoveryEnabledP3A) {
 
   // Test changing search engine while web discovery is enabled
   auto* service =
-      TemplateURLServiceFactory::GetForProfile(browser()->profile());
+      TemplateURLServiceFactory::GetForProfile(browser()->GetProfile());
   search_test_utils::WaitForTemplateURLServiceToLoad(service);
 
   auto regional_engines =
       regional_capabilities::RegionalCapabilitiesServiceFactory::GetForProfile(
-          browser()->profile())
+          browser()->GetProfile())
           ->GetRegionalPrepopulatedEngines();
 
   auto ddg_data = TemplateURLPrepopulateData::GetPrepopulatedEngine(
-      *browser()->profile()->GetPrefs(), regional_engines,
+      *browser()->GetProfile()->GetPrefs(), regional_engines,
       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO);
   TemplateURL ddg_url(*ddg_data);
   service->SetUserSelectedDefaultSearchProvider(&ddg_url);

@@ -100,7 +100,7 @@ class JSEthereumProviderBrowserTest : public InProcessBrowserTest {
 
   void SetUpOnMainThread() override {
     brave_wallet::SetDefaultEthereumWallet(
-        browser()->profile()->GetPrefs(),
+        browser()->GetProfile()->GetPrefs(),
         brave_wallet::mojom::DefaultWallet::BraveWallet);
     InProcessBrowserTest::SetUpOnMainThread();
 
@@ -134,12 +134,12 @@ class JSEthereumProviderBrowserTest : public InProcessBrowserTest {
 
   brave_wallet::JsonRpcService* GetJsonRpcService() {
     return brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
-               browser()->profile())
+               browser()->GetProfile())
         ->json_rpc_service();
   }
   brave_wallet::KeyringService* GetKeyringService() {
     return brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
-               browser()->profile())
+               browser()->GetProfile())
         ->keyring_service();
   }
 
@@ -151,7 +151,7 @@ class JSEthereumProviderBrowserTest : public InProcessBrowserTest {
 
 IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, AttachOnReload) {
   brave_wallet::SetDefaultEthereumWallet(
-      browser()->profile()->GetPrefs(),
+      browser()->GetProfile()->GetPrefs(),
       brave_wallet::mojom::DefaultWallet::None);
   const GURL url = https_server_.GetURL("/simple.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
@@ -163,7 +163,7 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, AttachOnReload) {
   EXPECT_EQ(browser()->tab_strip_model()->count(), 1);
 
   brave_wallet::SetDefaultEthereumWallet(
-      browser()->profile()->GetPrefs(),
+      browser()->GetProfile()->GetPrefs(),
       brave_wallet::mojom::DefaultWallet::BraveWallet);
   ReloadAndWaitForLoadStop();
 
@@ -176,7 +176,7 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, AttachOnReload) {
   EXPECT_TRUE(content::EvalJs(primary_main_frame(), overwrite).is_ok());
   ASSERT_TRUE(content::EvalJs(primary_main_frame(), command).ExtractBool());
   brave_wallet::SetDefaultEthereumWallet(
-      browser()->profile()->GetPrefs(),
+      browser()->GetProfile()->GetPrefs(),
       brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension);
   ReloadAndWaitForLoadStop();
   // overwrite successfully
@@ -187,7 +187,7 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, AttachOnReload) {
 IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest,
                        DoNotAttachToChromePages) {
   brave_wallet::SetDefaultEthereumWallet(
-      browser()->profile()->GetPrefs(),
+      browser()->GetProfile()->GetPrefs(),
       brave_wallet::mojom::DefaultWallet::None);
   ASSERT_TRUE(
       ui_test_utils::NavigateToURL(browser(), GURL("chrome://newtab/")));
@@ -212,7 +212,7 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest,
 
   EXPECT_EQ(browser()->tab_strip_model()->count(), 1);
   brave_wallet::SetDefaultEthereumWallet(
-      browser()->profile()->GetPrefs(),
+      browser()->GetProfile()->GetPrefs(),
       brave_wallet::mojom::DefaultWallet::BraveWallet);
   ReloadAndWaitForLoadStop();
 
@@ -242,7 +242,7 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest,
   GetKeyringService()->Reset(false);
 
   brave_wallet::SetDefaultEthereumWallet(
-      browser()->profile()->GetPrefs(),
+      browser()->GetProfile()->GetPrefs(),
       brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension);
 
   const GURL url = https_server_.GetURL("/simple.html");
@@ -268,7 +268,7 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, AttachIfWalletCreated) {
   GetKeyringService()->CreateWallet("password", base::DoNothing());
 
   brave_wallet::SetDefaultEthereumWallet(
-      browser()->profile()->GetPrefs(),
+      browser()->GetProfile()->GetPrefs(),
       brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension);
 
   const GURL url = https_server_.GetURL("/simple.html");
@@ -294,7 +294,7 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest,
   GetKeyringService()->CreateWallet("password", base::DoNothing());
 
   brave_wallet::SetDefaultEthereumWallet(
-      browser()->profile()->GetPrefs(),
+      browser()->GetProfile()->GetPrefs(),
       brave_wallet::mojom::DefaultWallet::None);
 
   const GURL url = https_server_.GetURL("/simple.html");
@@ -321,7 +321,7 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, EIP6369) {
   GetKeyringService()->CreateWallet("password", base::DoNothing());
 
   brave_wallet::SetDefaultEthereumWallet(
-      browser()->profile()->GetPrefs(),
+      browser()->GetProfile()->GetPrefs(),
       brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension);
 
   const GURL url = https_server_.GetURL("/simple.html");
@@ -341,11 +341,11 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest,
       extensions::ExtensionBuilder("MetaMask")
           .SetID(brave_wallet::kMetamaskExtensionId)
           .Build());
-  extensions::ExtensionRegistrar::Get(browser()->profile())
+  extensions::ExtensionRegistrar::Get(browser()->GetProfile())
       ->AddExtension(extension);
 
   brave_wallet::SetDefaultEthereumWallet(
-      browser()->profile()->GetPrefs(),
+      browser()->GetProfile()->GetPrefs(),
       brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension);
 
   const GURL url = https_server_.GetURL("/simple.html");
@@ -371,11 +371,11 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest,
       extensions::ExtensionBuilder("MetaMask")
           .SetID(brave_wallet::kMetamaskExtensionId)
           .Build());
-  extensions::ExtensionRegistrar::Get(browser()->profile())
+  extensions::ExtensionRegistrar::Get(browser()->GetProfile())
       ->AddExtension(extension);
 
   brave_wallet::SetDefaultEthereumWallet(
-      browser()->profile()->GetPrefs(),
+      browser()->GetProfile()->GetPrefs(),
       brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension);
 
   const GURL url = https_server_.GetURL("/simple.html");
@@ -464,7 +464,7 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, IsMetaMaskWritable) {
 
 IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, NonConfigurable) {
   brave_wallet::SetDefaultEthereumWallet(
-      browser()->profile()->GetPrefs(),
+      browser()->GetProfile()->GetPrefs(),
       brave_wallet::mojom::DefaultWallet::BraveWallet);
   const GURL url = https_server_.GetURL("/simple.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
@@ -486,7 +486,7 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest,
       brave_wallet::mojom::DefaultWallet::BraveWallet,
       brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension};
   for (const auto& default_wallet : non_configurable_states) {
-    brave_wallet::SetDefaultEthereumWallet(browser()->profile()->GetPrefs(),
+    brave_wallet::SetDefaultEthereumWallet(browser()->GetProfile()->GetPrefs(),
                                            default_wallet);
     const GURL url = https_server_.GetURL("/simple.html");
     ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
@@ -505,7 +505,7 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, OnlyWriteOwnProperty) {
   brave_wallet::SetDefaultEthereumWallet(
-      browser()->profile()->GetPrefs(),
+      browser()->GetProfile()->GetPrefs(),
       brave_wallet::mojom::DefaultWallet::BraveWallet);
   const GURL url = https_server_.GetURL("/simple.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
@@ -523,7 +523,7 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, OnlyWriteOwnProperty) {
             "0xaa36a7");
 
   brave_wallet::SetDefaultEthereumWallet(
-      browser()->profile()->GetPrefs(),
+      browser()->GetProfile()->GetPrefs(),
       brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension);
   ReloadAndWaitForLoadStop();
   ASSERT_EQ(content::EvalJs(

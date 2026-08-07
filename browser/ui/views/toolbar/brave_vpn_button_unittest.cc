@@ -81,8 +81,8 @@ class BraveVpnButtonUnitTest : public testing::Test {
         ->SetBraveVPNConnectionManagerForTesting(std::move(manager));
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN_V1)
     ASSERT_TRUE(brave_vpn::BraveVpnServiceFactory::GetForProfile(
-        GetBrowser()->profile()));
-    ASSERT_TRUE(ThemeServiceFactory::GetForProfile(profile()));
+        GetBrowser()->GetProfile()));
+    ASSERT_TRUE(ThemeServiceFactory::GetForProfile(GetBrowser()->GetProfile()));
     button_ = std::make_unique<BraveVPNButton>(GetBrowser());
   }
 

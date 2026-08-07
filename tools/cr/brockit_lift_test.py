@@ -1665,6 +1665,22 @@ class LiftPlasterTest(LiftTestCase):
             [FOO_PATCH])
         self.assertEqual(record.plaster_fixed_patches, [])
 
+    def test_continue_with_an_unfixed_plaster_is_reported(self):
+        """Continuing without having fixed the plaster is reported as a
+        regular failure, rather than a raw plaster exception escaping the
+        lift."""
+        self.env.add_plaster_for_foo()
+        self._release_reworking_the_patched_line(
+            f'  {self.RENAMED_SYMBOL} thing;  // upstream rework')
+        self.env.run_lift(f'--to={MAJOR_TARGET}')
+
+        run = self.env.run_lift(f'--to={MAJOR_TARGET}', '--continue')
+
+        self.assert_failed(
+            run, 'Plaster file has not been fixed and re-applied: '
+            f'{self.env.brave_path(FOO_PLASTER)}',
+            'Unexpected number of matches (0 vs 1)')
+
     def test_continue_with_the_plaster_deleted_but_the_patch_kept(self):
         """Dropping the plaster file means dropping the patch it owns; keeping
         one without the other is refused."""
@@ -1694,6 +1710,93 @@ class LiftPlasterTest(LiftTestCase):
         self.assert_succeeded(run)
         self.assertIn(f'  {BRAVE_SYMBOL} thing;  // upstream rework',
                       self.env.read_source(FOO))
+
+
+class LiftOrphanedPlasterTest(LiftTestCase):
+    """A plaster-managed patch whose source upstream deletes entirely.
+
+    The plaster's target is gone, not just changed, so there is nothing for
+    plaster to re-match against: the patch is reported both as deleted and as
+    an orphaned plaster.
+    """
+
+    def _release_deleting_foo(self) -> None:
+        with self.env.upstream_release(MAJOR_TARGET) as upstream:
+            upstream.delete(FOO)
+
+    def test_orphaned_plaster_is_reported_alongside_the_deletion(self):
+        self.env.add_plaster_for_foo()
+        self._release_deleting_foo()
+
+        run = self.env.run_lift(f'--to={MAJOR_TARGET}')
+
+        self.assertEqual(run.exit_code, 1)
+        self.assert_output_has(
+            run, '* Files that cannot be patched anymore (action needed):',
+            f'    ✘ {FOO} (deleted)',
+            '* Plaster failed to fix patches (action needed):',
+            f'    ✘ {self.env.brave_path(FOO_PLASTER)} (orphaned)')
+
+    def test_orphaned_plaster_opens_only_the_plaster_in_the_editor(self):
+        """There is no source left to open alongside it, unlike a plaster
+        whose source still exists (see `LiftPlasterTest`)."""
+        self.env.add_plaster_for_foo()
+        self._release_deleting_foo()
+
+        self.env.run_lift(f'--to={MAJOR_TARGET}')
+
+        self.assertEqual(self.env.vscode_files(), [
+            FOO_PATCH,
+            Path(self.env.brave_path(FOO_PLASTER)).as_posix(),
+        ])
+
+    def test_orphaned_plaster_is_recorded_in_the_continuation_file(self):
+        self.env.add_plaster_for_foo()
+        self._release_deleting_foo()
+
+        self.env.run_lift(f'--to={MAJOR_TARGET}')
+
+        record = self.env.continuation(MAJOR_TARGET).apply_record
+        self.assertEqual(
+            [patch.path.as_posix() for patch in record.plaster_broken_patches],
+            [FOO_PATCH])
+        self.assertEqual([
+            patch.path.as_posix() for patch in record.patches_to_deleted_files
+        ], [FOO_PATCH])
+
+    def test_continue_without_removing_the_orphaned_plaster_is_rejected(self):
+        self.env.add_plaster_for_foo()
+        self._release_deleting_foo()
+        self.env.run_lift(f'--to={MAJOR_TARGET}')
+
+        run = self.env.run_lift(f'--to={MAJOR_TARGET}', '--continue')
+
+        self.assert_failed(
+            run, 'Plaster file has not been fixed and re-applied: '
+            f'{self.env.brave_path(FOO_PLASTER)}',
+            'Failed to read the source targeted by '
+            f'{self.env.brave_path(FOO_PLASTER)} from git: {FOO}. The '
+            'upstream file may have been moved or deleted')
+
+    def test_continue_after_removing_the_orphaned_plaster_and_patch_finishes(
+            self):
+        """Resolving an orphaned plaster means dropping both the plaster and
+        the patch it owns, the same way a plain deleted patch is dropped."""
+        self.env.add_plaster_for_foo()
+        self._release_deleting_foo()
+        self.env.run_lift(f'--to={MAJOR_TARGET}')
+
+        (self.env.repo.brave / FOO_PLASTER).unlink()
+        self.env.git('add', '--all', 'rewrite')
+        self.env.commit_patch_changes(
+            f'Remove patch and plaster for deleted {FOO}')
+
+        run = self.env.run_lift(f'--to={MAJOR_TARGET}', '--continue',
+                                '--no-conflict-change')
+
+        self.assert_succeeded(run)
+        self.assertFalse((self.env.repo.brave / FOO_PATCH).exists())
+        self.assertFalse((self.env.repo.brave / FOO_PLASTER).exists())
 
 
 class LiftRestartTest(LiftTestCase):
@@ -2084,19 +2187,6 @@ class LiftRoughEdgesTest(LiftTestCase):
             self.env.git(
                 'show', f'{self.env.commit_for("Conflict-resolved")}:'
                 f'{FOO_PATCH}'))
-
-    def test_continue_with_an_unfixed_plaster_raises(self):
-        """A plaster that still does not apply comes back as a plaster error
-        rather than as a message telling the user what to do about it."""
-        self.env.add_plaster_for_foo()
-        with self.env.upstream_release(MAJOR_TARGET) as upstream:
-            upstream.edit(FOO,
-                          line=PATCHED_LINE,
-                          text='  RenamedThing thing;  // upstream rework')
-        self.env.run_lift(f'--to={MAJOR_TARGET}')
-
-        with self.assertRaises(plaster.PlasterApplyError):
-            self.env.run_lift(f'--to={MAJOR_TARGET}', '--continue')
 
     def test_init_failing_during_a_continuation_is_not_handled(self):
         """The `init` run that closes a continuation is not guarded, so a

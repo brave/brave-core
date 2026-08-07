@@ -147,12 +147,12 @@ void EnsureProfileKeyedServiceFactoriesBuilt() {
   IOSPasswordRequirementsServiceFactory::GetInstance();
   IOSUserEventServiceFactory::GetInstance();
   LanguageModelManagerFactory::GetInstance();
-  ListFamilyMembersServiceFactory::GetInstance();
+  supervised_user::ListFamilyMembersServiceFactory::GetInstance();
   OptimizationGuideServiceFactory::GetInstance();
   DataTypeStoreServiceFactory::GetInstance();
   PowerBookmarkServiceFactory::GetInstance();
   PushNotificationProfileServiceFactory::GetInstance();
-  SupervisedUserServiceFactory::GetInstance();
+  supervised_user::SupervisedUserServiceFactory::GetInstance();
   ShareKitServiceFactory::GetInstance();
   SyncServiceFactory::GetInstance();
   TabGroupServiceFactory::GetInstance();
@@ -164,7 +164,7 @@ void EnsureProfileKeyedServiceFactoriesBuilt() {
   SessionRestorationServiceFactory::GetInstance();
   SessionSyncServiceFactory::GetInstance();
   SigninClientFactory::GetInstance();
-  SupervisedUserServiceFactory::GetInstance();
+  supervised_user::SupervisedUserServiceFactory::GetInstance();
   SyncServiceFactory::GetInstance();
   UnifiedConsentServiceFactory::GetInstance();
   UrlLanguageHistogramFactory::GetInstance();

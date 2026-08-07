@@ -57,6 +57,7 @@ source_set("brave_welcome_page") {
     "//chrome/browser/search/background",
     "//chrome/browser/ui/webui:webui_util",
     "//chrome/browser/ui/webui/cr_components/theme_color_picker:impl",
+    "//chrome/browser/ui/webui/settings",
     "//components/country_codes",
     "//components/regional_capabilities",
     "//content/public/browser",

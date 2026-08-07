@@ -28,6 +28,7 @@
 #include "extensions/browser/crx_file_info.h"
 #include "extensions/browser/crx_installer.h"
 #include "extensions/browser/extension_util.h"
+#include "extensions/browser/install_prompt_data.h"
 #include "extensions/common/extension_urls.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "services/network/public/cpp/resource_request.h"
@@ -241,7 +242,10 @@ void ExtensionManifestV2Installer::OnCrxDownloaded(base::FilePath path) {
   if (!silent_) {
     crx_installer_ = extensions::CrxInstaller::Create(
         browser_context_,
-        std::make_unique<ExtensionInstallPrompt>(web_contents_.get()));
+        std::make_unique<ExtensionInstallPrompt>(
+            web_contents_.get(),
+            std::make_unique<extensions::InstallPromptData>(
+                extensions::InstallPromptData::UNSET_PROMPT_TYPE)));
   } else {
     crx_installer_ = extensions::CrxInstaller::CreateSilent(browser_context_);
     crx_installer_->set_allow_silent_install(true);

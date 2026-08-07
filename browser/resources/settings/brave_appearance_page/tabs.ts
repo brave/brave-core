@@ -6,7 +6,7 @@
 import '../settings_shared.css.js'
 import '../settings_vars.css.js'
 
-import {PrefsMixin, PrefsMixinInterface} from '/shared/settings/prefs/prefs_mixin.js';
+import {PrefServiceObserverMixin, PrefServiceObserverMixinInterface} from '/shared/settings/prefs2/pref_service_observer_mixin.js';
 import {I18nMixin, I18nMixinInterface} from 'chrome://resources/cr_elements/i18n_mixin.js'
 import {WebUiListenerMixin, WebUiListenerMixinInterface} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js'
 import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
@@ -18,10 +18,12 @@ import {loadTimeData} from '../i18n_setup.js'
 import {getTemplate} from './tabs.html.js'
 
 const SettingsBraveAppearanceTabsElementBase =
-    WebUiListenerMixin(PrefsMixin(I18nMixin(PolymerElement))) as {
-  new (): PolymerElement & I18nMixinInterface & PrefsMixinInterface &
-      WebUiListenerMixinInterface
+    WebUiListenerMixin(PrefServiceObserverMixin(I18nMixin(PolymerElement))) as {
+  new (): PolymerElement & I18nMixinInterface &
+      WebUiListenerMixinInterface & PrefServiceObserverMixinInterface
 }
+
+type PrefObject<T> = chrome.settingsPrivate.PrefObject<T>
 
 export class SettingsBraveAppearanceTabsElement extends SettingsBraveAppearanceTabsElementBase {
   static get is() {
@@ -86,7 +88,15 @@ export class SettingsBraveAppearanceTabsElement extends SettingsBraveAppearanceT
       verticalTabsToggleEnabled_: {
         type: Boolean,
         value: true,
-      }
+      },
+
+      // Mirrored from the global PrefService, purely to evaluate dom-if
+      // conditions and computed bindings in this element's own template. The
+      // controls themselves read/write via `pref-key` directly.
+      verticalTabsEnabledPref_: Object,
+      verticalTabsHideCompletelyWhenCollapsedPref_: Object,
+      verticalTabsShowToggleButtonPref_: Object,
+      scrollableHorizontalTabStripPref_: Object,
     }
   }
 
@@ -98,6 +108,11 @@ export class SettingsBraveAppearanceTabsElement extends SettingsBraveAppearanceT
   declare private tabTooltipModes_:
       Array<{value: number, name: string}>
   declare private verticalTabsToggleEnabled_: boolean
+  declare private verticalTabsEnabledPref_: PrefObject<boolean>|undefined
+  declare private verticalTabsHideCompletelyWhenCollapsedPref_:
+      PrefObject<boolean>|undefined
+  declare private verticalTabsShowToggleButtonPref_: PrefObject<boolean>|undefined
+  declare private scrollableHorizontalTabStripPref_: PrefObject<boolean>|undefined
 
   override connectedCallback() {
     super.connectedCallback()
@@ -106,6 +121,16 @@ export class SettingsBraveAppearanceTabsElement extends SettingsBraveAppearanceT
     this.addWebUiListener(
         'vertical-tabs-toggle-enabled-changed',
         (enabled: boolean) => { this.verticalTabsToggleEnabled_ = enabled })
+
+    this.mirrorPrefs({
+      'brave.tabs.vertical_tabs_enabled': 'verticalTabsEnabledPref_',
+      'brave.tabs.vertical_tabs_hide_completely_when_collapsed':
+          'verticalTabsHideCompletelyWhenCollapsedPref_',
+      'brave.tabs.vertical_tabs_show_toggle_button':
+          'verticalTabsShowToggleButtonPref_',
+      'brave.tabs.scrollable_horizontal_tab_strip':
+          'scrollableHorizontalTabStripPref_',
+    })
   }
 
   private isSharedPinnedTabsEnabled_() {

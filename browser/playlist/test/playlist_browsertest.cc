@@ -97,7 +97,7 @@ class PlaylistBrowserTest : public PlatformBrowserTest {
 
   playlist::PlaylistService* GetService() {
     return playlist::PlaylistServiceFactory::GetForBrowserContext(
-        browser()->profile());
+        browser()->GetProfile());
   }
 
   void ActivatePlaylistSidePanel() {
@@ -371,9 +371,9 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, DISABLED_PlayWithoutLocalCache) {
 
 IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, UIHiddenWhenDisabled) {
   auto* sidebar_service =
-      sidebar::SidebarServiceFactory::GetForProfile(browser()->profile());
+      sidebar::SidebarServiceFactory::GetForProfile(browser()->GetProfile());
   ASSERT_TRUE(sidebar_service);
-  auto* prefs = browser()->profile()->GetPrefs();
+  auto* prefs = browser()->GetProfile()->GetPrefs();
 
   prefs->SetBoolean(playlist::kPlaylistEnabledPref, false);
 

@@ -71,10 +71,10 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsBrowserTest,
 
   Browser* incognito_browser = CreateIncognitoBrowser();
   auto* normal_host_content_settings =
-      HostContentSettingsMapFactory::GetForProfile(browser()->profile());
+      HostContentSettingsMapFactory::GetForProfile(browser()->GetProfile());
   auto* incognito_host_content_settings =
       HostContentSettingsMapFactory::GetForProfile(
-          incognito_browser->profile());
+          incognito_browser->GetProfile());
   ASSERT_NE(normal_host_content_settings, incognito_host_content_settings);
 
   for (const content_settings::ContentSettingsInfo* info :

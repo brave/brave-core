@@ -56,7 +56,13 @@
         <ignore regexp="The resource `R.string.autofill_bnpl_tos_link_text` appears to be unused" />
         <ignore regexp="The resource `R.string.autofill_bnpl_tos_unlinked_title` appears to be unused" />
         <ignore regexp="The resource `R.string.autofill_bnpl_tos_linked_title` appears to be unused" />
-        
+
+        <!-- Upstream leftover: the production usage was removed in 6c1b3de7e3412
+             "[Ntp Aurora] Refactor search box layout hierarchy", but the dimen (still
+             read by NewTabPageTest/ShowNtpAtStartupTest) was kept. Remove once upstream
+             drops the resource. -->
+        <ignore regexp="The resource `R.dimen.ntp_section_bottom_margin` appears to be unused" />
+
         <!-- Ignore these because we had replaced chrome/android/java/res/drawable/incognito_history_placeholder_image.xml -->
         <ignore regexp="The resource `R.color.incognito_history_placeholder_bottom_circle_color` appears to be unused" />
         <ignore regexp="The resource `R.color.incognito_history_placeholder_stroke_color` appears to be unused" />

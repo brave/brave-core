@@ -187,10 +187,10 @@ class EmailAliasesBrowserTestBase : public InProcessBrowserTest {
     if (features::IsEmailAliasesEnabled()) {
       // Skip the promo as it is tested in
       // BraveBrowserCommandControllerWithEmailAliasesTest.
-      user_prefs::UserPrefs::Get(browser()->profile())
+      user_prefs::UserPrefs::Get(browser()->GetProfile())
           ->SetBoolean(prefs::kPromoShown, true);
 
-      brave_account::BraveAccountServiceFactory::GetFor(browser()->profile())
+      brave_account::BraveAccountServiceFactory::GetFor(browser()->GetProfile())
           ->BindInterface(authentication_.BindNewPipeAndPassReceiver());
     }
   }
@@ -380,7 +380,7 @@ class EmailAliasesBrowserTestBase : public InProcessBrowserTest {
 
   EmailAliasesService* email_aliases_service() {
     return EmailAliasesServiceFactory::GetServiceForProfile(
-        browser()->profile());
+        browser()->GetProfile());
   }
 
   void RunContextMenuOn(const std::string& element_id) {

@@ -12,6 +12,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/callback_list.h"
 #include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
@@ -24,10 +25,14 @@
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/commands/browser/accelerator_pref_manager.h"
 #include "build/build_config.h"
+#include "chrome/browser/ui/bookmarks/bookmark_tab_helper.h"
+#include "chrome/browser/ui/bookmarks/bookmark_tab_helper_observer.h"
 #include "chrome/browser/ui/tabs/tab_model.h"
+#include "chrome/browser/ui/unload_controller.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/contents_web_view.h"
 #include "components/prefs/pref_member.h"
+#include "components/tabs/public/tab_interface.h"
 #include "ui/base/accelerators/accelerator.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 
@@ -81,6 +86,7 @@ class WalletButton;
 #endif
 
 class BraveBrowserView : public BrowserView,
+                         public BookmarkTabHelperObserver,
                          public commands::AcceleratorService::Observer,
                          public FocusModeController::Observer {
   METADATA_HEADER(BraveBrowserView, BrowserView)
@@ -93,12 +99,16 @@ class BraveBrowserView : public BrowserView,
   static BraveBrowserView* From(BrowserView* view);
   static const BraveBrowserView* From(const BrowserView* view);
 
+  // Same as BrowserView::GetBrowserViewForBrowser(), but returning our
+  // overrides.
+  static BraveBrowserView* GetBrowserViewForBrowser(
+      const BrowserWindowInterface* browser);
+
   // We use rounded corners even rounded corners setting is disabled.
   // Call this when we want to know
   static bool ShouldUseBraveWebViewRoundedCornersForContents(
       const Browser* browser);
 
-  void SetStarredState(bool is_starred) override;
   void ShowUpdateChromeDialog() override;
 
   // Returns the bounding rectangle, in screen coordinates, used to detect
@@ -157,6 +167,10 @@ class BraveBrowserView : public BrowserView,
     return vertical_tab_strip_container_view_;
   }
   bool ShowBraveHelpBubbleView(const std::string& text) override;
+
+  // BookmarkTabHelperObserver:
+  void URLStarredChanged(content::WebContents* web_contents,
+                         bool starred) override;
 
   // commands::AcceleratorService:
   void OnAcceleratorsChanged(
@@ -262,7 +276,7 @@ class BraveBrowserView : public BrowserView,
   views::CloseRequestResult OnWindowCloseRequested() override;
   void ConfirmBrowserCloseWithPendingDownloads(
       int download_count,
-      Browser::DownloadCloseType dialog_type,
+      UnloadController::DownloadCloseType dialog_type,
       base::OnceCallback<void(bool)> callback) override;
   bool MaybeUpdateDevtools(content::WebContents* web_contents) override;
   bool MaybeUpdateSplitView(content::WebContents* web_contents) override;
@@ -284,6 +298,23 @@ class BraveBrowserView : public BrowserView,
   void UpdateWebViewRoundedCorners();
   void UpdateFocusModeState();
   bool ShouldDisableFocusModeForActiveTab() const;
+
+  // We need to observe BookmarkTabHelper to update the starred state of the
+  // star button in the toolbar when the active tab changes.
+  void ObserveBookmarkTabHelper(content::WebContents* contents);
+  void SetStarredState(bool is_starred);
+
+  // The active tab's WebContents can be replaced without an intervening
+  // OnActiveTabChanged() call (e.g. prerender activation), and can be
+  // destroyed without one too (e.g. all tabs closing together during browser
+  // shutdown). Track the active tab itself via TabInterface so
+  // |bookmark_tab_helper_observation_| is always moved off a WebContents
+  // before it goes away, instead of risking a dangling raw_ptr.
+  void OnActiveTabWillDiscardContents(tabs::TabInterface* tab,
+                                      content::WebContents* old_contents,
+                                      content::WebContents* new_contents);
+  void OnActiveTabWillDetach(tabs::TabInterface* tab,
+                             tabs::TabInterface::DetachReason reason);
 
   // FindBarHost is anchored to |find_bar_host_view_|; it must remain the last
   // child of BrowserView for correct z-order. Call when a child is added after
@@ -350,6 +381,10 @@ class BraveBrowserView : public BrowserView,
       accelerators_observation_{this};
   base::ScopedObservation<FocusModeController, FocusModeController::Observer>
       focus_mode_observation_{this};
+  base::ScopedObservation<BookmarkTabHelper, BookmarkTabHelperObserver>
+      bookmark_tab_helper_observation_{this};
+  base::CallbackListSubscription active_tab_will_discard_contents_subscription_;
+  base::CallbackListSubscription active_tab_will_detach_subscription_;
 
   base::WeakPtrFactory<BraveBrowserView> weak_ptr_{this};
 };

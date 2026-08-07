@@ -119,14 +119,10 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &blink::features::kControlledFrame,
       &blink::features::kFencedFrames,
       &blink::features::kFledge,
-      &blink::features::kFledgeBiddingAndAuctionServer,
-      &blink::features::kFledgeConsiderKAnonymity,
-      &blink::features::kFledgeEnforceKAnonymity,
       &blink::features::kLanguageDetectionAPI,
       &blink::features::kParakeet,
       &blink::features::kPrerender2,
       &blink::features::kPreloadingEagerViewportHeuristics,
-      &blink::features::kPrivateAggregationApi,
       &blink::features::kTranslationAPI,
       &blink::features::kUserMediaElement,
 #if BUILDFLAG(IS_ANDROID)
@@ -140,7 +136,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &commerce::kShoppingPDPMetrics,
       &commerce::kRetailCoupons,
       &compose::features::kEnableCompose,
-      &content_settings::features::kUserBypassUI,
       &contextual_tasks::kContextualTasks,
 #if !BUILDFLAG(IS_ANDROID)
       &enterprise_data_protection::kEnableForceDownloadToCloud,
@@ -223,7 +218,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &multistep_filter::kMultistepFilter,
       &net::features::kEnableWebTransportDraft07,
       &network::features::kBrowsingTopics,
-      &network::features::kInterestGroupStorage,
       &network::features::kSharedStorageAPI,
       &network_time::kNetworkTimeServiceQuerying,
       &ntp_features::kCustomizeChromeSidePanelExtensionsCard,
@@ -268,7 +262,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &segmentation_platform::features::kSegmentationPlatformTimeDelaySampling,
       &subresource_filter::kAdTagging,
       &switches::kSyncEnableBookmarksInTransportMode,
-      &syncer::kSyncDetermineAccountManagedStatus,
 #if !BUILDFLAG(IS_ANDROID)
       &tabs::kVerticalTabsLaunch,
 #endif  // !BUILDFLAG(IS_ANDROID)

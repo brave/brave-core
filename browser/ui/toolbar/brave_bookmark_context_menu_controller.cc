@@ -46,7 +46,7 @@ BraveBookmarkContextMenuController::BraveBookmarkContextMenuController(
                                     selection,
                                     can_paste),
       browser_(browser),
-      prefs_(browser_ ? browser_->profile()->GetPrefs() : nullptr) {
+      prefs_(browser_ ? browser_->GetProfile()->GetPrefs() : nullptr) {
   if (!browser_) {
     CHECK_IS_TEST();
   }

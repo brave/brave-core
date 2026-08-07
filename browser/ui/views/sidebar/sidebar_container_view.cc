@@ -67,7 +67,7 @@ namespace {
 using ShowSidebarOption = sidebar::SidebarService::ShowSidebarOption;
 
 sidebar::SidebarService* GetSidebarService(BraveBrowser* browser) {
-  return sidebar::SidebarServiceFactory::GetForProfile(browser->profile());
+  return sidebar::SidebarServiceFactory::GetForProfile(browser->GetProfile());
 }
 
 }  // namespace

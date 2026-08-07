@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/hid/BUILD.gn b/chrome/browser/ui/hid/BUILD.gn
-index d989e7fdcebb4123f5cdff98c282f25405ae26c6..afdb83007a0609d6ccc6eb62b6c58bf4f07a6f43 100644
+index be02bd97b52b52b2369c06899886ed9d44ff03f4..bc1f4393f18f75748b037a11657351de8500ddfd 100644
 --- a/chrome/browser/ui/hid/BUILD.gn
 +++ b/chrome/browser/ui/hid/BUILD.gn
-@@ -29,6 +29,7 @@ source_set("hid") {
+@@ -27,6 +27,7 @@ source_set("hid") {
      "//services/device/public/cpp/hid",
      "//ui/base",
    ]

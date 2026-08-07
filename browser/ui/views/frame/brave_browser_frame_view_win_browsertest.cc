@@ -133,7 +133,7 @@ IN_PROC_BROWSER_TEST_P(BraveBrowserFrameViewWinVerticalTabsLayoutTest,
   }
 
   const bool show_title = GetParam();
-  auto* prefs = browser()->profile()->GetPrefs();
+  auto* prefs = browser()->GetProfile()->GetPrefs();
   prefs->SetBoolean(brave_tabs::kVerticalTabsEnabled, true);
   prefs->SetBoolean(brave_tabs::kVerticalTabsShowTitleOnWindow, show_title);
   browser_view()->InvalidateLayout();

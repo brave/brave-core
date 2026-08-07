@@ -19,7 +19,7 @@ transpile_web_ui("resources") {
     "//brave/browser/ui/webui/brave_welcome_page:mojom_js",
     "//brave/components/resources:strings",
     "//ui/webui/resources/cr_components/color_change_listener:build_ts",
-    "//ui/webui/resources/cr_components/theme_color_picker:mojom",
+    "//ui/webui/resources/cr_components/theme_color_picker:build_ts",
   ]
 }
 

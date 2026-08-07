@@ -6,7 +6,7 @@
 #ifndef BRAVE_BROWSER_HISTORY_EMBEDDINGS_BRAVE_PASSAGE_EMBEDDINGS_SERVICE_CONTROLLER_H_
 #define BRAVE_BROWSER_HISTORY_EMBEDDINGS_BRAVE_PASSAGE_EMBEDDINGS_SERVICE_CONTROLLER_H_
 
-#include <memory>
+#include <optional>
 
 #include "base/files/file_path.h"
 #include "base/no_destructor.h"
@@ -57,9 +57,9 @@ class BravePassageEmbeddingsServiceController
   void OnLocalModelsReady(const base::FilePath& install_dir) override;
 
   // Reply for the model dir load posted by OnLocalModelsReady. `model_info` is
-  // null when the component ships no usable model.
+  // empty when the component ships no usable model.
   void OnLitertModelInfoLoaded(
-      std::unique_ptr<optimization_guide::ModelInfo> model_info);
+      std::optional<optimization_guide::ModelInfo> model_info);
 
   base::ScopedObservation<local_ai::LocalModelsUpdaterState,
                           local_ai::LocalModelsUpdaterState::Observer>

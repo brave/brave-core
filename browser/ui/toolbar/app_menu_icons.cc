@@ -36,20 +36,20 @@ constexpr auto kCommandIcons =
         {IDC_TOGGLE_AI_CHAT, &kLeoProductBraveLeoIcon},
 #endif
         {IDC_BRAVE_VPN_MENU, &kLeoProductVpnIcon},
-        {IDC_PASSWORDS_AND_AUTOFILL_MENU, &kLeoKeyIcon},
-        {IDC_RECENT_TABS_MENU, &kLeoHistoryIcon},
-        {IDC_BOOKMARKS_MENU, &kLeoProductBookmarksIcon},
+        {kPasswordsAndAutofillMenuId, &kLeoKeyIcon},
+        {kRecentTabsMenuId, &kLeoHistoryIcon},
+        {kBookmarksMenuId, &kLeoProductBookmarksIcon},
         {IDC_SHOW_DOWNLOADS, &kLeoDownloadIcon},
         {IDC_MANAGE_EXTENSIONS, &kLeoBrowserExtensionsIcon},
         {IDC_EXTENSIONS_SUBMENU_MANAGE_EXTENSIONS, &kLeoBrowserExtensionsIcon},
         {IDC_EXTENSIONS_SUBMENU_VISIT_CHROME_WEB_STORE, &kLeoShoppingBagIcon},
-        {IDC_ZOOM_MENU, &kLeoSearchZoomInIcon},
+        {kZoomMenuId, &kLeoSearchZoomInIcon},
         {IDC_PRINT, &kLeoPrintIcon},
-        {IDC_FIND_AND_EDIT_MENU, &kLeoFileSearchIcon},
-        {IDC_SAVE_AND_SHARE_MENU, &kLeoFileDownloadIcon},
-        {IDC_MORE_TOOLS_MENU, &kLeoWindowScrewdriverIcon},
+        {kFindAndEditMenuId, &kLeoFileSearchIcon},
+        {kSaveAndShareMenuId, &kLeoFileDownloadIcon},
+        {kMoreToolsMenuId, &kLeoWindowScrewdriverIcon},
         {IDC_OPTIONS, &kLeoSettingsIcon},
-        {IDC_HELP_MENU, &kLeoHelpOutlineIcon},
+        {kHelpMenuId, &kLeoHelpOutlineIcon},
         {IDC_EXIT, &kLeoCloseIcon},
 
         // The `VPN` submenu
@@ -67,12 +67,12 @@ constexpr auto kCommandIcons =
         {IDC_SHOW_BOOKMARK_MANAGER, &kLeoWindowBookmarkIcon},
         {IDC_SHOW_BOOKMARK_SIDE_PANEL, &kLeoProductBookmarksIcon},
         {IDC_IMPORT_SETTINGS, &kLeoImportArrowIcon},
-        {IDC_READING_LIST_MENU, &kLeoReadingListIcon},
+        {kReadingListMenuId, &kLeoReadingListIcon},
 
         // The `History submenu
         {IDC_SHOW_HISTORY, &kLeoHistoryIcon},
         {IDC_CLEAR_BROWSING_DATA, &kLeoTrashIcon},
-        {IDC_RECENT_TABS_NO_DEVICE_TABS, &kLeoSmartphoneLaptopIcon},
+        {kRecentTabsNoDeviceTabsId, &kLeoSmartphoneLaptopIcon},
 
         // The `Help` submenu
         {IDC_ABOUT, &kLeoBraveIconMonochromeIcon},

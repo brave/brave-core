@@ -55,7 +55,7 @@ BraveTabDragController::Liveness BraveTabDragController::Init(
           ->browser();
 
   if (base::FeatureList::IsEnabled(tabs::kBraveSharedPinnedTabs) &&
-      browser->profile()->GetPrefs()->GetBoolean(
+      browser->GetProfile()->GetPrefs()->GetBoolean(
           brave_tabs::kSharedPinnedTab)) {
     if (std::ranges::any_of(dragging_views, [](TabSlotView* slot_view) {
           // We don't allow sharable pinned tabs to be detached.
@@ -106,8 +106,8 @@ void BraveTabDragController::DetachAndAttachToNewContext(
   }
 
   auto get_region_view = [this] {
-    auto* browser_view = static_cast<BraveBrowserView*>(
-        BrowserView::GetBrowserViewForNativeWindow(
+    auto* browser_view =
+        BraveBrowserView::From(BrowserView::GetBrowserViewForNativeWindow(
             GetAttachedBrowserWidget()->GetNativeWindow()));
     DCHECK(browser_view);
 
