@@ -13,7 +13,7 @@ interface Props {
   fill?: boolean
 }
 
-const LoadingContainer = styled.div<{ $fill?: boolean }>`
+const LoadingContainer = styled.div<{ fill?: boolean }>`
   --leo-progressring-size: ${spacing['4Xl']};
 
   display: flex;
@@ -22,7 +22,7 @@ const LoadingContainer = styled.div<{ $fill?: boolean }>`
   padding: ${spacing['4Xl']};
   min-height: 120px;
 
-  ${p => p.$fill && css`
+  ${p => p.fill && css`
     --leo-progressring-size: 50px;
     min-height: 400px;
     height: 100%;
@@ -31,7 +31,7 @@ const LoadingContainer = styled.div<{ $fill?: boolean }>`
 
 export default function Loading(props: Props) {
   return (
-    <LoadingContainer $fill={props.fill}>
+    <LoadingContainer fill={props.fill}>
       <ProgressRing />
     </LoadingContainer>
   )

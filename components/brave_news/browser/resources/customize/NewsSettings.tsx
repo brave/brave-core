@@ -18,10 +18,8 @@ import { SettingsPanel } from './SettingsPanel'
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-
-  & > *:not(:last-child) {
-    border-bottom: solid 1px ${color.divider.subtle};
-  }
+  gap: 1px;
+  row-rule: 1px solid ${color.divider.subtle};
 `
 
 const ControlRow = styled.div`
@@ -41,16 +39,16 @@ const EnableRow = styled(Toggle)`
   --leo-toggle-label-gap: ${spacing.xl};
 
   padding: ${spacing.l} ${spacing['2Xl']};
+`
 
-  .label {
-    --leo-icon-size: ${icon.m};
+const EnableLabel = styled.span`
+  --leo-icon-size: ${icon.m};
 
-    flex: 1 1 auto;
-    display: flex;
-    align-items: center;
-    gap: ${spacing.xl};
-    color: ${color.text.primary};
-  }
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  gap: ${spacing.xl};
+  color: ${color.text.primary};
 `
 
 export default function NewsSettings() {
@@ -76,9 +74,9 @@ export default function NewsSettings() {
             toggleBraveNewsOnNTP(checked)
           }}
         >
-          <span className='label'>
+          <EnableLabel>
             {getLocale(S.BRAVE_NEWS_ENABLE_LABEL)}
-          </span>
+          </EnableLabel>
         </EnableRow>
         {feedV2Enabled && (
           <ControlRow>
