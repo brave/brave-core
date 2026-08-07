@@ -6,7 +6,6 @@
 #import <Cocoa/Cocoa.h>
 
 #include "base/files/file_path.h"
-#include "base/test/run_until.h"
 #include "brave/browser/ui/commands/accelerator_service.h"
 #include "brave/browser/ui/commands/accelerator_service_factory.h"
 #include "brave/browser/ui/commands/default_accelerators.h"
@@ -17,19 +16,21 @@
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/profiles/profile_test_util.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_window.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "content/public/test/browser_test.h"
 #include "testing/gtest_mac.h"
 
 namespace {
 
-void ActivateBrowser(Browser* browser) {
-  if (!browser->window()->IsActive()) {
-    browser->window()->Activate();
-    ASSERT_TRUE(
-        base::test::RunUntil([&]() { return browser->window()->IsActive(); }));
-  }
+// Notifies browser activation observers (including the coordinator under
+// test) that |browser| became active. Relying on actual window activation is
+// unreliable in tests: the startup browser may already report as active, and
+// newly shown windows may never be activated by the window server.
+// Browser::DidBecomeActive only notifies on an active-state transition, so
+// force a deactivate/activate cycle.
+void NotifyBrowserActivated(Browser* browser) {
+  browser->DidBecomeInactive();
+  browser->DidBecomeActive();
 }
 
 NSMenuItem* FindMenuItemWithTag(NSMenu* menu, int tag) {
@@ -55,7 +56,7 @@ IN_PROC_BROWSER_TEST_F(AcceleratorMenuCoordinatorMacBrowserTest,
                        KeyEquivalentFollowsCustomizations) {
   // Make sure the coordinator observes this profile's accelerator service:
   // it reacts to browser activation.
-  ActivateBrowser(browser());
+  NotifyBrowserActivated(browser());
 
   auto* service =
       commands::AcceleratorServiceFactory::GetForContext(browser()->profile());
@@ -109,7 +110,7 @@ IN_PROC_BROWSER_TEST_F(AcceleratorMenuCoordinatorMacBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(AcceleratorMenuCoordinatorMacBrowserTest,
                        KeyEquivalentFollowsActiveProfile) {
-  ActivateBrowser(browser());
+  NotifyBrowserActivated(browser());
 
   auto* service =
       commands::AcceleratorServiceFactory::GetForContext(browser()->profile());
@@ -136,13 +137,10 @@ IN_PROC_BROWSER_TEST_F(AcceleratorMenuCoordinatorMacBrowserTest,
       profile_manager,
       profile_manager->user_data_dir().AppendASCII("Second Profile"));
   Browser* second_browser = CreateBrowser(&second_profile);
-  ActivateBrowser(second_browser);
-  ASSERT_TRUE(
-      base::test::RunUntil([&]() { return item.keyEquivalent.length > 0u; }));
+  NotifyBrowserActivated(second_browser);
   EXPECT_NSEQ(default_key_equivalent, item.keyEquivalent);
 
   // Activating the first profile's browser applies its customization again.
-  ActivateBrowser(browser());
-  ASSERT_TRUE(
-      base::test::RunUntil([&]() { return item.keyEquivalent.length == 0u; }));
+  NotifyBrowserActivated(browser());
+  EXPECT_EQ(0u, item.keyEquivalent.length);
 }
