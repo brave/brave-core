@@ -262,7 +262,7 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderP3ATest, WebDiscoveryEnabledP3A) {
 
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
   histogram_tester_->ExpectUniqueSample(kWebDiscoveryAndAdsMetric, 0, 3);
-  prefs->SetBoolean(brave_ads::prefs::kOptedInToNotificationAds, true);
+  prefs->SetBoolean(brave_ads::prefs::kNotificationsEnabled, true);
   histogram_tester_->ExpectBucketCount(kWebDiscoveryAndAdsMetric, 1, 1);
   histogram_tester_->ExpectBucketCount(kWebDiscoveryDefaultEngineMetric,
                                        SearchEngineP3A::kDuckDuckGo, 2);

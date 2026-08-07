@@ -214,7 +214,7 @@ bool AdsTabHelper::UserHasOptedInToNotificationAds() const {
       ProfileIOS::FromBrowserState(web_state_->GetBrowserState())->GetPrefs();
 
   return prefs->GetBoolean(brave_rewards::prefs::kEnabled) &&
-         prefs->GetBoolean(prefs::kOptedInToNotificationAds);
+         prefs->GetBoolean(prefs::kNotificationsEnabled);
 }
 void AdsTabHelper::MaybeNotifyTabDidChange() {
   if (redirect_chain_.empty()) {

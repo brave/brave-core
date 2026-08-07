@@ -95,7 +95,7 @@ TEST_F(BraveAdsSubdivisionTest, DoNotFetchWhenOptingOutOfNotificationAds) {
   EXPECT_CALL(subdivision_observer_mock_, OnDidUpdateSubdivision).Times(0);
 
   // Act & Assert
-  SetProfileBooleanPref(prefs::kOptedInToNotificationAds, false);
+  SetProfileBooleanPref(prefs::kNotificationsEnabled, false);
 }
 
 TEST_F(BraveAdsSubdivisionTest, FetchWhenOptingInToNotificationAds) {
@@ -107,7 +107,7 @@ TEST_F(BraveAdsSubdivisionTest, FetchWhenOptingInToNotificationAds) {
   EXPECT_CALL(subdivision_observer_mock_, OnDidUpdateSubdivision);
 
   // Act & Assert
-  SetProfileBooleanPref(prefs::kOptedInToNotificationAds, true);
+  SetProfileBooleanPref(prefs::kNotificationsEnabled, true);
 }
 
 TEST_F(BraveAdsSubdivisionTest, DoNotFetchWhenOptingOutOfNewTabPageAds) {

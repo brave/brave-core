@@ -80,7 +80,7 @@ void MaybeEnableBraveFeaturesPrefsForPerfTesting(Profile* profile) {
 
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
   // Notification Ads
-  profile->GetPrefs()->SetBoolean(brave_ads::prefs::kOptedInToNotificationAds,
+  profile->GetPrefs()->SetBoolean(brave_ads::prefs::kNotificationsEnabled,
                                   true);
 #endif
 

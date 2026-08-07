@@ -240,7 +240,7 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
 - (void)setEnabled:(BOOL)enabled {
   [self setProfilePref:brave_rewards::prefs::kEnabled
                  value:base::Value(enabled)];
-  [self setProfilePref:brave_ads::prefs::kOptedInToNotificationAds
+  [self setProfilePref:brave_ads::prefs::kNotificationsEnabled
                  value:base::Value(enabled)];
 }
 

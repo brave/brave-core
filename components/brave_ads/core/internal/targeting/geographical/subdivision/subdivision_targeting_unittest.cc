@@ -57,7 +57,7 @@ TEST_F(BraveAdsSubdivisionTargetingTest,
   ads_client_notifier_.NotifyDidInitializeAds();
 
   // Act
-  SetProfileBooleanPref(prefs::kOptedInToNotificationAds, true);
+  SetProfileBooleanPref(prefs::kNotificationsEnabled, true);
 
   // Assert
   EXPECT_TRUE(SubdivisionTargeting::ShouldAllow());
@@ -78,7 +78,7 @@ TEST_F(BraveAdsSubdivisionTargetingTest,
 
   // Act & Assert
   EXPECT_CALL(ads_client_mock_, UrlRequest).Times(0);
-  SetProfileBooleanPref(prefs::kOptedInToNotificationAds, false);
+  SetProfileBooleanPref(prefs::kNotificationsEnabled, false);
 }
 
 TEST_F(BraveAdsSubdivisionTargetingTest,

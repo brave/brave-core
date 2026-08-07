@@ -281,7 +281,7 @@ bool AdsServiceImpl::UserHasOptedInToNewTabPageAds() const {
 
 bool AdsServiceImpl::UserHasOptedInToNotificationAds() const {
   return prefs_->GetBoolean(brave_rewards::prefs::kEnabled) &&
-         prefs_->GetBoolean(prefs::kOptedInToNotificationAds);
+         prefs_->GetBoolean(prefs::kNotificationsEnabled);
 }
 
 bool AdsServiceImpl::UserHasOptedInToSearchResultAds() const {
@@ -755,7 +755,7 @@ void AdsServiceImpl::InitializeNewTabPageAdsPrefChangeRegistrar() {
 
 void AdsServiceImpl::InitializeNotificationAdsPrefChangeRegistrar() {
   pref_change_registrar_.Add(
-      prefs::kOptedInToNotificationAds,
+      prefs::kNotificationsEnabled,
       base::BindRepeating(&AdsServiceImpl::OnAdsPrefChanged,
                           base::Unretained(this)));
 
@@ -782,7 +782,7 @@ void AdsServiceImpl::OnAdsPrefChanged(const std::string& path) {
     return ShutdownAdsService();
   }
 
-  if (path == prefs::kOptedInToNotificationAds &&
+  if (path == prefs::kNotificationsEnabled &&
       bat_ads_service_remote_.is_bound()) {
     RegisterOrUnregisterLanguageResourceComponent();
 

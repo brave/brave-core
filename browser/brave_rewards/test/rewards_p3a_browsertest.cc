@@ -174,7 +174,7 @@ IN_PROC_BROWSER_TEST_F(RewardsP3ABrowserTest, ToggleAdTypes) {
 
   TurnOnRewards();
 
-  prefs->SetBoolean(brave_ads::prefs::kOptedInToNotificationAds, false);
+  prefs->SetBoolean(brave_ads::prefs::kNotificationsEnabled, false);
   histogram_tester_->ExpectBucketCount(p3a::kAdTypesEnabledHistogramName, 1, 1);
 
   prefs->SetBoolean(ntp_background_images::prefs::
@@ -182,10 +182,10 @@ IN_PROC_BROWSER_TEST_F(RewardsP3ABrowserTest, ToggleAdTypes) {
                     false);
   histogram_tester_->ExpectBucketCount(p3a::kAdTypesEnabledHistogramName, 0, 1);
 
-  prefs->SetBoolean(brave_ads::prefs::kOptedInToNotificationAds, true);
+  prefs->SetBoolean(brave_ads::prefs::kNotificationsEnabled, true);
   histogram_tester_->ExpectBucketCount(p3a::kAdTypesEnabledHistogramName, 2, 1);
 
-  prefs->SetBoolean(brave_ads::prefs::kOptedInToNotificationAds, false);
+  prefs->SetBoolean(brave_ads::prefs::kNotificationsEnabled, false);
   histogram_tester_->ExpectBucketCount(p3a::kAdTypesEnabledHistogramName, 0, 2);
 }
 #endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
