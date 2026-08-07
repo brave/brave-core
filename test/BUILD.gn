@@ -1215,6 +1215,8 @@ test("brave_browser_tests") {
       "//brave/browser/brave_app_controller_mac_browsertest.mm",
       "//brave/browser/ui/commands/accelerator_menu_coordinator_mac_browsertest.mm",
     ]
+
+    deps += [ "//brave/components/commands/common" ]
   }
 
   if (is_win) {
