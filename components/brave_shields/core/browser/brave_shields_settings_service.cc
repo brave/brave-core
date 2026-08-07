@@ -11,6 +11,7 @@
 #include "brave/components/brave_shields/core/common/brave_shield_utils.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
+#include "brave/components/brave_shields/core/common/shields_settings.mojom-shared.h"
 #include "brave/components/content_settings/core/common/content_settings_util.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings.h"
@@ -20,7 +21,6 @@
 #include "components/prefs/pref_service.h"
 #include "net/base/url_util.h"
 #include "url/gurl.h"
-#include "brave/components/brave_shields/core/common/shields_settings.mojom-shared.h"
 
 namespace brave_shields {
 
@@ -203,9 +203,7 @@ void BraveShieldsSettingsService::SetFingerprintMode(
     control_type = ControlType::DEFAULT;  // STANDARD_MODE
   }
 
-  brave_shields::SetFingerprintingControlType(&*host_content_settings_map_,
-                                              control_type, url, local_state_,
-                                              profile_prefs_);
+  SetFingerprintingControlType(control_type, url);
 }
 
 mojom::FingerprintMode BraveShieldsSettingsService::GetFingerprintMode(
@@ -392,8 +390,7 @@ bool BraveShieldsSettingsService::MakePseudoRandomGeneratorForURL(
     const GURL& url,
     base::span<const uint8_t> additional_entropy,
     FarblingPRNG* prng) {
-  if (brave_shields::GetFarblingLevel(&*host_content_settings_map_, url) ==
-      brave_shields::mojom::FarblingLevel::OFF) {
+  if (GetFarblingLevel(url) == brave_shields::mojom::FarblingLevel::OFF) {
     return false;
   }
   const base::Token farbling_token = GetFarblingToken(url, additional_entropy);
@@ -456,10 +453,35 @@ base::Token BraveShieldsSettingsService::GetFarblingToken(
   return token;
 }
 
-void BraveShieldsSettingsService::SetFingerprintingControlType(ControlType type,
-                                  const GURL& url,
-                                  PrefService* local_state,
-                                  PrefService* profile_state) {
+bool BraveShieldsSettingsService::ShouldDoReduceLanguage(const GURL& url) {
+  if (!brave_shields::IsReduceLanguageEnabledForProfile(profile_prefs_)) {
+    return false;
+  }
+
+  // Don't reduce language if Brave Shields is down (this also handles cases
+  // where the URL is not HTTP(S))
+  if (!IsBraveShieldsEnabled(url)) {
+    return false;
+  }
+
+  // Don't reduce language if fingerprinting is off
+  if (GetFingerprintingControlType(url) == ControlType::ALLOW) {
+    return false;
+  }
+
+  // Don't reduce language if there's a webcompat exception
+  if (brave_shields::IsWebcompatEnabled(
+          &*host_content_settings_map_,
+          ContentSettingsType::BRAVE_WEBCOMPAT_LANGUAGE, url)) {
+    return false;
+  }
+
+  return true;
+}
+
+void BraveShieldsSettingsService::SetFingerprintingControlType(
+    ControlType type,
+    const GURL& url) {
   auto primary_pattern = GetPatternFromURL(url);
 
   if (!primary_pattern.IsValid()) {
@@ -487,25 +509,27 @@ void BraveShieldsSettingsService::SetFingerprintingControlType(ControlType type,
       ContentSettingsType::BRAVE_FINGERPRINTING_V2, content_setting);
   if (!host_content_settings_map_->IsOffTheRecord()) {
     // Only report to P3A if not a guest/incognito profile
-    RecordShieldsSettingChanged(local_state);
+    RecordShieldsSettingChanged(local_state_);
     if (url.is_empty()) {
       // If global setting changed, report global setting and recalulate
       // domain specific setting counts
       RecordShieldsFingerprintSetting(type);
-      RecordShieldsDomainSettingCounts(profile_state, true, type);
+      RecordShieldsDomainSettingCounts(profile_prefs_, true, type);
     } else {
       // If domain specific setting changed, recalculate counts
       ControlType global_setting = GetFingerprintingControlType(GURL());
       RecordShieldsDomainSettingCountsWithChange(
-          profile_state, true, global_setting,
+          profile_prefs_, true, global_setting,
           was_default ? nullptr : &prev_setting, type);
     }
   }
 }
 
-ControlType BraveShieldsSettingsService::GetFingerprintingControlType(const GURL& url) {
+ControlType BraveShieldsSettingsService::GetFingerprintingControlType(
+    const GURL& url) {
   ContentSettingsForOneType fingerprinting_rules =
-      host_content_settings_map_->GetSettingsForOneType(ContentSettingsType::BRAVE_FINGERPRINTING_V2);
+      host_content_settings_map_->GetSettingsForOneType(
+          ContentSettingsType::BRAVE_FINGERPRINTING_V2);
 
   ContentSetting fp_setting =
       GetBraveFPContentSettingFromRules(fingerprinting_rules, url);
@@ -519,6 +543,30 @@ ControlType BraveShieldsSettingsService::GetFingerprintingControlType(const GURL
 
   return fp_setting == CONTENT_SETTING_ALLOW ? ControlType::ALLOW
                                              : ControlType::BLOCK;
+}
+
+mojom::FarblingLevel BraveShieldsSettingsService::GetFarblingLevel(
+    const GURL& primary_url) {
+  if (!base::FeatureList::IsEnabled(features::kBraveFarbling)) {
+    return brave_shields::mojom::FarblingLevel::OFF;
+  }
+
+  const bool shields_up = IsBraveShieldsEnabled(primary_url);
+  if (!shields_up) {
+    return brave_shields::mojom::FarblingLevel::OFF;
+  }
+
+  auto fingerprinting_type = GetFingerprintingControlType(primary_url);
+  switch (fingerprinting_type) {
+    case ControlType::ALLOW:
+      return brave_shields::mojom::FarblingLevel::OFF;
+    case ControlType::BLOCK:
+      return brave_shields::mojom::FarblingLevel::MAXIMUM;
+    case ControlType::BLOCK_THIRD_PARTY:
+      NOTREACHED();
+    case ControlType::DEFAULT:
+      return brave_shields::mojom::FarblingLevel::BALANCED;
+  }
 }
 
 }  // namespace brave_shields

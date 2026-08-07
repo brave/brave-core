@@ -91,11 +91,12 @@ class BraveShieldsSettingsService : public KeyedService {
   base::Token GetFarblingToken(const GURL& url,
                                base::span<const uint8_t> additional_entropy);
 
+  bool ShouldDoReduceLanguage(const GURL& url);
+
 void SetFingerprintingControlType(ControlType type,
-                                  const GURL& url,
-                                  PrefService* local_state = nullptr,
-                                  PrefService* profile_state = nullptr);
+                                  const GURL& url);
 ControlType GetFingerprintingControlType(const GURL& url);
+mojom::FarblingLevel GetFarblingLevel(const GURL& primary_url);
 
  private:
   const raw_ref<HostContentSettingsMap>
