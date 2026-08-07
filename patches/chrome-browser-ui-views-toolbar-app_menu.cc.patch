@@ -1,15 +1,15 @@
 diff --git a/chrome/browser/ui/views/toolbar/app_menu.cc b/chrome/browser/ui/views/toolbar/app_menu.cc
-index 31083766a081e411a7089e2088c427cca9209f63..558bef11fa7405341f58cf506394ff5ae469101e 100644
+index 31083766a081e411a7089e2088c427cca9209f63..be905f5198778c90c303fd4377a90aeac8d8ecab 100644
 --- a/chrome/browser/ui/views/toolbar/app_menu.cc
 +++ b/chrome/browser/ui/views/toolbar/app_menu.cc
 @@ -1590,8 +1590,10 @@ views::View* AppMenu::GetZoomAppMenuViewForTest() {
  }
  
  void AppMenu::PopulateMenu(MenuItemView* parent, MenuModel* model) {
-+#if 0
++if ((false)) { [[maybe_unused]]
    int target_profile_row_height = ComputeTargetProfileRowHeight(
        views::MenuConfig::instance().item_vertical_margin, model);
-+#endif
++}
  
    for (size_t i = 0, max = model->GetItemCount(); i < max; ++i) {
      // Add the menu item at the end.
@@ -29,12 +29,12 @@ index 31083766a081e411a7089e2088c427cca9209f63..558bef11fa7405341f58cf506394ff5a
        default:
          if (IsOtherProfileCommand(model->GetCommandIdAt(i))) {
            ui::ImageModel icon = model->GetIconAt(i);
-+#if 0
++if ((false)) { [[maybe_unused]]
            int icon_height =
                icon.IsEmpty() ? views::kMenuCheckSize : icon.Size().height();
 -          item->set_vertical_margin(
 -              std::max(0, (target_profile_row_height - icon_height) / 2));
-+#endif
++}
 +          item->set_vertical_margin(8);
          }
          break;

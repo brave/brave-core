@@ -17,32 +17,30 @@ substitutions:
         \1 - 6
 
   - description: |
-      Compile out the `target_profile_row_height` computation.
+      Cancel `target_profile_row_height` unused variable.
 
-      This value goes unused due to our changes. Scoped to
-      AppMenu::PopulateMenu.
+      This value goes unused due to our changes.
     regex:
       re_pattern: |-
         (void AppMenu::PopulateMenu\(.*?\n)(\s*)(int target_profile_row_height =.*?;)
       re_flags: [DOTALL]
       replace: |-
-        \1#if 0
+        \1if ((false)) { [[maybe_unused]]
         \2\3
-        #endif
+        }
 
   - description: |
-      Compile out the `icon_height` computation.
+      Cancel `icon_height` unused variable.
 
-      This value goes unused due to our changes. Scoped to
-      AppMenu::PopulateMenu.
+      This value goes unused due to our changes.
     regex:
       re_pattern: |-
         (void AppMenu::PopulateMenu\(.*?\n)(\s*)(int icon_height =.*?;)
       re_flags: [DOTALL]
       replace: |-
-        \1#if 0
+        \1if ((false)) { [[maybe_unused]]
         \2\3
-        #endif
+        }
 
   - description: |
       Pin every menu-row vertical margin to 8px.
