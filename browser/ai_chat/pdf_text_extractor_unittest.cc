@@ -10,8 +10,7 @@
 #include <utility>
 #include <vector>
 
-#include "base/files/file_util.h"
-#include "base/files/scoped_temp_dir.h"
+#include "base/test/run_until.h"
 #include "base/test/test_future.h"
 #include "chrome/test/base/testing_profile.h"
 #include "content/public/test/browser_task_environment.h"
@@ -19,6 +18,13 @@
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace ai_chat {
+
+class TestPdfTextExtractor : public PdfTextExtractor {
+ public:
+  content::WebContents* GetWebContentsForTesting() {
+    return GetWebContents();
+  }
+};
 
 class PdfTextExtractorTest : public content::RenderViewHostTestHarness {
  public:
@@ -34,7 +40,7 @@ class PdfTextExtractorTest : public content::RenderViewHostTestHarness {
 // Without a real PDF viewer extension, the hidden WebContents will never
 // produce a PDFDocumentHelper. The extraction should time out and return
 // nullopt.
-TEST_F(PdfTextExtractorTest, BytesOverload_TimeoutReturnsNullopt) {
+TEST_F(PdfTextExtractorTest, TimeoutReturnsNullopt) {
   auto extractor = std::make_unique<PdfTextExtractor>();
   base::test::TestFuture<std::optional<std::string>> future;
 
@@ -50,50 +56,26 @@ TEST_F(PdfTextExtractorTest, BytesOverload_TimeoutReturnsNullopt) {
   EXPECT_FALSE(result.has_value());
 }
 
-// Same timeout test but using the file-path overload (no temp file).
-TEST_F(PdfTextExtractorTest, PathOverload_TimeoutReturnsNullopt) {
-  base::ScopedTempDir temp_dir;
-  ASSERT_TRUE(temp_dir.CreateUniqueTempDir());
-  base::FilePath pdf_path = temp_dir.GetPath().AppendASCII("test.pdf");
-  ASSERT_TRUE(base::WriteFile(pdf_path, "%PDF-1.4 dummy content for test"));
-
-  auto extractor = std::make_unique<PdfTextExtractor>();
+// Destroying after the hidden WebContents starts loading must not invoke the
+// extraction callback.
+TEST_F(PdfTextExtractorTest, DestroyAfterLoadStarts_DoesNotRunCallback) {
+  auto extractor = std::make_unique<TestPdfTextExtractor>();
   base::test::TestFuture<std::optional<std::string>> future;
 
-  extractor->ExtractText(browser_context(), pdf_path, future.GetCallback());
+  std::vector<uint8_t> dummy_pdf = {0x25, 0x50, 0x44, 0x46};
+  extractor->ExtractText(browser_context(), std::move(dummy_pdf),
+                         FILE_PATH_LITERAL("pdf"), future.GetCallback());
 
-  task_environment()->FastForwardBy(base::Seconds(31));
-
-  auto result = future.Take();
-  EXPECT_FALSE(result.has_value());
-}
-
-// Destroying the extractor while an extraction is in-flight must not crash
-// or leak.
-TEST_F(PdfTextExtractorTest, DestroyDuringExtraction_NoCrash) {
-  auto extractor = std::make_unique<PdfTextExtractor>();
-
-  base::ScopedTempDir temp_dir;
-  ASSERT_TRUE(temp_dir.CreateUniqueTempDir());
-  base::FilePath pdf_path = temp_dir.GetPath().AppendASCII("test.pdf");
-  ASSERT_TRUE(base::WriteFile(pdf_path, "%PDF-1.4 dummy content for test"));
-
-  bool callback_called = false;
-  extractor->ExtractText(
-      browser_context(), pdf_path,
-      base::BindOnce(
-          [](bool* called, std::optional<std::string>) { *called = true; },
-          &callback_called));
-
-  // Destroy while extraction is in progress — should not crash.
+  ASSERT_TRUE(base::test::RunUntil([&] {
+    return extractor->GetWebContentsForTesting() != nullptr;
+  }));
   extractor.reset();
 
-  EXPECT_FALSE(callback_called);
+  EXPECT_FALSE(future.IsReady());
 }
 
-// The bytes overload writes to a temp file. Verify the extraction and cleanup
-// complete without crashing after timeout.
-TEST_F(PdfTextExtractorTest, BytesOverload_CleanupAfterTimeout) {
+// Verify the extraction and cleanup complete without crashing after timeout.
+TEST_F(PdfTextExtractorTest, CleanupAfterTimeout) {
   auto extractor = std::make_unique<PdfTextExtractor>();
   base::test::TestFuture<std::optional<std::string>> future;
 
@@ -106,26 +88,6 @@ TEST_F(PdfTextExtractorTest, BytesOverload_CleanupAfterTimeout) {
   task_environment()->FastForwardBy(base::Seconds(31));
 
   ASSERT_TRUE(future.Wait());
-}
-
-// The file-path overload should NOT delete the original file after extraction.
-TEST_F(PdfTextExtractorTest, PathOverload_OriginalFileNotDeleted) {
-  base::ScopedTempDir temp_dir;
-  ASSERT_TRUE(temp_dir.CreateUniqueTempDir());
-  base::FilePath pdf_path = temp_dir.GetPath().AppendASCII("keep_me.pdf");
-  ASSERT_TRUE(base::WriteFile(pdf_path, "%PDF-1.4 dummy content for test"));
-
-  auto extractor = std::make_unique<PdfTextExtractor>();
-  base::test::TestFuture<std::optional<std::string>> future;
-
-  extractor->ExtractText(browser_context(), pdf_path, future.GetCallback());
-
-  task_environment()->FastForwardBy(base::Seconds(31));
-
-  ASSERT_TRUE(future.Wait());
-
-  // The original file must still exist — only temp files are cleaned up.
-  EXPECT_TRUE(base::PathExists(pdf_path));
 }
 
 }  // namespace ai_chat
