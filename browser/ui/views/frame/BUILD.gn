@@ -28,6 +28,7 @@ source_set("frame") {
     "//brave/browser/ui/tabs:tabs_public",
     "//brave/browser/ui/views/sidebar",
     "//chrome/browser/ui/exclusive_access",
+    "//chrome/browser/ui/views/bookmarks",
     "//chrome/browser/ui/views/infobars",
     "//ui/compositor",
   ]
