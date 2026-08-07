@@ -670,7 +670,7 @@ void BraveTreeTabStripCollectionDelegate::MoveTabsRecursive(
   // of being flattened.
   const base::flat_set<tabs::TabInterface*> moving_tabs_set(moving_tabs.begin(),
                                                             moving_tabs.end());
-  for (auto* moving_tab : base::Reversed(moving_tabs)) {
+  for (auto* moving_tab : std::views::reverse(moving_tabs)) {
     auto* moving_tab_tree_node = GetParentTreeNodeCollectionOfTab(moving_tab);
     MoveNonSelectedChildrenOfTreeTabNodeToParent(
         static_cast<tabs::TreeTabNodeTabCollection*>(moving_tab_tree_node),
@@ -684,7 +684,7 @@ void BraveTreeTabStripCollectionDelegate::MoveTabsRecursive(
                                       tabs::TabCollection::Type::TREE_NODE});
   std::vector<std::unique_ptr<tabs::TabCollection>>
       unique_moving_tab_collections_reversed;
-  for (auto& tab_or_collection : base::Reversed(compacted_moving_tabs)) {
+  for (auto& tab_or_collection : std::views::reverse(compacted_moving_tabs)) {
     tabs::TabCollection* moving_tab_tree_node = std::visit(
         absl::Overload(
             [this](tabs::TabInterface* tab) {
@@ -861,7 +861,7 @@ void BraveTreeTabStripCollectionDelegate::MoveTabsIntoGroup(
   }
 
   // Attach to the target group at 0 index temporarily.
-  for (auto& tab : base::Reversed(owned_tab_or_collection)) {
+  for (auto& tab : std::views::reverse(owned_tab_or_collection)) {
     std::visit(absl::Overload{
                    [&](std::unique_ptr<tabs::TabInterface>&& tab) {
                      auto* tab_ptr = tab.get();
@@ -1026,7 +1026,7 @@ void BraveTreeTabStripCollectionDelegate::MoveTabsOutOfGroup(
       CompactMovingTabs(moving_tabs, {tabs::TabCollection::Type::SPLIT});
   if (new_pinned_state) {
     // In this case, we just move the tabs to the pinned collection.
-    for (auto& tab_or_collection : base::Reversed(compacted_moving_tabs)) {
+    for (auto& tab_or_collection : std::views::reverse(compacted_moving_tabs)) {
       std::visit(absl::Overload{
                      [&](tabs::TabInterface* tab) {
                        auto detached_tab = DetachTabOutOfGroup(tab);
@@ -1167,7 +1167,7 @@ void BraveTreeTabStripCollectionDelegate::PinTabs(
   // collections to be passed in.
   base::flat_map<split_tabs::SplitTabId, std::set<tabs::TabInterface*>>
       split_tabs;
-  for (auto* moving_tab : base::Reversed(moving_tabs)) {
+  for (auto* moving_tab : std::views::reverse(moving_tabs)) {
     auto* parent_collection =
         collection_->GetParentCollection(moving_tab, GetPassKey());
     if (parent_collection->type() == tabs::TabCollection::Type::PINNED) {
@@ -1291,7 +1291,7 @@ void BraveTreeTabStripCollectionDelegate::UnpinTabs(
   base::flat_map<split_tabs::SplitTabId, std::vector<tabs::TabInterface*>>
       split_tabs;
 
-  for (auto* moving_tab : base::Reversed(moving_tabs)) {
+  for (auto* moving_tab : std::views::reverse(moving_tabs)) {
     if (!IsTabInPinnedCollection(moving_tab)) {
       // Already in unpinned collection. This will be moved together with
       // MoveTabsRecursive() call in the end of this function.
@@ -1375,7 +1375,7 @@ void BraveTreeTabStripCollectionDelegate::MoveChildrenOfTreeTabNodeToNode(
   CHECK_LT(target_index, target_collection->ChildCount());
 
   auto children = tree_tab_node_collection->GetTreeNodeChildren();
-  for (auto& child : base::Reversed(children)) {
+  for (auto& child : std::views::reverse(children)) {
     std::visit(
         absl::Overload{
             [&](tabs::TabInterface* tab) {
@@ -1418,7 +1418,7 @@ void BraveTreeTabStripCollectionDelegate::
   CHECK(local_index.has_value());
 
   auto children = tree_tab_node_collection->GetTreeNodeChildren();
-  for (auto& child : base::Reversed(children)) {
+  for (auto& child : std::views::reverse(children)) {
     std::visit(
         absl::Overload{
             [&](tabs::TabInterface* tab) {

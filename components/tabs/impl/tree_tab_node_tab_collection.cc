@@ -8,12 +8,12 @@
 #include <algorithm>
 #include <limits>
 #include <memory>
+#include <ranges>
 #include <utility>
 #include <variant>
 
 #include "absl/functional/overload.h"
 #include "base/check_op.h"
-#include "base/containers/adapters.h"
 #include "base/containers/flat_set.h"
 #include "base/functional/bind.h"
 #include "base/logging.h"
@@ -116,7 +116,7 @@ void TreeTabNodeTabCollection::FlattenTreeTabs(TabCollection& root) {
   CollectTreeNodesRecursively(root, all_tree_nodes);
 
   // Process tree nodes in reverse order so we handle children before parents.
-  for (auto* tree_node : base::Reversed(all_tree_nodes)) {
+  for (auto* tree_node : std::views::reverse(all_tree_nodes)) {
     // Move all direct children (tabs and collections e.g. SplitTabCollection)
     // from this tree node back to the tree node's parent, preserving order.
     std::vector<std::variant<tabs::TabInterface*, TabCollection*>> children =
