@@ -15,9 +15,11 @@
 #undef RegisterComponentsForUpdate
 
 #include "brave/browser/brave_browser_process.h"
+#include "brave/browser/brave_global_features.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_user_agent/browser/brave_user_agent_component_installer.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+#include "brave/components/extension_malware_blocklist/browser/extension_malware_blocklist_component_installer.h"
 #include "brave/components/local_ai/buildflags/buildflags.h"
 #include "brave/components/p3a/component_installer.h"
 #include "brave/components/p3a/p3a_service.h"
@@ -25,6 +27,7 @@
 #include "brave/components/query_filter/browser/query_filter_component_installer.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/component_updater/component_updater_utils.h"
+#include "extensions/buildflags/buildflags.h"
 
 #if BUILDFLAG(ENABLE_PSST)
 #include "brave/components/psst/core/browser/psst_component_installer.h"
@@ -77,6 +80,12 @@ void RegisterComponentsForUpdate() {
   RegisterZxcvbnDataComponent(cus);
 #endif  // BUILDFLAG(IS_ANDROID)
   brave_user_agent::RegisterBraveUserAgentComponent(cus);
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+  extension_malware_blocklist::RegisterExtensionMalwareBlocklistComponent(
+      cus, BraveGlobalFeatures::FromGlobalFeatures(
+               g_browser_process->GetFeatures())
+               ->extension_malware_blocklist());
+#endif  // BUILDFLAG(ENABLE_EXTENSIONS)
 #if BUILDFLAG(ENABLE_LOCAL_AI)
   local_ai::ManageLocalModelsComponentRegistration(
       cus, g_browser_process->local_state());
