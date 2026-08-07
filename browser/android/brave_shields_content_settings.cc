@@ -207,9 +207,11 @@ void JNI_BraveShieldsContentSettings_SetFingerprintingControlType(
     const base::android::JavaRef<jstring>& type,
     const base::android::JavaRef<jstring>& url,
     const base::android::JavaRef<jobject>& j_profile) {
-  brave_shields::SetFingerprintingControlType(
-      HostContentSettingsMapFactory::GetForProfile(
-          Profile::FromJavaObject(j_profile)),
+  auto* brave_shields_settings =
+      BraveShieldsSettingsServiceFactory::GetForProfile(
+          Profile::FromJavaObject(j_profile));
+
+  brave_shields_settings->SetFingerprintingControlType(
       brave_shields::ControlTypeFromString(
           base::android::ConvertJavaStringToUTF8(env, type)),
       GURL(base::android::ConvertJavaStringToUTF8(env, url)),

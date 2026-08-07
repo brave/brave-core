@@ -110,8 +110,7 @@ int OnBeforeStartTransaction_ReduceLanguageWork(
   if (origin_url.is_empty()) {
     return net::OK;
   }
-  if (!brave_shields::ShouldDoReduceLanguage(content_settings, origin_url,
-                                             profile->GetPrefs())) {
+  if (!settings_service->ShouldDoReduceLanguage(origin_url)) {
     return net::OK;
   }
   std::string additional_entropy;

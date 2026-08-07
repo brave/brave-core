@@ -290,10 +290,12 @@ void DefaultBraveShieldsHandler::SetFingerprintingControlType(
   CHECK(profile_);
   std::string value = args[0].GetString();
 
-  brave_shields::SetFingerprintingControlType(
-      HostContentSettingsMapFactory::GetForProfile(profile_),
-      ControlTypeFromString(value), GURL(), g_browser_process->local_state(),
-      profile_->GetPrefs());
+  auto* settings_service =
+      BraveShieldsSettingsServiceFactory::GetForProfile(profile_);
+  CHECK(settings_service);
+
+  settings_service->SetFingerprintingControlType(
+      ControlTypeFromString(value), GURL());
 }
 
 void DefaultBraveShieldsHandler::GetFingerprintingBlockEnabled(
@@ -317,10 +319,12 @@ void DefaultBraveShieldsHandler::SetFingerprintingBlockEnabled(
   CHECK(profile_);
   bool value = args[0].GetBool();
 
-  brave_shields::SetFingerprintingControlType(
-      HostContentSettingsMapFactory::GetForProfile(profile_),
-      value ? ControlType::DEFAULT : ControlType::ALLOW, GURL(),
-      g_browser_process->local_state());
+  auto* settings_service =
+      BraveShieldsSettingsServiceFactory::GetForProfile(profile_);
+  CHECK(settings_service);
+
+  settings_service->SetFingerprintingControlType(
+      value ? ControlType::DEFAULT : ControlType::ALLOW, GURL());
 }
 
 void DefaultBraveShieldsHandler::GetHttpsUpgradeControlType(
