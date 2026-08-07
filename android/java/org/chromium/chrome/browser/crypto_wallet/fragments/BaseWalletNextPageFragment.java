@@ -152,7 +152,13 @@ public abstract class BaseWalletNextPageFragment extends Fragment {
 
     /** Shows biometric authentication button if supported and if it was previously set. */
     protected void showBiometricAuthenticationButton(@NonNull final View view) {
-        if (Utils.isBiometricSupported(requireContext())
+        final Context context = getContext();
+        if (context == null) {
+            // An async biometric callback can run after the fragment has detached for example
+            // when a rotation cancels the prompt; there is no attached view to update.
+            return;
+        }
+        if (Utils.isBiometricSupported(context)
                 && KeystoreHelper.shouldUseBiometricToUnlock()) {
             view.setVisibility(View.VISIBLE);
         } else {
@@ -219,9 +225,14 @@ public abstract class BaseWalletNextPageFragment extends Fragment {
                         super.onAuthenticationError(errorCode, errString);
 
                         final Context context = getContext();
+                        if (context == null) {
+                            // A rotation may cancel the prompt and report the error once the
+                            // fragment has detached.
+                            return;
+                        }
                         // Error code 10 is when the user taps back to dismiss the dialog,
                         // there's no need to show a toast to log this action.
-                        if (!TextUtils.isEmpty(errString) && context != null && errorCode != 10) {
+                        if (!TextUtils.isEmpty(errString) && errorCode != 10) {
                             Toast.makeText(context, errString, Toast.LENGTH_SHORT).show();
                         }
                         // Both tapping back and the Cancel button report a user cancellation, which
