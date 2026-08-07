@@ -23,6 +23,10 @@ namespace actions {
 class ActionItem;
 }
 
+namespace content {
+class WebContents;
+}
+
 namespace page_actions {
 
 // Drives the Brave News page action: shows the icon when the current page has
@@ -52,8 +56,14 @@ class BraveNewsPageActionController
   void WebContentsDestroyed() override;
 
  private:
-  void AttachToTabHelper();
-  void UpdatePageAction();
+  void OnPrefChanged();
+
+  // (Re-)observes |contents| and its BraveNewsTabHelper, since the tab's
+  // contents can be swapped out (e.g. tab discarding). Stops observing the
+  // previously attached helper, which may be about to be destroyed.
+  void AttachToTabHelper(content::WebContents* contents);
+
+  void UpdatePageAction(content::WebContents* contents);
 
   const raw_ref<tabs::TabInterface> tab_;
   const raw_ref<page_actions::PageActionControllerImpl> page_action_controller_;
