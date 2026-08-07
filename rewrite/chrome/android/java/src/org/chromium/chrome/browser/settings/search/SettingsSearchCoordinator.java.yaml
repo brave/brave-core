@@ -21,7 +21,8 @@ substitutions:
       and then applies the tint. Anchored on the method signature (a stable
       landmark), not on an interior statement.
     regex:
-      re_pattern: '(public void )(initializeSearchUi)(\(@Nullable Bundle savedState\) \{)'
+      re_pattern:
+        '(public void )(initializeSearchUi)(\(@Nullable Bundle savedState\) \{)'
       replace: |-
         \1\2\3
                 \2_ChromiumImpl(savedState);
