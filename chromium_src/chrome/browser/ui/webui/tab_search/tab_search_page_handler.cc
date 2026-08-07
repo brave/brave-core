@@ -20,6 +20,7 @@
 #include "chrome/browser/history_embeddings/history_embeddings_utils.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window.h"
+#include "chrome/browser/ui/browser_window/public/create_browser_window.h"
 #include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
 #include "chrome/browser/ui/navigator/browser_navigator_params.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
@@ -220,9 +221,11 @@ void TabSearchPageHandler::OnGetFocusTabs(
     return;
   }
 
-  auto create_params = Browser::CreateParams(Profile::FromWebUI(web_ui_), true);
+  auto create_params =
+      BrowserWindowCreateParams(Profile::FromWebUI(web_ui_), true);
   create_params.user_title = topic;
-  Browser* new_browser = Browser::Create(create_params);
+  Browser* new_browser = CreateBrowserWindow(std::move(create_params))
+                             ->GetBrowserForMigrationOnly();
   for (auto* tab : tabs_before_move) {
     int tab_index =
         tab->GetBrowserWindowInterface()->GetTabStripModel()->GetIndexOfTab(
