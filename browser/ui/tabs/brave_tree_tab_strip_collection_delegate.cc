@@ -1692,11 +1692,7 @@ bool BraveTreeTabStripCollectionDelegate::ShouldDetachAsTreeSubtreeRoot(
         auto* const* current_tab = std::get_if<tabs::TabInterface*>(&child);
         return !current_tab || *current_tab != tree_node->GetCurrentTab();
       });
-  if (!has_descendant) {
-    return false;
-  }
-
-  return true;
+  return has_descendant;
 }
 
 void BraveTreeTabStripCollectionDelegate::WillDetachTreeTabNodeSubtree(
