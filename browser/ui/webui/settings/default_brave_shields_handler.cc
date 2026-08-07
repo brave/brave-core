@@ -294,8 +294,8 @@ void DefaultBraveShieldsHandler::SetFingerprintingControlType(
       BraveShieldsSettingsServiceFactory::GetForProfile(profile_);
   CHECK(settings_service);
 
-  settings_service->SetFingerprintingControlType(
-      ControlTypeFromString(value), GURL());
+  settings_service->SetFingerprintingControlType(ControlTypeFromString(value),
+                                                 GURL());
 }
 
 void DefaultBraveShieldsHandler::GetFingerprintingBlockEnabled(

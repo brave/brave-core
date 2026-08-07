@@ -191,8 +191,7 @@ TEST_F(BraveShieldsUtilProfilesTest, SetFingerprintingControlType) {
     return settings->GetFingerprintingControlType(kTestUrl);
   };
 
-  RunSettingsServiceTest<ControlType>(kExpects, std::move(set),
-                                      std::move(get));
+  RunSettingsServiceTest<ControlType>(kExpects, std::move(set), std::move(get));
 }
 
 TEST_F(BraveShieldsUtilProfilesTest, SetHttpsUpgradeControlType) {

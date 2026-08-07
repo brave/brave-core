@@ -235,7 +235,8 @@ TEST_F(BraveShieldsSettingsServiceTest, FingerprintMode) {
       brave_shields_settings()->GetFingerprintMode(GURL("https://example.com")),
       FingerprintMode::STANDARD_MODE);
   // verify underlying FingerprintingControlType is unchanged
-  EXPECT_EQ(brave_shields_settings()->GetFingerprintingControlType(GURL("https://example.com")),
+  EXPECT_EQ(brave_shields_settings()->GetFingerprintingControlType(
+                GURL("https://example.com")),
             brave_shields::ControlType::DEFAULT);
 }
 
@@ -692,7 +693,7 @@ TEST_F(BraveShieldsSettingsServiceTest, ShieldsDown) {
 TEST_F(BraveShieldsSettingsServiceTest, FingerprintingAllowed) {
   const GURL url("http://a.com");
   brave_shields_settings()->SetFingerprintingControlType(ControlType::ALLOW,
-                                                          url);
+                                                         url);
   brave_shields::FarblingPRNG prng;
   EXPECT_FALSE(brave_shields_settings()->MakePseudoRandomGeneratorForURL(
       url, {}, &prng));
@@ -713,7 +714,7 @@ TEST_F(BraveShieldsSettingsServiceTest, SetFingerprintingControlType_Default) {
 
   /* ALLOW */
   brave_shields_settings()->SetFingerprintingControlType(ControlType::ALLOW,
-                                                          GURL());
+                                                         GURL());
   type = brave_shields_settings()->GetFingerprintingControlType(GURL());
   EXPECT_EQ(ControlType::ALLOW, type);
 
@@ -724,7 +725,7 @@ TEST_F(BraveShieldsSettingsServiceTest, SetFingerprintingControlType_Default) {
 
   /* BLOCK */
   brave_shields_settings()->SetFingerprintingControlType(ControlType::BLOCK,
-                                                          GURL());
+                                                         GURL());
   type = brave_shields_settings()->GetFingerprintingControlType(GURL());
   EXPECT_EQ(ControlType::BLOCK, type);
 
@@ -735,7 +736,7 @@ TEST_F(BraveShieldsSettingsServiceTest, SetFingerprintingControlType_Default) {
 
   /* DEFAULT */
   brave_shields_settings()->SetFingerprintingControlType(ControlType::DEFAULT,
-                                                          GURL());
+                                                         GURL());
   type = brave_shields_settings()->GetFingerprintingControlType(GURL());
   EXPECT_EQ(ControlType::DEFAULT, type);
 
@@ -746,7 +747,7 @@ TEST_F(BraveShieldsSettingsServiceTest, SetFingerprintingControlType_Default) {
 
   /* Global ALLOW and Site explicit DEFAULT */
   brave_shields_settings()->SetFingerprintingControlType(ControlType::ALLOW,
-                                                          GURL());
+                                                         GURL());
   brave_shields_settings()->SetFingerprintingControlType(
       ControlType::DEFAULT, GURL("http://brave.com"));
   // Site should have DEFAULT if it's explicitly set.
@@ -756,7 +757,7 @@ TEST_F(BraveShieldsSettingsServiceTest, SetFingerprintingControlType_Default) {
 
   /* Global BLOCK and Site explicit DEFAULT */
   brave_shields_settings()->SetFingerprintingControlType(ControlType::BLOCK,
-                                                          GURL());
+                                                         GURL());
   // Site should have DEFAULT if it's explicitly set.
   type = brave_shields_settings()->GetFingerprintingControlType(
       GURL("http://brave.com"));

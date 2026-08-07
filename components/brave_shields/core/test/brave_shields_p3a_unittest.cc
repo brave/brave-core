@@ -70,15 +70,15 @@ TEST_F(BraveShieldsP3ATest, RecordGlobalFingerprintBlockSetting) {
   histogram_tester_->ExpectTotalCount(kFingerprintSettingHistogramName, 0);
 
   shields_settings_service_->SetFingerprintingControlType(ControlType::BLOCK,
-                                                           GURL());
+                                                          GURL());
   histogram_tester_->ExpectBucketCount(kFingerprintSettingHistogramName, 2, 1);
 
-  shields_settings_service_->SetFingerprintingControlType(
-      ControlType::DEFAULT, GURL());
+  shields_settings_service_->SetFingerprintingControlType(ControlType::DEFAULT,
+                                                          GURL());
   histogram_tester_->ExpectBucketCount(kFingerprintSettingHistogramName, 1, 1);
 
   shields_settings_service_->SetFingerprintingControlType(ControlType::ALLOW,
-                                                           GURL());
+                                                          GURL());
   histogram_tester_->ExpectBucketCount(kFingerprintSettingHistogramName, 0, 1);
 
   histogram_tester_->ExpectTotalCount(kFingerprintSettingHistogramName, 3);
@@ -155,8 +155,8 @@ TEST_F(BraveShieldsP3ATest, RecordDomainFingerprintBlockCounts) {
 
   auto* map = HostContentSettingsMapFactory::GetForProfile(profile_.get());
 
-  shields_settings_service_->SetFingerprintingControlType(
-      ControlType::DEFAULT, GURL());
+  shields_settings_service_->SetFingerprintingControlType(ControlType::DEFAULT,
+                                                          GURL());
   shields_settings_service_->SetFingerprintingControlType(
       ControlType::BLOCK, GURL("https://brave.com"));
 
@@ -202,7 +202,7 @@ TEST_F(BraveShieldsP3ATest, RecordDomainFingerprintBlockCounts) {
 
   // Change global setting
   shields_settings_service_->SetFingerprintingControlType(ControlType::BLOCK,
-                                                           GURL());
+                                                          GURL());
   histogram_tester_->ExpectBucketCount(kDomainFPSettingsAboveHistogramName, 0,
                                        2);
   histogram_tester_->ExpectBucketCount(kDomainFPSettingsBelowHistogramName, 0,
