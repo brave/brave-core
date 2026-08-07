@@ -37,15 +37,15 @@ BraveNewsPageActionController::BraveNewsPageActionController(
   Profile* const profile = tab_->GetBrowserWindowInterface()->GetProfile();
   should_show_.Init(
       brave_news::prefs::kShouldShowToolbarButton, profile->GetPrefs(),
-      base::BindRepeating(&BraveNewsPageActionController::UpdatePageAction,
+      base::BindRepeating(&BraveNewsPageActionController::OnPrefChanged,
                           base::Unretained(this)));
   opted_in_.Init(
       brave_news::prefs::kBraveNewsOptedIn, profile->GetPrefs(),
-      base::BindRepeating(&BraveNewsPageActionController::UpdatePageAction,
+      base::BindRepeating(&BraveNewsPageActionController::OnPrefChanged,
                           base::Unretained(this)));
   news_enabled_.Init(
       brave_news::prefs::kNewTabPageShowToday, profile->GetPrefs(),
-      base::BindRepeating(&BraveNewsPageActionController::UpdatePageAction,
+      base::BindRepeating(&BraveNewsPageActionController::OnPrefChanged,
                           base::Unretained(this)));
 }
 
@@ -53,21 +53,24 @@ BraveNewsPageActionController::~BraveNewsPageActionController() = default;
 
 void BraveNewsPageActionController::Init() {
   did_activate_subscription_ = tab_->RegisterDidActivate(base::BindRepeating(
-      [](BraveNewsPageActionController* self, tabs::TabInterface*) {
-        self->AttachToTabHelper();
-        self->UpdatePageAction();
+      [](BraveNewsPageActionController* self, tabs::TabInterface* tab) {
+        self->AttachToTabHelper(tab->GetContents());
+        self->UpdatePageAction(tab->GetContents());
       },
       base::Unretained(this)));
   will_discard_contents_subscription_ =
       tab_->RegisterWillDiscardContents(base::BindRepeating(
           [](BraveNewsPageActionController* self, tabs::TabInterface*,
-             content::WebContents*, content::WebContents*) {
-            self->AttachToTabHelper();
-            self->UpdatePageAction();
+             content::WebContents*, content::WebContents* new_contents) {
+            // TabInterface::GetContents() still returns the outgoing contents
+            // at this point, so the swapped in contents has to be taken from
+            // the argument.
+            self->AttachToTabHelper(new_contents);
+            self->UpdatePageAction(new_contents);
           },
           base::Unretained(this)));
-  AttachToTabHelper();
-  UpdatePageAction();
+  AttachToTabHelper(tab_->GetContents());
+  UpdatePageAction(tab_->GetContents());
 }
 
 void BraveNewsPageActionController::ExecuteAction(
@@ -94,7 +97,7 @@ void BraveNewsPageActionController::ExecuteAction(
 
 void BraveNewsPageActionController::OnAvailableFeedsChanged(
     const std::vector<GURL>& feeds) {
-  UpdatePageAction();
+  UpdatePageAction(tab_->GetContents());
 }
 
 void BraveNewsPageActionController::WebContentsDestroyed() {
@@ -102,8 +105,12 @@ void BraveNewsPageActionController::WebContentsDestroyed() {
   Observe(nullptr);
 }
 
-void BraveNewsPageActionController::AttachToTabHelper() {
-  content::WebContents* const contents = tab_->GetContents();
+void BraveNewsPageActionController::OnPrefChanged() {
+  UpdatePageAction(tab_->GetContents());
+}
+
+void BraveNewsPageActionController::AttachToTabHelper(
+    content::WebContents* contents) {
   BraveNewsTabHelper* const tab_helper =
       contents ? BraveNewsTabHelper::FromWebContents(contents) : nullptr;
 
@@ -125,8 +132,8 @@ void BraveNewsPageActionController::AttachToTabHelper() {
   }
 }
 
-void BraveNewsPageActionController::UpdatePageAction() {
-  content::WebContents* const contents = tab_->GetContents();
+void BraveNewsPageActionController::UpdatePageAction(
+    content::WebContents* contents) {
   BraveNewsTabHelper* const tab_helper =
       contents ? BraveNewsTabHelper::FromWebContents(contents) : nullptr;
 

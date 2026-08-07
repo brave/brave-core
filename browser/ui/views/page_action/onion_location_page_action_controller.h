@@ -12,6 +12,10 @@
 #include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/web_contents_observer.h"
 
+namespace content {
+class WebContents;
+}
+
 namespace page_actions {
 
 // Drives the Onion Location page action: shows an icon (and, when browsing
@@ -34,8 +38,11 @@ class OnionLocationPageActionController : public content::WebContentsObserver {
   void ExecuteAction();
 
  private:
-  void AttachToWebContents();
-  void UpdatePageAction();
+  // (Re-)observes |contents|, since the tab's contents can be swapped out
+  // (e.g. tab discarding).
+  void AttachToWebContents(content::WebContents* contents);
+
+  void UpdatePageAction(content::WebContents* contents);
   void ResetPageAction();
 
   // content::WebContentsObserver:
