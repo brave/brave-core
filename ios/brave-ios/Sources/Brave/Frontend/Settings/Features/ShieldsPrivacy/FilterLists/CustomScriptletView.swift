@@ -204,7 +204,29 @@ struct CustomScriptletView: View {
 
   private func saveCustomScriptlet() {
     guard isSaveEnabled, !isSaving else { return }
-    saveError = SaveError(message: "Not yet supported")
+    isSaving = true
+
+    Task { @MainActor in
+      defer { isSaving = false }
+
+      do {
+        try await CustomFilterListStorage.shared.save(
+          customScriptlet: CustomScriptlet(
+            name: fullCustomScriptletName,
+            content: customScriptletContent
+          )
+        )
+        // Remove the old file if the scriptlet was renamed
+        if let editingScriptlet, editingScriptlet.name != fullCustomScriptletName {
+          try await CustomFilterListStorage.shared.deleteCustomScriptlet(
+            named: editingScriptlet.name
+          )
+        }
+        dismiss()
+      } catch {
+        saveError = SaveError(message: error.localizedDescription)
+      }
+    }
   }
 }
 
