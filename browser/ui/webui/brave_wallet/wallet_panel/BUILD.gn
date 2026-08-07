@@ -36,6 +36,8 @@ source_set("wallet_panel") {
     "//brave/components/resources:static_resources_grit",
     "//brave/components/resources:strings_grit",
     "//chrome/browser/ui/browser_window",
+    "//chrome/browser/ui/side_panel",
+    "//chrome/browser/ui/side_panel:side_panel_views_dependent",
     "//chrome/browser/ui/tabs:tab_strip",
     "//chrome/browser/ui/webui",
     "//chrome/browser/ui/webui:favicon_source",

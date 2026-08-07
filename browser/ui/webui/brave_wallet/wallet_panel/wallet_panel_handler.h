@@ -30,6 +30,7 @@ class WalletPanelHandler : public brave_wallet::mojom::PanelHandler {
   // brave_wallet::mojom::PanelHandler:
   void ShowUI() override;
   void CloseUI() override;
+  void CloseSidePanel() override;
   void ConnectToSite(
       const std::vector<std::string>& accounts,
       brave_wallet::mojom::PermissionLifetimeOption option) override;
