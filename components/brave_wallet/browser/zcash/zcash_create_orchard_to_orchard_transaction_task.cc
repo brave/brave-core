@@ -114,6 +114,7 @@ void ZCashCreateOrchardToOrchardTransactionTask::CreateTransaction() {
   }
 
   ZCashTransaction zcash_transaction;
+  zcash_transaction.init_v5_part();
   for (const auto& note : pick_result.value().inputs) {
     OrchardInput orchard_input;
     orchard_input.note = note;

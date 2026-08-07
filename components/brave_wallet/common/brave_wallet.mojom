@@ -2378,16 +2378,17 @@ struct BtcTxData {
 struct ZecTxInput {
   string address;
   uint64 value;
+  ZCashTokenType pool = kNone;
 };
 
 struct ZecTxOutput {
   string address;
   uint64 value;
+  ZCashTokenType pool = kNone;
 };
 
 struct ZecTxData {
-  // Whether Orchard pool is used. Ironwood TBD.
-  bool use_shielded_pool;
+  ZCashTokenType zcash_token_type = kNone;
   string to;
   bool sending_max_amount;
   // Memo field should exist only for shielded output.

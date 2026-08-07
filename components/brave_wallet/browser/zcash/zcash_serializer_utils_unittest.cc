@@ -37,6 +37,7 @@ ZCashTransaction::TxInput MakeInput(
 
 ZCashTransaction MakeCombinedTransparentTx() {
   ZCashTransaction tx;
+  tx.init_v5_part();
   tx.set_consensus_brach_id(0xc2d6d0b4);
 
   tx.transparent_part().inputs.push_back(MakeInput(

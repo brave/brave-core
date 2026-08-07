@@ -794,9 +794,68 @@ describe('findTransactionToken', () => {
     })
 
     it('should detect ZEC as the token for ZCash transactions', () => {
+      const transparentToken = {
+        ...mockZecToken,
+        zcashTokenType: BraveWallet.ZCashTokenType.kTransparent,
+      }
+      const transparentTransaction = {
+        ...mockZecSendTransaction,
+        txDataUnion: {
+          zecTxData: {
+            ...mockZecSendTransaction.txDataUnion.zecTxData,
+            zcashTokenType: BraveWallet.ZCashTokenType.kTransparent,
+          },
+        },
+      }
       expect(
-        findTransactionToken(mockZecSendTransaction, [mockZecToken])?.symbol,
+        findTransactionToken(transparentTransaction, [transparentToken])
+          ?.symbol,
       ).toBe('ZEC')
+    })
+
+    it('should detect the exact ZCash token type for ZCash transactions', () => {
+      const transparentToken = {
+        ...mockZecToken,
+        zcashTokenType: BraveWallet.ZCashTokenType.kTransparent,
+      }
+      const orchardToken = {
+        ...mockZecToken,
+        zcashTokenType: BraveWallet.ZCashTokenType.kOrchard,
+      }
+      const ironwoodToken = {
+        ...mockZecToken,
+        zcashTokenType: BraveWallet.ZCashTokenType.kIronwood,
+      }
+      const transactionWithTokenType = (
+        zcashTokenType: BraveWallet.ZCashTokenType,
+      ) => ({
+        ...mockZecSendTransaction,
+        txDataUnion: {
+          zecTxData: {
+            ...mockZecSendTransaction.txDataUnion.zecTxData,
+            zcashTokenType,
+          },
+        },
+      })
+
+      expect(
+        findTransactionToken(
+          transactionWithTokenType(BraveWallet.ZCashTokenType.kTransparent),
+          [transparentToken, orchardToken, ironwoodToken],
+        ),
+      ).toBe(transparentToken)
+      expect(
+        findTransactionToken(
+          transactionWithTokenType(BraveWallet.ZCashTokenType.kOrchard),
+          [transparentToken, orchardToken, ironwoodToken],
+        ),
+      ).toBe(orchardToken)
+      expect(
+        findTransactionToken(
+          transactionWithTokenType(BraveWallet.ZCashTokenType.kIronwood),
+          [transparentToken, orchardToken, ironwoodToken],
+        ),
+      ).toBe(ironwoodToken)
     })
   })
 

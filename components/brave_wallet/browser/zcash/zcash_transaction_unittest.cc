@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/zcash/zcash_transaction.h"
 
+#include <array>
 #include <limits>
 #include <memory>
 #include <utility>
@@ -14,6 +15,7 @@
 #include "brave/components/brave_wallet/browser/zcash/zcash_serializer.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 using testing::_;
 
@@ -97,6 +99,7 @@ TEST(ZCashTransaction, TxOutput_Value) {
 
 TEST(ZCashTransaction, Value) {
   ZCashTransaction tx;
+  tx.init_v5_part();
 
   ZCashTransaction::TxInput input1;
   input1.utxo_address = kAddress1;
@@ -185,6 +188,7 @@ TEST(ZCashTransaction, IsSigned) {
 
 TEST(ZCashTransaction, TotalInputsAmount) {
   ZCashTransaction tx;
+  tx.init_v5_part();
   EXPECT_EQ(tx.TotalInputsAmount().ValueOrDie(), 0u);
 
   ZCashTransaction::TxInput input1;
@@ -207,6 +211,7 @@ TEST(ZCashTransaction, TotalInputsAmount) {
 
 TEST(ZCashTransaction, TotalInputsAmountOverflow) {
   ZCashTransaction tx;
+  tx.init_v5_part();
   tx.transparent_part().inputs.emplace_back().utxo_value =
       std::numeric_limits<uint64_t>::max();
   tx.v5_part().orchard.inputs.emplace_back().note.amount = 1;
@@ -243,6 +248,7 @@ TEST(ZCashTransactionUtilsUnitTest, ValidateAmounts) {
   // Valid transparent-only transaction
   {
     ZCashTransaction tx;
+    tx.init_v5_part();
     tx.set_fee(5000u);
 
     // Add transparent inputs
@@ -264,6 +270,7 @@ TEST(ZCashTransactionUtilsUnitTest, ValidateAmounts) {
   // Valid transparent-only transaction with single input/output
   {
     ZCashTransaction tx;
+    tx.init_v5_part();
     tx.set_fee(5000u);
 
     auto& input = tx.transparent_part().inputs.emplace_back();
@@ -279,6 +286,7 @@ TEST(ZCashTransactionUtilsUnitTest, ValidateAmounts) {
   // Invalid transparent transaction - inputs < outputs + fee
   {
     ZCashTransaction tx;
+    tx.init_v5_part();
     tx.set_fee(5000u);
 
     auto& input = tx.transparent_part().inputs.emplace_back();
@@ -294,6 +302,7 @@ TEST(ZCashTransactionUtilsUnitTest, ValidateAmounts) {
   // Invalid transparent transaction - inputs > outputs + fee
   {
     ZCashTransaction tx;
+    tx.init_v5_part();
     tx.set_fee(5000u);
 
     auto& input = tx.transparent_part().inputs.emplace_back();
@@ -309,6 +318,7 @@ TEST(ZCashTransactionUtilsUnitTest, ValidateAmounts) {
   // Valid transaction with zero fee
   {
     ZCashTransaction tx;
+    tx.init_v5_part();
     tx.set_fee(0u);
 
     auto& input = tx.transparent_part().inputs.emplace_back();
@@ -324,6 +334,7 @@ TEST(ZCashTransactionUtilsUnitTest, ValidateAmounts) {
   // Valid transaction with empty inputs and outputs (zero fee)
   {
     ZCashTransaction tx;
+    tx.init_v5_part();
     tx.set_fee(0u);
 
     // 0 (inputs) = 0 (outputs) + 0 (fee)
@@ -333,6 +344,7 @@ TEST(ZCashTransactionUtilsUnitTest, ValidateAmounts) {
   // Test with multiple transparent inputs and outputs
   {
     ZCashTransaction tx;
+    tx.init_v5_part();
     tx.set_fee(5000u);
 
     // Multiple inputs
@@ -354,6 +366,7 @@ TEST(ZCashTransactionUtilsUnitTest, ValidateAmounts) {
   // Valid orchard-only transaction
   {
     ZCashTransaction tx;
+    tx.init_v5_part();
     tx.set_fee(5000u);
 
     // Add orchard inputs
@@ -375,6 +388,7 @@ TEST(ZCashTransactionUtilsUnitTest, ValidateAmounts) {
   // Valid mixed transaction (transparent + orchard)
   {
     ZCashTransaction tx;
+    tx.init_v5_part();
     tx.set_fee(5000u);
 
     // Transparent inputs
@@ -400,6 +414,7 @@ TEST(ZCashTransactionUtilsUnitTest, ValidateAmounts) {
   // Invalid mixed transaction - inputs < outputs + fee
   {
     ZCashTransaction tx;
+    tx.init_v5_part();
     tx.set_fee(5000u);
 
     auto& t_input = tx.transparent_part().inputs.emplace_back();
@@ -421,6 +436,7 @@ TEST(ZCashTransactionUtilsUnitTest, ValidateAmounts) {
   // Invalid mixed transaction - inputs > outputs + fee
   {
     ZCashTransaction tx;
+    tx.init_v5_part();
     tx.set_fee(5000u);
 
     auto& t_input = tx.transparent_part().inputs.emplace_back();
@@ -442,6 +458,7 @@ TEST(ZCashTransactionUtilsUnitTest, ValidateAmounts) {
   // Valid transaction with multiple orchard inputs and outputs
   {
     ZCashTransaction tx;
+    tx.init_v5_part();
     tx.set_fee(10000u);
 
     // Multiple orchard inputs
@@ -463,6 +480,7 @@ TEST(ZCashTransactionUtilsUnitTest, ValidateAmounts) {
   // Valid transaction with orchard inputs and transparent output
   {
     ZCashTransaction tx;
+    tx.init_v5_part();
     tx.set_fee(5000u);
 
     auto& input1 = tx.v5_part().orchard.inputs.emplace_back();
@@ -481,6 +499,7 @@ TEST(ZCashTransactionUtilsUnitTest, ValidateAmounts) {
   // Test with large amounts
   {
     ZCashTransaction tx;
+    tx.init_v5_part();
     tx.set_fee(1000u);
 
     auto& input = tx.transparent_part().inputs.emplace_back();
@@ -497,6 +516,7 @@ TEST(ZCashTransactionUtilsUnitTest, ValidateAmounts) {
 TEST(ZCashTransactionUtilsUnitTest, ValidateAmountsOverflow) {
   {
     ZCashTransaction tx;
+    tx.init_v5_part();
     tx.transparent_part().inputs.emplace_back().utxo_value =
         std::numeric_limits<uint64_t>::max();
     tx.v5_part().orchard.inputs.emplace_back().note.amount = 1;
@@ -505,6 +525,7 @@ TEST(ZCashTransactionUtilsUnitTest, ValidateAmountsOverflow) {
 
   {
     ZCashTransaction tx;
+    tx.init_v5_part();
     tx.transparent_part().inputs.emplace_back().utxo_value =
         std::numeric_limits<uint64_t>::max();
     tx.transparent_part().outputs.emplace_back().amount =
@@ -515,6 +536,7 @@ TEST(ZCashTransactionUtilsUnitTest, ValidateAmountsOverflow) {
 
   {
     ZCashTransaction tx;
+    tx.init_v5_part();
     tx.transparent_part().inputs.emplace_back().utxo_value =
         std::numeric_limits<uint64_t>::max();
     tx.transparent_part().outputs.emplace_back().amount =
@@ -530,6 +552,8 @@ TEST(ZCashTransactionUtilsUnitTest, ValidateAmountsOverflow) {
 TEST(ZCashTransaction, OperatorEquals_OrchardPart) {
   ZCashTransaction tx1;
   ZCashTransaction tx2;
+  tx1.init_v5_part();
+  tx2.init_v5_part();
 
   // Identical transactions must be equal.
   EXPECT_EQ(tx1, tx2);
@@ -544,14 +568,480 @@ TEST(ZCashTransaction, OperatorEquals_OrchardPart) {
 }
 
 TEST(ZCashTransaction, ToValueFromValue_VersionRoundTrip) {
-  ZCashTransaction tx;
-  tx.set_locktime(10);
-  tx.set_to("t1example");
-  auto& input = tx.transparent_part().inputs.emplace_back();
-  input.utxo_value = 5;
-  auto parsed = ZCashTransaction::FromValue(tx.ToValue());
+  // v5 round-trips to a v5 transaction.
+  {
+    ZCashTransaction tx;
+    tx.init_v5_part();
+    tx.set_locktime(10);
+    tx.set_to("t1example");
+    auto& input = tx.transparent_part().inputs.emplace_back();
+    input.utxo_value = 5;
+    auto parsed = ZCashTransaction::FromValue(tx.ToValue());
+    ASSERT_TRUE(parsed);
+    EXPECT_TRUE(parsed->is_v5());
+    EXPECT_EQ(*parsed, tx);
+  }
+  // v6 round-trips to a v6 transaction.
+  {
+    ZCashTransaction tx;
+    tx.init_v6_part();
+    tx.set_locktime(11);
+    tx.set_to("t1example");
+    auto parsed = ZCashTransaction::FromValue(tx.ToValue());
+    ASSERT_TRUE(parsed);
+    EXPECT_TRUE(parsed->is_v6());
+    EXPECT_EQ(*parsed, tx);
+  }
+}
+
+TEST(ZCashTransaction, OperatorEquals_V6Part) {
+  ZCashTransaction tx1;
+  ZCashTransaction tx2;
+
+  // Both uninitialized: equal.
+  EXPECT_EQ(tx1, tx2);
+
+  // Only tx1 has v6_part: not equal.
+  tx1.init_v6_part();
+  EXPECT_NE(tx1, tx2);
+
+  // Both have default v6_part: equal.
+  tx2.init_v6_part();
+  EXPECT_EQ(tx1, tx2);
+
+  // Differing legacy_orchard digest: not equal.
+  std::array<uint8_t, kZCashDigestSize> d{};
+  d[0] = 0xAB;
+  tx1.v6_part().legacy_orchard.digest = d;
+  EXPECT_NE(tx1, tx2);
+
+  tx2.v6_part().legacy_orchard.digest = d;
+  EXPECT_EQ(tx1, tx2);
+
+  // Differing ironwood digest: not equal.
+  std::array<uint8_t, kZCashDigestSize> d2{};
+  d2[0] = 0xCD;
+  tx1.v6_part().ironwood.digest = d2;
+  EXPECT_NE(tx1, tx2);
+
+  tx2.v6_part().ironwood.digest = d2;
+  EXPECT_EQ(tx1, tx2);
+}
+
+TEST(ZCashTransaction, LegacyFormatReadsAsV5AndWritesV5Part) {
+  // Frozen pre-v6 persisted shape: top-level orchard_* keys, no v6_part.
+  // note_version is omitted so OrchardNote::FromValue defaults it to 2.
+  constexpr char kOrchardAddrHex[] =
+      "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+      "AAAAAAAAAAAAAAAA";  // 43 bytes
+  constexpr char kNullifierHex[] =
+      "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB";  // 32
+  constexpr char kRhoHex[] =
+      "CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC";  // 32
+  constexpr char kSeedHex[] =
+      "DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD";  // 32
+  constexpr char kOutputAddrHex[] =
+      "EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE"
+      "EEEEEEEEEEEEEEEE";  // 43 bytes
+
+  base::DictValue dict = base::test::ParseJsonDict(absl::StrFormat(
+      R"({
+        "inputs": [{
+          "utxo_address": "%s",
+          "utxo_outpoint": {
+            "txid": "%s",
+            "index": 1
+          },
+          "utxo_value": "100000",
+          "script_pub_key": "010203",
+          "script_sig": "0405"
+        }],
+        "outputs": [{
+          "address": "%s",
+          "amount": "40000",
+          "script_pub_key": "060708"
+        }],
+        "orchard_inputs": [{
+          "note": {
+            "addr": "%s",
+            "block_id": "42",
+            "nullifier": "%s",
+            "amount": "50000",
+            "orchard_commitment_tree_position": "7",
+            "rho": "%s",
+            "seed": "%s"
+          }
+        }],
+        "orchard_outputs": [{
+          "address": "%s",
+          "amount": "45000"
+        }],
+        "anchor_block_height": "1234",
+        "locktime": "99",
+        "to": "%s",
+        "amount": "45000",
+        "fee": "15000",
+        "expiry_height": "2000"
+      })",
+      kAddress1, kTxid1, kAddress2, kOrchardAddrHex, kNullifierHex, kRhoHex,
+      kSeedHex, kOutputAddrHex, kAddress2));
+
+  auto parsed = ZCashTransaction::FromValue(dict);
   ASSERT_TRUE(parsed);
-  EXPECT_EQ(*parsed, tx);
+  EXPECT_TRUE(parsed->is_v5());
+  EXPECT_FALSE(parsed->is_v6());
+
+  EXPECT_EQ(parsed->locktime(), 99u);
+  EXPECT_EQ(parsed->to(), kAddress2);
+  EXPECT_EQ(parsed->amount(), 45000u);
+  EXPECT_EQ(parsed->fee(), 15000u);
+  EXPECT_EQ(parsed->expiry_height(), 2000u);
+
+  ASSERT_EQ(parsed->transparent_part().inputs.size(), 1u);
+  EXPECT_EQ(parsed->transparent_part().inputs[0].utxo_address, kAddress1);
+  EXPECT_EQ(parsed->transparent_part().inputs[0].utxo_value, 100000u);
+
+  ASSERT_EQ(parsed->transparent_part().outputs.size(), 1u);
+  EXPECT_EQ(parsed->transparent_part().outputs[0].address, kAddress2);
+  EXPECT_EQ(parsed->transparent_part().outputs[0].amount, 40000u);
+
+  ASSERT_EQ(parsed->v5_part().orchard.inputs.size(), 1u);
+  EXPECT_EQ(parsed->v5_part().orchard.inputs[0].note.amount, 50000u);
+  EXPECT_EQ(parsed->v5_part().orchard.inputs[0].note.block_id, 42u);
+  EXPECT_EQ(parsed->v5_part().orchard.inputs[0].note.note_version, 2u);
+  EXPECT_EQ(
+      parsed->v5_part().orchard.inputs[0].note.orchard_commitment_tree_position,
+      7u);
+
+  ASSERT_EQ(parsed->v5_part().orchard.outputs.size(), 1u);
+  EXPECT_EQ(parsed->v5_part().orchard.outputs[0].value, 45000u);
+  ASSERT_TRUE(parsed->v5_part().orchard.anchor_block_height);
+  EXPECT_EQ(*parsed->v5_part().orchard.anchor_block_height, 1234u);
+
+  // Re-serializing migrates the legacy top-level shape to explicit v5 data.
+  base::DictValue rewritten = parsed->ToValue();
+  EXPECT_FALSE(rewritten.FindDict("v6_part"));
+  auto* v5_part = rewritten.FindDict("v5_part");
+  ASSERT_TRUE(v5_part);
+  auto* orchard = v5_part->FindDict("orchard");
+  ASSERT_TRUE(orchard);
+  ASSERT_TRUE(orchard->FindList("inputs"));
+  ASSERT_TRUE(orchard->FindList("outputs"));
+  EXPECT_TRUE(orchard->FindString("anchor_block_height"));
+  EXPECT_FALSE(rewritten.FindList("orchard_inputs"));
+  EXPECT_FALSE(rewritten.FindList("orchard_outputs"));
+}
+
+TEST(ZCashTransaction, FromValue_OldFormatOrchardOnlyParsesAsV5) {
+  constexpr char kOrchardAddrHex[] =
+      "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+      "AAAAAAAAAAAAAAAA";
+  constexpr char kNullifierHex[] =
+      "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB";
+  constexpr char kRhoHex[] =
+      "CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC";
+  constexpr char kSeedHex[] =
+      "DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD";
+  constexpr char kOutputAddrHex[] =
+      "EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE"
+      "EEEEEEEEEEEEEEEE";
+
+  // No transparent inputs/outputs lists — only orchard_* (accepted pre-v6
+  // path).
+  base::DictValue dict = base::test::ParseJsonDict(absl::StrFormat(
+      R"({
+        "orchard_inputs": [{
+          "note": {
+            "addr": "%s",
+            "block_id": "1",
+            "nullifier": "%s",
+            "amount": "30000",
+            "orchard_commitment_tree_position": "0",
+            "rho": "%s",
+            "seed": "%s"
+          }
+        }],
+        "orchard_outputs": [{
+          "address": "%s",
+          "amount": "25000"
+        }],
+        "anchor_block_height": "10",
+        "locktime": "0",
+        "to": "ua1example",
+        "amount": "25000",
+        "fee": "5000"
+      })",
+      kOrchardAddrHex, kNullifierHex, kRhoHex, kSeedHex, kOutputAddrHex));
+
+  auto parsed = ZCashTransaction::FromValue(dict);
+  ASSERT_TRUE(parsed);
+  EXPECT_TRUE(parsed->is_v5());
+  EXPECT_TRUE(parsed->transparent_part().inputs.empty());
+  EXPECT_TRUE(parsed->transparent_part().outputs.empty());
+  ASSERT_EQ(parsed->v5_part().orchard.inputs.size(), 1u);
+  EXPECT_EQ(parsed->v5_part().orchard.inputs[0].note.amount, 30000u);
+  ASSERT_EQ(parsed->v5_part().orchard.outputs.size(), 1u);
+  EXPECT_EQ(parsed->v5_part().orchard.outputs[0].value, 25000u);
+  EXPECT_EQ(*parsed->v5_part().orchard.anchor_block_height, 10u);
+}
+
+TEST(ZCashTransaction, FromValue_LegacyTransparentOnlyParsesAsV5) {
+  base::DictValue dict = base::test::ParseJsonDict(absl::StrFormat(
+      R"({
+        "inputs": [{
+          "utxo_address": "%s",
+          "utxo_outpoint": {
+            "txid": "%s",
+            "index": 1
+          },
+          "utxo_value": "100000",
+          "script_pub_key": "010203",
+          "script_sig": "0405"
+        }],
+        "outputs": [{
+          "address": "%s",
+          "amount": "90000",
+          "script_pub_key": "060708"
+        }],
+        "orchard_inputs": [],
+        "orchard_outputs": [],
+        "locktime": "99",
+        "to": "%s",
+        "amount": "90000",
+        "fee": "10000"
+      })",
+      kAddress1, kTxid1, kAddress2, kAddress2));
+
+  auto parsed = ZCashTransaction::FromValue(dict);
+  ASSERT_TRUE(parsed);
+  EXPECT_TRUE(parsed->is_v5());
+  EXPECT_FALSE(parsed->is_v6());
+  EXPECT_EQ(parsed->locktime(), 99u);
+  EXPECT_EQ(parsed->to(), kAddress2);
+  EXPECT_EQ(parsed->amount(), 90000u);
+  EXPECT_EQ(parsed->fee(), 10000u);
+
+  ASSERT_EQ(parsed->transparent_part().inputs.size(), 1u);
+  EXPECT_EQ(parsed->transparent_part().inputs[0].utxo_address, kAddress1);
+  EXPECT_EQ(parsed->transparent_part().inputs[0].utxo_value, 100000u);
+  ASSERT_EQ(parsed->transparent_part().outputs.size(), 1u);
+  EXPECT_EQ(parsed->transparent_part().outputs[0].address, kAddress2);
+  EXPECT_EQ(parsed->transparent_part().outputs[0].amount, 90000u);
+
+  EXPECT_TRUE(parsed->v5_part().orchard.inputs.empty());
+  EXPECT_TRUE(parsed->v5_part().orchard.outputs.empty());
+}
+
+TEST(ZCashTransaction, InitVersionPart) {
+  ZCashTransaction tx;
+  EXPECT_FALSE(tx.is_v5());
+  EXPECT_FALSE(tx.is_v6());
+
+  tx.init_v5_part();
+  EXPECT_TRUE(tx.is_v5());
+  EXPECT_FALSE(tx.is_v6());
+
+  tx.init_v6_part();
+  EXPECT_FALSE(tx.is_v5());
+  EXPECT_TRUE(tx.is_v6());
+  EXPECT_TRUE(tx.v6_part().legacy_orchard.inputs.empty());
+  EXPECT_TRUE(tx.v6_part().legacy_orchard.outputs.empty());
+  EXPECT_TRUE(tx.v6_part().ironwood.inputs.empty());
+  EXPECT_TRUE(tx.v6_part().ironwood.outputs.empty());
+}
+
+TEST(ZCashTransaction, ToValueFromValue_V6PartRichRoundTrip) {
+  ZCashTransaction tx;
+  tx.init_v6_part();
+  tx.set_locktime(42);
+  tx.set_to(kAddress1);
+  tx.set_amount(90000);
+  tx.set_fee(10000);
+  tx.set_expiry_height(500);
+
+  {
+    auto& input = tx.v6_part().legacy_orchard.inputs.emplace_back();
+    input.note.addr.fill(0x11);
+    input.note.block_id = 3;
+    input.note.nullifier.fill(0x22);
+    input.note.amount = 70000;
+    input.note.orchard_commitment_tree_position = 1;
+    input.note.rho.fill(0x33);
+    input.note.seed.fill(0x44);
+    input.note.note_version = 2;
+
+    auto& output = tx.v6_part().legacy_orchard.outputs.emplace_back();
+    output.addr.fill(0x55);
+    output.value = 20000;
+    tx.v6_part().legacy_orchard.anchor_block_height = 100;
+    std::array<uint8_t, kZCashDigestSize> digest{};
+    digest.fill(0xAB);
+    tx.v6_part().legacy_orchard.digest = digest;
+    tx.v6_part().legacy_orchard.raw_tx = std::vector<uint8_t>{0x01, 0x02, 0x03};
+  }
+
+  {
+    auto& input = tx.v6_part().ironwood.inputs.emplace_back();
+    input.note.addr.fill(0x66);
+    input.note.block_id = 4;
+    input.note.nullifier.fill(0x77);
+    input.note.amount = 30000;
+    input.note.orchard_commitment_tree_position = 2;
+    input.note.rho.fill(0x88);
+    input.note.seed.fill(0x99);
+    input.note.note_version = 3;
+
+    auto& output = tx.v6_part().ironwood.outputs.emplace_back();
+    output.addr.fill(0xAA);
+    output.value = 70000;
+    tx.v6_part().ironwood.anchor_block_height = 200;
+    std::array<uint8_t, kZCashDigestSize> digest{};
+    digest.fill(0xCD);
+    tx.v6_part().ironwood.digest = digest;
+    tx.v6_part().ironwood.raw_tx = std::vector<uint8_t>{0xDE, 0xAD};
+  }
+
+  auto& t_input = tx.transparent_part().inputs.emplace_back();
+  t_input.utxo_address = kAddress1;
+  t_input.utxo_value = 5000;
+  base::HexStringToSpan(kTxid1, t_input.utxo_outpoint.txid);
+
+  base::DictValue value = tx.ToValue();
+  EXPECT_FALSE(value.FindDict("v5_part"));
+  auto* v6_part = value.FindDict("v6_part");
+  ASSERT_TRUE(v6_part);
+  EXPECT_FALSE(v6_part->Find("zip233_amount"));
+  const auto* legacy_orchard = v6_part->FindDict("legacy_orchard");
+  ASSERT_TRUE(legacy_orchard);
+  EXPECT_FALSE(legacy_orchard->Find("digest"));
+  EXPECT_FALSE(legacy_orchard->Find("raw_tx"));
+  const auto* ironwood = v6_part->FindDict("ironwood");
+  ASSERT_TRUE(ironwood);
+  EXPECT_FALSE(ironwood->Find("digest"));
+  EXPECT_FALSE(ironwood->Find("raw_tx"));
+
+  auto parsed = ZCashTransaction::FromValue(value);
+  ASSERT_TRUE(parsed);
+  EXPECT_TRUE(parsed->is_v6());
+  ZCashTransaction expected = tx;
+  expected.v6_part().legacy_orchard.digest.reset();
+  expected.v6_part().legacy_orchard.raw_tx.reset();
+  expected.v6_part().ironwood.digest.reset();
+  expected.v6_part().ironwood.raw_tx.reset();
+  EXPECT_EQ(*parsed, expected);
+
+  base::DictValue rewritten = parsed->ToValue();
+  ASSERT_TRUE(rewritten.FindDict("v6_part"));
+  EXPECT_FALSE(rewritten.FindList("orchard_inputs"));
+  EXPECT_FALSE(rewritten.FindList("orchard_outputs"));
+}
+
+TEST(ZCashTransaction, TotalInputsAmount_V6) {
+  ZCashTransaction tx;
+  tx.init_v6_part();
+
+  EXPECT_EQ(tx.TotalInputsAmount().ValueOrDie(), 0u);
+
+  tx.transparent_part().inputs.emplace_back().utxo_value = 1000u;
+  tx.v6_part().legacy_orchard.inputs.emplace_back().note.amount = 2000u;
+  tx.v6_part().ironwood.inputs.emplace_back().note.amount = 3000u;
+  EXPECT_EQ(tx.TotalInputsAmount().ValueOrDie(), 6000u);
+}
+
+TEST(ZCashTransaction, ValidateAmounts_V6) {
+  // Valid dual-pool v6 transaction.
+  {
+    ZCashTransaction tx;
+    tx.init_v6_part();
+    tx.set_fee(5000u);
+
+    tx.v6_part().legacy_orchard.inputs.emplace_back().note.amount = 20000u;
+    tx.v6_part().ironwood.inputs.emplace_back().note.amount = 10000u;
+    tx.transparent_part().inputs.emplace_back().utxo_value = 5000u;
+
+    tx.v6_part().legacy_orchard.outputs.emplace_back().value = 10000u;
+    tx.v6_part().ironwood.outputs.emplace_back().value = 15000u;
+    tx.transparent_part().outputs.emplace_back().amount = 5000u;
+
+    // 35000 (inputs) = 30000 (outputs) + 5000 (fee)
+    EXPECT_TRUE(tx.ValidateAmounts());
+  }
+
+  // Invalid: inputs < outputs + fee.
+  {
+    ZCashTransaction tx;
+    tx.init_v6_part();
+    tx.set_fee(5000u);
+
+    tx.v6_part().legacy_orchard.inputs.emplace_back().note.amount = 10000u;
+    tx.v6_part().ironwood.outputs.emplace_back().value = 10000u;
+
+    EXPECT_FALSE(tx.ValidateAmounts());
+  }
+
+  // Invalid: inputs > outputs + fee.
+  {
+    ZCashTransaction tx;
+    tx.init_v6_part();
+    tx.set_fee(1000u);
+
+    tx.v6_part().ironwood.inputs.emplace_back().note.amount = 20000u;
+    tx.v6_part().ironwood.outputs.emplace_back().value = 10000u;
+
+    EXPECT_FALSE(tx.ValidateAmounts());
+  }
+}
+
+TEST(ZCashTransaction, FromValue_V5PartMalformed) {
+  // Missing orchard.
+  base::DictValue dict = base::test::ParseJsonDict(R"({
+    "v5_part": {},
+    "locktime": "0",
+    "to": "t1",
+    "amount": "0",
+    "fee": "0"
+  })");
+  EXPECT_FALSE(ZCashTransaction::FromValue(dict));
+}
+
+TEST(ZCashTransaction, FromValue_V6PartMalformed) {
+  // Missing legacy_orchard.
+  {
+    base::DictValue dict = base::test::ParseJsonDict(R"({
+      "v6_part": {
+        "ironwood": {}
+      },
+      "locktime": "0",
+      "to": "t1",
+      "amount": "0",
+      "fee": "0"
+    })");
+    EXPECT_FALSE(ZCashTransaction::FromValue(dict));
+  }
+
+  // Missing ironwood.
+  {
+    base::DictValue dict = base::test::ParseJsonDict(R"({
+      "v6_part": {
+        "legacy_orchard": {}
+      },
+      "locktime": "0",
+      "to": "t1",
+      "amount": "0",
+      "fee": "0"
+    })");
+    EXPECT_FALSE(ZCashTransaction::FromValue(dict));
+  }
+}
+
+TEST(ZCashTransaction, FromValue_EmptyDictFails) {
+  base::DictValue dict = base::test::ParseJsonDict(R"({
+    "locktime": "0",
+    "to": "t1",
+    "amount": "0",
+    "fee": "0"
+  })");
+  EXPECT_FALSE(ZCashTransaction::FromValue(dict));
 }
 
 }  // namespace brave_wallet

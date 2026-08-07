@@ -116,6 +116,7 @@ void ZCashCreateOrchardToTransparentTransactionTask::CreateTransaction() {
   CHECK(spendable_notes_);
 
   ZCashTransaction zcash_transaction;
+  zcash_transaction.init_v5_part();
 
   // Pick Orchard inputs.
   auto pick_result =

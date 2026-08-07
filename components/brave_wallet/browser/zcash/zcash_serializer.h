@@ -15,8 +15,8 @@
 
 namespace brave_wallet {
 
-// Dispatch entry points for ZCash transaction serialization.
-// Version-specific work is handled by ZCashV5Serializer; shared ZIP-244
+// Entry points for ZCash v5 transaction serialization.
+// Version-specific work is handled by ZCashV5Serializer (ZIP-244); shared
 // primitives live in ZCashSerializerUtils.
 class ZCashSerializer {
  public:
