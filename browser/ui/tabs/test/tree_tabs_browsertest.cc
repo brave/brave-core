@@ -3778,3 +3778,50 @@ IN_PROC_BROWSER_TEST_F(
 
   CloseBrowserSynchronously(second_browser);
 }
+
+// Exercises the real chrome::MoveTabsToNewWindow() command (the entry point
+// patched in browser_commands.cc's MoveTabsToWindowImpl to route tree nodes
+// through InsertDetachedTreeTabNodeAt), rather than calling
+// DetachTabsAndCollectionsForInsertion()/InsertDetachedTreeTabNodeAt()
+// directly as the tests above do.
+IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
+                       MoveTabsToNewWindow_PreservesTreeHierarchy) {
+  SetTreeTabsEnabled(true);
+
+  auto* parent_tab = tab_strip_model().GetTabAtIndex(0);
+  auto child_interface =
+      std::make_unique<tabs::TabModel>(CreateWebContents(), &tab_strip_model());
+  child_interface->set_opener(parent_tab);
+  tab_strip_model().AddTab(std::move(child_interface), -1,
+                           ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
+  auto* child_tab = tab_strip_model().GetTabAtIndex(1);
+  // Keep an unrelated tab behind in the source window so moving {0, 1} out
+  // doesn't empty the source browser, which would race the source window's
+  // own close-on-empty handling against the BrowserCreatedObserver below.
+  AddTab();
+  ASSERT_EQ(3, tab_strip_model().count());
+  ASSERT_EQ(child_tab->GetParentCollection()->GetParentCollection(),
+            parent_tab->GetParentCollection());
+
+  ui_test_utils::BrowserCreatedObserver browser_created_observer;
+  chrome::MoveTabsToNewWindow(browser(), {0, 1});
+  Browser* const new_browser = browser_created_observer.Wait();
+  ASSERT_TRUE(new_browser);
+
+  EXPECT_EQ(1, tab_strip_model().count());
+
+  BraveTabStripModel& new_model =
+      *static_cast<BraveTabStripModel*>(new_browser->tab_strip_model());
+  ASSERT_EQ(2, new_model.count());
+  ASSERT_NE(new_model.GetIndexOfTab(parent_tab), TabStripModel::kNoTab);
+  ASSERT_NE(new_model.GetIndexOfTab(child_tab), TabStripModel::kNoTab);
+
+  // The child must still be nested under the parent's tree node in the new
+  // window, not flattened to a top-level sibling.
+  EXPECT_EQ(child_tab->GetParentCollection()->GetParentCollection(),
+            parent_tab->GetParentCollection());
+  ASSERT_EQ(parent_tab->GetParentCollection()->type(),
+            tabs::TabCollection::Type::TREE_NODE);
+
+  CloseBrowserSynchronously(new_browser);
+}
