@@ -748,10 +748,11 @@ base::StrAppend(&result, {kOpenTag, "\n", "=== METADATA ===\n"});
 
 <a id="CSA-039"></a>
 
-## ✅ Use `base::Reversed()` for Reverse Iteration
+## ✅ Use `std::views::reverse()` for Reverse Iteration
 
-**Prefer `base::Reversed()` with range-based for loops over explicit reverse
-iterators.** Always add a comment explaining why reverse order is needed.
+**Prefer `std::views::reverse()` with range-based for loops over explicit
+reverse iterators.** Always add a comment explaining why reverse order is
+needed.
 
 ```cpp
 // ❌ WRONG - explicit reverse iterators
@@ -759,9 +760,9 @@ for (auto it = history.crbegin(); it != history.crend(); ++it) {
   ProcessEntry(*it);
 }
 
-// ✅ CORRECT - base::Reversed with comment
+// ✅ CORRECT - std::views::reverse with comment
 // Process newest entries first to prioritize recent content.
-for (const auto& entry : base::Reversed(history)) {
+for (const auto& entry : std::views::reverse(history)) {
   ProcessEntry(entry);
 }
 ```

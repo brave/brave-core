@@ -3,9 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include <algorithm>
+#include "components/search_engines/util.h"
 
-#include "base/containers/adapters.h"
+#include <algorithm>
+#include <ranges>
 
 #define GetSearchProvidersUsingKeywordResult \
   GetSearchProvidersUsingKeywordResult_ChromiumImpl
@@ -31,7 +32,8 @@ void GetSearchProvidersUsingKeywordResult(
   if (template_urls && !template_urls->empty()) {
     std::vector<std::unique_ptr<TemplateURLData>> prepopulated_urls =
         template_url_data_resolver.GetPrepopulatedEngines();
-    for (const auto& template_url_data : base::Reversed(prepopulated_urls)) {
+    for (const auto& template_url_data :
+         std::views::reverse(prepopulated_urls)) {
       auto it = std::ranges::find_if(
           *template_urls,
           [&template_url_data](std::unique_ptr<TemplateURL>& t_url1) {
