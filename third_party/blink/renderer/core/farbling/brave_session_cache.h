@@ -105,7 +105,6 @@ class CORE_EXPORT BraveSessionCache final
   // list of the currently supported webgl extensions on the device which would
   // be farbled.
   blink::WebGLFarbledExtensionHandler* CreateWebGLFarbledExtensionHandler(
-      const blink::Vector<blink::String>& supported_extensions,
       const bool is_webgl2);
 
   // Returns a non owning reference to the underlying webgl/webgl2 handler if
