@@ -38,10 +38,13 @@ blink::ScriptValue GetWebGLDebugInfoValue(
     blink::ScriptState* script_state,
     blink::CanvasRenderingContextHost* host,
     const WebGLDebugRendererInfoType type,
-    const blink::String original_string_value) {
+    const blink::String original_string_value,
+    bool is_webgl2) {
   auto level = brave::GetBraveFarblingLevelFor(
       host->GetTopExecutionContext(),
-      ContentSettingsType::BRAVE_WEBCOMPAT_WEBGL, BraveFarblingLevel::OFF);
+      is_webgl2 ? ContentSettingsType::BRAVE_WEBCOMPAT_WEBGL2
+                : ContentSettingsType::BRAVE_WEBCOMPAT_WEBGL,
+      BraveFarblingLevel::OFF);
   blink::ScriptValue original_script_value =
       blink::WebGLAny(script_state, original_string_value);
 
@@ -109,13 +112,13 @@ blink::ScriptValue GetWebGLDebugInfoValue(
   if (ExtensionEnabled(kWebGLDebugRendererInfoName))                \
     return GetWebGLDebugInfoValue(                                  \
         script_state, Host(), WebGLDebugRendererInfoType::RENDERER, \
-        String(ContextGL()->GetString(GL_RENDERER)));
+        String(ContextGL()->GetString(GL_RENDERER)), IsWebGL2());
 
-#define BRAVE_WEBGL_GET_PARAMETER_UNMASKED_VENDOR                     \
-  if (ExtensionEnabled(kWebGLDebugRendererInfoName))                  \
-    return GetWebGLDebugInfoValue(script_state, Host(),               \
-                                  WebGLDebugRendererInfoType::VENDOR, \
-                                  String(ContextGL()->GetString(GL_VENDOR)));
+#define BRAVE_WEBGL_GET_PARAMETER_UNMASKED_VENDOR                 \
+  if (ExtensionEnabled(kWebGLDebugRendererInfoName))              \
+    return GetWebGLDebugInfoValue(                                \
+        script_state, Host(), WebGLDebugRendererInfoType::VENDOR, \
+        String(ContextGL()->GetString(GL_VENDOR)), IsWebGL2());
 
 #define getExtension getExtension_ChromiumImpl
 #define getSupportedExtensions getSupportedExtensions_ChromiumImpl
@@ -135,14 +138,15 @@ namespace {
 template <typename T>
 WebGLFarbledExtensionHandler* CreateOrGetValidWebGLExtensionHandler(
     ExecutionContext* context,
+    bool is_webgl2,
     T&& get_real_extensions) {
   // Check if we have a valid handler for the current context.
+  auto& cache = brave::BraveSessionCache::From(*context);
   WebGLFarbledExtensionHandler* handler =
-      brave::BraveSessionCache::From(*context)
-          .get_webgl_farbled_extension_handler();
+      cache.get_webgl_farbled_extension_handler(is_webgl2);
 
-  // No valid handler found so create a new one which will be re-used until the
-  // lifetime of this context.
+  // No valid handler found so create a new one which will be re-used for this
+  // WebGL API version until the lifetime of the execution context.
   if (!handler) {
     // Get the real list of supported WebGL extensions.
     std::optional<Vector<String>> real_extensions =
@@ -150,20 +154,20 @@ WebGLFarbledExtensionHandler* CreateOrGetValidWebGLExtensionHandler(
     if (real_extensions == std::nullopt) {
       return nullptr;
     }
-    handler = brave::BraveSessionCache::From(*context)
-                  .CreateWebGLFarbledExtensionHandler(real_extensions.value());
+    handler = cache.CreateWebGLFarbledExtensionHandler(real_extensions.value(),
+                                                       is_webgl2);
   }
   return handler;
 }
 
 }  // namespace
 
-// This method returns the supported WebGL extensions. If fingerprinting
+// This method returns the supported WebGL/WebGL2 extensions. If fingerprinting
 // protections are enabled then the list may include farbled values.
 std::optional<Vector<String>>
 WebGLRenderingContextBase::getSupportedExtensions() {
   WebGLFarbledExtensionHandler* handler = CreateOrGetValidWebGLExtensionHandler(
-      Host()->GetTopExecutionContext(),
+      Host()->GetTopExecutionContext(), IsWebGL2(),
       [this]() { return getSupportedExtensions_ChromiumImpl(); });
 
   // Handler can be null when if there were no supported extensions found.
@@ -181,7 +185,7 @@ WebGLRenderingContextBase::getSupportedExtensions() {
 ScriptObject WebGLRenderingContextBase::getExtension(ScriptState* script_state,
                                                      const String& name) {
   WebGLFarbledExtensionHandler* handler = CreateOrGetValidWebGLExtensionHandler(
-      Host()->GetTopExecutionContext(),
+      Host()->GetTopExecutionContext(), IsWebGL2(),
       [this]() { return getSupportedExtensions_ChromiumImpl(); });
 
   if (!handler) {

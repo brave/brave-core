@@ -96,21 +96,24 @@ class CORE_EXPORT BraveSessionCache final
   brave_shields::FarblingPRNG MakePseudoRandomGenerator(
       FarbleKey key = FarbleKey::kNone);
   std::optional<blink::BraveAudioFarblingHelper> GetAudioFarblingHelper();
-  // Returns a non owning reference to |webgl_farbled_extension_handler_|.
+  // Returns a non owning reference to the underlying webgl/webgl2 handler.
   // Callers must not delete it. If a prior call to create this was already made
-  // then this method will crash, otherwise |webgl_farbled_extension_handler_|
-  // is created and its non-owning reference is returned.
-  // If you are only looking to  get a prviously created handler then call the
-  // getter method get_webgl_farbled_extension_handler.
-  // |supported_extensions| is the actual list of the currently supported webgl
-  // extensions on the device which would be farbled.
+  // then this method will crash, otherwise handler is created and its
+  // non-owning reference is returned. If you are only looking to  get a
+  // prviously created handler then call the getter method
+  // get_webgl_farbled_extension_handler. |supported_extensions| is the actual
+  // list of the currently supported webgl extensions on the device which would
+  // be farbled.
   blink::WebGLFarbledExtensionHandler* CreateWebGLFarbledExtensionHandler(
-      const blink::Vector<blink::String>& supported_extensions);
+      const blink::Vector<blink::String>& supported_extensions,
+      const bool is_webgl2);
 
-  // Returns a non owning reference to |webgl_farbled_extension_handler_| if
+  // Returns a non owning reference to the underlying webgl/webgl2 handler if
   // it's already created. Callers must not delete it.
-  blink::WebGLFarbledExtensionHandler* get_webgl_farbled_extension_handler() {
-    return webgl_farbled_extension_handler_.get();
+  blink::WebGLFarbledExtensionHandler* get_webgl_farbled_extension_handler(
+      bool is_webgl2) {
+    return is_webgl2 ? webgl2_farbled_extension_handler_.get()
+                     : webgl_farbled_extension_handler_.get();
   }
 
  private:
@@ -122,6 +125,9 @@ class CORE_EXPORT BraveSessionCache final
   // A handler to farble the webgl supported extensions.
   std::unique_ptr<blink::WebGLFarbledExtensionHandler>
       webgl_farbled_extension_handler_;
+  // A handler to farble the webgl2 supported extensions.
+  std::unique_ptr<blink::WebGLFarbledExtensionHandler>
+      webgl2_farbled_extension_handler_;
   blink::HashMap<ContentSettingsType, BraveFarblingLevel> farbling_levels_;
 };
 
