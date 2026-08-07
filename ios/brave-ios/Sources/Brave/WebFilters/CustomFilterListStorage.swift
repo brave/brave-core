@@ -11,6 +11,34 @@ import Foundation
 import Preferences
 import WebKit
 
+/// A user provided scriptlet that is injected into the ad-block engine's resources
+struct CustomScriptlet: Identifiable, Hashable {
+  /// The name of the scriptlet. This is also the file name it is stored under and the
+  /// name filter list rules refer to (i.e. `user-my-scriptlet.js`)
+  let name: String
+  /// The javascript for this scriptlet
+  let content: String
+
+  var id: String { name }
+
+  /// The required prefix for a scriptlet's name
+  static let namePrefix = "user-"
+  /// The required extension for a scriptlet's name
+  static let nameExtension = ".js"
+
+  /// Tells us if the given name is a valid scriptlet name.
+  ///
+  /// A valid name is prefixed with `user-`, suffixed with `.js` and is safe to use as a
+  /// file name (i.e. contains no path separators or relative path components).
+  static func isValidName(_ name: String) -> Bool {
+    guard name.hasPrefix(namePrefix), name.hasSuffix(nameExtension) else { return false }
+    // Ensure there is something between the prefix and the extension
+    guard name.count > namePrefix.count + nameExtension.count else { return false }
+    guard !name.contains("/"), !name.contains(":"), !name.contains("..") else { return false }
+    return true
+  }
+}
+
 @MainActor class CustomFilterListStorage: ObservableObject {
   enum CustomRulesError: Error, LocalizedError {
     /// We limit the number of lines because UITextView cannot handle large text
