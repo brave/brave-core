@@ -176,6 +176,8 @@ class ZCashWalletService : public mojom::ZCashWalletService,
 
   void Reset();
 
+  void ShutdownSyncStateForTesting();
+
  protected:
   OrchardSyncState::SequenceBound& sync_state();
   ZCashRpc& zcash_rpc();

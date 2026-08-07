@@ -1073,6 +1073,10 @@ void ZCashWalletService::Reset() {
   sync_state().AsyncCall(&OrchardSyncState::ResetDatabase);
 }
 
+void ZCashWalletService::ShutdownSyncStateForTesting() {
+  sync_state().SynchronouslyResetForTest();
+}
+
 ZCashActionContext ZCashWalletService::CreateActionContext(
     const mojom::AccountIdPtr& account_id) {
   std::optional<OrchardAddrRawPart> internal_addr;
