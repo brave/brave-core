@@ -43,6 +43,7 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"
+#include "chrome/browser/ui/browser_window/public/create_browser_window.h"
 #include "chrome/browser/ui/tabs/tab_enums.h"
 #include "chrome/browser/ui/tabs/tab_group_model.h"
 #include "chrome/browser/ui/tabs/tab_model.h"
@@ -863,8 +864,9 @@ BrowserWindowInterface* TabManagementTool::FindOrCreateTargetWindow(
 
   if (*window_id == -1) {
     // Create a new window
-    Browser::CreateParams create_params(profile_, true);
-    BrowserWindowInterface* target_browser = Browser::Create(create_params);
+    BrowserWindowCreateParams create_params(profile_, true);
+    BrowserWindowInterface* target_browser =
+        CreateBrowserWindow(std::move(create_params));
     if (!target_browser) {
       *error_out = "Failed to create new browser window";
       return nullptr;

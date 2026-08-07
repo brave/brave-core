@@ -18,6 +18,7 @@
 #include "chrome/browser/profiles/profiles_state.h"
 #include "chrome/browser/sync/sync_service_factory.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_window/public/create_browser_window.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "content/public/test/browser_test.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -56,7 +57,7 @@ IN_PROC_BROWSER_TEST_F(DeleteProfileHelperBrowserTest,
                   .GetProfileAttributesWithPath(profile_path_to_delete));
   // Set the profile as last-used, so that the callback of
   // `MaybeScheduleProfileForDeletion()` is called.
-  Browser::Create(Browser::CreateParams(&profile_to_delete, true));
+  CreateBrowserWindow(BrowserWindowCreateParams(&profile_to_delete, true));
   profiles::SetLastUsedProfile(profile_path_to_delete.BaseName());
   // Schedule profile deletion.
   ProfileKeepAliveAddedWaiter keep_alive_added_waiter(
