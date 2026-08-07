@@ -20,6 +20,7 @@ struct AdBlockDebugView: View {
           Text("Adblock Rule Exclusions")
         }
       )
+      CustomScriptletSectionView()
     }
   }
 }
@@ -297,6 +298,57 @@ private struct CorruptCacheSectionView: View {
     await AsyncFileManager.default.createFile(atPath: cachedDATFile.path, contents: corruptedData)
 
     return true
+  }
+}
+
+private struct CustomScriptletSectionView: View {
+  @ObservedObject private var customFilterListStorage = CustomFilterListStorage.shared
+  @State private var isPresentingAddScriptlet = false
+  @State private var editingCustomScriptlet: CustomScriptlet?
+
+  var body: some View {
+    Section {
+      Button {
+        isPresentingAddScriptlet = true
+      } label: {
+        Text("Add New Scriptlet")
+          .foregroundStyle(Color(braveSystemName: .textInteractive))
+      }
+      .fullScreenCover(isPresented: $isPresentingAddScriptlet) {
+        NavigationStack {
+          CustomScriptletView()
+        }
+      }
+      // This button is single item, if added to ForEach blow it will cause
+      // multiple presentation issue
+      .fullScreenCover(item: $editingCustomScriptlet) { scriptlet in
+        NavigationStack {
+          CustomScriptletView(
+            customScriptlet: scriptlet
+          )
+        }
+      }
+      ForEach(customFilterListStorage.customScriptlets) { scriptlet in
+        Button {
+          editingCustomScriptlet = scriptlet
+        } label: {
+          Text(scriptlet.name)
+            .foregroundStyle(Color(braveSystemName: .textInteractive))
+        }
+      }
+      .onDelete(perform: deleteScriptlets)
+    } header: {
+      Text("Custom Scriptlets")
+    }
+  }
+
+  private func deleteScriptlets(at offsets: IndexSet) {
+    let names = offsets.map({ customFilterListStorage.customScriptlets[$0].name })
+    Task {
+      for name in names {
+        try? await customFilterListStorage.deleteCustomScriptlet(named: name)
+      }
+    }
   }
 }
 
