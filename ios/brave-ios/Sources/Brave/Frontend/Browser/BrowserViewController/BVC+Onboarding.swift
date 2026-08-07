@@ -28,7 +28,7 @@ extension BrowserViewController {
     Preferences.AppState.shouldDeferPromotedPurchase.value = false
     iapObserver.savedPayment = nil
 
-    if !topToolbar.inOverlayMode,
+    if !isSearchContainerVisible,
       topToolbar.currentURL == nil,
       Preferences.DebugFlag.skipNTPCallouts != true
     {
@@ -64,8 +64,8 @@ extension BrowserViewController {
     }
 
     // If a controller is already presented (such as menu), do not show onboarding
-    // It also includes the case for overlay mode and tabtray opened
-    guard presentedViewController == nil, !topToolbar.inOverlayMode, !isTabTrayActive else {
+    // It also includes the case for search visibility and tabtray opened
+    guard presentedViewController == nil, !isSearchContainerVisible, !isTabTrayActive else {
       return
     }
 
