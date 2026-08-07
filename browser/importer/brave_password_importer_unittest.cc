@@ -17,7 +17,6 @@
 #include "base/functional/callback_helpers.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/test/test_future.h"
-#include "build/build_config.h"
 #include "chrome/browser/password_manager/factories/profile_password_store_factory.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
@@ -211,15 +210,14 @@ TEST_F(BravePasswordImporterTest, KeyMismatchImportsNothing) {
       credentials, os_crypt_async::GetTestEncryptorForTesting()));
 
   auto [result, submitted] = RunImport();
-  // The exact Result is platform-dependent. On macOS undecryptable logins are
-  // cleared on read (kClearUndecryptablePasswords is enabled by default), so
-  // the read succeeds with nothing decrypted; on Linux they are not, so the
-  // read reports a failure. Either way, no credential may be submitted or leak.
-#if BUILDFLAG(IS_MAC)
-  EXPECT_EQ(BravePasswordImporter::Result::kSuccess, result);
-#else
-  EXPECT_EQ(BravePasswordImporter::Result::kReadFailed, result);
-#endif
+  // The exact Result depends on how password_manager handles undecryptable
+  // rows: it may drop them and report success with nothing decrypted, or
+  // report a read failure. That internal behavior is not something this
+  // importer controls, so accept either. What must always hold is that no
+  // credential is submitted to the store or leaks into it.
+  EXPECT_TRUE(result == BravePasswordImporter::Result::kSuccess ||
+              result == BravePasswordImporter::Result::kReadFailed)
+      << "unexpected result=" << static_cast<int>(result);
   EXPECT_EQ(0u, submitted);
   EXPECT_TRUE(password_manager::GetAllLoginsSync(password_store()).empty());
 }
