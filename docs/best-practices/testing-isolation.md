@@ -862,3 +862,88 @@ instead of `size_t` for masks with more than 16 flags to avoid overflow.
 
 See
 [Chromium C++ Testing Best Practices](https://www.chromium.org/chromium-os/developer-library/guides/testing/cpp-writing-tests/).
+
+---
+
+<a id="TI-042"></a>
+
+## ❌ Don't Let Tests Depend on a Feature Flag's Current Default
+
+**A test must never rely on the compiled-in default of a `base::Feature`.** Pin
+every flag whose behavior the test depends on, or parameterize over both states.
+A test that rides the default silently changes what it covers the day someone
+flips that default — and reads as passing either way.
+
+This matters most when you are the one _flipping_ a default. Two moves are
+tempting and both are wrong:
+
+```cpp
+// ❌ WRONG - deleting "now redundant" setup because the new default enables it.
+// The fixture is now coupled to the default; flip it back and this fixture
+// silently stops testing the caching path it is named after.
+class MyCachingTest : public MyTestBase {
+  // MyCachingTest() { feature_list_.InitAndEnableFeature(kMyCache); }  <- removed
+};
+
+// ❌ WRONG - a bespoke helper that absorbs the new default's behavior so the
+// pre-existing expectations still hold. This models an ordering that
+// production never performs, so it introduces a bug rather than hiding one.
+void ConsumeStartupNotification(Manager& m) {
+  ThrowawayObserver unused;
+  m.ForceNotifyObserver(unused, /*is_default_engine=*/true);
+}
+```
+
+```cpp
+// ✅ CORRECT - parameterize, so the test runs for both states and asserts only
+// what actually differs.
+class MyCachingTest : public testing::TestWithParam<bool> {
+ protected:
+  void SetUp() override {
+    feature_list_.InitWithFeatureState(features::kMyCache, GetParam());
+  }
+  base::test::ScopedFeatureList feature_list_;
+};
+
+TEST_P(MyCachingTest, NotifiesWhenReady) {
+  const bool cache_enabled = GetParam();
+  // ... only the counts that genuinely differ are param-dependent:
+  EXPECT_EQ(observer.changed_count, cache_enabled ? 0 : 1);
+}
+
+INSTANTIATE_TEST_SUITE_P(All, MyCachingTest, testing::Bool(),
+                         [](const testing::TestParamInfo<bool>& info) {
+                           return info.param ? "CacheEnabled" : "CacheDisabled";
+                         });
+```
+
+```cpp
+// ✅ CORRECT - where parameterizing is impractical (e.g. a TYPED_TEST fixture),
+// at least pin the flag explicitly instead of inheriting the default.
+scoped_feature_list_.InitWithFeatureStates(
+    {{features::kSomeOtherFlag, use_weak_ptr},
+     {features::kMyCache, true}});
+```
+
+Practical notes:
+
+- **Check the test file for an existing parameterized fixture first.** A file
+  that already covers a flag usually has one; reuse it rather than adding a
+  helper next to it.
+- **Most tests turn out to be flag-independent.** If the expectations are
+  identical for both params, that is the proof no helper was needed — keep them
+  parameterized anyway so a future default flip can't quietly change coverage.
+- **Ordering:** `ScopedFeatureList` must be initialized _before_ constructing
+  anything that reads the flag in its constructor. If a fixture builds a service
+  in `SetUp()`, the feature list init belongs at the top of `SetUp()`, not the
+  bottom.
+- **Filtering:** parameterized suites need the instantiation prefix in
+  `--gtest_filter` (`All/MyCachingTest.*`). A bare fixture-name filter matches
+  nothing and still reports success.
+- **Attributing failures after a flip:** re-run the failing test with
+  `--disable-features=<Flag>` on the same binary. If it fails identically the
+  failure is pre-existing, and you did not have to rebuild at the merge base to
+  find out.
+
+Related: [TI-041](#TI-041) covers the multi-flag case, where a class is affected
+by several features and you want all 2^N combinations.
