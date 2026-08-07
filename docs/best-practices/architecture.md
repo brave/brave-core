@@ -101,12 +101,34 @@ void MyComponent::Init(PrefService* prefs) {
 }
 ```
 
+This also applies when an object is passed in only to look up another service
+from it. If a class holds a `Profile*` solely to call
+`SomeService::Get(profile)`, inject the service instead — the class doesn't
+depend on `Profile`, only on the service.
+
+```cpp
+// ❌ WRONG - holding Profile only to fetch another service
+BraveExtensionService::BraveExtensionService(Profile* profile)
+    : profile_(profile) {}
+
+void BraveExtensionService::OnMalwareListUpdated() {
+  ExtensionSystem* extension_system = ExtensionSystem::Get(profile_);
+  // ...only ever used to reach extension_system
+}
+
+// ✅ CORRECT - inject the service actually needed
+BraveExtensionService::BraveExtensionService(ExtensionSystem* extension_system)
+    : extension_system_(extension_system) {}
+```
+
 Common substitutions:
 
 - `Profile*` → `PrefService*` (when only prefs are needed)
 - `Profile*` → `BrowserContext*` (in components)
 - `BrowserContext*` → `scoped_refptr<URLLoaderFactory>` (when only network is
   needed)
+- `Profile*` → the specific service you fetch (e.g. `ExtensionSystem*`), when
+  `Profile` is used only as a lookup handle for that service
 
 ---
 
