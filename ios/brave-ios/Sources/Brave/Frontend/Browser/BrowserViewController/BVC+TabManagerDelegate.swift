@@ -416,19 +416,6 @@ extension BrowserViewController: TabManagerDelegate {
     )
   }
 
-  func hideToastsOnNavigationStartIfNeeded(_ tabManager: TabManager) {
-    if tabManager.selectedTab?.braveSearch?.braveSearchResultAdManager == nil {
-      searchResultAdClickedInfoBar?.dismiss(false)
-      searchResultAdClickedInfoBar = nil
-    }
-
-    let isNewTabURL = tabManager.selectedTab?.visibleURL?.isNewTabURL
-    if isNewTabURL != true {
-      newTabTakeoverInfoBar?.dismiss(false)
-      newTabTakeoverInfoBar = nil
-    }
-  }
-
   func tabManagerDidRemoveAllTabs(_ tabManager: TabManager, toast: ButtonToast?) {
     guard let toast = toast, !privateBrowsingManager.isPrivateBrowsing else {
       return
