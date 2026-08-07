@@ -120,7 +120,6 @@ class SearchSettingsViewController: UITableViewController {
 
     tableView.do {
       $0.allowsSelectionDuringEditing = true
-      $0.registerHeaderFooter(SettingsTableSectionHeaderFooterView.self)
       $0.register(
         UITableViewCell.self,
         forCellReuseIdentifier: Constants.addCustomEngineRowIdentifier
@@ -153,11 +152,6 @@ class SearchSettingsViewController: UITableViewController {
     if isPresentedModally {
       navigationItem.leftBarButtonItem = dismissBarButton
     }
-
-    let footer = SettingsTableSectionHeaderFooterView(
-      frame: CGRect(width: tableView.bounds.width, height: UX.headerHeight)
-    )
-    tableView.tableFooterView = footer
   }
 
   override func viewWillAppear(_ animated: Bool) {
