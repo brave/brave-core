@@ -16,6 +16,10 @@
 #include "components/prefs/pref_member.h"
 #include "components/tabs/public/tab_interface.h"
 
+namespace content {
+class WebContents;
+}
+
 namespace page_actions {
 
 // Drives the Playlist page action: shows an icon when the current page has
@@ -51,11 +55,12 @@ class PlaylistPageActionController
   void OnAddedItemFromTabHelper(
       const std::vector<playlist::mojom::PlaylistItemPtr>& items) override;
 
-  // (Re-)observes the current WebContents' PlaylistTabHelper, since the tab's
-  // contents can be swapped out (e.g. tab discarding).
-  void AttachToTabHelper();
+  // (Re-)observes |contents|' PlaylistTabHelper, since the tab's contents can
+  // be swapped out (e.g. tab discarding). Stops observing the previously
+  // attached helper, which may be about to be destroyed.
+  void AttachToTabHelper(content::WebContents* contents);
 
-  void UpdateState();
+  void UpdateState(content::WebContents* contents);
   void UpdatePageAction();
 
   enum class State { kNone, kSaved, kFound } state_ = State::kNone;

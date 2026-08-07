@@ -8,10 +8,12 @@
 #include <memory>
 #include <vector>
 
+#include "base/functional/bind.h"
 #include "base/scoped_observation.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/speedreader/speedreader_service_factory.h"
 #include "brave/browser/ui/speedreader/speedreader_tab_helper.h"
+#include "brave/browser/ui/views/page_action/test_tab_interface.h"
 #include "brave/components/speedreader/common/features.h"
 #include "brave/components/speedreader/speedreader_pref_names.h"
 #include "brave/components/speedreader/speedreader_service.h"
@@ -21,12 +23,12 @@
 #include "chrome/browser/ui/page_action/page_action_icon_type.h"
 #include "chrome/browser/ui/page_action/page_action_model.h"
 #include "chrome/browser/ui/page_action/page_action_model_observer.h"
-#include "chrome/browser/ui/page_action/test_support/fake_tab_interface.h"
 #include "chrome/browser/ui/page_action/test_support/test_page_action_properties_provider.h"
 #include "chrome/browser/ui/toolbar/pinned_toolbar/pinned_toolbar_actions_model.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
+#include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/actions/actions.h"
@@ -61,6 +63,13 @@ class TestObserver : public PageActionModelObserver {
   int model_change_count_ = 0;
 };
 
+void AttachTabHelpers(TestingProfile* profile, content::WebContents* contents) {
+  speedreader::SpeedreaderTabHelper::CreateForWebContents(
+      contents,
+      *speedreader::SpeedreaderServiceFactory::GetForBrowserContext(profile),
+      /*rewriter_service=*/nullptr);
+}
+
 }  // namespace
 
 class SpeedreaderPageActionControllerTest : public testing::Test {
@@ -80,7 +89,8 @@ class SpeedreaderPageActionControllerTest : public testing::Test {
 
     pinned_actions_model_ =
         std::make_unique<PinnedToolbarActionsModel>(&profile_);
-    tab_interface_ = std::make_unique<FakeTabInterface>(&profile_);
+    tab_interface_ = std::make_unique<TestTabInterface>(
+        &profile_, base::BindRepeating(&AttachTabHelpers, &profile_));
     tab_interface_->Activate();
 
     page_action_controller_ = std::make_unique<PageActionControllerImpl>(
@@ -97,12 +107,6 @@ class SpeedreaderPageActionControllerTest : public testing::Test {
             action_item_.get());
 
     page_action_controller_->AddObserver(kActionShowSpeedreader, observation_);
-
-    speedreader::SpeedreaderTabHelper::CreateForWebContents(
-        tab_interface_->GetContents(),
-        *speedreader::SpeedreaderServiceFactory::GetForBrowserContext(
-            &profile_),
-        /*rewriter_service=*/nullptr);
 
     controller_ = std::make_unique<SpeedreaderPageActionController>(
         *tab_interface_, *page_action_controller_);
@@ -124,6 +128,8 @@ class SpeedreaderPageActionControllerTest : public testing::Test {
         tab_interface_->GetContents());
   }
 
+  TestTabInterface& tab_interface() { return *tab_interface_; }
+
   SpeedreaderPageActionController* controller() { return controller_.get(); }
   const TestObserver& observer() const { return observer_; }
   PrefService* prefs() { return profile_.GetPrefs(); }
@@ -135,7 +141,7 @@ class SpeedreaderPageActionControllerTest : public testing::Test {
   TestingProfile profile_;
 
   std::unique_ptr<PinnedToolbarActionsModel> pinned_actions_model_;
-  std::unique_ptr<FakeTabInterface> tab_interface_;
+  std::unique_ptr<TestTabInterface> tab_interface_;
   std::unique_ptr<PageActionControllerImpl> page_action_controller_;
   std::unique_ptr<actions::ActionItem> action_item_;
   base::CallbackListSubscription action_item_subscription_;
@@ -180,6 +186,36 @@ TEST_F(SpeedreaderPageActionControllerTest, VisibleWhenDistilled) {
   EXPECT_EQ(
       observer().tooltip_text(),
       l10n_util::GetStringUTF16(IDS_SPEEDREADER_ICON_TURN_OFF_READER_MODE));
+}
+
+// The tab's contents can be swapped out - by tab discarding, or by a shared
+// pinned tab being moved to another window. The controller has to follow the
+// swapped in contents, and stop observing the outgoing contents' tab helper,
+// which is about to be destroyed.
+TEST_F(SpeedreaderPageActionControllerTest, FollowsDiscardedContents) {
+  speedreader::SpeedreaderTabHelper* const discarded_tab_helper = tab_helper();
+  discarded_tab_helper->SetDistillStateForTesting(speedreader::ViewOriginal(
+      speedreader::ViewOriginal::Reason::kNotDistillable,
+      /*was_auto_distilled=*/false));
+  ASSERT_FALSE(observer().visible());
+
+  // A tab helper starts out distillable, so swapping in a new contents shows
+  // the action.
+  tab_interface().DiscardContents();
+  ASSERT_NE(discarded_tab_helper, tab_helper());
+  EXPECT_TRUE(observer().visible());
+
+  // The discarded contents no longer drives the page action.
+  const int model_change_count = observer().model_change_count();
+  discarded_tab_helper->SetDistillStateForTesting(
+      speedreader::Distilled(speedreader::DistillationResult::kSuccess));
+  EXPECT_EQ(model_change_count, observer().model_change_count());
+
+  // The swapped in one does.
+  tab_helper()->SetDistillStateForTesting(speedreader::ViewOriginal(
+      speedreader::ViewOriginal::Reason::kNotDistillable,
+      /*was_auto_distilled=*/false));
+  EXPECT_FALSE(observer().visible());
 }
 
 TEST_F(SpeedreaderPageActionControllerTest, ExecuteActionDoesNotCrash) {
