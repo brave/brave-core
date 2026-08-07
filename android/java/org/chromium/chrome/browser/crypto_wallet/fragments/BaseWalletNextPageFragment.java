@@ -55,6 +55,9 @@ import javax.crypto.NoSuchPaddingException;
 public abstract class BaseWalletNextPageFragment extends Fragment {
     public interface BiometricAuthenticationCallback {
         void authenticationSuccess(@NonNull final String unlockWalletPassword);
+
+        /** Invoked when the user dismisses the biometric prompt by tapping back or Cancel. */
+        default void authenticationDismissed() {}
     }
 
     // Might be {@code null} when detached from the screen.
@@ -220,6 +223,11 @@ public abstract class BaseWalletNextPageFragment extends Fragment {
                         // there's no need to show a toast to log this action.
                         if (!TextUtils.isEmpty(errString) && context != null && errorCode != 10) {
                             Toast.makeText(context, errString, Toast.LENGTH_SHORT).show();
+                        }
+                        // Both tapping back and the Cancel button report a user cancellation, which
+                        // is the dismissal we want to remember across a rotation.
+                        if (errorCode == BIOMETRIC_ERROR_USER_CANCELED) {
+                            biometricAuthenticationCallback.authenticationDismissed();
                         }
                         showBiometricAuthenticationButton(biometricUnlockButton);
                     }

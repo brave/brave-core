@@ -46,6 +46,21 @@ public class OnboardingViewModel extends ViewModel {
         return mUnlockPassword;
     }
 
+    // Whether the user dismissed the biometric unlock prompt on the current unlock screen. Retained
+    // across configuration changes so a rotation does not pop the prompt up again, but only for as
+    // long as the hosting activity lives, so a freshly shown unlock screen enables it once more.
+    private boolean mBiometricPromptDismissed;
+
+    /** Records whether the user dismissed the biometric unlock prompt for the unlock screen. */
+    public void setBiometricPromptDismissed(final boolean biometricPromptDismissed) {
+        mBiometricPromptDismissed = biometricPromptDismissed;
+    }
+
+    /** Returns whether the user dismissed the biometric unlock prompt for the unlock screen. */
+    public boolean isBiometricPromptDismissed() {
+        return mBiometricPromptDismissed;
+    }
+
     public void setLegacyRestoreEnabled(final boolean legacyRestoreEnabled) {
         mLegacyRestoreEnabled = legacyRestoreEnabled;
     }

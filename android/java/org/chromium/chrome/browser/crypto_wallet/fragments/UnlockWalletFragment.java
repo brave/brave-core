@@ -55,7 +55,8 @@ public class UnlockWalletFragment extends BaseWalletNextPageFragment
         }
         mCipher = KeystoreHelper.getCipherForDecryption();
         // Shared with the host activity; survives configuration changes, so it carries the unlock
-        // password and keyboard state across a rotation (the fragment is recreated fresh).
+        // password and the biometric prompt dismissal across a rotation (the fragment is recreated
+        // fresh).
         mOnboardingViewModel =
                 new ViewModelProvider(requireActivity()).get(OnboardingViewModel.class);
     }
@@ -142,6 +143,9 @@ public class UnlockWalletFragment extends BaseWalletNextPageFragment
         mBiometricUnlockButton.setOnClickListener(
                 v -> {
                     if (Utils.isBiometricSupported(requireContext()) && mCipher != null) {
+                        // Tapping the button is an explicit request for the prompt, so clear any
+                        // earlier dismissal.
+                        mOnboardingViewModel.setBiometricPromptDismissed(false);
                         // noinspection NewApi
                         showBiometricAuthenticationDialog(mBiometricUnlockButton, this, mCipher);
                     }
@@ -152,8 +156,11 @@ public class UnlockWalletFragment extends BaseWalletNextPageFragment
                 && mCipher != null) {
 
             mBiometricUnlockButton.setVisibility(View.VISIBLE);
-            // noinspection NewApi
-            showBiometricAuthenticationDialog(mBiometricUnlockButton, this, mCipher);
+            // Skip the automatic prompt if the user already dismissed it for this unlock screen.
+            if (!mOnboardingViewModel.isBiometricPromptDismissed()) {
+                // noinspection NewApi
+                showBiometricAuthenticationDialog(mBiometricUnlockButton, this, mCipher);
+            }
         }
     }
 
@@ -174,5 +181,12 @@ public class UnlockWalletFragment extends BaseWalletNextPageFragment
         if (mOnNextPage != null) {
             mOnNextPage.showWallet(false);
         }
+    }
+
+    @Override
+    public void authenticationDismissed() {
+        // Remember the dismissal so a configuration change such as a rotation does not bring the
+        // biometric prompt back up automatically.
+        mOnboardingViewModel.setBiometricPromptDismissed(true);
     }
 }
