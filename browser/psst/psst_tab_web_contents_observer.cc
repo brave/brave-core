@@ -19,16 +19,14 @@
 #include "brave/components/psst/core/browser/psst_rule.h"
 #include "brave/components/psst/core/browser/psst_rule_registry.h"
 #include "brave/components/psst/core/common/features.h"
-#include "chrome/browser/profiles/profile.h"
-#include "components/country_codes/country_codes.h"
 #include "components/prefs/pref_service.h"
-#include "components/regional_capabilities/regional_capabilities_prefs.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/page.h"
 #include "content/public/browser/web_contents.h"
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
+#include "components/variations/service/variations_service.h"
 
 namespace psst {
 
@@ -84,21 +82,6 @@ void PrepareParametersForPolicyExecution(
   user_script_result.Set(kUserScriptResultInitialExecutionPropName, is_initial);
 }
 
-std::optional<std::string> GetCountryCode(Profile* profile) {
-  if (!profile) {
-    return std::nullopt;
-  }
-
-  const auto country_id =
-      country_codes::CountryId::Deserialize(profile->GetPrefs()->GetInteger(
-          regional_capabilities::prefs::kCountryIDAtInstall));
-  if (!country_id.IsValid()) {
-    return std::nullopt;
-  }
-
-  return std::string(country_id.CountryCode());
-}
-
 }  // namespace
 
 // static
@@ -108,9 +91,11 @@ PsstTabWebContentsObserver::MaybeCreateForWebContents(
     content::BrowserContext* browser_context,
     std::unique_ptr<PsstUiDelegate> ui_delegate,
     PsstSettingsService* psst_settings_service,
+    variations::VariationsService* variations_service,
     const int32_t world_id) {
   CHECK(browser_context);
   CHECK(psst_settings_service);
+  CHECK(variations_service);
   CHECK(ui_delegate);
 
   if (browser_context->IsOffTheRecord() ||
@@ -120,7 +105,7 @@ PsstTabWebContentsObserver::MaybeCreateForWebContents(
 
   auto observer = base::WrapUnique<PsstTabWebContentsObserver>(
       new PsstTabWebContentsObserver(tab, PsstRuleRegistry::GetInstance(),
-                                     psst_settings_service,
+                                     psst_settings_service, variations_service,
                                      std::move(ui_delegate)));
 
   auto inject_script_callback = base::BindRepeating(
@@ -172,10 +157,12 @@ PsstTabWebContentsObserver::PsstTabWebContentsObserver(
     tabs::TabInterface& tab,
     PsstRuleRegistry* registry,
     PsstSettingsService* psst_settings_service,
+    variations::VariationsService* variations_service,
     std::unique_ptr<PsstUiDelegate> ui_delegate)
     : tabs::ContentsObservingTabFeature(tab),
       registry_(registry),
       psst_settings_service_(psst_settings_service),
+      variations_service_(variations_service),
       ui_delegate_(std::move(ui_delegate)) {
   psst_settings_service_->AddObserver(this);
 }
@@ -227,9 +214,7 @@ void PsstTabWebContentsObserver::InsertUserScript(
     return;
   }
   base::DictValue params_dict;
-  if (auto country_code = GetCountryCode(tab().GetProfile())) {
-    params_dict.Set(kUserScriptParamCountryIdPropName, *country_code);
-  }
+  params_dict.Set(kUserScriptParamCountryIdPropName, variations_service_->GetLatestCountry());
   const std::string user_script_with_param =
       MaybeAddParamsToScript(rule->user_script(), std::move(params_dict));
   RunWithTimeout(

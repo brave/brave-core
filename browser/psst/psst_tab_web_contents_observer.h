@@ -21,6 +21,10 @@
 #include "chrome/browser/ui/tabs/contents_observing_tab_feature.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"
 
+namespace variations {
+    class VariationsService;
+}
+
 namespace psst {
 
 class MatchedRule;
@@ -68,6 +72,7 @@ class PsstTabWebContentsObserver : public tabs::ContentsObservingTabFeature,
       content::BrowserContext* browser_context,
       std::unique_ptr<PsstUiDelegate> ui_delegate,
       PsstSettingsService* psst_settings_service,
+      variations::VariationsService* variations_service,
       const int32_t world_id);
 
   ~PsstTabWebContentsObserver() override;
@@ -84,6 +89,7 @@ class PsstTabWebContentsObserver : public tabs::ContentsObservingTabFeature,
   PsstTabWebContentsObserver(tabs::TabInterface& tab,
                              PsstRuleRegistry* registry,
                              PsstSettingsService* psst_settings_service,
+                             variations::VariationsService* variations_service,
                              std::unique_ptr<PsstUiDelegate> ui_delegate);
 
   void InsertUserScript(std::unique_ptr<MatchedRule> rule);
@@ -116,6 +122,7 @@ class PsstTabWebContentsObserver : public tabs::ContentsObservingTabFeature,
 
   const raw_ptr<PsstRuleRegistry> registry_;
   const raw_ptr<PsstSettingsService> psst_settings_service_ = nullptr;
+  const raw_ptr<variations::VariationsService> variations_service_ = nullptr;
   InjectScriptCallback inject_script_callback_;
   mojo::AssociatedRemote<script_injector::mojom::ScriptInjector>
       script_injector_remote_;
