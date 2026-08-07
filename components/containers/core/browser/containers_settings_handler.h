@@ -49,6 +49,11 @@ class ContainersSettingsHandler : public mojom::ContainersSettingsHandler {
   void GetContainersEnabled(GetContainersEnabledCallback callback) override;
   // Updates whether the Containers feature is enabled.
   void SetContainersEnabled(bool enabled) override;
+  // Whether container tabs should always show the mini container icon.
+  void GetContainersOnlyUseMiniIcon(
+      GetContainersOnlyUseMiniIconCallback callback) override;
+  // Updates whether container tabs should always show the mini container icon.
+  void SetContainersOnlyUseMiniIcon(bool only_use_mini_icon) override;
 
   // Returns an error if the given container properties are invalid.
   static std::optional<mojom::ContainerOperationError>
@@ -58,6 +63,7 @@ class ContainersSettingsHandler : public mojom::ContainersSettingsHandler {
   // Called when the containers list in preferences changes.
   void OnContainersChanged();
   void OnContainersEnabledPrefChanged();
+  void OnContainersOnlyUseMiniIconPrefChanged();
 
   // Interface to communicate with the settings page in the renderer.
   mojo::Remote<mojom::ContainersSettingsUI> ui_;

@@ -204,6 +204,12 @@ TEST_F(ContainersPrefsTest, ContainersEnabledDefaultsToTrue) {
   EXPECT_FALSE(prefs_.GetBoolean(prefs::kContainersEnabled));
 }
 
+TEST_F(ContainersPrefsTest, ContainersOnlyUseMiniIconDefaultsToFalse) {
+  EXPECT_FALSE(prefs_.GetBoolean(prefs::kContainersOnlyUseMiniIcon));
+  prefs_.SetBoolean(prefs::kContainersOnlyUseMiniIcon, true);
+  EXPECT_TRUE(prefs_.GetBoolean(prefs::kContainersOnlyUseMiniIcon));
+}
+
 TEST(ContainersPrefsRegistrationTest,
      ContainersEnabledDefaultsToFalseOnStable) {
   base::test::ScopedFeatureList feature_list;
