@@ -413,7 +413,7 @@ class ObserverMock : public NTPBackgroundImagesService::Observer {
     sponsored_content_data_.reset();
   }
 
-  const std::optional<base::DictValue>& sponsored_content_data() {
+  const std::optional<base::DictValue>& sponsored_content_data() const {
     return sponsored_content_data_;
   }
 
@@ -1023,7 +1023,7 @@ TEST_F(NTPBackgroundImagesServiceTest,
   const base::FilePath image_dir = SetUpSponsoredSiteWithImage();
   service_->SetSponsoredImagesInstalledDirForTesting(installed_dir_.GetPath());
 
-  const std::optional<base::FilePath> result =
+  std::optional<base::FilePath> result =
       service_->MaybeGetSponsoredSiteImageFilePath(
           base::FilePath::FromUTF8Unsafe("tiles/image.webp"));
 
