@@ -119,7 +119,7 @@ class BraveNewsControllerTest : public testing::Test {
             /*policy_service=*/nullptr),
         history_service_.get(), test_url_loader_factory_.GetSafeWeakWrapper(),
         std::make_unique<TestDirectFeedFetcherDelegate>(),
-        std::make_unique<TestControllerDelegate>());
+        std::make_unique<TestControllerDelegate>(), /*is_first_time=*/false);
   }
 
  protected:
@@ -205,6 +205,25 @@ TEST_F(BraveNewsControllerTest, GetFeedV2IsEmptyWhenDisabled) {
   auto feed = GetFeedV2();
   EXPECT_TRUE(feed->items.empty());
   EXPECT_FALSE(HasInitialSubscriptions());
+}
+
+TEST_F(BraveNewsControllerTest, FirstTimeUserOptsInWhenFeatureEnabled) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitWithFeatures(
+      {features::kBraveNewsFeedUpdate, features::kBraveNewsNewUserOptIn}, {});
+
+  controller_.reset();
+  ASSERT_FALSE(pref_service_.GetBoolean(prefs::kBraveNewsOptedIn));
+
+  controller_ = std::make_unique<BraveNewsController>(
+      &pref_service_,
+      std::make_unique<brave_policy::PolicyInitializationWaiter>(
+          /*policy_service=*/nullptr),
+      history_service_.get(), test_url_loader_factory_.GetSafeWeakWrapper(),
+      std::make_unique<TestDirectFeedFetcherDelegate>(),
+      std::make_unique<TestControllerDelegate>(), /*is_first_time=*/true);
+
+  EXPECT_TRUE(pref_service_.GetBoolean(prefs::kBraveNewsOptedIn));
 }
 
 }  // namespace brave_news

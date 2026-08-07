@@ -48,6 +48,7 @@ source_set("impl") {
     ":brave_news",
     "//base",
     "//brave/browser:browser_process",
+    "//brave/browser/brave_stats:first_run_util",
     "//brave/components/brave_news/browser",
     "//brave/components/brave_news/common",
     "//brave/components/brave_news/common:rss_link_reader_mojom",
