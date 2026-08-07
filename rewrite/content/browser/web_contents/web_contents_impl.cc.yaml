@@ -22,7 +22,9 @@ substitutions:
       This lets Brave's Containers carry over on `noopener` navigations and
       new tabs, instead of falling back to the default partition.
     regex:
-      re_pattern: '(WebContentsImpl::CreateNewWindow\(.*?if \(params\.opener_suppressed\) \{)'
+      re_pattern:
+        '(WebContentsImpl::CreateNewWindow\(.*?if \(params\.opener_suppressed\)
+        \{)'
       re_flags: [DOTALL]
       replace: |-
         \1
@@ -44,7 +46,7 @@ substitutions:
       the `opener_suppressed` case, the window is shown and navigated later.
     regex:
       re_pattern:
-        'if \(!params\.opener_suppressed\) \{(\s+if \(!is_guest\) \{\s+WebContentsView\*
-        new_view)'
+        'if \(!params\.opener_suppressed\) \{(\s+if \(!is_guest\)
+        \{\s+WebContentsView\* new_view)'
       replace: |-
         if (!params.opener_suppressed && !params.no_javascript_access) {\1
