@@ -64,6 +64,19 @@ GetFakeSupportedExtensions() {
   return *fake_values;
 }
 
+// Some clients/libraries like Plotly lowercase
+// extension names before invoking getExtension();
+// See https://github.com/brave/brave-browser/issues/57902.
+bool ContainsExtensionIgnoringCase(const Vector<String>& extensions,
+                                   const String& name) {
+  for (const String& extension : extensions) {
+    if (EqualIgnoringAsciiCase(extension, name)) {
+      return true;
+    }
+  }
+  return false;
+}
+
 }  // namespace
 
 WebGLFarbledExtensionHandler::WebGLFarbledExtensionHandler(
@@ -142,7 +155,7 @@ blink::ScriptObject WebGLFarbledExtensionHandler::GetExtension(
   }
 
   // If extension is part of the supported list return the real extension.
-  if (supported_extensions_.Contains(name)) {
+  if (ContainsExtensionIgnoringCase(supported_extensions_, name)) {
     CHECK(real_extension);
     return *real_extension;
   }
@@ -152,7 +165,8 @@ blink::ScriptObject WebGLFarbledExtensionHandler::GetExtension(
 
 bool WebGLFarbledExtensionHandler::IsExtensionFarbled(
     const blink::String& name) const {
-  return fake_extension_.has_value() && fake_extension_.value().name == name;
+  return fake_extension_.has_value() &&
+         EqualIgnoringAsciiCase(fake_extension_.value().name, name);
 }
 
 base::span<const WebGLFakeExtension> GetFakeSupportedExtensionsForTesting() {
