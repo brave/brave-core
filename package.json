@@ -219,7 +219,7 @@
     "@ledgerhq/hw-app-btc": "10.3.0",
     "@ledgerhq/hw-app-eth": "6.45.19",
     "@ledgerhq/hw-app-solana": "6.27.1",
-    "@ledgerhq/hw-transport-webhid": "6.29.0",
+    "@ledgerhq/hw-transport-webhid": "6.36.0",
     "@mozilla/readability": "0.6.0",
     "@reduxjs/toolkit": "1.9.0",
     "@solana/web3.js": "1.98.2",
