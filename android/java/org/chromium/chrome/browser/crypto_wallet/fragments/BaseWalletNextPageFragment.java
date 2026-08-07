@@ -167,7 +167,6 @@ public abstract class BaseWalletNextPageFragment extends Fragment {
     }
 
     @SuppressLint("MissingPermission")
-    @RequiresApi(api = Build.VERSION_CODES.P)
     protected void showBiometricAuthenticationDialog(
             @NonNull final View biometricUnlockButton,
             @NonNull final BiometricAuthenticationCallback biometricAuthenticationCallback,
