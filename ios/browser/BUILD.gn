@@ -35,6 +35,7 @@ group("browser") {
     "api/session_restore",
     "api/storekit_receipt",
     "api/sync",
+    "api/topsites",
     "api/translate",
     "api/unicode",
     "api/unzip",
