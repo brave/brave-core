@@ -12,11 +12,6 @@ namespace containers::prefs {
 // existing container tabs are not affected when the pref is disabled.
 inline constexpr char kContainersEnabled[] = "brave.containers.enabled";
 
-// Controls whether container tabs always show the mini container icon instead
-// of using the large tab accent icon when there is enough space.
-inline constexpr char kContainersOnlyUseMiniIcon[] =
-    "brave.containers.only_use_mini_icon";
-
 // Syncable list of containers.
 inline constexpr char kContainersList[] = "brave.containers.list";
 
