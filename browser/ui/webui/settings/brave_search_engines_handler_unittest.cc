@@ -42,6 +42,19 @@ TemplateURL* AddDefaultListEngine(TemplateURLService* service,
   return service->Add(std::make_unique<TemplateURL>(data));
 }
 
+// Adds an engine like the one a user creates from the settings page: no
+// prepopulate id, so it only shows up in the "default" section of the table
+// model once it becomes the default search provider.
+TemplateURL* AddUserDefinedEngine(TemplateURLService* service,
+                                  const std::string& name) {
+  TemplateURLData data;
+  data.SetShortName(base::UTF8ToUTF16(name));
+  data.SetKeyword(base::UTF8ToUTF16(name));
+  data.SetURL("https://" + name + "/search?q={searchTerms}");
+  data.is_active = TemplateURLData::ActiveStatus::kTrue;
+  return service->Add(std::make_unique<TemplateURL>(data));
+}
+
 }  // namespace
 
 class BraveSearchEnginesHandlerTest : public testing::Test {
@@ -113,6 +126,7 @@ class BraveSearchEnginesHandlerTest : public testing::Test {
 
   content::TestWebUI* web_ui() { return web_ui_.get(); }
   Profile* profile() { return profile_; }
+  TemplateURLService* template_url_service() { return template_url_service_; }
 
  protected:
   std::string engine_a_guid_;
@@ -185,6 +199,34 @@ TEST_F(BraveSearchEnginesHandlerTest, SetDefaultPrivateEngineByDatabaseId) {
   web_ui()->HandleReceivedMessage("setDefaultPrivateSearchEngine", args);
 
   EXPECT_EQ(engine_a_guid_,
+            profile()->GetPrefs()->GetString(
+                prefs::kSyncedDefaultPrivateSearchProviderGUID));
+}
+
+// A user-added engine gets the highest database ID of all engines, which is by
+// definition greater than or equal to the number of rows in the table model.
+// Verify that such an engine can still be picked as the private window default
+// (i.e. that the ID isn't validated as if it were a table model index).
+TEST_F(BraveSearchEnginesHandlerTest, SetDefaultPrivateEngineUserAddedEngine) {
+  TemplateURL* user_engine =
+      AddUserDefinedEngine(template_url_service(), "user_engine");
+  ASSERT_TRUE(user_engine);
+  const std::string user_engine_guid = user_engine->sync_guid();
+
+  // Make it the normal window default, which is what puts a user-added engine
+  // into the list offered for private windows.
+  template_url_service()->SetUserSelectedDefaultSearchProvider(user_engine);
+
+  // The service may recreate the TemplateURL, so look it up again by GUID.
+  const TemplateURL* default_engine =
+      template_url_service()->GetTemplateURLForGUID(user_engine_guid);
+  ASSERT_TRUE(default_engine);
+
+  base::ListValue args;
+  args.Append(static_cast<int>(default_engine->id()));
+  web_ui()->HandleReceivedMessage("setDefaultPrivateSearchEngine", args);
+
+  EXPECT_EQ(user_engine_guid,
             profile()->GetPrefs()->GetString(
                 prefs::kSyncedDefaultPrivateSearchProviderGUID));
 }
