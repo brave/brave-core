@@ -8,7 +8,9 @@
 #include <memory>
 #include <vector>
 
+#include "base/functional/bind.h"
 #include "base/scoped_observation.h"
+#include "brave/browser/ui/views/page_action/test_tab_interface.h"
 #include "brave/components/brave_wayback_machine/brave_wayback_machine_tab_helper.h"
 #include "brave/components/brave_wayback_machine/pref_names.h"
 #include "brave/components/brave_wayback_machine/wayback_state.h"
@@ -17,11 +19,11 @@
 #include "chrome/browser/ui/page_action/page_action_icon_type.h"
 #include "chrome/browser/ui/page_action/page_action_model.h"
 #include "chrome/browser/ui/page_action/page_action_model_observer.h"
-#include "chrome/browser/ui/page_action/test_support/fake_tab_interface.h"
 #include "chrome/browser/ui/page_action/test_support/test_page_action_properties_provider.h"
 #include "chrome/browser/ui/toolbar/pinned_toolbar/pinned_toolbar_actions_model.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/prefs/pref_service.h"
+#include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/actions/actions.h"
@@ -51,6 +53,10 @@ class TestObserver : public PageActionModelObserver {
   int model_change_count_ = 0;
 };
 
+void AttachTabHelpers(content::WebContents* contents) {
+  BraveWaybackMachineTabHelper::CreateForWebContents(contents);
+}
+
 }  // namespace
 
 class WaybackMachinePageActionControllerTest : public testing::Test {
@@ -67,7 +73,8 @@ class WaybackMachinePageActionControllerTest : public testing::Test {
   void SetUp() override {
     pinned_actions_model_ =
         std::make_unique<PinnedToolbarActionsModel>(&profile_);
-    tab_interface_ = std::make_unique<FakeTabInterface>(&profile_);
+    tab_interface_ = std::make_unique<TestTabInterface>(
+        &profile_, base::BindRepeating(&AttachTabHelpers));
     tab_interface_->Activate();
 
     page_action_controller_ = std::make_unique<PageActionControllerImpl>(
@@ -87,9 +94,6 @@ class WaybackMachinePageActionControllerTest : public testing::Test {
     page_action_controller_->AddObserver(kActionShowWaybackMachine,
                                          observation_);
 
-    BraveWaybackMachineTabHelper::CreateForWebContents(
-        tab_interface_->GetContents());
-
     controller_ = std::make_unique<WaybackMachinePageActionController>(
         *tab_interface_, *page_action_controller_);
     controller_->Init();
@@ -105,10 +109,13 @@ class WaybackMachinePageActionControllerTest : public testing::Test {
     pinned_actions_model_.reset();
   }
 
+  content::WebContents* contents() { return tab_interface_->GetContents(); }
+
   BraveWaybackMachineTabHelper* tab_helper() {
-    return BraveWaybackMachineTabHelper::FromWebContents(
-        tab_interface_->GetContents());
+    return BraveWaybackMachineTabHelper::FromWebContents(contents());
   }
+
+  TestTabInterface& tab_interface() { return *tab_interface_; }
 
   const TestObserver& observer() const { return observer_; }
   PrefService* prefs() { return profile_.GetPrefs(); }
@@ -119,7 +126,7 @@ class WaybackMachinePageActionControllerTest : public testing::Test {
   TestingProfile profile_;
 
   std::unique_ptr<PinnedToolbarActionsModel> pinned_actions_model_;
-  std::unique_ptr<FakeTabInterface> tab_interface_;
+  std::unique_ptr<TestTabInterface> tab_interface_;
   std::unique_ptr<PageActionControllerImpl> page_action_controller_;
   std::unique_ptr<actions::ActionItem> action_item_;
   base::CallbackListSubscription action_item_subscription_;
@@ -174,6 +181,27 @@ TEST_F(WaybackMachinePageActionControllerTest, HiddenAgainAfterReset) {
 
   tab_helper()->SetWaybackStateForTesting(WaybackState::kInitial);
   EXPECT_FALSE(observer().visible());
+}
+
+// The tab's contents can be swapped out - by tab discarding, or by a shared
+// pinned tab being moved to another window. The controller has to stop
+// listening to the outgoing contents' tab helper, which holds a single callback
+// and CHECKs that it was cleared before it's destroyed.
+TEST_F(WaybackMachinePageActionControllerTest, DetachesFromDiscardedContents) {
+  content::WebContents* const discarded_contents = contents();
+  tab_interface().DiscardContents();
+  ASSERT_NE(discarded_contents, contents());
+
+  // The discarded contents no longer drives the page action.
+  const int model_change_count = observer().model_change_count();
+  BraveWaybackMachineTabHelper::FromWebContents(discarded_contents)
+      ->SetWaybackStateForTesting(WaybackState::kLoaded);
+  EXPECT_EQ(model_change_count, observer().model_change_count());
+  EXPECT_FALSE(observer().visible());
+
+  // The swapped in contents does.
+  tab_helper()->SetWaybackStateForTesting(WaybackState::kLoaded);
+  EXPECT_TRUE(observer().visible());
 }
 
 }  // namespace page_actions
