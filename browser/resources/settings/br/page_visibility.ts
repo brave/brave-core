@@ -126,7 +126,6 @@ function getPageVisibility () {
     // <if expr="enable_email_aliases">
     emailAliases: loadTimeData.getBoolean('isEmailAliasesEnabled'),
     // </if>
-    // </if>
     // <if expr="enable_psst">
     psst: loadTimeData.getBoolean('isPsstEnabled'),
     // </if>
