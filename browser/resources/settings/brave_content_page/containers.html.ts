@@ -41,7 +41,7 @@ export function getHtml(this: SettingsBraveContentContainersElement) {
       ${this.containersEnabled_
         ? html`
             <settings-toggle-button
-              .checked="${this.containersOnlyUseMiniIcon_}"
+              .checked="${this.alwaysUseMiniAccentIconPref_?.value ?? false}"
               icon="container-on"
               label="$i18n{SETTINGS_CONTAINERS_ONLY_USE_MINI_ICON_LABEL}"
               no-set-pref

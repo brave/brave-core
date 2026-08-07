@@ -75,11 +75,6 @@ class MockContainersSettingsObserver : public mojom::ContainersSettingsUI {
     containers_enabled_changed_count_++;
   }
 
-  void OnContainersOnlyUseMiniIconChanged(bool only_use_mini_icon) override {
-    last_containers_only_use_mini_icon_ = only_use_mini_icon;
-    containers_only_use_mini_icon_changed_count_++;
-  }
-
   const std::vector<mojom::ContainerPtr>& last_containers() const {
     return last_containers_;
   }
@@ -90,12 +85,6 @@ class MockContainersSettingsObserver : public mojom::ContainersSettingsUI {
   int containers_enabled_changed_count() const {
     return containers_enabled_changed_count_;
   }
-  bool last_containers_only_use_mini_icon() const {
-    return last_containers_only_use_mini_icon_;
-  }
-  int containers_only_use_mini_icon_changed_count() const {
-    return containers_only_use_mini_icon_changed_count_;
-  }
 
  private:
   mojo::Receiver<mojom::ContainersSettingsUI> receiver_{this};
@@ -103,8 +92,6 @@ class MockContainersSettingsObserver : public mojom::ContainersSettingsUI {
   int containers_changed_count_ = 0;
   bool last_containers_enabled_ = false;
   int containers_enabled_changed_count_ = 0;
-  bool last_containers_only_use_mini_icon_ = false;
-  int containers_only_use_mini_icon_changed_count_ = 0;
 };
 
 }  // namespace
@@ -114,11 +101,6 @@ class ContainersSettingsHandlerTest : public testing::Test {
   void SetUp() override {
     feature_list_.InitAndEnableFeature(features::kContainers);
     RegisterProfilePrefs(prefs_.registry());
-    // Normally registered by brave_tabs::RegisterBraveProfilePrefs()
-    // (browser/ui/tabs/brave_tab_prefs.cc), which this test target cannot
-    // depend on. Register it directly here instead.
-    prefs_.registry()->RegisterBooleanPref(kAlwaysUseMiniAccentIconPrefName,
-                                           false);
     // Remove default containers from prefs for this test suite.
     prefs_.SetList(prefs::kContainersList, base::ListValue());
 
@@ -416,28 +398,6 @@ TEST_F(ContainersSettingsHandlerTest, ContainersEnabledGetSetAndObserver) {
   mock_observer_->FlushForTesting();
   EXPECT_EQ(2, mock_observer_->containers_enabled_changed_count());
   EXPECT_TRUE(mock_observer_->last_containers_enabled());
-}
-
-TEST_F(ContainersSettingsHandlerTest,
-       ContainersOnlyUseMiniIconGetSetAndObserver) {
-  base::test::TestFuture<bool> enabled_future;
-  handler_->GetContainersOnlyUseMiniIcon(enabled_future.GetCallback());
-  EXPECT_FALSE(enabled_future.Take());
-  EXPECT_EQ(0, mock_observer_->containers_only_use_mini_icon_changed_count());
-
-  handler_->SetContainersOnlyUseMiniIcon(true);
-  mock_observer_->FlushForTesting();
-  EXPECT_EQ(1, mock_observer_->containers_only_use_mini_icon_changed_count());
-  EXPECT_TRUE(mock_observer_->last_containers_only_use_mini_icon());
-
-  base::test::TestFuture<bool> enabled_future2;
-  handler_->GetContainersOnlyUseMiniIcon(enabled_future2.GetCallback());
-  EXPECT_TRUE(enabled_future2.Take());
-
-  prefs_.SetBoolean(kAlwaysUseMiniAccentIconPrefName, false);
-  mock_observer_->FlushForTesting();
-  EXPECT_EQ(2, mock_observer_->containers_only_use_mini_icon_changed_count());
-  EXPECT_FALSE(mock_observer_->last_containers_only_use_mini_icon());
 }
 
 }  // namespace containers

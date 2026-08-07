@@ -390,6 +390,8 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
       settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[brave_tabs::kScrollableHorizontalTabStrip] =
       settings_api::PrefType::kBoolean;
+  (*s_brave_allowlist)[brave_tabs::kAlwaysUseMiniAccentIcon] =
+      settings_api::PrefType::kBoolean;
 #endif
 
 #if BUILDFLAG(IS_WIN)

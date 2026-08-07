@@ -17,15 +17,6 @@
 
 namespace containers {
 
-// This pref is owned by //brave/browser/ui/tabs (see
-// brave_tabs::kAlwaysUseMiniAccentIcon in brave_tab_prefs.h) since it now
-// controls tab accent icon rendering in general, not just container tabs.
-// The name is duplicated here (rather than depending on that header)
-// because components/containers/core/browser must not depend on the
-// browser-layer //brave/browser/ui/tabs target.
-inline constexpr char kAlwaysUseMiniAccentIconPrefName[] =
-    "brave.tabs.always_use_mini_accent_icon";
-
 // Handles container management operations from the settings UI. This class
 // implements the mojom::ContainersSettingsHandler interface to process requests
 // from settings UI and manages container data persistence through prefs.
@@ -58,11 +49,6 @@ class ContainersSettingsHandler : public mojom::ContainersSettingsHandler {
   void GetContainersEnabled(GetContainersEnabledCallback callback) override;
   // Updates whether the Containers feature is enabled.
   void SetContainersEnabled(bool enabled) override;
-  // Whether container tabs should always show the mini container icon.
-  void GetContainersOnlyUseMiniIcon(
-      GetContainersOnlyUseMiniIconCallback callback) override;
-  // Updates whether container tabs should always show the mini container icon.
-  void SetContainersOnlyUseMiniIcon(bool only_use_mini_icon) override;
 
   // Returns an error if the given container properties are invalid.
   static std::optional<mojom::ContainerOperationError>
@@ -72,7 +58,6 @@ class ContainersSettingsHandler : public mojom::ContainersSettingsHandler {
   // Called when the containers list in preferences changes.
   void OnContainersChanged();
   void OnContainersEnabledPrefChanged();
-  void OnContainersOnlyUseMiniIconPrefChanged();
 
   // Interface to communicate with the settings page in the renderer.
   mojo::Remote<mojom::ContainersSettingsUI> ui_;
