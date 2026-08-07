@@ -1135,6 +1135,11 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
           New Temporary Container
         </message>
       </if>
+      <if expr="enable_containers">
+        <message name="IDS_TOOLTIP_TAB_IN_CONTAINER" desc="Extra tool tip text, when the tab is in container">
+          container
+        </message>
+      </if>
 
       <!-- Text recognition dialog-->
       <if expr="enable_text_recognition">
