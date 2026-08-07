@@ -175,13 +175,14 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
                         });
 
         findPreference(PREF_SERVER_RESET_CONFIGURATION)
-                .setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                    @Override
-                    public boolean onPreferenceClick(Preference preference) {
-                        showConfirmDialog();
-                        return true;
-                    }
-                });
+                .setOnPreferenceClickListener(
+                        new Preference.OnPreferenceClickListener() {
+                            @Override
+                            public boolean onPreferenceClick(Preference preference) {
+                                showConfirmDialog();
+                                return true;
+                            }
+                        });
 
         findPreference(PREF_SPLIT_TUNNELING)
                 .setOnPreferenceClickListener(

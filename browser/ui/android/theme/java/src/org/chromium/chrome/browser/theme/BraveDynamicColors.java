@@ -8,6 +8,7 @@ package org.chromium.chrome.browser.theme;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.os.Build;
 import android.view.View;
@@ -23,6 +24,7 @@ import org.chromium.chrome.browser.flags.ChromeFeatureMap;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.components.cached_flags.CachedFlag;
 import org.chromium.ui.R;
+import org.chromium.ui.util.AttrUtils;
 
 /** Controls Brave's runtime use of Material dynamic colors. */
 @NullMarked
@@ -121,6 +123,24 @@ public final class BraveDynamicColors {
      */
     public static void applyToOutlinedButtonIfEnabled(View button) {
         applyButtonBackgroundColorIfEnabled(button, R.attr.globalTextButtonTextColor);
+    }
+
+    /**
+     * Returns the active theme's {@code globalTextButtonTextColor}, or {@code fallbackColor} when
+     * dynamic colors are disabled.
+     *
+     * @param theme theme used to resolve {@code globalTextButtonTextColor} when dynamic colors are
+     *     enabled
+     * @param fallbackColor color returned when dynamic colors are disabled
+     * @return the resolved theme text-button color, or {@code fallbackColor} when dynamic colors
+     *     are disabled
+     */
+    public static int getTextButtonColor(Resources.Theme theme, int fallbackColor) {
+        if (!isDynamicColorsEnabled()) {
+            return fallbackColor;
+        }
+
+        return AttrUtils.resolveColor(theme, R.attr.globalTextButtonTextColor);
     }
 
     private static void applyButtonBackgroundColorIfEnabled(View button, int backgroundColorAttr) {

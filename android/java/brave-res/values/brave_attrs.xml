@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="brave_account_preference">
-        <attr name="title_text_color" format="color"/>
+        <attr name="title_text_appearance" format="reference"/>
         <attr name="title_truncate_middle" format="boolean"/>
-        <attr name="summary_text_color" format="color"/>
     </declare-styleable>
 
 	<declare-styleable name="brave_list_preference">

@@ -9,7 +9,6 @@ import static org.chromium.build.NullUtil.assertNonNull;
 import static org.chromium.build.NullUtil.assumeNonNull;
 
 import android.os.Bundle;
-import android.text.style.ForegroundColorSpan;
 
 import androidx.preference.Preference;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,13 +28,11 @@ import org.chromium.chrome.browser.crypto_wallet.BraveWalletServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletConstants;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.util.TabUtils;
-import org.chromium.components.browser_ui.settings.ChromeBasePreference;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
 import org.chromium.components.browser_ui.settings.search.BaseSearchIndexProvider;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
-import org.chromium.ui.text.SpanApplier;
 
 @NullMarked
 public class BraveWalletPreferences extends BravePreferenceFragment
@@ -189,17 +186,11 @@ public class BraveWalletPreferences extends BravePreferenceFragment
                                         .setChecked(isNftDiscoveryEnabled));
         mWeb3NftDiscoverySwitch.setOnPreferenceChangeListener(this);
 
-        ChromeBasePreference learnMorePreference =
+        BraveInlineTextButtonPreference learnMorePreference =
                 findPreference(BRAVE_WALLET_WEB3_NFT_DISCOVERY_LEARN_MORE);
         if (learnMorePreference != null) {
-            learnMorePreference.setTitle(
-                    SpanApplier.applySpans(
-                            getString(R.string.settings_enable_nft_discovery_desc),
-                            new SpanApplier.SpanInfo(
-                                    "<LINK_1>",
-                                    "</LINK_1>",
-                                    new ForegroundColorSpan(
-                                            requireContext().getColor(R.color.brave_link)))));
+            learnMorePreference.setTextButtonTitle(
+                    getString(R.string.settings_enable_nft_discovery_desc));
             learnMorePreference.setOnPreferenceClickListener(
                     preference -> {
                         TabUtils.openUrlInCustomTab(

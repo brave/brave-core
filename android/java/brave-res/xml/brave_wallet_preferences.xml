@@ -49,7 +49,7 @@
         android:summaryOff="@string/text_off" />
 
     <!-- A description with hyperlink to explain more about NFT discovery settings. -->
-    <org.chromium.components.browser_ui.settings.ChromeBasePreference
+    <org.chromium.chrome.browser.settings.BraveInlineTextButtonPreference
         android:key="nft_auto_discovery_learn_more" />
 
     <org.chromium.chrome.browser.settings.BraveWalletResetPreference
