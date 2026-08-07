@@ -31,8 +31,6 @@ struct WebGLFakeExtension {
 // Handler for returning information around the available webgl extensions.
 // This handler automatically takes into consideration any farbling when the
 // brave shields are up.
-// TODO(https://github.com/brave/brave-browser/issues/55858): Add the
-// integration with the BraveSessionCache.
 class CORE_EXPORT WebGLFarbledExtensionHandler {
  public:
   // Returns the default handler without any farbling logic.

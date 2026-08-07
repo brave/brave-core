@@ -573,8 +573,13 @@ IN_PROC_BROWSER_TEST_P(BraveWebGLExtensionFarblingTest,
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   EXPECT_EQ(EvalJs(contents(), kGetWebGL1Extensions).ExtractString(),
             webgl1_off);
-  EXPECT_EQ(EvalJs(contents(), kGetWebGL2Extensions).ExtractString(),
-            kSupportedExtensionsMax);
+  // Old implementation doesn't make the distinction b/w BRAVE_WEBCOMPAT_WEBGL
+  // and BRAVE_WEBCOMPAT_WEBGL2. So, turning off BRAVE_WEBCOMPAT_WEBGL above
+  // also turns off farbling for WebGL2.
+  if (GetParam()) {
+    EXPECT_EQ(EvalJs(contents(), kGetWebGL2Extensions).ExtractString(),
+              kSupportedExtensionsMax);
+  }
 
   // Exception for WebGL2 only: WebGL2 unfarbled, WebGL1 still maximum.
   brave_shields::SetWebcompatEnabled(content_settings(),
@@ -586,8 +591,12 @@ IN_PROC_BROWSER_TEST_P(BraveWebGLExtensionFarblingTest,
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   EXPECT_EQ(EvalJs(contents(), kGetWebGL1Extensions).ExtractString(),
             kSupportedExtensionsMax);
-  EXPECT_EQ(EvalJs(contents(), kGetWebGL2Extensions).ExtractString(),
-            webgl2_off);
+  // Old implementation doesn't make the distinction b/w BRAVE_WEBCOMPAT_WEBGL
+  // and BRAVE_WEBCOMPAT_WEBGL2.
+  if (GetParam()) {
+    EXPECT_EQ(EvalJs(contents(), kGetWebGL2Extensions).ExtractString(),
+              webgl2_off);
+  }
 }
 
 // BRAVE_WEBCOMPAT_WEBGL and BRAVE_WEBCOMPAT_WEBGL2 must independently control
