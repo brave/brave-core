@@ -13,6 +13,10 @@
 #include "chrome/browser/ui/page_action/page_action_controller.h"
 #include "components/tabs/public/tab_interface.h"
 
+namespace content {
+class WebContents;
+}
+
 namespace page_actions {
 
 // Drives the Speedreader page action: shows a reader-mode icon whenever the
@@ -39,11 +43,12 @@ class SpeedreaderPageActionController
   // speedreader::SpeedreaderTabHelper::Observer:
   void OnDistillStateUpdated() override;
 
-  // (Re-)observes the current WebContents' SpeedreaderTabHelper, since the
-  // tab's contents can be swapped out (e.g. tab discarding).
-  void AttachToTabHelper();
+  // (Re-)observes |contents|' SpeedreaderTabHelper, since the tab's contents
+  // can be swapped out (e.g. tab discarding). Stops observing the previously
+  // attached helper, which may be about to be destroyed.
+  void AttachToTabHelper(content::WebContents* contents);
 
-  void UpdatePageAction();
+  void UpdatePageAction(content::WebContents* contents);
 
   const raw_ref<tabs::TabInterface> tab_;
   const raw_ref<page_actions::PageActionControllerImpl> page_action_controller_;

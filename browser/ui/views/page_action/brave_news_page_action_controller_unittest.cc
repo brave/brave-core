@@ -8,8 +8,10 @@
 #include <memory>
 #include <vector>
 
+#include "base/functional/bind.h"
 #include "base/scoped_observation.h"
 #include "brave/browser/brave_news/brave_news_tab_helper.h"
+#include "brave/browser/ui/views/page_action/test_tab_interface.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "chrome/browser/ui/actions/chrome_action_id.h"
@@ -18,12 +20,12 @@
 #include "chrome/browser/ui/page_action/page_action_icon_type.h"
 #include "chrome/browser/ui/page_action/page_action_model.h"
 #include "chrome/browser/ui/page_action/page_action_model_observer.h"
-#include "chrome/browser/ui/page_action/test_support/fake_tab_interface.h"
 #include "chrome/browser/ui/page_action/test_support/test_page_action_properties_provider.h"
 #include "chrome/browser/ui/toolbar/pinned_toolbar/pinned_toolbar_actions_model.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
+#include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -75,6 +77,10 @@ brave_news::mojom::PublisherPtr MakePublisher(const GURL& feed_source,
   return publisher;
 }
 
+void AttachTabHelpers(content::WebContents* contents) {
+  BraveNewsTabHelper::CreateForWebContents(contents);
+}
+
 }  // namespace
 
 class BraveNewsPageActionControllerTest : public testing::Test {
@@ -97,7 +103,8 @@ class BraveNewsPageActionControllerTest : public testing::Test {
 
     pinned_actions_model_ =
         std::make_unique<PinnedToolbarActionsModel>(&profile_);
-    tab_interface_ = std::make_unique<FakeTabInterface>(&profile_);
+    tab_interface_ = std::make_unique<TestTabInterface>(
+        &profile_, base::BindRepeating(&AttachTabHelpers));
     ON_CALL(*tab_interface_, GetBrowserWindowInterface())
         .WillByDefault(Return(&browser_window_));
     tab_interface_->Activate();
@@ -116,8 +123,6 @@ class BraveNewsPageActionControllerTest : public testing::Test {
             action_item_.get());
 
     page_action_controller_->AddObserver(kActionShowBraveNews, observation_);
-
-    BraveNewsTabHelper::CreateForWebContents(tab_interface_->GetContents());
 
     controller_ = std::make_unique<BraveNewsPageActionController>(
         *tab_interface_, *page_action_controller_);
@@ -138,6 +143,8 @@ class BraveNewsPageActionControllerTest : public testing::Test {
     return BraveNewsTabHelper::FromWebContents(tab_interface_->GetContents());
   }
 
+  TestTabInterface& tab_interface() { return *tab_interface_; }
+
   BraveNewsPageActionController* controller() { return controller_.get(); }
   const TestObserver& observer() const { return observer_; }
   PrefService* prefs() { return profile_.GetPrefs(); }
@@ -149,7 +156,7 @@ class BraveNewsPageActionControllerTest : public testing::Test {
   testing::NiceMock<MockBrowserWindowInterface> browser_window_;
 
   std::unique_ptr<PinnedToolbarActionsModel> pinned_actions_model_;
-  std::unique_ptr<FakeTabInterface> tab_interface_;
+  std::unique_ptr<TestTabInterface> tab_interface_;
   std::unique_ptr<PageActionControllerImpl> page_action_controller_;
   std::unique_ptr<actions::ActionItem> action_item_;
   base::CallbackListSubscription action_item_subscription_;
@@ -189,6 +196,35 @@ TEST_F(BraveNewsPageActionControllerTest, HiddenAgainWhenFeedRemoved) {
 
   tab_helper()->SetDefaultFeedForTesting(nullptr);
   EXPECT_FALSE(observer().visible());
+}
+
+// The tab's contents can be swapped out - by tab discarding, or by a shared
+// pinned tab being moved to another window. The controller has to follow the
+// swapped in contents, and stop observing the outgoing contents' tab helper,
+// which is about to be destroyed.
+TEST_F(BraveNewsPageActionControllerTest, FollowsDiscardedContents) {
+  BraveNewsTabHelper* const discarded_tab_helper = tab_helper();
+  discarded_tab_helper->SetDefaultFeedForTesting(
+      MakePublisher(GURL("https://example.com/feed"), /*subscribed=*/false));
+  ASSERT_TRUE(observer().visible());
+
+  // The swapped in contents has no feed, so the action hides.
+  tab_interface().DiscardContents();
+  ASSERT_NE(discarded_tab_helper, tab_helper());
+  EXPECT_FALSE(observer().visible());
+
+  // The discarded contents no longer drives the page action.
+  const int model_change_count = observer().model_change_count();
+  discarded_tab_helper->SetDefaultFeedForTesting(
+      MakePublisher(GURL("https://example.com/other-feed"),
+                    /*subscribed=*/true));
+  EXPECT_EQ(model_change_count, observer().model_change_count());
+
+  // The swapped in one does.
+  tab_helper()->SetDefaultFeedForTesting(
+      MakePublisher(GURL("https://example.com/new-feed"),
+                    /*subscribed=*/false));
+  EXPECT_TRUE(observer().visible());
 }
 
 TEST_F(BraveNewsPageActionControllerTest,

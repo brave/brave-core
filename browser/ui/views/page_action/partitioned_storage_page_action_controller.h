@@ -29,6 +29,10 @@ namespace containers {
 class ContainersMenuModel;
 }
 
+namespace content {
+class WebContents;
+}
+
 namespace views {
 class MenuModelAdapter;
 class MenuRunner;
@@ -56,7 +60,7 @@ class PartitionedStoragePageActionController {
                      actions::ActionItem* item);
 
  private:
-  void UpdatePageAction();
+  void UpdatePageAction(content::WebContents* web_contents);
   void OnPartitionedStorageMenuClosed();
 
   const raw_ref<tabs::TabInterface> tab_;

@@ -11,9 +11,11 @@
 
 #include "base/check.h"
 #include "base/files/scoped_temp_dir.h"
+#include "base/functional/bind.h"
 #include "base/scoped_observation.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/playlist/playlist_service_factory.h"
+#include "brave/browser/ui/views/page_action/test_tab_interface.h"
 #include "brave/components/playlist/content/browser/media_detector_component_manager.h"
 #include "brave/components/playlist/content/browser/playlist_service.h"
 #include "brave/components/playlist/content/browser/playlist_tab_helper.h"
@@ -26,7 +28,6 @@
 #include "chrome/browser/ui/page_action/page_action_icon_type.h"
 #include "chrome/browser/ui/page_action/page_action_model.h"
 #include "chrome/browser/ui/page_action/page_action_model_observer.h"
-#include "chrome/browser/ui/page_action/test_support/fake_tab_interface.h"
 #include "chrome/browser/ui/page_action/test_support/test_page_action_properties_provider.h"
 #include "chrome/browser/ui/toolbar/pinned_toolbar/pinned_toolbar_actions_model.h"
 #include "chrome/test/base/testing_profile.h"
@@ -36,6 +37,7 @@
 #include "components/prefs/testing_pref_service.h"
 #include "components/sync_preferences/pref_service_mock_factory.h"
 #include "components/sync_preferences/pref_service_syncable.h"
+#include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/actions/actions.h"
@@ -64,6 +66,11 @@ class TestObserver : public PageActionModelObserver {
   bool visible_ = false;
   int model_change_count_ = 0;
 };
+
+void AttachTabHelpers(playlist::PlaylistService* service,
+                      content::WebContents* contents) {
+  playlist::PlaylistTabHelper::CreateForWebContents(contents, service);
+}
 
 }  // namespace
 
@@ -114,7 +121,9 @@ class PlaylistPageActionControllerTest : public testing::Test {
 
     pinned_actions_model_ =
         std::make_unique<PinnedToolbarActionsModel>(profile_.get());
-    tab_interface_ = std::make_unique<FakeTabInterface>(profile_.get());
+    tab_interface_ = std::make_unique<TestTabInterface>(
+        profile_.get(),
+        base::BindRepeating(&AttachTabHelpers, playlist_service_.get()));
     tab_interface_->Activate();
 
     page_action_controller_ = std::make_unique<PageActionControllerImpl>(
@@ -133,9 +142,6 @@ class PlaylistPageActionControllerTest : public testing::Test {
 
     page_action_controller_->AddObserver(kActionShowPlaylistPageAction,
                                          observation_);
-
-    playlist::PlaylistTabHelper::CreateForWebContents(
-        tab_interface_->GetContents(), playlist_service_.get());
 
     controller_ = std::make_unique<PlaylistPageActionController>(
         *tab_interface_, *page_action_controller_);
@@ -165,10 +171,11 @@ class PlaylistPageActionControllerTest : public testing::Test {
   // Mirrors PlaylistTabHelper::OnMediaFilesUpdated(), a public
   // mojom::PlaylistServiceObserver override that the real PlaylistService
   // calls when it detects media on the current page.
-  void AddFoundItem() {
+  void AddFoundItem() { AddFoundItem(tab_helper()); }
+  void AddFoundItem(playlist::PlaylistTabHelper* tab_helper) {
     std::vector<playlist::mojom::PlaylistItemPtr> items;
     items.push_back(playlist::mojom::PlaylistItem::New());
-    tab_helper()->OnMediaFilesUpdated(
+    tab_helper->OnMediaFilesUpdated(
         tab_interface_->GetContents()->GetLastCommittedURL(), std::move(items));
   }
 
@@ -181,6 +188,8 @@ class PlaylistPageActionControllerTest : public testing::Test {
     item->page_source = tab_interface_->GetContents()->GetLastCommittedURL();
     tab_helper()->OnItemCreated(std::move(item));
   }
+
+  TestTabInterface& tab_interface() { return *tab_interface_; }
 
   const TestObserver& observer() const { return observer_; }
   PrefService* prefs() { return profile_->GetPrefs(); }
@@ -197,7 +206,7 @@ class PlaylistPageActionControllerTest : public testing::Test {
   std::unique_ptr<playlist::PlaylistService> playlist_service_;
 
   std::unique_ptr<PinnedToolbarActionsModel> pinned_actions_model_;
-  std::unique_ptr<FakeTabInterface> tab_interface_;
+  std::unique_ptr<TestTabInterface> tab_interface_;
   std::unique_ptr<PageActionControllerImpl> page_action_controller_;
   std::unique_ptr<actions::ActionItem> action_item_;
   base::CallbackListSubscription action_item_subscription_;
@@ -222,6 +231,30 @@ TEST_F(PlaylistPageActionControllerTest, VisibleWithFoundItem) {
 TEST_F(PlaylistPageActionControllerTest, VisibleWithSavedItem) {
   AddSavedItem();
 
+  EXPECT_TRUE(observer().visible());
+}
+
+// The tab's contents can be swapped out - by tab discarding, or by a shared
+// pinned tab being moved to another window. The controller has to follow the
+// swapped in contents, and stop observing the outgoing contents' tab helper,
+// which is about to be destroyed.
+TEST_F(PlaylistPageActionControllerTest, FollowsDiscardedContents) {
+  playlist::PlaylistTabHelper* const discarded_tab_helper = tab_helper();
+  AddFoundItem(discarded_tab_helper);
+  ASSERT_TRUE(observer().visible());
+
+  // The swapped in contents has no items, so the action hides.
+  tab_interface().DiscardContents();
+  ASSERT_NE(discarded_tab_helper, tab_helper());
+  EXPECT_FALSE(observer().visible());
+
+  // The discarded contents no longer drives the page action.
+  const int model_change_count = observer().model_change_count();
+  AddFoundItem(discarded_tab_helper);
+  EXPECT_EQ(model_change_count, observer().model_change_count());
+
+  // The swapped in one does.
+  AddFoundItem();
   EXPECT_TRUE(observer().visible());
 }
 

@@ -125,12 +125,19 @@ source_set("unit_tests") {
   testonly = true
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
-  sources = [ "page_action_view_unittest.cc" ]
+  sources = [
+    "page_action_view_unittest.cc",
+    "test_tab_interface.cc",
+    "test_tab_interface.h",
+  ]
   deps = [
     "//base",
+    "//chrome/browser/ui/page_action:test_support",
     "//chrome/browser/ui/views/page_action",
     "//chrome/browser/ui/views/page_action:test_support",
     "//chrome/test:test_support",
+    "//components/tabs:test_support",
+    "//content/public/browser",
     "//testing/gmock",
     "//testing/gtest",
     "//ui/gfx",

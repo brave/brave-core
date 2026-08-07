@@ -47,21 +47,24 @@ OnionLocationPageActionController::~OnionLocationPageActionController() =
 
 void OnionLocationPageActionController::Init() {
   did_activate_subscription_ = tab_->RegisterDidActivate(base::BindRepeating(
-      [](OnionLocationPageActionController* self, tabs::TabInterface*) {
-        self->AttachToWebContents();
-        self->UpdatePageAction();
+      [](OnionLocationPageActionController* self, tabs::TabInterface* tab) {
+        self->AttachToWebContents(tab->GetContents());
+        self->UpdatePageAction(tab->GetContents());
       },
       base::Unretained(this)));
   will_discard_contents_subscription_ =
       tab_->RegisterWillDiscardContents(base::BindRepeating(
           [](OnionLocationPageActionController* self, tabs::TabInterface*,
-             content::WebContents*, content::WebContents*) {
-            self->AttachToWebContents();
-            self->UpdatePageAction();
+             content::WebContents*, content::WebContents* new_contents) {
+            // TabInterface::GetContents() still returns the outgoing contents
+            // at this point, so the swapped in contents has to be taken from
+            // the argument.
+            self->AttachToWebContents(new_contents);
+            self->UpdatePageAction(new_contents);
           },
           base::Unretained(this)));
-  AttachToWebContents();
-  UpdatePageAction();
+  AttachToWebContents(tab_->GetContents());
+  UpdatePageAction(tab_->GetContents());
 }
 
 void OnionLocationPageActionController::ExecuteAction() {
@@ -89,15 +92,15 @@ void OnionLocationPageActionController::ExecuteAction() {
                                         initiator_origin);
 }
 
-void OnionLocationPageActionController::AttachToWebContents() {
-  content::WebContents* const contents = tab_->GetContents();
+void OnionLocationPageActionController::AttachToWebContents(
+    content::WebContents* contents) {
   if (web_contents() != contents) {
     Observe(contents);
   }
 }
 
-void OnionLocationPageActionController::UpdatePageAction() {
-  content::WebContents* const contents = tab_->GetContents();
+void OnionLocationPageActionController::UpdatePageAction(
+    content::WebContents* contents) {
   if (!contents) {
     ResetPageAction();
     return;
@@ -167,7 +170,7 @@ void OnionLocationPageActionController::DidFinishNavigation(
       !navigation_handle->HasCommitted()) {
     return;
   }
-  UpdatePageAction();
+  UpdatePageAction(web_contents());
 }
 
 }  // namespace page_actions

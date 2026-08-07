@@ -79,31 +79,32 @@ WaybackMachinePageActionController::WaybackMachinePageActionController(
               page_action_controller)) {}
 
 WaybackMachinePageActionController::~WaybackMachinePageActionController() {
-  if (content::WebContents* contents = tab_->GetContents()) {
-    if (auto* tab_helper =
-            BraveWaybackMachineTabHelper::FromWebContents(contents)) {
-      tab_helper->SetWaybackStateChangedCallback(base::NullCallback());
-    }
-  }
+  DetachFromTabHelper(tab_->GetContents());
 }
 
 void WaybackMachinePageActionController::Init() {
   did_activate_subscription_ = tab_->RegisterDidActivate(base::BindRepeating(
-      [](WaybackMachinePageActionController* self, tabs::TabInterface*) {
-        self->AttachToTabHelper();
-        self->UpdatePageAction();
+      [](WaybackMachinePageActionController* self, tabs::TabInterface* tab) {
+        self->AttachToTabHelper(tab->GetContents());
+        self->UpdatePageAction(tab->GetContents());
       },
       base::Unretained(this)));
   will_discard_contents_subscription_ =
       tab_->RegisterWillDiscardContents(base::BindRepeating(
           [](WaybackMachinePageActionController* self, tabs::TabInterface*,
-             content::WebContents*, content::WebContents*) {
-            self->AttachToTabHelper();
-            self->UpdatePageAction();
+             content::WebContents* old_contents,
+             content::WebContents* new_contents) {
+            // TabInterface::GetContents() still returns |old_contents| at
+            // this point, so both sides of the swap have to be driven by the
+            // arguments. Detaching matters: the helper holds a single callback
+            // and CHECKs that it was cleared before it's destroyed.
+            self->DetachFromTabHelper(old_contents);
+            self->AttachToTabHelper(new_contents);
+            self->UpdatePageAction(new_contents);
           },
           base::Unretained(this)));
-  AttachToTabHelper();
-  UpdatePageAction();
+  AttachToTabHelper(tab_->GetContents());
+  UpdatePageAction(tab_->GetContents());
 }
 
 void WaybackMachinePageActionController::ExecuteAction(
@@ -131,11 +132,11 @@ void WaybackMachinePageActionController::ExecuteAction(
 
 void WaybackMachinePageActionController::OnWaybackStateChanged(
     WaybackState state) {
-  UpdatePageAction();
+  UpdatePageAction(tab_->GetContents());
 }
 
-void WaybackMachinePageActionController::AttachToTabHelper() {
-  content::WebContents* const contents = tab_->GetContents();
+void WaybackMachinePageActionController::AttachToTabHelper(
+    content::WebContents* contents) {
   if (!contents) {
     return;
   }
@@ -148,8 +149,19 @@ void WaybackMachinePageActionController::AttachToTabHelper() {
       weak_factory_.GetWeakPtr()));
 }
 
-void WaybackMachinePageActionController::UpdatePageAction() {
-  content::WebContents* const contents = tab_->GetContents();
+void WaybackMachinePageActionController::DetachFromTabHelper(
+    content::WebContents* contents) {
+  if (!contents) {
+    return;
+  }
+  if (auto* tab_helper =
+          BraveWaybackMachineTabHelper::FromWebContents(contents)) {
+    tab_helper->SetWaybackStateChangedCallback(base::NullCallback());
+  }
+}
+
+void WaybackMachinePageActionController::UpdatePageAction(
+    content::WebContents* contents) {
   if (!contents) {
     page_action_controller_->Hide(kActionShowWaybackMachine);
     return;

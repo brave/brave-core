@@ -40,21 +40,24 @@ void PlaylistPageActionController::Init() {
                           base::Unretained(this)));
 
   did_activate_subscription_ = tab_->RegisterDidActivate(base::BindRepeating(
-      [](PlaylistPageActionController* self, tabs::TabInterface*) {
-        self->AttachToTabHelper();
-        self->UpdateState();
+      [](PlaylistPageActionController* self, tabs::TabInterface* tab) {
+        self->AttachToTabHelper(tab->GetContents());
+        self->UpdateState(tab->GetContents());
       },
       base::Unretained(this)));
   will_discard_contents_subscription_ =
       tab_->RegisterWillDiscardContents(base::BindRepeating(
           [](PlaylistPageActionController* self, tabs::TabInterface*,
-             content::WebContents*, content::WebContents*) {
-            self->AttachToTabHelper();
-            self->UpdateState();
+             content::WebContents*, content::WebContents* new_contents) {
+            // TabInterface::GetContents() still returns the outgoing contents
+            // at this point, so the swapped in contents has to be taken from
+            // the argument.
+            self->AttachToTabHelper(new_contents);
+            self->UpdateState(new_contents);
           },
           base::Unretained(this)));
-  AttachToTabHelper();
-  UpdateState();
+  AttachToTabHelper(tab_->GetContents());
+  UpdateState(tab_->GetContents());
 }
 
 void PlaylistPageActionController::ExecuteAction() {
@@ -67,12 +70,12 @@ void PlaylistPageActionController::PlaylistTabHelperWillBeDestroyed() {
 
 void PlaylistPageActionController::OnSavedItemsChanged(
     const std::vector<playlist::mojom::PlaylistItemPtr>& items) {
-  UpdateState();
+  UpdateState(tab_->GetContents());
 }
 
 void PlaylistPageActionController::OnFoundItemsChanged(
     const std::vector<playlist::mojom::PlaylistItemPtr>& items) {
-  UpdateState();
+  UpdateState(tab_->GetContents());
 }
 
 void PlaylistPageActionController::OnAddedItemFromTabHelper(
@@ -88,9 +91,10 @@ void PlaylistPageActionController::OnAddedItemFromTabHelper(
   }
 }
 
-void PlaylistPageActionController::AttachToTabHelper() {
+void PlaylistPageActionController::AttachToTabHelper(
+    content::WebContents* contents) {
   tab_helper_observation_.Reset();
-  if (content::WebContents* contents = tab_->GetContents()) {
+  if (contents) {
     if (auto* tab_helper =
             playlist::PlaylistTabHelper::FromWebContents(contents)) {
       tab_helper_observation_.Observe(tab_helper);
@@ -124,10 +128,10 @@ void PlaylistPageActionController::ShowBubble(
       ->ShowBubble(anchor_view, type);
 }
 
-void PlaylistPageActionController::UpdateState() {
+void PlaylistPageActionController::UpdateState(content::WebContents* contents) {
   bool has_saved_items = false;
   bool has_found_items = false;
-  if (content::WebContents* contents = tab_->GetContents()) {
+  if (contents) {
     if (auto* tab_helper =
             playlist::PlaylistTabHelper::FromWebContents(contents)) {
       has_saved_items = !tab_helper->saved_items().empty();
