@@ -22,7 +22,7 @@
 #include "mojo/public/cpp/bindings/associated_remote.h"
 
 namespace variations {
-    class VariationsService;
+class VariationsService;
 }
 
 namespace psst {

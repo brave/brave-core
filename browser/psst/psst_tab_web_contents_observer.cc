@@ -20,13 +20,13 @@
 #include "brave/components/psst/core/browser/psst_rule_registry.h"
 #include "brave/components/psst/core/common/features.h"
 #include "components/prefs/pref_service.h"
+#include "components/variations/service/variations_service.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/page.h"
 #include "content/public/browser/web_contents.h"
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
-#include "components/variations/service/variations_service.h"
 
 namespace psst {
 
@@ -214,7 +214,8 @@ void PsstTabWebContentsObserver::InsertUserScript(
     return;
   }
   base::DictValue params_dict;
-  params_dict.Set(kUserScriptParamCountryIdPropName, variations_service_->GetLatestCountry());
+  params_dict.Set(kUserScriptParamCountryIdPropName,
+                  variations_service_->GetLatestCountry());
   const std::string user_script_with_param =
       MaybeAddParamsToScript(rule->user_script(), std::move(params_dict));
   RunWithTimeout(
