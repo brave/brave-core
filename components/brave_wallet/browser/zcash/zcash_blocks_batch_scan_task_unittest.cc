@@ -209,7 +209,7 @@ class ZCashBlocksBatchScanTest : public testing::Test {
           auto account_id = MakeIndexBasedAccountId(
               mojom::CoinType::ZEC, mojom::KeyringId::kZCashTestnet,
               mojom::AccountKind::kDerived, 0);
-          constexpr uint32_t kActivation = kIronwoodActivationHeightTestnet;
+          constexpr uint32_t kBase = kNu5BlockUpdate;
 
           OrchardBlockScanner::Result result = CreateResultForTesting(
               std::move(tree_state), std::vector<OrchardCommitment>(),
@@ -222,29 +222,28 @@ class ZCashBlocksBatchScanTest : public testing::Test {
           }
 
           for (const auto& block : blocks) {
-            // Orchard notes discovered before Ironwood activation.
-            if (block->height == kActivation - 15) {
+            // Orchard notes discovered.
+            if (block->height == kBase + 15) {
               result.orchard.discovered_notes.push_back(
                   GenerateMockOrchardNote(account_id, block->height, 1));
-            } else if (block->height == kActivation - 5) {
+            } else if (block->height == kBase + 25) {
               result.orchard.discovered_notes.push_back(
                   GenerateMockOrchardNote(account_id, block->height, 2));
-            } else if (block->height == kActivation + 10) {
-              // Orchard nullifier found after activation, spending note 1.
+            } else if (block->height == kBase + 40) {
+              // Orchard nullifier found, spending note 1.
               result.orchard.found_spends.push_back(
                   GenerateMockNoteSpend(account_id, block->height, 1));
             }
 
             if (result.ironwood) {
-              if (block->height == kActivation + 5) {
+              if (block->height == kBase + 35) {
                 result.ironwood->discovered_notes.push_back(
                     GenerateMockOrchardNote(account_id, block->height, 11));
-              } else if (block->height == kActivation + 8) {
+              } else if (block->height == kBase + 38) {
                 result.ironwood->discovered_notes.push_back(
                     GenerateMockOrchardNote(account_id, block->height, 12));
-              } else if (block->height == kActivation + 15) {
-                // Ironwood nullifier found after activation, spending
-                // note 11.
+              } else if (block->height == kBase + 45) {
+                // Ironwood nullifier found, spending note 11.
                 result.ironwood->found_spends.push_back(
                     GenerateMockNoteSpend(account_id, block->height, 11));
               }
@@ -482,7 +481,7 @@ TEST_F(ZCashBlocksBatchScanTest, DecodingError) {
 
 // Flag ON, but mainnet scan range is still below activation: the scanner
 // must receive std::nullopt for the ironwood tree state.
-TEST_F(ZCashBlocksBatchScanTest, IronwoodInactiveOnMainnet) {
+TEST_F(ZCashBlocksBatchScanTest, IronwoodAlwaysActiveOnMainnet) {
   base::test::ScopedFeatureList features;
   features.InitAndEnableFeatureWithParameters(
       features::kBraveWalletZCashFeature,
@@ -517,7 +516,7 @@ TEST_F(ZCashBlocksBatchScanTest, IronwoodInactiveOnMainnet) {
   EXPECT_TRUE(result_future.Wait());
 
   ASSERT_TRUE(ironwood_present.has_value());
-  EXPECT_FALSE(ironwood_present.value());
+  EXPECT_TRUE(ironwood_present.value());
 }
 
 // Flag ON and testnet block at/above the activation height: the scanner must
@@ -572,7 +571,7 @@ TEST_F(ZCashBlocksBatchScanTest, IronwoodActiveOnTestnet) {
   base::test::TestFuture<base::expected<void, ZCashShieldSyncService::Error>>
       result_future;
   auto task = ZCashBlocksBatchScanTask(context, *block_scanner,
-                                       {kIronwoodActivationHeightTestnet, 1},
+                                       {kNu5BlockUpdate + 1, 1},
                                        result_future.GetCallback());
   task.Start();
   EXPECT_TRUE(result_future.Wait());
@@ -635,9 +634,9 @@ TEST_F(ZCashBlocksBatchScanTest, IronwoodStraddlingBatchEmptyTreeState) {
       result_future;
   // Frontier = activation - 2 (pre-activation); last block = activation + 1
   // (Ironwood decode enabled).
-  auto task = ZCashBlocksBatchScanTask(
-      context, *block_scanner, {kIronwoodActivationHeightTestnet - 1, 3},
-      result_future.GetCallback());
+  auto task = ZCashBlocksBatchScanTask(context, *block_scanner,
+                                       {kNu5BlockUpdate + 1, 3},
+                                       result_future.GetCallback());
   task.Start();
   EXPECT_TRUE(result_future.Wait());
 
@@ -709,9 +708,9 @@ TEST_F(ZCashBlocksBatchScanTest, IronwoodFrontierDecoded) {
       result_future;
   // Frontier block height == activation height, so the "post-activation"
   // branch (real tree size + decoded frontier) must be taken.
-  auto task = ZCashBlocksBatchScanTask(
-      context, *block_scanner, {kIronwoodActivationHeightTestnet + 1, 1},
-      result_future.GetCallback());
+  auto task = ZCashBlocksBatchScanTask(context, *block_scanner,
+                                       {kNu5BlockUpdate + 1, 1},
+                                       result_future.GetCallback());
   task.Start();
   EXPECT_TRUE(result_future.Wait());
 
@@ -774,9 +773,9 @@ TEST_F(ZCashBlocksBatchScanTest, IronwoodFrontierInvalidHexError) {
 
   base::test::TestFuture<base::expected<void, ZCashShieldSyncService::Error>>
       result_future;
-  auto task = ZCashBlocksBatchScanTask(
-      context, *block_scanner, {kIronwoodActivationHeightTestnet + 1, 1},
-      result_future.GetCallback());
+  auto task = ZCashBlocksBatchScanTask(context, *block_scanner,
+                                       {kNu5BlockUpdate + 1, 1},
+                                       result_future.GetCallback());
   task.Start();
 
   auto result = result_future.Get();
@@ -821,9 +820,9 @@ TEST_F(ZCashBlocksBatchScanTest, IronwoodActivation_Enabled) {
 
   base::test::TestFuture<base::expected<void, ZCashShieldSyncService::Error>>
       result_future;
-  auto task = ZCashBlocksBatchScanTask(
-      context, *block_scanner, {kIronwoodActivationHeightTestnet - 20, 41},
-      result_future.GetCallback());
+  auto task = ZCashBlocksBatchScanTask(context, *block_scanner,
+                                       {kNu5BlockUpdate + 1, 50},
+                                       result_future.GetCallback());
   task.Start();
 
   EXPECT_TRUE(result_future.Get().has_value());
@@ -871,9 +870,9 @@ TEST_F(ZCashBlocksBatchScanTest, IronwoodActivation_Disabled) {
 
   base::test::TestFuture<base::expected<void, ZCashShieldSyncService::Error>>
       result_future;
-  auto task = ZCashBlocksBatchScanTask(
-      context, *block_scanner, {kIronwoodActivationHeightTestnet - 20, 41},
-      result_future.GetCallback());
+  auto task = ZCashBlocksBatchScanTask(context, *block_scanner,
+                                       {kNu5BlockUpdate + 1, 41},
+                                       result_future.GetCallback());
   task.Start();
 
   EXPECT_TRUE(result_future.Get().has_value());

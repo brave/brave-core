@@ -385,6 +385,7 @@ export function useGate3(params: SwapParams) {
             value: new Amount(value).toHex(),
             sendingMaxAmount: false,
             useShieldedPool: isShieldedToken(fromToken),
+            zcashTokenType: fromToken.zcashTokenType,
             memo: undefined,
             swapInfo: {
               sourceCoin: fromToken.coin,

@@ -16,7 +16,7 @@
 namespace brave_wallet {
 
 MockOrchardBlockScannerProxy::MockOrchardBlockScannerProxy(Callback callback)
-    : OrchardBlockScannerProxy({}, 0), callback_(callback) {}
+    : OrchardBlockScannerProxy({}), callback_(callback) {}
 
 MockOrchardBlockScannerProxy::~MockOrchardBlockScannerProxy() = default;
 

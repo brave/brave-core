@@ -50,9 +50,6 @@ inline constexpr uint8_t kOrchardSpendingKeySize = 32;
 inline constexpr size_t kOrchardCompleteBlockHashSize = 32u;
 // Block number where Orchard support was added
 inline constexpr size_t kNu5BlockUpdate = 1687104;
-// TODO(cypt4): NU7/Ironwood activation heights are not finalized.
-inline constexpr uint32_t kIronwoodActivationHeightMainnet = 3428143;
-inline constexpr uint32_t kIronwoodActivationHeightTestnet = 4134000;
 
 using OrchardFullViewKey = std::array<uint8_t, kOrchardFullViewKeySize>;
 using OrchardMemo = std::array<uint8_t, kOrchardMemoSize>;
@@ -253,7 +250,7 @@ std::optional<std::vector<uint8_t>> OrchardMemoToVec(
 // 0x14813a6fb939819e79f48cc70fa40e39296da381ba1cce030290490000000000
 std::optional<std::string> RevertHex(const std::string& hex);
 
-uint32_t GetIronwoodActivationHeight(const std::string& chain_id);
+// Ironwood is active on all networks.
 bool IsIronwoodActive(const std::string& chain_id, uint32_t chain_tip_height);
 
 }  // namespace brave_wallet

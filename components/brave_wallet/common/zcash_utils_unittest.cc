@@ -509,26 +509,11 @@ TEST(ZCashUtilsUnitTest, ZCashAddressToScriptPubkey) {
 }
 
 TEST(ZCashUtilsUnitTest, IronwoodActivation) {
-  EXPECT_EQ(GetIronwoodActivationHeight(mojom::kZCashMainnet),
-            kIronwoodActivationHeightMainnet);
-  EXPECT_EQ(GetIronwoodActivationHeight(mojom::kZCashTestnet),
-            kIronwoodActivationHeightTestnet);
-
-  // Mainnet activates at the configured height.
-  EXPECT_FALSE(IsIronwoodActive(mojom::kZCashMainnet,
-                                kIronwoodActivationHeightMainnet - 1u));
-  EXPECT_TRUE(
-      IsIronwoodActive(mojom::kZCashMainnet, kIronwoodActivationHeightMainnet));
-  EXPECT_TRUE(IsIronwoodActive(mojom::kZCashMainnet,
-                               kIronwoodActivationHeightMainnet + 1u));
-
-  // Testnet activates at the configured height.
-  EXPECT_FALSE(IsIronwoodActive(mojom::kZCashTestnet,
-                                kIronwoodActivationHeightTestnet - 1u));
-  EXPECT_TRUE(
-      IsIronwoodActive(mojom::kZCashTestnet, kIronwoodActivationHeightTestnet));
-  EXPECT_TRUE(IsIronwoodActive(mojom::kZCashTestnet,
-                               kIronwoodActivationHeightTestnet + 1u));
+  // Ironwood is always active regardless of chain tip height.
+  EXPECT_TRUE(IsIronwoodActive(mojom::kZCashMainnet, 0u));
+  EXPECT_TRUE(IsIronwoodActive(mojom::kZCashMainnet, 1u));
+  EXPECT_TRUE(IsIronwoodActive(mojom::kZCashTestnet, 0u));
+  EXPECT_TRUE(IsIronwoodActive(mojom::kZCashTestnet, 1u));
 }
 
 }  // namespace brave_wallet
