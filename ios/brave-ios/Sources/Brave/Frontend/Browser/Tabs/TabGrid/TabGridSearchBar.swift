@@ -25,9 +25,18 @@ struct TabGridSearchBar: View {
           }
         } label: {
           Text(Strings.CancelString)
-            .foregroundStyle(Color(braveSystemName: .textInteractive))
+            .frame(maxHeight: .infinity)
         }
         .transition(.move(edge: .trailing).combined(with: .opacity))
+        .osAvailabilityModifiers { content in
+          if #available(iOS 26.0, *) {
+            content
+              .buttonStyle(.plainGlass)
+          } else {
+            content
+              .foregroundStyle(Color(braveSystemName: .textInteractive))
+          }
+        }
       }
     }
     .animation(.toolbarsSizeAnimation, value: isFocused)
