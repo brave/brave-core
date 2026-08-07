@@ -791,6 +791,25 @@ extension Strings.Shields {
     comment:
       "An error message telling the user that a rule is invalid"
   )
+  /// An error message telling the user that a scriptlet's name is invalid
+  public static let customScriptletInvalidNameError = NSLocalizedString(
+    "CustomScriptletInvalidNameError",
+    tableName: "BraveShared",
+    bundle: .module,
+    value:
+      "Invalid scriptlet name",
+    comment:
+      "An error message telling the user that the name they gave their custom scriptlet is invalid."
+  )
+  /// An error message telling the user that a scriptlet has no content
+  public static let customScriptletEmptyContentError = NSLocalizedString(
+    "CustomScriptletEmptyContentError",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "The scriptlet must contain some javascript",
+    comment:
+      "An error message telling the user that the custom scriptlet they are trying to save has no content"
+  )
 }
 
 // MARK: - Custom scriptlets
