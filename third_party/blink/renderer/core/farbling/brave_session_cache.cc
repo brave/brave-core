@@ -274,23 +274,37 @@ void BraveSessionCache::Init() {
 
 blink::WebGLFarbledExtensionHandler*
 BraveSessionCache::CreateWebGLFarbledExtensionHandler(
-    const blink::Vector<blink::String>& supported_extensions) {
-  CHECK(!webgl_farbled_extension_handler_);
+    const blink::Vector<blink::String>& supported_extensions,
+    const bool is_webgl2) {
+  if (is_webgl2) {
+    CHECK(!webgl2_farbled_extension_handler_);
+  } else {
+    CHECK(!webgl_farbled_extension_handler_);
+  }
 
-  auto level =
-      GetBraveFarblingLevel(ContentSettingsType::BRAVE_WEBCOMPAT_WEBGL);
-  webgl_farbled_extension_handler_ =
-      level == BraveFarblingLevel::OFF
-          ? blink::WebGLFarbledExtensionHandler::CreateOffHandler(
-                supported_extensions)
-      : level == BraveFarblingLevel::BALANCED
-          ? blink::WebGLFarbledExtensionHandler::CreateBalancedHandler(
-                supported_extensions,
-                default_shields_settings_->farbling_token.low())
-          : blink::WebGLFarbledExtensionHandler::CreateMaximumHandler(
-                supported_extensions);
+  auto level = GetBraveFarblingLevel(
+      is_webgl2 ? ContentSettingsType::BRAVE_WEBCOMPAT_WEBGL2
+                : ContentSettingsType::BRAVE_WEBCOMPAT_WEBGL);
+  std::unique_ptr<blink::WebGLFarbledExtensionHandler>
+      farbled_extension_handler =
+          level == BraveFarblingLevel::OFF
+              ? blink::WebGLFarbledExtensionHandler::CreateOffHandler(
+                    supported_extensions)
+          : level == BraveFarblingLevel::BALANCED
+              ? blink::WebGLFarbledExtensionHandler::CreateBalancedHandler(
+                    supported_extensions,
+                    default_shields_settings_->farbling_token.low())
+              : blink::WebGLFarbledExtensionHandler::CreateMaximumHandler(
+                    supported_extensions);
 
-  return webgl_farbled_extension_handler_.get();
+  if (is_webgl2) {
+    webgl2_farbled_extension_handler_ = std::move(farbled_extension_handler);
+  } else {
+    webgl_farbled_extension_handler_ = std::move(farbled_extension_handler);
+  }
+
+  return is_webgl2 ? webgl2_farbled_extension_handler_.get()
+                   : webgl_farbled_extension_handler_.get();
 }
 
 std::optional<blink::BraveAudioFarblingHelper>
