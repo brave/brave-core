@@ -11,9 +11,9 @@
 #include "brave/components/extension_malware_blocklist/browser/extension_malware_blocklist.h"
 #include "components/keyed_service/core/keyed_service.h"
 
-class Profile;
-
 namespace extensions {
+
+class ExtensionSystem;
 
 // Re-runs the per-profile extension blocklist evaluation whenever the local
 // malicious-extension list loads or updates. Without this, enforcement only
@@ -24,7 +24,7 @@ class BraveExtensionService
     : public KeyedService,
       public extension_malware_blocklist::ExtensionMalwareBlocklist::Observer {
  public:
-  explicit BraveExtensionService(Profile* profile);
+  explicit BraveExtensionService(ExtensionSystem* extension_system);
   BraveExtensionService(const BraveExtensionService&) = delete;
   BraveExtensionService& operator=(const BraveExtensionService&) = delete;
   ~BraveExtensionService() override;
@@ -36,7 +36,7 @@ class BraveExtensionService
   void OnMalwareListUpdated() override;
 
  private:
-  const raw_ptr<Profile> profile_;
+  const raw_ptr<ExtensionSystem> extension_system_;
 
   base::ScopedObservation<
       extension_malware_blocklist::ExtensionMalwareBlocklist,

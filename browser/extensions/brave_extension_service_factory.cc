@@ -9,7 +9,7 @@
 
 #include "brave/browser/extensions/brave_extension_service.h"
 #include "chrome/browser/extensions/chrome_extension_system_factory.h"
-#include "chrome/browser/profiles/profile.h"
+#include "extensions/browser/extension_system.h"
 
 namespace extensions {
 
@@ -37,8 +37,7 @@ BraveExtensionServiceFactory::~BraveExtensionServiceFactory() = default;
 std::unique_ptr<KeyedService>
 BraveExtensionServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
-  return std::make_unique<BraveExtensionService>(
-      Profile::FromBrowserContext(context));
+  return std::make_unique<BraveExtensionService>(ExtensionSystem::Get(context));
 }
 
 bool BraveExtensionServiceFactory::ServiceIsCreatedWithBrowserContext() const {

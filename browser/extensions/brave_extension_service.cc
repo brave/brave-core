@@ -6,14 +6,13 @@
 #include "brave/browser/extensions/brave_extension_service.h"
 
 #include "chrome/browser/extensions/extension_service.h"
-#include "chrome/browser/profiles/profile.h"
 #include "extensions/browser/blocklist.h"
 #include "extensions/browser/extension_system.h"
 
 namespace extensions {
 
-BraveExtensionService::BraveExtensionService(Profile* profile)
-    : profile_(profile) {
+BraveExtensionService::BraveExtensionService(ExtensionSystem* extension_system)
+    : extension_system_(extension_system) {
   if (auto* blocklist = extension_malware_blocklist::ExtensionMalwareBlocklist::
           GetInstance()) {
     observation_.Observe(blocklist);
@@ -34,11 +33,7 @@ void BraveExtensionService::Shutdown() {
 }
 
 void BraveExtensionService::OnMalwareListUpdated() {
-  ExtensionSystem* extension_system = ExtensionSystem::Get(profile_);
-  if (!extension_system) {
-    return;
-  }
-  ExtensionService* extension_service = extension_system->extension_service();
+  ExtensionService* extension_service = extension_system_->extension_service();
   if (extension_service) {
     // OnBlocklistUpdated() is private on ExtensionService but public on the
     // Blocklist::Observer interface it implements, so re-trigger enforcement
