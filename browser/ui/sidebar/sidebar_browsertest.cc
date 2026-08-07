@@ -7,9 +7,12 @@
 #include <optional>
 
 #include "base/check.h"
+#include "base/files/file_path.h"
+#include "base/files/file_util.h"
 #include "base/functional/bind.h"
 #include "base/i18n/rtl.h"
 #include "base/memory/weak_ptr.h"
+#include "base/path_service.h"
 #include "base/run_loop.h"
 #include "base/scoped_observation.h"
 #include "base/strings/strcat.h"
@@ -75,6 +78,7 @@
 #include "chrome/browser/ui/views/frame/multi_contents_view.h"
 #include "chrome/browser/ui/views/frame/toolbar_button_provider.h"
 #include "chrome/browser/ui/views/side_panel/side_panel.h"
+#include "chrome/common/chrome_paths.h"
 #include "chrome/common/chrome_switches.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -971,6 +975,12 @@ class MockSidebarModelObserver : public SidebarModel::Observer {
 };
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
+#if BUILDFLAG(IS_LINUX)
+// This must match kEulaSentinelFile in
+// chrome/browser/first_run/first_run_internal_linux.cc.
+constexpr char kEulaSentinelFile[] = "EULA Accepted";
+#endif
+
 class SidebarBrowserTestWithkSidebarShowAlwaysOnStable
     : public testing::WithParamInterface<bool>,
       public SidebarBrowserTest {
@@ -1002,6 +1012,21 @@ class SidebarBrowserTestWithkSidebarShowAlwaysOnStable
     command_line->AppendSwitch(switches::kDontShowSidebarOnNonStable);
     command_line->AppendSwitch(switches::kForceFirstRun);
   }
+
+#if BUILDFLAG(IS_LINUX)
+  // With --force-first-run, ChromeBrowserMainParts shows a modal terms of
+  // service dialog on Linux and blocks startup until it's dismissed. Write the
+  // sentinel that marks the terms as already accepted. See
+  // first_run::internal::ShowEulaDialog().
+  bool SetUpUserDataDirectory() override {
+    if (!SidebarBrowserTest::SetUpUserDataDirectory()) {
+      return false;
+    }
+    base::FilePath user_data_dir;
+    base::PathService::Get(chrome::DIR_USER_DATA, &user_data_dir);
+    return base::WriteFile(user_data_dir.Append(kEulaSentinelFile), "");
+  }
+#endif
 
   base::test::ScopedFeatureList feature_list_;
   testing::NiceMock<MockSidebarModelObserver> observer_;

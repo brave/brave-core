@@ -7,6 +7,8 @@
 #include <vector>
 
 #include "base/check.h"
+#include "base/files/file_path.h"
+#include "base/files/file_util.h"
 #include "base/path_service.h"
 #include "brave/browser/profile_resetter/brave_profile_resetter.h"
 #include "brave/browser/profiles/brave_profile_manager.h"
@@ -62,6 +64,12 @@
 using SearchEngineProviderServiceTest = InProcessBrowserTest;
 
 namespace {
+
+#if BUILDFLAG(IS_LINUX)
+// This must match kEulaSentinelFile in
+// chrome/browser/first_run/first_run_internal_linux.cc.
+constexpr char kEulaSentinelFile[] = "EULA Accepted";
+#endif
 
 testing::AssertionResult VerifyTemplateURLServiceLoad(
     TemplateURLService* service) {
@@ -236,6 +244,21 @@ class SearchSuggestionsEnabledTest : public InProcessBrowserTest,
       command_line->AppendSwitch(switches::kForceFirstRun);
     }
   }
+
+#if BUILDFLAG(IS_LINUX)
+  // With --force-first-run, ChromeBrowserMainParts shows a modal terms of
+  // service dialog on Linux and blocks startup until it's dismissed. Write the
+  // sentinel that marks the terms as already accepted. See
+  // first_run::internal::ShowEulaDialog().
+  bool SetUpUserDataDirectory() override {
+    if (!InProcessBrowserTest::SetUpUserDataDirectory()) {
+      return false;
+    }
+    base::FilePath user_data_dir;
+    base::PathService::Get(chrome::DIR_USER_DATA, &user_data_dir);
+    return base::WriteFile(user_data_dir.Append(kEulaSentinelFile), "");
+  }
+#endif
 
   const std::string& GetLocale() const { return std::get<0>(GetParam()); }
   bool IsNewUser() const { return std::get<1>(GetParam()); }
