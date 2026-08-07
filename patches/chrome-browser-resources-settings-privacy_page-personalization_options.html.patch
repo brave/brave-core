@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/personalization_options.html b/chrome/browser/resources/settings/privacy_page/personalization_options.html
-index 50a3c356721437fd5bca3d2239bea82589488416..7fb3bab5748873b0d40b407aa52416c736e713e5 100644
+index 6a0e834005c0ebc4f63d79eff78f80f07404c740..41e8334234f1b7f4623065f1658bf0123a164422 100644
 --- a/chrome/browser/resources/settings/privacy_page/personalization_options.html
 +++ b/chrome/browser/resources/settings/privacy_page/personalization_options.html
 @@ -24,6 +24,7 @@
@@ -34,7 +34,7 @@ index 50a3c356721437fd5bca3d2239bea82589488416..7fb3bab5748873b0d40b407aa52416c7
 +<if expr="_google_chrome">
      <settings-toggle-button id="urlCollectionToggle"
          class="hr"
-         pref="{{prefs.url_keyed_anonymized_data_collection.enabled}}"
+         pref-key="url_keyed_anonymized_data_collection.enabled"
          label="$i18n{urlKeyedAnonymizedDataCollection}"
          sub-label="$i18n{urlKeyedAnonymizedDataCollectionDesc}">
      </settings-toggle-button>
@@ -42,7 +42,7 @@ index 50a3c356721437fd5bca3d2239bea82589488416..7fb3bab5748873b0d40b407aa52416c7
  <if expr="_google_chrome">
  <if expr="not is_chromeos">
      <settings-toggle-button id="spellCheckControl"
-@@ -155,6 +159,7 @@
+@@ -157,6 +161,7 @@
        </settings-toggle-button>
      </template>
  
@@ -50,7 +50,7 @@ index 50a3c356721437fd5bca3d2239bea82589488416..7fb3bab5748873b0d40b407aa52416c7
      <template is="dom-if" if="[[showSignoutDialog_]]" restamp>
        <settings-signout-dialog sync-status="[[syncStatus]]"
            on-close="onSignoutDialogClosed_">
-@@ -175,3 +180,4 @@
+@@ -177,3 +182,4 @@
        <div>$i18n{chromeSigninChoiceToast}</div>
      </cr-toast>
  </if>
