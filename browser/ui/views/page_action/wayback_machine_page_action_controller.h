@@ -19,6 +19,10 @@ namespace actions {
 class ActionItem;
 }
 
+namespace content {
+class WebContents;
+}
+
 namespace page_actions {
 
 // Drives the Wayback Machine page action: shows an icon (badged once a
@@ -44,12 +48,17 @@ class WaybackMachinePageActionController {
  private:
   void OnWaybackStateChanged(WaybackState state);
 
-  // (Re-)registers for wayback-state updates on the current WebContents'
+  // (Re-)registers for wayback-state updates on |contents|'
   // BraveWaybackMachineTabHelper, since the tab's contents can be swapped out
   // (e.g. tab discarding).
-  void AttachToTabHelper();
+  void AttachToTabHelper(content::WebContents* contents);
 
-  void UpdatePageAction();
+  // Unregisters from |contents|' BraveWaybackMachineTabHelper. Must be called
+  // for contents that are being swapped out, as the helper CHECKs that no
+  // callback is left registered when it's destroyed.
+  void DetachFromTabHelper(content::WebContents* contents);
+
+  void UpdatePageAction(content::WebContents* contents);
 
   const raw_ref<tabs::TabInterface> tab_;
   const raw_ref<page_actions::PageActionControllerImpl> page_action_controller_;
