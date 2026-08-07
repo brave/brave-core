@@ -55,7 +55,8 @@ public class BraveWalletResetTxHistoryAndNoncePreference extends Preference
     public void onBindViewHolder(PreferenceViewHolder holder) {
         super.onBindViewHolder(holder);
         TextView titleView = (TextView) holder.findViewById(android.R.id.title);
-        titleView.setTextColor(getContext().getColor(R.color.wallet_error_text_color));
+        titleView.setTextAppearance(
+                R.style.TextAppearance_Brave_PreferenceTitle_WalletDestructiveAction);
     }
 
     @Override

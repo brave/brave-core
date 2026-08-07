@@ -6,11 +6,9 @@
 package org.chromium.chrome.browser.settings;
 
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.preference.PreferenceViewHolder;
@@ -20,23 +18,20 @@ import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
 import org.chromium.components.browser_ui.settings.ChromeBasePreference;
 
-/** A preference for Brave Account that supports customizing title and summary text colors. */
+/** A preference for Brave Account with a custom title appearance and truncation behavior. */
 @NullMarked
 public class BraveAccountPreference extends ChromeBasePreference {
-    private final @Nullable ColorStateList mTitleTextColor;
+    private final int mTitleTextAppearanceResId;
     private final boolean mTitleTruncateMiddle;
-    private final int mSummaryTextColorResId;
 
     public BraveAccountPreference(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
 
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.brave_account_preference);
-        mTitleTextColor =
-                a.getColorStateList(R.styleable.brave_account_preference_title_text_color);
+        mTitleTextAppearanceResId =
+                a.getResourceId(R.styleable.brave_account_preference_title_text_appearance, 0);
         mTitleTruncateMiddle =
                 a.getBoolean(R.styleable.brave_account_preference_title_truncate_middle, false);
-        mSummaryTextColorResId =
-                a.getResourceId(R.styleable.brave_account_preference_summary_text_color, 0);
 
         a.recycle();
     }
@@ -45,54 +40,21 @@ public class BraveAccountPreference extends ChromeBasePreference {
     public void onBindViewHolder(PreferenceViewHolder holder) {
         super.onBindViewHolder(holder);
 
-        if (holder.findViewById(android.R.id.icon) instanceof ImageView imageView) {
-            setTint(imageView, mTitleTextColor);
-        }
-
         if (holder.findViewById(android.R.id.title) instanceof TextView titleView) {
             if (!isSelectable()) {
-                // Restore the default primary text color when the preference is non-selectable.
-                setColorFromAttr(titleView, android.R.attr.textColorPrimary);
+                // Restore the default primary title appearance when the preference is non-selectable.
+                titleView.setTextAppearance(R.style.TextAppearance_TextLarge_Primary);
             } else if (!isEnabled()) {
-                // Use tertiary text color when preference is disabled.
-                setColorFromRes(titleView, R.color.text_tertiary);
-            } else {
-                setColor(titleView, mTitleTextColor);
+                // Use the tertiary title appearance when the preference is disabled.
+                titleView.setTextAppearance(R.style.TextAppearance_Brave_PreferenceTitle_Tertiary);
+            } else if (mTitleTextAppearanceResId != 0) {
+                titleView.setTextAppearance(mTitleTextAppearanceResId);
             }
 
             if (mTitleTruncateMiddle) {
                 titleView.setSingleLine(true);
                 titleView.setEllipsize(TextUtils.TruncateAt.MIDDLE);
             }
-        }
-
-        if (holder.findViewById(android.R.id.summary) instanceof TextView summaryView) {
-            setColorFromRes(summaryView, mSummaryTextColorResId);
-        }
-    }
-
-    private void setColor(TextView textView, @Nullable ColorStateList color) {
-        if (color != null) {
-            textView.setTextColor(color);
-        }
-    }
-
-    private void setColorFromAttr(TextView textView, int attr) {
-        TypedArray ta = getContext().obtainStyledAttributes(new int[] {attr});
-        ColorStateList color = ta.getColorStateList(0);
-        ta.recycle();
-        setColor(textView, color);
-    }
-
-    private void setColorFromRes(TextView textView, int colorResId) {
-        if (colorResId != 0) {
-            textView.setTextColor(getContext().getColor(colorResId));
-        }
-    }
-
-    private void setTint(ImageView imageView, @Nullable ColorStateList color) {
-        if (color != null) {
-            imageView.setImageTintList(color);
         }
     }
 }

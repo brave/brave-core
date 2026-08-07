@@ -14,7 +14,6 @@ import androidx.preference.PreferenceViewHolder;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.theme.BraveDynamicColors;
 import org.chromium.components.browser_ui.settings.ChromeBasePreference;
 
 /** A preference whose title uses the active text-button color. */
@@ -29,9 +28,7 @@ public class BraveTextButtonPreference extends ChromeBasePreference {
         super.onBindViewHolder(holder);
 
         if (holder.findViewById(android.R.id.title) instanceof TextView titleView) {
-            titleView.setTextColor(
-                    BraveDynamicColors.getTextButtonColor(
-                            getContext(), getContext().getColor(R.color.brave_link)));
+            titleView.setTextAppearance(R.style.TextAppearance_Brave_PreferenceTitle_TextButton);
         }
     }
 }

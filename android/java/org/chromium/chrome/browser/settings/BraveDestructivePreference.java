@@ -28,7 +28,8 @@ public class BraveDestructivePreference extends ChromeBasePreference {
         super.onBindViewHolder(holder);
 
         if (holder.findViewById(android.R.id.title) instanceof TextView titleView) {
-            titleView.setTextColor(getContext().getColor(R.color.systemfeedback_error_text));
+            titleView.setTextAppearance(
+                    R.style.TextAppearance_Brave_PreferenceTitle_DestructiveAction);
         }
     }
 }

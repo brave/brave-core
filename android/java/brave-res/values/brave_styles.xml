@@ -433,6 +433,26 @@
         <item name="android:textColor">@color/systemfeedback_error_text</item>
     </style>
 
+    <style name="TextAppearance.Brave.PreferenceTitle.Tertiary"
+           parent="TextAppearance.TextLarge.Primary">
+        <item name="android:textColor">@color/text_tertiary</item>
+    </style>
+
+    <style name="TextAppearance.Brave.PreferenceTitle.TextButton"
+           parent="TextAppearance.TextLarge.Primary">
+        <item name="android:textColor">?attr/globalTextButtonTextColor</item>
+    </style>
+
+    <style name="TextAppearance.Brave.PreferenceTitle.DestructiveAction"
+           parent="TextAppearance.TextLarge.Primary">
+        <item name="android:textColor">@color/systemfeedback_error_text</item>
+    </style>
+
+    <style name="TextAppearance.Brave.PreferenceTitle.WalletDestructiveAction"
+           parent="TextAppearance.TextLarge.Primary">
+        <item name="android:textColor">@color/wallet_error_text_color</item>
+    </style>
+
     <style name="LargeSemibold">
         <!-- Default browser size for fonts -->
         <item name="android:textSize">@dimen/large_semibold</item>
