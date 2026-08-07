@@ -130,14 +130,6 @@ bool BravePrivacySandboxSettings::IsPrivacySandboxCurrentlyUnrestricted()
   return false;
 }
 
-bool BravePrivacySandboxSettings::IsSubjectToM1NoticeRestricted() const {
-  return false;
-}
-
-bool BravePrivacySandboxSettings::IsRestrictedNoticeEnabled() const {
-  return false;
-}
-
 void BravePrivacySandboxSettings::OnCookiesCleared() {}
 void BravePrivacySandboxSettings::AddObserver(Observer* observer) {}
 void BravePrivacySandboxSettings::RemoveObserver(Observer* observer) {}
