@@ -7,7 +7,6 @@ import Flex from '$web-common/Flex'
 import { getLocale } from '$web-common/locale'
 import Button from '@brave/leo/react/button'
 import * as React from 'react'
-import { useState } from 'react'
 import styled from 'styled-components'
 import { font, spacing } from '@brave/leo/tokens/css/variables'
 import { useBraveNews, useChannels } from '../shared/Context'
@@ -26,7 +25,7 @@ const Header = styled.span`
 `
 
 export default function Discover () {
-  const [query, setQuery] = useState('')
+  const [query, setQuery] = React.useState('')
 
   return <Flex direction='column'>
     <Header>{getLocale(S.BRAVE_NEWS_DISCOVER_TITLE)}</Header>
@@ -41,27 +40,19 @@ export default function Discover () {
 function Home () {
   const channels = useChannels()
   const {
+    suggestedPublisherIds,
     updateSuggestedPublisherIds,
     publishersLoaded,
     channelsLoaded,
   } = useBraveNews()
-  const [suggestionsLoading, setSuggestionsLoading] = useState(true)
+  const suggestionsLoading = suggestedPublisherIds.length === 0
 
   const channelNames = React.useMemo(() => channels.map(c => c.channelName),
     [channels])
 
   // When we mount this component, update the suggested publisher ids.
   React.useEffect(() => {
-    let cancelled = false
-    setSuggestionsLoading(true)
-    updateSuggestedPublisherIds().finally(() => {
-      if (!cancelled) {
-        setSuggestionsLoading(false)
-      }
-    })
-    return () => {
-      cancelled = true
-    }
+    updateSuggestedPublisherIds()
   }, [updateSuggestedPublisherIds])
 
   return (

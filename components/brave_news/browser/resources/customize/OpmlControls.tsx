@@ -49,6 +49,23 @@ export default function OpmlControls(props: Props) {
   const inputRef = React.useRef<HTMLInputElement>(null)
   const [status, setStatus] = React.useState<Status | null>(null)
 
+  // Dismissing the file picker fires a `cancel` event on the input that bubbles
+  // to Leo Dialog's cancel handler, which treats it like Escape and closes the
+  // customize dialog. Stop it here. Longer-term this may belong in Leo (only
+  // close when the cancel target is the dialog itself).
+  React.useEffect(() => {
+    const input = inputRef.current
+    if (!input) {
+      return
+    }
+    const onCancel = (e: Event) => {
+      e.preventDefault()
+      e.stopPropagation()
+    }
+    input.addEventListener('cancel', onCancel)
+    return () => input.removeEventListener('cancel', onCancel)
+  }, [])
+
   // Auto-dismiss the status alert.
   React.useEffect(() => {
     if (!status) {
