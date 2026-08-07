@@ -5,9 +5,11 @@
 
 #include <memory>
 #include <optional>
+#include <utility>
 
 #include "base/files/file_path.h"
 #include "base/memory/raw_ptr.h"
+#include "base/memory/weak_ptr.h"
 #include "base/path_service.h"
 #include "base/run_loop.h"
 #include "base/strings/strcat.h"
@@ -54,6 +56,8 @@
 
 #if BUILDFLAG(ENABLE_SCREEN_AI_BROWSERTESTS)
 #include "chrome/browser/screen_ai/screen_ai_install_state.h"
+#include "chrome/browser/screen_ai/screen_ai_service_router.h"
+#include "chrome/browser/screen_ai/screen_ai_service_router_factory.h"
 #include "services/screen_ai/public/cpp/utilities.h"
 #include "ui/accessibility/accessibility_features.h"
 #include "ui/accessibility/ax_features.mojom-features.h"
@@ -435,43 +439,44 @@ class AIChatPDFOCRBrowserTest : public InProcessBrowserTest {
   }
 
   void TearDownOnMainThread() override {
+    weak_ptr_factory_.InvalidateWeakPtrs();
     chat_tab_helper_ = nullptr;
     InProcessBrowserTest::TearDownOnMainThread();
   }
 
-  // Polls GetContent() until non-empty text is returned (OCR may be slow).
+  // Polls GetContent() until `expected_text` is returned (OCR may be slow).
   // Uses async callbacks delivered by RunUntil's message loop to avoid
-  // nested RunLoop DCHECKs.
+  // nested RunLoop DCHECKs. Skips the test if the OCR service crashed, see
+  // `HasOCRServiceCrashed()`.
   void FetchPageContentWaitForOCR(const base::Location& location,
                                   std::string_view expected_text) {
     SCOPED_TRACE(testing::Message() << location.ToString());
     ASSERT_TRUE(
         pdf_extension_test_util::EnsurePDFHasLoaded(GetActiveWebContents()));
 
-    std::string result;
-    bool got_result = false;
-
-    auto fetch = [&]() {
-      chat_tab_helper_->web_contents_content().GetContent(
-          base::BindLambdaForTesting([&](ai_chat::PageContent content) {
-            result = content.content;
-            got_result = true;
-          }));
-    };
-
-    fetch();
-    ASSERT_TRUE(base::test::RunUntil([&]() {
-      if (!got_result) {
-        return false;
-      }
-      if (result == expected_text) {
+    FetchPageContent();
+    const bool got_expected_text = base::test::RunUntil([&]() {
+      if (page_content_ == expected_text) {
         return true;
       }
+      if (HasOCRServiceCrashed()) {
+        return true;
+      }
+      if (!page_content_) {
+        return false;
+      }
       // OCR may not be done for all pages yet, retry.
-      got_result = false;
-      fetch();
+      FetchPageContent();
       return false;
-    }));
+    });
+
+    if (ocr_service_crashed_) {
+      GTEST_SKIP() << "The ScreenAI service crashed, so the OCR text this test "
+                      "waits for can never arrive";
+    }
+    ASSERT_TRUE(got_expected_text)
+        << "Timed out waiting for OCR text, last page content: "
+        << page_content_.value_or("<none>");
   }
 
  protected:
@@ -480,7 +485,72 @@ class AIChatPDFOCRBrowserTest : public InProcessBrowserTest {
   raw_ptr<ai_chat::AIChatTabHelper> chat_tab_helper_ = nullptr;
 
  private:
+  // Bound weakly so that a reply arriving after the polling loop has given up
+  // does not write to freed memory.
+  void FetchPageContent() {
+    page_content_.reset();
+    chat_tab_helper_->web_contents_content().GetContent(
+        base::BindOnce(&AIChatPDFOCRBrowserTest::OnPageContent,
+                       weak_ptr_factory_.GetWeakPtr()));
+  }
+
+  void OnPageContent(ai_chat::PageContent content) {
+    page_content_ = std::move(content.content);
+  }
+
+  void OnOCRServiceState(bool available) {
+    ocr_service_available_ = available;
+    ocr_service_state_query_pending_ = false;
+  }
+
+  // Returns true if the ScreenAI service - the sandboxed process that runs the
+  // closed source OCR library - crashed. The browser then suspends the service
+  // for a minute, which outlives the test timeout, so the OCR text the test is
+  // waiting for can never arrive and there is nothing left to verify. This is
+  // not a failure of the code under test. The library is not Brave code, and
+  // upstream disables its own OCR browser tests on Linux and Mac over the
+  // timeouts these crashes cause, see the `crbug.com/470431038` guards in
+  // chrome/browser/screen_ai/optical_character_recognizer_browsertest.cc.
+  bool HasOCRServiceCrashed() {
+    if (ocr_service_crashed_) {
+      return true;
+    }
+    auto* router =
+        screen_ai::ScreenAIServiceRouterFactory::GetForBrowserContext(
+            browser()->profile());
+    if (router->IsProcessRunningForTesting(
+            screen_ai::ScreenAIServiceRouter::Service::kOCR) ||
+        ocr_service_state_query_pending_) {
+      return false;
+    }
+    // The service process is not running, so ask the browser for its state. A
+    // service suspended after a crash reports unavailable synchronously. The
+    // other states are either reported later - which relaunches a service that
+    // shut itself down after being idle, so this test only has to wait longer -
+    // or never, which keeps the query below from repeating. `GetServiceState()`
+    // also answers synchronously when OCR is disabled, which cannot happen here
+    // because the fixture enables `kScreenAIOCREnabled`.
+    ocr_service_state_query_pending_ = true;
+    ocr_service_available_.reset();
+    router->GetServiceStateAsync(
+        screen_ai::ScreenAIServiceRouter::Service::kOCR,
+        base::BindOnce(&AIChatPDFOCRBrowserTest::OnOCRServiceState,
+                       weak_ptr_factory_.GetWeakPtr()));
+    ocr_service_crashed_ = ocr_service_available_ == false;
+    return ocr_service_crashed_;
+  }
+
   content::ContentMockCertVerifier mock_cert_verifier_;
+
+  // Content of the last completed GetContent() call, unset while one is in
+  // flight.
+  std::optional<std::string> page_content_;
+
+  bool ocr_service_state_query_pending_ = false;
+  bool ocr_service_crashed_ = false;
+  std::optional<bool> ocr_service_available_;
+
+  base::WeakPtrFactory<AIChatPDFOCRBrowserTest> weak_ptr_factory_{this};
 };
 
 // Disabled on Mac due to upstream searchify issue (crbug.com/406839385).
