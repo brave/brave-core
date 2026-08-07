@@ -60,7 +60,8 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
             @Nullable Bundle savedInstanceState) {
         // Do not let Activity.onCreate() restore the FragmentManager state: the onboarding pager's
         // FragmentStateAdapter uses fragments that depend on native and is set only in
-        // finishNativeInitialization, and restoring the fragments before that (and before an adapter
+        // finishNativeInitialization, and restoring the fragments before that (and before an
+        // adapter
         // exists) crashes the pager.
         // The onboarding flow is instead rebuilt from the action and page persisted in
         // onSaveInstanceState. Kept consistent with onRestoreInstanceState, which also drops the
@@ -211,7 +212,9 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
         return (WalletAction) savedState.getSerializable(KEY_WALLET_ACTION);
     }
 
-    /** Returns the onboarding page to restore after a recreation, or {@code 0} if none was saved. */
+    /**
+     * Returns the onboarding page to restore after a recreation, or {@code 0} if none was saved.
+     */
     private int getRestoredPagerIndex() {
         final Bundle savedState = getSavedInstanceState();
         return savedState == null ? 0 : savedState.getInt(KEY_PAGER_INDEX, 0);

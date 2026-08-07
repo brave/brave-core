@@ -12,14 +12,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
 import android.hardware.biometrics.BiometricPrompt;
-import android.os.Build;
 import android.os.CancellationSignal;
 import android.text.TextUtils;
 import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
@@ -158,8 +156,7 @@ public abstract class BaseWalletNextPageFragment extends Fragment {
             // when a rotation cancels the prompt; there is no attached view to update.
             return;
         }
-        if (Utils.isBiometricSupported(context)
-                && KeystoreHelper.shouldUseBiometricToUnlock()) {
+        if (Utils.isBiometricSupported(context) && KeystoreHelper.shouldUseBiometricToUnlock()) {
             view.setVisibility(View.VISIBLE);
         } else {
             view.setVisibility(View.GONE);
