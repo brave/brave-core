@@ -9,6 +9,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -84,6 +85,12 @@ public class UnlockWalletFragment extends BaseWalletNextPageFragment
         mUnlockButton = view.findViewById(R.id.btn_unlock);
         mUnlockWalletRestoreButton = view.findViewById(R.id.btn_unlock_wallet_restore);
         mBiometricUnlockButton = view.findViewById(R.id.biometric_unlock_wallet);
+
+        // Align the header text to the start in the two-column layout.
+        if (view.findViewById(R.id.column_divider) != null) {
+            ((TextView) view.findViewById(R.id.unlock_wallet_title)).setGravity(Gravity.START);
+            ((TextView) view.findViewById(R.id.unlock_wallet_subtitle)).setGravity(Gravity.START);
+        }
 
         mUnlockWalletPassword.addTextChangedListener(
                 new TextWatcher() {
