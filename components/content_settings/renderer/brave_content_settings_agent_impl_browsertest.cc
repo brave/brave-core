@@ -251,12 +251,11 @@ class BraveContentSettingsAgentImplBrowserTest : public InProcessBrowserTest {
 
   void ShieldsDown() {
     brave_shields_settings_->SetBraveShieldsEnabled(false,
-                                          top_level_page_url());
+                                                    top_level_page_url());
   }
 
   void ShieldsUp() {
-    brave_shields_settings_->SetBraveShieldsEnabled(true,
-                                          top_level_page_url());
+    brave_shields_settings_->SetBraveShieldsEnabled(true, top_level_page_url());
   }
 
   void AllowFingerprinting() {

@@ -34,6 +34,7 @@ specific_include_rules = {
   # checking was implemented. These tests should be migrated out of
   # //brave/components into //brave/browser eventually.
   "brave_content_settings_agent_impl_browsertest\.cc": [
+    "+brave/browser",
     "+chrome",
     "+content",
   ],
