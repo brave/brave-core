@@ -1,0 +1,13 @@
+diff --git a/third_party/rust/aho_corasick/v1/BUILD.gn b/third_party/rust/aho_corasick/v1/BUILD.gn
+index 43605f54a1477b1e5becd8a266a5490edda70aa2..a88cdf77537c35338257a4e03f9564e7c6ff7c27 100644
+--- a/third_party/rust/aho_corasick/v1/BUILD.gn
++++ b/third_party/rust/aho_corasick/v1/BUILD.gn
+@@ -58,7 +58,7 @@ cargo_crate("lib") {
+   cargo_pkg_repository = "https://github.com/BurntSushi/aho-corasick"
+   cargo_pkg_version = "1.1.4"
+ 
+-  allow_unsafe = false
++  allow_unsafe = true
+ 
+   deps = [ "//third_party/rust/memchr/v2:lib" ]
+   features = [
