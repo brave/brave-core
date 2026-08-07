@@ -28,6 +28,7 @@
 #include "brave/ios/browser/api/profile/profile_bridge_impl.h"
 #include "brave/ios/browser/api/sync/brave_sync_api+private.h"
 #include "brave/ios/browser/api/sync/driver/brave_sync_profile_service+private.h"
+#include "brave/ios/browser/api/topsites/brave_top_sites_service_internal.h"
 #include "brave/ios/browser/api/web_image/web_image+private.h"
 #include "brave/ios/browser/api/web_view/brave_web_view_configuration.h"
 #include "brave/ios/browser/api/web_view/brave_web_view_configuration_provider.h"
@@ -103,6 +104,7 @@
 @property(nonatomic) WebImageDownloader* webImageDownloader;
 @property(nonatomic) NTPBackgroundImagesService* backgroundImagesService;
 @property(nonatomic) DefaultHostContentSettings* defaultHostContentSettings;
+@property(nonatomic) BraveTopSitesService* topSitesService;
 @end
 
 @implementation BraveProfileController
@@ -354,6 +356,13 @@
   return BraveWebViewConfigurationProvider::FromBrowserState(
              _profile->GetOffTheRecordProfile())
       .GetConfiguration();
+}
+
+- (BraveTopSitesService*)topSitesService {
+  if (!_topSitesService) {
+    _topSitesService = [[BraveTopSitesService alloc] initWithProfile:_profile];
+  }
+  return _topSitesService;
 }
 
 #pragma mark - Handling of destroying the incognito BrowserState

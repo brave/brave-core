@@ -73,6 +73,7 @@
 #include "ios/chrome/browser/supervised_user/model/family_link_settings_service_factory.h"
 #include "ios/chrome/browser/supervised_user/model/list_family_members_service_factory.h"
 #include "ios/chrome/browser/supervised_user/model/supervised_user_service_factory.h"
+#include "ios/chrome/browser/supervised_user/model/supervised_user_url_filtering_service_factory.h"
 #include "ios/chrome/browser/sync/model/data_type_store_service_factory.h"
 #include "ios/chrome/browser/sync/model/device_info_sync_service_factory.h"
 #include "ios/chrome/browser/sync/model/ios_user_event_service_factory.h"
@@ -153,6 +154,7 @@ void EnsureProfileKeyedServiceFactoriesBuilt() {
   PowerBookmarkServiceFactory::GetInstance();
   PushNotificationProfileServiceFactory::GetInstance();
   supervised_user::SupervisedUserServiceFactory::GetInstance();
+  supervised_user::SupervisedUserUrlFilteringServiceFactory::GetInstance();
   ShareKitServiceFactory::GetInstance();
   SyncServiceFactory::GetInstance();
   TabGroupServiceFactory::GetInstance();
