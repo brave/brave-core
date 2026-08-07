@@ -8,6 +8,7 @@ import Button from '@brave/leo/react/button'
 import Input from '@brave/leo/react/input'
 
 import { getString } from '../../lib/strings'
+import { generateSiteNameFromUrl } from '../../lib/site_name_from_url'
 import { TopSite } from '../../state/top_sites_store'
 import { Modal } from '../common/modal'
 
@@ -41,11 +42,15 @@ interface Props {
 export function TopSiteEditModal(props: Props) {
   const [title, setTitle] = React.useState('')
   const [url, setURL] = React.useState('')
+  const [titleEdited, setTitleEdited] = React.useState(false)
 
   React.useEffect(() => {
     if (props.isOpen) {
       setTitle(props.topSite?.title ?? '')
       setURL(props.topSite?.url ?? '')
+      // When editing an existing site, treat its title as already user-defined
+      // so URL changes don't overwrite it.
+      setTitleEdited(props.topSite !== null)
     }
   }, [props.isOpen, props.topSite])
 
@@ -85,7 +90,10 @@ export function TopSiteEditModal(props: Props) {
         </h4>
         <Input
           value={title}
-          onInput={(detail) => setTitle(detail.value)}
+          onInput={(detail) => {
+            setTitleEdited(true)
+            setTitle(detail.value)
+          }}
         >
           <span className='label'>
             {getString(S.NEW_TAB_TOP_SITES_TITLE_LABEL)}
@@ -93,7 +101,18 @@ export function TopSiteEditModal(props: Props) {
         </Input>
         <Input
           value={url}
-          onInput={(detail) => setURL(detail.value)}
+          onInput={(detail) => {
+            const nextURL = detail.value
+            setURL(nextURL)
+            if (!titleEdited) {
+              const generatedTitle = generateSiteNameFromUrl(nextURL)
+              if (generatedTitle) {
+                setTitle(generatedTitle)
+              } else if (!nextURL.trim()) {
+                setTitle('')
+              }
+            }
+          }}
         >
           <span className='label'>
             {getString(S.NEW_TAB_TOP_SITES_URL_LABEL)}
