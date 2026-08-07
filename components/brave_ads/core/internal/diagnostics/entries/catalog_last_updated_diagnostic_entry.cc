@@ -13,6 +13,7 @@ namespace brave_ads {
 
 namespace {
 constexpr char kName[] = "Catalog last updated";
+constexpr char kNever[] = "Never";
 }  // namespace
 
 DiagnosticEntryType CatalogLastUpdatedDiagnosticEntry::GetType() const {
@@ -26,7 +27,7 @@ std::string CatalogLastUpdatedDiagnosticEntry::GetName() const {
 std::string CatalogLastUpdatedDiagnosticEntry::GetValue() const {
   const base::Time last_updated_at = GetCatalogLastUpdated();
   if (last_updated_at.is_null()) {
-    return {};
+    return kNever;
   }
 
   return LongFriendlyDateAndTime(last_updated_at,

@@ -11,6 +11,7 @@ namespace brave_ads {
 
 namespace {
 constexpr char kName[] = "Catalog ID";
+constexpr char kNotApplicable[] = "N/A";
 }  // namespace
 
 DiagnosticEntryType CatalogIdDiagnosticEntry::GetType() const {
@@ -22,7 +23,12 @@ std::string CatalogIdDiagnosticEntry::GetName() const {
 }
 
 std::string CatalogIdDiagnosticEntry::GetValue() const {
-  return GetCatalogId();
+  std::string catalog_id = GetCatalogId();
+  if (catalog_id.empty()) {
+    return kNotApplicable;
+  }
+
+  return catalog_id;
 }
 
 }  // namespace brave_ads
