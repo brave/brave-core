@@ -36,6 +36,7 @@
 #include "brave/ios/browser/web/de_amp/de_amp_javascript_feature.h"
 #include "brave/ios/browser/web/document_fetch/document_fetch_javascript_feature.h"
 #include "brave/ios/browser/web/force_paste/force_paste_javascript_feature.h"
+#include "brave/ios/browser/web/fullscreen/fullscreen_helper_javascript_feature.h"
 #include "brave/ios/browser/web/logins/logins_javascript_feature.h"
 #include "brave/ios/browser/web/media/media_backgrounding_javascript_feature.h"
 #include "brave/ios/browser/web/navigator/brave_navigator_javascript_feature.h"
@@ -170,6 +171,7 @@ std::vector<web::JavaScriptFeature*> BraveWebClient::GetJavaScriptFeatures(
     features.push_back(DeAmpJavaScriptFeature::GetInstance());
     features.push_back(DocumentFetchJavaScriptFeature::GetInstance());
     features.push_back(ForcePasteJavaScriptFeature::GetInstance());
+    features.push_back(FullscreenHelperJavaScriptFeature::GetInstance());
     features.push_back(GPCJavaScriptFeature::FromBrowserState(browser_state));
     features.push_back(
         MediaBackgroundingJavaScriptFeature::FromBrowserState(browser_state));

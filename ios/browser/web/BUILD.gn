@@ -41,6 +41,7 @@ source_set("web") {
     "//brave/ios/browser/web/de_amp",
     "//brave/ios/browser/web/document_fetch",
     "//brave/ios/browser/web/force_paste",
+    "//brave/ios/browser/web/fullscreen",
     "//brave/ios/browser/web/logins",
     "//brave/ios/browser/web/media",
     "//brave/ios/browser/web/navigator",
