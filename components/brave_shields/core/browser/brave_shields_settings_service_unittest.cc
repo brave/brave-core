@@ -201,34 +201,6 @@ TEST_F(BraveShieldsSettingsServiceTest, FingerprintMode) {
                 GetHostContentSettingsMap(), kTestUrl),
             brave_shields::ControlType::ALLOW);
 
-  // iOS does not support FingerprintMode::STRICT_MODE
-#if !BUILDFLAG(IS_IOS)
-  // when kBraveShowStrictFingerprintingMode flag is disabled
-  brave_shields_settings()->SetFingerprintMode(FingerprintMode::STRICT_MODE,
-                                               kTestUrl);
-  // verify it returns FingerprintMode::STANDARD_MODE
-  EXPECT_EQ(brave_shields_settings()->GetFingerprintMode(kTestUrl),
-            FingerprintMode::STANDARD_MODE);
-  // verify underlying FingerprintingControlType is updated
-  EXPECT_EQ(brave_shields::GetFingerprintingControlType(
-                GetHostContentSettingsMap(), kTestUrl),
-            brave_shields::ControlType::DEFAULT);
-
-  // enable kBraveShowStrictFingerprintingMode flag
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndEnableFeature(
-      brave_shields::features::kBraveShowStrictFingerprintingMode);
-  brave_shields_settings()->SetFingerprintMode(FingerprintMode::STRICT_MODE,
-                                               kTestUrl);
-  // verify it returns FingerprintMode::STRICT_MODE
-  EXPECT_EQ(brave_shields_settings()->GetFingerprintMode(kTestUrl),
-            FingerprintMode::STRICT_MODE);
-  // verify underlying FingerprintingControlType is updated
-  EXPECT_EQ(brave_shields::GetFingerprintingControlType(
-                GetHostContentSettingsMap(), kTestUrl),
-            brave_shields::ControlType::BLOCK);
-#endif
-
   // verify other urls remain unchanged
   EXPECT_EQ(
       brave_shields_settings()->GetFingerprintMode(GURL("https://example.com")),

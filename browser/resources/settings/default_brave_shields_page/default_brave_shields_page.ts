@@ -139,10 +139,6 @@ class BraveShieldsPage extends BraveShieldsPageBase {
         type: Boolean,
         value: loadTimeData.getBoolean('isHttpsByDefaultEnabled')
       },
-      showStrictFingerprintingMode_: {
-        type: Boolean,
-        value: loadTimeData.getBoolean('showStrictFingerprintingMode')
-      },
       isForgetFirstPartyStorageFeatureEnabled_: {
         type: Boolean,
         value: loadTimeData.getBoolean('isForgetFirstPartyStorageFeatureEnabled')
@@ -212,7 +208,6 @@ class BraveShieldsPage extends BraveShieldsPageBase {
   private declare fingerprintingControlType_: string
   private declare httpsUpgradeControlTypes_: ControlType[]
   private declare isHttpsByDefaultEnabled_: boolean
-  private declare showStrictFingerprintingMode_: boolean
   private declare isBlockElementFeatureEnabled_: boolean
   private declare isForgetFirstPartyStorageFeatureEnabled_: boolean
   private declare isShowBraveShieldsInPageInfoEnabled_: boolean

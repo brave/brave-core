@@ -34,7 +34,6 @@ class BraveSpeechSynthesisFarblingBrowserTest : public InProcessBrowserTest {
   BraveSpeechSynthesisFarblingBrowserTest() {
     scoped_feature_list_.InitWithFeatures(
         {
-            brave_shields::features::kBraveShowStrictFingerprintingMode,
             webcompat::features::kBraveWebcompatExceptionsService,
         },
         {});
@@ -61,12 +60,6 @@ class BraveSpeechSynthesisFarblingBrowserTest : public InProcessBrowserTest {
   void AllowFingerprinting(std::string domain) {
     brave_shields::SetFingerprintingControlType(
         content_settings(), ControlType::ALLOW,
-        embedded_test_server()->GetURL(domain, "/"));
-  }
-
-  void BlockFingerprinting(std::string domain) {
-    brave_shields::SetFingerprintingControlType(
-        content_settings(), ControlType::BLOCK,
         embedded_test_server()->GetURL(domain, "/"));
   }
 
@@ -130,17 +123,6 @@ IN_PROC_BROWSER_TEST_F(BraveSpeechSynthesisFarblingBrowserTest, FarbleVoices) {
   EXPECT_NE(off_voices_b, default_voices_b);
   EXPECT_NE(off_voices_z, default_voices_z);
   EXPECT_NE(default_voices_b, default_voices_z);
-
-  // Farbling level: maximum
-  // The voices list is empty.
-  BlockFingerprinting(domain_b);
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url_b));
-  auto max_voices_b = EvalJs(web_contents(), kTitleScript);
-  EXPECT_EQ("", max_voices_b);
-  BlockFingerprinting(domain_z);
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url_z));
-  auto max_voices_z = EvalJs(web_contents(), kTitleScript);
-  EXPECT_EQ("", max_voices_z);
 
   // Farbling level: default, but webcompat exception enabled
   SetFingerprintingDefault(domain_z);

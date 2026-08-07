@@ -33,7 +33,6 @@
 
 using brave_shields::ControlType;
 using brave_shields::features::kBraveReduceLanguage;
-using brave_shields::features::kBraveShowStrictFingerprintingMode;
 using content::TitleWatcher;
 
 namespace {
@@ -68,8 +67,7 @@ class BraveNavigatorLanguagesFarblingBrowserTest : public InProcessBrowserTest {
  public:
   BraveNavigatorLanguagesFarblingBrowserTest()
       : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
-    feature_list_.InitWithFeatures(
-        {kBraveReduceLanguage, kBraveShowStrictFingerprintingMode}, {});
+    feature_list_.InitWithFeatures({kBraveReduceLanguage}, {});
   }
 
   BraveNavigatorLanguagesFarblingBrowserTest(
@@ -129,12 +127,6 @@ class BraveNavigatorLanguagesFarblingBrowserTest : public InProcessBrowserTest {
   void AllowFingerprinting(std::string domain) {
     brave_shields::SetFingerprintingControlType(
         content_settings(), ControlType::ALLOW,
-        https_server_.GetURL(domain, "/"));
-  }
-
-  void BlockFingerprinting(std::string domain) {
-    brave_shields::SetFingerprintingControlType(
-        content_settings(), ControlType::BLOCK,
         https_server_.GetURL(domain, "/"));
   }
 
@@ -234,17 +226,6 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorLanguagesFarblingBrowserTest,
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url2));
   EXPECT_EQ(standard_languages,
             EvalJs(web_contents(), kNavigatorLanguagesScript));
-
-  // Farbling level: maximum
-  BlockFingerprinting(domain1);
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url1));
-  std::string strict_languages = "en-US,en";
-  EXPECT_EQ(strict_languages,
-            EvalJs(web_contents(), kNavigatorLanguagesScript));
-  BlockFingerprinting(domain2);
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url2));
-  EXPECT_EQ(strict_languages,
-            EvalJs(web_contents(), kNavigatorLanguagesScript));
 }
 
 // Tests that web workers inherit the farbled navigator.languages
@@ -265,12 +246,6 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorLanguagesFarblingBrowserTest,
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   TitleWatcher watcher2(web_contents(), expected_title);
   EXPECT_EQ(expected_title, watcher2.WaitAndGetTitle());
-
-  // Farbling level: maximum
-  BlockFingerprinting(domain);
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-  TitleWatcher watcher3(web_contents(), expected_title);
-  EXPECT_EQ(expected_title, watcher3.WaitAndGetTitle());
 }
 
 // Tests that service workers inherit the farbled navigator.languages
@@ -325,15 +300,6 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorLanguagesFarblingBrowserTest,
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url_b));
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url_d));
 
-  // Farbling level: maximum
-  // HTTP Accept-Language header should be farbled but the same across domains.
-  BlockFingerprinting(domain_b);
-  BlockFingerprinting(domain_d);
-  SetExpectedHTTPAcceptLanguage(domain_b, "en-US,en;q=0.9");
-  SetExpectedHTTPAcceptLanguage(domain_d, "en-US,en;q=0.9");
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url_b));
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url_d));
-
   // Test with subdivided language code as the primary language.
   SetAcceptLanguages("zh-HK,zh,la");
 
@@ -354,27 +320,6 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorLanguagesFarblingBrowserTest,
   SetExpectedHTTPAcceptLanguage(domain_d, "zh-HK,zh;q=0.5");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url_b));
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url_d));
-
-  // Farbling level: maximum
-  // HTTP Accept-Language header should be farbled but the same across domains.
-  BlockFingerprinting(domain_b);
-  BlockFingerprinting(domain_d);
-  SetExpectedHTTPAcceptLanguage(domain_b, "en-US,en;q=0.9");
-  SetExpectedHTTPAcceptLanguage(domain_d, "en-US,en;q=0.9");
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url_b));
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url_d));
-
-  // Farbling level: maximum but domain is on exceptions list
-  // HTTP Accept-Language header should not be farbled.
-  BlockFingerprinting(domain_x);
-  BlockFingerprinting(domain_y);
-  BlockFingerprinting(domain_z);
-  SetExpectedHTTPAcceptLanguage(domain_x, "zh-HK,zh;q=0.9,la;q=0.8");
-  SetExpectedHTTPAcceptLanguage(domain_y, "zh-HK,zh;q=0.9,la;q=0.8");
-  SetExpectedHTTPAcceptLanguage(domain_z, "zh-HK,zh;q=0.9,la;q=0.8");
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url_x));
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url_y));
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url_z));
 }
 
 // Tests that the position of the HTTP Accept-Language header within the request
@@ -409,12 +354,6 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorLanguagesFarblingBrowserTest,
   SetFingerprintingDefault(domain);
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url_default));
   EXPECT_EQ(accept_language_position_, position_when_off) << "farbling=default";
-
-  // Farbling level: maximum. Accept-Language is farbled but its position must
-  // match the farbling-off position.
-  BlockFingerprinting(domain);
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url_max));
-  EXPECT_EQ(accept_language_position_, position_when_off) << "farbling=max";
 }
 
 // Tests results of farbling HTTP Accept-Language header

@@ -90,7 +90,6 @@ class BraveWebGLFarblingBrowserTest : public InProcessBrowserTest {
   BraveWebGLFarblingBrowserTest() {
     scoped_feature_list_.InitWithFeatures(
         {
-            brave_shields::features::kBraveShowStrictFingerprintingMode,
             webcompat::features::kBraveWebcompatExceptionsService,
         },
         {});
@@ -117,12 +116,6 @@ class BraveWebGLFarblingBrowserTest : public InProcessBrowserTest {
   void AllowFingerprinting(std::string domain) {
     brave_shields::SetFingerprintingControlType(
         content_settings(), ControlType::ALLOW,
-        embedded_test_server()->GetURL(domain, "/"));
-  }
-
-  void BlockFingerprinting(std::string domain) {
-    brave_shields::SetFingerprintingControlType(
-        content_settings(), ControlType::BLOCK,
         embedded_test_server()->GetURL(domain, "/"));
   }
 
@@ -276,24 +269,6 @@ IN_PROC_BROWSER_TEST_P(BraveWebGLExtensionFarblingTest,
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   std::string actual_value_off = EvalJs(contents(), kGetWebGL1).ExtractString();
 
-  // Farbling level: maximum
-  // pseudo-random data with no relation to original data
-  BlockFingerprinting(domain);
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-  const std::string expected_value_maximum =
-      GetExpectedString(TestFarblingLevel::MAXIMUM);
-  std::string actual_value_maximum =
-      EvalJs(contents(), kGetWebGL1).ExtractString();
-  EXPECT_EQ(expected_value_maximum, actual_value_maximum);
-  // second time, same as the first (tests that results are consistent for the
-  // lifetime of a session, and that the PRNG properly resets itself at the
-  // beginning of each calculation)
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-  actual_value_maximum = EvalJs(contents(), kGetWebGL1).ExtractString();
-  EXPECT_EQ(expected_value_maximum, actual_value_maximum);
-  // Check never same as the "off" state.
-  EXPECT_NE(actual_value_off, actual_value_maximum);
-
   // Farbling level: balanced (default)
   // If feature flag was "on", we do farbling otherwise not.
   SetFingerprintingDefault(domain);
@@ -304,8 +279,6 @@ IN_PROC_BROWSER_TEST_P(BraveWebGLExtensionFarblingTest,
       TestFarblingLevel::BALANCED, /*expected_override= */
       GetParam() ? std::nullopt : std::optional<std::string>(actual_value_off));
   EXPECT_EQ(expected_value_balanced, actual_value_balanced);
-  // Check never the same as "maximum" state.
-  EXPECT_NE(actual_value_balanced, actual_value_maximum);
 }
 
 IN_PROC_BROWSER_TEST_P(BraveWebGLExtensionFarblingTest,
@@ -315,12 +288,6 @@ IN_PROC_BROWSER_TEST_P(BraveWebGLExtensionFarblingTest,
       embedded_test_server()->GetURL(domain, "/getSupportedExtensions.html");
   const std::string kSupportedExtensionsMax = "WEBGL_debug_renderer_info";
   const std::string kGetWebGL1Extensions = "getWebGL1SupportedExtensions()";
-  // Farbling level: maximum
-  // WebGL getSupportedExtensions returns abbreviated list
-  BlockFingerprinting(domain);
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-  EXPECT_EQ(EvalJs(contents(), kGetWebGL1Extensions).ExtractString(),
-            kSupportedExtensionsMax);
 
   // Farbling level: off
   // WebGL getSupportedExtensions is real
@@ -343,12 +310,6 @@ IN_PROC_BROWSER_TEST_P(BraveWebGLExtensionFarblingTest, FarbleGetExtension) {
   std::string domain = "a.com";
   GURL url = embedded_test_server()->GetURL(domain, "/getExtension.html");
   const std::string kExpectedExtensionListMax = "WEBGL_debug_renderer_info";
-  // Farbling level: maximum
-  // WebGL getExtension returns null for most names
-  BlockFingerprinting(domain);
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-  EXPECT_EQ(EvalJs(contents(), kTitleScript).ExtractString(),
-            kExpectedExtensionListMax);
 
   // Farbling level: off
   // WebGL getExtension returns real objects
@@ -373,12 +334,6 @@ IN_PROC_BROWSER_TEST_P(BraveWebGLExtensionFarblingTest,
   std::string domain = "a.com";
   GURL url = embedded_test_server()->GetURL(domain, "/getExtension.html");
 
-  // Farbling level: maximum
-  BlockFingerprinting(domain);
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-  ASSERT_TRUE(ExecJs(contents(), "getExtensionWithInvalidName()"));
-  EXPECT_EQ(EvalJs(contents(), kTitleScript).ExtractString(), "null");
-
   // Farbling level: off
   AllowFingerprinting(domain);
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
@@ -399,12 +354,6 @@ IN_PROC_BROWSER_TEST_P(BraveWebGLExtensionFarblingTest,
       embedded_test_server()->GetURL(domain, "/getSupportedExtensions.html");
   const std::string kSupportedExtensionsMax = "WEBGL_debug_renderer_info";
   const std::string kGetWebGL2Extensions = "getWebGL2SupportedExtensions()";
-  // Farbling level: maximum
-  // WebGL2 getSupportedExtensions returns abbreviated list
-  BlockFingerprinting(domain);
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-  EXPECT_EQ(EvalJs(contents(), kGetWebGL2Extensions).ExtractString(),
-            kSupportedExtensionsMax);
 
   // Farbling level: off
   // WebGL2 getSupportedExtensions is real
@@ -505,7 +454,6 @@ IN_PROC_BROWSER_TEST_P(BraveWebGLExtensionFarblingTest,
   const std::string domain = "a.com";
   const GURL url =
       embedded_test_server()->GetURL(domain, "/getSupportedExtensions.html");
-  const std::string kSupportedExtensionsMax = "WEBGL_debug_renderer_info";
   const std::string kGetWebGL1Extensions = "getWebGL1SupportedExtensions()";
   const std::string kGetWebGL2Extensions = "getWebGL2SupportedExtensions()";
 
@@ -518,28 +466,26 @@ IN_PROC_BROWSER_TEST_P(BraveWebGLExtensionFarblingTest,
       EvalJs(contents(), kGetWebGL2Extensions).ExtractString();
   ASSERT_FALSE(webgl1_off.empty());
   ASSERT_FALSE(webgl2_off.empty());
-  ASSERT_NE(webgl1_off, kSupportedExtensionsMax);
-  ASSERT_NE(webgl2_off, kSupportedExtensionsMax);
 
-  // Maximum farbling: both versions abbreviated.
-  BlockFingerprinting(domain);
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-  EXPECT_EQ(EvalJs(contents(), kGetWebGL1Extensions).ExtractString(),
-            kSupportedExtensionsMax);
-  EXPECT_EQ(EvalJs(contents(), kGetWebGL2Extensions).ExtractString(),
-            kSupportedExtensionsMax);
+  // Shields up.
+  SetFingerprintingDefault(domain);
 
-  // Exception for WebGL1 only: WebGL1 unfarbled, WebGL2 still maximum.
+  // Exception for WebGL1 only: WebGL1 unfarbled, WebGL2 farbled.
   brave_shields::SetWebcompatEnabled(content_settings(),
                                      ContentSettingsType::BRAVE_WEBCOMPAT_WEBGL,
                                      true, url, nullptr);
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   EXPECT_EQ(EvalJs(contents(), kGetWebGL1Extensions).ExtractString(),
             webgl1_off);
-  EXPECT_EQ(EvalJs(contents(), kGetWebGL2Extensions).ExtractString(),
-            kSupportedExtensionsMax);
+  if (GetParam()) {
+    EXPECT_NE(EvalJs(contents(), kGetWebGL2Extensions).ExtractString(),
+              webgl2_off);
+  } else {
+    EXPECT_EQ(EvalJs(contents(), kGetWebGL2Extensions).ExtractString(),
+              webgl2_off);
+  }
 
-  // Exception for WebGL2 only: WebGL2 unfarbled, WebGL1 still maximum.
+  // Exception for WebGL2 only: WebGL2 unfarbled, WebGL1 farbled.
   brave_shields::SetWebcompatEnabled(content_settings(),
                                      ContentSettingsType::BRAVE_WEBCOMPAT_WEBGL,
                                      false, url, nullptr);
@@ -547,8 +493,14 @@ IN_PROC_BROWSER_TEST_P(BraveWebGLExtensionFarblingTest,
       content_settings(), ContentSettingsType::BRAVE_WEBCOMPAT_WEBGL2, true,
       url, nullptr);
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-  EXPECT_EQ(EvalJs(contents(), kGetWebGL1Extensions).ExtractString(),
-            kSupportedExtensionsMax);
+  if (GetParam()) {
+    EXPECT_NE(EvalJs(contents(), kGetWebGL1Extensions).ExtractString(),
+              webgl1_off);
+  } else {
+    EXPECT_EQ(EvalJs(contents(), kGetWebGL1Extensions).ExtractString(),
+              webgl1_off);
+  }
+
   EXPECT_EQ(EvalJs(contents(), kGetWebGL2Extensions).ExtractString(),
             webgl2_off);
 }

@@ -251,7 +251,6 @@ function FingerprintingControls(props: { showDetails: () => void }) {
   const api = useShieldsApi()
   const { data: siteBlockInfo } = api.useGetSiteBlockInfo()
   const { data: siteSettings } = api.useGetSiteSettings()
-  const showStrictMode = api.useShowStrictFingerprintingModeData()
   const webcompatExceptionsEnabled =
     api.useIsWebcompatExceptionsServiceEnabledData()
 
@@ -266,25 +265,7 @@ function FingerprintingControls(props: { showDetails: () => void }) {
   return (
     <div>
       <Icon name='biometric-login' />
-      {showStrictMode ? (
-        <Dropdown
-          value={String(fingerprintMode)}
-          disabled={isManaged}
-          onChange={({ value }) => {
-            withEnumValue(value, (mode) => api.setFingerprintMode([mode]))
-          }}
-        >
-          <leo-option value={String(FingerprintMode.STRICT_MODE)}>
-            {getString('BRAVE_SHIELDS_FINGERPRINTING_BLOCKED_AGG')}
-          </leo-option>
-          <leo-option value={String(FingerprintMode.STANDARD_MODE)}>
-            {getString('BRAVE_SHIELDS_FINGERPRINTING_BLOCKED_STD')}
-          </leo-option>
-          <leo-option value={String(FingerprintMode.ALLOW_MODE)}>
-            {getString('BRAVE_SHIELDS_FINGERPRINTING_ALLOW_ALL')}
-          </leo-option>
-        </Dropdown>
-      ) : (
+      {
         <div className='toggle'>
           {getString('BRAVE_SHIELDS_FINGERPRINTING_BLOCKED_STD')}
           <Toggle
@@ -300,7 +281,7 @@ function FingerprintingControls(props: { showDetails: () => void }) {
             }}
           />
         </div>
-      )}
+      }
       <Button
         onClick={props.showDetails}
         isDisabled={

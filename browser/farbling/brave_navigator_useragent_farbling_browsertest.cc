@@ -144,11 +144,6 @@ void ProgrammaticallyCreateOffscreenDocument(
 
 class BraveNavigatorUserAgentFarblingBrowserTest : public InProcessBrowserTest {
  public:
-  BraveNavigatorUserAgentFarblingBrowserTest() {
-    feature_list_.InitAndEnableFeature(
-        brave_shields::features::kBraveShowStrictFingerprintingMode);
-  }
-
   void SetUp() override {
     https_server_ = std::make_unique<net::EmbeddedTestServer>(
         net::test_server::EmbeddedTestServer::TYPE_HTTPS);
@@ -218,12 +213,6 @@ class BraveNavigatorUserAgentFarblingBrowserTest : public InProcessBrowserTest {
         https_server()->GetURL(domain, "/"));
   }
 
-  void BlockFingerprinting(std::string domain) {
-    brave_shields::SetFingerprintingControlType(
-        content_settings(), ControlType::BLOCK,
-        https_server()->GetURL(domain, "/"));
-  }
-
   void SetFingerprintingDefault(std::string domain) {
     brave_shields::SetFingerprintingControlType(
         content_settings(), ControlType::DEFAULT,
@@ -283,7 +272,6 @@ class BraveNavigatorUserAgentFarblingBrowserTest : public InProcessBrowserTest {
   content::ContentMockCertVerifier mock_cert_verifier_;
   std::unique_ptr<net::EmbeddedTestServer> https_server_;
   std::vector<std::string> user_agents_;
-  base::test::ScopedFeatureList feature_list_;
 };
 
 // Tests results of farbling user agent
@@ -327,20 +315,6 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorUserAgentFarblingBrowserTest,
       EvalJs(contents(), kUserAgentScript).ExtractString();
   // user agent should be the same on every domain if farbling is default
   EXPECT_EQ(default_ua_b, default_ua_z);
-
-  // Farbling level: maximum
-  // navigator.userAgent should be the possibly-farbled string from the default
-  // farbling level, further suffixed by a pseudo-random number of spaces based
-  // on domain and session key
-  BlockFingerprinting(domain_b);
-  // test known values
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url_b));
-  auto max_ua_b = EvalJs(contents(), kUserAgentScript);
-  EXPECT_EQ(default_ua_b + "   ", max_ua_b);
-  BlockFingerprinting(domain_z);
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url_z));
-  auto max_ua_z = EvalJs(contents(), kUserAgentScript);
-  EXPECT_EQ(default_ua_z + " ", max_ua_z);
 
   // test that web workers also inherit the farbled user agent
   // (farbling level is still maximum)
@@ -390,14 +364,6 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorUserAgentFarblingBrowserTest,
   std::u16string expected_title(u"pass");
   std::string domain_b = "b.com";
   GURL url_b = https_server()->GetURL(domain_b, "/simple.html");
-  BlockFingerprinting(domain_b);
-
-  // test that local iframes inherit the farbled user agent
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(
-      browser(),
-      https_server()->GetURL(domain_b, "/navigator/ua-local-iframe.html")));
-  TitleWatcher watcher1(contents(), expected_title);
-  EXPECT_EQ(expected_title, watcher1.WaitAndGetTitle());
 
   // test that remote iframes inherit the farbled user agent
   ASSERT_TRUE(ui_test_utils::NavigateToURL(
