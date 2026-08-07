@@ -19,8 +19,9 @@ substitutions:
       statement in which upstream first resolves it.
     regex:
       re_pattern:
-        '(^([ \t]*)[^;]*?(searchBox\.\w+ViewById\(R\.id\.search_icon\))[^;]*;)'
-      re_flags: [MULTILINE]
+        '(public void initializeSearchUi\(.+?View searchBox =
+        requireViewById\(R\.id\.search_box\);)'
+      re_flags: [DOTALL]
       replace: |-
         \1
-        \2BraveSettingsIconTintUtils.applyIconTint(\3, BraveDynamicColors.isDynamicColorsEnabled());
+                BraveSettingsIconTintUtils.applyIconTint(searchBox.requireViewById(R.id.search_icon), BraveDynamicColors.isDynamicColorsEnabled());

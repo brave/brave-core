@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/settings/search/SettingsSearchCoordinator.java b/chrome/android/java/src/org/chromium/chrome/browser/settings/search/SettingsSearchCoordinator.java
-index c8264df9bda937b587f83f5bacee651d8961a3fa..e1af9d3c5bfc50999453a2372cf5b43aa2948a5d 100644
+index c8264df9bda937b587f83f5bacee651d8961a3fa..5b184f7671845f4aa1d5f7280248b4e0bfe9ea6a 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/settings/search/SettingsSearchCoordinator.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/settings/search/SettingsSearchCoordinator.java
 @@ -4,6 +4,8 @@
@@ -11,11 +11,11 @@ index c8264df9bda937b587f83f5bacee651d8961a3fa..e1af9d3c5bfc50999453a2372cf5b43a
  import static androidx.annotation.VisibleForTesting.PRIVATE;
  
  import static org.chromium.base.CallbackUtils.emptyRunnable;
-@@ -307,6 +309,7 @@ public class SettingsSearchCoordinator
-         TooltipCompat.setTooltipText(
-                 searchBox.requireViewById(R.id.search_icon),
-                 mActivity.getString(R.string.search_in_settings_hint));
+@@ -302,6 +304,7 @@ public class SettingsSearchCoordinator
+         LayoutInflater.from(mActivity).inflate(R.layout.settings_search_box, searchBoxParent, true);
+         LayoutInflater.from(mActivity).inflate(R.layout.settings_search_query, mActionBar, true);
+         View searchBox = requireViewById(R.id.search_box);
 +        BraveSettingsIconTintUtils.applyIconTint(searchBox.requireViewById(R.id.search_icon), BraveDynamicColors.isDynamicColorsEnabled());
- 
-         View query = requireViewById(R.id.search_query_container);
-         Drawable bg = ContextCompat.getDrawable(mActivity, R.drawable.pill_background);
+         setSearchBoxVerticalMargin(searchBox, mUseMultiColumn);
+         searchBox.setOnClickListener(this::onClickSearchBox);
+         TooltipCompat.setTooltipText(
