@@ -1078,7 +1078,7 @@ void ExportAllBookmarks(Browser* browser) {
   (new BookmarksExportListener(browser->GetProfile()))->ShowFileDialog(browser);
 }
 
-void ToggleAllBookmarksButtonVisibility(Browser* browser) {
+void ToggleAllBookmarksButtonVisibility(BrowserWindowInterface* browser) {
   auto* prefs = browser->GetProfile()->GetPrefs();
   prefs->SetBoolean(
       brave::bookmarks::prefs::kShowAllBookmarksButton,

@@ -36,6 +36,7 @@
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
+#include "chrome/browser/ui/browser_window/public/create_browser_window.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
@@ -874,8 +875,8 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerFocusModeTest,
 
 IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerFocusModeTest,
                        FocusModeDisabledForPopupWindow) {
-  Browser* popup = Browser::Create(Browser::CreateParams(
-      Browser::TYPE_POPUP, browser()->GetProfile(), true));
+  auto* popup = CreateBrowserWindow(BrowserWindowCreateParams(
+      BrowserWindowInterface::TYPE_POPUP, browser()->GetProfile(), true));
   chrome::AddTabAt(popup, GURL("about:blank"), -1, true);
   BrowserWindow::FromBrowser(popup)->Show();
   EXPECT_FALSE(chrome::BrowserCommandController::From(popup)->IsCommandEnabled(

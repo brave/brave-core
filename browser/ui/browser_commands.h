@@ -151,7 +151,7 @@ void ScrollTabToTop(Browser* browser);
 void ScrollTabToBottom(Browser* browser);
 
 void ExportAllBookmarks(Browser* browser);
-void ToggleAllBookmarksButtonVisibility(Browser* browser);
+void ToggleAllBookmarksButtonVisibility(BrowserWindowInterface* browser);
 
 // Split view API with SideBySide.
 // false if active tab is already split tab.

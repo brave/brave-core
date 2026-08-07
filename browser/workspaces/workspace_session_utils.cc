@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <memory>
 #include <set>
+#include <utility>
 #include <vector>
 
 #include "brave/browser/workspaces/workspace_metadata.h"
@@ -181,19 +182,21 @@ void RestoreBrowserSessionCommandsForWorkspace(
       continue;
     }
 
-    Browser::CreateParams params(Browser::TYPE_NORMAL, profile, false);
+    BrowserWindowCreateParams params(BrowserWindowInterface::TYPE_NORMAL,
+                                     profile, false);
     params.initial_bounds = window->bounds;
     params.initial_show_state = window->show_state;
     params.initial_workspace = window->workspace;
     params.initial_visible_on_all_workspaces_state =
         window->visible_on_all_workspaces;
     params.should_trigger_session_restore = false;
-    Browser* browser = Browser::Create(params);
+    Browser* browser =
+        CreateBrowserWindow(std::move(params))->GetBrowserForMigrationOnly();
     if (!browser) {
       continue;
     }
 
-    auto* tsm = browser->tab_strip_model();
+    auto* tsm = browser->GetTabStripModel();
     for (size_t i = 0; i < window->tabs.size(); ++i) {
       const auto& tab = window->tabs[i];
       if (tab->navigations.empty()) {
