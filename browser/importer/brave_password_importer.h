@@ -68,10 +68,29 @@ class BravePasswordImporter {
                    CompletionCallback callback);
 
  private:
+  // Outcome of the background read of the source `Login Data`.
+  struct ReadResult {
+    ReadResult();
+    ReadResult(ReadResult&&);
+    ReadResult& operator=(ReadResult&&);
+    ~ReadResult();
+
+    Result result = Result::kReadFailed;
+    std::vector<password_manager::StoredCredential> credentials;
+  };
+
+  // Runs on a background thread. Copies the source `Login Data`, opens it with
+  // the destination's `encryptor`, and returns the outcome and credentials.
+  static ReadResult ReadCredentialsFromLoginData(
+      base::FilePath login_data_path,
+      scoped_refptr<os_crypt_async::Encryptor> encryptor);
+
+  // Posts `callback_` to the current sequence so early-failure paths complete
+  // asynchronously, matching the async success path.
+  void RunCallbackAsync(Result result, size_t submitted);
+
   void OnEncryptorReady(scoped_refptr<os_crypt_async::Encryptor> encryptor);
-  void OnCredentialsRead(
-      Result result,
-      std::vector<password_manager::StoredCredential> credentials);
+  void OnCredentialsRead(ReadResult read_result);
 
   base::FilePath source_path_;
   scoped_refptr<password_manager::PasswordStoreInterface> password_store_;

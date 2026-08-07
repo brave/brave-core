@@ -12,8 +12,9 @@
 #include "base/check.h"
 #include "base/files/file_util.h"
 #include "base/functional/bind.h"
+#include "base/location.h"
 #include "base/logging.h"
-#include "base/memory/weak_ptr.h"
+#include "base/task/sequenced_task_runner.h"
 #include "base/task/thread_pool.h"
 #include "brave/common/importer/scoped_copy_file.h"
 #include "chrome/browser/browser_process.h"
@@ -24,25 +25,16 @@
 #include "components/password_manager/core/browser/password_store/password_store_interface.h"
 #include "components/password_manager/core/browser/password_store/stored_credential.h"
 
-namespace {
+BravePasswordImporter::ReadResult::ReadResult() = default;
+BravePasswordImporter::ReadResult::ReadResult(ReadResult&&) = default;
+BravePasswordImporter::ReadResult& BravePasswordImporter::ReadResult::operator=(
+    ReadResult&&) = default;
+BravePasswordImporter::ReadResult::~ReadResult() = default;
 
-struct ReadResult {
-  ReadResult() = default;
-  ReadResult(ReadResult&&) = default;
-  ReadResult& operator=(ReadResult&&) = default;
-  ~ReadResult() = default;
-
-  BravePasswordImporter::Result result =
-      BravePasswordImporter::Result::kReadFailed;
-  std::vector<password_manager::StoredCredential> credentials;
-};
-
-// Runs on a background thread. Copies the source `Login Data` to a temporary
-// location (to avoid conflicting with a possibly-running source browser),
-// opens it with the destination's `encryptor`, and returns the outcome and
-// decrypted credentials.
-ReadResult ReadCredentialsFromLoginData(
-    const base::FilePath& login_data_path,
+// static
+BravePasswordImporter::ReadResult
+BravePasswordImporter::ReadCredentialsFromLoginData(
+    base::FilePath login_data_path,
     scoped_refptr<os_crypt_async::Encryptor> encryptor) {
   ReadResult read_result;
   if (!base::PathExists(login_data_path)) {
@@ -96,8 +88,6 @@ ReadResult ReadCredentialsFromLoginData(
   return read_result;
 }
 
-}  // namespace
-
 BravePasswordImporter::BravePasswordImporter() = default;
 BravePasswordImporter::~BravePasswordImporter() = default;
 
@@ -111,17 +101,24 @@ void BravePasswordImporter::StartImport(const base::FilePath& source_path,
   password_store_ = ProfilePasswordStoreFactory::GetForProfile(
       destination_profile, ServiceAccessType::EXPLICIT_ACCESS);
   if (!password_store_) {
-    std::move(callback_).Run(Result::kNoPasswordStore, 0);
+    RunCallbackAsync(Result::kNoPasswordStore, 0);
     return;
   }
 
   auto* os_crypt = g_browser_process->os_crypt_async();
   if (!os_crypt) {
-    std::move(callback_).Run(Result::kNoEncryptor, 0);
+    RunCallbackAsync(Result::kNoEncryptor, 0);
     return;
   }
   os_crypt->GetInstance(base::BindOnce(&BravePasswordImporter::OnEncryptorReady,
                                        weak_factory_.GetWeakPtr()));
+}
+
+void BravePasswordImporter::RunCallbackAsync(Result result, size_t submitted) {
+  // Always complete asynchronously so callers never see the callback run
+  // within StartImport()'s stack frame.
+  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+      FROM_HERE, base::BindOnce(std::move(callback_), result, submitted));
 }
 
 void BravePasswordImporter::OnEncryptorReady(
@@ -130,32 +127,23 @@ void BravePasswordImporter::OnEncryptorReady(
       base::FilePath::StringType(FILE_PATH_LITERAL("Login Data")));
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock(), base::TaskPriority::USER_VISIBLE},
-      base::BindOnce(&ReadCredentialsFromLoginData, login_data_path,
-                     std::move(encryptor)),
-      base::BindOnce(
-          [](base::WeakPtr<BravePasswordImporter> importer,
-             ReadResult read_result) {
-            if (importer) {
-              importer->OnCredentialsRead(read_result.result,
-                                          std::move(read_result.credentials));
-            }
-          },
-          weak_factory_.GetWeakPtr()));
+      base::BindOnce(&BravePasswordImporter::ReadCredentialsFromLoginData,
+                     login_data_path, std::move(encryptor)),
+      base::BindOnce(&BravePasswordImporter::OnCredentialsRead,
+                     weak_factory_.GetWeakPtr()));
 }
 
-void BravePasswordImporter::OnCredentialsRead(
-    Result result,
-    std::vector<password_manager::StoredCredential> credentials) {
-  if (result != Result::kSuccess || !password_store_) {
-    std::move(callback_).Run(result, 0);
+void BravePasswordImporter::OnCredentialsRead(ReadResult read_result) {
+  if (read_result.result != Result::kSuccess || !password_store_) {
+    std::move(callback_).Run(read_result.result, 0);
     return;
   }
-  if (credentials.empty()) {
+  if (read_result.credentials.empty()) {
     std::move(callback_).Run(Result::kSuccess, 0);
     return;
   }
-  const size_t count = credentials.size();
+  const size_t count = read_result.credentials.size();
   password_store_->AddLogins(
-      std::move(credentials),
+      std::move(read_result.credentials),
       base::BindOnce(std::move(callback_), Result::kSuccess, count));
 }
