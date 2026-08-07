@@ -78,5 +78,5 @@ substitutions:
       function_name: CreateHorizontalTabStripRegionView
       code: |-
         if (!base::FeatureList::IsEnabled(tabs::kTabStripUnification)) {
-          return std::make_unique<BraveHorizontalTabStripRegionView>(browser_view);
+          return CreateBraveHorizontalTabStripRegionView(browser_view);
         }

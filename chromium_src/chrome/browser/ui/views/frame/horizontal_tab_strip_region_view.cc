@@ -12,4 +12,8 @@
 #include "brave/browser/ui/views/tabs/brave_tab_strip.h"
 #include "chrome/browser/ui/tabs/features.h"
 
+// Defined in brave_tab_strip_region_view.cc.
+std::unique_ptr<TabStripRegionView> CreateBraveHorizontalTabStripRegionView(
+    BrowserView* browser_view);
+
 #include <chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.cc>
