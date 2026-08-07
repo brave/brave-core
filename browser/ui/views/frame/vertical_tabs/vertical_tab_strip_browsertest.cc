@@ -987,13 +987,11 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ExpandedState) {
   EXPECT_TRUE(prefs->GetBoolean(brave_tabs::kVerticalTabsCollapsed));
 
   // it affects all browsers.
-  auto* region_view_2 =
-      BraveBrowserView::GetBrowserViewForBrowser(
-          CreateBrowserWindow(
-              BrowserWindowCreateParams(browser()->GetProfile(), true))
-              ->GetBrowserForMigrationOnly())
-          ->vertical_tab_strip_container_view_
-          ->vertical_tab_strip_region_view();
+  auto* region_view_2 = BraveBrowserView::GetBrowserViewForBrowser(
+                            CreateBrowserWindow(BrowserWindowCreateParams(
+                                browser()->GetProfile(), true)))
+                            ->vertical_tab_strip_container_view_
+                            ->vertical_tab_strip_region_view();
   EXPECT_EQ(State::kCollapsed, region_view_2->state());
 
   // Given that kVerticalTabsExpandedStatePerWindow is true,
@@ -1018,13 +1016,11 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ExpandedState) {
 
   // And new browser should follow the preference.
   prefs->SetBoolean(brave_tabs::kVerticalTabsCollapsed, true);
-  auto* region_view_3 =
-      BraveBrowserView::GetBrowserViewForBrowser(
-          CreateBrowserWindow(
-              BrowserWindowCreateParams(browser()->GetProfile(), true))
-              ->GetBrowserForMigrationOnly())
-          ->vertical_tab_strip_container_view_
-          ->vertical_tab_strip_region_view();
+  auto* region_view_3 = BraveBrowserView::GetBrowserViewForBrowser(
+                            CreateBrowserWindow(BrowserWindowCreateParams(
+                                browser()->GetProfile(), true)))
+                            ->vertical_tab_strip_container_view_
+                            ->vertical_tab_strip_region_view();
   EXPECT_EQ(State::kCollapsed, region_view_3->state());
 }
 
@@ -1047,13 +1043,11 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ExpandedWidth) {
   EXPECT_EQ(100, prefs->GetValue(brave_tabs::kVerticalTabsExpandedWidth));
 
   // it affects all browsers.
-  auto* region_view_2 =
-      BraveBrowserView::GetBrowserViewForBrowser(
-          CreateBrowserWindow(
-              BrowserWindowCreateParams(browser()->GetProfile(), true))
-              ->GetBrowserForMigrationOnly())
-          ->vertical_tab_strip_container_view_
-          ->vertical_tab_strip_region_view();
+  auto* region_view_2 = BraveBrowserView::GetBrowserViewForBrowser(
+                            CreateBrowserWindow(BrowserWindowCreateParams(
+                                browser()->GetProfile(), true)))
+                            ->vertical_tab_strip_container_view_
+                            ->vertical_tab_strip_region_view();
   EXPECT_EQ(100, region_view_2->expanded_width_);
 
   // Given that kVerticalTabsExpandedStatePerWindow is true,
@@ -1069,13 +1063,11 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ExpandedWidth) {
 
   // And new browser should follow the preference.
   prefs->SetBoolean(brave_tabs::kVerticalTabsCollapsed, true);
-  auto* region_view_3 =
-      BraveBrowserView::GetBrowserViewForBrowser(
-          CreateBrowserWindow(
-              BrowserWindowCreateParams(browser()->GetProfile(), true))
-              ->GetBrowserForMigrationOnly())
-          ->vertical_tab_strip_container_view_
-          ->vertical_tab_strip_region_view();
+  auto* region_view_3 = BraveBrowserView::GetBrowserViewForBrowser(
+                            CreateBrowserWindow(BrowserWindowCreateParams(
+                                browser()->GetProfile(), true)))
+                            ->vertical_tab_strip_container_view_
+                            ->vertical_tab_strip_region_view();
   EXPECT_EQ(200, region_view_3->expanded_width_);
 }
 

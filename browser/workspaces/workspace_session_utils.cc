@@ -190,14 +190,13 @@ void RestoreBrowserSessionCommandsForWorkspace(
     params.initial_visible_on_all_workspaces_state =
         window->visible_on_all_workspaces;
     params.should_trigger_session_restore = false;
-    BrowserWindowInterface* browser_window =
-        CreateBrowserWindow(std::move(params));
-    if (!browser_window) {
+    Browser* browser =
+        CreateBrowserWindow(std::move(params))->GetBrowserForMigrationOnly();
+    if (!browser) {
       continue;
     }
-    Browser* browser = browser_window->GetBrowserForMigrationOnly();
 
-    auto* tsm = browser->tab_strip_model();
+    auto* tsm = browser->GetTabStripModel();
     for (size_t i = 0; i < window->tabs.size(); ++i) {
       const auto& tab = window->tabs[i];
       if (tab->navigations.empty()) {
