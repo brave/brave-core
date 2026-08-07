@@ -149,6 +149,14 @@ CHAR_LIMIT guidelines:
       <message name="IDS_ACCESSIBILITY_TAB_SWITCHER_INCOGNITO_STACK" desc="Content description for the Private stack selection 'button'.">
         Private tabs
       </message>
+      <message name="IDS_CONTEXTMENU_OPEN_ALL_IN_INCOGNITO_WINDOW_PLURAL" desc="Context sensitive menu item to open all bookmarks in a private window. [ICU Syntax]">
+        {NUM_BOOKMARKS, plural,
+          =1 {Open in Private window}
+          other {Open all (#) in Private window}}
+      </message>
+      <message name="IDS_CONTEXTMENU_OPEN_ALL_IN_INCOGNITO_WINDOW" desc="Context sensitive menu item to open all bookmarks in a private window when there are no bookmarks. [CHAR_LIMIT=30]">
+        Open all in Private window
+      </message>
       <message name="IDS_CONTEXTMENU_OPEN_IN_INCOGNITO_TAB" desc="Context sensitive menu item to open the selected link in a new Private tab. [CHAR_LIMIT=30]">
         Open in Private tab
       </message>
@@ -209,15 +217,11 @@ CHAR_LIMIT guidelines:
       <message name="IDS_MENU_NEW_INCOGNITO_WINDOW" desc="Menu item for opening a new private window. [CHAR_LIMIT=27]">
         New Private window
       </message>
-      <message name="IDS_MENU_INCOGNITO_WINDOW" desc="Short label of menu item for opening a new private window. [CHAR_LIMIT=27]">
-        Private window
-      </message>
+
       <message name="IDS_MENU_NEW_INCOGNITO_TAB" desc="Menu item for opening a new Private tab that facilitates pseudononymous browsing. [CHAR_LIMIT=27]" meaning="Android menu">
         New Private tab
       </message>
-      <message name="IDS_ACCESSIBILITY_INCOGNITO_TAB" desc="Content description for tabs that are in Private mode">
-        Private Tab
-      </message>
+
       <message name="IDS_MENU_CHROME_WEBSTORE" desc="Menu item for opening the chrome webstore that allows the user to install extensions. [CHAR_LIMIT=27]">
         Visit Web Store
       </message>
