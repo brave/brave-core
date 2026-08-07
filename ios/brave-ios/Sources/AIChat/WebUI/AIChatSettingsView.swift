@@ -35,8 +35,8 @@ public struct AIChatSettingsView: View {
               .foregroundStyle(.secondary)
               .font(.caption)
           }
-          .tint(Color(braveSystemName: .primitivePrimary40))
         }
+        .tint(Color(braveSystemName: .primitivePrimary40))
         NavigationLink {
           ModelListPicker(
             modelsWithSubtitles: viewModel.modelsWithSubtitles,
