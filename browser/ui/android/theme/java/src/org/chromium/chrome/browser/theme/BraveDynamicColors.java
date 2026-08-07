@@ -8,6 +8,7 @@ package org.chromium.chrome.browser.theme;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.os.Build;
 import android.view.View;
@@ -125,15 +126,21 @@ public final class BraveDynamicColors {
     }
 
     /**
-     * Returns the active text-button color or the supplied Nala fallback when dynamic colors are
-     * disabled.
+     * Returns the active theme's {@code globalTextButtonTextColor}, or {@code fallbackColor} when
+     * dynamic colors are disabled.
+     *
+     * @param theme theme used to resolve {@code globalTextButtonTextColor} when dynamic colors are
+     *     enabled
+     * @param fallbackColor color returned when dynamic colors are disabled
+     * @return the resolved theme text-button color, or {@code fallbackColor} when dynamic colors
+     *     are disabled
      */
-    public static int getTextButtonColor(Context context, int fallbackColor) {
+    public static int getTextButtonColor(Resources.Theme theme, int fallbackColor) {
         if (!isDynamicColorsEnabled()) {
             return fallbackColor;
         }
 
-        return AttrUtils.resolveColor(context.getTheme(), R.attr.globalTextButtonTextColor);
+        return AttrUtils.resolveColor(theme, R.attr.globalTextButtonTextColor);
     }
 
     private static void applyButtonBackgroundColorIfEnabled(View button, int backgroundColorAttr) {

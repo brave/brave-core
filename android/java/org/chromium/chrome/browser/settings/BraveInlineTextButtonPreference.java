@@ -34,7 +34,17 @@ public class BraveInlineTextButtonPreference extends ChromeBasePreference {
         super(context, attrs);
     }
 
-    /** Sets a title whose {@code <LINK_1>} text is styled as a text button after binding. */
+    /**
+     * Sets a title whose {@code <LINK_1>...</LINK_1>} range is styled as a text button after
+     * binding.
+     *
+     * <p>{@code title} must contain a valid {@code <LINK_1>...</LINK_1>} range. Missing or invalid
+     * tags cause {@link IllegalArgumentException}.
+     *
+     * @param title title string with the required {@code <LINK_1>...</LINK_1>} markup
+     * @throws IllegalArgumentException if {@code title} does not contain a valid {@code
+     *     <LINK_1>...</LINK_1>} range
+     */
     public void setTextButtonTitle(String title) {
         Object marker = new Object();
         SpannableString formattedTitle =
@@ -62,7 +72,8 @@ public class BraveInlineTextButtonPreference extends ChromeBasePreference {
         styledTitle.setSpan(
                 new ForegroundColorSpan(
                         BraveDynamicColors.getTextButtonColor(
-                                getContext(), getContext().getColor(R.color.brave_link))),
+                                getContext().getTheme(),
+                                getContext().getColor(R.color.brave_link))),
                 mTextButtonStart,
                 mTextButtonEnd,
                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);

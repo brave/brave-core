@@ -42,7 +42,8 @@ public class BraveAccountPreference extends ChromeBasePreference {
 
         if (holder.findViewById(android.R.id.title) instanceof TextView titleView) {
             if (!isSelectable()) {
-                // Restore the default primary title appearance when the preference is non-selectable.
+                // Restore the default primary title appearance when the preference is
+                // non-selectable.
                 titleView.setTextAppearance(R.style.TextAppearance_TextLarge_Primary);
             } else if (!isEnabled()) {
                 // Use the tertiary title appearance when the preference is disabled.

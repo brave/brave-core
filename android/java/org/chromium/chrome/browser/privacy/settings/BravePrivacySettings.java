@@ -340,7 +340,7 @@ public class BravePrivacySettings extends PrivacySettings {
                                     "</LINK_1>",
                                     new ChromeClickableSpan(
                                             BraveDynamicColors.getTextButtonColor(
-                                                    requireContext(),
+                                                    requireContext().getTheme(),
                                                     requireContext().getColor(R.color.brave_link)),
                                             result -> {
                                                 TabUtils.openUrlInCustomTab(

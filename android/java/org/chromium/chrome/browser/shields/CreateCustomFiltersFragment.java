@@ -82,7 +82,7 @@ public class CreateCustomFiltersFragment extends BravePreferenceFragment {
             ChromeClickableSpan summaryTextClickableSpan =
                     new ChromeClickableSpan(
                             BraveDynamicColors.getTextButtonColor(
-                                    requireContext(),
+                                    requireContext().getTheme(),
                                     requireContext().getColor(R.color.brave_link)),
                             (textView) -> {
                                 CustomTabActivity.showInfoPage(
