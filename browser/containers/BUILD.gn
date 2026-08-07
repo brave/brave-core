@@ -43,6 +43,7 @@ source_set("browser_tests") {
 
   deps = [
     ":containers",
+    "//brave/app:brave_generated_resources_grit_grit",
     "//brave/components/containers/content/browser",
     "//brave/components/containers/core/browser",
     "//brave/components/containers/core/browser:test_support",
