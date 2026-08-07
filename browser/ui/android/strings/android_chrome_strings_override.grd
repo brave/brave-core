@@ -208,6 +208,9 @@ CHAR_LIMIT guidelines:
         Private tabs will be locked when you leave Brave
      </message>
 
+      <message name="IDS_SAFETY_FRE_PROMO_INCOGNITO_TITLE" desc="Title of the Locked Private card on the Safety Promo screen of the First Run Experience.">
+        Locked Private mode
+      </message>
       <message name="IDS_NEW_INCOGNITO_TAB_TITLE" desc="Title in tab strip when opening a new Private tab.">
         New Private tab
       </message>

@@ -320,7 +320,6 @@
       <part file="policy_strings.grdp" />
       <part file="print_media_strings.grdp" />
       <part file="printing_component_strings.grdp" />
-      <part file="privacy_sandbox_chrome_strings.grdp" />
       <part file="protocol_handler_strings.grdp" />
       <part file="reset_password_strings.grdp" />
       <part file="saved_tab_groups_strings.grdp" />
@@ -539,6 +538,10 @@
 
       <message name="IDS_UTILITY_PROCESS_JSON_PARSER_NAME" desc="The name of the utility process used for parsing JSON files.">
         JSON Parser
+      </message>
+
+      <message name="IDS_UTILITY_PROCESS_MEDIA_GALLERY_UTILITY_NAME" desc="The name of the utility process used for checking media files.">
+        Media File Checker
       </message>
 
       <message name="IDS_SESSION_CRASHED_VIEW_RESTORE_BUTTON" desc="Title of the restore button in the session crashed view.">

@@ -300,6 +300,9 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
           </message>
         </else>
       </if>
+      <message name="IDS_APP_MENU_YOUR_CHROME_HEADER" desc="Header title for the Your Brave section in the main App Menu">
+        Your Brave
+      </message>
       <if expr="is_win">
         <message name="IDS_SXS_SHORTCUT_NAME">Brave Nightly</message>
         <message name="IDS_SHORTCUT_NAME_BETA">Brave Beta</message>
@@ -789,6 +792,64 @@ Brave is unable to recover your settings.
           Keep in Dock
         </message>
       </if>
+
+            <!-- Pin InfoBar Experimental strings -->
+      <if expr="is_win">
+        <message name="IDS_PIN_INFOBAR_EXPERIMENTAL_MESSAGE_1" translateable="false" desc="Message text for the experimental pin infobar version 1 on Windows">
+          Open Brave with one click. Pin it for faster access.
+        </message>
+        <message name="IDS_PIN_INFOBAR_EXPERIMENTAL_MESSAGE_2" translateable="false" desc="Message text for the experimental pin infobar version 2 on Windows">
+          Launch the web faster. Pin Brave to your taskbar.
+        </message>
+        <message name="IDS_PIN_INFOBAR_EXPERIMENTAL_MESSAGE_3" translateable="false" desc="Message text for the experimental pin infobar version 3 on Windows">
+          Keep Brave within reach anytime you browse.
+        </message>
+        <message name="IDS_PIN_INFOBAR_EXPERIMENTAL_BUTTON_3" translateable="false" desc="Button text for the experimental pin infobar version 3 on Windows">
+          Pin Brave Now
+        </message>
+        <message name="IDS_PIN_INFOBAR_EXPERIMENTAL_MESSAGE_4" translateable="false" desc="Message text for the experimental pin infobar version 4 on Windows">
+          Optimize your workflow. Add Brave to your taskbar.
+        </message>
+        <message name="IDS_PIN_INFOBAR_EXPERIMENTAL_MESSAGE_6" translateable="false" desc="Message text for the experimental pin infobar version 6 on Windows">
+          Simplify your startup. Pin Brave to your taskbar.
+        </message>
+        <message name="IDS_PIN_INFOBAR_EXPERIMENTAL_BUTTON_8" translateable="false" desc="Button text for the experimental pin infobar version 8 on Windows">
+          Pin Brave
+        </message>
+        <message name="IDS_PIN_INFOBAR_EXPERIMENTAL_MESSAGE_9" translateable="false" desc="Message text for the experimental pin infobar version 9 on Windows">
+          For a better desktop experience, pin Brave to your taskbar.
+        </message>
+        <message name="IDS_PIN_INFOBAR_EXPERIMENTAL_MESSAGE_10" translateable="false" desc="Message text for the experimental pin infobar version 10 on Windows">
+          Start browsing instantly. Pin Brave to your taskbar.
+        </message>
+        <message name="IDS_PIN_INFOBAR_EXPERIMENTAL_BUTTON_10" translateable="false" desc="Button text for the experimental pin infobar version 10 on Windows">
+          Pin Brave
+        </message>
+      </if>
+      <if expr="is_macosx">
+        <message name="IDS_PIN_INFOBAR_EXPERIMENTAL_DOCK_MESSAGE_1" translateable="false" desc="Message text for the experimental pin infobar version 1 on Mac">
+          Open Brave with one click. Keep it in your Dock for faster access.
+        </message>
+        <message name="IDS_PIN_INFOBAR_EXPERIMENTAL_DOCK_MESSAGE_2" translateable="false" desc="Message text for the experimental pin infobar version 2 on Mac">
+          Launch the web faster. Keep Brave in your Dock.
+        </message>
+        <message name="IDS_PIN_INFOBAR_EXPERIMENTAL_DOCK_MESSAGE_3" translateable="false" desc="Message text for the experimental pin infobar version 3 on Mac">
+          Keep Brave within reach anytime you browse.
+        </message>
+        <message name="IDS_PIN_INFOBAR_EXPERIMENTAL_DOCK_MESSAGE_4" translateable="false" desc="Message text for the experimental pin infobar version 4 on Mac">
+          Optimize your workflow. Add Brave to your Dock.
+        </message>
+        <message name="IDS_PIN_INFOBAR_EXPERIMENTAL_DOCK_MESSAGE_6" translateable="false" desc="Message text for the experimental pin infobar version 6 on Mac">
+          Simplify your startup. Keep Brave in your Dock.
+        </message>
+        <message name="IDS_PIN_INFOBAR_EXPERIMENTAL_DOCK_MESSAGE_9" translateable="false" desc="Message text for the experimental pin infobar version 9 on Mac">
+          For a better desktop experience, keep Brave in your Dock.
+        </message>
+        <message name="IDS_PIN_INFOBAR_EXPERIMENTAL_DOCK_MESSAGE_10" translateable="false" desc="Message text for the experimental pin infobar version 10 on Mac">
+          Start browsing instantly. Keep Brave in your Dock.
+        </message>
+      </if>
+
       <message name="IDS_DEFAULT_BROWSER_INFOBAR_TEXT" desc="Text to show in an infobar when Brave is not the current default browser.">
         Brave isn't your default browser
       </message>
@@ -1505,6 +1566,9 @@ Brave is unable to recover your settings.
       <!-- Sign in on your phone (QR code) strings  -->
       <message name="IDS_QR_CODE_BUBBLE_SIGNIN_ON_PHONE_TITLE" desc="Title of the QR Code bubble showing a code for the user to sign in on their phone.">
         Sign in to Brave on your phone
+      </message>
+      <message name="IDS_QR_CODE_BUBBLE_SIGNIN_ON_PHONE_QR_CODE_ALT_TEXT" desc="Accessibility label for the QR code image in the cross-device sign-in promo bubble.">
+        QR code to sign in to Brave as <ph name="USER_NAME">$1<ex>Elisa Beckett</ex></ph>
       </message>
 
       <!-- App list -->

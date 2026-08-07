@@ -681,9 +681,6 @@ are declared in tools/grit/grit_args.gni.
           <message name="IDS_CONTENT_CONTEXT_READING_MODE" desc="Context menu menuitem to open page in reading mode view">
            Open in reading mode
           </message>
-          <message name="IDS_CONTENT_CONTEXT_READING_MODE_SELECTION" desc="Context menu menuitem to open selected text in reading mode view">
-           Open “<ph name="SELECTION">$1<ex>text</ex></ph>” in reading mode
-          </message>
           <message name="IDS_CONTENT_CONTEXT_LISTEN_TO_THIS_PAGE" desc="Context menu item to listen to this page">
            Listen to this page
           </message>
@@ -727,8 +724,14 @@ are declared in tools/grit/grit_args.gni.
           <message name="IDS_CONTENT_CONTEXT_OPENLINKOFFTHERECORD" desc="The name of the open a link in Private window command">
             Open link in &amp;private window
           </message>
+          <message name="IDS_CONTENT_CONTEXT_OPENLINK_ISOLATED" desc="The name of the open a link in Isolated window command">
+            Open link in i&amp;solated window
+          </message>
           <message name="IDS_CONTENT_CONTEXT_OPENLINKOFFTHERECORD_V2" desc="The name of the open a link in Private window command">
             Open link in &amp;Private window
+          </message>
+          <message name="IDS_CONTENT_CONTEXT_OPENLINK_ISOLATED_V2" desc="The name of the open a link in Isolated window command">
+            Open link in I&amp;solated window
           </message>
           <message name="IDS_CONTENT_CONTEXT_OPENLINKSPLITVIEW" desc="The name of the open a link in split view command">
             Open link in split view
@@ -938,8 +941,14 @@ are declared in tools/grit/grit_args.gni.
           <message name="IDS_CONTENT_CONTEXT_PARTIAL_TRANSLATE" desc="The name of the Partial Translate command in the content area context menu">
             &amp;Translate selection to <ph name="LANGUAGE">$1<ex>English</ex></ph>
           </message>
+          <message name="IDS_CONTENT_CONTEXT_PARTIAL_TRANSLATE_V2" desc="The name of the Partial Translate command in the content area context menu when simplified menu is enabled and there is no specific selection text to display.">
+            &amp;Translate selection
+          </message>
           <message name="IDS_CONTENT_CONTEXT_PARTIAL_TRANSLATE_SELECTION" desc="The name of the Translate command in the content area context menu when there is a text selection.">
             &amp;Translate “<ph name="SELECTION">$1<ex>text</ex></ph>” to <ph name="LANGUAGE">$2<ex>English</ex></ph>
+          </message>
+          <message name="IDS_CONTENT_CONTEXT_PARTIAL_TRANSLATE_SELECTION_V2" desc="The name of the Translate command in the content area context menu when there is a text selection and menu simplification is enabled.">
+            &amp;Translate “<ph name="SELECTION">$1<ex>text</ex></ph>”
           </message>
           <message name="IDS_CONTENT_CONTEXT_SEARCHWEBFOR" desc="The name of the Search the Web for “string” command in the content area context menu">
             &amp;Search <ph name="SEARCH_ENGINE">$1<ex>Brave</ex></ph> for “<ph name="SEARCH_TERMS">$2<ex>flowers</ex></ph>”
@@ -1022,9 +1031,6 @@ are declared in tools/grit/grit_args.gni.
           <message name="IDS_CONTENT_CONTEXT_READING_MODE" desc="Context menu menuitem to open page in reading mode view">
            Open in Reading Mode
           </message>
-          <message name="IDS_CONTENT_CONTEXT_READING_MODE_SELECTION" desc="In Title Case: Context menu menuitem to open selected text in reading mode view">
-           Open “<ph name="SELECTION">$1<ex>text</ex></ph>” in Reading Mode
-          </message>
           <message name="IDS_CONTENT_CONTEXT_LISTEN_TO_THIS_PAGE" desc="In Title Case: Context menu item to listen to this page">
            Listen to This Page
           </message>
@@ -1070,6 +1076,12 @@ are declared in tools/grit/grit_args.gni.
           <!-- Also update IDS_CONTENT_CONTEXT_OPENLINKOFFTHERECORD_INAPP in google_chrome_strings.grd and chromium_strings.grd. -->
           <message name="IDS_CONTENT_CONTEXT_OPENLINKOFFTHERECORD" desc="In Title Case: The name of the open a link in Private window command">
             Open Link in &amp;Private Window
+          </message>
+          <message name="IDS_CONTENT_CONTEXT_OPENLINK_ISOLATED" desc="In Title Case: The name of the open a link in Isolated window command">
+            Open Link in I&amp;solated Window
+          </message>
+          <message name="IDS_CONTENT_CONTEXT_OPENLINK_ISOLATED_V2" desc="In Title Case: The name of the open a link in Isolated window command">
+            Open Link in I&amp;solated Window
           </message>
           <message name="IDS_CONTENT_CONTEXT_OPENLINKOFFTHERECORD_V2" desc="In Title Case: The name of the open a link in Private window command">
             Open Link in &amp;Private Window
@@ -1297,8 +1309,11 @@ are declared in tools/grit/grit_args.gni.
           <message name="IDS_CONTENT_CONTEXT_PARTIAL_TRANSLATE" desc="In Title Case: The name of the Partial Translate command in the content area context menu">
             &amp;Translate Selection to <ph name="LANGUAGE">$1<ex>English</ex></ph>
           </message>
-          <message name="IDS_CONTENT_CONTEXT_PARTIAL_TRANSLATE_SELECTION" desc="In Title Case: The name of the Translate command in the content area context menu when there is a text selection.">
-            &amp;Translate “<ph name="SELECTION">$1<ex>text</ex></ph>” to <ph name="LANGUAGE">$2<ex>English</ex></ph>
+          <message name="IDS_CONTENT_CONTEXT_PARTIAL_TRANSLATE_V2" desc="In Title Case: The name of the Partial Translate command in the content area context menu when simplified menu is enabled and there is no specific selection text to display.">
+            &amp;Translate Selection
+          </message>
+          <message name="IDS_CONTENT_CONTEXT_PARTIAL_TRANSLATE_SELECTION_V2" desc="In Title Case: The name of the Translate command in the content area context menu when there is a text selection and menu simplification is enabled.">
+            &amp;Translate “<ph name="SELECTION">$1<ex>text</ex></ph>”
           </message>
           <message name="IDS_CONTENT_CONTEXT_SEARCHWEBFOR" desc="In Title Case: The name of the Search the Web for “string” command in the content area context menu">
             &amp;Search <ph name="SEARCH_ENGINE">$1<ex>Brave</ex></ph> for “<ph name="SEARCH_TERMS">$2<ex>flowers</ex></ph>”
@@ -1398,6 +1413,9 @@ are declared in tools/grit/grit_args.gni.
 
       <!-- Page menu. Android has separate strings for its menu -->
       <if expr="not is_android">
+        <message name="IDS_APP_MENU_TOOLS_AND_ACTIONS_HEADER" desc="Header title for the Tools and Actions section in the main App Menu">
+          Tools and Actions
+        </message>
         <message name="IDS_PROFILE_ROW_VERIFY_MESSAGE" desc="A label to indicate that the profile needs credential verification (reauthentication). This is a shorter version of 'Verify it's you' that is used in other places.">
           Verify
         </message>
@@ -1433,6 +1451,9 @@ are declared in tools/grit/grit_args.gni.
           </message>
           <message name="IDS_NEW_INCOGNITO_WINDOW" desc="The text label of a menu item for opening a new Private window">
             New &amp;Private window
+          </message>
+          <message name="IDS_NEW_ISOLATED_WINDOW" desc="The text label of a menu item for opening a new Isolated window">
+            New &amp;Isolated window
           </message>
           <message name="IDS_PROFILE_ROW_SIGNED_IN_MESSAGE_WITH_EMAIL" desc="Label that lets the user know what email they are signed into their profile as.">
             Signed in as <ph name="EMAIL">$1<ex>user@gmail.com</ex></ph>
@@ -1575,6 +1596,9 @@ are declared in tools/grit/grit_args.gni.
           </message>
           <message name="IDS_NEW_INCOGNITO_WINDOW" desc="In Title Case: The text label of a menu item for opening a new Private window">
             New &amp;Private Window
+          </message>
+          <message name="IDS_NEW_ISOLATED_WINDOW" desc="In Title Case: The text label of a menu item for opening a new Isolated window">
+            New &amp;Isolated Window
           </message>
           <message name="IDS_PROFILE_ROW_SIGNED_IN_MESSAGE_WITH_EMAIL" desc="In Title Case: Label that lets the user know what email they are signed into their profile as.">
             Signed in as <ph name="EMAIL">$1<ex>user@gmail.com</ex></ph>
@@ -3632,6 +3656,82 @@ are declared in tools/grit/grit_args.gni.
         </message>
       </if>
 
+      <!-- Pin InfoBar Experimental strings -->
+      <if expr="is_win">
+        <message name="IDS_PIN_INFOBAR_EXPERIMENTAL_BUTTON_1" translateable="false" desc="Button text for the experimental pin infobar version 1 on Windows">
+          Enable One-Click Access
+        </message>
+        <message name="IDS_PIN_INFOBAR_EXPERIMENTAL_BUTTON_2" translateable="false" desc="Button text for the experimental pin infobar version 2 on Windows">
+          Pin for Speed
+        </message>
+        <message name="IDS_PIN_INFOBAR_EXPERIMENTAL_BUTTON_4" translateable="false" desc="Button text for the experimental pin infobar version 4 on Windows">
+          Add to Taskbar
+        </message>
+        <message name="IDS_PIN_INFOBAR_EXPERIMENTAL_MESSAGE_5" translateable="false" desc="Message text for the experimental pin infobar version 5 on Windows">
+          Never search for your browser again. Secure it here.
+        </message>
+        <message name="IDS_PIN_INFOBAR_EXPERIMENTAL_BUTTON_5" translateable="false" desc="Button text for the experimental pin infobar version 5 on Windows">
+          Secure to Taskbar
+        </message>
+        <message name="IDS_PIN_INFOBAR_EXPERIMENTAL_BUTTON_6" translateable="false" desc="Button text for the experimental pin infobar version 6 on Windows">
+          Pin to Taskbar
+        </message>
+        <message name="IDS_PIN_INFOBAR_EXPERIMENTAL_MESSAGE_7" translateable="false" desc="Message text for the experimental pin infobar version 7 on Windows">
+          Always one click away from the web.
+        </message>
+        <message name="IDS_PIN_INFOBAR_EXPERIMENTAL_BUTTON_7" translateable="false" desc="Button text for the experimental pin infobar version 7 on Windows">
+          Pin to Taskbar
+        </message>
+        <message name="IDS_PIN_INFOBAR_EXPERIMENTAL_MESSAGE_8" translateable="false" desc="Message text for the experimental pin infobar version 8 on Windows">
+          Ready when you are.
+        </message>
+        <message name="IDS_PIN_INFOBAR_EXPERIMENTAL_BUTTON_9" translateable="false" desc="Button text for the experimental pin infobar version 9 on Windows">
+          Pin to Taskbar
+        </message>
+      </if>
+
+      <if expr="is_macosx">
+        <message name="IDS_PIN_INFOBAR_EXPERIMENTAL_DOCK_BUTTON_1" translateable="false" desc="Button text for the experimental pin infobar version 1 on Mac">
+          Enable One-Click Access
+        </message>
+        <message name="IDS_PIN_INFOBAR_EXPERIMENTAL_DOCK_BUTTON_2" translateable="false" desc="Button text for the experimental pin infobar version 2 on Mac">
+          Keep in Dock
+        </message>
+        <message name="IDS_PIN_INFOBAR_EXPERIMENTAL_DOCK_BUTTON_3" translateable="false" desc="Button text for the experimental pin infobar version 3 on Mac">
+          Keep in Dock Now
+        </message>
+        <message name="IDS_PIN_INFOBAR_EXPERIMENTAL_DOCK_BUTTON_4" translateable="false" desc="Button text for the experimental pin infobar version 4 on Mac">
+          Add to Dock
+        </message>
+        <message name="IDS_PIN_INFOBAR_EXPERIMENTAL_DOCK_MESSAGE_5" translateable="false" desc="Message text for the experimental pin infobar version 5 on Mac">
+          Never search for your browser again. Secure it here.
+        </message>
+        <message name="IDS_PIN_INFOBAR_EXPERIMENTAL_DOCK_BUTTON_5" translateable="false" desc="Button text for the experimental pin infobar version 5 on Mac">
+          Secure to Dock
+        </message>
+        <message name="IDS_PIN_INFOBAR_EXPERIMENTAL_DOCK_BUTTON_6" translateable="false" desc="Button text for the experimental pin infobar version 6 on Mac">
+          Keep in Dock
+        </message>
+        <message name="IDS_PIN_INFOBAR_EXPERIMENTAL_DOCK_MESSAGE_7" translateable="false" desc="Message text for the experimental pin infobar version 7 on Mac">
+          Always one click away from the web.
+        </message>
+        <message name="IDS_PIN_INFOBAR_EXPERIMENTAL_DOCK_BUTTON_7" translateable="false" desc="Button text for the experimental pin infobar version 7 on Mac">
+          Keep in Dock
+        </message>
+        <message name="IDS_PIN_INFOBAR_EXPERIMENTAL_DOCK_MESSAGE_8" translateable="false" desc="Message text for the experimental pin infobar version 8 on Mac">
+          Ready when you are.
+        </message>
+        <message name="IDS_PIN_INFOBAR_EXPERIMENTAL_DOCK_BUTTON_8" translateable="false" desc="Button text for the experimental pin infobar version 8 on Mac">
+          Keep in Dock
+        </message>
+        <message name="IDS_PIN_INFOBAR_EXPERIMENTAL_DOCK_BUTTON_9" translateable="false" desc="Button text for the experimental pin infobar version 9 on Mac">
+          Keep in Dock
+        </message>
+        <message name="IDS_PIN_INFOBAR_EXPERIMENTAL_DOCK_BUTTON_10" translateable="false" desc="Button text for the experimental pin infobar version 10 on Mac">
+          Keep in Dock
+        </message>
+      </if>
+
       <!-- Bluetooth Device Credentials (i.e. PIN/Passkey) dialog -->
       <if expr="is_win or is_linux or is_chromeos">
         <message name="IDS_BLUETOOTH_DEVICE_CREDENTIALS_TITLE" desc="Title of the Bluetooth device credentials prompt dialog.">
@@ -4754,9 +4854,6 @@ are declared in tools/grit/grit_args.gni.
       <message name="IDS_TASK_MANAGER_LINUX_VM_PREFIX" desc="The prefix for a Linux virtual machine row">
         Linux Virtual Machine: <ph name="LINUX_VM_NAME">$1<ex>termina</ex></ph>
       </message>
-      <message name="IDS_TASK_MANAGER_PLUGIN_VM_PREFIX" desc="A row in the task manager for a Parallels Desktop Virtual Machine. Parallels Desktop is a 3rd-party product name that should remain in English.">
-        Parallels Desktop: <ph name="PLUGIN_VM_NAME">$1<ex>PvmDefault</ex></ph>
-      </message>
       <message name="IDS_TASK_MANAGER_OMNIBOX" desc="A row in the task manager for the WebUI Omnibox.">
         Omnibox
       </message>
@@ -4787,11 +4884,6 @@ are declared in tools/grit/grit_args.gni.
             ChromeOS System Image Writer
           </message>
         </if>
-      </if>
-      <if expr="enable_extensions or is_android">
-        <message name="IDS_UTILITY_PROCESS_MEDIA_GALLERY_UTILITY_NAME" desc="The name of the utility process used for checking media files.">
-          Media File Checker
-        </message>
       </if>
       <message name="IDS_UTILITY_PROCESS_NOOP_SERVICE_NAME" desc="The name of the utility process which does nothing, used for experimentation.">
         No-op Service
@@ -4950,6 +5042,15 @@ are declared in tools/grit/grit_args.gni.
         </message>
         <message name="IDS_EXTENSION_PROMPT_WARNING_BLUETOOTH_DEVICES" desc="Permission string for implementing Bluetooth profiles.">
           Send messages to and receive messages from Bluetooth devices.
+        </message>
+        <message name="IDS_EXTENSION_PROMPT_WARNING_BLUETOOTH_DEVICES_SOCKET" desc="Permission string for accessing Bluetooth devices via sockets.">
+          Send messages to and receive messages from Bluetooth devices using sockets.
+        </message>
+        <message name="IDS_EXTENSION_PROMPT_WARNING_BLUETOOTH_DEVICES_LOW_ENERGY" desc="Permission string for accessing Bluetooth devices via Low Energy.">
+          Send messages to and receive messages from Bluetooth devices using Low Energy.
+        </message>
+        <message name="IDS_EXTENSION_PROMPT_WARNING_BLUETOOTH_DEVICES_PERIPHERAL" desc="Permission string for allowing nearby Bluetooth devices to discover and connect.">
+          Allow nearby Bluetooth devices to discover and connect to this device.
         </message>
         <message name="IDS_EXTENSION_PROMPT_WARNING_BLUETOOTH_PRIVATE" desc="Permission string for Bluetooth Private API.">
           Control Bluetooth adapter state and pairing
@@ -7072,6 +7173,12 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_WEBUI_OMNIBOX_COMPOSE_ASK_ABOUT_YOUR_TABS" desc="Label for a button that guides the user to composebox's context menu using a suggestion like label.">
         Ask about your tabs
       </message>
+      <message name="IDS_OMNIBOX_EVERYWHERE_STATUS_ICON_TOOLTIP" desc="Tooltip text for the Omnibox Everywhere status tray icon." translateable="false">
+        Omnibox Everywhere
+      </message>
+      <message name="IDS_OMNIBOX_EVERYWHERE_STATUS_ICON_MENU_EXIT" desc="Label for the exit item in the Omnibox Everywhere status tray context menu." translateable="false">
+        Exit
+      </message>
 
 
       <!-- NTP -->
@@ -7162,6 +7269,15 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_NTP_SEARCH_BOX_DYNAMIC_PLACEHOLDER_CANVAS" desc="One of the dynamically changing placeholder texts for the NTP searchbox">
         Create anything
+      </message>
+      <message name="IDS_NTP_SEARCH_BOX_DYNAMIC_PLACEHOLDER_RESEARCH_TOPIC" desc="One of the dynamically changing placeholder texts for the NTP searchbox. Only shown to users eligible for AI Mode.">
+        Research a topic
+      </message>
+      <message name="IDS_NTP_SEARCH_BOX_DYNAMIC_PLACEHOLDER_LEARN_SKILL" desc="One of the dynamically changing placeholder texts for the NTP searchbox. Only shown to users eligible for AI Mode.">
+        Learn a new skill
+      </message>
+      <message name="IDS_NTP_SEARCH_BOX_DYNAMIC_PLACEHOLDER_GET_ADVICE" desc="One of the dynamically changing placeholder texts for the NTP searchbox. Only shown to users eligible for AI Mode.">
+        Get advice
       </message>
       <message name="IDS_NTP_CUSTOM_LINKS_ADD_SHORTCUT_TOOLTIP" desc="The tooltip for adding a custom link shortcut. (On the New Tab Page)">
         Add shortcut
@@ -8317,137 +8433,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_ACTION_CHIP_WRITE_EDIT_HEADING" desc="Heading of the write or edit action chip on the NTP.">
         Write or edit
       </message>
-      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_PROMPT_1" desc="Text shown on the composebox searchbox on click of the brainstorm chip on the NTP.">
-        Help me settle a debate with a friend by providing an objective, data-driven analysis that represents both sides fairly
-      </message>
-      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_PROMPT_2" desc="Text shown on the composebox searchbox on click of the brainstorm chip on the NTP.">
-        What are some thing I can do to help decrease stress?
-      </message>
-      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_PROMPT_3" desc="Text shown on the composebox searchbox on click of the brainstorm chip on the NTP.">
-        Ask me questions about how I'm feeling and use my answers to make a playlist tailored to my mood
-      </message>
-      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_PROMPT_4" desc="Text shown on the composebox searchbox on click of the brainstorm chip on the NTP.">
-        Help me practice for my interview by asking me questions like you're a hiring manager
-      </message>
-      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_PROMPT_5" desc="Text shown on the composebox searchbox on click of the brainstorm chip on the NTP.">
-        Can you help me think through something?
-      </message>
-      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_PROMPT_6" desc="Text shown on the composebox searchbox on click of the brainstorm chip on the NTP.">
-        Can you brainstorm with me to help me solve my problem?
-      </message>
-      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_PROMPT_7" desc="Text shown on the composebox searchbox on click of the brainstorm chip on the NTP.">
-        Brainstorm to help me come up with unique gift ideas for someone, using their hobbies and interests that I share with you
-      </message>
-      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_PROMPT_8" desc="Text shown on the composebox searchbox on click of the brainstorm chip on the NTP.">
-        Help me prepare for a tough conversation by roleplaying with me so I can practice my responses
-      </message>
-      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_PROMPT_9" desc="Text shown on the composebox searchbox on click of the brainstorm chip on the NTP.">
-        Compare my health plan options and breakdown the key differences between them
-      </message>
-      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_PROMPT_10" desc="Text shown on the composebox searchbox on click of the brainstorm chip on the NTP.">
-        What are some tips to help me promote my brand? Include advice on how I can optimize my website
-      </message>
-      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_PROMPT_11" desc="Text shown on the composebox searchbox on click of the brainstorm chip on the NTP.">
-        Plan a home fitness routine that helps me meet my goals
-      </message>
-      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_PROMPT_12" desc="Text shown on the composebox searchbox on click of the brainstorm chip on the NTP.">
-        Create a packing list for my upcoming trip. Help me make sure I don't forget anything important
-      </message>
-      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_PROMPT_13" desc="Text shown on the composebox searchbox on click of the brainstorm chip on the NTP.">
-        Create a to-do list for me today to help me stay on track
-      </message>
-      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_PROMPT_14" desc="Text shown on the composebox searchbox on click of the brainstorm chip on the NTP.">
-        Create a customized tracker to stay on top of my goals
-      </message>
-      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_PROMPT_15" desc="Text shown on the composebox searchbox on click of the brainstorm chip on the NTP.">
-        Make me a grocery list based on a recipe or meal plan
-      </message>
-      <message name="IDS_NTP_ACTION_CHIP_HELP_ME_LEARN_PROMPT_1" desc="Text shown on the composebox searchbox on click of the help me learn chip on the NTP">
-        Help me learn how to code in python
-      </message>
-      <message name="IDS_NTP_ACTION_CHIP_HELP_ME_LEARN_PROMPT_2" desc="Text shown on the composebox searchbox on click of the help me learn chip on the NTP">
-        Create practice questions to test my knowledge about a topic
-      </message>
-      <message name="IDS_NTP_ACTION_CHIP_HELP_ME_LEARN_PROMPT_3" desc="Text shown on the composebox searchbox on click of the help me learn chip on the NTP">
-        Create a beginner's guide to stargazing to help me learn what to look for in the night sky, including 3 easily identifiable constellations
-      </message>
-      <message name="IDS_NTP_ACTION_CHIP_HELP_ME_LEARN_PROMPT_4" desc="Text shown on the composebox searchbox on click of the help me learn chip on the NTP">
-        Can you breakdown the lifecycle of a star?
-      </message>
-      <message name="IDS_NTP_ACTION_CHIP_HELP_ME_LEARN_PROMPT_5" desc="Text shown on the composebox searchbox on click of the help me learn chip on the NTP">
-        I'm trying to learn a new language. Create a quiz to help me practice vocabulary and grammar
-      </message>
-      <message name="IDS_NTP_ACTION_CHIP_HELP_ME_LEARN_PROMPT_6" desc="Text shown on the composebox searchbox on click of the help me learn chip on the NTP">
-        Calculate my GPA by weighting credit hours, course levels, and grade-point values
-      </message>
-      <message name="IDS_NTP_ACTION_CHIP_HELP_ME_LEARN_PROMPT_7" desc="Text shown on the composebox searchbox on click of the help me learn chip on the NTP">
-        Help me graph a function to visualize the mathematical equation and see the shape of the curve
-      </message>
-      <message name="IDS_NTP_ACTION_CHIP_WRITE_EDIT_PROMPT_1" desc="Text shown on the composebox searchbox on click of the write or edit chip on the NTP">
-        Rewrite my email by tweaking the tone to be more persuasive
-      </message>
-      <message name="IDS_NTP_ACTION_CHIP_WRITE_EDIT_PROMPT_2" desc="Text shown on the composebox searchbox on click of the write or edit chip on the NTP">
-        Rewrite the following text to sound professional, polite, and clear for a workplace setting. Maintain the original core message but elevate the tone to be appropriate for an executive audience: [Insert your text here]
-      </message>
-      <message name="IDS_NTP_ACTION_CHIP_WRITE_EDIT_PROMPT_3" desc="Text shown on the composebox searchbox on click of the write or edit chip on the NTP">
-        Draft a brief, polite response declining an invitation
-      </message>
-      <message name="IDS_NTP_ACTION_CHIP_WRITE_EDIT_PROMPT_4" desc="Text shown on the composebox searchbox on click of the write or edit chip on the NTP">
-        Rewrite my bio to sound more professional
-      </message>
-      <message name="IDS_NTP_ACTION_CHIP_WRITE_EDIT_PROMPT_5" desc="Text shown on the composebox searchbox on click of the write or edit chip on the NTP">
-        Shorten my email by trimming the message to its core points
-      </message>
-      <message name="IDS_NTP_ACTION_CHIP_WRITE_EDIT_PROMPT_6" desc="Text shown on the composebox searchbox on click of the write or edit chip on the NTP">
-        Draft an outline that organizes my thoughts into a clear and concise format
-      </message>
-      <message name="IDS_NTP_ACTION_CHIP_WRITE_EDIT_PROMPT_7" desc="Text shown on the composebox searchbox on click of the write or edit chip on the NTP">
-        Help me draft a polite reply to decline plans to meet
-      </message>
-      <message name="IDS_NTP_ACTION_CHIP_WRITE_EDIT_PROMPT_8" desc="Text shown on the composebox searchbox on click of the write or edit chip on the NTP">
-        Draft a cover letter intro that highlights my skills and experience for a specific role
-      </message>
-      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_PROMPT_16" desc="Text shown on the composebox searchbox on click of the brainstorm chip on the NTP.">
-        Create a fun itinerary for a weekend movie marathon. Come up with a theme, at least 4 must-watch films, and recommend specific snacks to pair with the movie
-      </message>
-      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_PROMPT_17" desc="Text shown on the composebox searchbox on click of the brainstorm chip on the NTP.">
-        Create a prioritized, room-by-room deep cleaning checklist targeting commonly missed spots
-      </message>
-      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_PROMPT_18" desc="Text shown on the composebox searchbox on click of the brainstorm chip on the NTP.">
-        Create a realistic digital detox plan for me this weekend
-      </message>
-      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_PROMPT_19" desc="Text shown on the composebox searchbox on click of the brainstorm chip on the NTP.">
-        Draft an 8-week training schedule for a complete beginner who wants to run a 5K. Include alternating walking and running intervals, and designated rest days
-      </message>
-      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_PROMPT_20" desc="Text shown on the composebox searchbox on click of the brainstorm chip on the NTP.">
-        Help me create a 10-minute full body workout. I want to focus on strength, stamina and flexibility
-      </message>
-      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_PROMPT_21" desc="Text shown on the composebox searchbox on click of the brainstorm chip on the NTP.">
-        Create a 10-minute workout routine that I can do in my room that doesn't include jumping or loud movements
-      </message>
-      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_PROMPT_22" desc="Text shown on the composebox searchbox on click of the brainstorm chip on the NTP.">
-        Create a 15-minute morning routine that helps make my mornings run smoother. Make sure it includes a mindfulness exercise
-      </message>
-      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_PROMPT_23" desc="Text shown on the composebox searchbox on click of the brainstorm chip on the NTP.">
-        Create a 7-day study schedule for my upcoming exam using the pomodoro technique and spaced repetition. I don't want to cram the day before the test so make sure the day before includes light review and sleep
-      </message>
-      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_PROMPT_24" desc="Text shown on the composebox searchbox on click of the brainstorm chip on the NTP.">
-        Draft a lesson plan, outlining an engaging session for my class
-      </message>
-      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_PROMPT_25" desc="Text shown on the composebox searchbox on click of the brainstorm chip on the NTP.">
-        I want to impress someone. Look for open tables for 2 at restaurants everyone’s talking about right now
-      </message>
-      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_PROMPT_26" desc="Text shown on the composebox searchbox on click of the brainstorm chip on the NTP.">
-        I’m in the mood for a cozy café where I can unplug for a bit, read, and maybe get some work done. Can you find spots nearby that are known for being quiet, comfortable, and have reliable wi-fi?
-      </message>
-      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_PROMPT_27" desc="Text shown on the composebox searchbox on click of the brainstorm chip on the NTP.">
-        Are there any open tables at nearby restaurants tonight?
-      </message>
-      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_PROMPT_28" desc="Text shown on the composebox searchbox on click of the brainstorm chip on the NTP.">
-        Find family-friendly restaurants that take reservations. Must have a kids menu and a casual atmosphere
-      </message>
-
-
       <!-- NTP Modules -->
       <message name="IDS_NTP_MODULES_SETUP_LIST_DISABLE_TOAST_MESSAGE" desc="Text shown in the toast confirming a module has been disabled.">
         You won't see <ph name="MODULE_NAME">$1<ex>Make Brave Yours</ex></ph> on this page again
@@ -9337,10 +9322,16 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_READING_MODE_TOOLTIP" desc="Tooltip for the reading mode feature, which gives users an accessible reading experience.">
           Reading mode (<ph name="READING_MODE_SHORTCUT">$1<ex>⌥⌘R</ex></ph>)
         </message>
+        <message name="IDS_READING_MODE_LINE_FOCUS_SHORTCUT_LABEL" desc="Keyboard shortcut for turning on and off the line focus feature in Reading mode.">
+          ⌥L
+        </message>
       </if>
       <if expr="not is_macosx">
         <message name="IDS_READING_MODE_TOOLTIP" desc="Tooltip for the reading mode feature, which gives users an accessible reading experience.">
           Reading mode (<ph name="READING_MODE_SHORTCUT">$1<ex>Alt+Shift+R</ex></ph>)
+        </message>
+        <message name="IDS_READING_MODE_LINE_FOCUS_SHORTCUT_LABEL" desc="Keyboard shortcut for turning on and off the line focus feature in Reading mode.">
+          Alt+L
         </message>
       </if>
       <message name="IDS_READING_MODE_NOT_SELECTABLE_HEADER" desc="Header for reading mode when the current webpage cannot be opened in reading mode, even when selecting text.">
@@ -10022,6 +10013,12 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_SPLIT_VIEW_RESIZE_BOTTOM_SIDE_ACCESSIBLE_ALERT" is_accessibility_with_no_ui="true" desc="Accessible alert text used in IDS_SPLIT_VIEW_RESIZE_ACCESSIBLE_ALERT for which side the window/pane is seen on.">
                Bottom
       </message>
+      <message name="IDS_SPLIT_VIEW_HORIZONTAL_INDIRECT_ACCESS_IPH_TITLE" desc="The title for horizontal split view indirect access snooze IPH.">
+        Try stacked split view
+      </message>
+      <message name="IDS_SPLIT_VIEW_HORIZONTAL_INDIRECT_ACCESS_IPH_BODY" desc="The body for horizontal split view indirect access snooze IPH.">
+        Use the split view menu to switch between side by side and stacked layouts.
+      </message>
 
       <!-- Vertical Tab Strings -->
       <if expr="use_titlecase">
@@ -10170,12 +10167,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Unpin
       </message>
       <message name="IDS_TAB_SEARCH_BUTTON_CXMENU_PIN" desc="Name of the tab search button context menu item for pinning tab search.">
-        Pin
-      </message>
-      <message name="IDS_ORGANIZER_PANEL_BUTTON_CXMENU_UNPIN" desc="Name of the organizer panel button context menu item for unpinning the organizer panel.">
-        Unpin
-      </message>
-      <message name="IDS_ORGANIZER_PANEL_BUTTON_CXMENU_PIN" desc="Name of the organizer panel button context menu item for pinning the organizer panel.">
         Pin
       </message>
       <message name="IDS_EVERYTHING_MENU_BUTTON_CXMENU_UNPIN" desc="Name of the everything menu button context menu item for unpinning the everything menu.">
@@ -13641,18 +13632,6 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         <message name="IDS_CONTENT_CONTEXT_SHARING_CLICK_TO_CALL_SINGLE_DEVICE" desc="The label of item for click to call in context menu for showing device name when one device is available.">
           Call from <ph name="DEVICE_NAME">$1<ex>Jimmy's Pixel</ex></ph>
         </message>
-        <message name="IDS_CONTENT_CONTEXT_SHARING_SHARED_CLIPBOARD_NOTIFICATION_TITLE_UNKNOWN_DEVICE" desc="Title text displayed in a shared clipboard notification when the source device name is unknown.">
-          Text shared from other device
-        </message>
-        <message name="IDS_CONTENT_CONTEXT_SHARING_SHARED_CLIPBOARD_NOTIFICATION_TITLE" desc="The title of the notification shown when a clipboard was shared.">
-          Text shared from <ph name="DEVICE_NAME">$1<ex>Jimmy's Pixel</ex></ph>
-        </message>
-        <message name="IDS_CONTENT_CONTEXT_SHARING_SHARED_CLIPBOARD_NOTIFICATION_DESCRIPTION" desc="The description of the notification shown when a clipboard was shared.">
-          Copied to your clipboard
-        </message>
-        <message name="IDS_OMNIBOX_TOOLTIP_SHARED_CLIPBOARD" desc="The tooltip for the shared clipboard omnibox icon.">
-          Copy to your device
-        </message>
       </if>
 
       <if expr="use_titlecase">
@@ -13661,18 +13640,6 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         </message>
         <message name="IDS_CONTENT_CONTEXT_SHARING_CLICK_TO_CALL_SINGLE_DEVICE" desc="In Title Case: The label of item for click to call in context menu when single device is available.">
           Call from <ph name="DEVICE_NAME">$1<ex>Jimmy's Pixel</ex></ph>
-        </message>
-        <message name="IDS_CONTENT_CONTEXT_SHARING_SHARED_CLIPBOARD_NOTIFICATION_TITLE_UNKNOWN_DEVICE" desc="Title text displayed in a shared clipboard notification when the source device name is unknown.">
-          Text shared from Other Device
-        </message>
-        <message name="IDS_CONTENT_CONTEXT_SHARING_SHARED_CLIPBOARD_NOTIFICATION_TITLE" desc="In Title Case: The title of the notification shown when a clipboard was shared.">
-          Text shared from <ph name="DEVICE_NAME">$1<ex>Jimmy's Pixel</ex></ph>
-        </message>
-        <message name="IDS_CONTENT_CONTEXT_SHARING_SHARED_CLIPBOARD_NOTIFICATION_DESCRIPTION" desc="In Title Case: The description of the notification shown when a clipboard was shared.">
-          Copied to Your Clipboard
-        </message>
-        <message name="IDS_OMNIBOX_TOOLTIP_SHARED_CLIPBOARD" desc="The tooltip for the shared clipboard omnibox icon.">
-          Copy to Your Device
         </message>
       </if>
 
@@ -15283,6 +15250,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
         <message name="IDS_NEW_INCOGNITO_WINDOW_MAC" desc="In Title Case: The Mac menu item for opening a new Private window in the file menu.">
           New Private Window
         </message>
+        <message name="IDS_NEW_ISOLATED_WINDOW_MAC" desc="In Title Case: The Mac menu item for opening a new Isolated window in the file menu.">
+          New Isolated Window
+        </message>
         <message name="IDS_REOPEN_CLOSED_TABS_MAC" desc="In Title Case: The Mac menu item reopen recently closed tabs in the file menu.">
           Reopen Closed Tab
         </message>
@@ -16041,9 +16011,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </if>
 
       <!-- Live caption. -->
-      <message name="IDS_LIVE_CAPTION_PROMO" desc="Text shown on promotional UI appearing next to the global media controls button">
-        Get captions for your audio and video
-      </message>
       <message name="IDS_LIVE_CAPTION_PROMO_SCREENREADER" desc="Text announced encouraging users to open live caption">
         Get captions for your audio and video by enabling Live Caption in settings
       </message>
@@ -18740,8 +18707,10 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_READING_LIST_TOAST_BUTTON" desc="Button on a toast notification that allows a user to open a reading list entry.">
         Open
       </message>
-      <message name="IDS_CLOSE_PINNED_TAB_TOAST_BODY" desc="Text on a toast notification that is shown when a pinned tab is being closed.">
-        Press <ph name="SHORTCUT_TEXT">$1<ex>⌘ + W</ex></ph> again to close the pinned tab
+      <message name="IDS_CLOSE_PINNED_TAB_TOAST_BODY" desc="Text on a toast notification that is shown when one or more pinned tabs are being closed. [ICU Syntax]">
+        {NUM_TABS, plural,
+          =1 {Press <ph name="SHORTCUT_TEXT">$1<ex>⌘ + W</ex></ph> again to close the pinned tab}
+          other {Press <ph name="SHORTCUT_TEXT">$1<ex>⌘ + W</ex></ph> again to close the pinned tabs}}
       </message>
       <message name="IDS_TOAST_CLOSE_TOOLTIP" desc="Tooltip for the X button on a toast notification that closes the toast.">
         Close
@@ -18972,6 +18941,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
     <message name="IDS_IWA_SUB_APPS_INSTALLER_PARENT_APP_NAME" desc="Label before the Sub App's parent Isolated Web App name in the app related dialogs.">
     Parent App: <ph name="APP_NAME">$1<ex>Brave Maps</ex></ph>
     </message>
+    <message name="IDS_IWA_SUB_APPS_UNINSTALL_INFO" desc="Explanation shown in the uninstall dialog clarifying that removing this specific Sub App will not remove its parent app or other related Sub Apps.">
+    This app was installed by <ph name="PARENT_APP_NAME">$1<ex>Brave Workspace</ex></ph>. Uninstalling <ph name="APP_NAME">$2<ex>Docs</ex></ph> does not affect <ph name="PARENT_APP_NAME">$1<ex>Brave Workspace</ex></ph> or any other apps it has installed.
+    </message>
     <if expr="is_chromeos">
         <message name="IDS_IWA_INSTALLER_SHELF_ITEM_TITLE" desc="Title of an Isolated Web App installer item on the ChromeOS Shelf.">
           Application Installer
@@ -18987,6 +18959,17 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
       <message name="IDS_ISOLATED_WEB_APPS_WINDOW_OPEN_PERMISSION_NOTIFICATION_BUTTON_SETTINGS" desc="Text for the button on the multiple tabs opened notification that opens the app's content settings.">
         Manage permissions
+      </message>
+
+    <!-- Isolated Web Apps pending update notification. -->
+      <message name="IDS_IWA_UPDATE_PENDING_NOTIFICATION_TITLE" desc="Title for the notification shown when an Isolated Web App update has been downloaded and is waiting for the app to restart.">
+        Update available for <ph name="APP_NAME">$1<ex>App Name</ex></ph>
+      </message>
+      <message name="IDS_IWA_UPDATE_PENDING_NOTIFICATION_MESSAGE" desc="Body text for the notification informing the user that an Isolated Web App update is ready to be applied by restarting the app, and warning about potential unsaved data loss.">
+        A new version (<ph name="VERSION">$1<ex>1.2.0</ex></ph>) is ready. Restart the app to apply the update. Unsaved data may be lost.
+      </message>
+      <message name="IDS_IWA_UPDATE_PENDING_NOTIFICATION_RESTART_BUTTON" meaning="button label" desc="Button label on the notification to restart the Isolated Web App and apply the pending update.">
+        Restart app
       </message>
 
     <!-- Web App Protocol Handler Picker Dialog. -->
