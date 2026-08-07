@@ -14,6 +14,7 @@
 #include "base/test/values_test_util.h"
 #include "brave/common/importer/importer_constants.h"
 #include "brave/components/constants/brave_paths.h"
+#include "build/build_config.h"
 #include "components/user_data_importer/common/importer_data_types.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -151,11 +152,21 @@ TEST_F(BraveChromeImporterUtilsTest, BraveImporterCanImportPasswords) {
   base::WriteFile(GetTestProfilePath().AppendASCII("Login Data"), "dummy");
   uint16_t services_supported = user_data_importer::NONE;
 
-  // TYPE_BRAVE should support password import.
+  // TYPE_BRAVE supports password import on macOS and Linux, where both
+  // installations share the same OS keychain entry. On Windows each install
+  // has its own key, so password import is not offered and (with only Login
+  // Data present) ChromeImporterCanImport returns false.
+#if BUILDFLAG(IS_WIN)
+  EXPECT_FALSE(ChromeImporterCanImport(GetTestProfilePath(),
+                                       user_data_importer::TYPE_BRAVE,
+                                       &services_supported));
+  EXPECT_FALSE(services_supported & user_data_importer::PASSWORDS);
+#else
   EXPECT_TRUE(ChromeImporterCanImport(GetTestProfilePath(),
                                       user_data_importer::TYPE_BRAVE,
                                       &services_supported));
   EXPECT_TRUE(services_supported & user_data_importer::PASSWORDS);
+#endif
 
   // TYPE_CHROME should NOT support password import (app-bound encryption).
   // With only Login Data present and no other importable data,
@@ -181,7 +192,12 @@ TEST_F(BraveChromeImporterUtilsTest, BraveImporterCanImportAllDataTypes) {
                                       &services_supported));
   EXPECT_TRUE(services_supported & user_data_importer::FAVORITES);
   EXPECT_TRUE(services_supported & user_data_importer::HISTORY);
+#if BUILDFLAG(IS_WIN)
+  // Password import from Brave is not offered on Windows (per-install keys).
+  EXPECT_FALSE(services_supported & user_data_importer::PASSWORDS);
+#else
   EXPECT_TRUE(services_supported & user_data_importer::PASSWORDS);
+#endif
   EXPECT_TRUE(services_supported & user_data_importer::EXTENSIONS);
 }
 

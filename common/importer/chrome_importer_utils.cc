@@ -149,6 +149,19 @@ bool CanImportPasswordsForType(user_data_importer::ImporterType type) {
   }
 #endif
 
+  // Brave-to-Brave password import relies on both installations sharing the
+  // same OS keychain entry, which only holds on macOS and Linux. On Windows
+  // each installation instead stores its own random key in its own Local
+  // State, encrypted with DPAPI (so DPAPI is still in use, just not the way
+  // older versions used it as the shared key directly). Because that per-key
+  // is unique per installation, the destination cannot decrypt the source's
+  // `Login Data`.
+#if BUILDFLAG(IS_WIN)
+  if (type == user_data_importer::TYPE_BRAVE) {
+    return false;
+  }
+#endif
+
   return true;
 }
 
