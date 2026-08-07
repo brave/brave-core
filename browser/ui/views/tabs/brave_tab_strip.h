@@ -118,7 +118,7 @@ class BraveTabStrip : public TabStrip {
   void OnScrollableHorizontalTabStripPrefChanged();
   void OnCompactModePrefChanged();
 #if BUILDFLAG(ENABLE_CONTAINERS)
-  void OnContainersOnlyUseMiniIconPrefChanged();
+  void OnAlwaysUseMiniAccentIconPrefChanged();
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
   // Clears tree-tab-node UI state when a tab becomes pinned. There is no
@@ -130,7 +130,7 @@ class BraveTabStrip : public TabStrip {
   BooleanPrefMember scrollable_horizontal_tab_strip_;
   BooleanPrefMember compact_horizontal_tabs_;
 #if BUILDFLAG(ENABLE_CONTAINERS)
-  BooleanPrefMember containers_only_use_mini_icon_;
+  BooleanPrefMember always_use_mini_accent_icon_;
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
   IntegerPrefMember tab_min_width_mode_;
 

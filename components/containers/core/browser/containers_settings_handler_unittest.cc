@@ -114,6 +114,11 @@ class ContainersSettingsHandlerTest : public testing::Test {
   void SetUp() override {
     feature_list_.InitAndEnableFeature(features::kContainers);
     RegisterProfilePrefs(prefs_.registry());
+    // Normally registered by brave_tabs::RegisterBraveProfilePrefs()
+    // (browser/ui/tabs/brave_tab_prefs.cc), which this test target cannot
+    // depend on. Register it directly here instead.
+    prefs_.registry()->RegisterBooleanPref(kAlwaysUseMiniAccentIconPrefName,
+                                           false);
     // Remove default containers from prefs for this test suite.
     prefs_.SetList(prefs::kContainersList, base::ListValue());
 
@@ -429,7 +434,7 @@ TEST_F(ContainersSettingsHandlerTest,
   handler_->GetContainersOnlyUseMiniIcon(enabled_future2.GetCallback());
   EXPECT_TRUE(enabled_future2.Take());
 
-  prefs_.SetBoolean(prefs::kContainersOnlyUseMiniIcon, false);
+  prefs_.SetBoolean(kAlwaysUseMiniAccentIconPrefName, false);
   mock_observer_->FlushForTesting();
   EXPECT_EQ(2, mock_observer_->containers_only_use_mini_icon_changed_count());
   EXPECT_FALSE(mock_observer_->last_containers_only_use_mini_icon());
