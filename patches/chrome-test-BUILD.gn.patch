@@ -1,8 +1,8 @@
 diff --git a/chrome/test/BUILD.gn b/chrome/test/BUILD.gn
-index cbd501366c8013f47b6f89d9622b4c8c0f4c245d..7c3fe843ba2b783c64d14499c45751c96f6d44c9 100644
+index 0b0339c1cce06224f0135e8862f57b8ab4d530db..7db4f25631c95bec13f66d0306c93a7ec6112411 100644
 --- a/chrome/test/BUILD.gn
 +++ b/chrome/test/BUILD.gn
-@@ -560,6 +560,7 @@ static_library("test_support") {
+@@ -511,6 +511,7 @@ static_library("test_support") {
      "//ui/gl",
    ]
  
@@ -10,7 +10,7 @@ index cbd501366c8013f47b6f89d9622b4c8c0f4c245d..7c3fe843ba2b783c64d14499c45751c9
    data = []
    data_deps = []
  
-@@ -5900,6 +5901,7 @@ test("unit_tests") {
+@@ -5817,6 +5818,7 @@ test("unit_tests") {
      "//ui/webui",
      "//v8",
    ]

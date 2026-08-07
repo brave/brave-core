@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/tabs/tab_strip_model.h b/chrome/browser/ui/tabs/tab_strip_model.h
-index 87ad841b0a938250b5531965b9f48382232cff5f..3ae539a28b13073b5a68fa043e1b17c224823603 100644
+index 35134a3c4fb8afb2c7f3aa698daa9fb418a1b906..920984e973939807d840c0b39c027ad91180c064 100644
 --- a/chrome/browser/ui/tabs/tab_strip_model.h
 +++ b/chrome/browser/ui/tabs/tab_strip_model.h
-@@ -43,7 +43,7 @@
+@@ -44,7 +44,7 @@
  #error This file should only be included on desktop.
  #endif
  
@@ -11,7 +11,7 @@ index 87ad841b0a938250b5531965b9f48382232cff5f..3ae539a28b13073b5a68fa043e1b17c2
  class Profile;
  class TabGroupModel;
  class TabStripModelDelegate;
-@@ -212,7 +212,7 @@ class TabStripModel {
+@@ -213,7 +213,7 @@ class TabStripModel {
    TabStripModel(const TabStripModel&) = delete;
    TabStripModel& operator=(const TabStripModel&) = delete;
  
@@ -20,7 +20,7 @@ index 87ad841b0a938250b5531965b9f48382232cff5f..3ae539a28b13073b5a68fa043e1b17c2
  
    // Retrieves the TabStripModelDelegate associated with this TabStripModel.
    TabStripModelDelegate* delegate() const { return delegate_; }
-@@ -620,7 +620,7 @@ class TabStripModel {
+@@ -622,7 +622,7 @@ class TabStripModel {
    // returns the index of the tabs in the current model that would end up being
    // the adjacent tabs of the selected unpinned tabs post move operation.
    std::pair<std::optional<int>, std::optional<int>>
@@ -29,7 +29,7 @@ index 87ad841b0a938250b5531965b9f48382232cff5f..3ae539a28b13073b5a68fa043e1b17c2
                                     int destination_index);
  
    // Updates the layout for the tabs with `split_id` and notifies observers.
-@@ -777,6 +777,14 @@ class TabStripModel {
+@@ -779,6 +779,14 @@ class TabStripModel {
      CommandGlicCreateNewChat,
      CommandGlicSwitchToRecentConversation,
      CommandGlicUnshare,
@@ -52,7 +52,7 @@ index 87ad841b0a938250b5531965b9f48382232cff5f..3ae539a28b13073b5a68fa043e1b17c2
    FRIEND_TEST_ALL_PREFIXES(TabStripModelTest, GetIndicesClosedByCommand);
    // Temporary private API.
    FRIEND_TEST_ALL_PREFIXES(TabStripModelTest, FindGroupIdFor);
-@@ -1187,7 +1196,7 @@ class TabStripModel {
+@@ -1192,7 +1201,7 @@ class TabStripModel {
    };
  
    // Selects either the next tab (kNext), or the previous tab (kPrevious).

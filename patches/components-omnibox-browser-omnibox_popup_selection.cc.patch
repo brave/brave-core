@@ -1,8 +1,8 @@
 diff --git a/components/omnibox/browser/omnibox_popup_selection.cc b/components/omnibox/browser/omnibox_popup_selection.cc
-index ad19d469fff611a5c05d281ccf1171477cff5cb2..dabe3c2acc6e4ebed73dccb96094ff02cc55e7b9 100644
+index fc0124ccd071ea27ac7cf38d9cd3076b9263613d..8b4391af3ebe399f67b4b6871ab9aa639ba60ee8 100644
 --- a/components/omnibox/browser/omnibox_popup_selection.cc
 +++ b/components/omnibox/browser/omnibox_popup_selection.cc
-@@ -68,6 +68,7 @@ bool OmniboxPopupSelection::IsControlPresentOnMatch(
+@@ -72,6 +72,7 @@ bool OmniboxPopupSelection::IsControlPresentOnMatch(
      }
      case FOCUSED_BUTTON_THUMBS_UP:
      case FOCUSED_BUTTON_THUMBS_DOWN:

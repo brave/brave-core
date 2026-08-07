@@ -1,8 +1,8 @@
 diff --git a/components/permissions/permission_request_manager.cc b/components/permissions/permission_request_manager.cc
-index 2fa053c79b98011d7233caed9b05c11236096bae..2cdabe473b485255957ce37a96d5209f45681bad 100644
+index 945d20f89231c444b201a23d53301844738a3956..829b0b31c10287570edfb2b00cbaee86a332d884 100644
 --- a/components/permissions/permission_request_manager.cc
 +++ b/components/permissions/permission_request_manager.cc
-@@ -599,6 +599,7 @@ void PermissionRequestManager::OnVisibilityChanged(
+@@ -601,6 +601,7 @@ void PermissionRequestManager::OnVisibilityChanged(
    }
    bool prior_tab_is_active_ = tab_is_active_;
    tab_is_active_ = visibility != content::Visibility::HIDDEN;
@@ -10,7 +10,7 @@ index 2fa053c79b98011d7233caed9b05c11236096bae..2cdabe473b485255957ce37a96d5209f
    if (prior_tab_is_active_ != tab_is_active_) {
      OnTabActiveChanged();
    }
-@@ -614,6 +615,7 @@ GURL PermissionRequestManager::GetRequestingOrigin() const {
+@@ -616,6 +617,7 @@ GURL PermissionRequestManager::GetRequestingOrigin() const {
    GURL origin = requests_.front()->requesting_origin();
    if (DCHECK_IS_ON()) {
      for (const auto& request : requests_) {
@@ -18,7 +18,7 @@ index 2fa053c79b98011d7233caed9b05c11236096bae..2cdabe473b485255957ce37a96d5209f
        DCHECK_EQ(origin, request->requesting_origin());
      }
    }
-@@ -981,7 +983,7 @@ void PermissionRequestManager::DequeueRequestIfNeeded() {
+@@ -1038,7 +1040,7 @@ void PermissionRequestManager::DequeueRequestIfNeeded() {
    // only after the camera request is resolved. This is caused by code in
    // PermissionBubbleMediaAccessHandler and UserMediaClient. We probably don't
    // need two permission queues, so resolve the duplication.
@@ -27,7 +27,7 @@ index 2fa053c79b98011d7233caed9b05c11236096bae..2cdabe473b485255957ce37a96d5209f
        IsRequestInProgress()) {
      return;
    }
-@@ -1119,7 +1121,7 @@ void PermissionRequestManager::ShowPrompt() {
+@@ -1176,7 +1178,7 @@ void PermissionRequestManager::ShowPrompt() {
      return;
    }
  
@@ -36,7 +36,7 @@ index 2fa053c79b98011d7233caed9b05c11236096bae..2cdabe473b485255957ce37a96d5209f
    DCHECK(current_request_ui_to_use_);
  
    if (!tab_is_active_) {
-@@ -2032,7 +2034,7 @@ void PermissionRequestManager::OnTabActiveChanged() {
+@@ -2082,7 +2084,7 @@ void PermissionRequestManager::OnTabActiveChanged() {
      return;
    }
  

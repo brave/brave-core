@@ -1,8 +1,8 @@
 diff --git a/content/browser/web_contents/web_contents_impl.h b/content/browser/web_contents/web_contents_impl.h
-index a611af68804665d9baa0d256060b769073dc290c..09013efa194c83aece83b6b42286e7e11cfbc3a2 100644
+index d79ef098c00aeda3dbd1a5a352d5fb522c5fdbd2..b851c2b6b41f0f79bcba339d361aba66de73671f 100644
 --- a/content/browser/web_contents/web_contents_impl.h
 +++ b/content/browser/web_contents/web_contents_impl.h
-@@ -1686,6 +1686,8 @@ class CONTENT_EXPORT WebContentsImpl
+@@ -1693,6 +1693,8 @@ class CONTENT_EXPORT WebContentsImpl
    // changed.
    void OnCapturerCountChanged();
  

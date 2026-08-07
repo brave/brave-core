@@ -1,5 +1,5 @@
 diff --git a/components/update_client/request_sender.cc b/components/update_client/request_sender.cc
-index a1a02bde1e4790ed712374c6898679bc0fff3804..9758f95d33910bc6943f5b2e73a17cfe92d68674 100644
+index b7844848c334d8ecb63ffe1cd5c8731639d13326..9815fbf2f4a10dad25a724686b860b3e214c75b3 100644
 --- a/components/update_client/request_sender.cc
 +++ b/components/update_client/request_sender.cc
 @@ -191,6 +191,8 @@ const std::string& SelectCupServerProof(

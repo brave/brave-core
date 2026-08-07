@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/webui/BUILD.gn b/chrome/browser/ui/webui/BUILD.gn
-index 9623fff2d1efc0f34b07930b2ce608de29c3f375..99aabf7b5e2bfd898e7f92455390c9be212975cf 100644
+index 5dee1d4a7f4a82326c51dfa81f1021237c797602..69ae9488c53670afd21e35367c23c3254ae312fa 100644
 --- a/chrome/browser/ui/webui/BUILD.gn
 +++ b/chrome/browser/ui/webui/BUILD.gn
-@@ -293,6 +293,8 @@ source_set("configs") {
+@@ -295,6 +295,8 @@ source_set("configs") {
    if (enable_webui_ntp) {
      deps += [ "//chrome/browser/ui/webui/ntp_microsoft_auth" ]
    }
@@ -11,7 +11,7 @@ index 9623fff2d1efc0f34b07930b2ce608de29c3f375..99aabf7b5e2bfd898e7f92455390c9be
  }
  
  source_set("webui") {
-@@ -342,7 +344,7 @@ source_set("webui_util") {
+@@ -344,7 +346,7 @@ source_set("webui_util") {
  # //ui/resources only defines under "not is_android or is_desktop_android or
  # enable_webui_ntp"; gate the target to where it was compiled inside :ui.
  if (enable_extensions_core || enable_webui_ntp ||

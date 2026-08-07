@@ -1,8 +1,8 @@
 diff --git a/chrome/android/junit/BUILD.gn b/chrome/android/junit/BUILD.gn
-index 84825ef8920a90e2fc2d3b0375ebfdf4f4fda4e4..a0efbd8bb9475d05a4174ba28aa8fc98821a3bbb 100644
+index 1295155c289b9dec7e9215e45f48eec729b3200d..df458214913ca2ce61f79e57e3112637e54758a0 100644
 --- a/chrome/android/junit/BUILD.gn
 +++ b/chrome/android/junit/BUILD.gn
-@@ -420,6 +420,7 @@ if (is_android) {
+@@ -421,6 +421,7 @@ if (is_android) {
        "//url:gurl_junit_test_support",
        "//url/mojom:url_mojom_gurl_java",
      ]

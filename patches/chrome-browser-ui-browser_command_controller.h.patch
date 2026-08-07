@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/browser_command_controller.h b/chrome/browser/ui/browser_command_controller.h
-index 1bb03fd90914ab66899201fdc1f2b85e1ca5406e..b67cb1ab6558c36c0a6f0101d5b3a2f042c22307 100644
+index db2b77fc2b2ac711d5d67d49939b5883d6d31d54..2e4d680893e622a1e33bbb66b510810d5669ae6c 100644
 --- a/chrome/browser/ui/browser_command_controller.h
 +++ b/chrome/browser/ui/browser_command_controller.h
-@@ -126,6 +126,7 @@ class BrowserCommandController : public CommandUpdater,
+@@ -137,6 +137,7 @@ class BrowserCommandController : public CommandUpdater,
                                      base::TimeTicks time_stamp) override;
  
   private:
@@ -10,7 +10,7 @@ index 1bb03fd90914ab66899201fdc1f2b85e1ca5406e..b67cb1ab6558c36c0a6f0101d5b3a2f0
  #if BUILDFLAG(IS_CHROMEOS)
    friend class BrowserCommandControllerBrowserTestLockedFullscreen;
  #endif
-@@ -191,7 +192,7 @@ class BrowserCommandController : public CommandUpdater,
+@@ -201,7 +202,7 @@ class BrowserCommandController : public CommandUpdater,
  
    // Update commands whose state depends on the type of fullscreen mode the
    // window is in.

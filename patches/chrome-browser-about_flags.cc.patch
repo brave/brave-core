@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/about_flags.cc b/chrome/browser/about_flags.cc
-index dbab4cd951bf67dddcce37cf637fa8715d711738..defddd22708212898583d2633cb65a4683b565e6 100644
+index fcb2bcd34cd74d9d683b6ca2941cdf6ad3248706..12cab2e23727cec71aa38dedd6adcbd228030ed9 100644
 --- a/chrome/browser/about_flags.cc
 +++ b/chrome/browser/about_flags.cc
-@@ -4754,6 +4754,7 @@ const FeatureEntry::FeatureVariation kDictationVariations[] = {
+@@ -4873,6 +4873,7 @@ const FeatureEntry::FeatureVariation kAutofillAiWalletPassBranding2026Variations
  //
  // When adding a new choice, add it to the end of the list.
  const FeatureEntry kFeatureEntries[] = {

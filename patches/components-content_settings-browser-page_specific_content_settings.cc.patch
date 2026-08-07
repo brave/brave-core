@@ -1,5 +1,5 @@
 diff --git a/components/content_settings/browser/page_specific_content_settings.cc b/components/content_settings/browser/page_specific_content_settings.cc
-index 94927d72502311f7f82ab965e5802c412c1e40b3..79578ed4a1c48aa3ed5fede995142a1dc4705a5c 100644
+index 7b9414fa85167be61f6031af840f8751bef8d2a9..196cce55ec75e43e3c557dd2b8e1c2c8e6d045f3 100644
 --- a/components/content_settings/browser/page_specific_content_settings.cc
 +++ b/components/content_settings/browser/page_specific_content_settings.cc
 @@ -911,6 +911,7 @@ bool PageSpecificContentSettings::IsContentBlocked(

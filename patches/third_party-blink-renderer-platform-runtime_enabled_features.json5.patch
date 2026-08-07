@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/platform/runtime_enabled_features.json5 b/third_party/blink/renderer/platform/runtime_enabled_features.json5
-index a09e7fc7b5253a0af4b63293de844293796d3978..e0e4a654b55e7c3722fb4531eff1fb352822fa7f 100644
+index a51dd917a87d662c14150e81cd74272ffbc5c42d..74f6c671550deab948a4dde8d70fd8f790ae9031 100644
 --- a/third_party/blink/renderer/platform/runtime_enabled_features.json5
 +++ b/third_party/blink/renderer/platform/runtime_enabled_features.json5
-@@ -977,6 +977,11 @@
+@@ -963,6 +963,11 @@
        name: "BoxDecorationBreakCloneLineBreaking",
        status: "test",
      },
@@ -14,7 +14,7 @@ index a09e7fc7b5253a0af4b63293de844293796d3978..e0e4a654b55e7c3722fb4531eff1fb35
      {
        name: "BrowserInitiatedAutomaticPictureInPicture",
        public: true,
-@@ -1341,7 +1346,7 @@
+@@ -1316,7 +1321,7 @@
        // objects that live on the compositor thread.
        // [1] https://drafts.csswg.org/css-animations-2/#timeline-triggers
        name: "CompositorTimelineTrigger",
@@ -23,7 +23,7 @@ index a09e7fc7b5253a0af4b63293de844293796d3978..e0e4a654b55e7c3722fb4531eff1fb35
      },
      {
        name: "CompressionDictionaryTransport",
-@@ -2999,6 +3004,7 @@
+@@ -2954,6 +2959,7 @@
        // In-development features for the File System Access API.
        name: "FileSystemAccessAPIExperimental",
        status: "experimental",
@@ -31,7 +31,7 @@ index a09e7fc7b5253a0af4b63293de844293796d3978..e0e4a654b55e7c3722fb4531eff1fb35
      },
      {
        // The FileSystemHandle.getCloudIdentifiers() method (see
-@@ -3013,6 +3019,7 @@
+@@ -2968,6 +2974,7 @@
        // Non-OPFS File System Access API.
        name: "FileSystemAccessLocal",
        status: {"default": "stable"},
@@ -39,7 +39,7 @@ index a09e7fc7b5253a0af4b63293de844293796d3978..e0e4a654b55e7c3722fb4531eff1fb35
      },
      {
        name: "FileSystemAccessLockingScheme",
-@@ -4228,6 +4235,7 @@
+@@ -4164,6 +4171,7 @@
      {
        name: "MiddleClickAutoscroll",
        status: "test",

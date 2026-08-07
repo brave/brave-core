@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/toolbar/app_menu.cc b/chrome/browser/ui/views/toolbar/app_menu.cc
-index b54aa03712a675b14e4af4ad3f324eed362cc56d..3e80dc67707c4e26aa9bcb55e29c0042dd397113 100644
+index 0560e6d5797e04a9a97aa9b5f6fb9d6d129b6d17..d6fd8ef38c7bd4f8954d8935c98609b4f9d93348 100644
 --- a/chrome/browser/ui/views/toolbar/app_menu.cc
 +++ b/chrome/browser/ui/views/toolbar/app_menu.cc
 @@ -1595,8 +1595,10 @@ views::View* AppMenu::GetZoomAppMenuViewForTest() {
