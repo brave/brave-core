@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import usePromise from '$web-common/usePromise';
-import { AutocompleteResult, OmniboxPopupSelection, PageHandlerFactory, PageHandlerRemote, PageInterface, PageReceiver, SelectedFileInfo, SelectionDirection, SelectionStep, SuggestInventory, TabInfo } from 'chrome://resources/mojo/components/omnibox/browser/searchbox.mojom-webui.js';
+import { AutocompleteResult, InputMethod, OmniboxPopupSelection, PageHandlerFactory, PageHandlerRemote, PageInterface, PageReceiver, SelectedFileInfo, SelectionDirection, SelectionStep, SuggestInventory, TabInfo } from 'chrome://resources/mojo/components/omnibox/browser/searchbox.mojom-webui.js';
 import * as React from 'react';
 import getNTPBrowserAPI, { SearchEngineInfo } from '../../api/background';
 import { useEngineContext } from './EngineContext';
@@ -142,7 +142,7 @@ export function SearchContext(props: React.PropsWithChildren<{}>) {
   React.useEffect(() => {
     if (query) {
       const keywordQuery = `${searchEngine?.keyword} ${query}`
-      omniboxController.queryAutocomplete(activeQueryId++, keywordQuery, false, keywordQuery.length, SuggestInventory.kDefault, false, '');
+      omniboxController.queryAutocomplete(activeQueryId++, keywordQuery, false, keywordQuery.length, SuggestInventory.kDefault, false, '', InputMethod.kKeyboard);
     } else {
       omniboxController.stopAutocomplete(true)
     }
