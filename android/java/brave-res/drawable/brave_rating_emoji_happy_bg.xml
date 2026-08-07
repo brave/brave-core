@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2026 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/.
+-->
+
+<!-- Trailing pill of the emoji pair: tight inner corners where it meets the sad
+     pill, wide outer (trailing) corners. `corners` radii are absolute, so
+     drawable-ldrtl/ carries the mirrored variant. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="@color/systemfeedback_success_background" />
+    <corners
+        android:topLeftRadius="8dp"
+        android:topRightRadius="20dp"
+        android:bottomRightRadius="20dp"
+        android:bottomLeftRadius="8dp" />
+</shape>

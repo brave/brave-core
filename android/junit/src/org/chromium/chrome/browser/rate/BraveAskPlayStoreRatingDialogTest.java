@@ -28,6 +28,7 @@ import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowLooper;
 
 import org.chromium.base.test.BaseRobolectricTestRunner;
+import org.chromium.chrome.R;
 
 /** Tests for {@link BraveAskPlayStoreRatingDialog} using FakeReviewManager. */
 @RunWith(BaseRobolectricTestRunner.class)
@@ -45,6 +46,9 @@ public class BraveAskPlayStoreRatingDialogTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
         mActivity = Robolectric.buildActivity(FragmentActivity.class).create().get();
+        // The dialog's layout resolves colors from theme attributes, which a bare
+        // Theme.AppCompat.Light does not define. Use the same theme family the app runs under.
+        mActivity.setTheme(R.style.Theme_BrowserUI_DayNight);
         mFakeReviewManager = new FakeReviewManager(mActivity);
     }
 

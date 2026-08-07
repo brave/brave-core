@@ -10,28 +10,27 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="24dp"
-    android:orientation="vertical"
-    android:background="@drawable/rating_bottomsheet_background">
+    android:orientation="vertical">
 
 
     <TextView
+        style="@style/LargeSemibold"
         android:id="@+id/liking_brave_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-medium"
+        android:gravity="center_horizontal"
         android:text="@string/liking_brave"
-        android:textColor="@color/brave_rating_title_color"
-        android:textSize="20sp"/>
+        android:textColor="?attr/colorOnSurface"/>
 
     <TextView
+        style="@style/DefaultRegular"
         android:id="@+id/rating_emoji_subtitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:fontFamily="sans-serif"
+        android:gravity="center_horizontal"
         android:text="@string/in_one_emoji_experience_with_brave"
-        android:textColor="@color/brave_rating_sub_title_color"
-        android:textSize="16sp" />
+        android:textColor="?attr/colorOnSurfaceVariant" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -40,25 +39,68 @@
         android:gravity="center"
         android:orientation="horizontal">
 
+        <!-- The two pills split the sheet's content width evenly, so their outer
+             edges line up with the title and subtitle. The 16dp padding renders
+             the icon at the design's 48dp inside the 80dp-tall pill. -->
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/sadImageView"
-            android:layout_width="132dp"
-            android:layout_height="76dp"
-            android:layout_marginEnd="24dp"
-            android:background="@drawable/brave_rating_emoji_bg"
-            android:scaleType="center"
+            android:layout_width="0dp"
+            android:layout_height="80dp"
+            android:layout_weight="1"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/brave_rating_emoji_sad_bg"
+            android:padding="16dp"
+            android:scaleType="fitCenter"
             android:contentDescription="@string/sad"
-            app:srcCompat="@drawable/ic_brave_smiley_sad" />
+            app:srcCompat="@drawable/ic_face_sad"
+            app:tint="@color/systemfeedback_error_icon" />
 
          <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/happyImageView"
-            android:layout_width="132dp"
-            android:layout_height="76dp"
-            android:background="@drawable/brave_rating_emoji_bg"
-            android:scaleType="center"
+            android:layout_width="0dp"
+            android:layout_height="80dp"
+            android:layout_weight="1"
+            android:background="@drawable/brave_rating_emoji_happy_bg"
+            android:padding="16dp"
+            android:scaleType="fitCenter"
             android:contentDescription="@string/happy"
-            app:srcCompat="@drawable/ic_brave_smiley_happy" />
+            app:srcCompat="@drawable/ic_face_happy"
+            app:tint="@color/systemfeedback_success_icon" />
 
     </LinearLayout>
-     
+
+    <!-- The border spans the full content width while the checkbox and its label
+         are centred as a group. The whole row toggles the checkbox, so the row
+         owns the click and the checkbox is not independently clickable or
+         focusable - that also makes the pair a single TalkBack node. -->
+    <LinearLayout
+        android:id="@+id/dont_show_again_row"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/brave_rating_dont_show_again_bg"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <android.widget.CheckBox
+            android:id="@+id/dont_show_again_checkbox"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:button="@drawable/brave_checkbox"
+            android:buttonTint="@color/brave_rating_checkbox_tint"
+            android:clickable="false"
+            android:focusable="false" />
+
+        <TextView
+            style="@style/DefaultRegular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/brave_rating_dont_show_again"
+            android:textColor="?attr/colorOnSurfaceVariant" />
+
+    </LinearLayout>
+
 </LinearLayout>
