@@ -45,7 +45,7 @@ void SyncSchedulerImpl::PermanentlyDeleteAccountImpl(
     base::OnceCallback<void(const SyncProtocolError&)> callback) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
-  SyncCycle cycle(cycle_context_, this);
+  SyncCycle cycle(cycle_context_, this, signin::AccessTokenInfo());
   BraveSyncServerCommands::PermanentlyDeleteAccount(&cycle,
                                                     std::move(callback));
 }
