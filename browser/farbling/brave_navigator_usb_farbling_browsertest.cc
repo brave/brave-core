@@ -11,6 +11,8 @@
 #include "base/notreached.h"
 #include "base/path_service.h"
 #include "brave/browser/brave_content_browser_client.h"
+#include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/webcompat/core/common/features.h"
@@ -192,6 +194,9 @@ class BraveNavigatorUsbFarblingBrowserTest : public InProcessBrowserTest {
         device_manager.InitWithNewPipeAndPassReceiver());
     UsbChooserContextFactory::GetForProfile(browser()->profile())
         ->SetDeviceManagerForTesting(std::move(device_manager));
+    auto* profile = browser()->profile();
+    brave_shields_settings_ =
+        BraveShieldsSettingsServiceFactory::GetForProfile(profile);
   }
 
   void TearDownOnMainThread() override {
@@ -222,14 +227,12 @@ class BraveNavigatorUsbFarblingBrowserTest : public InProcessBrowserTest {
   }
 
   void AllowFingerprinting(std::string domain) {
-    brave_shields::SetFingerprintingControlType(
-        content_settings(), ControlType::ALLOW,
+    brave_shields_settings_->SetFingerprintingControlType(ControlType::ALLOW,
         https_server()->GetURL(domain, "/"));
   }
 
   void SetFingerprintingDefault(std::string domain) {
-    brave_shields::SetFingerprintingControlType(
-        content_settings(), ControlType::DEFAULT,
+    brave_shields_settings_->SetFingerprintingControlType(ControlType::DEFAULT,
         https_server()->GetURL(domain, "/"));
   }
 
@@ -264,6 +267,8 @@ class BraveNavigatorUsbFarblingBrowserTest : public InProcessBrowserTest {
   device::FakeUsbDeviceManager device_manager_;
   device::mojom::UsbDeviceInfoPtr fake_device_info_;
   base::test::ScopedFeatureList scoped_feature_list_;
+  raw_ptr<brave_shields::BraveShieldsSettingsService> brave_shields_settings_ =
+      nullptr;
 };
 
 IN_PROC_BROWSER_TEST_F(BraveNavigatorUsbFarblingBrowserTest,

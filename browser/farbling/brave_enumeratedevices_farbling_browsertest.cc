@@ -7,8 +7,10 @@
 
 #include "base/path_service.h"
 #include "base/test/thread_test_helper.h"
+#include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
 #include "brave/browser/extensions/brave_base_local_data_files_browsertest.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/constants/pref_names.h"
@@ -61,6 +63,9 @@ class BraveEnumerateDevicesFarblingBrowserTest : public InProcessBrowserTest {
     top_level_page_url_ = https_server_.GetURL("b.test", "/");
     farbling_url_ = https_server_.GetURL("b.test", "/simple.html");
     host_resolver()->AddRule("*", "127.0.0.1");
+    auto* profile = browser()->profile();
+    brave_shields_settings_ =
+        BraveShieldsSettingsServiceFactory::GetForProfile(profile);
   }
 
  protected:
@@ -74,18 +79,18 @@ class BraveEnumerateDevicesFarblingBrowserTest : public InProcessBrowserTest {
   }
 
   void AllowFingerprinting() {
-    brave_shields::SetFingerprintingControlType(
-        content_settings(), ControlType::ALLOW, top_level_page_url_);
+    brave_shields_settings_->SetFingerprintingControlType(ControlType::ALLOW,
+                                                          top_level_page_url_);
   }
 
   void BlockFingerprinting() {
-    brave_shields::SetFingerprintingControlType(
-        content_settings(), ControlType::BLOCK, top_level_page_url_);
+    brave_shields_settings_->SetFingerprintingControlType(ControlType::BLOCK,
+                                                          top_level_page_url_);
   }
 
   void SetFingerprintingDefault() {
-    brave_shields::SetFingerprintingControlType(
-        content_settings(), ControlType::DEFAULT, top_level_page_url_);
+    brave_shields_settings_->SetFingerprintingControlType(ControlType::DEFAULT,
+                                                          top_level_page_url_);
   }
 
   content::WebContents* contents() {
@@ -102,6 +107,8 @@ class BraveEnumerateDevicesFarblingBrowserTest : public InProcessBrowserTest {
  private:
   GURL top_level_page_url_;
   GURL farbling_url_;
+  raw_ptr<brave_shields::BraveShieldsSettingsService> brave_shields_settings_ =
+      nullptr;
 };
 
 // Tests results of farbling known values

@@ -6,7 +6,9 @@
 #include <memory>
 
 #include "base/path_service.h"
+#include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/constants/brave_paths.h"
@@ -52,6 +54,10 @@ class BraveSpeechSynthesisFarblingBrowserTest : public InProcessBrowserTest {
     embedded_test_server()->ServeFilesFromDirectory(test_data_dir);
 
     ASSERT_TRUE(embedded_test_server()->Start());
+
+    auto* profile = browser()->profile();
+    brave_shields_settings_ =
+        BraveShieldsSettingsServiceFactory::GetForProfile(profile);
   }
 
   HostContentSettingsMap* content_settings() {
@@ -59,20 +65,17 @@ class BraveSpeechSynthesisFarblingBrowserTest : public InProcessBrowserTest {
   }
 
   void AllowFingerprinting(std::string domain) {
-    brave_shields::SetFingerprintingControlType(
-        content_settings(), ControlType::ALLOW,
+    brave_shields_settings_->SetFingerprintingControlType(ControlType::ALLOW,
         embedded_test_server()->GetURL(domain, "/"));
   }
 
   void BlockFingerprinting(std::string domain) {
-    brave_shields::SetFingerprintingControlType(
-        content_settings(), ControlType::BLOCK,
+    brave_shields_settings_->SetFingerprintingControlType(ControlType::BLOCK,
         embedded_test_server()->GetURL(domain, "/"));
   }
 
   void SetFingerprintingDefault(std::string domain) {
-    brave_shields::SetFingerprintingControlType(
-        content_settings(), ControlType::DEFAULT,
+    brave_shields_settings_->SetFingerprintingControlType(ControlType::DEFAULT,
         embedded_test_server()->GetURL(domain, "/"));
   }
 
@@ -81,6 +84,8 @@ class BraveSpeechSynthesisFarblingBrowserTest : public InProcessBrowserTest {
   }
 
  private:
+  raw_ptr<brave_shields::BraveShieldsSettingsService> brave_shields_settings_ =
+      nullptr;
   base::test::ScopedFeatureList scoped_feature_list_;
 };
 

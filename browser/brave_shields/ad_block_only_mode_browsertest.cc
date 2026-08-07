@@ -79,8 +79,7 @@ class AdblockOnlyModeBrowserTestBase : public PlatformBrowserTest {
                          ControlType::BLOCK_THIRD_PARTY, GURL(), nullptr);
 
     // Enable Brave Fingerprinting protection.
-    SetFingerprintingControlType(host_content_settings_map(),
-                                 ControlType::DEFAULT, GURL());
+    brave_shields_settings()->SetFingerprintingControlType(ControlType::DEFAULT, GURL());
 
     // Set `Upgrade connections to HTTPS` to require HTTPS.
     SetHttpsUpgradeControlType(host_content_settings_map(), ControlType::BLOCK,
@@ -114,7 +113,7 @@ class AdblockOnlyModeBrowserTestBase : public PlatformBrowserTest {
               ControlType::BLOCK_THIRD_PARTY);
 
     // Verify that Brave Fingerprinting protection is enabled.
-    EXPECT_EQ(GetFingerprintingControlType(host_content_settings_map(), GURL()),
+    EXPECT_EQ(brave_shields_settings()->GetFingerprintingControlType(GURL()),
               ControlType::DEFAULT);
 
     // Verify that `Upgrade connections to HTTPS` is set to require HTTPS.
@@ -173,7 +172,7 @@ class AdblockOnlyModeBrowserTestBase : public PlatformBrowserTest {
               ControlType::ALLOW);
 
     // Verify that Brave Fingerprinting protection is disabled.
-    EXPECT_EQ(GetFingerprintingControlType(host_content_settings_map(), GURL()),
+    EXPECT_EQ(brave_shields_settings()->GetFingerprintingControlType(GURL()),
               ControlType::ALLOW);
 
     // Verify that `Upgrade connections to HTTPS` is set to standard mode.

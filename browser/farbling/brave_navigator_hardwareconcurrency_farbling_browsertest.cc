@@ -9,8 +9,10 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/thread_test_helper.h"
+#include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
 #include "brave/browser/extensions/brave_base_local_data_files_browsertest.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/constants/brave_paths.h"
@@ -60,6 +62,10 @@ class BraveNavigatorHardwareConcurrencyFarblingBrowserTest
 
     top_level_page_url_ = embedded_test_server()->GetURL("a.com", "/");
     farbling_url_ = embedded_test_server()->GetURL("a.com", "/simple.html");
+
+    auto* profile = browser()->profile();
+    brave_shields_settings_ =
+        BraveShieldsSettingsServiceFactory::GetForProfile(profile);
   }
 
   const GURL& farbling_url() { return farbling_url_; }
@@ -69,18 +75,18 @@ class BraveNavigatorHardwareConcurrencyFarblingBrowserTest
   }
 
   void AllowFingerprinting() {
-    brave_shields::SetFingerprintingControlType(
-        content_settings(), ControlType::ALLOW, top_level_page_url_);
+    brave_shields_settings_->SetFingerprintingControlType(ControlType::ALLOW,
+                                                          top_level_page_url_);
   }
 
   void BlockFingerprinting() {
-    brave_shields::SetFingerprintingControlType(
-        content_settings(), ControlType::BLOCK, top_level_page_url_);
+    brave_shields_settings_->SetFingerprintingControlType(ControlType::BLOCK,
+                                                          top_level_page_url_);
   }
 
   void SetFingerprintingDefault() {
-    brave_shields::SetFingerprintingControlType(
-        content_settings(), ControlType::DEFAULT, top_level_page_url_);
+    brave_shields_settings_->SetFingerprintingControlType(ControlType::DEFAULT,
+                                                          top_level_page_url_);
   }
 
   void EnableWebcompatException() {
@@ -98,6 +104,8 @@ class BraveNavigatorHardwareConcurrencyFarblingBrowserTest
   base::test::ScopedFeatureList scoped_feature_list_;
   GURL top_level_page_url_;
   GURL farbling_url_;
+  raw_ptr<brave_shields::BraveShieldsSettingsService> brave_shields_settings_ =
+      nullptr;
 };
 
 // Tests results of farbling known values

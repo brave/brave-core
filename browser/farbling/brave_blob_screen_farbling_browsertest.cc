@@ -9,9 +9,10 @@
 #include "base/path_service.h"
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
+#include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/constants/brave_paths.h"
-#include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -76,6 +77,9 @@ class BraveBlobScreenFarblingBrowserTest
     // Setup the test bound.
     ui_test_utils::SetAndWaitForBounds(*browser(),
                                        gfx::Rect(100, 100, 400, 400));
+    auto* profile = browser()->profile();
+    brave_shields_settings_ =
+        BraveShieldsSettingsServiceFactory::GetForProfile(profile);
   }
 
   void TearDownOnMainThread() override {
@@ -86,8 +90,7 @@ class BraveBlobScreenFarblingBrowserTest
 
   void AllowFingerprinting(bool allow) {
     fingerprinting_allowed_ = allow;
-    brave_shields::SetFingerprintingControlType(
-        HostContentSettingsMapFactory::GetForProfile(browser()->profile()),
+    brave_shields_settings_->SetFingerprintingControlType(
         allow ? ControlType::ALLOW : ControlType::DEFAULT, blob_test_url_);
   }
 
@@ -177,6 +180,8 @@ class BraveBlobScreenFarblingBrowserTest
   BlobContainerType blob_container_type_ = BlobContainerType::kUnset;
   bool fingerprinting_allowed_ = false;
   raw_ptr<Browser> pop_up_browser_ = nullptr;
+  raw_ptr<brave_shields::BraveShieldsSettingsService> brave_shields_settings_ =
+      nullptr;
 };
 
 INSTANTIATE_TEST_SUITE_P(
