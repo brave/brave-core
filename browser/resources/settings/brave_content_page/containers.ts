@@ -57,6 +57,9 @@ export class SettingsBraveContentContainersElement extends SettingsBraveContentC
       containersList_: {
         type: Array,
       },
+      containersOnlyUseMiniIcon_: {
+        type: Boolean,
+      },
       editingContainer_: {
         type: Object,
       },
@@ -78,6 +81,7 @@ export class SettingsBraveContentContainersElement extends SettingsBraveContentC
   private browserProxy = ContainersSettingsHandlerBrowserProxy.getInstance()
   accessor containersEnabled_ = true
   accessor containersList_: Container[] = []
+  accessor containersOnlyUseMiniIcon_ = false
   accessor editingContainer_: Container | undefined
   accessor deletingContainer_: Container | undefined
   accessor isEditDialogNameInvalid_ = false
@@ -92,12 +96,19 @@ export class SettingsBraveContentContainersElement extends SettingsBraveContentC
     this.browserProxy.handler.getContainers().then(({ containers }) => {
       this.onContainersListUpdated_(containers)
     })
+    this.browserProxy.handler.getContainersOnlyUseMiniIcon().then(
+      ({ onlyUseMiniIcon }) => {
+        this.containersOnlyUseMiniIcon_ = onlyUseMiniIcon
+      },
+    )
     this.browserProxy.callbackRouter.onContainersChanged.addListener(
       this.onContainersListUpdated_.bind(this),
     )
     this.browserProxy.callbackRouter.onContainersEnabledChanged.addListener(
       this.onContainersEnabledChanged_.bind(this),
     )
+    this.browserProxy.callbackRouter.onContainersOnlyUseMiniIconChanged
+      .addListener(this.onContainersOnlyUseMiniIconChanged_.bind(this))
   }
 
   override updated(changedProperties: PropertyValues<this>) {
@@ -115,9 +126,18 @@ export class SettingsBraveContentContainersElement extends SettingsBraveContentC
     this.containersEnabled_ = enabled
   }
 
+  private onContainersOnlyUseMiniIconChanged_(onlyUseMiniIcon: boolean) {
+    this.containersOnlyUseMiniIcon_ = onlyUseMiniIcon
+  }
+
   onContainersEnabledChange_(e: Event) {
     const toggle = e.target as SettingsToggleButtonElement
     this.browserProxy.handler.setContainersEnabled(toggle.checked)
+  }
+
+  onContainersOnlyUseMiniIconChange_(e: Event) {
+    const toggle = e.target as SettingsToggleButtonElement
+    this.browserProxy.handler.setContainersOnlyUseMiniIcon(toggle.checked)
   }
 
   onContainersListUpdated_(containers: Container[]) {

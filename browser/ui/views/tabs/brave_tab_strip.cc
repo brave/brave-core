@@ -61,6 +61,7 @@
 #include "brave/browser/ui/containers/container_model.h"
 #include "brave/browser/ui/containers/containers_icon_generator.h"
 #include "brave/components/containers/content/browser/storage_partition_utils.h"
+#include "brave/components/containers/core/browser/pref_names.h"
 #include "brave/components/containers/core/browser/temporary_container.h"
 #include "brave/components/containers/core/common/features.h"
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
@@ -95,6 +96,14 @@ BraveTabStrip::BraveTabStrip(
       brave_tabs::kCompactHorizontalTabs, g_browser_process->local_state(),
       base::BindRepeating(&BraveTabStrip::OnCompactModePrefChanged,
                           base::Unretained(this)));
+#if BUILDFLAG(ENABLE_CONTAINERS)
+  containers_only_use_mini_icon_.Init(
+      containers::prefs::kContainersOnlyUseMiniIcon,
+      controller_->GetBrowserWindowInterface()->GetProfile()->GetPrefs(),
+      base::BindRepeating(
+          &BraveTabStrip::OnContainersOnlyUseMiniIconPrefChanged,
+          base::Unretained(this)));
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
 }
 
 BraveTabStrip::~BraveTabStrip() = default;
@@ -388,6 +397,24 @@ void BraveTabStrip::OnCompactModePrefChanged() {
   PreferredSizeChanged();
 }
 
+#if BUILDFLAG(ENABLE_CONTAINERS)
+void BraveTabStrip::OnContainersOnlyUseMiniIconPrefChanged() {
+  // Invalidate layout of all tabs to update accent icon size.
+  // The size of the accent icon is determined in Tab::Layout().
+  for (int i = 0; i < GetTabCount(); ++i) {
+    auto* tab = tab_at(i);
+    tab->InvalidateLayout();
+    tab->SchedulePaint();
+  }
+
+  // We need to invalidate the ideal bounds of the tab container so that it
+  // doesn't skip the layout.
+  if (auto* tab_container = GetBraveTabContainer()) {
+    tab_container->InvalidateIdealBounds();
+  }
+}
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
+
 brave_tabs::TabMinWidthMode BraveTabStrip::GetTabMinWidthMode() const {
   const PrefService* prefs =
       controller_->GetBrowserWindowInterface()->GetProfile()->GetPrefs();
@@ -479,6 +506,14 @@ ui::ImageModel BraveTabStrip::GetTabAccentIcon(const Tab* tab) const {
           accent_colors->icon_color));
 #else
   return ui::ImageModel();
+#endif
+}
+
+bool BraveTabStrip::ShouldAlwaysShowMiniTabAccent() const {
+#if BUILDFLAG(ENABLE_CONTAINERS)
+  return *containers_only_use_mini_icon_;
+#else
+  return false;
 #endif
 }
 

@@ -29,6 +29,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
                           version_info::Channel channel) {
   registry->RegisterBooleanPref(prefs::kContainersEnabled,
                                 GetContainersEnabledPrefDefault(channel));
+  registry->RegisterBooleanPref(prefs::kContainersOnlyUseMiniIcon, false);
   registry->RegisterListPref(
       prefs::kContainersList,
       ConvertContainersToListValue(CreateDefaultContainersList()),

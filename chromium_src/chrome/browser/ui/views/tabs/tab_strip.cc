@@ -95,6 +95,10 @@ ui::ImageModel TabStrip::GetTabAccentIcon(const Tab* tab) const {
   return ui::ImageModel();
 }
 
+bool TabStrip::ShouldAlwaysShowMiniTabAccent() const {
+  return false;
+}
+
 int TabStrip::GetTreeHeight(const tree_tab::TreeTabNodeId& id) const {
   return 0;
 }
