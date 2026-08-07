@@ -1,8 +1,8 @@
 diff --git a/chrome/utility/BUILD.gn b/chrome/utility/BUILD.gn
-index 9c036b152ea104bd1c2f96c9636a6b776891fbba..a441900fc453de8ed4fa862fb4379dada6eccb52 100644
+index 48138252497a51f25e7145d119f6b07268f68a25..3fa089274dcf06d36a3c0995d86cccf69fb46588 100644
 --- a/chrome/utility/BUILD.gn
 +++ b/chrome/utility/BUILD.gn
-@@ -262,6 +262,7 @@ static_library("utility") {
+@@ -267,6 +267,7 @@ static_library("utility") {
    if (is_android) {
      deps += [ "//chrome/services/readaloud" ]
    }

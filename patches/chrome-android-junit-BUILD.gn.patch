@@ -1,5 +1,5 @@
 diff --git a/chrome/android/junit/BUILD.gn b/chrome/android/junit/BUILD.gn
-index 39a6a32239de9adde8599eca2e03de6ffc68500b..f2c4f3b343c567f0cb829d7607c5de252b58b7af 100644
+index 84825ef8920a90e2fc2d3b0375ebfdf4f4fda4e4..a0efbd8bb9475d05a4174ba28aa8fc98821a3bbb 100644
 --- a/chrome/android/junit/BUILD.gn
 +++ b/chrome/android/junit/BUILD.gn
 @@ -420,6 +420,7 @@ if (is_android) {

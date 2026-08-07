@@ -1,8 +1,8 @@
 diff --git a/chrome/app/chrome_main.cc b/chrome/app/chrome_main.cc
-index b5cc00e4c869a0ece32db12b8f60fa9fbce111f7..5a2778651b1e48682d13aadade7545273aeac671 100644
+index f3c06b9e10d09d2c93e44f1f7597e4323b52b538..cfc66e79f6527fabea76a099d69819d33e31a603 100644
 --- a/chrome/app/chrome_main.cc
 +++ b/chrome/app/chrome_main.cc
-@@ -126,9 +126,9 @@ int ChromeMain(int argc, const char** argv) {
+@@ -161,9 +161,9 @@ int ChromeMain(int argc, const char** argv) {
        base::TimeTicks::FromInternalValue(exe_entry_point_ticks),
        base::TimeTicks::FromInternalValue(preread_begin_ticks),
        base::TimeTicks::FromInternalValue(preread_end_ticks)};

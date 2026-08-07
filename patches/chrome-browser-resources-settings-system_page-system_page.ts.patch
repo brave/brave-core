@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/system_page/system_page.ts b/chrome/browser/resources/settings/system_page/system_page.ts
-index c617a0b59efe1dbf5780a92506812dc6b6b87222..4a05e7f43994eea9374f827f33d7cf56b22015d6 100644
+index c50e369220ac71b72ed6059756a2cfd7ce0340c5..fec23495a7b3acac22d331e4f86d31b2613575d6 100644
 --- a/chrome/browser/resources/settings/system_page/system_page.ts
 +++ b/chrome/browser/resources/settings/system_page/system_page.ts
-@@ -269,5 +269,3 @@ declare global {
+@@ -282,5 +282,3 @@ declare global {
      'settings-system-page': SettingsSystemPageElement;
    }
  }

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/tabs/dragging/tab_drag_controller.h b/chrome/browser/ui/views/tabs/dragging/tab_drag_controller.h
-index d7dbafa23db7043deca475d63ea82dab960555b1..3e8a8ec7c564d81142bb0326cc26f0e2baa390c1 100644
+index f1ee16dd323d4a05e491f6557a472607f6ddb3a3..9557c09065af751b1a7a0e8df69616e55ccbf644 100644
 --- a/chrome/browser/ui/views/tabs/dragging/tab_drag_controller.h
 +++ b/chrome/browser/ui/views/tabs/dragging/tab_drag_controller.h
 @@ -135,7 +135,7 @@ class TabDragController : public views::WidgetObserver,
