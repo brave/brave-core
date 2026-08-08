@@ -20,7 +20,37 @@
 #include "chrome/browser/ui/views/frame/multi_contents_view_delegate.h"
 #include "components/tabs/public/tab_interface.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
+#include "ui/views/layout/layout_provider.h"
 #include "ui/views/widget/widget.h"
+
+namespace {
+
+// Returns |corner_radii| with the corners that meet the split divider replaced
+// by the smaller border radius. |is_leading| identifies the contents area on
+// the divider's left.
+gfx::RoundedCornersF GetSplitContentsCornerRadii(
+    const gfx::RoundedCornersF& corner_radii,
+    bool is_leading) {
+  if (corner_radii.IsEmpty()) {
+    return corner_radii;
+  }
+
+  const float border_radius =
+      views::LayoutProvider::Get()->GetCornerRadiusMetric(
+          views::ShapeContextTokensOverride::kRoundedCornersBorderRadius);
+
+  gfx::RoundedCornersF split_radii = corner_radii;
+  if (is_leading) {
+    split_radii.set_upper_right(border_radius);
+    split_radii.set_lower_right(border_radius);
+  } else {
+    split_radii.set_upper_left(border_radius);
+    split_radii.set_lower_left(border_radius);
+  }
+  return split_radii;
+}
+
+}  // namespace
 
 // static
 BraveMultiContentsView* BraveMultiContentsView::From(MultiContentsView* view) {
@@ -79,6 +109,28 @@ void BraveMultiContentsView::SetWebPanelWidth(int width) {
 void BraveMultiContentsView::SetWebPanelOnLeft(bool left) {
   web_panel_on_left_ = left;
   InvalidateLayout();
+}
+
+void BraveMultiContentsView::SetContentsCornerRadii(
+    const gfx::RoundedCornersF& corner_radii) {
+  if (contents_container_view_for_web_panel_) {
+    contents_container_view_for_web_panel_->SetContentsCornerRadii(
+        corner_radii);
+  }
+
+  const bool is_in_split = IsInSplitView();
+  for (size_t i = 0; i < contents_container_views_.size(); ++i) {
+    auto* container_view =
+        BraveContentsContainerView::From(contents_container_views_[i]);
+    if (is_in_split) {
+      container_view->SetContentsCornerRadii(
+          GetSplitContentsCornerRadii(corner_radii, /*is_leading=*/i == 0));
+    } else {
+      container_view->SetContentsCornerRadii(corner_radii);
+    }
+  }
+
+  UpdateContentsBorderAndOverlay();
 }
 
 views::ProposedLayout BraveMultiContentsView::CalculateProposedLayout(
@@ -215,10 +267,6 @@ int BraveMultiContentsView::GetWebPanelWidth() const {
   }
 
   return web_panel_width_;
-}
-
-void BraveMultiContentsView::UpdateCornerRadius() {
-  UpdateContentsBorderAndOverlay();
 }
 
 ContentsContainerView* BraveMultiContentsView::GetActiveContentsContainerView()
