@@ -24,6 +24,7 @@ import { WalletRoutes } from '../../../constants/types'
 
 // Utils
 import { openWalletRouteTab } from '../../../utils/routes-utils'
+import { getLocale } from '../../../../common/locale'
 
 // Components
 import { WalletSettingsMenu } from '../wallet-menus/wallet_settings_menu'
@@ -32,13 +33,16 @@ import { WalletSettingsMenu } from '../wallet-menus/wallet_settings_menu'
 import {
   Button,
   ButtonIcon,
+  SidePanelIcon,
   LeftRightContainer,
+  SidePanelWrapper,
 } from './shared-panel-headers.style'
 import { HeaderTitle } from './shared-card-headers.style'
-import { Row } from '../../shared/style'
+import { Row, Text, HorizontalDivider } from '../../shared/style'
+import { useCloseSidePanelUIMutation } from '../../../common/slices/api.slice'
 
 interface Props {
-  title: string
+  title?: string
   expandRoute?: WalletRoutes
   actionIconName?: string
   onClickActionButton?: () => void
@@ -57,6 +61,9 @@ export const DefaultPanelHeader = (props: Props) => {
     false,
   )
 
+  // Mutations
+  const [closeSidePanelUI] = useCloseSidePanelUIMutation()
+
   // Methods
   const onClickToggleNav = React.useCallback(() => {
     setIsNavOpen((prev) => !prev)
@@ -70,6 +77,71 @@ export const DefaultPanelHeader = (props: Props) => {
     openWalletRouteTab(WalletRoutes.PortfolioAssets)
   }, [expandRoute])
 
+  const onClickClose = React.useCallback(() => {
+    closeSidePanelUI()
+  }, [closeSidePanelUI])
+
+  if (isSidePanel) {
+    return (
+      <SidePanelWrapper
+        padding='16px'
+        justifyContent='space-between'
+      >
+        <LeftRightContainer
+          width='unset'
+          justifyContent='flex-start'
+          gap='12px'
+        >
+          <Button onClick={onClickToggleNav}>
+            <SidePanelIcon name='hamburger-menu' />
+          </Button>
+          <Text
+            variant='heading.h4'
+            textColor='primary'
+          >
+            {getLocale('braveWalletTitle')}
+          </Text>
+          {title && (
+            <>
+              <HorizontalDivider />
+              <Text
+                variant='heading.h4'
+                textColor='secondary'
+              >
+                {title}
+              </Text>
+            </>
+          )}
+        </LeftRightContainer>
+        <LeftRightContainer
+          width='unset'
+          justifyContent='flex-end'
+          gap='12px'
+        >
+          {expandRoute && (
+            <Button onClick={onClickExpand}>
+              <SidePanelIcon name='expand' />
+            </Button>
+          )}
+          {actionIconName && onClickActionButton && (
+            <Button onClick={onClickActionButton}>
+              <SidePanelIcon name={actionIconName} />
+            </Button>
+          )}
+          <WalletSettingsMenu>
+            <Button slot='anchor-content'>
+              <SidePanelIcon name='more-vertical' />
+            </Button>
+          </WalletSettingsMenu>
+          <HorizontalDivider />
+          <Button onClick={onClickClose}>
+            <SidePanelIcon name='close' />
+          </Button>
+        </LeftRightContainer>
+      </SidePanelWrapper>
+    )
+  }
+
   return (
     <Row
       padding='16px'
@@ -79,23 +151,20 @@ export const DefaultPanelHeader = (props: Props) => {
         width='unset'
         justifyContent='flex-start'
       >
-        {!isMobile && expandRoute && !isSidePanel && (
+        {!isMobile && expandRoute && (
           <Button onClick={onClickExpand}>
             <ButtonIcon name='expand' />
           </Button>
         )}
-        {isSidePanel && (
-          <Button onClick={onClickToggleNav}>
-            <ButtonIcon name='hamburger-menu' />
-          </Button>
-        )}
       </LeftRightContainer>
-      <HeaderTitle
-        variant='large.semibold'
-        textColor='primary'
-      >
-        {title}
-      </HeaderTitle>
+      {title && (
+        <HeaderTitle
+          variant='large.semibold'
+          textColor='primary'
+        >
+          {title}
+        </HeaderTitle>
+      )}
       <LeftRightContainer
         width='unset'
         justifyContent='flex-end'
