@@ -444,44 +444,4 @@ INSTANTIATE_TEST_SUITE_P(
     testing::Values(CancelVerificationVerificationTokenNonEmpty()),
     BraveAccountServiceCancelVerificationTest::kNameGenerator);
 
-struct LogOutTestCase {
-  static void Run(const LogOutTestCase& test_case,
-                  PrefService& pref_service,
-                  mojo::Remote<mojom::Authentication>& authentication) {
-    AccountStatePrefs account_state_prefs(pref_service);
-    account_state_prefs.SetLoggedIn(kEmailAddress,
-                                    EncryptedAuthenticationToken());
-    authentication->LogOut();
-    authentication.FlushForTesting();
-    const auto state = account_state_prefs.GetAccountState();
-    ASSERT_TRUE(state->is_logged_out());
-    EXPECT_FALSE(state->get_logged_out()->verification);
-  }
-
-  std::string test_name;
-};
-
-namespace {
-
-const LogOutTestCase* LogOutAuthenticationTokenNonEmpty() {
-  static const base::NoDestructor<LogOutTestCase>
-      kLogOutAuthenticationTokenNonEmpty({
-          .test_name = "log_out_authentication_token_non_empty",
-      });
-  return kLogOutAuthenticationTokenNonEmpty.get();
-}
-
-using BraveAccountServiceLogOutTest = BraveAccountServiceTest<LogOutTestCase>;
-
-}  // namespace
-
-TEST_P(BraveAccountServiceLogOutTest, HandlesLogOutOutcomes) {
-  RunTestCase();
-}
-
-INSTANTIATE_TEST_SUITE_P(BraveAccountServiceTests,
-                         BraveAccountServiceLogOutTest,
-                         testing::Values(LogOutAuthenticationTokenNonEmpty()),
-                         BraveAccountServiceLogOutTest::kNameGenerator);
-
 }  // namespace brave_account

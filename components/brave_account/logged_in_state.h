@@ -18,6 +18,7 @@
 #include "brave/components/brave_account/endpoints/auth_validate.h"
 #include "brave/components/brave_account/flows/change_password.h"
 #include "brave/components/brave_account/flows/get_service_token.h"
+#include "brave/components/brave_account/flows/log_out.h"
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
 #include "brave/components/brave_account/state_base.h"
 #include "components/os_crypt/async/common/encryptor.h"
@@ -28,13 +29,14 @@ class SharedURLLoaderFactory;
 
 namespace brave_account {
 
-// `mojom::Authentication` surface available after login: `LogOut()`, plus the
-// password-change and service-token steps, which are delegated to the
-// `change_password_` and `get_service_token_` helpers. Also periodically
-// refreshes the stored email via `ScheduleAuthValidate()`/`AuthValidate()`,
-// driven by `auth_validate_timer_`. `ResendVerificationEmail()` and
-// `CancelVerification()` are fully handled by `StateBase` for both states.
-// All other methods inherit `StateBase`'s wrong-state default.
+// `mojom::Authentication` surface available after login: the log-out,
+// password-change, and service-token steps, which are delegated to the
+// `log_out_`, `change_password_`, and `get_service_token_` helpers. Also
+// periodically refreshes the stored email via
+// `ScheduleAuthValidate()`/`AuthValidate()`, driven by `auth_validate_timer_`.
+// `ResendVerificationEmail()` and `CancelVerification()` are fully handled by
+// `StateBase` for both states. All other methods inherit `StateBase`'s
+// wrong-state default.
 class LoggedInState : public StateBase {
  public:
   LoggedInState(
@@ -82,6 +84,7 @@ class LoggedInState : public StateBase {
 
   ChangePassword change_password_{*this};
   class GetServiceToken get_service_token_{*this};
+  class LogOut log_out_{*this};
 
   base::OneShotTimer auth_validate_timer_;
   base::WeakPtrFactory<LoggedInState> weak_factory_{this};
