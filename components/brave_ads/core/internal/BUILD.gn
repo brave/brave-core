@@ -1027,6 +1027,8 @@ static_library("internal") {
     "user_engagement/ad_events/ad_event_info.cc",
     "user_engagement/ad_events/ad_event_info.h",
     "user_engagement/ad_events/ad_event_interface.h",
+    "user_engagement/ad_events/ad_event_task_queue.cc",
+    "user_engagement/ad_events/ad_event_task_queue.h",
     "user_engagement/ad_events/ad_event_util.cc",
     "user_engagement/ad_events/ad_event_util.h",
     "user_engagement/ad_events/ad_events.cc",

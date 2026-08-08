@@ -8,7 +8,6 @@
 
 #include <string>
 
-#include "base/containers/circular_deque.h"
 #include "base/memory/raw_ref.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/search_result_ads/search_result_ad_event_handler.h"
@@ -30,11 +29,6 @@ class SearchResultAdHandler final : public SearchResultAdEventHandlerDelegate {
 
   ~SearchResultAdHandler() override;
 
-  static void DeferTriggeringAdViewedEventForTesting();
-
-  // You must call this if `DeferTriggeringAdViewedEventForTesting` is called.
-  static void TriggerDeferredAdViewedEventForTesting();
-
   void TriggerEvent(mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
                     mojom::SearchResultAdEventType mojom_ad_event_type,
                     ResultCallback callback);
@@ -42,13 +36,6 @@ class SearchResultAdHandler final : public SearchResultAdEventHandlerDelegate {
  private:
   void FireServedEventCallback(
       mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
-      ResultCallback callback,
-      bool success,
-      const std::string& placement_id,
-      mojom::SearchResultAdEventType mojom_ad_event_type);
-
-  void MaybeTriggerDeferredAdViewedEvent(ResultCallback callback);
-  void FireAdViewedEventCallback(
       ResultCallback callback,
       bool success,
       const std::string& placement_id,
@@ -67,10 +54,6 @@ class SearchResultAdHandler final : public SearchResultAdEventHandlerDelegate {
   const raw_ref<SiteVisit> site_visit_;
 
   SearchResultAdEventHandler event_handler_;
-
-  bool is_processing_viewed_ad_event_queue_ = false;
-  base::circular_deque<mojom::CreativeSearchResultAdInfoPtr>
-      viewed_ad_event_queue_;
 
   base::WeakPtrFactory<SearchResultAdHandler> weak_factory_{this};
 };
