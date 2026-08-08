@@ -3,14 +3,16 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "components/contextual_tasks/public/features.h"
+
 #include "base/feature_override.h"
 
-#include <components/one_time_tokens/core/common/one_time_token_features.cc>
+#include <components/contextual_tasks/public/features.cc>
 
-namespace one_time_tokens::features {
+namespace contextual_tasks {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
-    {kGmailOtpRetrievalService, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kContextualTasksCookiePrefetch, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 
-}  // namespace one_time_tokens::features
+}  // namespace contextual_tasks
