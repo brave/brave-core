@@ -1,0 +1,44 @@
+name: Lint GitHub Actions
+
+on:
+  pull_request:
+    paths:
+      - .github/**
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  actionlint:
+    name: actionlint
+    runs-on: ubuntu-slim
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          sparse-checkout: |
+            .github/workflows
+      - uses: rhysd/actionlint@914e7df21a07ef503a81201c76d2b11c789d3fca # v1.7.12
+
+  shellcheck:
+    name: shellcheck
+    runs-on: ubuntu-slim
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          sparse-checkout: |
+            .github/workflows/scripts
+      - name: Install shellcheck
+        run: sudo apt-get update && sudo apt-get install -y shellcheck
+      - name: Run shellcheck
+        run: shellcheck -x -S warning .github/workflows/scripts/*.sh
+
+# Note: JavaScript files placed under .github/workflows/scripts/ (e.g. consumed by
+# actions/github-script) are linted by the repository-wide ESLint configuration
+# (`npm run eslint`, see eslint.config.js) and PRESUBMIT CheckESLint under
+# PRESUBMIT_ALL_BRAVE. This workflow lints workflow YAML (actionlint) and shell
+# scripts (shellcheck) only.
