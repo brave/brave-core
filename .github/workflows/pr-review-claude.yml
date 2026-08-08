@@ -1,0 +1,74 @@
+# Run Claude-driven PR review in Docker.
+# Posts review as a PR comment. Use a bot account token with
+# pull request read + comment write.
+#
+# Opt-in: runs only when the PR has label "review/claude" (remove the
+# "if" to enable for all PRs once cost is acceptable).
+#
+# Runs on pull_request_target so workflow logic is loaded from the base branch
+# (trusted), not from PR changes. Same-repo PRs only:
+# github.event.pull_request.head.repo.full_name == github.repository.
+#
+# Author must be MEMBER or OWNER (github.event.pull_request.author_association).
+# Fork PRs from non-members are CONTRIBUTOR / etc. To also allow outside
+# collaborators, add: || ... == 'COLLABORATOR'
+name: PR review (Claude)
+
+on:
+  pull_request_target:
+    # "labeled" is intentional so adding review/claude triggers a run without a
+    # new push; the job if-condition ignores other label changes.
+    types: [opened, reopened, synchronize, labeled]
+
+# One run at a time per PR so labeled + synchronize in the same push do not post twice.
+concurrency:
+  group: pr-review-claude-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+# Reviews are posted with PR_REVIEW_BOT_GITHUB_TOKEN inside the container, not
+# GITHUB_TOKEN — keep workflow token scopes minimal on pull_request_target.
+permissions:
+  contents: read
+  packages: read
+
+env:
+  # Override to a build SHA tag (from the docker-build workflow) to pin the reviewer.
+  PR_REVIEW_IMAGE_TAG: latest
+
+jobs:
+  review:
+    name: Claude PR review
+    runs-on: ubuntu-latest
+    if: >-
+      github.event.pull_request.head.repo.full_name == github.repository
+      && contains(github.event.pull_request.labels.*.name, 'review/claude')
+      && (github.event.action != 'labeled'
+      || github.event.label.name == 'review/claude')
+      && (github.event.pull_request.author_association == 'MEMBER'
+      || github.event.pull_request.author_association == 'OWNER')
+    steps:
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@b45d80f862d83dbcd57f89517bcf500b2ab88fb2 # v4.0.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Pull review image
+        id: image
+        run: |
+          IMAGE="ghcr.io/${{ github.repository }}/pr-review-claude:${{ env.PR_REVIEW_IMAGE_TAG }}"
+          docker pull "$IMAGE"
+          # Pin this job to the digest that was actually pulled (immutable for the run).
+          DIGEST="$(docker inspect --format='{{index .RepoDigests 0}}' "$IMAGE")"
+          echo "ref=${DIGEST}" >> "$GITHUB_OUTPUT"
+          echo "Using image ${DIGEST}"
+
+      # No checkout / volume: the image contains the trusted script + skill from master (see Dockerfile COPY).
+      # Secrets are piped on stdin (-i) so they are not visible in docker inspect, container env, or ps for docker.
+      - name: Run Claude PR review
+        run: |
+          printf '%s\n%s\n' "${{ secrets.PR_REVIEW_BOT_GITHUB_TOKEN }}" "${{ secrets.PR_REVIEW_BOT_ANTHROPIC_API_KEY }}" | \
+            docker run -i --rm \
+            "${{ steps.image.outputs.ref }}" \
+            "${{ github.event.pull_request.number }}" "${{ github.repository }}"
