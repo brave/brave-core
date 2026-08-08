@@ -14,6 +14,7 @@ import("//brave/components/email_aliases/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//brave/components/local_ai/buildflags/buildflags.gni")
 import("//brave/components/playlist/core/common/buildflags/buildflags.gni")
+import("//brave/components/psst/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//build/config/features.gni")
@@ -42,6 +43,7 @@ source_set("brave_simple_policy_map") {
     "//brave/components/local_ai/buildflags",
     "//brave/components/p3a",
     "//brave/components/playlist/core/common/buildflags",
+    "//brave/components/psst/buildflags",
     "//brave/components/query_filter/common",
     "//brave/components/speedreader/common/buildflags",
     "//brave/components/tor/buildflags",
@@ -98,5 +100,9 @@ source_set("brave_simple_policy_map") {
       "//brave/components/email_aliases:pref_names",
       "//brave/components/email_aliases:service",
     ]
+  }
+
+  if (enable_psst) {
+    deps += [ "//brave/components/psst/core/browser" ]
   }
 }

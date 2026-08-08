@@ -214,6 +214,9 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_SETTINGS_BRAVE_ORIGIN_PLAYLIST_TOGGLE_TITLE},
       {"braveEmailAliasesToggleTitle",
        IDS_SETTINGS_BRAVE_ORIGIN_EMAIL_ALIASES_TOGGLE_TITLE},
+#if BUILDFLAG(ENABLE_PSST)
+      {"bravePsstToggleTitle", IDS_SETTINGS_BRAVE_ORIGIN_PSST_TOGGLE_TITLE},
+#endif
       {"braveOriginWebDiscoveryProjectToggleTitle",
        IDS_SETTINGS_BRAVE_ORIGIN_WEB_DISCOVERY_PROJECT_TOGGLE_TITLE},
       {"braveOriginP3AToggleTitle", IDS_SETTINGS_BRAVE_ORIGIN_P3A_TOGGLE_TITLE},
