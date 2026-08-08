@@ -4,4 +4,4 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 """Core `step` module: run a subprocess as a named build step."""
 
-DEPS = ['context']
+DEPS = ['context', 'platform']
