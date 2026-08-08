@@ -107,6 +107,8 @@ WalletPanelUI::WalletPanelUI(content::WebUI* web_ui)
 #endif
   source->AddBoolean("isLedgerMojoBridgeEnabled",
                      brave_wallet::IsMojoForHardwareWalletEnabled());
+  source->AddBoolean("isTrezorMojoBridgeEnabled",
+                     brave_wallet::IsMojoForHardwareWalletEnabled());
   source->AddBoolean("walletDebug", brave_wallet::IsWalletDebugEnabled());
 
   content::URLDataSource::Add(profile,
@@ -239,8 +241,14 @@ void WalletPanelUI::CreatePanelHandler(
 
 void WalletPanelUI::BindInterface(
     mojo::PendingReceiver<brave_wallet::mojom::LedgerBridgeService> receiver) {
-  service_receiver_.reset();
-  service_receiver_.Bind(std::move(receiver));
+  ledger_bridge_service_receiver_.reset();
+  ledger_bridge_service_receiver_.Bind(std::move(receiver));
+}
+
+void WalletPanelUI::BindInterface(
+    mojo::PendingReceiver<brave_wallet::mojom::TrezorBridgeService> receiver) {
+  trezor_bridge_service_receiver_.reset();
+  trezor_bridge_service_receiver_.Bind(std::move(receiver));
 }
 
 void WalletPanelUI::BindLedgerBridge(
@@ -259,6 +267,25 @@ void WalletPanelUI::MaybeFuseLedgerBridge() {
   if (ledger_bridge_remote_ && ledger_bridge_receiver_) {
     mojo::FusePipes(std::move(ledger_bridge_receiver_),
                     std::move(ledger_bridge_remote_));
+  }
+}
+
+void WalletPanelUI::BindTrezorBridge(
+    mojo::PendingRemote<brave_wallet::mojom::TrezorBridge> bridge) {
+  trezor_bridge_remote_ = std::move(bridge);
+  MaybeFuseTrezorBridge();
+}
+
+void WalletPanelUI::BindTrezorBridge(
+    mojo::PendingReceiver<brave_wallet::mojom::TrezorBridge> receiver) {
+  trezor_bridge_receiver_ = std::move(receiver);
+  MaybeFuseTrezorBridge();
+}
+
+void WalletPanelUI::MaybeFuseTrezorBridge() {
+  if (trezor_bridge_remote_ && trezor_bridge_receiver_) {
+    mojo::FusePipes(std::move(trezor_bridge_receiver_),
+                    std::move(trezor_bridge_remote_));
   }
 }
 
