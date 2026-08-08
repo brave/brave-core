@@ -13,6 +13,7 @@
 #include "base/containers/to_vector.h"
 #include "base/functional/bind.h"
 #include "base/strings/string_number_conversions.h"
+#include "brave/browser/ui/brave_scheme_utils.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/local_ai/buildflags/buildflags.h"
 #include "chrome/browser/history/history_service_factory.h"
@@ -34,6 +35,7 @@
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/page_transition_types.h"
 #include "ui/base/window_open_disposition.h"
+#include "url/gurl.h"
 #include "url/origin.h"
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
@@ -55,6 +57,22 @@
 #define TabSearchPageHandler TabSearchPageHandler_ChromiumImpl
 #include <chrome/browser/ui/webui/tab_search/tab_search_page_handler.cc>
 #undef TabSearchPageHandler
+
+// Untitled entries fall back to the raw URL spec as their title, which would
+// show chrome://. The URL line itself is rebranded for display by the
+// tab_search_item.ts rewrite, so `url` is left canonical here -- upstream's NTP
+// filter and dedup key both read it after this returns.
+tab_search::mojom::RecentlyClosedTabPtr
+TabSearchPageHandler::GetRecentlyClosedTab(sessions::tab_restore::Tab* tab,
+                                           const base::Time& close_time) {
+  auto tab_mojom =
+      TabSearchPageHandler_ChromiumImpl::GetRecentlyClosedTab(tab, close_time);
+  if (tab_mojom->title == tab_mojom->url.spec()) {
+    tab_mojom->title =
+        brave_utils::ReplaceChromeToBraveScheme(tab_mojom->url).spec();
+  }
+  return tab_mojom;
+}
 
 TabSearchPageHandler::TabSearchPageHandler(
     mojo::PendingReceiver<tab_search::mojom::PageHandler> receiver,

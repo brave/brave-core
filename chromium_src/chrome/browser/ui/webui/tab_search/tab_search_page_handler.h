@@ -32,11 +32,15 @@ using TabSearchPageHandler_BraveImpl = TabSearchPageHandler;
   NotUsed();                             \
   friend TabSearchPageHandler_BraveImpl; \
   tab_search::mojom::ProfileDataPtr CreateProfileData
+// Virtualized so the Brave subclass can rebrand the title fallback without
+// patching upstream.
+#define GetRecentlyClosedTab virtual GetRecentlyClosedTab
 
 #include <chrome/browser/ui/webui/tab_search/tab_search_page_handler.h>  // IWYU pragma: export
 
 #undef TabSearchPageHandler
 #undef CreateProfileData
+#undef GetRecentlyClosedTab
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 namespace ai_chat {
@@ -99,6 +103,11 @@ class TabSearchPageHandler : public TabSearchPageHandler_ChromiumImpl {
 #endif  // BUILDFLAG(ENABLE_LOCAL_AI)
 
  private:
+  // TabSearchPageHandler_ChromiumImpl:
+  tab_search::mojom::RecentlyClosedTabPtr GetRecentlyClosedTab(
+      sessions::tab_restore::Tab* tab,
+      const base::Time& close_time) override;
+
   void OpenURLInNewTab(const GURL& url);
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
