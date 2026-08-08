@@ -13,7 +13,7 @@ import { assert } from '//resources/js/assert.js'
 import { CrLitElement } from '//resources/lit/v3_0/lit.rollup.js'
 import { EventTracker } from '//resources/js/event_tracker.js'
 // <if expr="not is_android and not is_ios">
-import { hasKeyModifiers } from '//resources/js/util.js'
+import { getDeepActiveElement, hasKeyModifiers } from '//resources/js/util.js'
 // </if>
 
 import {
@@ -173,6 +173,13 @@ export class BraveAccountDialogsElement extends CrLitElement {
     switch (e.key) {
       // Clicks the action button (only if there's exactly one enabled).
       case 'Enter': {
+        // Only clicks it when a text field is focused: any other focused
+        // element (e.g. the "Forgot your password?" link) keeps its own Enter
+        // behavior.
+        if (!getDeepActiveElement()?.closest('input')) {
+          break
+        }
+
         const dialog = [...(this.shadowRoot?.children ?? [])].find(
           (el) => el instanceof HTMLElement && el.shadowRoot,
         )
