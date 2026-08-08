@@ -46,7 +46,7 @@ class RefillConfirmationTokens final {
  private:
   void Refill();
 
-  void GenerateTokens();
+  bool GenerateTokens();
 
   bool ShouldRequestSignedTokens() const;
   void RequestSignedTokens();

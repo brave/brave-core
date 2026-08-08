@@ -96,8 +96,14 @@ where
 
                         let issuer = self.encode_issuer_id(&order.merchant_id, &item.sku)?;
 
-                        let verification_key =
-                            cred.unblinded_cred.derive_verification_key::<Sha512>();
+                        // Derive the verification key with the same derivation
+                        // `unblinded_cred` was blinded with, recorded in
+                        // `cred.rfc`, so the presented signature verifies.
+                        let verification_key = if cred.rfc {
+                            cred.unblinded_cred.derive_verification_key_rfc::<Sha512>()
+                        } else {
+                            cred.unblinded_cred.derive_verification_key::<Sha512>()
+                        };
 
                         let signature =
                             verification_key.sign::<HmacSha512>(issuer.as_bytes()).encode_base64();
@@ -140,8 +146,14 @@ where
 
                         let issuer = self.encode_issuer_id(&order.merchant_id, &item.sku)?;
 
-                        let verification_key =
-                            cred.unblinded_cred.derive_verification_key::<Sha512>();
+                        // Derive the verification key with the same derivation
+                        // `unblinded_cred` was blinded with, recorded in
+                        // `cred.rfc`, so the presented signature verifies.
+                        let verification_key = if cred.rfc {
+                            cred.unblinded_cred.derive_verification_key_rfc::<Sha512>()
+                        } else {
+                            cred.unblinded_cred.derive_verification_key::<Sha512>()
+                        };
                         // FIXME change the payload we're creating the binding with
                         let signature =
                             verification_key.sign::<HmacSha512>(issuer.as_bytes()).encode_base64();

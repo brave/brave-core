@@ -75,6 +75,8 @@ pub mod ffi {
         LengthMismatchError,
         // Decoding failed
         DecodingError,
+        // The input maps to the group identity element
+        InvalidInput,
     }
 
     extern "Rust" {
@@ -118,7 +120,7 @@ pub mod ffi {
 
         fn generate_token() -> Box<Token>;
         fn encode_base64(self: &Token) -> String;
-        fn blind(self: &Token) -> Box<BlindedToken>;
+        fn blind(self: &Token) -> Box<BlindedTokenResult>;
 
         fn decode_base64_token(s: &str) -> Box<TokenResult>;
         fn error(self: &TokenResult) -> &Error;
@@ -141,6 +143,7 @@ pub mod ffi {
 
         fn encode_base64(self: &UnblindedToken) -> String;
         fn derive_verification_key(self: &UnblindedToken) -> Box<VerificationKey>;
+        fn derive_verification_key_rfc(self: &UnblindedToken) -> Box<VerificationKey>;
         fn preimage(self: &UnblindedToken) -> Box<TokenPreimage>;
 
         fn decode_base64_unblinded_token(s: &str) -> Box<UnblindedTokenResult>;
@@ -153,6 +156,10 @@ pub mod ffi {
         fn public_key(self: &SigningKey) -> Box<PublicKey>;
         fn sign(self: &SigningKey, token: &BlindedToken) -> Box<SignedTokenResult>;
         fn rederive_unblinded_token(self: &SigningKey, t: &TokenPreimage) -> Box<UnblindedToken>;
+        fn rederive_unblinded_token_rfc(
+            self: &SigningKey,
+            t: &TokenPreimage,
+        ) -> Box<UnblindedTokenResult>;
 
         fn decode_base64_signing_key(s: &str) -> Box<SigningKeyResult>;
         fn error(self: &SigningKeyResult) -> &Error;
@@ -290,6 +297,7 @@ impl From<errors::TokenError> for TokenError {
             errors::InternalError::VerifyError => TokenError::VerifyError,
             errors::InternalError::LengthMismatchError => TokenError::LengthMismatchError,
             errors::InternalError::DecodingError => TokenError::DecodingError,
+            errors::InternalError::InvalidInput => TokenError::InvalidInput,
         }
     }
 }
@@ -322,8 +330,13 @@ impl Token {
         self.0.encode_base64()
     }
 
-    fn blind(self: &Token) -> Box<BlindedToken> {
-        Box::new(self.0.blind().into())
+    fn blind(self: &Token) -> Box<BlindedTokenResult> {
+        // `blind_rfc` returns an error if the token preimage maps to
+        // the group identity element (RFC 9497 §3.3.1). Surface it to the
+        // caller so it can be handled gracefully.
+        Box::new(
+            || -> Result<BlindedToken, Error> { Ok(self.0.blind_rfc::<Sha512>()?.into()) }().into(),
+        )
     }
 }
 
@@ -366,6 +379,10 @@ impl UnblindedToken {
         Box::new(self.0.derive_verification_key::<Sha512>().into())
     }
 
+    fn derive_verification_key_rfc(self: &UnblindedToken) -> Box<VerificationKey> {
+        Box::new(self.0.derive_verification_key_rfc::<Sha512>().into())
+    }
+
     fn preimage(self: &UnblindedToken) -> Box<TokenPreimage> {
         Box::new(self.0.t.into())
     }
@@ -397,6 +414,21 @@ impl SigningKey {
 
     fn rederive_unblinded_token(self: &SigningKey, t: &TokenPreimage) -> Box<UnblindedToken> {
         Box::new(self.0.rederive_unblinded_token(&t.0).into())
+    }
+
+    fn rederive_unblinded_token_rfc(
+        self: &SigningKey,
+        t: &TokenPreimage,
+    ) -> Box<UnblindedTokenResult> {
+        // `rederive_unblinded_token_rfc` returns an error if the token
+        // preimage maps to the group identity element (RFC 9497 §3.3.1). Surface
+        // it to the caller so it can be handled gracefully.
+        Box::new(
+            || -> Result<UnblindedToken, Error> {
+                Ok(self.0.rederive_unblinded_token_rfc::<Sha512>(&t.0)?.into())
+            }()
+            .into(),
+        )
     }
 
     fn new_batch_dleq_proof(

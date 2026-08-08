@@ -336,7 +336,7 @@ dependencies = [
 
 [[package]]
 name = "challenge-bypass-ristretto"
-version = "2.0.2"
+version = "2.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "base64",
@@ -345,7 +345,6 @@ dependencies = [
  "hmac 0.12.1",
  "rand",
  "rand_chacha",
- "rand_core",
  "serde",
  "subtle",
  "zeroize",
