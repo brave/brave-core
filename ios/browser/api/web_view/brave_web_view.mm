@@ -34,6 +34,7 @@
 #include "brave/ios/browser/brave_shields/protection_stats_tab_helper.h"
 #include "brave/ios/browser/brave_shields/protection_stats_tab_helper_bridge.h"
 #include "brave/ios/browser/brave_shields/request_blocking/request_blocking_tab_helper.h"
+#include "brave/ios/browser/brave_shields/scriptlets/scriptlets_tab_helper.h"
 #include "brave/ios/browser/brave_talk/brave_talk_tab_helper_bridge.h"
 #include "brave/ios/browser/brave_wallet/cardano_provider_tab_helper.h"
 #include "brave/ios/browser/brave_wallet/ethereum_provider_tab_helper.h"
@@ -287,6 +288,8 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
 @property(nonatomic, weak) id<PrintHandler> printHandler;
 @property(nonatomic, weak) id<RequestBlockingTabHelperBridge>
     requestBlockingTabHelperBridge;
+@property(nonatomic, weak) id<ScriptletsTabHelperBridge>
+    scriptletsTabHelperBridge;
 @property(nonatomic, weak) id<BraveWalletProviderDelegate>
     walletProviderDelegate;
 @end
@@ -463,6 +466,10 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
     RequestBlockingTabHelper::CreateForWebState(self.webState);
     RequestBlockingTabHelper::FromWebState(self.webState)
         ->SetBridge(self.requestBlockingTabHelperBridge);
+
+    ScriptletsTabHelper::CreateForWebState(self.webState);
+    ScriptletsTabHelper::FromWebState(self.webState)
+        ->SetBridge(self.scriptletsTabHelperBridge);
   }
 }
 
@@ -903,6 +910,18 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
   _requestBlockingTabHelperBridge = bridge;
   if (RequestBlockingTabHelper* tab_helper =
           RequestBlockingTabHelper::FromWebState(self.webState)) {
+    tab_helper->SetBridge(bridge);
+  }
+}
+
+@end
+
+@implementation BraveWebView (Scriptlets)
+
+- (void)setScriptletsTabHelperBridge:(id<ScriptletsTabHelperBridge>)bridge {
+  _scriptletsTabHelperBridge = bridge;
+  if (ScriptletsTabHelper* tab_helper =
+          ScriptletsTabHelper::FromWebState(self.webState)) {
     tab_helper->SetBridge(bridge);
   }
 }

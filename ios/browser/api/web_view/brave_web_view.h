@@ -32,6 +32,7 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol ProtectionStatsTabHelperBridge;
 @protocol PrintHandler;
 @protocol RequestBlockingTabHelperBridge;
+@protocol ScriptletsTabHelperBridge;
 @protocol BraveWalletProviderDelegate;
 
 typedef void (^ResetConfigurationCallback)(id<ProfileBridge>,
@@ -272,6 +273,12 @@ CWV_EXPORT
 /// A bridge for Request Blocking javascript feature
 - (void)setRequestBlockingTabHelperBridge:
     (id<RequestBlockingTabHelperBridge>)bridge;
+@end
+
+CWV_EXPORT
+@interface BraveWebView (Scriptlets)
+/// A bridge for the Scriptlets javascript feature
+- (void)setScriptletsTabHelperBridge:(id<ScriptletsTabHelperBridge>)bridge;
 @end
 
 NS_ASSUME_NONNULL_END
