@@ -84,7 +84,7 @@ std::optional<Campaign> MaybeParseCampaign(
     const base::FilePath& installed_dir) {
   Campaign campaign;
 
-  const std::optional<int> campaign_version = dict.FindInt(kCampaignVersionKey);
+  std::optional<int> campaign_version = dict.FindInt(kCampaignVersionKey);
   if (campaign_version != kExpectedCampaignVersion) {
     // Currently, only version 2 is supported. Update this code to maintain
     // backwards compatibility when adding new schema versions.
@@ -207,7 +207,7 @@ std::optional<Campaign> MaybeParseCampaign(
           // Relative url is required.
           continue;
         }
-        const std::optional<base::FilePath> relative_file_path =
+        std::optional<base::FilePath> relative_file_path =
             MaybeNormalizeRelativeUrl(*relative_url);
         if (!relative_file_path) {
           // Path traversal or invalid path, deny access.
@@ -237,7 +237,7 @@ std::optional<Campaign> MaybeParseCampaign(
           // Relative url is required.
           continue;
         }
-        const std::optional<base::FilePath> relative_button_image_path =
+        std::optional<base::FilePath> relative_button_image_path =
             MaybeNormalizeRelativeUrl(*button_image_relative_url);
         if (!relative_button_image_path) {
           // Path traversal or invalid path, deny access.
@@ -260,7 +260,7 @@ std::optional<Campaign> MaybeParseCampaign(
           // Relative url is required.
           continue;
         }
-        const std::optional<base::FilePath> relative_file_path =
+        std::optional<base::FilePath> relative_file_path =
             MaybeNormalizeRelativeUrl(*relative_url);
         if (!relative_file_path) {
           // Path traversal or invalid path, deny access.
@@ -290,7 +290,7 @@ std::optional<Campaign> MaybeParseCampaign(
 bool CreativeFileByRelativeUrlExists(const std::string& relative_url,
                                      const base::FilePath& installed_dir,
                                      const base::DictValue& creative_dict) {
-  const std::optional<base::FilePath> relative_file_path =
+  std::optional<base::FilePath> relative_file_path =
       MaybeNormalizeRelativeUrl(relative_url);
   if (!relative_file_path) {
     // Path traversal or invalid path, deny access.
@@ -487,7 +487,7 @@ NTPSponsoredImagesData::NTPSponsoredImagesData(
     const base::DictValue& dict,
     const base::FilePath& installed_dir)
     : NTPSponsoredImagesData() {
-  const std::optional<int> schema_version = dict.FindInt(kSchemaVersionKey);
+  std::optional<int> schema_version = dict.FindInt(kSchemaVersionKey);
   if (schema_version != kExpectedSchemaVersion) {
     // Currently, only version 1 is supported. Update this code to maintain.
     return;
@@ -526,7 +526,7 @@ void NTPSponsoredImagesData::ParseCampaigns(
       continue;
     }
 
-    if (const std::optional<Campaign> campaign =
+    if (std::optional<Campaign> campaign =
             MaybeParseCampaign(*dict, installed_dir)) {
       campaigns.push_back(*campaign);
     }
@@ -565,8 +565,7 @@ std::optional<base::DictValue> NTPSponsoredImagesData::MaybeGetBackgroundAt(
 
   const Creative& creative = campaign.creatives[creative_index];
 
-  const std::optional<std::string> wallpaper_type =
-      ToString(creative.wallpaper_type);
+  std::optional<std::string> wallpaper_type = ToString(creative.wallpaper_type);
   if (!wallpaper_type) {
     // Unknown wallpaper type.
     return std::nullopt;

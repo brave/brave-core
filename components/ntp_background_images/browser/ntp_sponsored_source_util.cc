@@ -79,7 +79,7 @@ std::optional<base::FilePath> MaybeGetFilePathForRequestPath(
         continue;
       }
 
-      if (const std::optional<base::FilePath> child_creative_subdirectories =
+      if (std::optional<base::FilePath> child_creative_subdirectories =
               MaybeGetChildCreativeSubdirectories(parent_creative_dir,
                                                   request_dir)) {
         creative_dir = creative_dir.Append(*child_creative_subdirectories);
