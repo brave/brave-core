@@ -104,6 +104,9 @@
     <message name="IDS_SETTINGS_CONTAINERS_ENABLED_LABEL" desc="The label for the toggle that enables the Containers feature" formatter_data="webui=Containers">
       Enable Containers
     </message>
+    <message name="IDS_SETTINGS_CONTAINERS_ONLY_USE_MINI_ICON_LABEL" desc="Label for a settings toggle that makes container tabs always show only the mini container icon overlay instead of a larger container icon even when tab space allows." formatter_data="webui=Containers">
+      Always use mini icon for containers
+    </message>
     <message name="IDS_SETTINGS_CONTAINERS_ADD_CONTAINER_LABEL" desc="The label for dialog title for adding a container" formatter_data="webui=Containers">
       Add new container
     </message>

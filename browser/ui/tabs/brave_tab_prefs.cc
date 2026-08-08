@@ -48,6 +48,7 @@ void RegisterBraveProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterIntegerPref(kTabMinWidthMode,
                                 static_cast<int>(TabMinWidthMode::kMinimum));
   registry->RegisterBooleanPref(kScrollableHorizontalTabStrip, false);
+  registry->RegisterBooleanPref(kAlwaysUseMiniAccentIcon, false);
 }
 
 void MigrateBraveProfilePrefs(PrefService* prefs) {

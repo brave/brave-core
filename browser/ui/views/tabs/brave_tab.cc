@@ -575,6 +575,10 @@ bool BraveTab::ShouldShowLargeAccentIcon() const {
     return false;
   }
 
+  if (controller()->ShouldAlwaysShowMiniTabAccent()) {
+    return false;
+  }
+
   if (auto* vtc = VerticalTabController::FromBrowser(
           controller()->GetBrowserWindowInterface());
       vtc && vtc->ShouldShowBraveVerticalTabs()) {
