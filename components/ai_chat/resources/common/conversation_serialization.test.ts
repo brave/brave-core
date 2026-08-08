@@ -16,17 +16,23 @@ import {
   stringifyConversationData,
   parseConversationData,
   serializeConversationForSharing,
+  type ConversationData,
 } from './conversation_serialization'
+
+const sampleSharedConversation: ConversationData = {
+  messages: ComplexConversation,
+  title: 'sample title',
+}
 
 describe('conversation serialization', () => {
   it('should serialize and deserialize conversation data with bigint fields', () => {
-    const serialized = stringifyConversationData(ComplexConversation)
+    const serialized = stringifyConversationData(sampleSharedConversation)
     const deserialized = parseConversationData(serialized)
-    expect(deserialized).toEqual(ComplexConversation)
+    expect(deserialized).toEqual(sampleSharedConversation)
   })
 
   it('provides a known shared conversation viewer export format', () => {
-    const serialized = serializeConversationForSharing(ComplexConversation)
+    const serialized = serializeConversationForSharing(sampleSharedConversation)
     const parsed = JSON.parse(serialized)
 
     expect(parsed).toHaveProperty('version')
@@ -34,6 +40,6 @@ describe('conversation serialization', () => {
 
     expect(parsed).toHaveProperty('data')
     const deserialized = parseConversationData(parsed.data)
-    expect(deserialized).toEqual(ComplexConversation)
+    expect(deserialized).toEqual(sampleSharedConversation)
   })
 })

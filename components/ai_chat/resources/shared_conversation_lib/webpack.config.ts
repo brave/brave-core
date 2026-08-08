@@ -47,6 +47,16 @@ const pathMap = withMockOverrides(generatePathMap(genPath), {
   genPath,
 })
 
+// style-loader inlines the source of its `insert` option in to every generated
+// CSS module (it literally calls `.toString()` on the function), so that
+// function cannot reference anything this bundle imports. ProvidePlugin bridges
+// the gap: it rewrites this free identifier, in each of those generated modules,
+// to style_loader.ts's default export.
+// TODO(https://github.com/brave/brave-browser/issues/57626): Updated style-loader
+// might avoid the need for ProvidePlugin by insert being able to reference
+// a module.
+declare const _INSERT_STYLE_ELEMENT: (element: HTMLStyleElement) => void
+
 export default async function (
   env: any,
   argv: any,
@@ -93,6 +103,20 @@ export default async function (
       from: path.join(genPath, 'brave/ui/webui/resources/icons'),
       to: 'nala-icons',
     },
+    {
+      from: path.resolve(
+        import.meta.dirname,
+        '../../../../node_modules/@brave/leo/tokens/css/variables.css',
+      ),
+      to: 'nala.css',
+      transform: {
+        // TODO(https://github.com/brave/leo/issues/1433): Remove this transform
+        // when nala supports `:host`.
+        transformer(content: Buffer, absoluteFrom: string) {
+          return content.toString().replaceAll(':root', ':host')
+        },
+      },
+    },
   ]
 
   if (isDevMode) {
@@ -129,6 +153,12 @@ export default async function (
       new CopyPlugin({
         patterns: copyPluginPatterns,
       }),
+      new webpack.ProvidePlugin({
+        _INSERT_STYLE_ELEMENT: [
+          path.join(import.meta.dirname, 'style_loader.ts'),
+          'default',
+        ],
+      }),
     ],
     module: {
       parser: {
@@ -140,7 +170,13 @@ export default async function (
         },
       },
       rules: [
-        ...cssRules({ isDevMode }),
+        ...cssRules({
+          isDevMode,
+          styleLoaderOptions: {
+            insert: (element: HTMLStyleElement) =>
+              _INSERT_STYLE_ELEMENT(element),
+          },
+        }),
         tsLoaderRule({ configFile: tsConfigPath }),
         fileLoaderRule(),
         htmlAssetRule,
