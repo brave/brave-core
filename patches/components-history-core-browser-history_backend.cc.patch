@@ -18,6 +18,20 @@ index 0098d980cd83da221ebd29a2ca04af1f6fcf70ac..6ce068b27f68e0fe7c8e782f8f6a6d03
  #include "build/build_config.h"
  #include "build/ios_buildflags.h"
  #include "components/favicon/core/favicon_backend.h"
+@@ -1302,2 +1304,3 @@ void HistoryBackend::InitImpl(
+   // History database.
++  saw_sqlite_full_error_ = false;
+   db_ = std::make_unique<HistoryDatabase>(
+@@ -1321,4 +1324,8 @@ void HistoryBackend::InitImpl(
+       bool kill_db = scheduled_kill_db_;
+       if (kill_db) {
+-        KillHistoryDatabase();
++        if (saw_sqlite_full_error_) {
++          CloseHistoryDatabaseAfterLowDiskError();
++        } else {
++          KillHistoryDatabase();
++        }
+       }
 @@ -2056,6 +2058,18 @@ QueryURLResult HistoryBackend::QueryURL(const GURL& url) {
    return result;
  }
@@ -37,3 +51,58 @@ index 0098d980cd83da221ebd29a2ca04af1f6fcf70ac..6ce068b27f68e0fe7c8e782f8f6a6d03
  QueryURLAndVisitsResult HistoryBackend::QueryURLAndVisits(
      const GURL& url,
      VisitQuery404sPolicy policy_for_404s) {
+@@ -3686,2 +3705,7 @@ void HistoryBackend::DatabaseErrorCallback(int error, sql::Statement* stmt) {
+   // Raze the database for catastrophic errors.
++  if (sql::ToPrimaryResultCode(sql::ToSqliteResultCode(error)) ==
++      sql::SqliteResultCode::kFullDisk) {
++    saw_sqlite_full_error_ = true;
++  }
++
+   if (!scheduled_kill_db_ && sql::IsErrorCatastrophic(error)) {
+@@ -3696,2 +3720,16 @@ void HistoryBackend::DatabaseErrorCallback(int error, sql::Statement* stmt) {
+     // (then it can be cleared immediately).
++
++    // If a catastrophic-looking error follows SQLITE_FULL, prefer preserving the
++    // database over corruption recovery. SQLite can surface follow-on generic
++    // SQLITE_ERROR failures after a full-disk write failure. Razing in this path
++    // destroys committed browsing history even though disk-full is transient.
++    if (saw_sqlite_full_error_) {
++      task_runner_->PostTask(
++          FROM_HERE,
++          base::BindOnce(&HistoryBackend::CloseHistoryDatabaseAfterLowDiskError,
++                         this));
++      sql::UmaHistogramSqliteResult("History.DatabaseSqliteError", error);
++      return;
++    }
++
+     task_runner_->PostTask(
+@@ -3705,1 +3743,29 @@ void HistoryBackend::DatabaseErrorCallback(int error, sql::Statement* stmt) {
++void HistoryBackend::CloseHistoryDatabaseAfterLowDiskError() {
++  TRACE_EVENT0("browser",
++               "HistoryBackend::CloseHistoryDatabaseAfterLowDiskError");
++  scheduled_kill_db_ = false;
++  saw_sqlite_full_error_ = false;
++  if (!db_) {
++    return;
++  }
++
++  // Notify the sync bridge about storage error. It'll report failures to the
++  // sync engine and stop accepting remote updates, matching KillHistoryDatabase()
++  // behavior without deleting committed local history.
++  if (history_sync_bridge_) {
++    history_sync_bridge_->OnDatabaseError();
++  }
++
++  // Roll back the long-running transaction. Attempting to commit here can hit
++  // the same full-disk failure again. The important property is preserving the
++  // already-committed History file so SQLite can recover it on a later restart.
++  singleton_transaction_.reset();
++
++  // The expirer keeps tabs on the active databases. Tell it about the databases
++  // which will be closed.
++  expirer_.SetDatabases(nullptr, nullptr);
++
++  CloseAllDatabases();
++}
++
+ void HistoryBackend::KillHistoryDatabase() {
