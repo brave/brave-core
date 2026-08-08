@@ -61,7 +61,7 @@ public class BraveAccountSectionController
                     R.string.brave_account_password_reset_email_already_verified,
                     ChangePasswordServerErrorCode.MAXIMUM_CODE_VERIFICATION_ATTEMPTS_EXCEEDED,
                     R.string
-                            .brave_account_password_reset_maximum_code_verification_attempts_exceeded,
+                            .brave_account_resend_confirmation_email_maximum_code_verification_attempts_exceeded,
                     ChangePasswordServerErrorCode.INVALID_VERIFICATION_CODE,
                     R.string.brave_account_register_invalid_verification_code,
                     ChangePasswordServerErrorCode.TOKEN_HAS_EXPIRED,
@@ -76,6 +76,10 @@ public class BraveAccountSectionController
                     R.string.brave_account_resend_confirmation_email_maximum_send_attempts_exceeded,
                     ResendVerificationEmailServerErrorCode.EMAIL_ALREADY_VERIFIED,
                     R.string.brave_account_resend_confirmation_email_already_verified,
+                    ResendVerificationEmailServerErrorCode
+                            .MAXIMUM_CODE_VERIFICATION_ATTEMPTS_EXCEEDED,
+                    R.string
+                            .brave_account_resend_confirmation_email_maximum_code_verification_attempts_exceeded,
                     ResendVerificationEmailServerErrorCode.TOKEN_HAS_EXPIRED,
                     R.string.brave_account_resend_confirmation_email_token_has_expired);
 
