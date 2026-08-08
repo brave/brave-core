@@ -174,7 +174,7 @@ export const _ConfirmSimulatedEvmTransactionPanel = {
           transactionInfos: mockEvmTxInfos,
         }}
       >
-        <PanelWrapper isLonger>
+        <PanelWrapper>
           <LongWrapper padding='0px'>
             <ConfirmSimulatedTransactionPanel
               simulationType='EVM'
