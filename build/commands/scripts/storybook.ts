@@ -89,13 +89,7 @@ program
 
     switch (mode) {
       case 'build':
-        // If no build config was provided, use brave/.storybook-out directory.
-        // This is a fallback for CI to generate storybook at the CI-expected
-        // output path.
-        const outputDir = buildConfigProvided
-          ? path.join(config.outputDir, 'storybook')
-          : path.join(config.braveCoreDir, '.storybook-out')
-        nodeArgs.push('-o', outputDir)
+        nodeArgs.push('-o', path.join(config.outputDir, 'storybook'))
         break
       case 'dev':
         // Pass through any additional arguments in dev mode.
