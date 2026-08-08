@@ -8,9 +8,14 @@
 
 #include <string>
 
+class GURL;
+
 namespace brave_utils {
 // Replaces the chrome:// scheme with brave:// scheme in the given |url_string|.
 bool ReplaceChromeToBraveScheme(std::u16string& url_string);
+
+// Same, for a GURL. Returns |url| unchanged if it is not chrome://.
+GURL ReplaceChromeToBraveScheme(const GURL& url);
 }  // namespace brave_utils
 
 #endif  // BRAVE_BROWSER_UI_BRAVE_SCHEME_UTILS_H_

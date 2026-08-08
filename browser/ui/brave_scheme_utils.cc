@@ -8,6 +8,8 @@
 #include <string_view>
 
 #include "base/strings/string_util.h"
+#include "content/public/common/url_constants.h"
+#include "url/gurl.h"
 #include "url/third_party/mozilla/url_parse.h"
 
 namespace {
@@ -27,6 +29,15 @@ bool ReplaceChromeToBraveScheme(std::u16string& url_string) {
     }
   }
   return false;
+}
+
+GURL ReplaceChromeToBraveScheme(const GURL& url) {
+  if (!url.SchemeIs(content::kChromeUIScheme)) {
+    return url;
+  }
+  GURL::Replacements replacements;
+  replacements.SetSchemeStr(content::kBraveUIScheme);
+  return url.ReplaceComponents(replacements);
 }
 
 }  // namespace brave_utils
