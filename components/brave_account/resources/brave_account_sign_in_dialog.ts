@@ -42,6 +42,7 @@ export class BraveAccountSignInDialogElement extends CrLitElement {
       isEmailValid: { type: Boolean },
       isCapsLockOn: { type: Boolean },
       isPasswordValid: { type: Boolean },
+      isSubmitting: { type: Boolean, state: true },
       password: { type: String },
     }
   }
@@ -54,6 +55,9 @@ export class BraveAccountSignInDialogElement extends CrLitElement {
   // (`loginInitialize`/`loginFinalize`). We'll revisit handling this
   // through Mojo in C++ if that proves practical.
   protected async onSignInButtonClicked() {
+    if (this.isSubmitting) return
+    this.isSubmitting = true
+
     try {
       const serializedKE1 = this.login.start(this.password)
       const { encryptedLoginToken, serializedKE2 } =
@@ -94,6 +98,8 @@ export class BraveAccountSignInDialogElement extends CrLitElement {
 
       showError({ kind: 'login', details: error })
     }
+
+    this.isSubmitting = false
   }
 
   private browserProxy: BraveAccountBrowserProxy =
@@ -105,6 +111,7 @@ export class BraveAccountSignInDialogElement extends CrLitElement {
   protected accessor isEmailValid: boolean = false
   protected accessor isCapsLockOn: boolean = false
   protected accessor isPasswordValid: boolean = false
+  protected accessor isSubmitting: boolean = false
   protected accessor password: string = ''
 }
 
