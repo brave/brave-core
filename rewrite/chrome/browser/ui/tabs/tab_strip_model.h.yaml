@@ -52,3 +52,36 @@ substitutions:
     add_friend:
       class_name: TabStripModel
       friend_type: class BraveTabStripModel
+
+  - description: |
+      Let DetachedTabCollection have tabs::TreeTabNodeTabCollection in collection_.
+
+      This extends std::variant for DetachedTabCollection to hold a TreeTabNodeTabCollection.
+    count: 0
+    regex:
+      re_pattern: '(std::variant<std::unique_ptr<tabs::TabGroupTabCollection>,\s*std::unique_ptr<tabs::SplitTabCollection>)(>)'
+      replace: |-
+        \1, std::unique_ptr<tabs::TreeTabNodeTabCollection>\2
+
+  - description: Make the DetachTabsAndCollectionsForInsertion method virtual
+    make_virtual:
+      class_name: TabStripModel
+      method_name: 'DetachTabsAndCollectionsForInsertion'
+
+  - description: |
+      Add DetachTreeTabNodeForInsertion() for drag-and-drop.
+
+      This method is used to detach a tab while keep its tree structure intact.
+    add_to_public:
+      class_name: TabStripModel
+      code: |
+        std::unique_ptr<DetachedTabCollection> DetachTreeTabNodeForInsertion(tabs::TabInterface* subtree_root_tab, const std::vector<tabs::TabInterface*>& moving_tabs);
+
+  - description: |
+      Add InsertDetachedTreeTabNodeAt() for drag-and-drop.
+
+      This method is used to insert a detached tree tab node into the tab strip.
+    add_to_public:
+      class_name: TabStripModel
+      code: |
+        gfx::Range InsertDetachedTreeTabNodeAt(std::unique_ptr<DetachedTabCollection> tree_node, int index);

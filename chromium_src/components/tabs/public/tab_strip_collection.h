@@ -10,6 +10,10 @@ namespace tree_tab {
 class TreeTabNodeId;
 }  // namespace tree_tab
 
+namespace tabs {
+class TreeTabNodeTabCollection;
+}  // namespace tabs
+
 // Overload to AddTabRecursive() with an additional parameter and make it
 // virtual.
 #define AddTabRecursive(...)                                  \
@@ -43,9 +47,19 @@ class TreeTabNodeId;
 // public section by expanding the single occurrence of InsertTabCollectionAt
 // (avoids redefining 'private', which would break included base headers).
 // BraveTabStripCollection wraps this with a PassKey-restricted overload.
-#define InsertTabCollectionAt                                           \
-  AddTabCollectionAtPosition(std::unique_ptr<TabCollection> collection, \
-                             const TabCollection::Position& position);  \
+#define InsertTabCollectionAt                                            \
+  AddTabCollectionAtPosition(std::unique_ptr<TabCollection> collection,  \
+                             const TabCollection::Position& position);   \
+  virtual void PrepareTreeTabNodesForBatchDetach(                        \
+      const std::vector<TabInterface*>& moving_tabs) {}                  \
+  virtual bool ShouldDetachAsTreeSubtreeRoot(                            \
+      TabInterface* tab, const std::vector<TabInterface*>& moving_tabs); \
+  virtual void WillDetachTreeTabNodeSubtree(                             \
+      tabs::TreeTabNodeTabCollection& subtree_root) {}                   \
+  virtual void DidAttachTreeTabNodeSubtree(                              \
+      tabs::TreeTabNodeTabCollection& subtree_root) {}                   \
+  virtual void InsertDetachedTreeTabNode(                                \
+      std::unique_ptr<TabCollection> collection, int index);             \
   virtual void InsertTabCollectionAt
 
 #include <components/tabs/public/tab_strip_collection.h>  // IWYU pragma: export
