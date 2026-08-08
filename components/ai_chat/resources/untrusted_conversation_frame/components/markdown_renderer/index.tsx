@@ -304,6 +304,33 @@ const REMARK_PLUGINS = [
   remarkColor,
 ]
 
+// The AI occasionally generates invalid GFM table delimiter rows (e.g. `| : |` instead of `| :--- |`),
+// which causes the markdown parser to silently fall back to parsing the table as a paragraph.
+// This function detects and fixes malformed delimiter rows before parsing.
+function fixMalformedTables(text: string): string {
+  return text.split('\n').map(line => {
+    // Check if the line consists only of allowed delimiter characters and contains at least one pipe
+    if (/^[ \t]*\|?[\s\:\-\|]*\|[\s\:\-\|]*\|?[ \t]*$/.test(line) && line.includes('|')) {
+      return line.split('|').map((cell, index, array) => {
+        // Ignore the outside of the first and last pipes if they are empty
+        if ((index === 0 || index === array.length - 1) && cell.trim() === '') {
+          return cell;
+        }
+        // If the cell contains only colons and spaces (or is empty), it's an invalid GFM delimiter
+        if (/^[ \t]*:?[ \t]*:?[ \t]*$/.test(cell)) {
+          const trimmed = cell.trim();
+          if (trimmed === ':') return ' :--- ';
+          const left = trimmed.startsWith(':') ? ':' : '';
+          const right = trimmed.endsWith(':') && trimmed.length > 1 ? ':' : '';
+          return ` ${left}---${right} `;
+        }
+        return cell;
+      }).join('|');
+    }
+    return line;
+  }).join('\n');
+}
+
 export default function MarkdownRenderer(mainProps: MarkdownRendererProps) {
   const lastElementRef = React.useRef<HastElement | undefined>(undefined)
 
@@ -412,7 +439,7 @@ export default function MarkdownRenderer(mainProps: MarkdownRendererProps) {
         rehypePlugins={rehypePlugins}
         remarkPlugins={REMARK_PLUGINS}
         unwrapDisallowed={true}
-        children={mainProps.text}
+        children={fixMalformedTables(mainProps.text)}
         components={components as any}
       />
     </div>
