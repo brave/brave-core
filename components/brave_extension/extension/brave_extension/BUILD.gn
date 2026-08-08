@@ -35,7 +35,8 @@ transpile_web_ui("brave_extension") {
   # TODO(petemill): Use already-packed output from WDP, or use webpack for all
   # of it, not just some of it.
   extra_modules =
-      [ rebase_path("//brave/vendor/web-discovery-project/node_modules") ]
+      [ rebase_path("//brave/vendor/web-discovery-project/node_modules",
+                    root_build_dir) ]
 
   public_asset_path = "/out/"
 

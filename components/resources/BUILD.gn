@@ -262,5 +262,5 @@ action("about_credits") {
 
   outputs = [ "$root_gen_dir/npm_licenses.checked" ]
 
-  args = [ rebase_path("$root_gen_dir/npm_licenses.checked") ]
+  args = [ rebase_path("$root_gen_dir/npm_licenses.checked", root_build_dir) ]
 }

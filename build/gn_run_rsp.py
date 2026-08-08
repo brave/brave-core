@@ -18,7 +18,16 @@ import os
 import subprocess
 import shlex
 import sys
+from pathlib import Path
 
+
+# Paths prefixed with abs@ will be converted to absolute paths
+def maybe_abspath(value):
+    split = value.split("abs@", 1)
+    if len(split) == 2:
+        return split[0] + os.path.abspath(split[1])
+
+    return value
 
 def main():
     if len(sys.argv) < 2:
@@ -36,6 +45,10 @@ def main():
 
     args = shlex.split(content)
 
+    # Resolve any abs@ paths
+    for index, arg in enumerate(args):
+        args[index] = maybe_abspath(arg)
+
     # Parse environment variables from command line arguments.
     env_vars = {}
     for arg in args:
@@ -45,17 +58,13 @@ def main():
         else:
             break
 
-    # This script is designed to run binaries produced by the current build. We
-    # may prefix it with "./" to avoid picking up system versions that might
-    # also be on the path.
-    path = args[len(env_vars)]
-    if not os.path.isabs(path):
-        path = './' + path
 
     # The rest of the arguments are passed directly to the executable.
-    args = [path] + args[len(env_vars) + 1:]
+    args = args[len(env_vars):]
 
     env = os.environ.copy()
+    # Include the current directory in the path
+    env['PATH'] = env['PATH'] + os.pathsep + os.path.abspath(os.getcwd())
     env.update(env_vars)
 
     ret = subprocess.call(args, env=env)
