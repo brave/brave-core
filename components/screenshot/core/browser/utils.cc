@@ -5,11 +5,10 @@
 
 #include "brave/components/screenshot/core/browser/utils.h"
 
-#include "third_party/skia/include/core/SkCanvas.h"
-#include "third_party/skia/include/core/SkColor.h"
-#include "third_party/skia/include/core/SkImage.h"
-#include "third_party/skia/include/core/SkRect.h"
-#include "third_party/skia/include/core/SkSamplingOptions.h"
+#include <algorithm>
+
+#include "base/numerics/safe_conversions.h"
+#include "skia/ext/image_operations.h"
 
 namespace screenshot {
 
@@ -21,33 +20,25 @@ SkBitmap ScaleDownBitmap(const SkBitmap& bitmap) {
     return bitmap;
   }
 
-  SkBitmap scaled_bitmap;
-  scaled_bitmap.allocN32Pixels(kTargetWidth, kTargetHeight);
+  const float src_aspect = static_cast<float>(bitmap.width()) / bitmap.height();
+  const float dst_aspect = static_cast<float>(kTargetWidth) / kTargetHeight;
 
-  SkCanvas canvas(scaled_bitmap);
-  canvas.clear(SK_ColorTRANSPARENT);
-
-  SkSamplingOptions sampling_options(SkFilterMode::kLinear,
-                                     SkMipmapMode::kLinear);
-
-  float src_aspect = static_cast<float>(bitmap.width()) / bitmap.height();
-  float dst_aspect = static_cast<float>(kTargetWidth) / kTargetHeight;
-
-  SkRect dst_rect;
+  int width;
+  int height;
   if (src_aspect > dst_aspect) {
     // Source is wider — fit to width.
-    float scaled_height = kTargetWidth / src_aspect;
-    float y_offset = (kTargetHeight - scaled_height) / 2;
-    dst_rect = SkRect::MakeXYWH(0, y_offset, kTargetWidth, scaled_height);
+    width = kTargetWidth;
+    height = std::max(1, base::ClampRound(kTargetWidth / src_aspect));
   } else {
     // Source is taller — fit to height.
-    float scaled_width = kTargetHeight * src_aspect;
-    float x_offset = (kTargetWidth - scaled_width) / 2;
-    dst_rect = SkRect::MakeXYWH(x_offset, 0, scaled_width, kTargetHeight);
+    width = std::max(1, base::ClampRound(kTargetHeight * src_aspect));
+    height = kTargetHeight;
   }
 
-  canvas.drawImageRect(bitmap.asImage(), dst_rect, sampling_options);
-  return scaled_bitmap;
+  // Scale with ImageOperations rather than SkCanvas::drawImageRect() for
+  // cross-platform support.
+  return skia::ImageOperations::Resize(
+      bitmap, skia::ImageOperations::RESIZE_BETTER, width, height);
 }
 
 }  // namespace screenshot

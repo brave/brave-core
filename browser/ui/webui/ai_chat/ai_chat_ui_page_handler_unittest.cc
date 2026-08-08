@@ -226,7 +226,7 @@ TEST_F(AIChatUIPageHandlerTest, ProcessImageFile) {
     EXPECT_EQ(result->type, mojom::UploadedFileType::kImage);
     EXPECT_GT(result->data.size(), 0u);
     auto decoded = gfx::PNGCodec::Decode(result->data);
-    EXPECT_EQ(decoded.width(), 1024);
+    EXPECT_EQ(decoded.width(), 768);
     EXPECT_EQ(decoded.height(), 768);
   }
 }
