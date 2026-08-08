@@ -945,7 +945,7 @@ extension BrowserViewController: ToolbarDelegate {
 
   func tabToolbarDidPressBack(_ tabToolbar: ToolbarProtocol, button: UIButton) {
     tabManager.selectedTab?.goBack()
-    tabManager.selectedTab?.browserData?.resetExternalAlertProperties()
+    tabManager.selectedTab?.externalAppURLHelper?.reset()
     recordNavigationActionP3A(isNavigationActionForward: false)
   }
 
@@ -956,7 +956,7 @@ extension BrowserViewController: ToolbarDelegate {
 
   func tabToolbarDidPressForward(_ tabToolbar: ToolbarProtocol, button: UIButton) {
     tabManager.selectedTab?.goForward()
-    tabManager.selectedTab?.browserData?.resetExternalAlertProperties()
+    tabManager.selectedTab?.externalAppURLHelper?.reset()
     recordNavigationActionP3A(isNavigationActionForward: true)
   }
 
