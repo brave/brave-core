@@ -33,9 +33,13 @@ from collections.abc import Callable, Iterable
 import copy
 import inspect
 from pathlib import Path, PurePosixPath
-import subprocess
 import sys
 from typing import Any
+
+# gevent's drop-in `subprocess`, so a running step yields to other greenlets
+# rather than blocking the single OS thread they all share. Without this the
+# `futures` module would hand out concurrency that never actually overlaps.
+from gevent import subprocess
 
 from check import Check, Checker, PostProcessError, VerifySubset
 from engine_env import merge_envs

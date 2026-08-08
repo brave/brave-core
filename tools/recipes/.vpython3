@@ -35,3 +35,35 @@ wheel: <
   name: "infra/python/wheels/psutil/${vpython_platform}"
   version: "version:5.8.0.chromium.3"
 >
+
+# The concurrency substrate behind the `futures` module.
+wheel: <
+  name: "infra/python/wheels/gevent/${vpython_platform}"
+  version: "version:23.9.1"
+>
+wheel: <
+  name: "infra/python/wheels/greenlet/${vpython_platform}"
+  version: "version:3.0.1"
+>
+wheel: <
+  name: "infra/python/wheels/zope_event-py3"
+  version: "version:5.0"
+>
+wheel: <
+  name: "infra/python/wheels/zope_interface/${vpython_platform}"
+  version: "version:6.0"
+>
+wheel: <
+  name: "infra/python/wheels/cffi/${vpython_platform}"
+  version: "version:1.15.1"
+
+  # This is only required on the windows version of gevent.
+  match_tag: < platform: "win_amd64" >
+>
+wheel: <
+  name: "infra/python/wheels/pycparser-py2_py3"
+  version: "version:2.21"
+
+  # This is only required for cffi.
+  match_tag: < platform: "win_amd64" >
+>

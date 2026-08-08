@@ -6,19 +6,22 @@
 
 Ported from upstream `recipes-py`'s `recipe_engine/engine_types.py`, keeping
 the upstream semantics (and, where practical, the upstream wording) so the
-behaviour stays comparable when reading either code base.
+behaviour stays comparable when reading either code base:
 
   * `ResourceCost` -- what a step expects to consume, honoured by the step
     scheduler so too many costly steps never run at once.
-
-Upstream's `PerGreenletState` lands here alongside the `futures` module that
-gives it meaning, rather than ahead of it: it derives from `gevent.local.local`
-and so would pull the whole gevent stack in before anything runs concurrently.
+  * `PerGreenletState` -- a base class for module state that must be private to
+    each greenlet, with an explicit hook for carrying values into a newly
+    spawned one.
 """
 
 from __future__ import annotations
 
+from collections.abc import Callable
+from typing import Any
+
 import attr
+from gevent.local import local
 
 
 @attr.s(frozen=True, slots=True)
@@ -74,3 +77,57 @@ class ResourceCost:
         """Whether this cost fits within the given constraints."""
         return (self.cpu <= cpu and self.memory <= memory and self.disk <= disk
                 and self.net <= net)
+
+
+class PerGreenletState(local):
+    """Subclass to get an object whose state is tied to the current greenlet.
+
+        from engine_types import PerGreenletState
+
+        class MyState(PerGreenletState):
+            cool_stuff = True
+            neat_thing = ''
+
+            def _get_setter_on_spawn(self):
+                # Called on greenlet spawn; return a closure propagating values
+                # from the spawning greenlet to the new one.
+                old_cool_stuff = self.cool_stuff
+
+                def _inner():
+                    self.cool_stuff = old_cool_stuff
+
+                return _inner
+    """
+
+    def __new__(cls, *args: Any, **kwargs: Any) -> PerGreenletState:
+        ret = super().__new__(cls, *args, **kwargs)
+        PerGreenletStateRegistry.append(ret)
+        return ret
+
+    def _get_setter_on_spawn(self) -> Callable[[], None] | None:
+        """Hook for subclasses, to carry state into a spawned greenlet.
+
+        The engine invokes this immediately *before* spawning a new greenlet;
+        it should return a 0-argument function which repopulates `self`
+        immediately *after* the spawn (i.e. from inside the new greenlet).
+
+        Returning `None` -- as this default does -- leaves the new greenlet
+        with the class defaults instead of the spawning greenlet's values.
+        """
+        return None
+
+
+class _PerGreenletStateRegistry(list):
+    """A registry of every `PerGreenletState` instance.
+
+    `futures` walks this on spawn to collect each state's setter, and the
+    simulator clears it between test runs so no state leaks across cases.
+    """
+
+    def clear(self) -> None:
+        """Clear the registry."""
+        self[:] = []
+
+
+# The (global) registry of all PerGreenletState objects.
+PerGreenletStateRegistry = _PerGreenletStateRegistry()

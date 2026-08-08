@@ -36,6 +36,7 @@ import time
 from typing import TYPE_CHECKING
 
 import engine
+from engine_types import PerGreenletStateRegistry
 import simulation
 from recipe_test_api import TestData
 
@@ -165,6 +166,10 @@ def _simulate(
         test_data: TestData) -> tuple[dict[str, dict], simulation.TestContext]:
     """Run one recipe case in a fresh test-mode engine; return (steps, ctx)."""
     ctx = simulation.TestContext.from_test_data(test_data)
+    # The registry holds every `PerGreenletState` ever constructed, and module
+    # instances are per-engine, so without this the previous case's states pile
+    # up and get their setters replayed into this case's greenlets.
+    PerGreenletStateRegistry.clear()
     # A fresh engine per case: module instances are cached per engine, so
     # reusing one would leak state (deployed depot_tools, set env vars, ...).
     eng = engine._Engine(  # pylint: disable=protected-access

@@ -29,8 +29,10 @@ import collections
 from collections.abc import Mapping, Sequence
 import contextlib
 from pathlib import Path
+from types import MappingProxyType
 from typing import Any
 
+from engine_types import PerGreenletState
 from recipe_api import RecipeApi
 
 
@@ -42,22 +44,55 @@ def _check_type(name: str, var: object,
             f'{name} is not {expected}: {var!r} ({type(var).__name__})')
 
 
+class _State(PerGreenletState):
+    """The current scope, private to whichever greenlet is reading it.
+
+    A `with api.context(...)` block only applies to the steps that greenlet
+    runs. Were this held on the API instance instead, concurrently running
+    steps would share one scope and each other's cwd and env.
+
+    A newly spawned greenlet starts from the scope of the greenlet that
+    spawned it, which `_get_setter_on_spawn` carries across.
+    """
+
+    # Defaults are immutable, to prevent them becoming shared global state if
+    # something ever mutates in place rather than replacing wholesale.
+    cwd: Path | None = None
+    env: Mapping[str, str | None] = MappingProxyType({})
+    env_prefixes: Mapping[str, tuple[str, ...]] = MappingProxyType({})
+    env_suffixes: Mapping[str, tuple[str, ...]] = MappingProxyType({})
+
+    def _get_setter_on_spawn(self):
+        old_cwd = self.cwd
+        old_env = self.env
+        old_env_prefixes = self.env_prefixes
+        old_env_suffixes = self.env_suffixes
+
+        def _inner():
+            self.cwd = old_cwd
+            self.env = old_env
+            self.env_prefixes = old_env_prefixes
+            self.env_suffixes = old_env_suffixes
+
+        return _inner
+
+
 class ContextApi(RecipeApi):
     """Scoped ambient settings (cwd + environment) applied to steps.
 
-    The single per-run instance holds the current scope. `__call__` pushes new
-    values for the duration of a `with` block and restores them afterwards. The
-    `step` module reads the accessors below when building each step.
+    `__call__` pushes new values for the duration of a `with` block and
+    restores them afterwards. The `step` module reads the accessors below when
+    building each step.
+
+    The scope lives in greenlet-local storage, so concurrently running steps
+    each see their own; see `_State`.
     """
 
     def __init__(self) -> None:
         super().__init__()
         # Current scope. Replaced wholesale (never mutated in place) by
         # `__call__`, so an outer scope's dicts are never disturbed.
-        self._cwd: Path | None = None
-        self._env: dict[str, str | None] = {}
-        self._env_prefixes: dict[str, tuple[str, ...]] = {}
-        self._env_suffixes: dict[str, tuple[str, ...]] = {}
+        self._state = _State()
 
     @contextlib.contextmanager
     def __call__(
@@ -83,13 +118,13 @@ class ContextApi(RecipeApi):
         deferred: dict[str, Any] = {}
 
         def _push(member: str, new: Any) -> None:
-            deferred[member] = getattr(self, member)
-            setattr(self, member, new)
+            deferred[member] = getattr(self._state, member)
+            setattr(self._state, member, new)
 
         def _add(member: str, to_add: Mapping | None, adder) -> None:
             if to_add:
                 _check_type(member, to_add, Mapping)
-                new = dict(getattr(self, member))
+                new = dict(getattr(self._state, member))
                 for key, val in to_add.items():
                     adder(key, val, new)
                 _push(member, new)
@@ -120,31 +155,31 @@ class ContextApi(RecipeApi):
         try:
             if cwd is not None:
                 _check_type('cwd', cwd, (str, Path))
-                _push('_cwd', Path(cwd))
-            _add('_env_prefixes', env_prefixes, _as_prefixes)
-            _add('_env_suffixes', env_suffixes, _as_suffixes)
-            _add('_env', env, _as_env)
+                _push('cwd', Path(cwd))
+            _add('env_prefixes', env_prefixes, _as_prefixes)
+            _add('env_suffixes', env_suffixes, _as_suffixes)
+            _add('env', env, _as_env)
             yield
         finally:
             for member, val in deferred.items():
-                setattr(self, member, val)
+                setattr(self._state, member, val)
 
     @property
     def cwd(self) -> Path | None:
         """The cwd steps run in, or `None` to inherit the engine's cwd."""
-        return self._cwd
+        return self._state.cwd
 
     @property
     def env(self) -> dict[str, str | None]:
         """Whole-variable environment overrides currently in effect."""
-        return dict(self._env)
+        return dict(self._state.env)
 
     @property
     def env_prefixes(self) -> dict[str, tuple[str, ...]]:
         """Per-variable path prefixes currently in effect."""
-        return dict(self._env_prefixes)
+        return dict(self._state.env_prefixes)
 
     @property
     def env_suffixes(self) -> dict[str, tuple[str, ...]]:
         """Per-variable path suffixes currently in effect."""
-        return dict(self._env_suffixes)
+        return dict(self._state.env_suffixes)
