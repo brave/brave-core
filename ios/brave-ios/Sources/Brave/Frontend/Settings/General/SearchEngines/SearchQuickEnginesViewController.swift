@@ -87,11 +87,6 @@ class SearchQuickEnginesViewController: UITableViewController {
     editButton.accessibilityLabel = Strings.editQuickSearchEnginesAccessibilityTitle
     addButton.accessibilityLabel =
       Strings.CustomSearchEngine.addCustomSearchEngineAccessibilityTitle
-
-    let footer = SettingsTableSectionHeaderFooterView(
-      frame: CGRect(width: tableView.bounds.width, height: UX.headerHeight)
-    )
-    tableView.tableFooterView = footer
   }
 
   override func viewWillAppear(_ animated: Bool) {
