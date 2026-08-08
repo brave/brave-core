@@ -10,6 +10,7 @@
 #include <map>
 #include <memory>
 #include <optional>
+#include <utility>
 #include <vector>
 
 #include "base/check.h"
@@ -423,9 +424,12 @@ BraveBrowserView::BraveBrowserView(Browser* browser) : BrowserView(browser) {
     CHECK(controller);
     focus_mode_observation_.Observe(controller);
 
-    focus_mode_title_bar_view_ =
-        AddChildView(std::make_unique<FocusModeTitleBarView>());
-    focus_mode_title_bar_view_->SetVisible(false);
+    if (features::GetFocusModeUrlDisplay() ==
+        features::FocusModeUrlDisplay::kTitleBar) {
+      focus_mode_title_bar_view_ =
+          AddChildView(std::make_unique<FocusModeTitleBarView>());
+      focus_mode_title_bar_view_->SetVisible(false);
+    }
 
     focus_mode_top_overlay_ =
         AddChildView(std::make_unique<FocusModeTopOverlay>(
@@ -1438,6 +1442,14 @@ void BraveBrowserView::UpdateFocusModeState() {
     focus_mode_title_bar_view_->SetVisible(enabled);
     focus_mode_title_bar_view_->SetTab(
         enabled ? browser()->tab_strip_model()->GetActiveTab() : nullptr);
+  }
+
+  const bool show_domain =
+      enabled && features::GetFocusModeUrlDisplay() ==
+                     features::FocusModeUrlDisplay::kMiniToolbar;
+  if (show_domain != show_active_contents_domain_) {
+    show_active_contents_domain_ = show_domain;
+    GetBraveMultiContentsView()->OnShowActiveContentsDomainChanged();
   }
 
   // The toolbar is given extra horizontal padding in vertical tabs mode when

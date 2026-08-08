@@ -63,6 +63,12 @@ class BraveContentsContainerView :
   // content's own (unbordered) corner radii.
   gfx::RoundedCornersF GetCornerRadius(int border_thickness) const;
 
+  // True when this container should display its domain in the mini toolbar.
+  bool ShouldAlwaysShowDomain() const;
+
+  // True when this container's web contents occupies the entire window.
+  bool IsTabFullscreen() const;
+
   raw_ref<BrowserView> browser_view_;
 
   // true when this view is used for web panel.
