@@ -68,6 +68,11 @@ class BraveNavigatorHardwareConcurrencyFarblingBrowserTest
         BraveShieldsSettingsServiceFactory::GetForProfile(profile);
   }
 
+  void TearDownOnMainThread() override {
+    InProcessBrowserTest::TearDownOnMainThread();
+    brave_shields_settings_ = nullptr;
+  }
+
   const GURL& farbling_url() { return farbling_url_; }
 
   HostContentSettingsMap* content_settings() {

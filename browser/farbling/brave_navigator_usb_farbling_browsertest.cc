@@ -201,6 +201,7 @@ class BraveNavigatorUsbFarblingBrowserTest : public InProcessBrowserTest {
 
   void TearDownOnMainThread() override {
     browser_content_client_->ResetUsbDelegate();
+    brave_shields_settings_ = nullptr;
   }
 
   void TearDown() override { browser_content_client_.reset(); }

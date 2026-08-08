@@ -86,6 +86,11 @@ class BraveDeviceMemoryFarblingBrowserTest : public InProcessBrowserTest {
         BraveShieldsSettingsServiceFactory::GetForProfile(profile);
   }
 
+  void TearDownOnMainThread() override {
+    InProcessBrowserTest::TearDownOnMainThread();
+    brave_shields_settings_ = nullptr;
+  }
+
  protected:
   base::test::ScopedFeatureList feature_list_;
   net::EmbeddedTestServer https_server_;

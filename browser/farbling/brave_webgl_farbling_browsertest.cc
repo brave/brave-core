@@ -115,6 +115,11 @@ class BraveWebGLFarblingBrowserTest : public InProcessBrowserTest {
         BraveShieldsSettingsServiceFactory::GetForProfile(profile);
   }
 
+  void TearDownOnMainThread() override {
+    InProcessBrowserTest::TearDownOnMainThread();
+    brave_shields_settings_ = nullptr;
+  }
+
   HostContentSettingsMap* content_settings() {
     return HostContentSettingsMapFactory::GetForProfile(browser()->profile());
   }

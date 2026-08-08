@@ -102,6 +102,11 @@ class BraveDarkModeFingerprintProtectionTest : public InProcessBrowserTest {
         BraveShieldsSettingsServiceFactory::GetForProfile(profile);
   }
 
+  void TearDownOnMainThread() override {
+    InProcessBrowserTest::TearDownOnMainThread();
+    brave_shields_settings_ = nullptr;
+  }
+
   const GURL& dark_mode_url() { return dark_mode_url_; }
 
   void AllowFingerprinting() {

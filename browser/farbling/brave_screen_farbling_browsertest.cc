@@ -109,6 +109,11 @@ class BraveScreenFarblingBrowserTest : public InProcessBrowserTest {
         BraveShieldsSettingsServiceFactory::GetForProfile(profile);
   }
 
+  void TearDownOnMainThread() override {
+    InProcessBrowserTest::TearDownOnMainThread();
+    brave_shields_settings_ = nullptr;
+  }
+
   std::string LoadExtension(const base::FilePath& path) {
     extensions::ChromeTestExtensionLoader loader(browser()->profile());
     scoped_refptr<const extensions::Extension> extension =

@@ -69,6 +69,11 @@ class BraveWebAudioFarblingBrowserTest : public InProcessBrowserTest {
         BraveShieldsSettingsServiceFactory::GetForProfile(profile);
   }
 
+  void TearDownOnMainThread() override {
+    InProcessBrowserTest::TearDownOnMainThread();
+    brave_shields_settings_ = nullptr;
+  }
+
   const GURL& copy_from_channel_url() { return copy_from_channel_url_; }
 
   const GURL& farbling_url() { return farbling_url_; }

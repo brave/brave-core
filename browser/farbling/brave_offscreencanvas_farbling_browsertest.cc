@@ -66,6 +66,11 @@ class BraveOffscreenCanvasFarblingBrowserTest : public InProcessBrowserTest {
         BraveShieldsSettingsServiceFactory::GetForProfile(profile);
   }
 
+  void TearDownOnMainThread() override {
+    InProcessBrowserTest::TearDownOnMainThread();
+    brave_shields_settings_ = nullptr;
+  }
+
   void AllowFingerprinting() {
     brave_shields_settings_->SetFingerprintingControlType(ControlType::ALLOW,
                                                           top_level_page_url_);

@@ -150,6 +150,11 @@ class BraveContentSettingsAgentImplBrowserTest : public InProcessBrowserTest {
         BraveShieldsSettingsServiceFactory::GetForProfile(profile);
   }
 
+  void TearDownOnMainThread() override {
+    InProcessBrowserTest::TearDownOnMainThread();
+    brave_shields_settings_ = nullptr;
+  }
+
   void SaveReferrer(const net::test_server::HttpRequest& request) {
     base::AutoLock auto_lock(last_referrers_lock_);
 
