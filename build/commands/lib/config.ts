@@ -12,6 +12,12 @@ import EnvConfig from './envConfig.ts'
 import * as Log from './log.ts'
 import util from './util.js'
 import { isCI, isTeamcity } from './ciDetect.ts'
+import type {
+  BuildConfigOptions,
+  BuildOptions,
+  GnArgsOptions,
+  GnGenOptions,
+} from './build.ts'
 
 type ExecOptions = {
   env: NodeJS.ProcessEnv
@@ -82,6 +88,7 @@ export class Config {
   extraGnArgs: Record<string, any>
   extraGnGenOpts: string
   extraNinjaOpts: string[]
+  explicitGnGen: boolean = false
   sisoLimits: Record<string, any>
   sisoJobsLimit: number | undefined
   sisoCacheDir: string | undefined
@@ -462,14 +469,24 @@ export class Config {
     return path.join(this.cacheDir, name)
   }
 
-  updateInternal(options) {
+  updateInternal(
+    options: BuildConfigOptions
+      & GnArgsOptions
+      & GnGenOptions
+      & BuildOptions & {
+        build_config?: string
+        target_cpu?: string
+        use_libfuzzer?: boolean
+        gclient_verbose?: boolean
+      },
+  ) {
     if (options.universal) {
       this.targetArch = 'arm64'
       this.isUniversalBinary = true
     }
 
     if (options.target_cpu) {
-      options.target_arch = options.target_cpu
+      options.target_arch = options.target_cpu as any
     }
 
     if (options.target_arch === 'x86') {
@@ -668,7 +685,9 @@ export class Config {
     }
   }
 
-  fromGnArgs(options) {
+  fromGnArgs(
+    options: BuildConfigOptions & GnArgsOptions & GnGenOptions & BuildOptions,
+  ) {
     const gnArgs = readArgsGn(this.srcDir, options.C)
     Log.warn(
       '--no-gn-gen is experimental and only gn args that match command '
@@ -678,12 +697,19 @@ export class Config {
     assert(!isCI)
   }
 
-  update(options) {
+  update(
+    options: BuildConfigOptions & GnArgsOptions & GnGenOptions & BuildOptions,
+  ) {
     if (this.use_no_gn_gen) {
       this.fromGnArgs(options)
     } else {
       this.updateInternal(options)
     }
+  }
+
+  setExplicitGnGen() {
+    this.explicitGnGen = true
+    this.outputDir = 'Default'
   }
 
   isIOS() {

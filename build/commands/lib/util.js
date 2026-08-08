@@ -661,13 +661,13 @@ const util = {
     return hasGeneratedArgsUpdated || !isArgsGnValid
   },
 
-  generateNinjaFiles: async (options = config.defaultOptions) => {
+  generateNinjaFiles: async (options = config.defaultOptions, gnOpts = []) => {
     await Log.progressScopeAsync('generate ninja files', async () => {
       await util.buildNativeRedirectCC()
 
       const extraGnGenOpts = config.extraGnGenOpts
-        ? [config.extraGnGenOpts]
-        : []
+        ? [config.extraGnGenOpts, ...gnOpts]
+        : gnOpts
       util.runGnGen(
         config.outputDir,
         getBuildArgs(config),

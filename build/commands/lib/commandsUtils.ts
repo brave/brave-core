@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { Argument } from 'commander'
+import * as Log from './log.ts'
 
 // Returns an Argument that parses the current build configuration
 export function createBuildConfigArgument() {
@@ -16,4 +17,23 @@ export function createBuildConfigArgument() {
       return value
     },
   )
+}
+
+// Collects the value into the accumulator.
+export function collect(value: string, accumulator: string[]): string[] {
+  accumulator.push(value)
+  return accumulator
+}
+
+export function argParserBoolean(value: string): boolean {
+  try {
+    const parsed = JSON.parse(value)
+    if (typeof parsed !== 'boolean') {
+      throw new Error(`Invalid boolean value: ${value}`)
+    }
+    return parsed
+  } catch (error) {
+    Log.error(`Invalid boolean value: ${value}`)
+    process.exit(1)
+  }
 }

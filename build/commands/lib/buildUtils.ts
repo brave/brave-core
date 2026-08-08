@@ -9,6 +9,7 @@ import assert from 'node:assert'
 import fs from 'node:fs'
 import path from 'node:path'
 import { isCI } from './ciDetect.ts'
+import * as Log from './log.ts'
 
 // Helper to ensure vs_files mount is valid. We found that sometimes ciopfs
 // mount may disappear after a while. It's not clear why, but this helper
@@ -49,5 +50,31 @@ export function ensureVsFilesMount() {
         config.defaultOptions,
       )
     }
+  }
+}
+
+/**
+ * Checks to make sure the src/chrome/VERSION matches brave-core's package.json version
+ */
+export function checkVersionsMatch() {
+  const srcChromeVersionDir = path.resolve(
+    path.join(config.srcDir, 'chrome', 'VERSION'),
+  )
+  const versionData = fs.readFileSync(srcChromeVersionDir, 'utf8')
+  const re = /MAJOR=(\d+)\s+MINOR=(\d+)\s+BUILD=(\d+)\s+PATCH=(\d+)/
+  const found = versionData.match(re)
+  if (!found) {
+    Log.error('Failed to parse version data from src/chrome/VERSION')
+    process.exit(1)
+  }
+  const braveVersionFromChromeFile = `${found[2]}.${found[3]}.${found[4]}`
+  if (braveVersionFromChromeFile !== config.braveVersion) {
+    // Only a warning. The CI environment will choose to proceed or not within its own script.
+    Log.warn(
+      `Version files do not match!\n`
+        + `src/chrome/VERSION: ${braveVersionFromChromeFile}\n`
+        + `brave-core configured version: ${config.braveVersion}\n`
+        + `Did you forget to sync?`,
+    )
   }
 }

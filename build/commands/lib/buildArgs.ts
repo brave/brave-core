@@ -260,9 +260,7 @@ export function getBuildArgs(config: Config) {
     // exclude_unwind_tables is inherited form upstream and is false for any
     // Android build
 
-    args.target_android_output_format =
-      config.targetAndroidOutputFormat
-      || (config.buildConfig === 'Release' ? 'aab' : 'apk')
+    args.target_android_output_format = config.targetAndroidOutputFormat
     args.android_override_version_name = config.androidOverrideVersionName
 
     args.brave_android_developer_options_code =
