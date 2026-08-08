@@ -26,6 +26,7 @@
 #include "brave/components/de_amp/common/features.h"
 #include "brave/components/debounce/core/common/features.h"
 #include "brave/components/email_aliases/buildflags/buildflags.h"
+#include "brave/components/extension_malware_blocklist/common/features.h"
 #include "brave/components/google_sign_in_permission/features.h"
 #include "brave/components/local_ai/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/browser/features.h"
@@ -818,6 +819,20 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
               extensions::features::kBraveAutoUpdateExtensions),               \
       }))
 
+#define BRAVE_EXTENSION_MALWARE_BLOCKLIST_FEATURE_ENTRY                    \
+  IF_BUILDFLAG(                                                            \
+      ENABLE_EXTENSIONS,                                                   \
+      EXPAND_FEATURE_ENTRIES({                                             \
+          "brave-extension-malware-blocklist",                             \
+          "Enhanced malicious extension blocking",                         \
+          "Also turns off extensions flagged on Brave's own "              \
+          "malicious-extension list, in addition to the extensions Brave " \
+          "already blocks.",                                               \
+          kOsWin | kOsLinux | kOsMac,                                      \
+          FEATURE_VALUE_TYPE(extension_malware_blocklist::features::       \
+                                 kExtensionMalwareBlocklist),              \
+      }))
+
 #if BUILDFLAG(ENABLE_BRAVE_EDUCATION)
 #define BRAVE_EDUCATION_FEATURE_ENTRIES                                       \
   EXPAND_FEATURE_ENTRIES({                                                    \
@@ -1497,6 +1512,7 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
   BRAVE_UPGRADE_WHEN_IDLE_FEATURE_ENTRY                                        \
   BRAVE_EXTENSIONS_MANIFEST_V2                                                 \
   BRAVE_EXTENSION_AUTO_UPDATE_FEATURE_ENTRY                                    \
+  BRAVE_EXTENSION_MALWARE_BLOCKLIST_FEATURE_ENTRY                              \
   BRAVE_WORKAROUND_NEW_WINDOW_FLASH                                            \
   BRAVE_WEBASSEMBLY_JITLESS_FEATURE_ENTRY                                      \
   BRAVE_EDUCATION_FEATURE_ENTRIES                                              \
