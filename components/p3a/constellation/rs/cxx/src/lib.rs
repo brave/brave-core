@@ -86,7 +86,7 @@ pub struct RandomnessRequestStateWrapper(Option<RandomnessRequestState>);
 pub struct PPOPRFPublicKeyWrapper(Option<ServerPublicKey>);
 
 pub fn load_ppoprf_public_key(key_data: &[u8]) -> PPOPRFPublicKeyResult {
-    match ServerPublicKey::load_from_bincode(key_data) {
+    match postcard::from_bytes::<ServerPublicKey>(key_data) {
         Ok(key) => PPOPRFPublicKeyResult {
             key: Box::new(PPOPRFPublicKeyWrapper(Some(key))),
             error: String::new(),
