@@ -8,13 +8,14 @@
 #include "base/path_service.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/thread_test_helper.h"
+#include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
 #include "brave/browser/extensions/brave_base_local_data_files_browsertest.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/webcompat/core/common/features.h"
-#include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/extensions/extension_browsertest.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -60,34 +61,44 @@ class BraveOffscreenCanvasFarblingBrowserTest : public InProcessBrowserTest {
     ASSERT_TRUE(embedded_test_server()->Start());
 
     top_level_page_url_ = embedded_test_server()->GetURL("a.com", "/");
+    auto* profile = browser()->profile();
+    brave_shields_settings_ =
+        BraveShieldsSettingsServiceFactory::GetForProfile(profile);
   }
 
-  HostContentSettingsMap* content_settings() {
-    return HostContentSettingsMapFactory::GetForProfile(browser()->profile());
+  void TearDownOnMainThread() override {
+    InProcessBrowserTest::TearDownOnMainThread();
+    brave_shields_settings_ = nullptr;
   }
 
   void AllowFingerprinting() {
-    brave_shields::SetFingerprintingControlType(
-        content_settings(), ControlType::ALLOW, top_level_page_url_);
+    brave_shields_settings_->SetFingerprintingControlType(ControlType::ALLOW,
+                                                          top_level_page_url_);
   }
 
   void BlockFingerprinting() {
-    brave_shields::SetFingerprintingControlType(
-        content_settings(), ControlType::BLOCK, top_level_page_url_);
+    brave_shields_settings_->SetFingerprintingControlType(ControlType::BLOCK,
+                                                          top_level_page_url_);
   }
 
   void SetFingerprintingDefault() {
-    brave_shields::SetFingerprintingControlType(
-        content_settings(), ControlType::DEFAULT, top_level_page_url_);
+    brave_shields_settings_->SetFingerprintingControlType(ControlType::DEFAULT,
+                                                          top_level_page_url_);
   }
 
   content::WebContents* contents() {
     return browser()->tab_strip_model()->GetActiveWebContents();
   }
 
+  brave_shields::BraveShieldsSettingsService* brave_shields_settings() {
+    return brave_shields_settings_;
+  }
+
  private:
   base::test::ScopedFeatureList scoped_feature_list_;
   GURL top_level_page_url_;
+  raw_ptr<brave_shields::BraveShieldsSettingsService> brave_shields_settings_ =
+      nullptr;
 };
 
 IN_PROC_BROWSER_TEST_F(BraveOffscreenCanvasFarblingBrowserTest,
@@ -150,7 +161,7 @@ IN_PROC_BROWSER_TEST_F(BraveOffscreenCanvasFarblingBrowserTest,
   // Turn off shields to test that the worker content settings agent
   // properly respects shields setting separately from fingerprinting
   // setting.
-  brave_shields::SetBraveShieldsEnabled(content_settings(), false, url);
+  brave_shields_settings()->SetBraveShieldsEnabled(false, url);
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   while (content::EvalJs(contents(), kTitleScript).ExtractString() == "") {
   }

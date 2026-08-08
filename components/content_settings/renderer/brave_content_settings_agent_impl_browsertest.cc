@@ -8,6 +8,8 @@
 
 #include "base/feature_list.h"
 #include "base/path_service.h"
+#include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/core/common/features.h"
@@ -142,6 +144,15 @@ class BraveContentSettingsAgentImplBrowserTest : public InProcessBrowserTest {
     top_level_page_pattern_ =
         ContentSettingsPattern::FromString("https://a.test/*");
     iframe_pattern_ = ContentSettingsPattern::FromString("https://b.test/*");
+
+    auto* profile = browser()->profile();
+    brave_shields_settings_ =
+        BraveShieldsSettingsServiceFactory::GetForProfile(profile);
+  }
+
+  void TearDownOnMainThread() override {
+    InProcessBrowserTest::TearDownOnMainThread();
+    brave_shields_settings_ = nullptr;
   }
 
   void SaveReferrer(const net::test_server::HttpRequest& request) {
@@ -244,34 +255,32 @@ class BraveContentSettingsAgentImplBrowserTest : public InProcessBrowserTest {
   }
 
   void ShieldsDown() {
-    brave_shields::SetBraveShieldsEnabled(content_settings(), false,
-                                          top_level_page_url());
+    brave_shields_settings_->SetBraveShieldsEnabled(false,
+                                                    top_level_page_url());
   }
 
   void ShieldsUp() {
-    brave_shields::SetBraveShieldsEnabled(content_settings(), true,
-                                          top_level_page_url());
+    brave_shields_settings_->SetBraveShieldsEnabled(true, top_level_page_url());
   }
 
   void AllowFingerprinting() {
-    brave_shields::SetFingerprintingControlType(
-        content_settings(), ControlType::ALLOW, top_level_page_url());
+    brave_shields_settings_->SetFingerprintingControlType(ControlType::ALLOW,
+                                                          top_level_page_url());
   }
 
   void BlockFingerprinting() {
-    brave_shields::SetFingerprintingControlType(
-        content_settings(), ControlType::BLOCK, top_level_page_url());
+    brave_shields_settings_->SetFingerprintingControlType(ControlType::BLOCK,
+                                                          top_level_page_url());
   }
 
   void BlockThirdPartyFingerprinting() {
-    brave_shields::SetFingerprintingControlType(content_settings(),
-                                                ControlType::BLOCK_THIRD_PARTY,
-                                                top_level_page_url());
+    brave_shields_settings_->SetFingerprintingControlType(
+        ControlType::BLOCK_THIRD_PARTY, top_level_page_url());
   }
 
   void SetFingerprintingDefault() {
-    brave_shields::SetFingerprintingControlType(
-        content_settings(), ControlType::DEFAULT, top_level_page_url());
+    brave_shields_settings_->SetFingerprintingControlType(ControlType::DEFAULT,
+                                                          top_level_page_url());
   }
 
   void BlockScripts() {
@@ -396,6 +405,8 @@ class BraveContentSettingsAgentImplBrowserTest : public InProcessBrowserTest {
 
   base::ScopedTempDir temp_user_data_dir_;
   net::test_server::EmbeddedTestServer https_server_;
+  raw_ptr<brave_shields::BraveShieldsSettingsService> brave_shields_settings_ =
+      nullptr;
 };
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,

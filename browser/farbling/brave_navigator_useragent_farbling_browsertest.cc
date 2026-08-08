@@ -11,13 +11,14 @@
 #include "base/strings/strcat.h"
 #include "base/test/thread_test_helper.h"
 #include "base/version.h"
+#include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
 #include "brave/browser/extensions/brave_base_local_data_files_browsertest.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/constants/pref_names.h"
-#include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/extensions/extension_browsertest.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -172,6 +173,14 @@ class BraveNavigatorUserAgentFarblingBrowserTest : public InProcessBrowserTest {
     user_agents_.clear();
 
     https_server_->StartAcceptingConnections();
+    auto* profile = browser()->profile();
+    brave_shields_settings_ =
+        BraveShieldsSettingsServiceFactory::GetForProfile(profile);
+  }
+
+  void TearDownOnMainThread() override {
+    InProcessBrowserTest::TearDownOnMainThread();
+    brave_shields_settings_ = nullptr;
   }
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
@@ -208,26 +217,19 @@ class BraveNavigatorUserAgentFarblingBrowserTest : public InProcessBrowserTest {
     return user_agents_[user_agents_.size() - 1];
   }
 
-  HostContentSettingsMap* content_settings() {
-    return HostContentSettingsMapFactory::GetForProfile(browser()->profile());
-  }
-
   void AllowFingerprinting(std::string domain) {
-    brave_shields::SetFingerprintingControlType(
-        content_settings(), ControlType::ALLOW,
-        https_server()->GetURL(domain, "/"));
+    brave_shields_settings_->SetFingerprintingControlType(
+        ControlType::ALLOW, https_server()->GetURL(domain, "/"));
   }
 
   void BlockFingerprinting(std::string domain) {
-    brave_shields::SetFingerprintingControlType(
-        content_settings(), ControlType::BLOCK,
-        https_server()->GetURL(domain, "/"));
+    brave_shields_settings_->SetFingerprintingControlType(
+        ControlType::BLOCK, https_server()->GetURL(domain, "/"));
   }
 
   void SetFingerprintingDefault(std::string domain) {
-    brave_shields::SetFingerprintingControlType(
-        content_settings(), ControlType::DEFAULT,
-        https_server()->GetURL(domain, "/"));
+    brave_shields_settings_->SetFingerprintingControlType(
+        ControlType::DEFAULT, https_server()->GetURL(domain, "/"));
   }
 
   content::WebContents* contents() {
@@ -284,6 +286,8 @@ class BraveNavigatorUserAgentFarblingBrowserTest : public InProcessBrowserTest {
   std::unique_ptr<net::EmbeddedTestServer> https_server_;
   std::vector<std::string> user_agents_;
   base::test::ScopedFeatureList feature_list_;
+  raw_ptr<brave_shields::BraveShieldsSettingsService> brave_shields_settings_ =
+      nullptr;
 };
 
 // Tests results of farbling user agent

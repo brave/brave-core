@@ -364,34 +364,6 @@ bool IsReduceLanguageEnabledForProfile(PrefService* pref_service) {
   return true;
 }
 
-bool ShouldDoReduceLanguage(HostContentSettingsMap* map,
-                            const GURL& url,
-                            PrefService* pref_service) {
-  if (!IsReduceLanguageEnabledForProfile(pref_service)) {
-    return false;
-  }
-
-  // Don't reduce language if Brave Shields is down (this also handles cases
-  // where the URL is not HTTP(S))
-  if (!brave_shields::IsBraveShieldsEnabled(map, url)) {
-    return false;
-  }
-
-  // Don't reduce language if fingerprinting is off
-  if (brave_shields::GetFingerprintingControlType(map, url) ==
-      ControlType::ALLOW) {
-    return false;
-  }
-
-  // Don't reduce language if there's a webcompat exception
-  if (brave_shields::IsWebcompatEnabled(
-          map, ContentSettingsType::BRAVE_WEBCOMPAT_LANGUAGE, url)) {
-    return false;
-  }
-
-  return true;
-}
-
 DomainBlockingType GetDomainBlockingType(HostContentSettingsMap* map,
                                          const GURL& url) {
   // Don't block if feature is disabled
@@ -538,73 +510,6 @@ ControlType GetCookieControlType(
     return ControlType::BLOCK_THIRD_PARTY;
   }
   return ControlType::BLOCK;
-}
-
-void SetFingerprintingControlType(HostContentSettingsMap* map,
-                                  ControlType type,
-                                  const GURL& url,
-                                  PrefService* local_state,
-                                  PrefService* profile_state) {
-  auto primary_pattern = GetPatternFromURL(url);
-
-  if (!primary_pattern.IsValid()) {
-    return;
-  }
-
-  ControlType prev_setting = GetFingerprintingControlType(map, url);
-  content_settings::SettingInfo setting_info;
-  base::Value web_setting = map->GetWebsiteSetting(
-      url, GURL(), ContentSettingsType::BRAVE_FINGERPRINTING_V2, &setting_info);
-  bool was_default =
-      web_setting.is_none() || setting_info.primary_pattern.MatchesAllHosts() ||
-      setting_info.source == content_settings::SettingSource::kRemoteList;
-
-  ContentSetting content_setting;
-  if (type == ControlType::DEFAULT || type == ControlType::BLOCK_THIRD_PARTY) {
-    type = ControlType::DEFAULT;
-    content_setting = CONTENT_SETTING_ASK;
-  } else {
-    content_setting = GetDefaultBlockFromControlType(type);
-  }
-
-  map->SetContentSettingCustomScope(
-      primary_pattern, ContentSettingsPattern::Wildcard(),
-      ContentSettingsType::BRAVE_FINGERPRINTING_V2, content_setting);
-  if (!map->IsOffTheRecord()) {
-    // Only report to P3A if not a guest/incognito profile
-    RecordShieldsSettingChanged(local_state);
-    if (url.is_empty()) {
-      // If global setting changed, report global setting and recalulate
-      // domain specific setting counts
-      RecordShieldsFingerprintSetting(type);
-      RecordShieldsDomainSettingCounts(profile_state, true, type);
-    } else {
-      // If domain specific setting changed, recalculate counts
-      ControlType global_setting = GetFingerprintingControlType(map, GURL());
-      RecordShieldsDomainSettingCountsWithChange(
-          profile_state, true, global_setting,
-          was_default ? nullptr : &prev_setting, type);
-    }
-  }
-}
-
-ControlType GetFingerprintingControlType(HostContentSettingsMap* map,
-                                         const GURL& url) {
-  ContentSettingsForOneType fingerprinting_rules =
-      map->GetSettingsForOneType(ContentSettingsType::BRAVE_FINGERPRINTING_V2);
-
-  ContentSetting fp_setting =
-      GetBraveFPContentSettingFromRules(fingerprinting_rules, url);
-
-  if (fp_setting == CONTENT_SETTING_ASK ||
-      fp_setting == CONTENT_SETTING_DEFAULT ||
-      (!IsShowStrictFingerprintingModeEnabled() &&
-       fp_setting == CONTENT_SETTING_BLOCK)) {
-    return ControlType::DEFAULT;
-  }
-
-  return fp_setting == CONTENT_SETTING_ALLOW ? ControlType::ALLOW
-                                             : ControlType::BLOCK;
 }
 
 bool IsBraveShieldsManaged(PrefService* prefs,
@@ -793,30 +698,6 @@ bool IsWebcompatEnabled(HostContentSettingsMap* map,
       map->GetContentSetting(url, url, webcompat_settings_type);
 
   return setting == CONTENT_SETTING_ALLOW;
-}
-
-mojom::FarblingLevel GetFarblingLevel(HostContentSettingsMap* map,
-                                      const GURL& primary_url) {
-  if (!base::FeatureList::IsEnabled(features::kBraveFarbling)) {
-    return brave_shields::mojom::FarblingLevel::OFF;
-  }
-
-  const bool shields_up = IsBraveShieldsEnabled(map, primary_url);
-  if (!shields_up) {
-    return brave_shields::mojom::FarblingLevel::OFF;
-  }
-
-  auto fingerprinting_type = GetFingerprintingControlType(map, primary_url);
-  switch (fingerprinting_type) {
-    case ControlType::ALLOW:
-      return brave_shields::mojom::FarblingLevel::OFF;
-    case ControlType::BLOCK:
-      return brave_shields::mojom::FarblingLevel::MAXIMUM;
-    case ControlType::BLOCK_THIRD_PARTY:
-      NOTREACHED();
-    case ControlType::DEFAULT:
-      return brave_shields::mojom::FarblingLevel::BALANCED;
-  }
 }
 
 bool IsDeveloperModeEnabled(PrefService* profile_state) {
