@@ -316,9 +316,41 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
   }()
 
   private lazy var defaultBrowserSection: Static.Section = {
-    let addToDockRows: [Row] =
-      AddToDockEligibility.isEligible
-      ? [
+    let addToDockRows: [Row] = [
+      Row(
+        text: Strings.addToDockSettingsCell,
+        selection: { [weak self] in
+          guard let self else { return }
+          let controller = OnboardingController(
+            environment: .init(
+              p3aUtils: p3aUtilities,
+              attributionManager: attributionManager
+            ),
+            steps: [.addToDock],
+            showSplashScreen: false,
+            showDismissButton: false
+          ).then {
+            $0.isModalInPresentation = true
+            $0.modalPresentationStyle = .overFullScreen
+          }
+          self.present(controller, animated: true)
+        },
+        cellClass: MultilineButtonCell.self
+      )
+    ]
+
+    return Static.Section(
+      rows: [
+        Row(
+          text: Strings.setDefaultBrowserSettingsCell,
+          selection: { [unowned self] in
+            guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
+              return
+            }
+            UIApplication.shared.open(settingsUrl)
+          },
+          cellClass: MultilineButtonCell.self
+        ),
         Row(
           text: Strings.addToDockSettingsCell,
           selection: { [weak self] in
@@ -338,23 +370,7 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
             self.present(controller, animated: true)
           },
           cellClass: MultilineButtonCell.self
-        )
-      ]
-      : []
-
-    return Static.Section(
-      rows: [
-        Row(
-          text: Strings.setDefaultBrowserSettingsCell,
-          selection: { [unowned self] in
-            guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
-              return
-            }
-            UIApplication.shared.open(settingsUrl)
-          },
-          cellClass: MultilineButtonCell.self
-        )
-      ] + addToDockRows + [
+        ),
         Row(
           text: Strings.importBrowsingDataSettingsMenuTitle,
           selection: { [unowned self] in
@@ -378,7 +394,7 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
             self.navigationController?.pushViewController(controller, animated: true)
           },
           cellClass: MultilineButtonCell.self
-        )
+        ),
       ]
     )
   }()
