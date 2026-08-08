@@ -9,6 +9,7 @@
 #include <string>
 
 #include "brave/components/brave_ads/core/internal/common/subdivision/subdivision.h"
+#include "brave/components/brave_ads/core/internal/common/subdivision/test/test_subdivision_observer.h"
 #include "brave/components/brave_ads/core/internal/common/subdivision/url_request/subdivision_url_request_builder_util.h"
 #include "brave/components/brave_ads/core/internal/common/subdivision/url_request/test/subdivision_url_request_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/mock_test_util.h"
@@ -56,8 +57,12 @@ TEST_F(BraveAdsSubdivisionTargetingTest,
 
   ads_client_notifier_.NotifyDidInitializeAds();
 
+  TestSubdivisionObserver subdivision_observer(
+      subdivision_.get(), /*expected_subdivision=*/"US-CA");
+
   // Act
   SetProfileBooleanPref(prefs::kOptedInToNotificationAds, true);
+  EXPECT_TRUE(subdivision_observer.WaitForDidUpdateSubdivision());
 
   // Assert
   EXPECT_TRUE(SubdivisionTargeting::ShouldAllow());
