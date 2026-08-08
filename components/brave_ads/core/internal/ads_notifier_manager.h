@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_NOTIFIER_MANAGER_H_
 
 #include <memory>
+#include <string>
 #include <vector>
 
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
@@ -33,6 +34,9 @@ class AdsNotifierManager final {
   void NotifyBrowserUpgradeRequiredToServeAds() const;
 
   void NotifyIneligibleWalletToServeAds() const;
+
+  void NotifySolveCaptchaToServeAds(const std::string& payment_id,
+                                    const std::string& captcha_id) const;
 
   void NotifyRemindUser(mojom::ReminderType mojom_reminder_type) const;
 
