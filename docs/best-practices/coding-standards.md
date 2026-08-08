@@ -1345,7 +1345,7 @@ target produces it.
 
 ---
 
-<a id="CS-071"></a>
+<a id="CS-077"></a>
 
 ## ✅ Inject Scripts via `ScriptInjector`, Never `AllowInjectingJavaScript`
 
