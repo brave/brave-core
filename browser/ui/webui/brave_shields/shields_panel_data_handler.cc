@@ -83,8 +83,6 @@ void ShieldsPanelDataHandler::GetSiteSettings(
       active_shields_data_controller_->GetFingerprintMode();
   settings.cookie_block_mode =
       active_shields_data_controller_->GetCookieBlockMode();
-  settings.https_upgrade_mode =
-      active_shields_data_controller_->GetHttpsUpgradeMode();
   settings.is_noscript_enabled =
       active_shields_data_controller_->GetNoScriptEnabled();
   settings.is_forget_first_party_storage_enabled =
@@ -122,15 +120,6 @@ void ShieldsPanelDataHandler::SetCookieBlockMode(
   }
 
   active_shields_data_controller_->SetCookieBlockMode(mode);
-}
-
-void ShieldsPanelDataHandler::SetHttpsUpgradeMode(
-    brave_shields::mojom::HttpsUpgradeMode mode) {
-  if (!active_shields_data_controller_) {
-    return;
-  }
-
-  active_shields_data_controller_->SetHttpsUpgradeMode(mode);
 }
 
 void ShieldsPanelDataHandler::SetIsNoScriptsEnabled(bool is_enabled) {

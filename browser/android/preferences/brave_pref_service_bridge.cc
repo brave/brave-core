@@ -163,18 +163,6 @@ void JNI_BravePrefServiceBridge_SetOldAdsBlockedCount(
       kAdsBlocked, count + profile->GetPrefs()->GetUint64(kAdsBlocked));
 }
 
-void JNI_BravePrefServiceBridge_SetOldHttpsUpgradesCount(
-    JNIEnv* env,
-    const base::android::JavaRef<jobject>& j_profile,
-    jlong count) {
-  if (count <= 0) {
-    return;
-  }
-  Profile* profile = Profile::FromJavaObject(j_profile);
-  profile->GetPrefs()->SetUint64(
-      kHttpsUpgrades, count + profile->GetPrefs()->GetUint64(kHttpsUpgrades));
-}
-
 void JNI_BravePrefServiceBridge_ResetPromotionLastFetchStamp(JNIEnv* env) {
   GetOriginalProfile()->GetPrefs()->SetUint64(
       brave_rewards::prefs::kPromotionLastFetchStamp, 0);

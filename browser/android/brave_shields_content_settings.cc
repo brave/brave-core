@@ -232,35 +232,6 @@ JNI_BraveShieldsContentSettings_GetFingerprintingControlType(
       env, brave_shields::ControlTypeToString(control_type));
 }
 
-void JNI_BraveShieldsContentSettings_SetHttpsUpgradeControlType(
-    JNIEnv* env,
-    const base::android::JavaRef<jstring>& type,
-    const base::android::JavaRef<jstring>& url,
-    const base::android::JavaRef<jobject>& j_profile) {
-  brave_shields::SetHttpsUpgradeControlType(
-      HostContentSettingsMapFactory::GetForProfile(
-          Profile::FromJavaObject(j_profile)),
-      brave_shields::ControlTypeFromString(
-          base::android::ConvertJavaStringToUTF8(env, type)),
-      GURL(base::android::ConvertJavaStringToUTF8(env, url)),
-      g_browser_process->local_state());
-}
-
-base::android::ScopedJavaLocalRef<jstring>
-JNI_BraveShieldsContentSettings_GetHttpsUpgradeControlType(
-    JNIEnv* env,
-    const base::android::JavaRef<jstring>& url,
-    const base::android::JavaRef<jobject>& j_profile) {
-  brave_shields::ControlType control_type =
-      brave_shields::GetHttpsUpgradeControlType(
-          HostContentSettingsMapFactory::GetForProfile(
-              Profile::FromJavaObject(j_profile)),
-          GURL(base::android::ConvertJavaStringToUTF8(env, url)));
-
-  return base::android::ConvertUTF8ToJavaString(env,
-      brave_shields::ControlTypeToString(control_type));
-}
-
 base::android::ScopedJavaLocalRef<jstring>
 JNI_BraveShieldsContentSettings_GetCosmeticFilteringControlType(
     JNIEnv* env,
