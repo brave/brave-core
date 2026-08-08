@@ -16,7 +16,10 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kCustomizeChromeWallpaperSearch, base::FEATURE_DISABLED_BY_DEFAULT},
     {kNtpAlphaBackgroundCollections, base::FEATURE_DISABLED_BY_DEFAULT},
     {kNtpBackgroundImageErrorDetection, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kNtpCalendarModule, base::FEATURE_DISABLED_BY_DEFAULT},
     {kNtpChromeCartModule, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kNtpDriveModule, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kNtpDriveModuleLink, base::FEATURE_DISABLED_BY_DEFAULT},
     {kNtpModulesMaxColumnCount, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 

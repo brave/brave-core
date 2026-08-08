@@ -5,12 +5,12 @@
 
 #include "base/feature_override.h"
 
-#include <components/one_time_tokens/core/common/one_time_token_features.cc>
+#include <components/browser_actuator/public/features.cc>
 
-namespace one_time_tokens::features {
+namespace browser_actuator {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
-    {kGmailOtpRetrievalService, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kBrowserActuator, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 
-}  // namespace one_time_tokens::features
+}  // namespace browser_actuator

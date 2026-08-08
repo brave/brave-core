@@ -136,6 +136,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &commerce::kRetailCoupons,
       &compose::features::kEnableCompose,
       &contextual_tasks::kContextualTasks,
+      &contextual_tasks::kContextualTasksCookiePrefetch,
 #if !BUILDFLAG(IS_ANDROID)
       &enterprise_data_protection::kEnableForceDownloadToCloud,
       &enterprise_data_protection::kEnableForceDownloadToOneDrive,
@@ -223,7 +224,10 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &ntp_features::kCustomizeChromeWallpaperSearch,
       &ntp_features::kNtpAlphaBackgroundCollections,
       &ntp_features::kNtpBackgroundImageErrorDetection,
+      &ntp_features::kNtpCalendarModule,
       &ntp_features::kNtpChromeCartModule,
+      &ntp_features::kNtpDriveModule,
+      &ntp_features::kNtpDriveModuleLink,
       &omnibox::kMlUrlScoring,
 #if BUILDFLAG(IS_ANDROID)
       &omnibox::kOmniboxMobileParityUpdateV2,
@@ -231,6 +235,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &omnibox::kRichAutocompletion,
       &omnibox::kStarterPackExpansion,
       &optimization_guide::features::kOptimizationGuideFetchingForSRP,
+      &optimization_guide::features::kOptimizationGuideModelExecution,
       &optimization_guide::features::kOptimizationHints,
       &passage_embeddings::kPassageEmbedder,
       &permissions::features::kCpssUseTfliteSignatureRunner,
