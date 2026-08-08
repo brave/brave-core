@@ -34,6 +34,7 @@ from google.protobuf import json_format as jsonpb
 import proto_support
 from recipe_api import RecipeApi
 from recipe_test_api import RecipeTestApi
+from step_stack import StepStack
 
 # Root of the recipes tree (this file's directory). Recipe modules live under
 # `recipe_modules/<name>/` and recipes under `recipes/<name>.py`.
@@ -221,6 +222,9 @@ class _Engine:
         # proto defaults.
         self._properties: dict[str, object] = {}
         self._environ: Mapping[str, str] = {}
+        # The run's stack of open steps, shared by every module so `step` and
+        # `futures` reach the same one without depending on each other.
+        self._step_stack = StepStack()
         # module name -> instantiated RecipeApi (one instance per run).
         self._cache: dict[str, RecipeApi] = {}
         # module name -> instantiated RecipeTestApi, attached to each module as
@@ -295,6 +299,7 @@ class _Engine:
         # keeps the engine out of the instance's protected members directly.
         setattr(inst, '_workspace', self._workspace)
         setattr(inst, '_brave_core_ref', self._brave_core_ref)
+        setattr(inst, '_step_stack', self._step_stack)
         setattr(inst, '_module_name', name)
         setattr(inst, '_config_ctx', _load_config_ctx(name))
         inst.test_api = instantiate_test_module(name, [], self._test_api_cache)
@@ -345,9 +350,15 @@ class _Engine:
         if run_steps is None:
             raise RuntimeError(f"recipe '{recipe_name}' is missing RunSteps")
 
-        return _run_steps(run_steps, api, self._properties, self._environ,
-                          getattr(recipe, 'PROPERTIES', None),
-                          getattr(recipe, 'ENV_PROPERTIES', None))
+        try:
+            return _run_steps(run_steps, api, self._properties, self._environ,
+                              getattr(recipe, 'PROPERTIES', None),
+                              getattr(recipe, 'ENV_PROPERTIES', None))
+        finally:
+            # Closes the last step, then the root, which waits for any work the
+            # recipe spawned and never collected. A recipe that fails partway
+            # unwinds the same way, so nothing is left running.
+            self._step_stack.unwind()
 
 
 def _module_names() -> set[str]:

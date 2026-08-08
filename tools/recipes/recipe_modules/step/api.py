@@ -46,6 +46,23 @@ class StepApi(RecipeApi):
         # engine seeds `self._test.step_runner`).
         self._prod_runner = None
 
+    @property
+    def active_result(self) -> StepData | None:
+        """The currently active (open) result from the last step that was run.
+
+        Allows you to do things like:
+
+            try:
+                api.step('run test', [..., api.json.output()])
+            finally:
+                result = api.step.active_result
+                if result.json.output:
+                    ...
+
+        `None` before this greenlet has run any step.
+        """
+        return self._step_stack.active_step
+
     def _runner(self):
         if self._test is None:  # pragma: no cover - production step backend.
             return self._prod_runner_lazy()
@@ -107,6 +124,10 @@ class StepApi(RecipeApi):
             subprocess.CalledProcessError: If `check` and the process fails.
             RuntimeError: On Windows, if the command cannot be resolved.
         """
+        # The previous leaf step stays open until now, so `active_result` could
+        # reach it; starting another step closes it.
+        self._step_stack.close_non_parent_step()
+
         runner = self._runner()
         test_data = runner.step_test_data(name, step_test_data)
 
@@ -168,6 +189,9 @@ class StepApi(RecipeApi):
         if stderr is not None:
             result.stderr = stderr.result(test_data.stderr)
         result.finalize()
+        # Pushed before the failure is raised, so a recipe can still read the
+        # failing step's result from `active_result` in a `finally`.
+        self._step_stack.push(result)
 
         if check and retcode != 0:
             raise subprocess.CalledProcessError(retcode,
