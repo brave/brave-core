@@ -1,0 +1,12 @@
+diff --git a/extensions/browser/extensions_browser_client.h b/extensions/browser/extensions_browser_client.h
+index af00eb8413543a0fa377d8b27542d9f0cdbe18d2..b8353bee0e98e10804a1986031a7564978724a1f 100644
+--- a/extensions/browser/extensions_browser_client.h
++++ b/extensions/browser/extensions_browser_client.h
+@@ -700,6 +700,7 @@ class ExtensionsBrowserClient {
+       const base::Version& extension_version,
+       base::OnceCallback<void(bool, std::u16string)> callback);
+ 
++  BRAVE_EXTENSIONS_BROWSER_CLIENT_H
+  protected:
+   std::unique_ptr<ExtensionAssetsManager> assets_manager_;
+ 
