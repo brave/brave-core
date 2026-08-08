@@ -1,0 +1,22 @@
+diff --git a/chrome/browser/resources/extensions/detail_view.html.ts b/chrome/browser/resources/extensions/detail_view.html.ts
+index e20041e7f820acc1a7fc033b8c4e69ba41aa724a..53a778c545fc9d85b8912b3d55186a77cdff4a9a 100644
+--- a/chrome/browser/resources/extensions/detail_view.html.ts
++++ b/chrome/browser/resources/extensions/detail_view.html.ts
+@@ -343,14 +343,11 @@ this text can be found by Ctrl + F because it isn't hidden. -->
+             <span>$i18n{itemPinToToolbar}</span>
+           </extensions-toggle-row>` : ''}
+         ${this.shouldShowIncognitoOption_() ? html`
+-          <extensions-toggle-row id="allow-incognito"
+-              ?checked="${this.data.incognitoAccess.isActive}" class="hr"
+-              @change="${this.onAllowIncognitoChange_}">
++          <extensions-toggle-row id="allow-incognito" ?checked="${this.data.incognitoAccess.isActive}" class="hr" @change="${this.onAllowIncognitoChange_}">
+             <div>
+               <div>$i18n{itemAllowIncognito}</div>
+-              <div class="section-content">$i18n{incognitoInfoWarning}</div>
+-              <div class="section-content" id="allow-incognito-warning"
+-                  ?hidden="${!this.data.incognitoAccessPendingChange}">
++              <div class="section-content">$i18n{privateInfoWarning}<span ?hidden="${!this.data.incognitoAccess.isActive}"> $i18n{spanningInfoWarning}</span><span> $i18n{privateAndTorInfoWarning}</span></div>
++              <div class="section-content" id="allow-incognito-warning" ?hidden="${!this.data.incognitoAccessPendingChange}">
+                 $i18n{pendingChangeWarning}
+               </div>
+             </div>

@@ -5,10 +5,13 @@
 
 import { mangle } from 'lit_mangler'
 
-mangle(fragment => {
-  const button = fragment.querySelector('#profileCardButton')
-  if (!button) {
-    throw new Error('profileCardButton not found')
-  }
-  button.classList.add('plain')
-}, t => t.text.includes('id="profileCardButton"'))
+mangle(
+  (fragment) => {
+    const button = fragment.querySelector('#addProfile')
+    if (!button) {
+      throw new Error('addProfile not found')
+    }
+    button.classList.add('plain')
+  },
+  (t) => t.text.includes('id="addProfile"'),
+)

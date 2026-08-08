@@ -24,7 +24,6 @@ import re
 import os
 import sys
 import textwrap
-import brave_chromium_utils
 # Look for potential problems in chromium_src overrides.
 
 BRAVE_SRC = os.path.abspath(
@@ -445,14 +444,7 @@ class ChromiumSrcOverridesChecker:
             display_override_filepath = os.path.join('chromium_src',
                                                      override_filepath)
             if not os.path.isfile(original_filepath):
-                additional_extensions = (
-                    brave_chromium_utils.get_additional_extensions())
-                if any(
-                        override_filepath.endswith(ext)
-                        and os.path.isfile(original_filepath.replace(ext, ''))
-                        for ext in additional_extensions):
-                    original_filepath_found = True
-                elif self.gen_buildir is None:
+                if self.gen_buildir is None:
                     # When invoked from presubmit there's no gen_dir, so we can
                     # try to at least check that the include in the override is
                     # consistent with overriding a generated file.

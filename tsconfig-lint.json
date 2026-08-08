@@ -3,6 +3,7 @@
   "include": [
     "./components/**/*",
     "./chromium_src/**/*",
+    "./rewrite/**/*",
     "./build/**/*",
     "./ios/**/*",
     "./web/**/*",
