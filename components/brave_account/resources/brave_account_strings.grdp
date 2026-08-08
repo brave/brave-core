@@ -205,9 +205,6 @@
   <message name="IDS_BRAVE_ACCOUNT_REGISTER_TOO_MANY_VERIFICATIONS" desc="Error message shown when too many email verifications have been requested and the user must wait before trying again" formatter_data="webui=BraveAccount,BraveAccountSettings android_java">
     Email verification limit exceeded. Please wait 30 minutes before trying again.
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_REGISTER_MAXIMUM_CODE_VERIFICATION_ATTEMPTS_EXCEEDED" desc="" formatter_data="webui=BraveAccount">
-    Too many incorrect codes were entered. Start the registration process again.
-  </message>
   <message name="IDS_BRAVE_ACCOUNT_REGISTER_INVALID_VERIFICATION_CODE" desc="Error message shown when the entered email verification code is incorrect" formatter_data="webui=BraveAccount,BraveAccountSettings android_java">
     Wrong code, please try again.
   </message>
@@ -222,9 +219,6 @@
   </message>
   <message name="IDS_BRAVE_ACCOUNT_PASSWORD_RESET_EMAIL_ALREADY_VERIFIED" desc="Error message shown during password reset when the email is already verified, indicating an internal error" formatter_data="webui=BraveAccount,BraveAccountSettings android_java">
     Internal error. Close the dialog, cancel the verification, and try again.
-  </message>
-  <message name="IDS_BRAVE_ACCOUNT_PASSWORD_RESET_MAXIMUM_CODE_VERIFICATION_ATTEMPTS_EXCEEDED" desc="Error message shown during password reset when too many incorrect verification codes have been entered" formatter_data="webui=BraveAccount,BraveAccountSettings android_java">
-    Too many incorrect codes were entered. Start the password change process again.
   </message>
 
   <!-- Common: -->
@@ -267,6 +261,9 @@
   </message>
   <message name="IDS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_ALREADY_VERIFIED" desc="Error message shown in an alert when the email has already been verified" formatter_data="webui=BraveAccount,BraveAccountSettings android_java">
     Email already verified.
+  </message>
+  <message name="IDS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_MAXIMUM_CODE_VERIFICATION_ATTEMPTS_EXCEEDED" desc="Error message shown when too many incorrect verification codes have been entered" formatter_data="webui=BraveAccount,BraveAccountSettings android_java">
+    You entered too many incorrect codes. Cancel the verification and try again.
   </message>
   <message name="IDS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_TOKEN_HAS_EXPIRED" desc="Error message shown in an alert when the verification token has expired" formatter_data="webui=BraveAccount,BraveAccountSettings android_java">
     The verification code has expired. Cancel the verification and try again.
