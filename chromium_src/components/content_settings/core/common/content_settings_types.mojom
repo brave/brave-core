@@ -54,4 +54,5 @@ enum ContentSettingsType {
 
   BRAVE_CARDANO,
   BRAVE_PSST,
+  BRAVE_JAVASCRIPT,
 };
