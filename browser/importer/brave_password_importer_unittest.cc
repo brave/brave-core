@@ -210,14 +210,10 @@ TEST_F(BravePasswordImporterTest, KeyMismatchImportsNothing) {
       credentials, os_crypt_async::GetTestEncryptorForTesting()));
 
   auto [result, submitted] = RunImport();
-  // The exact Result depends on how password_manager handles undecryptable
-  // rows: it may drop them and report success with nothing decrypted, or
-  // report a read failure. That internal behavior is not something this
-  // importer controls, so accept either. What must always hold is that no
-  // credential is submitted to the store or leaks into it.
-  EXPECT_TRUE(result == BravePasswordImporter::Result::kSuccess ||
-              result == BravePasswordImporter::Result::kReadFailed)
-      << "unexpected result=" << static_cast<int>(result);
+  // The undecryptable row is dropped on read, so the import succeeds with
+  // nothing decrypted and no credential is submitted to or leaked into the
+  // store.
+  EXPECT_EQ(BravePasswordImporter::Result::kSuccess, result);
   EXPECT_EQ(0u, submitted);
   EXPECT_TRUE(password_manager::GetAllLoginsSync(password_store()).empty());
 }
