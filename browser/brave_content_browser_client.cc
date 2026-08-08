@@ -1244,9 +1244,14 @@ void BraveContentBrowserClient::WillCreateURLLoaderFactory(
       factory_override, navigation_response_task_runner);
 }
 
+bool BraveContentBrowserClient::HasWebRequestAPIProxy(
+    content::BrowserContext*) {
+  return true;
+}
+
 bool BraveContentBrowserClient::WillInterceptWebSocket(
-    content::RenderFrameHost* frame) {
-  return (frame != nullptr);
+    content::RenderFrameHost*) {
+  return true;
 }
 
 template <template <typename> class T>
@@ -1262,7 +1267,8 @@ void BraveContentBrowserClient::CreateChromeWebSocket(
   if (ChromeContentBrowserClient::WillInterceptWebSocket(frame)) {
     ChromeContentBrowserClient::CreateWebSocket(
         frame, proxy->CreateWebSocketFactory(), url, site_for_cookies,
-        user_agent, std::move(handshake_client), std::move(options));
+        user_agent, std::move(handshake_client), std::move(options),
+        std::nullopt, std::nullopt);
   } else {
     proxy->Start(std::move(handshake_client), std::move(options.header_client));
   }
@@ -1275,25 +1281,43 @@ void BraveContentBrowserClient::CreateWebSocket(
     const std::optional<std::string>& user_agent,
     mojo::PendingRemote<network::mojom::WebSocketHandshakeClient>
         handshake_client,
-    content::ContentBrowserClient::WebSocketOptions options) {
-#if BUILDFLAG(ENABLE_TOR)
+    content::ContentBrowserClient::WebSocketOptions options,
+    std::optional<content::GlobalRenderFrameHostId> frame_id,
+    std::optional<url::Origin> initiator_origin) {
+  content::BrowserContext* browser_context = nullptr;
+  content::GlobalRenderFrameHostToken render_frame_token;
+  url::Origin request_initiator;
   if (frame) {
-    content::BrowserContext* browser_context = frame->GetBrowserContext();
-    Profile* profile = Profile::FromBrowserContext(browser_context);
-    if (!profile->IsTor() &&
-        profile->GetPrefs()->GetBoolean(tor::prefs::kOnionOnlyInTorWindows) &&
-        net::IsOnion(url)) {
-      mojo::Remote<network::mojom::WebSocketHandshakeClient> client(
-          std::move(handshake_client));
-      client->OnFailure(std::string(), net::ERR_NAME_NOT_RESOLVED, 0);
+    browser_context = frame->GetBrowserContext();
+    render_frame_token = frame->GetGlobalFrameToken();
+    request_initiator = frame->GetLastCommittedOrigin();
+  } else {
+    CHECK(frame_id);
+    CHECK(initiator_origin);
+    auto* process = content::RenderProcessHost::FromID(frame_id->child_id);
+    if (!process) {
       return;
     }
+    browser_context = process->GetBrowserContext();
+    request_initiator = *initiator_origin;
+  }
+
+#if BUILDFLAG(ENABLE_TOR)
+  Profile* profile = Profile::FromBrowserContext(browser_context);
+  if (!profile->IsTor() &&
+      profile->GetPrefs()->GetBoolean(tor::prefs::kOnionOnlyInTorWindows) &&
+      net::IsOnion(url)) {
+    mojo::Remote<network::mojom::WebSocketHandshakeClient> client(
+        std::move(handshake_client));
+    client->OnFailure(std::string(), net::ERR_NAME_NOT_RESOLVED, 0);
+    return;
   }
 #endif
 
   if (base::FeatureList::IsEnabled(features::kBraveRequestInfoUniquePtr)) {
     auto* proxy = BraveProxyingWebSocket<base::WeakPtr>::ProxyWebSocket(
-        frame, std::move(factory), url, site_for_cookies, user_agent);
+        browser_context, render_frame_token, request_initiator,
+        std::move(factory), url, site_for_cookies, user_agent);
     CreateChromeWebSocket<base::WeakPtr>(
         frame, url, site_for_cookies, user_agent, std::move(handshake_client),
         std::move(options), proxy);
@@ -1302,7 +1326,8 @@ void BraveContentBrowserClient::CreateWebSocket(
     // convert to unique_ptr/WeakPtr
     auto* proxy =
         BraveProxyingWebSocket<std::shared_ptr>::ProxyWebSocket(  // nocheck
-            frame, std::move(factory), url, site_for_cookies, user_agent);
+            browser_context, render_frame_token, request_initiator,
+            std::move(factory), url, site_for_cookies, user_agent);
     CreateChromeWebSocket<std::shared_ptr>(  // nocheck
         frame, url, site_for_cookies,        // nocheck
         user_agent, std::move(handshake_client), std::move(options), proxy);
