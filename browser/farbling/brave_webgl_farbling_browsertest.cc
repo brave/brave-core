@@ -392,6 +392,43 @@ IN_PROC_BROWSER_TEST_P(BraveWebGLExtensionFarblingTest,
   EXPECT_EQ(EvalJs(contents(), kTitleScript).ExtractString(), "null");
 }
 
+// Regression test for https://github.com/brave/brave-browser/issues/57902
+//
+// Plotly.js Scattergl (via regl) lowercases required WebGL extension names
+// before calling getExtension(). Chromium matches case-insensitively; Brave's
+// farbling wrapper must do the same or createRegl fails and Plotly shows
+// "WebGL is not supported by your browser".
+IN_PROC_BROWSER_TEST_P(BraveWebGLExtensionFarblingTest,
+                       GetExtensionMatchesCaseInsensitivelyLikeRegl) {
+  const std::string domain = "a.com";
+  const GURL url = embedded_test_server()->GetURL(domain, "/getExtension.html");
+  // Plotly Scattergl / splom required extensions, lowercased by regl.
+  const std::string kExpectedPlotlyRegl =
+      "ANGLE_instanced_arrays:ok,OES_element_index_uint:ok";
+
+  auto run_checks = [&](const char* fingerprinting_label) {
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+    ASSERT_TRUE(ExecJs(contents(), "getExtensionPlotlyReglStyle()"))
+        << fingerprinting_label;
+    EXPECT_EQ(EvalJs(contents(), kTitleScript).ExtractString(),
+              kExpectedPlotlyRegl)
+        << fingerprinting_label;
+
+    ASSERT_TRUE(ExecJs(contents(), "getExtensionLowercaseAllSupported()"))
+        << fingerprinting_label;
+    EXPECT_EQ(EvalJs(contents(), kTitleScript).ExtractString(), "ok")
+        << fingerprinting_label;
+  };
+
+  // Shields / fingerprinting disabled (reported in the issue).
+  AllowFingerprinting(domain);
+  run_checks("farbling off");
+
+  // Default shields (balanced farbling).
+  SetFingerprintingDefault(domain);
+  run_checks("farbling balanced");
+}
+
 IN_PROC_BROWSER_TEST_P(BraveWebGLExtensionFarblingTest,
                        FarbleGetSupportedExtensionsWebGL2) {
   std::string domain = "a.com";
@@ -536,8 +573,13 @@ IN_PROC_BROWSER_TEST_P(BraveWebGLExtensionFarblingTest,
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   EXPECT_EQ(EvalJs(contents(), kGetWebGL1Extensions).ExtractString(),
             webgl1_off);
-  EXPECT_EQ(EvalJs(contents(), kGetWebGL2Extensions).ExtractString(),
-            kSupportedExtensionsMax);
+  // Old implementation doesn't make the distinction b/w BRAVE_WEBCOMPAT_WEBGL
+  // and BRAVE_WEBCOMPAT_WEBGL2. So, turning off BRAVE_WEBCOMPAT_WEBGL above
+  // also turns off farbling for WebGL2.
+  if (GetParam()) {
+    EXPECT_EQ(EvalJs(contents(), kGetWebGL2Extensions).ExtractString(),
+              kSupportedExtensionsMax);
+  }
 
   // Exception for WebGL2 only: WebGL2 unfarbled, WebGL1 still maximum.
   brave_shields::SetWebcompatEnabled(content_settings(),
@@ -549,8 +591,12 @@ IN_PROC_BROWSER_TEST_P(BraveWebGLExtensionFarblingTest,
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   EXPECT_EQ(EvalJs(contents(), kGetWebGL1Extensions).ExtractString(),
             kSupportedExtensionsMax);
-  EXPECT_EQ(EvalJs(contents(), kGetWebGL2Extensions).ExtractString(),
-            webgl2_off);
+  // Old implementation doesn't make the distinction b/w BRAVE_WEBCOMPAT_WEBGL
+  // and BRAVE_WEBCOMPAT_WEBGL2.
+  if (GetParam()) {
+    EXPECT_EQ(EvalJs(contents(), kGetWebGL2Extensions).ExtractString(),
+              webgl2_off);
+  }
 }
 
 // BRAVE_WEBCOMPAT_WEBGL and BRAVE_WEBCOMPAT_WEBGL2 must independently control
