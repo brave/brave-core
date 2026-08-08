@@ -59,12 +59,19 @@ def main():
             break
 
 
+    # Ensure the command contains a path (absolute or relative)
+    cmd = args[len(env_vars)]
+    if os.path.basename(cmd) == cmd:
+        print(f'The command to run must have a path {cmd}: {e}',
+              file=sys.stderr)
+        sys.exit(1)
+
     # The rest of the arguments are passed directly to the executable.
     args = args[len(env_vars):]
 
     env = os.environ.copy()
     # Include the current directory in the path
-    env['PATH'] = env['PATH'] + os.pathsep + os.path.abspath(os.getcwd())
+    env['PATH'] = os.path.abspath(os.getcwd()) + os.pathsep + env['PATH']
     env.update(env_vars)
 
     ret = subprocess.call(args, env=env)
