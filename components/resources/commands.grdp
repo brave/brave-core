@@ -601,4 +601,40 @@
   <message name="IDS_IDC_NEW_TEMPORARY_CONTAINER" desc="Label for the command that opens the current URL in a new local-only temporary container.">
     New temporary container
   </message>
+  
+  <message name="IDS_IDC_NEW_TAB_IN_CONTAINER_1" desc="Label for the command that opens a new tab in container 1.">
+    New tab in container 1
+  </message>
+
+  <message name="IDS_IDC_NEW_TAB_IN_CONTAINER_2" desc="Label for the command that opens a new tab in container 2.">      
+    New tab in container 2
+  </message>
+
+ <message name="IDS_IDC_NEW_TAB_IN_CONTAINER_3" desc="Label for the command that opens a new tab in container 3.">      
+    New tab in container 3
+  </message>
+
+ <message name="IDS_IDC_NEW_TAB_IN_CONTAINER_4" desc="Label for the command that opens a new tab in container 4.">      
+    New tab in container 4
+  </message>
+
+ <message name="IDS_IDC_NEW_TAB_IN_CONTAINER_5" desc="Label for the command that opens a new tab in container 5.">      
+    New tab in container 5
+  </message>
+
+ <message name="IDS_IDC_NEW_TAB_IN_CONTAINER_6" desc="Label for the command that opens a new tab in container 6.">      
+    New tab in container 6
+  </message>
+
+ <message name="IDS_IDC_NEW_TAB_IN_CONTAINER_7" desc="Label for the command that opens a new tab in container 7.">      
+    New tab in container 7
+  </message>
+
+ <message name="IDS_IDC_NEW_TAB_IN_CONTAINER_8" desc="Label for the command that opens a new tab in container 8.">      
+    New tab in container 8
+  </message>
+
+ <message name="IDS_IDC_NEW_TAB_IN_CONTAINER_9" desc="Label for the command that opens a new tab in container 9.">      
+    New tab in container 9
+  </message>
 </grit-part>
