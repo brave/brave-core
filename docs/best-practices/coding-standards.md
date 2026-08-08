@@ -1349,7 +1349,7 @@ target produces it.
 
 ## ✅ Inject Scripts via `ScriptInjector`, Never `AllowInjectingJavaScript`
 
-**Do not call `content::RenderFrameHost::AllowInjectingJavaScript()` followed by
+**Do not call `content::RenderFrameHost::AllowInjectingJavaScript()` or
 `RenderFrameHost::ExecuteJavaScript()`. Inject through
 `script_injector::mojom::ScriptInjector` instead.** `AllowInjectingJavaScript()`
 flips a global, process-wide switch that upstream restricts to Android WebView,
