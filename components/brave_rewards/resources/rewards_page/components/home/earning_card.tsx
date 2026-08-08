@@ -97,12 +97,7 @@ export function EarningCard() {
           <div className='counter-text'>
             {unconnectedAdsViewedString
               && formatString(unconnectedAdsViewedString, {
-                $1: (content) => (
-                  <div className='counter-value'>
-                    {content}
-                    {renderAdsViewedTooltip()}
-                  </div>
-                ),
+                $1: (content) => <div className='counter-value'>{content}</div>,
               })}
           </div>
         </div>
