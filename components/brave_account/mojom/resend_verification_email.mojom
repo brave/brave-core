@@ -22,17 +22,18 @@ struct ResendVerificationEmailClientError {
 enum ResendVerificationEmailServerErrorCode {
   // Sentinel: server returned a malformed response
   // (e.g. success body missing required fields).
-  kInvalidResponse                  = -1,
+  kInvalidResponse                         = -1,
   // Sentinel: server returned "code": null in the JSON body.
-  kNull                             = 0,
+  kNull                                    = 0,
   // Sentinel: server returned an unrecognized "code" in the JSON body.
-  kUnknown                          = 1,
+  kUnknown                                 = 1,
   // /v2/verify/resend:
   // - internal: -
   // - user-facing:
-  kMaximumEmailSendAttemptsExceeded = 13008,
-  kEmailAlreadyVerified             = 13009,
-  kTokenHasExpired                  = 14014,
+  kMaximumEmailSendAttemptsExceeded        = 13008,
+  kEmailAlreadyVerified                    = 13009,
+  kMaximumCodeVerificationAttemptsExceeded = 13010,
+  kTokenHasExpired                         = 14014,
 };
 
 struct ResendVerificationEmailServerError {
