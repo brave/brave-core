@@ -269,7 +269,7 @@ struct ChainId {
 };
 
 struct EthereumSignatureVRS {
-  array<uint8> v_bytes;
+  string v_hex;
   array<uint8> r_bytes;
   array<uint8> s_bytes;
 };
