@@ -3,15 +3,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+#include "brave/components/brave_policy/brave_policy_profile_id-forward.inc"
 #include "components/policy/core/common/configuration_policy_provider.h"
 #include "ios/chrome/browser/policy/model/profile_policy_connector_factory.h"
-
-namespace brave_policy {
-class BraveProfilePolicyProvider;
-void SetBraveProfilePolicyProviderProfileID(
-    policy::ConfigurationPolicyProvider* provider,
-    const base::FilePath& profile_path);
-}  // namespace brave_policy
 
 // Set the profile id after the profile policy connector has been created
 // policy_connector_ is assigned to the result of BuildProfilePolicyConnector

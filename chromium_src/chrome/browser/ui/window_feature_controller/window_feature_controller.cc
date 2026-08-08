@@ -5,14 +5,8 @@
 
 #include "chrome/browser/ui/window_feature_controller/window_feature_controller.h"
 
+#include "brave/browser/ui/window_feature_controller/window_feature_controller-forward.inc"
 #include "build/build_config.h"
-
-// Forward declared to avoid adding a compile-time dependency.
-// impl target is //brave/browser/ui/window_feature_controller:chromium_impl.
-bool BraveDisablesImmersiveFullscreenMode(
-    const base::WeakPtr<VerticalTabController>& vertical_tab_controller);
-bool BraveShouldShowTitlebar(
-    const base::WeakPtr<VerticalTabController>& vertical_tab_controller);
 
 #if BUILDFLAG(IS_MAC)
 #define UsesImmersiveFullscreenMode UsesImmersiveFullscreenMode_ChromiumImpl

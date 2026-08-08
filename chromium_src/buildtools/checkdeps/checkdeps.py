@@ -34,4 +34,24 @@ class BraveDepsChecker(DepsChecker):
         return directory_rules, excluded_subdirs
 
 
+_original_cpp_check_line = cpp_checker.CppChecker.CheckLine
+
+
+def _BraveCppCheckLine(self,
+                       rules,
+                       line,
+                       dependee_path,
+                       fail_on_temp_allow=False):
+    # *-forward.inc files are declaration-only (PRESUBMIT forbids quoted
+    # #includes inside them). Skip checkdeps for includes of these files so
+    # callers need not list them in DEPS.
+    match = cpp_checker.CppChecker._EXTRACT_INCLUDE_PATH.match(line)
+    if match and match.group(1).endswith('-forward.inc'):
+        return True, None
+    return _original_cpp_check_line(self, rules, line, dependee_path,
+                                    fail_on_temp_allow)
+
+
+cpp_checker.CppChecker.CheckLine = _BraveCppCheckLine
+
 DepsChecker = BraveDepsChecker

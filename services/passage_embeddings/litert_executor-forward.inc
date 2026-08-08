@@ -6,16 +6,17 @@
 #include <memory>
 
 #include "base/files/file.h"
-#include "brave/services/passage_embeddings/litert_executor-forward.inc"
-#include "services/passage_embeddings/passage_embedder_executor.h"
+
+namespace passage_embeddings {
+class PassageEmbedderExecutor;
+}  // namespace passage_embeddings
 
 namespace brave_history_embeddings {
 
-// Null implementation for builds without local AI (Android, Brave Origin). The
-// override calls the hook unconditionally, so a definition must always link.
 std::unique_ptr<passage_embeddings::PassageEmbedderExecutor>
-MaybeCreateLitertExecutor(base::File&, int, int, int) {
-  return nullptr;
-}
+MaybeCreateLitertExecutor(base::File& embeddings_model_file,
+                          int bos_id,
+                          int eos_id,
+                          int pad_id);
 
 }  // namespace brave_history_embeddings

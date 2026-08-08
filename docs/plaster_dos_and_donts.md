@@ -327,6 +327,13 @@ substitutions:
       replace: '\1constexpr int kFooMax = 42;\n'
 ```
 
+Exception: plastering `#include "brave/.../foo-forward.inc"` into an upstream
+file is acceptable when the hook must be visible without a `chromium_src` shadow
+(or the plaster is the only entry point). Prefer a `chromium_src` `#include` of
+the `*-forward.inc` when a shadow already exists. See
+[Forward-declaring Brave helpers](patching_and_chromium_src.md#forward-inc) in
+the patching guide for the full pattern.
+
 ## Use `chromium_src` to host substantive C++
 
 Where the C++ accompanying a plaster amounts to more than a trivial
