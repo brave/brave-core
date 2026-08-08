@@ -94,11 +94,18 @@ class BraveNavigatorHardwareConcurrencyFarblingBrowserTest
     return browser()->tab_strip_model()->GetActiveWebContents();
   }
 
+ protected:
+  static const size_t kMinProcessorsForFarbling;
+
  private:
   base::test::ScopedFeatureList scoped_feature_list_;
   GURL top_level_page_url_;
   GURL farbling_url_;
 };
+
+// static
+const size_t BraveNavigatorHardwareConcurrencyFarblingBrowserTest::
+    kMinProcessorsForFarbling = 4;
 
 // Tests results of farbling known values
 IN_PROC_BROWSER_TEST_F(BraveNavigatorHardwareConcurrencyFarblingBrowserTest,
@@ -112,17 +119,20 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorHardwareConcurrencyFarblingBrowserTest,
   ASSERT_GE(real_value, 2);
 
   // Farbling level: balanced (default)
-  // navigator.hardwareConcurrency should be greater than or equal to 2
-  // and less than or equal to the real value
   SetFingerprintingDefault();
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), farbling_url()));
   int fake_value =
       content::EvalJs(contents(), kHardwareConcurrencyScript).ExtractInt();
-  EXPECT_GE(fake_value, 2);
-  EXPECT_LE(fake_value, real_value);
+
+  if (real_value < static_cast<int>(kMinProcessorsForFarbling)) {
+    EXPECT_EQ(real_value, fake_value);
+  } else {
+    EXPECT_GE(fake_value, static_cast<int>(kMinProcessorsForFarbling));
+    EXPECT_LE(fake_value, real_value);
+  }
 
   // Farbling level: maximum
-  // navigator.hardwareConcurrency should be greater than or equal to 2
+  // navigator.hardwareConcurrency should be greater than or equal to 4
   // and less than or equal to 8
   BlockFingerprinting();
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), farbling_url()));
@@ -130,7 +140,7 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorHardwareConcurrencyFarblingBrowserTest,
       content::EvalJs(contents(), kHardwareConcurrencyScript).ExtractInt();
   // For this domain (a.com) + the random seed (constant for browser tests),
   // the value will always be the same.
-  EXPECT_EQ(completely_fake_value, 8);
+  EXPECT_EQ(completely_fake_value, 7);
 
   // Farbling level: default, but with webcompat exception enabled
   SetFingerprintingDefault();
@@ -171,8 +181,13 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorHardwareConcurrencyFarblingBrowserTest,
   int fake_value;
   base::StringToInt(content::EvalJs(contents(), kTitleScript).ExtractString(),
                     &fake_value);
-  EXPECT_GE(fake_value, 2);
-  EXPECT_LE(fake_value, real_value);
+
+  if (real_value < static_cast<int>(kMinProcessorsForFarbling)) {
+    EXPECT_EQ(real_value, fake_value);
+  } else {
+    EXPECT_GE(fake_value, static_cast<int>(kMinProcessorsForFarbling));
+    EXPECT_LE(fake_value, real_value);
+  }
 
   // Farbling level: maximum
   BlockFingerprinting();
@@ -184,7 +199,7 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorHardwareConcurrencyFarblingBrowserTest,
                     &completely_fake_value);
   // For this domain (a.com) + the random seed (constant for browser tests),
   // the value will always be the same.
-  EXPECT_EQ(completely_fake_value, 8);
+  EXPECT_EQ(completely_fake_value, 7);
 
   // Farbling level: default, but with webcompat exception enabled
   // get real navigator.hardwareConcurrency
