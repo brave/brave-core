@@ -1,28 +1,45 @@
 diff --git a/chrome/browser/ui/navigator/browser_navigator.cc b/chrome/browser/ui/navigator/browser_navigator.cc
-index 67fde190279e188b4c2200cbbac9771ccbc426ec..7aab910217ae5ddf6286706f1ff7517c81c18eb5 100644
+index 67fde190279e188b4c2200cbbac9771ccbc426ec..b786e7ee5731d6aacfedcbeb4d681abf36e93cb6 100644
 --- a/chrome/browser/ui/navigator/browser_navigator.cc
 +++ b/chrome/browser/ui/navigator/browser_navigator.cc
-@@ -574,6 +574,7 @@ base::WeakPtr<content::NavigationHandle> Navigate(NavigateParams* params) {
-       return nullptr;
-     }
-   }
-+  BRAVE_ADJUST_NAVIGATE_PARAMS_FOR_URL
+@@ -150,6 +150,7 @@ bool IncognitoModeForced(const Profile* profile) {
+ // Returns true on success. Otherwise, if changing params leads the browser
+ // into an erroneous state, returns false.
+ bool AdjustNavigateParamsForURL(NavigateParams* params) {
++  UpdateParams(params);
+   // Check for some chrome:// pages which we always want to open in a
+   // non-incognito window. Note that even though a ChromeOS guest session is
+   // technically an incognito window, these URLs are allowed.
+@@ -495,7 +496,11 @@ std::unique_ptr<content::WebContents> CreateTargetContents(
+   scoped_refptr<content::SiteInstance> initial_site_instance_for_new_contents =
+       params.opener ? params.opener->GetSiteInstance()
+                     : tab_util::GetSiteInstanceForNewTab(
+-                          params.browser->GetProfile(), url);
++                          params.browser->GetProfile(), url
++#if BUILDFLAG(ENABLE_CONTAINERS)
++                          , GetStoragePartitionConfigToInherit(params)
++#endif  // BUILDFLAG(ENABLE_CONTAINERS)
++);
  
-   // Open System Apps in their standalone window if necessary.
-   // TODO(crbug.com/40136163): Remove this code after we integrate with intent
-@@ -813,6 +814,7 @@ base::WeakPtr<content::NavigationHandle> Navigate(NavigateParams* params) {
+   WebContents::CreateParams create_params(
+       params.browser->GetProfile(), initial_site_instance_for_new_contents);
+@@ -813,6 +818,9 @@ base::WeakPtr<content::NavigationHandle> Navigate(NavigateParams* params) {
           params->user_gesture)) {
        tab_to_insert->set_opener(
            tabs::TabInterface::MaybeGetFromContents(params->source_contents));
-+      BRAVE_NAVIGATE_MARK_OPENER_FOR_SYNC_NAVIGATION
++      if (params->navigation_initiated_from_sync) {            
++        tab_to_insert->set_opener_was_set_for_empty_new_tab(); 
++      }
      }
    }
  
-@@ -830,6 +832,7 @@ base::WeakPtr<content::NavigationHandle> Navigate(NavigateParams* params) {
+@@ -830,6 +838,9 @@ base::WeakPtr<content::NavigationHandle> Navigate(NavigateParams* params) {
             params->user_gesture)) {
          tab_to_insert->set_opener(
              tabs::TabInterface::MaybeGetFromContents(params->source_contents));
-+        BRAVE_NAVIGATE_MARK_OPENER_FOR_SYNC_NAVIGATION
++      if (params->navigation_initiated_from_sync) {            
++        tab_to_insert->set_opener_was_set_for_empty_new_tab(); 
++      }
        }
        contents_to_navigate_or_insert = tab_to_insert->GetContents();
  
