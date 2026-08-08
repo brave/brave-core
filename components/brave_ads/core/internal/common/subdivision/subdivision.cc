@@ -85,6 +85,12 @@ void Subdivision::OnNotifyDidInitializeAds() {
   Initialize();
 }
 
+void Subdivision::OnNotifyNetworkConnectionChanged() {
+  if (subdivision_url_request_) {
+    subdivision_url_request_->Refetch();
+  }
+}
+
 void Subdivision::OnNotifyPrefDidChange(const std::string& path) {
   if (DoesMatchUserHasJoinedBraveRewardsPrefPath(path) ||
       DoesMatchUserHasOptedInToNotificationAdsPrefPath(path)) {
