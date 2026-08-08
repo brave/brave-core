@@ -47,6 +47,14 @@ void TabTrackerService::UpdateTab(int32_t tab_id, mojom::TabDataPtr tab) {
   NotifyObservers();
 }
 
+void TabTrackerService::SetDelegate(Delegate* delegate) {
+  delegate_ = delegate;
+}
+
+bool TabTrackerService::ActivateTab(int32_t tab_id) {
+  return delegate_ && delegate_->ActivateTab(tab_id);
+}
+
 void TabTrackerService::AddObserver(
     mojo::PendingRemote<mojom::TabDataObserver> observer) {
   auto id = observers_.Add(std::move(observer));

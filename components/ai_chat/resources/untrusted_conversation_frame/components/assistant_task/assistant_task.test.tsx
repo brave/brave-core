@@ -521,3 +521,62 @@ describe('AssistantTask web sources', () => {
     expect(steps[1].querySelector('[data-testid="search-summary"]')).toBeNull()
   })
 })
+
+describe('AssistantTask tab sources', () => {
+  const tabSourcesArtifact: Mojom.ToolArtifact = {
+    id: null,
+    type: Mojom.TAB_SOURCES_ARTIFACT_TYPE,
+    contentJson: JSON.stringify({
+      sources: [{ tab_id: 11, title: 'Tab One', url: 'https://one.example/' }],
+    }),
+  }
+
+  const entriesWithArtifacts = (artifacts?: Mojom.ToolArtifact[]) => [
+    createConversationTurnWithDefaults({
+      uuid: 'entry-a',
+      characterType: Mojom.CharacterType.ASSISTANT,
+      events: [
+        getToolUseEvent({
+          toolName: Mojom.SEMANTIC_TAB_SEARCH_TOOL_NAME,
+          id: '1',
+          argumentsJson: JSON.stringify({ query: 'react hooks' }),
+          artifacts,
+        }),
+        getCompletionEvent('Found it.'),
+      ],
+    }),
+  ]
+
+  test('shows TabSourcesEvent when a tab_sources artifact is present', () => {
+    const { container } = render(
+      <MockContext>
+        <AssistantTask
+          assistantEntries={entriesWithArtifacts([tabSourcesArtifact])}
+          isActiveTask={false}
+          allowedLinks={[]}
+        />
+      </MockContext>,
+    )
+
+    expect(
+      container.querySelector('[data-testid="tab-sources-event"]'),
+    ).toBeInTheDocument()
+    expect(screen.getByText('Tab One')).toBeInTheDocument()
+  })
+
+  test('shows no TabSourcesEvent without a tab_sources artifact', () => {
+    const { container } = render(
+      <MockContext>
+        <AssistantTask
+          assistantEntries={entriesWithArtifacts()}
+          isActiveTask={false}
+          allowedLinks={[]}
+        />
+      </MockContext>,
+    )
+
+    expect(
+      container.querySelector('[data-testid="tab-sources-event"]'),
+    ).toBeNull()
+  })
+})

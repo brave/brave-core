@@ -76,6 +76,7 @@ export function createMockUntrustedConversationHandler(
     generateQuestions: () => {},
     retryAPIRequest: () => {},
     switchToNonPremiumModel() {},
+    switchToTab: () => {},
 
     // Apply overrides
     ...overrides,
