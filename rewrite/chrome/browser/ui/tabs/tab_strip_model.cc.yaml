@@ -15,7 +15,7 @@ substitutions:
       replace: |-
         \1
             case CommandRestoreTab:
-            case CommandBookmarkAllTabs:
+            case CommandBookmarkTab:
             case CommandShowVerticalTabs:
             case CommandToggleTabMuted:
             case CommandBringAllTabsToThisWindow:
@@ -55,6 +55,6 @@ substitutions:
     regex:
       re_pattern: '(contents_data_->AddTabRecursive\(.*?)(\);)'
       re_flags: ['DOTALL']
-      replace: |
+      replace: |-
         auto* opener = tab_model->opener_was_set_for_empty_new_tab() ? nullptr : tab_model->opener();
           \1, opener\2
