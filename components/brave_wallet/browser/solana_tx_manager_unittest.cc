@@ -128,6 +128,8 @@ class SolanaTxManagerUnitTest : public testing::Test {
         json_rpc_service_.get(), nullptr, nullptr, nullptr, nullptr,
         *keyring_service_, &prefs_,
         CreateTxStorageForTest(temp_dir_.GetPath()));
+    tx_service_->SetOriginPermissionChecker(base::BindRepeating(
+        [](const url::Origin&, const mojom::AccountIdPtr&) { return true; }));
 
     CreateWallet();
 

@@ -122,16 +122,6 @@ void BraveWalletServiceDelegateImpl::SetActiveWebContentsForTesting(
   g_web_contents_for_testing = web_contents;
 }
 
-void BraveWalletServiceDelegateImpl::AddObserver(
-    BraveWalletServiceDelegate::Observer* observer) {
-  observer_list_.AddObserver(observer);
-}
-
-void BraveWalletServiceDelegateImpl::RemoveObserver(
-    BraveWalletServiceDelegate::Observer* observer) {
-  observer_list_.RemoveObserver(observer);
-}
-
 bool BraveWalletServiceDelegateImpl::ShouldTrackBrowser(
     BrowserWindowInterface* browser) {
   return browser->GetProfile() == Profile::FromBrowserContext(context_);

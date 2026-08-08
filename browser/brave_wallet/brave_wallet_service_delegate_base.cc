@@ -10,7 +10,9 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/permission_utils.h"
 #include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
+#include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
+#include "components/content_settings/core/common/content_settings_types.h"
 #include "components/permissions/permission_util.h"
 #include "content/public/browser/browser_context.h"
 
@@ -26,6 +28,9 @@ BraveWalletServiceDelegateBase::BraveWalletServiceDelegateBase(
   wallet_base_directory_ = context->GetPath().AppendASCII(kWalletBaseDirectory);
   is_private_window_ =
       Profile::FromBrowserContext(context)->IsIncognitoProfile();
+  auto* map = HostContentSettingsMapFactory::GetForProfile(context);
+  DCHECK(map);
+  content_settings_observation_.Observe(map);
 }
 
 BraveWalletServiceDelegateBase::~BraveWalletServiceDelegateBase() = default;
@@ -104,6 +109,29 @@ bool BraveWalletServiceDelegateBase::IsAutolockEnabled() {
 base::AutoReset<bool>
 BraveWalletServiceDelegateBase::GetScopedDisableAutolockForTesting() {
   return {&g_enable_wallet_autolock, false};
+}
+
+void BraveWalletServiceDelegateBase::OnContentSettingChanged(
+    const ContentSettingsPattern& primary_pattern,
+    const ContentSettingsPattern& secondary_pattern,
+    ContentSettingsType content_type) {
+  if (content_type != ContentSettingsType::BRAVE_ETHEREUM &&
+      content_type != ContentSettingsType::BRAVE_SOLANA &&
+      content_type != ContentSettingsType::BRAVE_CARDANO) {
+    return;
+  }
+  observer_list_.Notify(
+      &BraveWalletServiceDelegate::Observer::OnWalletContentSettingChanged);
+}
+
+void BraveWalletServiceDelegateBase::AddObserver(
+    BraveWalletServiceDelegate::Observer* observer) {
+  observer_list_.AddObserver(observer);
+}
+
+void BraveWalletServiceDelegateBase::RemoveObserver(
+    BraveWalletServiceDelegate::Observer* observer) {
+  observer_list_.RemoveObserver(observer);
 }
 
 }  // namespace brave_wallet
