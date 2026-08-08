@@ -145,6 +145,10 @@ class SubprocessStepRunner:
         import shutil
 
         cmd = [str(arg) for arg in step['cmd']]
+        if not cmd:
+            # A command-less step (`api.step(name, None)`, and so every nest
+            # step) records that something happened without running anything.
+            return 0
         if platform.system() == 'Windows':
             # Resolve to an absolute path to avoid bat-file name mismatches
             # (e.g. `gclient` vs `gclient.bat`) without using `shell=True`.

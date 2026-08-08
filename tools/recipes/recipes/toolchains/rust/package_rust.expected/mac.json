@@ -217,6 +217,42 @@
   },
   {
     "cmd": [
+      "git",
+      "clone",
+      "--depth",
+      "2",
+      "--filter=blob:none",
+      "--sparse",
+      "--branch",
+      "master",
+      "git@github.com:brave/brave-core.git",
+      "[WORKSPACE]/b/src/brave"
+    ],
+    "name": "clone brave-core (shallow, sparse) (2)"
+  },
+  {
+    "cmd": [
+      "git",
+      "-C",
+      "[WORKSPACE]/b/src/brave",
+      "sparse-checkout",
+      "list"
+    ],
+    "name": "sparse-checkout list (2)"
+  },
+  {
+    "cmd": [
+      "git",
+      "-C",
+      "[WORKSPACE]/b/src/brave",
+      "sparse-checkout",
+      "add",
+      "tools/cr/toolchains"
+    ],
+    "name": "sparse-checkout add (2)"
+  },
+  {
+    "cmd": [
       "[WORKSPACE]/b/src/third_party/depot_tools/vpython3",
       "[WORKSPACE]/b/src/brave/tools/cr/toolchains/ephemeral_xcode.py",
       "--sdk-version",
