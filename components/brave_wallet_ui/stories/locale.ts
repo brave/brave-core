@@ -604,7 +604,6 @@ provideStrings({
   braveWalletNetworkETH: 'Ethereum',
   braveWalletNetworkMain: 'Mainnet',
   braveWalletNetworkTest: 'Test Network',
-  braveWalletNetworkLocalhost: 'Localhost',
   braveWalletAddNetworksAnytimeInSettings:
     'You can add networks anytime in Settings.',
   braveWalletSupportedNetworks: 'Supported networks',

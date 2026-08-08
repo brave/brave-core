@@ -393,7 +393,6 @@ export type AllowSpendReturnPayload = {
 
 export const BuySupportedChains = [
   BraveWallet.MAINNET_CHAIN_ID,
-  BraveWallet.LOCALHOST_CHAIN_ID,
   BraveWallet.POLYGON_MAINNET_CHAIN_ID,
   BraveWallet.BNB_SMART_CHAIN_MAINNET_CHAIN_ID,
   BraveWallet.AVALANCHE_MAINNET_CHAIN_ID,
@@ -644,7 +643,6 @@ export const SupportedOffRampNetworks = [
 
 export const SupportedTestNetworks = [
   BraveWallet.SEPOLIA_CHAIN_ID,
-  BraveWallet.LOCALHOST_CHAIN_ID,
   BraveWallet.SOLANA_DEVNET,
   BraveWallet.SOLANA_TESTNET,
   BraveWallet.FILECOIN_TESTNET,
@@ -658,11 +656,6 @@ export const SupportedTestNetworks = [
 ]
 
 export const SupportedTestNetworkEntityIds: EntityId[] = [
-  `${BraveWallet.LOCALHOST_CHAIN_ID}-${BraveWallet.CoinType.BTC}`,
-  `${BraveWallet.LOCALHOST_CHAIN_ID}-${BraveWallet.CoinType.ETH}`,
-  `${BraveWallet.LOCALHOST_CHAIN_ID}-${BraveWallet.CoinType.FIL}`,
-  `${BraveWallet.LOCALHOST_CHAIN_ID}-${BraveWallet.CoinType.SOL}`,
-  `${BraveWallet.LOCALHOST_CHAIN_ID}-${BraveWallet.CoinType.ZEC}`,
   BraveWallet.SEPOLIA_CHAIN_ID,
   BraveWallet.SOLANA_DEVNET,
   BraveWallet.SOLANA_TESTNET,

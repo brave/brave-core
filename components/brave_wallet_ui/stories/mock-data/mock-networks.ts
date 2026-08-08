@@ -40,20 +40,6 @@ export const mockSepolia: BraveWallet.NetworkInfo = {
   symbolName: 'Ethereum',
 }
 
-export const mockEthLocalhost: BraveWallet.NetworkInfo = {
-  activeRpcEndpointIndex: 0,
-  blockExplorerUrls: ['http://localhost:7545/'],
-  chainId: BraveWallet.LOCALHOST_CHAIN_ID,
-  chainName: 'Localhost',
-  coin: 60,
-  supportedKeyrings: [BraveWallet.KeyringId.kDefault],
-  decimals: 18,
-  iconUrls: [ETHIcon],
-  rpcEndpoints: [{ url: 'http://localhost:7545/' }],
-  symbol: 'ETH',
-  symbolName: 'Ethereum',
-}
-
 export const mockFilecoinMainnetNetwork: BraveWallet.NetworkInfo = {
   chainId: 'f',
   chainName: 'Filecoin Mainnet',
@@ -173,7 +159,6 @@ export const mockNetworks: BraveWallet.NetworkInfo[] = [
   mockFilecoinTestnetNetwork,
   mockSolanaMainnetNetwork,
   mockSolanaTestnetNetwork,
-  mockEthLocalhost,
   mockBitcoinMainnet,
   mockBNBChainNetwork,
   mockCardanoMainnetNetwork,
