@@ -147,7 +147,10 @@ if (is_android) {
   }
 
   robolectric_library("brave_junit_tests_org.chromium.chrome.browser.rate") {
-    sources = [ "src/org/chromium/chrome/browser/rate/BraveAskPlayStoreRatingDialogTest.java" ]
+    sources = [
+      "src/org/chromium/chrome/browser/rate/BraveAskPlayStoreRatingDialogTest.java",
+      "src/org/chromium/chrome/browser/rate/RateUtilsTest.java",
+    ]
 
     deps = [
       "//chrome/android/junit:chrome_junit_tests_helper",
