@@ -12,6 +12,7 @@ import EnvConfig from './envConfig.ts'
 import * as Log from './log.ts'
 import util from './util.js'
 import { isCI, isTeamcity } from './ciDetect.ts'
+import * as buildOptions from './buildOptions.ts'
 
 type ExecOptions = {
   env: NodeJS.ProcessEnv
@@ -21,6 +22,16 @@ type ExecOptions = {
   onStdOutLine?: (line: string) => void
   onStdErrLine?: (line: string) => void
 }
+
+type UpdateOptions = buildOptions.BuildDirOptions
+  & buildOptions.TargetConfigOptions
+  & buildOptions.GnArgsOptions
+  & buildOptions.GnGenOptions
+  & buildOptions.NinjaOptions & {
+    build_config?: string | undefined
+    use_libfuzzer?: boolean | undefined
+    gclient_verbose?: boolean | undefined
+  }
 
 const validTargetOSValues = ['android', 'ios', 'linux', 'mac', 'win'] as const
 type TargetOS = (typeof validTargetOSValues)[number]
@@ -465,17 +476,15 @@ export class Config {
     return path.join(this.cacheDir, name)
   }
 
-  updateInternal(options) {
-    if (options.target_cpu) {
-      options.target_arch = options.target_cpu
-    }
-
+  updateInternal(options: UpdateOptions) {
     if (options.target_arch === 'x86') {
       this.targetArch = options.target_arch
       this.gypTargetArch = 'ia32'
     } else if (options.target_arch === 'ia32') {
       this.targetArch = 'x86'
       this.gypTargetArch = options.target_arch
+    } else if (options.target_arch === 'host_cpu') {
+      this.targetArch = process.arch
     } else if (options.target_arch) {
       this.targetArch = options.target_arch
     }
@@ -487,6 +496,8 @@ export class Config {
         this.targetOS = 'mac'
       } else if (options.target_os === 'windows') {
         this.targetOS = 'win'
+      } else if (options.target_os === 'host_os') {
+        this.targetOS = this.hostOS
       } else {
         this.targetOS = options.target_os
       }
@@ -682,11 +693,12 @@ export class Config {
       '--no-gn-gen is experimental and only gn args that match command '
         + 'line options will be processed',
     )
+    gnArgs.target_arch = gnArgs.target_cpu
     this.updateInternal(Object.assign({}, gnArgs, options))
     assert(!isCI)
   }
 
-  update(options) {
+  update(options: UpdateOptions) {
     if (this.use_no_gn_gen) {
       this.fromGnArgs(options)
     } else {
