@@ -6,6 +6,24 @@
 #include "brave/browser/ui/brave_scheme_utils.h"
 
 #include "testing/gtest/include/gtest/gtest.h"
+#include "url/gurl.h"
+
+TEST(BraveSchemeUtilsTest, ReplaceChromeToBraveSchemeGURL) {
+  EXPECT_EQ(GURL("brave://settings/"), brave_utils::ReplaceChromeToBraveScheme(
+                                           GURL("chrome://settings/")));
+
+  // Everything but the scheme is preserved.
+  EXPECT_EQ(GURL("brave://settings/clearBrowserData?foo=bar#ref"),
+            brave_utils::ReplaceChromeToBraveScheme(
+                GURL("chrome://settings/clearBrowserData?foo=bar#ref")));
+
+  // "chrome-extension" must not be mistaken for a "chrome" scheme match.
+  for (const char* spec : {"https://search.brave.com/", "brave://settings/",
+                           "chrome-extension://abcdefghijklmnop/page.html"}) {
+    const GURL url(spec);
+    EXPECT_EQ(url, brave_utils::ReplaceChromeToBraveScheme(url)) << spec;
+  }
+}
 
 TEST(BraveSchemeUtilsTest, ReplaceChromeToBraveScheme) {
   std::u16string url_string = u"chrome://settings";
