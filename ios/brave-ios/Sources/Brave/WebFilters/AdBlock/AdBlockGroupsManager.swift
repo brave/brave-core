@@ -4,6 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
+import BraveShared
 import BraveShields
 import Data
 import Foundation
@@ -509,29 +510,114 @@ import os
   }
 
   private func getCachedResourcesInfo() -> GroupedAdBlockEngine.ResourcesInfo? {
+    let cachedFileURL: URL
     if let resourcesFolderURL = AdblockService.makeAbsoluteURL(
       forComponentPath: Preferences.AppState.lastAdBlockResourcesFolderPath.value
     ), FileManager.default.fileExists(atPath: resourcesFolderURL.path) {
       // This is a legacy storage when we were gettting the component folder URL not the file URL
-      let resourcesFileURL = resourcesFolderURL.appendingPathComponent(
+      cachedFileURL = resourcesFolderURL.appendingPathComponent(
         "resources.json",
         conformingTo: .json
       )
-      return getResourcesInfo(fromFileURL: resourcesFileURL)
     } else if let resourcesFileURL = AdblockService.makeAbsoluteURL(
       forComponentPath: Preferences.AppState.lastAdBlockResourcesFilePath.value
     ), FileManager.default.fileExists(atPath: resourcesFileURL.path) {
-      return getResourcesInfo(fromFileURL: resourcesFileURL)
+      cachedFileURL = resourcesFileURL
     } else {
+      return nil
+    }
+
+    return getResourcesInfo(fromFileURL: cachedFileURL)
+  }
+
+  /// Rebuild the resources info so the user's custom scriptlets are picked up by the engines.
+  ///
+  /// The scriptlets only live in the resources so the engines don't need to be recompiled.
+  func didUpdateCustomScriptlets() async {
+    guard let resourcesInfo = getCachedResourcesInfo() else { return }
+    self.resourcesInfo = resourcesInfo
+
+    for engineType in GroupedAdBlockEngine.EngineType.allCases {
+      let manager = getManager(for: engineType)
+      await manager.update(resourcesInfo: resourcesInfo)
+      // The cached cosmetic filter models and frame scripts are built from the previous
+      // resources, so they need to be dropped for the new scriptlet to be injected.
+      await manager.engine?.clearCaches()
+    }
+  }
+
+  /// Read the resources JSON at `sourceURL`, append an entry for each of the given
+  /// `customScriptlets` with its base64-encoded content, and write the result into the
+  /// app caches directory.
+  /// - Returns: The URL of the augmented file, or nil if augmentation failed.
+  private func writeAugmentedResources(
+    from sourceURL: URL,
+    customScriptlets: [CustomScriptlet]
+  ) -> URL? {
+    guard
+      let data = try? Data(contentsOf: sourceURL),
+      var entries = try? JSONSerialization.jsonObject(with: data) as? [[String: Any]]
+    else {
+      return nil
+    }
+
+    for customScriptlet in customScriptlets {
+      entries.append([
+        "name": customScriptlet.name,
+        "aliases": [],
+        "kind": ["mime": "application/javascript"],
+        "content": Data(customScriptlet.content.utf8).base64EncodedString(),
+      ])
+    }
+
+    guard
+      let augmentedData = try? JSONSerialization.data(withJSONObject: entries),
+      let cachesURL = try? AsyncFileManager.default.url(for: .cachesDirectory, in: .userDomainMask)
+    else {
+      return nil
+    }
+
+    let folderURL = cachesURL.appendingPathComponent(
+      "adblock-resources",
+      conformingTo: .folder
+    )
+    let augmentedFileURL = folderURL.appendingPathComponent(
+      "resources.json",
+      conformingTo: .json
+    )
+
+    do {
+      try FileManager.default.createDirectory(at: folderURL, withIntermediateDirectories: true)
+      try augmentedData.write(to: augmentedFileURL, options: .atomic)
+      return augmentedFileURL
+    } catch {
       return nil
     }
   }
 
   /// Convert the given folder URL to a `ResourcesInfo` object
   private func getResourcesInfo(fromFileURL fileURL: URL) -> GroupedAdBlockEngine.ResourcesInfo {
+    let version = fileURL.deletingLastPathComponent().lastPathComponent
+
+    // Inject an entry for each of the user's custom scriptlets so they are available
+    // to the engine. Falls back to the unmodified component file if there are no
+    // custom scriptlets or if augmentation fails.
+    let customScriptlets = CustomFilterListStorage.shared.customScriptlets
+    if !customScriptlets.isEmpty,
+      let augmentedFileURL = writeAugmentedResources(
+        from: fileURL,
+        customScriptlets: customScriptlets
+      )
+    {
+      return GroupedAdBlockEngine.ResourcesInfo(
+        localFileURL: augmentedFileURL,
+        version: version
+      )
+    }
+
     return GroupedAdBlockEngine.ResourcesInfo(
       localFileURL: fileURL,
-      version: fileURL.deletingLastPathComponent().lastPathComponent
+      version: version
     )
   }
 
