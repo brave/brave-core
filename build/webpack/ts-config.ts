@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import dirName from './dirName.cjs'
 import fs from 'node:fs/promises'
 import path from 'node:path'
 import type { PathMap } from './path-map.ts'
@@ -24,7 +25,7 @@ export async function writeTsConfig(
   extendsFrom: string,
 ): Promise<string> {
   const configExtendsFrom = path.relative(genPath, extendsFrom)
-  const basePath = path.dirname(extendsFrom)
+  const basePath = path.resolve(dirName, '../../')
   const baseUrl = path.relative(genPath, basePath)
   const tsConfigPath = path.join(genPath, name)
   // Even though ts-loader will get the paths from webpack for module resolution

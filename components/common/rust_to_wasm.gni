@@ -50,8 +50,8 @@ template("rust_to_wasm") {
     # - makes our approach less self-contained.
     #
     response_file_contents = [
-      "CARGO_HOME=abs@" +
-          rebase_path("//third_party/rust-toolchain/bin", root_build_dir),
+      "CARGO=abs@" +
+          rebase_path("//third_party/rust-toolchain/bin/cargo", root_build_dir),
       "RUSTC=abs@" +
           rebase_path("//third_party/rust-toolchain/bin/rustc", root_build_dir),
     ]
