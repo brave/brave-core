@@ -177,6 +177,7 @@ leo_icons_sources = [
   "bluetooth-off.svg",
   "bluetooth.svg",
   "brave-icon-monochrome.svg",
+  "brave-icon-only-face.svg",
   "brave-icon-outline.svg",
   "brave-icon-release-color.svg",
   "brave-icon-search.svg",

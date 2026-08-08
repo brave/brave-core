@@ -36,7 +36,11 @@ interface BraveNewsContext {
   subscribedPublisherIds: string[]
   // Publishers to suggest to the user.
   suggestedPublisherIds: string[]
-  updateSuggestedPublisherIds: () => void
+  updateSuggestedPublisherIds: () => Promise<void>
+  // True once publishers/channels have been hydrated from the backend (the
+  // caches may still be empty, e.g. a fresh profile with no follows).
+  publishersLoaded: boolean
+  channelsLoaded: boolean
   isOptInPrefEnabled: boolean | undefined
   isShowOnNTPPrefEnabled: boolean | undefined
   toggleBraveNewsOnNTP: (enabled: boolean) => void
@@ -66,7 +70,9 @@ export const BraveNewsContext = React.createContext<BraveNewsContext>({
   subscribedPublisherIds: [],
   channels: {},
   suggestedPublisherIds: [],
-  updateSuggestedPublisherIds: () => { },
+  updateSuggestedPublisherIds: async () => { },
+  publishersLoaded: false,
+  channelsLoaded: false,
   isOptInPrefEnabled: undefined,
   isShowOnNTPPrefEnabled: undefined,
   toggleBraveNewsOnNTP: (enabled: boolean) => { },
@@ -110,14 +116,16 @@ export function BraveNewsContextProvider(props: BraveNewsContextProviderProps) {
   const [suggestedPublisherIds, setSuggestedPublisherIds] = useState<string[]>([])
   const [shouldRenderImages, setShouldRenderImages] = useState(false)
 
+  const publishersLoaded = publishersCache.connected
+  const channelsLoaded = channelsCache.connected
+
   // Get the default locale on load.
   useEffect(() => {
     getBraveNewsController().getLocale().then(({ locale }) => setLocale(locale))
   }, [configuration.isOptedIn, configuration.showOnNTP])
 
   React.useEffect(() => {
-    const handler = (channels: Channels) => setChannels(channels)
-
+    const handler = (next: Channels) => setChannels(next)
     channelsCache.addListener(handler)
     return () => channelsCache.removeListener(handler)
   }, [])
@@ -134,9 +142,9 @@ export function BraveNewsContextProvider(props: BraveNewsContextProviderProps) {
   }, [])
 
   React.useEffect(() => {
-    const handler = (publishers: Publishers) => setPublishers(publishers)
+    const handler = (next: Publishers) => setPublishers(next)
     publishersCache.addListener(handler)
-    return () => { publishersCache.removeListener(handler) }
+    return () => publishersCache.removeListener(handler)
   }, [])
 
   React.useEffect(() => {
@@ -211,6 +219,8 @@ export function BraveNewsContextProvider(props: BraveNewsContextProviderProps) {
     filteredPublisherIds,
     subscribedPublisherIds,
     updateSuggestedPublisherIds,
+    publishersLoaded,
+    channelsLoaded,
     isOptInPrefEnabled: configuration.isOptedIn,
     isShowOnNTPPrefEnabled: configuration.showOnNTP,
     toggleBraveNewsOnNTP,
@@ -221,7 +231,7 @@ export function BraveNewsContextProvider(props: BraveNewsContextProviderProps) {
     reportSidebarFilterUsage,
     reportSessionStart,
     shouldRenderImages,
-  }), [customizePage, setFeedView, feedV2, feedV2UpdatesAvailable, channels, publishers, suggestedPublisherIds, filteredPublisherIds, updateSuggestedPublisherIds, configuration, props.openArticlesInNewTab, toggleBraveNewsOnNTP, reportSidebarFilterUsage, reportViewCount, reportVisit, reportSessionStart, shouldRenderImages])
+  }), [customizePage, setFeedView, feedV2, feedV2UpdatesAvailable, channels, publishers, publishersLoaded, channelsLoaded, suggestedPublisherIds, filteredPublisherIds, updateSuggestedPublisherIds, configuration, props.openArticlesInNewTab, toggleBraveNewsOnNTP, reportSidebarFilterUsage, reportViewCount, reportVisit, reportSessionStart, shouldRenderImages])
 
   return <BraveNewsContext.Provider value={context}>
     {props.children}

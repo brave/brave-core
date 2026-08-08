@@ -5,11 +5,12 @@
 
 import Button, { ButtonProps } from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
+import { color } from '@brave/leo/tokens/css/variables'
 import * as React from 'react'
 import styled from 'styled-components'
 
 const StyledButton = styled(Button)`
-  --leo-button-color: rgba(150, 150, 150, 0.8);
+  --leo-button-color: color-mix(in srgb, ${color.neutral[30]} 80%, transparent);
   backdrop-filter: blur(64px);
 `
 
