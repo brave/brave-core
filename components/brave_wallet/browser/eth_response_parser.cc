@@ -344,6 +344,64 @@ bool ParseEthGetLogs(const base::Value& json_value, std::vector<Log>* logs) {
   return true;
 }
 
+std::optional<std::vector<SimulatedCall>> ParseEthSimulateV1(
+    const base::Value& json_value) {
+  auto blocks = ParseResultList(json_value);
+  if (!blocks) {
+    return std::nullopt;
+  }
+
+  std::vector<SimulatedCall> calls;
+  for (const auto& block_it : *blocks) {
+    if (!block_it.is_dict()) {
+      return std::nullopt;
+    }
+    const base::ListValue* calls_list = block_it.GetDict().FindList("calls");
+    if (!calls_list) {
+      return std::nullopt;
+    }
+    for (const auto& call_it : *calls_list) {
+      if (!call_it.is_dict()) {
+        return std::nullopt;
+      }
+      const auto& call_dict = call_it.GetDict();
+      SimulatedCall simulated;
+      // status is "0x1" for success; a reverted call has "0x0" (and an error)
+      // and emits no real events, so it is skipped downstream.
+      const std::string* status = call_dict.FindString("status");
+      simulated.success = status && *status == "0x1";
+      if (const base::ListValue* logs = call_dict.FindList("logs")) {
+        for (const auto& log_it : *logs) {
+          if (!log_it.is_dict()) {
+            return std::nullopt;
+          }
+          const auto& log_dict = log_it.GetDict();
+          const std::string* address = log_dict.FindString("address");
+          if (!address) {
+            return std::nullopt;
+          }
+          Log log;
+          log.address = *address;
+          if (const std::string* data = log_dict.FindString("data")) {
+            log.data = *data;
+          }
+          if (const base::ListValue* topics = log_dict.FindList("topics")) {
+            for (const auto& topic : *topics) {
+              if (!topic.is_string()) {
+                return std::nullopt;
+              }
+              log.topics.push_back(topic.GetString());
+            }
+          }
+          simulated.logs.push_back(std::move(log));
+        }
+      }
+      calls.push_back(std::move(simulated));
+    }
+  }
+  return calls;
+}
+
 std::optional<std::vector<std::string>>
 ParseUnstoppableDomainsProxyReaderGetMany(const base::Value& json_value) {
   auto bytes_result = ParseDecodedBytesResult(json_value);

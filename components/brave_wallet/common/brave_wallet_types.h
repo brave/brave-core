@@ -89,6 +89,13 @@ struct TransactionReceipt {
   bool status = false;
 };
 
+// One call from an eth_simulateV1 result. `success` mirrors the receipt
+// status; reverted calls emit no real events, so callers skip them.
+struct SimulatedCall {
+  bool success = false;
+  std::vector<Log> logs;
+};
+
 struct ImportInfo {
   std::string mnemonic;
   bool is_legacy_crypto_wallets;

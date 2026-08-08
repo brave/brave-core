@@ -11,6 +11,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/eip1559_transaction.h"
 #include "brave/components/brave_wallet/browser/eip2930_transaction.h"
+#include "brave/components/brave_wallet/browser/eth_data_parser.h"
 #include "brave/components/brave_wallet/browser/eth_tx_meta.h"
 #include "brave/components/brave_wallet/browser/tx_meta.h"
 
@@ -65,6 +66,41 @@ std::unique_ptr<TxMeta> EthTxStateManager::ValueToTxMeta(
   std::optional<bool> sign_only = value.FindBool("sign_only");
   if (sign_only) {
     meta->set_sign_only(*sign_only);
+  }
+
+  const base::ListValue* findings_list =
+      value.FindList("authorization_findings");
+  if (findings_list) {
+    std::vector<AuthorizationFinding> findings;
+    for (size_t i = 0; i < findings_list->size(); ++i) {
+      const base::DictValue* fd = (*findings_list)[i].GetIfDict();
+      if (!fd) {
+        continue;
+      }
+      std::optional<int> kind_int = fd->FindInt("kind");
+      const std::string* token_contract = fd->FindString("token_contract");
+      const std::string* grantor = fd->FindString("grantor");
+      const std::string* grantee = fd->FindString("grantee");
+      const std::string* raw_value = fd->FindString("raw_value");
+      if (!kind_int || !token_contract || !grantor || !grantee || !raw_value) {
+        continue;
+      }
+      const int k_erc20 =
+          static_cast<int>(AuthorizationFinding::Kind::kErc20Approval);
+      const int k_all =
+          static_cast<int>(AuthorizationFinding::Kind::kApprovalForAll);
+      AuthorizationFinding::Kind kind;
+      if (*kind_int == k_erc20) {
+        kind = AuthorizationFinding::Kind::kErc20Approval;
+      } else if (*kind_int == k_all) {
+        kind = AuthorizationFinding::Kind::kApprovalForAll;
+      } else {
+        continue;
+      }
+      findings.push_back(
+          {kind, *token_contract, *grantor, *grantee, *raw_value});
+    }
+    meta->set_authorization_findings(std::move(findings));
   }
 
   std::optional<int> type = tx->FindInt("type");

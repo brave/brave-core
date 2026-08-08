@@ -10,7 +10,9 @@
 #include <utility>
 
 #include "base/check_op.h"
+#include "base/numerics/checked_math.h"
 #include "base/strings/strcat.h"
+#include "base/strings/string_util.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/eth_abi_decoder.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
@@ -26,9 +28,19 @@ constexpr char kERC20TransferSelector[] = "0xa9059cbb";
 constexpr char kERC20ApproveSelector[] = "0x095ea7b3";
 constexpr char kERC721TransferFromSelector[] = "0x23b872dd";
 constexpr char kERC721SafeTransferFromSelector[] = "0x42842e0e";
+constexpr char kERC721SetApprovalForAllSelector[] = "0xa22cb465";
 constexpr char kERC1155SafeTransferFromSelector[] = "0xf242432a";
+
 constexpr char kFilForwarderTransferSelector[] =
     "0xd948d468";  // forward(bytes)
+
+// keccak256("ApprovalForAll(address,address,bool)")
+constexpr char kApprovalForAllTopic[] =
+    "0x17307eab39ab6107e8899845ad3d59bd9653f200f220920489ca2b5937696c31";
+// keccak256("Approval(address,address,uint256)")
+constexpr char kApprovalTopic[] =
+    "0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925";
+constexpr uint8_t kSetApprovalForAllSelector[4] = {0xa2, 0x2c, 0xb4, 0x65};
 
 // CowSwap function selectors
 constexpr char kCowOrderSellEthSelector[] = "0x322bba21";
@@ -538,6 +550,62 @@ std::optional<LiFiBridgeData> LiFiBridgeDataDecode(
 
 }  // namespace
 
+std::vector<AuthorizationFinding> ScanAuthorizations(
+    const std::vector<SimulatedCall>& calls) {
+  std::vector<AuthorizationFinding> findings;
+  for (const auto& call : calls) {
+    if (!call.success) {
+      continue;
+    }
+    for (const auto& log : call.logs) {
+      if (log.topics.empty()) {
+        continue;
+      }
+      AuthorizationFinding::Kind kind;
+      if (base::EqualsCaseInsensitiveASCII(log.topics[0],
+                                           kApprovalForAllTopic)) {
+        kind = AuthorizationFinding::Kind::kApprovalForAll;
+      } else if (base::EqualsCaseInsensitiveASCII(log.topics[0],
+                                                  kApprovalTopic)) {
+        kind = AuthorizationFinding::Kind::kErc20Approval;
+      } else {
+        continue;
+      }
+      if (log.topics.size() < 3) {
+        continue;
+      }
+      findings.push_back(
+          {kind, log.address, log.topics[1], log.topics[2], log.data});
+    }
+  }
+  return findings;
+}
+
+std::vector<std::string> FindSetApprovalForAllOperatorsByByteScan(
+    base::span<const uint8_t> data) {
+  std::vector<std::string> operators;
+  constexpr size_t kCallSize = 4 + 32 + 32;
+  for (size_t off = 0; off + kCallSize <= data.size(); ++off) {
+    if (data.subspan(off, 4u) != base::span(kSetApprovalForAllSelector)) {
+      continue;
+    }
+    size_t approved_off = base::CheckAdd(off, 4u, 32u).ValueOrDie();
+    bool nonzero = false;
+    for (size_t i = 0; i < 32; ++i) {
+      if (data[approved_off + i] != 0) {
+        nonzero = true;
+        break;
+      }
+    }
+    if (!nonzero) {
+      continue;
+    }
+    size_t operator_off = base::CheckAdd(off, 4u, 12u).ValueOrDie();
+    operators.push_back(ToHex(data.subspan(operator_off, 20u)));
+  }
+  return operators;
+}
+
 std::optional<std::tuple<mojom::TransactionType,    // tx_type
                          std::vector<std::string>,  // tx_params
                          std::vector<std::string>,  // tx_args
@@ -643,6 +711,26 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
         std::vector<std::string>{decoded.value()[0].GetString(),
                                  decoded.value()[1].GetString(),
                                  decoded.value()[2].GetString()},
+        nullptr);
+  } else if (selector == kERC721SetApprovalForAllSelector) {
+    // Decode approved as uint256: non-canonical encodings (e.g. 2, dirty high
+    // bytes) still grant on permissive contracts.
+    auto type = eth_abi::Tuple()
+                    .AddTupleType(eth_abi::Address())
+                    .AddTupleType(eth_abi::Uint(256))
+                    .build();
+    auto decoded = ABIDecode(type, calldata);
+    if (!decoded) {
+      return std::nullopt;
+    }
+
+    const bool approved = decoded.value()[1].GetString() != "0x0";
+    return std::make_tuple(
+        mojom::TransactionType::ERC721SetApprovalForAll,
+        std::vector<std::string>{"address",  // operator
+                                 "bool"},    // approved
+        std::vector<std::string>{decoded.value()[0].GetString(),
+                                 approved ? "0x1" : "0x0"},
         nullptr);
   } else if (selector == kSellEthForTokenToUniswapV3Selector) {
     // Function:

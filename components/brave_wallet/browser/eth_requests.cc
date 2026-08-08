@@ -129,4 +129,36 @@ std::string GetLogsPayload(base::DictValue filter_options) {
   return GetJSON(dictionary);
 }
 
+std::string GetSimulateV1Payload(std::string_view from_address,
+                                 std::string_view to_address,
+                                 std::string_view data,
+                                 std::string_view val) {
+  base::DictValue call;
+  AddKeyIfNotEmpty(&call, "data", data);
+  call.Set("from", base::Value(from_address));
+  call.Set("to", base::Value(to_address));
+  AddKeyIfNotEmpty(&call, "value", val);
+
+  base::ListValue calls;
+  calls.Append(std::move(call));
+
+  base::DictValue block_state_call;
+  block_state_call.Set("calls", std::move(calls));
+
+  base::ListValue block_state_calls;
+  block_state_calls.Append(std::move(block_state_call));
+
+  base::DictValue params_obj;
+  params_obj.Set("blockStateCalls", std::move(block_state_calls));
+  params_obj.Set("traceTransfers", false);
+  params_obj.Set("validation", false);
+
+  base::ListValue params;
+  params.Append(std::move(params_obj));
+  params.Append(kEthereumBlockTagLatest);
+  base::DictValue dictionary =
+      GetJsonRpcDictionary("eth_simulateV1", std::move(params));
+  return GetJSON(dictionary);
+}
+
 }  // namespace brave_wallet::eth
