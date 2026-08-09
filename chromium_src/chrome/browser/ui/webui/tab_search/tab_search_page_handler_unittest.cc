@@ -45,6 +45,11 @@
 
 namespace {
 
+// A chrome:// host with no WebUI controller, so navigating to it in a unit test
+// does not construct one.
+constexpr char kChromeBlankUrl[] = "chrome://blank/";
+constexpr char kBraveBlankUrl[] = "brave://blank/";
+
 #if BUILDFLAG(ENABLE_AI_CHAT) || BUILDFLAG(ENABLE_LOCAL_AI)
 constexpr char kFooDotComUrl1[] = "https://foo.com/1";
 constexpr char kFooDotComUrl2[] = "https://foo.com/2";
@@ -63,6 +68,59 @@ constexpr char kCatDotComTitle2[] = "cat.com 2";
 #endif
 
 }  // namespace
+
+// An untitled recently closed entry uses its URL spec as the title, which must
+// read brave://. The URL itself stays chrome:// -- see GetRecentlyClosedTab().
+TEST_F(TabSearchPageHandlerTest, RecentlyClosedUntitledChromeUrlTitle) {
+  // Keep a tab open so the strip is never emptied.
+  AddTabWithTitle(browser1(), GURL(kTabUrl2), kTabName2);
+  AddTabWithTitle(browser1(), GURL(kChromeBlankUrl), std::string());
+
+  handler()->CloseTab(
+      browser1()->tab_strip_model()->GetTabAtIndex(0)->GetHandle().raw_value());
+
+  handler()->GetProfileData(base::BindLambdaForTesting(
+      [&](tab_search::mojom::ProfileDataPtr profile_tabs) {
+        auto& recently_closed_tabs = profile_tabs->recently_closed_tabs;
+        ASSERT_EQ(1u, recently_closed_tabs.size());
+        ExpectRecentlyClosedTab(recently_closed_tabs[0].get(), kChromeBlankUrl,
+                                kBraveBlankUrl);
+      }));
+
+  EXPECT_CALL(page_, TabUpdated(_)).Times(testing::AnyNumber());
+  EXPECT_CALL(page_, TabsRemoved(_)).Times(testing::AnyNumber());
+}
+
+// Only the URL-derived title fallback is rebranded: real titles and
+// non-chrome:// URLs are left alone.
+TEST_F(TabSearchPageHandlerTest, RecentlyClosedTitleRebrandingIsNarrow) {
+  // Keep a tab open so the strip is never emptied.
+  AddTabWithTitle(browser1(), GURL(kTabUrl2), kTabName2);
+  AddTabWithTitle(browser1(), GURL(kTabUrl1), std::string());
+  AddTabWithTitle(browser1(), GURL(kChromeBlankUrl), kTabName1);
+
+  const int titled_chrome_tab_id =
+      browser1()->tab_strip_model()->GetTabAtIndex(0)->GetHandle().raw_value();
+  const int untitled_http_tab_id =
+      browser1()->tab_strip_model()->GetTabAtIndex(1)->GetHandle().raw_value();
+
+  handler()->CloseTab(titled_chrome_tab_id);
+  handler()->CloseTab(untitled_http_tab_id);
+
+  handler()->GetProfileData(base::BindLambdaForTesting(
+      [&](tab_search::mojom::ProfileDataPtr profile_tabs) {
+        auto& recently_closed_tabs = profile_tabs->recently_closed_tabs;
+        ASSERT_EQ(2u, recently_closed_tabs.size());
+        // Most recently closed first.
+        ExpectRecentlyClosedTab(recently_closed_tabs[0].get(), kTabUrl1,
+                                kTabUrl1);
+        ExpectRecentlyClosedTab(recently_closed_tabs[1].get(), kChromeBlankUrl,
+                                kTabName1);
+      }));
+
+  EXPECT_CALL(page_, TabUpdated(_)).Times(testing::AnyNumber());
+  EXPECT_CALL(page_, TabsRemoved(_)).Times(testing::AnyNumber());
+}
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 TEST_F(TabSearchPageHandlerTest, GetSuggestedTopics) {

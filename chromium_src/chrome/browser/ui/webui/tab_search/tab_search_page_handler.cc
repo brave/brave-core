@@ -58,10 +58,11 @@
 #include <chrome/browser/ui/webui/tab_search/tab_search_page_handler.cc>
 #undef TabSearchPageHandler
 
-// Untitled entries fall back to the raw URL spec as their title, which would
-// show chrome://. The URL line itself is rebranded for display by the
-// tab_search_item.ts rewrite, so `url` is left canonical here -- upstream's NTP
-// filter and dedup key both read it after this returns.
+// Untitled entries use the raw URL spec as their title, which would show
+// chrome://. Only the title is rebranded: `url` must stay chrome:// because
+// AddRecentlyClosedTab() matches it against the new-tab-page URL, and indexes
+// open and recently closed tabs by URL so a page is not listed twice. The row's
+// URL line is rebranded by the tab_search_item.ts rewrite.
 tab_search::mojom::RecentlyClosedTabPtr
 TabSearchPageHandler::GetRecentlyClosedTab(sessions::tab_restore::Tab* tab,
                                            const base::Time& close_time) {
