@@ -166,9 +166,13 @@ class ContainersBrowserTest : public InProcessBrowserTest {
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
     InProcessBrowserTest::SetUpCommandLine(command_line);
+    // Startup navigations for command line URLs run before SetUpOnMainThread
+    // installs the host resolver rules, so every host has to be mapped here
+    // too, not just port 443.
     command_line->AppendSwitchASCII(
         network::switches::kHostResolverRules,
-        absl::StrFormat("MAP *:443 127.0.0.1:%d", https_server_.port()));
+        absl::StrFormat("MAP *:443 127.0.0.1:%d,MAP * 127.0.0.1",
+                        https_server_.port()));
   }
 
   void SetUpOnMainThread() override {
@@ -2620,31 +2624,13 @@ IN_PROC_BROWSER_TEST_F(ContainersCommandLineContainerBrowserTest,
   EXPECT_EQ(kTestContainerId, config.partition_name());
 }
 
-// Base for tests that open command line URLs at startup. The startup
-// navigation runs before InProcessBrowserTest installs its host resolver rules
-// in SetUpOnMainThread, and the base fixture's command line rule only covers
-// port 443, so map every host to the test server up front. Without this the
-// startup tab commits an error page.
-class ContainersCommandLineUrlBrowserTest : public ContainersBrowserTest {
- public:
-  ContainersCommandLineUrlBrowserTest() = default;
-
-  void SetUpCommandLine(base::CommandLine* command_line) override {
-    ContainersBrowserTest::SetUpCommandLine(command_line);
-    command_line->AppendSwitchASCII(
-        network::switches::kHostResolverRules,
-        absl::StrFormat("MAP *:443 127.0.0.1:%d,MAP * 127.0.0.1",
-                        https_server_.port()));
-  }
-};
-
 class ContainersCommandLineTemporaryContainerBrowserTest
-    : public ContainersCommandLineUrlBrowserTest {
+    : public ContainersBrowserTest {
  public:
   ContainersCommandLineTemporaryContainerBrowserTest() = default;
 
   void SetUpDefaultCommandLine(base::CommandLine* command_line) override {
-    ContainersCommandLineUrlBrowserTest::SetUpDefaultCommandLine(command_line);
+    ContainersBrowserTest::SetUpDefaultCommandLine(command_line);
     command_line->AppendSwitch("temporary-container");
     command_line->AppendArg(
         https_server_.GetURL("a.test", "/simple.html").spec());
@@ -2677,13 +2663,13 @@ IN_PROC_BROWSER_TEST_F(ContainersCommandLineTemporaryContainerBrowserTest,
       << *first_partition_name;
 }
 
-class ContainersCommandLineTemporaryContainerOverridesNamedBrowserTest
-    : public ContainersCommandLineUrlBrowserTest {
+class ContainersCommandLineNamedTemporaryContainerBrowserTest
+    : public ContainersBrowserTest {
  public:
-  ContainersCommandLineTemporaryContainerOverridesNamedBrowserTest() = default;
+  ContainersCommandLineNamedTemporaryContainerBrowserTest() = default;
 
   void SetUpDefaultCommandLine(base::CommandLine* command_line) override {
-    ContainersCommandLineUrlBrowserTest::SetUpDefaultCommandLine(command_line);
+    ContainersBrowserTest::SetUpDefaultCommandLine(command_line);
     command_line->AppendSwitchASCII("container", kNamedContainerName);
     command_line->AppendSwitch("temporary-container");
     command_line->AppendArg(
@@ -2691,12 +2677,12 @@ class ContainersCommandLineTemporaryContainerOverridesNamedBrowserTest
   }
 };
 
-// PRE_ stores a container that the follow-up test's --container switch resolves
-// to. Using a test-owned name rather than a default container keeps the test
-// independent of localized strings.
+// PRE_ stores a synced container with the same name the follow-up test passes
+// to --container. Using a test-owned name rather than a default container keeps
+// the test independent of localized strings.
 IN_PROC_BROWSER_TEST_F(
-    ContainersCommandLineTemporaryContainerOverridesNamedBrowserTest,
-    PRE_TemporaryContainerSwitchOverridesNamedContainer) {
+    ContainersCommandLineNamedTemporaryContainerBrowserTest,
+    PRE_ContainerSwitchNamesTemporaryContainerInsteadOfResolvingIt) {
   Profile* profile = browser()->profile();
   std::vector<mojom::ContainerPtr> synced;
   synced.push_back(MakeContainer(kTestContainerId, kNamedContainerName,
@@ -2709,18 +2695,21 @@ IN_PROC_BROWSER_TEST_F(
                                   SessionStartupPref::kPrefValueNewTab);
 }
 
+// With --temporary-container, --container names the temporary container rather
+// than selecting an existing one, so a synced container with the same name is
+// left alone.
 IN_PROC_BROWSER_TEST_F(
-    ContainersCommandLineTemporaryContainerOverridesNamedBrowserTest,
-    TemporaryContainerSwitchOverridesNamedContainer) {
+    ContainersCommandLineNamedTemporaryContainerBrowserTest,
+    ContainerSwitchNamesTemporaryContainerInsteadOfResolvingIt) {
   ASSERT_EQ(1, browser()->tab_strip_model()->count());
 
   auto* containers_service =
       ContainersServiceFactory::GetForProfile(browser()->profile());
   ASSERT_TRUE(containers_service);
 
-  // Precondition: --container on its own would have resolved to this container,
-  // so the IsTemporaryContainerId/EXPECT_NE checks really do exercise the
-  // override rather than passing because the name never resolved.
+  // Precondition: without --temporary-container the switch would have resolved
+  // to this container, so the checks below really do exercise the naming
+  // behavior rather than passing because the name never resolved.
   const std::optional<std::string> named_container_id =
       containers_service->GetContainerIdFromContainerSpecifier(
           ContainerName(kNamedContainerName));
@@ -2732,6 +2721,13 @@ IN_PROC_BROWSER_TEST_F(
   ASSERT_TRUE(partition_name.has_value());
   EXPECT_TRUE(IsTemporaryContainerId(*partition_name)) << *partition_name;
   EXPECT_NE(kTestContainerId, *partition_name);
+
+  // The temporary container carries the name from the command line, so a later
+  // launch with the same switches opens tabs in this same container.
+  auto temporary_container =
+      containers_service->GetRuntimeContainerById(*partition_name);
+  ASSERT_TRUE(temporary_container);
+  EXPECT_EQ(kNamedContainerName, temporary_container->name);
 }
 
 class ContainersCommandLineTemporaryContainerWithoutUrlsBrowserTest

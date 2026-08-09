@@ -96,12 +96,12 @@ bool IsTemporaryContainerId(std::string_view container_id) {
          container_id.starts_with(kTemporaryContainerIdPrefix);
 }
 
-mojom::ContainerPtr CreateTemporaryContainer() {
+mojom::ContainerPtr CreateTemporaryContainer(std::string_view name) {
   return mojom::Container::New(
       base::StrCat({kTemporaryContainerIdPrefix,
                     base::Uuid::GenerateRandomV4().AsLowercaseString()}),
-      GenerateTemporaryContainerName(), PickTemporaryContainerIcon(),
-      PickTemporaryContainerBackground());
+      name.empty() ? GenerateTemporaryContainerName() : std::string(name),
+      PickTemporaryContainerIcon(), PickTemporaryContainerBackground());
 }
 
 }  // namespace containers

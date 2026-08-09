@@ -5,17 +5,17 @@
 
 #include "brave/browser/ui/startup/brave_startup_tab_provider_impl.h"
 
+#include <string>
+#include <utility>
+
+#include "base/command_line.h"
+#include "base/feature_list.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/containers/buildflags/buildflags.h"
 #include "chrome/browser/first_run/first_run.h"
 #include "chrome/browser/ui/startup/startup_tab.h"
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
-#include <utility>
-
-#include "base/command_line.h"
-#include "base/feature_list.h"
-#include "base/logging.h"
 #include "brave/browser/containers/containers_service_factory.h"
 #include "brave/components/containers/core/browser/container_specifier.h"
 #include "brave/components/containers/core/browser/containers_service.h"
@@ -27,18 +27,22 @@ namespace {
 // Switch to specify the container to use for the startup tabs.
 constexpr char kContainerSwitch[] = "container";
 
-// Switch to open the startup tabs in a newly created temporary container.
+// Switch to open the startup tabs in a temporary container.
 constexpr char kTemporaryContainerSwitch[] = "temporary-container";
 
 // Returns the container to use for the tabs passed via the command line. All
 // command line tabs share the same container, matching the "open in new
 // temporary container" UI.
 //
-// With `--temporary-container` this creates and persists a new container, so it
-// must not be called more than once per launch, and it returns an empty
-// specifier when the profile has no ContainersService. Returns an empty
-// specifier (no container) when neither switch is given or the Containers
-// feature is disabled.
+// `--temporary-container` opens the tabs in a temporary container: a new one,
+// or, when `--container` also gives a name, the temporary container with that
+// name, created on first use so that a later launch can open more tabs in it.
+// `--container` on its own resolves an existing container by name.
+//
+// Creating a temporary container persists it, so this must not be called more
+// than once per launch. Returns an empty specifier (no container) when neither
+// switch is given, when the Containers feature is disabled, or when the profile
+// has no ContainersService.
 containers::ContainerSpecifier MaybeCreateContainerForCommandLineTabs(
     const base::CommandLine& command_line,
     Profile* profile) {
@@ -46,16 +50,10 @@ containers::ContainerSpecifier MaybeCreateContainerForCommandLineTabs(
     return {};
   }
 
-  const bool has_temporary_switch =
-      command_line.HasSwitch(kTemporaryContainerSwitch);
-  const bool has_container_switch = command_line.HasSwitch(kContainerSwitch);
-  if (has_temporary_switch && has_container_switch) {
-    // A temporary container is the more isolated of the two, so prefer it.
-    DVLOG(1) << "--" << kTemporaryContainerSwitch << " overrides --"
-             << kContainerSwitch;
-  }
+  const std::string container_name =
+      command_line.GetSwitchValueUTF8(kContainerSwitch);
 
-  if (has_temporary_switch) {
+  if (command_line.HasSwitch(kTemporaryContainerSwitch)) {
     auto* containers_service = ContainersServiceFactory::GetForProfile(profile);
     if (!containers_service) {
       // The factory selects regular profiles and their off-the-record
@@ -63,15 +61,18 @@ containers::ContainerSpecifier MaybeCreateContainerForCommandLineTabs(
       // profiles.
       return {};
     }
-    // Address the temporary container by id: its name is randomly generated and
-    // is not guaranteed to be unique.
-    auto container = containers_service->CreateAndPersistTemporaryContainer();
+    auto container =
+        container_name.empty()
+            ? containers_service->CreateAndPersistTemporaryContainer()
+            : containers_service->GetOrCreateTemporaryContainerByName(
+                  container_name);
+    // Address the temporary container by id: names are not guaranteed to be
+    // unique, and a generated one is random.
     return containers::ContainerId(std::move(container->id));
   }
 
-  if (has_container_switch) {
-    return containers::ContainerName(
-        command_line.GetSwitchValueUTF8(kContainerSwitch));
+  if (!container_name.empty()) {
+    return containers::ContainerName(container_name);
   }
 
   return {};
