@@ -138,7 +138,7 @@ export class SettingsBraveContentContainersElement extends SettingsBraveContentC
     this.browserProxy.handler.setContainersEnabled(toggle.checked)
   }
 
-  onContainersOnlyUseMiniIconChange_(e: Event) {
+  onAlwaysUseMiniIconChange_(e: Event) {
     const toggle = e.target as SettingsToggleButtonElement
     PrefService.getInstance().setPrefValue(
       ALWAYS_USE_MINI_ACCENT_ICON_PREF,

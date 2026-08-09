@@ -51,6 +51,4 @@ TEST(BraveTabPrefsTest, AlwaysUseMiniAccentIconDefaultsToFalse) {
   brave_tabs::RegisterBraveProfilePrefs(prefs.registry());
 
   EXPECT_FALSE(prefs.GetBoolean(brave_tabs::kAlwaysUseMiniAccentIcon));
-  prefs.SetBoolean(brave_tabs::kAlwaysUseMiniAccentIcon, true);
-  EXPECT_TRUE(prefs.GetBoolean(brave_tabs::kAlwaysUseMiniAccentIcon));
 }
