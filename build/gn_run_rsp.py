@@ -21,13 +21,15 @@ import sys
 from pathlib import Path
 
 
-# Paths prefixed with abs@ will be converted to absolute paths
+# Paths prefixed with abs@ will be converted to absolute paths.
 def maybe_abspath(value):
-    split = value.split("abs@", 1)
-    if len(split) == 2:
-        return split[0] + os.path.abspath(split[1])
+    entries = value.split(os.pathsep)
+    for index, entry in enumerate(entries):
+        prefix, marker, path = entry.partition('abs@')
+        if marker:
+            entries[index] = prefix + os.path.abspath(path)
 
-    return value
+    return os.pathsep.join(entries)
 
 def main():
     if len(sys.argv) < 2:
