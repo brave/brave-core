@@ -298,7 +298,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
                 "publicKey" : "OqhZpUC8B15u+Gc11rQYRl8O3zOSAUIEC2JuDHI32TM=",
                 "batchProof" : "6bAH3z5sAoLdtM5tDrSJkhcYi4lp3GY+jh/ubSxTnQCgfkmKve/7s1bcIzvjsLvvPDuWABRZyBml6IzeG86ICg==",
                 "signedTokens" : [
-                  "Ktsii4pOKOjfmqziUsdlV3lJETaGXG0rksRujn1i1Qs="
+                  "2g0WjgYZfADeoAYI0kkXNVCcXCpfg5lv5yRdCHigkGs="
                 ]
               }
             })"}}}};
@@ -347,7 +347,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
                 "publicKey" : "OqhZpUC8B15u+Gc11rQYRl8O3zOSAUIEC2JuDHI32TM=",
                 "batchProof" : "6bAH3z5sAoLdtM5tDrSJkhcYi4lp3GY+jh/ubSxTnQCgfkmKve/7s1bcIzvjsLvvPDuWABRZyBml6IzeG86ICg==",
                 "signedTokens" : [
-                  "Ktsii4pOKOjfmqziUsdlV3lJETaGXG0rksRujn1i1Qs="
+                  "2g0WjgYZfADeoAYI0kkXNVCcXCpfg5lv5yRdCHigkGs="
                 ]
               }
             })"}}}};
@@ -437,7 +437,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
               "paymentToken" : {
                 "batchProof" : "6bAH3z5sAoLdtM5tDrSJkhcYi4lp3GY+jh/ubSxTnQCgfkmKve/7s1bcIzvjsLvvPDuWABRZyBml6IzeG86ICg==",
                 "signedTokens" : [
-                  "Ktsii4pOKOjfmqziUsdlV3lJETaGXG0rksRujn1i1Qs="
+                  "2g0WjgYZfADeoAYI0kkXNVCcXCpfg5lv5yRdCHigkGs="
                 ]
               }
             })"}}}};
@@ -486,7 +486,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
                 "publicKey" : "INVALID",
                 "batchProof" : "6bAH3z5sAoLdtM5tDrSJkhcYi4lp3GY+jh/ubSxTnQCgfkmKve/7s1bcIzvjsLvvPDuWABRZyBml6IzeG86ICg==",
                 "signedTokens" : [
-                  "Ktsii4pOKOjfmqziUsdlV3lJETaGXG0rksRujn1i1Qs="
+                  "2g0WjgYZfADeoAYI0kkXNVCcXCpfg5lv5yRdCHigkGs="
                 ]
               }
             })"}}}};
@@ -534,7 +534,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
                 "publicKey" : "Si61i/8huYsx01ED6SZIOvDuD6GQV5LAi2CMu3NAVCQ=",
                 "batchProof" : "6bAH3z5sAoLdtM5tDrSJkhcYi4lp3GY+jh/ubSxTnQCgfkmKve/7s1bcIzvjsLvvPDuWABRZyBml6IzeG86ICg==",
                 "signedTokens" : [
-                  "Ktsii4pOKOjfmqziUsdlV3lJETaGXG0rksRujn1i1Qs="
+                  "2g0WjgYZfADeoAYI0kkXNVCcXCpfg5lv5yRdCHigkGs="
                 ]
               }
             })"}}}};
@@ -582,7 +582,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
               "paymentToken" : {
                 "publicKey" : "OqhZpUC8B15u+Gc11rQYRl8O3zOSAUIEC2JuDHI32TM=",
                 "signedTokens" : [
-                  "Ktsii4pOKOjfmqziUsdlV3lJETaGXG0rksRujn1i1Qs="
+                  "2g0WjgYZfADeoAYI0kkXNVCcXCpfg5lv5yRdCHigkGs="
                 ]
               }
             })"}}}};
@@ -631,7 +631,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
                 "publicKey" : "OqhZpUC8B15u+Gc11rQYRl8O3zOSAUIEC2JuDHI32TM=",
                 "batchProof" : "INVALID",
                 "signedTokens" : [
-                  "Ktsii4pOKOjfmqziUsdlV3lJETaGXG0rksRujn1i1Qs="
+                  "2g0WjgYZfADeoAYI0kkXNVCcXCpfg5lv5yRdCHigkGs="
                 ]
               }
             })"}}}};
@@ -775,7 +775,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
                 "publicKey" : "OqhZpUC8B15u+Gc11rQYRl8O3zOSAUIEC2JuDHI32TM=",
                 "batchProof" : "INVALID",
                 "signedTokens" : [
-                  "Ktsii4pOKOjfmqziUsdlV3lJETaGXG0rksRujn1i1Qs="
+                  "2g0WjgYZfADeoAYI0kkXNVCcXCpfg5lv5yRdCHigkGs="
                 ]
               }
             })"}}}};
