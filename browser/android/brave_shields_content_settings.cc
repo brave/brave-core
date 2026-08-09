@@ -210,6 +210,7 @@ void JNI_BraveShieldsContentSettings_SetFingerprintingControlType(
   auto* brave_shields_settings =
       BraveShieldsSettingsServiceFactory::GetForProfile(
           Profile::FromJavaObject(j_profile));
+  CHECK(brave_shields_settings);
 
   brave_shields_settings->SetFingerprintingControlType(
       brave_shields::ControlTypeFromString(
@@ -225,6 +226,7 @@ JNI_BraveShieldsContentSettings_GetFingerprintingControlType(
   auto* brave_shields_settings =
       BraveShieldsSettingsServiceFactory::GetForProfile(
           Profile::FromJavaObject(j_profile));
+  CHECK(brave_shields_settings);
 
   brave_shields::ControlType control_type =
       brave_shields_settings->GetFingerprintingControlType(

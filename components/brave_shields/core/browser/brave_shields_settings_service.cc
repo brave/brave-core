@@ -514,7 +514,7 @@ void BraveShieldsSettingsService::SetFingerprintingControlType(
     RecordShieldsSettingChanged(record_setting_changed_metric ? local_state_
                                                               : nullptr);
     if (url.is_empty()) {
-      // If global setting changed, report global setting and recalulate
+      // If global setting changed, report global setting and recalculate
       // domain specific setting counts
       RecordShieldsFingerprintSetting(type);
       RecordShieldsDomainSettingCounts(

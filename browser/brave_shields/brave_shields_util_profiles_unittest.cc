@@ -95,7 +95,7 @@ class BraveShieldsUtilProfilesTest : public testing::Test {
       }
 
       auto incognito = incognito_profile();
-      // Now change value for incognito and expect that values are not depended
+      // Now change value for incognito and expect that values do not depend
       // on the regular profile.
       for (const auto& [ivalue, iexpect] : cases) {
         auto* incognito_settings =
