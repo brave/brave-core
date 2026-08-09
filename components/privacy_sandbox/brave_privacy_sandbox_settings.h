@@ -11,7 +11,6 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/observer_list.h"
-#include "base/time/time.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/privacy_sandbox/privacy_sandbox_settings.h"
 
@@ -23,7 +22,6 @@ class CookieSettings;
 }  // namespace content_settings
 
 namespace privacy_sandbox {
-class CanonicalTopic;
 class TrackingProtectionSettings;
 }  // namespace privacy_sandbox
 
@@ -38,24 +36,6 @@ class BravePrivacySandboxSettings
   ~BravePrivacySandboxSettings() override;
 
   // PrivacySandboxSettings:
-  bool IsTopicsAllowed() const override;
-  bool IsTopicsAllowedForContext(
-      const url::Origin& top_frame_origin,
-      const GURL& url,
-      content::RenderFrameHost* console_frame = nullptr) const override;
-  void SetTopicAllowed(const privacy_sandbox::CanonicalTopic& topic,
-                       bool allowed) override;
-  void ClearTopicSettings(base::Time start_time, base::Time end_time) override;
-  base::Time TopicsDataAccessibleSince() const override;
-  void SetFledgeJoiningAllowed(const std::string& top_frame_etld_plus1,
-                               bool allowed) override;
-  void ClearFledgeJoiningAllowedSettings(base::Time start_time,
-                                         base::Time end_time) override;
-  bool IsFledgeAllowed(
-      const url::Origin& top_frame_origin,
-      const url::Origin& auction_party,
-      privacy_sandbox::InterestGroupApiOperation interest_group_api_operation,
-      content::RenderFrameHost* console_frame = nullptr) const override;
   bool IsEventReportingDestinationAttested(
       const url::Origin& destination_origin,
       privacy_sandbox::PrivacySandboxAttestationsGatedAPI invoking_api)
@@ -71,19 +51,8 @@ class BravePrivacySandboxSettings
       const url::Origin& accessing_origin,
       std::string* out_debug_message,
       bool* out_block_is_site_setting_specific) const override;
-  bool IsPrivateAggregationAllowed(
-      const url::Origin& top_frame_origin,
-      const url::Origin& reporting_origin,
-      bool* out_block_is_site_setting_specific) const override;
-  bool IsPrivateAggregationDebugModeAllowed(
-      const url::Origin& top_frame_origin,
-      const url::Origin& reporting_origin) const override;
-
-  void SetAllPrivacySandboxAllowedForTesting() override;
-  void SetTopicsBlockedForTesting() override;
   bool IsPrivacySandboxRestricted() const override;
   bool IsPrivacySandboxCurrentlyUnrestricted() const override;
-  void OnCookiesCleared() override;
   void AddObserver(Observer* observer) override;
   void RemoveObserver(Observer* observer) override;
   void SetDelegateForTesting(std::unique_ptr<Delegate> delegate) override;
