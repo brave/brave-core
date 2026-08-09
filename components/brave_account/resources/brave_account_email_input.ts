@@ -10,6 +10,15 @@ import { getCss } from './brave_account_common.css.js'
 import { getHtml } from './brave_account_email_input.html.js'
 import { maybeSuggestEmailCorrection } from './brave_account_email_typo.js'
 
+// HTML5 type="email" validation accepts a bare domain with no dot (e.g.
+// `user@localhost`), which the backend rejects. This pattern additionally
+// requires the domain to contain a dot followed by at least one more
+// character, rejecting those addresses inline rather than after a failed
+// round trip. It intentionally stays a strict superset of type="email"'s own
+// rules: it only constrains the domain, so the browser's built-in checks
+// still run.
+export const EMAIL_PATTERN = '.+@.+\\..+'
+
 // Maximum email address length according to this RFC3696 errata:
 // https://www.rfc-editor.org/errata/eid1690.
 // While maxlength is based on UTF-16 code units (where surrogate pairs count as
