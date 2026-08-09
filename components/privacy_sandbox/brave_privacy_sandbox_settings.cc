@@ -43,45 +43,6 @@ void BravePrivacySandboxSettings::OnPrivacySandboxPrefChanged() {
 
 // PrivacySandboxSettings:
 
-bool BravePrivacySandboxSettings::IsTopicsAllowed() const {
-  return false;
-}
-
-bool BravePrivacySandboxSettings::IsTopicsAllowedForContext(
-    const url::Origin& top_frame_origin,
-    const GURL& url,
-    content::RenderFrameHost* console_frame) const {
-  return false;
-}
-
-void BravePrivacySandboxSettings::SetTopicAllowed(
-    const privacy_sandbox::CanonicalTopic& topic,
-    bool allowed) {}
-
-void BravePrivacySandboxSettings::ClearTopicSettings(base::Time start_time,
-                                                     base::Time end_time) {}
-
-base::Time BravePrivacySandboxSettings::TopicsDataAccessibleSince() const {
-  // Future time means topics data is never accessible
-  return base::Time::Max();
-}
-
-void BravePrivacySandboxSettings::SetFledgeJoiningAllowed(
-    const std::string& top_frame_etld_plus1,
-    bool allowed) {}
-
-void BravePrivacySandboxSettings::ClearFledgeJoiningAllowedSettings(
-    base::Time start_time,
-    base::Time end_time) {}
-
-bool BravePrivacySandboxSettings::IsFledgeAllowed(
-    const url::Origin& top_frame_origin,
-    const url::Origin& auction_party,
-    privacy_sandbox::InterestGroupApiOperation interest_group_api_operation,
-    content::RenderFrameHost* console_frame) const {
-  return false;
-}
-
 bool BravePrivacySandboxSettings::IsEventReportingDestinationAttested(
     const url::Origin& destination_origin,
     privacy_sandbox::PrivacySandboxAttestationsGatedAPI invoking_api) const {
@@ -105,22 +66,6 @@ bool BravePrivacySandboxSettings::IsSharedStorageSelectURLAllowed(
   return false;
 }
 
-bool BravePrivacySandboxSettings::IsPrivateAggregationAllowed(
-    const url::Origin& top_frame_origin,
-    const url::Origin& reporting_origin,
-    bool* out_block_is_site_setting_specific) const {
-  return false;
-}
-
-bool BravePrivacySandboxSettings::IsPrivateAggregationDebugModeAllowed(
-    const url::Origin& top_frame_origin,
-    const url::Origin& reporting_origin) const {
-  return false;
-}
-
-void BravePrivacySandboxSettings::SetAllPrivacySandboxAllowedForTesting() {}
-void BravePrivacySandboxSettings::SetTopicsBlockedForTesting() {}
-
 bool BravePrivacySandboxSettings::IsPrivacySandboxRestricted() const {
   return true;
 }
@@ -130,7 +75,6 @@ bool BravePrivacySandboxSettings::IsPrivacySandboxCurrentlyUnrestricted()
   return false;
 }
 
-void BravePrivacySandboxSettings::OnCookiesCleared() {}
 void BravePrivacySandboxSettings::AddObserver(Observer* observer) {}
 void BravePrivacySandboxSettings::RemoveObserver(Observer* observer) {}
 
