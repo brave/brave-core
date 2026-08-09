@@ -124,7 +124,8 @@ class BraveScreenFarblingBrowserTest : public InProcessBrowserTest {
 
   void SetFingerprintingSetting(bool allow) {
     brave_shields_settings_->SetFingerprintingControlType(
-        allow ? ControlType::ALLOW : ControlType::DEFAULT, parent_url());
+        allow ? ControlType::ALLOW : ControlType::DEFAULT, parent_url(), false,
+        false);
   }
 
   content::WebContents* Contents() const {

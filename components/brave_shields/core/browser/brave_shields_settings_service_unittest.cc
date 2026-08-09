@@ -693,7 +693,7 @@ TEST_F(BraveShieldsSettingsServiceTest, ShieldsDown) {
 TEST_F(BraveShieldsSettingsServiceTest, FingerprintingAllowed) {
   const GURL url("http://a.com");
   brave_shields_settings()->SetFingerprintingControlType(ControlType::ALLOW,
-                                                         url);
+                                                         url, false, false);
   brave_shields::FarblingPRNG prng;
   EXPECT_FALSE(brave_shields_settings()->MakePseudoRandomGeneratorForURL(
       url, {}, &prng));

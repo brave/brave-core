@@ -324,7 +324,7 @@ void DefaultBraveShieldsHandler::SetFingerprintingBlockEnabled(
   CHECK(settings_service);
 
   settings_service->SetFingerprintingControlType(
-      value ? ControlType::DEFAULT : ControlType::ALLOW, GURL());
+      value ? ControlType::DEFAULT : ControlType::ALLOW, GURL(), true, false);
 }
 
 void DefaultBraveShieldsHandler::GetHttpsUpgradeControlType(

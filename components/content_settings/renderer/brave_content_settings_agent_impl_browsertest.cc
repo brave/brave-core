@@ -264,23 +264,23 @@ class BraveContentSettingsAgentImplBrowserTest : public InProcessBrowserTest {
   }
 
   void AllowFingerprinting() {
-    brave_shields_settings_->SetFingerprintingControlType(ControlType::ALLOW,
-                                                          top_level_page_url());
+    brave_shields_settings_->SetFingerprintingControlType(
+        ControlType::ALLOW, top_level_page_url(), false, false);
   }
 
   void BlockFingerprinting() {
-    brave_shields_settings_->SetFingerprintingControlType(ControlType::BLOCK,
-                                                          top_level_page_url());
+    brave_shields_settings_->SetFingerprintingControlType(
+        ControlType::BLOCK, top_level_page_url(), false, false);
   }
 
   void BlockThirdPartyFingerprinting() {
     brave_shields_settings_->SetFingerprintingControlType(
-        ControlType::BLOCK_THIRD_PARTY, top_level_page_url());
+        ControlType::BLOCK_THIRD_PARTY, top_level_page_url(), false, false);
   }
 
   void SetFingerprintingDefault() {
-    brave_shields_settings_->SetFingerprintingControlType(ControlType::DEFAULT,
-                                                          top_level_page_url());
+    brave_shields_settings_->SetFingerprintingControlType(
+        ControlType::DEFAULT, top_level_page_url(), false, false);
   }
 
   void BlockScripts() {

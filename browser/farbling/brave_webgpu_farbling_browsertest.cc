@@ -102,17 +102,17 @@ class BraveWebGPUFarblingBrowserTest : public InProcessBrowserTest {
 
   void AllowFingerprinting(const std::string& domain) {
     brave_shields_settings_->SetFingerprintingControlType(
-        ControlType::ALLOW, https_server_.GetURL(domain, "/"));
+        ControlType::ALLOW, https_server_.GetURL(domain, "/"), false, false);
   }
 
   void BlockFingerprinting(const std::string& domain) {
     brave_shields_settings_->SetFingerprintingControlType(
-        ControlType::BLOCK, https_server_.GetURL(domain, "/"));
+        ControlType::BLOCK, https_server_.GetURL(domain, "/"), false, false);
   }
 
   void SetFingerprintingDefault(const std::string& domain) {
     brave_shields_settings_->SetFingerprintingControlType(
-        ControlType::DEFAULT, https_server_.GetURL(domain, "/"));
+        ControlType::DEFAULT, https_server_.GetURL(domain, "/"), false, false);
   }
 
   content::WebContents* contents() {

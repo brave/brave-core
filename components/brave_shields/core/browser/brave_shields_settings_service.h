@@ -93,7 +93,10 @@ class BraveShieldsSettingsService : public KeyedService {
 
   bool ShouldDoReduceLanguage(const GURL& url);
 
-  void SetFingerprintingControlType(ControlType type, const GURL& url);
+  void SetFingerprintingControlType(ControlType type,
+                                    const GURL& url,
+                                    bool use_local_state = true,
+                                    bool use_profile_state = true);
   ControlType GetFingerprintingControlType(const GURL& url);
   mojom::FarblingLevel GetFarblingLevel(const GURL& primary_url);
 

@@ -481,7 +481,9 @@ bool BraveShieldsSettingsService::ShouldDoReduceLanguage(const GURL& url) {
 
 void BraveShieldsSettingsService::SetFingerprintingControlType(
     ControlType type,
-    const GURL& url) {
+    const GURL& url,
+    bool use_local_state,
+    bool use_profile_state) {
   auto primary_pattern = GetPatternFromURL(url);
 
   if (!primary_pattern.IsValid()) {
@@ -509,17 +511,18 @@ void BraveShieldsSettingsService::SetFingerprintingControlType(
       ContentSettingsType::BRAVE_FINGERPRINTING_V2, content_setting);
   if (!host_content_settings_map_->IsOffTheRecord()) {
     // Only report to P3A if not a guest/incognito profile
-    RecordShieldsSettingChanged(local_state_);
+    RecordShieldsSettingChanged(use_local_state ? local_state_ : nullptr);
     if (url.is_empty()) {
       // If global setting changed, report global setting and recalulate
       // domain specific setting counts
       RecordShieldsFingerprintSetting(type);
-      RecordShieldsDomainSettingCounts(profile_prefs_, true, type);
+      RecordShieldsDomainSettingCounts(
+          use_profile_state ? profile_prefs_ : nullptr, true, type);
     } else {
       // If domain specific setting changed, recalculate counts
       ControlType global_setting = GetFingerprintingControlType(GURL());
       RecordShieldsDomainSettingCountsWithChange(
-          profile_prefs_, true, global_setting,
+          use_profile_state ? profile_prefs_ : nullptr, true, global_setting,
           was_default ? nullptr : &prev_setting, type);
     }
   }

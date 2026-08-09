@@ -185,7 +185,7 @@ TEST_F(BraveShieldsUtilProfilesTest, SetFingerprintingControlType) {
       {DEFAULT, DEFAULT}};
 
   auto set = [this](BraveShieldsSettingsService* settings, ControlType value) {
-    settings->SetFingerprintingControlType(value, kTestUrl);
+    settings->SetFingerprintingControlType(value, kTestUrl, false, false);
   };
   auto get = [this](BraveShieldsSettingsService* settings) {
     return settings->GetFingerprintingControlType(kTestUrl);

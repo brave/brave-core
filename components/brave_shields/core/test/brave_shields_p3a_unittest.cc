@@ -7,6 +7,7 @@
 
 #include <memory>
 
+#include "base/memory/raw_ptr.h"
 #include "base/test/metrics/histogram_tester.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
@@ -15,6 +16,7 @@
 #include "brave/components/brave_shields/core/common/features.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/test/base/testing_profile.h"
+#include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/prefs/testing_pref_service.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -65,20 +67,20 @@ TEST_F(BraveShieldsP3ATest, RecordGlobalAdBlockSetting) {
 
 TEST_F(BraveShieldsP3ATest, RecordGlobalFingerprintBlockSetting) {
   shields_settings_service_->SetFingerprintingControlType(
-      ControlType::BLOCK, GURL("https://brave.com"));
+      ControlType::BLOCK, GURL("https://brave.com"), false, false);
   // Should not report to histogram if not a global change
   histogram_tester_->ExpectTotalCount(kFingerprintSettingHistogramName, 0);
 
   shields_settings_service_->SetFingerprintingControlType(ControlType::BLOCK,
-                                                          GURL());
+                                                          GURL(), false, false);
   histogram_tester_->ExpectBucketCount(kFingerprintSettingHistogramName, 2, 1);
 
   shields_settings_service_->SetFingerprintingControlType(ControlType::DEFAULT,
-                                                          GURL());
+                                                          GURL(), false, false);
   histogram_tester_->ExpectBucketCount(kFingerprintSettingHistogramName, 1, 1);
 
   shields_settings_service_->SetFingerprintingControlType(ControlType::ALLOW,
-                                                          GURL());
+                                                          GURL(), false, false);
   histogram_tester_->ExpectBucketCount(kFingerprintSettingHistogramName, 0, 1);
 
   histogram_tester_->ExpectTotalCount(kFingerprintSettingHistogramName, 3);
@@ -154,11 +156,10 @@ TEST_F(BraveShieldsP3ATest, RecordDomainFingerprintBlockCounts) {
       brave_shields::features::kBraveShowStrictFingerprintingMode);
 
   auto* map = HostContentSettingsMapFactory::GetForProfile(profile_.get());
-
   shields_settings_service_->SetFingerprintingControlType(ControlType::DEFAULT,
-                                                          GURL());
+                                                          GURL(), false, false);
   shields_settings_service_->SetFingerprintingControlType(
-      ControlType::BLOCK, GURL("https://brave.com"));
+      ControlType::BLOCK, GURL("https://brave.com"), false, false);
 
   // Test initial count
   MaybeRecordInitialShieldsSettings(
@@ -172,29 +173,29 @@ TEST_F(BraveShieldsP3ATest, RecordDomainFingerprintBlockCounts) {
 
   // Test delta counting
   shields_settings_service_->SetFingerprintingControlType(
-      ControlType::ALLOW, GURL("https://brave.com"));
+      ControlType::ALLOW, GURL("https://brave.com"), false);
   histogram_tester_->ExpectBucketCount(kDomainFPSettingsAboveHistogramName, 0,
                                        1);
   histogram_tester_->ExpectBucketCount(kDomainFPSettingsBelowHistogramName, 1,
                                        1);
 
   shields_settings_service_->SetFingerprintingControlType(
-      ControlType::BLOCK, GURL("https://yahoo.com"));
+      ControlType::BLOCK, GURL("https://yahoo.com"), false);
   shields_settings_service_->SetFingerprintingControlType(
-      ControlType::BLOCK, GURL("https://reddit.com"));
+      ControlType::BLOCK, GURL("https://reddit.com"), false);
   shields_settings_service_->SetFingerprintingControlType(
-      ControlType::BLOCK, GURL("https://craigslist.com"));
+      ControlType::BLOCK, GURL("https://craigslist.com"), false);
   shields_settings_service_->SetFingerprintingControlType(
-      ControlType::BLOCK, GURL("https://github.com"));
+      ControlType::BLOCK, GURL("https://github.com"), false);
   shields_settings_service_->SetFingerprintingControlType(
-      ControlType::BLOCK, GURL("https://amazon.com"));
+      ControlType::BLOCK, GURL("https://amazon.com"), false);
   histogram_tester_->ExpectBucketCount(kDomainFPSettingsAboveHistogramName, 1,
                                        6);
   histogram_tester_->ExpectBucketCount(kDomainFPSettingsBelowHistogramName, 1,
                                        6);
 
   shields_settings_service_->SetFingerprintingControlType(
-      ControlType::BLOCK, GURL("https://brave.com"));
+      ControlType::BLOCK, GURL("https://brave.com"), false);
   histogram_tester_->ExpectBucketCount(kDomainFPSettingsAboveHistogramName, 2,
                                        1);
   histogram_tester_->ExpectBucketCount(kDomainFPSettingsBelowHistogramName, 0,
@@ -202,14 +203,14 @@ TEST_F(BraveShieldsP3ATest, RecordDomainFingerprintBlockCounts) {
 
   // Change global setting
   shields_settings_service_->SetFingerprintingControlType(ControlType::BLOCK,
-                                                          GURL());
+                                                          GURL(), false);
   histogram_tester_->ExpectBucketCount(kDomainFPSettingsAboveHistogramName, 0,
                                        2);
   histogram_tester_->ExpectBucketCount(kDomainFPSettingsBelowHistogramName, 0,
                                        3);
 
   shields_settings_service_->SetFingerprintingControlType(
-      ControlType::DEFAULT, GURL("https://amazon.com"));
+      ControlType::DEFAULT, GURL("https://amazon.com"), false);
   histogram_tester_->ExpectBucketCount(kDomainFPSettingsAboveHistogramName, 0,
                                        3);
   histogram_tester_->ExpectBucketCount(kDomainFPSettingsBelowHistogramName, 1,

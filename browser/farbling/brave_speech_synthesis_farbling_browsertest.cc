@@ -70,18 +70,19 @@ class BraveSpeechSynthesisFarblingBrowserTest : public InProcessBrowserTest {
   }
 
   void AllowFingerprinting(std::string domain) {
-    brave_shields_settings_->SetFingerprintingControlType(
-        ControlType::ALLOW, embedded_test_server()->GetURL(domain, "/"));
+    brave_shields_settings_->SetFingerprintingControlType(, false, false);
   }
 
   void BlockFingerprinting(std::string domain) {
     brave_shields_settings_->SetFingerprintingControlType(
-        ControlType::BLOCK, embedded_test_server()->GetURL(domain, "/"));
+        ControlType::BLOCK, embedded_test_server()->GetURL(domain, "/"), false,
+        false);
   }
 
   void SetFingerprintingDefault(std::string domain) {
     brave_shields_settings_->SetFingerprintingControlType(
-        ControlType::DEFAULT, embedded_test_server()->GetURL(domain, "/"));
+        ControlType::DEFAULT, embedded_test_server()->GetURL(domain, "/"),
+        false, false);
   }
 
   content::WebContents* web_contents() {

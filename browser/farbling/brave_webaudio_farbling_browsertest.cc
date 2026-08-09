@@ -85,18 +85,18 @@ class BraveWebAudioFarblingBrowserTest : public InProcessBrowserTest {
   }
 
   void AllowFingerprinting() {
-    brave_shields_settings_->SetFingerprintingControlType(ControlType::ALLOW,
-                                                          top_level_page_url_);
+    brave_shields_settings_->SetFingerprintingControlType(
+        ControlType::ALLOW, top_level_page_url_, false, false);
   }
 
   void BlockFingerprinting() {
-    brave_shields_settings_->SetFingerprintingControlType(ControlType::BLOCK,
-                                                          top_level_page_url_);
+    brave_shields_settings_->SetFingerprintingControlType(
+        ControlType::BLOCK, top_level_page_url_, false, false);
   }
 
   void SetFingerprintingDefault() {
-    brave_shields_settings_->SetFingerprintingControlType(ControlType::DEFAULT,
-                                                          top_level_page_url_);
+    brave_shields_settings_->SetFingerprintingControlType(
+        ControlType::DEFAULT, top_level_page_url_, false, false);
   }
 
   content::WebContents* contents() {

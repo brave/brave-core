@@ -219,17 +219,18 @@ class BraveNavigatorUserAgentFarblingBrowserTest : public InProcessBrowserTest {
 
   void AllowFingerprinting(std::string domain) {
     brave_shields_settings_->SetFingerprintingControlType(
-        ControlType::ALLOW, https_server()->GetURL(domain, "/"));
+        ControlType::ALLOW, https_server()->GetURL(domain, "/"), false, false);
   }
 
   void BlockFingerprinting(std::string domain) {
     brave_shields_settings_->SetFingerprintingControlType(
-        ControlType::BLOCK, https_server()->GetURL(domain, "/"));
+        ControlType::BLOCK, https_server()->GetURL(domain, "/"), false, false);
   }
 
   void SetFingerprintingDefault(std::string domain) {
     brave_shields_settings_->SetFingerprintingControlType(
-        ControlType::DEFAULT, https_server()->GetURL(domain, "/"));
+        ControlType::DEFAULT, https_server()->GetURL(domain, "/"), false,
+        false);
   }
 
   content::WebContents* contents() {
