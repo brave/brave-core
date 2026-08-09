@@ -435,7 +435,9 @@ Each subagent prompt MUST include:
    - Do NOT flag: existing code not being changed, template functions defined in
      headers, simple inline getters in headers, style preferences not in the
      documented best practices, **include/import ordering** (this is handled by
-     formatting tools and linters)
+     formatting tools and linters). This exclusion covers ordering only — an
+     include placed inside a `#if BUILDFLAG(...)` block (or moved out of one) is
+     conditional compilation, not ordering, and IS in scope.
    - **Every claim must be verified in the best practices source document.** Do
      NOT make claims based on general knowledge or assumptions about what
      "should" be a best practice. If the best practices docs do not contain a
