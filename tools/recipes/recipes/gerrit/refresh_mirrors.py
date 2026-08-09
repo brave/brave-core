@@ -21,13 +21,12 @@ from pathlib import Path
 from typing import TYPE_CHECKING
 
 import post_process
-from PB.recipes.brave.gerrit.refresh_mirrors import (EnvProperties,
-                                                     InputProperties)
+from PB.recipes.brave.gerrit.refresh_mirrors import InputProperties
 
 if TYPE_CHECKING:
     from engine import RecipeScriptApi
 
-DEPS = ['path', 'step', 'chromium_checkout', 'depot_tools']
+DEPS = ['path', 'step', 'chromium_checkout', 'depot_tools', 'git_cache']
 
 # Publishes the git cache into Gerrit; lives alongside this recipe (rather than
 # in brave-core proper) since this recipe is its only caller.
@@ -35,18 +34,15 @@ _REFRESH_MIRRORS_SCRIPT = (Path(__file__).resolve().parent /
                            'refresh_mirrors.resources' / 'refresh_mirrors.py')
 
 PROPERTIES = InputProperties
-ENV_PROPERTIES = EnvProperties
 
 
-def RunSteps(api: RecipeScriptApi, properties: InputProperties,
-             env_properties: EnvProperties) -> None:
+def RunSteps(api: RecipeScriptApi, properties: InputProperties) -> None:
     # Phase 1: sync Chromium so the git cache is populated, then pull all
     # tags into it (gclient sync fetches with --no-tags).
     chromium_src = api.chromium_checkout.ensure_checkout(
-        ref=properties.chromium_ref or 'main',
-        git_cache=env_properties.GIT_CACHE or None)
+        ref=properties.chromium_ref or 'main')
     api.chromium_checkout.fetch_tags(chromium_src)
-    git_cache_path = api.chromium_checkout.validate_git_cache()
+    git_cache_path = api.git_cache.validate()
 
     # Phase 2: publish the now-populated cache into Gerrit.
     vpython3 = api.depot_tools.vpython3()

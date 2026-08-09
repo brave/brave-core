@@ -182,7 +182,7 @@ def GenTests(api):
         api.post_process(post_process.DoesNotRun, 'gclient sync'),
         api.post_process(post_process.StatusSuccess),
     )
-    # No git cache configured -> validate_git_cache raises.
+    # No git cache configured -> git_cache.validate() raises.
     yield api.test(
         'missing git cache',
         api.properties(chromium_ref='main'),

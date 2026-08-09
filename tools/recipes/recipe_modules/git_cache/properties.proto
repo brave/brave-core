@@ -5,10 +5,9 @@
 
 syntax = "proto3";
 
-package recipes.brave.tools.ast_grep.package_ast_grep;
+package recipe_modules.brave.git_cache;
 
-message InputProperties {
-  // Chromium ref (tag or branch) whose checkout the tool is packaged against.
-  string chromium_ref = 1;
+message EnvProperties {
+  // The env with the path for the git cache repos.
+  string GIT_CACHE_PATH = 1;
 }
-

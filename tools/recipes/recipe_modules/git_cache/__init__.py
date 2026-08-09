@@ -2,9 +2,11 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
-"""`chromium_checkout` module: clone / sync / validate a Chromium src/ tree."""
+"""`git_cache` module.
+"""
 
-DEPS = [
-    'path', 'raw_io', 'json', 'step', 'context', 'depot_tools', 'env',
-    'git_cache', 'platform'
-]
+from PB.recipe_modules.brave.git_cache.properties import EnvProperties
+
+DEPS = ['env', 'path', 'raw_io', 'step']
+
+ENV_PROPERTIES = EnvProperties

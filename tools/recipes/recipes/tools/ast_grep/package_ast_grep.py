@@ -8,8 +8,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 import post_process
-from PB.recipes.brave.tools.ast_grep.package_ast_grep import (EnvProperties,
-                                                              InputProperties)
+from PB.recipes.brave.tools.ast_grep.package_ast_grep import InputProperties
 
 if TYPE_CHECKING:
     from engine import RecipeScriptApi
@@ -19,14 +18,10 @@ DEPS = [
 ]
 
 PROPERTIES = InputProperties
-ENV_PROPERTIES = EnvProperties
 
 
-def RunSteps(api: RecipeScriptApi, properties: InputProperties,
-             env_properties: EnvProperties) -> None:
+def RunSteps(api: RecipeScriptApi, properties: InputProperties) -> None:
     api.chromium_checkout.ensure_checkout(ref=properties.chromium_ref,
-                                          git_cache=env_properties.GIT_CACHE
-                                          or None,
                                           depth=1)
 
     brave_root = api.brave_core_checkout.deploy([

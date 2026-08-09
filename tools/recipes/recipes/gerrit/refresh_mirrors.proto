@@ -16,8 +16,3 @@ message InputProperties {
   string chromium_ref = 2;
 }
 
-message EnvProperties {
-  // Optional override for the git cache root; defaults to $GIT_CACHE_PATH in
-  // the environment.
-  string GIT_CACHE = 1;
-}
