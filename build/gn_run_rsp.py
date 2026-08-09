@@ -70,8 +70,6 @@ def main():
     args = args[len(env_vars):]
 
     env = os.environ.copy()
-    # Include the current directory in the path
-    env['PATH'] = os.path.abspath(os.getcwd()) + os.pathsep + env['PATH']
     env.update(env_vars)
 
     ret = subprocess.call(args, env=env)
