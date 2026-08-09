@@ -10,6 +10,7 @@ import { freezeWhen } from './brave_account_common.js'
 import { BraveAccountStrings } from './brave_components_webui_strings.js'
 import {
   BraveAccountEmailInputElement,
+  EMAIL_PATTERN,
   MAX_EMAIL_LENGTH,
 } from './brave_account_email_input.js'
 
@@ -17,6 +18,7 @@ export function getHtml(this: BraveAccountEmailInputElement) {
   return html`<!--_html_template_start_-->
     <leo-input
       maxlength=${MAX_EMAIL_LENGTH}
+      pattern=${EMAIL_PATTERN}
       placeholder="$i18n{BRAVE_ACCOUNT_EMAIL_INPUT_PLACEHOLDER}"
       showErrors
       type="email"
