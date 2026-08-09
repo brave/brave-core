@@ -71,7 +71,8 @@ class ContainersService : public KeyedService {
   // Returns the temporary container named `name`, creating and persisting it
   // if there isn't one yet. Containers that aren't temporary are never
   // returned, so a synced container sharing the name doesn't turn a request
-  // for a temporary container into a regular one.
+  // for a temporary container into a regular one. `name` must not be empty;
+  // use `CreateAndPersistTemporaryContainer` to get a generated name.
   mojom::ContainerPtr GetOrCreateTemporaryContainerByName(
       std::string_view name);
 

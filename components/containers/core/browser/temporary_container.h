@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_CONTAINERS_CORE_BROWSER_TEMPORARY_CONTAINER_H_
 #define BRAVE_COMPONENTS_CONTAINERS_CORE_BROWSER_TEMPORARY_CONTAINER_H_
 
+#include <optional>
 #include <string_view>
 
 #include "brave/components/containers/core/mojom/containers.mojom-forward.h"
@@ -21,7 +22,8 @@ bool IsTemporaryContainerId(std::string_view container_id);
 // Builds a temporary container (`t-` prefixed container id, random icon,
 // random background color). Uses `name` when given, otherwise generates a
 // BIP-39 two-word name.
-mojom::ContainerPtr CreateTemporaryContainer(std::string_view name = {});
+mojom::ContainerPtr CreateTemporaryContainer(
+    std::optional<std::string_view> name = std::nullopt);
 
 }  // namespace containers
 

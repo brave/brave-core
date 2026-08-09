@@ -18,6 +18,13 @@ component("features") {
   deps = [ "//base" ]
 }
 
+source_set("switches") {
+  sources = [ "switches.h" ]
+}
+
 group("common") {
-  public_deps = [ ":features" ]
+  public_deps = [
+    ":features",
+    ":switches",
+  ]
 }

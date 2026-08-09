@@ -20,15 +20,10 @@
 #include "brave/components/containers/core/browser/container_specifier.h"
 #include "brave/components/containers/core/browser/containers_service.h"
 #include "brave/components/containers/core/common/features.h"
+#include "brave/components/containers/core/common/switches.h"
 #include "brave/components/containers/core/mojom/containers.mojom.h"
 
 namespace {
-
-// Switch to specify the container to use for the startup tabs.
-constexpr char kContainerSwitch[] = "container";
-
-// Switch to open the startup tabs in a temporary container.
-constexpr char kTemporaryContainerSwitch[] = "temporary-container";
 
 // Returns the container to use for the tabs passed via the command line. All
 // command line tabs share the same container, matching the "open in new
@@ -51,9 +46,9 @@ containers::ContainerSpecifier MaybeCreateContainerForCommandLineTabs(
   }
 
   const std::string container_name =
-      command_line.GetSwitchValueUTF8(kContainerSwitch);
+      command_line.GetSwitchValueUTF8(containers::switches::kContainer);
 
-  if (command_line.HasSwitch(kTemporaryContainerSwitch)) {
+  if (command_line.HasSwitch(containers::switches::kTemporaryContainer)) {
     auto* containers_service = ContainersServiceFactory::GetForProfile(profile);
     if (!containers_service) {
       // The factory selects regular profiles and their off-the-record
@@ -101,7 +96,7 @@ StartupTabs BraveStartupTabProviderImpl::GetCommandLineTabs(
 #if BUILDFLAG(ENABLE_CONTAINERS)
   // Don't create a temporary container when there's nothing to open in it.
   if (!tabs.empty()) {
-    const auto container_specifier =
+    const containers::ContainerSpecifier container_specifier =
         MaybeCreateContainerForCommandLineTabs(command_line, profile);
     for (auto& tab : tabs) {
       tab.container = container_specifier;

@@ -167,7 +167,7 @@ TEST_F(ContainersServiceTest, GetOrCreateTemporaryContainerByName) {
   EXPECT_EQ("Shared Name", container->name);
   EXPECT_TRUE(GetLocallyUsedContainerFromPrefs(prefs_, container->id));
 
-  // The same name resolves to the container created above.
+  // The same name resolves to the same temporary container.
   auto reused = service_->GetOrCreateTemporaryContainerByName("Shared Name");
   ASSERT_TRUE(reused);
   EXPECT_EQ(container->id, reused->id);

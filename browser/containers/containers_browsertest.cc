@@ -24,6 +24,7 @@
 #include "brave/components/containers/core/browser/prefs.h"
 #include "brave/components/containers/core/browser/temporary_container.h"
 #include "brave/components/containers/core/common/features.h"
+#include "brave/components/containers/core/common/switches.h"
 #include "brave/components/containers/core/mojom/containers.mojom.h"
 #include "chrome/browser/browsing_data/chrome_browsing_data_remover_constants.h"
 #include "chrome/browser/prefs/session_startup_pref.h"
@@ -2584,7 +2585,7 @@ class ContainersCommandLineContainerBrowserTest : public ContainersBrowserTest {
 
   void SetUpDefaultCommandLine(base::CommandLine* command_line) override {
     ContainersBrowserTest::SetUpDefaultCommandLine(command_line);
-    command_line->AppendSwitchASCII("container", "Work");
+    command_line->AppendSwitchASCII(switches::kContainer, "Work");
     command_line->AppendArg(
         https_server_.GetURL("a.test", "/simple.html").spec());
   }
@@ -2631,7 +2632,7 @@ class ContainersCommandLineTemporaryContainerBrowserTest
 
   void SetUpDefaultCommandLine(base::CommandLine* command_line) override {
     ContainersBrowserTest::SetUpDefaultCommandLine(command_line);
-    command_line->AppendSwitch("temporary-container");
+    command_line->AppendSwitch(switches::kTemporaryContainer);
     command_line->AppendArg(
         https_server_.GetURL("a.test", "/simple.html").spec());
     command_line->AppendArg(
@@ -2670,8 +2671,8 @@ class ContainersCommandLineNamedTemporaryContainerBrowserTest
 
   void SetUpDefaultCommandLine(base::CommandLine* command_line) override {
     ContainersBrowserTest::SetUpDefaultCommandLine(command_line);
-    command_line->AppendSwitchASCII("container", kNamedContainerName);
-    command_line->AppendSwitch("temporary-container");
+    command_line->AppendSwitchASCII(switches::kContainer, kNamedContainerName);
+    command_line->AppendSwitch(switches::kTemporaryContainer);
     command_line->AppendArg(
         https_server_.GetURL("a.test", "/simple.html").spec());
   }
@@ -2708,8 +2709,9 @@ IN_PROC_BROWSER_TEST_F(
   ASSERT_TRUE(containers_service);
 
   // Precondition: without --temporary-container the switch would have resolved
-  // to this container, so the checks below really do exercise the naming
-  // behavior rather than passing because the name never resolved.
+  // to this container, so the IsTemporaryContainerId/EXPECT_NE checks really do
+  // exercise the naming behavior rather than passing because the name never
+  // resolved.
   const std::optional<std::string> named_container_id =
       containers_service->GetContainerIdFromContainerSpecifier(
           ContainerName(kNamedContainerName));
@@ -2737,13 +2739,13 @@ class ContainersCommandLineTemporaryContainerWithoutUrlsBrowserTest
 
   void SetUpDefaultCommandLine(base::CommandLine* command_line) override {
     ContainersBrowserTest::SetUpDefaultCommandLine(command_line);
-    command_line->AppendSwitch("temporary-container");
+    command_line->AppendSwitch(switches::kTemporaryContainer);
   }
 };
 
 // With no URLs to open there is nothing to isolate, so no temporary container
-// should be created. The sibling fixture above covers the positive case: the
-// same switch with URLs does create one.
+// should be created. ContainersCommandLineTemporaryContainerBrowserTest covers
+// the positive case: the same switch with URLs does create one.
 IN_PROC_BROWSER_TEST_F(
     ContainersCommandLineTemporaryContainerWithoutUrlsBrowserTest,
     NoTemporaryContainerCreated) {
@@ -2756,10 +2758,14 @@ IN_PROC_BROWSER_TEST_F(
 
   const std::vector<mojom::ContainerPtr> locally_used_containers =
       GetLocallyUsedContainersFromPrefs(*browser()->profile()->GetPrefs());
-  EXPECT_FALSE(std::ranges::any_of(
+  const auto temporary_container = std::ranges::find_if(
       locally_used_containers, [](const mojom::ContainerPtr& container) {
         return IsTemporaryContainerId(container->id);
-      }));
+      });
+  // The streamed message is only evaluated when the check fails, which is
+  // exactly when the iterator is dereferenceable.
+  EXPECT_TRUE(temporary_container == locally_used_containers.end())
+      << "Unexpected temporary container: " << (*temporary_container)->id;
 }
 
 }  // namespace containers
