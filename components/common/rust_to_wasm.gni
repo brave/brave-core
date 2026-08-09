@@ -54,8 +54,7 @@ template("rust_to_wasm") {
           rebase_path("//third_party/rust-toolchain/bin/cargo", root_build_dir),
       "RUSTC=abs@" +
           rebase_path("//third_party/rust-toolchain/bin/rustc", root_build_dir),
-      "PATH=abs@./" + host_path_sep +
-          "abs@" +
+      "PATH=abs@./" + host_path_sep + "abs@" +
           rebase_path("//third_party/rust-toolchain/bin") + host_path_sep +
           getenv("PATH"),
     ]
