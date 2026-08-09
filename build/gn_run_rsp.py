@@ -64,7 +64,7 @@ def main():
     # Ensure the command contains a path (absolute or relative)
     cmd = args[len(env_vars)]
     if os.path.basename(cmd) == cmd:
-        print(f'The command to run must have a path {cmd}: {e}',
+        print(f'The command to run must have a path: {cmd}',
               file=sys.stderr)
         sys.exit(1)
 
