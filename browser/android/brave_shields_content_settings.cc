@@ -228,7 +228,7 @@ JNI_BraveShieldsContentSettings_GetFingerprintingControlType(
 
   brave_shields::ControlType control_type =
       brave_shields_settings->GetFingerprintingControlType(
-          GURL(base::android::ConvertJavaStringToUTF8(env, url)), false, false);
+          GURL(base::android::ConvertJavaStringToUTF8(env, url)));
 
   return base::android::ConvertUTF8ToJavaString(
       env, brave_shields::ControlTypeToString(control_type));

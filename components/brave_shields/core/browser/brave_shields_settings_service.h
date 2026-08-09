@@ -95,8 +95,8 @@ class BraveShieldsSettingsService : public KeyedService {
 
   void SetFingerprintingControlType(ControlType type,
                                     const GURL& url,
-                                    bool use_local_state = true,
-                                    bool use_profile_state = true);
+                                    bool record_setting_changed_metric = true,
+                                    bool record_domain_setting_counts = true);
   ControlType GetFingerprintingControlType(const GURL& url);
   mojom::FarblingLevel GetFarblingLevel(const GURL& primary_url);
 
