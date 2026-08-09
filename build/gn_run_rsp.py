@@ -69,6 +69,10 @@ def main():
     # The rest of the arguments are passed directly to the executable.
     args = args[len(env_vars):]
 
+    # Always prepend PATH if set
+    if env_vars.get('PATH') is not None:
+        env_vars['PATH'] = env_vars['PATH'] + os.pathsep + os.getenv('PATH')
+
     env = os.environ.copy()
     env.update(env_vars)
 

@@ -70,8 +70,7 @@ template("build_crate") {
           rebase_path("//third_party/rust-toolchain/bin/cargo", root_build_dir),
       "RUSTC=abs@" +
           rebase_path("//third_party/rust-toolchain/bin/rustc", root_build_dir),
-      "PATH=abs@" + rebase_path("//third_party/rust-toolchain/bin") +
-          host_path_sep + getenv("PATH"),
+      "PATH=abs@" + rebase_path("//third_party/rust-toolchain/bin"),
     ]
 
     response_file_contents += rust_host_response_file_contents
