@@ -177,6 +177,7 @@ if (enable_ai_chat_tab_management_tool) {
       "//chrome/browser/profiles:profile_util",
       "//chrome/browser/ui",
       "//chrome/browser/ui/browser_window",
+      "//chrome/browser/ui/browser_window:create_browser_window",
       "//chrome/browser/ui/tabs:tab_strip",
       "//components/tab_groups",
       "//components/tabs:public",
