@@ -205,8 +205,9 @@ BraveAppMenu::BraveAppMenu(Browser* browser,
 
 BraveAppMenu::~BraveAppMenu() = default;
 
-void BraveAppMenu::RunMenu(views::MenuButtonController* host) {
-  AppMenu::RunMenu(host);
+void BraveAppMenu::RunMenu(views::MenuButtonController* host,
+                           ui::mojom::MenuSourceType source_type) {
+  AppMenu::RunMenu(host, source_type);
   menu_metrics_->RecordMenuShown();
 }
 
