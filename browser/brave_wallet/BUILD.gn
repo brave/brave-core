@@ -30,6 +30,7 @@ source_set("brave_wallet") {
     "//brave/components/brave_wallet/common:mojom",
     "//brave/components/brave_wallet/common/buildflags",
     "//chrome/browser:browser_process",
+    "//chrome/browser/content_settings:content_settings_factory",
     "//chrome/browser/profiles",
     "//chrome/browser/profiles:profile",
     "//components/keyed_service/content",

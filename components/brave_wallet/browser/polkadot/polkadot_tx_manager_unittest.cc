@@ -212,7 +212,10 @@ class PolkadotTxManagerUnitTest : public testing::Test {
     tx_service_ = std::make_unique<TxService>(
         json_rpc_service_.get(), nullptr, nullptr, nullptr,
         polkadot_wallet_service_.get(), *keyring_service_, &profile_prefs_,
-        std::move(tx_storage));
+        std::move(tx_storage),
+        base::BindRepeating([](const url::Origin&, const mojom::AccountIdPtr&) {
+          return true;
+        }));
 
     account_resolver_delegate_ =
         std::make_unique<AccountResolverDelegateImpl>(*keyring_service_);

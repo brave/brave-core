@@ -249,9 +249,10 @@ class EthTxManagerUnitTest : public testing::Test {
     tx_storage_ptr_ = tx_storage.get();
     tx_service_ = std::make_unique<TxService>(
         json_rpc_service_.get(), nullptr, nullptr, nullptr, nullptr,
-        *keyring_service_, GetPrefs(), std::move(tx_storage));
-    tx_service_->SetOriginPermissionChecker(base::BindRepeating(
-        [](const url::Origin&, const mojom::AccountIdPtr&) { return true; }));
+        *keyring_service_, GetPrefs(), std::move(tx_storage),
+        base::BindRepeating([](bool* granted, const url::Origin&,
+                               const mojom::AccountIdPtr&) { return *granted; },
+                            base::Unretained(&permission_granted_)));
 
     GetAccountUtils().CreateWallet(kMnemonicAbandonAbandon,
                                    kTestWalletPassword);
@@ -456,6 +457,7 @@ class EthTxManagerUnitTest : public testing::Test {
   std::unique_ptr<TxService> tx_service_;
   raw_ptr<TxStorage> tx_storage_ptr_ = nullptr;
   std::vector<uint8_t> data_;
+  bool permission_granted_ = true;
 };
 
 TEST_F(EthTxManagerUnitTest, AddUnapprovedTransactionWithGasPriceAndGasLimit) {
@@ -2508,8 +2510,7 @@ TEST_F(EthTxManagerUnitTest,
 
   // Simulate the site's wallet permission being revoked while the tx is
   // queued in the approval panel.
-  tx_service_->SetOriginPermissionChecker(base::BindRepeating(
-      [](const url::Origin&, const mojom::AccountIdPtr&) { return false; }));
+  permission_granted_ = false;
 
   base::test::TestFuture<bool, mojom::ProviderErrorUnionPtr, const std::string&>
       approve_tx_future;
@@ -2544,8 +2545,7 @@ TEST_F(EthTxManagerUnitTest,
   ASSERT_EQ(eth_tx_manager()->GetTransactionInfo(tx_meta_id)->tx_status,
             mojom::TransactionStatus::Unapproved);
 
-  tx_service_->SetOriginPermissionChecker(base::BindRepeating(
-      [](const url::Origin&, const mojom::AccountIdPtr&) { return false; }));
+  permission_granted_ = false;
 
   tx_service_->RejectUnapprovedTransactionsWithoutPermission();
 

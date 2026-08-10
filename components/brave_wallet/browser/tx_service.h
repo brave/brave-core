@@ -51,6 +51,9 @@ class TxService : public mojom::TxService,
                   public mojom::FilTxManagerProxy,
                   public mojom::BtcTxManagerProxy {
  public:
+  using OriginPermissionChecker =
+      base::RepeatingCallback<bool(const url::Origin&,
+                                   const mojom::AccountIdPtr&)>;
   TxService(JsonRpcService* json_rpc_service,
             BitcoinWalletService* bitcoin_wallet_service,
             ZCashWalletService* zcash_wallet_service,
@@ -58,7 +61,8 @@ class TxService : public mojom::TxService,
             PolkadotWalletService* polkadot_wallet_service,
             KeyringService& keyring_service,
             PrefService* prefs,
-            std::unique_ptr<TxStorage> tx_storage);
+            std::unique_ptr<TxStorage> tx_storage,
+            OriginPermissionChecker origin_permission_checker);
   ~TxService() override;
   TxService(const TxService&) = delete;
   TxService operator=(const TxService&) = delete;
@@ -277,10 +281,6 @@ class TxService : public mojom::TxService,
 
   TxStorage* GetTxStorageForTesting();
 
-  using OriginPermissionChecker =
-      base::RepeatingCallback<bool(const url::Origin&,
-                                   const mojom::AccountIdPtr&)>;
-  void SetOriginPermissionChecker(OriginPermissionChecker checker);
   bool HasOriginPermission(const url::Origin& origin,
                            const mojom::AccountIdPtr& account_id);
 
