@@ -12,6 +12,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.method.PasswordTransformationMethod;
 import android.view.ContextThemeWrapper;
@@ -85,6 +86,12 @@ public class OnboardingRestoreWalletFragment extends BaseOnboardingWalletFragmen
 
     private boolean mLegacyWalletRestoreEnabled;
 
+    /**
+     * Set once the recovery phrase is submitted, so the trailing {@link #onPause()} does not
+     * re-capture the cleared entry back into the shared view model.
+     */
+    private boolean mPhraseSubmitted;
+
     @NonNull
     public static OnboardingRestoreWalletFragment newInstance() {
         return new OnboardingRestoreWalletFragment();
@@ -155,8 +162,6 @@ public class OnboardingRestoreWalletFragment extends BaseOnboardingWalletFragmen
                             mWordCount == RECOVERY_PHRASE_12_WORDS
                                     ? RECOVERY_PHRASE_24_WORDS
                                     : RECOVERY_PHRASE_12_WORDS;
-                    mGridLayout24.setVisibility(
-                            mWordCount == RECOVERY_PHRASE_24_WORDS ? View.VISIBLE : View.GONE);
                     if (mWordCount == RECOVERY_PHRASE_12_WORDS) {
                         mLegacyImport.setChecked(false);
                         int i = RECOVERY_PHRASE_12_WORDS;
@@ -172,16 +177,11 @@ public class OnboardingRestoreWalletFragment extends BaseOnboardingWalletFragmen
                             i++;
                         }
                     }
+                    updateRecoveryPhraseViews();
                     mButtonContinue.setEnabled(mFilledItems.size() == mWordCount);
-                    mLegacyImport.setVisibility(
-                            mWordCount == RECOVERY_PHRASE_12_WORDS ? View.INVISIBLE : View.VISIBLE);
 
                     final PasteEditText pasteEditText =
                             mGridLayout12List.get(RECOVERY_PHRASE_12_WORDS - 1);
-                    pasteEditText.setImeOptions(
-                            mWordCount == RECOVERY_PHRASE_12_WORDS
-                                    ? EditorInfo.IME_ACTION_DONE
-                                    : EditorInfo.IME_ACTION_NEXT);
                     if (pasteEditText.hasFocus()) {
                         InputMethodManager imm =
                                 (InputMethodManager)
@@ -189,10 +189,6 @@ public class OnboardingRestoreWalletFragment extends BaseOnboardingWalletFragmen
                                                 .getSystemService(Context.INPUT_METHOD_SERVICE);
                         imm.restartInput(pasteEditText);
                     }
-                    mSwitchRecoveryPhrase.setText(
-                            mWordCount == RECOVERY_PHRASE_12_WORDS
-                                    ? R.string.recovery_phrase_24
-                                    : R.string.recovery_phrase_12);
                 });
 
         mToggleWordMask = view.findViewById(R.id.toggle_word_mask);
@@ -202,6 +198,73 @@ public class OnboardingRestoreWalletFragment extends BaseOnboardingWalletFragmen
                     mToggleWordMask.setImageResource(
                             mMaskWord ? R.drawable.ic_eye_on : R.drawable.ic_eye_off);
                 });
+
+        restoreStateAfterConfigurationChange();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (!mPhraseSubmitted) {
+            saveStateForConfigurationChange();
+        }
+    }
+
+    /** Applies the views that depend on the current 12 or 24 word count. */
+    private void updateRecoveryPhraseViews() {
+        final boolean is12Words = mWordCount == RECOVERY_PHRASE_12_WORDS;
+        mGridLayout24.setVisibility(is12Words ? View.GONE : View.VISIBLE);
+        mLegacyImport.setVisibility(is12Words ? View.INVISIBLE : View.VISIBLE);
+        mSwitchRecoveryPhrase.setText(
+                is12Words ? R.string.recovery_phrase_24 : R.string.recovery_phrase_12);
+        mGridLayout12List
+                .get(RECOVERY_PHRASE_12_WORDS - 1)
+                .setImeOptions(is12Words ? EditorInfo.IME_ACTION_DONE : EditorInfo.IME_ACTION_NEXT);
+    }
+
+    /** Captures the recovery phrase entry into the shared view model before a rotation. */
+    private void saveStateForConfigurationChange() {
+        final List<PasteEditText> visibleWords = getVisibleEditTextList();
+        final List<String> words = new ArrayList<>(visibleWords.size());
+        int focusedWordIndex = -1;
+        for (int i = 0; i < visibleWords.size(); i++) {
+            final PasteEditText wordField = visibleWords.get(i);
+            final Editable text = wordField.getText();
+            words.add(text == null ? "" : text.toString());
+            if (mLastFocusedItem != null && wordField.getId() == mLastFocusedItem.getId()) {
+                focusedWordIndex = i;
+            }
+        }
+        mOnboardingViewModel.saveRestoreWalletState(
+                words, mWordCount, focusedWordIndex, mLegacyWalletRestoreEnabled);
+    }
+
+    /** Repopulates the recovery phrase entry captured before a rotation. */
+    private void restoreStateAfterConfigurationChange() {
+        final int savedWordCount = mOnboardingViewModel.getRestoreWalletWordCount();
+        if (savedWordCount == 0) {
+            // Nothing has been captured yet, keep the default empty 12-word layout.
+            return;
+        }
+        mWordCount = savedWordCount;
+        mLegacyImport.setChecked(mOnboardingViewModel.isRestoreWalletLegacyEnabled());
+        updateRecoveryPhraseViews();
+
+        final List<PasteEditText> visibleWords = getVisibleEditTextList();
+        final List<String> savedWords = mOnboardingViewModel.getRestoreWalletWords();
+        final int size = Math.min(visibleWords.size(), savedWords.size());
+        for (int i = 0; i < size; i++) {
+            final String word = savedWords.get(i);
+            if (!TextUtils.isEmpty(word)) {
+                visibleWords.get(i).setText(word);
+            }
+        }
+
+        final int focusedWordIndex = mOnboardingViewModel.getRestoreWalletFocusedWordIndex();
+        if (focusedWordIndex >= 0 && focusedWordIndex < visibleWords.size()) {
+            // requestFocus triggers onFocusChange, which updates mLastFocusedItem.
+            visibleWords.get(focusedWordIndex).requestFocus();
+        }
     }
 
     @NonNull
@@ -326,6 +389,10 @@ public class OnboardingRestoreWalletFragment extends BaseOnboardingWalletFragmen
     private void goToNextPage(@NonNull final String recoveryPhrase) {
         mOnboardingViewModel.setRecoveryPhrase(recoveryPhrase);
         mOnboardingViewModel.setLegacyRestoreEnabled(mLegacyWalletRestoreEnabled);
+        // The phrase has been submitted, so drop the captured entry to avoid re-applying it if the
+        // restore screen is shown again.
+        mPhraseSubmitted = true;
+        mOnboardingViewModel.clearRestoreWalletState();
 
         BraveClipboardHelper.clearClipboard(recoveryPhrase);
         mPastedWords.clear();

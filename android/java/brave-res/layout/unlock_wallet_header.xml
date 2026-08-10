@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2026 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/unlock_wallet_title"
+        style="@style/BraveWalletTextViewTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="4dp"
+        android:gravity="center_horizontal"
+        android:lineSpacingExtra="3sp"
+        android:text="@string/unlock_wallet_title"
+        android:textColor="@color/wallet_text_color"
+        android:textSize="28sp" />
+
+    <TextView
+        android:id="@+id/unlock_wallet_subtitle"
+        style="@style/DefaultRegular"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="40dp"
+        android:gravity="center_horizontal"
+        android:lineSpacingExtra="5sp"
+        android:text="@string/unlock_wallet_subtitle"
+        android:textColor="@color/text_secondary"
+        android:textSize="16sp" />
+
+</LinearLayout>
