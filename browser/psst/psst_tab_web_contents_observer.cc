@@ -40,11 +40,9 @@ const char kUserScriptResultInitialExecutionPropName[] = "initial_execution";
 const char kUserScriptParamCountryIdPropName[] = "countryId";
 constexpr int kUnsetScriptVersion = -1;
 
-// Adds the dictionary of parameters returned by the user.js script to the
-// policy.js script, before it is executed. In case when parameters dictionary
-// cannot be serialized to JSON, means that script should be executed without
-// any parameters. In case of success, the function returns:
-// window.params = {
+// Prepends a JSON-serialized parameters dictionary to `script` as
+// `window.params`. If serialization fails, the original script is returned
+// unmodified, meaning it executes with no parameters. window.params = {
 //    "tasks": [ {
 //       "description": "Ads Preferences",
 //       "url": "https://a.test/settings/ads_preferences"
@@ -95,7 +93,6 @@ PsstTabWebContentsObserver::MaybeCreateForWebContents(
     const int32_t world_id) {
   CHECK(browser_context);
   CHECK(psst_settings_service);
-  CHECK(variations_service);
   CHECK(ui_delegate);
 
   if (browser_context->IsOffTheRecord() ||
@@ -214,8 +211,9 @@ void PsstTabWebContentsObserver::InsertUserScript(
     return;
   }
   base::DictValue params_dict;
-  params_dict.Set(kUserScriptParamCountryIdPropName,
-                  variations_service_->GetLatestCountry());
+  params_dict.Set(
+      kUserScriptParamCountryIdPropName,
+      variations_service_ ? variations_service_->GetLatestCountry() : "");
   const std::string user_script_with_param =
       MaybeAddParamsToScript(rule->user_script(), std::move(params_dict));
   RunWithTimeout(
