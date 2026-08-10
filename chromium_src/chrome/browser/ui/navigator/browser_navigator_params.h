@@ -9,8 +9,6 @@
 #include "brave/components/containers/buildflags/buildflags.h"
 #include "content/public/browser/storage_partition_config.h"
 
-// clang-format-off: This file shouldn't be hoisted to the top
 #include <chrome/browser/ui/navigator/browser_navigator_params.h>  // IWYU pragma: export
-// clang-format-on
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_NAVIGATOR_BROWSER_NAVIGATOR_PARAMS_H_
