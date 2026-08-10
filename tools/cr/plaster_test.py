@@ -5450,6 +5450,26 @@ class OverrideFeatureDefaultStateTest(unittest.TestCase):
                                value='base::FEATURE_ENABLED_BY_DEFAULT')
         self.assertTrue(content.rstrip().endswith(');'))
 
+    # -- `value` introducing a brand-new conditional: unlike the
+    # already-conditional sources above, `value` itself is plugged into the
+    # lookahead raw. `BUILDFLAG(IS_ANDROID)` is a real, unescaped capture
+    # group once spliced in, which shifts every group number after it -- the
+    # replace template's `\4` stops pointing at the literal `);` capture, and
+    # the call's real closing paren is silently dropped instead of appended.
+
+    def test_new_conditional_value_with_parens_keeps_the_closing_paren(self):
+        source = 'BASE_FEATURE(kFoo, base::FEATURE_ENABLED_BY_DEFAULT);\n'
+        value = ('\n'
+                 '#if BUILDFLAG(IS_ANDROID)\n'
+                 '             base::FEATURE_ENABLED_BY_DEFAULT\n'
+                 '#else\n'
+                 '             base::FEATURE_DISABLED_BY_DEFAULT\n'
+                 '#endif')
+        matches, content = self._run(source, feature_name='kFoo', value=value)
+        self.assertEqual(matches, 1)
+        self.assertIn('BUILDFLAG(IS_ANDROID)', content)
+        self.assertTrue(content.rstrip('\n').endswith('#endif);'))
+
     # -- multiple features in one file: every pairing of "fewer commas"
     # (two-argument/conditional) and "more commas" (three-argument) forms,
     # targeting either one, must stay within its own call. A two-argument
