@@ -43,7 +43,8 @@ class CommandLineContainerTest : public testing::Test {
   }
 
   ContainerSpecifier GetSpecifier(const base::CommandLine& command_line) {
-    return GetContainerSpecifierForCommandLineTabs(command_line, service_.get());
+    return GetContainerSpecifierForCommandLineTabs(command_line,
+                                                   service_.get());
   }
 
   base::test::ScopedFeatureList feature_list_;

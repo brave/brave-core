@@ -15,7 +15,6 @@
 #include "brave/browser/containers/containers_service_factory.h"
 #include "brave/components/containers/core/browser/command_line_container.h"
 #include "brave/components/containers/core/browser/container_specifier.h"
-#include "brave/components/containers/core/browser/containers_service.h"
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
 StartupTabs BraveStartupTabProviderImpl::GetDistributionFirstRunTabs(
