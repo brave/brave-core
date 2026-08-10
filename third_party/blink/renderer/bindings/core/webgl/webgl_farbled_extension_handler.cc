@@ -121,9 +121,6 @@ Vector<String> WebGLFarbledExtensionHandler::GetSupportedExtensions() const {
   return supported_extensions_;
 }
 
-// TODO(https://github.com/brave/brave-browser/issues/55858): Cover testing this
-// in browser_tests as it's not straightforward to test it as unittest due to
-// various v8 dependencies.
 blink::ScriptObject WebGLFarbledExtensionHandler::GetExtension(
     blink::ScriptState* script_state,
     const blink::String& name,
@@ -142,7 +139,15 @@ blink::ScriptObject WebGLFarbledExtensionHandler::GetExtension(
   }
 
   // If extension is part of the supported list return the real extension.
-  if (supported_extensions_.Contains(name)) {
+  // Some clients/libraries like Plotly lowercase extension names before
+  // invoking getExtension(); See
+  // https://github.com/brave/brave-browser/issues/57902.
+  bool found = std::ranges::any_of(
+      supported_extensions_, [&name](const String& real_extension) {
+        return EqualIgnoringAsciiCase(name, real_extension);
+      });
+
+  if (found) {
     CHECK(real_extension);
     return *real_extension;
   }
@@ -152,7 +157,8 @@ blink::ScriptObject WebGLFarbledExtensionHandler::GetExtension(
 
 bool WebGLFarbledExtensionHandler::IsExtensionFarbled(
     const blink::String& name) const {
-  return fake_extension_.has_value() && fake_extension_.value().name == name;
+  return fake_extension_.has_value() &&
+         EqualIgnoringAsciiCase(fake_extension_.value().name, name);
 }
 
 base::span<const WebGLFakeExtension> GetFakeSupportedExtensionsForTesting() {
