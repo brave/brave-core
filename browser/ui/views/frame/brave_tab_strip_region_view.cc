@@ -450,18 +450,14 @@ void BraveHorizontalTabStripRegionView::Layout(PassKey) {
     // flex slot; we paint NTB above the combo in GetChildrenInZOrder so it
     // stays clickable.
     if (new_tab_button_) {
-      if (tab_scroll_next_button_ && tab_scroll_next_button_->GetVisible()) {
-        const gfx::Size button_size = new_tab_button_->GetPreferredSize();
-        const int x = tab_scroll_next_button_->bounds().right() +
-                      GetLayoutConstant(LayoutConstant::kTabStripPadding) +
-                      GetLayoutConstant(LayoutConstant::kToolbarDividerSpacing);
-        new_tab_button_->SetBoundsRect(
-            gfx::Rect(gfx::Point(x, 0), button_size));
-      } else {
-        new_tab_button_->SetX(
-            tab_strip_->bounds().right() +
-            GetLayoutConstant(LayoutConstant::kTabStripPadding));
-      }
+      auto* anchor =
+          tab_scroll_next_button_ && tab_scroll_next_button_->GetVisible()
+              ? static_cast<views::View*>(tab_scroll_next_button_.get())
+              : static_cast<views::View*>(tab_strip_.get());
+      const int x = anchor->bounds().right() +
+                    GetLayoutConstant(LayoutConstant::kTabStripPadding);
+      new_tab_button_->SetBoundsRect(
+          gfx::Rect(gfx::Point(x, 0), new_tab_button_->GetPreferredSize()));
     }
 
     // Upstream positions combo_button_ at the leading edge via
@@ -592,7 +588,7 @@ void BraveHorizontalTabStripRegionView::UpdateTrailingScrollButtonMargin(
     if (auto* current = tab_strip_->GetProperty(views::kMarginsKey)) {
       upstream_right = current->right();
     }
-    upstream_right -= tab_scroll_next_button_->GetPreferredSize().width();
+    // upstream_right += tab_scroll_next_button_->GetPreferredSize().width()
     tab_scroll_next_button_->SetProperty(
         views::kMarginsKey, gfx::Insets::TLBR(0, 0, 0, upstream_right));
     // Clear the strip's right margin so tabs extend to the trailing button.

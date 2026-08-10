@@ -433,11 +433,9 @@ IN_PROC_BROWSER_TEST_F(HorizontalScrollableTabStripBrowserTest,
   ASSERT_TRUE(ntb);
 
   const int pad = GetLayoutConstant(LayoutConstant::kTabStripPadding);
-  const int divider = GetLayoutConstant(LayoutConstant::kToolbarDividerSpacing);
-  EXPECT_EQ(ntb->x(), next->bounds().right() + pad + divider)
+  EXPECT_EQ(ntb->x(), next->bounds().right() + pad)
       << "ntb->x()=" << ntb->x()
-      << " next->bounds().right()=" << next->bounds().right() << " pad=" << pad
-      << " divider=" << divider;
+      << " next->bounds().right()=" << next->bounds().right() << " pad=" << pad;
 }
 
 IN_PROC_BROWSER_TEST_F(HorizontalScrollableTabStripBrowserTest,
