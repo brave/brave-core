@@ -10,7 +10,12 @@ import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin'
 import { writeTsConfig } from '../webpack/ts-config.ts'
 import { fallback } from '../webpack/polyfill.ts'
 import { generatePathMapWithWebMocks } from '../webpack/path-map.ts'
-import { cssRules, tsLoaderRule, ifdefLoaderRule } from '../webpack/rules.ts'
+import {
+  cssRules,
+  tsLoaderRule,
+  reactCompilerRule,
+  ifdefLoaderRule,
+} from '../webpack/rules.ts'
 import {
   provideNodeGlobals,
   chromePrefixReplacers,
@@ -91,6 +96,10 @@ export default async ({
     // Narrow to .scss so we don't clobber Storybook's built-in .css handling.
     ...cssRules({ isDevMode, test: /\.scss$/ }),
     tsLoaderRule({ configFile: tsConfigPath, transpileOnly: forkTsChecker }),
+    // Keep Storybook's memoization behaviour matching the browser build, so
+    // compiler-induced differences show up during development rather than
+    // only in production.
+    reactCompilerRule(),
     ifdefLoaderRule(buildFlags),
     {
       test: /\.avif$/,

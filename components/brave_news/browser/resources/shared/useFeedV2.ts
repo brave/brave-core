@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import getBraveNewsController, { FeedV2, FeedV2Type } from "./api";
 import { addFeedListener } from "./feedListener";
 import { loadTimeData } from "$web-common/loadTimeData";
@@ -100,6 +100,34 @@ const maybeLoadFeed = (view?: FeedView) => {
     : undefined
 }
 
+const readFeedFromCache = (view?: FeedView): FeedV2 | undefined => {
+  const cachedFeed = localCache[view!]
+  if (cachedFeed && !isTooOld(cachedFeed)) {
+    return cachedFeed
+  }
+
+  let data = sessionStorage.getItem(FEED_KEY)
+  if (!data) {
+    data = localStorage.getItem(FEED_KEY)
+  }
+
+  if (!data) return undefined
+
+  const feed: FeedV2 = JSON.parse(data)
+
+  if (feed.items?.some(item => !item.article && !item.cluster && !item.discover && !item.hero)) {
+    return undefined
+  }
+
+  if (isTooOld(feed)) return undefined
+
+  if (typeof feed.error === 'number') return undefined
+
+  return !view || feedTypeToFeedView(feed.type) === view
+    ? feed
+    : undefined
+}
+
 const maybeLoadFeedView = (feed?: FeedV2): FeedView => {
   if (feed) {
     return feedTypeToFeedView(feed.type)
@@ -128,9 +156,23 @@ const fetchFeed = (feedView: FeedView) => {
 }
 
 export const useFeedV2 = (enabled: boolean) => {
-  const [feedV2, setFeedV2] = useState<FeedV2 | undefined>(maybeLoadFeed())
-  const [feedView, setFeedView] = useState<FeedView>(maybeLoadFeedView(feedV2))
+  const [fetchedFeed, setFetchedFeed] = useState<FeedV2 | undefined>(maybeLoadFeed())
+  const [feedView, setFeedView] = useState<FeedView>(maybeLoadFeedView(fetchedFeed))
+  const [fetchedForView, setFetchedForView] = useState<FeedView | undefined>(
+    fetchedFeed ? feedView : undefined)
   const [hash, setHash] = useState<string>()
+  const [isRefreshing, setIsRefreshing] = useState(false)
+
+  // Synchronous cache lookup (pure read, recomputes when feedView/enabled change).
+  const cachedFeed = useMemo(
+    () => enabled ? readFeedFromCache(feedView) : undefined,
+    [enabled, feedView])
+
+  // Effective feed: refreshing shows loading; otherwise cache takes priority,
+  // then the fetched feed if it belongs to the current view.
+  const feedV2 = isRefreshing
+    ? undefined
+    : cachedFeed ?? (fetchedForView === feedView ? fetchedFeed : undefined)
 
   // Clear out of date caches when the feed receives new data.
   useEffect(() => {
@@ -169,30 +211,38 @@ export const useFeedV2 = (enabled: boolean) => {
     return () => { cancelled = true }
   }, [enabled])
 
+  // Run cache side-effects (persist last-visited feed, clean up stale storage)
+  // when the view or enabled state changes.
   useEffect(() => {
     if (!enabled) return
+    maybeLoadFeed(feedView)
+  }, [enabled, feedView])
 
-    setFeedV2(undefined)
-
-    const cachedFeed = maybeLoadFeed(feedView)
-    if (cachedFeed) {
-      setFeedV2(cachedFeed)
-      return
-    }
+  // Fetch the feed asynchronously when there is no cached feed for the current
+  // view. State is only set inside the async callback, not synchronously in the
+  // effect body.
+  useEffect(() => {
+    if (!enabled || cachedFeed) return
+    if (fetchedForView === feedView && fetchedFeed !== undefined) return
 
     let cancelled = false
     fetchFeed(feedView).then((feed) => {
       if (cancelled) return
-      setFeedV2(feed)
+      setFetchedFeed(feed)
+      setFetchedForView(feedView)
     })
     return () => { cancelled = true }
-  }, [feedView, enabled])
+  }, [enabled, feedView, cachedFeed, fetchedForView, fetchedFeed])
 
   const refresh = useCallback(() => {
-    // Set the feed to undefined - this will trigger the loading indicator.
-    setFeedV2(undefined)
+    // Show the loading indicator while the fetch is in progress.
+    setIsRefreshing(true)
     getBraveNewsController().ensureFeedV2IsUpdating()
-    fetchFeed(feedView).then(setFeedV2)
+    fetchFeed(feedView).then((feed) => {
+      setFetchedFeed(feed)
+      setFetchedForView(feedView)
+      setIsRefreshing(false)
+    })
   }, [feedView])
 
   // When we switch back to this tab, if the feed is stale refresh it.
