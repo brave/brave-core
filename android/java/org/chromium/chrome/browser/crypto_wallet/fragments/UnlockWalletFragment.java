@@ -154,7 +154,6 @@ public class UnlockWalletFragment extends BaseWalletNextPageFragment
                         // Tapping the button is an explicit request for the prompt, so clear any
                         // earlier dismissal.
                         mOnboardingViewModel.setBiometricPromptDismissed(false);
-                        // noinspection NewApi
                         showBiometricAuthenticationDialog(mBiometricUnlockButton, this, mCipher);
                     }
                 });
@@ -166,7 +165,6 @@ public class UnlockWalletFragment extends BaseWalletNextPageFragment
             mBiometricUnlockButton.setVisibility(View.VISIBLE);
             // Skip the automatic prompt if the user already dismissed it for this unlock screen.
             if (!mOnboardingViewModel.isBiometricPromptDismissed()) {
-                // noinspection NewApi
                 showBiometricAuthenticationDialog(mBiometricUnlockButton, this, mCipher);
             }
         }
