@@ -285,10 +285,8 @@ std::u16string BraveTab::GetRenderedTooltipText(const gfx::Point& p) const {
 #if BUILDFLAG(ENABLE_CONTAINERS)
     if (std::u16string container_name = GetContainerNameForTab(*this);
         !container_name.empty()) {
-      tooltip.append(u" - ")
-          .append(container_name)
-          .append(u" ")
-          .append(l10n_util::GetStringUTF16(IDS_TOOLTIP_TAB_IN_CONTAINER));
+      tooltip = l10n_util::GetStringFUTF16(IDS_TOOLTIP_TAB_IN_CONTAINER,
+                                           tooltip, container_name);
     }
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
     return tooltip;

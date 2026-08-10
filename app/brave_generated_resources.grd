@@ -1136,8 +1136,8 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         </message>
       </if>
       <if expr="enable_containers">
-        <message name="IDS_TOOLTIP_TAB_IN_CONTAINER" desc="Extra tool tip text, when the tab is in container">
-          container
+        <message name="IDS_TOOLTIP_TAB_IN_CONTAINER" desc="Tab tooltip text when the tab is in a container. TOOLTIP is the regular tab tooltip text and CONTAINER_NAME is the name of the container.">
+          <ph name="TOOLTIP">$1<ex>New Tab</ex></ph> - <ph name="CONTAINER_NAME">$2<ex>Work</ex></ph> container
         </message>
       </if>
 
