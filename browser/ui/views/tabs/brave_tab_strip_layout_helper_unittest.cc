@@ -12,12 +12,14 @@
 #include "base/logging.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/browser/ui/views/tabs/brave_tab.h"
+#include "brave/browser/ui/views/tabs/brave_tab_group_header.h"
 #include "chrome/browser/ui/tabs/tab_types.h"
 #include "chrome/browser/ui/views/tabs/fake_tab_slot_controller.h"
 #include "chrome/browser/ui/views/tabs/tab_layout_state.h"
 #include "chrome/browser/ui/views/tabs/tab_strip_layout_types.h"
 #include "chrome/browser/ui/views/tabs/tab_width_constraints.h"
 #include "chrome/test/views/chrome_views_test_base.h"
+#include "components/tab_groups/tab_group_id.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
@@ -356,6 +358,37 @@ TEST(BraveTabStripLayoutHelperUnitTest,
 }
 
 TEST(BraveTabStripLayoutHelperUnitTest,
+     CalculateVerticalTabBounds_GroupedTabIsIndentedOnLeftOnly) {
+  std::vector<TabWidthConstraints> tabs;
+  tabs.push_back(MakeTabConstraints(TabPinned::kUnpinned, TabOpen::kOpen,
+                                    TabActive::kInactive, /*in_group=*/false));
+  tabs.push_back(MakeTabConstraints(TabPinned::kUnpinned, TabOpen::kOpen,
+                                    TabActive::kInactive, /*in_group=*/true));
+
+  constexpr int kAvailableWidth = 200;
+  auto [bounds, _] = CalculateVerticalTabBounds(
+      tabs, kAvailableWidth, /*should_layout_pinned_tabs_in_grid=*/false);
+
+  ASSERT_EQ(2u, bounds.size());
+
+  // A tab outside of a group is only inset by the container margins.
+  EXPECT_EQ(kMarginForVerticalTabContainers, bounds[0].x());
+  EXPECT_EQ(kAvailableWidth - 2 * kMarginForVerticalTabContainers,
+            bounds[0].width());
+
+  // A tab in a group is additionally indented from the left by the group
+  // padding, but not from the right.
+  constexpr int kGroupedTabX =
+      kMarginForVerticalTabContainers + BraveTabGroupHeader::kPaddingForGroup;
+  EXPECT_EQ(kGroupedTabX, bounds[1].x());
+  EXPECT_EQ(kAvailableWidth - kGroupedTabX - kMarginForVerticalTabContainers,
+            bounds[1].width());
+
+  // So it ends at the same right edge as a tab outside of a group.
+  EXPECT_EQ(bounds[0].right(), bounds[1].right());
+}
+
+TEST(BraveTabStripLayoutHelperUnitTest,
      CalculateVerticalTabBounds_NestingUsesBaseOffsetWhenEnoughSpace) {
   // Same three-node chain. With enough width, even_offset_per_level >= 20,
   // so offset per level is tabs::kBaseOffsetPerLevel.
@@ -500,6 +533,35 @@ TEST_F(CalculateBoundsForVerticalDraggedViewsTest,
   // same way tabs are indented in the static (non-dragging) layout.
   EXPECT_EQ(bounds[0].x() + kExpectedOffset, bounds[1].x());
   EXPECT_EQ(bounds[0].width() - kExpectedOffset, bounds[1].width());
+}
+
+TEST_F(CalculateBoundsForVerticalDraggedViewsTest,
+       IndentsGroupedTabOnLeftOnly) {
+  FakeTabSlotController controller;
+  views::View parent;
+
+  TestBraveTab* ungrouped = parent.AddChildView(
+      std::make_unique<TestBraveTab>(tabs::TabHandle(1), &controller));
+  ungrouped->SetBoundsRect({0, 0, 0, kVerticalTabHeight});
+
+  TestBraveTab* grouped = parent.AddChildView(
+      std::make_unique<TestBraveTab>(tabs::TabHandle(2), &controller));
+  grouped->SetBoundsRect({0, 0, 0, kVerticalTabHeight});
+  grouped->SetGroup(tab_groups::TabGroupId::GenerateNew());
+
+  constexpr int kDragAreaWidth = 200;
+  std::vector<TabSlotView*> views = {ungrouped, grouped};
+  std::vector<gfx::Rect> bounds = CalculateBoundsForVerticalDraggedViews(
+      views, kDragAreaWidth, /*is_vertical_tabs_floating=*/false);
+
+  ASSERT_EQ(2u, bounds.size());
+
+  // A dragged tab in a group is indented from the left by the group padding,
+  // but keeps the same right edge as an ungrouped one, the same way tabs are
+  // laid out in the static (non-dragging) layout.
+  EXPECT_EQ(0, bounds[0].x());
+  EXPECT_EQ(BraveTabGroupHeader::kPaddingForGroup, bounds[1].x());
+  EXPECT_EQ(bounds[0].right(), bounds[1].right());
 }
 
 TEST_F(CalculateBoundsForVerticalDraggedViewsTest,
