@@ -1271,9 +1271,11 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
       confirmButtonTitle = Strings.Wallet.confirm
       return
     }
-    if zecTxType == .shielding {
+    if zecTxType == .shieldingIronwood {
       confirmButtonTitle = Strings.Wallet.shieldZEC
-    } else if zecTxType == .unshielding {
+    } else if zecTxType == .unshieldingOrchard
+      || zecTxType == .unshieldingIronwood
+    {
       confirmButtonTitle = Strings.Wallet.unshieldZEC
     } else {
       confirmButtonTitle = Strings.Wallet.confirm
