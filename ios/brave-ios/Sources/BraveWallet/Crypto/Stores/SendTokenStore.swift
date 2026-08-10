@@ -590,9 +590,10 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
     recipient: String
   ) {
     Task { @MainActor in
+      guard let selectedSendToken else { return }
       let (_, zcashAddressError) = await zcashWalletService.transactionType(
         accountId: fromAccount.accountId,
-        useShieldedPool: false,
+        fromTokenType: selectedSendToken.zcashTokenType,
         recipient: recipient
       )
       if zcashAddressError != .noError {

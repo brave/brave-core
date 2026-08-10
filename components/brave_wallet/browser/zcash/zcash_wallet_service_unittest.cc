@@ -2077,6 +2077,7 @@ TEST_F(ZCashWalletServiceUnitTest, ShieldFunds_FailsOnNetworkError) {
 
 // Shield*Funds tests are disabled because they exercise unsupported
 // transaction-creation paths, including Ironwood stubs and ShieldAllFunds.
+// TBD update to support Ironwood.
 #define MAYBE_ShieldAllFunds DISABLED_ShieldAllFunds
 #define MAYBE_ShieldFunds DISABLED_ShieldFunds
 #define MAYBE_SendShieldedFunds DISABLED_SendShieldedFunds

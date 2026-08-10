@@ -1261,12 +1261,9 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
       return
     }
 
-    let useShieldedPool =
-      zecTxData.zcashTokenType == .orchard
-      || zecTxData.zcashTokenType == .ironwood
     let (zecTxType, zecAddressError) = await zcashWalletService.transactionType(
       accountId: activeParsedTransaction.fromAccountInfo.accountId,
-      useShieldedPool: useShieldedPool,
+      fromTokenType: zecTxData.zcashTokenType,
       recipient: activeParsedTransaction.toAddress
     )
 

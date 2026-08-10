@@ -766,7 +766,6 @@ export const SendScreen = React.memo(() => {
                     onChange={setIsWarningAcknowledged}
                   />
                 )}
-                // Add memo field for shielded transactions.
                 {isZCashShieldedTransactionsEnabled
                   && tokenFromParams?.coin === BraveWallet.CoinType.ZEC
                   && getZCashTransactionTypeResult
