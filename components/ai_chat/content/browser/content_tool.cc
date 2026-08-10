@@ -32,9 +32,10 @@ ContentTool::ContentTool(const blink::mojom::ScriptTool& script_tool,
     : rfh_(std::move(rfh)), internal_tool_name_(script_tool.name) {
   const GURL& url = rfh_.AsRenderFrameHostIfValid()->GetLastCommittedURL();
 
-  // Name of the ContentTool is {host}_tool_name. Only the host is used (not the
-  // full path) to keep the name within Bedrock's 64-char tool-name limit.
-  name_ = base::StrCat({url.host(), "_", script_tool.name});
+  // Name of the ContentTool is web_{host}_tool_name. Only the host is used
+  // (not the full path) to keep the name within Bedrock's 64-char tool-name
+  // limit.
+  name_ = base::StrCat({"web_", url.host(), "_", script_tool.name});
 
   // Toolnames only allow alphanumeric characters and underscores.
   std::replace_if(
