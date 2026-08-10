@@ -58,10 +58,12 @@ TxService::TxService(JsonRpcService* json_rpc_service,
                      PolkadotWalletService* polkadot_wallet_service,
                      KeyringService& keyring_service,
                      PrefService* prefs,
-                     std::unique_ptr<TxStorage> tx_storage)
+                     std::unique_ptr<TxStorage> tx_storage,
+                     OriginPermissionChecker origin_permission_checker)
     : prefs_(prefs),
       json_rpc_service_(json_rpc_service),
-      tx_storage_(std::move(tx_storage)) {
+      tx_storage_(std::move(tx_storage)),
+      origin_permission_checker_(std::move(origin_permission_checker)) {
   account_resolver_delegate_ =
       std::make_unique<AccountResolverDelegateImpl>(keyring_service);
 
@@ -742,10 +744,6 @@ TxStorage* TxService::GetTxStorageForTesting() {
   return tx_storage_.get();
 }
 
-void TxService::SetOriginPermissionChecker(OriginPermissionChecker checker) {
-  origin_permission_checker_ = std::move(checker);
-}
-
 bool TxService::HasOriginPermission(const url::Origin& origin,
                                     const mojom::AccountIdPtr& account_id) {
   if (!origin_permission_checker_) {
@@ -766,7 +764,7 @@ void TxService::RejectUnapprovedTransactionsWithoutPermission() {
         continue;
       }
       auto origin = url::Origin::Create(GURL(tx->origin_info->origin_spec));
-      if (!origin.scheme().empty() && origin.scheme() != url::kHttpScheme &&
+      if (origin.scheme() != url::kHttpScheme &&
           origin.scheme() != url::kHttpsScheme) {
         continue;
       }

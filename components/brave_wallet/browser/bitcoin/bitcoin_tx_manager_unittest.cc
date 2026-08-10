@@ -62,7 +62,10 @@ class BitcoinTxManagerUnitTest : public testing::Test {
     tx_service_ = std::make_unique<TxService>(
         json_rpc_service_.get(), bitcoin_wallet_service_.get(), nullptr,
         nullptr, nullptr, *keyring_service_, &prefs_,
-        CreateTxStorageForTest(temp_dir_.GetPath()));
+        CreateTxStorageForTest(temp_dir_.GetPath()),
+        base::BindRepeating([](const url::Origin&, const mojom::AccountIdPtr&) {
+          return true;
+        }));
 
     GetAccountUtils().CreateWallet(kMnemonicDivideCruise, "brave");
 

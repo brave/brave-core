@@ -299,8 +299,7 @@ BraveWalletService::BraveWalletService(
   tx_service_ = std::make_unique<TxService>(
       json_rpc_service(), GetBitcoinWalletService(), GetZcashWalletService(),
       GetCardanoWalletService(), GetPolkadotWalletService(), *keyring_service(),
-      profile_prefs, CreateTxStorage(*delegate_));
-  tx_service_->SetOriginPermissionChecker(
+      profile_prefs, CreateTxStorage(*delegate_),
       base::BindRepeating(static_cast<bool (BraveWalletService::*)(
                               const url::Origin&, const mojom::AccountIdPtr&)>(
                               &BraveWalletService::HasPermissionSync),
@@ -1300,6 +1299,7 @@ void BraveWalletService::OnWalletContentSettingChanged() {
 }
 
 void BraveWalletService::DrainSignMessageRequestsWithoutPermission() {
+  std::vector<PendingSignMessageRequest> to_drain;
   for (auto it = sign_message_requests_.begin();
        it != sign_message_requests_.end();) {
     auto origin =
@@ -1308,15 +1308,18 @@ void BraveWalletService::DrainSignMessageRequestsWithoutPermission() {
       ++it;
       continue;
     }
-    auto request = std::move(*it);
+    to_drain.push_back(std::move(*it));
     it = sign_message_requests_.erase(it);
-    // approved=true so the provider's permission re-validation produces
-    // kUnauthorized (not kUserRejectedRequest).
+  }
+  // approved=true so the provider's permission re-validation produces
+  // kUnauthorized (not kUserRejectedRequest).
+  for (auto& request : to_drain) {
     std::move(request.callback).Run(true, nullptr, std::nullopt);
   }
 }
 
 void BraveWalletService::DrainSignSolTransactionsRequestsWithoutPermission() {
+  std::vector<SignSolTransactionsRequestCallback> to_drain;
   auto req_it = sign_sol_transactions_requests_.begin();
   auto cb_it = sign_sol_transactions_callbacks_.begin();
   while (req_it != sign_sol_transactions_requests_.end()) {
@@ -1327,15 +1330,18 @@ void BraveWalletService::DrainSignSolTransactionsRequestsWithoutPermission() {
       ++cb_it;
       continue;
     }
-    auto callback = std::move(*cb_it);
+    to_drain.push_back(std::move(*cb_it));
     req_it = sign_sol_transactions_requests_.erase(req_it);
     cb_it = sign_sol_transactions_callbacks_.erase(cb_it);
+  }
+  for (auto& callback : to_drain) {
     std::move(callback).Run(true, {}, std::nullopt);
   }
 }
 
 void BraveWalletService::
     DrainSignCardanoTransactionRequestsWithoutPermission() {
+  std::vector<SignCardanoTransactionRequestCallback> to_drain;
   auto req_it = sign_cardano_transaction_requests_.begin();
   auto cb_it = sign_cardano_transaction_callbacks_.begin();
   while (req_it != sign_cardano_transaction_requests_.end()) {
@@ -1346,9 +1352,11 @@ void BraveWalletService::
       ++cb_it;
       continue;
     }
-    auto callback = std::move(*cb_it);
+    to_drain.push_back(std::move(*cb_it));
     req_it = sign_cardano_transaction_requests_.erase(req_it);
     cb_it = sign_cardano_transaction_callbacks_.erase(cb_it);
+  }
+  for (auto& callback : to_drain) {
     std::move(callback).Run(true, std::nullopt);
   }
 }
