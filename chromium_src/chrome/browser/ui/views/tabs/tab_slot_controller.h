@@ -48,6 +48,9 @@ class TreeTabNodeId;
   /* painted. Returns an empty ImageModel if the tab should not have an */     \
   /* accent or icon cannot be determined. */                                   \
   virtual ui::ImageModel GetTabAccentIcon(const Tab* tab) const = 0;           \
+  /* Returns whether tabs should always show the mini (small) accent icon */   \
+  /* instead of the large one, regardless of the tab's width. */               \
+  virtual bool ShouldAlwaysShowMiniTabAccent() const = 0;                      \
   /* Method to TabSlotController to determine whether tabs can be closed */    \
   /* via middle mouse button click. */                                         \
   virtual bool CanCloseTabViaMiddleButtonClick() const = 0;                    \

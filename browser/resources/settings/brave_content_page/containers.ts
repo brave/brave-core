@@ -15,6 +15,8 @@ import {
   CrLitElement,
   PropertyValues,
 } from 'chrome://resources/lit/v3_0/lit.rollup.js'
+import { PrefService } from '/shared/settings/prefs2/pref_service.js'
+import { PrefServiceObserverMixinLit } from '/shared/settings/prefs2/pref_service_observer_mixin_lit.js'
 
 import { ContainersStrings } from '../brave_generated_resources_webui_strings.js'
 import type { SettingsToggleButtonElement } from '../controls/settings_toggle_button.js'
@@ -31,7 +33,14 @@ import type { ColorSelectedEvent } from './containers_background_chip.js'
 import { ContainersSettingsHandlerBrowserProxy } from './containers_browser_proxy.js'
 import type { IconSelectedEvent } from './containers_icon.js'
 
-const SettingsBraveContentContainersElementBase = I18nMixinLit(CrLitElement)
+// Kept in sync with brave_tabs::kAlwaysUseMiniAccentIcon in
+// browser/ui/tabs/brave_tab_prefs.h.
+const ALWAYS_USE_MINI_ACCENT_ICON_PREF =
+  'brave.tabs.always_use_mini_accent_icon'
+
+const SettingsBraveContentContainersElementBase = PrefServiceObserverMixinLit(
+  I18nMixinLit(CrLitElement),
+)
 
 /**
  * 'settings-brave-content-containers' is the settings page containing settings for Containers
@@ -57,6 +66,9 @@ export class SettingsBraveContentContainersElement extends SettingsBraveContentC
       containersList_: {
         type: Array,
       },
+      alwaysUseMiniAccentIconPref_: {
+        type: Object,
+      },
       editingContainer_: {
         type: Object,
       },
@@ -78,6 +90,8 @@ export class SettingsBraveContentContainersElement extends SettingsBraveContentC
   private browserProxy = ContainersSettingsHandlerBrowserProxy.getInstance()
   accessor containersEnabled_ = true
   accessor containersList_: Container[] = []
+  accessor alwaysUseMiniAccentIconPref_:
+    chrome.settingsPrivate.PrefObject<boolean> | undefined
   accessor editingContainer_: Container | undefined
   accessor deletingContainer_: Container | undefined
   accessor isEditDialogNameInvalid_ = false
@@ -92,6 +106,10 @@ export class SettingsBraveContentContainersElement extends SettingsBraveContentC
     this.browserProxy.handler.getContainers().then(({ containers }) => {
       this.onContainersListUpdated_(containers)
     })
+    this.mirrorPref(
+      ALWAYS_USE_MINI_ACCENT_ICON_PREF,
+      'alwaysUseMiniAccentIconPref_',
+    )
     this.browserProxy.callbackRouter.onContainersChanged.addListener(
       this.onContainersListUpdated_.bind(this),
     )
@@ -118,6 +136,14 @@ export class SettingsBraveContentContainersElement extends SettingsBraveContentC
   onContainersEnabledChange_(e: Event) {
     const toggle = e.target as SettingsToggleButtonElement
     this.browserProxy.handler.setContainersEnabled(toggle.checked)
+  }
+
+  onAlwaysUseMiniIconChange_(e: Event) {
+    const toggle = e.target as SettingsToggleButtonElement
+    PrefService.getInstance().setPrefValue(
+      ALWAYS_USE_MINI_ACCENT_ICON_PREF,
+      toggle.checked,
+    )
   }
 
   onContainersListUpdated_(containers: Container[]) {
