@@ -141,7 +141,6 @@ class CustomEngineViewController: UIViewController {
       $0.register(CustomEngineURLInputTableViewCell.self)
       $0.register(CustomEngineTitleInputTableViewCell.self)
       $0.register(CustomEngineAddButtonCell.self)
-      $0.registerHeaderFooter(SearchEngineTableViewHeader.self)
       $0.dataSource = self
       $0.delegate = self
     }
@@ -313,17 +312,14 @@ extension CustomEngineViewController: UITableViewDelegate, UITableViewDataSource
     footerView.textLabel?.textColor = UIColor.secondaryLabel
   }
 
-  func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+  func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
     guard section != Section.button.rawValue else { return nil }
-
-    let headerView = tableView.dequeueReusableHeaderFooter() as SearchEngineTableViewHeader
     switch section {
     case Section.title.rawValue:
-      headerView.titleLabel.text = Strings.title.uppercased()
+      return Strings.title
     default:
-      headerView.titleLabel.text = Strings.URL.uppercased()
+      return Strings.URL
     }
-    return headerView
   }
 }
 

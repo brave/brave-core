@@ -1327,7 +1327,7 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
       optionsViewController.navigationItem.title = Strings.themesDisplayBrightness
 
       let nightModeSection = Section(
-        header: .title(Strings.NightMode.sectionTitle.uppercased()),
+        header: .title(Strings.NightMode.sectionTitle),
         rows: [
           .boolRow(
             title: Strings.NightMode.settingsTitle,
@@ -1649,7 +1649,10 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
       Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? ""
     )
     let titleLabel = UITableViewHeaderFooterView().then {
-      $0.textLabel?.text = Strings.about.uppercased()
+      $0.textLabel?.text = Strings.about
+      if #unavailable(iOS 26.0) {
+        $0.textLabel?.text = $0.textLabel?.text?.uppercased()
+      }
       $0.isUserInteractionEnabled = true
       $0.addGestureRecognizer(
         UITapGestureRecognizer(target: self, action: #selector(tappedAboutHeader))
