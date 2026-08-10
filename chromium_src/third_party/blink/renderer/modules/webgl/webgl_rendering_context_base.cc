@@ -166,6 +166,23 @@ WebGLFarbledExtensionHandler* CreateOrGetValidWebGLExtensionHandler(
 // protections are enabled then the list may include farbled values.
 std::optional<Vector<String>>
 WebGLRenderingContextBase::getSupportedExtensions() {
+  if (!base::FeatureList::IsEnabled(
+          blink::features::kWebGLBalancedFingerprintingProtection)) {
+    // Old implementation.
+    std::optional<Vector<String>> real_extensions =
+        getSupportedExtensions_ChromiumImpl();
+    if (real_extensions == std::nullopt) {
+      return real_extensions;
+    }
+    if (AllowFingerprintingForHost(Host())) {
+      return real_extensions;
+    }
+
+    Vector<String> fake_extensions;
+    fake_extensions.push_back(WebGLDebugRendererInfo::ExtensionName());
+    return fake_extensions;
+  }
+
   WebGLFarbledExtensionHandler* handler = CreateOrGetValidWebGLExtensionHandler(
       Host()->GetTopExecutionContext(), IsWebGL2(),
       [this]() { return getSupportedExtensions_ChromiumImpl(); });
@@ -184,6 +201,17 @@ WebGLRenderingContextBase::getSupportedExtensions() {
 // also represent a farbled object if the extension |name| was farbled.
 ScriptObject WebGLRenderingContextBase::getExtension(ScriptState* script_state,
                                                      const String& name) {
+  if (!base::FeatureList::IsEnabled(
+          blink::features::kWebGLBalancedFingerprintingProtection)) {
+    // Old implementation.
+    if (!AllowFingerprintingForHost(Host())) {
+      if (name != WebGLDebugRendererInfo::ExtensionName()) {
+        return ScriptObject::CreateNull(v8::Isolate::GetCurrent());
+      }
+    }
+    return getExtension_ChromiumImpl(script_state, name);
+  }
+
   WebGLFarbledExtensionHandler* handler = CreateOrGetValidWebGLExtensionHandler(
       Host()->GetTopExecutionContext(), IsWebGL2(),
       [this]() { return getSupportedExtensions_ChromiumImpl(); });
