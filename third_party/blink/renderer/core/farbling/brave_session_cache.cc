@@ -275,29 +275,25 @@ void BraveSessionCache::Init() {
 }
 
 blink::WebGLFarbledExtensionHandler*
-BraveSessionCache::CreateWebGLFarbledExtensionHandler(
-    const blink::Vector<blink::String>& supported_extensions,
-    const bool is_webgl2) {
+BraveSessionCache::CreateWebGLFarbledExtensionHandler(const bool is_webgl2) {
+  auto level = GetBraveFarblingLevel(
+      is_webgl2 ? ContentSettingsType::BRAVE_WEBCOMPAT_WEBGL2
+                : ContentSettingsType::BRAVE_WEBCOMPAT_WEBGL);
+  DCHECK(base::FeatureList::IsEnabled(
+             blink::features::kWebGLBalancedFingerprintingProtection) &&
+         level == BraveFarblingLevel::BALANCED);
+
+  // Check no handler was created before.
   if (is_webgl2) {
     CHECK(!webgl2_farbled_extension_handler_);
   } else {
     CHECK(!webgl_farbled_extension_handler_);
   }
 
-  auto level = GetBraveFarblingLevel(
-      is_webgl2 ? ContentSettingsType::BRAVE_WEBCOMPAT_WEBGL2
-                : ContentSettingsType::BRAVE_WEBCOMPAT_WEBGL);
   std::unique_ptr<blink::WebGLFarbledExtensionHandler>
       farbled_extension_handler =
-          level == BraveFarblingLevel::OFF
-              ? blink::WebGLFarbledExtensionHandler::CreateOffHandler(
-                    supported_extensions)
-          : level == BraveFarblingLevel::BALANCED
-              ? blink::WebGLFarbledExtensionHandler::CreateBalancedHandler(
-                    supported_extensions,
-                    default_shields_settings_->farbling_token.low())
-              : blink::WebGLFarbledExtensionHandler::CreateMaximumHandler(
-                    supported_extensions);
+          blink::WebGLFarbledExtensionHandler::CreateHandler(
+              default_shields_settings_->farbling_token.low());
 
   if (is_webgl2) {
     webgl2_farbled_extension_handler_ = std::move(farbled_extension_handler);
