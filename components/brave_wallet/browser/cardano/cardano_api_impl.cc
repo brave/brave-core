@@ -692,6 +692,13 @@ void CardanoApiImpl::OnSignMessageRequestProcessed(
     return;
   }
 
+  // Re-validate that the origin is still authorized to use this account.
+  // Permission may have been revoked while the request was queued.
+  if (auto account_valid_error = CheckSelectedAccountValid()) {
+    std::move(callback).Run(std::nullopt, std::move(account_valid_error));
+    return;
+  }
+
   auto sig_data = brave_wallet_service_->keyring_service()
                       ->SignCip30MessageByCardanoKeyring(
                           selected_account_.Clone(), key_id, message);

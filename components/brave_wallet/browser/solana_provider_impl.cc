@@ -328,6 +328,14 @@ void SolanaProviderImpl::OnSignTransactionRequestProcessed(
     return;
   }
 
+  if (!IsAccountAuthorized(*account)) {
+    std::move(callback).Run(mojom::SolanaProviderError::kUnauthorized,
+                            l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED),
+                            std::vector<uint8_t>(),
+                            mojom::SolanaMessageVersion::kLegacy);
+    return;
+  }
+
   std::optional<std::vector<uint8_t>> signed_tx;
   if (account->account_id->kind != mojom::AccountKind::kHardware) {
     signed_tx = tx->GetSignedTransactionBytes(keyring_service_,
@@ -467,6 +475,14 @@ void SolanaProviderImpl::OnSignAllTransactionsRequestProcessed(
         l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST),
         std::vector<std::vector<uint8_t>>(),
         std::vector<mojom::SolanaMessageVersion>());
+    return;
+  }
+
+  if (!IsAccountAuthorized(*account)) {
+    std::move(callback).Run(mojom::SolanaProviderError::kUnauthorized,
+                            l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED),
+                            std::vector<std::vector<uint8_t>>(),
+                            std::vector<mojom::SolanaMessageVersion>());
     return;
   }
 
@@ -803,6 +819,12 @@ bool SolanaProviderImpl::IsAccountConnected(const mojom::AccountInfo& account) {
   return delegate_->IsSolanaAccountConnected(account.address);
 }
 
+bool SolanaProviderImpl::IsAccountAuthorized(
+    const mojom::AccountInfo& account) {
+  return IsAccountConnected(account) &&
+         delegate_->IsAccountAllowed(mojom::CoinType::SOL, account.address);
+}
+
 void SolanaProviderImpl::OnConnect(
     const std::vector<mojom::AccountInfoPtr>& requested_accounts,
     ConnectCallback callback,
@@ -877,6 +899,15 @@ void SolanaProviderImpl::OnSignMessageRequestProcessed(
         mojom::SolanaProviderError::kUserRejectedRequest,
         l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST),
         std::move(result));
+    return;
+  }
+
+  // Re-validate that the origin is still authorized to use this account.
+  // Permission may have been revoked while the request was queued.
+  if (!IsAccountAuthorized(*account)) {
+    std::move(callback).Run(mojom::SolanaProviderError::kUnauthorized,
+                            l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED),
+                            std::move(result));
     return;
   }
 

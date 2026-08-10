@@ -589,6 +589,19 @@ void EthTxManager::ApproveTransaction(const std::string& tx_meta_id,
     return;
   }
 
+  if (meta->origin() &&
+      (meta->origin()->scheme() == url::kHttpScheme ||
+       meta->origin()->scheme() == url::kHttpsScheme) &&
+      !tx_service().HasOriginPermission(*meta->origin(), meta->from())) {
+    meta->set_status(mojom::TransactionStatus::Error);
+    tx_state_manager().AddOrUpdateTx(*meta);
+    std::move(callback).Run(false,
+                            mojom::ProviderErrorUnion::NewProviderError(
+                                mojom::ProviderError::kUnauthorized),
+                            l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED));
+    return;
+  }
+
   if (!meta->tx()->nonce()) {
     auto from = meta->from().Clone();
     auto chain_id = meta->chain_id();
@@ -615,6 +628,19 @@ void EthTxManager::OnGetNextNonce(std::unique_ptr<EthTxMeta> meta,
         mojom::ProviderErrorUnion::NewProviderError(
             mojom::ProviderError::kInternalError),
         l10n_util::GetStringUTF8(IDS_WALLET_GET_NONCE_ERROR));
+    return;
+  }
+
+  if (meta->origin() &&
+      (meta->origin()->scheme() == url::kHttpScheme ||
+       meta->origin()->scheme() == url::kHttpsScheme) &&
+      !tx_service().HasOriginPermission(*meta->origin(), meta->from())) {
+    meta->set_status(mojom::TransactionStatus::Error);
+    tx_state_manager().AddOrUpdateTx(*meta);
+    std::move(callback).Run(false,
+                            mojom::ProviderErrorUnion::NewProviderError(
+                                mojom::ProviderError::kUnauthorized),
+                            l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED));
     return;
   }
 

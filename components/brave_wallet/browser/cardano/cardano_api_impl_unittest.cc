@@ -13,6 +13,7 @@
 #include "base/run_loop.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/test/bind.h"
+#include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
@@ -457,6 +458,61 @@ TEST_F(CardanoApiImplTest, SignData_Rejected) {
             mojom::CardanoProviderErrorBundle::New(
                 3, l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST),
                 nullptr));
+}
+
+TEST_F(CardanoApiImplTest,
+       SignData_PermissionRevokedWhileQueued_RejectedBeforeSigning) {
+  CreateWallet();
+  auto added_account = AddAccount();
+
+  bool permission_granted = true;
+  ON_CALL(*delegate(), GetAllowedAccounts(_, _))
+      .WillByDefault(
+          [&](mojom::CoinType coin, const std::vector<std::string>& accounts) {
+            EXPECT_EQ(coin, mojom::CoinType::ADA);
+            if (!permission_granted) {
+              return std::vector<std::string>();
+            }
+            return std::vector<std::string>(
+                {added_account->account_id->unique_key});
+          });
+
+  auto address = keyring_service()->GetCardanoAddress(
+      added_account->account_id,
+      mojom::CardanoKeyId::New(mojom::CardanoKeyRole::kExternal, 0));
+
+  int captured_id = -1;
+  auto subscription =
+      brave_wallet_service()->RegisterSignMessageRequestAddedCallback(
+          base::BindLambdaForTesting([&] {
+            captured_id = brave_wallet_service()
+                              ->GetPendingSignMessageRequestsSync()
+                              .back()
+                              ->id;
+          }));
+
+  TestFuture<std::optional<base::DictValue>,
+             mojom::CardanoProviderErrorBundlePtr>
+      future;
+
+  provider()->SignData(address->address_string, base::HexEncode("message"),
+                       future.GetCallback());
+
+  ASSERT_TRUE(base::test::RunUntil([&] { return captured_id >= 0; }));
+
+  // Simulate permission revocation while the request is still queued.
+  permission_granted = false;
+
+  // User approves the stale panel — signing must still be refused.
+  brave_wallet_service()->NotifySignMessageRequestProcessed(
+      true, captured_id, nullptr, std::nullopt);
+
+  auto& signature = future.Get<0>();
+  auto& error = future.Get<1>();
+
+  EXPECT_EQ(signature, std::nullopt);
+  ASSERT_TRUE(error);
+  EXPECT_EQ(error->code, -3);
 }
 
 TEST_F(CardanoApiImplTest, MethodReturnsError_WhenNoPermission) {

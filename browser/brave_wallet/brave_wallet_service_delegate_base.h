@@ -10,9 +10,13 @@
 
 #include "base/auto_reset.h"
 #include "base/files/file_path.h"
+#include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
+#include "base/scoped_observation.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service_delegate.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "components/content_settings/core/browser/content_settings_observer.h"
+#include "components/content_settings/core/browser/host_content_settings_map.h"
 
 namespace content {
 class BrowserContext;
@@ -25,7 +29,8 @@ class Origin;
 namespace brave_wallet {
 
 // Shared BraveWalletServiceDelegate implementation between Desktop and Android.
-class BraveWalletServiceDelegateBase : public BraveWalletServiceDelegate {
+class BraveWalletServiceDelegateBase : public BraveWalletServiceDelegate,
+                                       public content_settings::Observer {
  public:
   explicit BraveWalletServiceDelegateBase(content::BrowserContext* context);
   BraveWalletServiceDelegateBase(const BraveWalletServiceDelegateBase&) =
@@ -56,10 +61,23 @@ class BraveWalletServiceDelegateBase : public BraveWalletServiceDelegate {
 
   bool IsAutolockEnabled() override;
 
+  void SetContentSettingChangedCallback(
+      base::RepeatingClosure callback) override;
+
+  // content_settings::Observer:
+  void OnContentSettingChanged(const ContentSettingsPattern& primary_pattern,
+                               const ContentSettingsPattern& secondary_pattern,
+                               ContentSettingsType content_type) override;
+
  protected:
   base::FilePath wallet_base_directory_;
   bool is_private_window_ = false;
   raw_ptr<content::BrowserContext> context_ = nullptr;
+
+ private:
+  base::RepeatingClosure content_setting_changed_callback_;
+  base::ScopedObservation<HostContentSettingsMap, content_settings::Observer>
+      content_settings_observation_{this};
 };
 
 }  // namespace brave_wallet

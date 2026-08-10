@@ -47,6 +47,7 @@ class BraveWalletServiceDelegate {
   };
   virtual void AddObserver(Observer* observer) {}
   virtual void RemoveObserver(Observer* observer) {}
+  virtual void SetContentSettingChangedCallback(base::RepeatingClosure) {}
 
   virtual void IsExternalWalletInstalled(mojom::ExternalWalletType,
                                          IsExternalWalletInstalledCallback);

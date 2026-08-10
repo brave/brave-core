@@ -77,6 +77,7 @@ class SolanaProviderImpl final : public mojom::SolanaProvider,
                            ConnectWithNoSolanaAccount);
 
   bool IsAccountConnected(const mojom::AccountInfo& account);
+  bool IsAccountAuthorized(const mojom::AccountInfo& account);
   void OnConnect(
       const std::vector<mojom::AccountInfoPtr>& requested_accounts,
       ConnectCallback callback,

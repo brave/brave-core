@@ -38,6 +38,7 @@
 #include "brave/components/brave_wallet/browser/tx_storage.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
+#include "components/grit/brave_components_strings.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "components/value_store/value_store_frontend.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
@@ -250,6 +251,8 @@ class EthTxManagerUnitTest : public testing::Test {
     tx_service_ = std::make_unique<TxService>(
         json_rpc_service_.get(), nullptr, nullptr, nullptr, nullptr,
         *keyring_service_, GetPrefs(), std::move(tx_storage));
+    tx_service_->SetOriginPermissionChecker(base::BindRepeating(
+        [](const url::Origin&, const mojom::AccountIdPtr&) { return true; }));
 
     GetAccountUtils().CreateWallet(kMnemonicAbandonAbandon,
                                    kTestWalletPassword);
@@ -2599,6 +2602,68 @@ TEST_F(EthTxManagerUnitTest, GetSignedTransaction) {
             "6c7d89a26051f74c88016345785d8a000083000102c080a0353cfbd58e495f3f39"
             "32e9f39c21358ea1bddf6bc873b2c56ec18d21ba19226da016f887fee07e5fa871"
             "591135699691adda8d2df99383a4a16172eca36421077a");
+}
+
+TEST_F(EthTxManagerUnitTest,
+       ApproveTransaction_PermissionRevokedWhileQueued_RejectedBeforeSigning) {
+  auto tx_data =
+      mojom::TxData::New("0x1", "0x06", "0x09184e72a000", "0x0974",
+                         "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
+                         "0x016345785d8a0000", data_);
+
+  base::test::TestFuture<bool, const std::string&, const std::string&>
+      add_tx_future;
+  eth_tx_manager()->AddUnapprovedEvmDappTransaction(
+      std::move(tx_data), from(), GetOrigin(), false,
+      add_tx_future.GetCallback());
+  auto [added, tx_meta_id, add_error] = add_tx_future.Take();
+  ASSERT_FALSE(tx_meta_id.empty());
+
+  // Simulate the site's wallet permission being revoked while the tx is
+  // queued in the approval panel.
+  tx_service_->SetOriginPermissionChecker(base::BindRepeating(
+      [](const url::Origin&, const mojom::AccountIdPtr&) { return false; }));
+
+  base::test::TestFuture<bool, mojom::ProviderErrorUnionPtr, const std::string&>
+      approve_tx_future;
+  eth_tx_manager()->ApproveTransaction(tx_meta_id,
+                                       approve_tx_future.GetCallback());
+
+  auto [success, error_union, message] = approve_tx_future.Take();
+  EXPECT_FALSE(success);
+  ASSERT_TRUE(error_union);
+  ASSERT_TRUE(error_union->is_provider_error());
+  EXPECT_EQ(error_union->get_provider_error(),
+            mojom::ProviderError::kUnauthorized);
+  EXPECT_EQ(message, l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED));
+  EXPECT_EQ(eth_tx_manager()->GetSignedTransaction(tx_meta_id), std::nullopt);
+}
+
+TEST_F(EthTxManagerUnitTest,
+       RejectUnapprovedTransactionsWithoutPermission_RejectsPendingTx) {
+  auto tx_data =
+      mojom::TxData::New("0x1", "0x06", "0x09184e72a000", "0x0974",
+                         "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
+                         "0x016345785d8a0000", data_);
+
+  base::test::TestFuture<bool, const std::string&, const std::string&>
+      add_tx_future;
+  eth_tx_manager()->AddUnapprovedEvmDappTransaction(
+      std::move(tx_data), from(), GetOrigin(), false,
+      add_tx_future.GetCallback());
+  auto [added, tx_meta_id, add_error] = add_tx_future.Take();
+  ASSERT_FALSE(tx_meta_id.empty());
+
+  ASSERT_EQ(eth_tx_manager()->GetTransactionInfo(tx_meta_id)->tx_status,
+            mojom::TransactionStatus::Unapproved);
+
+  tx_service_->SetOriginPermissionChecker(base::BindRepeating(
+      [](const url::Origin&, const mojom::AccountIdPtr&) { return false; }));
+
+  tx_service_->RejectUnapprovedTransactionsWithoutPermission();
+
+  EXPECT_EQ(eth_tx_manager()->GetTransactionInfo(tx_meta_id)->tx_status,
+            mojom::TransactionStatus::Rejected);
 }
 
 }  //  namespace brave_wallet
