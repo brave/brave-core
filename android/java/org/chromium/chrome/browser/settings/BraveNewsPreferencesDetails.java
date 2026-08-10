@@ -312,6 +312,33 @@ public class BraveNewsPreferencesDetails extends BravePreferenceFragment
     }
 
     @Override
+    public void initSearchView(SearchView searchView) {
+        SearchUtils.initializeSearchView(
+                searchView,
+                mSearch,
+                getActivity(),
+                mSearchViewObserver,
+                this::onSearchQueryChanged);
+    }
+
+    private void onSearchQueryChanged(String query) {
+        boolean queryHasChanged =
+                mSearch == null ? query != null && !query.isEmpty() : !mSearch.equals(query);
+        mSearch = query;
+        if (queryHasChanged && mSearch.length() > 0) {
+            search();
+        } else if (mSearch.length() == 0) {
+            mAdapter.notifyItemRangeRemoved(0, mAdapter.getItemCount());
+            mAdapter.setItems(
+                    new ArrayList<Channel>(),
+                    new ArrayList<Publisher>(),
+                    null,
+                    BraveNewsPreferencesSearchType.Init,
+                    mFeedSearchResultItemFollowMap);
+        }
+    }
+
+    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         MenuItem closeItem = menu.findItem(R.id.close_menu_id);
         if (closeItem != null) {
@@ -330,24 +357,7 @@ public class BraveNewsPreferencesDetails extends BravePreferenceFragment
                     mSearch,
                     getActivity(),
                     assumeNonNull(mSearchViewObserver),
-                    (query) -> {
-                        boolean queryHasChanged =
-                                mSearch == null
-                                        ? query != null && !query.isEmpty()
-                                        : !mSearch.equals(query);
-                        mSearch = query;
-                        if (queryHasChanged && mSearch.length() > 0) {
-                            search();
-                        } else if (mSearch.length() == 0) {
-                            mAdapter.notifyItemRangeRemoved(0, mAdapter.getItemCount());
-                            mAdapter.setItems(
-                                    new ArrayList<Channel>(),
-                                    new ArrayList<Publisher>(),
-                                    null,
-                                    BraveNewsPreferencesSearchType.Init,
-                                    mFeedSearchResultItemFollowMap);
-                        }
-                    });
+                    this::onSearchQueryChanged);
         }
     }
 
