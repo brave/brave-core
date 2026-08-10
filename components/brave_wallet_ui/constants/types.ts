@@ -362,19 +362,6 @@ export interface SlippagePresetObjectType {
   slippage: number
 }
 
-export interface ExpirationPresetObjectType {
-  id: number
-  name: string
-  expiration: number
-}
-
-export type AmountPresetTypes = 0 | 0.25 | 0.5 | 0.75 | 1
-
-export interface AmountPresetObjectType {
-  name: string
-  value: AmountPresetTypes
-}
-
 export type TransactionDataType = {
   functionName: string
   parameters: string
@@ -963,11 +950,6 @@ export const BitcoinNetworkLocaleMapping = {
 export const ZCashNetworkLocaleMapping = {
   [BraveWallet.Z_CASH_MAINNET]: 'ZCash Mainnet',
   [BraveWallet.Z_CASH_TESTNET]: 'ZCash Testnet',
-}
-
-export type GasFeeOption = {
-  id: string
-  name: string
 }
 
 export type GasEstimate = {
