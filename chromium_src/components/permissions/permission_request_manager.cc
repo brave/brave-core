@@ -18,8 +18,16 @@
 #define BRAVE_PERMISSION_REQUEST_MANAGER_ON_VISIBILITY_CHANGED \
   UpdateTabIsHiddenWithTabActivationState();
 
+// Wallet requests are flagged as embedded permission element initiated only to
+// keep the request queue FIFO, they have their own prompt and must not enter
+// the <permission> element prompt flow. That flow re-shows the prompt on grant
+// instead of finalizing the requests, which leaves permission callbacks unrun.
+#define BRAVE_PERMISSION_REQUEST_MANAGER_RECREATE_VIEW \
+  !IsCurrentRequestBraveWalletInitiated()
+
 #include <components/permissions/permission_request_manager.cc>
 
+#undef BRAVE_PERMISSION_REQUEST_MANAGER_RECREATE_VIEW
 #undef BRAVE_PERMISSION_REQUEST_MANAGER_ON_VISIBILITY_CHANGED
 #undef BRAVE_PERMISSION_REQUEST_MANAGER_GET_REQUESTING_ORIGIN
 
@@ -65,6 +73,20 @@ bool PermissionRequestManager::ShouldBeGrouppedInRequests(
     return true;
   }
   return ShouldGroupRequests(requests_.front().get(), a);
+}
+
+bool PermissionRequestManager::IsCurrentRequestBraveWalletInitiated() const {
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+  if (!IsRequestInProgress()) {
+    return false;
+  }
+  const RequestType request_type = requests_.front()->request_type();
+  return request_type == RequestType::kBraveEthereum ||
+         request_type == RequestType::kBraveSolana ||
+         request_type == RequestType::kBraveCardano;
+#else
+  return false;
+#endif
 }
 
 // Accept/Deny/Cancel each sub-request, total size of all passed in requests
