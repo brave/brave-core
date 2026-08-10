@@ -51,6 +51,9 @@ CORE_EXPORT BraveFarblingLevel
 GetBraveFarblingLevelFor(ExecutionContext* context,
                          ContentSettingsType webcompat_settings_type,
                          BraveFarblingLevel default_value);
+// TODO(https://github.com/brave/brave-browser/issues/58021): This method would
+// be removed as it only concerns with aggressive mode which is only behind a
+// feature flag and will be removed soon.
 CORE_EXPORT bool AllowFingerprinting(
     ExecutionContext* context,
     ContentSettingsType webcompat_settings_type);
