@@ -40,22 +40,39 @@ const char kUserScriptResultInitialExecutionPropName[] = "initial_execution";
 const char kUserScriptParamCountryIdPropName[] = "countryId";
 constexpr int kUnsetScriptVersion = -1;
 
+// Represents the types of scripts that can be injected into a webpage.
+enum class ScriptSourceType {
+  kUserScript = 0,
+  kPolicyScript = 1,
+};
+
 // Prepends a JSON-serialized parameters dictionary to `script` as
 // `window.params`. If serialization fails, the original script is returned
-// unmodified, meaning it executes with no parameters. window.params = {
+// unmodified, meaning it executes with no parameters.
+// window.params = {
 //    "tasks": [ {
 //       "description": "Ads Preferences",
 //       "url": "https://a.test/settings/ads_preferences"
 //    } ]
 // };
-// <policy script, which uses parameters to apply PSST settings selected by the
-// user>;
-std::string MaybeAddParamsToScript(const std::string& script,
+std::string MaybeAddParamsToScript(const MatchedRule& current_rule,
+                                   const ScriptSourceType script_source_type,
                                    base::DictValue params_dict) {
+  std::string script;
+  if (script_source_type == ScriptSourceType::kUserScript) {
+    script = current_rule.user_script();
+  } else if (script_source_type == ScriptSourceType::kPolicyScript) {
+    script = current_rule.policy_script();
+  } else {
+    NOTREACHED();
+  }
+
   std::optional<std::string> params_json = base::WriteJsonWithOptions(
       params_dict, base::JSONWriter::OPTIONS_PRETTY_PRINT);
   if (!params_json) {
-    VLOG(1) << "PSST: failed to serialize params for rule";
+    VLOG(1) << "PSST: failed to serialize params for rule "
+            << current_rule.name() << " (version " << current_rule.version()
+            << ")";
     return script;
   }
 
@@ -210,12 +227,11 @@ void PsstTabWebContentsObserver::InsertUserScript(
   if (!rule) {
     return;
   }
-  base::DictValue params_dict;
-  params_dict.Set(
-      kUserScriptParamCountryIdPropName,
-      variations_service_ ? variations_service_->GetLatestCountry() : "");
-  const std::string user_script_with_param =
-      MaybeAddParamsToScript(rule->user_script(), std::move(params_dict));
+  const std::string user_script_with_param = MaybeAddParamsToScript(
+      *rule, ScriptSourceType::kUserScript,
+      base::DictValue().Set(
+          kUserScriptParamCountryIdPropName,
+          variations_service_ ? variations_service_->GetLatestCountry() : ""));
   RunWithTimeout(
       user_script_with_param, false,
       base::BindOnce(&PsstTabWebContentsObserver::OnUserScriptResult,
@@ -294,7 +310,7 @@ void PsstTabWebContentsObserver::OnUserAcceptedPsstSettings(
   PrepareParametersForPolicyExecution(user_script_result_dict, perform_for_uids,
                                       is_initial);
   RunWithTimeout(
-      MaybeAddParamsToScript(rule->policy_script(),
+      MaybeAddParamsToScript(*rule, ScriptSourceType::kPolicyScript,
                              std::move(user_script_result_dict)),
       true,
       base::BindOnce(&PsstTabWebContentsObserver::OnPolicyScriptResult,

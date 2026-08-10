@@ -67,6 +67,13 @@ class PsstTabWebContentsObserver : public tabs::ContentsObservingTabFeature,
         const std::string& user_id) = 0;
   };
 
+  // Creates an observer for `tab`'s web contents, or returns null for
+  // incognito/guest profiles or when PSST is disabled. The returned observer
+  // keeps a reference to `tab` for its lifetime. `browser_context`,
+  // `psst_settings_service`, and `ui_delegate` must not be null.
+  // `variations_service` may be null, in which case the country used for
+  // rule matching is left empty. `world_id` is the isolated world that PSST
+  // scripts are injected into.
   static std::unique_ptr<PsstTabWebContentsObserver> MaybeCreateForWebContents(
       tabs::TabInterface& tab,
       content::BrowserContext* browser_context,

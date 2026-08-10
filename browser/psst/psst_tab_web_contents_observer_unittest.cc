@@ -12,6 +12,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/command_line.h"
 #include "base/files/file_path.h"
 #include "base/json/json_writer.h"
 #include "base/memory/ptr_util.h"
@@ -20,6 +21,7 @@
 #include "base/strings/strcat.h"
 #include "base/test/bind.h"
 #include "base/test/mock_callback.h"
+#include "base/test/scoped_command_line.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/test_future.h"
 #include "base/time/time.h"
@@ -37,6 +39,7 @@
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "components/tabs/public/mock_tab_interface.h"
 #include "components/variations/service/test_variations_service.h"
+#include "components/variations/variations_switches.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/navigation_handle.h"
@@ -285,6 +288,16 @@ class PsstTabWebContentsObserverUnitTestBase
     return inject_async_script_callback_;
   }
 
+  // Sets up an expectation that `user_script` is injected. Production code
+  // always prepends a countryId params block to the user script before
+  // injecting it (see PsstTabWebContentsObserver::InsertUserScript), so this
+  // wraps `user_script` the same way tests don't need to know about that
+  // detail.
+  auto& ExpectUserScriptInjected(const std::string& user_script) {
+    return EXPECT_CALL(inject_script_callback_,
+                       Run(WithCountryIdParams(user_script), _));
+  }
+
   MockUiDelegate& ui_delegate() { return *ui_delegate_; }
 
   tabs::MockTabInterface& mock_tab_interface() { return mock_tab; }
@@ -428,8 +441,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
       .Times(2);
 
   base::test::TestFuture<base::Value> first_nav_user_script_insert_future;
-  EXPECT_CALL(inject_script_callback(),
-              Run(WithCountryIdParams(first_nav_user_script), _))
+  ExpectUserScriptInjected(first_nav_user_script)
       .WillOnce(InsertScriptInPageCallback(&first_nav_user_script_insert_future,
                                            base::Value()));
 
@@ -450,8 +462,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
           CreateMatchedRule(second_nav_user_script, policy_script_)));
 
   base::test::TestFuture<base::Value> second_nav_user_script_insert_future;
-  EXPECT_CALL(inject_script_callback(),
-              Run(WithCountryIdParams(second_nav_user_script), _))
+  ExpectUserScriptInjected(second_nav_user_script)
       .WillOnce(InsertScriptInPageCallback(
           &second_nav_user_script_insert_future, base::Value()));
   EXPECT_CALL(inject_script_callback(), Run(policy_script_, _)).Times(0);
@@ -486,8 +497,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   // Hold the user script result until after the second navigation commits.
   PsstTabWebContentsObserver::InsertScriptInPageCallback
       held_user_script_callback;
-  EXPECT_CALL(inject_script_callback(),
-              Run(WithCountryIdParams(user_script_), _))
+  ExpectUserScriptInjected(user_script_)
       .WillOnce(HoldInsertScriptInPageCallback(&held_user_script_callback));
 
   // The stale result must not reach the UI or trigger the policy script.
@@ -551,8 +561,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
 
   PsstTabWebContentsObserver::InsertScriptInPageCallback
       held_user_script_callback;
-  EXPECT_CALL(inject_script_callback(),
-              Run(WithCountryIdParams(user_script_), _))
+  ExpectUserScriptInjected(user_script_)
       .WillOnce(HoldInsertScriptInPageCallback(&held_user_script_callback));
 
   EXPECT_CALL(ui_delegate(), GetPsstWebsiteSettings).Times(0);
@@ -608,8 +617,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest, ShouldProcessRedirectsNavigations) {
 
   base::test::TestFuture<base::Value> user_script_insert_future;
   auto value = base::Value();
-  EXPECT_CALL(inject_script_callback(),
-              Run(WithCountryIdParams(user_script_), _))
+  ExpectUserScriptInjected(user_script_)
       .WillOnce(InsertScriptInPageCallback(&user_script_insert_future,
                                            std::move(value)));
   EXPECT_CALL(inject_script_callback(), Run(policy_script_, _)).Times(0);
@@ -684,6 +692,40 @@ TEST_F(PsstTabWebContentsObserverUnitTest, DefaultPrefEnabledShouldProcess) {
   observer.Wait();
 }
 
+// Verifies the country id reported by the variations service is threaded
+// through to the injected user script, ensuring the wiring between
+// PsstTabWebContentsObserver and VariationsService is intact.
+TEST_F(PsstTabWebContentsObserverUnitTest,
+       UserScriptInjectedWithCountryIdFromVariationsService) {
+  const std::string country_id = "us";
+  base::test::ScopedCommandLine scoped_command_line;
+  scoped_command_line.GetProcessCommandLine()->AppendSwitchASCII(
+      variations::switches::kVariationsOverrideCountry, country_id);
+  ASSERT_EQ(country_id, variations_service()->GetLatestCountry());
+
+  base::RunLoop check_loop;
+  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url_, _))
+      .WillOnce(CheckIfMatchCallback(
+          &check_loop, CreateMatchedRule(user_script_, policy_script_)));
+
+  EXPECT_CALL(ui_delegate(), UpdateTasks(100, _, mojom::PsstStatus::kFailed))
+      .Times(1);
+
+  base::test::TestFuture<base::Value> user_script_insert_future;
+  EXPECT_CALL(inject_script_callback(),
+              Run(WithCountryIdParams(user_script_, country_id), _))
+      .WillOnce(InsertScriptInPageCallback(&user_script_insert_future,
+                                           base::Value()));
+
+  DocumentOnLoadObserver observer(web_contents());
+  content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
+                                                             url_);
+  observer.Wait();
+
+  check_loop.Run();
+  EXPECT_EQ(base::Value(), user_script_insert_future.Take());
+}
+
 TEST_F(PsstTabWebContentsObserverUnitTest, PrefDisabledDontProcess) {
   psst_settings_service()->SetPsstEnabled(false);
   EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url_, _)).Times(0);
@@ -719,8 +761,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
       .Times(1);
 
   // User script result is an empty value
-  EXPECT_CALL(inject_script_callback(),
-              Run(WithCountryIdParams(user_script_), _))
+  ExpectUserScriptInjected(user_script_)
       .WillOnce(InsertScriptInPageCallback(&user_script_insert_future,
                                            base::Value()));
   // No policy script executed
@@ -750,8 +791,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   base::test::TestFuture<base::Value> user_script_insert_future;
 
   // User script result is an empty dictionary
-  EXPECT_CALL(inject_script_callback(),
-              Run(WithCountryIdParams(user_script_), _))
+  ExpectUserScriptInjected(user_script_)
       .WillOnce(InsertScriptInPageCallback(&user_script_insert_future,
                                            base::Value(base::DictValue())));
   // No policy script executed
@@ -779,8 +819,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
       .Times(1);
 
   // User script result is an empty dictionary
-  EXPECT_CALL(inject_script_callback(),
-              Run(WithCountryIdParams(user_script_), _))
+  ExpectUserScriptInjected(user_script_)
       .WillOnce(InsertScriptInPageCallback(&user_script_insert_future,
                                            base::Value(base::DictValue())));
   // No policy script executed
@@ -839,8 +878,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   EXPECT_CALL(ui_delegate(),
               GetPsstWebsiteSettings(url::Origin::Create(url_), user_id_));
 
-  EXPECT_CALL(inject_script_callback(),
-              Run(WithCountryIdParams(user_script_), _))
+  ExpectUserScriptInjected(user_script_)
       .WillOnce(InsertScriptInPageCallback(&user_script_insert_future,
                                            script_params.Clone()));
 
@@ -903,8 +941,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
     EXPECT_CALL(ui_delegate(), UpdateTasks(100, _, mojom::PsstStatus::kFailed))
         .Times(1);
 
-    EXPECT_CALL(inject_script_callback(),
-                Run(WithCountryIdParams(user_script_), _))
+    ExpectUserScriptInjected(user_script_)
         .WillOnce(InsertScriptInPageCallback(
             &user_script_insert_future, test_case.user_script_result.Clone()));
     // No policy script executed
@@ -954,8 +991,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   EXPECT_CALL(ui_delegate(), UpdateTasks(100, _, mojom::PsstStatus::kFailed))
       .Times(1);
 
-  EXPECT_CALL(inject_script_callback(),
-              Run(WithCountryIdParams(user_script_), _))
+  ExpectUserScriptInjected(user_script_)
       .WillOnce(InsertScriptInPageCallback(&user_script_insert_future,
                                            script_params.Clone()));
 
@@ -1043,8 +1079,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest, UiDelegateUpdateTasksCalled) {
                                         .Set("description", task_description))))
           .Set("result", true));
 
-  EXPECT_CALL(inject_script_callback(),
-              Run(WithCountryIdParams(user_script_), _))
+  ExpectUserScriptInjected(user_script_)
       .WillOnce(InsertScriptInPageCallback(&user_script_insert_future,
                                            script_params.Clone()));
 
@@ -1119,8 +1154,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   auto script_params = base::Value(base::DictValue().Set("user_id", "value"));
 
   // User script's callback is delayed, causing the flow to fail
-  EXPECT_CALL(inject_script_callback(),
-              Run(WithCountryIdParams(user_script_), _))
+  ExpectUserScriptInjected(user_script_)
       .WillOnce(InsertScriptInPageDelayedCallback(
           &user_script_insert_future, task_environment(),
           kScriptTimeout.InSeconds() + 1, script_params.Clone()));
@@ -1181,8 +1215,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
         return settings.Clone();
       });
 
-  EXPECT_CALL(inject_script_callback(),
-              Run(WithCountryIdParams(user_script_), _))
+  ExpectUserScriptInjected(user_script_)
       .WillOnce(InsertScriptInPageCallback(&user_script_insert_future,
                                            script_params.Clone()));
 
