@@ -77,6 +77,8 @@ const HISTORY: Mojom.ConversationTurn[] = [
     },
     modelKey: '1',
     nearVerificationStatus: undefined,
+    threadUuid: undefined,
+    childThreadUuids: [],
   },
   {
     uuid: 'skill-response',
@@ -98,6 +100,8 @@ const HISTORY: Mojom.ConversationTurn[] = [
     skill: undefined,
     modelKey: '1',
     nearVerificationStatus: undefined,
+    threadUuid: undefined,
+    childThreadUuids: [],
   },
   {
     uuid: 'turn-uuid',
@@ -114,6 +118,8 @@ const HISTORY: Mojom.ConversationTurn[] = [
     skill: undefined,
     modelKey: '1',
     nearVerificationStatus: undefined,
+    threadUuid: undefined,
+    childThreadUuids: [],
   },
   {
     uuid: undefined,
@@ -134,6 +140,8 @@ const HISTORY: Mojom.ConversationTurn[] = [
     skill: undefined,
     modelKey: '1',
     nearVerificationStatus: undefined,
+    threadUuid: undefined,
+    childThreadUuids: [],
   },
   {
     uuid: undefined,
@@ -150,6 +158,8 @@ const HISTORY: Mojom.ConversationTurn[] = [
     skill: undefined,
     modelKey: '1',
     nearVerificationStatus: undefined,
+    threadUuid: undefined,
+    childThreadUuids: [],
   },
   // Show how a Task is displayed within history. Use the AssistantTask story for
   // viewing an active Task.
@@ -169,6 +179,8 @@ const HISTORY: Mojom.ConversationTurn[] = [
     skill: undefined,
     modelKey: '1',
     nearVerificationStatus: undefined,
+    threadUuid: undefined,
+    childThreadUuids: [],
   },
   {
     uuid: undefined,
@@ -189,6 +201,8 @@ const HISTORY: Mojom.ConversationTurn[] = [
     skill: undefined,
     modelKey: '1',
     nearVerificationStatus: undefined,
+    threadUuid: undefined,
+    childThreadUuids: [],
   },
   {
     uuid: undefined,
@@ -205,6 +219,8 @@ const HISTORY: Mojom.ConversationTurn[] = [
     skill: undefined,
     modelKey: '1',
     nearVerificationStatus: undefined,
+    threadUuid: undefined,
+    childThreadUuids: [],
   },
   {
     uuid: undefined,
@@ -225,6 +241,8 @@ const HISTORY: Mojom.ConversationTurn[] = [
     skill: undefined,
     modelKey: '1',
     nearVerificationStatus: undefined,
+    threadUuid: undefined,
+    childThreadUuids: [],
   },
   {
     uuid: undefined,
@@ -241,6 +259,8 @@ const HISTORY: Mojom.ConversationTurn[] = [
     skill: undefined,
     modelKey: '1',
     nearVerificationStatus: undefined,
+    threadUuid: undefined,
+    childThreadUuids: [],
   },
   {
     uuid: undefined,
@@ -276,6 +296,8 @@ const HISTORY: Mojom.ConversationTurn[] = [
     skill: undefined,
     modelKey: '1',
     nearVerificationStatus: undefined,
+    threadUuid: undefined,
+    childThreadUuids: [],
   },
   {
     uuid: undefined,
@@ -293,6 +315,8 @@ const HISTORY: Mojom.ConversationTurn[] = [
     skill: undefined,
     modelKey: '1',
     nearVerificationStatus: undefined,
+    threadUuid: undefined,
+    childThreadUuids: [],
   },
   {
     uuid: undefined,
@@ -341,6 +365,8 @@ const HISTORY: Mojom.ConversationTurn[] = [
     skill: undefined,
     modelKey: '1',
     nearVerificationStatus: undefined,
+    threadUuid: undefined,
+    childThreadUuids: [],
   },
   {
     uuid: undefined,
@@ -365,6 +391,8 @@ const HISTORY: Mojom.ConversationTurn[] = [
         skill: undefined,
         modelKey: '1',
         nearVerificationStatus: undefined,
+        threadUuid: undefined,
+        childThreadUuids: [],
       },
     ],
     createdTime: { internalValue: BigInt('13278618001000000') },
@@ -374,6 +402,8 @@ const HISTORY: Mojom.ConversationTurn[] = [
     skill: undefined,
     modelKey: '1',
     nearVerificationStatus: undefined,
+    threadUuid: undefined,
+    childThreadUuids: [],
   },
   {
     uuid: undefined,
@@ -396,6 +426,8 @@ const HISTORY: Mojom.ConversationTurn[] = [
     skill: undefined,
     modelKey: '1',
     nearVerificationStatus: undefined,
+    threadUuid: undefined,
+    childThreadUuids: [],
   },
   {
     uuid: undefined,
@@ -420,6 +452,8 @@ const HISTORY: Mojom.ConversationTurn[] = [
     skill: undefined,
     modelKey: '1',
     nearVerificationStatus: undefined,
+    threadUuid: undefined,
+    childThreadUuids: [],
   },
   {
     uuid: undefined,
@@ -436,6 +470,8 @@ const HISTORY: Mojom.ConversationTurn[] = [
     skill: undefined,
     modelKey: '1',
     nearVerificationStatus: undefined,
+    threadUuid: undefined,
+    childThreadUuids: [],
   },
   {
     uuid: undefined,
@@ -467,6 +503,8 @@ const HISTORY: Mojom.ConversationTurn[] = [
     skill: undefined,
     modelKey: '1',
     nearVerificationStatus: undefined,
+    threadUuid: undefined,
+    childThreadUuids: [],
   },
   {
     uuid: undefined,
@@ -488,6 +526,8 @@ const HISTORY: Mojom.ConversationTurn[] = [
     skill: undefined,
     modelKey: '1',
     nearVerificationStatus: undefined,
+    threadUuid: undefined,
+    childThreadUuids: [],
   },
   {
     uuid: undefined,
@@ -526,6 +566,8 @@ const HISTORY: Mojom.ConversationTurn[] = [
     skill: undefined,
     modelKey: '1',
     nearVerificationStatus: undefined,
+    threadUuid: undefined,
+    childThreadUuids: [],
   },
   {
     uuid: undefined,
@@ -546,6 +588,8 @@ const HISTORY: Mojom.ConversationTurn[] = [
     skill: undefined,
     modelKey: '1',
     nearVerificationStatus: undefined,
+    threadUuid: undefined,
+    childThreadUuids: [],
   },
   {
     uuid: undefined,
@@ -581,6 +625,8 @@ const HISTORY: Mojom.ConversationTurn[] = [
     skill: undefined,
     modelKey: '1',
     nearVerificationStatus: undefined,
+    threadUuid: undefined,
+    childThreadUuids: [],
   },
   // Show that tool use events are NOT interactive if they are not the last entry in the
   // group of assistant conversation entries.
@@ -599,6 +645,8 @@ const HISTORY: Mojom.ConversationTurn[] = [
     skill: undefined,
     modelKey: '1',
     nearVerificationStatus: undefined,
+    threadUuid: undefined,
+    childThreadUuids: [],
   },
   // Show that single or multipletool use events are interactive if they are the
   // last entry in thegroup of assistant conversation entries.
@@ -620,6 +668,8 @@ const HISTORY: Mojom.ConversationTurn[] = [
     skill: undefined,
     modelKey: '1',
     nearVerificationStatus: undefined,
+    threadUuid: undefined,
+    childThreadUuids: [],
   },
 ]
 

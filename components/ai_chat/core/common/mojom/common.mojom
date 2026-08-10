@@ -610,15 +610,9 @@ struct Thread {
   // The conversation entry this thread originates from.
   string origin_conversation_entry_uuid;
 
-  // TODO(djandries): currently unused, add title generation for threads
-  string title;
-
   uint64 total_tokens;
   uint64 trimmed_tokens;
   
-  // TODO(djandries): currently unused, port entry edits over to threads
-  bool is_edit = false;
-
   uint32 entry_count;
 };
 

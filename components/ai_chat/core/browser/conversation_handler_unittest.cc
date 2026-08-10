@@ -354,7 +354,7 @@ class ConversationHandlerUnitTest : public testing::Test {
           entries[i].first /* text */, std::nullopt /* prompt */,
           std::nullopt /* selected_text */, std::move(events),
           base::Time::Now(), std::nullopt /* edits */,
-          std::nullopt /* uploed_images */, nullptr /* skill */,
+          std::nullopt /* uploaded_images */, nullptr /* skill */,
           entries[i].second /* from_brave_search_SERP */,
           std::nullopt /* model_key */, nullptr /* near_verification_status */,
           std::vector<std::string>{} /* child_thread_uuids */);
