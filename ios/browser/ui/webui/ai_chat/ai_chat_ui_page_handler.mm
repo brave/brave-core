@@ -6,14 +6,12 @@
 #include "brave/ios/browser/ui/webui/ai_chat/ai_chat_ui_page_handler.h"
 
 #import <Foundation/Foundation.h>
-#import <UIKit/UIKit.h>
 
 #include <memory>
 #include <optional>
 #include <string>
 #include <vector>
 
-#include "base/apple/foundation_util.h"
 #include "base/containers/span.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_forward.h"
@@ -44,6 +42,7 @@
 #include "brave/ios/browser/misc_metrics/profile_misc_metrics_service.h"
 #include "brave/ios/browser/misc_metrics/profile_misc_metrics_service_factory.h"
 #include "brave/ios/browser/ui/webui/ai_chat/associated_url_content.h"
+#include "brave/ios/browser/ui/webui/ai_chat/image_utils.h"
 #include "components/favicon/core/favicon_service.h"
 #include "components/favicon_base/favicon_types.h"
 #include "components/grit/brave_components_webui_strings.h"
@@ -57,12 +56,9 @@
 #include "ios/web/public/web_state_observer.h"
 #include "ios/web_view/internal/cwv_web_view_internal.h"
 #include "net/base/apple/url_conversions.h"
-#include "skia/ext/skia_utils_ios.h"
-#include "third_party/skia/include/core/SkBitmap.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/page_transition_types.h"
 #include "ui/base/webui/web_ui_util.h"
-#include "ui/gfx/codec/png_codec.h"
 
 namespace ai_chat {
 
@@ -71,31 +67,9 @@ namespace {
 void DecodeAndScaleImage(
     const std::vector<uint8_t>& file_data,
     base::OnceCallback<void(std::optional<std::vector<uint8_t>>)> callback) {
-  NSData* ns_data = [NSData dataWithBytes:file_data.data()
-                                   length:file_data.size()];
-  auto encode_image = base::BindOnce(
-      [](NSData* data) -> std::optional<std::vector<uint8_t>> {
-        CGSize target_size = CGSizeMake(1024, 768);
-        UIImage* image = [[UIImage alloc] initWithData:data];
-        if (image.size.width > target_size.width ||
-            image.size.height > target_size.height) {
-          image = [image imageByPreparingThumbnailOfSize:target_size];
-        }
-        if (!image) {
-          return std::nullopt;
-        }
-        NSData* png_data = UIImagePNGRepresentation(image);
-        if (!png_data) {
-          return std::nullopt;
-        }
-        auto png_span = base::apple::NSDataToSpan(png_data);
-        return std::vector<uint8_t>(png_span.begin(), png_span.end());
-      },
-      ns_data);
-
-  base::ThreadPool::PostTaskAndReplyWithResult(FROM_HERE, {base::MayBlock()},
-                                               std::move(encode_image),
-                                               std::move(callback));
+  base::ThreadPool::PostTaskAndReplyWithResult(
+      FROM_HERE, {base::MayBlock()},
+      base::BindOnce(&DecodeAndScaleImageData, file_data), std::move(callback));
 }
 
 void OnFaviconRawBitmapAvailable(
