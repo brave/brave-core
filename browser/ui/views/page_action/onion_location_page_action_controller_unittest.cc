@@ -10,6 +10,7 @@
 
 #include "base/functional/bind.h"
 #include "base/scoped_observation.h"
+#include "brave/browser/ui/views/page_action/page_action_test_observer.h"
 #include "brave/browser/ui/views/page_action/test_tab_interface.h"
 #include "brave/components/tor/onion_location_tab_helper.h"
 #include "brave/grit/brave_generated_resources.h"
@@ -31,30 +32,6 @@
 namespace page_actions {
 
 namespace {
-
-// Records the most recent state pushed into the action's PageActionModel.
-class TestObserver : public PageActionModelObserver {
- public:
-  TestObserver() = default;
-  ~TestObserver() override = default;
-
-  // PageActionModelObserver:
-  void OnPageActionModelChanged(
-      const PageActionModelInterface& model) override {
-    visible_ = model.GetVisible();
-    tooltip_text_ = model.GetTooltipText();
-    ++model_change_count_;
-  }
-
-  bool visible() const { return visible_; }
-  const std::u16string& tooltip_text() const { return tooltip_text_; }
-  int model_change_count() const { return model_change_count_; }
-
- private:
-  bool visible_ = false;
-  std::u16string tooltip_text_;
-  int model_change_count_ = 0;
-};
 
 void AttachTabHelpers(content::WebContents* contents) {
   tor::OnionLocationTabHelper::CreateForWebContents(contents);
@@ -125,7 +102,7 @@ class OnionLocationPageActionControllerTest : public testing::Test {
   TestTabInterface& tab_interface() { return *tab_interface_; }
 
   OnionLocationPageActionController* controller() { return controller_.get(); }
-  const TestObserver& observer() const { return observer_; }
+  const PageActionTestObserver& observer() const { return observer_; }
 
  private:
   content::BrowserTaskEnvironment task_environment_;
@@ -138,7 +115,7 @@ class OnionLocationPageActionControllerTest : public testing::Test {
   std::unique_ptr<actions::ActionItem> action_item_;
   base::CallbackListSubscription action_item_subscription_;
 
-  TestObserver observer_;
+  PageActionTestObserver observer_;
   base::ScopedObservation<PageActionModelInterface, PageActionModelObserver>
       observation_{&observer_};
 

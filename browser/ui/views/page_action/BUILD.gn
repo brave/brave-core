@@ -126,12 +126,15 @@ source_set("unit_tests") {
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
   sources = [
+    "page_action_test_observer.cc",
+    "page_action_test_observer.h",
     "page_action_view_unittest.cc",
     "test_tab_interface.cc",
     "test_tab_interface.h",
   ]
   deps = [
     "//base",
+    "//chrome/browser/ui/page_action",
     "//chrome/browser/ui/page_action:test_support",
     "//chrome/browser/ui/views/page_action",
     "//chrome/browser/ui/views/page_action:test_support",
