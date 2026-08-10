@@ -5,9 +5,11 @@
 
 package org.chromium.chrome.browser.tab_group_sync;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
@@ -57,7 +59,8 @@ public class BraveSyncedTabGroupHelperUnitTest {
     @Mock private TabGroupSyncService mTabGroupSyncService;
     @Mock private TabGroupUiActionHandler mTabGroupUiActionHandler;
     @Mock private PrefService mPrefService;
-    @Mock private Tab mTab;
+    @Mock private Tab mSyncedGroupTab;
+    @Mock private Tab mLocalOnlyGroupTab;
 
     @After
     public void tearDown() {
@@ -94,7 +97,10 @@ public class BraveSyncedTabGroupHelperUnitTest {
     @Test
     public void testHidesTheSyncedGroupsAndKeepsTheLocalOnes() {
         when(mTabModel.getAllTabGroupIds()).thenReturn(tabGroupIds(TAB_GROUP_ID_1, TAB_GROUP_ID_2));
-        when(mTabModel.getTabsInGroup(TAB_GROUP_ID_1)).thenReturn(List.of(mTab));
+        // Both groups hold a tab, so that being in sync is the only thing that tells them apart:
+        // an empty group is skipped for having nothing to close, which would hide the check.
+        when(mTabModel.getTabsInGroup(TAB_GROUP_ID_1)).thenReturn(List.of(mSyncedGroupTab));
+        when(mTabModel.getTabsInGroup(TAB_GROUP_ID_2)).thenReturn(List.of(mLocalOnlyGroupTab));
         when(mTabModel.getTabRemover()).thenReturn(mTabRemover);
         when(mTabGroupSyncService.getGroup(new LocalTabGroupId(TAB_GROUP_ID_1)))
                 .thenReturn(savedTabGroup(SYNC_ID_1));
@@ -107,6 +113,7 @@ public class BraveSyncedTabGroupHelperUnitTest {
                 ArgumentCaptor.forClass(TabClosureParams.class);
         verify(mTabRemover).closeTabs(paramsCaptor.capture(), eq(false));
         TabClosureParams params = paramsCaptor.getValue();
+        assertEquals(List.of(mSyncedGroupTab), params.tabs);
         assertTrue(params.hideTabGroups);
         assertTrue(params.isTabGroup);
     }
@@ -114,6 +121,10 @@ public class BraveSyncedTabGroupHelperUnitTest {
     @Test
     public void testHidesNothingWithoutSyncedGroups() {
         when(mTabModel.getAllTabGroupIds()).thenReturn(tabGroupIds(TAB_GROUP_ID_1));
+        // The group has a tab, so nothing but the missing sync entry can keep it open. The remover
+        // is only there to keep a regression from failing on a null one instead of on the check.
+        when(mTabModel.getTabsInGroup(TAB_GROUP_ID_1)).thenReturn(List.of(mLocalOnlyGroupTab));
+        lenient().when(mTabModel.getTabRemover()).thenReturn(mTabRemover);
 
         BraveSyncedTabGroupHelper.hideSyncedTabGroups(mTabModel, mTabGroupSyncService);
 

@@ -136,6 +136,20 @@ public class BraveTabsAndTabGroupsSettings extends BravePreferenceFragment {
     }
 
     private void setTabGroupsEnabled(boolean enabled) {
+        setTabGroupsEnabled(enabled, /* ungroupExistingGroups= */ false);
+    }
+
+    /**
+     * Applies the "Enable tab groups" switch. With {@code ungroupExistingGroups} the open tab
+     * groups are ungrouped first, which is what the confirmation dialog offers when tab group sync
+     * is inactive. Ungrouping has to come before the setting flips: disabling tab groups closes
+     * every group that sync knows about, and every group created on this device is put there even
+     * when tab groups are not being synced, so by then there would be nothing left to ungroup.
+     */
+    private void setTabGroupsEnabled(boolean enabled, boolean ungroupExistingGroups) {
+        if (ungroupExistingGroups) {
+            BraveTabGroupHelper.ungroupAllTabGroups();
+        }
         BraveTabUiFeatureUtilities.setTabGroupsEnabled(enabled);
         updateTabGroupDependentPreferences();
         // Disabling tab groups hides the synced ones, enabling them brings them back.
@@ -154,8 +168,7 @@ public class BraveTabsAndTabGroupsSettings extends BravePreferenceFragment {
                                 return;
                             }
                             enableTabGroupsSwitch.setChecked(false);
-                            setTabGroupsEnabled(false);
-                            BraveTabGroupHelper.ungroupAllTabGroups();
+                            setTabGroupsEnabled(false, /* ungroupExistingGroups= */ true);
                         });
         PropertyModel dialog =
                 new PropertyModel.Builder(ModalDialogProperties.ALL_KEYS)
