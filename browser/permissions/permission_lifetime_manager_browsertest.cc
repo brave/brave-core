@@ -47,6 +47,7 @@
 #include "net/base/features.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
+#include "services/device/public/cpp/test/scoped_geolocation_overrider.h"
 #include "url/gurl.h"
 #include "url/origin.h"
 
@@ -232,6 +233,9 @@ class PermissionLifetimeManagerBrowserTest : public InProcessBrowserTest {
   }
 
  protected:
+  // Prevents the real system location provider from being started when the
+  // geolocation permission is granted.
+  device::ScopedGeolocationOverrider geolocation_overrider_{0, 0};
   content::ContentMockCertVerifier mock_cert_verifier_;
   net::test_server::EmbeddedTestServer https_server_;
   std::unique_ptr<MockPermissionLifetimePromptFactory> prompt_factory_;
