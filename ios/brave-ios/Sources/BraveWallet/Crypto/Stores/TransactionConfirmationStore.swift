@@ -1261,12 +1261,9 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
       return
     }
 
-    let useShieldedPool =
-      zecTxData.zcashTokenType == .orchard
-      || zecTxData.zcashTokenType == .ironwood
     let (zecTxType, zecAddressError) = await zcashWalletService.transactionType(
       accountId: activeParsedTransaction.fromAccountInfo.accountId,
-      useShieldedPool: useShieldedPool,
+      fromTokenType: zecTxData.zcashTokenType,
       recipient: activeParsedTransaction.toAddress
     )
 
@@ -1274,9 +1271,11 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
       confirmButtonTitle = Strings.Wallet.confirm
       return
     }
-    if zecTxType == .shielding {
+    if zecTxType == .shieldingIronwood {
       confirmButtonTitle = Strings.Wallet.shieldZEC
-    } else if zecTxType == .unshielding {
+    } else if zecTxType == .unshieldingOrchard
+      || zecTxType == .unshieldingIronwood
+    {
       confirmButtonTitle = Strings.Wallet.unshieldZEC
     } else {
       confirmButtonTitle = Strings.Wallet.confirm

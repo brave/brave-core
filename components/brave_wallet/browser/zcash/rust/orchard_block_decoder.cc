@@ -33,16 +33,10 @@ std::unique_ptr<OrchardDecodedBlocksBundle> OrchardBlockDecoder::DecodePool(
     const OrchardFullViewKey& fvk,
     const ::brave_wallet::OrchardTreeState& tree_state,
     const std::vector<::brave_wallet::zcash::mojom::CompactBlockPtr>& blocks,
-    ::brave_wallet::OrchardPool pool,
-    uint32_t ironwood_activation_height) {
+    ::brave_wallet::OrchardPool pool) {
   const bool is_ironwood = pool == ::brave_wallet::OrchardPool::kIronwood;
   ::rust::Vec<orchard::CxxOrchardCompactAction> compact_actions;
   for (const auto& block : blocks) {
-    // Ironwood commitments only exist from the activation height onward. Skip
-    // pre-activation blocks so they never contribute to the Ironwood tree.
-    if (is_ironwood && block->height < ironwood_activation_height) {
-      continue;
-    }
     bool block_has_action = false;
     for (const auto& tx : block->vtx) {
       const auto& actions =
@@ -95,17 +89,14 @@ OrchardBlockDecoder::Result OrchardBlockDecoder::DecodeBlocks(
     const ::brave_wallet::OrchardTreeState& orchard_tree_state,
     const std::vector<::brave_wallet::zcash::mojom::CompactBlockPtr>& blocks,
     base::optional_ref<const ::brave_wallet::OrchardTreeState>
-        ironwood_tree_state,
-    uint32_t ironwood_activation_height) {
+        ironwood_tree_state) {
   base::AssertLongCPUWorkAllowed();
   Result result;
-  // Orchard processes every block; the activation cut does not apply (0).
   result.orchard =
-      DecodePool(fvk, orchard_tree_state, blocks, OrchardPool::kOrchard, 0);
+      DecodePool(fvk, orchard_tree_state, blocks, OrchardPool::kOrchard);
   if (ironwood_tree_state.has_value()) {
     result.ironwood =
-        DecodePool(fvk, *ironwood_tree_state, blocks, OrchardPool::kIronwood,
-                   ironwood_activation_height);
+        DecodePool(fvk, *ironwood_tree_state, blocks, OrchardPool::kIronwood);
   }
   return result;
 }
