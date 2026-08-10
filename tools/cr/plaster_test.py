@@ -3186,6 +3186,197 @@ class RewriterFormsTest(unittest.TestCase):
             '    re_flag: [DOTALL]\n', 'Unrecognised substitution key')
 
 
+class RegexMacroDispatchTest(unittest.TestCase):
+    """End-to-end tests for dispatching a `regex_macro:`-style substitution
+    key (e.g. `set_feature_flag_default_state:`) to `RegexMacro`.
+
+    Every `regex_macro` op declared in `rewriters.pyl` is handled by the same
+    `RegexMacro` class (see `_regex_macro_rewriters`), so these tests exercise
+    that generic dispatch/validation path via the one macro currently shipped
+    (`set_feature_flag_default_state`), rather than the macro's own regex --
+    that is `ToggleBaseFeatureDefaultStateTest`'s job (renamed
+    `OverrideFeatureDefaultStateTest`).
+    """
+
+    def setUp(self):
+        self.fake_chromium_src = FakeChromiumRepo()
+        self.fake_chromium_src.setup()
+        self.addCleanup(self.fake_chromium_src.cleanup)
+
+    def _apply(self, name: str, source: str, yaml_body: str) -> str:
+        """Write `source`+plaster, apply, and return the rewritten source."""
+        src = Path('chrome/common/extensions/api') / name
+        self.fake_chromium_src.write_and_stage_file(
+            src, source, self.fake_chromium_src.chromium)
+        self.fake_chromium_src.commit(f'Add {name}',
+                                      self.fake_chromium_src.chromium)
+        plaster_path = plaster.PLASTER_FILES_PATH / (str(src) + '.yaml')
+        plaster_path.parent.mkdir(parents=True, exist_ok=True)
+        plaster_path.write_text(yaml_body)
+        plaster.PlasterFile(plaster_path).apply()
+        return (self.fake_chromium_src.chromium / src).read_text()
+
+    def test_macro_op_applies(self):
+        result = self._apply(
+            'feature.cc',
+            'BASE_FEATURE(kFoo, base::FEATURE_ENABLED_BY_DEFAULT);',
+            'substitutions:\n'
+            '  - description: Ship kFoo disabled.\n'
+            '    set_feature_flag_default_state:\n'
+            '      feature_name: kFoo\n'
+            '      value: base::FEATURE_DISABLED_BY_DEFAULT\n')
+        self.assertEqual(
+            result, 'BASE_FEATURE(kFoo, base::FEATURE_DISABLED_BY_DEFAULT);')
+
+    def test_registered_under_its_bare_name(self):
+        # The YAML key is the op id with its `cxx.` prefix stripped.
+        self.assertIn('set_feature_flag_default_state', plaster._REWRITERS)
+        cls = plaster._REWRITERS['set_feature_flag_default_state']
+        self.assertTrue(issubclass(cls, plaster.RegexMacro))
+        self.assertEqual(cls.OP_ID, 'cxx.set_feature_flag_default_state')
+
+    def test_help_text_lists_every_input(self):
+        # `plaster --help <macro>` must document each input, not just the
+        # macro's own top-level `description`.
+        cls = plaster._REWRITERS['set_feature_flag_default_state']
+        help_text = cls.help_text()
+        self.assertIn('Fields:', help_text)
+        self.assertIn('feature_name', help_text)
+        self.assertIn('value', help_text)
+        spec = plaster.RewritersEval.load().regex_macro(cls.OP_ID)
+        for entry in spec['inputs']:
+            self.assertIn(entry['name'], help_text)
+            self.assertIn(entry['description'], help_text)
+
+    def test_missing_required_arg_is_rejected(self):
+        spec = 'substitutions:\n' \
+              '  - description: d\n' \
+              '    set_feature_flag_default_state:\n' \
+              '      feature_name: kFoo\n'
+        with self.assertRaises(ValueError) as cm:
+            plaster.Substitution.from_yaml(spec)
+        self.assertIn('requires arg(s): value', str(cm.exception))
+
+    def test_unknown_arg_is_rejected(self):
+        spec = ('substitutions:\n'
+                '  - description: d\n'
+                '    set_feature_flag_default_state:\n'
+                '      feature_name: kFoo\n'
+                '      value: base::FEATURE_DISABLED_BY_DEFAULT\n'
+                '      bogus: x\n')
+        with self.assertRaises(ValueError) as cm:
+            plaster.Substitution.from_yaml(spec)
+        self.assertIn("Unrecognised set_feature_flag_default_state arg(s)",
+                      str(cm.exception))
+        self.assertIn("'bogus'", str(cm.exception))
+
+    def test_non_string_arg_is_rejected(self):
+        spec = ('substitutions:\n'
+                '  - description: d\n'
+                '    set_feature_flag_default_state:\n'
+                '      feature_name: kFoo\n'
+                '      value: 1\n')
+        with self.assertRaises(ValueError) as cm:
+            plaster.Substitution.from_yaml(spec)
+        self.assertIn('must be a string', str(cm.exception))
+
+    def test_unknown_macro_name_is_unrecognised(self):
+        # A name that is not a rewriter and not a declared regex macro falls
+        # through to the same "unrecognised" path as any other bad key.
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: d\n'
+            '    not_a_real_macro:\n'
+            '      feature_name: kFoo\n', 'Unknown rewriter')
+
+    def test_only_one_rewriter_allowed_alongside_a_macro(self):
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: d\n'
+            "    regex:\n"
+            "      re_pattern: 'a'\n"
+            "      replace: 'b'\n"
+            '    set_feature_flag_default_state:\n'
+            '      feature_name: kFoo\n'
+            '      value: base::FEATURE_DISABLED_BY_DEFAULT\n',
+            'Only one rewriter allowed per entry')
+
+    def test_count_mismatch_when_value_already_set(self):
+        # `RegexMacro.apply` reports the macro's own match count through the
+        # normal `count:` diagnostic, same as any other rewriter: applying an
+        # override that is already in effect is 0 matches against the
+        # default expectation of 1.
+        with self.assertRaises(plaster.PlasterApplyError) as cm:
+            self._apply(
+                'already_set.cc',
+                'BASE_FEATURE(kFoo, base::FEATURE_DISABLED_BY_DEFAULT);',
+                'substitutions:\n'
+                '  - description: Ship kFoo disabled.\n'
+                '    set_feature_flag_default_state:\n'
+                '      feature_name: kFoo\n'
+                '      value: base::FEATURE_DISABLED_BY_DEFAULT\n')
+        self.assertIn('Unexpected number of matches (0 vs 1)',
+                      str(cm.exception))
+
+    def test_rejected_on_a_non_cxx_source(self):
+        with self.assertRaises(ValueError) as cm:
+            self._apply(
+                'feature.idl', 'irrelevant', 'substitutions:\n'
+                '  - description: Ship kFoo disabled.\n'
+                '    set_feature_flag_default_state:\n'
+                '      feature_name: kFoo\n'
+                '      value: base::FEATURE_DISABLED_BY_DEFAULT\n')
+        self.assertIn(
+            'the `set_feature_flag_default_state` rewriter is only '
+            'supported for C++ sources', str(cm.exception))
+
+    def _expect_value_error(self, yaml_body: str, substr: str):
+        with self.assertRaises(ValueError) as ctx:
+            self._apply('validation.cc', 'dummy', yaml_body)
+        self.assertIn(substr, str(ctx.exception))
+
+
+class RegexMacroHelpTest(unittest.TestCase):
+    """Unit tests for `_regex_macro_help`, independent of the shipped macro.
+    """
+
+    @staticmethod
+    def _spec(description: str) -> dict:
+        return {
+            'description': description,
+            'inputs': [
+                {
+                    'name': 'foo',
+                    'description': 'The foo to use.'
+                },
+                {
+                    'name': 'bar',
+                    'description': 'The bar to use.'
+                },
+            ],
+        }
+
+    def test_fields_inserted_before_example_code_block(self):
+        help_text = plaster._regex_macro_help(
+            self._spec('Does a thing.\n\n```cpp\ncode here\n```\n'))
+        fields_index = help_text.index('Fields:')
+        example_index = help_text.index('```cpp')
+        self.assertLess(fields_index, example_index)
+        self.assertIn('- `foo` — The foo to use.', help_text)
+        self.assertIn('- `bar` — The bar to use.', help_text)
+
+    def test_fields_appended_when_no_code_block(self):
+        help_text = plaster._regex_macro_help(self._spec('Does a thing.'))
+        self.assertTrue(help_text.startswith('Does a thing.'))
+        self.assertIn('Fields:', help_text)
+        self.assertIn('- `foo` — The foo to use.', help_text)
+        self.assertIn('- `bar` — The bar to use.', help_text)
+
+    def test_field_order_matches_declared_inputs(self):
+        help_text = plaster._regex_macro_help(self._spec('Does a thing.'))
+        self.assertLess(help_text.index('`foo`'), help_text.index('`bar`'))
+
+
 class RewriterRegistryTest(unittest.TestCase):
     """The `_REWRITERS` registry drives both YAML dispatch and help."""
 
