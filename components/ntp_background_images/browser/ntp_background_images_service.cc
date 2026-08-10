@@ -237,7 +237,7 @@ std::string NTPBackgroundImagesService::GetCountryCode() const {
 
 void NTPBackgroundImagesService::RegisterSponsoredImagesComponent() {
   const std::string variations_country_code = GetCountryCode();
-  const std::optional<SponsoredImagesComponentInfo> sponsored_images_component =
+  std::optional<SponsoredImagesComponentInfo> sponsored_images_component =
       GetSponsoredImagesComponent(variations_country_code);
   if (!sponsored_images_component) {
     // Unsupported.
@@ -521,7 +521,7 @@ NTPBackgroundImagesService::HandleSponsoredSitesData(
     return std::nullopt;
   }
 
-  const std::optional<base::DictValue> dict =
+  std::optional<base::DictValue> dict =
       base::JSONReader::ReadDict(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   if (!dict) {
     return std::nullopt;
