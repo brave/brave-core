@@ -127,10 +127,20 @@ public class RateUtils {
     }
 
     /**
-     * 0. User has not opted out with "Don't show again" 1. every 30 days 2. app opened 5 days or
-     * more 3. Last 7 days 4 days used not to be consecutive 4. Any one of the following true i.
-     * User has added at least 5 bookmarks. ii. User has set Brave as default. iii.User has paid for
-     * the VPN subscription.
+     * Whether the rating prompt should be shown. All of the following must hold:
+     *
+     * <ul>
+     *   <li>User has not opted out with "Don't show again"
+     *   <li>Every 30 days
+     *   <li>App opened 5 days or more
+     *   <li>4 of the last 7 days used, not necessarily consecutive
+     *   <li>Any one of:
+     *       <ul>
+     *         <li>User has added at least 5 bookmarks
+     *         <li>User has set Brave as default
+     *         <li>User has paid for the VPN subscription
+     *       </ul>
+     * </ul>
      */
     public boolean shouldShowRateDialog(Context context) {
         if (getPrefRateDontShowAgain()) {
