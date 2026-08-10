@@ -66,12 +66,20 @@ public struct BraveVPNEnableSettingsHeaderView: View {
         Label(Strings.close, braveSystemImage: "leo.close")
           .labelStyle(.iconOnly)
           .font(.headline)
-          .foregroundStyle(Color(braveSystemName: .primitiveNeutral35))
+          .foregroundStyle(Color.white.opacity(0.25))
       }
       .padding(16)
     }
     .background(
-      Color(braveSystemName: .primitiveNeutral5),
+      LinearGradient(
+        colors: [
+          Color(braveSystemName: .primitiveNeutral15),
+          Color(braveSystemName: .primitiveNeutral5),
+        ],
+        startPoint: .top,
+        endPoint: .bottom
+      )
+      .shadow(.inner(color: Color(braveSystemName: .primitiveNeutral25), radius: 0, y: 1)),
       in: .rect(cornerRadius: 24, style: .continuous)
     )
   }
