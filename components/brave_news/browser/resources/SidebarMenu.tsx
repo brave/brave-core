@@ -39,13 +39,9 @@ const Container = styled.dialog`
   }
 `
 
-const MenuButton = styled(SettingsButton)`
-  margin-right: auto;
-`
-
 export default function SidebarMenu() {
   const dialogRef = React.useRef<HTMLDialogElement>(null)
-  return <MenuButton onClick={() => dialogRef.current?.showModal()}>
+  return <SettingsButton onClick={() => dialogRef.current?.showModal()}>
     <Icon name="hamburger-menu" />
     <Container ref={dialogRef as any} onClick={e => {
       // Close the menu on click outside.
@@ -56,5 +52,5 @@ export default function SidebarMenu() {
     }}>
       <FeedNavigation />
     </Container>
-  </MenuButton>
+  </SettingsButton>
 }
