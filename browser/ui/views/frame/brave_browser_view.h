@@ -166,6 +166,12 @@ class BraveBrowserView : public BrowserView,
   // FocusModeController::Observer:
   void OnFocusModeToggled(bool enabled) override;
 
+  // True when the active content area should always display its domain in the
+  // mini toolbar.
+  bool show_active_contents_domain_in_mini_toolbar() const {
+    return show_active_contents_domain_;
+  }
+
   BraveMultiContentsView* GetBraveMultiContentsView() const;
   void UpdateRoundedCornersUI();
   void UpdateVerticalTabStripBorder();
@@ -312,6 +318,7 @@ class BraveBrowserView : public BrowserView,
   std::unique_ptr<views::Widget> vertical_tab_strip_widget_;
 
   bool closing_confirm_dialog_activated_ = false;
+  bool show_active_contents_domain_ = false;
   raw_ptr<BraveHelpBubbleHostView> brave_help_bubble_host_view_ = nullptr;
   raw_ptr<SidebarContainerView> sidebar_container_view_ = nullptr;
   raw_ptr<views::View> contents_background_view_ = nullptr;
