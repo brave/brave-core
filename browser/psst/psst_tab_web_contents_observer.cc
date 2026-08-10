@@ -47,14 +47,22 @@ enum class ScriptSourceType {
 };
 
 // Prepends a JSON-serialized parameters dictionary to `script` as
-// `window.params`. If serialization fails, the original script is returned
-// unmodified, meaning it executes with no parameters.
-// window.params = {
+// `window.__bravePsstParams`, e.g.:
+// window.__bravePsstParams = {
 //    "tasks": [ {
 //       "description": "Ads Preferences",
 //       "url": "https://a.test/settings/ads_preferences"
 //    } ]
 // };
+//
+// A property on `window` is used for two reasons: the policy script can be
+// re-injected into the same page (e.g. when the site loads content dynamically)
+// with a different params value on each injection, and re-declaring a `const`
+// would throw; and the user script and policy script can both be injected into
+// the same page, so they can't share a `const` name without colliding.
+//
+// If serialization fails, the original script is returned unmodified,
+// meaning it executes with no parameters.
 std::string MaybeAddParamsToScript(const MatchedRule& current_rule,
                                    const ScriptSourceType script_source_type,
                                    base::DictValue params_dict) {
@@ -76,7 +84,8 @@ std::string MaybeAddParamsToScript(const MatchedRule& current_rule,
     return script;
   }
 
-  return base::StrCat({"window.params = ", *params_json, ";\n", script});
+  return base::StrCat(
+      {"window.__bravePsstParams = ", *params_json, ";\n", script});
 }
 
 void PrepareParametersForPolicyExecution(

@@ -78,7 +78,7 @@ MATCHER_P4(PsstWebsiteSettingsEq,
 std::string WithCountryIdParams(const std::string& script,
                                 const std::string& country_id = "") {
   return base::StrCat(
-      {"window.params = ",
+      {"window.__bravePsstParams = ",
        base::WriteJsonWithOptions(
            base::Value(base::DictValue().Set("countryId", country_id)),
            base::JSONWriter::OPTIONS_PRETTY_PRINT)
@@ -892,7 +892,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
                              expected_uids_to_perform));
 
   const auto script_with_parameters = base::StrCat(
-      {"window.params = ",
+      {"window.__bravePsstParams = ",
        base::WriteJsonWithOptions(script_params.Clone(),
                                   base::JSONWriter::OPTIONS_PRETTY_PRINT)
            .value(),
@@ -1093,7 +1093,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest, UiDelegateUpdateTasksCalled) {
                              expected_uids_to_perform));
 
   const auto policy_script_with_parameters = base::StrCat(
-      {"window.params = ",
+      {"window.__bravePsstParams = ",
        base::WriteJsonWithOptions(script_params.Clone(),
                                   base::JSONWriter::OPTIONS_PRETTY_PRINT)
            .value(),
@@ -1237,7 +1237,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   auto expected_policy_params = script_params.Clone();
   expected_policy_params.GetDict().Set("initial_execution", true);
   const auto script_with_parameters = base::StrCat(
-      {"window.params = ",
+      {"window.__bravePsstParams = ",
        base::WriteJsonWithOptions(expected_policy_params,
                                   base::JSONWriter::OPTIONS_PRETTY_PRINT)
            .value(),
