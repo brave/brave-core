@@ -59,35 +59,38 @@ bool BraveDownloadManagerDelegate::IsDownloadReadyForCompletion(
   // IPTC metadata stripping begins. This state similar to upstream
   // SafeBrowsingState, helps to let the callers know when the metadata
   // stripping is completed to unblock the download flow.
-  IptcStrippingState* state = static_cast<IptcStrippingState*>(
-      item->GetUserData(IptcStrippingState::kUserDataKey));
+  if (IptcStrippingState* state = static_cast<IptcStrippingState*>(
+          item->GetUserData(IptcStrippingState::kUserDataKey))) {
+    // Second pass after OnImageMetadataStripped(): stripping only starts after
+    // upstream already returned true, so do not call upstream again.
+    if (state->is_complete()) {
+      return true;
+    }
 
-  // Second pass after OnImageMetadataStripped(): stripping only starts after
-  // upstream already returned true, so do not call upstream again.
-  if (state && state->is_complete()) {
-    return true;
-  }
+    // Stripping already in flight: refresh the resume callback and keep
+    // blocking. Upstream has already returned ready on a prior pass.
+    if (state->stripping_started) {
+      state->set_callback(std::move(internal_complete_callback));
+      return false;
+    }
 
-  // Stripping already in flight: refresh the resume callback and keep
-  // blocking. Upstream has already returned ready on a prior pass.
-  if (state && state->stripping_started) {
-    state->set_callback(std::move(internal_complete_callback));
-    return false;
+    NOTREACHED() << "Stripping has not started but we somehow created a valid "
+                    "IptcStrippingState.";
   }
 
   // First pass for a strippable image: require upstream readiness, then take
   // over completion for metadata stripping.
-  auto [chromium_callback, brave_callback] =
+  auto [upstream_check_complete_callback, iptc_stripping_complete_callback] =
       base::SplitOnceCallback(std::move(internal_complete_callback));
   if (!ChromeDownloadManagerDelegate::IsDownloadReadyForCompletion(
-          item, std::move(chromium_callback))) {
+          item, std::move(upstream_check_complete_callback))) {
     return false;
   }
 
-  DCHECK(!state);
-  state = new IptcStrippingState();
-  state->set_callback(std::move(brave_callback));
-  item->SetUserData(IptcStrippingState::kUserDataKey, base::WrapUnique(state));
+  auto state = std::make_unique<IptcStrippingState>();
+  state->set_callback(std::move(iptc_stripping_complete_callback));
+  state->stripping_started = true;
+  item->SetUserData(IptcStrippingState::kUserDataKey, std::move(state));
 
   // I/O-blocking IPTC scrub off the UI thread.
   base::ThreadPool::PostTaskAndReplyWithResult(
@@ -98,8 +101,6 @@ bool BraveDownloadManagerDelegate::IsDownloadReadyForCompletion(
                      item->GetFullPath()),
       base::BindOnce(&BraveDownloadManagerDelegate::OnImageMetadataStripped,
                      weak_ptr_factory_.GetWeakPtr(), item->GetId()));
-
-  state->stripping_started = true;
   return false;
 }
 
