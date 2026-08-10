@@ -445,10 +445,7 @@ void BraveHorizontalTabStripRegionView::Layout(PassKey) {
 
     // NTB is ignored by flex (`kViewIgnoredByLayoutKey`) and positioned
     // manually by `HorizontalTabStripRegionView::Layout` relative to the tab
-    // strip edge. When scroll buttons are visible, leave a gap using layout
-    // constants (same family as toolbar spacing). That can overlap the combo's
-    // flex slot; we paint NTB above the combo in GetChildrenInZOrder so it
-    // stays clickable.
+    // strip edge.
     if (new_tab_button_) {
       auto* anchor =
           tab_scroll_next_button_ && tab_scroll_next_button_->GetVisible()
@@ -577,8 +574,6 @@ void BraveHorizontalTabStripRegionView::UpdateTrailingScrollButtonMargin(
 
   const bool scroll_active = container->ShouldShowHorizontalScrollButton() &&
                              *show_horizontal_tab_scroll_buttons_;
-  CHECK_EQ(scroll_active, tab_scroll_next_button_->GetVisible());
-
   if (scroll_active) {
     // Upstream reserves a right margin on the tab strip so the layered NTB can
     // overlap it.  Move that reserve to the trailing scroll button: the strip
@@ -588,7 +583,6 @@ void BraveHorizontalTabStripRegionView::UpdateTrailingScrollButtonMargin(
     if (auto* current = tab_strip_->GetProperty(views::kMarginsKey)) {
       upstream_right = current->right();
     }
-    // upstream_right += tab_scroll_next_button_->GetPreferredSize().width()
     tab_scroll_next_button_->SetProperty(
         views::kMarginsKey, gfx::Insets::TLBR(0, 0, 0, upstream_right));
     // Clear the strip's right margin so tabs extend to the trailing button.

@@ -797,6 +797,7 @@ IN_PROC_BROWSER_TEST_F(
 
   BraveHorizontalTabStripRegionView* region = tab_strip_region();
   ASSERT_TRUE(region);
+  ASSERT_TRUE(region->tab_scroll_next_for_testing());
   ASSERT_TRUE(region->tab_scroll_next_for_testing()->GetVisible());
 
   auto* margins = tab_strip->GetProperty(views::kMarginsKey);
