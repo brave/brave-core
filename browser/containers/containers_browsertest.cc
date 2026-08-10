@@ -24,6 +24,7 @@
 #include "brave/components/containers/core/browser/temporary_container.h"
 #include "brave/components/containers/core/common/features.h"
 #include "brave/components/containers/core/mojom/containers.mojom.h"
+#include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/browsing_data/chrome_browsing_data_remover_constants.h"
 #include "chrome/browser/prefs/session_startup_pref.h"
 #include "chrome/browser/profiles/profile.h"
@@ -42,6 +43,7 @@
 #include "chrome/browser/ui/views/frame/toolbar_button_provider.h"
 #include "chrome/browser/ui/views/location_bar/icon_label_bubble_view.h"
 #include "chrome/browser/ui/views/page_action/test_support/page_action_test_support.h"
+#include "chrome/browser/ui/views/tabs/tab_strip.h"
 #include "chrome/browser/ui/zoom/chrome_zoom_level_prefs.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/common/webui_url_constants.h"
@@ -71,16 +73,19 @@
 #include "third_party/blink/public/common/page/page_zoom.h"
 #include "third_party/skia/include/core/SkColor.h"
 #include "ui/actions/actions.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "ui/events/base_event_utils.h"
 #include "ui/events/event_constants.h"
 #include "ui/events/keycodes/keyboard_codes.h"
 #include "ui/gfx/animation/animation.h"
 #include "ui/gfx/animation/animation_test_api.h"
+#include "ui/gfx/geometry/point.h"
 #include "ui/views/controls/button/button.h"
 #include "ui/views/controls/menu/menu_controller.h"
 #include "ui/views/test/button_test_api.h"
 #include "ui/views/test/views_test_utils.h"
 #include "ui/views/view.h"
+#include "ui/views/view_utils.h"
 #include "url/gurl.h"
 
 namespace containers {
@@ -990,6 +995,65 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest, OpenUrlInContainer) {
               std::string::npos);
   EXPECT_EQ("value1",
             content::EvalJs(web_contents, GetLocalStorageJS("container_key")));
+}
+
+IN_PROC_BROWSER_TEST_F(ContainersBrowserTest, TabTooltipShowsContainerName) {
+  browser()->profile()->GetPrefs()->SetInteger(
+      brave_tabs::kTabHoverMode, brave_tabs::TabHoverMode::TOOLTIP);
+
+  const GURL url("https://a.test/simple.html");
+
+  auto container = containers::mojom::Container::New();
+  container->id = "tooltip-container";
+  container->name = "Tooltip Container";
+  container->icon = containers::mojom::Icon::kWork;
+  container->background_color = SK_ColorBLUE;
+
+  // The tooltip name comes from the runtime container, which is only
+  // populated once the container is known to the synced containers list.
+  std::vector<containers::mojom::ContainerPtr> synced;
+  synced.push_back(container->Clone());
+  SetContainersToPrefs(synced, *browser()->profile()->GetPrefs());
+
+  brave::OpenUrlInContainer(browser(), url, container);
+  content::WebContents* web_contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(web_contents);
+  EXPECT_TRUE(content::WaitForLoadStop(web_contents));
+
+  auto* browser_view = static_cast<BrowserView*>(browser()->window());
+  TabStrip* tab_strip = browser_view->horizontal_tab_strip_for_testing();
+  ASSERT_TRUE(tab_strip);
+  auto* brave_tab = views::AsViewClass<BraveTab>(
+      tab_strip->tab_at(browser()->tab_strip_model()->active_index()));
+  ASSERT_TRUE(brave_tab);
+
+  const std::u16string tooltip =
+      brave_tab->GetRenderedTooltipText(gfx::Point());
+  EXPECT_NE(std::u16string::npos, tooltip.find(u"Tooltip Container"))
+      << tooltip;
+}
+
+IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
+                       TabTooltipDoesNotShowContainerNameOutsideContainer) {
+  browser()->profile()->GetPrefs()->SetInteger(
+      brave_tabs::kTabHoverMode, brave_tabs::TabHoverMode::TOOLTIP);
+
+  const GURL url("https://a.test/simple.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+
+  auto* browser_view = static_cast<BrowserView*>(browser()->window());
+  TabStrip* tab_strip = browser_view->horizontal_tab_strip_for_testing();
+  ASSERT_TRUE(tab_strip);
+  auto* brave_tab = views::AsViewClass<BraveTab>(
+      tab_strip->tab_at(browser()->tab_strip_model()->active_index()));
+  ASSERT_TRUE(brave_tab);
+
+  const std::u16string tooltip =
+      brave_tab->GetRenderedTooltipText(gfx::Point());
+  EXPECT_EQ(
+      std::u16string::npos,
+      tooltip.find(l10n_util::GetStringUTF16(IDS_TOOLTIP_TAB_IN_CONTAINER)));
 }
 
 IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,

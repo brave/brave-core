@@ -1075,21 +1075,23 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         <message name="IDS_TAB_CXMENU_CLOSE_DUPLICATE_TABS" desc="The label of the 'Close duplicate tabs' tab context menu item">
           Close duplicate tabs
         </message>
-        <message name="IDS_CXMENU_NO_CONTAINER" desc="The label of the 'No container' context menu item, indicating that the tab is not in any container">
-          No container
-        </message>
-        <message name="IDS_CXMENU_OPEN_IN_CONTAINER" desc="The label of the 'Open in Container' context menu item">
-          Open in container
-        </message>
-        <message name="IDS_CXMENU_OPEN_LINK_IN_CONTAINER" desc="The label of the 'Open link in container' context menu item">
-          Open link in container
-        </message>
-        <message name="IDS_CXMENU_OPEN_CONTAINERS_SETTINGS" desc="The label of the context menu item for opening the Containers settings page.">
-          Manage containers
-        </message>
-        <message name="IDS_CXMENU_NEW_TEMPORARY_CONTAINER" desc="Creates a new local-only temporary container and opens the URL in it.">
-          New temporary container
-        </message>
+        <if expr="enable_containers">
+          <message name="IDS_CXMENU_NO_CONTAINER" desc="The label of the 'No container' context menu item, indicating that the tab is not in any container">
+            No container
+          </message>
+          <message name="IDS_CXMENU_OPEN_IN_CONTAINER" desc="The label of the 'Open in Container' context menu item">
+            Open in container
+          </message>
+          <message name="IDS_CXMENU_OPEN_LINK_IN_CONTAINER" desc="The label of the 'Open link in container' context menu item">
+            Open link in container
+          </message>
+          <message name="IDS_CXMENU_OPEN_CONTAINERS_SETTINGS" desc="The label of the context menu item for opening the Containers settings page.">
+            Manage containers
+          </message>
+          <message name="IDS_CXMENU_NEW_TEMPORARY_CONTAINER" desc="Creates a new local-only temporary container and opens the URL in it.">
+            New temporary container
+          </message>
+        </if>
       </if>
       <if expr="use_titlecase">
         <message name="IDS_TAB_CXMENU_BOOKMARK_ALL_TABS" desc="In Title Case: The label of the tab context menu item for creating a bookmark folder containing an entry for each open tab.">
@@ -1119,20 +1121,29 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         <message name="IDS_TAB_CXMENU_CLOSE_DUPLICATE_TABS" desc="The label of the 'Close duplicate tabs' tab context menu item">
           Close Duplicate Tabs
         </message>
-        <message name="IDS_CXMENU_NO_CONTAINER" desc="The label of the 'No container' context menu item, indicating that the tab is not in any container">
-          No Container
-        </message>
-        <message name="IDS_CXMENU_OPEN_IN_CONTAINER" desc="The label of the 'Open in Container' context menu item">
-          Open in Container
-        </message>
-        <message name="IDS_CXMENU_OPEN_LINK_IN_CONTAINER" desc="The label of the 'Open link in container' context menu item">
-          Open Link in Container
-        </message>
-        <message name="IDS_CXMENU_OPEN_CONTAINERS_SETTINGS" desc="The label of the tab context menu item for opening the Containers settings page.">
-          Manage Containers
-        </message>
-        <message name="IDS_CXMENU_NEW_TEMPORARY_CONTAINER" desc="Creates a new local-only temporary container and opens the URL in it.">
-          New Temporary Container
+        <if expr="enable_containers">
+          <message name="IDS_CXMENU_NO_CONTAINER" desc="The label of the 'No container' context menu item, indicating that the tab is not in any container">
+            No Container
+          </message>
+          <message name="IDS_CXMENU_OPEN_IN_CONTAINER" desc="The label of the 'Open in Container' context menu item">
+            Open in Container
+          </message>
+          <message name="IDS_CXMENU_OPEN_LINK_IN_CONTAINER" desc="The label of the 'Open link in container' context menu item">
+            Open Link in Container
+          </message>
+          <message name="IDS_CXMENU_OPEN_CONTAINERS_SETTINGS" desc="The label of the tab context menu item for opening the Containers settings page.">
+            Manage Containers
+          </message>
+          <message name="IDS_CXMENU_NEW_TEMPORARY_CONTAINER" desc="Creates a new local-only temporary container and opens the URL in it.">
+            New Temporary Container
+          </message>
+        </if>
+      </if>
+
+      <!-- Extra tab tooltip-->
+      <if expr="enable_containers">
+        <message name="IDS_TOOLTIP_TAB_IN_CONTAINER" desc="Tab tooltip text when the tab is in a container. TOOLTIP is the regular tab tooltip text and CONTAINER_NAME is the name of the container.">
+          <ph name="TOOLTIP">$1<ex>New Tab</ex></ph> - <ph name="CONTAINER_NAME">$2<ex>Work</ex></ph> container
         </message>
       </if>
 
