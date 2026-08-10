@@ -2931,7 +2931,8 @@ class RegexMacroEngine:
         no fewer. `pattern` (escaped) or `re_pattern`, and `replace`, are
         rendered with `inputs` via `str.format` before being handed to
         `re.subn`, so the macro's own backreferences (`\\1`) reach `re.subn`
-        untouched.
+        untouched. `re_pattern` gets each input escaped first though to avoid
+        confusion.
         """
         spec = self._rewriters.regex_macro(op_id)
         declared = frozenset(entry['name'] for entry in spec['inputs'])
@@ -2948,7 +2949,11 @@ class RegexMacroEngine:
 
         re_pattern = spec.get('re_pattern')
         if re_pattern is not None:
-            pattern = re_pattern.format(**inputs)
+            escaped_inputs = {
+                key: re.escape(value)
+                for key, value in inputs.items()
+            }
+            pattern = re_pattern.format(**escaped_inputs)
         else:
             pattern = re.escape(spec['pattern'].format(**inputs))
         replace = spec['replace'].format(**inputs)
