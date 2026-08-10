@@ -56,7 +56,9 @@ brave_shields::mojom::ShieldsSettingsPtr GetBraveShieldsSettingsOnUI(
       BraveShieldsSettingsServiceFactory::GetForProfile(
           Profile::FromBrowserContext(browser_context));
   const brave_shields::mojom::FarblingLevel farbling_level =
-      shields_settings_service->GetFarblingLevel(top_frame_url);
+      shields_settings_service
+          ? shields_settings_service->GetFarblingLevel(top_frame_url)
+          : brave_shields::mojom::FarblingLevel::OFF;
   std::string additional_entropy;
 #if BUILDFLAG(ENABLE_CONTAINERS)
   if (base::FeatureList::IsEnabled(containers::features::kContainers)) {
