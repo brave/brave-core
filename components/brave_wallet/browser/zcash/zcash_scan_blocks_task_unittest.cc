@@ -9,12 +9,15 @@
 #include <utility>
 #include <vector>
 
+#include "base/check.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/notreached.h"
+#include "base/run_loop.h"
 #include "base/task/thread_pool.h"
 #include "base/test/bind.h"
 #include "base/test/mock_callback.h"
 #include "base/test/task_environment.h"
+#include "base/test/test_future.h"
 #include "brave/components/brave_wallet/browser/internal/orchard_test_utils.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_rpc.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_test_utils.h"
@@ -133,24 +136,22 @@ class ZCashScanBlocksTaskTest : public testing::Test {
 
   testing::NiceMock<MockZCashRPC>& zcash_rpc() { return zcash_rpc_; }
 
-  base::test::TaskEnvironment& task_environment() { return task_environment_; }
-
   base::expected<std::optional<OrchardSyncState::SpendableNotesBundle>,
                  OrchardStorage::Error>
   GetSpendableNotes() {
-    std::optional<
+    base::test::TestFuture<
         base::expected<std::optional<OrchardSyncState::SpendableNotesBundle>,
                        OrchardStorage::Error>>
-        result;
+        future;
     sync_state_.AsyncCall(&OrchardSyncState::GetSpendableNotes)
         .WithArgs(OrchardPool::kOrchard, account_id_.Clone(),
                   OrchardAddrRawPart({}))
-        .Then(base::BindLambdaForTesting(
-            [&](base::expected<
-                std::optional<OrchardSyncState::SpendableNotesBundle>,
-                OrchardStorage::Error> r) { result = std::move(r); }));
-    task_environment().RunUntilIdle();
-    return std::move(result.value());
+        .Then(future.GetCallback());
+    // Called from inside a ZCashScanBlocksTaskObserver callback, which itself
+    // runs inside another TestFuture's RunLoop; a kDefault nested RunLoop
+    // would never process the AsyncCall's posted reply.
+    CHECK(future.Wait(base::RunLoop::Type::kNestableTasksAllowed));
+    return future.Take();
   }
 
   std::unique_ptr<MockOrchardBlockScannerProxy>
@@ -267,6 +268,7 @@ TEST_F(ZCashScanBlocksTaskTest, ScanRanges) {
 
   ZCashActionContext context = CreateContext();
 
+  base::test::TestFuture<void> done_future;
   base::MockCallback<ZCashScanBlocksTask::ZCashScanBlocksTaskObserver> callback;
   testing::Sequence seq;
   EXPECT_CALL(callback, Run(testing::_))
@@ -298,6 +300,7 @@ TEST_F(ZCashScanBlocksTaskTest, ScanRanges) {
       .WillOnce([&](base::expected<ZCashShieldSyncService::ScanRangeResult,
                                    ZCashShieldSyncService::Error> result) {
         EXPECT_EQ(result->ready_ranges, 4u);
+        done_future.SetValue();
       });
 
   auto task =
@@ -305,7 +308,7 @@ TEST_F(ZCashScanBlocksTaskTest, ScanRanges) {
                           kNu5BlockUpdate + kExpectedBatchSize * 3 + 15);
   task.Start();
 
-  task_environment().RunUntilIdle();
+  EXPECT_TRUE(done_future.Wait());
 }
 
 TEST_F(ZCashScanBlocksTaskTest, ScanSingle) {
@@ -333,6 +336,7 @@ TEST_F(ZCashScanBlocksTaskTest, ScanSingle) {
 
   ZCashActionContext context = CreateContext();
 
+  base::test::TestFuture<void> done_future;
   base::MockCallback<ZCashScanBlocksTask::ZCashScanBlocksTaskObserver> callback;
   testing::Sequence seq;
   EXPECT_CALL(callback, Run(testing::_))
@@ -348,19 +352,21 @@ TEST_F(ZCashScanBlocksTaskTest, ScanSingle) {
         EXPECT_EQ(result->ready_ranges, 1u);
         auto notes1 = GetSpendableNotes();
         EXPECT_EQ(1u, notes1.value()->all_notes.size());
+        done_future.SetValue();
       });
 
   auto task = ZCashScanBlocksTask(context, *block_scanner, callback.Get(),
                                   kNu5BlockUpdate + 1);
   task.Start();
 
-  task_environment().RunUntilIdle();
+  EXPECT_TRUE(done_future.Wait());
 }
 
 TEST_F(ZCashScanBlocksTaskTest, ScanLimited) {
   auto block_scanner = CreateMockOrchardBlockScannerProxy();
   ZCashActionContext context = CreateContext();
 
+  base::test::TestFuture<void> done_future;
   base::MockCallback<ZCashScanBlocksTask::ZCashScanBlocksTaskObserver> callback;
   testing::Sequence seq;
   EXPECT_CALL(callback, Run(testing::_))
@@ -392,19 +398,21 @@ TEST_F(ZCashScanBlocksTaskTest, ScanLimited) {
         EXPECT_EQ(result->ready_ranges, 3u);
         auto notes3 = GetSpendableNotes();
         EXPECT_EQ(3u, notes3.value()->all_notes.size());
+        done_future.SetValue();
       });
 
   auto task = ZCashScanBlocksTask(context, *block_scanner, callback.Get(),
                                   kNu5BlockUpdate + kExpectedBatchSize * 3);
   task.Start();
 
-  task_environment().RunUntilIdle();
+  EXPECT_TRUE(done_future.Wait());
 }
 
 TEST_F(ZCashScanBlocksTaskTest, ScanUnlimited) {
   auto block_scanner = CreateMockOrchardBlockScannerProxy();
   ZCashActionContext context = CreateContext();
 
+  base::test::TestFuture<void> done_future;
   base::MockCallback<ZCashScanBlocksTask::ZCashScanBlocksTaskObserver> callback;
   testing::Sequence seq;
   EXPECT_CALL(callback, Run(testing::_))
@@ -480,6 +488,7 @@ TEST_F(ZCashScanBlocksTaskTest, ScanUnlimited) {
       .WillOnce([&](base::expected<ZCashShieldSyncService::ScanRangeResult,
                                    ZCashShieldSyncService::Error> result) {
         EXPECT_EQ(result->ready_ranges, 10u);
+        done_future.SetValue();
       });
 
   // Scan without right border
@@ -487,7 +496,7 @@ TEST_F(ZCashScanBlocksTaskTest, ScanUnlimited) {
                                   std::nullopt);
   task.Start();
 
-  task_environment().RunUntilIdle();
+  EXPECT_TRUE(done_future.Wait());
 }
 
 TEST_F(ZCashScanBlocksTaskTest, PartialScanningDueError) {
@@ -517,6 +526,7 @@ TEST_F(ZCashScanBlocksTaskTest, PartialScanningDueError) {
   auto block_scanner = CreateMockOrchardBlockScannerProxy();
   ZCashActionContext context = CreateContext();
 
+  base::test::TestFuture<void> done_future;
   base::MockCallback<ZCashScanBlocksTask::ZCashScanBlocksTaskObserver> callback;
   testing::Sequence seq;
   EXPECT_CALL(callback, Run(testing::_))
@@ -538,6 +548,7 @@ TEST_F(ZCashScanBlocksTaskTest, PartialScanningDueError) {
       .WillOnce([&](base::expected<ZCashShieldSyncService::ScanRangeResult,
                                    ZCashShieldSyncService::Error> result) {
         EXPECT_FALSE(result.has_value());
+        done_future.SetValue();
       });
 
   auto task = ZCashScanBlocksTask(context, *block_scanner, callback.Get(),
@@ -546,7 +557,7 @@ TEST_F(ZCashScanBlocksTaskTest, PartialScanningDueError) {
   task.set_max_tasks_in_progress(1);
   task.Start();
 
-  task_environment().RunUntilIdle();
+  EXPECT_TRUE(done_future.Wait());
 }
 
 TEST_F(ZCashScanBlocksTaskTest, ChainTipMismatch) {
@@ -561,12 +572,14 @@ TEST_F(ZCashScanBlocksTaskTest, ChainTipMismatch) {
   auto block_scanner = CreateMockOrchardBlockScannerProxy();
   ZCashActionContext context = CreateContext();
 
+  base::test::TestFuture<void> done_future;
   base::MockCallback<ZCashScanBlocksTask::ZCashScanBlocksTaskObserver> callback;
   EXPECT_CALL(callback, Run(testing::_))
       .Times(1)
       .WillOnce([&](base::expected<ZCashShieldSyncService::ScanRangeResult,
                                    ZCashShieldSyncService::Error> result) {
         EXPECT_TRUE(!result.has_value());
+        done_future.SetValue();
       });
 
   // Scan with right border less than actual chain tip
@@ -574,7 +587,7 @@ TEST_F(ZCashScanBlocksTaskTest, ChainTipMismatch) {
                                   kChainTipHeight);
   task.Start();
 
-  task_environment().RunUntilIdle();
+  EXPECT_TRUE(done_future.Wait());
 }
 
 TEST_F(ZCashScanBlocksTaskTest, NetworkError_LatestBlock) {
@@ -588,12 +601,14 @@ TEST_F(ZCashScanBlocksTaskTest, NetworkError_LatestBlock) {
   auto block_scanner = CreateMockOrchardBlockScannerProxy();
   ZCashActionContext context = CreateContext();
 
+  base::test::TestFuture<void> done_future;
   base::MockCallback<ZCashScanBlocksTask::ZCashScanBlocksTaskObserver> callback;
   EXPECT_CALL(callback, Run(testing::_))
       .Times(1)
       .WillOnce([&](base::expected<ZCashShieldSyncService::ScanRangeResult,
                                    ZCashShieldSyncService::Error> result) {
         EXPECT_TRUE(!result.has_value());
+        done_future.SetValue();
       });
 
   // Scan without right border
@@ -601,7 +616,7 @@ TEST_F(ZCashScanBlocksTaskTest, NetworkError_LatestBlock) {
                                   std::nullopt);
   task.Start();
 
-  task_environment().RunUntilIdle();
+  EXPECT_TRUE(done_future.Wait());
 }
 
 TEST_F(ZCashScanBlocksTaskTest, NetworkError_CompactBlocks) {
@@ -615,6 +630,8 @@ TEST_F(ZCashScanBlocksTaskTest, NetworkError_CompactBlocks) {
   auto block_scanner = CreateMockOrchardBlockScannerProxy();
   ZCashActionContext context = CreateContext();
 
+  base::test::TestFuture<void> done_future;
+  int call_count = 0;
   base::MockCallback<ZCashScanBlocksTask::ZCashScanBlocksTaskObserver> callback;
   EXPECT_CALL(callback, Run(testing::_))
       .Times(2)
@@ -623,6 +640,9 @@ TEST_F(ZCashScanBlocksTaskTest, NetworkError_CompactBlocks) {
                              ZCashShieldSyncService::Error> result) {
             EXPECT_TRUE(!result.has_value() ||
                         result.value().ready_ranges == 0u);
+            if (++call_count == 2) {
+              done_future.SetValue();
+            }
           });
 
   // Scan without right border
@@ -630,7 +650,7 @@ TEST_F(ZCashScanBlocksTaskTest, NetworkError_CompactBlocks) {
                                   std::nullopt);
   task.Start();
 
-  task_environment().RunUntilIdle();
+  EXPECT_TRUE(done_future.Wait());
 }
 
 TEST_F(ZCashScanBlocksTaskTest, NetworkError_TreeState) {
@@ -645,6 +665,8 @@ TEST_F(ZCashScanBlocksTaskTest, NetworkError_TreeState) {
   auto block_scanner = CreateMockOrchardBlockScannerProxy();
   ZCashActionContext context = CreateContext();
 
+  base::test::TestFuture<void> done_future;
+  int call_count = 0;
   base::MockCallback<ZCashScanBlocksTask::ZCashScanBlocksTaskObserver> callback;
   EXPECT_CALL(callback, Run(testing::_))
       .Times(2)
@@ -653,6 +675,9 @@ TEST_F(ZCashScanBlocksTaskTest, NetworkError_TreeState) {
                              ZCashShieldSyncService::Error> result) {
             EXPECT_TRUE(!result.has_value() ||
                         result.value().ready_ranges == 0u);
+            if (++call_count == 2) {
+              done_future.SetValue();
+            }
           });
 
   // Scan without right border
@@ -660,7 +685,7 @@ TEST_F(ZCashScanBlocksTaskTest, NetworkError_TreeState) {
                                   std::nullopt);
   task.Start();
 
-  task_environment().RunUntilIdle();
+  EXPECT_TRUE(done_future.Wait());
 }
 
 TEST_F(ZCashScanBlocksTaskTest, DecodingError) {
@@ -677,6 +702,8 @@ TEST_F(ZCashScanBlocksTaskTest, DecodingError) {
           }));
   ZCashActionContext context = CreateContext();
 
+  base::test::TestFuture<void> done_future;
+  int call_count = 0;
   base::MockCallback<ZCashScanBlocksTask::ZCashScanBlocksTaskObserver> callback;
   EXPECT_CALL(callback, Run(testing::_))
       .Times(2)
@@ -685,6 +712,9 @@ TEST_F(ZCashScanBlocksTaskTest, DecodingError) {
                              ZCashShieldSyncService::Error> result) {
             EXPECT_TRUE(!result.has_value() ||
                         result.value().ready_ranges == 0u);
+            if (++call_count == 2) {
+              done_future.SetValue();
+            }
           });
 
   // Scan without right border
@@ -692,7 +722,7 @@ TEST_F(ZCashScanBlocksTaskTest, DecodingError) {
                                   std::nullopt);
   task.Start();
 
-  task_environment().RunUntilIdle();
+  EXPECT_TRUE(done_future.Wait());
 }
 
 }  // namespace brave_wallet
