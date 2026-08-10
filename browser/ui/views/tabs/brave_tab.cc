@@ -11,11 +11,13 @@
 
 #include "base/check.h"
 #include "base/feature_list.h"
+#include "base/strings/utf_string_conversions.h"
 #include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_container_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
 #include "brave/components/tabs/public/tree_tab_node.h"
+#include "brave/grit/brave_generated_resources.h"
 #include "cc/paint/paint_flags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -40,15 +42,58 @@
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
 #include "brave/browser/containers/containers_service_factory.h"
+#include "brave/components/containers/content/browser/storage_partition_utils.h"
 #include "brave/components/containers/core/browser/containers_service.h"
+#include "brave/components/containers/core/common/features.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
+#include "components/tabs/public/tab_interface.h"
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
 namespace {
 
 constexpr int kSmallAccentSize = 16;
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+std::u16string GetContainerNameForTab(const BraveTab& tab) {
+  if (!base::FeatureList::IsEnabled(containers::features::kContainers)) {
+    return std::u16string();
+  }
+
+  tabs::TabInterface* tab_interface = tab.tab_handle().Get();
+  if (!tab_interface) {
+    return std::u16string();
+  }
+
+  content::WebContents* contents = tab_interface->GetContents();
+  if (!contents) {
+    return std::u16string();
+  }
+
+  const std::string container_id =
+      containers::GetContainerIdForWebContents(contents);
+  if (container_id.empty()) {
+    return std::u16string();
+  }
+
+  Profile* profile = tab_interface->GetProfile();
+  if (!profile) {
+    return std::u16string();
+  }
+
+  auto* service = ContainersServiceFactory::GetForProfile(profile);
+  CHECK(service);
+
+  auto container = service->GetRuntimeContainerById(container_id);
+  CHECK(container);
+  if (!container->name.empty()) {
+    return base::UTF8ToUTF16(container->name);
+  }
+
+  return base::UTF8ToUTF16(container->id);
+}
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
 }  // namespace
 
@@ -232,7 +277,16 @@ std::u16string BraveTab::GetRenderedTooltipText(const gfx::Point& p) const {
   auto* browser = controller_->GetBrowserWindowInterface();
   if (browser &&
       brave_tabs::AreTooltipsEnabled(browser->GetProfile()->GetPrefs())) {
-    return Tab::GetTooltipText(data_.title, data_.alert_state);
+    std::u16string tooltip =
+        Tab::GetTooltipText(data_.title, data_.alert_state);
+#if BUILDFLAG(ENABLE_CONTAINERS)
+    if (std::u16string container_name = GetContainerNameForTab(*this);
+        !container_name.empty()) {
+      tooltip = l10n_util::GetStringFUTF16(IDS_TOOLTIP_TAB_IN_CONTAINER,
+                                           tooltip, container_name);
+    }
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
+    return tooltip;
   }
   return TabSlotView::GetTooltipText();
 }
