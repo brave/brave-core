@@ -99,6 +99,42 @@ namespace rewards { ... }
 #endif
 ```
 
+**Only merge a guarded include with guarded code when it's the single guard
+block immediately following the regular (non-guarded) includes.** Includes must
+always come first; only actual code may follow. When more than one distinct
+buildflag block has its own guarded include, do NOT merge each include down into
+its code block — that would place a later include after code (e.g. after a
+`namespace {...}`), which is incorrect ordering. Keep the guarded includes
+grouped with the other includes at the top instead.
+
+```cpp
+// ❌ WRONG - the second include ends up after code
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+#include "brave/components/brave_rewards/core/buildflags/buildflags.h"
+namespace rewards { ... }
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+#include "brave/components/brave_ads/core/buildflags/buildflags.h"
+namespace brave_ads { ... }
+#endif
+
+// ✅ CORRECT - guarded includes stay grouped at the top with other includes
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+#include "brave/components/brave_rewards/core/buildflags/buildflags.h"
+#endif
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+#include "brave/components/brave_ads/core/buildflags/buildflags.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+namespace rewards { ... }
+#endif
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+namespace brave_ads { ... }
+#endif
+```
+
 ---
 
 <a id="BS-045"></a>
@@ -161,8 +197,14 @@ class HistoryTool;
 
 **If a file is only compiled when a buildflag is enabled (guarded by
 `if(enable_feature)` in BUILD.gn), that file should not `#include` the buildflag
-header or use `#if BUILDFLAG(...)` guards.** The file is never compiled when the
-flag is disabled, so checking the flag inside it is redundant and misleading.
+header just to re-check the enable/disable flag with `#if BUILDFLAG(...)`.** The
+file is never compiled when the flag is disabled, so re-checking that same flag
+inside it is redundant and misleading.
+
+This applies only to the enable/disable flag that already gates the file.
+Buildflags also carry other GN-passed parameters (keys, URLs, numeric limits,
+etc.), and reading those values is perfectly valid — in that case including the
+buildflag header is expected, not redundant.
 
 ```cpp
 // In brave/components/foo/foo_impl.cc
