@@ -151,18 +151,36 @@ struct TabGridView: View {
         )
         .opacity(isGridHidden ? 0 : 1)
         .accessibilityHidden(isGridHidden)
+        .osAvailabilityModifiers { content in
+          if #available(iOS 26.0, *) {
+            // For Liquid Glass progressive blur
+            content
+              .ignoresSafeArea(.container, edges: .vertical)
+          } else {
+            content
+          }
+        }
       }
     }
     .environment(\.editMode, $editMode)
     .frame(maxWidth: .infinity, maxHeight: .infinity)
-    .mask {
-      // TODO: Test Performance of this mask w/ and w/o drawingGroup
-      let radius = 5.0
-      Color.black
-        .blur(radius: radius)
-        .padding(.horizontal, -(radius * 2))
-        .padding(insets)
-        .animation(.toolbarsSizeAnimation, value: insets)
+    .osAvailabilityModifiers { content in
+      if #available(iOS 26.0, *) {
+        // On 26 we will instead use `UIScrollEdgeElementContainerInteraction` to show progressive
+        // blurs under the header & footer
+        content
+      } else {
+        content
+          .mask {
+            // TODO: Test Performance of this mask w/ and w/o drawingGroup
+            let radius = 5.0
+            Color.black
+              .blur(radius: radius)
+              .padding(.horizontal, -(radius * 2))
+              .padding(insets)
+              .animation(.toolbarsSizeAnimation, value: insets)
+          }
+      }
     }
     .background(alignment: .top) {
       if viewModel.isPrivateBrowsing, horizontalSizeClass == .compact {
@@ -758,13 +776,56 @@ private struct TabGridModeSwitcher: UIViewRepresentable {
     }
   }
 
+  // A segmented control that puts a glass visual effect in the background and assigns it a tint
+  // based on the `backgroundColor` provided
+  @available(iOS 26.0, *)
+  private class GlassBackedSegmentedControl: UISegmentedControl {
+    private let backgroundView = UIVisualEffectView(effect: UIGlassEffect(style: .clear))
+
+    override init(items: [Any]?) {
+      super.init(items: items)
+
+      insertSubview(backgroundView, at: 0)
+      backgroundView.layer.cornerCurve = .continuous
+    }
+
+    @available(*, unavailable)
+    required init(coder: NSCoder) {
+      fatalError()
+    }
+
+    override func layoutSubviews() {
+      super.layoutSubviews()
+
+      backgroundView.frame = bounds
+      backgroundView.layer.cornerRadius = layer.cornerRadius
+    }
+
+    override var backgroundColor: UIColor? {
+      get {
+        super.backgroundColor
+      }
+      set {
+        // Only way to set a new tint is to replace the whole effect
+        let newEffect = UIGlassEffect(style: .clear)
+        newEffect.tintColor = newValue
+        backgroundView.effect = newEffect
+        super.backgroundColor = .clear
+      }
+    }
+  }
+
   func makeUIView(context: Context) -> UISegmentedControl {
-    let uiView = UISegmentedControl(
-      items: [
-        tabCount,
-        Strings.TabGrid.privateBrowsingModeTitle,
-      ]
-    )
+    let items: [Any] = [
+      tabCount,
+      Strings.TabGrid.privateBrowsingModeTitle,
+    ]
+    let uiView: UISegmentedControl
+    if #available(iOS 26.0, *) {
+      uiView = GlassBackedSegmentedControl(items: items)
+    } else {
+      uiView = UISegmentedControl(items: items)
+    }
     uiView.addAction(
       .init(handler: { [unowned uiView] _ in
         isPrivateBrowsing = uiView.selectedSegmentIndex == 1

@@ -125,6 +125,4 @@ if (enable_brave_ads) {
     "//brave/browser/net/search_ads_header_network_delegate_helper.cc",
     "//brave/browser/net/search_ads_header_network_delegate_helper.h",
   ]
-
-  brave_browser_net_deps += [ "//brave/components/brave_ads/core" ]
 }

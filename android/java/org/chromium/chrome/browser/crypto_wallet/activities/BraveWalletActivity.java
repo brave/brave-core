@@ -6,17 +6,16 @@
 package org.chromium.chrome.browser.crypto_wallet.activities;
 
 import android.content.Intent;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.os.Build;
+import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.viewpager2.widget.ViewPager2;
 
 import org.chromium.base.Log;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.domain.KeyringModel;
@@ -27,10 +26,7 @@ import org.chromium.chrome.browser.crypto_wallet.adapters.WalletOnboardingPagerA
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnNextPage;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletUtils;
-import org.chromium.chrome.browser.settings.BraveWalletPreferences;
-import org.chromium.chrome.browser.settings.SettingsNavigationFactory;
 import org.chromium.components.browser_ui.modaldialog.AppModalPresenter;
-import org.chromium.components.browser_ui.settings.SettingsNavigation;
 import org.chromium.ui.base.ActivityWindowAndroid;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 
@@ -44,6 +40,8 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
     public static final String SHOW_WALLET_ACTIVITY_BACKUP = "showWalletActivityBackup";
 
     private static final String TAG = "BWalletBaseActivity";
+    private static final String KEY_WALLET_ACTION = "wallet_action";
+    private static final String KEY_PAGER_INDEX = "pager_index";
 
     private View mCryptoOnboardingLayout;
     private ImageView mOnboardingCloseButton;
@@ -58,30 +56,26 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
     private boolean mBackupWallet;
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.wallet_search, menu);
-
-        if (menu instanceof MenuBuilder) {
-            ((MenuBuilder) menu).setOptionalIconsVisible(true);
-        }
-        return super.onCreateOptionsMenu(menu);
+    protected @Nullable Bundle transformSavedInstanceStateForOnCreate(
+            @Nullable Bundle savedInstanceState) {
+        // Do not let Activity.onCreate() restore the FragmentManager state: the onboarding pager's
+        // FragmentStateAdapter uses fragments that depend on native and is set only in
+        // finishNativeInitialization, and restoring the fragments before that (and before an
+        // adapter
+        // exists) crashes the pager.
+        // The onboarding flow is instead rebuilt from the action and page persisted in
+        // onSaveInstanceState. Kept consistent with onRestoreInstanceState, which also drops the
+        // (view) pager state.
+        return null;
     }
 
     @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.settings) {
-            SettingsNavigation settingsLauncher =
-                    SettingsNavigationFactory.createSettingsNavigation();
-            settingsLauncher.startSettings(this, BraveWalletPreferences.class);
-            return true;
-        } else if (item.getItemId() == R.id.lock) {
-            if (mKeyringService != null) {
-                mKeyringService.lock();
-            }
-        } else if (item.getItemId() == R.id.help_center) {
-            WalletUtils.openWalletHelpCenter(this);
-        }
-        return super.onOptionsItemSelected(item);
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        // Drop the restored view state (the pager's adapter state) so it stays consistent with the
+        // dropped FragmentManager state above; restoring one without the other crashes the pager's
+        // FragmentStateAdapter. Activity does not check the argument for null, so pass an empty
+        // bundle.
+        super.onRestoreInstanceState(new Bundle());
     }
 
     @Override
@@ -113,6 +107,13 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
                     @Override
                     public void onPageSelected(int position) {
                         super.onPageSelected(position);
+                        // Keep the keyboard on the unlock screen; hide it when navigating other
+                        // onboarding pages.
+                        if (mWalletOnboardingPagerAdapter != null
+                                && mWalletOnboardingPagerAdapter.getWalletAction()
+                                        == WalletAction.UNLOCK) {
+                            return;
+                        }
                         Utils.hideKeyboard(
                                 BraveWalletActivity.this,
                                 mCryptoWalletOnboardingViewPager.getWindowToken());
@@ -145,6 +146,18 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
                 new WalletOnboardingPagerAdapter(this, mRestartSetupAction, mRestartRestoreAction);
         mCryptoWalletOnboardingViewPager.setAdapter(mWalletOnboardingPagerAdapter);
 
+        // Rebuild an onboarding flow that was in progress before a recreation (rotation/theme
+        // switch). The action and page are persisted in onSaveInstanceState; the fragments
+        // themselves are recreated fresh.
+        final WalletAction restoredAction = getRestoredWalletAction();
+        if (restoredAction != null) {
+            mCryptoOnboardingLayout.setVisibility(View.VISIBLE);
+            mWalletOnboardingPagerAdapter.setWalletAction(restoredAction);
+            mCryptoWalletOnboardingViewPager.setCurrentItem(getRestoredPagerIndex(), false);
+            addRemoveSecureFlag(true);
+            return;
+        }
+
         if (Utils.shouldShowCryptoOnboarding()) {
             mCryptoOnboardingLayout.setVisibility(View.VISIBLE);
             mWalletOnboardingPagerAdapter.setWalletAction(WalletAction.ONBOARDING);
@@ -165,6 +178,46 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
                         }
                     });
         }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        // Persist the onboarding action and page so finishNativeInitialization can rebuild the flow
+        // after a recreation. Only while the onboarding UI is shown; otherwise leave it out, so a
+        // completed or unlocked state is not restored as onboarding. The FragmentManager and pager
+        // view state are dropped (see transformSavedInstanceStateForOnCreate and
+        // onRestoreInstanceState), so the fragments are recreated fresh.
+        if (mCryptoOnboardingLayout != null
+                && mCryptoOnboardingLayout.getVisibility() == View.VISIBLE
+                && mWalletOnboardingPagerAdapter != null) {
+            outState.putSerializable(
+                    KEY_WALLET_ACTION, mWalletOnboardingPagerAdapter.getWalletAction());
+            outState.putInt(KEY_PAGER_INDEX, mCryptoWalletOnboardingViewPager.getCurrentItem());
+        }
+    }
+
+    /**
+     * Returns the onboarding action that was in progress before a recreation, or {@code null} if
+     * none was.
+     */
+    private @Nullable WalletAction getRestoredWalletAction() {
+        final Bundle savedState = getSavedInstanceState();
+        if (savedState == null) {
+            return null;
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            return savedState.getSerializable(KEY_WALLET_ACTION, WalletAction.class);
+        }
+        return (WalletAction) savedState.getSerializable(KEY_WALLET_ACTION);
+    }
+
+    /**
+     * Returns the onboarding page to restore after a recreation, or {@code 0} if none was saved.
+     */
+    private int getRestoredPagerIndex() {
+        final Bundle savedState = getSavedInstanceState();
+        return savedState == null ? 0 : savedState.getInt(KEY_PAGER_INDEX, 0);
     }
 
     @Override

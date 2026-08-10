@@ -45,3 +45,10 @@ TEST(BraveTabPrefsTest,
 
   EXPECT_TRUE(brave_tabs::IsScrollableHorizontalTabStripEnabled(&prefs));
 }
+
+TEST(BraveTabPrefsTest, AlwaysUseMiniAccentIconDefaultsToFalse) {
+  TestingPrefServiceSimple prefs;
+  brave_tabs::RegisterBraveProfilePrefs(prefs.registry());
+
+  EXPECT_FALSE(prefs.GetBoolean(brave_tabs::kAlwaysUseMiniAccentIcon));
+}

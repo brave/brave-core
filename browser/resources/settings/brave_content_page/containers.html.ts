@@ -40,6 +40,13 @@ export function getHtml(this: SettingsBraveContentContainersElement) {
 
       ${this.containersEnabled_
         ? html`
+            <settings-toggle-button
+              .checked="${this.alwaysUseMiniAccentIconPref_?.value ?? false}"
+              icon="container-on"
+              label="$i18n{SETTINGS_CONTAINERS_ALWAYS_USE_MINI_ICON_LABEL}"
+              no-set-pref
+              @change="${this.onAlwaysUseMiniIconChange_}"
+            ></settings-toggle-button>
             ${this.containersList_?.length
               ? html`
                   <div class="cr-row continuation">

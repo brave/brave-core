@@ -5,9 +5,11 @@
 
 #include "brave/components/brave_vpn/browser/v2/api/brave_vpn_api_client.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/check.h"
+#include "base/check_deref.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
 #include "base/strings/strcat.h"
@@ -26,10 +28,11 @@ using brave_account::endpoint_client::WithHeaders;
 
 namespace brave_vpn::v2 {
 
+using endpoints::GetSubscriberCredential;
 using endpoints::GetSubscriberCredentialV12;
+using endpoints::VerifyPurchaseToken;
 
 namespace {
-constexpr char kHeaderBravePaymentsEnvironment[] = "Brave-Payments-Environment";
 
 const net::NetworkTrafficAnnotationTag kTrafficAnnotation =
     net::DefineNetworkTrafficAnnotation("brave_vpn_api_client", R"(
@@ -94,6 +97,43 @@ BraveVpnApiClient::BraveVpnApiClient(
 
 BraveVpnApiClient::~BraveVpnApiClient() = default;
 
+void BraveVpnApiClient::GetSubscriberCredential(
+    SubscriberCredentialCallback callback,
+    const std::string& product_type,
+    const std::string& product_id,
+    const std::string& validation_method,
+    const std::string& purchase_token,
+    const std::string& bundle_id) {
+  auto request = MakeRequest<GetSubscriberCredential::Request>();
+  request.body.product_type = product_type;
+  request.body.product_id = product_id;
+  request.body.validation_method = validation_method;
+  request.body.purchase_token = purchase_token;
+  request.body.bundle_id = bundle_id;
+
+  Client<endpoints::GetSubscriberCredential>::Send(
+      url_loader_factory_, std::move(request),
+      base::BindOnce(&BraveVpnApiClient::OnGetSubscriberCredentialResponse,
+                     weak_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+void BraveVpnApiClient::OnGetSubscriberCredentialResponse(
+    SubscriberCredentialCallback callback,
+    endpoints::GetSubscriberCredential::Response response) {
+  if (auto unrecoverable = MaybeDescribeUnrecoverableResponse(response)) {
+    return std::move(callback).Run(base::unexpected(*std::move(unrecoverable)));
+  }
+
+  std::move(callback).Run(
+      std::move(CHECK_DEREF(response.body))
+          .transform([](endpoints::GetSubscriberCredentialSuccessBody success) {
+            return std::move(success.subscriber_credential);
+          })
+          .transform_error([](endpoints::VpnErrorBody error) {
+            return std::move(error.error_title);
+          }));
+}
+
 void BraveVpnApiClient::GetSubscriberCredentialV12(
     SubscriberCredentialCallback callback,
     const std::string& skus_credential,
@@ -104,29 +144,47 @@ void BraveVpnApiClient::GetSubscriberCredentialV12(
   auto request =
       MakeRequest<WithHeaders<GetSubscriberCredentialV12::Request>>();
   request.body.skus_credential = skus_credential;
-  request.headers.SetHeader(kHeaderBravePaymentsEnvironment, environment);
+  request.headers.SetHeader(endpoints::kHeaderBravePaymentsEnvironment,
+                            environment);
 
   Client<endpoints::GetSubscriberCredentialV12>::Send(
       url_loader_factory_, std::move(request),
-      base::BindOnce(&BraveVpnApiClient::OnGetSubscriberCredentialV12Response,
+      base::BindOnce(&BraveVpnApiClient::OnGetSubscriberCredentialResponse,
                      weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
-void BraveVpnApiClient::OnGetSubscriberCredentialV12Response(
-    SubscriberCredentialCallback callback,
-    endpoints::GetSubscriberCredentialV12::Response response) {
+void BraveVpnApiClient::VerifyPurchaseToken(
+    VerifyPurchaseTokenCallback callback,
+    const std::string& purchase_token,
+    const std::string& product_id,
+    const std::string& product_type,
+    const std::string& bundle_id) {
+  auto request = MakeRequest<VerifyPurchaseToken::Request>();
+  request.body.purchase_token = purchase_token;
+  request.body.product_id = product_id;
+  request.body.product_type = product_type;
+  request.body.bundle_id = bundle_id;
+
+  Client<endpoints::VerifyPurchaseToken>::Send(
+      url_loader_factory_, std::move(request),
+      base::BindOnce(&BraveVpnApiClient::OnVerifyPurchaseTokenResponse,
+                     weak_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+void BraveVpnApiClient::OnVerifyPurchaseTokenResponse(
+    VerifyPurchaseTokenCallback callback,
+    endpoints::VerifyPurchaseToken::Response response) {
   if (auto unrecoverable = MaybeDescribeUnrecoverableResponse(response)) {
     return std::move(callback).Run(base::unexpected(*std::move(unrecoverable)));
   }
 
   std::move(callback).Run(
       std::move(CHECK_DEREF(response.body))
-          .transform(
-              [](endpoints::GetSubscriberCredentialV12SuccessBody success) {
-                return std::move(success.subscriber_credential);
-              })
-          .transform_error([](endpoints::VpnErrorBody error) {
-            return std::move(error.error_title);
+          .transform([](endpoints::RawJsonResponseBody success) {
+            return std::move(success.json);
+          })
+          .transform_error([](endpoints::RawJsonResponseBody error) {
+            return std::move(error.json);
           }));
 }
 

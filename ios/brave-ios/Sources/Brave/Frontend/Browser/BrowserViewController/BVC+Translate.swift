@@ -25,7 +25,7 @@ extension BrowserViewController: BraveTranslateScriptHandlerDelegate {
     }
 
     return Preferences.Translate.translateEnabled.value
-      && !topToolbar.inOverlayMode
+      && !isSearchContainerVisible
       && topToolbar.secureContentState == .secure
       && Preferences.Translate.translateURLBarOnboardingCount.value < 2
       && shouldShowTranslationOnboardingThisSession && presentedViewController == nil
@@ -79,7 +79,7 @@ extension BrowserViewController: BraveTranslateScriptHandlerDelegate {
   }
 
   func presentTranslateToast(tab: some TabState, languageInfo: BraveTranslateLanguageInfo) {
-    if presentedViewController != nil || topToolbar.inOverlayMode || tab !== tabManager.selectedTab
+    if presentedViewController != nil || isSearchContainerVisible || tab !== tabManager.selectedTab
     {
       return
     }
@@ -95,7 +95,7 @@ extension BrowserViewController: BraveTranslateScriptHandlerDelegate {
   }
 
   func presentTranslateError(tab: some TabState) {
-    if presentedViewController != nil || topToolbar.inOverlayMode || tab !== tabManager.selectedTab
+    if presentedViewController != nil || isSearchContainerVisible || tab !== tabManager.selectedTab
     {
       return
     }

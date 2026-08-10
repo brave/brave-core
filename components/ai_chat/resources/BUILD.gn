@@ -45,6 +45,7 @@ preprocess_if_expr("preprocess_html") {
   in_files = [
     "chart_display/chart_display.html",
     "code_sandbox/code_sandbox.html",
+    "leo_workspace/leo_workspace.html",
     "page/ai_chat_ui.html",
     "untrusted_conversation_frame/untrusted_conversation_frame.html",
   ]

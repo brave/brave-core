@@ -180,9 +180,6 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_ADD_YOUR_SUGGESTIONS"  desc="Text for Add your suggestions">
         Add your suggestions
       </message>
-      <message name="IDS_BRAVE_OPTIONAL"  desc="Text for Optional">
-        Optional
-      </message>
       <message name="IDS_IN_ONE_EMOJI_EXPERIENCE_WITH_BRAVE"  desc="Text for In one emoji, how's your experience with Brave?">
         In one emoji, how's your experience with Brave?
       </message>
@@ -204,8 +201,20 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_THANKS_FOR_YOUR_FEEDBACK"  desc="Text for Thanks for your feedback!">
         Thanks for your feedback!
       </message>
-      <message name="IDS_LET_US_KNOW_HOW_WE_CAN_IMPROVE_BRAVE"  desc="Text for Let us know how we can improve Brave.">
-        Let us know how we can improve Brave.
+      <message name="IDS_LET_US_KNOW_HOW_WE_CAN_IMPROVE_BRAVE"  desc="Text for Let us know how we can improve Brave">
+        Let us know how we can improve Brave
+      </message>
+      <message name="IDS_BRAVE_RATING_SEND_FEEDBACK" desc="Label for the button that submits written feedback from the rating prompt.">
+        Send
+      </message>
+      <message name="IDS_BRAVE_RATING_ADD_SUGGESTIONS_OPTIONAL" desc="Floating label for the optional free-text field on the rating feedback prompt.">
+        Add your suggestions (Optional)
+      </message>
+      <message name="IDS_BRAVE_RATING_FEEDBACK_SENT" desc="Confirmation shown after the user submits written feedback from the rating prompt.">
+        Feedback sent. Thank you!
+      </message>
+      <message name="IDS_BRAVE_RATING_DONT_SHOW_AGAIN" desc="Label for the checkbox on the rating prompt that stops the prompt from being shown again.">
+        Don't show again
       </message>
       <message name="IDS_BRAVE_NOTIFICATION_PERMISSION_RATIONALE_DIALOG_TITLE" desc="The title of a dialog shown to users before asking for notification permission.">
         Brave notifications make it easier
@@ -993,9 +1002,6 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       </message>
         <message name="IDS_WEBAPP" desc="WebApp placeholder used in menu item customization preferences">
         WebApp
-      </message>
-      <message name="IDS_BRAVE_UI_SETTINGS" desc="Settings button text">
-        Settings
       </message>
       <message name="IDS_BRAVE_ADS_EXISTING_USER_OFFER_TITLE" desc="Title for Brave Ads offer.">
         Brave Ads are here!
@@ -1998,9 +2004,6 @@ Are you sure you want to do this?
     </message>
     <message name="IDS_BRAVE_WALLET_SHIELDING" desc="Shielding label">
       Shielding
-    </message>
-    <message name="IDS_BRAVE_WALLET_TOOLBAR_LOCK" desc="Title for brave wallet toolbar lock option.">
-      Lock
     </message>
     <message name="IDS_BRAVE_WALLET_HELP_CENTER" desc="Title for help center link">
       Help center

@@ -17,16 +17,9 @@ namespace {
 
 std::optional<std::vector<OrchardNoteSpend>> CollectSpends(
     const std::vector<zcash::mojom::CompactBlockPtr>& blocks,
-    OrchardPool pool,
-    uint32_t ironwood_activation_height) {
+    OrchardPool pool) {
   std::vector<OrchardNoteSpend> found_spends;
   for (const auto& block : blocks) {
-    // Keep spend collection consistent with the decoder: ignore pre-activation
-    // blocks for the Ironwood pool.
-    if (pool == OrchardPool::kIronwood &&
-        block->height < ironwood_activation_height) {
-      continue;
-    }
     for (const auto& tx : block->vtx) {
       const auto& actions = pool == OrchardPool::kIronwood
                                 ? tx->ironwood_actions
@@ -48,8 +41,7 @@ std::optional<std::vector<OrchardNoteSpend>> CollectSpends(
 base::expected<OrchardBlockScanner::PoolResult, OrchardBlockScanner::ErrorCode>
 BuildPoolResult(std::unique_ptr<orchard::OrchardDecodedBlocksBundle> bundle,
                 const std::vector<zcash::mojom::CompactBlockPtr>& blocks,
-                OrchardPool pool,
-                uint32_t ironwood_activation_height) {
+                OrchardPool pool) {
   if (!bundle) {
     return base::unexpected(OrchardBlockScanner::ErrorCode::kInputError);
   }
@@ -58,7 +50,7 @@ BuildPoolResult(std::unique_ptr<orchard::OrchardDecodedBlocksBundle> bundle,
     return base::unexpected(
         OrchardBlockScanner::ErrorCode::kDiscoveredNotesError);
   }
-  auto spends = CollectSpends(blocks, pool, ironwood_activation_height);
+  auto spends = CollectSpends(blocks, pool);
   if (!spends) {
     return base::unexpected(OrchardBlockScanner::ErrorCode::kInputError);
   }
@@ -105,8 +97,7 @@ base::expected<OrchardBlockScanner::Result, OrchardBlockScanner::ErrorCode>
 OrchardBlockScanner::ScanBlocks(
     const OrchardTreeState& orchard_tree_state,
     const std::vector<zcash::mojom::CompactBlockPtr>& blocks,
-    base::optional_ref<const OrchardTreeState> ironwood_tree_state,
-    uint32_t ironwood_activation_height) {
+    base::optional_ref<const OrchardTreeState> ironwood_tree_state) {
   base::AssertLongCPUWorkAllowed();
   if (blocks.empty()) {
     return base::unexpected(ErrorCode::kInputError);
@@ -119,11 +110,10 @@ OrchardBlockScanner::ScanBlocks(
       orchard::OrchardBlockDecoder::DecodeBlocks(
           fvk_, orchard_tree_state, blocks,
           decode_ironwood ? ironwood_tree_state
-                          : base::optional_ref<const OrchardTreeState>(),
-          ironwood_activation_height);
+                          : base::optional_ref<const OrchardTreeState>());
 
   auto orchard_result = BuildPoolResult(std::move(decoded.orchard), blocks,
-                                        OrchardPool::kOrchard, 0);
+                                        OrchardPool::kOrchard);
   if (!orchard_result.has_value()) {
     return base::unexpected(orchard_result.error());
   }
@@ -132,9 +122,8 @@ OrchardBlockScanner::ScanBlocks(
   result.orchard = std::move(orchard_result.value());
 
   if (decode_ironwood) {
-    auto ironwood_result =
-        BuildPoolResult(std::move(decoded.ironwood), blocks,
-                        OrchardPool::kIronwood, ironwood_activation_height);
+    auto ironwood_result = BuildPoolResult(std::move(decoded.ironwood), blocks,
+                                           OrchardPool::kIronwood);
     if (!ironwood_result.has_value()) {
       return base::unexpected(ironwood_result.error());
     }

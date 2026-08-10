@@ -6,6 +6,7 @@
 package org.chromium.chrome.browser.rate;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -18,12 +19,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.textfield.TextInputEditText;
 
 import org.chromium.base.Log;
 import org.chromium.base.task.AsyncTask;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.ui.messages.snackbar.Snackbar;
+import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 
 public class BraveRateThanksFeedbackDialog extends BottomSheetDialogFragment {
     public static final String TAG_FRAGMENT = "brave_rate_thanks_feedback_dialog_tag";
@@ -37,7 +42,7 @@ public class BraveRateThanksFeedbackDialog extends BottomSheetDialogFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setStyle(STYLE_NORMAL, R.style.AppBottomSheetDialogTheme);
+        setStyle(STYLE_NORMAL, R.style.RatingBottomSheetDialogTheme);
     }
 
     @Override
@@ -62,16 +67,37 @@ public class BraveRateThanksFeedbackDialog extends BottomSheetDialogFragment {
     public void setupDialog(@NonNull Dialog dialog, int style) {
         super.setupDialog(dialog, style);
 
-        final View view = LayoutInflater.from(getContext())
-                                  .inflate(R.layout.brave_rating_thanks_feedback_dialog, null);
+        // Inflate against the dialog rather than the fragment so the sheet theme applies to the
+        // content; the layout resolves its colors from theme attributes.
+        final View view =
+                LayoutInflater.from(dialog.getContext())
+                        .inflate(R.layout.brave_rating_thanks_feedback_dialog, null);
         addSuggestionEditText(view);
-        clickOnDoneButton(view);
+        clickOnSendButton(view);
+        clickOnCancelButton(view);
         dialog.setContentView(view);
+
+        // Expand straight away: the default peek height is derived from the parent's width, so in
+        // landscape it leaves only a sliver of the sheet on screen. skipCollapsed also stops the
+        // sheet dropping back to that peek when the window resizes for the keyboard.
+        BottomSheetBehavior<?> behavior = ((BottomSheetDialog) dialog).getBehavior();
+        behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+        behavior.setSkipCollapsed(true);
+        behavior.setMaxWidth(getResources().getDimensionPixelSize(R.dimen.bottom_sheet_max_width));
     }
 
-    private void clickOnDoneButton(View view) {
-        Button doneButton = view.findViewById(R.id.rate_done_button);
-        doneButton.setOnClickListener(
+    private void clickOnCancelButton(View view) {
+        Button cancelButton = view.findViewById(R.id.rate_cancel_button);
+        cancelButton.setOnClickListener(
+                (v) -> {
+                    RateUtils.getInstance().setPrefNextRateDate();
+                    dismiss();
+                });
+    }
+
+    private void clickOnSendButton(View view) {
+        Button sendButton = view.findViewById(R.id.rate_send_button);
+        sendButton.setOnClickListener(
                 (v) -> {
                     TextInputEditText feedbackEditText = view.findViewById(R.id.feedbackEditText);
                     String feedBack = feedbackEditText.getText().toString();
@@ -95,11 +121,38 @@ public class BraveRateThanksFeedbackDialog extends BottomSheetDialogFragment {
         }
     }
 
+    /**
+     * Shows the "Feedback sent" confirmation over the browser. Must run before {@link #dismiss()},
+     * which detaches the fragment and leaves {@link #getActivity()} null.
+     */
+    private void showFeedbackSentSnackbar() {
+        Activity activity = getActivity();
+        if (!(activity instanceof SnackbarManager.SnackbarManageable)) {
+            return;
+        }
+        SnackbarManager snackbarManager =
+                ((SnackbarManager.SnackbarManageable) activity).getSnackbarManager();
+        if (snackbarManager == null) {
+            return;
+        }
+
+        // Chromium's default snackbar styling is used deliberately - the confirmation is
+        // informational and goes away on the TYPE_NOTIFICATION timeout or a swipe.
+        Snackbar snackbar =
+                Snackbar.make(
+                        activity.getString(R.string.brave_rating_feedback_sent),
+                        /* controller= */ null,
+                        Snackbar.TYPE_NOTIFICATION,
+                        Snackbar.UMA_UNKNOWN);
+        snackbarManager.showSnackbar(snackbar);
+    }
+
     private final RateFeedbackUtils.RateFeedbackCallback mRateFeedbackCallback =
             new RateFeedbackUtils.RateFeedbackCallback() {
                 @Override
                 public void rateFeedbackSubmitted() {
                     RateUtils.getInstance().setPrefNextRateDate();
+                    showFeedbackSentSnackbar();
                     dismiss();
                 }
             };

@@ -43,10 +43,12 @@ source_set("browser_tests") {
 
   deps = [
     ":containers",
+    "//brave/app:brave_generated_resources_grit_grit",
     "//brave/components/containers/content/browser",
     "//brave/components/containers/core/browser",
     "//brave/components/containers/core/browser:test_support",
     "//brave/components/containers/core/common:features",
+    "//brave/components/containers/core/common:switches",
     "//brave/components/containers/core/mojom",
     "//chrome/browser",
     "//chrome/browser/browsing_data:constants",

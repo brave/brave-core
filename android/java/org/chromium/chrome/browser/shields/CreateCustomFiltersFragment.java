@@ -81,7 +81,9 @@ public class CreateCustomFiltersFragment extends BravePreferenceFragment {
         if (getActivity() != null) {
             ChromeClickableSpan summaryTextClickableSpan =
                     new ChromeClickableSpan(
-                            getActivity().getColor(R.color.brave_link),
+                            BraveDynamicColors.getTextButtonColor(
+                                    requireContext().getTheme(),
+                                    requireContext().getColor(R.color.brave_link)),
                             (textView) -> {
                                 CustomTabActivity.showInfoPage(
                                         getActivity(), BRAVE_ADBLOCK_FILTER_SYNTAX_PAGE);

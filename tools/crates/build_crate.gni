@@ -47,6 +47,14 @@ template("build_crate") {
 
     outputs = executable_output_paths
 
+    cargo_toml = "//brave/tools/crates/Cargo.toml"
+    config_toml = "//brave/tools/crates/.cargo/config.toml"
+
+    inputs += [
+      cargo_toml,
+      config_toml,
+    ]
+
     # To avoid irreproducible builds,
     # `build_crate`s MUST always build with `cargo vendor`ed deps,
     # hence they always have to pass:
@@ -54,32 +62,31 @@ template("build_crate") {
     #   --frozen (--locked + --offline)
     # when running `cargo build`.
     response_file_contents = [
-      "TMPDIR=" + rebase_path(cargo_target_dir),
-      "TEMP=" + rebase_path(cargo_target_dir),
-      "TMP=" + rebase_path(cargo_target_dir),
+      "TMPDIR=abs@" + rebase_path(cargo_target_dir, root_build_dir),
+      "TEMP=abs@" + rebase_path(cargo_target_dir, root_build_dir),
+      "TMP=abs@" + rebase_path(cargo_target_dir, root_build_dir),
 
-      # This `rebase_path` MUST stay absolute (new_base = ""). A relative entry
-      # like `../../third_party/rust-toolchain/bin` is resolved against the
-      # process's CWD, so it may not resolve correctly and could silently fall
-      # through to a local rustup proxy via `~/.cargo/bin`.
-      "PATH=" + rebase_path("//third_party/rust-toolchain/bin") +
-          host_path_sep + getenv("PATH"),
+      "CARGO=abs@" +
+          rebase_path("//third_party/rust-toolchain/bin/cargo", root_build_dir),
+      "RUSTC=abs@" +
+          rebase_path("//third_party/rust-toolchain/bin/rustc", root_build_dir),
+      "PATH=abs@" + rebase_path("//third_party/rust-toolchain/bin"),
     ]
 
     response_file_contents += rust_host_response_file_contents
 
     response_file_contents += [
-      rebase_path(cargo_exe),
+      "abs@" + rebase_path(cargo_exe, root_build_dir),
       "build",
       "--quiet",
       "--profile",
       cargo_profile,
       "--manifest-path",
-      rebase_path("//brave/tools/crates/Cargo.toml"),
+      "abs@" + rebase_path(cargo_toml, root_build_dir),
       "--config",
-      rebase_path("//brave/tools/crates/.cargo/config.toml"),
+      "abs@" + rebase_path(config_toml, root_build_dir),
       "--target-dir",
-      rebase_path(cargo_target_dir),
+      "abs@" + rebase_path(cargo_target_dir, root_build_dir),
       "--frozen",
     ]
     foreach(crate, crates) {

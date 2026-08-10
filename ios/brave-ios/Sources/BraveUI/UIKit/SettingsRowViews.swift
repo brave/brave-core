@@ -79,6 +79,8 @@ public class MultilineButtonCell: ButtonCell {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
     textLabel?.numberOfLines = 0
     textLabel?.textColor = UIColor(braveSystemName: .textInteractive)
+    imageView?.tintColor = UIColor(braveSystemName: .iconInteractive)
+    imageView?.preferredSymbolConfiguration = .init(scale: .large)
   }
 
   required init?(coder aDecoder: NSCoder) {

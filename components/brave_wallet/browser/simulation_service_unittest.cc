@@ -43,7 +43,12 @@ namespace brave_wallet {
 
 class SimulationServiceUnitTest : public testing::Test {
  public:
-  SimulationServiceUnitTest() {
+  SimulationServiceUnitTest() = default;
+  ~SimulationServiceUnitTest() override = default;
+
+  void SetUp() override {
+    testing::Test::SetUp();
+
     brave_wallet::RegisterLocalStatePrefs(local_state_.registry());
     brave_wallet::RegisterLocalStatePrefsForMigration(local_state_.registry());
     RegisterProfilePrefs(prefs_.registry());
@@ -63,7 +68,11 @@ class SimulationServiceUnitTest : public testing::Test {
                                         mojom::BlowfishOptInStatus::kAllowed);
   }
 
-  ~SimulationServiceUnitTest() override = default;
+  void TearDown() override {
+    brave_wallet_service_->GetZcashWalletService()
+        ->ShutdownSyncStateForTesting();
+    testing::Test::TearDown();
+  }
 
   AccountUtils GetAccountUtils() {
     return AccountUtils(brave_wallet_service_->keyring_service());

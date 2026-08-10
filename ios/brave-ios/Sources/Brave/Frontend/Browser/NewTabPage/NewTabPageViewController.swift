@@ -91,7 +91,7 @@ protocol NewTabPageDelegate: AnyObject {
   func brandedImageCalloutActioned(_ state: BrandedImageCalloutState)
   func showNTPOnboarding()
   func showNewTabTakeoverInfoBarIfNeeded()
-  func isURLBarInOverlayMode() -> Bool
+  func isNewTabPageOccluded() -> Bool
 }
 
 /// The new tab page. Shows users a variety of information, including stats and
@@ -528,7 +528,7 @@ class NewTabPageViewController: UIViewController {
   private func reportSponsoredBackgroundViewedEventIfNeeded() {
     // Only record a sponsored background viewed impression when the NTP
     // background is not covered by the URL bar overlay.
-    if delegate?.isURLBarInOverlayMode() == true {
+    if delegate?.isNewTabPageOccluded() == true {
       return
     }
 
@@ -1566,7 +1566,7 @@ extension NewTabPageViewController {
 
 // MARK: - URL bar overlay
 extension NewTabPageViewController {
-  func urlBarDidLeaveOverlayMode() {
+  func searchContainerDidDismiss() {
     reportSponsoredBackgroundViewedEventIfNeeded()
   }
 }

@@ -4,15 +4,18 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include <algorithm>
+#include <optional>
 #include <string>
 #include <vector>
 
 #include "base/files/file_util.h"
+#include "base/location.h"
 #include "base/test/run_until.h"
 #include "base/threading/thread_restrictions.h"
 #include "brave/browser/containers/containers_service_factory.h"
 #include "brave/browser/containers/used_container_storage_partitions.h"
 #include "brave/browser/ui/browser_commands.h"
+#include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/tabs/brave_new_tab_button.h"
 #include "brave/browser/ui/views/tabs/brave_tab.h"
 #include "brave/components/containers/content/browser/storage_partition_utils.h"
@@ -22,7 +25,9 @@
 #include "brave/components/containers/core/browser/prefs.h"
 #include "brave/components/containers/core/browser/temporary_container.h"
 #include "brave/components/containers/core/common/features.h"
+#include "brave/components/containers/core/common/switches.h"
 #include "brave/components/containers/core/mojom/containers.mojom.h"
+#include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/browsing_data/chrome_browsing_data_remover_constants.h"
 #include "chrome/browser/prefs/session_startup_pref.h"
 #include "chrome/browser/profiles/profile.h"
@@ -41,6 +46,7 @@
 #include "chrome/browser/ui/views/frame/toolbar_button_provider.h"
 #include "chrome/browser/ui/views/location_bar/icon_label_bubble_view.h"
 #include "chrome/browser/ui/views/page_action/test_support/page_action_test_support.h"
+#include "chrome/browser/ui/views/tabs/tab_strip.h"
 #include "chrome/browser/ui/zoom/chrome_zoom_level_prefs.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/common/webui_url_constants.h"
@@ -70,16 +76,19 @@
 #include "third_party/blink/public/common/page/page_zoom.h"
 #include "third_party/skia/include/core/SkColor.h"
 #include "ui/actions/actions.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "ui/events/base_event_utils.h"
 #include "ui/events/event_constants.h"
 #include "ui/events/keycodes/keyboard_codes.h"
 #include "ui/gfx/animation/animation.h"
 #include "ui/gfx/animation/animation_test_api.h"
+#include "ui/gfx/geometry/point.h"
 #include "ui/views/controls/button/button.h"
 #include "ui/views/controls/menu/menu_controller.h"
 #include "ui/views/test/button_test_api.h"
 #include "ui/views/test/views_test_utils.h"
 #include "ui/views/view.h"
+#include "ui/views/view_utils.h"
 #include "url/gurl.h"
 
 namespace containers {
@@ -90,6 +99,55 @@ constexpr char kTestContainerId[] = "test-container-id";
 
 constexpr char kFarblingPluginsStringScript[] =
     "Array.from(navigator.plugins).map(p => p.name).join(',');";
+
+// Name of the container seeded by tests that exercise the --container switch.
+constexpr char kNamedContainerName[] = "Command Line Named Container";
+
+// Returns the storage partition config of the tab at `index`, after waiting for
+// it to finish loading, or std::nullopt if the tab can't be loaded. `location`
+// is the caller's location, reported via SCOPED_TRACE.
+std::optional<content::StoragePartitionConfig> GetStoragePartitionConfigOfTabAt(
+    Browser* browser,
+    int index,
+    const base::Location& location = base::Location::Current()) {
+  SCOPED_TRACE(location.ToString());
+  content::WebContents* web_contents =
+      browser->tab_strip_model()->GetWebContentsAt(index);
+  if (!web_contents) {
+    ADD_FAILURE() << "No tab at index " << index;
+    return std::nullopt;
+  }
+  if (!content::WaitForLoadStop(web_contents)) {
+    ADD_FAILURE() << "Failed to load the tab at index " << index
+                  << ": url=" << web_contents->GetLastCommittedURL()
+                  << " visible_url=" << web_contents->GetVisibleURL();
+    return std::nullopt;
+  }
+  return web_contents->GetPrimaryMainFrame()
+      ->GetStoragePartition()
+      ->GetConfig();
+}
+
+// Returns the container partition name of the tab at `index`, or std::nullopt
+// if the tab can't be loaded or is not in a containers storage partition.
+std::optional<std::string> GetContainerPartitionNameOfTabAt(
+    Browser* browser,
+    int index,
+    const base::Location& location = base::Location::Current()) {
+  SCOPED_TRACE(location.ToString());
+  const std::optional<content::StoragePartitionConfig> config =
+      GetStoragePartitionConfigOfTabAt(browser, index, location);
+  if (!config) {
+    return std::nullopt;
+  }
+  if (config->partition_domain() != kContainersStoragePartitionDomain) {
+    ADD_FAILURE() << "Tab at index " << index
+                  << " is not in a containers storage partition: "
+                  << config->partition_domain();
+    return std::nullopt;
+  }
+  return config->partition_name();
+}
 
 }  // namespace
 
@@ -115,9 +173,13 @@ class ContainersBrowserTest : public InProcessBrowserTest {
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
     InProcessBrowserTest::SetUpCommandLine(command_line);
+    // Startup navigations for command line URLs run before SetUpOnMainThread
+    // installs the host resolver rules, so every host has to be mapped here
+    // too, not just port 443.
     command_line->AppendSwitchASCII(
         network::switches::kHostResolverRules,
-        absl::StrFormat("MAP *:443 127.0.0.1:%d", https_server_.port()));
+        absl::StrFormat("MAP *:443 127.0.0.1:%d,MAP * 127.0.0.1",
+                        https_server_.port()));
   }
 
   void SetUpOnMainThread() override {
@@ -991,6 +1053,65 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest, OpenUrlInContainer) {
             content::EvalJs(web_contents, GetLocalStorageJS("container_key")));
 }
 
+IN_PROC_BROWSER_TEST_F(ContainersBrowserTest, TabTooltipShowsContainerName) {
+  browser()->profile()->GetPrefs()->SetInteger(
+      brave_tabs::kTabHoverMode, brave_tabs::TabHoverMode::TOOLTIP);
+
+  const GURL url("https://a.test/simple.html");
+
+  auto container = containers::mojom::Container::New();
+  container->id = "tooltip-container";
+  container->name = "Tooltip Container";
+  container->icon = containers::mojom::Icon::kWork;
+  container->background_color = SK_ColorBLUE;
+
+  // The tooltip name comes from the runtime container, which is only
+  // populated once the container is known to the synced containers list.
+  std::vector<containers::mojom::ContainerPtr> synced;
+  synced.push_back(container->Clone());
+  SetContainersToPrefs(synced, *browser()->profile()->GetPrefs());
+
+  brave::OpenUrlInContainer(browser(), url, container);
+  content::WebContents* web_contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(web_contents);
+  EXPECT_TRUE(content::WaitForLoadStop(web_contents));
+
+  auto* browser_view = static_cast<BrowserView*>(browser()->window());
+  TabStrip* tab_strip = browser_view->horizontal_tab_strip_for_testing();
+  ASSERT_TRUE(tab_strip);
+  auto* brave_tab = views::AsViewClass<BraveTab>(
+      tab_strip->tab_at(browser()->tab_strip_model()->active_index()));
+  ASSERT_TRUE(brave_tab);
+
+  const std::u16string tooltip =
+      brave_tab->GetRenderedTooltipText(gfx::Point());
+  EXPECT_NE(std::u16string::npos, tooltip.find(u"Tooltip Container"))
+      << tooltip;
+}
+
+IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
+                       TabTooltipDoesNotShowContainerNameOutsideContainer) {
+  browser()->profile()->GetPrefs()->SetInteger(
+      brave_tabs::kTabHoverMode, brave_tabs::TabHoverMode::TOOLTIP);
+
+  const GURL url("https://a.test/simple.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+
+  auto* browser_view = static_cast<BrowserView*>(browser()->window());
+  TabStrip* tab_strip = browser_view->horizontal_tab_strip_for_testing();
+  ASSERT_TRUE(tab_strip);
+  auto* brave_tab = views::AsViewClass<BraveTab>(
+      tab_strip->tab_at(browser()->tab_strip_model()->active_index()));
+  ASSERT_TRUE(brave_tab);
+
+  const std::u16string tooltip =
+      brave_tab->GetRenderedTooltipText(gfx::Point());
+  EXPECT_EQ(
+      std::u16string::npos,
+      tooltip.find(l10n_util::GetStringUTF16(IDS_TOOLTIP_TAB_IN_CONTAINER)));
+}
+
 IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
                        CreateTemporaryContainerAndOpenUrl) {
   const GURL url("https://a.test/simple.html");
@@ -1456,6 +1577,45 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
   EXPECT_FALSE(browser()->window()->IsFullscreen());
   EXPECT_TRUE(small_accent_view->GetVisible());
   EXPECT_TRUE(small_accent_view->layer());
+}
+
+IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
+                       SmallAccentIconViewNotLayeredWhenScrollIsActive) {
+  auto animation_resetter = gfx::AnimationTestApi::SetRichAnimationRenderMode(
+      gfx::Animation::RichAnimationRenderMode::FORCE_DISABLED);
+  auto* tab_strip_model = browser()->tab_strip_model();
+  auto* tab_strip =
+      browser()->GetBrowserView().horizontal_tab_strip_for_testing();
+
+  // Add a tab in a container
+  const GURL url("https://a.test/simple.html");
+  auto container = containers::mojom::Container::New();
+  container->id = "accent-scroll-test-container";
+  container->name = "Accent Scroll Test Container";
+  container->icon = containers::mojom::Icon::kSocial;
+  container->background_color = SK_ColorYELLOW;
+  brave::OpenUrlInContainer(browser(), url, container);
+  EXPECT_EQ(2, tab_strip_model->count());
+
+  auto* tab_in_container = views::AsViewClass<BraveTab>(
+      tab_strip->tab_at(tab_strip_model->active_index()));
+  ASSERT_TRUE(tab_strip->ShouldPaintTabAccent(tab_in_container));
+  content::WebContents* contents_in_container =
+      tab_strip_model->GetActiveWebContents();
+  ASSERT_TRUE(contents_in_container);
+  EXPECT_TRUE(content::WaitForLoadStop(contents_in_container));
+
+  // By default, the small accent icon view should be visible and have a layer.
+  views::View* small_accent_view =
+      tab_in_container->small_accent_icon_view_for_test();
+  EXPECT_TRUE(small_accent_view->layer());
+
+  // When the tab strip is scrollable, the small accent icon view should not
+  // have a layer.
+  browser()->profile()->GetPrefs()->SetBoolean(
+      brave_tabs::kScrollableHorizontalTabStrip, true);
+  views::test::RunScheduledLayout(tab_strip);
+  EXPECT_FALSE(small_accent_view->layer());
 }
 
 IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
@@ -2529,7 +2689,7 @@ class ContainersCommandLineContainerBrowserTest : public ContainersBrowserTest {
 
   void SetUpDefaultCommandLine(base::CommandLine* command_line) override {
     ContainersBrowserTest::SetUpDefaultCommandLine(command_line);
-    command_line->AppendSwitchASCII("container", "Work");
+    command_line->AppendSwitchASCII(switches::kContainer, "Work");
     command_line->AppendArg(
         https_server_.GetURL("a.test", "/simple.html").spec());
   }
@@ -2567,6 +2727,149 @@ IN_PROC_BROWSER_TEST_F(ContainersCommandLineContainerBrowserTest,
       web_contents->GetPrimaryMainFrame()->GetStoragePartition()->GetConfig();
   EXPECT_EQ(kContainersStoragePartitionDomain, config.partition_domain());
   EXPECT_EQ(kTestContainerId, config.partition_name());
+}
+
+class ContainersCommandLineTemporaryContainerBrowserTest
+    : public ContainersBrowserTest {
+ public:
+  ContainersCommandLineTemporaryContainerBrowserTest() = default;
+
+  void SetUpDefaultCommandLine(base::CommandLine* command_line) override {
+    ContainersBrowserTest::SetUpDefaultCommandLine(command_line);
+    command_line->AppendSwitch(switches::kTemporaryContainer);
+    command_line->AppendArg(
+        https_server_.GetURL("a.test", "/simple.html").spec());
+    command_line->AppendArg(
+        https_server_.GetURL("b.test", "/simple.html").spec());
+  }
+};
+
+IN_PROC_BROWSER_TEST_F(ContainersCommandLineTemporaryContainerBrowserTest,
+                       AllCommandLineTabsShareOneTemporaryContainer) {
+  ASSERT_EQ(2, browser()->tab_strip_model()->count());
+
+  const std::optional<std::string> first_partition_name =
+      GetContainerPartitionNameOfTabAt(browser(), 0);
+  ASSERT_TRUE(first_partition_name.has_value());
+  EXPECT_TRUE(IsTemporaryContainerId(*first_partition_name))
+      << *first_partition_name;
+
+  // All URLs on a single command line share one temporary container.
+  EXPECT_EQ(first_partition_name,
+            GetContainerPartitionNameOfTabAt(browser(), 1));
+
+  // The temporary container is persisted, so it can be shown in the UI and
+  // restored like a container created from the UI.
+  auto* containers_service =
+      ContainersServiceFactory::GetForProfile(browser()->profile());
+  ASSERT_TRUE(containers_service);
+  EXPECT_TRUE(
+      containers_service->GetRuntimeContainerById(*first_partition_name))
+      << *first_partition_name;
+}
+
+class ContainersCommandLineNamedTemporaryContainerBrowserTest
+    : public ContainersBrowserTest {
+ public:
+  ContainersCommandLineNamedTemporaryContainerBrowserTest() = default;
+
+  void SetUpDefaultCommandLine(base::CommandLine* command_line) override {
+    ContainersBrowserTest::SetUpDefaultCommandLine(command_line);
+    command_line->AppendSwitchASCII(switches::kContainer, kNamedContainerName);
+    command_line->AppendSwitch(switches::kTemporaryContainer);
+    command_line->AppendArg(
+        https_server_.GetURL("a.test", "/simple.html").spec());
+  }
+};
+
+// PRE_ stores a synced container with the same name the follow-up test passes
+// to --container. Using a test-owned name rather than a default container keeps
+// the test independent of localized strings.
+IN_PROC_BROWSER_TEST_F(
+    ContainersCommandLineNamedTemporaryContainerBrowserTest,
+    PRE_ContainerSwitchNamesTemporaryContainerInsteadOfResolvingIt) {
+  Profile* profile = browser()->profile();
+  std::vector<mojom::ContainerPtr> synced;
+  synced.push_back(MakeContainer(kTestContainerId, kNamedContainerName,
+                                 mojom::Icon::kWork, SK_ColorRED));
+  SetContainersToPrefs(synced, *profile->GetPrefs());
+
+  SessionStartupPref pref(SessionStartupPref::DEFAULT);
+  SessionStartupPref::SetStartupPref(profile, pref);
+  profile->GetPrefs()->SetInteger(prefs::kRestoreOnStartup,
+                                  SessionStartupPref::kPrefValueNewTab);
+}
+
+// With --temporary-container, --container names the temporary container rather
+// than selecting an existing one, so a synced container with the same name is
+// left alone.
+IN_PROC_BROWSER_TEST_F(
+    ContainersCommandLineNamedTemporaryContainerBrowserTest,
+    ContainerSwitchNamesTemporaryContainerInsteadOfResolvingIt) {
+  ASSERT_EQ(1, browser()->tab_strip_model()->count());
+
+  auto* containers_service =
+      ContainersServiceFactory::GetForProfile(browser()->profile());
+  ASSERT_TRUE(containers_service);
+
+  // Precondition: without --temporary-container the switch would have resolved
+  // to this container, so the IsTemporaryContainerId/EXPECT_NE checks really do
+  // exercise the naming behavior rather than passing because the name never
+  // resolved.
+  const std::optional<std::string> named_container_id =
+      containers_service->GetContainerIdFromContainerSpecifier(
+          ContainerName(kNamedContainerName));
+  ASSERT_TRUE(named_container_id.has_value());
+  ASSERT_EQ(kTestContainerId, *named_container_id);
+
+  const std::optional<std::string> partition_name =
+      GetContainerPartitionNameOfTabAt(browser(), 0);
+  ASSERT_TRUE(partition_name.has_value());
+  EXPECT_TRUE(IsTemporaryContainerId(*partition_name)) << *partition_name;
+  EXPECT_NE(kTestContainerId, *partition_name);
+
+  // The temporary container carries the name from the command line, so a later
+  // launch with the same switches opens tabs in this same container.
+  auto temporary_container =
+      containers_service->GetRuntimeContainerById(*partition_name);
+  ASSERT_TRUE(temporary_container);
+  EXPECT_EQ(kNamedContainerName, temporary_container->name);
+}
+
+class ContainersCommandLineTemporaryContainerWithoutUrlsBrowserTest
+    : public ContainersBrowserTest {
+ public:
+  ContainersCommandLineTemporaryContainerWithoutUrlsBrowserTest() = default;
+
+  void SetUpDefaultCommandLine(base::CommandLine* command_line) override {
+    ContainersBrowserTest::SetUpDefaultCommandLine(command_line);
+    command_line->AppendSwitch(switches::kTemporaryContainer);
+  }
+};
+
+// With no URLs to open there is nothing to isolate, so no temporary container
+// should be created. ContainersCommandLineTemporaryContainerBrowserTest covers
+// the positive case: the same switch with URLs does create one.
+IN_PROC_BROWSER_TEST_F(
+    ContainersCommandLineTemporaryContainerWithoutUrlsBrowserTest,
+    NoTemporaryContainerCreated) {
+  // The startup tab is in the default storage partition, not a container one.
+  ASSERT_GE(browser()->tab_strip_model()->count(), 1);
+  const std::optional<content::StoragePartitionConfig> config =
+      GetStoragePartitionConfigOfTabAt(browser(), 0);
+  ASSERT_TRUE(config.has_value());
+  EXPECT_NE(kContainersStoragePartitionDomain, config->partition_domain());
+
+  const std::vector<mojom::ContainerPtr> locally_used_containers =
+      GetLocallyUsedContainersFromPrefs(*browser()->profile()->GetPrefs());
+  const auto temporary_container = std::ranges::find_if(
+      locally_used_containers, [](const mojom::ContainerPtr& container) {
+        return IsTemporaryContainerId(container->id);
+      });
+  // The streamed message is only evaluated when the check fails, which is
+  // exactly when the iterator is dereferenceable.
+  EXPECT_TRUE(temporary_container == locally_used_containers.end())
+      << "Unexpected temporary container: " << (*temporary_container)->id;
 }
 
 }  // namespace containers

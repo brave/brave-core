@@ -6,6 +6,7 @@
 #include "brave/components/containers/core/browser/temporary_container.h"
 
 #include <array>
+#include <optional>
 #include <string>
 
 #include "base/check.h"
@@ -96,12 +97,13 @@ bool IsTemporaryContainerId(std::string_view container_id) {
          container_id.starts_with(kTemporaryContainerIdPrefix);
 }
 
-mojom::ContainerPtr CreateTemporaryContainer() {
+mojom::ContainerPtr CreateTemporaryContainer(
+    std::optional<std::string_view> name) {
   return mojom::Container::New(
       base::StrCat({kTemporaryContainerIdPrefix,
                     base::Uuid::GenerateRandomV4().AsLowercaseString()}),
-      GenerateTemporaryContainerName(), PickTemporaryContainerIcon(),
-      PickTemporaryContainerBackground());
+      name ? std::string(*name) : GenerateTemporaryContainerName(),
+      PickTemporaryContainerIcon(), PickTemporaryContainerBackground());
 }
 
 }  // namespace containers

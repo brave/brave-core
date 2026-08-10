@@ -31,6 +31,98 @@ public class OnboardingViewModel extends ViewModel {
     @NonNull final Set<NetworkInfo> mAvailableNetworks = new HashSet<>();
     @NonNull final SparseArray<String> mVerificationWords = new SparseArray<>(3);
 
+    // The unlock password, retained across configuration changes so the fragment (recreated fresh
+    // after a rotation) can restore it.
+    @Nullable private String mUnlockPassword;
+    // Whether the user dismissed the biometric unlock prompt on the current unlock screen. Retained
+    // across configuration changes so a rotation does not pop the prompt up again, but only for as
+    // long as the hosting activity lives, so a freshly shown unlock screen enables it once more.
+    private boolean mBiometricPromptDismissed;
+
+    // Recovery phrase entry state for the restore wallet screen, retained across configuration
+    // changes so the fragment, recreated fresh, can repopulate it. A word
+    // count of zero means nothing has been captured yet.
+    @NonNull private final List<String> mRestoreWalletWords = new ArrayList<>();
+    private int mRestoreWalletWordCount;
+    private int mRestoreWalletFocusedWordIndex = -1;
+    private boolean mRestoreWalletLegacyEnabled;
+
+    /** Stores the unlock password text so it survives a configuration change such as a rotation. */
+    public void setUnlockPassword(@Nullable final String unlockPassword) {
+        mUnlockPassword = unlockPassword;
+    }
+
+    /** Returns the unlock password to restore, or {@code null} if none is stored. */
+    @Nullable
+    public String getUnlockPassword() {
+        return mUnlockPassword;
+    }
+
+    /** Records whether the user dismissed the biometric unlock prompt for the unlock screen. */
+    public void setBiometricPromptDismissed(final boolean biometricPromptDismissed) {
+        mBiometricPromptDismissed = biometricPromptDismissed;
+    }
+
+    /** Returns whether the user dismissed the biometric unlock prompt for the unlock screen. */
+    public boolean isBiometricPromptDismissed() {
+        return mBiometricPromptDismissed;
+    }
+
+    /**
+     * Drops the captured unlock screen state so it is not re-applied the next time the unlock
+     * screen is shown (for example after the wallet is unlocked and later re-locked). Called once
+     * the wallet has been unlocked.
+     */
+    public void clearUnlockState() {
+        mUnlockPassword = null;
+        mBiometricPromptDismissed = false;
+    }
+
+    /** Stores the restore wallet screen state so it survives a configuration change. */
+    public void saveRestoreWalletState(
+            @NonNull final List<String> words,
+            final int wordCount,
+            final int focusedWordIndex,
+            final boolean legacyEnabled) {
+        mRestoreWalletWords.clear();
+        mRestoreWalletWords.addAll(words);
+        mRestoreWalletWordCount = wordCount;
+        mRestoreWalletFocusedWordIndex = focusedWordIndex;
+        mRestoreWalletLegacyEnabled = legacyEnabled;
+    }
+
+    /**
+     * Drops any captured restore wallet state so it is not re-applied the next time the screen is
+     * shown. Called once the recovery phrase has been submitted.
+     */
+    public void clearRestoreWalletState() {
+        mRestoreWalletWords.clear();
+        mRestoreWalletWordCount = 0;
+        mRestoreWalletFocusedWordIndex = -1;
+        mRestoreWalletLegacyEnabled = false;
+    }
+
+    /** Returns the recovery phrase words to restore, in visible order. */
+    @NonNull
+    public List<String> getRestoreWalletWords() {
+        return mRestoreWalletWords;
+    }
+
+    /** Returns the restored recovery phrase word count, or {@code 0} if nothing was captured. */
+    public int getRestoreWalletWordCount() {
+        return mRestoreWalletWordCount;
+    }
+
+    /** Returns the index of the focused recovery phrase word to restore, or {@code -1} if none. */
+    public int getRestoreWalletFocusedWordIndex() {
+        return mRestoreWalletFocusedWordIndex;
+    }
+
+    /** Returns whether the legacy wallet import option was enabled on the restore screen. */
+    public boolean isRestoreWalletLegacyEnabled() {
+        return mRestoreWalletLegacyEnabled;
+    }
+
     public void setLegacyRestoreEnabled(final boolean legacyRestoreEnabled) {
         mLegacyRestoreEnabled = legacyRestoreEnabled;
     }

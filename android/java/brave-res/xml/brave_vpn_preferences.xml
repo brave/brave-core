@@ -47,7 +47,7 @@
             android:key="split_tunneling"
             android:title="@string/split_tunneling"/>
 
-        <org.chromium.components.browser_ui.settings.ChromeBasePreference
+        <org.chromium.chrome.browser.settings.BraveDestructivePreference
             android:key="server_reset_configuration"
             android:title="@string/reset_configuration"/>
 

@@ -71,7 +71,7 @@
             android:text="@string/brave_sync_categories_text"
             style="@style/BraveSyncButton"
             android:background="@android:color/transparent"
-            android:textColor="@color/baseline_neutral_40" />
+            android:textColor="?attr/globalTextButtonTextColor" />
 
         <android.widget.Button android:id="@+id/brave_sync_btn_delete_account"
             android:layout_width="match_parent"
@@ -79,6 +79,6 @@
             android:text="@string/brave_sync_delete_account_text"
             style="@style/BraveSyncButton"
             android:background="@android:color/transparent"
-            android:textColor="@color/baseline_neutral_40" />
+            android:textColor="@color/systemfeedback_error_text" />
     </LinearLayout>
 </ScrollView>

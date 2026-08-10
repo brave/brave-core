@@ -73,8 +73,7 @@ class ZCashShieldSyncService {
 
   class OrchardBlockScannerProxy {
    public:
-    OrchardBlockScannerProxy(OrchardFullViewKey full_view_key,
-                             uint32_t ironwood_activation_height);
+    explicit OrchardBlockScannerProxy(OrchardFullViewKey full_view_key);
     virtual ~OrchardBlockScannerProxy();
     virtual void ScanBlocks(
         OrchardTreeState tree_state,
@@ -88,12 +87,10 @@ class ZCashShieldSyncService {
     static base::expected<OrchardBlockScanner::Result,
                           OrchardBlockScanner::ErrorCode>
     ScanBlocksInBackground(OrchardFullViewKey full_view_key,
-                           uint32_t ironwood_activation_height,
                            OrchardTreeState tree_state,
                            std::optional<OrchardTreeState> ironwood_tree_state,
                            std::vector<zcash::mojom::CompactBlockPtr> blocks);
     OrchardFullViewKey full_view_key_;
-    uint32_t ironwood_activation_height_ = 0;
     scoped_refptr<base::TaskRunner> task_runner_;
 
     base::WeakPtrFactory<OrchardBlockScannerProxy> weak_ptr_factory_{this};

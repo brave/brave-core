@@ -710,6 +710,28 @@ class MatchExpectation:
                 f'{self.minimum}..{upper})')
 
 
+def _is_valid_re_flag_name(flag: str) -> bool:
+    """True if `flag` names a real `re` module flag (e.g. `DOTALL`)."""
+    return flag.isupper() and hasattr(re, flag)
+
+
+def _parse_re_flags(flags_raw: object, description: str) -> int:
+    """Combine `re_flags` flag names (e.g. `['DOTALL']`) into one `re` mask.
+    """
+    if not isinstance(flags_raw, list):
+        raise ValueError(
+            f're_flags must be a list of strings (in "{description}")')
+    re_flags = 0
+    for flag in flags_raw:
+        if not isinstance(flag, str):
+            raise ValueError(
+                f're_flags entries must be strings (in "{description}")')
+        if not _is_valid_re_flag_name(flag):
+            raise ValueError(f'Invalid re flag specified: {flag}')
+        re_flags |= getattr(re, flag)
+    return re_flags
+
+
 class Regex(Rewriter):
     """A regex substitution applied with `re.subn` (the native rewriter).
     """
@@ -806,23 +828,8 @@ class Regex(Rewriter):
 
         return cls(re_pattern=re_pattern,
                    replace=replace,
-                   re_flags=cls._parse_flags(body.get('re_flags', []),
-                                             description))
-
-    @staticmethod
-    def _parse_flags(flags_raw: object, description: str) -> int:
-        if not isinstance(flags_raw, list):
-            raise ValueError(
-                f're_flags must be a list of strings (in "{description}")')
-        re_flags = 0
-        for flag in flags_raw:
-            if not isinstance(flag, str):
-                raise ValueError(
-                    f're_flags entries must be strings (in "{description}")')
-            if not (flag.isupper() and hasattr(re, flag)):
-                raise ValueError(f'Invalid re flag specified: {flag}')
-            re_flags |= getattr(re, flag)
-        return re_flags
+                   re_flags=_parse_re_flags(body.get('re_flags', []),
+                                            description))
 
 
 @dataclass(frozen=True)
@@ -2238,6 +2245,24 @@ _REWRITER_SCHEMA = {
     'result': _RESULT_SCHEMA,
 }
 
+# Regex macros have input fields, and those input fields also require a
+# documentation for them.
+_REGEX_MACRO_INPUT_SCHEMA = {
+    'name': _NON_EMPTY_STR,
+    'description': _NON_EMPTY_STR,
+}
+
+# A regex macro schema. A regex macro is similar to a substitution, so it has
+# the same entries that a regular regex rewriter has.
+_REGEX_MACRO_SCHEMA = {
+    'description': _NON_EMPTY_STR,
+    'inputs': [_REGEX_MACRO_INPUT_SCHEMA],
+    schema.Optional('pattern'): _NON_EMPTY_STR,
+    schema.Optional('re_pattern'): _NON_EMPTY_STR,
+    'replace': str,
+    schema.Optional('re_flags'): [str],
+}
+
 # Top-level schema for rewriters.pyl.
 _REWRITERS_SCHEMA = schema.Schema({
     schema.Optional('ast.matcher'): {
@@ -2245,6 +2270,9 @@ _REWRITERS_SCHEMA = schema.Schema({
     },
     schema.Optional('ast.rewriter'): {
         schema.Optional(_OP_ID): _REWRITER_SCHEMA
+    },
+    schema.Optional('regex_macro'): {
+        schema.Optional(_OP_ID): _REGEX_MACRO_SCHEMA
     },
 })
 
@@ -2276,6 +2304,7 @@ class RewritersEval:
             raise RewritersSchemaError(f'{source}: {e}') from e
         self._matchers = data.get('ast.matcher', {})
         self._rewriters = data.get('ast.rewriter', {})
+        self._regex_macros = data.get('regex_macro', {})
         self._check_cross_references()
 
     @classmethod
@@ -2313,6 +2342,19 @@ class RewritersEval:
         except KeyError:
             raise RewritersSchemaError(
                 f'unknown rewriter op: {op_id!r}') from None
+
+    @property
+    def regex_macros(self) -> MappingProxyType[str, dict]:
+        """Read-only mapping of regex macro op id -> validated macro spec."""
+        return MappingProxyType(self._regex_macros)
+
+    def regex_macro(self, op_id: str) -> dict:
+        """Return the regex macro spec for `op_id`, or raise if unknown."""
+        try:
+            return self._regex_macros[op_id]
+        except KeyError:
+            raise RewritersSchemaError(
+                f'unknown regex macro op: {op_id!r}') from None
 
     @classmethod
     def language_of(cls, op_id: str) -> str:
@@ -2356,6 +2398,8 @@ class RewritersEval:
             self._check_matcher_captures(op_id, spec)
         for op_id, spec in self._rewriters.items():
             self._check_rewriter_interface(op_id, spec)
+        for op_id, spec in self._regex_macros.items():
+            self._check_regex_macro_interface(op_id, spec)
 
     def _check_matcher_captures(self, op_id: str, spec: dict) -> None:
         """Every metavariable a capture reads must be bound by the template."""
@@ -2421,6 +2465,52 @@ class RewritersEval:
         if unused:
             raise RewritersSchemaError(
                 f'{self._source}: rewriter {op_id!r} declares input(s) '
+                f'never used in its templates: {", ".join(unused)}')
+
+    def _check_regex_macro_interface(self, op_id: str, spec: dict) -> None:
+        """A regex macro's `pattern`/`replace` fields and declared `inputs`
+        must line up.
+
+        The macro must pick exactly one of `pattern`/`re_pattern` (the same
+        mutual exclusivity `Regex.parse` enforces for a plain `regex:` block)
+        and name only real `re` flags. Each `inputs` entry's `name` must be
+        unique, and the set of names must be exactly the union of
+        `{placeholder}`s used across the active pattern field and `replace`,
+        so the macro's advertised interface never drifts from what it
+        actually consumes or leaves an input undocumented.
+        """
+        has_pattern = 'pattern' in spec
+        has_re_pattern = 're_pattern' in spec
+        if has_pattern == has_re_pattern:
+            raise RewritersSchemaError(
+                f'{self._source}: regex macro {op_id!r} must specify exactly '
+                f'one of `pattern` or `re_pattern`')
+        for flag in spec.get('re_flags', []):
+            if not _is_valid_re_flag_name(flag):
+                raise RewritersSchemaError(
+                    f'{self._source}: regex macro {op_id!r} has an invalid '
+                    f're_flags entry: {flag!r}')
+
+        names = [entry['name'] for entry in spec['inputs']]
+        duplicates = sorted({name for name in names if names.count(name) > 1})
+        if duplicates:
+            raise RewritersSchemaError(
+                f'{self._source}: regex macro {op_id!r} declares duplicate '
+                f'input name(s): {", ".join(duplicates)}')
+
+        declared = set(names)
+        used = _placeholders(spec.get('pattern', spec.get('re_pattern')))
+        used |= _placeholders(spec['replace'])
+
+        undeclared = sorted(used - declared)
+        if undeclared:
+            raise RewritersSchemaError(
+                f'{self._source}: regex macro {op_id!r} templates use '
+                f'undeclared input(s): {", ".join(undeclared)}')
+        unused = sorted(declared - used)
+        if unused:
+            raise RewritersSchemaError(
+                f'{self._source}: regex macro {op_id!r} declares input(s) '
                 f'never used in its templates: {", ".join(unused)}')
 
 
@@ -2816,6 +2906,164 @@ class AstRewriter:
             source = source[:start] + new_text.encode('utf-8') + source[end:]
         self._source = source.decode('utf-8')
         return total
+
+
+class RegexMacroEngine:
+    """Applies named `regex_macro` ops (from `rewriters.pyl`) to file contents.
+
+    Similar to `AstRewriter` this type is constructed with `RewritersEval`, but
+    it is dedicated to handle regex macros.
+    """
+
+    def __init__(self, rewriters: RewritersEval, content: str):
+        self._rewriters = rewriters
+        self._source = content
+
+    @property
+    def content(self) -> str:
+        """The current file contents, reflecting every applied rewrite."""
+        return self._source
+
+    def run(self, op_id: str, inputs: dict[str, str]) -> int:
+        """Run one regex macro, mutate content, return the change count.
+
+        `inputs` must supply exactly the op's declared `inputs`, no more and
+        no fewer. `pattern` (escaped) or `re_pattern`, and `replace`, are
+        rendered with `inputs` via `str.format` before being handed to
+        `re.subn`, so the macro's own backreferences (`\\1`) reach `re.subn`
+        untouched.
+        """
+        spec = self._rewriters.regex_macro(op_id)
+        declared = frozenset(entry['name'] for entry in spec['inputs'])
+        provided = frozenset(inputs)
+        if provided != declared:
+            problems = []
+            missing = sorted(declared - provided)
+            if missing:
+                problems.append(f'missing input(s): {", ".join(missing)}')
+            unknown = sorted(provided - declared)
+            if unknown:
+                problems.append(f'unknown input(s): {", ".join(unknown)}')
+            raise ValueError(f'{op_id}: ' + '; '.join(problems))
+
+        re_pattern = spec.get('re_pattern')
+        if re_pattern is not None:
+            pattern = re_pattern.format(**inputs)
+        else:
+            pattern = re.escape(spec['pattern'].format(**inputs))
+        replace = spec['replace'].format(**inputs)
+        flags = _parse_re_flags(spec.get('re_flags', []), op_id)
+        self._source, matches = re.subn(pattern,
+                                        replace,
+                                        self._source,
+                                        flags=flags)
+        return matches
+
+
+class RegexMacro(Rewriter):
+    """Applies a named `regex_macro` op (declared in `rewriters.pyl`) as a
+    substitution.
+
+    Every `regex_macro` op gets a `RegexMacro` subclass generated automatically
+    from its `rewriters.pyl` spec (see `_regex_macro_rewriters`), carrying only
+    the per-op `NAME` (the `substitutions:` key that selects it), `OP_ID`, and
+    the `SUMMARY`/ `HELP` `plaster --help` renders.
+
+    Behaviour validating a body's keys against the op's declared `inputs`, and
+    applying it via `RegexMacroEngine` lives in this class.
+    """
+
+    # Set on the generated subclass (see `_regex_macro_rewriters`): the
+    # `rewriters.pyl` op id this resolves to (e.g.
+    # `cxx.set_feature_flag_default_state`).
+    OP_ID: ClassVar[str] = ''
+
+    def __init__(self, inputs: dict[str, str]):
+        self._inputs = inputs
+
+    def source_language(self) -> str:
+        """The `<lang>.` prefix for the op (e.g. `cxx`)."""
+        return self.OP_ID.split('.', 1)[0]
+
+    def apply(self,
+              contents: str,
+              *,
+              count: int,
+              description: str,
+              blank_for_parse: bool = False) -> tuple[str, list[str]]:
+        del description  # Only the count matters for the regex diagnostic.
+        del blank_for_parse  # Regex macros run over plain text; nothing to relax.
+        engine = RegexMacroEngine(RewritersEval.load(), contents)
+        matches = engine.run(self.OP_ID, self._inputs)
+        error = MatchExpectation.from_count(count).error_for(matches)
+        return engine.content, [error] if error else []
+
+    @classmethod
+    def parse(cls, body: object, *, description: str) -> RegexMacro:
+        """Validate a `<macro-name>:` body against the op's declared `inputs`.
+        """
+        if not isinstance(body, dict):
+            raise ValueError(
+                f'"{cls.NAME}" must be a mapping (in "{description}")')
+        keys = frozenset(
+            entry['name']
+            for entry in RewritersEval.load().regex_macro(cls.OP_ID)['inputs'])
+        unknown = sorted(set(body) - keys)
+        if unknown:
+            raise ValueError(
+                f'Unrecognised {cls.NAME} arg(s): '
+                f'{", ".join(repr(k) for k in unknown)} (in "{description}")')
+        missing = sorted(keys - set(body))
+        if missing:
+            raise ValueError(f'{cls.NAME} requires arg(s): '
+                             f'{", ".join(missing)} (in "{description}")')
+        for key in sorted(keys):
+            if not isinstance(body[key], str):
+                raise ValueError(f'{cls.NAME} `{key}` must be a string '
+                                 f'(in "{description}")')
+        return cls({key: body[key] for key in keys})
+
+
+def _regex_macro_help(spec: dict) -> str:
+    """Full `plaster --help <macro>` text for one `regex_macro` spec.
+
+    This function produces the markdown text used to show the help section for
+    a given regex macro.
+    """
+    lines = spec['description'].rstrip('\n').splitlines()
+    fields = ['Fields:', ''] + [
+        f"- `{entry['name']}` — {entry['description']}"
+        for entry in spec['inputs']
+    ]
+    for index, line in enumerate(lines):
+        if line.startswith('```'):
+            return '\n'.join(lines[:index] + fields + [''] + lines[index:])
+    return '\n'.join(lines + [''] + fields)
+
+
+def _regex_macro_rewriters() -> dict[str, type[RegexMacro]]:
+    """One auto-generated `RegexMacro` subclass per declared `regex_macro` op.
+
+    This function produces a list of entries to be used by `_REWRITERS` to
+    register all the `regex_macro` ops declared in `rewriters.pyl`.
+    """
+    rewriters: dict[str, type[RegexMacro]] = {}
+    for op_id, spec in RewritersEval.load().regex_macros.items():
+        name = op_id.split('.', 1)[1]
+        first_paragraph = spec['description'].strip().split('\n\n', 1)[0]
+        rewriters[name] = type(
+            f'RegexMacro_{name}', (RegexMacro, ), {
+                'NAME': name,
+                'OP_ID': op_id,
+                'SUMMARY': ' '.join(first_paragraph.split()),
+                'HELP': _regex_macro_help(spec),
+            })
+    return rewriters
+
+
+# Every `regex_macro` op declared in `rewriters.pyl` joins `_REWRITERS`
+# alongside the hand-written rewriters above, each under its own bare name.
+_REWRITERS = MappingProxyType({**_REWRITERS, **_regex_macro_rewriters()})
 
 
 def get_plaster_files(filepaths: list[str] | None = None) -> list[PlasterFile]:

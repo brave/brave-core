@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/navigator/browser_navigator_params_utils.cc b/chrome/browser/ui/navigator/browser_navigator_params_utils.cc
+index 211b521c7453be850d50d3da823192d5754a6d40..33d66c09dbb03f96c0102735704a7e89b08ba834 100644
+--- a/chrome/browser/ui/navigator/browser_navigator_params_utils.cc
++++ b/chrome/browser/ui/navigator/browser_navigator_params_utils.cc
+@@ -74,7 +74,6 @@ content::NavigationController::LoadURLParams LoadURLParamsFromNavigateParams(
+   // |frame_tree_node_id| is invalid for main frame navigations.
+   if (params->frame_tree_node_id.is_null()) {
+     bool force_no_https_upgrade =
+-        params->url_typed_with_http_scheme ||
+         params->captive_portal_window_type !=
+             captive_portal::CaptivePortalWindowType::kNone;
+     std::unique_ptr<ChromeNavigationUIData> navigation_ui_data =

@@ -90,7 +90,7 @@ const CHANGE_PASSWORD_SERVER_ERROR_STRINGS: Partial<
   [ChangePasswordServerErrorCode.kEmailAlreadyVerified]:
     BraveAccountStrings.BRAVE_ACCOUNT_PASSWORD_RESET_EMAIL_ALREADY_VERIFIED,
   [ChangePasswordServerErrorCode.kMaximumCodeVerificationAttemptsExceeded]:
-    BraveAccountStrings.BRAVE_ACCOUNT_PASSWORD_RESET_MAXIMUM_CODE_VERIFICATION_ATTEMPTS_EXCEEDED,
+    BraveAccountStrings.BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_MAXIMUM_CODE_VERIFICATION_ATTEMPTS_EXCEEDED,
   [ChangePasswordServerErrorCode.kInvalidVerificationCode]:
     BraveAccountStrings.BRAVE_ACCOUNT_REGISTER_INVALID_VERIFICATION_CODE,
   [ChangePasswordServerErrorCode.kTokenHasExpired]:
@@ -131,7 +131,7 @@ const REGISTER_SERVER_ERROR_STRINGS: Partial<
   [RegisterServerErrorCode.kTooManyVerifications]:
     BraveAccountStrings.BRAVE_ACCOUNT_REGISTER_TOO_MANY_VERIFICATIONS,
   [RegisterServerErrorCode.kMaximumCodeVerificationAttemptsExceeded]:
-    BraveAccountStrings.BRAVE_ACCOUNT_REGISTER_MAXIMUM_CODE_VERIFICATION_ATTEMPTS_EXCEEDED,
+    BraveAccountStrings.BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_MAXIMUM_CODE_VERIFICATION_ATTEMPTS_EXCEEDED,
   [RegisterServerErrorCode.kInvalidVerificationCode]:
     BraveAccountStrings.BRAVE_ACCOUNT_REGISTER_INVALID_VERIFICATION_CODE,
   [RegisterServerErrorCode.kRegistrationVerificationAlreadyPendingForThisEmail]:
@@ -153,6 +153,8 @@ const RESEND_VERIFICATION_EMAIL_SERVER_ERROR_STRINGS: Partial<
     BraveAccountStrings.BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_MAXIMUM_SEND_ATTEMPTS_EXCEEDED,
   [ResendVerificationEmailServerErrorCode.kEmailAlreadyVerified]:
     BraveAccountStrings.BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_ALREADY_VERIFIED,
+  [ResendVerificationEmailServerErrorCode.kMaximumCodeVerificationAttemptsExceeded]:
+    BraveAccountStrings.BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_MAXIMUM_CODE_VERIFICATION_ATTEMPTS_EXCEEDED,
   [ResendVerificationEmailServerErrorCode.kTokenHasExpired]:
     BraveAccountStrings.BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_TOKEN_HAS_EXPIRED,
 }
@@ -175,7 +177,7 @@ const RESET_PASSWORD_SERVER_ERROR_STRINGS: Partial<
   [ResetPasswordServerErrorCode.kEmailAlreadyVerified]:
     BraveAccountStrings.BRAVE_ACCOUNT_PASSWORD_RESET_EMAIL_ALREADY_VERIFIED,
   [ResetPasswordServerErrorCode.kMaximumCodeVerificationAttemptsExceeded]:
-    BraveAccountStrings.BRAVE_ACCOUNT_PASSWORD_RESET_MAXIMUM_CODE_VERIFICATION_ATTEMPTS_EXCEEDED,
+    BraveAccountStrings.BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_MAXIMUM_CODE_VERIFICATION_ATTEMPTS_EXCEEDED,
   [ResetPasswordServerErrorCode.kInvalidVerificationCode]:
     BraveAccountStrings.BRAVE_ACCOUNT_REGISTER_INVALID_VERIFICATION_CODE,
   [ResetPasswordServerErrorCode.kTokenHasExpired]:

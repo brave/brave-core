@@ -71,6 +71,28 @@
 # An op yields every match in source order; the caller (plaster) decides how
 # many it expects. Input values are injected verbatim into the rule's `regex:`
 # fields, so the caller escapes any regex metacharacters.
+#
+#   "regex_macro" — a named, reusable `regex:` substitution: the templated
+#       equivalent of a substitution's own `regex:` block (see the `Regex`
+#       rewriter), keyed the same way as the ast ops above ("<lang>.<name>").
+#       description: Markdown documenting what the macro is for, meant for a
+#                future `plaster --help <macro>`, the same way a `Rewriter`'s
+#                `HELP` is.
+#       inputs:  the macro's `{placeholder}`s, each documented rather than
+#                bare, since a macro is meant to be read and reused by
+#                someone other than its author: { name, description }, where
+#                `name` is threaded into `pattern`/`re_pattern`/`replace` via
+#                `str.format` and `description` explains what to pass and why.
+#       One of either `pattern` (escaped for you) or `re_pattern`, plus
+#       `replace` and optional `re_flags` -- exactly the fields a
+#       substitution's own `regex:` block takes, applied as one `re.subn`. A
+#       macro need not know the target's current spelling of a value it is
+#       changing (e.g. one of several states a toggle can hold): the pattern
+#       can match every known spelling via alternation and `replace` can
+#       overwrite it wholesale with the wanted one, taken as an input, rather
+#       than the macro inspecting what is there. The substitution's own
+#       `count:` is what tells the caller a match -- and so a change --
+#       actually happened.
 
 {
     "ast.matcher": {
@@ -571,6 +593,43 @@ regex: ^{class_name}$
             "result": {
                 "node": "enumerator",
             },
+        },
+    },
+    "regex_macro": {
+
+        "cxx.set_feature_flag_default_state": {
+            "description": """\
+Sets a new value to a `BASE_FEATURE` feature flag.
+
+```yaml
+substitutions:
+  - description: Ship kMyFeature disabled.
+    set_feature_flag_default_state:
+      feature_name: kMyFeature
+      value: base::FEATURE_DISABLED_BY_DEFAULT
+```
+
+```diff
+ BASE_FEATURE(kMyFeature,
+              "MyFeature",
+-             base::FEATURE_ENABLED_BY_DEFAULT);
++             base::FEATURE_DISABLED_BY_DEFAULT);
+```
+""",
+            "inputs": [
+                {
+                    "name": "feature_name",
+                    "description":
+                    "The `BASE_FEATURE` feature flag name, e.g. `kMyFeature`.",
+                },
+                {
+                    "name": "value",
+                    "description":
+                    "The new value, e.g. `base::FEATURE_DISABLED_BY_DEFAULT`.",
+                },
+            ],
+            "re_pattern": "(BASE_FEATURE\\(\\s*{feature_name}\\s*,)(?!(?:[^;]*,)?\\s*{value}\\s*\\);)([^;]*,)?(\\s*)[^;]*?(\\);)",
+            "replace": "\\1\\2\\3{value}\\4",
         },
     },
 }

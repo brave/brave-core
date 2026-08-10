@@ -61,8 +61,7 @@
                android:layout_height="wrap_content"
                android:text="@string/brave_sync_start_new_chain"
                style="@style/BraveSyncBottomButton"
-               android:background="@android:color/transparent"
-               android:textColor="@color/baseline_neutral_40" />
+               android:background="@android:color/transparent" />
 
         </LinearLayout>
     </ScrollView>
@@ -126,8 +125,7 @@
                android:layout_height="wrap_content"
                android:text="@string/enter_code_words_sync"
                style="@style/BraveSyncBottomButton"
-               android:background="@android:color/transparent"
-               android:textColor="@color/baseline_neutral_40" />
+               android:background="@android:color/transparent" />
 
         </LinearLayout>
     </ScrollView>
@@ -272,8 +270,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/brave_sync_use_camera_text"
                 style="@style/BraveSyncBottomButton"
-                android:background="@android:color/transparent"
-                android:textColor="@color/baseline_neutral_40" />
+                android:background="@android:color/transparent" />
 
         </LinearLayout>
 
@@ -289,11 +286,11 @@
             android:id="@+id/tab_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:tabTextColor="@color/text_secondary"
-            app:tabSelectedTextColor="@color/text_interactive"
+            app:tabTextColor="?attr/colorOnSurfaceVariant"
+            app:tabSelectedTextColor="?attr/globalTextButtonTextColor"
             app:tabIndicator="@drawable/brave_sync_tab_indicator"
             app:tabIndicatorFullWidth="false"
-            app:tabIndicatorColor = "@color/text_interactive"
+            app:tabIndicatorColor="?attr/globalTextButtonTextColor"
             android:background="@drawable/brave_sync_tab_layout_bg"
             app:tabTextAppearance="@style/BraveSyncTabsTextAppearance"
             app:tabRippleColor="@android:color/transparent">

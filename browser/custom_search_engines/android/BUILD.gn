@@ -58,8 +58,6 @@ android_resources("java_resources") {
     "java/res/layout/confirmation_dialog_layout.xml",
     "java/res/layout/custom_search_engine_item.xml",
     "java/res/layout/custom_search_engines_preference_layout.xml",
-    "java/res/values-night/colors.xml",
-    "java/res/values/colors.xml",
     "java/res/values/dimens.xml",
     "java/res/values/styles.xml",
   ]

@@ -70,6 +70,10 @@
     <color name="default_text_color_on_accent1_dark">@color/primitive_neutral_0</color>
     <color name="gm3_baseline_surface_tint_light">#948989</color>
     <color name="gm3_baseline_surface_tint_dark">#F7F9FC</color>
+    <!-- Chromium's value is blue-tinted (#F8FAFD); point it at the Nala equivalent so surfaces
+         using ?attr/colorSurfaceContainerLow stay on the design system when dynamic colors are
+         off, and follow the wallpaper when they are on. -->
+    <color name="gm3_baseline_surface_container_low_light">@color/primitive_neutral_98</color>
     <color name="gm3_baseline_surface_container_light">#F3F1F1</color>
     <color name="gm3_baseline_surface_container_high_light">#F2F0F0</color>
     <color name="gm3_baseline_surface_container_highest_light">#F0EEEE</color>
@@ -116,7 +120,6 @@
 
     <color name="onboarding_welcome_text_color">#F0F2FF</color>
     <color name="onboarding_card_bg_color">@android:color/white</color>
-    <color name="onboarding_negative_button_color">#4C54D2</color>
 
     <color name="scan_qr_code_text_color">#212529</color>
     <color name="scan_qr_code_bg_color">@android:color/white</color>
@@ -135,8 +138,6 @@
     <color name="brave_sync_border_color">@color/primitive_neutral_95</color>
     <color name="brave_sync_bg_secondary_color">@android:color/white</color>
     <color name="brave_sync_main_button_color">@color/button_background</color>
-    <color name="brave_sync_copy_words_text_color">@color/text_secondary</color>
-    <color name="brave_sync_btn_transparent_text_color">@color/text_interactive</color>
 
     <color name="brave_set_default_dialog_text_color">@color/primitive_neutral_30</color>
 
@@ -263,16 +264,6 @@
 
     <color name="notification_button_color">#423EEE</color>
 
-    <color name="brave_rate_bg_color">#F4F6F8</color>
-    <color name="brave_smiley_sad_color">#E32444</color>
-    <color name="brave_smiley_happy_color">#4C54D2</color>
-    <color name="brave_rating_emoji_bg_color">#FFFFFF</color>
-    <color name="brave_rating_title_color">#000000</color>
-    <color name="brave_rating_sub_title_color">#424552</color>
-    <color name="brave_rating_not_now_text_color">#4C54D2</color>
-    <color name="brave_rating_rate_now_bg_color">#4C54D2</color>
-    <color name="brave_rating_text_input_stroke_color">#E2E3E7</color>
-    <color name="brave_rating_hint_text_color">#1D1F25</color>
 
     <color name="bookmark_menu_text_color">#484B4E</color>
     <color name="bookmark_menu_bg_color">@android:color/white</color>

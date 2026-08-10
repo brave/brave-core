@@ -38,6 +38,9 @@ section links to a detailed document.
   Overrides vs patches, minimizing duplication, ChromiumImpl fallback
 - **[Build System](./best-practices/build-system.md)** - BUILD.gn organization,
   buildflags, DEPS, GRD resources
+- **[C++ Buildflag Guards](./best-practices/coding-standards-buildflags.md)** -
+  `#if BUILDFLAG(...)` in C++ sources and headers: guarding includes, `#endif`
+  comments, forward declarations, `static_assert`
 - **[UI/Views](./best-practices/ui-views.md)** - Desktop C++ views, view
   hierarchy, layout, styling
 - **[Patches](./best-practices/patches.md)** - Patch style, minimality,

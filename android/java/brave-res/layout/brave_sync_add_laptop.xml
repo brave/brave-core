@@ -90,7 +90,6 @@
                 android:text="@string/brave_sync_copy_button_text"
                 style="@style/BraveSyncBottomButton"
                 android:background="@android:color/transparent"
-                android:textColor="@color/brave_sync_copy_words_text_color"
                 android:textSize="14sp" />
 
             <android.widget.Button android:id="@+id/brave_sync_btn_add_laptop_new_code"

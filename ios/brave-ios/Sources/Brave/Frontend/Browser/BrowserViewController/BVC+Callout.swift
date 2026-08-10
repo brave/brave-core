@@ -206,7 +206,7 @@ extension BrowserViewController {
     }
 
     if Preferences.DebugFlag.skipNTPCallouts == true || isOnboardingOrFullScreenCalloutPresented
-      || topToolbar.inOverlayMode
+      || isSearchContainerVisible
     {
       return false
     }

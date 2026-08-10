@@ -500,6 +500,7 @@ test("brave_unit_tests") {
       "//brave/browser/ui/views/accelerator_table_unittest.cc",
       "//brave/chromium_src/chrome/browser/devtools/url_constants_unittest.cc",
       "//brave/chromium_src/chrome/browser/profiles/profile_avatar_icon_util_unittest.cc",
+      "//brave/chromium_src/chrome/browser/ui/bookmarks/bookmark_utils_unittest.cc",
       "//brave/chromium_src/components/update_client/request_sender_unittest.cc",
       "//chrome/browser/push_messaging/push_messaging_app_identifier_unittest.cc",
       "//chrome/browser/push_messaging/push_messaging_notification_manager_unittest.cc",
@@ -527,7 +528,6 @@ test("brave_unit_tests") {
       "//brave/app:brave_generated_resources_grit",
       "//brave/app/theme:brave_theme_resources_grit",
       "//brave/browser/download/bubble:unit_tests",
-      "//brave/browser/prefs:unit_tests",
       "//brave/browser/renderer_context_menu/test:unit_tests",
       "//brave/browser/ui/bookmark:unittest",
       "//brave/browser/ui/color:unit_tests",
@@ -1301,6 +1301,7 @@ test("brave_browser_tests") {
   if (enable_ai_chat) {
     deps += [
       "//brave/browser/ui/webui/ai_chat:browser_tests",
+      "//brave/components/ai_chat/content/browser",
       "//brave/components/ai_chat/core/browser",
       "//brave/components/ai_chat/core/common",
       "//brave/components/ai_chat/renderer:browser_tests",

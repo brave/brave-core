@@ -3186,6 +3186,197 @@ class RewriterFormsTest(unittest.TestCase):
             '    re_flag: [DOTALL]\n', 'Unrecognised substitution key')
 
 
+class RegexMacroDispatchTest(unittest.TestCase):
+    """End-to-end tests for dispatching a `regex_macro:`-style substitution
+    key (e.g. `set_feature_flag_default_state:`) to `RegexMacro`.
+
+    Every `regex_macro` op declared in `rewriters.pyl` is handled by the same
+    `RegexMacro` class (see `_regex_macro_rewriters`), so these tests exercise
+    that generic dispatch/validation path via the one macro currently shipped
+    (`set_feature_flag_default_state`), rather than the macro's own regex --
+    that is `ToggleBaseFeatureDefaultStateTest`'s job (renamed
+    `OverrideFeatureDefaultStateTest`).
+    """
+
+    def setUp(self):
+        self.fake_chromium_src = FakeChromiumRepo()
+        self.fake_chromium_src.setup()
+        self.addCleanup(self.fake_chromium_src.cleanup)
+
+    def _apply(self, name: str, source: str, yaml_body: str) -> str:
+        """Write `source`+plaster, apply, and return the rewritten source."""
+        src = Path('chrome/common/extensions/api') / name
+        self.fake_chromium_src.write_and_stage_file(
+            src, source, self.fake_chromium_src.chromium)
+        self.fake_chromium_src.commit(f'Add {name}',
+                                      self.fake_chromium_src.chromium)
+        plaster_path = plaster.PLASTER_FILES_PATH / (str(src) + '.yaml')
+        plaster_path.parent.mkdir(parents=True, exist_ok=True)
+        plaster_path.write_text(yaml_body)
+        plaster.PlasterFile(plaster_path).apply()
+        return (self.fake_chromium_src.chromium / src).read_text()
+
+    def test_macro_op_applies(self):
+        result = self._apply(
+            'feature.cc',
+            'BASE_FEATURE(kFoo, base::FEATURE_ENABLED_BY_DEFAULT);',
+            'substitutions:\n'
+            '  - description: Ship kFoo disabled.\n'
+            '    set_feature_flag_default_state:\n'
+            '      feature_name: kFoo\n'
+            '      value: base::FEATURE_DISABLED_BY_DEFAULT\n')
+        self.assertEqual(
+            result, 'BASE_FEATURE(kFoo, base::FEATURE_DISABLED_BY_DEFAULT);')
+
+    def test_registered_under_its_bare_name(self):
+        # The YAML key is the op id with its `cxx.` prefix stripped.
+        self.assertIn('set_feature_flag_default_state', plaster._REWRITERS)
+        cls = plaster._REWRITERS['set_feature_flag_default_state']
+        self.assertTrue(issubclass(cls, plaster.RegexMacro))
+        self.assertEqual(cls.OP_ID, 'cxx.set_feature_flag_default_state')
+
+    def test_help_text_lists_every_input(self):
+        # `plaster --help <macro>` must document each input, not just the
+        # macro's own top-level `description`.
+        cls = plaster._REWRITERS['set_feature_flag_default_state']
+        help_text = cls.help_text()
+        self.assertIn('Fields:', help_text)
+        self.assertIn('feature_name', help_text)
+        self.assertIn('value', help_text)
+        spec = plaster.RewritersEval.load().regex_macro(cls.OP_ID)
+        for entry in spec['inputs']:
+            self.assertIn(entry['name'], help_text)
+            self.assertIn(entry['description'], help_text)
+
+    def test_missing_required_arg_is_rejected(self):
+        spec = 'substitutions:\n' \
+              '  - description: d\n' \
+              '    set_feature_flag_default_state:\n' \
+              '      feature_name: kFoo\n'
+        with self.assertRaises(ValueError) as cm:
+            plaster.Substitution.from_yaml(spec)
+        self.assertIn('requires arg(s): value', str(cm.exception))
+
+    def test_unknown_arg_is_rejected(self):
+        spec = ('substitutions:\n'
+                '  - description: d\n'
+                '    set_feature_flag_default_state:\n'
+                '      feature_name: kFoo\n'
+                '      value: base::FEATURE_DISABLED_BY_DEFAULT\n'
+                '      bogus: x\n')
+        with self.assertRaises(ValueError) as cm:
+            plaster.Substitution.from_yaml(spec)
+        self.assertIn("Unrecognised set_feature_flag_default_state arg(s)",
+                      str(cm.exception))
+        self.assertIn("'bogus'", str(cm.exception))
+
+    def test_non_string_arg_is_rejected(self):
+        spec = ('substitutions:\n'
+                '  - description: d\n'
+                '    set_feature_flag_default_state:\n'
+                '      feature_name: kFoo\n'
+                '      value: 1\n')
+        with self.assertRaises(ValueError) as cm:
+            plaster.Substitution.from_yaml(spec)
+        self.assertIn('must be a string', str(cm.exception))
+
+    def test_unknown_macro_name_is_unrecognised(self):
+        # A name that is not a rewriter and not a declared regex macro falls
+        # through to the same "unrecognised" path as any other bad key.
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: d\n'
+            '    not_a_real_macro:\n'
+            '      feature_name: kFoo\n', 'Unknown rewriter')
+
+    def test_only_one_rewriter_allowed_alongside_a_macro(self):
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: d\n'
+            "    regex:\n"
+            "      re_pattern: 'a'\n"
+            "      replace: 'b'\n"
+            '    set_feature_flag_default_state:\n'
+            '      feature_name: kFoo\n'
+            '      value: base::FEATURE_DISABLED_BY_DEFAULT\n',
+            'Only one rewriter allowed per entry')
+
+    def test_count_mismatch_when_value_already_set(self):
+        # `RegexMacro.apply` reports the macro's own match count through the
+        # normal `count:` diagnostic, same as any other rewriter: applying an
+        # override that is already in effect is 0 matches against the
+        # default expectation of 1.
+        with self.assertRaises(plaster.PlasterApplyError) as cm:
+            self._apply(
+                'already_set.cc',
+                'BASE_FEATURE(kFoo, base::FEATURE_DISABLED_BY_DEFAULT);',
+                'substitutions:\n'
+                '  - description: Ship kFoo disabled.\n'
+                '    set_feature_flag_default_state:\n'
+                '      feature_name: kFoo\n'
+                '      value: base::FEATURE_DISABLED_BY_DEFAULT\n')
+        self.assertIn('Unexpected number of matches (0 vs 1)',
+                      str(cm.exception))
+
+    def test_rejected_on_a_non_cxx_source(self):
+        with self.assertRaises(ValueError) as cm:
+            self._apply(
+                'feature.idl', 'irrelevant', 'substitutions:\n'
+                '  - description: Ship kFoo disabled.\n'
+                '    set_feature_flag_default_state:\n'
+                '      feature_name: kFoo\n'
+                '      value: base::FEATURE_DISABLED_BY_DEFAULT\n')
+        self.assertIn(
+            'the `set_feature_flag_default_state` rewriter is only '
+            'supported for C++ sources', str(cm.exception))
+
+    def _expect_value_error(self, yaml_body: str, substr: str):
+        with self.assertRaises(ValueError) as ctx:
+            self._apply('validation.cc', 'dummy', yaml_body)
+        self.assertIn(substr, str(ctx.exception))
+
+
+class RegexMacroHelpTest(unittest.TestCase):
+    """Unit tests for `_regex_macro_help`, independent of the shipped macro.
+    """
+
+    @staticmethod
+    def _spec(description: str) -> dict:
+        return {
+            'description': description,
+            'inputs': [
+                {
+                    'name': 'foo',
+                    'description': 'The foo to use.'
+                },
+                {
+                    'name': 'bar',
+                    'description': 'The bar to use.'
+                },
+            ],
+        }
+
+    def test_fields_inserted_before_example_code_block(self):
+        help_text = plaster._regex_macro_help(
+            self._spec('Does a thing.\n\n```cpp\ncode here\n```\n'))
+        fields_index = help_text.index('Fields:')
+        example_index = help_text.index('```cpp')
+        self.assertLess(fields_index, example_index)
+        self.assertIn('- `foo` — The foo to use.', help_text)
+        self.assertIn('- `bar` — The bar to use.', help_text)
+
+    def test_fields_appended_when_no_code_block(self):
+        help_text = plaster._regex_macro_help(self._spec('Does a thing.'))
+        self.assertTrue(help_text.startswith('Does a thing.'))
+        self.assertIn('Fields:', help_text)
+        self.assertIn('- `foo` — The foo to use.', help_text)
+        self.assertIn('- `bar` — The bar to use.', help_text)
+
+    def test_field_order_matches_declared_inputs(self):
+        help_text = plaster._regex_macro_help(self._spec('Does a thing.'))
+        self.assertLess(help_text.index('`foo`'), help_text.index('`bar`'))
+
+
 class RewriterRegistryTest(unittest.TestCase):
     """The `_REWRITERS` registry drives both YAML dispatch and help."""
 
@@ -4761,6 +4952,725 @@ class PatchinfoTest(unittest.TestCase):
         self.assertIsNotNone(original)
         roundtripped = plaster.Patchinfo.from_json(original.to_json())
         self.assertEqual(original, roundtripped)
+
+
+class RegexMacroSchemaTest(unittest.TestCase):
+    """Schema and cross-reference validation for `regex_macro` ops."""
+
+    def setUp(self):
+        # load() memoises a process-wide instance; clear it so tests that
+        # exercise the singleton start from a clean slate.
+        plaster.RewritersEval._instance = None
+        self.addCleanup(setattr, plaster.RewritersEval, '_instance', None)
+
+    @staticmethod
+    def _input(name: str, description: str = 'doc') -> dict:
+        """A documented `inputs` entry: `{name, description}`."""
+        return {'name': name, 'description': description}
+
+    @classmethod
+    def _valid_spec(cls) -> dict:
+        """A minimal, schema-valid `regex_macro` spec as a Python dict."""
+        return {
+            'regex_macro': {
+                'cxx.rename_constant': {
+                    'description': 'Renames a constant.',
+                    'inputs': [
+                        cls._input('old_name'),
+                        cls._input('new_name'),
+                    ],
+                    're_pattern': r'\b{old_name}\b',
+                    'replace': '{new_name}',
+                    're_flags': ['MULTILINE'],
+                },
+            },
+        }
+
+    def _eval_valid(self) -> plaster.RewritersEval:
+        return plaster.RewritersEval(repr(self._valid_spec()))
+
+    def _assert_invalid(self, mutate, expected_substr=None):
+        """Apply `mutate` to a valid spec and assert it fails validation."""
+        spec = self._valid_spec()
+        mutate(spec)
+        with self.assertRaises(plaster.RewritersSchemaError) as cm:
+            plaster.RewritersEval(repr(spec))
+        if expected_substr is not None:
+            self.assertIn(expected_substr, str(cm.exception))
+
+    # -- access ---------------------------------------------------------
+
+    def test_valid_spec_round_trips(self):
+        rewriters = self._eval_valid()
+        self.assertEqual(list(rewriters.regex_macros), ['cxx.rename_constant'])
+        self.assertEqual(
+            rewriters.regex_macro('cxx.rename_constant')['inputs'],
+            [self._input('old_name'),
+             self._input('new_name')])
+        self.assertEqual(
+            rewriters.regex_macro('cxx.rename_constant')['description'],
+            'Renames a constant.')
+
+    def test_unknown_op_access_raises(self):
+        rewriters = self._eval_valid()
+        with self.assertRaises(plaster.RewritersSchemaError):
+            rewriters.regex_macro('cxx.nope')
+
+    def test_exposed_mapping_is_read_only(self):
+        rewriters = self._eval_valid()
+        with self.assertRaises(TypeError):
+            rewriters.regex_macros['x'] = {}
+
+    def test_present_but_empty_is_valid(self):
+        rewriters = plaster.RewritersEval("{'regex_macro': {}}")
+        self.assertEqual(dict(rewriters.regex_macros), {})
+
+    def test_absent_is_valid(self):
+        # `regex_macro` is an optional top-level key, like `ast.matcher` and
+        # `ast.rewriter`.
+        rewriters = plaster.RewritersEval('{}')
+        self.assertEqual(dict(rewriters.regex_macros), {})
+
+    # -- op id ------------------------------------------------------------
+
+    def test_op_id_unknown_prefix_rejected(self):
+
+        def mutate(s):
+            s['regex_macro']['py.rename_constant'] = s['regex_macro'].pop(
+                'cxx.rename_constant')
+
+        self._assert_invalid(mutate, 'Wrong keys')
+
+    # -- field schema -------------------------------------------------------
+
+    def test_missing_description_key_rejected(self):
+        self._assert_invalid(
+            lambda s: s['regex_macro']['cxx.rename_constant'].pop(
+                'description'), 'Missing keys')
+
+    def test_missing_inputs_key_rejected(self):
+        self._assert_invalid(
+            lambda s: s['regex_macro']['cxx.rename_constant'].pop('inputs'),
+            'Missing keys')
+
+    def test_missing_replace_key_rejected(self):
+        self._assert_invalid(
+            lambda s: s['regex_macro']['cxx.rename_constant'].pop('replace'),
+            'Missing keys')
+
+    def test_unknown_field_rejected(self):
+        self._assert_invalid(
+            lambda s: s['regex_macro']['cxx.rename_constant'].update(
+                {'extra': 'x'}), 'Wrong keys')
+
+    def test_inputs_must_be_a_list(self):
+        self._assert_invalid(
+            lambda s: s['regex_macro']['cxx.rename_constant'].__setitem__(
+                'inputs', 'old_name'), "should be instance of 'list'")
+
+    def test_input_entry_must_be_a_mapping(self):
+        self._assert_invalid(
+            lambda s: s['regex_macro']['cxx.rename_constant'].__setitem__(
+                'inputs', ['old_name', self._input('new_name')]))
+
+    def test_input_entry_missing_description_rejected(self):
+        self._assert_invalid(
+            lambda s: s['regex_macro']['cxx.rename_constant'].__setitem__(
+                'inputs', [{
+                    'name': 'old_name'
+                }, self._input('new_name')]), 'Missing keys')
+
+    def test_input_entry_unknown_field_rejected(self):
+        self._assert_invalid(
+            lambda s: s['regex_macro']['cxx.rename_constant'].__setitem__(
+                'inputs', [{
+                    **self._input('old_name'), 'extra': 'x'
+                },
+                           self._input('new_name')]), 'Wrong keys')
+
+    def test_re_flags_must_be_list_of_strings(self):
+        self._assert_invalid(
+            lambda s: s['regex_macro']['cxx.rename_constant'].__setitem__(
+                're_flags', 'MULTILINE'), "should be instance of 'list'")
+
+    # -- pattern / re_pattern mutual exclusivity -----------------------------
+
+    def test_both_pattern_and_re_pattern_rejected(self):
+        self._assert_invalid(
+            lambda s: s['regex_macro']['cxx.rename_constant'].update(
+                {'pattern': '{old_name}'}), 'exactly one of')
+
+    def test_neither_pattern_nor_re_pattern_rejected(self):
+        self._assert_invalid(
+            lambda s: s['regex_macro']['cxx.rename_constant'].pop(
+                're_pattern'), 'exactly one of')
+
+    def test_pattern_only_is_valid(self):
+        spec = self._valid_spec()
+        macro = spec['regex_macro']['cxx.rename_constant']
+        del macro['re_pattern']
+        macro['pattern'] = '{old_name}'
+        rewriters = plaster.RewritersEval(repr(spec))
+        self.assertEqual(
+            rewriters.regex_macro('cxx.rename_constant')['pattern'],
+            '{old_name}')
+
+    # -- re_flags validity ----------------------------------------------
+
+    def test_invalid_re_flags_entry_rejected(self):
+        self._assert_invalid(
+            lambda s: s['regex_macro']['cxx.rename_constant'].__setitem__(
+                're_flags', ['NOT_A_FLAG']), 'invalid')
+
+    # -- inputs <-> template cross-reference ---------------------------------
+
+    def test_undeclared_input_rejected(self):
+        # `replace` uses `{new_name}`, but it is dropped from `inputs`.
+        self._assert_invalid(
+            lambda s: s['regex_macro']['cxx.rename_constant'].__setitem__(
+                'inputs', [self._input('old_name')]), 'undeclared input')
+
+    def test_unused_input_rejected(self):
+        self._assert_invalid(
+            lambda s: s['regex_macro']['cxx.rename_constant']['inputs'].append(
+                self._input('unused')), 'never used')
+
+    def test_duplicate_input_name_rejected(self):
+        self._assert_invalid(
+            lambda s: s['regex_macro']['cxx.rename_constant']['inputs'].append(
+                self._input('old_name')), 'duplicate')
+
+    # -- the real on-disk spec ------------------------------------------
+
+    def test_real_rewriters_file_exposes_toggle_macro(self):
+        rewriters = plaster.RewritersEval.load()
+        self.assertIn('cxx.set_feature_flag_default_state',
+                      rewriters.regex_macros)
+        spec = rewriters.regex_macro('cxx.set_feature_flag_default_state')
+        self.assertEqual([entry['name'] for entry in spec['inputs']],
+                         ['feature_name', 'value'])
+
+
+class RegexMacroEngineTest(unittest.TestCase):
+    """Behavioural tests for `RegexMacroEngine.run`, against synthetic specs."""
+
+    @staticmethod
+    def _rewriters(macro: dict) -> plaster.RewritersEval:
+        """Build a `RewritersEval` from a macro body given as `name: str`
+        inputs; fills in the `description`/`{name, description}` schema
+        boilerplate the individual test bodies below do not care about.
+        """
+        macro = dict(macro)
+        macro.setdefault('description', 'A regex macro used for testing.')
+        macro['inputs'] = [{
+            'name': name,
+            'description': 'doc'
+        } for name in macro['inputs']]
+        return plaster.RewritersEval(
+            repr({'regex_macro': {
+                'cxx.rename_constant': macro
+            }}))
+
+    def test_re_pattern_and_replace_are_rendered_with_inputs(self):
+        rewriters = self._rewriters({
+            'inputs': ['old_name', 'new_name'],
+            're_pattern': r'\b{old_name}\b',
+            'replace': '{new_name}',
+        })
+        engine = plaster.RegexMacroEngine(rewriters, 'int kOld = kOld + 1;')
+        matches = engine.run('cxx.rename_constant', {
+            'old_name': 'kOld',
+            'new_name': 'kNew',
+        })
+        self.assertEqual(matches, 2)
+        self.assertEqual(engine.content, 'int kNew = kNew + 1;')
+
+    def test_pattern_is_escaped_and_rendered_with_inputs(self):
+        # `pattern` is a literal: the rendered text is escaped for regex, so a
+        # regex-meaningful input character like '.' matches only itself.
+        rewriters = self._rewriters({
+            'inputs': ['old_name', 'new_name'],
+            'pattern': '{old_name}',
+            'replace': '{new_name}',
+        })
+        engine = plaster.RegexMacroEngine(rewriters, 'a.b + axb')
+        matches = engine.run('cxx.rename_constant', {
+            'old_name': 'a.b',
+            'new_name': 'X',
+        })
+        self.assertEqual(matches, 1)
+        self.assertEqual(engine.content, 'X + axb')
+
+    def test_re_flags_are_honoured(self):
+        rewriters = self._rewriters({
+            'inputs': ['name'],
+            're_pattern': '^{name}$',
+            're_flags': ['MULTILINE'],
+            'replace': 'X',
+        })
+        engine = plaster.RegexMacroEngine(rewriters, 'foo\nfoo\n')
+        matches = engine.run('cxx.rename_constant', {'name': 'foo'})
+        self.assertEqual(matches, 2)
+        self.assertEqual(engine.content, 'X\nX\n')
+
+    def test_backreferences_in_replace_are_preserved(self):
+        # `.format()` only touches `{}`; a `\1` backreference must reach
+        # `re.subn` untouched.
+        rewriters = self._rewriters({
+            'inputs': ['name'],
+            're_pattern': '({name})',
+            'replace': r'[\1]',
+        })
+        engine = plaster.RegexMacroEngine(rewriters, 'foo bar')
+        matches = engine.run('cxx.rename_constant', {'name': 'foo'})
+        self.assertEqual(matches, 1)
+        self.assertEqual(engine.content, '[foo] bar')
+
+    def test_missing_input_raises(self):
+        rewriters = self._rewriters({
+            'inputs': ['old_name', 'new_name'],
+            're_pattern': '{old_name}',
+            'replace': '{new_name}',
+        })
+        engine = plaster.RegexMacroEngine(rewriters, 'kOld')
+        with self.assertRaises(ValueError) as cm:
+            engine.run('cxx.rename_constant', {'old_name': 'kOld'})
+        self.assertIn('missing input(s): new_name', str(cm.exception))
+
+    def test_unknown_input_raises(self):
+        rewriters = self._rewriters({
+            'inputs': ['name'],
+            're_pattern': '{name}',
+            'replace': 'x',
+        })
+        engine = plaster.RegexMacroEngine(rewriters, 'kOld')
+        with self.assertRaises(ValueError) as cm:
+            engine.run('cxx.rename_constant', {'name': 'kOld', 'extra': '1'})
+        self.assertIn('unknown input(s): extra', str(cm.exception))
+
+    def test_unknown_op_raises(self):
+        rewriters = self._rewriters({
+            'inputs': ['name'],
+            're_pattern': '{name}',
+            'replace': 'x',
+        })
+        engine = plaster.RegexMacroEngine(rewriters, 'kOld')
+        with self.assertRaises(plaster.RewritersSchemaError):
+            engine.run('cxx.nope', {'name': 'kOld'})
+
+    def test_no_match_returns_zero_and_leaves_content_untouched(self):
+        rewriters = self._rewriters({
+            'inputs': ['name'],
+            're_pattern': '{name}',
+            'replace': 'x',
+        })
+        engine = plaster.RegexMacroEngine(rewriters, 'unrelated text')
+        matches = engine.run('cxx.rename_constant', {'name': 'kOld'})
+        self.assertEqual(matches, 0)
+        self.assertEqual(engine.content, 'unrelated text')
+
+    def test_successive_runs_accumulate_edits(self):
+        rewriters = self._rewriters({
+            'inputs': ['old_name', 'new_name'],
+            're_pattern': r'\b{old_name}\b',
+            'replace': '{new_name}',
+        })
+        engine = plaster.RegexMacroEngine(rewriters, 'kOne kTwo')
+        engine.run('cxx.rename_constant', {
+            'old_name': 'kOne',
+            'new_name': 'kA'
+        })
+        engine.run('cxx.rename_constant', {
+            'old_name': 'kTwo',
+            'new_name': 'kB'
+        })
+        self.assertEqual(engine.content, 'kA kB')
+
+
+class OverrideFeatureDefaultStateTest(unittest.TestCase):
+    """Exercises the shipped `cxx.set_feature_flag_default_state` macro.
+
+    The macro replaces a `BASE_FEATURE` call's whole last argument -- from its
+    last top-level comma to the call's own closing `);` -- rather than trying
+    to recognise a particular spelling of the state itself. These tests cover
+    every argument shape the macro is meant to handle, plus the corner cases
+    that shape implies: telling one call's `);` apart from a nested one's, and
+    not running past this call into the next.
+    """
+
+    _OP_ID = 'cxx.set_feature_flag_default_state'
+
+    def setUp(self):
+        self.rewriters = plaster.RewritersEval.load()
+
+    def _run(self, content: str, **inputs) -> tuple[int, str]:
+        engine = plaster.RegexMacroEngine(self.rewriters, content)
+        matches = engine.run(self._OP_ID, inputs)
+        return matches, engine.content
+
+    # -- legacy three-argument form: BASE_FEATURE(kFoo, "Foo", state) -------
+
+    def test_three_argument_flips_disabled_to_enabled(self):
+        source = ('BASE_FEATURE(kIPHDiscardRingFeature,\n'
+                  '             "IPH_DiscardRing",\n'
+                  '             base::FEATURE_DISABLED_BY_DEFAULT);\n')
+        matches, content = self._run(source,
+                                     feature_name='kIPHDiscardRingFeature',
+                                     value='base::FEATURE_ENABLED_BY_DEFAULT')
+        self.assertEqual(matches, 1)
+        self.assertEqual(content,
+                         ('BASE_FEATURE(kIPHDiscardRingFeature,\n'
+                          '             "IPH_DiscardRing",\n'
+                          '             base::FEATURE_ENABLED_BY_DEFAULT);\n'))
+
+    def test_three_argument_flips_enabled_to_disabled(self):
+        source = ('BASE_FEATURE(kFoo,\n'
+                  '             "Foo",\n'
+                  '             base::FEATURE_ENABLED_BY_DEFAULT);\n')
+        matches, content = self._run(source,
+                                     feature_name='kFoo',
+                                     value='base::FEATURE_DISABLED_BY_DEFAULT')
+        self.assertEqual(matches, 1)
+        self.assertEqual(
+            content, ('BASE_FEATURE(kFoo,\n'
+                      '             "Foo",\n'
+                      '             base::FEATURE_DISABLED_BY_DEFAULT);\n'))
+
+    def test_three_argument_single_line(self):
+        source = 'BASE_FEATURE(kFoo, "Foo", base::FEATURE_DISABLED_BY_DEFAULT);'
+        matches, content = self._run(source,
+                                     feature_name='kFoo',
+                                     value='base::FEATURE_ENABLED_BY_DEFAULT')
+        self.assertEqual(matches, 1)
+        self.assertEqual(
+            content,
+            'BASE_FEATURE(kFoo, "Foo", base::FEATURE_ENABLED_BY_DEFAULT);')
+
+    # -- modern two-argument form: BASE_FEATURE(kFoo, state) -----------------
+    # The display-name string was dropped entirely (https://crbug.com/1362858).
+
+    def test_two_argument_form_multiline(self):
+        source = ('BASE_FEATURE(kMyFeature,\n'
+                  '             base::FEATURE_DISABLED_BY_DEFAULT);\n')
+        matches, content = self._run(source,
+                                     feature_name='kMyFeature',
+                                     value='base::FEATURE_ENABLED_BY_DEFAULT')
+        self.assertEqual(matches, 1)
+        self.assertEqual(content,
+                         ('BASE_FEATURE(kMyFeature,\n'
+                          '             base::FEATURE_ENABLED_BY_DEFAULT);\n'))
+
+    def test_two_argument_form_single_line(self):
+        source = 'BASE_FEATURE(kMyFeature, base::FEATURE_DISABLED_BY_DEFAULT);'
+        matches, content = self._run(source,
+                                     feature_name='kMyFeature',
+                                     value='base::FEATURE_ENABLED_BY_DEFAULT')
+        self.assertEqual(matches, 1)
+        self.assertEqual(
+            content,
+            'BASE_FEATURE(kMyFeature, base::FEATURE_ENABLED_BY_DEFAULT);')
+
+    # -- preprocessor-conditional state: per-platform default states are
+    # spelled out as an #if/#else/#endif rather than a single token. The whole
+    # thing is the "last argument" here, and gets replaced wholesale, since
+    # the macro overrides the state unconditionally.
+
+    def test_preprocessor_conditional_state_is_replaced_wholesale(self):
+        source = ('BASE_FEATURE(kStackScanMaxFramePointerToStackEndGap,\n'
+                  '#if BUILDFLAG(IS_CHROMEOS)\n'
+                  '             FEATURE_ENABLED_BY_DEFAULT\n'
+                  '#else\n'
+                  '             FEATURE_DISABLED_BY_DEFAULT\n'
+                  '#endif\n'
+                  ');\n')
+        matches, content = self._run(
+            source,
+            feature_name='kStackScanMaxFramePointerToStackEndGap',
+            value='base::FEATURE_DISABLED_BY_DEFAULT')
+        self.assertEqual(matches, 1)
+        # The whole conditional is gone -- not merely one branch of it.
+        self.assertNotIn('#if', content)
+        self.assertNotIn('#else', content)
+        self.assertNotIn('#endif', content)
+        self.assertNotIn('BUILDFLAG', content)
+        self.assertNotIn('FEATURE_ENABLED_BY_DEFAULT', content)
+        self.assertIn('BASE_FEATURE(kStackScanMaxFramePointerToStackEndGap,',
+                      content)
+        self.assertTrue(
+            content.rstrip().endswith('base::FEATURE_DISABLED_BY_DEFAULT);'))
+
+    def test_preprocessor_conditional_does_not_confuse_nested_parens(self):
+        # `BUILDFLAG(IS_CHROMEOS)` has its own closing `)`, immediately after
+        # the feature name's comma; the match must not stop there instead of
+        # at the call's real, statement-ending `);`.
+        source = ('BASE_FEATURE(kFoo,\n'
+                  '#if BUILDFLAG(IS_CHROMEOS)\n'
+                  '             FEATURE_ENABLED_BY_DEFAULT\n'
+                  '#else\n'
+                  '             FEATURE_DISABLED_BY_DEFAULT\n'
+                  '#endif\n'
+                  ');\n')
+        matches, content = self._run(source,
+                                     feature_name='kFoo',
+                                     value='base::FEATURE_ENABLED_BY_DEFAULT')
+        self.assertEqual(matches, 1)
+        self.assertEqual(
+            content,
+            'BASE_FEATURE(kFoo,\nbase::FEATURE_ENABLED_BY_DEFAULT);\n')
+
+    # -- namespace qualification: the state is matched wholesale, so any
+    # spelling works without special-casing.
+
+    def test_unqualified_state_inside_base_namespace(self):
+        source = 'BASE_FEATURE(kMyFeature, FEATURE_DISABLED_BY_DEFAULT);'
+        matches, content = self._run(source,
+                                     feature_name='kMyFeature',
+                                     value='FEATURE_ENABLED_BY_DEFAULT')
+        self.assertEqual(matches, 1)
+        self.assertEqual(
+            content, 'BASE_FEATURE(kMyFeature, FEATURE_ENABLED_BY_DEFAULT);')
+
+    def test_fully_qualified_state(self):
+        source = 'BASE_FEATURE(kMyFeature, ::base::FEATURE_DISABLED_BY_DEFAULT);'
+        matches, content = self._run(
+            source,
+            feature_name='kMyFeature',
+            value='::base::FEATURE_ENABLED_BY_DEFAULT')
+        self.assertEqual(matches, 1)
+        self.assertEqual(
+            content,
+            'BASE_FEATURE(kMyFeature, ::base::FEATURE_ENABLED_BY_DEFAULT);')
+
+    def test_closing_parenthesis_is_preserved(self):
+        # Regression check: the closing `);` sits in its own capture group,
+        # so a careless replace template could swallow it.
+        source = 'BASE_FEATURE(kMyFeature, base::FEATURE_DISABLED_BY_DEFAULT);'
+        _, content = self._run(source,
+                               feature_name='kMyFeature',
+                               value='base::FEATURE_ENABLED_BY_DEFAULT')
+        self.assertTrue(content.rstrip().endswith(');'))
+
+    # -- multiple features in one file: every pairing of "fewer commas"
+    # (two-argument/conditional) and "more commas" (three-argument) forms,
+    # targeting either one, must stay within its own call. A two-argument
+    # feature followed by a three-argument one is the case that actually
+    # regressed: greedily matching "up to the last comma" without also
+    # forbidding `;` let the match run straight past the two-argument call's
+    # own `);` and land on the three-argument call's instead.
+
+    def test_two_then_three_argument_targeting_the_first(self):
+        source = (
+            'BASE_FEATURE(kFeatureA, base::FEATURE_DISABLED_BY_DEFAULT);\n'
+            '\n'
+            'BASE_FEATURE(kFeatureB,\n'
+            '             "FeatureB",\n'
+            '             base::FEATURE_DISABLED_BY_DEFAULT);\n')
+        matches, content = self._run(source,
+                                     feature_name='kFeatureA',
+                                     value='base::FEATURE_ENABLED_BY_DEFAULT')
+        self.assertEqual(matches, 1)
+        self.assertEqual(
+            content,
+            ('BASE_FEATURE(kFeatureA, base::FEATURE_ENABLED_BY_DEFAULT);\n'
+             '\n'
+             'BASE_FEATURE(kFeatureB,\n'
+             '             "FeatureB",\n'
+             '             base::FEATURE_DISABLED_BY_DEFAULT);\n'))
+
+    def test_two_then_three_argument_targeting_the_second(self):
+        source = (
+            'BASE_FEATURE(kFeatureA, base::FEATURE_DISABLED_BY_DEFAULT);\n'
+            '\n'
+            'BASE_FEATURE(kFeatureB,\n'
+            '             "FeatureB",\n'
+            '             base::FEATURE_DISABLED_BY_DEFAULT);\n')
+        matches, content = self._run(source,
+                                     feature_name='kFeatureB',
+                                     value='base::FEATURE_ENABLED_BY_DEFAULT')
+        self.assertEqual(matches, 1)
+        self.assertEqual(
+            content,
+            ('BASE_FEATURE(kFeatureA, base::FEATURE_DISABLED_BY_DEFAULT);\n'
+             '\n'
+             'BASE_FEATURE(kFeatureB,\n'
+             '             "FeatureB",\n'
+             '             base::FEATURE_ENABLED_BY_DEFAULT);\n'))
+
+    def test_three_then_two_argument_targeting_the_first(self):
+        source = (
+            'BASE_FEATURE(kFeatureA,\n'
+            '             "FeatureA",\n'
+            '             base::FEATURE_DISABLED_BY_DEFAULT);\n'
+            '\n'
+            'BASE_FEATURE(kFeatureB, base::FEATURE_DISABLED_BY_DEFAULT);\n')
+        matches, content = self._run(source,
+                                     feature_name='kFeatureA',
+                                     value='base::FEATURE_ENABLED_BY_DEFAULT')
+        self.assertEqual(matches, 1)
+        self.assertEqual(
+            content,
+            ('BASE_FEATURE(kFeatureA,\n'
+             '             "FeatureA",\n'
+             '             base::FEATURE_ENABLED_BY_DEFAULT);\n'
+             '\n'
+             'BASE_FEATURE(kFeatureB, base::FEATURE_DISABLED_BY_DEFAULT);\n'))
+
+    def test_three_then_two_argument_targeting_the_second(self):
+        source = (
+            'BASE_FEATURE(kFeatureA,\n'
+            '             "FeatureA",\n'
+            '             base::FEATURE_DISABLED_BY_DEFAULT);\n'
+            '\n'
+            'BASE_FEATURE(kFeatureB, base::FEATURE_DISABLED_BY_DEFAULT);\n')
+        matches, content = self._run(source,
+                                     feature_name='kFeatureB',
+                                     value='base::FEATURE_ENABLED_BY_DEFAULT')
+        self.assertEqual(matches, 1)
+        self.assertEqual(
+            content,
+            ('BASE_FEATURE(kFeatureA,\n'
+             '             "FeatureA",\n'
+             '             base::FEATURE_DISABLED_BY_DEFAULT);\n'
+             '\n'
+             'BASE_FEATURE(kFeatureB, base::FEATURE_ENABLED_BY_DEFAULT);\n'))
+
+    def test_only_the_named_feature_is_overridden_when_both_are_three_argument(
+            self):
+        source = ('BASE_FEATURE(kFeatureA,\n'
+                  '             "FeatureA",\n'
+                  '             base::FEATURE_DISABLED_BY_DEFAULT);\n'
+                  '\n'
+                  'BASE_FEATURE(kFeatureB,\n'
+                  '             "FeatureB",\n'
+                  '             base::FEATURE_DISABLED_BY_DEFAULT);\n')
+        matches, content = self._run(source,
+                                     feature_name='kFeatureB',
+                                     value='base::FEATURE_ENABLED_BY_DEFAULT')
+        self.assertEqual(matches, 1)
+        self.assertIn(
+            'kFeatureA,\n'
+            '             "FeatureA",\n'
+            '             base::FEATURE_DISABLED_BY_DEFAULT', content)
+        self.assertIn(
+            'kFeatureB,\n'
+            '             "FeatureB",\n'
+            '             base::FEATURE_ENABLED_BY_DEFAULT', content)
+
+    # -- idempotency and no-match cases --------------------------------------
+    #
+    # Setting a feature to the value it already has finds no match (`count`
+    # of 0) and leaves the text untouched, rather than reporting a match that
+    # happens to be a no-op on the text: `count` is meant to answer "did this
+    # override actually take effect", not merely "was the call found".
+
+    def test_no_match_when_two_argument_form_already_has_the_value(self):
+        source = 'BASE_FEATURE(kFoo, base::FEATURE_DISABLED_BY_DEFAULT);'
+        matches, content = self._run(source,
+                                     feature_name='kFoo',
+                                     value='base::FEATURE_DISABLED_BY_DEFAULT')
+        self.assertEqual(matches, 0)
+        self.assertEqual(content, source)
+
+    def test_no_match_when_three_argument_form_already_has_the_value(self):
+        source = ('BASE_FEATURE(kFoo,\n'
+                  '             "Foo",\n'
+                  '             base::FEATURE_DISABLED_BY_DEFAULT);\n')
+        matches, content = self._run(source,
+                                     feature_name='kFoo',
+                                     value='base::FEATURE_DISABLED_BY_DEFAULT')
+        self.assertEqual(matches, 0)
+        self.assertEqual(content, source)
+
+    def test_still_matches_when_the_value_actually_differs(self):
+        # Sanity check alongside the no-match cases above: a genuinely
+        # different value must still be found and applied.
+        source = ('BASE_FEATURE(kFoo,\n'
+                  '             "Foo",\n'
+                  '             base::FEATURE_DISABLED_BY_DEFAULT);\n')
+        matches, content = self._run(source,
+                                     feature_name='kFoo',
+                                     value='base::FEATURE_ENABLED_BY_DEFAULT')
+        self.assertEqual(matches, 1)
+        self.assertEqual(content,
+                         ('BASE_FEATURE(kFoo,\n'
+                          '             "Foo",\n'
+                          '             base::FEATURE_ENABLED_BY_DEFAULT);\n'))
+
+    def test_no_match_is_specific_to_the_named_feature(self):
+        # The other feature in the file already holds the value being set on
+        # kFeatureA, but that must not suppress the (real) change to kFeatureA.
+        source = (
+            'BASE_FEATURE(kFeatureA, base::FEATURE_DISABLED_BY_DEFAULT);\n'
+            '\n'
+            'BASE_FEATURE(kFeatureB, base::FEATURE_ENABLED_BY_DEFAULT);\n')
+        matches, content = self._run(source,
+                                     feature_name='kFeatureA',
+                                     value='base::FEATURE_ENABLED_BY_DEFAULT')
+        self.assertEqual(matches, 1)
+        self.assertEqual(
+            content,
+            ('BASE_FEATURE(kFeatureA, base::FEATURE_ENABLED_BY_DEFAULT);\n'
+             '\n'
+             'BASE_FEATURE(kFeatureB, base::FEATURE_ENABLED_BY_DEFAULT);\n'))
+
+    def test_no_match_case_does_not_leak_into_a_later_call(self):
+        # kFeatureA already has the value being set (should be a no-match),
+        # while kFeatureB, later in the file, does not. The no-match on
+        # kFeatureA must not cause the engine to drift onto kFeatureB instead.
+        source = (
+            'BASE_FEATURE(kFeatureA, base::FEATURE_DISABLED_BY_DEFAULT);\n'
+            '\n'
+            'BASE_FEATURE(kFeatureB,\n'
+            '             "FeatureB",\n'
+            '             base::FEATURE_ENABLED_BY_DEFAULT);\n')
+        matches, content = self._run(source,
+                                     feature_name='kFeatureA',
+                                     value='base::FEATURE_DISABLED_BY_DEFAULT')
+        self.assertEqual(matches, 0)
+        self.assertEqual(content, source)
+
+    def test_preprocessor_conditional_is_never_treated_as_already_set(self):
+        # A conditional last argument is never a bare token, so it can never
+        # equal `value` outright -- setting either branch's own value is still
+        # a match, replacing the whole conditional.
+        source = ('BASE_FEATURE(kFoo,\n'
+                  '#if BUILDFLAG(IS_CHROMEOS)\n'
+                  '             FEATURE_ENABLED_BY_DEFAULT\n'
+                  '#else\n'
+                  '             FEATURE_DISABLED_BY_DEFAULT\n'
+                  '#endif\n'
+                  ');\n')
+        matches, content = self._run(source,
+                                     feature_name='kFoo',
+                                     value='FEATURE_DISABLED_BY_DEFAULT')
+        self.assertEqual(matches, 1)
+        self.assertEqual(
+            content, 'BASE_FEATURE(kFoo,\nFEATURE_DISABLED_BY_DEFAULT);\n')
+
+    def test_no_match_for_a_different_feature_name(self):
+        source = 'BASE_FEATURE(kFoo, base::FEATURE_DISABLED_BY_DEFAULT);'
+        matches, content = self._run(source,
+                                     feature_name='kOther',
+                                     value='base::FEATURE_ENABLED_BY_DEFAULT')
+        self.assertEqual(matches, 0)
+        self.assertEqual(content, source)
+
+    # -- input validation -----------------------------------------------
+
+    def test_missing_inputs_raise(self):
+        engine = plaster.RegexMacroEngine(self.rewriters, 'irrelevant')
+        with self.assertRaises(ValueError):
+            engine.run(self._OP_ID, {'feature_name': 'kFoo'})
+
+    def test_unknown_input_raises(self):
+        engine = plaster.RegexMacroEngine(self.rewriters, 'irrelevant')
+        with self.assertRaises(ValueError):
+            engine.run(
+                self._OP_ID, {
+                    'feature_name': 'kFoo',
+                    'value': 'base::FEATURE_ENABLED_BY_DEFAULT',
+                    'extra': 'x',
+                })
 
 
 if __name__ == '__main__':

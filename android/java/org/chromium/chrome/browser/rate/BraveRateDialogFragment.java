@@ -6,10 +6,12 @@
 package org.chromium.chrome.browser.rate;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
@@ -29,6 +31,10 @@ public class BraveRateDialogFragment extends BottomSheetDialogFragment {
     public static final String TAG_FRAGMENT = "brave_rating_dialog_tag";
     private static final String TAG = "RateDialogFragment";
     private boolean mIsFromSettings;
+
+    // Mirrors the "Don't show again" checkbox so the preference can be written from onDismiss
+    // without holding on to a view past its lifecycle.
+    private boolean mDontShowAgain;
 
     public static BraveRateDialogFragment newInstance(boolean isFromSettings) {
         Bundle bundle = new Bundle();
@@ -50,7 +56,7 @@ public class BraveRateDialogFragment extends BottomSheetDialogFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setStyle(STYLE_NORMAL, R.style.AppBottomSheetDialogTheme);
+        setStyle(STYLE_NORMAL, R.style.RatingBottomSheetDialogTheme);
     }
 
     @Override
@@ -71,12 +77,22 @@ public class BraveRateDialogFragment extends BottomSheetDialogFragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        ((BottomSheetDialog) getDialog())
-                .getBehavior()
-                .setState(BottomSheetBehavior.STATE_EXPANDED);
+        BottomSheetBehavior<?> behavior = ((BottomSheetDialog) getDialog()).getBehavior();
+        behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+        behavior.setMaxWidth(getResources().getDimensionPixelSize(R.dimen.bottom_sheet_max_width));
 
         clickOnHappyImageView(view);
         clickOnSadImageView(view);
+        setUpDontShowAgainRow(view);
+    }
+
+    @Override
+    public void onDismiss(@NonNull DialogInterface dialog) {
+        // Persisted once the whole prompt goes away, so it covers every exit path: an emoji
+        // choice, a swipe down or a tap outside. The current state is written rather than only
+        // the opt-out, so unticking the box clears the preference again.
+        RateUtils.getInstance().setPrefRateDontShowAgain(mDontShowAgain);
+        super.onDismiss(dialog);
     }
 
     @Nullable
@@ -99,6 +115,20 @@ public class BraveRateDialogFragment extends BottomSheetDialogFragment {
                             ((AppCompatActivity) getActivity()).getSupportFragmentManager(),
                             BraveAskPlayStoreRatingDialog.TAG_FRAGMENT);
                 });
+    }
+
+    private void setUpDontShowAgainRow(View view) {
+        CheckBox dontShowAgainCheckBox = view.findViewById(R.id.dont_show_again_checkbox);
+        mDontShowAgain = RateUtils.getInstance().getPrefRateDontShowAgain();
+        dontShowAgainCheckBox.setChecked(mDontShowAgain);
+        dontShowAgainCheckBox.setOnCheckedChangeListener(
+                (buttonView, isChecked) -> mDontShowAgain = isChecked);
+        // The checkbox is not clickable itself, so the whole row drives it.
+        view.findViewById(R.id.dont_show_again_row)
+                .setOnClickListener(
+                        (v) ->
+                                dontShowAgainCheckBox.setChecked(
+                                        !dontShowAgainCheckBox.isChecked()));
     }
 
     private void clickOnSadImageView(View view) {

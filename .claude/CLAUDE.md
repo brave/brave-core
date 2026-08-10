@@ -6,6 +6,11 @@ All files in this src/brave directory are for Brave customizations. The chromium
 repository is the parent directory at src/ and all other children of that
 directory.
 
+## Conventions
+
+- Keep comments, commit messages, and PR descriptions succinct — essential "why"
+  only.
+
 ## Development Tasks
 
 When asked to explore a task, read only the docs that you need from docs/ using

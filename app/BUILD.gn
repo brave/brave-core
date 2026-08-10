@@ -25,11 +25,11 @@ action("generate_command_metadata") {
   output_cc = "$target_gen_dir/command_utils.cc"
   outputs = [ output_cc ]
 
-  args = rebase_path(command_files) + [
+  args = rebase_path(command_files, root_build_dir) + [
            "--output_cc",
-           rebase_path(output_cc),
+           rebase_path(output_cc, root_build_dir),
            "--template_cc",
-           rebase_path(cc_template),
+           rebase_path(cc_template, root_build_dir),
          ]
 }
 
@@ -139,6 +139,7 @@ source_set("unit_tests") {
     "//chrome/browser/preloading",
     "//chrome/browser/ui",
     "//chrome/browser/ui:ui_features",
+    "//chrome/browser/ui/omnibox",
     "//components/aggregation_service",
     "//components/attribution_reporting",
     "//components/autofill/core/common",

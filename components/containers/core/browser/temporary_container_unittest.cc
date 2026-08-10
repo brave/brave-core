@@ -76,4 +76,16 @@ TEST_F(TemporaryContainerTest, CreateTemporaryContainer) {
       std::ranges::contains(expected_backgrounds, container->background_color));
 }
 
+TEST_F(TemporaryContainerTest, CreateTemporaryContainerWithName) {
+  auto container = CreateTemporaryContainer("Command Line Container");
+  ASSERT_TRUE(container);
+  EXPECT_TRUE(IsTemporaryContainerId(container->id));
+  EXPECT_EQ("Command Line Container", container->name);
+
+  // Ids stay unique when the same name is used again.
+  auto other = CreateTemporaryContainer("Command Line Container");
+  ASSERT_TRUE(other);
+  EXPECT_NE(container->id, other->id);
+}
+
 }  // namespace containers

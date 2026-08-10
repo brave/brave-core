@@ -49,17 +49,21 @@ template("rust_to_wasm") {
     # - causes a race condition between the processes (that action_foreach forks) for wasm-pack's cache directory (if wasm-pack is run for the first time),
     # - makes our approach less self-contained.
     #
-    # The rust-toolchain `rebase_path` MUST stay absolute - see the note in
-    # `//brave/tools/crates/build_crate.gni` for why a relative entry can
-    # silently fall through to a local rustup proxy.
-    response_file_contents = [ "PATH=./" + host_path_sep +
-                               rebase_path("//third_party/rust-toolchain/bin") +
-                               host_path_sep + getenv("PATH") ]
+    response_file_contents = [
+      "CARGO=abs@" +
+          rebase_path("//third_party/rust-toolchain/bin/cargo", root_build_dir),
+      "RUSTC=abs@" +
+          rebase_path("//third_party/rust-toolchain/bin/rustc", root_build_dir),
+
+      # Include root_build_dir for wasm-bindgen
+      "PATH=abs@./" + host_path_sep + "abs@" +
+          rebase_path("//third_party/rust-toolchain/bin"),
+    ]
 
     response_file_contents += rust_host_response_file_contents
 
     response_file_contents += [
-      rebase_path("$root_build_dir/wasm-pack$host_exe_suffix"),
+      "abs@./wasm-pack$host_exe_suffix",
       "--log-level",
       "warn",
       "build",
@@ -69,17 +73,20 @@ template("rust_to_wasm") {
       "--target",
       wasm_pack_target,
       "--out-dir",
-      rebase_path(
-          "$root_gen_dir/{{source_root_relative_dir}}/$wasm_pack_target/pkg"),
+      "abs@" + rebase_path(
+              "$root_gen_dir/{{source_root_relative_dir}}/$wasm_pack_target/pkg",
+              root_build_dir),
       "--out-name",
       "index",
       "--",
       "--quiet",
       "--config",
-      rebase_path("//{{source_root_relative_dir}}/.cargo/config.toml"),
+      "abs@" + rebase_path("//{{source_root_relative_dir}}/.cargo/config.toml",
+                           root_build_dir),
       "--target-dir",
-      rebase_path(
-          "$root_gen_dir/{{source_root_relative_dir}}/$wasm_pack_target/target"),
+      "abs@" + rebase_path(
+              "$root_gen_dir/{{source_root_relative_dir}}/$wasm_pack_target/target",
+              root_build_dir),
       "--frozen",
     ]
 

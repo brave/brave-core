@@ -64,6 +64,12 @@ inline constexpr char kTabMinWidthMode[] = "brave.tabs.min_width_mode";
 inline constexpr char kScrollableHorizontalTabStrip[] =
     "brave.tabs.scrollable_horizontal_tab_strip";
 
+// When true, tabs that have an accent (e.g. container tabs) always show the
+// mini (small) accent icon instead of the large one, regardless of the tab's
+// width.
+inline constexpr char kAlwaysUseMiniAccentIcon[] =
+    "brave.tabs.always_use_mini_accent_icon";
+
 // Integer values stored in prefs; stable for migration. kDefault is reserved so
 // the product default can change without migrating explicit user choices.
 enum class TabMinWidthMode {

@@ -16,7 +16,7 @@
 namespace brave_wallet {
 
 MockOrchardBlockScannerProxy::MockOrchardBlockScannerProxy(Callback callback)
-    : OrchardBlockScannerProxy({}, 0), callback_(callback) {}
+    : OrchardBlockScannerProxy({}), callback_(callback) {}
 
 MockOrchardBlockScannerProxy::~MockOrchardBlockScannerProxy() = default;
 
@@ -41,7 +41,7 @@ OrchardNullifier GenerateMockNullifier(const mojom::AccountIdPtr& account_id,
 
 TestingZCashWalletService::~TestingZCashWalletService() {
   sync_state_ptr = nullptr;
-  sync_state().SynchronouslyResetForTest();
+  ShutdownSyncStateForTesting();
 }
 
 void TestingZCashWalletService::SetupSyncState(

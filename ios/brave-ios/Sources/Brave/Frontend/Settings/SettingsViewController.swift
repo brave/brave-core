@@ -337,6 +337,7 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
             }
             self.present(controller, animated: true)
           },
+          image: UIImage(braveSystemNamed: "leo.dock"),
           cellClass: MultilineButtonCell.self
         )
       ]
@@ -352,6 +353,7 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
             }
             UIApplication.shared.open(settingsUrl)
           },
+          image: UIImage(braveSystemNamed: "leo.set.as-default"),
           cellClass: MultilineButtonCell.self
         )
       ] + addToDockRows + [
@@ -377,6 +379,7 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
             )
             self.navigationController?.pushViewController(controller, animated: true)
           },
+          image: UIImage(braveSystemNamed: "leo.import.arrow"),
           cellClass: MultilineButtonCell.self
         )
       ]
@@ -723,6 +726,8 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
           .BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_MAXIMUM_SEND_ATTEMPTS_EXCEEDED,
         .emailAlreadyVerified:
           .BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_ALREADY_VERIFIED,
+        .maximumCodeVerificationAttemptsExceeded:
+          .BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_MAXIMUM_CODE_VERIFICATION_ATTEMPTS_EXCEEDED,
         .tokenHasExpired:
           .BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_TOKEN_HAS_EXPIRED,
       ],
@@ -748,7 +753,7 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
         .emailAlreadyVerified:
           .BRAVE_ACCOUNT_PASSWORD_RESET_EMAIL_ALREADY_VERIFIED,
         .maximumCodeVerificationAttemptsExceeded:
-          .BRAVE_ACCOUNT_PASSWORD_RESET_MAXIMUM_CODE_VERIFICATION_ATTEMPTS_EXCEEDED,
+          .BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_MAXIMUM_CODE_VERIFICATION_ATTEMPTS_EXCEEDED,
         .invalidVerificationCode:
           .BRAVE_ACCOUNT_REGISTER_INVALID_VERIFICATION_CODE,
         .tokenHasExpired:

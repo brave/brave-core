@@ -73,6 +73,16 @@ public class WalletOnboardingPagerAdapter extends FragmentStateAdapter {
         notifyItemRangeChanged(0, getItemCount());
     }
 
+    /**
+     * Returns the current wallet action, which determines the onboarding navigation sequence.
+     *
+     * @return the current {@link WalletAction}.
+     */
+    @NonNull
+    public WalletAction getWalletAction() {
+        return mWalletAction;
+    }
+
     @Override
     public long getItemId(int position) {
         if (position == 0 && mWalletAction == WalletAction.UNLOCK) {

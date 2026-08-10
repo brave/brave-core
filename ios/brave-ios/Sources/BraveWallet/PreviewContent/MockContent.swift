@@ -605,7 +605,7 @@ extension BraveWallet.TransactionInfo {
         .init(
           zecTxData:
               .init(
-                useShieldedPool: false,
+                zcashTokenType: .transparent,
                 to: "t1J3jktmALhAhc2neCSyBrLBhxjTercFhCM",
                 sendingMaxAmount: false,
                 memo: nil,

@@ -741,15 +741,19 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
         {
           if network.coin == .zec {
             // need to fetch and check correct transparent/shielded ZEC balance based on
-            // zecTxData.useShieldedPool value
+            // zecTxData.zcashTokenType value
             if let zecBalance = zecGasTokenBalanceCache,
               let zecTxData = activeParsedTransaction.transaction.txDataUnion.zecTxData
             {
-              let correctZecBalance: Double =
-                Double(
-                  zecTxData.useShieldedPool
-                    ? zecBalance.orchardBalance : zecBalance.transparentBalance
-                ) / 100_000_000
+              let balanceInZatoshi: UInt64
+              if zecTxData.zcashTokenType == .orchard {
+                balanceInZatoshi = zecBalance.orchardBalance
+              } else if zecTxData.zcashTokenType == .ironwood {
+                balanceInZatoshi = zecBalance.ironwoodBalance
+              } else {
+                balanceInZatoshi = zecBalance.transparentBalance
+              }
+              let correctZecBalance = Double(balanceInZatoshi) / 100_000_000.0
               isBalanceSufficient = BDouble(correctZecBalance) >= gasValue + fromValue
             } else if shouldFetchGasTokenBalance || zecGasTokenBalanceCache == nil {
               isBalanceSufficient = false
@@ -1259,7 +1263,7 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
 
     let (zecTxType, zecAddressError) = await zcashWalletService.transactionType(
       accountId: activeParsedTransaction.fromAccountInfo.accountId,
-      useShieldedPool: zecTxData.useShieldedPool,
+      fromTokenType: zecTxData.zcashTokenType,
       recipient: activeParsedTransaction.toAddress
     )
 
@@ -1267,9 +1271,11 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
       confirmButtonTitle = Strings.Wallet.confirm
       return
     }
-    if zecTxType == .shielding {
+    if zecTxType == .shieldingIronwood {
       confirmButtonTitle = Strings.Wallet.shieldZEC
-    } else if zecTxType == .unshielding {
+    } else if zecTxType == .unshieldingOrchard
+      || zecTxType == .unshieldingIronwood
+    {
       confirmButtonTitle = Strings.Wallet.unshieldZEC
     } else {
       confirmButtonTitle = Strings.Wallet.confirm
