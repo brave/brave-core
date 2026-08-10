@@ -4,10 +4,12 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include <algorithm>
+#include <optional>
 #include <string>
 #include <vector>
 
 #include "base/files/file_util.h"
+#include "base/location.h"
 #include "base/test/run_until.h"
 #include "base/threading/thread_restrictions.h"
 #include "brave/browser/containers/containers_service_factory.h"
@@ -23,6 +25,7 @@
 #include "brave/components/containers/core/browser/prefs.h"
 #include "brave/components/containers/core/browser/temporary_container.h"
 #include "brave/components/containers/core/common/features.h"
+#include "brave/components/containers/core/common/switches.h"
 #include "brave/components/containers/core/mojom/containers.mojom.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/browsing_data/chrome_browsing_data_remover_constants.h"
@@ -97,6 +100,55 @@ constexpr char kTestContainerId[] = "test-container-id";
 constexpr char kFarblingPluginsStringScript[] =
     "Array.from(navigator.plugins).map(p => p.name).join(',');";
 
+// Name of the container seeded by tests that exercise the --container switch.
+constexpr char kNamedContainerName[] = "Command Line Named Container";
+
+// Returns the storage partition config of the tab at `index`, after waiting for
+// it to finish loading, or std::nullopt if the tab can't be loaded. `location`
+// is the caller's location, reported via SCOPED_TRACE.
+std::optional<content::StoragePartitionConfig> GetStoragePartitionConfigOfTabAt(
+    Browser* browser,
+    int index,
+    const base::Location& location = base::Location::Current()) {
+  SCOPED_TRACE(location.ToString());
+  content::WebContents* web_contents =
+      browser->tab_strip_model()->GetWebContentsAt(index);
+  if (!web_contents) {
+    ADD_FAILURE() << "No tab at index " << index;
+    return std::nullopt;
+  }
+  if (!content::WaitForLoadStop(web_contents)) {
+    ADD_FAILURE() << "Failed to load the tab at index " << index
+                  << ": url=" << web_contents->GetLastCommittedURL()
+                  << " visible_url=" << web_contents->GetVisibleURL();
+    return std::nullopt;
+  }
+  return web_contents->GetPrimaryMainFrame()
+      ->GetStoragePartition()
+      ->GetConfig();
+}
+
+// Returns the container partition name of the tab at `index`, or std::nullopt
+// if the tab can't be loaded or is not in a containers storage partition.
+std::optional<std::string> GetContainerPartitionNameOfTabAt(
+    Browser* browser,
+    int index,
+    const base::Location& location = base::Location::Current()) {
+  SCOPED_TRACE(location.ToString());
+  const std::optional<content::StoragePartitionConfig> config =
+      GetStoragePartitionConfigOfTabAt(browser, index, location);
+  if (!config) {
+    return std::nullopt;
+  }
+  if (config->partition_domain() != kContainersStoragePartitionDomain) {
+    ADD_FAILURE() << "Tab at index " << index
+                  << " is not in a containers storage partition: "
+                  << config->partition_domain();
+    return std::nullopt;
+  }
+  return config->partition_name();
+}
+
 }  // namespace
 
 class ContainersBrowserTest : public InProcessBrowserTest {
@@ -121,9 +173,13 @@ class ContainersBrowserTest : public InProcessBrowserTest {
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
     InProcessBrowserTest::SetUpCommandLine(command_line);
+    // Startup navigations for command line URLs run before SetUpOnMainThread
+    // installs the host resolver rules, so every host has to be mapped here
+    // too, not just port 443.
     command_line->AppendSwitchASCII(
         network::switches::kHostResolverRules,
-        absl::StrFormat("MAP *:443 127.0.0.1:%d", https_server_.port()));
+        absl::StrFormat("MAP *:443 127.0.0.1:%d,MAP * 127.0.0.1",
+                        https_server_.port()));
   }
 
   void SetUpOnMainThread() override {
@@ -2633,7 +2689,7 @@ class ContainersCommandLineContainerBrowserTest : public ContainersBrowserTest {
 
   void SetUpDefaultCommandLine(base::CommandLine* command_line) override {
     ContainersBrowserTest::SetUpDefaultCommandLine(command_line);
-    command_line->AppendSwitchASCII("container", "Work");
+    command_line->AppendSwitchASCII(switches::kContainer, "Work");
     command_line->AppendArg(
         https_server_.GetURL("a.test", "/simple.html").spec());
   }
@@ -2671,6 +2727,149 @@ IN_PROC_BROWSER_TEST_F(ContainersCommandLineContainerBrowserTest,
       web_contents->GetPrimaryMainFrame()->GetStoragePartition()->GetConfig();
   EXPECT_EQ(kContainersStoragePartitionDomain, config.partition_domain());
   EXPECT_EQ(kTestContainerId, config.partition_name());
+}
+
+class ContainersCommandLineTemporaryContainerBrowserTest
+    : public ContainersBrowserTest {
+ public:
+  ContainersCommandLineTemporaryContainerBrowserTest() = default;
+
+  void SetUpDefaultCommandLine(base::CommandLine* command_line) override {
+    ContainersBrowserTest::SetUpDefaultCommandLine(command_line);
+    command_line->AppendSwitch(switches::kTemporaryContainer);
+    command_line->AppendArg(
+        https_server_.GetURL("a.test", "/simple.html").spec());
+    command_line->AppendArg(
+        https_server_.GetURL("b.test", "/simple.html").spec());
+  }
+};
+
+IN_PROC_BROWSER_TEST_F(ContainersCommandLineTemporaryContainerBrowserTest,
+                       AllCommandLineTabsShareOneTemporaryContainer) {
+  ASSERT_EQ(2, browser()->tab_strip_model()->count());
+
+  const std::optional<std::string> first_partition_name =
+      GetContainerPartitionNameOfTabAt(browser(), 0);
+  ASSERT_TRUE(first_partition_name.has_value());
+  EXPECT_TRUE(IsTemporaryContainerId(*first_partition_name))
+      << *first_partition_name;
+
+  // All URLs on a single command line share one temporary container.
+  EXPECT_EQ(first_partition_name,
+            GetContainerPartitionNameOfTabAt(browser(), 1));
+
+  // The temporary container is persisted, so it can be shown in the UI and
+  // restored like a container created from the UI.
+  auto* containers_service =
+      ContainersServiceFactory::GetForProfile(browser()->profile());
+  ASSERT_TRUE(containers_service);
+  EXPECT_TRUE(
+      containers_service->GetRuntimeContainerById(*first_partition_name))
+      << *first_partition_name;
+}
+
+class ContainersCommandLineNamedTemporaryContainerBrowserTest
+    : public ContainersBrowserTest {
+ public:
+  ContainersCommandLineNamedTemporaryContainerBrowserTest() = default;
+
+  void SetUpDefaultCommandLine(base::CommandLine* command_line) override {
+    ContainersBrowserTest::SetUpDefaultCommandLine(command_line);
+    command_line->AppendSwitchASCII(switches::kContainer, kNamedContainerName);
+    command_line->AppendSwitch(switches::kTemporaryContainer);
+    command_line->AppendArg(
+        https_server_.GetURL("a.test", "/simple.html").spec());
+  }
+};
+
+// PRE_ stores a synced container with the same name the follow-up test passes
+// to --container. Using a test-owned name rather than a default container keeps
+// the test independent of localized strings.
+IN_PROC_BROWSER_TEST_F(
+    ContainersCommandLineNamedTemporaryContainerBrowserTest,
+    PRE_ContainerSwitchNamesTemporaryContainerInsteadOfResolvingIt) {
+  Profile* profile = browser()->profile();
+  std::vector<mojom::ContainerPtr> synced;
+  synced.push_back(MakeContainer(kTestContainerId, kNamedContainerName,
+                                 mojom::Icon::kWork, SK_ColorRED));
+  SetContainersToPrefs(synced, *profile->GetPrefs());
+
+  SessionStartupPref pref(SessionStartupPref::DEFAULT);
+  SessionStartupPref::SetStartupPref(profile, pref);
+  profile->GetPrefs()->SetInteger(prefs::kRestoreOnStartup,
+                                  SessionStartupPref::kPrefValueNewTab);
+}
+
+// With --temporary-container, --container names the temporary container rather
+// than selecting an existing one, so a synced container with the same name is
+// left alone.
+IN_PROC_BROWSER_TEST_F(
+    ContainersCommandLineNamedTemporaryContainerBrowserTest,
+    ContainerSwitchNamesTemporaryContainerInsteadOfResolvingIt) {
+  ASSERT_EQ(1, browser()->tab_strip_model()->count());
+
+  auto* containers_service =
+      ContainersServiceFactory::GetForProfile(browser()->profile());
+  ASSERT_TRUE(containers_service);
+
+  // Precondition: without --temporary-container the switch would have resolved
+  // to this container, so the IsTemporaryContainerId/EXPECT_NE checks really do
+  // exercise the naming behavior rather than passing because the name never
+  // resolved.
+  const std::optional<std::string> named_container_id =
+      containers_service->GetContainerIdFromContainerSpecifier(
+          ContainerName(kNamedContainerName));
+  ASSERT_TRUE(named_container_id.has_value());
+  ASSERT_EQ(kTestContainerId, *named_container_id);
+
+  const std::optional<std::string> partition_name =
+      GetContainerPartitionNameOfTabAt(browser(), 0);
+  ASSERT_TRUE(partition_name.has_value());
+  EXPECT_TRUE(IsTemporaryContainerId(*partition_name)) << *partition_name;
+  EXPECT_NE(kTestContainerId, *partition_name);
+
+  // The temporary container carries the name from the command line, so a later
+  // launch with the same switches opens tabs in this same container.
+  auto temporary_container =
+      containers_service->GetRuntimeContainerById(*partition_name);
+  ASSERT_TRUE(temporary_container);
+  EXPECT_EQ(kNamedContainerName, temporary_container->name);
+}
+
+class ContainersCommandLineTemporaryContainerWithoutUrlsBrowserTest
+    : public ContainersBrowserTest {
+ public:
+  ContainersCommandLineTemporaryContainerWithoutUrlsBrowserTest() = default;
+
+  void SetUpDefaultCommandLine(base::CommandLine* command_line) override {
+    ContainersBrowserTest::SetUpDefaultCommandLine(command_line);
+    command_line->AppendSwitch(switches::kTemporaryContainer);
+  }
+};
+
+// With no URLs to open there is nothing to isolate, so no temporary container
+// should be created. ContainersCommandLineTemporaryContainerBrowserTest covers
+// the positive case: the same switch with URLs does create one.
+IN_PROC_BROWSER_TEST_F(
+    ContainersCommandLineTemporaryContainerWithoutUrlsBrowserTest,
+    NoTemporaryContainerCreated) {
+  // The startup tab is in the default storage partition, not a container one.
+  ASSERT_GE(browser()->tab_strip_model()->count(), 1);
+  const std::optional<content::StoragePartitionConfig> config =
+      GetStoragePartitionConfigOfTabAt(browser(), 0);
+  ASSERT_TRUE(config.has_value());
+  EXPECT_NE(kContainersStoragePartitionDomain, config->partition_domain());
+
+  const std::vector<mojom::ContainerPtr> locally_used_containers =
+      GetLocallyUsedContainersFromPrefs(*browser()->profile()->GetPrefs());
+  const auto temporary_container = std::ranges::find_if(
+      locally_used_containers, [](const mojom::ContainerPtr& container) {
+        return IsTemporaryContainerId(container->id);
+      });
+  // The streamed message is only evaluated when the check fails, which is
+  // exactly when the iterator is dereferenceable.
+  EXPECT_TRUE(temporary_container == locally_used_containers.end())
+      << "Unexpected temporary container: " << (*temporary_container)->id;
 }
 
 }  // namespace containers

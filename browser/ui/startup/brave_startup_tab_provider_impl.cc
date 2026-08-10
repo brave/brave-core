@@ -5,21 +5,16 @@
 
 #include "brave/browser/ui/startup/brave_startup_tab_provider_impl.h"
 
+#include "base/command_line.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/containers/buildflags/buildflags.h"
 #include "chrome/browser/first_run/first_run.h"
 #include "chrome/browser/ui/startup/startup_tab.h"
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
+#include "brave/browser/containers/containers_service_factory.h"
+#include "brave/components/containers/core/browser/command_line_container.h"
 #include "brave/components/containers/core/browser/container_specifier.h"
-#include "brave/components/containers/core/common/features.h"
-
-namespace {
-
-// Switch to specify the container to use for the startup tabs.
-constexpr char kContainerSwitch[] = "container";
-
-}  // namespace
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
 StartupTabs BraveStartupTabProviderImpl::GetDistributionFirstRunTabs(
@@ -40,12 +35,15 @@ StartupTabs BraveStartupTabProviderImpl::GetCommandLineTabs(
       command_line, cur_dir, profile);
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
-  if (base::FeatureList::IsEnabled(containers::features::kContainers) &&
-      command_line.HasSwitch(kContainerSwitch)) {
-    // Get the container name from the command line switch to use for the URLs
-    // passed via a command line.
-    auto container_specifier = containers::ContainerName(
-        command_line.GetSwitchValueUTF8(kContainerSwitch));
+  // Don't create a temporary container when there's nothing to open in it. The
+  // factory returns null when the Containers feature is disabled and for guest
+  // and system profiles, so those launches get no container either.
+  if (auto* containers_service =
+          ContainersServiceFactory::GetForProfile(profile);
+      containers_service && !tabs.empty()) {
+    const containers::ContainerSpecifier container_specifier =
+        containers::GetContainerSpecifierForCommandLineTabs(command_line,
+                                                            containers_service);
     for (auto& tab : tabs) {
       tab.container = container_specifier;
     }
