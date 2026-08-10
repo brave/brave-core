@@ -10,14 +10,3 @@ index 38f7fb922dd5e4858daaacbebd84c027c15d63c9..5c3bb20a8e695a82a1ca45fe5730a1c2
    QueryURLAndVisitsResult QueryURLAndVisits(
        const GURL& url,
        VisitQuery404sPolicy policy_for_404s);
-@@ -795,1 +796,6 @@ class HistoryBackend : public base::RefCountedThreadSafe<HistoryBackend>,
-+  // Close the history databases after a full-disk error without razing the
-+  // History file. The databases will be reopened on a future browser restart
-+  // once space is available.
-+  void CloseHistoryDatabaseAfterLowDiskError();
-+
-   // Called by the database to report errors.  Schedules one call to
-@@ -1096,2 +1102,3 @@ class HistoryBackend : public base::RefCountedThreadSafe<HistoryBackend>,
-   bool scheduled_kill_db_ = false;  // Database is being killed due to error.
-+  bool saw_sqlite_full_error_ = false;
-   std::unique_ptr<favicon::FaviconBackend> favicon_backend_;
