@@ -30,6 +30,8 @@ class TabHoverCardBubbleView;
 #undef BRAVE_TAB_HOVER_CARD_BUBBLE_VIEW_H_
 
 class TabHoverCardBubbleView : public TabHoverCardBubbleView_ChromiumImpl {
+  METADATA_HEADER(TabHoverCardBubbleView, TabHoverCardBubbleView_ChromiumImpl)
+
  public:
   using TabHoverCardBubbleView_ChromiumImpl::
       TabHoverCardBubbleView_ChromiumImpl;
