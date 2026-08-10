@@ -27,7 +27,7 @@ enum class WebGLDebugRendererInfoType {
   RENDERER,
 };
 
-// TODO(https://github.com/brave/brave-browser/issues/57902): This method
+// TODO(https://github.com/brave/brave-browser/issues/57999): This method
 // doesn't take into account BRAVE_WEBCOMPAT_WEBGL2 in WebGL2 context. This
 // needs to be fixed.
 bool AllowFingerprintingForHost(blink::CanvasRenderingContextHost* host) {
