@@ -31,8 +31,13 @@
 
 using brave_shields::ControlType;
 
+namespace {
+
 constexpr char kHardwareConcurrencyScript[] = "navigator.hardwareConcurrency;";
 constexpr char kTitleScript[] = "document.title;";
+constexpr size_t kMinProcessorsForFarbling = 4;
+
+}  // namespace
 
 class BraveNavigatorHardwareConcurrencyFarblingBrowserTest
     : public InProcessBrowserTest {
@@ -94,18 +99,11 @@ class BraveNavigatorHardwareConcurrencyFarblingBrowserTest
     return browser()->tab_strip_model()->GetActiveWebContents();
   }
 
- protected:
-  static const size_t kMinProcessorsForFarbling;
-
  private:
   base::test::ScopedFeatureList scoped_feature_list_;
   GURL top_level_page_url_;
   GURL farbling_url_;
 };
-
-// static
-const size_t BraveNavigatorHardwareConcurrencyFarblingBrowserTest::
-    kMinProcessorsForFarbling = 4;
 
 // Tests results of farbling known values
 IN_PROC_BROWSER_TEST_F(BraveNavigatorHardwareConcurrencyFarblingBrowserTest,
