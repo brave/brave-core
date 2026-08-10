@@ -130,6 +130,8 @@ nala_icons = [
   "ic_download.xml",
   "ic_edit_pencil.xml",
   "ic_email_shield.xml",
+  "ic_face_happy.xml",
+  "ic_face_sad.xml",
   "ic_grid04.xml",
   "ic_idea.xml",
   "ic_media_player.xml",

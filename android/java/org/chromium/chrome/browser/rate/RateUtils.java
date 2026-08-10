@@ -9,11 +9,11 @@ package org.chromium.chrome.browser.rate;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 
 import org.chromium.base.BravePreferenceKeys;
-import org.chromium.base.ContextUtils;
+import org.chromium.base.ResettersForTesting;
+import org.chromium.base.shared_preferences.SharedPreferencesManager;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.set_default_browser.BraveSetDefaultBrowserUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
@@ -25,8 +25,6 @@ public class RateUtils {
 
     private static RateUtils sInstance;
 
-    private final SharedPreferences mSharedPreferences;
-
     public static final String FROM_SETTINGS = "from_settings";
 
     private static final int DAYS_30 = 30;
@@ -36,6 +34,7 @@ public class RateUtils {
 
     private static final String PREF_RATE = "rate";
     private static final String PREF_NEXT_RATE_DATE = "next_rate_date";
+    private static final String QA_FORCE_RATE_DIALOG = "qa_force_rate_dialog";
     private static final String PREF_ADDED_BOOKMARK_COUNT = "added_bookmark_count";
 
     private static final String PREF_LAST_SESSION_SHOWN = "last_session_shown";
@@ -45,18 +44,14 @@ public class RateUtils {
     private static final String PREF_LAST_TIME_APP_USED_DATE3 = "last_time_app_used_date3";
     private static final String PREF_LAST_TIME_APP_USED_DATE4 = "last_time_app_used_date4";
 
-    private long lastTimeUsedDate1;
-    private long lastTimeUsedDate2;
-    private long lastTimeUsedDate3;
-    private long lastTimeUsedDate4;
+    private long mLastTimeUsedDate1;
+    private long mLastTimeUsedDate2;
+    private long mLastTimeUsedDate3;
+    private long mLastTimeUsedDate4;
 
-    private RateUtils() {
-        mSharedPreferences = ContextUtils.getAppSharedPreferences();
-    }
+    private RateUtils() {}
 
-    /**
-     * Returns the singleton instance of RateUtils, creating it if needed.
-     */
+    /** Returns the singleton instance of RateUtils, creating it if needed. */
     public static RateUtils getInstance() {
         if (sInstance == null) {
             sInstance = new RateUtils();
@@ -65,23 +60,42 @@ public class RateUtils {
     }
 
     /**
-     * Returns the user preference for whether the rate is enabled.
+     * Drops the singleton so the next {@link #getInstance()} starts from a clean state. The
+     * preferences live in shared preferences and are unaffected; this only clears the cached
+     * app-usage dates held on the instance.
      */
+    public static void resetForTesting() {
+        sInstance = null;
+        ResettersForTesting.register(() -> sInstance = null);
+    }
+
+    /** Returns the user preference for whether the rate is enabled. */
     public boolean getPrefRateEnabled() {
-        return mSharedPreferences.getBoolean(PREF_RATE, false);
+        return ChromeSharedPreferences.getInstance().readBoolean(PREF_RATE, false);
+    }
+
+    /** Sets the user preference for whether the rate is enabled. */
+    public void setPrefRateEnabled(boolean enabled) {
+        ChromeSharedPreferences.getInstance().writeBoolean(PREF_RATE, enabled);
+    }
+
+    /** Returns whether the user opted out of the rating prompt with "Don't show again". */
+    public boolean getPrefRateDontShowAgain() {
+        return ChromeSharedPreferences.getInstance()
+                .readBoolean(BravePreferenceKeys.BRAVE_RATE_DONT_SHOW_AGAIN, false);
     }
 
     /**
-     * Sets the user preference for whether the rate is enabled.
+     * Records that the user opted out of the rating prompt with "Don't show again". This only
+     * suppresses the automatic prompt; the dialog can still be opened from settings.
      */
-    public void setPrefRateEnabled(boolean enabled) {
-        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
-        sharedPreferencesEditor.putBoolean(PREF_RATE, enabled);
-        sharedPreferencesEditor.apply();
+    public void setPrefRateDontShowAgain(boolean dontShowAgain) {
+        ChromeSharedPreferences.getInstance()
+                .writeBoolean(BravePreferenceKeys.BRAVE_RATE_DONT_SHOW_AGAIN, dontShowAgain);
     }
 
     public long getPrefNextRateDate() {
-        return mSharedPreferences.getLong(PREF_NEXT_RATE_DATE, 0);
+        return ChromeSharedPreferences.getInstance().readLong(PREF_NEXT_RATE_DATE, 0);
     }
 
     public void setPrefNextRateDate() {
@@ -89,45 +103,59 @@ public class RateUtils {
         calender.setTime(new Date());
         calender.add(Calendar.DATE, DAYS_30);
 
-        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
-        sharedPreferencesEditor.putLong(PREF_NEXT_RATE_DATE, calender.getTimeInMillis());
-        sharedPreferencesEditor.apply();
+        ChromeSharedPreferences.getInstance()
+                .writeLong(PREF_NEXT_RATE_DATE, calender.getTimeInMillis());
     }
 
     public int getPrefAddedBookmarkCount() {
-        return mSharedPreferences.getInt(PREF_ADDED_BOOKMARK_COUNT, 0);
+        return ChromeSharedPreferences.getInstance().readInt(PREF_ADDED_BOOKMARK_COUNT, 0);
     }
 
     public void setPrefAddedBookmarkCount() {
         int currentBookmarkCount = getPrefAddedBookmarkCount();
 
-        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
-        sharedPreferencesEditor.putInt(PREF_ADDED_BOOKMARK_COUNT, currentBookmarkCount + 1);
-        sharedPreferencesEditor.apply();
+        ChromeSharedPreferences.getInstance()
+                .writeInt(PREF_ADDED_BOOKMARK_COUNT, currentBookmarkCount + 1);
     }
 
     public boolean isLastSessionShown() {
-        return mSharedPreferences.getBoolean(PREF_LAST_SESSION_SHOWN, false);
+        return ChromeSharedPreferences.getInstance().readBoolean(PREF_LAST_SESSION_SHOWN, false);
     }
 
     public void setLastSessionShown(boolean shown) {
-        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
-        sharedPreferencesEditor.putBoolean(PREF_LAST_SESSION_SHOWN, shown);
-        sharedPreferencesEditor.apply();
+        ChromeSharedPreferences.getInstance().writeBoolean(PREF_LAST_SESSION_SHOWN, shown);
     }
 
     /**
+     * Whether the rating prompt should be shown. All of the following must hold:
      *
-     * 1. every 30 days
-     * 2. app opened 5 days or more
-     * 3. Last 7 days 4 days used not to be consecutive
-     * 4. Any one of the following true
-     *      i.  User has added at least 5 bookmarks.
-     *      ii. User has set Brave as default.
-     *      iii.User has paid for the VPN subscription.
-     * */
+     * <ul>
+     *   <li>User has not opted out with "Don't show again"
+     *   <li>Every 30 days
+     *   <li>App opened 5 days or more
+     *   <li>4 of the last 7 days used, not necessarily consecutive
+     *   <li>Any one of:
+     *       <ul>
+     *         <li>User has added at least 5 bookmarks
+     *         <li>User has set Brave as default
+     *         <li>User has paid for the VPN subscription
+     *       </ul>
+     * </ul>
+     */
     public boolean shouldShowRateDialog(Context context) {
-        return mainCriteria() && anyOneSubCriteria(context);
+        if (getPrefRateDontShowAgain()) {
+            return false;
+        }
+        return isQaForceRateDialogEnabled() || (mainCriteria() && anyOneSubCriteria(context));
+    }
+
+    /**
+     * QA-only override from Developer options: shows the prompt regardless of the usage criteria.
+     * "Don't show again" deliberately still wins over it, so the opt-out stays testable with this
+     * switched on; the prompt can always be reopened from settings to clear that preference.
+     */
+    private boolean isQaForceRateDialogEnabled() {
+        return ChromeSharedPreferences.getInstance().readBoolean(QA_FORCE_RATE_DIALOG, false);
     }
 
     private boolean mainCriteria() {
@@ -146,36 +174,33 @@ public class RateUtils {
     }
 
     public void setTodayDate() {
+        SharedPreferencesManager sharedPreferencesManager = ChromeSharedPreferences.getInstance();
         long today = new Date().getTime();
-        lastTimeUsedDate1 = mSharedPreferences.getLong(PREF_LAST_TIME_APP_USED_DATE1, 0L);
-        lastTimeUsedDate2 = mSharedPreferences.getLong(PREF_LAST_TIME_APP_USED_DATE2, 0L);
-        lastTimeUsedDate3 = mSharedPreferences.getLong(PREF_LAST_TIME_APP_USED_DATE3, 0L);
-        lastTimeUsedDate4 = mSharedPreferences.getLong(PREF_LAST_TIME_APP_USED_DATE4, 0L);
+        mLastTimeUsedDate1 = sharedPreferencesManager.readLong(PREF_LAST_TIME_APP_USED_DATE1, 0L);
+        mLastTimeUsedDate2 = sharedPreferencesManager.readLong(PREF_LAST_TIME_APP_USED_DATE2, 0L);
+        mLastTimeUsedDate3 = sharedPreferencesManager.readLong(PREF_LAST_TIME_APP_USED_DATE3, 0L);
+        mLastTimeUsedDate4 = sharedPreferencesManager.readLong(PREF_LAST_TIME_APP_USED_DATE4, 0L);
 
-        if (dayDifference(today, lastTimeUsedDate1) == 0) {
+        if (dayDifference(today, mLastTimeUsedDate1) == 0) {
             return;
         }
 
-        lastTimeUsedDate4 = lastTimeUsedDate3;
-        lastTimeUsedDate3 = lastTimeUsedDate2;
-        lastTimeUsedDate2 = lastTimeUsedDate1;
+        mLastTimeUsedDate4 = mLastTimeUsedDate3;
+        mLastTimeUsedDate3 = mLastTimeUsedDate2;
+        mLastTimeUsedDate2 = mLastTimeUsedDate1;
 
-        lastTimeUsedDate1 = today;
+        mLastTimeUsedDate1 = today;
 
-        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
-        sharedPreferencesEditor.putLong(PREF_LAST_TIME_APP_USED_DATE1, lastTimeUsedDate1);
-        sharedPreferencesEditor.putLong(PREF_LAST_TIME_APP_USED_DATE2, lastTimeUsedDate2);
-        sharedPreferencesEditor.putLong(PREF_LAST_TIME_APP_USED_DATE3, lastTimeUsedDate3);
-        sharedPreferencesEditor.putLong(PREF_LAST_TIME_APP_USED_DATE4, lastTimeUsedDate4);
-        sharedPreferencesEditor.apply();
+        sharedPreferencesManager.writeLong(PREF_LAST_TIME_APP_USED_DATE1, mLastTimeUsedDate1);
+        sharedPreferencesManager.writeLong(PREF_LAST_TIME_APP_USED_DATE2, mLastTimeUsedDate2);
+        sharedPreferencesManager.writeLong(PREF_LAST_TIME_APP_USED_DATE3, mLastTimeUsedDate3);
+        sharedPreferencesManager.writeLong(PREF_LAST_TIME_APP_USED_DATE4, mLastTimeUsedDate4);
     }
 
     private boolean is4DaysUsedLast7Days() {
-        if (dayDifference(lastTimeUsedDate1, lastTimeUsedDate2) <= LAST_7_DAYS
-                && dayDifference(lastTimeUsedDate1, lastTimeUsedDate3) <= LAST_7_DAYS
-                && dayDifference(lastTimeUsedDate1, lastTimeUsedDate4) <= LAST_7_DAYS)
-            return true;
-        return false;
+        return dayDifference(mLastTimeUsedDate1, mLastTimeUsedDate2) <= LAST_7_DAYS
+                && dayDifference(mLastTimeUsedDate1, mLastTimeUsedDate3) <= LAST_7_DAYS
+                && dayDifference(mLastTimeUsedDate1, mLastTimeUsedDate4) <= LAST_7_DAYS;
     }
 
     private long dayDifference(long date1, long date2) {

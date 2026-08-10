@@ -24,6 +24,16 @@
         <item name="android:background">@drawable/rounded_top_corners</item>
     </style>
 
+    <!-- Material 3 sheet theme for the rating prompts. Unlike AppBottomSheetDialogTheme this is a
+         ThemeOverlay rather than a full theme, so the host activity's attributes - including the
+         dynamic color overlay - resolve through it. The default Widget.Material3.BottomSheet.Modal
+         paints the container with ?attr/colorSurfaceContainerLow, so the sheets do not carry their
+         own background. -->
+    <style name="RatingBottomSheetDialogTheme"
+           parent="ThemeOverlay.Material3.DayNight.BottomSheetDialog">
+        <item name="android:windowSoftInputMode">adjustResize</item>
+    </style>
+
     <style name="AppSetDefaultBottomSheetDialogTheme"
            parent="Theme.Design.Light.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/AppModalSetDefaultStyle</item>

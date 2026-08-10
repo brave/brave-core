@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2026 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/.
+-->
+
+<!-- RTL mirror of drawable/brave_rating_emoji_sad_bg.xml. A horizontal
+     LinearLayout reverses child order under RTL, so this pill moves to the
+     trailing side and its wide corners have to move with it. `corners` radii
+     are absolute (no start/end variants) and `<shape>` inflates to a
+     GradientDrawable, which ignores autoMirrored - hence the manual mirror. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="@color/systemfeedback_error_background" />
+    <corners
+        android:topLeftRadius="8dp"
+        android:topRightRadius="20dp"
+        android:bottomRightRadius="20dp"
+        android:bottomLeftRadius="8dp" />
+</shape>
