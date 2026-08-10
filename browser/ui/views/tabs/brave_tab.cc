@@ -68,9 +68,6 @@ void BraveTab::SmallAccentIconView::SetCanPaintToLayer(
 }
 
 void BraveTab::SmallAccentIconView::RefreshLayer() {
-  // In order to be clipped by Tab::PaintChildren(), we need to set paint to
-  // layer. Disable layer painting in fullscreen where the tab strip may be
-  // sliding in or out.
   if (can_paint_to_layer_ == !!layer()) {
     return;
   }
@@ -446,8 +443,15 @@ void BraveTab::UpdateSmallAccentIconLayer() {
     return;
   }
   const views::Widget* widget = GetWidget();
-  small_accent_icon_view_->SetCanPaintToLayer(widget &&
-                                              !widget->IsFullscreen());
+
+  // In order to be clipped by Tab::PaintChildren(), we need to set paint to
+  // layer. Disable layer painting
+  // * in fullscreen where the tab strip may be sliding in or out.
+  // * when tab are scrollable(!CanPaintThrobberToLayer()), which needs to be
+  //   clipped by viewport bound.
+  small_accent_icon_view_->SetCanPaintToLayer(
+      widget && !widget->IsFullscreen() &&
+      controller_->CanPaintThrobberToLayer());
   small_accent_icon_view_->SchedulePaint();
 }
 
