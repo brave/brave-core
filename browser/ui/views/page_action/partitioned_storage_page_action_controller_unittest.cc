@@ -14,6 +14,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/containers/containers_service_factory.h"
+#include "brave/browser/ui/views/page_action/page_action_test_observer.h"
 #include "brave/components/containers/content/browser/containers_web_contents_user_data.h"
 #include "brave/components/containers/core/browser/containers_service.h"
 #include "brave/components/containers/core/browser/containers_test_utils.h"
@@ -41,33 +42,6 @@
 namespace page_actions {
 
 namespace {
-
-// Records the most recent state pushed into the action's PageActionModel.
-class TestObserver : public PageActionModelObserver {
- public:
-  TestObserver() = default;
-  ~TestObserver() override = default;
-
-  // PageActionModelObserver:
-  void OnPageActionModelChanged(
-      const PageActionModelInterface& model) override {
-    visible_ = model.GetVisible();
-    text_ = model.GetText();
-    tooltip_text_ = model.GetTooltipText();
-    ++model_change_count_;
-  }
-
-  bool visible() const { return visible_; }
-  const std::u16string& text() const { return text_; }
-  const std::u16string& tooltip_text() const { return tooltip_text_; }
-  int model_change_count() const { return model_change_count_; }
-
- private:
-  bool visible_ = false;
-  std::u16string text_;
-  std::u16string tooltip_text_;
-  int model_change_count_ = 0;
-};
 
 // ContainersService can't be built via its factory in this lightweight
 // target (it depends on SessionServiceFactory/TabRestoreServiceFactory), so
@@ -151,7 +125,7 @@ class PartitionedStoragePageActionControllerTest : public testing::Test {
   PartitionedStoragePageActionController* controller() {
     return controller_.get();
   }
-  const TestObserver& observer() const { return observer_; }
+  const PageActionTestObserver& observer() const { return observer_; }
 
  private:
   content::BrowserTaskEnvironment task_environment_;
@@ -165,7 +139,7 @@ class PartitionedStoragePageActionControllerTest : public testing::Test {
   std::unique_ptr<actions::ActionItem> action_item_;
   base::CallbackListSubscription action_item_subscription_;
 
-  TestObserver observer_;
+  PageActionTestObserver observer_;
   base::ScopedObservation<PageActionModelInterface, PageActionModelObserver>
       observation_{&observer_};
 
