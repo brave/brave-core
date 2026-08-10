@@ -38,6 +38,9 @@ import os
   var isP3AManaged: Bool {
     p3aUtilities.isP3APreferenceManaged
   }
+  var isMetricsReportingManaged: Bool {
+    localState.isManagedPreference(forPath: kMetricsReportingEnabled)
+  }
   var isStatsReportingManaged: Bool {
     braveStats.isStatsReportingManaged
   }
@@ -49,6 +52,11 @@ import os
   @Published var isP3AEnabled: Bool {
     didSet {
       p3aUtilities.isP3AEnabled = isP3AEnabled
+    }
+  }
+  @Published var isCrashReportingEnabled: Bool {
+    didSet {
+      localState.set(isCrashReportingEnabled, forPath: kMetricsReportingEnabled)
     }
   }
   @Published var isDeAmpEnabled: Bool {
@@ -166,6 +174,7 @@ import os
   private var subscriptions: [AnyCancellable] = []
   private let prefs: any PrefService
   private let p3aUtilities: BraveP3AUtils
+  private let localState: any PrefService
   private let debounceService: (any DebounceService)?
   private let braveShieldsSettings: (any BraveShieldsSettings)?
   private let rewards: BraveRewards?
@@ -182,16 +191,19 @@ import os
     braveShieldsSettings: (any BraveShieldsSettings)?,
     braveCore: BraveProfileController,
     p3aUtils: BraveP3AUtils,
+    localState: any PrefService,
     rewards: BraveRewards?,
     braveStats: BraveStats,
     webcompatReporterHandler: WebcompatReporterWebcompatReporterHandler?,
     clearDataCallback: @escaping ClearDataCallback
   ) {
     self.p3aUtilities = p3aUtils
+    self.localState = localState
     self.debounceService = debounceService
     self.braveShieldsSettings = braveShieldsSettings
     self.tabManager = tabManager
     self.isP3AEnabled = p3aUtilities.isP3AEnabled
+    self.isCrashReportingEnabled = localState.boolean(forPath: kMetricsReportingEnabled)
     self.isStatsReportingEnabled = braveStats.isStatsReportingEnabled
     self.rewards = rewards
     self.clearDataCallback = clearDataCallback

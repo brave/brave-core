@@ -326,7 +326,8 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
             let controller = OnboardingController(
               environment: .init(
                 p3aUtils: p3aUtilities,
-                attributionManager: attributionManager
+                attributionManager: attributionManager,
+                localState: localState
               ),
               steps: [.addToDock],
               showSplashScreen: false,
@@ -789,6 +790,7 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
                   ),
                   braveCore: braveCore,
                   p3aUtils: p3aUtilities,
+                  localState: localState,
                   rewards: rewards,
                   braveStats: braveCore.braveStats,
                   webcompatReporterHandler: WebcompatReporter.ServiceFactory.get(
@@ -1895,7 +1897,8 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
             self.navigationController?.pushViewController(
               RetentionPreferencesDebugMenuViewController(
                 p3aUtilities: p3aUtilities,
-                attributionManager: attributionManager
+                attributionManager: attributionManager,
+                localState: localState
               ),
               animated: true
             )

@@ -173,6 +173,13 @@ struct OtherPrivacySettingsSectionView: View {
           toggle: $settings.isStatsReportingEnabled
         )
       }
+      if !settings.isMetricsReportingManaged {
+        ToggleView(
+          title: Strings.Settings.sendCrashReportsTitle,
+          subtitle: Strings.Settings.sendCrashReportsDescription,
+          toggle: $settings.isCrashReportingEnabled
+        )
+      }
       if FeatureList.kBraveNTPBrandedWallpaperSurveyPanelist.enabled {
         ToggleView(
           title: Strings.Settings.surveyPanelistTitle,
