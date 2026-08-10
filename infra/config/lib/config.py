@@ -108,8 +108,7 @@ class FrozenDict(collections.abc.Mapping[K, V]):
 
 
 class ConfigError(Exception):
-    """Raised for any gn_args configuration violation.
-    """
+    """Raised for any gn_args or builder configuration violation."""
 
 
 class AnonymousGnConfig:
@@ -322,3 +321,213 @@ class GnArgsRegistry:
 
 # What spec files import: `from lib.config import gn_args`.
 gn_args = GnArgsRegistry()
+
+# Sentinel distinguishing "caller didn't pass this" from an explicit falsy
+# value (0, '', [], None), mirroring upstream's `args.DEFAULT`.
+_UNSET = object()
+
+
+class Defaults:
+    """A settable group of module-level defaults for `builder()`.
+    """
+
+    def __init__(self, **defaults: Any) -> None:
+        self._values = dict(defaults)
+
+    def set(self, **kwargs: Any) -> None:
+        """Sets module-level defaults for the given fields."""
+        for key, value in kwargs.items():
+            if key not in self._values:
+                raise ConfigError('%r is not a defaultable field' % key)
+            self._values[key] = value
+
+    def get(self, name: str, value: Any) -> Any:
+        """Returns `value`, or the module-level default if `value` is unset."""
+        if value is not _UNSET:
+            return value
+        return self._values[name]
+
+
+class SyncConfig:
+    """What a builder needs to reach a synced tree: target platform plus
+    whatever gclient overrides `init`/`sync` should apply."""
+
+    def __init__(self, *, target_os: str, target_cpu: str,
+                 **gclient_overrides: Any) -> None:
+        # GN's target_os, and what `init`/`sync` sync a checkout for.
+        self.target_os = target_os
+
+        # GN's target_cpu.
+        self.target_cpu = target_cpu
+
+        # Custom vars, deps or revision pins for gclient, by name. Schema
+        # not yet settled (A1).
+        self.gclient_overrides = gclient_overrides
+
+
+class Targets:
+    """What a builder compiles and runs."""
+
+    def __init__(
+            self,
+            *,
+            compile: Sequence[str],  # pylint: disable=redefined-builtin
+            tests: Sequence[str]) -> None:
+        # GN target labels to compile, e.g. "brave:all".
+        self.compile = tuple(compile)
+
+        # Test target names to run.
+        self.tests = tuple(tests)
+
+
+class Builder:
+    """A registered builder: metadata plus what it builds and runs.
+
+    Its GN args are not stored here — `builder()` registers them into
+    `gn_args` under this builder's own name, so `gn_args.resolve(name)` is
+    the one way to read them back, same as for any other config.
+    """
+
+    def __init__(self, *, name: str, builder_group: str | None,
+                 execution_timeout_mins: int | None, channel: str | None,
+                 notifies: Sequence[str], sync_config: SyncConfig,
+                 targets: Targets) -> None:
+        # The name it was registered under; also its `gn_args` node name.
+        self.name = name
+
+        # The builder group it belongs to, e.g. "brave.sanitisers".
+        self.builder_group = builder_group
+
+        # How long the pipeline may run before it's killed.
+        self.execution_timeout_mins = execution_timeout_mins
+
+        # The release channel this builder builds for, e.g. "nightly".
+        self.channel = channel
+
+        # Who to notify on a build result worth telling someone about.
+        self.notifies = tuple(notifies)
+
+        # This builder's `sync_config()`.
+        self.sync_config = sync_config
+
+        # This builder's `targets()`.
+        self.targets = targets
+
+
+class BuildersRegistry:
+    """A registry of builders, and the `sync_config`/`targets` constructors
+    used to describe them.
+
+    Spec files call `builder()` to declare a builder; `defaults.set()` sets
+    module-level fallbacks for the fields a group of builders share, the way
+    a `chromium.<group>.star` file's `ci.defaults.set(...)` does upstream.
+    """
+
+    def __init__(self, gn_args_registry: GnArgsRegistry) -> None:
+        # Where a builder's GN args get registered (see `_register_gn_args`).
+        # Explicit rather than reaching for the module-level `gn_args` below,
+        # so a registry under test isn't wired to shared global state.
+        self._gn_args = gn_args_registry
+
+        # Module-level fallbacks for builder(), settable via `defaults.set()`.
+        self.defaults = Defaults(
+            builder_group=None,
+            execution_timeout_mins=None,
+            channel=None,
+            notifies=(),
+        )
+
+        # Name -> registered builder.
+        self._builders: dict[str, Builder] = {}
+
+    def _register_gn_args(self, builder_name: str, value: Any) -> None:
+        """Registers `value` as the named `gn_args` config for a builder.
+
+        a builder's GN args become a node in the same include graph as any other
+        config, named after the builder itself. Takes either a config name to
+        include as-is, or the anonymous struct `gn_args.config()` returns when
+        called without `name`.
+        """
+        if isinstance(value, str):
+            self._gn_args.config(name=builder_name, configs=[value])
+        elif isinstance(value, AnonymousGnConfig):
+            self._gn_args.config(name=builder_name,
+                                 configs=list(value.configs),
+                                 args=dict(value.gn_args),
+                                 args_file=value.args_file,
+                                 secrets=dict(value.secrets))
+        else:
+            raise ConfigError(
+                'builder %r: gn_args must be a config name or an anonymous '
+                'gn_args.config(), got %r' % (builder_name, value))
+
+    def sync_config(self, *, target_os: str, target_cpu: str,
+                    **gclient_overrides: Any) -> SyncConfig:
+        return SyncConfig(target_os=target_os,
+                          target_cpu=target_cpu,
+                          **gclient_overrides)
+
+    def targets(
+            self,
+            *,
+            compile: Sequence[str],  # pylint: disable=redefined-builtin
+            tests: Sequence[str]) -> Targets:
+        return Targets(compile=compile, tests=tests)
+
+    def builder(
+            self,
+            *,
+            name: str,
+            sync_config: SyncConfig,
+            gn_args: Any,  # pylint: disable=redefined-outer-name
+            targets: Targets,
+            builder_group: str | None = _UNSET,
+            execution_timeout_mins: int | None = _UNSET,
+            channel: str | None = _UNSET,
+            notifies: Sequence[str] = _UNSET) -> Builder:
+        """Defines a builder.
+
+        Args:
+            name: The builder's name. Also what its GN args are registered
+                under (see `_register_gn_args`).
+            sync_config: This builder's `sync_config()`.
+            gn_args: The config name, or `gn_args.config()` called without
+                `name`, describing this builder's GN args.
+            targets: This builder's `targets()`.
+            builder_group, execution_timeout_mins, channel, notifies: Fall
+                back to `defaults` when omitted.
+
+        Returns:
+            The registered `Builder`.
+        """
+        if name in self._builders:
+            raise ConfigError('builder %r is already defined' % name)
+
+        self._register_gn_args(name, gn_args)
+
+        builder = Builder(
+            name=name,
+            builder_group=self.defaults.get('builder_group', builder_group),
+            execution_timeout_mins=self.defaults.get('execution_timeout_mins',
+                                                     execution_timeout_mins),
+            channel=self.defaults.get('channel', channel),
+            notifies=self.defaults.get('notifies', notifies),
+            sync_config=sync_config,
+            targets=targets,
+        )
+        self._builders[name] = builder
+        return builder
+
+    def get(self, name: str) -> Builder:
+        try:
+            return self._builders[name]
+        except KeyError as e:
+            raise ConfigError('builder %r is not defined' % name) from e
+
+    def all(self) -> tuple[Builder, ...]:
+        """Every registered builder, in definition order."""
+        return tuple(self._builders.values())
+
+
+# What spec files import: `from lib.config import builders`.
+builders = BuildersRegistry(gn_args)
