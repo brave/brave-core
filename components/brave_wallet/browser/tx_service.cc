@@ -31,6 +31,7 @@
 #include "brave/components/brave_wallet/common/zcash_utils.h"
 #include "components/grit/brave_components_strings.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "url/gurl.h"
 #include "url/origin.h"
 
 namespace brave_wallet {
@@ -739,6 +740,42 @@ void TxService::ProcessBtcHardwareSignature(
 
 TxStorage* TxService::GetTxStorageForTesting() {
   return tx_storage_.get();
+}
+
+void TxService::SetOriginPermissionChecker(OriginPermissionChecker checker) {
+  origin_permission_checker_ = std::move(checker);
+}
+
+bool TxService::HasOriginPermission(const url::Origin& origin,
+                                    const mojom::AccountIdPtr& account_id) {
+  if (!origin_permission_checker_) {
+    return false;
+  }
+  return origin_permission_checker_.Run(origin, account_id);
+}
+
+void TxService::RejectUnapprovedTransactionsWithoutPermission() {
+  for (auto& tx_manager : tx_manager_map_) {
+    auto transactions =
+        tx_manager.second->GetAllTransactionInfo(std::nullopt, std::nullopt);
+    for (auto& tx : transactions) {
+      if (tx->tx_status != mojom::TransactionStatus::Unapproved) {
+        continue;
+      }
+      if (!tx->origin_info) {
+        continue;
+      }
+      auto origin = url::Origin::Create(GURL(tx->origin_info->origin_spec));
+      if (!origin.scheme().empty() && origin.scheme() != url::kHttpScheme &&
+          origin.scheme() != url::kHttpsScheme) {
+        continue;
+      }
+      if (HasOriginPermission(origin, tx->from_account_id)) {
+        continue;
+      }
+      tx_manager.second->RejectTransaction(tx->id, base::BindOnce([](bool) {}));
+    }
+  }
 }
 
 }  // namespace brave_wallet

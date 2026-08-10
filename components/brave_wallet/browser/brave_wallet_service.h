@@ -293,6 +293,11 @@ class BraveWalletService : public KeyedService,
   // BraveWalletServiceDelegate::Observer:
   void OnActiveOriginChanged(const mojom::OriginInfoPtr& origin_info) override;
 
+  void OnWalletContentSettingChanged();
+  void DrainSignMessageRequestsWithoutPermission();
+  void DrainSignSolTransactionsRequestsWithoutPermission();
+  void DrainSignCardanoTransactionRequestsWithoutPermission();
+
   // KeyringServiceObserverBase:
   void WalletRestored() override;
 
@@ -334,6 +339,9 @@ class BraveWalletService : public KeyedService,
 
   mojom::SignSolTransactionsRequestPtr GetPendingSignSolTransactionsRequest(
       int32_t id);
+  int sign_sol_transactions_id_for_testing() const {
+    return sign_sol_transactions_id_ - 1;
+  }
   mojom::SignCardanoTransactionRequestPtr
   GetPendingSingCardanoTransactionRequest(int32_t id);
 
