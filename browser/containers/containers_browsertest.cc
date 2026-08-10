@@ -13,6 +13,7 @@
 #include "brave/browser/containers/containers_service_factory.h"
 #include "brave/browser/containers/used_container_storage_partitions.h"
 #include "brave/browser/ui/browser_commands.h"
+#include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/tabs/brave_new_tab_button.h"
 #include "brave/browser/ui/views/tabs/brave_tab.h"
 #include "brave/components/containers/content/browser/storage_partition_utils.h"
@@ -1456,6 +1457,45 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
   EXPECT_FALSE(browser()->window()->IsFullscreen());
   EXPECT_TRUE(small_accent_view->GetVisible());
   EXPECT_TRUE(small_accent_view->layer());
+}
+
+IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
+                       SmallAccentIconViewNotLayeredWhenScrollIsActive) {
+  auto animation_resetter = gfx::AnimationTestApi::SetRichAnimationRenderMode(
+      gfx::Animation::RichAnimationRenderMode::FORCE_DISABLED);
+  auto* tab_strip_model = browser()->tab_strip_model();
+  auto* tab_strip =
+      browser()->GetBrowserView().horizontal_tab_strip_for_testing();
+
+  // Add a tab in a container
+  const GURL url("https://a.test/simple.html");
+  auto container = containers::mojom::Container::New();
+  container->id = "accent-scroll-test-container";
+  container->name = "Accent Scroll Test Container";
+  container->icon = containers::mojom::Icon::kSocial;
+  container->background_color = SK_ColorYELLOW;
+  brave::OpenUrlInContainer(browser(), url, container);
+  EXPECT_EQ(2, tab_strip_model->count());
+
+  auto* tab_in_container = views::AsViewClass<BraveTab>(
+      tab_strip->tab_at(tab_strip_model->active_index()));
+  ASSERT_TRUE(tab_strip->ShouldPaintTabAccent(tab_in_container));
+  content::WebContents* contents_in_container =
+      tab_strip_model->GetActiveWebContents();
+  ASSERT_TRUE(contents_in_container);
+  EXPECT_TRUE(content::WaitForLoadStop(contents_in_container));
+
+  // By default, the small accent icon view should be visible and have a layer.
+  views::View* small_accent_view =
+      tab_in_container->small_accent_icon_view_for_test();
+  EXPECT_TRUE(small_accent_view->layer());
+
+  // When the tab strip is scrollable, the small accent icon view should not
+  // have a layer.
+  browser()->profile()->GetPrefs()->SetBoolean(
+      brave_tabs::kScrollableHorizontalTabStrip, true);
+  views::test::RunScheduledLayout(tab_strip);
+  EXPECT_FALSE(small_accent_view->layer());
 }
 
 IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
