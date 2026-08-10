@@ -215,7 +215,8 @@ template("transpile_web_ui") {
 
     # support multiple entry points and named bundle JS filename
     foreach(entry_point, invoker.entry_points) {
-      args += [ "--entry=" + entry_point[0] + "=" + entry_point[1] ]
+      args += [ "--entry=" + entry_point[0] + "=./" +
+                rebase_path(entry_point[1], "//brave") ]
       inputs += [ entry_point[1] ]
     }
 
