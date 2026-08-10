@@ -96,7 +96,7 @@
 //! [`rand_xoshiro`]: https://crates.io/crates/rand_xoshiro
 //! [`rng` tag]: https://crates.io/keywords/rng
 
-#[cfg_attr(doc_cfg, doc(cfg(feature = "std")))]
+#[cfg_attr(docsrs, doc(cfg(feature = "std")))]
 #[cfg(feature = "std")] pub mod adapter;
 
 pub mod mock; // Public so we don't export `StepRng` directly, making it a bit
@@ -115,5 +115,5 @@ mod xoshiro128plusplus;
 #[cfg(feature = "std_rng")] pub use self::std::StdRng;
 #[cfg(all(feature = "std", feature = "std_rng"))] pub use self::thread::ThreadRng;
 
-#[cfg_attr(doc_cfg, doc(cfg(feature = "getrandom")))]
+#[cfg_attr(docsrs, doc(cfg(feature = "getrandom")))]
 #[cfg(feature = "getrandom")] pub use rand_core::OsRng;

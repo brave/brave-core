@@ -76,7 +76,7 @@ type Rng = super::xoshiro128plusplus::Xoshiro128PlusPlus;
 /// [`thread_rng`]: crate::thread_rng
 /// [rand_chacha]: https://crates.io/crates/rand_chacha
 /// [rand_xoshiro]: https://crates.io/crates/rand_xoshiro
-#[cfg_attr(doc_cfg, doc(cfg(feature = "small_rng")))]
+#[cfg_attr(docsrs, doc(cfg(feature = "small_rng")))]
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct SmallRng(Rng);
 

@@ -49,8 +49,8 @@
 #![deny(missing_debug_implementations)]
 #![doc(test(attr(allow(unused_variables), deny(warnings))))]
 #![no_std]
-#![cfg_attr(feature = "simd_support", feature(stdsimd))]
-#![cfg_attr(doc_cfg, feature(doc_cfg))]
+#![cfg_attr(feature = "nightly", feature(trusted_len))]
+#![cfg_attr(docsrs, feature(doc_cfg))]
 #![allow(
     clippy::float_cmp,
     clippy::neg_cmp_op_on_partial_ord,
@@ -58,37 +58,6 @@
 
 #[cfg(feature = "std")] extern crate std;
 #[cfg(feature = "alloc")] extern crate alloc;
-
-#[allow(unused)]
-macro_rules! trace { ($($x:tt)*) => (
-    #[cfg(feature = "log")] {
-        log::trace!($($x)*)
-    }
-) }
-#[allow(unused)]
-macro_rules! debug { ($($x:tt)*) => (
-    #[cfg(feature = "log")] {
-        log::debug!($($x)*)
-    }
-) }
-#[allow(unused)]
-macro_rules! info { ($($x:tt)*) => (
-    #[cfg(feature = "log")] {
-        log::info!($($x)*)
-    }
-) }
-#[allow(unused)]
-macro_rules! warn { ($($x:tt)*) => (
-    #[cfg(feature = "log")] {
-        log::warn!($($x)*)
-    }
-) }
-#[allow(unused)]
-macro_rules! error { ($($x:tt)*) => (
-    #[cfg(feature = "log")] {
-        log::error!($($x)*)
-    }
-) }
 
 // Re-exports from rand_core
 pub use rand_core::{CryptoRng, Error, RngCore, SeedableRng};
@@ -178,7 +147,7 @@ use crate::distributions::{Distribution, Standard};
 ///
 /// [`Standard`]: distributions::Standard
 #[cfg(all(feature = "std", feature = "std_rng"))]
-#[cfg_attr(doc_cfg, doc(cfg(all(feature = "std", feature = "std_rng"))))]
+#[cfg_attr(docsrs, doc(cfg(all(feature = "std", feature = "std_rng"))))]
 #[inline]
 pub fn random<T>() -> T
 where Standard: Distribution<T> {

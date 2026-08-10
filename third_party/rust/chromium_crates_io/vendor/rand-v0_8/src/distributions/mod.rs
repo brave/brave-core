@@ -54,16 +54,16 @@
 //! space to be specified as an arbitrary range within its target type `T`.
 //! Both [`Standard`] and [`Uniform`] are in some sense uniform distributions.
 //!
-//! Values may be sampled from this distribution using [`Rng::sample(Range)`] or
+//! Values may be sampled from this distribution using `Rng::sample(Range)` or
 //! by creating a distribution object with [`Uniform::new`],
 //! [`Uniform::new_inclusive`] or `From<Range>`. When the range limits are not
 //! known at compile time it is typically faster to reuse an existing
-//! `Uniform` object than to call [`Rng::sample(Range)`].
+//! `Uniform` object than to call `Rng::sample(Range)`.
 //!
 //! User types `T` may also implement `Distribution<T>` for [`Uniform`],
 //! although this is less straightforward than for [`Standard`] (see the
 //! documentation in the [`uniform`] module). Doing so enables generation of
-//! values of type `T` with  [`Rng::sample(Range)`].
+//! values of type `T` with  `Rng::sample(Range)`.
 //!
 //! ## Open and half-open ranges
 //!
@@ -113,7 +113,7 @@ pub mod uniform;
     note = "use rand::distributions::{WeightedIndex, WeightedError} instead"
 )]
 #[cfg(feature = "alloc")]
-#[cfg_attr(doc_cfg, doc(cfg(feature = "alloc")))]
+#[cfg_attr(docsrs, doc(cfg(feature = "alloc")))]
 pub mod weighted;
 
 pub use self::bernoulli::{Bernoulli, BernoulliError};
