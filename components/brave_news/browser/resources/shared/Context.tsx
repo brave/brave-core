@@ -160,13 +160,13 @@ export function BraveNewsContextProvider(props: BraveNewsContextProviderProps) {
     sortedPublishers.filter(isPublisherEnabled).map(p => p.publisherId),
     [sortedPublishers])
 
-  const toggleBraveNewsOnNTP = (shouldEnable: boolean) => {
+  const toggleBraveNewsOnNTP = useCallback((shouldEnable: boolean) => {
     if (shouldEnable) {
       configurationCache.set({ isOptedIn: true, showOnNTP: true })
       return
     }
     configurationCache.set({ showOnNTP: false })
-  }
+  }, [])
 
   const setOpenArticlesInNewTab = useCallback((inNewTab: boolean) => {
     configurationCache.set({ openArticlesInNewTab: inNewTab })
@@ -192,7 +192,7 @@ export function BraveNewsContextProvider(props: BraveNewsContextProviderProps) {
     }
     isSidebarFilterUsed.current = true
     getBraveNewsController().onSidebarFilterUsage()
-  }, [isSidebarFilterUsed.current])
+  }, [])
 
   const context = useMemo<BraveNewsContext>(() => ({
     locale,
@@ -220,7 +220,7 @@ export function BraveNewsContextProvider(props: BraveNewsContextProviderProps) {
     reportSidebarFilterUsage,
     reportSessionStart,
     shouldRenderImages,
-  }), [customizePage, setFeedView, feedV2, feedV2UpdatesAvailable, channels, publishers, suggestedPublisherIds, filteredPublisherIds, updateSuggestedPublisherIds, configuration, props.openArticlesInNewTab, toggleBraveNewsOnNTP, reportSidebarFilterUsage, reportViewCount, reportVisit, reportSessionStart, shouldRenderImages])
+  }), [locale, feedView, setFeedView, feedV2, feedV2UpdatesAvailable, refreshFeedV2, customizePage, channels, publishers, suggestedPublisherIds, sortedPublishers, filteredPublisherIds, subscribedPublisherIds, configuration, props.openArticlesInNewTab, shouldRenderImages])
 
   return <BraveNewsContext.Provider value={context}>
     {props.children}
@@ -244,8 +244,9 @@ export const useChannels = (options: { subscribedOnly: boolean } = { subscribedO
  */
 export const useChannelSubscribed = (channelName: string) => {
   const { channels, locale } = useBraveNews()
-  const subscribed = useMemo(() => channels[channelName]?.subscribedLocales.includes(locale) ?? false,
-    [channels[channelName], locale])
+  const channel = channels[channelName]
+  const subscribed = useMemo(() => channel?.subscribedLocales.includes(locale) ?? false,
+    [channel, locale])
   const setSubscribed = React.useCallback((subscribed: boolean) => {
     const channelsCache = ChannelsCachingWrapper.getInstance()
     channelsCache.setChannelSubscribed(locale, channelName, subscribed)
@@ -259,7 +260,8 @@ export const useChannelSubscribed = (channelName: string) => {
 
 export const usePublisher = (publisherId: string) => {
   const { publishers } = useBraveNews()
-  return useMemo(() => publishers[publisherId], [publishers[publisherId]])
+  const publisher = publishers[publisherId]
+  return useMemo(() => publisher, [publisher])
 }
 
 export const usePublisherFollowed = (publisherId: string) => {

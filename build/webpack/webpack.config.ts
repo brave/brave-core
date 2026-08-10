@@ -16,6 +16,7 @@ import { baseResolve } from './resolve.ts'
 import {
   cssRules,
   tsLoaderRule,
+  reactCompilerRule,
   ifdefLoaderRule,
   fileLoaderRule,
   onnxRuntimeWorkerJsRule,
@@ -143,6 +144,7 @@ export function createWebpackConfig(
       rules: [
         ...cssRules({ isDevMode }),
         tsLoaderRule({ configFile: tsConfigPath }),
+        reactCompilerRule(),
         ifdefLoaderRule(buildFlags),
         onnxRuntimeWorkerJsRule(),
         onnxRuntimeWasmRule(),
