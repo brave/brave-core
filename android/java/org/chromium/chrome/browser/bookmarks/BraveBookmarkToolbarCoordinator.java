@@ -11,6 +11,7 @@ import android.view.View;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
+import org.chromium.chrome.browser.bookmarks.BookmarkModel.BookmarkDeleteObserver;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.components.bookmarks.BookmarkId;
@@ -44,7 +45,8 @@ class BraveBookmarkToolbarCoordinator extends BookmarkToolbarCoordinator {
             BooleanSupplier incognitoEnabledSupplier,
             BookmarkManagerOpener bookmarkManagerOpener,
             SnackbarManager snackbarManager,
-            View nextFocusableView) {
+            View nextFocusableView,
+            @Nullable BookmarkDeleteObserver bookmarkDeleteObserver) {
         super(
                 context,
                 profile,
@@ -62,7 +64,8 @@ class BraveBookmarkToolbarCoordinator extends BookmarkToolbarCoordinator {
                 incognitoEnabledSupplier,
                 bookmarkManagerOpener,
                 snackbarManager,
-                nextFocusableView);
+                nextFocusableView,
+                bookmarkDeleteObserver);
 
         if (mToolbar != null && mToolbar instanceof BraveBookmarkToolbar) {
             ((BraveBookmarkToolbar) mToolbar).setBraveBookmarkDelegate(bookmarkDelegateSupplier);
