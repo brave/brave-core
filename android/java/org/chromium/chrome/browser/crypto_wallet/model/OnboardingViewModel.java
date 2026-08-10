@@ -81,6 +81,17 @@ public class OnboardingViewModel extends ViewModel {
         mRestoreWalletLegacyEnabled = legacyEnabled;
     }
 
+    /**
+     * Drops any captured restore wallet state so it is not re-applied the next time the screen is
+     * shown. Called once the recovery phrase has been submitted.
+     */
+    public void clearRestoreWalletState() {
+        mRestoreWalletWords.clear();
+        mRestoreWalletWordCount = 0;
+        mRestoreWalletFocusedWordIndex = -1;
+        mRestoreWalletLegacyEnabled = false;
+    }
+
     /** Returns the recovery phrase words to restore, in visible order. */
     @NonNull
     public List<String> getRestoreWalletWords() {

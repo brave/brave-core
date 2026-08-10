@@ -86,6 +86,12 @@ public class OnboardingRestoreWalletFragment extends BaseOnboardingWalletFragmen
 
     private boolean mLegacyWalletRestoreEnabled;
 
+    /**
+     * Set once the recovery phrase is submitted, so the trailing {@link #onPause()} does not
+     * re-capture the cleared entry back into the shared view model.
+     */
+    private boolean mPhraseSubmitted;
+
     @NonNull
     public static OnboardingRestoreWalletFragment newInstance() {
         return new OnboardingRestoreWalletFragment();
@@ -199,7 +205,9 @@ public class OnboardingRestoreWalletFragment extends BaseOnboardingWalletFragmen
     @Override
     public void onPause() {
         super.onPause();
-        saveStateForConfigurationChange();
+        if (!mPhraseSubmitted) {
+            saveStateForConfigurationChange();
+        }
     }
 
     /** Applies the views that depend on the current 12 or 24 word count. */
@@ -381,6 +389,10 @@ public class OnboardingRestoreWalletFragment extends BaseOnboardingWalletFragmen
     private void goToNextPage(@NonNull final String recoveryPhrase) {
         mOnboardingViewModel.setRecoveryPhrase(recoveryPhrase);
         mOnboardingViewModel.setLegacyRestoreEnabled(mLegacyWalletRestoreEnabled);
+        // The phrase has been submitted, so drop the captured entry to avoid re-applying it if the
+        // restore screen is shown again.
+        mPhraseSubmitted = true;
+        mOnboardingViewModel.clearRestoreWalletState();
 
         BraveClipboardHelper.clearClipboard(recoveryPhrase);
         mPastedWords.clear();
