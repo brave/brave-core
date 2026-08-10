@@ -15,6 +15,7 @@ import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.chromium.base.supplier.MonotonicObservableSupplier;
+import org.chromium.base.supplier.NonNullObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
@@ -90,7 +91,8 @@ public class BraveLocationBarMediator extends LocationBarMediator {
             FuseboxCoordinator fuseboxCoordinator,
             LocationBarEmbedder locationBarEmbedder,
             @Nullable OmniboxChipManager omniboxChipManager,
-            @Nullable LocationBarFocusScrimHandler scrimHandler) {
+            @Nullable LocationBarFocusScrimHandler scrimHandler,
+            NonNullObservableSupplier<Boolean> windowHasFocusSupplier) {
         super(
                 context,
                 locationBarLayout,
@@ -115,7 +117,8 @@ public class BraveLocationBarMediator extends LocationBarMediator {
                 fuseboxCoordinator,
                 locationBarEmbedder,
                 omniboxChipManager,
-                scrimHandler);
+                scrimHandler,
+                windowHasFocusSupplier);
     }
 
     public static Class<OmniboxUma> getOmniboxUmaClass() {
