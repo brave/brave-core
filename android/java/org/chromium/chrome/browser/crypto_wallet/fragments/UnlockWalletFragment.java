@@ -16,8 +16,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProvider;
@@ -26,6 +24,8 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 import org.chromium.brave_wallet.mojom.KeyringService;
+import org.chromium.build.annotations.NullMarked;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.helpers.Api33AndPlusBackPressHelper;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnNextPage;
@@ -36,6 +36,7 @@ import org.chromium.ui.base.BraveClipboardHelper;
 
 import javax.crypto.Cipher;
 
+@NullMarked
 public class UnlockWalletFragment extends BaseWalletNextPageFragment
         implements BaseWalletNextPageFragment.BiometricAuthenticationCallback {
 
@@ -64,22 +65,17 @@ public class UnlockWalletFragment extends BaseWalletNextPageFragment
 
     @Override
     public View onCreateView(
-            @NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            LayoutInflater inflater,
+            @Nullable ViewGroup container,
+            @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_unlock_wallet, container, false);
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setAnimatedBackground(view.findViewById(R.id.unlock_wallet_root));
 
-        final OnNextPage onNextPage = mOnNextPage;
-        if (onNextPage == null) {
-            // mOnNextPage might be {@code null} when detached from the screen.
-            // It's very unlikely to happen during on view creation but better be extra
-            // safe and return immediately.
-            return;
-        }
         mUnlockWalletPassword = view.findViewById(R.id.unlock_wallet_password);
         mUnlockWalletPasswordLayout = view.findViewById(R.id.unlock_wallet_password_layout);
         mUnlockButton = view.findViewById(R.id.btn_unlock);
@@ -90,6 +86,14 @@ public class UnlockWalletFragment extends BaseWalletNextPageFragment
         if (view.findViewById(R.id.column_divider) != null) {
             ((TextView) view.findViewById(R.id.unlock_wallet_title)).setGravity(Gravity.START);
             ((TextView) view.findViewById(R.id.unlock_wallet_subtitle)).setGravity(Gravity.START);
+        }
+
+        final OnNextPage onNextPage = mOnNextPage;
+        if (onNextPage == null) {
+            // mOnNextPage might be {@code null} when detached from the screen.
+            // It's very unlikely to happen during on view creation but better be extra
+            // safe and return immediately.
+            return;
         }
 
         mUnlockWalletPassword.addTextChangedListener(
@@ -123,13 +127,14 @@ public class UnlockWalletFragment extends BaseWalletNextPageFragment
         mUnlockButton.setOnClickListener(
                 v -> {
                     final KeyringService keyringService = getKeyringService();
-                    if (keyringService != null && mUnlockWalletPassword.getText() != null) {
+                    final Editable passwordText = mUnlockWalletPassword.getText();
+                    if (keyringService != null && passwordText != null) {
+                        final String password = passwordText.toString();
                         keyringService.unlock(
-                                mUnlockWalletPassword.getText().toString(),
+                                password,
                                 result -> {
                                     if (result) {
-                                        BraveClipboardHelper.clearClipboard(
-                                                mUnlockWalletPassword.getText().toString());
+                                        BraveClipboardHelper.clearClipboard(password);
                                         mUnlockWalletPassword.setText(null);
                                         mOnboardingViewModel.clearUnlockState();
                                         onNextPage.showWallet(false);
@@ -148,24 +153,25 @@ public class UnlockWalletFragment extends BaseWalletNextPageFragment
                     mUnlockWalletPassword.setText(null);
                 });
 
+        final Cipher cipher = mCipher;
         mBiometricUnlockButton.setOnClickListener(
                 v -> {
-                    if (Utils.isBiometricSupported(requireContext()) && mCipher != null) {
+                    if (Utils.isBiometricSupported(requireContext()) && cipher != null) {
                         // Tapping the button is an explicit request for the prompt, so clear any
                         // earlier dismissal.
                         mOnboardingViewModel.setBiometricPromptDismissed(false);
-                        showBiometricAuthenticationDialog(mBiometricUnlockButton, this, mCipher);
+                        showBiometricAuthenticationDialog(mBiometricUnlockButton, this, cipher);
                     }
                 });
 
         if (KeystoreHelper.shouldUseBiometricToUnlock()
                 && Utils.isBiometricSupported(requireContext())
-                && mCipher != null) {
+                && cipher != null) {
 
             mBiometricUnlockButton.setVisibility(View.VISIBLE);
             // Skip the automatic prompt if the user already dismissed it for this unlock screen.
             if (!mOnboardingViewModel.isBiometricPromptDismissed()) {
-                showBiometricAuthenticationDialog(mBiometricUnlockButton, this, mCipher);
+                showBiometricAuthenticationDialog(mBiometricUnlockButton, this, cipher);
             }
         }
     }
@@ -181,7 +187,7 @@ public class UnlockWalletFragment extends BaseWalletNextPageFragment
     }
 
     @Override
-    public void authenticationSuccess(@NonNull String unlockWalletPassword) {
+    public void authenticationSuccess(String unlockWalletPassword) {
         BraveClipboardHelper.clearClipboard(unlockWalletPassword);
         mUnlockWalletPassword.setText(null);
         mOnboardingViewModel.clearUnlockState();
