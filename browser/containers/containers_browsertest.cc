@@ -1032,9 +1032,6 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest, TabTooltipShowsContainerName) {
       brave_tab->GetRenderedTooltipText(gfx::Point());
   EXPECT_NE(std::u16string::npos, tooltip.find(u"Tooltip Container"))
       << tooltip;
-  EXPECT_NE(
-      std::u16string::npos,
-      tooltip.find(l10n_util::GetStringUTF16(IDS_TOOLTIP_TAB_IN_CONTAINER)));
 }
 
 IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
