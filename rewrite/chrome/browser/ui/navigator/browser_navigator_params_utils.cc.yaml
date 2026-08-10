@@ -1,0 +1,17 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Drop `params->url_typed_with_http_scheme ||` condition for force_no_https_upgrade
+
+      We want URLs that were manually typed with HTTP scheme to be HTTPS
+      upgradable, but preserve upstream's behavior regarding captive portals (like
+      hotel login pages, which typically aren't configured to work with HTTPS)
+
+    regex:
+      re_pattern: |
+        (bool force_no_https_upgrade =)(\s*?params->url_typed_with_http_scheme \|\|)
+      replace: \1\n
