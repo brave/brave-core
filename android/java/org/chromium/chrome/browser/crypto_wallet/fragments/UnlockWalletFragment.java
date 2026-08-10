@@ -131,6 +131,7 @@ public class UnlockWalletFragment extends BaseWalletNextPageFragment
                                         BraveClipboardHelper.clearClipboard(
                                                 mUnlockWalletPassword.getText().toString());
                                         mUnlockWalletPassword.setText(null);
+                                        mOnboardingViewModel.clearUnlockState();
                                         onNextPage.showWallet(false);
                                     } else {
                                         mUnlockWalletPasswordLayout.setError(
@@ -185,6 +186,7 @@ public class UnlockWalletFragment extends BaseWalletNextPageFragment
     public void authenticationSuccess(@NonNull String unlockWalletPassword) {
         BraveClipboardHelper.clearClipboard(unlockWalletPassword);
         mUnlockWalletPassword.setText(null);
+        mOnboardingViewModel.clearUnlockState();
         if (mOnNextPage != null) {
             mOnNextPage.showWallet(false);
         }

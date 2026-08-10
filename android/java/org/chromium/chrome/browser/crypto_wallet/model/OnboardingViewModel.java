@@ -68,6 +68,16 @@ public class OnboardingViewModel extends ViewModel {
         return mBiometricPromptDismissed;
     }
 
+    /**
+     * Drops the captured unlock screen state so it is not re-applied the next time the unlock
+     * screen is shown (for example after the wallet is unlocked and later re-locked). Called once
+     * the wallet has been unlocked.
+     */
+    public void clearUnlockState() {
+        mUnlockPassword = null;
+        mBiometricPromptDismissed = false;
+    }
+
     /** Stores the restore wallet screen state so it survives a configuration change. */
     public void saveRestoreWalletState(
             @NonNull final List<String> words,
