@@ -143,9 +143,11 @@ const PSST_TASKS = window.__bravePsstParams.tasks;
 const PSST_TASKS_LENGTH = window.__bravePsstParams.tasks?.length ?? 0;
 
 // Flag which is present only for the first (initial) execution
-const PSST_INITIAL_EXECUTION_FLAG = window.__bravePsstParams.initial_execution ?? false;
+const PSST_INITIAL_EXECUTION_FLAG =
+  window.__bravePsstParams.initial_execution ?? false;
 
-const PSST_CHECK_SETTINGS_LOADED = window.__bravePsstParams.psst_settings_status ?? null;
+const PSST_CHECK_SETTINGS_LOADED =
+  window.__bravePsstParams.psst_settings_status ?? null;
 
 const PSST_LOCALSTORAGE_KEY = 'psst';
 
