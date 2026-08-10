@@ -164,11 +164,13 @@ WebGLRenderingContextBase::getSupportedExtensions() {
     return real_extensions;
   }
 
-  const auto level = brave::GetBraveFarblingLevelFor(
-      Host()->GetTopExecutionContext(),
-      IsWebGL2() ? ContentSettingsType::BRAVE_WEBCOMPAT_WEBGL2
-                 : ContentSettingsType::BRAVE_WEBCOMPAT_WEBGL,
-      BraveFarblingLevel::OFF);
+  const auto level =
+      Host() ? brave::GetBraveFarblingLevelFor(
+                   Host()->GetTopExecutionContext(),
+                   IsWebGL2() ? ContentSettingsType::BRAVE_WEBCOMPAT_WEBGL2
+                              : ContentSettingsType::BRAVE_WEBCOMPAT_WEBGL,
+                   BraveFarblingLevel::OFF)
+             : BraveFarblingLevel::OFF;
 
   // Balanced case + feature flag: Farble the extension set.
   if (level == BraveFarblingLevel::BALANCED &&
@@ -198,11 +200,13 @@ WebGLRenderingContextBase::getSupportedExtensions() {
 // also represent a farbled object if the extension |name| was farbled.
 ScriptObject WebGLRenderingContextBase::getExtension(ScriptState* script_state,
                                                      const String& name) {
-  const auto level = brave::GetBraveFarblingLevelFor(
-      Host()->GetTopExecutionContext(),
-      IsWebGL2() ? ContentSettingsType::BRAVE_WEBCOMPAT_WEBGL2
-                 : ContentSettingsType::BRAVE_WEBCOMPAT_WEBGL,
-      BraveFarblingLevel::OFF);
+  const auto level =
+      Host() ? brave::GetBraveFarblingLevelFor(
+                   Host()->GetTopExecutionContext(),
+                   IsWebGL2() ? ContentSettingsType::BRAVE_WEBCOMPAT_WEBGL2
+                              : ContentSettingsType::BRAVE_WEBCOMPAT_WEBGL,
+                   BraveFarblingLevel::OFF)
+             : BraveFarblingLevel::OFF;
 
   // TODO(https://github.com/brave/brave-browser/issues/57897): Remove this once
   // the strict fingerprinting mode is removed.
