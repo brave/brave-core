@@ -10,7 +10,8 @@ import { spawnSync } from 'node:child_process'
 import fs from 'node:fs'
 import path from 'node:path'
 import process from 'node:process'
-import { Argument, program } from 'commander'
+import { Option, program } from 'commander'
+import { isCI } from '../lib/ciDetect.ts'
 import { createBuildConfigArgument } from '../lib/commandsUtils.ts'
 import config from '../lib/config.ts'
 import util from '../lib/util.js'
@@ -19,38 +20,40 @@ program
   .description(
     'Build Storybook generated deps, then run Storybook (dev or static build)',
   )
-  .addArgument(
-    new Argument('<mode>', 'Storybook mode').choices(['dev', 'build']),
-  )
   .addArgument(createBuildConfigArgument())
   .option('-C <build_dir>', 'build directory, relative to out/ or absolute')
   .option('--target_arch <target_arch>', 'target architecture')
   .option('--target_os <target_os>', 'target OS')
+  .addOption(
+    new Option('--command <command>', 'Storybook command')
+      .choices(['build', 'dev'])
+      .makeOptionMandatory(),
+  )
   .option('-B, --build_deps', 'build Storybook GN deps')
   .allowExcessArguments(true)
   .allowUnknownOption(true)
-  .action(async (mode, buildConfig, options) => {
+  .action(async (buildConfig, options) => {
+    if (buildConfig) {
+      config.buildConfig = buildConfig
+    }
+
     const buildConfigProvided =
       buildConfig !== undefined
       || options.C !== undefined
       || options.target_arch !== undefined
       || options.target_os !== undefined
 
-    if (!buildConfigProvided) {
+    if (!buildConfigProvided && !isCI) {
       // If no build config was provided, use the build output path from
-      // guessConfig.js to set the build directory. This is a fallback for CI to
-      // run storybook without specifying a build config, but still use the
-      // right build output path.
+      // guessConfig.js to set the build directory.
       await import('../lib/guessConfig.js').then(({ outputPath }) => {
         options.C = outputPath
       })
-    } else {
-      config.buildConfig = buildConfig || config.defaultBuildConfig
     }
 
     config.update(options)
 
-    if (mode === 'build' || options.build_deps) {
+    if (options.command === 'build' || options.build_deps) {
       config.buildTargets = ['brave/build/storybook:storybook_deps']
       await util.buildTargets(config.buildTargets, config.defaultOptions)
     }
@@ -82,12 +85,12 @@ program
       // section size.
       '--max-old-space-size=8192',
       storybookCli,
-      mode,
+      options.command,
       '-c',
       storybookConfigDir,
     ]
 
-    switch (mode) {
+    switch (options.command) {
       case 'build':
         nodeArgs.push('-o', path.join(config.outputDir, 'storybook'))
         break
