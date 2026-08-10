@@ -136,18 +136,19 @@ YAML).
 The keyed rewrite (`regex:` above) is a **rewriter**. There is on-going work to
 introduce more rewriters. These are the ones we have supported for now.
 
-| Rewriter                | Kind | Description                                       |
-| ----------------------- | ---- | ------------------------------------------------- |
-| `regex`                 | text | A Python `re.subn` substitution (the default).    |
-| `make_virtual`          | AST  | Prepends `virtual ` to a C++ method declaration.  |
-| `add_friend`            | AST  | Adds a `friend` declaration to a private section. |
-| `drop_final`            | AST  | Removes `final` from a C++ class declaration.     |
-| `preempt_function_impl` | AST  | Inserts at the top of a C++ function body.        |
-| `after_function_impl`   | AST  | Wraps a C++ function body and runs code after.    |
-| `rename_class`          | AST  | Renames a C++ class.                              |
-| `add_to_protected`      | AST  | Adds a member to a class `protected:` section.    |
-| `add_to_public`         | AST  | Appends a member to a class `public:` section.    |
-| `add_enum_entries`      | AST  | Appends entries to the end of a C++ enum.         |
+| Rewriter                         | Kind  | Description                                       |
+| -------------------------------- | ----- | ------------------------------------------------- |
+| `regex`                          | text  | A Python `re.subn` substitution (the default).    |
+| `make_virtual`                   | AST   | Prepends `virtual ` to a C++ method declaration.  |
+| `add_friend`                     | AST   | Adds a `friend` declaration to a private section. |
+| `drop_final`                     | AST   | Removes `final` from a C++ class declaration.     |
+| `preempt_function_impl`          | AST   | Inserts at the top of a C++ function body.        |
+| `after_function_impl`            | AST   | Wraps a C++ function body and runs code after.    |
+| `rename_class`                   | AST   | Renames a C++ class.                              |
+| `add_to_protected`               | AST   | Adds a member to a class `protected:` section.    |
+| `add_to_public`                  | AST   | Appends a member to a class `public:` section.    |
+| `add_enum_entries`               | AST   | Appends entries to the end of a C++ enum.         |
+| `set_feature_flag_default_state` | macro | Sets a `BASE_FEATURE`'s default state.            |
 
 Use `plaster --help` to discover rewriters and read their full docs:
 

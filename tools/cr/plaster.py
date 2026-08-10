@@ -2960,6 +2960,112 @@ class RegexMacroEngine:
         return matches
 
 
+class RegexMacro(Rewriter):
+    """Applies a named `regex_macro` op (declared in `rewriters.pyl`) as a
+    substitution.
+
+    Every `regex_macro` op gets a `RegexMacro` subclass generated automatically
+    from its `rewriters.pyl` spec (see `_regex_macro_rewriters`), carrying only
+    the per-op `NAME` (the `substitutions:` key that selects it), `OP_ID`, and
+    the `SUMMARY`/ `HELP` `plaster --help` renders.
+
+    Behaviour validating a body's keys against the op's declared `inputs`, and
+    applying it via `RegexMacroEngine` lives in this class.
+    """
+
+    # Set on the generated subclass (see `_regex_macro_rewriters`): the
+    # `rewriters.pyl` op id this resolves to (e.g.
+    # `cxx.set_feature_flag_default_state`).
+    OP_ID: ClassVar[str] = ''
+
+    def __init__(self, inputs: dict[str, str]):
+        self._inputs = inputs
+
+    def source_language(self) -> str:
+        """The `<lang>.` prefix for the op (e.g. `cxx`)."""
+        return self.OP_ID.split('.', 1)[0]
+
+    def apply(self,
+              contents: str,
+              *,
+              count: int,
+              description: str,
+              blank_for_parse: bool = False) -> tuple[str, list[str]]:
+        del description  # Only the count matters for the regex diagnostic.
+        del blank_for_parse  # Regex macros run over plain text; nothing to relax.
+        engine = RegexMacroEngine(RewritersEval.load(), contents)
+        matches = engine.run(self.OP_ID, self._inputs)
+        error = MatchExpectation.from_count(count).error_for(matches)
+        return engine.content, [error] if error else []
+
+    @classmethod
+    def parse(cls, body: object, *, description: str) -> RegexMacro:
+        """Validate a `<macro-name>:` body against the op's declared `inputs`.
+        """
+        if not isinstance(body, dict):
+            raise ValueError(
+                f'"{cls.NAME}" must be a mapping (in "{description}")')
+        keys = frozenset(
+            entry['name']
+            for entry in RewritersEval.load().regex_macro(cls.OP_ID)['inputs'])
+        unknown = sorted(set(body) - keys)
+        if unknown:
+            raise ValueError(
+                f'Unrecognised {cls.NAME} arg(s): '
+                f'{", ".join(repr(k) for k in unknown)} (in "{description}")')
+        missing = sorted(keys - set(body))
+        if missing:
+            raise ValueError(f'{cls.NAME} requires arg(s): '
+                             f'{", ".join(missing)} (in "{description}")')
+        for key in sorted(keys):
+            if not isinstance(body[key], str):
+                raise ValueError(f'{cls.NAME} `{key}` must be a string '
+                                 f'(in "{description}")')
+        return cls({key: body[key] for key in keys})
+
+
+def _regex_macro_help(spec: dict) -> str:
+    """Full `plaster --help <macro>` text for one `regex_macro` spec.
+
+    This function produces the markdown text used to show the help section for
+    a given regex macro.
+    """
+    lines = spec['description'].rstrip('\n').splitlines()
+    fields = ['Fields:', ''] + [
+        f"- `{entry['name']}` — {entry['description']}"
+        for entry in spec['inputs']
+    ]
+    for index, line in enumerate(lines):
+        if line.startswith('```'):
+            return '\n'.join(lines[:index] + fields + [''] + lines[index:])
+    return '\n'.join(lines + [''] + fields)
+
+
+def _regex_macro_rewriters() -> dict[str, type[RegexMacro]]:
+    """One auto-generated `RegexMacro` subclass per declared `regex_macro` op.
+
+    This function produces a list of entries to be used by `_REWRITERS` to
+    register all the `regex_macro` ops declared in `rewriters.pyl`.
+    """
+    rewriters: dict[str, type[RegexMacro]] = {}
+    for op_id, spec in RewritersEval.load().regex_macros.items():
+        name = op_id.split('.', 1)[1]
+        first_paragraph = spec['description'].strip().split('\n\n', 1)[0]
+        rewriters[name] = type(
+            f'RegexMacro_{name}', (RegexMacro, ), {
+                'NAME': name,
+                'OP_ID': op_id,
+                'SUMMARY': ' '.join(first_paragraph.split()),
+                'HELP': _regex_macro_help(spec),
+            })
+    return rewriters
+
+
+# Every `regex_macro` op declared in `rewriters.pyl` joins `_REWRITERS`
+# alongside the hand-written rewriters above, each under its own bare name.
+_REWRITERS = MappingProxyType({**_REWRITERS, **_regex_macro_rewriters()})
+
+
 def get_plaster_files(filepaths: list[str] | None = None) -> list[PlasterFile]:
     """Returns plaster files matching the provided file paths.
 

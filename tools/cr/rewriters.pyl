@@ -601,6 +601,14 @@ regex: ^{class_name}$
             "description": """\
 Sets a new value to a `BASE_FEATURE` feature flag.
 
+```yaml
+substitutions:
+  - description: Ship kMyFeature disabled.
+    set_feature_flag_default_state:
+      feature_name: kMyFeature
+      value: base::FEATURE_DISABLED_BY_DEFAULT
+```
+
 ```diff
  BASE_FEATURE(kMyFeature,
               "MyFeature",
