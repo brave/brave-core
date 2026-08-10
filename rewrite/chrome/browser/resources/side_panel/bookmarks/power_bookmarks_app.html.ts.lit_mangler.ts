@@ -8,8 +8,11 @@ import { mangle } from 'lit_mangler'
 // Change the icon of the add current tab button to the Brave one (without an outline).
 mangle(
   (element) => {
-    const buttonIcon = element.querySelector('#addCurrentTabButton [slot=prefix-icon]')
+    const buttonIcon = element.querySelector(
+      '#addCurrentTabButton [slot=prefix-icon]',
+    )
     if (!buttonIcon) throw new Error('buttonIcon not found')
     buttonIcon.setAttribute('icon', 'plus-add')
   },
-  literal => literal.text.includes('addCurrentTabButton'))
+  (literal) => literal.text.includes('addCurrentTabButton'),
+)

@@ -111,7 +111,9 @@ const restorePropertyCases = (text: string) => {
 const getLiteralsFromFile = (filepath: string) => {
   const file = loadRaw(filepath)
   const root: HTMLTemplateTags = {
-    text: file.getText(),
+    // getFullText() (not getText()) keeps the file's leading trivia - notably
+    // the copyright header - which we preserve when writing the mangled source.
+    text: file.getFullText(),
     children: [],
     id: nextId++,
   }

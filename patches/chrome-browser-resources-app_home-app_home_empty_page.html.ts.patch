@@ -1,0 +1,14 @@
+diff --git a/chrome/browser/resources/app_home/app_home_empty_page.html.ts b/chrome/browser/resources/app_home/app_home_empty_page.html.ts
+index a63179592e5450d8071b96bc06a5725f2f2f03df..f611ee7e96f9c11918a981b4ad68f397a217056e 100644
+--- a/chrome/browser/resources/app_home/app_home_empty_page.html.ts
++++ b/chrome/browser/resources/app_home/app_home_empty_page.html.ts
+@@ -11,8 +11,7 @@ export function getHtml(this: AppHomeEmptyPageElement) {
+ <div class="container">
+   <img src="chrome://resources/images/apps_home_empty_238x170.svg">
+     <p>$i18n{appAppearanceLabel}</p>
+-    <a href="https://support.google.com/chrome?p=install_web_apps"
+-        target="_blank">
++    <a href="https://support.brave.app/hc/en-us/articles/39077114659597" target="_blank">
+       <cr-button>$i18n{learnToInstall}</cr-button>
+     </a>
+ </div>
