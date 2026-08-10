@@ -1,0 +1,12 @@
+diff --git a/components/attribution_reporting/features.cc b/components/attribution_reporting/features.cc
+index b199e7682ad3396b6e66e62dd927b9e81e157382..7eda43f1027d03c6b9244a65cf4a6c798c86d569 100644
+--- a/components/attribution_reporting/features.cc
++++ b/components/attribution_reporting/features.cc
+@@ -9,6 +9,6 @@
+ namespace attribution_reporting::features {
+ 
+ // Controls whether the Conversion Measurement API infrastructure is enabled.
+-BASE_FEATURE(kConversionMeasurement, base::FEATURE_ENABLED_BY_DEFAULT);
++BASE_FEATURE(kConversionMeasurement, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ }  // namespace attribution_reporting::features

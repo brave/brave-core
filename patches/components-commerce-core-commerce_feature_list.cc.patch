@@ -1,0 +1,22 @@
+diff --git a/components/commerce/core/commerce_feature_list.cc b/components/commerce/core/commerce_feature_list.cc
+index 30567b8c4ae4498861fd49e92038fc8cd1405df1..d5e68d43a623459a34b68fb7c6c43ed11e33c2fa 100644
+--- a/components/commerce/core/commerce_feature_list.cc
++++ b/components/commerce/core/commerce_feature_list.cc
+@@ -126,7 +126,7 @@ const re2::RE2& GetCouponPartnerMerchantPattern() {
+ BASE_FEATURE(kCommerceAllowLocalImages, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ BASE_FEATURE(kCommerceAllowOnDemandBookmarkUpdates,
+-             base::FEATURE_ENABLED_BY_DEFAULT);
++             base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ BASE_FEATURE(kCommerceMerchantViewer, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+@@ -227,7 +227,7 @@ BASE_FEATURE(kInStockNotification, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ BASE_FEATURE(kShoppingPageTypes, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+-BASE_FEATURE(kRetailCoupons, base::FEATURE_ENABLED_BY_DEFAULT);
++BASE_FEATURE(kRetailCoupons, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ BASE_FEATURE(kCommerceDeveloper, base::FEATURE_DISABLED_BY_DEFAULT);
+ 

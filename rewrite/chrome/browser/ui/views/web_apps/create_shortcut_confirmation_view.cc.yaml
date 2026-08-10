@@ -1,0 +1,21 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Comment out the DCHECK guarding kDesktopPWAsTabStripSettings's compiled
+      default.
+
+      Brave ships this feature enabled by default (see
+      chrome/common/chrome_features.cc), unlike upstream, so the assertion
+      that its compiled default stays disabled no longer holds. Kept as a
+      comment, rather than removed, so the guard stays visible.
+    regex:
+      pattern: |-
+        DCHECK_EQ(features::kDesktopPWAsTabStripSettings.default_state,
+                    base::FEATURE_DISABLED_BY_DEFAULT);
+      replace: |-
+        // DCHECK_EQ(features::kDesktopPWAsTabStripSettings.default_state,
+          //           base::FEATURE_DISABLED_BY_DEFAULT);

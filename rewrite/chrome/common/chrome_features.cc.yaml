@@ -15,3 +15,28 @@ substitutions:
         '(const base::FeatureParam<bool> kGlicActorUiTaskIcon\{\s*&kGlicActorUi,
         kGlicActorUiTaskIconName, )true(\};)'
       replace: '\1false\2'
+
+  - description: 'Ship kChromeStructuredMetrics disabled.'
+    set_feature_flag_default_state:
+      feature_name: kChromeStructuredMetrics
+      value: base::FEATURE_DISABLED_BY_DEFAULT
+
+  - description: 'Ship kDesktopPWAsTabStripSettings enabled.'
+    set_feature_flag_default_state:
+      feature_name: kDesktopPWAsTabStripSettings
+      value: base::FEATURE_ENABLED_BY_DEFAULT
+
+  - description: 'Ship kHttpsFirstBalancedMode disabled.'
+    set_feature_flag_default_state:
+      feature_name: kHttpsFirstBalancedMode
+      value: base::FEATURE_DISABLED_BY_DEFAULT
+
+  - description: 'Ship kSCTAuditingHashdance disabled.'
+    set_feature_flag_default_state:
+      feature_name: kSCTAuditingHashdance
+      value: base::FEATURE_DISABLED_BY_DEFAULT
+
+  - description: 'Ship kTrustSafetySentimentSurveyV2 disabled.'
+    set_feature_flag_default_state:
+      feature_name: kTrustSafetySentimentSurveyV2
+      value: base::FEATURE_DISABLED_BY_DEFAULT

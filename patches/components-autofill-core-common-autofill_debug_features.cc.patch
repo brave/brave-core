@@ -1,0 +1,13 @@
+diff --git a/components/autofill/core/common/autofill_debug_features.cc b/components/autofill/core/common/autofill_debug_features.cc
+index 3eb584378836f6309363f1a246e91946fac6c9a2..b1fa74c2d37143bb70f9b79c0a6e47808e307133 100644
+--- a/components/autofill/core/common/autofill_debug_features.cc
++++ b/components/autofill/core/common/autofill_debug_features.cc
+@@ -123,7 +123,7 @@ BASE_FEATURE_PARAM(std::string,
+ // autofill server API url up to the parent "directory" of the "query" and
+ // "upload" resources.
+ // i.e., https://other.autofill.server:port/tbproxy/af/
+-BASE_FEATURE(kAutofillServerCommunication, base::FEATURE_ENABLED_BY_DEFAULT);
++BASE_FEATURE(kAutofillServerCommunication, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ // Controls attaching the autofill type predictions to their respective
+ // element in the DOM.

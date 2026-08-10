@@ -1,0 +1,13 @@
+diff --git a/components/heap_profiling/in_process/heap_profiler_parameters.cc b/components/heap_profiling/in_process/heap_profiler_parameters.cc
+index fb16321e89570ef25f378fb4890d2fe5cf308d2c..4e7431bbfcc90680d39ff43f2c32c26398c87976 100644
+--- a/components/heap_profiling/in_process/heap_profiler_parameters.cc
++++ b/components/heap_profiling/in_process/heap_profiler_parameters.cc
+@@ -125,7 +125,7 @@ constexpr base::FeatureParam<double> kUtilityHashSetLoadFactor{
+ 
+ }  // namespace
+ 
+-BASE_FEATURE(kHeapProfilerReporting, base::FEATURE_ENABLED_BY_DEFAULT);
++BASE_FEATURE(kHeapProfilerReporting, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ const base::FeatureParam<double> kStableProbability{
+     &kHeapProfilerReporting, "stable-probability", kDefaultStableProbability};

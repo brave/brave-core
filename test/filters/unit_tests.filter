@@ -316,6 +316,13 @@
 -HttpsFirstModeSettingsTrackerTest.ImplicitTransition_EsbToggled
 -HttpsFirstModeSettingsTrackerTest.StartupDetailedState_EnabledBalancedEsbPairing
 
+# These tests assume kHttpsFirstBalancedMode is enabled by default, but Brave
+# disables it, so Balanced Mode is never available and the "modified from
+# default" comparison in BundledSettingsMetricsProvider always disagrees with
+# the test's expectations.
+-BundledSettingsMetricsProviderUnitTest.EnhancedBundle_HttpsFirstModeMetrics
+-BundledSettingsMetricsProviderUnitTest.StandardBundle_HttpsFirstModeMetrics
+
 # These tests fail because we disable safe browsing enhanced protection and
 # patch safe_browsing::IsEnhancedProtectionEnabled to return false
 -All/ClientSideDetectionHostCreditCardFormReferringAppTest.*/*
