@@ -42,6 +42,7 @@ const VerifyResendTestCase* Success() {
 //   - { "code": null, "error": "Bad Request", "status": 400 }
 //   - { "code": 13008, "error": "maximum email send attempts exceeded", "status": 400 }
 //   - { "code": 13009, "error": "email already verified", "status": 400 }
+//   - { "code": 13010, "error": "maximum code verification attempts exceeded", "status": 400 }
 // - HTTP 401:
 //   - { "code": 14014, "error": "token has expired", "status": 401 }
 // - HTTP 5XX:
