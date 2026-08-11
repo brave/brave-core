@@ -17,6 +17,7 @@
 #include "chrome/browser/custom_handlers/protocol_handler_registry_factory.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_window/public/create_browser_window.h"
 #include "chrome/test/base/test_browser_window.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
@@ -99,12 +100,13 @@ class BraveRenderViewContextMenuTest : public testing::Test {
         *web_contents->GetPrimaryMainFrame(), params,
         /*is_paste_enabled=*/false, /*is_paste_and_match_style_enabled=*/false);
 
-    Browser::CreateParams create_params(
+    BrowserWindowCreateParams create_params(
         is_pwa_browser ? Browser::Type::TYPE_APP : Browser::Type::TYPE_NORMAL,
         profile_.get(), true);
     auto browser_window = std::make_unique<TestBrowserWindow>();
     create_params.window = browser_window.release();
-    browser_ = Browser::DeprecatedCreateOwnedForTesting(create_params);
+    browser_ =
+        DeprecatedCreateOwnedBrowserWindowForTesting(std::move(create_params));
     menu->SetBrowser(browser_.get());
 
     menu->Init();
