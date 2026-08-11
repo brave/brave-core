@@ -1,0 +1,12 @@
+diff --git a/content/browser/speech/on_device_speech_recognition_engine_impl.cc b/content/browser/speech/on_device_speech_recognition_engine_impl.cc
+index d7748c0871496a9b99267a0c763c73ee1c06fb82..5d089b69b1530a7fc2927463ee5761c40df88bc2 100644
+--- a/content/browser/speech/on_device_speech_recognition_engine_impl.cc
++++ b/content/browser/speech/on_device_speech_recognition_engine_impl.cc
+@@ -41,6 +41,7 @@ OnDeviceSpeechRecognitionEngine::Core::~Core() = default;
+ OnDeviceSpeechRecognitionEngine::OnDeviceSpeechRecognitionEngine(
+     const SpeechRecognitionSessionConfig& config)
+     : config_(config) {
++  if (UsesBraveOnDeviceSpeech(config.quality)) return;
+   core_ = base::SequenceBound<Core>(
+       content::GetUIThreadTaskRunner({}),
+       base::BindPostTaskToCurrentDefault(base::BindOnce(

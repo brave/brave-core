@@ -19,6 +19,7 @@ static_library("speech") {
     "//brave/browser/local_ai",
     "//brave/components/local_ai/core",
     "//brave/components/local_ai/core:speech_recognition_mojom",
+    "//brave/components/local_ai/core:utils",
     "//chrome/browser:browser_process",
     "//chrome/browser/profiles:profile",
     "//chrome/browser/profiles:profile_manager",
