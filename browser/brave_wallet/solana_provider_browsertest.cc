@@ -380,6 +380,7 @@ class SolanaProviderTest : public InProcessBrowserTest {
   ~SolanaProviderTest() override = default;
 
   void SetUpOnMainThread() override {
+    mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
     brave_wallet::SetDefaultSolanaWallet(
         browser()->GetProfile()->GetPrefs(),
         brave_wallet::mojom::DefaultWallet::BraveWallet);
@@ -414,9 +415,11 @@ class SolanaProviderTest : public InProcessBrowserTest {
     InProcessBrowserTest::SetUpCommandLine(command_line);
     mock_cert_verifier_.SetUpCommandLine(command_line);
 
+    ASSERT_TRUE(https_server_for_rpc_.InitializeAndListen());
     command_line->AppendSwitchASCII(
         network::switches::kHostResolverRules,
-        "MAP * " + https_server_for_rpc_.host_port_pair().ToString());
+        "MAP solana-mainnet.wallet.brave.com " +
+            https_server_for_rpc_.host_port_pair().ToString());
   }
 
   void SetUpInProcessBrowserTestFixture() override {
@@ -524,7 +527,7 @@ class SolanaProviderTest : public InProcessBrowserTest {
   void StartRPCServer(
       const net::EmbeddedTestServer::HandleRequestCallback& callback) {
     https_server_for_rpc()->RegisterRequestHandler(callback);
-    ASSERT_TRUE(https_server_for_rpc()->Start());
+    https_server_for_rpc()->StartAcceptingConnections();
   }
 
   content::WebContents* web_contents() {
