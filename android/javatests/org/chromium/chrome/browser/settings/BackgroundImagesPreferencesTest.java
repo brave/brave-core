@@ -91,10 +91,10 @@ public class BackgroundImagesPreferencesTest {
     }
 
     // Test for Opening Screen preference when feature is enabled but variant is "A".
-    // The preference should not be shown when variant is "A" (the default).
+    // The preference should not be shown when variant is "A".
     @Test
     @SmallTest
-    @EnableFeatures(BraveFeatureList.BRAVE_FRESH_NTP_AFTER_IDLE_EXPERIMENT)
+    @EnableFeatures(BraveFeatureList.BRAVE_FRESH_NTP_AFTER_IDLE_EXPERIMENT + ":variant/A")
     public void testOpeningScreenPrefNotShownWhenFeatureEnabledButVariantIsA() {
         Assert.assertTrue(
                 "BraveFreshNtpAfterIdleExperiment feature should be enabled",
@@ -105,7 +105,7 @@ public class BackgroundImagesPreferencesTest {
         // Wait for async preference updates to complete
         // Note: We check getPreferenceScreen().findPreference() directly because
         // BravePreferenceFragment.findPreference() may also return removed preferences
-        // The preference should be removed when variant is "A" (default) even if feature is enabled
+        // The preference should be removed when variant is "A" even if feature is enabled
         CriteriaHelper.pollUiThread(
                 () -> {
                     return mBackgroundImagesPreferences
@@ -113,7 +113,7 @@ public class BackgroundImagesPreferencesTest {
                                     .findPreference(PREF_OPENING_SCREEN_CATEGORY)
                             == null;
                 },
-                "Preference category should be removed when variant is A (default)",
+                "Preference category should be removed when variant is A",
                 5000L,
                 100L);
 
@@ -123,7 +123,7 @@ public class BackgroundImagesPreferencesTest {
                                 .getPreferenceScreen()
                                 .findPreference(PREF_OPENING_SCREEN_CATEGORY);
         assertNull(
-                "PREF_OPENING_SCREEN_CATEGORY should not be shown when variant is A (default)",
+                "PREF_OPENING_SCREEN_CATEGORY should not be shown when variant is A",
                 openingScreenCategory);
 
         // Also verify the preference itself is not accessible
@@ -131,9 +131,7 @@ public class BackgroundImagesPreferencesTest {
                 mBackgroundImagesPreferences
                         .getPreferenceScreen()
                         .findPreference(PREF_OPENING_SCREEN);
-        assertNull(
-                "PREF_OPENING_SCREEN should not be shown when variant is A (default)",
-                openingScreenPref);
+        assertNull("PREF_OPENING_SCREEN should not be shown when variant is A", openingScreenPref);
     }
 
     // Test for Opening Screen preference when feature is enabled and variant is "B".
@@ -180,100 +178,6 @@ public class BackgroundImagesPreferencesTest {
                         .findPreference(PREF_OPENING_SCREEN);
         assertNotNull(
                 "PREF_OPENING_SCREEN should be shown when feature is enabled and variant is B",
-                openingScreenPref);
-    }
-
-    // Test for Opening Screen preference when feature is enabled and variant is "C".
-    // The preference should be shown when variant is not "A".
-    @Test
-    @SmallTest
-    @EnableFeatures(BraveFeatureList.BRAVE_FRESH_NTP_AFTER_IDLE_EXPERIMENT + ":variant/C")
-    public void testOpeningScreenPrefShownWhenFeatureEnabledAndVariantIsC() {
-        Assert.assertTrue(
-                "BraveFreshNtpAfterIdleExperiment feature should be enabled",
-                ChromeFeatureList.isEnabled(
-                        BraveFeatureList.BRAVE_FRESH_NTP_AFTER_IDLE_EXPERIMENT));
-        startSettings();
-
-        // Wait for async preference updates to complete
-        // Note: We check getPreferenceScreen().findPreference() directly because
-        // BravePreferenceFragment.findPreference() may also return removed preferences
-        // The preference should be present when variant is not "A" and feature is enabled
-        CriteriaHelper.pollUiThread(
-                () -> {
-                    return mBackgroundImagesPreferences
-                                    .getPreferenceScreen()
-                                    .findPreference(PREF_OPENING_SCREEN_CATEGORY)
-                            != null;
-                },
-                "Preference category should be present when feature is enabled and variant is C",
-                5000L,
-                100L);
-
-        PreferenceCategory openingScreenCategory =
-                (PreferenceCategory)
-                        mBackgroundImagesPreferences
-                                .getPreferenceScreen()
-                                .findPreference(PREF_OPENING_SCREEN_CATEGORY);
-        assertNotNull(
-                "PREF_OPENING_SCREEN_CATEGORY should be shown when feature is enabled and variant"
-                        + " is C",
-                openingScreenCategory);
-
-        // Also verify the preference itself is accessible
-        Preference openingScreenPref =
-                mBackgroundImagesPreferences
-                        .getPreferenceScreen()
-                        .findPreference(PREF_OPENING_SCREEN);
-        assertNotNull(
-                "PREF_OPENING_SCREEN should be shown when feature is enabled and variant is C",
-                openingScreenPref);
-    }
-
-    // Test for Opening Screen preference when feature is enabled and variant is "D".
-    // The preference should be shown when variant is not "A".
-    @Test
-    @SmallTest
-    @EnableFeatures(BraveFeatureList.BRAVE_FRESH_NTP_AFTER_IDLE_EXPERIMENT + ":variant/D")
-    public void testOpeningScreenPrefShownWhenFeatureEnabledAndVariantIsD() {
-        Assert.assertTrue(
-                "BraveFreshNtpAfterIdleExperiment feature should be enabled",
-                ChromeFeatureList.isEnabled(
-                        BraveFeatureList.BRAVE_FRESH_NTP_AFTER_IDLE_EXPERIMENT));
-        startSettings();
-
-        // Wait for async preference updates to complete
-        // Note: We check getPreferenceScreen().findPreference() directly because
-        // BravePreferenceFragment.findPreference() may also return removed preferences
-        // The preference should be present when variant is not "A" and feature is enabled
-        CriteriaHelper.pollUiThread(
-                () -> {
-                    return mBackgroundImagesPreferences
-                                    .getPreferenceScreen()
-                                    .findPreference(PREF_OPENING_SCREEN_CATEGORY)
-                            != null;
-                },
-                "Preference category should be present when feature is enabled and variant is D",
-                5000L,
-                100L);
-
-        PreferenceCategory openingScreenCategory =
-                (PreferenceCategory)
-                        mBackgroundImagesPreferences
-                                .getPreferenceScreen()
-                                .findPreference(PREF_OPENING_SCREEN_CATEGORY);
-        assertNotNull(
-                "PREF_OPENING_SCREEN_CATEGORY should be shown when feature is enabled and variant"
-                        + " is D",
-                openingScreenCategory);
-
-        // Also verify the preference itself is accessible
-        Preference openingScreenPref =
-                mBackgroundImagesPreferences
-                        .getPreferenceScreen()
-                        .findPreference(PREF_OPENING_SCREEN);
-        assertNotNull(
-                "PREF_OPENING_SCREEN should be shown when feature is enabled and variant is D",
                 openingScreenPref);
     }
 

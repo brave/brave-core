@@ -16,7 +16,6 @@ import org.chromium.base.BravePreferenceKeys;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.ntp.BraveFreshNtpHelper;
 import org.chromium.components.browser_ui.widget.RadioButtonWithDescription;
 import org.chromium.components.browser_ui.widget.RadioButtonWithDescriptionLayout;
 
@@ -27,9 +26,9 @@ public class BraveRadioButtonGroupOpeningScreenPreference extends Preference
         implements RadioGroup.OnCheckedChangeListener {
     private static final int OPTIONS_SIZE = 3;
 
-    // Inactivity hours by variant
-    private static final int INACTIVITY_HOURS_VARIANT_B_D = 1;
-    private static final int INACTIVITY_HOURS_VARIANT_C = 2;
+    // Inactivity threshold shown in the option label, matching
+    // BraveReturnToChromeUtil.INACTIVITY_THRESHOLD_MS.
+    private static final int INACTIVITY_HOURS = 1;
 
     private int mSetting;
     @Nullable private RadioButtonWithDescription mSettingRadioButton;
@@ -77,24 +76,17 @@ public class BraveRadioButtonGroupOpeningScreenPreference extends Preference
                 (RadioButtonWithDescription)
                         holder.findViewById(R.id.new_opening_screen_new_tab_radio_button));
 
-        // Set dynamic text for inactivity option based on variant
         RadioButtonWithDescription inactivityButton =
                 mButtons.get(
                         BravePreferenceKeys.BRAVE_OPENING_SCREEN_OPTION_NEW_TAB_AFTER_INACTIVITY);
         if (inactivityButton != null) {
-            String variant = BraveFreshNtpHelper.getVariant();
-            int hours = INACTIVITY_HOURS_VARIANT_B_D; // Default for variants B and D
-            if (variant != null && variant.equals("C")) {
-                hours = INACTIVITY_HOURS_VARIANT_C;
-            }
-            String hoursText =
+            inactivityButton.setPrimaryText(
                     getContext()
                             .getResources()
                             .getQuantityString(
                                     R.plurals.opening_screen_new_tab_after_inactivity,
-                                    hours,
-                                    hours);
-            inactivityButton.setPrimaryText(hoursText);
+                                    INACTIVITY_HOURS,
+                                    INACTIVITY_HOURS));
         }
 
         mSettingRadioButton = mButtons.get(mSetting);

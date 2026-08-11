@@ -69,7 +69,7 @@ BASE_FEATURE(kBraveAndroidDynamicColors,
 // This feature allows showing a refreshed NTP when the app has been idle
 // for a specified duration.
 BASE_FEATURE(kBraveFreshNtpAfterIdleExperiment,
-             base::FEATURE_DISABLED_BY_DEFAULT);
+             base::FEATURE_ENABLED_BY_DEFAULT);
 
 // Enable custom search engines on Android, allowing users to add, edit, and
 // remove their own search engine entries from the search engine settings.
@@ -86,11 +86,12 @@ const base::FeatureParam<std::string> kBraveDayZeroExperimentVariant{
     /*default_value=*/""};
 
 #if BUILDFLAG(IS_ANDROID)
-// The variant of the fresh NTP experiment. i.e. A, B, C, etc.
+// The variant of the fresh NTP experiment: B (the default) or A for the control
+// arm.
 const base::FeatureParam<std::string> kBraveFreshNtpAfterIdleExperimentVariant{
     &kBraveFreshNtpAfterIdleExperiment,
     /*name=*/"variant",
-    /*default_value=*/"A"};
+    /*default_value=*/"B"};
 #endif  // BUILDFLAG(IS_ANDROID)
 
 }  // namespace features
