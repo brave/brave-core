@@ -685,11 +685,13 @@ inline constexpr char kPdfViewerSaveToDriveHelpCenterURL[] =
     "https://support.brave.app/";
 #endif
 
+#if defined(UNIT_TEST)
 // For
 // chrome/browser/privacy_sandbox/browsing_topics_settings_interactive_uitest.cc
 // only. No UI uses these.
 inline constexpr char kPrivacySandboxManageTopicsURL[] = "";
 inline constexpr char kPrivacySandboxAdTopicsURL[] = "";
+#endif
 
 }  // namespace chrome
 
