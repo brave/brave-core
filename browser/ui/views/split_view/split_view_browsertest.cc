@@ -15,6 +15,7 @@
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "brave/browser/ui/views/frame/split_view/brave_contents_container_view.h"
 #include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view.h"
+#include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view_mini_toolbar.h"
 #include "brave/common/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -66,6 +67,8 @@
 #include "ui/gfx/geometry/rect.h"
 #include "ui/gfx/geometry/skia_conversions.h"
 #include "ui/views/border.h"
+#include "ui/views/controls/button/image_button.h"
+#include "ui/views/controls/label.h"
 #include "ui/views/view_utils.h"
 #include "ui/views/widget/widget.h"
 
@@ -222,6 +225,13 @@ class SplitViewBrowserTest : public InProcessBrowserTest {
   BraveMultiContentsView* brave_multi_contents_view() const {
     return static_cast<BraveMultiContentsView*>(
         brave_browser_view()->multi_contents_view());
+  }
+
+  BraveMultiContentsViewMiniToolbar* active_mini_toolbar() const {
+    auto* contents_container_view =
+        brave_multi_contents_view()->GetActiveContentsContainerView();
+    return BraveMultiContentsViewMiniToolbar::From(
+        contents_container_view->mini_toolbar());
   }
 
   BrowserFrameView* browser_non_client_frame_view() {
@@ -480,6 +490,51 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest, SelectTabTest) {
   EXPECT_EQ(3, tab_strip()->GetActiveIndex());
   EXPECT_FALSE(tab_strip()->tab_at(2)->IsActive());
   EXPECT_TRUE(tab_strip()->tab_at(3)->IsActive());
+}
+
+IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest, MiniToolbarAlwaysShowDomainTest) {
+  NewSplitTab();
+
+  auto* mini_toolbar = active_mini_toolbar();
+  auto* domain_label = mini_toolbar->domain_label_for_testing();
+
+  // By default the active contents area shows only the menu button.
+  mini_toolbar->UpdateState(/*is_active*/ true, /*is_highlighted*/ false);
+  EXPECT_FALSE(domain_label->GetVisible());
+
+  mini_toolbar->SetAlwaysShowDomain(true);
+  mini_toolbar->UpdateState(/*is_active*/ true, /*is_highlighted*/ false);
+  EXPECT_TRUE(domain_label->GetVisible());
+
+  // The domain is shown for the inactive contents area either way.
+  mini_toolbar->UpdateState(/*is_active*/ false, /*is_highlighted*/ false);
+  EXPECT_TRUE(domain_label->GetVisible());
+
+  mini_toolbar->SetAlwaysShowDomain(false);
+  mini_toolbar->UpdateState(/*is_active*/ true, /*is_highlighted*/ false);
+  EXPECT_FALSE(domain_label->GetVisible());
+}
+
+IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest, MiniToolbarStyleTest) {
+  using ToolbarStyle = BraveMultiContentsViewMiniToolbar::Style;
+
+  NewSplitTab();
+
+  auto* mini_toolbar = active_mini_toolbar();
+  auto* menu_button = mini_toolbar->close_button_for_testing();
+
+  mini_toolbar->SetStyle(ToolbarStyle::kSplit);
+  mini_toolbar->UpdateState(/*is_active*/ true, /*is_highlighted*/ false);
+  EXPECT_TRUE(menu_button->GetVisible());
+
+  // The menu button acts on the split, so it is offered only by a split.
+  mini_toolbar->SetStyle(ToolbarStyle::kWebPanel);
+  mini_toolbar->UpdateState(/*is_active*/ true, /*is_highlighted*/ false);
+  EXPECT_FALSE(menu_button->GetVisible());
+
+  mini_toolbar->SetStyle(ToolbarStyle::kStandalone);
+  mini_toolbar->UpdateState(/*is_active*/ true, /*is_highlighted*/ false);
+  EXPECT_FALSE(menu_button->GetVisible());
 }
 
 class SplitViewWithRoundedCornersTest : public SplitViewBrowserTest {

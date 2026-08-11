@@ -326,7 +326,8 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
             let controller = OnboardingController(
               environment: .init(
                 p3aUtils: p3aUtilities,
-                attributionManager: attributionManager
+                attributionManager: attributionManager,
+                localState: localState
               ),
               steps: [.addToDock],
               showSplashScreen: false,
@@ -789,6 +790,7 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
                   ),
                   braveCore: braveCore,
                   p3aUtils: p3aUtilities,
+                  localState: localState,
                   rewards: rewards,
                   braveStats: braveCore.braveStats,
                   webcompatReporterHandler: WebcompatReporter.ServiceFactory.get(
@@ -1327,7 +1329,7 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
       optionsViewController.navigationItem.title = Strings.themesDisplayBrightness
 
       let nightModeSection = Section(
-        header: .title(Strings.NightMode.sectionTitle.uppercased()),
+        header: .title(Strings.NightMode.sectionTitle),
         rows: [
           .boolRow(
             title: Strings.NightMode.settingsTitle,
@@ -1649,7 +1651,10 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
       Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? ""
     )
     let titleLabel = UITableViewHeaderFooterView().then {
-      $0.textLabel?.text = Strings.about.uppercased()
+      $0.textLabel?.text = Strings.about
+      if #unavailable(iOS 26.0) {
+        $0.textLabel?.text = $0.textLabel?.text?.uppercased()
+      }
       $0.isUserInteractionEnabled = true
       $0.addGestureRecognizer(
         UITapGestureRecognizer(target: self, action: #selector(tappedAboutHeader))
@@ -1892,7 +1897,8 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
             self.navigationController?.pushViewController(
               RetentionPreferencesDebugMenuViewController(
                 p3aUtilities: p3aUtilities,
-                attributionManager: attributionManager
+                attributionManager: attributionManager,
+                localState: localState
               ),
               animated: true
             )

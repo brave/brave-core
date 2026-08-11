@@ -79,7 +79,6 @@ base::DictValue OAIAPIClient::CreateJSONRequestBody(
 
   dict.Set("messages", std::move(messages));
   dict.Set("stream", is_sse_enabled);
-  dict.Set("temperature", 0.7);
   dict.Set("model", model_request_name);
 
   if (oai_tool_definitions.has_value() && !oai_tool_definitions->empty()) {

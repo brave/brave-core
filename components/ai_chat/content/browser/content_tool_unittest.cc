@@ -133,18 +133,18 @@ class ContentToolTest : public content::RenderViewHostTestHarness {
 TEST_F(ContentToolTest, NamePrefixesHostAndSanitizes) {
   auto mojo_tool = MakeScriptTool("highlight", "Highlight the page");
   ContentTool tool(*mojo_tool, weak_document());
-  // Name format is "{sanitized-host}_{tool-name}". The dot in the host is
+  // Name format is "web_{sanitized-host}_{tool-name}". The dot in the host is
   // replaced with an underscore because tool names only allow alphanumeric
   // characters and underscores.
-  EXPECT_EQ(tool.Name(),
-            std::string(kTestHostSanitized) + std::string("_highlight"));
+  EXPECT_EQ(tool.Name(), "web_" + std::string(kTestHostSanitized) +
+                             std::string("_highlight"));
 }
 
 TEST_F(ContentToolTest, NameSanitizesDisallowedCharactersInToolName) {
   auto mojo_tool = MakeScriptTool("do-thing.now!", "");
   ContentTool tool(*mojo_tool, weak_document());
-  EXPECT_EQ(tool.Name(),
-            std::string(kTestHostSanitized) + std::string("_do_thing_now_"));
+  EXPECT_EQ(tool.Name(), "web_" + std::string(kTestHostSanitized) +
+                             std::string("_do_thing_now_"));
 }
 
 TEST_F(ContentToolTest, DescriptionIncludesHostAndOriginalMetadata) {

@@ -28,8 +28,6 @@ class SearchSettingsViewController: UITableViewController {
       width: OpenSearchEngine.preferredIconSize,
       height: OpenSearchEngine.preferredIconSize
     )
-
-    static let headerHeight: CGFloat = 44
   }
 
   // MARK: Constants
@@ -120,7 +118,6 @@ class SearchSettingsViewController: UITableViewController {
 
     tableView.do {
       $0.allowsSelectionDuringEditing = true
-      $0.registerHeaderFooter(SettingsTableSectionHeaderFooterView.self)
       $0.register(
         UITableViewCell.self,
         forCellReuseIdentifier: Constants.addCustomEngineRowIdentifier
@@ -153,11 +150,6 @@ class SearchSettingsViewController: UITableViewController {
     if isPresentedModally {
       navigationItem.leftBarButtonItem = dismissBarButton
     }
-
-    let footer = SettingsTableSectionHeaderFooterView(
-      frame: CGRect(width: tableView.bounds.width, height: UX.headerHeight)
-    )
-    tableView.tableFooterView = footer
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -248,13 +240,6 @@ class SearchSettingsViewController: UITableViewController {
       // Adding an extra row for Add Search Engine Entry
       return customSearchEngines.count + 1
     }
-  }
-
-  override func tableView(
-    _ tableView: UITableView,
-    heightForHeaderInSection section: Int
-  ) -> CGFloat {
-    return UX.headerHeight
   }
 
   override func tableView(
