@@ -16,6 +16,7 @@ import("//brave/components/playlist/core/common/buildflags/buildflags.gni")
 import("//brave/components/psst/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
+import("//brave/components/traffic_control/buildflags/buildflags.gni")
 import("//brave/components/web_discovery/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 import("//build/config/ui.gni")
@@ -227,6 +228,10 @@ source_set("extensions") {
 
   if (enable_containers) {
     deps += [ "//brave/components/containers/core/browser" ]
+  }
+
+  if (enable_traffic_control) {
+    deps += [ "//brave/components/traffic_control/core/browser" ]
   }
 
   allow_circular_includes_from = [ ":brave_prefs_util_impl" ]

@@ -1,0 +1,41 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+module traffic_control.mojom;
+
+// Destination for a matched rule. Fields are optional so a rule can target
+// a container, other browsing contexts, or a combination of them.
+struct Target {
+  string? container_id;
+};
+
+struct TrafficRule {
+  string id;
+  bool enabled;
+  // Policy URL-blocklist filter syntax (see FilterToComponents).
+  string url_filter;
+  Target target;
+};
+
+enum RuleOperationError {
+  kIdShouldBeEmpty = 1,
+  kIdShouldBeSet,
+  kInvalidUrlFilter,
+  kInvalidTarget,
+  kNotFound,
+};
+
+interface TrafficControlSettingsHandler {
+  BindUI(pending_remote<TrafficControlSettingsUI> ui);
+
+  GetRules() => (array<TrafficRule> rules);
+  AddRule(TrafficRule rule) => (RuleOperationError? error);
+  UpdateRule(TrafficRule rule) => (RuleOperationError? error);
+  RemoveRule(string id) => (RuleOperationError? error);
+};
+
+interface TrafficControlSettingsUI {
+  OnRulesChanged(array<TrafficRule> rules);
+};
