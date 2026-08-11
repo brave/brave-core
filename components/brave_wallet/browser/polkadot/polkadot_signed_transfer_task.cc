@@ -238,34 +238,34 @@ void PolkadotSignedTransferTask::MaybeFinalizeSignTransaction() {
     transfer_all = true;
   }
 
+  auto signature_payload_result =
+      asset_id_.has_value()
+          ? generate_assets_extrinsic_signature_payload(
+                *chain_metadata_.value(), account_info_->nonce,
+                send_amount_bytes, transfer_all, recipient_, *asset_id_,
+                runtime_version_->spec_version,
+                runtime_version_->transaction_version,
+                signing_header_->block_number, *genesis_hash_,
+                *signing_block_hash_)
+          : generate_extrinsic_signature_payload(
+                *chain_metadata_.value(), account_info_->nonce,
+                send_amount_bytes, transfer_all, recipient_,
+                runtime_version_->spec_version,
+                runtime_version_->transaction_version,
+                signing_header_->block_number, *genesis_hash_,
+                *signing_block_hash_);
+
+  if (!signature_payload_result->is_ok()) {
+    return StopWithError(WalletInternalErrorMessage());
+  }
+
+  auto signature_payload = signature_payload_result->unwrap();
+  signature_payload_ = base::ToVector(signature_payload->bytes);
+
   std::array<uint8_t, kSr25519SignatureSize> signature = {};
   if (use_dummy_signature_) {
     signature.fill(uint8_t{0x01});
   } else {
-    auto signature_payload_result =
-        asset_id_.has_value()
-            ? generate_assets_extrinsic_signature_payload(
-                  *chain_metadata_.value(), account_info_->nonce,
-                  send_amount_bytes, transfer_all, recipient_, *asset_id_,
-                  runtime_version_->spec_version,
-                  runtime_version_->transaction_version,
-                  signing_header_->block_number, *genesis_hash_,
-                  *signing_block_hash_)
-            : generate_extrinsic_signature_payload(
-                  *chain_metadata_.value(), account_info_->nonce,
-                  send_amount_bytes, transfer_all, recipient_,
-                  runtime_version_->spec_version,
-                  runtime_version_->transaction_version,
-                  signing_header_->block_number, *genesis_hash_,
-                  *signing_block_hash_);
-
-    // Stop here if we encountered either an invalid or unknown
-    // SigningExtension.
-    if (!signature_payload_result->is_ok()) {
-      return StopWithError(WalletInternalErrorMessage());
-    }
-    auto signature_payload = signature_payload_result->unwrap();
-
     auto sig = keyring_service_->SignMessageByPolkadotKeyring(
         sender_account_id_, signature_payload->bytes);
     if (!sig) {
@@ -305,6 +305,7 @@ PolkadotExtrinsicMetadata PolkadotSignedTransferTask::GetMetadata() const {
   PolkadotExtrinsicMetadata metadata;
 
   metadata.set_extrinsic(extrinsic_);
+  metadata.set_signature_payload(signature_payload_);
   metadata.set_block_hash(signing_block_hash_.value());
   metadata.set_block_num(signing_header_->block_number);
   metadata.set_mortality_period(64);

@@ -1375,9 +1375,14 @@ TEST_F(PolkadotWalletServiceUnitTest, GetFeeEstimate) {
       std::variant<uint128_t, TransferAll>(uint128_t{1234}), std::nullopt,
       recipient_pubkey,
       base::BindLambdaForTesting(
-          [=](base::expected<uint128_t, std::string> partial_fee) {
-            ASSERT_TRUE(partial_fee.has_value());
-            EXPECT_EQ(partial_fee.value(), uint128_t{15937408476ull});
+          [=](base::expected<PolkadotWalletService::FeeEstimate, std::string>
+                  fee_estimate) {
+            ASSERT_TRUE(fee_estimate.has_value());
+            EXPECT_EQ(fee_estimate->partial_fee, uint128_t{15937408476ull});
+
+            // The payload the user would be signing is generated even though
+            // this run only used a dummy signature.
+            EXPECT_FALSE(fee_estimate->signature_payload.empty());
             quit.Run();
           }));
 
@@ -1413,8 +1418,9 @@ TEST_F(PolkadotWalletServiceUnitTest, GetFeeEstimate_NetworkFailure) {
       std::variant<uint128_t, TransferAll>(uint128_t{1234}), std::nullopt,
       recipient_pubkey,
       base::BindLambdaForTesting(
-          [=](base::expected<uint128_t, std::string> partial_fee) {
-            ASSERT_FALSE(partial_fee.has_value());
+          [=](base::expected<PolkadotWalletService::FeeEstimate, std::string>
+                  fee_estimate) {
+            ASSERT_FALSE(fee_estimate.has_value());
             quit.Run();
           }));
 

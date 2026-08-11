@@ -2447,6 +2447,9 @@ struct PolkadotTxdata {
   uint128 fee;
   bool sending_max_amount;
   PolkadotAssetId? asset_id;
+  // 0x-prefixed hex of the blob the sender signs, for displaying in the UI
+  // before transaction confirmation.
+  string? signature_payload;
 };
 
 union TxDataUnion {
