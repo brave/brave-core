@@ -27,15 +27,15 @@ enum class WebGLDebugRendererInfoType {
   RENDERER,
 };
 
-// TODO(https://github.com/brave/brave-browser/issues/57999): This method
-// doesn't take into account BRAVE_WEBCOMPAT_WEBGL2 in WebGL2 context. This
-// needs to be fixed.
-bool AllowFingerprintingForHost(blink::CanvasRenderingContextHost* host) {
+bool AllowFingerprintingForHost(blink::CanvasRenderingContextHost* host,
+                                const bool is_webgl2) {
   if (!host) {
     return true;
   }
-  return brave::AllowFingerprinting(host->GetTopExecutionContext(),
-                                    ContentSettingsType::BRAVE_WEBCOMPAT_WEBGL);
+  return brave::AllowFingerprinting(
+      host->GetTopExecutionContext(),
+      is_webgl2 ? ContentSettingsType::BRAVE_WEBCOMPAT_WEBGL2
+                : ContentSettingsType::BRAVE_WEBCOMPAT_WEBGL);
 }
 
 blink::ScriptValue GetWebGLDebugInfoValue(
@@ -77,36 +77,36 @@ blink::ScriptValue GetWebGLDebugInfoValue(
 
 }  // namespace
 
-#define BRAVE_WEBGL_RENDERING_CONTEXT_BASE_RETURN \
-  if (!AllowFingerprintingForHost(Host()))        \
+#define BRAVE_WEBGL_RENDERING_CONTEXT_BASE_RETURN      \
+  if (!AllowFingerprintingForHost(Host(), IsWebGL2())) \
     return;
 
-#define BRAVE_WEBGL_RENDERING_CONTEXT_BASE_NULLPTR \
-  if (!AllowFingerprintingForHost(Host()))         \
+#define BRAVE_WEBGL_RENDERING_CONTEXT_BASE_NULLPTR     \
+  if (!AllowFingerprintingForHost(Host(), IsWebGL2())) \
     return nullptr;
 
-#define BRAVE_WEBGL_RENDERING_CONTEXT_BASE_NULLOPT \
-  if (!AllowFingerprintingForHost(Host()))         \
+#define BRAVE_WEBGL_RENDERING_CONTEXT_BASE_NULLOPT     \
+  if (!AllowFingerprintingForHost(Host(), IsWebGL2())) \
     return std::nullopt;
 
-#define BRAVE_WEBGL_RENDERING_CONTEXT_BASE_ZERO \
-  if (!AllowFingerprintingForHost(Host()))      \
+#define BRAVE_WEBGL_RENDERING_CONTEXT_BASE_ZERO        \
+  if (!AllowFingerprintingForHost(Host(), IsWebGL2())) \
     return 0;
 
-#define BRAVE_WEBGL_RENDERING_CONTEXT_BASE_MINUS_ONE \
-  if (!AllowFingerprintingForHost(Host()))           \
+#define BRAVE_WEBGL_RENDERING_CONTEXT_BASE_MINUS_ONE   \
+  if (!AllowFingerprintingForHost(Host(), IsWebGL2())) \
     return -1;
 
 #define BRAVE_WEBGL_RENDERING_CONTEXT_BASE_SCRIPT_VALUE \
-  if (!AllowFingerprintingForHost(Host()))              \
+  if (!AllowFingerprintingForHost(Host(), IsWebGL2()))  \
     return ScriptValue::CreateNull(v8::Isolate::GetCurrent());
 
-#define BRAVE_WEBGL_RENDERING_CONTEXT_BASE_STRING \
-  if (!AllowFingerprintingForHost(Host()))        \
+#define BRAVE_WEBGL_RENDERING_CONTEXT_BASE_STRING      \
+  if (!AllowFingerprintingForHost(Host(), IsWebGL2())) \
     return String();
 
 #define BRAVE_WEBGL_RENDERING_CONTEXT_BASE_GETSHADERINFOLOG \
-  if (!AllowFingerprintingForHost(Host())) {                \
+  if (!AllowFingerprintingForHost(Host(), IsWebGL2())) {    \
     range[0] = 0;                                           \
     range[1] = 0;                                           \
     precision = 0;                                          \
