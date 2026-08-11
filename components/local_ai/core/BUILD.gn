@@ -34,6 +34,24 @@ component("features") {
   public_deps = [ "//base" ]
 }
 
+component("utils") {
+  assert_no_deps = [ "//content/public/*" ]
+
+  defines = [ "IS_LOCAL_AI_UTILS_IMPL" ]
+
+  sources = [
+    "utils.cc",
+    "utils.h",
+  ]
+
+  public_deps = [
+    ":features",
+    "//base",
+    "//media/mojo/mojom:web_speech_recognition",
+    "//mojo/public/cpp/base",
+  ]
+}
+
 static_library("core") {
   assert_no_deps = [ "//content/public/*" ]
   friend = [ ":unit_tests" ]
@@ -45,7 +63,6 @@ static_library("core") {
     "on_device_speech_models_state.h",
     "pref_names.h",
     "url_constants.h",
-    "utils.h",
   ]
 
   sources = [
@@ -58,14 +75,11 @@ static_library("core") {
     "on_device_speech_models_state.h",
     "pref_names.cc",
     "pref_names.h",
-    "utils.cc",
-    "utils.h",
   ]
 
   public_deps = [
     ":features",
     "//base",
-    "//mojo/public/cpp/base",
   ]
 
   deps = [
@@ -87,10 +101,12 @@ source_set("unit_tests") {
     "local_models_updater_unittest.cc",
     "on_device_speech_models_component_installer_unittest.cc",
     "on_device_speech_models_state_unittest.cc",
+    "utils_unittest.cc",
   ]
 
   deps = [
     ":core",
+    ":utils",
     "//base",
     "//base/test:test_support",
     "//brave/components/brave_component_updater/browser:public",

@@ -3,6 +3,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/local_ai/buildflags/buildflags.gni")
+
 brave_content_browser_sources =
     [ "//brave/content/browser/devtools/adblock_devtools_instrumentation.cc" ]
 
@@ -18,5 +20,17 @@ brave_content_browser_deps = [
   "//brave/components/brave_service_keys",
   "//brave/components/brave_shields/core/common:mojom",
   "//brave/components/brave_wallet/common/buildflags",
+  "//brave/components/local_ai/buildflags",
   "//brave/components/speech_to_text",
 ]
+
+if (enable_local_ai) {
+  brave_content_browser_sources += [
+    "//brave/content/browser/speech/brave_on_device_speech_recognition_engine.cc",
+    "//brave/content/browser/speech/brave_on_device_speech_recognition_engine.h",
+  ]
+  brave_content_browser_deps += [
+    "//brave/components/local_ai/core:speech_recognition_mojom",
+    "//brave/components/local_ai/core:utils",
+  ]
+}

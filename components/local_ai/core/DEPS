@@ -6,6 +6,7 @@ include_rules = [
   "+components/prefs",
   "+components/update_client",
   "+crypto",
+  "+media/mojo/mojom",
   "+mojo/public/cpp/base",
   "+mojo/public/cpp/bindings",
 ]
