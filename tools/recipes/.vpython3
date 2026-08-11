@@ -23,3 +23,15 @@ wheel: <
   name: "infra/python/wheels/pyyaml-py3"
   version: "version:6.0.1"
 >
+
+# Declarative attribute classes, used by `engine_types` for `ResourceCost`.
+wheel: <
+  name: "infra/python/wheels/attrs-py3"
+  version: "version:23.1.0"
+>
+
+# Reports the host's logical core count and physical memory.
+wheel: <
+  name: "infra/python/wheels/psutil/${vpython_platform}"
+  version: "version:5.8.0.chromium.3"
+>
