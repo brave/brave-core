@@ -40,6 +40,7 @@ const conversation: ConversationDataJson = {
           'fromBraveSearchSERP': false,
           'modelKey': null,
           'nearVerificationStatus': null,
+          'childThreadUuids': [],
         },
       ],
       'uploadedFiles': null,
@@ -47,6 +48,7 @@ const conversation: ConversationDataJson = {
       'fromBraveSearchSERP': false,
       'modelKey': null,
       'nearVerificationStatus': null,
+      'childThreadUuids': [],
     },
     {
       'uuid': '30616781-39ad-4a2b-8aca-109c746e4221',
@@ -416,6 +418,7 @@ const conversation: ConversationDataJson = {
       'fromBraveSearchSERP': false,
       'modelKey': 'chat-qwen-3-235b',
       'nearVerificationStatus': null,
+      'childThreadUuids': [],
     },
   ],
   'associatedContent': [],

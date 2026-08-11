@@ -22,8 +22,8 @@ const conversation: ConversationDataJson = {
       'uploadedFiles': [],
       'fromBraveSearchSERP': false,
       'modelKey': '1',
-    threadUuid: undefined,
-    childThreadUuids: [],
+      threadUuid: undefined,
+      childThreadUuids: [],
     },
     {
       'uuid': 'assistant-1',
@@ -51,8 +51,6 @@ const conversation: ConversationDataJson = {
             'toolName': 'memory_storage_tool',
             'argumentsJson': '{"memory": "works as a software engineer"}',
           },
-    threadUuid: undefined,
-    childThreadUuids: [],
         },
         {
           'completionEvent': {
@@ -63,8 +61,8 @@ const conversation: ConversationDataJson = {
       'uploadedFiles': [],
       'fromBraveSearchSERP': false,
       'modelKey': '1',
-    threadUuid: undefined,
-    childThreadUuids: [],
+      threadUuid: undefined,
+      childThreadUuids: [],
     },
     {
       'uuid': 'user-2',
@@ -81,6 +79,7 @@ const conversation: ConversationDataJson = {
       'uploadedFiles': [],
       'fromBraveSearchSERP': false,
       'modelKey': '1',
+      'childThreadUuids': [],
     },
     {
       'uuid': 'assistant-2',
@@ -108,8 +107,6 @@ const conversation: ConversationDataJson = {
             'toolName': 'memory_storage_tool',
             'argumentsJson': '{"memory": "Likes cats"}',
           },
-    threadUuid: undefined,
-    childThreadUuids: [],
         },
         {
           'completionEvent': {
@@ -120,8 +117,7 @@ const conversation: ConversationDataJson = {
       'uploadedFiles': [],
       'fromBraveSearchSERP': false,
       'modelKey': '1',
-    threadUuid: undefined,
-    childThreadUuids: [],
+      'childThreadUuids': [],
     },
     {
       'uuid': 'user-3',
@@ -138,6 +134,7 @@ const conversation: ConversationDataJson = {
       'uploadedFiles': [],
       'fromBraveSearchSERP': false,
       'modelKey': '1',
+      'childThreadUuids': [],
     },
     {
       'uuid': 'assistant-3',
@@ -176,8 +173,7 @@ const conversation: ConversationDataJson = {
       'uploadedFiles': [],
       'fromBraveSearchSERP': false,
       'modelKey': '1',
-    threadUuid: undefined,
-    childThreadUuids: [],
+      'childThreadUuids': [],
     },
   ],
   'associatedContent': [],

@@ -19,6 +19,7 @@ const conversation: ConversationDataJson = {
       'actionType': 5,
       'characterType': 0,
       'text': "what's the weather in santa barbara today?\n",
+      'childThreadUuids': [],
     },
     {
       'uuid': '30dbca75-77ac-4c55-a895-462862f6073e',
@@ -303,6 +304,7 @@ const conversation: ConversationDataJson = {
       'characterType': 1,
       'text':
         'Santa Barbara is enjoying clear skies and mild temperatures today. As of now, it\u2019s **21.2\u00b0C (70\u00b0F)** with a \u201cfeels like\u201d temperature of 21.0\u00b0C, and humidity at 63% [1]. Winds are light at 0.89 m/s from the south-southwest, and visibility is good at 7.4 km [1].\n\nThe forecast for the day shows a high of **23.5\u00b0C (74\u00b0F)** under clear skies, with UV index at 8.7 \u2014 so sunscreen is recommended [1]. Tonight, temperatures will drop to **15.3\u00b0C (59\u00b0F)**, still clear [1].\n\nFor context, Weather Underground also reports 70\u00b0F (21\u00b0C) and sunny conditions as of this afternoon, with winds from the southwest at 10\u201315 mph [2].\n\nNo rain is expected today \u2014 perfect for outdoor plans [1][2].',
+      'childThreadUuids': [],
     },
   ],
   'associatedContent': [],

@@ -19,6 +19,7 @@ const conversation: ConversationDataJson = {
       'characterType': 0,
       'text':
         'I am thinking of opening a 25 year home mortgage worth 500,000 dollars. I have a 150,000 dollar downpayment. Find the rough average interest rate in the US. What would my typical monthly payment be and how much interest would I pay over the life of the mortgage? Graph it\n',
+      'childThreadUuids': [],
     },
     {
       'uuid': '22f56089-0a50-4ab6-bbc4-55497b48f680',
@@ -185,6 +186,7 @@ const conversation: ConversationDataJson = {
       'characterType': 1,
       'text':
         'Great! I have current mortgage rate data. Now let me calculate your mortgage details and create a visualization.',
+      'childThreadUuids': [],
     },
     {
       'uuid': 'a9b764f2-59dc-416f-83a6-6c389fd4112f',
@@ -206,6 +208,7 @@ const conversation: ConversationDataJson = {
       'characterType': 1,
       'text':
         "Perfect! Here's your mortgage breakdown:\n\n### Your Mortgage Details\n\n**Loan Amount:** $350,000 (after your $150,000 down payment)  \n**Interest Rate:** 6.37% (current US average as of April 30, 2026)[3]  \n**Loan Term:** 25 years\n\n### Monthly Payment & Total Costs\n\n**Monthly Payment:** $2,334.87  \n**Total Amount Paid:** $700,461.85  \n**Total Interest Paid:** $350,461.85\n\nThis means you'll pay almost as much in interest as the original loan amount over the life of the mortgage. The graph below shows how your remaining balance decreases over time and how much cumulative interest you'll pay:\n\nThe chart visualizes your mortgage journey over 25 years. Notice how the remaining balance (blue line) decreases steadily, while cumulative interest paid (orange line) climbs significantly, especially in the early years when most of your payment goes toward interest rather than principal.\n\n**Quick context:** The 30-year fixed mortgage rate is currently 6.40%[2], so your 25-year term is competitive. If you're considering extending to 30 years instead, your monthly payment would drop but you'd pay more total interest. Conversely, a shorter term would increase monthly payments but save you on interest costs.",
+      'childThreadUuids': [],
     },
     {
       'uuid': '2a6d18df-a0d2-45d2-bb23-eeef591c7f38',
@@ -220,6 +223,7 @@ const conversation: ConversationDataJson = {
       'characterType': 0,
       'text':
         'now search for the same in UK, converting purchase price to pounds and getting the local interest rate',
+      'childThreadUuids': [],
     },
     {
       'uuid': '5bec7506-c2ef-4e65-bcef-e198cbf92847',
@@ -468,6 +472,7 @@ const conversation: ConversationDataJson = {
       'actionType': 1,
       'characterType': 1,
       'text': '',
+      'childThreadUuids': [],
     },
     {
       'uuid': 'c306380e-9514-42f4-9ca0-122f62a60c20',
@@ -489,6 +494,7 @@ const conversation: ConversationDataJson = {
       'characterType': 1,
       'text':
         "Perfect! Here's your UK mortgage comparison:\n\n### UK Mortgage Details\n\n**Exchange Rate:** 1 GBP = 1.3576 USD (as of April 30, 2026)[1]\n\n**Converted Amounts:**\n- Home Price: \u00a3393,701\n- Down Payment: \u00a3118,110\n- Loan Amount: \u00a3275,591\n\n**Interest Rate:** 4.74% (current average for 5-year fixed mortgages in the UK)[2]  \n**Loan Term:** 25 years\n\n### UK Payment & Total Costs\n\n**Monthly Payment:** \u00a31,569.60  \n**Total Amount Paid:** \u00a3470,881.46  \n**Total Interest Paid:** \u00a3195,290.91\n\n### US vs UK Comparison\n\n| Metric | US | UK |\n|--------|----|----|\n| **Loan Amount** | $350,000 | \u00a3275,591 |\n| **Interest Rate** | 6.37% | 4.74% |\n| **Monthly Payment** | $2,334.87 | \u00a31,569.60 |\n| **Total Interest** | $350,461.85 | \u00a3195,290.91 |\n\n**Key Takeaway:** The UK mortgage is significantly cheaper. Despite the lower loan amount (due to currency conversion), your monthly payment is substantially lower because UK rates are about 1.6 percentage points lower than US rates. You'd pay roughly \u00a3765 less per month in the UK, saving approximately \u00a3229,000 in total interest over 25 years!\n\nThe graph above shows your UK mortgage amortization schedule over the 25-year term.",
+      'childThreadUuids': [],
     },
   ],
   'associatedContent': [],

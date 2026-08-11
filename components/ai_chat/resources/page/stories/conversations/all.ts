@@ -26,6 +26,7 @@ const conversation: ConversationDataJson = {
         'prompt': 'Translate the following text to English',
       },
       'modelKey': '1',
+      'childThreadUuids': [],
     },
     {
       'uuid': 'skill-response',
@@ -49,6 +50,7 @@ const conversation: ConversationDataJson = {
       'uploadedFiles': [],
       'fromBraveSearchSERP': false,
       'modelKey': '1',
+      'childThreadUuids': [],
     },
     {
       'uuid': 'turn-uuid',
@@ -65,6 +67,7 @@ const conversation: ConversationDataJson = {
       'uploadedFiles': [],
       'fromBraveSearchSERP': false,
       'modelKey': '1',
+      'childThreadUuids': [],
     },
     {
       'text': '',
@@ -80,13 +83,14 @@ const conversation: ConversationDataJson = {
         {
           'completionEvent': {
             'completion':
-              'The ways that animals move are just about as myriad as the animal kingdom itself. They walk, run, swim, crawl, fly and slither \u2014 and within each of those categories lies a tremendous number of subtly different movement types. A seagull and a *hummingbird* both have wings, but otherwise their flight techniques and abilities are poles apart. Orcas and **piranhas** both have tails, but they accomplish very different types of swimming. Even a human walking or running is moving their body in fundamentally different ways.',
+              'The ways that animals move are just about as myriad as the animal kingdom itself. They walk, run, swim, crawl, fly and slither — and within each of those categories lies a tremendous number of subtly different movement types. A seagull and a *hummingbird* both have wings, but otherwise their flight techniques and abilities are poles apart. Orcas and **piranhas** both have tails, but they accomplish very different types of swimming. Even a human walking or running is moving their body in fundamentally different ways.',
           },
         },
       ],
       'uploadedFiles': [],
       'fromBraveSearchSERP': false,
       'modelKey': '1',
+      'childThreadUuids': [],
     },
     {
       'text': 'Question that results in a task',
@@ -102,6 +106,7 @@ const conversation: ConversationDataJson = {
       'uploadedFiles': [],
       'fromBraveSearchSERP': false,
       'modelKey': '1',
+      'childThreadUuids': [],
     },
     {
       'text': '',
@@ -124,6 +129,7 @@ const conversation: ConversationDataJson = {
       'uploadedFiles': [],
       'fromBraveSearchSERP': false,
       'modelKey': '1',
+      'childThreadUuids': [],
     },
     {
       'text': '',
@@ -286,6 +292,7 @@ const conversation: ConversationDataJson = {
       'uploadedFiles': [],
       'fromBraveSearchSERP': false,
       'modelKey': '1',
+      'childThreadUuids': [],
     },
     {
       'text': '',
@@ -324,6 +331,7 @@ const conversation: ConversationDataJson = {
       'uploadedFiles': [],
       'fromBraveSearchSERP': false,
       'modelKey': '1',
+      'childThreadUuids': [],
     },
     {
       'text': '',
@@ -389,6 +397,7 @@ const conversation: ConversationDataJson = {
       'uploadedFiles': [],
       'fromBraveSearchSERP': false,
       'modelKey': '1',
+      'childThreadUuids': [],
     },
     {
       'text':
@@ -405,6 +414,7 @@ const conversation: ConversationDataJson = {
       'uploadedFiles': [],
       'fromBraveSearchSERP': false,
       'modelKey': '1',
+      'childThreadUuids': [],
     },
     {
       'text': '',
@@ -427,6 +437,7 @@ const conversation: ConversationDataJson = {
       'uploadedFiles': [],
       'fromBraveSearchSERP': false,
       'modelKey': '1',
+      'childThreadUuids': [],
     },
     {
       'text': 'What is taylor series?',
@@ -442,6 +453,7 @@ const conversation: ConversationDataJson = {
       'uploadedFiles': [],
       'fromBraveSearchSERP': false,
       'modelKey': '1',
+      'childThreadUuids': [],
     },
     {
       'text': '',
@@ -464,6 +476,7 @@ const conversation: ConversationDataJson = {
       'uploadedFiles': [],
       'fromBraveSearchSERP': false,
       'modelKey': '1',
+      'childThreadUuids': [],
     },
     {
       'text': 'Write a hello world program in c++',
@@ -479,6 +492,7 @@ const conversation: ConversationDataJson = {
       'uploadedFiles': [],
       'fromBraveSearchSERP': false,
       'modelKey': '1',
+      'childThreadUuids': [],
     },
     {
       'text': '',
@@ -501,6 +515,7 @@ const conversation: ConversationDataJson = {
       'uploadedFiles': [],
       'fromBraveSearchSERP': false,
       'modelKey': '1',
+      'childThreadUuids': [],
     },
     {
       'text': 'Shorten this selected text',
@@ -518,6 +533,7 @@ const conversation: ConversationDataJson = {
       'uploadedFiles': [],
       'fromBraveSearchSERP': false,
       'modelKey': '1',
+      'childThreadUuids': [],
     },
     {
       'text': '',
@@ -587,6 +603,7 @@ const conversation: ConversationDataJson = {
       'uploadedFiles': [],
       'fromBraveSearchSERP': false,
       'modelKey': '1',
+      'childThreadUuids': [],
     },
     {
       'text': 'Will an LTT store backpack fit in a Tesla Model Y frunk?',
@@ -609,6 +626,7 @@ const conversation: ConversationDataJson = {
           'uploadedFiles': [],
           'fromBraveSearchSERP': false,
           'modelKey': '1',
+          'childThreadUuids': [],
         },
       ],
       'createdTime': {
@@ -620,6 +638,7 @@ const conversation: ConversationDataJson = {
       'uploadedFiles': [],
       'fromBraveSearchSERP': false,
       'modelKey': '1',
+      'childThreadUuids': [],
     },
     {
       'text': '',
@@ -649,6 +668,7 @@ const conversation: ConversationDataJson = {
       'uploadedFiles': [],
       'fromBraveSearchSERP': false,
       'modelKey': '1',
+      'childThreadUuids': [],
     },
     {
       'text': 'What is this image?',
@@ -674,6 +694,7 @@ const conversation: ConversationDataJson = {
       ],
       'fromBraveSearchSERP': false,
       'modelKey': '1',
+      'childThreadUuids': [],
     },
     {
       'text': '',
@@ -695,6 +716,7 @@ const conversation: ConversationDataJson = {
       'uploadedFiles': [],
       'fromBraveSearchSERP': false,
       'modelKey': '1',
+      'childThreadUuids': [],
     },
     {
       'text': 'Summarize this page',
@@ -729,6 +751,7 @@ const conversation: ConversationDataJson = {
       ],
       'fromBraveSearchSERP': false,
       'modelKey': '1',
+      'childThreadUuids': [],
     },
     {
       'text': '',
@@ -767,6 +790,7 @@ const conversation: ConversationDataJson = {
       'uploadedFiles': [],
       'fromBraveSearchSERP': false,
       'modelKey': '1',
+      'childThreadUuids': [],
     },
     {
       'text': 'Summarize these',
@@ -810,6 +834,7 @@ const conversation: ConversationDataJson = {
       ],
       'fromBraveSearchSERP': false,
       'modelKey': '1',
+      'childThreadUuids': [],
     },
     {
       'text': '',
@@ -832,6 +857,7 @@ const conversation: ConversationDataJson = {
       'uploadedFiles': [],
       'fromBraveSearchSERP': false,
       'modelKey': '1',
+      'childThreadUuids': [],
     },
     {
       'text': '',
@@ -854,6 +880,7 @@ const conversation: ConversationDataJson = {
       'uploadedFiles': [],
       'fromBraveSearchSERP': false,
       'modelKey': '1',
+      'childThreadUuids': [],
     },
     {
       'text': '',
@@ -911,6 +938,7 @@ const conversation: ConversationDataJson = {
       'uploadedFiles': [],
       'fromBraveSearchSERP': false,
       'modelKey': '1',
+      'childThreadUuids': [],
     },
     {
       'text': '',
@@ -963,10 +991,26 @@ const conversation: ConversationDataJson = {
       'uploadedFiles': [],
       'fromBraveSearchSERP': false,
       'modelKey': '1',
+      'childThreadUuids': [],
     },
   ],
-  'associatedContent': [],
-  'title': '',
+  'associatedContent': [
+    {
+      'uuid': 'uuid',
+      'contentType': 0,
+      'title': 'Tiny Tweaks to Neurons Can Rewire Animal Motion',
+      'contentUsedPercentage': 40,
+      'url': {
+        'url':
+          'https://www.example.com/areallylongurlthatwillbetruncatedintheinputbox',
+      },
+      'contentId': 1,
+      'conversationTurnUuid': 'turn-uuid',
+      'toolsAttached': false,
+    },
+  ],
+  'title':
+    'Sorting C++ vectors is hard especially when you have to have a very long title for your conversation to test text clipping or wrapping',
 }
 
 export default conversation

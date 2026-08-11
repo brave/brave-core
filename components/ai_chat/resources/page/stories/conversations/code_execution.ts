@@ -19,6 +19,7 @@ const conversation: ConversationDataJson = {
       'characterType': 0,
       'text':
         'I am thinking of opening a 25 year home mortgage worth 500,000 dollars. I have a 150,000 dollar downpayment. The interest rate is 4.9%. What would my typical monthly payment be and how much interest would I pay over the life of the mortgage?\n',
+      'childThreadUuids': [],
     },
     {
       'uuid': '2560d3df-3660-4d48-8f81-63ae2ec32515',
@@ -50,6 +51,7 @@ const conversation: ConversationDataJson = {
       'actionType': 1,
       'characterType': 1,
       'text': '',
+      'childThreadUuids': [],
     },
     {
       'uuid': '9145e4d6-d717-4a6e-b43a-63148f2bfaa6',
@@ -71,6 +73,7 @@ const conversation: ConversationDataJson = {
       'characterType': 1,
       'text':
         "Here's the breakdown of your mortgage:\n\n**Monthly Payment: $2,025.73**\n\n**Total Interest Over 25 Years: $257,717.54**\n\nWith your $150,000 down payment, you'd be borrowing $350,000. Over the 25-year term, you'll pay a total of $607,717.54 (your monthly payments combined), which means roughly 74% of what you borrow goes toward interest.\n\nA few things to keep in mind:\n- This assumes a fixed 4.9% rate for the full 25 years\n- This doesn't include property taxes, insurance, HOA fees, or maintenance costs, which will add to your monthly housing expenses\n- Early payments go mostly toward interest; principal paydown accelerates later in the loan\n- If you can afford higher payments, even small increases can significantly reduce total interest paid\n\nWould you like me to show you what happens if you adjust the down payment, loan term, or interest rate?",
+      'childThreadUuids': [],
     },
   ],
   'associatedContent': [],

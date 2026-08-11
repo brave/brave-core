@@ -19,6 +19,7 @@ const conversation: ConversationDataJson = {
       'actionType': 5,
       'characterType': 0,
       'text': 'what is the latest macbook rumout',
+      'childThreadUuids': [],
     },
     {
       'uuid': '1000d1cc-598f-415c-99bf-425b124f5eb3',
@@ -47,6 +48,7 @@ const conversation: ConversationDataJson = {
       'actionType': 1,
       'characterType': 1,
       'text': '',
+      'childThreadUuids': [],
     },
   ],
   'associatedContent': [],
