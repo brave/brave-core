@@ -649,6 +649,9 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       <message name="IDS_EXTENSIONS_BRAVE_HOSTED" desc="Displayed in extensions management UI if an extension is hosted on the Brave server.">
         Brave-hosted
       </message>
+      <message name="IDS_BRAVE_EXTENSIONS_BLOCKLISTED_MALWARE" desc="Shown on the extensions page when an extension has been disabled because it appears on Brave's malicious-extension list, which is sourced from Socket.">
+        This extension contains malware. Flagged by Socket.
+      </message>
 
       <!-- App shortcuts -->
       <if expr="not is_win">
