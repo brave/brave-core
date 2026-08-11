@@ -75,9 +75,9 @@ TEST_F(BraveAdsConversionsUtilTest, IsAllowedToConvertNotificationAdEvent) {
 }
 
 TEST_F(BraveAdsConversionsUtilTest,
-       IsNotAllowedToConvertNotificationAdEventIfOptedOutOfNotificationAds) {
+       IsNotAllowedToConvertNotificationAdEventIfNotificationAdsAreDisabled) {
   // Arrange
-  test::OptOutOfNotificationAds();
+  test::DisableNotificationAds();
 
   const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
                                   /*use_random_uuids=*/false);

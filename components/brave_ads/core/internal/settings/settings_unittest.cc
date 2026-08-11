@@ -61,17 +61,17 @@ TEST_F(BraveAdsSettingsTest, UserHasNotOptedInToNewTabPageAds) {
   EXPECT_FALSE(UserHasOptedInToNewTabPageAds());
 }
 
-TEST_F(BraveAdsSettingsTest, UserHasOptedInToNotificationAds) {
+TEST_F(BraveAdsSettingsTest, NotificationAdsAreEnabled) {
   // Act & Assert
-  EXPECT_TRUE(UserHasOptedInToNotificationAds());
+  EXPECT_TRUE(IsNotificationAdsEnabled());
 }
 
-TEST_F(BraveAdsSettingsTest, UserHasNotOptedInToNotificationAds) {
+TEST_F(BraveAdsSettingsTest, NotificationAdsAreDisabled) {
   // Arrange
-  test::OptOutOfNotificationAds();
+  test::DisableNotificationAds();
 
   // Act & Assert
-  EXPECT_FALSE(UserHasOptedInToNotificationAds());
+  EXPECT_FALSE(IsNotificationAdsEnabled());
 }
 
 TEST_F(BraveAdsSettingsTest, MaximumNotificationAdsPerHour) {

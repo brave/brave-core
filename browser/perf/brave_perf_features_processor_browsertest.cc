@@ -91,7 +91,7 @@ class BraveSpeedFeatureProcessorBrowserTest : public InProcessBrowserTest {
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
-  bool HasOptedInToNotificationAds() {
+  bool IsNotificationAdsEnabled() {
     return browser()->profile()->GetPrefs()->GetBoolean(
         brave_ads::prefs::kNotificationsEnabled);
   }
@@ -118,7 +118,7 @@ IN_PROC_BROWSER_TEST_F(BraveSpeedFeatureProcessorBrowserTest, Default) {
   EXPECT_TRUE(SpeedreaderIsEnabled());
 #endif
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
-  EXPECT_TRUE(HasOptedInToNotificationAds());
+  EXPECT_TRUE(IsNotificationAdsEnabled());
 #endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)
   EXPECT_TRUE(BraveNewsAreEnabled());

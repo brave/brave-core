@@ -5,7 +5,7 @@ An advertisement, or ad unit, is a form of marketing communication to promote a 
 | unit  | served  | when  | description  |
 |---|---|---|---|
 | new tab page ad  | yes¹ ²  | Always, but the frequency is capped when the user has joined Brave Rewards.  | Displayed on new tab pages  |
-| notification ad  | yes²  | Only when opted into notification ads  | Displayed as system or custom push notifications  |
+| notification ad  | yes²  | Only when notification ads are enabled  | Displayed as system or custom push notifications  |
 | search result ad  | no² ³  | Always, but the frequency is capped when the user has joined Brave Rewards.  | Displayed on [search.brave.com](search.brave.com).  |
 
 Users are rewarded for viewed ad impressions if they join Brave Rewards.

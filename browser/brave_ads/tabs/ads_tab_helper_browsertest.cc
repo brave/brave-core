@@ -551,7 +551,7 @@ IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest,
 
 IN_PROC_BROWSER_TEST_F(
     BraveAdsTabHelperTest,
-    NotifyTabTextContentDidChangeForRewardsUserOptedInToNotificationAds) {
+    NotifyTabTextContentDidChangeForRewardsUserWithNotificationAdsEnabled) {
   GetPrefs()->SetBoolean(brave_rewards::prefs::kEnabled, true);
   GetPrefs()->SetBoolean(prefs::kNotificationsEnabled, true);
 
@@ -578,7 +578,7 @@ IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest,
 
 IN_PROC_BROWSER_TEST_F(
     BraveAdsTabHelperTest,
-    DoNotNotifyTabTextContentDidChangeForNonRewardsUserAndOptedOutOfNotificationAds) {
+    DoNotNotifyTabTextContentDidChangeForNonRewardsUserWithNotificationAdsDisabled) {
   GetPrefs()->SetBoolean(brave_rewards::prefs::kEnabled, false);
   GetPrefs()->SetBoolean(prefs::kNotificationsEnabled, false);
 
@@ -589,7 +589,7 @@ IN_PROC_BROWSER_TEST_F(
 
 IN_PROC_BROWSER_TEST_F(
     BraveAdsTabHelperTest,
-    DoNotNotifyTabTextContentDidChangeForRewardsUserOptedOutOfNotificationAds) {
+    DoNotNotifyTabTextContentDidChangeForRewardsUserWithNotificationAdsDisabled) {
   GetPrefs()->SetBoolean(brave_rewards::prefs::kEnabled, true);
   GetPrefs()->SetBoolean(prefs::kNotificationsEnabled, false);
 

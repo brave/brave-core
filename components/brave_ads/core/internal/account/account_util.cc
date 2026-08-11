@@ -39,7 +39,7 @@ bool IsAllowedToDeposit(const std::string& creative_instance_id,
     }
 
     case mojom::AdType::kNotificationAd: {
-      // Never allow deposits because users cannot opt into notification ads
+      // Never allow deposits because notification ads cannot be enabled
       // without joining Brave Rewards.
       return false;
     }

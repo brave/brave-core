@@ -136,7 +136,7 @@ class AdsTabHelperTest : public PlatformTest {
     profile_->GetPrefs()->SetBoolean(brave_rewards::prefs::kEnabled, false);
   }
 
-  void OptOutOfNotificationAds() {
+  void DisableNotificationAds() {
     profile_->GetPrefs()->SetBoolean(prefs::kNotificationsEnabled, false);
   }
 
@@ -307,7 +307,7 @@ TEST_F(AdsTabHelperTest, DoNotNotifyTabDidLoadForNetErrorPage) {
 }
 
 TEST_F(AdsTabHelperTest,
-       NotifyTabTextContentDidChangeForRewardsUserOptedInToNotificationAds) {
+       NotifyTabTextContentDidChangeForRewardsUserWithNotificationAdsEnabled) {
   Navigation(GURL("https://brave.com")).Simulate();
   EXPECT_CALL(ads_service_mock(),
               NotifyTabTextContentDidChange(/*tab_id=*/testing::_,
@@ -325,9 +325,9 @@ TEST_F(AdsTabHelperTest, DoNotNotifyTabTextContentDidChangeForNonRewardsUser) {
 
 TEST_F(
     AdsTabHelperTest,
-    DoNotNotifyTabTextContentDidChangeForNonRewardsUserAndOptedOutOfNotificationAds) {
+    DoNotNotifyTabTextContentDidChangeForNonRewardsUserWithNotificationAdsDisabled) {
   DisableBraveRewards();
-  OptOutOfNotificationAds();
+  DisableNotificationAds();
   Navigation(GURL("https://brave.com")).Simulate();
   EXPECT_CALL(ads_service_mock(), NotifyTabTextContentDidChange).Times(0);
   SimulatePageLoad(kInnerText);
@@ -335,8 +335,8 @@ TEST_F(
 
 TEST_F(
     AdsTabHelperTest,
-    DoNotNotifyTabTextContentDidChangeForRewardsUserOptedOutOfNotificationAds) {
-  OptOutOfNotificationAds();
+    DoNotNotifyTabTextContentDidChangeForRewardsUserWithNotificationAdsDisabled) {
+  DisableNotificationAds();
   Navigation(GURL("https://brave.com")).Simulate();
   EXPECT_CALL(ads_service_mock(), NotifyTabTextContentDidChange).Times(0);
   SimulatePageLoad(kInnerText);

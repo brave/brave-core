@@ -131,7 +131,7 @@ TEST_F(BraveAdsAntiTargetingResourceTest,
 TEST_F(BraveAdsAntiTargetingResourceTest,
        DoNotResetResourceIfAlreadyOptedInToNewTabPageAds) {
   // Arrange
-  test::OptOutOfNotificationAds();
+  test::DisableNotificationAds();
   test::OptOutOfSearchResultAds();
 
   ads_client_notifier_.NotifyResourceComponentDidChange(
@@ -166,7 +166,7 @@ TEST_F(BraveAdsAntiTargetingResourceTest,
 }
 
 TEST_F(BraveAdsAntiTargetingResourceTest,
-       DoNotResetResourceIfAlreadyOptedInToNotificationAds) {
+       DoNotResetResourceIfNotificationAdsAlreadyEnabled) {
   // Arrange
   test::OptOutOfNewTabPageAds();
   test::OptOutOfSearchResultAds();

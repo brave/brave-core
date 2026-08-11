@@ -209,7 +209,7 @@ void AdsTabHelper::WebStateDestroyed(web::WebState* web_state) {
   web_state_ = nullptr;
 }
 
-bool AdsTabHelper::UserHasOptedInToNotificationAds() const {
+bool AdsTabHelper::IsNotificationAdsEnabled() const {
   const PrefService* const prefs =
       ProfileIOS::FromBrowserState(web_state_->GetBrowserState())->GetPrefs();
 
@@ -272,10 +272,9 @@ bool AdsTabHelper::ShouldNotifyTabContentDidChange() const {
 }
 
 void AdsTabHelper::MaybeNotifyTabTextContentDidChange() {
-  if (!ShouldNotifyTabContentDidChange() ||
-      !UserHasOptedInToNotificationAds()) {
+  if (!ShouldNotifyTabContentDidChange() || !IsNotificationAdsEnabled()) {
     // Only utilized for text classification, which requires the user to have
-    // joined Brave Rewards and opted into notification ads.
+    // joined Brave Rewards and notification ads to be enabled.
     return;
   }
   web::WebFrame* main_web_frame =
