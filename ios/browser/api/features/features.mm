@@ -222,6 +222,12 @@
       initWithFeature:&brave_shields::features::kBraveIOSEnableFarblingPlugins];
 }
 
++ (Feature*)kBraveIOSUseUpstreamHttpsUpgrades {
+  return
+      [[Feature alloc] initWithFeature:&brave_shields::features::
+                                           kBraveIOSUseUpstreamHttpsUpgrades];
+}
+
 + (Feature*)kBraveShowStrictFingerprintingMode {
   return
       [[Feature alloc] initWithFeature:&brave_shields::features::

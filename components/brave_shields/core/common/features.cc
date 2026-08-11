@@ -133,6 +133,12 @@ BASE_FEATURE(kCosmeticFilteringJsPerformance,
 BASE_FEATURE(kWebKitAdvancedPrivacyProtections,
              base::FEATURE_DISABLED_BY_DEFAULT);
 
+#if BUILDFLAG(IS_IOS)
+// Use upstream's HTTPS upgrade implementation instead of Brave's own.
+BASE_FEATURE(kBraveIOSUseUpstreamHttpsUpgrades,
+             base::FEATURE_DISABLED_BY_DEFAULT);
+#endif
+
 constexpr base::FeatureParam<int> kComponentUpdateCheckIntervalMins{
     &kAdBlockDefaultResourceUpdateInterval, "update_interval_mins", 100};
 

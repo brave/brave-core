@@ -12,6 +12,7 @@
 #include "base/feature_list.h"
 #include "base/metrics/field_trial_params.h"
 #include "base/time/time.h"
+#include "build/build_config.h"
 
 namespace brave_shields {
 namespace features {
@@ -46,6 +47,9 @@ BASE_DECLARE_FEATURE(kCosmeticFilteringSyncLoad);
 BASE_DECLARE_FEATURE(kBlockAllCookiesToggle);
 BASE_DECLARE_FEATURE(kBraveShieldsElementPicker);
 BASE_DECLARE_FEATURE(kWebKitAdvancedPrivacyProtections);
+#if BUILDFLAG(IS_IOS)
+BASE_DECLARE_FEATURE(kBraveIOSUseUpstreamHttpsUpgrades);
+#endif
 extern const base::FeatureParam<int> kComponentUpdateCheckIntervalMins;
 extern const base::FeatureParam<std::string>
     kCosmeticFilteringSubFrameFirstSelectorsPollingDelayMs;

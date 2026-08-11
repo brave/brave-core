@@ -188,6 +188,15 @@ const flags_ui::FeatureEntry::FeatureVariation
           flags_ui::kOsIos,                                                    \
           FEATURE_VALUE_TYPE(                                                  \
               brave_shields::features::kWebKitAdvancedPrivacyProtections),     \
+      },                                                                       \
+      {                                                                        \
+          "ios-use-upstream-https-upgrades",                                   \
+          "Use upstream HTTPS upgrades",                                       \
+          "Use upstream's HTTPS upgrade implementation instead of Brave's "    \
+          "own.",                                                              \
+          flags_ui::kOsIos,                                                    \
+          FEATURE_VALUE_TYPE(                                                  \
+              brave_shields::features::kBraveIOSUseUpstreamHttpsUpgrades),     \
       })
 
 #define BRAVE_AI_CHAT_FEATURE_ENTRIES                                       \
