@@ -416,6 +416,7 @@ leo_icons_sources = [
   "product-vpn.svg",
   "protocol-handler-off.svg",
   "protocol-handler.svg",
+  "psst.svg",
   "qr-code-alternative.svg",
   "qr-code.svg",
   "qwant-color.svg",

@@ -33,6 +33,7 @@ brave_policies = [
   "BraveSoftware/DefaultBraveReferrersSetting.yaml",
   "BraveSoftware/DefaultBraveRemember1PStorageSetting.yaml",
   "BraveSoftware/EmailAliasesEnabled.yaml",
+  "BraveSoftware/PsstEnabled.yaml",
   "BraveSoftware/IPFSEnabled.yaml",
   "BraveSoftware/TorDisabled.yaml",
 ]

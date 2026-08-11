@@ -854,6 +854,9 @@
     <message name="IDS_SETTINGS_PSST_SUB_LABEL" desc="Privacy settings tuning sub-label">
       Allows Brave to automatically suggest (and adjust) site-specific privacy settings.
     </message>
+    <message name="IDS_SETTINGS_BRAVE_ORIGIN_PSST_TOGGLE_TITLE" desc="The title for toggling the 'psst' feature on/off for Brave Origin">
+      Privacy Settings Tuning Tool
+    </message>
   </if>
   <if expr="is_win">
     <message name="IDS_SETTINGS_WINDOWS_RECALL_DISABLED_LABEL" desc="Windows Recall setting label">
