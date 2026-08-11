@@ -47,6 +47,7 @@ if (is_android) {
       "//chrome/browser/ui/android/toolbar:adaptive_features_java",
       "//chrome/browser/ui/messages/android:java",
       "//components/browser_ui/accessibility/android:page_zoom_utils_java",
+      "//ui/accessibility:ui_accessibility_test_support_java",
     ]
   }
 
