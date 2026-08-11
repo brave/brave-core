@@ -5,7 +5,6 @@
 
 #include "chrome/browser/ui/web_applications/web_app_launch_process.h"
 
-#include "base/command_line.h"
 #include "brave/components/containers/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/navigator/browser_navigator_params.h"
@@ -13,24 +12,31 @@
 #include "components/services/app_service/public/cpp/app_launch_params.h"
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
+#include "base/command_line.h"
+#include "base/feature_list.h"
 #include "brave/browser/containers/container_specifier_utils.h"
 #include "brave/browser/containers/containers_service_factory.h"
 #include "brave/components/containers/core/browser/command_line_container.h"
 #include "brave/components/containers/core/browser/container_specifier.h"
+#include "brave/components/containers/core/common/features.h"
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
 namespace web_app {
 
 namespace {
 
-// Resolves the container for a command line PWA launch (--container /
-// --temporary-container) into the storage partition its WebContents should use,
-// reusing the same service calls as the normal command line tab path, then
-// navigates. Without a container this is a plain NavigateWebAppUsingParams().
-content::WebContents* NavigateWebAppInContainerUsingParams(
-    Profile* profile,
-    const apps::AppLaunchParams& launch_params,
+// Navigates a command line PWA launch, first resolving --container /
+// --temporary-container into the storage partition its WebContents should use,
+// reusing the same service calls as the normal command line tab path. Without
+// the containers feature (build- or runtime-disabled) or a container, this is a
+// plain NavigateWebAppUsingParams().
+content::WebContents* BraveNavigateWebAppUsingParams(
+    [[maybe_unused]] Profile* profile,
+    [[maybe_unused]] const apps::AppLaunchParams& launch_params,
     NavigateParams& nav_params) {
-  if (!nav_params.storage_partition_config) {
+#if BUILDFLAG(ENABLE_CONTAINERS)
+  if (base::FeatureList::IsEnabled(containers::features::kContainers) &&
+      !nav_params.storage_partition_config) {
     if (auto* containers_service =
             ContainersServiceFactory::GetForProfile(profile)) {
       const containers::ContainerSpecifier container_specifier =
@@ -41,12 +47,12 @@ content::WebContents* NavigateWebAppInContainerUsingParams(
               profile, container_specifier);
     }
   }
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
   return NavigateWebAppUsingParams(nav_params);
 }
 
 }  // namespace
 
 }  // namespace web_app
-#endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
 #include <chrome/browser/ui/web_applications/web_app_launch_process.cc>
