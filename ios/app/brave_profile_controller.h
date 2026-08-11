@@ -12,7 +12,7 @@
     BraveSendTabAPI, BraveSyncAPI, BraveSyncProfileServiceIOS,
     BraveTabGeneratorAPI, BraveWalletAPI, BraveStats, AIChat,
     DefaultHostContentSettings, CWVWebViewConfiguration, WebImageDownloader,
-    NTPBackgroundImagesService, BraveWebViewConfiguration, BraveTopSitesService;
+    NTPBackgroundImagesService, BraveWebViewConfiguration;
 @protocol AIChatDelegate
 , IpfsAPI, ProfileBridge;
 
@@ -41,7 +41,6 @@ OBJC_EXPORT
 @property(readonly) BraveWebViewConfiguration* defaultWebViewConfiguration;
 @property(readonly)
     BraveWebViewConfiguration* nonPersistentWebViewConfiguration;
-@property(readonly) BraveTopSitesService* topSitesService;
 - (void)notifyLastPrivateTabClosed;
 
 @end
