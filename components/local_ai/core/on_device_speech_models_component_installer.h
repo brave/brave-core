@@ -11,9 +11,14 @@
 #include <vector>
 
 #include "base/files/file_path.h"
+#include "base/functional/callback.h"
+#include "base/functional/callback_helpers.h"
 #include "base/values.h"
 #include "components/component_updater/component_installer.h"
+#include "components/component_updater/component_updater_service.h"
 #include "components/update_client/update_client.h"
+
+class PrefService;
 
 namespace base {
 class Version;
@@ -24,6 +29,11 @@ class ComponentUpdateService;
 }  // namespace component_updater
 
 namespace local_ai {
+
+// Component id of Brave's on-device speech recognition model, derived from the
+// public key it is signed with.
+inline constexpr char kOnDeviceSpeechModelsComponentId[] =
+    "nhkekccefdppopbldokibkoegppanbba";
 
 // Component Updater policy for Brave's on-device speech recognition model.
 // Exposed for testing - follows upstream Chromium pattern.
@@ -57,10 +67,16 @@ class OnDeviceSpeechModelsComponentInstallerPolicy
   bool IsBraveComponent() const override;
 };
 
-// Registers the on-device speech models component when the feature is enabled,
-// otherwise removes any previously installed copy. No-op if `cus` is null.
-void RegisterOnDeviceSpeechModelsComponent(
-    component_updater::ComponentUpdateService* cus);
+// Registers the on-device speech models component when the feature is enabled
+// and `kBraveLocalAIEnabled` is set, and deletes any installed copy otherwise.
+// Registering also requests the download, and is idempotent.
+//
+// `callback` is always run, asynchronously, for every outcome, including
+// `Error::INVALID_ARGUMENT` on the paths that register nothing.
+void MaybeRegisterOnDeviceSpeechModelsComponent(
+    component_updater::ComponentUpdateService* cus,
+    PrefService* local_state,
+    component_updater::Callback callback = base::DoNothing());
 
 }  // namespace local_ai
 
