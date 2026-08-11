@@ -1,17 +1,17 @@
 diff --git a/chrome/browser/ui/browser.h b/chrome/browser/ui/browser.h
-index 6bf8eceb2f399dcc2da1ed6190f9d13a31e30c0e..7e322ddf40fc60dd02578a4326a8d4876e82c663 100644
+index 4d75f489e195da3eec5562ede4e280610c2a4c6a..0054d5cdf42ad0cbb333351045cd9f5f63af1fe9 100644
 --- a/chrome/browser/ui/browser.h
 +++ b/chrome/browser/ui/browser.h
-@@ -424,6 +424,8 @@ class Browser : public TabStripModelObserver,
-   void SynchronouslyDestroyBrowser();
+@@ -174,6 +174,8 @@ class Browser : public TabStripModelObserver,
+   const DesktopBrowserWindowCapabilities* capabilities() const override;
  
   private:
 +  friend class BookmarkPrefsService;
 +  friend class BraveBrowser;
-   friend class BrowserTest;
-   friend class BrowserWebContentsDelegate;
-   friend class ExclusiveAccessTest;
-@@ -458,7 +460,7 @@ class Browser : public TabStripModelObserver,
+   friend BrowserWindowInterface* CreateBrowserWindow(
+       BrowserWindowCreateParams create_params);
+   friend std::unique_ptr<Browser> DeprecatedCreateOwnedBrowserWindowForTesting(
+@@ -219,7 +221,7 @@ class Browser : public TabStripModelObserver,
  
    // Handle changes to tab strip model.
    void OnTabInsertedAt(content::WebContents* contents, int index);
@@ -20,12 +20,3 @@ index 6bf8eceb2f399dcc2da1ed6190f9d13a31e30c0e..7e322ddf40fc60dd02578a4326a8d487
    void OnTabDetached(tabs::TabInterface* tab,
                       bool was_active,
                       bool had_active_modal_dialog);
-@@ -493,7 +495,7 @@ class Browser : public TabStripModelObserver,
-   //   updates), then scheduled_updates_ is updated for the |source| and update
-   //   pair and a task is scheduled (assuming it isn't running already)
-   //   that invokes ProcessPendingUIUpdates.
--  void ScheduleUIUpdate(content::WebContents* source, unsigned changed_flags);
-+  virtual void ScheduleUIUpdate(content::WebContents* source, unsigned changed_flags);
- 
-   // Processes all pending updates to the UI that have been scheduled by
-   // ScheduleUIUpdate in scheduled_updates_.

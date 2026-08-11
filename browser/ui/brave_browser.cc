@@ -8,7 +8,6 @@
 #include <optional>
 
 #include "base/check.h"
-#include "base/check_is_test.h"
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
@@ -36,8 +35,6 @@
 #include "components/bookmarks/common/bookmark_pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "components/tabs/public/tab_interface.h"
-#include "content/public/browser/navigation_entry.h"
-#include "content/public/browser/web_contents.h"
 
 namespace {
 
@@ -78,30 +75,6 @@ BraveBrowser::BraveBrowser(const CreateParams& params) : Browser(params) {
 }
 
 BraveBrowser::~BraveBrowser() = default;
-
-void BraveBrowser::ScheduleUIUpdate(content::WebContents* source,
-                                    unsigned changed_flags) {
-  Browser::ScheduleUIUpdate(source, changed_flags);
-
-  if (tab_strip_model_->GetIndexOfWebContents(source) ==
-      TabStripModel::kNoTab) {
-    return;
-  }
-
-  // We need to update sidebar UI only when current active tab state is changed.
-  if (changed_flags & content::INVALIDATE_TYPE_URL) {
-    if (source == tab_strip_model_->GetActiveWebContents()) {
-      // sidebar() can return a nullptr in unit tests.
-      if (auto* sidebar_controller = GetFeatures().sidebar_controller()) {
-        if (sidebar_controller->sidebar()) {
-          sidebar_controller->sidebar()->UpdateSidebarItemsState();
-        } else {
-          CHECK_IS_TEST();
-        }
-      }
-    }
-  }
-}
 
 void BraveBrowser::OnTabClosing(tabs::TabInterface* tab,
                                 bool* had_active_modal_dialog) {

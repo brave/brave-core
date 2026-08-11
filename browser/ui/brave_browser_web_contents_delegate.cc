@@ -29,14 +29,16 @@ BraveBrowserWebContentsDelegate::BraveBrowserWebContentsDelegate(
     UnloadController& unload_controller,
     web_app::AppBrowserController* app_browser_controller,
     BrowserWindow& window,
-    DesktopBrowserWindowCapabilities& capabilities)
+    DesktopBrowserWindowCapabilities& capabilities,
+    BrowserUiController& browser_ui_controller)
     : BrowserWebContentsDelegate(browser,
                                  exclusive_access_manager,
                                  command_controller,
                                  unload_controller,
                                  app_browser_controller,
                                  window,
-                                 capabilities),
+                                 capabilities,
+                                 browser_ui_controller),
       browser_(*browser),
       unload_controller_(unload_controller) {}
 
