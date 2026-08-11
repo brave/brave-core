@@ -114,11 +114,8 @@ private struct OnboardingRepresentable: UIViewControllerRepresentable {
       attributionManager: attributionManager,
       localState: localState
     )
-    var steps: [any OnboardingStep] = [.defaultBrowsing]
-    if AddToDockEligibility.isEligible {
-      steps.append(.addToDock)
-    }
-    steps.append(.blockInterruptions)
+    var steps: [any OnboardingStep] = [.defaultBrowsing, .addToDock, .blockInterruptions]
+
     if !p3aUtilities.isP3APreferenceManaged
       || !localState.isManagedPreference(forPath: kMetricsReportingEnabled)
     {
