@@ -818,6 +818,7 @@ if (!is_android) {
       "//brave:packed_resources",
       "//brave/browser/ui/sidebar:interactive_ui_tests",
       "//brave/browser/ui/views/frame/vertical_tabs:interactive_ui_tests",
+      "//brave/browser/ui/views/tabs/dragging:interactive_ui_tests",
       "//chrome:packed_resources",
       "//chrome/browser",
       "//chrome/test:chrome_test_launcher",

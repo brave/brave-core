@@ -42,4 +42,10 @@ BraveTabStripCollectionDelegate::GetTreeTabNodeIdForGroup(
   return nullptr;
 }
 
+bool BraveTabStripCollectionDelegate::ShouldDetachAsTreeSubtreeRoot(
+    TabInterface* tab,
+    const std::vector<TabInterface*>& moving_tabs) {
+  return false;
+}
+
 }  // namespace tabs

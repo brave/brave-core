@@ -79,6 +79,32 @@ class BraveTabStripCollectionDelegate {
   virtual const tree_tab::TreeTabNodeId* GetTreeTabNodeIdForGroup(
       tab_groups::TabGroupId group_id) const;
 
+  // Called before a batch of tabs is detached together (e.g. for a
+  // cross-window move). Hoists any child of a moving tab's tree node that is
+  // NOT itself part of |moving_tabs| up to that tree node's parent, so each
+  // moving tab's tree node afterwards contains only descendants that are also
+  // moving. Must be called once, before any detaching begins.
+  virtual void PrepareTreeTabNodesForBatchDetach(
+      const std::vector<TabInterface*>& moving_tabs) {}
+
+  // Returns true if |tab| is the topmost tab of a subtree that should be
+  // detached as a single atomic TreeTabNodeTabCollection unit rather than via
+  // the ordinary single-tab detach path.
+  virtual bool ShouldDetachAsTreeSubtreeRoot(
+      TabInterface* tab,
+      const std::vector<TabInterface*>& moving_tabs);
+
+  // Called just before |subtree_root| (and its descendant tree nodes) are
+  // physically removed from the collection hierarchy for reinsertion
+  // elsewhere (e.g. a different window).
+  virtual void WillDetachTreeTabNodeSubtree(
+      TreeTabNodeTabCollection& subtree_root) {}
+
+  // Called just after |subtree_root| (and its descendant tree nodes) have
+  // been physically inserted into the collection hierarchy.
+  virtual void DidAttachTreeTabNodeSubtree(
+      TreeTabNodeTabCollection& subtree_root) {}
+
  protected:
   base::PassKey<BraveTabStripCollectionDelegate> GetPassKey() const;
 
