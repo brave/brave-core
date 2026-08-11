@@ -34,21 +34,47 @@ class BraveVpnApiClient {
   BraveVpnApiClient& operator=(const BraveVpnApiClient&) = delete;
   virtual ~BraveVpnApiClient();
 
-  // Connect API: GetSubscriberCredentialV12.
-  // Exchanges a SKUS credential for a subscriber credential.
+  // Connect API: GetSubscriberCredential (legacy, store purchase token).
+  // Exchanges store purchase details for a subscriber credential.
   // On success: the subscriber credential.
   // On failure: a user-facing error string (transport/HTTP failure, or the
   // server's reported error message).
   using SubscriberCredentialCallback =
       base::OnceCallback<void(base::expected<std::string, std::string>)>;
+  virtual void GetSubscriberCredential(SubscriberCredentialCallback callback,
+                                       const std::string& product_type,
+                                       const std::string& product_id,
+                                       const std::string& validation_method,
+                                       const std::string& purchase_token,
+                                       const std::string& bundle_id);
+
+  // Connect API: GetSubscriberCredentialV12.
+  // Exchanges a SKUS credential for a subscriber credential.
+  // On success: the subscriber credential.
+  // On failure: a user-facing error string (transport/HTTP failure, or the
+  // server's reported error message).
   virtual void GetSubscriberCredentialV12(SubscriberCredentialCallback callback,
                                           const std::string& skus_credential,
                                           const std::string& environment);
 
+  // Connect API: VerifyPurchaseToken.
+  // Verifies a store purchase token and returns the server's JSON response
+  // verbatim.
+  using VerifyPurchaseTokenCallback =
+      base::OnceCallback<void(base::expected<std::string, std::string>)>;
+  virtual void VerifyPurchaseToken(VerifyPurchaseTokenCallback callback,
+                                   const std::string& purchase_token,
+                                   const std::string& product_id,
+                                   const std::string& product_type,
+                                   const std::string& bundle_id);
+
  private:
-  void OnGetSubscriberCredentialV12Response(
+  void OnGetSubscriberCredentialResponse(
       SubscriberCredentialCallback callback,
-      endpoints::GetSubscriberCredentialV12::Response response);
+      endpoints::GetSubscriberCredential::Response response);
+  void OnVerifyPurchaseTokenResponse(
+      VerifyPurchaseTokenCallback callback,
+      endpoints::VerifyPurchaseToken::Response response);
 
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   base::WeakPtrFactory<BraveVpnApiClient> weak_factory_{this};

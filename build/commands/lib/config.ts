@@ -351,8 +351,7 @@ export class Config {
     // LSAN only works with ASAN and has very low overhead.
     // Chromium supports LeakSanitizer is supported on x86_64 Linux only.
     // See https://www.chromium.org/developers/testing/leaksanitizer/
-    // Temporarily disable LSAN: https://github.com/brave/brave-browser/issues/56047
-    return false
+    return this.isAsan() && this.targetOS === 'linux'
   }
 
   isOfficialBuild() {

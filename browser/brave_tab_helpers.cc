@@ -37,8 +37,10 @@
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
+#include "chrome/browser/content_settings/page_specific_content_settings_delegate.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
+#include "components/content_settings/browser/page_specific_content_settings.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/web_contents.h"
@@ -246,6 +248,9 @@ void AttachTabHelpers(content::WebContents* web_contents) {
 }
 
 void AttachPrivacySensitiveTabHelpers(content::WebContents* web_contents) {
+  content_settings::PageSpecificContentSettings::CreateForWebContents(
+      web_contents,
+      std::make_unique<PageSpecificContentSettingsDelegate>(web_contents));
   brave_shields::BraveShieldsWebContentsObserver::CreateForWebContents(
       web_contents);
   ephemeral_storage::EphemeralStorageTabHelper::CreateForWebContents(

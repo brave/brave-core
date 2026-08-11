@@ -1,0 +1,14 @@
+diff --git a/components/captive_portal/content/captive_portal_service.cc b/components/captive_portal/content/captive_portal_service.cc
+index c8d8bdade49738443ff8cfa58bdbdac342cba11b..d658a091f80bf0e102d605af8a526c856faaa7cf 100644
+--- a/components/captive_portal/content/captive_portal_service.cc
++++ b/components/captive_portal/content/captive_portal_service.cc
+@@ -238,8 +238,7 @@ void CaptivePortalService::ResetBackoffEntry(CaptivePortalResult result) {
+ void CaptivePortalService::UpdateEnabledState() {
+   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+   bool enabled_before = enabled_;
+-  enabled_ = testing_state_ != DISABLED_FOR_TESTING &&
+-             resolve_errors_with_web_service_.GetValue();
++  enabled_ = testing_state_ != DISABLED_FOR_TESTING;
+ 
+   if (enabled_before == enabled_)
+     return;

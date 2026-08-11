@@ -35,6 +35,7 @@ import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabObscuringHandler;
 import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
+import org.chromium.chrome.browser.tasks.tab_management.BraveTabUiFeatureUtilities;
 import org.chromium.chrome.browser.theme.ThemeColorProvider;
 import org.chromium.chrome.browser.toolbar.LocationBarModel;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuButtonHelper;
@@ -60,6 +61,7 @@ public class BraveBottomControlsCoordinator extends BottomControlsCoordinator {
     private final ScrollingBottomViewResourceFrameLayout mRoot;
     private final NullableObservableSupplier<BookmarkModel> mBookmarkModelSupplier;
     private final LocationBarModel mLocationBarModel;
+    private final Runnable mTabGroupsSettingsObserver = this::onTabGroupsSettingsChanged;
 
     public BraveBottomControlsCoordinator(
             OneshotSupplier<LayoutStateProvider> layoutStateProviderSupplier,
@@ -116,6 +118,8 @@ public class BraveBottomControlsCoordinator extends BottomControlsCoordinator {
         mRoot = root;
         mBookmarkModelSupplier = bookmarkModelSupplier;
         mLocationBarModel = locationBarModel;
+
+        BraveTabUiFeatureUtilities.addSettingsObserver(mTabGroupsSettingsObserver);
     }
 
     public void initializeWithNative(
@@ -159,9 +163,17 @@ public class BraveBottomControlsCoordinator extends BottomControlsCoordinator {
 
     @Override
     public void destroy() {
+        BraveTabUiFeatureUtilities.removeSettingsObserver(mTabGroupsSettingsObserver);
         super.destroy();
 
         if (mBottomToolbarCoordinator != null) mBottomToolbarCoordinator.destroy();
+    }
+
+    /** Keeps the tab groups bar in step with the tab groups switches in settings. */
+    private void onTabGroupsSettingsChanged() {
+        if (mMediator instanceof BraveBottomControlsMediator) {
+            ((BraveBottomControlsMediator) mMediator).onTabGroupsSettingsChanged();
+        }
     }
 
     public void updateBookmarkButton(boolean isBookmarked, boolean editingAllowed) {

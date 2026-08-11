@@ -74,6 +74,7 @@ class PurchasedStateManager final {
   mojom::PurchasedInfo GetInfo() const;
   bool IsPurchased() const;
   std::string GetCurrentEnvironment() const;
+  std::optional<std::string> GetSubscriberCredential() const;
 
   void SetPurchasedState(const std::string& env,
                          mojom::PurchasedState state,

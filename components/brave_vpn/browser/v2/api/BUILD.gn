@@ -13,6 +13,7 @@ source_set("api") {
     "brave_vpn_api_client.h",
     "error_body.h",
     "purchase_endpoints.h",
+    "raw_json_response_body.h",
   ]
 
   public_deps = [
@@ -32,7 +33,10 @@ source_set("api") {
 source_set("unit_tests") {
   testonly = true
 
-  sources = [ "brave_vpn_api_client_unittest.cc" ]
+  sources = [
+    "brave_vpn_api_client_unittest.cc",
+    "purchase_endpoints_unittest.cc",
+  ]
 
   deps = [
     ":api",

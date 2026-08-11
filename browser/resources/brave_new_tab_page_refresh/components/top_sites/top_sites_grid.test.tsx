@@ -51,12 +51,17 @@ function createTopSite(url: string): TopSite {
   return { title: 'Site', url, favicon: '' }
 }
 
-function createSponsoredSite(targetUrl: string): SponsoredSite {
+function createSponsoredSite(
+  targetUrl: string,
+  overrides: Partial<SponsoredSite> = {},
+): SponsoredSite {
   return {
     relativeImageUrl: '',
     title: 'foo',
     adDisclosure: 'bar',
     targetUrl,
+    hasGenuineVisit: true,
+    ...overrides,
   }
 }
 

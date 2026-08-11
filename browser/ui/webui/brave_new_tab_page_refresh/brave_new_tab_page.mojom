@@ -62,6 +62,9 @@ struct SponsoredSite {
   string title;
   string ad_disclosure;
   string target_url;
+  // Whether the user has genuinely visited this site's domain in Brave,
+  // rather than only added it as a Favorite.
+  bool has_genuine_visit;
 };
 
 struct TopSite {
