@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/sync/test/integration/sync_test.cc b/chrome/browser/sync/test/integration/sync_test.cc
-index 4cf854b0378e667e0787560b063a54fa56351216..49204b21d8880602fec3c7050428f1e6a5b3524c 100644
+index 312ea20e7edc055783860e370c8a7eea725d72f0..e29b8dc99801484320e21e162df2def4c08b0eaa 100644
 --- a/chrome/browser/sync/test/integration/sync_test.cc
 +++ b/chrome/browser/sync/test/integration/sync_test.cc
 @@ -1284,7 +1284,7 @@ std::string SetupSyncModeAsString(SyncTest::SetupSyncMode sync_test_mode) {
