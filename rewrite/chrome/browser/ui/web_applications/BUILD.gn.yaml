@@ -4,10 +4,18 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 substitutions:
-  - description:
-      'Add deps needed by Brave container overrides in the impl target'
+  - description: |
+      Pull in the variable list for the Brave additions to `source_set("impl")`.
+
+      Inserted at the top of the file.
     regex:
-      re_pattern:
-        '(public_deps = \[ "//chrome/browser:browser_public_dependencies" \])'
-      replace: |-
-        \1\n  import("//brave/browser/ui/web_applications/sources.gni") deps += brave_chrome_browser_ui_web_applications_deps
+      re_pattern: '(# found in the LICENSE file\.\n\n)'
+      replace: |
+        \1import("//brave/browser/ui/web_applications/sources.gni")
+
+  - description: |
+      Append Brave deps to `source_set("impl")`.
+    regex:
+      re_pattern: '(source_set\("impl"\).*?\bdeps\s*=\s*\[\])'
+      re_flags: [DOTALL]
+      replace: '\1\n  deps += brave_chrome_browser_ui_web_applications_deps'

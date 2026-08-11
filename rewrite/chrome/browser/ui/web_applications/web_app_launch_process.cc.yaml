@@ -13,6 +13,7 @@ substitutions:
       storage partition, so --container / --temporary-container match the normal
       command line tab path.
     regex:
-      re_pattern: '\n([^\S\n]*)return NavigateWebAppUsingParams\(nav_params\);'
-      replace: |2-
-        \n\1return BraveNavigateWebAppUsingParams(&profile_.get(), *params_, nav_params);
+      pattern: 'return NavigateWebAppUsingParams(nav_params);'
+      replace:
+        'return BraveNavigateWebAppUsingParams(&profile_.get(), *params_,
+        nav_params);'
