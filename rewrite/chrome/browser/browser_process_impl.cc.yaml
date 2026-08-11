@@ -1,0 +1,22 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Construct Brave's SodaInstaller as the global SodaInstaller.
+
+      Brave ships no SODA and installs its own on-device speech model in its
+      place. Taking over the installer is what serves
+      SpeechRecognition.install() without changing
+      OnDeviceSpeechRecognitionImpl::Install: upstream parks the reply, calls
+      InstallSoda and then InstallLanguage, and settles the reply from the
+      installer's own notifications, so only the source of the bytes changes.
+
+      CreateBraveSodaInstaller is forward declared in the chromium_src
+      override. It returns BraveSodaInstaller in builds that ship a model, and
+      StubSodaInstaller in builds that do not.
+    regex:
+      pattern: 'std::make_unique<speech::SodaInstallerImpl>()'
+      replace: 'speech::CreateBraveSodaInstaller()'
