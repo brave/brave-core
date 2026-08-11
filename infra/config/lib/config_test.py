@@ -3,7 +3,8 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
-"""Tests for config.py: freeze/thaw/FrozenDict and GnArgsRegistry."""
+"""Tests for config.py: freeze/thaw/FrozenDict, GnArgsRegistry and
+BuildersRegistry."""
 
 # Some tests read `_resolved` directly to check memoization, which is
 # otherwise unobservable from the public API.
@@ -16,8 +17,10 @@ import unittest
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 # pylint: disable=wrong-import-position
-from config import (AnonymousGnConfig, ConfigError, FrozenDict, GnArgsRegistry,
-                    freeze, thaw)
+# _UNSET is private (module-internal sentinel); tests reach for it directly
+# rather than duplicating it.
+from config import (AnonymousGnConfig, BuildersRegistry, ConfigError, Defaults,
+                    FrozenDict, GnArgsRegistry, _UNSET, freeze, thaw)
 
 
 class FreezeThawTest(unittest.TestCase):
@@ -279,6 +282,187 @@ class GnArgsResolveTest(unittest.TestCase):
                 'target_os': 'linux',
                 'target_cpu': 'x64',
             })
+
+
+class DefaultsTest(unittest.TestCase):
+
+    def setUp(self):
+        self.defaults = Defaults(channel=None, notifies=())
+
+    def test_get_returns_value_when_given(self):
+        self.assertEqual(self.defaults.get('channel', 'beta'), 'beta')
+
+    def test_get_falls_back_to_initial_default(self):
+        self.assertIsNone(self.defaults.get('channel', _UNSET))
+
+    def test_set_changes_the_fallback(self):
+        self.defaults.set(channel='nightly')
+        self.assertEqual(self.defaults.get('channel', _UNSET), 'nightly')
+
+    def test_set_unknown_field_raises(self):
+        with self.assertRaises(ConfigError):
+            self.defaults.set(nope='x')
+
+    def test_explicit_falsy_value_is_not_treated_as_unset(self):
+        self.defaults.set(notifies=['a'])
+        self.assertEqual(self.defaults.get('notifies', []), [])
+
+
+class BuildersRegistryTest(unittest.TestCase):
+
+    def setUp(self):
+        self.gn_args = GnArgsRegistry()
+        self.builders = BuildersRegistry(self.gn_args)
+
+    def _sync_config(self):
+        return self.builders.sync_config(target_os='linux', target_cpu='x64')
+
+    def _targets(self):
+        return self.builders.targets(compile=['brave:all'],
+                                     tests=['brave_all_unit_tests'])
+
+    def test_sync_config_fields(self):
+        sync_config = self.builders.sync_config(target_os='linux',
+                                                target_cpu='x64',
+                                                custom_vars={'a': 1})
+        self.assertEqual(sync_config.target_os, 'linux')
+        self.assertEqual(sync_config.target_cpu, 'x64')
+        self.assertEqual(sync_config.gclient_overrides,
+                         {'custom_vars': {
+                             'a': 1
+                         }})
+
+    def test_targets_fields_become_tuples(self):
+        targets = self.builders.targets(compile=['brave:all'],
+                                        tests=['a', 'b'])
+        self.assertEqual(targets.compile, ('brave:all', ))
+        self.assertEqual(targets.tests, ('a', 'b'))
+
+    def test_builder_with_named_gn_args_config(self):
+        self.gn_args.config(name='asan',
+                            args={
+                                'target_os': 'linux',
+                                'target_cpu': 'x64',
+                                'is_asan': True,
+                            })
+        builder = self.builders.builder(name='linux-x64-asan-brave',
+                                        sync_config=self._sync_config(),
+                                        gn_args='asan',
+                                        targets=self._targets())
+        self.assertEqual(builder.name, 'linux-x64-asan-brave')
+        self.assertTrue(
+            self.gn_args.resolve('linux-x64-asan-brave')['gn_args']['is_asan'])
+
+    def test_builder_with_anonymous_gn_args_config(self):
+        self.gn_args.config(name='linux', args={'target_os': 'linux'})
+        self.gn_args.config(name='x64', args={'target_cpu': 'x64'})
+        anon = self.gn_args.config(configs=['linux', 'x64'],
+                                   args={'is_asan': True},
+                                   secrets={'k': 'ENV_K'})
+        self.builders.builder(name='b',
+                              sync_config=self._sync_config(),
+                              gn_args=anon,
+                              targets=self._targets())
+        resolved = self.gn_args.resolve('b')
+        self.assertEqual(resolved['gn_args'], {
+            'target_os': 'linux',
+            'target_cpu': 'x64',
+            'is_asan': True,
+        })
+        self.assertEqual(resolved['secrets'], {'k': 'ENV_K'})
+
+    def test_builder_with_invalid_gn_args_raises(self):
+        with self.assertRaises(ConfigError):
+            self.builders.builder(name='b',
+                                  sync_config=self._sync_config(),
+                                  gn_args=123,
+                                  targets=self._targets())
+
+    def test_duplicate_builder_name_raises(self):
+        self.builders.builder(name='b',
+                              sync_config=self._sync_config(),
+                              gn_args=self.gn_args.config(args={
+                                  'target_os': 'linux',
+                                  'target_cpu': 'x64',
+                              }),
+                              targets=self._targets())
+        with self.assertRaises(ConfigError):
+            self.builders.builder(name='b',
+                                  sync_config=self._sync_config(),
+                                  gn_args=self.gn_args.config(args={
+                                      'target_os': 'linux',
+                                      'target_cpu': 'x64',
+                                  }),
+                                  targets=self._targets())
+
+    def test_defaults_are_applied_and_overridable(self):
+        self.builders.defaults.set(builder_group='brave.sanitizers',
+                                   execution_timeout_mins=270,
+                                   channel='nightly',
+                                   notifies=['browser-sanitizers-bot'])
+        inherited = self.builders.builder(
+            name='inherited',
+            sync_config=self._sync_config(),
+            gn_args=self.gn_args.config(args={
+                'target_os': 'linux',
+                'target_cpu': 'x64',
+            }),
+            targets=self._targets())
+        self.assertEqual(inherited.builder_group, 'brave.sanitizers')
+        self.assertEqual(inherited.execution_timeout_mins, 270)
+        self.assertEqual(inherited.channel, 'nightly')
+        self.assertEqual(inherited.notifies, ('browser-sanitizers-bot', ))
+
+        overridden = self.builders.builder(
+            name='overridden',
+            sync_config=self._sync_config(),
+            gn_args=self.gn_args.config(args={
+                'target_os': 'linux',
+                'target_cpu': 'x64',
+            }),
+            targets=self._targets(),
+            channel='beta',
+            notifies=['browser-bot'])
+        self.assertEqual(overridden.builder_group, 'brave.sanitizers')
+        self.assertEqual(overridden.channel, 'beta')
+        self.assertEqual(overridden.notifies, ('browser-bot', ))
+
+    def test_get_and_all(self):
+        b1 = self.builders.builder(name='b1',
+                                   sync_config=self._sync_config(),
+                                   gn_args=self.gn_args.config(args={
+                                       'target_os': 'linux',
+                                       'target_cpu': 'x64',
+                                   }),
+                                   targets=self._targets())
+        self.assertIs(self.builders.get('b1'), b1)
+        self.assertEqual(self.builders.all(), (b1, ))
+        with self.assertRaises(ConfigError):
+            self.builders.get('nope')
+
+    def test_registries_are_isolated_per_instance(self):
+        other_gn_args = GnArgsRegistry()
+        other_builders = BuildersRegistry(other_gn_args)
+        other_builders.builder(name='b',
+                               sync_config=self._sync_config(),
+                               gn_args=other_gn_args.config(args={
+                                   'target_os': 'linux',
+                                   'target_cpu': 'x64',
+                               }),
+                               targets=self._targets())
+        # A same-named builder in a separate registry pair does not collide.
+        self.builders.builder(name='b',
+                              sync_config=self._sync_config(),
+                              gn_args=self.gn_args.config(args={
+                                  'target_os': 'linux',
+                                  'target_cpu': 'x64',
+                              }),
+                              targets=self._targets())
+        # Both succeeded without an "already defined" clash: each pair's
+        # `gn_args` node for 'b' lives in its own registry.
+        self.assertIn('b', self.gn_args._nodes)  # pylint: disable=protected-access
+        self.assertIn('b', other_gn_args._nodes)  # pylint: disable=protected-access
+        self.assertIsNot(self.gn_args._nodes['b'], other_gn_args._nodes['b'])  # pylint: disable=protected-access
 
 
 if __name__ == '__main__':
