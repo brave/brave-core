@@ -5,23 +5,15 @@
 
 #include "content/browser/gpu/gpu_process_host.h"
 
+#include "build/build_config.h"
+
 #if BUILDFLAG(IS_WIN)
-
 #include "sandbox/policy/features.h"
-#include "sandbox/win/src/sandbox_policy.h"
-
-#define AddDllToUnload(x)                                            \
-  AddDllToUnload(x);                                                 \
-  config->SetShouldPatchModuleFileName(base::FeatureList::IsEnabled( \
-      sandbox::policy::features::kModuleFileNamePatch))
-
 #endif  // BUILDFLAG(IS_WIN)
 
 #include <content/browser/gpu/gpu_process_host.cc>
 
 #if BUILDFLAG(IS_WIN)
-
-#undef AddDllToUnload
 
 namespace content {
 
