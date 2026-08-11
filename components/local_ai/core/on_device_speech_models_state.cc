@@ -11,11 +11,6 @@
 
 namespace local_ai {
 
-namespace {
-// Subdirectory within the component install dir that holds the model files.
-constexpr char kModelDir[] = "nemotron-speech-streaming-en-0.6b-int4-onnx";
-}  // namespace
-
 // static
 OnDeviceSpeechModelsState* OnDeviceSpeechModelsState::GetInstance() {
   static base::NoDestructor<OnDeviceSpeechModelsState> instance;
@@ -25,6 +20,20 @@ OnDeviceSpeechModelsState* OnDeviceSpeechModelsState::GetInstance() {
 OnDeviceSpeechModelsState::OnDeviceSpeechModelsState() = default;
 OnDeviceSpeechModelsState::~OnDeviceSpeechModelsState() = default;
 
+void OnDeviceSpeechModelsState::AddObserver(Observer* observer) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  observers_.AddObserver(observer);
+
+  if (IsModelInstalled()) {
+    observer->OnSpeechModelInstalledChanged(true);
+  }
+}
+
+void OnDeviceSpeechModelsState::RemoveObserver(Observer* observer) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  observers_.RemoveObserver(observer);
+}
+
 void OnDeviceSpeechModelsState::SetInstallDir(
     const base::FilePath& install_dir) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
@@ -32,16 +41,25 @@ void OnDeviceSpeechModelsState::SetInstallDir(
     return;
   }
   install_dir_ = install_dir;
-  if (install_dir.empty()) {
-    model_dir_ = base::FilePath();
-    return;
-  }
-  model_dir_ = install_dir_.AppendASCII(kModelDir);
+  model_dir_ = install_dir_.empty() ? base::FilePath()
+                                    : install_dir_.AppendASCII(kModelDirName);
+  NotifyInstalledChanged();
+}
+
+void OnDeviceSpeechModelsState::NotifyInstalledChanged() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  observers_.Notify(&Observer::OnSpeechModelInstalledChanged,
+                    IsModelInstalled());
 }
 
 const base::FilePath& OnDeviceSpeechModelsState::GetInstallDir() const {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   return install_dir_;
+}
+
+bool OnDeviceSpeechModelsState::IsModelInstalled() const {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  return !model_dir_.empty();
 }
 
 const base::FilePath& OnDeviceSpeechModelsState::GetModelDir() const {
