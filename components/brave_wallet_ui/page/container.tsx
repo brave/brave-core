@@ -292,7 +292,7 @@ export const Container = () => {
           requirement={!isWalletLocked && !walletNotYetCreated}
           redirectRoute={defaultRedirect}
         >
-          <UnlockedWalletRoutes sessionRoute={sessionRoute} />
+          <UnlockedWalletRoutes />
         </ProtectedRoute>
 
         <ProtectedRoute
