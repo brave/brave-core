@@ -47,6 +47,11 @@ public class OnboardingViewModel extends ViewModel {
     private int mRestoreWalletFocusedWordIndex = -1;
     private boolean mRestoreWalletLegacyEnabled;
 
+    // Terms of use screen checkbox selections, retained across configuration changes so the
+    // fragment (recreated fresh after a rotation) can restore them.
+    private boolean mSelfCustodyChecked;
+    private boolean mTermsOfUseChecked;
+
     /** Stores the unlock password text so it survives a configuration change such as a rotation. */
     public void setUnlockPassword(@Nullable final String unlockPassword) {
         mUnlockPassword = unlockPassword;
@@ -121,6 +126,33 @@ public class OnboardingViewModel extends ViewModel {
     /** Returns whether the legacy wallet import option was enabled on the restore screen. */
     public boolean isRestoreWalletLegacyEnabled() {
         return mRestoreWalletLegacyEnabled;
+    }
+
+    /** Stores the terms of use screen checkbox selections so they survive a configuration change. */
+    public void setTermsOfUseSelections(
+            final boolean selfCustodyChecked, final boolean termsOfUseChecked) {
+        mSelfCustodyChecked = selfCustodyChecked;
+        mTermsOfUseChecked = termsOfUseChecked;
+    }
+
+    /** Returns whether the self custody checkbox was checked on the terms of use screen. */
+    public boolean isSelfCustodyChecked() {
+        return mSelfCustodyChecked;
+    }
+
+    /** Returns whether the terms of use checkbox was checked on the terms of use screen. */
+    public boolean isTermsOfUseChecked() {
+        return mTermsOfUseChecked;
+    }
+
+    /**
+     * Drops the captured terms of use selections so they are not re-applied the next time the
+     * screen is shown. Called once the user leaves the screen (by continuing, going back, or
+     * closing).
+     */
+    public void clearTermsOfUseSelections() {
+        mSelfCustodyChecked = false;
+        mTermsOfUseChecked = false;
     }
 
     public void setLegacyRestoreEnabled(final boolean legacyRestoreEnabled) {
