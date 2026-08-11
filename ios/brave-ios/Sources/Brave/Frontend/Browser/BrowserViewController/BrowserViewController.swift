@@ -291,6 +291,8 @@ public class BrowserViewController: UIViewController {
 
   let defaultBrowserHelper: DefaultBrowserHelper = .init()
 
+  let downloadBackgroundTaskModel: DownloadBackgroundTaskScheduler?
+
   public init(
     windowId: UUID,
     profile: LegacyBrowserProfile,
@@ -300,7 +302,8 @@ public class BrowserViewController: UIViewController {
     rewards: BraveRewards,
     crashedLastSession: Bool,
     newsFeedDataSource: FeedDataSource,
-    privateBrowsingManager: PrivateBrowsingManager
+    privateBrowsingManager: PrivateBrowsingManager,
+    downloadBackgroundTaskModel: DownloadBackgroundTaskScheduler?,
   ) {
     self.windowId = windowId
     self.profile = profile
@@ -314,6 +317,8 @@ public class BrowserViewController: UIViewController {
     self.feedDataSource = newsFeedDataSource
     self.prefsChangeRegistrar = PrefChangeRegistrar(prefService: profileController.profile.prefs)
     self.braveTalkJitsiCoordinator = .init(prefService: profileController.profile.prefs)
+    self.downloadBackgroundTaskModel = downloadBackgroundTaskModel
+
     feedDataSource.historyAPI = profileController.historyAPI
     backgroundDataSource = .init(
       service: profileController.backgroundImagesService,
