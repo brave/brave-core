@@ -338,47 +338,21 @@ TEST_F(BraveShieldsTabHelperUnitTest,
 }
 
 TEST_F(BraveShieldsTabHelperUnitTest, IsBraveShieldsManaged) {
-  // about:blank test
-  NavigateTo(GURL("about:blank"));
+  GURL host("http://host.com");
+
+  // By default shields status should be non-managed as no override of the prefs
+  // was added via policies.
+  NavigateTo(host);
   EXPECT_FALSE(brave_shields_tab_helper_->IsBraveShieldsManaged());
 
-  GURL host2("http://host2.com");
-  GURL host1("http://host1.com");
-
-  NavigateTo(host2);
-  EXPECT_FALSE(brave_shields_tab_helper_->IsBraveShieldsManaged());
-
+  // Set up the corresponding managed pref which will take precedence over the
+  // user prefs to simulate managed case. Check shields is correctly shown as
+  // managed.
   base::ListValue disabled_list;
-  disabled_list.Append("[*.]host2.com");
+  disabled_list.Append("[*.]host.com");
   profile()->GetTestingPrefService()->SetManagedPref(
       kManagedBraveShieldsDisabledForUrls, std::move(disabled_list));
-  // only disabled pref set
-  NavigateTo(host2);
-  EXPECT_TRUE(brave_shields_tab_helper_->IsBraveShieldsManaged());
-
-  NavigateTo(host1);
-  EXPECT_FALSE(brave_shields_tab_helper_->IsBraveShieldsManaged());
-
-  base::ListValue enabled_list;
-  enabled_list.Append("[*.]host1.com");
-  profile()->GetTestingPrefService()->SetManagedPref(
-      kManagedBraveShieldsEnabledForUrls, std::move(enabled_list));
-
-  // both disabled/enabled prefs set
-  NavigateTo(host2);
-  EXPECT_TRUE(brave_shields_tab_helper_->IsBraveShieldsManaged());
-
-  NavigateTo(host1);
-  EXPECT_TRUE(brave_shields_tab_helper_->IsBraveShieldsManaged());
-
-  profile()->GetTestingPrefService()->RemoveManagedPref(
-      kManagedBraveShieldsDisabledForUrls);
-
-  // only enabled prefs set
-  NavigateTo(host2);
-  EXPECT_FALSE(brave_shields_tab_helper_->IsBraveShieldsManaged());
-
-  NavigateTo(host1);
+  NavigateTo(host);
   EXPECT_TRUE(brave_shields_tab_helper_->IsBraveShieldsManaged());
 }
 

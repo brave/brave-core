@@ -99,11 +99,6 @@ void BraveShieldsSettingsService::SetBraveShieldsEnabled(bool is_enabled,
                                         is_enabled, url, local_state_);
 }
 
-bool BraveShieldsSettingsService::IsBraveShieldsEnabled(const GURL& url) {
-  return brave_shields::IsBraveShieldsEnabled(&*host_content_settings_map_,
-                                              url);
-}
-
 void BraveShieldsSettingsService::SetDefaultAdBlockMode(
     mojom::AdBlockMode mode) {
   SetAdBlockMode(mode, GURL());

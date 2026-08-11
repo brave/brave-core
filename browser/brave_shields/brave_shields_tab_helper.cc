@@ -509,8 +509,7 @@ void BraveShieldsTabHelper::AllowScriptsOnce(
 }
 
 bool BraveShieldsTabHelper::IsBraveShieldsManaged() {
-  const GURL url =
-      web_contents()->GetPrimaryMainFrame()->GetLastCommittedOrigin().GetURL();
+  const GURL url = GetCurrentSiteURL();
   content_settings::SettingInfo info;
   host_content_settings_map_->GetWebsiteSetting(
       url, url, ContentSettingsType::BRAVE_SHIELDS, &info);
