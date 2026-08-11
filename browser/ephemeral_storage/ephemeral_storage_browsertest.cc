@@ -1174,6 +1174,63 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
   EXPECT_EQ("name=third-party-a.com", third_party_values.cookies);
 }
 
+IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
+                       CookiesPartitionedBetweenLocalhostAndLoopbackIp) {
+  const GURL localhost_page = https_server_.GetURL("localhost", "/simple.html");
+  const GURL loopback_page = https_server_.GetURL("127.0.0.1", "/simple.html");
+  const GURL loopback_set_cookie_url = https_server_.GetURL(
+      "127.0.0.1",
+      "/set-cookie?name=loopback_ephemeral;path=/;SameSite=None;Secure");
+
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), localhost_page));
+  auto* web_contents = browser()->tab_strip_model()->GetActiveWebContents();
+
+  ASSERT_TRUE(content::ExecJs(web_contents, content::JsReplace(R"(
+        new Promise((resolve) => {
+          const frame = document.createElement('iframe');
+          frame.id = 'loopback_iframe';
+          frame.onload = () => resolve(true);
+          frame.src = $1;
+          document.body.appendChild(frame);
+        });
+      )",
+                                                               loopback_page)));
+
+  RenderFrameHost* main_frame = web_contents->GetPrimaryMainFrame();
+  RenderFrameHost* loopback_iframe = content::ChildFrameAt(main_frame, 0);
+  ASSERT_TRUE(loopback_iframe);
+
+  SetCookieInFrame(loopback_iframe, "name=loopback_ephemeral");
+  EXPECT_EQ("name=loopback_ephemeral", GetCookiesInFrame(loopback_iframe));
+
+  // Ephemeral 3p cookies must not land in the persistent jar.
+  EXPECT_EQ("", content::GetCookies(browser()->profile(), loopback_page));
+
+  // Opening the loopback origin top-level must not see the 3p cookie.
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), loopback_page));
+  EXPECT_EQ("", GetCookiesInFrame(browser()
+                                      ->tab_strip_model()
+                                      ->GetActiveWebContents()
+                                      ->GetPrimaryMainFrame()));
+  EXPECT_EQ("", content::GetCookies(browser()->profile(), loopback_page));
+
+  // Setting via a third-party navigation under localhost is also ephemeral.
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), localhost_page));
+  web_contents = browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(content::ExecJs(web_contents,
+                              content::JsReplace(R"(
+        new Promise((resolve) => {
+          const frame = document.createElement('iframe');
+          frame.id = 'loopback_iframe';
+          frame.onload = () => resolve(true);
+          frame.src = $1;
+          document.body.appendChild(frame);
+        });
+      )",
+                                                 loopback_set_cookie_url)));
+  EXPECT_EQ("", content::GetCookies(browser()->profile(), loopback_page));
+}
+
 class EphemeralStorageKeepAliveDisabledBrowserTest
     : public EphemeralStorageBrowserTest {
  public:
