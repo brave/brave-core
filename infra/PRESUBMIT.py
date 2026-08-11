@@ -23,3 +23,22 @@ def CheckTests(input_api, output_api):
                     root,
                     files_to_check=[r'.+_test\.py$']))
     return input_api.RunTests(tests)
+
+
+def CheckBotsGenerateOutput(input_api, output_api):
+    """Verifies infra/config/generated/builders/ is up to date.
+
+    Mirrors upstream's canned `CheckLucicfgGenOutput`: runs the generator in
+    check-only mode, unconditionally (regardless of which files changed), and
+    turns a non-zero exit - drift, or a file under generated/builders/ that
+    is no longer produced by anything - into a presubmit error.
+    """
+    bots_py = os.path.join(input_api.PresubmitLocalPath(), 'bots', 'bots.py')
+    return input_api.RunTests([
+        input_api.Command(
+            name='bots.py generate --check',
+            cmd=[input_api.python3_executable, bots_py, 'generate', '--check'],
+            kwargs={},
+            message=output_api.PresubmitError,
+        ),
+    ])
