@@ -159,7 +159,7 @@ TEST_F(BraveAdsAntiTargetingResourceTest,
   ASSERT_FALSE(resource_->IsLoaded());
 
   // Act
-  SetProfileBooleanPref(prefs::kOptedInToNotificationAds, true);
+  SetProfileBooleanPref(prefs::kNotificationsEnabled, true);
 
   // Assert
   ASSERT_TRUE(base::test::RunUntil([this] { return resource_->IsLoaded(); }));
@@ -176,7 +176,7 @@ TEST_F(BraveAdsAntiTargetingResourceTest,
   ASSERT_TRUE(base::test::RunUntil([this] { return resource_->IsLoaded(); }));
 
   // Act
-  SetProfileBooleanPref(prefs::kOptedInToNotificationAds, true);
+  SetProfileBooleanPref(prefs::kNotificationsEnabled, true);
 
   // Assert
   EXPECT_TRUE(resource_->IsLoaded());

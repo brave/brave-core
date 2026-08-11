@@ -45,7 +45,7 @@ bool UserHasOptedInToNewTabPageAds() {
 
 bool UserHasOptedInToNotificationAds() {
   return UserHasJoinedBraveRewards() &&
-         GetProfileBooleanPref(prefs::kOptedInToNotificationAds);
+         GetProfileBooleanPref(prefs::kNotificationsEnabled);
 }
 
 int GetMaximumNotificationAdsPerHour() {

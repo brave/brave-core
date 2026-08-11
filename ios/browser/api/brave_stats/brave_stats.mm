@@ -53,7 +53,7 @@ NSString* const kWebcompatReportEndpoint =
 }
 
 - (BOOL)isNotificationAdsEnabled {
-  return _profilePrefs->GetBoolean(brave_ads::prefs::kOptedInToNotificationAds);
+  return _profilePrefs->GetBoolean(brave_ads::prefs::kNotificationsEnabled);
 }
 
 - (nullable NSDate*)lastPingDate {

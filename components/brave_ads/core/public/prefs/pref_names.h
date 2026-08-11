@@ -22,7 +22,8 @@ inline constexpr char kGracePeriod[] = "brave.brave_ads.grace_period";
 
 inline constexpr char kDiagnosticId[] = "brave.brave_ads.diagnostics.id";
 
-inline constexpr char kOptedInToNotificationAds[] = "brave.brave_ads.enabled";
+inline constexpr char kNotificationsEnabled[] =
+    "brave.brave_ads.notifications.enabled";
 inline constexpr char kMaximumNotificationAdsPerHour[] =
     "brave.brave_ads.ads_per_hour";
 

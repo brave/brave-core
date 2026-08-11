@@ -25,7 +25,7 @@ jboolean JNI_BraveAdsNativeHelper_IsOptedInToNotificationAds(
     const base::android::JavaRef<jobject>& j_profile_android) {
   Profile* profile = Profile::FromJavaObject(j_profile_android);
   return profile->GetPrefs()->GetBoolean(
-      brave_ads::prefs::kOptedInToNotificationAds);
+      brave_ads::prefs::kNotificationsEnabled);
 }
 
 // static
@@ -34,7 +34,7 @@ void JNI_BraveAdsNativeHelper_SetOptedInToNotificationAds(
     const base::android::JavaRef<jobject>& j_profile_android,
     jboolean should_enable_ads) {
   Profile* profile = Profile::FromJavaObject(j_profile_android);
-  profile->GetPrefs()->SetBoolean(brave_ads::prefs::kOptedInToNotificationAds,
+  profile->GetPrefs()->SetBoolean(brave_ads::prefs::kNotificationsEnabled,
                                   should_enable_ads);
 }
 

@@ -24,7 +24,7 @@ bool DoesMatchUserHasOptedInToNewTabPageAdsPrefPath(std::string_view path) {
 }
 
 bool DoesMatchUserHasOptedInToNotificationAdsPrefPath(std::string_view path) {
-  return path == prefs::kOptedInToNotificationAds;
+  return path == prefs::kNotificationsEnabled;
 }
 
 bool DoesMatchUserHasOptedInToSearchResultAdsPrefPath(std::string_view path) {

@@ -105,7 +105,7 @@ class AdsTabHelperTest : public PlatformTest {
     profile_ = TestProfileIOS::Builder().Build();
 
     profile_->GetPrefs()->SetBoolean(brave_rewards::prefs::kEnabled, true);
-    profile_->GetPrefs()->SetBoolean(prefs::kOptedInToNotificationAds, true);
+    profile_->GetPrefs()->SetBoolean(prefs::kNotificationsEnabled, true);
 
     web_state_ = std::make_unique<web::FakeWebState>();
     web_state_->SetBrowserState(profile_.get());
@@ -137,7 +137,7 @@ class AdsTabHelperTest : public PlatformTest {
   }
 
   void OptOutOfNotificationAds() {
-    profile_->GetPrefs()->SetBoolean(prefs::kOptedInToNotificationAds, false);
+    profile_->GetPrefs()->SetBoolean(prefs::kNotificationsEnabled, false);
   }
 
   NavigationBuilder Navigation(const GURL& url) {

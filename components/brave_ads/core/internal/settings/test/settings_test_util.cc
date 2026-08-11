@@ -30,7 +30,7 @@ void OptOutOfNewTabPageAds() {
 }
 
 void OptOutOfNotificationAds() {
-  SetProfileBooleanPrefValue(prefs::kOptedInToNotificationAds, false);
+  SetProfileBooleanPrefValue(prefs::kNotificationsEnabled, false);
 }
 
 void SetMaximumNotificationAdsPerHour(int max_ads_per_hour) {

@@ -7,6 +7,7 @@
 
 #include <string_view>
 
+#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 
@@ -27,6 +28,9 @@ constexpr std::string_view kObsoleteNotificationAdLastNormalizedCoordinateY =
     "brave.brave_ads.ad_notification.last_normalized_coordinate_y";
 constexpr std::string_view kObsoleteNotificationAdDidFallbackToCustom =
     "brave.brave_ads.ad_notification.did_fallback_to_custom";
+
+constexpr std::string_view kObsoleteOptedInToNotificationAds =
+    "brave.brave_ads.enabled";
 
 constexpr std::string_view kNewTabPageEventCountConstellationDictPref =
     "brave.brave_ads.p3a.ntp_event_count_constellation";
@@ -50,6 +54,9 @@ void RegisterProfilePrefsForMigration(PrefRegistrySimple* const registry) {
 
   // Added 07/2026.
   registry->RegisterBooleanPref(kObsoleteHasMigratedClientStateV7, false);
+
+  // Added 08/2026.
+  registry->RegisterBooleanPref(kObsoleteOptedInToNotificationAds, false);
 }
 
 void MigrateObsoleteProfilePrefs(PrefService* const prefs) {
@@ -64,6 +71,13 @@ void MigrateObsoleteProfilePrefs(PrefService* const prefs) {
 
   // Added 07/2026.
   prefs->ClearPref(kObsoleteHasMigratedClientStateV7);
+
+  // Added 08/2026.
+  if (prefs->HasPrefPath(kObsoleteOptedInToNotificationAds)) {
+    prefs->SetBoolean(prefs::kNotificationsEnabled,
+                      prefs->GetBoolean(kObsoleteOptedInToNotificationAds));
+    prefs->ClearPref(kObsoleteOptedInToNotificationAds);
+  }
 }
 
 void RegisterLocalStatePrefsForMigration(PrefRegistrySimple* registry) {

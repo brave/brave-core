@@ -93,7 +93,7 @@ class BraveSpeedFeatureProcessorBrowserTest : public InProcessBrowserTest {
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
   bool HasOptedInToNotificationAds() {
     return browser()->profile()->GetPrefs()->GetBoolean(
-        brave_ads::prefs::kOptedInToNotificationAds);
+        brave_ads::prefs::kNotificationsEnabled);
   }
 #endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 

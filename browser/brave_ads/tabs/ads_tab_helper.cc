@@ -109,7 +109,7 @@ bool AdsTabHelper::UserHasOptedInToNotificationAds() const {
           ->GetPrefs();
 
   return prefs->GetBoolean(brave_rewards::prefs::kEnabled) &&
-         prefs->GetBoolean(prefs::kOptedInToNotificationAds);
+         prefs->GetBoolean(prefs::kNotificationsEnabled);
 }
 
 bool AdsTabHelper::IsVisible() const {

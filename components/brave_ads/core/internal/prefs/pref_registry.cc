@@ -30,7 +30,7 @@ void RegisterProfilePrefs(PrefRegistrySimple* const registry) {
 
   registry->RegisterStringPref(prefs::kDiagnosticId, "");
 
-  registry->RegisterBooleanPref(prefs::kOptedInToNotificationAds, false);
+  registry->RegisterBooleanPref(prefs::kNotificationsEnabled, false);
   registry->RegisterInt64Pref(prefs::kMaximumNotificationAdsPerHour, -1);
 
   registry->RegisterBooleanPref(prefs::kOptedInToSearchResultAds, true);
