@@ -22,6 +22,8 @@
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
 #include "base/threading/sequence_bound.h"
+#include "brave/components/brave_wallet/browser/blockchain_registry.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/internal/orchard_bundle_manager.h"
 #include "brave/components/brave_wallet/browser/internal/orchard_sync_state.h"
 #include "brave/components/brave_wallet/browser/internal/orchard_test_utils.h"
@@ -1714,6 +1716,49 @@ TEST_F(ZCashWalletServiceUnitTest, ValidateOrchardUnifiedAddress) {
         "fa8wzjrav8z2xpxqnrnmjxh8tmz6jhfh425t7f3vy6p4pd3zmqa"
         "yq49efl2c4xydc0gszg660q9p",
         callback.Get());
+  }
+}
+
+TEST_F(ZCashWalletServiceUnitTest, RestrictedRecipientAddress) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeatureWithParameters(
+      features::kBraveWalletZCashFeature,
+      {{"zcash_shielded_transactions_enabled", "true"}});
+
+  // Unified address with a transparent part and no orchard part.
+  constexpr char kUnifiedAddress[] =
+      "u19hwdcqxhkapje2p0744gq96parewuffyeg0kg3q3taq040zwqh2wxjwyxzs6l9dulzua"
+      "p43ya7mq7q3mu2hjafzlwylvystjlc6n294emxww9xm8qn6tcldqkq4k9ccsqzmjeqk9yp"
+      "kss572ut324nmxke666jm8lhkpt85gzq58d50rfnd7wufke8jjhc3lhswxrdr57ah42xck"
+      "h2j";
+
+  auto transparent_address =
+      ExtractTransparentPart(kUnifiedAddress, /*is_testnet=*/false);
+  ASSERT_TRUE(transparent_address);
+
+  // Only the transparent address is on the published restricted lists.
+  BlockchainRegistry::ScopedRestrictedAddressesForTesting scoped_restricted(
+      {base::ToLowerASCII(*transparent_address)});
+
+  // Both encodings of the same recipient must be rejected.
+  for (const auto& address_to :
+       {std::string(kUnifiedAddress), *transparent_address}) {
+    {
+      base::test::TestFuture<base::expected<ZCashTransaction, std::string>>
+          future;
+      zcash_wallet_service_->CreateFullyTransparentTransaction(
+          account_id(), address_to, 1000u, future.GetCallback());
+      ASSERT_FALSE(future.Get().has_value());
+      EXPECT_EQ(future.Get().error(), WalletInternalErrorMessage());
+    }
+    {
+      base::test::TestFuture<base::expected<ZCashTransaction, std::string>>
+          future;
+      zcash_wallet_service_->CreateOrchardToTransparentTransaction(
+          account_id(), address_to, 1000u, future.GetCallback());
+      ASSERT_FALSE(future.Get().has_value());
+      EXPECT_EQ(future.Get().error(), WalletInternalErrorMessage());
+    }
   }
 }
 
