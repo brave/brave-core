@@ -10,10 +10,6 @@
 #include "base/memory/weak_ptr.h"
 #include "chrome/browser/ui/browser.h"
 
-namespace content {
-class WebContents;
-}  // namespace content
-
 class BraveBrowser : public Browser {
  public:
   explicit BraveBrowser(const CreateParams& params);
@@ -23,8 +19,6 @@ class BraveBrowser : public Browser {
   BraveBrowser& operator=(const BraveBrowser&) = delete;
 
   // Browser overrides:
-  void ScheduleUIUpdate(content::WebContents* source,
-                        unsigned changed_flags) override;
   void OnTabStripModelChanged(
       TabStripModel* tab_strip_model,
       const TabStripModelChange& change,
