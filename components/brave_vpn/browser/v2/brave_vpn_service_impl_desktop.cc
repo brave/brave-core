@@ -54,7 +54,7 @@ void BraveVpnServiceImpl::Disconnect() {
 void BraveVpnServiceImpl::GetSelectedRegion(
     GetSelectedRegionCallback callback) {
   NOTIMPLEMENTED();
-  std::move(callback).Run({});
+  std::move(callback).Run(mojom::Region::New());
 }
 
 void BraveVpnServiceImpl::SetSelectedRegion(mojom::RegionPtr region) {
