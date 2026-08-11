@@ -349,13 +349,6 @@ program
   .action(updatePatches)
 
 program
-  .command('cibuild')
-  .option('--target_arch <target_arch>', 'target architecture')
-  .action((options) => {
-    build('Release', options)
-  })
-
-program
   .command('test <suite>')
   .allowUnknownOption(true)
   .allowExcessArguments(true)
