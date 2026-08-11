@@ -5,6 +5,10 @@ script/audit_deps.py @brave/sec-team
 /README.md @bsclifton
 script/deps.py @brave/deps-reviewers
 package*.json @brave/js-deps-reviewers
+# Explicit rule for the root package.json to be owned by both js-deps-reviewers
+# and build-commands-reviewers as it is used by the build system. Any team can
+# approve changes to this file.
+/package.json @brave/js-deps-reviewers @brave/build-commands-reviewers
 pnpm*.yaml @brave/js-deps-reviewers
 rewrite/ @brave/brave-core-owners
 rewrite/**/*.h.yaml @brave/brave-core-owners @brave/chromium-src-reviewers
