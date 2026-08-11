@@ -237,7 +237,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &multistep_filter::kMultistepFilter,
       &net::features::kEnableWebTransportDraft07,
       &network::features::kBrowsingTopics,
-      &network::features::kSharedStorageAPI,
       &network_time::kNetworkTimeServiceQuerying,
       &ntp_features::kCustomizeChromeSidePanelExtensionsCard,
       &ntp_features::kCustomizeChromeWallpaperSearch,
