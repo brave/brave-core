@@ -9,7 +9,9 @@ import Button from '@brave/leo/react/button'
 import * as React from 'react'
 import styled from 'styled-components'
 import { font, spacing } from '@brave/leo/tokens/css/variables'
+import { ChannelsCachingWrapper } from '../shared/channelsCache'
 import { useBraveNews, useChannels } from '../shared/Context'
+import { PublishersCachingWrapper } from '../shared/publishersCache'
 import ChannelCard from './ChannelCard'
 import DiscoverSection from './DiscoverSection'
 import Loading from './Loading'
@@ -39,12 +41,9 @@ export default function Discover () {
 
 function Home () {
   const channels = useChannels()
-  const {
-    suggestedPublisherIds,
-    updateSuggestedPublisherIds,
-    publishersLoaded,
-    channelsLoaded,
-  } = useBraveNews()
+  const { suggestedPublisherIds, updateSuggestedPublisherIds } = useBraveNews()
+  const publishersLoaded = PublishersCachingWrapper.getInstance().connected
+  const channelsLoaded = ChannelsCachingWrapper.getInstance().connected
   const suggestionsLoading = suggestedPublisherIds.length === 0
 
   const channelNames = React.useMemo(() => channels.map(c => c.channelName),

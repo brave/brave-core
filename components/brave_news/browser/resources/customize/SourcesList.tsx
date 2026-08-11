@@ -13,7 +13,9 @@ import {
 import { PluralStringProxyImpl } from 'chrome://resources/js/plural_string_proxy.js'
 import * as React from 'react'
 import styled from 'styled-components'
+import { ChannelsCachingWrapper } from '../shared/channelsCache'
 import { useBraveNews, useChannels } from '../shared/Context'
+import { PublishersCachingWrapper } from '../shared/publishersCache'
 import Loading from './Loading'
 import { ChannelListEntry, FeedListEntry } from './SourcesListEntry'
 
@@ -47,8 +49,10 @@ const List = styled.div`
 `
 
 export default function SourcesList() {
-  const { subscribedPublisherIds, publishersLoaded, channelsLoaded } = useBraveNews()
+  const { subscribedPublisherIds } = useBraveNews()
   const channels = useChannels({ subscribedOnly: true })
+  const publishersLoaded = PublishersCachingWrapper.getInstance().connected
+  const channelsLoaded = ChannelsCachingWrapper.getInstance().connected
 
   const { result: sourcesCount } = usePromise(
     () =>

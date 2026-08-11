@@ -7,6 +7,7 @@ import Flex from '$web-common/Flex'
 import { getLocale } from '$web-common/locale'
 import * as React from 'react'
 import { useBraveNews } from '../shared/Context'
+import { PublishersCachingWrapper } from '../shared/publishersCache'
 import Carousel from './Carousel'
 import CustomizeLink from './CustomizeLink'
 import CustomizePage from './CustomizePage'
@@ -47,7 +48,7 @@ export function PopularCarousel () {
 }
 
 export function PopularPage () {
-  const { publishersLoaded } = useBraveNews()
+  const publishersLoaded = PublishersCachingWrapper.getInstance().connected
   const popularPublisherIds = usePopularPublisherIds()
   return <CustomizePage title={getLocale(S.BRAVE_NEWS_POPULAR_TITLE)}>
     {publishersLoaded ? (
