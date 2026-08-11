@@ -13,6 +13,7 @@
 
 #include "base/containers/span.h"
 #include "base/files/file.h"
+#include "base/files/memory_mapped_file.h"
 #include "third_party/litert/src/litert/cc/litert_compiled_model.h"
 #include "third_party/litert/src/litert/cc/litert_environment.h"
 
@@ -33,8 +34,8 @@ class LitertModelRunner {
       base::span<const uint8_t> tflite_model,
       int num_threads);
 
-  // Reads the `.tflite` out of `model_file` and builds a runner for it, or
-  // returns nullptr if the file or the model is unusable.
+  // Maps the `.tflite` in `model_file` and builds a runner for it, or returns
+  // nullptr if the file or the model is unusable.
   static std::unique_ptr<LitertModelRunner> CreateFromFile(
       base::File& model_file,
       int num_threads);
@@ -54,9 +55,16 @@ class LitertModelRunner {
  private:
   LitertModelRunner();
 
+  // `tflite_model` is aliased, not copied: litert wraps the pointer for as long
+  // as model_ lives. Callers pass `mapped_model_` or `owned_model_`.
   bool Init(base::span<const uint8_t> tflite_model, int num_threads);
 
-  std::vector<uint8_t> tflite_model_;
+  // Backing storage for the model bytes; exactly one is populated. Keep these
+  // declared before model_, which aliases them and so must be destroyed first.
+  // The mapping keeps the model out of anonymous memory and makes recompiling
+  // it for a new thread count cheap.
+  base::MemoryMappedFile mapped_model_;
+  std::vector<uint8_t> owned_model_;
   std::optional<litert::Environment> environment_;
   std::optional<litert::CompiledModel> model_;
   size_t input_window_size_ = 0;

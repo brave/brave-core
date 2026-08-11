@@ -72,12 +72,27 @@ TEST(LitertModelRunnerTest, CreateFailsOnMalformedModel) {
             LitertModelRunner::Create(MalformedModelBytes(), kSingleThread));
 }
 
-// CreateFromFile reads the model from a base::File; an invalid or empty file
-// must fail without reading past the end.
+// An invalid file must fail rather than yield a runner over nothing.
 TEST(LitertModelRunnerTest, CreateFromFileFailsOnInvalidFile) {
   base::File invalid_file;
   EXPECT_EQ(nullptr,
             LitertModelRunner::CreateFromFile(invalid_file, kSingleThread));
+}
+
+// A truncated download leaves a zero-length file, which must not map into an
+// empty model the runner then accepts.
+TEST(LitertModelRunnerTest, CreateFromFileFailsOnEmptyModelFile) {
+  base::ScopedTempDir temp_dir;
+  ASSERT_TRUE(temp_dir.CreateUniqueTempDir());
+  const base::FilePath model_path =
+      temp_dir.GetPath().AppendASCII("empty.tflite");
+  ASSERT_TRUE(base::WriteFile(model_path, base::span<const uint8_t>()));
+
+  base::File model_file(model_path,
+                        base::File::FLAG_OPEN | base::File::FLAG_READ);
+  ASSERT_TRUE(model_file.IsValid());
+  EXPECT_EQ(nullptr,
+            LitertModelRunner::CreateFromFile(model_file, kSingleThread));
 }
 
 TEST(LitertModelRunnerTest, CreateFromFileFailsOnMalformedModelFile) {

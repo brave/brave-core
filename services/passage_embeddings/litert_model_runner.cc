@@ -9,7 +9,6 @@
 #include <utility>
 
 #include "base/containers/extend.h"
-#include "base/containers/heap_array.h"
 #include "base/logging.h"
 #include "base/memory/ptr_util.h"
 #include "third_party/litert/src/litert/cc/litert_element_type.h"
@@ -31,7 +30,8 @@ std::unique_ptr<LitertModelRunner> LitertModelRunner::Create(
     base::span<const uint8_t> tflite_model,
     int num_threads) {
   auto runner = base::WrapUnique(new LitertModelRunner());
-  if (!runner->Init(tflite_model, num_threads)) {
+  runner->owned_model_.assign(tflite_model.begin(), tflite_model.end());
+  if (!runner->Init(runner->owned_model_, num_threads)) {
     return nullptr;
   }
   return runner;
@@ -44,22 +44,20 @@ std::unique_ptr<LitertModelRunner> LitertModelRunner::CreateFromFile(
   if (!model_file.IsValid()) {
     return nullptr;
   }
-  const int64_t length = model_file.GetLength();
-  if (length <= 0) {
+  auto runner = base::WrapUnique(new LitertModelRunner());
+  // Duplicate because the caller keeps ownership of `model_file`; the mapping
+  // needs a descriptor of its own for as long as the runner lives.
+  if (!runner->mapped_model_.Initialize(model_file.Duplicate())) {
     return nullptr;
   }
-  auto bytes = base::HeapArray<uint8_t>::WithSize(static_cast<size_t>(length));
-  if (!model_file.ReadAndCheck(0, bytes)) {
+  if (!runner->Init(runner->mapped_model_.bytes(), num_threads)) {
     return nullptr;
   }
-  return Create(bytes, num_threads);
+  return runner;
 }
 
 bool LitertModelRunner::Init(base::span<const uint8_t> tflite_model,
                              int num_threads) {
-  // The runtime references the model bytes past compilation; keep our own copy.
-  tflite_model_.assign(tflite_model.begin(), tflite_model.end());
-
   std::vector<litert::EnvironmentOptions::Option> env_options;
   auto environment = litert::Environment::Create(litert::EnvironmentOptions(
       litert::Span<const litert::EnvironmentOptions::Option>(
@@ -92,7 +90,7 @@ bool LitertModelRunner::Init(base::span<const uint8_t> tflite_model,
 
   auto model = litert::CompiledModel::Create(
       *environment_,
-      litert::BufferRef<uint8_t>(tflite_model_.data(), tflite_model_.size()),
+      litert::BufferRef<uint8_t>(tflite_model.data(), tflite_model.size()),
       *compile_options);
   if (!model) {
     LOG(ERROR) << "LiteRT runner: CompiledModel::Create failed: "
