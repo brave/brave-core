@@ -86,7 +86,7 @@ class PdfTextHelperTest : public content::RenderViewHostTestHarness {
 
 TEST_F(PdfTextHelperTest, NoPdfDocumentHelper_ReturnsNullopt) {
   base::test::TestFuture<std::optional<std::string>> future;
-  ExtractTextFromLoadedPdf(web_contents(), future.GetCallback());
+  ExtractTextFromLoadedPdf(*web_contents(), future.GetCallback());
   EXPECT_FALSE(future.Get().has_value());
 }
 
@@ -107,7 +107,7 @@ TEST_F(PdfTextHelperTest, SinglePage_ExtractsText) {
           });
 
   base::test::TestFuture<std::optional<std::string>> future;
-  ExtractTextFromLoadedPdf(web_contents(), future.GetCallback());
+  ExtractTextFromLoadedPdf(*web_contents(), future.GetCallback());
 
   auto result = future.Get();
   ASSERT_TRUE(result.has_value());
@@ -141,7 +141,7 @@ TEST_F(PdfTextHelperTest, MultiPage_JoinsWithNewline) {
       });
 
   base::test::TestFuture<std::optional<std::string>> future;
-  ExtractTextFromLoadedPdf(web_contents(), future.GetCallback());
+  ExtractTextFromLoadedPdf(*web_contents(), future.GetCallback());
 
   auto result = future.Get();
   ASSERT_TRUE(result.has_value());
@@ -160,7 +160,7 @@ TEST_F(PdfTextHelperTest, GetPdfBytesFailed_ReturnsNullopt) {
       });
 
   base::test::TestFuture<std::optional<std::string>> future;
-  ExtractTextFromLoadedPdf(web_contents(), future.GetCallback());
+  ExtractTextFromLoadedPdf(*web_contents(), future.GetCallback());
   EXPECT_FALSE(future.Get().has_value());
 }
 
@@ -176,7 +176,7 @@ TEST_F(PdfTextHelperTest, ZeroPages_ReturnsNullopt) {
       });
 
   base::test::TestFuture<std::optional<std::string>> future;
-  ExtractTextFromLoadedPdf(web_contents(), future.GetCallback());
+  ExtractTextFromLoadedPdf(*web_contents(), future.GetCallback());
   EXPECT_FALSE(future.Get().has_value());
 }
 
