@@ -84,3 +84,32 @@ jobs:
           for id in "${IDS[@]}"; do FLAGS+=(--id "${id// /}"); done
           socket config set defaultOrg "brave"
           socket fix . "${FLAGS[@]}"
+
+      - name: Update PR body
+        env:
+          GH_TOKEN: ${{ secrets.SOCKET_FIX_PAT }}
+          GHSA_IDS: ${{ inputs.ghsa_ids }}
+          ISSUE_LINK: ${{ inputs.issue_link }}
+          WDP_REF: ${{ inputs.wdp_ref }}
+          LEO_REF: ${{ inputs.leo_ref }}
+        run: |
+          BRANCH="socket/fix/$(echo "$GHSA_IDS" | tr ', ' '-' | tr -s '-' | cut -c1-60)"
+          PR_NUMBER=$(gh pr list --repo "${GITHUB_REPOSITORY}" --head "$BRANCH" --json number -q '.[0].number' 2>/dev/null || true)
+          if [[ -z "$PR_NUMBER" ]]; then
+            echo "::warning::No open PR found on branch $BRANCH, skipping body update"
+            exit 0
+          fi
+          BODY="Addresses: $GHSA_IDS"
+          IFS=',' read -ra LINKS <<< "$ISSUE_LINK"
+          for link in "${LINKS[@]}"; do
+            BODY="$BODY"$'\n\n'"closes ${link// /}"
+          done
+          if [[ -n "$WDP_REF" ]]; then
+            WDP_PR=$(gh api "repos/brave/web-discovery-project/commits/$WDP_REF/pulls" -q '.[0].html_url' 2>/dev/null || true)
+            [[ -n "$WDP_PR" ]] && BODY="$BODY"$'\n\n'"WDP: $WDP_PR"
+          fi
+          if [[ -n "$LEO_REF" ]]; then
+            LEO_PR=$(gh api "repos/brave/leo/commits/$LEO_REF/pulls" -q '.[0].html_url' 2>/dev/null || true)
+            [[ -n "$LEO_PR" ]] && BODY="$BODY"$'\n\n'"Leo: $LEO_PR"
+          fi
+          gh pr edit "$PR_NUMBER" --repo "${GITHUB_REPOSITORY}" --body "$BODY"
