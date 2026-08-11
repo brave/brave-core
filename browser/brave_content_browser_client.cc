@@ -98,6 +98,9 @@
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/translate/core/common/brave_translate_switches.h"
 #include "brave/components/url_sanitizer/core/browser/url_sanitizer_service.h"
+#include "brave/bnes/bns_constants.h"
+#include "brave/bnes/bns_scheme_handler.h"
+#include "brave/bnes/bns_security.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "brave/third_party/blink/renderer/brave_farbling_constants.h"
 #include "build/build_config.h"
@@ -1210,6 +1213,26 @@ void BraveContentBrowserClient::WillCreateURLLoaderFactory(
     bool* disable_secure_dns,
     network::mojom::URLLoaderFactoryOverridePtr* factory_override,
     scoped_refptr<base::SequencedTaskRunner> navigation_response_task_runner) {
+  // [BNES] Route bnes:// requests to custom loader factory
+  if (factory_override && !*factory_override) {
+    bool is_bnes_request = false;
+    if (frame) {
+      GURL frame_url = frame->GetLastCommittedURL();
+      if (bns::IsBnesScheme(frame_url)) {
+        is_bnes_request = true;
+      }
+    }
+    if (!is_bnes_request && request_initiator.scheme() == bns::kBnesScheme) {
+      is_bnes_request = true;
+    }
+    if (is_bnes_request) {
+      *factory_override = network::mojom::URLLoaderFactoryOverride::New(
+          bns::BnesURLLoaderFactory::Create(),
+          /* overridden_factory_receiver= */ absl::nullopt,
+          /* skip_cors_enabled_scheme_check= */ true);
+    }
+  }
+
   // TODO(iefremov): Skip proxying for certain requests?
   if (base::FeatureList::IsEnabled(features::kBraveRequestInfoUniquePtr)) {
     BraveProxyingURLLoaderFactory<base::WeakPtr>::MaybeProxyRequest(

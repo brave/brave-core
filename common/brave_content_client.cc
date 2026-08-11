@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/bnes/bns_constants.h"
 #include "brave/common/brave_content_client.h"
 
 #include <optional>
@@ -90,6 +91,12 @@ void BraveContentClient::AddAdditionalSchemes(Schemes* schemes) {
   schemes->secure_schemes.push_back(content::kBraveUIScheme);
   schemes->cors_enabled_schemes.push_back(content::kBraveUIScheme);
   schemes->savable_schemes.push_back(content::kBraveUIScheme);
+
+  // [BNES] Register bnes:// as a native secure scheme
+  schemes->standard_schemes.push_back(bns::kBnesScheme);
+  schemes->secure_schemes.push_back(bns::kBnesScheme);
+  schemes->cors_enabled_schemes.push_back(bns::kBnesScheme);
+  schemes->savable_schemes.push_back(bns::kBnesScheme);
 }
 
 void BraveContentClient::AddContentDecryptionModules(

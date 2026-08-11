@@ -1,0 +1,47 @@
+# Copyright (c) 2026 The BNES Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+static_library("security") {
+  sources = [
+    "bns_constants.h",
+    "bns_security.cc",
+    "bns_security.h",
+  ]
+
+  deps = [
+    "//base",
+    "//net",
+    "//url",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [ "bns_security_unittest.cc" ]
+  deps = [
+    ":security",
+    "//testing/gtest",
+  ]
+}
+
+# H6.2/H6.3 preparation: scheme handler and resolver stubs.
+# These are not yet compiled or tested; they document the intended structure
+# and touch points for the native bnes:// routing implementation.
+source_set("scheme_handler") {
+  sources = [
+    "bns_scheme_handler.cc",
+    "bns_scheme_handler.h",
+    "bns_resolver.cc",
+    "bns_resolver.h",
+  ]
+  deps = [
+    ":security",
+    "//base",
+    "//mojo",
+    "//net",
+    "//services/network/public/cpp",
+    "//url",
+  ]
+}
