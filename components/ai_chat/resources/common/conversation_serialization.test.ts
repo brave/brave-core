@@ -32,8 +32,10 @@ const sampleAssociatedContent: Mojom.AssociatedContent = {
   toolsAttached: false,
 }
 
+// The story fixture is stored in its serialized form, so revive it to get the
+// mojom types a conversation actually holds.
 const sampleSharedConversation: ConversationData = {
-  messages: ComplexConversation,
+  messages: parseConversationData(JSON.stringify(ComplexConversation)).messages,
   associatedContent: [sampleAssociatedContent],
   title: 'sample title',
 }
@@ -66,6 +68,7 @@ function conversationWithUploadedFile(data: number[]): ConversationData {
         ],
       }),
     ],
+    associatedContent: [],
     title: 'conversation with an attachment',
   }
 }

@@ -3,13 +3,20 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import { parseConversationData } from '../../../common/conversation_serialization'
 import * as Mojom from '../../../common/mojom'
-import SampleConversation from '../../stories/conversations/multi_tool_multi_turn'
+import sampleConversationJson from '../../stories/conversations/multi_tool_multi_turn'
 import {
   createSharedConversationPayload,
   type FaviconContext,
   type ShareableConversationContext,
 } from './create_shared_conversation_payload'
+
+// The story fixture is stored in its serialized form, so revive it to get the
+// mojom types a conversation actually holds.
+const SampleConversation = parseConversationData(
+  JSON.stringify(sampleConversationJson),
+).messages
 
 function createAssociatedContent(
   contentId: number,
