@@ -1,0 +1,13 @@
+diff --git a/components/variations/seed_reader_writer.h b/components/variations/seed_reader_writer.h
+index 4df18d701c91d541e404f17cef67ecac312d521e..164043f5ab6d4aadaa5748a8b1732ff435359121 100644
+--- a/components/variations/seed_reader_writer.h
++++ b/components/variations/seed_reader_writer.h
+@@ -265,6 +265,8 @@ class COMPONENT_EXPORT(VARIATIONS) SeedReaderWriter
+   // Converts a time from StoredSeedInfo proto format (int64_t) to a base::Time.
+   static base::Time ProtoTimeToTime(int64_t proto_time);
+ 
++  void SetSessionCountry(std::string_view country_code);
++
+  private:
+   // The storage format of the seed data.
+   // - kCompressed: the seed is compressed. This is used for backward
