@@ -40,7 +40,6 @@ namespace {
 constexpr base::FilePath::CharType kComponentInstallDir[] =
     FILE_PATH_LITERAL("BraveOnDeviceSpeechModels");
 constexpr char kComponentName[] = "Brave On-Device Speech Models";
-constexpr char kComponentId[] = "nhkekccefdppopbldokibkoegppanbba";
 
 // SHA256 of the provisioned component's public key.
 constexpr uint8_t kPublicKeySHA256[32] = {
@@ -162,7 +161,9 @@ void MaybeRegisterOnDeviceSpeechModelsComponent(
       cus, base::BindOnce(
                [](component_updater::Callback callback) {
                  brave_component_updater::BraveOnDemandUpdater::GetInstance()
-                     ->EnsureInstalled(kComponentId, std::move(callback));
+                     ->EnsureInstalled(
+                         std::string(kOnDeviceSpeechModelsComponentId),
+                         std::move(callback));
                },
                std::move(callback)));
 }
