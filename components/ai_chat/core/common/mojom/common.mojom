@@ -549,6 +549,9 @@ struct ConversationTurn {
   // Populated if owned by a conversation
   string? uuid;
 
+  // The thread this entry belongs to, if any. Null for root entries.
+  string? thread_uuid;
+
   CharacterType character_type;
   ActionType action_type;
 
@@ -595,6 +598,22 @@ struct ConversationTurn {
 
   // NEAR attestation verification status associated with this turn.
   NEARVerificationStatus? near_verification_status;
+
+  // UUIDs of threads that originate from this entry.
+  array<string> child_thread_uuids;
+};
+
+// A thread is a sub-conversation that branches off a conversation entry.
+struct Thread {
+  string uuid;
+  string conversation_uuid;
+  // The conversation entry this thread originates from.
+  string origin_conversation_entry_uuid;
+
+  uint64 total_tokens;
+  uint64 trimmed_tokens;
+  
+  uint32 entry_count;
 };
 
 // State of the tool loop task execution. A Task represents a loop of tool

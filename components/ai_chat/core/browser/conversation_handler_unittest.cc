@@ -347,16 +347,17 @@ class ConversationHandlerUnitTest : public testing::Test {
       }
 
       auto entry = mojom::ConversationTurn::New(
-          "turn-" + base::NumberToString(i),
+          "turn-" + base::NumberToString(i), std::nullopt /* thread_uuid */,
           is_human ? mojom::CharacterType::HUMAN
                    : mojom::CharacterType::ASSISTANT,
           is_human ? mojom::ActionType::QUERY : mojom::ActionType::RESPONSE,
           entries[i].first /* text */, std::nullopt /* prompt */,
           std::nullopt /* selected_text */, std::move(events),
           base::Time::Now(), std::nullopt /* edits */,
-          std::nullopt /* uploaed_images */, nullptr /* skill */,
+          std::nullopt /* uploaded_images */, nullptr /* skill */,
           entries[i].second /* from_brave_search_SERP */,
-          std::nullopt /* model_key */, nullptr /* near_verification_status */);
+          std::nullopt /* model_key */, nullptr /* near_verification_status */,
+          std::vector<std::string>{} /* child_thread_uuids */);
       expected_history.push_back(entry.Clone());
       history.push_back(std::move(entry));
     }
@@ -548,21 +549,23 @@ TEST_F(ConversationHandlerUnitTest, SubmitSelectedText) {
   std::vector<mojom::ConversationTurnPtr> expected_history;
 
   expected_history.push_back(mojom::ConversationTurn::New(
-      std::nullopt, mojom::CharacterType::HUMAN,
+      std::nullopt, std::nullopt /* thread_uuid */, mojom::CharacterType::HUMAN,
       mojom::ActionType::SUMMARIZE_SELECTED_TEXT, expected_turn_text,
       std::nullopt, selected_text, std::nullopt, base::Time::Now(),
       std::nullopt, std::nullopt, nullptr /* skill */, false,
-      std::nullopt /* model_key */, nullptr /* near_verification_status */));
+      std::nullopt /* model_key */, nullptr /* near_verification_status */,
+      std::vector<std::string>{} /* child_thread_uuids */));
 
   std::vector<mojom::ConversationEntryEventPtr> response_events;
   response_events.push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
       mojom::CompletionEvent::New(expected_response)));
   expected_history.push_back(mojom::ConversationTurn::New(
-      std::nullopt, mojom::CharacterType::ASSISTANT,
-      mojom::ActionType::RESPONSE, expected_response, std::nullopt,
-      std::nullopt, std::move(response_events), base::Time::Now(), std::nullopt,
-      std::nullopt, nullptr /* skill */, false, std::nullopt /* model_key */,
-      nullptr /* near_verification_status */));
+      std::nullopt, std::nullopt /* thread_uuid */,
+      mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
+      expected_response, std::nullopt, std::nullopt, std::move(response_events),
+      base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */, false,
+      std::nullopt /* model_key */, nullptr /* near_verification_status */,
+      std::vector<std::string>{} /* child_thread_uuids */));
 
   NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
   EXPECT_CALL(client, OnAPIRequestInProgress(true)).Times(1);
@@ -630,21 +633,23 @@ TEST_F(ConversationHandlerUnitTest, SubmitSelectedText_WithNEARVerification) {
   std::vector<mojom::ConversationTurnPtr> expected_history;
 
   expected_history.push_back(mojom::ConversationTurn::New(
-      std::nullopt, mojom::CharacterType::HUMAN,
+      std::nullopt, std::nullopt /* thread_uuid */, mojom::CharacterType::HUMAN,
       mojom::ActionType::SUMMARIZE_SELECTED_TEXT, expected_turn_text,
       std::nullopt, selected_text, std::nullopt, base::Time::Now(),
       std::nullopt, std::nullopt, nullptr /* skill */, false,
-      std::nullopt /* model_key */, nullptr /* near_verification_status */));
+      std::nullopt /* model_key */, nullptr /* near_verification_status */,
+      std::vector<std::string>{} /* child_thread_uuids */));
 
   std::vector<mojom::ConversationEntryEventPtr> response_events;
   response_events.push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
       mojom::CompletionEvent::New(expected_response)));
   expected_history.push_back(mojom::ConversationTurn::New(
-      std::nullopt, mojom::CharacterType::ASSISTANT,
-      mojom::ActionType::RESPONSE, expected_response, std::nullopt,
-      std::nullopt, std::move(response_events), base::Time::Now(), std::nullopt,
-      std::nullopt, nullptr /* skill */, false, std::nullopt /* model_key */,
-      mojom::NEARVerificationStatus::New(true)));
+      std::nullopt, std::nullopt /* thread_uuid */,
+      mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
+      expected_response, std::nullopt, std::nullopt, std::move(response_events),
+      base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */, false,
+      std::nullopt /* model_key */, mojom::NEARVerificationStatus::New(true),
+      std::vector<std::string>{} /* child_thread_uuids */));
 
   NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
   EXPECT_CALL(client, OnAPIRequestInProgress(true)).Times(1);
@@ -706,21 +711,23 @@ TEST_F(ConversationHandlerUnitTest, SubmitSelectedText_WithAssociatedContent) {
 
   std::vector<mojom::ConversationTurnPtr> expected_history;
   expected_history.push_back(mojom::ConversationTurn::New(
-      std::nullopt, mojom::CharacterType::HUMAN,
+      std::nullopt, std::nullopt /* thread_uuid */, mojom::CharacterType::HUMAN,
       mojom::ActionType::SUMMARIZE_SELECTED_TEXT, expected_turn_text,
       std::nullopt, selected_text, std::nullopt, base::Time::Now(),
       std::nullopt, std::nullopt, nullptr /* skill */, false,
-      std::nullopt /* model_key */, nullptr /* near_verification_status */));
+      std::nullopt /* model_key */, nullptr /* near_verification_status */,
+      std::vector<std::string>{} /* child_thread_uuids */));
 
   std::vector<mojom::ConversationEntryEventPtr> response_events;
   response_events.push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
       mojom::CompletionEvent::New(expected_response)));
   expected_history.push_back(mojom::ConversationTurn::New(
-      std::nullopt, mojom::CharacterType::ASSISTANT,
-      mojom::ActionType::RESPONSE, expected_response, std::nullopt,
-      std::nullopt, std::move(response_events), base::Time::Now(), std::nullopt,
-      std::nullopt, nullptr /* skill */, false, std::nullopt /* model_key */,
-      nullptr /* near_verification_status */));
+      std::nullopt, std::nullopt /* thread_uuid */,
+      mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
+      expected_response, std::nullopt, std::nullopt, std::move(response_events),
+      base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */, false,
+      std::nullopt /* model_key */, nullptr /* near_verification_status */,
+      std::vector<std::string>{} /* child_thread_uuids */));
 
   NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
   EXPECT_CALL(client, OnAPIRequestInProgress(true)).Times(1);
@@ -1912,11 +1919,12 @@ TEST_F(ConversationHandlerUnitTest, RegenerateAnswer_ErrorCases) {
   // Test regenerating a conversation with just a single assistant entry
   std::vector<mojom::ConversationTurnPtr> single_entry_history;
   single_entry_history.push_back(mojom::ConversationTurn::New(
-      "assistant_uuid", mojom::CharacterType::ASSISTANT,
-      mojom::ActionType::RESPONSE, "original answer", std::nullopt,
-      std::nullopt, std::nullopt, base::Time::Now(), std::nullopt, std::nullopt,
-      nullptr /* skill */, false, std::nullopt /* model_key */,
-      nullptr /* near_verification_status */));
+      "assistant_uuid", std::nullopt /* thread_uuid */,
+      mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
+      "original answer", std::nullopt, std::nullopt, std::nullopt,
+      base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */, false,
+      std::nullopt /* model_key */, nullptr /* near_verification_status */,
+      std::vector<std::string>{} /* child_thread_uuids */));
 
   conversation_handler_->SetChatHistoryForTesting(
       CloneHistory(single_entry_history));
@@ -1962,18 +1970,22 @@ TEST_F(ConversationHandlerUnitTest,
   auto& history = conversation_handler_->GetConversationHistory();
   std::vector<mojom::ConversationTurnPtr> expected_history;
   expected_history.push_back(mojom::ConversationTurn::New(
-      "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY, "query",
-      std::nullopt, std::nullopt, std::nullopt, base::Time::Now(), std::nullopt,
-      std::nullopt, nullptr /* skill */, true, std::nullopt /* model_key */,
-      nullptr /* near_verification_status */));
+      "turn-1", std::nullopt /* thread_uuid */, mojom::CharacterType::HUMAN,
+      mojom::ActionType::QUERY, "query", std::nullopt, std::nullopt,
+      std::nullopt, base::Time::Now(), std::nullopt, std::nullopt,
+      nullptr /* skill */, true, std::nullopt /* model_key */,
+      nullptr /* near_verification_status */,
+      std::vector<std::string>{} /* child_thread_uuids */));
   std::vector<mojom::ConversationEntryEventPtr> events;
   events.push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
       mojom::CompletionEvent::New("summary")));
   expected_history.push_back(mojom::ConversationTurn::New(
-      "turn-2", mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
-      "summary", std::nullopt, std::nullopt, std::move(events),
-      base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */, true,
-      std::nullopt /* model_key */, nullptr /* near_verification_status */));
+      "turn-2", std::nullopt /* thread_uuid */, mojom::CharacterType::ASSISTANT,
+      mojom::ActionType::RESPONSE, "summary", std::nullopt, std::nullopt,
+      std::move(events), base::Time::Now(), std::nullopt, std::nullopt,
+      nullptr /* skill */, true, std::nullopt /* model_key */,
+      nullptr /* near_verification_status */,
+      std::vector<std::string>{} /* child_thread_uuids */));
   ASSERT_EQ(history.size(), expected_history.size());
   for (size_t i = 0; i < history.size(); i++) {
     expected_history[i]->created_time = history[i]->created_time;
@@ -2029,34 +2041,40 @@ TEST_F(ConversationHandlerUnitTest,
   auto& history = conversation_handler_->GetConversationHistory();
   std::vector<mojom::ConversationTurnPtr> expected_history;
   expected_history.push_back(mojom::ConversationTurn::New(
-      std::nullopt, mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
-      "query", std::nullopt, std::nullopt, std::nullopt, base::Time::Now(),
-      std::nullopt, std::nullopt, nullptr /* skill */, true,
-      std::nullopt /* model_key */, nullptr /* near_verification_status */));
+      std::nullopt, std::nullopt /* thread_uuid */, mojom::CharacterType::HUMAN,
+      mojom::ActionType::QUERY, "query", std::nullopt, std::nullopt,
+      std::nullopt, base::Time::Now(), std::nullopt, std::nullopt,
+      nullptr /* skill */, true, std::nullopt /* model_key */,
+      nullptr /* near_verification_status */,
+      std::vector<std::string>{} /* child_thread_uuids */));
   std::vector<mojom::ConversationEntryEventPtr> events;
   events.push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
       mojom::CompletionEvent::New("summary")));
   expected_history.push_back(mojom::ConversationTurn::New(
-      std::nullopt, mojom::CharacterType::ASSISTANT,
-      mojom::ActionType::RESPONSE, "summary", std::nullopt, std::nullopt,
-      std::move(events), base::Time::Now(), std::nullopt, std::nullopt,
-      nullptr /* skill */, true, std::nullopt /* model_key */,
-      nullptr /* near_verification_status */));
+      std::nullopt, std::nullopt /* thread_uuid */,
+      mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE, "summary",
+      std::nullopt, std::nullopt, std::move(events), base::Time::Now(),
+      std::nullopt, std::nullopt, nullptr /* skill */, true,
+      std::nullopt /* model_key */, nullptr /* near_verification_status */,
+      std::vector<std::string>{} /* child_thread_uuids */));
 
   expected_history.push_back(mojom::ConversationTurn::New(
-      std::nullopt, mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
-      "query2", std::nullopt, std::nullopt, std::nullopt, base::Time::Now(),
-      std::nullopt, std::nullopt, nullptr /* skill */, true,
-      std::nullopt /* model_key */, nullptr /* near_verification_status */));
+      std::nullopt, std::nullopt /* thread_uuid */, mojom::CharacterType::HUMAN,
+      mojom::ActionType::QUERY, "query2", std::nullopt, std::nullopt,
+      std::nullopt, base::Time::Now(), std::nullopt, std::nullopt,
+      nullptr /* skill */, true, std::nullopt /* model_key */,
+      nullptr /* near_verification_status */,
+      std::vector<std::string>{} /* child_thread_uuids */));
   std::vector<mojom::ConversationEntryEventPtr> events2;
   events2.push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
       mojom::CompletionEvent::New("summary2")));
   expected_history.push_back(mojom::ConversationTurn::New(
-      std::nullopt, mojom::CharacterType::ASSISTANT,
-      mojom::ActionType::RESPONSE, "summary2", std::nullopt, std::nullopt,
-      std::move(events2), base::Time::Now(), std::nullopt, std::nullopt,
-      nullptr /* skill */, true, std::nullopt /* model_key */,
-      nullptr /* near_verification_status */));
+      std::nullopt, std::nullopt /* thread_uuid */,
+      mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE, "summary2",
+      std::nullopt, std::nullopt, std::move(events2), base::Time::Now(),
+      std::nullopt, std::nullopt, nullptr /* skill */, true,
+      std::nullopt /* model_key */, nullptr /* near_verification_status */,
+      std::vector<std::string>{} /* child_thread_uuids */));
 
   ASSERT_EQ(history.size(), expected_history.size());
   for (size_t i = 0; i < history.size(); i++) {
@@ -2094,11 +2112,12 @@ TEST_F(ConversationHandlerUnitTest,
   events3.push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
       mojom::CompletionEvent::New("new answer")));
   auto expected_turn = mojom::ConversationTurn::New(
-      std::nullopt, mojom::CharacterType::ASSISTANT,
-      mojom::ActionType::RESPONSE, "new answer", std::nullopt, std::nullopt,
-      std::move(events3), base::Time::Now(), std::nullopt, std::nullopt,
-      nullptr /* skill */, false, std::nullopt /* model_key */,
-      nullptr /* near_verification_status */);
+      std::nullopt, std::nullopt /* thread_uuid */,
+      mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
+      "new answer", std::nullopt, std::nullopt, std::move(events3),
+      base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */, false,
+      std::nullopt /* model_key */, nullptr /* near_verification_status */,
+      std::vector<std::string>{} /* child_thread_uuids */);
   EXPECT_CALL(client, OnConversationHistoryUpdate(TurnEq(expected_turn.get())))
       .Times(testing::AtLeast(2));
 
@@ -4491,12 +4510,14 @@ TEST_F(ConversationHandlerUnitTest, NoScreenshotWhenScreenshotsAlreadyExist) {
   // Add existing screenshots to conversation history
   std::vector<mojom::ConversationTurnPtr> history;
   auto turn_with_screenshots = mojom::ConversationTurn::New(
-      "turn-screenshots", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+      "turn-screenshots", std::nullopt /* thread_uuid */,
+      mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
       "Previous question", std::nullopt, std::nullopt, std::nullopt,
       base::Time::Now(), std::nullopt,
       CreateSampleUploadedFiles(1, mojom::UploadedFileType::kScreenshot),
       nullptr /* skill */, false, std::nullopt /* model_key */,
-      nullptr /* near_verification_status */);
+      nullptr /* near_verification_status */,
+      std::vector<std::string>{} /* child_thread_uuids */);
   history.push_back(std::move(turn_with_screenshots));
   conversation_handler_->SetChatHistoryForTesting(std::move(history));
 

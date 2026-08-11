@@ -26,6 +26,8 @@ const MEMORY_HISTORY: Mojom.ConversationTurn[] = [
     skill: undefined,
     modelKey: '1',
     nearVerificationStatus: undefined,
+    threadUuid: undefined,
+    childThreadUuids: [],
   },
   {
     uuid: 'assistant-1',
@@ -50,6 +52,8 @@ const MEMORY_HISTORY: Mojom.ConversationTurn[] = [
     skill: undefined,
     modelKey: '1',
     nearVerificationStatus: undefined,
+    threadUuid: undefined,
+    childThreadUuids: [],
   },
   {
     uuid: 'user-2',
@@ -66,6 +70,8 @@ const MEMORY_HISTORY: Mojom.ConversationTurn[] = [
     skill: undefined,
     modelKey: '1',
     nearVerificationStatus: undefined,
+    threadUuid: undefined,
+    childThreadUuids: [],
   },
   {
     uuid: 'assistant-2',
@@ -90,6 +96,8 @@ const MEMORY_HISTORY: Mojom.ConversationTurn[] = [
     skill: undefined,
     modelKey: '1',
     nearVerificationStatus: undefined,
+    threadUuid: undefined,
+    childThreadUuids: [],
   },
   {
     uuid: 'user-3',
@@ -106,6 +114,8 @@ const MEMORY_HISTORY: Mojom.ConversationTurn[] = [
     skill: undefined,
     modelKey: '1',
     nearVerificationStatus: undefined,
+    threadUuid: undefined,
+    childThreadUuids: [],
   },
   {
     uuid: 'assistant-3',
@@ -132,6 +142,8 @@ const MEMORY_HISTORY: Mojom.ConversationTurn[] = [
     skill: undefined,
     modelKey: '1',
     nearVerificationStatus: undefined,
+    threadUuid: undefined,
+    childThreadUuids: [],
   },
 ]
 

@@ -692,16 +692,18 @@ TEST(AIChatSyncConversionsTest, EntryRoundTripAllFields) {
       "extracted text" /* extracted_text */));
 
   auto entry = mojom::ConversationTurn::New(
-      "entry-all" /* uuid */, mojom::CharacterType::ASSISTANT,
-      mojom::ActionType::RESPONSE, "entry text" /* text */,
-      "the prompt" /* prompt */, "selected text" /* selected_text */,
-      std::move(events) /* events */, base::Time::Now() /* created_time */,
+      "entry-all" /* uuid */, std::nullopt /* thread_uuid */,
+      mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
+      "entry text" /* text */, "the prompt" /* prompt */,
+      "selected text" /* selected_text */, std::move(events) /* events */,
+      base::Time::Now() /* created_time */,
       std::nullopt /* edits (not synced) */,
       std::move(uploaded_files) /* uploaded_files */,
       mojom::SkillEntry::New("/skill", "skill prompt") /* skill */,
       false /* from_brave_search_SERP (not synced) */,
       "model-key" /* model_key */,
-      mojom::NEARVerificationStatus::New(true) /* near_verification_status */);
+      mojom::NEARVerificationStatus::New(true) /* near_verification_status */,
+      std::vector<std::string>{} /* child_thread_uuids */);
 
   // Associated content is carried alongside the entry; its extracted text
   // rides in the texts map keyed by AC uuid.
