@@ -1,6 +1,8 @@
 include_rules = [
+  "+brave/browser/ui/views/side_panel/brave_talk",
   "+brave/components/ai_chat/core/common/buildflags",
   "+brave/components/brave_news/common",
+  "+brave/components/brave_talk",
   "+brave/components/brave_wallet/common/buildflags",
   "+brave/components/playlist/core/common",
   "+brave/ui/color/nala",

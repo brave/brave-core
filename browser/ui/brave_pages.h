@@ -9,7 +9,6 @@
 #include <string_view>
 
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
-#include "brave/components/brave_talk/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 
 class Browser;
@@ -33,9 +32,6 @@ void ShowExtensionSettings(BrowserWindowInterface* browser);
 void ShowSync(BrowserWindowInterface* browser);
 void ShowBraveNewsConfigure(BrowserWindowInterface* browser);
 void ShowShortcutsPage(BrowserWindowInterface* browser);
-#if BUILDFLAG(ENABLE_BRAVE_TALK)
-void ShowBraveTalk(BrowserWindowInterface* browser);
-#endif
 #if BUILDFLAG(ENABLE_AI_CHAT)
 void ShowFullpageChat(BrowserWindowInterface* browser);
 #endif

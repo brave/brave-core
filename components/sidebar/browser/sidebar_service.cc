@@ -684,7 +684,7 @@ SidebarItem SidebarService::GetBuiltInItemForType(
             l10n_util::GetStringUTF16(IDS_SIDEBAR_BRAVE_TALK_ITEM_TITLE),
             SidebarItem::Type::kTypeBuiltIn,
             SidebarItem::BuiltInItemType::kBraveTalk,
-            /* open_in_panel = */ false);
+            /* open_in_panel = */ true);
       }
       return SidebarItem();
 #endif  // BUILDFLAG(ENABLE_BRAVE_TALK)

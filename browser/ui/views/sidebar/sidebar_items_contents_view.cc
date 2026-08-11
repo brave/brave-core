@@ -162,19 +162,6 @@ void SidebarItemsContentsView::UpdateAllBuiltInItemsViewState() {
       continue;
     }
 
-#if BUILDFLAG(ENABLE_BRAVE_TALK)
-    // If browser window has tab that loads brave talk, brave talk panel icon
-    // will use colored one for normal state also.
-    if (item.built_in_item_type ==
-        sidebar::SidebarItem::BuiltInItemType::kBraveTalk) {
-      UpdateItemViewStateAt(item_index,
-                            browser_->GetFeatures()
-                                .sidebar_controller()
-                                ->DoesBrowserHaveOpenedTabForItem(item));
-      continue;
-    }
-#endif
-
     UpdateItemViewStateAt(item_index, item_index == active_index);
   }
 }

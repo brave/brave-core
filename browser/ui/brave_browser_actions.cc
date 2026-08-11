@@ -11,6 +11,7 @@
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
+#include "brave/components/brave_talk/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/containers/buildflags/buildflags.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
@@ -53,10 +54,16 @@
 #include "brave/components/brave_wallet/common/features.h"
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_TALK)
+#include "brave/components/brave_talk/pref_names.h"
+#include "components/prefs/pref_service.h"
+#endif
+
 namespace {
 
-#if BUILDFLAG(ENABLE_PLAYLIST) || BUILDFLAG(ENABLE_AI_CHAT) || \
-    BUILDFLAG(ENABLE_BRAVE_NEWS) || BUILDFLAG(ENABLE_BRAVE_WALLET)
+#if BUILDFLAG(ENABLE_PLAYLIST) || BUILDFLAG(ENABLE_AI_CHAT) ||        \
+    BUILDFLAG(ENABLE_BRAVE_NEWS) || BUILDFLAG(ENABLE_BRAVE_WALLET) || \
+    BUILDFLAG(ENABLE_BRAVE_TALK)
 actions::ActionItem::ActionItemBuilder SidePanelAction(
     SidePanelEntryId id,
     int title_id,
@@ -74,7 +81,8 @@ actions::ActionItem::ActionItemBuilder SidePanelAction(
       .SetProperty(actions::kActionItemPinnableKey, is_pinnable);
 }
 #endif  // BUILDFLAG(ENABLE_PLAYLIST) || BUILDFLAG(ENABLE_AI_CHAT) ||
-        // BUILDFLAG(ENABLE_BRAVE_NEWS) || BUILDFLAG(ENABLE_BRAVE_WALLET)
+        // BUILDFLAG(ENABLE_BRAVE_NEWS) || BUILDFLAG(ENABLE_BRAVE_WALLET) ||
+        // BUILDFLAG(ENABLE_BRAVE_TALK)
 
 }  // namespace
 
@@ -115,6 +123,17 @@ void BraveBrowserActions::InitializeBrowserActions() {
         SidePanelAction(SidePanelEntryId::kBraveNews, IDS_BRAVE_NEWS_TITLE,
                         IDS_BRAVE_NEWS_TITLE, kLeoRssIcon,
                         kActionSidePanelShowBraveNews, bwi, true)
+            .Build());
+  }
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_TALK)
+  if (!profile_->GetPrefs()->GetBoolean(brave_talk::prefs::kDisabledByPolicy)) {
+    root_action_item_->AddChild(
+        SidePanelAction(
+            SidePanelEntryId::kBraveTalk, IDS_SIDEBAR_BRAVE_TALK_ITEM_TITLE,
+            IDS_SIDEBAR_BRAVE_TALK_ITEM_TITLE, kLeoProductBraveTalkIcon,
+            kActionSidePanelShowBraveTalk, bwi, true)
             .Build());
   }
 #endif

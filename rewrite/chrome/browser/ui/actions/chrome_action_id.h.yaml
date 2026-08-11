@@ -13,6 +13,7 @@ substitutions:
           E(kActionSidePanelShowChatUI) \
           E(kActionSidePanelShowBraveNews) \
           E(kActionSidePanelShowWallet) \
+          E(kActionSidePanelShowBraveTalk) \
   - description: |
       Register Brave's toolbar action ids.
     regex:

@@ -519,6 +519,11 @@ if (enable_traffic_control) {
 
 if (enable_brave_talk) {
   brave_chrome_browser_deps += [ "//brave/components/brave_talk" ]
+
+  if (!is_android) {
+    brave_chrome_browser_deps +=
+        [ "//brave/browser/ui/views/side_panel/brave_talk" ]
+  }
 }
 
 if (enable_commander) {

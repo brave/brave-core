@@ -71,6 +71,7 @@
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_shields/core/common/shields_settings.mojom.h"
+#include "brave/components/brave_talk/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
@@ -249,6 +250,10 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/components/containers/content/browser/storage_partition_utils.h"
 #include "brave/components/containers/core/common/features.h"
 #include "brave/components/containers/core/mojom/containers.mojom.h"
+#endif
+
+#if !BUILDFLAG(IS_ANDROID) && BUILDFLAG(ENABLE_BRAVE_TALK)
+#include "brave/browser/ui/views/side_panel/brave_talk/brave_talk_side_panel_navigation_throttle.h"
 #endif
 
 #if !BUILDFLAG(IS_ANDROID)
@@ -1430,6 +1435,9 @@ void BraveContentBrowserClient::CreateThrottlesForNavigation(
 #if !BUILDFLAG(IS_ANDROID)
   NewTabShowsNavigationThrottle::MaybeCreateAndAdd(registry);
   SplitViewLinkNavigationThrottle::MaybeCreateAndAdd(registry);
+#if BUILDFLAG(ENABLE_BRAVE_TALK)
+  BraveTalkSidePanelNavigationThrottle::MaybeCreateAndAdd(registry);
+#endif
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)

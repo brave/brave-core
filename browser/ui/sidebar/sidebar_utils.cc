@@ -185,7 +185,7 @@ SidePanelEntryId SidePanelIdFromSideBarItemType(BuiltInItemType type) {
 #endif
 #if BUILDFLAG(ENABLE_BRAVE_TALK)
     case BuiltInItemType::kBraveTalk:
-      break;
+      return SidePanelEntryId::kBraveTalk;
 #endif
     case BuiltInItemType::kHistory:
       break;
@@ -219,6 +219,10 @@ std::optional<BuiltInItemType> BuiltInItemTypeFromSidePanelId(
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)
     case SidePanelEntryId::kBraveNews:
       return BuiltInItemType::kBraveNews;
+#endif
+#if BUILDFLAG(ENABLE_BRAVE_TALK)
+    case SidePanelEntryId::kBraveTalk:
+      return BuiltInItemType::kBraveTalk;
 #endif
     default:
       break;
@@ -280,6 +284,11 @@ void SetLastUsedSidePanel(PrefService* prefs,
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)
       case SidePanelEntryId::kBraveNews:
         type = BuiltInItemType::kBraveNews;
+        break;
+#endif
+#if BUILDFLAG(ENABLE_BRAVE_TALK)
+      case SidePanelEntryId::kBraveTalk:
+        type = BuiltInItemType::kBraveTalk;
         break;
 #endif
       default:

@@ -7,6 +7,7 @@
 
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
+#include "brave/components/brave_talk/buildflags/buildflags.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
@@ -26,6 +27,15 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/side_panel/side_panel_entry.h"
 #include "chrome/browser/ui/side_panel/side_panel_entry_id.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_TALK)
+#include "brave/browser/ui/views/side_panel/brave_talk/brave_talk_side_panel_web_view.h"
+#include "brave/components/brave_talk/pref_names.h"
+#include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/side_panel/side_panel_entry.h"
+#include "chrome/browser/ui/side_panel/side_panel_entry_id.h"
+#include "components/prefs/pref_service.h"
 #endif
 
 #define PopulateGlobalEntries PopulateGlobalEntries_ChromiumImpl
@@ -69,6 +79,17 @@ void SidePanelHelper::PopulateGlobalEntries(
     global_registry->Register(std::make_unique<SidePanelEntry>(
         SidePanelEntry::Key(SidePanelEntry::Id::kBraveNews),
         base::BindRepeating(&BraveNewsSidePanelWebView::CreateView,
+                            browser->GetProfile()),
+        base::NullCallback()));
+  }
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_TALK)
+  if (!browser->GetProfile()->GetPrefs()->GetBoolean(
+          brave_talk::prefs::kDisabledByPolicy)) {
+    global_registry->Register(std::make_unique<SidePanelEntry>(
+        SidePanelEntry::Key(SidePanelEntry::Id::kBraveTalk),
+        base::BindRepeating(&BraveTalkSidePanelWebView::CreateView,
                             browser->GetProfile()),
         base::NullCallback()));
   }
