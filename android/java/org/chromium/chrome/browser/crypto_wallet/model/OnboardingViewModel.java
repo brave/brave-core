@@ -155,6 +155,19 @@ public class OnboardingViewModel extends ViewModel {
         mTermsOfUseChecked = false;
     }
 
+    /** Clears every captured value so a new pass through onboarding starts from a clean state. */
+    public void reset() {
+        mLegacyRestoreEnabled = false;
+        mPassword = null;
+        mRecoveryPhrase = null;
+        mSelectedNetworks.clear();
+        mAvailableNetworks.clear();
+        mVerificationWords.clear();
+        clearUnlockState();
+        clearRestoreWalletState();
+        clearTermsOfUseSelections();
+    }
+
     public void setLegacyRestoreEnabled(final boolean legacyRestoreEnabled) {
         mLegacyRestoreEnabled = legacyRestoreEnabled;
     }
