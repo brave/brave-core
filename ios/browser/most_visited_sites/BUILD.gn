@@ -3,17 +3,21 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-source_set("topsites") {
+source_set("most_visited_sites") {
   sources = [
-    "brave_top_sites_service.h",
-    "brave_top_sites_service.mm",
-    "brave_top_sites_service_internal.h",
+    "most_visited_sites_bridge.h",
+    "most_visited_sites_bridge_impl.h",
+    "most_visited_sites_bridge_impl.mm",
+    "most_visited_sites_factory_bridge.h",
+    "most_visited_sites_factory_bridge.mm",
   ]
   deps = [
     "//base",
+    "//brave/ios/browser/api/profile",
     "//components/ntp_tiles",
     "//ios/chrome/browser/ntp_tiles/model",
     "//ios/chrome/browser/shared/model/profile",
+    "//ios/web/public/thread",
     "//net",
     "//url",
   ]
