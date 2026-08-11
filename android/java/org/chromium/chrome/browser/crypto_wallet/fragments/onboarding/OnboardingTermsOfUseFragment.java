@@ -14,19 +14,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.FragmentActivity;
 
 import com.google.android.material.checkbox.MaterialCheckBox;
 
+import org.chromium.build.annotations.NullMarked;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.helpers.Api33AndPlusBackPressHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.util.TabUtils;
 
 /** Onboarding fragment showing terms and conditions to accept before using Brave Wallet. */
+@NullMarked
 public class OnboardingTermsOfUseFragment extends BaseOnboardingWalletFragment
         implements CompoundButton.OnCheckedChangeListener {
 
@@ -37,7 +38,6 @@ public class OnboardingTermsOfUseFragment extends BaseOnboardingWalletFragment
 
     private boolean mContinueButtonClicked;
 
-    @NonNull
     public static OnboardingTermsOfUseFragment newInstance() {
         return new OnboardingTermsOfUseFragment();
     }
@@ -55,12 +55,14 @@ public class OnboardingTermsOfUseFragment extends BaseOnboardingWalletFragment
 
     @Override
     public View onCreateView(
-            @NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            LayoutInflater inflater,
+            @Nullable ViewGroup container,
+            @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_terms_of_use_wallet, container, false);
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         mSelfCustodyCheckBox = view.findViewById(R.id.self_custody_check_box);
