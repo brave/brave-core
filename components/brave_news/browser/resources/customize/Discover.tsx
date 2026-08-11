@@ -7,11 +7,14 @@ import Flex from '$web-common/Flex'
 import { getLocale } from '$web-common/locale'
 import Button from '@brave/leo/react/button'
 import * as React from 'react'
-import { useState } from 'react'
 import styled from 'styled-components'
+import { font, spacing } from '@brave/leo/tokens/css/variables'
+import { ChannelsCachingWrapper } from '../shared/channelsCache'
 import { useBraveNews, useChannels } from '../shared/Context'
+import { PublishersCachingWrapper } from '../shared/publishersCache'
 import ChannelCard from './ChannelCard'
 import DiscoverSection from './DiscoverSection'
+import Loading from './Loading'
 import PublisherCard, { DirectPublisherCard } from '../shared/PublisherCard'
 import { PopularCarousel } from './Popular'
 import { SuggestionsCarousel } from './Suggestions'
@@ -19,16 +22,15 @@ import useSearch from './useSearch'
 import Input from '@brave/leo/react/input'
 
 const Header = styled.span`
-  font-size: 24px;
-  font-weight: 600;
-  padding: 12px 0;
+  font: ${font.heading.h2};
+  padding: ${spacing.l} 0;
 `
 
 export default function Discover () {
-  const [query, setQuery] = useState('')
+  const [query, setQuery] = React.useState('')
 
   return <Flex direction='column'>
-    <Header>Discover</Header>
+    <Header>{getLocale(S.BRAVE_NEWS_DISCOVER_TITLE)}</Header>
     <Input type="search" placeholder={getLocale(S.BRAVE_NEWS_SEARCH_PLACEHOLDER_LABEL)} value={query} onInput={e => setQuery(e.value)} />
     { query.length
       ? <SearchResults query={query} />
@@ -39,23 +41,34 @@ export default function Discover () {
 
 function Home () {
   const channels = useChannels()
-  const { updateSuggestedPublisherIds } = useBraveNews()
+  const { suggestedPublisherIds, updateSuggestedPublisherIds } = useBraveNews()
+  const publishersLoaded = PublishersCachingWrapper.getInstance().connected
+  const channelsLoaded = ChannelsCachingWrapper.getInstance().connected
+  const suggestionsLoading = suggestedPublisherIds.length === 0
 
   const channelNames = React.useMemo(() => channels.map(c => c.channelName),
     [channels])
 
   // When we mount this component, update the suggested publisher ids.
-  React.useEffect(() => { updateSuggestedPublisherIds() }, [])
+  React.useEffect(() => {
+    updateSuggestedPublisherIds()
+  }, [updateSuggestedPublisherIds])
 
   return (
     <>
-      <PopularCarousel />
-      <SuggestionsCarousel />
-      <DiscoverSection name={getLocale(S.BRAVE_NEWS_BROWSE_CHANNELS_HEADER)}>
-      {channelNames.map(channelName =>
-        <ChannelCard key={channelName} channelName={channelName} />
+      {publishersLoaded ? <PopularCarousel /> : <Loading />}
+      {suggestionsLoading ? <Loading /> : <SuggestionsCarousel />}
+      {channelsLoaded ? (
+        <DiscoverSection name={getLocale(S.BRAVE_NEWS_BROWSE_CHANNELS_HEADER)}>
+          {channelNames.map(channelName =>
+            <ChannelCard key={channelName} channelName={channelName} />)}
+        </DiscoverSection>
+      ) : (
+        <>
+          <DiscoverSection name={getLocale(S.BRAVE_NEWS_BROWSE_CHANNELS_HEADER)} />
+          <Loading />
+        </>
       )}
-      </DiscoverSection>
     </>
   )
 }

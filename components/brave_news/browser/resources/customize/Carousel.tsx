@@ -8,30 +8,29 @@ import styled, { css } from 'styled-components'
 import Flex from '$web-common/Flex'
 import PublisherCard from '../shared/PublisherCard'
 import { ArrowRight } from '../shared/Icons'
-import { color } from '@brave/leo/tokens/css/variables'
+import { color, effect, font, radius, spacing } from '@brave/leo/tokens/css/variables'
 
 const CARD_SIZE = 208
 const CARD_SIZE_PX = `${CARD_SIZE}px`
-const CARD_GAP = '16px'
 
 const ScrollButton = styled.button<{ hidden: boolean }>`
   all: unset;
   position: absolute;
-  width: 32px;
-  height: 32px;
-  top: 32px;
-  background: white;
-  border-radius: 32px;
-  box-shadow: 0px 1px 4px rgba(63, 76, 99, 0.35);
+  width: ${spacing['3Xl']};
+  height: ${spacing['3Xl']};
+  top: ${spacing['3Xl']};
+  background: ${color.container.background};
+  border-radius: ${radius.full};
+  box-shadow: ${effect.elevation['02']};
   display: flex;
   align-items: center;
   justify-content: center;
-  color: ${color.text.secondary};
+  color: ${color.icon.default};
   cursor: pointer;
 
   :hover {
-    box-shadow: 0px 1px 4px rgba(63, 76, 99, 0.5);
-    color: ${color.legacy.interactive4};
+    box-shadow: ${effect.elevation['03']};
+    color: ${color.icon.interactive};
   }
 
   ${p => p.hidden && css`opacity: 0;`}
@@ -40,17 +39,17 @@ const ScrollButton = styled.button<{ hidden: boolean }>`
 `
 
 const ScrollButtonLeft = styled(ScrollButton)`
-  left: -16px;
+  left: calc(-1 * ${spacing.xl});
   transform: rotate(180deg);
 `
 
 const ScrollButtonRight = styled(ScrollButton)`
-  right: -16px;
+  right: calc(-1 * ${spacing.xl});
 `
 
 const Container = styled(Flex)`
-  padding: 16px 0;
-  max-width: calc(${CARD_SIZE_PX} * 3 + ${CARD_GAP} * 2);
+  padding: ${spacing.xl} 0 0 0;
+  max-width: calc(${CARD_SIZE_PX} * 3 + ${spacing.xl} * 2);
   container-name: carousel;
   container-type: inline-size;
   &:not(:hover, :has(:focus-visible)) ${ScrollButton} {
@@ -60,13 +59,12 @@ const Container = styled(Flex)`
 
 const Header = styled.div`
   width: 100%;
-  font-weight: 600;
-  font-size: 16px;
-  margin: 8px 0;
+  font: ${font.heading.h4};
+  margin: ${spacing.m} 0;
 `
 
 const Subtitle = styled.span`
-  font-size: 12px;
+  font: ${font.small.regular};
 `
 
 const CarouselContainer = styled.div`
@@ -74,7 +72,7 @@ const CarouselContainer = styled.div`
 `
 
 const ItemsContainer = styled(Flex)`
-  margin: 8px 0;
+  margin: ${spacing.m} 0;
   overflow-x: auto;
   overflow-y: hidden;
   scroll-snap-type: x mandatory;
@@ -86,7 +84,7 @@ const ItemsContainer = styled(Flex)`
 `
 
 const PublisherCardContainer = styled.div`
-  min-width: calc((100cqi - ${CARD_GAP} * 2) / 3);
+  min-width: calc((100cqi - ${spacing.xl} * 2) / 3);
   max-width: ${CARD_SIZE_PX};
   scroll-snap-align: start;
 `
@@ -131,14 +129,14 @@ export default function Carousel(props: Props) {
 
   return (
     <Container direction='column'>
-      <Flex direction='row' gap={8} align='center'>
+      <Flex direction='row' gap={spacing.m} align='center'>
         <Header>{props.title}</Header>
       </Flex>
       {props.subtitle && <Subtitle>
         {props.subtitle}
       </Subtitle>}
       <CarouselContainer>
-        <ItemsContainer direction='row' gap={CARD_GAP} ref={scrollContainerRef as any} onScroll={updateAvailableDirections}>
+        <ItemsContainer direction='row' gap={spacing.xl} ref={scrollContainerRef as any} onScroll={updateAvailableDirections}>
           {props.publisherIds.map(p => <PublisherCardContainer key={p}>
             <PublisherCard publisherId={p} />
           </PublisherCardContainer>)}
