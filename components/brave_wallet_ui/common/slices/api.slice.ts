@@ -104,6 +104,13 @@ export function createWalletApi() {
               return { data: true }
             },
           }),
+          closeSidePanelUI: mutation<boolean, void>({
+            queryFn(arg, api, extraOptions, baseQuery) {
+              const { panelHandler } = baseQuery(undefined).data
+              panelHandler?.closeSidePanel()
+              return { data: true }
+            },
+          }),
         }),
       })
       // Wallet management endpoints
@@ -175,6 +182,7 @@ export const {
   useCancelTransactionMutation,
   useCheckExternalWalletPasswordMutation,
   useClosePanelUIMutation,
+  useCloseSidePanelUIMutation,
   useCompleteWalletBackupMutation,
   useConnectToSiteMutation,
   useCreateWalletMutation,
