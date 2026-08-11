@@ -30,7 +30,7 @@ export const _SignSimulatedTransactionPanel = {
   render: () => {
     return (
       <WalletPanelStory>
-        <PanelWrapper isLonger>
+        <PanelWrapper>
           <LongWrapper>
             <SignSimulatedTransactionPanel
               txSimulation={mockReceiveSolSimulation}
@@ -53,7 +53,7 @@ export const _EmptySignSimulatedTransactionPanel = {
   render: () => {
     return (
       <WalletPanelStory>
-        <PanelWrapper isLonger>
+        <PanelWrapper>
           <LongWrapper>
             <SignSimulatedTransactionPanel
               txSimulation={mockNoChangeSolSimulation}
