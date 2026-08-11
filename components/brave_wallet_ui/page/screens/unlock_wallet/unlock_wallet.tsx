@@ -1,7 +1,7 @@
 // Copyright (c) 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at https://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
 import { useHistory } from 'react-router'
@@ -23,7 +23,9 @@ import { useUnlockWalletMutation } from '../../../common/slices/api.slice'
 import getWalletAPIProxy from '../../../common/async/bridge'
 
 // Components
-import { PasswordInput } from '../../shared/password-input/password-input-v2'
+import {
+  PasswordInput, //
+} from '../../../components/shared/password-input/password-input-v2'
 
 // Styled Components
 import {
@@ -37,10 +39,10 @@ import {
   DoubleTapIcon,
   AndroidLockScreenWrapper,
   BraveLogo,
-} from './style'
-import { VerticalSpace, Row, Text } from '../../shared/style'
+} from './unlock_wallet.style'
+import { VerticalSpace, Row, Text } from '../../../components/shared/style'
 
-export const LockScreen = () => {
+export const UnlockWallet = () => {
   // redux
   const isPanel = useSafeUISelector(UISelectors.isPanel)
   const isMobile = useSafeUISelector(UISelectors.isMobile)

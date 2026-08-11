@@ -1,7 +1,8 @@
 // Copyright (c) 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at https://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
 import styled from 'styled-components'
 import Icon from '@brave/leo/react/icon'
 import * as leo from '@brave/leo/tokens/css/variables'
@@ -19,8 +20,8 @@ import BraveLogoDark from '../../../assets/svg-icons/wallet_logo_dark.svg'
 // Shared Styles
 import {
   layoutPanelWidth, //
-} from '../wallet-page-wrapper/wallet-page-wrapper.style'
-import { Text, Column, WalletButton } from '../../shared/style'
+} from '../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper.style'
+import { Text, Column, WalletButton } from '../../../components/shared/style'
 
 export const StyledWrapper = styled.div`
   display: flex;

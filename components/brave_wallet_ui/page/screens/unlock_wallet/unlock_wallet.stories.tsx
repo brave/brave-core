@@ -1,20 +1,20 @@
 // Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at https://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
 
 import {
   WalletPageStory, //
 } from '../../../stories/wrappers/wallet-page-story-wrapper'
-import { LockScreen } from '.'
+import { UnlockWallet } from './unlock_wallet'
 
-export const _LockScreen = {
+export const _UnlockWallet = {
   render: () => {
     return (
       <WalletPageStory>
-        <LockScreen />
+        <UnlockWallet />
       </WalletPageStory>
     )
   },
@@ -22,5 +22,5 @@ export const _LockScreen = {
 
 export default {
   title: 'Wallet/Desktop/Screens',
-  component: LockScreen,
+  component: UnlockWallet,
 }
