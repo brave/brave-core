@@ -176,6 +176,7 @@ export function createMockService(
         },
       }),
     getConversationShares: () => Promise.resolve({ shares: [] }),
+    copyConversationShareLink: () => {},
     createSkill: () => {},
     updateSkill: () => {},
     deleteSkill: () => {},

@@ -69,6 +69,12 @@ export default function createAIChatApi(
           prefetchWithArgs: [],
           placeholderData: [] as Mojom.Skill[],
         },
+        // Not prefetched - only the shared conversations dialog needs this, and
+        // it fetches when it opens.
+        getConversationShares: {
+          response: (result) => result.shares,
+          placeholderData: [] as Mojom.ConversationShare[],
+        },
         getPremiumStatus: {
           response: (result) => ({
             /**

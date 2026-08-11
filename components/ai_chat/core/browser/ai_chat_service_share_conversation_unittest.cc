@@ -274,4 +274,34 @@ TEST_F(AIChatServiceShareConversationTest, RecordsShareSoItCanBeManaged) {
   EXPECT_EQ(shares[0]->conversation_title, "Conversation title");
 }
 
+TEST_F(AIChatServiceShareConversationTest, CopiesRecordedShareLinkAgain) {
+  auto fake_share_manager = std::make_unique<FakeConversationShareManager>();
+  fake_share_manager->share_result = MakeShareResult();
+  ai_chat_service_->SetConversationShareManagerForTesting(
+      std::move(fake_share_manager));
+
+  base::test::TestFuture<const std::optional<GURL>&> share_future;
+  ai_chat_service_->ShareConversation(
+      "ciphertext-blob", "url-safe-key-fragment", "conversation-uuid",
+      "Conversation title",
+      /*copy_to_clipboard=*/false, share_future.GetCallback());
+  ASSERT_TRUE(share_future.Get().has_value());
+
+  ui::TestClipboard* clipboard = ui::TestClipboard::CreateForCurrentThread();
+  ai_chat_service_->CopyConversationShareLink("test-share-id");
+
+  base::test::TestFuture<std::u16string> clipboard_future;
+  clipboard->ReadText(ui::ClipboardBuffer::kCopyPaste,
+                      /*data_dst=*/std::nullopt,
+                      clipboard_future.GetCallback());
+  std::u16string clipboard_text = clipboard_future.Get();
+  ui::Clipboard::DestroyClipboardForCurrentThread();
+
+  // The recorded link includes the key fragment, so the user can share it with
+  // someone else without re-uploading the conversation.
+  EXPECT_EQ(
+      base::UTF16ToUTF8(clipboard_text),
+      "https://leo-ai.brave.app/sharing/test-share-id#url-safe-key-fragment");
+}
+
 }  // namespace ai_chat

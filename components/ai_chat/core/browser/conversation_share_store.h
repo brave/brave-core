@@ -29,12 +29,12 @@ class OSCryptAsync;
 namespace ai_chat {
 
 namespace store {
+class ConversationShareProto;
 class ConversationSharesProto;
 }  // namespace store
 
 // Remembers which conversations the user has shared, so that the share
-// management UI can list them, re-copy their links and delete them from the
-// sharing server.
+// management UI can list them and re-copy their links.
 //
 // Records hold the full shareable link, which contains the conversation's
 // decryption key, so the list is encrypted with OSCrypt before it is written to
@@ -55,6 +55,8 @@ class ConversationShareStore {
  public:
   using GetSharesCallback =
       base::OnceCallback<void(std::vector<mojom::ConversationSharePtr>)>;
+  // Invalid if there is no record for the share.
+  using GetShareUrlCallback = base::OnceCallback<void(const GURL&)>;
 
   ConversationShareStore(PrefService* prefs,
                          os_crypt_async::OSCryptAsync* os_crypt_async);
@@ -71,6 +73,10 @@ class ConversationShareStore {
 
   // Unexpired shares, most recently shared first.
   virtual void GetShares(GetSharesCallback callback);
+
+  // The full shareable link, including the decryption key fragment.
+  virtual void GetShareUrl(const std::string& share_id,
+                           GetShareUrlCallback callback);
 
  private:
   // A deferred store operation. It is handed the store when it runs, so that a
@@ -93,6 +99,11 @@ class ConversationShareStore {
   std::unique_ptr<store::ConversationSharesProto> ReadRecords();
 
   void WriteRecords(const store::ConversationSharesProto& records);
+
+  // nullptr if |records| holds no record for |share_id|.
+  static const store::ConversationShareProto* FindRecord(
+      const store::ConversationSharesProto& records,
+      const std::string& share_id);
 
   // Removes records the sharing server will have deleted by now. Returns
   // whether anything was removed.

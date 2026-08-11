@@ -217,6 +217,13 @@ interface Service {
   // expired, most recently shared first.
   GetConversationShares() => (array<ConversationShare> shares);
 
+  // Copies the link of an existing share to the system clipboard, marked as
+  // confidential in the same way as when the share was created. The link
+  // includes the conversation's decryption key, so it is not returned to the
+  // caller - keys for past shares stay in the browser process. Does nothing if
+  // there is no record of |share_id|.
+  CopyConversationShareLink(string share_id);
+
   // Bind ability to send events to the UI and receive current state
   BindObserver(pending_remote<ServiceObserver> ui) => (ServiceState state);
 
