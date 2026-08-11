@@ -48,6 +48,10 @@ extension BrowserViewController: DownloadQueueDelegate {
   ) {
     downloadToast?.combinedBytesDownloaded = combinedBytesDownloaded
     downloadToast?.combinedTotalBytesExpected = combinedTotalBytesExpected
+
+    if #available(iOS 26.0, *) {
+      downloadBackgroundTaskModel?.updateActiveTaskProgress()
+    }
   }
 
   func downloadQueue(
