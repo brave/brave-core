@@ -162,9 +162,10 @@ tools/cr/plaster.py --help make_virtual   # full docs for a specific rewriter
 Besides `substitutions:`, a plaster file may set file-wide options at the top
 level:
 
-| Key                            | Default | Description                                                   |
-| ------------------------------ | ------- | ------------------------------------------------------------- |
-| `blank_macros_for_ast_parsing` | `false` | Blank parse-blocking macros/conditionals before AST matching. |
+| Key                                            | Default | Description                                                              |
+| ---------------------------------------------- | ------- | ------------------------------------------------------------------------ |
+| `blank_macros_for_ast_parsing`                 | `false` | Blank parse-blocking macros/conditionals before AST matching.            |
+| `blank_string_adjacent_macros_for_ast_parsing` | `false` | Blank a macro directly adjacent to a string literal before AST matching. |
 
 ### Applying a plaster
 
