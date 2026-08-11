@@ -11,6 +11,10 @@
 
 import { describe, expect, it, jest } from '@jest/globals'
 
+import { NemotronStreamSession, OrtNemotronModel } from './nemotron_recognizer'
+
+import * as config from './configs'
+
 jest.mock('./ort_env', () => ({
   // Used by processAvailable(); no-op for unit tests
   disposeOrt: jest.fn(),
@@ -18,10 +22,6 @@ jest.mock('./ort_env', () => ({
   // Not used by these tests, but required by OrtNemotronModel.buildFromBytes().
   ensureOrt: jest.fn(),
 }))
-
-import { NemotronStreamSession, OrtNemotronModel } from './nemotron_recognizer'
-
-import * as config from './configs'
 
 type TensorData = Float32Array | Int32Array | BigInt64Array
 
