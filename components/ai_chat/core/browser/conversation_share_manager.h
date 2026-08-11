@@ -43,6 +43,9 @@ class ConversationShareManager {
   // response, or an invalid resulting URL).
   using ShareConversationCallback =
       base::OnceCallback<void(const std::optional<ConversationShareResult>&)>;
+  // Whether the server accepted the deletion.
+  using DeleteShareCallback = base::OnceCallback<void(bool)>;
+
   explicit ConversationShareManager(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
   ConversationShareManager(const ConversationShareManager&) = delete;
@@ -53,6 +56,12 @@ class ConversationShareManager {
   // produced by the UI.
   virtual void ShareConversation(const std::string& encrypted_contents,
                                  ShareConversationCallback callback);
+
+  // Asks the server to delete a previously uploaded share. |deletion_id| is the
+  // capability token the server returned when the share was created - the share
+  // id alone does not authorize deletion.
+  virtual void DeleteShare(const std::string& deletion_id,
+                           DeleteShareCallback callback);
 
  protected:
   void SetAPIRequestHelperForTesting(
@@ -66,6 +75,8 @@ class ConversationShareManager {
  private:
   void OnShareCompleted(ShareConversationCallback callback,
                         api_request_helper::APIRequestResult result);
+  void OnDeleteShareCompleted(DeleteShareCallback callback,
+                              api_request_helper::APIRequestResult result);
 
   std::unique_ptr<api_request_helper::APIRequestHelper> api_request_helper_;
 

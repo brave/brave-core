@@ -208,4 +208,108 @@ TEST_F(ConversationShareManagerUnitTest, ShareConversation_MissingDeletionId) {
   EXPECT_TRUE(result->deletion_id.empty());
 }
 
+TEST_F(ConversationShareManagerUnitTest, DeleteShare_Success) {
+  MockAPIRequestHelper* mock_request_helper =
+      share_manager_->GetMockAPIRequestHelper();
+
+  EXPECT_CALL(*mock_request_helper, Request)
+      .WillOnce(
+          [&](const std::string& method, const GURL& url,
+              const std::string& body, const std::string& content_type,
+              ResultCallback result_callback,
+              const base::flat_map<std::string, std::string>& headers,
+              const api_request_helper::APIRequestOptions& options,
+              api_request_helper::APIRequestHelper::ResponseConversionCallback
+                  conversion_callback) {
+            EXPECT_EQ(net::HttpRequestHeaders::kPostMethod, method);
+            EXPECT_EQ("/v1/share/delete", url.path());
+            EXPECT_EQ("application/json", content_type);
+
+            EXPECT_TRUE(headers.contains("x-brave-key"));
+            EXPECT_TRUE(headers.contains("digest"));
+            EXPECT_TRUE(
+                headers.contains(net::HttpRequestHeaders::kAuthorization));
+
+            auto body_dict = base::test::ParseJsonDict(body);
+            const std::string* deletion_id =
+                body_dict.FindString("deletion_id");
+            EXPECT_TRUE(deletion_id);
+            if (deletion_id) {
+              EXPECT_EQ("del456", *deletion_id);
+            }
+
+            std::move(result_callback)
+                .Run(api_request_helper::APIRequestResult(
+                    net::HTTP_OK, base::Value(), {}, net::OK, GURL()));
+            return Ticket();
+          });
+
+  base::test::TestFuture<bool> future;
+  share_manager_->DeleteShare("del456", future.GetCallback());
+
+  EXPECT_TRUE(future.Get());
+}
+
+TEST_F(ConversationShareManagerUnitTest, DeleteShare_AlreadyGone) {
+  MockAPIRequestHelper* mock_request_helper =
+      share_manager_->GetMockAPIRequestHelper();
+
+  EXPECT_CALL(*mock_request_helper, Request)
+      .WillOnce(
+          [](const std::string&, const GURL&, const std::string&,
+             const std::string&, ResultCallback result_callback,
+             const base::flat_map<std::string, std::string>&,
+             const api_request_helper::APIRequestOptions&,
+             api_request_helper::APIRequestHelper::ResponseConversionCallback) {
+            std::move(result_callback)
+                .Run(api_request_helper::APIRequestResult(
+                    net::HTTP_NOT_FOUND, base::Value(), {}, net::OK, GURL()));
+            return Ticket();
+          });
+
+  base::test::TestFuture<bool> future;
+  share_manager_->DeleteShare("del456", future.GetCallback());
+
+  // A share the server has already forgotten is in the state the user asked
+  // for, so the local record can be dropped too.
+  EXPECT_TRUE(future.Get());
+}
+
+TEST_F(ConversationShareManagerUnitTest, DeleteShare_ServerError) {
+  MockAPIRequestHelper* mock_request_helper =
+      share_manager_->GetMockAPIRequestHelper();
+
+  EXPECT_CALL(*mock_request_helper, Request)
+      .WillOnce(
+          [](const std::string&, const GURL&, const std::string&,
+             const std::string&, ResultCallback result_callback,
+             const base::flat_map<std::string, std::string>&,
+             const api_request_helper::APIRequestOptions&,
+             api_request_helper::APIRequestHelper::ResponseConversionCallback) {
+            std::move(result_callback)
+                .Run(api_request_helper::APIRequestResult(
+                    net::HTTP_INTERNAL_SERVER_ERROR, base::Value(), {}, net::OK,
+                    GURL()));
+            return Ticket();
+          });
+
+  base::test::TestFuture<bool> future;
+  share_manager_->DeleteShare("del456", future.GetCallback());
+
+  EXPECT_FALSE(future.Get());
+}
+
+TEST_F(ConversationShareManagerUnitTest, DeleteShare_NoDeletionId) {
+  MockAPIRequestHelper* mock_request_helper =
+      share_manager_->GetMockAPIRequestHelper();
+
+  // Nothing authorizes the deletion, so no request is made.
+  EXPECT_CALL(*mock_request_helper, Request).Times(0);
+
+  base::test::TestFuture<bool> future;
+  share_manager_->DeleteShare("", future.GetCallback());
+
+  EXPECT_FALSE(future.Get());
+}
+
 }  // namespace ai_chat

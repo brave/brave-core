@@ -433,13 +433,19 @@
     Manage shared conversations
   </message>
   <message name="IDS_CHAT_UI_SHARED_CONVERSATIONS_DIALOG_DESCRIPTION" desc="Explanatory text at the top of the dialog listing the conversations the user has shared" formatter_data="webui=AiChat">
-    Anyone with the link can view these conversations until they expire.
+    Anyone with the link can view these conversations until they expire. Delete a shared conversation to stop its link from working.
   </message>
   <message name="IDS_CHAT_UI_SHARED_CONVERSATIONS_DIALOG_EMPTY" desc="Text shown in the shared conversations dialog when the user has not shared any conversations" formatter_data="webui=AiChat">
     You haven't shared any conversations.
   </message>
+  <message name="IDS_CHAT_UI_SHARED_CONVERSATIONS_DELETE_BUTTON_LABEL" desc="A label for the button which deletes a shared conversation so that its link stops working" formatter_data="webui=AiChat">
+    Delete shared conversation
+  </message>
   <message name="IDS_CHAT_UI_SHARED_CONVERSATIONS_COPY_LINK_BUTTON_LABEL" desc="A label for the button which copies the link to a shared conversation" formatter_data="webui=AiChat">
     Copy link
+  </message>
+  <message name="IDS_CHAT_UI_SHARED_CONVERSATIONS_DELETE_ERROR" desc="An error message shown when a shared conversation could not be deleted" formatter_data="webui=AiChat">
+    Couldn't delete the shared conversation. Check your connection and try again.
   </message>
   <message name="IDS_CHAT_UI_MENU_RENAME_CONVERSATION" desc="Menu entry for renaming a conversation" formatter_data="webui=AiChat">
     Rename conversation

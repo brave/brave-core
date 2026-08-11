@@ -103,6 +103,84 @@ describe('SharedConversationsModal', () => {
     })
   })
 
+  it('deletes the share it was asked to and drops it from the list', async () => {
+    let shares = [...mockShares]
+    const deleteConversationShare = jest.fn((shareId: string) => {
+      shares = shares.filter((share) => share.shareId !== shareId)
+      return Promise.resolve({ success: true })
+    })
+
+    await renderModal(
+      <MockContext
+        service={{
+          getConversationShares: () => Promise.resolve({ shares }),
+          deleteConversationShare,
+        }}
+      >
+        <SharedConversationsModal
+          isOpen
+          onClose={() => {}}
+        />
+      </MockContext>,
+    )
+
+    await waitFor(() => {
+      expect(screen.getByText('How to use TypeScript')).toBeInTheDocument()
+    })
+
+    await act(async () => {
+      fireEvent.click(
+        screen.getAllByTitle(
+          'CHAT_UI_SHARED_CONVERSATIONS_DELETE_BUTTON_LABEL',
+        )[0],
+      )
+    })
+
+    expect(deleteConversationShare).toHaveBeenCalledWith('share-id-1')
+    await waitFor(() => {
+      expect(screen.queryByText('share-id-1')).not.toBeInTheDocument()
+    })
+    expect(screen.getByText('share-id-2')).toBeInTheDocument()
+    expect(showAlert).not.toHaveBeenCalled()
+  })
+
+  it('keeps the share and alerts when the server refuses to delete it', async () => {
+    await renderModal(
+      <MockContext
+        service={{
+          getConversationShares: () => Promise.resolve({ shares: mockShares }),
+          deleteConversationShare: () => Promise.resolve({ success: false }),
+        }}
+      >
+        <SharedConversationsModal
+          isOpen
+          onClose={() => {}}
+        />
+      </MockContext>,
+    )
+
+    await waitFor(() => {
+      expect(screen.getByText('share-id-1')).toBeInTheDocument()
+    })
+
+    await act(async () => {
+      fireEvent.click(
+        screen.getAllByTitle(
+          'CHAT_UI_SHARED_CONVERSATIONS_DELETE_BUTTON_LABEL',
+        )[0],
+      )
+    })
+
+    // The share still exists on the server, so it must stay listed for a retry.
+    expect(screen.getByText('share-id-1')).toBeInTheDocument()
+    expect(showAlert).toHaveBeenCalledWith(
+      expect.objectContaining({
+        type: 'error',
+        content: 'CHAT_UI_SHARED_CONVERSATIONS_DELETE_ERROR',
+      }),
+    )
+  })
+
   it('asks the browser to copy the link, rather than copying it itself', async () => {
     const copyConversationShareLink = jest.fn()
 

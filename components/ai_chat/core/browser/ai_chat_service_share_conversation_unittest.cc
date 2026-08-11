@@ -71,11 +71,19 @@ class FakeConversationShareManager : public ConversationShareManager {
     std::move(callback).Run(share_result);
   }
 
+  void DeleteShare(const std::string& deletion_id,
+                   DeleteShareCallback callback) override {
+    last_deletion_id = deletion_id;
+    std::move(callback).Run(delete_succeeds);
+  }
+
   // What the fake server "returns" (the viewer URL has no decryption key
   // fragment).
   std::optional<ConversationShareResult> share_result;
+  bool delete_succeeds = true;
   // Captures what was uploaded, to assert the key fragment never reaches here.
   std::string last_encrypted_contents;
+  std::string last_deletion_id;
 };
 
 ConversationShareResult MakeShareResult() {
@@ -327,6 +335,76 @@ TEST_F(AIChatServiceShareConversationTest, DoesNotCopyLinkForUnknownShare) {
 
   // Nothing is recorded for the share, so there is no link to put anywhere.
   EXPECT_TRUE(clipboard_text.empty());
+}
+
+TEST_F(AIChatServiceShareConversationTest, DeleteConversationShareForgetsIt) {
+  auto fake_share_manager = std::make_unique<FakeConversationShareManager>();
+  fake_share_manager->share_result = MakeShareResult();
+  auto* fake_share_manager_ptr = fake_share_manager.get();
+  ai_chat_service_->SetConversationShareManagerForTesting(
+      std::move(fake_share_manager));
+
+  base::test::TestFuture<const std::optional<GURL>&> share_future;
+  ai_chat_service_->ShareConversation(
+      "ciphertext-blob", "url-safe-key-fragment", "conversation-uuid",
+      "Conversation title",
+      /*copy_to_clipboard=*/false, share_future.GetCallback());
+  ASSERT_TRUE(share_future.Get().has_value());
+
+  base::test::TestFuture<bool> delete_future;
+  ai_chat_service_->DeleteConversationShare("test-share-id",
+                                            delete_future.GetCallback());
+  EXPECT_TRUE(delete_future.Get());
+  // The server is authorized with the deletion id it handed out, not the share
+  // id from the link.
+  EXPECT_EQ(fake_share_manager_ptr->last_deletion_id, "test-deletion-id");
+
+  base::test::TestFuture<std::vector<mojom::ConversationSharePtr>>
+      shares_future;
+  ai_chat_service_->GetConversationShares(shares_future.GetCallback());
+  EXPECT_TRUE(shares_future.Get().empty());
+}
+
+TEST_F(AIChatServiceShareConversationTest, KeepsRecordWhenServerDeleteFails) {
+  auto fake_share_manager = std::make_unique<FakeConversationShareManager>();
+  fake_share_manager->share_result = MakeShareResult();
+  fake_share_manager->delete_succeeds = false;
+  ai_chat_service_->SetConversationShareManagerForTesting(
+      std::move(fake_share_manager));
+
+  base::test::TestFuture<const std::optional<GURL>&> share_future;
+  ai_chat_service_->ShareConversation(
+      "ciphertext-blob", "url-safe-key-fragment", "conversation-uuid",
+      "Conversation title",
+      /*copy_to_clipboard=*/false, share_future.GetCallback());
+  ASSERT_TRUE(share_future.Get().has_value());
+
+  base::test::TestFuture<bool> delete_future;
+  ai_chat_service_->DeleteConversationShare("test-share-id",
+                                            delete_future.GetCallback());
+  EXPECT_FALSE(delete_future.Get());
+
+  // The share still exists on the server, so the user keeps a way to retry.
+  base::test::TestFuture<std::vector<mojom::ConversationSharePtr>>
+      shares_future;
+  ai_chat_service_->GetConversationShares(shares_future.GetCallback());
+  EXPECT_EQ(shares_future.Get().size(), 1u);
+}
+
+TEST_F(AIChatServiceShareConversationTest, DeleteUnknownShareSucceeds) {
+  auto fake_share_manager = std::make_unique<FakeConversationShareManager>();
+  auto* fake_share_manager_ptr = fake_share_manager.get();
+  ai_chat_service_->SetConversationShareManagerForTesting(
+      std::move(fake_share_manager));
+
+  base::test::TestFuture<bool> delete_future;
+  ai_chat_service_->DeleteConversationShare("never-shared",
+                                            delete_future.GetCallback());
+
+  // Nothing is known about the share, so there is nothing to ask the server to
+  // delete and nothing for the user to retry.
+  EXPECT_TRUE(delete_future.Get());
+  EXPECT_TRUE(fake_share_manager_ptr->last_deletion_id.empty());
 }
 
 }  // namespace ai_chat

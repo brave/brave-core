@@ -135,6 +135,30 @@ void ConversationShareStore::GetShares(GetSharesCallback callback) {
       base::BindPostTaskToCurrentDefault(std::move(callback))));
 }
 
+void ConversationShareStore::GetDeletionId(const std::string& share_id,
+                                           GetDeletionIdCallback callback) {
+  RunWhenReady(base::BindOnce(
+      [](std::string share_id, GetDeletionIdCallback callback,
+         ConversationShareStore& store) {
+        std::unique_ptr<store::ConversationSharesProto> records =
+            store.ReadRecords();
+        if (!records) {
+          // Nothing can be found in records which can't be read.
+          std::move(callback).Run(std::nullopt);
+          return;
+        }
+        // The server has already deleted anything expired, so there is nothing
+        // left to authorize a deletion for.
+        DropExpiredRecords(*records);
+        const store::ConversationShareProto* record =
+            FindRecord(*records, share_id);
+        std::move(callback).Run(
+            record ? std::optional<std::string>(record->deletion_id())
+                   : std::nullopt);
+      },
+      share_id, base::BindPostTaskToCurrentDefault(std::move(callback))));
+}
+
 void ConversationShareStore::GetShareUrl(const std::string& share_id,
                                          GetShareUrlCallback callback) {
   RunWhenReady(base::BindOnce(
@@ -156,6 +180,28 @@ void ConversationShareStore::GetShareUrl(const std::string& share_id,
                                        : std::nullopt);
       },
       share_id, base::BindPostTaskToCurrentDefault(std::move(callback))));
+}
+
+void ConversationShareStore::RemoveShare(const std::string& share_id) {
+  RunWhenReady(base::BindOnce(
+      [](std::string share_id, ConversationShareStore& store) {
+        std::unique_ptr<store::ConversationSharesProto> records =
+            store.ReadRecords();
+        if (!records) {
+          return;
+        }
+        auto& shares = *records->mutable_shares();
+        auto removed = std::ranges::remove_if(
+            shares, [&share_id](const store::ConversationShareProto& record) {
+              return record.share_id() == share_id;
+            });
+        if (!removed.empty()) {
+          shares.erase(removed.begin(), shares.end());
+          store.WriteRecords(*records);
+          store.ScheduleNextPurge(*records);
+        }
+      },
+      share_id));
 }
 
 void ConversationShareStore::OnEncryptorReady(

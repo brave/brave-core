@@ -220,6 +220,9 @@ class AIChatService : public KeyedService,
                          bool copy_to_clipboard,
                          ShareConversationCallback callback) override;
   void GetConversationShares(GetConversationSharesCallback callback) override;
+  void DeleteConversationShare(
+      const std::string& share_id,
+      DeleteConversationShareCallback callback) override;
   void CopyConversationShareLink(const std::string& share_id) override;
   void BindConversation(
       const std::string& uuid,
@@ -326,6 +329,16 @@ class AIChatService : public KeyedService,
       bool copy_to_clipboard,
       ShareConversationCallback callback,
       const std::optional<ConversationShareResult>& share_result);
+
+  // Steps of DeleteConversationShare(): look up the capability token stored
+  // when the share was created, ask the server to delete the share with it,
+  // and forget the local record once the server has.
+  void OnShareDeletionIdRetrieved(const std::string& share_id,
+                                  DeleteConversationShareCallback callback,
+                                  std::optional<std::string> deletion_id);
+  void OnConversationShareDeleted(const std::string& share_id,
+                                  DeleteConversationShareCallback callback,
+                                  bool success);
 
   void MaybeAssociateContent(
       ConversationHandler* conversation,

@@ -29,12 +29,21 @@ const dateTimeFormatter = new Intl.DateTimeFormat(undefined, {
 const copyLinkLabel = getLocale(
   S.CHAT_UI_SHARED_CONVERSATIONS_COPY_LINK_BUTTON_LABEL,
 )
+const deleteLabel = getLocale(
+  S.CHAT_UI_SHARED_CONVERSATIONS_DELETE_BUTTON_LABEL,
+)
 
 export default function SharedConversationsModal(props: Props) {
   const aiChatContext = useAIChat()
 
   const { getConversationSharesData: shares, isPlaceholderData: isLoading } =
     aiChatContext.api.useGetConversationShares()
+  const {
+    mutateAsync: deleteConversationShare,
+    isPending: isDeleting,
+    variables: deletingArgs,
+  } = aiChatContext.api.useDeleteConversationShare()
+
   const handleCopyLink = (shareId: string) => {
     // The link is copied by the browser process: it holds the conversation's
     // decryption key, and only the browser can mark the clipboard entry as
@@ -47,6 +56,19 @@ export default function SharedConversationsModal(props: Props) {
       ),
       actions: [],
     })
+  }
+
+  const handleDelete = async (shareId: string) => {
+    // The record is only removed once the server confirms the deletion, so a
+    // failure leaves the entry in place for the user to retry.
+    const success = await deleteConversationShare([shareId]).catch(() => false)
+    if (!success) {
+      showAlert({
+        type: 'error',
+        content: getLocale(S.CHAT_UI_SHARED_CONVERSATIONS_DELETE_ERROR),
+        actions: [],
+      })
+    }
   }
 
   return (
@@ -105,6 +127,19 @@ export default function SharedConversationsModal(props: Props) {
                     onClick={() => handleCopyLink(share.shareId)}
                   >
                     <Icon name='copy' />
+                  </Button>
+                  <Button
+                    fab
+                    kind='plain-faint'
+                    size='small'
+                    title={deleteLabel}
+                    aria-label={deleteLabel}
+                    isLoading={
+                      isDeleting && deletingArgs?.[0] === share.shareId
+                    }
+                    onClick={() => handleDelete(share.shareId)}
+                  >
+                    <Icon name='trash' />
                   </Button>
                 </div>
               </li>
