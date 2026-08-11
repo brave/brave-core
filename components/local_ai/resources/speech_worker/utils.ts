@@ -51,8 +51,7 @@ export function readBigBuffer(buffer: BigBuffer, name: string): Uint8Array {
   throw new Error(`Invalid ${name} BigBuffer`)
 }
 
-// Argmax over a sub-range [start, end) of a flat array; returns the index
-// relative to `start`.
+// Argmax over a flat array; returns the index of max value
 export function argmax(a: Float32Array): number {
   let best = 0
   for (let i = 1; i < a.length; i++) {

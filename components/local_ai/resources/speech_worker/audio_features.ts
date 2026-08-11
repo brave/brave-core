@@ -81,7 +81,7 @@ export function initFftPower(n: FftSize): FftState {
 }
 
 // Compute power spectrum from a real-valued N_FFT frame.
-function fftPower(fft: FftState): Float32Array {
+export function fftPower(fft: FftState): Float32Array {
   const { n, real, imag, bitRev, frame } = fft
 
   // Bit-reversed copy of real input.
