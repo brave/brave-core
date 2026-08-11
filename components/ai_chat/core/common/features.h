@@ -198,6 +198,12 @@ BASE_DECLARE_FEATURE(kAIChatConversationShare);
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 extern const base::FeatureParam<std::string> kAIChatConversationShareBaseUrl;
 
+// How long the sharing server keeps a shared conversation before deleting it.
+// Locally stored records of shares are purged on the same schedule so that the
+// share management UI doesn't list shares which no longer exist.
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+extern const base::FeatureParam<int> kAIChatConversationShareExpiryDays;
+
 // Enables copying serialized conversation data as JSON to the clipboard when
 // using the alt+meta modifier keys and the "Copy entire conversation" menu
 // option.

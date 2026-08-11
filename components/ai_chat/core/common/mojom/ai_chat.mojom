@@ -110,6 +110,23 @@ struct ConversationArchive {
   array<ContentArchive> associated_content;
 };
 
+// A conversation the user has uploaded to the sharing server, as recorded
+// locally when the share was created.
+struct ConversationShare {
+  // Identifies the share on the sharing server. It is the last path component
+  // of the shared link, so it lets the user match a record with a link they
+  // have already sent to someone.
+  string share_id;
+
+  // Title of the conversation at the time it was shared. The conversation may
+  // since have been renamed or deleted.
+  string conversation_title;
+
+  // When the conversation was shared. The sharing server deletes shares after
+  // a fixed period, so this also indicates when the link will stop working.
+  mojo_base.mojom.Time created_time;
+};
+
 struct Skill {
   string id;
   string shortcut;
@@ -174,17 +191,23 @@ interface Service {
   // base64-encoded blob (12-byte AES-GCM IV followed by the ciphertext)
   // produced by the UI. |key_fragment| is the URL-safe-base64 decryption key
   // which is never sent to the sharing server; it is appended to the server's
-  // viewer URL as a fragment to build the full shareable link. When
-  // |copy_to_clipboard| is true, that full link is written to the system
-  // clipboard marked as confidential (excluded from clipboard history and other
-  // data-leak-prevention surfaces) - this must happen in the browser process
-  // because the renderer cannot set clipboard confidentiality flags. Returns
-  // the full shareable URL (including the key fragment), or null if sharing
-  // failed.
+  // viewer URL as a fragment to build the full shareable link.
+  // |conversation_title| is recorded alongside the share so the user can
+  // recognize it in the share management UI. When |copy_to_clipboard| is true,
+  // the full link is written to the system clipboard marked as confidential
+  // (excluded from clipboard history and other data-leak-prevention surfaces)
+  // - this must happen in the browser process because the renderer cannot set
+  // clipboard confidentiality flags. Returns the full shareable URL (including
+  // the key fragment), or null if sharing failed.
   ShareConversation(string encrypted_contents,
                     string key_fragment,
+                    string conversation_title,
                     bool copy_to_clipboard)
       => (url.mojom.Url? shared_conversation_url);
+
+  // Metadata for every conversation the user has shared and which hasn't yet
+  // expired, most recently shared first.
+  GetConversationShares() => (array<ConversationShare> shares);
 
   // Bind ability to send events to the UI and receive current state
   BindObserver(pending_remote<ServiceObserver> ui) => (ServiceState state);

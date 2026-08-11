@@ -76,6 +76,7 @@ export default function ShareConversationModal(props: Props) {
         await aiChatContext.api.service.shareConversation(
           ciphertext,
           keyFragment,
+          conversationTitle,
           /*copyToClipboard=*/ true,
         )
       // A null result means sharing failed and nothing was copied, so leave the

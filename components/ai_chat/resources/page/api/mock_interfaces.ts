@@ -175,6 +175,7 @@ export function createMockService(
           url: 'https://leo-ai.brave.app/sharing/mock-share-id#mock-key',
         },
       }),
+    getConversationShares: () => Promise.resolve({ shares: [] }),
     createSkill: () => {},
     updateSkill: () => {},
     deleteSkill: () => {},
