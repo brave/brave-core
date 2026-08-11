@@ -111,7 +111,6 @@ export default defineConfig([
   },
 
   globalIgnores([
-    '.storybook/*',
     'browser/*',
     'ui/webui/resources/*',
     '**/*.d.ts',
