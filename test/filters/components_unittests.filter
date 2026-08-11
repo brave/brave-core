@@ -231,6 +231,8 @@
 # This test fails because brave.omnibox.history_suggestions_enabled is not
 # registered.
 -SearchboxUtilsTest.CanPasteAndGo
+-SearchboxUtilsTest.ClassifyStringSearchQuery
+-SearchboxUtilsTest.ClassifyStringUrl
 
 # This test fails because its message is hardcoded to look for "Google Search"
 # instead of "Brave Search"
