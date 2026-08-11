@@ -7,8 +7,33 @@ import("//brave/components/local_ai/buildflags/buildflags.gni")
 
 assert(enable_local_ai)
 
+# Implements the hooks that the chromium_src overrides of
+# chrome/browser/speech/on_device_speech_recognition_util.cc and
+# chrome/browser/browser_process_impl.cc forward declare.
+source_set("chromium_impl") {
+  sources = [
+    "brave_soda_installer_factory.cc",
+    "on_device_speech_recognition_util.cc",
+  ]
+
+  deps = [
+    ":speech",
+    "//base",
+    "//brave/components/local_ai/core",
+    "//brave/components/local_ai/core:features",
+    "//brave/components/local_ai/core:utils",
+    "//chrome/browser:browser_process",
+    "//components/prefs",
+    "//components/soda",
+    "//media/mojo/mojom:web_speech_recognition",
+    "//ui/base",
+  ]
+}
+
 static_library("speech") {
   sources = [
+    "brave_soda_installer.cc",
+    "brave_soda_installer.h",
     "on_device_speech_recognition_controller.cc",
     "on_device_speech_recognition_controller.h",
   ]
@@ -23,6 +48,12 @@ static_library("speech") {
     "//chrome/browser:browser_process",
     "//chrome/browser/profiles:profile",
     "//chrome/browser/profiles:profile_manager",
+    "//components/component_updater",
+    "//components/prefs",
+    "//components/soda",
+    "//components/soda:constants",
+    "//components/update_client",
+    "//content/public/browser",
     "//mojo/public/cpp/base",
     "//mojo/public/cpp/bindings",
     "//services/network/public/mojom",
@@ -34,19 +65,36 @@ static_library("speech") {
 source_set("unit_tests") {
   testonly = true
 
-  sources = [ "on_device_speech_recognition_controller_unittest.cc" ]
+  sources = [
+    "brave_soda_installer_unittest.cc",
+    "on_device_speech_recognition_controller_unittest.cc",
+    "on_device_speech_recognition_util_unittest.cc",
+  ]
 
   deps = [
+    # The availability policy has no header, so its test forward-declares it
+    # and relies on this target for the definition.
+    ":chromium_impl",
     ":speech",
     "//base",
     "//base/test:test_support",
+    "//brave/components/brave_component_updater/browser:test_support",
     "//brave/components/local_ai/core",
+    "//brave/components/local_ai/core:features",
     "//brave/components/local_ai/core:speech_recognition_mojom",
     "//chrome/browser/profiles:profile",
     "//chrome/test:test_support",
+    "//components/component_updater",
+    "//components/component_updater:test_support",
+    "//components/prefs",
+    "//components/soda",
+    "//components/soda:constants",
+    "//components/update_client",
     "//content/test:test_support",
+    "//media/mojo/mojom:web_speech_recognition",
     "//mojo/public/cpp/bindings",
     "//services/on_device_model/public/mojom",
+    "//testing/gmock",
     "//testing/gtest",
     "//url",
   ]

@@ -410,6 +410,7 @@ if (enable_local_ai) {
   brave_chrome_browser_deps += [
     "//brave/browser/history_embeddings",
     "//brave/browser/speech",
+    "//brave/browser/speech:chromium_impl",
     "//brave/browser/ui/webui/local_ai",
     "//brave/components/local_ai/core",
     "//brave/components/local_ai/core:features",

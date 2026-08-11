@@ -1,0 +1,5 @@
+specific_include_rules = {
+  ".*_unittest\.cc": [
+    "+brave/components/brave_component_updater/browser/mock_on_demand_updater.h",
+  ],
+}

@@ -8,6 +8,7 @@
 
 #include <cstdint>
 #include <string>
+#include <string_view>
 #include <vector>
 
 #include "base/files/file_path.h"
@@ -29,6 +30,13 @@ class ComponentUpdateService;
 }  // namespace component_updater
 
 namespace local_ai {
+
+// Component id of Brave's on-device speech recognition model, derived from the
+// public key it is signed with. Shared so that a consumer watching the
+// component updater can tell this component's events from every other
+// component's.
+inline constexpr std::string_view kOnDeviceSpeechModelsComponentId =
+    "nhkekccefdppopbldokibkoegppanbba";
 
 // Component Updater policy for Brave's on-device speech recognition model.
 // Exposed for testing - follows upstream Chromium pattern.
