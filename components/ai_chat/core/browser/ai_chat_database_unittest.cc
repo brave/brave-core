@@ -212,10 +212,13 @@ TEST_P(AIChatDatabaseTest, AddAndGetConversationAndEntries) {
       last_query->edits->emplace_back(mojom::ConversationTurn::New(
           base::Uuid::GenerateRandomV4().AsLowercaseString(),
           std::nullopt /* thread_uuid */, mojom::CharacterType::HUMAN,
-          mojom::ActionType::QUERY, "edited query 1", std::nullopt,
-          std::nullopt, std::nullopt, base::Time::Now() + base::Minutes(121),
-          std::nullopt, std::nullopt, nullptr /* skill */, false, std::nullopt,
-          nullptr, std::vector<std::string>{} /* child_thread_uuids */));
+          mojom::ActionType::QUERY, "edited query 1", std::nullopt /* prompt */,
+          std::nullopt /* selected_text */, std::nullopt /* events */,
+          base::Time::Now() + base::Minutes(121), std::nullopt /* edits */,
+          std::nullopt /* uploaded_files */, nullptr /* skill */,
+          false /* from_brave_search_SERP */, std::nullopt /* model_key */,
+          nullptr /* near_verification_status */,
+          std::vector<std::string>{} /* child_thread_uuids */));
       EXPECT_TRUE(db_->DeleteConversationEntry(last_query->uuid.value()));
       EXPECT_TRUE(db_->AddConversationEntry(uuid, last_query->Clone()));
     }
@@ -230,10 +233,13 @@ TEST_P(AIChatDatabaseTest, AddAndGetConversationAndEntries) {
       last_query->edits->emplace_back(mojom::ConversationTurn::New(
           base::Uuid::GenerateRandomV4().AsLowercaseString(),
           std::nullopt /* thread_uuid */, mojom::CharacterType::HUMAN,
-          mojom::ActionType::QUERY, "edited query 2", std::nullopt,
-          std::nullopt, std::nullopt, base::Time::Now() + base::Minutes(122),
-          std::nullopt, std::nullopt, nullptr /* skill */, false, std::nullopt,
-          nullptr, std::vector<std::string>{} /* child_thread_uuids */));
+          mojom::ActionType::QUERY, "edited query 2", std::nullopt /* prompt */,
+          std::nullopt /* selected_text */, std::nullopt /* events */,
+          base::Time::Now() + base::Minutes(122), std::nullopt /* edits */,
+          std::nullopt /* uploaded_files */, nullptr /* skill */,
+          false /* from_brave_search_SERP */, std::nullopt /* model_key */,
+          nullptr /* near_verification_status */,
+          std::vector<std::string>{} /* child_thread_uuids */));
       EXPECT_TRUE(db_->DeleteConversationEntry(last_query->uuid.value()));
       EXPECT_TRUE(db_->AddConversationEntry(uuid, last_query->Clone()));
     }
