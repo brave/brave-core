@@ -18,7 +18,6 @@ export function createBuildConfigArgument() {
   )
 }
 
-
 // Collects values into an array.
 export function collect(
   value: string,
