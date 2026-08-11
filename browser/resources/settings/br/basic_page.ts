@@ -37,6 +37,9 @@ import '../brave_leo_assistant_page/personalization.js'
 // <if expr="enable_containers">
 import '../brave_content_page/containers.js'
 // </if>
+// <if expr="enable_traffic_control">
+import '../brave_content_page/traffic_control.js'
+// </if>
 
 import {
   html,

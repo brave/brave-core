@@ -10,6 +10,7 @@ import("//brave/components/playlist/core/common/buildflags/buildflags.gni")
 import("//brave/components/request_otr/common/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//brave/components/text_recognition/common/buildflags/buildflags.gni")
+import("//brave/components/traffic_control/buildflags/buildflags.gni")
 import("//brave/resources/brave_grit.gni")
 import("//build/config/features.gni")
 import("//build/config/locales.gni")
@@ -65,6 +66,7 @@ brave_grit("brave_generated_resources_grit") {
     "enable_request_otr=$enable_request_otr",
     "enable_speedreader=$enable_speedreader",
     "enable_text_recognition=$enable_text_recognition",
+    "enable_traffic_control=$enable_traffic_control",
     "enable_psst=$enable_psst",
   ]
   source = "brave_generated_resources.grd"
