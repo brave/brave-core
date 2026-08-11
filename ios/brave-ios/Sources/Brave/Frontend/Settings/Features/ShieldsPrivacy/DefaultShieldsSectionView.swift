@@ -32,14 +32,6 @@ struct DefaultShieldsSectionView: View {
         )
       }
 
-      } else {
-      } label: {
-        LabelView(
-          title: Strings.Shields.upgradeConnectionsToHTTPS,
-          subtitle: nil
-        )
-      }
-
       ToggleView(
         title: Strings.Shields.autoRedirectAMPPages,
         subtitle: Strings.Shields.autoRedirectAMPPagesDescription,
