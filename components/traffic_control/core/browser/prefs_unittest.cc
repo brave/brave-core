@@ -25,10 +25,11 @@ namespace {
 mojom::TrafficRulePtr MakeRule(std::string_view id,
                                bool enabled,
                                std::optional<std::string> url_filter,
-                               std::optional<std::string> container_id) {
-  return mojom::TrafficRule::New(std::string(id), enabled,
-                                 mojom::Condition::New(std::move(url_filter)),
-                                 mojom::Target::New(std::move(container_id)));
+                               std::optional<std::string> container_id,
+                               bool temporary_container = false) {
+  return mojom::TrafficRule::New(
+      std::string(id), enabled, mojom::Condition::New(std::move(url_filter)),
+      mojom::Target::New(std::move(container_id), temporary_container));
 }
 
 }  // namespace
@@ -58,6 +59,7 @@ TEST_F(TrafficControlPrefsTest, RoundTrip) {
   EXPECT_EQ("mail.example.com", *loaded[0]->condition->url_filter);
   ASSERT_TRUE(loaded[0]->target->container_id.has_value());
   EXPECT_EQ("container-1", *loaded[0]->target->container_id);
+  EXPECT_FALSE(loaded[0]->target->temporary_container);
 }
 
 TEST_F(TrafficControlPrefsTest, RoundTripOmitsUnsetOptionalFields) {
@@ -70,11 +72,13 @@ TEST_F(TrafficControlPrefsTest, RoundTripOmitsUnsetOptionalFields) {
   const base::DictValue& dict = stored[0].GetDict();
   EXPECT_FALSE(dict.FindDict("condition")->contains("url_filter"));
   EXPECT_FALSE(dict.FindDict("target")->contains("container_id"));
+  EXPECT_FALSE(dict.FindDict("target")->contains("temporary_container"));
 
   auto loaded = GetRulesFromPrefs(prefs_);
   ASSERT_EQ(1u, loaded.size());
   EXPECT_FALSE(loaded[0]->condition->url_filter.has_value());
   EXPECT_FALSE(loaded[0]->target->container_id.has_value());
+  EXPECT_FALSE(loaded[0]->target->temporary_container);
 }
 
 TEST_F(TrafficControlPrefsTest, RoundTripPreservesEmptyContainerId) {
@@ -96,6 +100,26 @@ TEST_F(TrafficControlPrefsTest, RoundTripPreservesEmptyContainerId) {
   ASSERT_EQ(1u, loaded.size());
   ASSERT_TRUE(loaded[0]->target->container_id.has_value());
   EXPECT_TRUE(loaded[0]->target->container_id->empty());
+  EXPECT_FALSE(loaded[0]->target->temporary_container);
+}
+
+TEST_F(TrafficControlPrefsTest, RoundTripTemporaryContainer) {
+  std::vector<mojom::TrafficRulePtr> rules;
+  rules.push_back(MakeRule("id-1", true, "example.com", std::nullopt,
+                           /*temporary_container=*/true));
+
+  SetRulesToPrefs(rules, prefs_);
+  const base::ListValue& stored = prefs_.GetList(prefs::kTrafficControlList);
+  ASSERT_EQ(1u, stored.size());
+  const base::DictValue* target = stored[0].GetDict().FindDict("target");
+  ASSERT_TRUE(target);
+  EXPECT_FALSE(target->contains("container_id"));
+  EXPECT_EQ(true, target->FindBool("temporary_container"));
+
+  auto loaded = GetRulesFromPrefs(prefs_);
+  ASSERT_EQ(1u, loaded.size());
+  EXPECT_FALSE(loaded[0]->target->container_id.has_value());
+  EXPECT_TRUE(loaded[0]->target->temporary_container);
 }
 
 TEST_F(TrafficControlPrefsTest, FullListReplacePreservesOrder) {
@@ -165,6 +189,15 @@ TEST_F(TrafficControlPrefsTest, GetRulesFromPrefsSkipsMalformedEntries) {
 
   list.Append(
       base::DictValue()
+          .Set("id", "bad-new-temporary")
+          .Set("enabled", true)
+          .Set("condition", base::DictValue().Set("url_filter", "bad.com"))
+          .Set("target",
+               base::DictValue().Set("temporary_container",
+                                     "yes")));  // Non-bool temporary_container.
+
+  list.Append(
+      base::DictValue()
           .Set("id", "valid-id")
           .Set("enabled", true)
           .Set("condition", base::DictValue().Set("url_filter", "example.com"))
@@ -192,6 +225,7 @@ TEST_F(TrafficControlPrefsTest, GetRulesFromPrefsSkipsMalformedEntries) {
   EXPECT_FALSE(loaded[1]->enabled);
   EXPECT_FALSE(loaded[1]->condition->url_filter.has_value());
   EXPECT_FALSE(loaded[1]->target->container_id.has_value());
+  EXPECT_FALSE(loaded[1]->target->temporary_container);
 }
 
 }  // namespace traffic_control

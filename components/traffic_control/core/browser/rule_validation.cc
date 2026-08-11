@@ -6,16 +6,18 @@
 #include "brave/components/traffic_control/core/browser/rule_validation.h"
 
 #include <string>
+#include <string_view>
 
+#include "base/strings/string_split.h"
+#include "base/strings/string_util.h"
 #include "brave/components/traffic_control/core/mojom/traffic_control.mojom.h"
 #include "components/url_matcher/url_util.h"
 
 namespace traffic_control {
 
-bool IsValidUrlFilter(std::string_view filter) {
-  if (filter.empty()) {
-    return false;
-  }
+namespace {
+
+bool IsValidUrlFilterLine(std::string_view filter) {
   std::string scheme;
   std::string host;
   bool match_subdomains = false;
@@ -25,6 +27,26 @@ bool IsValidUrlFilter(std::string_view filter) {
   return url_matcher::util::FilterToComponents(std::string(filter), &scheme,
                                                &host, &match_subdomains, &port,
                                                &path, &query);
+}
+
+}  // namespace
+
+bool IsValidUrlFilter(std::string_view filter_text) {
+  // Freeform multiline text: one pattern per line. Empty lines and `#`
+  // comments are ignored. At least one valid pattern is required.
+  bool has_pattern = false;
+  for (std::string_view line : base::SplitStringPiece(
+           filter_text, "\n", base::KEEP_WHITESPACE, base::SPLIT_WANT_ALL)) {
+    line = base::TrimWhitespaceASCII(line, base::TRIM_ALL);
+    if (line.empty() || line.starts_with('#')) {
+      continue;
+    }
+    if (!IsValidUrlFilterLine(line)) {
+      return false;
+    }
+    has_pattern = true;
+  }
+  return has_pattern;
 }
 
 std::optional<mojom::RuleOperationError> ValidateRule(
@@ -47,6 +69,12 @@ std::optional<mojom::RuleOperationError> ValidateRule(
   if (!rule->condition->url_filter.has_value() ||
       !IsValidUrlFilter(*rule->condition->url_filter)) {
     return mojom::RuleOperationError::kInvalidUrlFilter;
+  }
+
+  // temporary_container and container_id are mutually exclusive.
+  if (rule->target->temporary_container &&
+      rule->target->container_id.has_value()) {
+    return mojom::RuleOperationError::kInvalidTarget;
   }
 
   return std::nullopt;

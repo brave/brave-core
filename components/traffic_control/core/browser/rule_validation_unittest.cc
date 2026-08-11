@@ -19,10 +19,11 @@ namespace {
 mojom::TrafficRulePtr MakeRule(std::string_view id,
                                bool enabled,
                                std::optional<std::string> url_filter,
-                               std::optional<std::string> container_id) {
-  return mojom::TrafficRule::New(std::string(id), enabled,
-                                 mojom::Condition::New(std::move(url_filter)),
-                                 mojom::Target::New(std::move(container_id)));
+                               std::optional<std::string> container_id,
+                               bool temporary_container = false) {
+  return mojom::TrafficRule::New(
+      std::string(id), enabled, mojom::Condition::New(std::move(url_filter)),
+      mojom::Target::New(std::move(container_id), temporary_container));
 }
 
 }  // namespace
@@ -35,9 +36,17 @@ TEST(RuleValidationTest, IsValidUrlFilterAcceptsCommonFilters) {
   EXPECT_TRUE(IsValidUrlFilter("*"));
 }
 
+TEST(RuleValidationTest, IsValidUrlFilterAcceptsMultilineWithComments) {
+  EXPECT_TRUE(IsValidUrlFilter(
+      "# work sites\nexample.com\n\n.corp.example.com\n# end\n"));
+  EXPECT_TRUE(IsValidUrlFilter("  example.com  \n  other.com  "));
+}
+
 TEST(RuleValidationTest, IsValidUrlFilterRejectsInvalidFilters) {
   EXPECT_FALSE(IsValidUrlFilter(""));
+  EXPECT_FALSE(IsValidUrlFilter("   \n# only comments\n"));
   EXPECT_FALSE(IsValidUrlFilter("http://"));
+  EXPECT_FALSE(IsValidUrlFilter("example.com\nhttp://"));
 }
 
 TEST(RuleValidationTest, ValidateRule) {
@@ -73,6 +82,16 @@ TEST(RuleValidationTest, ValidateRule) {
   EXPECT_EQ(ValidateRule(MakeRule("id", true, "example.com", std::nullopt),
                          /*require_empty_id=*/false),
             std::nullopt);
+
+  EXPECT_EQ(ValidateRule(MakeRule("id", true, "example.com", std::nullopt,
+                                  /*temporary_container=*/true),
+                         /*require_empty_id=*/false),
+            std::nullopt);
+
+  EXPECT_EQ(ValidateRule(MakeRule("id", true, "example.com", "c1",
+                                  /*temporary_container=*/true),
+                         /*require_empty_id=*/false),
+            mojom::RuleOperationError::kInvalidTarget);
 
   EXPECT_EQ(ValidateRule(nullptr, /*require_empty_id=*/true),
             mojom::RuleOperationError::kInvalidTarget);
