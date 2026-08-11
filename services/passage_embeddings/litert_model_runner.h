@@ -26,14 +26,18 @@ namespace brave_history_embeddings {
 // model.
 class LitertModelRunner {
  public:
-  // Builds from the in-memory `.tflite`; nullptr on failure.
+  // Builds from the in-memory `.tflite`; nullptr on failure. `num_threads`
+  // sizes the CPU backend's intra-op thread pool and is fixed for the life of
+  // the runner, because LiteRT bakes it into the model at compile time.
   static std::unique_ptr<LitertModelRunner> Create(
-      base::span<const uint8_t> tflite_model);
+      base::span<const uint8_t> tflite_model,
+      int num_threads);
 
   // Reads the `.tflite` out of `model_file` and builds a runner for it, or
   // returns nullptr if the file or the model is unusable.
   static std::unique_ptr<LitertModelRunner> CreateFromFile(
-      base::File& model_file);
+      base::File& model_file,
+      int num_threads);
 
   ~LitertModelRunner();
 
@@ -50,7 +54,7 @@ class LitertModelRunner {
  private:
   LitertModelRunner();
 
-  bool Init(base::span<const uint8_t> tflite_model);
+  bool Init(base::span<const uint8_t> tflite_model, int num_threads);
 
   std::vector<uint8_t> tflite_model_;
   std::optional<litert::Environment> environment_;

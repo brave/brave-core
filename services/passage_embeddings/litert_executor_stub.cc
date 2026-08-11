@@ -13,7 +13,7 @@ namespace brave_history_embeddings {
 // Null implementation for builds without local AI (Android, Brave Origin). The
 // override calls the hook unconditionally, so a definition must always link.
 std::unique_ptr<passage_embeddings::PassageEmbedderExecutor>
-MaybeCreateLitertExecutor(base::File&, int, int, int) {
+MaybeCreateLitertExecutor(base::File&, int, int, int, int) {
   return nullptr;
 }
 

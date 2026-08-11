@@ -18,6 +18,7 @@
 #include "third_party/litert/src/litert/cc/litert_options.h"
 #include "third_party/litert/src/litert/cc/litert_ranked_tensor_type.h"
 #include "third_party/litert/src/litert/cc/litert_tensor_buffer.h"
+#include "third_party/litert/src/litert/cc/options/litert_cpu_options.h"
 
 namespace brave_history_embeddings {
 
@@ -27,9 +28,10 @@ LitertModelRunner::~LitertModelRunner() = default;
 
 // static
 std::unique_ptr<LitertModelRunner> LitertModelRunner::Create(
-    base::span<const uint8_t> tflite_model) {
+    base::span<const uint8_t> tflite_model,
+    int num_threads) {
   auto runner = base::WrapUnique(new LitertModelRunner());
-  if (!runner->Init(tflite_model)) {
+  if (!runner->Init(tflite_model, num_threads)) {
     return nullptr;
   }
   return runner;
@@ -37,7 +39,8 @@ std::unique_ptr<LitertModelRunner> LitertModelRunner::Create(
 
 // static
 std::unique_ptr<LitertModelRunner> LitertModelRunner::CreateFromFile(
-    base::File& model_file) {
+    base::File& model_file,
+    int num_threads) {
   if (!model_file.IsValid()) {
     return nullptr;
   }
@@ -49,10 +52,11 @@ std::unique_ptr<LitertModelRunner> LitertModelRunner::CreateFromFile(
   if (!model_file.ReadAndCheck(0, bytes)) {
     return nullptr;
   }
-  return Create(bytes);
+  return Create(bytes, num_threads);
 }
 
-bool LitertModelRunner::Init(base::span<const uint8_t> tflite_model) {
+bool LitertModelRunner::Init(base::span<const uint8_t> tflite_model,
+                             int num_threads) {
   // The runtime references the model bytes past compilation; keep our own copy.
   tflite_model_.assign(tflite_model.begin(), tflite_model.end());
 
@@ -72,6 +76,19 @@ bool LitertModelRunner::Init(base::span<const uint8_t> tflite_model) {
     return false;
   }
   compile_options->SetHardwareAccelerators(litert::HwAccelerators::kCpu);
+
+  // XNNPACK sizes its intra-op thread pool from this; LiteRT defaults to a
+  // single thread when no CPU options are attached.
+  auto cpu_options = compile_options->GetCpuOptions();
+  if (!cpu_options) {
+    LOG(ERROR) << "LiteRT runner: cannot create CPU options: "
+               << cpu_options.Error().Message();
+    return false;
+  }
+  if (!cpu_options->SetNumThreads(num_threads)) {
+    LOG(ERROR) << "LiteRT runner: rejected num_threads=" << num_threads;
+    return false;
+  }
 
   auto model = litert::CompiledModel::Create(
       *environment_,
