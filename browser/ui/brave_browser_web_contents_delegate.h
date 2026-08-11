@@ -12,6 +12,8 @@
 #include "base/memory/scoped_refptr.h"
 #include "chrome/browser/ui/browser_web_contents_delegate/browser_web_contents_delegate.h"
 
+class BrowserUiController;
+
 class BraveBrowserWebContentsDelegate : public BrowserWebContentsDelegate {
  public:
   BraveBrowserWebContentsDelegate(
@@ -21,7 +23,8 @@ class BraveBrowserWebContentsDelegate : public BrowserWebContentsDelegate {
       UnloadController& unload_controller,
       web_app::AppBrowserController* app_browser_controller,
       BrowserWindow& window,
-      DesktopBrowserWindowCapabilities& capabilities);
+      DesktopBrowserWindowCapabilities& capabilities,
+      BrowserUiController& browser_ui_controller);
   BraveBrowserWebContentsDelegate(const BraveBrowserWebContentsDelegate&) =
       delete;
   BraveBrowserWebContentsDelegate& operator=(
