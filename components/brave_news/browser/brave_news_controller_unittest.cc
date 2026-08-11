@@ -76,6 +76,7 @@ class TestControllerDelegate : public BraveNewsController::Delegate {
  public:
   ~TestControllerDelegate() override = default;
   void OpenSettings() override {}
+  void CloseUI() override {}
 };
 
 }  // namespace
