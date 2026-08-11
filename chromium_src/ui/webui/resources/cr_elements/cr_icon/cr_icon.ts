@@ -23,10 +23,10 @@ const iconMap: { [key: string]: string } = {
     'settings:security': 'lock',
     'settings:search': 'search',
     'settings:palette': 'appearance',
-    'settings:assignment': 'list-checks',
+    'settings:password-manager': 'list-checks',
     'settings:language': 'product-translate',
-    'settings:system': 'settings',
-    'settings:restore': 'backward',
+    'settings:build': 'settings',
+    'settings:restart-alt': 'backward',
     'settings:location-on': 'location-on', // location
     'privacy:location-on': 'location-on', // location
     'privacy:location-off': 'location-off', // location off
@@ -89,7 +89,7 @@ const iconMap: { [key: string]: string } = {
     'settings20:lightbulb': 'idea',
     'cr:delete': 'trash', // delete browsing data
     'cr:security': 'lock',
-    'privacy:page-info': 'tune', // privacy page additional settings
+    'privacy:page-info-old': 'tune', // privacy page additional settings
     'cr:fullscreen': 'fullscreen-on', // automatic fullscreen
     'settings:picture-in-picture': 'picture-in-picture', // picture in picture
     'cr:file-download': 'download',
