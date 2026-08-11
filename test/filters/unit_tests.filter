@@ -33,6 +33,8 @@
 -GlicMetricsTrustFirstOnboardingTest.*
 -GlicEnablingProfileReadyStateTestBase.*
 -MultistepFilterServiceFactoryTest.*
+-SigninUiUtilTest.*
+-SkillsUiTabController*Test.*_CallsInvoke*
 -SkillsUiTabController*Test.InvokeSkill_*
 -TabStripActionContainerTest.Glic*
 
@@ -144,29 +146,25 @@
 -ComposePopupAutofillDriverTest.*
 -ContentAnnotatorServiceFactoryTest.CreatesServiceWithFlagEnabled
 -ContentAnnotatorTabHelperTest.PropagatesLanguageEvent
--ContextHubPageHandlerTest.ClearTabGroupChatHistory
--ContextHubPageHandlerTest.ClearTabGroups
--ContextHubPageHandlerTest.DeleteMemoryBankEntries_Success
--ContextHubPageHandlerTest.GenerateAutoTodos_Failure
--ContextHubPageHandlerTest.GenerateAutoTodos_Success
--ContextHubPageHandlerTest.GenerateAutoTodos_WithSourceReferences
--ContextHubPageHandlerTest.GetAllMemoryBankEntries_Success
--ContextHubPageHandlerTest.GetExistingTabGroupsAndChats_NoGroups
--ContextHubPageHandlerTest.GetExistingTabGroupsAndChats_WithGroups
--ContextHubPageHandlerTest.RetrieveAndGroupTabs_NoTabs
--ContextHubPageHandlerTest.RetrieveAndGroupTabs_WithTabs
+-ContextHubPageHandlerTest.*
 -ContextHubServiceFactoryTest.CreatesDatabaseStorageWhenMemoryBanksDisabled
 -ContextHubServiceFactoryTest.CreatesServiceWithDatabaseMemoryBankWhenFlagEnabled
 -ContextHubServiceFactoryTest.CreatesServiceWithFlagEnabled
 -ContextHubServiceFactoryTest.CreatesServiceWithMemoryBankWhenFlagEnabled
 -ContextHubServiceFactoryTest.CreatesServiceWithoutMemoryBankWhenFlagDisabled
 -ContextHubServiceFactoryTest.DeleteDatabaseWhenFeaturesDisabled
+-ContextHubTabProviderDesktopTest.RemoveGroupFromTabstripIfOpen_ClosesTabs
+-ContextHubTabProviderDesktopTest.UngroupGroupFromTabstripIfOpen_UngroupsTabs
 -DigitalIdentityLowRiskOriginsTest.*
 -ExecutionEngineUrlGatingTest.AllowIfDecisionUnknown
+-ExecutionEngineUrlGatingTest.AllowIfNotBlocked
 -ExecutionEngineUrlGatingTest.AllowIfNotBlockedForOriginGating
 -ExecutionEngineUrlGatingTest.AllowedOriginsFromNavigationGating
 -ExecutionEngineUrlGatingTest.BlockIfInBlocklist
 -ExecutionEngineUrlGatingTest.BlockIfInBlocklistForOriginGating
+-ExecutionEngineUrlGatingTest.SafetyChecksForNextAction_PromptsForSensitiveSite
+-ExecutionEngineUrlGatingTest.ShouldDeferNavigation_CrossOriginNonSensitiveAllowed
+-ExecutionEngineUrlGatingTest.ShouldDeferNavigation_CrossOriginSensitiveBlocked
 -FindsTabHelperTest.TestOmniboxRecentSearchSuggestionCountThresholdMet
 -HistoryEmbeddingsHandlerTest.*
 -IndigoPageActionControllerTest.*
@@ -194,10 +192,12 @@
 -FirstPartySetsPolicyServiceFactoryTest.OffTheRecordProfile_DistinctAndDisabled
 -FirstPartySetsPolicyServiceTest.*
 
-# These tests fail because we change the default for TOP_LEVEL_STORAGE_ACCESS
+# These tests fail because we change the default for (TOP_LEVEL_)STORAGE_ACCESS
 # to CONTENT_SETTING_BLOCK.
+-HostContentSettingsMapTest.DeleteStorageAccessRwsGrantsOnStartup
 -TopLevelStorageAccessPermissionContextAPIWithFirstPartySetsTest.ImplicitGrant_AutograntedWithinFPS
 -TopLevelStorageAccessPermissionContextAPIWithFirstPartySetsTest.ImplicitGrant_CrossSiteFrameQueryStillAsk
+
 
 # This test fails because tab_next_close_button->GetBoundsInScreen().Contains(tab_center)
 # returns false instead of true
@@ -207,7 +207,10 @@
 # These tests fail because Brave overrides how underlines are drawn for tab
 # groups
 -TabContainerTest.GroupUnderlineBasics
+-TabContainerTest.GroupUnderlineHiddenInFocusMode
+-TabContainerTest.MultipleGroupsUnderlineHiddenInFocusMode
 -TabGroupViewsTest.UnderlineBoundsWhenTabsAreNotVisible
+-TabGroupViewsTest.UnderlineHiddenInFocusMode
 
 # This test is disabled as we have our own ink drop configs.
 -ToolbarInkDropUtilTest.ConfigureInkDropTest
@@ -301,12 +304,13 @@
 -AccountExtensionTrackerUnitTest.ExtensionSyncDisabledWhileSignedIn
 -AccountsPolicyManagerTest.ClearProfileWhenSigninAndSignoutNotAllowed
 -ActorTaskListBubbleControllerTest.ShowBubble*
+-ActorTaskListBubbleTest.*
 -All/DiceResponseHandlerParamTest.Signin*/*
 -All/SigninUtilHistorySyncOptinForManagedSettingsTest.*
--AppMenuModelTest.ProfileSyncOnTest
 -AvatarButtonPromoManagerTest.SigninPromoHasLastExternalEventTimeCheck
 -AvatarButtonPromoManagerTest.SigninPromoSupportIndependantProfileAndAccount*
 -BrowserSigninDetectorServiceTest.LateObservation
+-ChromePaymentsAutofillClientTest.ShowPaymentsChurnedUsersUI_WithAccountInfo
 -ConnectorsServiceRealTimeURLIdentifierTest.ReturnsCorrectIdentifier/*
 -ContextualSearchboxHandlerSignedInTestTabsTest.GetRecentTabs_SetsShowInRecentTabChip
 -ContextualTasksEligibilityManagerTest.*
@@ -329,6 +333,8 @@
 -ExtensionLocalDataBatchUploaderTest.TriggerLocalDataMigrationForItems
 -ExtensionSyncServiceTransportModeTest.AccountExtensionTypeChangesWithSync
 -ExtensionSyncServiceTransportModeTest.OnlySyncAccountExtensions
+-NotebooksEligibilityServiceFactoryTest.FeatureEnabledCreatesService
+-NotebooksServiceFactoryTest.FeatureEnabledUsesRealService
 -OpportunisticKeyRetrievalEnclaveManagerTest.StoringOpportunisticallyRetrievedKeyAfterSignInOfMatchingAccount
 -PeopleHandlerDiceTest.RecordSigninOffered
 -PeopleHandlerDiceTest.StoredAccountsList
@@ -436,10 +442,6 @@
 # These tests are flaky both for us and upstream.
 # https://github.com/brave/brave-browser/issues/56768
 -FullStreamUIPolicyTest.*
-
-# This test fails because we insert our own bookmarks submenu into the app menu
-# model
--AppMenuModelTest.ModelHasIcons
 
 # This test fails because we use our own preferences for showing the bookmarks
 # bar
@@ -590,7 +592,6 @@
 
 # These tests are disabled because we don't show the default browser prompt item
 # in the Hamburger menu
--AppMenuModelTest.DefaultBrowserPrompt
 -DefaultBrowserPromptManagerTest.AppMenuItemHiddenOnPromptAccept
 -DefaultBrowserPromptManagerTest.AppMenuItemPersistsOnPromptDismissed
 -DefaultBrowserPromptManagerTest.ShowsAppMenuItem
@@ -613,6 +614,9 @@
 
 # These tests fail because we disable popular site suggestions functionality
 -MostVisitedHandlerTest/MostVisitedAutoRemovalTest.OnMostVisitedTileHoverMetrics/*
+
+# This test fails because we set ntp_prefs::kNtpCustomLinksVisible to false
+-MostVisitedPrefObserverTest.InitialSetup_DefaultPrefs
 
 # These fail because we override GetChromeChannel to always use
 # with_extended_stable = false and override channel info
@@ -713,6 +717,7 @@
 
 # These tests fail because we disable kAimEnabled.
 -AimEligibilityRefreshNavigationThrottleTest.FetchEligibilityOnAimSearchUrl
+-SearchboxHandlerAimEligibilityTest.GetCyclingPlaceholderConfig_AimEligibleReturnsEvergreenPlaceholders
 
 # We added our own page action view but this made metrics code related to the
 # page action fails. In order to addressed that we scrubbed out metrics code and
@@ -731,6 +736,7 @@
 
 # Changed PageActionView's default bg/fg colors.
 # https://github.com/brave/brave-core/pull/35714
+-PageActionViewTest.AnchoredMessageUpdatesBackground
 -PageActionViewTest.ChipStateUpdatesBackgroundColor
 -PageActionViewTest.ChipStateUpdatesForegroundColor
 
@@ -739,12 +745,15 @@
 
 # These tests fail because brave.omnibox.history_suggestions_enabled is not
 # registered.
+-ContextualSearchboxHandlerTest.QueryAutocomplete_NullBrowserWindowInterfaceDoesNotCrash
 -ContextualSearchboxHandlerTest.QueryAutocomplete_SetsLensInputs_InToolModes
+-OmniboxComposeboxHandlerTest.OpenLensSearch
 -OmniboxContextMenuControllerTest.*
 -OmniboxEditModelPopupTest.AiModeButtonClick*
 -OmniboxEditModelPopupTest.AimPopup*
 -OmniboxPopupHandlerTest.*
 -WebuiOmniboxHandlerTest.OnActiveTabChanged_SavesAndRestoresState
+-WebuiOmniboxHandlerTest.OpenLensSearch
 
 # These tests crash because the tests initialize profile first and then reset
 # the global features. The ephemeral_storage::ApplicationStateObserver created
@@ -851,7 +860,6 @@
 -ExtensionSyncTypeTest.UserScriptNoUpdateUrl
 -ExtensionTelemetryServiceSystemTimeTest.PersistsReportsWithUnspecifiedManagementAuthorityOnShutdown
 -ExtensionTelemetryServiceTest.*
--ExtensionsMenuMainPageViewUnitTest.PinnedExtensions
 -GCMProfileServiceTest.*
 -GetUserPopulationForProfileTest.PopulatesPopulation
 -HostContentSettingsMapTest.IncognitoInheritSaaAndRenew
@@ -867,8 +875,6 @@
 -PageInfoBubbleViewTest.*
 -PageInfoTest.IncognitoPermissionsDontShowAsk # Change upstream logic for incognito windows. https://github.com/brave/brave-browser/issues/24720
 -PeriodicBackgroundSyncPermissionContextWithPermissionTest.DefaultSearchEngine
--PermissionDashboardUnitTest.DisplayLHSIndicatorForCamera*
--PermissionDashboardUnitTest.DisplayLHSIndicatorTooltip
 -PermissionsUpdaterTest.GrantAndRevokeOptionalPermissions
 -ProfileAttributesStorageTest.*
 -ProfileCustomizationBubbleSyncControllerTest.ShouldAbortIfCalledAgain
