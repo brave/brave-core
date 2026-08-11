@@ -8,7 +8,7 @@
 
 group("brave") {
   deps = [
-    "//brave/bns:bns_security",
-    "//brave/bns:scheme_handler",
+    "//brave/bnes:security",
+    "//brave/bnes:scheme_handler",
   ]
 }
