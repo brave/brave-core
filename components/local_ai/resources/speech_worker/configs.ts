@@ -39,8 +39,31 @@ export const HOP_LENGTH: number = 160 // mel hop in samples (10 ms @ 16 kHz)
 export const N_MELS: number = 128
 export const PREEMPH: number = 0.97
 export const LOG_ZERO_GUARD: number = 5.9604645e-8
-export const OFF = (N_FFT - WIN_LENGTH) >> 1 // 56
+
+////////// PAD BEGIN ////////////
+// Zero padding applied to the raw audio before framing for FFT caculations. 
+// PAD num of left-padding is applied once per audio stream, at the beginning.
+// This is for doing 'centered framing' for the first FFT frame. Otherwise the first few raw audio samples 
+// would lie near the left edge of the Hann window,mwhere the window coefficients are close to zero, 
+// strongly attenuating their contribution to the resulting spectrum.
+
 export const PAD = N_FFT >> 1 // 256
+
+////////// PAD END ////////////
+
+////////// OFFSET BEGIN ////////////
+// We take WIN_LENGTH real audio samples, multiply them by a WIN_LENGTH point Hann window 
+// and place the result in the middle of an FFT buffer of N_FFT num. of elements. 
+// OFF tells us where the real WIN_LENGTH-sample window begins inside the FFT buffer.
+
+export const OFF = (N_FFT - WIN_LENGTH) >> 1 // 56
+
+// So, a 512-point FFT buffer would be:
+// | 56 zeros | 400 windowed audio samples | 56 zeros |
+// 0         OFF                 (WIN_LENGTH + OFF)  N_FFT
+////////// OFFSET END ////////////
+
+
 // A streaming mel frame is stable once the right edge of the real Hann window
 // is available. Currently the WIN_LENGTH window at OFF
 // inside the N_FFT frame, so raw window is:
