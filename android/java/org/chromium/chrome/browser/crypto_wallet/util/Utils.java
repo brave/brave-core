@@ -814,7 +814,6 @@ public class Utils {
 
     public static String getNetworkIconName(final NetworkInfo network) {
         final String chainId = network.chainId;
-        final int coin = network.coin;
 
         String logo;
         switch (chainId) {

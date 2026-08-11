@@ -180,28 +180,30 @@ struct SuggestedNetworkView: View {
     List {
       Section {
         Group {
-          VStack(alignment: .leading) {
-            Text(Strings.Wallet.networkNameTitle)
-              .fontWeight(.semibold)
-            Text(chain.chainName)
-          }
-          .padding(.vertical, 6)
-          .accessibilityElement(children: .combine)
-          if let networkURL = chain.rpcEndpoints.first {
+          if let chain = chain {
             VStack(alignment: .leading) {
-              Text(Strings.Wallet.networkURLTitle)
+              Text(Strings.Wallet.networkNameTitle)
                 .fontWeight(.semibold)
-              Text(networkURL.absoluteDisplayString)
+              Text(chain.chainName)
             }
             .padding(.vertical, 6)
-          }
-          Button {
-            isPresentingNetworkDetails = .init(
-              mode: .view(chain)
-            )
-          } label: {
-            Text(Strings.Wallet.viewDetails)
-              .foregroundColor(Color(braveSystemName: .textInteractive))
+            .accessibilityElement(children: .combine)
+            if let networkURL = chain.rpcEndpoints.first {
+              VStack(alignment: .leading) {
+                Text(Strings.Wallet.networkURLTitle)
+                  .fontWeight(.semibold)
+                Text(networkURL.absoluteDisplayString)
+              }
+              .padding(.vertical, 6)
+            }
+            Button {
+              isPresentingNetworkDetails = .init(
+                mode: .view(chain)
+              )
+            } label: {
+              Text(Strings.Wallet.viewDetails)
+                .foregroundColor(Color(braveSystemName: .textInteractive))
+            }
           }
         }
       } header: {
