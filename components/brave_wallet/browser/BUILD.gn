@@ -924,6 +924,8 @@ source_set("unit_tests") {
   if (enable_snaps) {
     deps += [
       "//brave/components/brave_wallet/browser/snap/installer:tar_decompressor",
+      "//brave/components/constants",
+      "//testing/gmock",
     ]
   }
 

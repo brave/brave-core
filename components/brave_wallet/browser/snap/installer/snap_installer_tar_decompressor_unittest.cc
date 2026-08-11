@@ -12,6 +12,8 @@
 #include "base/files/scoped_temp_dir.h"
 #include "base/threading/thread_restrictions.h"
 #include "brave/components/brave_wallet/browser/snap/installer/tar_test_helpers.h"
+#include "brave/components/brave_wallet/browser/test_utils.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_wallet {
@@ -33,11 +35,10 @@ class SnapInstallerTarDecompressorTest : public testing::Test {
 
 TEST_F(SnapInstallerTarDecompressorTest, ExtractsValidTarball) {
   const std::string bundle = "export const onRpcRequest = () => 42;";
-  const std::string manifest =
-      MakeMinimalSnapManifestJson("dist/bundle.js",
-                                  ComputeSnapBundleShasum(bundle));
-  base::FilePath tarball = WriteTarball(
-      BuildSnapTarball(manifest, bundle, "dist/bundle.js"));
+  const std::string manifest = MakeMinimalSnapManifestJson(
+      "dist/bundle.js", ComputeSnapBundleShasum(bundle));
+  base::FilePath tarball =
+      WriteTarball(BuildSnapTarball(manifest, bundle, "dist/bundle.js"));
 
   base::ScopedAllowBlockingForTesting allow_blocking;
   SnapTarballExtractResult result =
@@ -81,6 +82,40 @@ TEST_F(SnapInstallerTarDecompressorTest, MissingBundleReturnsError) {
   base::ScopedAllowBlockingForTesting allow_blocking;
   auto result = SnapInstallerTarDecompressor::ExtractTarballToDir(tarball);
   EXPECT_EQ(result.error, "Failed to extract snap bundle from tarball");
+}
+
+TEST_F(SnapInstallerTarDecompressorTest, ExtractsRealNpmSnapTarball) {
+  base::FilePath real_tarball =
+      BraveWalletComponentsTestDataFolder()
+          .AppendASCII("snap_installer")
+          .AppendASCII("name-lookup-example-snap-3.1.2.tgz");
+
+  base::ScopedAllowBlockingForTesting allow_blocking;
+  base::FilePath tarball = temp_dir_.GetPath().AppendASCII("real.tgz");
+  ASSERT_TRUE(base::CopyFile(real_tarball, tarball));
+
+  SnapTarballExtractResult result =
+      SnapInstallerTarDecompressor::ExtractTarballToDir(tarball);
+  EXPECT_TRUE(result.error.empty()) << result.error;
+  EXPECT_THAT(result.manifest_json,
+              testing::HasSubstr("Name Lookup Example Snap"));
+  ASSERT_FALSE(result.temp_dir_path.empty());
+
+  const base::FilePath unpacked_dir =
+      result.temp_dir_path.AppendASCII("unpacked");
+  EXPECT_TRUE(base::PathExists(unpacked_dir.AppendASCII("bundle.js")));
+  EXPECT_TRUE(base::PathExists(unpacked_dir.AppendASCII("manifest.json")));
+
+  // Verify the extracted bundle is intact and the computed shasum matches it.
+  std::string extracted_bundle;
+  ASSERT_TRUE(
+      base::ReadFileToString(unpacked_dir.AppendASCII("bundle.js"),
+                             &extracted_bundle));
+  EXPECT_EQ(result.bundle_size_bytes, extracted_bundle.size());
+  EXPECT_EQ(result.computed_shasum,
+            ComputeSnapBundleShasum(extracted_bundle));
+
+  base::DeletePathRecursively(result.temp_dir_path);
 }
 
 }  // namespace brave_wallet
