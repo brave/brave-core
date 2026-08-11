@@ -422,9 +422,7 @@ export class NemotronStreamSession {
 
           decoderCalls++
 
-          const tok = argmax(
-            dout.outputs.data as Float32Array,
-          )
+          const tok = argmax(dout.outputs.data as Float32Array)
 
           if (tok !== config.NEMO_BLANK) {
             this.hyp.push(tok)
