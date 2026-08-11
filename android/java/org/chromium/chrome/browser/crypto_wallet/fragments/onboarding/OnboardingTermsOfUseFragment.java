@@ -92,6 +92,14 @@ public class OnboardingTermsOfUseFragment extends BaseOnboardingWalletFragment
                         mOnNextPage.incrementPages(1);
                     }
                 });
+
+        // Restore the selections entered before a configuration change such as a rotation. Read
+        // both values first, as setChecked triggers onCheckedChanged, which writes them back.
+        final boolean selfCustodyChecked = mOnboardingViewModel.isSelfCustodyChecked();
+        final boolean termsOfUseChecked = mOnboardingViewModel.isTermsOfUseChecked();
+        mSelfCustodyCheckBox.setChecked(selfCustodyChecked);
+        mTermsOfUseCheckBox.setChecked(termsOfUseChecked);
+        updateContinueButtonState();
     }
 
     @Override
@@ -101,7 +109,28 @@ public class OnboardingTermsOfUseFragment extends BaseOnboardingWalletFragment
     }
 
     @Override
+    public void onDestroy() {
+        // Drop the saved selections when the user genuinely leaves the screen (taps next, goes
+        // back, or closes with X). Keep them when the fragment is destroyed for a configuration
+        // change such as a rotation, which is a state restoration that repopulates the recreated
+        // fragment from these values.
+        final FragmentActivity activity = getActivity();
+        if (activity != null && !activity.isChangingConfigurations()) {
+            mOnboardingViewModel.clearTermsOfUseSelections();
+        }
+        super.onDestroy();
+    }
+
+    @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        // Persist the selections so they survive a configuration change such as a rotation.
+        mOnboardingViewModel.setTermsOfUseSelections(
+                mSelfCustodyCheckBox.isChecked(), mTermsOfUseCheckBox.isChecked());
+        updateContinueButtonState();
+    }
+
+    /** Enables the continue button only when both terms of use checkboxes are selected. */
+    private void updateContinueButtonState() {
         mContinueButton.setEnabled(
                 mSelfCustodyCheckBox.isChecked() && mTermsOfUseCheckBox.isChecked());
     }
