@@ -60,11 +60,19 @@ jobs:
       - name: Install Socket CLI
         run: pnpm add -g @socketsecurity/cli
 
+      - name: Configure GPG
+        uses: crazy-max/ghaction-import-gpg@e89d40939c28e39f97cf32126055eeae86ba74ec # v6.3.0
+        with:
+          gpg_private_key: ${{ secrets.BRAVE_SUPPORT_ADMIN_GPG_KEY }}
+          passphrase: ${{ secrets.BRAVE_SUPPORT_ADMIN_COMMIT_SIGNING_KEY_PASSPHRASE }}
+          git_user_signingkey: true
+          git_commit_gpgsign: true
+
       - name: Run Socket Fix
         env:
           GHSA_IDS: ${{ inputs.ghsa_ids }}
           SOCKET_SECURITY_API_KEY: ${{ secrets.SOCKET_SECURITY_API_KEY }}
-          SOCKET_CLI_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SOCKET_CLI_GITHUB_TOKEN: ${{ secrets.SOCKET_FIX_PAT }}
           CI: ''
         run: |
           if ! [[ "$GHSA_IDS" =~ ^GHSA-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{4}(,[[:space:]]?GHSA-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{4})*$ ]]; then
@@ -75,14 +83,6 @@ jobs:
           for id in "${IDS[@]}"; do FLAGS+=(--id "${id// /}"); done
           socket config set defaultOrg "brave"
           socket fix . "${FLAGS[@]}"
-
-      - name: Configure GPG
-        uses: crazy-max/ghaction-import-gpg@e89d40939c28e39f97cf32126055eeae86ba74ec # v6.3.0
-        with:
-          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
-          passphrase: ${{ secrets.GPG_PASSPHRASE }}
-          git_user_signingkey: true
-          git_commit_gpgsign: true
 
       - name: Compute branch name
         id: branch
