@@ -3,6 +3,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/containers/buildflags/buildflags.gni")
+
 declare_args() {
-  enable_traffic_control = is_linux || is_mac || is_win
+  enable_traffic_control = enable_containers && (is_linux || is_mac || is_win)
 }

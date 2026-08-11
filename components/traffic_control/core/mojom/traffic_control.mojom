@@ -1,0 +1,70 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+module traffic_control.mojom;
+
+// Destination for a matched rule. An empty or unset `container_id` means the
+// rule does not route traffic into a container.
+struct Target {
+  // Optional container to route matched traffic into.
+  string? container_id;
+};
+
+// Represents a traffic control rule that matches URLs and routes them to a
+// target. Rules are evaluated in list order; the first enabled match wins.
+struct TrafficRule {
+  // Unique identifier for the rule.
+  string id;
+  // Whether the rule is active.
+  bool enabled;
+  // URL filter pattern (policy URL-blocklist syntax).
+  string url_filter;
+  // Destination for matched traffic.
+  Target target;
+};
+
+// Represents an error that occurred during a rule CRUD operation.
+enum RuleOperationError {
+  // The rule ID is set, but the operation expects it to be empty.
+  kIdShouldBeEmpty = 1,
+  // The rule ID is not set, but the operation expects it to be non-empty.
+  kIdShouldBeSet,
+  // The URL filter is invalid.
+  kInvalidUrlFilter,
+  // The target is invalid.
+  kInvalidTarget,
+  // The rule was not found.
+  kNotFound,
+};
+
+// Interface for settings UI -> browser communication. This interface allows the
+// settings UI to perform CRUD operations on traffic control rules, with all
+// operations being handled in the browser process.
+interface TrafficControlSettingsHandler {
+  // Establishes a connection with the UI for browser -> UI notifications. This
+  // creates a 1-to-1 connection between the handler and the settings UI.
+  BindUI(pending_remote<TrafficControlSettingsUI> ui);
+
+  // Retrieves the current list of rules. Returns: Array of all configured rules.
+  GetRules() => (array<TrafficRule> rules);
+
+  // Creates a new rule.
+  AddRule(TrafficRule rule) => (RuleOperationError? error);
+
+  // Updates an existing rule.
+  UpdateRule(TrafficRule rule) => (RuleOperationError? error);
+
+  // Removes a rule by its ID.
+  RemoveRule(string id) => (RuleOperationError? error);
+};
+
+// Interface for browser -> settings UI communication. This interface allows the
+// browser process to notify the settings UI about changes to the rules list.
+interface TrafficControlSettingsUI {
+  // Notifies the settings UI when the rules list is modified. This ensures the
+  // UI stays in sync with the browser-side rule state.
+  // - `rules`: Updated list of all rules.
+  OnRulesChanged(array<TrafficRule> rules);
+};
