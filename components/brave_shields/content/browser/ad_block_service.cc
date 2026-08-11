@@ -11,6 +11,7 @@
 
 #include "base/check.h"
 #include "base/check_is_test.h"
+#include "base/command_line.h"
 #include "base/feature_list.h"
 #include "base/files/file_path.h"
 #include "base/functional/bind.h"
@@ -36,6 +37,7 @@
 #include "brave/components/brave_shields/core/common/adblock/rs/src/lib.rs.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
+#include "brave/components/constants/brave_switches.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
@@ -432,7 +434,9 @@ void AdBlockService::SetupDiscardPolicy(
 
 bool AdBlockService::IsDebugMode() const {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  return local_state_->GetBoolean(prefs::kAdBlockDebugMode);
+  return local_state_->GetBoolean(prefs::kAdBlockDebugMode) ||
+         base::CommandLine::ForCurrentProcess()->HasSwitch(
+             switches::kEnableAdblockDebugMode);
 }
 
 void AdBlockService::SetDebugMode(bool debug_mode) {

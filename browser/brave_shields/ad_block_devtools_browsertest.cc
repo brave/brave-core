@@ -3,9 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "base/command_line.h"
 #include "base/strings/strcat.h"
 #include "base/values.h"
 #include "brave/browser/brave_shields/ad_block_service_browsertest.h"
+#include "brave/components/constants/brave_switches.h"
 #include "chrome/browser/interstitials/security_interstitial_page_test_utils.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
