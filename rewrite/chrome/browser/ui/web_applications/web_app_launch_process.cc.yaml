@@ -1,0 +1,22 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Route command line PWA launches through the containers storage partition.
+
+      WebAppLaunchProcess::Run() navigates a command line launch via
+      NavigateWebAppUsingParams(). Redirect that single call to the Brave helper
+      so --container / --temporary-container resolve to the right storage
+      partition, matching the normal command line tab path.
+    regex:
+      re_pattern: '\n[^\S\n]*return (NavigateWebAppUsingParams\(nav_params\));'
+      replace: |-
+        \n#if BUILDFLAG(ENABLE_CONTAINERS)
+          return NavigateWebAppInContainerUsingParams(&profile_.get(), *params_,
+                                                      nav_params);
+        #else
+          return \1;
+        #endif  // BUILDFLAG(ENABLE_CONTAINERS)

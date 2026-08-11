@@ -1,0 +1,17 @@
+diff --git a/chrome/browser/ui/web_applications/web_app_launch_process.cc b/chrome/browser/ui/web_applications/web_app_launch_process.cc
+index c6f9462a2f3c76606348ec9a66b193ac74e202ae..1d3b27b8952ea451699d95d79544243b9c5beb26 100644
+--- a/chrome/browser/ui/web_applications/web_app_launch_process.cc
++++ b/chrome/browser/ui/web_applications/web_app_launch_process.cc
+@@ -303,7 +303,12 @@ content::WebContents* WebAppLaunchProcess::Run() {
+ 
+   nav_params.web_app_navigation_data->SetLaunchParams(std::move(launch_params));
+   nav_params.web_app_navigation_data->SetLaunchSource(params_->launch_source);
++#if BUILDFLAG(ENABLE_CONTAINERS)
++  return NavigateWebAppInContainerUsingParams(&profile_.get(), *params_,
++                                              nav_params);
++#else
+   return NavigateWebAppUsingParams(nav_params);
++#endif  // BUILDFLAG(ENABLE_CONTAINERS)
+ }
+ 
+ const apps::ShareTarget* WebAppLaunchProcess::MaybeGetShareTarget() const {

@@ -47,13 +47,6 @@ content::WebContents* NavigateWebAppInContainerUsingParams(
 }  // namespace
 
 }  // namespace web_app
-
-#define NavigateWebAppUsingParams(nav_params) \
-  NavigateWebAppInContainerUsingParams(&profile_.get(), *params_, nav_params)
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
 #include <chrome/browser/ui/web_applications/web_app_launch_process.cc>
-
-#if BUILDFLAG(ENABLE_CONTAINERS)
-#undef NavigateWebAppUsingParams
-#endif  // BUILDFLAG(ENABLE_CONTAINERS)

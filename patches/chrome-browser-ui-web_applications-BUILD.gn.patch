@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/web_applications/BUILD.gn b/chrome/browser/ui/web_applications/BUILD.gn
+index 9bb9c96ba751684de20b3a2971e24418948c3837..e85c42e9482b62489db5b9a54de387c5f0bc7bbb 100644
+--- a/chrome/browser/ui/web_applications/BUILD.gn
++++ b/chrome/browser/ui/web_applications/BUILD.gn
+@@ -214,6 +214,7 @@ source_set("impl") {
+     }
+   }
+   public_deps = [ "//chrome/browser:browser_public_dependencies" ]
++  import("//brave/browser/ui/web_applications/sources.gni") deps += brave_chrome_browser_ui_web_applications_deps
+ }
+ 
+ source_set("unit_tests") {
