@@ -27,7 +27,12 @@ import genGradle from '../lib/genGradle.js'
 import perfTests from '../lib/perfTests.ts'
 import registerListAffectedTestsCommand from './listAffectedTests.js'
 import registerGenerateCoverageReportCommand from './generateCoverageReport.js'
-import { createBuildConfigArgument, collect, parseInteger, parseBoolean } from '../lib/commandsUtils.ts'
+import {
+  createBuildConfigArgument,
+  collect,
+  parseInteger,
+  parseBoolean,
+} from '../lib/commandsUtils.ts'
 
 const parsedArgs = program.parseOptions(process.argv)
 
