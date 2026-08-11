@@ -375,10 +375,6 @@ extension BraveWalletJsonRpcService {
       allHiddenChainIds.append(contentsOf: hiddenChainIdsForCoin)
     }
     let filteredNetworks = allNetworks.filter { network in
-      if network.chainId == BraveWallet.LocalhostChainId {
-        // localhost not supported on iOS
-        return false
-      }
       if network.chainId == BraveWallet.BitcoinTestnet {
         if respectHiddenNetworksPreference {
           // check bitcoin testnet is enabled and visibility
@@ -505,9 +501,7 @@ extension BraveWalletJsonRpcService {
       for coinType in coins {
         group.addTask { @MainActor in
           let chains = await self.hiddenNetworks(coin: coinType)
-          return chains.filter {  // localhost not supported
-            $0 != BraveWallet.LocalhostChainId
-          }
+          return chains
         }
       }
       return await group.reduce([String](), { $0 + $1 })
