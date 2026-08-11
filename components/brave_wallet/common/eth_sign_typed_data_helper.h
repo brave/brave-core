@@ -61,6 +61,14 @@ class EthSignTypedDataHelper {
   FRIEND_TEST_ALL_PREFIXES(EthSignedTypedDataHelperUnitTest,
                            InvalidEncodeTypes);
   FRIEND_TEST_ALL_PREFIXES(EthSignedTypedDataHelperUnitTest, EncodeTypesArrays);
+  FRIEND_TEST_ALL_PREFIXES(EthSignedTypedDataHelperUnitTest,
+                           EncodeTypesPrimaryTypeSortedFirst);
+  FRIEND_TEST_ALL_PREFIXES(EthSignedTypedDataHelperUnitTest,
+                           EncodeTypesFixedAndNestedArrayDependencies);
+  FRIEND_TEST_ALL_PREFIXES(EthSignedTypedDataHelperUnitTest,
+                           EncodeTypesWithCyclicDependencies);
+  FRIEND_TEST_ALL_PREFIXES(EthSignedTypedDataHelperUnitTest,
+                           EncodeTypesIgnoresNonListDependency);
   FRIEND_TEST_ALL_PREFIXES(EthSignedTypedDataHelperUnitTest, EncodeField);
 
   explicit EthSignTypedDataHelper(base::DictValue types, Version version);

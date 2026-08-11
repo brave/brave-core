@@ -9,12 +9,12 @@
 
 #include <algorithm>
 #include <optional>
-#include <queue>
 #include <string_view>
 #include <utility>
 
 #include "base/check.h"
 #include "base/containers/extend.h"
+#include "base/containers/queue.h"
 #include "base/containers/span.h"
 #include "base/numerics/safe_conversions.h"
 #include "base/strings/strcat.h"
@@ -40,7 +40,7 @@ FindAndValidateAllDependencyTypes(const base::DictValue& types,
 
   absl::flat_hash_set<std::string_view> visited_types;
 
-  std::queue<std::string_view> types_queue;
+  base::queue<std::string_view> types_queue;
   types_queue.push(primary_type_name);
 
   while (!types_queue.empty()) {
@@ -146,6 +146,9 @@ std::optional<std::string> EthSignTypedDataHelper::EncodeTypes(
   std::ranges::sort(*types_map, [=](const auto& a, const auto& b) {
     if (a.first == primary_type_name) {
       return true;
+    }
+    if (b.first == primary_type_name) {
+      return false;
     }
     return a.first < b.first;
   });
