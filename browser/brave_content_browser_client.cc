@@ -173,6 +173,7 @@
 #endif  // !BUILDFLAG(IS_ANDROID)
 
 #if BUILDFLAG(ENABLE_LOCAL_AI)
+#include "brave/browser/speech/on_device_speech_recognition_controller.h"
 #include "brave/browser/ui/webui/local_ai/on_device_speech_recognition_worker_ui.h"
 #include "brave/components/local_ai/core/features.h"
 #include "brave/components/local_ai/core/on_device_speech_recognition.mojom.h"
@@ -935,6 +936,14 @@ BraveContentBrowserClient::WorkerGetBraveShieldSettings(
       IsJsBlockingEnforced(browser_context, url),
       brave_user_agent::ShouldHideBraveBrand(url));
 }
+
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+mojo::PendingRemote<local_ai::mojom::AsrSession>
+BraveContentBrowserClient::GetAsrSession(
+    content::BrowserContext* browser_context) {
+  return speech::OnDeviceSpeechRecognitionController::Get()->GetAsrSession();
+}
+#endif
 
 bool BraveContentBrowserClient::CanCreateWindow(
     content::RenderFrameHost* opener,

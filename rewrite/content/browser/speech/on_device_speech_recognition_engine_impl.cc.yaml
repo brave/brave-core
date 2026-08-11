@@ -1,0 +1,18 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Build no UI thread Core for sessions Brave serves itself
+
+      BraveOnDeviceSpeechRecognitionEngine supplies the stream from Brave's own
+      model, so it needs nothing the Core produces. Left to build, the Core asks
+      the optimization guide broker for assets, which records the use case as
+      recently used in local state, and that is one of the criteria the
+      optimization guide weighs when deciding to register Chrome's on-device
+      model for download.
+    preempt_function_impl:
+      function_name: OnDeviceSpeechRecognitionEngine::OnDeviceSpeechRecognitionEngine
+      return_if: 'UsesBraveOnDeviceSpeech(config.quality)'

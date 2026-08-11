@@ -1,0 +1,22 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# `class CONTENT_EXPORT OnDeviceSpeechRecognitionEngine` cannot be parsed by
+# tree-sitter with the export macro in place, so blank it out for AST matching.
+blank_macros_for_ast_parsing: true
+
+substitutions:
+  - description: |
+      Let Brave's engine subclass reach the members it substitutes
+
+      BraveOnDeviceSpeechRecognitionEngine serves the session from Brave's own
+      model rather than the ModelBroker one the base creates, and every member
+      it needs for that is private. It reads config_ to name the frame to ask
+      for a session, calls OnAsrStreamCreated to bind the stream pair Brave's
+      controller hands back, closes asr_stream_ so the worker emits its final
+      result, and asserts main_sequence_checker_.
+    add_friend:
+      class_name: OnDeviceSpeechRecognitionEngine
+      friend_type: class BraveOnDeviceSpeechRecognitionEngine

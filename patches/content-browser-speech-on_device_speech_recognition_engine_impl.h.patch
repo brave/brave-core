@@ -1,0 +1,12 @@
+diff --git a/content/browser/speech/on_device_speech_recognition_engine_impl.h b/content/browser/speech/on_device_speech_recognition_engine_impl.h
+index 7db247ad20fbb74b687267269baaca11e9f877f1..81f9110dd37c9969f7185a7611d980a74e8f97cf 100644
+--- a/content/browser/speech/on_device_speech_recognition_engine_impl.h
++++ b/content/browser/speech/on_device_speech_recognition_engine_impl.h
+@@ -96,6 +96,7 @@ class CONTENT_EXPORT OnDeviceSpeechRecognitionEngine
+   };
+ 
+  private:
++  friend class BraveOnDeviceSpeechRecognitionEngine;
+   friend class OnDeviceSpeechRecognitionEngineTest;
+   FRIEND_TEST(OnDeviceSpeechRecognitionEngine, ConvertAccumulatedAudioData);
+   FRIEND_TEST(OnDeviceSpeechRecognitionEngine, Reinitialization);

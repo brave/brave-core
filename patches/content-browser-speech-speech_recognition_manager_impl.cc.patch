@@ -1,0 +1,34 @@
+diff --git a/content/browser/speech/speech_recognition_manager_impl.cc b/content/browser/speech/speech_recognition_manager_impl.cc
+index 6de11ccd8067888513b82c47fb66610314864dbc..fe9662c286cbfdf9748a5d882c8dc3feb3af1c2c 100644
+--- a/content/browser/speech/speech_recognition_manager_impl.cc
++++ b/content/browser/speech/speech_recognition_manager_impl.cc
+@@ -243,6 +243,9 @@ int SpeechRecognitionManagerImpl::GetSessionTrackerCountForTesting(  // IN-TEST
+ // static
+ bool SpeechRecognitionManagerImpl::IsOptimizationGuideSpeechModel(
+     const SpeechRecognitionSessionConfig& config) {
++  if (UsesBraveOnDeviceSpeech(config.quality)) {
++    return true;
++  }
+   const bool use_gemini_nano =
+       base::FeatureList::IsEnabled(media::kOnDeviceWebSpeechGeminiNano) &&
+       config.quality == media::mojom::SpeechRecognitionQuality::kConversation;
+@@ -703,7 +706,9 @@ int SpeechRecognitionManagerImpl::CreateSession(
+   const bool use_tinygemma =
+       base::FeatureList::IsEnabled(media::kOnDeviceWebSpeechSmallExpertModel) &&
+       config.quality == media::mojom::SpeechRecognitionQuality::kDictation;
+-  const bool uses_optimization_guide_model = use_gemini_nano || use_tinygemma;
++  const bool uses_optimization_guide_model =
++      (use_gemini_nano || use_tinygemma) ||
++      UsesBraveOnDeviceSpeech(config.quality);
+   if (UseOnDeviceSpeechRecognition(config) &&
+       audio_forwarder_config.has_value() && !uses_optimization_guide_model) {
+     CHECK_GT(audio_forwarder_config.value().channel_count, 0);
+@@ -755,7 +760,7 @@ int SpeechRecognitionManagerImpl::CreateSession(
+   if (UseOnDeviceSpeechRecognition(config)) {
+     if (IsOptimizationGuideSpeechModel(config)) {
+       speech_recognition_engine =
+-          std::make_unique<OnDeviceSpeechRecognitionEngine>(config);
++          MakeOnDeviceSpeechEngine(config);
+     } else {
+       std::unique_ptr<SodaSpeechRecognitionEngineImpl>
+           soda_speech_recognition_engine =

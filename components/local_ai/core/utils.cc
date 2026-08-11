@@ -6,9 +6,11 @@
 #include "brave/components/local_ai/core/utils.h"
 
 #include "base/containers/span.h"
+#include "base/feature_list.h"
 #include "base/files/file.h"
 #include "base/files/file_path.h"
 #include "base/logging.h"
+#include "brave/components/local_ai/core/features.h"
 
 namespace local_ai {
 
@@ -30,6 +32,13 @@ std::optional<mojo_base::BigBuffer> ReadFileToBigBuffer(
     return std::nullopt;
   }
   return buffer;
+}
+
+bool IsQualityServedByBraveOnDeviceSpeech(
+    media::mojom::SpeechRecognitionQuality quality) {
+  return base::FeatureList::IsEnabled(kBraveOnDeviceSpeechRecognition) &&
+         (quality == media::mojom::SpeechRecognitionQuality::kCommand ||
+          quality == media::mojom::SpeechRecognitionQuality::kDictation);
 }
 
 }  // namespace local_ai

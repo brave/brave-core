@@ -1,0 +1,31 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/local_ai/buildflags/buildflags.gni")
+
+assert(enable_local_ai)
+
+# The engine itself is compiled into //content/browser through
+# brave_content_browser_sources, so this target is only its tests.
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "brave_on_device_speech_recognition_engine_unittest.cc" ]
+
+  deps = [
+    "//base",
+    "//base/test:test_support",
+    "//brave/components/local_ai/core:speech_recognition_mojom",
+    "//content/public/browser",
+    "//content/public/common",
+    "//content/test:test_support",
+    "//media",
+    "//media/mojo/mojom:web_speech_recognition",
+    "//mojo/public/cpp/bindings",
+    "//services/on_device_model/public/mojom",
+    "//testing/gtest",
+    "//url",
+  ]
+}

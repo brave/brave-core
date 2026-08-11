@@ -1,0 +1,43 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Report the qualities Brave's model serves as an on-device model.
+
+      Brave serves on-device speech from its own model, so CreateSession has to
+      build the on-device engine for those sessions rather than the SODA one.
+      UsesBraveOnDeviceSpeech is the predicate the chromium_src override
+      defines, and the audio-forwarder guard below asks it too.
+    preempt_function_impl:
+      function_name: SpeechRecognitionManagerImpl::IsOptimizationGuideSpeechModel
+      code: |-
+        if (UsesBraveOnDeviceSpeech(config.quality)) {
+          return true;
+        }
+
+  - description: |
+      Apply the same answer to the audio-forwarder guard.
+
+      CreateSession recomputes IsOptimizationGuideSpeechModel's condition inline
+      instead of calling it, so extending only the method would leave Brave's
+      sessions handed to the speech recognition service, which bypasses the
+      browser and with it Brave's engine.
+    regex:
+      re_pattern: '(const bool uses_optimization_guide_model =)\s*([^;]*);'
+      replace: |-
+        \1
+              (\2) ||
+              UsesBraveOnDeviceSpeech(config.quality);
+
+  - description: |
+      Construct Brave's on-device speech recognition engine.
+
+      MakeOnDeviceSpeechEngine, from the chromium_src override, returns Brave's
+      subclass for the qualities Brave's model serves and upstream's engine for
+      the rest.
+    regex:
+      pattern: 'std::make_unique<OnDeviceSpeechRecognitionEngine>(config)'
+      replace: 'MakeOnDeviceSpeechEngine(config)'
