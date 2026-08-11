@@ -4,12 +4,13 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import 'webpack-dev-server'
+import assert from 'node:assert'
 import fs from 'fs'
 import path from 'path'
 import webpack from 'webpack'
 import CopyPlugin from 'copy-webpack-plugin'
+import { isCI } from '../../../../build/commands/lib/ciDetect.ts'
 import { writeTsConfig } from '../../../../build/webpack/ts-config.ts'
-import { genPath } from '../../../../build/commands/lib/guessConfig.js'
 import {
   deterministicOptimization,
   deterministicIdsPlugins,
@@ -26,18 +27,7 @@ import {
   fileLoaderRule,
   htmlAssetRule,
 } from '../../../../build/webpack/rules.ts'
-
-if (!fs.existsSync(genPath)) {
-  throw new Error(
-    "Failed to find build output 'gen' folder! Have you run a brave-core build yet with the specified (or default) configuration?",
-  )
-}
-console.log(`Using brave-core generated dependency path of '${genPath}'`)
-
-// Mock browser-privileged functionality (e.g. string pluralization,
-// createSanitizedImageUrl) with the web-compatible implementations we share
-// with Storybook.
-const pathMap = generatePathMapWithWebMocks(genPath)
+import GenerateDepfilePlugin from '../../../../build/webpack/webpack-plugin-depfile.js'
 
 // style-loader inlines the source of its `insert` option in to every generated
 // CSS module (it literally calls `.toString()` on the function), so that
@@ -49,16 +39,43 @@ const pathMap = generatePathMapWithWebMocks(genPath)
 // a module.
 declare const _INSERT_STYLE_ELEMENT: (element: HTMLStyleElement) => void
 
+type WebpackEnv = {
+  root_gen_dir?: string
+  depfile_path?: string
+  depfile_source_name?: string
+}
+
+async function resolveGenPath(env: WebpackEnv): Promise<string> {
+  if (env.root_gen_dir) {
+    return path.resolve(env.root_gen_dir)
+  }
+
+  assert(!isCI, 'guessConfig is not allowed on CI')
+  const { genPath } = await import(
+    '../../../../build/commands/lib/guessConfig.js'
+  )
+  return genPath
+}
+
 export default async function (
-  env: any,
+  env: WebpackEnv = {},
   argv: any,
 ): Promise<webpack.Configuration> {
   const isDevMode = argv.mode === 'development'
 
-  const outputPath = path.join(genPath, 'ai-chat-shared-conversation-lib')
-  if (!isDevMode) {
-    console.log('Output path is', outputPath)
+  const genPath = await resolveGenPath(env)
+  if (!fs.existsSync(genPath)) {
+    throw new Error(
+      "Failed to find build output 'gen' folder! Have you run a brave-core build yet with the specified (or default) configuration?",
+    )
   }
+
+  // Mock browser-privileged functionality (e.g. string pluralization,
+  // createSanitizedImageUrl) with the web-compatible implementations we share
+  // with Storybook.
+  const pathMap = generatePathMapWithWebMocks(genPath)
+
+  const outputPath = path.join(genPath, 'ai-chat-shared-conversation-lib')
 
   const tsConfigPath = await writeTsConfig(
     pathMap,
@@ -118,9 +135,39 @@ export default async function (
     })
   }
 
+  const plugins: webpack.Configuration['plugins'] = []
+  if (env.depfile_path) {
+    assert(
+      env.depfile_source_name,
+      'depfile_source_name is required when depfile_path is set',
+    )
+    plugins.push(
+      new GenerateDepfilePlugin({
+        depfilePath: env.depfile_path,
+        depfileSourceName: env.depfile_source_name,
+      }),
+    )
+  }
+  plugins.push(
+    ...deterministicIdsPlugins(genPath),
+    provideNodeGlobals,
+    ...chromePrefixReplacers(pathMap),
+    new CopyPlugin({
+      patterns: copyPluginPatterns,
+    }),
+    new webpack.ProvidePlugin({
+      _INSERT_STYLE_ELEMENT: [
+        path.join(import.meta.dirname, 'style_loader.ts'),
+        'default',
+      ],
+    }),
+  )
+
   return {
     target: 'web',
+    context: path.resolve(import.meta.dirname, '../../../..'),
     entry,
+    stats: isDevMode ? 'normal' : 'errors-only',
     devtool: isDevMode ? 'inline-source-map' : false,
     devServer: {
       historyApiFallback: true,
@@ -138,20 +185,7 @@ export default async function (
     experiments: {
       outputModule: true,
     },
-    plugins: [
-      ...deterministicIdsPlugins(genPath),
-      provideNodeGlobals,
-      ...chromePrefixReplacers(pathMap),
-      new CopyPlugin({
-        patterns: copyPluginPatterns,
-      }),
-      new webpack.ProvidePlugin({
-        _INSERT_STYLE_ELEMENT: [
-          path.join(import.meta.dirname, 'style_loader.ts'),
-          'default',
-        ],
-      }),
-    ],
+    plugins,
     module: {
       parser: {
         // Leave import.meta.url untransformed so that we can use the runtime
