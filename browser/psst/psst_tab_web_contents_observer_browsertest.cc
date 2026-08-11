@@ -139,13 +139,15 @@ const WAIT_FOR_PAGE_TIMEOUT = 1000;
 const WAIT_FOR_PAGE_ATTEMPTS_COUNT = 6;
 
 // Use tasks as list of the policy settings tasks to apply
-const PSST_TASKS = params.tasks;
-const PSST_TASKS_LENGTH = params.tasks?.length ?? 0;
+const PSST_TASKS = window.__bravePsstParams.tasks;
+const PSST_TASKS_LENGTH = window.__bravePsstParams.tasks?.length ?? 0;
 
 // Flag which is present only for the first (initial) execution
-const PSST_INITIAL_EXECUTION_FLAG = params.initial_execution ?? false;
+const PSST_INITIAL_EXECUTION_FLAG =
+  window.__bravePsstParams.initial_execution ?? false;
 
-const PSST_CHECK_SETTINGS_LOADED = params.psst_settings_status ?? null;
+const PSST_CHECK_SETTINGS_LOADED =
+  window.__bravePsstParams.psst_settings_status ?? null;
 
 const PSST_LOCALSTORAGE_KEY = 'psst';
 

@@ -21,6 +21,10 @@
 #include "chrome/browser/ui/tabs/contents_observing_tab_feature.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"
 
+namespace variations {
+class VariationsService;
+}
+
 namespace psst {
 
 class MatchedRule;
@@ -63,11 +67,19 @@ class PsstTabWebContentsObserver : public tabs::ContentsObservingTabFeature,
         const std::string& user_id) = 0;
   };
 
+  // Creates an observer for `tab`'s web contents, or returns null for
+  // incognito/guest profiles or when PSST is disabled. The returned observer
+  // keeps a reference to `tab` for its lifetime. `browser_context`,
+  // `psst_settings_service`, and `ui_delegate` must not be null.
+  // `variations_service` may be null, in which case the country used for
+  // rule matching is left empty. `world_id` is the isolated world that PSST
+  // scripts are injected into.
   static std::unique_ptr<PsstTabWebContentsObserver> MaybeCreateForWebContents(
       tabs::TabInterface& tab,
       content::BrowserContext* browser_context,
       std::unique_ptr<PsstUiDelegate> ui_delegate,
       PsstSettingsService* psst_settings_service,
+      variations::VariationsService* variations_service,
       const int32_t world_id);
 
   ~PsstTabWebContentsObserver() override;
@@ -84,6 +96,7 @@ class PsstTabWebContentsObserver : public tabs::ContentsObservingTabFeature,
   PsstTabWebContentsObserver(tabs::TabInterface& tab,
                              PsstRuleRegistry* registry,
                              PsstSettingsService* psst_settings_service,
+                             variations::VariationsService* variations_service,
                              std::unique_ptr<PsstUiDelegate> ui_delegate);
 
   void InsertUserScript(std::unique_ptr<MatchedRule> rule);
@@ -116,6 +129,7 @@ class PsstTabWebContentsObserver : public tabs::ContentsObservingTabFeature,
 
   const raw_ptr<PsstRuleRegistry> registry_;
   const raw_ptr<PsstSettingsService> psst_settings_service_ = nullptr;
+  const raw_ptr<variations::VariationsService> variations_service_ = nullptr;
   InjectScriptCallback inject_script_callback_;
   mojo::AssociatedRemote<script_injector::mojom::ScriptInjector>
       script_injector_remote_;
