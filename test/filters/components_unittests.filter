@@ -231,6 +231,8 @@
 # This test fails because brave.omnibox.history_suggestions_enabled is not
 # registered.
 -SearchboxUtilsTest.CanPasteAndGo
+-SearchboxUtilsTest.ClassifyStringSearchQuery
+-SearchboxUtilsTest.ClassifyStringUrl
 
 # This test fails because its message is hardcoded to look for "Google Search"
 # instead of "Brave Search"
@@ -251,6 +253,17 @@
 # This test asserts features::kSkillsEnabled's upstream default which we
 # override.
 -SkillsFeaturesTest.IsSkillsEnabled_Default_PrefOn
+
+# These tests fail because of the following CHECK in identity_test_utils.cc:
+# identity_manager->AreRefreshTokensLoaded()
+-AccountPreviewDataServiceTest.GetPreferredAccountForPromo
+-AccountPreviewDataServiceTest.GetPreferredAccountForPromoRespectsDefaultAccountOrderCookieJar
+-AccountPreviewDataServiceTest.RateLimitOn429PeriodicRefresh
+-AccountPreviewDataServiceTest.RemainingAccountsAllCachedDoesNotCrashAndRecomputes
+-IdentityUtilsTest.GetOrderedAccountsForDisplayCookieOrderOnDesktop
+
+# This test fails because we disable kEmailVerificationProtocol feature.
+-EmailVerifierDelegateTestBase.ThirdPartyOriginTrialEnabled
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -AccountInvestigatorTest.*
