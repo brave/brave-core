@@ -14,5 +14,5 @@ substitutions:
       command line tab path.
     regex:
       re_pattern: '\n([^\S\n]*)return NavigateWebAppUsingParams\(nav_params\);'
-      replace: |-2
+      replace: |2-
         \n\1return BraveNavigateWebAppUsingParams(&profile_.get(), *params_, nav_params);
