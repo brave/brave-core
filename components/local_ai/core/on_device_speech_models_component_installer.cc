@@ -17,14 +17,18 @@
 #include "base/functional/bind.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/path_service.h"
+#include "base/task/bind_post_task.h"
+#include "base/task/thread_pool.h"
 #include "base/values.h"
 #include "base/version.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "brave/components/local_ai/core/features.h"
 #include "brave/components/local_ai/core/on_device_speech_models_state.h"
+#include "brave/components/local_ai/core/pref_names.h"
 #include "components/component_updater/component_installer.h"
 #include "components/component_updater/component_updater_paths.h"
 #include "components/component_updater/component_updater_service.h"
+#include "components/prefs/pref_service.h"
 #include "components/update_client/update_client.h"
 #include "components/update_client/update_client_errors.h"
 #include "crypto/sha2.h"
@@ -54,7 +58,12 @@ base::FilePath GetComponentDir() {
 }
 
 void DeleteComponentDirectory() {
-  base::DeletePathRecursively(GetComponentDir());
+  // Posted because removing the model is hundreds of megabytes of blocking
+  // file I/O.
+  base::ThreadPool::PostTask(
+      FROM_HERE, {base::MayBlock(), base::TaskPriority::BEST_EFFORT},
+      base::BindOnce(base::IgnoreResult(&base::DeletePathRecursively),
+                     GetComponentDir()));
 }
 
 }  // namespace
@@ -67,7 +76,7 @@ OnDeviceSpeechModelsComponentInstallerPolicy::
 bool OnDeviceSpeechModelsComponentInstallerPolicy::VerifyInstallation(
     const base::DictValue& manifest,
     const base::FilePath& install_dir) const {
-  return true;
+  return base::DirectoryExists(install_dir.AppendASCII(kModelDirName));
 }
 
 bool OnDeviceSpeechModelsComponentInstallerPolicy::
@@ -122,20 +131,40 @@ bool OnDeviceSpeechModelsComponentInstallerPolicy::IsBraveComponent() const {
   return true;
 }
 
-void RegisterOnDeviceSpeechModelsComponent(
-    component_updater::ComponentUpdateService* cus) {
-  if (!base::FeatureList::IsEnabled(kBraveOnDeviceSpeechRecognition) || !cus) {
+void MaybeRegisterOnDeviceSpeechModelsComponent(
+    component_updater::ComponentUpdateService* cus,
+    PrefService* local_state,
+    component_updater::Callback callback) {
+  // Keep delivery consistently asynchronous across all branches below.
+  callback = base::BindPostTaskToCurrentDefault(std::move(callback));
+
+  if (!cus || !local_state ||
+      brave_component_updater::BraveOnDemandUpdater::GetInstance()
+          ->is_component_update_disabled()) {
+    std::move(callback).Run(update_client::Error::INVALID_ARGUMENT);
+    return;
+  }
+
+  if (!base::FeatureList::IsEnabled(kBraveOnDeviceSpeechRecognition) ||
+      !local_state->GetBoolean(prefs::kBraveLocalAIEnabled)) {
+    // Published before the delete is posted, so nothing acts on a model whose
+    // files are on their way out. A delete that lags or fails is caught by
+    // `VerifyInstallation` at the next startup.
+    OnDeviceSpeechModelsState::GetInstance()->SetInstallDir(base::FilePath());
     DeleteComponentDirectory();
+    std::move(callback).Run(update_client::Error::INVALID_ARGUMENT);
     return;
   }
 
   auto installer = base::MakeRefCounted<component_updater::ComponentInstaller>(
       std::make_unique<OnDeviceSpeechModelsComponentInstallerPolicy>());
   installer->Register(
-      cus, base::BindOnce([]() {
-        brave_component_updater::BraveOnDemandUpdater::GetInstance()
-            ->EnsureInstalled(kComponentId);
-      }));
+      cus, base::BindOnce(
+               [](component_updater::Callback callback) {
+                 brave_component_updater::BraveOnDemandUpdater::GetInstance()
+                     ->EnsureInstalled(kComponentId, std::move(callback));
+               },
+               std::move(callback)));
 }
 
 }  // namespace local_ai
