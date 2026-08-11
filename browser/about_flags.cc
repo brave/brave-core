@@ -27,6 +27,7 @@
 #include "brave/components/debounce/core/common/features.h"
 #include "brave/components/email_aliases/buildflags/buildflags.h"
 #include "brave/components/google_sign_in_permission/features.h"
+#include "brave/components/image_metadata_stripper/common/features.h"
 #include "brave/components/local_ai/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
@@ -1429,6 +1430,15 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
           "Not recommended.",                                                  \
           kOsWin | kOsLinux | kOsMac,                                          \
           FEATURE_VALUE_TYPE(features::kBraveOverrideDownloadDangerLevel),     \
+      },                                                                       \
+      {                                                                        \
+          "brave-strip-downloaded-image-metadata",                             \
+          "Strip metadata from downloaded images",                             \
+          "Removes tracking metadata, such as the Facebook IPTC identifiers, " \
+          "from JPEG and PNG images as they are downloaded.",                  \
+          kOsAll,                                                              \
+          FEATURE_VALUE_TYPE(image_metadata_stripper::features::               \
+                                 kStripDownloadedImageMetadata),               \
       },                                                                       \
       {                                                                        \
           "brave-webcompat-exceptions-service",                                \
