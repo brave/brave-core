@@ -9,15 +9,17 @@ import Strings
 import SwiftUI
 import WidgetKit
 
-struct LeoVoiceInputWidget: Widget {
+struct LockScreenLeoVoiceInputWidget: Widget {
   var body: some WidgetConfiguration {
-    StaticConfiguration(kind: "LeoVoiceInputWidget", provider: LeoVoiceInputProvider()) { _ in
-      LeoVoiceInputView()
-        .unredacted()
+    StaticConfiguration(
+      kind: "LockScreenLeoVoiceInputWidget",
+      provider: LeoVoiceInputProvider()
+    ) { _ in
+      LockScreenLeoVoiceInputView()
     }
     .configurationDisplayName(Strings.Widgets.leoVoiceInputWidgetTitle)
     .description(Strings.Widgets.leoVoiceInputWidgetDescription)
-    .supportedFamilies([.systemSmall])
+    .supportedFamilies([.accessoryCircular])
     .contentMarginsDisabled()
   }
 }
@@ -40,27 +42,23 @@ private struct LeoVoiceInputProvider: TimelineProvider {
   }
 }
 
-private struct LeoVoiceInputView: View {
+private struct LockScreenLeoVoiceInputView: View {
   var body: some View {
-    Link(
-      destination: URL(
+    ZStack {
+      AccessoryWidgetBackground()
+        .widgetBackground { EmptyView() }
+      WidgetShortcut.braveLeoVoiceInput.image
+        .imageScale(.large)
+        .font(.system(size: 20))
+        .widgetLabel(Strings.Widgets.braveLeoVoiceInput)
+        .accessibilityLabel(Text(Strings.Widgets.braveLeoVoiceInput))
+    }
+    .widgetURL(
+      URL(
         string:
           "\(AppURLScheme.appURLScheme)://shortcut?path=\(WidgetShortcut.braveLeoVoiceInput.rawValue)"
-      )!,
-      label: {
-        VStack(spacing: 8) {
-          WidgetShortcut.braveLeoVoiceInput.image
-            .imageScale(.large)
-            .font(.system(size: 28))
-          Text(Strings.Widgets.braveLeoVoiceInput)
-            .font(.system(size: 13, weight: .semibold))
-            .multilineTextAlignment(.center)
-        }
-        .foregroundColor(Color(braveSystemName: .textPrimary))
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-      }
+      )
     )
-    .widgetBackground { Color(UIColor(braveSystemName: .containerHighlight)) }
   }
 }
 
@@ -69,9 +67,9 @@ private struct LeoVoiceInputView: View {
 #if DEBUG
 
 #Preview(
-  as: .systemSmall,
+  as: .accessoryCircular,
   widget: {
-    LeoVoiceInputWidget()
+    LockScreenLeoVoiceInputWidget()
   },
   timeline: {
     LeoVoiceInputEntry(date: .now)

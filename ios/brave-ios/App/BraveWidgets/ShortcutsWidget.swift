@@ -194,7 +194,7 @@ extension WidgetShortcut {
     case .braveLeo, .askBrave:
       return Image(braveSystemName: "leo.product.brave-leo")
     case .braveLeoVoiceInput:
-      return Image(braveSystemName: "leo.microphone")
+      return Image(braveSystemName: "leo.leo.voice-input")
     @unknown default:
       assertionFailure()
       return Image(systemName: "xmark.octagon")
@@ -278,7 +278,10 @@ private struct ShortcutsView: View {
     ShortcutsWidget()
   },
   timeline: {
-    ShortcutEntry(date: .now, shortcutSlots: [.newTab, .newPrivateTab, .bookmarks])
+    ShortcutEntry(
+      date: .now,
+      shortcutSlots: [.newTab, .newPrivateTab, .braveLeoVoiceInput, .askBrave]
+    )
   }
 )
 

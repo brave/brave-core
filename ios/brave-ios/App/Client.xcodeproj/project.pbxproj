@@ -80,6 +80,7 @@
 		44A8A3792BADE6DC004D1BF1 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 44A8A3782BADE6DC004D1BF1 /* PrivacyInfo.xcprivacy */; };
 		44A8A37B2BADE8D2004D1BF1 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 44A8A37A2BADE8D2004D1BF1 /* PrivacyInfo.xcprivacy */; };
 		44A8A37D2BADE919004D1BF1 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 44A8A37C2BADE919004D1BF1 /* PrivacyInfo.xcprivacy */; };
+		5E15A943302CF3AC00293A68 /* LockScreenLeoVoiceInputWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E15A942302CF3AC00293A68 /* LockScreenLeoVoiceInputWidget.swift */; };
 		5E8CD8E123D5E3DA00548FC0 /* libarchive.2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E8CD8E023D5E3D100548FC0 /* libarchive.2.tbd */; };
 		5EE5918123A290E000E8E8DE /* CoreNFC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F926647A234D4EF400359492 /* CoreNFC.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7DDE6308292FEC9500B8B585 /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = 7DDE6307292FEC9500B8B585 /* SDWebImage */; };
@@ -437,6 +438,7 @@
 		59B691D621B6964D00E9388E /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		59B691DE21B6965C00E9388E /* ko-KR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "ko-KR"; path = "ko-KR.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		59B691E921B6966C00E9388E /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		5E15A942302CF3AC00293A68 /* LockScreenLeoVoiceInputWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockScreenLeoVoiceInputWidget.swift; sourceTree = "<group>"; };
 		5E8CD8E023D5E3D100548FC0 /* libarchive.2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libarchive.2.tbd; path = usr/lib/libarchive.2.tbd; sourceTree = SDKROOT; };
 		7D2697692E7B9AE20058A3DF /* sr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sr; path = "sr-Cyrl.lproj/BraveWidgets.strings"; sourceTree = "<group>"; };
 		7D26976A2E7B9AE20058A3DF /* sr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sr; path = "sr-Cyrl.lproj/Localizable.strings"; sourceTree = "<group>"; };
@@ -803,6 +805,7 @@
 				2713FCD72A96429100398A57 /* WidgetBackground.swift */,
 				27A28ED428C00C19001466A4 /* LockScreenShortcutWidget.swift */,
 				27DB270728BE9CAE005CB7AC /* LockScreenFavoriteWidget.swift */,
+				5E15A942302CF3AC00293A68 /* LockScreenLeoVoiceInputWidget.swift */,
 				CA0391F4271E143F000EB13C /* FavoritesWidget.swift */,
 				CA0391F3271E143F000EB13C /* ShortcutsWidget.swift */,
 				CA0391F6271E143F000EB13C /* StatsWidget.swift */,
@@ -1388,6 +1391,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				272947E329C8F86A00BF2FDC /* NewsTopicsModel.swift in Sources */,
+				5E15A943302CF3AC00293A68 /* LockScreenLeoVoiceInputWidget.swift in Sources */,
 				278BB9FF297B0A1E00690BE3 /* TopNewsListWidget.swift in Sources */,
 				CA0391FC271E143F000EB13C /* SingleStatWidget.swift in Sources */,
 				27A28ED528C00C1D001466A4 /* LockScreenShortcutWidget.swift in Sources */,
