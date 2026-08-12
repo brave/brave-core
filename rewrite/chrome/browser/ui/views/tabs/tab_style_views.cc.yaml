@@ -76,7 +76,7 @@ substitutions:
     count: 2
 
   - description: |-
-      Disable the upstream `TabStyleViews::CreateForTab` factory.
+      Disable the upstream `TabStyleViews::Create` factory.
 
       It must return `BraveVerticalTabStyle`, which inherits from the `.cc`-local
       `HorizontalTabStyleViews` and so can only be defined after it. A forward
@@ -84,11 +84,9 @@ substitutions:
       upstream factory and re-define it in `chromium_src` where the full type is
       visible.
     regex:
-      re_pattern:
-        '(// static\nstd::unique_ptr<TabStyleViews>
-        TabStyleViews::CreateForTab\(Tab\* tab\) \{.*?\n\})'
+      re_pattern: '(// static\n[^\n]*\bTabStyleViews::Create\(.*?\{.*?\n\})'
       re_flags: [DOTALL]
       replace: |-
-        #if 0  // TabStyleViews::CreateForTab declared in the chromium_src.
+        #if 0  // TabStyleViews::Create declared in the chromium_src.
         \1
         #endif

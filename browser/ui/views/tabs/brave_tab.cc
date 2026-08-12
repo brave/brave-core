@@ -264,7 +264,8 @@ void BraveTab::OnFullscreenStateChanged() {
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
 void BraveTab::UpdateTabStyle() {
-  ResetTabStyle(TabStyleViews::CreateForTab(this));
+  ResetTabStyle(TabStyleViews::Create(CreateStyleDelegate(this),
+                                      TabStripOrientation::kHorizontal));
   UpdateInsets();
   InvalidateLayout();
 }

@@ -59,7 +59,8 @@ bool IsBrowserFrameCondensed(const BrowserWindowInterface* browser) {
 //
 class BraveVerticalTabStyle : public HorizontalTabStyleViews {
  public:
-  explicit BraveVerticalTabStyle(Tab* tab);
+  explicit BraveVerticalTabStyle(
+      std::unique_ptr<TabStyleViewDelegate> delegate);
   BraveVerticalTabStyle(const BraveVerticalTabStyle&) = delete;
   BraveVerticalTabStyle& operator=(const BraveVerticalTabStyle&) = delete;
   ~BraveVerticalTabStyle() override = default;
@@ -87,8 +88,8 @@ class BraveVerticalTabStyle : public HorizontalTabStyleViews {
       bool hovered) const override;
 
  private:
-  // Returns the concrete Tab this style belongs to. HorizontalTabStyleViews only
-  // keeps the abstract TabStyleViewDelegate, so Brave's subclass needs its
+  // Returns the concrete Tab this style belongs to. HorizontalTabStyleViews
+  // only keeps the abstract TabStyleViewDelegate, so Brave's subclass needs its
   // own pointer for the tab-specific state it relies on below.
   const Tab* tab() const { return tab_; }
 
@@ -120,8 +121,10 @@ class BraveVerticalTabStyle : public HorizontalTabStyleViews {
   const raw_ptr<const Tab> tab_;
 };
 
-BraveVerticalTabStyle::BraveVerticalTabStyle(Tab* tab)
-    : HorizontalTabStyleViews(Tab::CreateStyleDelegate(tab)), tab_(tab) {}
+BraveVerticalTabStyle::BraveVerticalTabStyle(
+    std::unique_ptr<TabStyleViewDelegate> delegate)
+    : HorizontalTabStyleViews(std::move(delegate)),
+      tab_(views::AsViewClass<Tab>(this->delegate()->GetView())) {}
 
 bool BraveVerticalTabStyle::IsHovering() const {
   // Upstream gives true when the tab is in split tab and another tab is
@@ -702,6 +705,16 @@ std::optional<SkColor> BraveVerticalTabStyle::GetTargetTabBackgroundColor(
 
 }  // namespace
 
-std::unique_ptr<TabStyleViews> TabStyleViews::CreateForTab(Tab* tab) {
-  return std::make_unique<BraveVerticalTabStyle>(tab);
+std::unique_ptr<TabStyleViews> TabStyleViews::Create(
+    std::unique_ptr<TabStyleViewDelegate> delegate,
+    TabStripOrientation orientation) {
+  // Our vertical tabs are preferred when selecting, but the fallback to the
+  // upstream vertical tab style is left in place too.
+  if (views::AsViewClass<Tab>(delegate->GetView())) {
+    return std::make_unique<BraveVerticalTabStyle>(std::move(delegate));
+  }
+  if (orientation == TabStripOrientation::kVertical) {
+    return std::make_unique<VerticalTabStyleViews>(std::move(delegate));
+  }
+  return std::make_unique<HorizontalTabStyleViews>(std::move(delegate));
 }
