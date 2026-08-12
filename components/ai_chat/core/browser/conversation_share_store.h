@@ -60,6 +60,7 @@ class ConversationShareStore {
   // |url| is the full shareable link, including the decryption key fragment.
   virtual void AddShare(const std::string& share_id,
                         const std::string& deletion_id,
+                        const std::string& conversation_uuid,
                         const std::string& conversation_title,
                         const GURL& url);
 
@@ -75,6 +76,7 @@ class ConversationShareStore {
 
     std::string share_id;
     std::string deletion_id;
+    std::string conversation_uuid;
     std::string conversation_title;
     GURL url;
     base::Time created_time;

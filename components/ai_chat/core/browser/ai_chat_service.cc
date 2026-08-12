@@ -860,6 +860,7 @@ void AIChatService::ConversationExists(const std::string& conversation_uuid,
 
 void AIChatService::ShareConversation(const std::string& encrypted_contents,
                                       const std::string& key_fragment,
+                                      const std::string& conversation_uuid,
                                       const std::string& conversation_title,
                                       bool copy_to_clipboard,
                                       ShareConversationCallback callback) {
@@ -871,12 +872,13 @@ void AIChatService::ShareConversation(const std::string& encrypted_contents,
       encrypted_contents,
       base::BindOnce(&AIChatService::OnShareConversationComplete,
                      weak_ptr_factory_.GetWeakPtr(), key_fragment,
-                     conversation_title, copy_to_clipboard,
+                     conversation_uuid, conversation_title, copy_to_clipboard,
                      std::move(callback)));
 }
 
 void AIChatService::OnShareConversationComplete(
     const std::string& key_fragment,
+    const std::string& conversation_uuid,
     const std::string& conversation_title,
     bool copy_to_clipboard,
     ShareConversationCallback callback,
@@ -901,8 +903,8 @@ void AIChatService::OnShareConversationComplete(
   // contains the decryption key, which is why the store encrypts what it
   // writes.
   conversation_share_store_->AddShare(
-      share_result->share_id, share_result->deletion_id, conversation_title,
-      shared_conversation_url);
+      share_result->share_id, share_result->deletion_id, conversation_uuid,
+      conversation_title, shared_conversation_url);
 
   if (copy_to_clipboard) {
     CopyTextToClipboardAsConfidential(shared_conversation_url.spec());

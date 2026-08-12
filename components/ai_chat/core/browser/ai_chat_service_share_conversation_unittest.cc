@@ -151,7 +151,8 @@ TEST_F(AIChatServiceShareConversationTest, ReturnsFullUrlWithKeyFragment) {
 
   base::test::TestFuture<const std::optional<GURL>&> future;
   ai_chat_service_->ShareConversation(
-      "ciphertext-blob", "url-safe-key-fragment", "Conversation title",
+      "ciphertext-blob", "url-safe-key-fragment", "conversation-uuid",
+      "Conversation title",
       /*copy_to_clipboard=*/false, future.GetCallback());
 
   const std::optional<GURL>& result = future.Get();
@@ -175,7 +176,8 @@ TEST_F(AIChatServiceShareConversationTest, ReturnsNulloptWhenSharingFails) {
 
   base::test::TestFuture<const std::optional<GURL>&> future;
   ai_chat_service_->ShareConversation(
-      "ciphertext-blob", "url-safe-key-fragment", "Conversation title",
+      "ciphertext-blob", "url-safe-key-fragment", "conversation-uuid",
+      "Conversation title",
       /*copy_to_clipboard=*/true, future.GetCallback());
 
   EXPECT_FALSE(future.Get().has_value());
@@ -192,7 +194,8 @@ TEST_F(AIChatServiceShareConversationTest,
 
   base::test::TestFuture<const std::optional<GURL>&> future;
   ai_chat_service_->ShareConversation(
-      "ciphertext-blob", "url-safe-key-fragment", "Conversation title",
+      "ciphertext-blob", "url-safe-key-fragment", "conversation-uuid",
+      "Conversation title",
       /*copy_to_clipboard=*/true, future.GetCallback());
   std::optional<GURL> result = future.Get();
 
@@ -226,7 +229,8 @@ TEST_F(AIChatServiceShareConversationTest,
 
   base::test::TestFuture<const std::optional<GURL>&> future;
   ai_chat_service_->ShareConversation(
-      "ciphertext-blob", "url-safe-key-fragment", "Conversation title",
+      "ciphertext-blob", "url-safe-key-fragment", "conversation-uuid",
+      "Conversation title",
       /*copy_to_clipboard=*/false, future.GetCallback());
   std::optional<GURL> result = future.Get();
 
@@ -252,7 +256,8 @@ TEST_F(AIChatServiceShareConversationTest, RecordsShareSoItCanBeManaged) {
 
   base::test::TestFuture<const std::optional<GURL>&> share_future;
   ai_chat_service_->ShareConversation(
-      "ciphertext-blob", "url-safe-key-fragment", "Conversation title",
+      "ciphertext-blob", "url-safe-key-fragment", "conversation-uuid",
+      "Conversation title",
       /*copy_to_clipboard=*/false, share_future.GetCallback());
   ASSERT_TRUE(share_future.Get().has_value());
 
@@ -263,6 +268,9 @@ TEST_F(AIChatServiceShareConversationTest, RecordsShareSoItCanBeManaged) {
 
   ASSERT_EQ(shares.size(), 1u);
   EXPECT_EQ(shares[0]->share_id, "test-share-id");
+  // The conversation the share was made from is recorded too, so the share can
+  // be related back to it.
+  EXPECT_EQ(shares[0]->conversation_uuid, "conversation-uuid");
   EXPECT_EQ(shares[0]->conversation_title, "Conversation title");
 }
 

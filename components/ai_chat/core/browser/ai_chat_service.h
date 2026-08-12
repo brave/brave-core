@@ -215,6 +215,7 @@ class AIChatService : public KeyedService,
                           ConversationExistsCallback callback) override;
   void ShareConversation(const std::string& encrypted_contents,
                          const std::string& key_fragment,
+                         const std::string& conversation_uuid,
                          const std::string& conversation_title,
                          bool copy_to_clipboard,
                          ShareConversationCallback callback) override;
@@ -319,6 +320,7 @@ class AIChatService : public KeyedService,
   // clipboard as confidential, and returns it via |callback|.
   void OnShareConversationComplete(
       const std::string& key_fragment,
+      const std::string& conversation_uuid,
       const std::string& conversation_title,
       bool copy_to_clipboard,
       ShareConversationCallback callback,

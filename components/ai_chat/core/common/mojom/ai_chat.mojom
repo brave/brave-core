@@ -118,6 +118,12 @@ struct ConversationShare {
   // have already sent to someone.
   string share_id;
 
+  // The conversation this share was made from. Viewing the share doesn't need
+  // it - the uploaded copy is self-contained - but it relates the share back to
+  // the conversation it came from. Empty for shares recorded before this was
+  // kept, and the conversation may since have been deleted.
+  string conversation_uuid;
+
   // Title of the conversation at the time it was shared. The conversation may
   // since have been renamed or deleted.
   string conversation_title;
@@ -192,15 +198,18 @@ interface Service {
   // produced by the UI. |key_fragment| is the URL-safe-base64 decryption key
   // which is never sent to the sharing server; it is appended to the server's
   // viewer URL as a fragment to build the full shareable link.
-  // |conversation_title| is recorded alongside the share so the user can
-  // recognize it in the share management UI. When |copy_to_clipboard| is true,
-  // the full link is written to the system clipboard marked as confidential
-  // (excluded from clipboard history and other data-leak-prevention surfaces)
-  // - this must happen in the browser process because the renderer cannot set
-  // clipboard confidentiality flags. Returns the full shareable URL (including
-  // the key fragment), or null if sharing failed.
+  // |conversation_uuid| and |conversation_title| are recorded alongside the
+  // share so the user can recognize it in the share management UI and so the
+  // share can be related back to the conversation it came from. When
+  // |copy_to_clipboard| is true, the full link is written to the system
+  // clipboard marked as confidential (excluded from clipboard history and other
+  // data-leak-prevention surfaces) - this must happen in the browser process
+  // because the renderer cannot set clipboard confidentiality flags. Returns
+  // the full shareable URL (including the key fragment), or null if sharing
+  // failed.
   ShareConversation(string encrypted_contents,
                     string key_fragment,
+                    string conversation_uuid,
                     string conversation_title,
                     bool copy_to_clipboard)
       => (url.mojom.Url? shared_conversation_url);

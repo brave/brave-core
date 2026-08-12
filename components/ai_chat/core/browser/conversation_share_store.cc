@@ -33,6 +33,7 @@ namespace {
 
 constexpr char kShareIdKey[] = "share_id";
 constexpr char kDeletionIdKey[] = "deletion_id";
+constexpr char kConversationUuidKey[] = "conversation_uuid";
 constexpr char kTitleKey[] = "title";
 constexpr char kUrlKey[] = "url";
 constexpr char kCreatedTimeKey[] = "created_time";
@@ -65,6 +66,9 @@ ConversationShareStore::ShareRecordFromValue(const base::Value& value) {
   ShareRecord record;
   record.share_id = *share_id;
   record.deletion_id = *deletion_id;
+  const std::string* conversation_uuid = dict->FindString(kConversationUuidKey);
+  record.conversation_uuid =
+      conversation_uuid ? *conversation_uuid : std::string();
   const std::string* title = dict->FindString(kTitleKey);
   record.conversation_title = title ? *title : std::string();
   record.url = GURL(*url);
@@ -95,6 +99,7 @@ ConversationShareStore::~ConversationShareStore() = default;
 
 void ConversationShareStore::AddShare(const std::string& share_id,
                                       const std::string& deletion_id,
+                                      const std::string& conversation_uuid,
                                       const std::string& conversation_title,
                                       const GURL& url) {
   // Without a deletion id the share can never be deleted from this client, so
@@ -107,6 +112,7 @@ void ConversationShareStore::AddShare(const std::string& share_id,
   ShareRecord record;
   record.share_id = share_id;
   record.deletion_id = deletion_id;
+  record.conversation_uuid = conversation_uuid;
   record.conversation_title = conversation_title;
   record.url = url;
   record.created_time = base::Time::Now();
@@ -206,7 +212,8 @@ void ConversationShareStore::GetSharesInternal(GetSharesCallback callback) {
     // The link is deliberately not included - it contains the conversation's
     // decryption key, which stays in the browser process.
     shares.push_back(mojom::ConversationShare::New(
-        record->share_id, record->conversation_title, record->created_time));
+        record->share_id, record->conversation_uuid, record->conversation_title,
+        record->created_time));
   }
   std::move(callback).Run(std::move(shares));
 }
@@ -258,6 +265,7 @@ void ConversationShareStore::WriteRecordsToPrefs() {
     base::DictValue dict;
     dict.Set(kShareIdKey, record.share_id);
     dict.Set(kDeletionIdKey, record.deletion_id);
+    dict.Set(kConversationUuidKey, record.conversation_uuid);
     dict.Set(kTitleKey, record.conversation_title);
     dict.Set(kUrlKey, record.url.spec());
     dict.Set(kCreatedTimeKey, base::TimeToValue(record.created_time));

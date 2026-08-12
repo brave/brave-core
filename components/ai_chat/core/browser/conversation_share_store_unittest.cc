@@ -67,11 +67,13 @@ TEST_F(ConversationShareStoreUnitTest, StartsEmpty) {
 }
 
 TEST_F(ConversationShareStoreUnitTest, AddAndGetShare) {
-  store_->AddShare("share-1", "deletion-1", "My conversation", GURL(kShareUrl));
+  store_->AddShare("share-1", "deletion-1", "conversation-share-1",
+                   "My conversation", GURL(kShareUrl));
 
   std::vector<mojom::ConversationSharePtr> shares = GetShares();
   ASSERT_EQ(shares.size(), 1u);
   EXPECT_EQ(shares[0]->share_id, "share-1");
+  EXPECT_EQ(shares[0]->conversation_uuid, "conversation-share-1");
   EXPECT_EQ(shares[0]->conversation_title, "My conversation");
   EXPECT_EQ(shares[0]->created_time, base::Time::Now());
 }
@@ -79,18 +81,21 @@ TEST_F(ConversationShareStoreUnitTest, AddAndGetShare) {
 TEST_F(ConversationShareStoreUnitTest, IgnoresSharesThatCannotBeManaged) {
   // Without a deletion id there is nothing the management UI could do with the
   // record, so it isn't worth keeping the decryption key for.
-  store_->AddShare("share-1", "", "My conversation", GURL(kShareUrl));
-  store_->AddShare("", "deletion-2", "My conversation", GURL(kShareUrl));
-  store_->AddShare("share-3", "deletion-3", "My conversation",
-                   GURL("not-a-url"));
+  store_->AddShare("share-1", "", "conversation-share-1", "My conversation",
+                   GURL(kShareUrl));
+  store_->AddShare("", "deletion-2", "", "My conversation", GURL(kShareUrl));
+  store_->AddShare("share-3", "deletion-3", "conversation-share-3",
+                   "My conversation", GURL("not-a-url"));
 
   EXPECT_TRUE(GetShares().empty());
 }
 
 TEST_F(ConversationShareStoreUnitTest, SharesAreMostRecentFirst) {
-  store_->AddShare("share-1", "deletion-1", "First", GURL(kShareUrl));
+  store_->AddShare("share-1", "deletion-1", "conversation-share-1", "First",
+                   GURL(kShareUrl));
   task_environment_.FastForwardBy(base::Hours(1));
-  store_->AddShare("share-2", "deletion-2", "Second", GURL(kShareUrl));
+  store_->AddShare("share-2", "deletion-2", "conversation-share-2", "Second",
+                   GURL(kShareUrl));
 
   std::vector<mojom::ConversationSharePtr> shares = GetShares();
   ASSERT_EQ(shares.size(), 2u);
@@ -99,18 +104,21 @@ TEST_F(ConversationShareStoreUnitTest, SharesAreMostRecentFirst) {
 }
 
 TEST_F(ConversationShareStoreUnitTest, PersistsAcrossStoreInstances) {
-  store_->AddShare("share-1", "deletion-1", "My conversation", GURL(kShareUrl));
+  store_->AddShare("share-1", "deletion-1", "conversation-share-1",
+                   "My conversation", GURL(kShareUrl));
 
   CreateStore();
 
   std::vector<mojom::ConversationSharePtr> shares = GetShares();
   ASSERT_EQ(shares.size(), 1u);
   EXPECT_EQ(shares[0]->share_id, "share-1");
+  EXPECT_EQ(shares[0]->conversation_uuid, "conversation-share-1");
   EXPECT_EQ(shares[0]->conversation_title, "My conversation");
 }
 
 TEST_F(ConversationShareStoreUnitTest, StoredRecordsAreNotReadableAsPlaintext) {
-  store_->AddShare("share-1", "deletion-1", "My conversation", GURL(kShareUrl));
+  store_->AddShare("share-1", "deletion-1", "conversation-share-1",
+                   "My conversation", GURL(kShareUrl));
 
   const std::string stored =
       prefs_.GetString(prefs::kBraveAIChatConversationShares);
@@ -125,9 +133,11 @@ TEST_F(ConversationShareStoreUnitTest, StoredRecordsAreNotReadableAsPlaintext) {
 }
 
 TEST_F(ConversationShareStoreUnitTest, DropsExpiredRecordsOnLoad) {
-  store_->AddShare("share-1", "deletion-1", "Old", GURL(kShareUrl));
+  store_->AddShare("share-1", "deletion-1", "conversation-share-1", "Old",
+                   GURL(kShareUrl));
   task_environment_.FastForwardBy(base::Days(3));
-  store_->AddShare("share-2", "deletion-2", "New", GURL(kShareUrl));
+  store_->AddShare("share-2", "deletion-2", "conversation-share-2", "New",
+                   GURL(kShareUrl));
 
   // The server deletes shares after the expiry period, so the first share is
   // gone by the time the store is next created.
@@ -142,7 +152,8 @@ TEST_F(ConversationShareStoreUnitTest, DropsExpiredRecordsOnLoad) {
 }
 
 TEST_F(ConversationShareStoreUnitTest, DropsExpiredRecordsWhileRunning) {
-  store_->AddShare("share-1", "deletion-1", "Old", GURL(kShareUrl));
+  store_->AddShare("share-1", "deletion-1", "conversation-share-1", "Old",
+                   GURL(kShareUrl));
 
   task_environment_.FastForwardBy(base::Hours(1));
   EXPECT_EQ(GetShares().size(), 1u);
@@ -159,7 +170,8 @@ TEST_F(ConversationShareStoreUnitTest, NoPendingWorkWithNothingToExpire) {
   EXPECT_EQ(task_environment_.NextMainThreadPendingTaskDelay(),
             base::TimeDelta::Max());
 
-  store_->AddShare("share-1", "deletion-1", "Shared", GURL(kShareUrl));
+  store_->AddShare("share-1", "deletion-1", "conversation-share-1", "Shared",
+                   GURL(kShareUrl));
   // While a share is live, a purge is queued for exactly when it expires.
   EXPECT_EQ(task_environment_.NextMainThreadPendingTaskDelay(),
             base::Days(features::kAIChatConversationShareExpiryDays.Get()));
@@ -176,7 +188,8 @@ TEST_F(ConversationShareStoreUnitTest, ExpiryPeriodIsConfigurable) {
   feature_list.InitAndEnableFeatureWithParameters(
       features::kAIChatConversationShare, {{"expiry_days", "30"}});
 
-  store_->AddShare("share-1", "deletion-1", "Old", GURL(kShareUrl));
+  store_->AddShare("share-1", "deletion-1", "conversation-share-1", "Old",
+                   GURL(kShareUrl));
 
   task_environment_.FastForwardBy(base::Days(8));
   EXPECT_EQ(GetShares().size(), 1u);
