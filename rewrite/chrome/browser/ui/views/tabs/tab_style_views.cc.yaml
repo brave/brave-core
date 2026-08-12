@@ -5,26 +5,26 @@
 
 substitutions:
   - description: |-
-      Expose TabStyleViewsImpl's private members to BraveVerticalTabStyle.
+      Expose HorizontalTabStyleViews's private members to BraveVerticalTabStyle.
 
-      Brave subclasses TabStyleViewsImpl (in
+      Brave subclasses HorizontalTabStyleViews (in
       chromium_src/chrome/browser/ui/views/tabs/tab_style_views.cc), so it needs
       friend access to reach the base's private members and override its private
       virtuals.
     add_friend:
-      class_name: TabStyleViewsImpl
+      class_name: HorizontalTabStyleViews
       friend_type: class BraveVerticalTabStyle
 
   - description: |-
       Virtualise GetSeparatorBounds for BraveVerticalTabStyle.
     make_virtual:
-      class_name: TabStyleViewsImpl
+      class_name: HorizontalTabStyleViews
       method_name: GetSeparatorBounds
 
   - description: |-
       Virtualise IsHovering for BraveVerticalTabStyle.
     make_virtual:
-      class_name: TabStyleViewsImpl
+      class_name: HorizontalTabStyleViews
       method_name: IsHovering
 
   - description: |-
@@ -33,7 +33,7 @@ substitutions:
       Virtualising to tweak separator visibility for vertical tabs and split
       tabs.
     make_virtual:
-      class_name: TabStyleViewsImpl
+      class_name: HorizontalTabStyleViews
       method_name: GetSeparatorOpacity
 
   - description: |-
@@ -41,11 +41,11 @@ substitutions:
 
       Virtualising to supply its own vertical-tab background colors.
     make_virtual:
-      class_name: TabStyleViewsImpl
+      class_name: HorizontalTabStyleViews
       method_name: GetCurrentTabBackgroundColor
 
   - description: |-
-      Square off the extension corner in TabStyleViewsImpl::GetPath, so Brave
+      Square off the extension corner in HorizontalTabStyleViews::GetPath, so Brave
       tabs don't carry upstream's rounded extension.
     regex:
       re_pattern:
@@ -53,12 +53,12 @@ substitutions:
       replace: '  extension_corner_radius = 0;\n\1'
 
   - description: |-
-      Fully round the tab separators in TabStyleViewsImpl::PaintSeparators
+      Fully round the tab separators in HorizontalTabStyleViews::PaintSeparators
 
       This patch computes a radius of half the separator width.
     regex:
       re_pattern:
-        '(void TabStyleViewsImpl::PaintSeparators\(.*?\n)(  cc::PaintFlags
+        '(void HorizontalTabStyleViews::PaintSeparators\(.*?\n)(  cc::PaintFlags
         flags;)'
       re_flags: [DOTALL]
       replace: |-
@@ -79,7 +79,7 @@ substitutions:
       Disable the upstream `TabStyleViews::CreateForTab` factory.
 
       It must return `BraveVerticalTabStyle`, which inherits from the `.cc`-local
-      `TabStyleViewsImpl` and so can only be defined after it. A forward
+      `HorizontalTabStyleViews` and so can only be defined after it. A forward
       declaration isn't enough for `make_unique`, so we disable the whole
       upstream factory and re-define it in `chromium_src` where the full type is
       visible.
