@@ -29,7 +29,7 @@ void OptOutOfNewTabPageAds() {
                              false);
 }
 
-void OptOutOfNotificationAds() {
+void DisableNotificationAds() {
   SetProfileBooleanPrefValue(prefs::kNotificationsEnabled, false);
 }
 
@@ -44,7 +44,7 @@ void OptOutOfSearchResultAds() {
 
 void OptOutOfAllAds() {
   OptOutOfNewTabPageAds();
-  OptOutOfNotificationAds();
+  DisableNotificationAds();
   OptOutOfSearchResultAds();
 }
 

@@ -35,9 +35,9 @@ TEST_F(BraveAdsNotificationAdUtilTest, ShouldServe) {
 }
 
 TEST_F(BraveAdsNotificationAdUtilTest,
-       ShouldNotServeIfOptedOutOfNotificationAds) {
+       ShouldNotServeIfNotificationAdsAreDisabled) {
   // Arrange
-  test::OptOutOfNotificationAds();
+  test::DisableNotificationAds();
 
   // Act & Assert
   EXPECT_FALSE(ShouldServe());

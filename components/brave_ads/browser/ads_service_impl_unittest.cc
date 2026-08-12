@@ -364,7 +364,7 @@ TEST_F(BraveAdsAdsServiceImplTest,
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
 // Search result ads are opted out so the service does not start during
 // `Startup`, keeping each test's trigger isolated.
-TEST_F(BraveAdsAdsServiceImplTest, ServiceStartsWhenOptedInToNotificationAds) {
+TEST_F(BraveAdsAdsServiceImplTest, ServiceStartsWhenNotificationAdsAreEnabled) {
   // Arrange
   prefs_.SetBoolean(prefs::kOptedInToSearchResultAds, false);
   Startup();
@@ -392,7 +392,7 @@ TEST_F(BraveAdsAdsServiceImplTest, ServiceStartsWhenUserHasJoinedBraveRewards) {
 
 TEST_F(
     BraveAdsAdsServiceImplTest,
-    ServiceDoesNotStopWhenOptedOutOfNotificationAdsWhileOptedInToSearchResultAds) {
+    ServiceDoesNotStopWhenNotificationAdsAreDisabledWhileOptedInToSearchResultAds) {
   // Arrange
   prefs_.SetBoolean(prefs::kOptedInToSearchResultAds, true);
   prefs_.SetBoolean(brave_rewards::prefs::kEnabled, true);
@@ -629,9 +629,8 @@ TEST_F(BraveAdsAdsServiceImplTest, ProcessIdleStateDoesNotNotifyActiveTwice) {
   EXPECT_EQ(1U, bat_ads_service_factory_->become_active_count());
 }
 
-TEST_F(
-    BraveAdsAdsServiceImplTest,
-    DoesNotClearNotificationAdsPrefOnShutdownIfUserHasNotOptedInToNotificationAds) {
+TEST_F(BraveAdsAdsServiceImplTest,
+       DoesNotClearNotificationAdsPrefOnShutdownIfNotificationAdsAreDisabled) {
   // Arrange
   prefs_.SetList(prefs::kNotificationAds, base::ListValue().Append("foo"));
 
@@ -644,7 +643,7 @@ TEST_F(
 }
 
 TEST_F(BraveAdsAdsServiceImplTest,
-       ClearsNotificationAdsPrefOnShutdownIfUserHasOptedInToNotificationAds) {
+       ClearsNotificationAdsPrefOnShutdownIfNotificationAdsAreEnabled) {
   // Arrange
   prefs_.SetBoolean(brave_rewards::prefs::kEnabled, true);
   prefs_.SetBoolean(prefs::kNotificationsEnabled, true);
@@ -659,7 +658,7 @@ TEST_F(BraveAdsAdsServiceImplTest,
 
 TEST_F(
     BraveAdsAdsServiceImplTest,
-    DoesNotClearNotificationAdsPrefOnBrowserWillShutdownIfUserHasNotOptedInToNotificationAds) {
+    DoesNotClearNotificationAdsPrefOnBrowserWillShutdownIfNotificationAdsAreDisabled) {
   // Arrange
   prefs_.SetList(prefs::kNotificationAds, base::ListValue().Append("foo"));
 
@@ -673,7 +672,7 @@ TEST_F(
 
 TEST_F(
     BraveAdsAdsServiceImplTest,
-    ClearsNotificationAdsPrefOnBrowserWillShutdownIfUserHasOptedInToNotificationAds) {
+    ClearsNotificationAdsPrefOnBrowserWillShutdownIfNotificationAdsAreEnabled) {
   // Arrange: the browser can start quitting well before `Shutdown()` runs for
   // this profile, so notification ads must be closed as soon as
   // `OnBrowserWillShutdown()` fires rather than only at `Shutdown()`.
@@ -708,7 +707,7 @@ TEST_F(BraveAdsAdsServiceImplTest,
 
 TEST_F(BraveAdsAdsServiceImplTest,
        UnregistersLanguageResourceComponentWhenUserOptsOutOfNotificationAds) {
-  // Arrange: start with notification ads opted in so the language component
+  // Arrange: start with notification ads enabled so the language component
   // is already registered; service must be running before opting out.
   prefs_.SetBoolean(prefs::kOptedInToSearchResultAds, true);
   prefs_.SetBoolean(brave_rewards::prefs::kEnabled, true);

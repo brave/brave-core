@@ -53,16 +53,16 @@ TEST_F(
 }
 
 TEST_F(BraveAdsSiteVisitUtilTest,
-       AllowNotificationAdPageLandIfRewardsUserAndOptedInToNotificationAds) {
+       AllowNotificationAdPageLandIfRewardsUserWithNotificationAdsEnabled) {
   // Act & Assert
   EXPECT_TRUE(IsAllowedToLandOnPage(mojom::AdType::kNotificationAd));
 }
 
 TEST_F(
     BraveAdsSiteVisitUtilTest,
-    DoNotAllowNotificationAdPageLandIfRewardsUserAndOptedOutOfNotificationAds) {
+    DoNotAllowNotificationAdPageLandIfRewardsUserWithNotificationAdsDisabled) {
   // Arrange
-  test::OptOutOfNotificationAds();
+  test::DisableNotificationAds();
 
   // Act & Assert
   EXPECT_FALSE(IsAllowedToLandOnPage(mojom::AdType::kNotificationAd));

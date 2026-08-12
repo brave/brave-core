@@ -146,7 +146,7 @@ TEST_F(BraveAdsPurchaseIntentResourceTest,
 }
 
 TEST_F(BraveAdsPurchaseIntentResourceTest,
-       DoNotResetResourceIfAlreadyOptedInToNotificationAds) {
+       DoNotResetResourceIfNotificationAdsAlreadyEnabled) {
   // Arrange
   test::OptOutOfNewTabPageAds();
   test::OptOutOfSearchResultAds();

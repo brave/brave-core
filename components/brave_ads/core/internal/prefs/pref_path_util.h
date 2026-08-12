@@ -14,7 +14,7 @@ bool DoesMatchUserHasJoinedBraveRewardsPrefPath(std::string_view path);
 
 bool DoesMatchUserHasOptedInToNewTabPageAdsPrefPath(std::string_view path);
 
-bool DoesMatchUserHasOptedInToNotificationAdsPrefPath(std::string_view path);
+bool DoesMatchNotificationAdsEnabledPrefPath(std::string_view path);
 
 bool DoesMatchUserHasOptedInToSearchResultAdsPrefPath(std::string_view path);
 

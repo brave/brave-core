@@ -159,7 +159,7 @@ TEST_F(BraveAdsTextClassificationResourceTest,
 }
 
 TEST_F(BraveAdsTextClassificationResourceTest,
-       DoNotResetResourceIfAlreadyOptedInToNotificationAds) {
+       DoNotResetResourceIfNotificationAdsAlreadyEnabled) {
   // Arrange
   test::OptOutOfNewTabPageAds();
   test::OptOutOfSearchResultAds();

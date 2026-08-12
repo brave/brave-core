@@ -240,9 +240,9 @@ void AdsServiceImpl::Migrate() {
 void AdsServiceImpl::RegisterResourceComponents() {
   RegisterCountryResourceComponent();
 
-  if (UserHasOptedInToNotificationAds()) {
+  if (IsNotificationAdsEnabled()) {
     // Only utilized for text classification, which requires the user to have
-    // joined Brave Rewards and opted into notification ads.
+    // joined Brave Rewards and notification ads to be enabled.
     RegisterLanguageResourceComponent();
   }
 }
@@ -279,7 +279,7 @@ bool AdsServiceImpl::UserHasOptedInToNewTabPageAds() const {
                                 kNewTabPageShowSponsoredImagesBackgroundImage);
 }
 
-bool AdsServiceImpl::UserHasOptedInToNotificationAds() const {
+bool AdsServiceImpl::IsNotificationAdsEnabled() const {
   return prefs_->GetBoolean(brave_rewards::prefs::kEnabled) &&
          prefs_->GetBoolean(prefs::kNotificationsEnabled);
 }
@@ -657,8 +657,8 @@ void AdsServiceImpl::SetContentSettings() {
 bool AdsServiceImpl::ShouldShowOnboardingNotification() {
   const bool should_show_onboarding_notification =
       prefs_->GetBoolean(prefs::kShouldShowOnboardingNotification);
-  return should_show_onboarding_notification &&
-         UserHasOptedInToNotificationAds() && CheckIfCanShowNotificationAds();
+  return should_show_onboarding_notification && IsNotificationAdsEnabled() &&
+         CheckIfCanShowNotificationAds();
 }
 
 void AdsServiceImpl::MaybeShowOnboardingNotification() {
@@ -676,7 +676,7 @@ void AdsServiceImpl::ShowReminder(mojom::ReminderType mojom_reminder_type) {
   CHECK(mojom::IsKnownEnumValue(mojom_reminder_type));
 
 #if !BUILDFLAG(IS_ANDROID)
-  if (UserHasOptedInToNotificationAds() && CheckIfCanShowNotificationAds()) {
+  if (IsNotificationAdsEnabled() && CheckIfCanShowNotificationAds()) {
     // TODO(https://github.com/brave/brave-browser/issues/29587): Decouple Brave
     // Ads reminders from notification ads.
     ShowNotificationAd(BuildReminder(mojom_reminder_type));
@@ -786,7 +786,7 @@ void AdsServiceImpl::OnAdsPrefChanged(const std::string& path) {
       bat_ads_service_remote_.is_bound()) {
     RegisterOrUnregisterLanguageResourceComponent();
 
-    if (UserHasOptedInToNotificationAds()) {
+    if (IsNotificationAdsEnabled()) {
       delegate_->MaybeInitNotificationHelper();
     }
   }
@@ -937,7 +937,7 @@ void AdsServiceImpl::NotificationAdTimedOut(const std::string& placement_id) {
 }
 
 void AdsServiceImpl::CloseAllNotificationAds() {
-  if (!UserHasOptedInToNotificationAds()) {
+  if (!IsNotificationAdsEnabled()) {
     return;
   }
 
@@ -953,9 +953,9 @@ void AdsServiceImpl::CloseAllNotificationAds() {
 }
 
 void AdsServiceImpl::RegisterOrUnregisterLanguageResourceComponent() {
-  if (UserHasOptedInToNotificationAds()) {
+  if (IsNotificationAdsEnabled()) {
     // Only utilized for text classification, which requires the user to have
-    // joined Brave Rewards and opted into notification ads.
+    // joined Brave Rewards and notification ads to be enabled.
     RegisterLanguageResourceComponent();
   } else {
     UnregisterLanguageResourceComponent();
