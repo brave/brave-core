@@ -93,10 +93,16 @@ class ConversationShareStore {
   static std::optional<ShareRecord> ShareRecordFromValue(
       const base::Value& value);
 
+  // A deferred store operation. It is handed the store when it runs, so that a
+  // queued task never holds a pointer to one; see RunWhenReady().
+  using PendingTask = base::OnceCallback<void(ConversationShareStore&)>;
+
   void OnEncryptorReady(scoped_refptr<os_crypt_async::Encryptor> encryptor);
 
   // Runs |task| once the encryptor has arrived, which may be immediately.
-  void RunWhenReady(base::OnceClosure task);
+  // Queued tasks are owned by this store and only ever run from one of its
+  // methods, so |task| cannot outlive the store it is handed.
+  void RunWhenReady(PendingTask task);
 
   // What is stored in prefs, or std::nullopt when it couldn't be decrypted this
   // session but may well decrypt in a later one, e.g. a locked keyring: nothing
@@ -106,9 +112,6 @@ class ConversationShareStore {
   std::optional<std::vector<ShareRecord>> ReadRecords();
 
   void WriteRecords(const std::vector<ShareRecord>& records);
-
-  void AddShareInternal(ShareRecord record);
-  void GetSharesInternal(GetSharesCallback callback);
 
   // Removes records the sharing server will have deleted by now. Returns
   // whether anything was removed.
@@ -128,7 +131,7 @@ class ConversationShareStore {
   scoped_refptr<os_crypt_async::Encryptor> encryptor_;
 
   // Operations which arrived before the encryptor did.
-  std::vector<base::OnceClosure> pending_tasks_;
+  std::vector<PendingTask> pending_tasks_;
 
   base::OneShotTimer expiry_timer_;
 

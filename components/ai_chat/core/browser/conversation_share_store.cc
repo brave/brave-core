@@ -123,18 +123,49 @@ void ConversationShareStore::AddShare(const std::string& share_id,
   record.url = url;
   record.created_time = base::Time::Now();
 
-  RunWhenReady(base::BindOnce(&ConversationShareStore::AddShareInternal,
-                              weak_ptr_factory_.GetWeakPtr(),
-                              std::move(record)));
+  RunWhenReady(base::BindOnce(
+      [](ShareRecord record, ConversationShareStore& store) {
+        // Nothing can be stored safely without a key to encrypt it with.
+        if (!store.encryptor_->IsEncryptionAvailable()) {
+          return;
+        }
+        std::optional<std::vector<ShareRecord>> records = store.ReadRecords();
+        if (!records) {
+          return;
+        }
+        records->push_back(std::move(record));
+        store.WriteRecords(*records);
+        store.ScheduleNextPurge(*records);
+      },
+      std::move(record)));
 }
 
 void ConversationShareStore::GetShares(GetSharesCallback callback) {
   // Whether the encryptor has arrived yet is an implementation detail, so the
   // callback is always run asynchronously.
-  RunWhenReady(
-      base::BindOnce(&ConversationShareStore::GetSharesInternal,
-                     weak_ptr_factory_.GetWeakPtr(),
-                     base::BindPostTaskToCurrentDefault(std::move(callback))));
+  RunWhenReady(base::BindOnce(
+      [](GetSharesCallback callback, ConversationShareStore& store) {
+        std::vector<ShareRecord> records =
+            store.ReadRecords().value_or(std::vector<ShareRecord>());
+        // The timer purges these from prefs at the moment they expire, but
+        // never report one the server has already deleted.
+        DropExpiredRecords(records);
+        // Most recently shared first.
+        std::ranges::stable_sort(records, std::greater<>(),
+                                 &ShareRecord::created_time);
+
+        std::vector<mojom::ConversationSharePtr> shares;
+        shares.reserve(records.size());
+        for (const ShareRecord& record : records) {
+          // The link is deliberately not included - it contains the
+          // conversation's decryption key, which stays in the browser process.
+          shares.push_back(mojom::ConversationShare::New(
+              record.share_id, record.conversation_uuid,
+              record.conversation_title, record.created_time));
+        }
+        std::move(callback).Run(std::move(shares));
+      },
+      base::BindPostTaskToCurrentDefault(std::move(callback))));
 }
 
 void ConversationShareStore::OnEncryptorReady(
@@ -145,16 +176,16 @@ void ConversationShareStore::OnEncryptorReady(
   // don't hold on to the keys for it.
   PurgeExpiredRecords();
 
-  std::vector<base::OnceClosure> pending_tasks = std::move(pending_tasks_);
+  std::vector<PendingTask> pending_tasks = std::move(pending_tasks_);
   pending_tasks_.clear();
   for (auto& task : pending_tasks) {
-    std::move(task).Run();
+    std::move(task).Run(*this);
   }
 }
 
-void ConversationShareStore::RunWhenReady(base::OnceClosure task) {
+void ConversationShareStore::RunWhenReady(PendingTask task) {
   if (encryptor_) {
-    std::move(task).Run();
+    std::move(task).Run(*this);
     return;
   }
   pending_tasks_.push_back(std::move(task));
@@ -209,42 +240,6 @@ ConversationShareStore::ReadRecords() {
     WriteRecords(records);
   }
   return records;
-}
-
-void ConversationShareStore::AddShareInternal(ShareRecord record) {
-  // Nothing can be stored safely without a key to encrypt it with.
-  if (!encryptor_->IsEncryptionAvailable()) {
-    return;
-  }
-  std::optional<std::vector<ShareRecord>> records = ReadRecords();
-  if (!records) {
-    return;
-  }
-  records->push_back(std::move(record));
-  WriteRecords(*records);
-  ScheduleNextPurge(*records);
-}
-
-void ConversationShareStore::GetSharesInternal(GetSharesCallback callback) {
-  std::vector<ShareRecord> records =
-      ReadRecords().value_or(std::vector<ShareRecord>());
-  // The timer purges these from prefs at the moment they expire, but never
-  // report one the server has already deleted.
-  DropExpiredRecords(records);
-  // Most recently shared first.
-  std::ranges::stable_sort(records, std::greater<>(),
-                           &ShareRecord::created_time);
-
-  std::vector<mojom::ConversationSharePtr> shares;
-  shares.reserve(records.size());
-  for (const ShareRecord& record : records) {
-    // The link is deliberately not included - it contains the conversation's
-    // decryption key, which stays in the browser process.
-    shares.push_back(mojom::ConversationShare::New(
-        record.share_id, record.conversation_uuid, record.conversation_title,
-        record.created_time));
-  }
-  std::move(callback).Run(std::move(shares));
 }
 
 // static
