@@ -33,38 +33,4 @@
   return self;
 }
 
-- (NSUInteger)hash {
-  NSUInteger hash = self.hideFirstPartyContent;
-  hash = hash * 31 + self.genericHide;
-  hash = hash * 31 + [self.firstSelectorsPollingDelayMs hash];
-  hash = hash * 31 + [self.switchToSelectorsPollingThreshold hash];
-  hash = hash * 31 + [self.fetchNewClassIdRulesThrottlingMs hash];
-  hash = hash * 31 + [self.aggressiveSelectors hash];
-  hash = hash * 31 + [self.standardSelectors hash];
-  hash = hash * 31 + [self.proceduralFilters hash];
-  return hash;
-}
-
-- (BOOL)isEqual:(id)object {
-  if (self == object) {
-    return YES;
-  }
-  if (![object isKindOfClass:[CosmeticFilteringArgs class]]) {
-    return NO;
-  }
-
-  CosmeticFilteringArgs* other = (CosmeticFilteringArgs*)object;
-  return self.hideFirstPartyContent == other.hideFirstPartyContent &&
-         self.genericHide == other.genericHide &&
-         [self.firstSelectorsPollingDelayMs
-             isEqual:other.firstSelectorsPollingDelayMs] &&
-         [self.switchToSelectorsPollingThreshold
-             isEqual:other.switchToSelectorsPollingThreshold] &&
-         [self.fetchNewClassIdRulesThrottlingMs
-             isEqual:other.fetchNewClassIdRulesThrottlingMs] &&
-         [self.aggressiveSelectors isEqual:other.aggressiveSelectors] &&
-         [self.standardSelectors isEqual:other.standardSelectors] &&
-         [self.proceduralFilters isEqual:other.proceduralFilters];
-}
-
 @end

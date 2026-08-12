@@ -17,8 +17,8 @@ type Arguments = {
   hideFirstPartyContent: boolean
   genericHide: boolean
   firstSelectorsPollingDelayMs: number | undefined
-  switchToSelectorsPollingThreshold: number
-  fetchNewClassIdRulesThrottlingMs: number
+  switchToSelectorsPollingThreshold: number | undefined
+  fetchNewClassIdRulesThrottlingMs: number | undefined
   aggressiveSelectors: Array<string>
   standardSelectors: Array<string>
   proceduralFilters: Array<ProceduralActionFilter>
