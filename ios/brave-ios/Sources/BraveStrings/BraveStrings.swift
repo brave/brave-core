@@ -3643,6 +3643,14 @@ extension Strings {
     value: "Ask Brave",
     comment: "Title for Ask Brave menu item. Brave is the company name and should not be translated"
   )
+  public static let leoVoiceInputMenuItem = NSLocalizedString(
+    "LeoVoiceInputMenuItem",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Leo Voice Input",
+    comment:
+      "Title for Brave Leo voice input menu item. Brave Leo is the name of a product and should not be translated"
+  )
   public static let passwordsMenuItem = NSLocalizedString(
     "PasswordsMenuItem",
     tableName: "BraveShared",
