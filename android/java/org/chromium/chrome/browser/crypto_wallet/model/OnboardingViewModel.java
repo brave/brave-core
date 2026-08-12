@@ -58,6 +58,11 @@ public class OnboardingViewModel extends ViewModel {
     private boolean mSelfCustodyChecked;
     private boolean mTermsOfUseChecked;
 
+    // Secure password screen entries, retained across configuration changes so the fragment,
+    // recreated fresh after a rotation can restore them.
+    @Nullable private String mSecurePassword;
+    @Nullable private String mSecureRetypePassword;
+
     // Wallet creation request, owned by the model so it survives configuration changes and keeps
     // running while the activity is in the background. Triggered only once.
     private boolean mWalletCreationRequested;
@@ -168,6 +173,25 @@ public class OnboardingViewModel extends ViewModel {
         mTermsOfUseChecked = false;
     }
 
+    /** Stores the secure password screen entry so it survives a configuration change. */
+    public void setSecurePasswordEntry(
+            @Nullable final String securePassword, @Nullable final String secureRetypePassword) {
+        mSecurePassword = securePassword;
+        mSecureRetypePassword = secureRetypePassword;
+    }
+
+    /** Returns the password typed on the secure password screen, or {@code null} if none. */
+    @Nullable
+    public String getSecurePassword() {
+        return mSecurePassword;
+    }
+
+    /** Returns the confirmation password typed on the secure password screen, or {@code null}. */
+    @Nullable
+    public String getSecureRetypePassword() {
+        return mSecureRetypePassword;
+    }
+
     /**
      * Live outcome of the Wallet creation or restoration request: {@code true} on success,
      * {@code false} on failure. Observers are notified once the request completes, including
@@ -244,6 +268,8 @@ public class OnboardingViewModel extends ViewModel {
         clearUnlockState();
         clearRestoreWalletState();
         clearTermsOfUseSelections();
+        mSecurePassword = null;
+        mSecureRetypePassword = null;
         mWalletCreationRequested = false;
         mWalletCreationSucceeded.setValue(null);
     }

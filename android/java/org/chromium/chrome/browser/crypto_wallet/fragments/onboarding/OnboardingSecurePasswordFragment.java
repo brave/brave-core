@@ -25,6 +25,7 @@ public class OnboardingSecurePasswordFragment extends BaseOnboardingWalletFragme
     private boolean mCreateWalletClicked;
     private PasswordStrengthMeterView mPasswordStrengthMeterView;
     private AppCompatButton mContinueButton;
+    private TextInputEditText mPasswordEditText;
     private TextInputEditText mRetypePasswordEditText;
 
     @Override
@@ -37,6 +38,7 @@ public class OnboardingSecurePasswordFragment extends BaseOnboardingWalletFragme
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        mPasswordEditText = view.findViewById(R.id.text_input_password_edit_text);
         mRetypePasswordEditText = view.findViewById(R.id.text_input_retype_edit_text);
         mContinueButton = view.findViewById(R.id.btn_secure_crypto_continue);
         mContinueButton.setOnClickListener(
@@ -51,12 +53,35 @@ public class OnboardingSecurePasswordFragment extends BaseOnboardingWalletFragme
 
         mPasswordStrengthMeterView = view.findViewById(R.id.password_strength_meter);
         mPasswordStrengthMeterView.setListener(match -> mContinueButton.setEnabled(match));
+
+        // Restore the entry from before a configuration change such as a rotation. Set the password
+        // before the confirmation, and let the strength meter's text watchers recompute the meter
+        // and the continue button state.
+        final String securePassword = mOnboardingViewModel.getSecurePassword();
+        if (securePassword != null) {
+            mPasswordEditText.setText(securePassword);
+        }
+        final String secureRetypePassword = mOnboardingViewModel.getSecureRetypePassword();
+        if (secureRetypePassword != null) {
+            mRetypePasswordEditText.setText(secureRetypePassword);
+        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
         mCreateWalletClicked = false;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        // Capture the entry so it survives a configuration change such as a rotation.
+        final Editable password = mPasswordEditText.getText();
+        final Editable retypePassword = mRetypePasswordEditText.getText();
+        mOnboardingViewModel.setSecurePasswordEntry(
+                password == null ? null : password.toString(),
+                retypePassword == null ? null : retypePassword.toString());
     }
 
     private void goToTheNextPage(@NonNull final String passwordInput) {
