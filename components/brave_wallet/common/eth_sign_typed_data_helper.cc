@@ -8,13 +8,13 @@
 #include <stddef.h>
 
 #include <algorithm>
-#include <array>
 #include <optional>
 #include <string_view>
 #include <utility>
 
 #include "base/check.h"
 #include "base/containers/extend.h"
+#include "base/containers/queue.h"
 #include "base/containers/span.h"
 #include "base/numerics/safe_conversions.h"
 #include "base/strings/strcat.h"
@@ -24,8 +24,91 @@
 #include "brave/components/brave_wallet/common/hash_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/string_utils.h"
+#include "third_party/abseil-cpp/absl/container/flat_hash_set.h"
 
 namespace brave_wallet {
+
+namespace {
+
+constexpr char kTypeField[] = "type";
+constexpr char kNameField[] = "name";
+
+std::optional<std::vector<std::pair<std::string_view, const base::ListValue*>>>
+FindAndValidateAllDependencyTypes(const base::DictValue& types,
+                                  const std::string_view primary_type_name) {
+  std::vector<std::pair<std::string_view, const base::ListValue*>> result;
+
+  absl::flat_hash_set<std::string_view> visited_types;
+
+  base::queue<std::string_view> types_queue;
+  types_queue.push(primary_type_name);
+
+  while (!types_queue.empty()) {
+    auto type_name = types_queue.front();
+    types_queue.pop();
+
+    if (visited_types.contains(type_name)) {
+      continue;
+    }
+
+    const auto* member_list = types.FindList(type_name);
+    if (!member_list) {
+      // Reference implementation just ignores unknown types and continues to
+      // encode the rest of the data.
+      // https://github.com/MetaMask/eth-sig-util/blob/0832d49b7c2f6d48d22a4496faee3e393081d1ec/src/sign-typed-data.ts#L436
+      continue;
+    }
+    visited_types.emplace(type_name);
+    result.emplace_back(type_name, member_list);
+
+    for (const auto& member : *member_list) {
+      if (!member.is_dict()) {
+        return std::nullopt;
+      }
+      const std::string* type_str = member.GetDict().FindString(kTypeField);
+      const std::string* name_str = member.GetDict().FindString(kNameField);
+      if (!type_str || !name_str) {
+        return std::nullopt;
+      }
+
+      std::string_view lookup_type = *type_str;
+      if (auto split_array_part = base::SplitStringOnce(*type_str, "[")) {
+        lookup_type = split_array_part->first;
+      }
+
+      if (!visited_types.contains(lookup_type)) {
+        types_queue.push(lookup_type);
+      }
+    }
+  }
+
+  return result;
+}
+
+// https://eips.ethereum.org/EIPS/eip-712#definition-of-encodetype
+void EncodeType(std::string& encode_to,
+                const std::string_view type_name,
+                const base::ListValue& member_list) {
+  base::StrAppend(&encode_to, {type_name, "("});
+
+  for (auto& member : member_list) {
+    CHECK(member.is_dict());
+
+    const std::string* type_str = member.GetDict().FindString(kTypeField);
+    const std::string* name_str = member.GetDict().FindString(kNameField);
+    CHECK(type_str);
+    CHECK(name_str);
+
+    base::StrAppend(&encode_to, {*type_str, " ", *name_str, ","});
+  }
+  if (!member_list.empty()) {
+    CHECK_EQ(encode_to.back(), ',');
+    encode_to.pop_back();  // Trim last comma.
+  }
+  base::StrAppend(&encode_to, {")"});
+}
+
+}  // namespace
 
 // static
 std::unique_ptr<EthSignTypedDataHelper> EthSignTypedDataHelper::Create(
@@ -49,90 +132,40 @@ void EthSignTypedDataHelper::SetVersion(Version version) {
   version_ = version;
 }
 
-void EthSignTypedDataHelper::FindAllDependencyTypes(
-    base::flat_map<std::string, base::Value>* known_types,
-    const std::string_view anchor_type_name) const {
-  DCHECK(!anchor_type_name.empty());
-  DCHECK(known_types);
-
-  const auto* anchor_type = types_.FindList(anchor_type_name);
-  if (!anchor_type) {
-    return;
-  }
-  known_types->emplace(anchor_type_name, anchor_type->Clone());
-
-  for (const auto& field : *anchor_type) {
-    if (!field.is_dict()) {
-      // EncodeType will fail for this anchor type, there is no need to continue
-      // finding.
-      return;
-    }
-    const std::string* type = field.GetDict().FindString("type");
-    if (type) {
-      const auto type_split = base::SplitStringPiece(
-          *type, "[", base::KEEP_WHITESPACE, base::SPLIT_WANT_ALL);
-      std::string_view lookup_type = *type;
-      if (type_split.size() == 2) {
-        lookup_type = type_split[0];
-      }
-
-      if (!known_types->contains(lookup_type)) {
-        FindAllDependencyTypes(known_types, lookup_type);
-      }
-    }
-  }
-}
-
-std::string EthSignTypedDataHelper::EncodeType(
-    const base::Value& type,
-    const std::string_view type_name) const {
-  if (!type.is_list()) {
-    return std::string();
-  }
-  std::string result = base::StrCat({type_name, "("});
-
-  for (size_t i = 0; i < type.GetList().size(); ++i) {
-    if (!type.GetList()[i].is_dict()) {
-      return std::string();
-    }
-    const base::DictValue& root = type.GetList()[i].GetDict();
-    const std::string* type_str = root.FindString("type");
-    const std::string* name_str = root.FindString("name");
-    if (!type_str || !name_str) {
-      return std::string();
-    }
-    base::StrAppend(&result, {*type_str, " ", *name_str});
-    if (i != type.GetList().size() - 1) {
-      base::StrAppend(&result, {","});
-    }
-  }
-  base::StrAppend(&result, {")"});
-  return result;
-}
-
-std::string EthSignTypedDataHelper::EncodeTypes(
+// https://eips.ethereum.org/EIPS/eip-712#definition-of-encodetype
+std::optional<std::string> EthSignTypedDataHelper::EncodeTypes(
     const std::string_view primary_type_name) const {
   std::string result;
 
-  base::flat_map<std::string, base::Value> types_map;
-  FindAllDependencyTypes(&types_map, primary_type_name);
-
-  auto it = types_map.find(primary_type_name);
-  if (it != types_map.end()) {
-    base::StrAppend(&result, {EncodeType(it->second, primary_type_name)});
+  auto types_map = FindAndValidateAllDependencyTypes(types_, primary_type_name);
+  if (!types_map) {
+    return std::nullopt;
   }
-  for (const auto& type : types_map) {
-    if (type.first == primary_type_name) {
-      continue;
+
+  // Primary type comes first, then the rest of the types in alphabetical order.
+  std::ranges::sort(*types_map, [=](const auto& a, const auto& b) {
+    if (a.first == primary_type_name) {
+      return true;
     }
-    base::StrAppend(&result, {EncodeType(type.second, type.first)});
+    if (b.first == primary_type_name) {
+      return false;
+    }
+    return a.first < b.first;
+  });
+  for (const auto& type : *types_map) {
+    EncodeType(result, type.first, *type.second);
   }
   return result;
 }
 
-EthSignTypedDataHelper::Eip712HashArray EthSignTypedDataHelper::GetTypeHash(
+std::optional<EthSignTypedDataHelper::Eip712HashArray>
+EthSignTypedDataHelper::GetTypeHash(
     const std::string_view primary_type_name) const {
-  return KeccakHash(base::as_byte_span(EncodeTypes(primary_type_name)));
+  auto encode_types = EncodeTypes(primary_type_name);
+  if (!encode_types) {
+    return std::nullopt;
+  }
+  return KeccakHash(base::as_byte_span(*encode_types));
 }
 
 std::optional<
@@ -160,14 +193,19 @@ EthSignTypedDataHelper::EncodeData(const std::string_view primary_type_name,
   // 32 bytes for type hash and for each item in schema.
   result.reserve(Eip712HashArray().size() * (1 + primary_type->size()));
 
-  base::Extend(result, GetTypeHash(primary_type_name));
+  auto type_hash = GetTypeHash(primary_type_name);
+  if (!type_hash) {
+    return std::nullopt;
+  }
+
+  base::Extend(result, *type_hash);
 
   base::DictValue sanitized_data;
 
   for (const auto& item : *primary_type) {
     const auto& field = item.GetDict();
-    const std::string* type_str = field.FindString("type");
-    const std::string* name_str = field.FindString("name");
+    const std::string* type_str = field.FindString(kTypeField);
+    const std::string* name_str = field.FindString(kNameField);
     if (!type_str || !name_str) {
       return std::nullopt;
     }
