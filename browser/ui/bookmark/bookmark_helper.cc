@@ -48,7 +48,7 @@ void MigrateBookmarkState(PrefService* prefs) {
   // kAlwaysShowBookmarkBarOnNTP is also default state.
   if (auto* pref =
           prefs->FindPreference(bookmarks::prefs::kAlwaysShowBookmarkBarOnNTP);
-      pref->IsDefaultValue()) {
+      pref && pref->IsDefaultValue()) {
     return;
   }
 

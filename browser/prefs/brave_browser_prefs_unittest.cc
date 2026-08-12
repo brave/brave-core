@@ -5,13 +5,10 @@
 
 #include "base/files/file_path.h"
 #include "brave/browser/ui/bookmark/bookmark_helper.h"
-#include "brave/components/constants/pref_names.h"
-#include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/prefs/browser_prefs.h"
 #include "chrome/browser/profiles/chrome_browser_main_extra_parts_profiles.h"
 #include "chrome/browser/profiles/pref_service_builder_utils.h"
-#include "chrome/common/pref_names.h"
 #include "components/bookmarks/common/bookmark_bar_visibility_state.h"
 #include "components/bookmarks/common/bookmark_pref_names.h"
 #include "components/prefs/pref_service.h"
@@ -43,8 +40,6 @@ class BraveBrowserPrefsTest : public testing::Test {
   content::BrowserTaskEnvironment task_environment_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
 };
-
-#if !BUILDFLAG(IS_ANDROID)
 
 // When the deprecated `kAlwaysShowBookmarkBarOnNTP` was never set by the user,
 // the migration must leave the upstream `kBookmarkBarVisibilityState` at its
@@ -110,7 +105,5 @@ TEST_F(BraveBrowserPrefsTest, BookmarkBarState_Never_Migrates) {
       prefs_.FindPreference(bookmarks::prefs::kAlwaysShowBookmarkBarOnNTP)
           ->IsDefaultValue());
 }
-
-#endif
 
 }  // namespace
