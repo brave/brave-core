@@ -6,8 +6,10 @@
 #include "brave/components/p3a/constellation_log_store.h"
 
 #include <memory>
-#include <set>
+#include <string>
+#include <string_view>
 
+#include "base/containers/flat_set.h"
 #include "base/notreached.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/p3a/metric_log_type.h"
@@ -16,9 +18,14 @@
 
 namespace p3a {
 
-class P3AConstellationLogStoreTest : public testing::Test {
+class P3AConstellationLogStoreTest : public testing::Test,
+                                     public ConstellationLogStore::Delegate {
  public:
   P3AConstellationLogStoreTest() {}
+
+  bool IsPriorityMetric(std::string_view histogram_name) const override {
+    return priority_metrics_.contains(histogram_name);
+  }
 
  protected:
   void SetUp() override {
@@ -27,7 +34,7 @@ class P3AConstellationLogStoreTest : public testing::Test {
 
   void SetUpLogStore(MetricLogType log_type) {
     log_store_ =
-        std::make_unique<ConstellationLogStore>(local_state_, log_type);
+        std::make_unique<ConstellationLogStore>(*this, local_state_, log_type);
   }
 
   std::string GenerateMockConstellationMessage() {
@@ -59,7 +66,7 @@ class P3AConstellationLogStoreTest : public testing::Test {
   }
 
   void ConsumeMessages(size_t message_count) {
-    std::set<std::string> consumed_log_set;
+    base::flat_set<std::string> consumed_log_set;
 
     ASSERT_TRUE(log_store_->has_unsent_logs());
     ASSERT_FALSE(log_store_->has_staged_log());
@@ -80,6 +87,9 @@ class P3AConstellationLogStoreTest : public testing::Test {
   }
 
   ConstellationLogStore* log_store() { return log_store_.get(); }
+
+ protected:
+  base::flat_set<std::string> priority_metrics_;
 
  private:
   size_t curr_test_constellation_message_id_{0};
@@ -180,6 +190,60 @@ TEST_F(P3AConstellationLogStoreTest, ShouldDeleteOldMessages) {
     log_store()->SetCurrentEpoch(max_epochs + 2);
     log_store()->LoadPersistedUnsentLogs();
   }
+}
+
+TEST_F(P3AConstellationLogStoreTest, PriorityMessagesStagedFirst) {
+  priority_metrics_.insert("Brave.Test.Metric3");
+  SetUpLogStore(MetricLogType::kTypical);
+  log_store()->SetCurrentEpoch(1);
+
+  UpdateSomeMessages(1, 5);
+  ASSERT_TRUE(log_store()->has_unsent_priority_logs());
+
+  log_store()->StageNextLog();
+  EXPECT_EQ(log_store()->staged_log_histogram_name(), "Brave.Test.Metric3");
+  log_store()->MarkStagedLogAsSent();
+  log_store()->DiscardStagedLog();
+
+  EXPECT_FALSE(log_store()->has_unsent_priority_logs());
+  ConsumeMessages(4);
+}
+
+TEST_F(P3AConstellationLogStoreTest, PriorityAppliedAfterConfigChange) {
+  SetUpLogStore(MetricLogType::kTypical);
+  log_store()->SetCurrentEpoch(1);
+
+  // Messages are recorded before the remote configuration is available.
+  UpdateSomeMessages(1, 3);
+  ASSERT_FALSE(log_store()->has_unsent_priority_logs());
+
+  priority_metrics_.insert("Brave.Test.Metric2");
+  log_store()->NotifyConfigReady();
+  ASSERT_TRUE(log_store()->has_unsent_priority_logs());
+
+  log_store()->StageNextLog();
+  EXPECT_EQ(log_store()->staged_log_histogram_name(), "Brave.Test.Metric2");
+  log_store()->MarkStagedLogAsSent();
+  log_store()->DiscardStagedLog();
+  EXPECT_FALSE(log_store()->has_unsent_priority_logs());
+
+  priority_metrics_.insert("Brave.Test.Metric1");
+  log_store()->NotifyConfigReady();
+  EXPECT_TRUE(log_store()->has_unsent_priority_logs());
+}
+
+TEST_F(P3AConstellationLogStoreTest, PriorityPreservedAcrossReload) {
+  priority_metrics_.insert("Brave.Test.Metric2");
+  SetUpLogStore(MetricLogType::kTypical);
+  log_store()->SetCurrentEpoch(1);
+
+  UpdateSomeMessages(1, 3);
+
+  log_store()->LoadPersistedUnsentLogs();
+  EXPECT_TRUE(log_store()->has_unsent_priority_logs());
+
+  log_store()->StageNextLog();
+  EXPECT_EQ(log_store()->staged_log_histogram_name(), "Brave.Test.Metric2");
 }
 
 }  // namespace p3a
