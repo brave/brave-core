@@ -190,7 +190,7 @@ tuple_impl! {A, B, C, D, E, F, G, H, I, J, K}
 tuple_impl! {A, B, C, D, E, F, G, H, I, J, K, L}
 
 #[cfg(feature = "min_const_gen")]
-#[cfg_attr(doc_cfg, doc(cfg(feature = "min_const_gen")))]
+#[cfg_attr(docsrs, doc(cfg(feature = "min_const_gen")))]
 impl<T, const N: usize> Distribution<[T; N]> for Standard
 where Standard: Distribution<T>
 {
