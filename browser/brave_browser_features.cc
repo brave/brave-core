@@ -59,6 +59,11 @@ BASE_FEATURE(kBraveV8JitlessMode,
              base::FEATURE_DISABLED_BY_DEFAULT);
 
 #if BUILDFLAG(IS_ANDROID)
+// Controls the dynamic colors preference default when the user has not made a
+// choice. Dynamic colors are available on Android 12 and above.
+BASE_FEATURE(kBraveAndroidDynamicColorsByDefault,
+             base::FEATURE_DISABLED_BY_DEFAULT);
+
 // Enable fresh NTP display after idle expiration on Android.
 // This feature allows showing a refreshed NTP when the app has been idle
 // for a specified duration.

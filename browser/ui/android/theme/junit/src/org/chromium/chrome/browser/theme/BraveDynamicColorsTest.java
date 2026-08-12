@@ -15,8 +15,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.annotation.Config;
 
+import org.chromium.base.BraveFeatureList;
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.test.BaseRobolectricTestRunner;
+import org.chromium.base.test.util.Features.DisableFeatures;
+import org.chromium.base.test.util.Features.EnableFeatures;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 
 /** Unit tests for {@link BraveDynamicColors}. */
@@ -41,12 +44,21 @@ public class BraveDynamicColorsTest {
     }
 
     @Test
-    public void testIsDynamicColorsEnabled_userPreferenceUnset_returnsTrue() {
+    @EnableFeatures(BraveFeatureList.BRAVE_ANDROID_DYNAMIC_COLORS_BY_DEFAULT)
+    public void testIsDynamicColorsEnabled_defaultEnabled_userPreferenceUnset_returnsTrue() {
         assertTrue(BraveDynamicColors.isDynamicColorsEnabled());
     }
 
     @Test
-    public void testIsDynamicColorsEnabled_userPreferenceDisabled_returnsFalse() {
+    @DisableFeatures(BraveFeatureList.BRAVE_ANDROID_DYNAMIC_COLORS_BY_DEFAULT)
+    public void testIsDynamicColorsEnabled_defaultDisabled_userPreferenceUnset_returnsFalse() {
+        assertFalse(BraveDynamicColors.isDynamicColorsEnabled());
+    }
+
+    @Test
+    @EnableFeatures(BraveFeatureList.BRAVE_ANDROID_DYNAMIC_COLORS_BY_DEFAULT)
+    public void
+            testIsDynamicColorsEnabled_userPreferenceDisabledOverridesDefaultEnabled_returnsFalse() {
         ChromeSharedPreferences.getInstance()
                 .writeBoolean(BravePreferenceKeys.BRAVE_ANDROID_DYNAMIC_COLORS_ENABLED, false);
 
@@ -55,7 +67,9 @@ public class BraveDynamicColorsTest {
     }
 
     @Test
-    public void testIsDynamicColorsEnabled_userPreferenceEnabled_returnsTrue() {
+    @DisableFeatures(BraveFeatureList.BRAVE_ANDROID_DYNAMIC_COLORS_BY_DEFAULT)
+    public void
+            testIsDynamicColorsEnabled_userPreferenceEnabledOverridesDefaultDisabled_returnsTrue() {
         ChromeSharedPreferences.getInstance()
                 .writeBoolean(BravePreferenceKeys.BRAVE_ANDROID_DYNAMIC_COLORS_ENABLED, true);
 
