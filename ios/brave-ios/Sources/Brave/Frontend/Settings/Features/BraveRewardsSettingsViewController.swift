@@ -35,7 +35,7 @@ private class BraveRewardsSettingsViewModel: ObservableObject {
       rewards.isEnabled || rewards.isTurningOnRewards
     }
     set {
-      if rewards.rewardsAPI == nil {
+      if rewards.rewardsAPI == nil || rewards.rewardsAPI?.isInitialized == false {
         rewards.startRewardsService { [weak self] in
           guard let self else { return }
           if let rewardsAPI = self.rewards.rewardsAPI {
@@ -59,10 +59,25 @@ private class BraveRewardsSettingsViewModel: ObservableObject {
   }
 
   @Published private(set) var isWalletInitialized: Bool = false
+
+  @MainActor
+  func resetRewards() async {
+    // Reset the rewards profile the same way desktop does: delete the rewards
+    // database and clear all rewards preferences.
+    if let rewardsAPI = rewards.rewardsAPI {
+      await withCheckedContinuation { continuation in
+        rewardsAPI.completeReset { _ in
+          continuation.resume()
+        }
+      }
+      isWalletInitialized = rewardsAPI.isInitialized
+    }
+  }
 }
 
 struct BraveRewardsSettingsView: View {
   @ObservedObject private var model: BraveRewardsSettingsViewModel
+  @State private var isResetConfirmationPresented: Bool = false
   fileprivate init(model: BraveRewardsSettingsViewModel) {
     self.model = model
   }
@@ -87,7 +102,30 @@ struct BraveRewardsSettingsView: View {
             Text(Strings.RewardsInternals.title)
           }
         }
+        Section {
+          Button(role: .destructive) {
+            isResetConfirmationPresented = true
+          } label: {
+            Text(Strings.Rewards.settingsResetTitle)
+          }
+        }
       }
+    }
+    .alert(
+      Strings.Rewards.settingsResetConfirmationTitle,
+      isPresented: $isResetConfirmationPresented
+    ) {
+      Button(role: .cancel) {
+      } label: {
+        Text(Strings.cancelButtonTitle)
+      }
+      Button(role: .destructive) {
+        Task { await model.resetRewards() }
+      } label: {
+        Text(Strings.Rewards.settingsResetTitle)
+      }
+    } message: {
+      Text(Strings.Rewards.settingsResetConfirmationMessage)
     }
   }
 }
