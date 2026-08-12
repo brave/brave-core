@@ -4,14 +4,42 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { Route, Switch } from 'react-router'
+import { Redirect, Route, Switch, useHistory } from 'react-router'
+import { useSelector } from 'react-redux'
 
 // Types
 import { WalletRoutes } from '../../constants/types'
+import {
+  AccountsTabState, //
+} from '../reducers/accounts-tab-reducer'
+
+// Hooks
+import {
+  usePortfolioVisibleNetworks, //
+} from '../../common/hooks/use_portfolio_networks'
+import {
+  usePortfolioAccounts, //
+} from '../../common/hooks/use_portfolio_accounts'
+
+// Styles
+import { DefaultPageWrapper } from '../../components/shared/style'
 
 // Components
-import { CryptoView } from '../../components/desktop/views/crypto'
 import { WalletPageLayout } from '../../components/desktop/wallet-page-layout'
+import { ExploreWeb3Header } from '../../components/desktop/card-headers/explorer_web3_header'
+import {
+  EditVisibleAssetsModal, //
+} from '../../components/desktop/popup-modals/edit-visible-assets-modal/index'
+import { AddAccountModal } from '../../components/desktop/popup-modals/add-account-modal/add-account-modal'
+import {
+  RemoveAccountModal, //
+} from '../../components/desktop/popup-modals/confirm-password-modal/remove-account-modal'
+import { AccountSettingsModal } from '../../components/desktop/popup-modals/account-settings-modal/account-settings-modal'
+import {
+  WalletPageWrapper, //
+} from '../../components/desktop/wallet-page-wrapper/wallet-page-wrapper'
+import { NftCollection } from '../../components/desktop/views/nfts/components/nft_collection'
+import { Banners } from '../../components/desktop/views/banners/banners'
 import {
   BackupWalletRoutes, //
 } from '../screens/backup-wallet/backup-wallet.routes'
@@ -21,44 +49,190 @@ import {
   OnboardingSuccess, //
 } from '../screens/onboarding/onboarding_success/onboarding_success'
 import { PageNotFound } from '../screens/page_not_found/page_not_found'
+import { PortfolioOverview } from '../screens/portfolio_overview/portfolio_overview'
+import { FungibleAssetDetails } from '../screens/fungible_asset_details/fungible_asset_details'
+import { NFTAssetDetails } from '../screens/nft_asset_details/nft_asset_details'
+import { MarketView } from '../screens/market/market'
+import { MarketAssetDetails } from '../screens/market/market_asset_details'
+import { AccountsOverview } from '../screens/accounts_overview/accounts_overview'
+import { AccountDetails } from '../screens/account_details/account_details'
 
-export const UnlockedWalletRoutes = ({
-  sessionRoute,
-}: {
-  sessionRoute: string | undefined
-}) => {
+export const UnlockedWalletRoutes = () => {
+  // Selectors
+  const { accountToRemove, showAccountModal, selectedAccount } = useSelector(
+    ({ accountsTab }: { accountsTab: AccountsTabState }) => accountsTab,
+  )
+
+  // custom hooks
+  const { visiblePortfolioNetworks } = usePortfolioVisibleNetworks()
+  const { usersFilteredAccounts } = usePortfolioAccounts()
+
+  // routing
+  const history = useHistory()
+
+  // methods
+  const hideVisibleAssetsModal = React.useCallback(() => {
+    history.push(WalletRoutes.PortfolioAssets)
+  }, [history])
+
   // render
   return (
-    <Switch>
-      <Route
-        path={WalletRoutes.OnboardingComplete}
-        exact
-      >
-        <WalletPageLayout>
-          <OnboardingSuccess />
-        </WalletPageLayout>
-      </Route>
+    <>
+      <Switch>
+        <Route
+          path={WalletRoutes.OnboardingComplete}
+          exact
+        >
+          <WalletPageLayout>
+            <OnboardingSuccess />
+          </WalletPageLayout>
+        </Route>
 
-      <Route path={WalletRoutes.Backup}>
-        <WalletPageLayout>
-          <BackupWalletRoutes />
-        </WalletPageLayout>
-      </Route>
+        <Route path={WalletRoutes.Backup}>
+          <WalletPageLayout>
+            <BackupWalletRoutes />
+          </WalletPageLayout>
+        </Route>
 
-      <Route path={WalletRoutes.FundWalletPageStart}>
-        <FundWalletScreen />
-      </Route>
+        <Route path={WalletRoutes.FundWalletPageStart}>
+          <FundWalletScreen />
+        </Route>
 
-      <Route path={WalletRoutes.DepositFundsPageStart}>
-        <DepositFundsScreen />
-      </Route>
+        <Route path={WalletRoutes.DepositFundsPageStart}>
+          <DepositFundsScreen />
+        </Route>
 
-      <Route path={WalletRoutes.CryptoPage}>
-        <CryptoView sessionRoute={sessionRoute} />
-      </Route>
-      <Route path='*'>
-        <PageNotFound />
-      </Route>
-    </Switch>
+        {/* Portfolio */}
+        <Route
+          path={WalletRoutes.Portfolio}
+          exact={true}
+          render={() => <Redirect to={WalletRoutes.PortfolioAssets} />}
+        />
+
+        <Route
+          path={WalletRoutes.PortfolioAssets}
+          exact
+        >
+          <PortfolioOverview />
+        </Route>
+
+        <Route
+          path={WalletRoutes.PortfolioNFTs}
+          exact
+        >
+          <PortfolioOverview />
+        </Route>
+
+        <Route
+          path={WalletRoutes.PortfolioActivity}
+          exact
+        >
+          <PortfolioOverview />
+        </Route>
+
+        <Route path={WalletRoutes.AddAssetModal}>
+          <PortfolioOverview />
+        </Route>
+
+        <Route
+          path={WalletRoutes.PortfolioNFTAsset}
+          exact
+        >
+          <NFTAssetDetails />
+        </Route>
+
+        <Route
+          path={WalletRoutes.PortfolioAsset}
+          exact
+        >
+          <FungibleAssetDetails />
+        </Route>
+
+        <Route
+          path={WalletRoutes.PortfolioNFTCollection}
+          exact
+        >
+          <NftCollection
+            networks={visiblePortfolioNetworks}
+            accounts={usersFilteredAccounts}
+          />
+        </Route>
+
+        {/* Accounts */}
+        <Route path={WalletRoutes.AddAccountModal}>
+          {/* Show accounts overview in background */}
+          <WalletPageWrapper wrapContentInBox={true}>
+            <DefaultPageWrapper>
+              <Banners />
+              <AccountsOverview />
+            </DefaultPageWrapper>
+          </WalletPageWrapper>
+        </Route>
+
+        <Route path={WalletRoutes.Account}>
+          <AccountDetails />
+        </Route>
+
+        <Route path={WalletRoutes.Accounts}>
+          <AccountsOverview />
+        </Route>
+
+        {/* Market */}
+        <Route
+          path={WalletRoutes.Market}
+          exact={true}
+        >
+          <WalletPageWrapper
+            wrapContentInBox
+            cardHeader={<ExploreWeb3Header />}
+            useCardInPanel={true}
+          >
+            <DefaultPageWrapper>
+              <MarketView />
+            </DefaultPageWrapper>
+          </WalletPageWrapper>
+        </Route>
+
+        <Route
+          path={WalletRoutes.MarketSub}
+          exact={true}
+        >
+          <WalletPageWrapper wrapContentInBox={true}>
+            <DefaultPageWrapper>
+              <MarketAssetDetails />
+            </DefaultPageWrapper>
+          </WalletPageWrapper>
+        </Route>
+
+        <Route
+          path={WalletRoutes.Explore}
+          exact={true}
+        >
+          <Redirect to={WalletRoutes.Market} />
+        </Route>
+
+        <Route path='*'>
+          <PageNotFound />
+        </Route>
+      </Switch>
+
+      {/* Overlay modals — separate Switch so background routes still render */}
+      <Switch>
+        <Route
+          path={WalletRoutes.AddAssetModal}
+          exact
+        >
+          <EditVisibleAssetsModal onClose={hideVisibleAssetsModal} />
+        </Route>
+
+        <Route path={WalletRoutes.AddAccountModal}>
+          <AddAccountModal />
+        </Route>
+      </Switch>
+
+      {accountToRemove !== undefined && <RemoveAccountModal />}
+
+      {showAccountModal && selectedAccount && <AccountSettingsModal />}
+    </>
   )
 }
