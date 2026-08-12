@@ -5,9 +5,11 @@
 
 substitutions:
   - description: 'Ship kAutofillAiServerModel disabled.'
-    set_feature_flag_default_state:
-      feature_name: kAutofillAiServerModel
-      value: base::FEATURE_DISABLED_BY_DEFAULT
+    regex:
+      pattern: 'DEFINE_FEATURE_WITH_MOBILE_COUNTRY_RESTRICTION(kAutofillAiServerModel);'
+      replace:
+        'BASE_FEATURE(kAutofillAiServerModel,
+        base::FEATURE_DISABLED_BY_DEFAULT);'
 
   - description: 'Ship kYourSavedInfoSettingsPage disabled.'
     set_feature_flag_default_state:
