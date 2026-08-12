@@ -104,6 +104,13 @@ bool BraveShieldsSettingsService::IsBraveShieldsEnabled(const GURL& url) {
                                               url);
 }
 
+bool BraveShieldsSettingsService::IsBraveShieldsManaged(const GURL& url) {
+  content_settings::SettingInfo info;
+  host_content_settings_map_->GetWebsiteSetting(
+      url, url, ContentSettingsType::BRAVE_SHIELDS, &info);
+  return info.source == content_settings::SettingSource::kPolicy;
+}
+
 void BraveShieldsSettingsService::SetDefaultAdBlockMode(
     mojom::AdBlockMode mode) {
   SetAdBlockMode(mode, GURL());

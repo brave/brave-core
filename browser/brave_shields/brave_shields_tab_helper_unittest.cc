@@ -10,7 +10,6 @@
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
-#include "brave/components/constants/pref_names.h"
 #include "chrome/test/base/chrome_render_view_host_test_harness.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
@@ -83,10 +82,6 @@ class BraveShieldsTabHelperUnitTest
   }
 
   void Reload() { content::NavigationSimulator::Reload(web_contents()); }
-
-  TestingProfile* profile() {
-    return static_cast<TestingProfile*>(browser_context());
-  }
 
   PrefService* profile_prefs() {
     return Profile::FromBrowserContext(web_contents()->GetBrowserContext())
@@ -335,25 +330,6 @@ TEST_F(BraveShieldsTabHelperUnitTest,
   brave_shields_tab_helper_->SetBraveShieldsEnabled(false);
   EXPECT_TRUE(brave_shields_tab_helper_
                   ->ShouldShowShieldsDisabledAdBlockOnlyModePrompt());
-}
-
-TEST_F(BraveShieldsTabHelperUnitTest, IsBraveShieldsManaged) {
-  GURL host("http://host.com");
-
-  // By default shields status should be non-managed as no override of the prefs
-  // was added via policies.
-  NavigateTo(host);
-  EXPECT_FALSE(brave_shields_tab_helper_->IsBraveShieldsManaged());
-
-  // Set up the corresponding managed pref which will take precedence over the
-  // user prefs to simulate managed case. Check shields is correctly shown as
-  // managed.
-  base::ListValue disabled_list;
-  disabled_list.Append("[*.]host.com");
-  profile()->GetTestingPrefService()->SetManagedPref(
-      kManagedBraveShieldsDisabledForUrls, std::move(disabled_list));
-  NavigateTo(host);
-  EXPECT_TRUE(brave_shields_tab_helper_->IsBraveShieldsManaged());
 }
 
 }  // namespace brave_shields

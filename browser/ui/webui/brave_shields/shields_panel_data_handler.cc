@@ -10,8 +10,11 @@
 #include "base/check.h"
 #include "base/task/sequenced_task_runner.h"
 #include "brave/browser/brave_browser_process.h"
+#include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
 #include "brave/browser/ui/webui/webcompat_reporter/webcompat_reporter_dialog.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/webui/top_chrome/top_chrome_web_ui_controller.h"
 #include "components/favicon/core/favicon_service.h"
@@ -286,8 +289,9 @@ void ShieldsPanelDataHandler::UpdateSiteBlockInfo() {
     return;
   }
 
-  site_block_info_.host =
-      active_shields_data_controller_->GetCurrentSiteURL().host();
+  const GURL current_site_url =
+      active_shields_data_controller_->GetCurrentSiteURL();
+  site_block_info_.host = current_site_url.host();
   site_block_info_.total_blocked_resources =
       active_shields_data_controller_->GetTotalBlockedCount();
   site_block_info_.ads_list =
@@ -307,8 +311,14 @@ void ShieldsPanelDataHandler::UpdateSiteBlockInfo() {
   site_block_info_.show_shields_disabled_ad_block_only_mode_prompt =
       active_shields_data_controller_
           ->ShouldShowShieldsDisabledAdBlockOnlyModePrompt();
+  auto* brave_shields_settings =
+      BraveShieldsSettingsServiceFactory::GetForProfile(
+          Profile::FromBrowserContext(
+              active_shields_data_controller_->web_contents()
+                  ->GetBrowserContext()));
+  CHECK(brave_shields_settings);
   site_block_info_.is_brave_shields_managed =
-      active_shields_data_controller_->IsBraveShieldsManaged();
+      brave_shields_settings->IsBraveShieldsManaged(current_site_url);
   const auto& invoked_webcompat_set =
       active_shields_data_controller_->GetInvokedWebcompatFeatures();
   site_block_info_.invoked_webcompat_list = std::vector<ContentSettingsType>(

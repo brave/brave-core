@@ -508,14 +508,6 @@ void BraveShieldsTabHelper::AllowScriptsOnce(
   ReloadWebContents();
 }
 
-bool BraveShieldsTabHelper::IsBraveShieldsManaged() {
-  const GURL url = GetCurrentSiteURL();
-  content_settings::SettingInfo info;
-  host_content_settings_map_->GetWebsiteSetting(
-      url, url, ContentSettingsType::BRAVE_SHIELDS, &info);
-  return info.source == content_settings::SettingSource::kPolicy;
-}
-
 void BraveShieldsTabHelper::HandleItemBlocked(const std::string& block_type,
                                               const std::string& subresource) {
   auto subres = GURL(subresource);
