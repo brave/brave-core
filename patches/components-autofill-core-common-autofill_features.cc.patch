@@ -1,0 +1,23 @@
+diff --git a/components/autofill/core/common/autofill_features.cc b/components/autofill/core/common/autofill_features.cc
+index 4891d3dd3497ade6e171a1e5f71fd16b203129b9..f9e95f58aef86d49f0129ecec3621f8840c325ce 100644
+--- a/components/autofill/core/common/autofill_features.cc
++++ b/components/autofill/core/common/autofill_features.cc
+@@ -257,8 +257,7 @@ BASE_FEATURE_PARAM(
+ // If enabled, the client may trigger the server model for AutofillAI type
+ // predictions.
+ BASE_FEATURE(kAutofillAiServerModel,
+-             IS_AUTOFILL_AI_PLATFORM ? base::FEATURE_ENABLED_BY_DEFAULT
+-                                     : base::FEATURE_DISABLED_BY_DEFAULT);
++             base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ // The maximum duration for which an AutofillAI server model response is kept in
+ // the local cache. NOTE: It is advisable to choose a value that is at least as
+@@ -1099,7 +1098,7 @@ BASE_FEATURE(kYourSavedInfoBrandingInSettings,
+ 
+ // Defines if the "Your Saved Info" page is eligible to be shown in Chrome
+ // settings.
+-BASE_FEATURE(kYourSavedInfoSettingsPage, base::FEATURE_ENABLED_BY_DEFAULT);
++BASE_FEATURE(kYourSavedInfoSettingsPage, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ // Defines if the shipping and order data is included in the "Your Saved Info"
+ // settings page.

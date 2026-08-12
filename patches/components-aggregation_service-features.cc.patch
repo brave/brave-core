@@ -1,0 +1,13 @@
+diff --git a/components/aggregation_service/features.cc b/components/aggregation_service/features.cc
+index f38918997afd60b790a873dc3424c52ea1762fb8..6fca59388d1b0b654e0cb2da0079a559bbd97c7e 100644
+--- a/components/aggregation_service/features.cc
++++ b/components/aggregation_service/features.cc
+@@ -12,7 +12,7 @@
+ namespace aggregation_service {
+ 
+ BASE_FEATURE(kAggregationServiceMultipleCloudProviders,
+-             base::FEATURE_ENABLED_BY_DEFAULT);
++             base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ const base::FeatureParam<std::string> kAggregationServiceCoordinatorAllowlist{
+     &kAggregationServiceMultipleCloudProviders, "allowlist", ""};
