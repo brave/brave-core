@@ -129,6 +129,10 @@ group("all") {
       "//brave/test:brave_network_audit_tests",
       "//chrome/test:browser_tests",
     ]
+
+    if (target_os == "linux" && target_cpu == "x64") {
+      deps += [ "//brave/components/ai_chat/resources/shared_conversation_lib" ]
+    }
   }
 
   if (toolkit_views) {
@@ -185,6 +189,10 @@ if (!is_ios) {
     if (!is_ios) {
       deps += [ ":packed_resources" ]
     }
+  }
+
+  group("ai-chat-shared-conversation-lib") {
+    deps = [ "//brave/components/ai_chat/resources/shared_conversation_lib" ]
   }
 
   group("storybook") {
