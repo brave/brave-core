@@ -758,6 +758,14 @@ void BraveTabContainer::ScrollTabToBeVisible(Tab* tab) {
 void BraveTabContainer::OnScrollableHorizontalTabStripPrefChanged() {
   // only called when tabs::kBraveScrollableTabStrip feature flag is enabled.
 
+  // Refreshs all small accent icon layers of tabs.
+  int tab_count = GetTabCount();
+  for (int i = 0; i < tab_count; ++i) {
+    BraveTab* tab = views::AsViewClass<BraveTab>(GetTabAtModelIndex(i));
+    CHECK(tab);
+    tab->UpdateSmallAccentIconLayer();
+  }
+
   if (!IsHorizontalScrollableTabStripEnabled()) {
     SetScrollOffset(0);
 
