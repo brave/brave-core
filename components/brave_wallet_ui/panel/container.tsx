@@ -30,7 +30,7 @@ import {
 import {
   DecryptMessageRequestPanel, //
 } from '../components/extension/public_encryption_key_panels/decrypt_message_request_panel'
-
+import { ConfirmationPopup } from '../components/extension/confirmation_popup/confirmation_popup'
 import { ConnectWithSiteWrapper } from '../stories/style'
 import { PanelWrapper } from './panel_wrapper/panel_wrapper'
 import { FullScreenWrapper } from '../page/screens/page-screen.styles'
@@ -38,10 +38,11 @@ import { FullScreenWrapper } from '../page/screens/page-screen.styles'
 import { TransactionStatus } from '../components/extension/post-confirmation'
 import {
   useSafePanelSelector,
+  useSafeUISelector,
   useSafeWalletSelector,
   useUnsafePanelSelector,
 } from '../common/hooks/use-safe-selector'
-import { WalletSelectors } from '../common/selectors'
+import { UISelectors, WalletSelectors } from '../common/selectors'
 import { PanelSelectors } from './selectors'
 import {
   useGetPendingAddChainRequestQuery,
@@ -85,6 +86,7 @@ function Container() {
   const hasInitialized = useSafeWalletSelector(WalletSelectors.hasInitialized)
   const isWalletCreated = useSafeWalletSelector(WalletSelectors.isWalletCreated)
   const isWalletLocked = useSafeWalletSelector(WalletSelectors.isWalletLocked)
+  const isSidePanel = useSafeUISelector(UISelectors.isSidePanel)
 
   // panel selectors (safe)
   const selectedPanel = useSafePanelSelector(PanelSelectors.selectedPanel)
@@ -146,8 +148,41 @@ function Container() {
     || isLoadingSignMessageErrorData
     || isLoadingAddTokenRequests
 
+  const pendingOrConfirmingTransaction =
+    selectedPendingTransaction ?? submittingTransaction
+
+  const sidePanelConfirmations = React.useMemo(() => {
+    if (
+      selectedPanel === 'transactionStatus'
+      && selectedTransactionId
+      && !submittingTransaction
+    ) {
+      return (
+        <ConfirmationPopup>
+          <TransactionStatus transactionLookup={selectedTransactionId} />
+        </ConfirmationPopup>
+      )
+    }
+    if (pendingOrConfirmingTransaction) {
+      return (
+        <ConfirmationPopup isLoading={isLoadingPendingActions}>
+          <PendingTransactionPanel
+            selectedPendingTransaction={pendingOrConfirmingTransaction}
+          />
+        </ConfirmationPopup>
+      )
+    }
+    return null
+  }, [
+    selectedPanel,
+    selectedTransactionId,
+    submittingTransaction,
+    pendingOrConfirmingTransaction,
+    isLoadingPendingActions,
+  ])
+
   // render
-  if (!hasInitialized || isLoadingPendingActions) {
+  if (!hasInitialized || (isLoadingPendingActions && !isSidePanel)) {
     return (
       <PanelWrapper>
         <FullScreenWrapper>
@@ -280,6 +315,7 @@ function Container() {
     selectedPanel === 'transactionStatus'
     && selectedTransactionId
     && !submittingTransaction
+    && !isSidePanel
   ) {
     return (
       <PanelWrapper>
@@ -288,10 +324,7 @@ function Container() {
     )
   }
 
-  const pendingOrConfirmingTransaction =
-    selectedPendingTransaction ?? submittingTransaction
-
-  if (pendingOrConfirmingTransaction) {
+  if (pendingOrConfirmingTransaction && !isSidePanel) {
     return (
       <PanelWrapper>
         <PendingTransactionPanel
@@ -320,6 +353,7 @@ function Container() {
   return (
     <PanelWrapper>
       <PageContainer />
+      {isSidePanel && sidePanelConfirmations}
     </PanelWrapper>
   )
 }
