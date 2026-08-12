@@ -43,8 +43,8 @@ class LitertExecutor : public passage_embeddings::PassageEmbedderExecutor {
   }
 
  private:
-  // The process-global runner cached in MaybeCreateLitertExecutor(); outlives
-  // this executor, so a ref is safe.
+  // The process-global runner cached in MaybeCreateLitertExecutor(), which is
+  // only replaced while no executor holds it, so a ref is safe.
   const raw_ref<LitertModelRunner> runner_;
   const int bos_id_;
   const int eos_id_;
@@ -57,17 +57,32 @@ std::unique_ptr<passage_embeddings::PassageEmbedderExecutor>
 MaybeCreateLitertExecutor(base::File& embeddings_model_file,
                           int bos_id,
                           int eos_id,
-                          int pad_id) {
-  // Building a runner compiles the model, and PassageEmbedderImpl rebuilds its
-  // executor on every priority change, so cache one runner per process and hand
-  // out lightweight executors that borrow it. All calls arrive on the service's
-  // single task-runner sequence, so the lazy init needs no locking.
-  static base::NoDestructor<std::unique_ptr<LitertModelRunner>> runner(
-      LitertModelRunner::CreateFromFile(embeddings_model_file));
-  if (!runner->get()) {
+                          int pad_id,
+                          int num_threads) {
+  // Upstream rebuilds its executor on every priority change, and LiteRT bakes
+  // the thread count into the compiled model, so cache one runner and let
+  // executors borrow it, replacing it when the count changes. Replacing cannot
+  // strand a live borrow, because PassageEmbedderImpl drops its executor before
+  // calling this. Only the service's task runner sequence gets here, so the
+  // cache needs no locking.
+  struct CachedRunner {
+    std::unique_ptr<LitertModelRunner> runner;
+    int num_threads = 0;
+  };
+  static base::NoDestructor<CachedRunner> cached;
+  if (!cached->runner || cached->num_threads != num_threads) {
+    // A compiled model holds XNNPACK's repacked copy of the weights. Assigning
+    // would keep the old one alive while the replacement compiles, so free it
+    // first.
+    cached->runner.reset();
+    cached->runner =
+        LitertModelRunner::CreateFromFile(embeddings_model_file, num_threads);
+    cached->num_threads = num_threads;
+  }
+  if (!cached->runner) {
     return nullptr;
   }
-  return std::make_unique<LitertExecutor>(*runner->get(), bos_id, eos_id,
+  return std::make_unique<LitertExecutor>(*cached->runner, bos_id, eos_id,
                                           pad_id);
 }
 
