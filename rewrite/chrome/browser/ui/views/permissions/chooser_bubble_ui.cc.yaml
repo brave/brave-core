@@ -1,0 +1,13 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Set the chooser bubble's footnote view once construction has set up
+      device_chooser_content_view_.
+    after_function_impl:
+      function_name: ChooserBubbleUiViewDelegate::ChooserBubbleUiViewDelegate
+      code: |-
+        SetFootnoteView(device_chooser_content_view_->CreateFootnoteView(browser));
