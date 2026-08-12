@@ -116,12 +116,6 @@ public class OnboardingInitWalletFragment extends BaseOnboardingWalletFragment {
     public void onResume() {
         super.onResume();
         mButtonClicked = false;
-        // This is the start of the onboarding flow, so clear anything captured by a previous pass
-        // (for example after navigating back to this screen). Done in onResume rather than
-        // onViewCreated because the pager keeps this fragment alive off screen, and only the
-        // visible page is resumed, so a rotation on a later page does not wipe its in-progress
-        // state.
-        mOnboardingViewModel.reset();
     }
 
     @Override
