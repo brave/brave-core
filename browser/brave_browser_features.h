@@ -26,7 +26,7 @@ BASE_DECLARE_FEATURE(kBraveWebAssemblyJitless);
 #endif  // BUILDFLAG(BRAVE_V8_ENABLE_DRUMBRAKE)
 BASE_DECLARE_FEATURE(kBraveV8JitlessMode);
 #if BUILDFLAG(IS_ANDROID)
-BASE_DECLARE_FEATURE(kBraveAndroidDynamicColors);
+BASE_DECLARE_FEATURE(kBraveAndroidDynamicColorsByDefault);
 BASE_DECLARE_FEATURE(kBraveFreshNtpAfterIdleExperiment);
 BASE_DECLARE_FEATURE(kBraveCustomSearchEngines);
 BASE_DECLARE_FEATURE(kBraveAndroidTabGroupsSettings);

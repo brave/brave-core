@@ -446,15 +446,6 @@ const char* const kBraveSyncImplLink[1] = {"https://github.com/brave/go-sync"};
       FEATURE_VALUE_TYPE(                                               \
           chrome::android::kAdaptiveButtonInTopToolbarCustomizationV2), \
   })
-#define BRAVE_ANDROID_DYNAMIC_COLORS                                 \
-  EXPAND_FEATURE_ENTRIES({                                           \
-      "brave-android-dynamic-colors",                                \
-      "Dynamic Colors",                                              \
-      "Use dynamic colors in the application. This feature is only " \
-      "available on Android 12 and above.",                          \
-      kOsAndroid,                                                    \
-      FEATURE_VALUE_TYPE(features::kBraveAndroidDynamicColors),      \
-  })
 #define BRAVE_CUSTOM_SEARCH_ENGINES                                        \
   EXPAND_FEATURE_ENTRIES({                                                 \
       "brave-custom-search-engines",                                       \
@@ -476,7 +467,6 @@ const char* const kBraveSyncImplLink[1] = {"https://github.com/brave/go-sync"};
 #define BRAVE_BACKGROUND_VIDEO_PLAYBACK_ANDROID
 #define BRAVE_SAFE_BROWSING_ANDROID
 #define BRAVE_ADAPTIVE_BUTTON_IN_TOOLBAR_ANDROID
-#define BRAVE_ANDROID_DYNAMIC_COLORS
 #define BRAVE_CUSTOM_SEARCH_ENGINES
 #define BRAVE_ANDROID_TAB_GROUPS_SETTINGS
 #endif  // BUILDFLAG(IS_ANDROID)
@@ -1541,7 +1531,6 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
   BRAVE_BACKGROUND_VIDEO_PLAYBACK_ANDROID                                      \
   BRAVE_SAFE_BROWSING_ANDROID                                                  \
   BRAVE_ADAPTIVE_BUTTON_IN_TOOLBAR_ANDROID                                     \
-  BRAVE_ANDROID_DYNAMIC_COLORS                                                 \
   BRAVE_ANDROID_TAB_GROUPS_SETTINGS                                            \
   BRAVE_CUSTOM_SEARCH_ENGINES                                                  \
   BRAVE_CHANGE_ACTIVE_TAB_ON_SCROLL_EVENT_FEATURE_ENTRIES                      \
