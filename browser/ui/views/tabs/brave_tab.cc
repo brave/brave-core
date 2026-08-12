@@ -12,10 +12,12 @@
 #include "base/check.h"
 #include "base/feature_list.h"
 #include "base/strings/utf_string_conversions.h"
+#include "brave/browser/ui/containers/container_model.h"
 #include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_container_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
+#include "brave/browser/ui/views/tabs/accent_color/brave_tab_accent_color_palette.h"
 #include "brave/components/tabs/public/tree_tab_node.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "cc/paint/paint_flags.h"
@@ -24,13 +26,16 @@
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/tabs/alert/tab_alert_controller.h"
 #include "chrome/browser/ui/tabs/features.h"
+#include "chrome/browser/ui/views/tabs/hovercard/hover_card_anchor_target.h"
 #include "chrome/browser/ui/views/tabs/tab/alert_indicator_button.h"
 #include "chrome/browser/ui/views/tabs/tab/tab_close_button.h"
 #include "chrome/browser/ui/views/tabs/tab_slot_controller.h"
 #include "components/vector_icons/vector_icons.h"
 #include "ui/base/models/image_model.h"
+#include "ui/compositor/compositor.h"
 #include "ui/compositor/layer.h"
 #include "ui/gfx/canvas.h"
+#include "ui/gfx/color_palette.h"
 #include "ui/gfx/favicon_size.h"
 #include "ui/gfx/geometry/skia_conversions.h"
 #include "ui/gfx/scoped_canvas.h"
@@ -56,30 +61,36 @@ namespace {
 constexpr int kSmallAccentSize = 16;
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
-std::u16string GetContainerNameForTab(const BraveTab& tab) {
+std::optional<containers::ContainerModel> GetContainerModelForTab(
+    const BraveTab& tab) {
+  if (!tab.GetWidget()) {
+    // Detached state.
+    return std::nullopt;
+  }
+
   if (!base::FeatureList::IsEnabled(containers::features::kContainers)) {
-    return std::u16string();
+    return std::nullopt;
   }
 
   tabs::TabInterface* tab_interface = tab.tab_handle().Get();
   if (!tab_interface) {
-    return std::u16string();
+    return std::nullopt;
   }
 
   content::WebContents* contents = tab_interface->GetContents();
   if (!contents) {
-    return std::u16string();
+    return std::nullopt;
   }
 
   const std::string container_id =
       containers::GetContainerIdForWebContents(contents);
   if (container_id.empty()) {
-    return std::u16string();
+    return std::nullopt;
   }
 
   Profile* profile = tab_interface->GetProfile();
   if (!profile) {
-    return std::u16string();
+    return std::nullopt;
   }
 
   auto* service = ContainersServiceFactory::GetForProfile(profile);
@@ -87,11 +98,22 @@ std::u16string GetContainerNameForTab(const BraveTab& tab) {
 
   auto container = service->GetRuntimeContainerById(container_id);
   CHECK(container);
-  if (!container->name.empty()) {
-    return base::UTF8ToUTF16(container->name);
+  return containers::ContainerModel(
+      std::move(container),
+      tab.GetWidget()->GetCompositor()->device_scale_factor());
+}
+
+std::u16string GetContainerNameForTab(const BraveTab& tab) {
+  auto container = GetContainerModelForTab(tab);
+  if (!container) {
+    return std::u16string();
   }
 
-  return base::UTF8ToUTF16(container->id);
+  if (!container->name().empty()) {
+    return base::UTF8ToUTF16(container->name());
+  }
+
+  return base::UTF8ToUTF16(container->id());
 }
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
@@ -231,7 +253,6 @@ void BraveTab::MaybeStartObservingFullscreenChanges() {
           ->RegisterOnFullscreenStateChanged(base::BindRepeating(
               &BraveTab::OnFullscreenStateChanged, base::Unretained(this)));
 }
-
 void BraveTab::StopObservingFullscreenChanges() {
   fullscreen_subscription_ = {};
 }
@@ -770,6 +791,36 @@ ui::ImageModel BraveTab::GetTabAccentIcon() const {
 base::WeakPtr<BraveTab> BraveTab::GetWeakPtr() {
   return weak_factory_.GetWeakPtr();
 }
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+std::optional<ContainerCardData> BraveTab::GetContainerCardData() const {
+  if (!ShouldPaintTabAccent()) {
+    return std::nullopt;
+  }
+
+  auto container = GetContainerModelForTab(*this);
+  if (!container) {
+    return std::nullopt;
+  }
+
+  const bool is_dark =
+      GetWidget() &&
+      GetWidget()->GetColorMode() == ui::ColorProviderKey::ColorMode::kDark;
+  auto accent_color = accent_color::GetTabAccentColors(
+      {
+          .container_color = container->background_color(),
+          .is_dark = is_dark,
+          .is_pinned = false,
+          .state = accent_color::TabAccentColorsParams::State::kActive,
+      },
+      GetColorProvider());
+
+  return ContainerCardData{
+      .container_name = base::UTF8ToUTF16(container->name()),
+      .container_icon = container->icon(),
+      .container_background_color = accent_color.background_color};
+}
+#endif
 
 void BraveTab::InitTreeToggleButton() {
   constexpr int kButtonPadding = 12;

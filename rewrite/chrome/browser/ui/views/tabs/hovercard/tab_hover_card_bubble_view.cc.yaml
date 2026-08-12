@@ -1,0 +1,34 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Add BraveTabCardView as a friend class to TabCardView
+
+      As TabCardView is a inner class of TabHoverCardBubbleView, we need use
+      `regex` instead of `add_to_friend`.
+    regex:
+      re_pattern: '(class TabHoverCardBubbleView::TabCardView.*?{)'
+      re_flags: [DOTALL]
+      replace: \1\n  friend class BraveTabCardView;
+
+  - description: |
+      Replace std::make_unique<TabCardView> with a factory method.
+
+      The factory method will be overriden in chromium_src to create
+      BraveTabCardView instead of TabCardView.
+
+    regex:
+      re_pattern: 'std::make_unique<TabCardView>\(this\)'
+      replace: 'CreateTabCardView()'
+
+  - description: |
+      Make TabCardView::UpdateContent virtual for BraveTabCardView.
+
+    regex:
+      re_pattern: |
+        (class TabHoverCardBubbleView::TabCardView.*?)(void UpdateContent\(const HoverCardAnchorTarget\* anchor_target\) {)
+      re_flags: [DOTALL]
+      replace: '\1\n  virtual \2\n'
