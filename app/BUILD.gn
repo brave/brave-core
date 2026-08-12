@@ -140,7 +140,6 @@ source_set("unit_tests") {
     "//chrome/browser/ui",
     "//chrome/browser/ui:ui_features",
     "//chrome/browser/ui/omnibox",
-    "//components/aggregation_service",
     "//components/attribution_reporting:features",
     "//components/autofill/core/common",
     "//components/browser_actuator/internal:features",
