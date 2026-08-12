@@ -40,12 +40,14 @@ bool BraveIsAllowedThirdParty(const GURL& url,
                    {ContentSettingsPattern::FromString(kWordpress),
                     ContentSettingsPattern::FromString(kWp)}});
 
-  if (net::registry_controlled_domains::GetDomainAndRegistry(
-          url, net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES) ==
-      net::registry_controlled_domains::GetDomainAndRegistry(
-          first_party_url,
-          net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES))
+  // SameDomainOrHost requires a non-empty eTLD+1 (or an exact host match), so
+  // hosts without a registrable domain (localhost, IPs) are not treated as the
+  // same site just because GetDomainAndRegistry returns an empty string.
+  if (net::registry_controlled_domains::SameDomainOrHost(
+          url, first_party_url,
+          net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES)) {
     return true;
+  }
 
   for (const auto& entity : *entity_list) {
     if (entity.first.Matches(url) && entity.second.Matches(first_party_url)) {
