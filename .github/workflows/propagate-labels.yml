@@ -18,27 +18,11 @@ jobs:
     name: propagate labels
     runs-on: ubuntu-slim
     steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          sparse-checkout: |
+            .github/workflows/scripts
       - name: propagate labels
-        run: |
-          set -xeEo pipefail
-          shopt -s inherit_errexit
-
-          pr_number="${{ github.event.pull_request.number }}"
-          read -ra relevant_pr_labels <<<"$(gh pr view -R "$GITHUB_REPOSITORY" "$pr_number" --json labels -q ".labels[].name"|\
-            grep -E "${LABELS// /|}"|tr '\n' '\t')"
-
-          if [[ "${relevant_pr_labels[*]}" ]]; then
-            read -ra pr_issues <<<"$(gh api graphql -q ".data.repository.pullRequest.closingIssuesReferences.edges[].node.url" -f query="{
-              repository(owner: \"${GITHUB_REPOSITORY_OWNER:?}\", name: \"${GITHUB_REPOSITORY##*/}\") {
-                pullRequest(number: ${pr_number:?}) { closingIssuesReferences (first: 100) { edges { node { url } } } }
-              } }"|tr '\n' '\t')"
-
-            for label in "${relevant_pr_labels[@]}"; do
-              for issue in "${pr_issues[@]}"; do
-                if [[ "$(gh label list -R "$(echo "${issue:?}"|cut -d/ -f4-5)" -S "${label:?}" \
-                    --json name -q ".[]|select(.name==\"$label\").name")" ]]; then
-                  gh issue edit "$issue" --add-label "$label"
-                fi
-              done
-            done
-          fi
+        env:
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: bash .github/workflows/scripts/propagate-labels.sh
