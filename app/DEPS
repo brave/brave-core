@@ -17,7 +17,6 @@ include_rules += [
   "+brave/components/variations/command_line_utils.h",
   "+brave/renderer/brave_content_renderer_client.h",
   "+brave/utility/brave_content_utility_client.h",
-  "+components/aggregation_service/features.h",
   "+components/attribution_reporting/features.h",
   "+components/autofill/core/common/autofill_debug_features.h",
   "+components/autofill/core/common/autofill_features.h",
