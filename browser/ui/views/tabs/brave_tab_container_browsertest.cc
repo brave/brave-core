@@ -433,11 +433,9 @@ IN_PROC_BROWSER_TEST_F(HorizontalScrollableTabStripBrowserTest,
   ASSERT_TRUE(ntb);
 
   const int pad = GetLayoutConstant(LayoutConstant::kTabStripPadding);
-  const int divider = GetLayoutConstant(LayoutConstant::kToolbarDividerSpacing);
-  EXPECT_EQ(ntb->x(), next->bounds().right() + pad + divider)
+  EXPECT_EQ(ntb->x(), next->bounds().right() + pad)
       << "ntb->x()=" << ntb->x()
-      << " next->bounds().right()=" << next->bounds().right() << " pad=" << pad
-      << " divider=" << divider;
+      << " next->bounds().right()=" << next->bounds().right() << " pad=" << pad;
 }
 
 IN_PROC_BROWSER_TEST_F(HorizontalScrollableTabStripBrowserTest,
@@ -778,6 +776,36 @@ IN_PROC_BROWSER_TEST_F(HorizontalScrollableTabStripBrowserTest,
   ASSERT_EQ(back->GetState(), views::Button::STATE_NORMAL);
   EXPECT_EQ(views::InkDrop::Get(back)->GetMode(),
             views::InkDropHost::InkDropMode::ON);
+}
+
+IN_PROC_BROWSER_TEST_F(
+    HorizontalScrollableTabStripBrowserTest,
+    TabStripRightMarginShouldBeZeroWhenScrollButtonsAreVisible) {
+  auto* tab_strip = views::AsViewClass<BraveTabStrip>(
+      browser_view()->horizontal_tab_strip_for_testing());
+  BraveTabContainer* container = views::AsViewClass<BraveTabContainer>(
+      tab_strip->GetTabContainerForTesting());
+  ASSERT_TRUE(container);
+
+  browser()->profile()->GetPrefs()->SetBoolean(
+      brave_tabs::kShowHorizontalTabScrollButtons, true);
+
+  while (container->GetMaxScrollOffsetForTesting() == 0) {
+    AppendTab();
+    StopAnimatingAndLayout();
+  }
+
+  BraveHorizontalTabStripRegionView* region = tab_strip_region();
+  ASSERT_TRUE(region);
+  ASSERT_TRUE(region->tab_scroll_next_for_testing());
+  ASSERT_TRUE(region->tab_scroll_next_for_testing()->GetVisible());
+
+  auto* margins = tab_strip->GetProperty(views::kMarginsKey);
+  ASSERT_TRUE(margins);
+  EXPECT_EQ(margins->right(), 0)
+      << "When scroll buttons are visible, the tab strip's right margin "
+         "should be zero to avoid extra spacing between the last tab and "
+         "the scroll button.";
 }
 
 class VerticalTabsScrollBarModeBrowserTest : public InProcessBrowserTest {
