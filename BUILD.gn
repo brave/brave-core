@@ -5,6 +5,7 @@
 
 import("//brave/build/config.gni")
 import("//brave/build/redirect_cc.gni")
+import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/tools/crates/build_crate.gni")
 import("//build/config/locales.gni")
@@ -130,7 +131,7 @@ group("all") {
       "//chrome/test:browser_tests",
     ]
 
-    if (target_os == "linux" && target_cpu == "x64") {
+    if (enable_ai_chat && target_os == "linux" && target_cpu == "x64") {
       deps += [ "//brave/components/ai_chat/resources/shared_conversation_lib" ]
     }
   }
@@ -191,8 +192,10 @@ if (!is_ios) {
     }
   }
 
-  group("ai-chat-shared-conversation-lib") {
-    deps = [ "//brave/components/ai_chat/resources/shared_conversation_lib" ]
+  if (enable_ai_chat) {
+    group("ai-chat-shared-conversation-lib") {
+      deps = [ "//brave/components/ai_chat/resources/shared_conversation_lib" ]
+    }
   }
 
   group("storybook") {
