@@ -252,7 +252,7 @@ void P3AService::OnRemoteConfigLoaded() {
   if (!initialized_) {
     Init(nullptr, nullptr);
   } else {
-    message_manager_->NotifyConfigUpdate();
+    message_manager_->NotifyConfigReady();
   }
 }
 

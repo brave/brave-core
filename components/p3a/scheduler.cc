@@ -73,17 +73,16 @@ void Scheduler::Start(bool priority_messages_pending) {
   metrics::MetricsScheduler::Start();
 }
 
-void Scheduler::UploadFinished(bool ok, bool priority_messages_pending) {
-  base::TimeDelta next_interval;
-  if (!ok) {
-    is_priority_scheduled_ = false;
-    next_interval = backoff_interval_;
-    backoff_interval_ = BackOffUploadInterval(backoff_interval_);
-  } else {
-    is_priority_scheduled_ = priority_messages_pending;
-    backoff_interval_ = initial_backoff_interval_;
-    next_interval = GenerateInterval();
-  }
+void Scheduler::UploadSucceeded(bool priority_messages_pending) {
+  is_priority_scheduled_ = priority_messages_pending;
+  backoff_interval_ = initial_backoff_interval_;
+  TaskDone(GenerateInterval());
+}
+
+void Scheduler::UploadFailed() {
+  is_priority_scheduled_ = false;
+  const base::TimeDelta next_interval = backoff_interval_;
+  backoff_interval_ = BackOffUploadInterval(backoff_interval_);
   TaskDone(next_interval);
 }
 
