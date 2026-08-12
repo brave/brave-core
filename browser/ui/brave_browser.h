@@ -12,7 +12,7 @@
 
 class BraveBrowser : public Browser {
  public:
-  explicit BraveBrowser(const CreateParams& params);
+  explicit BraveBrowser(BrowserWindowCreateParams params);
   ~BraveBrowser() override;
 
   BraveBrowser(const BraveBrowser&) = delete;
