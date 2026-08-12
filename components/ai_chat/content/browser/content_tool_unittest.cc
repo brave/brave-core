@@ -213,13 +213,37 @@ TEST_F(ContentToolTest, RequiresPermissionChallengeUntilGranted) {
   auto tool_use = mojom::ToolUseEvent::New();
   auto result = tool.RequiresUserInteractionBeforeHandling(*tool_use);
   ASSERT_TRUE(std::holds_alternative<mojom::PermissionChallengePtr>(result));
-  EXPECT_TRUE(std::get<mojom::PermissionChallengePtr>(result));
+  auto& challenge = std::get<mojom::PermissionChallengePtr>(result);
+  ASSERT_TRUE(challenge);
+
+  // The challenge describes the site-registered tool name and site origin in
+  // a human-readable, markdown-formatted way (instead of the mangled
+  // model-facing tool name).
+  EXPECT_EQ(challenge->description,
+            "Leo would like to execute **echo** on **https://example.com**");
 
   tool.UserPermissionGranted(/*tool_use_id=*/"any");
 
   auto after = tool.RequiresUserInteractionBeforeHandling(*tool_use);
   ASSERT_TRUE(std::holds_alternative<bool>(after));
   EXPECT_FALSE(std::get<bool>(after));
+}
+
+TEST_F(ContentToolTest, PermissionChallengeDescriptionEscapesToolName) {
+  // Tool names are site-controlled, so markdown punctuation must be escaped
+  // to prevent a site injecting formatting or links into the prompt.
+  auto mojo_tool = MakeScriptTool("do-thing[now](https://evil.com)", "");
+  ContentTool tool(*mojo_tool, weak_document());
+
+  auto tool_use = mojom::ToolUseEvent::New();
+  auto result = tool.RequiresUserInteractionBeforeHandling(*tool_use);
+  ASSERT_TRUE(std::holds_alternative<mojom::PermissionChallengePtr>(result));
+  auto& challenge = std::get<mojom::PermissionChallengePtr>(result);
+  ASSERT_TRUE(challenge);
+  EXPECT_EQ(
+      challenge->description,
+      "Leo would like to execute **do\\-thing\\[now\\]\\(https\\:\\/\\/evil\\."
+      "com\\)** on **https://example.com**");
 }
 
 TEST_F(ContentToolTest, UseToolNormalizesEmptyInputToObject) {
@@ -240,6 +264,23 @@ TEST_F(ContentToolTest, UseToolForwardsEmptyIshJsonValuesUnchanged) {
   for (const std::string args : {"null", R"("")", "[]", "{}"}) {
     EXPECT_EQ(ForwardedInputFor(args), args) << "args=" << args;
   }
+}
+
+TEST_F(ContentToolTest, PermissionChallengeOmitsDescriptionWhenDocumentGone) {
+  // The origin is read from the RenderFrameHost when the challenge is
+  // created; if the document is gone there is no origin to display, so the
+  // challenge falls back to having no description.
+  auto mojo_tool = MakeScriptTool("noop", "");
+  ContentTool tool(*mojo_tool, weak_document());
+
+  DeleteContents();
+
+  auto tool_use = mojom::ToolUseEvent::New();
+  auto result = tool.RequiresUserInteractionBeforeHandling(*tool_use);
+  ASSERT_TRUE(std::holds_alternative<mojom::PermissionChallengePtr>(result));
+  auto& challenge = std::get<mojom::PermissionChallengePtr>(result);
+  ASSERT_TRUE(challenge);
+  EXPECT_FALSE(challenge->description.has_value());
 }
 
 TEST_F(ContentToolTest, UseToolAfterDocumentGoneReturnsEmpty) {

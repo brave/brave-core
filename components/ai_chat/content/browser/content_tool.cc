@@ -16,16 +16,40 @@
 #include "base/functional/bind.h"
 #include "base/json/json_reader.h"
 #include "base/strings/strcat.h"
+#include "base/strings/utf_string_conversions.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_utils.h"
 #include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom.h"
+#include "components/grit/brave_components_strings.h"
 #include "content/public/browser/render_frame_host.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "services/service_manager/public/cpp/interface_provider.h"
 #include "third_party/blink/public/mojom/content_extraction/script_tools.mojom.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "url/gurl.h"
+#include "url/origin.h"
 
 namespace ai_chat {
+
+namespace {
+
+// Backslash-escapes ASCII punctuation so `text` can be embedded in a
+// markdown string without affecting its formatting. Used for
+// site-controlled values (e.g. WebMCP tool names) shown in the permission
+// prompt.
+std::string EscapeMarkdown(const std::string& text) {
+  std::string escaped;
+  escaped.reserve(text.size());
+  for (char c : text) {
+    if (absl::ascii_ispunct(c)) {
+      escaped.push_back('\\');
+    }
+    escaped.push_back(c);
+  }
+  return escaped;
+}
+
+}  // namespace
 
 ContentTool::ContentTool(const blink::mojom::ScriptTool& script_tool,
                          content::WeakDocumentPtr rfh)
@@ -103,7 +127,21 @@ ContentTool::RequiresUserInteractionBeforeHandling(
     return false;
   }
 
-  return mojom::PermissionChallenge::New();
+  auto challenge = mojom::PermissionChallenge::New();
+
+  // Provide a human-readable, markdown-formatted description naming the
+  // site-registered tool and the site's origin, instead of the mangled
+  // model-facing tool name. The tool name is site-controlled, so escape it
+  // to prevent the site injecting markdown into the prompt.
+  if (content::RenderFrameHost* rfh = rfh_.AsRenderFrameHostIfValid()) {
+    const url::Origin& origin = rfh->GetLastCommittedOrigin();
+    challenge->description = l10n_util::GetStringFUTF8(
+        IDS_CHAT_UI_PERMISSION_CHALLENGE_WEB_TOOL_SUMMARY,
+        base::UTF8ToUTF16(EscapeMarkdown(internal_tool_name_)),
+        base::UTF8ToUTF16(origin.opaque() ? rfh->GetLastCommittedURL().spec()
+                                          : origin.Serialize()));
+  }
+  return challenge;
 }
 
 void ContentTool::UserPermissionGranted(const std::string& tool_use_id) {

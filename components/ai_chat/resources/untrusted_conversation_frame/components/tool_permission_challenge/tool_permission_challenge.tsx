@@ -10,6 +10,7 @@ import ConversationAreaButton from '../../../common/components/conversation_area
 import * as Mojom from '../../../common/mojom'
 import { useUntrustedConversationContext } from '../../untrusted_conversation_context'
 import { getToolPermissionImplications } from '../assistant_response/get_tool_permission_implications'
+import MarkdownRenderer from '../markdown_renderer'
 import styles from './tool_permission_challenge.module.scss'
 
 interface Props {
@@ -35,9 +36,28 @@ export default function ToolPermissionChallenge(props: Props) {
     props.toolUseEvent.toolName,
   )
 
-  if (!props.toolUseEvent.permissionChallenge) {
+  const permissionChallenge = props.toolUseEvent.permissionChallenge
+  if (!permissionChallenge) {
     return null
   }
+
+  // Tools can provide a human-readable, markdown-formatted description of
+  // what they want permission to do (e.g. website-provided WebMCP tools
+  // describe themselves as "Leo would like to execute **name** on
+  // **origin**" instead of the mangled model-facing tool name).
+  const summary = permissionChallenge.description ? (
+    <MarkdownRenderer
+      text={permissionChallenge.description}
+      shouldShowTextCursor={false}
+    />
+  ) : (
+    <p>
+      {formatLocale(S.CHAT_UI_PERMISSION_CHALLENGE_SUMMARY, {
+        $1: <b>{props.toolLabel}</b>,
+      })}
+    </p>
+  )
+
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -51,26 +71,20 @@ export default function ToolPermissionChallenge(props: Props) {
       </div>
 
       <div className={styles.content}>
-        <p>
-          {formatLocale(S.CHAT_UI_PERMISSION_CHALLENGE_SUMMARY, {
-            $1: <b>{props.toolLabel}</b>,
-          })}
-        </p>
+        {summary}
 
-        {props.toolUseEvent.permissionChallenge?.assessment && (
+        {permissionChallenge.assessment && (
           <>
             <p>{getLocale(S.CHAT_UI_PERMISSION_CHALLENGE_ASSESSMENT_INTRO)}</p>
             <p className={styles.assessment}>
-              {props.toolUseEvent.permissionChallenge?.assessment}
+              {permissionChallenge.assessment}
             </p>
           </>
         )}
 
         {toolPermissionImplications && <p>{toolPermissionImplications}</p>}
-        {props.toolUseEvent.permissionChallenge?.plan && (
-          <p className={styles.assessment}>
-            {props.toolUseEvent.permissionChallenge.plan}
-          </p>
+        {permissionChallenge.plan && (
+          <p className={styles.assessment}>{permissionChallenge.plan}</p>
         )}
 
         <ConversationAreaButton

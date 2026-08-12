@@ -15,6 +15,7 @@ type CustomArgs = {
   hasAssessment: boolean
   hasPlan: boolean
   hasImplications: boolean
+  isWebTool: boolean
 }
 
 const args: CustomArgs = {
@@ -22,14 +23,17 @@ const args: CustomArgs = {
   hasAssessment: true,
   hasPlan: false,
   hasImplications: true,
+  isWebTool: false,
 }
 
 export const _ToolPermissionChallenge = {
   render: (args: CustomArgs) => {
     const toolUseEvent: Mojom.ToolUseEvent = {
-      toolName: args.hasImplications
-        ? Mojom.TAB_MANAGEMENT_TOOL_NAME
-        : Mojom.CODE_EXECUTION_TOOL_NAME,
+      toolName: args.isWebTool
+        ? 'web_example_com_get_stock_price'
+        : args.hasImplications
+          ? Mojom.TAB_MANAGEMENT_TOOL_NAME
+          : Mojom.CODE_EXECUTION_TOOL_NAME,
       id: 'toolId',
       argumentsJson: 'toolArguments',
       output: undefined,
@@ -41,6 +45,9 @@ export const _ToolPermissionChallenge = {
           : undefined,
         plan: args.hasPlan
           ? 'I am going to group your tabs by category.'
+          : undefined,
+        description: args.isWebTool
+          ? 'Leo would like to execute **get_stock_price** on **https://example.com**'
           : undefined,
       },
     }

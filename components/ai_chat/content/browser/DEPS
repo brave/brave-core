@@ -9,6 +9,7 @@ include_rules = [
   "+components/user_prefs",
   "+components/favicon/content",
   "+components/favicon/core/test",
+  "+components/grit/brave_components_strings.h",
   "+components/viz/common",
   "+content/public/browser",
   "+content/public/common",

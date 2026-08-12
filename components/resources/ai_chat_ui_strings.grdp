@@ -915,6 +915,9 @@
   <message name="IDS_CHAT_UI_PERMISSION_CHALLENGE_SUMMARY" desc="Summary for permission challenge" formatter_data="webui=AiChat">
     Brave AI needs your permission for: <ph name="TOOL_LABEL">$1<ex>Navigating to https://www.example.com/path/to/page</ex></ph>
   </message>
+  <message name="IDS_CHAT_UI_PERMISSION_CHALLENGE_WEB_TOOL_SUMMARY" desc="Summary for a permission challenge raised by a website-provided (WebMCP) tool. Supports markdown, which is used to bold the tool name and site origin." formatter_data="webui=AiChat">
+    Leo would like to execute **<ph name="TOOL_NAME">$1<ex>get_stock_price</ex></ph>** on **<ph name="SITE_ORIGIN">$2<ex>https://www.example.com</ex></ph>**
+  </message>
   <message name="IDS_CHAT_UI_PERMISSION_CHALLENGE_ASSESSMENT_INTRO" desc="Introduction to an assessment for why a permission challenge is being presented" formatter_data="webui=AiChat">
     The operation was detected as potentially misaligned with your request:
   </message>

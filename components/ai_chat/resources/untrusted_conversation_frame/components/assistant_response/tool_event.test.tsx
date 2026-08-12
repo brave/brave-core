@@ -128,6 +128,7 @@ describe('ToolEvent', () => {
             permissionChallenge: {
               assessment: 'This is an assessment',
               plan: 'This is a plan',
+              description: undefined,
             },
           }}
           isEntryActive={true}
@@ -173,6 +174,7 @@ describe('ToolEvent', () => {
               // permission challenge UI.
               assessment: undefined,
               plan: undefined,
+              description: undefined,
             },
           }}
           isEntryActive={true}
@@ -192,6 +194,39 @@ describe('ToolEvent', () => {
     )
     fireEvent.click(denyButton)
     expect(mockProcessPermissionChallenge).toHaveBeenCalledWith('123', false)
+  })
+
+  it('should show human-readable markdown description when provided', () => {
+    render(
+      <MockContext>
+        <ToolEvent
+          toolUseEvent={{
+            // Website-provided (WebMCP) tools have a mangled, model-facing
+            // name which should not be shown in the permission prompt.
+            toolName: 'web_example_com_get_stock_price',
+            id: '123',
+            argumentsJson: '{}',
+            output: undefined,
+            permissionChallenge: {
+              assessment: undefined,
+              plan: undefined,
+              description:
+                'Leo would like to execute **get_stock_price** '
+                + 'on **https://example.com**',
+            },
+          }}
+          isEntryActive={true}
+        />
+      </MockContext>,
+    )
+    // The markdown description is rendered with the markdown renderer, with
+    // the tool name and origin bolded.
+    expect(screen.getByText('get_stock_price')).toBeInTheDocument()
+    expect(screen.getByText('get_stock_price').tagName).toBe('STRONG')
+    expect(screen.getByText('https://example.com')).toBeInTheDocument()
+    expect(
+      screen.queryByText(S.CHAT_UI_PERMISSION_CHALLENGE_SUMMARY),
+    ).not.toBeInTheDocument()
   })
 
   it('should not allow permission challenge interaction in a non-active event', () => {
@@ -214,6 +249,7 @@ describe('ToolEvent', () => {
               // permission challenge UI.
               assessment: undefined,
               plan: undefined,
+              description: undefined,
             },
           }}
           isEntryActive={false}

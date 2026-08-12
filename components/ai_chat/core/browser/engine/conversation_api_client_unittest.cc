@@ -1083,7 +1083,8 @@ TEST_F(ConversationAPIClientUnitTest, PerformRequest_PermissionChallenge) {
           "search_web", "call_123", "{\"query\":\"Hello, world!\"}",
           std::nullopt, std::nullopt,
           mojom::PermissionChallenge::New(
-              "Server determined this tool use is off", std::nullopt),
+              "Server determined this tool use is off", std::nullopt,
+              std::nullopt),
           false));
   {
     SCOPED_TRACE(
@@ -1116,7 +1117,7 @@ TEST_F(ConversationAPIClientUnitTest, PerformRequest_PermissionChallenge) {
           "read_file", "call_789", "{\"path\":\"/etc/passwd\"}", std::nullopt,
           std::nullopt,
           mojom::PermissionChallenge::New("This tool is also off-topic",
-                                          std::nullopt),
+                                          std::nullopt, std::nullopt),
           false));
   {
     SCOPED_TRACE(
@@ -1162,7 +1163,9 @@ TEST_F(ConversationAPIClientUnitTest, PerformRequest_PermissionChallenge) {
   auto expected_tool_use_event_6 =
       mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
           "missing_reasoning", "call_303", "{}", std::nullopt, std::nullopt,
-          mojom::PermissionChallenge::New(std::nullopt, std::nullopt), false));
+          mojom::PermissionChallenge::New(std::nullopt, std::nullopt,
+                                          std::nullopt),
+          false));
   {
     SCOPED_TRACE(
         "Expected missing_reasoning (call_303) to have PermissionChallenge "
