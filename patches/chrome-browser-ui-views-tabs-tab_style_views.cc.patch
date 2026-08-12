@@ -76,10 +76,13 @@ index 9139e3997f25e4c13c3c0d96fe70e2853e95adaa..0c5b8f5e3184a07ec9465355bced5a52
  
  // TabStyleViews ---------------------------------------------------------------
  
-+#if 0  // TabStyleViews::CreateForTab declared in the chromium_src.
++#if 0  // TabStyleViews::Create declared in the chromium_src.
  // static
- std::unique_ptr<TabStyleViews> TabStyleViews::CreateForTab(Tab* tab) {
-   return std::make_unique<TabStyleViewsImpl>(Tab::CreateStyleDelegate(tab));
+ std::unique_ptr<TabStyleViews> TabStyleViews::Create(
+     std::unique_ptr<TabStyleViewDelegate> delegate,
+@@ -1037,6 +1044,7 @@ std::unique_ptr<TabStyleViews> TabStyleViews::Create(
+   }
+   return std::make_unique<HorizontalTabStyleViews>(std::move(delegate));
  }
 +#endif
  
