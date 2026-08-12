@@ -152,7 +152,9 @@ function PolkadotTransactionDetails({
         width='100%'
         padding='24px'
       >
-        <LabelText>Estimated Signature Payload</LabelText>
+        <LabelText>
+          {getLocale('braveWalletConfirmTransactionPolkadotSignaturePayload')}:
+        </LabelText>
         <DetailText>{polkadotTxData.signaturePayload}</DetailText>
       </DetailColumn>
     </StyledWrapper>
