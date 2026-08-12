@@ -11,6 +11,8 @@ include_rules = [
   "+components/omnibox",
   "+components/prefs",
   "+components/search_engines",
+  # For upstream's already-translated omnibox suggestion strings.
+  "+components/strings/grit/components_strings.h",
   "+components/sync_preferences/testing_pref_service_syncable.h",
   "+components/variations",
   "+content/public/test",
