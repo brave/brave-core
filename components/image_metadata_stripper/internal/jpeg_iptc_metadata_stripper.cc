@@ -137,6 +137,7 @@ constexpr uint16_t kIptcResourceId = 0x0404;         // 2 bytes
 //    F B M D      0 1   0 0 0 a      c 6 0 3 0 0 0 0 ...
 //    <-- 4B -->  <-2->  <--- 4 --->  <------ 8 ------>
 //
+//   kFbmdMarkerChars   = 4  (ASCII marker "FBMD")
 //   kFbmdTypeChars     = 2  (ASCII hex chars for the type byte)
 //   kFbmdLengthChars   = 4  (ASCII hex chars for field_count)
 //   kFbmdFieldChars    = 8  (ASCII hex chars per 32-bit field)
@@ -144,12 +145,14 @@ constexpr uint16_t kIptcResourceId = 0x0404;         // 2 bytes
 //   kFbmdLengthOffset  = 4 + 2 = 6  (start of field_count)
 //   record size        = kFbmdHeaderSize + (field_count + 1) * kFbmdFieldChars
 constexpr std::string_view kFbmdMarker = "FBMD";  // 4 bytes
+constexpr size_t kFbmdMarkerChars = 4u;
 constexpr size_t kFbmdTypeChars = 2u;
 constexpr size_t kFbmdLengthChars = 4u;
 constexpr size_t kFbmdFieldChars = 8u;
 constexpr size_t kFbmdHeaderSize =
-    kFbmdMarker.length() + kFbmdTypeChars + kFbmdLengthChars;
-constexpr size_t kFbmdLengthOffset = kFbmdMarker.length() + kFbmdTypeChars;
+    kFbmdMarkerChars + kFbmdTypeChars + kFbmdLengthChars;
+constexpr size_t kFbmdLengthOffset = kFbmdMarkerChars + kFbmdTypeChars;
+static_assert(kFbmdMarker.size() == kFbmdMarkerChars);
 
 // Reads a big-endian uint16 at `offset` in `data`. Returns false if truncated.
 bool ReadU16(base::span<const uint8_t> data, size_t offset, uint16_t& out) {
