@@ -36,6 +36,7 @@
 #include "brave/components/brave_account/endpoint_client/request_types.h"
 #include "brave/components/brave_account/endpoint_client/response.h"
 #include "brave/components/brave_account/endpoint_client/retry_options.h"
+#include "brave/components/brave_account/endpoint_client/test_endpoint_bodies_equality.h"
 #include "brave/components/brave_account/endpoint_client/test_support.h"
 #include "brave/components/brave_account/endpoint_client/url_replacements.h"
 #include "brave/components/brave_account/endpoint_client/with_headers.h"
@@ -75,32 +76,6 @@ bool operator==(const WithHeaders<Response<T, E>>& lhs,
   }
 
   return lhs.headers->StrictlyEquals(*rhs.headers);
-}
-
-bool operator==(const JSONRequestBody& lhs, const JSONRequestBody& rhs) {
-  return lhs.request == rhs.request;
-}
-
-bool operator==(const JSONSuccessBody& lhs, const JSONSuccessBody& rhs) {
-  return lhs.success == rhs.success;
-}
-
-bool operator==(const JSONErrorBody& lhs, const JSONErrorBody& rhs) {
-  return lhs.error == rhs.error;
-}
-
-bool operator==(const ProtobufRequestBody& lhs,
-                const ProtobufRequestBody& rhs) {
-  return lhs.request() == rhs.request();
-}
-
-bool operator==(const ProtobufSuccessBody& lhs,
-                const ProtobufSuccessBody& rhs) {
-  return lhs.success() == rhs.success();
-}
-
-bool operator==(const ProtobufErrorBody& lhs, const ProtobufErrorBody& rhs) {
-  return lhs.error() == rhs.error();
 }
 
 namespace {

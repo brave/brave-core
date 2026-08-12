@@ -15,6 +15,7 @@ source_set("endpoint_client") {
     "is_request_body.h",
     "is_response.h",
     "is_response_body.h",
+    "json_array_of.h",
     "maybe_strip_with_headers.h",
     "request.h",
     "request_handle.cc",
@@ -62,7 +63,9 @@ source_set("unit_tests") {
     "is_request_unittest.cc",
     "is_response_body_unittest.cc",
     "is_response_unittest.cc",
+    "json_array_of_unittest.cc",
     "maybe_strip_with_headers_unittest.cc",
+    "test_endpoint_bodies_equality.h",
     "url_replacements_unittest.cc",
   ]
 
