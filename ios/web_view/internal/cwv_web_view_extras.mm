@@ -50,6 +50,12 @@ const CWVUserAgentType CWVUserAgentTypeDesktop =
   self.webState->GetWebViewProxy().obscuredInsets = obscuredInsets;
 }
 
+- (void)setMinimumViewportInset:(UIEdgeInsets)minInset
+           maximumViewportInset:(UIEdgeInsets)maxInset {
+  [self.webState->GetWebViewProxy() setMinimumViewportInset:minInset
+                                       maximumViewportInset:maxInset];
+}
+
 + (BOOL)isRestoreDataValid:(NSData*)data {
   return [self _isRestoreDataValid:data];
 }
