@@ -8,10 +8,7 @@
 #include <utility>
 
 #include "base/check.h"
-#include "base/functional/bind.h"
 #include "brave/components/brave_account/brave_account_encryption.h"
-#include "brave/components/brave_account/endpoint_client/with_headers.h"
-#include "brave/components/brave_account/endpoints/verify_delete.h"
 #include "brave/components/brave_account/mojom/change_password.mojom.h"
 #include "brave/components/brave_account/mojom/login.mojom.h"
 #include "brave/components/brave_account/mojom/register.mojom.h"
@@ -20,11 +17,7 @@
 
 namespace brave_account {
 
-using endpoint_client::SetBearerToken;
-using endpoint_client::WithHeaders;
-using endpoints::VerifyDelete;
 using internal::MakeCalledInWrongStateError;
-using internal::MakeRequest;
 
 void StateBase::AddReceiver(
     mojo::PendingReceiver<mojom::Authentication> receiver) {
@@ -89,28 +82,7 @@ void StateBase::ResendVerificationEmail(
 }
 
 void StateBase::CancelVerification(mojom::VerificationIntentPtr intent) {
-  CHECK(intent);
-
-  if (intent->is_logged_out_intent() &&
-      intent->get_logged_out_intent() ==
-          mojom::LoggedOutVerificationIntent::kRegistration) {
-    // Best-effort notification to the server, since server side will clean up
-    // verification tokens automatically (currently after 30 minutes).
-    // Not adopted into the state's in-flight bag:
-    // best-effort with no callback that touches state.
-    if (const auto verification_token =
-            GetDecryptedVerificationToken(std::move(intent));
-        !verification_token.empty()) {
-      auto request = MakeRequest<WithHeaders<VerifyDelete::Request>>();
-      SetBearerToken(request, verification_token);
-
-      SendUnownedRequest<VerifyDelete>(std::move(request));
-    }
-  }
-
-  // LoggedOutWithVerification ==> LoggedOut (no state swap), or
-  // LoggedInWithVerification ==> LoggedIn (no state swap).
-  account_state_prefs_->ClearVerification();
+  cancel_verification_(std::move(intent));
 }
 
 void StateBase::ResetPasswordStep1(const std::string& email,
