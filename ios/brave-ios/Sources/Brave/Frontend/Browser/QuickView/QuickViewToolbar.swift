@@ -133,7 +133,7 @@ struct QuickViewToolbarView: View {
           maxWidth: viewModel.secureContentState.shouldDisplayWarning ? .infinity : nil
         )
         progressBar
-          .hidden(isHidden: !viewModel.isLoading)
+          .hidden(isHidden: !viewModel.isProgressBarVisible)
       }
       .padding(.horizontal, 16)
 

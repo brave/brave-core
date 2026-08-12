@@ -44,11 +44,11 @@ class QuickViewToolbarModel {
   var readerModeState: ReaderModeState = .unavailable
   var isPlaylistEnabled: Bool = false
   var isTranslateEnabled: Bool = false
-  var isLoading: Bool = true
   var loadingProgress: Double = 0.0
   var onActionButton: ((QuickViewActionButton) -> Void)?
   var onTappedCollapsedBarTopArea: (() -> Void)?
   var collapseProgress: CGFloat = 0.0
+  private(set) var isProgressBarVisible: Bool = false
   private var loadingCompletionTask: Task<Void, Error>?
 
   init(
@@ -107,20 +107,28 @@ extension QuickViewToolbarModel: TabObserver {
   func tabDidStartLoading(_ tab: some TabState) {
     loadingCompletionTask?.cancel()
     loadingCompletionTask = nil
-    isLoading = true
   }
 
   func tabDidStopLoading(_ tab: some TabState) {
+    guard isProgressBarVisible else { return }
     loadingCompletionTask = Task { @MainActor [weak self] in
       guard let self else { return }
       self.loadingProgress = 1.0
       try await Task.sleep(for: .milliseconds(300))
-      self.isLoading = false
+      self.isProgressBarVisible = false
     }
   }
 
   func tabDidChangeLoadProgress(_ tab: some TabState) {
-    loadingProgress = tab.estimatedProgress
+    if let url = tab.visibleURL, !url.isNewTabURL, !InternalURL.isValid(url: url), tab.isLoading {
+      isProgressBarVisible = true
+      loadingProgress = tab.estimatedProgress
+    } else {
+      loadingCompletionTask?.cancel()
+      loadingCompletionTask = nil
+      isProgressBarVisible = false
+      loadingProgress = 0.0
+    }
   }
 
   func tabDidChangeBackForwardState(_ tab: some TabState) {
