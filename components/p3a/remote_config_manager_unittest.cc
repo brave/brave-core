@@ -123,6 +123,7 @@ TEST_F(P3ARemoteConfigManagerTest, LoadRemoteConfig) {
             "Brave.Core.LastUsage");
   ASSERT_TRUE(uptime_config->cadence.has_value());
   EXPECT_EQ(uptime_config->cadence.value(), MetricLogType::kExpress);
+  EXPECT_TRUE(uptime_config->priority);
 
   const auto* shields_config = remote_config_manager_->GetRemoteMetricConfig(
       "Brave.Shields.UsageStatus");

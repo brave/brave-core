@@ -36,7 +36,11 @@ class P3ASchedulerTest : public testing::Test {
     scheduler_ = std::make_unique<Scheduler>(
         base::BindLambdaForTesting([&]() {
           upload_count_++;
-          scheduler_->UploadFinished(upload_ok_, priority_messages_pending_);
+          if (upload_ok_) {
+            scheduler_->UploadSucceeded(priority_messages_pending_);
+          } else {
+            scheduler_->UploadFailed();
+          }
         }),
         randomize_upload_interval, kAverageUploadInterval,
         kAveragePrepPriorityInterval);
