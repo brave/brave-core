@@ -474,28 +474,6 @@ const conversation: ConversationDataJson = {
       'text': '',
       'childThreadUuids': [],
     },
-    {
-      'uuid': 'c306380e-9514-42f4-9ca0-122f62a60c20',
-      'events': [
-        {
-          'completionEvent': {
-            'completion':
-              "Perfect! Here's your UK mortgage comparison:\n\n### UK Mortgage Details\n\n**Exchange Rate:** 1 GBP = 1.3576 USD (as of April 30, 2026)[1]\n\n**Converted Amounts:**\n- Home Price: \u00a3393,701\n- Down Payment: \u00a3118,110\n- Loan Amount: \u00a3275,591\n\n**Interest Rate:** 4.74% (current average for 5-year fixed mortgages in the UK)[2]  \n**Loan Term:** 25 years\n\n### UK Payment & Total Costs\n\n**Monthly Payment:** \u00a31,569.60  \n**Total Amount Paid:** \u00a3470,881.46  \n**Total Interest Paid:** \u00a3195,290.91\n\n### US vs UK Comparison\n\n| Metric | US | UK |\n|--------|----|----|\n| **Loan Amount** | $350,000 | \u00a3275,591 |\n| **Interest Rate** | 6.37% | 4.74% |\n| **Monthly Payment** | $2,334.87 | \u00a31,569.60 |\n| **Total Interest** | $350,461.85 | \u00a3195,290.91 |\n\n**Key Takeaway:** The UK mortgage is significantly cheaper. Despite the lower loan amount (due to currency conversion), your monthly payment is substantially lower because UK rates are about 1.6 percentage points lower than US rates. You'd pay roughly \u00a3765 less per month in the UK, saving approximately \u00a3229,000 in total interest over 25 years!\n\nThe graph above shows your UK mortgage amortization schedule over the 25-year term.",
-          },
-        },
-      ],
-      'createdTime': {
-        'internalValue': {
-          '$bigint': '13422039411439626',
-        },
-      },
-      'fromBraveSearchSERP': false,
-      'actionType': 1,
-      'characterType': 1,
-      'text':
-        "Perfect! Here's your UK mortgage comparison:\n\n### UK Mortgage Details\n\n**Exchange Rate:** 1 GBP = 1.3576 USD (as of April 30, 2026)[1]\n\n**Converted Amounts:**\n- Home Price: \u00a3393,701\n- Down Payment: \u00a3118,110\n- Loan Amount: \u00a3275,591\n\n**Interest Rate:** 4.74% (current average for 5-year fixed mortgages in the UK)[2]  \n**Loan Term:** 25 years\n\n### UK Payment & Total Costs\n\n**Monthly Payment:** \u00a31,569.60  \n**Total Amount Paid:** \u00a3470,881.46  \n**Total Interest Paid:** \u00a3195,290.91\n\n### US vs UK Comparison\n\n| Metric | US | UK |\n|--------|----|----|\n| **Loan Amount** | $350,000 | \u00a3275,591 |\n| **Interest Rate** | 6.37% | 4.74% |\n| **Monthly Payment** | $2,334.87 | \u00a31,569.60 |\n| **Total Interest** | $350,461.85 | \u00a3195,290.91 |\n\n**Key Takeaway:** The UK mortgage is significantly cheaper. Despite the lower loan amount (due to currency conversion), your monthly payment is substantially lower because UK rates are about 1.6 percentage points lower than US rates. You'd pay roughly \u00a3765 less per month in the UK, saving approximately \u00a3229,000 in total interest over 25 years!\n\nThe graph above shows your UK mortgage amortization schedule over the 25-year term.",
-      'childThreadUuids': [],
-    },
   ],
   'associatedContent': [],
   'title': '',
