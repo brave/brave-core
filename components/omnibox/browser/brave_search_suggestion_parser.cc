@@ -168,14 +168,17 @@ bool ParseSuggestResults(const base::ListValue& root_list,
       if (!answer || answer->empty()) {
         continue;
       }
+      // An annotation becomes the match description, which restores the
+      // separator the desktop match cell suppresses for CALCULATOR -- the row
+      // would read "<answer> - <description>".
+      annotation.clear();
       // The suggestion is the answer, so accepting the match searches the text
       // the user typed. See BaseSearchProvider::CreateSearchSuggestion.
       suggestion_text = std::move(*answer);
       match_contents = suggestion_text;
       if (ui::GetDeviceFormFactor() == ui::DEVICE_FORM_FACTOR_DESKTOP) {
         // Desktop shows "<expression> = <answer>" on one line, as upstream
-        // does. Leaving the annotation empty keeps the description separator
-        // suppressed for CALCULATOR matches.
+        // does.
         const auto* expression = suggestion_dict.FindString("expression");
         match_contents = l10n_util::GetStringFUTF16(
             IDS_OMNIBOX_ONE_LINE_CALCULATOR_SUGGESTION_TEMPLATE,

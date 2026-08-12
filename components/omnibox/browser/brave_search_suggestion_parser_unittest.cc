@@ -206,6 +206,56 @@ TEST(BraveSearchSuggestionParser, ParseSuggestResults_UnknownVertical) {
   EXPECT_EQ(u"weather in toronto", results.suggest_results[0].suggestion());
 }
 
+TEST(BraveSearchSuggestionParser, ParseSuggestResults_CalculatorStringAnswer) {
+  // Unit conversions send `answer` as a string rather than a number.
+  SearchSuggestionParser::Results results;
+  ASSERT_TRUE(ParseSuggestions("5000 m in km", R"([
+      {"type": "calculator", "q": "5000 m in km",
+       "expression": "5000 m in km", "answer": "5 km"}
+  ])",
+                               &results));
+  ASSERT_EQ(1u, results.suggest_results.size());
+
+  const auto& calculator = results.suggest_results[0];
+  EXPECT_EQ(AutocompleteMatchType::CALCULATOR, calculator.type());
+  EXPECT_EQ(u"5 km", calculator.suggestion());
+  if (ui::GetDeviceFormFactor() == ui::DEVICE_FORM_FACTOR_DESKTOP) {
+    EXPECT_EQ(u"5000 m in km = 5 km", calculator.match_contents());
+  } else {
+    EXPECT_EQ(u"5 km", calculator.match_contents());
+  }
+}
+
+TEST(BraveSearchSuggestionParser,
+     ParseSuggestResults_CalculatorWithoutExpression) {
+  // Without `expression` the query stands in for it.
+  SearchSuggestionParser::Results results;
+  ASSERT_TRUE(ParseSuggestions(
+      "5-2", R"([{"type": "calculator", "q": "5-2", "answer": 3}])", &results));
+  ASSERT_EQ(1u, results.suggest_results.size());
+
+  const auto& calculator = results.suggest_results[0];
+  EXPECT_EQ(u"3", calculator.suggestion());
+  if (ui::GetDeviceFormFactor() == ui::DEVICE_FORM_FACTOR_DESKTOP) {
+    EXPECT_EQ(u"5-2 = 3", calculator.match_contents());
+  } else {
+    EXPECT_EQ(u"3", calculator.match_contents());
+  }
+}
+
+TEST(BraveSearchSuggestionParser, ParseSuggestResults_CalculatorIgnoresDesc) {
+  // A description would restore the separator the desktop match cell
+  // suppresses for CALCULATOR, so it is dropped even if the server sends one.
+  SearchSuggestionParser::Results results;
+  ASSERT_TRUE(ParseSuggestions("5-2", R"([
+      {"type": "calculator", "q": "5-2", "expression": "5-2", "answer": 3,
+       "desc": "arithmetic"}
+  ])",
+                               &results));
+  ASSERT_EQ(1u, results.suggest_results.size());
+  EXPECT_TRUE(results.suggest_results[0].annotation().empty());
+}
+
 TEST(BraveSearchSuggestionParser, ParseSuggestResults_CalculatorWithoutAnswer) {
   // Nothing to display, so the suggestion is skipped.
   SearchSuggestionParser::Results results;
