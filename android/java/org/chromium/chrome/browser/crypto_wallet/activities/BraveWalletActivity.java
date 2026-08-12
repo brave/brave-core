@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
+import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.widget.ViewPager2;
 
 import org.chromium.base.Log;
@@ -23,7 +24,9 @@ import org.chromium.chrome.browser.app.domain.NetworkModel;
 import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletOnboardingPagerAdapter;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletOnboardingPagerAdapter.WalletAction;
+import org.chromium.chrome.browser.crypto_wallet.fragments.onboarding.OnboardingTermsOfUseFragment;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnNextPage;
+import org.chromium.chrome.browser.crypto_wallet.model.OnboardingViewModel;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletUtils;
 import org.chromium.components.browser_ui.modaldialog.AppModalPresenter;
@@ -107,6 +110,19 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
                     @Override
                     public void onPageSelected(int position) {
                         super.onPageSelected(position);
+                        // Reset the shared model and uncheck the terms fragment if it's still alive
+                        // off screen so it won't load stale selections when shown again.
+                        if (mWalletOnboardingPagerAdapter != null
+                                && mWalletOnboardingPagerAdapter.isInitWalletFragmentAt(position)) {
+                            new ViewModelProvider(BraveWalletActivity.this)
+                                    .get(OnboardingViewModel.class)
+                                    .reset();
+                            final OnboardingTermsOfUseFragment termsOfUseFragment =
+                                    mWalletOnboardingPagerAdapter.getTermsOfUseFragment();
+                            if (termsOfUseFragment != null) {
+                                termsOfUseFragment.uncheckSelections();
+                            }
+                        }
                         // Keep the keyboard on the unlock screen; hide it when navigating other
                         // onboarding pages.
                         if (mWalletOnboardingPagerAdapter != null

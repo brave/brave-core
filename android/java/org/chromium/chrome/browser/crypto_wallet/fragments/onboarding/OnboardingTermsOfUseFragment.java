@@ -110,6 +110,20 @@ public class OnboardingTermsOfUseFragment extends BaseOnboardingWalletFragment
         mContinueButtonClicked = false;
     }
 
+    /**
+     * Clears both terms checkboxes and refreshes the continue button state to match. Does nothing
+     * when the fragment has no view.
+     */
+    public void uncheckSelections() {
+        if (getView() == null) {
+            // The view has been destroyed; it will start unchecked when recreated.
+            return;
+        }
+        mSelfCustodyCheckBox.setChecked(false);
+        mTermsOfUseCheckBox.setChecked(false);
+        updateContinueButtonState();
+    }
+
     @Override
     public void onDestroy() {
         // Drop the saved selections when the user genuinely leaves the screen (taps next, goes
