@@ -58,7 +58,7 @@ jobs:
           grep -q "$LEO_REF" package.json || { echo "::error::Failed to update Leo hash in package.json"; exit 1; }
 
       - name: Install Socket CLI
-        run: pnpm add -g @socketsecurity/cli
+        run: pnpm add -g @socketsecurity/cli@1.1.156
 
       - name: Configure GPG
         uses: crazy-max/ghaction-import-gpg@e89d40939c28e39f97cf32126055eeae86ba74ec # v6.3.0
@@ -72,9 +72,6 @@ jobs:
         env:
           GHSA_IDS: ${{ inputs.ghsa_ids }}
           SOCKET_SECURITY_API_KEY: ${{ secrets.SOCKET_SECURITY_API_KEY }}
-          SOCKET_CLI_GITHUB_TOKEN: ${{ secrets.SOCKET_FIX_PAT }}
-          SOCKET_CLI_GIT_USER_NAME: brave-support-admin
-          SOCKET_CLI_GIT_USER_EMAIL: 138038132+brave-support-admin@users.noreply.github.com
         run: |
           if ! [[ "$GHSA_IDS" =~ ^GHSA-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{4}(,[[:space:]]?GHSA-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{4})*$ ]]; then
             echo "::error::GHSA_IDS contains invalid entries. Expected format: GHSA-xxxx-xxxx-xxxx (comma or comma-space separated)"
@@ -85,7 +82,15 @@ jobs:
           socket config set defaultOrg "brave"
           socket fix . "${FLAGS[@]}"
 
-      - name: Update PR body
+      - name: Compute branch name
+        id: branch
+        env:
+          GHSA_IDS: ${{ inputs.ghsa_ids }}
+        run: |
+          echo "name=socket-fix/$(echo "$GHSA_IDS" | tr ', ' '-' | tr -s '-' | cut -c1-60)" >> "$GITHUB_OUTPUT"
+
+      - name: Compute PR body
+        id: body
         env:
           GH_TOKEN: ${{ secrets.SOCKET_FIX_PAT }}
           GHSA_IDS: ${{ inputs.ghsa_ids }}
@@ -93,12 +98,6 @@ jobs:
           WDP_REF: ${{ inputs.wdp_ref }}
           LEO_REF: ${{ inputs.leo_ref }}
         run: |
-          BRANCH="socket/fix/$(echo "$GHSA_IDS" | tr ', ' '-' | tr -s '-' | cut -c1-60)"
-          PR_NUMBER=$(gh pr list --repo "${GITHUB_REPOSITORY}" --head "$BRANCH" --json number -q '.[0].number' 2>/dev/null || true)
-          if [[ -z "$PR_NUMBER" ]]; then
-            echo "::warning::No open PR found on branch $BRANCH, skipping body update"
-            exit 0
-          fi
           BODY="Addresses: $GHSA_IDS"
           IFS=',' read -ra LINKS <<< "$ISSUE_LINK"
           for link in "${LINKS[@]}"; do
@@ -112,4 +111,22 @@ jobs:
             LEO_PR=$(gh api "repos/brave/leo/commits/$LEO_REF/pulls" -q '.[0].html_url' 2>/dev/null || true)
             [[ -n "$LEO_PR" ]] && BODY="$BODY"$'\n\n'"Leo: $LEO_PR"
           fi
-          gh pr edit "$PR_NUMBER" --repo "${GITHUB_REPOSITORY}" --body "$BODY"
+          {
+            echo "body<<EOF"
+            echo "$BODY"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@84ae59a2cdc2258d6fa0732dd66352dddae2a412 # v7.0.9
+        with:
+          commit-message: 'fix: address security advisories'
+          author: brave-support-admin <138038132+brave-support-admin@users.noreply.github.com>
+          committer: brave-support-admin <138038132+brave-support-admin@users.noreply.github.com>
+          branch: ${{ steps.branch.outputs.name }}
+          delete-branch: true
+          base: master
+          title: 'fix: address security advisories'
+          body: ${{ steps.body.outputs.body }}
+          labels: CI/skip,security
+          token: ${{ secrets.SOCKET_FIX_PAT }}
