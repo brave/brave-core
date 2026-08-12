@@ -669,6 +669,13 @@ void BraveNewsController::OpenSettings() {
   }
 }
 
+void BraveNewsController::CloseUI() {
+  DVLOG(1) << __FUNCTION__;
+  if (delegate_) {
+    delegate_->CloseUI();
+  }
+}
+
 void BraveNewsController::GetVisitedSites(GetVisitedSitesCallback callback) {
   auto options = GetQueryOptions();
   history_service_->QueryHistory(

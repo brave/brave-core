@@ -10,9 +10,9 @@ import styled from "styled-components";
 
 const SettingsButton = styled(Button).attrs({
   fab: true,
-  kind: 'outline'
+  kind: 'plain-faint'
 })`
-  --leo-button-color: var(--bn-glass-50);
+  --leo-button-color: var(--leo-color-icon-default);
   --leo-button-radius: ${radius.s};
   --leo-button-padding: ${spacing.s};
 
