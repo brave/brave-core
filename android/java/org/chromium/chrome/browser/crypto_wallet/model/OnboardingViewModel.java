@@ -10,10 +10,16 @@ import android.util.SparseArray;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import org.chromium.brave_wallet.mojom.JsonRpcService;
+import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
+import org.chromium.chrome.browser.app.domain.KeyringModel;
 import org.chromium.chrome.browser.crypto_wallet.fragments.onboarding.OnboardingVerifyRecoveryPhraseFragment.VerificationStep;
+import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -51,6 +57,11 @@ public class OnboardingViewModel extends ViewModel {
     // fragment (recreated fresh after a rotation) can restore them.
     private boolean mSelfCustodyChecked;
     private boolean mTermsOfUseChecked;
+
+    // Wallet creation request, owned by the model so it survives configuration changes and keeps
+    // running while the activity is in the background. Triggered only once.
+    private boolean mWalletCreationRequested;
+    @NonNull private final MutableLiveData<Boolean> mWalletCreationSucceeded = new MutableLiveData<>();
 
     /** Stores the unlock password text so it survives a configuration change such as a rotation. */
     public void setUnlockPassword(@Nullable final String unlockPassword) {
@@ -157,6 +168,71 @@ public class OnboardingViewModel extends ViewModel {
         mTermsOfUseChecked = false;
     }
 
+    /**
+     * Live outcome of the Wallet creation or restoration request: {@code true} on success,
+     * {@code false} on failure. Observers are notified once the request completes, including
+     * observers that subscribe after completion (for example a fragment recreated by a rotation).
+     */
+    @NonNull
+    public LiveData<Boolean> getWalletCreationSucceeded() {
+        return mWalletCreationSucceeded;
+    }
+
+    /**
+     * Creates or restores the Wallet exactly once, based on the state captured during onboarding.
+     * Repeat calls (for example from a fragment recreated by a rotation) are ignored while the
+     * request is running or after it has completed. The request is owned by the model, so it is not
+     * cancelled when the activity is recreated or sent to the background; its outcome is delivered
+     * through {@link #getWalletCreationSucceeded()}.
+     */
+    public void createOrRestoreWallet(
+            @NonNull final KeyringModel keyringModel,
+            @NonNull final JsonRpcService jsonRpcService,
+            @Nullable final KeyringService keyringService,
+            final boolean overridePreviousWallet) {
+        if (mWalletCreationRequested) {
+            return;
+        }
+        mWalletCreationRequested = true;
+        keyringModel.isWalletCreated(
+                isCreated -> {
+                    // Skip creation when a wallet already exists, unless restoring over it from the
+                    // unlock screen button.
+                    if (isCreated && !overridePreviousWallet) {
+                        mWalletCreationSucceeded.setValue(true);
+                        return;
+                    }
+                    if (mRecoveryPhrase == null) {
+                        keyringModel.createWallet(
+                                getPassword(),
+                                mAvailableNetworks,
+                                mSelectedNetworks,
+                                jsonRpcService,
+                                recoveryPhrases -> {
+                                    Utils.setCryptoOnboarding(false);
+                                    mWalletCreationSucceeded.setValue(true);
+                                });
+                    } else {
+                        keyringModel.restoreWallet(
+                                getPassword(),
+                                requireRecoveryPhrase(),
+                                mLegacyRestoreEnabled,
+                                mAvailableNetworks,
+                                mSelectedNetworks,
+                                jsonRpcService,
+                                result -> {
+                                    if (result) {
+                                        if (keyringService != null) {
+                                            keyringService.notifyWalletBackupComplete();
+                                        }
+                                        Utils.setCryptoOnboarding(false);
+                                    }
+                                    mWalletCreationSucceeded.setValue(result);
+                                });
+                    }
+                });
+    }
+
     /** Clears every captured value so a new pass through onboarding starts from a clean state. */
     public void reset() {
         mLegacyRestoreEnabled = false;
@@ -168,6 +244,8 @@ public class OnboardingViewModel extends ViewModel {
         clearUnlockState();
         clearRestoreWalletState();
         clearTermsOfUseSelections();
+        mWalletCreationRequested = false;
+        mWalletCreationSucceeded.setValue(null);
     }
 
     public void setLegacyRestoreEnabled(final boolean legacyRestoreEnabled) {
