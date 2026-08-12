@@ -152,6 +152,131 @@ class CheckJson5ParseErrorsTest(unittest.TestCase):
         self.assertEqual([], errors)
 
 
+class CheckBraveForwardIncHasNoIncludesTest(unittest.TestCase):
+
+    def testFlagsDisallowedQuotedInclude(self):
+        input_api = MockInputApi()
+        input_api.files = [
+            MockAffectedFile(
+                'browser/ui/window_feature_controller/'
+                'window_feature_controller-forward.inc', [
+                    'class VerticalTabController;',
+                    '#include "content/public/browser/web_contents.h"',
+                    'bool BraveShouldShowTitlebar();',
+                ]),
+        ]
+
+        errors = PRESUBMIT.CheckBraveForwardIncHasNoIncludes(
+            input_api, MockOutputApi())
+
+        self.assertEqual(1, len(errors))
+        self.assertEqual(1, len(errors[0].items))
+        self.assertIn('window_feature_controller-forward.inc:2',
+                      errors[0].items[0])
+        self.assertIn('#include "content/public/browser/web_contents.h"',
+                      errors[0].items[0])
+
+    def testFlagsQuotedIncludeWithWhitespace(self):
+        input_api = MockInputApi()
+        input_api.files = [
+            MockAffectedFile(
+                'components/brave_policy/brave_policy_profile_id-forward.inc',
+                ['  #  include "chrome/browser/profiles/profile.h"']),
+        ]
+
+        errors = PRESUBMIT.CheckBraveForwardIncHasNoIncludes(
+            input_api, MockOutputApi())
+
+        self.assertEqual(1, len(errors))
+        self.assertIn('#  include "chrome/browser/profiles/profile.h"',
+                      errors[0].items[0])
+
+    def testAllowsSystemIncludes(self):
+        input_api = MockInputApi()
+        input_api.files = [
+            MockAffectedFile(
+                'components/brave_policy/brave_browser_policy_provider-forward.inc',
+                [
+                    '#include <memory>',
+                    'namespace brave_policy {',
+                    'std::unique_ptr<policy::ConfigurationPolicyProvider>',
+                    'CreateBraveBrowserPolicyProvider();',
+                    '}  // namespace brave_policy',
+                ]),
+        ]
+
+        errors = PRESUBMIT.CheckBraveForwardIncHasNoIncludes(
+            input_api, MockOutputApi())
+
+        self.assertEqual([], errors)
+
+    def testAllowsBaseAndBuildIncludes(self):
+        input_api = MockInputApi()
+        input_api.files = [
+            MockAffectedFile(
+                'browser/ui/window_feature_controller/'
+                'window_feature_controller-forward.inc', [
+                    '#include "base/memory/weak_ptr.h"',
+                    '#include "build/build_config.h"',
+                    'bool BraveShouldShowTitlebar();',
+                ]),
+        ]
+
+        errors = PRESUBMIT.CheckBraveForwardIncHasNoIncludes(
+            input_api, MockOutputApi())
+
+        self.assertEqual([], errors)
+
+    def testAllowsCleanForwardInc(self):
+        input_api = MockInputApi()
+        input_api.files = [
+            MockAffectedFile(
+                'services/passage_embeddings/litert_executor-forward.inc', [
+                    'namespace brave_history_embeddings {',
+                    'std::unique_ptr<'
+                    'passage_embeddings::PassageEmbedderExecutor>',
+                    'MaybeCreateLitertExecutor('
+                    'base::File& file, int, int, int);',
+                    '}  // namespace brave_history_embeddings',
+                ]),
+        ]
+
+        errors = PRESUBMIT.CheckBraveForwardIncHasNoIncludes(
+            input_api, MockOutputApi())
+
+        self.assertEqual([], errors)
+
+    def testIgnoresNonForwardInc(self):
+        input_api = MockInputApi()
+        input_api.files = [
+            MockAffectedFile(
+                'browser/foo.h',
+                ['#include "content/public/browser/web_contents.h"']),
+            MockAffectedFile(
+                'browser/foo.inc',
+                ['#include "content/public/browser/web_contents.h"']),
+        ]
+
+        errors = PRESUBMIT.CheckBraveForwardIncHasNoIncludes(
+            input_api, MockOutputApi())
+
+        self.assertEqual([], errors)
+
+    def testIgnoresDeletedFiles(self):
+        input_api = MockInputApi()
+        input_api.files = [
+            MockAffectedFile(
+                'browser/enterprise/platform_auth_helper-forward.inc',
+                ['#include "content/public/browser/web_contents.h"'],
+                action='D'),
+        ]
+
+        errors = PRESUBMIT.CheckBraveForwardIncHasNoIncludes(
+            input_api, MockOutputApi())
+
+        self.assertEqual([], errors)
+
+
 class CheckTodoBugReferencesTest(unittest.TestCase):
 
     def _Check(self, line):

@@ -3,7 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "base/memory/weak_ptr.h"
 #include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
+#include "brave/browser/ui/window_feature_controller/window_feature_controller-forward.inc"
 #include "chrome/browser/ui/layout_constants.h"
 
 bool BraveDisablesImmersiveFullscreenMode(

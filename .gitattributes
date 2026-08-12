@@ -14,7 +14,7 @@
 *.icon  text eol=lf
 *.idl   text eol=lf
 *.in    text eol=lf
-*.inc   text eol=lf
+*.inc   text eol=lf linguist-language=C++
 *.java  text eol=lf
 *.js    text eol=lf
 *.json  text eol=lf

@@ -332,17 +332,113 @@ const classWeNeedInternalsFrom = new UpstreamClass()
 ;(classWeNeedInternalsFrom as any).callPrivateMethod()
 ```
 
-### Minimize dependencies
+<a id="forward-inc"></a>
 
-We want to avoid creating new dependencies in the chrome code when possible. gn
-dependency checks also don't currently run for chromium_src so unlike other
-targets, it won't fail if you add includes that do not have deps listed for the
-original source file target. We also want to avoid patching gn to add
-dependencies. One way to avoid these is with forward declarations. For most code
-in chrome you can forward declare classes or methods that have their
-implementation in brave. Code in `component` gn target types doesn't lend itself
-to this technique in general. This also applies to patches in general including
-plaster.
+### Forward-declaring Brave helpers (`*-forward.inc`)
+
+We want to avoid creating new dependencies in upstream Chromium targets when
+possible. `gn check` also does not currently run for `chromium_src`, so unlike
+other targets it will not fail if you add includes that are missing from the
+original source file's deps. We also want to avoid patching GN to add Brave
+deps. Forward declarations are the usual way out of that: declare a Brave hook
+in the patched/overridden TU, implement it in a Brave target that is linked into
+the same binary, and never `#include` Brave implementation headers from the
+upstream-facing unit.
+
+Prefer a dedicated `*-forward.inc` file over hand-written decls sprinkled in
+`chromium_src` or plaster `code` blocks:
+
+| File                          | Role                                                                                                                                                                                                                                                |
+| ----------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `brave/.../foo-forward.inc`   | Declarations only (namespaces, incomplete types, free-function / factory hooks). Allowed includes: system (`#include <...>`), `"base/..."`, and `"build/..."`. Other quoted includes are forbidden (PRESUBMIT `CheckBraveForwardIncHasNoIncludes`). |
+| `brave/.../foo.cc`            | Implementation in a Brave `source_set` / similar, linked via an existing Brave top-level deps list (not patched into upstream GN).                                                                                                                  |
+| `chromium_src/...` or plaster | `#include` the `*-forward.inc`, then call the hook.                                                                                                                                                                                                 |
+
+checkdeps ignores `#include`s of `*-forward.inc` files (see the Brave
+`checkdeps.py` override), so they do not need DEPS entries.
+
+`.inc` (rather than `-forward.h`) signals that the file is not a standalone
+header: prefer incomplete-type forward decls for Chromium/Brave types, and use
+system / `base/` / `build/` includes when those types appear in signatures. Do
+not put other quoted `#include "..."` in the `.inc`; that would pull Brave or
+Chromium headers into the upstream TU the same way a normal header would.
+
+```cpp
+// brave/components/brave_policy/brave_browser_policy_provider-forward.inc
+#include <memory>
+
+namespace policy {
+class ConfigurationPolicyProvider;
+}  // namespace policy
+
+namespace brave_policy {
+std::unique_ptr<policy::ConfigurationPolicyProvider>
+CreateBraveBrowserPolicyProvider();
+}  // namespace brave_policy
+```
+
+```cpp
+// brave/browser/ui/window_feature_controller/window_feature_controller-forward.inc
+#include "base/memory/weak_ptr.h"
+
+class VerticalTabController;
+
+bool BraveShouldShowTitlebar(
+    const base::WeakPtr<VerticalTabController>& vertical_tab_controller);
+```
+
+```cpp
+// chromium_src/chrome/browser/ui/window_feature_controller/window_feature_controller.cc
+#include "chrome/browser/ui/window_feature_controller/window_feature_controller.h"
+
+#include "brave/browser/ui/window_feature_controller/window_feature_controller-forward.inc"
+
+// ... wrap / re-include upstream, call BraveShouldShowTitlebar(...)
+```
+
+```cpp
+// brave/browser/ui/window_feature_controller/window_feature_controller.cc
+#include "base/memory/weak_ptr.h"
+#include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
+#include "brave/browser/ui/window_feature_controller/window_feature_controller-forward.inc"
+
+bool BraveShouldShowTitlebar(
+    const base::WeakPtr<VerticalTabController>& vertical_tab_controller) {
+  // ...
+}
+```
+
+Plastering an `#include "...-forward.inc"` into upstream is an acceptable
+exception to “don't use plaster for mere additions” when the hook must be
+visible in a TU that has no `chromium_src` shadow (or when the plaster is the
+only entry point). Prefer `chromium_src` when a shadow already exists.
+
+Do:
+
+- Keep hooks as free functions (often under `brave::` / a Brave namespace).
+- Share one `*-forward.inc` across desktop / iOS / Android `chromium_src` when
+  the signatures match.
+- Include the `*-forward.inc` from the Brave implementation `.cc` as well so
+  signatures stay in sync.
+- Use `#include <...>` / `"base/..."` / `"build/..."` in the `.inc` when the
+  signature needs those types.
+
+Don't:
+
+- `#include` Brave implementation headers from `chromium_src` just to call a
+  helper.
+- Put quoted `#include "..."` directives other than `"base/..."` and
+  `"build/..."` inside `*-forward.inc`.
+- Patch upstream `BUILD.gn` to depend on the Brave impl target when linking via
+  an existing Brave deps list works.
+
+Code in `component` gn target types doesn't always lend itself to this
+technique. The same idea applies to patches and plaster in general.
+
+### Minimize dependencies (legacy hand decls)
+
+If a one-off is too small to warrant a shared `*-forward.inc`, an explicit
+forward declaration in the `chromium_src` file is still acceptable:
 
 chromium_src/chrome/browser/chrome_feature/chrome_feature.cc
 

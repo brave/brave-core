@@ -3,12 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+#include "brave/components/brave_policy/brave_profile_policy_provider-forward.inc"
 #include "components/policy/core/common/configuration_policy_provider.h"
-
-namespace brave_policy {
-std::unique_ptr<policy::ConfigurationPolicyProvider>
-CreateBraveProfilePolicyProvider();
-}  // namespace brave_policy
 
 // Create and Init the Brave Profile Policy Provider which is used
 // for Brave Origin and other Brave specific policies.
