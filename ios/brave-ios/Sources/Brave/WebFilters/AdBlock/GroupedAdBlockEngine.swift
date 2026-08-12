@@ -234,9 +234,9 @@ public actor GroupedAdBlockEngine {
     resourcesInfo = info
   }
 
-  /// Serialize the engine into data to be later loaded from cache
-  public func serialize() throws -> Data {
-    return try engine.serialize()
+  /// Serialize the engine into the given file to be later loaded from cache
+  public func serialize(to fileURL: URL) throws {
+    try engine.serialize(to: fileURL)
   }
 
   /// Create an engine from the given resources
@@ -264,9 +264,9 @@ public actor GroupedAdBlockEngine {
   private static func makeEngine(from group: FilterListGroup) throws -> AdblockEngine {
     switch group.fileType {
     case .data:
-      return try AdblockEngine(serializedData: Data(contentsOf: group.localFileURL))
+      return try AdblockEngine(serializedFileURL: group.localFileURL)
     case .text:
-      return try AdblockEngine(rules: String(contentsOf: group.localFileURL))
+      return try AdblockEngine(rulesFileURL: group.localFileURL)
     }
   }
 }

@@ -36,10 +36,21 @@ OBJC_EXPORT
 /// error if the engine cannot parse the rules provided due to invalid UTF8
 - (nullable instancetype)initWithRules:(NSString*)rules error:(NSError**)error;
 
-/// Initialize an adblock engine with a set of serialized rules. Returns
-/// nil/Throws an error if the engine cannot decode the rules
-- (nullable instancetype)initWithSerializedData:(NSData*)data
-                                          error:(NSError**)error;
+/// Initialize an adblock engine with a set of rules read from a file. Returns
+/// nil/Throws an error if the file cannot be read, or if the engine cannot
+/// parse the rules provided due to invalid UTF8.
+///
+/// Prefer this over ``initWithRules:error:`` for large filter lists: the file
+/// is read into a single buffer instead of being copied through `NSString`
+/// and `NSData` first.
+- (nullable instancetype)initWithRulesFileURL:(NSURL*)fileURL
+                                        error:(NSError**)error;
+
+/// Initialize an adblock engine with a set of serialized rules read from a
+/// file. Returns nil/Throws an error if the file cannot be read or if the
+/// engine cannot decode the rules.
+- (nullable instancetype)initWithSerializedFileURL:(NSURL*)fileURL
+                                             error:(NSError**)error;
 
 /// Checks if a `url` matches for the specified `Engine` within the context.
 ///
@@ -77,11 +88,13 @@ OBJC_EXPORT
                     isThirdParty:(bool)isThirdParty
                     resourceType:(NSString*)resourceType;
 
-/// Deserializes a previously serialized data file list.
-- (bool)deserialize:(NSData*)data NS_SWIFT_NAME(deserialize(data:));
-
-/// Serializes the engine to a data file list.
-- (nullable NSData*)serialize:(NSError**)error;
+/// Serializes the engine to a data file list at the given file URL, replacing
+/// any file already at that location.
+///
+/// Writing directly to disk avoids holding a second copy of the serialized
+/// engine in memory, which can be substantial for large filter lists.
+- (BOOL)serializeToFileURL:(NSURL*)fileURL
+                     error:(NSError**)error NS_SWIFT_NAME(serialize(to:));
 
 /// Uses a list of `Resource`s from JSON format
 - (bool)useResources:(NSString*)resources;

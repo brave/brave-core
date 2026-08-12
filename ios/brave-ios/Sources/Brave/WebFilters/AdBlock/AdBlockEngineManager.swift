@@ -608,19 +608,9 @@ import os
     do {
       let folderURL = try await getOrCreateCacheFolder()
 
-      // Write the serialized engine
-      let serializedEngineData = try await engine.serialize()
+      // Write the serialized engine directly to file
       let serializedEngineURL = folderURL.appendingPathComponent("list.dat", conformingTo: .data)
-
-      if await AsyncFileManager.default.fileExists(atPath: serializedEngineURL.path) {
-        try await AsyncFileManager.default.removeItem(at: serializedEngineURL)
-      }
-
-      // Write the data to file
-      await AsyncFileManager.default.createFile(
-        atPath: serializedEngineURL.path,
-        contents: serializedEngineData
-      )
+      try await engine.serialize(to: serializedEngineURL)
 
       // Write the info about the engine
       let info = CachedEngineInfo(infos: engine.group.infos, fileType: .data)

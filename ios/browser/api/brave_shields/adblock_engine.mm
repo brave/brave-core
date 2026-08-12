@@ -5,6 +5,17 @@
 
 #include "brave/ios/browser/api/brave_shields/adblock_engine.h"
 
+#include <optional>
+#include <string>
+#include <vector>
+
+#include "base/apple/foundation_util.h"
+#include "base/compiler_specific.h"
+#include "base/containers/span.h"
+#include "base/files/file.h"
+#include "base/files/file_path.h"
+#include "base/files/file_util.h"
+#include "base/numerics/safe_conversions.h"
 #include "base/strings/sys_string_conversions.h"
 #include "brave/base/apple/foundation_util.h"
 #include "brave/components/brave_shields/core/common/adblock/rs/src/lib.rs.h"
@@ -64,6 +75,33 @@ class AdblockEngineBox final {
   rust::Box<adblock::Engine> adblock_engine_;
 };
 
+namespace {
+
+/// Reads the contents of the file at `path` into a single buffer sized to the
+/// file. Filter lists are large enough that reading them through `NSData` or
+/// `NSString` first, only to copy them again for the engine, is a meaningful
+/// amount of memory.
+std::optional<std::vector<std::uint8_t>> ReadFileBytes(
+    const base::FilePath& path) {
+  base::File file(path, base::File::FLAG_OPEN | base::File::FLAG_READ);
+  if (!file.IsValid()) {
+    return std::nullopt;
+  }
+
+  const int64_t length = file.GetLength();
+  if (length < 0 || !base::IsValueInRangeForNumericType<size_t>(length)) {
+    return std::nullopt;
+  }
+
+  std::vector<std::uint8_t> bytes(static_cast<size_t>(length));
+  if (!file.ReadAndCheck(0, bytes)) {
+    return std::nullopt;
+  }
+  return bytes;
+}
+
+}  // namespace
+
 @implementation AdblockEngine {
   AdblockEngineBox adblock_engine;
 }
@@ -76,27 +114,11 @@ class AdblockEngineBox final {
 - (instancetype)initWithRules:(NSString*)rules error:(NSError**)error {
   if ((self = [super init])) {
     if (rules.length > 0) {
-      std::vector<std::uint8_t> vecRules;
-      NSData* data = [rules dataUsingEncoding:NSUTF8StringEncoding];
-
-      if (data) {
-        vecRules.resize(data.length);
-        [data getBytes:vecRules.data() length:data.length];
-      }
-
-      auto result = adblock::engine_with_rules(vecRules);
-      if (result.result_kind == adblock::ResultKind::Success) {
-        adblock_engine = std::move(result.value);
-      } else {
-        if (error) {
-          *error = [[self class] adblockErrorForKind:result.result_kind
-                                             message:result.error_message];
-        } else {
-          *error = [[self class]
-              adblockErrorForKind:adblock::ResultKind::AdblockError
-                          message:
-                              "Unknown error initializing engine with rules"];
-        }
+      const std::string utf8Rules = base::SysNSStringToUTF8(rules);
+      const auto utf8Bytes = base::as_byte_span(utf8Rules);
+      const std::vector<std::uint8_t> vecRules(utf8Bytes.begin(),
+                                               utf8Bytes.end());
+      if (![self setRules:vecRules error:error]) {
         return nil;
       }
     }
@@ -104,18 +126,65 @@ class AdblockEngineBox final {
   return self;
 }
 
-- (instancetype)initWithSerializedData:(NSData*)data error:(NSError**)error {
+- (instancetype)initWithRulesFileURL:(NSURL*)fileURL error:(NSError**)error {
   if ((self = [super init])) {
-    if (![self deserialize:data]) {
+    const auto rules = ReadFileBytes(base::apple::NSURLToFilePath(fileURL));
+    if (!rules.has_value()) {
+      if (error) {
+        *error =
+            [[self class] adblockErrorForKind:adblock::ResultKind::AdblockError
+                                      message:"Failed to read rules file"];
+      }
+      return nil;
+    }
+
+    // An empty file leaves the default empty engine in place
+    if (!rules->empty() && ![self setRules:*rules error:error]) {
+      return nil;
+    }
+  }
+  return self;
+}
+
+- (instancetype)initWithSerializedFileURL:(NSURL*)fileURL
+                                    error:(NSError**)error {
+  if ((self = [super init])) {
+    const auto data = ReadFileBytes(base::apple::NSURLToFilePath(fileURL));
+    if (!data.has_value()) {
+      if (error) {
+        *error = [[self class]
+            adblockErrorForKind:adblock::ResultKind::AdblockError
+                        message:"Failed to read serialized data file"];
+      }
+      return nil;
+    }
+
+    if (!adblock_engine->deserialize(*data)) {
       if (error) {
         *error =
             [[self class] adblockErrorForKind:adblock::ResultKind::AdblockError
                                       message:"Failed to deserialize data"];
-        return nil;
       }
+      return nil;
     }
   }
   return self;
+}
+
+/// Replaces the engine with one built from `rules`, or returns `NO` and
+/// populates `error` if the rules cannot be parsed.
+- (BOOL)setRules:(const std::vector<std::uint8_t>&)rules
+           error:(NSError**)error {
+  auto result = adblock::engine_with_rules(rules);
+  if (result.result_kind != adblock::ResultKind::Success) {
+    if (error) {
+      *error = [[self class] adblockErrorForKind:result.result_kind
+                                         message:result.error_message];
+    }
+    return NO;
+  }
+  adblock_engine = std::move(result.value);
+  return YES;
 }
 
 + (NSError*)adblockErrorForKind:(adblock::ResultKind)kind
@@ -182,13 +251,7 @@ class AdblockEngineBox final {
           base::SysNSStringToUTF8(resourceType), isThirdParty, "")));
 }
 
-- (bool)deserialize:(NSData*)data {
-  std::vector<std::uint8_t> vecData(data.length);
-  [data getBytes:vecData.data() length:data.length];
-  return adblock_engine->deserialize(vecData);
-}
-
-- (nullable NSData*)serialize:(NSError**)error {
+- (BOOL)serializeToFileURL:(NSURL*)fileURL error:(NSError**)error {
   auto result = adblock_engine->serialize();
 
   if (result.empty()) {
@@ -197,10 +260,28 @@ class AdblockEngineBox final {
           [[self class] adblockErrorForKind:adblock::ResultKind::AdblockError
                                     message:"Failed to serialize data"];
     }
-    return nil;
+    return NO;
   }
 
-  return [NSData dataWithBytes:result.data() length:result.size()];
+  // SAFETY: `rust::Vec` is a contiguous buffer, so its data pointer and size
+  // always describe a valid range, and `result` outlives the write below.
+  // Constructing the span from the container instead would instantiate
+  // `rust::Slice::end()`, whose own pointer arithmetic is not spanified.
+  const auto span = UNSAFE_BUFFERS(base::span(result.data(), result.size()));
+
+  const base::FilePath path = base::apple::NSURLToFilePath(fileURL);
+  if (!base::WriteFile(path, span)) {
+    // Don't leave a partially written file behind
+    base::DeleteFile(path);
+    if (error) {
+      *error = [[self class]
+          adblockErrorForKind:adblock::ResultKind::AdblockError
+                      message:"Failed to write serialized data to file"];
+    }
+    return NO;
+  }
+
+  return YES;
 }
 
 - (bool)useResources:(NSString*)resources {

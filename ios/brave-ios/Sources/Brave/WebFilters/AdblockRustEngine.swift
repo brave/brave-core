@@ -59,12 +59,6 @@ extension AdblockEngine {
     ).didMatchRule
   }
 
-  @available(*, deprecated, renamed: "deserialize(data:)")
-  @discardableResult
-  public func set(data: Data) -> Bool {
-    deserialize(data: data)
-  }
-
   @available(*, deprecated, message: "Use AdblockEngine.addResources(_:)")
   public func set(json: Data) -> Bool {
     guard let string = String(data: json, encoding: .utf8) else {

@@ -17,11 +17,14 @@ final class AdBlockEngineTests: XCTestCase {
 
     // When
     // We create an engine
-    let engine = try AdblockEngine(rules: String(contentsOf: sampleFilterListURL))
+    let engine = try AdblockEngine(rulesFileURL: sampleFilterListURL)
 
     // Then
     // Serialize then deserialize the engine
-    let serializedData = try engine.serialize()
-    _ = try AdblockEngine(serializedData: serializedData)
+    let serializedEngineURL = FileManager.default.temporaryDirectory
+      .appendingPathComponent("\(UUID().uuidString).dat")
+    defer { try? FileManager.default.removeItem(at: serializedEngineURL) }
+    try engine.serialize(to: serializedEngineURL)
+    _ = try AdblockEngine(serializedFileURL: serializedEngineURL)
   }
 }
