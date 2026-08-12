@@ -228,6 +228,14 @@ TEST_F(ConversationShareStoreUnitTest, DiscardsUnreadableStoredData) {
   EXPECT_TRUE(GetShares().empty());
   // The unusable value is rewritten rather than left on disk.
   EXPECT_TRUE(prefs_.GetString(prefs::kBraveAIChatConversationShares).empty());
+
+  // A value which can never be read back must not stop shares being recorded
+  // from now on.
+  store_->AddShare("share-1", "deletion-1", "conversation-share-1", "Shared",
+                   GURL(kShareUrl));
+  std::vector<mojom::ConversationSharePtr> shares = GetShares();
+  ASSERT_EQ(shares.size(), 1u);
+  EXPECT_EQ(shares[0]->share_id, "share-1");
 }
 
 TEST_F(ConversationShareStoreUnitTest, KeepsStoredDataWhenNoKeyIsAvailable) {

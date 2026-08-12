@@ -41,6 +41,11 @@ namespace ai_chat {
 // prefs. If OSCrypt has no key available then nothing is recorded - the share
 // itself still works, it just can't be managed later.
 //
+// Prefs are the only copy: the list is read back for each operation rather than
+// cached, so the decryption keys it holds are only in memory for as long as an
+// operation takes. The list is small (the server expires shares, see below) and
+// every write needs the whole list anyway, since it is stored as one blob.
+//
 // The sharing server deletes a share once it is
 // features::kAIChatConversationShareExpiryDays old, so records at least that
 // old are dropped when this store is created, and each remaining record is
@@ -90,39 +95,37 @@ class ConversationShareStore {
 
   void OnEncryptorReady(scoped_refptr<os_crypt_async::Encryptor> encryptor);
 
-  // Runs |task| once the encryptor has arrived and |records_| has been read
-  // from prefs, which may be immediately.
-  void RunWhenLoaded(base::OnceClosure task);
+  // Runs |task| once the encryptor has arrived, which may be immediately.
+  void RunWhenReady(base::OnceClosure task);
+
+  // What is stored in prefs, or std::nullopt when it couldn't be decrypted this
+  // session but may well decrypt in a later one, e.g. a locked keyring: nothing
+  // may be written over records in that state. Data which will never be
+  // readable is discarded here instead, so that one bad write can't stop shares
+  // from being recorded for good.
+  std::optional<std::vector<ShareRecord>> ReadRecords();
+
+  void WriteRecords(const std::vector<ShareRecord>& records);
 
   void AddShareInternal(ShareRecord record);
   void GetSharesInternal(GetSharesCallback callback);
 
-  // Drops records the sharing server will have deleted by now from |records_|,
-  // without persisting anything. Returns whether anything was dropped.
-  bool DropExpiredRecords();
+  // Removes records the sharing server will have deleted by now. Returns
+  // whether anything was removed.
+  static bool DropExpiredRecords(std::vector<ShareRecord>& records);
 
-  // DropExpiredRecords(), persisting the result and arming |expiry_timer_| for
-  // the next expiry. This is what the timer runs.
+  // Drops expired records from prefs and re-arms |expiry_timer_|. This is what
+  // the timer runs.
   void PurgeExpiredRecords();
 
-  // Arms |expiry_timer_| for when the oldest remaining record expires, or
-  // cancels it when no records remain. Must be called after any change to
-  // |records_|.
-  void ScheduleNextPurge();
-
-  void WriteRecordsToPrefs();
+  // Arms |expiry_timer_| for when the oldest of |records| expires, or cancels
+  // it when there are none. Must be called after any change to what is stored.
+  void ScheduleNextPurge(const std::vector<ShareRecord>& records);
 
   raw_ptr<PrefService> prefs_;
 
+  // Null until the encryptor has arrived.
   scoped_refptr<os_crypt_async::Encryptor> encryptor_;
-
-  // std::nullopt until the encryptor has arrived and prefs have been read.
-  std::optional<std::vector<ShareRecord>> records_;
-
-  // Whether prefs hold records which couldn't be decrypted this session but
-  // may well decrypt in a later one, in which case nothing may be written over
-  // them.
-  bool stored_records_undecryptable_ = false;
 
   // Operations which arrived before the encryptor did.
   std::vector<base::OnceClosure> pending_tasks_;
