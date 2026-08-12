@@ -10,6 +10,7 @@
 #include <string_view>
 
 #include "base/check.h"
+#include "base/containers/map_util.h"
 #include "base/functional/bind.h"
 #include "base/json/values_util.h"
 #include "base/logging.h"
@@ -53,7 +54,7 @@ MessageManager::MessageManager(PrefService& local_state,
         std::make_unique<MetricLogStore>(*this, *local_state_, log_type);
     constellation_prep_log_stores_[log_type]->LoadPersistedUnsentLogs();
     constellation_send_log_stores_[log_type] =
-        std::make_unique<ConstellationLogStore>(*local_state_, log_type);
+        std::make_unique<ConstellationLogStore>(*this, *local_state_, log_type);
   }
 }
 
@@ -68,7 +69,9 @@ void MessageManager::RegisterPrefs(PrefRegistrySimple* registry) {
 
 void MessageManager::Start(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory) {
-  RemoveObsoleteLogs();
+  // Stores are populated during construction, before the remote configuration
+  // is available.
+  NotifyConfigUpdate();
 
   uploader_ = std::make_unique<Uploader>(
       url_loader_factory,
@@ -93,13 +96,14 @@ void MessageManager::Start(
     constellation_prep_schedulers_[log_type] = std::make_unique<Scheduler>(
         base::BindRepeating(&MessageManager::StartScheduledConstellationPrep,
                             base::Unretained(this), log_type),
-        config_->randomize_upload_interval, config_->average_upload_interval);
+        config_->randomize_upload_interval, config_->average_upload_interval,
+        kAveragePrepPriorityInterval);
     constellation_upload_schedulers_[log_type] = std::make_unique<Scheduler>(
         base::BindRepeating(&MessageManager::StartScheduledUpload,
                             base::Unretained(this), log_type),
-        config_->randomize_upload_interval, config_->average_upload_interval);
+        config_->randomize_upload_interval, config_->average_upload_interval,
+        kAverageUploadPriorityInterval);
 
-    constellation_upload_schedulers_[log_type]->Start();
     constellation_helper_->UpdateRandomnessServerInfo(log_type);
   }
 }
@@ -112,11 +116,10 @@ void MessageManager::Stop() {
   constellation_upload_schedulers_.clear();
 }
 
-void MessageManager::RemoveObsoleteLogs() {
+void MessageManager::NotifyConfigUpdate() {
   for (MetricLogType log_type : kAllMetricLogTypes) {
-    if (constellation_prep_log_stores_[log_type]) {
-      constellation_prep_log_stores_[log_type]->RemoveObsoleteLogs();
-    }
+    constellation_prep_log_stores_[log_type]->NotifyConfigReady();
+    constellation_send_log_stores_[log_type]->NotifyConfigReady();
   }
 }
 
@@ -128,6 +131,7 @@ void MessageManager::UpdateMetricValue(std::string_view histogram_name,
   }
   constellation_prep_log_stores_[*log_type]->UpdateValue(
       std::string(histogram_name), bucket);
+  MaybeExpeditePrepForPriority(*log_type);
   const auto* metric_config = delegate_->GetMetricConfig(histogram_name);
   if (metric_config && metric_config->record_activation_date && bucket >= 1) {
     // Record activation date for metric, for retention measurement purposes
@@ -171,7 +175,9 @@ void MessageManager::OnLogUploadComplete(bool is_ok,
     log_store->MarkStagedLogAsSent();
     log_store->DiscardStagedLog();
   }
-  scheduler->UploadFinished(is_ok);
+  scheduler->UploadFinished(
+      /*ok=*/is_ok,
+      /*priority_messages_pending=*/log_store->has_unsent_priority_logs());
 }
 
 void MessageManager::OnNewConstellationMessage(
@@ -183,7 +189,8 @@ void MessageManager::OnNewConstellationMessage(
   VLOG(2) << "MessageManager::OnNewConstellationMessage: is_success = "
           << is_success << ", has msg = " << (serialized_message != nullptr);
   if (!is_success) {
-    constellation_prep_schedulers_[log_type]->UploadFinished(false);
+    constellation_prep_schedulers_[log_type]->UploadFinished(
+        /*ok=*/false, /*priority_messages_pending=*/false);
     return;
   }
   // Message may not exist if client did not meet Nebula threshold,
@@ -193,7 +200,12 @@ void MessageManager::OnNewConstellationMessage(
         histogram_name, epoch, *serialized_message);
   }
   constellation_prep_log_stores_[log_type]->DiscardStagedLog();
-  constellation_prep_schedulers_[log_type]->UploadFinished(true);
+  constellation_prep_schedulers_[log_type]->UploadFinished(
+      /*ok=*/true, /*priority_messages_pending=*/
+      constellation_prep_log_stores_[log_type]->has_unsent_priority_logs());
+  if (constellation_send_log_stores_[log_type]->has_unsent_priority_logs()) {
+    constellation_upload_schedulers_[log_type]->ExpediteForPriority();
+  }
   delegate_->OnMetricCycled(histogram_name);
 }
 
@@ -214,7 +226,12 @@ void MessageManager::OnRandomnessServerInfoReady(
   constellation_send_log_stores_[log_type]->SetCurrentEpoch(
       server_info->current_epoch);
   constellation_send_log_stores_[log_type]->LoadPersistedUnsentLogs();
-  constellation_prep_schedulers_[log_type]->Start();
+  constellation_upload_schedulers_[log_type]->Start(
+      /*priority_messages_pending=*/constellation_send_log_stores_[log_type]
+          ->has_unsent_priority_logs());
+  constellation_prep_schedulers_[log_type]->Start(
+      /*priority_messages_pending=*/constellation_prep_log_stores_[log_type]
+          ->has_unsent_priority_logs());
   rotation_scheduler_->InitConstellationTimer(log_type,
                                               server_info->next_epoch_time);
 }
@@ -234,7 +251,7 @@ void MessageManager::StartScheduledUpload(MetricLogType log_type) {
   VLOG(2) << logging_prefix << " at " << base::Time::Now();
 
   if (!log_store->has_unsent_logs()) {
-    scheduler->UploadFinished(true);
+    scheduler->UploadFinished(/*ok=*/true, /*priority_messages_pending=*/false);
     VLOG(2) << logging_prefix << " - Nothing to stage.";
     return;
   }
@@ -269,13 +286,15 @@ void MessageManager::StartScheduledConstellationPrep(MetricLogType log_type) {
       kPostRotationUploadDelay) {
     // We should delay Constellation preparations right after a rotation to give
     // rotation callbacks a chance to record relevant metrics.
-    scheduler->UploadFinished(true);
+    scheduler->UploadFinished(
+        /*ok=*/true,
+        /*priority_messages_pending=*/log_store->has_unsent_priority_logs());
     return;
   }
 
   VLOG(2) << logging_prefix << " - starting";
   if (!log_store->has_unsent_logs()) {
-    scheduler->UploadFinished(true);
+    scheduler->UploadFinished(/*ok=*/true, /*priority_messages_pending=*/false);
     VLOG(2) << logging_prefix << " - Nothing to stage.";
     return;
   }
@@ -294,7 +313,8 @@ void MessageManager::StartScheduledConstellationPrep(MetricLogType log_type) {
 
   if (!constellation_helper_->StartMessagePreparation(log_key, log_type, log,
                                                       is_nebula)) {
-    scheduler->UploadFinished(false);
+    scheduler->UploadFinished(/*ok=*/false,
+                              /*priority_messages_pending=*/false);
   }
 }
 
@@ -335,9 +355,25 @@ void MessageManager::CleanupActivationDates() {
 
 void MessageManager::SetIsBrowserDefault(bool is_default) {
   message_meta_.SetIsBrowserDefault(is_default);
-  for (auto& [_, log_store] : constellation_prep_log_stores_) {
+  for (auto& [log_type, log_store] : constellation_prep_log_stores_) {
     log_store->ReevaluateDeferredEntries();
+    MaybeExpeditePrepForPriority(log_type);
   }
+}
+
+void MessageManager::MaybeExpeditePrepForPriority(MetricLogType log_type) {
+  Scheduler* scheduler =
+      base::FindPtrOrNull(constellation_prep_schedulers_, log_type);
+  if (!scheduler ||
+      !constellation_prep_log_stores_[log_type]->has_unsent_priority_logs()) {
+    return;
+  }
+  scheduler->ExpediteForPriority();
+}
+
+bool MessageManager::IsPriorityMetric(std::string_view histogram_name) const {
+  const auto* metric_config = delegate_->GetMetricConfig(histogram_name);
+  return metric_config && metric_config->priority;
 }
 
 bool MessageManager::ShouldDeferMetric(std::string_view histogram_name) const {

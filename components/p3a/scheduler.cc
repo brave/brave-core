@@ -6,7 +6,6 @@
 #include "brave/components/p3a/scheduler.h"
 
 #include "base/check_op.h"
-#include "base/rand_util.h"
 #include "brave/vendor/brave_base/random.h"
 
 namespace p3a {
@@ -53,28 +52,60 @@ base::TimeDelta GetRandomizedUploadInterval(
 
 Scheduler::Scheduler(const base::RepeatingClosure& upload_callback,
                      bool randomize_upload_interval,
-                     base::TimeDelta average_upload_interval)
+                     base::TimeDelta average_upload_interval,
+                     base::TimeDelta average_priority_interval)
     : metrics::MetricsScheduler(upload_callback,
                                 false /* fast_startup_for_testing */),
       initial_backoff_interval_(base::Seconds(kInitialBackoffIntervalSeconds)),
       backoff_interval_(base::Seconds(kInitialBackoffIntervalSeconds)),
       randomize_upload_interval_(randomize_upload_interval),
-      average_upload_interval_(average_upload_interval) {}
+      average_upload_interval_(average_upload_interval),
+      average_priority_interval_(average_priority_interval) {}
 
 Scheduler::~Scheduler() = default;
 
-void Scheduler::UploadFinished(bool ok) {
+void Scheduler::Start(bool priority_messages_pending) {
+  Stop();
+  if (priority_messages_pending != is_priority_scheduled_) {
+    is_priority_scheduled_ = priority_messages_pending;
+    SetInterval(GenerateInterval());
+  }
+  metrics::MetricsScheduler::Start();
+}
+
+void Scheduler::UploadFinished(bool ok, bool priority_messages_pending) {
+  base::TimeDelta next_interval;
   if (!ok) {
-    TaskDone(backoff_interval_);
+    is_priority_scheduled_ = false;
+    next_interval = backoff_interval_;
     backoff_interval_ = BackOffUploadInterval(backoff_interval_);
   } else {
+    is_priority_scheduled_ = priority_messages_pending;
     backoff_interval_ = initial_backoff_interval_;
-    if (randomize_upload_interval_) {
-      TaskDone(GetRandomizedUploadInterval(average_upload_interval_));
-    } else {
-      TaskDone(average_upload_interval_);
-    }
+    next_interval = GenerateInterval();
   }
+  TaskDone(next_interval);
+}
+
+void Scheduler::ExpediteForPriority() {
+  if (IsCallbackPending() || is_priority_scheduled_) {
+    return;
+  }
+  const bool was_running = IsRunning();
+  Stop();
+  is_priority_scheduled_ = true;
+  SetInterval(GenerateInterval());
+  if (was_running) {
+    metrics::MetricsScheduler::Start();
+  }
+}
+
+base::TimeDelta Scheduler::GenerateInterval() const {
+  const base::TimeDelta average = is_priority_scheduled_
+                                      ? average_priority_interval_
+                                      : average_upload_interval_;
+  return randomize_upload_interval_ ? GetRandomizedUploadInterval(average)
+                                    : average;
 }
 
 }  // namespace p3a

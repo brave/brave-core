@@ -33,9 +33,10 @@ const size_t kTypicalMaxEpochsToRetain = 4;
 const size_t kSlowMaxEpochsToRetain = 2;
 const size_t kExpressMaxEpochsToRetain = 21;
 
-ConstellationLogStore::ConstellationLogStore(PrefService& local_state,
+ConstellationLogStore::ConstellationLogStore(Delegate& delegate,
+                                             PrefService& local_state,
                                              MetricLogType log_type)
-    : local_state_(local_state), log_type_(log_type) {}
+    : delegate_(delegate), local_state_(local_state), log_type_(log_type) {}
 
 ConstellationLogStore::~ConstellationLogStore() = default;
 
@@ -72,12 +73,21 @@ void ConstellationLogStore::UpdateMessage(const std::string& histogram_name,
 
   LogKey key(epoch, histogram_name);
   log_[key] = msg;
-  unsent_entries_.insert(key);
+  InsertUnsentEntry(key);
+}
+
+void ConstellationLogStore::InsertUnsentEntry(const LogKey& key) {
+  if (delegate_->IsPriorityMetric(key.histogram_name)) {
+    priority_unsent_entries_.insert(key);
+  } else {
+    unsent_entries_.insert(key);
+  }
 }
 
 void ConstellationLogStore::RemoveMessageIfExists(const LogKey& key) {
   log_.erase(key);
   unsent_entries_.erase(key);
+  priority_unsent_entries_.erase(key);
 
   // Update the persistent value.
   ScopedDictPrefUpdate update(&*local_state_, GetPrefName());
@@ -97,7 +107,23 @@ void ConstellationLogStore::SetCurrentEpoch(uint8_t current_epoch) {
 }
 
 bool ConstellationLogStore::has_unsent_logs() const {
-  return !unsent_entries_.empty();
+  return !unsent_entries_.empty() || !priority_unsent_entries_.empty();
+}
+
+bool ConstellationLogStore::has_unsent_priority_logs() const {
+  return !priority_unsent_entries_.empty();
+}
+
+void ConstellationLogStore::NotifyConfigReady() {
+  // Promote newly prioritized messages out of the standard pool.
+  for (auto it = unsent_entries_.begin(); it != unsent_entries_.end();) {
+    if (delegate_->IsPriorityMetric(it->histogram_name)) {
+      priority_unsent_entries_.insert(*it);
+      it = unsent_entries_.erase(it);
+    } else {
+      ++it;
+    }
+  }
 }
 
 bool ConstellationLogStore::has_staged_log() const {
@@ -134,11 +160,13 @@ std::optional<uint64_t> ConstellationLogStore::staged_log_user_id() const {
 }
 
 void ConstellationLogStore::StageNextLog() {
-  // Stage the next item.
+  // Stage the next item. Priority metrics are drained first.
   DCHECK(has_unsent_logs());
-  uint64_t rand_idx = base::RandGenerator(unsent_entries_.size());
-  staged_entry_key_ =
-      std::make_unique<LogKey>(*(unsent_entries_.begin() + rand_idx));
+  const auto& pool = priority_unsent_entries_.empty()
+                         ? unsent_entries_
+                         : priority_unsent_entries_;
+  uint64_t rand_idx = base::RandGenerator(pool.size());
+  staged_entry_key_ = std::make_unique<LogKey>(*(pool.begin() + rand_idx));
 
   staged_log_ = log_.at(*staged_entry_key_);
 
@@ -181,6 +209,7 @@ size_t ConstellationLogStore::GetMaxEpochsToRetain() const {
 void ConstellationLogStore::LoadPersistedUnsentLogs() {
   log_.clear();
   unsent_entries_.clear();
+  priority_unsent_entries_.clear();
 
   std::vector<std::string> epochs_to_remove;
 
@@ -205,7 +234,7 @@ void ConstellationLogStore::LoadPersistedUnsentLogs() {
       LogKey key(item_epoch, histogram_name);
       log_[key] = log_value.GetString();
 
-      unsent_entries_.insert(key);
+      InsertUnsentEntry(key);
     }
   }
 
