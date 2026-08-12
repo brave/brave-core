@@ -9,7 +9,7 @@ assert(enable_local_ai)
 
 # Resolves open-tab URLs to URLIDs via HistoryService and ranks them with
 # HistoryEmbeddingsSearch. Shared by the tab_search WebUI page handler and the
-# semantic tab search chat tool.
+# AI Chat `tabSearch` markdown directive.
 source_set("open_tab_search") {
   public = [ "open_tab_search.h" ]
   sources = [ "open_tab_search.cc" ]
