@@ -10,12 +10,12 @@ import android.content.Intent;
 
 import androidx.annotation.Nullable;
 
-/**
- * Brave extension of FreIntentCreator.
- */
-public class BraveFreIntentCreator extends FreIntentCreator {
-    @Override
-    protected Intent createInternal(Context caller, Intent fromIntent, boolean preferLightweightFre,
+/** Replaces {@link FreIntentCreator#createInternal} via bytecode. */
+public class BraveFreIntentCreator {
+    public static Intent createInternal(
+            Context caller,
+            Intent fromIntent,
+            boolean preferLightweightFre,
             @Nullable String associatedAppName) {
         // Launch WelcomeOnboardingActivity directly which is the only one enabled
         Intent welcomeOnboardingIntent = new Intent(caller, WelcomeOnboardingActivity.class);
