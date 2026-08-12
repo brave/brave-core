@@ -26,15 +26,13 @@ NS_SWIFT_NAME(NTPTile)
 
 /// Observes the tiles vended by a `MostVisitedSitesBridge`.
 NS_SWIFT_NAME(MostVisitedSitesObserver)
-@protocol MostVisitedSitesBridgeObserver
+@protocol MostVisitedSitesObserverBridge
 
 /// The set of tiles changed. Called with the initial set shortly after the
-/// observer is attached. Mirrors
-/// `ntp_tiles::MostVisitedSites::Observer::OnURLsAvailable`.
+/// observer is attached.
 - (void)mostVisitedSitesDidUpdateTiles:(NSArray<NTPTileBridge*>*)tiles;
 
-/// A favicon became available for the tile at `url`. Mirrors
-/// `ntp_tiles::MostVisitedSites::Observer::OnIconMadeAvailable`.
+/// A favicon became available for the tile at `url`.
 - (void)mostVisitedSitesDidUpdateFaviconForURL:(NSURL*)url;
 
 @end
@@ -44,23 +42,27 @@ NS_SWIFT_NAME(MostVisitedSitesObserver)
 NS_SWIFT_NAME(MostVisitedSites)
 @protocol MostVisitedSitesBridge
 
-/// The most recently delivered tiles. Empty until the first delivery.
-@property(readonly) NSArray<NTPTileBridge*>* tiles;
-
-/// Receives tile and favicon updates.
-@property(nonatomic, weak, nullable) id<MostVisitedSitesBridgeObserver>
-    observer;
+/// Starts producing tiles and delivering them to `observer`.
+///
+/// Only history-backed tiles are surfaced (`ntp_tiles::TileSource::TOP_SITES`,
+/// ranked by frecency).
+///
+/// `observer` is held weakly and receives the initial set of tiles
+/// May only be called once;
+/// `maxNumSites` is the max number of the returning tiles.
+- (void)startTopSitesOnlyWithObserver:
+            (id<MostVisitedSitesObserverBridge>)observer
+                          maxNumSites:(NSUInteger)maxNumSites
+    NS_SWIFT_NAME(startTopSitesOnly(observer:maxNumSites:));
 
 /// Requests an asynchronous refresh. The observer is notified only if the set
-/// of tiles changed. Mirrors `ntp_tiles::MostVisitedSites::Refresh`.
+/// of tiles changed.
 - (void)refresh;
 
 /// Hide or restore a URL from a blocked list.
-/// Mirrors `ntp_tiles::MostVisitedSites::AddOrRemoveBlockedUrl`.
 - (void)setBlocked:(BOOL)blocked forURL:(NSURL*)url;
 
-/// Restores every URL hidden from a blocked list. Mirrors
-/// `ntp_tiles::MostVisitedSites::ClearBlockedUrls`.
+/// Restores every URL hidden from a blocked list.
 - (void)clearBlockedURLs;
 
 @end

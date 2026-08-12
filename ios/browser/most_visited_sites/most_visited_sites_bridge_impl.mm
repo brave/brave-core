@@ -8,7 +8,6 @@
 #include <utility>
 
 #include "base/strings/sys_string_conversions.h"
-#include "components/ntp_tiles/constants.h"
 #include "components/ntp_tiles/most_visited_sites.h"
 #include "components/ntp_tiles/ntp_tile.h"
 #include "ios/chrome/browser/ntp_tiles/model/most_visited_sites_observer_bridge.h"
@@ -28,39 +27,44 @@
 @end
 
 @interface MostVisitedSitesBridgeImpl () <MostVisitedSitesObserving>
-@property(nonatomic, copy) NSArray<NTPTileBridge*>* tiles;
 @end
 
 @implementation MostVisitedSitesBridgeImpl {
   std::unique_ptr<ntp_tiles::MostVisitedSites> _mostVisitedSites;
   std::unique_ptr<ntp_tiles::MostVisitedSitesObserverBridge> _observerBridge;
+  __weak id<MostVisitedSitesObserverBridge> _observer;
 }
-
-@synthesize observer = _observer;
 
 - (instancetype)initWithMostVisitedSites:
     (std::unique_ptr<ntp_tiles::MostVisitedSites>)mostVisitedSites {
   if ((self = [super init])) {
-    _tiles = @[];
     _mostVisitedSites = std::move(mostVisitedSites);
-    _observerBridge =
-        std::make_unique<ntp_tiles::MostVisitedSitesObserverBridge>(
-            self, _mostVisitedSites.get());
-    // All tile types are disabled by default. Brave ships its own favourites,
-    // so only history backed tiles are surfaced here.
-    _mostVisitedSites->EnableTileTypes(
-        ntp_tiles::MostVisitedSites::EnableTileTypesOptions().with_top_sites(
-            true));
-    _mostVisitedSites->AddMostVisitedURLsObserver(
-        _observerBridge.get(), ntp_tiles::kMaxNumMostVisited);
   }
   return self;
 }
 
 - (void)dealloc {
-  _mostVisitedSites->RemoveMostVisitedURLsObserver(_observerBridge.get());
-  _observerBridge.reset();
+  if (_observerBridge) {
+    _mostVisitedSites->RemoveMostVisitedURLsObserver(_observerBridge.get());
+    _observerBridge.reset();
+  }
   _mostVisitedSites.reset();
+}
+
+- (void)startTopSitesOnlyWithObserver:
+            (id<MostVisitedSitesObserverBridge>)observer
+                          maxNumSites:(NSUInteger)maxNumSites {
+  if (_observerBridge) {
+    return;
+  }
+  _observer = observer;
+  _observerBridge = std::make_unique<ntp_tiles::MostVisitedSitesObserverBridge>(
+      self, _mostVisitedSites.get());
+  _mostVisitedSites->EnableTileTypes(
+      ntp_tiles::MostVisitedSites::EnableTileTypesOptions().with_top_sites(
+          true));
+  _mostVisitedSites->AddMostVisitedURLsObserver(_observerBridge.get(),
+                                                maxNumSites);
 }
 
 - (void)refresh {
@@ -95,8 +99,7 @@
                       initWithURL:url
                             title:base::SysUTF16ToNSString(tile.title)]];
   }
-  self.tiles = bridgedTiles;
-  [self.observer mostVisitedSitesDidUpdateTiles:self.tiles];
+  [_observer mostVisitedSitesDidUpdateTiles:[bridgedTiles copy]];
 }
 
 - (void)mostVisitedSites:(ntp_tiles::MostVisitedSites*)mostVisitedSites
@@ -105,7 +108,7 @@
   if (!url) {
     return;
   }
-  [self.observer mostVisitedSitesDidUpdateFaviconForURL:url];
+  [_observer mostVisitedSitesDidUpdateFaviconForURL:url];
 }
 
 @end
