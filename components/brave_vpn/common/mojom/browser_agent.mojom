@@ -25,7 +25,7 @@ enum BrowserAuthResult {
   kAccepted,
   kRejected,
   kVersionMismatch,
-  kAlreadyAuthenticated,
+  kHostAlreadyRequested,
 };
 
 // The browser's connection to the agent, and the only interface reachable on

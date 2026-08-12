@@ -35,14 +35,20 @@ class BrowserHostImpl;
 class BrowserRegistry : public BrowserHostProviderImpl::Delegate {
  public:
   explicit BrowserRegistry(mojo::NamedPlatformChannel::ServerName server_name);
-  explicit BrowserRegistry(
-      std::unique_ptr<named_mojo_ipc_server::IpcServer> host_server);
   ~BrowserRegistry() override;
 
   BrowserRegistry(const BrowserRegistry&) = delete;
   BrowserRegistry& operator=(const BrowserRegistry&) = delete;
 
+  // Takes the IPC server directly, so a test can choose connection ids and
+  // report disconnects without a real endpoint.
+  static std::unique_ptr<BrowserRegistry> CreateForTesting(
+      std::unique_ptr<named_mojo_ipc_server::IpcServer> host_server);
+
  private:
+  explicit BrowserRegistry(
+      std::unique_ptr<named_mojo_ipc_server::IpcServer> host_server);
+
   // Everything Authenticate() must carry across the verification hop, since
   // none of it can be re-read from dispatch state afterwards.
   struct PendingAuth {

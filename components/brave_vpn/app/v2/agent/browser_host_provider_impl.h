@@ -29,7 +29,8 @@ class BrowserHostProviderImpl : public brave_vpn::mojom::BrowserHostProvider {
     // Decides whether the connection currently being dispatched may have a
     // BrowserHost, and binds |host| to one if so. Called synchronously from
     // BindBrowserHost(), so implementations may read dispatch state (peer info,
-    // current receiver) before returning, but not afterwards.
+    // current receiver) before returning, but not afterwards. |callback| is
+    // always run from a posted task.
     virtual void Authenticate(
         uint32_t protocol_version,
         mojo::PendingRemote<mojom::BrowserEndpoint> browser_endpoint,

@@ -5,12 +5,14 @@
 
 #include "brave/components/brave_vpn/app/v2/agent/browser_registry.h"
 
+#include <memory>
 #include <utility>
 
 #include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/location.h"
 #include "base/logging.h"
+#include "base/memory/ptr_util.h"
 #include "base/notimplemented.h"
 #include "base/sequence_checker.h"
 #include "base/strings/strcat.h"
@@ -64,6 +66,12 @@ BrowserRegistry::BrowserRegistry(
 
 BrowserRegistry::~BrowserRegistry() = default;
 
+// static
+std::unique_ptr<BrowserRegistry> BrowserRegistry::CreateForTesting(  // IN-TEST
+    std::unique_ptr<named_mojo_ipc_server::IpcServer> host_server) {
+  return base::WrapUnique(new BrowserRegistry(std::move(host_server)));
+}
+
 void BrowserRegistry::StartHostServer() {
   VLOG(1) << "Starting IPC server";
   host_server_->set_disconnect_handler(base::BindRepeating(
@@ -101,7 +109,9 @@ void BrowserRegistry::Authenticate(
             << protocol_version << " outside supported range ["
             << kMinSupportedProtocolVersion << ", " << mojom::kProtocolVersion
             << "]";
-    std::move(callback).Run(mojom::BrowserAuthResult::kVersionMismatch);
+    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+        FROM_HERE, base::BindOnce(std::move(callback),
+                                  mojom::BrowserAuthResult::kVersionMismatch));
     return;
   }
 
@@ -112,7 +122,10 @@ void BrowserRegistry::Authenticate(
       pending_auth_.contains(receiver_id)) {
     VLOG(1) << "Refusing browser " << receiver_id
             << ": authentication in progress or succeeded already";
-    std::move(callback).Run(mojom::BrowserAuthResult::kAlreadyAuthenticated);
+    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+        FROM_HERE,
+        base::BindOnce(std::move(callback),
+                       mojom::BrowserAuthResult::kHostAlreadyRequested));
     return;
   }
 
@@ -122,11 +135,13 @@ void BrowserRegistry::Authenticate(
                       .host = std::move(host),
                       .reply = std::move(callback)};
 
+  // TODO(https://github.com/brave/brave-browser/issues/54623)
   // Real peer verification will be asynchronous (inspecting the peer process,
   // checking signatures), so the hop is posted even while it is a no-op, and
   // nothing past this point may read dispatch state.
   NOTIMPLEMENTED_LOG_ONCE()
       << "Peer verification: accepting every browser for now";
+
   base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
       FROM_HERE, base::BindOnce(&BrowserRegistry::OnPeerVerified,
                                 weak_factory_.GetWeakPtr(), std::move(pending),

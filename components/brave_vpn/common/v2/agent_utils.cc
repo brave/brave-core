@@ -24,10 +24,6 @@ namespace {
 constexpr char kAgentServerName[] = "brave_vpn_agent";
 
 #if BUILDFLAG(IS_POSIX)
-// |sun_path| is 104 bytes on macOS and 108 on Linux. The same code has to be
-// correct on both, so the shorter limit applies.
-constexpr size_t kMaxSocketPathLength = 103;
-
 // Returns the directory holding the agent's socket. This is where the
 // per-session scoping comes from on POSIX: both candidate directories are
 // already private to one login session, mode 0700, so the socket's own name can
@@ -70,25 +66,33 @@ std::optional<mojo::NamedPlatformChannel::ServerName> GetAgentServerName() {
   return base::ASCIIToWide(
       base::StrCat({kAgentServerName, ".", base::NumberToString(session_id)}));
 #else
-  const base::FilePath dir = GetSocketDirectory();
-  if (dir.empty()) {
+  return GetAgentServerNameForDirectory(GetSocketDirectory());
+#endif  // BUILDFLAG(IS_WIN)
+}
+
+#if BUILDFLAG(IS_POSIX)
+
+std::optional<mojo::NamedPlatformChannel::ServerName>
+GetAgentServerNameForDirectory(const base::FilePath& socket_dir) {
+  if (socket_dir.empty()) {
     return std::nullopt;
   }
 
   // On POSIX mojo::NamedPlatformChannel uses the ServerName verbatim as the
   // sockaddr_un path, so it must be absolute. A bare name would bind() into
   // whatever the process's current working directory happens to be.
-  const base::FilePath path = dir.Append(kAgentServerName);
+  const base::FilePath path = socket_dir.Append(kAgentServerName);
 
   // Deliberately no truncation or fallback: an over-long path makes bind() and
   // connect() fail identically on both sides, which is a loud and symmetric
   // failure.
-  if (path.value().size() > kMaxSocketPathLength) {
+  if (path.value().size() > kMaxAgentSocketPathLength) {
     LOG(ERROR) << "Agent socket path exceeds the sockaddr_un limit: " << path;
     return std::nullopt;
   }
   return path.value();
-#endif  // BUILDFLAG(IS_WIN)
 }
+
+#endif  // BUILDFLAG(IS_POSIX)
 
 }  // namespace brave_vpn::v2

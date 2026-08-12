@@ -22,8 +22,9 @@ namespace brave_vpn::v2 {
 class BrowserRegistryTest : public testing::Test {
  protected:
   BrowserRegistryTest()
-      : registry_(std::make_unique<named_mojo_ipc_server::FakeIpcServer>(
-            &server_state_)) {}
+      : registry_(BrowserRegistry::CreateForTesting(
+            std::make_unique<named_mojo_ipc_server::FakeIpcServer>(
+                &server_state_))) {}
 
   // Mojo's ReceiverSet hands out ids from a monotonic counter and never reuses
   // them, so a dropped connection's id can never come back.
@@ -33,9 +34,9 @@ class BrowserRegistryTest : public testing::Test {
                          mojo::ReceiverId connection,
                          uint32_t protocol_version) {
     server_state_.current_receiver = connection;
-    static_cast<BrowserHostProviderImpl::Delegate&>(registry_).Authenticate(
-        protocol_version, browser.BindEndpoint(), browser.BindHost(),
-        browser.GetReplyCallback());
+    static_cast<BrowserHostProviderImpl::Delegate&>(*registry_)
+        .Authenticate(protocol_version, browser.BindEndpoint(),
+                      browser.BindHost(), browser.GetReplyCallback());
   }
 
   mojom::BrowserAuthResult Authenticate(
@@ -55,7 +56,7 @@ class BrowserRegistryTest : public testing::Test {
 
   base::test::TaskEnvironment task_environment_;
   named_mojo_ipc_server::FakeIpcServer::TestState server_state_;
-  BrowserRegistry registry_;
+  std::unique_ptr<BrowserRegistry> registry_;
   mojo::ReceiverId last_connection_id_ = 0;
 };
 
@@ -106,20 +107,20 @@ TEST_F(BrowserRegistryTest, RefusesSecondHostWhileOneIsBound) {
             Authenticate(first, connection));
 
   FakeBrowser second;
-  EXPECT_EQ(mojom::BrowserAuthResult::kAlreadyAuthenticated,
+  EXPECT_EQ(mojom::BrowserAuthResult::kHostAlreadyRequested,
             Authenticate(second, connection));
 }
 
-// The refusal has to cover a request that is still being verified, not just one
-// that already succeeded.
-TEST_F(BrowserRegistryTest, RefusesSecondHostWhileVerificationIsPending) {
+// The refusal has to cover a request that is outstanding, not only one that has
+// already been granted.
+TEST_F(BrowserRegistryTest, RefusesSecondHostWhileFirstIsStillInFlight) {
   const mojo::ReceiverId connection = NextConnectionId();
   FakeBrowser first;
   StartAuthenticate(first, connection, mojom::kProtocolVersion);
   ASSERT_FALSE(first.has_reply());
 
   FakeBrowser second;
-  EXPECT_EQ(mojom::BrowserAuthResult::kAlreadyAuthenticated,
+  EXPECT_EQ(mojom::BrowserAuthResult::kHostAlreadyRequested,
             Authenticate(second, connection));
 
   // The pending request is unaffected by the refused one.
@@ -139,6 +140,23 @@ TEST_F(BrowserRegistryTest, DroppingHostEndsSessionAndAllowsRebinding) {
   EXPECT_TRUE(first.WaitForEndpointClosed());
 
   // The connection itself is still up, so it may authenticate again.
+  FakeBrowser second;
+  EXPECT_EQ(mojom::BrowserAuthResult::kAccepted,
+            Authenticate(second, connection));
+}
+
+TEST_F(BrowserRegistryTest, DroppingHostWhileVerificationPendingEndsSession) {
+  const mojo::ReceiverId connection = NextConnectionId();
+  FakeBrowser first;
+  StartAuthenticate(first, connection, mojom::kProtocolVersion);
+  first.WatchEndpoint();
+
+  first.DropHost();
+
+  EXPECT_EQ(mojom::BrowserAuthResult::kAccepted, first.WaitForReply());
+  EXPECT_TRUE(first.WaitForEndpointClosed());
+
+  // Neither the session nor the pending marker outlived the request.
   FakeBrowser second;
   EXPECT_EQ(mojom::BrowserAuthResult::kAccepted,
             Authenticate(second, connection));
@@ -170,6 +188,14 @@ TEST_F(BrowserRegistryTest, ConnectionDropTearsDownItsSession) {
   DisconnectConnection(connection);
 
   EXPECT_TRUE(browser.WaitForEndpointClosed());
+
+  // Erasing during the disconnect handler must leave the registry able to serve
+  // new connections. This cannot assert the dropped id itself is gone, since
+  // ReceiverSet never reuses ids; the WaitForEndpointClosed() assertion is that
+  // evidence.
+  FakeBrowser next_browser;
+  EXPECT_EQ(mojom::BrowserAuthResult::kAccepted,
+            Authenticate(next_browser, NextConnectionId()));
 }
 
 // A connection that goes away mid-verification must still have its request
@@ -187,6 +213,21 @@ TEST_F(BrowserRegistryTest, ConnectionDropDuringVerificationAnswersRequest) {
   FakeBrowser next;
   EXPECT_EQ(mojom::BrowserAuthResult::kAccepted,
             Authenticate(next, NextConnectionId()));
+}
+
+// Shutdown while a request is being verified drops the request instead of
+// answering it, which is what the weak pointer on the verification hop is for.
+TEST_F(BrowserRegistryTest, DestroyedWhileVerificationPendingIsSafe) {
+  FakeBrowser browser;
+  StartAuthenticate(browser, NextConnectionId(), mojom::kProtocolVersion);
+  browser.WatchEndpoint();
+
+  registry_.reset();
+
+  // The abandoned request takes the browser's endpoint down with it, which is
+  // how the browser learns the agent will not answer.
+  EXPECT_TRUE(browser.WaitForEndpointClosed());
+  EXPECT_FALSE(browser.has_reply());
 }
 
 TEST_F(BrowserRegistryTest, KeepsOneSessionPerConnection) {
