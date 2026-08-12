@@ -213,8 +213,6 @@ public class BravePrivacySettings extends PrivacySettings {
     private TextMessagePreference mBlockCrosssiteCookiesLearnMore;
     private ChromeSwitchPreference mDeAmpPref;
     private ChromeSwitchPreference mDebouncePref;
-    private @Nullable ChromeSwitchPreference mHttpsFirstModePrefLegacy;
-    private @Nullable Preference mHttpsFirstModePref;
     private BraveDialogPreference mFingerprintingProtectionPref;
     private ChromeSwitchPreference mFingerprintingProtection2Pref;
     private BraveDialogPreference mRequestOtrPref;
