@@ -54,6 +54,22 @@ extension Strings {
       comment: "Description for shortcuts widget on 'add widget' screen."
     )
 
+    public static let leoVoiceInputWidgetTitle = NSLocalizedString(
+      "widgets.leoVoiceInputWidgetTitle",
+      bundle: widgetBundle,
+      value: "Leo Voice Input",
+      comment:
+        "Title for the Leo voice input widget on 'add widget' screen. Leo is the name of a product and should not be translated"
+    )
+
+    public static let leoVoiceInputWidgetDescription = NSLocalizedString(
+      "widgets.leoVoiceInputWidgetDescription",
+      bundle: widgetBundle,
+      value: "Ask Leo a question by voice.",
+      comment:
+        "Description for the Leo voice input widget on 'add widget' screen. Leo is the name of a product and should not be translated"
+    )
+
     public static let shortcutsNewTabButton = NSLocalizedString(
       "widgets.shortcutsNewTabButton",
       bundle: widgetBundle,
@@ -197,6 +213,13 @@ extension Strings {
       value: "Ask Brave",
       comment:
         "Title for Ask Brave shortcut. Brave is the company name and should not be translated"
+    )
+    public static let braveLeoVoiceInput = NSLocalizedString(
+      "widgets.braveLeoVoiceInput",
+      bundle: widgetBundle,
+      value: "Leo Voice Input",
+      comment:
+        "Title for the Leo AI voice input shortcut. Leo is the name of a product and should not be translated"
     )
     public static let newsUnavailableByPolicy = NSLocalizedString(
       "widgets.newsUnavailableByPolicy",

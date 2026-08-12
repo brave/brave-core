@@ -50,6 +50,14 @@ extension BrowserViewController {
     }
   }
 
+  /// Entry point for the "Leo Voice Input" home-screen widget shortcut: records a voice query and opens it as a new Leo conversation.
+  func presentLeoVoiceInput() {
+    handleVoiceRecognitionRequest { [weak self] query in
+      guard let self, let query else { return }
+      self.openBraveLeo(with: query)
+    }
+  }
+
   private func handleVoiceRecognitionRequest(_ completion: @escaping (String?) -> Void) {
     if !speechRecognizer.isVoiceSearchAvailable {
       completion(nil)

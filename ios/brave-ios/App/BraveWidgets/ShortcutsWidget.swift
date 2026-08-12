@@ -158,6 +158,8 @@ extension WidgetShortcut {
       return Strings.Widgets.braveLeo
     case .askBrave:
       return Strings.Widgets.askBrave
+    case .braveLeoVoiceInput:
+      return Strings.Widgets.braveLeoVoiceInput
     @unknown default:
       assertionFailure()
       return ""
@@ -191,6 +193,8 @@ extension WidgetShortcut {
       return Image(braveSystemName: "leo.product.brave-news")
     case .braveLeo, .askBrave:
       return Image(braveSystemName: "leo.product.brave-leo")
+    case .braveLeoVoiceInput:
+      return Image(braveSystemName: "leo.microphone")
     @unknown default:
       assertionFailure()
       return Image(systemName: "xmark.octagon")
