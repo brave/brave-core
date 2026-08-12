@@ -88,9 +88,7 @@ public class WalletOnboardingPagerAdapter extends FragmentStateAdapter {
         return mWalletAction;
     }
 
-    /**
-     * Returns whether the init Wallet fragment is shown at the given position.
-     */
+    /** Returns whether the init Wallet fragment is shown at the given position. */
     public boolean isInitWalletFragmentAt(final int position) {
         return position == 0
                 && (mWalletAction == WalletAction.ONBOARDING

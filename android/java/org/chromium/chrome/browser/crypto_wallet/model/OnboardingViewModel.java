@@ -128,7 +128,9 @@ public class OnboardingViewModel extends ViewModel {
         return mRestoreWalletLegacyEnabled;
     }
 
-    /** Stores the terms of use screen checkbox selections so they survive a configuration change. */
+    /**
+     * Stores the terms of use screen checkbox selections so they survive a configuration change.
+     */
     public void setTermsOfUseSelections(
             final boolean selfCustodyChecked, final boolean termsOfUseChecked) {
         mSelfCustodyChecked = selfCustodyChecked;
