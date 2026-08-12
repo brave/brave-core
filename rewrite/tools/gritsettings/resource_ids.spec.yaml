@@ -25,7 +25,8 @@ substitutions:
       Register components_brave_strings.grd and
       components_brave_origin_strings.grd.
     regex:
-      re_pattern: '(  "components/components_chromium_strings\.grd": \{.*?\n  \},)'
+      re_pattern:
+        '(  "components/components_chromium_strings\.grd": \{.*?\n  \},)'
       re_flags: [DOTALL]
       replace: |-
         \1
@@ -55,7 +56,7 @@ substitutions:
       re_pattern:
         '("<\(SHARED_INTERMEDIATE_DIR\)/chrome/browser/resources/history/resources\.grd":
         \{\n    "META": \{"sizes": \{"includes": \[)60(\]\}\},)'
-      replace: '\g<1>62\g<2>'
+      replace: '\g<1>63\g<2>'
 
   - description: |-
       Grow the reserved id range for settings/resources.grd, since Brave adds
@@ -82,4 +83,4 @@ substitutions:
       re_pattern:
         '("<\(SHARED_INTERMEDIATE_DIR\)/ui/webui/resources/webui_resources\.grd":
         \{\n    "META": \{"sizes": \{"includes": \[)1100(\]\}\},)'
-      replace: '\g<1>1330\g<2>'
+      replace: '\g<1>1373\g<2>'

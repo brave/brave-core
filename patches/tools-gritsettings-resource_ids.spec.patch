@@ -1,5 +1,5 @@
 diff --git a/tools/gritsettings/resource_ids.spec b/tools/gritsettings/resource_ids.spec
-index a53220c08468420111254ff77807383b39b4f9f8..60b76fac31009f945fcfdc4a871ec937b8b9648b 100644
+index a53220c08468420111254ff77807383b39b4f9f8..1b8c219e81120721562d77153bc14e92908d5abc 100644
 --- a/tools/gritsettings/resource_ids.spec
 +++ b/tools/gritsettings/resource_ids.spec
 @@ -38,6 +38,12 @@
@@ -29,7 +29,7 @@ index a53220c08468420111254ff77807383b39b4f9f8..60b76fac31009f945fcfdc4a871ec937
    },
    "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/history/resources.grd": {
 -    "META": {"sizes": {"includes": [60]}},
-+    "META": {"sizes": {"includes": [62]}},
++    "META": {"sizes": {"includes": [63]}},
      "includes": [4040],
    },
    "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/indigo/resources.grd": {
@@ -65,7 +65,7 @@ index a53220c08468420111254ff77807383b39b4f9f8..60b76fac31009f945fcfdc4a871ec937
    },
    "<(SHARED_INTERMEDIATE_DIR)/ui/webui/resources/webui_resources.grd": {
 -    "META": {"sizes": {"includes": [1100]}},
-+    "META": {"sizes": {"includes": [1330]}},
++    "META": {"sizes": {"includes": [1373]}},
      "includes": [10000],
    },
  
