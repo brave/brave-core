@@ -19,6 +19,7 @@ generated_file("build_flags_json") {
     enable_brave_wallet = enable_brave_wallet
     enable_email_aliases = enable_email_aliases
     is_brave_origin_branded = is_brave_origin_branded
+    is_official_build = is_official_build
     is_ios = is_ios
     is_android = is_android
     is_linux = is_linux
