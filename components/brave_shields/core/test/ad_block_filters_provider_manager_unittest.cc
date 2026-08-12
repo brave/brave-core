@@ -5,10 +5,8 @@
 
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider_manager.h"
 
-#include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_shields/content/test/test_filters_provider.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider.h"
-#include "brave/components/brave_shields/core/common/features.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 class FiltersProviderManagerTestObserver
@@ -72,6 +70,11 @@ TEST(AdBlockFiltersProviderManagerTest,
   FiltersProviderManagerTestObserver observer;
   m.AddObserver(&observer);
 
+  // Simulate AdBlockService::OnDATLoaded(). It's a startup notification, so
+  // the first OnChanged is suppressed.
+  m.ForceNotifyObserver(observer, true);
+  EXPECT_EQ(observer.changed_count, 0);
+
   // Register provider1 — it initializes, OnChanged fires, observer notified.
   brave_shields::TestFiltersProvider provider1("rules_a", true, 0);
   provider1.RegisterAsSourceProvider(&m);
@@ -92,27 +95,9 @@ TEST(AdBlockFiltersProviderManagerTest,
   EXPECT_EQ(observer.changed_count, 2);
 }
 
-class AdBlockFiltersProviderManagerDATCacheTest
-    : public testing::TestWithParam<bool> {
- protected:
-  void SetUp() override {
-    if (GetParam()) {
-      feature_list_.InitAndEnableFeature(
-          brave_shields::features::kAdblockDATCache);
-    } else {
-      feature_list_.InitAndDisableFeature(
-          brave_shields::features::kAdblockDATCache);
-    }
-  }
-
-  base::test::ScopedFeatureList feature_list_;
-};
-
-// Disabled: startup OnChanged notifies observer for each provider init.
-// Enabled: first provider's OnChanged is suppressed; subsequent providers
-// notify normally.
-TEST_P(AdBlockFiltersProviderManagerDATCacheTest, OnChangedNotifiesWhenReady) {
-  const bool dat_cache_enabled = GetParam();
+// First provider's OnChanged is suppressed; subsequent providers notify
+// normally.
+TEST(AdBlockFiltersProviderManagerTest, OnChangedNotifiesWhenReady) {
   brave_shields::AdBlockFiltersProviderManager m;
   FiltersProviderManagerTestObserver observer;
   m.AddObserver(&observer);
@@ -120,18 +105,15 @@ TEST_P(AdBlockFiltersProviderManagerDATCacheTest, OnChangedNotifiesWhenReady) {
   brave_shields::TestFiltersProvider provider1("", true, 0);
   EXPECT_EQ(observer.changed_count, 0);
   provider1.RegisterAsSourceProvider(&m);
-  EXPECT_EQ(observer.changed_count, dat_cache_enabled ? 0 : 1);
+  EXPECT_EQ(observer.changed_count, 0);
 
   brave_shields::TestFiltersProvider provider2("", true, 0);
   provider2.RegisterAsSourceProvider(&m);
-  EXPECT_EQ(observer.changed_count, dat_cache_enabled ? 1 : 2);
+  EXPECT_EQ(observer.changed_count, 1);
 }
 
-// Disabled: init OnChanged fires (count=1), ForceNotify fires again (count=2).
-// Enabled: init OnChanged suppressed (count=0), ForceNotify fires (count=1).
-TEST_P(AdBlockFiltersProviderManagerDATCacheTest,
-       NotifiesAfterRegisterAndForceNotify) {
-  const bool dat_cache_enabled = GetParam();
+// Init OnChanged is suppressed; ForceNotify then fires.
+TEST(AdBlockFiltersProviderManagerTest, NotifiesAfterRegisterAndForceNotify) {
   brave_shields::AdBlockFiltersProviderManager m;
 
   FiltersProviderManagerTestObserver observer;
@@ -139,16 +121,15 @@ TEST_P(AdBlockFiltersProviderManagerDATCacheTest,
 
   brave_shields::TestFiltersProvider provider("rules", true, 0);
   provider.RegisterAsSourceProvider(&m);
-  EXPECT_EQ(observer.changed_count, dat_cache_enabled ? 0 : 1);
+  EXPECT_EQ(observer.changed_count, 0);
 
   m.ForceNotifyObserver(observer, true);
-  EXPECT_EQ(observer.changed_count, dat_cache_enabled ? 1 : 2);
+  EXPECT_EQ(observer.changed_count, 1);
 }
 
 // Provider added but not initialized. ForceNotify defers; observer fires when
-// provider is later initialized. Same result regardless of flag.
-TEST_P(AdBlockFiltersProviderManagerDATCacheTest,
-       FiresWhenProviderLaterInitialized) {
+// provider is later initialized.
+TEST(AdBlockFiltersProviderManagerTest, FiresWhenProviderLaterInitialized) {
   brave_shields::AdBlockFiltersProviderManager m;
 
   FiltersProviderManagerTestObserver observer;
@@ -163,11 +144,3 @@ TEST_P(AdBlockFiltersProviderManagerDATCacheTest,
   provider.Initialize();
   EXPECT_EQ(observer.changed_count, 1);
 }
-
-INSTANTIATE_TEST_SUITE_P(All,
-                         AdBlockFiltersProviderManagerDATCacheTest,
-                         testing::Bool(),
-                         [](const testing::TestParamInfo<bool>& info) {
-                           return info.param ? "DATCacheEnabled"
-                                             : "DATCacheDisabled";
-                         });
