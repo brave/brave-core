@@ -63,6 +63,9 @@ export class SettingsBraveContentContainersElement extends SettingsBraveContentC
       containersEnabled_: {
         type: Boolean,
       },
+      containersEnabledPref_: {
+        type: Object,
+      },
       containersList_: {
         type: Array,
       },
@@ -89,9 +92,23 @@ export class SettingsBraveContentContainersElement extends SettingsBraveContentC
 
   private browserProxy = ContainersSettingsHandlerBrowserProxy.getInstance()
   accessor containersEnabled_ = true
+  // Synthetic pref backing the enabled toggle. Containers state lives in the
+  // browser process (not settingsPrivate), but settings-toggle-button requires
+  // a bound pref to avoid a PrefControlMixin "not found" error.
+  accessor containersEnabledPref_: chrome.settingsPrivate.PrefObject<boolean> = {
+    key: 'brave.containers.enabled',
+    type: chrome.settingsPrivate.PrefType.BOOLEAN,
+    value: true,
+  }
   accessor containersList_: Container[] = []
-  accessor alwaysUseMiniAccentIconPref_:
-    chrome.settingsPrivate.PrefObject<boolean> | undefined
+  // Initialized eagerly so the toggle always has a pref bound; mirrorPref()
+  // replaces it with the real value once prefs load.
+  accessor alwaysUseMiniAccentIconPref_: chrome.settingsPrivate.PrefObject<boolean> =
+    {
+      key: ALWAYS_USE_MINI_ACCENT_ICON_PREF,
+      type: chrome.settingsPrivate.PrefType.BOOLEAN,
+      value: false,
+    }
   accessor editingContainer_: Container | undefined
   accessor deletingContainer_: Container | undefined
   accessor isEditDialogNameInvalid_ = false
@@ -101,7 +118,7 @@ export class SettingsBraveContentContainersElement extends SettingsBraveContentC
   override connectedCallback() {
     super.connectedCallback()
     this.browserProxy.handler.getContainersEnabled().then(({ enabled }) => {
-      this.containersEnabled_ = enabled
+      this.setContainersEnabled_(enabled)
     })
     this.browserProxy.handler.getContainers().then(({ containers }) => {
       this.onContainersListUpdated_(containers)
@@ -130,7 +147,12 @@ export class SettingsBraveContentContainersElement extends SettingsBraveContentC
   }
 
   private onContainersEnabledChanged_(enabled: boolean) {
+    this.setContainersEnabled_(enabled)
+  }
+
+  private setContainersEnabled_(enabled: boolean) {
     this.containersEnabled_ = enabled
+    this.containersEnabledPref_ = { ...this.containersEnabledPref_, value: enabled }
   }
 
   onContainersEnabledChange_(e: Event) {

@@ -31,6 +31,7 @@ export function getHtml(this: SettingsBraveContentContainersElement) {
       </div>
 
       <settings-toggle-button
+        .pref="${this.containersEnabledPref_}"
         .checked="${this.containersEnabled_}"
         icon="container-on"
         label="$i18n{SETTINGS_CONTAINERS_ENABLED_LABEL}"
@@ -41,7 +42,7 @@ export function getHtml(this: SettingsBraveContentContainersElement) {
       ${this.containersEnabled_
         ? html`
             <settings-toggle-button
-              .checked="${this.alwaysUseMiniAccentIconPref_?.value ?? false}"
+              .pref="${this.alwaysUseMiniAccentIconPref_}"
               icon="container-on"
               label="$i18n{SETTINGS_CONTAINERS_ALWAYS_USE_MINI_ICON_LABEL}"
               no-set-pref
