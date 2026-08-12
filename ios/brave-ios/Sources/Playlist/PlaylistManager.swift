@@ -34,6 +34,7 @@ public class PlaylistManager: NSObject {
 
   private var _playbackTask: Task<Void, Error>?
 
+  /// Returns the UUID of the item currently playing, if any. LRU reclamation skips evicting that item.
   public var currentlyPlayingItemIDProvider: (() -> String?)?
   public var playbackTask: Task<Void, Error>? {
     get {
@@ -749,7 +750,7 @@ public class PlaylistManager: NSObject {
 
     guard isDiskSpaceEncumbered() else { return }
 
-    let task = Task { @MainActor in
+    let task = Task {
       await self.performReclaimSpaceIfNeeded()
     }
     reclaimTask = task
