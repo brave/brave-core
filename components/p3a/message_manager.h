@@ -85,7 +85,7 @@ class MessageManager : public MetricLogStore::Delegate,
 
   // Must be called whenever metric configurations may have changed, so that
   // log stores can discard obsolete logs and redo priority routing.
-  void NotifyConfigUpdate();
+  void NotifyConfigReady();
 
   bool IsActive() const;
 

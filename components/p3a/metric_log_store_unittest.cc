@@ -12,7 +12,6 @@
 
 #include "base/containers/flat_set.h"
 #include "base/strings/string_number_conversions.h"
-#include "base/test/metrics/histogram_tester.h"
 #include "brave/components/p3a/metric_log_type.h"
 #include "brave/components/p3a/metric_names.h"
 #include "components/prefs/testing_pref_service.h"

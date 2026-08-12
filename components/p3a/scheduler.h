@@ -30,9 +30,12 @@ class Scheduler : public metrics::MetricsScheduler {
   void Start() = delete;
 
   // |priority_messages_pending| schedules the next task at the accelerated
-  // priority interval instead of the standard one. Ignored if |ok| is false,
-  // since backoff takes precedence.
-  void UploadFinished(bool ok, bool priority_messages_pending);
+  // priority interval instead of the standard one.
+  void UploadSucceeded(bool priority_messages_pending);
+
+  // Schedules the next task at the current backoff interval, expanding the
+  // backoff window for subsequent failures.
+  void UploadFailed();
 
   // Shortens the wait before the next task to the priority interval. No-op if
   // a task is in flight, or if the next task is already expedited.
