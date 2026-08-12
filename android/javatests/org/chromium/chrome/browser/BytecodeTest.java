@@ -1277,6 +1277,16 @@ public class BytecodeTest {
                         MethodModifier.STATIC,
                         void.class,
                         List.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/firstrun/FreIntentCreator",
+                        "createInternal",
+                        MethodModifier.STATIC,
+                        Intent.class,
+                        Context.class,
+                        Intent.class,
+                        boolean.class,
+                        String.class));
     }
 
     @Test
@@ -2220,10 +2230,6 @@ public class BytecodeTest {
                         OneshotSupplier.class,
                         MonotonicObservableSupplier.class,
                         Supplier.class));
-        Assert.assertTrue(
-                constructorsMatch(
-                        "org/chromium/chrome/browser/firstrun/FreIntentCreator",
-                        "org/chromium/chrome/browser/firstrun/BraveFreIntentCreator"));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/ui/appmenu/BraveAppMenu",
