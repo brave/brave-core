@@ -49,7 +49,7 @@ class VariationsBrowserTest : public PlatformBrowserTest {
   VariationsBrowserTest() {
     DisableTestingConfig();
     // Force the SeedFileTrial to Default so seed loading reads from prefs
-    // (where WriteSeedData stores the test seed) rather than a seed file.
+    // (where WriteSignedSeedData stores the test seed) rather than a seed file.
     SetUpSeedFileTrial(kDefaultGroup);
   }
   ~VariationsBrowserTest() override = default;
@@ -60,7 +60,8 @@ class VariationsBrowserTest : public PlatformBrowserTest {
 
 IN_PROC_BROWSER_TEST_F(VariationsBrowserTest, PRE_BraveSeedApplied) {
   PrefService* local_state = g_browser_process->local_state();
-  WriteSeedData(local_state, GetBraveSignedSeedData(), kRegularSeedPrefKeys);
+  WriteSignedSeedData(local_state, GetBraveSignedSeedData(),
+                      kRegularSeedPrefKeys);
 
   EXPECT_FALSE(base::FeatureList::IsEnabled(kVariationsTestFeature));
   EXPECT_EQ(variations::GetSeedVersion(), "");
