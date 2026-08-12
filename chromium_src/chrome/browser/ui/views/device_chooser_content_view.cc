@@ -14,7 +14,7 @@
 #include <chrome/browser/ui/views/device_chooser_content_view.cc>
 
 std::unique_ptr<views::View> DeviceChooserContentView::CreateFootnoteView(
-    Browser* browser) {
+    BrowserWindowInterface* browser) {
   if (chooser_controller_->GetType() ==
       permissions::ChooserControllerType::kBluetooth) {
     return views::CreateStyledLabelForDialogFootnote(
