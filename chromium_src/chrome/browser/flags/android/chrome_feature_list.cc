@@ -105,7 +105,6 @@
     &brave_shields::features::kBraveShowStrictFingerprintingMode,              \
     &brave_shields::features::kBlockAllCookiesToggle,                          \
     &brave_shields::features::kBraveShieldsElementPicker,                      \
-    &features::kBraveAndroidDynamicColors,                                     \
     &features::kBraveFreshNtpAfterIdleExperiment,                              \
     &ntp_background_images::features::kBraveNTPBrandedWallpaperSurveyPanelist, \
     &brave_shields::features::kBraveShredFeature,                              \

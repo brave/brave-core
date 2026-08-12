@@ -26,14 +26,11 @@ import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.robolectric.annotation.Config;
 
-import org.chromium.base.BraveFeatureList;
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.base.supplier.ObservableSuppliers;
 import org.chromium.base.supplier.SettableNonNullObservableSupplier;
 import org.chromium.base.test.BaseRobolectricTestRunner;
-import org.chromium.base.test.util.Features.DisableFeatures;
-import org.chromium.base.test.util.Features.EnableFeatures;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ActivityTabProvider;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
@@ -85,18 +82,20 @@ public class BraveStatusBarColorControllerUnitTest {
     }
 
     @Test
-    @DisableFeatures(BraveFeatureList.BRAVE_ANDROID_DYNAMIC_COLORS)
     @Config(sdk = Build.VERSION_CODES.S)
-    public void testBackgroundColorForNtp_dynamicColorsDisabled_returnsWhite() {
+    public void testBackgroundColorForNtp_dynamicColorsUserDisabled_returnsWhite() {
+        ChromeSharedPreferences.getInstance()
+                .writeBoolean(BravePreferenceKeys.BRAVE_ANDROID_DYNAMIC_COLORS_ENABLED, false);
         BraveStatusBarColorController controller =
                 newControllerWithUpstreamNtpBackground(TEST_UPSTREAM_NTP_BACKGROUND_COLOR);
         assertEquals(Color.WHITE, controller.getBackgroundColorForNtpForTesting());
     }
 
     @Test
-    @EnableFeatures(BraveFeatureList.BRAVE_ANDROID_DYNAMIC_COLORS)
     @Config(sdk = Build.VERSION_CODES.S)
-    public void testBackgroundColorForNtp_dynamicColorsEnabled_returnsUpstreamDefault() {
+    public void testBackgroundColorForNtp_dynamicColorsUserEnabled_returnsUpstreamDefault() {
+        ChromeSharedPreferences.getInstance()
+                .writeBoolean(BravePreferenceKeys.BRAVE_ANDROID_DYNAMIC_COLORS_ENABLED, true);
         BraveStatusBarColorController controller =
                 newControllerWithUpstreamNtpBackground(TEST_UPSTREAM_NTP_BACKGROUND_COLOR);
         assertEquals(
@@ -105,20 +104,10 @@ public class BraveStatusBarColorControllerUnitTest {
     }
 
     @Test
-    @EnableFeatures(BraveFeatureList.BRAVE_ANDROID_DYNAMIC_COLORS)
     @Config(sdk = Build.VERSION_CODES.R)
-    public void testBackgroundColorForNtp_dynamicColorsBelowAndroidS_returnsWhite() {
-        BraveStatusBarColorController controller =
-                newControllerWithUpstreamNtpBackground(TEST_UPSTREAM_NTP_BACKGROUND_COLOR);
-        assertEquals(Color.WHITE, controller.getBackgroundColorForNtpForTesting());
-    }
-
-    @Test
-    @EnableFeatures(BraveFeatureList.BRAVE_ANDROID_DYNAMIC_COLORS)
-    @Config(sdk = Build.VERSION_CODES.S)
-    public void testBackgroundColorForNtp_dynamicColorsUserDisabled_returnsWhite() {
+    public void testBackgroundColorForNtp_dynamicColorsUserEnabledBelowAndroidS_returnsWhite() {
         ChromeSharedPreferences.getInstance()
-                .writeBoolean(BravePreferenceKeys.BRAVE_ANDROID_DYNAMIC_COLORS_ENABLED, false);
+                .writeBoolean(BravePreferenceKeys.BRAVE_ANDROID_DYNAMIC_COLORS_ENABLED, true);
         BraveStatusBarColorController controller =
                 newControllerWithUpstreamNtpBackground(TEST_UPSTREAM_NTP_BACKGROUND_COLOR);
         assertEquals(Color.WHITE, controller.getBackgroundColorForNtpForTesting());

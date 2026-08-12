@@ -95,7 +95,6 @@ public class BraveAppearancePreferencesTest {
 
     @Test
     @SmallTest
-    @EnableFeatures(BraveFeatureList.BRAVE_ANDROID_DYNAMIC_COLORS)
     public void testDynamicColorsPreferenceAvailability() {
         startSettings();
 

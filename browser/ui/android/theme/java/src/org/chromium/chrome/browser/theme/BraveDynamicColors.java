@@ -16,43 +16,26 @@ import android.view.View;
 import com.google.android.material.color.DynamicColors;
 import com.google.android.material.color.DynamicColorsOptions;
 
-import org.chromium.base.BraveFeatureList;
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
-import org.chromium.chrome.browser.flags.ChromeFeatureMap;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
-import org.chromium.components.cached_flags.CachedFlag;
 import org.chromium.ui.R;
 import org.chromium.ui.util.AttrUtils;
 
 /** Controls Brave's runtime use of Material dynamic colors. */
 @NullMarked
 public final class BraveDynamicColors {
-    // ChromeCachedFlags.<clinit> creates a singleton bytecode-redirected to BraveCachedFlags
-    // before BraveCachedFlags' static fields are ready, so this CachedFlag must live separately.
-    private static final CachedFlag sDynamicColorsFlag =
-            new CachedFlag(
-                    ChromeFeatureMap.getInstance(),
-                    BraveFeatureList.BRAVE_ANDROID_DYNAMIC_COLORS,
-                    false);
-
     private BraveDynamicColors() {}
-
-    /** Returns the feature flag used for cached-flag registration and early-startup reads. */
-    public static CachedFlag getCachedFlag() {
-        return sDynamicColorsFlag;
-    }
 
     /**
      * Returns whether dynamic colors are available for this app session.
      *
-     * <p>Availability requires the cached feature flag to be enabled and Android 12 or later. It
-     * does not include the user's preference; {@link #isDynamicColorsEnabled()} is the preferred
-     * method for runtime behavior checks.
+     * <p>Availability requires Android 12 or later. It does not include the user's preference;
+     * {@link #isDynamicColorsEnabled()} is the preferred method for runtime behavior checks.
      */
     public static boolean isDynamicColorsAvailable() {
-        return getCachedFlag().isEnabled() && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S;
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.S;
     }
 
     /**
