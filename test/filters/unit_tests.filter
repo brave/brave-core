@@ -458,7 +458,21 @@
 -WebAppRegistrarTest.GetApps
 -WebAppUninstallCommandTest.*
 
-# This test is flaky: passes locally but fails on CI
+# Known upstream flake: 7.6% flake rate over 60 days per LUCI Analysis (20-55%
+# daily until 2026-06-29, 0% after). TransientKeepAlivePolicy evicts the
+# "oldest" kept-alive process by comparing base::TimeTicks keep_alive_start_time
+# values, but under the test's MOCK_TIME clock the navigations all record the
+# same timestamp. The tie is then broken by the iteration order of
+# base::flat_map<const ProcessNode*, ...>, i.e. by ProcessNode pointer value, so
+# the process the allocator happens to place lowest is evicted instead of the
+# one that went idle first and the wrong process loses its keep-alive ref count.
+# Fixed upstream by advancing mock time between navigations
+# (https://crrev.com/c/8012610, main@{#1654416}); that landed after the Chromium
+# 151 branch point, so our copy of the test still ties. Both entries can be
+# removed once we roll to Chromium 152. Filtered for all platforms because the
+# tie is decided by allocator layout rather than by OS - upstream disabled both
+# tests on macOS for this same bug, and Brave CI hit it on linux x64.
+-TransientKeepAlivePolicyTest.EvictionFollowedByTimeout
 -TransientKeepAlivePolicyTest.EvictsOldestProcessWhenLimitExceeded
 
 # These tests fail because of the following failed expectation in prerender_test_util.cc:
