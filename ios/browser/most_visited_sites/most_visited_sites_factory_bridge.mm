@@ -19,16 +19,13 @@
 
 @implementation MostVisitedSitesFactoryBridge
 
-+ (nullable id<MostVisitedSitesBridge>)mostVisitedSitesForProfile:
++ (id<MostVisitedSitesBridge>)mostVisitedSitesForProfile:
     (id<ProfileBridge>)profileBridge {
   DCHECK_CURRENTLY_ON(web::WebThread::UI);
   ProfileBridgeImpl* holder =
       base::apple::ObjCCastStrict<ProfileBridgeImpl>(profileBridge);
   ProfileIOS* profile = holder.profile;
-  // no tiles for private mode
-  if (profile->IsOffTheRecord()) {
-    return nil;
-  }
+  DCHECK(!profile->IsOffTheRecord());
   std::unique_ptr<ntp_tiles::MostVisitedSites> mostVisitedSites =
       IOSMostVisitedSitesFactory::NewForBrowserState(profile);
   return [[MostVisitedSitesBridgeImpl alloc]
