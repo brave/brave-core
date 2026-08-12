@@ -572,9 +572,6 @@
       <message name="IDS_PAGE_INFO_COOKIES_SITE_NOT_WORKING_TITLE" desc="Label shown on a dialog that allows users to turn off third-party cookie blocking for a specific site.">
         Site not working?
       </message>
-      <message name="IDS_PAGE_INFO_COOKIES_SITE_NOT_WORKING_DESCRIPTION_TRACKING_PROTECTION" desc="Descriptive text in the Page Info UI explaining the trade-off of temporarily allowing third-party cookies for this site, a change that will automatically expire in the future.">
-        Try temporarily allowing third-party cookies, which means less browsing protection but site features are more likely to work as expected.
-      </message>
       <message name="IDS_PAGE_INFO_COOKIES_SITE_NOT_WORKING_DESCRIPTION" desc="Descriptive text in the Page Info UI explaining the trade-off of allowing third-party cookies for the current site.">
         Try allowing third-party cookies, which means less browsing protection but site features are more likely to work as expected.
       </message>
@@ -589,9 +586,6 @@
       </message>
       <message name="IDS_PAGE_INFO_TRACKING_PROTECTION_TOGGLE_ALLOWED" desc="Summary text in the Page Info dialog to indicate that third-party cookies are allowed on this site.">
         Allowed
-      </message>
-      <message name="IDS_PAGE_INFO_COOKIES_SUBTITLE_BLOCKED_HIGH_CONFIDENCE" desc="Description text in the Page Info dialog to indicate that third-party cookies are blocked on a site that has a high breakage confidence level.">
-        Site not working? Third-party cookies blocked
       </message>
       <message name="IDS_PAGE_INFO_COOKIES_THIRD_PARTY_COOKIES_LABEL" desc="The label used in the Page Info dialog to label a toggle button that when enabled allows third-party cookies and when disabled blocks third-party cookies.">
         Third-party cookies
@@ -1554,18 +1548,15 @@
         New tab page appearance bottom sheet
       </message>
       <message name="IDS_NTP_CUSTOMIZATION_THEME_BOTTOM_SHEET_DEFAULT_OPTION" desc="Title of the default option in the new tab page customization theme bottom sheet">
-        Brave Default
+        Brave default
       </message>
       <message name="IDS_NTP_CUSTOMIZATION_THEME_BOTTOM_SHEET_UPLOAD_IMAGE_OPTION" desc="Title of the upload image option in the new tab page customization theme bottom sheet">
         Upload an image
       </message>
       <message name="IDS_NTP_CUSTOMIZATION_THEME_BOTTOM_SHEET_CHROME_COLORS_OPTION" desc="Title of the chrome colors option in the new tab page customization theme bottom sheet">
-        Brave Colors
+        Brave colors
       </message>
       <message name="IDS_NTP_CUSTOMIZATION_THEME_BOTTOM_SHEET_THEME_COLLECTIONS_OPTION" desc="Title of the theme collections option in the new tab page customization theme bottom sheet">
-        Theme Collections
-      </message>
-      <message name="IDS_NTP_CUSTOMIZATION_THEME_COLLECTIONS_TITLE" desc="Open all available theme collections when click the theme collection section in the NTP appearance bottom sheet">
         Theme collections
       </message>
       <message name="IDS_NTP_CUSTOMIZATION_THEME_COLLECTIONS_BOTTOM_SHEET" desc="Accessibility string to announce the currently displaying bottom sheet is the new tab page appearance theme collections bottom sheet.">
@@ -1579,9 +1570,6 @@
       </message>
       <message name="IDS_NTP_CUSTOMIZATION_THEME_COLLECTIONS_DAILY_UPDATE" desc="Title of the toggle switch for updating theme collection background daily">
         Refresh daily
-      </message>
-      <message name="IDS_NTP_CUSTOMIZATION_CHROME_COLORS_TITLE" desc="Title for the Brave Colors bottom sheet in NTP customization.">
-        Brave Colors
       </message>
       <message name="IDS_NTP_CUSTOMIZATION_CHROME_COLORS_BOTTOM_SHEET" desc="Accessibility string to announce the currently displaying bottom sheet is the Brave Colors bottom sheet." is_accessibility_with_no_ui="true">
         Brave Colors bottom sheet
