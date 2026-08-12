@@ -1,0 +1,20 @@
+diff --git a/chrome/browser/ui/web_applications/BUILD.gn b/chrome/browser/ui/web_applications/BUILD.gn
+index 9bb9c96ba751684de20b3a2971e24418948c3837..3e88cb2fd693b31c1c9103839480a11a505670d5 100644
+--- a/chrome/browser/ui/web_applications/BUILD.gn
++++ b/chrome/browser/ui/web_applications/BUILD.gn
+@@ -2,6 +2,7 @@
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
+ 
++import("//brave/browser/ui/web_applications/sources.gni")
+ import("//build/config/ui.gni")
+ import("//extensions/buildflags/buildflags.gni")
+ 
+@@ -105,6 +106,7 @@ source_set("launch_utils") {
+ source_set("impl") {
+   sources = []
+   deps = []
++  deps += brave_chrome_browser_ui_web_applications_deps
+ 
+   if (!is_android) {
+     sources += [ "web_app_dialog_utils.cc" ]

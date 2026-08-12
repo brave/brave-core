@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/web_applications/web_app_launch_process.cc b/chrome/browser/ui/web_applications/web_app_launch_process.cc
+index c6f9462a2f3c76606348ec9a66b193ac74e202ae..185cd7c6cf3395ef2994f14681c319aeec98988c 100644
+--- a/chrome/browser/ui/web_applications/web_app_launch_process.cc
++++ b/chrome/browser/ui/web_applications/web_app_launch_process.cc
+@@ -303,7 +303,7 @@ content::WebContents* WebAppLaunchProcess::Run() {
+ 
+   nav_params.web_app_navigation_data->SetLaunchParams(std::move(launch_params));
+   nav_params.web_app_navigation_data->SetLaunchSource(params_->launch_source);
+-  return NavigateWebAppUsingParams(nav_params);
++  return BraveNavigateWebAppUsingParams(&profile_.get(), *params_, nav_params);
+ }
+ 
+ const apps::ShareTarget* WebAppLaunchProcess::MaybeGetShareTarget() const {

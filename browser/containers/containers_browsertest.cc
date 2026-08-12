@@ -8,9 +8,12 @@
 #include <string>
 #include <vector>
 
+#include "base/command_line.h"
+#include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/location.h"
 #include "base/test/run_until.h"
+#include "base/test/test_future.h"
 #include "base/threading/thread_restrictions.h"
 #include "brave/browser/containers/containers_service_factory.h"
 #include "brave/browser/containers/used_container_storage_partitions.h"
@@ -48,6 +51,10 @@
 #include "chrome/browser/ui/views/page_action/test_support/page_action_test_support.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
 #include "chrome/browser/ui/zoom/chrome_zoom_level_prefs.h"
+#include "chrome/browser/web_applications/test/os_integration_test_override_impl.h"
+#include "chrome/browser/web_applications/test/web_app_install_test_utils.h"
+#include "chrome/browser/web_applications/web_app_command_scheduler.h"
+#include "chrome/browser/web_applications/web_app_provider.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/common/webui_url_constants.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -56,8 +63,10 @@
 #include "components/permissions/permission_request_manager.h"
 #include "components/permissions/request_type.h"
 #include "components/permissions/test/mock_permission_prompt_factory.h"
+#include "components/services/app_service/public/cpp/app_launch_util.h"
 #include "components/sessions/core/tab_restore_service.h"
 #include "components/tabs/public/tab_interface.h"
+#include "components/webapps/common/web_app_id.h"
 #include "content/public/browser/browsing_data_remover.h"
 #include "content/public/browser/host_zoom_map.h"
 #include "content/public/browser/navigation_controller.h"
@@ -2870,6 +2879,110 @@ IN_PROC_BROWSER_TEST_F(
   // exactly when the iterator is dereferenceable.
   EXPECT_TRUE(temporary_container == locally_used_containers.end())
       << "Unexpected temporary container: " << (*temporary_container)->id;
+}
+
+// Installing a web app with OS integration requires a blocking registration to
+// be alive for the duration of the test, hence the dedicated fixture.
+class ContainersPwaBrowserTest : public ContainersBrowserTest {
+ protected:
+  // Launches an installed PWA from the command line and returns the storage
+  // partition config of the resulting app WebContents, or std::nullopt on
+  // failure. `command_line` carries the container switches under test.
+  std::optional<content::StoragePartitionConfig>
+  LaunchPwaFromCommandLineAndGetStoragePartitionConfig(
+      Profile* profile,
+      const webapps::AppId& app_id,
+      const base::CommandLine& command_line) {
+    web_app::WebAppProvider* provider =
+        web_app::WebAppProvider::GetForLocalAppsUnchecked(profile);
+    if (!provider) {
+      ADD_FAILURE() << "No WebAppProvider for profile";
+      return std::nullopt;
+    }
+
+    base::test::TestFuture<base::WeakPtr<BrowserWindowInterface>,
+                           base::WeakPtr<content::WebContents>,
+                           apps::LaunchContainer>
+        future;
+    provider->scheduler().LaunchAppFromCommandLine(
+        app_id, command_line, base::FilePath(),
+        /*protocol_handler_launch_url=*/std::nullopt,
+        /*file_launch_url=*/std::nullopt, /*launch_files=*/{},
+        future.GetCallback());
+
+    content::WebContents* web_contents = future.Get<1>().get();
+    if (!web_contents) {
+      ADD_FAILURE() << "PWA launch produced no WebContents";
+      return std::nullopt;
+    }
+    if (!content::WaitForLoadStop(web_contents)) {
+      ADD_FAILURE() << "PWA WebContents failed to load";
+      return std::nullopt;
+    }
+    return web_contents->GetPrimaryMainFrame()
+        ->GetStoragePartition()
+        ->GetConfig();
+  }
+
+ private:
+  web_app::OsIntegrationTestOverrideBlockingRegistration faked_os_integration_;
+};
+
+// A named --container on its own resolves an existing container, isolating the
+// launched PWA into that container's storage partition.
+IN_PROC_BROWSER_TEST_F(ContainersPwaBrowserTest, LaunchPwaInNamedContainer) {
+  std::vector<mojom::ContainerPtr> synced;
+  synced.push_back(
+      MakeContainer(kTestContainerId, "Work", mojom::Icon::kWork, SK_ColorRED));
+  SetContainersToPrefs(synced, *browser()->profile()->GetPrefs());
+
+  const webapps::AppId app_id = web_app::test::InstallDummyWebApp(
+      browser()->profile(), "Container PWA",
+      https_server_.GetURL("a.test", "/simple.html"));
+
+  base::CommandLine command_line(base::CommandLine::NO_PROGRAM);
+  command_line.AppendSwitchASCII(switches::kContainer, "Work");
+
+  const std::optional<content::StoragePartitionConfig> config =
+      LaunchPwaFromCommandLineAndGetStoragePartitionConfig(
+          browser()->profile(), app_id, command_line);
+  ASSERT_TRUE(config.has_value());
+  EXPECT_EQ(kContainersStoragePartitionDomain, config->partition_domain());
+  EXPECT_EQ(kTestContainerId, config->partition_name());
+}
+
+// --temporary-container launches the PWA in a freshly created temporary
+// container's storage partition.
+IN_PROC_BROWSER_TEST_F(ContainersPwaBrowserTest,
+                       LaunchPwaInTemporaryContainer) {
+  const webapps::AppId app_id = web_app::test::InstallDummyWebApp(
+      browser()->profile(), "Temporary Container PWA",
+      https_server_.GetURL("a.test", "/simple.html"));
+
+  base::CommandLine command_line(base::CommandLine::NO_PROGRAM);
+  command_line.AppendSwitch(switches::kTemporaryContainer);
+
+  const std::optional<content::StoragePartitionConfig> config =
+      LaunchPwaFromCommandLineAndGetStoragePartitionConfig(
+          browser()->profile(), app_id, command_line);
+  ASSERT_TRUE(config.has_value());
+  EXPECT_EQ(kContainersStoragePartitionDomain, config->partition_domain());
+  EXPECT_TRUE(IsTemporaryContainerId(config->partition_name()));
+}
+
+// Without either switch, a command line PWA launch stays in the default
+// (non-container) storage partition.
+IN_PROC_BROWSER_TEST_F(ContainersPwaBrowserTest, LaunchPwaWithoutContainer) {
+  const webapps::AppId app_id = web_app::test::InstallDummyWebApp(
+      browser()->profile(), "Plain PWA",
+      https_server_.GetURL("a.test", "/simple.html"));
+
+  const std::optional<content::StoragePartitionConfig> config =
+      LaunchPwaFromCommandLineAndGetStoragePartitionConfig(
+          browser()->profile(), app_id,
+          base::CommandLine(base::CommandLine::NO_PROGRAM));
+  ASSERT_TRUE(config.has_value());
+  EXPECT_NE(kContainersStoragePartitionDomain, config->partition_domain());
 }
 
 }  // namespace containers
