@@ -1329,14 +1329,6 @@
 -ExtensionWebstorePrivateApiTest.InstallTheme
 -ExtensionWebstorePrivateApiTest.MissingDownloadDir
 
-# These tests fail because we change the Learn More link in the HTTPS First
-# interstitial.
--HttpsUpgradesBrowserTest.InterstitialLearnMoreLink/AllFeatures
--HttpsUpgradesBrowserTest.InterstitialLearnMoreLink/HttpsFirstBalancedMode*
--HttpsUpgradesBrowserTest.InterstitialLearnMoreLink/HttpsFirstModeAdvancedProtection
--HttpsUpgradesBrowserTest.InterstitialLearnMoreLink/HttpsFirstModeIncognito
--HttpsUpgradesBrowserTest.InterstitialLearnMoreLink/HttpsFirstModeOnly
-
 # These tests crash because we disable
 # enterprise_connectors::kLocalContentAnalysisEnabled feature
 -ActiveFrameUserEmailBrowserTest.GetActiveUserForFrame/*
