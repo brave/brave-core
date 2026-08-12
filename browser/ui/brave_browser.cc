@@ -47,7 +47,8 @@ void BraveBrowser::SuppressBrowserWindowClosingDialogForTesting(bool suppress) {
   g_suppress_dialog_for_testing = suppress;
 }
 
-BraveBrowser::BraveBrowser(const CreateParams& params) : Browser(params) {
+BraveBrowser::BraveBrowser(BrowserWindowCreateParams params)
+    : Browser(std::move(params)) {
   if (auto* sidebar_controller = GetFeatures().sidebar_controller()) {
     // TODO(https://github.com/brave/brave-browser/issues/45633): Cleanup this.
     // Below call order is important.
