@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/tabs/tab_strip_model.h b/chrome/browser/ui/tabs/tab_strip_model.h
-index cf144a90c3a881225aea35ba65fa82283cb3a9f6..2f0f83faba378fb17cfee92c6916a95989bd2c0b 100644
+index 87ad841b0a938250b5531965b9f48382232cff5f..75731aba03c5d70a33f96065ada3af6206b11ea0 100644
 --- a/chrome/browser/ui/tabs/tab_strip_model.h
 +++ b/chrome/browser/ui/tabs/tab_strip_model.h
-@@ -42,7 +42,7 @@
+@@ -43,7 +43,7 @@
  #error This file should only be included on desktop.
  #endif
  
@@ -11,7 +11,7 @@ index cf144a90c3a881225aea35ba65fa82283cb3a9f6..2f0f83faba378fb17cfee92c6916a959
  class Profile;
  class TabGroupModel;
  class TabStripModelDelegate;
-@@ -89,7 +89,7 @@ class TabGroupModelFactory {
+@@ -90,7 +90,7 @@ class TabGroupModelFactory {
  struct DetachedTabCollection {
    DetachedTabCollection(
        std::variant<std::unique_ptr<tabs::TabGroupTabCollection>,
@@ -20,7 +20,7 @@ index cf144a90c3a881225aea35ba65fa82283cb3a9f6..2f0f83faba378fb17cfee92c6916a959
        std::optional<int> active_index,
        bool pinned_);
    DetachedTabCollection(const DetachedTabCollection&) = delete;
-@@ -97,7 +97,7 @@ struct DetachedTabCollection {
+@@ -98,7 +98,7 @@ struct DetachedTabCollection {
    ~DetachedTabCollection();
    DetachedTabCollection(DetachedTabCollection&&);
    std::variant<std::unique_ptr<tabs::TabGroupTabCollection>,
@@ -29,7 +29,7 @@ index cf144a90c3a881225aea35ba65fa82283cb3a9f6..2f0f83faba378fb17cfee92c6916a959
        collection_;
    // Store the index of tab that was active in the detached group.
    std::optional<int> active_index_;
-@@ -211,7 +211,7 @@ class TabStripModel {
+@@ -212,7 +212,7 @@ class TabStripModel {
    TabStripModel(const TabStripModel&) = delete;
    TabStripModel& operator=(const TabStripModel&) = delete;
  
@@ -38,7 +38,7 @@ index cf144a90c3a881225aea35ba65fa82283cb3a9f6..2f0f83faba378fb17cfee92c6916a959
  
    // Retrieves the TabStripModelDelegate associated with this TabStripModel.
    TabStripModelDelegate* delegate() const { return delegate_; }
-@@ -356,7 +356,7 @@ class TabStripModel {
+@@ -357,7 +357,7 @@ class TabStripModel {
    // Detaches the WebContents at the specified index and immediately deletes it.
    void DetachAndDeleteWebContentsAt(int index);
  
@@ -47,7 +47,7 @@ index cf144a90c3a881225aea35ba65fa82283cb3a9f6..2f0f83faba378fb17cfee92c6916a959
                             std::unique_ptr<DetachedTabCollection>>>
    DetachTabsAndCollectionsForInsertion(const std::vector<int>& tab_indices);
  
-@@ -612,7 +612,7 @@ class TabStripModel {
+@@ -620,7 +620,7 @@ class TabStripModel {
    // returns the index of the tabs in the current model that would end up being
    // the adjacent tabs of the selected unpinned tabs post move operation.
    std::pair<std::optional<int>, std::optional<int>>
@@ -56,7 +56,7 @@ index cf144a90c3a881225aea35ba65fa82283cb3a9f6..2f0f83faba378fb17cfee92c6916a959
                                     int destination_index);
  
    // Updates the layout for the tabs with `split_id` and notifies observers.
-@@ -769,6 +769,14 @@ class TabStripModel {
+@@ -777,6 +777,14 @@ class TabStripModel {
      CommandGlicCreateNewChat,
      CommandGlicSwitchToRecentConversation,
      CommandGlicUnshare,
@@ -71,7 +71,7 @@ index cf144a90c3a881225aea35ba65fa82283cb3a9f6..2f0f83faba378fb17cfee92c6916a959
      CommandLast
    };
    // LINT.ThenChange(//tools/metrics/histograms/metadata/tab/histograms.xml:TabContextMenuCommand)
-@@ -896,7 +904,12 @@ class TabStripModel {
+@@ -904,7 +912,12 @@ class TabStripModel {
    tabs::TabInterface* GetTabForWebContents(
        const content::WebContents* contents) const;
  
@@ -84,7 +84,7 @@ index cf144a90c3a881225aea35ba65fa82283cb3a9f6..2f0f83faba378fb17cfee92c6916a959
    FRIEND_TEST_ALL_PREFIXES(TabStripModelTest, GetIndicesClosedByCommand);
    // Temporary private API.
    FRIEND_TEST_ALL_PREFIXES(TabStripModelTest, FindGroupIdFor);
-@@ -1174,7 +1187,7 @@ class TabStripModel {
+@@ -1187,7 +1200,7 @@ class TabStripModel {
    };
  
    // Selects either the next tab (kNext), or the previous tab (kPrevious).

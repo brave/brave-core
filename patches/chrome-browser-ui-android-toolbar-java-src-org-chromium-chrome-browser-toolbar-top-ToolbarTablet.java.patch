@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarTablet.java b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarTablet.java
-index db8fb8d24fa18dec8ff9ab4721d3236688c7f436..814d4e97313629883dea27b963677ebbab8b6a98 100644
+index 29cea1a7dcd650c754d28d11ac0e36f237a7b367..6f27b2a6ba59257987d38e06a97d6e26488c0d88 100644
 --- a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarTablet.java
 +++ b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarTablet.java
-@@ -289,6 +289,7 @@ public class ToolbarTablet extends ToolbarLayout {
+@@ -301,6 +301,7 @@ public class ToolbarTablet extends ToolbarLayout {
          mFixedHeightBackground.setBackgroundColor(color);
          mLocationBar.updateVisualsForState();
          setToolbarHairlineColor(color);

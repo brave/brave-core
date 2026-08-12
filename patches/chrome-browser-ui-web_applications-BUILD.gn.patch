@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/web_applications/BUILD.gn b/chrome/browser/ui/web_applications/BUILD.gn
-index 9bb9c96ba751684de20b3a2971e24418948c3837..3e88cb2fd693b31c1c9103839480a11a505670d5 100644
+index f8819f84cd6b4a56aaa698490f862cf6a656dfe7..f2bcf41a043db745485afe12247b82b9201cde29 100644
 --- a/chrome/browser/ui/web_applications/BUILD.gn
 +++ b/chrome/browser/ui/web_applications/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -10,7 +10,7 @@ index 9bb9c96ba751684de20b3a2971e24418948c3837..3e88cb2fd693b31c1c9103839480a11a
  import("//build/config/ui.gni")
  import("//extensions/buildflags/buildflags.gni")
  
-@@ -105,6 +106,7 @@ source_set("launch_utils") {
+@@ -107,6 +108,7 @@ source_set("launch_utils") {
  source_set("impl") {
    sources = []
    deps = []

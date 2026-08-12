@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/toolbar/app_menu.cc b/chrome/browser/ui/views/toolbar/app_menu.cc
-index 31083766a081e411a7089e2088c427cca9209f63..be905f5198778c90c303fd4377a90aeac8d8ecab 100644
+index b54aa03712a675b14e4af4ad3f324eed362cc56d..3e80dc67707c4e26aa9bcb55e29c0042dd397113 100644
 --- a/chrome/browser/ui/views/toolbar/app_menu.cc
 +++ b/chrome/browser/ui/views/toolbar/app_menu.cc
-@@ -1590,8 +1590,10 @@ views::View* AppMenu::GetZoomAppMenuViewForTest() {
+@@ -1595,8 +1595,10 @@ views::View* AppMenu::GetZoomAppMenuViewForTest() {
  }
  
  void AppMenu::PopulateMenu(MenuItemView* parent, MenuModel* model) {
@@ -13,7 +13,7 @@ index 31083766a081e411a7089e2088c427cca9209f63..be905f5198778c90c303fd4377a90aea
  
    for (size_t i = 0, max = model->GetItemCount(); i < max; ++i) {
      // Add the menu item at the end.
-@@ -1609,9 +1611,9 @@ void AppMenu::PopulateMenu(MenuItemView* parent, MenuModel* model) {
+@@ -1614,9 +1616,9 @@ void AppMenu::PopulateMenu(MenuItemView* parent, MenuModel* model) {
      auto add_menu_row_background = [item](int vertical_margin,
                                            ui::ColorId background_color_id) {
        constexpr int kBackgroundCornerRadius = 12;
@@ -25,7 +25,7 @@ index 31083766a081e411a7089e2088c427cca9209f63..be905f5198778c90c303fd4377a90aea
        item->SetSelectedColorId(ui::kColorAppMenuRowBackgroundHovered);
      };
  
-@@ -1727,10 +1729,11 @@ void AppMenu::PopulateMenu(MenuItemView* parent, MenuModel* model) {
+@@ -1732,10 +1734,11 @@ void AppMenu::PopulateMenu(MenuItemView* parent, MenuModel* model) {
        default:
          if (IsOtherProfileCommand(model->GetCommandIdAt(i))) {
            ui::ImageModel icon = model->GetIconAt(i);

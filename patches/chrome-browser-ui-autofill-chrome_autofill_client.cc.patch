@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/autofill/chrome_autofill_client.cc b/chrome/browser/ui/autofill/chrome_autofill_client.cc
-index d70314612e28ac0f6fe004e2255d0ff9da38c4d0..15ec244410366838598fe863827a4c5a4d5db34c 100644
+index 1850f785fca132a9544256697414c85579b48283..ad55d9c89b0b42ef2e8fd294774d2e39e622d566 100644
 --- a/chrome/browser/ui/autofill/chrome_autofill_client.cc
 +++ b/chrome/browser/ui/autofill/chrome_autofill_client.cc
-@@ -306,6 +306,12 @@ bool CanTriggerAutofillAiSavePromptSurveyForEntityType(EntityType type) {
+@@ -276,6 +276,12 @@ ui::ElementIdentifier GetElementId(AutofillClient::IphFeature iph_feature) {
  // static
  void ChromeAutofillClient::CreateForWebContents(
      content::WebContents* web_contents) {

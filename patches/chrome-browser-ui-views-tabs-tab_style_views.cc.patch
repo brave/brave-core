@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/tabs/tab_style_views.cc b/chrome/browser/ui/views/tabs/tab_style_views.cc
-index ed475c06560080d34de24d40f29a21dfd38991d5..d4095caae14195c6fcf72d5317ce20ba9191b2d6 100644
+index 38fd672d4610b8ff1d5c975a43a10e8389e9c84c..1a63f8c854052d03edd21ba13bd9a183af936c53 100644
 --- a/chrome/browser/ui/views/tabs/tab_style_views.cc
 +++ b/chrome/browser/ui/views/tabs/tab_style_views.cc
-@@ -81,18 +81,19 @@ class TabStyleViewsImpl : public TabStyleViews {
+@@ -77,18 +77,19 @@ class TabStyleViewsImpl : public TabStyleViews {
    }
  
   private:
@@ -24,7 +24,7 @@ index ed475c06560080d34de24d40f29a21dfd38991d5..d4095caae14195c6fcf72d5317ce20ba
  
    bool ShouldPaintTabBackgroundColor(
        TabStyle::TabSelectionState selection_state,
-@@ -110,7 +111,7 @@ class TabStyleViewsImpl : public TabStyleViews {
+@@ -106,7 +107,7 @@ class TabStyleViewsImpl : public TabStyleViews {
    // Returns a single separator's opacity based on whether it is the
    // logically `leading` separator. `for_layout` has the same meaning as in
    // GetSeparatorOpacities().
@@ -33,7 +33,7 @@ index ed475c06560080d34de24d40f29a21dfd38991d5..d4095caae14195c6fcf72d5317ce20ba
  
    // Helper that returns an interpolated opacity if the tab or its neighbor
    // `other_tab` is mid-hover-animation. Used in almost all cases when a
-@@ -122,7 +123,7 @@ class TabStyleViewsImpl : public TabStyleViews {
+@@ -118,7 +119,7 @@ class TabStyleViewsImpl : public TabStyleViews {
    TabStyle::TabSelectionState GetSelectionState() const;
  
    // Gets the bounds for the leading and trailing separators for a tab.
@@ -42,7 +42,7 @@ index ed475c06560080d34de24d40f29a21dfd38991d5..d4095caae14195c6fcf72d5317ce20ba
  
    // Returns the opacities of the separators. If `for_layout` is true, returns
    // the "layout" opacities, which ignore the effects of surrounding tabs' hover
-@@ -130,7 +131,7 @@ class TabStyleViewsImpl : public TabStyleViews {
+@@ -126,7 +127,7 @@ class TabStyleViewsImpl : public TabStyleViews {
    TabStyle::SeparatorOpacities GetSeparatorOpacities(bool for_layout) const;
  
    // Returns whether the mouse is currently hovering this tab.
@@ -51,7 +51,7 @@ index ed475c06560080d34de24d40f29a21dfd38991d5..d4095caae14195c6fcf72d5317ce20ba
  
    // Returns whether the hover animation is being shown.
    bool IsHoverAnimationActive() const;
-@@ -341,6 +342,7 @@ SkPath TabStyleViewsImpl::GetPath(TabStyle::PathType path_type,
+@@ -337,6 +338,7 @@ SkPath TabStyleViewsImpl::GetPath(TabStyle::PathType path_type,
      extension_corner_radius -= 0.5f * stroke_adjustment;
    }
  
@@ -59,7 +59,7 @@ index ed475c06560080d34de24d40f29a21dfd38991d5..d4095caae14195c6fcf72d5317ce20ba
    float left_extension_corner_radius = extension_corner_radius;
    if (IsLeftSplitTab(tab())) {
      top_right_corner_radius = 0;
-@@ -1012,14 +1014,18 @@ void TabStyleViewsImpl::PaintSeparators(gfx::Canvas* canvas) const {
+@@ -989,14 +991,18 @@ void TabStyleViewsImpl::PaintSeparators(gfx::Canvas* canvas) const {
                                                     SK_AlphaOPAQUE));
    };
  
@@ -80,7 +80,7 @@ index ed475c06560080d34de24d40f29a21dfd38991d5..d4095caae14195c6fcf72d5317ce20ba
  }
  
  bool TabStyleViewsImpl::IsLeftSplitTab(const Tab* tab) const {
-@@ -1159,10 +1165,12 @@ ui::metadata::TypeConverter<TabStyle::TabColors>::GetValidStrings() {
+@@ -1136,10 +1142,12 @@ ui::metadata::TypeConverter<TabStyle::TabColors>::GetValidStrings() {
  
  // TabStyleViews ---------------------------------------------------------------
  

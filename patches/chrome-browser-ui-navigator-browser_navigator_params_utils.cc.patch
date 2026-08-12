@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/navigator/browser_navigator_params_utils.cc b/chrome/browser/ui/navigator/browser_navigator_params_utils.cc
-index 211b521c7453be850d50d3da823192d5754a6d40..33d66c09dbb03f96c0102735704a7e89b08ba834 100644
+index c7dcca03b5602e1067a056a9e93d80a96a99f65e..ffd31c04401425cc0b9628ee03addc6b47bf90be 100644
 --- a/chrome/browser/ui/navigator/browser_navigator_params_utils.cc
 +++ b/chrome/browser/ui/navigator/browser_navigator_params_utils.cc
-@@ -74,7 +74,6 @@ content::NavigationController::LoadURLParams LoadURLParamsFromNavigateParams(
+@@ -75,7 +75,6 @@ content::NavigationController::LoadURLParams LoadURLParamsFromNavigateParams(
    // |frame_tree_node_id| is invalid for main frame navigations.
    if (params->frame_tree_node_id.is_null()) {
      bool force_no_https_upgrade =
