@@ -7,8 +7,8 @@
 
 #include "brave/components/containers/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/navigator/browser_navigator.h"
 #include "chrome/browser/ui/navigator/browser_navigator_params.h"
-#include "chrome/browser/ui/web_applications/web_app_launch_utils.h"
 #include "components/services/app_service/public/cpp/app_launch_params.h"
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
@@ -29,8 +29,8 @@ namespace {
 // --temporary-container into the storage partition its WebContents should use,
 // reusing the same service calls as the normal command line tab path. Without
 // the containers feature (build- or runtime-disabled) or a container, this is a
-// plain NavigateWebAppUsingParams().
-content::WebContents* BraveNavigateWebAppUsingParams(
+// plain Navigate(&nav_params).
+content::WebContents* NavigateWebAppWithContainerPartition(
     [[maybe_unused]] Profile* profile,
     [[maybe_unused]] const apps::AppLaunchParams& launch_params,
     NavigateParams& nav_params) {
@@ -48,7 +48,8 @@ content::WebContents* BraveNavigateWebAppUsingParams(
     }
   }
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
-  return NavigateWebAppUsingParams(nav_params);
+  Navigate(&nav_params);
+  return nav_params.navigated_or_inserted_contents;
 }
 
 }  // namespace
