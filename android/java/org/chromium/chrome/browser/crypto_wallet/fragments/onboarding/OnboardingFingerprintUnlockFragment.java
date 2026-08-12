@@ -7,7 +7,6 @@ package org.chromium.chrome.browser.crypto_wallet.fragments.onboarding;
 
 import android.annotation.SuppressLint;
 import android.hardware.biometrics.BiometricPrompt;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.CancellationSignal;
 import android.text.TextUtils;
@@ -18,7 +17,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.core.content.ContextCompat;
 

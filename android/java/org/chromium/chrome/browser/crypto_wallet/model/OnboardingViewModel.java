@@ -71,7 +71,9 @@ public class OnboardingViewModel extends ViewModel {
     // Wallet creation request, owned by the model so it survives configuration changes and keeps
     // running while the activity is in the background. Triggered only once.
     private boolean mWalletCreationRequested;
-    @NonNull private final MutableLiveData<Boolean> mWalletCreationSucceeded = new MutableLiveData<>();
+
+    @NonNull
+    private final MutableLiveData<Boolean> mWalletCreationSucceeded = new MutableLiveData<>();
 
     /** Stores the unlock password text so it survives a configuration change such as a rotation. */
     public void setUnlockPassword(@Nullable final String unlockPassword) {
@@ -198,9 +200,9 @@ public class OnboardingViewModel extends ViewModel {
     }
 
     /**
-     * Live outcome of the Wallet creation or restoration request: {@code true} on success,
-     * {@code false} on failure. Observers are notified once the request completes, including
-     * observers that subscribe after completion (for example a fragment recreated by a rotation).
+     * Live outcome of the Wallet creation or restoration request: {@code true} on success, {@code
+     * false} on failure. Observers are notified once the request completes, including observers
+     * that subscribe after completion (for example a fragment recreated by a rotation).
      */
     @NonNull
     public LiveData<Boolean> getWalletCreationSucceeded() {
@@ -336,8 +338,8 @@ public class OnboardingViewModel extends ViewModel {
     }
 
     /**
-     * Returns the word typed on the given verify recovery phrase step, or {@code null} if the stored
-     * word belongs to a different step or nothing is stored.
+     * Returns the word typed on the given verify recovery phrase step, or {@code null} if the
+     * stored word belongs to a different step or nothing is stored.
      */
     @Nullable
     public String getVerificationTypedWord(final int step) {
