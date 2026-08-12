@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_P3A_SCHEDULER_H_
 
 #include "base/functional/callback_forward.h"
+#include "base/time/time.h"
 #include "components/metrics/metrics_scheduler.h"
 
 namespace p3a {
@@ -15,18 +16,30 @@ namespace p3a {
 // Will callback to MessageManager on a given interval.
 class Scheduler : public metrics::MetricsScheduler {
  public:
-  explicit Scheduler(const base::RepeatingClosure& upload_callback,
-                     bool randomize_upload_interval,
-                     base::TimeDelta average_upload_interval);
+  Scheduler(const base::RepeatingClosure& upload_callback,
+            bool randomize_upload_interval,
+            base::TimeDelta average_upload_interval,
+            base::TimeDelta average_priority_interval);
   Scheduler(const Scheduler&) = delete;
   Scheduler& operator=(const Scheduler&) = delete;
   ~Scheduler() override;
 
-  void UploadFinished(bool ok);
+  // |priority_messages_pending| schedules the first task at the accelerated
+  // priority interval instead of the standard one.
+  void Start(bool priority_messages_pending);
+  void Start() = delete;
+
+  // |priority_messages_pending| schedules the next task at the accelerated
+  // priority interval instead of the standard one. Ignored if |ok| is false,
+  // since backoff takes precedence.
+  void UploadFinished(bool ok, bool priority_messages_pending);
+
+  // Shortens the wait before the next task to the priority interval. No-op if
+  // a task is in flight, or if the next task is already expedited.
+  void ExpediteForPriority();
 
  private:
-  // Provides us with the interval between successful uploads.
-  base::RepeatingCallback<base::TimeDelta(void)> get_interval_callback_;
+  base::TimeDelta GenerateInterval() const;
 
   // Initial time to wait between upload retry attempts.
   const base::TimeDelta initial_backoff_interval_;
@@ -37,6 +50,11 @@ class Scheduler : public metrics::MetricsScheduler {
   bool randomize_upload_interval_;
 
   base::TimeDelta average_upload_interval_;
+
+  base::TimeDelta average_priority_interval_;
+
+  // True if the currently scheduled task uses the priority interval.
+  bool is_priority_scheduled_ = false;
 };
 
 }  // namespace p3a

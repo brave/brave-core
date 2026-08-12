@@ -16,6 +16,12 @@
 
 namespace p3a {
 
+// Average intervals used while priority metrics are pending.
+inline constexpr base::TimeDelta kAveragePrepPriorityInterval =
+    base::Seconds(7);
+inline constexpr base::TimeDelta kAverageUploadPriorityInterval =
+    base::Seconds(2);
+
 struct P3AConfig {
   // The average interval between uploading different values.
   base::TimeDelta average_upload_interval;
