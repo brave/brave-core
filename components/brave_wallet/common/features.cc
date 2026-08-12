@@ -80,6 +80,10 @@ BASE_FEATURE(kBraveWalletAccountHidingFeature,
 #endif
 );
 
+BASE_FEATURE(kBraveWalletSnapsFeature,
+             "BraveWalletSnaps",
+             base::FEATURE_DISABLED_BY_DEFAULT);
+
 BASE_FEATURE(kBraveWalletSidePanel, base::FEATURE_DISABLED_BY_DEFAULT);
 
 #if BUILDFLAG(IS_IOS)

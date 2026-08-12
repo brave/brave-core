@@ -36,6 +36,7 @@ bool IsTransactionSimulationsEnabled();
 bool IsAccountHidingEnabled();
 bool IsWalletDebugEnabled();
 bool IsMojoForHardwareWalletEnabled();
+bool IsSnapsFeatureEnabled();
 #if BUILDFLAG(IS_IOS)
 bool IsWalletWebUIEnabled();
 #endif
