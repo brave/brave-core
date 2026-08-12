@@ -63,6 +63,11 @@ public class OnboardingViewModel extends ViewModel {
     @Nullable private String mSecurePassword;
     @Nullable private String mSecureRetypePassword;
 
+    // Word typed on the current verify recovery phrase step, retained across configuration changes
+    // so the fragment recreated fresh after a rotation can restore it.
+    @Nullable private String mVerificationTypedWord;
+    private int mVerificationTypedStep = -1;
+
     // Wallet creation request, owned by the model so it survives configuration changes and keeps
     // running while the activity is in the background. Triggered only once.
     private boolean mWalletCreationRequested;
@@ -270,6 +275,8 @@ public class OnboardingViewModel extends ViewModel {
         clearTermsOfUseSelections();
         mSecurePassword = null;
         mSecureRetypePassword = null;
+        mVerificationTypedWord = null;
+        mVerificationTypedStep = -1;
         mWalletCreationRequested = false;
         mWalletCreationSucceeded.setValue(null);
     }
@@ -320,6 +327,21 @@ public class OnboardingViewModel extends ViewModel {
     private Pair<Integer, String> extractPositionAndWordAtIndex(final int index) {
         final int key = mVerificationWords.keyAt(index);
         return new Pair<>(key, mVerificationWords.get(key));
+    }
+
+    /** Stores the word typed on the given verify recovery phrase step so it survives a rotation. */
+    public void setVerificationTypedWord(final int step, @Nullable final String typedWord) {
+        mVerificationTypedStep = step;
+        mVerificationTypedWord = typedWord;
+    }
+
+    /**
+     * Returns the word typed on the given verify recovery phrase step, or {@code null} if the stored
+     * word belongs to a different step or nothing is stored.
+     */
+    @Nullable
+    public String getVerificationTypedWord(final int step) {
+        return mVerificationTypedStep == step ? mVerificationTypedWord : null;
     }
 
     public void setSelectedNetworks(
