@@ -44,7 +44,6 @@ public class BraveDynamicColorsTest {
     }
 
     @Test
-    @EnableFeatures(BraveFeatureList.BRAVE_ANDROID_DYNAMIC_COLORS_BY_DEFAULT)
     public void testIsDynamicColorsEnabled_defaultEnabled_userPreferenceUnset_returnsTrue() {
         assertTrue(BraveDynamicColors.isDynamicColorsEnabled());
     }

@@ -35,7 +35,7 @@ public final class BraveDynamicColors {
             new CachedFlag(
                     ChromeFeatureMap.getInstance(),
                     BraveFeatureList.BRAVE_ANDROID_DYNAMIC_COLORS_BY_DEFAULT,
-                    false);
+                    true);
 
     private BraveDynamicColors() {}
 
