@@ -133,8 +133,8 @@ class OnDeviceSpeechRecognitionControllerTest : public testing::Test {
 
   void SetUp() override {
     ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
-    // A real ProfileManager, so the boot flow's observation of it is registered
-    // rather than skipped by its null guard.
+    // A real ProfileManager: the boot flow observes it and refuses to start a
+    // worker without one.
     profile_manager_.emplace(TestingBrowserProcess::GetGlobal());
     ASSERT_TRUE(profile_manager_->SetUp());
     controller_ = OnDeviceSpeechRecognitionController::CreateForTesting(
@@ -425,6 +425,56 @@ TEST_F(OnDeviceSpeechRecognitionControllerTest,
 
   profile_manager_.reset();
   EXPECT_EQ(nullptr, last_bwc_.get());
+}
+
+// Worker creation is asynchronous, so a shutdown can land before it finishes.
+// The teardown invalidates the pending creation callback, so a worker that
+// arrives after it is ignored instead of being taken up in a dying profile.
+TEST_F(OnDeviceSpeechRecognitionControllerTest,
+       ProfileManagerDestructionWhileStartingDropsCreationReply) {
+  SetInstalled(true);
+  capture_created_ = true;
+
+  // Capture the creation reply, leaving the controller in kRendererStarting.
+  Session s = StartSession();
+  ASSERT_FALSE(captured_created_.is_null());
+  auto pending_created = std::move(captured_created_);
+  auto pending_delegate = captured_delegate_;
+
+  profile_manager_.reset();
+
+  raw_ptr<FakeBackgroundWebContents> pending_bwc = nullptr;
+  std::move(pending_created)
+      .Run(MakeFakeBwc(pending_delegate, &pending_bwc), &otr_profile_);
+  EXPECT_EQ(nullptr, pending_bwc);
+}
+
+// Teardown returns the controller to kIdle, so a Start() after shutdown looks
+// like a normal boot. Calling the callback directly leaves a live
+// ProfileManager behind, so only the shutdown flag can stop that boot.
+TEST_F(OnDeviceSpeechRecognitionControllerTest, StartAfterShutdownDoesNotBoot) {
+  SetInstalled(true);
+  Session s1 = StartSession();
+  ASSERT_NE(nullptr, last_bwc_.get());
+
+  controller_->OnProfileManagerDestroying();
+  ASSERT_EQ(nullptr, last_bwc_.get());
+
+  Session s2 = StartSession();
+  EXPECT_EQ(nullptr, last_bwc_.get());
+  EXPECT_EQ(1, bwc_created_count_);
+}
+
+// A shutdown while no worker is up reaches nobody, so the flag stays unset. A
+// Start() after it must still not boot: no manager, no guest profile.
+TEST_F(OnDeviceSpeechRecognitionControllerTest,
+       StartWithoutProfileManagerDoesNotBoot) {
+  SetInstalled(true);
+  profile_manager_.reset();
+
+  Session s = StartSession();
+  EXPECT_EQ(nullptr, last_bwc_.get());
+  EXPECT_EQ(0, bwc_created_count_);
 }
 
 // The worker environment comes up but the worker never registers its factory.

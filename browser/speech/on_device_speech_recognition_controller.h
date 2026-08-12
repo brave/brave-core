@@ -19,7 +19,6 @@
 #include "brave/components/local_ai/core/background_web_contents.h"
 #include "brave/components/local_ai/core/on_device_speech_recognition.mojom.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/profiles/profile_manager_observer.h"
 #include "chrome/browser/profiles/profile_observer.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
@@ -28,6 +27,8 @@
 #include "mojo/public/cpp/bindings/receiver_set.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "services/on_device_model/public/mojom/on_device_model.mojom.h"
+
+class ProfileManager;
 
 namespace base {
 template <typename T>
@@ -165,6 +166,11 @@ class OnDeviceSpeechRecognitionController
   CreateBackgroundWebContentsCallback create_background_web_contents_;
 
   State state_ = State::kIdle;
+
+  // Set once the profile manager is gone. TearDown() returns state_ to kIdle,
+  // so this is what keeps a later Start() from booting a worker that has no
+  // profile manager to build a guest profile from.
+  bool shutting_down_ = false;
 
   // The guest profile's primary OTR profile, which hosts the worker's
   // BackgroundWebContents and is the profile we observe for destruction.

@@ -23,6 +23,7 @@
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/profiles/profile_manager.h"
 #include "mojo/public/cpp/base/big_buffer.h"
 #include "services/network/public/mojom/web_sandbox_flags.mojom-shared.h"
 #include "url/gurl.h"
@@ -234,13 +235,28 @@ void OnDeviceSpeechRecognitionController::OnProfileWillBeDestroyed(
 }
 
 void OnDeviceSpeechRecognitionController::OnProfileManagerDestroying() {
+  shutting_down_ = true;
   TearDown();
 }
 
 void OnDeviceSpeechRecognitionController::StartWorker() {
-  if (state_ != State::kIdle) {
+  // TearDown() leaves state_ at kIdle, so without the shutdown check a Start()
+  // arriving after OnProfileManagerDestroying() would boot another worker and
+  // trip CHECK(profile_manager) in local_ai::CreateBackgroundWebContents().
+  if (shutting_down_ || state_ != State::kIdle) {
     return;
   }
+
+  // Observe before creation starts: creation is asynchronous, and a shutdown
+  // while it is in flight has to tear down so the worker never lands in a
+  // profile that is going away.
+  auto* profile_manager = g_browser_process->profile_manager();
+  if (!profile_manager) {
+    // Already gone, with nothing observing to have set the flag above.
+    return;
+  }
+  profile_manager_observation_.Observe(profile_manager);
+
   state_ = State::kRendererStarting;
 
   // startup_timer_ is a member, so it cannot fire after `this` is destroyed.
@@ -281,9 +297,6 @@ void OnDeviceSpeechRecognitionController::OnBackgroundContentsCreated(
   // destruction so the WebContents never outlives its BrowserContext (which
   // would trip BrowserContextImpl's rph_with_bc_reference NOTREACHED).
   profile_observation_.Observe(otr_profile);
-  if (auto* profile_manager = g_browser_process->profile_manager()) {
-    profile_manager_observation_.Observe(profile_manager);
-  }
 }
 
 void OnDeviceSpeechRecognitionController::LoadOrtModel() {
