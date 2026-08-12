@@ -31,7 +31,7 @@ namespace brave_wallet {
 class BlockchainRegistry : public mojom::BlockchainRegistry {
  public:
   static constexpr char kRestrictedAddressFileName[] =
-      "ofac-sanctioned-digital-currency-addresses.json";
+      "prohibited-addresses.json";
 
   BlockchainRegistry(const BlockchainRegistry&) = delete;
   BlockchainRegistry& operator=(const BlockchainRegistry&) = delete;
