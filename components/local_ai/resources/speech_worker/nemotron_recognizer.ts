@@ -178,7 +178,9 @@ export class NemotronStreamSession {
   private inflight: Promise<void> = Promise.resolve()
 
   // Debug chunk counter.
+  // <if expr="!is_official_build">
   private chunkIdx = 0
+  // </if>
 
   constructor(
     model: OrtNemotronModel,
@@ -215,13 +217,13 @@ export class NemotronStreamSession {
       return
     }
 
-    if (config.DEBUG) {
-      this.debug('audio appended', {
-        samples: samples.length,
-        ms: this.samplesToMs(samples.length),
-        frontend: this.frontend.debugState(),
-      })
-    }
+    // <if expr="!is_official_build">
+    this.debug('audio appended', {
+      samples: samples.length,
+      ms: this.samplesToMs(samples.length),
+      frontend: this.frontend.debugState(),
+    })
+    // </if>
 
     this.inflight = this.inflight
       .then(() => this.processAvailable(false))
@@ -249,13 +251,13 @@ export class NemotronStreamSession {
       return
     }
 
-    if (config.DEBUG) {
-      this.debug('finish requested, appended silence', {
-        flushSamples: flush,
-        flushMs: this.samplesToMs(flush),
-        frontend: this.frontend.debugState(),
-      })
-    }
+    // <if expr="!is_official_build">
+    this.debug('finish requested, appended silence', {
+      flushSamples: flush,
+      flushMs: this.samplesToMs(flush),
+      frontend: this.frontend.debugState(),
+    })
+    // </if>
 
     this.inflight = this.inflight
       .then(() => this.processAvailable(true))
@@ -300,20 +302,21 @@ export class NemotronStreamSession {
     let atLeastOneChunkProcessed = false
 
     while (this.frontend.hasFullChunk()) {
+      // <if expr="!is_official_build">
       const chunkIdx = this.chunkIdx++
-
-      const frontendBefore = config.DEBUG
-        ? this.frontend.debugState()
-        : undefined
-
+      const frontendBefore = this.frontend.debugState()
       const chunkStarted = performance.now()
-
       const packStarted = performance.now()
+      // </if>
+
       const sig = this.frontend.makeNextEncoderInput()
+
+      // <if expr="!is_official_build">
       const packMs = performance.now() - packStarted
+      const encoderStarted = performance.now()
+      // </if>
 
       // Fresh input tensors every step. Do not reuse/carry ORT tensors.
-      const encoderStarted = performance.now()
       const eo = await this.model.runEncoder(
         {
           audio_signal: new ort.Tensor('float32', sig, [
@@ -346,7 +349,10 @@ export class NemotronStreamSession {
         },
         ENC_FETCHES,
       )
+
+      // <if expr="!is_official_build">
       const encoderMs = performance.now() - encoderStarted
+      // </if>
 
       // Copy data out before disposing ORT tensors.
       // Encoder output is laid out as [batch, hidden_dim, time].
@@ -374,10 +380,12 @@ export class NemotronStreamSession {
       disposeOrt([], eo as unknown as Record<string, OrtTensor>)
 
       // RNN-T greedy decode over this chunk's encoder frames.
+      // <if expr="!is_official_build">
       const decodeStarted = performance.now()
       let decoderCalls = 0
       let emittedTokensThisChunk = 0
       let maxSymHits = 0
+      // </if>
 
       // Outer loop over encoder time index.
       for (let fi = 0; fi < nEnc; fi++) {
@@ -420,7 +428,9 @@ export class NemotronStreamSession {
             ]),
           })
 
+          // <if expr="!is_official_build">
           decoderCalls++
+          // </if>
 
           const tok = argmax(dout.outputs.data as Float32Array)
 
@@ -429,7 +439,9 @@ export class NemotronStreamSession {
             this.prevToken = tok
             this.st1 = (dout.output_states_1.data as Float32Array).slice()
             this.st2 = (dout.output_states_2.data as Float32Array).slice()
+            // <if expr="!is_official_build">
             emittedTokensThisChunk++
+            // </if>
           }
 
           disposeOrt([], dout as unknown as Record<string, OrtTensor>)
@@ -441,48 +453,52 @@ export class NemotronStreamSession {
           sym++
         }
 
+        // <if expr="!is_official_build">
         if (sym === config.NEMO_MAX_SYM) {
           maxSymHits++
         }
+        // </if>
       }
 
+      // <if expr="!is_official_build">
       const decodeMs = performance.now() - decodeStarted
+      // </if>
 
       this.frontend.consumeChunk()
 
-      if (config.DEBUG) {
-        const modelMs = encoderMs + decodeMs
-        const totalMs = performance.now() - chunkStarted
-        const chunkAudioMs = this.samplesToMs(
-          config.NEMO_CHUNK * config.HOP_LENGTH,
-        )
+      // <if expr="!is_official_build">
+      const modelMs = encoderMs + decodeMs
+      const totalMs = performance.now() - chunkStarted
+      const chunkAudioMs = this.samplesToMs(
+        config.NEMO_CHUNK * config.HOP_LENGTH,
+      )
 
-        this.debug('chunk processed', {
-          chunkIdx,
+      this.debug('chunk processed', {
+        chunkIdx,
 
-          packMs,
-          encoderMs,
-          decodeMs,
-          modelMs,
-          totalMs,
+        packMs,
+        encoderMs,
+        decodeMs,
+        modelMs,
+        totalMs,
 
-          chunkAudioMs,
-          modelRtf: modelMs / chunkAudioMs,
-          totalRtf: totalMs / chunkAudioMs,
+        chunkAudioMs,
+        modelRtf: modelMs / chunkAudioMs,
+        totalRtf: totalMs / chunkAudioMs,
 
-          nTime,
-          nEnc,
-          decoderCalls,
-          emittedTokensThisChunk,
-          hypTokensTotal: this.hyp.length,
-          maxSymHits,
+        nTime,
+        nEnc,
+        decoderCalls,
+        emittedTokensThisChunk,
+        hypTokensTotal: this.hyp.length,
+        maxSymHits,
 
-          cacheLen: Number(this.cacheLen[0]),
+        cacheLen: Number(this.cacheLen[0]),
 
-          frontendBefore,
-          frontendAfter: this.frontend.debugState(),
-        })
-      }
+        frontendBefore,
+        frontendAfter: this.frontend.debugState(),
+      })
+      // </if>
 
       atLeastOneChunkProcessed = true
     }
@@ -500,19 +516,17 @@ export class NemotronStreamSession {
     }
   }
 
+  // <if expr="!is_official_build">
   private samplesToMs(samples: number): number {
     return (samples * 1000) / this.sampleRateHz
   }
 
   private debug(message: string, details?: Record<string, unknown>): void {
-    if (!config.DEBUG) {
-      return
-    }
-
     const json = JSON.stringify(details ?? {}, (_key, value: unknown) =>
       typeof value === 'bigint' ? value.toString() : value,
     )
 
     console.error(`[NEMO_DEBUG] ${message} ${json}`)
   }
+  // </if>
 }

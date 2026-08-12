@@ -8,8 +8,6 @@
 // pre-encode left-context frames. Conformer caches are carried between
 // steps, and fixed input/cache shapes keep the encoder cost constant per step.
 
-export const DEBUG: boolean = false // if enabled, will calculate RTF numbers, turn to false in production
-
 // frontend constants
 export type FftSize =
   | 32

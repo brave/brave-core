@@ -6,6 +6,7 @@
 import * as config from './configs'
 import type { FftSize, FftState } from './configs'
 
+// <if expr="!is_official_build">
 export interface StreamingMelFrontendDebugState {
   // Total number of raw PCM samples appended since the stream started.
   rawSamplesReceived: number
@@ -39,6 +40,7 @@ export interface StreamingMelFrontendDebugState {
   // Approximate duration of stableBacklogFrames in milliseconds.
   estimatedStableBacklogMs: number
 }
+// </if>
 
 // standard symmetric Hann window; following NeMo's implementation
 export function hannWindow(): Float32Array {
@@ -246,6 +248,7 @@ export class StreamingMelFrontend {
     this.fftPre.power.fill(0)
   }
 
+  // <if expr="!is_official_build">
   debugState(): StreamingMelFrontendDebugState {
     const stableBacklogFrames = this.nextMelFrame - this.nextChunkFrame
 
@@ -265,6 +268,7 @@ export class StreamingMelFrontend {
         (stableBacklogFrames * config.HOP_LENGTH * 1000) / this.sampleRateHz,
     }
   }
+  // </if>
 
   private appendStableMelFrames() {
     // By 'stable' mel frame, we mean a mel frame whose required raw audio
