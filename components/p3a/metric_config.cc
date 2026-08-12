@@ -163,6 +163,8 @@ void RemoteMetricConfig::RegisterJSONConverter(
   converter->RegisterCustomValueField("custom_attributes",
                                       &RemoteMetricConfig::custom_attributes,
                                       &GetCustomAttributes);
+  converter->RegisterCustomValueField("priority", &RemoteMetricConfig::priority,
+                                      &GetOptionalBool);
 }
 
 }  // namespace p3a
