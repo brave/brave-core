@@ -29,10 +29,7 @@ class FakePdfListener : public pdf::mojom::PdfListener {
 
   MOCK_METHOD(void, SetCaretPosition, (const gfx::PointF&), (override));
   MOCK_METHOD(void, MoveRangeSelectionExtent, (const gfx::PointF&), (override));
-  MOCK_METHOD(void,
-              SetSelectionBounds,
-              (const gfx::PointF&, const gfx::PointF&),
-              (override));
+  MOCK_METHOD(void, SetSelectionBase, (const gfx::PointF&), (override));
   MOCK_METHOD(void, GetPdfBytes, (uint32_t, GetPdfBytesCallback), (override));
   MOCK_METHOD(void, GetPageText, (int32_t, GetPageTextCallback), (override));
   MOCK_METHOD(void,
