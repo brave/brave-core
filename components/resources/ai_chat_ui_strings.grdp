@@ -426,7 +426,7 @@
   <message name="IDS_CHAT_UI_SHARE_CONVERSATION_DIALOG_GENERATE_LINK_BUTTON_LABEL" desc="A label for the button which generates and copies a shareable link for the current conversation" formatter_data="webui=AiChat">
     Generate link
   </message>
-  <message name="IDS_CHAT_UI_SHARE_CONVERSATION_DIALOG_LINK_COPIED_BUTTON_LABEL" desc="A label shown on the share button after the shareable link has been copied to the clipboard" formatter_data="webui=AiChat">
+  <message name="IDS_CHAT_UI_SHARE_CONVERSATION_DIALOG_LINK_COPIED_BUTTON_LABEL" desc="Confirmation that the shareable link has been copied to the clipboard. Shown as a label on the share button, and as a notification when a link is copied from the list of shared conversations" formatter_data="webui=AiChat">
     Link copied to clipboard
   </message>
   <message name="IDS_CHAT_UI_MENU_MANAGE_SHARED_CONVERSATIONS" desc="Menu entry which opens a dialog listing the conversations the user has shared" formatter_data="webui=AiChat">

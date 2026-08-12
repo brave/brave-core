@@ -15,7 +15,6 @@ import { useAIChat } from '../../state/ai_chat_context'
 import styles from './style.module.scss'
 
 interface Props {
-  isOpen: boolean
   onClose: () => void
 }
 
@@ -52,7 +51,7 @@ export default function SharedConversationsModal(props: Props) {
 
   return (
     <Dialog
-      isOpen={props.isOpen}
+      isOpen
       showClose
       onClose={props.onClose}
       className={styles.dialog}

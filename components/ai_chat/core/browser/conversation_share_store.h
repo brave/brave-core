@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_CONVERSATION_SHARE_STORE_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -55,8 +56,8 @@ class ConversationShareStore {
  public:
   using GetSharesCallback =
       base::OnceCallback<void(std::vector<mojom::ConversationSharePtr>)>;
-  // Invalid if there is no record for the share.
-  using GetShareUrlCallback = base::OnceCallback<void(const GURL&)>;
+  // std::nullopt if there is no record for the share.
+  using GetShareUrlCallback = base::OnceCallback<void(std::optional<GURL>)>;
 
   ConversationShareStore(PrefService* prefs,
                          os_crypt_async::OSCryptAsync* os_crypt_async);

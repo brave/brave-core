@@ -43,10 +43,10 @@ const mockShares: Mojom.ConversationShare[] = [
   },
 ]
 
-async function renderModal(...args: Parameters<typeof render>) {
+async function renderModal(ui: React.ReactElement) {
   let result: ReturnType<typeof render>
   await act(async () => {
-    result = render(...args)
+    result = render(ui)
   })
   return result!
 }
@@ -64,10 +64,7 @@ describe('SharedConversationsModal', () => {
           getConversationShares: () => Promise.resolve({ shares: mockShares }),
         }}
       >
-        <SharedConversationsModal
-          isOpen
-          onClose={() => {}}
-        />
+        <SharedConversationsModal onClose={() => {}} />
       </MockContext>,
     )
 
@@ -95,10 +92,7 @@ describe('SharedConversationsModal', () => {
   it('shows an empty state when nothing has been shared', async () => {
     await renderModal(
       <MockContext>
-        <SharedConversationsModal
-          isOpen
-          onClose={() => {}}
-        />
+        <SharedConversationsModal onClose={() => {}} />
       </MockContext>,
     )
 
@@ -119,10 +113,7 @@ describe('SharedConversationsModal', () => {
           copyConversationShareLink,
         }}
       >
-        <SharedConversationsModal
-          isOpen
-          onClose={() => {}}
-        />
+        <SharedConversationsModal onClose={() => {}} />
       </MockContext>,
     )
 

@@ -144,7 +144,7 @@ void ConversationShareStore::GetShareUrl(const std::string& share_id,
             store.ReadRecords();
         if (!records) {
           // Nothing can be found in records which can't be read.
-          std::move(callback).Run(GURL());
+          std::move(callback).Run(std::nullopt);
           return;
         }
         // There is nothing worth copying a link to once the server has deleted
@@ -152,9 +152,10 @@ void ConversationShareStore::GetShareUrl(const std::string& share_id,
         DropExpiredRecords(*records);
         const store::ConversationShareProto* record =
             FindRecord(*records, share_id);
-        std::move(callback).Run(record ? GURL(record->url()) : GURL());
+        std::move(callback).Run(record ? std::optional<GURL>(record->url())
+                                       : std::nullopt);
       },
-      share_id, std::move(callback)));
+      share_id, base::BindPostTaskToCurrentDefault(std::move(callback))));
 }
 
 void ConversationShareStore::OnEncryptorReady(

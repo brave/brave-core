@@ -919,15 +919,11 @@ void AIChatService::GetConversationShares(
 
 void AIChatService::CopyConversationShareLink(const std::string& share_id) {
   conversation_share_store_->GetShareUrl(
-      share_id, base::BindOnce(&AIChatService::OnShareUrlRetrievedForCopy,
-                               weak_ptr_factory_.GetWeakPtr()));
-}
-
-void AIChatService::OnShareUrlRetrievedForCopy(const GURL& url) {
-  if (!url.is_valid()) {
-    return;
-  }
-  CopyTextToClipboardAsConfidential(url.spec());
+      share_id, base::BindOnce([](std::optional<GURL> url) {
+        if (url && url->is_valid()) {
+          CopyTextToClipboardAsConfidential(url->spec());
+        }
+      }));
 }
 
 void AIChatService::OnPremiumStatusReceived(GetPremiumStatusCallback callback,

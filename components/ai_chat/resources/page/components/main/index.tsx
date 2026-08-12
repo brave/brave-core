@@ -224,7 +224,6 @@ function Main() {
       time the dialog is shown. */}
       {isSharedConversationsDialogOpen && (
         <SharedConversationsModal
-          isOpen
           onClose={() => setIsSharedConversationsDialogOpen(false)}
         />
       )}

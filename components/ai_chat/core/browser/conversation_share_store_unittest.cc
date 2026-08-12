@@ -77,10 +77,10 @@ class ConversationShareStoreUnitTest : public testing::Test {
     return future.Take();
   }
 
-  GURL GetShareUrl(const std::string& share_id) {
-    base::test::TestFuture<const GURL&> future;
+  std::optional<GURL> GetShareUrl(const std::string& share_id) {
+    base::test::TestFuture<std::optional<GURL>> future;
     store_->GetShareUrl(share_id, future.GetCallback());
-    return future.Get();
+    return future.Take();
   }
 
   // Writes |proto| to the pref the way the store would, so that stored values
@@ -136,7 +136,7 @@ TEST_F(ConversationShareStoreUnitTest, AddAndGetShare) {
 
   // The link, which contains the decryption key, is kept so it can be copied
   // again, but is not part of what the UI displays.
-  EXPECT_EQ(GetShareUrl("share-1").spec(), kShareUrl);
+  EXPECT_EQ(GetShareUrl("share-1"), GURL(kShareUrl));
 }
 
 TEST_F(ConversationShareStoreUnitTest, RecordsEveryFieldOfAShare) {
@@ -228,7 +228,7 @@ TEST_F(ConversationShareStoreUnitTest, SharesAreMostRecentFirst) {
 }
 
 TEST_F(ConversationShareStoreUnitTest, GetShareUrlForUnknownShare) {
-  EXPECT_FALSE(GetShareUrl("never-shared").is_valid());
+  EXPECT_FALSE(GetShareUrl("never-shared").has_value());
 }
 
 TEST_F(ConversationShareStoreUnitTest, PersistsAcrossStoreInstances) {
@@ -242,7 +242,7 @@ TEST_F(ConversationShareStoreUnitTest, PersistsAcrossStoreInstances) {
   EXPECT_EQ(shares[0]->share_id, "share-1");
   EXPECT_EQ(shares[0]->conversation_uuid, "conversation-share-1");
   EXPECT_EQ(shares[0]->conversation_title, "My conversation");
-  EXPECT_EQ(GetShareUrl("share-1").spec(), kShareUrl);
+  EXPECT_EQ(GetShareUrl("share-1"), GURL(kShareUrl));
 }
 
 TEST_F(ConversationShareStoreUnitTest, StoredRecordsAreNotReadableAsPlaintext) {

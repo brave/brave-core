@@ -327,8 +327,6 @@ class AIChatService : public KeyedService,
       ShareConversationCallback callback,
       const std::optional<ConversationShareResult>& share_result);
 
-  void OnShareUrlRetrievedForCopy(const GURL& url);
-
   void MaybeAssociateContent(
       ConversationHandler* conversation,
       int associated_content_id,
