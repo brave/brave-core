@@ -87,7 +87,6 @@ public class OnboardingFingerprintUnlockFragment extends BaseOnboardingWalletFra
     }
 
     @SuppressLint("MissingPermission")
-    @RequiresApi(api = Build.VERSION_CODES.P)
     private void setUpBiometric(@NonNull final String password, @NonNull final Cipher cipher) {
         final BiometricPrompt.AuthenticationCallback authenticationCallback =
                 new BiometricPrompt.AuthenticationCallback() {
