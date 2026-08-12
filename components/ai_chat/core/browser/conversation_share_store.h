@@ -72,6 +72,8 @@ class ConversationShareStore {
     ShareRecord();
     ShareRecord(const ShareRecord&);
     ShareRecord& operator=(const ShareRecord&);
+    ShareRecord(ShareRecord&&) noexcept;
+    ShareRecord& operator=(ShareRecord&&) noexcept;
     ~ShareRecord();
 
     std::string share_id;
@@ -95,9 +97,12 @@ class ConversationShareStore {
   void AddShareInternal(ShareRecord record);
   void GetSharesInternal(GetSharesCallback callback);
 
-  // Drops records the sharing server will have deleted by now. Returns whether
-  // anything was dropped.
+  // Drops records the sharing server will have deleted by now from |records_|,
+  // without persisting anything. Returns whether anything was dropped.
   bool DropExpiredRecords();
+
+  // DropExpiredRecords(), persisting the result and arming |expiry_timer_| for
+  // the next expiry. This is what the timer runs.
   void PurgeExpiredRecords();
 
   // Arms |expiry_timer_| for when the oldest remaining record expires, or
@@ -113,6 +118,11 @@ class ConversationShareStore {
 
   // std::nullopt until the encryptor has arrived and prefs have been read.
   std::optional<std::vector<ShareRecord>> records_;
+
+  // Whether prefs hold records which couldn't be decrypted this session but
+  // may well decrypt in a later one, in which case nothing may be written over
+  // them.
+  bool stored_records_undecryptable_ = false;
 
   // Operations which arrived before the encryptor did.
   std::vector<base::OnceClosure> pending_tasks_;

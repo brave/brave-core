@@ -6,11 +6,13 @@
 #include "brave/components/ai_chat/core/browser/conversation_share_store.h"
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <utility>
 #include <vector>
 
 #include "base/base64.h"
+#include "base/memory/scoped_refptr.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
@@ -20,6 +22,7 @@
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "components/os_crypt/async/browser/os_crypt_async.h"
 #include "components/os_crypt/async/browser/test_utils.h"
+#include "components/os_crypt/async/common/test_encryptor.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
@@ -29,6 +32,25 @@ namespace ai_chat {
 namespace {
 
 constexpr char kShareUrl[] = "https://leo-ai.brave.app/shared/share-1#key-1";
+
+// Vends the same encryptor every time, so that a store re-created over the same
+// prefs can read what an earlier one wrote, and tests can control what the
+// encryptor is able to do in between.
+class FakeOSCryptAsync : public os_crypt_async::OSCryptAsync {
+ public:
+  FakeOSCryptAsync()
+      : OSCryptAsync({}),
+        encryptor_(os_crypt_async::GetTestEncryptorForTesting()) {}
+
+  void GetInstance(InitCallback callback) override {
+    std::move(callback).Run(encryptor_);
+  }
+
+  os_crypt_async::TestEncryptor& encryptor() { return *encryptor_; }
+
+ private:
+  scoped_refptr<os_crypt_async::TestEncryptor> encryptor_;
+};
 
 }  // namespace
 
@@ -206,6 +228,36 @@ TEST_F(ConversationShareStoreUnitTest, DiscardsUnreadableStoredData) {
   EXPECT_TRUE(GetShares().empty());
   // The unusable value is rewritten rather than left on disk.
   EXPECT_TRUE(prefs_.GetString(prefs::kBraveAIChatConversationShares).empty());
+}
+
+TEST_F(ConversationShareStoreUnitTest, KeepsStoredDataWhenNoKeyIsAvailable) {
+  FakeOSCryptAsync os_crypt;
+  store_ = std::make_unique<ConversationShareStore>(&prefs_, &os_crypt);
+  store_->AddShare("share-1", "deletion-1", "conversation-share-1", "Shared",
+                   GURL(kShareUrl));
+  const std::string stored =
+      prefs_.GetString(prefs::kBraveAIChatConversationShares);
+  ASSERT_FALSE(stored.empty());
+
+  // A key can be unavailable for a session, e.g. a locked keyring, which says
+  // nothing about whether what is stored is still good.
+  os_crypt.encryptor().set_decryption_available_for_testing(false);
+  store_ = std::make_unique<ConversationShareStore>(&prefs_, &os_crypt);
+
+  EXPECT_TRUE(GetShares().empty());
+  EXPECT_EQ(prefs_.GetString(prefs::kBraveAIChatConversationShares), stored);
+
+  // Nor may a new share write over records which can't be read right now.
+  store_->AddShare("share-2", "deletion-2", "conversation-share-2", "Shared",
+                   GURL(kShareUrl));
+  EXPECT_EQ(prefs_.GetString(prefs::kBraveAIChatConversationShares), stored);
+
+  // They are readable again once the key is back.
+  os_crypt.encryptor().set_decryption_available_for_testing(std::nullopt);
+  store_ = std::make_unique<ConversationShareStore>(&prefs_, &os_crypt);
+  std::vector<mojom::ConversationSharePtr> shares = GetShares();
+  ASSERT_EQ(shares.size(), 1u);
+  EXPECT_EQ(shares[0]->share_id, "share-1");
 }
 
 }  // namespace ai_chat

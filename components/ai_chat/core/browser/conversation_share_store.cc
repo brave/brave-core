@@ -19,6 +19,7 @@
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/json/values_util.h"
+#include "base/task/bind_post_task.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
@@ -83,6 +84,11 @@ ConversationShareStore::ShareRecord::ShareRecord() = default;
 ConversationShareStore::ShareRecord::ShareRecord(const ShareRecord&) = default;
 ConversationShareStore::ShareRecord&
 ConversationShareStore::ShareRecord::operator=(const ShareRecord&) = default;
+ConversationShareStore::ShareRecord::ShareRecord(ShareRecord&&) noexcept =
+    default;
+ConversationShareStore::ShareRecord&
+ConversationShareStore::ShareRecord::operator=(ShareRecord&&) noexcept =
+    default;
 ConversationShareStore::ShareRecord::~ShareRecord() = default;
 
 ConversationShareStore::ConversationShareStore(
@@ -123,9 +129,12 @@ void ConversationShareStore::AddShare(const std::string& share_id,
 }
 
 void ConversationShareStore::GetShares(GetSharesCallback callback) {
-  RunWhenLoaded(base::BindOnce(&ConversationShareStore::GetSharesInternal,
-                               weak_ptr_factory_.GetWeakPtr(),
-                               std::move(callback)));
+  // Whether prefs have been read yet or not is an implementation detail, so
+  // the callback is always run asynchronously.
+  RunWhenLoaded(
+      base::BindOnce(&ConversationShareStore::GetSharesInternal,
+                     weak_ptr_factory_.GetWeakPtr(),
+                     base::BindPostTaskToCurrentDefault(std::move(callback))));
 }
 
 void ConversationShareStore::OnEncryptorReady(
@@ -133,23 +142,32 @@ void ConversationShareStore::OnEncryptorReady(
   encryptor_ = std::move(encryptor);
   records_ = std::vector<ShareRecord>();
 
-  // Read whatever is already stored. Anything that doesn't decrypt or parse is
-  // dropped: it is unusable, and rewriting the pref discards it for good.
+  // Read whatever is already stored. Anything that decrypts but doesn't parse
+  // is dropped: it is unusable, and rewriting the pref discards it for good.
   const std::string stored =
       prefs_->GetString(prefs::kBraveAIChatConversationShares);
   std::optional<std::vector<uint8_t>> ciphertext =
       stored.empty() ? std::nullopt : base::Base64Decode(stored);
+  const bool decryption_available = encryptor_->IsDecryptionAvailable();
+  os_crypt_async::Encryptor::DecryptFlags flags;
   std::optional<std::string> json =
-      ciphertext && encryptor_->IsDecryptionAvailable()
-          ? encryptor_->DecryptData(*ciphertext)
+      ciphertext && decryption_available
+          ? encryptor_->DecryptData(*ciphertext, &flags)
           : std::nullopt;
   std::optional<base::ListValue> parsed =
       json ? base::JSONReader::ReadList(*json, base::JSON_PARSE_RFC)
            : std::nullopt;
 
+  // A key can be missing for this session alone, e.g. a locked keyring, which
+  // says nothing about whether what is stored is still good.
+  stored_records_undecryptable_ =
+      ciphertext && !json &&
+      (!decryption_available || flags.temporarily_unavailable);
+
   // Whether the stored pref held anything that couldn't be read back, in which
   // case it is rewritten to discard it.
-  bool discarded_unreadable = !stored.empty() && !parsed;
+  bool discarded_unreadable =
+      !stored.empty() && !parsed && !stored_records_undecryptable_;
 
   if (parsed) {
     for (const base::Value& item : *parsed) {
@@ -162,12 +180,12 @@ void ConversationShareStore::OnEncryptorReady(
     }
   }
 
-  // The sharing server has already deleted anything past its lifetime, so
-  // don't hold on to the keys for it.
-  if (DropExpiredRecords() || discarded_unreadable) {
+  if (discarded_unreadable) {
     WriteRecordsToPrefs();
   }
-  ScheduleNextPurge();
+  // The sharing server has already deleted anything past its lifetime, so
+  // don't hold on to the keys for it.
+  PurgeExpiredRecords();
 
   std::vector<base::OnceClosure> pending_tasks = std::move(pending_tasks_);
   pending_tasks_.clear();
@@ -255,6 +273,11 @@ void ConversationShareStore::ScheduleNextPurge() {
 
 void ConversationShareStore::WriteRecordsToPrefs() {
   CHECK(records_);
+  // What is stored may well decrypt in a later session, so writing over it
+  // would destroy usable records.
+  if (stored_records_undecryptable_) {
+    return;
+  }
   if (records_->empty()) {
     prefs_->ClearPref(prefs::kBraveAIChatConversationShares);
     return;
