@@ -4,11 +4,12 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 import { CONTINUE, SKIP, visit } from 'unist-util-visit'
 import type { Node } from 'unist'
+import InlineTabSearch from '../assistant_response/inline_tab_search'
 import SearchWidget from '../search_widget/search_widget'
 import * as React from 'react'
 import { useAssistantEvents } from '../assistant_response/assistant_response_context'
 
-export const ALLOWED_DIRECTIVES = ['search'] as const
+export const ALLOWED_DIRECTIVES = ['search', 'tabSearch'] as const
 type NodeType = Node & {
   name: string
   attributes: Record<string, string>
@@ -77,5 +78,13 @@ export const directiveComponents: Record<
         results={results}
       />
     )
+  },
+  tabSearch: function (props: any) {
+    const query =
+      typeof props.children === 'string' ? props.children.trim() : ''
+    if (!query) {
+      return null
+    }
+    return <InlineTabSearch query={query} />
   },
 }

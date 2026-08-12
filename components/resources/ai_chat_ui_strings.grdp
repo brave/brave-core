@@ -516,6 +516,12 @@
   <message name="IDS_CHAT_UI_SEARCH_QUERIES" desc="AI Response status to indicate that search queries were used to enhance the response" formatter_data="webui=AiChat">
     Searching the web for <ph name="SEARCH_TERMS">$1<ex>"my first search engine query", "my second search engine query"</ex></ph>.
   </message>
+  <message name="IDS_CHAT_UI_TAB_SEARCH_IN_PROGRESS" desc="Status shown while the browser searches the user's open tabs for a query the AI assistant asked about" formatter_data="webui=AiChat">
+    Searching your open tabs for "<ph name="QUERY">$1<ex>react hooks</ex></ph>"…
+  </message>
+  <message name="IDS_CHAT_UI_TAB_SEARCH_NO_RESULTS" desc="Message shown when none of the user's open tabs match what the AI assistant searched for" formatter_data="webui=AiChat">
+    No open tabs match "<ph name="QUERY">$1<ex>react hooks</ex></ph>".
+  </message>
   <message name="IDS_CHAT_UI_SOURCES" desc="Heading for a list of website sources that were used to generate an AI chat response" formatter_data="webui=AiChat">
     Sources
   </message>
