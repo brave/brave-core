@@ -2334,8 +2334,22 @@
 # time to fire NetworkBecameIdle. Brave's cosmetic filters inject MutationObserver
 # and setInterval(500ms) polling on all pages, generating continuous renderer tasks
 # that prevent the quiet window from completing
+#
+# The same task pressure delays the Blink idle task (PostIdleTask) that
+# NetworkAndMainThreadStabilityMonitor waits on after network idle, so the
+# PageStabilityMetrics tests here fail on the missing
+# Actor.RendererPageStability.TimeFromMonitoringToNetworkAndMainThreadIdle
+# histogram. These tests are unstable upstream as well, on Linux and Windows
+# alike -- 30-day LUCI Analysis for PaintDelayed: Ubuntu 3.59% of 79693
+# verdicts, Windows 4.81% of 32624, macOS 0.45% of 5360, spread across many
+# non-sanitizer builders (linux-rel, win-rel, linux-oi-rel, Win11 Tests x64).
+# That cross-OS spread, together with the platform-independent Brave root cause
+# above, is why these go in the all-platform filter file rather than a
+# per-platform one.
+# PaintDelayed: https://github.com/brave/brave-browser/issues/56915
 -PageSettledMonitorChromeBrowserTest.WaitOnNetworkFetch
 -PageStabilityMetricsMinWaitTest.NetworkAndMainThreadIdleDelayed
+-PageStabilityMetricsMinWaitTest.PaintDelayed
 -PageStabilityMetricsTest.NetworkAndMainThreadIdle
 -PageStabilityMetricsTest.Paint
 
