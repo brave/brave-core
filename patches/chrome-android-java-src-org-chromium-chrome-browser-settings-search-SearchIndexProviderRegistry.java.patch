@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/settings/search/SearchIndexProviderRegistry.java b/chrome/android/java/src/org/chromium/chrome/browser/settings/search/SearchIndexProviderRegistry.java
-index 1077426a3061fd7f4fcc6ea1a6c5693d79293f6d..0b61bd5f5ce7a5ce94d42c6b4148173712930dac 100644
+index 1077426a3061fd7f4fcc6ea1a6c5693d79293f6d..713704bb20eac5253721595ef7ead1abb041040e 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/settings/search/SearchIndexProviderRegistry.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/settings/search/SearchIndexProviderRegistry.java
 @@ -7,7 +7,6 @@ package org.chromium.chrome.browser.settings.search;
@@ -59,7 +59,7 @@ index 1077426a3061fd7f4fcc6ea1a6c5693d79293f6d..0b61bd5f5ce7a5ce94d42c6b41481737
                      SafetyCheckSettingsFragment.SEARCH_INDEX_DATA_PROVIDER,
                      TabsSettings.SEARCH_INDEX_DATA_PROVIDER,
                      ManageSyncSettings.SEARCH_INDEX_DATA_PROVIDER,
-@@ -157,5 +150,32 @@ public final class SearchIndexProviderRegistry {
+@@ -157,5 +150,35 @@ public final class SearchIndexProviderRegistry {
                      DownloadSettings.SEARCH_INDEX_DATA_PROVIDER,
                      DeveloperSettings.SEARCH_INDEX_DATA_PROVIDER,
                      TracingSettings.SEARCH_INDEX_DATA_PROVIDER,
@@ -67,6 +67,9 @@ index 1077426a3061fd7f4fcc6ea1a6c5693d79293f6d..0b61bd5f5ce7a5ce94d42c6b41481737
 +                    TracingCategoriesSettings.SEARCH_INDEX_DATA_PROVIDER,
 +                    org.chromium.chrome.browser.accessibility.BraveAccessibilitySettings.SEARCH_INDEX_DATA_PROVIDER,
 +                    org.chromium.components.browser_ui.site_settings.BraveSiteSettingsPreferencesBase.SEARCH_INDEX_DATA_PROVIDER,
++                    org.chromium.chrome.browser.decentralized_dns.settings.UnstoppableDomainsSettingsFragment.SEARCH_INDEX_DATA_PROVIDER,
++                    org.chromium.chrome.browser.decentralized_dns.settings.ENSSettingsFragment.SEARCH_INDEX_DATA_PROVIDER,
++                    org.chromium.chrome.browser.decentralized_dns.settings.SnsSettingsFragment.SEARCH_INDEX_DATA_PROVIDER,
 +                    org.chromium.chrome.browser.password_manager.settings.PasswordSettings.SEARCH_INDEX_DATA_PROVIDER,
 +                    org.chromium.chrome.browser.playlist.settings.BravePlaylistPreferences.SEARCH_INDEX_DATA_PROVIDER,
 +                    org.chromium.chrome.browser.privacy.settings.BravePrivacySettings.SEARCH_INDEX_DATA_PROVIDER,
