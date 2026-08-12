@@ -136,15 +136,14 @@ struct CustomScriptletView: View {
           TextEditor(text: $customScriptletContent)
             .font(.system(size: editorFontSize, weight: .regular).monospaced())
             .frame(height: 400)
+            .autocorrectionDisabled(true)
+            .textInputAutocapitalization(.never)
             .overlay(
               alignment: .topLeading,
               content: {
                 Text(Strings.Shields.customScriptletContentWarning)
                   .multilineTextAlignment(.leading)
-                  .autocorrectionDisabled(true)
-                  .textInputAutocapitalization(.never)
-                  .padding(.vertical, 8)
-                  .padding(.horizontal, 8)
+                  .padding(8)
                   .disabled(true)
                   .allowsHitTesting(false)
                   .font(.body)
@@ -176,12 +175,7 @@ struct CustomScriptletView: View {
       )
       customScriptletContent = editingScriptlet.content
     }
-    .scrollContentBackground(.hidden)
     .scrollDismissesKeyboard(.interactively)
-    .background(
-      Color(braveSystemName: .pageBackground)
-        .edgesIgnoringSafeArea(.all)
-    )
     .navigationTitle(
       Text(
         editingScriptlet == nil
@@ -193,13 +187,20 @@ struct CustomScriptletView: View {
       cancelToolbarItem
       saveToolbarItem
     }
-    .alert(item: $saveError) { error in
-      Alert(
-        title: Text(Strings.genericErrorTitle),
-        message: Text(error.message),
-        dismissButton: .default(Text(Strings.OKString))
-      )
-    }
+    .alert(
+      Text(Strings.genericErrorTitle),
+      isPresented: Binding(
+        get: { saveError != nil },
+        set: { if !$0 { saveError = nil } }
+      ),
+      presenting: saveError,
+      actions: { _ in
+        Button(Strings.OKString) {}
+      },
+      message: { error in
+        Text(error.message)
+      }
+    )
   }
 
   private func saveCustomScriptlet() {
