@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_CONVERSATION_SHARE_STORE_H_
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_CONVERSATION_SHARE_STORE_H_
 
-#include <optional>
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -21,16 +21,16 @@
 
 class PrefService;
 
-namespace base {
-class Value;
-}  // namespace base
-
 namespace os_crypt_async {
 class Encryptor;
 class OSCryptAsync;
 }  // namespace os_crypt_async
 
 namespace ai_chat {
+
+namespace store {
+class ConversationSharesProto;
+}  // namespace store
 
 // Remembers which conversations the user has shared, so that the share
 // management UI can list them, re-copy their links and delete them from the
@@ -73,26 +73,6 @@ class ConversationShareStore {
   virtual void GetShares(GetSharesCallback callback);
 
  private:
-  struct ShareRecord {
-    ShareRecord();
-    ShareRecord(const ShareRecord&);
-    ShareRecord& operator=(const ShareRecord&);
-    ShareRecord(ShareRecord&&) noexcept;
-    ShareRecord& operator=(ShareRecord&&) noexcept;
-    ~ShareRecord();
-
-    std::string share_id;
-    std::string deletion_id;
-    std::string conversation_uuid;
-    std::string conversation_title;
-    GURL url;
-    base::Time created_time;
-  };
-
-  // std::nullopt if |value| isn't a record this version can use.
-  static std::optional<ShareRecord> ShareRecordFromValue(
-      const base::Value& value);
-
   // A deferred store operation. It is handed the store when it runs, so that a
   // queued task never holds a pointer to one; see RunWhenReady().
   using PendingTask = base::OnceCallback<void(ConversationShareStore&)>;
@@ -104,18 +84,19 @@ class ConversationShareStore {
   // methods, so |task| cannot outlive the store it is handed.
   void RunWhenReady(PendingTask task);
 
-  // What is stored in prefs, or std::nullopt when it couldn't be decrypted this
-  // session but may well decrypt in a later one, e.g. a locked keyring: nothing
-  // may be written over records in that state. Data which will never be
-  // readable is discarded here instead, so that one bad write can't stop shares
-  // from being recorded for good.
-  std::optional<std::vector<ShareRecord>> ReadRecords();
+  // What is stored in prefs, or null when it couldn't be decrypted this session
+  // but may well decrypt in a later one, e.g. a locked keyring: nothing may be
+  // written over records in that state. Data which will never be readable is
+  // discarded here instead, so that one bad write can't stop shares from being
+  // recorded for good. Records which are missing a field this needs are
+  // dropped, so everything returned can be listed and deleted.
+  std::unique_ptr<store::ConversationSharesProto> ReadRecords();
 
-  void WriteRecords(const std::vector<ShareRecord>& records);
+  void WriteRecords(const store::ConversationSharesProto& records);
 
   // Removes records the sharing server will have deleted by now. Returns
   // whether anything was removed.
-  static bool DropExpiredRecords(std::vector<ShareRecord>& records);
+  static bool DropExpiredRecords(store::ConversationSharesProto& records);
 
   // Drops expired records from prefs and re-arms |expiry_timer_|. This is what
   // the timer runs.
@@ -123,7 +104,7 @@ class ConversationShareStore {
 
   // Arms |expiry_timer_| for when the oldest of |records| expires, or cancels
   // it when there are none. Must be called after any change to what is stored.
-  void ScheduleNextPurge(const std::vector<ShareRecord>& records);
+  void ScheduleNextPurge(const store::ConversationSharesProto& records);
 
   raw_ptr<PrefService> prefs_;
 

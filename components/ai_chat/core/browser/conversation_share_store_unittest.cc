@@ -20,6 +20,7 @@
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
+#include "brave/components/ai_chat/core/proto/store.pb.h"
 #include "components/os_crypt/async/browser/os_crypt_async.h"
 #include "components/os_crypt/async/browser/test_utils.h"
 #include "components/os_crypt/async/common/test_encryptor.h"
@@ -76,6 +77,34 @@ class ConversationShareStoreUnitTest : public testing::Test {
     return future.Take();
   }
 
+  // Writes |proto| to the pref the way the store would, so that stored values
+  // the store itself would never write can be arranged.
+  void StoreProto(os_crypt_async::Encryptor& encryptor,
+                  const store::ConversationSharesProto& proto) {
+    std::optional<std::vector<uint8_t>> ciphertext =
+        encryptor.EncryptString(proto.SerializeAsString());
+    ASSERT_TRUE(ciphertext);
+    prefs_.SetString(prefs::kBraveAIChatConversationShares,
+                     base::Base64Encode(*ciphertext));
+  }
+
+  // What is stored in the pref, so that fields the public API doesn't report
+  // back can be checked. Empty if it can't be read.
+  store::ConversationSharesProto ReadStoredProto(
+      os_crypt_async::Encryptor& encryptor) {
+    store::ConversationSharesProto proto;
+    std::optional<std::vector<uint8_t>> ciphertext = base::Base64Decode(
+        prefs_.GetString(prefs::kBraveAIChatConversationShares));
+    if (!ciphertext) {
+      return proto;
+    }
+    std::optional<std::string> serialized = encryptor.DecryptData(*ciphertext);
+    if (serialized) {
+      proto.ParseFromString(*serialized);
+    }
+    return proto;
+  }
+
  protected:
   base::test::TaskEnvironment task_environment_{
       base::test::TaskEnvironment::TimeSource::MOCK_TIME};
@@ -98,6 +127,69 @@ TEST_F(ConversationShareStoreUnitTest, AddAndGetShare) {
   EXPECT_EQ(shares[0]->conversation_uuid, "conversation-share-1");
   EXPECT_EQ(shares[0]->conversation_title, "My conversation");
   EXPECT_EQ(shares[0]->created_time, base::Time::Now());
+}
+
+TEST_F(ConversationShareStoreUnitTest, RecordsEveryFieldOfAShare) {
+  FakeOSCryptAsync os_crypt;
+  store_ = std::make_unique<ConversationShareStore>(&prefs_, &os_crypt);
+  store_->AddShare("share-1", "deletion-1", "conversation-share-1",
+                   "My conversation", GURL(kShareUrl));
+
+  // The link and the deletion id are deliberately never reported to the UI, so
+  // check what was stored: without either, a share can't later be re-copied or
+  // deleted.
+  store::ConversationSharesProto stored = ReadStoredProto(os_crypt.encryptor());
+  ASSERT_EQ(stored.shares().size(), 1);
+  const store::ConversationShareProto& share = stored.shares(0);
+  EXPECT_EQ(share.share_id(), "share-1");
+  EXPECT_EQ(share.deletion_id(), "deletion-1");
+  EXPECT_EQ(share.conversation_uuid(), "conversation-share-1");
+  EXPECT_EQ(share.conversation_title(), "My conversation");
+  EXPECT_EQ(share.url(), kShareUrl);
+  EXPECT_EQ(base::Time::FromDeltaSinceWindowsEpoch(
+                base::Microseconds(share.created_time_windows_epoch_micros())),
+            base::Time::Now());
+}
+
+TEST_F(ConversationShareStoreUnitTest, DiscardsStoredRecordsMissingFields) {
+  FakeOSCryptAsync os_crypt;
+  const int64_t now =
+      base::Time::Now().ToDeltaSinceWindowsEpoch().InMicroseconds();
+  store::ConversationSharesProto proto;
+  // No title, which is legitimate - conversations can be untitled.
+  store::ConversationShareProto* usable = proto.add_shares();
+  usable->set_share_id("share-1");
+  usable->set_deletion_id("deletion-1");
+  usable->set_conversation_uuid("conversation-share-1");
+  usable->set_url(kShareUrl);
+  usable->set_created_time_windows_epoch_micros(now);
+  // No deletion id, so this one could never be removed from the server.
+  store::ConversationShareProto* no_deletion_id = proto.add_shares();
+  no_deletion_id->set_share_id("share-2");
+  no_deletion_id->set_conversation_uuid("conversation-share-2");
+  no_deletion_id->set_url(kShareUrl);
+  no_deletion_id->set_created_time_windows_epoch_micros(now);
+  // An empty share id is no more usable than a missing one - there would be
+  // nothing to ask the server to delete.
+  store::ConversationShareProto* empty_share_id = proto.add_shares();
+  empty_share_id->set_share_id("");
+  empty_share_id->set_deletion_id("deletion-3");
+  empty_share_id->set_conversation_uuid("conversation-share-3");
+  empty_share_id->set_url(kShareUrl);
+  empty_share_id->set_created_time_windows_epoch_micros(now);
+  ASSERT_NO_FATAL_FAILURE(StoreProto(os_crypt.encryptor(), proto));
+
+  store_ = std::make_unique<ConversationShareStore>(&prefs_, &os_crypt);
+
+  std::vector<mojom::ConversationSharePtr> shares = GetShares();
+  ASSERT_EQ(shares.size(), 1u);
+  EXPECT_EQ(shares[0]->share_id, "share-1");
+  EXPECT_TRUE(shares[0]->conversation_title.empty());
+  // The record which can't be acted on is dropped from the pref, not merely
+  // left out of what is reported.
+  store::ConversationSharesProto stored = ReadStoredProto(os_crypt.encryptor());
+  ASSERT_EQ(stored.shares().size(), 1);
+  EXPECT_EQ(stored.shares(0).share_id(), "share-1");
 }
 
 TEST_F(ConversationShareStoreUnitTest, IgnoresSharesThatCannotBeManaged) {
