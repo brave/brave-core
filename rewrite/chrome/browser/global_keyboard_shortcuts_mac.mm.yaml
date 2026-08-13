@@ -23,3 +23,20 @@ substitutions:
       replace:
         'keys.push_back({true, false, false, true, kVK_ANSI_T,
         IDC_NEW_SPLIT_TAB})'
+
+  - description: |
+      Suppress static-table shortcuts managed by commands::AcceleratorService.
+
+      When kBraveCommands is enabled, the shortcuts that aren't backed by a
+      main menu item are registered with the browser's FocusManager instead,
+      so users can customize or remove them. Returning NoCommand() avoids
+      double handling and honors those customizations. The helper is defined
+      in the chromium_src shadow file for this source.
+    after_function_impl:
+      function_name: CommandForKeyEvent
+      result_var: result
+      code: |-
+        if (ShouldSuppressStaticTableCommand(result)) {
+          return NoCommand();
+        }
+        return result;
