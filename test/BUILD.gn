@@ -1222,7 +1222,10 @@ test("brave_browser_tests") {
       "//brave/browser/ui/commands/accelerator_menu_coordinator_mac_browsertest.mm",
     ]
 
-    deps += [ "//brave/components/commands/common" ]
+    deps += [
+      "//brave/components/commands/common",
+      "//chrome/browser/ui/browser_active_state_manager",
+    ]
   }
 
   if (is_win) {
