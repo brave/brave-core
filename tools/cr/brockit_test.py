@@ -1117,6 +1117,13 @@ class GitHubIssueTest(unittest.TestCase):
 class MergeTest(unittest.TestCase):
     """Tests for the `merge` command."""
 
+    # The Chromium versions `_setup_upstream`/`_setup_remote_without_upstream`
+    # bump `origin/master` and `cr149` to, mirroring the real precondition
+    # that a branch only reaches `merge` once `lift` has already committed its
+    # version bump.
+    _BASE_VERSION = '151.0.7049.1'
+    _TARGET_VERSION = '152.0.7204.1'
+
     def setUp(self):
         self.fake_chromium_src = FakeChromiumRepo()
         self.fake_chromium_src.setup()
@@ -1129,19 +1136,22 @@ class MergeTest(unittest.TestCase):
                                                        or self.brave)
 
     def _setup_upstream(self) -> None:
-        """Wires up an `origin/master` upstream for a fresh `cr149` branch.
+        """Wires up an `origin/master` upstream for a fresh `cr149` branch,
+        already bumped from `_BASE_VERSION` to `_TARGET_VERSION`.
         """
         self.fake_chromium_src.create_brave_remote()
         self._git('config',
                   'receive.denyCurrentBranch',
                   'ignore',
                   repo=self.remote)
+        self.fake_chromium_src.update_brave_version(self._BASE_VERSION)
         # The freshly-initialised remote carries its own unrelated "Initial
         # commit" on `master`; force-push so `origin/master` starts from this
         # repo's history and later fast-forwards line up.
         self._git('push', '--force', 'origin', 'HEAD:master')
         self._git('checkout', '-b', 'cr149')
         self._git('branch', '--set-upstream-to=origin/master')
+        self.fake_chromium_src.update_brave_version(self._TARGET_VERSION)
 
     def _advance_upstream(self, relative_path: str, content: str) -> str:
         """Adds a commit to `origin/master` that `cr149` does not have.
@@ -1167,23 +1177,26 @@ class MergeTest(unittest.TestCase):
         self._setup_upstream()
         self._git('checkout', '--detach', 'HEAD')
         with self.assertRaises(brockit.InvalidInputException):
-            brockit.Merge().execute()
+            brockit.Merge.create().execute()
 
     def test_merge_raises_without_upstream(self):
         self._git('checkout', '-b', 'no-upstream')
         with self.assertRaises(brockit.InvalidInputException):
-            brockit.Merge().execute()
+            brockit.Merge.create().execute()
 
     def _setup_remote_without_upstream(self) -> None:
-        """Wires up an `origin/master` remote for a fresh `cr149` branch, but
-        leaves the branch without any upstream set."""
+        """Wires up an `origin/master` remote for a fresh `cr149` branch,
+        already bumped from `_BASE_VERSION` to `_TARGET_VERSION`, but leaves
+        the branch without any upstream set."""
         self.fake_chromium_src.create_brave_remote()
         self._git('config',
                   'receive.denyCurrentBranch',
                   'ignore',
                   repo=self.remote)
+        self.fake_chromium_src.update_brave_version(self._BASE_VERSION)
         self._git('push', '--force', 'origin', 'HEAD:master')
         self._git('checkout', '-b', 'cr149')
+        self.fake_chromium_src.update_brave_version(self._TARGET_VERSION)
 
     def test_merge_with_base_branch_without_upstream(self):
         """`--base-branch` allows merging when no upstream is set."""
@@ -1193,7 +1206,7 @@ class MergeTest(unittest.TestCase):
         self.fake_chromium_src.commit('Branch change', self.brave)
         head = self._git('rev-parse', 'HEAD')
 
-        brockit.Merge().execute(base_branch='origin/master')
+        brockit.Merge.create(base_branch='origin/master').execute()
 
         self.assertEqual(self._remote_master(), head)
 
@@ -1210,7 +1223,7 @@ class MergeTest(unittest.TestCase):
         self.fake_chromium_src.commit('Branch change', self.brave)
 
         with self.assertRaises(brockit.InvalidInputException):
-            brockit.Merge().execute()
+            brockit.Merge.create().execute()
 
     def test_merge_base_branch_overrides_upstream_tracking_current_branch(
             self):
@@ -1224,7 +1237,7 @@ class MergeTest(unittest.TestCase):
         self.fake_chromium_src.commit('Branch change', self.brave)
         head = self._git('rev-parse', 'HEAD')
 
-        brockit.Merge().execute(base_branch='origin/master')
+        brockit.Merge.create(base_branch='origin/master').execute()
 
         self.assertEqual(self._remote_master(), head)
 
@@ -1240,7 +1253,7 @@ class MergeTest(unittest.TestCase):
         self.fake_chromium_src.commit('Branch change', self.brave)
         head = self._git('rev-parse', 'HEAD')
 
-        brockit.Merge().execute(base_branch='origin/master')
+        brockit.Merge.create(base_branch='origin/master').execute()
 
         self.assertEqual(self._remote_master(), head)
 
@@ -1261,7 +1274,7 @@ class MergeTest(unittest.TestCase):
         gh.is_logged_in.return_value = True
         gh.get_pr_base_branch.return_value = 'origin/master'
 
-        brockit.Merge().execute()
+        brockit.Merge.create().execute()
 
         self.assertEqual(self._remote_master(), head)
         gh.get_pr_base_branch.assert_called_once_with('cr149')
@@ -1280,15 +1293,17 @@ class MergeTest(unittest.TestCase):
         gh.is_logged_in.return_value = True
         gh.get_pr_base_branch.return_value = None
 
-        brockit.Merge().execute()
+        brockit.Merge.create().execute()
 
         self.assertEqual(self._remote_master(), head)
 
     def test_merge_raises_when_nothing_to_merge(self):
         """A branch already at its upstream has nothing to push."""
         self._setup_upstream()
+        # Fast-forward `origin/master` to `cr149` so the two are identical.
+        self._git('push', 'origin', 'HEAD:master')
         with self.assertRaises(brockit.InvalidInputException):
-            brockit.Merge().execute()
+            brockit.Merge.create().execute()
 
     def test_merge_raises_on_dirty_tree(self):
         self._setup_upstream()
@@ -1298,7 +1313,7 @@ class MergeTest(unittest.TestCase):
         # Leave an uncommitted modification behind.
         (self.brave / 'foo.txt').write_text('dirty')
         with self.assertRaises(brockit.InvalidInputException):
-            brockit.Merge().execute()
+            brockit.Merge.create().execute()
 
     def test_merge_rejects_when_merge_in_progress(self):
         """A leftover `MERGE_HEAD` is rejected rather than being concluded."""
@@ -1314,7 +1329,7 @@ class MergeTest(unittest.TestCase):
             brockit.repository.brave.is_valid_git_reference('MERGE_HEAD'))
 
         with self.assertRaises(brockit.InvalidInputException):
-            brockit.Merge().execute()
+            brockit.Merge.create().execute()
 
     def test_merge_rejects_when_rebase_in_progress(self):
         """A half-finished rebase blocks the merge until it is concluded."""
@@ -1333,7 +1348,7 @@ class MergeTest(unittest.TestCase):
 
         try:
             with self.assertRaises(brockit.InvalidInputException):
-                brockit.Merge().execute()
+                brockit.Merge.create().execute()
         finally:
             subprocess.run(['git', 'rebase', '--abort'],
                            cwd=self.brave,
@@ -1352,7 +1367,7 @@ class MergeTest(unittest.TestCase):
         self.fake_chromium_src.commit('Second branch change', self.brave)
         head = self._git('rev-parse', 'HEAD')
 
-        brockit.Merge().execute()
+        brockit.Merge.create().execute()
 
         # The remote master now points at the branch tip, and no merge commit
         # was created (HEAD is unchanged).
@@ -1367,13 +1382,27 @@ class MergeTest(unittest.TestCase):
         self.fake_chromium_src.commit('Branch change', self.brave)
         self._advance_upstream('upstream.txt', 'upstream')
 
-        brockit.Merge().execute()
+        brockit.Merge.create().execute()
 
         head = self._git('rev-parse', 'HEAD')
         # The new HEAD is a merge commit (two parents) and the remote master
         # was fast-forwarded to it.
         self.assertEqual(len(self._git('rev-parse', 'HEAD^@').split()), 2)
         self.assertEqual(self._remote_master(), head)
+
+    def test_merge_diverged_titles_commit_for_chromium_upgrade(self):
+        """The merge commit is titled like the upgrade's GitHub issue/PR,
+        rather than git's generic default message."""
+        # `_setup_upstream` already bumps `cr149` from `_BASE_VERSION` to
+        # `_TARGET_VERSION` over `origin/master`; diverge upstream too, so the
+        # merge produces a merge commit.
+        self._setup_upstream()
+        self._advance_upstream('unrelated.txt', 'upstream change')
+
+        brockit.Merge.create().execute()
+
+        self.assertEqual(self._git('log', '-1', '--format=%s'),
+                         'Upgrade from Chromium 151 to Chromium 152')
 
     def test_merge_conflict_rolls_back_and_fails(self):
         """Merge conflicts roll the merge back and fail without pushing."""
@@ -1385,7 +1414,7 @@ class MergeTest(unittest.TestCase):
         upstream_master = self._advance_upstream('conflict.txt', 'upstream')
 
         with self.assertRaises(brockit.BadOutcomeException):
-            brockit.Merge().execute()
+            brockit.Merge.create().execute()
 
         # The merge was aborted: no leftover merge state, the branch tip is
         # unchanged, and nothing was pushed.
@@ -1404,7 +1433,7 @@ class MergeTest(unittest.TestCase):
         master_before = self._remote_master()
 
         with self.assertRaises(brockit.InvalidInputException):
-            brockit.Merge().execute()
+            brockit.Merge.create().execute()
 
         # The branch was never pushed.
         self.assertEqual(self._remote_master(), master_before)
@@ -1418,7 +1447,7 @@ class MergeTest(unittest.TestCase):
         master_before = self._remote_master()
 
         with self.assertRaises(brockit.InvalidInputException):
-            brockit.Merge().execute()
+            brockit.Merge.create().execute()
 
         self.assertEqual(self._remote_master(), master_before)
 
@@ -1436,7 +1465,7 @@ class MergeTest(unittest.TestCase):
         master_before = self._remote_master()
 
         with self.assertRaises(brockit.InvalidInputException):
-            brockit.Merge().execute()
+            brockit.Merge.create().execute()
 
         self.assertEqual(self._remote_master(), master_before)
 
@@ -1448,7 +1477,7 @@ class MergeTest(unittest.TestCase):
         master_before = self._remote_master()
 
         with self.assertRaises(brockit.InvalidInputException):
-            brockit.Merge().execute()
+            brockit.Merge.create().execute()
 
         self.assertEqual(self._remote_master(), master_before)
 
@@ -1504,19 +1533,19 @@ class MergeTest(unittest.TestCase):
                                             self.brave)
         head = self._git('rev-parse', 'HEAD')
 
-        brockit.Merge().execute()
+        brockit.Merge.create().execute()
 
         self.assertEqual(self._remote_master(), head)
 
     def test_merge_allows_canonical_branch(self):
         """A single, correctly-placed pinned commit is merge-ready."""
         self._setup_upstream()
-        self.fake_chromium_src.commit_empty(
-            'Update from Chromium 1.0.0.0 to Chromium 1.0.0.1.', self.brave)
+        # `_setup_upstream` already left a single pinned "Update from
+        # Chromium" commit on the branch; add just the feature commit on top.
         self.fake_chromium_src.commit_empty('[cr149] Feature A', self.brave)
         head = self._git('rev-parse', 'HEAD')
 
-        brockit.Merge().execute()
+        brockit.Merge.create().execute()
 
         self.assertEqual(self._remote_master(), head)
 
@@ -1527,7 +1556,7 @@ class MergeTest(unittest.TestCase):
         head_before = self._git('rev-parse', 'HEAD')
         master_before = self._remote_master()
 
-        brockit.Merge().execute(dry_run=True)
+        brockit.Merge.create().execute(dry_run=True)
 
         # HEAD is unchanged (no merge commit) and the remote was not pushed.
         self.assertEqual(self._git('rev-parse', 'HEAD'), head_before)
@@ -1541,7 +1570,7 @@ class MergeTest(unittest.TestCase):
                                             self.brave)
 
         with self.assertRaises(brockit.InvalidInputException):
-            brockit.Merge().execute(dry_run=True)
+            brockit.Merge.create().execute(dry_run=True)
 
 
 if __name__ == '__main__':
