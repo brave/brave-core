@@ -19,6 +19,12 @@ source_set("core") {
   sources = [
     "agent_app.cc",
     "agent_app.h",
+    "browser_host_impl.cc",
+    "browser_host_impl.h",
+    "browser_host_provider_impl.cc",
+    "browser_host_provider_impl.h",
+    "browser_registry.cc",
+    "browser_registry.h",
     "shutdown_handlers.cc",
     "shutdown_handlers.h",
     "single_instance.h",
@@ -38,7 +44,18 @@ source_set("core") {
     ]
   }
 
-  public_deps = [ "//base" ]
+  public_deps = [
+    "//base",
+    "//brave/components/brave_vpn/common/mojom:agent",
+    "//components/named_mojo_ipc_server",
+    "//mojo/public/cpp/bindings",
+    "//mojo/public/cpp/platform",
+  ]
+
+  deps = [
+    "//brave/components/brave_vpn/common/v2:common",
+    "//mojo/core/embedder",
+  ]
 }
 
 if (is_win) {
@@ -139,18 +156,43 @@ if (is_mac) {
   }
 }
 
+source_set("test_support") {
+  testonly = true
+
+  sources = [
+    "test/fake_browser.cc",
+    "test/fake_browser.h",
+    "test/fake_browser_endpoint.cc",
+    "test/fake_browser_endpoint.h",
+  ]
+
+  public_deps = [
+    "//base",
+    "//base/test:test_support",
+    "//brave/components/brave_vpn/common/mojom:agent",
+    "//mojo/public/cpp/bindings",
+  ]
+}
+
 source_set("unit_tests") {
   testonly = true
   sources = [
     "agent_app_unittest.cc",
+    "browser_host_impl_unittest.cc",
+    "browser_host_provider_impl_unittest.cc",
+    "browser_registry_unittest.cc",
     "shutdown_handlers_unittest.cc",
     "single_instance_unittest.cc",
   ]
 
   deps = [
     ":core",
+    ":test_support",
     "//base",
     "//base/test:test_support",
+    "//brave/components/brave_vpn/common/mojom:agent",
+    "//components/named_mojo_ipc_server:test_support",
+    "//mojo/public/cpp/bindings",
     "//testing/gtest",
   ]
 }

@@ -19,6 +19,7 @@
 #include "base/run_loop.h"
 #include "base/synchronization/waitable_event.h"
 #include "base/task/single_thread_task_executor.h"
+#include "base/task/thread_pool/thread_pool_instance.h"
 #include "base/test/bind.h"
 #include "base/test/gtest_util.h"
 #include "base/test/multiprocess_test.h"
@@ -95,6 +96,7 @@ base::FilePath SignalDirFromCommandLine() {
 // path depends on is provably in place, so a watcher thread polls for that and
 // only then tells the parent it is safe to send the signal under test.
 MULTIPROCESS_TEST_MAIN(AgentAppRunChild) {
+  base::ThreadPoolInstance::CreateAndStartWithDefaultParams("AgentAppRunChild");
   const base::FilePath dir = SignalDirFromCommandLine();
 
   base::Thread readiness("readiness_watcher");
@@ -117,6 +119,7 @@ MULTIPROCESS_TEST_MAIN(AgentAppRunChild) {
 // shutdown. Uses ShutdownHandlers directly (not AgentApp, whose shutdown cannot
 // hang), so readiness can simply be signaled after Install() returns.
 MULTIPROCESS_TEST_MAIN(HungShutdownChild) {
+  base::ThreadPoolInstance::CreateAndStartWithDefaultParams("AgentAppRunChild");
   const base::FilePath dir = SignalDirFromCommandLine();
 
   base::SingleThreadTaskExecutor executor;
