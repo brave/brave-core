@@ -23,11 +23,13 @@ source_set("brave_wallet") {
     "//brave/common:mojo_bindings",
     "//brave/components/brave_wallet/common",
     "//brave/components/brave_wallet/renderer",
+    "//brave/components/minimal_injection_frames",
     "//content/public/common",
     "//content/public/renderer",
     "//gin",
     "//third_party/blink/public:blink",
     "//third_party/blink/public/common",
+    "//url",
     "//v8",
   ]
 }

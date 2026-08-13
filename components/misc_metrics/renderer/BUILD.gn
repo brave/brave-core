@@ -13,6 +13,7 @@ source_set("renderer") {
 
   deps = [
     "//base",
+    "//brave/components/minimal_injection_frames",
     "//brave/components/misc_metrics/common:mojom",
     "//brave/components/resources:static_resources_grit",
     "//brave/components/safe_builtins/renderer",

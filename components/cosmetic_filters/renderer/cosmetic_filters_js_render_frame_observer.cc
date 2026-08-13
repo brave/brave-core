@@ -14,10 +14,12 @@
 #include "base/functional/bind.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/de_amp/common/features.h"
+#include "brave/components/minimal_injection_frames/minimal_injection_frames.h"
 #include "content/public/renderer/render_frame.h"
 #include "third_party/blink/public/platform/web_isolated_world_info.h"
 #include "third_party/blink/public/platform/web_url.h"
 #include "third_party/blink/public/web/web_local_frame.h"
+#include "url/origin.h"
 
 namespace cosmetic_filters {
 
@@ -88,6 +90,12 @@ void CosmeticFiltersJsRenderFrameObserver::ReadyToCommitNavigation(
 
   if (!url_.SchemeIsHTTPOrHTTPS())
     return;
+
+  // Leaves `ready_` unsignaled, so the script is never injected into the frame
+  // and its MutationObserver never runs. Same shape as the scheme check above.
+  if (brave::IsMinimalInjectionFrame(url::Origin::Create(url_))) {
+    return;
+  }
 
   if (base::FeatureList::IsEnabled(
           ::brave_shields::features::kCosmeticFilteringSyncLoad)) {

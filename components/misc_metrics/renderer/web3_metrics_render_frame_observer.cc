@@ -10,6 +10,7 @@
 #include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/strings/strcat.h"
+#include "brave/components/minimal_injection_frames/minimal_injection_frames.h"
 #include "brave/components/safe_builtins/renderer/safe_builtins_helpers.h"
 #include "components/grit/brave_components_resources.h"
 #include "content/public/renderer/render_frame.h"
@@ -64,6 +65,10 @@ bool Web3MetricsRenderFrameObserver::CanInjectProxy() {
 
   // Scripts can't be executed on provisional frames.
   if (render_frame()->GetWebFrame()->IsProvisional()) {
+    return false;
+  }
+
+  if (brave::IsMinimalInjectionFrame(url::Origin::Create(url_))) {
     return false;
   }
 

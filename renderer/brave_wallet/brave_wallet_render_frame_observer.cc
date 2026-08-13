@@ -14,9 +14,11 @@
 #include "brave/components/brave_wallet/renderer/js_ethereum_provider.h"
 #include "brave/components/brave_wallet/renderer/js_solana_provider.h"
 #include "brave/components/brave_wallet/renderer/v8_helper.h"
+#include "brave/components/minimal_injection_frames/minimal_injection_frames.h"
 #include "content/public/renderer/render_frame.h"
 #include "third_party/blink/public/platform/scheduler/web_agent_group_scheduler.h"
 #include "third_party/blink/public/web/web_local_frame.h"
+#include "url/origin.h"
 #include "v8/include/v8-microtask-queue.h"
 
 namespace brave_wallet {
@@ -57,6 +59,10 @@ bool BraveWalletRenderFrameObserver::CanCreateProvider() {
 
   // Scripts can't be executed on provisional frames
   if (render_frame()->GetWebFrame()->IsProvisional()) {
+    return false;
+  }
+
+  if (brave::IsMinimalInjectionFrame(url::Origin::Create(url_))) {
     return false;
   }
 
