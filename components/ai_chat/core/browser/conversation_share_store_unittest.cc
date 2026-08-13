@@ -160,14 +160,21 @@ TEST_F(ConversationShareStoreUnitTest, DropsExpiredRecordsOnLoad) {
   task_environment_.FastForwardBy(base::Days(3));
   store_->AddShare("share-2", "deletion-2", "conversation-share-2", "New",
                    GURL(kShareUrl));
+  const std::string stored_with_both =
+      prefs_.GetString(prefs::kBraveAIChatConversationShares);
 
-  // The server deletes shares after the expiry period, so the first share is
-  // gone by the time the store is next created.
+  // Destroy the store before advancing time: a live one purges on its own
+  // timer, which would leave the load path with nothing to drop.
+  store_.reset();
   task_environment_.FastForwardBy(
       base::Days(features::kAIChatConversationShareExpiryDays.Get()) -
       base::Days(2));
   CreateStore();
 
+  // The server deletes shares after the expiry period, so the expired record is
+  // dropped from disk on load, not merely filtered out of what is reported.
+  EXPECT_NE(prefs_.GetString(prefs::kBraveAIChatConversationShares),
+            stored_with_both);
   std::vector<mojom::ConversationSharePtr> shares = GetShares();
   ASSERT_EQ(shares.size(), 1u);
   EXPECT_EQ(shares[0]->share_id, "share-2");

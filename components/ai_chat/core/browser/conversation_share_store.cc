@@ -54,9 +54,11 @@ ConversationShareStore::ShareRecordFromValue(const base::Value& value) {
   }
   const std::string* share_id = dict->FindString(kShareIdKey);
   const std::string* deletion_id = dict->FindString(kDeletionIdKey);
+  const std::string* conversation_uuid = dict->FindString(kConversationUuidKey);
   const std::string* url = dict->FindString(kUrlKey);
   const base::Value* created_time = dict->Find(kCreatedTimeKey);
-  if (!share_id || !deletion_id || !url || !created_time) {
+  if (!share_id || !deletion_id || !conversation_uuid || !url ||
+      !created_time) {
     return std::nullopt;
   }
   std::optional<base::Time> parsed_time = base::ValueToTime(*created_time);
@@ -67,9 +69,7 @@ ConversationShareStore::ShareRecordFromValue(const base::Value& value) {
   ShareRecord record;
   record.share_id = *share_id;
   record.deletion_id = *deletion_id;
-  const std::string* conversation_uuid = dict->FindString(kConversationUuidKey);
-  record.conversation_uuid =
-      conversation_uuid ? *conversation_uuid : std::string();
+  record.conversation_uuid = *conversation_uuid;
   const std::string* title = dict->FindString(kTitleKey);
   record.conversation_title = title ? *title : std::string();
   record.url = GURL(*url);

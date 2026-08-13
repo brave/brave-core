@@ -120,8 +120,7 @@ struct ConversationShare {
 
   // The conversation this share was made from. Viewing the share doesn't need
   // it - the uploaded copy is self-contained - but it relates the share back to
-  // the conversation it came from. Empty for shares recorded before this was
-  // kept, and the conversation may since have been deleted.
+  // the conversation it came from, which may since have been deleted.
   string conversation_uuid;
 
   // Title of the conversation at the time it was shared. The conversation may
