@@ -7,7 +7,9 @@
 #define BRAVE_BROWSER_SERP_METRICS_SERP_METRICS_ALL_PROFILES_AGGREGATOR_MOCK_H_
 
 #include <cstddef>
+#include <optional>
 
+#include "base/time/time.h"
 #include "brave/browser/serp_metrics/serp_metrics_all_profiles_aggregator.h"
 #include "brave/components/serp_metrics/serp_metric_type.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -33,10 +35,13 @@ class SerpMetricsAllProfilesAggregatorMock
 
   MOCK_METHOD(size_t,
               GetSearchCountForYesterday,
-              (SerpMetricType type),
+              (SerpMetricType type, std::optional<base::Time> last_report_time),
               (const, override));
 
-  MOCK_METHOD(size_t, GetSearchCountForStalePeriod, (), (const, override));
+  MOCK_METHOD(size_t,
+              GetSearchCountForStalePeriod,
+              (std::optional<base::Time> last_report_time),
+              (const, override));
 };
 
 }  // namespace serp_metrics

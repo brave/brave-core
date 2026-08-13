@@ -8,8 +8,10 @@
 
 #include <cstddef>
 #include <memory>
+#include <optional>
 #include <vector>
 
+#include "base/time/time.h"
 #include "brave/components/serp_metrics/serp_metric_type.h"
 
 class PrefService;
@@ -34,8 +36,11 @@ class SerpMetricsAllProfilesAggregator {
 
   virtual ~SerpMetricsAllProfilesAggregator();
 
-  virtual size_t GetSearchCountForYesterday(SerpMetricType type) const;
-  virtual size_t GetSearchCountForStalePeriod() const;
+  virtual size_t GetSearchCountForYesterday(
+      SerpMetricType type,
+      std::optional<base::Time> last_report_time = std::nullopt) const;
+  virtual size_t GetSearchCountForStalePeriod(
+      std::optional<base::Time> last_report_time = std::nullopt) const;
 
   size_t GetSearchCountForTesting(SerpMetricType type) const;
 

@@ -23,6 +23,7 @@
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/browser/net/brave_system_request_handler.h"
 #include "brave/browser/profiles/brave_profile_manager.h"
+#include "brave/browser/serp_metrics/serp_metrics_p3a.h"
 #include "brave/common/brave_channel_info.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_component_updater/browser/brave_component_updater_delegate.h"
@@ -315,6 +316,8 @@ ProfileManager* BraveBrowserProcessImpl::profile_manager() {
 
 void BraveBrowserProcessImpl::StartBraveServices() {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+
+  process_misc_metrics()->serp_metrics_p3a()->Init();
 
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
   resource_component();
