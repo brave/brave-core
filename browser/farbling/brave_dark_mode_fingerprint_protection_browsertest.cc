@@ -9,8 +9,10 @@
 #include "base/test/scoped_feature_list.h"
 #include "base/test/thread_test_helper.h"
 #include "brave/browser/brave_content_browser_client.h"
+#include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
 #include "brave/browser/extensions/brave_base_local_data_files_browsertest.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/constants/brave_paths.h"
@@ -95,27 +97,31 @@ class BraveDarkModeFingerprintProtectionTest : public InProcessBrowserTest {
     top_level_page_url_ = embedded_test_server()->GetURL("a.com", "/");
     dark_mode_url_ =
         embedded_test_server()->GetURL("a.com", "/dark_mode_fingerprint.html");
+    auto* profile = browser()->profile();
+    brave_shields_settings_ =
+        BraveShieldsSettingsServiceFactory::GetForProfile(profile);
+  }
+
+  void TearDownOnMainThread() override {
+    InProcessBrowserTest::TearDownOnMainThread();
+    brave_shields_settings_ = nullptr;
   }
 
   const GURL& dark_mode_url() { return dark_mode_url_; }
 
-  HostContentSettingsMap* content_settings() {
-    return HostContentSettingsMapFactory::GetForProfile(browser()->profile());
-  }
-
   void AllowFingerprinting() {
-    brave_shields::SetFingerprintingControlType(
-        content_settings(), ControlType::ALLOW, top_level_page_url_);
+    brave_shields_settings_->SetFingerprintingControlType(
+        ControlType::ALLOW, top_level_page_url_, false, false);
   }
 
   void BlockFingerprinting() {
-    brave_shields::SetFingerprintingControlType(
-        content_settings(), ControlType::BLOCK, top_level_page_url_);
+    brave_shields_settings_->SetFingerprintingControlType(
+        ControlType::BLOCK, top_level_page_url_, false, false);
   }
 
   void SetFingerprintingDefault() {
-    brave_shields::SetFingerprintingControlType(
-        content_settings(), ControlType::DEFAULT, top_level_page_url_);
+    brave_shields_settings_->SetFingerprintingControlType(
+        ControlType::DEFAULT, top_level_page_url_, false, false);
   }
 
   void SetDarkMode(bool dark_mode) {
@@ -167,6 +173,8 @@ class BraveDarkModeFingerprintProtectionTest : public InProcessBrowserTest {
   GURL top_level_page_url_;
   GURL dark_mode_url_;
   base::test::ScopedFeatureList feature_list_;
+  raw_ptr<brave_shields::BraveShieldsSettingsService> brave_shields_settings_ =
+      nullptr;
 };
 
 IN_PROC_BROWSER_TEST_F(BraveDarkModeFingerprintProtectionTest, DarkModeCheck) {

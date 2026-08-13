@@ -7,8 +7,10 @@
 
 #include "base/path_service.h"
 #include "base/test/thread_test_helper.h"
+#include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
 #include "brave/browser/extensions/brave_base_local_data_files_browsertest.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/constants/brave_paths.h"
@@ -79,6 +81,14 @@ class BraveDeviceMemoryFarblingBrowserTest : public InProcessBrowserTest {
     https_server_.ServeFilesFromDirectory(test_data_dir);
     EXPECT_TRUE(https_server_.Start());
     host_resolver()->AddRule("*", "127.0.0.1");
+    auto* profile = browser()->profile();
+    brave_shields_settings_ =
+        BraveShieldsSettingsServiceFactory::GetForProfile(profile);
+  }
+
+  void TearDownOnMainThread() override {
+    InProcessBrowserTest::TearDownOnMainThread();
+    brave_shields_settings_ = nullptr;
   }
 
  protected:
@@ -90,21 +100,18 @@ class BraveDeviceMemoryFarblingBrowserTest : public InProcessBrowserTest {
   }
 
   void AllowFingerprinting(std::string domain) {
-    brave_shields::SetFingerprintingControlType(
-        content_settings(), ControlType::ALLOW,
-        https_server_.GetURL(domain, "/"));
+    brave_shields_settings_->SetFingerprintingControlType(
+        ControlType::ALLOW, https_server_.GetURL(domain, "/"), false, false);
   }
 
   void BlockFingerprinting(std::string domain) {
-    brave_shields::SetFingerprintingControlType(
-        content_settings(), ControlType::BLOCK,
-        https_server_.GetURL(domain, "/"));
+    brave_shields_settings_->SetFingerprintingControlType(
+        ControlType::BLOCK, https_server_.GetURL(domain, "/"), false, false);
   }
 
   void SetFingerprintingDefault(std::string domain) {
-    brave_shields::SetFingerprintingControlType(
-        content_settings(), ControlType::DEFAULT,
-        https_server_.GetURL(domain, "/"));
+    brave_shields_settings_->SetFingerprintingControlType(
+        ControlType::DEFAULT, https_server_.GetURL(domain, "/"), false, false);
   }
 
   content::WebContents* contents() {
@@ -113,6 +120,8 @@ class BraveDeviceMemoryFarblingBrowserTest : public InProcessBrowserTest {
 
  private:
   base::test::ScopedFeatureList scoped_feature_list_;
+  raw_ptr<brave_shields::BraveShieldsSettingsService> brave_shields_settings_ =
+      nullptr;
 };
 
 // Tests results of farbling known values

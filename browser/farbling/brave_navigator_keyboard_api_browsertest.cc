@@ -6,6 +6,8 @@
 #include <memory>
 
 #include "base/path_service.h"
+#include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
@@ -49,6 +51,14 @@ class BraveNavigatorKeyboardAPIBrowserTest : public InProcessBrowserTest {
     top_level_page_url_ = https_server_.GetURL("a.test", "/");
     test_url_ = https_server_.GetURL("a.test", "/simple.html");
     host_resolver()->AddRule("*", "127.0.0.1");
+    auto* profile = browser()->profile();
+    brave_shields_settings_ =
+        BraveShieldsSettingsServiceFactory::GetForProfile(profile);
+  }
+
+  void TearDownOnMainThread() override {
+    InProcessBrowserTest::TearDownOnMainThread();
+    brave_shields_settings_ = nullptr;
   }
 
  protected:
@@ -61,18 +71,18 @@ class BraveNavigatorKeyboardAPIBrowserTest : public InProcessBrowserTest {
   }
 
   void AllowFingerprinting() {
-    brave_shields::SetFingerprintingControlType(
-        content_settings(), ControlType::ALLOW, top_level_page_url_);
+    brave_shields_settings_->SetFingerprintingControlType(
+        ControlType::ALLOW, top_level_page_url_, false, false);
   }
 
   void BlockFingerprinting() {
-    brave_shields::SetFingerprintingControlType(
-        content_settings(), ControlType::BLOCK, top_level_page_url_);
+    brave_shields_settings_->SetFingerprintingControlType(
+        ControlType::BLOCK, top_level_page_url_, false, false);
   }
 
   void SetFingerprintingDefault() {
-    brave_shields::SetFingerprintingControlType(
-        content_settings(), ControlType::DEFAULT, top_level_page_url_);
+    brave_shields_settings_->SetFingerprintingControlType(
+        ControlType::DEFAULT, top_level_page_url_, false, false);
   }
 
   content::WebContents* contents() {
@@ -89,6 +99,8 @@ class BraveNavigatorKeyboardAPIBrowserTest : public InProcessBrowserTest {
  private:
   GURL top_level_page_url_;
   GURL test_url_;
+  raw_ptr<brave_shields::BraveShieldsSettingsService> brave_shields_settings_ =
+      nullptr;
 };
 
 IN_PROC_BROWSER_TEST_F(BraveNavigatorKeyboardAPIBrowserTest,

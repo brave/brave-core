@@ -274,9 +274,11 @@ void DefaultBraveShieldsHandler::GetFingerprintingControlType(
     const base::ListValue& args) {
   CHECK_EQ(args.size(), 1U);
   CHECK(profile_);
+  auto* settings_service =
+      BraveShieldsSettingsServiceFactory::GetForProfile(profile_);
+  CHECK(settings_service);
 
-  ControlType setting = brave_shields::GetFingerprintingControlType(
-      HostContentSettingsMapFactory::GetForProfile(profile_), GURL());
+  ControlType setting = settings_service->GetFingerprintingControlType(GURL());
 
   AllowJavascript();
   ResolveJavascriptCallback(args[0], base::Value(ControlTypeToString(setting)));
@@ -288,10 +290,12 @@ void DefaultBraveShieldsHandler::SetFingerprintingControlType(
   CHECK(profile_);
   std::string value = args[0].GetString();
 
-  brave_shields::SetFingerprintingControlType(
-      HostContentSettingsMapFactory::GetForProfile(profile_),
-      ControlTypeFromString(value), GURL(), g_browser_process->local_state(),
-      profile_->GetPrefs());
+  auto* settings_service =
+      BraveShieldsSettingsServiceFactory::GetForProfile(profile_);
+  CHECK(settings_service);
+
+  settings_service->SetFingerprintingControlType(ControlTypeFromString(value),
+                                                 GURL());
 }
 
 void DefaultBraveShieldsHandler::GetFingerprintingBlockEnabled(
@@ -299,8 +303,11 @@ void DefaultBraveShieldsHandler::GetFingerprintingBlockEnabled(
   CHECK_EQ(args.size(), 1U);
   CHECK(profile_);
 
-  ControlType setting = brave_shields::GetFingerprintingControlType(
-      HostContentSettingsMapFactory::GetForProfile(profile_), GURL());
+  auto* settings_service =
+      BraveShieldsSettingsServiceFactory::GetForProfile(profile_);
+  CHECK(settings_service);
+
+  ControlType setting = settings_service->GetFingerprintingControlType(GURL());
   bool result = setting != ControlType::ALLOW;
   AllowJavascript();
   ResolveJavascriptCallback(args[0], base::Value(result));
@@ -312,10 +319,12 @@ void DefaultBraveShieldsHandler::SetFingerprintingBlockEnabled(
   CHECK(profile_);
   bool value = args[0].GetBool();
 
-  brave_shields::SetFingerprintingControlType(
-      HostContentSettingsMapFactory::GetForProfile(profile_),
-      value ? ControlType::DEFAULT : ControlType::ALLOW, GURL(),
-      g_browser_process->local_state());
+  auto* settings_service =
+      BraveShieldsSettingsServiceFactory::GetForProfile(profile_);
+  CHECK(settings_service);
+
+  settings_service->SetFingerprintingControlType(
+      value ? ControlType::DEFAULT : ControlType::ALLOW, GURL(), true, false);
 }
 
 void DefaultBraveShieldsHandler::GetHttpsUpgradeControlType(

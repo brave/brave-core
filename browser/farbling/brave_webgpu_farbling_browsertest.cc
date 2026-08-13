@@ -5,12 +5,13 @@
 
 #include "base/path_service.h"
 #include "base/test/scoped_feature_list.h"
+#include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/webcompat/core/common/features.h"
 #include "build/build_config.h"
-#include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -71,6 +72,14 @@ class BraveWebGPUFarblingBrowserTest : public InProcessBrowserTest {
     https_server_.ServeFilesFromDirectory(test_data_dir);
 
     ASSERT_TRUE(https_server_.Start());
+    auto* profile = browser()->profile();
+    brave_shields_settings_ =
+        BraveShieldsSettingsServiceFactory::GetForProfile(profile);
+  }
+
+  void TearDownOnMainThread() override {
+    InProcessBrowserTest::TearDownOnMainThread();
+    brave_shields_settings_ = nullptr;
   }
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
@@ -91,26 +100,19 @@ class BraveWebGPUFarblingBrowserTest : public InProcessBrowserTest {
     mock_cert_verifier_.TearDownInProcessBrowserTestFixture();
   }
 
-  HostContentSettingsMap* content_settings() {
-    return HostContentSettingsMapFactory::GetForProfile(browser()->profile());
-  }
-
   void AllowFingerprinting(const std::string& domain) {
-    brave_shields::SetFingerprintingControlType(
-        content_settings(), ControlType::ALLOW,
-        https_server_.GetURL(domain, "/"));
+    brave_shields_settings_->SetFingerprintingControlType(
+        ControlType::ALLOW, https_server_.GetURL(domain, "/"), false, false);
   }
 
   void BlockFingerprinting(const std::string& domain) {
-    brave_shields::SetFingerprintingControlType(
-        content_settings(), ControlType::BLOCK,
-        https_server_.GetURL(domain, "/"));
+    brave_shields_settings_->SetFingerprintingControlType(
+        ControlType::BLOCK, https_server_.GetURL(domain, "/"), false, false);
   }
 
   void SetFingerprintingDefault(const std::string& domain) {
-    brave_shields::SetFingerprintingControlType(
-        content_settings(), ControlType::DEFAULT,
-        https_server_.GetURL(domain, "/"));
+    brave_shields_settings_->SetFingerprintingControlType(
+        ControlType::DEFAULT, https_server_.GetURL(domain, "/"), false, false);
   }
 
   content::WebContents* contents() {
@@ -121,6 +123,8 @@ class BraveWebGPUFarblingBrowserTest : public InProcessBrowserTest {
   net::EmbeddedTestServer https_server_;
   content::ContentMockCertVerifier mock_cert_verifier_;
   base::test::ScopedFeatureList scoped_feature_list_;
+  raw_ptr<brave_shields::BraveShieldsSettingsService> brave_shields_settings_ =
+      nullptr;
 };
 
 // Test no scrubbing fixture.

@@ -67,10 +67,6 @@ bool IsFirstPartyCosmeticFilteringEnabled(HostContentSettingsMap* map,
 
 bool IsReduceLanguageEnabledForProfile(PrefService* pref_service);
 
-bool ShouldDoReduceLanguage(HostContentSettingsMap* map,
-                            const GURL& url,
-                            PrefService* pref_service);
-
 DomainBlockingType GetDomainBlockingType(HostContentSettingsMap* map,
                                          const GURL& url);
 
@@ -83,14 +79,6 @@ ControlType GetCookieControlType(
     HostContentSettingsMap* map,
     content_settings::CookieSettings* cookie_settings,
     const GURL& url);
-
-void SetFingerprintingControlType(HostContentSettingsMap* map,
-                                  ControlType type,
-                                  const GURL& url,
-                                  PrefService* local_state = nullptr,
-                                  PrefService* profile_state = nullptr);
-ControlType GetFingerprintingControlType(HostContentSettingsMap* map,
-                                         const GURL& url);
 
 bool IsBraveShieldsManaged(PrefService* prefs,
                            HostContentSettingsMap* map,
@@ -128,9 +116,6 @@ void SetWebcompatEnabled(HostContentSettingsMap* map,
 bool IsWebcompatEnabled(HostContentSettingsMap* map,
                         ContentSettingsType webcompat_settings_type,
                         const GURL& url);
-
-mojom::FarblingLevel GetFarblingLevel(HostContentSettingsMap* map,
-                                      const GURL& primary_url);
 
 bool IsDeveloperModeEnabled(PrefService* profile_state);
 

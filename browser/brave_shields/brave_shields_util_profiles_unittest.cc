@@ -3,6 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+#include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "chrome/browser/content_settings/cookie_settings_factory.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
@@ -68,6 +70,39 @@ class BraveShieldsUtilProfilesTest : public testing::Test {
 
         setter(incognito_map, ivalue);
         const auto iget = getter(incognito_map);
+        if (iexpect != iget) {
+          ADD_FAILURE() << "Incognito profile: Set " << ivalue << " Get "
+                        << iget << " Expected " << iexpect
+                        << " Regular profile value " << value << "\n";
+        }
+      }
+    }
+  }
+
+  template <typename ValueT>
+  void RunSettingsServiceTest(
+      base::span<const std::pair<ValueT, ValueT>> cases,
+      base::FunctionRef<void(BraveShieldsSettingsService*, ValueT)> setter,
+      base::FunctionRef<ValueT(BraveShieldsSettingsService*)> getter) {
+    for (const auto& [value, expect] : cases) {
+      auto* regular_settings =
+          BraveShieldsSettingsServiceFactory::GetForProfile(regular_profile());
+      setter(regular_settings, value);
+      const auto get = getter(regular_settings);
+      if (expect != get) {
+        ADD_FAILURE() << "Regular profile: Set " << value << " Get " << get
+                      << " Expected " << expect << "\n";
+      }
+
+      auto incognito = incognito_profile();
+      // Now change value for incognito and expect that values do not depend
+      // on the regular profile.
+      for (const auto& [ivalue, iexpect] : cases) {
+        auto* incognito_settings =
+            BraveShieldsSettingsServiceFactory::GetForProfile(incognito.get());
+
+        setter(incognito_settings, ivalue);
+        const auto iget = getter(incognito_settings);
         if (iexpect != iget) {
           ADD_FAILURE() << "Incognito profile: Set " << ivalue << " Get "
                         << iget << " Expected " << iexpect
@@ -149,14 +184,14 @@ TEST_F(BraveShieldsUtilProfilesTest, SetFingerprintingControlType) {
       {BLOCK_THIRD_PARTY, DEFAULT},
       {DEFAULT, DEFAULT}};
 
-  auto set = [this](HostContentSettingsMap* map, ControlType value) {
-    SetFingerprintingControlType(map, value, kTestUrl);
+  auto set = [this](BraveShieldsSettingsService* settings, ControlType value) {
+    settings->SetFingerprintingControlType(value, kTestUrl, false, false);
   };
-  auto get = [this](HostContentSettingsMap* map) {
-    return GetFingerprintingControlType(map, kTestUrl);
+  auto get = [this](BraveShieldsSettingsService* settings) {
+    return settings->GetFingerprintingControlType(kTestUrl);
   };
 
-  RunTest<ControlType>(kExpects, std::move(set), std::move(get));
+  RunSettingsServiceTest<ControlType>(kExpects, std::move(set), std::move(get));
 }
 
 TEST_F(BraveShieldsUtilProfilesTest, SetHttpsUpgradeControlType) {

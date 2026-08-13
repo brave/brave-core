@@ -11,9 +11,10 @@
 #include "base/path_service.h"
 #include "base/run_loop.h"
 #include "base/test/scoped_feature_list.h"
+#include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/constants/brave_paths.h"
-#include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/extensions/chrome_test_extension_loader.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window.h"
@@ -102,6 +103,15 @@ class BraveScreenFarblingBrowserTest : public InProcessBrowserTest {
     ASSERT_TRUE(embedded_test_server()->Start());
 
     parent_url_ = embedded_test_server()->GetURL("a.com", "/iframe.html");
+
+    auto* profile = browser()->profile();
+    brave_shields_settings_ =
+        BraveShieldsSettingsServiceFactory::GetForProfile(profile);
+  }
+
+  void TearDownOnMainThread() override {
+    InProcessBrowserTest::TearDownOnMainThread();
+    brave_shields_settings_ = nullptr;
   }
 
   std::string LoadExtension(const base::FilePath& path) {
@@ -112,14 +122,10 @@ class BraveScreenFarblingBrowserTest : public InProcessBrowserTest {
     return extension->id();
   }
 
-  HostContentSettingsMap* ContentSettings() {
-    return HostContentSettingsMapFactory::GetForProfile(browser()->profile());
-  }
-
   void SetFingerprintingSetting(bool allow) {
-    brave_shields::SetFingerprintingControlType(
-        ContentSettings(), allow ? ControlType::ALLOW : ControlType::DEFAULT,
-        parent_url());
+    brave_shields_settings_->SetFingerprintingControlType(
+        allow ? ControlType::ALLOW : ControlType::DEFAULT, parent_url(), false,
+        false);
   }
 
   content::WebContents* Contents() const {
@@ -336,6 +342,8 @@ class BraveScreenFarblingBrowserTest : public InProcessBrowserTest {
 
  protected:
   base::test::ScopedFeatureList feature_list_;
+  raw_ptr<brave_shields::BraveShieldsSettingsService> brave_shields_settings_ =
+      nullptr;
 
  private:
   GURL parent_url_;

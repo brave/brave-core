@@ -331,10 +331,13 @@ void BraveShieldsWebContentsObserver::SendShieldsSettings(
                 .GetURL()
           : url::Origin::Create(navigation_handle->GetURL()).GetURL();
 
-  HostContentSettingsMap* host_content_settings_map =
-      HostContentSettingsMapFactory::GetForProfile(rfh->GetBrowserContext());
+  auto* shields_settings_service =
+      BraveShieldsSettingsServiceFactory::GetForProfile(
+          Profile::FromBrowserContext(rfh->GetBrowserContext()));
   const brave_shields::mojom::FarblingLevel farbling_level =
-      brave_shields::GetFarblingLevel(host_content_settings_map, primary_url);
+      shields_settings_service
+          ? shields_settings_service->GetFarblingLevel(primary_url)
+          : brave_shields::mojom::FarblingLevel::OFF;
   std::string additional_entropy;
 #if BUILDFLAG(ENABLE_CONTAINERS)
   if (base::FeatureList::IsEnabled(containers::features::kContainers)) {
@@ -342,12 +345,8 @@ void BraveShieldsWebContentsObserver::SendShieldsSettings(
         navigation_handle->GetWebContents());
   }
 #endif
-  auto* shields_settings_service =
-      BraveShieldsSettingsServiceFactory::GetForProfile(
-          Profile::FromBrowserContext(rfh->GetBrowserContext()));
   const base::Token farbling_token =
-      farbling_level != brave_shields::mojom::FarblingLevel::OFF &&
-              shields_settings_service
+      farbling_level != brave_shields::mojom::FarblingLevel::OFF
           ? shields_settings_service->GetFarblingToken(
                 primary_url, base::as_byte_span(additional_entropy))
           : base::Token();
