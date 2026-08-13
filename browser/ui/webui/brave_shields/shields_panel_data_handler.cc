@@ -29,10 +29,12 @@ ShieldsPanelDataHandler::ShieldsPanelDataHandler(
         data_handler_receiver,
     TopChromeWebUIController* webui_controller,
     TabStripModel* tab_strip_model,
-    favicon::FaviconService* favicon_service)
+    favicon::FaviconService* favicon_service,
+    brave_shields::BraveShieldsSettingsService* brave_shields_settings_service)
     : data_handler_receiver_(this, std::move(data_handler_receiver)),
       webui_controller_(webui_controller),
-      favicon_service_(favicon_service) {
+      favicon_service_(favicon_service),
+      brave_shields_settings_service_(brave_shields_settings_service) {
   DCHECK(tab_strip_model);
   tab_strip_model->AddObserver(this);
 
@@ -311,14 +313,8 @@ void ShieldsPanelDataHandler::UpdateSiteBlockInfo() {
   site_block_info_.show_shields_disabled_ad_block_only_mode_prompt =
       active_shields_data_controller_
           ->ShouldShowShieldsDisabledAdBlockOnlyModePrompt();
-  auto* brave_shields_settings =
-      BraveShieldsSettingsServiceFactory::GetForProfile(
-          Profile::FromBrowserContext(
-              active_shields_data_controller_->web_contents()
-                  ->GetBrowserContext()));
-  CHECK(brave_shields_settings);
   site_block_info_.is_brave_shields_managed =
-      brave_shields_settings->IsBraveShieldsManaged(current_site_url);
+      brave_shields_settings_service_->IsBraveShieldsManaged(current_site_url);
   const auto& invoked_webcompat_set =
       active_shields_data_controller_->GetInvokedWebcompatFeatures();
   site_block_info_.invoked_webcompat_list = std::vector<ContentSettingsType>(
