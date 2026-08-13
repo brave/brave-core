@@ -1,0 +1,19 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Give SidePanelControllerViews a WeakPtrFactory, declared last so it is
+      destroyed first.
+
+      CreateCustomizeChromeWebView() binds a callback to CloseSidePanel()
+      through it, which must not fire once this object starts tearing down.
+    regex:
+      re_pattern: '(class SidePanelControllerViews[^{]*\{.*?)\n\};'
+      re_flags: [DOTALL]
+      replace: |-
+        \1
+          base::WeakPtrFactory<SidePanelControllerViews> weak_ptr_factory_{this};
+        };
