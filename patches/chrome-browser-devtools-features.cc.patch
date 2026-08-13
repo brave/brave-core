@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/devtools/features.cc b/chrome/browser/devtools/features.cc
-index 5af5dcc1cc92abe579d72e9c2ffa88181413991d..6abc3fd4cca9f7cd72557fac8b0c23f4bf27a1f4 100644
+index 5af5dcc1cc92abe579d72e9c2ffa88181413991d..fb4df136de2fa83cb16796c10900e91741c3b5ca 100644
 --- a/chrome/browser/devtools/features.cc
 +++ b/chrome/browser/devtools/features.cc
 @@ -11,7 +11,14 @@ namespace features {
@@ -59,3 +59,11 @@ index 5af5dcc1cc92abe579d72e9c2ffa88181413991d..6abc3fd4cca9f7cd72557fac8b0c23f4
  
  // Whether Console Insights Teasers are enabled.
  BASE_FEATURE(kDevToolsConsoleInsightsTeasers,
+@@ -237,6 +248,7 @@ BASE_FEATURE(kDevToolsGeminiRebranding, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ BASE_FEATURE(kDevToolsAiOriginTrialsApis, base::FEATURE_ENABLED_BY_DEFAULT);
+ 
++// kDevToolsUseGcaApi feature state is enforced via plaster rewrite.
+ BASE_FEATURE(kDevToolsUseGcaApi, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ // Whether the Plus Button is shown in main DevTools panel/drawer tabbed

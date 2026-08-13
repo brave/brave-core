@@ -1,8 +1,18 @@
 diff --git a/chrome/browser/history_embeddings/history_embeddings_utils.cc b/chrome/browser/history_embeddings/history_embeddings_utils.cc
-index 8198ba0c74bbfb0e68f8334f9592dddccb182c28..d829b6e1448dc9ef7c000dfcad93e7039c2d32fe 100644
+index 8198ba0c74bbfb0e68f8334f9592dddccb182c28..b1bb7482efcbf223be2dcc8f0fc498e6bc316aa9 100644
 --- a/chrome/browser/history_embeddings/history_embeddings_utils.cc
 +++ b/chrome/browser/history_embeddings/history_embeddings_utils.cc
-@@ -163,10 +163,10 @@ void PopulateSourceForWebUI(content::WebUIDataSource* source,
+@@ -57,7 +57,8 @@ constexpr auto kEnabledByDefaultForDesktopOnly =
+ #endif
+ 
+ // These are the kill switches for the launched history embeddings features.
+-BASE_FEATURE(kLaunchedHistoryEmbeddings, kEnabledByDefaultForDesktopOnly);
++// kLaunchedHistoryEmbeddings feature state is enforced via plaster rewrite.
++BASE_FEATURE(kLaunchedHistoryEmbeddings, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ bool IsHistoryEmbeddingsEnabledForProfile(Profile* profile) {
+   if (!IsHistoryEmbeddingsFeatureEnabled()) {
+@@ -163,10 +164,10 @@ void PopulateSourceForWebUI(content::WebUIDataSource* source,
                ModelExecutionEnterprisePolicyValue::kAllowWithoutLogging);
    if (logging_disabled_by_enterprise) {
      source->AddLocalizedString("historyEmbeddingsDisclaimer",

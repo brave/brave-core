@@ -13,8 +13,6 @@
 // the chrome://history side bar toggle. IsHistoryEmbeddingsSettingVisible()
 // is forced to false so the chrome://settings/ai History Search entry is
 // not surfaced; the per-profile toggle lives on chrome://history.
-#include "base/feature_list.h"
-#include "base/feature_override.h"
 #include "brave/components/local_ai/buildflags/buildflags.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/browser_process.h"
@@ -40,10 +38,6 @@
 #undef IsHistoryEmbeddingsSettingVisible
 
 namespace history_embeddings {
-
-OVERRIDE_FEATURE_DEFAULT_STATES({{
-    {kLaunchedHistoryEmbeddings, base::FEATURE_DISABLED_BY_DEFAULT},
-}});
 
 bool IsHistoryEmbeddingsFeatureEnabled() {
 #if BUILDFLAG(ENABLE_LOCAL_AI)

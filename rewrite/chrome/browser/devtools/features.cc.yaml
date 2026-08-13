@@ -35,3 +35,8 @@ substitutions:
     set_feature_flag_default_state:
       feature_name: kDevToolsNewPermissionDialog
       value: base::FEATURE_DISABLED_BY_DEFAULT
+
+  - description: 'Ship kDevToolsUseGcaApi disabled.'
+    set_feature_flag_default_state:
+      feature_name: kDevToolsUseGcaApi
+      value: base::FEATURE_DISABLED_BY_DEFAULT

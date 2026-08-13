@@ -1,0 +1,32 @@
+diff --git a/components/autofill/core/common/autofill_payments_features.cc b/components/autofill/core/common/autofill_payments_features.cc
+index 6e6e504c19fd590a40600260e9fc351603aa2614..9f196e30fab5b9254963f630520fa9a9ade7346c 100644
+--- a/components/autofill/core/common/autofill_payments_features.cc
++++ b/components/autofill/core/common/autofill_payments_features.cc
+@@ -47,13 +47,7 @@ BASE_FEATURE(kAutofillEnableAiCardRecommendation,
+ // When enabled, Chrome will extract the checkout amount from the checkout page
+ // of the allowlisted merchant websites.
+ BASE_FEATURE(kAutofillEnableAmountExtraction,
+-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || \
+-    BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_ANDROID)
+-             base::FEATURE_ENABLED_BY_DEFAULT);
+-#else
+              base::FEATURE_DISABLED_BY_DEFAULT);
+-#endif  // BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) ||
+-        // BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_ANDROID)
+ 
+ // Enables testing of the result of checkout amount extraction on desktop.
+ // This flag will allow amount extraction to run on any website when a CC
+@@ -80,13 +74,7 @@ BASE_FEATURE(kAutofillEnableBottomSheetScanCardAndFill,
+ 
+ // When enabled, buy now pay later (BNPL) in Autofill will be offered.
+ BASE_FEATURE(kAutofillEnableBuyNowPayLater,
+-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || \
+-    BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_ANDROID)
+-             base::FEATURE_ENABLED_BY_DEFAULT);
+-#else
+              base::FEATURE_DISABLED_BY_DEFAULT);
+-#endif  // BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) ||
+-        // BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_ANDROID)
+ 
+ // When enabled, additional steps are required to autofill buy now pay later
+ // (BNPL) issuers that are externally linked.
