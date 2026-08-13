@@ -9,6 +9,7 @@ import("//brave/components/containers/buildflags/buildflags.gni")
 import("//brave/components/playlist/core/common/buildflags/buildflags.gni")
 import("//brave/components/psst/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
+import("//build/config/ui.gni")
 
 assert(is_win || is_mac || is_linux || is_chromeos || is_android)
 
@@ -234,5 +235,9 @@ source_set("browser_tests") {
       ":tab_menu",
       ":tab_model",
     ]
+  }
+
+  if (toolkit_views) {
+    deps += [ "//chrome/browser/ui/views/tabs/tab" ]
   }
 }
