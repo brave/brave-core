@@ -113,10 +113,7 @@ bool BraveTabGroupHeader::ShouldShowVerticalTabs() const {
 
 void BraveTabGroupHeader::LayoutTitleChipForVerticalTabs() {
   auto title_bounds = GetContentsBounds();
-  // Inset the left/top/bottom, but not the right, so the chip's right edge is
-  // flush with the tabs in the group below (which only have a left inset).
-  title_bounds.Inset(gfx::Insets::TLBR(kPaddingForGroup, kPaddingForGroup,
-                                       kPaddingForGroup, 0));
+  title_bounds.Inset(gfx::Insets(kPaddingForGroup));
   title_chip_->SetBoundsRect(title_bounds);
 
   // |title_| is a child view of |title_chip_| and there could be |sync_icon_|
