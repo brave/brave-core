@@ -199,24 +199,31 @@ class TranslateURLFetcher {
 
 <a id="CSRC-015"></a>
 
-## ✅ Use `#define` to Add `virtual` Without Patches
+## ❌ Don't Use `#define` to Add `virtual` — Use `make_virtual`
 
-**When a Chromium method needs to be made virtual for override, use a `#define`
-in a chromium_src override of the header instead of a patch.**
+**When a Chromium method needs to be made virtual for override, use the
+`make_virtual` plaster rewriter, not a `#define` in a chromium_src header
+override.**
 
 ```cpp
-// ❌ WRONG - patch to add virtual keyword
--  void SomeMethod(...);
-+  virtual void SomeMethod(...);
-
-// ✅ CORRECT - chromium_src define
+// ❌ WRONG - chromium_src define; rewrites every SomeMethod in the TU
 #define SomeMethod virtual SomeMethod
 #include "src/path/to/original_header.h"
 #undef SomeMethod
 ```
 
-Note: This technique does not work when the return type is a pointer or
-reference (e.g., `T* Method()`).
+```yaml
+# ✅ CORRECT - rewrite/path/to/original_header.h.yaml
+substitutions:
+  - description: 'Let BraveSomeClass override SomeMethod.'
+    make_virtual:
+      class_name: SomeClass
+      method_name: SomeMethod
+```
+
+The rewriter also handles what the `#define` could not: a pointer or reference
+return type (`T* Method()`), and a destructor (quote it — `'~SomeClass'`). See
+[PLSTR-003](./plaster.md#PLSTR-003).
 
 ---
 

@@ -34,6 +34,7 @@ Category mapping (based on filename prefixes/keywords):
     android:      android*
     ios:          ios*
     patch:        patch*
+    plaster:      plaster*
     nala:         nala*
     always:       everything else (architecture, documentation, etc.)
 """
@@ -56,7 +57,7 @@ CATEGORY_RULES = [
     ("patch", "patch"),
     ("nala", "nala"),
     ("localization", "frontend"),
-    ("plaster", "cpp"),
+    ("plaster", "plaster"),
     ("ui-views", "cpp"),
 ]
 
@@ -101,6 +102,12 @@ CATEGORY_FILE_PATTERNS = {
     "patch": {
         "extensions": {".patch"},
         "path_contains": ["patches/"],
+    },
+    # Plaster rules apply to the rewrite configs themselves, and to
+    # chromium_src C++ where a #define would be reached for instead.
+    "plaster": {
+        "extensions": set(),
+        "path_contains": ["rewrite/", "chromium_src/", "patches/"],
     },
     "nala": {
         "extensions": {".icon", ".svg"},
