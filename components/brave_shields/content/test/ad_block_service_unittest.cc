@@ -185,6 +185,11 @@ class AdBlockServiceTestBase : public testing::Test {
 };
 
 class AdBlockServiceTest : public AdBlockServiceTestBase {
+ public:
+  AdBlockServiceTest() {
+    feature_list_.InitAndEnableFeature(features::kAdblockDATCache);
+  }
+
  protected:
   std::unique_ptr<AdBlockService> CreateService() {
     return CreateServiceWithTaskRunner(
@@ -195,6 +200,11 @@ class AdBlockServiceTest : public AdBlockServiceTestBase {
 };
 
 class AdBlockServiceQueuedTest : public AdBlockServiceTestBase {
+ public:
+  AdBlockServiceQueuedTest() {
+    feature_list_.InitAndEnableFeature(features::kAdblockDATCache);
+  }
+
  protected:
   base::test::TaskEnvironment task_environment_{
       base::test::TaskEnvironment::TimeSource::MOCK_TIME,
