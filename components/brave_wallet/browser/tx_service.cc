@@ -28,6 +28,7 @@
 #include "brave/components/brave_wallet/browser/zcash/zcash_tx_manager.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/fil_address.h"
+#include "brave/components/brave_wallet/common/zcash_utils.h"
 #include "components/grit/brave_components_strings.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "url/origin.h"
@@ -359,6 +360,19 @@ void TxService::AddUnapprovedZCashTransaction(
   if (BlockchainRegistry::GetInstance()->IsRestrictedAddress(params->to)) {
     std::move(callback).Run(false, "", WalletInternalErrorMessage());
     return;
+  }
+
+  // A unified address without a transparent receiver is orchard-only and has
+  // nothing extra to check.
+  if (IsUnifiedAddress(params->to)) {
+    auto transparent_part = ExtractTransparentPart(
+        params->to, IsZCashTestnetKeyring(params->from->keyring_id));
+    if (transparent_part &&
+        BlockchainRegistry::GetInstance()->IsRestrictedAddress(
+            *transparent_part)) {
+      std::move(callback).Run(false, "", WalletInternalErrorMessage());
+      return;
+    }
   }
 
   GetZCashTxManager()->AddUnapprovedZCashTransaction(std::move(params),

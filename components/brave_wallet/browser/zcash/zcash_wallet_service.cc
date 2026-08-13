@@ -7,7 +7,6 @@
 
 #include <optional>
 #include <set>
-#include <string>
 #include <utility>
 
 #include "base/barrier_callback.h"
@@ -15,7 +14,6 @@
 #include "base/check_is_test.h"
 #include "base/containers/span.h"
 #include "base/functional/callback_helpers.h"
-#include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_auto_sync_manager.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_create_orchard_to_transparent_transaction_task.h"
@@ -36,32 +34,6 @@
 namespace brave_wallet {
 
 namespace {
-
-// Resolves the transparent address funds are actually sent to and rejects it if
-// it's restricted. A unified address has to be unwrapped first: only its
-// transparent receiver ends up in the output, and the restricted list is keyed
-// by transparent addresses.
-base::expected<std::string, std::string> ResolveTransparentRecipient(
-    const mojom::AccountIdPtr& account_id,
-    const std::string& address_to) {
-  std::string transparent_address = address_to;
-  if (IsUnifiedAddress(address_to)) {
-    auto transparent_part = ExtractTransparentPart(
-        address_to, IsZCashTestnetKeyring(account_id->keyring_id));
-    if (!transparent_part) {
-      return base::unexpected(l10n_util::GetStringUTF8(
-          IDS_BRAVE_WALLET_ZCASH_UNIFIED_ADDRESS_ERROR));
-    }
-    transparent_address = std::move(transparent_part.value());
-  }
-
-  if (BlockchainRegistry::GetInstance()->IsRestrictedAddress(
-          transparent_address)) {
-    return base::unexpected(WalletInternalErrorMessage());
-  }
-
-  return base::ok(std::move(transparent_address));
-}
 
 }  // namespace
 
@@ -623,16 +595,22 @@ void ZCashWalletService::CreateFullyTransparentTransaction(
     const std::string& address_to,
     uint64_t amount,
     CreateTransactionCallback callback) {
-  auto final_address = ResolveTransparentRecipient(account_id, address_to);
-  if (!final_address.has_value()) {
-    std::move(callback).Run(base::unexpected(final_address.error()));
-    return;
+  std::string final_address = address_to;
+  if (IsUnifiedAddress(address_to)) {
+    auto transparent = ExtractTransparentPart(
+        address_to, IsZCashTestnetKeyring(account_id->keyring_id));
+    if (!transparent) {
+      std::move(callback).Run(base::unexpected(l10n_util::GetStringUTF8(
+          IDS_BRAVE_WALLET_ZCASH_UNIFIED_ADDRESS_ERROR)));
+      return;
+    }
+    final_address = transparent.value();
   }
 
   auto [task_it, inserted] = create_transaction_tasks_.insert(
       std::make_unique<ZCashCreateTransparentTransactionTask>(
           base::PassKey<ZCashWalletService>(), *this,
-          CreateActionContext(account_id), final_address.value(), amount));
+          CreateActionContext(account_id), final_address, amount));
   CHECK(inserted);
   auto* task_ptr = task_it->get();
 
@@ -744,19 +722,11 @@ void ZCashWalletService::CreateOrchardToTransparentTransaction(
     return;
   }
 
-  // `address_to` may be a unified address, which the task can't build an output
-  // script from, so hand it the transparent receiver.
-  auto final_address = ResolveTransparentRecipient(account_id, address_to);
-  if (!final_address.has_value()) {
-    std::move(callback).Run(base::unexpected(final_address.error()));
-    return;
-  }
-
   auto [task_it, inserted] =
       create_orchard_to_transparent_transaction_tasks_.insert(
           std::make_unique<ZCashCreateOrchardToTransparentTransactionTask>(
               base::PassKey<ZCashWalletService>(), *this,
-              CreateActionContext(account_id), final_address.value(), amount));
+              CreateActionContext(account_id), address_to, amount));
   CHECK(inserted);
   auto* task_ptr = task_it->get();
 
