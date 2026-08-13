@@ -317,7 +317,10 @@ export class Config {
   }
 
   isComponentBuild() {
-    return this.buildConfig === 'Debug' || this.buildConfig === 'Component'
+    return (
+      !this.isAndroid()
+      && (this.buildConfig === 'Debug' || this.buildConfig === 'Component')
+    )
   }
 
   isDebug() {
@@ -512,6 +515,12 @@ export class Config {
 
     if (options.build_config) {
       this.buildConfig = options.build_config
+    }
+
+    // Component build is not supported on Android since cr152, fallback to
+    // Static build.
+    if (this.isAndroid() && this.buildConfig === 'Component') {
+      this.buildConfig = 'Static'
     }
 
     if (options.is_asan) {
