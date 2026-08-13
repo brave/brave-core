@@ -21,6 +21,7 @@
 #include "brave/browser/ui/tabs/tree_tab_session_manager.h"
 #include "brave/browser/ui/views/frame/brave_non_client_hit_test_helper.h"
 #include "brave/browser/ui/views/page_info/brave_shields_ui_contents_cache.h"
+#include "brave/browser/ui/views/toolbar/screenshot_preview_dialog.h"
 #include "brave/browser/ui/views/workspaces/workspaces_bubble_controller.h"
 #include "brave/browser/workspaces/features.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
@@ -184,15 +185,18 @@ void BrowserWindowFeatures::InitPostBrowserViewConstruction(
               return bv->GetNativeWindow();
             },
             browser_view),
+        base::BindRepeating(&screenshot::ShowScreenshotPreviewDialog),
         std::move(extractor));
   }
 #else
   screenshot_controller_ = std::make_unique<screenshot::ScreenshotController>(
-      browser_view->GetProfile(), base::BindRepeating(
-                                      [](BrowserView* bv) -> gfx::NativeWindow {
-                                        return bv->GetNativeWindow();
-                                      },
-                                      browser_view));
+      browser_view->GetProfile(),
+      base::BindRepeating(
+          [](BrowserView* bv) -> gfx::NativeWindow {
+            return bv->GetNativeWindow();
+          },
+          browser_view),
+      base::BindRepeating(&screenshot::ShowScreenshotPreviewDialog));
 #endif
 
   if (base::FeatureList::IsEnabled(features::kWorkspaces) &&

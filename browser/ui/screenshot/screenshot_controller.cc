@@ -133,22 +133,28 @@ base::FilePath BuildDefaultPath(const base::FilePath& download_dir) {
 
 ScreenshotController::ScreenshotController(
     content::BrowserContext* profile,
-    NativeWindowGetter parent_window_getter)
+    NativeWindowGetter parent_window_getter,
+    PreviewDialogShower preview_dialog_shower)
     : parent_window_getter_(std::move(parent_window_getter)),
+      preview_dialog_shower_(std::move(preview_dialog_shower)),
       profile_(profile) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  CHECK(preview_dialog_shower_);
 }
 
 #if BUILDFLAG(ENABLE_PRINT_PREVIEW)
 ScreenshotController::ScreenshotController(
     content::BrowserContext* profile,
     NativeWindowGetter parent_window_getter,
+    PreviewDialogShower preview_dialog_shower,
     std::unique_ptr<screenshot::PrintPreviewExtractor> print_preview_extractor)
     : parent_window_getter_(std::move(parent_window_getter)),
+      preview_dialog_shower_(std::move(preview_dialog_shower)),
       print_preview_extractor_(std::move(print_preview_extractor)),
       profile_(profile) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
+  CHECK(preview_dialog_shower_);
   CHECK(print_preview_extractor_);
 }
 #endif
@@ -285,7 +291,7 @@ void ScreenshotController::OnFullPageDevToolsCaptured(
     FinishWithError(Error::kCaptureFailed);
     return;
   }
-  ShowSaveDialog(std::move(result.value()));
+  ShowPreviewDialog(std::move(result.value()));
 }
 
 void ScreenshotController::OnVisibleAreaCopied(SkBitmap bitmap) {
@@ -328,7 +334,20 @@ void ScreenshotController::OnEncoded(std::optional<std::vector<uint8_t>> png) {
     FinishWithError(Error::kEncodeFailed);
     return;
   }
-  ShowSaveDialog(std::move(*png));
+  ShowPreviewDialog(std::move(*png));
+}
+
+void ScreenshotController::ShowPreviewDialog(std::vector<uint8_t> png) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  // The dialog takes ownership of `png` for display and hands the same bytes
+  // back to ShowSaveDialog() via `on_download` if the user confirms, so
+  // there's never a need for a second copy here.
+  preview_dialog_shower_.Run(
+      parent_window_getter_.Run(), std::move(png),
+      base::BindOnce(&ScreenshotController::ShowSaveDialog,
+                     weak_factory_.GetWeakPtr()),
+      base::BindOnce(&ScreenshotController::FinishWithError,
+                     weak_factory_.GetWeakPtr(), Error::kUserCancelled));
 }
 
 void ScreenshotController::ShowSaveDialog(std::vector<uint8_t> png) {
