@@ -37,6 +37,8 @@ void ProcessBraveTypes(Iterator&& iterate_content_settings_list,
   // This is required because we override COOKIES with BRAVE_COOKIES and it's
   // counted twice.
   fix_empty_host_pattern(ContentSettingsType::BRAVE_COOKIES);
+  // Same for effective JAVASCRIPT rules produced from BRAVE_JAVASCRIPT.
+  fix_empty_host_pattern(ContentSettingsType::BRAVE_JAVASCRIPT);
 }
 
 }  // namespace
