@@ -85,11 +85,24 @@ void AssociatedContentDelegate::SetTitle(std::u16string title) {
 }
 
 void AssociatedContentDelegate::AddObserver(Observer* observer) {
+  bool had_observers = !observers_.empty();
   observers_.AddObserver(observer);
+  if (!had_observers) {
+    OnFirstObserverAdded();
+  }
 }
 
 void AssociatedContentDelegate::RemoveObserver(Observer* observer) {
   observers_.RemoveObserver(observer);
+  if (observers_.empty()) {
+    OnLastObserverRemoved();
+  }
+}
+
+void AssociatedContentDelegate::NotifyContentToolsChanged() {
+  for (auto& observer : observers_) {
+    observer.OnContentToolsChanged(this);
+  }
 }
 
 }  // namespace ai_chat

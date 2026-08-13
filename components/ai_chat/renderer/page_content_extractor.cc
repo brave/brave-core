@@ -24,6 +24,7 @@
 #include "brave/components/ai_chat/core/common/utils.h"
 #include "brave/components/ai_chat/core/common/yt_util.h"
 #include "brave/components/ai_chat/renderer/page_text_distilling.h"
+#include "brave/third_party/blink/renderer/core/ai_chat/ai_chat_tool_change_listener.h"
 #include "content/public/renderer/render_frame.h"
 #include "content/public/renderer/render_frame_observer.h"
 #include "mojo/public/cpp/bindings/callback_helpers.h"
@@ -36,6 +37,7 @@
 #include "third_party/blink/public/web/web_local_frame.h"
 #include "third_party/blink/public/web/web_script_source.h"
 #include "third_party/blink/public/web/web_script_tool_types.h"
+#include "third_party/blink/renderer/platform/heap/garbage_collected.h"
 #include "url/gurl.h"
 #include "url/origin.h"
 #include "url/url_constants.h"
@@ -327,9 +329,12 @@ void PageContentExtractor::OnJSTranscriptUrlResult(
     return;
   }
   // Handle invalid url
-  GURL transcript_url =
-      render_frame()->GetWebFrame()->GetDocument().CompleteURL(
-          blink::WebString::FromAscii(url));
+  GURL transcript_url(render_frame()
+                           ->GetWebFrame()
+                           ->GetDocument()
+                           .CompleteURL(blink::WebString::FromAscii(url))
+                           .GetString()
+                           .Utf8());
   if (!transcript_url.is_valid() ||
       !transcript_url.SchemeIs(url::kHttpsScheme)) {
     DVLOG(1) << "Invalid Url for transcript: " << transcript_url.spec();
@@ -368,6 +373,57 @@ void PageContentExtractor::ExecuteContentTool(
             }
           },
           std::move(wrapped)));
+}
+
+void PageContentExtractor::SetContentToolsListener(
+    mojo::PendingRemote<mojom::ContentToolsListener> listener) {
+  content_tools_listener_.reset();
+  if (listener) {
+    content_tools_listener_.Bind(std::move(listener));
+    // Treat a dropped subscription (e.g. the delegate was destroyed) the same
+    // as an explicit unsubscribe.
+    content_tools_listener_.set_disconnect_handler(
+        base::BindOnce(&PageContentExtractor::UpdateToolChangeListener,
+                       weak_ptr_factory_.GetWeakPtr()));
+  }
+  UpdateToolChangeListener();
+}
+
+void PageContentExtractor::DidCreateNewDocument() {
+  // The ModelContext is per-document, so the `toolchange` listener must be
+  // re-attached when a new document is created in this frame.
+  UpdateToolChangeListener();
+}
+
+void PageContentExtractor::UpdateToolChangeListener() {
+  if (!render_frame() || !render_frame()->IsMainFrame()) {
+    return;
+  }
+  if (!content_tools_listener_.is_bound() ||
+      !content_tools_listener_.is_connected()) {
+    if (tool_change_listener_) {
+      tool_change_listener_->Stop();
+      tool_change_listener_ = nullptr;
+    }
+    return;
+  }
+  if (!tool_change_listener_) {
+    tool_change_listener_ =
+        blink::MakeGarbageCollected<brave::AIChatToolChangeListener>(
+            base::BindRepeating(
+                [](base::WeakPtr<PageContentExtractor> self) {
+                  if (self && self->content_tools_listener_.is_bound()) {
+                    self->content_tools_listener_->OnContentToolsChanged();
+                  }
+                },
+                weak_ptr_factory_.GetWeakPtr()));
+  }
+  tool_change_listener_->Start(render_frame()->GetWebFrame()->GetDocument());
+
+  // Notify once on (re)attachment so the browser can re-probe: any tools
+  // registered between page load and the subscription being established would
+  // otherwise be missed, since their `toolchange` events already fired.
+  content_tools_listener_->OnContentToolsChanged();
 }
 
 void PageContentExtractor::GetSearchSummarizerKey(

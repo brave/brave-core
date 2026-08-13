@@ -24,6 +24,7 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "content/public/browser/navigation_entry.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/content_mock_cert_verifier.h"
@@ -247,6 +248,227 @@ IN_PROC_BROWSER_TEST_F(WebMcpBrowserTest,
   ASSERT_TRUE(ui_test_utils::NavigateToURL(
       browser(), https_server()->GetURL("a.com", kPageWithoutToolsPath)));
   EXPECT_TRUE(RefreshAndGetTools(manager).empty());
+}
+
+// Tools registered after the content is attached to a conversation should
+// attach the content (and surface its tools) via the WebMCP `toolchange`
+// notification, without waiting for a generation loop.
+IN_PROC_BROWSER_TEST_F(WebMcpBrowserTest,
+                       AssociatedContentManager_AttachesOnLateRegistration) {
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(
+      browser(), https_server()->GetURL("a.com", kPageWithoutToolsPath)));
+
+  auto* content = GetActiveContent();
+  ASSERT_TRUE(content);
+
+  auto* ai_chat_service =
+      AIChatServiceFactory::GetForBrowserContext(browser()->profile());
+  auto* conversation = ai_chat_service->CreateConversation();
+  ASSERT_TRUE(conversation);
+
+  auto* manager = conversation->associated_content_manager();
+  manager->AddContent(content);
+  ASSERT_FALSE(content->tools_attached());
+
+  // Register a tool only after the content was attached to the conversation.
+  ASSERT_EQ(1, content::EvalJs(GetActiveWebContents(), R"JS(
+    (async () => {
+      await document.modelContext.registerTool({
+        name: "late_tool",
+        description: "Registered after content was attached",
+        execute: async () => "ok",
+      });
+      return (await document.modelContext.getTools()).length;
+    })()
+  )JS"));
+
+  ASSERT_TRUE(base::test::RunUntil([&] { return content->tools_attached(); }));
+  EXPECT_EQ(1u, RefreshAndGetTools(manager).size());
+}
+
+// Unregistering all of the page's tools (via AbortSignal) should detach the
+// staged content again.
+IN_PROC_BROWSER_TEST_F(WebMcpBrowserTest,
+                       AssociatedContentManager_DetachesOnUnregistration) {
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(
+      browser(), https_server()->GetURL("a.com", kPageWithoutToolsPath)));
+
+  auto* content = GetActiveContent();
+  ASSERT_TRUE(content);
+
+  auto* ai_chat_service =
+      AIChatServiceFactory::GetForBrowserContext(browser()->profile());
+  auto* conversation = ai_chat_service->CreateConversation();
+  ASSERT_TRUE(conversation);
+
+  auto* manager = conversation->associated_content_manager();
+  manager->AddContent(content);
+  ASSERT_FALSE(content->tools_attached());
+
+  // Register two tools, each with an AbortSignal so they can be unregistered.
+  ASSERT_EQ(2, content::EvalJs(GetActiveWebContents(), R"JS(
+    (async () => {
+      window.__toolControllers = [new AbortController(),
+                                  new AbortController()];
+      await document.modelContext.registerTool({
+        name: "tool_one",
+        description: "First tool",
+        execute: async () => "1",
+      }, { signal: window.__toolControllers[0].signal });
+      await document.modelContext.registerTool({
+        name: "tool_two",
+        description: "Second tool",
+        execute: async () => "2",
+      }, { signal: window.__toolControllers[1].signal });
+      return (await document.modelContext.getTools()).length;
+    })()
+  )JS"));
+
+  ASSERT_TRUE(base::test::RunUntil([&] { return content->tools_attached(); }));
+
+  // Unregistering both tools should detach the content.
+  ASSERT_TRUE(content::ExecJs(GetActiveWebContents(),
+                              "window.__toolControllers.forEach(c => "
+                              "c.abort())"));
+  // Verify the page itself sees the tools as unregistered, so that a failure
+  // below is known to be about the browser-side detach rather than the
+  // AbortSignal not working.
+  EXPECT_EQ(0, content::EvalJs(GetActiveWebContents(),
+                               "(async () => (await "
+                               "document.modelContext.getTools()).length)()"));
+  ASSERT_TRUE(base::test::RunUntil([&] { return !content->tools_attached(); }));
+  EXPECT_TRUE(RefreshAndGetTools(manager).empty());
+}
+
+// After a true reload, tools registered *later* (after the subscription is
+// re-established) must attach the content via the live `toolchange` path -
+// the only path that can catch late registrations.
+IN_PROC_BROWSER_TEST_F(WebMcpBrowserTest,
+                       AssociatedContentManager_LivePathSurvivesReload) {
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(
+      browser(), https_server()->GetURL("a.com", kPageWithoutToolsPath)));
+
+  auto* ai_chat_service =
+      AIChatServiceFactory::GetForBrowserContext(browser()->profile());
+  auto* conversation = ai_chat_service->CreateConversation();
+  ASSERT_TRUE(conversation);
+  auto* manager = conversation->associated_content_manager();
+
+  auto* content = GetActiveContent();
+  manager->AddContent(content);
+  ASSERT_FALSE(content->tools_attached());
+
+  // True reload of the same (tool-less) page.
+  auto* web_contents = GetActiveWebContents();
+  content::WaitForLoadStop(web_contents);
+  web_contents->GetController().Reload(content::ReloadType::NORMAL,
+                                       /*check_for_repost=*/false);
+  content::WaitForLoadStop(web_contents);
+  ASSERT_FALSE(content->tools_attached());
+
+  // Register a tool only now - after the reload. Only the live `toolchange`
+  // notification path can attach the content here.
+  ASSERT_EQ(1, content::EvalJs(GetActiveWebContents(), R"JS(
+    (async () => {
+      await document.modelContext.registerTool({
+        name: "late_tool",
+        description: "Registered after reload",
+        execute: async () => "ok",
+      });
+      return (await document.modelContext.getTools()).length;
+    })()
+  )JS"));
+
+  ASSERT_TRUE(base::test::RunUntil([&] { return content->tools_attached(); }));
+  EXPECT_EQ(1u, RefreshAndGetTools(manager).size());
+}
+
+// A true reload (ui::PAGE_TRANSITION_RELOAD) must not archive the content:
+// the live delegate stays attached with its uuid (and staged state) intact,
+// so the page's re-registered tools attach again via the live `toolchange`
+// path - with no re-attach from the frontend.
+IN_PROC_BROWSER_TEST_F(WebMcpBrowserTest,
+                       AssociatedContentManager_AttachesAfterTrueReload) {
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(
+      browser(), https_server()->GetURL("a.com", kPageWithToolsPath)));
+  ASSERT_EQ(2, WaitForPageToolCount());
+
+  auto* ai_chat_service =
+      AIChatServiceFactory::GetForBrowserContext(browser()->profile());
+  auto* conversation = ai_chat_service->CreateConversation();
+  ASSERT_TRUE(conversation);
+  auto* manager = conversation->associated_content_manager();
+
+  auto* content = GetActiveContent();
+  manager->AddContent(content);
+  ASSERT_TRUE(base::test::RunUntil([&] { return content->tools_attached(); }));
+
+  auto associated = manager->GetAssociatedContent();
+  ASSERT_EQ(1u, associated.size());
+  const std::string uuid_before = associated[0]->uuid;
+
+  // Perform a true reload (not a fresh navigation).
+  auto* web_contents = GetActiveWebContents();
+  content::WaitForLoadStop(web_contents);
+  web_contents->GetController().Reload(content::ReloadType::NORMAL,
+                                       /*check_for_repost=*/false);
+  content::WaitForLoadStop(web_contents);
+  ASSERT_EQ(2, WaitForPageToolCount());
+
+  // The content must not have been archived: same uuid, still the live
+  // delegate, and its re-registered tools attach again.
+  associated = manager->GetAssociatedContent();
+  ASSERT_EQ(1u, associated.size());
+  EXPECT_EQ(uuid_before, associated[0]->uuid);
+  EXPECT_EQ("WebMCP test", associated[0]->title);
+  ASSERT_TRUE(base::test::RunUntil([&] { return content->tools_attached(); }));
+  EXPECT_EQ(2u, RefreshAndGetTools(manager).size());
+}
+
+// A renderer-initiated reload (location.reload()) is a converted reload: the
+// navigation entry gets a NEW UniqueID. The delegate must track it (it is the
+// content_id the frontend uses for tab association) while still not archiving
+// the content.
+IN_PROC_BROWSER_TEST_F(
+    WebMcpBrowserTest,
+    AssociatedContentManager_LocationReloadKeepsAssociation) {
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(
+      browser(), https_server()->GetURL("a.com", kPageWithToolsPath)));
+  ASSERT_EQ(2, WaitForPageToolCount());
+
+  auto* ai_chat_service =
+      AIChatServiceFactory::GetForBrowserContext(browser()->profile());
+  auto* conversation = ai_chat_service->CreateConversation();
+  ASSERT_TRUE(conversation);
+  auto* manager = conversation->associated_content_manager();
+
+  auto* content = GetActiveContent();
+  manager->AddContent(content);
+  ASSERT_TRUE(base::test::RunUntil([&] { return content->tools_attached(); }));
+
+  auto associated = manager->GetAssociatedContent();
+  ASSERT_EQ(1u, associated.size());
+  const std::string uuid_before = associated[0]->uuid;
+
+  auto* web_contents = GetActiveWebContents();
+  content::WaitForLoadStop(web_contents);
+  ASSERT_TRUE(content::ExecJs(web_contents, "location.reload()"));
+  content::WaitForLoadStop(web_contents);
+  ASSERT_EQ(2, WaitForPageToolCount());
+
+  associated = manager->GetAssociatedContent();
+  ASSERT_EQ(1u, associated.size());
+  // Same logical content: not archived, uuid unchanged...
+  EXPECT_EQ(uuid_before, associated[0]->uuid);
+  EXPECT_EQ("WebMCP test", associated[0]->title);
+  // ...and the content id must match the (possibly reused) navigation entry,
+  // or the frontend can no longer match this content to its tab.
+  EXPECT_EQ(
+      web_contents->GetController().GetLastCommittedEntry()->GetUniqueID(),
+      associated[0]->content_id);
+
+  ASSERT_TRUE(base::test::RunUntil([&] { return content->tools_attached(); }));
+  EXPECT_EQ(2u, RefreshAndGetTools(manager).size());
 }
 
 }  // namespace ai_chat

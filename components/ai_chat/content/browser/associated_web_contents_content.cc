@@ -129,11 +129,36 @@ void AssociatedWebContentsContent::NavigationEntryCommitted(
   if (!is_same_document_navigation_) {
     is_page_loaded_ = false;
   }
-  if (!is_same_document_navigation_ ||
-      previous_page_title_ != load_details.entry->GetTitle()) {
+
+  // A reload is a cross-document navigation back to the same URL (this
+  // covers browser-initiated reloads as well as converted reloads like
+  // location.reload(), whose entries keep their original transition type).
+  const bool is_reload = !load_details.is_same_document &&
+                         !load_details.previous_main_frame_url.is_empty() &&
+                         load_details.previous_main_frame_url ==
+                             web_contents()->GetLastCommittedURL();
+  if (is_reload) {
+    // A reload is the same logical page, so keep the content attached to its
+    // conversations: don't archive it and don't regenerate the uuid (which
+    // would orphan turn associations and staged state). Do keep the
+    // navigation id and URL up to date: converted reloads (e.g.
+    // location.reload(), discarded-tab restores) get a new navigation entry
+    // with a new UniqueID, and reloads can redirect. Observers are notified
+    // of the new page as usual; the cached content is refetched after load.
+    set_content_id(pending_navigation_id_);
+    set_url(web_contents()->GetLastCommittedURL());
+    NotifyNewPage();
+  } else if (!is_same_document_navigation_ ||
+             previous_page_title_ != load_details.entry->GetTitle()) {
     OnNewPage(pending_navigation_id_);
   }
   previous_page_title_ = load_details.entry->GetTitle();
+
+  // The renderer-side PageContentExtractor pipe is scoped to the RenderFrame,
+  // so re-establish the tool-change subscription after navigations.
+  if (!load_details.is_same_document && content_tools_subscription_wanted_) {
+    UpdateContentToolsSubscription();
+  }
 }
 
 void AssociatedWebContentsContent::TitleWasSet(
@@ -380,6 +405,47 @@ void AssociatedWebContentsContent::OnContentToolsFetched(
     }
   }
   std::move(callback).Run(std::move(tools));
+}
+
+void AssociatedWebContentsContent::OnFirstObserverAdded() {
+  content_tools_subscription_wanted_ = true;
+  UpdateContentToolsSubscription();
+}
+
+void AssociatedWebContentsContent::OnLastObserverRemoved() {
+  content_tools_subscription_wanted_ = false;
+  UpdateContentToolsSubscription();
+}
+
+void AssociatedWebContentsContent::OnContentToolsChanged() {
+  NotifyContentToolsChanged();
+}
+
+void AssociatedWebContentsContent::UpdateContentToolsSubscription() {
+  if (!content_tools_subscription_wanted_) {
+    // Dropping both ends of the subscription is enough: the renderer notices
+    // the ContentToolsListener pipe disconnect and detaches its listener.
+    content_tools_extractor_.reset();
+    content_tools_listener_.reset();
+    return;
+  }
+
+  // Deliberately no WebMCP feature gate: how the runtime feature is enabled
+  // only affects whether the page can register tools, not whether we may
+  // listen.
+
+  content::RenderFrameHost* rfh = web_contents()->GetPrimaryMainFrame();
+  if (!rfh || !rfh->IsRenderFrameLive()) {
+    return;
+  }
+
+  content_tools_extractor_.reset();
+  rfh->GetRemoteInterfaces()->GetInterface(
+      content_tools_extractor_.BindNewPipeAndPassReceiver());
+
+  content_tools_listener_.reset();
+  content_tools_extractor_->SetContentToolsListener(
+      content_tools_listener_.BindNewPipeAndPassRemote());
 }
 
 bool AssociatedWebContentsContent::HasOpenAIChatPermission() const {
