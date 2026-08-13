@@ -147,6 +147,9 @@ constexpr char16_t kPsstLearnMoreUrl[] =
     u"https://support.brave.app/hc/en-us/articles/47405731650957";
 #endif
 
+constexpr char16_t kBraveAccountLearnMoreURL[] =
+    u"https://support.brave.app/hc/en-us/articles/45530506862349";
+
 void BraveAddCommonStrings(content::WebUIDataSource* html_source,
                            Profile* profile) {
   webui::LocalizedString localized_strings[] = {
@@ -1303,6 +1306,8 @@ void BraveAddEmailAliasesStrings(content::WebUIDataSource* html_source) {
 void BraveAddBraveAccountStrings(content::WebUIDataSource* html_source) {
   if (brave_account::features::IsBraveAccountEnabled()) {
     html_source->AddLocalizedStrings(webui::kBraveAccountSettingsStrings);
+    html_source->AddString("braveAccountLearnMoreURL",
+                           kBraveAccountLearnMoreURL);
   }
 }
 
