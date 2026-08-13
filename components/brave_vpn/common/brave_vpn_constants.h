@@ -40,7 +40,10 @@ inline constexpr char kSupportTicketEmailKey[] = "email";
 inline constexpr char kSupportTicketSubjectKey[] = "subject";
 inline constexpr char kSupportTicketSupportTicketKey[] = "support-ticket";
 inline constexpr char kSupportTicketPartnerClientIdKey[] = "partner-client-id";
-inline constexpr char kSupportTicketTimezoneKey[] = "timezone";
+inline constexpr char kSupportTicketSubscriberCredential[] =
+    "subscriber-credential";
+inline constexpr char kSupportTicketPaymentValidationMethodKey[] =
+    "payment-validation-method";
 
 inline constexpr char kVpnHost[] = "connect-api.guardianapp.com";
 inline constexpr char kServerRegionsWithCities[] =
