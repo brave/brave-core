@@ -24,10 +24,17 @@ type Arguments = {
   proceduralFilters: Array<ProceduralActionFilter>
 }
 
-const args: Arguments = sendTokenizedWebKitMessageSynchronously(
-  messageHandlerName,
-  { request_type: 'args' },
-)
+const receivedArgs: Arguments | undefined =
+  sendTokenizedWebKitMessageSynchronously(messageHandlerName, {
+    request_type: 'args',
+  })
+
+if (!receivedArgs) {
+  // Nothing to do without arguments from the browser.
+  throw new Error('Missing cosmetic filtering arguments')
+}
+
+const args: Arguments = receivedArgs
 
 type OperatorType = string
 type StyleAction = {
