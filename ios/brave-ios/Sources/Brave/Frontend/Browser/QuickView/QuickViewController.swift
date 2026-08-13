@@ -23,6 +23,7 @@ class QuickViewController: UIViewController {
   private let profile: any Profile
   private let syncAPI: BraveSyncAPI
   private let sendTabAPI: BraveSendTabAPI
+  private let historyAPI: BraveHistoryAPI
   private let toolbarViewModel: QuickViewToolbarModel
   private lazy var toolbarHostingController = UIHostingController(
     rootView: QuickViewToolbarView(viewModel: toolbarViewModel)
@@ -60,6 +61,7 @@ class QuickViewController: UIViewController {
     profile: any Profile,
     syncAPI: BraveSyncAPI,
     sendTabAPI: BraveSendTabAPI,
+    historyAPI: BraveHistoryAPI,
     onOpenInNewTab: ((URLRequest, Bool) -> Void)?,
     onOpenInNewWindow: ((URL, Bool) -> Void)?,
     onAttachTab: ((any TabState) -> Void)?
@@ -68,6 +70,7 @@ class QuickViewController: UIViewController {
     self.profile = profile
     self.syncAPI = syncAPI
     self.sendTabAPI = sendTabAPI
+    self.historyAPI = historyAPI
     self.toolbarViewModel = QuickViewToolbarModel(
       url: url,
       isPrivate: profile.isOffTheRecord
@@ -134,6 +137,7 @@ class QuickViewController: UIViewController {
     tab.readerMode?.onReaderModeDisplayed = { [weak self] in
       self?.showReaderModeBar()
     }
+    tab.historyTabHelper = .init(tab: tab, historyAPI: historyAPI)
     tab.createWebView()
     tab.delegate = self
     tab.webViewProxy?.scrollView?.layer.masksToBounds = true
@@ -181,6 +185,7 @@ class QuickViewController: UIViewController {
           guard let self, let currentTab = self.currentTab else { return }
           currentTab.removeObserver(self.toolbarViewModel)
           currentTab.removeObserver(self)
+          currentTab.historyTabHelper = nil
           self.onAttachTab?(currentTab)
         }
       case .share:
@@ -556,6 +561,7 @@ extension QuickViewController: TabDelegate {
       guard let self, let currentTab = self.currentTab else { return }
       currentTab.removeObserver(self.toolbarViewModel)
       currentTab.removeObserver(self)
+      currentTab.historyTabHelper = nil
       self.onAttachTab?(currentTab)
       self.onOpenInNewTab?(request, profile.isOffTheRecord)
     }
