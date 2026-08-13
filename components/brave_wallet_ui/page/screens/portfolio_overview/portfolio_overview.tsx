@@ -156,6 +156,7 @@ export const PortfolioOverview = () => {
   // UI Selectors (safe)
   const isPanel = useSafeUISelector(UISelectors.isPanel)
   const isMobile = useSafeUISelector(UISelectors.isMobile)
+  const isSidePanel = useSafeUISelector(UISelectors.isSidePanel)
   const isMobileOrPanel = isMobile || isPanel
 
   // custom hooks
@@ -640,7 +641,13 @@ export const PortfolioOverview = () => {
       <DefaultPageWrapper>
         <Column
           fullWidth={true}
-          padding={isMobileOrPanel ? '0px' : '20px 20px 0px 20px'}
+          padding={
+            isSidePanel
+              ? '20px 0px 0px 0px'
+              : isMobileOrPanel
+                ? '0px'
+                : '20px 20px 0px 20px'
+          }
         >
           <Banners />
         </Column>
