@@ -398,9 +398,13 @@ class BlankForParseOptions:
     # Blanks a macro/identifier directly adjacent to a string literal.
     string_adjacent_macros: bool = False
 
+    # Blanks the Views METADATA_HEADER/BEGIN_METADATA/END_METADATA macros.
+    metadata_header_macros: bool = False
+
     def __bool__(self) -> bool:
         """True if any pass is enabled, i.e. parsing needs preparation at all."""
-        return self.macros or self.string_adjacent_macros
+        return (self.macros or self.string_adjacent_macros
+                or self.metadata_header_macros)
 
 
 class Rewriter(abc.ABC):
@@ -445,7 +449,7 @@ class Rewriter(abc.ABC):
         human-readable count/validation failures (empty when the entry applied
         as expected). `blank_for_parse` bundles the file-wide
         `blank_macros_for_ast_parsing` / `blank_string_adjacent_macros_for_ast_parsing`
-        flags used by AST rewriters.
+        / `blank_metadata_header_macros` flags used by AST rewriters.
         """
 
     @classmethod
@@ -478,6 +482,7 @@ _TOP_LEVEL_KEYS: Final = frozenset({
     'substitutions',
     'blank_macros_for_ast_parsing',
     'blank_string_adjacent_macros_for_ast_parsing',
+    'blank_metadata_header_macros',
 })
 
 # Target-source suffixes plaster treats as C++. `blank_macros_for_ast_parsing`
@@ -506,6 +511,10 @@ class PlasterSpec:
     # Used to indicate that preprocessor macros adjacent to string literals
     # should be blanked before AST parsing. C++-only.
     blank_string_adjacent_macros_for_ast_parsing: bool = False
+
+    # Used to indicate that the Views METADATA_HEADER/BEGIN_METADATA/
+    # END_METADATA macros should be blanked before AST parsing. C++-only.
+    blank_metadata_header_macros: bool = False
 
 
 @dataclass(frozen=True)
@@ -599,6 +608,11 @@ class Substitution:
             raise ValueError(
                 '`blank_string_adjacent_macros_for_ast_parsing` must be a '
                 'boolean')
+        blank_metadata_header_macros = data.get('blank_metadata_header_macros',
+                                                False)
+        if not isinstance(blank_metadata_header_macros, bool):
+            raise ValueError(
+                '`blank_metadata_header_macros` must be a boolean')
         raw = data.get('substitutions')
         if raw is None:
             raise ValueError(
@@ -613,7 +627,8 @@ class Substitution:
             substitutions=[Substitution._from_item(entry) for entry in raw],
             blank_macros_for_ast_parsing=blank_macros,
             blank_string_adjacent_macros_for_ast_parsing=(
-                blank_string_adjacent_macros))
+                blank_string_adjacent_macros),
+            blank_metadata_header_macros=blank_metadata_header_macros)
 
     @staticmethod
     def _from_item(data: object) -> Substitution:
@@ -2098,6 +2113,10 @@ class PlasterFile:
                     raise ValueError(
                         '`blank_string_adjacent_macros_for_ast_parsing` is '
                         f'only supported for C++ sources (in {self.path})')
+                if doc.blank_metadata_header_macros:
+                    raise ValueError(
+                        '`blank_metadata_header_macros` is only supported '
+                        f'for C++ sources (in {self.path})')
                 for substitution in doc.substitutions:
                     if substitution.rewriter.source_language() == 'cxx':
                         raise ValueError(
@@ -2116,7 +2135,8 @@ class PlasterFile:
         blank_for_parse = BlankForParseOptions(
             macros=doc.blank_macros_for_ast_parsing,
             string_adjacent_macros=(
-                doc.blank_string_adjacent_macros_for_ast_parsing))
+                doc.blank_string_adjacent_macros_for_ast_parsing),
+            metadata_header_macros=doc.blank_metadata_header_macros)
 
         try:
             for substitution in doc.substitutions:
@@ -2737,7 +2757,9 @@ class CxxMacrosEraser:
     There are two types of erasure done in this class. The common macros one
     (e.g #if, #endif, FOO_EXPORT), which is less controversial, and then the
     more targeted erasure of macros that are adjacent to string literals, which
-    should be used sparingly.
+    should be used sparingly. The metadata-header pass goes further and keeps
+    identifiers as literal, unmoved text, so a later op like `rename_class`
+    can still find and rename them there.
     """
 
     @dataclass(frozen=True)
@@ -2784,6 +2806,20 @@ class CxxMacrosEraser:
     _CXX_MACRO_BEFORE_STRING_RE = re.compile(
         f'({_CXX_MACRO_TOKEN})([ \\t]+)({_CXX_STRING_LIT})')
 
+    # `METADATA_HEADER(Foo, views::View)`: a bare macro call with no trailing
+    # `;`, sitting directly in a class body where only a declaration is valid.
+    _METADATA_HEADER_RE = re.compile(
+        r'METADATA_HEADER\(\s*([\w:]+)\s*(?:,\s*([\w:]+)\s*)?\)')
+
+    # `BEGIN_METADATA(Foo, views::View)` ... `END_METADATA`: the same problem
+    # at namespace scope, usually with property-registration macro calls
+    # (e.g. `ADD_PROPERTY_METADATA(...)`) in between. Those inner calls are
+    # blanked wholesale rather than parsed, since nothing else in plaster ever
+    # needs to match them.
+    _BEGIN_METADATA_RE = re.compile(
+        r'BEGIN_METADATA\(\s*([\w:]+)\s*(?:,\s*([\w:]+)\s*)?\)(.*?)'
+        r'END_METADATA', re.DOTALL)
+
     def __init__(self, blank_for_parse: BlankForParseOptions):
         self._blank_for_parse = blank_for_parse
 
@@ -2802,7 +2838,41 @@ class CxxMacrosEraser:
             source = self._blank_outside_opaque_spans(
                 source, self._CXX_MACRO_BEFORE_STRING_RE,
                 lambda m: ' ' * len(m.group(1)) + m.group(2) + m.group(3))
+        if self._blank_for_parse.metadata_header_macros:
+            source = self._METADATA_HEADER_RE.sub(self._blank_metadata_header,
+                                                  source)
+            source = self._BEGIN_METADATA_RE.sub(self._blank_begin_metadata,
+                                                 source)
         return source
+
+    @staticmethod
+    def _metadata_header_using_decl(match: re.Match) -> tuple[str, int]:
+        """Builds `using name[,base]` (no trailing `;`) from `match`'s `name`/
+        `base` groups, padded so each keeps its original byte offset.
+
+        Returns the declaration text and the offset (relative to the match
+        start) where it ends, so callers with trailing content of their own
+        (`_BEGIN_METADATA_RE`'s property-macro block) know where to resume.
+        """
+        name, base = match.group(1), match.group(2)
+        prefix = 'using '.ljust(match.start(1) - match.start(0))
+        if base is None:
+            return prefix + name, match.end(1) - match.start(0)
+        middle = ','.ljust(match.start(2) - match.end(1))
+        return prefix + name + middle + base, match.end(2) - match.start(0)
+
+    @classmethod
+    def _blank_metadata_header(cls, match: re.Match) -> str:
+        decl, decl_end = cls._metadata_header_using_decl(match)
+        return decl + ';'.ljust(len(match.group(0)) - decl_end)
+
+    @classmethod
+    def _blank_begin_metadata(cls, match: re.Match) -> str:
+        decl, decl_end = cls._metadata_header_using_decl(match)
+        header_len = match.start(3) - match.start(0)
+        header = decl + ';'.ljust(header_len - decl_end)
+        blanked_middle = re.sub(r'[^\n]', ' ', match.group(3))
+        return header + blanked_middle + ' ' * len('END_METADATA')
 
     def _blank_outside_opaque_spans(self, source: str, pattern: re.Pattern,
                                     repl: Callable[[re.Match], str]) -> str:

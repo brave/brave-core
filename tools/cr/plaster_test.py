@@ -1369,6 +1369,40 @@ class RewriterFormsTest(unittest.TestCase):
         self.assertIn('Unexpected number of matches (2 vs 1)',
                       str(ctx.exception))
 
+    def test_make_virtual_on_out_of_line_nested_class_fully_qualified(self):
+        # As with add_friend, a class defined out-of-line as a nested class
+        # (`class Outer::Inner`) has a qualified `name` field, so
+        # `class_name` must be spelled fully qualified to match it.
+        result = self._apply(
+            'nested_virt.h', 'class Outer::Inner : public Base {\n'
+            ' public:\n'
+            '  void Foo();\n'
+            '};\n', 'substitutions:\n'
+            '  - description: make Foo virtual on the nested class\n'
+            '    make_virtual:\n'
+            '      class_name: Outer::Inner\n'
+            '      method_name: Foo\n')
+        self.assertEqual(
+            result, 'class Outer::Inner : public Base {\n'
+            ' public:\n'
+            '  virtual void Foo();\n'
+            '};\n')
+
+    def test_make_virtual_bare_name_does_not_match_out_of_line_nested_class(
+            self):
+        with self.assertRaises(plaster.PlasterApplyError) as ctx:
+            self._apply(
+                'nested_virt_bare.h', 'class Outer::Inner : public Base {\n'
+                ' public:\n'
+                '  void Foo();\n'
+                '};\n', 'substitutions:\n'
+                '  - description: bare name does not match\n'
+                '    make_virtual:\n'
+                '      class_name: Inner\n'
+                '      method_name: Foo\n')
+        self.assertIn('Unexpected number of matches (0 vs 1)',
+                      str(ctx.exception))
+
     def test_make_virtual_unknown_arg_rejected(self):
         self._expect_value_error(
             'substitutions:\n'
@@ -1466,6 +1500,99 @@ class RewriterFormsTest(unittest.TestCase):
             result, 'class Foo {\n public:\n'
             '  class Bar {\n   private:\n    int y_;\n  };\n'
             ' private:\n  friend class BraveFoo;\n  int x_;\n};\n')
+
+    def test_add_friend_bare_name_does_not_match_out_of_line_nested_class(
+            self):
+        # A nested class defined out-of-line spells its class-head with its
+        # enclosing class as a qualifier (`class Outer::Inner : public Base`),
+        # so the class_specifier's `name` field is a qualified_identifier
+        # ("Outer::Inner"), not a bare identifier ("Inner"). A bare
+        # `class_name` does *not* match this -- it must be spelled fully
+        # qualified (see the test below) -- e.g. TabHoverCardBubbleView::
+        # TabCardView in
+        # chrome/browser/ui/views/tabs/hovercard/tab_hover_card_bubble_view.cc.
+        with self.assertRaises(plaster.PlasterApplyError) as ctx:
+            self._apply(
+                'out_of_line_nested.h', 'class Outer::Inner : public Base {\n'
+                ' public:\n'
+                '  void Foo();\n'
+                '\n'
+                ' private:\n'
+                '  int x_;\n'
+                '};\n', 'substitutions:\n'
+                '  - description: friend the Brave subclass\n'
+                '    add_friend:\n'
+                '      class_name: Inner\n'
+                '      friend_type: class BraveInner\n')
+        self.assertIn('Unexpected number of matches (0 vs 1)',
+                      str(ctx.exception))
+
+    def test_add_friend_on_out_of_line_nested_class_fully_qualified(self):
+        # `class_name` must be spelled fully qualified (`Outer::Inner`) to
+        # match an out-of-line nested class definition; this also
+        # disambiguates it from an unrelated same-named top-level class.
+        result = self._apply(
+            'out_of_line_nested_qualified.h', 'class Inner {\n'
+            ' private:\n'
+            '  int unrelated_;\n'
+            '};\n'
+            '\n'
+            'class Outer::Inner : public Base {\n'
+            ' public:\n'
+            '  void Foo();\n'
+            '\n'
+            ' private:\n'
+            '  int x_;\n'
+            '};\n', 'substitutions:\n'
+            '  - description: friend the Brave subclass of the nested class\n'
+            '    add_friend:\n'
+            '      class_name: Outer::Inner\n'
+            '      friend_type: class BraveInner\n')
+        self.assertEqual(
+            result, 'class Inner {\n'
+            ' private:\n'
+            '  int unrelated_;\n'
+            '};\n'
+            '\n'
+            'class Outer::Inner : public Base {\n'
+            ' public:\n'
+            '  void Foo();\n'
+            '\n'
+            ' private:\n'
+            '  friend class BraveInner;\n'
+            '  int x_;\n'
+            '};\n')
+
+    def test_add_friend_bare_name_ignores_out_of_line_nested_class(self):
+        # A bare `class_name` matching an unrelated top-level class is
+        # unaffected by a same-named out-of-line nested class elsewhere in
+        # the file -- the qualified name never matches the bare regex, so
+        # there is no ambiguity to resolve.
+        result = self._apply(
+            'bare_name_top_level_only.h', 'class Inner {\n'
+            ' private:\n'
+            '  int unrelated_;\n'
+            '};\n'
+            '\n'
+            'class Outer::Inner : public Base {\n'
+            ' private:\n'
+            '  int x_;\n'
+            '};\n', 'substitutions:\n'
+            '  - description: friend the top-level class only\n'
+            '    add_friend:\n'
+            '      class_name: Inner\n'
+            '      friend_type: class BraveInner\n')
+        self.assertEqual(
+            result, 'class Inner {\n'
+            ' private:\n'
+            '  friend class BraveInner;\n'
+            '  int unrelated_;\n'
+            '};\n'
+            '\n'
+            'class Outer::Inner : public Base {\n'
+            ' private:\n'
+            '  int x_;\n'
+            '};\n')
 
     def test_add_friend_no_private_section_fails(self):
         with self.assertRaises(plaster.PlasterApplyError):
@@ -1746,6 +1873,37 @@ class RewriterFormsTest(unittest.TestCase):
         self.assertEqual(
             result, 'void C::A() {\n  a();\n}\n\n'
             'void C::B() {\n  if (g()) return;\n  b();\n}\n')
+
+    def test_preempt_function_impl_nested_class_out_of_line_method(self):
+        # A method of a nested class defined out-of-line is declared with its
+        # full enclosing scope (`Outer::Inner::Method`), not just
+        # `Inner::Method` -- the same qualification rule as `add_friend` and
+        # `make_virtual` on the nested class itself.
+        result = self._apply(
+            'nested_method.cc', 'void Outer::Inner::Method(int x) {\n'
+            '  Upstream(x);\n}\n', 'substitutions:\n'
+            '  - description: guard a nested class out-of-line method\n'
+            '    preempt_function_impl:\n'
+            '      function_name: Outer::Inner::Method\n'
+            "      return_if: '!Enabled()'\n")
+        self.assertEqual(
+            result, 'void Outer::Inner::Method(int x) {\n'
+            '  if (!Enabled()) return;\n  Upstream(x);\n}\n')
+
+    def test_preempt_function_impl_partial_qualification_fails(self):
+        # `Inner::Method` (missing the `Outer::` scope) does not match --
+        # the declarator's full qualified text must be given, not a suffix.
+        with self.assertRaises(plaster.PlasterApplyError) as ctx:
+            self._apply(
+                'nested_method_partial.cc',
+                'void Outer::Inner::Method(int x) {\n'
+                '  Upstream(x);\n}\n', 'substitutions:\n'
+                '  - description: partial qualification does not match\n'
+                '    preempt_function_impl:\n'
+                '      function_name: Inner::Method\n'
+                "      return_if: '!Enabled()'\n")
+        self.assertIn('Unexpected number of matches (0 vs 1)',
+                      str(ctx.exception))
 
     def test_preempt_function_impl_overloads_need_count(self):
         result = self._apply(
@@ -2943,6 +3101,35 @@ class RewriterFormsTest(unittest.TestCase):
             'void C::Foo() {\n  [&]() -> void {\n  Upstream();\n  }();\n'
             '  Prepare();\n\n  Track();\n}\n')
 
+    def test_after_function_impl_nested_class_out_of_line_method(self):
+        # As with preempt_function_impl, a method of a nested class defined
+        # out-of-line must be named with its full enclosing scope.
+        result = self._apply(
+            'append_nested_method.cc', 'void Outer::Inner::Method(int x) {\n'
+            '  Upstream(x);\n}\n', 'substitutions:\n'
+            '  - description: append after a nested class method\n'
+            '    after_function_impl:\n'
+            '      function_name: Outer::Inner::Method\n'
+            '      code: |-\n'
+            '        AfterNested(x);\n')
+        self.assertEqual(
+            result, 'void Outer::Inner::Method(int x) {\n  [&]() -> void {\n'
+            '  Upstream(x);\n  }();\n  AfterNested(x);\n}\n')
+
+    def test_after_function_impl_partial_qualification_fails(self):
+        with self.assertRaises(plaster.PlasterApplyError) as ctx:
+            self._apply(
+                'append_nested_method_partial.cc',
+                'void Outer::Inner::Method(int x) {\n'
+                '  Upstream(x);\n}\n', 'substitutions:\n'
+                '  - description: partial qualification does not match\n'
+                '    after_function_impl:\n'
+                '      function_name: Inner::Method\n'
+                '      code: |-\n'
+                '        AfterNested(x);\n')
+        self.assertIn('Unexpected number of matches (0 vs 1)',
+                      str(ctx.exception))
+
     def test_after_function_impl_targets_named_function_only(self):
         # Only the named function's body is wrapped, not a sibling.
         result = self._apply(
@@ -3121,6 +3308,152 @@ class RewriterFormsTest(unittest.TestCase):
             result,
             self._AURA_CLASS.replace(' private:\n',
                                      ' private:\n  friend class BraveC;\n'))
+
+    # -- classes wrapped in Views METADATA_HEADER/BEGIN_METADATA/END_METADATA
+    #
+    # METADATA_HEADER(Name, Base) (in the class body) and
+    # BEGIN_METADATA(Name, Base) ... END_METADATA (right after it, at
+    # namespace scope) are bare macro calls with no trailing `;`; tree-sitter
+    # turns the call -- and, for BEGIN_METADATA, everything after it -- into
+    # one ERROR node. This mirrors the real bug: an unrelated class's
+    # BEGIN_METADATA/END_METADATA sitting just before the target class broke
+    # every AST rewriter's ability to reach it.
+
+    # The leading comment lines and blank line before the class are load-
+    # bearing for the repro: tree-sitter's error recovery only cascades all
+    # the way to `class Outer::Inner` with this exact shape ahead of it
+    # (confirmed empirically -- dropping them, or the constructor's member
+    # initializer, makes it recover locally instead, same as it does for
+    # `blank_macros_for_ast_parsing`'s export-macro/conditional cases).
+    _METADATA_CLASS = ('BEGIN_METADATA(Unrelated, views::View)\n'
+                       'END_METADATA\n'
+                       '\n'
+                       '// Outer::Inner\n'
+                       '// ----------------------------------------------\n'
+                       'class Outer::Inner : public views::View {\n'
+                       '  METADATA_HEADER(Inner, views::View)\n'
+                       '\n'
+                       ' public:\n'
+                       '  explicit Inner(Outer* bubble_view)\n'
+                       '      : bubble_view_(bubble_view) {\n'
+                       '    CHECK(bubble_view_);\n'
+                       '  }\n'
+                       '\n'
+                       '  void Foo();\n'
+                       '\n'
+                       ' private:\n'
+                       '  int x_;\n'
+                       '};\n'
+                       '\n'
+                       'BEGIN_METADATA(Inner, views::View)\n'
+                       'END_METADATA\n')
+
+    def test_add_friend_reaches_class_after_begin_metadata(self):
+        result = self._apply(
+            'metadata_friend.h', self._METADATA_CLASS,
+            'blank_metadata_header_macros: true\n'
+            'substitutions:\n'
+            '  - description: friend the Brave subclass past BEGIN_METADATA\n'
+            '    add_friend:\n'
+            '      class_name: Outer::Inner\n'
+            '      friend_type: class BraveInner\n')
+        self.assertEqual(
+            result,
+            self._METADATA_CLASS.replace(
+                ' private:\n', ' private:\n  friend class BraveInner;\n'))
+
+    def test_make_virtual_reaches_class_after_begin_metadata(self):
+        result = self._apply(
+            'metadata_virt.h', self._METADATA_CLASS,
+            'blank_metadata_header_macros: true\n'
+            'substitutions:\n'
+            '  - description: make Foo virtual past BEGIN_METADATA\n'
+            '    make_virtual:\n'
+            '      class_name: Outer::Inner\n'
+            '      method_name: Foo\n')
+        self.assertEqual(
+            result,
+            self._METADATA_CLASS.replace('  void Foo();',
+                                         '  virtual void Foo();'))
+
+    def test_rename_class_renames_name_inside_metadata_macros(self):
+        # The blanking preserves `name`'s byte offset exactly so the edit,
+        # which is always spliced onto the real (unblanked) source, lands on
+        # the literal `Inner` inside METADATA_HEADER and BEGIN_METADATA too --
+        # not just the class declaration itself.
+        result = self._apply(
+            'metadata_rename.h', self._METADATA_CLASS,
+            'blank_metadata_header_macros: true\n'
+            'substitutions:\n'
+            '  - description: rename Inner\n'
+            '    rename_class:\n'
+            '      class_name: Inner\n'
+            '      rename: Inner_ChromiumImpl\n')
+        expected = self._METADATA_CLASS
+        for old, new in (
+            ('class Outer::Inner :', 'class Outer::Inner_ChromiumImpl :'),
+            ('explicit Inner(', 'explicit Inner_ChromiumImpl('),
+            ('METADATA_HEADER(Inner,', 'METADATA_HEADER(Inner_ChromiumImpl,'),
+            ('BEGIN_METADATA(Inner,', 'BEGIN_METADATA(Inner_ChromiumImpl,'),
+        ):
+            expected = expected.replace(old, new)
+        self.assertEqual(result, expected)
+
+    def test_metadata_header_flag_off_by_default_fails(self):
+        # Without the flag, BEGIN_METADATA breaks tree-sitter's parse of
+        # everything after it, so add_friend finds nothing to friend.
+        with self.assertRaises(plaster.PlasterApplyError):
+            self._apply(
+                'metadata_no_flag.h', self._METADATA_CLASS, 'substitutions:\n'
+                '  - description: no flag, so BEGIN_METADATA breaks parsing\n'
+                '    add_friend:\n'
+                '      class_name: Outer::Inner\n'
+                '      friend_type: class BraveInner\n')
+
+    def test_metadata_header_flag_must_be_boolean(self):
+        self._expect_value_error(
+            'blank_metadata_header_macros: yes please\n'
+            'substitutions:\n'
+            '  - description: bad flag type\n'
+            '    drop_final:\n'
+            '      class_name: C\n',
+            '`blank_metadata_header_macros` must be a boolean')
+
+    def test_metadata_header_flag_rejected_for_non_cxx_source(self):
+        self._expect_value_error(
+            'blank_metadata_header_macros: true\n'
+            'substitutions:\n'
+            '  - description: flag on a non-C++ source\n'
+            '    regex:\n'
+            "      re_pattern: 'x'\n"
+            "      replace: 'y'\n",
+            '`blank_metadata_header_macros` is only supported for C++ '
+            'sources')
+
+    def test_metadata_header_flag_allowed_for_cxx_source(self):
+        result = self._apply(
+            'metadata_cxx_flag.h', 'A Chromium thing.\n',
+            'blank_metadata_header_macros: true\n'
+            'substitutions:\n'
+            '  - description: flag on a C++ source\n'
+            '    regex:\n'
+            "      re_pattern: 'Chromium'\n"
+            "      replace: 'Brave'\n")
+        self.assertEqual(result, 'A Brave thing.\n')
+
+    def test_metadata_header_flag_independent_of_other_blank_flags(self):
+        # Enabling the other two blanking passes must not also enable this
+        # one -- BEGIN_METADATA still breaks the parse.
+        with self.assertRaises(plaster.PlasterApplyError):
+            self._apply(
+                'metadata_other_flags.h', self._METADATA_CLASS,
+                'blank_macros_for_ast_parsing: true\n'
+                'blank_string_adjacent_macros_for_ast_parsing: true\n'
+                'substitutions:\n'
+                '  - description: wrong flags for this construct\n'
+                '    add_friend:\n'
+                '      class_name: Outer::Inner\n'
+                '      friend_type: class BraveInner\n')
 
     # -- functions with a macro-adjacent string literal -------------------
     #
@@ -4446,6 +4779,86 @@ class CxxMacrosEraserTest(unittest.TestCase):
         # be mistaken for that literal's own close.
         src = 'Log(R"bar(text with )foo" inside)bar" BAZ);\n'
         self.assertEqual(self._prepared(src), src)
+
+    # -- Views METADATA_HEADER / BEGIN_METADATA / END_METADATA ------------
+    #
+    # Both are bare macro calls with no trailing `;`, sitting where only a
+    # declaration is valid (a class body, or namespace scope right after the
+    # class). Left alone, tree-sitter turns the call -- and, for
+    # BEGIN_METADATA, everything up to end of file -- into one ERROR node.
+
+    _METADATA_OPTS = plaster.BlankForParseOptions(metadata_header_macros=True)
+
+    def test_blanks_metadata_header(self):
+        result = self._prepared(
+            'class Foo {\n  METADATA_HEADER(Foo, views::View)\n};\n',
+            self._METADATA_OPTS)
+        self.assertNotIn('METADATA_HEADER', result)
+        for kept in ('Foo', 'views::View'):
+            self.assertIn(kept, result)
+
+    def test_blanks_metadata_header_single_arg(self):
+        result = self._prepared('class Foo {\n  METADATA_HEADER(Foo)\n};\n',
+                                self._METADATA_OPTS)
+        self.assertNotIn('METADATA_HEADER', result)
+        self.assertIn('Foo', result)
+
+    def test_blanks_begin_metadata_block(self):
+        result = self._prepared(
+            'BEGIN_METADATA(Foo, views::View)\nEND_METADATA\n',
+            self._METADATA_OPTS)
+        self.assertNotIn('BEGIN_METADATA', result)
+        self.assertNotIn('END_METADATA', result)
+        for kept in ('Foo', 'views::View'):
+            self.assertIn(kept, result)
+
+    def test_blanks_begin_metadata_single_arg(self):
+        result = self._prepared('BEGIN_METADATA(Foo)\nEND_METADATA\n',
+                                self._METADATA_OPTS)
+        self.assertNotIn('BEGIN_METADATA', result)
+        self.assertNotIn('END_METADATA', result)
+        self.assertIn('Foo', result)
+
+    def test_blanks_property_macros_between_begin_and_end_metadata(self):
+        # Property-registration calls in between are blanked wholesale --
+        # nothing else in plaster ever needs to match them.
+        result = self._prepared(
+            'BEGIN_METADATA(Foo, views::View)\n'
+            'ADD_PROPERTY_METADATA(int, SomeProp)\n'
+            'END_METADATA\n', self._METADATA_OPTS)
+        self.assertNotIn('ADD_PROPERTY_METADATA', result)
+        self.assertNotIn('SomeProp', result)
+
+    def test_metadata_header_name_and_base_keep_their_byte_offsets(self):
+        # The whole point of this pass: a later op (e.g. rename_class) matches
+        # against the blanked copy but edits the real source at the same byte
+        # offsets, so `Foo`/`views::View` must land at the same position in
+        # both, not merely leave the overall text the same length.
+        src = 'class C {\n  METADATA_HEADER(Foo, views::View)\n};\n'
+        result = self._prepared(src, self._METADATA_OPTS)
+        self.assertEqual(result.index('Foo'), src.index('Foo'))
+        self.assertEqual(result.index('views::View'), src.index('views::View'))
+
+    def test_metadata_header_macros_off_by_default(self):
+        src = 'class Foo {\n  METADATA_HEADER(Foo, views::View)\n};\n'
+        self.assertEqual(self._prepared(src, plaster.BlankForParseOptions()),
+                         src)
+
+    def test_metadata_header_macros_not_enabled_by_the_other_two_flags(self):
+        src = 'BEGIN_METADATA(Foo, views::View)\nEND_METADATA\n'
+        result = self._prepared(
+            src,
+            plaster.BlankForParseOptions(macros=True,
+                                         string_adjacent_macros=True))
+        self.assertEqual(result, src)
+
+    def test_metadata_header_macros_does_not_enable_the_other_two_passes(self):
+        src = ('class MODULES_EXPORT Foo final {\n'
+               '#if X\n'
+               '  void Bar() { Log("v" STRINGIZE(V)); }\n'
+               '#endif\n'
+               '};\n')
+        self.assertEqual(self._prepared(src, self._METADATA_OPTS), src)
 
     # -- the two passes are independently gated ----------------------------
     #
