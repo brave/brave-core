@@ -16,6 +16,7 @@
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/profiles/profile_test_util.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_active_state_manager/browser_active_state_manager.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "content/public/test/browser_test.h"
 #include "testing/gtest_mac.h"
@@ -29,8 +30,9 @@ namespace {
 // Browser::DidBecomeActive only notifies on an active-state transition, so
 // force a deactivate/activate cycle.
 void NotifyBrowserActivated(Browser* browser) {
-  browser->DidBecomeInactive();
-  browser->DidBecomeActive();
+  auto* browser_active_state_manager = BrowserActiveStateManager::From(browser);
+  browser_active_state_manager->DidBecomeInactive();
+  browser_active_state_manager->DidBecomeActive();
 }
 
 NSMenuItem* FindMenuItemWithTag(NSMenu* menu, int tag) {
