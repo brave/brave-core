@@ -310,22 +310,30 @@ bool BraveTabContainer::ShouldTabBeVisible(const Tab* tab) const {
 
     // Handle unpinned tabs in vertical tabs mode.
     // Only show tab if it is not hidden under the pinned tab area.
-    if (auto tab_index = tabs_view_model_.GetIndexOfView(tab)) {
+    if (auto tab_index = GetTabIndex(tab)) {
       const auto tab_bottom =
           tabs_view_model_.ideal_bounds(*tab_index).bottom();
-      return tab_bottom > GetPinnedTabsAreaBottom();
+      const int pinned_tabs_area_bottom =
+          visibility_pass_cache_
+              ? visibility_pass_cache_->pinned_tabs_area_bottom
+              : GetPinnedTabsAreaBottom();
+      return tab_bottom > pinned_tabs_area_bottom;
     }
   } else if (scroll_direction == views::LayoutOrientation::kHorizontal) {
     if (tab->data().pinned || tab->dragging()) {
       return TabContainerImpl::ShouldTabBeVisible(tab);
     }
 
-    if (auto tab_index = tabs_view_model_.GetIndexOfView(tab)) {
+    if (auto tab_index = GetTabIndex(tab)) {
       // Show unpinned tabs only if they are within unpinned tab area.
       // If tabs are fully occluded by pinned tabs area, we should hide the
       // tabs.
+      const int pinned_tabs_area_boundary =
+          visibility_pass_cache_
+              ? visibility_pass_cache_->pinned_tabs_area_boundary
+              : GetPinnedTabsAreaBoundary();
       return tabs_view_model_.ideal_bounds(*tab_index).right() >
-             GetPinnedTabsAreaBoundary();
+             pinned_tabs_area_boundary;
     }
   }
 
@@ -633,7 +641,26 @@ void BraveTabContainer::SetTabSlotVisibility() {
     }
   }
 
+  // The superclass call below queries ShouldTabBeVisible() for every tab;
+  // precompute what those queries need so one pass is O(n log n) instead of
+  // O(n^2).
+  if (GetScrollDirection()) {
+    VisibilityPassCache cache;
+    cache.pinned_tab_count = layout_helper_->GetPinnedTabCount();
+    cache.pinned_tabs_area_bottom = GetPinnedTabsAreaBottom();
+    cache.pinned_tabs_area_boundary = GetPinnedTabsAreaBoundary();
+    std::vector<std::pair<const Tab*, size_t>> indices;
+    indices.reserve(tabs_view_model_.view_size());
+    for (size_t i = 0; i < tabs_view_model_.view_size(); ++i) {
+      indices.emplace_back(tabs_view_model_.view_at(i), i);
+    }
+    cache.tab_indices = base::flat_map<const Tab*, size_t>(std::move(indices));
+    visibility_pass_cache_.emplace(std::move(cache));
+  }
+
   TabContainerImpl::SetTabSlotVisibility();
+
+  visibility_pass_cache_.reset();
 
   if (GetScrollDirection()) {
     // Even though TabContainerImpl::SetTabSlotVisibility() already updates the
@@ -1852,9 +1879,22 @@ bool BraveTabContainer::IsPinned(const Tab* tab) const {
   // AddTabToViewModel -> layout_helper_->InsertTabAt) before calling
   // StartInsertTabAnimation, so GetIndexOfView(tab) returns the correct index
   // and GetPinnedTabCount() is already accurate when IsPinned() is called.
-  const auto pinned_tab_count = layout_helper_->GetPinnedTabCount();
-  auto tab_index = tabs_view_model_.GetIndexOfView(tab);
+  const size_t pinned_tab_count = visibility_pass_cache_
+                                      ? visibility_pass_cache_->pinned_tab_count
+                                      : layout_helper_->GetPinnedTabCount();
+  auto tab_index = GetTabIndex(tab);
   return tab_index && *tab_index < pinned_tab_count;
+}
+
+std::optional<size_t> BraveTabContainer::GetTabIndex(const Tab* tab) const {
+  if (visibility_pass_cache_) {
+    auto it = visibility_pass_cache_->tab_indices.find(tab);
+    if (it == visibility_pass_cache_->tab_indices.end()) {
+      return std::nullopt;
+    }
+    return it->second;
+  }
+  return tabs_view_model_.GetIndexOfView(tab);
 }
 
 bool BraveTabContainer::ShouldShowHorizontalScrollButton() const {
