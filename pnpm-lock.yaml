@@ -17,9 +17,7 @@ overrides:
   react: 19.2.7
   react-dom: 19.2.7
   axios: 1.18.0
-  elliptic: 6.6.1
   esbuild: 0.28.1
-  http-proxy-middleware: 2.0.10
   postcss: 8.5.23
   prismjs: 1.30.0
   protobufjs: 7.6.5
@@ -3812,6 +3810,7 @@ packages:
 
   crypto-js@4.2.0:
     resolution: {integrity: sha512-KALDyEYgpY+Rlob/iriUtjV6d5Eq+Y191A5g4UqLAi8CyGP9N1+FdVbkc1SxKc2r4YAYqG8JzO2KGL+AizD70Q==}
+    deprecated: Active development of CryptoJS has been discontinued. This library is no longer maintained.
 
   css-loader@5.2.7:
     resolution: {integrity: sha512-Q7mOvpBNBG7YrVGMxRxcBJZFL75o+cH2abNASdibkj/fffYD8qWbInZrD0S9ccI6vZclF3DsHE7njGlLtaHbhg==}
