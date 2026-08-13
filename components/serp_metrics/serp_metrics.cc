@@ -120,7 +120,9 @@ void SerpMetrics::RecordSearch(SerpMetricType type) {
   storage.AddCount(1);
 }
 
-size_t SerpMetrics::GetSearchCountForYesterday(SerpMetricType type) const {
+size_t SerpMetrics::GetSearchCountForYesterday(
+    SerpMetricType type,
+    std::optional<base::Time> last_report_time) const {
   CHECK_NE(SerpMetricType::kUndefined, type);
 
   const auto iter = time_period_storages_.find(type);
@@ -129,12 +131,14 @@ size_t SerpMetrics::GetSearchCountForYesterday(SerpMetricType type) const {
   const base::Time now = base::Time::Now();
   return GetYesterdaySumAfterLastCheckedCutoff(
       storage, GetStartOfYesterday(now), GetEndOfYesterday(now),
-      GetStartOfStalePeriod());
+      GetStartOfStalePeriod(last_report_time));
 }
 
-size_t SerpMetrics::GetSearchCountForStalePeriod() const {
+size_t SerpMetrics::GetSearchCountForStalePeriod(
+    std::optional<base::Time> last_report_time) const {
   const base::Time now = base::Time::Now();
-  const base::Time start_of_stale_period = GetStartOfStalePeriod();
+  const base::Time start_of_stale_period =
+      GetStartOfStalePeriod(last_report_time);
   const base::Time end_of_stale_period = GetEndOfStalePeriod(now);
 
   size_t count = 0;
@@ -162,7 +166,15 @@ size_t SerpMetrics::GetSearchCountForTesting(SerpMetricType type) const {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-base::Time SerpMetrics::GetStartOfStalePeriod() const {
+base::Time SerpMetrics::GetStartOfStalePeriod(
+    std::optional<base::Time> last_report_time) const {
+  if (last_report_time.has_value()) {
+    // Passed by `SerpMetricsP3A` from `kP3ALastReportedAtDict`. Null means
+    // the metric has never been cycled, so the full retention window is stale.
+    return last_report_time->is_null() ? base::Time()
+                                       : last_report_time->UTCMidnight();
+  }
+
   // `kLastReportedAt` tracks when SERP metrics were last reported, so we can
   // compute how far back metrics should be considered stale.
   const base::Time last_reported_at =

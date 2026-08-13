@@ -20,6 +20,9 @@ BASE_DECLARE_FEATURE(kSerpMetricsFeature);
 inline constexpr base::FeatureParam<size_t> kSerpMetricsTimePeriodInDays{
     &kSerpMetricsFeature, "time_period_in_days", 28};
 
+inline constexpr base::FeatureParam<bool> kSerpMetricsP3A{&kSerpMetricsFeature,
+                                                          "p3a", true};
+
 }  // namespace serp_metrics
 
 #endif  // BRAVE_COMPONENTS_SERP_METRICS_SERP_METRICS_FEATURE_H_
