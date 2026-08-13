@@ -18,6 +18,7 @@
 #include "base/debug/stack_trace.h"
 #include "base/feature_list.h"
 #include "base/notimplemented.h"
+#include "base/task/sequenced_task_runner.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
@@ -157,15 +158,19 @@ BraveTabContainer::~BraveTabContainer() {
   // closed tabs were cleaned up from OnTabCloseAnimationCompleted().
   CancelAnimation();
   DCHECK(closing_tabs_.empty()) << "There are dangling closed tabs.";
-  DCHECK(!layout_locked_)
-      << "The lock returned by LockLayout() shouldn't outlive this object";
+  // Note: |layout_locked_| may still be true here. The unlock closure
+  // returned by LockLayout() is bound to a weak pointer, so a lock that
+  // outlives this object is benign (e.g. the window is closed while a
+  // session-restore insert batch holds the lock).
 }
 
 base::OnceClosure BraveTabContainer::LockLayout() {
   DCHECK(!layout_locked_) << "LockLayout() doesn't allow reentrance";
   layout_locked_ = true;
+  // Bind weakly: during session restore the closure is posted to the task
+  // queue, and the window (with this container) can be closed before it runs.
   return base::BindOnce(&BraveTabContainer::OnUnlockLayout,
-                        base::Unretained(this));
+                        weak_factory_.GetWeakPtr());
 }
 
 bool BraveTabContainer::ShouldShowVerticalTabs() const {
@@ -349,6 +354,15 @@ bool BraveTabContainer::ShouldTabBeVisible(const Tab* tab) const {
 
 std::vector<Tab*> BraveTabContainer::AddTabs(
     std::vector<TabInsertionParams> tabs_params) {
+  // Session restore inserts tabs one batch after another, and every insert
+  // triggers a full O(tab count) strip layout. Lock the layout for the rest
+  // of the current task batch and post the unlock closure, so all inserts
+  // that pile up in the task queue are laid out in a single pass.
+  if (GetScrollDirection() && !layout_locked_ && IsSessionRestoreInProgress()) {
+    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(FROM_HERE,
+                                                             LockLayout());
+  }
+
   std::vector<Tab*> added_tabs =
       TabContainerImpl::AddTabs(std::move(tabs_params));
   // Session restore inserts many background tabs back-to-back; scrolling to
@@ -573,6 +587,7 @@ void BraveTabContainer::PaintBoundingBoxForSplitTab(
 }
 
 void BraveTabContainer::OnUnlockLayout() {
+  CHECK(!IsSessionRestoreInProgress());
   layout_locked_ = false;
 
   InvalidateIdealBounds();
