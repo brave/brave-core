@@ -38,13 +38,12 @@ class BraveTabStripCollectionDelegate {
   virtual bool ShouldHandleTabManipulation() const = 0;
 
   virtual void AddTabRecursive(
-      std::unique_ptr<TabInterface> tab,
+      ScopedTab tab,
       size_t index,
       std::optional<tab_groups::TabGroupId> new_group_id,
       bool new_pinned_state,
       TabInterface* opener) const = 0;
-  virtual std::unique_ptr<TabInterface> RemoveTabAtIndexRecursive(
-      size_t index) const = 0;
+  virtual ScopedTab RemoveTabAtIndexRecursive(size_t index) const = 0;
   virtual void MoveTabsRecursive(
       const std::vector<int>& tab_indices,
       size_t destination_index,
