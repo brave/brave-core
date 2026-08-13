@@ -90,6 +90,7 @@ def _native(path: str) -> str:
     """
     return str(Path(path))
 
+
 # The line each source carries the symbol brave rewrites on, and the upstream
 # and brave spellings of that symbol. A patch generated from a change on line 2
 # has a hunk covering lines 1 to 5, which is what makes the upstream edits below
