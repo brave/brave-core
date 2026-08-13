@@ -46,7 +46,7 @@ jobs:
           [[ "$isCrossRepository" = "true" ]] || { echo "PR is not cross repo. Exiting!"; exit 1; }
 
           contribHeadRefName="contributor-$headRepositoryOwnerLogin-$headRefName"
-          if gh api "repos/${GITHUB_REPOSITORY}/git/refs/heads/$contribHeadRefName" -q .ref > /dev/null 2>&1; then
+          if gh api "repos/${GITHUB_REPOSITORY}/git/refs/heads/$contribHeadRefName" > /dev/null 2>&1; then
             gh api --method PATCH "repos/${GITHUB_REPOSITORY}/git/refs/heads/$contribHeadRefName" \
               --field sha="$COMMIT_HASH" --field force=true
           else
@@ -54,7 +54,13 @@ jobs:
               --field ref="refs/heads/$contribHeadRefName" --field sha="$COMMIT_HASH"
           fi
 
-          ci_pr_number=$(gh pr list -H "$contribHeadRefName" --json number -q '.[0].number')
+          ci_prs=$(gh pr list -H "$contribHeadRefName" --json number)
+          ci_pr_count=$($JQ 'length' <<<"$ci_prs")
+          if (( ci_pr_count > 1 )); then
+            echo "Expected at most one PR for branch '$contribHeadRefName'; found $ci_pr_count"
+            exit 1
+          fi
+          ci_pr_number=$($JQ '.[0].number // ""' <<<"$ci_prs")
           if [[ -z "$ci_pr_number" ]]; then
             gh pr create \
               --draft \
