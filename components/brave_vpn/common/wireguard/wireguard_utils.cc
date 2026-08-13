@@ -40,6 +40,27 @@ std::string EncodeBase64(base::span<const uint8_t> in) {
 
 namespace {
 constexpr char kCloudflareIPv4[] = "1.1.1.1";
+
+// The whole address space minus private, link-local and multicast ranges
+// (10/8, 172.16/12, 192.168/16, 169.254/16, 224/3, fc00::/7, fe80::/10,
+// ff00::/8) so LAN devices and mDNS/SSDP discovery stay reachable while
+// connected.
+//
+// On Windows this list must not contain any /0 prefix: tunnel.dll only installs
+// its blockAll/blockDNS WFP filters when a peer routes a default route, and
+// those filters are what block the LAN.
+constexpr char kAllowedIPs[] =
+    "0.0.0.0/5, 8.0.0.0/7, 11.0.0.0/8, 12.0.0.0/6, 16.0.0.0/4, 32.0.0.0/3, "
+    "64.0.0.0/2, 128.0.0.0/3, 160.0.0.0/5, 168.0.0.0/8, 169.0.0.0/9, "
+    "169.128.0.0/10, 169.192.0.0/11, 169.224.0.0/12, 169.240.0.0/13, "
+    "169.248.0.0/14, 169.252.0.0/15, 169.255.0.0/16, 170.0.0.0/7, "
+    "172.0.0.0/12, 172.32.0.0/11, 172.64.0.0/10, 172.128.0.0/9, 173.0.0.0/8, "
+    "174.0.0.0/7, 176.0.0.0/4, 192.0.0.0/9, 192.128.0.0/11, 192.160.0.0/13, "
+    "192.169.0.0/16, 192.170.0.0/15, 192.172.0.0/14, 192.176.0.0/12, "
+    "192.192.0.0/10, 193.0.0.0/8, 194.0.0.0/7, 196.0.0.0/6, 200.0.0.0/5, "
+    "208.0.0.0/4, ::/1, 8000::/2, c000::/3, e000::/4, f000::/5, f800::/6, "
+    "fe00::/9, fec0::/10";
+
 // Template for wireguard config generation.
 // For a quick reference on the keys/values, please see:
 // https://github.com/pirate/wireguard-docs?tab=readme-ov-file#config-reference
@@ -50,7 +71,7 @@ constexpr char kWireguardConfigTemplate[] = R"(
   DNS = {dns_servers}
   [Peer]
   PublicKey = {server_public_key}
-  AllowedIPs = 0.0.0.0/0, ::/0
+  AllowedIPs = {allowed_ips}
   Endpoint = {vpn_server_hostname}:51821
 )";
 
@@ -76,6 +97,7 @@ std::optional<std::string> CreateWireguardConfig(
                                      mapped_ipv4_address);
   base::ReplaceSubstringsAfterOffset(&config, 0, "{dns_servers}",
                                      kCloudflareIPv4);
+  base::ReplaceSubstringsAfterOffset(&config, 0, "{allowed_ips}", kAllowedIPs);
   return config;
 }
 
