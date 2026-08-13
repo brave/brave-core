@@ -6,6 +6,7 @@
 import * as React from 'react'
 import { formatLocale } from '$web-common/locale'
 import * as Mojom from '../../../common/mojom'
+import { AttachmentPageItem } from '../../../page/components/attachment_item'
 import { useUntrustedConversationContext } from '../../untrusted_conversation_context'
 import styles from './inline_tab_search.module.scss'
 
@@ -21,32 +22,13 @@ function TabSourceCard(props: { source: Mojom.TabData }) {
     }
   })()
 
-  // Local favicon database only: never fall back to Google's favicon server,
-  // which would send the tab's URL off device.
-  const faviconSrc =
-    `chrome-untrusted://favicon2?size=32&allowGoogleServerFallback=0&pageUrl=`
-    + encodeURIComponent(source.url.url)
-
-  const handleClick = () => {
-    context.api.uiHandler.switchToTab(source.id)
-  }
-
   return (
     <li>
-      <button
-        title={source.title || source.url.url}
-        onClick={handleClick}
-      >
-        <img
-          className={styles.favicon}
-          src={faviconSrc}
-          alt=''
-        />
-        <span className={styles.text}>
-          <span className={styles.title}>{source.title || host}</span>
-          <span className={styles.host}>{host}</span>
-        </span>
-      </button>
+      <AttachmentPageItem
+        url={source.url.url}
+        title={source.title || host}
+        onClick={() => context.api.uiHandler.switchToTab(source.id)}
+      />
     </li>
   )
 }

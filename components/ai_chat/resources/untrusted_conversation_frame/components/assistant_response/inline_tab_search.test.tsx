@@ -111,9 +111,11 @@ test('InlineTabSearch falls back to the host when a tab has no title', async () 
     </MockContext>,
   )
 
+  // Title falls back to the host; the subtitle is the scheme-stripped URL.
   await waitFor(() =>
-    expect(screen.getAllByText('only.example')).toHaveLength(2),
+    expect(screen.getByText('only.example')).toBeInTheDocument(),
   )
+  expect(screen.getByText('only.example/')).toBeInTheDocument()
 })
 
 test('InlineTabSearch reports when no open tab matched', async () => {
