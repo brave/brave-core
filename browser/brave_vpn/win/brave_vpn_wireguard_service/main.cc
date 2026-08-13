@@ -69,6 +69,16 @@ std::optional<int> ProcessUserLevelCommands(
             IDS_BRAVE_VPN_WIREGUARD_TRAY_NOTIFICATION_DISCONNECTED)));
     return 0;
   }
+
+  // User level command line. Publishes notification to system notification
+  // center when the connection is dropped because it could not be protected.
+  if (command_line.HasSwitch(
+          brave_vpn::kBraveVpnWireguardServiceNotifyFirewallErrorSwitchName)) {
+    brave_vpn::ShowDesktopNotification(
+        base::UTF16ToWide(l10n_util::GetStringUTF16(
+            IDS_BRAVE_VPN_WIREGUARD_TRAY_NOTIFICATION_FIREWALL_ERROR)));
+    return 0;
+  }
   return std::nullopt;
 }
 
