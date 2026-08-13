@@ -13,10 +13,12 @@
 #include <string_view>
 #include <vector>
 
+#include "base/containers/flat_set.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/one_shot_event.h"
 #include "base/scoped_multi_source_observation.h"
+#include "base/timer/timer.h"
 #include "brave/components/ai_chat/core/browser/associated_archive_content.h"
 #include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
@@ -77,7 +79,8 @@ class AssociatedContentManager : public ToolProvider,
 
   // Sets whether the tools exposed by the content with |content_uuid| are
   // attached (available to the LLM). Reflects an explicit user choice, e.g.
-  // detaching via the tools pill.
+  // detaching via the tools pill. An explicit choice stops automatic
+  // attach/detach updates for the content (see OnContentToolsChanged).
   void SetToolsAttached(std::string_view content_uuid, bool tools_attached);
 
   // Fetches the tools the content with |content_uuid| exposes, described for
@@ -135,6 +138,7 @@ class AssociatedContentManager : public ToolProvider,
   void OnRequestArchive(AssociatedContentDelegate* delegate) override;
   void OnDestroyed(AssociatedContentDelegate* delegate) override;
   void OnTitleChanged(AssociatedContentDelegate* delegate) override;
+  void OnContentToolsChanged(AssociatedContentDelegate* delegate) override;
 
   std::vector<AssociatedContentDelegate*> GetContentDelegatesForTesting() {
     return content_delegates_;
@@ -149,11 +153,29 @@ class AssociatedContentManager : public ToolProvider,
   void OnContentToolsDetected(base::WeakPtr<AssociatedContentDelegate> delegate,
                               std::vector<std::unique_ptr<Tool>> tools);
 
+  // Re-probes GetContentTools() for each content that notified a tools change
+  // since the debounce timer started, skipping any that are no longer staged.
+  void ProcessPendingContentToolChanges();
+
+  // Whether |uuid| is staged (not yet associated with a conversation turn)
+  // and hasn't had its tools attachment explicitly overridden by the user,
+  // i.e. whether it's still eligible for automatic attach/detach updates.
+  bool IsEligibleForAutoToolsUpdate(const std::string& uuid) const;
+
   raw_ptr<ConversationHandler> conversation_;
 
   std::vector<std::unique_ptr<Tool>> tools_;
   std::vector<AssociatedContentDelegate*> content_delegates_;
   base::flat_map<std::string, std::string> content_uuid_to_conversation_turns_;
+
+  // Contents whose tools attachment was explicitly chosen by the user (via
+  // SetToolsAttached). Automatic attach/detach updates are skipped for these.
+  base::flat_set<std::string> tools_attachment_overridden_;
+
+  // Debounce for OnContentToolsChanged: a page may register many tools in a
+  // burst, and each re-probe is a full AIPageContent extraction round-trip.
+  base::flat_set<std::string> pending_tools_changed_uuids_;
+  base::OneShotTimer content_tools_changed_timer_;
 
   // Used for ownership - still stored in the above array.
   // This includes:

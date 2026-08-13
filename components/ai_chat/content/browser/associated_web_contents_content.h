@@ -46,7 +46,8 @@ class AIChatMetrics;
 
 // Provides context to an AI Chat conversation in the form of the Tab's content
 class AssociatedWebContentsContent : public content::WebContentsObserver,
-                                     public AssociatedContentDriver {
+                                     public AssociatedContentDriver,
+                                     public mojom::ContentToolsListener {
  public:
   // Delegate to extract print preview content
   class PrintPreviewExtractionDelegate {
@@ -128,6 +129,19 @@ class AssociatedWebContentsContent : public content::WebContentsObserver,
   void OnNewPage(int64_t navigation_id) override;
   void GetContentTools(GetContentToolsCallback callback) override;
 
+  // ai_chat::AssociatedContentDelegate
+  void OnFirstObserverAdded() override;
+  void OnLastObserverRemoved() override;
+
+  // mojom::ContentToolsListener
+  void OnContentToolsChanged() override;
+
+  // (Re)establishes the renderer tool-change subscription while at least one
+  // conversation is attached to this content (and WebMCP is enabled), and
+  // tears it down otherwise. Must be re-invoked after each navigation, since
+  // the renderer-side pipe is scoped to the RenderFrame.
+  void UpdateContentToolsSubscription();
+
   // Called when an event of significance occurs that, if the page is a
   // same-document navigation, should result in that previous navigation
   // being considered as a new page.
@@ -190,6 +204,13 @@ class AssociatedWebContentsContent : public content::WebContentsObserver,
   std::unique_ptr<PageContentFetcherDelegate> page_content_fetcher_delegate_;
 
   std::unique_ptr<FullScreenshotter> full_screenshotter_;
+
+  // WebMCP tool-change subscription state. The remote is bound to the
+  // primary main frame's PageContentExtractor while a subscription is active;
+  // the receiver delivers the renderer's `toolchange` notifications.
+  bool content_tools_subscription_wanted_ = false;
+  mojo::Remote<mojom::PageContentExtractor> content_tools_extractor_;
+  mojo::Receiver<mojom::ContentToolsListener> content_tools_listener_{this};
 
   base::WeakPtrFactory<AssociatedWebContentsContent> weak_ptr_factory_{this};
 };

@@ -66,6 +66,10 @@ class AssociatedContentDelegate {
     virtual void OnRequestArchive(AssociatedContentDelegate* delegate) {}
     virtual void OnNewPage(AssociatedContentDelegate* delegate) {}
     virtual void OnTitleChanged(AssociatedContentDelegate* delegate) {}
+    // The set of tools the content exposes (e.g. WebMCP tools registered via
+    // document.modelContext) may have changed. Observers can re-fetch via
+    // GetContentTools(). Only live content can send this.
+    virtual void OnContentToolsChanged(AssociatedContentDelegate* delegate) {}
   };
 
   AssociatedContentDelegate();
@@ -127,7 +131,18 @@ class AssociatedContentDelegate {
   // Content has navigated
   virtual void OnNewPage(int64_t navigation_id);
 
+  // Called when the first observer is added and when the last observer is
+  // removed. Live-content implementations can use these to start/stop
+  // watching the page (e.g. for WebMCP tool changes) only while some
+  // conversation is attached.
+  virtual void OnFirstObserverAdded() {}
+  virtual void OnLastObserverRemoved() {}
+
+  // Notifies observers that the content's tool set may have changed.
+  void NotifyContentToolsChanged();
+
   void set_uuid(std::string uuid) { uuid_ = std::move(uuid); }
+  void set_content_id(int content_id) { content_id_ = content_id; }
   void NotifyNewPage();
   void set_url(GURL url) { url_ = std::move(url); }
   void SetTitle(std::u16string title);

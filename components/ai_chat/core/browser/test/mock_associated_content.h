@@ -32,6 +32,12 @@ class MockAssociatedContent : public AssociatedContentDelegate {
 
   void SetTitle(std::u16string title);
 
+  // Simulates the content's tool set changing (e.g. a page registering or
+  // unregistering WebMCP tools).
+  void NotifyContentToolsChanged() {
+    AssociatedContentDelegate::NotifyContentToolsChanged();
+  }
+
   // AssociatedContentDelegate:
   void GetContent(GetPageContentCallback callback) override;
   void OnNewPage(int64_t navigation_id) override;

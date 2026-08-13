@@ -11,7 +11,9 @@
 
 #include "base/files/scoped_temp_dir.h"
 #include "base/functional/callback_helpers.h"
+#include "base/run_loop.h"
 #include "base/test/bind.h"
+#include "base/test/run_until.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
@@ -733,6 +735,186 @@ TEST_F(AssociatedContentManagerUnitTest,
   ASSERT_EQ(1u, conversation_->associated_content.size());
   EXPECT_EQ(conversation_->associated_content[0]->content_type,
             mojom::ContentType::VideoTranscript);
+}
+
+namespace {
+
+// Runs the tools currently exposed by |has_tools| back through
+// GetContentToolsCallback.
+void RunGetContentTools(
+    const bool& has_tools,
+    int& probe_count,
+    AssociatedContentDelegate::GetContentToolsCallback callback) {
+  ++probe_count;
+  std::vector<std::unique_ptr<Tool>> tools;
+  if (has_tools) {
+    tools.push_back(std::make_unique<NiceMock<MockTool>>("a_tool"));
+  }
+  std::move(callback).Run(std::move(tools));
+}
+
+}  // namespace
+
+TEST_F(AssociatedContentManagerUnitTest,
+       OnContentToolsChanged_AttachesStagedContentWhenToolsAppear) {
+  // When a staged content's page registers tools after the initial detection
+  // probe, the content should become attached so its tools can be surfaced.
+  NiceMock<MockAssociatedContent> content;
+  bool has_tools = false;
+  int probe_count = 0;
+  EXPECT_CALL(content, GetContentTools)
+      .WillRepeatedly(
+          [&](AssociatedContentDelegate::GetContentToolsCallback cb) {
+            RunGetContentTools(has_tools, probe_count, std::move(cb));
+          });
+
+  auto* manager = conversation_handler_->associated_content_manager();
+  manager->AddContent(&content);
+  ASSERT_FALSE(content.tools_attached());
+  ASSERT_EQ(1, probe_count);
+
+  // The page registers a tool after the content was attached.
+  has_tools = true;
+  content.NotifyContentToolsChanged();
+
+  ASSERT_TRUE(base::test::RunUntil([&] { return content.tools_attached(); }));
+  auto associated = manager->GetAssociatedContent();
+  ASSERT_EQ(1u, associated.size());
+  EXPECT_TRUE(associated[0]->tools_attached);
+}
+
+TEST_F(AssociatedContentManagerUnitTest,
+       OnContentToolsChanged_DetachesStagedContentWhenToolsDisappear) {
+  // When a staged content's page unregisters all of its tools, the content
+  // should be detached again.
+  NiceMock<MockAssociatedContent> content;
+  bool has_tools = true;
+  int probe_count = 0;
+  EXPECT_CALL(content, GetContentTools)
+      .WillRepeatedly(
+          [&](AssociatedContentDelegate::GetContentToolsCallback cb) {
+            RunGetContentTools(has_tools, probe_count, std::move(cb));
+          });
+
+  auto* manager = conversation_handler_->associated_content_manager();
+  manager->AddContent(&content);
+  ASSERT_TRUE(content.tools_attached());
+
+  // The page unregisters all of its tools.
+  has_tools = false;
+  content.NotifyContentToolsChanged();
+
+  ASSERT_TRUE(base::test::RunUntil([&] { return !content.tools_attached(); }));
+  auto associated = manager->GetAssociatedContent();
+  ASSERT_EQ(1u, associated.size());
+  EXPECT_FALSE(associated[0]->tools_attached);
+}
+
+TEST_F(AssociatedContentManagerUnitTest,
+       OnContentToolsChanged_IgnoresContentAssociatedWithTurn) {
+  // Once content is associated with a conversation turn it is no longer
+  // staged, so live tool changes must not flip its tools attachment.
+  NiceMock<MockAssociatedContent> content;
+  bool has_tools = false;
+  int probe_count = 0;
+  EXPECT_CALL(content, GetContentTools)
+      .WillRepeatedly(
+          [&](AssociatedContentDelegate::GetContentToolsCallback cb) {
+            RunGetContentTools(has_tools, probe_count, std::move(cb));
+          });
+
+  auto* manager = conversation_handler_->associated_content_manager();
+  manager->AddContent(&content);
+  ASSERT_FALSE(content.tools_attached());
+  ASSERT_EQ(1, probe_count);
+
+  auto turn = mojom::ConversationTurn::New(
+      "test-turn-uuid", std::nullopt /* thread_uuid */,
+      mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+      "Test human message", std::nullopt, std::nullopt, std::nullopt,
+      base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */, false,
+      std::nullopt, nullptr,
+      std::vector<std::string>{} /* child_thread_uuids */);
+  manager->AssociateUnsentContentWithTurn(turn);
+
+  // A tool appears after the content was associated with a turn.
+  has_tools = true;
+  content.NotifyContentToolsChanged();
+
+  // Wait past the debounce window; no re-probe should have happened.
+  base::RunLoop loop;
+  task_environment_.GetMainThreadTaskRunner()->PostDelayedTask(
+      FROM_HERE, loop.QuitClosure(), base::Milliseconds(250));
+  loop.Run();
+
+  EXPECT_EQ(1, probe_count);
+  EXPECT_FALSE(content.tools_attached());
+}
+
+TEST_F(AssociatedContentManagerUnitTest,
+       OnContentToolsChanged_IgnoresUserOverriddenContent) {
+  // An explicit user choice via SetToolsAttached must stick: subsequent tool
+  // changes on the page must not override it, even while staged.
+  NiceMock<MockAssociatedContent> content;
+  bool has_tools = false;
+  int probe_count = 0;
+  EXPECT_CALL(content, GetContentTools)
+      .WillRepeatedly(
+          [&](AssociatedContentDelegate::GetContentToolsCallback cb) {
+            RunGetContentTools(has_tools, probe_count, std::move(cb));
+          });
+
+  auto* manager = conversation_handler_->associated_content_manager();
+  manager->AddContent(&content);
+  ASSERT_FALSE(content.tools_attached());
+  ASSERT_EQ(1, probe_count);
+
+  // The user explicitly detaches the content's tools.
+  manager->SetToolsAttached(content.uuid(), /*tools_attached=*/false);
+
+  // A tool appears after the user's explicit choice.
+  has_tools = true;
+  content.NotifyContentToolsChanged();
+
+  // Wait past the debounce window; no re-probe should have happened.
+  base::RunLoop loop;
+  task_environment_.GetMainThreadTaskRunner()->PostDelayedTask(
+      FROM_HERE, loop.QuitClosure(), base::Milliseconds(250));
+  loop.Run();
+
+  EXPECT_EQ(1, probe_count);
+  EXPECT_FALSE(content.tools_attached());
+}
+
+TEST_F(AssociatedContentManagerUnitTest,
+       OnContentToolsChanged_DebouncesBursts) {
+  // A burst of tool registrations should produce a single re-probe, not one
+  // per `toolchange` event.
+  NiceMock<MockAssociatedContent> content;
+  bool has_tools = true;
+  int probe_count = 0;
+  EXPECT_CALL(content, GetContentTools)
+      .WillRepeatedly(
+          [&](AssociatedContentDelegate::GetContentToolsCallback cb) {
+            RunGetContentTools(has_tools, probe_count, std::move(cb));
+          });
+
+  auto* manager = conversation_handler_->associated_content_manager();
+  manager->AddContent(&content);
+  ASSERT_EQ(1, probe_count);
+
+  content.NotifyContentToolsChanged();
+  content.NotifyContentToolsChanged();
+  content.NotifyContentToolsChanged();
+
+  ASSERT_TRUE(base::test::RunUntil([&] { return probe_count == 2; }));
+
+  // Wait past another debounce window; no further probes should happen.
+  base::RunLoop loop;
+  task_environment_.GetMainThreadTaskRunner()->PostDelayedTask(
+      FROM_HERE, loop.QuitClosure(), base::Milliseconds(250));
+  loop.Run();
+  EXPECT_EQ(2, probe_count);
 }
 
 }  // namespace ai_chat

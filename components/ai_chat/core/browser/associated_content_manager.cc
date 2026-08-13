@@ -31,7 +31,13 @@ namespace ai_chat {
 
 namespace {
 constexpr size_t kMaxToolsPerContent = 30;
-}
+
+// Pages may register or unregister many tools in a burst (each producing a
+// WebMCP `toolchange` event), so tools re-detection is debounced to avoid a
+// full AIPageContent extraction per event.
+constexpr base::TimeDelta kContentToolsChangedDebounceDelay =
+    base::Milliseconds(100);
+}  // namespace
 
 AssociatedContentManager::AssociatedContentManager(
     ConversationHandler* conversation)
@@ -183,6 +189,8 @@ void AssociatedContentManager::RemoveContent(
     // anymore.
     content_observations_.RemoveObservation(delegate);
     content_delegates_.erase(it);
+    tools_attachment_overridden_.erase(delegate->uuid());
+    pending_tools_changed_uuids_.erase(delegate->uuid());
   }
 
   // If this is owned content, delete it.
@@ -214,6 +222,10 @@ void AssociatedContentManager::RemoveContent(std::string_view content_uuid,
 void AssociatedContentManager::SetToolsAttached(std::string_view content_uuid,
                                                 bool tools_attached) {
   DVLOG(1) << __func__;
+
+  // Any explicit choice (even one matching the current value) stops automatic
+  // attach/detach updates for this content.
+  tools_attachment_overridden_.insert(std::string(content_uuid));
 
   auto it = std::ranges::find_if(content_delegates_,
                                  [&content_uuid](const auto& delegate) {
@@ -269,6 +281,51 @@ void AssociatedContentManager::OnContentToolsDetected(
   }
   delegate->set_tools_attached(tools_attached);
   conversation_->OnAssociatedContentUpdated();
+}
+
+bool AssociatedContentManager::IsEligibleForAutoToolsUpdate(
+    const std::string& uuid) const {
+  // Only staged content (i.e. not yet associated with a conversation turn)
+  // that the user hasn't explicitly overridden the tools attachment for is
+  // eligible for automatic attach/detach updates.
+  return !content_uuid_to_conversation_turns_.contains(uuid) &&
+         !tools_attachment_overridden_.contains(uuid);
+}
+
+void AssociatedContentManager::OnContentToolsChanged(
+    AssociatedContentDelegate* delegate) {
+  const std::string& uuid = delegate->uuid();
+  if (!IsEligibleForAutoToolsUpdate(uuid)) {
+    return;
+  }
+  pending_tools_changed_uuids_.insert(uuid);
+  if (!content_tools_changed_timer_.IsRunning()) {
+    content_tools_changed_timer_.Start(
+        FROM_HERE, kContentToolsChangedDebounceDelay,
+        base::BindOnce(
+            &AssociatedContentManager::ProcessPendingContentToolChanges,
+            weak_ptr_factory_.GetWeakPtr()));
+  }
+}
+
+void AssociatedContentManager::ProcessPendingContentToolChanges() {
+  auto pending = std::exchange(pending_tools_changed_uuids_, {});
+  for (const auto& uuid : pending) {
+    auto it = std::ranges::find(content_delegates_, uuid,
+                                [](const auto& ptr) { return ptr->uuid(); });
+    if (it == content_delegates_.end()) {
+      continue;
+    }
+    // State may have changed while debouncing; only re-probe content that is
+    // still staged and not user-overridden.
+    if (!IsEligibleForAutoToolsUpdate(uuid)) {
+      continue;
+    }
+    AssociatedContentDelegate* delegate = *it;
+    delegate->GetContentTools(
+        base::BindOnce(&AssociatedContentManager::OnContentToolsDetected,
+                       weak_ptr_factory_.GetWeakPtr(), delegate->GetWeakPtr()));
+  }
 }
 
 void AssociatedContentManager::ClearContent() {
@@ -600,6 +657,8 @@ void AssociatedContentManager::DetachContent() {
   content_observations_.RemoveAllObservations();
   content_delegates_.clear();
   owned_content_.clear();
+  tools_attachment_overridden_.clear();
+  pending_tools_changed_uuids_.clear();
 }
 
 }  // namespace ai_chat
