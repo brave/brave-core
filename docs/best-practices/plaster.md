@@ -130,9 +130,10 @@ substitutions:
       method_name: UpdateToolbarButtonState
 ```
 
-Prefer an AST rewriter (`preempt_function_impl`, `after_function_impl`,
-`add_to_public`, …) over a regex where one fits, and never rename an upstream
-function to `_ChromiumImpl` just to wrap it. See
+Prefer an AST rewriter over a regex where one fits, and never rename an upstream
+function to `_ChromiumImpl` just to wrap it. Run `plaster --help` to discover
+the available rewriters and `plaster --help <rewriter>` for a specific one's
+full docs. See also [plaster.md](../plaster.md) and
 [plaster_dos_and_donts.md](../plaster_dos_and_donts.md).
 
 ---
