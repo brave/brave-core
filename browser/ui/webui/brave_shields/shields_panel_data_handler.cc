@@ -28,11 +28,11 @@ ShieldsPanelDataHandler::ShieldsPanelDataHandler(
     TopChromeWebUIController* webui_controller,
     TabStripModel* tab_strip_model,
     favicon::FaviconService* favicon_service,
-    brave_shields::BraveShieldsSettingsService* brave_shields_settings_service)
+    brave_shields::BraveShieldsSettingsService& brave_shields_settings)
     : data_handler_receiver_(this, std::move(data_handler_receiver)),
       webui_controller_(webui_controller),
       favicon_service_(favicon_service),
-      brave_shields_settings_service_(brave_shields_settings_service) {
+      brave_shields_settings_(brave_shields_settings) {
   DCHECK(tab_strip_model);
   tab_strip_model->AddObserver(this);
 
@@ -81,21 +81,22 @@ void ShieldsPanelDataHandler::GetSiteSettings(
   }
 
   SiteSettings settings;
-  settings.ad_block_mode = active_shields_data_controller_->GetAdBlockMode();
+  const auto& site_url = active_shields_data_controller_->GetCurrentSiteURL();
+  settings.ad_block_mode = brave_shields_settings_->GetAdBlockMode(site_url);
   settings.fingerprint_mode =
-      active_shields_data_controller_->GetFingerprintMode();
+      brave_shields_settings_->GetFingerprintMode(site_url);
   settings.cookie_block_mode =
       active_shields_data_controller_->GetCookieBlockMode();
   settings.https_upgrade_mode =
       active_shields_data_controller_->GetHttpsUpgradeMode();
   settings.is_noscript_enabled =
-      active_shields_data_controller_->GetNoScriptEnabled();
+      brave_shields_settings_->IsNoScriptEnabled(site_url);
   settings.is_forget_first_party_storage_enabled =
-      active_shields_data_controller_->GetForgetFirstPartyStorageEnabled();
+      brave_shields_settings_->GetForgetFirstPartyStorageEnabled(site_url);
   settings.webcompat_settings =
       active_shields_data_controller_->GetWebcompatSettings();
   settings.scripts_blocked_override_status =
-      active_shields_data_controller_->GetJsContentSettingsOverriddenData();
+      brave_shields_settings_->GetJsContentSettingOverriddenData(site_url);
 
   std::move(callback).Run(settings.Clone());
 }
@@ -106,7 +107,9 @@ void ShieldsPanelDataHandler::SetAdBlockMode(
     return;
   }
 
-  active_shields_data_controller_->SetAdBlockMode(mode);
+  brave_shields_settings_->SetAdBlockMode(
+      mode, active_shields_data_controller_->GetCurrentSiteURL());
+  active_shields_data_controller_->ReloadWebContents();
 }
 
 void ShieldsPanelDataHandler::SetFingerprintMode(
@@ -115,7 +118,9 @@ void ShieldsPanelDataHandler::SetFingerprintMode(
     return;
   }
 
-  active_shields_data_controller_->SetFingerprintMode(mode);
+  brave_shields_settings_->SetFingerprintMode(
+      mode, active_shields_data_controller_->GetCurrentSiteURL());
+  active_shields_data_controller_->ReloadWebContents();
 }
 
 void ShieldsPanelDataHandler::SetCookieBlockMode(
@@ -141,7 +146,9 @@ void ShieldsPanelDataHandler::SetIsNoScriptsEnabled(bool is_enabled) {
     return;
   }
 
-  active_shields_data_controller_->SetIsNoScriptEnabled(is_enabled);
+  brave_shields_settings_->SetNoScriptEnabled(
+      is_enabled, active_shields_data_controller_->GetCurrentSiteURL());
+  active_shields_data_controller_->ReloadWebContents();
 }
 
 void ShieldsPanelDataHandler::AllowScriptsOnce(
@@ -197,8 +204,8 @@ void ShieldsPanelDataHandler::SetForgetFirstPartyStorageEnabled(
     return;
   }
 
-  active_shields_data_controller_->SetForgetFirstPartyStorageEnabled(
-      is_enabled);
+  brave_shields_settings_->SetForgetFirstPartyStorageEnabled(
+      is_enabled, active_shields_data_controller_->GetCurrentSiteURL());
 }
 
 void ShieldsPanelDataHandler::SetWebcompatEnabled(
@@ -305,14 +312,15 @@ void ShieldsPanelDataHandler::UpdateSiteBlockInfo() {
   site_block_info_.http_redirects_list =
       active_shields_data_controller_->GetHttpRedirectsList();
   site_block_info_.is_brave_shields_enabled =
-      active_shields_data_controller_->IsBraveShieldsEnabled();
+      brave_shields_settings_->IsBraveShieldsEnabled(
+          active_shields_data_controller_->GetCurrentSiteURL());
   site_block_info_.is_brave_shields_ad_block_only_mode_enabled =
       active_shields_data_controller_->IsBraveShieldsAdBlockOnlyModeEnabled();
   site_block_info_.show_shields_disabled_ad_block_only_mode_prompt =
       active_shields_data_controller_
           ->ShouldShowShieldsDisabledAdBlockOnlyModePrompt();
   site_block_info_.is_brave_shields_managed =
-      brave_shields_settings_service_->IsBraveShieldsManaged(current_site_url);
+      brave_shields_settings_->IsBraveShieldsManaged(current_site_url);
   const auto& invoked_webcompat_set =
       active_shields_data_controller_->GetInvokedWebcompatFeatures();
   site_block_info_.invoked_webcompat_list = std::vector<ContentSettingsType>(
