@@ -1,0 +1,13 @@
+diff --git a/components/variations/variations_seed_store.h b/components/variations/variations_seed_store.h
+index 7a0f2eb295c44267a0f71221ac16439a853e5daf..5e14d2df217c6bf3cccba75834d6c6fcbca793c6 100644
+--- a/components/variations/variations_seed_store.h
++++ b/components/variations/variations_seed_store.h
+@@ -294,6 +294,8 @@ class COMPONENT_EXPORT(VARIATIONS) VariationsSeedStore {
+       base::OnceCallback<void(StoredSeedInfo)> done_callback,
+       SeedType seed_type);
+ 
++  void SetSessionCountry(std::string_view country_code);
++
+  protected:
+   // Stores the serial number of the latest seed.
+   void StoreLatestSerialNumber(std::string_view serial_number);
