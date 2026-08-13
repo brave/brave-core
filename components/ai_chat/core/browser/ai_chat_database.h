@@ -162,6 +162,10 @@ class AIChatDatabase : public syncer::SyncMetadataStore {
 
   bool CreateSchema();
 
+  // Must run after migrations: older databases are missing columns that some
+  // of these indexes cover, and CreateSchema() runs before migrations.
+  bool CreateIndexes();
+
   // The directory storing the database.
   const base::FilePath db_file_path_;
 

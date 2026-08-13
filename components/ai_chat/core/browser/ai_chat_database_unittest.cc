@@ -76,6 +76,16 @@ class AIChatDatabaseTest : public testing::Test,
     return temp_directory_.GetPath().AppendASCII("ai_chat");
   }
 
+  size_t CountRows(const char* table) {
+    size_t count = 0;
+    CHECK(sql::test::CountTableRows(&db_->GetDB(), table, &count));
+    return count;
+  }
+
+  // GetDB() is private and friendship does not extend to the classes TEST_P
+  // generates, so tests reach the schema through the fixture.
+  std::string GetSchema() { return db_->GetDB().GetSchema(); }
+
  protected:
   base::test::TaskEnvironment task_environment_{
       base::test::TaskEnvironment::TimeSource::MOCK_TIME};
@@ -1190,6 +1200,162 @@ TEST_P(AIChatDatabaseTest, DeleteConversationEntryWithAssociatedContent) {
   EXPECT_EQ(archive_result->entries[0]->uuid.value(), history[1]->uuid.value());
 }
 
+namespace {
+
+// Every table keyed by conversation_entry_uuid. Deleting an entry or a
+// conversation must not leave rows behind in any of them.
+constexpr const char* kEntryChildTables[] = {
+    "conversation_entry_event_completion",
+    "conversation_entry_event_search_queries",
+    "conversation_entry_event_web_sources",
+    "conversation_entry_event_inline_search",
+    "conversation_entry_event_tool_use",
+    "conversation_entry_uploaded_files",
+};
+
+// Appends one event of every kind that is persisted to its own table, so that
+// per-table deletion coverage can be asserted.
+void AppendEventForEveryTable(mojom::ConversationTurnPtr& entry) {
+  if (!entry->events) {
+    entry->events = std::vector<mojom::ConversationEntryEventPtr>();
+  }
+  entry->events->push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
+      mojom::CompletionEvent::New("completion")));
+  entry->events->push_back(mojom::ConversationEntryEvent::NewSearchQueriesEvent(
+      mojom::SearchQueriesEvent::New(std::vector<std::string>{"query"})));
+  std::vector<mojom::WebSourcePtr> sources;
+  sources.push_back(mojom::WebSource::New(
+      "source", GURL("https://example.com/source"),
+      GURL("https://example.com/favicon.ico"), std::nullopt, std::nullopt));
+  entry->events->push_back(mojom::ConversationEntryEvent::NewSourcesEvent(
+      mojom::WebSourcesEvent::New(std::move(sources),
+                                  std::vector<std::string>{})));
+  entry->events->push_back(mojom::ConversationEntryEvent::NewInlineSearchEvent(
+      mojom::InlineSearchEvent::New("inline query", "{}")));
+  entry->events->push_back(mojom::ConversationEntryEvent::NewToolUseEvent(
+      mojom::ToolUseEvent::New("tool", "tool-id", "{}", std::nullopt,
+                               std::nullopt, nullptr, false)));
+}
+
+}  // namespace
+
+// The event tables are only reachable via conversation_entry, so a missed
+// table leaks encrypted rows that nothing will ever clean up.
+TEST_P(AIChatDatabaseTest, DeleteConversationRemovesAllChildRows) {
+  const std::string uuid = "conversation_to_delete";
+  auto history = CreateSampleChatHistory(1u, 0,
+                                         /*num_uploaded_files_per_query=*/1u);
+  AppendEventForEveryTable(history[1]);
+
+  std::vector<mojom::AssociatedContentPtr> associated_content;
+  associated_content.push_back(mojom::AssociatedContent::New(
+      "content", mojom::ContentType::PageContent, "page title", 1,
+      GURL("https://example.com/page"), 62, history[0]->uuid.value(), false));
+  const mojom::ConversationPtr metadata = mojom::Conversation::New(
+      uuid, "title", base::Time::Now() - base::Hours(2), true, std::nullopt, 0,
+      0, false, std::move(associated_content));
+
+  ASSERT_TRUE(db_->AddConversation(metadata->Clone(), {"Page contents"},
+                                   history[0]->Clone()));
+  ASSERT_TRUE(db_->AddConversationEntry(uuid, history[1]->Clone()));
+
+  // An edit is a conversation_entry row of its own, with its own events.
+  auto edit = history[1]->Clone();
+  edit->uuid = base::Uuid::GenerateRandomV4().AsLowercaseString();
+  ASSERT_TRUE(db_->AddConversationEntry(uuid, std::move(edit),
+                                        history[1]->uuid.value()));
+
+  // Without this the assertions after deletion could pass vacuously.
+  for (const char* table : kEntryChildTables) {
+    SCOPED_TRACE(table);
+    EXPECT_GT(CountRows(table), 0u);
+  }
+  EXPECT_EQ(CountRows("associated_content"), 1u);
+  EXPECT_EQ(CountRows("conversation_entry"), 3u);
+
+  EXPECT_TRUE(db_->DeleteConversation(uuid));
+
+  for (const char* table : kEntryChildTables) {
+    SCOPED_TRACE(table);
+    EXPECT_EQ(CountRows(table), 0u);
+  }
+  EXPECT_EQ(CountRows("associated_content"), 0u);
+  EXPECT_EQ(CountRows("conversation_entry"), 0u);
+  EXPECT_EQ(CountRows("conversation"), 0u);
+}
+
+// Deleting an entry deletes the edits pointing at it, so it must also delete
+// those edits' event rows.
+TEST_P(AIChatDatabaseTest, DeleteConversationEntryRemovesEditChildRows) {
+  const std::string uuid = "conversation_with_edits";
+  auto history = CreateSampleChatHistory(1u, 0, 0u);
+  AppendEventForEveryTable(history[1]);
+
+  const mojom::ConversationPtr metadata = mojom::Conversation::New(
+      uuid, "title", base::Time::Now() - base::Hours(2), true, std::nullopt, 0,
+      0, false, std::vector<mojom::AssociatedContentPtr>());
+
+  ASSERT_TRUE(db_->AddConversation(metadata->Clone(), {}, history[0]->Clone()));
+  ASSERT_TRUE(db_->AddConversationEntry(uuid, history[1]->Clone()));
+
+  auto edit = history[1]->Clone();
+  edit->uuid = base::Uuid::GenerateRandomV4().AsLowercaseString();
+  ASSERT_TRUE(db_->AddConversationEntry(uuid, std::move(edit),
+                                        history[1]->uuid.value()));
+  ASSERT_EQ(CountRows("conversation_entry"), 3u);
+
+  EXPECT_TRUE(db_->DeleteConversationEntry(history[1]->uuid.value()));
+
+  // Only the human query entry is left, and it owns no events.
+  EXPECT_EQ(CountRows("conversation_entry"), 1u);
+  for (const char* table : kEntryChildTables) {
+    SCOPED_TRACE(table);
+    EXPECT_EQ(CountRows(table), 0u);
+  }
+}
+
+// updated_time comes from a GROUP BY over conversation_entry; a bare `date`
+// column there would be an arbitrary row of the group rather than the latest.
+TEST_P(AIChatDatabaseTest, GetAllConversationsUsesLatestEntryDate) {
+  const std::string uuid = "conversation_dates";
+  auto history = CreateSampleChatHistory(1u, 0, 0u);
+
+  // Give the first-persisted entry the later date, so neither insertion order
+  // nor rowid order matches date order.
+  const base::Time latest = base::Time::Now() - base::Hours(1);
+  const base::Time earlier = base::Time::Now() - base::Hours(5);
+  history[0]->created_time = latest;
+  history[1]->created_time = earlier;
+
+  const mojom::ConversationPtr metadata = mojom::Conversation::New(
+      uuid, "title", base::Time::Now() - base::Hours(9), true, std::nullopt, 0,
+      0, false, std::vector<mojom::AssociatedContentPtr>());
+
+  ASSERT_TRUE(db_->AddConversation(metadata->Clone(), {}, history[0]->Clone()));
+  ASSERT_TRUE(db_->AddConversationEntry(uuid, history[1]->Clone()));
+
+  std::vector<mojom::ConversationPtr> conversations =
+      db_->GetAllConversations();
+  ASSERT_EQ(conversations.size(), 1u);
+  EXPECT_EQ(conversations[0]->updated_time, latest);
+}
+
+// The delete and read paths rely on these to avoid full table scans, and
+// Chrome's SQLite build has no automatic-index fallback.
+TEST_P(AIChatDatabaseTest, SchemaCreatesIndexes) {
+  // Force initialization before inspecting the schema.
+  ASSERT_TRUE(db_->GetAllConversations().empty());
+
+  const std::string schema = GetSchema();
+  for (const char* index :
+       {"associated_content_by_conversation", "associated_content_by_entry",
+        "conversation_entry_by_conversation",
+        "conversation_entry_by_editing_entry"}) {
+    SCOPED_TRACE(index);
+    EXPECT_NE(schema.find(index), std::string::npos);
+  }
+}
+
 // Sync metadata tests (non-parameterized, use the same fixture setup pattern).
 class AIChatDatabaseSyncTest : public testing::Test {
  public:
@@ -1327,6 +1493,18 @@ class AIChatDatabaseMigrationTest : public testing::Test,
     EXPECT_EQ(kCompatibleDatabaseVersionNumber,
               meta_table.GetCompatibleVersionNumber());
     EXPECT_EQ(kCurrentDatabaseVersion, meta_table.GetVersionNumber());
+
+    // Indexes are created after migrations, because some of them cover columns
+    // that migrations add. They must exist whichever version we started from.
+    const std::string schema = db.GetSchema();
+    for (const char* index :
+         {"associated_content_by_conversation", "associated_content_by_entry",
+          "conversation_entry_by_conversation",
+          "conversation_entry_by_editing_entry"}) {
+      SCOPED_TRACE(index);
+      EXPECT_NE(schema.find(index), std::string::npos);
+    }
+
     db.Close();
     task_environment_.RunUntilIdle();
     ASSERT_TRUE(temp_directory_.Delete());
