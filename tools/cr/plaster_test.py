@@ -1306,6 +1306,68 @@ class RewriterFormsTest(unittest.TestCase):
                 '      class_name: C\n'
                 '      method_name: Foo\n')
 
+    def test_make_virtual_skips_defined_function_template_overload(self):
+        # Real-world overload set: a plain overload plus a function-template
+        # overload (constrained with `requires`) that forwards to it. `virtual`
+        # is illegal on a function template, so only the plain overload should
+        # match -- exercising whether make_virtual can tell the two apart.
+        source = (
+            'class C {\n'
+            ' public:\n'
+            '  void AddTabRecursive(ScopedTab tab,\n'
+            '                       size_t index,\n'
+            '                       std::optional<tab_groups::TabGroupId> new_group_id,\n'
+            '                       bool new_pinned_state);\n'
+            '\n'
+            '  template <typename T>\n'
+            '    requires std::derived_from<T, TabInterface>\n'
+            '  void AddTabRecursive(std::unique_ptr<T> tab,\n'
+            '                       size_t index,\n'
+            '                       std::optional<tab_groups::TabGroupId> new_group_id,\n'
+            '                       bool new_pinned_state) {\n'
+            '    AddTabRecursive(ScopedTab(tab.release()), index, new_group_id,\n'
+            '                    new_pinned_state);\n'
+            '  }\n'
+            '};\n')
+        result = self._apply(
+            'template_overload.h', source, 'substitutions:\n'
+            '  - description: make the non-template overload virtual\n'
+            '    make_virtual:\n'
+            '      class_name: C\n'
+            '      method_name: AddTabRecursive\n')
+        expected = source.replace(
+            '  void AddTabRecursive(ScopedTab tab,',
+            '  virtual void AddTabRecursive(ScopedTab tab,')
+        self.assertEqual(result, expected)
+
+    def test_make_virtual_cannot_exclude_declaration_only_function_template(
+            self):
+        # Same overload set, but the template overload is a bare declaration
+        # (no body), matching the same `field_declaration`/`declaration` shape
+        # the matcher looks for. make_virtual has no way to distinguish a
+        # function template from an ordinary method here, so it counts 2
+        # matches for a 1-match default and refuses to apply. It fails closed
+        # rather than incorrectly stamping `virtual` on the template, but
+        # there is currently no arg to select just the non-template overload.
+        source = (
+            'class C {\n'
+            ' public:\n'
+            '  void AddTabRecursive(ScopedTab tab, size_t index);\n'
+            '\n'
+            '  template <typename T>\n'
+            '    requires std::derived_from<T, TabInterface>\n'
+            '  void AddTabRecursive(std::unique_ptr<T> tab, size_t index);\n'
+            '};\n')
+        with self.assertRaises(plaster.PlasterApplyError) as ctx:
+            self._apply(
+                'template_overload_decl.h', source, 'substitutions:\n'
+                '  - description: make the non-template overload virtual\n'
+                '    make_virtual:\n'
+                '      class_name: C\n'
+                '      method_name: AddTabRecursive\n')
+        self.assertIn('Unexpected number of matches (2 vs 1)',
+                      str(ctx.exception))
+
     def test_make_virtual_unknown_arg_rejected(self):
         self._expect_value_error(
             'substitutions:\n'
