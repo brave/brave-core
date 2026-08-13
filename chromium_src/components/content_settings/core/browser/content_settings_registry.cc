@@ -14,6 +14,7 @@
 #include "brave/components/psst/buildflags/buildflags.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings.mojom.h"
+#include "components/pref_registry/pref_registry_syncable.h"
 #include "net/base/features.h"
 
 #if BUILDFLAG(ENABLE_PSST)
@@ -121,6 +122,46 @@ void ContentSettingsRegistry::BraveInit() {
           WebsiteSettingsRegistry::PLATFORM_ANDROID,
       ContentSettingsInfo::INHERIT_IN_INCOGNITO,
       PermissionSettingsInfo::EXCEPTIONS_ON_SECURE_AND_INSECURE_ORIGINS);
+
+  // BRAVE_JAVASCRIPT is the Shields-owned twin of the upstream JAVASCRIPT
+  // content setting: the effective JAVASCRIPT setting is derived from both. To
+  // avoid the two definitions drifting apart, derive every property from the
+  // already-registered JAVASCRIPT entry rather than restating literals.
+  const ContentSettingsInfo* javascript_info =
+      Get(ContentSettingsType::JAVASCRIPT);
+  CHECK(javascript_info);
+  const PermissionSettingsInfo* javascript_permission_info =
+      javascript_info->permission_settings_info();
+  const WebsiteSettingsInfo* javascript_website_info =
+      javascript_info->website_settings_info();
+  std::set<ContentSetting> javascript_valid_settings;
+  for (int i = 0; i < CONTENT_SETTING_NUM_SETTINGS; ++i) {
+    const auto setting = static_cast<ContentSetting>(i);
+    if (setting != CONTENT_SETTING_DEFAULT &&
+        javascript_info->IsSettingValid(setting)) {
+      javascript_valid_settings.insert(setting);
+    }
+  }
+  // The sync status isn't exposed directly, but it is the only input to the
+  // SYNCABLE_PREF registration flag, so recover it from there.
+  const WebsiteSettingsInfo::SyncStatus javascript_sync_status =
+      (javascript_website_info->GetPrefRegistrationFlags() &
+       user_prefs::PrefRegistrySyncable::SYNCABLE_PREF)
+          ? WebsiteSettingsInfo::SYNCABLE
+          : WebsiteSettingsInfo::UNSYNCABLE;
+  // The platform set is consumed by WebsiteSettingsRegistry at registration
+  // time and not retained on the info, so it is the one value that cannot be
+  // read back. Mirror JAVASCRIPT's platforms explicitly.
+  Register(ContentSettingsType::BRAVE_JAVASCRIPT,
+           brave_shields::kBraveJavaScript,
+           javascript_info->GetInitialDefaultSetting(), javascript_sync_status,
+           javascript_permission_info->allowlisted_primary_schemes(),
+           javascript_valid_settings, javascript_website_info->scoping_type(),
+           WebsiteSettingsRegistry::DESKTOP |
+               WebsiteSettingsRegistry::PLATFORM_ANDROID |
+               WebsiteSettingsRegistry::PLATFORM_IOS,
+           javascript_info->incognito_behavior(),
+           javascript_permission_info->origin_restriction());
 
   Register(ContentSettingsType::BRAVE_FINGERPRINTING_V2,
            brave_shields::kFingerprintingV2, CONTENT_SETTING_ASK,
