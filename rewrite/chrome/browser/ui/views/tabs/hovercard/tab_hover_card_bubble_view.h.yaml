@@ -4,7 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 substitutions:
-  - description: Add a protected method for the Brave subclass to override.
+  - description: Add a public method for the Brave subclass and test.
     add_to_public:
       class_name: TabHoverCardBubbleView
       code: 'bool HasThumbnailView() const;'

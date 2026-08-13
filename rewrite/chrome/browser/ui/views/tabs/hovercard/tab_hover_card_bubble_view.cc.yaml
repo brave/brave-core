@@ -21,7 +21,7 @@ substitutions:
       BraveTabCardView instead of TabCardView.
 
     regex:
-      re_pattern: 'std::make_unique<TabCardView>\(this\)'
+      pattern: 'std::make_unique<TabCardView>(this)'
       replace: 'CreateTabCardView()'
 
   - description: |
