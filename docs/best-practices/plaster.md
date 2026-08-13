@@ -81,12 +81,11 @@ whitespace, character classes, or structural anchors.
 
 <a id="PLSTR-003"></a>
 
-## ❌ Never Use a Function-Rewriting `#define` in New Code — Use a Plaster
+## ❌ Never Use a Macro to Edit Upstream Code in New Code — Use a Plaster
 
-**Do not introduce a `#define` in `chromium_src` to redirect a call, rename a
-function, or wrap an upstream body. Use a plaster rewrite instead.** A `#define`
-rewrites _every_ occurrence of the identifier in all sources included after it,
-invisibly and often unintentionally.
+**All new uses of a macro to edit upstream code are banned. Use a plaster
+rewrite instead.** A `#define` rewrites _every_ occurrence of the identifier in
+all sources included after it, invisibly and often unintentionally.
 
 ```cpp
 // ❌ WRONG - chromium_src/.../web_app_launch_process.cc
@@ -117,11 +116,19 @@ Symptoms that a `#define` is fighting you: needing to reorder `#include`s so a
 macro does not mangle unrelated declarations, or `#undef`-ing right after the
 include.
 
-This does **not** ban every macro in `chromium_src`. The rule targets macros
-that **redirect a call target or replace/rename a function definition**. Macros
-that merely decorate a declaration remain correct — see
-[CSRC-015](./chromium-src-overrides.md#CSRC-015)
-(`#define SomeMethod virtual SomeMethod`), as do string-ID overrides.
+This covers macros that merely decorate a declaration, too.
+`#define SomeMethod virtual SomeMethod` is banned in new code — use
+`make_virtual`, alongside `drop_final` and `add_friend` where subclassing needs
+them:
+
+```yaml
+# ✅ CORRECT - rewrite/chrome/browser/download/bubble/download_display_controller.h.yaml
+substitutions:
+  - description: 'Let BraveDownloadDisplayController override the button state.'
+    make_virtual:
+      class_name: DownloadDisplayController
+      method_name: UpdateToolbarButtonState
+```
 
 Prefer an AST rewriter (`preempt_function_impl`, `after_function_impl`,
 `add_to_public`, …) over a regex where one fits, and never rename an upstream
