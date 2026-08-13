@@ -779,18 +779,22 @@ TEST_F(BraveStatsUpdaterTest, SendSerpMetricsUsageIfEnabled) {
       serp_metrics_aggregator_mock(GetLocalState(), profile_attributes_storage);
 
   EXPECT_CALL(serp_metrics_aggregator_mock,
-              GetSearchCountForYesterday(serp_metrics::SerpMetricType::kBrave))
+              GetSearchCountForYesterday(serp_metrics::SerpMetricType::kBrave,
+                                         ::testing::_))
       .WillOnce(::testing::Return(3));
 
   EXPECT_CALL(serp_metrics_aggregator_mock,
-              GetSearchCountForYesterday(serp_metrics::SerpMetricType::kGoogle))
+              GetSearchCountForYesterday(serp_metrics::SerpMetricType::kGoogle,
+                                         ::testing::_))
       .WillOnce(::testing::Return(2));
 
   EXPECT_CALL(serp_metrics_aggregator_mock,
-              GetSearchCountForYesterday(serp_metrics::SerpMetricType::kOther))
+              GetSearchCountForYesterday(serp_metrics::SerpMetricType::kOther,
+                                         ::testing::_))
       .WillOnce(::testing::Return(1));
 
-  EXPECT_CALL(serp_metrics_aggregator_mock, GetSearchCountForStalePeriod)
+  EXPECT_CALL(serp_metrics_aggregator_mock,
+              GetSearchCountForStalePeriod(::testing::_))
       .WillOnce(::testing::Return(15));
 
   auto params = BuildUpdaterParams();
