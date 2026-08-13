@@ -9,6 +9,7 @@ from pathlib import Path
 import argparse
 import contextlib
 import copy
+import dataclasses
 import hashlib
 import io
 import json
@@ -3121,6 +3122,86 @@ class RewriterFormsTest(unittest.TestCase):
             self._AURA_CLASS.replace(' private:\n',
                                      ' private:\n  friend class BraveC;\n'))
 
+    # -- functions with a macro-adjacent string literal -------------------
+    #
+    # A bare macro touching a string literal (only valid post-preprocessing,
+    # e.g. Skia's `STRINGIZE(SK_MILESTONE)` version string idiom) drops into
+    # a tree-sitter error node that can swallow everything up to the next
+    # construct it resyncs on. Regression coverage for a real bug: this once
+    # made `after_function_impl` on the *first* function wrap the *second*
+    # function's body too.
+
+    _VERSION_STRING_FUNCTION = (
+        'base::DictValue C::GetClientInfo() {\n'
+        '  base::DictValue dict;\n'
+        '  dict.Set("graphics_backend",\n'
+        '           std::string("Skia/" STRINGIZE(SK_MILESTONE) " " '
+        'SKIA_COMMIT_HASH));\n'
+        '  return dict;\n'
+        '}\n'
+        '\n'
+        'base::ListValue C::GetLogMessages() {\n'
+        '  return GetLogs();\n'
+        '}\n')
+
+    def test_after_function_impl_unaffected_by_later_macro_adjacent_string(
+            self):
+        # Without the fix, `after_function_impl` on `GetClientInfo` would
+        # wrap `GetLogMessages` too, since the STRINGIZE construct inside
+        # `GetClientInfo` throws tree-sitter's parse off. Confirm it now stays
+        # scoped to the target function's own body.
+        result = self._apply(
+            'version_string.cc', self._VERSION_STRING_FUNCTION,
+            'blank_string_adjacent_macros_for_ast_parsing: true\n'
+            'substitutions:\n'
+            '  - description: report the executable path after the body\n'
+            '    after_function_impl:\n'
+            '      function_name: C::GetClientInfo\n'
+            '      result_var: dict\n'
+            '      code: |-\n'
+            '        return dict;\n')
+        self.assertEqual(
+            result, 'base::DictValue C::GetClientInfo() {\n'
+            '  base::DictValue dict = [&]() -> base::DictValue {\n'
+            '  base::DictValue dict;\n'
+            '  dict.Set("graphics_backend",\n'
+            '           std::string("Skia/" STRINGIZE(SK_MILESTONE) " " '
+            'SKIA_COMMIT_HASH));\n'
+            '  return dict;\n'
+            '  }();\n'
+            '  return dict;\n'
+            '}\n'
+            '\n'
+            'base::ListValue C::GetLogMessages() {\n'
+            '  return GetLogs();\n'
+            '}\n')
+
+    def test_make_virtual_unaffected_by_macro_adjacent_string_in_sibling(self):
+        # A macro-adjacent string literal in one method must not stop a
+        # rewriter from correctly reaching a *different* method in the same
+        # class.
+        result = self._apply(
+            'version_string.h', 'class C {\n'
+            ' public:\n'
+            '  void GetClientInfo() {\n'
+            '    Log("Skia/" STRINGIZE(SK_MILESTONE) " " SKIA_COMMIT_HASH);\n'
+            '  }\n'
+            '  void Foo();\n'
+            '};\n', 'blank_string_adjacent_macros_for_ast_parsing: true\n'
+            'substitutions:\n'
+            '  - description: make Foo virtual\n'
+            '    make_virtual:\n'
+            '      class_name: C\n'
+            '      method_name: Foo\n')
+        self.assertEqual(
+            result, 'class C {\n'
+            ' public:\n'
+            '  void GetClientInfo() {\n'
+            '    Log("Skia/" STRINGIZE(SK_MILESTONE) " " SKIA_COMMIT_HASH);\n'
+            '  }\n'
+            '  virtual void Foo();\n'
+            '};\n')
+
     def test_blanking_is_off_by_default(self):
         # Without `blank_macros_for_ast_parsing`, the export-macro class is
         # unparseable, so the rewriter matches nothing and the apply fails.
@@ -3184,6 +3265,126 @@ class RewriterFormsTest(unittest.TestCase):
             "      re_pattern: 'Chromium'\n"
             "      replace: 'Brave'\n")
         self.assertEqual(result, 'A Brave thing.\n')
+
+    # -- `blank_string_adjacent_macros_for_ast_parsing` (separate flag) ----
+    #
+    # A distinct opt-in from `blank_macros_for_ast_parsing`, with the same
+    # validation shape, plus coverage that the two are independent end to end
+    # (not just at the `CxxMacrosEraser.erase` unit level above).
+
+    _VERSION_STRING_CLASS = ('class C {\n'
+                             ' public:\n'
+                             '  void Bar() { Log("v" STRINGIZE(V)); }\n'
+                             '  void Foo();\n'
+                             '};\n')
+
+    def test_string_adjacent_flag_off_by_default(self):
+        # `after_function_impl` needs `GetClientInfo`'s function_definition
+        # node intact to find its body; on this fixture, without the flag,
+        # the STRINGIZE construct's error node swallows enough of it that the
+        # query comes up empty (0 matches) rather than finding *a* match.
+        # (On the real, larger file this bug was found in, tree-sitter's
+        # error recovery instead re-synced onto a much later, wrong
+        # `compound_statement` -- still broken, just a different symptom.)
+        with self.assertRaises(plaster.PlasterApplyError):
+            self._apply(
+                'no_string_blank.cc', self._VERSION_STRING_FUNCTION,
+                'substitutions:\n'
+                '  - description: report the executable path after the body\n'
+                '    after_function_impl:\n'
+                '      function_name: C::GetClientInfo\n'
+                '      result_var: dict\n'
+                '      code: |-\n'
+                '        return dict;\n')
+
+    def test_string_adjacent_flag_must_be_boolean(self):
+        self._expect_value_error(
+            'blank_string_adjacent_macros_for_ast_parsing: yes please\n'
+            'substitutions:\n'
+            '  - description: bad flag type\n'
+            '    drop_final:\n'
+            '      class_name: C\n',
+            '`blank_string_adjacent_macros_for_ast_parsing` must be a boolean')
+
+    def test_string_adjacent_flag_rejected_for_non_cxx_source(self):
+        self._expect_value_error(
+            'blank_string_adjacent_macros_for_ast_parsing: true\n'
+            'substitutions:\n'
+            '  - description: flag on a non-C++ source\n'
+            '    regex:\n'
+            "      re_pattern: 'x'\n"
+            "      replace: 'y'\n",
+            '`blank_string_adjacent_macros_for_ast_parsing` is only '
+            'supported for C++ sources')
+
+    def test_macros_flag_alone_does_not_enable_string_adjacent_pass(self):
+        # Setting `blank_macros_for_ast_parsing` must not also enable the
+        # separate string-adjacent pass this construct needs: still fails.
+        with self.assertRaises(plaster.PlasterApplyError):
+            self._apply(
+                'macros_only.cc', self._VERSION_STRING_FUNCTION,
+                'blank_macros_for_ast_parsing: true\n'
+                'substitutions:\n'
+                '  - description: wrong flag for this construct\n'
+                '    after_function_impl:\n'
+                '      function_name: C::GetClientInfo\n'
+                '      result_var: dict\n'
+                '      code: |-\n'
+                '        return dict;\n')
+
+    def test_string_adjacent_flag_alone_fixes_the_match(self):
+        result = self._apply(
+            'string_adjacent_only.cc', self._VERSION_STRING_FUNCTION,
+            'blank_string_adjacent_macros_for_ast_parsing: true\n'
+            'substitutions:\n'
+            '  - description: report the executable path after the body\n'
+            '    after_function_impl:\n'
+            '      function_name: C::GetClientInfo\n'
+            '      result_var: dict\n'
+            '      code: |-\n'
+            '        return dict;\n')
+        # Correctly scoped: the wrap closes right after GetClientInfo's own
+        # `return dict;`, well before GetLogMessages even starts.
+        self.assertNotIn('GetLogMessages', result[:result.index('}();')])
+
+    def test_string_adjacent_flag_alone_reaches_sibling_method(self):
+        # A construct simple enough that tree-sitter handles it fine even
+        # without the flag; this only confirms the flag does not itself
+        # break normal operation on it.
+        result = self._apply(
+            'string_adjacent_only.h', self._VERSION_STRING_CLASS,
+            'blank_string_adjacent_macros_for_ast_parsing: true\n'
+            'substitutions:\n'
+            '  - description: make Foo virtual\n'
+            '    make_virtual:\n'
+            '      class_name: C\n'
+            '      method_name: Foo\n')
+        self.assertEqual(
+            result,
+            self._VERSION_STRING_CLASS.replace('void Foo();',
+                                               'virtual void Foo();'))
+
+    def test_both_blank_flags_together(self):
+        # The two flags compose: an export-macro class *and* a
+        # STRINGIZE-guarded method in the same file, both reached in one pass.
+        result = self._apply(
+            'both_flags.h', 'class MODULES_EXPORT C {\n'
+            ' public:\n'
+            '  void Bar() { Log("v" STRINGIZE(V)); }\n'
+            '  void Foo();\n'
+            '};\n', 'blank_macros_for_ast_parsing: true\n'
+            'blank_string_adjacent_macros_for_ast_parsing: true\n'
+            'substitutions:\n'
+            '  - description: make Foo virtual on an exported, STRINGIZE-using class\n'
+            '    make_virtual:\n'
+            '      class_name: C\n'
+            '      method_name: Foo\n')
+        self.assertEqual(
+            result, 'class MODULES_EXPORT C {\n'
+            ' public:\n'
+            '  void Bar() { Log("v" STRINGIZE(V)); }\n'
+            '  virtual void Foo();\n'
+            '};\n')
 
     def test_ast_rewriter_rejected_for_non_cxx_source(self):
         # AST rewriters (cxx.* ops) only work on C++ sources; the `.idl` target
@@ -4051,16 +4252,22 @@ _SYNTHETIC_SPEC = {
 }
 
 
-class PrepareForParseTest(unittest.TestCase):
-    """Unit tests for AstRewriter._prepare_cxx_for_parse (no ast-grep binary)."""
+class CxxMacrosEraserTest(unittest.TestCase):
+    """Unit tests for CxxMacrosEraser."""
 
-    def _prepared(self, source: str) -> str:
-        """Return the parse-prepared source, asserting length is preserved.
+    # Both passes on by default: most tests below exercise one pass's
+    # mechanics in isolation and don't care about the other's gating (that
+    # independence gets its own tests further down).
+    _BOTH_PASSES = plaster.BlankForParseOptions(macros=True,
+                                                string_adjacent_macros=True)
 
-        `_prepare_cxx_for_parse` only reads the held source and the class regexes,
-        so the rewriters registry is irrelevant and left as None here.
-        """
-        result = plaster.AstRewriter(None, source)._prepare_cxx_for_parse()
+    def _prepared(
+            self,
+            source: str,
+            blank_for_parse: plaster.BlankForParseOptions = _BOTH_PASSES
+    ) -> str:
+        """Return the erased source, asserting length is preserved."""
+        result = plaster.CxxMacrosEraser(blank_for_parse).erase(source)
         # The whole point is that offsets are preserved for byte-for-byte
         # remapping onto the untouched source.
         self.assertEqual(len(result.encode('utf-8')),
@@ -4137,6 +4344,190 @@ class PrepareForParseTest(unittest.TestCase):
         for src in ('#include <memory>\n', '#define FOO 1\n',
                     '#pragma once\n'):
             self.assertEqual(self._prepared(src), src)
+
+    # -- macros adjacent to string literals --------------------------------
+    #
+    # A bare identifier (optionally called) touching a string literal, with
+    # only whitespace between them, has no raw C++ grammar: it is only valid
+    # once a macro that expands to (or stringizes into) a string literal has
+    # run. Left alone, tree-sitter drops the expression into an error node
+    # that can swallow everything up to the next construct it can resync on.
+
+    def test_blanks_macro_after_string_literal(self):
+        self._assert_blanks('std::string("Skia/" STRINGIZE(SK_MILESTONE));',
+                            'STRINGIZE(SK_MILESTONE)')
+
+    def test_blanks_bare_macro_after_string_literal(self):
+        self._assert_blanks('std::string("Skia/" SKIA_COMMIT_HASH);',
+                            'SKIA_COMMIT_HASH')
+
+    def test_blanks_macro_before_string_literal(self):
+        self._assert_blanks('std::string(SKIA_COMMIT_HASH " built");',
+                            'SKIA_COMMIT_HASH')
+
+    def test_blanks_macro_chain_between_string_literals(self):
+        # The real construct that triggered this: a `STRINGIZE(...)` call and
+        # a bare macro, each adjacent to a string literal on at least one
+        # side, chained together.
+        result = self._prepared(
+            'std::string("Skia/" STRINGIZE(SK_MILESTONE) " " '
+            'SKIA_COMMIT_HASH);')
+        self.assertNotIn('STRINGIZE', result)
+        self.assertNotIn('SKIA_COMMIT_HASH', result)
+        for kept in ('"Skia/"', '" "'):
+            self.assertIn(kept, result)
+
+    def test_leaves_plain_string_concatenation_untouched(self):
+        # Two string literals with only whitespace between them is valid,
+        # unrelated C++ (adjacent string literal concatenation).
+        self.assertEqual(self._prepared('"foo" "bar"'), '"foo" "bar"')
+
+    def test_leaves_string_with_operator_untouched(self):
+        # An operator between the string and the identifier makes this
+        # ordinary, already-parseable C++; nothing to blank.
+        for src in ('"foo" + bar', '"foo" == bar', 'foo + "bar"'):
+            self.assertEqual(self._prepared(src), src)
+
+    def test_leaves_user_defined_literal_suffix_untouched(self):
+        # No whitespace: a real user-defined literal suffix, not this
+        # construct.
+        self.assertEqual(self._prepared('"foo"s'), '"foo"s')
+
+    def test_leaves_string_literal_prefix_untouched(self):
+        # No whitespace: a real encoding prefix, not this construct.
+        for src in ('u8"foo"', 'L"foo"', 'u"foo"', 'U"foo"'):
+            self.assertEqual(self._prepared(src), src)
+
+    def test_macro_after_string_handles_escaped_quote(self):
+        self._assert_blanks(r'std::string("a\"b" FOO);', 'FOO')
+
+    def test_leaves_encoded_prefix_adjacent_to_macro_untouched(self):
+        # `u8"foo"`/`L"foo"`/etc. are excluded from `_CXX_STRING_LIT`
+        # entirely (see its comment), so a macro next to one is left alone
+        # rather than risk misreading the prefixed form.
+        for src in ('std::string(u8"Skia/" FOO);', 'std::string(FOO L"x");'):
+            self.assertEqual(self._prepared(src), src)
+
+    def test_leaves_preprocessor_directive_with_string_untouched(self):
+        # `#define FOO "bar"` and `#include "foo.h"` have the same *shape*
+        # as the macro-adjacent-string construct (identifier/token then
+        # whitespace then a string literal), but they are directive syntax,
+        # not an expression -- the name/path must survive intact.
+        for src in ('#define FOO "bar"\n', '#include "foo.h"\n',
+                    '#define VERSION_STRING "v" MY_STRINGIZE(X)\n'):
+            self.assertEqual(self._prepared(src), src)
+
+    def test_directive_with_string_inside_conditional_still_protected(self):
+        # The conditional lines around it are blanked as usual, but the
+        # `#define` line's own content survives untouched.
+        src = '#if X\n#define FOO "bar"\n#endif\n'
+        result = self._prepared(src)
+        self.assertIn('#define FOO "bar"', result)
+        for directive in ('#if X', '#endif'):
+            self.assertNotIn(directive, result)
+
+    def test_leaves_raw_string_with_embedded_quote_untouched(self):
+        # A raw string's content may contain unescaped `"` characters
+        # (`some "quoted" text` below); naively pairing quotes would misread
+        # `"quoted"` as a standalone string literal sandwiched between two
+        # bare words, and blank them as if they were macros.
+        src = 'Log(R"foo(some "quoted" text)foo" BAR);\n'
+        self.assertEqual(self._prepared(src), src)
+
+    def test_leaves_raw_string_adjacent_to_macro_untouched(self):
+        # A raw string with no embedded quote is safe to reason about, but is
+        # still excluded wholesale (rather than only when it has embedded
+        # quotes) to keep the rule simple and uniformly safe.
+        for src in ('Log(R"(hello)" FOO);\n', 'Log(FOO R"(hello)");\n'):
+            self.assertEqual(self._prepared(src), src)
+
+    def test_raw_string_delimiter_must_match_on_both_sides(self):
+        # `)foo"` inside the content of a `R"bar(...)bar"` literal must not
+        # be mistaken for that literal's own close.
+        src = 'Log(R"bar(text with )foo" inside)bar" BAZ);\n'
+        self.assertEqual(self._prepared(src), src)
+
+    # -- the two passes are independently gated ----------------------------
+    #
+    # `blank_macros_for_ast_parsing` and
+    # `blank_string_adjacent_macros_for_ast_parsing` are separate opt-ins:
+    # each pass only runs when its own flag is set, regardless of the other.
+
+    def test_string_adjacent_macros_alone_does_not_blank_export_macro(self):
+        src = 'class MODULES_EXPORT Foo final {};'
+        result = self._prepared(
+            src,
+            plaster.BlankForParseOptions(macros=False,
+                                         string_adjacent_macros=True))
+        self.assertEqual(result, src)
+
+    def test_string_adjacent_macros_alone_does_not_blank_conditional(self):
+        src = 'a\n#if X\nb\n#endif\n'
+        result = self._prepared(
+            src,
+            plaster.BlankForParseOptions(macros=False,
+                                         string_adjacent_macros=True))
+        self.assertEqual(result, src)
+
+    def test_macros_alone_does_not_blank_macro_after_string_literal(self):
+        src = 'std::string("Skia/" STRINGIZE(SK_MILESTONE));'
+        result = self._prepared(
+            src,
+            plaster.BlankForParseOptions(macros=True,
+                                         string_adjacent_macros=False))
+        self.assertEqual(result, src)
+
+    def test_neither_flag_blanks_anything(self):
+        src = ('class MODULES_EXPORT Foo final {\n'
+               '#if X\n'
+               '  void Bar() { Log("v" STRINGIZE(V)); }\n'
+               '#endif\n'
+               '};\n')
+        self.assertEqual(self._prepared(src, plaster.BlankForParseOptions()),
+                         src)
+
+    def test_both_flags_blank_both_constructs(self):
+        result = self._prepared(
+            'class MODULES_EXPORT Foo final {\n'
+            '  void Bar() { Log("v" STRINGIZE(V)); }\n'
+            '};\n',
+            plaster.BlankForParseOptions(macros=True,
+                                         string_adjacent_macros=True))
+        self.assertNotIn('MODULES_EXPORT', result)
+        self.assertNotIn('STRINGIZE', result)
+
+    # -- construction / identity -------------------------------------------
+
+    def test_regexes_are_shared_across_instances(self):
+        # Class-level: compiled once, not per `CxxMacrosEraser()` call.
+        a = plaster.CxxMacrosEraser(plaster.BlankForParseOptions())
+        b = plaster.CxxMacrosEraser(plaster.BlankForParseOptions())
+        self.assertIs(a._EXPORT_MACRO_RE, b._EXPORT_MACRO_RE)
+        self.assertIs(a._CXX_MACRO_AFTER_STRING_RE,
+                      b._CXX_MACRO_AFTER_STRING_RE)
+
+    def test_two_instances_do_not_share_options(self):
+        macros_only = plaster.CxxMacrosEraser(
+            plaster.BlankForParseOptions(macros=True))
+        string_adjacent_only = plaster.CxxMacrosEraser(
+            plaster.BlankForParseOptions(string_adjacent_macros=True))
+        src = 'class MODULES_EXPORT C { void F() { Log("v" FOO); } };'
+        self.assertNotIn('MODULES_EXPORT', macros_only.erase(src))
+        self.assertIn('FOO', macros_only.erase(src))
+        self.assertIn('MODULES_EXPORT', string_adjacent_only.erase(src))
+        self.assertNotIn('FOO', string_adjacent_only.erase(src))
+
+    def test_erase_is_repeatable_on_the_same_instance(self):
+        eraser = plaster.CxxMacrosEraser(
+            plaster.BlankForParseOptions(macros=True))
+        src = 'class MODULES_EXPORT C {};'
+        self.assertEqual(eraser.erase(src), eraser.erase(src))
+
+    def test_opaque_span_is_frozen(self):
+        span = plaster.CxxMacrosEraser._OpaqueSpan(0, 3, 'abc')
+        self.assertEqual((span.start, span.end, span.text), (0, 3, 'abc'))
+        with self.assertRaises(dataclasses.FrozenInstanceError):
+            span.start = 1
 
 
 class RunAstGrepTest(unittest.TestCase):
