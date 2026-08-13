@@ -8,10 +8,10 @@ import util from './util.js'
 import branding from './branding.js'
 import * as buildUtils from './buildUtils.ts'
 
-const build = async (
+export async function build(
   buildConfig = config.defaultBuildConfig,
   options: Record<string, unknown> = {},
-) => {
+) {
   config.buildConfig = buildConfig
   config.update(options)
   buildUtils.checkVersionsMatch()
@@ -34,5 +34,3 @@ const build = async (
     await util.buildTargets()
   }
 }
-
-export default build
