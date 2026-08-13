@@ -140,11 +140,6 @@ public class BrowserViewController: UIViewController {
   private var adFeatureLinkageCancelable: AnyCancellable?
   var onPendingRequestUpdatedCancellable: AnyCancellable?
 
-  // Translation
-  let translationHostingController: UIHostingController<AnyView> = .init(
-    rootView: AnyView(EmptyView())
-  )
-
   /// Voice Search
   var voiceSearchViewController: PopupViewController<SpeechToTextInputView>?
   var voiceSearchCancelable: AnyCancellable?
@@ -855,10 +850,6 @@ public class BrowserViewController: UIViewController {
 
     addChild(tabsBar)
     tabsBar.didMove(toParent: self)
-
-    addChild(translationHostingController)
-    view.addSubview(translationHostingController.view)
-    translationHostingController.didMove(toParent: self)
 
     view.addSubview(alertStackView)
     view.addSubview(bottomTouchArea)
