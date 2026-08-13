@@ -71,6 +71,7 @@
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_shields/core/common/shields_settings.mojom.h"
+#include "brave/components/brave_user_agent/browser/brave_user_agent_exceptions.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
@@ -928,7 +929,8 @@ BraveContentBrowserClient::WorkerGetBraveShieldSettings(
   return brave_shields::mojom::ShieldsSettings::New(
       farbling_level, farbling_token, std::vector<std::string>(),
       brave_shields::IsReduceLanguageEnabledForProfile(pref_service),
-      IsJsBlockingEnforced(browser_context, url));
+      IsJsBlockingEnforced(browser_context, url),
+      brave_user_agent::ShouldHideBraveBrand(url));
 }
 
 bool BraveContentBrowserClient::CanCreateWindow(
