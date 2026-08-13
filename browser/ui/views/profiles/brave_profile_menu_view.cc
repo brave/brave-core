@@ -25,7 +25,7 @@
 #include "ui/base/models/image_model.h"
 
 void BraveProfileMenuView::MaybeBuildCloseBrowsersButton() {
-  Profile* profile = browser().profile();
+  Profile* profile = browser().GetProfile();
   int window_count =
       ProfileBrowserCollection::GetForProfile(profile)->GetSize();
   if (!profile->IsOffTheRecord() && profile->HasPrimaryOTRProfile()) {

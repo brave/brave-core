@@ -1,5 +1,5 @@
 diff --git a/chrome/common/BUILD.gn b/chrome/common/BUILD.gn
-index 202db8b06e3e12d2fc363cf50910b3979ac38f8a..c76a9e24c9c9f5ffe2fa0190da9423ca08324529 100644
+index a45216bc2d63e728576b1d44f1dccf86198eccae..92c5d76fa8e879fa72a77565c0b8428ca50b1341 100644
 --- a/chrome/common/BUILD.gn
 +++ b/chrome/common/BUILD.gn
 @@ -90,6 +90,7 @@ source_set("channel_info") {
@@ -18,7 +18,7 @@ index 202db8b06e3e12d2fc363cf50910b3979ac38f8a..c76a9e24c9c9f5ffe2fa0190da9423ca
    if (enable_extensions_core) {
      public_deps += [
        "//chrome/common/extensions",
-@@ -468,6 +470,7 @@ static_library("non_code_constants") {
+@@ -473,6 +475,7 @@ static_library("non_code_constants") {
    if (is_win) {
      sources += [ "chrome_icon_resources_win.h" ]
    }

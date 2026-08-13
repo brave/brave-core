@@ -1,18 +1,18 @@
 diff --git a/chrome/browser/ui/browser_tabrestore.cc b/chrome/browser/ui/browser_tabrestore.cc
-index 09b035b82be13f29f9f56745da054110a88212c8..e242852c44c0836404e152016af4964948dafab7 100644
+index 99337838365cbb2539412741d079c1f2ba8b6cf7..b4e4af91f3c83dd575451ad13ea7bce0ed3d7b06 100644
 --- a/chrome/browser/ui/browser_tabrestore.cc
 +++ b/chrome/browser/ui/browser_tabrestore.cc
 @@ -73,7 +73,14 @@ std::unique_ptr<WebContents> CreateRestoredTab(
-           browser->profile(), session_storage_namespace);
+           browser->GetProfile(), session_storage_namespace);
    WebContents::CreateParams create_params(
-       browser->profile(),
--      tab_util::GetSiteInstanceForNewTab(browser->profile(), restore_url));
+       browser->GetProfile(),
+-      tab_util::GetSiteInstanceForNewTab(browser->GetProfile(), restore_url));
 +      tab_util::GetSiteInstanceForNewTab(
-+          browser->profile(), restore_url
++          browser->GetProfile(), restore_url
 +#if BUILDFLAG(ENABLE_CONTAINERS)
 +          ,
 +          containers::GetStoragePartitionConfigToRestore(
-+              browser->profile(), navigations, selected_navigation)
++              browser->GetProfile(), navigations, selected_navigation)
 +#endif  // BUILDFLAG(ENABLE_CONTAINERS)
 +  ));
    create_params.initially_hidden = initially_hidden;

@@ -11,6 +11,7 @@ import org.chromium.build.annotations.NullMarked;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
+import org.chromium.chrome.browser.tabwindow.TabWindowManager;
 import org.chromium.chrome.browser.toolbar.R;
 import org.chromium.ui.listmenu.ListItemType;
 import org.chromium.ui.listmenu.ListMenuItemProperties;
@@ -26,8 +27,9 @@ import org.chromium.ui.modelutil.MVCListAdapter.ModelList;
 public class BraveTabSwitcherActionMenuCoordinator extends TabSwitcherActionMenuCoordinator {
     public BraveTabSwitcherActionMenuCoordinator(
             Profile profile,
-            MonotonicObservableSupplier<TabModelSelector> tabModelSelectorSupplier) {
-        super(profile, tabModelSelectorSupplier);
+            MonotonicObservableSupplier<TabModelSelector> tabModelSelectorSupplier,
+            TabWindowManager tabWindowManager) {
+        super(profile, tabModelSelectorSupplier, tabWindowManager);
     }
 
     @Override

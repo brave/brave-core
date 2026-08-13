@@ -108,7 +108,7 @@ public class BraveSearchEngineUtils {
     }
 
     public static void setDSEPrefs(TemplateUrl templateUrl, Profile profile) {
-        BraveSearchEngineAdapter.setDSEPrefs(templateUrl, profile);
+        BraveSearchEngineAdapter.setDSEPrefs(templateUrl.getShortName(), profile);
     }
 
     public static void updateActiveDSE(Profile profile, TemplateUrlService templateUrlServiceArg) {

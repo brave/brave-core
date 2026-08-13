@@ -100,7 +100,7 @@ void AddBackgroundColorToSource(content::WebUIDataSource* source,
         Profile::FromBrowserContext(contents->GetBrowserContext());
     if (auto* browser = ProfileBrowserCollection::GetForProfile(profile)
                             ->GetLastActiveBrowser()) {
-      browser_window = browser->GetBrowserForMigrationOnly()->window();
+      browser_window = BrowserWindow::FromBrowser(browser);
     }
   }
   if (!browser_window) {

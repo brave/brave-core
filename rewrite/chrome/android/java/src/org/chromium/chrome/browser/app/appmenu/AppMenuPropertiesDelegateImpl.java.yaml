@@ -22,3 +22,11 @@ substitutions:
         '\1&& (\2 || (url != null &&
         UrlConstants.CHROME_SCHEME.equals(url.getScheme()) &&
         url.getHost().equals("leo-ai")))'
+
+  - description: |
+      Make mAppMenuItemTheme protected.
+
+      To access at BraveTabbedAppMenuPropertiesDelegate
+    regex:
+      re_pattern: 'private( final AppMenuItemTheme mAppMenuItemTheme;)'
+      replace: 'protected\1'

@@ -308,4 +308,14 @@
   <message name="IDS_COMPARE_HISTORY_ROW" desc="Text for a single row in tab compare history">
     Compare <ph name="COMPARE_SET_NAME"><ex>e-bikes</ex>$1</ph> · <ph name="ITEMS"><ex>3</ex>$2</ph> items
   </message>
+
+  <!-- Critical actions -->
+  <!-- TODO(b/538113758): Make translatable when strings are finalized. -->
+  <message name="IDS_HISTORY_SOURCE_FILTER_CHIP_ACTOR_GEMINI" desc="This string is found on a chip that filters the history results when the user selects it; it sits next to its opposite filter: 'You' (the user's browsing activity). It is at the top of the Brave history page, where users can see their browsing history when Gemini performs tasks." translateable="false">
+    Gemini
+  </message>
+  <message name="IDS_HISTORY_ACTOR_TASK_TOOLTIP_GEMINI" desc="This string indicates entries in Brave history that are the result of Gemini in Brave browsing while performing a task for the user. When users view their Brave history, this string appears as a tooltip on a Gemini history entry." translateable="false">
+    Gemini task
+  </message>
+
 </grit-part>

@@ -24,6 +24,7 @@
 -All/PDFExtensionPacificTimeZoneJSTest.*
 -*PDFExtension*SaveToDrive*.*
 
+-AppWindowApiTest.OpeningAbsoluteURLs
 -ExtensionCspApiTest.ServiceWorkerIsConstrainedByMV3CSPEvenIfSandboxed
 -PageLoadMetricsBrowserTestTerminatedPage.UkmIsRecordedWhenRenderProcessShutsDown
 -PasswordChangeUIControllerBrowserTest.PageIsInteractableWhileToastIsShowing

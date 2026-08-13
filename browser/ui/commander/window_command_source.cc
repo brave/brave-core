@@ -31,7 +31,7 @@ namespace {
 // Activates `browser` if it's still present.
 void SwitchToBrowser(base::WeakPtr<BrowserWindowInterface> browser) {
   if (browser.get()) {
-    browser->GetBrowserForMigrationOnly()->window()->Show();
+    BrowserWindow::FromBrowser(browser.get())->Show();
   }
 }
 

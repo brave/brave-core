@@ -16,7 +16,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
-import org.chromium.base.supplier.SettableNullableObservableSupplier;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
@@ -24,6 +23,7 @@ import org.chromium.chrome.browser.lens.LensController;
 import org.chromium.chrome.browser.locale.LocaleManager;
 import org.chromium.chrome.browser.omnibox.UrlBar.ScrollType;
 import org.chromium.chrome.browser.omnibox.fusebox.FuseboxCoordinator;
+import org.chromium.chrome.browser.omnibox.styles.OmniboxResourceProvider;
 import org.chromium.chrome.browser.omnibox.suggestions.AutocompleteCoordinator;
 import org.chromium.chrome.browser.omnibox.suggestions.OmniboxLoadUrlParams;
 import org.chromium.chrome.browser.profiles.Profile;
@@ -40,7 +40,6 @@ import org.chromium.ui.base.PageTransition;
 import org.chromium.ui.base.WindowAndroid;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 import org.chromium.ui.permissions.PermissionCallback;
-import org.chromium.url.GURL;
 
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
@@ -71,6 +70,7 @@ public class BraveLocationBarMediator extends LocationBarMediator {
             Context context,
             LocationBarLayout locationBarLayout,
             LocationBarDataProvider locationBarDataProvider,
+            OmniboxResourceProvider resourceProvider,
             LocationBarEmbedderUiOverrides embedderUiOverrides,
             MonotonicObservableSupplier<Profile> profileSupplier,
             OverrideUrlLoadingDelegate overrideUrlLoadingDelegate,
@@ -90,12 +90,12 @@ public class BraveLocationBarMediator extends LocationBarMediator {
             FuseboxCoordinator fuseboxCoordinator,
             LocationBarEmbedder locationBarEmbedder,
             @Nullable OmniboxChipManager omniboxChipManager,
-            @Nullable LocationBarFocusScrimHandler scrimHandler,
-            SettableNullableObservableSupplier<GURL> exactMatchUrlSupplier) {
+            @Nullable LocationBarFocusScrimHandler scrimHandler) {
         super(
                 context,
                 locationBarLayout,
                 locationBarDataProvider,
+                resourceProvider,
                 embedderUiOverrides,
                 profileSupplier,
                 overrideUrlLoadingDelegate,
@@ -115,8 +115,7 @@ public class BraveLocationBarMediator extends LocationBarMediator {
                 fuseboxCoordinator,
                 locationBarEmbedder,
                 omniboxChipManager,
-                scrimHandler,
-                exactMatchUrlSupplier);
+                scrimHandler);
     }
 
     public static Class<OmniboxUma> getOmniboxUmaClass() {

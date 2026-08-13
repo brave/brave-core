@@ -547,7 +547,7 @@ class SolanaProviderRendererTest : public InProcessBrowserTest {
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
     brave_wallet::SetDefaultSolanaWallet(
-        browser()->profile()->GetPrefs(),
+        browser()->GetProfile()->GetPrefs(),
         brave_wallet::mojom::DefaultWallet::BraveWallet);
     content::SetBrowserClientForTesting(&test_content_browser_client_);
     base::FilePath test_data_dir;
@@ -585,7 +585,7 @@ class SolanaProviderRendererTest : public InProcessBrowserTest {
 
   brave_wallet::KeyringService* GetKeyringService() {
     return brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
-               browser()->profile())
+               browser()->GetProfile())
         ->keyring_service();
   }
 
@@ -613,7 +613,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, DefaultWallet) {
 
   EXPECT_EQ(base::Value(true), result);
   brave_wallet::SetDefaultSolanaWallet(
-      browser()->profile()->GetPrefs(),
+      browser()->GetProfile()->GetPrefs(),
       brave_wallet::mojom::DefaultWallet::None);
   ReloadAndWaitForLoadStop(browser());
   auto result2 = EvalJs(web_contents(browser()), CheckSolanaProviderScript);
@@ -622,7 +622,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, DefaultWallet) {
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, ExtensionOverwrite) {
   brave_wallet::SetDefaultSolanaWallet(
-      browser()->profile()->GetPrefs(),
+      browser()->GetProfile()->GetPrefs(),
       brave_wallet::mojom::DefaultWallet::BraveWallet);
   ReloadAndWaitForLoadStop(browser());
   // can't be overwritten
@@ -633,7 +633,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, ExtensionOverwrite) {
           .ExtractBool());
 
   brave_wallet::SetDefaultSolanaWallet(
-      browser()->profile()->GetPrefs(),
+      browser()->GetProfile()->GetPrefs(),
       brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension);
   ReloadAndWaitForLoadStop(browser());
   // overwritten
@@ -647,7 +647,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest,
   GetKeyringService()->Reset(false);
 
   brave_wallet::SetDefaultSolanaWallet(
-      browser()->profile()->GetPrefs(),
+      browser()->GetProfile()->GetPrefs(),
       brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension);
   ReloadAndWaitForLoadStop(browser());
 
@@ -662,7 +662,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, AttachIfWalletCreated) {
   GetKeyringService()->CreateWallet("password", base::DoNothing());
 
   brave_wallet::SetDefaultSolanaWallet(
-      browser()->profile()->GetPrefs(),
+      browser()->GetProfile()->GetPrefs(),
       brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension);
   ReloadAndWaitForLoadStop(browser());
 
@@ -1061,7 +1061,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, OnAccountChanged) {
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, NonConfigurable) {
   brave_wallet::SetDefaultSolanaWallet(
-      browser()->profile()->GetPrefs(),
+      browser()->GetProfile()->GetPrefs(),
       brave_wallet::mojom::DefaultWallet::BraveWallet);
   GURL url = embedded_test_server()->GetURL("/empty.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));

@@ -1,5 +1,5 @@
 diff --git a/base/trace_event/builtin_categories.h b/base/trace_event/builtin_categories.h
-index 87f016e219d6c4e3b403e9290c586d3a777f2914..fbb95618eac2e8158b3e3a547ea2d41a4cf29fac 100644
+index 9377661e94e74ab6f74d67306c97713ef794d2ac..2199cd824ccd1c46c645fd7b1b3fd7b278fc160f 100644
 --- a/base/trace_event/builtin_categories.h
 +++ b/base/trace_event/builtin_categories.h
 @@ -61,6 +61,10 @@ PERFETTO_DEFINE_TEST_CATEGORY_PREFIXES("cat",

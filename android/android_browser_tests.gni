@@ -84,6 +84,7 @@ android_test_exception_deps = [
   "//brave/components/de_amp/browser/test:browser_tests",
   "//brave/renderer/skus:browser_tests",
   "//brave/renderer/test:browser_tests",
+  "//chrome/browser/profiles/keep_alive:test_support",
   "//chrome/browser/ui/views/translate",
   "//chrome/browser/web_applications",
   "//chrome/test:test_support_ui",

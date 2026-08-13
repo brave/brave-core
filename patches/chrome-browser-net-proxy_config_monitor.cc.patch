@@ -1,12 +1,16 @@
 diff --git a/chrome/browser/net/proxy_config_monitor.cc b/chrome/browser/net/proxy_config_monitor.cc
-index 50e7a07af841ff55cd24c0a79eef5dcc68807933..8432d06598cb92138bdaecc2a4297104accec74c 100644
+index 69118955433de89b65981275202874c08f59c358..5833ff1671f03bfeddc45a1d979178455a1cf295 100644
 --- a/chrome/browser/net/proxy_config_monitor.cc
 +++ b/chrome/browser/net/proxy_config_monitor.cc
-@@ -52,6 +52,7 @@ ProxyConfigMonitor::ProxyConfigMonitor(Profile* profile) {
-             profile->GetPrefs(), g_browser_process->local_state());
+@@ -54,6 +54,11 @@ ProxyConfigMonitor::ProxyConfigMonitor(Profile* profile) {
+             profile->GetProfilePolicyConnector()->policy_service());
    }
  
-+  BRAVE_PROXY_CONFIG_MONITOR
++#if BUILDFLAG(ENABLE_TOR)
++  if (profile && profile->IsTor())
++    proxy_config_service_ = CreateProxyConfigServiceTor(profile);
++  else
++#endif  // BUILDFLAG(ENABLE_TOR)
    proxy_config_service_ = ProxyServiceFactory::CreateProxyConfigService(
        pref_proxy_config_tracker_.get(), profile);
  

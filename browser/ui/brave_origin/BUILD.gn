@@ -26,5 +26,7 @@ source_set("brave_origin") {
       "//brave/browser/ui/brave_origin/android:jni_headers",
       "//components/prefs",
     ]
+  } else {
+    deps += [ "//chrome/browser/ui:chrome_pages" ]
   }
 }

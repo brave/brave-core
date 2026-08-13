@@ -379,7 +379,7 @@ class SolanaProviderTest : public InProcessBrowserTest {
 
   void SetUpOnMainThread() override {
     brave_wallet::SetDefaultSolanaWallet(
-        browser()->profile()->GetPrefs(),
+        browser()->GetProfile()->GetPrefs(),
         brave_wallet::mojom::DefaultWallet::BraveWallet);
 
     browser_content_client_ = std::make_unique<TestContentBrowserClient>();
@@ -547,7 +547,7 @@ class SolanaProviderTest : public InProcessBrowserTest {
 
   BraveWalletService* brave_wallet_service() {
     return BraveWalletServiceFactory::GetServiceForContext(
-        browser()->profile());
+        browser()->GetProfile());
   }
 
   KeyringService* keyring_service() {
@@ -568,7 +568,8 @@ class SolanaProviderTest : public InProcessBrowserTest {
   }
 
   HostContentSettingsMap* host_content_settings_map() {
-    return HostContentSettingsMapFactory::GetForProfile(browser()->profile());
+    return HostContentSettingsMapFactory::GetForProfile(
+        browser()->GetProfile());
   }
 
   void ReloadAndWaitForLoadStop(Browser* browser) {

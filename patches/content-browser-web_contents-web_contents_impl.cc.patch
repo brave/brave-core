@@ -1,16 +1,33 @@
 diff --git a/content/browser/web_contents/web_contents_impl.cc b/content/browser/web_contents/web_contents_impl.cc
-index 7edad76e875c081e4e8d7de917658d006624de91..cb834b39eaa8c2f719bbbb3a7b29fc8457468d31 100644
+index 503e19a566b58e7e99446b87cee60554819dcc07..0ab25ca8d2b1db0552b9d4f039d8b142ac3e3fed 100644
 --- a/content/browser/web_contents/web_contents_impl.cc
 +++ b/content/browser/web_contents/web_contents_impl.cc
-@@ -5560,6 +5560,7 @@ FrameTree* WebContentsImpl::CreateNewWindow(
+@@ -2983,7 +2983,11 @@ int WebContentsImpl::GetVirtualKeyboardResizeHeight() {
+ }
+ 
+ bool WebContentsImpl::ShouldDoLearning() {
++  bool should_do_learning = [&]() -> bool {
+   return !GetBrowserContext()->IsOffTheRecord();
++  }();
++  return should_do_learning &&
++         !GetContentClient()->browser()->IsWindowsRecallDisabled();
+ }
+ 
+ void WebContentsImpl::OnAudioStateChanged() {
+@@ -5555,6 +5559,12 @@ FrameTree* WebContentsImpl::CreateNewWindow(
    // SiteInstance is created in a new BrowsingInstance.
    scoped_refptr<SiteInstance> site_instance;
    if (params.opener_suppressed) {
-+    BRAVE_WEB_CONTENTS_IMPL_CREATE_NEW_WINDOW_OPENER_SUPPRESSED
++    if (!is_guest &&
++        GetContentClient()->browser()->ShouldInheritStoragePartition(
++            partition_config)) {
++      site_instance = SiteInstance::CreateForFixedStoragePartition(
++          GetBrowserContext(), GURL(), partition_config);
++    } else /* NOLINT(readability/braces) */
      if (is_guest) {
        // For guests, noopener windows can be created in a new BrowsingInstance
        // as long as they preserve the guest's StoragePartition.
-@@ -5657,7 +5658,7 @@ FrameTree* WebContentsImpl::CreateNewWindow(
+@@ -5652,7 +5662,7 @@ FrameTree* WebContentsImpl::CreateNewWindow(
  
    // Save the window for later if we're not suppressing the opener (since it
    // will be shown immediately).

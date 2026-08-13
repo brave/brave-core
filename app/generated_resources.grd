@@ -299,6 +299,9 @@ are declared in tools/grit/grit_args.gni.
       <!-- Media Router specific strings -->
       <part file="media_router_strings.grdp" />
 
+      <!-- Notebooks specific strings -->
+      <part file="notebooks_strings.grdp" />
+
       <!-- Profiles specific strings -->
       <part file="profiles_strings.grdp" />
 
@@ -612,6 +615,11 @@ are declared in tools/grit/grit_args.gni.
       <message name="IDS_INSPECT_ELEMENT_ANDROID" desc="The name of the Inspect Element command in the context menu for Android.">
         Inspect
       </message>
+      <if expr="is_android">
+        <message name="IDS_CONTEXTMENU_PRINT_SELECTION_DROPDOWN" desc="The name of the Print command in the text selection dropdown menu on Android. Prints the currently selected text.">
+          Print
+        </message>
+      </if>
 
        <!-- content area context menus. Android does not use it -->
       <if expr="not is_android">
@@ -970,8 +978,8 @@ are declared in tools/grit/grit_args.gni.
             Help improve autofill
           </message>
           <!-- TODO(481979475): remove non translateable flag  -->
-          <message name="IDS_CONTENT_CONTEXT_AUTOFILL_FALLBACK_AT_MEMORY" desc="In Title Case: The name of Search and Fill From Anywhere command in the content area context menu" translateable="false">
-            Search and fill from anywhere
+          <message name="IDS_CONTENT_CONTEXT_AUTOFILL_FALLBACK_AT_MEMORY" desc="Main action pattern for enhanced autofill. It functions as a concise command in the content area context menu explaining that Brave will locate relevant information and insert it into a form." translateable="false">
+            Find and fill
           </message>
           <message name="IDS_CONTENT_CONTEXT_AUTOFILL_FALLBACK_PASSWORDS_SELECT_PASSWORD" desc="This is a context menu entry in the passwords submenu. It triggers the password selection bubble.">
             Select password
@@ -1180,7 +1188,7 @@ are declared in tools/grit/grit_args.gni.
           <message name="IDS_CONTENT_CONTEXT_COPYVIDEOLOCATION" desc="In Title Case: The name of the Copy Video Location command in the content area context menu">
             C&amp;opy Video Address
           </message>
-          <message name="IDS_CONTENT_CONTEXT_COPYVIDEOFRAME" desc="The name of the Copy Video Frame command in the content area context menu">
+          <message name="IDS_CONTENT_CONTEXT_COPYVIDEOFRAME" desc="In Title Case: The name of the Copy Video Frame command in the content area context menu">
             Cop&amp;y Video Frame
           </message>
           <message name="IDS_CONTENT_CONTEXT_SEARCHFORVIDEOFRAME" desc="In Title Case: The name of the Lens Search command in the content area context menu">
@@ -1323,8 +1331,8 @@ are declared in tools/grit/grit_args.gni.
             Help Improve Autofill
           </message>
           <!-- TODO(481979475): remove non translateable flag  -->
-          <message name="IDS_CONTENT_CONTEXT_AUTOFILL_FALLBACK_AT_MEMORY" desc="In Title Case: The name of Search and Fill From Anywhere command in the content area context menu" translateable="false">
-            Search and Fill From Anywhere
+          <message name="IDS_CONTENT_CONTEXT_AUTOFILL_FALLBACK_AT_MEMORY" desc="In Title Case: Main action pattern for enhanced autofill. It functions as a concise command in the content area context menu explaining that Brave will locate relevant information and insert it into a form." translateable="false">
+            Find and Fill
           </message>
           <!-- TODO(359570730): remove non translateable flag  -->
           <message name="IDS_CONTENT_CONTEXT_AUTOFILL_PREDICTION_IMPROVEMENTS" desc="In Title Case: The name of the Autofill manual fallback for payment methods attribute command in the content area context menu." translateable="false">
@@ -1989,7 +1997,7 @@ are declared in tools/grit/grit_args.gni.
       </if>
 
       <!-- Keywords -->
-      <message name="IDS_AUTOCOMPLETE_MATCH_DESCRIPTION_SEPARATOR" desc="The separator between a result in the autocomplete popup and its description.">
+      <message name="IDS_AUTOCOMPLETE_MATCH_DESCRIPTION_SEPARATOR" desc="The separator between a result in the autocomplete popup and its description." formatter_data="android_java">
         ''' - '''
       </message>
       <if expr="not use_titlecase">
@@ -3895,38 +3903,17 @@ are declared in tools/grit/grit_args.gni.
       <message name="IDS_TRACKING_PROTECTION_BUBBLE_PERMANENT_ALLOWED_DESCRIPTION" desc="Descriptive text in the tracking protection bubble for permanent exceptions informing the user about having less browsing protection.">
         This means site features should work as expected, but you may have less browsing protection.
       </message>
-      <message name="IDS_COOKIE_CONTROLS_BUBBLE_SEND_FEEDBACK_BUTTON_TITLE" desc="A subtitle for a portion of the cookie controls bubble soliciting feedback from users.">
-        Send feedback
-      </message>
-      <message name="IDS_COOKIE_CONTROLS_BUBBLE_SEND_FEEDBACK_BUTTON_DESCRIPTION" desc="Text asking the user for feedback on why they allowed third-party cookies for this particular site.">
-        Help us improve Brave by telling us why you allowed third-party cookies
-      </message>
       <message name="IDS_COOKIE_CONTROLS_BUBBLE_RELOADING_LABEL" desc="Descriptive text informing the user that the page is reloading after they toggled third-party cookies in the cookie controls bubble.">
         Reloading <ph name="DOMAIN">$1<ex>example.com</ex></ph>...
       </message>
       <message name="IDS_COOKIE_CONTROLS_BUBBLE_THIRD_PARTY_COOKIES_LABEL" desc="Label in the Page Info bubble for the third-party cookie controls toggle.">
         Third-party cookies
       </message>
-      <message name="IDS_COOKIE_CONTROLS_BUBBLE_SEND_FEEDBACK_FORM_PLACEHOLDER" desc="In the feedback text box accessible from the cookie controls bubble, this is the default text the user replaces with their feedback.">
-        Tell us why you allowed third-party cookies on this site
-      </message>
       <message name="IDS_COOKIE_CONTROLS_PAGE_ACTION_COOKIES_ALLOWED_LABEL" desc="Label in the Page Action (omnibox) icon indicating that cookies are allowed on the current site.">
         Third-party cookies allowed
       </message>
       <message name="IDS_COOKIE_CONTROLS_PAGE_ACTION_COOKIES_BLOCKED_LABEL" desc="Label in the Page Action (omnibox) icon indicating that cookies are blocked on the current site.">
         Third-party cookies blocked
-      </message>
-      <message name="IDS_COOKIE_CONTROLS_PROMO_TITLE" desc="Title of the in-product-help bubble shown for the cookie controls bubble. Indicates that cookies are blocked on the current site.">
-        Third-party cookies blocked
-      </message>
-      <message name="IDS_COOKIE_CONTROLS_PROMO_TEXT" desc="Text of the in-product-help bubble shown for the cookie controls bubble. Explains that sites may not work correctly without third-party cookies.">
-        If you visit a site that uses cookies, you may need to temporarily enable cookies to make all site features work.
-      </message>
-      <message name="IDS_COOKIE_CONTROLS_PROMO_CLOSE_BUTTON_TEXT" desc="Text on the button that closes in the in-product-help bubble shown for the cookie controls bubble.">
-        Close
-      </message>
-      <message name="IDS_COOKIE_CONTROLS_PROMO_SEE_HOW_BUTTON_TEXT" desc="Text on the button that opens the cookie controls bubble on the in-product-help bubble shown for the cookie controls bubble. Encourages users to see how to temporarily enable third-party cookies.">
-        See how
       </message>
 
       <!-- JS optimizations bubble -->
@@ -4865,29 +4852,8 @@ are declared in tools/grit/grit_args.gni.
       <message name="IDS_EXTENSION_CONFIRM_PERMISSIONS" desc="Titlebar of the extension or app permissions prompt window">
         Confirm Permissions
       </message>
-      <message name="IDS_EXTENSION_INSTALL_PROMPT_TITLE" desc="Titlebar of the extension or app installation prompt. Asks the user if they want to install a particular extension or app.">
-        Add "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>"?
-      </message>
-      <message name="IDS_EXTENSION_REQUEST_PROMPT_TITLE" desc="Titlebar of the extension or app request prompt. Asks the user if they want to send installation request for a particular extension or app to their admin.">
-        Send a request to your administrator to install "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>"?
-      </message>
-      <message name="IDS_EXTENSION_PENDING_REQUEST_PROMPT_TITLE" desc="Titlebar of the extension or app request prompt. Tells the user their installation request for a particular extension or app is still pending review.">
-        You already requested "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>"
-      </message>
       <message name="IDS_EXTENSION_BLOCKED_BY_POLICY_PROMPT_TITLE" desc="Title of the extension or app install blocked prompt. Tells the user they can't install this extension as it's blocked by policy.">
         Your admin has blocked "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>" - App ID <ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>
-      </message>
-      <message name="IDS_EXTENSION_RE_ENABLE_PROMPT_TITLE" desc="Titlebar of the extension or app installation prompt. Asks the user if they want to re-enable a particular extension or app.">
-        The newest version of "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>" has been disabled because it requires more permissions.
-      </message>
-      <message name="IDS_EXTENSION_PERMISSIONS_PROMPT_TITLE" desc="Titlebar of the extension or app permissions prompt. Asks the user if they want to grant the permissions to the particular extension or app.">
-        "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>" has requested additional permissions.
-      </message>
-      <message name="IDS_EXTENSION_REMOTE_INSTALL_PROMPT_TITLE" desc="Titlebar of the extension or app installation prompt. Asks the user if they want to enable a particular extension or app that was installed remotely.">
-        Enable "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>"?
-      </message>
-      <message name="IDS_EXTENSION_REPAIR_PROMPT_TITLE" desc="Titlebar of the extension or app installation prompt. Asks the user if they want to update the extension/app.">
-        Repair "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>"?
       </message>
       <message name="IDS_EXTENSION_ASK_PARENT_PROMPT_TITLE" desc="Titlebar of the extension ask parent prompt. Tells the user they need to ask their parent for approval to install this extension.">
         Ask parent for approval
@@ -4898,31 +4864,6 @@ are declared in tools/grit/grit_args.gni.
       <message name="IDS_EXTENSION_ASK_PARENT_PROMPT_ASK_IN_PERSON_BUTTON" desc="Text for the ask-in-person button on the extension ask parent for approval install prompt.">
         Ask in person
       </message>
-      <message name="IDS_EXTENSION_PARENT_APPROVAL_PROMPT_TITLE" desc="Titlebar of the extension or app permissions prompt. Asks the user if they want to grant the permissions to the particular extension or app.">
-        Install "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>"
-      </message>
-      <if expr="use_titlecase">
-        <message name="IDS_EXTENSION_EXTERNAL_INSTALL_PROMPT_ACCEPT_BUTTON_EXTENSION" desc="In Title Case: Button on the external install prompt to enable an extension installed by a third party.">
-          Enable Extension
-        </message>
-        <message name="IDS_EXTENSION_EXTERNAL_INSTALL_PROMPT_ACCEPT_BUTTON_APP" desc="In Title Case: Button on the external install prompt to enable an extension installed by a third party.">
-          Enable App
-        </message>
-        <message name="IDS_EXTENSION_EXTERNAL_INSTALL_PROMPT_ACCEPT_BUTTON_THEME" desc="In Title Case: Button on the external install prompt to enable an extension installed by a third party.">
-          Enable Theme
-        </message>
-      </if>
-      <if expr="not use_titlecase">
-        <message name="IDS_EXTENSION_EXTERNAL_INSTALL_PROMPT_ACCEPT_BUTTON_EXTENSION" desc="Button on the external install prompt to enable an extension installed by a third party.">
-          Enable extension
-        </message>
-        <message name="IDS_EXTENSION_EXTERNAL_INSTALL_PROMPT_ACCEPT_BUTTON_APP" desc="Button on the external install prompt to enable an extension installed by a third party.">
-          Enable app
-        </message>
-        <message name="IDS_EXTENSION_EXTERNAL_INSTALL_PROMPT_ACCEPT_BUTTON_THEME" desc="Button on the external install prompt to enable an extension installed by a third party.">
-          Enable theme
-        </message>
-      </if>
 
       <!-- Extension alerts. -->
       <message name="IDS_EXTENSION_ALERT_TITLE" desc="Titlebar of the extension notification alert for blocklisted extensions">
@@ -4966,30 +4907,12 @@ are declared in tools/grit/grit_args.gni.
       <message name="IDS_EXTENSION_PROMPT_EXTENSION_CONNECT_FROM_INCOGNITO" desc="Shown when a website tries to connect to an extension from Private mode, prompting the user to allow or deny the request.">
         <ph name="ORIGIN">$1<ex>http://www.google.com</ex></ph> wants to communicate with the extension "<ph name="EXTENSION_NAME">$2<ex>Gmail Checker</ex></ph>"
       </message>
-      <message name="IDS_EXTENSION_PROMPT_WILL_HAVE_ACCESS_TO" desc="Second line in the content area of the extension or app installation prompt. Note that the exact wording is important. This should mean that the extension or app _can_ access the listed privileges, but not necessarily that it will or needs to.">
-        It can:
-      </message>
-      <message name="IDS_EXTENSION_PROMPT_WILL_NOW_HAVE_ACCESS_TO" desc="Second line in the content area of the extension or app re-enable prompt. Note that the exact wording is important. This should mean that the extension _can now_ access the listed privileges, but not necessarily that it will or needs to. This message appeared because the user must approve new permissions of the extension or app.">
-        It can now:
-      </message>
-      <message name="IDS_EXTENSION_PROMPT_WANTS_ACCESS_TO" desc="Second line in the content area of the extension or app permissions prompt. Note that the exact wording is important. This should mean that the extension _wants to_ access the listed privileges, but not necessarily that it will or needs to. This message appeared because the user must approve new permissions of the extension or app.">
-        It could:
-      </message>
-      <message name="IDS_EXTENSION_PROMPT_CAN_ACCESS" desc="Second line in the content area of the extension or app permissions view dialog. Note that the exact wording is important. This should mean that the extension _can now_ access the listed privileges, because it has already been installed. This message appeared because the user must approve new permissions of the extension or app.">
-        It can:
-      </message>
-      <message name="IDS_EXTENSION_PROMPT_REQUESTS_PERMISSIONS" desc="Second line in the content area of the extension or app installation prompt. Note that the exact wording is important. This should mean that the extension or app _can_ access the listed privileges, but not necessarily that it will or needs to.">
-        This extension requests the following permissions:
-      </message>
       <message name="IDS_EXTENSION_PROMPT_GRANT_PERMISSIONS_CHECKBOX" desc="Label next to the checkbox in the extension or app installation prompt, which indicates if a user wants to grant access to all requested sites.">
         Grant access to all requested sites.
       </message>
 
       <message name="IDS_EXTENSION_PERMISSION_LINE" desc="Template for item in list of privileges that an extension or app has">
           • <ph name="PERMISSION">$1<ex>Read and change all your data on all websites</ex></ph>
-      </message>
-      <message name="IDS_EXTENSION_RATING_COUNT" desc="Number of ratings an app or extensions has (displayed after star icons)">
-        (<ph name="RATING_COUNT">$1<ex>46</ex></ph>)
       </message>
       <message name="IDS_EXTENSION_PROMPT_RATING_ACCESSIBLE_TEXT" desc="The text read by a screen reader for the ratings section of an extension prompt, indicating to the user what the average rating for an extension is and how many times it has been rated. [ICU Syntax]">
         {1, plural,
@@ -4998,9 +4921,6 @@ are declared in tools/grit/grit_args.gni.
       </message>
       <message name="IDS_EXTENSION_PROMPT_NO_RATINGS_ACCESSIBLE_TEXT" desc="The text read by a screen reader for the ratings section of an extension prompt when there haven't been any user ratings for the extension.">
         Not yet rated by any users.
-      </message>
-      <message name="IDS_EXTENSION_USER_COUNT" desc="Number of users an app or extension has">
-        <ph name="USER_COUNT">$1<ex>10,479</ex></ph> users
       </message>
       <message name="IDS_EXTENSION_PROMPT_STORE_LINK" desc="Anchor text for link to Web Store in app or extension installation dialog">
         Open in Web Store
@@ -5795,18 +5715,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_EXTENSION_PROMPT_INSTALL_FRICTION_WARNING_TEXT" desc="The warning text displayed in the install friction dialog">
         This extension is not trusted by Enhanced Safe Browsing. <ph name="LEARN_MORE_LINK">$1<ex>Learn more</ex></ph>
       </message>
-      <message name="IDS_EXTENSION_INSTALL_PROMPT_ACCEPT_BUTTON_EXTENSION" desc="Text for the install button on the extension install prompt, for an extension (i.e. not app or theme).">
-        Add extension
-      </message>
-      <message name="IDS_EXTENSION_INSTALL_PROMPT_ACCEPT_BUTTON_APP" desc="Text for the install button on the extension install prompt, for an app.">
-        Add app
-      </message>
-      <message name="IDS_EXTENSION_INSTALL_PROMPT_ACCEPT_BUTTON_THEME" desc="Text for the install button on the extension install prompt, for a theme.">
-        Add theme
-      </message>
-      <message name="IDS_EXTENSION_INSTALL_PROMPT_ASK_A_PARENT_BUTTON" desc="Text for the ask-a-parent button on the extension install prompt.">
-        Ask a parent
-      </message>
       <message name="IDS_EXTENSION_INSTALL_BLOCKED_BY_PARENT_PROMPT_TITLE" desc="Text for the title of the dialog indicating that a parent has blocked installing extensions and apps.">
         Can't add <ph name="EXTENSION_TYPE_PARAMETER">$1<ex>extension</ex></ph>
       </message>
@@ -5824,12 +5732,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_PARENT_PERMISSION_PROMPT_CHILD_WANTS_TO_INSTALL_LABEL" desc="Text for the header section of the parent permission dialog explaining that the child is installing a extension that is requesting permissions.">
         <ph name="CHILD_NAME">$1<ex>Junior</ex></ph> wants to install an <ph name="EXTENSION_TYPE">$2<ex>extension</ex></ph> that can:
-      </message>
-      <message name="IDS_PARENT_PERMISSION_PROMPT_APPROVE_BUTTON" desc="Text for the approve button on the parent permission prompt.">
-        Approve
-      </message>
-      <message name="IDS_PARENT_PERMISSION_PROMPT_CANCEL_BUTTON" desc="Text for the cancel button on the parent permission prompt.">
-        Cancel
       </message>
       <message name="IDS_PARENT_PERMISSION_PROMPT_SELECT_PARENT_LABEL" desc="Text for the label shown above the parent selector.">
         Choose parent account for approval
@@ -5851,9 +5753,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_PARENT_PERMISSION_PROMPT_PASSWORD_INCORRECT_LABEL" desc="Text for the label shown when the previously entered password was incorrect.">
         Password incorrect
-      </message>
-      <message name="IDS_EXTENSION_INSTALL_PROMPT_REQUEST_BUTTON" desc="Text for the request button on the extension request prompt.">
-        Send
       </message>
       <message name="IDS_EXTENSION_PROMPT_UNINSTALL_BUTTON" desc="Text for the uninstall button on the extension uninstall prompt">
         Remove
@@ -5881,30 +5780,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_EXTENSION_PROMPT_UNINSTALL_TRIGGERED_BY_EXTENSION" desc="Text in uninstall-extension dialog that indicates the uninstall was triggered by another extension (the name of the extension being uninstalled is already present in the dialog title).">
         "<ph name="TRIGGERING_EXTENSION_NAME">$1<ex>Extension Manager</ex></ph>" would like to remove this extension.
-      </message>
-      <message name="IDS_EXTENSION_PROMPT_RE_ENABLE_BUTTON" desc="Text for the enable button on the extension re-enable prompt">
-        Re-enable
-      </message>
-      <message name="IDS_EXTENSION_PROMPT_PERMISSIONS_BUTTON" desc="Text for the allow button on the extension permissions prompt">
-        Allow
-      </message>
-      <message name="IDS_EXTENSION_PROMPT_PERMISSIONS_ACCEPT_BUTTON" desc="Text for the accept permissions button on the extension permissions prompt">
-        Accept permissions
-      </message>
-      <message name="IDS_EXTENSION_PROMPT_PERMISSIONS_ABORT_BUTTON" desc="Text for the deny button on the extension permissions prompt">
-        Deny
-      </message>
-      <message name="IDS_EXTENSION_PROMPT_REMOTE_INSTALL_BUTTON_EXTENSION" desc="Text for the install button on the extension install prompt for a remotely installed extension">
-        Enable extension
-      </message>
-      <message name="IDS_EXTENSION_PROMPT_REMOTE_INSTALL_BUTTON_APP" desc="Text for the install button on the extension install prompt for a remotely installed app">
-        Enable app
-      </message>
-      <message name="IDS_EXTENSION_PROMPT_REPAIR_BUTTON_EXTENSION" desc="Text for the install button on the extension reinstall prompt.">
-        Repair extension
-      </message>
-      <message name="IDS_EXTENSION_PROMPT_REPAIR_BUTTON_APP" desc="Text for the install button on the app reinstall prompt.">
-        Repair app
       </message>
       <message name="IDS_EXTENSION_WEB_STORE_TITLE_SHORT" desc="Shortened version of text for the Web Store">
         Web Store
@@ -7197,6 +7072,12 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_WEBUI_OMNIBOX_COMPOSE_ASK_ABOUT_YOUR_TABS" desc="Label for a button that guides the user to composebox's context menu using a suggestion like label.">
         Ask about your tabs
       </message>
+      <message name="IDS_OMNIBOX_EVERYWHERE_STATUS_ICON_TOOLTIP" desc="Tooltip text for the Omnibox Everywhere status tray icon." translateable="false">
+        Omnibox Everywhere
+      </message>
+      <message name="IDS_OMNIBOX_EVERYWHERE_STATUS_ICON_MENU_EXIT" desc="Label for the exit item in the Omnibox Everywhere status tray context menu." translateable="false">
+        Exit
+      </message>
 
 
       <!-- NTP -->
@@ -7212,6 +7093,12 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_NTP_DRIVE_DISCLAIMER_CONNECT" desc="Label on the button to proceed with connecting Google Drive.">
         Connect
+      </message>
+      <message name="IDS_NTP_DRIVE_DISCLAIMER_ERROR" desc="Error message displayed when connecting to Google Drive fails.">
+        Couldn't connect to your Google Drive account
+      </message>
+      <message name="IDS_NTP_DRIVE_DISCLAIMER_TRY_AGAIN" desc="Label on the button to retry connecting to Google Drive.">
+        Try again
       </message>
       <message name="IDS_GOOGLE_SEARCH_BOX_EMPTY_HINT_MD" desc="The text displayed in the fakebox (on the New Tab page) when it is empty, Brave is the default search engine, and the Material Design UI is enabled.">
         Search Brave or type a URL
@@ -8203,10 +8090,10 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_COMPOSE_PLACEHOLDER_TEXT" desc="The placeholder for the input in the compose box.">
         Ask AI Mode
       </message>
-      <message name="IDS_NTP_COMPOSE_CANCEL_BUTTON_A11Y_LABEL" desc="The accessibility label for the cancel button on the compose box when there is no input.">
+      <message name="IDS_NTP_COMPOSE_CANCEL_BUTTON_A11Y_LABEL" desc="The accessibility label for the cancel button on the compose box when there is no input." formatter_data="android_java">
         Dismiss
       </message>
-      <message name="IDS_NTP_COMPOSE_CANCEL_BUTTON_A11Y_LABEL_INPUT" desc="The accessibility label for the cancel button on the compose box when there is input.">
+      <message name="IDS_NTP_COMPOSE_CANCEL_BUTTON_A11Y_LABEL_INPUT" desc="The accessibility label for the cancel button on the compose box when there is input." formatter_data="android_java">
         Clear
       </message>
       <message name="IDS_NTP_COMPOSE_IMAGE_UPLOAD_BUTTON_A11Y_LABEL" desc="The accessibility label for the image upload button on the compose box.">
@@ -8215,7 +8102,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_COMPOSE_PDF_UPLOAD_BUTTON_A11Y_LABEL" desc="The accessibility label for the file upload button on the compose box.">
         Upload a PDF
       </message>
-      <message name="IDS_NTP_COMPOSE_SUBMIT_BUTTON_A11Y_LABEL" desc="The accessibility label for the submit button on the compose box.">
+      <message name="IDS_NTP_COMPOSE_SUBMIT_BUTTON_A11Y_LABEL" desc="The accessibility label for the submit button on the compose box." formatter_data="android_java">
         Send
       </message>
       <message name="IDS_NTP_COMPOSE_DELETE_FILE_A11Y_LABEL" desc="The accessibility label for the delete button shown on hover for uploaded files.">
@@ -8292,7 +8179,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_COMPOSE_ADD_CONTEXTS" desc="The text to display to ask user to add context to their search.">
         Add tabs and more
       </message>
-      <message name="IDS_NTP_COMPOSE_ADD_CONTEXT_TITLE" desc="The a11y title for a button that allows users to add context to their search e.g. pdf or image.">
+      <message name="IDS_NTP_COMPOSE_ADD_CONTEXT_TITLE" desc="The a11y title for a button that allows users to add context to their search e.g. pdf or image." formatter_data="android_java">
         Enhance your search with tabs, files, or an AI tool
       </message>
       <message name="IDS_NTP_COMPOSE_SUGGESTIONS_INFO" desc="The text underneath the composebox that explains to users how suggestions are generated.">
@@ -8354,6 +8241,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_COMPOSE_SHARING_TABS_WITH_GOOGLE" desc="Text for the tooltip above the favicons that show a user is sharing tabs as context.">
         Sharing tabs with Brave
       </message>
+      <message name="IDS_COMPOSE_ADD_OPEN_TABS_TO_ASK_ANYTHING" desc="Label for the action to add open tabs to ask anything in composebox.">
+        Add open tabs to ask anything
+      </message>
       <message name="IDS_COMPOSE_ADD_TABS" desc="Label for the row in the Composebox context menu that opens a flyout listing all open tabs to share.">
         Add tabs
       </message>
@@ -8397,10 +8287,10 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_ACTION_CHIP_CANVAS_BODY" desc="Body text in the canvas action chip describing the use of the chip.">
         Write, plan, code, and more
       </message>
-      <message name="IDS_NTP_ACTION_CHIP_STARTER_HEADING" desc="Heading of the conversation starter action chip on the NTP." translateable="false">
+      <message name="IDS_NTP_ACTION_CHIP_STARTER_HEADING" desc="Heading of the conversation starter action chip on the NTP.">
         Do more with AI Mode
       </message>
-      <message name="IDS_NTP_ACTION_CHIP_STARTER_BODY" desc="Body text in the conversation starter action chip describing the use of the chip." translateable="false">
+      <message name="IDS_NTP_ACTION_CHIP_STARTER_BODY" desc="Body text in the conversation starter action chip describing the use of the chip.">
         Create, plan, summarize
       </message>
       <message name="IDS_NTP_ACTION_CHIP_DISABLE_TEXT" desc="Text for menu option to disable action chip feature.">
@@ -8424,6 +8314,145 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_COMPOSE_ASK_ABOUT_THIS_PAGE_ARIA_LABEL" desc="The aria-label for the button that allows the user to ask a question about the content of their most recent tab. The $1 is a placeholder for the page title.">
         Ask Brave about previous page: <ph name="PAGE_TITLE">$1</ph>
       </message>
+      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_HEADING" desc="Heading of the brainstorm action chip on the NTP.">
+        Brainstorm
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_HELP_ME_LEARN_HEADING" desc="Heading of the help me learn action chip on the NTP.">
+        Help me learn
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_WRITE_EDIT_HEADING" desc="Heading of the write or edit action chip on the NTP.">
+        Write or edit
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_PROMPT_1" desc="Text shown on the composebox searchbox on click of the brainstorm chip on the NTP.">
+        Help me settle a debate with a friend by providing an objective, data-driven analysis that represents both sides fairly
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_PROMPT_2" desc="Text shown on the composebox searchbox on click of the brainstorm chip on the NTP.">
+        What are some thing I can do to help decrease stress?
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_PROMPT_3" desc="Text shown on the composebox searchbox on click of the brainstorm chip on the NTP.">
+        Ask me questions about how I'm feeling and use my answers to make a playlist tailored to my mood
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_PROMPT_4" desc="Text shown on the composebox searchbox on click of the brainstorm chip on the NTP.">
+        Help me practice for my interview by asking me questions like you're a hiring manager
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_PROMPT_5" desc="Text shown on the composebox searchbox on click of the brainstorm chip on the NTP.">
+        Can you help me think through something?
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_PROMPT_6" desc="Text shown on the composebox searchbox on click of the brainstorm chip on the NTP.">
+        Can you brainstorm with me to help me solve my problem?
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_PROMPT_7" desc="Text shown on the composebox searchbox on click of the brainstorm chip on the NTP.">
+        Brainstorm to help me come up with unique gift ideas for someone, using their hobbies and interests that I share with you
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_PROMPT_8" desc="Text shown on the composebox searchbox on click of the brainstorm chip on the NTP.">
+        Help me prepare for a tough conversation by roleplaying with me so I can practice my responses
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_PROMPT_9" desc="Text shown on the composebox searchbox on click of the brainstorm chip on the NTP.">
+        Compare my health plan options and breakdown the key differences between them
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_PROMPT_10" desc="Text shown on the composebox searchbox on click of the brainstorm chip on the NTP.">
+        What are some tips to help me promote my brand? Include advice on how I can optimize my website
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_PROMPT_11" desc="Text shown on the composebox searchbox on click of the brainstorm chip on the NTP.">
+        Plan a home fitness routine that helps me meet my goals
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_PROMPT_12" desc="Text shown on the composebox searchbox on click of the brainstorm chip on the NTP.">
+        Create a packing list for my upcoming trip. Help me make sure I don't forget anything important
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_PROMPT_13" desc="Text shown on the composebox searchbox on click of the brainstorm chip on the NTP.">
+        Create a to-do list for me today to help me stay on track
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_PROMPT_14" desc="Text shown on the composebox searchbox on click of the brainstorm chip on the NTP.">
+        Create a customized tracker to stay on top of my goals
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_PROMPT_15" desc="Text shown on the composebox searchbox on click of the brainstorm chip on the NTP.">
+        Make me a grocery list based on a recipe or meal plan
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_HELP_ME_LEARN_PROMPT_1" desc="Text shown on the composebox searchbox on click of the help me learn chip on the NTP">
+        Help me learn how to code in python
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_HELP_ME_LEARN_PROMPT_2" desc="Text shown on the composebox searchbox on click of the help me learn chip on the NTP">
+        Create practice questions to test my knowledge about a topic
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_HELP_ME_LEARN_PROMPT_3" desc="Text shown on the composebox searchbox on click of the help me learn chip on the NTP">
+        Create a beginner's guide to stargazing to help me learn what to look for in the night sky, including 3 easily identifiable constellations
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_HELP_ME_LEARN_PROMPT_4" desc="Text shown on the composebox searchbox on click of the help me learn chip on the NTP">
+        Can you breakdown the lifecycle of a star?
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_HELP_ME_LEARN_PROMPT_5" desc="Text shown on the composebox searchbox on click of the help me learn chip on the NTP">
+        I'm trying to learn a new language. Create a quiz to help me practice vocabulary and grammar
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_HELP_ME_LEARN_PROMPT_6" desc="Text shown on the composebox searchbox on click of the help me learn chip on the NTP">
+        Calculate my GPA by weighting credit hours, course levels, and grade-point values
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_HELP_ME_LEARN_PROMPT_7" desc="Text shown on the composebox searchbox on click of the help me learn chip on the NTP">
+        Help me graph a function to visualize the mathematical equation and see the shape of the curve
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_WRITE_EDIT_PROMPT_1" desc="Text shown on the composebox searchbox on click of the write or edit chip on the NTP">
+        Rewrite my email by tweaking the tone to be more persuasive
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_WRITE_EDIT_PROMPT_2" desc="Text shown on the composebox searchbox on click of the write or edit chip on the NTP">
+        Rewrite the following text to sound professional, polite, and clear for a workplace setting. Maintain the original core message but elevate the tone to be appropriate for an executive audience: [Insert your text here]
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_WRITE_EDIT_PROMPT_3" desc="Text shown on the composebox searchbox on click of the write or edit chip on the NTP">
+        Draft a brief, polite response declining an invitation
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_WRITE_EDIT_PROMPT_4" desc="Text shown on the composebox searchbox on click of the write or edit chip on the NTP">
+        Rewrite my bio to sound more professional
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_WRITE_EDIT_PROMPT_5" desc="Text shown on the composebox searchbox on click of the write or edit chip on the NTP">
+        Shorten my email by trimming the message to its core points
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_WRITE_EDIT_PROMPT_6" desc="Text shown on the composebox searchbox on click of the write or edit chip on the NTP">
+        Draft an outline that organizes my thoughts into a clear and concise format
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_WRITE_EDIT_PROMPT_7" desc="Text shown on the composebox searchbox on click of the write or edit chip on the NTP">
+        Help me draft a polite reply to decline plans to meet
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_WRITE_EDIT_PROMPT_8" desc="Text shown on the composebox searchbox on click of the write or edit chip on the NTP">
+        Draft a cover letter intro that highlights my skills and experience for a specific role
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_PROMPT_16" desc="Text shown on the composebox searchbox on click of the brainstorm chip on the NTP.">
+        Create a fun itinerary for a weekend movie marathon. Come up with a theme, at least 4 must-watch films, and recommend specific snacks to pair with the movie
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_PROMPT_17" desc="Text shown on the composebox searchbox on click of the brainstorm chip on the NTP.">
+        Create a prioritized, room-by-room deep cleaning checklist targeting commonly missed spots
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_PROMPT_18" desc="Text shown on the composebox searchbox on click of the brainstorm chip on the NTP.">
+        Create a realistic digital detox plan for me this weekend
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_PROMPT_19" desc="Text shown on the composebox searchbox on click of the brainstorm chip on the NTP.">
+        Draft an 8-week training schedule for a complete beginner who wants to run a 5K. Include alternating walking and running intervals, and designated rest days
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_PROMPT_20" desc="Text shown on the composebox searchbox on click of the brainstorm chip on the NTP.">
+        Help me create a 10-minute full body workout. I want to focus on strength, stamina and flexibility
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_PROMPT_21" desc="Text shown on the composebox searchbox on click of the brainstorm chip on the NTP.">
+        Create a 10-minute workout routine that I can do in my room that doesn't include jumping or loud movements
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_PROMPT_22" desc="Text shown on the composebox searchbox on click of the brainstorm chip on the NTP.">
+        Create a 15-minute morning routine that helps make my mornings run smoother. Make sure it includes a mindfulness exercise
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_PROMPT_23" desc="Text shown on the composebox searchbox on click of the brainstorm chip on the NTP.">
+        Create a 7-day study schedule for my upcoming exam using the pomodoro technique and spaced repetition. I don't want to cram the day before the test so make sure the day before includes light review and sleep
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_PROMPT_24" desc="Text shown on the composebox searchbox on click of the brainstorm chip on the NTP.">
+        Draft a lesson plan, outlining an engaging session for my class
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_PROMPT_25" desc="Text shown on the composebox searchbox on click of the brainstorm chip on the NTP.">
+        I want to impress someone. Look for open tables for 2 at restaurants everyone’s talking about right now
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_PROMPT_26" desc="Text shown on the composebox searchbox on click of the brainstorm chip on the NTP.">
+        I’m in the mood for a cozy café where I can unplug for a bit, read, and maybe get some work done. Can you find spots nearby that are known for being quiet, comfortable, and have reliable wi-fi?
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_PROMPT_27" desc="Text shown on the composebox searchbox on click of the brainstorm chip on the NTP.">
+        Are there any open tables at nearby restaurants tonight?
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_PROMPT_28" desc="Text shown on the composebox searchbox on click of the brainstorm chip on the NTP.">
+        Find family-friendly restaurants that take reservations. Must have a kids menu and a casual atmosphere
+      </message>
+
 
       <!-- NTP Modules -->
       <message name="IDS_NTP_MODULES_SETUP_LIST_DISABLE_TOAST_MESSAGE" desc="Text shown in the toast confirming a module has been disabled.">
@@ -8522,6 +8551,12 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <ph name="BREAK">&lt;br&gt;</ph>
         You can manage settings from the card menu or see more options in Customize Brave.
       </message>
+      <message name="IDS_NTP_MODULES_DRIVE_SEE_MORE" desc="A label for the see more button in the Drive module.">
+        See more
+      </message>
+      <message name="IDS_NTP_MODULES_DRIVE_SEE_MORE_ACCNAME" is_accessibility_with_no_ui="true" desc="Screen reader announcement when the see more link is focused in the Drive module.">
+        See more in Google Drive
+      </message>
       <message name="IDS_NTP_MODULES_MICROSOFT_FILES_NAME" desc="Name of the Microsoft files module in sentence case shown in various UIs.">
         SharePoint and OneDrive files
       </message>
@@ -8616,7 +8651,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
         See more
       </message>
       <message name="IDS_NTP_MODULES_CALENDAR_SEE_MORE_ACCNAME" is_accessibility_with_no_ui="true" desc="Screen reader announcement when the see more link is focused.">
-        See more meetings on your Calendar
+        See more in Brave Calendar
       </message>
       <message name="IDS_NTP_MODULES_KALEIDOSCOPE_TITLE" desc="Title shown in the header of the Kaleidoscope module.">
         Top picks for you
@@ -8725,6 +8760,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_NTP_MODULES_MOST_RELEVANT_TAB_RESUMPTION_SEE_MORE" desc="A label for the see more button in the most relevant tab resumption module.">
         See more
+      </message>
+      <message name="IDS_NTP_MODULES_MOST_RELEVANT_TAB_RESUMPTION_SEE_MORE_ACCNAME" is_accessibility_with_no_ui="true" desc="Screen reader announcement when the see more link is focused.">
+        See more tabs
       </message>
       <message name="IDS_NTP_MODULES_MICROSOFT_AUTHENTICATION_NAME" desc="Name of the Microsoft Authentication module as shown in various UIs.">
         Microsoft Authentication
@@ -9368,6 +9406,12 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_READING_MODE_ENABLE_PIN_BUTTON_LABEL" desc="Accessibility label for the button that pins reading mode to the toolbar.">
         Unpin reading mode
       </message>
+      <message name="IDS_READING_MODE_APPEARANCE_LABEL" desc="Accessibility label for the appearance combobox of the reading mode feature.">
+        Appearance
+      </message>
+      <message name="IDS_READING_MODE_MEDIA_LABEL" desc="Accessibility label for the media combobox of the reading mode feature.">
+        Media
+      </message>
       <message name="IDS_READING_MODE_COLORS_COMBOBOX_LABEL" desc="Accessibility label for the colors combobox of the reading mode feature.">
         Color theme
       </message>
@@ -9391,6 +9435,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_READING_MODE_SPACING_COMBOBOX_VERY_WIDE" desc="Combobox option for setting letter spacing of text in the reading mode feature. Very wide means that letters are spaced very far apart.">
         Very wide
+      </message>
+      <message name="IDS_READING_MODE_TEXT_STYLE_LABEL" desc="Accessibility label for the text styling settings menu of the reading mode feature.">
+        Text
       </message>
       <message name="IDS_READING_MODE_DEFAULT_COLOR_LABEL" desc="Combobox option for setting the color theme for the reading mode feature. This option corresponds to either the light or dark theme depending on the user's operating system theme.">
         Default
@@ -9470,6 +9517,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_READING_MODE_LINE_FOCUS_OFF_LABEL" desc="Dropdown option for turning off line focus.">
         Off
       </message>
+      <message name="IDS_READING_MODE_LINE_FOCUS_ON_LABEL" desc="Dropdown option for turning on line focus.">
+        On
+      </message>
       <message name="IDS_READING_MODE_LINE_FOCUS_SMALL_FOCUS_LABEL_SCREENREADER" desc="Screen reader label for the dropdown option for the small height window line focus option.">
         Small focus style
       </message>
@@ -9489,7 +9539,10 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Follow cursor movement
       </message>
       <message name="IDS_READING_MODE_LINE_FOCUS_OFF_LABEL_SCREENREADER" desc="Screen reader label for the dropdown option for turning off line focus.">
-        Off (no line focus)
+        Off (disable line focus)
+      </message>
+      <message name="IDS_READING_MODE_LINE_FOCUS_ON_LABEL_SCREENREADER" desc="Screen reader label for the dropdown option for turning on line focus.">
+        On (enable line focus)
       </message>
       <if expr="is_macosx">
         <message name="IDS_READING_MODE_KEYBOARD_SHORTCUT_IPH_BODY" desc="Text for the help bubble describing the keyboard shortcut used to open and close reading mode.">
@@ -9551,6 +9604,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_READING_MODE_SETTINGS" desc="Accessibility label for button that contains settings menu for the immersive reading mode feature.">
         Settings
+      </message>
+      <message name="IDS_READING_MODE_TRANSLATE" desc="Accessibility label for button that opens the translation box for the reading mode feature.">
+        Translate
       </message>
       <message name="IDS_READING_MODE_VOICE_SPEED" desc="Accessibility label for button that opens a dropdown with options for changing the speed of the voice for Read Aloud.">
         Voice speed
@@ -9664,6 +9720,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_READING_MODE_LINE_FOCUS_LABEL" desc="Accessibility label for the line focus menu item in reading mode.">
         Line focus
       </message>
+      <message name="IDS_READING_MODE_TURN_LINE_FOCUS_OFF_LABEL" desc="Text for the toolbar button in reading mode that turns off line focus. Displays only when line focus is on.">
+        Turn off focus
+      </message>
       <message name="IDS_READING_MODE_SIDE_PANEL_LABEL" desc="Accessibility label for the Side panel option in view menu for reading mode.">
         Side panel
       </message>
@@ -9698,6 +9757,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_LENS_COBROWSE_IPH_DESCRIPTION" desc="Informs user how Google Lens can be used in cobrowse.">
         Use Google Lens to learn more about specific images or text on a page.
+      </message>
+      <message name="IDS_LENS_COBROWSE_CURRENT_TAB_IPH_DESCRIPTION" desc="Informs user that the content and URL of their current tab is shared with Brave to get more relevant answers.">
+        The content and the URL of your current tab is shared with Brave to give you more relevant answers. You can add or remove tabs as you browse.
       </message>
 
       <!--Tooltip strings -->
@@ -9795,7 +9857,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_TOOLTIP_TAB_SCROLL_TRAILING" desc="The tooltip for the trailing scroll button">
         Scroll to last tab
       </message>
-      <message name="IDS_TOOLTIP_MIC_SEARCH" desc="The tooltip for search-by-voice button">
+      <message name="IDS_TOOLTIP_MIC_SEARCH" desc="The tooltip for search-by-voice button" formatter_data="android_java">
         Search by voice
       </message>
       <message name="IDS_TOOLTIP_LENS_SEARCH" desc="The tooltip for search-by-image button">
@@ -10066,78 +10128,33 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <!-- /Vertical Tab Strings -->
 
-      <!-- Projects Panel Strings -->
+      <!-- Organizer Panel Strings -->
       <if expr="use_titlecase">
         <then>
-          <message name="IDS_VIEW_PROJECTS_PANEL" desc="In Title Case: The tooltip for the button in the top container that shows the projects panel.">
+          <message name="IDS_VIEW_ORGANIZER_PANEL" desc="In Title Case: The tooltip for the button in the top container that shows the organizer panel.">
             View Organizer
           </message>
-          <message name="IDS_HIDE_PROJECTS_PANEL" desc="In Title Case: The tooltip for the button in the top container that hides the projects panel.">
+          <message name="IDS_HIDE_ORGANIZER_PANEL" desc="In Title Case: The tooltip for the button in the top container that hides the organizer panel.">
             Hide Organizer
-          </message>
-          <message name="IDS_TAB_GROUPS_TITLE" desc="In Title Case: The title for the tab groups container in the projects panel.">
-            Tab Groups
-          </message>
-          <message name="IDS_RECENT_CHATS_TITLE" desc="In Title Case: The title for the recent chats container in the projects panel.">
-            Recent Chats &amp; Threads
           </message>
           <message name="IDS_TAB_GROUP_MORE_OPTIONS" desc="In Title Case: The tooltip for the button in a tab group item that opens the options menu.">
             More options
           </message>
-          <message name="IDS_THREADS_SHOW_MORE" desc="In Title Case: The label for the button that expands the list of recent threads.">
-            Show More
-          </message>
-          <message name="IDS_THREADS_SHOW_LESS" desc="In Title Case: The label for the button that collapses the list of recent threads.">
-            Show Less
-          </message>
         </then>
         <else>
-          <message name="IDS_VIEW_PROJECTS_PANEL" desc="The tooltip for the button in the top container that shows the projects panel.">
+          <message name="IDS_VIEW_ORGANIZER_PANEL" desc="The tooltip for the button in the top container that shows the organizer panel.">
             View organizer
           </message>
-          <message name="IDS_HIDE_PROJECTS_PANEL" desc="The tooltip for the button in the top container that hides the projects panel.">
+          <message name="IDS_HIDE_ORGANIZER_PANEL" desc="The tooltip for the button in the top container that hides the organizer panel.">
             Hide organizer
-          </message>
-          <message name="IDS_TAB_GROUPS_TITLE" desc="The title for the tab groups container in the projects panel.">
-            Tab groups
-          </message>
-          <message name="IDS_RECENT_CHATS_TITLE" desc="The title for the recent chats container in the projects panel.">
-            Recent chats &amp; threads
           </message>
           <message name="IDS_TAB_GROUP_MORE_OPTIONS" desc="The tooltip for the button in a tab group item that opens the options menu.">
             More options
           </message>
-          <message name="IDS_THREADS_SHOW_MORE" desc="The label for the button that expands the list of recent threads.">
-            Show more
-          </message>
-          <message name="IDS_THREADS_SHOW_LESS" desc="The label for the button that collapses the list of recent threads.">
-            Show less
-          </message>
         </else>
       </if>
-      <message name="IDS_PROJECTS_PANEL" desc="The name of the projects panel announced by screenreaders." is_accessibility_with_no_ui="true">
+      <message name="IDS_ORGANIZER_PANEL" desc="The name of the organizer panel announced by screenreaders." is_accessibility_with_no_ui="true">
         Organizer
-      </message>
-      <message name="IDS_PROJECTS_PANEL_GEMINI_ACTIVITY" desc="The label for the Gemini app activity menu item in the projects panel.">
-        Gemini app activity
-      </message>
-      <message name="IDS_PROJECTS_PANEL_AI_MODE_ACTIVITY" desc="The label for the AI Mode activity menu item in the projects panel.">
-        AI Mode activity
-      </message>
-      <message name="IDS_TAB_GROUPS_NO_TAB_GROUPS" desc="Text indicating the user has no Tab groups.">
-        Organize tabs into labeled, color-coded groups for easy access
-      </message>
-      <message name="IDS_OPEN_GEMINI_THREAD_TOOLTIP" desc="Tooltip for a button that opens a Gemini thread.">
-        Open in Gemini
-      </message>
-      <message name="IDS_OPEN_AI_MODE_THREAD_TOOLTIP" desc="Tooltip for a button that opens an AI Mode thread.">
-        Open in AI Mode
-      </message>
-      <message name="IDS_OPEN_GEMINI_THREAD_ACCESSIBILITY_LABEL" desc="Screenreader label for a button that opens a Gemini thread." is_accessibility_with_no_ui="true">
-        Open "<ph name="THREAD_NAME">$1<ex>Compact SUV Comparison</ex></ph>" in Gemini
-      </message>
-      <message name="IDS_OPEN_AI_MODE_THREAD_ACCESSIBILITY_LABEL" desc="Screenreader label for a button that opens an AI Mode thread." is_accessibility_with_no_ui="true">
-        Open "<ph name="THREAD_NAME">$1<ex>Compact SUV Comparison</ex></ph>" in AI Mode
       </message>
       <if expr="use_titlecase">
         <message name="IDS_TAB_STRIP_UNPIN_TAB_SEARCH" desc="In Title Case: Name of the tab strip system menu item for unpinning tab search.">
@@ -10161,10 +10178,10 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_TAB_SEARCH_BUTTON_CXMENU_PIN" desc="Name of the tab search button context menu item for pinning tab search.">
         Pin
       </message>
-      <message name="IDS_PROJECTS_PANEL_BUTTON_CXMENU_UNPIN" desc="Name of the projects panel button context menu item for unpinning the projects panel.">
+      <message name="IDS_ORGANIZER_PANEL_BUTTON_CXMENU_UNPIN" desc="Name of the organizer panel button context menu item for unpinning the organizer panel.">
         Unpin
       </message>
-      <message name="IDS_PROJECTS_PANEL_BUTTON_CXMENU_PIN" desc="Name of the projects panel button context menu item for pinning the projects panel.">
+      <message name="IDS_ORGANIZER_PANEL_BUTTON_CXMENU_PIN" desc="Name of the organizer panel button context menu item for pinning the organizer panel.">
         Pin
       </message>
       <message name="IDS_EVERYTHING_MENU_BUTTON_CXMENU_UNPIN" desc="Name of the everything menu button context menu item for unpinning the everything menu.">
@@ -10637,6 +10654,14 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_EXTENSIONS_MENU_IPH_ENTRY_POINT_BODY" desc="">
         From here, you can see and manage extension permissions for the site you're on
       </message>
+      <if expr="enable_extensions_core">
+        <message name="IDS_EXTENSIONS_PINNED_BY_DEFAULT_IPH_BODY" desc="Body text for the promotional UI anchored to a newly installed extension showing that new extensions are pinned by default." formatter_data="android_java">
+          Newly added extensions are automatically pinned. Change this on the Extensions page.
+        </message>
+        <message name="IDS_EXTENSIONS_PINNED_BY_DEFAULT_IPH_GO_TO_EXTENSIONS" desc="Button text for the promotional UI anchored to a newly installed extension showing that new extensions are pinned by default. Clicking it takes the user to the Extensions settings page.">
+          Go to Extensions
+        </message>
+      </if>
       <message name="IDS_EXTENSIONS_REQUEST_ACCESS_BUTTON_IPH_ENTRY_POINT_TITLE" desc="Title text shown on promotional UI appearing when the request access button in the toolbar is visible.">
         {NUM_EXTENSIONS, plural,
           =1 {Choose if this extension can read or change this site}
@@ -11710,7 +11735,7 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         <message name="IDS_TAB_CXMENU_NEWTABTOLEFT" desc="In Title Case: The label of the 'New Tab to the Left' Tab context menu item. Translate this verbatim, do not localize for RTL languages (we have separate strings for RTL).">
           New Tab to the Left
         </message>
-        <message name="IDS_TAB_CXMENU_NEWTABBELOW" desc="The label of the 'New Tab Below' Tab context menu item.">
+        <message name="IDS_TAB_CXMENU_NEWTABBELOW" desc="In Title Case: The label of the 'New Tab Below' Tab context menu item.">
           New Tab Below
         </message>
         <message name="IDS_TAB_CXMENU_RELOAD" desc="In Title Case: The label of the 'Reload' Tab context menu item.">
@@ -12297,6 +12322,9 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         <message name="IDS_TAB_GROUP_HEADER_CXMENU_NEW_TAB_IN_GROUP" desc="The label of the tab group header context menu item for adding a new tab into the current group.">
           New tab in group
         </message>
+        <message name="IDS_TAB_GROUP_HEADER_CXMENU_HOME" desc="Home option in tab group bubble">
+          Home
+        </message>
         <message name="IDS_TAB_GROUP_HEADER_CXMENU_UNGROUP" desc="The label of the tab group header context menu item for ungrouping the current group.">
           Ungroup
         </message>
@@ -12350,6 +12378,9 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
       <if expr="use_titlecase">
         <message name="IDS_TAB_GROUP_HEADER_CXMENU_NEW_TAB_IN_GROUP" desc="In Title Case: The label of the tab group header context menu item for adding a new tab into the current group.">
           New Tab in Group
+        </message>
+        <message name="IDS_TAB_GROUP_HEADER_CXMENU_HOME" desc="Home option in tab group bubble">
+          Home
         </message>
         <message name="IDS_TAB_GROUP_HEADER_CXMENU_UNGROUP" desc="In Title Case: The label of the tab group header context menu item for ungrouping the current group.">
           Ungroup
@@ -12913,6 +12944,9 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         <message name="IDS_ANCHORED_MESSAGE_COLLAPSE_BUTTON_TOOLTIP" desc="Tooltip for the anchored message collapse button.">
           Hide details
         </message>
+        <message name="IDS_PAGE_ACTION_ANCHORED_MESSAGE_SHOWING" desc="Tooltip for a page action when its anchored message is showing.">
+          <ph name="ACTION_TOOLTIP">$1<ex>Bookmark this tab</ex></ph> - expanded contents shown
+        </message>
       <!-- /Page Action -->
 
       <!-- User Education -->
@@ -13458,19 +13492,16 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
       </message>
       <if expr="use_titlecase">
         <then>
-          <message name="IDS_MENU_SEND_TAB_TO_SELF" desc="In Title Case: The label of a menu entry to share the current tab to other devices">
-            Send to Your &amp;Devices
+          <message name="IDS_MENU_SEND_TAB_TO_SELF" desc="In Title Case: The label of a menu entry to share the current tab to another device">
+            Send to Your &amp;Device
           </message>
         </then>
         <else>
-          <message name="IDS_MENU_SEND_TAB_TO_SELF" desc="The label of a menu entry to share the current tab to other devices">
-            Send to your &amp;devices
+          <message name="IDS_MENU_SEND_TAB_TO_SELF" desc="The label of a menu entry to share the current tab to another device">
+            Send to your &amp;device
           </message>
         </else>
       </if>
-      <message name="IDS_SEND_TAB_TO_SELF" desc="The title of an action or bubble letting the user share the current tab to other devices">
-        Send to your devices
-      </message>
       <message name="IDS_SEND_TAB_TO_SELF_DEVICE_LABEL" desc="The label for a target device in the Send Tab to Self context menu, which includes the device name and its last active time.">
         <ph name="DEVICE_NAME">$1<ex>Pixel 9 Pro</ex></ph> (<ph name="LAST_ACTIVE_TIME">$2<ex>Active 5 mins ago</ex></ph>)
       </message>
@@ -13491,6 +13522,12 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
       </message>
       <message name="IDS_SEND_TAB_TO_SELF_SIGN_IN_PROMO_BODY" desc="Body label text of the send-tab-to-self sign-in promo bubble.">
         To send links between devices, ensure both are signed in to the same Brave account.
+      </message>
+      <message name="IDS_SEND_TAB_TO_SELF_VERIFY_ITS_YOU_PROMO_TITLE" desc="Title of the send-tab-to-self sign-in promo bubble when the user needs to verify their identity (reauthenticate).">
+        Send a link to another device
+      </message>
+      <message name="IDS_SEND_TAB_TO_SELF_VERIFY_ITS_YOU_PROMO_LABEL" desc="Text when a user in the verify it's you (signin pending) state attempts to use send-tab-to-self.">
+        To send links, verify it’s you. You can send links when you’re signed in to the same Brave sync chain on both devices.
       </message>
 
       <!-- Share via QR Code strings -->
@@ -13610,12 +13647,6 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         <message name="IDS_CONTENT_CONTEXT_SHARING_CLICK_TO_CALL_SINGLE_DEVICE" desc="The label of item for click to call in context menu for showing device name when one device is available.">
           Call from <ph name="DEVICE_NAME">$1<ex>Jimmy's Pixel</ex></ph>
         </message>
-        <message name="IDS_CONTENT_CONTEXT_SHARING_SHARED_CLIPBOARD_MULTIPLE_DEVICES" desc="The label of item for shared clipboard in context menu when multiple devices are available.">
-          Copy to your device
-        </message>
-        <message name="IDS_CONTENT_CONTEXT_SHARING_SHARED_CLIPBOARD_SINGLE_DEVICE" desc="The label of item for shared clipboard in context menu for showing device name when one device is available.">
-          Copy to <ph name="DEVICE_NAME">$1<ex>Jimmy's Pixel</ex></ph>
-        </message>
         <message name="IDS_CONTENT_CONTEXT_SHARING_SHARED_CLIPBOARD_NOTIFICATION_TITLE_UNKNOWN_DEVICE" desc="Title text displayed in a shared clipboard notification when the source device name is unknown.">
           Text shared from other device
         </message>
@@ -13636,12 +13667,6 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         </message>
         <message name="IDS_CONTENT_CONTEXT_SHARING_CLICK_TO_CALL_SINGLE_DEVICE" desc="In Title Case: The label of item for click to call in context menu when single device is available.">
           Call from <ph name="DEVICE_NAME">$1<ex>Jimmy's Pixel</ex></ph>
-        </message>
-        <message name="IDS_CONTENT_CONTEXT_SHARING_SHARED_CLIPBOARD_MULTIPLE_DEVICES" desc="In Title Case: The label of item for shared clipboard in context menu when multiple devices are available.">
-          Copy to Your Device
-        </message>
-        <message name="IDS_CONTENT_CONTEXT_SHARING_SHARED_CLIPBOARD_SINGLE_DEVICE" desc="In Title Case: The label of item for shared clipboard in context menu when single device is available.">
-          Copy to <ph name="DEVICE_NAME">$1<ex>Jimmy's Pixel</ex></ph>
         </message>
         <message name="IDS_CONTENT_CONTEXT_SHARING_SHARED_CLIPBOARD_NOTIFICATION_TITLE_UNKNOWN_DEVICE" desc="Title text displayed in a shared clipboard notification when the source device name is unknown.">
           Text shared from Other Device
@@ -14302,6 +14327,12 @@ This can include information about installed software, files, your browser, the 
         <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_BUBBLE_NEW_PROFILE_BUTTON_LABEL" desc="Label of the confirmation button in the web signin interception bubble">
           Ok
         </message>
+        <message name="IDS_SIGNIN_QRCODE_BANNER_TITLE" desc="Title of the C++ Views banner on the Brave Sign-in page encouraging the user to sign in using a QR code and their phone.">
+          Sign in faster with a QR code
+        </message>
+        <message name="IDS_SIGNIN_QRCODE_BANNER_DESCRIPTION" desc="Description of the C++ Views banner on the Brave Sign-in page explaining how the user can scan the QR code with their phone camera to sign in using their passkey for google.com.">
+          Scan this QR code with the camera on the device that has your passkey for google.com
+        </message>
 
         <if expr="use_titlecase">
           <then>
@@ -14629,6 +14660,15 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <if expr="is_win">
         <message name="IDS_DEFAULT_BROWSER_VISUAL_GUIDED_SETTER_INSTRUCTION_STEP_1" desc="Instruction step 1 of the default browser visual guided setter.">
          Click <ph name="BEGIN_BOLD">&lt;strong&gt;</ph>Set Default<ph name="END_BOLD">&lt;/strong&gt;</ph> in your Windows settings.
+        </message>
+        <message name="IDS_DEFAULT_BROWSER_VISUAL_GUIDED_SETTER_RESIZED_TO_FIT" desc="Text explaining that Windows settings will be resized to fit in the default browser visual guided setter.">
+          Your Windows settings will be resized to fit here.
+        </message>
+        <message name="IDS_DEFAULT_BROWSER_VISUAL_GUIDED_SETTER_DIDNT_WORK" desc="Text asking if setting default browser didn't work in the default browser visual guided setter.">
+          Didn't work?
+        </message>
+        <message name="IDS_DEFAULT_BROWSER_VISUAL_GUIDED_SETTER_OPEN_WINDOWS_SETTINGS" desc="Button label to open Windows settings in the default browser visual guided setter.">
+          Open windows settings
         </message>
       </if>
 
@@ -15196,316 +15236,316 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <if expr="is_macosx">
         <!-- Menubar Menu Titles -->
         <!-- NOTE: Some of these exist in context menus with Title Case support, but we use different IDs and explicit meaning strings so that we can get different strings in some languages due to the different context. -->
-        <message name="IDS_FILE_MENU_MAC" desc="The menu title of the Mac file menu." meaning="Top-level menu">
+        <message name="IDS_FILE_MENU_MAC" desc="In Title Case: The menu title of the Mac file menu." meaning="Top-level menu">
           File
         </message>
-        <message name="IDS_EDIT_MENU_MAC" desc="The menu title of the Mac edit menu." meaning="Top-level menu">
+        <message name="IDS_EDIT_MENU_MAC" desc="In Title Case: The menu title of the Mac edit menu." meaning="Top-level menu">
           Edit
         </message>
-        <message name="IDS_VIEW_MENU_MAC" desc="The menu title of the Mac view menu." meaning="Top-level menu">
+        <message name="IDS_VIEW_MENU_MAC" desc="In Title Case: The menu title of the Mac view menu." meaning="Top-level menu">
           View
         </message>
-        <message name="IDS_HISTORY_MENU_MAC" desc="The menu title of the Mac history menu." meaning="Top-level menu">
+        <message name="IDS_HISTORY_MENU_MAC" desc="In Title Case: The menu title of the Mac history menu." meaning="Top-level menu">
           History
         </message>
-        <message name="IDS_WINDOW_MENU_MAC" desc="The menu title of the Mac window menu." meaning="Top-level menu">
+        <message name="IDS_WINDOW_MENU_MAC" desc="In Title Case: The menu title of the Mac window menu." meaning="Top-level menu">
           Window
         </message>
-        <message name="IDS_TAB_MENU_MAC" desc="The menu title of the Mac tab menu." meaning="Top-level menu, tab as in the UI element in the tabstrip containing a website">
+        <message name="IDS_TAB_MENU_MAC" desc="In Title Case: The menu title of the Mac tab menu." meaning="Top-level menu, tab as in the UI element in the tabstrip containing a website">
           Tab
         </message>
-        <message name="IDS_HELP_MENU_MAC" desc="The menu title of the Mac help menu." meaning="Top-level menu">
+        <message name="IDS_HELP_MENU_MAC" desc="In Title Case: The menu title of the Mac help menu." meaning="Top-level menu">
           Help
         </message>
         <!-- App menu -->
-        <message name="IDS_ABOUT_MAC" desc="The Mac menu item to open the about box.">
+        <message name="IDS_ABOUT_MAC" desc="In Title Case: The Mac menu item to open the about box.">
           About <ph name="PRODUCT_NAME">$1<ex>Brave</ex></ph>
         </message>
-        <message name="IDS_SERVICES_MAC" desc="The Mac menu item for the OS X services submenu (OS fills it in) in the app menu.">
+        <message name="IDS_SERVICES_MAC" desc="In Title Case: The Mac menu item for the OS X services submenu (OS fills it in) in the app menu.">
           Services
         </message>
-        <message name="IDS_HIDE_APP_MAC" desc="The Mac menu item to hide all browser windows in the app menu.">
+        <message name="IDS_HIDE_APP_MAC" desc="In Title Case: The Mac menu item to hide all browser windows in the app menu.">
           Hide <ph name="PRODUCT_NAME">$1<ex>Brave</ex></ph>
         </message>
-        <message name="IDS_HIDE_OTHERS_MAC" desc="The Mac menu item to hide other applications' windows in the app menu.">
+        <message name="IDS_HIDE_OTHERS_MAC" desc="In Title Case: The Mac menu item to hide other applications' windows in the app menu.">
           Hide Others
         </message>
-        <message name="IDS_SHOW_ALL_MAC" desc="The Mac menu item to show all browser windows in the app menu.">
+        <message name="IDS_SHOW_ALL_MAC" desc="In Title Case: The Mac menu item to show all browser windows in the app menu.">
           Show All
         </message>
-        <message name="IDS_EXIT_MAC" desc="The Mac menu item to quit the browser in the app menu.">
+        <message name="IDS_EXIT_MAC" desc="In Title Case: The Mac menu item to quit the browser in the app menu.">
           Quit <ph name="PRODUCT_NAME">$1<ex>Brave</ex></ph>
         </message>
         <!-- File menu -->
-        <message name="IDS_NEW_MAC" desc="The Mac menu item for creating a new file in the file menu.">
+        <message name="IDS_NEW_MAC" desc="In Title Case: The Mac menu item for creating a new file in the file menu.">
           New
         </message>
-        <message name="IDS_NEW_TAB_MAC" desc="The Mac menu item for opening a new tab in the file menu.">
+        <message name="IDS_NEW_TAB_MAC" desc="In Title Case: The Mac menu item for opening a new tab in the file menu.">
           New Tab
         </message>
-        <message name="IDS_NEW_WINDOW_MAC" desc="The Mac menu item for opening a new window in the file menu.">
+        <message name="IDS_NEW_WINDOW_MAC" desc="In Title Case: The Mac menu item for opening a new window in the file menu.">
           New Window
         </message>
-        <message name="IDS_NEW_INCOGNITO_WINDOW_MAC" desc="The Mac menu item for opening a new Private window in the file menu.">
+        <message name="IDS_NEW_INCOGNITO_WINDOW_MAC" desc="In Title Case: The Mac menu item for opening a new Private window in the file menu.">
           New Private Window
         </message>
-        <message name="IDS_REOPEN_CLOSED_TABS_MAC" desc="The Mac menu item reopen recently closed tabs in the file menu.">
+        <message name="IDS_REOPEN_CLOSED_TABS_MAC" desc="In Title Case: The Mac menu item reopen recently closed tabs in the file menu.">
           Reopen Closed Tab
         </message>
-        <message name="IDS_OPEN_FILE_MAC" desc="The Mac menu item to open a file in the file menu.">
+        <message name="IDS_OPEN_FILE_MAC" desc="In Title Case: The Mac menu item to open a file in the file menu.">
           Open File...
         </message>
-        <message name="IDS_OPEN_LOCATION_MAC" desc="The Mac menu item to open a location in the file menu (puts cursor in the url bar).">
+        <message name="IDS_OPEN_LOCATION_MAC" desc="In Title Case: The Mac menu item to open a location in the file menu (puts cursor in the url bar).">
           Open Location...
         </message>
-        <message name="IDS_CLOSE_WINDOW_MAC" desc="The Mac menu item to close a window in the file menu.">
+        <message name="IDS_CLOSE_WINDOW_MAC" desc="In Title Case: The Mac menu item to close a window in the file menu.">
           Close Window
         </message>
-        <message name="IDS_CLOSE_ALL_WINDOWS_MAC" desc="The Mac menu item to close all windows in the file menu.">
+        <message name="IDS_CLOSE_ALL_WINDOWS_MAC" desc="In Title Case: The Mac menu item to close all windows in the file menu.">
           Close All
         </message>
-        <message name="IDS_CLOSE_TAB_MAC" desc="The Mac menu item to close a browser tab in the file menu.">
+        <message name="IDS_CLOSE_TAB_MAC" desc="In Title Case: The Mac menu item to close a browser tab in the file menu.">
           Close Tab
         </message>
-        <message name="IDS_SAVE_PAGE_MAC" desc="The Mac menu item to save a page in the file menu.">
+        <message name="IDS_SAVE_PAGE_MAC" desc="In Title Case: The Mac menu item to save a page in the file menu.">
           Save Page As...
         </message>
-        <message name="IDS_EMAIL_LINK_MAC" desc="The Mac menu item to email a link to the current page in the share submenu">
+        <message name="IDS_EMAIL_LINK_MAC" desc="In Title Case: The Mac menu item to email a link to the current page in the share submenu">
           Email Link
         </message>
-        <message name="IDS_SHARING_MORE_MAC" desc="The Mac menu item to see more macOS share extensions in the share menu.">
+        <message name="IDS_SHARING_MORE_MAC" desc="In Title Case: The Mac menu item to see more macOS share extensions in the share menu.">
           More...
         </message>
-        <message name="IDS_SHARE_MAC" desc="The Mac menu item for sharing to external services.">
+        <message name="IDS_SHARE_MAC" desc="In Title Case: The Mac menu item for sharing to external services.">
           Share
         </message>
-        <message name="IDS_PRINT_USING_SYSTEM_DIALOG_MAC" desc="The Mac menu item to print using system dialog in the file menu">
+        <message name="IDS_PRINT_USING_SYSTEM_DIALOG_MAC" desc="In Title Case: The Mac menu item to print using system dialog in the file menu">
           Print Using System Dialog...
         </message>
         <!-- Edit menu -->
-        <message name="IDS_EDIT_UNDO_MAC" desc="The Mac menu item undo in the edit menu.">
+        <message name="IDS_EDIT_UNDO_MAC" desc="In Title Case: The Mac menu item undo in the edit menu.">
           Undo
         </message>
-        <message name="IDS_EDIT_REDO_MAC" desc="The Mac menu item redo in the edit menu.">
+        <message name="IDS_EDIT_REDO_MAC" desc="In Title Case: The Mac menu item redo in the edit menu.">
           Redo
         </message>
-        <message name="IDS_CUT_MAC" desc="The Mac menu item for cut in the edit menu.">
+        <message name="IDS_CUT_MAC" desc="In Title Case: The Mac menu item for cut in the edit menu.">
           Cut
         </message>
-        <message name="IDS_COPY_MAC" desc="The Mac menu item for copy in the edit menu.">
+        <message name="IDS_COPY_MAC" desc="In Title Case: The Mac menu item for copy in the edit menu.">
           Copy
         </message>
-        <message name="IDS_PASTE_MAC" desc="The Mac menu item for paste in the edit menu.">
+        <message name="IDS_PASTE_MAC" desc="In Title Case: The Mac menu item for paste in the edit menu.">
           Paste
         </message>
-        <message name="IDS_PASTE_MATCH_STYLE_MAC" desc="The Mac menu item for paste and match style in the edit menu.">
+        <message name="IDS_PASTE_MATCH_STYLE_MAC" desc="In Title Case: The Mac menu item for paste and match style in the edit menu.">
           Paste and Match Style
         </message>
-        <message name="IDS_EDIT_DELETE_MAC" desc="The Mac menu item delete in the edit menu.">
+        <message name="IDS_EDIT_DELETE_MAC" desc="In Title Case: The Mac menu item delete in the edit menu.">
           Delete
         </message>
-        <message name="IDS_EDIT_SELECT_ALL_MAC" desc="The Mac menu item select all in the edit menu.">
+        <message name="IDS_EDIT_SELECT_ALL_MAC" desc="In Title Case: The Mac menu item select all in the edit menu.">
           Select All
         </message>
         <!-- Edit::Find submenu -->
-        <message name="IDS_EDIT_FIND_SUBMENU_MAC" desc="The Mac menu item for the find submenu in the edit menu.">
+        <message name="IDS_EDIT_FIND_SUBMENU_MAC" desc="In Title Case: The Mac menu item for the find submenu in the edit menu.">
           Find
         </message>
-        <message name="IDS_EDIT_SEARCH_WEB_MAC" desc="The Mac menu item for search the web (using, e.g., Brave or Yahoo! search) in the edit menu.">
+        <message name="IDS_EDIT_SEARCH_WEB_MAC" desc="In Title Case: The Mac menu item for search the web (using, e.g., Brave or Yahoo! search) in the edit menu.">
           Search the Web...
         </message>
-        <message name="IDS_EDIT_FIND_MAC" desc="The Mac menu item for find in the edit menu.">
+        <message name="IDS_EDIT_FIND_MAC" desc="In Title Case: The Mac menu item for find in the edit menu.">
           Find...
         </message>
-        <message name="IDS_EDIT_FIND_NEXT_MAC" desc="The Mac menu item for find next in the edit menu.">
+        <message name="IDS_EDIT_FIND_NEXT_MAC" desc="In Title Case: The Mac menu item for find next in the edit menu.">
           Find Next
         </message>
-        <message name="IDS_EDIT_FIND_PREVIOUS_MAC" desc="The Mac menu item for find previous in the edit menu.">
+        <message name="IDS_EDIT_FIND_PREVIOUS_MAC" desc="In Title Case: The Mac menu item for find previous in the edit menu.">
           Find Previous
         </message>
-        <message name="IDS_EDIT_USE_SELECTION_MAC" desc="The Mac menu item for use selection for find in the edit menu.">
+        <message name="IDS_EDIT_USE_SELECTION_MAC" desc="In Title Case: The Mac menu item for use selection for find in the edit menu.">
           Use Selection for Find
         </message>
-        <message name="IDS_EDIT_JUMP_TO_SELECTION_MAC" desc="The Mac menu item for jump to selection in the edit menu.">
+        <message name="IDS_EDIT_JUMP_TO_SELECTION_MAC" desc="In Title Case: The Mac menu item for jump to selection in the edit menu.">
           Jump to Selection
         </message>
         <!-- Edit::Spelling and Grammar submenu -->
-        <message name="IDS_EDIT_SPELLING_GRAMMAR_MAC" desc="The Mac menu item for spelling and grammar submenu in the edit menu.">
+        <message name="IDS_EDIT_SPELLING_GRAMMAR_MAC" desc="In Title Case: The Mac menu item for spelling and grammar submenu in the edit menu.">
           Spelling and Grammar
         </message>
-        <message name="IDS_EDIT_SHOW_SPELLING_GRAMMAR_MAC" desc="The Mac menu item for show spelling and grammar in the edit menu.">
+        <message name="IDS_EDIT_SHOW_SPELLING_GRAMMAR_MAC" desc="In Title Case: The Mac menu item for show spelling and grammar in the edit menu.">
           Show Spelling and Grammar
         </message>
-        <message name="IDS_EDIT_CHECK_DOCUMENT_MAC" desc="The Mac menu item for check document in the edit menu.">
+        <message name="IDS_EDIT_CHECK_DOCUMENT_MAC" desc="In Title Case: The Mac menu item for check document in the edit menu.">
           Check Document Now
         </message>
-        <message name="IDS_EDIT_CHECK_SPELLING_TYPING_MAC" desc="The Mac menu item for check spelling while typing in the edit menu.">
+        <message name="IDS_EDIT_CHECK_SPELLING_TYPING_MAC" desc="In Title Case: The Mac menu item for check spelling while typing in the edit menu.">
           Check Spelling While Typing
         </message>
-        <message name="IDS_EDIT_CHECK_GRAMMAR_MAC" desc="The Mac menu item for check grammar with spelling in the edit menu.">
+        <message name="IDS_EDIT_CHECK_GRAMMAR_MAC" desc="In Title Case: The Mac menu item for check grammar with spelling in the edit menu.">
           Check Grammar With Spelling
         </message>
         <!-- Edit::Substitutions submenu -->
-        <message name="IDS_EDIT_SUBSTITUTIONS_MAC" desc="The Mac menu item for the substitutions submenu in the edit menu.">
+        <message name="IDS_EDIT_SUBSTITUTIONS_MAC" desc="In Title Case: The Mac menu item for the substitutions submenu in the edit menu.">
           Substitutions
         </message>
-        <message name="IDS_EDIT_SHOW_SUBSTITUTIONS_MAC" desc="The Mac menu item for showing the substitutions panel in the edit menu.">
+        <message name="IDS_EDIT_SHOW_SUBSTITUTIONS_MAC" desc="In Title Case: The Mac menu item for showing the substitutions panel in the edit menu.">
           Show Substitutions
         </message>
-        <message name="IDS_EDIT_SMART_QUOTES_MAC" desc="The Mac menu item for toggling smart quotes in the edit menu.">
+        <message name="IDS_EDIT_SMART_QUOTES_MAC" desc="In Title Case: The Mac menu item for toggling smart quotes in the edit menu.">
           Smart Quotes
         </message>
-        <message name="IDS_EDIT_SMART_DASHES_MAC" desc="The Mac menu item for toggling smart dashes in the edit menu.">
+        <message name="IDS_EDIT_SMART_DASHES_MAC" desc="In Title Case: The Mac menu item for toggling smart dashes in the edit menu.">
           Smart Dashes
         </message>
-        <message name="IDS_EDIT_TEXT_REPLACEMENT_MAC" desc="The Mac menu item for toggling text replacement in the edit menu.">
+        <message name="IDS_EDIT_TEXT_REPLACEMENT_MAC" desc="In Title Case: The Mac menu item for toggling text replacement in the edit menu.">
           Text Replacement
         </message>
         <!-- Edit::Transformations submenu -->
-        <message name="IDS_EDIT_TRANSFORMATIONS_MAC" desc="The Mac menu item for the transformations submenu in the edit menu.">
+        <message name="IDS_EDIT_TRANSFORMATIONS_MAC" desc="In Title Case: The Mac menu item for the transformations submenu in the edit menu.">
           Transformations
         </message>
-        <message name="IDS_EDIT_MAKE_UPPERCASE_MAC" desc="The Mac menu item for making the selected text uppercase in the edit menu.">
+        <message name="IDS_EDIT_MAKE_UPPERCASE_MAC" desc="In Title Case: The Mac menu item for making the selected text uppercase in the edit menu.">
           Make Uppercase
         </message>
-        <message name="IDS_EDIT_MAKE_LOWERCASE_MAC" desc="The Mac menu item for making the selected text lowercase in the edit menu.">
+        <message name="IDS_EDIT_MAKE_LOWERCASE_MAC" desc="In Title Case: The Mac menu item for making the selected text lowercase in the edit menu.">
           Make Lowercase
         </message>
-        <message name="IDS_EDIT_CAPITALIZE_MAC" desc="The Mac menu item for capitalizing the selected text in the edit menu.">
+        <message name="IDS_EDIT_CAPITALIZE_MAC" desc="In Title Case: The Mac menu item for capitalizing the selected text in the edit menu.">
           Capitalize
         </message>
         <!-- View menu -->
-        <message name="IDS_BOOKMARK_BAR_ALWAYS_SHOW_MAC" desc="The Mac menu item for having bookmark bar always visible in the view menu.">
+        <message name="IDS_BOOKMARK_BAR_ALWAYS_SHOW_MAC" desc="In Title Case: The Mac menu item for having bookmark bar always visible in the view menu.">
           Always Show Bookmarks Bar
         </message>
-        <message name="IDS_STOP_MENU_MAC" desc="The Mac menu item stop in the view menu.">
+        <message name="IDS_STOP_MENU_MAC" desc="In Title Case: The Mac menu item stop in the view menu.">
           Stop
         </message>
-        <message name="IDS_RELOAD_MENU_MAC" desc="The Mac menu item to reload the current page in the view menu.">
+        <message name="IDS_RELOAD_MENU_MAC" desc="In Title Case: The Mac menu item to reload the current page in the view menu.">
           Reload This Page
         </message>
-        <message name="IDS_RELOAD_BYPASSING_CACHE_MENU_MAC" desc="The Mac menu item to force reload the current page (ignoring cache) in the view menu.">
+        <message name="IDS_RELOAD_BYPASSING_CACHE_MENU_MAC" desc="In Title Case: The Mac menu item to force reload the current page (ignoring cache) in the view menu.">
           Force Reload This Page
         </message>
-        <message name="IDS_ENTER_FULLSCREEN_MAC" desc="The Mac menu item to go into fullscreen mode in the view menu and also in the app menu.">
+        <message name="IDS_ENTER_FULLSCREEN_MAC" desc="In Title Case: The Mac menu item to go into fullscreen mode in the view menu and also in the app menu.">
           Enter Full Screen
         </message>
-        <message name="IDS_EXIT_FULLSCREEN_MAC" desc="The Mac menu item to leave fullscreen mode in the view menu and also in the app menu.">
+        <message name="IDS_EXIT_FULLSCREEN_MAC" desc="In Title Case: The Mac menu item to leave fullscreen mode in the view menu and also in the app menu.">
           Exit Full Screen
         </message>
-        <message name="IDS_TOGGLE_FULLSCREEN_TOOLBAR_MAC" desc="The Mac menu checkbox item to show/hide the toolbar in full screen.">
+        <message name="IDS_TOGGLE_FULLSCREEN_TOOLBAR_MAC" desc="In Title Case: The Mac menu checkbox item to show/hide the toolbar in full screen.">
           Always Show Toolbar in Full Screen
         </message>
-        <message name="IDS_TEXT_BIGGER_MAC" desc="The Mac menu item to zoom in on the page in the view menu.">
+        <message name="IDS_TEXT_BIGGER_MAC" desc="In Title Case: The Mac menu item to zoom in on the page in the view menu.">
           Zoom In
         </message>
-        <message name="IDS_TEXT_DEFAULT_MAC" desc="The Mac menu item to make the page actual size in the view menu.">
+        <message name="IDS_TEXT_DEFAULT_MAC" desc="In Title Case: The Mac menu item to make the page actual size in the view menu.">
           Actual Size
         </message>
-        <message name="IDS_TEXT_SMALLER_MAC" desc="The Mac menu item to zoom out on the in the view menu.">
+        <message name="IDS_TEXT_SMALLER_MAC" desc="In Title Case: The Mac menu item to zoom out on the in the view menu.">
           Zoom Out
         </message>
-        <message name="IDS_DEVELOPER_MENU_MAC" desc="The Mac menu item for the developer submenu in the view menu.">
+        <message name="IDS_DEVELOPER_MENU_MAC" desc="In Title Case: The Mac menu item for the developer submenu in the view menu.">
           Developer
         </message>
         <!-- View->Developer menu -->
-        <message name="IDS_VIEW_SOURCE_MAC" desc="The Mac menu item for view page source in the developer submenu of the view menu.">
+        <message name="IDS_VIEW_SOURCE_MAC" desc="In Title Case: The Mac menu item for view page source in the developer submenu of the view menu.">
           View Source
         </message>
-        <message name="IDS_DEV_TOOLS_MAC" desc="The Mac menu item for the developer tools in the developer submenu of the view menu.">
+        <message name="IDS_DEV_TOOLS_MAC" desc="In Title Case: The Mac menu item for the developer tools in the developer submenu of the view menu.">
           Developer Tools
         </message>
-        <message name="IDS_DEV_TOOLS_CONSOLE_MAC" desc="The Mac menu item for the JavaScript console in the developer submenu of the view menu.">
+        <message name="IDS_DEV_TOOLS_CONSOLE_MAC" desc="In Title Case: The Mac menu item for the JavaScript console in the developer submenu of the view menu.">
           JavaScript Console
         </message>
-        <message name="IDS_DEV_TOOLS_ELEMENTS_MAC" desc="The Mac menu item to inspect elements in the developer submenu of the view menu.">
+        <message name="IDS_DEV_TOOLS_ELEMENTS_MAC" desc="In Title Case: The Mac menu item to inspect elements in the developer submenu of the view menu.">
           Inspect Elements
         </message>
-        <message name="IDS_ALLOW_JAVASCRIPT_APPLE_EVENTS_MAC" desc="The Mac menu item to allow JavaScript from Apple Events in the developer submenu of the view menu.">
+        <message name="IDS_ALLOW_JAVASCRIPT_APPLE_EVENTS_MAC" desc="In Title Case: The Mac menu item to allow JavaScript from Apple Events in the developer submenu of the view menu.">
           Allow JavaScript from Apple Events
         </message>
-        <message name="IDS_TASK_MANAGER_MAC" desc="The Mac menu item for task manager in the developer submenu of the view menu.">
+        <message name="IDS_TASK_MANAGER_MAC" desc="In Title Case: The Mac menu item for task manager in the developer submenu of the view menu.">
           Task Manager
         </message>
         <!-- History menu -->
-        <message name="IDS_HISTORY_HOME_MAC" desc="The Mac menu item for home in the history menu." meaning="'home' as in an internet location, a 'home page'">
+        <message name="IDS_HISTORY_HOME_MAC" desc="In Title Case: The Mac menu item for home in the history menu." meaning="'home' as in an internet location, a 'home page'">
           Home
         </message>
-        <message name="IDS_HISTORY_BACK_MAC" desc="The Mac menu item for back in the history menu.">
+        <message name="IDS_HISTORY_BACK_MAC" desc="In Title Case: The Mac menu item for back in the history menu.">
           Back
         </message>
-        <message name="IDS_HISTORY_FORWARD_MAC" desc="The Mac menu item for forward in the history menu.">
+        <message name="IDS_HISTORY_FORWARD_MAC" desc="In Title Case: The Mac menu item for forward in the history menu.">
           Forward
         </message>
-        <message name="IDS_HISTORY_VISITED_MAC" desc="The Mac menu item for the header of visited items in the history menu.">
+        <message name="IDS_HISTORY_VISITED_MAC" desc="In Title Case: The Mac menu item for the header of visited items in the history menu.">
           Recently Visited
         </message>
-        <message name="IDS_HISTORY_CLOSED_MAC" desc="The Mac menu item for the header of recently closed items in the history menu.">
+        <message name="IDS_HISTORY_CLOSED_MAC" desc="In Title Case: The Mac menu item for the header of recently closed items in the history menu.">
           Recently Closed
         </message>
-        <message name="IDS_HISTORY_CLOSED_RESTORE_WINDOW_MAC" desc="The Mac menu item for restoring all the tabs of a recently closed window.">
+        <message name="IDS_HISTORY_CLOSED_RESTORE_WINDOW_MAC" desc="In Title Case: The Mac menu item for restoring all the tabs of a recently closed window.">
           Restore Window
         </message>
-        <message name="IDS_HISTORY_CLOSED_RESTORE_GROUP_MAC" desc="The Mac menu item for restoring all the tabs of a recently closed group.">
+        <message name="IDS_HISTORY_CLOSED_RESTORE_GROUP_MAC" desc="In Title Case: The Mac menu item for restoring all the tabs of a recently closed group.">
           Restore Group
         </message>
-        <message name="IDS_HISTORY_CLOSED_RESTORE_SPLIT_MAC" desc="The Mac menu item for restoring a recently closed split.">
+        <message name="IDS_HISTORY_CLOSED_RESTORE_SPLIT_MAC" desc="In Title Case: The Mac menu item for restoring a recently closed split.">
           Restore Split View
         </message>
         <!-- Window menu -->
-        <message name="IDS_MINIMIZE_WINDOW_MAC" desc="The Mac menu item for minimize the window menu." meaning="Mac Menubar: The Mac menu item for minimize the window menu.">
+        <message name="IDS_MINIMIZE_WINDOW_MAC" desc="In Title Case: The Mac menu item for minimize the window menu." meaning="Mac Menubar: The Mac menu item for minimize the window menu.">
           Minimize
         </message>
-        <message name="IDS_ZOOM_WINDOW_MAC" desc="The Mac menu item for zoom (maximize) in the window menu." meaning="Mac Menubar: The Mac menu item for zoom (maximize) in the window menu.">
+        <message name="IDS_ZOOM_WINDOW_MAC" desc="In Title Case: The Mac menu item for zoom (maximize) in the window menu." meaning="Mac Menubar: The Mac menu item for zoom (maximize) in the window menu.">
           Zoom
         </message>
-        <message name="IDS_NEXT_TAB_MAC" desc="The Mac menu item for next tab in the window menu.">
+        <message name="IDS_NEXT_TAB_MAC" desc="In Title Case: The Mac menu item for next tab in the window menu.">
           Select Next Tab
         </message>
-        <message name="IDS_PREV_TAB_MAC" desc="The Mac menu item for previous tab in the window menu.">
+        <message name="IDS_PREV_TAB_MAC" desc="In Title Case: The Mac menu item for previous tab in the window menu.">
           Select Previous Tab
         </message>
-        <message name="IDS_SHOW_DOWNLOADS_MAC" desc="The Mac menu item to show downloads in the window menu.">
+        <message name="IDS_SHOW_DOWNLOADS_MAC" desc="In Title Case: The Mac menu item to show downloads in the window menu.">
           Downloads
         </message>
-        <message name="IDS_WINDOW_AUDIO_PLAYING_MAC" desc="The emoji to append to the title of a window showing audio is playing.">
+        <message name="IDS_WINDOW_AUDIO_PLAYING_MAC" desc="In Title Case: The emoji to append to the title of a window showing audio is playing.">
           <ph name="TAB_TITLE">$1<ex>The Title of the Tab</ex></ph> <ph name="EMOJI_PLAYING">$2<ex>(playing)</ex></ph>
         </message>
-        <message name="IDS_WINDOW_AUDIO_MUTING_MAC" desc="The emoji to append to the title of a window showing audio is muting.">
+        <message name="IDS_WINDOW_AUDIO_MUTING_MAC" desc="In Title Case: The emoji to append to the title of a window showing audio is muting.">
           <ph name="TAB_TITLE">$1<ex>The Title of the Tab</ex></ph> <ph name="EMOJI_MUTING">$2<ex>(muting)</ex></ph>
         </message>
-        <message name="IDS_SHOW_EXTENSIONS_MAC" desc="The Mac menu item to show extensions in the window menu.">
+        <message name="IDS_SHOW_EXTENSIONS_MAC" desc="In Title Case: The Mac menu item to show extensions in the window menu.">
           Extensions
         </message>
-        <message name="IDS_ALL_WINDOWS_FRONT_MAC" desc="The Mac menu item for bring all to front the window menu.">
+        <message name="IDS_ALL_WINDOWS_FRONT_MAC" desc="In Title Case: The Mac menu item for bring all to front the window menu.">
           Bring All to Front
         </message>
-        <message name="IDS_DUPLICATE_TAB_MAC" desc="The Mac menu item for duplicating the selected tab(s).">
+        <message name="IDS_DUPLICATE_TAB_MAC" desc="In Title Case: The Mac menu item for duplicating the selected tab(s).">
           Duplicate Tab
         </message>
-        <message name="IDS_DUPLICATE_TARGET_TAB_MAC" desc="The Mac menu item for duplicating the selected tab(s).">
+        <message name="IDS_DUPLICATE_TARGET_TAB_MAC" desc="In Title Case: The Mac menu item for duplicating the selected tab(s).">
           Duplicate Selected Tab
         </message>
-        <message name="IDS_MUTE_SITE_MAC" desc="The Mac menu item for muting the selected tab(s).">
+        <message name="IDS_MUTE_SITE_MAC" desc="In Title Case: The Mac menu item for muting the selected tab(s).">
           Mute Site
         </message>
-        <message name="IDS_MUTE_TARGET_SITE_MAC" desc="The Mac menu item for muting the selected tab(s).">
+        <message name="IDS_MUTE_TARGET_SITE_MAC" desc="In Title Case: The Mac menu item for muting the selected tab(s).">
           Mute Selected Site
         </message>
-        <message name="IDS_PIN_TAB_MAC" desc="The Mac menu item for pinning the selected tab(s).">
+        <message name="IDS_PIN_TAB_MAC" desc="In Title Case: The Mac menu item for pinning the selected tab(s).">
           Pin Tab
         </message>
-        <message name="IDS_PIN_TARGET_TAB_MAC" desc="The Mac menu item for pinning the selected tab(s).">
+        <message name="IDS_PIN_TARGET_TAB_MAC" desc="In Title Case: The Mac menu item for pinning the selected tab(s).">
           Pin Selected Tab
         </message>
-        <message name="IDS_GROUP_TAB_MAC" desc="The Mac menu item for adding the selected tab(s) to a new tab group.">
+        <message name="IDS_GROUP_TAB_MAC" desc="In Title Case: The Mac menu item for adding the selected tab(s) to a new tab group.">
           Group Tab
         </message>
-        <message name="IDS_GROUP_TARGET_TAB_MAC" desc="The Mac menu item for adding the selected tab(s) to a new tab group.">
+        <message name="IDS_GROUP_TARGET_TAB_MAC" desc="In Title Case: The Mac menu item for adding the selected tab(s) to a new tab group.">
           Group Selected Tab
         </message>
         <!-- Help menu -->
-        <message name="IDS_FEEDBACK_MAC" desc="The Mac menu item to report a bug in the Help menu.">
+        <message name="IDS_FEEDBACK_MAC" desc="In Title Case: The Mac menu item to report a bug in the Help menu.">
           Report an Issue...
         </message>
         <message name="IDS_HELP_MAC" desc="The Mac menu item to show help in the Help menu.">
@@ -16147,6 +16187,18 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_DISPLAY_MEDIA_PICKER_TEXT" desc="Text for the window picker dialog shown when a getDisplayMedia capture is requested by an app to be used by the app itself.">
         The site will be able to see the contents of your screen
       </message>
+      <message name="IDS_DISPLAY_MEDIA_PICKER_AUDIO_RECOMMENDED" desc="Warning text for the window picker dialog shown when getDisplayMedia requested audio preference is high.">
+        This site recommends sharing audio for full functionality
+      </message>
+      <message name="IDS_DISPLAY_MEDIA_PICKER_SHARE_SYSTEM_AUDIO_CHECKBOX" desc="Simplified checkbox label for sharing system audio.">
+        Share with system audio
+      </message>
+      <message name="IDS_DISPLAY_MEDIA_PICKER_SHARE_TAB_AUDIO_CHECKBOX" desc="Simplified checkbox label for sharing tab audio.">
+        Share with tab audio
+      </message>
+      <message name="IDS_DISPLAY_MEDIA_PICKER_CONFIRM_BUTTON_SHARE_WITH_AUDIO" desc="Confirmation button label when audio sharing is selected.">
+        Share with Audio
+      </message>
       <message name="IDS_DESKTOP_MEDIA_PICKER_TEXT_DELEGATED" desc="Text for the window picker dialog shown when desktop capture is requested by an app to be used by a tab.">
         <ph name="APP_NAME">$1<ex>Brave Hangouts</ex></ph> wants to share the contents of your screen with <ph name="TARGET_NAME">$2<ex>https://google.com</ex></ph>.
       </message>
@@ -16219,11 +16271,17 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_DESKTOP_MEDIA_PICKER_DELEGATED_SOURCE_LIST_WINDOW_BUTTON" desc="Select window button text.">
         Choose a window
       </message>
+      <message name="IDS_DESKTOP_MEDIA_PICKER_DELEGATED_SOURCE_LIST_WINDOW_BUTTON_WITH_AUDIO" desc="Select window with audio button text.">
+        Choose a window with audio
+      </message>
       <message name="IDS_DESKTOP_MEDIA_PICKER_DELEGATED_SOURCE_LIST_SCREEN_TEXT" desc="Select screen label text.">
         To share your screen, use your system's screen picker
       </message>
       <message name="IDS_DESKTOP_MEDIA_PICKER_DELEGATED_SOURCE_LIST_SCREEN_BUTTON" desc="Select screen button text.">
         Choose a screen
+      </message>
+      <message name="IDS_DESKTOP_MEDIA_PICKER_DELEGATED_SOURCE_LIST_SCREEN_BUTTON_WITH_AUDIO" desc="Select screen with audio button text.">
+        Choose a screen with audio
       </message>
 
       <message name="IDS_SHARE_THIS_TAB_DIALOG_TITLE" desc="Title for the tab-sharing dialog shown when a getDisplayMedia capture is constrained to share only the current tab.">
@@ -16832,35 +16890,33 @@ Please help our engineers fix this problem. Tell us what happened right before y
     </message>
 
     <!-- HID (Human Interface Device) chooser -->
-    <if expr="not is_android">
-      <message name="IDS_HID_CHOOSER_PROMPT" desc="The label that is used to introduce the Human Interface Device (HID) chooser details to the user in a popup.">
-        <ph name="Origin">$1<ex>www.google.com</ex></ph> wants to connect to a HID device
-      </message>
-      <message name="IDS_HID_CHOOSER_ITEM_WITHOUT_NAME" desc="User option displaying the device IDs for a Human Interface Device (HID) without a device name.">
-        Unknown Device (<ph name="DEVICE_ID">$1<ex>1234:abcd</ex></ph>)
-      </message>
-      <message name="IDS_HID_CHOOSER_LOADING_LABEL" desc="Text on label that the browser is loading the list of HID devices.">
-        Finding devices...
-      </message>
-      <message name="IDS_HID_CHOOSER_LOADING_LABEL_TOOLTIP" desc="Tooltip for the label that the browser is loading the list of HID devices.">
-        Finding HID devices...
-      </message>
-      <message name="IDS_HID_POLICY_DESCRIPTION_FOR_VENDOR_ID_AND_PRODUCT_ID" desc="String describing a HID device permission granted by enterprise policy to a site when only the numeric product ID and vendor ID are available">
-        HID device (<ph name="VENDOR_ID">$1<ex>1234</ex></ph>:<ph name="PRODUCT_ID">$2<ex>1234</ex></ph>)
-      </message>
-      <message name="IDS_HID_POLICY_DESCRIPTION_FOR_VENDOR_ID" desc="String describing a HID device permission granted by enterprise policy to a site for all devices from a single vendor when only the numeric vendor ID is available.">
-        HID devices from vendor <ph name="VENDOR_ID">$1<ex>1234</ex></ph>
-      </message>
-      <message name="IDS_HID_POLICY_DESCRIPTION_FOR_USAGE_AND_USAGE_PAGE" desc="String describing a HID device permission granted by permission policy to a site for all devices containing a top-level collection with a single HID usage when only the numeric HID usage value is available.">
-        HID devices with usage <ph name="USAGE">$1<ex>1234</ex></ph> from usage page <ph name="USAGE_PAGE">$2<ex>1234</ex></ph>
-      </message>
-      <message name="IDS_HID_POLICY_DESCRIPTION_FOR_USAGE_PAGE" desc="String describing a HID device permission granted by permission policy to a site for all devices containing a top-level collection with any usage from a HID usage page when only the numeric HID usage page value is available.">
-        HID devices with usages from usage page <ph name="USAGE_PAGE">$1<ex>1234</ex></ph>
-      </message>
-      <message name="IDS_HID_POLICY_DESCRIPTION_FOR_ANY_DEVICE" desc="String describing a HID device permission granted by permission policy to a site for all devices.">
-        Any HID device
-      </message>
-    </if>
+    <message name="IDS_HID_CHOOSER_PROMPT" desc="The label that is used to introduce the Human Interface Device (HID) chooser details to the user in a popup.">
+      <ph name="Origin">$1<ex>www.google.com</ex></ph> wants to connect to a HID device
+    </message>
+    <message name="IDS_HID_CHOOSER_ITEM_WITHOUT_NAME" desc="User option displaying the device IDs for a Human Interface Device (HID) without a device name.">
+      Unknown Device (<ph name="DEVICE_ID">$1<ex>1234:abcd</ex></ph>)
+    </message>
+    <message name="IDS_HID_CHOOSER_LOADING_LABEL" desc="Text on label that the browser is loading the list of HID devices.">
+      Finding devices...
+    </message>
+    <message name="IDS_HID_CHOOSER_LOADING_LABEL_TOOLTIP" desc="Tooltip for the label that the browser is loading the list of HID devices.">
+      Finding HID devices...
+    </message>
+    <message name="IDS_HID_POLICY_DESCRIPTION_FOR_VENDOR_ID_AND_PRODUCT_ID" desc="String describing a HID device permission granted by enterprise policy to a site when only the numeric product ID and vendor ID are available">
+      HID device (<ph name="VENDOR_ID">$1<ex>1234</ex></ph>:<ph name="PRODUCT_ID">$2<ex>1234</ex></ph>)
+    </message>
+    <message name="IDS_HID_POLICY_DESCRIPTION_FOR_VENDOR_ID" desc="String describing a HID device permission granted by enterprise policy to a site for all devices from a single vendor when only the numeric vendor ID is available.">
+      HID devices from vendor <ph name="VENDOR_ID">$1<ex>1234</ex></ph>
+    </message>
+    <message name="IDS_HID_POLICY_DESCRIPTION_FOR_USAGE_AND_USAGE_PAGE" desc="String describing a HID device permission granted by permission policy to a site for all devices containing a top-level collection with a single HID usage when only the numeric HID usage value is available.">
+      HID devices with usage <ph name="USAGE">$1<ex>1234</ex></ph> from usage page <ph name="USAGE_PAGE">$2<ex>1234</ex></ph>
+    </message>
+    <message name="IDS_HID_POLICY_DESCRIPTION_FOR_USAGE_PAGE" desc="String describing a HID device permission granted by permission policy to a site for all devices containing a top-level collection with any usage from a HID usage page when only the numeric HID usage page value is available.">
+      HID devices with usages from usage page <ph name="USAGE_PAGE">$1<ex>1234</ex></ph>
+    </message>
+    <message name="IDS_HID_POLICY_DESCRIPTION_FOR_ANY_DEVICE" desc="String describing a HID device permission granted by permission policy to a site for all devices.">
+      Any HID device
+    </message>
 
     <!-- File Handling launch prompt -->
     <if expr="not is_android">
@@ -16978,8 +17034,8 @@ Please help our engineers fix this problem. Tell us what happened right before y
       Open Anyway
     </message>
 
-    <if expr="is_win or is_macosx or is_linux">
-      <message name="IDS_UTILITY_PROCESS_SYSTEM_SIGNALS_NAME" desc="The name of the utility process used to collect system signals. Only spawned on Windows, Mac or Linux.">
+    <if expr="is_win or is_macosx or is_linux or is_chromeos">
+      <message name="IDS_UTILITY_PROCESS_SYSTEM_SIGNALS_NAME" desc="The name of the utility process used to collect system signals. Only spawned on Windows, Mac, Linux or ChromeOS.">
         System Signals Utilities
       </message>
     </if>
@@ -17955,6 +18011,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
     <message name="IDS_DEEP_SCANNING_DIALOG_PASTE_BYPASS_JUSTIFICATION_LABEL" desc="Text displayed in the label above the bypass justification text area, explaining to the user that they have to enter a justification for pasting data even though there was a data loss prevention warning.">
       Please enter a reason for pasting this data:
     </message>
+    <message name="IDS_DEEP_SCANNING_DIALOG_COPY_BYPASS_JUSTIFICATION_LABEL" desc="Text displayed in the label above the bypass justification text area, explaining to the user that they have to enter a justification for copying data even though there was a data loss prevention warning.">
+      Please enter a reason for copying this data:
+    </message>
     <message name="IDS_DEEP_SCANNING_DIALOG_PRINT_BYPASS_JUSTIFICATION_LABEL" desc="Text displayed in the label above the bypass justification text area, explaining to the user that they have to enter a justification for printing a document or page even though there was a data loss prevention warning.">
       Please enter a reason for printing this data:
     </message>
@@ -17972,6 +18031,15 @@ Please help our engineers fix this problem. Tell us what happened right before y
     </message>
     <message name="IDS_DEEP_SCANNING_DIALOG_SAVE_TO_CLOUD_STORAGE_MESSAGE" desc="Button text to allow the user to save a file to cloud storage">
       <ph name="FILE_NAME">$1<ex>foo.txt</ex></ph> has sensitive data. Your organization will let you save it to cloud storage or discard it
+    </message>
+    <message name="IDS_ENTERPRISE_COPY_WARNING_TOAST_BODY" desc="Text on a toast notification shown when copying content is warned by DLP.">
+      Your organization advises against copying this content
+    </message>
+    <message name="IDS_ENTERPRISE_COPY_WARNING_TOAST_BUTTON" desc="Button text on a toast notification to copy data anyway.">
+      Copy anyway
+    </message>
+    <message name="IDS_ENTERPRISE_COPY_BLOCKED_TOAST_BODY" desc="Text on a toast notification shown when copying content is blocked by DLP.">
+      Your organization blocked copying this content
     </message>
 
     <!-- Data sharing UI strings -->
@@ -18123,7 +18191,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
     </message>
 
     <!-- Extension request -->
-    <if expr="not is_android">
+    <if expr="not is_android or enable_extensions_core">
       <message name="IDS_ENTERPRISE_EXTENSION_REQUEST_APPROVED_TITLE" desc="The notification title when there are some extension requests approved.">
         {NUM_EXTENSIONS, plural,
           =1 {An extension has been approved}
@@ -18615,7 +18683,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
         Dismiss
       </message>
       <message name="IDS_PERFORMANCE_INTERVENTION_BUTTON_TOOLTIP" desc="The tooltip for the performance intervention toolbar button">
-        Perfomance issue alert
+        Performance issue alert
       </message>
       <message name="IDS_PERFORMANCE_INTERVENTION_BUTTON_ACCNAME" desc="The accessibility text for the performance intervention toolbar button">
         Performance issue alert
@@ -18642,6 +18710,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_MULTISTEP_FILTER_CUE_SETTINGS" desc="Text for the settings menu item on the contextual cue for multistep filters." translateable="false">
         Settings
       </message>
+      <message name="IDS_MULTISTEP_FILTER_CUE_GIVE_FEEDBACK" desc="Text for the give feedback menu item on the contextual cue for multistep filters." translateable="false">
+        Give feedback
+      </message>
       <message name="IDS_MULTISTEP_FILTER_CUE_EXPANDABLE_CONTENT_HEADING" desc="Text for the expandable content heading on the contextual cue for multistep filters." translateable="false">
         From your recent search
       </message>
@@ -18663,10 +18734,10 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_LINK_COPIED_TO_HIGHLIGHT_TOAST_BODY" desc="Text on a toast notification that is shown when a link to highlight is successfully copied.">
         Link copied to highlight
       </message>
-      <message name="IDS_DICTATION_ERROR_TOAST" desc="Text shown in a toast notification when a voice typing/dictation session fails due to an error." translateable="false">
+      <message name="IDS_DICTATION_ERROR_TOAST" desc="Text shown in a toast notification when a voice typing/dictation session fails due to an error.">
         Something went wrong. Try again later
       </message>
-      <message name="IDS_DICTATION_STOPPED_TOAST" desc="Text shown in a toast notification when a voice typing/dictation session is stopped." translateable="false">
+      <message name="IDS_DICTATION_STOPPED_TOAST" desc="Text shown in a toast notification when a voice typing/dictation session is stopped.">
         Voice typing stopped
       </message>
       <message name="IDS_READING_LIST_TOAST_BODY" desc="Text on a toast notification that is shown when one or more items are added to the reading list [ICU Syntax]">
@@ -18692,6 +18763,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
       <message name="IDS_GLIC_SELECTION_OVERLAY_PRESELECTION_BUBBLE_TEXT" desc="Text that is shown in the Glic selection overlay preselection bubble. Informs the user to select text or image to ask Gemini.">
         Select any text or image to ask Gemini
+      </message>
+      <message name="IDS_TAB_GROUP_HEADER_CXMENU_ASK_GEMINI" translateable="false" desc="The label of the tab group context menu item to ask Gemini about the tab group.">
+        Ask Gemini about this group
       </message>
       <message name="IDS_COPIED_TO_CLIPBOARD_TOAST_BODY" desc="Text on a toast notification that is shown when an item has been copied to clipboard.">
         Copied to clipboard
@@ -18987,7 +19061,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
     Add freehand drawings, signatures, and highlights with the new Draw tool
     </message>
     <message name="IDS_PDF_TEXT_ANNOTATIONS_IPH_BODY" desc="Content of in-product help to introduce the PDF Text Annotations feature.">
-    Add text with the new "Add text" tool
+    Add text, comments, and notes with the new Text Annotations tool
     </message>
 
     <!-- PDF Searchify elements. -->

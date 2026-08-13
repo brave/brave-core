@@ -1,0 +1,19 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Route Tor profiles through the Tor proxy config service
+    regex:
+      re_pattern: |-
+        ^( *)(proxy_config_service_ = ProxyServiceFactory::CreateProxyConfigService\(.*?profile\);)
+      re_flags: [DOTALL, MULTILINE]
+      replace: |-
+        #if BUILDFLAG(ENABLE_TOR)
+        \1if (profile && profile->IsTor())
+        \1  proxy_config_service_ = CreateProxyConfigServiceTor(profile);
+        \1else
+        #endif  // BUILDFLAG(ENABLE_TOR)
+        \1\2

@@ -94,7 +94,7 @@ class BraveProxyingURLLoaderFactoryBrowserTest : public InProcessBrowserTest {
         FILE_PATH_LITERAL("callback.html"),
         "<html><body>Callback page loaded</body></html>");
 
-    extensions::ChromeTestExtensionLoader loader(browser()->profile());
+    extensions::ChromeTestExtensionLoader loader(browser()->GetProfile());
     scoped_refptr<const extensions::Extension> extension =
         loader.LoadExtension(test_extension_dir_.UnpackedPath());
     ASSERT_TRUE(extension) << "Failed to load test extension";

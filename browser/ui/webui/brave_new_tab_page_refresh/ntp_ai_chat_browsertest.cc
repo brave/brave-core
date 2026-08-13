@@ -172,7 +172,7 @@ class NTPAIChatBrowserTest : public InProcessBrowserTest {
     InProcessBrowserTest::SetUpOnMainThread();
 
     // Enable the show chat input pref
-    browser()->profile()->GetPrefs()->SetBoolean(
+    browser()->GetProfile()->GetPrefs()->SetBoolean(
         brave_search_conversion::prefs::kShowNTPChatInput, true);
   }
 
@@ -339,7 +339,7 @@ class NTPAIChatPrefDisabledBrowserTest : public InProcessBrowserTest {
     InProcessBrowserTest::SetUpOnMainThread();
 
     // Disable the show chat input pref
-    browser()->profile()->GetPrefs()->SetBoolean(
+    browser()->GetProfile()->GetPrefs()->SetBoolean(
         brave_search_conversion::prefs::kShowNTPChatInput, false);
   }
 

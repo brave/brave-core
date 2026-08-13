@@ -24,7 +24,7 @@ void BraveBookmarkSubMenuModel::Build(Browser* browser) {
     return;
   RemoveItemAt(index.value());
   brave_bookmarks_submenu_model_ =
-      std::make_unique<BookmarkBarSubMenuModel>(browser->profile());
+      std::make_unique<BookmarkBarSubMenuModel>(browser->GetProfile());
   InsertSubMenuWithStringIdAt(index.value(), IDC_BRAVE_BOOKMARK_BAR_SUBMENU,
                               IDS_SHOW_BOOKMARK_BAR,
                               brave_bookmarks_submenu_model_.get());

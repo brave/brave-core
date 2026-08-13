@@ -9,6 +9,8 @@
 
 #include "base/check.h"
 #include "base/command_line.h"
+#include "base/files/file.h"
+#include "base/files/memory_mapped_file.h"
 #include "base/path_service.h"
 #include "build/build_config.h"
 #include "ui/base/resource/resource_bundle.h"
@@ -24,7 +26,13 @@
 #endif
 
 #if BUILDFLAG(IS_ANDROID)
+#include "base/android/jni_android.h"
+#include "chrome/common/chrome_descriptors_android.h"
 #include "ui/base/resource/resource_bundle_android.h"
+#endif
+
+#if BUILDFLAG(IS_POSIX)
+#include "base/posix/global_descriptors.h"
 #endif
 
 namespace {
@@ -67,8 +75,28 @@ namespace brave {
 
 void InitializeResourceBundle() {
 #if BUILDFLAG(IS_ANDROID)
-  ui::BraveLoadMainAndroidPackFile("assets/brave_resources.pak",
-                                   base::FilePath());
+  if (base::android::IsJavaAvailable()) {
+    // Browser/zygote process: open brave_resources.pak from the APK via JNI.
+    // The resulting fd/region are cached and shared with child processes (see
+    // BraveContentBrowserClient::GetAdditionalMappedFilesForChildProcess).
+    ui::BraveLoadMainAndroidPackFile("assets/brave_resources.pak",
+                                     base::FilePath());
+  } else {
+    // Native-only (javaless) renderers have no JVM and cannot open the APK
+    // asset, so they load brave_resources.pak from the file descriptor passed
+    // in by the browser at process creation. Mirrors how Chrome delivers
+    // resources.pak to child processes. Native-only renderers became
+    // unconditional upstream in
+    // https://chromium.googlesource.com/chromium/src/+/56513bb3d2d5f87d08be352b76442d6b424e86e5
+    auto* global_descriptors = base::GlobalDescriptors::GetInstance();
+    int pak_fd = global_descriptors->MaybeGet(kBraveResourcesPakDescriptor);
+    if (pak_fd != -1) {
+      base::MemoryMappedFile::Region pak_region =
+          global_descriptors->GetRegion(kBraveResourcesPakDescriptor);
+      ui::ResourceBundle::GetSharedInstance().AddDataPackFromFileRegion(
+          base::File(pak_fd), pak_region, ui::kScaleFactorNone);
+    }
+  }
   // brave_100_percent.pak is excluded now from the Android build because
   // its resources are not used
 #else

@@ -146,7 +146,8 @@ void BraveShieldsWebContentsObserver::DispatchBlockedEvent(
       if (block_type == kAds) {
         prefs->SetUint64(kAdsBlocked, prefs->GetUint64(kAdsBlocked) + 1);
       } else if (block_type == kHTTPUpgradableResources) {
-        prefs->SetUint64(kHttpsUpgrades, prefs->GetUint64(kHttpsUpgrades) + 1);
+        prefs->SetUint64(kHttpsUpgradesStat,
+                         prefs->GetUint64(kHttpsUpgradesStat) + 1);
       } else if (block_type == kJavaScript) {
         prefs->SetUint64(kJavascriptBlocked,
                          prefs->GetUint64(kJavascriptBlocked) + 1);
@@ -220,7 +221,7 @@ void BraveShieldsWebContentsObserver::OnJavaScriptAllowedOnce(
     const std::u16string& details) {
 #if !BUILDFLAG(IS_ANDROID)
   WebContents* web_contents =
-      WebContents::FromRenderFrameHost(receivers_.GetCurrentTargetFrame());
+      WebContents::FromRenderFrameHost(&receivers_.CurrentTargetFrame());
   if (!web_contents) {
     return;
   }
@@ -233,7 +234,7 @@ void BraveShieldsWebContentsObserver::OnWebcompatFeatureInvoked(
     ContentSettingsType webcompat_settings_type) {
 #if !BUILDFLAG(IS_ANDROID)
   WebContents* web_contents =
-      WebContents::FromRenderFrameHost(receivers_.GetCurrentTargetFrame());
+      WebContents::FromRenderFrameHost(&receivers_.CurrentTargetFrame());
   if (!web_contents) {
     return;
   }
@@ -245,7 +246,7 @@ void BraveShieldsWebContentsObserver::OnWebcompatFeatureInvoked(
 void BraveShieldsWebContentsObserver::OnJavaScriptBlocked(
     const std::u16string& details) {
   WebContents* web_contents =
-      WebContents::FromRenderFrameHost(receivers_.GetCurrentTargetFrame());
+      WebContents::FromRenderFrameHost(&receivers_.CurrentTargetFrame());
   if (!web_contents) {
     return;
   }
@@ -259,7 +260,7 @@ void BraveShieldsWebContentsObserver::RegisterProfilePrefs(
   registry->RegisterUint64Pref(kAdsBlocked, 0);
   registry->RegisterUint64Pref(kTrackersBlocked, 0);
   registry->RegisterUint64Pref(kJavascriptBlocked, 0);
-  registry->RegisterUint64Pref(kHttpsUpgrades, 0);
+  registry->RegisterUint64Pref(kHttpsUpgradesStat, 0);
   registry->RegisterUint64Pref(kFingerprintingBlocked, 0);
 }
 

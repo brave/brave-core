@@ -31,6 +31,7 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ActivityTabProvider;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.ChromeActivity;
+import org.chromium.chrome.browser.app.tabwindow.TabWindowManagerSingleton;
 import org.chromium.chrome.browser.back_press.BackPressManager;
 import org.chromium.chrome.browser.bookmarks.BookmarkModel;
 import org.chromium.chrome.browser.bookmarks.TabBookmarker;
@@ -404,7 +405,8 @@ public class BraveToolbarManager extends ToolbarManager
                         BottomTabSwitcherActionMenuCoordinator.createOnLongClickListener(
                                 id -> ((ChromeActivity) mActivity).onOptionsItemSelected(id, null),
                                 mProfileSupplier.get(),
-                                mTabModelSelectorSupplier),
+                                mTabModelSelectorSupplier,
+                                TabWindowManagerSingleton.getInstance()),
                         mActivityTabProvider,
                         mToolbarTabController::openHomepage,
                         mCallbackController.makeCancelable(

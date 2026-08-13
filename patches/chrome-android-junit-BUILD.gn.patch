@@ -1,0 +1,12 @@
+diff --git a/chrome/android/junit/BUILD.gn b/chrome/android/junit/BUILD.gn
+index fa3a0c2a6f7a43ce14e9e06cff69b1a400fb0687..912b9b80ba53db443ace6671688ee2387796a605 100644
+--- a/chrome/android/junit/BUILD.gn
++++ b/chrome/android/junit/BUILD.gn
+@@ -420,6 +420,7 @@ if (is_android) {
+       "//url:gurl_junit_test_support",
+       "//url/mojom:url_mojom_gurl_java",
+     ]
++    import("//brave/android/junit/sources.gni") public_deps -= brave_android_junit_chrome_junit_tests_helper_excluded_public_deps
+   }
+ 
+   # Partition tests into one target per-package to keep incremental build times

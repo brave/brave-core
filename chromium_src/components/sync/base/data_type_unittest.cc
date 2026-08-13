@@ -19,9 +19,11 @@ TEST(DataTypeTest, LowPriorityUserTypes) {
   EXPECT_TRUE(LowPriorityUserTypes().Has(USER_EVENTS));
 }
 
-// This test is supposed to fail when sync types are increased/decreased
+// This test is used by Brave's Chromium rebasing team. It's meant to fail when
+// sync types are added or removed so that the team can investigate how to
+// properly support the upstream change.
 TEST(DataTypeTest, DataTypeCounts) {
-  EXPECT_EQ(static_cast<int>(DataTypeForHistograms::kMaxValue), 81);
+  EXPECT_EQ(static_cast<int>(DataTypeForHistograms::kMaxValue), 84);
 }
 
 TEST(DataTypeTest, AIChatConversationEncryptable) {

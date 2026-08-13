@@ -31,7 +31,7 @@ class PdfTextExtractorBrowserTest : public InProcessBrowserTest {
         .AppendASCII(filename);
   }
 
-  content::BrowserContext* browser_context() { return browser()->profile(); }
+  content::BrowserContext* browser_context() { return browser()->GetProfile(); }
 };
 
 IN_PROC_BROWSER_TEST_F(PdfTextExtractorBrowserTest, PathOverload_ExtractsText) {

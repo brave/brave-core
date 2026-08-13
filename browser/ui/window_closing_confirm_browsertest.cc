@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "base/byte_count.h"
+#include "base/byte_size.h"
 #include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/run_loop.h"
@@ -61,7 +61,7 @@ class WindowClosingConfirmBrowserTest : public InProcessBrowserTest,
 
     InProcessBrowserTest::SetUpOnMainThread();
 
-    PrefService* prefs = browser()->profile()->GetPrefs();
+    PrefService* prefs = browser()->GetProfile()->GetPrefs();
     // Enabled by default.
     EXPECT_TRUE(prefs->GetBoolean(kEnableWindowClosingConfirm));
 
@@ -148,7 +148,7 @@ class WindowClosingConfirmBrowserTest : public InProcessBrowserTest,
   }
 
   content::DownloadManager* DownloadManagerForBrowser(Browser* browser) {
-    return browser->profile()->GetDownloadManager();
+    return browser->GetProfile()->GetDownloadManager();
   }
 
   DownloadPrefs* GetDownloadPrefs(Browser* browser) {
@@ -227,7 +227,7 @@ IN_PROC_BROWSER_TEST_F(WindowClosingConfirmBrowserTest,
 
   // However, should not ask for profile deletion.
   closing_confirm_dialog_created_ = false;
-  webui::DeleteProfileAtPath(browser()->profile()->GetPath(),
+  webui::DeleteProfileAtPath(browser()->GetProfile()->GetPath(),
                              ProfileMetrics::DELETE_PROFILE_SETTINGS);
   ui_test_utils::WaitForBrowserToClose(browser());
   EXPECT_FALSE(closing_confirm_dialog_created_);
@@ -267,7 +267,15 @@ IN_PROC_BROWSER_TEST_F(WindowClosingConfirmBrowserTest,
   ui_test_utils::WaitForBrowserToClose(brave_browser);
 }
 
-IN_PROC_BROWSER_TEST_F(WindowClosingConfirmBrowserTest, TestWithDownload) {
+// Disabling on Mac due to excessive flakiness
+// https://github.com/brave/brave-browser/issues/57731
+#if BUILDFLAG(IS_MAC)
+#define MAYBE_TestWithDownload DISABLED_TestWithDownload
+#else
+#define MAYBE_TestWithDownload TestWithDownload
+#endif
+IN_PROC_BROWSER_TEST_F(WindowClosingConfirmBrowserTest,
+                       MAYBE_TestWithDownload) {
 // On macOS, download in-progress warning is not shown for normal profile window
 // closing as it can still continue after window is closed.
 // However, private profile window works like normal window of other platforms.
@@ -277,15 +285,15 @@ IN_PROC_BROWSER_TEST_F(WindowClosingConfirmBrowserTest, TestWithDownload) {
 #else
   auto* brave_browser = static_cast<BraveBrowser*>(browser());
 #endif
-  brave_browser->profile()->GetPrefs()->SetBoolean(prefs::kPromptForDownload,
-                                                   false);
+  brave_browser->GetProfile()->GetPrefs()->SetBoolean(prefs::kPromptForDownload,
+                                                      false);
 
   test_response_handler()->RegisterToTestServer(embedded_test_server());
   ASSERT_TRUE(embedded_test_server()->Start());
   GURL url = embedded_test_server()->GetURL("/large_file");
 
   content::TestDownloadHttpResponse::Parameters parameters;
-  parameters.size = base::MiB(32).InBytes(); /* 32MB file. */
+  parameters.size = base::MiBU(32).InBytes(); /* 32MB file. */
   content::TestDownloadHttpResponse::StartServing(parameters, url);
 
   // Ensure that we have enough disk space to download the large file.

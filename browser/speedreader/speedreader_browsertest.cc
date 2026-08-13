@@ -166,7 +166,7 @@ class SpeedReaderBrowserTest : public InProcessBrowserTest {
 
   speedreader::SpeedreaderService* speedreader_service() {
     return speedreader::SpeedreaderServiceFactory::GetForBrowserContext(
-        browser()->profile());
+        browser()->GetProfile());
   }
 
   void NonBlockingDelay(base::TimeDelta delay) {
@@ -269,7 +269,7 @@ class SpeedReaderBrowserTest : public InProcessBrowserTest {
   }
 
   void DisableSpeedreader() {
-    browser()->profile()->GetPrefs()->SetBoolean(
+    browser()->GetProfile()->GetPrefs()->SetBoolean(
         speedreader::kSpeedreaderEnabled, false);
   }
 
@@ -353,7 +353,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, DisableSiteWorks) {
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, DISABLED_SmokeTest) {
   // Solana web3.js console warning will interfere with console observer
   brave_wallet::SetDefaultSolanaWallet(
-      browser()->profile()->GetPrefs(),
+      browser()->GetProfile()->GetPrefs(),
       brave_wallet::mojom::DefaultWallet::None);
 
   const std::string kGetContentLength = "document.body.innerHTML.length";
@@ -870,7 +870,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, Toolbar) {
   NavigateToPageSynchronously(kTestPageReadable);
 
   auto* page = ActiveWebContents();
-  auto* toolbar_view = static_cast<BraveBrowserView*>(browser()->window())
+  auto* toolbar_view = BraveBrowserView::GetBrowserViewForBrowser(browser())
                            ->reader_mode_toolbar();
   auto* toolbar = toolbar_view->GetWebContentsForTesting();
   WaitElement(toolbar, "appearance");
@@ -937,14 +937,14 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, Toolbar) {
 }
 
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ToolbarLangs) {
-  language::LanguagePrefs language_prefs(browser()->profile()->GetPrefs());
+  language::LanguagePrefs language_prefs(browser()->GetProfile()->GetPrefs());
   language_prefs.SetUserSelectedLanguagesList(
       {"en-US", "ja", "en-CA", "fr-CA"});
 
   EnableSpeedreaderAllowedForAllSites();
   NavigateToPageSynchronously(kTestPageReadable);
 
-  auto* toolbar_view = static_cast<BraveBrowserView*>(browser()->window())
+  auto* toolbar_view = BraveBrowserView::GetBrowserViewForBrowser(browser())
                            ->reader_mode_toolbar();
   auto* toolbar = toolbar_view->GetWebContentsForTesting();
 
@@ -1140,9 +1140,9 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ToolbarWithRoundedCorners) {
       tab_helper()->PageDistillState()));
 
   const bool rounded_contents =
-      browser()->profile()->GetPrefs()->GetBoolean(kWebViewRoundedCorners);
+      browser()->GetProfile()->GetPrefs()->GetBoolean(kWebViewRoundedCorners);
 
-  auto* browser_view = static_cast<BraveBrowserView*>(browser()->window());
+  auto* browser_view = BraveBrowserView::GetBrowserViewForBrowser(browser());
   EXPECT_EQ(browser_view->reader_mode_toolbar()->rounded_corners_.IsEmpty(),
             !rounded_contents);
   chrome::NewSplitTab(browser(), split_tabs::SplitTabLayout::kSideBySide,
@@ -1272,10 +1272,10 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderContentSpoofBrowserTest,
   // for downloads. Disable the download prompt so the download proceeds
   // automatically and wait for the download itself instead. Same pattern as
   // DeAmpBrowserTest.ContentDispositionAttachment.
-  browser()->profile()->GetPrefs()->SetBoolean(prefs::kPromptForDownload,
-                                               false);
+  browser()->GetProfile()->GetPrefs()->SetBoolean(prefs::kPromptForDownload,
+                                                  false);
   content::DownloadTestObserverTerminal download_observer(
-      browser()->profile()->GetDownloadManager(), 1,
+      browser()->GetProfile()->GetDownloadManager(), 1,
       content::DownloadTestObserver::ON_DANGEROUS_DOWNLOAD_ACCEPT);
   TurnOnReaderMode();
   download_observer.WaitForFinished();
@@ -1304,7 +1304,7 @@ class SpeedReaderWithSplitViewBrowserTest : public SpeedReaderBrowserTest {
   }
 
   BraveBrowserView* brave_browser_view() {
-    return static_cast<BraveBrowserView*>(browser()->window());
+    return BraveBrowserView::GetBrowserViewForBrowser(browser());
   }
 
   // Don't cache as it changes whenever active tab changes.

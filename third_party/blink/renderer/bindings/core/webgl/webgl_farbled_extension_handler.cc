@@ -76,6 +76,7 @@ WebGLFarbledExtensionHandler::~WebGLFarbledExtensionHandler() = default;
 
 // static
 std::unique_ptr<WebGLFarbledExtensionHandler>
+
 WebGLFarbledExtensionHandler::CreateOffHandler(
     const Vector<String>& real_extensions) {
   return std::unique_ptr<WebGLFarbledExtensionHandler>(
@@ -86,7 +87,7 @@ WebGLFarbledExtensionHandler::CreateOffHandler(
 std::unique_ptr<WebGLFarbledExtensionHandler>
 WebGLFarbledExtensionHandler::CreateBalancedHandler(
     const Vector<String>& real_extensions,
-    const size_t seed) {
+    const uint64_t seed) {
   if (!base::FeatureList::IsEnabled(
           blink::features::kWebGLBalancedFingerprintingProtection)) {
     return std::unique_ptr<WebGLFarbledExtensionHandler>(
@@ -95,7 +96,8 @@ WebGLFarbledExtensionHandler::CreateBalancedHandler(
 
   Vector<String> modified_extensions = real_extensions;
   const auto& fake_extension_list = GetFakeSupportedExtensions();
-  const size_t fake_index = seed % fake_extension_list.size();
+  const size_t fake_index =
+      static_cast<size_t>(seed % fake_extension_list.size());
   const WebGLFakeExtension& fake_extension = fake_extension_list[fake_index];
   modified_extensions.emplace_back(fake_extension.name);
 
