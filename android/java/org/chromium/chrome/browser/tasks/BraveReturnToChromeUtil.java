@@ -28,10 +28,8 @@ import org.chromium.url.GURL;
 @NullMarked
 public final class BraveReturnToChromeUtil {
 
-    // Inactivity threshold for variants B and D: 1 hour in milliseconds
-    private static final long INACTIVITY_THRESHOLD_MS_VARIANT_B_D = 60 * 60 * 1000L; // 1 hour
-    // Inactivity threshold for variant C: 2 hours in milliseconds
-    private static final long INACTIVITY_THRESHOLD_MS_VARIANT_C = 2 * 60 * 60 * 1000L; // 2 hours
+    // Inactivity threshold for variant B: 1 hour in milliseconds
+    private static final long INACTIVITY_THRESHOLD_MS = 60 * 60 * 1000L; // 1 hour
 
     /** Returns whether should show a NTP as the home surface at startup. */
     public static boolean shouldShowNtpAsHomeSurfaceAtStartup(
@@ -47,29 +45,12 @@ public final class BraveReturnToChromeUtil {
             return false;
         }
 
-        String variant = BraveFreshNtpHelper.getVariant();
-        boolean shouldShow = false;
-        switch (variant) {
-            case "A":
-                // Variant A: Brave's default behavior (no NTP at startup)
-                shouldShow = false;
-                break;
-            case "B":
-            case "D":
-                // Variants B and D: Show NTP if app has been backgrounded for ≥ 1 hour
-                // and OPTION_NEW_TAB_AFTER_INACTIVITY is selected
-                shouldShow =
-                        shouldShowNtpForInactivityVariant(
-                                inactivityTracker, INACTIVITY_THRESHOLD_MS_VARIANT_B_D);
-                break;
-            case "C":
-                // Variant C: Show NTP if app has been backgrounded for ≥ 2 hours
-                // and OPTION_NEW_TAB_AFTER_INACTIVITY is selected
-                shouldShow =
-                        shouldShowNtpForInactivityVariant(
-                                inactivityTracker, INACTIVITY_THRESHOLD_MS_VARIANT_C);
-                break;
-        }
+        // Variant B, the default, shows the NTP if the app has been backgrounded for ≥ 1 hour and
+        // OPTION_NEW_TAB_AFTER_INACTIVITY is selected. Variant A is the study's control arm and
+        // keeps the pre-experiment behavior of restoring the last open tab.
+        boolean shouldShow =
+                BraveFreshNtpHelper.getVariant().equals("B")
+                        && shouldShowNtpForInactivity(inactivityTracker);
 
         // Set flag only when shouldShowNtpAsHomeSurfaceAtStartup returns true
         // This ensures maybeShowRecentTabsDialog only executes when this method was called
@@ -85,11 +66,9 @@ public final class BraveReturnToChromeUtil {
      * Checks if NTP should be shown based on inactivity duration and preference.
      *
      * @param inactivityTracker The inactivity tracker to check background time
-     * @param inactivityThresholdMs The inactivity threshold in milliseconds
      * @return true if NTP should be shown, false otherwise
      */
-    private static boolean shouldShowNtpForInactivityVariant(
-            ChromeInactivityTracker inactivityTracker, long inactivityThresholdMs) {
+    private static boolean shouldShowNtpForInactivity(ChromeInactivityTracker inactivityTracker) {
         // Check opening screen option first
         int openingScreenOption =
                 ChromeSharedPreferences.getInstance()
@@ -123,7 +102,8 @@ public final class BraveReturnToChromeUtil {
         // playing in the background — background playback means the user is not truly idle.
         long timeSinceLastBackgroundedMs = inactivityTracker.getTimeSinceLastBackgroundedMs();
 
-        return timeSinceLastBackgroundedMs >= inactivityThresholdMs && !isBackgroundMediaPlaying();
+        return timeSinceLastBackgroundedMs >= INACTIVITY_THRESHOLD_MS
+                && !isBackgroundMediaPlaying();
     }
 
     /**

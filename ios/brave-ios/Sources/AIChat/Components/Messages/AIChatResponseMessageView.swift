@@ -352,6 +352,7 @@ struct AIChatResponseMessageView_Previews: PreviewProvider {
       turn:
         .init(
           uuid: nil,
+          threadUuid: nil,
           characterType: .assistant,
           actionType: .response,
           text:
@@ -365,7 +366,8 @@ struct AIChatResponseMessageView_Previews: PreviewProvider {
           skill: nil,
           fromBraveSearchSerp: false,
           modelKey: nil,
-          nearVerificationStatus: nil
+          nearVerificationStatus: nil,
+          childThreadUuids: []
         ),
       isEntryInProgress: false,
       lastEdited: Date(),

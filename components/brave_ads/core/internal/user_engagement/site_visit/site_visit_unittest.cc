@@ -126,11 +126,11 @@ TEST_F(BraveAdsSiteVisitTest, LandOnNotificationAdPage) {
 }
 
 TEST_F(BraveAdsSiteVisitTest,
-       DoNotLandOnNotificationAdPageIfOptedOutOfNotificationAds) {
+       DoNotLandOnNotificationAdPageIfNotificationAdsAreDisabled) {
   // Arrange
   const base::test::ScopedFeatureList scoped_feature_list(kSiteVisitFeature);
 
-  test::OptOutOfNotificationAds();
+  test::DisableNotificationAds();
 
   const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
                                   /*use_random_uuids=*/true);

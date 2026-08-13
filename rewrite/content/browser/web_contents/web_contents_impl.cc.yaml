@@ -1,0 +1,52 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Turn learning off when Windows Recall is disabled.
+
+      Windows Recall and Brave's on-device learning both retain user
+      activity locally, so disabling Recall should disable this too.
+    after_function_impl:
+      function_name: WebContentsImpl::ShouldDoLearning
+      result_var: should_do_learning
+      code: |-
+        return should_do_learning &&
+               !GetContentClient()->browser()->IsWindowsRecallDisabled();
+
+  - description: |
+      Inherit the opener's storage partition for opener-suppressed windows.
+
+      This lets Brave's Containers carry over on `noopener` navigations and
+      new tabs, instead of falling back to the default partition.
+    regex:
+      re_pattern:
+        '(WebContentsImpl::CreateNewWindow\(.*?if \(params\.opener_suppressed\)
+        \{)'
+      re_flags: [DOTALL]
+      replace: |-
+        \1
+            if (!is_guest &&
+                GetContentClient()->browser()->ShouldInheritStoragePartition(
+                    partition_config)) {
+              site_instance = SiteInstance::CreateForFixedStoragePartition(
+                  GetBrowserContext(), GURL(), partition_config);
+            } else /* NOLINT(readability/braces) */
+
+  - description: |
+      Don't show the new window when JavaScript access to it is denied.
+
+      Brave denies script access (`no_javascript_access`) to windows opened
+      from an OTR tab. That makes upstream treat the popup as living in a new
+      BrowsingInstance, so its widget is created browser-initiated and never
+      gets its `blink::mojom::Widget` bound by the opener's renderer. Showing
+      it here would call `WasShown()` on an unbound `AssociatedRemote`. As in
+      the `opener_suppressed` case, the window is shown and navigated later.
+    regex:
+      re_pattern:
+        'if \(!params\.opener_suppressed\) \{(\s+if \(!is_guest\)
+        \{\s+WebContentsView\* new_view)'
+      replace: |-
+        if (!params.opener_suppressed && !params.no_javascript_access) {\1

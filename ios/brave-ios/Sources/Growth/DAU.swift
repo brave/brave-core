@@ -16,7 +16,7 @@ public protocol BraveCoreStats: AnyObject {
   /// Reads the `brave.stats.reporting_enabled` Chromium preference,
   // so must be accessed on the main thread.
   var isStatsReportingEnabled: Bool { get }
-  /// Reads the `brave.brave_ads.enabled` Chromium preference,
+  /// Reads the `brave.brave_ads.notifications.enabled` Chromium preference,
   // so must be accessed on the main thread.
   var isNotificationAdsEnabled: Bool { get }
   /// Reads and writes the `brave.stats.last_check_ymd` Chromium preference,

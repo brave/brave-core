@@ -103,13 +103,13 @@ void AdsTabHelper::SetAdsServiceForTesting(AdsService* const ads_service) {
   ads_service_ = ads_service;
 }
 
-bool AdsTabHelper::UserHasOptedInToNotificationAds() const {
+bool AdsTabHelper::IsNotificationAdsEnabled() const {
   const PrefService* const prefs =
       Profile::FromBrowserContext(web_contents()->GetBrowserContext())
           ->GetPrefs();
 
   return prefs->GetBoolean(brave_rewards::prefs::kEnabled) &&
-         prefs->GetBoolean(prefs::kOptedInToNotificationAds);
+         prefs->GetBoolean(prefs::kNotificationsEnabled);
 }
 
 bool AdsTabHelper::IsVisible() const {
@@ -251,9 +251,9 @@ void AdsTabHelper::MaybeNotifyTabTextContentDidChange() {
     return;
   }
 
-  if (UserHasOptedInToNotificationAds()) {
+  if (IsNotificationAdsEnabled()) {
     // Only utilized for text classification, which requires the user to have
-    // joined Brave Rewards and opted into notification ads.
+    // joined Brave Rewards and notification ads to be enabled.
     web_contents()->GetPrimaryMainFrame()->ExecuteJavaScriptInIsolatedWorld(
         kDocumentBodyInnerTextJavaScript,
         base::BindOnce(&AdsTabHelper::OnMaybeNotifyTabTextContentDidChange,

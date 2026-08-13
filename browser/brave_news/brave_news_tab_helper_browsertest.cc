@@ -127,7 +127,7 @@ class BraveNewsTabHelperTest : public InProcessBrowserTest {
   }
 
   void OptIn() {
-    auto* prefs = browser()->profile()->GetPrefs();
+    auto* prefs = browser()->GetProfile()->GetPrefs();
     prefs->SetBoolean(brave_news::prefs::kNewTabPageShowToday, true);
     prefs->SetBoolean(brave_news::prefs::kBraveNewsOptedIn, true);
   }
@@ -178,7 +178,7 @@ class BraveNewsTabHelperTest : public InProcessBrowserTest {
 
   brave_news::BraveNewsController* controller() {
     return brave_news::BraveNewsControllerFactory::GetForBrowserContext(
-        browser()->profile());
+        browser()->GetProfile());
   }
 
   net::EmbeddedTestServer* https_server() { return &https_server_; }

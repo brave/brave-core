@@ -10,6 +10,7 @@ import type {
   CSSResultGroup,
   PropertyValues}
 from '//resources/lit/v3_0/lit.rollup.js';
+import type {CrRippleElement} from '../cr_ripple/cr_ripple.js';
 
 import {getHtml} from './cr_button.html.js';
 
@@ -129,7 +130,7 @@ export class CrButtonElement extends CrLitElement {
   }
 
   // Shim for Chromium
-  getRipple() { return null as any }
+  getRipple(): CrRippleElement { return null as unknown as CrRippleElement }
   hasRipple() { return false }
 }
 

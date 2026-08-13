@@ -62,11 +62,11 @@ BraveBrowserFrameViewMac::BraveBrowserFrameViewMac(
     : BrowserFrameViewMac(browser_widget, browser_view) {
   auto* browser = browser_view->browser();
   frame_graphic_ =
-      std::make_unique<BraveWindowFrameGraphic>(browser->profile());
+      std::make_unique<BraveWindowFrameGraphic>(browser->GetProfile());
 
   if (VerticalTabController::FromBrowser(browser)
           ->SupportsBraveVerticalTabs()) {
-    auto* prefs = browser->profile()->GetOriginalProfile()->GetPrefs();
+    auto* prefs = browser->GetProfile()->GetOriginalProfile()->GetPrefs();
     show_vertical_tabs_.Init(
         brave_tabs::kVerticalTabsEnabled, prefs,
         base::BindRepeating(

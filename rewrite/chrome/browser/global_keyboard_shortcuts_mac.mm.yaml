@@ -1,0 +1,42 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Append the `IDC_NEW_OFFTHERECORD_WINDOW_TOR` (Cmd+Shift+N) shortcut to the
+      end of the `keys({ ... })` initializer list in
+      `GetShortcutsNotPresentInMainMenu`.
+    regex:
+      re_pattern: '(GetShortcutsNotPresentInMainMenu\(\)[^\n]*\n.*?)(\n\s*\}\);)'
+      re_flags: [DOTALL]
+      replace: |-
+        \1
+              {true,  false, false, true,  kVK_ANSI_N,            IDC_NEW_OFFTHERECORD_WINDOW_TOR},\2
+
+  - description: |
+      Change the `IDC_NEW_SPLIT_TAB` shortcut key from `kVK_ANSI_N` to
+      `kVK_ANSI_T` (Cmd+Shift+T) in the `keys.push_back` call.
+    regex:
+      re_pattern: 'keys\.push_back\(\{true,\s*false,\s*false,\s*true,\s*kVK_ANSI_N,\s*IDC_NEW_SPLIT_TAB\}\)'
+      replace:
+        'keys.push_back({true, false, false, true, kVK_ANSI_T,
+        IDC_NEW_SPLIT_TAB})'
+
+  - description: |
+      Suppress static-table shortcuts managed by commands::AcceleratorService.
+
+      When kBraveCommands is enabled, the shortcuts that aren't backed by a
+      main menu item are registered with the browser's FocusManager instead,
+      so users can customize or remove them. Returning NoCommand() avoids
+      double handling and honors those customizations. The helper is defined
+      in the chromium_src shadow file for this source.
+    after_function_impl:
+      function_name: CommandForKeyEvent
+      result_var: result
+      code: |-
+        if (ShouldSuppressStaticTableCommand(result)) {
+          return NoCommand();
+        }
+        return result;

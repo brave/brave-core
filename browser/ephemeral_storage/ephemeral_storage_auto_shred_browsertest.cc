@@ -34,7 +34,7 @@ class EphemeralStorageAutoShredBrowserTest
   void SetUpOnMainThread() override {
     EphemeralStorageBrowserTest::SetUpOnMainThread();
 
-    auto* profile = browser()->profile();
+    auto* profile = browser()->GetProfile();
     brave_shields_settings_ =
         BraveShieldsSettingsServiceFactory::GetForProfile(profile);
   }
@@ -120,7 +120,7 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageAutoShredBrowserTest,
   EXPECT_EQ(1u, GetAllCookies().size());
   // Make sure that only b.com has not been cleaned
   EXPECT_EQ("name=bcom",
-            content::GetCookies(browser()->profile(),
+            content::GetCookies(browser()->GetProfile(),
                                 https_server_.GetURL("b.com", "/")));
 }
 

@@ -316,9 +316,19 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
   }()
 
   private lazy var defaultBrowserSection: Static.Section = {
-    let addToDockRows: [Row] =
-      AddToDockEligibility.isEligible
-      ? [
+    Static.Section(
+      rows: [
+        Row(
+          text: Strings.setDefaultBrowserSettingsCell,
+          selection: { [unowned self] in
+            guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
+              return
+            }
+            UIApplication.shared.open(settingsUrl)
+          },
+          image: UIImage(braveSystemNamed: "leo.set.as-default"),
+          cellClass: MultilineButtonCell.self
+        ),
         Row(
           text: Strings.addToDockSettingsCell,
           selection: { [weak self] in
@@ -340,24 +350,7 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
           },
           image: UIImage(braveSystemNamed: "leo.dock"),
           cellClass: MultilineButtonCell.self
-        )
-      ]
-      : []
-
-    return Static.Section(
-      rows: [
-        Row(
-          text: Strings.setDefaultBrowserSettingsCell,
-          selection: { [unowned self] in
-            guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
-              return
-            }
-            UIApplication.shared.open(settingsUrl)
-          },
-          image: UIImage(braveSystemNamed: "leo.set.as-default"),
-          cellClass: MultilineButtonCell.self
-        )
-      ] + addToDockRows + [
+        ),
         Row(
           text: Strings.importBrowsingDataSettingsMenuTitle,
           selection: { [unowned self] in
@@ -382,7 +375,7 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
           },
           image: UIImage(braveSystemNamed: "leo.import.arrow"),
           cellClass: MultilineButtonCell.self
-        )
+        ),
       ]
     )
   }()

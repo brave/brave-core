@@ -8,27 +8,27 @@
 <!-- Vertical Tab strip -->
 <settings-toggle-button
   class="cr-row first"
-  pref="{{prefs.brave.tabs.vertical_tabs_enabled}}"
+  pref-key="brave.tabs.vertical_tabs_enabled"
   label="$i18n{appearanceSettingsTabsUseVerticalTabs}"
   disabled="[[!verticalTabsToggleEnabled_]]">
 </settings-toggle-button>
 <template
   is="dom-if"
-  if="[[prefs.brave.tabs.vertical_tabs_enabled.value]]">
+  if="[[verticalTabsEnabledPref_.value]]">
   <div class="cr-row continuation list-frame">
     <settings-checkbox
       class="list-item"
-      pref="{{prefs.brave.tabs.vertical_tabs_show_title_on_window}}"
+      pref-key="brave.tabs.vertical_tabs_show_title_on_window"
       label="$i18n{appearanceSettingsTabsShowWindowTitle}">
     </settings-checkbox>
     <template is="dom-if" if="[[isHideVerticalTabCompletelyFlagEnabled()]]">
       <settings-checkbox
         class="list-item"
-        pref="{{prefs.brave.tabs.vertical_tabs_hide_completely_when_collapsed}}"
+        pref-key="brave.tabs.vertical_tabs_hide_completely_when_collapsed"
         label="$i18n{SETTINGS_APPEARANCE_SETTINGS_TABS_HIDE_COMPLETELY_WHEN_COLLPASED}">
       </settings-checkbox>
     </template>
-    <template is="dom-if" if="[[shouldForceFloatOnMouseOver_(prefs.brave.tabs.vertical_tabs_hide_completely_when_collapsed.value, prefs.brave.tabs.vertical_tabs_show_toggle_button.value)]]">
+    <template is="dom-if" if="[[shouldForceFloatOnMouseOver_(verticalTabsHideCompletelyWhenCollapsedPref_.value, verticalTabsShowToggleButtonPref_.value)]]">
       <!-- Show always checked and disabled checkbox. "Float on mouse over" is
            forced on when vertical_tabs_hide_completely_when_collapsed is true,
            or when the vertical tabs toggle button is hidden (there would be no
@@ -40,44 +40,44 @@
         label="$i18n{appearanceSettingsTabsFloatOnMouseOver}">
       </settings-checkbox>
     </template>
-    <template is="dom-if" if="[[!shouldForceFloatOnMouseOver_(prefs.brave.tabs.vertical_tabs_hide_completely_when_collapsed.value, prefs.brave.tabs.vertical_tabs_show_toggle_button.value)]]">
+    <template is="dom-if" if="[[!shouldForceFloatOnMouseOver_(verticalTabsHideCompletelyWhenCollapsedPref_.value, verticalTabsShowToggleButtonPref_.value)]]">
       <settings-checkbox
         class="list-item"
-        pref="{{prefs.brave.tabs.vertical_tabs_floating_enabled}}"
+        pref-key="brave.tabs.vertical_tabs_floating_enabled"
         label="$i18n{appearanceSettingsTabsFloatOnMouseOver}">
       </settings-checkbox>
     </template>
     <settings-checkbox
       class="list-item"
-      pref="{{prefs.brave.tabs.vertical_tabs_expanded_state_per_window}}"
+      pref-key="brave.tabs.vertical_tabs_expanded_state_per_window"
       label="$i18n{appearanceSettingsTabsVerticalTabExpandedStatePerWindow}">
     </settings-checkbox>
     <settings-checkbox
       class="list-item"
-      pref="{{prefs.brave.tabs.vertical_tabs_show_scrollbar}}"
+      pref-key="brave.tabs.vertical_tabs_show_scrollbar"
       label="$i18n{appearanceSettingsTabsVerticalTabShowScrollbar}">
     </settings-checkbox>
     <template is="dom-if" if="[[isTreeTabsFlagEnabled()]]">
       <settings-checkbox
         class="list-item"
-        pref="{{prefs.brave.tabs.tree_tabs_enabled}}"
+        pref-key="brave.tabs.tree_tabs_enabled"
         label="$i18n{SETTINGS_APPEARANCE_SETTINGS_TABS_USE_TREE_TABS}">
       </settings-checkbox>
     </template>
     <settings-radio-group
     class="list-item"
-    pref="{{prefs.brave.tabs.vertical_tabs_on_right}}"
+    pref-key="brave.tabs.vertical_tabs_on_right"
     group-aria-label="$i18n{appearanceSettingsTabsVerticalTabPosition}">
       <controlled-radio-button
         class="hr list-item"
-        pref="[[prefs.brave.tabs.vertical_tabs_on_right]]"
+        pref-key="brave.tabs.vertical_tabs_on_right"
         label="$i18n{appearanceSettingsTabsVerticalTabOnLeft}"
         name="false"
         no-extension-indicator>
       </controlled-radio-button>
       <controlled-radio-button
         class="list-item"
-        pref="[[prefs.brave.tabs.vertical_tabs_on_right]]"
+        pref-key="brave.tabs.vertical_tabs_on_right"
         label="$i18n{appearanceSettingsTabsVerticalTabOnRight}"
         name="true"
         no-extension-indicator>
@@ -88,34 +88,34 @@
 
 <!-- Tab speaker icons function  -->
 <settings-toggle-button
-  pref="{{prefs.brave.tabs.mute_indicator_not_clickable}}"
+  pref-key="brave.tabs.mute_indicator_not_clickable"
   class="cr-row"
   label="$i18n{braveDisableClickableMuteIndicators}">
 </settings-toggle-button>
 
 <!-- Tab close button visibility -->
 <settings-toggle-button
-  pref="{{prefs.brave.tabs.always_hide_tab_close_button}}"
+  pref-key="brave.tabs.always_hide_tab_close_button"
   class="cr-row"
   label="$i18n{SETTINGS_APPEARANCE_SETTINGS_TABS_ALWAYS_HIDE_TAB_CLOSE_BUTTON}">
 </settings-toggle-button>
 
 <!-- Middle click close tab -->
 <settings-toggle-button
-  pref="{{prefs.brave.tabs.middle_click_close_tab_enabled}}"
+  pref-key="brave.tabs.middle_click_close_tab_enabled"
   class="cr-row"
   label="$i18n{SETTINGS_APPEARANCE_SETTINGS_TABS_MIDDLE_CLICK_CLOSE_TAB}">
 </settings-toggle-button>
 
 <template is="dom-if" if="[[isScrollableHorizontalTabStripFlagEnabled()]]">
   <settings-toggle-button
-    pref="{{prefs.brave.tabs.scrollable_horizontal_tab_strip}}"
+    pref-key="brave.tabs.scrollable_horizontal_tab_strip"
     class="cr-row"
     label="$i18n{appearanceSettingsScrollableHorizontalTabStrip}">
   </settings-toggle-button>
   <template
     is="dom-if"
-    if="[[prefs.brave.tabs.scrollable_horizontal_tab_strip.value]]">
+    if="[[scrollableHorizontalTabStripPref_.value]]">
     <div class="cr-row settings-box">
       <div class="flex">
         <div class="label">$i18n{appearanceSettingsTabMinWidthMode}</div>
@@ -126,7 +126,7 @@
       </settings-dropdown-menu>
     </div>
     <settings-toggle-button
-      pref="{{prefs.brave.tabs.show_horizontal_tab_scroll_buttons}}"
+      pref-key="brave.tabs.show_horizontal_tab_scroll_buttons"
       class="cr-row"
       label="$i18n{appearanceSettingsTabsHorizontalScrollButtons}">
     </settings-toggle-button>
@@ -147,7 +147,7 @@
 <!-- Shared Pinned Tabs -->
 <template is="dom-if" if="[[isSharedPinnedTabsEnabled_()]]">
   <settings-toggle-button
-    pref="{{prefs.brave.tabs.shared_pinned_tab}}"
+    pref-key="brave.tabs.shared_pinned_tab"
     class="cr-row"
     label="$i18n{appearanceSettingsSharedPinnedTab}">
   </settings-toggle-button>
@@ -155,14 +155,14 @@
 
 <!-- Tab memory usage -->
 <settings-toggle-button id="hoverCardMemoryUsageToggle"
-  pref="{{prefs.browser.hovercard.memory_usage_enabled}}"
+  pref-key="browser.hovercard.memory_usage_enabled"
   class="cr-row"
   label="$i18n{showHoverCardMemoryUsageStandalone}">
 </settings-toggle-button>
 
 <!-- Inactive tabs appearance  -->
 <settings-toggle-button
-  pref="{{prefs.performance_tuning.discard_ring_treatment.enabled}}"
+  pref-key="performance_tuning.discard_ring_treatment.enabled"
   class="cr-row"
   label="$i18n{discardRingTreatmentEnabledLabel}"
   sub-label-with-link="$i18n{discardRingTreatmentEnabledDescriptionWithLearnLink}"

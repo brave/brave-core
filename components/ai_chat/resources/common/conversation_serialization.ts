@@ -123,6 +123,55 @@ function conversationReviver(_key: string, value: unknown) {
   return value
 }
 
+/** A bigint as written by conversationReplacer. */
+type TaggedBigInt = { [BIGINT_TAG]: string }
+
+/** A byte array as written by conversationReplacer. */
+type TaggedBytes = { [BYTES_TAG]: string }
+
+/**
+ * The keys of T which JSON.stringify omits from its output, i.e. those whose
+ * value can be undefined.
+ */
+type UndefinedKeys<T> = {
+  [K in keyof T]-?: undefined extends T[K] ? K : never
+}[keyof T]
+
+/**
+ * An object as parsed back from JSON. A property which was undefined was never
+ * written, so it comes back missing rather than present-and-undefined. It can
+ * also come back as null: mojom's nullable fields are typed as undefined but
+ * the JS bindings decode them from the browser as null, which JSON keeps.
+ */
+type JsonifiedObject<T> = {
+  [K in Exclude<keyof T, UndefinedKeys<T>>]: Jsonified<T[K]>
+} & {
+  [K in UndefinedKeys<T>]?: Jsonified<Exclude<T[K], undefined>> | null
+}
+
+/**
+ * A value as parsed back from JSON without conversationReviver, so bigints and
+ * encoded byte arrays are still in their tagged form. Byte arrays are a union
+ * because only the arrays isByteArray accepts are encoded - shorter ones stay
+ * as numbers.
+ */
+type Jsonified<T> = T extends bigint
+  ? TaggedBigInt
+  : T extends number[]
+    ? number[] | TaggedBytes
+    : T extends readonly (infer E)[]
+      ? Array<Jsonified<E>>
+      : T extends object
+        ? JsonifiedObject<T>
+        : T
+
+/**
+ * The shape of stringifyConversationData's output once JSON.parse'd without
+ * conversationReviver - what a conversation looks like when it is kept as a
+ * .json file rather than restored with parseConversationData.
+ */
+export type ConversationDataJson = Jsonified<ConversationData>
+
 /**
  * Serializes all conversation data to a JSON string, which can be restored
  * with parseConversationData. This is a lossless serialization.

@@ -6,9 +6,6 @@
   <message name="IDS_BRAVE_NEWS_INTRO_DESCRIPTION" desc="Description for introduction to Brave News news feed section. Do not translate the title Brave News." formatter_data="webui=BraveNews">
     Follow your favorite sources, in a single feed. Just open a tab in Brave, scroll down, and… voila!
   </message>
-  <message name="IDS_BRAVE_NEWS_INTRO_DESCRIPTION_TWO" desc="Description second paragraph for introduction to Brave News news feed section. Do not translate the title Brave News." formatter_data="webui=BraveNews">
-    Brave News is ad-supported with private, anonymized ads. <ph name="LINK_START">$1</ph>Learn more.<ph name="LINK_END">/$1</ph>.
-  </message>
   <message name="IDS_BRAVE_NEWS_OPT_IN_ACTION_LABEL" desc="Button text for opting in to Brave News" formatter_data="webui=BraveNews">
     Turn on Brave News
   </message>
@@ -18,8 +15,11 @@
   <message name="IDS_BRAVE_NEWS_SETTINGS_TITLE" desc="Title for the News settings dialog" formatter_data="webui=BraveNews">
     Brave News
   </message>
-  <message name="IDS_BRAVE_NEWS_BACK_TO_DASHBOARD" desc="Label for the back to dashboard button" formatter_data="webui=BraveNews">
-    Back to <ph name="BEGIN_BOLD">$1</ph>Dashboard<ph name="END_BOLD">/$1</ph>
+  <message name="IDS_BRAVE_NEWS_SETTINGS_SECTION_TITLE" desc="Title for the settings section within the News customize dialog" formatter_data="webui=BraveNews">
+    Settings
+  </message>
+  <message name="IDS_BRAVE_NEWS_ENABLE_LABEL" desc="Label for the toggle that enables Brave News" formatter_data="webui=BraveNews">
+    Enable Brave News
   </message>
   <message name="IDS_BRAVE_NEWS_BACK_BUTTON" desc="Label for the back button" formatter_data="webui=BraveNews">
     Back
@@ -139,6 +139,9 @@
   <message name="IDS_BRAVE_NEWS_CHANNEL_GAMING" desc="Translation of the 'Gaming' channel" formatter_data="webui=BraveNews">
     Gaming
   </message>
+  <message name="IDS_BRAVE_NEWS_CHANNEL_GOVERNMENT" desc="Translation of the 'Government' channel" formatter_data="webui=BraveNews">
+    Government
+  </message>
   <message name="IDS_BRAVE_NEWS_CHANNEL_HEALTH" desc="Translation of the 'Health' channel" formatter_data="webui=BraveNews">
     Health
   </message>
@@ -147,6 +150,9 @@
   </message>
   <message name="IDS_BRAVE_NEWS_CHANNEL_LIFESTYLE" desc="Translation of the 'Lifestyle' channel" formatter_data="webui=BraveNews">
     Lifestyle
+  </message>
+  <message name="IDS_BRAVE_NEWS_CHANNEL_LOCAL_NEWS" desc="Translation of the 'Local News' channel" formatter_data="webui=BraveNews">
+    Local News
   </message>
   <message name="IDS_BRAVE_NEWS_CHANNEL_MUSIC" desc="Translation of the 'Music' channel" formatter_data="webui=BraveNews">
     Music
@@ -230,6 +236,9 @@
   </message>
   <message name="IDS_BRAVE_NEWS_REFRESH_FEED" desc="Text of button for refreshing the feed" formatter_data="webui=BraveNews">
     Refresh
+  </message>
+  <message name="IDS_BRAVE_NEWS_CLOSE" desc="Text for the close button in the Brave News sidebar header" formatter_data="webui=BraveNews">
+    Close
   </message>
   <message name="IDS_BRAVE_NEWS_OPEN_ARTICLES_IN" desc="Question for how the user would like to open their articles" formatter_data="webui=BraveNews">
     Open articles in

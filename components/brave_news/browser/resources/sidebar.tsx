@@ -36,8 +36,7 @@ const Header = styled.div`
   gap: ${spacing.m};
   padding-inline: ${spacing.xl};
 
-  background: var(--bn-glass-container);
-  backdrop-filter: blur(64px);
+  background: var(--leo-color-page-background);
 `
 
 const Content = styled.div`
@@ -64,6 +63,7 @@ export function Sidebar() {
       <Header>
         <Controls
           onCustomize={() => getBraveNewsController().openSettings()}
+          onClose={() => getBraveNewsController().closeUI()}
           showMenu
           title={getLocale(S.BRAVE_NEWS_TITLE)}
         />

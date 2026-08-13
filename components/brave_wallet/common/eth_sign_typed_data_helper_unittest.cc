@@ -37,20 +37,24 @@ TEST(EthSignedTypedDataHelperUnitTest, EncodeTypes) {
       EthSignTypedDataHelper::Create(types_value.GetDict().Clone(),
                                      EthSignTypedDataHelper::Version::kV4);
   ASSERT_TRUE(helper);
-  const std::string encoded_types_v4 = helper->EncodeTypes("Mail");
-  EXPECT_EQ(encoded_types_v4,
+  auto encoded_types_v4 = helper->EncodeTypes("Mail");
+  ASSERT_TRUE(encoded_types_v4);
+  EXPECT_EQ(*encoded_types_v4,
             "Mail(Person from,Person to,string contents)Person(string "
             "name,address wallet)");
   auto typed_hash_v4 = helper->GetTypeHash("Mail");
-  EXPECT_EQ(base::HexEncodeLower(typed_hash_v4),
+  ASSERT_TRUE(typed_hash_v4);
+  EXPECT_EQ(base::HexEncodeLower(*typed_hash_v4),
             "a0cedeb2dc280ba39b857546d74f5549c3a1d7bdc2dd96bf881f76108e23dac2");
 
   // v3 should be same as v4
   helper->SetVersion(EthSignTypedDataHelper::Version::kV3);
-  const std::string encoded_types_v3 = helper->EncodeTypes("Mail");
+  auto encoded_types_v3 = helper->EncodeTypes("Mail");
+  ASSERT_TRUE(encoded_types_v3);
   EXPECT_EQ(encoded_types_v4, encoded_types_v3);
   auto typed_hash_v3 = helper->GetTypeHash("Mail");
-  EXPECT_EQ(typed_hash_v3, typed_hash_v4);
+  ASSERT_TRUE(typed_hash_v3);
+  EXPECT_EQ(*typed_hash_v3, *typed_hash_v4);
 
   // When depended type is not valid
   types_value = ParseJson(R"({
@@ -66,8 +70,7 @@ TEST(EthSignedTypedDataHelperUnitTest, EncodeTypes) {
   helper = EthSignTypedDataHelper::Create(types_value.GetDict().Clone(),
                                           EthSignTypedDataHelper::Version::kV4);
   ASSERT_TRUE(helper);
-  EXPECT_EQ(helper->EncodeTypes("Mail"),
-            "Mail(Person from,Person to,string contents)");
+  EXPECT_EQ(helper->EncodeTypes("Mail"), std::nullopt);
 }
 
 TEST(EthSignedTypedDataHelperUnitTest, InvalidEncodeTypes) {
@@ -98,9 +101,7 @@ TEST(EthSignedTypedDataHelperUnitTest, InvalidEncodeTypes) {
     std::unique_ptr<EthSignTypedDataHelper> invalid_types_helper =
         EthSignTypedDataHelper::Create(invalid_value.GetDict().Clone(),
                                        EthSignTypedDataHelper::Version::kV4);
-    const std::string invalid_encoded_types_v4 =
-        invalid_types_helper->EncodeTypes("Domain");
-    EXPECT_EQ(invalid_encoded_types_v4, "");
+    EXPECT_EQ(invalid_types_helper->EncodeTypes("Domain"), std::nullopt);
   }
 }
 
@@ -121,19 +122,122 @@ TEST(EthSignedTypedDataHelperUnitTest, EncodeTypesArrays) {
       EthSignTypedDataHelper::Create(types_value.GetDict().Clone(),
                                      EthSignTypedDataHelper::Version::kV4);
   ASSERT_TRUE(helper);
-  const std::string encoded_types_v4 = helper->EncodeTypes("Mail");
-  EXPECT_EQ(encoded_types_v4,
+  auto encoded_types_v4 = helper->EncodeTypes("Mail");
+  ASSERT_TRUE(encoded_types_v4);
+  EXPECT_EQ(*encoded_types_v4,
             "Mail(Person[] to)Person(string name,address wallet)");
   auto typed_hash_v4 = helper->GetTypeHash("Mail");
-  EXPECT_EQ(base::HexEncodeLower(typed_hash_v4),
+  ASSERT_TRUE(typed_hash_v4);
+  EXPECT_EQ(base::HexEncodeLower(*typed_hash_v4),
             "08dde06d30a2d7c005e313f9d36bef353674e06b4ae1a923fb086f2da5b40cce");
 
   // v3 should be same as v4
   helper->SetVersion(EthSignTypedDataHelper::Version::kV3);
-  const std::string encoded_types_v3 = helper->EncodeTypes("Mail");
+  auto encoded_types_v3 = helper->EncodeTypes("Mail");
+  ASSERT_TRUE(encoded_types_v3);
   EXPECT_EQ(encoded_types_v4, encoded_types_v3);
   auto typed_hash_v3 = helper->GetTypeHash("Mail");
-  EXPECT_EQ(typed_hash_v3, typed_hash_v4);
+  ASSERT_TRUE(typed_hash_v3);
+  EXPECT_EQ(*typed_hash_v3, *typed_hash_v4);
+}
+
+TEST(EthSignedTypedDataHelperUnitTest, EncodeTypesPrimaryTypeSortedFirst) {
+  const std::string types_json(R"({
+    "Transaction": [
+        {"name": "asset", "type": "Asset"},
+        {"name": "person", "type": "Person"}
+    ],
+    "Asset": [
+        {"name": "name", "type": "string"}
+    ],
+    "Person": [
+        {"name": "name", "type": "string"}
+    ]})");
+
+  auto types_value = ParseJson(types_json);
+  std::unique_ptr<EthSignTypedDataHelper> helper =
+      EthSignTypedDataHelper::Create(types_value.GetDict().Clone(),
+                                     EthSignTypedDataHelper::Version::kV4);
+  ASSERT_TRUE(helper);
+  auto encoded_types = helper->EncodeTypes("Transaction");
+  ASSERT_TRUE(encoded_types);
+  // Transaction is primary type and comes first.
+  EXPECT_EQ(*encoded_types,
+            "Transaction(Asset asset,Person person)Asset(string "
+            "name)Person(string name)");
+}
+
+TEST(EthSignedTypedDataHelperUnitTest,
+     EncodeTypesFixedAndNestedArrayDependencies) {
+  // The dependency type name is looked up by splitting on the first '[', so
+  // this exercises fixed-size ("Person[2]") and nested ("Person[2][]") array
+  // suffixes, not just the dynamic array case covered above.
+  const std::string types_json(R"({
+    "Mail": [
+        {"name": "recipients", "type": "Person[2]"},
+        {"name": "cc", "type": "Person[2][]"}
+    ],
+    "Person": [
+        {"name": "name", "type": "string"}
+    ]})");
+
+  auto types_value = ParseJson(types_json);
+  std::unique_ptr<EthSignTypedDataHelper> helper =
+      EthSignTypedDataHelper::Create(types_value.GetDict().Clone(),
+                                     EthSignTypedDataHelper::Version::kV4);
+  ASSERT_TRUE(helper);
+  auto encoded_types = helper->EncodeTypes("Mail");
+  ASSERT_TRUE(encoded_types);
+  EXPECT_EQ(*encoded_types,
+            "Mail(Person[2] recipients,Person[2][] cc)Person(string name)");
+}
+
+TEST(EthSignedTypedDataHelperUnitTest, EncodeTypesWithCyclicDependencies) {
+  // "A" -> "B" -> "C" -> "A" forms a cycle in the type dependency graph,
+  // distinct from a type directly referencing itself.
+  const std::string types_json(R"({
+    "A": [
+        {"name": "b", "type": "B"}
+    ],
+    "B": [
+        {"name": "c", "type": "C"}
+    ],
+    "C": [
+        {"name": "a", "type": "A"},
+        {"name": "value", "type": "string"}
+    ]})");
+
+  auto types_value = ParseJson(types_json);
+  std::unique_ptr<EthSignTypedDataHelper> helper =
+      EthSignTypedDataHelper::Create(types_value.GetDict().Clone(),
+                                     EthSignTypedDataHelper::Version::kV4);
+  ASSERT_TRUE(helper);
+  auto encoded_types = helper->EncodeTypes("A");
+  ASSERT_TRUE(encoded_types);
+  EXPECT_EQ(*encoded_types, "A(B b)B(C c)C(A a,string value)");
+}
+
+TEST(EthSignedTypedDataHelperUnitTest, EncodeTypesIgnoresNonListDependency) {
+  // A dependency type name that exists in |types| but maps to something
+  // other than a list of fields should be ignored, same as an unknown type
+  // name.
+  // https://github.com/MetaMask/eth-sig-util/blob/0832d49b7c2f6d48d22a4496faee3e393081d1ec/src/sign-typed-data.ts#L436
+  const std::string types_json(R"({
+    "Mail": [
+        {"name": "extra", "type": "Extra"},
+        {"name": "contents", "type": "string"}
+    ],
+    "Extra": "not-a-list"
+    })");
+
+  auto types_value = ParseJson(types_json);
+  std::unique_ptr<EthSignTypedDataHelper> helper =
+      EthSignTypedDataHelper::Create(types_value.GetDict().Clone(),
+                                     EthSignTypedDataHelper::Version::kV4);
+  ASSERT_TRUE(helper);
+  auto encoded_types = helper->EncodeTypes("Mail");
+  ASSERT_TRUE(encoded_types);
+  EXPECT_EQ(*encoded_types, "Mail(Extra extra,string contents)");
 }
 
 TEST(EthSignedTypedDataHelperUnitTest, EncodedData) {

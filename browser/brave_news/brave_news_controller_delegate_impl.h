@@ -28,6 +28,7 @@ class BraveNewsControllerDelegateImpl : public BraveNewsController::Delegate {
 
   // BraveNewsController::Delegate:
   void OpenSettings() override;
+  void CloseUI() override;
 
  private:
   const raw_ref<Profile> profile_;

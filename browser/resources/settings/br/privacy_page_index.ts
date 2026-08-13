@@ -102,75 +102,110 @@ RegisterPolymerTemplateModifications({
 
     if (loadTimeData.getBoolean('isGoogleSignInFeatureEnabled')) {
       viewManager.appendChild(html`
-        <site-settings-google-page
-            id="${ContentSettingsTypes.GOOGLE_SIGN_IN}"
-            route-path$="[[routes_.SITE_SETTINGS_GOOGLE_SIGN_IN.path]]"
-            data-parent-view-id="siteSettings"
-            slot="view"
-            in-search-mode="[[inSearchMode_]]">
-          </site-settings-google-page>`)
+        <template is="dom-if" if="[[renderView_(
+            routes_.SITE_SETTINGS_GOOGLE_SIGN_IN, currentRoute,
+            inSearchMode)]]" update-when-false>
+          <site-settings-google-page
+              id="${ContentSettingsTypes.GOOGLE_SIGN_IN}"
+              route-path$="[[routes_.SITE_SETTINGS_GOOGLE_SIGN_IN.path]]"
+              data-parent-view-id="privacy"
+              slot="view"
+              in-search-mode="[[inSearchMode_]]">
+          </site-settings-google-page>
+        </template>
+      `)
     }
 
     viewManager.appendChild(html`
-      <site-settings-shields-page
-          id="${ContentSettingsTypes.BRAVE_SHIELDS}"
-          route-path$="[[routes_.SITE_SETTINGS_SHIELDS_STATUS.path]]"
-          data-parent-view-id="siteSettings"
-          slot="view"
-          in-search-mode="[[inSearchMode_]]">
-        </site-settings-shields-page>`)
+      <template is="dom-if" if="[[renderView_(
+          routes_.SITE_SETTINGS_SHIELDS_STATUS, currentRoute,
+          inSearchMode)]]" update-when-false>
+        <site-settings-shields-page
+            id="${ContentSettingsTypes.BRAVE_SHIELDS}"
+            route-path$="[[routes_.SITE_SETTINGS_SHIELDS_STATUS.path]]"
+            data-parent-view-id="privacy"
+            slot="view"
+            in-search-mode="[[inSearchMode_]]">
+        </site-settings-shields-page>
+      </template>
+    `)
 
     viewManager.appendChild(html`
-      <site-settings-autoplay-page
-          id="${ContentSettingsTypes.AUTOPLAY}"
-          route-path$="[[routes_.SITE_SETTINGS_AUTOPLAY.path]]"
-          data-parent-view-id="siteSettings"
-          slot="view"
-          in-search-mode="[[inSearchMode_]]">
-        </site-settings-autoplay-page>`)
+      <template is="dom-if" if="[[renderView_(
+          routes_.SITE_SETTINGS_AUTOPLAY, currentRoute,
+          inSearchMode)]]" update-when-false>
+        <site-settings-autoplay-page
+            id="${ContentSettingsTypes.AUTOPLAY}"
+            route-path$="[[routes_.SITE_SETTINGS_AUTOPLAY.path]]"
+            data-parent-view-id="privacy"
+            slot="view"
+            in-search-mode="[[inSearchMode_]]">
+        </site-settings-autoplay-page>
+      </template>
+    `)
 
     // <if expr="enable_ai_chat">
     if (loadTimeData.getBoolean('isOpenAIChatFromBraveSearchEnabled')) {
       viewManager.appendChild(html`
-      <site-settings-brave-ai-page
-          id=${ContentSettingsTypes.BRAVE_OPEN_AI_CHAT}
-          route-path$="[[routes_.SITE_SETTINGS_BRAVE_OPEN_AI_CHAT.path]]"
-          data-parent-view-id="siteSettings"
-          slot="view"
-          in-search-mode="[[inSearchMode_]]">
-        </site-settings-brave-ai-page>`)
+        <template is="dom-if" if="[[renderView_(
+                  routes_.SITE_SETTINGS_BRAVE_OPEN_AI_CHAT, currentRoute,
+                  inSearchMode)]]" update-when-false>
+          <site-settings-brave-ai-page
+            id=${ContentSettingsTypes.BRAVE_OPEN_AI_CHAT}
+            route-path$="[[routes_.SITE_SETTINGS_BRAVE_OPEN_AI_CHAT.path]]" 
+            data-parent-view-id="privacy"
+            slot="view"
+            in-search-mode="[[inSearchMode_]]">
+          </site-settings-brave-ai-page>
+        </template>
+      `)
     }
     // </if>
 
     // <if expr="enable_brave_wallet">
     if (loadTimeData.getBoolean('isBraveWalletAllowed')) {
       viewManager.appendChild(html`
-        <site-settings-ethereum-page
-            id="${ContentSettingsTypes.ETHEREUM}"
-            route-path$="[[routes_.SITE_SETTINGS_ETHEREUM.path]]"
-            data-parent-view-id="siteSettings"
-            slot="view"
-            in-search-mode="[[inSearchMode_]]">
-          </site-settings-ethereum-page>`)
+        <template is="dom-if" if="[[renderView_(
+            routes_.SITE_SETTINGS_ETHEREUM, currentRoute,
+            inSearchMode)]]" update-when-false>
+          <site-settings-ethereum-page
+              id="${ContentSettingsTypes.ETHEREUM}"
+              route-path$="[[routes_.SITE_SETTINGS_ETHEREUM.path]]"
+              data-parent-view-id="privacy"
+              slot="view"
+              in-search-mode="[[inSearchMode_]]">
+          </site-settings-ethereum-page>
+        </template>
+      `)
 
       viewManager.appendChild(html`
-        <site-settings-solana-page
-            id="${ContentSettingsTypes.SOLANA}"
-            route-path$="[[routes_.SITE_SETTINGS_SOLANA.path]]"
-            data-parent-view-id="siteSettings"
-            slot="view"
-            in-search-mode="[[inSearchMode_]]">
-          </site-settings-solana-page>`)
+        <template is="dom-if" if="[[renderView_(
+            routes_.SITE_SETTINGS_SOLANA, currentRoute,
+            inSearchMode)]]" update-when-false>
+          <site-settings-solana-page
+              id="${ContentSettingsTypes.SOLANA}"
+              route-path$="[[routes_.SITE_SETTINGS_SOLANA.path]]"
+              data-parent-view-id="privacy"
+              slot="view"
+              in-search-mode="[[inSearchMode_]]">
+          </site-settings-solana-page>
+        </template>
+      `)
 
       if (loadTimeData.getBoolean('isCardanoDappSupportFeatureEnabled')) {
         viewManager.appendChild(html`
-          <site-settings-cardano-page
-              id="${ContentSettingsTypes.CARDANO}"
-              route-path$="[[routes_.SITE_SETTINGS_CARDANO.path]]"
-              data-parent-view-id="siteSettings"
-              slot="view"
-              in-search-mode="[[inSearchMode_]]">
-            </site-settings-cardano-page>`)
+          <template is="dom-if" if="[[renderView_(
+              routes_.SITE_SETTINGS_CARDANO, currentRoute,
+              inSearchMode)]]" update-when-false>
+            <site-settings-cardano-page
+                id="${ContentSettingsTypes.CARDANO}"
+                route-path$="[[routes_.SITE_SETTINGS_CARDANO.path]]"
+                data-parent-view-id="privacy"
+                slot="view"
+                in-search-mode="[[inSearchMode_]]">
+            </site-settings-cardano-page>
+          </template>
+        `)
       }
     }
     // </if>

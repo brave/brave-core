@@ -105,6 +105,11 @@ bool BraveContentsContainerView::IsActive() const {
   return tabs::TabInterface::GetFromContents(web_contents)->IsActivated();
 }
 
+void BraveContentsContainerView::SetContentsCornerRadii(
+    const gfx::RoundedCornersF& corner_radii) {
+  contents_corner_radii_ = corner_radii;
+}
+
 void BraveContentsContainerView::UpdateBorderAndOverlay(bool is_in_split,
                                                         bool is_active,
                                                         bool is_highlighted) {
@@ -186,10 +191,11 @@ void BraveContentsContainerView::UpdateBorderRoundedCorners() {
   const auto contents_corner_radius(GetCornerRadius(/*border_thickness=*/0));
 
   contents_view_->layer()->SetRoundedCornerRadius(contents_corner_radius);
-  contents_view_->holder()->SetCornerRadii(contents_corner_radius);
+  contents_view_->holder()->SetNativeViewCornerRadii(contents_corner_radius);
   contents_scrim_view_->SetRoundedCorners(contents_corner_radius);
 
-  devtools_web_view_->holder()->SetCornerRadii(contents_corner_radius);
+  devtools_web_view_->holder()->SetNativeViewCornerRadii(
+      contents_corner_radius);
   devtools_scrim_view_->SetRoundedCorners(contents_corner_radius);
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
@@ -266,31 +272,14 @@ bool BraveContentsContainerView::IsTabFullscreen() const {
 
 gfx::RoundedCornersF BraveContentsContainerView::GetCornerRadius(
     int border_thickness) const {
-  if (IsTabFullscreen()) {
-    return {};
+  if (contents_corner_radii_.IsEmpty() || !border_thickness) {
+    return contents_corner_radii_;
   }
 
-  if (!BraveBrowserView::ShouldUseBraveWebViewRoundedCornersForContents(
-          browser_view_->browser())) {
-    return {};
-  }
-
-  tabs::TabInterface* tab = nullptr;
-  if (is_in_split_ && contents_view_->web_contents()) {
-    tab = tabs::TabInterface::GetFromContents(contents_view_->web_contents());
-  }
-
-  auto rounded_corners =
-      BraveContentsViewUtil::GetRoundedCornersForContentsView(
-          browser_view_->browser(), tab);
-  if (border_thickness) {
-    return {rounded_corners.upper_left() + border_thickness,
-            rounded_corners.upper_right() + border_thickness,
-            rounded_corners.lower_right() + border_thickness,
-            rounded_corners.lower_left() + border_thickness};
-  }
-
-  return rounded_corners;
+  return {contents_corner_radii_.upper_left() + border_thickness,
+          contents_corner_radii_.upper_right() + border_thickness,
+          contents_corner_radii_.lower_right() + border_thickness,
+          contents_corner_radii_.lower_left() + border_thickness};
 }
 
 BEGIN_METADATA(BraveContentsContainerView)

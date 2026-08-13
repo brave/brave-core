@@ -48,6 +48,7 @@
 #include "components/history/core/browser/history_service.h"
 #include "components/history/core/browser/history_types.h"
 #include "components/prefs/scoped_user_pref_update.h"
+#include "mojo/public/cpp/bindings/callback_helpers.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/remote_set.h"
@@ -365,7 +366,11 @@ void BraveNewsController::GetSuggestedPublisherIds(
     std::move(callback).Run({});
     return;
   }
-  IN_ENGINE(GetSuggestedPublisherIds, std::move(callback));
+  // The engine can be reset (e.g. when News is disabled) while a suggestion
+  // fetch is in flight. Ensure the Mojo response is always sent.
+  IN_ENGINE(GetSuggestedPublisherIds,
+            mojo::WrapCallbackWithDefaultInvokeIfNotRun(
+                std::move(callback), std::vector<std::string>()));
 }
 
 void BraveNewsController::FindFeeds(const GURL& possible_feed_or_site_url,
@@ -661,6 +666,13 @@ void BraveNewsController::OpenSettings() {
   DVLOG(1) << __FUNCTION__;
   if (delegate_) {
     delegate_->OpenSettings();
+  }
+}
+
+void BraveNewsController::CloseUI() {
+  DVLOG(1) << __FUNCTION__;
+  if (delegate_) {
+    delegate_->CloseUI();
   }
 }
 

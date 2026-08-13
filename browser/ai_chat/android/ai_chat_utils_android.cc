@@ -51,12 +51,15 @@ static void JNI_BraveLeoUtils_OpenLeoQuery(
   // Send the query
   conversation->MaybeUnlinkAssociatedContent();
   mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New(
-      std::nullopt, mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+      std::nullopt /* uuid */, std::nullopt /* thread_uuid */,
+      mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
       base::android::ConvertJavaStringToUTF8(query), std::nullopt /* prompt */,
       std::nullopt /* selected_text */, std::nullopt /* events */,
-      base::Time::Now(), std::nullopt, std::nullopt /* uploaded images */,
-      nullptr /* skill */, false, std::nullopt /* model_key */,
-      nullptr /* near_verification_status */);
+      base::Time::Now(), std::nullopt /* edits */,
+      std::nullopt /* uploaded_files */, nullptr /* skill */,
+      false /* from_brave_search_SERP */, std::nullopt /* model_key */,
+      nullptr /* near_verification_status */,
+      std::vector<std::string>{} /* child_thread_uuids */);
   conversation->SubmitHumanConversationEntry(std::move(turn));
 
   content::OpenURLParams params(

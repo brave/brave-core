@@ -86,7 +86,7 @@ class DownloadToolbarInsecureIconTest : public InProcessBrowserTest {
   FakeDownloadBubbleUpdateService* fake_service() {
     return static_cast<FakeDownloadBubbleUpdateService*>(
         DownloadBubbleUpdateServiceFactory::GetForProfile(
-            browser()->profile()));
+            browser()->GetProfile()));
   }
 
   ToolbarButton* download_button() {

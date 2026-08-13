@@ -76,7 +76,7 @@ class BraveLocationBarViewBrowserTest : public InProcessBrowserTest {
   }
 
   TemplateURLService* GetTemplateURLService() {
-    return TemplateURLServiceFactory::GetForProfile(browser()->profile());
+    return TemplateURLServiceFactory::GetForProfile(browser()->GetProfile());
   }
 
   content::WebContents* web_contents() {
@@ -158,7 +158,7 @@ IN_PROC_BROWSER_TEST_F(BraveLocationBarViewBrowserTest,
       &bing_template_url);
 
   // Set dismissed and check button is not shown anymore.
-  browser()->profile()->GetPrefs()->SetBoolean(
+  browser()->GetProfile()->GetPrefs()->SetBoolean(
       brave_search_conversion::prefs::kDismissed, true);
   omnibox_view()->SetUserText(u"a");
   WaitUntil(base::BindLambdaForTesting(
@@ -173,7 +173,7 @@ IN_PROC_BROWSER_TEST_F(BraveLocationBarViewBrowserTest,
   constexpr std::u16string search_term = u"a";
 
   // Unset dismissed and simulate promotion button click.
-  browser()->profile()->GetPrefs()->SetBoolean(
+  browser()->GetProfile()->GetPrefs()->SetBoolean(
       brave_search_conversion::prefs::kDismissed, false);
   location_bar()->FocusLocation(/*is_user_initiated=*/true,
                                 /*clear_focus_if_failed=*/false);
@@ -196,7 +196,7 @@ IN_PROC_BROWSER_TEST_F(BraveLocationBarViewBrowserTest,
   EXPECT_EQ(target_search_url, web_contents()->GetVisibleURL());
 
   // Check dismissed bit is set after user clicks button.
-  EXPECT_TRUE(browser()->profile()->GetPrefs()->GetBoolean(
+  EXPECT_TRUE(browser()->GetProfile()->GetPrefs()->GetBoolean(
       brave_search_conversion::prefs::kDismissed));
 }
 

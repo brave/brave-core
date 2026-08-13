@@ -3,136 +3,181 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import * as Mojom from '../../../common/mojom'
-import {
-  getCompletionEvent,
-  getToolUseEvent,
-} from '../../../common/test_data_utils'
-import { createTextContentBlock } from '../../../common/content_block'
+import { type ConversationDataJson } from '../../../common/conversation_serialization'
 
-const MEMORY_HISTORY: Mojom.ConversationTurn[] = [
-  {
-    uuid: 'user-1',
-    text: 'Remember that I work as a software engineer.',
-    characterType: Mojom.CharacterType.HUMAN,
-    actionType: Mojom.ActionType.QUERY,
-    prompt: undefined,
-    selectedText: undefined,
-    edits: [],
-    createdTime: { internalValue: BigInt('13278618001000000') },
-    events: [],
-    uploadedFiles: [],
-    fromBraveSearchSERP: false,
-    skill: undefined,
-    modelKey: '1',
-    nearVerificationStatus: undefined,
-  },
-  {
-    uuid: 'assistant-1',
-    text: '',
-    characterType: Mojom.CharacterType.ASSISTANT,
-    actionType: Mojom.ActionType.UNSPECIFIED,
-    prompt: undefined,
-    selectedText: undefined,
-    edits: [],
-    createdTime: { internalValue: BigInt('13278618001100000') },
-    events: [
-      getToolUseEvent({
-        id: 'memory-1',
-        toolName: Mojom.MEMORY_STORAGE_TOOL_NAME,
-        argumentsJson: '{"memory": "works as a software engineer"}',
-        output: [createTextContentBlock('')],
-      }),
-      getCompletionEvent("I'll remember that you work as a software engineer."),
-    ],
-    uploadedFiles: [],
-    fromBraveSearchSERP: false,
-    skill: undefined,
-    modelKey: '1',
-    nearVerificationStatus: undefined,
-  },
-  {
-    uuid: 'user-2',
-    text: 'Remember I like cats.',
-    characterType: Mojom.CharacterType.HUMAN,
-    actionType: Mojom.ActionType.QUERY,
-    prompt: undefined,
-    selectedText: undefined,
-    edits: [],
-    createdTime: { internalValue: BigInt('13278618001200000') },
-    events: [],
-    uploadedFiles: [],
-    fromBraveSearchSERP: false,
-    skill: undefined,
-    modelKey: '1',
-    nearVerificationStatus: undefined,
-  },
-  {
-    uuid: 'assistant-2',
-    text: '',
-    characterType: Mojom.CharacterType.ASSISTANT,
-    actionType: Mojom.ActionType.UNSPECIFIED,
-    prompt: undefined,
-    selectedText: undefined,
-    edits: [],
-    createdTime: { internalValue: BigInt('13278618001300000') },
-    events: [
-      getToolUseEvent({
-        id: 'memory-2',
-        toolName: Mojom.MEMORY_STORAGE_TOOL_NAME,
-        argumentsJson: '{"memory": "Likes cats"}',
-        output: [createTextContentBlock('')],
-      }),
-      getCompletionEvent("I've noted you like cats."),
-    ],
-    uploadedFiles: [],
-    fromBraveSearchSERP: false,
-    skill: undefined,
-    modelKey: '1',
-    nearVerificationStatus: undefined,
-  },
-  {
-    uuid: 'user-3',
-    text: 'Remember my favorite hobby is hiking.',
-    characterType: Mojom.CharacterType.HUMAN,
-    actionType: Mojom.ActionType.QUERY,
-    prompt: undefined,
-    selectedText: undefined,
-    edits: [],
-    createdTime: { internalValue: BigInt('13278618001400000') },
-    events: [],
-    uploadedFiles: [],
-    fromBraveSearchSERP: false,
-    skill: undefined,
-    modelKey: '1',
-    nearVerificationStatus: undefined,
-  },
-  {
-    uuid: 'assistant-3',
-    text: '',
-    characterType: Mojom.CharacterType.ASSISTANT,
-    actionType: Mojom.ActionType.UNSPECIFIED,
-    prompt: undefined,
-    selectedText: undefined,
-    edits: [],
-    createdTime: { internalValue: BigInt('13278618001500000') },
-    events: [
-      getToolUseEvent({
-        id: 'memory-3',
-        toolName: Mojom.MEMORY_STORAGE_TOOL_NAME,
-        argumentsJson: '{"memory": "favorite hobby is hiking"}',
-        output: [createTextContentBlock('Memory storage failed')],
-      }),
-      getCompletionEvent(
-        'I encountered an error while trying to store that information.',
-      ),
-    ],
-    uploadedFiles: [],
-    fromBraveSearchSERP: false,
-    skill: undefined,
-    modelKey: '1',
-    nearVerificationStatus: undefined,
-  },
-]
+const conversation: ConversationDataJson = {
+  'messages': [
+    {
+      'uuid': 'user-1',
+      'text': 'Remember that I work as a software engineer.',
+      'characterType': 0,
+      'actionType': 5,
+      'edits': [],
+      'createdTime': {
+        'internalValue': {
+          '$bigint': '13278618001000000',
+        },
+      },
+      'events': [],
+      'uploadedFiles': [],
+      'fromBraveSearchSERP': false,
+      'modelKey': '1',
+      threadUuid: undefined,
+      childThreadUuids: [],
+    },
+    {
+      'uuid': 'assistant-1',
+      'text': '',
+      'characterType': 1,
+      'actionType': 0,
+      'edits': [],
+      'createdTime': {
+        'internalValue': {
+          '$bigint': '13278618001100000',
+        },
+      },
+      'events': [
+        {
+          'toolUseEvent': {
+            'output': [
+              {
+                'textContentBlock': {
+                  'text': '',
+                },
+              },
+            ],
+            'isServerResult': false,
+            'id': 'memory-1',
+            'toolName': 'memory_storage_tool',
+            'argumentsJson': '{"memory": "works as a software engineer"}',
+          },
+        },
+        {
+          'completionEvent': {
+            'completion': "I'll remember that you work as a software engineer.",
+          },
+        },
+      ],
+      'uploadedFiles': [],
+      'fromBraveSearchSERP': false,
+      'modelKey': '1',
+      threadUuid: undefined,
+      childThreadUuids: [],
+    },
+    {
+      'uuid': 'user-2',
+      'text': 'Remember I like cats.',
+      'characterType': 0,
+      'actionType': 5,
+      'edits': [],
+      'createdTime': {
+        'internalValue': {
+          '$bigint': '13278618001200000',
+        },
+      },
+      'events': [],
+      'uploadedFiles': [],
+      'fromBraveSearchSERP': false,
+      'modelKey': '1',
+      'childThreadUuids': [],
+    },
+    {
+      'uuid': 'assistant-2',
+      'text': '',
+      'characterType': 1,
+      'actionType': 0,
+      'edits': [],
+      'createdTime': {
+        'internalValue': {
+          '$bigint': '13278618001300000',
+        },
+      },
+      'events': [
+        {
+          'toolUseEvent': {
+            'output': [
+              {
+                'textContentBlock': {
+                  'text': '',
+                },
+              },
+            ],
+            'isServerResult': false,
+            'id': 'memory-2',
+            'toolName': 'memory_storage_tool',
+            'argumentsJson': '{"memory": "Likes cats"}',
+          },
+        },
+        {
+          'completionEvent': {
+            'completion': "I've noted you like cats.",
+          },
+        },
+      ],
+      'uploadedFiles': [],
+      'fromBraveSearchSERP': false,
+      'modelKey': '1',
+      'childThreadUuids': [],
+    },
+    {
+      'uuid': 'user-3',
+      'text': 'Remember my favorite hobby is hiking.',
+      'characterType': 0,
+      'actionType': 5,
+      'edits': [],
+      'createdTime': {
+        'internalValue': {
+          '$bigint': '13278618001400000',
+        },
+      },
+      'events': [],
+      'uploadedFiles': [],
+      'fromBraveSearchSERP': false,
+      'modelKey': '1',
+      'childThreadUuids': [],
+    },
+    {
+      'uuid': 'assistant-3',
+      'text': '',
+      'characterType': 1,
+      'actionType': 0,
+      'edits': [],
+      'createdTime': {
+        'internalValue': {
+          '$bigint': '13278618001500000',
+        },
+      },
+      'events': [
+        {
+          'toolUseEvent': {
+            'output': [
+              {
+                'textContentBlock': {
+                  'text': 'Memory storage failed',
+                },
+              },
+            ],
+            'isServerResult': false,
+            'id': 'memory-3',
+            'toolName': 'memory_storage_tool',
+            'argumentsJson': '{"memory": "favorite hobby is hiking"}',
+          },
+        },
+        {
+          'completionEvent': {
+            'completion':
+              'I encountered an error while trying to store that information.',
+          },
+        },
+      ],
+      'uploadedFiles': [],
+      'fromBraveSearchSERP': false,
+      'modelKey': '1',
+      'childThreadUuids': [],
+    },
+  ],
+  'associatedContent': [],
+  'title': '',
+}
 
-export default MEMORY_HISTORY
+export default conversation

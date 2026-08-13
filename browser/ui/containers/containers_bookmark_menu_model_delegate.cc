@@ -51,9 +51,10 @@ ContainersBookmarkMenuModelDelegate::GetCurrentContainerIds() {
   return {};
 }
 
-Browser* ContainersBookmarkMenuModelDelegate::GetBrowserToOpenSettings() {
+BrowserWindowInterface*
+ContainersBookmarkMenuModelDelegate::GetBrowserToOpenSettings() {
   CHECK(browser_);
-  return browser_->GetBrowserForMigrationOnly();
+  return browser_;
 }
 
 float ContainersBookmarkMenuModelDelegate::GetScaleFactor() {

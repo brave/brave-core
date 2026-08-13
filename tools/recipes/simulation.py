@@ -33,9 +33,13 @@ from collections.abc import Callable, Iterable
 import copy
 import inspect
 from pathlib import Path, PurePosixPath
-import subprocess
 import sys
 from typing import Any
+
+# gevent's drop-in `subprocess`, so a running step yields to other greenlets
+# rather than blocking the single OS thread they all share. Without this the
+# `futures` module would hand out concurrency that never actually overlaps.
+from gevent import subprocess
 
 from check import Check, Checker, PostProcessError, VerifySubset
 from engine_env import merge_envs
@@ -51,6 +55,16 @@ SIM_HOME = PurePosixPath('/b/home')
 
 WORKSPACE_TOKEN = '[WORKSPACE]'
 HOME_TOKEN = '[HOME]'
+
+# What a simulated host reports about itself, matching upstream recipes-py's
+# simulator: linux/64/intel on 8 cores with 16 GiB. Fixed so a step's
+# `ResourceCost` schedules the same way regardless of the machine running the
+# tests; a case that needs different figures asks for them explicitly with
+# `api.platform(...)` / `api.platform.capacity(...)`.
+SIM_BITS = 64
+SIM_ARCH = 'intel'
+SIM_CPU_COUNT = 8
+SIM_TOTAL_MEMORY = 16 * 1024
 
 # This engine's own root (`tools/recipes/`), for stabilizing commands that
 # reference a resource file living next to a recipe module (e.g. `file`'s
@@ -235,6 +249,10 @@ class TestContext:
     def __init__(self,
                  *,
                  platform: str = 'linux',
+                 bits: int = SIM_BITS,
+                 arch: str = SIM_ARCH,
+                 cpu_count: int = SIM_CPU_COUNT,
+                 total_memory: int = SIM_TOTAL_MEMORY,
                  env: dict[str, str] | None = None,
                  files: Iterable[str | Path] = (),
                  dirs: Iterable[str | Path] = (),
@@ -242,6 +260,10 @@ class TestContext:
                  home: str | Path = SIM_HOME,
                  test_data: TestData | None = None) -> None:
         self.platform = platform
+        self.bits = bits
+        self.arch = arch
+        self.cpu_count = cpu_count
+        self.total_memory = total_memory
         self.env = dict(env or {})
         self.fs = SimFS(files, dirs)
         self.which_map = dict(which_map or {})
@@ -255,11 +277,16 @@ class TestContext:
     def from_test_data(cls, test_data: TestData) -> TestContext:
         """Build a context from the seed values a `GenTests` case supplied."""
         mod = test_data.mod_data
-        platform = mod.get('platform', {}).get('name', 'linux')
+        platform_seed = mod.get('platform', {})
+        platform = platform_seed.get('name', 'linux')
         env_seed = mod.get('env', {})
         path_seed = mod.get('path', {})
         return cls(
             platform=platform,
+            bits=platform_seed.get('bits', SIM_BITS),
+            arch=platform_seed.get('arch', SIM_ARCH),
+            cpu_count=platform_seed.get('cpu_count', SIM_CPU_COUNT),
+            total_memory=platform_seed.get('total_memory', SIM_TOTAL_MEMORY),
             # `api.env.set(...)` vars plus any `api.properties.environ(...)`
             # values; the latter is what the engine decodes into ENV_PROPERTIES.
             env={

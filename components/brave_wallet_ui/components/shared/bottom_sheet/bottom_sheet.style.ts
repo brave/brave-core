@@ -18,6 +18,7 @@ export const Background = styled(Column)<{ isOpen: boolean }>`
   position: fixed;
   z-index: ${(p) => (p.isOpen ? 31 : -1)};
   background: rgba(0, 0, 0, 0.2);
+  opacity: ${(p) => (p.isOpen ? 1 : 0)};
 `
 
 export const BottomCard = styled(Column)<{ isOpen: boolean }>`

@@ -13,30 +13,9 @@
 #include "brave/browser/brave_ads/android/jni_headers/BraveAdsNativeHelper_jni.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
 #include "brave/components/brave_ads/core/public/ads_util.h"
-#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
-#include "components/prefs/pref_service.h"
 
 namespace brave_ads {
-
-// static
-jboolean JNI_BraveAdsNativeHelper_IsOptedInToNotificationAds(
-    JNIEnv* env,
-    const base::android::JavaRef<jobject>& j_profile_android) {
-  Profile* profile = Profile::FromJavaObject(j_profile_android);
-  return profile->GetPrefs()->GetBoolean(
-      brave_ads::prefs::kOptedInToNotificationAds);
-}
-
-// static
-void JNI_BraveAdsNativeHelper_SetOptedInToNotificationAds(
-    JNIEnv* env,
-    const base::android::JavaRef<jobject>& j_profile_android,
-    jboolean should_enable_ads) {
-  Profile* profile = Profile::FromJavaObject(j_profile_android);
-  profile->GetPrefs()->SetBoolean(brave_ads::prefs::kOptedInToNotificationAds,
-                                  should_enable_ads);
-}
 
 // static
 jboolean JNI_BraveAdsNativeHelper_IsSupportedRegion(

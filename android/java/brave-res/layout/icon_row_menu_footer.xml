@@ -16,7 +16,7 @@
         android:layout_gravity="top|start"
         android:orientation="horizontal"
         android:baselineAligned="false"
-        android:padding="?attr/appMenuIconRowPadding"
+        android:padding="@dimen/overflow_menu_icon_row_padding"
         android:id="@+id/menu_items" >
 
         <!-- The icons will be set in onFinishInflate. -->
@@ -31,7 +31,7 @@
                 android:layout_width="?attr/minInteractTargetSize"
                 android:layout_height="?attr/minInteractTargetSize"
                 android:layout_gravity="center"
-                style="?attr/overflowMenuButtonStyle"
+                style="@style/OverflowMenuButton"
                 android:contentDescription="@string/accessibility_menu_forward" />
         </FrameLayout>
         
@@ -45,7 +45,7 @@
                 android:layout_width="?attr/minInteractTargetSize"
                 android:layout_height="?attr/minInteractTargetSize"
                 android:layout_gravity="center"
-                style="?attr/overflowMenuButtonStyle"
+                style="@style/OverflowMenuButton"
                 android:contentDescription="@string/share" />
         </FrameLayout>
 
@@ -59,7 +59,7 @@
                 android:layout_width="?attr/minInteractTargetSize"
                 android:layout_height="?attr/minInteractTargetSize"
                 android:layout_gravity="center"
-                style="?attr/overflowMenuButtonStyle"
+                style="@style/OverflowMenuButton"
                 android:contentDescription="@string/accessibility_toolbar_btn_home" />
         </FrameLayout>
 
@@ -73,7 +73,7 @@
                 android:layout_width="?attr/minInteractTargetSize"
                 android:layout_height="?attr/minInteractTargetSize"
                 android:layout_gravity="center"
-                style="?attr/overflowMenuButtonStyle"
+                style="@style/OverflowMenuButton"
                 android:contentDescription="@string/accessibility_menu_bookmark" />
         </FrameLayout>
 
@@ -87,7 +87,7 @@
                 android:layout_width="?attr/minInteractTargetSize"
                 android:layout_height="?attr/minInteractTargetSize"
                 android:layout_gravity="center"
-                style="?attr/overflowMenuButtonStyle"
+                style="@style/OverflowMenuButton"
                 android:contentDescription="@string/download_page" />
         </FrameLayout>
 
@@ -101,7 +101,7 @@
                 android:layout_width="?attr/minInteractTargetSize"
                 android:layout_height="?attr/minInteractTargetSize"
                 android:layout_gravity="center"
-                style="?attr/overflowMenuButtonStyle"
+                style="@style/OverflowMenuButton"
                 android:contentDescription="@string/accessibility_btn_refresh" />
         </FrameLayout>
     </LinearLayout>

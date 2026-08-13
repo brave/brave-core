@@ -42,6 +42,7 @@ import org.chromium.chrome.browser.ui.edge_to_edge.EdgeToEdgeController;
 import org.chromium.chrome.browser.ui.edge_to_edge.TopInsetProvider;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.browser.ui.native_page.NativePageHost;
+import org.chromium.chrome.browser.ui.side_ui.SideUiStateProvider;
 import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
 import org.chromium.components.search_engines.TemplateUrlService;
 import org.chromium.content_public.browser.LoadUrlParams;
@@ -89,6 +90,7 @@ public class BraveNewTabPage extends NewTabPage {
             OneshotSupplier<ModuleRegistry> moduleRegistrySupplier,
             MonotonicObservableSupplier<EdgeToEdgeController> edgeToEdgeControllerSupplier,
             TopInsetProvider topInsetProvider,
+            OneshotSupplier<SideUiStateProvider> sideUiStateProviderSupplier,
             StartupMetricsTracker startupMetricsTracker,
             BackPressManager backPressManager) {
         super(
@@ -115,6 +117,7 @@ public class BraveNewTabPage extends NewTabPage {
                 moduleRegistrySupplier,
                 edgeToEdgeControllerSupplier,
                 topInsetProvider,
+                sideUiStateProviderSupplier,
                 startupMetricsTracker,
                 backPressManager);
 

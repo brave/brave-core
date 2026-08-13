@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/navigator/browser_navigator_params.h b/chrome/browser/ui/navigator/browser_navigator_params.h
-index 541135be7009e4dc0f6557484e97ed1f24809ad9..bef9da69f165b99f44901302ed458ebab62bae87 100644
+index 79275e8a51bec6903828babc21c820ee9d4aa2be..d19e50153f7c22deb60fb638f2efa4398a14b1a6 100644
 --- a/chrome/browser/ui/navigator/browser_navigator_params.h
 +++ b/chrome/browser/ui/navigator/browser_navigator_params.h
-@@ -72,6 +72,9 @@ struct OpenURLParams;
+@@ -71,6 +71,9 @@ struct OpenURLParams;
  
  // TODO(thestig): Split or ifdef out more fields that are not used on Android.
  struct NavigateParams {

@@ -48,7 +48,7 @@ import 'emptykit.css'
 import { FullScreenWrapper, AlertCenter } from './screens/page-screen.styles'
 
 // components
-import { LockScreen } from '../components/desktop/lock-screen/index'
+import { UnlockWallet } from './screens/unlock_wallet/unlock_wallet'
 import {
   WalletPageLayout, //
 } from '../components/desktop/wallet-page-layout/index'
@@ -247,7 +247,7 @@ export const Container = () => {
             noBorderRadius={true}
             useDarkBackground={isPanel}
           >
-            <LockScreen />
+            <UnlockWallet />
           </WalletPageWrapper>
         </ProtectedRoute>
 
@@ -292,7 +292,7 @@ export const Container = () => {
           requirement={!isWalletLocked && !walletNotYetCreated}
           redirectRoute={defaultRedirect}
         >
-          <UnlockedWalletRoutes sessionRoute={sessionRoute} />
+          <UnlockedWalletRoutes />
         </ProtectedRoute>
 
         <ProtectedRoute

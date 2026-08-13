@@ -30,7 +30,7 @@ void RegisterProfilePrefs() {
 
   RegisterProfileStringPref(prefs::kDiagnosticId, "");
 
-  RegisterProfileBooleanPref(prefs::kOptedInToNotificationAds, true);
+  RegisterProfileBooleanPref(prefs::kNotificationsEnabled, true);
   RegisterProfileInt64Pref(prefs::kMaximumNotificationAdsPerHour, -1);
 
   RegisterProfileBooleanPref(prefs::kOptedInToSearchResultAds, true);

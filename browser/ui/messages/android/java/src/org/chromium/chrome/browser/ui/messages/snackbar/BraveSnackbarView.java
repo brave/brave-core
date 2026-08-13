@@ -77,14 +77,16 @@ public class BraveSnackbarView extends SnackbarView {
             Snackbar snackbar,
             ViewGroup parentView,
             @Nullable WindowAndroid windowAndroid,
-            NonNullObservableSupplier<Integer> additionalBottomMarginPxSupplier) {
+            NonNullObservableSupplier<Integer> additionalBottomMarginPxSupplier,
+            NonNullObservableSupplier<Boolean> isFullscreenSupplier) {
         super(
                 activity,
                 manager,
                 snackbar,
                 parentView,
                 windowAndroid,
-                additionalBottomMarginPxSupplier);
+                additionalBottomMarginPxSupplier,
+                isFullscreenSupplier);
     }
 
     /**

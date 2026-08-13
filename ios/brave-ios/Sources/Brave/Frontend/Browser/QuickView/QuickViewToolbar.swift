@@ -145,21 +145,37 @@ struct QuickViewToolbarView: View {
 
   private var collapsedAddressView: some View {
     VStack {
-      URLDisplayLabel(
-        formattedURL: viewModel.displayURL,
-        isLeftToRight: viewModel.isURLLeftToRight,
-        textFont: .preferredFont(forTextStyle: .caption2),
-        textColor: UIColor(braveSystemName: .textTertiary),
-        gradientColors: [
-          browserColors.chromeBackground.cgColor,
-          browserColors.chromeBackground.withAlphaComponent(0.1).cgColor,
-        ],
-        scaledToFit: viewModel.secureContentState.shouldDisplayWarning
-      )
-      .accessibilityLabel(viewModel.displayURL)
-      .fixedSize(horizontal: false, vertical: true)
-      .padding(.vertical, 4)
+      Button {
+        viewModel.onTappedCollapsedBarTopArea?()
+      } label: {
+        HStack {
+          Spacer()
+          URLDisplayLabel(
+            formattedURL: viewModel.displayURL,
+            isLeftToRight: viewModel.isURLLeftToRight,
+            textFont: .preferredFont(forTextStyle: .caption2),
+            textColor: UIColor(braveSystemName: .textTertiary),
+            gradientColors: [
+              browserColors.chromeBackground.cgColor,
+              browserColors.chromeBackground.withAlphaComponent(0.1).cgColor,
+            ],
+            scaledToFit: viewModel.secureContentState.shouldDisplayWarning
+          )
+          .accessibilityLabel(viewModel.displayURL)
+          .fixedSize(horizontal: false, vertical: true)
+          .padding(.vertical, 4)
+          Spacer()
+        }
+        .contentShape(Rectangle())
+      }
+      .buttonStyle(NoHighlightButtonStyle())
       Spacer()
+    }
+  }
+
+  private struct NoHighlightButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+      configuration.label
     }
   }
 

@@ -148,6 +148,7 @@ void SuggestionsController::GetSuggestedPublisherIds(
              const SubscriptionsSnapshot& subscriptions,
              GetSuggestedPublisherIdsCallback callback) {
             if (!controller) {
+              std::move(callback).Run({});
               return;
             }
             controller->publishers_controller_->GetOrFetchPublishers(
@@ -157,6 +158,7 @@ void SuggestionsController::GetSuggestedPublisherIds(
                        GetSuggestedPublisherIdsCallback callback,
                        const Publishers& publishers) {
                       if (!controller) {
+                        std::move(callback).Run({});
                         return;
                       }
 
@@ -169,6 +171,7 @@ void SuggestionsController::GetSuggestedPublisherIds(
                              GetSuggestedPublisherIdsCallback callback,
                              history::QueryResults results) {
                             if (!controller) {
+                              std::move(callback).Run({});
                               return;
                             }
                             auto result =

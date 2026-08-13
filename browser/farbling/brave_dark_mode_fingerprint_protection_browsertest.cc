@@ -100,7 +100,8 @@ class BraveDarkModeFingerprintProtectionTest : public InProcessBrowserTest {
   const GURL& dark_mode_url() { return dark_mode_url_; }
 
   HostContentSettingsMap* content_settings() {
-    return HostContentSettingsMapFactory::GetForProfile(browser()->profile());
+    return HostContentSettingsMapFactory::GetForProfile(
+        browser()->GetProfile());
   }
 
   void AllowFingerprinting() {

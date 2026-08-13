@@ -66,8 +66,9 @@ ContainersTabMenuModelDelegate::GetCurrentContainerIds() {
   return container_ids;
 }
 
-Browser* ContainersTabMenuModelDelegate::GetBrowserToOpenSettings() {
-  return browser_window_->GetBrowserForMigrationOnly();
+BrowserWindowInterface*
+ContainersTabMenuModelDelegate::GetBrowserToOpenSettings() {
+  return browser_window_;
 }
 
 float ContainersTabMenuModelDelegate::GetScaleFactor() {

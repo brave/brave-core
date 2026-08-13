@@ -32,6 +32,7 @@
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
 #include "chrome/browser/ui/views/tabs/tab_strip_controller.h"
 #include "chrome/test/base/in_process_browser_test.h"
+#include "chrome/test/base/ui_test_utils.h"
 #include "components/prefs/pref_service.h"
 #include "components/saved_tab_groups/public/tab_group_sync_service.h"
 #include "components/split_tabs/split_tab_visual_data.h"
@@ -124,7 +125,7 @@ class TreeTabsBrowserTest : public InProcessBrowserTest {
   }
   ~TreeTabsBrowserTest() override = default;
 
-  Profile* profile() { return browser()->profile(); }
+  Profile* profile() { return browser()->GetProfile(); }
   BraveTabStripModel& tab_strip_model() {
     return *static_cast<BraveTabStripModel*>(browser()->tab_strip_model());
   }
@@ -186,7 +187,7 @@ class TreeTabsBrowserTest : public InProcessBrowserTest {
   // initialized.
   void EnsureTabGroupSyncServiceInitialized() {
     auto* tab_groups_service =
-        tab_groups::TabGroupSyncServiceFactory::GetForProfile(profile());
+        tab_groups::TabGroupSyncServiceFactory::GetForProfile(GetProfile());
     ASSERT_TRUE(tab_groups_service);
     tab_groups_service->SetIsInitializedForTesting(true);
   }
@@ -3658,4 +3659,169 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
 
   tab_strip()->EndDrag(EndDragReason::kComplete);
   EXPECT_FALSE(TabDragController::IsActive());
+}
+
+// When detaching a parent tab together with its child into a new window, the
+// child must stay nested under the parent in the destination window.
+IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
+                       DetachTreeTabNode_FullSubtree_PreservesHierarchy) {
+  SetTreeTabsEnabled(true);
+
+  auto* parent_tab = tab_strip_model().GetTabAtIndex(0);
+  auto child_interface =
+      std::make_unique<tabs::TabModel>(CreateWebContents(), &tab_strip_model());
+  child_interface->set_opener(parent_tab);
+  tab_strip_model().AddTab(std::move(child_interface), -1,
+                           ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
+  auto* child_tab = tab_strip_model().GetTabAtIndex(1);
+  ASSERT_EQ(2, tab_strip_model().count());
+  ASSERT_EQ(child_tab->GetParentCollection()->GetParentCollection(),
+            parent_tab->GetParentCollection());
+
+  const tree_tab::TreeTabNodeId parent_node_id =
+      static_cast<const tabs::TreeTabNodeTabCollection*>(
+          parent_tab->GetParentCollection())
+          ->node()
+          .id();
+  const tree_tab::TreeTabNodeId child_node_id =
+      static_cast<const tabs::TreeTabNodeTabCollection*>(
+          child_tab->GetParentCollection())
+          ->node()
+          .id();
+  ASSERT_TRUE(tab_strip_model().tree_model()->GetNode(parent_node_id));
+  ASSERT_TRUE(tab_strip_model().tree_model()->GetNode(child_node_id));
+
+  Browser* const second_browser = CreateBrowser(profile());
+  BraveTabStripModel& second_model =
+      *static_cast<BraveTabStripModel*>(second_browser->tab_strip_model());
+  const int second_browser_initial_count = second_model.count();
+
+  auto detached =
+      tab_strip_model().DetachTabsAndCollectionsForInsertion({0, 1});
+  ASSERT_EQ(1u, detached.size());
+  auto* collection =
+      std::get_if<std::unique_ptr<DetachedTabCollection>>(&detached[0]);
+  ASSERT_TRUE(collection);
+  second_model.InsertDetachedTreeTabNodeAt(std::move(*collection),
+                                           second_model.count());
+
+  // Both tabs left the source window.
+  EXPECT_EQ(0, tab_strip_model().count());
+  EXPECT_FALSE(tab_strip_model().tree_model()->GetNode(parent_node_id));
+  EXPECT_FALSE(tab_strip_model().tree_model()->GetNode(child_node_id));
+
+  ASSERT_EQ(second_browser_initial_count + 2, second_model.count());
+  tabs::TabInterface* const new_parent = parent_tab;
+  tabs::TabInterface* const new_child = child_tab;
+  ASSERT_NE(second_model.GetIndexOfTab(new_parent), TabStripModel::kNoTab);
+  ASSERT_NE(second_model.GetIndexOfTab(new_child), TabStripModel::kNoTab);
+
+  // The child must still be nested under the parent's tree node in the new
+  // window, not flattened to a top-level sibling.
+  EXPECT_EQ(new_child->GetParentCollection()->GetParentCollection(),
+            new_parent->GetParentCollection());
+  ASSERT_EQ(new_parent->GetParentCollection()->type(),
+            tabs::TabCollection::Type::TREE_NODE);
+
+  // The destination window's TreeTabModel must know about both nodes now.
+  EXPECT_TRUE(second_model.tree_model()->GetNode(parent_node_id));
+  EXPECT_TRUE(second_model.tree_model()->GetNode(child_node_id));
+
+  CloseBrowserSynchronously(second_browser);
+}
+
+// When only the parent (and not its child) is selected for the cross-window
+// move, the child must be hoisted out to become a top-level tab in the
+// source window instead of disappearing or being dragged along.
+IN_PROC_BROWSER_TEST_F(
+    TreeTabsBrowserTest,
+    DetachTreeTabNode_OnlyParentSelected_HoistsChildInSourceWindow) {
+  SetTreeTabsEnabled(true);
+
+  auto* parent_tab = tab_strip_model().GetTabAtIndex(0);
+  auto child_interface =
+      std::make_unique<tabs::TabModel>(CreateWebContents(), &tab_strip_model());
+  child_interface->set_opener(parent_tab);
+  tab_strip_model().AddTab(std::move(child_interface), -1,
+                           ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
+  auto* child_tab = tab_strip_model().GetTabAtIndex(1);
+  ASSERT_EQ(2, tab_strip_model().count());
+
+  // Make the child (the tab that will remain) active before detaching the
+  // parent, so the detach doesn't need to change the window's active tab -
+  // avoiding an unrelated accessible-title recompute for a tab whose Tab
+  // view was never built (it was added directly via the model, not through
+  // the real UI insertion path this low-level test bypasses).
+  tab_strip_model().ActivateTabAt(1);
+
+  Browser* const second_browser = CreateBrowser(profile());
+  BraveTabStripModel& second_model =
+      *static_cast<BraveTabStripModel*>(second_browser->tab_strip_model());
+  const int second_browser_initial_count = second_model.count();
+
+  auto detached = tab_strip_model().DetachTabsAndCollectionsForInsertion({0});
+  ASSERT_EQ(1u, detached.size());
+  auto* tab = std::get_if<std::unique_ptr<DetachedTab>>(&detached[0]);
+  ASSERT_TRUE(tab);
+  second_model.InsertDetachedTabAt(second_model.count(),
+                                   std::move(tab->get()->tab), ADD_NONE);
+
+  // Only the parent moved; the child remains in the source window, hoisted
+  // to become a top-level tab rather than being detached with the parent.
+  ASSERT_EQ(1, tab_strip_model().count());
+  EXPECT_EQ(tab_strip_model().GetTabAtIndex(0), child_tab);
+  EXPECT_EQ(child_tab->GetParentCollection()->GetParentCollection(),
+            &unpinned_collection());
+
+  ASSERT_EQ(second_browser_initial_count + 1, second_model.count());
+  EXPECT_NE(second_model.GetIndexOfTab(parent_tab), TabStripModel::kNoTab);
+
+  CloseBrowserSynchronously(second_browser);
+}
+
+// Exercises the real chrome::MoveTabsToNewWindow() command (the entry point
+// patched in browser_commands.cc's MoveTabsToWindowImpl to route tree nodes
+// through InsertDetachedTreeTabNodeAt), rather than calling
+// DetachTabsAndCollectionsForInsertion()/InsertDetachedTreeTabNodeAt()
+// directly as the tests above do.
+IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
+                       MoveTabsToNewWindow_PreservesTreeHierarchy) {
+  SetTreeTabsEnabled(true);
+
+  auto* parent_tab = tab_strip_model().GetTabAtIndex(0);
+  auto child_interface =
+      std::make_unique<tabs::TabModel>(CreateWebContents(), &tab_strip_model());
+  child_interface->set_opener(parent_tab);
+  tab_strip_model().AddTab(std::move(child_interface), -1,
+                           ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
+  auto* child_tab = tab_strip_model().GetTabAtIndex(1);
+  // Keep an unrelated tab behind in the source window so moving {0, 1} out
+  // doesn't empty the source browser, which would race the source window's
+  // own close-on-empty handling against the BrowserCreatedObserver below.
+  AddTab();
+  ASSERT_EQ(3, tab_strip_model().count());
+  ASSERT_EQ(child_tab->GetParentCollection()->GetParentCollection(),
+            parent_tab->GetParentCollection());
+
+  ui_test_utils::BrowserCreatedObserver browser_created_observer;
+  chrome::MoveTabsToNewWindow(browser(), {0, 1});
+  Browser* const new_browser = browser_created_observer.Wait();
+  ASSERT_TRUE(new_browser);
+
+  EXPECT_EQ(1, tab_strip_model().count());
+
+  BraveTabStripModel& new_model =
+      *static_cast<BraveTabStripModel*>(new_browser->tab_strip_model());
+  ASSERT_EQ(2, new_model.count());
+  ASSERT_NE(new_model.GetIndexOfTab(parent_tab), TabStripModel::kNoTab);
+  ASSERT_NE(new_model.GetIndexOfTab(child_tab), TabStripModel::kNoTab);
+
+  // The child must still be nested under the parent's tree node in the new
+  // window, not flattened to a top-level sibling.
+  EXPECT_EQ(child_tab->GetParentCollection()->GetParentCollection(),
+            parent_tab->GetParentCollection());
+  ASSERT_EQ(parent_tab->GetParentCollection()->type(),
+            tabs::TabCollection::Type::TREE_NODE);
+
+  CloseBrowserSynchronously(new_browser);
 }

@@ -6,6 +6,7 @@
 import Flex from '$web-common/Flex'
 import * as React from 'react'
 import styled from 'styled-components'
+import { color, font, spacing } from '@brave/leo/tokens/css/variables'
 import { useBraveNews } from '../shared/Context'
 import { getLocale } from '$web-common/locale'
 import Button from '@brave/leo/react/button'
@@ -20,9 +21,8 @@ const BackButton = styled(Button).attrs({
 `
 
 const Header = styled.span`
-  font-weight: 500;
-  font-size: 16px;
-  color: var(--text01);
+  font: ${font.heading.h4};
+  color: ${color.text.primary};
   flex: 5;
   text-align: center;
 `
@@ -34,7 +34,7 @@ export default function CustomizePage (props: {
   children: React.ReactNode
 }) {
   const { setCustomizePage } = useBraveNews()
-  return <Flex direction="column">
+  return <Flex direction="column" gap={spacing.m}>
     <Flex align="center">
         <BackButton onClick={() => setCustomizePage('news')}>
           <Icon name="arrow-left" slot="icon-before" />

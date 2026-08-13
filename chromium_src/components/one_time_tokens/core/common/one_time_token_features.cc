@@ -10,7 +10,7 @@
 namespace one_time_tokens::features {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
-    {kGmailOtpRetrievalService, base::FEATURE_ENABLED_BY_DEFAULT},
+    {kGmailOtpRetrievalService, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 
 }  // namespace one_time_tokens::features

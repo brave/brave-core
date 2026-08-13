@@ -12,7 +12,6 @@
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/split_view/split_view_features.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
-#include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "brave/browser/ui/views/frame/split_view/brave_contents_container_view.h"
 #include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view.h"
 #include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view_mini_toolbar.h"
@@ -205,7 +204,8 @@ class SplitViewBrowserTest : public InProcessBrowserTest {
 
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
-    browser()->profile()->GetPrefs()->SetBoolean(kWebViewRoundedCorners, false);
+    browser()->GetProfile()->GetPrefs()->SetBoolean(kWebViewRoundedCorners,
+                                                    false);
   }
 
   TabStrip* tab_strip() {
@@ -376,9 +376,13 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest, BraveMultiContentsViewTest) {
                                                     .exclusive_access_manager()
                                                     ->fullscreen_controller();
   fullscreen_controller->set_is_tab_fullscreen_for_testing(true);
+  brave_browser_view()->InvalidateLayout();
+  RunScheduledLayouts();
   EXPECT_EQ(gfx::RoundedCornersF(),
             start_contents_container_view->GetCornerRadius(true));
   fullscreen_controller->set_is_tab_fullscreen_for_testing(false);
+  brave_browser_view()->InvalidateLayout();
+  RunScheduledLayouts();
 
   auto* start_contents_web_view =
       multi_contents_view->start_contents_view_for_testing();
@@ -544,7 +548,8 @@ class SplitViewWithRoundedCornersTest : public SplitViewBrowserTest {
 
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
-    browser()->profile()->GetPrefs()->SetBoolean(kWebViewRoundedCorners, true);
+    browser()->GetProfile()->GetPrefs()->SetBoolean(kWebViewRoundedCorners,
+                                                    true);
   }
 };
 
@@ -561,6 +566,7 @@ IN_PROC_BROWSER_TEST_F(SplitViewWithRoundedCornersTest, ContentsOutlineTest) {
   };
 
   // Outline if split tab is not active.
+  RunScheduledLayouts();
   EXPECT_TRUE(has_contents_outline(brave_browser_view()));
 
   chrome::NewSplitTab(browser(), split_tabs::SplitTabLayout::kSideBySide,
@@ -578,16 +584,18 @@ IN_PROC_BROWSER_TEST_F(SplitViewWithRoundedCornersTest, ContentsOutlineTest) {
   EXPECT_TRUE(has_contents_outline(brave_browser_view()));
 
   // Turn off the rounded corners.
-  browser()->profile()->GetPrefs()->SetBoolean(kWebViewRoundedCorners, false);
+  browser()->GetProfile()->GetPrefs()->SetBoolean(kWebViewRoundedCorners,
+                                                  false);
 
   // Outline should be gone.
+  RunScheduledLayouts();
   EXPECT_FALSE(has_contents_outline(brave_browser_view()));
   browser()->tab_strip_model()->ActivateTabAt(0);
   EXPECT_TRUE(IsActiveTabSplit(tab_strip_model));
   EXPECT_FALSE(has_contents_outline(brave_browser_view()));
 
   // Turn on the rounded corners.
-  browser()->profile()->GetPrefs()->SetBoolean(kWebViewRoundedCorners, true);
+  browser()->GetProfile()->GetPrefs()->SetBoolean(kWebViewRoundedCorners, true);
 
   // Still don't have outline as split view is active.
   EXPECT_FALSE(has_contents_outline(brave_browser_view()));
@@ -604,12 +612,11 @@ IN_PROC_BROWSER_TEST_F(SplitViewWithRoundedCornersTest,
                        TabFullscreenStateTest) {
   auto* contents_view = brave_browser_view()->GetContentsView();
 
-  const gfx::RoundedCornersF border_radius(
-      BraveContentsViewUtil::GetRoundedCornersForContentsView(browser(),
-                                                              nullptr));
-
   // Check it has rounded corners.
-  EXPECT_EQ(contents_view->layer()->rounded_corner_radii(), border_radius);
+  RunScheduledLayouts();
+  const gfx::RoundedCornersF border_radius =
+      contents_view->layer()->rounded_corner_radii();
+  EXPECT_FALSE(border_radius.IsEmpty());
 
   FullscreenController* fullscreen_controller = browser()
                                                     ->GetFeatures()
@@ -618,19 +625,21 @@ IN_PROC_BROWSER_TEST_F(SplitViewWithRoundedCornersTest,
 
   // Check rounded corners are cleared in tab fullscreen.
   fullscreen_controller->set_is_tab_fullscreen_for_testing(true);
-  brave_browser_view()->UpdateWebViewRoundedCorners();
+  brave_browser_view()->InvalidateLayout();
+  RunScheduledLayouts();
   EXPECT_EQ(contents_view->layer()->rounded_corner_radii(),
             gfx::RoundedCornersF());
 
   // Check it has rounded corners again.
   fullscreen_controller->set_is_tab_fullscreen_for_testing(false);
-  brave_browser_view()->UpdateWebViewRoundedCorners();
+  brave_browser_view()->InvalidateLayout();
+  RunScheduledLayouts();
   EXPECT_EQ(contents_view->layer()->rounded_corner_radii(), border_radius);
 }
 
 // Regression test for https://github.com/brave/brave-browser/issues/57245:
-// detaching a split tab into a new window used to CHECK-crash in
-// BraveContentsViewUtil::GetRoundedCornersForContentsView().
+// detaching a split tab into a new window used to CHECK-crash while computing
+// the contents corner radii.
 IN_PROC_BROWSER_TEST_F(SplitViewWithRoundedCornersTest,
                        DetachSplitTabToNewWindowDoesNotCrash) {
   // Keep an extra, non-split tab so the source window survives the move.
@@ -762,7 +771,7 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest, SplitViewWithPinnedTabTest) {
 }
 
 IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest, BookmarksBarVisibilityTest) {
-  auto* prefs = browser()->profile()->GetPrefs();
+  auto* prefs = browser()->GetProfile()->GetPrefs();
   auto* tab_strip_model = browser()->tab_strip_model();
   NewSplitTab();
 
@@ -804,7 +813,7 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest, BookmarksBarVisibilityTest) {
 // See the comment of SideBySideBrowserTest at browser_browsertest.cc.
 #if !BUILDFLAG(IS_MAC)
   ui_test_utils::ToggleFullscreenModeAndWait(browser());
-  EXPECT_TRUE(browser()->window()->IsFullscreen());
+  EXPECT_TRUE(BrowserWindow::FromBrowser(browser())->IsFullscreen());
 
   // Same reason with above for having different result with SideBySide
   // enabled state.

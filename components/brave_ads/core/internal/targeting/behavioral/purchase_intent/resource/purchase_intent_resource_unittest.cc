@@ -139,14 +139,14 @@ TEST_F(BraveAdsPurchaseIntentResourceTest,
   ASSERT_FALSE(resource_->IsLoaded());
 
   // Act
-  SetProfileBooleanPref(prefs::kOptedInToNotificationAds, true);
+  SetProfileBooleanPref(prefs::kNotificationsEnabled, true);
 
   // Assert
   ASSERT_TRUE(base::test::RunUntil([this] { return resource_->IsLoaded(); }));
 }
 
 TEST_F(BraveAdsPurchaseIntentResourceTest,
-       DoNotResetResourceIfAlreadyOptedInToNotificationAds) {
+       DoNotResetResourceIfNotificationAdsAlreadyEnabled) {
   // Arrange
   test::OptOutOfNewTabPageAds();
   test::OptOutOfSearchResultAds();
@@ -156,7 +156,7 @@ TEST_F(BraveAdsPurchaseIntentResourceTest,
   ASSERT_TRUE(base::test::RunUntil([this] { return resource_->IsLoaded(); }));
 
   // Act
-  SetProfileBooleanPref(prefs::kOptedInToNotificationAds, true);
+  SetProfileBooleanPref(prefs::kNotificationsEnabled, true);
 
   // Assert
   EXPECT_TRUE(resource_->IsLoaded());

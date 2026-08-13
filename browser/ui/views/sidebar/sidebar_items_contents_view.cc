@@ -90,7 +90,7 @@ std::string GetFirstCharFromURL(const GURL& url) {
 }
 
 sidebar::SidebarService* GetSidebarService(Browser* browser) {
-  return sidebar::SidebarServiceFactory::GetForProfile(browser->profile());
+  return sidebar::SidebarServiceFactory::GetForProfile(browser->GetProfile());
 }
 
 }  // namespace
@@ -359,7 +359,7 @@ void SidebarItemsContentsView::UpdateItem(
 
 void SidebarItemsContentsView::ShowItemAddedFeedbackBubble(
     size_t item_added_index) {
-  auto* prefs = browser_->profile()->GetPrefs();
+  auto* prefs = browser_->GetProfile()->GetPrefs();
   const int current_count =
       prefs->GetInteger(sidebar::kSidebarItemAddedFeedbackBubbleShowCount);
   // Don't show feedback bubble more than three times.
@@ -387,7 +387,7 @@ void SidebarItemsContentsView::ShowItemAddedFeedbackBubble(
   }
 
   auto* bubble = SidebarItemAddedFeedbackBubble::Create(
-      anchor_view, this, browser_->profile()->GetPrefs());
+      anchor_view, this, browser_->GetProfile()->GetPrefs());
   observation_.Observe(bubble);
   bubble->Show();
 }
@@ -547,7 +547,7 @@ void SidebarItemsContentsView::OnItemPressed(const views::View* item,
         sidebar::SidebarItem::BuiltInItemType::kChatUI) {
       auto* profile_metrics =
           misc_metrics::ProfileMiscMetricsServiceFactory::GetServiceForContext(
-              browser_->profile());
+              browser_->GetProfile());
       if (profile_metrics) {
         auto* ai_chat_metrics = profile_metrics->GetAIChatMetrics();
         if (ai_chat_metrics) {

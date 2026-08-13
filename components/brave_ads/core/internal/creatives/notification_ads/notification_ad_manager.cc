@@ -117,7 +117,7 @@ bool NotificationAdManager::Exists(const std::string& placement_id) const {
 ///////////////////////////////////////////////////////////////////////////////
 
 void NotificationAdManager::Initialize() {
-  if (!UserHasOptedInToNotificationAds()) {
+  if (!IsNotificationAdsEnabled()) {
     return;
   }
 

@@ -94,6 +94,10 @@ export type ChangeEvent<Entity> = {
  * cache.addListener(console.log)
  */
 export class EntityCachingWrapper<Entity> extends CachingWrapper<Cache<Entity>> {
+  // True once the mojom backend has delivered at least one update, i.e. the
+  // cache has been hydrated with the current state.
+  connected = false
+
   constructor() {
     super({})
   }
@@ -105,6 +109,7 @@ export class EntityCachingWrapper<Entity> extends CachingWrapper<Cache<Entity>> 
     for (const id in event.addedOrUpdated) copy[id] = event.addedOrUpdated[id]
     for (const id of event.removed) delete copy[id]
 
+    this.connected = true
     this.notifyChanged(copy)
   }
 }

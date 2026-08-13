@@ -5,7 +5,7 @@
 
 import { getLocale } from '$web-common/locale'
 import Icon from '@brave/leo/react/icon'
-import { font, spacing } from '@brave/leo/tokens/css/variables'
+import { color, font, spacing } from '@brave/leo/tokens/css/variables'
 import * as React from 'react'
 import styled from 'styled-components'
 import SettingsButton from './SettingsButton'
@@ -29,10 +29,17 @@ const RightSide = styled.div`
   margin-left: auto;
 `
 
+const Divider = styled.div`
+  width: 1px;
+  height: ${spacing.l};
+  background: ${color.divider.subtle};
+  flex: 0;
+`
+
 interface Props {
-  // Invoked when the customize ("tune") button is pressed. Surfaces differ in
-  // where customization lives: the feed opens its inline modal, while the side
-  // panel opens the New Tab Page.
+  // Invoked when the customize ("settings") button is pressed. Surfaces differ
+  // in where customization lives: the feed opens its inline modal, while the
+  // side panel opens the New Tab Page.
   onCustomize: () => void
   // Whether to show the feed-list menu. The feed only needs it on small
   // viewports (it has a dedicated sidebar otherwise), whereas narrow surfaces
@@ -41,12 +48,15 @@ interface Props {
   // Optional heading rendered between the menu and the action buttons. Only the
   // side panel supplies this; the feed page has its own layout.
   title?: string
+  // When provided, a close button is rendered (sidebar mode only). Closes the
+  // hosting side panel.
+  onClose?: () => void
   className?: string
 }
 
 const Title = styled.span`
-  color: var(--bn-glass-100);
-  font: ${font.large.semibold};
+  color: ${color.text.primary};
+  font: ${font.heading.h4};
 `
 
 // The Brave News feed controls: an optional feed-list menu plus customize and
@@ -56,6 +66,7 @@ export default function FeedControls({
   onCustomize,
   showMenu,
   title,
+  onClose,
   className,
 }: Props) {
   const { feedV2, refreshFeedV2 } = useBraveNews()
@@ -72,7 +83,7 @@ export default function FeedControls({
           onClick={onCustomize}
           title={getLocale(S.BRAVE_NEWS_CUSTOMIZE_FEED)}
         >
-          <Icon name='tune' />
+          <Icon name='settings' />
         </SettingsButton>
         <SettingsButton
           isLoading={!feedV2}
@@ -81,6 +92,17 @@ export default function FeedControls({
         >
           <Icon name='refresh' />
         </SettingsButton>
+        {onClose && (
+          <>
+            <Divider />
+            <SettingsButton
+              onClick={onClose}
+              title={getLocale(S.BRAVE_NEWS_CLOSE)}
+            >
+              <Icon name='close' />
+            </SettingsButton>
+          </>
+        )}
       </RightSide>
     </Container>
   )

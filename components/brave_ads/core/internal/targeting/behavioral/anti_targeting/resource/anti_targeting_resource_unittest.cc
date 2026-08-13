@@ -131,7 +131,7 @@ TEST_F(BraveAdsAntiTargetingResourceTest,
 TEST_F(BraveAdsAntiTargetingResourceTest,
        DoNotResetResourceIfAlreadyOptedInToNewTabPageAds) {
   // Arrange
-  test::OptOutOfNotificationAds();
+  test::DisableNotificationAds();
   test::OptOutOfSearchResultAds();
 
   ads_client_notifier_.NotifyResourceComponentDidChange(
@@ -159,14 +159,14 @@ TEST_F(BraveAdsAntiTargetingResourceTest,
   ASSERT_FALSE(resource_->IsLoaded());
 
   // Act
-  SetProfileBooleanPref(prefs::kOptedInToNotificationAds, true);
+  SetProfileBooleanPref(prefs::kNotificationsEnabled, true);
 
   // Assert
   ASSERT_TRUE(base::test::RunUntil([this] { return resource_->IsLoaded(); }));
 }
 
 TEST_F(BraveAdsAntiTargetingResourceTest,
-       DoNotResetResourceIfAlreadyOptedInToNotificationAds) {
+       DoNotResetResourceIfNotificationAdsAlreadyEnabled) {
   // Arrange
   test::OptOutOfNewTabPageAds();
   test::OptOutOfSearchResultAds();
@@ -176,7 +176,7 @@ TEST_F(BraveAdsAntiTargetingResourceTest,
   ASSERT_TRUE(base::test::RunUntil([this] { return resource_->IsLoaded(); }));
 
   // Act
-  SetProfileBooleanPref(prefs::kOptedInToNotificationAds, true);
+  SetProfileBooleanPref(prefs::kNotificationsEnabled, true);
 
   // Assert
   EXPECT_TRUE(resource_->IsLoaded());

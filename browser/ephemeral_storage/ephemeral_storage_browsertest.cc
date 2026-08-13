@@ -248,7 +248,8 @@ void EphemeralStorageBrowserTest::SetUpOnMainThread() {
       "a.com", "/ephemeral_storage_with_network_cookies.html");
 
   brave_shields_settings_service_ =
-      BraveShieldsSettingsServiceFactory::GetForProfile(browser()->profile());
+      BraveShieldsSettingsServiceFactory::GetForProfile(
+          browser()->GetProfile());
   ASSERT_TRUE(brave_shields_settings_service_);
 }
 
@@ -376,7 +377,7 @@ void WaitForCleanup(Profile* profile) {
 size_t EphemeralStorageBrowserTest::WaitForCleanupAfterKeepAlive(
     Profile* profile) {
   if (!profile) {
-    profile = browser()->profile();
+    profile = browser()->GetProfile();
   }
   const size_t fired_cnt = EphemeralStorageServiceFactory::GetInstance()
                                ->GetForContext(profile)
@@ -461,7 +462,7 @@ void EphemeralStorageBrowserTest::SetCookieSetting(
     const GURL& url,
     ContentSetting content_setting) {
   auto* host_content_settings_map =
-      HostContentSettingsMapFactory::GetForProfile(browser()->profile());
+      HostContentSettingsMapFactory::GetForProfile(browser()->GetProfile());
   host_content_settings_map->SetContentSettingCustomScope(
       ContentSettingsPattern::FromString(
           base::StrCat({"[*.]", url.host(), ":*"})),
@@ -503,12 +504,12 @@ content::EvalJsResult EphemeralStorageBrowserTest::SetIDBValue(
 }
 
 HostContentSettingsMap* EphemeralStorageBrowserTest::content_settings() {
-  return HostContentSettingsMapFactory::GetForProfile(browser()->profile());
+  return HostContentSettingsMapFactory::GetForProfile(browser()->GetProfile());
 }
 
 network::mojom::CookieManager* EphemeralStorageBrowserTest::CookieManager() {
   return browser()
-      ->profile()
+      ->GetProfile()
       ->GetDefaultStoragePartition()
       ->GetCookieManagerForBrowserProcess();
 }
@@ -853,7 +854,7 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
 
   // A browser with the same profile should share all values with the
   // first browser, including ephemeral storage values.
-  Browser* same_profile_browser = CreateBrowser(browser()->profile());
+  Browser* same_profile_browser = CreateBrowser(browser()->GetProfile());
   ASSERT_TRUE(ui_test_utils::NavigateToURL(same_profile_browser,
                                            a_site_ephemeral_storage_url_));
   auto* same_profile_web_contents =
@@ -911,9 +912,9 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
       ui_test_utils::NavigateToURL(browser(), a_site_ephemeral_storage_url_));
 
   std::string a_cookie =
-      content::GetCookies(browser()->profile(), GURL("https://a.com/"));
+      content::GetCookies(browser()->GetProfile(), GURL("https://a.com/"));
   std::string b_cookie =
-      content::GetCookies(browser()->profile(), GURL("https://b.com/"));
+      content::GetCookies(browser()->GetProfile(), GURL("https://b.com/"));
   EXPECT_EQ("name=acom", a_cookie);
   EXPECT_EQ("name=bcom", b_cookie);
 
@@ -938,7 +939,8 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
 
   // The cookie set in the ephemeral area should not be visible in the main
   // cookie storage.
-  b_cookie = content::GetCookies(browser()->profile(), GURL("https://b.com/"));
+  b_cookie =
+      content::GetCookies(browser()->GetProfile(), GURL("https://b.com/"));
   EXPECT_EQ("name=bcom", b_cookie);
 
   // Navigating to a new TLD should clear all ephemeral cookies after keep-alive
@@ -1174,6 +1176,63 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
   EXPECT_EQ("name=third-party-a.com", third_party_values.cookies);
 }
 
+IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
+                       CookiesPartitionedBetweenLocalhostAndLoopbackIp) {
+  const GURL localhost_page = https_server_.GetURL("localhost", "/simple.html");
+  const GURL loopback_page = https_server_.GetURL("127.0.0.1", "/simple.html");
+  const GURL loopback_set_cookie_url = https_server_.GetURL(
+      "127.0.0.1",
+      "/set-cookie?name=loopback_ephemeral;path=/;SameSite=None;Secure");
+
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), localhost_page));
+  auto* web_contents = browser()->tab_strip_model()->GetActiveWebContents();
+
+  ASSERT_TRUE(content::ExecJs(web_contents, content::JsReplace(R"(
+        new Promise((resolve) => {
+          const frame = document.createElement('iframe');
+          frame.id = 'loopback_iframe';
+          frame.onload = () => resolve(true);
+          frame.src = $1;
+          document.body.appendChild(frame);
+        });
+      )",
+                                                               loopback_page)));
+
+  RenderFrameHost* main_frame = web_contents->GetPrimaryMainFrame();
+  RenderFrameHost* loopback_iframe = content::ChildFrameAt(main_frame, 0);
+  ASSERT_TRUE(loopback_iframe);
+
+  SetCookieInFrame(loopback_iframe, "name=loopback_ephemeral");
+  EXPECT_EQ("name=loopback_ephemeral", GetCookiesInFrame(loopback_iframe));
+
+  // Ephemeral 3p cookies must not land in the persistent jar.
+  EXPECT_EQ("", content::GetCookies(browser()->GetProfile(), loopback_page));
+
+  // Opening the loopback origin top-level must not see the 3p cookie.
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), loopback_page));
+  EXPECT_EQ("", GetCookiesInFrame(browser()
+                                      ->tab_strip_model()
+                                      ->GetActiveWebContents()
+                                      ->GetPrimaryMainFrame()));
+  EXPECT_EQ("", content::GetCookies(browser()->GetProfile(), loopback_page));
+
+  // Setting via a third-party navigation under localhost is also ephemeral.
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), localhost_page));
+  web_contents = browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(content::ExecJs(web_contents,
+                              content::JsReplace(R"(
+        new Promise((resolve) => {
+          const frame = document.createElement('iframe');
+          frame.id = 'loopback_iframe';
+          frame.onload = () => resolve(true);
+          frame.src = $1;
+          document.body.appendChild(frame);
+        });
+      )",
+                                                 loopback_set_cookie_url)));
+  EXPECT_EQ("", content::GetCookies(browser()->GetProfile(), loopback_page));
+}
+
 class EphemeralStorageKeepAliveDisabledBrowserTest
     : public EphemeralStorageBrowserTest {
  public:
@@ -1347,7 +1406,7 @@ class FirstPartyStorageCleanupSiteDataBrowserTest
   int GetHistoryCount() {
     history::HistoryService* history_service =
         HistoryServiceFactory::GetForProfile(
-            browser()->profile(), ServiceAccessType::IMPLICIT_ACCESS);
+            browser()->GetProfile(), ServiceAccessType::IMPLICIT_ACCESS);
     CHECK(history_service);
     // base::RunLoop loop;
     base::CancelableTaskTracker task_tracker;
@@ -1390,7 +1449,7 @@ IN_PROC_BROWSER_TEST_F(FirstPartyStorageCleanupSiteDataBrowserTest,
   EXPECT_EQ("b.com", site_b_tab_values.iframe_2.local_storage);
 
   // Shred site data for site a.com
-  auto* profile = browser()->profile();
+  auto* profile = browser()->GetProfile();
   auto storage_partition_config = site_a_tab->GetSiteInstance()
                                       ->GetSecurityPrincipal()
                                       .GetStoragePartitionConfig();
@@ -1446,7 +1505,7 @@ IN_PROC_BROWSER_TEST_F(FirstPartyStorageCleanupSiteDataBrowserTest,
   EXPECT_EQ("b.com", site_b_tab_values.iframe_2.local_storage);
 
   // Shred site data for site a.com
-  auto* profile = browser()->profile();
+  auto* profile = browser()->GetProfile();
   // Enable shred browsing history
   GetBraveShieldsSettingsService()->SetShredBrowsingHistory(true);
 
@@ -1540,7 +1599,7 @@ IN_PROC_BROWSER_TEST_F(FirstPartyStorageCleanupSiteDataBrowserTest,
 
   // Shred site data for a.com - this should close tabs for a.com, a.a.com, and
   // b.a.com
-  auto* profile = browser()->profile();
+  auto* profile = browser()->GetProfile();
   auto storage_partition_config = site_a_tab->GetSiteInstance()
                                       ->GetSecurityPrincipal()
                                       .GetStoragePartitionConfig();
@@ -1626,7 +1685,7 @@ IN_PROC_BROWSER_TEST_F(FirstPartyStorageCleanupSiteDataBrowserTest,
 
   // Try to Shred site data for a.com - this should not be executed as shields
   // are disabled on a.a.com
-  auto* profile = browser()->profile();
+  auto* profile = browser()->GetProfile();
   auto storage_partition_config = site_a_tab->GetSiteInstance()
                                       ->GetSecurityPrincipal()
                                       .GetStoragePartitionConfig();

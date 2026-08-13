@@ -93,6 +93,14 @@
 -SyncServiceImplStartupWithDetermineAccountTypeTest.StartupWithConsumerAccount
 -SyncServiceImplStartupWithDetermineAccountTypeTest.StartupWithManagedAccount
 
+# These tests fail because we force a resolved (non-managed) consumer status in
+# SyncAuthManager::ActiveAccount::StartDeterminingAccountType, skipping
+# AccountManagedStatusFinder, since Brave Sync uses a fake account with no
+# refresh token. See brave/rewrite/components/sync/service/sync_auth_manager.cc.yaml.
+-SyncAuthManagerTest.AccountChangeWhileDeterminingAccountType
+-SyncAuthManagerTest.DeterminesAccountTypeAsynchronously
+-SyncAuthManagerTest.DeterminesAccountTypeSynchronously
+
 # This test fails because we use different search engine keywords.
 -SearchEngineChoiceEligibilityTest.ChoiceScreenConditions_SkipFor3p_Waffle
 
@@ -157,7 +165,12 @@
 
 # This tests fails because we disable safe browsing enhanced protection and
 # patch safe_browsing::IsEnhancedProtectionEnabled to return false
--ClientSideDetectionServiceBaseTest.AtPhishingReportLimitESB
+-All/ClientSideDetectionServiceBaseLimitTest.AtPhishingReportLimitESB/*
+-All/ClientSideDetectionServiceBaseLimitTest.GetNumReportTestESB/*
+-All/ClientSideDetectionServiceBaseOnlyESBTest.TestReceivingImageClassifierUpdatesAfterResubscription/*
+-All/ClientSideDetectionServiceOnlyESBTest.TestReceivingImageClassifierUpdatesAfterResubscription/*
+-ClientSideDetectionHostBaseTest.*
+-ClientSideDetectionServiceBaseTest.TestReceivingImageEmbedderUpdatesAfterResubscription
 -GetUserPopulationTest.PopulatesPopulation_WithoutSBERDeprecation
 -RealTimeUrlLookupServiceTest.TestCanSendRTSampleRequest_FeatureEnabled
 -RealTimeUrlLookupServiceTest.TestFillLlamaForcedTriggerCapability
@@ -209,6 +222,25 @@
 -HistoryURLProviderTest.PromoteShorterURLs
 -InMemoryURLIndexTest.TitleSearch
 -URLDatabaseTest.EnumeratorForSignificant
+
+# These fail because we disable kPersonalContext feature, which prevents
+# PersonalContextService from being created and ContextHubService which depends
+# on PersonalContextService.
+-PersonalContextFetcherTest.*
+
+# This test fails because brave.omnibox.history_suggestions_enabled is not
+# registered.
+-SearchboxUtilsTest.CanPasteAndGo
+
+# This test fails because its message is hardcoded to look for "Google Search"
+# instead of "Brave Search"
+-AiModeButtonServiceTest.ConfigWithGoogleDse
+
+# These tests fail because we use our own hardcoded CUP signing key (see
+# chromium_src/components/update_client/request_sender.cc), bypassing upstream's
+# ECDSA/ML-DSA-44 (PQC) key-selection logic entirely, so this assertion of
+# upstream key selection never holds in our builds.
+-All/RequestSenderTest.CupKeySelection/*
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -AccountInvestigatorTest.*

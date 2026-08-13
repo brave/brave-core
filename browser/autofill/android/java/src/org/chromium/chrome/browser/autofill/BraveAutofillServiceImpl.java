@@ -290,6 +290,7 @@ public class BraveAutofillServiceImpl extends SplitCompatAutofillService.Impl {
 
             if (!autofillDataMap.isEmpty()) {
                 Dataset.Builder dataset = new Dataset.Builder();
+                boolean hasValues = false;
                 for (Map.Entry<AutofillId, String> entry : autofillDataMap.entrySet()) {
                     AutofillId fieldId = entry.getKey();
                     String value = entry.getValue();
@@ -326,8 +327,14 @@ public class BraveAutofillServiceImpl extends SplitCompatAutofillService.Impl {
                         presentation.setTextViewText(R.id.subtitle, subtitle);
                     }
                     dataset.setValue(fieldId, autofillValue, presentation);
+                    hasValues = true;
                 }
-                fillResponse.addDataset(dataset.build());
+                // Dataset.Builder.build() throws IllegalStateException unless at least one
+                // value was set, and every field may have been skipped above (e.g. all
+                // matched fields are dropdowns with no matching option).
+                if (hasValues) {
+                    fillResponse.addDataset(dataset.build());
+                }
             }
         }
 

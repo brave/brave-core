@@ -152,7 +152,7 @@ class AIChatRenderViewContextMenuBrowserTest : public InProcessBrowserTest {
     return browser()->tab_strip_model()->GetActiveWebContents();
   }
 
-  PrefService* GetPrefs() { return browser()->profile()->GetPrefs(); }
+  PrefService* GetPrefs() { return browser()->GetProfile()->GetPrefs(); }
 
   net::EmbeddedTestServer* https_server() { return &https_server_; }
 
@@ -263,7 +263,7 @@ class AIChatRenderViewContextMenuBrowserTest : public InProcessBrowserTest {
     }
 
     return AIChatServiceFactory::GetInstance()
-        ->GetForBrowserContext(browser()->profile())
+        ->GetForBrowserContext(browser()->GetProfile())
         ->GetOrCreateConversationHandlerForContent(
             helper->web_contents_content().content_id(),
             helper->web_contents_content().GetWeakPtr());

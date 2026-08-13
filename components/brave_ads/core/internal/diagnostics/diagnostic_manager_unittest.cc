@@ -51,7 +51,7 @@ TEST_F(BraveAdsDiagnosticManagerTest, DiagnosticManager) {
               "value": "true"
             },
             {
-              "name": "Opted into notification ads",
+              "name": "Notification ads enabled",
               "value": "true"
             },
             {

@@ -12,7 +12,7 @@
 namespace contextual_tasks {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
-    {kContextualTasks, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kContextualTasksCookiePrefetch, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 
 }  // namespace contextual_tasks

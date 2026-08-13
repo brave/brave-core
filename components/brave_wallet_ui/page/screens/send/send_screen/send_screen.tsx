@@ -94,6 +94,9 @@ import {
 } from '../../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper'
 import { FromAsset } from '../../composer_ui/from_asset/from_asset'
 import {
+  DefaultPanelHeader, //
+} from '../../../../components/desktop/card-headers/default-panel-header'
+import {
   PanelActionHeader, //
 } from '../../../../components/desktop/card-headers/panel-action-header'
 import {
@@ -157,6 +160,7 @@ export const SendScreen = React.memo(() => {
   // Selectors
   const isPanel = useSafeUISelector(UISelectors.isPanel)
   const isMobile = useSafeUISelector(UISelectors.isMobile)
+  const isSidePanel = useSafeUISelector(UISelectors.isSidePanel)
   const isMobileOrPanel = isMobile || isPanel
   const isIOS = useSafeUISelector(UISelectors.isIOS)
   const isKeyboardVisible = useIsKeyboardVisible()
@@ -699,9 +703,15 @@ export const SendScreen = React.memo(() => {
       <WalletPageWrapper
         wrapContentInBox={true}
         noCardPadding={true}
-        hideNav={isMobileOrPanel}
+        useCardInPanel={true}
+        hideNav={!isSidePanel && isMobileOrPanel}
         cardHeader={
-          isMobileOrPanel ? (
+          isSidePanel ? (
+            <DefaultPanelHeader
+              expandRoute={WalletRoutes.Send}
+              title={getLocale('braveWalletSend')}
+            />
+          ) : isMobileOrPanel ? (
             <PanelActionHeader
               title={getLocale('braveWalletSend')}
               expandRoute={WalletRoutes.Send}

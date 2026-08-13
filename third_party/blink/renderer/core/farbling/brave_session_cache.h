@@ -51,6 +51,9 @@ CORE_EXPORT BraveFarblingLevel
 GetBraveFarblingLevelFor(ExecutionContext* context,
                          ContentSettingsType webcompat_settings_type,
                          BraveFarblingLevel default_value);
+// TODO(https://github.com/brave/brave-browser/issues/58021): Remove this helper
+// once the MAXIMUM ("strict") farbling mode is removed; it currently returns
+// true unless the farbling level is MAXIMUM.
 CORE_EXPORT bool AllowFingerprinting(
     ExecutionContext* context,
     ContentSettingsType webcompat_settings_type);

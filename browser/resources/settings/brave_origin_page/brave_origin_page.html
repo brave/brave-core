@@ -103,7 +103,7 @@
       icon="bar-chart">
   </origin-toggle-button>
 
-  <if expr="enable_ai_chat or enable_brave_news or enable_speedreader or enable_brave_talk or enable_tor or enable_brave_vpn or enable_brave_wallet or enable_brave_wayback_machine or enable_playlist or enable_email_aliases">
+  <if expr="enable_ai_chat or enable_brave_news or enable_speedreader or enable_brave_talk or enable_tor or enable_brave_vpn or enable_brave_wallet or enable_brave_wayback_machine or enable_playlist or enable_email_aliases or enable_psst">
     <div class="cr-row title">$i18n{braveOriginSectionFeaturesTitle}</div>
   </if>
 
@@ -201,6 +201,14 @@
         policy-key="EmailAliasesEnabled"
         label="$i18n{braveEmailAliasesToggleTitle}"
         icon="email-shield">
+    </origin-toggle-button> 
+  </if>
+
+  <if expr="enable_psst">
+    <origin-toggle-button id="togglePsstButton"
+        policy-key="PsstEnabled"
+        label="$i18n{bravePsstToggleTitle}"
+        icon="psst">
     </origin-toggle-button> 
   </if>
 

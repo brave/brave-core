@@ -127,10 +127,10 @@ void BraveLocationBarView::Init() {
   }
 
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)
-  if (!browser_->profile()->IsOffTheRecord()) {
+  if (!browser_->GetProfile()->IsOffTheRecord()) {
     brave_news_action_icon_view_ =
         AddChildView(std::make_unique<BraveNewsActionIconView>(
-            browser_->profile(), this, this));
+            browser_->GetProfile(), this, this));
     brave_news_action_icon_view_->SetVisible(false);
     views::InkDrop::Get(brave_news_action_icon_view_)
         ->SetVisibleOpacity(GetPageActionInkDropVisibleOpacity());
@@ -138,7 +138,7 @@ void BraveLocationBarView::Init() {
 #endif  // BUILDFLAG(ENABLE_BRAVE_NEWS)
 #if BUILDFLAG(ENABLE_TOR)
   onion_location_view_ = AddChildView(
-      std::make_unique<OnionLocationView>(browser_->profile(), this, this));
+      std::make_unique<OnionLocationView>(browser_->GetProfile(), this, this));
 #endif
 
   if (PromotionButtonController::PromotionEnabled(GetProfile()->GetPrefs())) {
@@ -451,7 +451,7 @@ int BraveLocationBarView::GetBorderRadius() const {
 void BraveLocationBarView::FocusLocation(bool is_user_initiated,
                                          bool clear_focus_if_failed) {
   if (base::FeatureList::IsEnabled(tabs::kBraveSharedPinnedTabs) &&
-      browser_->profile()->GetPrefs()->GetBoolean(
+      browser_->GetProfile()->GetPrefs()->GetBoolean(
           brave_tabs::kSharedPinnedTab)) {
     // When updating dummy contents, this could be called even when the widget
     // is inactive. We shouldn't focus the omnibox in that case.

@@ -62,7 +62,6 @@ inline const std::string& EncryptedVerificationToken() {
 }
 
 struct AuthenticationObserverTestCase;
-struct AuthValidateTestCase;
 struct CancelVerificationTestCase;
 struct ChangePasswordStep1TestCase;
 struct ChangePasswordStep2TestCase;
@@ -80,6 +79,7 @@ struct ResetPasswordStep1TestCase;
 struct ResetPasswordStep2TestCase;
 struct ResetPasswordStep3TestCase;
 struct ResetPasswordStep4TestCase;
+struct UpdateEmailTestCase;
 
 template <typename TestCase>
 class BraveAccountServiceTest : public testing::TestWithParam<const TestCase*> {
@@ -145,7 +145,7 @@ class BraveAccountServiceTest : public testing::TestWithParam<const TestCase*> {
       TestCase::Run(test_case, pref_service_, task_environment_,
                     authentication_, future.GetCallback());
       EXPECT_EQ(future.Take(), test_case.mojo_expected);
-    } else if constexpr (std::is_same_v<TestCase, AuthValidateTestCase>) {
+    } else if constexpr (std::is_same_v<TestCase, UpdateEmailTestCase>) {
       TestCase::Run(test_case, pref_service_, task_environment_,
                     CHECK_DEREF(brave_account_service_.get()));
     } else if constexpr (std::is_same_v<TestCase,

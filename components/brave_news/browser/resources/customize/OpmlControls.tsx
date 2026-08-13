@@ -18,8 +18,8 @@ import { downloadOpml, importOpml } from './opml'
 const Links = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: ${spacing.m};
+  flex-wrap: wrap;
 
   & leo-button {
     flex: 0 0 auto;
@@ -31,7 +31,7 @@ const Links = styled.div`
 // fixed-position alert anchored to the bottom of the (modal) dialog.
 const StatusContainer = styled.div`
   position: fixed;
-  bottom: 24px;
+  bottom: ${spacing['2Xl']};
   left: 50%;
   transform: translateX(-50%);
   z-index: 1;
@@ -40,10 +40,31 @@ const StatusContainer = styled.div`
 
 type Status = { type: 'success' | 'error'; content: string }
 
-export default function OpmlControls() {
+interface Props {
+  disabled?: boolean
+}
+
+export default function OpmlControls(props: Props) {
   const { publishers, channels, locale } = useBraveNews()
   const inputRef = React.useRef<HTMLInputElement>(null)
   const [status, setStatus] = React.useState<Status | null>(null)
+
+  // Dismissing the file picker fires a `cancel` event on the input that bubbles
+  // to Leo Dialog's cancel handler, which treats it like Escape and closes the
+  // customize dialog. Stop it here. Longer-term this may belong in Leo (only
+  // close when the cancel target is the dialog itself).
+  React.useEffect(() => {
+    const input = inputRef.current
+    if (!input) {
+      return
+    }
+    const onCancel = (e: Event) => {
+      e.preventDefault()
+      e.stopPropagation()
+    }
+    input.addEventListener('cancel', onCancel)
+    return () => input.removeEventListener('cancel', onCancel)
+  }, [])
 
   // Auto-dismiss the status alert.
   React.useEffect(() => {
@@ -81,8 +102,8 @@ export default function OpmlControls() {
           ChannelsCachingWrapper.getInstance().setChannelSubscribed(
             loc,
             name,
-            true
-          )
+            true,
+          ),
       })
       setStatus({
         type: 'success',
@@ -90,14 +111,14 @@ export default function OpmlControls() {
           $1: String(result.subscribedPublishers),
           $2: String(result.addedDirectFeeds),
           $3: String(result.subscribedChannels),
-          $4: String(result.skipped)
-        })
+          $4: String(result.skipped),
+        }),
       })
     } catch (err) {
       console.error('Brave News: failed to import OPML', err)
       setStatus({
         type: 'error',
-        content: getLocale(S.BRAVE_NEWS_OPML_IMPORT_ERROR)
+        content: getLocale(S.BRAVE_NEWS_OPML_IMPORT_ERROR),
       })
     }
   }
@@ -105,10 +126,20 @@ export default function OpmlControls() {
   return (
     <>
       <Links>
-        <Button kind='plain-faint' size='small' onClick={() => inputRef.current?.click()}>
+        <Button
+          kind='outline'
+          size='small'
+          isDisabled={props.disabled}
+          onClick={() => inputRef.current?.click()}
+        >
           {getLocale(S.BRAVE_NEWS_OPML_IMPORT)}
         </Button>
-        <Button kind='plain-faint' size='small' onClick={onExport}>
+        <Button
+          kind='outline'
+          size='small'
+          isDisabled={props.disabled}
+          onClick={onExport}
+        >
           {getLocale(S.BRAVE_NEWS_OPML_EXPORT)}
         </Button>
       </Links>
@@ -117,6 +148,7 @@ export default function OpmlControls() {
         type='file'
         accept='.opml,.xml,text/xml,application/xml,text/x-opml'
         hidden
+        disabled={props.disabled}
         onChange={onFileChange}
       />
       {status && (

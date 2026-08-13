@@ -24,7 +24,7 @@ public class BraveFreshNtpHelper {
             new CachedFlag(
                     ChromeFeatureMap.getInstance(),
                     BraveFeatureList.BRAVE_FRESH_NTP_AFTER_IDLE_EXPERIMENT,
-                    false);
+                    true);
 
     // Cached variant parameter for fresh NTP experiment - safe to access before native is ready.
     public static final StringCachedFeatureParam sBraveFreshNtpAfterIdleExperimentVariant =
@@ -32,7 +32,7 @@ public class BraveFreshNtpHelper {
                     ChromeFeatureMap.getInstance(),
                     BraveFeatureList.BRAVE_FRESH_NTP_AFTER_IDLE_EXPERIMENT,
                     "variant",
-                    "A");
+                    "B");
 
     /**
      * @return Whether the fresh NTP after idle expiration feature is enabled. This uses a cached
@@ -43,9 +43,8 @@ public class BraveFreshNtpHelper {
     }
 
     /**
-     * Gets the variant of the fresh NTP experiment (e.g., "A", "B", "C"). Returns empty string if
-     * no variant is set. This uses a cached param, so it's safe to call even before native is
-     * ready.
+     * Gets the variant of the fresh NTP experiment: "B" (the default) or "A" for the study's
+     * control arm. This uses a cached param, so it's safe to call even before native is ready.
      *
      * @return The variant string.
      */

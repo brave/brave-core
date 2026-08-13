@@ -13,7 +13,7 @@ void DisconnectExternalBraveRewardsWallet();
 
 void OptOutOfNewTabPageAds();
 
-void OptOutOfNotificationAds();
+void DisableNotificationAds();
 void SetMaximumNotificationAdsPerHour(int max_ads_per_hour);
 
 void OptOutOfSearchResultAds();

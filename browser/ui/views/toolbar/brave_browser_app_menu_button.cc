@@ -44,7 +44,7 @@ BraveBrowserAppMenuButton::BraveBrowserAppMenuButton(ToolbarView* toolbar_view)
 
     // Listen for pref changes to update the icon.
     pref_change_registrar_.Init(
-        toolbar_view_->browser()->profile()->GetPrefs());
+        toolbar_view_->browser()->GetProfile()->GetPrefs());
     pref_change_registrar_.Add(
         kBraveSubtleAppMenuLogo,
         base::BindRepeating(&BraveBrowserAppMenuButton::UpdateIcon,
@@ -107,7 +107,7 @@ void BraveBrowserAppMenuButton::UpdateIcon() {
     return;
   }
 
-  auto* prefs = toolbar_view_->browser()->profile()->GetPrefs();
+  auto* prefs = toolbar_view_->browser()->GetProfile()->GetPrefs();
   auto& icon = prefs->GetBoolean(kBraveSubtleAppMenuLogo) ? kAppMenuOutlineIcon
                                                           : kAppMenuColorIcon;
   for (auto state : kButtonStates) {

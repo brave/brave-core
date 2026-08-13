@@ -31,6 +31,7 @@
 -All/CookieSettingsTest.AllowCookiesUsingExceptions/2
 -All/CookieSettingsTest.AllowCookiesUsingExceptions/5
 -AutomationApiTest.*
+-DownloadExtensionBubbleEnabledTest.SetUiOptionsBeforeDownloadStart
 -SaveDesktopSnapshotTest.SaveDesktopSnapshot
 
 # Flaky Chromium test - resize event fires during print preview due to Brave UI
@@ -148,6 +149,9 @@
 # https://github.com/brave/brave-browser/issues/55112
 -AutofillProgressDialogViewsBrowserTest.CloseBrowserWhileDialogShowing/3
 
+# Known upstream flake: 11.9% flake rate over 30 days per LUCI Analysis.
+-IframeInfoMultiSourcePageContextFetcherBrowserTest.TakesScreenshot_AddsIframeInfoToAPC
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -All/PDFPluginDisabledTest.*
 -AllowCurrentProfile_DifferentUserSignedInDefaultProfile/ExistingWinBrowserProfilesSigninUtilTest.*
@@ -161,7 +165,6 @@
 -CRLSetInterceptionBrowserTest.*
 -ChromeMojoProxyResolverWinBrowserTest.*
 -ChromeSecurityExploitBrowserTest.*
--ChromeTracingDelegateBrowserTest.NewIncognitoSessionBlockingTraceFinalization
 -ContentAnalysisDialogPlainTests.*
 -CredentialProviderSigninDialogWinIntegrationDialogDisplayTest.*
 -DisallowCurrentProfile_CredProviderUsedDefaultProfile/ExistingWinBrowserProfilesSigninUtilTest.*

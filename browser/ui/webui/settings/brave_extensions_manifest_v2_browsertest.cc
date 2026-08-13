@@ -112,29 +112,29 @@ class BraveExtensionsManifestV2BrowserTest : public InProcessBrowserTest {
   void SimulateInstall() {
     scoped_refptr<const extensions::Extension> extension(
         extensions::ExtensionBuilder("extension").SetID(kExtensionId).Build());
-    extensions::ExtensionRegistrar::Get(browser()->profile())
+    extensions::ExtensionRegistrar::Get(browser()->GetProfile())
         ->AddExtension(extension);
   }
 
   void EnableExtension(bool enable) {
     if (enable) {
-      extensions::ExtensionRegistrar::Get(browser()->profile())
+      extensions::ExtensionRegistrar::Get(browser()->GetProfile())
           ->EnableExtension(kExtensionId);
     } else {
-      extensions::ExtensionRegistrar::Get(browser()->profile())
+      extensions::ExtensionRegistrar::Get(browser()->GetProfile())
           ->DisableExtension(kExtensionId,
                              {extensions::disable_reason::DISABLE_USER_ACTION});
     }
   }
 
   bool IsExtensionEnabled() {
-    return extensions::ExtensionRegistry::Get(browser()->profile())
+    return extensions::ExtensionRegistry::Get(browser()->GetProfile())
         ->enabled_extensions()
         .Contains(kExtensionId);
   }
 
   bool IsExtensionInstalled() {
-    return extensions::ExtensionRegistry::Get(browser()->profile())
+    return extensions::ExtensionRegistry::Get(browser()->GetProfile())
         ->GetInstalledExtension(kExtensionId);
   }
 
@@ -320,7 +320,7 @@ IN_PROC_BROWSER_TEST_F(BraveExtensionsManifestV2InstallerBrowserTest,
   EXPECT_FALSE(IsExtensionEnabled());
 
   auto* extension =
-      extensions::ExtensionRegistry::Get(browser()->profile())
+      extensions::ExtensionRegistry::Get(browser()->GetProfile())
           ->GetExtensionById(kExtensionId,
                              extensions::ExtensionRegistry::EVERYTHING);
   EXPECT_FALSE(extension);
@@ -339,7 +339,8 @@ IN_PROC_BROWSER_TEST_F(BraveExtensionsManifestV2InstallerBrowserTest,
   test_extension = test_extension.AppendASCII(
       "manifest_v2/eedcldngdlcmkjdcdlffmjhpbfdcmkce.crx");
 
-  auto installer = extensions::CrxInstaller::CreateSilent(browser()->profile());
+  auto installer =
+      extensions::CrxInstaller::CreateSilent(browser()->GetProfile());
   installer->set_allow_silent_install(true);
   installer->set_is_gallery_install(true);
 
@@ -364,7 +365,7 @@ IN_PROC_BROWSER_TEST_F(BraveExtensionsManifestV2InstallerBrowserTest,
   EXPECT_EQ(u"Extension v2", web_contents->GetTitle());
 
   const auto* extension =
-      extensions::ExtensionRegistry::Get(browser()->profile())
+      extensions::ExtensionRegistry::Get(browser()->GetProfile())
           ->GetInstalledExtension(kTestExtension);
   EXPECT_TRUE(extension->from_webstore());
   EXPECT_TRUE(base::PathExists(extension->path()
@@ -400,16 +401,17 @@ IN_PROC_BROWSER_TEST_F(BraveExtensionsManifestV2ReplaceBrowserTest,
           .SetLocation(extensions::mojom::ManifestLocation::kExternalPolicy)
           .Build();
 
-  auto* registrar = extensions::ExtensionRegistrar::Get(browser()->profile());
+  auto* registrar =
+      extensions::ExtensionRegistrar::Get(browser()->GetProfile());
   registrar->AddExtension(extension);
-  extensions::ExtensionRegistry::Get(browser()->profile())
+  extensions::ExtensionRegistry::Get(browser()->GetProfile())
       ->TriggerOnInstalled(extension.get(), false);
   registrar->DisableExtension(
       extensions_mv2::kWebStoreNoScriptId,
       {extensions::disable_reason::DISABLE_UNSUPPORTED_MANIFEST_VERSION});
   WaitExtensionInstalled();
 
-  auto* registry = extensions::ExtensionRegistry::Get(browser()->profile());
+  auto* registry = extensions::ExtensionRegistry::Get(browser()->GetProfile());
   EXPECT_FALSE(
       registry->GetInstalledExtension(extensions_mv2::kWebStoreNoScriptId));
   EXPECT_TRUE(registry->GetInstalledExtension(extensions_mv2::kNoScriptId));

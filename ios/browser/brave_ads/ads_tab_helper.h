@@ -66,7 +66,7 @@ class AdsTabHelper : public web::WebStateUserData<AdsTabHelper>,
   bool IsPlayingMediaWithAudio(int player_id) const;
   void OnVisibilityChanged(bool is_visible);
   void MaybeNotifyTabTextContentDidChange();
-  bool UserHasOptedInToNotificationAds() const;
+  bool IsNotificationAdsEnabled() const;
   bool ShouldNotifyTabContentDidChange() const;
   void OnMaybeNotifyTabTextContentDidChange(
       const std::vector<GURL>& redirect_chain,

@@ -11,7 +11,7 @@ import path from 'node:path'
 import fs from 'fs-extra'
 import config from '../lib/config.ts'
 import util from '../lib/util.js'
-import build from '../lib/build.js'
+import build from '../lib/build.ts'
 import buildChromiumRelease from '../lib/buildChromiumRelease.ts'
 import { buildFuzzer, runFuzzer } from '../lib/fuzzer.js'
 import versions from '../lib/versions.js'
@@ -27,25 +27,12 @@ import genGradle from '../lib/genGradle.js'
 import perfTests from '../lib/perfTests.ts'
 import registerListAffectedTestsCommand from './listAffectedTests.js'
 import registerGenerateCoverageReportCommand from './generateCoverageReport.js'
-import { createBuildConfigArgument } from '../lib/commandsUtils.ts'
-
-const collect = (value, accumulator) => {
-  accumulator.push(value)
-  return accumulator
-}
-
-// Use this wrapper function instead of JavaScript's parseInt() with option()
-// when defining integer optional parameters, or the default value might get
-// passed as well into the radix parameter of parseInt(), causing wrong results.
-// https://github.com/brave/brave-browser/issues/13724
-function parseInteger(string) {
-  // As per the spec [1], not passing the optional radix parameter to parseInt()
-  // will make parsing to interpret the string passed as a decimal number unless
-  // it's prefixed with '0' (octal) or '0x' (hexadecimal). We only need decimal
-  // in this particular case so let's be explicit about that.
-  // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/parseInt
-  return parseInt(string, 10)
-}
+import {
+  createBuildConfigArgument,
+  collect,
+  parseInteger,
+  parseBoolean,
+} from '../lib/commandsUtils.ts'
 
 const parsedArgs = program.parseOptions(process.argv)
 
@@ -231,7 +218,7 @@ program
   .option(
     '--use_remoteexec [arg]',
     'whether to use RBE for building',
-    JSON.parse,
+    parseBoolean,
   )
   .option(
     '--xcode_gen <target>',
@@ -367,13 +354,6 @@ program
   .action(updatePatches)
 
 program
-  .command('cibuild')
-  .option('--target_arch <target_arch>', 'target architecture')
-  .action((options) => {
-    build('Release', options)
-  })
-
-program
   .command('test <suite>')
   .allowUnknownOption(true)
   .allowExcessArguments(true)
@@ -421,7 +401,7 @@ program
   .option(
     '--use_remoteexec [arg]',
     'whether to use RBE for building',
-    JSON.parse,
+    parseBoolean,
   )
   .option(
     '--ios_xcode_build_version <build_version>',
@@ -454,7 +434,7 @@ program
   .option(
     '--use_remoteexec [arg]',
     'whether to use RBE for building',
-    JSON.parse,
+    parseBoolean,
   )
   .option('--offline', 'use offline mode for RBE')
   .action(buildFuzzer)

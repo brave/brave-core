@@ -31,44 +31,45 @@ import org.chromium.ui.util.AttrUtils;
 public final class BraveDynamicColors {
     // ChromeCachedFlags.<clinit> creates a singleton bytecode-redirected to BraveCachedFlags
     // before BraveCachedFlags' static fields are ready, so this CachedFlag must live separately.
-    private static final CachedFlag sDynamicColorsFlag =
+    private static final CachedFlag sDynamicColorsDefaultFlag =
             new CachedFlag(
                     ChromeFeatureMap.getInstance(),
-                    BraveFeatureList.BRAVE_ANDROID_DYNAMIC_COLORS,
-                    false);
+                    BraveFeatureList.BRAVE_ANDROID_DYNAMIC_COLORS_BY_DEFAULT,
+                    true);
 
     private BraveDynamicColors() {}
 
-    /** Returns the feature flag used for cached-flag registration and early-startup reads. */
-    public static CachedFlag getCachedFlag() {
-        return sDynamicColorsFlag;
+    /** Returns the cached feature that supplies the default for an unset user preference. */
+    public static CachedFlag getCachedDefaultFlag() {
+        return sDynamicColorsDefaultFlag;
     }
 
     /**
      * Returns whether dynamic colors are available for this app session.
      *
-     * <p>Availability requires the cached feature flag to be enabled and Android 12 or later. It
-     * does not include the user's preference; {@link #isDynamicColorsEnabled()} is the preferred
-     * method for runtime behavior checks.
+     * <p>Availability requires Android 12 or later. It does not include the user's preference;
+     * {@link #isDynamicColorsEnabled()} is the preferred method for runtime behavior checks.
      */
     public static boolean isDynamicColorsAvailable() {
-        return getCachedFlag().isEnabled() && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S;
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.S;
     }
 
     /**
      * Returns whether dynamic colors should be used at runtime.
      *
-     * <p>This requires dynamic colors to be available and the user preference to be enabled. The
-     * preference defaults to enabled when it has not been set.
+     * <p>This requires dynamic colors to be available and the user preference to be enabled. An
+     * unset preference uses the cached remotely controlled default.
      */
     public static boolean isDynamicColorsEnabled() {
         return isDynamicColorsAvailable() && isDynamicColorsUserEnabled();
     }
 
-    /** Returns the persisted user preference, which defaults to enabled when unset. */
+    /** Returns the persisted user preference or the cached default when it is unset. */
     private static boolean isDynamicColorsUserEnabled() {
         return ChromeSharedPreferences.getInstance()
-                .readBoolean(BravePreferenceKeys.BRAVE_ANDROID_DYNAMIC_COLORS_ENABLED, true);
+                .readBoolean(
+                        BravePreferenceKeys.BRAVE_ANDROID_DYNAMIC_COLORS_ENABLED,
+                        getCachedDefaultFlag().isEnabled());
     }
 
     /**

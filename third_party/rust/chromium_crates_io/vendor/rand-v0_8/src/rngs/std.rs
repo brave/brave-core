@@ -29,7 +29,7 @@ use rand_chacha::ChaCha12Rng as Rng;
 ///
 /// [rand_chacha]: https://crates.io/crates/rand_chacha
 /// [rand issue]: https://github.com/rust-random/rand/issues/932
-#[cfg_attr(doc_cfg, doc(cfg(feature = "std_rng")))]
+#[cfg_attr(docsrs, doc(cfg(feature = "std_rng")))]
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct StdRng(Rng);
 

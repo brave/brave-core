@@ -28,6 +28,7 @@ import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.tasks.HomeSurfaceTracker;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.browser.ui.native_page.TouchEnabledDelegate;
+import org.chromium.chrome.browser.ui.side_ui.SideUiStateProvider;
 import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
 import org.chromium.components.browser_ui.widget.displaystyle.UiConfig;
 import org.chromium.misc_metrics.mojom.MiscAndroidMetrics;
@@ -66,6 +67,7 @@ public class BraveNewTabPageCoordinator extends NewTabPageCoordinator {
             SnackbarManager snackbarManager,
             boolean isTablet,
             Supplier<Integer> tabStripHeightSupplier,
+            OneshotSupplier<SideUiStateProvider> sideUiStateProviderSupplier,
             @Nullable HomeSurfaceTracker homeSurfaceTracker,
             BackPressManager backPressManager) {
         super(
@@ -83,6 +85,7 @@ public class BraveNewTabPageCoordinator extends NewTabPageCoordinator {
                 snackbarManager,
                 isTablet,
                 tabStripHeightSupplier,
+                sideUiStateProviderSupplier,
                 homeSurfaceTracker,
                 backPressManager);
 

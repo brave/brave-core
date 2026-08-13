@@ -148,12 +148,14 @@ void AIChatUIPageHandler::SubmitVoiceQuery(const std::string& conversation_uuid,
   // Send the query
   conversation->MaybeUnlinkAssociatedContent();
   mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New(
-      std::nullopt, mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+      std::nullopt /* uuid */, std::nullopt /* thread_uuid */,
+      mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
       base::SysNSStringToUTF8(query), std::nullopt /* prompt */,
       std::nullopt /* selected_text */, std::nullopt /* events */,
       base::Time::Now(), std::nullopt, std::nullopt /* uploaded images */,
       nullptr /* skill */, false, std::nullopt /* model_key */,
-      nullptr /* near_verification_status */);
+      nullptr /* near_verification_status */,
+      std::vector<std::string>{} /* child_thread_uuids */);
   conversation->SubmitHumanConversationEntry(std::move(turn));
 }
 

@@ -71,6 +71,9 @@ class BraveNewsController
 
     // Opens the New Tab Page and shows the Brave News customize modal.
     virtual void OpenSettings() = 0;
+
+    // Closes the Brave News side panel.
+    virtual void CloseUI() = 0;
   };
 
   BraveNewsController(
@@ -160,6 +163,7 @@ class BraveNewsController
   void OnCardVisited(uint32_t depth) override;
   void OnSidebarFilterUsage() override;
   void OpenSettings() override;
+  void CloseUI() override;
 
   // mojom::BraveNewsInternals
   void GetVisitedSites(GetVisitedSitesCallback callback) override;

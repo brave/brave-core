@@ -152,7 +152,7 @@ class AdsServiceImpl : public AdsService,
 
   bool UserHasJoinedBraveRewards() const;
   bool UserHasOptedInToNewTabPageAds() const;
-  bool UserHasOptedInToNotificationAds() const;
+  bool IsNotificationAdsEnabled() const;
   bool UserHasOptedInToSearchResultAds() const;
 
   bool CanStartBatAdsService() const;

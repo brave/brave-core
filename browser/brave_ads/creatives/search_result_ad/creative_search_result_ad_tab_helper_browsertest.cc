@@ -169,7 +169,7 @@ class BraveAdsCreativeSearchResultAdTabHelperTest
 
   net::EmbeddedTestServer& https_server() { return https_server_; }
 
-  PrefService* GetPrefs() { return browser()->profile()->GetPrefs(); }
+  PrefService* GetPrefs() { return browser()->GetProfile()->GetPrefs(); }
 
   AdsServiceMock& ads_service() { return ads_service_mock_; }
 
@@ -209,7 +209,8 @@ IN_PROC_BROWSER_TEST_F(BraveAdsCreativeSearchResultAdTabHelperTest,
 IN_PROC_BROWSER_TEST_F(BraveAdsCreativeSearchResultAdTabHelperTest,
                        IncognitoBrowser) {
   const GURL url = GetURL(kAllowedDomain, kSearchResultUrlPath);
-  Browser* incognito_browser = OpenURLOffTheRecord(browser()->profile(), url);
+  Browser* incognito_browser =
+      OpenURLOffTheRecord(browser()->GetProfile(), url);
   EXPECT_FALSE(GetCreativeSearchResultAdTabHelper(incognito_browser));
 
   ASSERT_TRUE(ui_test_utils::NavigateToURL(incognito_browser, url));

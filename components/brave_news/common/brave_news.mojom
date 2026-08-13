@@ -315,4 +315,8 @@ interface BraveNewsController {
   // surfaces that don't host the customize UI themselves (e.g. the side
   // panel), which delegate settings to the New Tab Page.
   OpenSettings();
+
+  // Closes the Brave News side panel. Only meaningful for surfaces hosted in
+  // the browser side panel (e.g. the sidebar); other surfaces no-op.
+  CloseUI();
 };

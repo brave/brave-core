@@ -1,6 +1,6 @@
 {
   "name": "brave-core",
-  "version": "1.95.57",
+  "version": "1.95.66",
   "description": "Brave browser for Android, iOS, Linux, macOS, and Windows",
   "main": "index.js",
   "type": "module",
@@ -10,6 +10,7 @@
     "audit_deps": "node ./build/commands/scripts/audit.js -- --audit_dev_deps",
     "init": "pnpm install --frozen-lockfile && node ./build/commands/scripts/sync.js --init",
     "sync": "pnpm install --frozen-lockfile && node ./build/commands/scripts/sync.js",
+    "get_build_var": "node ./build/commands/scripts/getBuildVar.ts",
     "delete_string_translations": "node ./build/commands/scripts/commands.js delete_string_translations",
     "create_dist": "node ./build/commands/scripts/commands.js build --target=create_dist",
     "gclient": "node ./build/commands/scripts/gclient.js",
@@ -34,8 +35,8 @@
     "list_affected_tests": "node ./build/commands/scripts/commands.js list_affected_tests",
     "test:scripts": "node ./build/commands/scripts/testScripts.ts",
     "eslint": "eslint --quiet .",
-    "build-storybook": "node ./build/commands/scripts/commands.js build --target=brave:storybook && node --max-old-space-size=8192 ./node_modules/storybook/bin/index.cjs build -c .storybook -o .storybook-out",
-    "storybook": "storybook dev",
+    "build-storybook": "node ./build/commands/scripts/storybook.ts --command=build",
+    "storybook": "node ./build/commands/scripts/storybook.ts --command=dev",
     "test-unit": "jest",
     "test-unit:wallet": "jest --coverage=false components/brave_wallet_ui",
     "update_symlink": "node ./build/commands/scripts/commands.js update_symlink",
@@ -48,7 +49,6 @@
     "update_wasm_resources": "node ./build/commands/scripts/updateWasmResources.js",
     "coverage_report": "node ./build/commands/scripts/commands.js coverage_report",
     "ai-chat-shared-conversation-lib-dev": "webpack serve --disable-interpret --config components/ai_chat/resources/shared_conversation_lib/webpack.config.ts --mode=development",
-    "ai-chat-shared-conversation-lib-prod": "webpack --disable-interpret --config components/ai_chat/resources/shared_conversation_lib/webpack.config.ts --mode=production",
     "generate_about_credits": "node ./build/commands/scripts/generateAboutCredits.js"
   },
   "repository": {
@@ -79,7 +79,7 @@
     "projects": {
       "chrome": {
         "dir": "src",
-        "tag": "151.0.7922.108",
+        "tag": "152.0.7977.42",
         "repository": {
           "url": "https://chromium.googlesource.com/chromium/src.git"
         },

@@ -71,11 +71,16 @@ source_set("impl") {
 
   if (!is_android) {
     # The controller delegate opens the New Tab Page, which requires
-    # //chrome/browser/ui/navigator (desktop only).
+    # //chrome/browser/ui/navigator (desktop only). CloseUI also closes the
+    # browser side panel, which requires //chrome/browser/ui/side_panel and
+    # //chrome/browser/ui/browser_window.
     sources += [ "brave_news_controller_delegate_impl.cc" ]
     deps += [
       "//brave/components/constants",
+      "//chrome/browser/ui/browser_window",
       "//chrome/browser/ui/navigator",
+      "//chrome/browser/ui/side_panel",
+      "//chrome/browser/ui/side_panel:side_panel_views_dependent",
     ]
   }
 

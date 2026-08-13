@@ -49,13 +49,15 @@ class CommanderServiceBrowserTest : public InProcessBrowserTest {
   }
 
  protected:
-  Profile* profile() { return browser()->profile(); }
+  Profile* profile() { return browser()->GetProfile(); }
   commander::CommanderService* commander() {
     return commander::CommanderServiceFactory::GetForBrowserContext(profile());
   }
 
   OmniboxView* omnibox() {
-    return browser()->window()->GetLocationBar()->GetOmniboxView();
+    return BrowserWindow::FromBrowser(browser())
+        ->GetLocationBar()
+        ->GetOmniboxView();
   }
 
   void WaitUntil(base::RepeatingCallback<bool()> condition) {

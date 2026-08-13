@@ -22,8 +22,8 @@ namespace {
 
 bool DoesRequireResource() {
   // Require resource only if:
-  // - The user has joined Brave Rewards and opted into notification ads.
-  return UserHasOptedInToNotificationAds();
+  // - The user has joined Brave Rewards and notification ads are enabled.
+  return IsNotificationAdsEnabled();
 }
 
 }  // namespace
@@ -88,7 +88,7 @@ void PurchaseIntentResource::Unload() {
 
 void PurchaseIntentResource::OnNotifyPrefDidChange(const std::string& path) {
   if (DoesMatchUserHasJoinedBraveRewardsPrefPath(path) ||
-      DoesMatchUserHasOptedInToNotificationAdsPrefPath(path)) {
+      DoesMatchNotificationAdsEnabledPrefPath(path)) {
     // This condition should include all the preferences that are present in the
     // `DoesRequireResource` function.
     MaybeLoadOrUnload();

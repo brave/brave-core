@@ -141,7 +141,7 @@ source_set("unit_tests") {
     "//chrome/browser/ui:ui_features",
     "//chrome/browser/ui/omnibox",
     "//components/aggregation_service",
-    "//components/attribution_reporting",
+    "//components/attribution_reporting:features",
     "//components/autofill/core/common",
     "//components/browsing_data/core",
     "//components/commerce/core:feature_list",
@@ -218,7 +218,10 @@ source_set("unit_tests") {
     ]
   }
   if (is_win) {
-    deps += [ "//chrome/browser/startup" ]
+    deps += [
+      "//chrome/browser/startup",
+      "//chrome/browser/win:mica_titlebar",
+    ]
   }
   if (enable_brave_vpn_v2_apps) {
     deps += [ "//brave/components/brave_vpn/app/v2/shared" ]

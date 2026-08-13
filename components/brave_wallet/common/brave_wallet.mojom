@@ -437,6 +437,9 @@ interface PanelHandler {
   // Notify the backend that the dialog should be closed.
   CloseUI();
 
+  // Close the Wallet Chromium side panel (not the popup bubble panel).
+  CloseSidePanel();
+
   ConnectToSite(array<string> accounts, PermissionLifetimeOption option);
 
   CancelConnectToSite();

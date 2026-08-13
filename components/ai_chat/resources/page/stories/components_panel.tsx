@@ -11,6 +11,10 @@ import { Meta, StoryObj } from '@storybook/react'
 import '@brave/leo/tokens/css/variables.css'
 import { getKeysForMojomEnum } from '$web-common/mojomUtils'
 import { InferControlsFromArgs } from '$storybook/utils'
+import {
+  ConversationDataJson,
+  parseConversationData,
+} from '../../common/conversation_serialization'
 import * as Mojom from '../../common/mojom'
 import FullPage from '../components/full_page'
 import Loading from '../components/loading'
@@ -456,23 +460,49 @@ const meta: Meta<CustomArgs> = {
 async function getConversationContent(
   conversationType: (typeof CONVERSATION_TYPES)[number],
 ): Promise<Mojom.ConversationTurn[]> {
+  // When adding new varieties of conversation content, add it to one of these
+  // cases or create a new case for any sub-variations of the content's rendering.
+  // These files are created from real data by enabling the
+  // brave://flags/#brave-ai-chat-export-json feature flag and clicking the
+  // "Copy entire conversation" menu item with alt+meta keys pressed.
+  // Then get the content in devtools with `copy(JSON.parse(_your_pasted_content_.data))`
+  // and paste it as the ConversationDataJson literal of a new file in
+  // ./conversations, so that the type checker validates the shape.
+  let serializedContent: ConversationDataJson | undefined
   switch (conversationType) {
     case 'ALL':
-      return (await import('./conversations/all')).default
+      serializedContent = (await import('./conversations/all')).default
+      break
     case 'MEMORY':
-      return (await import('./conversations/memory')).default
+      serializedContent = (await import('./conversations/memory')).default
+      break
     case 'SEARCH':
-      return (await import('./conversations/search')).default
+      serializedContent = (await import('./conversations/search')).default
+      break
     case 'SEARCHING':
-      return (await import('./conversations/searching')).default
+      serializedContent = (await import('./conversations/searching')).default
+      break
     case 'WEATHER':
-      return (await import('./conversations/weather')).default
+      serializedContent = (await import('./conversations/weather')).default
+      break
     case 'CODE_EXECUTION':
-      return (await import('./conversations/code_execution')).default
+      serializedContent = (await import('./conversations/code_execution'))
+        .default
+      break
     case 'MULTI_TOOL_MULTI_TURN':
-      return (await import('./conversations/multi_tool_multi_turn')).default
+      serializedContent = (
+        await import('./conversations/multi_tool_multi_turn')
+      ).default
+      break
     case 'MULTI_TOOL_MULTI_TURN_IN_PROGRESS':
-      return (await import('./conversations/multi_tool_multi_turn')).InProgress
+      serializedContent = (
+        await import('./conversations/multi_tool_multi_turn_in_progress')
+      ).default
+      break
+  }
+
+  if (serializedContent) {
+    return parseConversationData(JSON.stringify(serializedContent)).messages
   }
 
   return []

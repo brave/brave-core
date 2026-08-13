@@ -22,6 +22,7 @@
 #include "brave/components/brave_account/brave_account_state_prefs.h"
 #include "brave/components/brave_account/endpoint_client/client.h"
 #include "brave/components/brave_account/endpoint_client/request_handle.h"
+#include "brave/components/brave_account/flows/cancel_verification.h"
 #include "brave/components/brave_account/flows/resend_verification_email.h"
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
 #include "brave/components/brave_account/state_internal.h"
@@ -178,21 +179,27 @@ class StateBase : public mojom::Authentication {
   // Flow helpers, each owned by one state and implementing that state's
   // flow overrides on its owner's behalf: `Login`, `Register`, and
   // `ResetPassword` owned by `LoggedOutState` (the `LoginStep*`, `Register*`,
-  // and `ResetPassword*` overrides), `ChangePassword` and `GetServiceToken`
-  // owned by `LoggedInState` (the `ChangePassword*` and `GetServiceToken`
-  // overrides). `ResendVerificationEmail` is the exception: it is owned by
-  // `StateBase` itself (see `resend_verification_email_` below), because its
-  // override is valid in both states. They are friended on `StateBase` (not
-  // on the owning state) because the plumbing they borrow through their
-  // back-reference - request lifetime (`in_flight_`,
-  // `SendStateOwnedRequest()`), crypto, and `account_state_prefs_` - is bound
-  // to `StateBase` and can't move out.
+  // and `ResetPassword*` overrides), `ChangePassword`, `GetServiceToken`, and
+  // `LogOut` owned by `LoggedInState` (the `ChangePassword*`,
+  // `GetServiceToken`, and `LogOut` overrides). `CancelVerification` and
+  // `ResendVerificationEmail` are the exceptions: they are owned by `StateBase`
+  // itself (see `cancel_verification_` and `resend_verification_email_` below),
+  // because their overrides are valid in both states. `UpdateEmail`, owned by
+  // `LoggedInState`, implements no mojom override at all: it drives itself,
+  // polling in the background to refresh the stored email. They are friended on
+  // `StateBase` (not on the owning state) because the plumbing they borrow
+  // through their back-reference - request lifetime (`in_flight_`,
+  // `SendStateOwnedRequest()`, `SendCallerOwnedRequest()`), crypto, and
+  // `account_state_prefs_` - is bound to `StateBase` and can't move out.
+  friend class CancelVerification;
   friend class ChangePassword;
   friend class GetServiceToken;
   friend class Login;
+  friend class LogOut;
   friend class Register;
   friend class ResendVerificationEmail;
   friend class ResetPassword;
+  friend class UpdateEmail;
 
   void AddObserver(
       mojo::PendingRemote<mojom::AuthenticationObserver> observer) final;
@@ -266,6 +273,7 @@ class StateBase : public mojom::Authentication {
   const AddObserverCallback add_observer_;
   mojo::ReceiverSet<mojom::Authentication> receivers_;
   std::list<endpoint_client::RequestHandle> in_flight_;
+  class CancelVerification cancel_verification_{*this};
   class ResendVerificationEmail resend_verification_email_{*this};
   base::WeakPtrFactory<StateBase> weak_factory_{this};
 };
