@@ -49,6 +49,20 @@ pub fn engine_with_rules(rules: &CxxVector<u8>) -> BoxEngineResult {
     .into()
 }
 
+pub fn engine_with_rules_from_file(path: &CxxString) -> BoxEngineResult {
+    || -> Result<Box<Engine>, InternalError> {
+        // `from_utf8` validates the buffer in place, so the file contents are
+        // only held once: the string passed to `add_filter_list` is the buffer
+        // that was read from disk.
+        let rules = String::from_utf8(std::fs::read(path.to_str()?)?)?;
+        let mut filter_set = InnerFilterSet::new(false);
+        filter_set.add_filter_list(rules, Default::default());
+        let engine = InnerEngine::new_with_filter_set(filter_set);
+        Ok(Box::new(Engine { engine }))
+    }()
+    .into()
+}
+
 /// Creates a new engine with rules from a given filter set.
 pub fn engine_from_filter_set(filter_set: Box<FilterSet>) -> BoxEngineResult {
     || -> Result<Box<Engine>, InternalError> {

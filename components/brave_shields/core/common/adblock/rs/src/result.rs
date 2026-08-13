@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 use std::str::Utf8Error;
+use std::string::FromUtf8Error;
 
 use adblock::resources::AddResourceError;
 use thiserror::Error;
@@ -17,6 +18,10 @@ pub(crate) enum InternalError {
     Json(#[from] serde_json::Error),
     #[error("utf-8 encoding error: {0}")]
     Utf8(#[from] Utf8Error),
+    #[error("utf-8 encoding error: {0}")]
+    FromUtf8(#[from] FromUtf8Error),
+    #[error("io error: {0}")]
+    Io(#[from] std::io::Error),
     #[error("{0}")]
     AddResource(#[from] AddResourceError),
 }
@@ -25,8 +30,8 @@ impl From<&InternalError> for ResultKind {
     fn from(error: &InternalError) -> Self {
         match error {
             InternalError::Json(_) => Self::JsonError,
-            InternalError::Utf8(_) => Self::Utf8Error,
-            InternalError::AddResource(_) => Self::AdblockError,
+            InternalError::Utf8(_) | InternalError::FromUtf8(_) => Self::Utf8Error,
+            InternalError::Io(_) | InternalError::AddResource(_) => Self::AdblockError,
         }
     }
 }

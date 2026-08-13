@@ -49,6 +49,13 @@ mod ffi {
         /// Creates a new engine with rules from a given filter list.
         /// Deprecated: Use engine_from_filter_set instead.
         fn engine_with_rules(rules: &CxxVector<u8>) -> BoxEngineResult;
+        /// Creates a new engine with rules read from the filter list file at
+        /// `path`.
+        ///
+        /// Prefer this over `engine_with_rules` for large filter lists: the
+        /// file contents are read into the same buffer the engine parses from,
+        /// rather than being copied into it by the caller.
+        fn engine_with_rules_from_file(path: &CxxString) -> BoxEngineResult;
         /// Creates a new engine with rules from a given filter set.
         fn engine_from_filter_set(filter_set: Box<FilterSet>) -> BoxEngineResult;
 

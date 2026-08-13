@@ -118,7 +118,8 @@ std::optional<std::vector<std::uint8_t>> ReadFileBytes(
       const auto utf8Bytes = base::as_byte_span(utf8Rules);
       const std::vector<std::uint8_t> vecRules(utf8Bytes.begin(),
                                                utf8Bytes.end());
-      if (![self setRules:vecRules error:error]) {
+      auto result = adblock::engine_with_rules(vecRules);
+      if (![self setEngineFromResult:std::move(result) error:error]) {
         return nil;
       }
     }
@@ -128,18 +129,11 @@ std::optional<std::vector<std::uint8_t>> ReadFileBytes(
 
 - (instancetype)initWithRulesFileURL:(NSURL*)fileURL error:(NSError**)error {
   if ((self = [super init])) {
-    const auto rules = ReadFileBytes(base::apple::NSURLToFilePath(fileURL));
-    if (!rules.has_value()) {
-      if (error) {
-        *error =
-            [[self class] adblockErrorForKind:adblock::ResultKind::AdblockError
-                                      message:"Failed to read rules file"];
-      }
-      return nil;
-    }
-
-    // An empty file leaves the default empty engine in place
-    if (!rules->empty() && ![self setRules:*rules error:error]) {
+    // The rules are read by the engine itself so that the file contents are
+    // never copied between being read and being parsed.
+    auto result = adblock::engine_with_rules_from_file(
+        base::apple::NSURLToFilePath(fileURL).value());
+    if (![self setEngineFromResult:std::move(result) error:error]) {
       return nil;
     }
   }
@@ -171,11 +165,10 @@ std::optional<std::vector<std::uint8_t>> ReadFileBytes(
   return self;
 }
 
-/// Replaces the engine with one built from `rules`, or returns `NO` and
-/// populates `error` if the rules cannot be parsed.
-- (BOOL)setRules:(const std::vector<std::uint8_t>&)rules
-           error:(NSError**)error {
-  auto result = adblock::engine_with_rules(rules);
+/// Replaces the engine with the one in `result`, or returns `NO` and populates
+/// `error` if the engine could not be created.
+- (BOOL)setEngineFromResult:(adblock::BoxEngineResult)result
+                      error:(NSError**)error {
   if (result.result_kind != adblock::ResultKind::Success) {
     if (error) {
       *error = [[self class] adblockErrorForKind:result.result_kind
