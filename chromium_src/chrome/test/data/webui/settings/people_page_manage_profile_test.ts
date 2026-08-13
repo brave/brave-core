@@ -111,7 +111,7 @@ function createManageProfileElement(): SettingsManageProfileElement {
 function getCustomProfileImageRow(
   manageProfile: SettingsManageProfileElement,
 ): BrCustomProfileImageRowElement | null {
-  return manageProfile.shadowRoot!.querySelector('br-custom-profile-image-row')
+  return manageProfile.shadowRoot.querySelector('br-custom-profile-image-row')
 }
 
 function getRequiredElement<T extends Element>(
@@ -127,7 +127,7 @@ function getRequiredCustomProfileImageRow(
   manageProfile: SettingsManageProfileElement,
 ): BrCustomProfileImageRowElement {
   return getRequiredElement<BrCustomProfileImageRowElement>(
-    manageProfile.shadowRoot!,
+    manageProfile.shadowRoot,
     'br-custom-profile-image-row',
   )
 }
@@ -226,15 +226,15 @@ function braveManageProfileFeatureEnabledTests() {
     await row.updateComplete
 
     const themePicker = getRequiredElement(
-      manageProfile.shadowRoot!,
+      manageProfile.shadowRoot,
       'cr-theme-color-picker',
     )
     const avatarSelector = getRequiredElement(
-      manageProfile.shadowRoot!,
+      manageProfile.shadowRoot,
       'cr-profile-avatar-selector',
     )
     const sections = Array.from(
-      manageProfile.shadowRoot!.querySelectorAll('.manage-profile-section'),
+      manageProfile.shadowRoot.querySelectorAll('.manage-profile-section'),
     )
     const themeSection = themePicker.closest('.manage-profile-section')
     const customSection = row.closest('.manage-profile-section')
@@ -397,7 +397,7 @@ function braveManageProfileFeatureEnabledTests() {
     await browserProxy.whenCalled('getAvailableIcons')
     await microtasksFinished()
     const avatarSelector = getRequiredElement(
-      manageProfile.shadowRoot!,
+      manageProfile.shadowRoot,
       'cr-profile-avatar-selector',
     )
     const avatar = getRequiredElement<HTMLElement>(

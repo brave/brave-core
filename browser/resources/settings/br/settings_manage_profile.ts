@@ -3,18 +3,19 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import {
-  RegisterPolymerTemplateModifications,
-  RegisterStyleOverride,
-  html as braveHtml,
-} from 'chrome://resources/brave/polymer_overriding.js'
-import {html as polymerHtml} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
+import { injectStyle } from '//resources/brave/lit_overriding.js'
+import { css } from '//resources/lit/v3_0/lit.rollup.js'
+import type { PropertyValues } from '//resources/lit/v3_0/lit.rollup.js'
+
+import { SettingsManageProfileElement } from '../people_page/manage_profile.js'
 
 // <if expr="enable_custom_profile_image">
 import 'chrome://resources/brave/custom_profile_image_row.js'
 
-import {CustomProfileImageStrings} from '../brave_generated_resources_webui_strings.js'
-import {loadTimeData} from '../i18n_setup.js'
+import { getTrustedHTML } from 'chrome://resources/js/static_types.js'
+
+import { CustomProfileImageStrings } from '../brave_generated_resources_webui_strings.js'
+import { loadTimeData } from '../i18n_setup.js'
 // </if>
 
 // Brave avatar assets are organized in 7-color groups per style under
@@ -23,89 +24,106 @@ import {loadTimeData} from '../i18n_setup.js'
 // keep variants visually aligned.
 const kManageProfilePickerColumns = '7'
 
-RegisterStyleOverride(
-  'settings-manage-profile',
-  polymerHtml`
-    <style include="settings-shared">
-      .content {
-        --cr-section-indent-width: 20px;
-      }
+const kPickerSelectors = ['cr-theme-color-picker', 'cr-profile-avatar-selector']
 
-      .cr-row.manage-profile-section {
-        padding-top: var(--leo-spacing-xl) !important;
-      }
+injectStyle(
+  SettingsManageProfileElement,
+  css`
+    .content {
+      --cr-section-indent-width: 20px;
+    }
 
-      .grid-container {
-        --icon-grid-gap: 22px !important;
-        --icon-size: 66px !important;
-      }
+    .cr-row.manage-profile-section {
+      padding-top: var(--leo-spacing-xl) !important;
+    }
 
-      .custom-profile-image-section .content {
-        --icon-grid-gap: 22px;
-        --icon-size: 66px;
-      }
-    </style>
+    .grid-container {
+      --icon-grid-gap: 22px !important;
+      --icon-size: 66px !important;
+    }
   `,
 )
 
 // <if expr="enable_custom_profile_image">
+injectStyle(
+  SettingsManageProfileElement,
+  css`
+    .custom-profile-image-section .content {
+      --icon-grid-gap: 22px;
+      --icon-size: 66px;
+    }
+  `,
+)
+
 function createCustomProfileImageSection() {
-  return braveHtml`
-    <div class="cr-row manage-profile-section custom-profile-image-section">
-      <h1 class="cr-title-text">
-        ${loadTimeData.getString(
-          CustomProfileImageStrings.CUSTOM_PROFILE_IMAGE_TITLE,
-        )}
-      </h1>
-      <div class="content">
-        <br-custom-profile-image-row hide-title></br-custom-profile-image-row>
-      </div>
+  const section = document.createElement('div')
+  section.className =
+    'cr-row manage-profile-section custom-profile-image-section'
+  section.innerHTML = getTrustedHTML`
+    <h1 class="cr-title-text"></h1>
+    <div class="content">
+      <br-custom-profile-image-row hide-title></br-custom-profile-image-row>
     </div>
   `
+  section.querySelector('h1')!.textContent = loadTimeData.getString(
+    CustomProfileImageStrings.CUSTOM_PROFILE_IMAGE_TITLE,
+  )
+  return section
 }
 // </if>
 
-function customizeManageProfileTemplate(templateContent: DocumentFragment) {
-  const themeColorPicker = templateContent.querySelector(
-    'cr-theme-color-picker',
-  )
-  if (!themeColorPicker) {
-    throw new Error('[Settings] Missing Manage Profile theme color picker')
-  }
-  themeColorPicker.setAttribute('columns', kManageProfilePickerColumns)
+// `firstUpdated` is `protected` on ReactiveElement, so reach it through an
+// untyped view of the prototype to patch it from outside the class hierarchy.
+const proto = SettingsManageProfileElement.prototype as unknown as {
+  shadowRoot: ShadowRoot | null
+  firstUpdated?: (changedProperties: PropertyValues) => void
+}
 
-  const profileAvatarSelector = templateContent.querySelector(
-    'cr-profile-avatar-selector',
-  )
-  if (!profileAvatarSelector) {
-    throw new Error('[Settings] Missing Manage Profile avatar selector')
+const originalFirstUpdated = proto.firstUpdated
+proto.firstUpdated = function (
+  this: SettingsManageProfileElement,
+  changedProperties: PropertyValues,
+) {
+  originalFirstUpdated?.call(this, changedProperties)
+
+  // The pickers take `columns` as an attribute rendered by the static part of
+  // the Lit template, so setting it once after the first render sticks.
+  for (const selector of kPickerSelectors) {
+    const picker = this.shadowRoot?.querySelector(selector)
+    if (!picker) {
+      console.error(`[Settings] Missing Manage Profile picker '${selector}'`)
+      continue
+    }
+    picker.setAttribute('columns', kManageProfilePickerColumns)
   }
-  profileAvatarSelector.setAttribute('columns', kManageProfilePickerColumns)
 
   // <if expr="enable_custom_profile_image">
   if (!loadTimeData.getBoolean('customProfileImageEnabled')) {
     return
   }
 
-  const themeColorSection = themeColorPicker.closest(
-    '.manage-profile-section',
-  )
+  const themeColorSection = this.shadowRoot
+    ?.querySelector('cr-theme-color-picker')
+    ?.closest('.manage-profile-section')
   if (!themeColorSection) {
-    throw new Error(
+    console.error(
       '[Settings] Missing Manage Profile theme color picker section',
     )
+    return
   }
 
-  const profileAvatarSection = profileAvatarSelector.closest(
-    '.manage-profile-section',
-  )
+  const profileAvatarSection = this.shadowRoot
+    ?.querySelector('cr-profile-avatar-selector')
+    ?.closest('.manage-profile-section')
   if (!profileAvatarSection) {
-    throw new Error('[Settings] Missing Manage Profile avatar section')
+    console.error('[Settings] Missing Manage Profile avatar section')
+    return
   }
 
   const sectionParent = profileAvatarSection.parentElement
   if (themeColorSection.parentElement !== sectionParent) {
-    throw new Error('[Settings] Manage Profile sections changed structure')
+    console.error('[Settings] Manage Profile sections changed structure')
+    return
   }
 
   sectionParent!.insertBefore(
@@ -114,7 +132,3 @@ function customizeManageProfileTemplate(templateContent: DocumentFragment) {
   )
   // </if>
 }
-
-RegisterPolymerTemplateModifications({
-  'settings-manage-profile': customizeManageProfileTemplate,
-})
