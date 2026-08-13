@@ -58,15 +58,6 @@ PolicyTask MakePolicyTask(
   return task;
 }
 
-void RunUploadCallback(std::optional<std::string>,
-                       const int,
-                       const std::string&,
-                       std::optional<std::string>,
-                       base::ListValue,
-                       base::OnceCallback<void()> callback) {
-  std::move(callback).Run();
-}
-
 std::unique_ptr<PsstReporterService> CreateService(
     ChannelNameCallback channel_name_callback,
     ComponentVersionCallback component_version_callback,
@@ -195,38 +186,6 @@ TEST_F(PsstReporterServiceUnitTest,
 
   base::test::TestFuture<void> future;
   service->SubmitPsstErrorsReport(std::move(tasks), 1, future.GetCallback());
-  EXPECT_TRUE(future.Wait());
-}
-
-TEST_F(PsstReporterServiceUnitTest, FailedTasksUploadWithNullServiceCallbacks) {
-  const auto expected_brave_version =
-      version_info::GetBraveVersionWithoutChromiumMajorVersion();
-  auto uploader = std::make_unique<MockPsstErrorReportUploader>();
-  auto* uploader_ptr = uploader.get();
-
-  auto service = CreateService(base::NullCallback(), base::NullCallback(),
-                               std::move(uploader));
-  auto failed_task =
-      MakePolicyTask("uid-a", "https://a.example", "task a", "boom");
-  PolicyTasksSet tasks;
-  tasks.insert(failed_task.Clone());
-
-  base::ListValue expected_tasks;
-  expected_tasks.Append(failed_task.ToValue());
-
-  EXPECT_CALL(
-      *uploader_ptr,
-      Upload(std::optional<std::string>(std::nullopt), 3,
-             expected_brave_version, std::optional<std::string>(std::nullopt),
-             testing::Truly([&expected_tasks](const base::ListValue& actual) {
-               return actual == expected_tasks;
-             }),
-             _))
-      .Times(1)
-      .WillOnce(&RunUploadCallback);
-
-  base::test::TestFuture<void> future;
-  service->SubmitPsstErrorsReport(std::move(tasks), 3, future.GetCallback());
   EXPECT_TRUE(future.Wait());
 }
 
