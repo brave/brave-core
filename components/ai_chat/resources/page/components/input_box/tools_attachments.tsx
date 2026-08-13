@@ -32,7 +32,10 @@ export default function ToolsAttachments(props: Props) {
           {getLocale(S.CHAT_UI_TOOLS_ATTACHMENT_LABEL)} (
           {props.toolsContent.length})
         </span>
-        <Tooltip mode='default'>
+        <Tooltip
+          mode='default'
+          positionStrategy='fixed'
+        >
           <Icon name='info-outline' />
           <div
             slot='content'
