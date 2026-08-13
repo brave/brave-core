@@ -228,6 +228,12 @@ class FuturesApi(RecipeApi):
 
         meta = kwargs.pop('__meta', None)
 
+        # A leaf step left open by this greenlet is closed before control can
+        # reach the new one, so two leaf steps are never open at once at the
+        # same nest level. The greenlet is then attributed to the innermost
+        # enclosing parent, which waits for it when it closes.
+        self._step_stack.close_non_parent_step()
+
         # Collected in the spawning greenlet and replayed inside the new one,
         # so it starts from this greenlet's ambient state rather than the class
         # defaults. A state which does not implement the hook returns None and
@@ -241,10 +247,17 @@ class FuturesApi(RecipeApi):
         def _runner():
             for setter in setters:
                 setter()
-            return func(*args, **kwargs)
+            try:
+                return func(*args, **kwargs)
+            finally:
+                # Symmetric with the close_non_parent_step() call above spawn:
+                # a leaf step this greenlet leaves open is closed as the
+                # greenlet finishes.
+                self._step_stack.close_non_parent_step()
 
         greenlet = gevent.spawn(_runner)
         greenlet.name = name
+        self._step_stack.register_greenlet(greenlet)
         return Future(greenlet, name, meta)
 
     def spawn_immediate(self, func: Callable[..., T], *args: Any,
