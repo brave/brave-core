@@ -7855,6 +7855,28 @@ extension Strings {
       value: "on %@",
       comment: "This is a suffix statement. example: SomeChannel on Twitter"
     )
+    public static let settingsResetTitle = NSLocalizedString(
+      "rewards.settingsResetTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Reset",
+      comment: "Title of a button that resets the user's Brave Rewards profile"
+    )
+    public static let settingsResetConfirmationTitle = NSLocalizedString(
+      "rewards.settingsResetConfirmationTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Reset Brave Rewards",
+      comment: "Title of a confirmation dialog shown before resetting Brave Rewards"
+    )
+    public static let settingsResetConfirmationMessage = NSLocalizedString(
+      "rewards.settingsResetConfirmationMessage",
+      tableName: "BraveShared",
+      bundle: .module,
+      value:
+        "By resetting, your current Brave Rewards profile will be deleted, and Brave Rewards will no longer be enabled.",
+      comment: "Message of a confirmation dialog shown before resetting Brave Rewards"
+    )
   }
 }
 
