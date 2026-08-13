@@ -24,9 +24,17 @@ class _ActiveStep:
 
     # The step's result, or None for the synthetic root entry.
     step_data: StepData | None = attr.ib()
+
+    # The step's name, as the tuple of nesting tokens leading to it, so a step
+    # named `child` inside a nest named `parent` is `('parent', 'child')`.
+    # Empty for the root entry. This is the namespace a step run inside this one
+    # is named under.
+    name_tokens: tuple[str, ...] = attr.ib()
+
     # Whether this is a parent nesting step, rather than a real (leaf) step.
     # Only the tip of a stack may be False.
     is_parent: bool = attr.ib()
+
     # Greenlets spawned while this entry was the innermost parent.
     greenlets: list = attr.ib(factory=list)
 
@@ -69,12 +77,17 @@ class StepStack:
 
     def __init__(self) -> None:
         self._storage = _Steps()
+        # namespace tokens -> {requested step name: times used}, so a repeated
+        # name within one namespace can be given a distinct one. Shared by the
+        # whole run rather than per greenlet, so concurrent steps cannot end up
+        # with the same name.
+        self._step_names: dict[tuple[str, ...], dict[str, int]] = {}
 
     @property
     def _stack(self) -> list[_ActiveStep]:
         """This greenlet's stack, seeded with the root entry on first use."""
         if self._storage.steps is None:
-            self._storage.steps = [_ActiveStep(None, True)]
+            self._storage.steps = [_ActiveStep(None, (), True)]
         return self._storage.steps
 
     @property
@@ -82,9 +95,44 @@ class StepStack:
         """The tip's step data; None while the tip is the root entry."""
         return self._stack[-1].step_data
 
-    def push(self, step_data: StepData, is_parent: bool = False) -> None:
+    def record_step_name(self, name: str) -> tuple[str, ...]:
+        """Reserve *name* in the current namespace, and return its tokens.
+
+        The namespace is whatever nest the calling greenlet is inside, so a
+        step's tokens are that nest's tokens plus its own name. A name already
+        used in the same namespace gets ` (2)`, ` (3)` and so on appended,
+        rather than silently becoming the same step twice.
+
+        Side effect: closes the tip if it is not a parent, so the namespace is
+        read from the enclosing nest rather than from the step that just ran.
+        """
+        self.close_non_parent_step()
+
+        namespace = self._stack[-1].name_tokens
+        used = self._step_names.setdefault(namespace, {})
+        count = used.setdefault(name, 0)
+        used[name] += 1
+        return namespace + (name if not count else f'{name} ({count + 1})', )
+
+    def push(self,
+             step_data: StepData,
+             name_tokens: tuple[str, ...],
+             is_parent: bool = False) -> None:
         """Make *step_data* the tip of this greenlet's stack."""
-        self._stack.append(_ActiveStep(step_data, is_parent))
+        self._stack.append(_ActiveStep(step_data, name_tokens, is_parent))
+
+    def make_tip_parent(self) -> None:
+        """Turn the tip into a parent nesting step.
+
+        A nest runs an ordinary (command-less) step first, then promotes it, so
+        the steps that follow are named under it and it stays open until the
+        nest ends.
+        """
+        self._stack[-1].is_parent = True
+
+    def pop(self) -> None:
+        """Close the tip and drop it, leaving the entry beneath it as the tip."""
+        self._stack.pop().close()
 
     def close_non_parent_step(self) -> None:
         """Close the tip, unless it is a parent nesting step.

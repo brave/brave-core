@@ -48,6 +48,11 @@ def GenTests(api):
     # Already deployed: the live sparse set already covers both requested
     # paths (`third_party/node` directly, `tools/cr/bootstrap` via its
     # `tools/cr` ancestor), so nothing is re-added.
+    #
+    # `deploy` runs once directly and once more via `bootstrap_on_path`, so the
+    # sparse set is listed twice and each listing is seeded separately -- the
+    # second is `sparse-checkout list (2)`, having been named in the same
+    # namespace as the first.
     yield api.test(
         'already deployed',
         api.path.files('b/src/brave/third_party/node',
@@ -55,7 +60,11 @@ def GenTests(api):
         api.step_data(
             'sparse-checkout list',
             stdout=api.raw_io.output_text('third_party/node\ntools/cr\n')),
+        api.step_data(
+            'sparse-checkout list (2)',
+            stdout=api.raw_io.output_text('third_party/node\ntools/cr\n')),
         api.post_process(post_process.DoesNotRun, 'sparse-checkout add'),
+        api.post_process(post_process.DoesNotRun, 'sparse-checkout add (2)'),
         api.post_process(post_process.MustRun, 'npm version'),
         api.post_process(post_process.StatusSuccess),
     )

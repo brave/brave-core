@@ -7,6 +7,7 @@
 from __future__ import annotations
 
 from collections.abc import Callable, Mapping, Sequence
+import contextlib
 import logging
 from pathlib import Path
 import subprocess
@@ -63,6 +64,52 @@ class StepApi(RecipeApi):
         """
         return self._step_stack.active_step
 
+    @contextlib.contextmanager
+    def nest(self, name: str):
+        """Nest the steps run inside the `with` block under a parent step.
+
+        This runs a step of its own, with no command, and names every step run
+        within it under it:
+
+            with api.step.nest('build'):
+                api.step('configure', ['gn', 'gen'])   # `build.configure`
+                api.step('compile', ['ninja'])         # `build.compile`
+
+        Nesting composes, so a nest inside a nest extends the namespace
+        further. Because names are only made distinct within their namespace,
+        two nests may each contain a step of the same name.
+
+        A nest also owns the work spawned inside it: leaving the block waits
+        for any greenlet `futures.spawn` started there, so
+
+            with api.step.nest('fan out'):
+                for url in urls:
+                    api.futures.spawn(fetch, url)
+
+        cannot fall out of the block with fetches still in flight.
+
+        Args:
+            name: The name of this step.
+
+        Yields:
+            The parent step's `StepData`.
+        """
+        assert name, 'invalid empty name'
+
+        parent = self(name, None)
+        # The step just run is the tip, recorded under the right namespace.
+        # Promoting it to a parent is what puts the steps inside the block
+        # under it, rather than beside it, and keeps it open until the block
+        # ends.
+        self._step_stack.make_tip_parent()
+        try:
+            yield parent
+        finally:
+            # Close whatever leaf the block left open, then the parent itself,
+            # which waits for the greenlets spawned inside it.
+            self._step_stack.close_non_parent_step()
+            self._step_stack.pop()
+
     def _runner(self):
         if self._test is None:  # pragma: no cover - production step backend.
             return self._prod_runner_lazy()
@@ -79,7 +126,7 @@ class StepApi(RecipeApi):
     def __call__(
         self,
         name: str,
-        cmd: Sequence[str | Path | Placeholder],
+        cmd: Sequence[str | Path | Placeholder] | None,
         *,
         cwd: str | Path | None = None,
         env: Mapping[str, str] | None = None,
@@ -92,10 +139,14 @@ class StepApi(RecipeApi):
         """Run *cmd* as the step named *name*.
 
         Args:
-            name: Human-readable step name, logged before the command runs.
+            name: Human-readable step name, logged before the command runs. It
+                is namespaced by any enclosing `nest`, and made distinct if the
+                same name has already been used in that namespace.
             cmd: The program and its arguments as a sequence; each element is
                 either a `Placeholder` (rendered into arguments just before the
-                step runs) or stringified (so `Path` objects are fine).
+                step runs) or stringified (so `Path` objects are fine). `None`
+                runs no subprocess, recording a step that exists only to say
+                something happened.
             cwd: Working directory override for the subprocess; defaults to
                 `context.cwd` (and, when neither is set, the engine's cwd).
             env: Whole-variable environment overrides layered on top of
@@ -124,9 +175,11 @@ class StepApi(RecipeApi):
             subprocess.CalledProcessError: If `check` and the process fails.
             RuntimeError: On Windows, if the command cannot be resolved.
         """
-        # The previous leaf step stays open until now, so `active_result` could
-        # reach it; starting another step closes it.
-        self._step_stack.close_non_parent_step()
+        # Namespaces the step under any enclosing `nest` and makes a repeated
+        # name distinct. Also closes the previous leaf step, which stayed open
+        # so `active_result` could reach it.
+        name_tokens = self._step_stack.record_step_name(name)
+        name = '.'.join(name_tokens)
 
         runner = self._runner()
         test_data = runner.step_test_data(name, step_test_data)
@@ -144,7 +197,7 @@ class StepApi(RecipeApi):
 
         rendered_cmd: list[str] = []
         cmd_placeholders: list[Placeholder] = []
-        for arg in cmd:
+        for arg in cmd or ():
             if isinstance(arg, Placeholder):
                 rendered_cmd.extend(arg.render(_test_for(arg)))
                 cmd_placeholders.append(arg)
@@ -191,7 +244,7 @@ class StepApi(RecipeApi):
         result.finalize()
         # Pushed before the failure is raised, so a recipe can still read the
         # failing step's result from `active_result` in a `finally`.
-        self._step_stack.push(result)
+        self._step_stack.push(result, name_tokens)
 
         if check and retcode != 0:
             raise subprocess.CalledProcessError(retcode,
