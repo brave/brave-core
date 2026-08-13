@@ -12,10 +12,17 @@ import logging
 from pathlib import Path
 import subprocess
 
+from engine_types import ResourceCost as _ResourceCost
 from recipe_api import (InputPlaceholder, OutputPlaceholder, Placeholder,
                         RecipeApi)
 from recipe_test_api import PlaceholderTestData, StepTestData
+from resource_semaphore import ResourceWaiter
 from step_data import StepData
+
+# _UNSET_COST means "the caller said nothing about cost", and the default,
+# which is also different from an explicit `cost=None`, which opts the step out
+# of admission control entirely.
+_UNSET_COST = object()
 
 
 class StepApi(RecipeApi):
@@ -46,6 +53,67 @@ class StepApi(RecipeApi):
         # Lazily-created production runner (unused in test mode, where the
         # engine seeds `self._test.step_runner`).
         self._prod_runner = None
+        # Admission control for steps that declare a `cost`, sized from the
+        # host in initialise().
+        self._resource: ResourceWaiter | None = None
+
+    def initialise(self) -> None:
+        self._resource = ResourceWaiter(
+            self.m.platform.cpu_count * self.CPU_CORE,
+            self.m.platform.total_memory)
+
+    def ResourceCost(self,
+                     cpu: int = 500,
+                     memory: int = 50,
+                     disk: int = 0,
+                     net: int = 0) -> _ResourceCost:
+        """A structure defining the resources that a given step may need.
+
+        The four resources are:
+
+          * cpu (measured in millicores): The amount of cpu the step is expected
+            to take. Defaults to 500.
+          * memory (measured in MiB): The amount of memory the step is expected
+            to take. Defaults to 50.
+          * disk (as percentage of max disk bandwidth): The amount of "disk
+            bandwidth" the step is expected to take. This is a very simplified
+            percentage covering IOPS, read/write bandwidth, seek time, etc. At
+            100, the step will run exclusively w.r.t. all other steps having a
+            `disk` cost. At 0, the step will run regardless of other steps with
+            disk cost.
+          * net (as percentage of max net bandwidth): The amount of "net
+            bandwidth" the step is expected to take. As `disk`, but for the
+            network.
+
+        A step will run when ALL of the resources are simultaneously available.
+        The engine uses a greedy scheduling algorithm for picking the next step
+        to run: if several are waiting, it picks the largest which fits the
+        currently available resources.
+
+        A value higher than the machine's maximum is equivalent to that maximum,
+        so a step declaring more memory than the host has still runs -- on its
+        own.
+
+        Returns:
+            A `ResourceCost` suitable for `api.step(...)`'s `cost` kwarg.
+            Passing `None` as the cost is equivalent to
+            `ResourceCost(0, 0, 0, 0)`.
+        """
+        return _ResourceCost(min(cpu, self.MAX_CPU),
+                             min(memory, self.MAX_MEMORY), disk, net)
+
+    # The number of millicores in a single CPU core.
+    CPU_CORE = 1000
+
+    @property
+    def MAX_CPU(self) -> int:
+        """The maximum number of millicores this system has."""
+        return self.m.platform.cpu_count * self.CPU_CORE
+
+    @property
+    def MAX_MEMORY(self) -> int:
+        """The maximum amount of memory on the system, in MiB."""
+        return self.m.platform.total_memory
 
     @property
     def active_result(self) -> StepData | None:
@@ -134,6 +202,7 @@ class StepApi(RecipeApi):
         stdin: InputPlaceholder | None = None,
         stdout: OutputPlaceholder | None = None,
         stderr: OutputPlaceholder | None = None,
+        cost: _ResourceCost | None = _UNSET_COST,
         step_test_data: Callable[[], StepTestData] | None = None,
     ) -> StepData:
         """Run *cmd* as the step named *name*.
@@ -159,6 +228,12 @@ class StepApi(RecipeApi):
                 returned `StepData`'s `stdout`. Left unset, the command
                 inherits this process's stdout.
             stderr: As *stdout*, for standard error.
+            cost: What the step is expected to consume, from
+                `api.step.ResourceCost(...)`. The step waits until the machine
+                has room for all of it at once, so several expensive steps
+                cannot overwhelm the host. Defaults to `ResourceCost()` (half a
+                core, 50 MiB) for a step with a command, and to nothing for a
+                command-less one. Pass `None` to opt out of admission control.
             step_test_data: A zero-argument callable returning the
                 `StepTestData` this step should default to under simulation, so
                 the common case needs no per-test seeding, e.g.
@@ -222,7 +297,23 @@ class StepApi(RecipeApi):
             'env_suffixes': context.env_suffixes,
         }
         logging.info('[step] %s\n >>>> %s', name, ' '.join(rendered_cmd))
-        retcode = runner.run(step, handles)
+
+        def _if_blocking(needed: _ResourceCost) -> None:
+            # Only reached when a step actually queues, which a simulated run
+            # never does: a simulated step completes without yielding, so two
+            # of them never hold resources at once. `ResourceWaiter` itself is
+            # covered by `unittests/resource_semaphore_test.py`, which runs
+            # greenlets that really do block.
+            logging.info(  # pragma: no cover
+                '[step] %s waiting for resources: %s', name, needed)
+
+        # A command-less step runs nothing, so it consumes nothing and must
+        # never queue; anything else takes the default cost unless the caller
+        # said otherwise.
+        if cost is _UNSET_COST:
+            cost = None if not rendered_cmd else self.ResourceCost()
+        with self._resource.wait_for(cost, _if_blocking):
+            retcode = runner.run(step, handles)
 
         # Resolve placeholders before reporting a failure, so that a failing
         # step still cleans up its input files and still reports whatever
