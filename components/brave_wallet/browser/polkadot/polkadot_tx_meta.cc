@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_tx_meta.h"
 
-#include "base/logging.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
