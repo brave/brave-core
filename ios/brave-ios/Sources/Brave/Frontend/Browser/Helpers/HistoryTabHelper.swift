@@ -5,7 +5,7 @@
 
 import BraveCore
 import Shared
-@_spi(ChromiumWebViewAccess) import Web
+import Web
 
 extension TabDataValues {
   private struct HistoryTabHelperKey: TabDataKey {
@@ -21,6 +21,7 @@ public class HistoryTabHelper: TabObserver {
 
   private weak var tab: (any TabState)?
   private let historyAPI: BraveHistoryAPI
+  private var lastRecordedTitle: String?
 
   public init(
     tab: some TabState,
@@ -57,7 +58,8 @@ public class HistoryTabHelper: TabObserver {
   public func tabDidChangeTitle(_ tab: some TabState) {
     guard let title = (tab.title?.isEmpty == true ? tab.visibleURL?.absoluteString : tab.title)
     else { return }
-    if !title.isEmpty && title != tab.lastTitle {
+    if !title.isEmpty && title != lastRecordedTitle {
+      lastRecordedTitle = title
       recordHistoryIfNeeded(for: tab)
     }
   }
