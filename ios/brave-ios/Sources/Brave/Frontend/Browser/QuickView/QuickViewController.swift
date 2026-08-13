@@ -214,6 +214,14 @@ class QuickViewController: UIViewController {
         break
       }
     }
+    toolbarViewModel.onTappedCollapsedBarTopArea = { [weak self] in
+      guard let self else { return }
+      if self.isKeyboardVisible {
+        self.view.endEditing(true)
+      } else {
+        self.toolbarVisibilityViewModel.toolbarState = .expanded
+      }
+    }
   }
 
   private func setupUI() {
