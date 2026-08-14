@@ -11,7 +11,9 @@ declare_args() {
   # Enables unclocking wallet with passoword set by command line.
   # Only for dev builds.
   enable_brave_wallet_dev_cmd_line_unlock = false
+}
 
+declare_args() {
   # MetaMask Snaps support is desktop-only.
   enable_snaps = enable_brave_wallet && !is_android && !is_ios
 }
