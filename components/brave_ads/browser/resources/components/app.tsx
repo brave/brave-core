@@ -10,6 +10,7 @@ import Icon from '@brave/leo/react/icon'
 import { useRoute, useRouter } from '../lib/router'
 import { Conversions } from './conversions'
 import { Events } from './events'
+import { Diagnostics } from './diagnostics'
 import { ClearAdsDataButton } from './clear_ads_data_button'
 import * as routes from '../lib/app_routes'
 
@@ -17,7 +18,7 @@ import { style } from './app.style'
 
 function NavList() {
   const router = useRouter()
-  const currentRoute = useRoute() || routes.conversions
+  const currentRoute = useRoute() || routes.diagnostics
 
   function onLinkClick(event: React.MouseEvent<HTMLAnchorElement>) {
     if (event.defaultPrevented || event.button !== 0 ||
@@ -46,6 +47,7 @@ function NavList() {
 
   return (
     <ul>
+      <li>{renderLink(routes.diagnostics, 'Diagnostics')}</li>
       <li>{renderLink(routes.conversions, 'Conversions')}</li>
       <li>{renderLink(routes.events, 'Events')}</li>
     </ul>
@@ -62,10 +64,12 @@ export function App() {
 
   function renderContent() {
     switch (route) {
+      case routes.conversions:
+        return <Conversions />
       case routes.events:
         return <Events />
       default:
-        return <Conversions />
+        return <Diagnostics />
     }
   }
 

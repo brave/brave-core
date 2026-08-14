@@ -197,6 +197,8 @@ interface AdsInternals {
   CreateAdsInternalsPageHandler(pending_remote<AdsInternalsPage> page);
   GetAdsInternals() => (string response);
   ClearAdsData() => (bool success);
+  GetDiagnostics() => (string response);
+  SetDiagnosticId(string diagnostic_id);
 };
 
 interface AdsInternalsPage {
