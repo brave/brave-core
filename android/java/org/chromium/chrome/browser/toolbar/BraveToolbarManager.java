@@ -622,23 +622,28 @@ public class BraveToolbarManager extends ToolbarManager
     @Override
     protected boolean shouldSuppressToolbarLongPress() {
         return shouldSuppressToolbarLongPressForTab(
-                super.shouldSuppressToolbarLongPress(), mLocationBarModel.getTab());
+                super.shouldSuppressToolbarLongPress(),
+                mLocationBarModel.getTab(),
+                mOmniboxFocusStateSupplier.get());
     }
 
     /**
      * Upstream suppresses the address bar long press menu on the standard NTP, where the address
      * bar is replaced by the NTP fakebox. Brave's NTP keeps the real address bar, so the menu - and
-     * with it the "Move address bar to the bottom/top" item - stays available there.
+     * with it the "Move address bar to the bottom/top" item - stays available there. While the
+     * address bar is focused it is being edited, so the upstream suppression stands.
      *
      * @param suppressedByUpstream what {@link ToolbarManager#shouldSuppressToolbarLongPress()}
      *     decided for the current state.
      * @param tab the tab the address bar is currently showing, may be null.
+     * @param isOmniboxFocused whether the address bar is currently focused.
      * @return whether the address bar long press menu should be suppressed.
      */
     @VisibleForTesting
     static boolean shouldSuppressToolbarLongPressForTab(
-            boolean suppressedByUpstream, @Nullable Tab tab) {
+            boolean suppressedByUpstream, @Nullable Tab tab, boolean isOmniboxFocused) {
         if (suppressedByUpstream
+                && !isOmniboxFocused
                 && tab != null
                 && tab.getUrl() != null
                 && UrlUtilities.isNtpUrl(tab.getUrl())) {
