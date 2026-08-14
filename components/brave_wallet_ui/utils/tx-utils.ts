@@ -90,6 +90,12 @@ export type CardanoTransactionInfo = TransactionInfo & {
   }
 }
 
+export type PolkadotTransactionInfo = TransactionInfo & {
+  txDataUnion: Omit<TxDataUnionAllUndefined, 'polkadotTxData'> & {
+    polkadotTxData: BraveWallet.PolkadotTxdata
+  }
+}
+
 export interface ParsedTransactionFees {
   gasLimit: string
   gasPrice: string
@@ -292,7 +298,7 @@ export function isEthereumTransaction(
 
 export function isPolkadotTransaction(
   tx?: Pick<TransactionInfo, 'txDataUnion'>,
-) {
+): tx is PolkadotTransactionInfo {
   if (!tx) {
     return false
   }

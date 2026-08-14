@@ -307,13 +307,21 @@ void PolkadotWalletService::OnGenerateTransferForFee(
   polkadot_substrate_rpc_.GetPaymentInfo(
       chain_id, metadata->extrinsic(),
       base::BindOnce(&PolkadotWalletService::OnEstimatedFee,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+                     weak_ptr_factory_.GetWeakPtr(),
+                     metadata->signature_payload(), std::move(callback)));
 }
 
 void PolkadotWalletService::OnEstimatedFee(
+    std::vector<uint8_t> signature_payload,
     GetFeeEstimateCallback callback,
     base::expected<uint128_t, std::string> partial_fee) {
-  std::move(callback).Run(std::move(partial_fee));
+  if (!partial_fee.has_value()) {
+    return std::move(callback).Run(
+        base::unexpected(std::move(partial_fee.error())));
+  }
+
+  std::move(callback).Run(
+      FeeEstimate{partial_fee.value(), std::move(signature_payload)});
 }
 
 void PolkadotWalletService::OnGetChainMetadataForValidateAddress(

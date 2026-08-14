@@ -1375,9 +1375,14 @@ TEST_F(PolkadotWalletServiceUnitTest, GetFeeEstimate) {
       std::variant<uint128_t, TransferAll>(uint128_t{1234}), std::nullopt,
       recipient_pubkey,
       base::BindLambdaForTesting(
-          [=](base::expected<uint128_t, std::string> partial_fee) {
-            ASSERT_TRUE(partial_fee.has_value());
-            EXPECT_EQ(partial_fee.value(), uint128_t{15937408476ull});
+          [=](base::expected<PolkadotWalletService::FeeEstimate, std::string>
+                  fee_estimate) {
+            ASSERT_TRUE(fee_estimate.has_value());
+            EXPECT_EQ(fee_estimate->partial_fee, uint128_t{15937408476ull});
+
+            // The payload the user would be signing is generated even though
+            // this run only used a dummy signature.
+            EXPECT_FALSE(fee_estimate->signature_payload.empty());
             quit.Run();
           }));
 
@@ -1413,8 +1418,93 @@ TEST_F(PolkadotWalletServiceUnitTest, GetFeeEstimate_NetworkFailure) {
       std::variant<uint128_t, TransferAll>(uint128_t{1234}), std::nullopt,
       recipient_pubkey,
       base::BindLambdaForTesting(
-          [=](base::expected<uint128_t, std::string> partial_fee) {
-            ASSERT_FALSE(partial_fee.has_value());
+          [=](base::expected<PolkadotWalletService::FeeEstimate, std::string>
+                  fee_estimate) {
+            ASSERT_FALSE(fee_estimate.has_value());
+            quit.Run();
+          }));
+
+  run_loop.Run();
+}
+
+TEST_F(PolkadotWalletServiceUnitTest, GetFeeEstimate_PaymentInfoFailure) {
+  // Test that our wallet service handles the case were the RPC layer surfaces
+  // an error.
+
+  auto polkadot_mock_rpc = std::make_unique<PolkadotMockRpc>(
+      &url_loader_factory_, network_manager_.get());
+
+  auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
+      *keyring_service_, *network_manager_, prefs_,
+      url_loader_factory_.GetSafeWeakWrapper());
+
+  UnlockWallet();
+
+  polkadot_mock_rpc->RejectPaymentInfoRequest();
+  polkadot_mock_rpc->AddReqResPairs();
+  polkadot_mock_rpc->FinalizeSetup();
+
+  // We opt into using a manual RunLoop here because of the limitations around
+  // base::test::TestFuture and uint128_t.
+  base::RunLoop run_loop;
+  auto quit = run_loop.QuitClosure();
+
+  std::string chain_id = mojom::kPolkadotTestnet;
+
+  std::array<uint8_t, kPolkadotSubstrateAccountIdSize> recipient_pubkey = {};
+  EXPECT_TRUE(base::HexStringToSpan(kBob, recipient_pubkey));
+
+  polkadot_wallet_service->GetFeeEstimate(
+      chain_id, polkadot_testnet_account_->account_id->Clone(),
+      std::variant<uint128_t, TransferAll>(uint128_t{1234}), std::nullopt,
+      recipient_pubkey,
+      base::BindLambdaForTesting(
+          [=](base::expected<PolkadotWalletService::FeeEstimate, std::string>
+                  fee_estimate) {
+            ASSERT_FALSE(fee_estimate.has_value());
+            EXPECT_EQ(fee_estimate.error(), WalletInternalErrorMessage());
+            quit.Run();
+          }));
+
+  run_loop.Run();
+}
+
+TEST_F(PolkadotWalletServiceUnitTest, GetFeeEstimate_NullPaymentInfo) {
+  // Test that our wallet service handles the case where the RPC returns null
+  // during fee estimation.
+
+  auto polkadot_mock_rpc = std::make_unique<PolkadotMockRpc>(
+      &url_loader_factory_, network_manager_.get());
+
+  auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
+      *keyring_service_, *network_manager_, prefs_,
+      url_loader_factory_.GetSafeWeakWrapper());
+
+  UnlockWallet();
+
+  polkadot_mock_rpc->ReturnNullPaymentInfo();
+  polkadot_mock_rpc->AddReqResPairs();
+  polkadot_mock_rpc->FinalizeSetup();
+
+  // We opt into using a manual RunLoop here because of the limitations around
+  // base::test::TestFuture and uint128_t.
+  base::RunLoop run_loop;
+  auto quit = run_loop.QuitClosure();
+
+  std::string chain_id = mojom::kPolkadotTestnet;
+
+  std::array<uint8_t, kPolkadotSubstrateAccountIdSize> recipient_pubkey = {};
+  EXPECT_TRUE(base::HexStringToSpan(kBob, recipient_pubkey));
+
+  polkadot_wallet_service->GetFeeEstimate(
+      chain_id, polkadot_testnet_account_->account_id->Clone(),
+      std::variant<uint128_t, TransferAll>(uint128_t{1234}), std::nullopt,
+      recipient_pubkey,
+      base::BindLambdaForTesting(
+          [=](base::expected<PolkadotWalletService::FeeEstimate, std::string>
+                  fee_estimate) {
+            ASSERT_FALSE(fee_estimate.has_value());
+            EXPECT_EQ(fee_estimate.error(), WalletParsingErrorMessage());
             quit.Run();
           }));
 

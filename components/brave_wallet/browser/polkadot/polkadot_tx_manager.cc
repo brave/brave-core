@@ -128,6 +128,8 @@ void PolkadotTxManager::OnApprovePolkadotTransaction(
     auto* tx = tx_meta->tx();
     CHECK(tx);
 
+    // Replace the payload we estimated with the one that was actually signed.
+    tx->set_signature_payload(extrinsic_metadata.signature_payload());
     tx->set_extrinsic_metadata(extrinsic_metadata);
   }
 
@@ -221,8 +223,9 @@ void PolkadotTxManager::OnGetFeeForUnapproved(
     PolkadotChainMetadata chain_metadata,
     mojom::NewPolkadotTransactionParamsPtr params,
     AddUnapprovedPolkadotTransactionCallback callback,
-    base::expected<uint128_t, std::string> partial_fee) {
-  if (!partial_fee.has_value()) {
+    base::expected<PolkadotWalletService::FeeEstimate, std::string>
+        fee_estimate) {
+  if (!fee_estimate.has_value()) {
     return std::move(callback).Run(false, "", WalletInternalErrorMessage());
   }
 
@@ -242,7 +245,7 @@ void PolkadotTxManager::OnGetFeeForUnapproved(
     // manually adjust this and if our fee is larger than our max send amount,
     // we can go ahead and reject the transaction.
     base::CheckedNumeric<uint128_t> checked_amount = amount;
-    checked_amount -= partial_fee.value();
+    checked_amount -= fee_estimate->partial_fee;
     if (!checked_amount.AssignIfValid(&amount)) {
       return std::move(callback).Run(false, "",
                                      WalletInsufficientBalanceErrorMessage());
@@ -253,9 +256,10 @@ void PolkadotTxManager::OnGetFeeForUnapproved(
 
   PolkadotTransaction tx;
   tx.set_amount(amount);
-  tx.set_fee(partial_fee.value());
+  tx.set_fee(fee_estimate->partial_fee);
   tx.set_recipient(*recipient);
   tx.set_transfer_all(params->sending_max_amount);
+  tx.set_signature_payload(std::move(fee_estimate->signature_payload));
   if (!params->asset_id.is_null()) {
     tx.set_asset_id(params->asset_id->id);
   }

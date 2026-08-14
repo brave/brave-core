@@ -22,6 +22,7 @@ import { getLocale } from '../../../../common/locale'
 import {
   getTransactionTypeName,
   isCardanoTransaction,
+  isPolkadotTransaction,
 } from '../../../utils/tx-utils'
 import { numberArrayToHexStr } from '../../../utils/hex-utils'
 import { findAccountByAddress } from '../../../utils/account-utils'
@@ -48,6 +49,10 @@ interface Props {
 
 interface CardanoTransactionDetailsProps {
   cardanoTxData: BraveWallet.CardanoTxData
+}
+
+interface PolkadotTransactionDetailsProps {
+  polkadotTxData: BraveWallet.PolkadotTxdata
 }
 
 function CardanoTransactionDetails({
@@ -123,6 +128,39 @@ function CardanoTransactionDetails({
   )
 }
 
+function PolkadotTransactionDetails({
+  polkadotTxData,
+}: PolkadotTransactionDetailsProps) {
+  if (!polkadotTxData.signaturePayload) {
+    return (
+      <StyledWrapper>
+        <Column
+          width='100%'
+          padding='24px'
+        >
+          <NoDataText>
+            {getLocale('braveWalletConfirmTransactionNoData')}
+          </NoDataText>
+        </Column>
+      </StyledWrapper>
+    )
+  }
+
+  return (
+    <StyledWrapper>
+      <DetailColumn
+        width='100%'
+        padding='24px'
+      >
+        <LabelText>
+          {getLocale('braveWalletConfirmTransactionPolkadotSignaturePayload')}:
+        </LabelText>
+        <DetailText>{polkadotTxData.signaturePayload}</DetailText>
+      </DetailColumn>
+    </StyledWrapper>
+  )
+}
+
 export function PendingTransactionDetails(props: Props) {
   const { transactionInfo, instructions } = props
   const { txArgs, txParams, txType, txDataUnion } = transactionInfo
@@ -192,6 +230,14 @@ export function PendingTransactionDetails(props: Props) {
     return (
       <CardanoTransactionDetails
         cardanoTxData={transactionInfo.txDataUnion.cardanoTxData}
+      />
+    )
+  }
+
+  if (isPolkadotTransaction(transactionInfo)) {
+    return (
+      <PolkadotTransactionDetails
+        polkadotTxData={transactionInfo.txDataUnion.polkadotTxData}
       />
     )
   }

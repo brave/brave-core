@@ -320,6 +320,14 @@ void PolkadotMockRpc::RejectAccountInfoRequest() {
   reject_account_info_request_ = true;
 }
 
+void PolkadotMockRpc::RejectPaymentInfoRequest() {
+  reject_payment_info_request_ = true;
+}
+
+void PolkadotMockRpc::ReturnNullPaymentInfo() {
+  null_payment_info_ = true;
+}
+
 void PolkadotMockRpc::RejectInitialChainHeader() {
   reject_initial_chain_header_ = true;
 }
@@ -1262,6 +1270,18 @@ bool PolkadotMockRpc::HandlePaymentInfoRequest(
           EXPECT_NE(extrinsic.find(base::HexEncodeLower(
                         std::vector<uint8_t>(1 + 64, 0x01))),
                     std::string::npos);
+
+          if (reject_payment_info_request_) {
+            url_loader_factory_->AddResponse(req.url.spec(),
+                                             std::string(kRpcErrorResponse));
+            return true;
+          }
+
+          if (null_payment_info_) {
+            url_loader_factory_->AddResponse(req.url.spec(),
+                                             std::string(kNullResultResponse));
+            return true;
+          }
 
           url_loader_factory_->AddResponse(
               req.url.spec(),
