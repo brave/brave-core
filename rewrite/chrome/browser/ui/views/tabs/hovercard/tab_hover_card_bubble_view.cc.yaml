@@ -3,16 +3,13 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-substitutions:
-  - description: |
-      Add BraveTabCardView as a friend class to TabCardView
+blank_metadata_header_macros: true
 
-      As TabCardView is a inner class of TabHoverCardBubbleView, we need use
-      `regex` instead of `add_to_friend`.
-    regex:
-      re_pattern: '(class TabHoverCardBubbleView::TabCardView.*?{)'
-      re_flags: [DOTALL]
-      replace: \1\n  friend class BraveTabCardView;
+substitutions:
+  - description: Add BraveTabCardView as a friend class to TabCardView
+    add_friend:
+      class_name: TabHoverCardBubbleView::TabCardView
+      friend_type: class BraveTabCardView
 
   - description: |
       Replace std::make_unique<TabCardView> with a factory method.
