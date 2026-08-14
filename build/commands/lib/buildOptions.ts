@@ -188,8 +188,8 @@ export function supportExtraNinjaOptions<
 }
 
 type OptionsOf<
-  Add extends (command: Command<[], {}, {}>) => Command<any, any, any>,
-> = ReturnType<Add> extends Command<any, infer Options, any> ? Options : never
+  F extends (command: Command<[], {}, {}>) => Command<any, any, any>,
+> = ReturnType<F> extends Command<any, infer Options, any> ? Options : never
 
 export type BuildDirOptions = OptionsOf<typeof supportBuildDir>
 export type TargetConfigOptions = OptionsOf<typeof supportTargetConfig>
