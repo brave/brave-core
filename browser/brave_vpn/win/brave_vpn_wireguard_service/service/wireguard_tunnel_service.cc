@@ -6,8 +6,10 @@
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/service/wireguard_tunnel_service.h"
 
 #include <array>
+#include <memory>
 #include <optional>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "base/base64.h"
@@ -16,17 +18,21 @@
 #include "base/containers/span.h"
 #include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
+#include "base/functional/bind.h"
 #include "base/logging.h"
 #include "base/memory/raw_ref.h"
 #include "base/path_service.h"
 #include "base/rand_util.h"
 #include "base/scoped_native_library.h"
 #include "base/strings/utf_string_conversions.h"
+#include "base/synchronization/lock.h"
+#include "base/thread_annotations.h"
 #include "base/win/access_control_list.h"
 #include "base/win/scoped_handle.h"
 #include "base/win/security_descriptor.h"
 #include "base/win/sid.h"
 #include "base/win/windows_types.h"
+#include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/service/wireguard_firewall.h"
 #include "brave/browser/brave_vpn/win/service_commands.h"
 #include "brave/browser/brave_vpn/win/service_constants.h"
 #include "brave/browser/brave_vpn/win/service_details.h"
@@ -133,6 +139,34 @@ std::optional<base::FilePath> WriteConfigToFile(const std::string& config) {
   scoped_temp_dir.Take();
   return temp_file_path;
 }
+
+// Owns the firewall for the lifetime of the tunnel. Install() runs on an OS
+// worker thread from TunnelInterfaceWatcher, so the pointer is guarded.
+class ScopedFirewallHolder {
+ public:
+  ScopedFirewallHolder() = default;
+  ScopedFirewallHolder(const ScopedFirewallHolder&) = delete;
+  ScopedFirewallHolder& operator=(const ScopedFirewallHolder&) = delete;
+  ~ScopedFirewallHolder() = default;
+
+  void Install(const NET_LUID& tunnel_luid) {
+    auto firewall = wireguard::ScopedWireguardFirewall::Create(tunnel_luid);
+    if (!firewall) {
+      // Fail closed. Running the tunnel with no firewall would leak traffic
+      // and DNS outside it, so stop the tunnel instead.
+      VLOG(1) << "Failed to install the WireGuard firewall, stopping tunnel";
+      wireguard::RequestTunnelShutdown();
+      return;
+    }
+    base::AutoLock auto_lock(lock_);
+    firewall_ = std::move(firewall);
+  }
+
+ private:
+  base::Lock lock_;
+  std::unique_ptr<wireguard::ScopedWireguardFirewall> firewall_
+      GUARDED_BY(lock_);
+};
 
 bool IsServiceRunning(SC_HANDLE service) {
   SERVICE_STATUS service_status = {0};
@@ -349,6 +383,22 @@ int RunWireguardTunnelService(const base::FilePath& config_file_path) {
               << tunnel_lib.GetError()->ToString();
       return S_FALSE;
     }
+    // Our config routes no default route, so tunnel.dll installs none of its
+    // own WFP filters (see wireguard_utils.cc). Install ours as soon as it
+    // brings the adapter up. `firewall` is declared before `watcher` so the
+    // watcher is torn down first, and its destructor waits for any in-flight
+    // callback before returning.
+    ScopedFirewallHolder firewall;
+    auto watcher = TunnelInterfaceWatcher::Create(
+        GetTunnelInterfaceAlias(config_path),
+        base::BindOnce(&ScopedFirewallHolder::Install,
+                       base::Unretained(&firewall)));
+    if (!watcher) {
+      VLOG(1) << "Unable to watch for the tunnel adapter, refusing to connect "
+                 "without a firewall";
+      return S_FALSE;
+    }
+
     // Show system notification about connected vpn.
     brave_vpn::RunWireGuardCommandForUsers(
         brave_vpn::kBraveVpnWireguardServiceNotifyConnectedSwitchName);

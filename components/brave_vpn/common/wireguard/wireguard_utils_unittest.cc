@@ -219,12 +219,14 @@ TEST(BraveVPNWireGuardUtilsUnitTest, CreateWireguardConfig) {
   EXPECT_EQ(config.find('{'), std::string::npos);
 }
 
-TEST(BraveVPNWireGuardUtilsUnitTest, WireguardConfigExcludesLocalNetworks) {
+TEST(BraveVPNWireGuardUtilsUnitTest, WireguardConfigHasNoDefaultRoute) {
   auto allowed_ips = GetAllowedIPs(CreateTestConfig());
-  ASSERT_FALSE(allowed_ips.empty());
+  EXPECT_THAT(allowed_ips, testing::ElementsAre("0.0.0.0/1", "128.0.0.0/1",
+                                                "::/1", "8000::/1"));
 
-  // A default route would make tunnel.dll install its blockAll/blockDNS WFP
-  // filters, which block the local network regardless of the routing table.
+  // A default route makes tunnel.dll install its own blockAll/blockDNS WFP
+  // filters, which block the local network. We install our own filter set
+  // instead, so no prefix here may be a /0.
   for (const auto& allowed_ip : allowed_ips) {
     net::IPAddress prefix;
     size_t prefix_length = 0;
@@ -233,33 +235,13 @@ TEST(BraveVPNWireGuardUtilsUnitTest, WireguardConfigExcludesLocalNetworks) {
     EXPECT_NE(prefix_length, 0u) << allowed_ip;
   }
 
-  // Local networks stay reachable while connected.
-  constexpr const char* kLocalAddresses[] = {
-      "10.0.0.1",
-      "10.255.255.255",
-      "172.16.0.1",
-      "172.31.255.254",
-      "192.168.1.5",
-      "169.254.1.1",
-      // Multicast: mDNS and SSDP discovery, plus the broadcast address.
-      "224.0.0.251",
-      "239.255.255.250",
-      "255.255.255.255",
-      "fd00::1",
-      "fc00::1",
-      "fe80::1",
-      "ff02::fb",
-  };
-  for (const auto* address : kLocalAddresses) {
-    EXPECT_FALSE(IsRoutedIntoTunnel(allowed_ips, address)) << address;
-  }
-
-  // Everything else still goes through the tunnel, including the addresses
-  // adjacent to each excluded range.
+  // Splitting the default route must not shrink coverage: everything still
+  // routes into the tunnel, in both halves of both address families.
   constexpr const char* kTunneledAddresses[] = {
-      "1.1.1.1",         "8.8.8.8",     "9.255.255.255",   "11.0.0.1",
-      "172.15.255.254",  "172.32.0.1",  "169.253.255.254", "169.255.0.1",
-      "192.167.255.254", "192.169.0.1", "223.255.255.255", "2606:4700::1",
+      "0.0.0.1",   "1.1.1.1",      "8.8.8.8",     "127.255.255.1",
+      "128.0.0.1", "192.168.1.5",  "224.0.0.251", "255.255.255.255",
+      "::1",       "2606:4700::1", "fd00::1",     "fe80::1",
+      "ff02::fb",
   };
   for (const auto* address : kTunneledAddresses) {
     EXPECT_TRUE(IsRoutedIntoTunnel(allowed_ips, address)) << address;
