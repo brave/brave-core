@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "base/check.h"
+#include "base/notreached.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
@@ -71,27 +72,66 @@ void ZCashCompleteTransactionTask::WorkOnTask() {
     return;
   }
 
-  if (!transaction_.v5_part().orchard.inputs.empty() ||
-      !transaction_.v5_part().orchard.outputs.empty()) {
-    if (!transaction_.v5_part().orchard.anchor_block_height.has_value()) {
-      error_ = "Anchor not selected";
-      ScheduleWorkOnTask();
-      return;
-    }
+  if (!transaction_.is_v6()) {
+    // v5: process legacy Orchard pool.
+    if (!transaction_.v5_part().orchard.inputs.empty() ||
+        !transaction_.v5_part().orchard.outputs.empty()) {
+      if (!transaction_.v5_part().orchard.anchor_block_height.has_value()) {
+        error_ = "Anchor not selected";
+        ScheduleWorkOnTask();
+        return;
+      }
 
-    if (!witness_inputs_) {
-      CalculateWitness();
-      return;
-    }
+      if (!witness_inputs_) {
+        CalculateWitness();
+        return;
+      }
 
-    if (!anchor_tree_state_) {
-      GetTreeState();
-      return;
-    }
+      if (!anchor_tree_state_) {
+        GetTreeState();
+        return;
+      }
 
-    if (!transaction_.v5_part().orchard.raw_tx) {
-      SignOrchardPart();
-      return;
+      if (!transaction_.v5_part().orchard.raw_tx) {
+        SignOrchardPart();
+        return;
+      }
+    }
+  } else {
+    // v6: build an unauthorized bundle (+digest) for every non-empty pool,
+    // then sign them together — the ZIP-246 sighash covers both pool
+    // digests.
+    for (OrchardPool pool : {OrchardPool::kOrchard, OrchardPool::kIronwood}) {
+      auto& shielded = PoolRefV6(pool);
+      if (shielded.inputs.empty() && shielded.outputs.empty()) {
+        continue;
+      }
+      if (!shielded.anchor_block_height.has_value()) {
+        error_ = "Anchor not selected";
+        ScheduleWorkOnTask();
+        return;
+      }
+      auto& state = v6_signing_state_[pool];
+      if (!state.witness_done) {
+        CalculateWitnessV6(pool);
+        return;
+      }
+      if (!state.tree_state) {
+        GetTreeStateV6(pool);
+        return;
+      }
+      if (!shielded.digest) {
+        BuildOrchardBundleV6(pool);
+        return;
+      }
+    }
+    // Every non-empty pool now has a digest; sign any bundle not yet signed.
+    for (OrchardPool pool : {OrchardPool::kOrchard, OrchardPool::kIronwood}) {
+      if (v6_signing_state_.count(pool) &&
+          v6_signing_state_[pool].bundle_manager && !PoolRefV6(pool).raw_tx) {
+        SignOrchardBundlesV6();
+        return;
+      }
     }
   }
 
@@ -242,7 +282,7 @@ void ZCashCompleteTransactionTask::SignOrchardPart() {
   spends_bundle.inputs = transaction_.v5_part().orchard.inputs;
   auto orchard_bundle_manager = OrchardBundleManager::Create(
       *state_tree_bytes, spends_bundle, transaction_.v5_part().orchard.outputs,
-      OrchardPool::kOrchard, false);
+      OrchardPool::kOrchard, /*is_v6_transaction=*/false);
 
   if (!orchard_bundle_manager) {
     error_ = l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
@@ -274,6 +314,152 @@ void ZCashCompleteTransactionTask::OnSignOrchardPartComplete(
 
   transaction_.v5_part().orchard.raw_tx =
       orchard_bundle_manager->GetRawTxBytes();
+  ScheduleWorkOnTask();
+}
+
+ZCashCompleteTransactionTask::V6PoolSigningState::V6PoolSigningState() =
+    default;
+ZCashCompleteTransactionTask::V6PoolSigningState::~V6PoolSigningState() =
+    default;
+ZCashCompleteTransactionTask::V6PoolSigningState::V6PoolSigningState(
+    V6PoolSigningState&&) = default;
+ZCashCompleteTransactionTask::V6PoolSigningState&
+ZCashCompleteTransactionTask::V6PoolSigningState::operator=(
+    V6PoolSigningState&&) = default;
+
+ZCashTransaction::ShieldedPool& ZCashCompleteTransactionTask::PoolRefV6(
+    OrchardPool pool) {
+  CHECK(transaction_.is_v6());
+  return pool == OrchardPool::kIronwood ? transaction_.v6_part().ironwood
+                                        : transaction_.v6_part().legacy_orchard;
+}
+
+void ZCashCompleteTransactionTask::CalculateWitnessV6(OrchardPool pool) {
+  auto& shielded = PoolRefV6(pool);
+  if (shielded.inputs.empty()) {
+    v6_signing_state_[pool].witness_done = true;
+    ScheduleWorkOnTask();
+    return;
+  }
+  context_.sync_state
+      ->AsyncCall(&OrchardSyncState::CalculateWitnessForCheckpoint)
+      .WithArgs(pool, context_.account_id.Clone(), shielded.inputs,
+                shielded.anchor_block_height.value())
+      .Then(base::BindOnce(
+          &ZCashCompleteTransactionTask::OnWitnessCalculateResultV6,
+          weak_ptr_factory_.GetWeakPtr(), pool));
+}
+
+void ZCashCompleteTransactionTask::OnWitnessCalculateResultV6(
+    OrchardPool pool,
+    base::expected<std::vector<OrchardInput>, OrchardStorage::Error> result) {
+  if (!result.has_value()) {
+    error_ = l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
+    ScheduleWorkOnTask();
+    return;
+  }
+  PoolRefV6(pool).inputs = result.value();
+  v6_signing_state_[pool].witness_done = true;
+  ScheduleWorkOnTask();
+}
+
+void ZCashCompleteTransactionTask::GetTreeStateV6(OrchardPool pool) {
+  context_.zcash_rpc->GetTreeState(
+      context_.chain_id,
+      zcash::mojom::BlockID::New(PoolRefV6(pool).anchor_block_height.value(),
+                                 std::vector<uint8_t>({})),
+      base::BindOnce(&ZCashCompleteTransactionTask::OnGetTreeStateV6,
+                     weak_ptr_factory_.GetWeakPtr(), pool));
+}
+
+void ZCashCompleteTransactionTask::OnGetTreeStateV6(
+    OrchardPool pool,
+    base::expected<zcash::mojom::TreeStatePtr, std::string> result) {
+  if (!result.has_value()) {
+    error_ = l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
+    ScheduleWorkOnTask();
+    return;
+  }
+  v6_signing_state_[pool].tree_state = std::move(result.value());
+  ScheduleWorkOnTask();
+}
+
+void ZCashCompleteTransactionTask::BuildOrchardBundleV6(OrchardPool pool) {
+  auto& state = v6_signing_state_[pool];
+  auto& shielded = PoolRefV6(pool);
+
+  const std::string& tree_hex = (pool == OrchardPool::kIronwood)
+                                    ? state.tree_state.value()->ironwoodTree
+                                    : state.tree_state.value()->orchardTree;
+  auto state_tree_bytes =
+      PrefixedHexStringToBytes(base::StrCat({"0x", tree_hex}));
+  if (!state_tree_bytes) {
+    error_ = l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
+    ScheduleWorkOnTask();
+    return;
+  }
+  auto fvk = zcash_wallet_service_->keyring_service_->GetOrchardFullViewKey(
+      context_.account_id);
+  auto sk = zcash_wallet_service_->keyring_service_->GetOrchardSpendingKey(
+      context_.account_id);
+  if (!fvk || !sk) {
+    error_ = l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
+    ScheduleWorkOnTask();
+    return;
+  }
+  OrchardSpendsBundle spends_bundle;
+  spends_bundle.sk = *sk;
+  spends_bundle.fvk = *fvk;
+  spends_bundle.inputs = shielded.inputs;
+  auto orchard_bundle_manager = OrchardBundleManager::Create(
+      *state_tree_bytes, spends_bundle, shielded.outputs, pool,
+      /*is_v6_transaction=*/true);
+  if (!orchard_bundle_manager) {
+    error_ = l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
+    ScheduleWorkOnTask();
+    return;
+  }
+  shielded.digest = orchard_bundle_manager->GetOrchardDigest();
+  state.bundle_manager = std::move(orchard_bundle_manager);
+  ScheduleWorkOnTask();
+}
+
+void ZCashCompleteTransactionTask::SignOrchardBundlesV6() {
+  if (!v6_sighash_) {
+    v6_sighash_ = ZCashSerializerUtils::CalculateSignatureDigest(transaction_,
+                                                                 std::nullopt);
+  }
+  for (OrchardPool pool : {OrchardPool::kOrchard, OrchardPool::kIronwood}) {
+    if (!v6_signing_state_.count(pool)) {
+      continue;
+    }
+    auto& state = v6_signing_state_[pool];
+    if (state.bundle_manager && !PoolRefV6(pool).raw_tx) {
+      auto manager = std::move(state.bundle_manager);
+      base::ThreadPool::PostTaskAndReplyWithResult(
+          FROM_HERE, {base::MayBlock()},
+          base::BindOnce(&ApplyOrchardSignatures, std::move(manager),
+                         *v6_sighash_),
+          base::BindOnce(
+              &ZCashCompleteTransactionTask::OnSignOrchardBundleCompleteV6,
+              weak_ptr_factory_.GetWeakPtr(), pool));
+      return;
+    }
+  }
+  // WorkOnTask only calls this once it has found a bundle to sign, so falling
+  // through here would drop `callback_` and hang the task.
+  NOTREACHED();
+}
+
+void ZCashCompleteTransactionTask::OnSignOrchardBundleCompleteV6(
+    OrchardPool pool,
+    std::unique_ptr<OrchardBundleManager> orchard_bundle_manager) {
+  if (!orchard_bundle_manager) {
+    error_ = l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
+    ScheduleWorkOnTask();
+    return;
+  }
+  PoolRefV6(pool).raw_tx = orchard_bundle_manager->GetRawTxBytes();
   ScheduleWorkOnTask();
 }
 
