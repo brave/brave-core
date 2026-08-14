@@ -4,12 +4,16 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "base/feature_override.h"
+#include "build/build_config.h"
 
 #include <components/signin/public/base/signin_switches.cc>
 
 namespace switches {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
+    {kFirstRunDesktopRefresh, base::FEATURE_DISABLED_BY_DEFAULT},
+#endif
     {kSyncEnableBookmarksInTransportMode, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 
