@@ -81,11 +81,16 @@
 		44A8A37B2BADE8D2004D1BF1 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 44A8A37A2BADE8D2004D1BF1 /* PrivacyInfo.xcprivacy */; };
 		44A8A37D2BADE919004D1BF1 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 44A8A37C2BADE919004D1BF1 /* PrivacyInfo.xcprivacy */; };
 		5E15A943302CF3AC00293A68 /* LockScreenLeoVoiceInputWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E15A942302CF3AC00293A68 /* LockScreenLeoVoiceInputWidget.swift */; };
+		712DB4B8D861CEB9E1DA83D4 /* LeoVoiceInputControlWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 721145F892E7556AB0FD17F0 /* LeoVoiceInputControlWidget.swift */; };
+		0234FCDDA586B26AF6B692A1 /* LeoVoiceInputLaunchIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C317F8B5E1DFBCFFB113FA69 /* LeoVoiceInputLaunchIntent.swift */; };
+		35644B42C65B13847CD53BCB /* LeoVoiceInputLaunchIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C317F8B5E1DFBCFFB113FA69 /* LeoVoiceInputLaunchIntent.swift */; };
 		5E8CD8E123D5E3DA00548FC0 /* libarchive.2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E8CD8E023D5E3D100548FC0 /* libarchive.2.tbd */; };
 		5EE5918123A290E000E8E8DE /* CoreNFC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F926647A234D4EF400359492 /* CoreNFC.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7DDE6308292FEC9500B8B585 /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = 7DDE6307292FEC9500B8B585 /* SDWebImage */; };
 		CA0391B4271E1023000EB13C /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CA0391B3271E1023000EB13C /* WidgetKit.framework */; };
 		CA0391B6271E1023000EB13C /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CA0391B5271E1023000EB13C /* SwiftUI.framework */; };
+		F00786AA04CED5C1EB6D0F13 /* AppIntents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B54D10F527776A322FFE9AC /* AppIntents.framework */; };
+		46FF7C73FE43F6ADDD5961DF /* AppIntents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B54D10F527776A322FFE9AC /* AppIntents.framework */; };
 		CA0391B9271E1023000EB13C /* BraveWidgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0391B8271E1023000EB13C /* BraveWidgets.swift */; };
 		CA0391BC271E1026000EB13C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CA0391BB271E1026000EB13C /* Assets.xcassets */; };
 		CA0391E3271E1382000EB13C /* BraveWidgets.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = CA0391E5271E1382000EB13C /* BraveWidgets.intentdefinition */; settings = {ATTRIBUTES = (no_codegen, ); }; };
@@ -439,6 +444,8 @@
 		59B691DE21B6965C00E9388E /* ko-KR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "ko-KR"; path = "ko-KR.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		59B691E921B6966C00E9388E /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		5E15A942302CF3AC00293A68 /* LockScreenLeoVoiceInputWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockScreenLeoVoiceInputWidget.swift; sourceTree = "<group>"; };
+		721145F892E7556AB0FD17F0 /* LeoVoiceInputControlWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeoVoiceInputControlWidget.swift; sourceTree = "<group>"; };
+		C317F8B5E1DFBCFFB113FA69 /* LeoVoiceInputLaunchIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeoVoiceInputLaunchIntent.swift; sourceTree = "<group>"; };
 		5E8CD8E023D5E3D100548FC0 /* libarchive.2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libarchive.2.tbd; path = usr/lib/libarchive.2.tbd; sourceTree = SDKROOT; };
 		7D2697692E7B9AE20058A3DF /* sr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sr; path = "sr-Cyrl.lproj/BraveWidgets.strings"; sourceTree = "<group>"; };
 		7D26976A2E7B9AE20058A3DF /* sr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sr; path = "sr-Cyrl.lproj/Localizable.strings"; sourceTree = "<group>"; };
@@ -491,6 +498,7 @@
 		CA0391B2271E1023000EB13C /* BraveWidgetsExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = BraveWidgetsExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA0391B3271E1023000EB13C /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		CA0391B5271E1023000EB13C /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		6B54D10F527776A322FFE9AC /* AppIntents.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppIntents.framework; path = System/Library/Frameworks/AppIntents.framework; sourceTree = SDKROOT; };
 		CA0391B8271E1023000EB13C /* BraveWidgets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraveWidgets.swift; sourceTree = "<group>"; };
 		CA0391BB271E1026000EB13C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CA0391BD271E1026000EB13C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -586,6 +594,7 @@
 				278852E42ACDC26B005395CF /* Playlist in Frameworks */,
 				0A1DF486244A2ECB00541FE4 /* NetworkExtension.framework in Frameworks */,
 				27466BB1288EDB9C00584C90 /* RuntimeWarnings in Frameworks */,
+				46FF7C73FE43F6ADDD5961DF /* AppIntents.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -632,6 +641,7 @@
 				2787B06A2B7ED260004796F8 /* BraveCore in Frameworks */,
 				27D5907129B7BA1B00AE9989 /* Preferences in Frameworks */,
 				CA0391B4271E1023000EB13C /* WidgetKit.framework in Frameworks */,
+				F00786AA04CED5C1EB6D0F13 /* AppIntents.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -788,6 +798,7 @@
 				E6231C001B90A44F005ABB0D /* libz.tbd */,
 				CA0391B3271E1023000EB13C /* WidgetKit.framework */,
 				CA0391B5271E1023000EB13C /* SwiftUI.framework */,
+				6B54D10F527776A322FFE9AC /* AppIntents.framework */,
 				27262B4C28BEB3D800A2E526 /* Intents.framework */,
 				2FE7D51C2B509DA40039FBA4 /* UniformTypeIdentifiers.framework */,
 				2714EE6A2AF2D4CD002090A9 /* AuthenticationServices.framework */,
@@ -806,6 +817,8 @@
 				27A28ED428C00C19001466A4 /* LockScreenShortcutWidget.swift */,
 				27DB270728BE9CAE005CB7AC /* LockScreenFavoriteWidget.swift */,
 				5E15A942302CF3AC00293A68 /* LockScreenLeoVoiceInputWidget.swift */,
+				721145F892E7556AB0FD17F0 /* LeoVoiceInputControlWidget.swift */,
+				C317F8B5E1DFBCFFB113FA69 /* LeoVoiceInputLaunchIntent.swift */,
 				CA0391F4271E143F000EB13C /* FavoritesWidget.swift */,
 				CA0391F3271E143F000EB13C /* ShortcutsWidget.swift */,
 				CA0391F6271E143F000EB13C /* StatsWidget.swift */,
@@ -1392,6 +1405,8 @@
 			files = (
 				272947E329C8F86A00BF2FDC /* NewsTopicsModel.swift in Sources */,
 				5E15A943302CF3AC00293A68 /* LockScreenLeoVoiceInputWidget.swift in Sources */,
+				712DB4B8D861CEB9E1DA83D4 /* LeoVoiceInputControlWidget.swift in Sources */,
+				0234FCDDA586B26AF6B692A1 /* LeoVoiceInputLaunchIntent.swift in Sources */,
 				278BB9FF297B0A1E00690BE3 /* TopNewsListWidget.swift in Sources */,
 				CA0391FC271E143F000EB13C /* SingleStatWidget.swift in Sources */,
 				27A28ED528C00C1D001466A4 /* LockScreenShortcutWidget.swift in Sources */,
@@ -1420,6 +1435,7 @@
 				CABDE77F2A55DD1C00A388A4 /* AppState.swift in Sources */,
 				CAADEFE026E2707F0020DC4C /* SceneDelegate.swift in Sources */,
 				CAAE653D287C9FCF00FA44A3 /* CPTemplateApplicationSceneDelegate.swift in Sources */,
+				35644B42C65B13847CD53BCB /* LeoVoiceInputLaunchIntent.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

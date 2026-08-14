@@ -18,5 +18,6 @@ struct BraveWidgets: WidgetBundle {
     LockScreenShortcutWidget()
     LockScreenFavoriteWidget()
     LockScreenLeoVoiceInputWidget()
+    LeoVoiceInputControlWidget()
   }
 }
