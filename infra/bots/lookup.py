@@ -53,7 +53,7 @@ class BuilderLookup:
             hint = (' available builders: %s.' %
                     ', '.join(available) if available else '')
             raise BotsError(
-                'builder %r not found under %s; run `bots.py generate` '
+                'builder %r not found under %s; run `bots.py snapshot` '
                 'first, or check the name.%s' %
                 (self.builder_name, gen_paths.BUILDERS_OUTPUT_DIR, hint))
         return json.loads(path.read_text(encoding='utf-8'))

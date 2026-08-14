@@ -25,7 +25,7 @@ def CheckTests(input_api, output_api):
     return input_api.RunTests(tests)
 
 
-def CheckBotsGenerateOutput(input_api, output_api):
+def CheckBotsSnapshotOutput(input_api, output_api):
     """Verifies infra/config/generated/builders/ is up to date.
 
     Mirrors upstream's canned `CheckLucicfgGenOutput`: runs the generator in
@@ -36,8 +36,8 @@ def CheckBotsGenerateOutput(input_api, output_api):
     bots_py = os.path.join(input_api.PresubmitLocalPath(), 'bots', 'bots.py')
     return input_api.RunTests([
         input_api.Command(
-            name='bots.py generate --check',
-            cmd=[input_api.python3_executable, bots_py, 'generate', '--check'],
+            name='bots.py snapshot --check',
+            cmd=[input_api.python3_executable, bots_py, 'snapshot', '--check'],
             kwargs={},
             message=output_api.PresubmitError,
         ),
