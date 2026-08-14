@@ -131,8 +131,12 @@ group("all") {
       "//chrome/test:browser_tests",
     ]
 
-    if (enable_ai_chat && target_os == "linux" && target_cpu == "x64") {
-      deps += [ "//brave/components/ai_chat/resources/shared_conversation_lib" ]
+    if (target_os == "linux" && target_cpu == "x64") {
+      deps += [ "//chrome/test:interactive_ui_tests" ]
+      if (enable_ai_chat) {
+        deps +=
+            [ "//brave/components/ai_chat/resources/shared_conversation_lib" ]
+      }
     }
   }
 
