@@ -1249,6 +1249,50 @@ class RewriterFormsTest(unittest.TestCase):
             '      method_name: Foo\n')
         self.assertEqual(result, 'class C {\n  virtual void Foo();\n};\n')
 
+    def test_make_virtual_on_inline_defined_method(self):
+        # A method defined inline (with a body, not just declared) parses as
+        # a function_definition, not a field_declaration -- the real bug this
+        # covers: `UpdateContent` in tab_hover_card_bubble_view.cc is defined
+        # this way, and make_virtual used to find nothing to match.
+        source = ('class C {\n'
+                  ' public:\n'
+                  '  void UpdateContent(const Data* data) {\n'
+                  '    Apply(data);\n'
+                  '  }\n'
+                  '};\n')
+        result = self._apply(
+            'inline_defined.h', source, 'substitutions:\n'
+            '  - description: make the inline-defined method virtual\n'
+            '    make_virtual:\n'
+            '      class_name: C\n'
+            '      method_name: UpdateContent\n')
+        self.assertEqual(
+            result,
+            source.replace('  void UpdateContent',
+                           '  virtual void UpdateContent'))
+
+    def test_make_virtual_on_inline_defined_method_qualified_nested_class(
+            self):
+        # The real fixture: an out-of-line nested class (needing the fully
+        # qualified `class_name`, per the earlier fix) whose method is also
+        # defined inline (needing this fix), together.
+        source = ('class Outer::Inner : public views::View {\n'
+                  ' public:\n'
+                  '  void UpdateContent(const Data* data) {\n'
+                  '    Apply(data);\n'
+                  '  }\n'
+                  '};\n')
+        result = self._apply(
+            'inline_defined_nested.h', source, 'substitutions:\n'
+            '  - description: make the inline-defined nested method virtual\n'
+            '    make_virtual:\n'
+            '      class_name: Outer::Inner\n'
+            '      method_name: UpdateContent\n')
+        self.assertEqual(
+            result,
+            source.replace('  void UpdateContent',
+                           '  virtual void UpdateContent'))
+
     def test_make_virtual_after_leading_attribute(self):
         # `virtual` must land after a leading attribute, not before it.
         result = self._apply(
