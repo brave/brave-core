@@ -178,12 +178,6 @@ public class BrowserViewController: UIViewController {
   /// Whether last session was a crash or not
   private let crashedLastSession: Bool
 
-  // A view to place behind the bottom bar down to the toolbar during keyboard animations to avoid
-  // the odd look for the URL bar floating
-  private let bottomBarKeyboardBackground = UIView().then {
-    $0.isUserInteractionEnabled = false
-  }
-
   var toolbarVisibilityViewModel = ToolbarVisibilityViewModel(estimatedTransitionDistance: 44)
   private var toolbarLayoutGuide = UILayoutGuide().then {
     $0.identifier = "toolbar-visibility-layout-guide"
@@ -721,8 +715,6 @@ public class BrowserViewController: UIViewController {
       alongsideTransition: { context in
         if self.isViewLoaded {
           self.updateStatusBarOverlayColor()
-          self.bottomBarKeyboardBackground.backgroundColor =
-            self.privateBrowsingManager.browserColors.chromeBackground
           self.setNeedsStatusBarAppearanceUpdate()
         }
       }
@@ -839,7 +831,6 @@ public class BrowserViewController: UIViewController {
       header.isUsingBottomBar = isUsingBottomBar
       collapsedURLBarView.isUsingBottomBar = isUsingBottomBar
       searchContainer?.isUsingBottomBar = isUsingBottomBar
-      bottomBarKeyboardBackground.isHidden = !isUsingBottomBar
       topToolbar.displayTabTraySwipeGestureRecognizer?.isEnabled = isUsingBottomBar
       updateTabsBarVisibility()
       updateStatusBarOverlayColor()
@@ -872,7 +863,6 @@ public class BrowserViewController: UIViewController {
     view.addSubview(alertStackView)
     view.addSubview(bottomTouchArea)
     view.addSubview(topTouchArea)
-    view.addSubview(bottomBarKeyboardBackground)
     view.addSubview(footer)
     view.addSubview(statusBarOverlay)
     view.addSubview(header)
@@ -1012,8 +1002,6 @@ public class BrowserViewController: UIViewController {
       .sink(receiveValue: { [weak self] isPrivateBrowsing in
         guard let self = self else { return }
         self.updateStatusBarOverlayColor()
-        self.bottomBarKeyboardBackground.backgroundColor =
-          self.privateBrowsingManager.browserColors.chromeBackground
         self.collapsedURLBarView.browserColors = self.privateBrowsingManager.browserColors
       })
 
@@ -1450,16 +1438,6 @@ public class BrowserViewController: UIViewController {
       if toolbar == nil {
         make.height.equalTo(0)
       }
-    }
-
-    bottomBarKeyboardBackground.snp.remakeConstraints {
-      if self.isUsingBottomBar {
-        $0.top.equalTo(header)
-        $0.bottom.equalTo(footer)
-      } else {
-        $0.top.bottom.equalTo(footer)
-      }
-      $0.leading.trailing.equalToSuperview()
     }
 
     // Remake constraints even if we're already showing the home controller.
