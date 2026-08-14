@@ -18,9 +18,3 @@ substitutions:
                       "chrome-untrusted" &&
                    document_->GetExecutionContext()->GetSecurityOrigin()->Host() ==
                       ai_chat::kAIChatLeoWorkspaceUIHost);
-  - description: |
-      Include the AI Chat constants header for kAIChatLeoWorkspaceUIHost.
-    regex:
-      re_pattern: '(#include "base/time/time\.h"\n)'
-      replace: |
-        \1#include "brave/components/ai_chat/core/common/constants.h"

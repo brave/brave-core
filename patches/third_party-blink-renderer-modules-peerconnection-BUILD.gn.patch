@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/modules/peerconnection/BUILD.gn b/third_party/blink/renderer/modules/peerconnection/BUILD.gn
-index 626cedd0595705251dc1668557d5e5391ccc859b..fe1d1a5d3ad09f24b52f684574ff77b773cef0df 100644
+index 626cedd0595705251dc1668557d5e5391ccc859b..0f2f300e8a11fc63becacf6bc75a4e845c2ab45f 100644
 --- a/third_party/blink/renderer/modules/peerconnection/BUILD.gn
 +++ b/third_party/blink/renderer/modules/peerconnection/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -14,7 +14,7 @@ index 626cedd0595705251dc1668557d5e5391ccc859b..fe1d1a5d3ad09f24b52f684574ff77b7
      "//third_party/blink/renderer/modules/permissions",
      "//third_party/blink/renderer/modules/webrtc",
    ]
-+  deps += brave_blink_renderer_modules_peerconnection_deps  # Brave
++  deps += brave_blink_renderer_modules_peerconnection_ai_chat_deps  # Brave
  
    allow_circular_includes_from =
        [ "//third_party/blink/renderer/modules/mediastream" ]

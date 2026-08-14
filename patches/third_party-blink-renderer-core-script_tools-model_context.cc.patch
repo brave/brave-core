@@ -1,16 +1,8 @@
 diff --git a/third_party/blink/renderer/core/script_tools/model_context.cc b/third_party/blink/renderer/core/script_tools/model_context.cc
-index b43715b25c22dce6d8f893870cd8ecdb94b21a0a..c9a7a889140581f72532171a60e20876a903b24f 100644
+index af315ec3eb468f1a06fb4ea12757b8fadc154c16..0eadfa6b8291856dd2617ab360360d6b986edbf2 100644
 --- a/third_party/blink/renderer/core/script_tools/model_context.cc
 +++ b/third_party/blink/renderer/core/script_tools/model_context.cc
-@@ -8,6 +8,7 @@
- #include "base/metrics/histogram_functions.h"
- #include "base/task/single_thread_task_runner.h"
- #include "base/time/time.h"
-+#include "brave/components/ai_chat/core/common/constants.h"
- #include "third_party/blink/public/platform/browser_interface_broker_proxy.h"
- #include "third_party/blink/public/web/web_script_tool_types.h"
- #include "third_party/blink/renderer/bindings/core/v8/capture_source_location.h"
-@@ -847,7 +848,11 @@ bool ModelContext::IsModelContextAllowed() const {
+@@ -901,7 +901,11 @@ bool ModelContext::IsModelContextAllowed() const {
                url::kFileScheme &&
            key.IsUniversalFileAgent()) ||
           (document_->GetSettings() &&
