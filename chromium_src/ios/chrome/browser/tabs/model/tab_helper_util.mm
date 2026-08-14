@@ -5,6 +5,8 @@
 
 #import "ios/chrome/browser/tabs/model/tab_helper_util.h"
 
+#include "base/feature_list.h"
+#include "brave/components/brave_shields/core/common/features.h"
 #import "components/omnibox/common/omnibox_features.h"
 #include "ios/chrome/browser/complex_tasks/model/ios_task_tab_helper.h"
 #import "ios/chrome/browser/https_upgrades/model/https_only_mode_upgrade_tab_helper.h"
@@ -15,6 +17,7 @@
 #include "ios/chrome/browser/tabs/model/ios_chrome_synced_tab_delegate.h"
 #import "ios/components/security_interstitials/https_only_mode/https_only_mode_container.h"
 #import "ios/components/security_interstitials/ios_blocking_page_tab_helper.h"
+#import "ios/web/public/web_state.h"
 
 void AttachTabHelpers(web::WebState* web_state, TabHelperFilter filter_flags) {
   IOSTaskTabHelper::CreateForWebState(web_state);
@@ -25,4 +28,14 @@ void AttachTabHelpers(web::WebState* web_state, TabHelperFilter filter_flags) {
   // Create Brave's version instead of Chromes as we replace its usage in
   // ios_captive_portal_blocking_page.mm
   BraveCaptivePortalTabHelper::CreateForWebState(web_state);
+
+  if (base::FeatureList::IsEnabled(
+          brave_shields::features::kBraveIOSUseUpstreamHttpsUpgrades)) {
+    ProfileIOS* profile =
+        ProfileIOS::FromBrowserState(web_state->GetBrowserState());
+    HttpsOnlyModeUpgradeTabHelper::CreateForWebState(
+        web_state, profile->GetPrefs(),
+        HttpsUpgradeServiceFactory::GetForProfile(profile));
+    HttpsOnlyModeContainer::CreateForWebState(web_state);
+  }
 }

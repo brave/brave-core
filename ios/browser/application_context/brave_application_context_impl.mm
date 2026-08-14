@@ -18,6 +18,7 @@
 #include "brave/components/debounce/core/browser/debounce_component_installer.h"
 #include "brave/components/https_upgrade_exceptions/browser/https_upgrade_exceptions_service.h"
 #include "brave/components/url_sanitizer/core/browser/url_sanitizer_component_installer.h"
+#include "brave/ios/browser/https_upgrade_exceptions/https_upgrade_exceptions_service_accessor.h"
 #include "components/application_locale_storage/application_locale_storage.h"
 #include "ios/chrome/browser/application_context/model/application_context_impl.h"
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
@@ -107,6 +108,8 @@ BraveApplicationContextImpl::https_upgrade_exceptions_service() {
     https_upgrade_exceptions_service_ =
         https_upgrade_exceptions::HttpsUpgradeExceptionsServiceFactory(
             local_data_files_service());
+    https_upgrade_exceptions::SetHttpsUpgradeExceptionsService(
+        https_upgrade_exceptions_service_.get());
   }
   return https_upgrade_exceptions_service_.get();
 }

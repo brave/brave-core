@@ -615,7 +615,8 @@ extension BrowserViewController {
 
   /// Determines if the given url should be upgraded from http to https.
   fileprivate func shouldUpgradeToHttps(url: URL, isPrivate: Bool) -> Bool {
-    guard FeatureList.kBraveHttpsByDefault.enabled,
+    guard !FeatureList.kBraveIOSUseUpstreamHttpsUpgrades.enabled,
+      FeatureList.kBraveHttpsByDefault.enabled,
       let httpUpgradeService = HttpsUpgradeServiceFactory.get(privateMode: isPrivate),
       url.scheme == "http", let host = url.host
     else {

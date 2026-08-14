@@ -32,6 +32,7 @@ public class BraveProfileMigrations {
     migrateMediaBackgroundingPreference()
     migrateBlockAllCookiesPreference()
     migrateDefaultWalletPreferences()
+    migrateHTTPSUpgradeLevelPreference()
   }
 
   private func migrateDefaultUserAgentPreferences() {
@@ -78,6 +79,13 @@ public class BraveProfileMigrations {
     // migrate global / default settings first, then site-specific
     braveShieldsSettings.migrateGlobalSettings()
     braveShieldsSettings.migrateShieldsToContentSettings(for: domainsToMigrate)
+  }
+
+  private func migrateHTTPSUpgradeLevelPreference() {
+    profileController.profile.prefs.set(
+      Preferences.Shields.httpsUpgradeLevel.prefValue,
+      forPath: kHttpsUpgradeLevel
+    )
   }
 
   /// Migrate sync passwords default value to enabled.

@@ -8,13 +8,17 @@ import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/components/email_aliases/buildflags/buildflags.gni")
 
+source_set("pref_names") {
+  sources = [ "pref_names.h" ]
+}
+
 source_set("prefs") {
   sources = [
     "browser_prefs_impl.mm",
-    "pref_names.h",
     "shared_pref_names_bridge.h",
     "shared_pref_names_bridge.mm",
   ]
+  public_deps = [ ":pref_names" ]
   deps = [
     "//brave/components/ai_chat/core/browser",
     "//brave/components/ai_chat/core/common",

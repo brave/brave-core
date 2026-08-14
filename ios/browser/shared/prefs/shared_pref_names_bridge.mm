@@ -9,6 +9,9 @@
 #include "brave/ios/browser/shared/prefs/pref_names.h"
 #include "components/metrics/metrics_pref_names.h"
 
+NSString* const kHttpsUpgradeLevel =
+    base::SysUTF8ToNSString(prefs::kHttpsUpgradeLevel);
+
 NSString* const kMediaBackgroundingEnabled =
     base::SysUTF8ToNSString(prefs::kMediaBackgroundingEnabled);
 

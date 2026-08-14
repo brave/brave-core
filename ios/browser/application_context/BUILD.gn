@@ -20,6 +20,7 @@ source_set("application_context") {
     "//brave/components/debounce/core/browser",
     "//brave/components/https_upgrade_exceptions/browser",
     "//brave/components/url_sanitizer/core/browser",
+    "//brave/ios/browser/https_upgrade_exceptions",
     "//components/application_locale_storage",
     "//ios/chrome/browser/application_context/model",
     "//ios/chrome/browser/shared/model/application_context",

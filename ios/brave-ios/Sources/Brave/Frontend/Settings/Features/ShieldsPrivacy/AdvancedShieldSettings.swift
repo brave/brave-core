@@ -118,6 +118,7 @@ import os
   @Published var httpsUpgradeLevel: HTTPSUpgradeLevel {
     didSet {
       Preferences.Shields.httpsUpgradeLevel = httpsUpgradeLevel
+      prefs.set(httpsUpgradeLevel.prefValue, forPath: kHttpsUpgradeLevel)
       HttpsUpgradeServiceFactory.get(privateMode: false)?.clearAllowlist(
         fromStart: Date.distantPast,
         end: Date.distantFuture
