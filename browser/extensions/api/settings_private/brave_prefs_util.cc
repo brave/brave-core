@@ -8,6 +8,7 @@
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
+#include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
@@ -38,6 +39,10 @@
 #include "components/history/core/common/pref_names.h"
 #include "components/omnibox/browser/omnibox_prefs.h"
 #include "extensions/buildflags/buildflags.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
+#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_TALK)
 #include "brave/components/brave_talk/pref_names.h"
@@ -90,8 +95,6 @@
 namespace extensions {
 
 using ntp_background_images::prefs::kNewTabPageShowBackgroundImage;
-using ntp_background_images::prefs::
-    kNewTabPageShowSponsoredImagesBackgroundImage;
 
 namespace settings_api = api::settings_private;
 
@@ -200,8 +203,10 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
   (*s_brave_allowlist)[debounce::prefs::kDebounceEnabled] =
       settings_api::PrefType::kBoolean;
   // new tab prefs
-  (*s_brave_allowlist)[kNewTabPageShowSponsoredImagesBackgroundImage] =
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+  (*s_brave_allowlist)[brave_ads::prefs::kSponsoredEnabled] =
       settings_api::PrefType::kBoolean;
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
   (*s_brave_allowlist)[kNewTabPageShowBackgroundImage] =
       settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[kNewTabPageShowClock] = settings_api::PrefType::kBoolean;

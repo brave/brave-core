@@ -43,8 +43,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
                                 false);
   registry->RegisterBooleanPref(prefs::kBrandedWallpaperNotificationDismissed,
                                 false);
-  registry->RegisterBooleanPref(
-      prefs::kNewTabPageShowSponsoredImagesBackgroundImage, true);
   registry->RegisterBooleanPref(prefs::kNewTabPageShowBackgroundImage, true);
   registry->RegisterIntegerPref(
       prefs::kNewTabTakeoverInfobarRemainingDisplayCount,

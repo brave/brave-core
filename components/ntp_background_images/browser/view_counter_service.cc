@@ -21,6 +21,7 @@
 #include "base/logging.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/task/thread_pool.h"
+#include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
@@ -38,6 +39,10 @@
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
 #include "components/prefs/pref_service.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
 namespace ntp_background_images {
 
@@ -100,10 +105,12 @@ ViewCounterService::ViewCounterService(
       brave_rewards::prefs::kEnabled,
       base::BindRepeating(&ViewCounterService::OnPreferenceChanged,
                           weak_ptr_factory_.GetWeakPtr()));
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
   pref_change_registrar_.Add(
-      prefs::kNewTabPageShowSponsoredImagesBackgroundImage,
+      brave_ads::prefs::kSponsoredEnabled,
       base::BindRepeating(&ViewCounterService::OnPreferenceChanged,
                           weak_ptr_factory_.GetWeakPtr()));
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
   pref_change_registrar_.Add(
       prefs::kNewTabPageShowBackgroundImage,
       base::BindRepeating(&ViewCounterService::OnPreferenceChanged,
@@ -307,8 +314,11 @@ void ViewCounterService::OnPreferenceChanged(const std::string& pref_name) {
     return;
   }
 
-  if (pref_name == prefs::kNewTabPageShowBackgroundImage ||
-      pref_name == prefs::kNewTabPageShowSponsoredImagesBackgroundImage) {
+  if (pref_name == prefs::kNewTabPageShowBackgroundImage
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+      || pref_name == brave_ads::prefs::kSponsoredEnabled
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
+  ) {
     RecordSponsoredImagesEnabledP3A(prefs_);
   }
 
@@ -370,9 +380,12 @@ bool ViewCounterService::IsShowBackgroundImageOptedIn() const {
 }
 
 bool ViewCounterService::IsSponsoredImagesWallpaperOptedIn() const {
-  return prefs_->GetBoolean(
-      prefs::kNewTabPageShowSponsoredImagesBackgroundImage) &&
-        is_supported_locale_;
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+  return prefs_->GetBoolean(brave_ads::prefs::kSponsoredEnabled) &&
+         is_supported_locale_;
+#else
+  return false;
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 }
 
 void ViewCounterService::OnGetCurrentBrandedWallpaper(

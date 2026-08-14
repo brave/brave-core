@@ -38,6 +38,7 @@
 #include "base/time/time.h"
 #include "base/timer/timer.h"
 #include "base/trace_event/trace_event.h"
+#include "base/values.h"
 #include "brave/components/brave_ads/browser/bat_ads_service_factory.h"
 #include "brave/components/brave_ads/browser/component_updater/resource_component.h"
 #include "brave/components/brave_ads/browser/device_id/device_id.h"
@@ -275,8 +276,7 @@ bool AdsServiceImpl::UserHasJoinedBraveRewards() const {
 bool AdsServiceImpl::UserHasOptedInToNewTabPageAds() const {
   return prefs_->GetBoolean(
              ntp_background_images::prefs::kNewTabPageShowBackgroundImage) &&
-         prefs_->GetBoolean(ntp_background_images::prefs::
-                                kNewTabPageShowSponsoredImagesBackgroundImage);
+         prefs_->GetBoolean(prefs::kSponsoredEnabled);
 }
 
 bool AdsServiceImpl::IsNotificationAdsEnabled() const {
@@ -285,7 +285,7 @@ bool AdsServiceImpl::IsNotificationAdsEnabled() const {
 }
 
 bool AdsServiceImpl::UserHasOptedInToSearchResultAds() const {
-  return prefs_->GetBoolean(prefs::kOptedInToSearchResultAds);
+  return prefs_->GetBoolean(prefs::kSponsoredEnabled);
 }
 
 bool AdsServiceImpl::CanStartBatAdsService() const {
@@ -570,10 +570,28 @@ void AdsServiceImpl::ClearAllPrefsAndAdsServiceDataAndMaybeRestart(
   }
   VLOG(6) << "Clearing ads data";
 
-  // Clear all ads preferences.
-  prefs_->ClearPrefsWithPrefixSilently("brave.brave_ads");
+  ClearAdsPrefs();
 
   ClearAdsServiceDataAndMaybeRestart(std::move(callback));
+}
+
+void AdsServiceImpl::ClearAdsPrefs() {
+  // Do not react to preferences change because the service will be restarted
+  // soon. The pref change will be handled after the service was restarted.
+  pref_change_registrar_.RemoveAll();
+
+  std::optional<bool> sponsored_enabled;
+  if (prefs_->HasPrefPath(prefs::kSponsoredEnabled)) {
+    sponsored_enabled = prefs_->GetBoolean(prefs::kSponsoredEnabled);
+  }
+
+  prefs_->ClearPrefsWithPrefixSilently("brave.brave_ads");
+
+  if (sponsored_enabled) {
+    prefs_->SetBoolean(prefs::kSponsoredEnabled, *sponsored_enabled);
+  }
+
+  InitializePrefChangeRegistrar();
 }
 
 void AdsServiceImpl::ClearAdsServiceDataAndMaybeRestart(
@@ -707,7 +725,7 @@ void AdsServiceImpl::InitializePrefChangeRegistrar() {
   InitializeSubdivisionTargetingPrefChangeRegistrar();
   InitializeNewTabPageAdsPrefChangeRegistrar();
   InitializeNotificationAdsPrefChangeRegistrar();
-  InitializeSearchResultAdsPrefChangeRegistrar();
+  InitializeSponsoredPrefChangeRegistrar();
 }
 
 void AdsServiceImpl::InitializeBraveRewardsPrefChangeRegistrar() {
@@ -743,14 +761,6 @@ void AdsServiceImpl::InitializeNewTabPageAdsPrefChangeRegistrar() {
       base::BindRepeating(
           &AdsServiceImpl::OnAdsPrefChanged, base::Unretained(this),
           ntp_background_images::prefs::kNewTabPageShowBackgroundImage));
-
-  pref_change_registrar_.Add(
-      ntp_background_images::prefs::
-          kNewTabPageShowSponsoredImagesBackgroundImage,
-      base::BindRepeating(&AdsServiceImpl::OnAdsPrefChanged,
-                          base::Unretained(this),
-                          ntp_background_images::prefs::
-                              kNewTabPageShowSponsoredImagesBackgroundImage));
 }
 
 void AdsServiceImpl::InitializeNotificationAdsPrefChangeRegistrar() {
@@ -766,9 +776,9 @@ void AdsServiceImpl::InitializeNotificationAdsPrefChangeRegistrar() {
                           prefs::kMaximumNotificationAdsPerHour));
 }
 
-void AdsServiceImpl::InitializeSearchResultAdsPrefChangeRegistrar() {
+void AdsServiceImpl::InitializeSponsoredPrefChangeRegistrar() {
   pref_change_registrar_.Add(
-      prefs::kOptedInToSearchResultAds,
+      prefs::kSponsoredEnabled,
       base::BindRepeating(&AdsServiceImpl::OnAdsPrefChanged,
                           base::Unretained(this)));
 }

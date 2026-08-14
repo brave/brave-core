@@ -32,6 +32,13 @@ constexpr std::string_view kObsoleteNotificationAdDidFallbackToCustom =
 constexpr std::string_view kObsoleteOptedInToNotificationAds =
     "brave.brave_ads.enabled";
 
+constexpr std::string_view kObsoleteNewTabPageShowSponsoredImages =
+    "brave.new_tab_page.show_branded_background_image";
+constexpr std::string_view kObsoleteNewTabPageShowSponsoredSites =
+    "brave.new_tab_page.show_sponsored_sites";
+constexpr std::string_view kObsoleteOptedInToSearchResultAds =
+    "brave.brave_ads.opted_in_to_search_result_ads";
+
 constexpr std::string_view kNewTabPageEventCountConstellationDictPref =
     "brave.brave_ads.p3a.ntp_event_count_constellation";
 constexpr std::string_view kNewTabPageKnownCampaignsDictPref =
@@ -57,6 +64,9 @@ void RegisterProfilePrefsForMigration(PrefRegistrySimple* const registry) {
 
   // Added 08/2026.
   registry->RegisterBooleanPref(kObsoleteOptedInToNotificationAds, false);
+  registry->RegisterBooleanPref(kObsoleteNewTabPageShowSponsoredImages, true);
+  registry->RegisterBooleanPref(kObsoleteNewTabPageShowSponsoredSites, true);
+  registry->RegisterBooleanPref(kObsoleteOptedInToSearchResultAds, true);
 }
 
 void MigrateObsoleteProfilePrefs(PrefService* const prefs) {
@@ -78,6 +88,18 @@ void MigrateObsoleteProfilePrefs(PrefService* const prefs) {
                       prefs->GetBoolean(kObsoleteOptedInToNotificationAds));
     prefs->ClearPref(kObsoleteOptedInToNotificationAds);
   }
+
+  // Sponsored content was previously gated by separate new tab page
+  // preferences, so opting out of either one opts out of all sponsored content.
+  // Clearing them afterwards restores their defaults, so this only ever runs
+  // once.
+  if (!prefs->GetBoolean(kObsoleteNewTabPageShowSponsoredImages) ||
+      !prefs->GetBoolean(kObsoleteNewTabPageShowSponsoredSites)) {
+    prefs->SetBoolean(prefs::kSponsoredEnabled, false);
+  }
+  prefs->ClearPref(kObsoleteNewTabPageShowSponsoredImages);
+  prefs->ClearPref(kObsoleteNewTabPageShowSponsoredSites);
+  prefs->ClearPref(kObsoleteOptedInToSearchResultAds);
 }
 
 void RegisterLocalStatePrefsForMigration(PrefRegistrySimple* registry) {

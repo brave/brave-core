@@ -95,9 +95,7 @@ public class BackgroundImagesPreferences extends BravePreferenceFragment
                     UserPrefs.get(getProfile())
                             .getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE));
             mShowSponsoredImagesPref.setChecked(
-                    UserPrefs.get(getProfile())
-                            .getBoolean(
-                                    BravePref.NEW_TAB_PAGE_SHOW_SPONSORED_IMAGES_BACKGROUND_IMAGE));
+                    UserPrefs.get(getProfile()).getBoolean(BravePref.SPONSORED_ENABLED));
             mShowSponsoredImagesPref.setOnPreferenceChangeListener(this);
         }
         mLearnMorePreference =
@@ -182,10 +180,7 @@ public class BackgroundImagesPreferences extends BravePreferenceFragment
                     .setBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE, (boolean) newValue);
             BraveRelaunchUtils.askForRelaunch(getActivity());
         } else if (PREF_SHOW_SPONSORED_IMAGES.equals(key)) {
-            UserPrefs.get(getProfile())
-                    .setBoolean(
-                            BravePref.NEW_TAB_PAGE_SHOW_SPONSORED_IMAGES_BACKGROUND_IMAGE,
-                            (boolean) newValue);
+            UserPrefs.get(getProfile()).setBoolean(BravePref.SPONSORED_ENABLED, (boolean) newValue);
             BraveRelaunchUtils.askForRelaunch(getActivity());
         } else if (PREF_SHOW_TOP_SITES.equals(key)) {
             NtpUtil.setDisplayTopSites((boolean) newValue);

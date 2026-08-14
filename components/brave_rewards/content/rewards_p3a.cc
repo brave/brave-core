@@ -9,7 +9,6 @@
 #include "base/metrics/histogram_macros.h"
 #include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
-#include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/components/p3a_utils/bucket.h"
 #include "brave/components/time_period_storage/monthly_storage.h"
 #include "components/prefs/pref_service.h"
@@ -84,9 +83,7 @@ void RecordAdTypesEnabled(PrefService* prefs) {
     UMA_HISTOGRAM_EXACT_LINEAR(kAdTypesEnabledHistogramName, INT_MAX - 1, 4);
     return;
   }
-  int ntp_enabled =
-      prefs->GetBoolean(ntp_background_images::prefs::
-                            kNewTabPageShowSponsoredImagesBackgroundImage);
+  int ntp_enabled = prefs->GetBoolean(brave_ads::prefs::kSponsoredEnabled);
   int notification_enabled =
       prefs->GetBoolean(brave_ads::prefs::kNotificationsEnabled);
   int answer = (notification_enabled << 1) | ntp_enabled;

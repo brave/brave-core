@@ -134,9 +134,7 @@ TEST_F(BraveAdsTextClassificationResourceTest,
   // Act
   SetProfileBooleanPref(
       ntp_background_images::prefs::kNewTabPageShowBackgroundImage, true);
-  SetProfileBooleanPref(ntp_background_images::prefs::
-                            kNewTabPageShowSponsoredImagesBackgroundImage,
-                        true);
+  SetProfileBooleanPref(prefs::kSponsoredEnabled, true);
 
   // Assert
   EXPECT_FALSE(resource_->IsLoaded());
@@ -162,7 +160,6 @@ TEST_F(BraveAdsTextClassificationResourceTest,
        DoNotResetResourceIfNotificationAdsAlreadyEnabled) {
   // Arrange
   test::OptOutOfNewTabPageAds();
-  test::OptOutOfSearchResultAds();
 
   ads_client_notifier_.NotifyResourceComponentDidChange(
       test::kLanguageComponentManifestVersion, test::kLanguageComponentId);
@@ -185,7 +182,7 @@ TEST_F(BraveAdsTextClassificationResourceTest,
   ASSERT_FALSE(resource_->IsLoaded());
 
   // Act
-  SetProfileBooleanPref(prefs::kOptedInToSearchResultAds, true);
+  SetProfileBooleanPref(prefs::kSponsoredEnabled, true);
 
   // Assert
   EXPECT_FALSE(resource_->IsLoaded());

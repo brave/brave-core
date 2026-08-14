@@ -299,12 +299,7 @@ void RewardsServiceImpl::InitPrefChangeRegistrar() {
       base::BindRepeating(&RewardsServiceImpl::OnPreferenceChanged,
                           base::Unretained(this)));
   profile_pref_change_registrar_.Add(
-      ntp_background_images::prefs::
-          kNewTabPageShowSponsoredImagesBackgroundImage,
-      base::BindRepeating(&RewardsServiceImpl::OnPreferenceChanged,
-                          base::Unretained(this)));
-  profile_pref_change_registrar_.Add(
-      brave_ads::prefs::kOptedInToSearchResultAds,
+      brave_ads::prefs::kSponsoredEnabled,
       base::BindRepeating(&RewardsServiceImpl::OnPreferenceChanged,
                           base::Unretained(this)));
 #endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
@@ -322,10 +317,8 @@ void RewardsServiceImpl::OnPreferenceChanged(const std::string& key) {
   }
 
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
-  if (key == ntp_background_images::prefs::
-                 kNewTabPageShowSponsoredImagesBackgroundImage ||
-      key == brave_ads::prefs::kNotificationsEnabled ||
-      key == brave_ads::prefs::kOptedInToSearchResultAds) {
+  if (key == brave_ads::prefs::kSponsoredEnabled ||
+      key == brave_ads::prefs::kNotificationsEnabled) {
     p3a::RecordAdTypesEnabled(prefs_);
   }
 #endif  // BUILDFLAG(ENABLE_BRAVE_ADS)

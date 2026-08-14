@@ -13,6 +13,7 @@
 #include "base/values.h"
 #include "base/version_info/version_info.h"
 #include "brave/components/brave_ads/core/public/common/locale/locale_util.h"
+#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/components/skus/browser/pref_names.h"
@@ -128,8 +129,7 @@ bool IsSurveyPanelist(const PrefService& prefs) {
 
   if (!prefs.GetBoolean(
           ntp_background_images::prefs::kNewTabPageShowBackgroundImage) ||
-      !prefs.GetBoolean(ntp_background_images::prefs::
-                            kNewTabPageShowSponsoredImagesBackgroundImage)) {
+      !prefs.GetBoolean(brave_ads::prefs::kSponsoredEnabled)) {
     return false;
   }
 

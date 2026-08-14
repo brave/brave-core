@@ -49,6 +49,7 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
 #include "brave/browser/brave_ads/ads_service_factory.h"
+#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
@@ -70,8 +71,6 @@
 using brave_shields::ControlType;
 using content::BrowserThread;
 using ntp_background_images::prefs::kNewTabPageShowBackgroundImage;
-using ntp_background_images::prefs::
-    kNewTabPageShowSponsoredImagesBackgroundImage;  // NOLINT
 
 namespace {
 
@@ -105,14 +104,16 @@ void MigrateHttpsUpgradeSettings(Profile* profile) {
 }
 
 void RecordInitialP3AValues(Profile* profile) {
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
   // Preference is unregistered for some reason in profile_manager_unittest
   // TODO(bsclifton): create a proper testing profile
   if (!profile->GetPrefs()->FindPreference(kNewTabPageShowBackgroundImage) ||
       !profile->GetPrefs()->FindPreference(
-          kNewTabPageShowSponsoredImagesBackgroundImage)) {
+          brave_ads::prefs::kSponsoredEnabled)) {
     return;
   }
   ntp_background_images::RecordSponsoredImagesEnabledP3A(profile->GetPrefs());
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
   if (profile->IsRegularProfile()) {
     auto* map = HostContentSettingsMapFactory::GetForProfile(profile);
     MaybeRecordInitialShieldsSettings(

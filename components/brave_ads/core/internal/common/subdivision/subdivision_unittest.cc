@@ -119,9 +119,7 @@ TEST_F(BraveAdsSubdivisionTest, DoNotFetchWhenOptingOutOfNewTabPageAds) {
   // Act & Assert
   SetProfileBooleanPref(
       ntp_background_images::prefs::kNewTabPageShowBackgroundImage, false);
-  SetProfileBooleanPref(ntp_background_images::prefs::
-                            kNewTabPageShowSponsoredImagesBackgroundImage,
-                        false);
+  SetProfileBooleanPref(prefs::kSponsoredEnabled, false);
 }
 
 TEST_F(BraveAdsSubdivisionTest, DoNotFetchWhenOptingInToNewTabPageAds) {
@@ -135,31 +133,7 @@ TEST_F(BraveAdsSubdivisionTest, DoNotFetchWhenOptingInToNewTabPageAds) {
   // Act & Assert
   SetProfileBooleanPref(
       ntp_background_images::prefs::kNewTabPageShowBackgroundImage, true);
-  SetProfileBooleanPref(ntp_background_images::prefs::
-                            kNewTabPageShowSponsoredImagesBackgroundImage,
-                        true);
-}
-
-TEST_F(BraveAdsSubdivisionTest, DoNotFetchWhenOptingOutOfSearchResultAds) {
-  // Arrange
-  MockHttpOkUrlResponse(/*country_code=*/"US", /*subdivision_code=*/"CA");
-
-  EXPECT_CALL(subdivision_observer_mock_, OnDidUpdateSubdivision).Times(0);
-
-  // Act & Assert
-  SetProfileBooleanPref(prefs::kOptedInToSearchResultAds, false);
-}
-
-TEST_F(BraveAdsSubdivisionTest, DoNotFetchWhenOptingInToSearchResultAds) {
-  // Arrange
-  test::OptOutOfAllAds();
-
-  MockHttpOkUrlResponse(/*country_code=*/"US", /*subdivision_code=*/"CA");
-
-  EXPECT_CALL(subdivision_observer_mock_, OnDidUpdateSubdivision).Times(0);
-
-  // Act & Assert
-  SetProfileBooleanPref(prefs::kOptedInToSearchResultAds, true);
+  SetProfileBooleanPref(prefs::kSponsoredEnabled, true);
 }
 
 TEST_F(BraveAdsSubdivisionTest,

@@ -23,7 +23,6 @@
 #include "brave/components/brave_rewards/content/rewards_service_observer.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/constants/brave_paths.h"
-#include "brave/components/ntp_background_images/common/pref_names.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -177,9 +176,7 @@ IN_PROC_BROWSER_TEST_F(RewardsP3ABrowserTest, ToggleAdTypes) {
   prefs->SetBoolean(brave_ads::prefs::kNotificationsEnabled, false);
   histogram_tester_->ExpectBucketCount(p3a::kAdTypesEnabledHistogramName, 1, 1);
 
-  prefs->SetBoolean(ntp_background_images::prefs::
-                        kNewTabPageShowSponsoredImagesBackgroundImage,
-                    false);
+  prefs->SetBoolean(brave_ads::prefs::kSponsoredEnabled, false);
   histogram_tester_->ExpectBucketCount(p3a::kAdTypesEnabledHistogramName, 0, 1);
 
   prefs->SetBoolean(brave_ads::prefs::kNotificationsEnabled, true);

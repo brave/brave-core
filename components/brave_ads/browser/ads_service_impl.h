@@ -178,6 +178,7 @@ class AdsServiceImpl : public AdsService,
                                                       bool shutdown_succeeded);
   void ClearAllPrefsAndAdsServiceDataAndMaybeRestart(ResultCallback callback,
                                                      bool shutdown_succeeded);
+  void ClearAdsPrefs();
   void ClearAdsServiceDataAndMaybeRestart(ResultCallback callback);
   void ClearAdsServiceDataAndMaybeRestartCallback(ResultCallback callback,
                                                   bool success);
@@ -202,7 +203,7 @@ class AdsServiceImpl : public AdsService,
   void InitializeSubdivisionTargetingPrefChangeRegistrar();
   void InitializeNewTabPageAdsPrefChangeRegistrar();
   void InitializeNotificationAdsPrefChangeRegistrar();
-  void InitializeSearchResultAdsPrefChangeRegistrar();
+  void InitializeSponsoredPrefChangeRegistrar();
   void OnAdsPrefChanged(const std::string& path);
   void OnVariationsCountryPrefChanged();
   void NotifyPrefChanged(const std::string& path) const;

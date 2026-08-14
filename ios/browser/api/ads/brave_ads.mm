@@ -184,7 +184,7 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
 
 - (BOOL)isOptedInToSearchResultAds {
   return self.profilePrefService->GetBoolean(
-      brave_ads::prefs::kOptedInToSearchResultAds);
+      brave_ads::prefs::kSponsoredEnabled);
 }
 
 - (BOOL)shouldShowSearchResultAdClickedInfoBar {
@@ -217,8 +217,7 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
   [self setProfilePref:ntp_background_images::prefs::
                            kNewTabPageShowBackgroundImage
                  value:base::Value(isEnabled)];
-  [self setProfilePref:ntp_background_images::prefs::
-                           kNewTabPageShowSponsoredImagesBackgroundImage
+  [self setProfilePref:brave_ads::prefs::kSponsoredEnabled
                  value:base::Value(isEnabled)];
 }
 
