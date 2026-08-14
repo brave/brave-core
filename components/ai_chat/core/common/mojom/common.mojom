@@ -341,10 +341,10 @@ struct PermissionChallenge {
   // Tool's explanation for why it needs permission
   string? plan;
   // Human-readable, markdown-formatted description of what the tool wants
-  // permission to do, rendered with the UI's markdown renderer, e.g. "Leo
-  // would like to execute **get_stock_price** on **https://example.com**" for
-  // website-provided (WebMCP) tools. Tools must markdown-escape any
-  // untrusted values they embed.
+  // permission to do, rendered with the UI's markdown renderer, e.g. "Brave
+  // AI would like to execute **get_stock_price** on
+  // **https://example.com**" for website-provided (WebMCP) tools. Tools
+  // must markdown-escape any untrusted values they embed.
   string? description;
 };
 

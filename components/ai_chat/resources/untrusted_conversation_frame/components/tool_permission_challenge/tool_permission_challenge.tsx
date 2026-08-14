@@ -43,7 +43,7 @@ export default function ToolPermissionChallenge(props: Props) {
 
   // Tools can provide a human-readable, markdown-formatted description of
   // what they want permission to do (e.g. website-provided WebMCP tools
-  // describe themselves as "Leo would like to execute **name** on
+  // describe themselves as "Brave AI would like to execute **name** on
   // **origin**" instead of the mangled model-facing tool name).
   const summary = permissionChallenge.description ? (
     <MarkdownRenderer

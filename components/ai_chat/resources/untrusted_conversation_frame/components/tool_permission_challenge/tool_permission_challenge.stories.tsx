@@ -47,7 +47,7 @@ export const _ToolPermissionChallenge = {
           ? 'I am going to group your tabs by category.'
           : undefined,
         description: args.isWebTool
-          ? 'Leo would like to execute **get_stock_price** on **https://example.com**'
+          ? 'Brave AI would like to execute **get_stock_price** on **https://example.com**'
           : undefined,
       },
     }

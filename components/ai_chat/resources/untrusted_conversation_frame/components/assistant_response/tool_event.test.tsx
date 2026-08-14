@@ -211,7 +211,7 @@ describe('ToolEvent', () => {
               assessment: undefined,
               plan: undefined,
               description:
-                'Leo would like to execute **get_stock_price** '
+                'Brave AI would like to execute **get_stock_price** '
                 + 'on **https://example.com**',
             },
           }}

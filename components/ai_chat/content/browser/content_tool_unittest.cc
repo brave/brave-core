@@ -219,8 +219,9 @@ TEST_F(ContentToolTest, RequiresPermissionChallengeUntilGranted) {
   // The challenge describes the site-registered tool name and site origin in
   // a human-readable, markdown-formatted way (instead of the mangled
   // model-facing tool name).
-  EXPECT_EQ(challenge->description,
-            "Leo would like to execute **echo** on **https://example.com**");
+  EXPECT_EQ(
+      challenge->description,
+      "Brave AI would like to execute **echo** on **https://example.com**");
 
   tool.UserPermissionGranted(/*tool_use_id=*/"any");
 
@@ -240,10 +241,35 @@ TEST_F(ContentToolTest, PermissionChallengeDescriptionEscapesToolName) {
   ASSERT_TRUE(std::holds_alternative<mojom::PermissionChallengePtr>(result));
   auto& challenge = std::get<mojom::PermissionChallengePtr>(result);
   ASSERT_TRUE(challenge);
+  EXPECT_EQ(challenge->description,
+            "Brave AI would like to execute "
+            "**do\\-thing\\[now\\]\\(https\\:\\/\\/evil\\.com\\)** on "
+            "**https://example.com**");
+}
+
+TEST_F(ContentToolTest, PermissionChallengeEscapesUrlForOpaqueOrigin) {
+  // Opaque origins (e.g. data: URLs, or a document sandboxed via CSP) have no
+  // serializable origin, so the challenge falls back to the full URL. Unlike
+  // an origin's serialization (scheme://host:port), a URL's path/query is
+  // site-controlled and can legally contain markdown metacharacters (e.g.
+  // "[Brave](https://bank.com)"), so it must be escaped just like the tool
+  // name to prevent the site injecting formatting or a link into the prompt.
+  content::WebContentsTester::For(web_contents())
+      ->NavigateAndCommit(GURL("data:text/html,[Brave](https://bank.com)"));
+  ASSERT_TRUE(main_rfh()->GetLastCommittedOrigin().opaque());
+
+  auto mojo_tool = MakeScriptTool("echo", "");
+  ContentTool tool(*mojo_tool, weak_document());
+
+  auto tool_use = mojom::ToolUseEvent::New();
+  auto result = tool.RequiresUserInteractionBeforeHandling(*tool_use);
+  ASSERT_TRUE(std::holds_alternative<mojom::PermissionChallengePtr>(result));
+  auto& challenge = std::get<mojom::PermissionChallengePtr>(result);
+  ASSERT_TRUE(challenge);
   EXPECT_EQ(
       challenge->description,
-      "Leo would like to execute **do\\-thing\\[now\\]\\(https\\:\\/\\/evil\\."
-      "com\\)** on **https://example.com**");
+      "Brave AI would like to execute **echo** on "
+      "**data\\:text\\/html\\,\\[Brave\\]\\(https\\:\\/\\/bank\\.com\\)**");
 }
 
 TEST_F(ContentToolTest, UseToolNormalizesEmptyInputToObject) {
@@ -278,8 +304,9 @@ TEST_F(ContentToolTest,
   tool.UserPermissionGranted(/*tool_use_id=*/"any");
 
   auto tool_use = mojom::ToolUseEvent::New();
-  EXPECT_EQ(tool.GetPermissionChallengeDescription(*tool_use),
-            "Leo would like to execute **echo** on **https://example.com**");
+  EXPECT_EQ(
+      tool.GetPermissionChallengeDescription(*tool_use),
+      "Brave AI would like to execute **echo** on **https://example.com**");
 }
 
 TEST_F(ContentToolTest, PermissionChallengeOmitsDescriptionWhenDocumentGone) {

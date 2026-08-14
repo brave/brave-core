@@ -6160,8 +6160,8 @@ TEST_F(ConversationHandlerUnitTest,
   auto tool1 = std::make_unique<NiceMock<MockTool>>("test_tool", "Test tool");
   ON_CALL(*tool1, GetPermissionChallengeDescription)
       .WillByDefault([](const mojom::ToolUseEvent& tool_use) {
-        return "Leo would like to execute **thing** on **https://example.com"
-               "**";
+        return "Brave AI would like to execute **thing** on "
+               "**https://example.com**";
       });
 
   EXPECT_CALL(*tool1, RequiresUserInteractionBeforeHandling).Times(0);
@@ -6214,8 +6214,9 @@ TEST_F(ConversationHandlerUnitTest,
   EXPECT_EQ(tool_event->permission_challenge->assessment,
             "Server determined this tool use is off-topic");
   // ...and the Tool's description has been added to the same challenge.
-  EXPECT_EQ(tool_event->permission_challenge->description,
-            "Leo would like to execute **thing** on **https://example.com**");
+  EXPECT_EQ(
+      tool_event->permission_challenge->description,
+      "Brave AI would like to execute **thing** on **https://example.com**");
 }
 
 TEST_F(ConversationHandlerUnitTest, OnTaskStateChanged_Paused) {

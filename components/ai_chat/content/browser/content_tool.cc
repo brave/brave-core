@@ -147,11 +147,19 @@ std::optional<std::string> ContentTool::GetPermissionChallengeDescription(
     return std::nullopt;
   }
   const url::Origin& origin = rfh->GetLastCommittedOrigin();
+  // An opaque origin (e.g. a data: URL, or a document sandboxed via CSP) has
+  // no serialization to fall back on, so the full URL is used instead - and
+  // unlike an origin's serialization (scheme://host:port), a URL's
+  // path/query is site-controlled and can legally contain markdown
+  // metacharacters, so it must be escaped just like the tool name to
+  // prevent the site injecting formatting or a link into the prompt.
+  const std::string site_display =
+      origin.opaque() ? EscapeMarkdown(rfh->GetLastCommittedURL().spec())
+                      : origin.Serialize();
   return l10n_util::GetStringFUTF8(
       IDS_CHAT_UI_PERMISSION_CHALLENGE_WEB_TOOL_SUMMARY,
       base::UTF8ToUTF16(EscapeMarkdown(internal_tool_name_)),
-      base::UTF8ToUTF16(origin.opaque() ? rfh->GetLastCommittedURL().spec()
-                                        : origin.Serialize()));
+      base::UTF8ToUTF16(site_display));
 }
 
 void ContentTool::UseTool(const std::string& input_json,
