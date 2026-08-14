@@ -362,17 +362,13 @@ void TxService::AddUnapprovedZCashTransaction(
     return;
   }
 
-  // A unified address without a transparent receiver is orchard-only and has
-  // nothing extra to check.
-  if (IsUnifiedAddress(params->to)) {
-    auto transparent_part = ExtractTransparentPart(
-        params->to, IsZCashTestnetKeyring(params->from->keyring_id));
-    if (transparent_part &&
-        BlockchainRegistry::GetInstance()->IsRestrictedAddress(
-            *transparent_part)) {
-      std::move(callback).Run(false, "", WalletInternalErrorMessage());
-      return;
-    }
+  auto transparent_part = ExtractTransparentPart(
+      params->to, IsZCashTestnetKeyring(params->from->keyring_id));
+  if (transparent_part &&
+      BlockchainRegistry::GetInstance()->IsRestrictedAddress(
+          *transparent_part)) {
+    std::move(callback).Run(false, "", WalletInternalErrorMessage());
+    return;
   }
 
   GetZCashTxManager()->AddUnapprovedZCashTransaction(std::move(params),
