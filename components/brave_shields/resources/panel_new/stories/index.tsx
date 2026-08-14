@@ -12,7 +12,7 @@ import { App } from '../components/app'
 
 function StorybookApp() {
   return (
-    <div style={{ position: 'absolute', inset: 0 }}>
+    <div style={{ position: 'absolute', inset: 0, width: '388px' }}>
       <ShieldsApiProvider api={createMockShieldsAPI()}>
         <App />
       </ShieldsApiProvider>
