@@ -22,7 +22,7 @@ class BraveBrowserViewTabbedLayoutImpl : public BrowserViewTabbedLayoutImpl {
  public:
   BraveBrowserViewTabbedLayoutImpl(
       std::unique_ptr<BrowserViewLayoutDelegate> delegate,
-      Browser* browser,
+      BrowserWindowInterface* browser,
       BrowserViewLayoutViews views);
   ~BraveBrowserViewTabbedLayoutImpl() override;
 
