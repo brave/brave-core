@@ -20,19 +20,18 @@ from pathlib import Path
 import pkgutil
 import sys
 
-_BOTS_DIR = Path(__file__).resolve().parent
-_CONFIG_DIR = _BOTS_DIR.parent / 'config'
-_BUILDERS_OUTPUT_DIR = _CONFIG_DIR / 'generated' / 'builders'
+import gen_paths
+import lookup
 
 
 def _load_config() -> None:
     """Imports gn_args.py and every builders/*.py file for their registration
     side effects, populating the shared `lib.config` registries."""
-    config_dir = str(_CONFIG_DIR)
+    config_dir = str(gen_paths.CONFIG_DIR)
     if config_dir not in sys.path:
         sys.path.insert(0, config_dir)
     importlib.import_module('gn_args')
-    import builders as builders_package  # pylint: disable=import-outside-toplevel
+    import builders as builders_package
     for module_info in pkgutil.iter_modules(builders_package.__path__):
         importlib.import_module('builders.' + module_info.name)
 
@@ -123,10 +122,12 @@ def write_output(output_dir: Path,
 
 def cmd_generate(args: argparse.Namespace) -> int:
     _load_config()
-    from lib.config import builders, gn_args  # pylint: disable=import-outside-toplevel
+    from lib.config import builders, gn_args
 
     fresh = compute_fresh_output(builders, gn_args)
-    result = write_output(_BUILDERS_OUTPUT_DIR, fresh, dry_run=args.check)
+    result = write_output(gen_paths.BUILDERS_OUTPUT_DIR,
+                          fresh,
+                          dry_run=args.check)
 
     for path in result.deleted:
         print(f'deleted:   {path}')
@@ -159,8 +160,14 @@ def main(argv: list[str] | None = None) -> int:
     generate_parser.add_argument('-v', '--verbose', action='store_true')
     generate_parser.set_defaults(func=cmd_generate)
 
+    lookup.add_subparser(subparsers)
+
     args = parser.parse_args(argv)
-    return args.func(args)
+    try:
+        return args.func(args)
+    except lookup.BotsError as e:
+        print(e, file=sys.stderr)
+        return 1
 
 
 if __name__ == '__main__':
