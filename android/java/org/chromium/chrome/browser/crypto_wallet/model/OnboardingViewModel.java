@@ -10,10 +10,16 @@ import android.util.SparseArray;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import org.chromium.brave_wallet.mojom.JsonRpcService;
+import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
+import org.chromium.chrome.browser.app.domain.KeyringModel;
 import org.chromium.chrome.browser.crypto_wallet.fragments.onboarding.OnboardingVerifyRecoveryPhraseFragment.VerificationStep;
+import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -46,6 +52,35 @@ public class OnboardingViewModel extends ViewModel {
     private int mRestoreWalletWordCount;
     private int mRestoreWalletFocusedWordIndex = -1;
     private boolean mRestoreWalletLegacyEnabled;
+
+    // Terms of use screen checkbox selections, retained across configuration changes so the
+    // fragment (recreated fresh after a rotation) can restore them.
+    private boolean mSelfCustodyChecked;
+    private boolean mTermsOfUseChecked;
+
+    // Secure password screen entries, retained across configuration changes so the fragment,
+    // recreated fresh after a rotation can restore them.
+    @Nullable private String mSecurePassword;
+    @Nullable private String mSecureRetypePassword;
+
+    // Word typed on the current verify recovery phrase step, retained across configuration changes
+    // so the fragment recreated fresh after a rotation can restore it.
+    @Nullable private String mVerificationTypedWord;
+    private int mVerificationTypedStep = -1;
+
+    // Network selection screen in-progress state, retained across configuration changes so the
+    // fragment recreated fresh after a rotation can restore it. A null selection set means
+    // nothing has been captured yet, so the adapter keeps its default selection.
+    @Nullable private Set<NetworkInfo> mNetworkSelectionSelected;
+    private boolean mNetworkSelectionShowTestnets;
+    @Nullable private String mNetworkSelectionSearchQuery;
+
+    // Wallet creation request, owned by the model so it survives configuration changes and keeps
+    // running while the activity is in the background. Triggered only once.
+    private boolean mWalletCreationRequested;
+
+    @NonNull
+    private final MutableLiveData<Boolean> mWalletCreationSucceeded = new MutableLiveData<>();
 
     /** Stores the unlock password text so it survives a configuration change such as a rotation. */
     public void setUnlockPassword(@Nullable final String unlockPassword) {
@@ -123,12 +158,143 @@ public class OnboardingViewModel extends ViewModel {
         return mRestoreWalletLegacyEnabled;
     }
 
-    public void setLegacyRestoreEnabled(final boolean legacyRestoreEnabled) {
-        mLegacyRestoreEnabled = legacyRestoreEnabled;
+    /**
+     * Stores the terms of use screen checkbox selections so they survive a configuration change.
+     */
+    public void setTermsOfUseSelections(
+            final boolean selfCustodyChecked, final boolean termsOfUseChecked) {
+        mSelfCustodyChecked = selfCustodyChecked;
+        mTermsOfUseChecked = termsOfUseChecked;
     }
 
-    public boolean isLegacyRestoreEnabled() {
-        return mLegacyRestoreEnabled;
+    /** Returns whether the self custody checkbox was checked on the terms of use screen. */
+    public boolean isSelfCustodyChecked() {
+        return mSelfCustodyChecked;
+    }
+
+    /** Returns whether the terms of use checkbox was checked on the terms of use screen. */
+    public boolean isTermsOfUseChecked() {
+        return mTermsOfUseChecked;
+    }
+
+    /**
+     * Drops the captured terms of use selections so they are not re-applied the next time the
+     * screen is shown. Called once the user leaves the screen (by continuing, going back, or
+     * closing).
+     */
+    public void clearTermsOfUseSelections() {
+        mSelfCustodyChecked = false;
+        mTermsOfUseChecked = false;
+    }
+
+    /** Stores the secure password screen entry so it survives a configuration change. */
+    public void setSecurePasswordEntry(
+            @Nullable final String securePassword, @Nullable final String secureRetypePassword) {
+        mSecurePassword = securePassword;
+        mSecureRetypePassword = secureRetypePassword;
+    }
+
+    /** Returns the password typed on the secure password screen, or {@code null} if none. */
+    @Nullable
+    public String getSecurePassword() {
+        return mSecurePassword;
+    }
+
+    /** Returns the confirmation password typed on the secure password screen, or {@code null}. */
+    @Nullable
+    public String getSecureRetypePassword() {
+        return mSecureRetypePassword;
+    }
+
+    /**
+     * Live outcome of the Wallet creation or restoration request: {@code true} on success, {@code
+     * false} on failure. Observers are notified once the request completes, including observers
+     * that subscribe after completion (for example a fragment recreated by a rotation).
+     */
+    @NonNull
+    public LiveData<Boolean> getWalletCreationSucceeded() {
+        return mWalletCreationSucceeded;
+    }
+
+    /**
+     * Creates or restores the Wallet exactly once, based on the state captured during onboarding.
+     * Repeat calls (for example from a fragment recreated by a rotation) are ignored while the
+     * request is running or after it has completed. The request is owned by the model, so it is not
+     * cancelled when the activity is recreated or sent to the background; its outcome is delivered
+     * through {@link #getWalletCreationSucceeded()}.
+     */
+    public void createOrRestoreWallet(
+            @NonNull final KeyringModel keyringModel,
+            @NonNull final JsonRpcService jsonRpcService,
+            @Nullable final KeyringService keyringService,
+            final boolean overridePreviousWallet) {
+        if (mWalletCreationRequested) {
+            return;
+        }
+        mWalletCreationRequested = true;
+        keyringModel.isWalletCreated(
+                isCreated -> {
+                    // Skip creation when a wallet already exists, unless restoring over it from the
+                    // unlock screen button.
+                    if (isCreated && !overridePreviousWallet) {
+                        mWalletCreationSucceeded.setValue(true);
+                        return;
+                    }
+                    if (mRecoveryPhrase == null) {
+                        keyringModel.createWallet(
+                                getPassword(),
+                                mAvailableNetworks,
+                                mSelectedNetworks,
+                                jsonRpcService,
+                                recoveryPhrases -> {
+                                    Utils.setCryptoOnboarding(false);
+                                    mWalletCreationSucceeded.setValue(true);
+                                });
+                    } else {
+                        keyringModel.restoreWallet(
+                                getPassword(),
+                                requireRecoveryPhrase(),
+                                mLegacyRestoreEnabled,
+                                mAvailableNetworks,
+                                mSelectedNetworks,
+                                jsonRpcService,
+                                result -> {
+                                    if (result) {
+                                        if (keyringService != null) {
+                                            keyringService.notifyWalletBackupComplete();
+                                        }
+                                        Utils.setCryptoOnboarding(false);
+                                    }
+                                    mWalletCreationSucceeded.setValue(result);
+                                });
+                    }
+                });
+    }
+
+    /** Clears every captured value so a new pass through onboarding starts from a clean state. */
+    public void reset() {
+        mLegacyRestoreEnabled = false;
+        mPassword = null;
+        mRecoveryPhrase = null;
+        mSelectedNetworks.clear();
+        mAvailableNetworks.clear();
+        mVerificationWords.clear();
+        clearUnlockState();
+        clearRestoreWalletState();
+        clearTermsOfUseSelections();
+        mSecurePassword = null;
+        mSecureRetypePassword = null;
+        mVerificationTypedWord = null;
+        mVerificationTypedStep = -1;
+        mNetworkSelectionSelected = null;
+        mNetworkSelectionShowTestnets = false;
+        mNetworkSelectionSearchQuery = null;
+        mWalletCreationRequested = false;
+        mWalletCreationSucceeded.setValue(null);
+    }
+
+    public void setLegacyRestoreEnabled(final boolean legacyRestoreEnabled) {
+        mLegacyRestoreEnabled = legacyRestoreEnabled;
     }
 
     public void setRecoveryPhrase(@NonNull final String recoveryPhrase) {
@@ -171,6 +337,21 @@ public class OnboardingViewModel extends ViewModel {
         return new Pair<>(key, mVerificationWords.get(key));
     }
 
+    /** Stores the word typed on the given verify recovery phrase step so it survives a rotation. */
+    public void setVerificationTypedWord(final int step, @Nullable final String typedWord) {
+        mVerificationTypedStep = step;
+        mVerificationTypedWord = typedWord;
+    }
+
+    /**
+     * Returns the word typed on the given verify recovery phrase step, or {@code null} if the
+     * stored word belongs to a different step or nothing is stored.
+     */
+    @Nullable
+    public String getVerificationTypedWord(final int step) {
+        return mVerificationTypedStep == step ? mVerificationTypedWord : null;
+    }
+
     public void setSelectedNetworks(
             @NonNull final Set<NetworkInfo> selectedNetworks,
             @NonNull final Set<NetworkInfo> availableNetworks) {
@@ -181,14 +362,34 @@ public class OnboardingViewModel extends ViewModel {
         mAvailableNetworks.addAll(availableNetworks);
     }
 
-    @NonNull
-    public Set<NetworkInfo> getSelectedNetworks() {
-        return mSelectedNetworks;
+    /** Stores the network selection screen state so it survives a rotation. */
+    public void setNetworkSelectionState(
+            @NonNull final Set<NetworkInfo> selectedNetworks,
+            final boolean showTestnets,
+            @Nullable final String searchQuery) {
+        mNetworkSelectionSelected = new HashSet<>(selectedNetworks);
+        mNetworkSelectionShowTestnets = showTestnets;
+        mNetworkSelectionSearchQuery = searchQuery;
     }
 
-    @NonNull
-    public Set<NetworkInfo> getAvailableNetworks() {
-        return mAvailableNetworks;
+    /**
+     * Returns the selected networks captured on the network selection screen, or {@code null} if
+     * nothing has been captured yet.
+     */
+    @Nullable
+    public Set<NetworkInfo> getNetworkSelectionSelected() {
+        return mNetworkSelectionSelected;
+    }
+
+    /** Returns whether the show testnets checkbox was checked on the network selection screen. */
+    public boolean isNetworkSelectionShowTestnets() {
+        return mNetworkSelectionShowTestnets;
+    }
+
+    /** Returns the search query typed on the network selection screen, or {@code null} if none. */
+    @Nullable
+    public String getNetworkSelectionSearchQuery() {
+        return mNetworkSelectionSearchQuery;
     }
 
     public void generateVerificationWords(@NonNull final List<String> recoveryPhrases) {
