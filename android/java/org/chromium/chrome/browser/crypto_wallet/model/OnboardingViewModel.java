@@ -68,6 +68,13 @@ public class OnboardingViewModel extends ViewModel {
     @Nullable private String mVerificationTypedWord;
     private int mVerificationTypedStep = -1;
 
+    // Network selection screen in-progress state, retained across configuration changes so the
+    // fragment recreated fresh after a rotation can restore it. A null selection set means
+    // nothing has been captured yet, so the adapter keeps its default selection.
+    @Nullable private Set<NetworkInfo> mNetworkSelectionSelected;
+    private boolean mNetworkSelectionShowTestnets;
+    @Nullable private String mNetworkSelectionSearchQuery;
+
     // Wallet creation request, owned by the model so it survives configuration changes and keeps
     // running while the activity is in the background. Triggered only once.
     private boolean mWalletCreationRequested;
@@ -279,6 +286,9 @@ public class OnboardingViewModel extends ViewModel {
         mSecureRetypePassword = null;
         mVerificationTypedWord = null;
         mVerificationTypedStep = -1;
+        mNetworkSelectionSelected = null;
+        mNetworkSelectionShowTestnets = false;
+        mNetworkSelectionSearchQuery = null;
         mWalletCreationRequested = false;
         mWalletCreationSucceeded.setValue(null);
     }
@@ -364,6 +374,36 @@ public class OnboardingViewModel extends ViewModel {
     @NonNull
     public Set<NetworkInfo> getAvailableNetworks() {
         return mAvailableNetworks;
+    }
+
+    /** Stores the network selection screen state so it survives a rotation. */
+    public void setNetworkSelectionState(
+            @NonNull final Set<NetworkInfo> selectedNetworks,
+            final boolean showTestnets,
+            @Nullable final String searchQuery) {
+        mNetworkSelectionSelected = new HashSet<>(selectedNetworks);
+        mNetworkSelectionShowTestnets = showTestnets;
+        mNetworkSelectionSearchQuery = searchQuery;
+    }
+
+    /**
+     * Returns the selected networks captured on the network selection screen, or {@code null} if
+     * nothing has been captured yet.
+     */
+    @Nullable
+    public Set<NetworkInfo> getNetworkSelectionSelected() {
+        return mNetworkSelectionSelected;
+    }
+
+    /** Returns whether the show testnets checkbox was checked on the network selection screen. */
+    public boolean isNetworkSelectionShowTestnets() {
+        return mNetworkSelectionShowTestnets;
+    }
+
+    /** Returns the search query typed on the network selection screen, or {@code null} if none. */
+    @Nullable
+    public String getNetworkSelectionSearchQuery() {
+        return mNetworkSelectionSearchQuery;
     }
 
     public void generateVerificationWords(@NonNull final List<String> recoveryPhrases) {
