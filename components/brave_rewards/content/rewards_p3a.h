@@ -29,8 +29,6 @@ inline constexpr char kAutoContributionsStateHistogramName[] =
     "Brave.Rewards.AutoContributionsState.3";
 inline constexpr char kAdTypesEnabledHistogramName[] =
     "Brave.Rewards.AdTypesEnabled";
-inline constexpr char kSearchResultAdsOptinHistogramName[] =
-    "Brave.Rewards.SearchResultAdsOptin";
 inline constexpr char kAdsHistoryViewHistogramName[] =
     "Brave.Rewards.AdsHistoryView";
 inline constexpr char kMobileConversionHistogramName[] =
@@ -73,8 +71,6 @@ void RecordNoWalletCreatedForAllMetrics();
 void RecordRewardsPageViews(PrefService* prefs, bool new_view);
 
 void RecordAdTypesEnabled(PrefService* prefs);
-
-void RecordSearchResultAdsOptinChange(PrefService* prefs);
 
 void RecordAdsHistoryView();
 
