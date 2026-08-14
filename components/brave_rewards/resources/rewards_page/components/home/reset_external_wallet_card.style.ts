@@ -28,7 +28,7 @@ export const style = scoped.css`
 
     padding: 16px;
     border-radius: 50%;
-    background: ${color.systemfeedback.warningVibrant};
+    background: var(--leo-color-primitive-yellow-80);
   }
 
   h3 {
