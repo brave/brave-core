@@ -8,14 +8,19 @@
 // Designed to be used on CI, but should work locally too.
 // The script includes syncing; there is no need to run pnpm run sync before.
 
-import config from './config.ts'
-import util from './util.js'
+// Check environment before doing anything.
+import '../lib/checkEnvironment.js'
+
+import { program } from 'commander'
+import { collect } from '../lib/commandsUtils.ts'
+import config from '../lib/config.ts'
+import util from '../lib/util.js'
 import path from 'node:path'
 import fs from 'fs-extra'
-import depotTools from './depotTools.js'
-import syncUtil from './syncUtils.js'
-import * as Log from './log.ts'
-import { isCI } from './ciDetect.ts'
+import depotTools from '../lib/depotTools.js'
+import syncUtil from '../lib/syncUtils.js'
+import * as Log from '../lib/log.ts'
+import { isCI } from '../lib/ciDetect.ts'
 
 // Use the same filename as for Brave archive.
 const getOutputFilename = (): string => {
@@ -218,4 +223,28 @@ function buildChromiumRelease(buildOptions: { force?: boolean } = {}) {
   })
 }
 
-export default buildChromiumRelease
+program
+  .description(
+    'Produces a chromium release build for performance testing.\n'
+      + 'Uses the same /src directory; all brave patches are reverted.\n'
+      + 'The default build_dir is `chromium_Release(_target_arch)`.\n'
+      + 'Intended for use on CI, use locally with care.',
+  )
+  .option('--force', 'Ignore a warning about non-CI build')
+  .option('-C <build_dir>', 'build config (out/chromium_Release')
+  .option('--target_os <target_os>', 'target OS')
+  .option('--target_arch <target_arch>', 'target architecture')
+  .option(
+    '--gn <arg>',
+    'Additional gn args, in the form <key>:<value>',
+    collect,
+    [],
+  )
+  .option(
+    '--ninja <opt>',
+    'Additional Ninja command-line options, in the form <key>:<value>',
+    collect,
+    [],
+  )
+  .action(buildChromiumRelease)
+  .parse()
