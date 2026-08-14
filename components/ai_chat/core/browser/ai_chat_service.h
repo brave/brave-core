@@ -162,9 +162,15 @@ class AIChatService : public KeyedService,
       int associated_content_id,
       base::WeakPtr<AssociatedContentDelegate> associated_content);
 
-  // Removes all in-memory and persisted data for all conversations
-  void DeleteConversations(std::optional<base::Time> begin_time = std::nullopt,
-                           std::optional<base::Time> end_time = std::nullopt);
+  // Removes all in-memory and persisted data for all conversations updated
+  // within the provided time range, or for every conversation when no range is
+  // provided.
+  void DeleteConversationsInRange(
+      std::optional<base::Time> begin_time = std::nullopt,
+      std::optional<base::Time> end_time = std::nullopt);
+
+  // Removes all in-memory and persisted data for the provided conversations.
+  void DeleteConversations(const std::vector<std::string>& uuids);
 
   // Remove only web-content data from conversations
   void DeleteAssociatedWebContent(
@@ -207,6 +213,8 @@ class AIChatService : public KeyedService,
   void GetActionMenuList(GetActionMenuListCallback callback) override;
   void GetPremiumStatus(
       mojom::Service::GetPremiumStatusCallback callback) override;
+  // Temporary shim over DeleteConversations(), until the mojom API takes a
+  // list of UUIDs.
   void DeleteConversation(const std::string& id) override;
   void RenameConversation(const std::string& id,
                           const std::string& new_name) override;

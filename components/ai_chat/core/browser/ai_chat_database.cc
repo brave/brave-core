@@ -1323,17 +1323,41 @@ bool AIChatDatabase::UpdateConversationTokenInfo(
   return statement.Run();
 }
 
-bool AIChatDatabase::DeleteConversation(std::string_view conversation_uuid) {
+bool AIChatDatabase::DeleteConversations(
+    const std::vector<std::string>& uuids) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (uuids.empty()) {
+    return true;
+  }
   if (!LazyInit()) {
     return false;
   }
 
+  // All the conversations are deleted in a single transaction, so a failure
+  // part-way through doesn't leave orphaned rows behind.
   sql::Transaction transaction(&db_);
   if (!transaction.Begin()) {
     DVLOG(0) << "Transaction cannot begin\n";
     return false;
   }
+
+  for (const auto& uuid : uuids) {
+    if (!DeleteConversationInternal(uuid)) {
+      return false;
+    }
+  }
+
+  if (!transaction.Commit()) {
+    DVLOG(0) << "Transaction commit failed with reason: "
+             << db_.GetErrorMessage();
+    return false;
+  }
+  return true;
+}
+
+bool AIChatDatabase::DeleteConversationInternal(
+    std::string_view conversation_uuid) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   // Each event table is cleared in a single statement, selecting the target
   // rows with a subquery over conversation_entry. `conversation_entry` itself
@@ -1489,11 +1513,6 @@ bool AIChatDatabase::DeleteConversation(std::string_view conversation_uuid) {
     }
   }
 
-  if (!transaction.Commit()) {
-    DVLOG(0) << "Transaction commit failed with reason: "
-             << db_.GetErrorMessage();
-    return false;
-  }
   return true;
 }
 

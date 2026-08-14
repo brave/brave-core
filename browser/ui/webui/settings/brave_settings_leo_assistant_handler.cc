@@ -179,7 +179,7 @@ void BraveLeoAssistantHandler::HandleResetLeoData(const base::ListValue& args) {
   if (!service) {
     return;
   }
-  service->DeleteConversations();
+  service->DeleteConversationsInRange();
   if (profile_) {
     ai_chat::SetUserOptedIn(profile_->GetPrefs(), false);
     ai_chat::prefs::DeleteAllMemoriesFromPrefs(*profile_->GetPrefs());

@@ -93,8 +93,9 @@ class AIChatDatabase : public syncer::SyncMetadataStore {
                                            uint64_t total_tokens,
                                            uint64_t trimmed_tokens);
 
-  // Deletes the conversation with the provided UUID
-  virtual bool DeleteConversation(std::string_view conversation_uuid);
+  // Deletes the conversations with the provided UUIDs, and all of their data,
+  // in a single transaction. No-op for an empty list.
+  virtual bool DeleteConversations(const std::vector<std::string>& uuids);
 
   // Deletes the conversation entry with the provided ID and all associated
   // edits and events.
@@ -140,6 +141,10 @@ class AIChatDatabase : public syncer::SyncMetadataStore {
   // re-initialize the database (e.g. after a table deletion).
   bool LazyInit(bool re_init = false);
   sql::InitStatus InitInternal();
+
+  // Deletes a single conversation and all of its rows. Must be called within a
+  // transaction started by the caller.
+  bool DeleteConversationInternal(std::string_view conversation_uuid);
 
   std::vector<mojom::ConversationTurnPtr> GetConversationEntries(
       std::string_view conversation_id);

@@ -261,7 +261,7 @@ TEST_P(AIChatDatabaseTest, AddAndGetConversationAndEntries) {
 
   // Test deleting conversation (after loop so that we can test conversation
   // entry selection with multiple conversations in the database).
-  EXPECT_TRUE(db_->DeleteConversation("second"));
+  EXPECT_TRUE(db_->DeleteConversations({"second"}));
   // Verify no data for deleted conversation
   mojom::ConversationArchivePtr conversation_data =
       db_->GetConversationData("second");
@@ -278,7 +278,7 @@ TEST_P(AIChatDatabaseTest, AddAndGetConversationAndEntries) {
   EXPECT_GT(conversation_data_2->entries.size(), 0u);
   EXPECT_EQ(conversation_data_2->associated_content.size(), 1u);
   // Delete last conversation
-  EXPECT_TRUE(db_->DeleteConversation("first"));
+  EXPECT_TRUE(db_->DeleteConversations({"first"}));
   conversations = db_->GetAllConversations();
   EXPECT_EQ(conversations.size(), 0u);
 }
@@ -778,7 +778,7 @@ TEST_P(AIChatDatabaseTest, UploadFile) {
   ExpectConversationHistoryEquals(FROM_HERE, data->entries, history);
 
   // Delete the whole conversation contains uploaded image
-  EXPECT_TRUE(db_->DeleteConversation(kUUID));
+  EXPECT_TRUE(db_->DeleteConversations({kUUID}));
   EXPECT_EQ(db_->GetAllConversations().size(), 0u);
 }
 
@@ -1241,7 +1241,7 @@ void AppendEventForEveryTable(mojom::ConversationTurnPtr& entry) {
 
 // The event tables are only reachable via conversation_entry, so a missed
 // table leaks encrypted rows that nothing will ever clean up.
-TEST_P(AIChatDatabaseTest, DeleteConversationRemovesAllChildRows) {
+TEST_P(AIChatDatabaseTest, DeleteConversationsRemovesAllChildRows) {
   const std::string uuid = "conversation_to_delete";
   auto history = CreateSampleChatHistory(1u, 0,
                                          /*num_uploaded_files_per_query=*/1u);
@@ -1273,7 +1273,7 @@ TEST_P(AIChatDatabaseTest, DeleteConversationRemovesAllChildRows) {
   EXPECT_EQ(CountRows("associated_content"), 1u);
   EXPECT_EQ(CountRows("conversation_entry"), 3u);
 
-  EXPECT_TRUE(db_->DeleteConversation(uuid));
+  EXPECT_TRUE(db_->DeleteConversations({uuid}));
 
   for (const char* table : kEntryChildTables) {
     SCOPED_TRACE(table);
@@ -1282,6 +1282,52 @@ TEST_P(AIChatDatabaseTest, DeleteConversationRemovesAllChildRows) {
   EXPECT_EQ(CountRows("associated_content"), 0u);
   EXPECT_EQ(CountRows("conversation_entry"), 0u);
   EXPECT_EQ(CountRows("conversation"), 0u);
+}
+
+// A batch delete must be scoped to the provided UUIDs, since the statements it
+// runs share a single transaction with the other conversations' rows.
+TEST_P(AIChatDatabaseTest, DeleteConversationsDeletesOnlyProvidedUuids) {
+  constexpr const char* kUuids[] = {"first", "second", "third"};
+  for (const char* uuid : kUuids) {
+    auto history = CreateSampleChatHistory(1u, 0,
+                                           /*num_uploaded_files_per_query=*/1u);
+    AppendEventForEveryTable(history[1]);
+    const mojom::ConversationPtr metadata = mojom::Conversation::New(
+        uuid, "title", base::Time::Now() - base::Hours(2), true, std::nullopt,
+        0, 0, false, std::vector<mojom::AssociatedContentPtr>());
+    ASSERT_TRUE(
+        db_->AddConversation(metadata->Clone(), {}, history[0]->Clone()));
+    ASSERT_TRUE(db_->AddConversationEntry(uuid, history[1]->Clone()));
+  }
+  ASSERT_EQ(db_->GetAllConversations().size(), 3u);
+  ASSERT_EQ(CountRows("conversation_entry"), 6u);
+
+  EXPECT_TRUE(db_->DeleteConversations({"first", "third"}));
+
+  auto conversations = db_->GetAllConversations();
+  ASSERT_EQ(conversations.size(), 1u);
+  EXPECT_EQ(conversations[0]->uuid, "second");
+  // The surviving conversation keeps all of its rows.
+  EXPECT_EQ(CountRows("conversation_entry"), 2u);
+  for (const char* table : kEntryChildTables) {
+    SCOPED_TRACE(table);
+    EXPECT_GT(CountRows(table), 0u);
+  }
+  EXPECT_EQ(db_->GetConversationData("second")->entries.size(), 2u);
+}
+
+TEST_P(AIChatDatabaseTest, DeleteConversationsWithNoUuidsIsNoOp) {
+  const std::string uuid = "conversation_kept";
+  auto history = CreateSampleChatHistory(1u, 0, 0u);
+  const mojom::ConversationPtr metadata = mojom::Conversation::New(
+      uuid, "title", base::Time::Now() - base::Hours(2), true, std::nullopt, 0,
+      0, false, std::vector<mojom::AssociatedContentPtr>());
+  ASSERT_TRUE(db_->AddConversation(metadata->Clone(), {}, history[0]->Clone()));
+
+  EXPECT_TRUE(db_->DeleteConversations({}));
+
+  EXPECT_EQ(db_->GetAllConversations().size(), 1u);
+  EXPECT_EQ(CountRows("conversation_entry"), 1u);
 }
 
 // Deleting an entry deletes the edits pointing at it, so it must also delete
