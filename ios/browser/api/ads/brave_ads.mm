@@ -182,11 +182,6 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
   return adsService != nil && adsService->IsInitialized();
 }
 
-- (BOOL)isOptedInToSearchResultAds {
-  return self.profilePrefService->GetBoolean(
-      brave_ads::prefs::kOptedInToSearchResultAds);
-}
-
 - (BOOL)shouldShowSearchResultAdClickedInfoBar {
   return self.profilePrefService->GetBoolean(
       brave_ads::prefs::kShouldShowSearchResultAdClickedInfoBar);

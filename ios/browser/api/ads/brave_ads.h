@@ -56,9 +56,6 @@ OBJC_EXPORT
 /// Returns `true` if the ads service is running otherwise returns `false`.
 - (BOOL)isServiceRunning;
 
-/// Returns `true` if the user opted-in to search result ads.
-- (BOOL)isOptedInToSearchResultAds;
-
 /// Returns `true` if the privacy notice infobar should be displayed when a user
 /// clicks on a search result ad. This should be called before calling
 /// `triggerSearchResultAdClickedEvent`.
