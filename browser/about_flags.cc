@@ -138,6 +138,7 @@
 #include "brave/browser/ui/focus_mode/focus_mode_features.h"
 #include "brave/browser/ui/page_info/features.h"
 #include "brave/browser/ui/screenshot/features.h"
+#include "brave/components/sidebar/common/features.h"
 #endif
 
 #define EXPAND_FEATURE_ENTRIES(...) __VA_ARGS__,
@@ -948,6 +949,19 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
 #define BRAVE_SCREENSHOT_FEATURE_ENTRY
 #endif
 
+#if defined(TOOLKIT_VIEWS)
+#define BRAVE_SIDEBAR_WEB_PANEL_FEATURE_ENTRY                  \
+  EXPAND_FEATURE_ENTRIES({                                     \
+      "sidebar-web-panel",                                     \
+      "Sidebar Web Panel",                                     \
+      "Support web panel in sidebar.",                         \
+      kOsWin | kOsMac | kOsLinux,                              \
+      FEATURE_VALUE_TYPE(sidebar::features::kSidebarWebPanel), \
+  })
+#else
+#define BRAVE_SIDEBAR_WEB_PANEL_FEATURE_ENTRY
+#endif
+
 // Keep the last item empty.
 #define LAST_BRAVE_FEATURE_ENTRIES_ITEM
 
@@ -1564,6 +1578,7 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
       FEATURE_VALUE_TYPE(brave_origin::features::kBraveOrigin),                \
   })                                                                           \
   BRAVE_SCREENSHOT_FEATURE_ENTRY                                               \
+  BRAVE_SIDEBAR_WEB_PANEL_FEATURE_ENTRY                                        \
   LAST_BRAVE_FEATURE_ENTRIES_ITEM  // Keep it as the last item.
 namespace flags_ui {
 namespace {

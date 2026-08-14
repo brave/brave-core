@@ -45,7 +45,7 @@ export const style = scoped.css`
 
     .link-broken {
       padding: 8px;
-      border: solid 1px ${color.systemfeedback.warningVibrant};
+      border: solid 1px var(--leo-color-primitive-yellow-80);
       background: ${color.systemfeedback.warningBackground};
       margin: 0 -14px;
     }

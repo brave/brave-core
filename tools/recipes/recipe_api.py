@@ -24,6 +24,8 @@ import functools
 from pathlib import Path
 from typing import Any
 
+from step_stack import StepStack
+
 
 class ModuleInjectionSite:
     """Namespace holding a module's resolved DEPS (and the module itself).
@@ -183,6 +185,11 @@ class RecipeApi:
         # brave-core ref the checkout modules clone, seeded by the engine.
         # `brave_core_checkout` uses it; defaults to `master` until overridden.
         self._brave_core_ref: str = 'master'
+        # The run's stack of open steps, seeded by the engine. `step` pushes
+        # each step onto it and `futures` registers spawned greenlets against
+        # it; every other module ignores it. Defaults to a private stack so a
+        # module instantiated outside the engine still works.
+        self._step_stack = StepStack()
         # Simulation context, seeded by the engine only in test mode. `None`
         # means production: the seam modules (`path`, `env`, `platform`, `step`)
         # touch the real machine. When set, they read/mutate this instead. Its

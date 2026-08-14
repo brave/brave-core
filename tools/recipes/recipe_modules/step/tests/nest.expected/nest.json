@@ -1,0 +1,93 @@
+[
+  {
+    "cmd": [],
+    "name": "build"
+  },
+  {
+    "cmd": [
+      "gn",
+      "gen"
+    ],
+    "name": "build.configure"
+  },
+  {
+    "cmd": [
+      "ninja"
+    ],
+    "name": "build.compile"
+  },
+  {
+    "cmd": [],
+    "name": "package"
+  },
+  {
+    "cmd": [
+      "ninja",
+      "package"
+    ],
+    "name": "package.compile"
+  },
+  {
+    "cmd": [],
+    "name": "package.sign"
+  },
+  {
+    "cmd": [
+      "codesign"
+    ],
+    "name": "package.sign.compile"
+  },
+  {
+    "cmd": [
+      "echo",
+      "first"
+    ],
+    "name": "twice"
+  },
+  {
+    "cmd": [
+      "echo",
+      "second"
+    ],
+    "name": "twice (2)"
+  },
+  {
+    "cmd": [],
+    "name": "fan out"
+  },
+  {
+    "cmd": [
+      "fetch",
+      "0"
+    ],
+    "name": "fan out.fetch 0"
+  },
+  {
+    "cmd": [
+      "fetch",
+      "1"
+    ],
+    "name": "fan out.fetch 1"
+  },
+  {
+    "cmd": [
+      "echo",
+      "joined"
+    ],
+    "name": "after"
+  },
+  {
+    "cmd": [],
+    "name": "outer"
+  },
+  {
+    "cmd": [
+      "echo",
+      "outer"
+    ],
+    "name": "outer.reports"
+  },
+  {
+    "name": "$result"
+  }
+]

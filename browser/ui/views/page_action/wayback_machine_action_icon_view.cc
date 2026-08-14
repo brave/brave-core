@@ -125,7 +125,7 @@ views::BubbleDialogDelegate* WaybackMachineActionIconView::GetBubble() const {
 }
 
 const gfx::VectorIcon& WaybackMachineActionIconView::GetVectorIcon() const {
-  return kLeoHistoryIcon;
+  return kLeoCalendarTimeIcon;
 }
 
 ui::ImageModel WaybackMachineActionIconView::GetSizedIconImage(int size) const {
@@ -139,7 +139,7 @@ ui::ImageModel WaybackMachineActionIconView::GetSizedIconImage(int size) const {
       GetActive() ? views::GetCascadingAccentColor(
                         const_cast<WaybackMachineActionIconView*>(this))
                   : GetIconColor();
-  gfx::IconDescription icon_description(kLeoHistoryIcon, size, icon_color);
+  gfx::IconDescription icon_description(kLeoCalendarTimeIcon, size, icon_color);
   auto* cp = GetColorProvider();
   if (state == WaybackState::kLoaded) {
     const SkColor badge_color = cp ? cp->GetColor(kColorWaybackMachineURLLoaded)

@@ -58,8 +58,8 @@ IN_PROC_BROWSER_TEST_F(AcceleratorMenuCoordinatorMacBrowserTest,
   // it reacts to browser activation.
   NotifyBrowserActivated(browser());
 
-  auto* service =
-      commands::AcceleratorServiceFactory::GetForContext(browser()->profile());
+  auto* service = commands::AcceleratorServiceFactory::GetForContext(
+      browser()->GetProfile());
   ASSERT_TRUE(service);
 
   NSMenuItem* item = FindMenuItemWithTag([NSApp mainMenu], IDC_NEW_WINDOW);
@@ -112,8 +112,8 @@ IN_PROC_BROWSER_TEST_F(AcceleratorMenuCoordinatorMacBrowserTest,
                        KeyEquivalentFollowsActiveProfile) {
   NotifyBrowserActivated(browser());
 
-  auto* service =
-      commands::AcceleratorServiceFactory::GetForContext(browser()->profile());
+  auto* service = commands::AcceleratorServiceFactory::GetForContext(
+      browser()->GetProfile());
   ASSERT_TRUE(service);
 
   NSMenuItem* item = FindMenuItemWithTag([NSApp mainMenu], IDC_NEW_WINDOW);

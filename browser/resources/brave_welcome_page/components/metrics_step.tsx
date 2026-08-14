@@ -28,7 +28,7 @@ export function MetricsStep(props: StepComponentProps) {
 
   useStepTransition()
 
-  const [webDiscoveryEnabled, setWebDiscoveryEnabled] = React.useState(true)
+  const [webDiscoveryEnabled, setWebDiscoveryEnabled] = React.useState(false)
   const [p3aEnabled, setP3AEnabled] = React.useState(true)
   const [crashReportingEnabled, setCrashReportingEnabled] = React.useState(true)
 
@@ -79,16 +79,6 @@ export function MetricsStep(props: StepComponentProps) {
           </p>
         </div>
         <div className='step-ui'>
-          {availableMetrics.webDiscovery && (
-            <ProductCard
-              image={wdpImage}
-              title={getString('WELCOME_PAGE_PRODUCT_WDP_TITLE')}
-              description={getString('WELCOME_PAGE_PRODUCT_WDP_DESCRIPTION')}
-              learnMoreUrl='https://support.brave.app/hc/articles/4409406835469-What-is-the-Web-Discovery-Project'
-              checked={webDiscoveryEnabled}
-              onChange={setWebDiscoveryEnabled}
-            />
-          )}
           {availableMetrics.p3a && (
             <ProductCard
               image={p3aImage}
@@ -109,6 +99,16 @@ export function MetricsStep(props: StepComponentProps) {
               learnMoreUrl='https://support.brave.app/hc/en-us/articles/360017905872-How-do-I-enable-or-disable-automatic-crash-reporting'
               checked={crashReportingEnabled}
               onChange={setCrashReportingEnabled}
+            />
+          )}
+          {availableMetrics.webDiscovery && (
+            <ProductCard
+              image={wdpImage}
+              title={getString('WELCOME_PAGE_PRODUCT_WDP_TITLE')}
+              description={getString('WELCOME_PAGE_PRODUCT_WDP_DESCRIPTION')}
+              learnMoreUrl='https://support.brave.app/hc/articles/4409406835469-What-is-the-Web-Discovery-Project'
+              checked={webDiscoveryEnabled}
+              onChange={setWebDiscoveryEnabled}
             />
           )}
         </div>

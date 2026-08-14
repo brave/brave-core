@@ -137,6 +137,7 @@ export function AttachmentPageItem(props: {
               mode='mini'
               mouseleaveTimeout={tooltipHideDelay}
               mouseenterDelay={tooltipShowDelay}
+              positionStrategy='fixed'
             >
               <Icon name='info-outline' />
               <div
@@ -152,6 +153,7 @@ export function AttachmentPageItem(props: {
             mouseleaveTimeout={tooltipHideDelay}
             mouseenterDelay={tooltipShowDelay}
             className={styles.subtitleText}
+            positionStrategy='fixed'
           >
             <div>{sansSchemeUrl}</div>
             <div

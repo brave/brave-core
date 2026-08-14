@@ -38,3 +38,25 @@ builders.builder(
         ],
     ),
 )
+
+builders.builder(
+    name='linux-x64-asan-chromium',
+    sync_config=builders.sync_config(target_os='linux', target_cpu='x64'),
+    gn_args=gn_args.config(configs=[
+        'release',
+        'asan',
+        'remoteexec',
+        'nightly',
+        'linux',
+        'x64',
+    ]),
+    targets=builders.targets(
+        compile=[
+            'brave:all',
+        ],
+        tests=[
+            'chromium_unit_tests',
+            'browser_tests',
+        ],
+    ),
+)

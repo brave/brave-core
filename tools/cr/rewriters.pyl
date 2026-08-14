@@ -97,17 +97,27 @@
 {
     "ast.matcher": {
 
-        # The full declaration of `class_name::method_name`, including a
-        # multi-line signature and its trailing semicolon. The name is matched
-        # by text, so methods (field_identifier), destructors (destructor_name,
-        # e.g. "~Foo") and constructors (identifier) are all found. Overloads
-        # sharing the name each produce their own match. The result node is a
-        # field_declaration for methods and a declaration for con/destructors.
+        # The full method, including a multi-line signature and either its
+        # trailing semicolon (a bodyless declaration) or its inline `{ ... }`
+        # body (a definition). The name is matched by text, so methods
+        # (field_identifier), destructors (destructor_name, e.g. "~Foo") and
+        # constructors (identifier) are all found. Overloads sharing the name
+        # each produce their own match. The result node is a field_declaration
+        # for a bodyless method, a declaration for a bodyless con/destructor,
+        # or a function_definition for one defined inline.
+        #
+        # Templated functions are guaranteed to be skipped.
         "cxx.find_class_method_decl": {
             "template": """\
 any:
   - kind: field_declaration
   - kind: declaration
+  - all:
+      - kind: function_definition
+      - not:
+          inside:
+            kind: template_declaration
+            stopBy: end
 has:
   kind: function_declarator
   stopBy: end
@@ -296,10 +306,18 @@ inside:
                 "node": "compound_statement",
                 "captures": {
                     "return_type": [
-                        {"text": "TRAILING_RETURN_TYPE"},
-                        {"span": ["LEADING_QUALIFIER", "FUNCTION"]},
-                        {"span": ["RETURN_TYPE", "FUNCTION"]},
-                        {"literal": "void"},
+                        {
+                            "text": "TRAILING_RETURN_TYPE"
+                        },
+                        {
+                            "span": ["LEADING_QUALIFIER", "FUNCTION"]
+                        },
+                        {
+                            "span": ["RETURN_TYPE", "FUNCTION"]
+                        },
+                        {
+                            "literal": "void"
+                        },
                     ],
                 },
             },
@@ -453,8 +471,7 @@ regex: ^{class_name}$
             },
             "replace": {
                 "re_pattern": "(?s)^\\{(.*)\\}$",
-                "replace":
-                "{{\\n  {result_var}[&]() -> {return_type} "
+                "replace": "{{\\n  {result_var}[&]() -> {return_type} "
                 "{{\\1  }}();\\n{epilogue}\\n}}",
             },
             "result": {
@@ -596,7 +613,6 @@ regex: ^{class_name}$
         },
     },
     "regex_macro": {
-
         "cxx.set_feature_flag_default_state": {
             "description": """\
 Sets a new value to a `BASE_FEATURE` feature flag.
@@ -619,13 +635,11 @@ substitutions:
             "inputs": [
                 {
                     "name": "feature_name",
-                    "description":
-                    "The `BASE_FEATURE` feature flag name, e.g. `kMyFeature`.",
+                    "description": "The `BASE_FEATURE` feature flag name, e.g. `kMyFeature`.",
                 },
                 {
                     "name": "value",
-                    "description":
-                    "The new value, e.g. `base::FEATURE_DISABLED_BY_DEFAULT`.",
+                    "description": "The new value, e.g. `base::FEATURE_DISABLED_BY_DEFAULT`.",
                 },
             ],
             "re_pattern": "(BASE_FEATURE\\(\\s*{feature_name}\\s*,)(?!(?:[^;]*,)?\\s*{value}\\s*\\);)([^;]*,)?(\\s*)[^;]*?(\\);)",

@@ -7,8 +7,8 @@
 
 # Packages allowed to run install/build lifecycle scripts.
 allowBuilds:
-  '@brave/leo-sf-symbols@https://codeload.github.com/brave/leo-sf-symbols/tar.gz/f601277fdcd837c3e6b7239b73537603c7539119': true
-  '@brave/leo@https://codeload.github.com/brave/leo/tar.gz/a9fe69615e3cc3d7f2388fac1ddfa3db1e12a30a': true
+  '@brave/leo-sf-symbols@https://codeload.github.com/brave/leo-sf-symbols/tar.gz/d6c826a443dd10bc02e2349812fe3f9727460e0d': true
+  '@brave/leo@https://codeload.github.com/brave/leo/tar.gz/20ef7060208f692feeb7c4f1364550fcb3d85454': true
   '@parcel/watcher': true
   blake-hash: true
   bufferutil: true

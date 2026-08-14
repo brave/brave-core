@@ -12,6 +12,7 @@
 #include "base/logging.h"
 #include "base/process/launch.h"
 #include "base/process/memory.h"
+#include "base/task/thread_pool/thread_pool_instance.h"
 #include "brave/components/brave_vpn/app/v2/agent/agent_app.h"
 #include "brave/components/brave_vpn/app/v2/agent/single_instance.h"
 #include "brave/components/brave_vpn/app/v2/shared/app_utils.h"
@@ -105,6 +106,15 @@ int main(int argc, char* argv[]) {
   CrashReporterClient::InitializeForProcess(
       process_type, kBraveVpnAgentAppProductName, channel_name, user_data_dir);
 
+  base::ThreadPoolInstance::CreateAndStartWithDefaultParams(
+      kBraveVpnAgentAppProductName);
+
   AgentApp agent_app;
-  return agent_app.Run();
+  const int exit_code = agent_app.Run();
+
+  // Blocks until running pool tasks have finished, so the IPC server's socket
+  // work is not still executing while the process unwinds.
+  base::ThreadPoolInstance::Get()->Shutdown();
+
+  return exit_code;
 }

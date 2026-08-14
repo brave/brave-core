@@ -1,7 +1,7 @@
 // Copyright (c) 2019 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at https://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 // Check environment before doing anything.
 import '../lib/checkEnvironment.js'
@@ -18,8 +18,7 @@ import syncUtil from '../lib/syncUtils.js'
 import sisoUtils from '../lib/sisoUtils.js'
 
 program
-  // @ts-ignore
-  .version(process.env.npm_package_version)
+  .version(process.env.npm_package_version || 'unknown')
   .option('--gclient_verbose', 'verbose output for gclient')
   .option('--target_os <target_os>', 'comma-separated target OS list')
   .option(
@@ -28,7 +27,7 @@ program
   )
   .option('--init', 'initialize all dependencies')
   .option('--force', 'force reset all projects to origin/ref')
-  .option('--no-history', 'performs a shallow clone') // NOTE: sets program.history = false
+  .option('--no-history', 'performs a shallow clone') // NOTE: sets options.history = false
   .option('--no-bootstrap', "Don't bootstrap from Google Storage.")
   .option('--fetch_all', 'fetch all tags and branch heads')
   .option(
@@ -45,21 +44,21 @@ program
     '--with_issue_44921',
     'Do not pass --revision to gclient to avoid process hanging on jenkins. https://github.com/brave/brave-browser/issues/44921',
   )
-  .action(RunCommand)
+  .action(sync)
   .parse()
 
-function syncBrave(program) {
+function syncBrave(options) {
   let args = ['sync', '--nohooks']
-  const syncWithForce = program.init || program.force
+  const syncWithForce = options.init || options.force
   if (syncWithForce) {
     args.push('--force')
   }
 
-  if (program.delete_unused_deps) {
+  if (options.delete_unused_deps) {
     args.push('-D')
   }
 
-  if (program.bootstrap === false) {
+  if (options.bootstrap === false) {
     if (isCI) {
       Log.error('--no-boostrap is not allowed on CI')
       process.exit(1)
@@ -67,7 +66,7 @@ function syncBrave(program) {
     args.push('--no-bootstrap')
   }
 
-  if (program.history === false) {
+  if (options.history === false) {
     args.push('--no-history')
   }
 
@@ -78,38 +77,38 @@ function syncBrave(program) {
   )
 }
 
-async function RunCommand(program) {
+async function sync(options) {
   // Install depot_tools early to make Python available.
   depotTools.installDepotTools()
 
   // Read the existing .gclient config to reuse some values from it if they are
   // not provided.
-  const existingGclientConfig = program.init ? {} : syncUtil.readGclientConfig()
+  const existingGclientConfig = options.init ? {} : syncUtil.readGclientConfig()
 
   // --target_os, --target_arch as lists make sense only for `init/sync`
   // commands. Handle comma-separated values here and only pass the first value
   // to the config.update() call.
   const targetOSList = commaSeparatedToList(
-    program.target_os,
+    options.target_os,
     existingGclientConfig.target_os || [],
   )
   if (targetOSList.length > 0) {
-    program.target_os = targetOSList[0]
+    options.target_os = targetOSList[0]
   }
   const targetArchList = commaSeparatedToList(
-    program.target_arch,
+    options.target_arch,
     existingGclientConfig.target_cpu || [],
   )
   if (targetArchList.length > 0) {
-    program.target_arch = targetArchList[0]
+    options.target_arch = targetArchList[0]
   }
 
-  config.update(program)
+  config.update(options)
 
   if (
     config.disableGclientConfigUpdate
     && fs.existsSync(config.gclientFile)
-    && !program.init
+    && !options.init
   ) {
     Log.warn(
       `Skipping ${config.gclientFile} update (disable_gclient_config_update=true)`,
@@ -119,14 +118,14 @@ async function RunCommand(program) {
   }
 
   if (isCI) {
-    program.delete_unused_deps = true
+    options.delete_unused_deps = true
   }
 
   Log.progressScope('gclient sync', () => {
-    const didSyncChromium = syncUtil.syncChromium(program)
-    if (!didSyncChromium || program.delete_unused_deps) {
+    const didSyncChromium = syncUtil.syncChromium(options)
+    if (!didSyncChromium || options.delete_unused_deps) {
       // If no Chromium sync was done, run sync inside `brave` to sync Brave DEPS.
-      syncBrave(program)
+      syncBrave(options)
     }
   })
 
@@ -134,7 +133,7 @@ async function RunCommand(program) {
 
   await util.applyPatches()
 
-  if (!program.nohooks) {
+  if (!options.nohooks) {
     if (!(await syncUtil.checkInternalDepsEndpoint())) {
       Log.warn(
         'The internal dependencies endpoint is unreachable, which may block toolchain downloads. Please check your VPN connection.',
