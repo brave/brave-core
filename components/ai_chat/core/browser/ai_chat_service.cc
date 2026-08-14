@@ -807,10 +807,6 @@ void AIChatService::GetPremiumStatus(
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
 
-void AIChatService::DeleteConversation(const std::string& id) {
-  DeleteConversations({id});
-}
-
 void AIChatService::DeleteConversations(const std::vector<std::string>& uuids) {
   if (uuids.empty()) {
     return;

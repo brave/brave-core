@@ -55,9 +55,9 @@ export default function DeleteConversationModal() {
             size='medium'
             onClick={() => {
               if (aiChatContext.deletingConversationId) {
-                aiChatContext.api.service.deleteConversation(
+                aiChatContext.api.service.deleteConversations([
                   aiChatContext.deletingConversationId,
-                )
+                ])
                 aiChatContext.setDeletingConversationId(null)
               }
             }}
