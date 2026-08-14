@@ -12,6 +12,7 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
 #include <cstdint>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -150,6 +151,14 @@ class FakeRewardsService : public brave_rewards::RewardsService {
   void GetEnvironment(brave_rewards::GetEnvironmentCallback callback) override;
   brave_rewards::p3a::ConversionMonitor* GetP3AConversionMonitor() override;
   void OnRewardsPageShown() override;
+
+  // Records the `num_lines` most recently passed to `LoadDiagnosticLog`.
+  std::optional<int> last_load_diagnostic_log_num_lines() const {
+    return last_load_diagnostic_log_num_lines_;
+  }
+
+ private:
+  std::optional<int> last_load_diagnostic_log_num_lines_;
 };
 
 }  // namespace brave_ads::test

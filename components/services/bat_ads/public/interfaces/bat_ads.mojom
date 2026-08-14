@@ -204,3 +204,12 @@ interface AdsInternals {
 interface AdsInternalsPage {
   UpdateBraveRewardsEnabled(bool enabled);
 };
+
+// Exposes the Brave Rewards diagnostic log to brave://ads-internals so it can
+// be viewed alongside ads-specific diagnostics without duplicating it.
+interface AdsInternalsLogs {
+  // A null `num_lines` returns the full log.
+  GetLog(uint32? num_lines) => (string log);
+  ClearLog() => (bool success);
+  ToggleVerboseLoggingAndRestart();
+};
