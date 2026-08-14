@@ -46,11 +46,6 @@ public class BraveSettingsActivity extends SettingsActivity {
      */
     private final Map<RecyclerView, Integer> mOriginalRecyclerViewBottomPaddings = new HashMap<>();
 
-    private final Runnable mUpdateSettingsContentInsetsRunnable = this::updateSettingsContentInsets;
-
-    private final View.OnLayoutChangeListener mContentViewLayoutListener =
-            this::onContentViewLayoutChanged;
-
     private final FragmentManager.FragmentLifecycleCallbacks mSettingsFragmentLifecycleCallbacks =
             new FragmentManager.FragmentLifecycleCallbacks() {
                 @Override
@@ -98,8 +93,8 @@ public class BraveSettingsActivity extends SettingsActivity {
         View contentView = getContentView();
         mContentView = contentView;
         contentView.setBackgroundColor(SemanticColorUtils.getSettingsBackgroundColor(this));
-        contentView.addOnLayoutChangeListener(mContentViewLayoutListener);
-        contentView.post(mUpdateSettingsContentInsetsRunnable);
+        ViewCompat.setOnApplyWindowInsetsListener(contentView, this::updateSettingsContentInsets);
+        ViewCompat.requestApplyInsets(contentView);
     }
 
     @Override
@@ -107,8 +102,7 @@ public class BraveSettingsActivity extends SettingsActivity {
         getSupportFragmentManager()
                 .unregisterFragmentLifecycleCallbacks(mSettingsFragmentLifecycleCallbacks);
         if (mContentView != null) {
-            mContentView.removeOnLayoutChangeListener(mContentViewLayoutListener);
-            mContentView.removeCallbacks(mUpdateSettingsContentInsetsRunnable);
+            ViewCompat.setOnApplyWindowInsetsListener(mContentView, null);
             mContentView = null;
         }
         mOriginalRecyclerViewBottomPaddings.clear();
@@ -164,15 +158,19 @@ public class BraveSettingsActivity extends SettingsActivity {
         mOriginalRecyclerViewBottomPaddings.putIfAbsent(
                 recyclerView, recyclerView.getPaddingBottom());
         recyclerView.setClipToPadding(false);
-        updateSettingsContentInsets();
-    }
 
-    private void updateSettingsContentInsets() {
         View contentView = mContentView;
-        if (contentView == null || isFinishing() || isDestroyed()) return;
+        if (contentView == null) return;
 
         WindowInsetsCompat rootWindowInsets = ViewCompat.getRootWindowInsets(contentView);
         if (rootWindowInsets == null) return;
+
+        updateSettingsContentInsets(contentView, rootWindowInsets);
+    }
+
+    private WindowInsetsCompat updateSettingsContentInsets(
+            View contentView, WindowInsetsCompat rootWindowInsets) {
+        if (isFinishing() || isDestroyed()) return rootWindowInsets;
 
         setBottomPadding(
                 contentView, rootWindowInsets.getInsets(WindowInsetsCompat.Type.ime()).bottom);
@@ -187,19 +185,7 @@ public class BraveSettingsActivity extends SettingsActivity {
                 mOriginalRecyclerViewBottomPaddings.entrySet()) {
             setBottomPadding(entry.getKey(), entry.getValue() + navigationBarBottomInset);
         }
-    }
-
-    private void onContentViewLayoutChanged(
-            View view,
-            int left,
-            int top,
-            int right,
-            int bottom,
-            int oldLeft,
-            int oldTop,
-            int oldRight,
-            int oldBottom) {
-        updateSettingsContentInsets();
+        return rootWindowInsets;
     }
 
     private static void setBottomPadding(View view, int bottomPadding) {
