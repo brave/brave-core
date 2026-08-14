@@ -5,6 +5,8 @@
 
 #import "ios/chrome/browser/https_upgrades/model/https_only_mode_upgrade_tab_helper.h"
 
+#include <string>
+
 #import "base/feature_list.h"
 #import "base/functional/bind.h"
 #import "base/functional/callback.h"
@@ -44,9 +46,18 @@ brave_shields::HttpsUpgradeLevel GetHttpsUpgradeLevel(PrefService* prefs) {
       prefs->GetInteger(prefs::kHttpsUpgradeLevel));
 }
 
+// Hosts that can't get publicly trusted certificates: private network names,
+// private range IPs and single label hostnames. Matches the exclusions
+// `HttpsUpgradesInterceptor::MaybeCreateLoader` applies on other platforms.
+bool CannotHavePubliclyTrustedCertificate(const GURL& url) {
+  const std::string host = url.GetHost();
+  return net::IsHostnameNonUnique(host) || net::GetSuperdomain(host).empty();
+}
+
 // Returns whether `url` should be upgraded for the level selected in Shields.
-// Standard only upgrades hosts that aren't known to be broken over HTTPS,
-// strict upgrades every host.
+// Standard only upgrades public hosts that aren't known to be broken over
+// HTTPS, strict upgrades every host so that the interstitial is shown for
+// private hosts too.
 bool BraveShouldUpgradeToHttps(PrefService* prefs, const GURL& url) {
   if (!base::FeatureList::IsEnabled(net::features::kBraveHttpsByDefault)) {
     return false;
@@ -55,6 +66,9 @@ bool BraveShouldUpgradeToHttps(PrefService* prefs, const GURL& url) {
     case brave_shields::HttpsUpgradeLevel::kDisabled:
       return false;
     case brave_shields::HttpsUpgradeLevel::kStandard: {
+      if (CannotHavePubliclyTrustedCertificate(url)) {
+        return false;
+      }
       auto* exceptions_service =
           https_upgrade_exceptions::GetHttpsUpgradeExceptionsService();
       return exceptions_service && exceptions_service->CanUpgradeToHTTPS(url);
