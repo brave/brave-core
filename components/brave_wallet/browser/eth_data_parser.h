@@ -21,6 +21,12 @@ std::optional<std::tuple<mojom::TransactionType,    // tx_type
                          mojom::SwapInfoPtr>>       // swap_info
 GetTransactionInfoFromData(const std::vector<uint8_t>& data);
 
+std::optional<std::string> GetFinalRecipient(
+    const std::string& chain_id,
+    const std::string& base_to,
+    mojom::TransactionType tx_type,
+    const std::vector<std::string>& tx_args);
+
 }  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ETH_DATA_PARSER_H_

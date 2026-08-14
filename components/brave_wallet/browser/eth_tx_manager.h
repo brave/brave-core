@@ -169,6 +169,7 @@ class EthTxManager : public TxManager, public EthBlockTracker::Observer {
   FRIEND_TEST_ALL_PREFIXES(EthTxManagerUnitTest, TestSubmittedToConfirmed);
   FRIEND_TEST_ALL_PREFIXES(EthTxManagerUnitTest, RetryTransaction);
   FRIEND_TEST_ALL_PREFIXES(EthTxManagerUnitTest, Reset);
+  FRIEND_TEST_ALL_PREFIXES(EthTxManagerUnitTest, RestrictedRecipientInCalldata);
   friend class EthTxManagerUnitTest;
 
   mojom::CoinType GetCoinType() const override;
