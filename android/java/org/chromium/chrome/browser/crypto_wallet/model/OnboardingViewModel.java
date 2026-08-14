@@ -297,10 +297,6 @@ public class OnboardingViewModel extends ViewModel {
         mLegacyRestoreEnabled = legacyRestoreEnabled;
     }
 
-    public boolean isLegacyRestoreEnabled() {
-        return mLegacyRestoreEnabled;
-    }
-
     public void setRecoveryPhrase(@NonNull final String recoveryPhrase) {
         mRecoveryPhrase = recoveryPhrase;
     }
@@ -364,16 +360,6 @@ public class OnboardingViewModel extends ViewModel {
 
         mAvailableNetworks.clear();
         mAvailableNetworks.addAll(availableNetworks);
-    }
-
-    @NonNull
-    public Set<NetworkInfo> getSelectedNetworks() {
-        return mSelectedNetworks;
-    }
-
-    @NonNull
-    public Set<NetworkInfo> getAvailableNetworks() {
-        return mAvailableNetworks;
     }
 
     /** Stores the network selection screen state so it survives a rotation. */
