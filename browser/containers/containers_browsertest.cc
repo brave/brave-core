@@ -1128,8 +1128,8 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(ContainersBrowserTest, HoverCardShowsContainerName) {
   ::test::TabHoverCardTestUtil tab_hover_card_test_util;  // Disables animation.
-  browser()->profile()->GetPrefs()->SetInteger(brave_tabs::kTabHoverMode,
-                                               brave_tabs::TabHoverMode::CARD);
+  browser()->GetProfile()->GetPrefs()->SetInteger(
+      brave_tabs::kTabHoverMode, brave_tabs::TabHoverMode::CARD);
 
   const GURL url("https://a.test/simple.html");
 
@@ -1143,7 +1143,7 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest, HoverCardShowsContainerName) {
   // populated once the container is known to the synced containers list.
   std::vector<containers::mojom::ContainerPtr> synced;
   synced.push_back(container->Clone());
-  SetContainersToPrefs(synced, *browser()->profile()->GetPrefs());
+  SetContainersToPrefs(synced, *browser()->GetProfile()->GetPrefs());
 
   brave::OpenUrlInContainer(browser(), url, container);
   content::WebContents* web_contents =
@@ -1167,8 +1167,8 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest, HoverCardShowsContainerName) {
 IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
                        HoverCardDoesNotShowContainerNameOutsideContainer) {
   ::test::TabHoverCardTestUtil tab_hover_card_test_util;  // Disables animation.
-  browser()->profile()->GetPrefs()->SetInteger(brave_tabs::kTabHoverMode,
-                                               brave_tabs::TabHoverMode::CARD);
+  browser()->GetProfile()->GetPrefs()->SetInteger(
+      brave_tabs::kTabHoverMode, brave_tabs::TabHoverMode::CARD);
 
   const GURL url("https://a.test/simple.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
