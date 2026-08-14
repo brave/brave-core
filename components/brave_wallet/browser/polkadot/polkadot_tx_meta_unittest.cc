@@ -150,6 +150,7 @@ TEST(PolkadotTxMeta, ToTransactionPtr) {
     EXPECT_EQ(tx_data->fee, Uint128ToMojom(0));
     EXPECT_FALSE(tx_data->sending_max_amount);
     EXPECT_FALSE(tx_data->asset_id);
+    EXPECT_FALSE(tx_data->signature_payload);
   }
 
   // Serialize a transaction with an asset id.
@@ -175,6 +176,20 @@ TEST(PolkadotTxMeta, ToTransactionPtr) {
     ASSERT_TRUE(tx_data->asset_id);
     EXPECT_EQ(tx_data->asset_id->id, 1337u);
     EXPECT_TRUE(tx_data->sending_max_amount);
+  }
+
+  // A stored signature payload is surfaced as 0x-prefixed hex so it can be
+  // shown in the transaction details.
+  PolkadotTransaction signed_tx =
+      MakePolkadotTx(/*transfer_all=*/false, /*asset_id=*/std::nullopt);
+  signed_tx.set_signature_payload({0xde, 0xad, 0xbe, 0xef});
+  meta = MakePolkadotTxMeta(polkadot_account_id->Clone(), std::move(signed_tx));
+
+  {
+    auto ti = meta->ToTransactionInfo();
+    const auto& tx_data = ti->tx_data_union->get_polkadot_tx_data();
+    ASSERT_TRUE(tx_data->signature_payload);
+    EXPECT_EQ(*tx_data->signature_payload, "0xdeadbeef");
   }
 }
 

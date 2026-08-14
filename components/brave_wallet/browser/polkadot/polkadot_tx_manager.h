@@ -15,6 +15,7 @@
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_extrinsic.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_transaction_status_task.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_tx_meta.h"
+#include "brave/components/brave_wallet/browser/polkadot/polkadot_wallet_service.h"
 #include "brave/components/brave_wallet/browser/tx_manager.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "third_party/abseil-cpp/absl/container/flat_hash_map.h"
@@ -26,7 +27,6 @@ class TxService;
 class TxStorage;
 class AccountResolverDelegate;
 class NetworkManager;
-class PolkadotWalletService;
 class PolkadotTxStateManager;
 
 // Polkadot transaction manager
@@ -82,11 +82,11 @@ class PolkadotTxManager : public TxManager,
       AddUnapprovedPolkadotTransactionCallback callback,
       base::expected<PolkadotChainMetadata, std::string> chain_metadata);
 
-  void OnGetFeeForUnapproved(
-      PolkadotChainMetadata chain_metadata,
-      mojom::NewPolkadotTransactionParamsPtr params,
-      AddUnapprovedPolkadotTransactionCallback callback,
-      base::expected<uint128_t, std::string> partial_fee);
+  void OnGetFeeForUnapproved(PolkadotChainMetadata chain_metadata,
+                             mojom::NewPolkadotTransactionParamsPtr params,
+                             AddUnapprovedPolkadotTransactionCallback callback,
+                             base::expected<PolkadotWalletService::FeeEstimate,
+                                            std::string> fee_estimate);
 
   void OnApprovePolkadotTransaction(
       std::unique_ptr<PolkadotTxMeta> tx_metadata,

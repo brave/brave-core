@@ -59,6 +59,12 @@ struct PolkadotMockRpc {
   void RejectExtrinsicSubmission();
   void RejectAccountInfoRequest();
 
+  // Fail the fee-estimation RPC (state_call with
+  // TransactionPaymentApi_query_info) with a JSON-RPC error, or with a
+  // successful response whose "result" is null. Configure at most one.
+  void RejectPaymentInfoRequest();
+  void ReturnNullPaymentInfo();
+
   // Reject an individual step of the signing-payload assembly with a JSON-RPC
   // error, so the corresponding RPC call fails. Configure exactly one before
   // calling AddReqResPairs() to exercise a specific failure path.
@@ -173,6 +179,7 @@ struct PolkadotMockRpc {
   bool use_invalid_finalized_block_hash_ = false;
   bool reject_extrinsic_submission_ = false;
   bool reject_account_info_request_ = false;
+  bool reject_payment_info_request_ = false;
   bool reject_initial_chain_header_ = false;
   bool reject_parent_block_header_ = false;
   bool reject_finalized_head_ = false;
@@ -185,6 +192,7 @@ struct PolkadotMockRpc {
   bool null_finalized_head_ = false;
   bool null_finalized_block_header_ = false;
   bool null_genesis_block_hash_ = false;
+  bool null_payment_info_ = false;
 };
 
 // Build metadata from a known relay/parachain name returned by system_chain.

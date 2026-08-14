@@ -304,6 +304,7 @@ class PolkadotTxManagerUnitTest : public testing::Test {
     EXPECT_EQ(base::HexEncodeLower(
                   polkadot_tx->tx()->extrinsic_metadata()->extrinsic()),
               kExpectedExtrinsic);
+    EXPECT_FALSE(polkadot_tx->tx()->signature_payload().empty());
   }
 
   size_t GetStatusTaskCount() {
@@ -622,6 +623,57 @@ TEST_F(PolkadotTxManagerUnitTest, ApproveTransaction_Confirmed) {
   ASSERT_TRUE(GetPolkadotBlockTracker()->IsRunning(mojom::kPolkadotTestnet));
   GetPolkadotTxManager()->UpdatePendingTransactions(chain_id);
   EXPECT_FALSE(GetPolkadotBlockTracker()->IsRunning(mojom::kPolkadotTestnet));
+}
+
+TEST_F(PolkadotTxManagerUnitTest, SignaturePayloadStoredWhileUnapproved) {
+  // The blob the user would be signing is stored with the unapproved
+  // transaction so the confirmation UI can display it before approval.
+
+  SetUpMockRpcForFoundExtrinsic(polkadot_mock_rpc_.get(), true, false);
+
+  polkadot_mock_rpc_->AddReqResPairs();
+  polkadot_mock_rpc_->FinalizeSetup();
+
+  std::string chain_id = mojom::kPolkadotTestnet;
+
+  auto tx_meta_id = SetUpUnapprovedTx(chain_id);
+
+  std::vector<uint8_t> unapproved_payload;
+  {
+    auto polkadot_tx = GetPolkadotTxManager()->GetPolkadotTx(tx_meta_id);
+    ASSERT_TRUE(polkadot_tx);
+
+    EXPECT_EQ(polkadot_tx->status(), mojom::TransactionStatus::Unapproved);
+    unapproved_payload = polkadot_tx->tx()->signature_payload();
+    EXPECT_FALSE(unapproved_payload.empty());
+
+    // It's surfaced to the front-end as 0x-prefixed hex.
+    auto tx_info = polkadot_tx->ToTransactionInfo();
+    const auto& tx_data = tx_info->tx_data_union->get_polkadot_tx_data();
+    ASSERT_TRUE(!tx_data.is_null());
+    ASSERT_TRUE(tx_data->signature_payload);
+    EXPECT_EQ(*tx_data->signature_payload,
+              "0x" + base::HexEncodeLower(unapproved_payload));
+  }
+
+  base::test::TestFuture<bool, mojom::ProviderErrorUnionPtr, const std::string&>
+      approved_future;
+
+  GetPolkadotTxManager()->ApproveTransaction(tx_meta_id,
+                                             approved_future.GetCallback());
+
+  auto [success, error, msg] = approved_future.Take();
+  ASSERT_TRUE(success);
+
+  {
+    auto polkadot_tx = GetPolkadotTxManager()->GetPolkadotTx(tx_meta_id);
+    ASSERT_TRUE(polkadot_tx);
+
+    // Note that in production, new blocks can be minted so what was presented
+    // isn't necessarily what the user originally saw. But things like pallet
+    // indices all stay the same.
+    EXPECT_EQ(polkadot_tx->tx()->signature_payload(), unapproved_payload);
+  }
 }
 
 TEST_F(PolkadotTxManagerUnitTest, ApproveTransaction_AssetId_Confirmed) {

@@ -118,6 +118,53 @@ TEST(PolkadotTransaction, JsonSerde) {
   EXPECT_EQ(tx2->extrinsic_metadata()->mortality_period(), 32u);
 }
 
+TEST(PolkadotTransaction, SignaturePayload) {
+  std::array<uint8_t, kPolkadotSubstrateAccountIdSize> pubkey = {};
+  EXPECT_TRUE(base::HexStringToSpan(
+      "8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48",
+      pubkey));
+
+  PolkadotTransaction polkadot_tx;
+  polkadot_tx.set_amount(uint128_t{12341234123412341234u});
+  polkadot_tx.set_fee(uint128_t{15937408476u});
+  polkadot_tx.set_recipient(PolkadotAddress{pubkey, 0});
+  polkadot_tx.set_transfer_all(true);
+
+  EXPECT_TRUE(polkadot_tx.signature_payload().empty());
+  EXPECT_FALSE(polkadot_tx.ToValue().contains("signature_payload"));
+
+  std::vector<uint8_t> signature_payload = {0xde, 0xad, 0xbe, 0xef};
+  polkadot_tx.set_signature_payload(signature_payload);
+
+  const char tx_json[] = R"({
+    "amount": "f201ec6f0cdf44ab0000000000000000",
+    "fee": "dc8df1b5030000000000000000000000",
+    "recipient": "8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48",
+    "ss58_prefix": 0,
+    "transfer_all": true,
+    "signature_payload": "deadbeef"
+  })";
+
+  EXPECT_EQ(base::test::ParseJsonDict(tx_json), polkadot_tx.ToValue());
+
+  auto tx = PolkadotTransaction::FromValue(base::test::ParseJsonDict(tx_json));
+  ASSERT_TRUE(tx);
+  EXPECT_EQ(tx->signature_payload(), signature_payload);
+
+  // A non-hex payload fails to deserialize.
+  const char tx_json_bad_payload[] = R"({
+    "amount": "f201ec6f0cdf44ab0000000000000000",
+    "fee": "dc8df1b5030000000000000000000000",
+    "recipient": "8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48",
+    "ss58_prefix": 0,
+    "transfer_all": true,
+    "signature_payload": "cat"
+  })";
+
+  EXPECT_FALSE(PolkadotTransaction::FromValue(
+      base::test::ParseJsonDict(tx_json_bad_payload)));
+}
+
 TEST(PolkadotTransaction, AssetId) {
   std::array<uint8_t, kPolkadotSubstrateAccountIdSize> pubkey = {};
   EXPECT_TRUE(base::HexStringToSpan(
