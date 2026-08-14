@@ -15,6 +15,7 @@ import("//brave/components/psst/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 import("//build/config/ui.gni")
+import("//extensions/buildflags/buildflags.gni")
 import("//testing/test.gni")
 import("//tools/grit/repack.gni")
 
@@ -64,6 +65,11 @@ test("brave_components_unittests") {
       "//brave/components/containers/content/browser:unit_tests",
       "//brave/components/containers/core/browser:unit_tests",
     ]
+  }
+
+  if (enable_extensions) {
+    deps +=
+        [ "//brave/components/extension_malware_blocklist/browser:unit_tests" ]
   }
 
   if (enable_psst) {

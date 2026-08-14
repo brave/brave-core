@@ -701,7 +701,6 @@ if (toolkit_views) {
 if (enable_extensions) {
   brave_chrome_browser_deps += [
     "//brave/browser/extensions",
-    "//brave/components/extension_malware_blocklist/browser",
     "//chrome/browser/extensions",
     "//chrome/browser/extensions:chrome_extensions_browser_client",
     "//extensions/browser",

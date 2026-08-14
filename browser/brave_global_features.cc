@@ -6,8 +6,25 @@
 #include "brave/browser/brave_global_features.h"
 
 #include "chrome/browser/global_features.h"
+#include "extensions/buildflags/buildflags.h"
 
-BraveGlobalFeatures::BraveGlobalFeatures() = default;
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+#include <memory>
+
+#include "base/feature_list.h"
+#include "brave/components/extension_malware_blocklist/browser/extension_malware_blocklist.h"
+#include "brave/components/extension_malware_blocklist/common/features.h"
+#endif
+
+BraveGlobalFeatures::BraveGlobalFeatures() {
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+  if (base::FeatureList::IsEnabled(
+          extension_malware_blocklist::features::kExtensionMalwareBlocklist)) {
+    extension_malware_blocklist_ = std::make_unique<
+        extension_malware_blocklist::ExtensionMalwareBlocklist>();
+  }
+#endif
+}
 
 BraveGlobalFeatures::~BraveGlobalFeatures() = default;
 
