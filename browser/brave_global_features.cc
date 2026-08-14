@@ -5,12 +5,12 @@
 
 #include "brave/browser/brave_global_features.h"
 
+#include <memory>
+
 #include "chrome/browser/global_features.h"
 #include "extensions/buildflags/buildflags.h"
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
-#include <memory>
-
 #include "base/feature_list.h"
 #include "brave/components/extension_malware_blocklist/browser/extension_malware_blocklist.h"
 #include "brave/components/extension_malware_blocklist/common/features.h"
