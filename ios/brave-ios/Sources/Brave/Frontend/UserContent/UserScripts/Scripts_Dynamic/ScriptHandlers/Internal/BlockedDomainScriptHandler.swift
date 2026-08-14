@@ -52,12 +52,18 @@ class BlockedDomainScriptHandler: TabContentScript {
       return
     }
 
-    let request = URLRequest(url: url)
     tab.proceedAnywaysDomainList?.insert(baseDomain)
-    tab.loadRequest(request)
+    if let pendingURL = tab.braveSearch?.pendingQuickViewURL, pendingURL == url {
+      tab.braveSearch?.pendingQuickViewURL = nil
+      tab.braveSearch?.presentInQuickView?(url, tab)
+      tab.goBack()
+    } else {
+      tab.loadRequest(URLRequest(url: url))
+    }
   }
 
   private func blockedDomainDidGoBack(tab: some TabState) {
+    tab.braveSearch?.pendingQuickViewURL = nil
     guard let url = tab.visibleURL?.strippedInternalURL else {
       assertionFailure(
         "There should be no way this method can be triggered if the tab is not on an internal url"

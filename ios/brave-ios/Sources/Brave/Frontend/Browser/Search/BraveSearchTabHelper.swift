@@ -35,6 +35,8 @@ class BraveSearchTabHelper: TabObserver, TabPolicyDecider, BraveSearchMakeDefaul
 
   var presentInQuickView: ((URL, any TabState) -> Void)?
 
+  var pendingQuickViewURL: URL?
+
   init(tab: some TabState, rewards: BraveRewards, searchEngines: SearchEngines) {
     self.tab = tab
     self.rewards = rewards
@@ -243,6 +245,28 @@ class BraveSearchTabHelper: TabObserver, TabPolicyDecider, BraveSearchMakeDefaul
       Preferences.General.openLinkInQuickViewMode.value,
       shouldOpenInQuickView(requestURL: requestURL, requestInfo: requestInfo, tab: tab)
     {
+      if let etldP1 = requestURL.baseDomain,
+        tab.proceedAnywaysDomainList?.contains(etldP1) == false
+      {
+        let shieldLevel =
+          tab.braveShieldsHelper?.shieldLevel(
+            for: requestURL,
+            considerAllShieldsOption: true
+          ) ?? .standard
+
+        let shouldBlock = await AdBlockGroupsManager.shared.shouldBlock(
+          requestURL: requestURL,
+          sourceURL: requestURL,
+          resourceType: .document,
+          isAdBlockEnabled: shieldLevel.isEnabled,
+          isAdBlockModeAggressive: shieldLevel.isAggressive
+        )
+
+        if shouldBlock {
+          pendingQuickViewURL = requestURL
+          return .cancel
+        }
+      }
       presentInQuickView?(requestURL, tab)
       return .cancel
     }
