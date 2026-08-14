@@ -7,10 +7,16 @@ import LeoSegmentedControl, {
   SegmentedControlProps,
 } from '@brave/leo/react/segmentedControl'
 import * as leo from '@brave/leo/tokens/css/variables'
+import Icon from '@brave/leo/react/icon'
 
 // Shared Styles
 import { Title } from '../onboarding/onboarding.style'
-import { Row, Text, Column } from '../../../components/shared/style'
+import {
+  Row,
+  Text,
+  Column,
+  WalletButton,
+} from '../../../components/shared/style'
 
 export const DepositTitle = styled(Title)`
   margin-top: 0px;
@@ -87,4 +93,21 @@ export const SelectAssetWrapper = styled(Column)`
 export const SearchAndDropdownWrapper = styled(Column)`
   flex: 1;
   min-width: 25%;
+`
+
+export const BackButton = styled(WalletButton)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  outline: none;
+  background: none;
+  border: none;
+  padding: 0px;
+  margin: 0px;
+`
+
+export const BackIcon = styled(Icon)`
+  --leo-icon-size: 24px;
+  color: ${leo.color.icon.default};
 `

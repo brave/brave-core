@@ -64,6 +64,7 @@ import { useDebouncedCallback } from '../swap/hooks/useDebouncedCallback'
 
 // style
 import {
+  Text,
   Column,
   CopyButton,
   HorizontalSpace,
@@ -71,7 +72,7 @@ import {
   Row,
   LoadingRing,
 } from '../../../components/shared/style'
-import { Description, Title } from '../onboarding/onboarding.style'
+import { Description } from '../onboarding/onboarding.style'
 import {
   FilterTokenRow, //
 } from '../../../components/desktop/views/portfolio/style'
@@ -87,6 +88,8 @@ import {
   SearchWrapper,
   SelectAssetWrapper,
   SearchAndDropdownWrapper,
+  BackButton,
+  BackIcon,
 } from './deposit-funds.style'
 
 // components
@@ -527,6 +530,7 @@ function DepositAccount() {
   const isZCashShieldedTransactionsEnabled = useSafeWalletSelector(
     WalletSelectors.isZCashShieldedTransactionsEnabled,
   )
+  const isSidePanel = useSafeUISelector(UISelectors.isSidePanel)
 
   // queries
   const { accounts } = useAccountsQuery()
@@ -756,7 +760,27 @@ function DepositAccount() {
       padding='0 12px'
     >
       <Column alignItems='flex-start'>
-        <Title>{depositTitleText}</Title>
+        <Row
+          gap='8px'
+          padding='16px 0px 0px 0px'
+          marginBottom='16px'
+          width='unset'
+        >
+          {isSidePanel && (
+            <BackButton
+              onClick={() => history.push(WalletRoutes.DepositFundsPageStart)}
+            >
+              <BackIcon name='carat-left' />
+            </BackButton>
+          )}
+          <Text
+            variant='heading.h3'
+            textColor='primary'
+            textAlign='left'
+          >
+            {depositTitleText}
+          </Text>
+        </Row>
 
         {selectedAssetNetwork && (
           <Description>
