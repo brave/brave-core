@@ -19,6 +19,17 @@ source_set("internal") {
   deps = [ "//base" ]
 }
 
+if (is_ios) {
+  bundle_data("unit_tests_bundle_data") {
+    testonly = true
+    visibility = [ ":unit_tests" ]
+    sources =
+        [ "//brave/test/data/image_metadata_stripper/fbmd_test_image.jpg" ]
+    outputs = [ "{{bundle_resources_dir}}/" +
+                "{{source_root_relative_dir}}/{{source_file_part}}" ]
+  }
+}
+
 source_set("unit_tests") {
   testonly = true
 
@@ -31,4 +42,8 @@ source_set("unit_tests") {
     "//base",
     "//testing/gtest",
   ]
+
+  if (is_ios) {
+    deps += [ ":unit_tests_bundle_data" ]
+  }
 }
