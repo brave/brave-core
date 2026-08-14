@@ -84,9 +84,9 @@ void BraveUserAgentExceptions::AddToExceptedDomainsForTesting(
   excepted_domains_.insert(std::string(domain));
 }
 
-bool ShouldHideBraveBrand(const GURL& top_frame_url) {
+bool ShouldHideBraveBrand(const GURL& url) {
   auto* exceptions = BraveUserAgentExceptions::GetInstance();
-  return exceptions && !exceptions->CanShowBrave(top_frame_url);
+  return exceptions && !exceptions->CanShowBrave(url);
 }
 
 }  // namespace brave_user_agent

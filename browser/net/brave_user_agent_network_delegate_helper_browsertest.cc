@@ -10,6 +10,7 @@
 #include "base/feature_list.h"
 #include "base/path_service.h"
 #include "base/test/scoped_feature_list.h"
+#include "base/values.h"
 #include "brave/components/brave_user_agent/browser/brave_user_agent_exceptions.h"
 #include "brave/components/brave_user_agent/common/brand_names.h"
 #include "brave/components/brave_user_agent/common/features.h"
@@ -25,7 +26,6 @@
 #include "net/http/http_status_code.h"
 #include "net/test/embedded_test_server/http_request.h"
 #include "net/test/embedded_test_server/http_response.h"
-#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace {
@@ -100,6 +100,9 @@ class BraveUserAgentNetworkDelegateBrowserTest
   net::EmbeddedTestServer& https_server();
   void RunBrandHeaderTest(const std::string& domain, const std::string& path);
   void NavigateAndWait(const GURL& url);
+  void ExpectBrands(const std::string& brands,
+                    const std::string& full_version_list,
+                    bool allows_brave_brand);
   void ExpectBrandsInFrame(const content::ToRenderFrameHost& frame,
                            bool allows_brave_brand);
   void ExpectUserAgentDataBrands(const std::string& domain,
@@ -243,11 +246,23 @@ void BraveUserAgentNetworkDelegateBrowserTest::NavigateAndWait(
   )"));
 }
 
-void BraveUserAgentNetworkDelegateBrowserTest::ExpectBrandsInFrame(
-    const content::ToRenderFrameHost& frame,
+void BraveUserAgentNetworkDelegateBrowserTest::ExpectBrands(
+    const std::string& brands,
+    const std::string& full_version_list,
     bool allows_brave_brand) {
   // When the feature is off no domain is excepted, so Brave is always shown.
   const bool expect_brave = allows_brave_brand || !GetParam();
+  for (const std::string& value : {brands, full_version_list}) {
+    SCOPED_TRACE(value);
+    EXPECT_EQ(expect_brave, value.find(kBraveBrand) != std::string::npos);
+    EXPECT_EQ(!expect_brave,
+              value.find(kGoogleChromeBrand) != std::string::npos);
+  }
+}
+
+void BraveUserAgentNetworkDelegateBrowserTest::ExpectBrandsInFrame(
+    const content::ToRenderFrameHost& frame,
+    bool allows_brave_brand) {
   const std::string brands =
       content::EvalJs(frame,
                       "navigator.userAgentData.brands.map(b => b.brand)"
@@ -260,12 +275,7 @@ void BraveUserAgentNetworkDelegateBrowserTest::ExpectBrandsInFrame(
                       ".then(v => v.fullVersionList.map(b => b.brand)"
                       ".join(','))")
           .ExtractString();
-  for (const std::string& value : {brands, full_version_list}) {
-    SCOPED_TRACE(value);
-    EXPECT_EQ(expect_brave, value.find(kBraveBrand) != std::string::npos);
-    EXPECT_EQ(!expect_brave,
-              value.find(kGoogleChromeBrand) != std::string::npos);
-  }
+  ExpectBrands(brands, full_version_list, allows_brave_brand);
 }
 
 void BraveUserAgentNetworkDelegateBrowserTest::ExpectUserAgentDataBrands(
@@ -351,22 +361,23 @@ IN_PROC_BROWSER_TEST_P(BraveUserAgentNetworkDelegateBrowserTest,
                                              ->tab_strip_model()
                                              ->GetActiveWebContents()
                                              ->GetPrimaryMainFrame();
-  const std::string brands = content::EvalJs(main_frame, R"(
+  const content::EvalJsResult result = content::EvalJs(main_frame, R"(
         new Promise(resolve => {
-          const source = `postMessage(
-              navigator.userAgentData.brands.map(b => b.brand).join(','))`;
+          const source = `Promise.all([
+              navigator.userAgentData.brands.map(b => b.brand).join(','),
+              navigator.userAgentData
+                  .getHighEntropyValues(['fullVersionList'])
+                  .then(v => v.fullVersionList.map(b => b.brand).join(',')),
+          ]).then(r => postMessage(r))`;
           const worker = new Worker(
               URL.createObjectURL(new Blob([source])));
           worker.onmessage = e => resolve(e.data);
         });
-      )")
-                                 .ExtractString();
-  if (GetParam()) {
-    EXPECT_THAT(brands, ::testing::HasSubstr(kGoogleChromeBrand));
-    EXPECT_THAT(brands, ::testing::Not(::testing::HasSubstr(kBraveBrand)));
-  } else {
-    EXPECT_THAT(brands, ::testing::HasSubstr(kBraveBrand));
-  }
+      )");
+  const base::ListValue& values = result.ExtractList();
+  ASSERT_EQ(2u, values.size());
+  ExpectBrands(values[0].GetString(), values[1].GetString(),
+               /*allows_brave_brand=*/false);
 }
 
 INSTANTIATE_TEST_SUITE_P(FeatureFlag,
