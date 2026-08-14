@@ -48,7 +48,7 @@ public final class BraveToolbarManagerUnitTest {
         setTabUrl(JUnitTestGURLs.NTP_NATIVE_URL);
         assertFalse(
                 BraveToolbarManager.shouldSuppressToolbarLongPressForTab(
-                        /* suppressedByUpstream= */ true, mTab));
+                        /* suppressedByUpstream= */ true, mTab, /* isOmniboxFocused= */ false));
     }
 
     /** The WebUI flavour of the NTP url must be treated the same as the native one. */
@@ -58,7 +58,7 @@ public final class BraveToolbarManagerUnitTest {
         setTabUrl(JUnitTestGURLs.NTP_URL);
         assertFalse(
                 BraveToolbarManager.shouldSuppressToolbarLongPressForTab(
-                        /* suppressedByUpstream= */ true, mTab));
+                        /* suppressedByUpstream= */ true, mTab, /* isOmniboxFocused= */ false));
     }
 
     /** Off the NTP the upstream decision must be left untouched. */
@@ -68,7 +68,7 @@ public final class BraveToolbarManagerUnitTest {
         setTabUrl(JUnitTestGURLs.EXAMPLE_URL);
         assertTrue(
                 BraveToolbarManager.shouldSuppressToolbarLongPressForTab(
-                        /* suppressedByUpstream= */ true, mTab));
+                        /* suppressedByUpstream= */ true, mTab, /* isOmniboxFocused= */ false));
     }
 
     /** Being on the NTP must never turn a non-suppressed state into a suppressed one. */
@@ -78,7 +78,20 @@ public final class BraveToolbarManagerUnitTest {
         setTabUrl(JUnitTestGURLs.NTP_NATIVE_URL);
         assertFalse(
                 BraveToolbarManager.shouldSuppressToolbarLongPressForTab(
-                        /* suppressedByUpstream= */ false, mTab));
+                        /* suppressedByUpstream= */ false, mTab, /* isOmniboxFocused= */ false));
+    }
+
+    /**
+     * A focused address bar is being edited, so the long press menu must stay suppressed on the NTP
+     * as well.
+     */
+    @Test
+    @SmallTest
+    public void testUpstreamSuppressionKeptOnFocusedAddressBar() {
+        setTabUrl(JUnitTestGURLs.NTP_NATIVE_URL);
+        assertTrue(
+                BraveToolbarManager.shouldSuppressToolbarLongPressForTab(
+                        /* suppressedByUpstream= */ true, mTab, /* isOmniboxFocused= */ true));
     }
 
     @Test
@@ -86,7 +99,7 @@ public final class BraveToolbarManagerUnitTest {
     public void testUpstreamSuppressionKeptWithoutTab() {
         assertTrue(
                 BraveToolbarManager.shouldSuppressToolbarLongPressForTab(
-                        /* suppressedByUpstream= */ true, null));
+                        /* suppressedByUpstream= */ true, null, /* isOmniboxFocused= */ false));
     }
 
     @Test
@@ -95,6 +108,6 @@ public final class BraveToolbarManagerUnitTest {
         setTabUrl(null);
         assertTrue(
                 BraveToolbarManager.shouldSuppressToolbarLongPressForTab(
-                        /* suppressedByUpstream= */ true, mTab));
+                        /* suppressedByUpstream= */ true, mTab, /* isOmniboxFocused= */ false));
     }
 }
