@@ -57,11 +57,6 @@ ShieldsPanelUI::ShieldsPanelUI(content::WebUI* web_ui)
       "isHttpsByDefaultEnabled",
       base::FeatureList::IsEnabled(net::features::kBraveHttpsByDefault));
 
-  source->AddBoolean(
-      "showStrictFingerprintingMode",
-      base::FeatureList::IsEnabled(
-          brave_shields::features::kBraveShowStrictFingerprintingMode));
-
   source->AddBoolean("isTorProfile", profile_->IsTor());
 
   source->AddBoolean("isBraveForgetFirstPartyStorageFeatureEnabled",

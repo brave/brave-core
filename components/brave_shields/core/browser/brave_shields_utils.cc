@@ -598,8 +598,7 @@ ControlType GetFingerprintingControlType(HostContentSettingsMap* map,
 
   if (fp_setting == CONTENT_SETTING_ASK ||
       fp_setting == CONTENT_SETTING_DEFAULT ||
-      (!IsShowStrictFingerprintingModeEnabled() &&
-       fp_setting == CONTENT_SETTING_BLOCK)) {
+      fp_setting == CONTENT_SETTING_BLOCK) {
     return ControlType::DEFAULT;
   }
 
@@ -615,11 +614,6 @@ bool IsBraveShieldsManaged(PrefService* prefs,
   content_settings::SettingInfo info;
   map->GetWebsiteSetting(url, url, ContentSettingsType::BRAVE_SHIELDS, &info);
   return info.source == content_settings::SettingSource::kPolicy;
-}
-
-bool IsShowStrictFingerprintingModeEnabled() {
-  return base::FeatureList::IsEnabled(
-      features::kBraveShowStrictFingerprintingMode);
 }
 
 void SetHttpsUpgradeControlType(HostContentSettingsMap* map,

@@ -39,8 +39,9 @@ class BraveWebAudioFarblingBrowserTest : public InProcessBrowserTest {
   BraveWebAudioFarblingBrowserTest() {
     scoped_feature_list_.InitWithFeatures(
         /*enabled_features=*/
-        {webcompat::features::kBraveWebcompatExceptionsService,
-         brave_shields::features::kBraveShowStrictFingerprintingMode},
+        {
+            webcompat::features::kBraveWebcompatExceptionsService,
+        },
         /*disabled_features=*/{});
   }
 
@@ -80,11 +81,6 @@ class BraveWebAudioFarblingBrowserTest : public InProcessBrowserTest {
         content_settings(), ControlType::ALLOW, top_level_page_url_);
   }
 
-  void BlockFingerprinting() {
-    brave_shields::SetFingerprintingControlType(
-        content_settings(), ControlType::BLOCK, top_level_page_url_);
-  }
-
   void SetFingerprintingDefault() {
     brave_shields::SetFingerprintingControlType(
         content_settings(), ControlType::DEFAULT, top_level_page_url_);
@@ -112,19 +108,6 @@ IN_PROC_BROWSER_TEST_F(BraveWebAudioFarblingBrowserTest,
 
 // Tests results of farbling known values
 IN_PROC_BROWSER_TEST_F(BraveWebAudioFarblingBrowserTest, FarbleWebAudio) {
-  // Farbling level: maximum
-  // web audio: pseudo-random data with no relation to underlying audio channel
-  BlockFingerprinting();
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), farbling_url()));
-  EXPECT_EQ(content::EvalJs(contents(), kTitleScript), "356");
-  // second time, same as the first (tests that the PRNG properly resets itself
-  // at the beginning of each calculation)
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), farbling_url()));
-  EXPECT_EQ(content::EvalJs(contents(), kTitleScript), "356");
-
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), farbling2_url()));
-  EXPECT_EQ(content::EvalJs(contents(), kWebAudioResultScript), -971);
-
   // Farbling level: balanced (default)
   // web audio: farbled audio data
   SetFingerprintingDefault();

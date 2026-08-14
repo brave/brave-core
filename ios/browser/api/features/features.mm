@@ -222,12 +222,6 @@
       initWithFeature:&brave_shields::features::kBraveIOSEnableFarblingPlugins];
 }
 
-+ (Feature*)kBraveShowStrictFingerprintingMode {
-  return
-      [[Feature alloc] initWithFeature:&brave_shields::features::
-                                           kBraveShowStrictFingerprintingMode];
-}
-
 + (Feature*)kBraveSync {
   return [[Feature alloc] initWithFeature:&brave_sync::features::kBraveSync];
 }

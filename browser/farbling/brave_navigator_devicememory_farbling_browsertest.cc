@@ -40,7 +40,6 @@ class BraveDeviceMemoryFarblingBrowserTest : public InProcessBrowserTest {
       : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
     scoped_feature_list_.InitWithFeatures(
         {
-            brave_shields::features::kBraveShowStrictFingerprintingMode,
             webcompat::features::kBraveWebcompatExceptionsService,
         },
         {
@@ -96,12 +95,6 @@ class BraveDeviceMemoryFarblingBrowserTest : public InProcessBrowserTest {
         https_server_.GetURL(domain, "/"));
   }
 
-  void BlockFingerprinting(std::string domain) {
-    brave_shields::SetFingerprintingControlType(
-        content_settings(), ControlType::BLOCK,
-        https_server_.GetURL(domain, "/"));
-  }
-
   void SetFingerprintingDefault(std::string domain) {
     brave_shields::SetFingerprintingControlType(
         content_settings(), ControlType::DEFAULT,
@@ -143,14 +136,6 @@ IN_PROC_BROWSER_TEST_F(BraveDeviceMemoryFarblingBrowserTest,
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url1));
   EXPECT_EQ(8192, EvalJs(contents(), kDeviceMemoryScript));
   SetFingerprintingDefault(domain2);
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url2));
-  EXPECT_EQ(32768, EvalJs(contents(), kDeviceMemoryScript));
-
-  // Farbling level: maximum
-  BlockFingerprinting(domain1);
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url1));
-  EXPECT_EQ(16384, EvalJs(contents(), kDeviceMemoryScript));
-  AllowFingerprinting(domain2);
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url2));
   EXPECT_EQ(32768, EvalJs(contents(), kDeviceMemoryScript));
 

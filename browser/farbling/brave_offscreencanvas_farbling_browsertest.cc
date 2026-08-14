@@ -33,14 +33,12 @@ constexpr char kEmbeddedTestServerDirectory[] = "canvas";
 constexpr char kTitleScript[] = "document.title;";
 constexpr char kExpectedImageDataHashFarblingBalanced[] = "184";
 constexpr char kExpectedImageDataHashFarblingOff[] = "0";
-constexpr char kExpectedImageDataHashFarblingMaximum[] = "184";
 
 class BraveOffscreenCanvasFarblingBrowserTest : public InProcessBrowserTest {
  public:
   BraveOffscreenCanvasFarblingBrowserTest() {
     scoped_feature_list_.InitWithFeatures(
         {
-            brave_shields::features::kBraveShowStrictFingerprintingMode,
             webcompat::features::kBraveWebcompatExceptionsService,
         },
         {});
@@ -70,11 +68,6 @@ class BraveOffscreenCanvasFarblingBrowserTest : public InProcessBrowserTest {
   void AllowFingerprinting() {
     brave_shields::SetFingerprintingControlType(
         content_settings(), ControlType::ALLOW, top_level_page_url_);
-  }
-
-  void BlockFingerprinting() {
-    brave_shields::SetFingerprintingControlType(
-        content_settings(), ControlType::BLOCK, top_level_page_url_);
   }
 
   void SetFingerprintingDefault() {
@@ -108,12 +101,6 @@ IN_PROC_BROWSER_TEST_F(BraveOffscreenCanvasFarblingBrowserTest,
   }
   EXPECT_EQ(content::EvalJs(contents(), kTitleScript), "pass");
 
-  BlockFingerprinting();
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-  while (content::EvalJs(contents(), kTitleScript).ExtractString() == "") {
-  }
-  EXPECT_EQ(content::EvalJs(contents(), kTitleScript), "pass");
-
   SetFingerprintingDefault();
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   while (content::EvalJs(contents(), kTitleScript).ExtractString() == "") {
@@ -133,13 +120,6 @@ IN_PROC_BROWSER_TEST_F(BraveOffscreenCanvasFarblingBrowserTest,
   }
   EXPECT_EQ(content::EvalJs(contents(), kTitleScript),
             kExpectedImageDataHashFarblingOff);
-
-  BlockFingerprinting();
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-  while (content::EvalJs(contents(), kTitleScript).ExtractString() == "") {
-  }
-  EXPECT_EQ(content::EvalJs(contents(), kTitleScript),
-            kExpectedImageDataHashFarblingMaximum);
 
   SetFingerprintingDefault();
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));

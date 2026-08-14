@@ -40,7 +40,6 @@ class BraveNavigatorHardwareConcurrencyFarblingBrowserTest
   BraveNavigatorHardwareConcurrencyFarblingBrowserTest() {
     scoped_feature_list_.InitWithFeatures(
         {
-            brave_shields::features::kBraveShowStrictFingerprintingMode,
             webcompat::features::kBraveWebcompatExceptionsService,
         },
         {});
@@ -72,11 +71,6 @@ class BraveNavigatorHardwareConcurrencyFarblingBrowserTest
   void AllowFingerprinting() {
     brave_shields::SetFingerprintingControlType(
         content_settings(), ControlType::ALLOW, top_level_page_url_);
-  }
-
-  void BlockFingerprinting() {
-    brave_shields::SetFingerprintingControlType(
-        content_settings(), ControlType::BLOCK, top_level_page_url_);
   }
 
   void SetFingerprintingDefault() {
@@ -122,19 +116,7 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorHardwareConcurrencyFarblingBrowserTest,
   EXPECT_GE(fake_value, 2);
   EXPECT_LE(fake_value, real_value);
 
-  // Farbling level: maximum
-  // navigator.hardwareConcurrency should be greater than or equal to 2
-  // and less than or equal to 8
-  BlockFingerprinting();
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), farbling_url()));
-  int completely_fake_value =
-      content::EvalJs(contents(), kHardwareConcurrencyScript).ExtractInt();
-  // For this domain (a.com) + the random seed (constant for browser tests),
-  // the value will always be the same.
-  EXPECT_EQ(completely_fake_value, 8);
-
   // Farbling level: default, but with webcompat exception enabled
-  SetFingerprintingDefault();
   EnableWebcompatException();
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), farbling_url()));
   int real_value2 =
@@ -174,18 +156,6 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorHardwareConcurrencyFarblingBrowserTest,
                     &fake_value);
   EXPECT_GE(fake_value, 2);
   EXPECT_LE(fake_value, real_value);
-
-  // Farbling level: maximum
-  BlockFingerprinting();
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-  while (content::EvalJs(contents(), kTitleScript).ExtractString() == "") {
-  }
-  int completely_fake_value;
-  base::StringToInt(content::EvalJs(contents(), kTitleScript).ExtractString(),
-                    &completely_fake_value);
-  // For this domain (a.com) + the random seed (constant for browser tests),
-  // the value will always be the same.
-  EXPECT_EQ(completely_fake_value, 8);
 
   // Farbling level: default, but with webcompat exception enabled
   // get real navigator.hardwareConcurrency

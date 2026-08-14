@@ -33,9 +33,6 @@ function createBrowserShieldsApi() {
         'isHttpsByDefaultEnabled',
       ),
       isTorProfile: loadTimeData.getBoolean('isTorProfile'),
-      showStrictFingerprintingMode: loadTimeData.getBoolean(
-        'showStrictFingerprintingMode',
-      ),
       isWebcompatExceptionsServiceEnabled: loadTimeData.getBoolean(
         'isWebcompatExceptionsServiceEnabled',
       ),

@@ -1335,11 +1335,6 @@ void BraveAddLocalizedStrings(content::WebUIDataSource* html_source,
       "isHttpsByDefaultEnabled",
       base::FeatureList::IsEnabled(net::features::kBraveHttpsByDefault));
 
-  html_source->AddBoolean(
-      "showStrictFingerprintingMode",
-      base::FeatureList::IsEnabled(
-          brave_shields::features::kBraveShowStrictFingerprintingMode));
-
 #if BUILDFLAG(ENABLE_TOR)
   html_source->AddBoolean("braveTorDisabledByPolicy",
                           TorProfileServiceFactory::IsTorDisabled(profile) &&

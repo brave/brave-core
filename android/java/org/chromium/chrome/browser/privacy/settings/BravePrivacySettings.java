@@ -361,11 +361,8 @@ public class BravePrivacySettings extends PrivacySettings {
                 (ChromeSwitchPreference) findPreference(PREF_FINGERPRINTING_PROTECTION2);
         mFingerprintingProtection2Pref.setOnPreferenceChangeListener(this);
 
-        boolean showStrictFingerprintingMode =
-                ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_SHOW_STRICT_FINGERPRINTING_MODE);
-
-        mFingerprintingProtectionPref.setVisible(showStrictFingerprintingMode);
-        mFingerprintingProtection2Pref.setVisible(!showStrictFingerprintingMode);
+        mFingerprintingProtectionPref.setVisible(false);
+        mFingerprintingProtection2Pref.setVisible(true);
 
         mRequestOtrPref = (BraveDialogPreference) findPreference(PREF_REQUEST_OTR);
         mRequestOtrPref.setOnPreferenceChangeListener(this);
@@ -1045,14 +1042,7 @@ public class BravePrivacySettings extends PrivacySettings {
                         indexData.removeEntryForKey(frag, PREF_REQUEST_OTR);
                     }
 
-                    boolean showStrictFingerprinting =
-                            ChromeFeatureList.isEnabled(
-                                    BraveFeatureList.BRAVE_SHOW_STRICT_FINGERPRINTING_MODE);
-                    if (!showStrictFingerprinting) {
-                        indexData.removeEntryForKey(frag, PREF_FINGERPRINTING_PROTECTION);
-                    } else {
-                        indexData.removeEntryForKey(frag, PREF_FINGERPRINTING_PROTECTION2);
-                    }
+                    indexData.removeEntryForKey(frag, PREF_FINGERPRINTING_PROTECTION);
 
                     boolean httpsByDefault =
                             ChromeFeatureList.isEnabled(BraveFeatureList.HTTPS_BY_DEFAULT);
@@ -1100,18 +1090,6 @@ public class BravePrivacySettings extends PrivacySettings {
                     }
                     indexData.updateEntrySummaryForKey(
                             frag, PREF_BLOCK_CROSS_SITE_COOKIES, cookiesSummaryId);
-
-                    if (showStrictFingerprinting) {
-                        String fpPref = BraveShieldsContentSettings.getFingerprintingPref();
-                        int fpSummaryId = R.string.block_fingerprinting_option_2;
-                        if (fpPref.equals(BraveShieldsContentSettings.BLOCK_RESOURCE)) {
-                            fpSummaryId = R.string.block_fingerprinting_option_1;
-                        } else if (fpPref.equals(BraveShieldsContentSettings.ALLOW_RESOURCE)) {
-                            fpSummaryId = R.string.block_fingerprinting_option_3;
-                        }
-                        indexData.updateEntrySummaryForKey(
-                                frag, PREF_FINGERPRINTING_PROTECTION, fpSummaryId);
-                    }
 
                     if (httpsByDefault) {
                         String httpsUpgradePref = BraveShieldsContentSettings.getHttpsUpgradePref();
