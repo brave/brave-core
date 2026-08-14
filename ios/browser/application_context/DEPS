@@ -5,5 +5,4 @@ include_rules = [
   "+brave/components/brave_wallet/browser",
   "+brave/components/https_upgrade_exceptions/browser",
   "+brave/components/url_sanitizer/core/browser",
-  "+brave/ios/browser/https_upgrade_exceptions",
 ]

@@ -81,11 +81,16 @@ public class BraveProfileMigrations {
     braveShieldsSettings.migrateShieldsToContentSettings(for: domainsToMigrate)
   }
 
+  /// Migrates the HTTPS upgrade level onto upstream's HTTPS-Only Mode pref.
+  /// Both `standard` and `strict` become enabled, the interstitial standard
+  /// used to skip is now shown for any failed upgrade.
   private func migrateHTTPSUpgradeLevelPreference() {
+    guard !Preferences.Migration.httpsOnlyModeCompleted.value else { return }
     profileController.profile.prefs.set(
-      Preferences.Shields.httpsUpgradeLevel.prefValue,
-      forPath: kHttpsUpgradeLevel
+      Preferences.Shields.httpsUpgradeLevel.isEnabled,
+      forPath: kHttpsOnlyModeEnabled
     )
+    Preferences.Migration.httpsOnlyModeCompleted.value = true
   }
 
   /// Migrate sync passwords default value to enabled.
@@ -480,6 +485,13 @@ extension Preferences {
     /// allows a user to select between `standard`, `strict` and `disabled` instead of a simple on/off `Bool`
     static let httpsUpgradesLivelCompleted = Option<Bool>(
       key: "migration.https-upgrades-level-completed",
+      default: false
+    )
+
+    /// The https upgrades preference is a simple on/off `Bool` again when using
+    /// upstream's HTTPS upgrades, stored in the profile `PrefService`
+    static let httpsOnlyModeCompleted = Option<Bool>(
+      key: "migration.https-only-mode-completed",
       default: false
     )
 

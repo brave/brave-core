@@ -578,7 +578,11 @@ public class BrowserViewController: UIViewController {
 
     if FeatureList.kUseProfileWebViewConfiguration.enabled {
       BraveWebView.didResetConfiguration = { profile, configuration in
-        configuration.prepareBraveConfiguration()
+        configuration.prepareBraveConfiguration(
+          isHttpsUpgradeEnabled: FeatureList.kBraveIOSUseUpstreamHttpsUpgrades.enabled
+            ? profile.prefs.boolean(forPath: kHttpsOnlyModeEnabled)
+            : Preferences.Shields.httpsUpgradeLevel.isEnabled
+        )
       }
       let configuration = BraveWebViewConfiguration(profile: profileController.profile)
       configuration.setSkusCredentialsFetchedCallback { [weak self] domain, message in

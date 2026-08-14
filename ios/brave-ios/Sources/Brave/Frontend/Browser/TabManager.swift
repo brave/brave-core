@@ -279,7 +279,9 @@ class TabManager: NSObject {
     let configuration: WKWebViewConfiguration = .init()
     configuration.websiteDataStore = isPrivate ? sharedNonPersistentStore() : .default()
     configuration.userContentController = WKUserContentController()
-    configuration.prepareBraveConfiguration()
+    configuration.prepareBraveConfiguration(
+      isHttpsUpgradeEnabled: Preferences.Shields.httpsUpgradeLevel.isEnabled
+    )
     return configuration
   }
 
@@ -1670,8 +1672,8 @@ extension TabManager: NSFetchedResultsControllerDelegate {
 extension WKWebViewConfiguration {
   /// Updates a WebKit configuration with Brave's defaults and preferences that can't be done
   /// from inside Chromium's `WKWebViewConfigurationProvider::ResetWithWebViewConfiguration`
-  func prepareBraveConfiguration() {
-    upgradeKnownHostsToHTTPS = Preferences.Shields.httpsUpgradeLevel.isEnabled
+  func prepareBraveConfiguration(isHttpsUpgradeEnabled: Bool) {
+    upgradeKnownHostsToHTTPS = isHttpsUpgradeEnabled
     preferences.isFraudulentWebsiteWarningEnabled = Preferences.Shields.googleSafeBrowsing.value
 
     if FeatureList.kWebKitAdvancedPrivacyProtections.enabled {

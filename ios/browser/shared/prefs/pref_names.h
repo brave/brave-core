@@ -6,27 +6,7 @@
 #ifndef BRAVE_IOS_BROWSER_SHARED_PREFS_PREF_NAMES_H_
 #define BRAVE_IOS_BROWSER_SHARED_PREFS_PREF_NAMES_H_
 
-namespace brave_shields {
-
-// The level of HTTPS upgrades applied to main frame navigations. Values are
-// persisted, do not renumber.
-enum class HttpsUpgradeLevel {
-  // No navigations are upgraded
-  kDisabled = 0,
-  // Navigations are upgraded, falling back to HTTP automatically when the
-  // upgraded navigation fails
-  kStandard = 1,
-  // Navigations are upgraded, showing an interstitial the user must accept
-  // before falling back to HTTP
-  kStrict = 2,
-};
-
-}  // namespace brave_shields
-
 namespace prefs {
-
-// The `brave_shields::HttpsUpgradeLevel` applied to navigations
-inline constexpr char kHttpsUpgradeLevel[] = "brave.https_upgrade_level";
 
 // Whether or not videos continue to play when the app is backgrounded
 inline constexpr char kMediaBackgroundingEnabled[] =

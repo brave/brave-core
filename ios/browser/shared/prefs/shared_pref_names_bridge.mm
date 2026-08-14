@@ -8,9 +8,12 @@
 #include "base/strings/sys_string_conversions.h"
 #include "brave/ios/browser/shared/prefs/pref_names.h"
 #include "components/metrics/metrics_pref_names.h"
+#include "ios/chrome/browser/shared/model/prefs/pref_names.h"
 
-NSString* const kHttpsUpgradeLevel =
-    base::SysUTF8ToNSString(prefs::kHttpsUpgradeLevel);
+// Upstream's HTTPS-Only Mode pref, which drives
+// `HttpsOnlyModeUpgradeTabHelper`.
+NSString* const kHttpsOnlyModeEnabled =
+    base::SysUTF8ToNSString(prefs::kHttpsOnlyModeEnabled);
 
 NSString* const kMediaBackgroundingEnabled =
     base::SysUTF8ToNSString(prefs::kMediaBackgroundingEnabled);

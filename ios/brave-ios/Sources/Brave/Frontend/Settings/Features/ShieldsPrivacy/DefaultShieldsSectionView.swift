@@ -32,7 +32,13 @@ struct DefaultShieldsSectionView: View {
         )
       }
 
-      if FeatureList.kBraveHttpsByDefault.enabled {
+      if FeatureList.kBraveIOSUseUpstreamHttpsUpgrades.enabled {
+        ToggleView(
+          title: Strings.Shields.upgradeConnectionsToHTTPS,
+          subtitle: nil,
+          toggle: $settings.isHttpsOnlyModeEnabled
+        )
+      } else if FeatureList.kBraveHttpsByDefault.enabled {
         FormPicker(selection: $settings.httpsUpgradeLevel) {
           ForEach(HTTPSUpgradeLevel.allCases) { level in
             Text(level.localizedTitle)

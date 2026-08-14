@@ -118,11 +118,13 @@ import os
   @Published var httpsUpgradeLevel: HTTPSUpgradeLevel {
     didSet {
       Preferences.Shields.httpsUpgradeLevel = httpsUpgradeLevel
-      prefs.set(httpsUpgradeLevel.prefValue, forPath: kHttpsUpgradeLevel)
-      HttpsUpgradeServiceFactory.get(privateMode: false)?.clearAllowlist(
-        fromStart: Date.distantPast,
-        end: Date.distantFuture
-      )
+      clearHttpsUpgradeAllowlist()
+    }
+  }
+  @Published var isHttpsOnlyModeEnabled: Bool {
+    didSet {
+      prefs.set(isHttpsOnlyModeEnabled, forPath: kHttpsOnlyModeEnabled)
+      clearHttpsUpgradeAllowlist()
     }
   }
   @Published var shredLevel: SiteShredLevel {
@@ -224,6 +226,7 @@ import os
       self.shredLevel = Preferences.Shields.shredLevel
     }
     self.httpsUpgradeLevel = Preferences.Shields.httpsUpgradeLevel
+    self.isHttpsOnlyModeEnabled = prefs.boolean(forPath: kHttpsOnlyModeEnabled)
     self.isDeAmpEnabled = prefs.boolean(forPath: kDeAmpEnabled)
     self.isGPCEnabled = prefs.boolean(forPath: kGlobalPrivacyControlEnabled)
     self.isBlockAllCookiesEnabled = prefs.boolean(forPath: kBlockAllCookiesEnabled)
@@ -311,6 +314,13 @@ import os
     Task { @MainActor in
       self.isSaveContactInfoEnabled = await webcompatReporterHandler?.browserParams().1 ?? false
     }
+  }
+
+  private func clearHttpsUpgradeAllowlist() {
+    HttpsUpgradeServiceFactory.get(privateMode: false)?.clearAllowlist(
+      fromStart: Date.distantPast,
+      end: Date.distantFuture
+    )
   }
 
   func clearPrivateData(_ clearables: [Clearable]) async {
