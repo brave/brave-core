@@ -47,6 +47,7 @@
             android:id="@+id/text_search_networks_edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:imeOptions="actionDone"
             android:inputType="textFilter"
             android:lines="1" />
 
