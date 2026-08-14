@@ -169,7 +169,6 @@ export class StreamingMelFrontend {
     private readonly fbank: Float32Array,
     private readonly hann: Float32Array,
     private readonly fftPre: FftState,
-    private readonly sampleRateHz: number,
   ) {}
 
   appendAudioSamples(samples: Float32Array) {
@@ -265,7 +264,7 @@ export class StreamingMelFrontend {
       stableBacklogFrames,
       chunksReady: Math.floor(stableBacklogFrames / config.NEMO_CHUNK),
       estimatedStableBacklogMs:
-        (stableBacklogFrames * config.HOP_LENGTH * 1000) / this.sampleRateHz,
+        (stableBacklogFrames * config.HOP_LENGTH * 1000) / config.TARGET_SAMPLE_RATE,
     }
   }
   // </if>

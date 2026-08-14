@@ -139,7 +139,6 @@ export class NemotronStreamSession {
   private readonly onResult: (text: string, isFinal: boolean) => void
   private readonly onError: () => void
   private readonly model: OrtNemotronModel
-  private readonly sampleRateHz: number
   private readonly frontend: StreamingMelFrontend
 
   // Attention cache.
@@ -194,14 +193,12 @@ export class NemotronStreamSession {
         `Unsupported sample rate for Nemotron: ${sampleRateHz} Hz`,
       )
     }
-    this.sampleRateHz = sampleRateHz
     this.onResult = onResult
     this.onError = onError
     this.frontend = new StreamingMelFrontend(
       model.fbank,
       model.hann,
       initFftPower(config.N_FFT as FftSize),
-      sampleRateHz,
     )
   }
 
@@ -518,7 +515,7 @@ export class NemotronStreamSession {
 
   // <if expr="!is_official_build">
   private samplesToMs(samples: number): number {
-    return (samples * 1000) / this.sampleRateHz
+    return (samples * 1000) / config.TARGET_SAMPLE_RATE
   }
 
   private debug(message: string, details?: Record<string, unknown>): void {
