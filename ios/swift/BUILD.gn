@@ -4,25 +4,65 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/build/ios/swift_framework.gni")
+import("//build/config/ios/rules.gni")
+import("//ios/build/config.gni")
+import("//testing/test.gni")
 
 ios_swift_framework_bundle("brave_core_swift") {
   output_name = "BraveCoreSwift"
   output_dir = root_out_dir
-  sources = [
-    "foo.swift"
-  ]
+  sources = [ "foo.swift" ]
   info_plist = "Info.plist"
+  enable_testability = true
+
   deps = [
     ":bar",
     "//brave/ios:brave_core_ios_framework+link",
   ]
-  cxx_import_deps = [
-    "//base/ios/swift_shims:sys_info"
-  ]
+  cxx_import_deps = [ "//base/ios/swift_shims:sys_info" ]
 }
 
 swift_source_set("bar") {
-  sources = [
-    "bar.swift"
+  sources = [ "bar.swift" ]
+  cxx_import_deps = [ "//base/ios/swift_shims:time" ]
+}
+
+config("test_config") {
+  ldflags = [ "-Wl,-rpath," + rebase_path(root_out_dir) ]
+  framework_dirs = [ root_out_dir ]
+}
+
+swift_source_set("tests") {
+  testonly = true
+  sources = [ "foo_test.swift" ]
+  deps = [
+    ":brave_core_swift",
+    "//build/config/ios:xctest",
   ]
+  cxx_import_deps = [ "//base/ios/swift_shims:sys_info" ]
+}
+
+test("ios_swift_unit_tests") {
+  deps = [
+    # Ensure that all unit tests are run
+    "//ios/chrome/test:run_all_unittests",
+    "//ios/chrome/test:test_support",
+
+    # use fake hooks and pack resources
+    "//ios/chrome/app:tests_fake_hook",
+    "//ios/chrome/app/resources:packed_resources",
+    "//ios/chrome/app/resources:system_strings",
+    "//ios/testing:http_server_bundle_data",
+
+    # Providers
+    "//ios/chrome/test/providers",
+    "//ios/chrome/test/providers/signin:trusted_vault_provider",
+
+    # Tests
+    ":tests",
+
+    # Needed for linking reasons
+    "//brave/ios/browser",
+  ]
+  configs += [ ":test_config" ]
 }

@@ -1,4 +1,4 @@
-import BraveCore
+internal import BraveCore
 internal import CxxImports
 internal import brave_ios_swift_bar
 
@@ -18,4 +18,10 @@ public struct FooStruct {
 
 public enum FooEnum {
   case one, two, three
+}
+
+class InternalFooClass {
+  let value = 1
+  init() {
+  }
 }

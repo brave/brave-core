@@ -454,7 +454,7 @@ public class BrowserViewController: UIViewController {
 
   fileprivate func didInit() {
     let a = FooClass()
-    
+
     updateApplicationShortcuts()
     tabManager.addDelegate(self)
     UserScriptManager.shared.fetchWalletScripts(from: profileController.braveWalletAPI)
