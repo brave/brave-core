@@ -15,7 +15,6 @@
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
 #include "build/build_config.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
 #include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
@@ -35,7 +34,7 @@
 
 BraveBrowserViewTabbedLayoutImpl::BraveBrowserViewTabbedLayoutImpl(
     std::unique_ptr<BrowserViewLayoutDelegate> delegate,
-    Browser* browser,
+    BrowserWindowInterface* browser,
     BrowserViewLayoutViews views)
     : BrowserViewTabbedLayoutImpl(std::move(delegate),
                                   browser,
