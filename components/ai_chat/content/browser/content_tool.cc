@@ -128,24 +128,30 @@ ContentTool::RequiresUserInteractionBeforeHandling(
   }
 
   auto challenge = mojom::PermissionChallenge::New();
-
-  // Provide a human-readable, markdown-formatted description naming the
-  // site-registered tool and the site's origin, instead of the mangled
-  // model-facing tool name. The tool name is site-controlled, so escape it
-  // to prevent the site injecting markdown into the prompt.
-  if (content::RenderFrameHost* rfh = rfh_.AsRenderFrameHostIfValid()) {
-    const url::Origin& origin = rfh->GetLastCommittedOrigin();
-    challenge->description = l10n_util::GetStringFUTF8(
-        IDS_CHAT_UI_PERMISSION_CHALLENGE_WEB_TOOL_SUMMARY,
-        base::UTF8ToUTF16(EscapeMarkdown(internal_tool_name_)),
-        base::UTF8ToUTF16(origin.opaque() ? rfh->GetLastCommittedURL().spec()
-                                          : origin.Serialize()));
-  }
+  challenge->description = GetPermissionChallengeDescription(tool_use);
   return challenge;
 }
 
 void ContentTool::UserPermissionGranted(const std::string& tool_use_id) {
   user_permission_granted_ = true;
+}
+
+std::optional<std::string> ContentTool::GetPermissionChallengeDescription(
+    const mojom::ToolUseEvent& tool_use) const {
+  // Provide a human-readable, markdown-formatted description naming the
+  // site-registered tool and the site's origin, instead of the mangled
+  // model-facing tool name. The tool name is site-controlled, so escape it
+  // to prevent the site injecting markdown into the prompt.
+  content::RenderFrameHost* rfh = rfh_.AsRenderFrameHostIfValid();
+  if (!rfh) {
+    return std::nullopt;
+  }
+  const url::Origin& origin = rfh->GetLastCommittedOrigin();
+  return l10n_util::GetStringFUTF8(
+      IDS_CHAT_UI_PERMISSION_CHALLENGE_WEB_TOOL_SUMMARY,
+      base::UTF8ToUTF16(EscapeMarkdown(internal_tool_name_)),
+      base::UTF8ToUTF16(origin.opaque() ? rfh->GetLastCommittedURL().spec()
+                                        : origin.Serialize()));
 }
 
 void ContentTool::UseTool(const std::string& input_json,

@@ -6144,6 +6144,80 @@ TEST_F(ConversationHandlerUnitTest,
                   CreateContentBlocksForText("Tool executed successfully"));
 }
 
+TEST_F(ConversationHandlerUnitTest,
+       PermissionChallenge_ServerChallengeDecoratedWithToolDescription) {
+  // A PermissionChallenge raised by the server's alignment check only knows
+  // the raw tool name, so it can't provide a human-readable `description`
+  // (e.g. naming a WebMCP tool and its origin instead of a mangled,
+  // model-facing name). Verify that ConversationHandler asks the matching
+  // Tool to fill in a description for such a challenge before showing it,
+  // without ever calling RequiresUserInteractionBeforeHandling (Gate 2) or
+  // UserPermissionGranted for it.
+  conversation_handler_->associated_content_manager()->ClearContent();
+  MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+
+  auto tool1 = std::make_unique<NiceMock<MockTool>>("test_tool", "Test tool");
+  ON_CALL(*tool1, GetPermissionChallengeDescription)
+      .WillByDefault([](const mojom::ToolUseEvent& tool_use) {
+        return "Leo would like to execute **thing** on **https://example.com"
+               "**";
+      });
+
+  EXPECT_CALL(*tool1, RequiresUserInteractionBeforeHandling).Times(0);
+
+  ON_CALL(*mock_tool_provider_, GetTools()).WillByDefault([&]() {
+    std::vector<base::WeakPtr<Tool>> tools;
+    tools.push_back(tool1->GetWeakPtr());
+    return tools;
+  });
+
+  NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
+
+  base::RunLoop loop;
+  // Engine returns tool use event with only a server-side permission
+  // challenge (assessment only, no description - this is all oai_parsing.cc
+  // ever sets).
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .WillOnce(testing::DoAll(
+          testing::WithArg<6>(
+              [](EngineConsumer::GenerationDataCallback callback) {
+                auto tool_use = mojom::ToolUseEvent::New(
+                    "test_tool", "tool_id_1", "{}", std::nullopt, std::nullopt,
+                    mojom::PermissionChallenge::New(
+                        "Server determined this tool use is off-topic",
+                        std::nullopt, std::nullopt),
+                    false);
+                callback.Run(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewToolUseEvent(
+                        std::move(tool_use)),
+                    std::nullopt));
+              }),
+          testing::WithArg<7>(
+              [&](EngineConsumer::GenerationCompletedCallback callback) {
+                std::move(callback).Run(
+                    base::ok(EngineConsumer::GenerationResultData(
+                        mojom::ConversationEntryEvent::NewCompletionEvent(
+                            mojom::CompletionEvent::New("")),
+                        std::nullopt)));
+                loop.Quit();
+              })));
+
+  conversation_handler_->SubmitHumanConversationEntry("Test", std::nullopt);
+  loop.Run();
+
+  const auto& history = conversation_handler_->GetConversationHistory();
+  auto* tool_event =
+      history.back()->events.value()[0]->get_tool_use_event().get();
+  ASSERT_TRUE(tool_event->permission_challenge);
+  // The server's assessment is preserved...
+  EXPECT_EQ(tool_event->permission_challenge->assessment,
+            "Server determined this tool use is off-topic");
+  // ...and the Tool's description has been added to the same challenge.
+  EXPECT_EQ(tool_event->permission_challenge->description,
+            "Leo would like to execute **thing** on **https://example.com**");
+}
+
 TEST_F(ConversationHandlerUnitTest, OnTaskStateChanged_Paused) {
   // Test that when a ToolProvider is paused by the user, tools are not
   // executed and the tool loop waits for resumption.

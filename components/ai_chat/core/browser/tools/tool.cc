@@ -52,6 +52,11 @@ void Tool::UserPermissionGranted(const std::string& tool_use_id) {
   // Default: no-op. Tools can override if they need to track permission state.
 }
 
+std::optional<std::string> Tool::GetPermissionChallengeDescription(
+    const mojom::ToolUseEvent& tool_use) const {
+  return std::nullopt;
+}
+
 bool Tool::SupportsConversation(
     bool is_temporary,
     bool has_untrusted_content,

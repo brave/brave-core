@@ -94,6 +94,19 @@ class Tool {
   // before UseTool is called.
   virtual void UserPermissionGranted(const std::string& tool_use_id);
 
+  // Returns a human-readable, markdown-formatted description of what this
+  // tool use is asking permission for (e.g. naming a site-registered WebMCP
+  // tool and its origin instead of a mangled, model-facing tool name).
+  // Unlike RequiresUserInteractionBeforeHandling(), this has no side effects
+  // and doesn't depend on whether this Tool is the one that created the
+  // PermissionChallenge being shown - it's also used to decorate a
+  // PermissionChallenge created elsewhere (e.g. by the server's alignment
+  // check, which only knows the raw tool name) with a nicer description.
+  // Returns nullopt if this tool has nothing more descriptive to add than
+  // the default fallback (the raw tool name).
+  virtual std::optional<std::string> GetPermissionChallengeDescription(
+      const mojom::ToolUseEvent& tool_use) const;
+
   // Whether this tool supports the given conversation. Can be used to filter
   // tools based on conversation properties like temporary status.
   virtual bool SupportsConversation(

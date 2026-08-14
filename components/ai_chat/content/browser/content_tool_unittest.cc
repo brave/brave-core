@@ -266,6 +266,22 @@ TEST_F(ContentToolTest, UseToolForwardsEmptyIshJsonValuesUnchanged) {
   }
 }
 
+TEST_F(ContentToolTest,
+       GetPermissionChallengeDescriptionAvailableAfterPermissionGranted) {
+  // Unlike RequiresUserInteractionBeforeHandling(), which returns `false`
+  // once permission has been granted, GetPermissionChallengeDescription()
+  // has no side effects and remains available so it can be used to decorate
+  // a PermissionChallenge this Tool didn't create itself (e.g. one raised
+  // by the server's alignment check).
+  auto mojo_tool = MakeScriptTool("echo", "");
+  ContentTool tool(*mojo_tool, weak_document());
+  tool.UserPermissionGranted(/*tool_use_id=*/"any");
+
+  auto tool_use = mojom::ToolUseEvent::New();
+  EXPECT_EQ(tool.GetPermissionChallengeDescription(*tool_use),
+            "Leo would like to execute **echo** on **https://example.com**");
+}
+
 TEST_F(ContentToolTest, PermissionChallengeOmitsDescriptionWhenDocumentGone) {
   // The origin is read from the RenderFrameHost when the challenge is
   // created; if the document is gone there is no origin to display, so the
