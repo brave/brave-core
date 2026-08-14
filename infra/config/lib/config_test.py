@@ -8,7 +8,6 @@ BuildersRegistry."""
 
 # Some tests read `_resolved` directly to check memoization, which is
 # otherwise unobservable from the public API.
-# pylint: disable=protected-access
 
 import os
 import sys
@@ -16,7 +15,6 @@ import unittest
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-# pylint: disable=wrong-import-position
 # _UNSET is private (module-internal sentinel); tests reach for it directly
 # rather than duplicating it.
 from config import (AnonymousGnConfig, BuildersRegistry, ConfigError, Defaults,
@@ -460,9 +458,9 @@ class BuildersRegistryTest(unittest.TestCase):
                               targets=self._targets())
         # Both succeeded without an "already defined" clash: each pair's
         # `gn_args` node for 'b' lives in its own registry.
-        self.assertIn('b', self.gn_args._nodes)  # pylint: disable=protected-access
-        self.assertIn('b', other_gn_args._nodes)  # pylint: disable=protected-access
-        self.assertIsNot(self.gn_args._nodes['b'], other_gn_args._nodes['b'])  # pylint: disable=protected-access
+        self.assertIn('b', self.gn_args._nodes)
+        self.assertIn('b', other_gn_args._nodes)
+        self.assertIsNot(self.gn_args._nodes['b'], other_gn_args._nodes['b'])
 
 
 if __name__ == '__main__':
