@@ -43,10 +43,16 @@ class OrchardBundleManager {
 
   // Creates instance for shielded outputs only
   // Returns in unauthorized state
+  // `is_v6_transaction` must be true whenever this bundle is part of a v6
+  // Zcash transaction (i.e. whenever it may coexist with a bundle from the
+  // other shielded pool), since the bundle's digest is computed differently
+  // depending on the transaction version.
   static std::unique_ptr<OrchardBundleManager> Create(
       base::span<const uint8_t> tree_state,
       const OrchardSpendsBundle& spends_bundle,
-      const std::vector<OrchardOutput>& orchard_outputs);
+      const std::vector<OrchardOutput>& orchard_outputs,
+      OrchardPool pool,
+      bool is_v6_transaction);
 
   static void OverrideRandomSeedForTesting(size_t seed) {
     random_seed_for_testing_ = seed;
