@@ -23,11 +23,8 @@ export interface AppState {
   externalWalletId: string
   externalWalletAccountId: string
   rewardsEvents: RewardsEvent[]
-  adDiagnosticId: string
-  adDiagnosticEntries: AdDiagnosticsEntry[]
   actions: {
     getString: (key: StringKey) => string
-    setAdDiagnosticId: (diagnosticId: string) => void
     clearRewardsLog: () => void
     loadRewardsLog: () => void
     fetchFullRewardsLog: () => Promise<string>
@@ -70,11 +67,6 @@ export interface RewardsEvent {
   createdAt: number
 }
 
-export interface AdDiagnosticsEntry {
-  name: string
-  value: string
-}
-
 export type Environment = 'development' | 'staging' | 'production'
 
 export type AppStore = StateStore<AppState>
@@ -95,13 +87,10 @@ export function defaultAppStore() {
     externalWalletId: '',
     externalWalletAccountId: '',
     rewardsEvents: [],
-    adDiagnosticId: '',
-    adDiagnosticEntries: [],
     actions: {
       getString(key) {
         return ''
       },
-      setAdDiagnosticId(diagnosticId) {},
       clearRewardsLog() {},
       loadRewardsLog() {},
       async fetchFullRewardsLog() {
