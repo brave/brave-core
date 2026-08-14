@@ -257,6 +257,16 @@ IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest,
 }
 
 IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest,
+                       RecordAskBraveSearchEngineResultsPage) {
+  content::NavigateToURLBlockUntilNavigationsComplete(
+      GetWebContents(),
+      https_server_->GetURL("search.brave.com", "/ask?q=test"),
+      /*number_of_navigations=*/1, /*ignore_uncommitted_navigations=*/true);
+  EXPECT_EQ(1U,
+            GetSerpMetrics()->GetSearchCountForTesting(SerpMetricType::kBrave));
+}
+
+IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest,
                        RecordGoogleSearchEngineResultsPage) {
   content::NavigateToURLBlockUntilNavigationsComplete(
       GetWebContents(),
