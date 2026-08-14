@@ -14,6 +14,7 @@
 #include "brave/components/brave_shields/core/browser/brave_shields_test_utils.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/features.h"
+#include "brave/components/constants/pref_names.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_types.h"
@@ -46,6 +47,9 @@ class BraveShieldsSettingsServiceTest : public testing::Test {
   void TearDown() override { host_content_settings_map_->ShutdownOnUIThread(); }
 
   TestingPrefServiceSimple* GetLocalState() { return &local_state_; }
+  sync_preferences::TestingPrefServiceSyncable* GetProfilePrefs() {
+    return &profile_prefs_;
+  }
   HostContentSettingsMap* GetHostContentSettingsMap() {
     return host_content_settings_map_.get();
   }
@@ -95,6 +99,23 @@ TEST_F(BraveShieldsSettingsServiceTest, BraveShieldsEnabled) {
       GURL("https://example.com")));
   EXPECT_TRUE(brave_shields::IsBraveShieldsEnabled(
       GetHostContentSettingsMap(), GURL("https://example.com")));
+}
+
+TEST_F(BraveShieldsSettingsServiceTest, IsBraveShieldsManaged) {
+  const GURL host("http://host.com");
+
+  // By default shields status should be non-managed as no override of the prefs
+  // was added via policies.
+  EXPECT_FALSE(brave_shields_settings()->IsBraveShieldsManaged(host));
+
+  // Set up the corresponding managed pref which will take precedence over the
+  // user prefs to simulate managed case. Check shields is correctly shown as
+  // managed.
+  base::ListValue disabled_list;
+  disabled_list.Append("[*.]host.com");
+  GetProfilePrefs()->SetManagedPref(kManagedBraveShieldsDisabledForUrls,
+                                    std::move(disabled_list));
+  EXPECT_TRUE(brave_shields_settings()->IsBraveShieldsManaged(host));
 }
 
 TEST_F(BraveShieldsSettingsServiceTest, AdBlockMode) {

@@ -24,7 +24,11 @@ class TopChromeWebUIController;
 
 namespace favicon {
 class FaviconService;
-}
+}  // namespace favicon
+
+namespace brave_shields {
+class BraveShieldsSettingsService;
+}  // namespace brave_shields
 
 class ShieldsPanelDataHandler
     : public brave_shields::mojom::DataHandler,
@@ -36,7 +40,8 @@ class ShieldsPanelDataHandler
           data_handler_receiver,
       TopChromeWebUIController* webui_controller,
       TabStripModel* tab_strip_model,
-      favicon::FaviconService* favicon_service);
+      favicon::FaviconService* favicon_service,
+      brave_shields::BraveShieldsSettingsService* brave_settings_service);
 
   ShieldsPanelDataHandler(const ShieldsPanelDataHandler&) = delete;
   ShieldsPanelDataHandler& operator=(const ShieldsPanelDataHandler&) = delete;
@@ -92,6 +97,8 @@ class ShieldsPanelDataHandler
   raw_ptr<brave_shields::BraveShieldsTabHelper>
       active_shields_data_controller_ = nullptr;      // not owned
   raw_ptr<favicon::FaviconService> favicon_service_;  // not owned
+  raw_ptr<brave_shields::BraveShieldsSettingsService>
+      brave_shields_settings_service_;  // not owned
 };
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_BRAVE_SHIELDS_SHIELDS_PANEL_DATA_HANDLER_H_

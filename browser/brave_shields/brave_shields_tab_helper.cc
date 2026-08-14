@@ -508,15 +508,6 @@ void BraveShieldsTabHelper::AllowScriptsOnce(
   ReloadWebContents();
 }
 
-bool BraveShieldsTabHelper::IsBraveShieldsManaged() {
-  PrefService* profile_prefs =
-      Profile::FromBrowserContext(web_contents()->GetBrowserContext())
-          ->GetPrefs();
-
-  return brave_shields::IsBraveShieldsManaged(
-      profile_prefs, &*host_content_settings_map_, GetCurrentSiteURL());
-}
-
 void BraveShieldsTabHelper::HandleItemBlocked(const std::string& block_type,
                                               const std::string& subresource) {
   auto subres = GURL(subresource);

@@ -12,6 +12,7 @@
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/ui/webui/webcompat_reporter/webcompat_reporter_dialog.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/webui/top_chrome/top_chrome_web_ui_controller.h"
 #include "components/favicon/core/favicon_service.h"
@@ -26,10 +27,12 @@ ShieldsPanelDataHandler::ShieldsPanelDataHandler(
         data_handler_receiver,
     TopChromeWebUIController* webui_controller,
     TabStripModel* tab_strip_model,
-    favicon::FaviconService* favicon_service)
+    favicon::FaviconService* favicon_service,
+    brave_shields::BraveShieldsSettingsService* brave_shields_settings_service)
     : data_handler_receiver_(this, std::move(data_handler_receiver)),
       webui_controller_(webui_controller),
-      favicon_service_(favicon_service) {
+      favicon_service_(favicon_service),
+      brave_shields_settings_service_(brave_shields_settings_service) {
   DCHECK(tab_strip_model);
   tab_strip_model->AddObserver(this);
 
@@ -286,8 +289,9 @@ void ShieldsPanelDataHandler::UpdateSiteBlockInfo() {
     return;
   }
 
-  site_block_info_.host =
-      active_shields_data_controller_->GetCurrentSiteURL().host();
+  const GURL current_site_url =
+      active_shields_data_controller_->GetCurrentSiteURL();
+  site_block_info_.host = current_site_url.host();
   site_block_info_.total_blocked_resources =
       active_shields_data_controller_->GetTotalBlockedCount();
   site_block_info_.ads_list =
@@ -308,7 +312,7 @@ void ShieldsPanelDataHandler::UpdateSiteBlockInfo() {
       active_shields_data_controller_
           ->ShouldShowShieldsDisabledAdBlockOnlyModePrompt();
   site_block_info_.is_brave_shields_managed =
-      active_shields_data_controller_->IsBraveShieldsManaged();
+      brave_shields_settings_service_->IsBraveShieldsManaged(current_site_url);
   const auto& invoked_webcompat_set =
       active_shields_data_controller_->GetInvokedWebcompatFeatures();
   site_block_info_.invoked_webcompat_list = std::vector<ContentSettingsType>(

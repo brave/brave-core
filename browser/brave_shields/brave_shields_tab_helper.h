@@ -77,7 +77,6 @@ class BraveShieldsTabHelper
   mojom::AdBlockMode GetAdBlockMode();
   mojom::FingerprintMode GetFingerprintMode();
   mojom::CookieBlockMode GetCookieBlockMode();
-  bool IsBraveShieldsManaged();
   mojom::HttpsUpgradeMode GetHttpsUpgradeMode();
   bool GetNoScriptEnabled();
   mojom::ContentSettingsOverriddenDataPtr GetJsContentSettingsOverriddenData();
