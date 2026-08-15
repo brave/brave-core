@@ -264,7 +264,8 @@ export class StreamingMelFrontend {
       stableBacklogFrames,
       chunksReady: Math.floor(stableBacklogFrames / config.NEMO_CHUNK),
       estimatedStableBacklogMs:
-        (stableBacklogFrames * config.HOP_LENGTH * 1000) / config.TARGET_SAMPLE_RATE,
+        (stableBacklogFrames * config.HOP_LENGTH * 1000)
+        / config.TARGET_SAMPLE_RATE,
     }
   }
   // </if>
