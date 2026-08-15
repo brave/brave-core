@@ -7,10 +7,12 @@
 
 #include "base/check.h"
 #include "base/feature_list.h"
+#include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
 #include "brave/browser/brave_shields/brave_shields_tab_helper.h"
 #include "brave/browser/ui/brave_scheme_utils.h"
 #include "brave/browser/ui/page_info/features.h"
 #include "brave/components/brave_origin/buildflags/buildflags.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/constants/url_constants.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/vector_icons/vector_icons.h"
@@ -127,6 +129,11 @@ const gfx::VectorIcon* BraveLocationBarModelDelegate::GetVectorIconOverride()
   }
 
   // Return the appropriate shields icon based on the Shields status.
-  return shields_helper->IsBraveShieldsEnabled() ? &kLeoShieldDoneIcon
-                                                 : &kLeoShieldDisableFilledIcon;
+  auto* shields_settings = BraveShieldsSettingsServiceFactory::GetForProfile(
+      Profile::FromBrowserContext(web_contents->GetBrowserContext()));
+  CHECK(shields_settings);
+  return shields_settings->IsBraveShieldsEnabled(
+             shields_helper->GetCurrentSiteURL())
+             ? &kLeoShieldDoneIcon
+             : &kLeoShieldDisableFilledIcon;
 }

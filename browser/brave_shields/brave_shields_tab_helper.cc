@@ -278,10 +278,6 @@ BraveShieldsTabHelper::GetInvokedWebcompatFeatures() {
   return webcompat_features_invoked_;
 }
 
-bool BraveShieldsTabHelper::IsBraveShieldsEnabled() {
-  return brave_shields_settings_->IsBraveShieldsEnabled(GetCurrentSiteURL());
-}
-
 bool BraveShieldsTabHelper::GetAllowElementBlockerInPrivateModeEnabled() {
   return brave_shields::GetAllowElementBlockerInPrivateModeEnabled(
       g_browser_process->local_state());
@@ -358,14 +354,6 @@ GURL BraveShieldsTabHelper::GetFaviconURL(bool refresh) {
   return url;
 }
 
-mojom::AdBlockMode BraveShieldsTabHelper::GetAdBlockMode() {
-  return brave_shields_settings_->GetAdBlockMode(GetCurrentSiteURL());
-}
-
-mojom::FingerprintMode BraveShieldsTabHelper::GetFingerprintMode() {
-  return brave_shields_settings_->GetFingerprintMode(GetCurrentSiteURL());
-}
-
 mojom::CookieBlockMode BraveShieldsTabHelper::GetCookieBlockMode() {
   auto cookie_settings = CookieSettingsFactory::GetForProfile(
       Profile::FromBrowserContext(web_contents()->GetBrowserContext()));
@@ -399,29 +387,6 @@ mojom::HttpsUpgradeMode BraveShieldsTabHelper::GetHttpsUpgradeMode() {
   } else {
     return mojom::HttpsUpgradeMode::STANDARD_MODE;
   }
-}
-
-bool BraveShieldsTabHelper::GetNoScriptEnabled() {
-  return brave_shields_settings_->IsNoScriptEnabled(GetCurrentSiteURL());
-}
-
-mojom::ContentSettingsOverriddenDataPtr
-BraveShieldsTabHelper::GetJsContentSettingsOverriddenData() {
-  return brave_shields_settings_->GetJsContentSettingOverriddenData(
-      GetCurrentSiteURL());
-}
-
-bool BraveShieldsTabHelper::GetForgetFirstPartyStorageEnabled() {
-  return brave_shields_settings_->GetForgetFirstPartyStorageEnabled(
-      GetCurrentSiteURL());
-}
-
-void BraveShieldsTabHelper::SetAdBlockMode(mojom::AdBlockMode mode) {
-  brave_shields_settings_->SetAdBlockMode(mode, GetCurrentSiteURL());
-}
-
-void BraveShieldsTabHelper::SetFingerprintMode(mojom::FingerprintMode mode) {
-  brave_shields_settings_->SetFingerprintMode(mode, GetCurrentSiteURL());
 }
 
 void BraveShieldsTabHelper::SetCookieBlockMode(mojom::CookieBlockMode mode) {
@@ -464,15 +429,6 @@ void BraveShieldsTabHelper::SetHttpsUpgradeMode(mojom::HttpsUpgradeMode mode) {
                                             g_browser_process->local_state());
 
   ReloadWebContents();
-}
-
-void BraveShieldsTabHelper::SetIsNoScriptEnabled(bool is_enabled) {
-  brave_shields_settings_->SetNoScriptEnabled(is_enabled, GetCurrentSiteURL());
-}
-
-void BraveShieldsTabHelper::SetForgetFirstPartyStorageEnabled(bool is_enabled) {
-  brave_shields_settings_->SetForgetFirstPartyStorageEnabled(
-      is_enabled, GetCurrentSiteURL());
 }
 
 void BraveShieldsTabHelper::BlockAllowedScripts(

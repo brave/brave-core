@@ -21,9 +21,11 @@
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "base/feature_list.h"
+#include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
 #include "brave/browser/brave_shields/brave_shields_tab_helper.h"
 #include "brave/browser/ui/brave_pages.h"
 #include "brave/browser/ui/browser_commands.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"  // nogncheck
@@ -182,8 +184,16 @@ void LaunchContentPicker(BrowserWindowInterface* browser) {
   // Element blocking requires Shields (and ad blocking) to be enabled.
   auto* shields =
       brave_shields::BraveShieldsTabHelper::FromWebContents(contents);
-  if (!shields || !shields->IsBraveShieldsEnabled() ||
-      shields->GetAdBlockMode() == brave_shields::mojom::AdBlockMode::ALLOW) {
+  if (!shields) {
+    return;
+  }
+  auto* shields_settings = BraveShieldsSettingsServiceFactory::GetForProfile(
+      Profile::FromBrowserContext(contents->GetBrowserContext()));
+  CHECK(shields_settings);
+  const auto& url = shields->GetCurrentSiteURL();
+  if (!shields_settings->IsBraveShieldsEnabled(url) ||
+      shields_settings->GetAdBlockMode(url) ==
+          brave_shields::mojom::AdBlockMode::ALLOW) {
     return;
   }
 

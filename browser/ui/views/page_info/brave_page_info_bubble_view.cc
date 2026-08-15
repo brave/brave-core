@@ -5,8 +5,12 @@
 
 #include "brave/browser/ui/views/page_info/brave_page_info_bubble_view.h"
 
+#include "base/check.h"
+#include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
 #include "brave/browser/ui/page_info/features.h"
 #include "brave/browser/ui/views/page_info/brave_shields_page_info_view.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/views/page_info/page_info_view_factory.h"
 #include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/navigation_handle.h"
@@ -251,7 +255,14 @@ BravePageInfoBubbleView::GetShieldsTabHelper() {
 
 bool BravePageInfoBubbleView::IsShieldsEnabledForWebContents() {
   auto* tab_helper = GetShieldsTabHelper();
-  return tab_helper && tab_helper->IsBraveShieldsEnabled();
+  if (!tab_helper) {
+    return false;
+  }
+  auto* shields_settings = BraveShieldsSettingsServiceFactory::GetForProfile(
+      Profile::FromBrowserContext(web_contents()->GetBrowserContext()));
+  CHECK(shields_settings);
+  return shields_settings->IsBraveShieldsEnabled(
+      tab_helper->GetCurrentSiteURL());
 }
 
 bool BravePageInfoBubbleView::IsDisplayingSecurityInfo() {
