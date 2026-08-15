@@ -6,8 +6,11 @@
 #include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 
 #include <array>
+#include <string>
 #include <tuple>
+#include <vector>
 
+#include "base/scoped_observation.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_p3a.h"
@@ -25,6 +28,33 @@
 using brave_shields::mojom::AdBlockMode;
 using brave_shields::mojom::AutoShredMode;
 using brave_shields::mojom::FingerprintMode;
+
+namespace {
+
+class TestSettingsObserver
+    : public brave_shields::BraveShieldsSettingsService::Observer {
+ public:
+  explicit TestSettingsObserver(
+      brave_shields::BraveShieldsSettingsService& settings_service) {
+    observation_.Observe(&settings_service);
+  }
+
+  void OnShieldsSettingsChanged(const std::string& etld_plus_one) override {
+    changed_domains_.push_back(etld_plus_one);
+  }
+
+  const std::vector<std::string>& changed_domains() const {
+    return changed_domains_;
+  }
+
+ private:
+  std::vector<std::string> changed_domains_;
+  base::ScopedObservation<brave_shields::BraveShieldsSettingsService,
+                          brave_shields::BraveShieldsSettingsService::Observer>
+      observation_{this};
+};
+
+}  // namespace
 
 class BraveShieldsSettingsServiceTest : public testing::Test {
  public:
@@ -99,6 +129,20 @@ TEST_F(BraveShieldsSettingsServiceTest, BraveShieldsEnabled) {
       GURL("https://example.com")));
   EXPECT_TRUE(brave_shields::IsBraveShieldsEnabled(
       GetHostContentSettingsMap(), GURL("https://example.com")));
+}
+
+TEST_F(BraveShieldsSettingsServiceTest, NotifiesSettingsObservers) {
+  TestSettingsObserver observer(*brave_shields_settings());
+
+  brave_shields_settings()->SetAdBlockMode(AdBlockMode::AGGRESSIVE, kTestUrl);
+  brave_shields_settings()->SetNoScriptEnabled(
+      true, GURL("https://subdomain.brave.com/path"));
+  brave_shields_settings()->SetFingerprintMode(
+      FingerprintMode::ALLOW_MODE, GURL("https://example.com"));
+
+  EXPECT_EQ(observer.changed_domains(),
+            (std::vector<std::string>{"brave.com", "brave.com",
+                                      "example.com"}));
 }
 
 TEST_F(BraveShieldsSettingsServiceTest, IsBraveShieldsManaged) {
