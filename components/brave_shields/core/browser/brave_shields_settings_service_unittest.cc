@@ -32,29 +32,29 @@ namespace {
 
 class TestSettingsObserver
     : public brave_shields::BraveShieldsSettingsService::Observer {
-public:
+ public:
   explicit TestSettingsObserver(
-      brave_shields::BraveShieldsSettingsService &settings_service) {
+      brave_shields::BraveShieldsSettingsService& settings_service) {
     observation_.Observe(&settings_service);
   }
 
-  void OnShieldsSettingsChanged(const GURL &url) override {
+  void OnShieldsSettingsChanged(const GURL& url) override {
     changed_urls_.push_back(url);
   }
 
-  const std::vector<GURL> &changed_urls() const { return changed_urls_; }
+  const std::vector<GURL>& changed_urls() const { return changed_urls_; }
 
-private:
+ private:
   std::vector<GURL> changed_urls_;
   base::ScopedObservation<brave_shields::BraveShieldsSettingsService,
                           brave_shields::BraveShieldsSettingsService::Observer>
       observation_{this};
 };
 
-} // namespace
+}  // namespace
 
 class BraveShieldsSettingsServiceTest : public testing::Test {
-public:
+ public:
   BraveShieldsSettingsServiceTest() {}
   ~BraveShieldsSettingsServiceTest() override = default;
 
@@ -73,17 +73,17 @@ public:
 
   void TearDown() override { host_content_settings_map_->ShutdownOnUIThread(); }
 
-  TestingPrefServiceSimple *GetLocalState() { return &local_state_; }
-  sync_preferences::TestingPrefServiceSyncable *GetProfilePrefs() {
+  TestingPrefServiceSimple* GetLocalState() { return &local_state_; }
+  sync_preferences::TestingPrefServiceSyncable* GetProfilePrefs() {
     return &profile_prefs_;
   }
-  HostContentSettingsMap *GetHostContentSettingsMap() {
+  HostContentSettingsMap* GetHostContentSettingsMap() {
     return host_content_settings_map_.get();
   }
 
   const GURL kTestUrl{"https://brave.com"};
 
-  brave_shields::BraveShieldsSettingsService *brave_shields_settings() {
+  brave_shields::BraveShieldsSettingsService* brave_shields_settings() {
     return brave_shields_settings_.get();
   }
 
@@ -94,7 +94,7 @@ public:
     return dict;
   }
 
-private:
+ private:
   // These tests are part of the "brave_components_unittests" target and the
   // test runner inherits from base::TestSuite rather than ChromeTestSuite.
   // The latter is the one that automatically adds this seed for tests.
@@ -137,10 +137,10 @@ TEST_F(BraveShieldsSettingsServiceTest, NotifiesSettingsObservers) {
   brave_shields_settings()->SetFingerprintMode(FingerprintMode::ALLOW_MODE,
                                                GURL("https://example.com"));
 
-  EXPECT_EQ(
-      observer.changed_urls(),
-      (std::vector<GURL>{kTestUrl, GURL("https://subdomain.brave.com/path"),
-                         GURL("https://example.com")}));
+  EXPECT_EQ(observer.changed_urls(),
+            (std::vector<GURL>{
+                kTestUrl, GURL("https://subdomain.brave.com/path"),
+                GURL("https://example.com")}));
 }
 
 TEST_F(BraveShieldsSettingsServiceTest, IsBraveShieldsManaged) {
@@ -388,13 +388,13 @@ TEST_F(BraveShieldsSettingsServiceTest, NoScriptsEnabledByDefault) {
 
 class BraveShieldsSettingsServiceShredFeatureTest
     : public BraveShieldsSettingsServiceTest {
-public:
+ public:
   BraveShieldsSettingsServiceShredFeatureTest() {
     scoped_feature_list_.InitAndEnableFeature(
         brave_shields::features::kBraveShredFeature);
   }
 
-private:
+ private:
   base::test::ScopedFeatureList scoped_feature_list_;
 };
 
@@ -706,7 +706,7 @@ TEST_F(BraveShieldsSettingsServiceTest, PRNGKnownValues) {
       std::make_tuple<>(GURL("http://a.com"), 10450951993123491723UL),
       std::make_tuple<>(GURL("http://b.com"), 2581208260237394178UL),
   };
-  for (const auto &c : test_cases) {
+  for (const auto& c : test_cases) {
     brave_shields::FarblingPRNG prng;
     ASSERT_TRUE(brave_shields_settings()->MakePseudoRandomGeneratorForURL(
         std::get<0>(c), {}, &prng));
@@ -719,7 +719,7 @@ TEST_F(BraveShieldsSettingsServiceTest, PRNGKnownValuesDifferentSeeds) {
       std::make_tuple<>(GURL("http://a.com"), 10450951993123491723UL),
       std::make_tuple<>(GURL("http://b.com"), 2581208260237394178UL),
   };
-  for (const auto &c : test_cases) {
+  for (const auto& c : test_cases) {
     brave_shields::FarblingPRNG prng;
     ASSERT_TRUE(brave_shields_settings()->MakePseudoRandomGeneratorForURL(
         std::get<0>(c), {}, &prng));
@@ -737,7 +737,7 @@ TEST_F(BraveShieldsSettingsServiceTest, InvalidDomains) {
       GURL("data:text/plain;base64,"),
       GURL(""),
   };
-  for (const auto &url : test_cases) {
+  for (const auto& url : test_cases) {
     brave_shields::FarblingPRNG prng;
     EXPECT_FALSE(brave_shields_settings()->MakePseudoRandomGeneratorForURL(
         url, {}, &prng));
@@ -769,7 +769,7 @@ TEST_F(BraveShieldsSettingsServiceTest, FingerprintingAllowed) {
 class BraveShieldsSettingsFarblingTest
     : public BraveShieldsSettingsServiceTest,
       public testing::WithParamInterface<bool> {
-public:
+ public:
   BraveShieldsSettingsFarblingTest() {
     if (GetParam()) {
       scoped_feature_list_.InitWithFeatures(
@@ -782,13 +782,15 @@ public:
 
   bool IsFarblingTokenResetEnabled() const { return GetParam(); }
 
-private:
+ private:
   base::test::ScopedFeatureList scoped_feature_list_;
 };
 
 INSTANTIATE_TEST_SUITE_P(
-    /* no prefix */, BraveShieldsSettingsFarblingTest, testing::Bool(),
-    [](const testing::TestParamInfo<bool> &info) {
+    /* no prefix */,
+    BraveShieldsSettingsFarblingTest,
+    testing::Bool(),
+    [](const testing::TestParamInfo<bool>& info) {
       return info.param
                  ? "BraveShieldsSettingsFarblingTest_FarblingTokenResetEnabled"
                  : "BraveShieldsSettingsFarblingTest_"
