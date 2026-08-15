@@ -137,10 +137,10 @@ TEST_F(BraveShieldsSettingsServiceTest, NotifiesSettingsObservers) {
   brave_shields_settings()->SetFingerprintMode(FingerprintMode::ALLOW_MODE,
                                                GURL("https://example.com"));
 
-  EXPECT_EQ(observer.changed_urls(),
-            (std::vector<GURL>{
-                kTestUrl, GURL("https://subdomain.brave.com/path"),
-                GURL("https://example.com")}));
+  EXPECT_EQ(
+      observer.changed_urls(),
+      (std::vector<GURL>{kTestUrl, GURL("https://subdomain.brave.com/path"),
+                         GURL("https://example.com")}));
 }
 
 TEST_F(BraveShieldsSettingsServiceTest, IsBraveShieldsManaged) {
