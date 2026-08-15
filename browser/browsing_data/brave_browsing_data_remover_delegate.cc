@@ -216,7 +216,7 @@ void BraveBrowsingDataRemoverDelegate::RemoveEmbedderData(
     ai_chat::AIChatService* ai_chat_service =
         ai_chat::AIChatServiceFactory::GetForBrowserContext(profile_);
     if (ai_chat_service) {
-      ai_chat_service->DeleteConversations(delete_begin, delete_end);
+      ai_chat_service->DeleteConversationsInRange(delete_begin, delete_end);
     }
   }
 #endif

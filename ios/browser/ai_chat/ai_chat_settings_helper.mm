@@ -216,7 +216,7 @@ AiChatOperationResult OperationalResultFromValidationResult(
 }
 
 - (void)resetLeoData {
-  _aiChatService->DeleteConversations();
+  _aiChatService->DeleteConversationsInRange();
   ai_chat::SetUserOptedIn(_profilePrefs, false);
   ai_chat::prefs::DeleteAllMemoriesFromPrefs(*_profilePrefs);
   ai_chat::prefs::ResetCustomizationsPref(*_profilePrefs);

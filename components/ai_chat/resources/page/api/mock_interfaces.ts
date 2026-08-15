@@ -166,7 +166,7 @@ export function createMockService(
     dismissStorageNotice: () => {},
     dismissPremiumPrompt: () => {},
     bindConversation: () => {},
-    deleteConversation: () => {},
+    deleteConversations: () => {},
     renameConversation: () => {},
     conversationExists: () => Promise.resolve({ exists: true }),
     shareConversation: () =>
