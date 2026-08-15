@@ -24,8 +24,6 @@ substitutions:
   - description: |
       Make TabCardView::UpdateContent virtual for BraveTabCardView.
 
-    regex:
-      re_pattern: |
-        (class TabHoverCardBubbleView::TabCardView.*?)(void UpdateContent\(const HoverCardAnchorTarget\* anchor_target\) {)
-      re_flags: [DOTALL]
-      replace: '\1\n  virtual \2\n'
+    make_virtual:
+      class_name: TabHoverCardBubbleView::TabCardView
+      method_name: UpdateContent
