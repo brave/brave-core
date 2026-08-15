@@ -137,12 +137,12 @@ TEST_F(BraveShieldsSettingsServiceTest, NotifiesSettingsObservers) {
   brave_shields_settings()->SetAdBlockMode(AdBlockMode::AGGRESSIVE, kTestUrl);
   brave_shields_settings()->SetNoScriptEnabled(
       true, GURL("https://subdomain.brave.com/path"));
-  brave_shields_settings()->SetFingerprintMode(
-      FingerprintMode::ALLOW_MODE, GURL("https://example.com"));
+  brave_shields_settings()->SetFingerprintMode(FingerprintMode::ALLOW_MODE,
+                                               GURL("https://example.com"));
 
-  EXPECT_EQ(observer.changed_domains(),
-            (std::vector<std::string>{"brave.com", "brave.com",
-                                      "example.com"}));
+  EXPECT_EQ(
+      observer.changed_domains(),
+      (std::vector<std::string>{"brave.com", "brave.com", "example.com"}));
 }
 
 TEST_F(BraveShieldsSettingsServiceTest, IsBraveShieldsManaged) {
