@@ -17,6 +17,7 @@
 #include "base/notreached.h"
 #include "base/numerics/byte_conversions.h"
 #include "base/numerics/safe_conversions.h"
+#include "brave/components/brave_user_agent/common/brand_names.h"
 #include "brave/third_party/blink/renderer/brave_farbling_constants.h"
 #include "brave/third_party/blink/renderer/brave_font_whitelist.h"
 #include "build/build_config.h"
@@ -207,6 +208,23 @@ bool BlockScreenFingerprinting(ExecutionContext* context,
             : ContentSettingsType::BRAVE_WEBCOMPAT_SCREEN,
       BraveFarblingLevel::OFF);
   return level != BraveFarblingLevel::OFF;
+}
+
+blink::UserAgentMetadata MaybeHideBraveBrand(
+    ExecutionContext* context,
+    blink::UserAgentMetadata metadata) {
+  if (!context || !BraveSessionCache::From(*context).ShouldHideBraveBrand()) {
+    return metadata;
+  }
+  for (auto* brand_list :
+       {&metadata.brand_version_list, &metadata.brand_full_version_list}) {
+    for (auto& brand_version : *brand_list) {
+      if (brand_version.brand == brave_user_agent::kBraveBrand) {
+        brand_version.brand = brave_user_agent::kGoogleChromeBrand;
+      }
+    }
+  }
+  return metadata;
 }
 
 int FarbledPointerScreenCoordinate(const DOMWindow* view,

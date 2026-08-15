@@ -39,6 +39,7 @@ brave_blink_renderer_core_sources = [
 brave_blink_renderer_core_deps = [
   "//brave/components/brave_shields/core/common:mojom",
   "//brave/components/brave_shields/core/common/",
+  "//brave/components/brave_user_agent/common",
 ]
 
 if (!is_android && !is_ios) {

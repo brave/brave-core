@@ -10,12 +10,16 @@
 #include "base/feature_list.h"
 #include "base/path_service.h"
 #include "base/test/scoped_feature_list.h"
+#include "base/values.h"
 #include "brave/components/brave_user_agent/browser/brave_user_agent_exceptions.h"
+#include "brave/components/brave_user_agent/common/brand_names.h"
 #include "brave/components/brave_user_agent/common/features.h"
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "content/public/browser/render_frame_host.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "net/dns/mock_host_resolver.h"
@@ -28,8 +32,8 @@ namespace {
 
 constexpr char kSecCHUAHeader[] = "Sec-CH-UA";
 constexpr char kSecCHUAFullVersionListHeader[] = "Sec-CH-UA-Full-Version-List";
-constexpr char kBraveBrand[] = "Brave";
-constexpr char kGoogleChromeBrand[] = "Google Chrome";
+using brave_user_agent::kBraveBrand;
+using brave_user_agent::kGoogleChromeBrand;
 
 struct HeaderCapture {
   bool allows_brave_header = false;
@@ -96,6 +100,13 @@ class BraveUserAgentNetworkDelegateBrowserTest
   net::EmbeddedTestServer& https_server();
   void RunBrandHeaderTest(const std::string& domain, const std::string& path);
   void NavigateAndWait(const GURL& url);
+  void ExpectBrands(const std::string& brands,
+                    const std::string& full_version_list,
+                    bool allows_brave_brand);
+  void ExpectBrandsInFrame(const content::ToRenderFrameHost& frame,
+                           bool allows_brave_brand);
+  void ExpectUserAgentDataBrands(const std::string& domain,
+                                 bool allows_brave_brand);
 
   void ExpectHeaderBrands(const std::vector<HeaderCapture>& captures) {
     ASSERT_TRUE(!captures.empty());
@@ -235,6 +246,46 @@ void BraveUserAgentNetworkDelegateBrowserTest::NavigateAndWait(
   )"));
 }
 
+void BraveUserAgentNetworkDelegateBrowserTest::ExpectBrands(
+    const std::string& brands,
+    const std::string& full_version_list,
+    bool allows_brave_brand) {
+  // When the feature is off no domain is excepted, so Brave is always shown.
+  const bool expect_brave = allows_brave_brand || !GetParam();
+  for (const std::string& value : {brands, full_version_list}) {
+    SCOPED_TRACE(value);
+    EXPECT_EQ(expect_brave, value.find(kBraveBrand) != std::string::npos);
+    EXPECT_EQ(!expect_brave,
+              value.find(kGoogleChromeBrand) != std::string::npos);
+  }
+}
+
+void BraveUserAgentNetworkDelegateBrowserTest::ExpectBrandsInFrame(
+    const content::ToRenderFrameHost& frame,
+    bool allows_brave_brand) {
+  const std::string brands =
+      content::EvalJs(frame,
+                      "navigator.userAgentData.brands.map(b => b.brand)"
+                      ".join(',')")
+          .ExtractString();
+  const std::string full_version_list =
+      content::EvalJs(frame,
+                      "navigator.userAgentData"
+                      ".getHighEntropyValues(['fullVersionList'])"
+                      ".then(v => v.fullVersionList.map(b => b.brand)"
+                      ".join(','))")
+          .ExtractString();
+  ExpectBrands(brands, full_version_list, allows_brave_brand);
+}
+
+void BraveUserAgentNetworkDelegateBrowserTest::ExpectUserAgentDataBrands(
+    const std::string& domain,
+    bool allows_brave_brand) {
+  NavigateAndWait(https_server().GetURL(domain, "/" + domain + "/simple.html"));
+  ExpectBrandsInFrame(browser()->tab_strip_model()->GetActiveWebContents(),
+                      allows_brave_brand);
+}
+
 void BraveUserAgentNetworkDelegateBrowserTest::RunBrandHeaderTest(
     const std::string& domain,
     const std::string& path) {
@@ -263,6 +314,70 @@ IN_PROC_BROWSER_TEST_P(BraveUserAgentNetworkDelegateBrowserTest,
 IN_PROC_BROWSER_TEST_P(BraveUserAgentNetworkDelegateBrowserTest,
                        SecCHUAHeadersAfterRedirectFromNonExceptedToExcepted) {
   RunBrandHeaderTest("b.test", "/b.test/redirect_b_to_a.html");
+}
+
+// navigator.userAgentData must agree with the Sec-CH-UA headers, otherwise a
+// site can detect Brave from JavaScript despite the header rewrite.
+IN_PROC_BROWSER_TEST_P(BraveUserAgentNetworkDelegateBrowserTest,
+                       UserAgentDataBrandsOnExceptedDomain) {
+  ExpectUserAgentDataBrands("a.test", /*allows_brave_brand=*/false);
+}
+
+IN_PROC_BROWSER_TEST_P(BraveUserAgentNetworkDelegateBrowserTest,
+                       UserAgentDataBrandsOnNonExceptedDomain) {
+  ExpectUserAgentDataBrands("b.test", /*allows_brave_brand=*/true);
+}
+
+// The decision is keyed on the top frame, so a non-excepted iframe embedded in
+// an excepted page must also hide the brand.
+IN_PROC_BROWSER_TEST_P(BraveUserAgentNetworkDelegateBrowserTest,
+                       UserAgentDataBrandsInIframeFollowsTopFrame) {
+  NavigateAndWait(https_server().GetURL("a.test", "/a.test/simple.html"));
+  content::RenderFrameHost* main_frame = browser()
+                                             ->tab_strip_model()
+                                             ->GetActiveWebContents()
+                                             ->GetPrimaryMainFrame();
+  ASSERT_TRUE(content::ExecJs(
+      main_frame, content::JsReplace(
+                      R"(
+        new Promise(resolve => {
+          const frame = document.createElement('iframe');
+          frame.src = $1;
+          frame.onload = () => resolve();
+          document.body.appendChild(frame);
+        });
+      )",
+                      https_server().GetURL("b.test", "/b.test/simple.html"))));
+  content::RenderFrameHost* child = content::ChildFrameAt(main_frame, 0);
+  ASSERT_TRUE(child);
+  ExpectBrandsInFrame(child, /*allows_brave_brand=*/false);
+}
+
+// Workers get their shields settings over a separate path, so cover one.
+IN_PROC_BROWSER_TEST_P(BraveUserAgentNetworkDelegateBrowserTest,
+                       UserAgentDataBrandsInDedicatedWorker) {
+  NavigateAndWait(https_server().GetURL("a.test", "/a.test/simple.html"));
+  content::RenderFrameHost* main_frame = browser()
+                                             ->tab_strip_model()
+                                             ->GetActiveWebContents()
+                                             ->GetPrimaryMainFrame();
+  const content::EvalJsResult result = content::EvalJs(main_frame, R"(
+        new Promise(resolve => {
+          const source = `Promise.all([
+              navigator.userAgentData.brands.map(b => b.brand).join(','),
+              navigator.userAgentData
+                  .getHighEntropyValues(['fullVersionList'])
+                  .then(v => v.fullVersionList.map(b => b.brand).join(',')),
+          ]).then(r => postMessage(r))`;
+          const worker = new Worker(
+              URL.createObjectURL(new Blob([source])));
+          worker.onmessage = e => resolve(e.data);
+        });
+      )");
+  const base::ListValue& values = result.ExtractList();
+  ASSERT_EQ(2u, values.size());
+  ExpectBrands(values[0].GetString(), values[1].GetString(),
+               /*allows_brave_brand=*/false);
 }
 
 INSTANTIATE_TEST_SUITE_P(FeatureFlag,

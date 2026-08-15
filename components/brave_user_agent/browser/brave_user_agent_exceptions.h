@@ -50,6 +50,11 @@ class BraveUserAgentExceptions {
   friend class BraveUserAgentExceptionsUnitTest;
 };
 
+// Returns true when `url` is excepted and should therefore report
+// "Google Chrome" rather than "Brave". Returns false when the feature is
+// disabled or the exceptions list has not loaded yet.
+bool ShouldHideBraveBrand(const GURL& url);
+
 }  // namespace brave_user_agent
 
 #endif  // BRAVE_COMPONENTS_BRAVE_USER_AGENT_BROWSER_BRAVE_USER_AGENT_EXCEPTIONS_H_

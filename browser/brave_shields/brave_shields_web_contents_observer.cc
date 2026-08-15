@@ -20,6 +20,7 @@
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
 #include "brave/components/brave_shields/core/common/shields_settings.mojom.h"
+#include "brave/components/brave_user_agent/browser/brave_user_agent_exceptions.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/containers/buildflags/buildflags.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
@@ -360,7 +361,8 @@ void BraveShieldsWebContentsObserver::SendShieldsSettings(
   agent->SetShieldsSettings(brave_shields::mojom::ShieldsSettings::New(
       farbling_level, farbling_token, allowed_scripts_,
       brave_shields::IsReduceLanguageEnabledForProfile(pref_service),
-      IsJsBlockingEnforced(rfh->GetBrowserContext(), primary_url)));
+      IsJsBlockingEnforced(rfh->GetBrowserContext(), primary_url),
+      brave_user_agent::ShouldHideBraveBrand(primary_url)));
 }
 
 void BraveShieldsWebContentsObserver::BindReceiver(
