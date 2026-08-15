@@ -34,8 +34,7 @@ class BraveShieldsSettingsService : public KeyedService {
  public:
   class Observer : public base::CheckedObserver {
    public:
-    virtual void OnShieldsSettingsChanged(
-        const std::string& etld_plus_one) = 0;
+    virtual void OnShieldsSettingsChanged(const std::string& etld_plus_one) = 0;
   };
 
   explicit BraveShieldsSettingsService(
