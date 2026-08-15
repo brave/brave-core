@@ -60,7 +60,6 @@ static_library("browser") {
     "//components/prefs",
     "//components/value_store",
     "//crypto",
-    "//net",
     "//url",
   ]
   public_deps = [

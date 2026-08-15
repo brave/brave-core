@@ -18,7 +18,6 @@
 #include "components/content_settings/core/common/content_settings_types.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_service.h"
-#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "net/base/url_util.h"
 #include "url/gurl.h"
 
@@ -32,18 +31,17 @@ uint32_t g_stable_farbling_tokens_seed = 0;
 std::optional<base::Token> g_profile_token_for_testing;
 
 namespace {
-base::DictValue GetShieldsMetadata(HostContentSettingsMap* map,
-                                   const GURL& url) {
+base::DictValue GetShieldsMetadata(HostContentSettingsMap *map,
+                                   const GURL &url) {
   auto shields_metadata_value = map->GetWebsiteSetting(
       url, url, ContentSettingsType::BRAVE_SHIELDS_METADATA);
-  if (auto* shields_metadata_dict = shields_metadata_value.GetIfDict()) {
+  if (auto *shields_metadata_dict = shields_metadata_value.GetIfDict()) {
     return std::move(*shields_metadata_dict);
   }
   return base::DictValue();
 }
 
-void SetShieldsMetadata(HostContentSettingsMap* map,
-                        const GURL& url,
+void SetShieldsMetadata(HostContentSettingsMap *map, const GURL &url,
                         base::DictValue shields_metadata) {
   map->SetWebsiteSettingDefaultScope(
       url, url, ContentSettingsType::BRAVE_SHIELDS_METADATA,
@@ -57,7 +55,7 @@ uint64_t PersistentHashU64(base::span<const uint8_t> data) {
          base::PersistentHash(base::byte_span_from_ref(hash));
 }
 
-base::Token CreateFarblingToken(const GURL& url) {
+base::Token CreateFarblingToken(const GURL &url) {
   if (!g_stable_farbling_tokens_seed) {
     return base::Token::CreateRandom();
   }
@@ -80,33 +78,31 @@ base::Token CreateProfileLevelFarblingToken() {
              : base::Token::CreateRandom();
 }
 
-}  // namespace
+} // namespace
 
 BraveShieldsSettingsService::BraveShieldsSettingsService(
-    HostContentSettingsMap& host_content_settings_map,
-    PrefService* local_state,
-    PrefService* profile_prefs)
+    HostContentSettingsMap &host_content_settings_map, PrefService *local_state,
+    PrefService *profile_prefs)
     : host_content_settings_map_(host_content_settings_map),
-      local_state_(local_state),
-      profile_prefs_(profile_prefs) {
+      local_state_(local_state), profile_prefs_(profile_prefs) {
   CHECK(profile_prefs_);
 }
 
 BraveShieldsSettingsService::~BraveShieldsSettingsService() = default;
 
 void BraveShieldsSettingsService::SetBraveShieldsEnabled(bool is_enabled,
-                                                         const GURL& url) {
+                                                         const GURL &url) {
   brave_shields::SetBraveShieldsEnabled(&*host_content_settings_map_,
                                         is_enabled, url, local_state_);
   NotifySettingsChanged(url);
 }
 
-bool BraveShieldsSettingsService::IsBraveShieldsEnabled(const GURL& url) {
+bool BraveShieldsSettingsService::IsBraveShieldsEnabled(const GURL &url) {
   return brave_shields::IsBraveShieldsEnabled(&*host_content_settings_map_,
                                               url);
 }
 
-bool BraveShieldsSettingsService::IsBraveShieldsManaged(const GURL& url) {
+bool BraveShieldsSettingsService::IsBraveShieldsManaged(const GURL &url) {
   content_settings::SettingInfo info;
   host_content_settings_map_->GetWebsiteSetting(
       url, url, ContentSettingsType::BRAVE_SHIELDS, &info);
@@ -123,7 +119,7 @@ mojom::AdBlockMode BraveShieldsSettingsService::GetDefaultAdBlockMode() {
 }
 
 void BraveShieldsSettingsService::SetAdBlockMode(mojom::AdBlockMode mode,
-                                                 const GURL& url) {
+                                                 const GURL &url) {
   ControlType control_type_ad;
   ControlType control_type_cosmetic;
 
@@ -134,11 +130,11 @@ void BraveShieldsSettingsService::SetAdBlockMode(mojom::AdBlockMode mode,
   }
 
   if (mode == mojom::AdBlockMode::AGGRESSIVE) {
-    control_type_cosmetic = ControlType::BLOCK;  // aggressive
+    control_type_cosmetic = ControlType::BLOCK; // aggressive
   } else if (mode == mojom::AdBlockMode::STANDARD) {
-    control_type_cosmetic = ControlType::BLOCK_THIRD_PARTY;  // standard
+    control_type_cosmetic = ControlType::BLOCK_THIRD_PARTY; // standard
   } else {
-    control_type_cosmetic = ControlType::ALLOW;  // allow
+    control_type_cosmetic = ControlType::ALLOW; // allow
   }
 
   brave_shields::SetAdControlType(&*host_content_settings_map_, control_type_ad,
@@ -150,8 +146,8 @@ void BraveShieldsSettingsService::SetAdBlockMode(mojom::AdBlockMode mode,
   NotifySettingsChanged(url);
 }
 
-mojom::AdBlockMode BraveShieldsSettingsService::GetAdBlockMode(
-    const GURL& url) {
+mojom::AdBlockMode
+BraveShieldsSettingsService::GetAdBlockMode(const GURL &url) {
   ControlType control_type_ad =
       brave_shields::GetAdControlType(&*host_content_settings_map_, url);
 
@@ -181,8 +177,7 @@ BraveShieldsSettingsService::GetDefaultFingerprintMode() {
 }
 
 void BraveShieldsSettingsService::SetFingerprintMode(
-    mojom::FingerprintMode mode,
-    const GURL& url) {
+    mojom::FingerprintMode mode, const GURL &url) {
 #if BUILDFLAG(IS_IOS)
   /// Strict FingerprintMode is not supported on iOS
   CHECK(mode != mojom::FingerprintMode::STRICT_MODE);
@@ -195,7 +190,7 @@ void BraveShieldsSettingsService::SetFingerprintMode(
   } else if (mode == mojom::FingerprintMode::STRICT_MODE) {
     control_type = ControlType::BLOCK;
   } else {
-    control_type = ControlType::DEFAULT;  // STANDARD_MODE
+    control_type = ControlType::DEFAULT; // STANDARD_MODE
   }
 
   brave_shields::SetFingerprintingControlType(&*host_content_settings_map_,
@@ -204,8 +199,8 @@ void BraveShieldsSettingsService::SetFingerprintMode(
   NotifySettingsChanged(url);
 }
 
-mojom::FingerprintMode BraveShieldsSettingsService::GetFingerprintMode(
-    const GURL& url) {
+mojom::FingerprintMode
+BraveShieldsSettingsService::GetFingerprintMode(const GURL &url) {
   ControlType control_type = brave_shields::GetFingerprintingControlType(
       &*host_content_settings_map_, url);
 
@@ -233,7 +228,7 @@ bool BraveShieldsSettingsService::IsNoScriptEnabledByDefault() {
 }
 
 void BraveShieldsSettingsService::SetNoScriptEnabled(bool is_enabled,
-                                                     const GURL& url) {
+                                                     const GURL &url) {
   ControlType control_type =
       is_enabled ? ControlType::BLOCK : ControlType::ALLOW;
   brave_shields::SetNoScriptControlType(&*host_content_settings_map_,
@@ -241,24 +236,21 @@ void BraveShieldsSettingsService::SetNoScriptEnabled(bool is_enabled,
   NotifySettingsChanged(url);
 }
 
-void BraveShieldsSettingsService::AddObserver(Observer* observer) {
+void BraveShieldsSettingsService::AddObserver(Observer *observer) {
   observers_.AddObserver(observer);
 }
 
-void BraveShieldsSettingsService::RemoveObserver(Observer* observer) {
+void BraveShieldsSettingsService::RemoveObserver(Observer *observer) {
   observers_.RemoveObserver(observer);
 }
 
-void BraveShieldsSettingsService::NotifySettingsChanged(const GURL& url) {
-  const std::string etld_plus_one =
-      net::registry_controlled_domains::GetDomainAndRegistry(
-          url, net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
-  for (Observer& observer : observers_) {
-    observer.OnShieldsSettingsChanged(etld_plus_one);
+void BraveShieldsSettingsService::NotifySettingsChanged(const GURL &url) {
+  for (Observer &observer : observers_) {
+    observer.OnShieldsSettingsChanged(url);
   }
 }
 
-bool BraveShieldsSettingsService::IsNoScriptEnabled(const GURL& url) {
+bool BraveShieldsSettingsService::IsNoScriptEnabled(const GURL &url) {
   ControlType control_type =
       brave_shields::GetNoScriptControlType(&*host_content_settings_map_, url);
 
@@ -267,7 +259,7 @@ bool BraveShieldsSettingsService::IsNoScriptEnabled(const GURL& url) {
 
 #if !BUILDFLAG(IS_IOS)
 bool BraveShieldsSettingsService::GetForgetFirstPartyStorageEnabled(
-    const GURL& url) {
+    const GURL &url) {
   ContentSetting setting = host_content_settings_map_->GetContentSetting(
       url, url, ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE);
 
@@ -275,8 +267,7 @@ bool BraveShieldsSettingsService::GetForgetFirstPartyStorageEnabled(
 }
 
 void BraveShieldsSettingsService::SetForgetFirstPartyStorageEnabled(
-    bool is_enabled,
-    const GURL& url) {
+    bool is_enabled, const GURL &url) {
   auto primary_pattern = content_settings::CreateDomainPattern(url);
 
   if (!primary_pattern.IsValid()) {
@@ -303,7 +294,7 @@ mojom::AutoShredMode BraveShieldsSettingsService::GetDefaultAutoShredMode() {
 }
 
 void BraveShieldsSettingsService::SetAutoShredMode(mojom::AutoShredMode mode,
-                                                   const GURL& url) {
+                                                   const GURL &url) {
   CHECK(base::FeatureList::IsEnabled(
       brave_shields::features::kBraveShredFeature));
 
@@ -323,8 +314,8 @@ void BraveShieldsSettingsService::SetAutoShredMode(mojom::AutoShredMode mode,
   ReportAutoShredSettingsP3A(*host_content_settings_map_);
 }
 
-mojom::AutoShredMode BraveShieldsSettingsService::GetAutoShredMode(
-    const GURL& url) {
+mojom::AutoShredMode
+BraveShieldsSettingsService::GetAutoShredMode(const GURL &url) {
   CHECK(base::FeatureList::IsEnabled(
       brave_shields::features::kBraveShredFeature));
   return AutoShredSetting::FromValue(
@@ -332,7 +323,7 @@ mojom::AutoShredMode BraveShieldsSettingsService::GetAutoShredMode(
           url, GURL(), AutoShredSetting::kContentSettingsType));
 }
 
-bool BraveShieldsSettingsService::IsJsBlockingEnforced(const GURL& url) {
+bool BraveShieldsSettingsService::IsJsBlockingEnforced(const GURL &url) {
   const auto js_content_settings_overridden_data =
       GetJsContentSettingOverriddenData(url);
   return js_content_settings_overridden_data &&
@@ -342,7 +333,7 @@ bool BraveShieldsSettingsService::IsJsBlockingEnforced(const GURL& url) {
 
 mojom::ContentSettingsOverriddenDataPtr
 BraveShieldsSettingsService::GetJsContentSettingOverriddenData(
-    const GURL& url) {
+    const GURL &url) {
   content_settings::SettingInfo info;
   const auto rule = host_content_settings_map_->GetContentSetting(
       url, GURL(), content_settings::mojom::ContentSettingsType::JAVASCRIPT,
@@ -358,7 +349,7 @@ BraveShieldsSettingsService::GetJsContentSettingOverriddenData(
 }
 
 bool BraveShieldsSettingsService::IsShieldsDisabledOnAnyHostMatchingDomainOf(
-    const GURL& url) const {
+    const GURL &url) const {
   // First check the exact domain
   if (CONTENT_SETTING_BLOCK ==
       host_content_settings_map_->GetContentSetting(
@@ -373,7 +364,7 @@ bool BraveShieldsSettingsService::IsShieldsDisabledOnAnyHostMatchingDomainOf(
 
   const auto ephemeral_domain = net::URLToEphemeralStorageDomain(url);
 
-  for (const auto& setting : all_shield_settings) {
+  for (const auto &setting : all_shield_settings) {
     // Skip invalid patterns or settings that don't disable shields
     if (!setting.primary_pattern.IsValid() ||
         setting.setting_value != CONTENT_SETTING_BLOCK) {
@@ -404,9 +395,8 @@ bool BraveShieldsSettingsService::IsShredBrowsingHistoryEnabled() {
 }
 
 bool BraveShieldsSettingsService::MakePseudoRandomGeneratorForURL(
-    const GURL& url,
-    base::span<const uint8_t> additional_entropy,
-    FarblingPRNG* prng) {
+    const GURL &url, base::span<const uint8_t> additional_entropy,
+    FarblingPRNG *prng) {
   if (brave_shields::GetFarblingLevel(&*host_content_settings_map_, url) ==
       brave_shields::mojom::FarblingLevel::OFF) {
     return false;
@@ -421,14 +411,13 @@ bool BraveShieldsSettingsService::MakePseudoRandomGeneratorForURL(
 
 // static
 void BraveShieldsSettingsService::RegisterProfilePrefs(
-    user_prefs::PrefRegistrySyncable* registry) {
+    user_prefs::PrefRegistrySyncable *registry) {
   registry->RegisterBooleanPref(brave_shields::prefs::kReduceLanguageEnabled,
                                 true);
 }
 
 base::Token BraveShieldsSettingsService::GetFarblingToken(
-    const GURL& url,
-    base::span<const uint8_t> additional_entropy) {
+    const GURL &url, base::span<const uint8_t> additional_entropy) {
   base::Token token;
   if (!url.SchemeIsHTTPOrHTTPS()) {
     return token;
@@ -436,7 +425,7 @@ base::Token BraveShieldsSettingsService::GetFarblingToken(
 
   // Get the farbling token from the Shields metadata.
   auto shields_metadata = GetShieldsMetadata(&*host_content_settings_map_, url);
-  if (auto* farbling_token = shields_metadata.FindString("farbling_token")) {
+  if (auto *farbling_token = shields_metadata.FindString("farbling_token")) {
     token = base::Token::FromString(*farbling_token).value_or(base::Token());
   }
 
@@ -471,4 +460,4 @@ base::Token BraveShieldsSettingsService::GetFarblingToken(
   return token;
 }
 
-}  // namespace brave_shields
+} // namespace brave_shields
