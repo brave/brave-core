@@ -26,6 +26,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/time/time.h"
 #include "brave/app/brave_command_ids.h"
+#include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
 #include "brave/browser/brave_shields/brave_shields_tab_helper.h"
 #include "brave/browser/debounce/debounce_service_factory.h"
 #include "brave/browser/ui/bookmark/brave_bookmark_prefs.h"
@@ -38,6 +39,7 @@
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/containers/buildflags/buildflags.h"
@@ -521,7 +523,11 @@ void ToggleShieldsEnabled(Browser* browser) {
     return;
   }
 
-  shields->SetBraveShieldsEnabled(!shields->IsBraveShieldsEnabled());
+  auto* shields_settings = BraveShieldsSettingsServiceFactory::GetForProfile(
+      Profile::FromBrowserContext(contents->GetBrowserContext()));
+  CHECK(shields_settings);
+  shields->SetBraveShieldsEnabled(
+      !shields_settings->IsBraveShieldsEnabled(shields->GetCurrentSiteURL()));
 }
 
 void ToggleJavascriptEnabled(Browser* browser) {
@@ -539,7 +545,12 @@ void ToggleJavascriptEnabled(Browser* browser) {
     return;
   }
 
-  shields->SetIsNoScriptEnabled(!shields->GetNoScriptEnabled());
+  auto* shields_settings = BraveShieldsSettingsServiceFactory::GetForProfile(
+      Profile::FromBrowserContext(contents->GetBrowserContext()));
+  CHECK(shields_settings);
+  const auto& url = shields->GetCurrentSiteURL();
+  shields_settings->SetNoScriptEnabled(
+      !shields_settings->IsNoScriptEnabled(url), url);
 }
 
 #if BUILDFLAG(ENABLE_COMMANDER)

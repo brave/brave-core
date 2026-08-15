@@ -66,7 +66,6 @@ class BraveShieldsTabHelper
   std::vector<GURL> GetBlockedJsList();
   std::vector<GURL> GetAllowedJsList();
   std::vector<GURL> GetFingerprintsList();
-  bool IsBraveShieldsEnabled();
   void SetBraveShieldsEnabled(bool is_enabled);
   bool IsBraveShieldsAdBlockOnlyModeEnabled();
   void SetBraveShieldsAdBlockOnlyModeEnabled(bool is_enabled);
@@ -77,15 +76,10 @@ class BraveShieldsTabHelper
   GURL GetFaviconURL(bool refresh);
   const base::flat_set<ContentSettingsType>& GetInvokedWebcompatFeatures();
 
-  mojom::AdBlockMode GetAdBlockMode();
-  mojom::FingerprintMode GetFingerprintMode();
   mojom::CookieBlockMode GetCookieBlockMode();
   mojom::HttpsUpgradeMode GetHttpsUpgradeMode();
-  bool GetNoScriptEnabled();
-  void SetAdBlockMode(mojom::AdBlockMode mode);
   void SetCookieBlockMode(mojom::CookieBlockMode mode);
   void SetHttpsUpgradeMode(mojom::HttpsUpgradeMode mode);
-  void SetIsNoScriptEnabled(bool is_enabled);
   void EnforceSiteDataCleanup();
   void AllowScriptsOnce(const std::vector<std::string>& origins);
   void BlockAllowedScripts(const std::vector<std::string>& origins);

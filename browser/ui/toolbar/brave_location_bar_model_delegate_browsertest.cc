@@ -6,8 +6,10 @@
 #include "brave/browser/ui/toolbar/brave_location_bar_model_delegate.h"
 
 #include "base/test/scoped_feature_list.h"
+#include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
 #include "brave/browser/brave_shields/brave_shields_tab_helper.h"
 #include "brave/browser/ui/page_info/features.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_location_bar_model_delegate.h"
@@ -132,7 +134,11 @@ IN_PROC_BROWSER_TEST_F(BraveLocationBarModelDelegateShieldsBrowserTest,
 
   auto* shields_helper = GetShieldsHelper();
   ASSERT_TRUE(shields_helper);
-  EXPECT_TRUE(shields_helper->IsBraveShieldsEnabled());
+  auto* shields_settings =
+      BraveShieldsSettingsServiceFactory::GetForProfile(browser()->profile());
+  ASSERT_TRUE(shields_settings);
+  EXPECT_TRUE(shields_settings->IsBraveShieldsEnabled(
+      shields_helper->GetCurrentSiteURL()));
 
   const gfx::VectorIcon* icon = delegate_->GetVectorIconOverride();
   EXPECT_EQ(icon, &kLeoShieldDoneIcon);
@@ -146,7 +152,11 @@ IN_PROC_BROWSER_TEST_F(BraveLocationBarModelDelegateShieldsBrowserTest,
   ASSERT_TRUE(shields_helper);
 
   shields_helper->SetBraveShieldsEnabled(false);
-  EXPECT_FALSE(shields_helper->IsBraveShieldsEnabled());
+  auto* shields_settings =
+      BraveShieldsSettingsServiceFactory::GetForProfile(browser()->profile());
+  ASSERT_TRUE(shields_settings);
+  EXPECT_FALSE(shields_settings->IsBraveShieldsEnabled(
+      shields_helper->GetCurrentSiteURL()));
 
   const gfx::VectorIcon* icon = delegate_->GetVectorIconOverride();
   EXPECT_EQ(icon, &kLeoShieldDisableFilledIcon);
