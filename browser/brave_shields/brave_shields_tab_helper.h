@@ -39,13 +39,13 @@ class BraveShieldsTabHelper
       public content_settings::Observer,
       public BraveShieldsSettingsService::Observer,
       public favicon::FaviconDriverObserver {
-public:
-  BraveShieldsTabHelper(const BraveShieldsTabHelper &) = delete;
-  BraveShieldsTabHelper &operator=(const BraveShieldsTabHelper &) = delete;
+ public:
+  BraveShieldsTabHelper(const BraveShieldsTabHelper&) = delete;
+  BraveShieldsTabHelper& operator=(const BraveShieldsTabHelper&) = delete;
   ~BraveShieldsTabHelper() override;
 
   class Observer : public base::CheckedObserver {
-  public:
+   public:
     virtual void OnResourcesChanged() = 0;
     virtual void OnFaviconUpdated() {}
     virtual void OnShieldsEnabledChanged() {}
@@ -53,12 +53,12 @@ public:
     virtual void OnRepeatedReloadsDetected() {}
   };
 
-  void HandleItemBlocked(const std::string &block_type,
-                         const std::string &subresource);
-  void HandleItemAllowedOnce(const std::string &allowed_once_type,
-                             const std::string &subresource);
-  void
-  HandleWebcompatFeatureInvoked(ContentSettingsType webcompat_content_settings);
+  void HandleItemBlocked(const std::string& block_type,
+                         const std::string& subresource);
+  void HandleItemAllowedOnce(const std::string& allowed_once_type,
+                             const std::string& subresource);
+  void HandleWebcompatFeatureInvoked(
+      ContentSettingsType webcompat_content_settings);
   void ClearAllResourcesList();
   int GetTotalBlockedCount();
   std::vector<GURL> GetBlockedAdsList();
@@ -74,7 +74,7 @@ public:
   void SetBraveShieldsAdBlockOnlyModePromptDismissed();
   GURL GetCurrentSiteURL() const;
   GURL GetFaviconURL(bool refresh);
-  const base::flat_set<ContentSettingsType> &GetInvokedWebcompatFeatures();
+  const base::flat_set<ContentSettingsType>& GetInvokedWebcompatFeatures();
 
   mojom::AdBlockMode GetAdBlockMode();
   mojom::FingerprintMode GetFingerprintMode();
@@ -90,18 +90,18 @@ public:
   void SetIsNoScriptEnabled(bool is_enabled);
   void SetForgetFirstPartyStorageEnabled(bool is_enabled);
   void EnforceSiteDataCleanup();
-  void AllowScriptsOnce(const std::vector<std::string> &origins);
-  void BlockAllowedScripts(const std::vector<std::string> &origins);
+  void AllowScriptsOnce(const std::vector<std::string>& origins);
+  void BlockAllowedScripts(const std::vector<std::string>& origins);
   void SetWebcompatEnabled(ContentSettingsType webcompat_settings_type,
                            bool enabled);
   base::flat_map<ContentSettingsType, bool> GetWebcompatSettings();
   bool GetAllowElementBlockerInPrivateModeEnabled();
 
-  void AddObserver(Observer *obs);
-  void RemoveObserver(Observer *obs);
-  bool HasObserver(Observer *observer);
+  void AddObserver(Observer* obs);
+  void RemoveObserver(Observer* obs);
+  bool HasObserver(Observer* observer);
 
-private:
+ private:
   friend class content::WebContentsUserData<BraveShieldsTabHelper>;
 
   struct RepeatedReloadsCounter {
@@ -109,30 +109,31 @@ private:
     size_t reloads_count = 0;
   };
 
-  explicit BraveShieldsTabHelper(content::WebContents *web_contents);
+  explicit BraveShieldsTabHelper(content::WebContents* web_contents);
 
   // content::WebContentsObserver
-  void
-  DidFinishNavigation(content::NavigationHandle *navigation_handle) override;
+  void DidFinishNavigation(
+      content::NavigationHandle* navigation_handle) override;
   void WebContentsDestroyed() override;
 
   // content_settings::Observer
-  void
-  OnContentSettingChanged(const ContentSettingsPattern &primary_pattern,
-                          const ContentSettingsPattern &secondary_pattern,
-                          ContentSettingsTypeSet content_type_set) override;
+  void OnContentSettingChanged(
+      const ContentSettingsPattern& primary_pattern,
+      const ContentSettingsPattern& secondary_pattern,
+      ContentSettingsTypeSet content_type_set) override;
 
   // BraveShieldsSettingsService::Observer
-  void OnShieldsSettingsChanged(const GURL &url) override;
+  void OnShieldsSettingsChanged(const GURL& url) override;
 
   // favicon::FaviconDriverObserver
-  void OnFaviconUpdated(favicon::FaviconDriver *favicon_driver,
+  void OnFaviconUpdated(favicon::FaviconDriver* favicon_driver,
                         NotificationIconType notification_icon_type,
-                        const GURL &icon_url, bool icon_url_changed,
-                        const gfx::Image &image) override;
+                        const GURL& icon_url,
+                        bool icon_url_changed,
+                        const gfx::Image& image) override;
 
   void ReloadWebContents();
-  void MaybeNotifyRepeatedReloads(content::NavigationHandle *navigation_handle);
+  void MaybeNotifyRepeatedReloads(content::NavigationHandle* navigation_handle);
 
   void OnShieldsAdBlockOnlyModeEnabledChanged();
 
@@ -161,6 +162,6 @@ private:
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 };
 
-} // namespace brave_shields
+}  // namespace brave_shields
 
-#endif // BRAVE_BROWSER_BRAVE_SHIELDS_BRAVE_SHIELDS_TAB_HELPER_H_
+#endif  // BRAVE_BROWSER_BRAVE_SHIELDS_BRAVE_SHIELDS_TAB_HELPER_H_
