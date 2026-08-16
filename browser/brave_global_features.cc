@@ -14,7 +14,7 @@
 #include "base/feature_list.h"
 #include "brave/components/extension_malware_blocklist/browser/extension_malware_blocklist.h"
 #include "brave/components/extension_malware_blocklist/common/features.h"
-#endif
+#endif  // BUILDFLAG(ENABLE_EXTENSIONS)
 
 BraveGlobalFeatures::BraveGlobalFeatures() {
 #if BUILDFLAG(ENABLE_EXTENSIONS)
@@ -23,7 +23,7 @@ BraveGlobalFeatures::BraveGlobalFeatures() {
     extension_malware_blocklist_ = std::make_unique<
         extension_malware_blocklist::ExtensionMalwareBlocklist>();
   }
-#endif
+#endif  // BUILDFLAG(ENABLE_EXTENSIONS)
 }
 
 BraveGlobalFeatures::~BraveGlobalFeatures() = default;

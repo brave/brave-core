@@ -15,7 +15,7 @@
 namespace extension_malware_blocklist {
 class ExtensionMalwareBlocklist;
 }  // namespace extension_malware_blocklist
-#endif
+#endif  // BUILDFLAG(ENABLE_EXTENSIONS)
 
 // Brave-specific subclass of GlobalFeatures
 // This class owns the core controllers for features that are globally
@@ -38,13 +38,13 @@ class BraveGlobalFeatures : public GlobalFeatures {
   extension_malware_blocklist() {
     return extension_malware_blocklist_.get();
   }
-#endif
+#endif  // BUILDFLAG(ENABLE_EXTENSIONS)
 
  private:
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   std::unique_ptr<extension_malware_blocklist::ExtensionMalwareBlocklist>
       extension_malware_blocklist_;
-#endif
+#endif  // BUILDFLAG(ENABLE_EXTENSIONS)
 };
 
 #endif  // BRAVE_BROWSER_BRAVE_GLOBAL_FEATURES_H_
