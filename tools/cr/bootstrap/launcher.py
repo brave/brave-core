@@ -31,6 +31,18 @@ import sys
 # A brave checkout's path relative to the workspace root.
 _SRC_BRAVE = Path('src') / 'brave'
 
+# The path for `launcher.py` relative to brave root.
+_CHECKOUT_SENTINEL = Path('tools') / 'cr' / 'bootstrap' / 'launcher.py'
+
+# An env used to store the checkout path, inherited by child processes, so a
+# nested launcher call does not have to redo the resolution again.
+_CHECKOUT_ENV_VAR = 'BRAVE_LAUNCHER_CHECKOUT_DIR'
+
+
+def _is_checkout(path: Path) -> bool:
+    """Whether `path` is a `src/brave` checkout (carries our sentinel)."""
+    return (path / _CHECKOUT_SENTINEL).is_file()
+
 
 @dataclass(frozen=True)
 class Shim:
@@ -96,22 +108,25 @@ SHIM_TARGETS: dict[str, Shim] = {
 }
 
 
-def find_brave_checkout(start: Path) -> Path | None:
-    """The `src/brave` checkout at or above `start`, or None.
+def _resolve_checkout() -> Path | None:
+    """The checkout governing this invocation.
 
-    By layout, not git: the first ancestor `src/brave` carrying our sentinel.
+    Returns the checkout path for Brave, if one can be found, or if one has been
+    found before by a parent invocation of this launcher. Otherwise, returns
+    None.
     """
-    start = start.resolve()
-    sentinel = _SRC_BRAVE / 'tools' / 'cr' / 'bootstrap' / 'launcher.py'
+    value = os.environ.get(_CHECKOUT_ENV_VAR)
+    if value:
+        candidate = Path(value)
+        if _is_checkout(candidate):
+            return candidate
+
+    start = Path.cwd().resolve()
     for directory in (start, *start.parents):
-        if (directory / sentinel).is_file():
-            return directory / _SRC_BRAVE
+        checkout = directory / _SRC_BRAVE
+        if _is_checkout(checkout):
+            return checkout
     return None
-
-
-def _find_cwd_checkout() -> Path | None:
-    """The `brave-core` checkout governing the current working directory."""
-    return find_brave_checkout(Path.cwd())
 
 
 def host_platform_key() -> str | None:
@@ -277,46 +292,9 @@ class SelfUpdater:
         return module
 
 
-@dataclass(frozen=True)
-class Invocation:
-    """A resolved command to run for a shim.
-
-    `argv` is the command prefix to run. `path_prepend`, when set, is a
-    directory to prepend to `$PATH` for the child process so that any nested
-    `node` lookups resolve to the checkout binary directly, instead of recursing
-    back through the shim that sits first on `$PATH`.
-    """
-
-    # The argv prefix to run the tool with.
-    argv: list[str]
-
-    # A directory to prepend to `$PATH` before running, or None.
-    path_prepend: Path | None = None
-
-
-def _run_with_path_prepended(directory: Path | None, run):
-    """Run `run()` with `directory` prepended to `$PATH`, then restore `$PATH`.
-
-    The prepend is skipped when `directory` is None, or when it is already on
-    `$PATH`, for the duration of the call.
-    """
-    previous = os.environ.get('PATH', '')
-    already_present = directory is not None and any(
-        entry and Path(entry).resolve() == directory.resolve()
-        for entry in previous.split(os.pathsep))
-    if directory is None or already_present:
-        return run()
-    os.environ['PATH'] = (os.pathsep.join([str(directory), previous])
-                          if previous else str(directory))
-    try:
-        return run()
-    finally:
-        os.environ['PATH'] = previous
-
-
 def resolve_invocation(tool: str, checkout: Path | None,
-                       allow_fallback: bool) -> Invocation | None:
-    """The command to run `tool` from `checkout`.
+                       allow_fallback: bool) -> list[str] | None:
+    """The argv prefix to run `tool` from `checkout`.
 
     This function attempts to resolve the invocation for a given tool. Tools
     are usually run from checkout, but certain tools are allowed to fallback to
@@ -335,26 +313,20 @@ def resolve_invocation(tool: str, checkout: Path | None,
                 updater.deploy()
         if target.is_file():
             if shim.runtime == 'vpython':
-                invocation = Invocation(
-                    [str(_resolve_vpython3(checkout)),
-                     str(target)])
+                invocation = [str(_resolve_vpython3(checkout)), str(target)]
             elif shim.runtime == 'node':
                 # Run with whatever `node` is on $PATH (our node shim, which
                 # resolves the right node in turn).
                 node = shutil.which('node')
                 if node is not None:
-                    invocation = Invocation([node, str(target)])
+                    invocation = [node, str(target)]
             else:
-                # A bare checkout binary (node). Prepend its directory to
-                # `$PATH` so child processes that spawn `node` hit this binary
-                # directly rather than recursing through the shim.
-                invocation = Invocation([str(target)],
-                                        path_prepend=target.parent)
+                invocation = [str(target)]
 
     if invocation is None and allow_fallback:
         system = _resolve_system_binary(tool.split('-', 1)[0])
         if system is not None:
-            invocation = Invocation([system])
+            invocation = [system]
     return invocation
 
 
@@ -392,7 +364,7 @@ def main() -> int:
     tool = parsed.tool
     tool_args = parsed.tool_args
 
-    checkout = _find_cwd_checkout()
+    checkout = _resolve_checkout()
     try:
         invocation = resolve_invocation(tool, checkout, parsed.allow_fallback)
     except UnknownShimError:
@@ -400,11 +372,14 @@ def main() -> int:
         return 2
 
     if invocation is not None:
+        env = os.environ.copy()
+        # Setting `BRAVE_LAUNCHER_CHECKOUT_DIR` so nested invocations resolve
+        # with the same checkout dir.
+        if checkout is not None and not env.get(_CHECKOUT_ENV_VAR):
+            env[_CHECKOUT_ENV_VAR] = str(checkout)
         # Intentionally do not change cwd: the tool runs relative to the current
         # path.
-        return _run_with_path_prepended(
-            invocation.path_prepend,
-            lambda: subprocess.call([*invocation.argv, *tool_args]))
+        return subprocess.call([*invocation, *tool_args], env=env)
 
     # Resolved a known tool but produced nothing to run — report why.
     if parsed.allow_fallback:
