@@ -1,12 +1,26 @@
 diff --git a/content/browser/gpu/gpu_internals_ui.cc b/content/browser/gpu/gpu_internals_ui.cc
-index ba9a815a4788ce76ea3e95ca9afb0fdd9a1e6a71..48671cf6081360e39cc744890c4014c5157225d1 100644
+index ba9a815a4788ce76ea3e95ca9afb0fdd9a1e6a71..1bb6eda307c07eab1ce7f6429b8cecc049b2952d 100644
 --- a/content/browser/gpu/gpu_internals_ui.cc
 +++ b/content/browser/gpu/gpu_internals_ui.cc
-@@ -744,6 +744,7 @@ base::DictValue GpuMessageHandler::GetClientInfo() {
-            std::string("Skia/" STRINGIZE(SK_MILESTONE) " " SKIA_COMMIT_HASH));
-   dict.Set("revision_identifier", GPU_LISTS_VERSION);
- 
-+  BRAVE_GPU_MESSAGE_HANDLER_ON_REQUEST_CLIENT_INFO
-   return dict;
+@@ -705,6 +705,7 @@ void GpuMessageHandler::HandleGetGpuInfo(const base::ListValue& args) {
  }
  
+ base::DictValue GpuMessageHandler::GetClientInfo() {
++  base::DictValue dict = [&]() -> base::DictValue {
+   DCHECK_CURRENTLY_ON(BrowserThread::UI);
+ 
+   base::DictValue dict;
+@@ -745,6 +746,13 @@ base::DictValue GpuMessageHandler::GetClientInfo() {
+   dict.Set("revision_identifier", GPU_LISTS_VERSION);
+ 
+   return dict;
++  }();
++  #if BUILDFLAG(IS_WIN)
++  if (auto* host = GpuProcessHost::Get()) {
++    dict.Set("executable_path", host->executable_path());
++  }
++  #endif  // BUILDFLAG(IS_WIN)
++  return dict;
+ }
+ 
+ base::ListValue GpuMessageHandler::GetLogMessages() {
