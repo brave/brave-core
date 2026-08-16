@@ -49,6 +49,8 @@
 #include "chrome/browser/ui/views/frame/toolbar_button_provider.h"
 #include "chrome/browser/ui/views/location_bar/icon_label_bubble_view.h"
 #include "chrome/browser/ui/views/page_action/test_support/page_action_test_support.h"
+#include "chrome/browser/ui/views/tabs/hovercard/tab_hover_card_bubble_view.h"
+#include "chrome/browser/ui/views/tabs/hovercard/tab_hover_card_test_util.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
 #include "chrome/browser/ui/zoom/chrome_zoom_level_prefs.h"
 #include "chrome/browser/web_applications/test/os_integration_test_override_impl.h"
@@ -93,6 +95,7 @@
 #include "ui/gfx/animation/animation_test_api.h"
 #include "ui/gfx/geometry/point.h"
 #include "ui/views/controls/button/button.h"
+#include "ui/views/controls/button/label_button.h"
 #include "ui/views/controls/menu/menu_controller.h"
 #include "ui/views/test/button_test_api.h"
 #include "ui/views/test/views_test_utils.h"
@@ -1121,6 +1124,64 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
   EXPECT_EQ(
       std::u16string::npos,
       tooltip.find(l10n_util::GetStringUTF16(IDS_TOOLTIP_TAB_IN_CONTAINER)));
+}
+
+IN_PROC_BROWSER_TEST_F(ContainersBrowserTest, HoverCardShowsContainerName) {
+  ::test::TabHoverCardTestUtil tab_hover_card_test_util;  // Disables animation.
+  browser()->GetProfile()->GetPrefs()->SetInteger(
+      brave_tabs::kTabHoverMode, brave_tabs::TabHoverMode::CARD);
+
+  const GURL url("https://a.test/simple.html");
+
+  auto container = containers::mojom::Container::New();
+  container->id = "hover-card-container";
+  container->name = "Hover Card Container";
+  container->icon = containers::mojom::Icon::kWork;
+  container->background_color = SK_ColorBLUE;
+
+  // The hover card name comes from the runtime container, which is only
+  // populated once the container is known to the synced containers list.
+  std::vector<containers::mojom::ContainerPtr> synced;
+  synced.push_back(container->Clone());
+  SetContainersToPrefs(synced, *browser()->GetProfile()->GetPrefs());
+
+  brave::OpenUrlInContainer(browser(), url, container);
+  content::WebContents* web_contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(web_contents);
+  EXPECT_TRUE(content::WaitForLoadStop(web_contents));
+
+  TabHoverCardBubbleView* hover_card =
+      tab_hover_card_test_util.SimulateHoverTab(
+          browser(), browser()->tab_strip_model()->active_index());
+  ASSERT_TRUE(hover_card);
+
+  views::LabelButton* container_label =
+      hover_card->GetContainerLabelForTesting();
+  ASSERT_TRUE(container_label);
+  EXPECT_TRUE(container_label->GetVisible());
+  EXPECT_EQ(u"Hover Card Container", container_label->GetText());
+  EXPECT_TRUE(container_label->GetBackground());
+}
+
+IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
+                       HoverCardDoesNotShowContainerNameOutsideContainer) {
+  ::test::TabHoverCardTestUtil tab_hover_card_test_util;  // Disables animation.
+  browser()->GetProfile()->GetPrefs()->SetInteger(
+      brave_tabs::kTabHoverMode, brave_tabs::TabHoverMode::CARD);
+
+  const GURL url("https://a.test/simple.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+
+  TabHoverCardBubbleView* hover_card =
+      tab_hover_card_test_util.SimulateHoverTab(
+          browser(), browser()->tab_strip_model()->active_index());
+  ASSERT_TRUE(hover_card);
+
+  views::LabelButton* container_label =
+      hover_card->GetContainerLabelForTesting();
+  ASSERT_TRUE(container_label);
+  EXPECT_FALSE(container_label->GetVisible());
 }
 
 IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
