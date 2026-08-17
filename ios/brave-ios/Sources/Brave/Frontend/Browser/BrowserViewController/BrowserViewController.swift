@@ -2098,12 +2098,7 @@ public class BrowserViewController: UIViewController {
       if !url.isNewTabURL, !InternalURL.isValid(url: url) || url.isInternalURL(for: .readermode),
         !url.isFileURL
       {
-        // Only add history of a url which is not a localhost url
         if !url.isInternalURL(for: .readermode) {
-          if !tab.isPrivate {
-            profileController.historyAPI.add(url: url, title: tab.title ?? "", dateAdded: Date())
-          }
-
           // Saving Tab.
           tabManager.saveTab(tab)
         }

@@ -180,6 +180,8 @@ extension BrowserViewController: TabManagerDelegate {
       }
       self.present(quickViewController, animated: true)
     }
+
+    tab.historyTabHelper = .init(tab: tab, historyAPI: profileController.historyAPI)
   }
 
   func tabManager(
