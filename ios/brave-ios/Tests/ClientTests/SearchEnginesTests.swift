@@ -80,6 +80,32 @@ class SearchEnginesTests: XCTestCase {
     XCTAssertEqual(deleted, [])
   }
 
+  func testDoubleDeleteCustomEngineDoesNotCrash() async throws {
+    // Regression test: deleting a custom engine that is no longer in
+    // customEngines (already deleted or never added) must not crash.
+    // Before the fix, firstIndex(of:)! would force-unwrap nil and crash.
+    let testEngine = OpenSearchEngine(
+      engineID: "ATesterDouble",
+      shortName: "ATesterDouble",
+      image: UIImage(),
+      searchTemplate: "http://firefox.com/find?q={searchTerm}",
+      suggestTemplate: nil,
+      isCustomEngine: true
+    )
+    let engines = SearchEngines()
+    await engines.loadSearchEngines()
+    try await engines.addSearchEngine(testEngine)
+
+    // First delete: normal removal.
+    try await engines.deleteCustomEngine(testEngine)
+    XCTAssertFalse(engines.orderedEngines.contains(testEngine))
+
+    // Second delete: engine no longer in customEngines — must return silently.
+    // No crash is the expected outcome; an exception here fails the test.
+    try await engines.deleteCustomEngine(testEngine)
+    XCTAssertFalse(engines.orderedEngines.contains(testEngine))
+  }
+
   func testDefaultEngine() async {
     let engines = SearchEngines()
     await engines.loadSearchEngines()
