@@ -1529,7 +1529,7 @@ public class BytecodeTest {
                         OpenInAppMenuItemProvider.class,
                         Supplier.class,
                         Supplier.class,
-                        Supplier.class,
+                        NonNullObservableSupplier.class,
                         BooleanSupplier.class));
         Assert.assertTrue(
                 constructorsMatch(
