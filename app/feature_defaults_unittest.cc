@@ -107,6 +107,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
   const base::Feature* disabled_features[] = {
       &attribution_reporting::features::kConversionMeasurement,
       &autofill::features::kAutofillAiServerModel,
+      &autofill::features::kAutofillAiWithDataSchema,
       &autofill::features::kAutofillEnableAmountExtraction,
       &autofill::features::kAutofillEnableBuyNowPayLater,
       &autofill::features::debug::kAutofillServerCommunication,
