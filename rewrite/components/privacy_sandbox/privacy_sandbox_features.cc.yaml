@@ -8,8 +8,3 @@ substitutions:
     set_feature_flag_default_state:
       feature_name: kEnforcePrivacySandboxAttestations
       value: base::FEATURE_DISABLED_BY_DEFAULT
-
-  - description: 'Ship kPrivacySandboxSettings4 disabled.'
-    set_feature_flag_default_state:
-      feature_name: kPrivacySandboxSettings4
-      value: base::FEATURE_DISABLED_BY_DEFAULT
