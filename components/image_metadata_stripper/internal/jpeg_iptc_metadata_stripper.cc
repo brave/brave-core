@@ -211,7 +211,7 @@ base::span<const uint8_t> FindIptcData(base::span<const uint8_t> payload) {
     // 1u is accounting for the actual byte which contained the name_length.
     size_t name_field = 1u + name_length;
     name_field += name_field % 2u;  // Pad to even.
-    if (name_field > payload.size() - pos) {
+    if (pos + name_field > payload.size()) {
       break;
     }
     pos += name_field;  // pos now points to the 4-byte holding the length of
