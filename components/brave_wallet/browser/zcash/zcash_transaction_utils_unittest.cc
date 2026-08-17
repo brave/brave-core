@@ -471,6 +471,51 @@ TEST(ZCashTransactionUtilsUnitTest, PickZCashOrchardInputs) {
     EXPECT_FALSE(result.has_value());
   }
 
+  // Zero-amount notes are skipped so they don't inflate the Orchard action
+  // count (and therefore the ZIP-317 fee) beyond what's needed to cover the
+  // target amount.
+  {
+    std::vector<OrchardNote> notes;
+    notes.push_back(OrchardNote{{}, 1u, {}, 0u, 0, {}, {}, 2});
+    notes.push_back(OrchardNote{{}, 2u, {}, 0u, 0, {}, {}, 2});
+    notes.push_back(OrchardNote{{}, 3u, {}, 5000u, 0, {}, {}, 2});
+    notes.push_back(OrchardNote{{}, 4u, {}, 100000u, 0, {}, {}, 2});
+    notes.push_back(OrchardNote{{}, 5u, {}, 0u, 0, {}, {}, 2});
+    auto result = PickZCashOrchardInputs(notes, 10000u,
+                                         ZCashTargetOutputType::kTransparent);
+    EXPECT_TRUE(result.has_value());
+    // Only the two value-bearing notes are selected.
+    EXPECT_EQ(result->inputs.size(), 2u);
+    // max(2, max(0, 1) + max(2, 0, 2)) * 5000.
+    EXPECT_EQ(result->fee, 15000u);
+    EXPECT_EQ(result->change, 105000u - 10000u - result->fee);
+    EXPECT_EQ(result->inputs[0].amount, 5000u);
+    EXPECT_EQ(result->inputs[1].amount, 100000u);
+  }
+
+  // Same as above, but for the legacy Orchard pool inside a v6 tx (spends and
+  // outputs never share an action), matching how
+  // ZCashCreateOrchardToTransparentTransactionTask calls this. Two
+  // value-bearing notes selected (dust filtered) needs 2 spends + 1 change
+  // output = 3 actions, not max(2, 1, 2) = 2.
+  {
+    std::vector<OrchardNote> notes;
+    notes.push_back(OrchardNote{{}, 1u, {}, 0u, 0, {}, {}, 2});
+    notes.push_back(OrchardNote{{}, 2u, {}, 0u, 0, {}, {}, 2});
+    notes.push_back(OrchardNote{{}, 3u, {}, 5000u, 0, {}, {}, 2});
+    notes.push_back(OrchardNote{{}, 4u, {}, 100000u, 0, {}, {}, 2});
+    notes.push_back(OrchardNote{{}, 5u, {}, 0u, 0, {}, {}, 2});
+    auto result = PickZCashOrchardInputs(notes, 10000u,
+                                         ZCashTargetOutputType::kTransparent,
+                                         /*orchard_cross_address_disabled=*/
+                                         true);
+    EXPECT_TRUE(result.has_value());
+    EXPECT_EQ(result->inputs.size(), 2u);
+    // max(2, max(0, 1) + (2 + 1)) * 5000.
+    EXPECT_EQ(result->fee, 20000u);
+    EXPECT_EQ(result->change, 105000u - 10000u - result->fee);
+  }
+
   // Empty inputs, full amount.
   {
     auto result =
@@ -654,6 +699,26 @@ TEST(ZCashTransactionUtilsUnitTest, CalculateZCashTxFee) {
   EXPECT_DEATH_IF_SUPPORTED(
       { CalculateZCashTxFee(1u, 1u, ZCashTargetOutputType::kTransparent); },
       "");
+}
+
+// Regression test: the legacy Orchard pool inside a v6 transaction disables
+// cross-address transfers, so a spend and an output never share an action —
+// the actual action count is `spends + outputs`, not `max(spends, outputs)`.
+// Undercounting this underpays the ZIP-317 fee and gets the tx rejected by
+// the network as "unpaid actions".
+TEST(ZCashTransactionUtilsUnitTest,
+     CalculateZCashTxFee_OrchardCrossAddressDisabled) {
+  // 2 orchard spends + 1 orchard change output + 1 transparent target output.
+  // Disabled: actions = spends(2) + outputs(1) = 3 -> fee = 5000 * (1 + 3).
+  EXPECT_EQ(20000u,
+            CalculateZCashTxFee(0u, 2u, ZCashTargetOutputType::kTransparent,
+                                /*orchard_cross_address_disabled=*/true)
+                .ValueOrDie());
+  // Enabled (default): actions = max(2, 1, 2) = 2 -> fee = 5000 * (1 + 2).
+  EXPECT_EQ(15000u,
+            CalculateZCashTxFee(0u, 2u, ZCashTargetOutputType::kTransparent,
+                                /*orchard_cross_address_disabled=*/false)
+                .ValueOrDie());
 }
 
 }  // namespace brave_wallet
