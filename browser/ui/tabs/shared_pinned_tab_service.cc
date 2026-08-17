@@ -447,7 +447,8 @@ void SharedPinnedTabService::OnTabChangedAt(tabs::TabInterface* tab,
       continue;
     }
 
-    tab_strip_model->UpdateWebContentsStateAt(index, change_type);
+    tab_strip_model->UpdateWebContentsState(
+        tab_strip_model->GetWebContentsAt(index), change_type);
   }
 }
 
