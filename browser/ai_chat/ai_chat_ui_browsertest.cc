@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/files/file_path.h"
+#include "base/functional/bind.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/path_service.h"
@@ -453,11 +454,11 @@ class AIChatPDFOCRBrowserTest : public InProcessBrowserTest {
 
     FetchPageContent();
     ASSERT_TRUE(base::test::RunUntil([&]() {
+      if (fetch_in_flight_) {
+        return false;
+      }
       if (page_content_ == expected_text) {
         return true;
-      }
-      if (!page_content_) {
-        return false;
       }
       // OCR may not be done for all pages yet, retry.
       FetchPageContent();
@@ -475,7 +476,7 @@ class AIChatPDFOCRBrowserTest : public InProcessBrowserTest {
   // Bound weakly so that a reply arriving after the polling loop has given up
   // does not write to freed memory.
   void FetchPageContent() {
-    page_content_.reset();
+    fetch_in_flight_ = true;
     chat_tab_helper_->web_contents_content().GetContent(
         base::BindOnce(&AIChatPDFOCRBrowserTest::OnPageContent,
                        weak_ptr_factory_.GetWeakPtr()));
@@ -483,12 +484,18 @@ class AIChatPDFOCRBrowserTest : public InProcessBrowserTest {
 
   void OnPageContent(ai_chat::PageContent content) {
     page_content_ = std::move(content.content);
+    fetch_in_flight_ = false;
   }
 
   content::ContentMockCertVerifier mock_cert_verifier_;
 
-  // Content of the last completed GetContent() call, unset while one is in
-  // flight.
+  // Whether a GetContent() reply is still outstanding. Tracked separately from
+  // `page_content_` so that the last content stays available for the timeout
+  // message instead of being cleared by the retry that precedes it.
+  bool fetch_in_flight_ = false;
+
+  // Content of the last completed GetContent() call, unset until the first one
+  // completes.
   std::optional<std::string> page_content_;
 
   base::WeakPtrFactory<AIChatPDFOCRBrowserTest> weak_ptr_factory_{this};
