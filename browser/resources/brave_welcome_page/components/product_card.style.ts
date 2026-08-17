@@ -17,7 +17,7 @@ export const style = scoped.css`
   }
 
   img {
-    width: 101px;
+    width: 100px;
     height: auto;
     border-radius: ${radius.l};
   }
