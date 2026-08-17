@@ -10,3 +10,14 @@ substitutions:
       replace:
         'BASE_FEATURE(kAutofillAiServerModel,
         base::FEATURE_DISABLED_BY_DEFAULT);'
+
+  - description: |-
+      Ship kAutofillAiWithDataSchema disabled.
+
+      This is the master switch for AI-based autofill, which Brave does not
+      offer, and upstream ships it enabled by default on every platform.
+    regex:
+      pattern: 'DEFINE_FEATURE_WITH_MOBILE_COUNTRY_RESTRICTION(kAutofillAiWithDataSchema);'
+      replace:
+        'BASE_FEATURE(kAutofillAiWithDataSchema,
+        base::FEATURE_DISABLED_BY_DEFAULT);'
