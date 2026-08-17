@@ -28,6 +28,7 @@ using brave_account::endpoint_client::WithHeaders;
 
 namespace brave_vpn::v2 {
 
+using endpoints::CreateSupportTicket;
 using endpoints::GetSubscriberCredential;
 using endpoints::GetSubscriberCredentialV12;
 using endpoints::VerifyPurchaseToken;
@@ -185,6 +186,43 @@ void BraveVpnApiClient::OnVerifyPurchaseTokenResponse(
           })
           .transform_error([](endpoints::RawJsonResponseBody error) {
             return std::move(error.json);
+          }));
+}
+
+void BraveVpnApiClient::CreateSupportTicket(
+    CreateSupportTicketCallback callback,
+    const std::string& email,
+    const std::string& subject,
+    const std::string& body,
+    const std::string& subscriber_credential,
+    const std::string& timezone) {
+  auto request = MakeRequest<CreateSupportTicket::Request>();
+  request.body.email = email;
+  request.body.subject = subject;
+  request.body.body = body;
+  request.body.subscriber_credential = subscriber_credential;
+  request.body.timezone = timezone;
+
+  Client<endpoints::CreateSupportTicket>::Send(
+      url_loader_factory_, std::move(request),
+      base::BindOnce(&BraveVpnApiClient::OnCreateSupportTicketResponse,
+                     weak_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+void BraveVpnApiClient::OnCreateSupportTicketResponse(
+    CreateSupportTicketCallback callback,
+    endpoints::CreateSupportTicket::Response response) {
+  if (auto unrecoverable = MaybeDescribeUnrecoverableResponse(response)) {
+    return std::move(callback).Run(base::unexpected(*std::move(unrecoverable)));
+  }
+
+  std::move(callback).Run(
+      std::move(CHECK_DEREF(response.body))
+          .transform([](endpoints::RawJsonResponseBody success) {
+            return std::move(success.json);
+          })
+          .transform_error([](endpoints::VpnErrorBody error) {
+            return std::move(error.error_title);
           }));
 }
 

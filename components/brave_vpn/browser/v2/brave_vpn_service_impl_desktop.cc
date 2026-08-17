@@ -3,15 +3,42 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include <memory>
+#include <optional>
+#include <string>
 #include <utility>
 
+#include "base/functional/bind.h"
 #include "base/notimplemented.h"
+#include "base/types/expected.h"
+#include "brave/components/brave_vpn/browser/v2/api/brave_vpn_api_client.h"
 #include "brave/components/brave_vpn/browser/v2/brave_vpn_service_impl.h"
 #include "brave/components/brave_vpn/browser/v2/purchased_state_manager.h"
 #include "brave/components/brave_vpn/common/brave_vpn_constants.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
+#include "third_party/icu/source/i18n/unicode/timezone.h"
 
 namespace brave_vpn::v2 {
+namespace {
+std::string GetTimeZoneName() {
+  std::unique_ptr<icu::TimeZone> zone(icu::TimeZone::createDefault());
+  icu::UnicodeString id;
+  zone->getID(id);
+  std::string current_time_zone;
+  id.toUTF8String<std::string>(current_time_zone);
+  return current_time_zone;
+}
+
+// Bridges the endpoint client's typed result to the mojom
+// (bool success, string response) contract used by CreateSupportTicket.
+void RunCreateSupportTicketCallback(
+    BraveVpnServiceImpl::CreateSupportTicketCallback callback,
+    base::expected<std::string, std::string> result) {
+  const bool success = result.has_value();
+  std::move(callback).Run(success,
+                          success ? std::string() : std::move(result).error());
+}
+}  // namespace
 
 bool BraveVpnServiceImpl::IsConnected() const {
   NOTIMPLEMENTED();
@@ -76,8 +103,19 @@ void BraveVpnServiceImpl::CreateSupportTicket(
     const std::string& subject,
     const std::string& body,
     CreateSupportTicketCallback callback) {
-  NOTIMPLEMENTED();
-  std::move(callback).Run(false, {});
+  if (!api_client_) {
+    std::move(callback).Run(false, {});
+    return;
+  }
+  std::optional<std::string> subscriber_credential =
+      purchased_state_manager_
+          ? purchased_state_manager_->GetSubscriberCredential()
+          : std::nullopt;
+
+  api_client_->CreateSupportTicket(
+      base::BindOnce(&RunCreateSupportTicketCallback, std::move(callback)),
+      email, subject, body, subscriber_credential.value_or(""),
+      GetTimeZoneName());
 }
 
 void BraveVpnServiceImpl::GetSupportData(GetSupportDataCallback callback) {

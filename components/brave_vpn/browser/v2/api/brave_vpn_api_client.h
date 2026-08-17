@@ -13,6 +13,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_vpn/browser/v2/api/purchase_endpoints.h"
+#include "brave/components/brave_vpn/browser/v2/api/support_endpoints.h"
 
 namespace network {
 class SharedURLLoaderFactory;
@@ -68,6 +69,19 @@ class BraveVpnApiClient {
                                    const std::string& product_type,
                                    const std::string& bundle_id);
 
+  // Connect API: CreateSupportTicket.
+  // Submits a customer support inquiry. On success: the server's confirmation
+  // JSON (an echo of the submitted data). On failure: a user-facing error
+  // string.
+  using CreateSupportTicketCallback =
+      base::OnceCallback<void(base::expected<std::string, std::string>)>;
+  virtual void CreateSupportTicket(CreateSupportTicketCallback callback,
+                                   const std::string& email,
+                                   const std::string& subject,
+                                   const std::string& body,
+                                   const std::string& subscriber_credential,
+                                   const std::string& timezone);
+
  private:
   void OnGetSubscriberCredentialResponse(
       SubscriberCredentialCallback callback,
@@ -75,6 +89,9 @@ class BraveVpnApiClient {
   void OnVerifyPurchaseTokenResponse(
       VerifyPurchaseTokenCallback callback,
       endpoints::VerifyPurchaseToken::Response response);
+  void OnCreateSupportTicketResponse(
+      CreateSupportTicketCallback callback,
+      endpoints::CreateSupportTicket::Response response);
 
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   base::WeakPtrFactory<BraveVpnApiClient> weak_factory_{this};

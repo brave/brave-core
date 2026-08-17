@@ -21,6 +21,7 @@
 #include "brave/components/skus/browser/test/fake_skus_service.h"
 #include "brave/components/skus/common/features.h"
 #include "brave/components/skus/common/skus_sdk.mojom.h"
+#include "build/build_config.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/testing_pref_service.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
@@ -33,6 +34,7 @@ namespace brave_vpn::v2 {
 namespace {
 constexpr char kTestDomain[] = "vpn.brave.com";
 constexpr char kTestEnvironment[] = "unittest-env";
+constexpr char kTestEmail[] = "test@example.com";
 }  // namespace
 
 class BraveVpnServiceImplTest : public testing::Test {
@@ -111,13 +113,24 @@ TEST_F(BraveVpnServiceImplTest, SafeDefaultsAfterShutdown) {
   service_->ReloadPurchasedState();
   service_->LoadPurchasedState(kTestDomain);
   EXPECT_EQ(skus_bind_count_, 0);
-
-  base::test::TestFuture<mojom::PurchasedInfoPtr> future;
-  service_->GetPurchasedState(future.GetCallback());
-  const mojom::PurchasedInfoPtr& info = future.Get();
-  ASSERT_TRUE(info);
-  EXPECT_EQ(info->state, mojom::PurchasedState::NOT_PURCHASED);
-  EXPECT_EQ(info->description, std::nullopt);
+  {
+    base::test::TestFuture<mojom::PurchasedInfoPtr> future;
+    service_->GetPurchasedState(future.GetCallback());
+    const mojom::PurchasedInfoPtr& info = future.Get();
+    ASSERT_TRUE(info);
+    EXPECT_EQ(info->state, mojom::PurchasedState::NOT_PURCHASED);
+    EXPECT_EQ(info->description, std::nullopt);
+  }
+#if !BUILDFLAG(IS_ANDROID)
+  {
+    base::test::TestFuture<bool, std::string> future;
+    service_->CreateSupportTicket(
+        kTestEmail, "subject", "body",
+        future.GetCallback<bool, const std::string&>());
+    EXPECT_FALSE(future.Get<0>());
+    EXPECT_TRUE(future.Get<1>().empty());
+  }
+#endif  // !BUILDFLAG(IS_ANDROID)
 }
 
 }  // namespace brave_vpn::v2
