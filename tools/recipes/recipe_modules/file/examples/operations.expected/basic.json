@@ -160,7 +160,7 @@
   {
     "cmd": [
       "echo",
-      "[PosixPath('/src/a.txt'), PosixPath('/src/sub/b.txt')]"
+      "[Path(, 'src', 'a.txt'), Path(, 'src', 'sub', 'b.txt')]"
     ],
     "name": "echo listdir"
   },

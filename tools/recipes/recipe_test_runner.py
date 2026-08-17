@@ -284,12 +284,19 @@ def _start_coverage() -> coverage.Coverage:
     """
     import coverage  # Local import: only the full-run path needs the wheel.
     root = engine.RECIPES_ROOT
-    cov = coverage.Coverage(config_file=False,
-                            data_file=None,
-                            include=[
-                                str(root / engine.RECIPES_PKG / '*'),
-                                str(root / engine.MODULES_PKG / '*'),
-                            ])
+    cov = coverage.Coverage(
+        config_file=False,
+        data_file=None,
+        # A test case runs `RunSteps` under gevent (the
+        # `futures` module spawns greenlets); without this,
+        # coverage can lose track of code that runs in a
+        # greenlet other than the main one. Matches
+        # recipes-py's own `runner.py`.
+        concurrency='gevent',
+        include=[
+            str(root / engine.RECIPES_PKG / '*'),
+            str(root / engine.MODULES_PKG / '*'),
+        ])
     # `if TYPE_CHECKING:` blocks never execute at runtime; the default
     # `# pragma: no cover` still applies for the production I/O seams that
     # simulation intentionally never exercises.
