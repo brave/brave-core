@@ -9,13 +9,13 @@
 #include <string>
 #include <utility>
 
-#include "base/check.h"
 #include "base/functional/callback_helpers.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/path_service.h"
 #include "base/task/single_thread_task_runner.h"
 #include "base/test/scoped_feature_list.h"
+#include "base/test/scoped_path_override.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/net/features.h"
 #include "brave/browser/net/url_context.h"
@@ -111,8 +111,8 @@ class BraveAdBlockTPNetworkDelegateHelperTest : public testing::Test {
         std::make_unique<TestingBraveComponentUpdaterDelegate>(
             TestingBrowserProcess::GetGlobal()->GetTestingLocalState());
 
-    base::FilePath user_data_dir;
-    DCHECK(base::PathService::Get(chrome::DIR_USER_DATA, &user_data_dir));
+    const base::FilePath user_data_dir =
+        base::PathService::CheckedGet(chrome::DIR_USER_DATA);
     auto adblock_service = std::make_unique<brave_shields::AdBlockService>(
         brave_component_updater_delegate_->local_state(),
         brave_component_updater_delegate_->locale(), nullptr,
@@ -188,6 +188,7 @@ class BraveAdBlockTPNetworkDelegateHelperTest : public testing::Test {
   std::unique_ptr<TestingBraveComponentUpdaterDelegate>
       brave_component_updater_delegate_;
 
+  base::ScopedPathOverride user_data_dir_override_{chrome::DIR_USER_DATA};
   content::BrowserTaskEnvironment task_environment_;
 
   std::unique_ptr<net::MockHostResolver> host_resolver_;
