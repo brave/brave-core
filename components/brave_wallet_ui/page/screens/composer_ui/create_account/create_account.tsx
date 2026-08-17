@@ -1,33 +1,33 @@
 // Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at https://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
 
 // Redux
-import { useSafeWalletSelector } from '../../../common/hooks/use-safe-selector'
-import { WalletSelectors } from '../../../common/selectors'
+import { useSafeWalletSelector } from '../../../../common/hooks/use-safe-selector'
+import { WalletSelectors } from '../../../../common/selectors'
 import {
   useAddAccountMutation,
   useGetHiddenAccountsQuery,
   useGetNetworkQuery,
-} from '../../../common/slices/api.slice'
+} from '../../../../common/slices/api.slice'
 
 // Types
-import { BraveWallet } from '../../../constants/types'
+import { BraveWallet } from '../../../../constants/types'
 
 // Components
-import { NavButton } from '../../extension/buttons/nav-button/index'
+import { NavButton } from '../../../../components/extension/buttons/nav-button/index'
 
 // Utils
-import { getLocale } from '../../../../common/locale'
-import { suggestNewAccountName } from '../../../utils/address-utils'
-import { keyringIdForNewAccount } from '../../../utils/account-utils'
+import { getLocale } from '../../../../../common/locale'
+import { suggestNewAccountName } from '../../../../utils/address-utils'
+import { keyringIdForNewAccount } from '../../../../utils/account-utils'
 
 // Styled Components
-import { StyledWrapper, Description, ButtonRow } from './style'
-import { useAccountsQuery } from '../../../common/slices/api.slice.extra'
+import { StyledWrapper, Description, ButtonRow } from './create_account.style'
+import { useAccountsQuery } from '../../../../common/slices/api.slice.extra'
 
 export interface Props {
   network: Pick<BraveWallet.NetworkInfo, 'chainId' | 'coin'>
@@ -131,5 +131,3 @@ export const CreateAccountTab = ({
     </StyledWrapper>
   )
 }
-
-export default CreateAccountTab

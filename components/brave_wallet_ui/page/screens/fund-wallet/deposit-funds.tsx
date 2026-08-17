@@ -102,8 +102,8 @@ import SelectAccountItem from '../../../components/shared/select-account-item/in
 import SelectAccount from '../../../components/shared/select-account/index'
 import { BuyAssetOptionItem } from '../../../components/shared/buy-option/buy-asset-option'
 import { CopiedToClipboardConfirmation } from '../../../components/desktop/copied-to-clipboard-confirmation/copied-to-clipboard-confirmation'
-import CreateAccountTab from '../../../components/buy-send-swap/create-account/index'
-import SelectHeader from '../../../components/buy-send-swap/select-header/index'
+import { CreateAccountTab } from '../composer_ui/create_account/create_account'
+import { SelectHeader } from './components/select_header/select_header'
 import {
   NetworkFilterSelector, //
 } from '../../../components/desktop/network-filter-selector'
