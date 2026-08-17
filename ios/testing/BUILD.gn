@@ -22,6 +22,7 @@ test("ios_brave_unit_tests") {
     "//ios/testing:http_server_bundle_data",
 
     # Providers
+    "//ios/chrome/browser/providers/device_resources:chromium_device_resources",
     "//ios/chrome/test/providers",
     "//ios/chrome/test/providers/signin:trusted_vault_provider",
 
