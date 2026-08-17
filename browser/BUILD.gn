@@ -51,7 +51,10 @@ source_set("browser_process") {
 source_set("brave_global_features") {
   sources = [ "brave_global_features.h" ]
 
-  public_deps = [ "//chrome/browser:global_features" ]
+  public_deps = [
+    "//chrome/browser:global_features",
+    "//extensions/buildflags",
+  ]
 }
 
 source_set("brave_global_features_impl") {
@@ -59,9 +62,16 @@ source_set("brave_global_features_impl") {
   sources = [ "brave_global_features.cc" ]
 
   deps = [
+    "//base",
     "//brave/browser:brave_global_features",
+    "//brave/components/extension_malware_blocklist/common",
     "//chrome/browser:global_features",
+    "//extensions/buildflags",
   ]
+
+  if (enable_extensions) {
+    deps += [ "//brave/components/extension_malware_blocklist/browser" ]
+  }
 }
 
 source_set("core") {
