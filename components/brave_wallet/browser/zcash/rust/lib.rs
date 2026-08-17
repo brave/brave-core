@@ -365,7 +365,7 @@ mod ffi {
         // Must not be used in production, only in tests.
         fn create_testing_orchard_bundle(
             tree_state: &[u8],
-            fvk: [u8; 96],
+            fvk: &[u8; 96],
             spends: Vec<CxxOrchardSpend>,
             outputs: Vec<CxxOrchardOutput>,
             rng_seed: u64,
@@ -863,7 +863,7 @@ impl CxxOrchardAuthorizedBundle {
 
 fn create_orchard_builder_internal(
     orchard_tree_bytes: &[u8],
-    fvk: [u8; 96],
+    fvk: &[u8; 96],
     spends: Vec<CxxOrchardSpend>,
     outputs: Vec<CxxOrchardOutput>,
     random_source: OrchardRandomSource,
@@ -1093,7 +1093,7 @@ fn create_orchard_bundle(
 
 fn create_testing_orchard_bundle(
     orchard_tree_bytes: &[u8],
-    fvk: [u8; 96],
+    fvk: &[u8; 96],
     spends: Vec<CxxOrchardSpend>,
     outputs: Vec<CxxOrchardOutput>,
     rng_seed: u64,
