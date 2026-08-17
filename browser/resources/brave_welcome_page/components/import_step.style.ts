@@ -44,7 +44,6 @@ style.passthrough.css`
       flex-direction: column;
 
       > * {
-        min-height: calc(24px + 2 * ${spacing.xl});
         padding: ${spacing.l} ${spacing.xl};
         border-bottom: solid 1px ${color.divider.subtle};
         display: flex;
