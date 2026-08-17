@@ -5,6 +5,13 @@
 
 import { BigBuffer } from 'gen/mojo/public/mojom/base/big_buffer.mojom-webui.js'
 
+import {
+  ENGLISH_SUPPORTED_LANGUAGES,
+  MULTILINGUAL_SUPPORTED_LANGUAGES,
+} from './configs'
+
+import type { NemotronModelType } from './configs'
+
 // Parse a tokens.txt ("<token> <id>" per line, id-ordered, ▁ == space) into
 // an id-indexed vocab array.
 export function parseTokens(buf: Uint8Array): string[] {
@@ -60,4 +67,26 @@ export function argmax(a: Float32Array): number {
     }
   }
   return best
+}
+
+export function getNemotronModelType(
+  lang: string,
+): NemotronModelType {
+  if (
+    ENGLISH_SUPPORTED_LANGUAGES.includes(
+      lang as typeof ENGLISH_SUPPORTED_LANGUAGES[number],
+    )
+  ) {
+    return 'english'
+  }
+
+  if (
+    MULTILINGUAL_SUPPORTED_LANGUAGES.includes(
+      lang as typeof MULTILINGUAL_SUPPORTED_LANGUAGES[number],
+    )
+  ) {
+    return 'multilingual'
+  }
+
+  throw new Error(`Unsupported ASR language: ${lang}`)
 }

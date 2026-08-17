@@ -28,7 +28,8 @@ import {
 import { installTrustedTypesPolicy } from './ort_env'
 import { NemotronStreamSession, OrtNemotronModel } from './nemotron_recognizer'
 
-import { parseTokens, readBigBuffer } from './utils'
+import { parseTokens, readBigBuffer, getNemotronModelType } from './utils'
+import type { NemotronModelType } from './configs'
 
 // Thin mojo endpoint for one ASR stream: owns the receiver and responder
 // and bridges AsrStreamInput calls to a mojo-free NemotronStreamSession.
@@ -39,6 +40,7 @@ class AsrStreamInputAdapter implements AsrStreamInputInterface {
 
   constructor(
     model: OrtNemotronModel,
+    modelType: NemotronModelType,
     sampleRateHz: number,
     pending: AsrStreamInputPendingReceiver,
     responder: AsrStreamResponderRemote,
@@ -56,6 +58,7 @@ class AsrStreamInputAdapter implements AsrStreamInputInterface {
 
     this.session = new NemotronStreamSession(
       model,
+      modelType,
       sampleRateHz,
       onResult,
       onError,
@@ -79,6 +82,7 @@ class SpeechRecognitionFactoryImpl
   private readonly receiver: SpeechRecognitionFactoryReceiver
   private readonly streams = new Set<AsrStreamInputAdapter>()
   private model: OrtNemotronModel | null = null
+  private modelType: NemotronModelType | null = null
 
   constructor() {
     this.receiver = new SpeechRecognitionFactoryReceiver(this)
@@ -88,9 +92,10 @@ class SpeechRecognitionFactoryImpl
     return this.receiver.$.bindNewPipeAndPassRemote()
   }
 
-  async init(files: OrtModelFiles) {
+  async init(files: OrtModelFiles, lang: string = 'en-US') {
     try {
-      this.model = await OrtNemotronModel.buildFromBytes(
+      const modelType = getNemotronModelType(lang)
+      const model = await OrtNemotronModel.buildFromBytes(
         readBigBuffer(files.encoder, 'Encoder'),
         readBigBuffer(files.encoderData, 'EncoderData'),
         readBigBuffer(files.decoder, 'Decoder'),
@@ -100,6 +105,8 @@ class SpeechRecognitionFactoryImpl
           readBigBuffer(files.melFilters, 'Filterbank').slice().buffer,
         ),
       )
+      this.modelType = modelType
+      this.model = model
       return { success: true }
     } catch (err) {
       console.error('[speech-worker] init failed:', err)
@@ -112,7 +119,7 @@ class SpeechRecognitionFactoryImpl
     stream: AsrStreamInputPendingReceiver,
     responder: AsrStreamResponderRemote,
   ) {
-    if (!this.model) {
+    if (!this.model || !this.modelType) {
       console.error('[speech-worker] createAsrStream before init')
       responder.$.close()
       return
@@ -122,6 +129,7 @@ class SpeechRecognitionFactoryImpl
     try {
       adapter = new AsrStreamInputAdapter(
         this.model,
+        this.modelType,
         options.sampleRateHz,
         stream,
         responder,
