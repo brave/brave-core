@@ -6,26 +6,28 @@
 #ifndef BRAVE_BROWSER_UI_WEBUI_ADS_INTERNALS_ADS_INTERNALS_UI_H_
 #define BRAVE_BROWSER_UI_WEBUI_ADS_INTERNALS_ADS_INTERNALS_UI_H_
 
-#include <string>
-
 #include "brave/components/brave_ads/core/browser/internals/ads_internals_handler.h"
+#include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
-#include "components/prefs/pref_change_registrar.h"
 #include "content/public/browser/web_ui_controller.h"
+#include "content/public/browser/webui_config.h"
+#include "content/public/common/url_constants.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 
-class PrefService;
+class AdsInternalsUI;
 
-namespace brave_ads {
-class AdsService;
-}  // namespace brave_ads
+class AdsInternalsUIConfig
+    : public content::DefaultWebUIConfig<AdsInternalsUI> {
+ public:
+  AdsInternalsUIConfig()
+      : DefaultWebUIConfig(content::kChromeUIScheme, kAdsInternalsHost) {}
+
+  bool IsWebUIEnabled(content::BrowserContext* browser_context) override;
+};
 
 class AdsInternalsUI : public content::WebUIController {
  public:
-  AdsInternalsUI(content::WebUI* const web_ui,
-                 std::string_view name,
-                 brave_ads::AdsService* ads_service,
-                 PrefService& prefs);
+  explicit AdsInternalsUI(content::WebUI* web_ui);
 
   AdsInternalsUI(const AdsInternalsUI&) = delete;
   AdsInternalsUI& operator=(const AdsInternalsUI&) = delete;

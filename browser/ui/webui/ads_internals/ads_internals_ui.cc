@@ -7,21 +7,31 @@
 
 #include <utility>
 
+#include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/components/brave_ads/browser/resources/grit/ads_internals_generated_map.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
+#include "brave/components/brave_rewards/core/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui.h"
 
-AdsInternalsUI::AdsInternalsUI(content::WebUI* const web_ui,
-                               std::string_view name,
-                               brave_ads::AdsService* ads_service,
-                               PrefService& prefs)
-    : content::WebUIController(web_ui), handler_(ads_service, prefs) {
-  CreateAndAddWebUIDataSource(web_ui, name, kAdsInternalsGenerated,
+bool AdsInternalsUIConfig::IsWebUIEnabled(
+    content::BrowserContext* browser_context) {
+  auto* profile = Profile::FromBrowserContext(browser_context);
+  return !profile->IsIncognitoProfile() &&
+         !profile->GetPrefs()->GetBoolean(
+             brave_rewards::prefs::kDisabledByPolicy);
+}
+
+AdsInternalsUI::AdsInternalsUI(content::WebUI* web_ui)
+    : content::WebUIController(web_ui),
+      handler_(brave_ads::AdsServiceFactory::GetForProfile(
+                   Profile::FromWebUI(web_ui)),
+               *Profile::FromWebUI(web_ui)->GetPrefs()) {
+  CreateAndAddWebUIDataSource(web_ui, kAdsInternalsHost, kAdsInternalsGenerated,
                               IDR_ADS_INTERNALS_HTML);
 }
 
