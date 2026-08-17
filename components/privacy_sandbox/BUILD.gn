@@ -15,6 +15,5 @@ source_set("privacy_sandbox") {
     "//components/prefs",
     "//components/privacy_sandbox",
     "//components/privacy_sandbox:privacy_sandbox_prefs",
-    "//components/privacy_sandbox:tracking_protection_settings",
   ]
 }
