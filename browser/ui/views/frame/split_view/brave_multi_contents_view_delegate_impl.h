@@ -13,7 +13,7 @@ class BrowserWindowInterface;
 class BraveMultiContentsViewDelegateImpl
     : public MultiContentsViewDelegateImpl {
  public:
-  explicit BraveMultiContentsViewDelegateImpl(Browser& browser);
+  explicit BraveMultiContentsViewDelegateImpl(BrowserWindowInterface& browser);
   ~BraveMultiContentsViewDelegateImpl() override;
 
   // MultiContentsViewDelegateImpl:
