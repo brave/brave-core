@@ -51,6 +51,8 @@
     "canned": [
       "CheckChangeLintsClean",
       "GetPylint",
+      "GetRuff",
+      "GetUnitTests",
     ],
   },
 
