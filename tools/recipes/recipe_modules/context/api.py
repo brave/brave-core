@@ -32,6 +32,7 @@ from pathlib import Path
 from types import MappingProxyType
 from typing import Any
 
+import config_types
 from engine_types import PerGreenletState
 from recipe_api import RecipeApi
 
@@ -57,7 +58,7 @@ class _State(PerGreenletState):
 
     # Defaults are immutable, to prevent them becoming shared global state if
     # something ever mutates in place rather than replacing wholesale.
-    cwd: Path | None = None
+    cwd: Path | config_types.Path | None = None
     env: Mapping[str, str | None] = MappingProxyType({})
     env_prefixes: Mapping[str, tuple[str, ...]] = MappingProxyType({})
     env_suffixes: Mapping[str, tuple[str, ...]] = MappingProxyType({})
@@ -97,7 +98,7 @@ class ContextApi(RecipeApi):
     @contextlib.contextmanager
     def __call__(
         self,
-        cwd: str | Path | None = None,
+        cwd: str | Path | config_types.Path | None = None,
         env_prefixes: Mapping[str, Sequence[str | Path]] | None = None,
         env_suffixes: Mapping[str, Sequence[str | Path]] | None = None,
         env: Mapping[str, str | None] | None = None,
@@ -154,8 +155,13 @@ class ContextApi(RecipeApi):
 
         try:
             if cwd is not None:
-                _check_type('cwd', cwd, (str, Path))
-                _push('cwd', Path(cwd))
+                _check_type('cwd', cwd, (str, Path, config_types.Path))
+                # A `config_types.Path` (simulated) is already the value we
+                # want; only a plain str/real Path needs wrapping.
+                _push(
+                    'cwd',
+                    cwd if isinstance(cwd, (Path,
+                                            config_types.Path)) else Path(cwd))
             _add('env_prefixes', env_prefixes, _as_prefixes)
             _add('env_suffixes', env_suffixes, _as_suffixes)
             _add('env', env, _as_env)
@@ -165,7 +171,7 @@ class ContextApi(RecipeApi):
                 setattr(self._state, member, val)
 
     @property
-    def cwd(self) -> Path | None:
+    def cwd(self) -> Path | config_types.Path | None:
         """The cwd steps run in, or `None` to inherit the engine's cwd."""
         return self._state.cwd
 

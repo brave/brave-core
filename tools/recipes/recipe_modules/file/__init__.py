@@ -9,4 +9,4 @@ File content travels in and out of the step through placeholders (see
 `api.py`).
 """
 
-DEPS = ['depot_tools', 'json', 'proto', 'raw_io', 'step']
+DEPS = ['depot_tools', 'json', 'path', 'proto', 'raw_io', 'step']

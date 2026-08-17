@@ -18,8 +18,12 @@ Holds everything needed to run a recipe with zero real side effects:
     nothing, and hands back the canned retcode. Both also answer the `step`
     module's request for a step's simulated data -- production with a
     `DisabledTestData`, so placeholders know they are running for real.
-  * expectation helpers: `stabilize` (machine paths -> `[WORKSPACE]`/`[HOME]`
-    tokens), `build_steps`, and `apply_post_process`.
+  * expectation helpers: `stabilize` (the one remaining real machine path,
+    `RECIPES_ROOT`, -> `[RECIPES_ROOT]`), `build_steps`, and
+    `apply_post_process`. `[WORKSPACE]`/`[HOME]` need no such rewriting: the
+    `path` recipe module builds them as literal `config_types.Path` tokens
+    from the start (see `recipe_modules/path/api.py`), so they never appear as
+    real machine paths in the first place.
 
 Deliberately never imports `engine` (the engine imports this), so there is no
 cycle: the test runner in `engine.py` drives a recipe, then hands the recorded
@@ -41,18 +45,17 @@ from typing import Any
 # `futures` module would hand out concurrency that never actually overlaps.
 from gevent import subprocess
 
+import config_types
 from check import Check, Checker, PostProcessError, VerifySubset
 from engine_env import merge_envs
 import post_process as pp
 from recipe_test_api import (DisabledTestData, PostprocessHookContext,
                              StepTestData, TestData)
 
-# Fixed synthetic locations used in test mode. They are never touched on disk;
-# they exist only so module-derived paths are deterministic, and are rewritten
-# to tokens in expectations so goldens are machine-independent.
-SIM_WORKSPACE = PurePosixPath('/b/w')
-SIM_HOME = PurePosixPath('/b/home')
-
+# The literal tokens `recipe_modules/path/api.py` builds its simulated
+# `workspace`/`home` config_types.Path values from directly -- there is no
+# real-looking fake path to later rewrite into these; the token is the value
+# from construction (see config_types.py's module docstring).
 WORKSPACE_TOKEN = '[WORKSPACE]'
 HOME_TOKEN = '[HOME]'
 
@@ -69,8 +72,8 @@ SIM_TOTAL_MEMORY = 16 * 1024
 # This engine's own root (`tools/recipes/`), for stabilizing commands that
 # reference a resource file living next to a recipe module (e.g. `file`'s
 # `resources/fileutil.py`) via a real `Path(__file__).resolve()`-derived
-# path -- unlike `SIM_WORKSPACE`/`SIM_HOME`, this is a real machine path even
-# in test mode, so it varies by checkout location unless stabilized here too.
+# path -- unlike `WORKSPACE_TOKEN`/`HOME_TOKEN`, this is a real machine path
+# even in test mode, so it varies by checkout location unless stabilized here.
 # Computed independently of (but always equal to) `engine.RECIPES_ROOT`,
 # since both are `Path(__file__).resolve().parent` of a sibling file in this
 # same directory; this module deliberately never imports `engine` (see the
@@ -79,8 +82,16 @@ RECIPES_ROOT = Path(__file__).resolve().parent
 RECIPES_ROOT_TOKEN = '[RECIPES_ROOT]'
 
 
-def _norm(path: str | Path) -> str:
-    """Normalize a path to a stable string key for the simulated filesystem."""
+def _norm(path: str | Path | config_types.Path) -> str:
+    """Normalize a path to a stable string key for the simulated filesystem.
+
+    `config_types.Path.as_posix()` is used (not `str()`) because `str()`
+    renders with whatever separator the current case is simulating -- under a
+    `platform='win'` case that's `\\`, and `PurePosixPath` would then treat
+    the whole backslash-joined string as one opaque filename component.
+    """
+    if isinstance(path, config_types.Path):
+        return path.as_posix()
     return str(PurePosixPath(str(path)))
 
 
@@ -120,6 +131,34 @@ class SimFS:
 
     def add_dir(self, path: str | Path) -> None:
         self._dirs.add(_norm(path))
+
+    def copy(self, source: str | Path, dest: str | Path) -> None:
+        """Duplicates `source`, and everything nested under it, to `dest`."""
+        source = _norm(source)
+        dest = _norm(dest)
+        if source == dest:
+            raise ValueError(f'source and dest are the same path: {source!r}')
+        prefix = source.rstrip('/') + '/'
+        for collection in (self._files, self._dirs):
+            for path in [
+                    p for p in collection
+                    if p == source or p.startswith(prefix)
+            ]:
+                collection.add(dest + path[len(source):])
+
+    def remove(self,
+               path: str | Path,
+               should_remove: Callable[[str], bool] = lambda p: True) -> None:
+        """Removes `path`, and everything nested under it matching
+        `should_remove`, from the simulated filesystem."""
+        path = _norm(path)
+        prefix = path.rstrip('/') + '/'
+        for collection in (self._files, self._dirs):
+            collection -= {
+                p
+                for p in collection
+                if (p == path or p.startswith(prefix)) and should_remove(p)
+            }
 
 
 class SubprocessStepRunner:
@@ -261,7 +300,7 @@ class TestContext:
                  files: Iterable[str | Path] = (),
                  dirs: Iterable[str | Path] = (),
                  which_map: dict[str, str] | None = None,
-                 home: str | Path = SIM_HOME,
+                 home: str = HOME_TOKEN,
                  test_data: TestData | None = None) -> None:
         self.platform = platform
         self.bits = bits
@@ -271,7 +310,9 @@ class TestContext:
         self.env = dict(env or {})
         self.fs = SimFS(files, dirs)
         self.which_map = dict(which_map or {})
-        self.home = Path(str(home))
+        # The resolved-base string `_SimFs.home()` wraps in a fresh
+        # `config_types.Path` -- a literal token by default (`[HOME]`).
+        self.home = str(home)
         # Per-prefix counter behind `api.path.mkdtemp`, so a run's temporary
         # directories get stable, ordered names instead of random ones.
         self.temp_counter: Counter[str] = Counter()
@@ -305,21 +346,26 @@ class TestContext:
 
 
 def _resolve_seed(path: str) -> str:
-    """Resolve a seeded path: absolute as-is, relative under the workspace."""
+    """Resolve a seeded path: absolute or already-tokenized (a leading
+    `[TOKEN]`, e.g. `[HOME]/...`) as-is, relative under the workspace."""
     pure = PurePosixPath(path)
-    return str(pure if pure.is_absolute() else SIM_WORKSPACE / pure)
+    if pure.is_absolute() or path.startswith('['):
+        return str(pure)
+    return f'{WORKSPACE_TOKEN}/{pure}'
 
 
-def stabilize(value: str, context: TestContext | None = None) -> str:
-    """Rewrite machine-specific path prefixes to stable tokens."""
-    value = value.replace(str(RECIPES_ROOT), RECIPES_ROOT_TOKEN)
-    value = value.replace(str(SIM_WORKSPACE), WORKSPACE_TOKEN)
-    home = str(context.home) if context is not None else str(SIM_HOME)
-    return value.replace(home, HOME_TOKEN)
+def stabilize(value: str) -> str:
+    """Rewrite the one remaining real machine path prefix to a stable token.
+
+    `[WORKSPACE]`/`[HOME]` need no rewriting here: `recipe_modules/path/api.py`
+    builds them as literal `config_types.Path` tokens from construction, so
+    they never appear as real machine paths in a step's recorded strings.
+    """
+    return value.replace(str(RECIPES_ROOT), RECIPES_ROOT_TOKEN)
 
 
-def build_steps(runner: SimulationStepRunner, failure: dict | None,
-                context: TestContext) -> dict[str, dict]:
+def build_steps(runner: SimulationStepRunner,
+                failure: dict | None) -> dict[str, dict]:
     """Assemble the ordered `{name: step}` map (+ `$result`) for post-process.
 
     Paths are stabilized here so post-process checks and the written expectation
@@ -332,21 +378,21 @@ def build_steps(runner: SimulationStepRunner, failure: dict | None,
     for step in runner.recorded_steps:
         entry: dict[str, Any] = {
             'name': step['name'],
-            'cmd': [stabilize(arg, context) for arg in step['cmd']],
+            'cmd': [stabilize(arg) for arg in step['cmd']],
         }
         if 'cwd' in step:
-            entry['cwd'] = stabilize(step['cwd'], context)
+            entry['cwd'] = stabilize(step['cwd'])
         if 'stdin' in step:
-            entry['stdin'] = stabilize(step['stdin'], context)
+            entry['stdin'] = stabilize(step['stdin'])
         if 'env' in step:
             entry['env'] = {
-                k: (None if v is None else stabilize(v, context))
+                k: (None if v is None else stabilize(v))
                 for k, v in step['env'].items()
             }
         for affix in ('env_prefixes', 'env_suffixes'):
             if affix in step:
                 entry[affix] = {
-                    k: [stabilize(v, context) for v in values]
+                    k: [stabilize(v) for v in values]
                     for k, values in step[affix].items()
                 }
         if 'retcode' in step:
@@ -358,7 +404,7 @@ def build_steps(runner: SimulationStepRunner, failure: dict | None,
         if 'humanReason' in failure:
             failure = {
                 **failure,
-                'humanReason': stabilize(failure['humanReason'], context),
+                'humanReason': stabilize(failure['humanReason']),
             }
         result['failure'] = failure
     steps[pp.RESULT_STEP] = result

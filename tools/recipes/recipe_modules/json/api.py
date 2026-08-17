@@ -23,6 +23,7 @@ from typing import Any
 from google.protobuf import json_format as jsonpb
 from google.protobuf import struct_pb2
 
+import config_types
 from recipe_api import OutputPlaceholder, RecipeApi, returns_placeholder
 
 # JSON is meant to be read by whoever debugs a build, so anything encoded here
@@ -37,7 +38,7 @@ MAX_SAFE_INTEGER = (2**53) - 1
 
 def _default_serializer(obj: Any):
     """Make the types recipes pass around routinely JSON-serializable."""
-    if isinstance(obj, Path):
+    if isinstance(obj, (Path, config_types.Path)):
         return str(obj)
     if isinstance(obj, struct_pb2.Struct):
         # A proto Struct has exactly one sensible JSON form, so coercing it

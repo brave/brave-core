@@ -197,13 +197,14 @@ class _Engine:
         # in test mode: it seeds this onto every module (so the seam modules
         # simulate I/O) and does not touch the real cwd.
         self._test = test
+
         # Root directory the job runs in. Recipe paths (b/src, out, ...) are
-        # derived from it by the `path` module.
+        # derived from it by the `path` module. In test mode this value is
+        # never actually read: `PathApi`'s properties branch on `self._test`
+        # directly and return a `[WORKSPACE]`-rooted `config_types.Path`
+        # instead.
         if self._test is not None:
-            # Fixed synthetic workspace so module-derived paths are
-            # deterministic; never chdir'd into (nothing runs on disk).
-            from simulation import SIM_WORKSPACE
-            self._workspace = Path(str(SIM_WORKSPACE))
+            self._workspace = Path.cwd()
         elif workspace:
             self._workspace = Path(workspace).expanduser().resolve()
             # Run from the workspace so every subprocess the recipes launch

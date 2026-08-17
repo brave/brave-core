@@ -13,11 +13,11 @@ from typing import Any
 
 from recipe_api import RecipeApi
 
-# Repo-relative path (under brave-core) to the CLI wrapping `EphemeralXcode`.
-EPHEMERAL_XCODE_SCRIPT = Path('tools/cr/toolchains/ephemeral_xcode.py')
+# Path to `EphemeralXcode`.
+EPHEMERAL_XCODE_SCRIPT = 'tools/cr/toolchains/ephemeral_xcode.py'
 
-# Repo-relative path (under a Chromium checkout) to the macOS SDK pin.
-MAC_SDK_GNI_PATH = Path('build/config/mac/mac_sdk.gni')
+# Path for Chromium's macOS SDK pin.
+MAC_SDK_GNI_PATH = 'build/config/mac/mac_sdk.gni'
 
 # The resource script `ensure()` runs to read `MAC_SDK_GNI_PATH`. Lives
 # alongside this module (not under brave-core), so it's always present -- no

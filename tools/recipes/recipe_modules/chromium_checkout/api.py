@@ -15,9 +15,8 @@ import subprocess
 
 from recipe_api import RecipeApi
 
-# A file that is reliably present in any Chromium checkout, used as a token to
-# decide whether a path holds a valid repo.
-CHROME_VERSION_FILE = Path('chrome/VERSION')
+# `chrome/VERSION` is a reliable fingerprint for a Chromium repo.
+CHROME_VERSION_FILE = 'chrome/VERSION'
 
 # Hermetic Windows toolchain base URL, so the checkout can build without a local
 # Visual Studio install. Set only when not already configured by the caller.
@@ -125,7 +124,7 @@ class ChromiumCheckoutApi(RecipeApi):
 
     def has_valid_checkout(self, chromium_src: str | Path) -> bool:
         """Return whether *chromium_src* points to a valid Chromium repo."""
-        chromium_src = Path(chromium_src)
+        chromium_src = self.m.path.abs(chromium_src)
         # `chrome/VERSION` is an unmistakable trait of a proper checkout.
         if not self.m.path.exists(chromium_src / CHROME_VERSION_FILE):
             return False
@@ -169,7 +168,7 @@ class ChromiumCheckoutApi(RecipeApi):
         (branch/tag/commit) isn't known ahead of time, so it's re-pointed at
         the mirror and *ref* is fetched and checked out explicitly.
         """
-        chromium_src = Path(chromium_src)
+        chromium_src = self.m.path.abs(chromium_src)
         is_tag = bool(ref and _is_tag_ref(ref))
         is_commit = bool(ref and not is_tag and _is_commit_hash_ref(ref))
         is_qualified_ref = bool(ref and not is_tag and not is_commit
