@@ -97,7 +97,7 @@ import {
 import {
   PortfolioOverviewHeader, //
 } from '../../../components/desktop/card-headers/portfolio-overview-header'
-import { Banners } from '../../../components/desktop/views/banners/banners'
+import { Banners } from '../../../components/desktop/banners/banners'
 import {
   LastPricesUpdatedTooltip, //
 } from '../../../components/shared/last_prices_updated_tooltip/last_prices_updated_tooltip'

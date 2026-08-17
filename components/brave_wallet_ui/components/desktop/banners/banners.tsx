@@ -7,27 +7,27 @@ import * as React from 'react'
 import { useHistory } from 'react-router-dom'
 
 // Page API Proxy
-import getWalletPageApiProxy from '../../../../page/wallet_page_api_proxy'
+import getWalletPageApiProxy from '../../../page/wallet_page_api_proxy'
 
 // Utils
-import { getLocale } from '../../../../../common/locale'
-import { openWalletSettings } from '../../../../utils/routes-utils'
+import { getLocale } from '../../../../common/locale'
+import { openWalletSettings } from '../../../utils/routes-utils'
 
 // Selectors
-import { useSafeUISelector } from '../../../../common/hooks/use-safe-selector'
-import { UISelectors } from '../../../../common/selectors'
+import { useSafeUISelector } from '../../../common/hooks/use-safe-selector'
+import { UISelectors } from '../../../common/selectors'
 
 // Types
-import { WalletRoutes, BraveWallet } from '../../../../constants/types'
+import { WalletRoutes, BraveWallet } from '../../../constants/types'
 
 // Components
-import WalletBanner from '../../wallet-banner'
+import { Banner } from './banner/banner'
 import {
   useGetDefaultEthereumWalletQuery,
   useGetIsWalletBackedUpQuery,
   useGetDefaultSolanaWalletQuery,
   useGetIsMetaMaskInstalledQuery,
-} from '../../../../common/slices/api.slice'
+} from '../../../common/slices/api.slice'
 
 export const Banners = () => {
   // Selectors
@@ -105,7 +105,7 @@ export const Banners = () => {
   return (
     <>
       {showBanner && (
-        <WalletBanner
+        <Banner
           onDismiss={() => {
             setDismissDefaultWalletBanner(true)
           }}
@@ -118,7 +118,7 @@ export const Banners = () => {
       {!isCheckingWalletBackupStatus
         && !isWalletBackedUp
         && !isBackupWarningDismissed && (
-          <WalletBanner
+          <Banner
             onDismiss={() => {
               setDismissBackupWarning(true)
             }}
