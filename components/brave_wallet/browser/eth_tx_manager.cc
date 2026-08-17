@@ -324,7 +324,7 @@ void EthTxManager::ContinueAddUnapprovedTransaction(
   std::vector<std::string> tx_args;
   if (auto tx_info = GetTransactionInfoFromData(tx->data())) {
     tx_type = std::get<0>(*tx_info);
-    tx_args = std::get<2>(*tx_info);
+    tx_args = std::move(std::get<2>(*tx_info));
   }
 
   // Every transaction creation path we have seems to route through this

@@ -672,31 +672,51 @@ TEST_F(EthTxManagerUnitTest, RestrictedRecipientInCalldata) {
   constexpr char kTokenContract[] =
       "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c";
 
+  struct test_case {
+    std::string label;
+    std::vector<uint8_t> tx;
+    std::string encoded_tx;
+  };
+
   // Every token transfer flavor that names its recipient in the calldata.
   auto calldata_paying = [kAllowed](const std::string& recipient) {
-    std::vector<std::string> hex_datas(5);
-    EXPECT_TRUE(erc20::Transfer(recipient, 10, &hex_datas[0]));
-    EXPECT_TRUE(erc20::Approve(recipient, 10, &hex_datas[1]));
-    EXPECT_TRUE(erc721::TransferFromOrSafeTransferFrom(
-        false, kAllowed, recipient, 10, &hex_datas[2]));
-    EXPECT_TRUE(erc721::TransferFromOrSafeTransferFrom(
-        true, kAllowed, recipient, 10, &hex_datas[3]));
-    EXPECT_TRUE(
-        erc1155::SafeTransferFrom(kAllowed, recipient, 10, 1, &hex_datas[4]));
+    std::vector<test_case> test_data(5);
 
-    std::vector<std::vector<uint8_t>> datas;
-    for (const auto& hex_data : hex_datas) {
-      std::vector<uint8_t> data;
-      EXPECT_TRUE(PrefixedHexStringToBytes(hex_data, &data));
-      datas.push_back(std::move(data));
-    }
-    return datas;
+    test_data[0].label = "erc20::Transfer";
+    EXPECT_TRUE(erc20::Transfer(recipient, 10, &test_data[0].encoded_tx));
+    EXPECT_TRUE(
+        PrefixedHexStringToBytes(test_data[0].encoded_tx, &test_data[0].tx));
+
+    test_data[1].label = "erc20::Approve";
+    EXPECT_TRUE(erc20::Approve(recipient, 10, &test_data[1].encoded_tx));
+    EXPECT_TRUE(
+        PrefixedHexStringToBytes(test_data[1].encoded_tx, &test_data[1].tx));
+
+    test_data[2].label = "erc721::TransferFromOrSafeTransferFrom";
+    EXPECT_TRUE(erc721::TransferFromOrSafeTransferFrom(
+        false, kAllowed, recipient, 10, &test_data[2].encoded_tx));
+    EXPECT_TRUE(
+        PrefixedHexStringToBytes(test_data[2].encoded_tx, &test_data[2].tx));
+
+    test_data[3].label = "erc721::TransferFromOrSafeTransferFrom";
+    EXPECT_TRUE(erc721::TransferFromOrSafeTransferFrom(
+        true, kAllowed, recipient, 10, &test_data[3].encoded_tx));
+    EXPECT_TRUE(
+        PrefixedHexStringToBytes(test_data[3].encoded_tx, &test_data[3].tx));
+
+    test_data[4].label = "erc1155::SafeTransferFrom";
+    EXPECT_TRUE(erc1155::SafeTransferFrom(kAllowed, recipient, 10, 1,
+                                          &test_data[4].encoded_tx));
+    EXPECT_TRUE(
+        PrefixedHexStringToBytes(test_data[4].encoded_tx, &test_data[4].tx));
+
+    return test_data;
   };
 
   BlockchainRegistry::ScopedRestrictedAddressesForTesting scoped_restricted(
       {kRestricted});
 
-  for (const auto& data : calldata_paying(kRestricted)) {
+  for (const auto& [label, data, encoded_data] : calldata_paying(kRestricted)) {
     base::test::TestFuture<bool, const std::string&, const std::string&>
         unapproved_future;
 
@@ -706,13 +726,13 @@ TEST_F(EthTxManagerUnitTest, RestrictedRecipientInCalldata) {
         from(), unapproved_future.GetCallback());
 
     const auto& [success, tx_meta_id, error] = unapproved_future.Take();
-    EXPECT_FALSE(success);
+    EXPECT_FALSE(success) << label;
     EXPECT_TRUE(tx_meta_id.empty());
     EXPECT_EQ(error, WalletInternalErrorMessage());
   }
 
   // The same calls to an address that is not on the list still go through.
-  for (const auto& data : calldata_paying(kAllowed)) {
+  for (const auto& [label, data, encoded_data] : calldata_paying(kAllowed)) {
     base::test::TestFuture<bool, const std::string&, const std::string&>
         unapproved_future;
 
@@ -722,7 +742,7 @@ TEST_F(EthTxManagerUnitTest, RestrictedRecipientInCalldata) {
         from(), unapproved_future.GetCallback());
 
     const auto& [success, tx_meta_id, error] = unapproved_future.Take();
-    EXPECT_TRUE(success);
+    EXPECT_TRUE(success) << label;
     EXPECT_FALSE(tx_meta_id.empty());
     EXPECT_TRUE(error.empty());
   }
