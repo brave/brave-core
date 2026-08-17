@@ -241,22 +241,28 @@ void BraveRendererUpdater::UpdateRenderer(
   // matching interface binder is no longer registered.
   is_wallet_allowed_for_context_ = brave_wallet::IsAllowedForContext(profile_);
 
-  bool should_ignore_brave_wallet_for_eth =
-      !is_wallet_created_ || has_installed_metamask;
+  // Nothing is injected until the user has actually created a wallet. A
+  // provider with no keyring behind it can't serve a dApp anyway, and its mere
+  // presence is observable by page scripts, so users who never opted into the
+  // wallet get no page-world properties at all.
+  bool can_install_providers =
+      is_wallet_allowed_for_context_ && is_wallet_created_;
 
   auto default_ethereum_wallet =
       static_cast<brave_wallet::mojom::DefaultWallet>(
           brave_wallet_ethereum_provider_.GetValue());
   bool install_window_brave_ethereum_provider =
-      is_wallet_allowed_for_context_ &&
+      can_install_providers &&
       default_ethereum_wallet != brave_wallet::mojom::DefaultWallet::None;
+  // The unprefixed `window.ethereum` is additionally yielded to MetaMask when
+  // the user asked to prefer the extension.
   bool install_window_ethereum_provider =
-      ((default_ethereum_wallet ==
+      can_install_providers &&
+      (default_ethereum_wallet ==
+           brave_wallet::mojom::DefaultWallet::BraveWallet ||
+       (default_ethereum_wallet ==
             brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension &&
-        !should_ignore_brave_wallet_for_eth) ||
-       default_ethereum_wallet ==
-           brave_wallet::mojom::DefaultWallet::BraveWallet) &&
-      is_wallet_allowed_for_context_;
+        !has_installed_metamask));
   bool allow_overwrite_window_ethereum_provider =
       default_ethereum_wallet ==
       brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension;
@@ -264,11 +270,11 @@ void BraveRendererUpdater::UpdateRenderer(
   auto default_solana_wallet = static_cast<brave_wallet::mojom::DefaultWallet>(
       brave_wallet_solana_provider_.GetValue());
   bool brave_use_native_solana_wallet =
+      can_install_providers &&
       (default_solana_wallet ==
            brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension ||
        default_solana_wallet ==
-           brave_wallet::mojom::DefaultWallet::BraveWallet) &&
-      is_wallet_allowed_for_context_;
+           brave_wallet::mojom::DefaultWallet::BraveWallet);
   bool allow_overwrite_window_solana_provider =
       default_solana_wallet ==
       brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension;
@@ -276,10 +282,8 @@ void BraveRendererUpdater::UpdateRenderer(
   auto default_cardano_wallet = static_cast<brave_wallet::mojom::DefaultWallet>(
       brave_wallet_cardano_provider_.GetValue());
   bool install_window_brave_cardano_provider =
-      brave_wallet::IsCardanoDAppSupportEnabled() &&
-      (default_cardano_wallet ==
-       brave_wallet::mojom::DefaultWallet::BraveWallet) &&
-      is_wallet_allowed_for_context_;
+      can_install_providers && brave_wallet::IsCardanoDAppSupportEnabled() &&
+      default_cardano_wallet == brave_wallet::mojom::DefaultWallet::BraveWallet;
 #endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 
   PrefService* pref_service = profile_->GetPrefs();

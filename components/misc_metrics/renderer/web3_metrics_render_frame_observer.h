@@ -9,6 +9,7 @@
 #include <optional>
 #include <string>
 
+#include "base/functional/callback.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/misc_metrics/common/misc_metrics.mojom.h"
 #include "content/public/renderer/render_frame_observer.h"
@@ -24,7 +25,12 @@ namespace misc_metrics {
 
 class Web3MetricsRenderFrameObserver : public content::RenderFrameObserver {
  public:
-  explicit Web3MetricsRenderFrameObserver(content::RenderFrame* render_frame);
+  // `is_web3_enabled_callback` reports whether a wallet provider is being
+  // installed into pages. There is nothing to proxy while it returns false, and
+  // the proxy is itself observable, so injection waits on it.
+  Web3MetricsRenderFrameObserver(
+      content::RenderFrame* render_frame,
+      base::RepeatingCallback<bool()> is_web3_enabled_callback);
   Web3MetricsRenderFrameObserver(const Web3MetricsRenderFrameObserver&) =
       delete;
   Web3MetricsRenderFrameObserver& operator=(
@@ -51,6 +57,7 @@ class Web3MetricsRenderFrameObserver : public content::RenderFrameObserver {
   mojom::Web3Metrics& GetWeb3Metrics();
 
   GURL url_;
+  base::RepeatingCallback<bool()> is_web3_enabled_callback_;
   std::string install_proxy_script_;
   mojo::Remote<mojom::Web3Metrics> web3_metrics_;
   base::WeakPtrFactory<Web3MetricsRenderFrameObserver> weak_ptr_factory_{this};

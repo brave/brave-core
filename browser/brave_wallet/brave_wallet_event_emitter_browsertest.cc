@@ -139,6 +139,7 @@ class BraveWalletEventEmitterTest : public InProcessBrowserTest {
 };
 
 IN_PROC_BROWSER_TEST_F(BraveWalletEventEmitterTest, CheckForAConnectEvent) {
+  RestoreWallet();
   GURL url =
       https_server()->GetURL("a.com", "/brave_wallet_event_emitter.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
@@ -152,6 +153,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletEventEmitterTest, CheckForAConnectEvent) {
 
 IN_PROC_BROWSER_TEST_F(BraveWalletEventEmitterTest,
                        CheckForAChainChangedEvent) {
+  RestoreWallet();
   GURL url =
       https_server()->GetURL("a.com", "/brave_wallet_event_emitter.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
