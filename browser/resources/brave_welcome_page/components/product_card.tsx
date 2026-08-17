@@ -22,7 +22,11 @@ interface Props {
 
 export function ProductCard(props: Props) {
   return (
-    <div data-css-scope={style.scope}>
+    <div
+      data-css-scope={style.scope}
+      className={props.checked ? undefined : 'unchecked'}
+      onClick={() => props.onChange(!props.checked)}
+    >
       <img src={props.image} />
       <div className='text'>
         <h3>{props.title}</h3>
@@ -35,6 +39,7 @@ export function ProductCard(props: Props) {
                 href={props.learnMoreUrl}
                 target='_blank'
                 rel='noopener noreferrer'
+                onClick={(event) => event.stopPropagation()}
               >
                 {getString('WELCOME_PAGE_LEARN_MORE_LINK_LABEL')}
               </SecureLink>
