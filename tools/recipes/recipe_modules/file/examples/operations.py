@@ -33,8 +33,8 @@ def RunSteps(api):
                     recursive=True,
                     include_hidden=True)
 
-    # An already-Path `source` (not just a plain string) must not be
-    # re-wrapped in a fresh native `pathlib.Path` -- see `_as_path`.
+    # `glob_paths`/`listdir` build new paths from `source` and hand them back,
+    # so `source` must already be a Path -- see `glob_paths`'s docstring.
     src = api.path.abs('/src')
     paths = api.file.glob_paths('glob',
                                 src,
@@ -43,9 +43,8 @@ def RunSteps(api):
                                 test_data=['a.py', 'sub/b.py'])
     api.step('echo glob', ['echo', str(paths)])
 
-    # A plain string `source` (not yet a Path) must still be wrapped.
     entries = api.file.listdir('listdir',
-                               '/src',
+                               src,
                                recursive=True,
                                test_data=['a.txt', 'sub/b.txt'])
     api.step('echo listdir', ['echo', str(entries)])

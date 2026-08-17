@@ -149,9 +149,11 @@ class TestGitConfigRewritesUrls(unittest.TestCase):
         foobar_head = self._make_bare_repo_with_commit(foobar_target, 'foobar')
         self.assertNotEqual(foo_head, foobar_head)
 
+        # Forward slashes: `\` is an escape in a git config section name, so a
+        # native Windows path would be mangled.
         targets = {
-            str(foo_target): upstream_urls_for('mirror/example.com/foo'),
-            str(foobar_target): upstream_urls_for(
+            foo_target.as_posix(): upstream_urls_for('mirror/example.com/foo'),
+            foobar_target.as_posix(): upstream_urls_for(
                 'mirror/example.com/foo-bar'),
         }
         config = ''.join(f'[url "{target}"]\n' +
@@ -314,7 +316,9 @@ class TestMain(unittest.TestCase):
 
     def setUp(self):
         self._tmp = tempfile.TemporaryDirectory()
-        self.tmp = Path(self._tmp.name)
+        # Resolved, as `install` resolves `--output`: on Windows the temp dir
+        # can be an 8.3 short name (`ADMINI~1`) that resolves to the long one.
+        self.tmp = Path(self._tmp.name).resolve()
 
     def tearDown(self):
         self._tmp.cleanup()

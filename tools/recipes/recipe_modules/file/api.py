@@ -41,18 +41,6 @@ from step_data import StepData
 ProtoMessage = TypeVar('ProtoMessage', bound=Message)
 
 
-def _as_path(
-        source: str | Path | config_types.Path) -> Path | config_types.Path:
-    """*source* as a Path, without re-wrapping an already-Path-like value.
-
-    Re-wrapping a `config_types.Path` (simulated) in a real `pathlib.Path`
-    would force it back onto the host's native separator.
-    """
-    if isinstance(source, (Path, config_types.Path)):
-        return source
-    return Path(source)
-
-
 class FileApi(RecipeApi):
     """Basic filesystem operations (read, write, copy, remove, ...) as steps."""
 
@@ -418,11 +406,12 @@ class FileApi(RecipeApi):
     def glob_paths(
         self,
         name: str,
-        source: str | Path,
+        source: Path | config_types.Path,
         pattern: str,
         *,
         include_hidden: bool = False,
-        test_data: Sequence[str] = ()) -> list[Path]:
+        test_data: Sequence[str] = ()
+    ) -> list[Path | config_types.Path]:
         """Return paths under *source* matching the glob *pattern*.
 
         Args:
@@ -439,6 +428,8 @@ class FileApi(RecipeApi):
         Raises:
             Error: If the glob failed.
         """
+        assert isinstance(source, (Path, config_types.Path)), (
+            f'{source!r} must already be a Path -- see the source docstring')
         args = ['glob', str(source), pattern]
         if include_hidden:
             args.append('--hidden')
@@ -447,15 +438,16 @@ class FileApi(RecipeApi):
             args,
             step_test_data=lambda: self.test_api.glob_paths(test_data),
             stdout=self.m.raw_io.output_text())
-        return [_as_path(source) / line for line in result.stdout.splitlines()]
+        return [source / line for line in result.stdout.splitlines()]
 
     def listdir(
         self,
         name: str,
-        source: str | Path,
+        source: Path | config_types.Path,
         *,
         recursive: bool = False,
-        test_data: Sequence[str] = ()) -> list[Path]:
+        test_data: Sequence[str] = ()
+    ) -> list[Path | config_types.Path]:
         """Return every file inside *source*.
 
         Args:
@@ -472,6 +464,9 @@ class FileApi(RecipeApi):
         Raises:
             Error: If the listing failed.
         """
+        assert isinstance(source, (Path, config_types.Path)), (
+            f'{source!r} must already be a Path -- see the source docstring')
+        self.m.path.assert_absolute(source)
         args = ['listdir', str(source)]
         if recursive:
             args.append('--recursive')
@@ -480,7 +475,7 @@ class FileApi(RecipeApi):
             args,
             step_test_data=lambda: self.test_api.listdir(test_data),
             stdout=self.m.raw_io.output_text())
-        return [_as_path(source) / line for line in result.stdout.splitlines()]
+        return [source / line for line in result.stdout.splitlines()]
 
     def ensure_directory(self,
                          name: str,

@@ -90,8 +90,10 @@ class BrockitTest(unittest.TestCase):
         self.assertTrue(test_pinslist_path.read_text().endswith('\n'),
                         "File does not end with an empty line before update.")
 
-        # Call the function to update the timestamp
-        before_update = datetime.now()
+        # Call the function to update the timestamp. Truncated to seconds, as
+        # the timestamp written is, so crossing a second boundary during the
+        # call (likelier on slow runners) can't make it look earlier.
+        before_update = datetime.now().replace(microsecond=0)
         readable_timestamp = brockit._update_pinslist_timestamp()
 
         # Verify that the timestamp is updated
@@ -102,7 +104,7 @@ class BrockitTest(unittest.TestCase):
         timestamp_datetime = datetime.strptime(readable_timestamp,
                                                '%a %b %d %H:%M:%S %Y')
         self.assertTrue(
-            0 <= (before_update - timestamp_datetime).total_seconds() <= 10)
+            0 <= (timestamp_datetime - before_update).total_seconds() <= 10)
 
         # Ensure there is still an empty line at the end of the file after
         self.assertTrue(test_pinslist_path.read_text().endswith('\n'),
