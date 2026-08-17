@@ -29,7 +29,8 @@ namespace brave_wallet {
 // A JavaScriptFeature that injects the `window.cardano.brave` CIP-30 provider
 // into web pages so they can communicate with Brave Wallet. The provider is
 // only installed when Brave Wallet is allowed for the profile, Cardano dApp
-// support is enabled, and Brave is set as the default Cardano wallet.
+// support is enabled, Brave is set as the default Cardano wallet, and the user
+// has created a wallet.
 class CardanoProviderJavaScriptFeature : public web::JavaScriptFeature,
                                          public base::SupportsUserData::Data {
  public:
@@ -51,10 +52,12 @@ class CardanoProviderJavaScriptFeature : public web::JavaScriptFeature,
  private:
   explicit CardanoProviderJavaScriptFeature(ProfileIOS* profile);
 
-  void OnDefaultCardanoWalletChanged();
+  void OnScriptGatingPrefChanged();
+  void OnKeyringsChanged();
 
   web::MessageHandlerToken token_;
   raw_ptr<ProfileIOS> profile_;
+  bool is_wallet_created_ = false;
   PrefChangeRegistrar pref_change_registrar_;
 };
 

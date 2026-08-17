@@ -29,12 +29,6 @@ void BraveWalletProviderDelegateBridge::WalletInteractionDetected() {
   [bridge_ walletInteractionDetected];
 }
 
-void BraveWalletProviderDelegateBridge::ShowWalletOnboarding(
-    const url::Origin& origin) {
-  URLOriginIOS* origin_ios = [[URLOriginIOS alloc] initWithOrigin:origin];
-  [bridge_ showWalletOnboardingWithOrigin:origin_ios];
-}
-
 void BraveWalletProviderDelegateBridge::ShowWalletBackup() {
   [bridge_ showWalletBackup];
 }

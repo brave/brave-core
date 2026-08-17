@@ -313,10 +313,6 @@ extension WalletTabHelper: BraveWalletProviderDelegate {
     // No usage for iOS
   }
 
-  func showWalletOnboarding(withOrigin origin: URLOrigin) {
-    showPanel(withOrigin: origin)
-  }
-
   func isTabVisible() -> Bool {
     guard let tab else { return false }
     return tab.isVisible

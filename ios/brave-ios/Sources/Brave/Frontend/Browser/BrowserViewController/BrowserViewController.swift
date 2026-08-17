@@ -272,6 +272,10 @@ public class BrowserViewController: UIViewController {
 
   private let prefsChangeRegistrar: PrefChangeRegistrar
 
+  /// Whether a wallet exists, to distinguish create/reset from the account
+  /// edits that also write the keyrings pref.
+  private var isWalletCreated: Bool = false
+
   let defaultBrowserHelper: DefaultBrowserHelper = .init()
 
   public init(
@@ -508,6 +512,23 @@ public class BrowserViewController: UIViewController {
     }
     prefsChangeRegistrar.addObserver(forPath: kDefaultSolanaWallet) { [weak self] _ in
       self?.defaultWalletChanged(for: .sol)
+    }
+    // Creating or resetting a wallet flips whether the providers are injected,
+    // so the scripts have to be refreshed the same way a default wallet change
+    // refreshes them. The keyrings pref is also written on every account add,
+    // rename and removal, so only react when the created state actually
+    // changed — refreshing discards every web view.
+    isWalletCreated = profileController.profile.prefs.hasPref(
+      forPath: kBraveWalletKeyrings
+    )
+    prefsChangeRegistrar.addObserver(forPath: kBraveWalletKeyrings) { [weak self] _ in
+      guard let self else { return }
+      let isWalletCreated = self.profileController.profile.prefs.hasPref(
+        forPath: kBraveWalletKeyrings
+      )
+      guard isWalletCreated != self.isWalletCreated else { return }
+      self.isWalletCreated = isWalletCreated
+      self.defaultWalletChanged(for: .eth)
     }
 
     disconnectVPNIfDisabledByPolicy()
