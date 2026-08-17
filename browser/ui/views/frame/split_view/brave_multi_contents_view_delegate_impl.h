@@ -8,12 +8,13 @@
 
 #include "chrome/browser/ui/views/frame/multi_contents_view_delegate.h"
 
+class BrowserWindowInterface;
 class TabStripModel;
 
 class BraveMultiContentsViewDelegateImpl
     : public MultiContentsViewDelegateImpl {
  public:
-  explicit BraveMultiContentsViewDelegateImpl(Browser& browser);
+  explicit BraveMultiContentsViewDelegateImpl(BrowserWindowInterface& browser);
   ~BraveMultiContentsViewDelegateImpl() override;
 
   // MultiContentsViewDelegateImpl:

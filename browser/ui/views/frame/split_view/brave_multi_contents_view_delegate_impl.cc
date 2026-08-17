@@ -5,13 +5,13 @@
 
 #include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view_delegate_impl.h"
 
-#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 
 BraveMultiContentsViewDelegateImpl::BraveMultiContentsViewDelegateImpl(
-    Browser& browser)
+    BrowserWindowInterface& browser)
     : MultiContentsViewDelegateImpl(browser),
-      tab_strip_model_(*browser.tab_strip_model()) {}
+      tab_strip_model_(*browser.GetTabStripModel()) {}
 
 BraveMultiContentsViewDelegateImpl::~BraveMultiContentsViewDelegateImpl() =
     default;
