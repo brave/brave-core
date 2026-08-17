@@ -1279,9 +1279,16 @@ TEST(AIChatSyncConversionsTest, FitEntryRefusesEntryOversizedByPlainField) {
   EXPECT_FALSE(FitEntryWithinSyncBudget(&entry));
 
   EXPECT_TRUE(entry.uploaded_files(0).has_omitted_data_hash());
-  ForEachOmittableString(&entry, [](sync_pb::AIChatCompressibleString& value) {
-    EXPECT_TRUE(value.has_omitted_content_hash());
-  });
+  // A field that survived still holds its marker, so collecting the stragglers
+  // names them in the failure output.
+  std::vector<std::string> not_omitted;
+  ForEachOmittableString(
+      &entry, [&not_omitted](sync_pb::AIChatCompressibleString& value) {
+        if (!value.has_omitted_content_hash()) {
+          not_omitted.push_back(value.raw());
+        }
+      });
+  EXPECT_THAT(not_omitted, testing::IsEmpty());
 }
 
 }  // namespace ai_chat
