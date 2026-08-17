@@ -34,11 +34,8 @@
 
 BraveBrowserViewTabbedLayoutImpl::BraveBrowserViewTabbedLayoutImpl(
     std::unique_ptr<BrowserViewLayoutDelegate> delegate,
-    BrowserWindowInterface* browser,
     BrowserViewLayoutViews views)
-    : BrowserViewTabbedLayoutImpl(std::move(delegate),
-                                  browser,
-                                  std::move(views)) {}
+    : BrowserViewTabbedLayoutImpl(std::move(delegate), std::move(views)) {}
 
 BraveBrowserViewTabbedLayoutImpl::~BraveBrowserViewTabbedLayoutImpl() = default;
 
