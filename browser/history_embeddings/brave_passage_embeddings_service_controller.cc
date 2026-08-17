@@ -85,7 +85,7 @@ void BravePassageEmbeddingsServiceController::OnLocalModelsReady(
       {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
        base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN},
       base::BindOnce(
-          &optimization_guide::LoadAndVerifyModelInfoOffThread,
+          &optimization_guide::LoadAndVerifyModelOffThread,
           optimization_guide::proto::OPTIMIZATION_TARGET_PASSAGE_EMBEDDER,
           local_ai::LocalModelsUpdaterState::GetInstance()
               ->GetEmbeddingGemmaLitertDir()),
