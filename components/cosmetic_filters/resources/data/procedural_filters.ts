@@ -13,10 +13,14 @@ type CSSSelector = string
 type CSSInstruction = string
 type CSSValue = string
 
+/** A single step in a procedural filter, e.g. `{ type: 'has-text', arg: 'Ad' }`. */
 interface ProceduralOperator {
   type: OperatorType
   arg: string
 }
+
+/** An ordered list of operators, each narrowing the elements matched by the
+ * previous. */
 type ProceduralSelector = ProceduralOperator[]
 type OperatorType = string
 type OperatorArg = CSSSelector | ProceduralSelector | string
