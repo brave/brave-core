@@ -466,11 +466,6 @@ export class Config {
   }
 
   updateInternal(options) {
-    if (options.universal) {
-      this.targetArch = 'arm64'
-      this.isUniversalBinary = true
-    }
-
     if (options.target_cpu) {
       options.target_arch = options.target_cpu
     }
@@ -521,6 +516,10 @@ export class Config {
     // Static build.
     if (this.isAndroid() && this.buildConfig === 'Component') {
       this.buildConfig = 'Static'
+    }
+
+    if (options.universal) {
+      this.isUniversalBinary = true
     }
 
     if (options.is_asan) {
