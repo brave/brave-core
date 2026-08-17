@@ -19,18 +19,14 @@
 #include "base/functional/callback.h"
 #include "base/logging.h"
 #include "base/memory/ptr_util.h"
-#include "base/notreached.h"
 #include "base/path_service.h"
+#include "base/rand_util.h"
 #include "base/synchronization/lock.h"
 #include "base/thread_annotations.h"
 #include "brave/browser/brave_vpn/win/service_details.h"
 #include "brave/components/brave_vpn/common/win/scoped_sc_handle.h"
-#include "chrome/common/channel_info.h"
-#include "components/version_info/channel.h"
 
-namespace brave_vpn {
-
-namespace wireguard {
+namespace brave_vpn::wireguard {
 
 namespace {
 
@@ -47,6 +43,13 @@ constexpr uint8_t kWeightBlockDns = 10;
 constexpr uint8_t kWeightPermitInfrastructure = 14;
 
 constexpr uint16_t kDnsPort = 53;
+
+constexpr uint8_t kUdpProtocol = IPPROTO_UDP;
+constexpr uint16_t kDhcpV4ClientPort = 68;
+constexpr uint16_t kDhcpV4ServerPort = 67;
+constexpr uint16_t kDhcpV6ClientPort = 546;
+constexpr uint16_t kDhcpV6ServerPort = 547;
+constexpr uint32_t kIpv4Broadcast = 0xffffffff;
 
 struct Ipv4Prefix {
   uint32_t address;
@@ -80,58 +83,56 @@ constexpr Ipv6Prefix kLocalIpv6Prefixes[] = {
     {std::array<uint8_t, 16>{0xff}, 8},
 };
 
-std::wstring GetFirewallFilterName() {
-  switch (chrome::GetChannel()) {
-    case version_info::Channel::CANARY:
-      return L"Brave VPN Nightly WireGuard Firewall";
-    case version_info::Channel::DEV:
-      return L"Brave VPN Dev WireGuard Firewall";
-    case version_info::Channel::BETA:
-      return L"Brave VPN Beta WireGuard Firewall";
-    case version_info::Channel::STABLE:
-      return L"Brave VPN WireGuard Firewall";
-    case version_info::Channel::UNKNOWN:
-      return L"Brave VPN Development WireGuard Firewall";
+constexpr bool AreValidPrefixLengths() {
+  for (const auto& prefix : kLocalIpv4Prefixes) {
+    if (prefix.prefix_length == 0 || prefix.prefix_length > 32) {
+      return false;
+    }
   }
-
-  NOTREACHED();
+  for (const auto& prefix : kLocalIpv6Prefixes) {
+    if (prefix.prefix_length == 0 || prefix.prefix_length > 128) {
+      return false;
+    }
+  }
+  return true;
 }
 
-GUID GetFirewallSublayerGUID() {
-  switch (chrome::GetChannel()) {
-    case version_info::Channel::CANARY:
-      // 7edf1bd3-9515-4029-b05d-84810d87335d
-      return {0x7edf1bd3,
-              0x9515,
-              0x4029,
-              {0xb0, 0x5d, 0x84, 0x81, 0x0d, 0x87, 0x33, 0x5d}};
-    case version_info::Channel::DEV:
-      // b18adb98-4ed2-430d-84dc-5159f5ecd961
-      return {0xb18adb98,
-              0x4ed2,
-              0x430d,
-              {0x84, 0xdc, 0x51, 0x59, 0xf5, 0xec, 0xd9, 0x61}};
-    case version_info::Channel::BETA:
-      // b6580eb6-3a2e-4198-bf48-c4a4928867e4
-      return {0xb6580eb6,
-              0x3a2e,
-              0x4198,
-              {0xbf, 0x48, 0xc4, 0xa4, 0x92, 0x88, 0x67, 0xe4}};
-    case version_info::Channel::STABLE:
-      // 78128c6d-f6b0-4abc-9599-841580081911
-      return {0x78128c6d,
-              0xf6b0,
-              0x4abc,
-              {0x95, 0x99, 0x84, 0x15, 0x80, 0x08, 0x19, 0x11}};
-    case version_info::Channel::UNKNOWN:
-      // d0e578c0-6f14-4fd7-8021-ab422f0de990
-      return {0xd0e578c0,
-              0x6f14,
-              0x4fd7,
-              {0x80, 0x21, 0xab, 0x42, 0x2f, 0x0d, 0xe9, 0x90}};
-  }
+static_assert(AreValidPrefixLengths(),
+              "A local network prefix must be a real subnet: a /0 entry would "
+              "match every address, so the permit below would outweigh the "
+              "block-all filter and defeat the kill-switch.");
 
-  NOTREACHED();
+// Prefix length to the netmask WFP wants, in host byte order. Defined across
+// the whole 0..32 range so that a bad table entry is a wrong filter rather than
+// undefined behavior; AreValidPrefixLengths() is what rejects bad entries.
+constexpr uint32_t Ipv4Netmask(uint8_t prefix_length) {
+  return prefix_length == 0 ? 0u : 0xffffffffu << (32u - prefix_length);
+}
+
+// The provider owns everything we install and exists so that a `netsh wfp show
+// filters` dump can be attributed to Brave at a glance; the sublayer holds the
+// filters themselves.
+struct BaseObjects {
+  GUID provider;
+  GUID sublayer;
+};
+
+// Fresh keys for every run. Both objects are dynamic and we never look either
+// one up again, so neither needs a stable identity -- and a fixed key would
+// collide with the objects of a previous run that the filtering engine has not
+// reaped yet, which is exactly what a crash-restart looks like. tunnel.dll does
+// the same with its own base objects.
+GUID CreateTransientKey() {
+  GUID key = {};
+  base::RandBytes(base::byte_span_from_ref(key));
+  // Mark it as a random (v4) UUID so it reads as one wherever it is dumped.
+  key.Data3 = (key.Data3 & 0x0fff) | 0x4000;
+  key.Data4[0] = (key.Data4[0] & 0x3f) | 0x80;
+  return key;
+}
+
+BaseObjects CreateBaseObjects() {
+  return {.provider = CreateTransientKey(), .sublayer = CreateTransientKey()};
 }
 
 std::vector<GUID> GetOutboundLayers() {
@@ -145,15 +146,17 @@ std::vector<GUID> GetAllLayers() {
 }
 
 DWORD AddFilter(HANDLE engine,
+                const BaseObjects& base_objects,
                 const GUID& layer,
                 FWP_ACTION_TYPE action,
                 uint8_t weight,
                 base::span<const FWPM_FILTER_CONDITION0> conditions,
-                wchar_t* name) {
+                const wchar_t* name) {
   FWPM_FILTER0 filter = {};
-  filter.subLayerKey = GetFirewallSublayerGUID();
-  filter.displayData.name = name;
-  filter.displayData.description = name;
+  filter.subLayerKey = base_objects.sublayer;
+  filter.providerKey = const_cast<GUID*>(&base_objects.provider);
+  filter.displayData.name = const_cast<wchar_t*>(name);
+  filter.displayData.description = const_cast<wchar_t*>(name);
   filter.layerKey = layer;
   filter.action.type = action;
   filter.weight.type = FWP_UINT8;
@@ -172,13 +175,15 @@ DWORD AddFilter(HANDLE engine,
 }
 
 DWORD AddFilterToLayers(HANDLE engine,
+                        const BaseObjects& base_objects,
                         const std::vector<GUID>& layers,
                         FWP_ACTION_TYPE action,
                         uint8_t weight,
                         base::span<const FWPM_FILTER_CONDITION0> conditions,
-                        wchar_t* name) {
+                        const wchar_t* name) {
   for (const auto& layer : layers) {
-    auto result = AddFilter(engine, layer, action, weight, conditions, name);
+    auto result = AddFilter(engine, base_objects, layer, action, weight,
+                            conditions, name);
     if (result != ERROR_SUCCESS) {
       return result;
     }
@@ -188,14 +193,14 @@ DWORD AddFilterToLayers(HANDLE engine,
 
 // Blocks everything that no higher weighted permit matched. This is the
 // kill-switch.
-DWORD AddBlockAll(HANDLE engine, wchar_t* name) {
-  return AddFilterToLayers(engine, GetAllLayers(), FWP_ACTION_BLOCK,
-                           kWeightBlockAll, {}, name);
+DWORD AddBlockAll(HANDLE engine, const BaseObjects& base_objects) {
+  return AddFilterToLayers(engine, base_objects, GetAllLayers(),
+                           FWP_ACTION_BLOCK, kWeightBlockAll, {}, L"Block all");
 }
 
 // Permits the tunnel service itself so the WireGuard handshake with the VPN
 // endpoint can go out over the physical adapter.
-DWORD AddPermitTunnelService(HANDLE engine, wchar_t* name) {
+DWORD AddPermitTunnelService(HANDLE engine, const BaseObjects& base_objects) {
   const base::FilePath exe_path = base::PathService::CheckedGet(base::FILE_EXE);
 
   FWP_BYTE_BLOB* app_id = nullptr;
@@ -210,35 +215,108 @@ DWORD AddPermitTunnelService(HANDLE engine, wchar_t* name) {
       FWPM_FILTER_CONDITION0{FWPM_CONDITION_ALE_APP_ID,
                              FWP_MATCH_EQUAL,
                              {FWP_BYTE_BLOB_TYPE, {.byteBlob = app_id}}}};
-  result = AddFilterToLayers(engine, GetAllLayers(), FWP_ACTION_PERMIT,
-                             kWeightPermitInfrastructure, conditions, name);
+  result = AddFilterToLayers(engine, base_objects, GetAllLayers(),
+                             FWP_ACTION_PERMIT, kWeightPermitInfrastructure,
+                             conditions, L"Permit Brave VPN service");
   FwpmFreeMemory0(reinterpret_cast<void**>(&app_id));
   return result;
 }
 
-DWORD AddPermitLoopback(HANDLE engine, wchar_t* name) {
+// DHCP has to keep working while the tunnel is up, or the machine silently
+// loses its lease. The local network permits cover a server on a private
+// address, but not the responses from one that answers from a public address,
+// so these match on the DHCP port pairs instead.
+//
+// Mirrors tunnel.dll's own permitDHCPIPv4/permitDHCPIPv6: outbound is
+// restricted to the broadcast address rather than allowing any destination on
+// port 67, because nothing stops another local process from binding port 68 on
+// Windows. A unicast renewal that goes unanswered falls back to a broadcast
+// rebind, which this covers.
+DWORD AddPermitDhcp(HANDLE engine, const BaseObjects& base_objects) {
+  const std::array<FWPM_FILTER_CONDITION0, 4u> v4_request = {
+      FWPM_FILTER_CONDITION0{FWPM_CONDITION_IP_PROTOCOL,
+                             FWP_MATCH_EQUAL,
+                             {FWP_UINT8, {.uint8 = kUdpProtocol}}},
+      FWPM_FILTER_CONDITION0{FWPM_CONDITION_IP_LOCAL_PORT,
+                             FWP_MATCH_EQUAL,
+                             {FWP_UINT16, {.uint16 = kDhcpV4ClientPort}}},
+      FWPM_FILTER_CONDITION0{FWPM_CONDITION_IP_REMOTE_PORT,
+                             FWP_MATCH_EQUAL,
+                             {FWP_UINT16, {.uint16 = kDhcpV4ServerPort}}},
+      FWPM_FILTER_CONDITION0{FWPM_CONDITION_IP_REMOTE_ADDRESS,
+                             FWP_MATCH_EQUAL,
+                             {FWP_UINT32, {.uint32 = kIpv4Broadcast}}}};
+  auto result = AddFilter(engine, base_objects, FWPM_LAYER_ALE_AUTH_CONNECT_V4,
+                          FWP_ACTION_PERMIT, kWeightPermitInfrastructure,
+                          v4_request, L"Permit DHCP request");
+  if (result != ERROR_SUCCESS) {
+    return result;
+  }
+
+  // No address condition: the offer or ack comes from whatever address the
+  // server or relay answers from, which is the case the local network permits
+  // miss.
+  const std::array<FWPM_FILTER_CONDITION0, 3u> v4_response = {
+      FWPM_FILTER_CONDITION0{FWPM_CONDITION_IP_PROTOCOL,
+                             FWP_MATCH_EQUAL,
+                             {FWP_UINT8, {.uint8 = kUdpProtocol}}},
+      FWPM_FILTER_CONDITION0{FWPM_CONDITION_IP_LOCAL_PORT,
+                             FWP_MATCH_EQUAL,
+                             {FWP_UINT16, {.uint16 = kDhcpV4ClientPort}}},
+      FWPM_FILTER_CONDITION0{FWPM_CONDITION_IP_REMOTE_PORT,
+                             FWP_MATCH_EQUAL,
+                             {FWP_UINT16, {.uint16 = kDhcpV4ServerPort}}}};
+  result = AddFilter(engine, base_objects, FWPM_LAYER_ALE_AUTH_RECV_ACCEPT_V4,
+                     FWP_ACTION_PERMIT, kWeightPermitInfrastructure,
+                     v4_response, L"Permit DHCP response");
+  if (result != ERROR_SUCCESS) {
+    return result;
+  }
+
+  // DHCPv6 only ever talks to multicast or link-local addresses, which the
+  // local network permits already cover, so the port pair is all that is left
+  // to pin down.
+  const std::array<FWPM_FILTER_CONDITION0, 3u> v6 = {
+      FWPM_FILTER_CONDITION0{FWPM_CONDITION_IP_PROTOCOL,
+                             FWP_MATCH_EQUAL,
+                             {FWP_UINT8, {.uint8 = kUdpProtocol}}},
+      FWPM_FILTER_CONDITION0{FWPM_CONDITION_IP_LOCAL_PORT,
+                             FWP_MATCH_EQUAL,
+                             {FWP_UINT16, {.uint16 = kDhcpV6ClientPort}}},
+      FWPM_FILTER_CONDITION0{FWPM_CONDITION_IP_REMOTE_PORT,
+                             FWP_MATCH_EQUAL,
+                             {FWP_UINT16, {.uint16 = kDhcpV6ServerPort}}}};
+  const std::vector<GUID> v6_layers = {FWPM_LAYER_ALE_AUTH_CONNECT_V6,
+                                       FWPM_LAYER_ALE_AUTH_RECV_ACCEPT_V6};
+  return AddFilterToLayers(engine, base_objects, v6_layers, FWP_ACTION_PERMIT,
+                           kWeightPermitInfrastructure, v6, L"Permit DHCPv6");
+}
+
+DWORD AddPermitLoopback(HANDLE engine, const BaseObjects& base_objects) {
   const std::array<FWPM_FILTER_CONDITION0, 1u> conditions = {
       FWPM_FILTER_CONDITION0{
           FWPM_CONDITION_FLAGS,
           FWP_MATCH_FLAGS_ALL_SET,
           {FWP_UINT32, {.uint32 = FWP_CONDITION_FLAG_IS_LOOPBACK}}}};
-  return AddFilterToLayers(engine, GetAllLayers(), FWP_ACTION_PERMIT,
-                           kWeightPermitInfrastructure, conditions, name);
+  return AddFilterToLayers(engine, base_objects, GetAllLayers(),
+                           FWP_ACTION_PERMIT, kWeightPermitInfrastructure,
+                           conditions, L"Permit loopback");
 }
 
 // Permits everything on the tunnel adapter, i.e. all the traffic that is
 // actually being tunneled.
 DWORD AddPermitTunnelInterface(HANDLE engine,
-                               const NET_LUID& tunnel_luid,
-                               wchar_t* name) {
+                               const BaseObjects& base_objects,
+                               const NET_LUID& tunnel_luid) {
   // WFP stores a pointer for FWP_UINT64, so this must outlive the filter adds.
   UINT64 luid_value = tunnel_luid.Value;
   const std::array<FWPM_FILTER_CONDITION0, 1u> conditions = {
       FWPM_FILTER_CONDITION0{FWPM_CONDITION_IP_LOCAL_INTERFACE,
                              FWP_MATCH_EQUAL,
                              {FWP_UINT64, {.uint64 = &luid_value}}}};
-  return AddFilterToLayers(engine, GetAllLayers(), FWP_ACTION_PERMIT,
-                           kWeightPermitInfrastructure, conditions, name);
+  return AddFilterToLayers(engine, base_objects, GetAllLayers(),
+                           FWP_ACTION_PERMIT, kWeightPermitInfrastructure,
+                           conditions, L"Permit tunnel interface");
 }
 
 // Replaces tunnel.dll's blockDNS filter. Queries that go through the tunnel are
@@ -246,32 +324,33 @@ DWORD AddPermitTunnelInterface(HANDLE engine,
 // this only catches queries that would otherwise leave over another adapter --
 // including the ones Windows' multihomed name resolution would send to the
 // router alongside the tunnel's resolver.
-DWORD AddBlockDns(HANDLE engine, wchar_t* name) {
+DWORD AddBlockDns(HANDLE engine, const BaseObjects& base_objects) {
   const std::array<FWPM_FILTER_CONDITION0, 1u> conditions = {
       FWPM_FILTER_CONDITION0{FWPM_CONDITION_IP_REMOTE_PORT,
                              FWP_MATCH_EQUAL,
                              {FWP_UINT16, {.uint16 = kDnsPort}}}};
-  return AddFilterToLayers(engine, GetOutboundLayers(), FWP_ACTION_BLOCK,
-                           kWeightBlockDns, conditions, name);
+  return AddFilterToLayers(engine, base_objects, GetOutboundLayers(),
+                           FWP_ACTION_BLOCK, kWeightBlockDns, conditions,
+                           L"Block DNS");
 }
 
-DWORD AddPermitLocalNetwork(HANDLE engine, wchar_t* name) {
+DWORD AddPermitLocalNetwork(HANDLE engine, const BaseObjects& base_objects) {
   const std::vector<GUID> v4_layers = {FWPM_LAYER_ALE_AUTH_CONNECT_V4,
                                        FWPM_LAYER_ALE_AUTH_RECV_ACCEPT_V4};
   for (const auto& prefix : kLocalIpv4Prefixes) {
     // WFP stores a pointer for FWP_V4_ADDR_MASK, so this must outlive the add.
     FWP_V4_ADDR_AND_MASK addr_and_mask = {};
     addr_and_mask.addr = prefix.address;
-    addr_and_mask.mask = ~((1u << (32 - prefix.prefix_length)) - 1u);
+    addr_and_mask.mask = Ipv4Netmask(prefix.prefix_length);
 
     const std::array<FWPM_FILTER_CONDITION0, 1u> conditions = {
         FWPM_FILTER_CONDITION0{
             FWPM_CONDITION_IP_REMOTE_ADDRESS,
             FWP_MATCH_EQUAL,
             {FWP_V4_ADDR_MASK, {.v4AddrMask = &addr_and_mask}}}};
-    auto result =
-        AddFilterToLayers(engine, v4_layers, FWP_ACTION_PERMIT,
-                          kWeightPermitLocalNetwork, conditions, name);
+    auto result = AddFilterToLayers(
+        engine, base_objects, v4_layers, FWP_ACTION_PERMIT,
+        kWeightPermitLocalNetwork, conditions, L"Permit local network");
     if (result != ERROR_SUCCESS) {
       return result;
     }
@@ -289,9 +368,9 @@ DWORD AddPermitLocalNetwork(HANDLE engine, wchar_t* name) {
             FWPM_CONDITION_IP_REMOTE_ADDRESS,
             FWP_MATCH_EQUAL,
             {FWP_V6_ADDR_MASK, {.v6AddrMask = &addr_and_mask}}}};
-    auto result =
-        AddFilterToLayers(engine, v6_layers, FWP_ACTION_PERMIT,
-                          kWeightPermitLocalNetwork, conditions, name);
+    auto result = AddFilterToLayers(
+        engine, base_objects, v6_layers, FWP_ACTION_PERMIT,
+        kWeightPermitLocalNetwork, conditions, L"Permit local network");
     if (result != ERROR_SUCCESS) {
       return result;
     }
@@ -300,25 +379,44 @@ DWORD AddPermitLocalNetwork(HANDLE engine, wchar_t* name) {
   return ERROR_SUCCESS;
 }
 
-DWORD AddSublayer(HANDLE engine, wchar_t* name) {
+// Leaves `serviceName` null on purpose: that field is how BFE knows to start
+// the owning service on demand, which makes no sense for a transient provider.
+// The provider is what attributes the whole set to Brave in a `netsh wfp show
+// filters` dump, since the keys themselves are transient. The filters below it
+// are named for what they do rather than repeating the product name.
+DWORD AddProvider(HANDLE engine, const BaseObjects& base_objects) {
+  std::wstring name = GetBraveVpnWireguardServiceDisplayName();
+  FWPM_PROVIDER0 provider = {};
+  provider.providerKey = base_objects.provider;
+  provider.displayData.name = name.data();
+  provider.displayData.description = name.data();
+  return FwpmProviderAdd0(engine, &provider, nullptr);
+}
+
+DWORD AddSublayer(HANDLE engine, const BaseObjects& base_objects) {
+  std::wstring name = GetBraveVpnWireguardServiceDisplayName();
   FWPM_SUBLAYER0 sublayer = {};
-  sublayer.subLayerKey = GetFirewallSublayerGUID();
-  sublayer.displayData.name = name;
-  sublayer.displayData.description = name;
+  sublayer.subLayerKey = base_objects.sublayer;
+  sublayer.providerKey = const_cast<GUID*>(&base_objects.provider);
+  sublayer.displayData.name = name.data();
+  sublayer.displayData.description = name.data();
   sublayer.weight = 0xFFFF;
   return FwpmSubLayerAdd0(engine, &sublayer, nullptr);
 }
 
-bool AddAllFilters(HANDLE engine, const NET_LUID& tunnel_luid) {
-  std::wstring name = GetFirewallFilterName();
-  return AddSublayer(engine, name.data()) == ERROR_SUCCESS &&
-         AddPermitTunnelService(engine, name.data()) == ERROR_SUCCESS &&
-         AddPermitLoopback(engine, name.data()) == ERROR_SUCCESS &&
-         AddPermitTunnelInterface(engine, tunnel_luid, name.data()) ==
+bool AddAllFilters(HANDLE engine,
+                   const BaseObjects& base_objects,
+                   const NET_LUID& tunnel_luid) {
+  return AddProvider(engine, base_objects) == ERROR_SUCCESS &&
+         AddSublayer(engine, base_objects) == ERROR_SUCCESS &&
+         AddPermitTunnelService(engine, base_objects) == ERROR_SUCCESS &&
+         AddPermitLoopback(engine, base_objects) == ERROR_SUCCESS &&
+         AddPermitDhcp(engine, base_objects) == ERROR_SUCCESS &&
+         AddPermitTunnelInterface(engine, base_objects, tunnel_luid) ==
              ERROR_SUCCESS &&
-         AddBlockDns(engine, name.data()) == ERROR_SUCCESS &&
-         AddPermitLocalNetwork(engine, name.data()) == ERROR_SUCCESS &&
-         AddBlockAll(engine, name.data()) == ERROR_SUCCESS;
+         AddBlockDns(engine, base_objects) == ERROR_SUCCESS &&
+         AddPermitLocalNetwork(engine, base_objects) == ERROR_SUCCESS &&
+         AddBlockAll(engine, base_objects) == ERROR_SUCCESS;
 }
 
 }  // namespace
@@ -347,7 +445,10 @@ std::unique_ptr<ScopedWireguardFirewall> ScopedWireguardFirewall::Create(
     return nullptr;
   }
 
-  if (!AddAllFilters(engine, tunnel_luid)) {
+  // Named local, not a temporary: the WFP structs store a pointer to
+  // `provider`, so it has to outlive every FwpmXxxAdd0() call below.
+  const BaseObjects base_objects = CreateBaseObjects();
+  if (!AddAllFilters(engine, base_objects, tunnel_luid)) {
     FwpmTransactionAbort0(engine);
     FwpmEngineClose0(engine);
     return nullptr;
@@ -489,6 +590,4 @@ void RequestTunnelShutdown() {
   }
 }
 
-}  // namespace wireguard
-
-}  // namespace brave_vpn
+}  // namespace brave_vpn::wireguard

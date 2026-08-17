@@ -26,7 +26,10 @@
 #include "base/scoped_native_library.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/synchronization/lock.h"
+#include "base/synchronization/waitable_event.h"
 #include "base/thread_annotations.h"
+#include "base/threading/platform_thread.h"
+#include "base/time/time.h"
 #include "base/win/access_control_list.h"
 #include "base/win/scoped_handle.h"
 #include "base/win/security_descriptor.h"
@@ -140,6 +143,11 @@ std::optional<base::FilePath> WriteConfigToFile(const std::string& config) {
   return temp_file_path;
 }
 
+// How long the tunnel adapter gets to appear before we give up on protecting
+// the connection. Creating a WinTun adapter is a sub-second operation; this is
+// generous for a slow machine while keeping the unprotected window short.
+constexpr base::TimeDelta kFirewallInstallTimeout = base::Seconds(10);
+
 // Owns the firewall for the lifetime of the tunnel. Install() runs on an OS
 // worker thread from TunnelInterfaceWatcher, so the pointer is guarded.
 class ScopedFirewallHolder {
@@ -156,16 +164,81 @@ class ScopedFirewallHolder {
       // and DNS outside it, so stop the tunnel instead.
       VLOG(1) << "Failed to install the WireGuard firewall, stopping tunnel";
       wireguard::RequestTunnelShutdown();
+      // The shutdown is already under way, so there is nothing left for the
+      // watchdog to do.
+      settled_.Signal();
       return;
     }
-    base::AutoLock auto_lock(lock_);
-    firewall_ = std::move(firewall);
+    {
+      base::AutoLock auto_lock(lock_);
+      firewall_ = std::move(firewall);
+    }
+    settled_.Signal();
   }
+
+  // False if the firewall was neither installed nor failed within `timeout`,
+  // which means the tunnel adapter never showed up under the name we expected.
+  bool WaitUntilSettled(base::TimeDelta timeout) {
+    return settled_.TimedWait(timeout);
+  }
+
+  // Releases the watchdog when the tunnel is going down for other reasons, so
+  // it does not hold the process open for the rest of the timeout.
+  void StopWaiting() { settled_.Signal(); }
 
  private:
   base::Lock lock_;
   std::unique_ptr<wireguard::ScopedWireguardFirewall> firewall_
       GUARDED_BY(lock_);
+  base::WaitableEvent settled_;
+};
+
+// Bounds how long the tunnel may run unprotected. If the adapter never resolves
+// to a LUID -- our guess at the name tunnel.dll gives it being wrong, say --
+// the filters are never installed and the tunnel would otherwise stay up with
+// no kill-switch and no DNS-leak protection, silently.
+//
+// This needs its own thread because tunnel_proc() blocks the main thread for
+// the tunnel's whole lifetime, and cannot be moved off it: tunnel.dll calls
+// StartServiceCtrlDispatcher(), which Windows requires on the initial thread.
+class FirewallWatchdog : public base::PlatformThread::Delegate {
+ public:
+  explicit FirewallWatchdog(ScopedFirewallHolder& holder) : holder_(holder) {}
+  FirewallWatchdog(const FirewallWatchdog&) = delete;
+  FirewallWatchdog& operator=(const FirewallWatchdog&) = delete;
+  ~FirewallWatchdog() override { Stop(); }
+
+  bool Start() {
+    running_ = base::PlatformThread::Create(0, this, &thread_handle_);
+    return running_;
+  }
+
+  // Idempotent, so the destructor can back this up if an early return is ever
+  // added between Start() and the explicit Stop().
+  void Stop() {
+    if (!running_) {
+      return;
+    }
+    running_ = false;
+    holder_->StopWaiting();
+    base::PlatformThread::Join(thread_handle_);
+  }
+
+ private:
+  void ThreadMain() override {
+    if (holder_->WaitUntilSettled(kFirewallInstallTimeout)) {
+      return;
+    }
+    LOG(ERROR) << "WireGuard firewall was not installed within "
+               << kFirewallInstallTimeout << ", disconnecting";
+    brave_vpn::RunWireGuardCommandForUsers(
+        brave_vpn::kBraveVpnWireguardServiceNotifyFirewallErrorSwitchName);
+    wireguard::RequestTunnelShutdown();
+  }
+
+  const raw_ref<ScopedFirewallHolder> holder_;
+  base::PlatformThreadHandle thread_handle_;
+  bool running_ = false;
 };
 
 bool IsServiceRunning(SC_HANDLE service) {
@@ -399,10 +472,18 @@ int RunWireguardTunnelService(const base::FilePath& config_file_path) {
       return S_FALSE;
     }
 
+    FirewallWatchdog watchdog(firewall);
+    if (!watchdog.Start()) {
+      VLOG(1) << "Unable to start the firewall watchdog, refusing to connect "
+                 "without a way to detect an unprotected tunnel";
+      return S_FALSE;
+    }
+
     // Show system notification about connected vpn.
     brave_vpn::RunWireGuardCommandForUsers(
         brave_vpn::kBraveVpnWireguardServiceNotifyConnectedSwitchName);
     auto result = tunnel_proc(config_path.value().c_str());
+    watchdog.Stop();
     if (result) {
       ResetWireguardTunnelUsageFlag();
       return S_OK;

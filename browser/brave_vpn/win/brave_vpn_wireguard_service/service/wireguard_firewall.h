@@ -25,9 +25,7 @@ namespace base {
 class FilePath;
 }  // namespace base
 
-namespace brave_vpn {
-
-namespace wireguard {
+namespace brave_vpn::wireguard {
 
 // Installs the WFP filters that keep traffic inside the WireGuard tunnel while
 // leaving the local network reachable.
@@ -97,8 +95,6 @@ std::wstring GetTunnelInterfaceAlias(const base::FilePath& config);
 // closed when the firewall cannot be installed.
 void RequestTunnelShutdown();
 
-}  // namespace wireguard
-
-}  // namespace brave_vpn
+}  // namespace brave_vpn::wireguard
 
 #endif  // BRAVE_BROWSER_BRAVE_VPN_WIN_BRAVE_VPN_WIREGUARD_SERVICE_SERVICE_WIREGUARD_FIREWALL_H_
