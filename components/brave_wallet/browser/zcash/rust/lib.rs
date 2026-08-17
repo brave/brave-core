@@ -354,7 +354,7 @@ mod ffi {
         // OsRng is used
         fn create_orchard_bundle(
             tree_state: &[u8],
-            fvk: [u8; 96],
+            fvk: &[u8; 96],
             spends: Vec<CxxOrchardSpend>,
             outputs: Vec<CxxOrchardOutput>,
             ironwood: bool,
@@ -1074,7 +1074,7 @@ fn create_orchard_builder_internal(
 
 fn create_orchard_bundle(
     orchard_tree_bytes: &[u8],
-    fvk: [u8; 96],
+    fvk: &[u8; 96],
     spends: Vec<CxxOrchardSpend>,
     outputs: Vec<CxxOrchardOutput>,
     ironwood: bool,

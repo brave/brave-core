@@ -58,10 +58,10 @@ TEST(ZCashV6SerializerTest, HashHeader) {
   EXPECT_EQ(stream.data()[5], 0xB6u);
   EXPECT_EQ(stream.data()[6], 0x84u);
   EXPECT_EQ(stream.data()[7], 0xD8u);
-
   // The header hash is deterministic for identical header fields.
-  EXPECT_EQ(ZCashV6Serializer::HashHeader(tx),
-            ZCashV6Serializer::HashHeader(tx));
+  EXPECT_EQ(
+      "0xe2a3668ae60a6327e24ae6fcd7a4775c9da93148663f14f0552dc2bfecf76aa8",
+      ToHex(ZCashV6Serializer::HashHeader(tx)));
 }
 
 // SerializeRawTransaction must emit the correct wire format for four cases:
@@ -145,8 +145,9 @@ TEST(ZCashV6SerializerTest, CalculateTxIdDigest) {
   auto tx = MakeEmptyV6Tx();
 
   // Determinism.
-  EXPECT_EQ(ZCashV6Serializer::CalculateTxIdDigest(tx),
-            ZCashV6Serializer::CalculateTxIdDigest(tx));
+  EXPECT_EQ(
+      "0x59b9ff363b8d9a7fb16b9cf560835ddeb590dface54cb03388775b8fceff2ff3",
+      ToHex(ZCashV6Serializer::CalculateTxIdDigest(tx)));
 
   // legacy_orchard digest is included independently.
   auto tx_legacy = tx;
