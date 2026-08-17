@@ -28,11 +28,17 @@ class OrchardUnauthorizedBundle {
   virtual ~OrchardUnauthorizedBundle() = default;
 
   // Creates OrchardUnauthorizedBundle without shielded inputs
+  // `is_v6_transaction` selects the transaction version the bundle's
+  // commitment/digest is computed against; an Ironwood-pool bundle only
+  // exists in a v6 transaction, and an Orchard-pool bundle needs v6 too when
+  // it coexists with an Ironwood bundle in the same transaction.
   static std::unique_ptr<OrchardUnauthorizedBundle> Create(
       base::span<const uint8_t> tree_state,
       const ::brave_wallet::OrchardSpendsBundle& orchard_spends,
       const std::vector<::brave_wallet::OrchardOutput>& orchard_outputs,
-      std::optional<size_t> random_seed_for_testing);
+      std::optional<size_t> random_seed_for_testing,
+      ::brave_wallet::OrchardPool pool,
+      bool is_v6_transaction);
 
   // Before Complete is called we need to calculate signature digest which
   // combines all zcash transaction data.
