@@ -43,6 +43,7 @@ void ResourceContextData<T>::StartProxying(
     content::ContentBrowserClient::URLLoaderFactoryType url_loader_factory_type,
     const url::Origin& request_initiator,
     const net::IsolationInfo& isolation_info,
+    std::optional<int64_t> navigation_id,
     scoped_refptr<base::SequencedTaskRunner> navigation_response_task_runner) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
@@ -61,7 +62,7 @@ void ResourceContextData<T>::StartProxying(
   auto proxy = std::make_unique<BraveProxyingURLLoaderFactory<T>>(
       *self->request_handler_, browser_context, render_frame_token,
       factory_builder, url_loader_factory_type, request_initiator,
-      isolation_info, self->request_id_generator_,
+      isolation_info, navigation_id, self->request_id_generator_,
       base::BindOnce(&ResourceContextData::RemoveProxy,
                      self->weak_factory_.GetWeakPtr()),
       navigation_response_task_runner);
