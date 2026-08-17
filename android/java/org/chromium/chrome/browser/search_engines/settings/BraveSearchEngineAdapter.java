@@ -44,6 +44,20 @@ public class BraveSearchEngineAdapter extends SearchEngineAdapter {
                         templateUrlShortName);
     }
 
+    // The private DSE short name is a Java-only pref. Read/write it without materializing the OTR
+    // profile: creating one CHECK-fails when incognito is disabled by policy. See
+    // OffTheRecordProfileImpl::Init in chrome/browser/profiles/off_the_record_profile_impl.cc.
+    public static void setPrivateDSEPrefs(String templateUrlShortName) {
+        ChromeSharedPreferences.getInstance()
+                .writeString(PRIVATE_DSE_SHORTNAME, templateUrlShortName);
+    }
+
+    // Java-only counterpart of getDSEShortName() for private mode: reads the same
+    // SharedPreferences entry without needing an OTR profile. Returns null if unset.
+    public static String getPrivateDSEShortName() {
+        return ChromeSharedPreferences.getInstance().readString(PRIVATE_DSE_SHORTNAME, null);
+    }
+
     public static void updateActiveDSE(Profile profile, TemplateUrlService templateUrlServiceArg) {
         String shortName = getDSEShortName(profile, false, templateUrlServiceArg);
         TemplateUrl templateUrl =
