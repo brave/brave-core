@@ -76,6 +76,12 @@ class BraveProxyingURLLoaderFactory : public network::mojom::URLLoaderFactory {
     ~InProgressRequest() override;
 
     void Restart();
+
+    // Records on the navigation's NavigationHandle (if this request belongs to
+    // one) that its next redirect was authorized by us, so the eventual
+    // navigation loader doesn't reject it as unsafe.
+    void AuthorizeBypassRedirectChecks();
+
     // Called when ThrottlingURLLoader disconnects our proxied_loader_receiver_.
     // For redirect-restart disconnects (kFollowRedirectReason), we forward the
     // same disconnect reason to target_loader_ so that any inner proxy layer
@@ -201,6 +207,7 @@ class BraveProxyingURLLoaderFactory : public network::mojom::URLLoaderFactory {
           url_loader_factory_type,
       const url::Origin& request_initiator,
       const net::IsolationInfo& isolation_info,
+      std::optional<int64_t> navigation_id,
       scoped_refptr<RequestIDGenerator> request_id_generator,
       DisconnectCallback on_disconnect,
       scoped_refptr<base::SequencedTaskRunner> navigation_response_task_runner);
@@ -219,6 +226,7 @@ class BraveProxyingURLLoaderFactory : public network::mojom::URLLoaderFactory {
           url_loader_factory_type,
       const url::Origin& request_initiator,
       const net::IsolationInfo& isolation_info,
+      std::optional<int64_t> navigation_id,
       scoped_refptr<base::SequencedTaskRunner> navigation_response_task_runner);
 
   // network::mojom::URLLoaderFactory:
@@ -250,6 +258,7 @@ class BraveProxyingURLLoaderFactory : public network::mojom::URLLoaderFactory {
       url_loader_factory_type_;
   const url::Origin request_initiator_;
   const net::IsolationInfo isolation_info_;
+  const std::optional<int64_t> navigation_id_;
 
   mojo::ReceiverSet<network::mojom::URLLoaderFactory> proxy_receivers_;
   mojo::Remote<network::mojom::URLLoaderFactory> target_factory_;
