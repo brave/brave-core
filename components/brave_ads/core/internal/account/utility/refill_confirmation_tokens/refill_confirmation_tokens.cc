@@ -162,8 +162,10 @@ RefillConfirmationTokens::HandleRequestSignedTokensUrlResponse(
   }
 
   if (mojom_url_response.code != net::HTTP_CREATED) {
-    const bool should_retry = HttpStatusCodeClass(mojom_url_response.code) !=
-                              HttpStatusCodeClassType::kClientError;
+    const bool should_retry =
+        mojom_url_response.code == net::HTTP_TOO_MANY_REQUESTS ||
+        HttpStatusCodeClass(mojom_url_response.code) !=
+            HttpStatusCodeClassType::kClientError;
     return UrlResponseError({.message = "Failed to request signed tokens",
                              .should_retry = should_retry});
   }
@@ -241,10 +243,12 @@ RefillConfirmationTokens::HandleGetSignedTokensUrlResponse(
 
   if (mojom_url_response.code != net::HTTP_OK &&
       mojom_url_response.code != net::HTTP_UNAUTHORIZED) {
-    return UrlResponseError(
-        {.message = "Failed to get signed tokens",
-         .should_retry = HttpStatusCodeClass(mojom_url_response.code) !=
-                         HttpStatusCodeClassType::kClientError});
+    const bool should_retry =
+        mojom_url_response.code == net::HTTP_TOO_MANY_REQUESTS ||
+        HttpStatusCodeClass(mojom_url_response.code) !=
+            HttpStatusCodeClassType::kClientError;
+    return UrlResponseError({.message = "Failed to get signed tokens",
+                             .should_retry = should_retry});
   }
 
   std::optional<base::DictValue> dict =
