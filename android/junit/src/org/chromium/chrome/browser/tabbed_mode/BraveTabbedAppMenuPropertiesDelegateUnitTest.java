@@ -295,7 +295,8 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
                         /* recentlyClosedEntriesManagerSupplier= */ () ->
                                 mRecentlyClosedEntriesManager,
                         () -> mSideUiStateProvider,
-                        /* isXrFullSpaceModeSupplier= */ () -> false,
+                        /* xrSpaceModeObservableSupplier= */ ObservableSuppliers.createNonNull(
+                                false),
                         /* canActivateTabLayoutToggleMenu= */ () ->
                                 mCanActivateTabLayoutToggleMenu);
         delegate.setIsJunitTesting(true);
