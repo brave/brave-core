@@ -8,14 +8,13 @@
 #include "base/types/to_address.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "components/tabs/public/tab_interface.h"
 
 BraveMultiContentsViewDelegateImpl::BraveMultiContentsViewDelegateImpl(
-    Browser& browser)
+    BrowserWindowInterface& browser)
     : MultiContentsViewDelegateImpl(browser), bwi_(browser) {}
 
 BraveMultiContentsViewDelegateImpl::~BraveMultiContentsViewDelegateImpl() =
@@ -23,7 +22,7 @@ BraveMultiContentsViewDelegateImpl::~BraveMultiContentsViewDelegateImpl() =
 
 void BraveMultiContentsViewDelegateImpl::WebContentsFocused(
     content::WebContents* contents) {
-  TabStripModel* model = bwi_->tab_strip_model();
+  TabStripModel* model = bwi_->GetTabStripModel();
   // https://github.com/brave/brave-browser/issues/53121
   // On macOS, closing a split view detaches a web contents native view, which
   // can synchronously trigger a focus change (via AppKit first responder
@@ -61,7 +60,7 @@ void BraveMultiContentsViewDelegateImpl::ResizeWebContents(double ratio,
   // TODO(https://github.com/brave/brave-browser/issues/33533):
   // Need to handle split view resize when web panel is active.
   // If not skip, crash happened now due to above reason.
-  if (!bwi_->tab_strip_model()->GetActiveTab()->GetSplit()) {
+  if (!bwi_->GetTabStripModel()->GetActiveTab()->GetSplit()) {
     return;
   }
 
