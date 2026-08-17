@@ -1608,10 +1608,7 @@ public abstract class BraveActivity extends ChromeActivity
                             BraveSearchEngineUtils.getTemplateUrlByShortName(
                                     getCurrentProfile(), OnboardingPrefManager.BRAVE);
                     if (braveTemplateUrl != null) {
-                        BraveSearchEngineUtils.setDSEPrefs(
-                                braveTemplateUrl,
-                                getCurrentProfile()
-                                        .getPrimaryOtrProfile(/* createIfNeeded= */ true));
+                        BraveSearchEngineUtils.setPrivateDSEPrefs(braveTemplateUrl);
                     }
                 };
         TemplateUrlServiceFactory.getForProfile(getCurrentProfile())
