@@ -96,14 +96,11 @@ class BraveWalletService : public KeyedService,
   template <class T>
   void Bind(mojo::PendingReceiver<T> receiver);
 
-  static void MigrateDeadNetwork(PrefService* prefs,
-                                 const std::string& chain_id,
-                                 const std::string& fallback_chain_id,
-                                 std::string_view pref_key);
   static void MigrateAsCustomNetwork(PrefService* prefs,
                                      const mojom::NetworkInfo& network,
                                      bool is_eip1559,
                                      std::string_view pref_key);
+  static void MaybeMigrateLocalhostNetworks(PrefService* prefs);
 
   // mojom::BraveWalletService:
   void AddObserver(::mojo::PendingRemote<mojom::BraveWalletServiceObserver>

@@ -248,6 +248,9 @@ void RegisterProfilePrefsForMigration(
   // Added 05/2026
   registry->RegisterDictionaryPref(
       kBraveWalletLastTransactionSentTimeDictDeprecated);
+
+  // Added 08/2026
+  registry->RegisterBooleanPref(kBraveWalletLocalhostNetworksMigrated, false);
 }
 
 void ClearJsonRpcServiceProfilePrefs(PrefService* prefs) {
@@ -315,6 +318,9 @@ void MigrateObsoleteProfilePrefs(PrefService* prefs) {
   prefs->ClearPref(kBraveWalletIsSPLTokenProgramMigrated);
   // Added 05/2026
   prefs->ClearPref(kBraveWalletAuroraMainnetMigrated);
+
+  // Added 08/2026
+  BraveWalletService::MaybeMigrateLocalhostNetworks(prefs);
 }
 
 }  // namespace brave_wallet

@@ -55,8 +55,6 @@ class EthNonceTrackerUnitTest : public testing::Test {
     transaction_count_ = count;
     url_loader_factory_.ClearResponses();
 
-    // See JsonRpcService::SetNetwork() to better understand where the
-    // http://localhost:7545 URL used below is coming from.
     url_loader_factory_.AddResponse(
         network_manager_
             ->GetNetworkURL(mojom::kPolygonMainnetChainId, mojom::CoinType::ETH)

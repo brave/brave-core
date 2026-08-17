@@ -1386,6 +1386,43 @@ bool NetworkManager::SetCurrentChainId(mojom::CoinType coin,
   return true;
 }
 
+void NetworkManager::MigrateDeadNetwork(mojom::CoinType coin,
+                                        const std::string& chain_id,
+                                        const std::string& fallback_chain_id) {
+  RemoveHiddenNetwork(coin, chain_id);
+
+  // Migrate current chain id for default origin. Read the raw pref value
+  // directly since GetCurrentChainId() falls back to the default chain for
+  // a dead chain_id that's no longer a known chain.
+  const std::string* selected_chain_id =
+      prefs_->GetDict(kBraveWalletSelectedNetworks)
+          .FindString(GetPrefKeyForCoinType(coin));
+  if (selected_chain_id &&
+      base::EqualsCaseInsensitiveASCII(*selected_chain_id, chain_id)) {
+    SetCurrentChainId(coin, std::nullopt, fallback_chain_id);
+  }
+
+  const auto& selected_networks =
+      prefs_->GetDict(kBraveWalletSelectedNetworksPerOrigin);
+  const auto* coin_dict =
+      selected_networks.FindDict(GetPrefKeyForCoinType(coin));
+  if (!coin_dict) {
+    return;
+  }
+
+  for (auto origin : *coin_dict) {
+    const auto* chain_id_each = origin.second.GetIfString();
+    if (!chain_id_each) {
+      continue;
+    }
+
+    if (base::ToLowerASCII(*chain_id_each) == chain_id) {
+      SetCurrentChainId(coin, url::Origin::Create(GURL(origin.first)),
+                        fallback_chain_id);
+    }
+  }
+}
+
 void NetworkManager::SetNetworkURLForTesting(const std::string& chain_id,
                                              GURL url) {
   CHECK_IS_TEST();
