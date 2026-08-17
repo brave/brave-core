@@ -96,7 +96,6 @@
 
 #if BUILDFLAG(IS_WIN)
 #include "chrome/browser/startup/startup_features.h"
-#include "chrome/browser/win/mica_titlebar.h"
 #endif
 
 #if BUILDFLAG(ENABLE_SCREEN_CAPTURE)
@@ -222,9 +221,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &history_embeddings::kHistoryEmbeddings,
       &history_embeddings::kHistoryEmbeddingsAnswers,
       &history_embeddings::kLaunchedHistoryEmbeddings,
-#if BUILDFLAG(IS_WIN)
-      &kWindows11MicaTitlebar,
-#endif
       &lens::features::kLensOverlay,
       &lens::features::kLensOverlayOmniboxEntryPoint,
       &lens::features::kLensStandalone,
