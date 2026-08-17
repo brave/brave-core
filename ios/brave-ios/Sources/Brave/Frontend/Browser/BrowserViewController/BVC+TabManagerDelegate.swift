@@ -88,6 +88,11 @@ extension BrowserViewController: TabManagerDelegate {
         self?.scanAddressQRCode(completion: completion)
       }
     )
+    let blockedDomainTabHelper: BlockedDomainTabHelper = .init(tab: tab)
+    tab.blockedDomainHelper = blockedDomainTabHelper
+    // When `BlockedDomainTabHelper+TabPolicyDecider` is moved to `BraveShields` target,
+    // we should add it as a policy decider at initialization.
+    tab.addPolicyDecider(blockedDomainTabHelper)
     let braveShieldsHelper: BraveShieldsTabHelper = .init(
       tab: tab,
       braveShieldsSettings: BraveShieldsSettingsServiceFactory.get(profile: tab.profile)

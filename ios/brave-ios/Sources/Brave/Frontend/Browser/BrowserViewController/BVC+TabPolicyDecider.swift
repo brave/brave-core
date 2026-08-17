@@ -350,31 +350,6 @@ extension BrowserViewController: TabPolicyDecider {
     if ["http", "https", "data", "blob", "file"].contains(requestURL.scheme) {
       pendingRequests[requestURL.absoluteString] = request
 
-      if requestInfo.isMainFrame,
-        let etldP1 = requestURL.baseDomain,
-        tab.proceedAnywaysDomainList?.contains(etldP1) == false
-      {
-        let shieldLevel =
-          tab.braveShieldsHelper?.shieldLevel(
-            for: requestURL,
-            considerAllShieldsOption: true
-          ) ?? .standard
-
-        let shouldBlock = await AdBlockGroupsManager.shared.shouldBlock(
-          requestURL: requestURL,
-          sourceURL: requestURL,
-          resourceType: .document,
-          isAdBlockEnabled: shieldLevel.isEnabled,
-          isAdBlockModeAggressive: shieldLevel.isAggressive
-        )
-
-        if shouldBlock, let url = requestURL.encodeEmbeddedInternalURL(for: .blocked) {
-          let request = PrivilegedRequest(url: url) as URLRequest
-          tab.loadRequest(request)
-          return .cancel
-        }
-      }
-
       // Cookie Blocking code below
       tab.browserData?.setScript(
         script: .cookieBlocking,
