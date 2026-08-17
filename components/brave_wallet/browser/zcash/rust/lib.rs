@@ -354,7 +354,7 @@ mod ffi {
         // OsRng is used
         fn create_orchard_bundle(
             tree_state: &[u8],
-            fvk: [u8; 96],
+            fvk: &[u8; 96],
             spends: Vec<CxxOrchardSpend>,
             outputs: Vec<CxxOrchardOutput>,
             ironwood: bool,
@@ -365,7 +365,7 @@ mod ffi {
         // Must not be used in production, only in tests.
         fn create_testing_orchard_bundle(
             tree_state: &[u8],
-            fvk: [u8; 96],
+            fvk: &[u8; 96],
             spends: Vec<CxxOrchardSpend>,
             outputs: Vec<CxxOrchardOutput>,
             rng_seed: u64,
@@ -863,7 +863,7 @@ impl CxxOrchardAuthorizedBundle {
 
 fn create_orchard_builder_internal(
     orchard_tree_bytes: &[u8],
-    fvk: [u8; 96],
+    fvk: &[u8; 96],
     spends: Vec<CxxOrchardSpend>,
     outputs: Vec<CxxOrchardOutput>,
     random_source: OrchardRandomSource,
@@ -997,7 +997,7 @@ fn create_orchard_builder_internal(
     // `add_change_output`, so without a parseable fvk there is no way to add
     // one; report that as an fvk error rather than letting it surface from
     // `add_output` below as a misleading `WrongOutputError`.
-    let wallet_fvk = OrchardFVK::from_bytes(&fvk);
+    let wallet_fvk = OrchardFVK::from_bytes(fvk);
     if wallet_fvk.is_none()
         && !outputs.is_empty()
         && !bundle_version.default_flags().cross_address_enabled()
@@ -1074,7 +1074,7 @@ fn create_orchard_builder_internal(
 
 fn create_orchard_bundle(
     orchard_tree_bytes: &[u8],
-    fvk: [u8; 96],
+    fvk: &[u8; 96],
     spends: Vec<CxxOrchardSpend>,
     outputs: Vec<CxxOrchardOutput>,
     ironwood: bool,
@@ -1093,7 +1093,7 @@ fn create_orchard_bundle(
 
 fn create_testing_orchard_bundle(
     orchard_tree_bytes: &[u8],
-    fvk: [u8; 96],
+    fvk: &[u8; 96],
     spends: Vec<CxxOrchardSpend>,
     outputs: Vec<CxxOrchardOutput>,
     rng_seed: u64,

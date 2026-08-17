@@ -10,6 +10,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/check.h"
 #include "base/memory/ptr_util.h"
 
 namespace brave_wallet {
@@ -27,6 +28,8 @@ std::unique_ptr<OrchardBundleManager> OrchardBundleManager::Create(
     const std::vector<OrchardOutput>& orchard_outputs,
     OrchardPool pool,
     bool is_v6_transaction) {
+  CHECK(pool == OrchardPool::kOrchard);
+  CHECK(!is_v6_transaction);
   CHECK(!orchard_outputs.empty() || !spends_bundle.inputs.empty());
   auto bundle = orchard::OrchardUnauthorizedBundle::Create(
       tree_state, spends_bundle, orchard_outputs, random_seed_for_testing_,
