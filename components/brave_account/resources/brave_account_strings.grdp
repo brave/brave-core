@@ -222,9 +222,19 @@
   </message>
 
   <!-- Common: -->
-  <message name="IDS_BRAVE_ACCOUNT_DESCRIPTION" desc="Description explaining the benefits of having a Brave Account" formatter_data="webui=BraveAccount,BraveAccountSettings">
-    A Brave account will allow you to easily access Brave services.
-  </message>
+  <if expr="not is_android and not is_ios">
+    <message name="IDS_BRAVE_ACCOUNT_DESCRIPTION" desc="Description explaining the benefits of having a Brave Account" formatter_data="webui=BraveAccount">
+      A Brave account lets you create and manage your email aliases.
+    </message>
+    <message name="IDS_SETTINGS_BRAVE_ACCOUNT_LOGGED_OUT_ROW_DESCRIPTION" desc="Description explaining the benefits of having a Brave Account, shown in the Get started settings page. Ends with a link to a support article." formatter_data="webui=BraveAccountSettings">
+      A Brave account lets you create and manage your email aliases. <ph name="BEGIN_LINK">&lt;a&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
+    </message>
+  </if>
+  <if expr="is_android or is_ios">
+    <message name="IDS_BRAVE_ACCOUNT_DESCRIPTION" desc="Description explaining the benefits of having a Brave Account" formatter_data="webui=BraveAccount">
+      A Brave account will allow you to easily access Brave services.
+    </message>
+  </if>
   <message name="IDS_BRAVE_ACCOUNT_BACK_BUTTON_LABEL" desc="Label for the back button" formatter_data="webui=BraveAccount">
     Go back
   </message>
