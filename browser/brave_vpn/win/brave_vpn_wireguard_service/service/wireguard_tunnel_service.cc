@@ -25,9 +25,7 @@
 #include "base/rand_util.h"
 #include "base/scoped_native_library.h"
 #include "base/strings/utf_string_conversions.h"
-#include "base/synchronization/lock.h"
 #include "base/synchronization/waitable_event.h"
-#include "base/thread_annotations.h"
 #include "base/threading/platform_thread.h"
 #include "base/time/time.h"
 #include "base/win/access_control_list.h"
@@ -148,36 +146,32 @@ std::optional<base::FilePath> WriteConfigToFile(const std::string& config) {
 // generous for a slow machine while keeping the unprotected window short.
 constexpr base::TimeDelta kFirewallInstallTimeout = base::Seconds(10);
 
-// Owns the firewall for the lifetime of the tunnel. Install() runs on an OS
-// worker thread from TunnelInterfaceWatcher, so the pointer is guarded.
+// Owns the firewall for the lifetime of the tunnel. The global filters are
+// already installed by the time this is constructed; PermitTunnel() completes
+// the policy and runs on an OS worker thread from TunnelInterfaceWatcher.
 class ScopedFirewallHolder {
  public:
-  ScopedFirewallHolder() = default;
+  explicit ScopedFirewallHolder(
+      std::unique_ptr<wireguard::ScopedWireguardFirewall> firewall)
+      : firewall_(std::move(firewall)) {}
   ScopedFirewallHolder(const ScopedFirewallHolder&) = delete;
   ScopedFirewallHolder& operator=(const ScopedFirewallHolder&) = delete;
   ~ScopedFirewallHolder() = default;
 
-  void Install(const NET_LUID& tunnel_luid) {
-    auto firewall = wireguard::ScopedWireguardFirewall::Create(tunnel_luid);
-    if (!firewall) {
-      // Fail closed. Running the tunnel with no firewall would leak traffic
-      // and DNS outside it, so stop the tunnel instead.
-      VLOG(1) << "Failed to install the WireGuard firewall, stopping tunnel";
+  void PermitTunnel(const NET_LUID& tunnel_luid) {
+    if (!firewall_->PermitTunnelInterface(tunnel_luid)) {
+      // Fail closed. Block-all is already in force, so the tunnel would carry
+      // nothing anyway; stop it rather than leave the user staring at a dead
+      // connection.
+      VLOG(1) << "Failed to complete the WireGuard firewall, stopping tunnel";
       wireguard::RequestTunnelShutdown();
-      // The shutdown is already under way, so there is nothing left for the
-      // watchdog to do.
-      settled_.Signal();
-      return;
-    }
-    {
-      base::AutoLock auto_lock(lock_);
-      firewall_ = std::move(firewall);
     }
     settled_.Signal();
   }
 
-  // False if the firewall was neither installed nor failed within `timeout`,
-  // which means the tunnel adapter never showed up under the name we expected.
+  // False if the tunnel filters were neither installed nor failed within
+  // `timeout`, which means the adapter never showed up under the name we
+  // expected and the tunnel is up but carrying nothing.
   bool WaitUntilSettled(base::TimeDelta timeout) {
     return settled_.TimedWait(timeout);
   }
@@ -187,9 +181,9 @@ class ScopedFirewallHolder {
   void StopWaiting() { settled_.Signal(); }
 
  private:
-  base::Lock lock_;
-  std::unique_ptr<wireguard::ScopedWireguardFirewall> firewall_
-      GUARDED_BY(lock_);
+  // Only touched from the interface-change thread after construction, and
+  // destroyed on the main thread once the watcher has been torn down.
+  const std::unique_ptr<wireguard::ScopedWireguardFirewall> firewall_;
   base::WaitableEvent settled_;
 };
 
@@ -457,14 +451,23 @@ int RunWireguardTunnelService(const base::FilePath& config_file_path) {
       return S_FALSE;
     }
     // Our config routes no default route, so tunnel.dll installs none of its
-    // own WFP filters (see wireguard_utils.cc). Install ours as soon as it
-    // brings the adapter up. `firewall` is declared before `watcher` so the
-    // watcher is torn down first, and its destructor waits for any in-flight
-    // callback before returning.
-    ScopedFirewallHolder firewall;
+    // own WFP filters (see wireguard_utils.cc). Put the global half of ours in
+    // before the tunnel starts, so nothing escapes while the adapter is being
+    // created, and complete it once the adapter can be resolved to a LUID.
+    auto installed_firewall = ScopedWireguardFirewall::Create();
+    if (!installed_firewall) {
+      VLOG(1) << "Unable to install the firewall, refusing to connect "
+                 "unprotected";
+      return S_FALSE;
+    }
+
+    // `firewall` is declared before `watcher` so the watcher is torn down
+    // first, and its destructor waits for any in-flight callback before
+    // returning.
+    ScopedFirewallHolder firewall(std::move(installed_firewall));
     auto watcher = TunnelInterfaceWatcher::Create(
         GetTunnelInterfaceAlias(config_path),
-        base::BindOnce(&ScopedFirewallHolder::Install,
+        base::BindOnce(&ScopedFirewallHolder::PermitTunnel,
                        base::Unretained(&firewall)));
     if (!watcher) {
       VLOG(1) << "Unable to watch for the tunnel adapter, refusing to connect "

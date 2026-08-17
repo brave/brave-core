@@ -40,6 +40,9 @@ namespace {
 constexpr uint8_t kWeightBlockAll = 1;
 constexpr uint8_t kWeightPermitLocalNetwork = 8;
 constexpr uint8_t kWeightBlockDns = 10;
+// Only has to outweigh the block-all filter, and only exists until the tunnel
+// is up. See AddTemporaryPermitDns().
+constexpr uint8_t kWeightPermitTemporaryDns = 12;
 constexpr uint8_t kWeightPermitInfrastructure = 14;
 
 constexpr uint16_t kDnsPort = 53;
@@ -151,7 +154,8 @@ DWORD AddFilter(HANDLE engine,
                 FWP_ACTION_TYPE action,
                 uint8_t weight,
                 base::span<const FWPM_FILTER_CONDITION0> conditions,
-                const wchar_t* name) {
+                const wchar_t* name,
+                UINT64* out_filter_id = nullptr) {
   FWPM_FILTER0 filter = {};
   filter.subLayerKey = base_objects.sublayer;
   filter.providerKey = const_cast<GUID*>(&base_objects.provider);
@@ -170,6 +174,10 @@ DWORD AddFilter(HANDLE engine,
   if (result != ERROR_SUCCESS) {
     VLOG(1) << "FwpmFilterAdd0 failed, weight: " << static_cast<int>(weight)
             << ", error: " << std::hex << result;
+    return result;
+  }
+  if (out_filter_id) {
+    *out_filter_id = filter_id;
   }
   return result;
 }
@@ -404,26 +412,68 @@ DWORD AddSublayer(HANDLE engine, const BaseObjects& base_objects) {
   return FwpmSubLayerAdd0(engine, &sublayer, nullptr);
 }
 
-bool AddAllFilters(HANDLE engine,
-                   const BaseObjects& base_objects,
-                   const NET_LUID& tunnel_luid) {
+// Phase one only. tunnel.dll has to resolve the endpoint hostname before there
+// is a tunnel to resolve it through, and on Windows that query is issued by the
+// DNS Client service rather than by us, so no app-based permit would cover it.
+// AddTunnelFilters() withdraws this and hands over to AddBlockDns().
+DWORD AddTemporaryPermitDns(HANDLE engine,
+                            const BaseObjects& base_objects,
+                            std::vector<UINT64>* filter_ids) {
+  const std::array<FWPM_FILTER_CONDITION0, 1u> conditions = {
+      FWPM_FILTER_CONDITION0{FWPM_CONDITION_IP_REMOTE_PORT,
+                             FWP_MATCH_EQUAL,
+                             {FWP_UINT16, {.uint16 = kDnsPort}}}};
+  for (const auto& layer : GetOutboundLayers()) {
+    UINT64 filter_id = 0;
+    auto result = AddFilter(engine, base_objects, layer, FWP_ACTION_PERMIT,
+                            kWeightPermitTemporaryDns, conditions,
+                            L"Permit DNS while connecting", &filter_id);
+    if (result != ERROR_SUCCESS) {
+      return result;
+    }
+    filter_ids->push_back(filter_id);
+  }
+  return ERROR_SUCCESS;
+}
+
+// Everything that does not need the tunnel adapter, so that block-all is in
+// force before the adapter exists rather than after.
+bool AddGlobalFilters(HANDLE engine,
+                      const BaseObjects& base_objects,
+                      std::vector<UINT64>* temporary_dns_filter_ids) {
   return AddProvider(engine, base_objects) == ERROR_SUCCESS &&
          AddSublayer(engine, base_objects) == ERROR_SUCCESS &&
          AddPermitTunnelService(engine, base_objects) == ERROR_SUCCESS &&
          AddPermitLoopback(engine, base_objects) == ERROR_SUCCESS &&
          AddPermitDhcp(engine, base_objects) == ERROR_SUCCESS &&
-         AddPermitTunnelInterface(engine, base_objects, tunnel_luid) ==
-             ERROR_SUCCESS &&
-         AddBlockDns(engine, base_objects) == ERROR_SUCCESS &&
          AddPermitLocalNetwork(engine, base_objects) == ERROR_SUCCESS &&
+         AddTemporaryPermitDns(engine, base_objects,
+                               temporary_dns_filter_ids) == ERROR_SUCCESS &&
          AddBlockAll(engine, base_objects) == ERROR_SUCCESS;
+}
+
+// The rest, once the adapter is up: let the tunnel carry traffic and pin DNS to
+// it, dropping the allowance that kept endpoint resolution working.
+bool AddTunnelFilters(HANDLE engine,
+                      const BaseObjects& base_objects,
+                      const NET_LUID& tunnel_luid,
+                      const std::vector<UINT64>& temporary_dns_filter_ids) {
+  for (const auto filter_id : temporary_dns_filter_ids) {
+    auto result = FwpmFilterDeleteById0(engine, filter_id);
+    if (result != ERROR_SUCCESS) {
+      VLOG(1) << "FwpmFilterDeleteById0 failed, error: " << std::hex << result;
+      return false;
+    }
+  }
+  return AddPermitTunnelInterface(engine, base_objects, tunnel_luid) ==
+             ERROR_SUCCESS &&
+         AddBlockDns(engine, base_objects) == ERROR_SUCCESS;
 }
 
 }  // namespace
 
 // static
-std::unique_ptr<ScopedWireguardFirewall> ScopedWireguardFirewall::Create(
-    const NET_LUID& tunnel_luid) {
+std::unique_ptr<ScopedWireguardFirewall> ScopedWireguardFirewall::Create() {
   // A dynamic session means the kernel drops the sublayer and every filter in
   // it when `engine` is closed or this process dies, so we can never leave a
   // machine firewalled off after a crash.
@@ -448,7 +498,8 @@ std::unique_ptr<ScopedWireguardFirewall> ScopedWireguardFirewall::Create(
   // Named local, not a temporary: the WFP structs store a pointer to
   // `provider`, so it has to outlive every FwpmXxxAdd0() call below.
   const BaseObjects base_objects = CreateBaseObjects();
-  if (!AddAllFilters(engine, base_objects, tunnel_luid)) {
+  std::vector<UINT64> temporary_dns_filter_ids;
+  if (!AddGlobalFilters(engine, base_objects, &temporary_dns_filter_ids)) {
     FwpmTransactionAbort0(engine);
     FwpmEngineClose0(engine);
     return nullptr;
@@ -461,12 +512,47 @@ std::unique_ptr<ScopedWireguardFirewall> ScopedWireguardFirewall::Create(
     return nullptr;
   }
 
-  VLOG(1) << "WireGuard firewall installed";
-  return base::WrapUnique(new ScopedWireguardFirewall(engine));
+  VLOG(1) << "WireGuard firewall installed, waiting for the tunnel adapter";
+  return base::WrapUnique(new ScopedWireguardFirewall(
+      engine, base_objects.provider, base_objects.sublayer,
+      std::move(temporary_dns_filter_ids)));
 }
 
-ScopedWireguardFirewall::ScopedWireguardFirewall(HANDLE engine)
-    : engine_(engine) {}
+bool ScopedWireguardFirewall::PermitTunnelInterface(
+    const NET_LUID& tunnel_luid) {
+  const BaseObjects base_objects = {.provider = provider_key_,
+                                    .sublayer = sublayer_key_};
+  auto result = FwpmTransactionBegin0(engine_, 0);
+  if (result != ERROR_SUCCESS) {
+    VLOG(1) << "FwpmTransactionBegin0 failed, error: " << std::hex << result;
+    return false;
+  }
+
+  if (!AddTunnelFilters(engine_, base_objects, tunnel_luid,
+                        temporary_dns_filter_ids_)) {
+    FwpmTransactionAbort0(engine_);
+    return false;
+  }
+
+  result = FwpmTransactionCommit0(engine_);
+  if (result != ERROR_SUCCESS) {
+    VLOG(1) << "FwpmTransactionCommit0 failed, error: " << std::hex << result;
+    return false;
+  }
+
+  VLOG(1) << "WireGuard firewall now permits the tunnel adapter";
+  return true;
+}
+
+ScopedWireguardFirewall::ScopedWireguardFirewall(
+    HANDLE engine,
+    const GUID& provider_key,
+    const GUID& sublayer_key,
+    std::vector<UINT64> temporary_dns_filter_ids)
+    : engine_(engine),
+      provider_key_(provider_key),
+      sublayer_key_(sublayer_key),
+      temporary_dns_filter_ids_(std::move(temporary_dns_filter_ids)) {}
 
 ScopedWireguardFirewall::~ScopedWireguardFirewall() {
   if (!engine_) {
