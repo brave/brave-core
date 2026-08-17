@@ -16,6 +16,7 @@ static_library("browser") {
     "containers_settings_handler.h",
     "prefs_registration.h",
     "temporary_container.h",
+    "ui_pref_names.h",
     "unknown_container.h",
   ]
 

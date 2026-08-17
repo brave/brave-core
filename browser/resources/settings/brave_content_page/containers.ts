@@ -15,11 +15,9 @@ import {
   CrLitElement,
   PropertyValues,
 } from 'chrome://resources/lit/v3_0/lit.rollup.js'
-import { PrefService } from '/shared/settings/prefs2/pref_service.js'
 import { PrefServiceObserverMixinLit } from '/shared/settings/prefs2/pref_service_observer_mixin_lit.js'
 
 import { ContainersStrings } from '../brave_generated_resources_webui_strings.js'
-import type { SettingsToggleButtonElement } from '../controls/settings_toggle_button.js'
 import {
   Container,
   ContainerOperationError,
@@ -32,11 +30,6 @@ import { getHtml } from './containers.html.js'
 import type { ColorSelectedEvent } from './containers_background_chip.js'
 import { ContainersSettingsHandlerBrowserProxy } from './containers_browser_proxy.js'
 import type { IconSelectedEvent } from './containers_icon.js'
-
-// Kept in sync with brave_tabs::kAlwaysUseMiniAccentIcon in
-// browser/ui/tabs/brave_tab_prefs.h.
-const ALWAYS_USE_MINI_ACCENT_ICON_PREF =
-  'brave.tabs.always_use_mini_accent_icon'
 
 const SettingsBraveContentContainersElementBase = PrefServiceObserverMixinLit(
   I18nMixinLit(CrLitElement),
@@ -60,14 +53,11 @@ export class SettingsBraveContentContainersElement extends SettingsBraveContentC
 
   static override get properties() {
     return {
-      containersEnabled_: {
-        type: Boolean,
+      containersEnabledPref_: {
+        type: Object,
       },
       containersList_: {
         type: Array,
-      },
-      alwaysUseMiniAccentIconPref_: {
-        type: Object,
       },
       editingContainer_: {
         type: Object,
@@ -88,10 +78,10 @@ export class SettingsBraveContentContainersElement extends SettingsBraveContentC
   }
 
   private browserProxy = ContainersSettingsHandlerBrowserProxy.getInstance()
-  accessor containersEnabled_ = true
+  accessor containersEnabledPref_:
+    | chrome.settingsPrivate.PrefObject<boolean>
+    | undefined
   accessor containersList_: Container[] = []
-  accessor alwaysUseMiniAccentIconPref_:
-    chrome.settingsPrivate.PrefObject<boolean> | undefined
   accessor editingContainer_: Container | undefined
   accessor deletingContainer_: Container | undefined
   accessor isEditDialogNameInvalid_ = false
@@ -100,50 +90,24 @@ export class SettingsBraveContentContainersElement extends SettingsBraveContentC
 
   override connectedCallback() {
     super.connectedCallback()
-    this.browserProxy.handler.getContainersEnabled().then(({ enabled }) => {
-      this.containersEnabled_ = enabled
-    })
     this.browserProxy.handler.getContainers().then(({ containers }) => {
       this.onContainersListUpdated_(containers)
     })
-    this.mirrorPref(
-      ALWAYS_USE_MINI_ACCENT_ICON_PREF,
-      'alwaysUseMiniAccentIconPref_',
-    )
+    this.mirrorPref('brave.containers.enabled', 'containersEnabledPref_')
     this.browserProxy.callbackRouter.onContainersChanged.addListener(
       this.onContainersListUpdated_.bind(this),
-    )
-    this.browserProxy.callbackRouter.onContainersEnabledChanged.addListener(
-      this.onContainersEnabledChanged_.bind(this),
     )
   }
 
   override updated(changedProperties: PropertyValues<this>) {
     super.updated(changedProperties)
     if (
-      changedProperties.has('containersEnabled_')
-      && !this.containersEnabled_
+      changedProperties.has('containersEnabledPref_')
+      && !this.containersEnabledPref_?.value
     ) {
       this.editingContainer_ = undefined
       this.deletingContainer_ = undefined
     }
-  }
-
-  private onContainersEnabledChanged_(enabled: boolean) {
-    this.containersEnabled_ = enabled
-  }
-
-  onContainersEnabledChange_(e: Event) {
-    const toggle = e.target as SettingsToggleButtonElement
-    this.browserProxy.handler.setContainersEnabled(toggle.checked)
-  }
-
-  onAlwaysUseMiniIconChange_(e: Event) {
-    const toggle = e.target as SettingsToggleButtonElement
-    PrefService.getInstance().setPrefValue(
-      ALWAYS_USE_MINI_ACCENT_ICON_PREF,
-      toggle.checked,
-    )
   }
 
   onContainersListUpdated_(containers: Container[]) {

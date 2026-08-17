@@ -31,21 +31,17 @@ export function getHtml(this: SettingsBraveContentContainersElement) {
       </div>
 
       <settings-toggle-button
-        .checked="${this.containersEnabled_}"
+        pref-key="brave.containers.enabled"
         icon="container-on"
         label="$i18n{SETTINGS_CONTAINERS_ENABLED_LABEL}"
-        no-set-pref
-        @change="${this.onContainersEnabledChange_}"
       ></settings-toggle-button>
 
-      ${this.containersEnabled_
+      ${this.containersEnabledPref_?.value
         ? html`
             <settings-toggle-button
-              .checked="${this.alwaysUseMiniAccentIconPref_?.value ?? false}"
+              pref-key="brave.tabs.always_use_mini_accent_icon"
               icon="container-on"
               label="$i18n{SETTINGS_CONTAINERS_ALWAYS_USE_MINI_ICON_LABEL}"
-              no-set-pref
-              @change="${this.onAlwaysUseMiniIconChange_}"
             ></settings-toggle-button>
             ${this.containersList_?.length
               ? html`

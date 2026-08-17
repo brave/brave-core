@@ -10,6 +10,7 @@ import("//brave/components/brave_talk/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
+import("//brave/components/containers/buildflags/buildflags.gni")
 import("//brave/components/email_aliases/buildflags/buildflags.gni")
 import("//brave/components/playlist/core/common/buildflags/buildflags.gni")
 import("//brave/components/psst/buildflags/buildflags.gni")
@@ -113,6 +114,7 @@ source_set("extensions") {
     "//brave/components/brave_wallet/common/buildflags",
     "//brave/components/brave_wayback_machine/buildflags",
     "//brave/components/constants",
+    "//brave/components/containers/buildflags",
     "//brave/components/de_amp/common",
     "//brave/components/debounce/core/common",
     "//brave/components/email_aliases/buildflags",
@@ -221,6 +223,10 @@ source_set("extensions") {
 
   if (enable_email_aliases) {
     deps += [ "//brave/components/email_aliases:pref_names" ]
+  }
+
+  if (enable_containers) {
+    deps += [ "//brave/components/containers/core/browser" ]
   }
 
   allow_circular_includes_from = [ ":brave_prefs_util_impl" ]
