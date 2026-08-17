@@ -79,12 +79,12 @@ std::optional<std::string> ReadCompressibleString(
     const sync_pb::AIChatCompressibleString& in);
 
 // Invokes |visit| for every AIChatCompressibleString on |entry| that
-// FitEntryWithinSyncBudget is allowed to omit. Callers that have to recognise
-// or undo an omission (see AIChatSyncBridge::RestoreOmittedFieldsFromLocal)
-// use this so they cover exactly the field set the budget policy can drop,
-// rather than maintaining a second list of their own. Uploaded file bytes are
-// not covered — they are raw bytes rather than an AIChatCompressibleString, so
-// callers handle AIChatUploadedFile::omitted_data_hash separately.
+// FitEntryWithinSyncBudget is allowed to omit. Code on the receiving side that
+// has to recognise or undo an omission uses this so it covers exactly the field
+// set the budget policy can drop, rather than maintaining a second list of its
+// own. Uploaded file bytes are not covered — they are raw bytes rather than an
+// AIChatCompressibleString, so callers handle
+// AIChatUploadedFile::omitted_data_hash separately.
 using CompressibleStringVisitor =
     base::FunctionRef<void(sync_pb::AIChatCompressibleString&)>;
 void ForEachOmittableString(sync_pb::AIChatConversationSpecifics_Entry* entry,
