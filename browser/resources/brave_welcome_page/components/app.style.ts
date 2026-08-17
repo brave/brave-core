@@ -15,11 +15,11 @@ export const style = scoped.css`
     align-items: center;
     justify-content: center;
     min-height: 100vh;
-    background-color: ${color.primitive.neutral['0']};
     background-image: none;
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
+    background: linear-gradient(45deg, #200000 0%, #800000 27.45%, #FF4710 61%);
     padding: ${spacing.xl};
   }
 
@@ -45,6 +45,7 @@ style.passthrough.css`
 
   h1, h2, h3, h4, p {
     margin: 0;
+    text-wrap: pretty;
   }
 
   h1 {
@@ -146,8 +147,7 @@ style.passthrough.css`
     }
 
     .step-text {
-      max-width: 430px;
-      width: 40%;
+      max-width: 350px;
       align-self: stretch;
     }
 
