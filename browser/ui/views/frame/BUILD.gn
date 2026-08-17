@@ -123,6 +123,7 @@ source_set("browser_tests") {
     "//chrome/browser/ui/exclusive_access",
     "//chrome/browser/ui/side_panel:side_panel_views_dependent",
     "//chrome/browser/ui/tabs:features",
+    "//chrome/browser/ui/views/frame:scrim_view",
     "//chrome/browser/ui/views/infobars",
     "//chrome/browser/ui/views/tabs/shared",
     "//chrome/browser/ui/window_feature_controller",
