@@ -153,20 +153,25 @@ DWORD AddFilter(HANDLE engine,
                 const GUID& layer,
                 FWP_ACTION_TYPE action,
                 uint8_t weight,
-                base::span<const FWPM_FILTER_CONDITION0> conditions,
+                base::span<FWPM_FILTER_CONDITION0> conditions,
                 const wchar_t* name,
                 UINT64* out_filter_id = nullptr) {
+  // FWPM_FILTER0 holds non-const pointers even though WFP only reads through
+  // them, so point it at mutable copies of our own rather than casting away
+  // constness we actually rely on.
+  GUID provider_key = base_objects.provider;
+  std::wstring display_name(name);
+
   FWPM_FILTER0 filter = {};
   filter.subLayerKey = base_objects.sublayer;
-  filter.providerKey = const_cast<GUID*>(&base_objects.provider);
-  filter.displayData.name = const_cast<wchar_t*>(name);
-  filter.displayData.description = const_cast<wchar_t*>(name);
+  filter.providerKey = &provider_key;
+  filter.displayData.name = display_name.data();
+  filter.displayData.description = display_name.data();
   filter.layerKey = layer;
   filter.action.type = action;
   filter.weight.type = FWP_UINT8;
   filter.weight.uint8 = weight;
-  filter.filterCondition =
-      const_cast<FWPM_FILTER_CONDITION0*>(conditions.data());
+  filter.filterCondition = conditions.data();
   filter.numFilterConditions = static_cast<UINT32>(conditions.size());
 
   UINT64 filter_id = 0;
@@ -187,7 +192,7 @@ DWORD AddFilterToLayers(HANDLE engine,
                         const std::vector<GUID>& layers,
                         FWP_ACTION_TYPE action,
                         uint8_t weight,
-                        base::span<const FWPM_FILTER_CONDITION0> conditions,
+                        base::span<FWPM_FILTER_CONDITION0> conditions,
                         const wchar_t* name) {
   for (const auto& layer : layers) {
     auto result = AddFilter(engine, base_objects, layer, action, weight,
@@ -219,7 +224,7 @@ DWORD AddPermitTunnelService(HANDLE engine, const BaseObjects& base_objects) {
     return result;
   }
 
-  const std::array<FWPM_FILTER_CONDITION0, 1u> conditions = {
+  std::array<FWPM_FILTER_CONDITION0, 1u> conditions = {
       FWPM_FILTER_CONDITION0{FWPM_CONDITION_ALE_APP_ID,
                              FWP_MATCH_EQUAL,
                              {FWP_BYTE_BLOB_TYPE, {.byteBlob = app_id}}}};
@@ -241,7 +246,7 @@ DWORD AddPermitTunnelService(HANDLE engine, const BaseObjects& base_objects) {
 // Windows. A unicast renewal that goes unanswered falls back to a broadcast
 // rebind, which this covers.
 DWORD AddPermitDhcp(HANDLE engine, const BaseObjects& base_objects) {
-  const std::array<FWPM_FILTER_CONDITION0, 4u> v4_request = {
+  std::array<FWPM_FILTER_CONDITION0, 4u> v4_request = {
       FWPM_FILTER_CONDITION0{FWPM_CONDITION_IP_PROTOCOL,
                              FWP_MATCH_EQUAL,
                              {FWP_UINT8, {.uint8 = kUdpProtocol}}},
@@ -264,7 +269,7 @@ DWORD AddPermitDhcp(HANDLE engine, const BaseObjects& base_objects) {
   // No address condition: the offer or ack comes from whatever address the
   // server or relay answers from, which is the case the local network permits
   // miss.
-  const std::array<FWPM_FILTER_CONDITION0, 3u> v4_response = {
+  std::array<FWPM_FILTER_CONDITION0, 3u> v4_response = {
       FWPM_FILTER_CONDITION0{FWPM_CONDITION_IP_PROTOCOL,
                              FWP_MATCH_EQUAL,
                              {FWP_UINT8, {.uint8 = kUdpProtocol}}},
@@ -284,7 +289,7 @@ DWORD AddPermitDhcp(HANDLE engine, const BaseObjects& base_objects) {
   // DHCPv6 only ever talks to multicast or link-local addresses, which the
   // local network permits already cover, so the port pair is all that is left
   // to pin down.
-  const std::array<FWPM_FILTER_CONDITION0, 3u> v6 = {
+  std::array<FWPM_FILTER_CONDITION0, 3u> v6 = {
       FWPM_FILTER_CONDITION0{FWPM_CONDITION_IP_PROTOCOL,
                              FWP_MATCH_EQUAL,
                              {FWP_UINT8, {.uint8 = kUdpProtocol}}},
@@ -301,11 +306,10 @@ DWORD AddPermitDhcp(HANDLE engine, const BaseObjects& base_objects) {
 }
 
 DWORD AddPermitLoopback(HANDLE engine, const BaseObjects& base_objects) {
-  const std::array<FWPM_FILTER_CONDITION0, 1u> conditions = {
-      FWPM_FILTER_CONDITION0{
-          FWPM_CONDITION_FLAGS,
-          FWP_MATCH_FLAGS_ALL_SET,
-          {FWP_UINT32, {.uint32 = FWP_CONDITION_FLAG_IS_LOOPBACK}}}};
+  std::array<FWPM_FILTER_CONDITION0, 1u> conditions = {FWPM_FILTER_CONDITION0{
+      FWPM_CONDITION_FLAGS,
+      FWP_MATCH_FLAGS_ALL_SET,
+      {FWP_UINT32, {.uint32 = FWP_CONDITION_FLAG_IS_LOOPBACK}}}};
   return AddFilterToLayers(engine, base_objects, GetAllLayers(),
                            FWP_ACTION_PERMIT, kWeightPermitInfrastructure,
                            conditions, L"Permit loopback");
@@ -318,7 +322,7 @@ DWORD AddPermitTunnelInterface(HANDLE engine,
                                const NET_LUID& tunnel_luid) {
   // WFP stores a pointer for FWP_UINT64, so this must outlive the filter adds.
   UINT64 luid_value = tunnel_luid.Value;
-  const std::array<FWPM_FILTER_CONDITION0, 1u> conditions = {
+  std::array<FWPM_FILTER_CONDITION0, 1u> conditions = {
       FWPM_FILTER_CONDITION0{FWPM_CONDITION_IP_LOCAL_INTERFACE,
                              FWP_MATCH_EQUAL,
                              {FWP_UINT64, {.uint64 = &luid_value}}}};
@@ -333,7 +337,7 @@ DWORD AddPermitTunnelInterface(HANDLE engine,
 // including the ones Windows' multihomed name resolution would send to the
 // router alongside the tunnel's resolver.
 DWORD AddBlockDns(HANDLE engine, const BaseObjects& base_objects) {
-  const std::array<FWPM_FILTER_CONDITION0, 1u> conditions = {
+  std::array<FWPM_FILTER_CONDITION0, 1u> conditions = {
       FWPM_FILTER_CONDITION0{FWPM_CONDITION_IP_REMOTE_PORT,
                              FWP_MATCH_EQUAL,
                              {FWP_UINT16, {.uint16 = kDnsPort}}}};
@@ -351,11 +355,10 @@ DWORD AddPermitLocalNetwork(HANDLE engine, const BaseObjects& base_objects) {
     addr_and_mask.addr = prefix.address;
     addr_and_mask.mask = Ipv4Netmask(prefix.prefix_length);
 
-    const std::array<FWPM_FILTER_CONDITION0, 1u> conditions = {
-        FWPM_FILTER_CONDITION0{
-            FWPM_CONDITION_IP_REMOTE_ADDRESS,
-            FWP_MATCH_EQUAL,
-            {FWP_V4_ADDR_MASK, {.v4AddrMask = &addr_and_mask}}}};
+    std::array<FWPM_FILTER_CONDITION0, 1u> conditions = {FWPM_FILTER_CONDITION0{
+        FWPM_CONDITION_IP_REMOTE_ADDRESS,
+        FWP_MATCH_EQUAL,
+        {FWP_V4_ADDR_MASK, {.v4AddrMask = &addr_and_mask}}}};
     auto result = AddFilterToLayers(
         engine, base_objects, v4_layers, FWP_ACTION_PERMIT,
         kWeightPermitLocalNetwork, conditions, L"Permit local network");
@@ -371,11 +374,10 @@ DWORD AddPermitLocalNetwork(HANDLE engine, const BaseObjects& base_objects) {
     base::span(addr_and_mask.addr).copy_from(prefix.address);
     addr_and_mask.prefixLength = prefix.prefix_length;
 
-    const std::array<FWPM_FILTER_CONDITION0, 1u> conditions = {
-        FWPM_FILTER_CONDITION0{
-            FWPM_CONDITION_IP_REMOTE_ADDRESS,
-            FWP_MATCH_EQUAL,
-            {FWP_V6_ADDR_MASK, {.v6AddrMask = &addr_and_mask}}}};
+    std::array<FWPM_FILTER_CONDITION0, 1u> conditions = {FWPM_FILTER_CONDITION0{
+        FWPM_CONDITION_IP_REMOTE_ADDRESS,
+        FWP_MATCH_EQUAL,
+        {FWP_V6_ADDR_MASK, {.v6AddrMask = &addr_and_mask}}}};
     auto result = AddFilterToLayers(
         engine, base_objects, v6_layers, FWP_ACTION_PERMIT,
         kWeightPermitLocalNetwork, conditions, L"Permit local network");
@@ -403,9 +405,10 @@ DWORD AddProvider(HANDLE engine, const BaseObjects& base_objects) {
 
 DWORD AddSublayer(HANDLE engine, const BaseObjects& base_objects) {
   std::wstring name = GetBraveVpnWireguardServiceDisplayName();
+  GUID provider_key = base_objects.provider;
   FWPM_SUBLAYER0 sublayer = {};
   sublayer.subLayerKey = base_objects.sublayer;
-  sublayer.providerKey = const_cast<GUID*>(&base_objects.provider);
+  sublayer.providerKey = &provider_key;
   sublayer.displayData.name = name.data();
   sublayer.displayData.description = name.data();
   sublayer.weight = 0xFFFF;
@@ -419,7 +422,7 @@ DWORD AddSublayer(HANDLE engine, const BaseObjects& base_objects) {
 DWORD AddTemporaryPermitDns(HANDLE engine,
                             const BaseObjects& base_objects,
                             std::vector<UINT64>* filter_ids) {
-  const std::array<FWPM_FILTER_CONDITION0, 1u> conditions = {
+  std::array<FWPM_FILTER_CONDITION0, 1u> conditions = {
       FWPM_FILTER_CONDITION0{FWPM_CONDITION_IP_REMOTE_PORT,
                              FWP_MATCH_EQUAL,
                              {FWP_UINT16, {.uint16 = kDnsPort}}}};
