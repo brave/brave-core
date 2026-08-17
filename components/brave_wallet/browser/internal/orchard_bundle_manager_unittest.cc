@@ -1520,7 +1520,6 @@ inline constexpr const char* kV6OrchardToTransparentSpend0MerklePath[] = {
     "3fd4915c19bd831a7920be55d969b2ac23359e2559da77de2373f06ca014ba27",
     "87d063cd07ee4944222b7762840eb94c688bec743fa8bdf7715c8fe29f104c2a",
 };
-inline constexpr size_t kV6OrchardToTransparentSpend0MerklePathSize = 32;
 
 // spend[1] amount=250000 witness_position=50195645
 inline constexpr char kV6OrchardToTransparentSpend1Addr[] =
@@ -1567,7 +1566,6 @@ inline constexpr const char* kV6OrchardToTransparentSpend1MerklePath[] = {
     "3fd4915c19bd831a7920be55d969b2ac23359e2559da77de2373f06ca014ba27",
     "87d063cd07ee4944222b7762840eb94c688bec743fa8bdf7715c8fe29f104c2a",
 };
-inline constexpr size_t kV6OrchardToTransparentSpend1MerklePathSize = 32;
 
 inline constexpr char kV6OrchardToTransparentOutput0Addr[] =
     "037f9054dc0deb4c01dfd4b6c47aec0d2b57f9260b6d35f70f2cccbeb39b0dab9b253cfaa5"

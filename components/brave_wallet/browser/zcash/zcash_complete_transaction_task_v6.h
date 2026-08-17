@@ -3,12 +3,13 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_ZCASH_COMPLETE_TRANSACTION_TASK_H_
-#define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_ZCASH_COMPLETE_TRANSACTION_TASK_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_ZCASH_COMPLETE_TRANSACTION_TASK_V6_H_
+#define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_ZCASH_COMPLETE_TRANSACTION_TASK_V6_H_
 
 #include <array>
 #include <map>
 #include <memory>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -23,22 +24,26 @@ namespace brave_wallet {
 class KeyringService;
 class ZCashWalletService;
 
-// Completes transaction by signing transparent inputs and generating orchard
-// part(if needed).
-class ZCashCompleteTransactionTask {
+// Completes a v6 transaction by signing transparent inputs and generating
+// Orchard/Ironwood shielded parts (if needed).
+class ZCashCompleteTransactionTaskV6 {
  public:
-  using ZCashCompleteTransactionTaskCallback =
+  using ZCashCompleteTransactionTaskV6Callback =
       base::OnceCallback<void(base::expected<ZCashTransaction, std::string>)>;
-  ZCashCompleteTransactionTask(base::PassKey<ZCashWalletService> pass_key,
-                               ZCashWalletService& zcash_wallet_service,
-                               ZCashActionContext context,
-                               KeyringService& keyring_service,
-                               const ZCashTransaction& transaction);
-  ~ZCashCompleteTransactionTask();
+  ZCashCompleteTransactionTaskV6(base::PassKey<ZCashWalletService> pass_key,
+                                 ZCashWalletService& zcash_wallet_service,
+                                 ZCashActionContext context,
+                                 KeyringService& keyring_service,
+                                 const ZCashTransaction& transaction);
+  ~ZCashCompleteTransactionTaskV6();
 
-  void Start(ZCashCompleteTransactionTaskCallback callback);
+  void Start(ZCashCompleteTransactionTaskV6Callback callback);
 
  private:
+  static std::unique_ptr<OrchardBundleManager> ApplyOrchardSignatures(
+      std::unique_ptr<OrchardBundleManager> orchard_bundle_manager,
+      std::array<uint8_t, kZCashDigestSize> sighash);
+
   void ScheduleWorkOnTask();
   void WorkOnTask();
 
@@ -49,18 +54,6 @@ class ZCashCompleteTransactionTask {
   void GetLatestBlock();
   void OnGetLatestBlockHeight(
       base::expected<zcash::mojom::BlockIDPtr, std::string> result);
-
-  void CalculateWitness();
-  void OnWitnessCalculateResult(
-      base::expected<std::vector<OrchardInput>, OrchardStorage::Error> result);
-
-  void GetTreeState();
-  void OnGetTreeState(
-      base::expected<zcash::mojom::TreeStatePtr, std::string> result);
-
-  void SignOrchardPart();
-  void OnSignOrchardPartComplete(
-      std::unique_ptr<OrchardBundleManager> orchard_bundle_manager);
 
   void CalculateWitnessV6(OrchardPool pool);
   void OnWitnessCalculateResultV6(
@@ -83,14 +76,11 @@ class ZCashCompleteTransactionTask {
   ZCashActionContext context_;
   raw_ref<KeyringService> keyring_service_;
   ZCashTransaction transaction_;
-  ZCashCompleteTransactionTaskCallback callback_;
+  ZCashCompleteTransactionTaskV6Callback callback_;
 
   std::optional<std::string> error_;
   std::optional<uint32_t> consensus_branch_id_;
   std::optional<uint32_t> chain_tip_height_;
-
-  std::optional<std::vector<OrchardInput>> witness_inputs_;
-  std::optional<zcash::mojom::TreeStatePtr> anchor_tree_state_;
 
   struct V6PoolSigningState {
     V6PoolSigningState();
@@ -104,9 +94,9 @@ class ZCashCompleteTransactionTask {
   std::map<OrchardPool, V6PoolSigningState> v6_signing_state_;
   std::optional<std::array<uint8_t, kZCashDigestSize>> v6_sighash_;
 
-  base::WeakPtrFactory<ZCashCompleteTransactionTask> weak_ptr_factory_{this};
+  base::WeakPtrFactory<ZCashCompleteTransactionTaskV6> weak_ptr_factory_{this};
 };
 
 }  // namespace brave_wallet
 
-#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_ZCASH_COMPLETE_TRANSACTION_TASK_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_ZCASH_COMPLETE_TRANSACTION_TASK_V6_H_

@@ -29,7 +29,7 @@
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/browser/zcash/v5_zcash_serializer.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_auto_sync_manager.h"
-#include "brave/components/brave_wallet/browser/zcash/zcash_complete_transaction_task.h"
+#include "brave/components/brave_wallet/browser/zcash/zcash_complete_transaction_task_v5.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_rpc.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_test_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -4713,8 +4713,8 @@ TEST_F(ZCashWalletServiceUnitTest,
 
   // Create a task and add it to the complete_transaction_tasks_ set
   auto [task_it, inserted] =
-      zcash_wallet_service_->complete_transaction_tasks_.insert(
-          std::make_unique<ZCashCompleteTransactionTask>(
+      zcash_wallet_service_->complete_transaction_tasks_v5_.insert(
+          std::make_unique<ZCashCompleteTransactionTaskV5>(
               zcash_wallet_service_->CreatePassKeyForTesting(),
               *zcash_wallet_service_,
               zcash_wallet_service_->CreateActionContext(account_id()),
@@ -4733,7 +4733,7 @@ TEST_F(ZCashWalletServiceUnitTest,
   // EXPECT_DEATH should trigger because ValidateAmounts will fail
   // and the CHECK will abort
   EXPECT_DEATH_IF_SUPPORTED(
-      zcash_wallet_service_->OnCompleteTransactionTaskDone(
+      zcash_wallet_service_->OnCompleteTransactionTaskV5Done(
           task_ptr, account_id(), invalid_tx, callback.Get(), result),
       "");
 }
@@ -4753,8 +4753,8 @@ TEST_F(ZCashWalletServiceUnitTest,
 
   // Create a task and add it to the complete_transaction_tasks_ set
   auto [task_it, inserted] =
-      zcash_wallet_service_->complete_transaction_tasks_.insert(
-          std::make_unique<ZCashCompleteTransactionTask>(
+      zcash_wallet_service_->complete_transaction_tasks_v5_.insert(
+          std::make_unique<ZCashCompleteTransactionTaskV5>(
               zcash_wallet_service_->CreatePassKeyForTesting(),
               *zcash_wallet_service_,
               zcash_wallet_service_->CreateActionContext(account_id()),
@@ -4776,7 +4776,7 @@ TEST_F(ZCashWalletServiceUnitTest,
   // EXPECT_DEATH should trigger because ValidateAmounts will fail for the
   // result_invalid_tx and the CHECK will abort
   EXPECT_DEATH_IF_SUPPORTED(
-      zcash_wallet_service_->OnCompleteTransactionTaskDone(
+      zcash_wallet_service_->OnCompleteTransactionTaskV5Done(
           task_ptr, account_id(), result_invalid_tx, callback.Get(), result),
       "");
 }
