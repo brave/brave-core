@@ -139,32 +139,27 @@ export class NemotronStreamSession {
   private readonly onResult: (text: string, isFinal: boolean) => void
   private readonly onError: () => void
   private readonly model: OrtNemotronModel
+  private readonly modelConfig:
+    | typeof config.ENGLISH_NEMOTRON_CONFIG
+    | typeof config.MULTILINGUAL_NEMOTRON_CONFIG
   private readonly frontend: StreamingMelFrontend
 
   // Attention cache.
-  private cacheCh = new Float32Array(
-    config.NEMO_NUM_ENCODER_LAYERS
-      * config.NEMO_LEFT_CONTEXT
-      * config.NEMO_HIDDEN_DIM,
-  )
+  private cacheCh: Float32Array
 
   // Convolution cache.
-  private cacheTime = new Float32Array(
-    config.NEMO_NUM_ENCODER_LAYERS
-      * config.NEMO_HIDDEN_DIM
-      * config.NEMO_CONV_CONTEXT,
-  )
+  private cacheTime: Float32Array
 
   // Indicates how much of left context at encoder-output level is valid.
   // This is different from left context at mel-frame level.
   private cacheLen = BigInt64Array.from([BigInt(0)])
 
   // Decoder LSTM state cache; 2 LSTM layers.
-  private st1 = new Float32Array(2 * config.NEMO_DECODER_LSTM_DIM)
-  private st2 = new Float32Array(2 * config.NEMO_DECODER_LSTM_DIM)
+  private st1: Float32Array
+  private st2: Float32Array
 
   // RNN-T predictor seed. NeMo uses BLANK as the initial previous token.
-  private prevToken = config.NEMO_BLANK
+  private prevToken: number
 
   // Hypothesis token IDs.
   private readonly hyp: number[] = []
@@ -183,11 +178,35 @@ export class NemotronStreamSession {
 
   constructor(
     model: OrtNemotronModel,
+    modelType: config.NemotronModelType,
     sampleRateHz: number,
     onResult: (text: string, isFinal: boolean) => void,
     onError: () => void,
   ) {
     this.model = model
+    this.modelConfig =
+      modelType === 'english'
+        ? config.ENGLISH_NEMOTRON_CONFIG
+        : config.MULTILINGUAL_NEMOTRON_CONFIG
+
+    this.cacheCh = new Float32Array(
+      this.modelConfig.NEMO_NUM_ENCODER_LAYERS
+        * this.modelConfig.NEMO_LEFT_CONTEXT
+        * this.modelConfig.NEMO_HIDDEN_DIM,
+    )
+
+    this.cacheTime = new Float32Array(
+      this.modelConfig.NEMO_NUM_ENCODER_LAYERS
+        * this.modelConfig.NEMO_HIDDEN_DIM
+        * this.modelConfig.NEMO_CONV_CONTEXT,
+    )
+
+    this.st1 = new Float32Array(2 * this.modelConfig.NEMO_DECODER_LSTM_DIM)
+
+    this.st2 = new Float32Array(2 * this.modelConfig.NEMO_DECODER_LSTM_DIM)
+
+    this.prevToken = this.modelConfig.NEMO_BLANK
+
     if (sampleRateHz !== config.TARGET_SAMPLE_RATE) {
       throw new Error(
         `Unsupported sample rate for Nemotron: ${sampleRateHz} Hz`,
@@ -239,7 +258,9 @@ export class NemotronStreamSession {
     this.state = 'finishing'
 
     const flush =
-      config.SILENCE_FLUSH_CHUNKS * config.NEMO_CHUNK * config.HOP_LENGTH
+    this.modelConfig.SILENCE_FLUSH_CHUNKS
+      * this.modelConfig.NEMO_CHUNK
+      * config.HOP_LENGTH
 
     try {
       this.frontend.appendAudioSamples(new Float32Array(flush))
@@ -291,7 +312,7 @@ export class NemotronStreamSession {
     this.cacheLen.fill(BigInt(0))
     this.st1.fill(0)
     this.st2.fill(0)
-    this.prevToken = config.NEMO_BLANK
+    this.prevToken = this.modelConfig.NEMO_BLANK
   }
 
   private async processAvailable(final: boolean): Promise<void> {
@@ -319,27 +340,27 @@ export class NemotronStreamSession {
           audio_signal: new ort.Tensor('float32', sig, [
             1,
             config.N_MELS,
-            config.NEMO_FRAMES,
+            this.modelConfig.NEMO_FRAMES,
           ]),
 
           length: new ort.Tensor(
             'int64',
-            BigInt64Array.from([BigInt(config.NEMO_FRAMES)]),
+            BigInt64Array.from([BigInt(this.modelConfig.NEMO_FRAMES)]),
             [1],
           ),
 
           cache_last_channel: new ort.Tensor('float32', this.cacheCh, [
             1,
-            config.NEMO_NUM_ENCODER_LAYERS,
-            config.NEMO_LEFT_CONTEXT,
-            config.NEMO_HIDDEN_DIM,
+            this.modelConfig.NEMO_NUM_ENCODER_LAYERS,
+            this.modelConfig.NEMO_LEFT_CONTEXT,
+            this.modelConfig.NEMO_HIDDEN_DIM,
           ]),
 
           cache_last_time: new ort.Tensor('float32', this.cacheTime, [
             1,
-            config.NEMO_NUM_ENCODER_LAYERS,
-            config.NEMO_HIDDEN_DIM,
-            config.NEMO_CONV_CONTEXT,
+            this.modelConfig.NEMO_NUM_ENCODER_LAYERS,
+            this.modelConfig.NEMO_HIDDEN_DIM,
+            this.modelConfig.NEMO_CONV_CONTEXT,
           ]),
 
           cache_last_channel_len: new ort.Tensor('int64', this.cacheLen, [1]),
@@ -386,21 +407,21 @@ export class NemotronStreamSession {
 
       // Outer loop over encoder time index.
       for (let fi = 0; fi < nEnc; fi++) {
-        const frame = new Float32Array(config.NEMO_HIDDEN_DIM)
+        const frame = new Float32Array(this.modelConfig.NEMO_HIDDEN_DIM)
 
         // Inner loop over channel/hidden-dim index.
-        for (let c = 0; c < config.NEMO_HIDDEN_DIM; c++) {
+        for (let c = 0; c < this.modelConfig.NEMO_HIDDEN_DIM; c++) {
           frame[c] = encOut[c * nTime + fi]
         }
 
         let sym = 0
 
         // Decoder processes each time frame, aggregated across all channels.
-        while (sym < config.NEMO_MAX_SYM) {
+        while (sym < this.modelConfig.NEMO_MAX_SYM) {
           const dout = await this.model.runDecoder({
             encoder_outputs: new ort.Tensor('float32', frame, [
               1,
-              config.NEMO_HIDDEN_DIM,
+              this.modelConfig.NEMO_HIDDEN_DIM,
               1,
             ]),
 
@@ -415,13 +436,13 @@ export class NemotronStreamSession {
             input_states_1: new ort.Tensor('float32', this.st1, [
               2,
               1,
-              config.NEMO_DECODER_LSTM_DIM,
+              this.modelConfig.NEMO_DECODER_LSTM_DIM,
             ]),
 
             input_states_2: new ort.Tensor('float32', this.st2, [
               2,
               1,
-              config.NEMO_DECODER_LSTM_DIM,
+              this.modelConfig.NEMO_DECODER_LSTM_DIM,
             ]),
           })
 
@@ -431,7 +452,7 @@ export class NemotronStreamSession {
 
           const tok = argmax(dout.outputs.data as Float32Array)
 
-          if (tok !== config.NEMO_BLANK) {
+          if (tok !== this.modelConfig.NEMO_BLANK) {
             this.hyp.push(tok)
             this.prevToken = tok
             this.st1 = (dout.output_states_1.data as Float32Array).slice()
@@ -443,7 +464,7 @@ export class NemotronStreamSession {
 
           disposeOrt([], dout as unknown as Record<string, OrtTensor>)
 
-          if (tok === config.NEMO_BLANK) {
+          if (tok === this.modelConfig.NEMO_BLANK) {
             break
           }
 
@@ -451,7 +472,7 @@ export class NemotronStreamSession {
         }
 
         // <if expr="!is_official_build">
-        if (sym === config.NEMO_MAX_SYM) {
+        if (sym === this.modelConfig.NEMO_MAX_SYM) {
           maxSymHits++
         }
         // </if>
@@ -467,7 +488,7 @@ export class NemotronStreamSession {
       const modelMs = encoderMs + decodeMs
       const totalMs = performance.now() - chunkStarted
       const chunkAudioMs = this.samplesToMs(
-        config.NEMO_CHUNK * config.HOP_LENGTH,
+        this.modelConfig.NEMO_CHUNK * config.HOP_LENGTH,
       )
 
       this.debug('chunk processed', {

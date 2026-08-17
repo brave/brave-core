@@ -182,7 +182,7 @@ export class StreamingMelFrontend {
   }
 
   hasFullChunk() {
-    return this.nextMelFrame - this.nextChunkFrame >= config.NEMO_CHUNK
+    return this.nextMelFrame - this.nextChunkFrame >= config.COMMON_NEMOTRON_CONFIG.NEMO_CHUNK
   }
 
   makeNextEncoderInput(): Float32Array {
@@ -190,14 +190,14 @@ export class StreamingMelFrontend {
       throw new Error('Not enough stable mel frames for another encoder chunk')
     }
 
-    const chunk = new Float32Array(config.N_MELS * config.NEMO_FRAMES)
+    const chunk = new Float32Array(config.N_MELS * config.COMMON_NEMOTRON_CONFIG.NEMO_FRAMES)
     const mainStart = this.nextChunkFrame
 
     // Left pre-encode mel cache. For the first chunk, this leaves the first
     // NEMO_PRECACHE columns as zeros.
-    const cacheStart = Math.max(0, mainStart - config.NEMO_PRECACHE)
+    const cacheStart = Math.max(0, mainStart - config.COMMON_NEMOTRON_CONFIG.NEMO_PRECACHE)
     const cacheFrames = mainStart - cacheStart
-    const cacheOffset = config.NEMO_PRECACHE - cacheFrames
+    const cacheOffset = config.COMMON_NEMOTRON_CONFIG.NEMO_PRECACHE - cacheFrames
 
     for (let f = 0; f < cacheFrames; f++) {
       this.copyMelFrameToEncoderChunk(
@@ -207,10 +207,10 @@ export class StreamingMelFrontend {
       )
     }
 
-    for (let f = 0; f < config.NEMO_CHUNK; f++) {
+    for (let f = 0; f < config.COMMON_NEMOTRON_CONFIG.NEMO_CHUNK; f++) {
       this.copyMelFrameToEncoderChunk(
         chunk,
-        config.NEMO_PRECACHE + f,
+        config.COMMON_NEMOTRON_CONFIG.NEMO_PRECACHE + f,
         this.getMelFrame(mainStart + f),
       )
     }
@@ -222,7 +222,7 @@ export class StreamingMelFrontend {
     if (!this.hasFullChunk()) {
       throw new Error('Cannot consume an incomplete mel chunk')
     }
-    this.nextChunkFrame += config.NEMO_CHUNK
+    this.nextChunkFrame += config.COMMON_NEMOTRON_CONFIG.NEMO_CHUNK
     this.trimOldBuffers()
   }
 
@@ -262,7 +262,7 @@ export class StreamingMelFrontend {
       nextChunkFrame: this.nextChunkFrame,
 
       stableBacklogFrames,
-      chunksReady: Math.floor(stableBacklogFrames / config.NEMO_CHUNK),
+      chunksReady: Math.floor(stableBacklogFrames / config.COMMON_NEMOTRON_CONFIG.NEMO_CHUNK),
       estimatedStableBacklogMs:
         (stableBacklogFrames * config.HOP_LENGTH * 1000)
         / config.TARGET_SAMPLE_RATE,
@@ -388,7 +388,7 @@ export class StreamingMelFrontend {
     melFrame: Float32Array,
   ) {
     for (let m = 0; m < config.N_MELS; m++) {
-      chunk[m * config.NEMO_FRAMES + chunkFrameOffset] = melFrame[m]
+      chunk[m * config.COMMON_NEMOTRON_CONFIG.NEMO_FRAMES + chunkFrameOffset] = melFrame[m]
     }
   }
 
@@ -397,7 +397,7 @@ export class StreamingMelFrontend {
     // pre-encode cache.
     const keepFromFrame = Math.max(
       0,
-      this.nextChunkFrame - config.NEMO_PRECACHE,
+      this.nextChunkFrame - config.COMMON_NEMOTRON_CONFIG.NEMO_PRECACHE,
     )
 
     const dropFrames = keepFromFrame - this.melFrameBase
