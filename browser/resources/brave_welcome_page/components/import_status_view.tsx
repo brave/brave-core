@@ -59,7 +59,9 @@ export function ImportStatusView(props: Props) {
       data-import-status={status}
     >
       <div className='header'>
-        <BrowserIcon name={browserName} />
+        <div className='source-icon'>
+          <BrowserIcon name={browserName} />
+        </div>
         <div className='carats'>
           <Icon name='carat-right' />
           <Icon name='carat-right' />
