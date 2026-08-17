@@ -617,6 +617,9 @@ regex: ^{class_name}$
             "description": """\
 Sets a new value to a `BASE_FEATURE` feature flag.
 
+`set_feature_flag_default_state` can be safely used even when the value being
+assigned is already set, with the intent of preventing sliding back.
+
 ```yaml
 substitutions:
   - description: Ship kMyFeature disabled.
@@ -626,6 +629,7 @@ substitutions:
 ```
 
 ```diff
++// kMyFeature feature state is enforced via plaster rewrite.
  BASE_FEATURE(kMyFeature,
               "MyFeature",
 -             base::FEATURE_ENABLED_BY_DEFAULT);
@@ -642,8 +646,8 @@ substitutions:
                     "description": "The new value, e.g. `base::FEATURE_DISABLED_BY_DEFAULT`.",
                 },
             ],
-            "re_pattern": "(BASE_FEATURE\\(\\s*{feature_name}\\s*,)(?!(?:[^;]*,)?\\s*{value}\\s*\\);)([^;]*,)?(\\s*)[^;]*?(\\);)",
-            "replace": "\\1\\2\\3{value}\\4",
+            "re_pattern": "([ \\t]*)(BASE_FEATURE\\(\\s*{feature_name}\\s*,)([^;]*,)?(\\s*)[^;]*?(\\);)",
+            "replace": "\\1// {feature_name} feature state is enforced via plaster rewrite.\\n\\1\\2\\3\\4{value}\\5",
         },
     },
 }
