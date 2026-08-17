@@ -9,4 +9,6 @@ static_library("image_metadata_stripper") {
   sources = [ "image_metadata_stripper.cc" ]
 
   public_deps = [ "//base" ]
+
+  deps = [ "internal" ]
 }
