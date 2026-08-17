@@ -70,8 +70,8 @@ const iconMap: { [key: string]: string } = {
     'privacy:content-paste-off': 'copy-off', // clipboard off
     'privacy:credit-card': 'credit-card', // payment handlers
     'privacy:credit-card-off': 'credit-card-off', // payment handlers
-    'settings:bluetooth-scanning': 'bluetooth', // bluetooth scanning
-    'settings:bluetooth-off': 'bluetooth-off', // bluetooth off
+    'settings:bluetooth-searching': 'bluetooth', // bluetooth searching
+    'settings:bluetooth-disabled': 'bluetooth-off', // bluetooth off
     'privacy:warning': 'warning-triangle-outline', // insecure content
     'privacy:federated-identity-api': '', // federated identity (unused)
     'privacy:cardboard': 'virtual-reality', // virtual reality & augmented reality
@@ -83,10 +83,11 @@ const iconMap: { [key: string]: string } = {
     'privacy:zoom-in': 'search-zoom-in', // zoom levels
     'privacy:drive-pdf': 'file', // pdfs
     'privacy:open-in-browser': 'window', // open in browser
-    'settings20:chrome-filled': 'hearts',
+    'settings20:chrome-product': 'hearts',
     'settings20:incognito-unfilled': 'product-private-window',
     'settings20:incognito': 'product-private-window',
     'settings20:lightbulb': 'idea',
+    'settings20:lightbulb-2': 'idea',
     'cr:delete': 'trash', // delete browsing data
     'cr:security': 'lock',
     'privacy:page-info-old': 'tune', // privacy page additional settings
@@ -127,7 +128,12 @@ proto.updateIcon_ = function (this: CrIconElement, ...args: unknown[]) {
         for (const node of this.shadowRoot.querySelectorAll(type)) node.remove()
     }
 
-    const name = iconMap[this.icon]
+    // Upstream's `kWebUIRoundedIcons` rollout picks between a rounded icon name
+    // and a legacy "-old" suffixed name at runtime depending on the feature
+    // state. Both refer to the same icon, so strip the suffix before mapping to
+    // keep overrides working regardless of the feature's enabled state.
+    const unroundedIcon = this.icon.replace(/-old$/, '')
+    const name = iconMap[this.icon] ?? iconMap[unroundedIcon]
     if (name || leoIcons.has(this.icon)) {
         removeAllOfType('svg')
 
