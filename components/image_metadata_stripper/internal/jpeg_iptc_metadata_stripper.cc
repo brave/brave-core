@@ -185,8 +185,8 @@ base::span<const uint8_t> FindIptcData(base::span<const uint8_t> payload) {
   size_t pos = kPhotoshopHeader.size();
 
   // 2. Iterate over each Image resource blocks.
-  // Each resource block: "8BIM" + id (2) + Pascal name (variable) + length (4)
-  // + data. See reference (4).
+  // Each resource block: "8BIM"(4) + id (2) + Pascal name (variable) + length
+  // (4) + data. See reference (4).
   while (pos + 6u <= payload.size()) {
     // 1. Search for "8BIM" signature.
     if (base::as_string_view(payload.subspan(pos, k8BimSignature.size())) !=
@@ -202,11 +202,18 @@ base::span<const uint8_t> FindIptcData(base::span<const uint8_t> payload) {
     }
     pos += 2u;
 
+    if (pos >= payload.size()) {
+      break;
+    }
+
     // 3. Pascal name: 1-byte length + bytes, padded to an even total size.
     const uint8_t name_length = payload[pos];
     // 1u is accounting for the actual byte which contained the name_length.
     size_t name_field = 1u + name_length;
     name_field += name_field % 2u;  // Pad to even.
+    if (name_field > payload.size() - pos) {
+      break;
+    }
     pos += name_field;  // pos now points to the 4-byte holding the length of
                         // the IRB data.
 
@@ -228,8 +235,12 @@ base::span<const uint8_t> FindIptcData(base::span<const uint8_t> payload) {
     if (resource_id == kIptcResourceId) {
       return payload.subspan(pos, data_length);
     }
-    // Otherwise, move to the next block.
-    pos += data_length + (data_length % 2u);  // Data padded to even.
+    // Otherwise, move to the next IRB block (data padded to even).
+    const size_t skip = data_length + (data_length % 2u);
+    if (pos + skip > payload.size()) {
+      break;
+    }
+    pos += skip;
   }
   return {};
 }
