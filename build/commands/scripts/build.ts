@@ -7,12 +7,11 @@
 import '../lib/checkEnvironment.js'
 
 import { program } from 'commander'
-import { createBuildConfigArgument } from '../lib/commandsUtils.ts'
 import * as buildOptions from '../lib/buildOptions.ts'
 import { build } from '../lib/build.ts'
 
 program
-  .addArgument(createBuildConfigArgument())
+  .apply(buildOptions.supportBuildConfigArg)
   .apply(buildOptions.supportBuildDir)
   .apply(buildOptions.supportTargetConfig)
   .apply(buildOptions.supportGnArgs)

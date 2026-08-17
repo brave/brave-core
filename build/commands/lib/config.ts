@@ -12,7 +12,7 @@ import EnvConfig from './envConfig.ts'
 import * as Log from './log.ts'
 import util from './util.js'
 import { isCI, isTeamcity } from './ciDetect.ts'
-import * as buildOptions from './buildOptions.ts'
+import type * as buildOptions from './buildOptions.ts'
 
 type ExecOptions = {
   env: NodeJS.ProcessEnv

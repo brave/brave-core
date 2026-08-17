@@ -6,7 +6,7 @@
 import config from './config.ts'
 import util from './util.js'
 import branding from './branding.js'
-import * as buildOptions from './buildOptions.ts'
+import type * as buildOptions from './buildOptions.ts'
 import * as buildUtils from './buildUtils.ts'
 
 export async function build(

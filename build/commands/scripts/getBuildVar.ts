@@ -7,7 +7,6 @@
 import '../lib/checkEnvironment.js'
 
 import { Argument, program } from 'commander'
-import { createBuildConfigArgument } from '../lib/commandsUtils.ts'
 import * as buildOptions from '../lib/buildOptions.ts'
 import config, { type Config } from '../lib/config.ts'
 
@@ -24,7 +23,7 @@ program
       Object.keys(allowedBuildVars) as BuildVar[],
     ),
   )
-  .addArgument(createBuildConfigArgument())
+  .apply(buildOptions.supportBuildConfigArg)
   .apply(buildOptions.supportBuildDir)
   .apply(buildOptions.supportTargetConfig)
   .allowExcessArguments(true)

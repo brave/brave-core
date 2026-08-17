@@ -12,7 +12,6 @@ import path from 'node:path'
 import process from 'node:process'
 import { Option, program } from 'commander'
 import { isCI } from '../lib/ciDetect.ts'
-import { createBuildConfigArgument } from '../lib/commandsUtils.ts'
 import * as buildOptions from '../lib/buildOptions.ts'
 import config from '../lib/config.ts'
 import util from '../lib/util.js'
@@ -21,7 +20,7 @@ program
   .description(
     'Build Storybook generated deps, then run Storybook (dev or static build)',
   )
-  .addArgument(createBuildConfigArgument())
+  .apply(buildOptions.supportBuildConfigArg)
   .apply(buildOptions.supportBuildDir)
   .apply(buildOptions.supportTargetConfig)
   .addOption(

@@ -3,9 +3,21 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { Command, Option } from 'commander'
+import { Argument, Command, Option } from 'commander'
 import './commanderApply.ts'
 import { collect, parseBoolean } from './commandsUtils.ts'
+
+export function supportBuildConfigArg<
+  Args extends any[],
+  Opts extends {},
+  GlobalOpts extends {},
+>(command: Command<Args, Opts, GlobalOpts>) {
+  return command.addArgument(
+    new Argument('[build_config]', 'build configuration').argParser((value) =>
+      value.startsWith('-') ? undefined : value,
+    ),
+  )
+}
 
 export function supportBuildDir<
   Args extends any[],
