@@ -17,6 +17,7 @@ source_set("importer") {
     ":csv",
     "//base",
     "//components/password_manager/core/browser:password_form",
+    "//components/password_manager/core/browser/password_store:password_store_interface",
   ]
 
   deps = [
