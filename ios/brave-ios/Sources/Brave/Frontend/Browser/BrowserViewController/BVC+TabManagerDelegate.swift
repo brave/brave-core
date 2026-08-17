@@ -413,7 +413,7 @@ extension BrowserViewController: TabManagerDelegate {
       duration: duration,
       makeConstraints: { make in
         make.left.right.equalTo(self.view)
-        make.bottom.equalTo(self.webViewContainer)
+        make.bottom.equalTo(self.pageOverlayLayoutGuide)
       },
       completion: { [weak self] in
         if toast is ButtonToast {
