@@ -35,6 +35,7 @@ class BraveSearchTabHelper: TabObserver, TabPolicyDecider, BraveSearchMakeDefaul
 
   var presentInQuickView: ((URL, any TabState) -> Void)?
 
+  /// A helper property that handles pending interstitial screen before entering QuickView mode.
   var pendingQuickViewURL: URL?
 
   init(tab: some TabState, rewards: BraveRewards, searchEngines: SearchEngines) {
