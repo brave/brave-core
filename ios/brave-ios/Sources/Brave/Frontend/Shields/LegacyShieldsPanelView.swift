@@ -16,31 +16,21 @@ import Strings
 import SwiftUI
 import Web
 
-struct ShieldsPanelView: View {
-  enum Action {
-    enum NavigationTarget {
-      case shareStats
-      case reportBrokenSite
-      case globalShields
-    }
-    case navigate(NavigationTarget, dismiss: Bool)
-    case changedShieldSettings
-    case shredSiteData
-  }
+struct LegacyShieldsPanelView: View {
 
   private let url: URL
   private var tab: any TabState
   private let displayHost: String
   @AppStorage("advancedShieldsExpanded") private var advancedShieldsExpanded = false
   @ObservedObject private var viewModel: ShieldsPanelViewModel
-  private var actionCallback: (Action) -> Void
+  private var actionCallback: (ShieldsPanelAction) -> Void
 
   @MainActor init(
     url: URL,
     tab: some TabState,
     domain: Domain,
     isAdvancedControlsEnabled: Bool,
-    callback: @escaping (Action) -> Void
+    callback: @escaping (ShieldsPanelAction) -> Void
   ) {
     self.url = url
     self.tab = tab
@@ -365,17 +355,19 @@ private struct ShieldSettingSectionHeader: View {
   }
 }
 
-class ShieldsPanelViewController: UIHostingController<ShieldsPanelView>, PopoverContentComponent {
-  private let shieldsPanelView: ShieldsPanelView
+class LegacyShieldsPanelViewController: UIHostingController<LegacyShieldsPanelView>,
+  PopoverContentComponent
+{
+  private let shieldsPanelView: LegacyShieldsPanelView
 
   init(
     url: URL,
     tab: some TabState,
     domain: Domain,
     isAdvancedControlsEnabled: Bool = true,
-    callback: @escaping (ShieldsPanelView.Action) -> Void
+    callback: @escaping (ShieldsPanelAction) -> Void
   ) {
-    let shieldsPanelView = ShieldsPanelView(
+    let shieldsPanelView = LegacyShieldsPanelView(
       url: url,
       tab: tab,
       domain: domain,
