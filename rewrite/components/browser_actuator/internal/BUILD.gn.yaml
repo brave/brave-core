@@ -11,7 +11,8 @@ substitutions:
       feature flag Brave overrides, kBrowserActuatorProtoStreamTransport
       included, and that requires depending on this target directly.
     regex:
-      pattern: 'visibility = [ "//components/browser_actuator/*" ]'
+      re_pattern: '(source_set\("features"\)\s*\{[^}]*?visibility = \[[^\]]*\])'
+      re_flags: [DOTALL]
       replace: |-
-        visibility = [ "//components/browser_actuator/*" ]
+        \1
           visibility += [ "//brave/app:unit_tests" ]

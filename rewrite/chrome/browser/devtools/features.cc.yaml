@@ -21,14 +21,15 @@ substitutions:
 
   - description: |-
       Ship kDevToolsConsoleInsights disabled outside of Android.
-    set_feature_flag_default_state:
-      feature_name: kDevToolsConsoleInsights
-      value: |
-
+    regex:
+      pattern:
+        'BASE_FEATURE(kDevToolsConsoleInsights,
+        base::FEATURE_ENABLED_BY_DEFAULT);'
+      replace: |-
         #if BUILDFLAG(IS_ANDROID)
-          base::FEATURE_ENABLED_BY_DEFAULT
+        BASE_FEATURE(kDevToolsConsoleInsights, base::FEATURE_ENABLED_BY_DEFAULT);
         #else
-          base::FEATURE_DISABLED_BY_DEFAULT
+        BASE_FEATURE(kDevToolsConsoleInsights, base::FEATURE_DISABLED_BY_DEFAULT);
         #endif
 
   - description: 'Ship kDevToolsNewPermissionDialog disabled.'
