@@ -110,6 +110,14 @@ bool BraveMultiContentsView::IsWebPanelVisible() const {
   return contents_container_view_for_web_panel_->GetVisible();
 }
 
+views::View*
+BraveMultiContentsView::GetWebPanelContentsViewForTesting()  // IN-TEST
+    const {
+  return contents_container_view_for_web_panel_
+             ? contents_container_view_for_web_panel_->contents_view()
+             : nullptr;
+}
+
 void BraveMultiContentsView::SetWebPanelWidth(int width) {
   web_panel_width_ = width;
   InvalidateLayout();

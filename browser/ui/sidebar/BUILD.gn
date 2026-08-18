@@ -192,14 +192,21 @@ source_set("interactive_ui_tests") {
   testonly = true
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
-  sources = [ "sidebar_interactive_ui_tests.cc" ]
+  sources = [
+    "sidebar_interactive_ui_tests.cc",
+    "web_panel_interactive_ui_tests.cc",
+  ]
 
   deps = [
+    ":sidebar",
     ":sidebar_impl",
     ":test_support",
     "//base",
+    "//brave/browser/ui/views/frame",
+    "//brave/browser/ui/views/frame/split_view",
     "//brave/components/brave_wallet/common/buildflags",
     "//brave/components/sidebar/browser",
+    "//brave/components/sidebar/common",
     "//chrome/browser/ui",
     "//chrome/browser/ui/browser_window",
     "//chrome/browser/ui/tabs:tab_strip",
@@ -208,6 +215,7 @@ source_set("interactive_ui_tests") {
     "//content/public/browser",
     "//content/test:test_support",
     "//ui/base",
+    "//ui/views",
     "//url",
   ]
 

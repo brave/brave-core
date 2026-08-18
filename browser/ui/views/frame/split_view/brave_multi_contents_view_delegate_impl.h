@@ -21,6 +21,7 @@ class BraveMultiContentsViewDelegateImpl
   void ResizeWebContents(double ratio, bool done_resizing) override;
 
  private:
+  const raw_ref<Browser> browser_;
   const raw_ref<TabStripModel> tab_strip_model_;
 };
 
