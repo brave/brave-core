@@ -25,12 +25,8 @@ import genGradle from '../lib/genGradle.js'
 import perfTests from '../lib/perfTests.ts'
 import registerListAffectedTestsCommand from './listAffectedTests.js'
 import registerGenerateCoverageReportCommand from './generateCoverageReport.js'
-import {
-  createBuildConfigArgument,
-  collect,
-  parseInteger,
-  parseBoolean,
-} from '../lib/commandsUtils.ts'
+import { collect, parseInteger, parseBoolean } from '../lib/commandsUtils.ts'
+import * as buildOptions from '../lib/buildOptions.ts'
 
 const parsedArgs = program.parseOptions(process.argv)
 
@@ -56,7 +52,7 @@ program
     'target environment (device, catalyst, simulator)',
   )
   .option('--checkdeps_only', 'only run checkdeps')
-  .addArgument(createBuildConfigArgument())
+  .apply(buildOptions.supportBuildConfigArg)
   .action(gnCheck)
 
 program
@@ -65,7 +61,7 @@ program
     '--print-patch-failures-in-json',
     'Emits a JSON structure with a list of patch files that failed to apply',
   )
-  .addArgument(createBuildConfigArgument())
+  .apply(buildOptions.supportBuildConfigArg)
   .action(applyPatches)
 
 program
@@ -95,7 +91,7 @@ program
       'target environment',
     ).choices(['device', 'catalyst', 'simulator']),
   )
-  .addArgument(createBuildConfigArgument())
+  .apply(buildOptions.supportBuildConfigArg)
   .action(async (buildConfig, options) => {
     config.buildConfig = buildConfig || config.defaultBuildConfig
     if (options.target_os === 'host_os') {
@@ -174,7 +170,7 @@ program
     '--output_path [pathname]',
     'use the Brave binary located at [pathname]',
   )
-  .addArgument(createBuildConfigArgument())
+  .apply(buildOptions.supportBuildConfigArg)
   .action(start.bind(null, parsedArgs.unknown))
 
 program
@@ -293,7 +289,7 @@ program
     '26.2',
   ) // should match ios_deployment_target
   .option('--offline', 'use offline mode for RBE')
-  .addArgument(createBuildConfigArgument())
+  .apply(buildOptions.supportBuildConfigArg)
   .action(test.bind(null, parsedArgs.unknown))
 
 program.command('mass_rename').action(util.massRename)
@@ -329,7 +325,7 @@ program
   .allowExcessArguments(true)
   .option('-C <build_dir>', 'build config (out/Debug, out/Release)')
   .option('--target_arch <target_arch>', 'target architecture')
-  .addArgument(createBuildConfigArgument())
+  .apply(buildOptions.supportBuildConfigArg)
   .action(genGradle.bind(null, parsedArgs.unknown))
 
 program.command('docs').action(util.launchDocs)

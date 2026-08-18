@@ -12,7 +12,7 @@
 import '../lib/checkEnvironment.js'
 
 import { program } from 'commander'
-import { collect } from '../lib/commandsUtils.ts'
+import * as buildOptions from '../lib/buildOptions.ts'
 import config from '../lib/config.ts'
 import util from '../lib/util.js'
 import path from 'node:path'
@@ -157,8 +157,13 @@ function getChromiumGnArgs(): Record<string, any> {
   return args
 }
 
-function buildChromiumRelease(buildOptions: { force?: boolean } = {}) {
-  if (!isCI && !buildOptions.force) {
+function buildChromiumRelease(
+  options: buildOptions.BuildDirOptions
+    & buildOptions.TargetConfigOptions
+    & buildOptions.ExtraGnArgsOptions
+    & buildOptions.ExtraNinjaOptions & { force?: boolean },
+) {
+  if (!isCI && !options.force) {
     console.error(
       'Warning: the command resets all changes in src/ folder.\n'
         + 'src/brave stays untouched. Pass --force to continue.',
@@ -167,7 +172,7 @@ function buildChromiumRelease(buildOptions: { force?: boolean } = {}) {
   }
   config.buildConfig = 'Release'
   config.isChromium = true
-  config.update(buildOptions)
+  config.update(options)
 
   const chromiumConfig = chromiumConfigs[config.targetOS]
   if (!chromiumConfig) {
@@ -230,21 +235,10 @@ program
       + 'The default build_dir is `chromium_Release(_target_arch)`.\n'
       + 'Intended for use on CI, use locally with care.',
   )
+  .apply(buildOptions.supportBuildDir)
+  .apply(buildOptions.supportTargetConfig)
+  .apply(buildOptions.supportExtraGnArgs)
+  .apply(buildOptions.supportExtraNinjaOptions)
   .option('--force', 'Ignore a warning about non-CI build')
-  .option('-C <build_dir>', 'build config (out/chromium_Release')
-  .option('--target_os <target_os>', 'target OS')
-  .option('--target_arch <target_arch>', 'target architecture')
-  .option(
-    '--gn <arg>',
-    'Additional gn args, in the form <key>:<value>',
-    collect,
-    [],
-  )
-  .option(
-    '--ninja <opt>',
-    'Additional Ninja command-line options, in the form <key>:<value>',
-    collect,
-    [],
-  )
   .action(buildChromiumRelease)
   .parse()

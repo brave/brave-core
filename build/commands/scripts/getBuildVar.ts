@@ -7,7 +7,7 @@
 import '../lib/checkEnvironment.js'
 
 import { Argument, program } from 'commander'
-import { createBuildConfigArgument } from '../lib/commandsUtils.ts'
+import * as buildOptions from '../lib/buildOptions.ts'
 import config, { type Config } from '../lib/config.ts'
 
 const allowedBuildVars = {
@@ -23,11 +23,9 @@ program
       Object.keys(allowedBuildVars) as BuildVar[],
     ),
   )
-  .addArgument(createBuildConfigArgument())
-  .option('-C <build_dir>', 'build directory, relative to out/ or absolute')
-  .option('--target_arch <target_arch>', 'target architecture')
-  .option('--target_os <target_os>', 'target OS')
-  .option('--target_environment <target_environment>', 'target environment')
+  .apply(buildOptions.supportBuildConfigArg)
+  .apply(buildOptions.supportBuildDir)
+  .apply(buildOptions.supportTargetConfig)
   .allowExcessArguments(true)
   .allowUnknownOption(true)
   .action(async (variable, buildConfig, options) => {

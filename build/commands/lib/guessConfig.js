@@ -23,10 +23,10 @@ const extraArchitectures = ['arm64', 'x86']
 // This uses environment variables as there is currently no way to pass custom
 // arguments to the |storybook build| cli.
 config.update({
-  target_arch: process.env.TARGET_ARCH,
-  target_os: process.env.TARGET_OS,
-  target_environment: process.env.TARGET_ENVIRONMENT,
-  target: process.env.TARGET,
+  target_arch: /** @type {any} */ (process.env.TARGET_ARCH),
+  target_os: /** @type {any} */ (process.env.TARGET_OS),
+  target_environment: /** @type {any} */ (process.env.TARGET_ENVIRONMENT),
+  target: /** @type {any} */ (process.env.TARGET),
   build_config: process.env.BUILD_CONFIG,
 })
 
