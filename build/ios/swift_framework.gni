@@ -9,6 +9,8 @@ import("//build/config/apple/swift_source_set.gni")
 import("//build/config/ios/ios_sdk.gni")
 import("//build/config/ios/rules.gni")
 
+assert(current_os == "ios")
+
 # Computes the Swift target triple (without the deployment target version) for
 # the current toolchain. This is the name the Swift compiler looks for when
 # resolving a module inside

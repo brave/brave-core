@@ -16,6 +16,10 @@ import argparse
 import os
 import shutil
 import sys
+from brave_chromium_utils import sys_path
+
+with sys_path('//build'):
+    import action_helpers
 
 # Extensions copied for each requested name. All of these are declared as
 # outputs of the `swift` tool, so they are always present.
@@ -63,8 +67,7 @@ def main():
             # this step needs to re-run.
             shutil.copyfile(source, destination)
 
-    with open(args.depfile, 'w', encoding='utf8') as depfile:
-        depfile.write(f'{args.depfile_target}: {" ".join(sorted(inputs))}\n')
+    action_helpers.write_depfile(args.depfile, args.depfile_target, inputs)
 
     return 0
 
