@@ -114,7 +114,8 @@ class BraveSiteHacksNetworkDelegateBrowserTest : public InProcessBrowserTest {
   }
 
   HostContentSettingsMap* content_settings() {
-    return HostContentSettingsMapFactory::GetForProfile(browser()->profile());
+    return HostContentSettingsMapFactory::GetForProfile(
+        browser()->GetProfile());
   }
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
@@ -408,7 +409,7 @@ IN_PROC_BROWSER_TEST_F(BraveSiteHacksNetworkDelegateBrowserTest,
   net::ProxyConfigServiceTor::SetBypassTorProxyConfigForTesting(true);
   tor::TorNavigationThrottle::SetSkipWaitForTorConnectedForTesting(true);
   Browser* tor_browser =
-      TorProfileManager::SwitchToTorProfile(browser()->profile());
+      TorProfileManager::SwitchToTorProfile(browser()->GetProfile());
 
   // Same-origin navigations
   {
@@ -513,7 +514,7 @@ IN_PROC_BROWSER_TEST_F(BraveSiteHacksNetworkDelegateBrowserTest,
   net::ProxyConfigServiceTor::SetBypassTorProxyConfigForTesting(true);
   tor::TorNavigationThrottle::SetSkipWaitForTorConnectedForTesting(true);
   Browser* tor_browser =
-      TorProfileManager::SwitchToTorProfile(browser()->profile());
+      TorProfileManager::SwitchToTorProfile(browser()->GetProfile());
 
   // Same-origin .onion iframes
   {

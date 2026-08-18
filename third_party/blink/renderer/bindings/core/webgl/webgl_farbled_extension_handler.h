@@ -8,6 +8,7 @@
 
 #include <base/containers/span.h>
 
+#include <cstdint>
 #include <memory>
 #include <optional>
 
@@ -44,7 +45,7 @@ class CORE_EXPORT WebGLFarbledExtensionHandler {
   // |seed| is derived from the current brave::FarblingToken for the session.
   static std::unique_ptr<WebGLFarbledExtensionHandler> CreateBalancedHandler(
       const Vector<String>& real_extensions,
-      const size_t seed);
+      const uint64_t seed);
 
   // Return a handler which maximum fingerprinting protections.
   // |real_extensions| is the set of actual supported WebGL extensions.

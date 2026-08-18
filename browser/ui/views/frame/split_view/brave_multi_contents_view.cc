@@ -157,7 +157,8 @@ void BraveMultiContentsView::UpdateContentsBorderAndOverlay() {
       /*is_in_split*/ false, /*is_active*/ true,
       /*is_highlighted*/ false);
 
-  for (auto* contents_container_view : contents_container_views_) {
+  for (ContentsContainerView* contents_container_view :
+       contents_container_views_) {
     contents_container_view->UpdateBorderAndOverlay(IsInSplitView(),
                                                     /*is_active*/ false,
                                                     /*is_highlighted*/ false);

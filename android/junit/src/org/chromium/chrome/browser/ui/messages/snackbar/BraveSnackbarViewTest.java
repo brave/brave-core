@@ -79,7 +79,8 @@ public class BraveSnackbarViewTest {
                 snackbar,
                 mParentView,
                 /* windowAndroid= */ null,
-                ObservableSuppliers.alwaysZero());
+                ObservableSuppliers.alwaysZero(),
+                ObservableSuppliers.alwaysFalse());
     }
 
     private static Snackbar makeSnackbar(String message, int type) {

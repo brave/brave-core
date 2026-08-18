@@ -22,11 +22,11 @@
 
 BraveBrowserWidget::BraveBrowserWidget(BrowserView* browser_view)
     : BrowserWidget(browser_view), view_(browser_view) {
-  if (view_->browser()->profile()->IsIncognitoProfile() ||
-      view_->browser()->profile()->IsTor() ||
-      view_->browser()->profile()->IsGuestSession()) {
+  if (view_->browser()->GetProfile()->IsIncognitoProfile() ||
+      view_->browser()->GetProfile()->IsTor() ||
+      view_->browser()->GetProfile()->IsGuestSession()) {
     theme_supplier_ = base::MakeRefCounted<BravePrivateWindowThemeSupplier>(
-        !view_->browser()->profile()->IsTor());
+        !view_->browser()->GetProfile()->IsTor());
   }
 }
 
@@ -81,7 +81,7 @@ ui::ColorProviderKey BraveBrowserWidget::GetColorProviderKey() const {
   }
 
   // We want to use dark mode for guest profile.
-  if (view_->browser()->profile()->IsGuestSession()) {
+  if (view_->browser()->GetProfile()->IsGuestSession()) {
     key.color_mode = ui::ColorProviderKey::ColorMode::kDark;
     key.user_color_source = ui::ColorProviderKey::UserColorSource::kGrayscale;
   }
@@ -92,7 +92,7 @@ ui::ColorProviderKey BraveBrowserWidget::GetColorProviderKey() const {
     // private/tor/guest window and we don't want to set kDarker for them.
     if (!theme_supplier_ &&
         key.color_mode == ui::ColorProviderKey::ColorMode::kDark &&
-        browser_view_->browser()->profile()->GetPrefs()->GetBoolean(
+        browser_view_->browser()->GetProfile()->GetPrefs()->GetBoolean(
             darker_theme::prefs::kBraveDarkerMode)) {
       key.scheme_variant = ui::ColorProviderKey::SchemeVariant::kDarker;
     }

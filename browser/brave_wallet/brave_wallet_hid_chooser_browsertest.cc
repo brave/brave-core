@@ -56,7 +56,7 @@ class BraveWalletHidChooserBrowserTest : public InProcessBrowserTest {
 
     base::test::TestFuture<std::vector<device::mojom::HidDeviceInfoPtr>>
         future_devices;
-    HidChooserContextFactory::GetForProfile(browser()->profile())
+    HidChooserContextFactory::GetForProfile(browser()->GetProfile())
         ->SetHidManagerForTesting(std::move(hid_manager),
                                   future_devices.GetCallback());
     ASSERT_TRUE(future_devices.Wait());

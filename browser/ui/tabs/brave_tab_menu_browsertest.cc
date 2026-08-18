@@ -71,10 +71,11 @@ class BraveTabMenuBrowserTest : public InProcessBrowserTest {
   BrowserWindowInterface* CreateBrowser(bool incognito) {
     if (incognito) {
       return chrome::OpenEmptyWindow(
-          browser()->profile()->GetPrimaryOTRProfile(/*create_if_needed=*/true),
+          browser()->GetProfile()->GetPrimaryOTRProfile(
+              /*create_if_needed=*/true),
           /*should_trigger_session_restore=*/false);
     }
-    return chrome::OpenEmptyWindow(browser()->profile(),
+    return chrome::OpenEmptyWindow(browser()->GetProfile(),
                                    /*should_trigger_session_restore=*/false);
   }
 
@@ -487,7 +488,7 @@ class BraveTabMenuWithContainersBrowserTest : public BraveTabMenuBrowserTest {
 
   void SetUpOnMainThread() override {
     BraveTabMenuBrowserTest::SetUpOnMainThread();
-    containers::SetContainersEnabled(true, browser()->profile()->GetPrefs());
+    containers::SetContainersEnabled(true, browser()->GetProfile()->GetPrefs());
   }
 
  private:
@@ -506,7 +507,7 @@ IN_PROC_BROWSER_TEST_F(BraveTabMenuWithContainersBrowserTest,
       menu_model->GetIndexOfCommandId(TabStripModel::CommandOpenInContainer);
   EXPECT_TRUE(index.has_value());
 
-  chrome::NewEmptyWindow(browser()->profile());
+  chrome::NewEmptyWindow(browser()->GetProfile());
 
   menu = CreateMenuControllerAt(0);
   menu_model = CreateMenuModelAt(menu.get(), 0);

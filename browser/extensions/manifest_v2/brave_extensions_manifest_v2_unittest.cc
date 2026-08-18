@@ -24,7 +24,6 @@
 #include "extensions/browser/install_signer.h"
 #include "extensions/browser/install_verifier.h"
 #include "extensions/browser/manifest_v2_handler.h"
-#include "extensions/browser/mv2_deprecation_impact_checker.h"
 #include "extensions/browser/pref_names.h"
 #include "extensions/common/constants.h"
 #include "extensions/common/extension_builder.h"

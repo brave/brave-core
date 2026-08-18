@@ -72,7 +72,8 @@ TEST(SerpClassifierTest, IsNotSameSearchQueryWithStartpage) {
 }
 
 TEST(SerpClassifierTest, OnlyClassifyAllowedSearchEngines) {
-  for (const auto* prepopulated_engine :
+  for (const TemplateURLPrepopulateData::PrepopulatedEngine*
+           prepopulated_engine :
        regional_capabilities::GetAllPrepopulatedEngines()) {
     VerifySerpClassifierExpectation(*prepopulated_engine);
   }

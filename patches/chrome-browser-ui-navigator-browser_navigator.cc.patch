@@ -1,12 +1,45 @@
 diff --git a/chrome/browser/ui/navigator/browser_navigator.cc b/chrome/browser/ui/navigator/browser_navigator.cc
-index 67fde190279e188b4c2200cbbac9771ccbc426ec..e93d3e748003229116dce230f2cee40a2a535e2d 100644
+index a3a2000fe57f7095a85dbbcbbff473d41fdb83b5..00f27d30f059c349586d2f445167a73e7e1a9eaa 100644
 --- a/chrome/browser/ui/navigator/browser_navigator.cc
 +++ b/chrome/browser/ui/navigator/browser_navigator.cc
-@@ -574,6 +574,7 @@ base::WeakPtr<content::NavigationHandle> Navigate(NavigateParams* params) {
-       return nullptr;
+@@ -186,6 +186,7 @@ bool ShouldForceCaptivePortalSigninIntoCurrentTab(const NavigateParams& params,
+ // Returns true on success. Otherwise, if changing params leads the browser
+ // into an erroneous state, returns false.
+ bool AdjustNavigateParamsForURL(NavigateParams* params) {
++  UpdateParams(params);
+   // Check for some chrome:// pages which we always want to open in a
+   // non-incognito window. Note that even though a ChromeOS guest session is
+   // technically an incognito window, these URLs are allowed.
+@@ -479,7 +480,11 @@ std::unique_ptr<content::WebContents> CreateTargetContents(
+   scoped_refptr<content::SiteInstance> initial_site_instance_for_new_contents =
+       params.opener ? params.opener->GetSiteInstance()
+                     : tab_util::GetSiteInstanceForNewTab(
+-                          params.browser->GetProfile(), url);
++                          params.browser->GetProfile(), url
++#if BUILDFLAG(ENABLE_CONTAINERS)
++                          , GetStoragePartitionConfigToInherit(params)
++#endif  // BUILDFLAG(ENABLE_CONTAINERS)
++);
+ 
+   WebContents::CreateParams create_params(
+       params.browser->GetProfile(), initial_site_instance_for_new_contents);
+@@ -851,6 +856,9 @@ base::WeakPtr<content::NavigationHandle> NavigateImpl(
+          params->user_gesture)) {
+       tab_to_insert->set_opener(
+           tabs::TabInterface::MaybeGetFromContents(params->source_contents));
++      if (params->navigation_initiated_from_sync) {            
++        tab_to_insert->set_opener_was_set_for_empty_new_tab(); 
++      }
      }
    }
-+  BRAVE_ADJUST_NAVIGATE_PARAMS_FOR_URL
  
-   // Open System Apps in their standalone window if necessary.
-   // TODO(crbug.com/40136163): Remove this code after we integrate with intent
+@@ -868,6 +876,9 @@ base::WeakPtr<content::NavigationHandle> NavigateImpl(
+            params->user_gesture)) {
+         tab_to_insert->set_opener(
+             tabs::TabInterface::MaybeGetFromContents(params->source_contents));
++      if (params->navigation_initiated_from_sync) {            
++        tab_to_insert->set_opener_was_set_for_empty_new_tab(); 
++      }
+       }
+       contents_to_navigate_or_insert = tab_to_insert->GetContents();
+ 

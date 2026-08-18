@@ -33,7 +33,5 @@ substitutions:
       We tweak a few AutocompleteInput settings because unlike Chromium we only
       want keyword search results.
     regex:
-      re_pattern: 'autocomplete_input\.set_in_keyword_mode\(false\);\s*autocomplete_input\.set_allow_exact_keyword_match\(false\);'
-      replace: |-
-        autocomplete_input.set_in_keyword_mode(true);
-          autocomplete_input.set_allow_exact_keyword_match(true);
+      pattern: 'bool is_keyword_selected = false;'
+      replace: 'bool is_keyword_selected = true;'

@@ -1,0 +1,31 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Instantiate BraveBrowser instead of Browser
+
+      Both `Browser::Create` and `Browser::DeprecatedCreateOwnedForTesting`
+      construct the Brave subclass so Brave-specific behaviour is always in
+      place.
+    count: 2
+    regex:
+      pattern: 'base::WrapUnique(new Browser(params))'
+      replace: 'base::WrapUnique(new BraveBrowser(params))'
+
+  - description: |
+      Use BraveTabStripModel for the browser's tab strip model
+    regex:
+      pattern: 'std::make_unique<TabStripModel>'
+      replace: 'std::make_unique<BraveTabStripModel>'
+
+  - description: |
+      Use chrome::BraveTabStripModelDelegate for the tab strip model delegate
+
+      Replaces the former `#define BrowserTabStripModelDelegate
+      BraveTabStripModelDelegate` from the chromium_src override.
+    regex:
+      pattern: 'std::make_unique<chrome::BrowserTabStripModelDelegate>'
+      replace: 'std::make_unique<chrome::BraveTabStripModelDelegate>'

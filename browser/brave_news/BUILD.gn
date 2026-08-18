@@ -74,6 +74,7 @@ source_set("impl") {
     deps += [
       "//brave/components/constants",
       "//chrome/browser/ui/navigator",
+      "//chrome/browser/ui/side_panel",
     ]
   }
 

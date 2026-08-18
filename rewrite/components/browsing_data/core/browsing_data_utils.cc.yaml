@@ -1,0 +1,37 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Handle BRAVE_AI_CHAT in the pref-to-type switch.
+
+      Guarded by ENABLE_AI_CHAT. Inserted at the top of the switch, rather
+      than as a case grouped with an existing entry, since BRAVE_AI_CHAT's
+      pref doesn't belong with any of them and a default: clause may or may
+      not follow.
+    regex:
+      re_pattern: '(GetDeletionPreferenceFromDataType\([^)]*\)\s*\{\s*switch[^{]*\{)'
+      replace: |-
+        \1
+        #if BUILDFLAG(ENABLE_AI_CHAT)
+            case BrowsingDataType::BRAVE_AI_CHAT:
+              *out_pref = prefs::kDeleteBraveLeoHistory;
+              return true;
+        #endif
+
+  - description: |
+      Map the Brave Leo deletion prefs back to BRAVE_AI_CHAT.
+
+      Guarded by ENABLE_AI_CHAT. GetAIChatDataTypeFromDeletionPreference
+      comes from the chromium_src override's anonymous namespace.
+    preempt_function_impl:
+      function_name: GetDataTypeFromDeletionPreference
+      code: |-
+        #if BUILDFLAG(ENABLE_AI_CHAT)
+        if (auto data_type =
+                GetAIChatDataTypeFromDeletionPreference(pref_name)) {
+          return data_type;
+        }
+        #endif

@@ -10,7 +10,7 @@ import { injectStyle } from '//resources/brave/lit_overriding.js'
 
 import '//resources/brave/leo.bundle.js';
 
-const leoIcons = (window as any).leoIcons as Set<string>
+const leoIcons = (window as unknown as {leoIcons: Set<string>}).leoIcons
 
 // Maps Chromium icons to their equivalent Brave icons.
 const iconMap: { [key: string]: string } = {
@@ -23,10 +23,10 @@ const iconMap: { [key: string]: string } = {
     'settings:security': 'lock',
     'settings:search': 'search',
     'settings:palette': 'appearance',
-    'settings:assignment': 'list-checks',
+    'settings:password-manager': 'list-checks',
     'settings:language': 'product-translate',
-    'settings:system': 'settings',
-    'settings:restore': 'backward',
+    'settings:build': 'settings',
+    'settings:restart-alt': 'backward',
     'settings:location-on': 'location-on', // location
     'privacy:location-on': 'location-on', // location
     'privacy:location-off': 'location-off', // location off
@@ -70,8 +70,8 @@ const iconMap: { [key: string]: string } = {
     'privacy:content-paste-off': 'copy-off', // clipboard off
     'privacy:credit-card': 'credit-card', // payment handlers
     'privacy:credit-card-off': 'credit-card-off', // payment handlers
-    'settings:bluetooth-scanning': 'bluetooth', // bluetooth scanning
-    'settings:bluetooth-off': 'bluetooth-off', // bluetooth off
+    'settings:bluetooth-searching': 'bluetooth', // bluetooth searching
+    'settings:bluetooth-disabled': 'bluetooth-off', // bluetooth off
     'privacy:warning': 'warning-triangle-outline', // insecure content
     'privacy:federated-identity-api': '', // federated identity (unused)
     'privacy:cardboard': 'virtual-reality', // virtual reality & augmented reality
@@ -83,13 +83,14 @@ const iconMap: { [key: string]: string } = {
     'privacy:zoom-in': 'search-zoom-in', // zoom levels
     'privacy:drive-pdf': 'file', // pdfs
     'privacy:open-in-browser': 'window', // open in browser
-    'settings20:chrome-filled': 'hearts',
+    'settings20:chrome-product': 'hearts',
     'settings20:incognito-unfilled': 'product-private-window',
     'settings20:incognito': 'product-private-window',
     'settings20:lightbulb': 'idea',
+    'settings20:lightbulb-2': 'idea',
     'cr:delete': 'trash', // delete browsing data
     'cr:security': 'lock',
-    'privacy:page-info': 'tune', // privacy page additional settings
+    'privacy:page-info-old': 'tune', // privacy page additional settings
     'cr:fullscreen': 'fullscreen-on', // automatic fullscreen
     'settings:picture-in-picture': 'picture-in-picture', // picture in picture
     'cr:file-download': 'download',
@@ -117,20 +118,29 @@ injectStyle(CrIconElement, css`:host {
   --leo-icon-color: var(--iron-icon-fill-color, currentColor);
  }`)
 
-const old = (CrIconElement.prototype as any).updateIcon_;
-(CrIconElement.prototype as any).updateIcon_ = function (...args: any) {
+interface CrIconInternals {
+    updateIcon_: (this: CrIconElement, ...args: unknown[]) => void;
+}
+const proto = CrIconElement.prototype as unknown as CrIconInternals;
+const old = proto.updateIcon_;
+proto.updateIcon_ = function (this: CrIconElement, ...args: unknown[]) {
     const removeAllOfType = (type: string) => {
-        for (const node of this.shadowRoot!.querySelectorAll(type)) node.remove()
+        for (const node of this.shadowRoot.querySelectorAll(type)) node.remove()
     }
 
-    const name = iconMap[this.icon]
+    // Upstream's `kWebUIRoundedIcons` rollout picks between a rounded icon name
+    // and a legacy "-old" suffixed name at runtime depending on the feature
+    // state. Both refer to the same icon, so strip the suffix before mapping to
+    // keep overrides working regardless of the feature's enabled state.
+    const unroundedIcon = this.icon.replace(/-old$/, '')
+    const name = iconMap[this.icon] ?? iconMap[unroundedIcon]
     if (name || leoIcons.has(this.icon)) {
         removeAllOfType('svg')
 
-        let leoIcon = this.shadowRoot!.querySelector('leo-icon')
+        let leoIcon = this.shadowRoot.querySelector('leo-icon')
         if (!leoIcon) {
             leoIcon = document.createElement('leo-icon')
-            this.shadowRoot!.append(leoIcon)
+            this.shadowRoot.append(leoIcon)
         }
         leoIcon.setAttribute('name', name ?? this.icon)
     } else {

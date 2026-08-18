@@ -125,7 +125,7 @@ void NavigateToPublisherAndWaitForUpdate(Browser* browser,
                                          const std::string& publisher_key) {
   DCHECK(browser);
   auto* rewards_service =
-      RewardsServiceFactory::GetForProfile(browser->profile());
+      RewardsServiceFactory::GetForProfile(browser->GetProfile());
   PublisherUpdatedWaiter waiter(rewards_service);
   NavigateToPublisherPage(browser, https_server, publisher_key);
   waiter.Wait();
@@ -171,7 +171,7 @@ void CreateRewardsWallet(RewardsServiceImpl* rewards_service,
 void SetOnboardingBypassed(Browser* browser, bool bypassed) {
   DCHECK(browser);
   // Rewards onboarding will be skipped if the rewards enabled flag is set
-  PrefService* prefs = browser->profile()->GetPrefs();
+  PrefService* prefs = browser->GetProfile()->GetPrefs();
   prefs->SetBoolean(prefs::kEnabled, bypassed);
 }
 

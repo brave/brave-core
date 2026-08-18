@@ -11,56 +11,27 @@
 #include "base/containers/fixed_flat_map.h"
 #include "base/containers/map_util.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "components/browsing_data/core/pref_names.h"
 
-#define GetDeletionPreferenceFromDataType \
-  GetDeletionPreferenceFromDataType_ChromiumImpl
-#define GetDataTypeFromDeletionPreference \
-  GetDataTypeFromDeletionPreference_ChromiumImpl
-#if BUILDFLAG(ENABLE_AI_CHAT)
-#define TABS \
-  TABS:      \
-  case BrowsingDataType::BRAVE_AI_CHAT
-#endif
-
-#include <components/browsing_data/core/browsing_data_utils.cc>
+namespace {
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
-#undef TABS
-#endif
-#undef GetDataTypeFromDeletionPreference
-#undef GetDeletionPreferenceFromDataType
-
-namespace browsing_data {
-
-bool GetDeletionPreferenceFromDataType(
-    BrowsingDataType data_type,
-    std::string* out_pref) {
-#if BUILDFLAG(ENABLE_AI_CHAT)
-  if (data_type == BrowsingDataType::BRAVE_AI_CHAT) {
-    *out_pref = prefs::kDeleteBraveLeoHistory;
-    return true;
-  }
-#endif
-
-  return GetDeletionPreferenceFromDataType_ChromiumImpl(data_type, out_pref);
-}
-
-std::optional<BrowsingDataType> GetDataTypeFromDeletionPreference(
-    const std::string& pref_name) {
-#if BUILDFLAG(ENABLE_AI_CHAT)
+std::optional<browsing_data::BrowsingDataType>
+GetAIChatDataTypeFromDeletionPreference(const std::string& pref_name) {
   static constexpr auto kPreferenceToDataType =
-      base::MakeFixedFlatMap<std::string_view, BrowsingDataType>({
-          {prefs::kDeleteBraveLeoHistory, BrowsingDataType::BRAVE_AI_CHAT},
-          {prefs::kDeleteBraveLeoHistoryOnExit,
-           BrowsingDataType::BRAVE_AI_CHAT},
-      });
-
+      base::MakeFixedFlatMap<std::string_view, browsing_data::BrowsingDataType>(
+          {{browsing_data::prefs::kDeleteBraveLeoHistory,
+            browsing_data::BrowsingDataType::BRAVE_AI_CHAT},
+           {browsing_data::prefs::kDeleteBraveLeoHistoryOnExit,
+            browsing_data::BrowsingDataType::BRAVE_AI_CHAT}});
   if (const auto* data_type =
           base::FindOrNull(kPreferenceToDataType, pref_name)) {
     return *data_type;
   }
-#endif
-  return GetDataTypeFromDeletionPreference_ChromiumImpl(pref_name);
+  return std::nullopt;
 }
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
-}  // namespace browsing_data
+}  // namespace
+
+#include <components/browsing_data/core/browsing_data_utils.cc>

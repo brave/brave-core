@@ -202,6 +202,13 @@ void PrintPreviewExtractorInternal::CreatePrintPreview() {
       rfh->GetRemoteAssociatedInterfaces()->GetInterface(&print_render_frame_);
     }
 
+    // `GetPrintPreviewParams()` requires `print_preview_rfh_` to match `rfh`,
+    // which this extraction flow bypasses since it doesn't go through
+    // PrintPreviewNow(). Cleared in PreviewCleanup().
+    if (manager) {
+      manager->SetPrintPreviewRenderFrameHostForExtraction(rfh);
+    }
+
     print_render_frame_->SetIsPrintPreviewExtraction(true);
     print_render_frame_->InitiatePrintPreview(false);
     print_render_frame_->SetIsPrintPreviewExtraction(false);
@@ -503,6 +510,7 @@ void PrintPreviewExtractorInternal::PreviewCleanup() {
   auto* manager = printing::PrintViewManager::FromWebContents(web_contents_);
   if (manager) {
     manager->ClearPrintPreviewSettings();
+    manager->ClearPrintPreviewRenderFrameHostForExtraction();
   }
   DisconnectPrintPreviewUI();
 }

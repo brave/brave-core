@@ -1,0 +1,16 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Add an isolated world ID for internal Brave features
+
+      Kept before ISOLATED_WORLD_ID_EXTENSIONS, which extensions' dynamically
+      assigned isolated worlds treat as a lower bound.
+    add_enum_entries:
+      enum_name: ChromeIsolatedWorldIDs
+      max_value: ISOLATED_WORLD_ID_EXTENSIONS
+      entries:
+        - ISOLATED_WORLD_ID_BRAVE_INTERNAL

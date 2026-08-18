@@ -71,8 +71,8 @@ BraveContentsContainerView::BraveContentsContainerView(
       for_web_panel_(for_web_panel) {
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   auto* browser = browser_view_->browser();
-  reader_mode_toolbar_ =
-      AddChildView(std::make_unique<ReaderModeToolbarView>(browser->profile()));
+  reader_mode_toolbar_ = AddChildView(
+      std::make_unique<ReaderModeToolbarView>(browser->GetProfile()));
   reader_mode_toolbar_->SetDelegate(this);
 #endif
 
@@ -175,10 +175,11 @@ void BraveContentsContainerView::UpdateBorderRoundedCorners() {
   const auto contents_corner_radius(GetCornerRadius(/*border_thickness=*/0));
 
   contents_view_->layer()->SetRoundedCornerRadius(contents_corner_radius);
-  contents_view_->holder()->SetCornerRadii(contents_corner_radius);
+  contents_view_->holder()->SetNativeViewCornerRadii(contents_corner_radius);
   contents_scrim_view_->SetRoundedCorners(contents_corner_radius);
 
-  devtools_web_view_->holder()->SetCornerRadii(contents_corner_radius);
+  devtools_web_view_->holder()->SetNativeViewCornerRadii(
+      contents_corner_radius);
   devtools_scrim_view_->SetRoundedCorners(contents_corner_radius);
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)

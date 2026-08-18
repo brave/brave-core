@@ -41,8 +41,8 @@ PageActionIconParams& ModifyIconParamsForBrave(PageActionIconParams& params) {
   // Browser could be null if the location bar was created for
   // PresentationReceiverWindowView.
   if (params.browser && params.browser->is_type_normal() &&
-      !params.browser->profile()->IsOffTheRecord() &&
-      playlist::IsPlaylistAllowed(params.browser->profile()->GetPrefs())) {
+      !params.browser->GetProfile()->IsOffTheRecord() &&
+      playlist::IsPlaylistAllowed(params.browser->GetProfile()->GetPrefs())) {
     params.types_enabled.push_back(brave::kPlaylistPageActionIconType);
   }
 #endif  // BUILDFLAG(ENABLE_PLAYLIST)
@@ -54,8 +54,8 @@ PageActionIconParams& ModifyIconParamsForBrave(PageActionIconParams& params) {
       params.types_enabled.insert(
           std::ranges::find(
               params.types_enabled,
-              PageActionIconType::kCookieControls),  // The place where
-                                                     // kReaderMode was.
+              PageActionIconType::kFederation),  // The place where
+                                                 // kReaderMode was.
           brave::kSpeedreaderPageActionIconType);
     }
   }

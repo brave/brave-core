@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_P3A_NITRO_UTILS_COSE_H_
 #define BRAVE_COMPONENTS_P3A_NITRO_UTILS_COSE_H_
 
+#include <optional>
 #include <vector>
 
 #include "components/cbor/values.h"
@@ -47,6 +48,11 @@ class CoseSign1 : bssl::VerifyCertificateChainDelegate {
                              bssl::CertErrors* errors) override;
   bssl::SignatureVerifyCache* GetVerifyCache() override;
   bool AcceptPreCertificates() override;
+  std::optional<MTCCosigner> GetMTCCosigner(
+      bssl::Span<const uint8_t> cosigner_id) override;
+  bool IsCosignatureVerificationResultAcceptable(
+      const bssl::MTCAnchor* mtc_anchor,
+      std::vector<std::vector<uint8_t>> valid_additional_cosigners) override;
 
   cbor::Value protected_headers_;
   cbor::Value unprotected_headers_;

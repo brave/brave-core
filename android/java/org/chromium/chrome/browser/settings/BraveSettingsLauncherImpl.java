@@ -53,10 +53,10 @@ public class BraveSettingsLauncherImpl extends SettingsNavigationImpl {
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         }
         if (fragment != null) {
-            intent.putExtra(SettingsActivity.EXTRA_SHOW_FRAGMENT, fragment.getName());
+            intent.putExtra(SettingsIntentUtil.EXTRA_SHOW_FRAGMENT, fragment.getName());
         }
         if (fragmentArgs != null) {
-            intent.putExtra(SettingsActivity.EXTRA_SHOW_FRAGMENT_ARGUMENTS, fragmentArgs);
+            intent.putExtra(SettingsIntentUtil.EXTRA_SHOW_FRAGMENT_ARGUMENTS, fragmentArgs);
         }
         return intent;
     }

@@ -151,7 +151,7 @@ class PermissionLifetimeManagerBrowserTest : public InProcessBrowserTest {
   }
 
   PermissionManager* permission_manager() {
-    return PermissionManagerFactory::GetForProfile(browser()->profile());
+    return PermissionManagerFactory::GetForProfile(browser()->GetProfile());
   }
 
   HostContentSettingsMap* host_content_settings_map() {
@@ -198,13 +198,13 @@ class PermissionLifetimeManagerBrowserTest : public InProcessBrowserTest {
   }
 
   const base::DictValue& GetExpirationsPrefValue() {
-    return browser()->profile()->GetPrefs()->GetDict(
+    return browser()->GetProfile()->GetPrefs()->GetDict(
         prefs::kPermissionLifetimeExpirations);
   }
 
   size_t WaitForCleanupAfterKeepAlive() {
     return EphemeralStorageServiceFactory::GetInstance()
-        ->GetForContext(browser()->profile())
+        ->GetForContext(browser()->GetProfile())
         ->FireCleanupTimersForTesting();
   }
 

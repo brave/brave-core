@@ -68,7 +68,7 @@ class HatsServiceBrowserTestBase : public InProcessBrowserTest {
 
   HatsServiceDesktop* GetHatsService() {
     return static_cast<HatsServiceDesktop*>(
-        HatsServiceFactory::GetForProfile(browser()->profile(), true));
+        HatsServiceFactory::GetForProfile(browser()->GetProfile(), true));
   }
 
   void SetMetricsConsent(bool consent) {
@@ -104,8 +104,8 @@ class HatsServiceProbabilityOne : public HatsServiceBrowserTestBase {
   void SetUpOnMainThread() override {
     host_resolver()->AddRule("*", "127.0.0.1");
     // Set the profile creation time to be old enough to ensure triggering.
-    browser()->profile()->SetCreationTimeForTesting(base::Time::Now() -
-                                                    base::Days(45));
+    browser()->GetProfile()->SetCreationTimeForTesting(base::Time::Now() -
+                                                       base::Days(45));
   }
 
   void TearDownOnMainThread() override {

@@ -187,6 +187,15 @@
   <message name="IDS_PROFILE_MENU_PROFILE_IDENTIFIER_WITH_SEPARATOR" desc="The user name and profile name are separated by a symbol, in this case bullet •, with a white space before it and a white space after it. If the bullet • resembles another symbol in the language, please translate the bullet • as a symbol (A) that is not easily mistaken for a number or letter in the language and (B) that is typically used to separate elements.">
     <ph name="USER_NAME">$1<ex>John</ex></ph> • <ph name="PROFILE_NAME">$2<ex>Work</ex></ph>
   </message>
+  <message name="IDS_PROFILE_MENU_PROFILE_IDENTIFIER_WITH_NAME_AND_TIER" is_accessibility_with_no_ui="true" desc="The user name, profile name, and the Brave membership tier are separated by a symbol, in this case bullet •, with a white space before it and a white space after it. If the bullet • resembles another symbol in the language, please translate the bullet • as a symbol (A) that is not easily mistaken for a number or letter in the language and (B) that is typically used to separate elements.">
+    <ph name="USER_NAME">$1<ex>John</ex></ph> • <ph name="PROFILE_NAME">$2<ex>Work</ex></ph> • <ph name="TIER_NAME">$3<ex>Brave Subscription</ex></ph>
+  </message>
+  <message name="IDS_PROFILE_AVATAR_NAME_WITH_AI_MEMBERSHIP" desc="Label indicating that the profile has a Brave membership associated with the AI avatar ring, preceded by the profile name or details.">
+    <ph name="PROFILE_NAME">$1<ex>Alice</ex></ph>. Brave membership
+  </message>
+  <message name="IDS_PROFILE_MENU_PROFILE_IDENTIFIER_WITH_TIER" is_accessibility_with_no_ui="true" desc="Label indicating that the profile has a Brave membership tier associated with the AI avatar ring, preceded by the profile name. The profile name and the tier name are separated by a symbol, in this case bullet •, with a white space before it and a white space after it. If the bullet • resembles another symbol in the language, please translate the bullet • as a symbol (A) that is not easily mistaken for a number or letter in the language and (B) that is typically used to separate elements.">
+    <ph name="PROFILE_NAME">$1<ex>Alice</ex></ph> • <ph name="TIER_NAME">$2<ex>Brave Subscription</ex></ph>
+  </message>
   <message name="IDS_PROFILE_MENU_PROFILE_MANAGED_HEADER" desc="Disclaimer indicating that the profile is managed">
     This profile is managed
   </message>
@@ -1246,7 +1255,39 @@
       Yes, I'm in
     </message>
 
-    <!-- Feature Showcase - Stepper -->
+    <!-- Feature Showcase - Gemini -->
+    <message name="IDS_FEATURE_SHOWCASE_GEMINI_SUBTITLE" desc="This is a subtitle explaining a specific feature of the AI assistant: using active page content to provide better context. (CHAR LIMIT = 60)">
+      Get more relevant answers by sharing your tabs
+    </message>
+    <message name="IDS_FEATURE_SHOWCASE_GEMINI_DISCLOSURE_1_ROW" desc="This is the body text of a consent dialog. It explains the technical data flow (content and URLs) to Brave for AI processing. The tone should be transparent and cautionary.">
+      Brave uses the content and URL of shared tabs. Your current tab is shared in new chats. You can change this setting anytime.
+    </message>
+    <message name="IDS_FEATURE_SHOWCASE_GEMINI_DISCLOSURE_2_ROW" desc="This is a disclosure regarding human review and data usage for model training. 'Learn more' links to privacy choices. It is a critical privacy notice. This string includes legal disclaimers and a quality warning about AI 'hallucinations.' The tone should be cautionary.">
+      Chats are reviewed and used to improve Brave AI. Gemini is AI and can make mistakes. You can <ph name="BEGIN_LINK_MANAGE_ACTIVITY">&lt;a href="$1" target="_blank"&gt;</ph>manage your activity<ph name="END_LINK_MANAGE_ACTIVITY">&lt;/a&gt;</ph>, including info about your location. <ph name="BEGIN_LINK_LEARN_MORE">&lt;a href="$2" target="_blank"&gt;</ph>Learn more about your choices<ph name="END_LINK_LEARN_MORE">&lt;/a&gt;</ph>
+    </message>
+    <message name="IDS_FEATURE_SHOWCASE_GEMINI_DISCLOSURE_2_US" desc="This is a disclosure regarding human review and data usage for model training. 'Learn more' links to privacy choices. It is a critical privacy notice. This string includes legal disclaimers and a quality warning about AI 'hallucinations.' The tone should be cautionary.">
+      Chats are reviewed and used to improve Brave AI. Gemini is AI and can make mistakes. Some content may not be suitable for everyone. You can <ph name="BEGIN_LINK_MANAGE_ACTIVITY">&lt;a href="$1" target="_blank"&gt;</ph>manage your activity<ph name="END_LINK_MANAGE_ACTIVITY">&lt;/a&gt;</ph>, including info about your location. <ph name="BEGIN_LINK_LEARN_MORE">&lt;a href="$2" target="_blank"&gt;</ph>Learn more about your choices<ph name="END_LINK_LEARN_MORE">&lt;/a&gt;</ph>
+    </message>
+    <message name="IDS_FEATURE_SHOWCASE_GEMINI_DISCLOSURE_2_ENTERPRISE_ROW" desc="This string includes legal disclaimers and a quality warning about AI 'hallucinations.' The tone should be cautionary.">
+      Neither your conversations with Gemini nor your Brave Workspace data will be reviewed or used to improve generative AI models. Gemini is AI and can make mistakes.
+    </message>
+    <message name="IDS_FEATURE_SHOWCASE_GEMINI_DISCLOSURE_2_ENTERPRISE_US" desc="This string includes legal disclaimers and a quality warning about AI 'hallucinations.' The tone should be cautionary.">
+      Neither your conversations with Gemini nor your Brave Workspace data will be reviewed or used to improve generative AI models. Gemini is AI and can make mistakes. Some content may not be suitable for everyone.
+    </message>
+    <message name="IDS_FEATURE_SHOWCASE_GEMINI_DISCLOSURE_3_ROW" desc="">
+      <ph name="BEGIN_LINK_TERMS">&lt;a href="$1" target="_blank"&gt;</ph>Brave Terms<ph name="END_LINK_TERMS">&lt;/a&gt;</ph> and the <ph name="BEGIN_LINK_PRIVACY">&lt;a href="$2" target="_blank"&gt;</ph>Gemini Apps Privacy Notice<ph name="END_LINK_PRIVACY">&lt;/a&gt;</ph> apply
+    </message>
+    <message name="IDS_FEATURE_SHOWCASE_GEMINI_DISCLOSURE_3_KR" desc="">
+      Our <ph name="BEGIN_LINK_TERMS">&lt;a href="$1" target="_blank"&gt;</ph>Terms<ph name="END_LINK_TERMS">&lt;/a&gt;</ph>, <ph name="BEGIN_LINK_LOCATION_TERMS">&lt;a href="$2" target="_blank"&gt;</ph>Korean Location Terms<ph name="END_LINK_LOCATION_TERMS">&lt;/a&gt;</ph>, and <ph name="BEGIN_LINK_PRIVACY">&lt;a href="$3" target="_blank"&gt;</ph>Privacy Notice<ph name="END_LINK_PRIVACY">&lt;/a&gt;</ph> apply.
+    </message>
+    <message name="IDS_FEATURE_SHOWCASE_GEMINI_NOT_NOW" desc="This is the button to decline the AI feature consent. (CHAR LIMIT = 15)">
+      Not now
+    </message>
+    <message name="IDS_FEATURE_SHOWCASE_GEMINI_YES_IM_IN" desc="This is a button to accept the AI feature consent. 'Yes, I'm in' is a colloquial phrase meaning 'I agree/consent.' Translate this as a positive, informal affirmation. (CHAR LIMIT = 15)">
+      Yes, I'm in
+    </message>
+
+    <!-- Enterprise profile welcome -->
     <message name="IDS_FEATURE_SHOWCASE_STEPPER_A11Y_LABEL" is_accessibility_with_no_ui="true" desc="The accessible text for the feature showcase progress stepper, conveying the current step and total steps.">
       Step <ph name="STEP_NUMBER">$1<ex>1</ex></ph> of <ph name="TOTAL_STEPS">$2<ex>3</ex></ph>
     </message>

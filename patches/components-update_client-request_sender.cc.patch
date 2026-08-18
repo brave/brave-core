@@ -1,0 +1,13 @@
+diff --git a/components/update_client/request_sender.cc b/components/update_client/request_sender.cc
+index 154cafd14623e5033718089376dd0d4629f9516e..25b49761f35ed26c32d48df1fe2dc9b71e044c1a 100644
+--- a/components/update_client/request_sender.cc
++++ b/components/update_client/request_sender.cc
+@@ -191,6 +191,8 @@ const std::string& SelectCupServerProof(
+ }
+ 
+ client_update_protocol::Cup BuildSigner() {
++  if ((true)) return client_update_protocol::Cup(kBraveKeyVersion,
++                                     base::as_byte_span(kBravePublicKey));
+   return base::FeatureList::IsEnabled(
+              client_update_protocol::features::kPqcCupSigning)
+              ? client_update_protocol::Cup(

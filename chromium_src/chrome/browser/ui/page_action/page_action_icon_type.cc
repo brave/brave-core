@@ -26,9 +26,14 @@ bool IsPageActionMigrated(PageActionIconType page_action) {
 
   if (page_action == PageActionIconType::kBookmarkStar) {
     // Brave hides the location bar bookmark star (we have our own bookmark
-    // button in the toolbar). Keeping it on the legacy path lets the
-    // star_view.cc patch keep it hidden, matching the behavior from before
-    // upstream enabled kPageActionsMigrationBookmarkStar by default in cr151.
+    // button in the toolbar). `kBookmarkStar` is now unconditionally on the new
+    // framework upstream (`StarView` was deleted in cr152), so this no longer
+    // selects a legacy code path. It still needs to return false, though:
+    // `TabFeatures` only constructs a `BookmarkPageActionController`
+    // (chrome/browser/ui/tabs/tab_features.cc) when this returns true, and that
+    // controller is the only thing that ever calls
+    // `PageActionController::Show()` for `kActionBookmarkThisTab`. Without it,
+    // the action's visibility stays at its default (hidden).
     return false;
   }
 

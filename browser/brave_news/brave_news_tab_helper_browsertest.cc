@@ -111,7 +111,7 @@ class BraveNewsTabHelperTest : public InProcessBrowserTest {
       : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {}
 
   void OptIn() {
-    auto* prefs = browser()->profile()->GetPrefs();
+    auto* prefs = browser()->GetProfile()->GetPrefs();
     prefs->SetBoolean(brave_news::prefs::kNewTabPageShowToday, true);
     prefs->SetBoolean(brave_news::prefs::kBraveNewsOptedIn, true);
   }

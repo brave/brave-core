@@ -32,11 +32,11 @@ class CookiePrefServiceTest : public PlatformBrowserTest {
   Profile* profile() { return chrome_test_utils::GetProfile(this); }
 
   HostContentSettingsMap* content_settings() {
-    return HostContentSettingsMapFactory::GetForProfile(profile());
+    return HostContentSettingsMapFactory::GetForProfile(GetProfile());
   }
 
   scoped_refptr<content_settings::CookieSettings> cookie_settings() {
-    return CookieSettingsFactory::GetForProfile(profile());
+    return CookieSettingsFactory::GetForProfile(GetProfile());
   }
 
   ContentSetting GetCookiePref() {

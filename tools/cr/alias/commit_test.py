@@ -507,6 +507,16 @@ class TestGracefulExit(unittest.TestCase):
     def tearDown(self) -> None:
         self._sandbox.__exit__(None, None, None)
 
+    @unittest.skipIf(
+        platform.system() == 'Windows',
+        'No side-effect-free way to synthesize this on Windows: '
+        'GenerateConsoleCtrlEvent only scopes to a specific child when it '
+        'was started with CREATE_NEW_PROCESS_GROUP, but that flag also '
+        'disables the default CTRL_C_EVENT handling that flag exists to '
+        'work around, so the child never sees an interrupt at all. The '
+        'one event that does stay scoped, CTRL_BREAK_EVENT, is delivered '
+        'but is not mapped to KeyboardInterrupt unless the child opts in '
+        "with signal.signal(signal.SIGBREAK, ...), which cmd.py doesn't.")
     def test_no_traceback_on_keyboard_interrupt(self) -> None:
         """Sending SIGINT produces exit code 130 with no traceback."""
         import signal

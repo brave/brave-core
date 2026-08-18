@@ -4,30 +4,15 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 substitutions:
-  - description: 'Make FinishWarnBeforeClosing virtual'
-    make_virtual:
-      class_name: Browser
-      method_name: FinishWarnBeforeClosing
-
   - description: 'Make ScheduleUIUpdate virtual'
     make_virtual:
       class_name: Browser
       method_name: ScheduleUIUpdate
 
-  - description: 'Make TryToCloseWindow virtual'
-    make_virtual:
-      class_name: Browser
-      method_name: TryToCloseWindow
-
   - description: 'Make OnTabClosing virtual'
     make_virtual:
       class_name: Browser
       method_name: OnTabClosing
-
-  - description: 'Make ResetTryToCloseWindow virtual'
-    make_virtual:
-      class_name: Browser
-      method_name: ResetTryToCloseWindow
 
   - description: 'Friend BraveBrowser and BookmarkPrefsService'
     add_friend:

@@ -48,7 +48,7 @@ IN_PROC_BROWSER_TEST_F(BraveExtensionProviderTest,
   EXPECT_EQ(true, content::EvalJs(contents,
                                   "setExpectations(1, 0, 0, 0);"
                                   "addImage('ad_banner.png')"));
-  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+  EXPECT_EQ(browser()->GetProfile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveExtensionProviderTest, ExtensionsCanGetCookies) {

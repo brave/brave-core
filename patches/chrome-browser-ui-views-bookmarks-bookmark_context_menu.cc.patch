@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/bookmarks/bookmark_context_menu.cc b/chrome/browser/ui/views/bookmarks/bookmark_context_menu.cc
-index 3d6d96a2d91a88d4b818b7ad9a993bb5afd55495..2b8a88e8f029abf8461d49f1f202af9b614a0bc6 100644
+index 1811e514bad87daaaa2f8ca25d835b0f099878a8..8729718e5f968b018571f37be555ab030d8194ba 100644
 --- a/chrome/browser/ui/views/bookmarks/bookmark_context_menu.cc
 +++ b/chrome/browser/ui/views/bookmarks/bookmark_context_menu.cc
-@@ -75,6 +75,7 @@ BookmarkContextMenu::BookmarkContextMenu(
+@@ -72,6 +72,7 @@ BookmarkContextMenu::BookmarkContextMenu(
    for (size_t i = 0; i < menu_model->GetItemCount(); ++i) {
      views::MenuModelAdapter::AppendMenuItemFromModel(
          menu_model, i, menu_, menu_model->GetCommandIdAt(i));

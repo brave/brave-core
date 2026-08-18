@@ -63,6 +63,7 @@
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/devtools/devtools_ui_controller.h"
 #include "chrome/browser/devtools/devtools_window.h"
+#include "chrome/browser/ui/bookmarks/bookmark_tab_helper.h"
 #include "chrome/browser/ui/browser_actions.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_element_identifiers.h"
@@ -295,13 +296,19 @@ const BraveBrowserView* BraveBrowserView::From(const BrowserView* view) {
   return views::AsViewClass<const BraveBrowserView>(view);
 }
 
+// static
+BraveBrowserView* BraveBrowserView::GetBrowserViewForBrowser(
+    const BrowserWindowInterface* browser) {
+  return From(BrowserView::GetBrowserViewForBrowser(browser));
+}
+
 bool BraveBrowserView::ShouldUseBraveWebViewRoundedCornersForContents(
     const Browser* browser) {
   if (!browser->is_type_normal()) {
     return false;
   }
 
-  if (browser->profile()->GetPrefs()->GetBoolean(kWebViewRoundedCorners)) {
+  if (browser->GetProfile()->GetPrefs()->GetBoolean(kWebViewRoundedCorners)) {
     return true;
   }
 
@@ -580,6 +587,38 @@ void BraveBrowserView::SetStarredState(bool is_starred) {
   }
 }
 
+void BraveBrowserView::URLStarredChanged(content::WebContents* web_contents,
+                                         bool starred) {
+  if (web_contents == GetActiveWebContents()) {
+    SetStarredState(starred);
+  }
+}
+
+void BraveBrowserView::ObserveBookmarkTabHelper(
+    content::WebContents* contents) {
+  bookmark_tab_helper_observation_.Reset();
+  if (auto* bookmark_helper =
+          contents ? BookmarkTabHelper::FromWebContents(contents) : nullptr) {
+    bookmark_tab_helper_observation_.Observe(bookmark_helper);
+    SetStarredState(bookmark_helper->is_starred());
+  } else {
+    SetStarredState(false);
+  }
+}
+
+void BraveBrowserView::OnActiveTabWillDiscardContents(
+    tabs::TabInterface* tab,
+    content::WebContents* old_contents,
+    content::WebContents* new_contents) {
+  ObserveBookmarkTabHelper(new_contents);
+}
+
+void BraveBrowserView::OnActiveTabWillDetach(
+    tabs::TabInterface* tab,
+    tabs::TabInterface::DetachReason reason) {
+  bookmark_tab_helper_observation_.Reset();
+}
+
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 ReaderModeToolbarView* BraveBrowserView::reader_mode_toolbar() {
   return BraveContentsContainerView::From(
@@ -845,7 +884,7 @@ void BraveBrowserView::LoadAccelerators() {
   if (base::FeatureList::IsEnabled(commands::features::kBraveCommands)) {
     auto* accelerator_service =
         commands::AcceleratorServiceFactory::GetForContext(
-            browser()->profile());
+            browser()->GetProfile());
     if (accelerator_service) {
       accelerators_observation_.Observe(accelerator_service);
       return;
@@ -901,13 +940,13 @@ void BraveBrowserView::OnWindowClosingConfirmResponse(bool allowed_to_close) {
   closing_confirm_dialog_activated_ = false;
 
   auto* browser = GetBraveBrowser();
-  // Set to Browser instance because Browser instance knows about the result
-  // of any warning handlers or beforeunload handlers.
-  browser->set_confirmed_to_close(allowed_to_close);
+  // Record the user's choice on the window-scoped UnloadController, which
+  // tracks the result of any warning or beforeunload handlers.
+  UnloadController::From(browser)->set_confirmed_to_close(allowed_to_close);
   if (allowed_to_close) {
     // Start close window again as user allowed to close it.
     // Confirm dialog will not be launched for this closing request
-    // as we set BraveBrowser::confirmed_to_closed_window_ to true.
+    // as we set UnloadController::confirmed_to_close_ to true.
     // If user cancels this window closing via additional warnings
     // or beforeunload handler, this dialog will be shown again.
     chrome::CloseWindow(browser);
@@ -916,7 +955,7 @@ void BraveBrowserView::OnWindowClosingConfirmResponse(bool allowed_to_close) {
 
 void BraveBrowserView::ConfirmBrowserCloseWithPendingDownloads(
     int download_count,
-    Browser::DownloadCloseType dialog_type,
+    UnloadController::DownloadCloseType dialog_type,
     base::OnceCallback<void(bool)> callback) {
   // Simulate user response.
   if (g_download_confirm_return_allow_for_testing) {
@@ -1152,6 +1191,21 @@ void BraveBrowserView::OnActiveTabChanged(content::WebContents* old_contents,
 
   BrowserView::OnActiveTabChanged(old_contents, new_contents, index, reason);
 
+  ObserveBookmarkTabHelper(new_contents);
+  active_tab_will_discard_contents_subscription_ = {};
+  active_tab_will_detach_subscription_ = {};
+  if (auto* tab = new_contents
+                      ? tabs::TabInterface::GetFromContents(new_contents)
+                      : nullptr) {
+    active_tab_will_discard_contents_subscription_ =
+        tab->RegisterWillDiscardContents(base::BindRepeating(
+            &BraveBrowserView::OnActiveTabWillDiscardContents,
+            base::Unretained(this)));
+    active_tab_will_detach_subscription_ =
+        tab->RegisterWillDetach(base::BindRepeating(
+            &BraveBrowserView::OnActiveTabWillDetach, base::Unretained(this)));
+  }
+
   // Switching between tabs may change state that is relevant for focus mode
   // (e.g. when switching between an https tab and an http tab).
   UpdateFocusModeState();
@@ -1232,7 +1286,7 @@ bool BraveBrowserView::UpdateToolbarSecurityState() {
 
 bool BraveBrowserView::AcceleratorPressed(const ui::Accelerator& accelerator) {
   if (base::FeatureList::IsEnabled(tabs::kBraveSharedPinnedTabs) &&
-      browser()->profile()->GetPrefs()->GetBoolean(
+      browser()->GetProfile()->GetPrefs()->GetBoolean(
           brave_tabs::kSharedPinnedTab)) {
     if (int command_id; FindCommandIdForAccelerator(accelerator, &command_id) &&
                         command_id == IDC_CLOSE_TAB) {

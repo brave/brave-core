@@ -79,20 +79,20 @@ class BraveSpeedFeatureProcessorBrowserTest : public InProcessBrowserTest {
   bool SpeedreaderIsEnabled() {
     auto* speedreader_service =
         speedreader::SpeedreaderServiceFactory::GetForBrowserContext(
-            browser()->profile());
+            browser()->GetProfile());
     return speedreader_service->IsAllowedForAllReadableSites();
   }
 #endif  // BUILDFLAG(ENABLE_SPEEDREADER)
 
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)
   bool BraveNewsAreEnabled() {
-    return brave_news::IsEnabled(browser()->profile()->GetPrefs());
+    return brave_news::IsEnabled(browser()->GetProfile()->GetPrefs());
   }
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
   bool HasOptedInToNotificationAds() {
-    return browser()->profile()->GetPrefs()->GetBoolean(
+    return browser()->GetProfile()->GetPrefs()->GetBoolean(
         brave_ads::prefs::kOptedInToNotificationAds);
   }
 #endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
@@ -100,7 +100,7 @@ class BraveSpeedFeatureProcessorBrowserTest : public InProcessBrowserTest {
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   void WaitForRewardsServiceInitialized() {
     auto* rewards_service = brave_rewards::RewardsServiceFactory::GetForProfile(
-        browser()->profile());
+        browser()->GetProfile());
     TestRewardsServiceObserver observer;
     observer.WaitForServiceInitialized(rewards_service);
   }
@@ -128,7 +128,7 @@ IN_PROC_BROWSER_TEST_F(BraveSpeedFeatureProcessorBrowserTest, Default) {
 #endif  // BUILDFLAG(ENABLE_BRAVE_REWARDS)
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
-  auto* prefs = browser()->profile()->GetPrefs();
+  auto* prefs = browser()->GetProfile()->GetPrefs();
   EXPECT_TRUE(ai_chat::IsAIChatEnabled(prefs));
   EXPECT_TRUE(ai_chat::HasUserOptedIn(prefs));
 #endif

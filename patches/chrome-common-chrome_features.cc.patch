@@ -1,0 +1,13 @@
+diff --git a/chrome/common/chrome_features.cc b/chrome/common/chrome_features.cc
+index bdeedbf2ac08aba3903c20875ecabf6bd41cd201..d0546ab6e2ff82c0c76f6b1f04adf2bc690a6be0 100644
+--- a/chrome/common/chrome_features.cc
++++ b/chrome/common/chrome_features.cc
+@@ -377,7 +377,7 @@ const char kGlicActorUiDebounceTimerName[] = "glic-actor-ui-debounce-timer";
+ 
+ // Controls whether the task icon in the actor ui is enabled.
+ const base::FeatureParam<bool> kGlicActorUiTaskIcon{
+-    &kGlicActorUi, kGlicActorUiTaskIconName, true};
++    &kGlicActorUi, kGlicActorUiTaskIconName, false};
+ // Controls whether the Actor Overlay in the actor ui is enabled.
+ const base::FeatureParam<bool> kGlicActorUiOverlay{
+     &kGlicActorUi, kGlicActorUiOverlayName, true};

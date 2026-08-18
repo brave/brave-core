@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/toolbar/app_menu.h b/chrome/browser/ui/views/toolbar/app_menu.h
-index 63aa030ad4fc86a5eed3c6728926fea114cdbf49..1b14e29dda57edd6f8b82e3cf0ffb97cb7c077d5 100644
+index 63aa030ad4fc86a5eed3c6728926fea114cdbf49..2813a729c238122d5e9a01c71aacf16ba5f7801d 100644
 --- a/chrome/browser/ui/views/toolbar/app_menu.h
 +++ b/chrome/browser/ui/views/toolbar/app_menu.h
 @@ -35,7 +35,7 @@ class MenuRunner;
@@ -11,3 +11,28 @@ index 63aa030ad4fc86a5eed3c6728926fea114cdbf49..1b14e29dda57edd6f8b82e3cf0ffb97c
                        public BookmarkMergedSurfaceServiceObserver,
                        public GlobalErrorObserver {
   public:
+@@ -47,11 +47,14 @@ class AppMenu final : public views::MenuDelegate,
+   AppMenu& operator=(const AppMenu&) = delete;
+   ~AppMenu() override;
+ 
++  std::unique_ptr<views::Background>
++  CreateInMenuButtonBackgroundWithLeadingBorder();
++
+   // Shows the menu relative to the specified controller's button.
+-  void RunMenu(views::MenuButtonController* host);
++  virtual void RunMenu(views::MenuButtonController* host);
+ 
+   // Shows the menu with an anchor in the parent widget given its bounds.
+-  void RunMenu(views::Widget* parent, const gfx::Rect& anchor_screen_bounds);
++  virtual void RunMenu(views::Widget* parent, const gfx::Rect& anchor_screen_bounds);
+ 
+   // Closes the menu if it is open, otherwise does nothing.
+   void CloseMenu();
+@@ -136,6 +139,7 @@ class AppMenu final : public views::MenuDelegate,
+   views::View* GetZoomAppMenuViewForTest();
+ 
+  private:
++  friend class BraveAppMenu;
+   class CutCopyPasteView;
+   class RecentTabsMenuModelDelegate;
+   class ZoomView;
