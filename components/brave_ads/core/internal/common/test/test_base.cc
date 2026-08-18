@@ -373,9 +373,7 @@ void TestBase::FlushImmediateTasks() {
   // sequence, even for fire-and-forget calls with `base::DoNothing`. Those
   // replies arrive with a 0ms delay and must be flushed so that callers see
   // only genuinely scheduled tasks.
-  if (task_environment_.NextMainThreadPendingTaskDelay().is_zero()) {
-    task_environment_.FastForwardBy(base::TimeDelta());
-  }
+  task_environment_.FastForwardBy(base::TimeDelta());
 }
 
 }  // namespace brave_ads::test
