@@ -118,7 +118,6 @@ describe('FrontEndProcessing', () => {
           fbank,
           hannWindow(),
           initFftPower(config.N_FFT as FftSize),
-          config.TARGET_SAMPLE_RATE,
         )
 
       const frontendAllAtOnce = makeFrontend()
