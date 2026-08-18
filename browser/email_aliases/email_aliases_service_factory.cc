@@ -43,9 +43,7 @@ EmailAliasesServiceFactory* EmailAliasesServiceFactory::GetInstance() {
 }
 
 EmailAliasesServiceFactory::EmailAliasesServiceFactory()
-    : ProfileKeyedServiceFactory(
-          "EmailAliasesService",
-          ProfileSelections::BuildRedirectedInIncognito()) {
+    : ProfileKeyedServiceFactory("EmailAliasesService") {
   DependsOn(brave_account::BraveAccountServiceFactory::GetInstance());
 }
 
