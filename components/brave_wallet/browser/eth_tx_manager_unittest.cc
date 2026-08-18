@@ -666,21 +666,21 @@ TEST_F(EthTxManagerUnitTest, RestrictedFromAddress) {
 }
 
 TEST_F(EthTxManagerUnitTest, RestrictedRecipientInCalldata) {
+  struct TestData {
+    std::string label;
+    std::vector<uint8_t> tx;
+    std::string encoded_tx;
+  };
+
   constexpr char kRestricted[] = "0xbfb30a082f650c2a15d0632f0e87be4f8e64460a";
   constexpr char kAllowed[] = "0xbfb30a082f650c2a15d0632f0e87be4f8e64460f";
   // What the dApp asks us to call: never the party being paid.
   constexpr char kTokenContract[] =
       "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c";
 
-  struct test_case {
-    std::string label;
-    std::vector<uint8_t> tx;
-    std::string encoded_tx;
-  };
-
   // Every token transfer flavor that names its recipient in the calldata.
   auto calldata_paying = [kAllowed](const std::string& recipient) {
-    std::vector<test_case> test_data(5);
+    std::vector<TestData> test_data(5);
 
     test_data[0].label = "erc20::Transfer";
     EXPECT_TRUE(erc20::Transfer(recipient, 10, &test_data[0].encoded_tx));
