@@ -106,6 +106,9 @@ class UserScriptManager {
   private var walletSolanaWeb3Script: WKUserScript?
   private var walletSolanaWalletStandardScript: WKUserScript?
 
+  /// Whether or not a wallet is created and web3 provider scripts should be injected into the page
+  var isWalletCreated: Bool = false
+
   enum ScriptType: String, CaseIterable {
     case faviconFetcher
     case cookieBlocking
@@ -371,9 +374,6 @@ class UserScriptManager {
       // the user has created a wallet: an empty keyring can't serve a dApp, but
       // the provider is still observable by page scripts.
       let prefs = tab.profile.prefs
-      // hasPref rather than reading the dict: the keyrings value holds the
-      // encrypted mnemonic and every account, and this runs on each script load.
-      let isWalletCreated = prefs.hasPref(forPath: kBraveWalletKeyrings)
       let isEthProviderEnabled =
         isWalletCreated
         && prefs.integer(forPath: kDefaultEthereumWallet) != BraveWallet.DefaultWallet.none.rawValue

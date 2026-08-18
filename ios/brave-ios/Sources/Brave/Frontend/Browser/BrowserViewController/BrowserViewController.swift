@@ -274,7 +274,11 @@ public class BrowserViewController: UIViewController {
 
   /// Whether a wallet exists, to distinguish create/reset from the account
   /// edits that also write the keyrings pref.
-  private var isWalletCreated: Bool = false
+  private var isWalletCreated: Bool = false {
+    didSet {
+      UserScriptManager.shared.isWalletCreated = isWalletCreated
+    }
+  }
 
   let defaultBrowserHelper: DefaultBrowserHelper = .init()
 
@@ -518,14 +522,14 @@ public class BrowserViewController: UIViewController {
     // refreshes them. The keyrings pref is also written on every account add,
     // rename and removal, so only react when the created state actually
     // changed — refreshing discards every web view.
-    isWalletCreated = profileController.profile.prefs.hasPref(
+    isWalletCreated = !profileController.profile.prefs.dictionary(
       forPath: kBraveWalletKeyrings
-    )
+    ).isEmpty
     prefsChangeRegistrar.addObserver(forPath: kBraveWalletKeyrings) { [weak self] _ in
       guard let self else { return }
-      let isWalletCreated = self.profileController.profile.prefs.hasPref(
+      let isWalletCreated = !self.profileController.profile.prefs.dictionary(
         forPath: kBraveWalletKeyrings
-      )
+      ).isEmpty
       guard isWalletCreated != self.isWalletCreated else { return }
       self.isWalletCreated = isWalletCreated
       self.defaultWalletChanged(for: .eth)
