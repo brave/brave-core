@@ -70,6 +70,14 @@ void ScriptletsJavaScriptFeature::ScriptMessageReceivedWithReply(
     web::WebState* web_state,
     const web::ScriptMessage& message,
     ScriptMessageReplyCallback callback) {
+  const GURL frame_url = message.security_origin().GetURL();
+
+  if (!frame_url.is_valid() || !frame_url.SchemeIsHTTPOrHTTPS() ||
+      !token_.GetValidatedScriptMessageBody(message)) {
+    std::move(callback).Run(nullptr, nil);
+    return;
+  }
+
   auto reply_handler = base::BindOnce(
       [](ScriptMessageReplyCallback handler,
          std::vector<std::string> scriptlets) {
@@ -88,6 +96,5 @@ void ScriptletsJavaScriptFeature::ScriptMessageReceivedWithReply(
     return;
   }
 
-  const GURL frame_url = message.security_origin().GetURL();
   tab_helper->RequestScriptlets(frame_url, std::move(reply_handler));
 }
