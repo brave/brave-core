@@ -16,11 +16,14 @@
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/functional/bind.h"
+#include "base/functional/callback_helpers.h"
 #include "base/location.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/no_destructor.h"
 #include "base/path_service.h"
+#include "base/task/sequenced_task_runner.h"
+#include "base/task/task_traits.h"
 #include "base/task/thread_pool.h"
 #include "base/values.h"
 #include "base/version.h"
@@ -54,12 +57,6 @@ base::FilePath GetComponentDir() {
       base::PathService::CheckedGet(component_updater::DIR_COMPONENT_USER);
 
   return components_dir.Append(kComponentInstallDir);
-}
-
-void DeleteComponentDirectory() {
-  base::ThreadPool::PostTask(
-      FROM_HERE, {base::MayBlock(), base::TaskPriority::BEST_EFFORT},
-      base::GetDeletePathRecursivelyCallback(GetComponentDir()));
 }
 
 // Keeps the component registration in sync with the `kBraveLocalAIEnabled`
@@ -122,7 +119,19 @@ class LocalModelsComponentRegistrar {
       Unregister();
       return;
     }
+    // Hop through the file task runner so that a delete queued by an earlier
+    // Unregister() has finished before the component installs into that same
+    // directory again.
+    file_task_runner_->PostTaskAndReply(
+        FROM_HERE, base::DoNothing(),
+        base::BindOnce(&LocalModelsComponentRegistrar::Register,
+                       base::Unretained(this)));
+  }
 
+  void Register() {
+    if (!IsEnabled()) {
+      return;
+    }
     auto installer =
         base::MakeRefCounted<component_updater::ComponentInstaller>(
             std::make_unique<LocalModelsComponentInstallerPolicy>());
@@ -147,15 +156,27 @@ class LocalModelsComponentRegistrar {
   }
 
   void Unregister() {
-    if (cus_) {
-      cus_->UnregisterComponent(kComponentId);
-    }
+    // UnregisterComponent() reports whether the component was registered. When
+    // it was, ComponentInstaller::Uninstall() removes the installed versions
+    // and the directory on its own task runner, so deleting it here as well
+    // would race that. Clean up directly only when nothing was registered -
+    // a directory left behind by a previous session.
+    const bool was_registered = cus_ && cus_->UnregisterComponent(kComponentId);
     LocalModelsUpdaterState::GetInstance()->SetInstallDir(base::FilePath());
-    DeleteComponentDirectory();
+    if (!was_registered) {
+      file_task_runner_->PostTask(
+          FROM_HERE, base::GetDeletePathRecursivelyCallback(GetComponentDir()));
+    }
   }
 
   raw_ptr<component_updater::ComponentUpdateService> cus_ = nullptr;
   PrefChangeRegistrar pref_change_registrar_;
+  // Serializes our own directory deletes against the registrations that follow
+  // them.
+  scoped_refptr<base::SequencedTaskRunner> file_task_runner_ =
+      base::ThreadPool::CreateSequencedTaskRunner(
+          {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
+           base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN});
 };
 
 }  // namespace
