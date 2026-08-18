@@ -1711,6 +1711,58 @@ class LiftPlasterTest(LiftTestCase):
         self.assertIn(f'  {BRAVE_SYMBOL} thing;  // upstream rework',
                       self.env.read_source(FOO))
 
+    # The literal text of `FOO`'s last filler line, i.e. `_source_body`'s
+    # boilerplate for line `SOURCE_LINES`. Far enough from `PATCHED_LINE` to
+    # land in its own hunk while both are still 20 lines apart.
+    TRAILING_LINE = f'// {FOO} line {SOURCE_LINES}'
+
+    # A second substitution on `TRAILING_LINE`, appended to a one-substitution
+    # plaster body so the resulting patch starts out with two hunks instead of
+    # one.
+    _TRAILING_LINE_SUBSTITUTION = f"""\
+  - description: Rewrite the trailing line too, far from the first edit
+    regex:
+      pattern: '{TRAILING_LINE}'
+      replace: '{TRAILING_LINE} (brave footer)'
+"""
+
+    TWO_HUNK_PLASTER_BODY = FOO_PLASTER_BODY + _TRAILING_LINE_SUBSTITUTION
+
+    # The same fix as `FIXED_PLASTER_BODY` (pointed at the renamed symbol),
+    # plus the second, far-away substitution above.
+    FIXED_TWO_HUNK_PLASTER_BODY = FIXED_PLASTER_BODY + _TRAILING_LINE_SUBSTITUTION
+
+    def test_plaster_managed_hunk_change_is_not_rejected(self):
+        """A plaster-managed patch is always whatever the plaster reproduces
+        from the current source, so a hunk count change there is expected
+        plaster churn, not an unreviewed hand-edit that needs a culprit
+        commit. Contrast with `LiftConflictResolutionTest
+        .test_continue_with_a_bigger_patch_is_rejected`, where the same shape
+        of change is rejected for a raw (non-plaster) patch."""
+        self.env.add_plaster_for_foo(self.TWO_HUNK_PLASTER_BODY)
+
+        # Upstream renames the symbol (breaking the plaster, same as
+        # `test_plaster_that_no_longer_matches_is_reported`) and, in the same
+        # release, squeezes away the filler between the two edits, so the two
+        # substitutions that used to sit far apart (and in separate hunks)
+        # will land close enough to merge into one once the plaster is fixed.
+        lines = self.env.upstream_source(FOO).splitlines(keepends=True)
+        lines[PATCHED_LINE -
+              1] = (f'  {self.RENAMED_SYMBOL} thing;  // upstream rework\n')
+        squeezed = ''.join(lines[:5] + [lines[-1]])
+        with self.env.upstream_release(MAJOR_TARGET) as upstream:
+            upstream.write(FOO, squeezed)
+        self.env.run_lift(f'--to={MAJOR_TARGET}')
+
+        # The user fixes the plaster and reapplies it, which regenerates the
+        # patch (now one hunk) without committing it, exactly like
+        # `test_continue_after_fixing_the_plaster_finishes`.
+        self.env.reapply_plaster_for_foo(self.FIXED_TWO_HUNK_PLASTER_BODY)
+        run = self.env.run_lift(f'--to={MAJOR_TARGET}', '--continue',
+                                '--no-conflict-change')
+
+        self.assert_succeeded(run)
+
 
 class LiftOrphanedPlasterTest(LiftTestCase):
     """A plaster-managed patch whose source upstream deletes entirely.
