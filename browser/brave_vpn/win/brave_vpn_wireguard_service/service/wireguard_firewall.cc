@@ -9,6 +9,7 @@
 
 #include <array>
 #include <ios>
+#include <memory>
 #include <string>
 #include <utility>
 #include <vector>
@@ -30,20 +31,38 @@ namespace brave_vpn::wireguard {
 
 namespace {
 
-// Filter weights within our sublayer. The highest matching weight decides, and
-// a block beats a permit at equal weight, so anything whose ordering matters
-// gets a distinct value.
+// Filter weights within our sublayer. A packet typically matches several of
+// these at once -- a DNS query to the router matches the block-all, the local
+// network permit and the DNS block -- and WFP lets the highest weight decide.
+// These numbers are therefore the policy itself, not a hint, and the
+// static_asserts on these constants spell out the orderings it depends on.
 //
-// The only ordering that is load bearing: kWeightBlockDns must outweigh
-// kWeightPermitLocalNetwork, or DNS queries to the router's resolver would be
-// permitted along with the rest of the LAN and leak.
+// Ties are broken in an unspecified order, so no block and permit that can
+// match the same traffic may share a weight. The gaps leave room to slot a
+// filter in without renumbering.
 constexpr uint8_t kWeightBlockAll = 1;
 constexpr uint8_t kWeightPermitLocalNetwork = 8;
 constexpr uint8_t kWeightBlockDns = 10;
-// Only has to outweigh the block-all filter, and only exists until the tunnel
-// is up. See AddTemporaryPermitDns().
+// Only exists until the tunnel is up. See AddTemporaryPermitDns(); it is
+// deleted in the same transaction that adds the DNS block, so the two never
+// coexist and their relative weight does not matter.
 constexpr uint8_t kWeightPermitTemporaryDns = 12;
 constexpr uint8_t kWeightPermitInfrastructure = 14;
+
+static_assert(kWeightBlockAll < kWeightPermitLocalNetwork &&
+                  kWeightBlockAll < kWeightPermitTemporaryDns &&
+                  kWeightBlockAll < kWeightPermitInfrastructure,
+              "block-all is the floor: a permit that does not outweigh it "
+              "never takes effect and that traffic silently disappears.");
+
+static_assert(kWeightPermitLocalNetwork < kWeightBlockDns,
+              "a query to the router's resolver matches the local network "
+              "permit as well, so the DNS block has to win or DNS leaks out "
+              "of the tunnel.");
+
+static_assert(kWeightBlockDns < kWeightPermitInfrastructure,
+              "DNS through the tunnel has to keep working, so the tunnel "
+              "interface permit has to outweigh the DNS block in turn.");
 
 constexpr uint16_t kDnsPort = 53;
 
@@ -67,7 +86,7 @@ struct Ipv6Prefix {
 // Reachable while connected. Note this deliberately includes multicast, which
 // covers mDNS (224.0.0.251), LLMNR (224.0.0.252) and SSDP (239.255.255.250), so
 // discovering a printer or NAS by name keeps working. Those all use ports other
-// than 53, so the DNS block below does not interfere with them.
+// than 53, so AddBlockDns() does not interfere with them.
 constexpr Ipv4Prefix kLocalIpv4Prefixes[] = {
     {0x0a000000, 8},   // 10.0.0.0/8, RFC1918.
     {0xac100000, 12},  // 172.16.0.0/12, RFC1918.
@@ -138,11 +157,13 @@ BaseObjects CreateBaseObjects() {
   return {.provider = CreateTransientKey(), .sublayer = CreateTransientKey()};
 }
 
-std::vector<GUID> GetOutboundLayers() {
+// Not constexpr: the FWPM_LAYER_* GUIDs are extern symbols resolved at link
+// time. Returning by value is still allocation-free and converts to a span.
+std::array<GUID, 2u> GetOutboundLayers() {
   return {FWPM_LAYER_ALE_AUTH_CONNECT_V4, FWPM_LAYER_ALE_AUTH_CONNECT_V6};
 }
 
-std::vector<GUID> GetAllLayers() {
+std::array<GUID, 4u> GetAllLayers() {
   return {FWPM_LAYER_ALE_AUTH_CONNECT_V4, FWPM_LAYER_ALE_AUTH_CONNECT_V6,
           FWPM_LAYER_ALE_AUTH_RECV_ACCEPT_V4,
           FWPM_LAYER_ALE_AUTH_RECV_ACCEPT_V6};
@@ -189,7 +210,7 @@ DWORD AddFilter(HANDLE engine,
 
 DWORD AddFilterToLayers(HANDLE engine,
                         const BaseObjects& base_objects,
-                        const std::vector<GUID>& layers,
+                        base::span<const GUID> layers,
                         FWP_ACTION_TYPE action,
                         uint8_t weight,
                         base::span<FWPM_FILTER_CONDITION0> conditions,
@@ -299,8 +320,8 @@ DWORD AddPermitDhcp(HANDLE engine, const BaseObjects& base_objects) {
       FWPM_FILTER_CONDITION0{FWPM_CONDITION_IP_REMOTE_PORT,
                              FWP_MATCH_EQUAL,
                              {FWP_UINT16, {.uint16 = kDhcpV6ServerPort}}}};
-  const std::vector<GUID> v6_layers = {FWPM_LAYER_ALE_AUTH_CONNECT_V6,
-                                       FWPM_LAYER_ALE_AUTH_RECV_ACCEPT_V6};
+  const std::array<GUID, 2u> v6_layers = {FWPM_LAYER_ALE_AUTH_CONNECT_V6,
+                                          FWPM_LAYER_ALE_AUTH_RECV_ACCEPT_V6};
   return AddFilterToLayers(engine, base_objects, v6_layers, FWP_ACTION_PERMIT,
                            kWeightPermitInfrastructure, v6, L"Permit DHCPv6");
 }
@@ -332,8 +353,8 @@ DWORD AddPermitTunnelInterface(HANDLE engine,
 }
 
 // Replaces tunnel.dll's blockDNS filter. Queries that go through the tunnel are
-// already permitted at a higher weight by the tunnel interface filter above, so
-// this only catches queries that would otherwise leave over another adapter --
+// already permitted at a higher weight by AddPermitTunnelInterface(), so this
+// only catches queries that would otherwise leave over another adapter --
 // including the ones Windows' multihomed name resolution would send to the
 // router alongside the tunnel's resolver.
 DWORD AddBlockDns(HANDLE engine, const BaseObjects& base_objects) {
@@ -347,8 +368,8 @@ DWORD AddBlockDns(HANDLE engine, const BaseObjects& base_objects) {
 }
 
 DWORD AddPermitLocalNetwork(HANDLE engine, const BaseObjects& base_objects) {
-  const std::vector<GUID> v4_layers = {FWPM_LAYER_ALE_AUTH_CONNECT_V4,
-                                       FWPM_LAYER_ALE_AUTH_RECV_ACCEPT_V4};
+  const std::array<GUID, 2u> v4_layers = {FWPM_LAYER_ALE_AUTH_CONNECT_V4,
+                                          FWPM_LAYER_ALE_AUTH_RECV_ACCEPT_V4};
   for (const auto& prefix : kLocalIpv4Prefixes) {
     // WFP stores a pointer for FWP_V4_ADDR_MASK, so this must outlive the add.
     FWP_V4_ADDR_AND_MASK addr_and_mask = {};
@@ -367,8 +388,8 @@ DWORD AddPermitLocalNetwork(HANDLE engine, const BaseObjects& base_objects) {
     }
   }
 
-  const std::vector<GUID> v6_layers = {FWPM_LAYER_ALE_AUTH_CONNECT_V6,
-                                       FWPM_LAYER_ALE_AUTH_RECV_ACCEPT_V6};
+  const std::array<GUID, 2u> v6_layers = {FWPM_LAYER_ALE_AUTH_CONNECT_V6,
+                                          FWPM_LAYER_ALE_AUTH_RECV_ACCEPT_V6};
   for (const auto& prefix : kLocalIpv6Prefixes) {
     FWP_V6_ADDR_AND_MASK addr_and_mask = {};
     base::span(addr_and_mask.addr).copy_from(prefix.address);
@@ -392,7 +413,7 @@ DWORD AddPermitLocalNetwork(HANDLE engine, const BaseObjects& base_objects) {
 // Leaves `serviceName` null on purpose: that field is how BFE knows to start
 // the owning service on demand, which makes no sense for a transient provider.
 // The provider is what attributes the whole set to Brave in a `netsh wfp show
-// filters` dump, since the keys themselves are transient. The filters below it
+// filters` dump, since the keys themselves are transient. The filters it owns
 // are named for what they do rather than repeating the product name.
 DWORD AddProvider(HANDLE engine, const BaseObjects& base_objects) {
   std::wstring name = GetBraveVpnWireguardServiceDisplayName();
@@ -460,7 +481,7 @@ bool AddGlobalFilters(HANDLE engine,
 bool AddTunnelFilters(HANDLE engine,
                       const BaseObjects& base_objects,
                       const NET_LUID& tunnel_luid,
-                      const std::vector<UINT64>& temporary_dns_filter_ids) {
+                      base::span<const UINT64> temporary_dns_filter_ids) {
   for (const auto filter_id : temporary_dns_filter_ids) {
     auto result = FwpmFilterDeleteById0(engine, filter_id);
     if (result != ERROR_SUCCESS) {
@@ -498,8 +519,6 @@ std::unique_ptr<ScopedWireguardFirewall> ScopedWireguardFirewall::Create() {
     return nullptr;
   }
 
-  // Named local, not a temporary: the WFP structs store a pointer to
-  // `provider`, so it has to outlive every FwpmXxxAdd0() call below.
   const BaseObjects base_objects = CreateBaseObjects();
   std::vector<UINT64> temporary_dns_filter_ids;
   if (!AddGlobalFilters(engine, base_objects, &temporary_dns_filter_ids)) {

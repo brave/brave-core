@@ -141,10 +141,13 @@ std::optional<base::FilePath> WriteConfigToFile(const std::string& config) {
   return temp_file_path;
 }
 
-// How long the tunnel adapter gets to appear before we give up on protecting
-// the connection. Creating a WinTun adapter is a sub-second operation; this is
-// generous for a slow machine while keeping the unprotected window short.
-constexpr base::TimeDelta kFirewallInstallTimeout = base::Seconds(10);
+// How long the tunnel adapter gets to appear before we give up on it. The
+// block-all filter is already in force by this point, so waiting costs
+// connectivity rather than privacy: without the adapter the tunnel simply
+// carries nothing, and this timeout is what turns that silent dead end into a
+// visible error. Generous because the first connect on a machine may have to
+// install the WireGuardNT driver, which is not a sub-second operation.
+constexpr base::TimeDelta kFirewallInstallTimeout = base::Seconds(30);
 
 // Owns the firewall for the lifetime of the tunnel. The global filters are
 // already installed by the time this is constructed; PermitTunnel() completes
@@ -485,7 +488,24 @@ int RunWireguardTunnelService(const base::FilePath& config_file_path) {
     // Show system notification about connected vpn.
     brave_vpn::RunWireGuardCommandForUsers(
         brave_vpn::kBraveVpnWireguardServiceNotifyConnectedSwitchName);
+
+    // Owns the tunnel's whole lifetime: it returns only once the tunnel is
+    // down. If it ever failed to return -- an upstream bug, since its stop
+    // handler only moves the service to STOP_PENDING and returns -- the process
+    // would stay alive, and because our WFP session is dynamic that leaves
+    // block-all in force with nothing permitting the tunnel. The user would
+    // have no connectivity at all until the service is killed or the machine
+    // rebooted; RemoveExistingWireguardService() does not help, as it gives up
+    // after 2s and only marks the service for deletion.
+    //
+    // If a report ever points here, the fix is a deadline armed by
+    // RequestTunnelShutdown() that terminates the process. Note that it has to
+    // account for the failure actions from SetServiceFailureActions(): with
+    // dwResetPeriod == 0 every termination looks like a first failure, so a
+    // naive implementation restarts forever, and the IKEv2 fallback counter
+    // will not stop it because only browser-initiated connects increment it.
     auto result = tunnel_proc(config_path.value().c_str());
+    VLOG(1) << "Tunnel stopped, result: " << result;
     watchdog.Stop();
     if (result) {
       ResetWireguardTunnelUsageFlag();

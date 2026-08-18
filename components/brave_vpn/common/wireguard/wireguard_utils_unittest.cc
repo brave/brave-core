@@ -5,11 +5,13 @@
 
 #include "brave/components/brave_vpn/common/wireguard/wireguard_utils.h"
 
+#include <optional>
 #include <string>
 #include <string_view>
 #include <vector>
 
 #include "base/base64.h"
+#include "base/check.h"
 #include "base/json/json_reader.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
@@ -35,7 +37,8 @@ constexpr char kTestAddress[] = "10.146.91.135";
 std::string CreateTestConfig() {
   auto config = brave_vpn::wireguard::CreateWireguardConfig(
       kTestPrivateKey, kTestPublicKey, kTestHostname, kTestAddress);
-  return config.value_or(std::string());
+  CHECK(config.has_value());
+  return *config;
 }
 
 std::vector<std::string> GetAllowedIPs(const std::string& config) {
