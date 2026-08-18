@@ -8,6 +8,7 @@
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/hex_utils.h"
 
 namespace brave_wallet {
 
@@ -35,12 +36,18 @@ mojom::TransactionInfoPtr PolkadotTxMeta::ToTransactionInfo() const {
     asset_id->id = *tx_->asset_id();
   }
 
+  std::optional<std::string> signature_payload;
+  if (!tx_->signature_payload().empty()) {
+    signature_payload = ToHex(tx_->signature_payload());
+  }
+
   return mojom::TransactionInfo::New(
       id_, from_.Clone(), tx_hash_,
       mojom::TxDataUnion::NewPolkadotTxData(mojom::PolkadotTxdata::New(
           tx_->recipient().ToString().value_or(""),
           Uint128ToMojom(tx_->amount()), Uint128ToMojom(tx_->fee()),
-          tx_->transfer_all(), std::move(asset_id))),
+          tx_->transfer_all(), std::move(asset_id),
+          std::move(signature_payload))),
       status_, mojom::TransactionType::Other,
       std::vector<std::string>() /* tx_params */,
       std::vector<std::string>() /* tx_args */,

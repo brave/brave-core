@@ -47,6 +47,13 @@ class PolkadotExtrinsicMetadata {
   uint32_t block_num() const { return block_num_; }
   void set_block_num(uint32_t block_num) { block_num_ = block_num; }
 
+  const std::vector<uint8_t>& signature_payload() const {
+    return signature_payload_;
+  }
+  void set_signature_payload(std::vector<uint8_t> signature_payload) {
+    signature_payload_ = std::move(signature_payload);
+  }
+
   uint32_t mortality_period() const { return mortality_period_; }
   void set_mortality_period(uint32_t mortality_period) {
     mortality_period_ = mortality_period;
@@ -55,6 +62,7 @@ class PolkadotExtrinsicMetadata {
  private:
   std::array<uint8_t, kPolkadotBlockHashSize> block_hash_ = {};
   std::vector<uint8_t> extrinsic_;
+  std::vector<uint8_t> signature_payload_;
   uint32_t block_num_ = 0;
 
   // Right now we don't necessarily need to store the mortality period used for
