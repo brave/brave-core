@@ -39,7 +39,7 @@ ContentTool::ContentTool(const blink::mojom::ScriptTool& script_tool,
     // system-owned, so surface the tool's own name and description verbatim: no
     // host prefix (the page is unique and controls its names) and no
     // "website-provided" framing.
-    name_ = base::StrCat({"web_", script_tool.name});
+    name_ = script_tool.name;
     description_ = script_tool.description;
   } else {
     // Name of the ContentTool is {host}_tool_name. Only the host is used (not
