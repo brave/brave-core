@@ -82,6 +82,13 @@ class BraveProxyingURLLoaderFactory : public network::mojom::URLLoaderFactory {
     // navigation loader doesn't reject it as unsafe.
     void AuthorizeBypassRedirectChecks();
 
+    // True when the redirect we are about to forward was already authorized on
+    // the navigation's NavigationHandle by an inner proxy, i.e. the WebRequest
+    // proxy synthesizing an extension or DNR redirect. Those redirects are
+    // trusted and must not be re-checked here, as the authorization is
+    // consumed further up by the navigation loader.
+    bool IsBypassRedirectChecksAuthorized() const;
+
     // Called when ThrottlingURLLoader disconnects our proxied_loader_receiver_.
     // For redirect-restart disconnects (kFollowRedirectReason), we forward the
     // same disconnect reason to target_loader_ so that any inner proxy layer
