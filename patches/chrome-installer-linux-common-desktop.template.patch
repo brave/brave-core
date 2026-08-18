@@ -1,0 +1,21 @@
+diff --git a/chrome/installer/linux/common/desktop.template b/chrome/installer/linux/common/desktop.template
+--- a/chrome/installer/linux/common/desktop.template
++++ b/chrome/installer/linux/common/desktop.template
+@@ -170,7 +170,7 @@
+ Exec=/usr/bin/@@usr_bin_symlink_name
+ 
+ [Desktop Action new-private-window]
+-Name=New Incognito Window
++Name=New Private Window
+ Name[ar]=نافذة جديدة للتصفح المتخفي
+ Name[bg]=Нов прозорец „инкогнито“
+ Name[bn]=নতুন ছদ্মবেশী উইন্ডো
+@@ -179,7 +179,7 @@
+ Name[da]=Nyt inkognitovindue
+ Name[de]=Neues Inkognito-Fenster
+ Name[el]=Νέο παράθυρο για ανώνυμη περιήγηση
+-Name[en_GB]=New Incognito window
++Name[en_GB]=New Private window
+ Name[es]=Nueva ventana de incógnito
+ Name[et]=Uus inkognito aken
+ Name[fa]=پنجره جدید حالت ناشناس
