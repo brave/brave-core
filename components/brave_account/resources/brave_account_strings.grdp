@@ -151,7 +151,7 @@
     Forgot your password?
   </message>
   <message name="IDS_BRAVE_ACCOUNT_FORGOT_PASSWORD_DIALOG_DESCRIPTION" desc="Description for the dialog where the user can reset their Brave Account password" formatter_data="webui=BraveAccount">
-    Confirm your Brave account email and you'll then receive a link to reset your password. The link will only be valid for 30 minutes.
+    Confirm your Brave account email and you'll then receive a code to reset your password. The code will only be valid for 15 minutes.
   </message>
   <message name="IDS_BRAVE_ACCOUNT_RESET_PASSWORD_BUTTON_LABEL" desc="Label for the button that submits the 'Forgot Password' dialog" formatter_data="webui=BraveAccount">
     Reset your password
