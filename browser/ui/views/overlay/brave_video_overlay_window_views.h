@@ -23,13 +23,8 @@ class BraveVideoOverlayWindowViews : public VideoOverlayWindowViews {
   ~BraveVideoOverlayWindowViews() override;
 
 #if BUILDFLAG(IS_LINUX)
-  // Sets WM_CLASS (X11) and the app id (Wayland) on the picture-in-picture
-  // widget's init params so Linux window managers can match the window to the
-  // browser's (or source web app's) .desktop entry. Without them the window
-  // has none. Called from VideoOverlayWindowViews::Create() via chromium_src.
-  static void SetLinuxWMClass(
-      views::Widget::InitParams& params,
-      content::VideoPictureInPictureWindowController* controller);
+  // views::Widget:
+  void Init(views::Widget::InitParams params) override;
 #endif  // BUILDFLAG(IS_LINUX)
 
   // VideoOverlayWindowViews:
