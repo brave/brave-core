@@ -35,6 +35,7 @@ if (!is_ios) {
 if (is_mac) {
   import("//brave/build/mac/tweak_info_plist.gni")
   import("//build/config/mac/rules.gni")
+  import("//chrome/updater/branding.gni")
 }
 
 if (is_win) {
@@ -766,7 +767,10 @@ if (is_mac) {
     }
 
     if (enable_updater) {
-      args += [ "--enable_updater" ]
+      args += [
+        "--enable_updater",
+        "--update_check_url=$update_check_url",
+      ]
     }
 
     deps = [ "//chrome:chrome_app_plist" ]
