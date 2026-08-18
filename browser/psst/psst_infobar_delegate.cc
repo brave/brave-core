@@ -7,7 +7,9 @@
 
 #include <memory>
 
+#include "base/functional/bind.h"
 #include "base/memory/ptr_util.h"
+#include "base/task/sequenced_task_runner.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/infobars/confirm_infobar_creator.h"
 #include "components/infobars/core/infobar.h"
@@ -40,7 +42,10 @@ bool PsstInfoBarDelegate::Accept() {
     std::move(on_accept_callback_).Run(true);
   }
 
-  return true;
+  // The infobar is already closed by the callback above (it synchronously
+  // triggers ShowConsentDialog() -> HideInfoBar()), so returning true here
+  // would make the caller remove it a second time (use-after-free).
+  return false;
 }
 
 bool PsstInfoBarDelegate::Cancel() {
@@ -53,7 +58,16 @@ bool PsstInfoBarDelegate::Cancel() {
 
 void PsstInfoBarDelegate::InfoBarDismissed() {
   if (!on_accept_callback_.is_null()) {
-    std::move(on_accept_callback_).Run(false);
+    // Unlike Accept()/Cancel(), the caller (InfoBarView::CloseButtonPressed())
+    // always calls RemoveSelf() right after this returns, with no way to
+    // signal "already removed". The callback below leads (synchronously, if
+    // run inline) to SetPsstEnabled(false) -> OnPsstEnableChange() ->
+    // HideInfoBar(), which would remove this same infobar a second time
+    // while CloseButtonPressed() is still on the stack, causing a
+    // use-after-free. Post it instead so it runs after RemoveSelf() has
+    // already completed; HideInfoBar() then just no-ops (infobar not found).
+    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+        FROM_HERE, base::BindOnce(std::move(on_accept_callback_), false));
   }
 }
 

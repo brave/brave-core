@@ -242,7 +242,7 @@ constexpr auto kBraveOriginProfileMetadata =
         {psst::prefs::kPsstEnabled,
          BraveOriginServiceFactory::BraveOriginPrefMetadata(
              false,
-             /*user_settable=*/false)},
+             /*user_settable=*/true)},
 #endif
     });
 
