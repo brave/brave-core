@@ -10,6 +10,7 @@
 #include <string>
 
 #include "brave/components/skus/common/skus_sdk.mojom.h"
+#include "mojo/public/rust/system/scoped_handle_interop.h"
 #include "third_party/rust/cxx/v1/cxx.h"
 
 class PrefService;
@@ -17,9 +18,6 @@ class PrefService;
 namespace skus {
 
 enum class TracingLevel : uint8_t;
-struct HttpRequest;
-struct HttpResponse;
-struct HttpRoundtripContext;
 struct WakeupContext;
 struct SkusResult;
 struct StoragePurgeContext;
@@ -42,21 +40,13 @@ class RustBoundPostTask {
   base::OnceCallback<void(skus::mojom::SkusResultPtr)> callback_;
 };
 
-class SkusUrlLoader {
- public:
-  virtual ~SkusUrlLoader() = default;
-  virtual void BeginFetch(
-      const skus::HttpRequest& req,
-      rust::cxxbridge1::Fn<
-          void(rust::cxxbridge1::Box<skus::HttpRoundtripContext>,
-               skus::HttpResponse)> callback,
-      rust::cxxbridge1::Box<skus::HttpRoundtripContext> ctx) = 0;
-};
-
 class SkusContext {
  public:
   virtual ~SkusContext() = default;
-  virtual std::unique_ptr<skus::SkusUrlLoader> CreateFetcher() const = 0;
+  // Returns the client end of a pipe bound to a
+  // brave.network.mojom.SimpleUrlLoader, for Rust to make HTTP requests with.
+  virtual std::unique_ptr<mojo::rust::ScopedMessagePipeHandleWrapper>
+  CreateUrlLoader() = 0;
   virtual void GetValueFromStore(
       const std::string& key,
       rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::StorageGetContext>,
@@ -101,12 +91,8 @@ void shim_scheduleWakeup(
     rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::WakeupContext>)> done,
     rust::cxxbridge1::Box<skus::WakeupContext> ctx);
 
-std::unique_ptr<SkusUrlLoader> shim_executeRequest(
-    const skus::SkusContext& ctx,
-    const skus::HttpRequest& req,
-    rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::HttpRoundtripContext>,
-                              skus::HttpResponse)> done,
-    rust::cxxbridge1::Box<skus::HttpRoundtripContext> rt_ctx);
+std::unique_ptr<mojo::rust::ScopedMessagePipeHandleWrapper>
+shim_createUrlLoader(skus::SkusContext& ctx);  // NOLINT
 }  // namespace skus
 
 #endif  // BRAVE_COMPONENTS_SKUS_BROWSER_RS_CXX_SRC_SHIM_H_

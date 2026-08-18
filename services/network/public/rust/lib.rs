@@ -284,6 +284,12 @@ impl RequestBuilder {
         }
     }
 
+    /// A request with no body, for callers whose method is only known at
+    /// runtime.
+    pub fn with_method(url: impl Into<String>, method: HttpMethod) -> Self {
+        Self::new(url, method)
+    }
+
     pub fn get(url: impl Into<String>) -> Self {
         Self::new(url, HttpMethod::kGet)
     }

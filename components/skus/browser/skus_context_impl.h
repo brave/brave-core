@@ -12,14 +12,12 @@
 #include "base/memory/raw_ref.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/sequence_checker.h"
+#include "base/task/sequenced_task_runner_helpers.h"
 #include "brave/components/skus/browser/rs/cxx/src/shim.h"
 #include "brave/components/skus/browser/skus_service_impl.h"
+#include "brave/services/network/simple_url_loader_service.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "third_party/rust/cxx/v1/cxx.h"
-
-namespace skus {
-class SkusUrlLoader;
-}  // namespace skus
 
 namespace skus {
 
@@ -42,7 +40,8 @@ class SkusContextImpl : public SkusContext {
       base::WeakPtr<SkusServiceImpl>);
   ~SkusContextImpl() override;
 
-  std::unique_ptr<skus::SkusUrlLoader> CreateFetcher() const override;
+  std::unique_ptr<mojo::rust::ScopedMessagePipeHandleWrapper> CreateUrlLoader()
+      override;
   void GetValueFromStore(
       const std::string& key,
       rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::StorageGetContext>,
@@ -63,9 +62,22 @@ class SkusContextImpl : public SkusContext {
 
  private:
   SEQUENCE_CHECKER(sequence_checker_);
-  // used for making requests to SKU server
-  mutable std::unique_ptr<network::PendingSharedURLLoaderFactory>
+  // Used for making requests to the SKU server. Consumed the first time a URL
+  // loader is asked for, since SharedURLLoaderFactory can only be created on
+  // the sequence that will use it.
+  std::unique_ptr<network::PendingSharedURLLoaderFactory>
       pending_url_loader_factory_ GUARDED_BY_CONTEXT(sequence_checker_);
+  // Created lazily from `pending_url_loader_factory_`, then shared by every
+  // request. Serves the Mojo interface that the Rust SDK drives.
+  //
+  // Deleted on the sequence it was created on. This object is owned by the Rust
+  // SDK, which SkusServiceImpl destroys from the UI sequence, but the service
+  // holds a mojo::ReceiverSet bound to the SDK sequence and Mojo endpoints must
+  // be destroyed where they were bound.
+  std::unique_ptr<brave::network::SimpleUrlLoaderService,
+                  base::OnTaskRunnerDeleter>
+      url_loader_service_ GUARDED_BY_CONTEXT(sequence_checker_){
+          nullptr, base::OnTaskRunnerDeleter(nullptr)};
   scoped_refptr<base::SequencedTaskRunner> ui_task_runner_;
   base::WeakPtr<SkusServiceImpl> skus_service_;
 };

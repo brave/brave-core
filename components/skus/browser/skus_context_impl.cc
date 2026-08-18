@@ -9,9 +9,11 @@
 #include <utility>
 
 #include "base/task/bind_post_task.h"
+#include "base/task/sequenced_task_runner.h"
 #include "brave/components/skus/browser/rs/cxx/src/lib.rs.h"
-#include "brave/components/skus/browser/skus_url_loader_impl.h"
 #include "brave/components/skus/common/skus_sdk.mojom.h"
+#include "mojo/public/cpp/bindings/pending_remote.h"
+#include "net/traffic_annotation/network_traffic_annotation.h"
 
 namespace {
 
@@ -19,6 +21,26 @@ void OnScheduleWakeup(
     rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::WakeupContext>)> done,
     rust::cxxbridge1::Box<skus::WakeupContext> ctx) {
   done(std::move(ctx));
+}
+
+const net::NetworkTrafficAnnotationTag& GetNetworkTrafficAnnotationTag() {
+  static const net::NetworkTrafficAnnotationTag network_traffic_annotation_tag =
+      net::DefineNetworkTrafficAnnotation("sku_sdk_execute_request", R"(
+      semantics {
+        sender: "Brave SKU SDK"
+        description:
+          "Call the SKU SDK implementation provided by the caller"
+        trigger:
+          "Any Brave webpage using SKU SDK where window.chrome.braveSkus.*"
+          "methods are called; ex: fetch_order / fetch_order_credentials"
+        data: "JSON data comprising an order."
+        destination: OTHER
+        destination_other: "Brave developers"
+      }
+      policy {
+        cookies_allowed: NO
+      })");
+  return network_traffic_annotation_tag;
 }
 
 }  // namespace
@@ -95,15 +117,9 @@ void shim_scheduleWakeup(
       base::Milliseconds(delay_ms + buffer_ms));
 }
 
-std::unique_ptr<SkusUrlLoader> shim_executeRequest(
-    const skus::SkusContext& ctx,
-    const skus::HttpRequest& req,
-    rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::HttpRoundtripContext>,
-                              skus::HttpResponse)> done,
-    rust::cxxbridge1::Box<skus::HttpRoundtripContext> rt_ctx) {
-  auto fetcher = ctx.CreateFetcher();
-  fetcher->BeginFetch(req, std::move(done), std::move(rt_ctx));
-  return fetcher;
+std::unique_ptr<mojo::rust::ScopedMessagePipeHandleWrapper>
+shim_createUrlLoader(skus::SkusContext& ctx) {  // NOLINT
+  return ctx.CreateUrlLoader();
 }
 
 SkusContextImpl::SkusContextImpl(
@@ -116,12 +132,24 @@ SkusContextImpl::SkusContextImpl(
       skus_service_(skus_service) {}
 SkusContextImpl::~SkusContextImpl() = default;
 
-std::unique_ptr<skus::SkusUrlLoader> SkusContextImpl::CreateFetcher() const {
+std::unique_ptr<mojo::rust::ScopedMessagePipeHandleWrapper>
+SkusContextImpl::CreateUrlLoader() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  auto url_loader_factory = network::SharedURLLoaderFactory::Create(
-      std::move(pending_url_loader_factory_));
-  pending_url_loader_factory_ = url_loader_factory->Clone();
-  return std::make_unique<SkusUrlLoaderImpl>(url_loader_factory);
+  if (!url_loader_service_) {
+    // SharedURLLoaderFactory must be created on the sequence that uses it,
+    // which is why the factory is carried here in its pending form.
+    url_loader_service_ = {new brave::network::SimpleUrlLoaderService(
+                               network::SharedURLLoaderFactory::Create(
+                                   std::move(pending_url_loader_factory_)),
+                               GetNetworkTrafficAnnotationTag()),
+                           base::OnTaskRunnerDeleter(
+                               base::SequencedTaskRunner::GetCurrentDefault())};
+  }
+
+  mojo::PendingRemote<brave::network::mojom::SimpleUrlLoader> remote;
+  url_loader_service_->Bind(remote.InitWithNewPipeAndPassReceiver());
+  return std::make_unique<mojo::rust::ScopedMessagePipeHandleWrapper>(
+      remote.PassPipe());
 }
 
 void SkusContextImpl::GetValueFromStore(

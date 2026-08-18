@@ -1,4 +1,5 @@
 include_rules = [
+  "+brave/services/network",
   "+components/keyed_service",
   "+components/prefs",
   "+components/sync_preferences/testing_pref_service_syncable.h",
@@ -8,14 +9,11 @@ include_rules = [
 ]
 
 specific_include_rules = {
-  "skus_url_loader_impl\.h": [
-    "+third_party/rust/cxx/v1/cxx.h"
-  ],
-  "skus_url_loader_impl_unittest\.cc": [
-    "+third_party/rust/cxx/v1/cxx.h"
-  ],
   "skus_context_impl\.h": [
     "+third_party/rust/cxx/v1/cxx.h"
+  ],
+  "skus_context_impl\.cc": [
+    "+mojo/public/cpp/bindings",
   ],
   "skus_service_impl\.h": [
     "+third_party/rust/cxx/v1/cxx.h"

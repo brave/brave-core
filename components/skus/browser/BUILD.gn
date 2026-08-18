@@ -10,8 +10,6 @@ static_library("browser") {
     "skus_context_impl.h",
     "skus_service_impl.cc",
     "skus_service_impl.h",
-    "skus_url_loader_impl.cc",
-    "skus_url_loader_impl.h",
     "skus_utils.cc",
     "skus_utils.h",
   ]
@@ -20,12 +18,14 @@ static_library("browser") {
 
   deps = [
     "//base",
-    "//brave/components/api_request_helper",
     "//brave/components/skus/common",
     "//brave/components/skus/common:mojom",
+    "//brave/services/network",
     "//components/keyed_service/core",
     "//components/pref_registry",
     "//components/prefs",
+    "//mojo/public/cpp/bindings",
+    "//mojo/public/rust/system:scoped_handle_interop_cc",
     "//net",
     "//services/network/public/cpp",
     "//services/preferences/public/cpp",
@@ -50,15 +50,15 @@ source_set("test_support") {
 source_set("unit_tests") {
   testonly = true
 
+  # skus_service_unittest.cc is the only end-to-end coverage of the SKU SDK's
+  # HTTP path, which now runs over Mojo rather than a cxx shim. It was
+  # previously win/mac only, for
+  # https://github.com/brave/brave-browser/issues/15817. It is stable locally on
+  # Linux, so please watch the Linux bots on this CL.
   sources = [
-    "skus_url_loader_impl_unittest.cc",
+    "skus_service_unittest.cc",
     "skus_utils_unittest.cc",
   ]
-
-  # Remove when linux fixed https://github.com/brave/brave-browser/issues/15817.
-  if (is_win || is_mac) {
-    sources += [ "skus_service_unittest.cc" ]
-  }
 
   deps = [
     "//base",

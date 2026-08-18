@@ -7,6 +7,11 @@ mod errors;
 mod httpclient;
 mod storage;
 
+chromium::import! {
+    "//brave/services/network/public/rust:brave_url_loader";
+    "//mojo/public/rust/system";
+}
+
 use std::cell::RefCell;
 use std::fmt;
 use std::rc::Rc;
@@ -22,7 +27,9 @@ use tracing_log::LogTracer;
 
 pub use skus;
 
-use crate::httpclient::{HttpRoundtripContext, WakeupContext};
+use brave_url_loader::UrlLoader;
+
+use crate::httpclient::{create_url_loader, WakeupContext};
 use crate::storage::{StorageGetContext, StoragePurgeContext, StorageSetContext};
 
 pub struct NativeClientExecutor {
@@ -37,6 +44,9 @@ pub struct NativeClientInner {
     environment: skus::Environment,
     executor: Rc<RefCell<NativeClientExecutor>>,
     ctx: Rc<RefCell<UniquePtr<ffi::SkusContext>>>,
+    // Bound once at SDK initialization and shared by every request. `None` only
+    // if the pipe could not be created, in which case requests fail.
+    url_loader: Rc<RefCell<Option<UrlLoader>>>,
 }
 
 #[derive(Clone)]
@@ -157,22 +167,7 @@ mod ffi {
         InvalidCall,
     }
 
-    pub struct HttpRequest {
-        pub url: String,
-        pub method: String,
-        pub headers: Vec<String>,
-        pub body: Vec<u8>,
-    }
-    #[derive(Debug)]
-    pub struct HttpResponse {
-        pub result: SkusResult,
-        pub return_code: u16,
-        pub headers: Vec<String>,
-        pub body: Vec<u8>,
-    }
-
     extern "Rust" {
-        type HttpRoundtripContext;
         type WakeupContext;
         type StoragePurgeContext;
         type StorageSetContext;
@@ -222,18 +217,26 @@ mod ffi {
         type SkusResultCode;
     }
 
+    // Imports the wrapper type from the Mojo Rust bindings so cxx knows it is
+    // the same type on both sides.
+    unsafe extern "C++" {
+        include!("mojo/public/rust/system/scoped_handle_interop.h");
+
+        #[namespace = "mojo::rust"]
+        type ScopedMessagePipeHandleWrapper =
+            system::scoped_handle_interop::ScopedMessagePipeHandleWrapper;
+    }
+
     unsafe extern "C++" {
         include!("brave/components/skus/browser/rs/cxx/src/shim.h");
 
         type SkusContext;
-        type SkusUrlLoader;
 
-        fn shim_executeRequest(
-            ctx: &SkusContext,
-            req: &HttpRequest,
-            done: fn(Box<HttpRoundtripContext>, resp: HttpResponse),
-            rt_ctx: Box<HttpRoundtripContext>,
-        ) -> UniquePtr<SkusUrlLoader>;
+        /// Returns the client end of a pipe bound to a
+        /// brave.network.mojom.SimpleUrlLoader.
+        fn shim_createUrlLoader(
+            ctx: Pin<&mut SkusContext>,
+        ) -> UniquePtr<ScopedMessagePipeHandleWrapper>;
 
         fn shim_scheduleWakeup(
             delay_ms: u64,
@@ -282,6 +285,11 @@ fn initialize_sdk(ctx: UniquePtr<ffi::SkusContext>, env: String) -> Box<CppSDK> 
     let env = env.parse::<skus::Environment>().unwrap_or(skus::Environment::Local);
 
     let executor = Rc::new(RefCell::new(NativeClientExecutor::new()));
+    let mut ctx = ctx;
+    let url_loader = create_url_loader(&mut ctx, executor.clone());
+    if url_loader.is_none() {
+        debug!("could not bind a url loader; requests will fail");
+    }
     let sdk = skus::sdk::SDK::new(
         NativeClient {
             executor: executor.clone(),
@@ -289,6 +297,7 @@ fn initialize_sdk(ctx: UniquePtr<ffi::SkusContext>, env: String) -> Box<CppSDK> 
                 environment: env.clone(),
                 executor,
                 ctx: Rc::new(RefCell::new(ctx)),
+                url_loader: Rc::new(RefCell::new(url_loader)),
             })),
         },
         env,

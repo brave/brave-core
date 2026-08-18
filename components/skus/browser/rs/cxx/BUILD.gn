@@ -22,10 +22,12 @@ rust_static_library("rust_lib") {
 
   deps = [
     "//brave/components/skus/browser/rs/lib:rust_lib",
+    "//brave/services/network/public/rust:brave_url_loader",
     "//brave/third_party/rust/async_trait/v0_1:lib",
     "//brave/third_party/rust/futures/v0_3:lib",
     "//brave/third_party/rust/serde_json/v1:lib",
     "//brave/third_party/rust/tracing_log/v0_2:lib",
+    "//mojo/public/rust/system",
     "//third_party/rust/log/v0_4:lib",
   ]
 }
@@ -37,6 +39,7 @@ source_set("shim") {
   public_deps = [
     "//base",
     "//build/rust:cxx_cppdeps",
+    "//mojo/public/rust/system:scoped_handle_interop_cc",
   ]
 
   deps = [ "//brave/components/skus/common:mojom" ]
