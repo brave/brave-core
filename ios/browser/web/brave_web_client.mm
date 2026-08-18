@@ -16,6 +16,7 @@
 #include "brave/components/brave_talk/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/constants/url_constants.h"
+#include "brave/components/global_privacy_control/pref_names.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/ios/browser/ai_chat/ai_chat_distiller_javascript_feature.h"
 #include "brave/ios/browser/api/profile/profile_bridge_impl.h"
@@ -50,6 +51,7 @@
 #include "components/autofill/ios/form_util/form_handlers_java_script_feature.h"
 #include "components/language/ios/browser/language_detection_java_script_feature.h"
 #include "components/password_manager/ios/password_manager_java_script_feature.h"
+#include "components/prefs/pref_service.h"
 #import "components/translate/ios/browser/translate_java_script_feature.h"
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
 #include "ios/chrome/browser/shared/model/url/chrome_url_constants.h"
@@ -63,6 +65,7 @@
 #include "ios/web/common/url_scheme_util.h"
 #include "ios/web/common/user_agent.h"
 #import "ios/web/public/navigation/browser_url_rewriter.h"
+#import "ios/web/public/web_state.h"
 #import "ios/web_view/internal/cwv_ssl_error_handler_internal.h"
 #import "ios/web_view/internal/cwv_web_view_internal.h"
 #import "ios/web_view/public/cwv_navigation_delegate.h"
@@ -306,6 +309,15 @@ NSString* BraveWebClient::GetUserAgentForRequest(
                           request:request];
   }
   return nil;
+}
+
+bool BraveWebClient::IsGlobalPrivacyControlEnabled(web::WebState* webState) {
+  auto* profile = ProfileIOS::FromBrowserState(webState->GetBrowserState());
+  if (!profile) {
+    return false;
+  }
+  return profile->GetPrefs()->GetBoolean(
+      global_privacy_control::kGlobalPrivacyControlEnabled);
 }
 
 bool BraveWebClient::CanRunOpenPanel(web::WebState* source) const

@@ -21,6 +21,10 @@ bool WebClient::ShouldBlockUniversalLinks(web::WebState* web_state,
   return false;
 }
 
+bool WebClient::IsGlobalPrivacyControlEnabled(web::WebState* web_state) {
+  return false;
+}
+
 void WebClient::DidResetConfiguration(web::BrowserState* browser_state,
                                       WKWebViewConfiguration* configuration) {
   // Called when the underlying WKWebViewConfiguration is reset.

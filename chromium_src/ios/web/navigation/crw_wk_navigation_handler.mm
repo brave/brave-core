@@ -35,6 +35,15 @@
           preferences.allowsContentJavaScript = false;
         }
 
+#if defined(__IPHONE_27_0) && __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_27_0
+        if (@available(iOS 27, *)) {
+          bool isGPCEnabled =
+              web::GetWebClient()->IsGlobalPrivacyControlEnabled(
+                  static_cast<web::WebState*>(self.webStateImpl));
+          preferences.globalPrivacyControlEnabled = isGPCEnabled;
+        }
+#endif
+
         if (@available(iOS 18, *)) {
         } else {
 #pragma clang diagnostic push
