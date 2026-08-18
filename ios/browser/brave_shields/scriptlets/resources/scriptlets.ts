@@ -8,11 +8,13 @@ import {
   messageHandlerName,
 } from '//brave/ios/web/js_messaging/resources/utils.js'
 
-const scriptlets: string[] = sendTokenizedWebKitMessageSynchronously(
+const scriptlets: string[] | null = sendTokenizedWebKitMessageSynchronously(
   messageHandlerName,
   {},
 )
 
-for (const scriptlet of scriptlets) {
-  new Function(scriptlet)()
+if (scriptlets) {
+  for (const scriptlet of scriptlets) {
+    new Function(scriptlet)()
+  }
 }

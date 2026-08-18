@@ -28,13 +28,14 @@ void ScriptletsTabHelper::SetBridge(id<ScriptletsTabHelperBridge> bridge) {
 void ScriptletsTabHelper::RequestScriptlets(
     const GURL& frame_url,
     base::OnceCallback<void(std::vector<std::string>)> callback) {
-  if (!bridge_) {
+  NSURL* frame_nsurl = net::NSURLWithGURL(frame_url);
+  if (!bridge_ || !frame_nsurl) {
     std::move(callback).Run({});
     return;
   }
 
   [bridge_
-      scriptletsForFrameURL:net::NSURLWithGURL(frame_url)
+      scriptletsForFrameURL:frame_nsurl
                  completion:base::CallbackToBlock(base::BindOnce(
                                 [](base::OnceCallback<void(
                                        std::vector<std::string>)> callback,
