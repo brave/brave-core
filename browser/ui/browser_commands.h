@@ -6,6 +6,8 @@
 #ifndef BRAVE_BROWSER_UI_BROWSER_COMMANDS_H_
 #define BRAVE_BROWSER_UI_BROWSER_COMMANDS_H_
 
+#include <optional>
+
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/commander/common/buildflags/buildflags.h"
@@ -170,26 +172,35 @@ void OpenTabUrlsInContainer(BrowserWindowInterface* browser_window,
                             const std::vector<tabs::TabHandle>& tabs,
                             const containers::mojom::ContainerPtr& container);
 // Creates a new tab with the specified URL in the given container.
-void OpenUrlInContainer(BrowserWindowInterface* browser_window,
-                        const GURL& url,
-                        const containers::mojom::ContainerPtr& container,
-                        bool is_link = true);
+void OpenUrlInContainer(
+    BrowserWindowInterface* browser_window,
+    const GURL& url,
+    const containers::mojom::ContainerPtr& container,
+    bool is_link = true,
+    const std::optional<url::Origin>& initiator_origin = std::nullopt,
+    bool started_from_context_menu = false);
 
 // Creates new tabs with the given tabs' URLs without a container.
 void OpenTabUrlsWithoutContainer(BrowserWindowInterface* browser_window,
                                  const std::vector<tabs::TabHandle>& tabs);
-void OpenUrlWithoutContainer(BrowserWindowInterface* browser_window,
-                             const GURL& url,
-                             bool is_link = true);
+void OpenUrlWithoutContainer(
+    BrowserWindowInterface* browser_window,
+    const GURL& url,
+    bool is_link = true,
+    const std::optional<url::Origin>& initiator_origin = std::nullopt,
+    bool started_from_context_menu = false);
 
 // Creates a new temporary container and opens the given tabs' URLs in it.
 void CreateTemporaryContainerAndOpenTabUrls(
     BrowserWindowInterface* browser_window,
     const std::vector<tabs::TabHandle>& tabs);
 // Opens |url| in a new tab in a freshly created temporary container.
-void CreateTemporaryContainerAndOpenUrl(BrowserWindowInterface* browser_window,
-                                        const GURL& url,
-                                        bool is_link = true);
+void CreateTemporaryContainerAndOpenUrl(
+    BrowserWindowInterface* browser_window,
+    const GURL& url,
+    bool is_link = true,
+    const std::optional<url::Origin>& initiator_origin = std::nullopt,
+    bool started_from_context_menu = false);
 
 // Opens the container menu on the page action view if the active tab is in a
 // container.
