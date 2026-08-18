@@ -77,6 +77,7 @@ public class ContentFilteringAdapter extends RecyclerView.Adapter<RecyclerView.V
                 customFilterListViewHolder.mLastUpdateText.setVisibility(View.GONE);
                 customFilterListViewHolder.mToggleSwitch.setVisibility(View.GONE);
                 customFilterListViewHolder.mUrlText.setVisibility(View.GONE);
+                customFilterListViewHolder.mRefreshImageView.setVisibility(View.GONE);
                 customFilterListViewHolder.mDeleteImageView.setVisibility(View.GONE);
                 customFilterListViewHolder.mArrowImageView.setVisibility(View.VISIBLE);
 
@@ -155,12 +156,22 @@ public class ContentFilteringAdapter extends RecyclerView.Adapter<RecyclerView.V
                         });
 
                 if (mIsEdit) {
+                    customFilterListViewHolder.mRefreshImageView.setVisibility(View.VISIBLE);
                     customFilterListViewHolder.mDeleteImageView.setVisibility(View.VISIBLE);
                     customFilterListViewHolder.mToggleSwitch.setVisibility(View.GONE);
                 } else {
+                    customFilterListViewHolder.mRefreshImageView.setVisibility(View.GONE);
                     customFilterListViewHolder.mDeleteImageView.setVisibility(View.GONE);
                     customFilterListViewHolder.mToggleSwitch.setVisibility(View.VISIBLE);
                 }
+
+                customFilterListViewHolder.mRefreshImageView.setOnClickListener(
+                        view -> {
+                            if (mIsEdit) {
+                                mBraveContentFileringListener.onSubscriptionFilterRefresh(
+                                        holder.getAdapterPosition() - TWO_ITEMS_SPACE);
+                            }
+                        });
 
                 customFilterListViewHolder.mDeleteImageView.setOnClickListener(
                         view -> {
@@ -285,6 +296,7 @@ public class ContentFilteringAdapter extends RecyclerView.Adapter<RecyclerView.V
         TextView mTitleText;
         TextView mLastUpdateText;
         TextView mUrlText;
+        ImageView mRefreshImageView;
         ImageView mDeleteImageView;
         ImageView mArrowImageView;
         MaterialSwitch mToggleSwitch;
@@ -295,6 +307,7 @@ public class ContentFilteringAdapter extends RecyclerView.Adapter<RecyclerView.V
             mTitleText = (TextView) itemView.findViewById(R.id.title_text);
             mLastUpdateText = (TextView) itemView.findViewById(R.id.last_update_text);
             mUrlText = (TextView) itemView.findViewById(R.id.url_text);
+            mRefreshImageView = (ImageView) itemView.findViewById(R.id.iv_refresh);
             mDeleteImageView = (ImageView) itemView.findViewById(R.id.iv_delete);
             mArrowImageView = (ImageView) itemView.findViewById(R.id.iv_arrow);
             mToggleSwitch = (MaterialSwitch) itemView.findViewById(R.id.toggle_switch);

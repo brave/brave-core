@@ -162,6 +162,21 @@ public class ContentFilteringFragment extends BravePreferenceFragment
     }
 
     @Override
+    public void onSubscriptionFilterRefresh(int position) {
+        if (mFilterListAndroidHandler != null
+                && mSubscriptionFilterLists != null
+                && position < mSubscriptionFilterLists.size()) {
+            SubscriptionInfo customFilter = mSubscriptionFilterLists.get(position);
+            mFilterListAndroidHandler.refreshSubscription(customFilter.subscriptionUrl);
+            Toast.makeText(
+                            getActivity(),
+                            getString(R.string.update_filter_list_success_text),
+                            Toast.LENGTH_SHORT)
+                    .show();
+        }
+    }
+
+    @Override
     public void onCustomFilters() {
         if (mSubscriptionFilterLists.size() > 0) {
             isEditSelected(false);

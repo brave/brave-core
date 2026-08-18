@@ -27,6 +27,7 @@ interface FilterListAndroidHandler {
   CreateSubscription(url.mojom.Url subscription_url);
   EnableSubscription(url.mojom.Url sub_url, bool enabled);
   DeleteSubscription(url.mojom.Url sub_url);
+  RefreshSubscription(url.mojom.Url sub_url);
   GetFilterLists() => (mojo_base.mojom.ListValue filterLists);
   GetCustomFilters() => (string custom_filters);
   UpdateCustomFilters(string custom_filters) => (bool is_updated);

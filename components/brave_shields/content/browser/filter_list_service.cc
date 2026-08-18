@@ -110,6 +110,11 @@ void FilterListService::DeleteSubscription(const GURL& sub_url) {
       sub_url);
 }
 
+void FilterListService::RefreshSubscription(const GURL& sub_url) {
+  ad_block_service_->subscription_service_manager()->RefreshSubscription(
+      sub_url, /*from_ui=*/true);
+}
+
 void FilterListService::GetCustomFilters(GetCustomFiltersCallback callback) {
   std::move(callback).Run(
       ad_block_service_->custom_filters_provider()->GetCustomFilters());
