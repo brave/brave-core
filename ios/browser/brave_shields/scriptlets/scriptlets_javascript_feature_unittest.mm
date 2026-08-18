@@ -116,13 +116,12 @@ class ScriptletsJavaScriptFeatureTest : public IOSChromeTestWithWebState {
     }
 
     NSString* cosmetic = [engine cosmeticResourcesForURL:frame_url];
-    std::optional<base::Value> parsed = base::JSONReader::Read(
+    std::optional<base::DictValue> parsed = base::JSONReader::ReadDict(
         base::SysNSStringToUTF8(cosmetic), base::JSON_PARSE_RFC);
-    if (!parsed || !parsed->is_dict()) {
+    if (!parsed) {
       return nil;
     }
-    const std::string* injected_script =
-        parsed->GetDict().FindString("injected_script");
+    const std::string* injected_script = parsed->FindString("injected_script");
     if (!injected_script || injected_script->empty()) {
       return nil;
     }
@@ -188,18 +187,19 @@ TEST_F(ScriptletsJavaScriptFeatureTest, TestScriptletSetAboutBlank) {
 // report a different color depending on its value. Toggling the global (as the
 // De-AMP pref does) is reflected in the injected scriptlet's behavior.
 TEST_F(ScriptletsJavaScriptFeatureTest, CheckForDeAmpPref) {
-  const std::string resources_json = ResourcesJSON(
-      "deamp.js", "(function() {"
-                  " if (deAmpEnabled) {"
-                  "   window.getComputedStyle = function(selector) {"
-                  "     return { 'color': 'green' };"
-                  "   }"
-                  " } else {"
-                  "   window.getComputedStyle = function(selector) {"
-                  "     return { 'color': 'red' };"
-                  "   }"
-                  " }"
-                  "})();");
+  const std::string resources_json = ResourcesJSON("deamp.js", R"js(
+    (function() {
+      if (deAmpEnabled) {
+        window.getComputedStyle = function(selector) {
+          return { 'color': 'green' };
+        }
+      } else {
+        window.getComputedStyle = function(selector) {
+          return { 'color': 'red' };
+        }
+      }
+    })();
+  )js");
 
   // De-AMP enabled: the scriptlet reports 'green'.
   NSArray<NSString*>* enabled_scriptlets = ScriptletsForRules(

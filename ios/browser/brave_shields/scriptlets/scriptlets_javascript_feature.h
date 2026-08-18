@@ -13,8 +13,6 @@
 
 class ScriptletsJavaScriptFeature : public web::JavaScriptFeature {
  public:
-  // This feature holds no state, so only a single static instance is ever
-  // needed.
   static ScriptletsJavaScriptFeature* GetInstance();
 
   // JavaScriptFeature:
