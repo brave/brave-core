@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { NftDropdownOption, NftDropdown } from './nft-group-selector'
+import { NftDropdownOption, NftDropdown } from './nft_group_selector'
 
 const options: NftDropdownOption[] = [
   { id: 'collected', label: 'Collected', labelSummary: '1' },

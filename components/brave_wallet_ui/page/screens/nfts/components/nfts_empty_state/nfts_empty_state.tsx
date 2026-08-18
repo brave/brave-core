@@ -2,11 +2,12 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
+
 import * as React from 'react'
 import useMediaQuery from '$web-common/useMediaQuery'
 
 // utils
-import { getLocale } from '../../../../../../../common/locale'
+import { getLocale } from '../../../../../../common/locale'
 
 // styles
 import {
@@ -16,9 +17,9 @@ import {
   StyledWrapper,
   SubHeading,
   ImportButton,
-} from './nfts-empty-state.style'
-import EmptyStateGraphicLight from '../../../../../../assets/png-icons/nft-empty-state-light.png'
-import EmptyStateGraphicDark from '../../../../../../assets/png-icons/nft-empty-state-dark.png'
+} from './nfts_empty_state.style'
+import EmptyStateGraphicLight from '../../../../../assets/png-icons/nft-empty-state-light.png'
+import EmptyStateGraphicDark from '../../../../../assets/png-icons/nft-empty-state-dark.png'
 
 interface Props {
   onImportNft: () => void

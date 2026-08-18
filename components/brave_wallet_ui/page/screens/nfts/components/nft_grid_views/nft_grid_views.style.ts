@@ -1,13 +1,13 @@
 // Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at https://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
-import { WalletButton, Text } from '../../../../../shared/style'
+import { WalletButton, Text } from '../../../../../components/shared/style'
 import * as leo from '@brave/leo/tokens/css/variables'
 import Icon from '@brave/leo/react/icon'
-import Ipfs from '../../../../../../assets/svg-icons/nft-ipfs/ipfs-color.svg'
+import Ipfs from '../../../../../assets/svg-icons/nft-ipfs/ipfs-color.svg'
 
 export const NFTWrapper = styled.div`
   display: flex;

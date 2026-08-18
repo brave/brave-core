@@ -1,7 +1,7 @@
 // Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at https://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
 
@@ -33,10 +33,18 @@ import { getLocale } from '../../../../../../../common/locale'
 import { getAssetIdKey } from '../../../../../../utils/asset-utils'
 
 // components
-import { DecoratedNftIcon } from '../../../../../shared/nft-icon/decorated-nft-icon'
-import { NftMorePopup } from '../nft-more-popup/nft-more-popup'
-import { AddOrEditNftModal } from '../../../../popup-modals/add-edit-nft-modal/add-edit-nft-modal'
-import { RemoveNftModal } from '../../../../popup-modals/remove-nft-modal/remove-nft-modal'
+import {
+  DecoratedNftIcon, //
+} from '../../../../../../components/shared/nft-icon/decorated-nft-icon'
+import {
+  NftMorePopup, //
+} from '../../../../../../components/desktop/popup-modals/nft_more_popup/nft_more_popup'
+import {
+  AddOrEditNftModal, //
+} from '../../../../../../components/desktop/popup-modals/add-edit-nft-modal/add-edit-nft-modal'
+import {
+  RemoveNftModal, //
+} from '../../../../../../components/desktop/popup-modals/remove-nft-modal/remove-nft-modal'
 
 // Styled Components
 import {
@@ -50,8 +58,8 @@ import {
   JunkMarker,
   JunkIcon,
   WatchOnlyMarker,
-} from './style'
-import { Row } from '../../../../../shared/style'
+} from '../nft_grid_views.style'
+import { Row } from '../../../../../../components/shared/style'
 
 interface Props {
   token: BraveWallet.BlockchainToken

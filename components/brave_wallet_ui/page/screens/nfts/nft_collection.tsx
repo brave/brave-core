@@ -8,42 +8,42 @@ import { useHistory, useParams } from 'react-router-dom'
 import { skipToken } from '@reduxjs/toolkit/query'
 
 // redux
-import { useAppDispatch } from '../../../../../common/hooks/use-redux'
+import { useAppDispatch } from '../../../common/hooks/use-redux'
 
 // types
-import { BraveWallet } from '../../../../../constants/types'
+import { BraveWallet } from '../../../constants/types'
 
 // hooks
-import { useAccountsQuery } from '../../../../../common/slices/api.slice.extra'
+import { useAccountsQuery } from '../../../common/slices/api.slice.extra'
 import {
   useBalancesFetcher, //
-} from '../../../../../common/hooks/use-balances-fetcher'
+} from '../../../common/hooks/use-balances-fetcher'
 import {
   useSyncedLocalStorage, //
-} from '../../../../../common/hooks/use_local_storage'
+} from '../../../common/hooks/use_local_storage'
 
 // selectors
 import {
   useSafeUISelector,
   useSafeWalletSelector,
-} from '../../../../../common/hooks/use-safe-selector'
-import { UISelectors, WalletSelectors } from '../../../../../common/selectors'
+} from '../../../common/hooks/use-safe-selector'
+import { UISelectors, WalletSelectors } from '../../../common/selectors'
 
 // actions
-import { WalletActions } from '../../../../../common/actions'
-import { WalletPageActions } from '../../../../../page/actions'
+import { WalletActions } from '../../../common/actions'
+import { WalletPageActions } from '../../actions'
 
 // utils
 import {
   LOCAL_STORAGE_KEYS, //
-} from '../../../../../common/constants/local-storage-keys'
+} from '../../../common/constants/local-storage-keys'
 import {
   useGetNftAssetIdsByCollectionRegistryQuery,
   useGetNftDiscoveryEnabledStatusQuery,
   useGetSimpleHashSpamNftsQuery,
   useGetUserTokensRegistryQuery,
   useSetNftDiscoveryEnabledMutation,
-} from '../../../../../common/slices/api.slice'
+} from '../../../common/slices/api.slice'
 import {
   compareTokensByName,
   filterTokensByNetworks,
@@ -53,48 +53,48 @@ import {
   getTokensWithBalanceForAccounts,
   groupSpamAndNonSpamNfts,
   isTokenWatchOnly,
-} from '../../../../../utils/asset-utils'
-import { useQuery } from '../../../../../common/hooks/use-query'
+} from '../../../utils/asset-utils'
+import { useQuery } from '../../../common/hooks/use-query'
 import {
   makePortfolioAssetRoute,
   makePortfolioNftCollectionRoute,
-} from '../../../../../utils/routes-utils'
+} from '../../../utils/routes-utils'
 import {
   selectAllVisibleUserNFTsFromQueryResult,
   selectHiddenNftsFromQueryResult, //
-} from '../../../../../common/slices/entities/blockchain-token.entity'
+} from '../../../common/slices/entities/blockchain-token.entity'
 import {
   getLastPageNumber,
   getListPageItems,
-} from '../../../../../utils/pagination_utils'
+} from '../../../utils/pagination_utils'
 
 // components
 import {
   NFTGridViewItem, //
-} from '../../portfolio/components/nft-grid-view/nft-grid-view-item'
+} from './components/nft_grid_views/nft_grid_view_item/nft_grid_view_item'
 import {
   EnableNftDiscoveryModal, //
-} from '../../../popup-modals/enable-nft-discovery-modal/enable-nft-discovery-modal'
+} from '../../../components/desktop/popup-modals/enable-nft-discovery-modal/enable-nft-discovery-modal'
 import {
   AutoDiscoveryEmptyState, //
-} from './auto-discovery-empty-state/auto-discovery-empty-state'
+} from './components/auto_discovery_empty_state/auto_discovery_empty_state'
 import {
   NftGridViewItemSkeleton, //
-} from '../../portfolio/components/nft-grid-view/nft-grid-view-item-skeleton'
-import { Pagination } from '../../../../shared/pagination/pagination'
+} from './components/nft_grid_views/nft_grid_view_item_skeleton/nft_grid_view_item_skeleton'
+import { Pagination } from '../../../components/shared/pagination/pagination'
 import {
   WalletPageWrapper, //
-} from '../../../wallet-page-wrapper/wallet-page-wrapper'
-import NftAssetHeader from '../../../card-headers/nft-asset-header'
-import { NftsEmptyState } from './nfts-empty-state/nfts-empty-state'
+} from '../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper'
+import NftAssetHeader from '../../../components/desktop/card-headers/nft-asset-header'
+import { NftsEmptyState } from './components/nfts_empty_state/nfts_empty_state'
 import {
   AddOrEditNftModal, //
-} from '../../../popup-modals/add-edit-nft-modal/add-edit-nft-modal'
+} from '../../../components/desktop/popup-modals/add-edit-nft-modal/add-edit-nft-modal'
 
 // styles
 import { NFTListWrapper, NftGrid } from './nfts.styles'
-import { Column, Row } from '../../../../shared/style'
-import { ContentWrapper } from '../../portfolio/style'
+import { Column, Row } from '../../../components/shared/style'
+import { ContentWrapper } from '../page-screen.styles'
 
 interface Params {
   collectionName: string
