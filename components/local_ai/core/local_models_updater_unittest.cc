@@ -182,6 +182,21 @@ TEST_F(LocalModelsUpdaterUnitTest, NoRegisterWhenMasterSwitchOff) {
       base::test::RunUntil([&]() { return !PathExists(install_dir_); }));
 }
 
+// Tests that ComponentReady() is ignored while the master switch is off. An
+// unregistration is deferred behind an in-flight update, so that update still
+// installs and reports ready after the switch turned off.
+TEST_F(LocalModelsUpdaterUnitTest, ComponentReadyIgnoredWhenMasterSwitchOff) {
+  local_state_->SetBoolean(prefs::kBraveLocalAIEnabled, false);
+  EXPECT_CALL(*cus_, UnregisterComponent(kComponentId))
+      .WillRepeatedly(testing::Return(true));
+  ManageLocalModelsComponentRegistration(cus_.get(), local_state_.get());
+
+  LocalModelsComponentInstallerPolicy policy;
+  policy.ComponentReady(base::Version("1.0.0"), install_dir_,
+                        base::DictValue());
+  EXPECT_TRUE(LocalModelsUpdaterState::GetInstance()->GetInstallDir().empty());
+}
+
 // Tests that observers are told when the models go away, so they can drop
 // anything derived from the install dir.
 TEST_F(LocalModelsUpdaterUnitTest, ObserverNotifiedWhenModelsGoAway) {

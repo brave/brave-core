@@ -97,6 +97,15 @@ class LocalModelsComponentRegistrar {
     cus_ = nullptr;
   }
 
+  // The master switch on its own. ComponentReady() is gated on this rather
+  // than IsEnabled(), because it also fires for a policy that was constructed
+  // without the registrar ever being started; defaulting to enabled then
+  // matches the pref's registered default.
+  bool IsMasterSwitchEnabled() const {
+    const PrefService* local_state = pref_change_registrar_.prefs();
+    return !local_state || local_state->GetBoolean(prefs::kBraveLocalAIEnabled);
+  }
+
  private:
   friend base::NoDestructor<LocalModelsComponentRegistrar>;
 
@@ -104,9 +113,7 @@ class LocalModelsComponentRegistrar {
   ~LocalModelsComponentRegistrar() = default;
 
   bool IsEnabled() const {
-    const PrefService* local_state = pref_change_registrar_.prefs();
-    return cus_ && local_state &&
-           local_state->GetBoolean(prefs::kBraveLocalAIEnabled) &&
+    return cus_ && pref_change_registrar_.prefs() && IsMasterSwitchEnabled() &&
            base::FeatureList::IsEnabled(history_embeddings::kHistoryEmbeddings);
   }
 
@@ -187,6 +194,12 @@ void LocalModelsComponentInstallerPolicy::ComponentReady(
     const base::FilePath& install_dir,
     base::DictValue manifest) {
   if (install_dir.empty()) {
+    return;
+  }
+  // An unregistration is deferred while an update is in flight, so this still
+  // fires for a download that started before the master switch turned off.
+  // Don't publish a component that is on its way back out.
+  if (!LocalModelsComponentRegistrar::GetInstance()->IsMasterSwitchEnabled()) {
     return;
   }
   LocalModelsUpdaterState::GetInstance()->SetInstallDir(install_dir);
