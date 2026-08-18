@@ -11,16 +11,12 @@
 
 #include "base/containers/unique_ptr_adapters.h"
 #include "base/memory/scoped_refptr.h"
-#include "base/memory/weak_ptr.h"
+#include "base/task/sequenced_task_runner.h"
 #include "brave/services/network/public/mojom/simple_url_loader.mojom.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
-
-namespace network {
-class SimpleURLLoader;
-}  // namespace network
 
 namespace brave::network {
 
@@ -36,14 +32,18 @@ namespace brave::network {
 // requests from Rust should therefore construct its own instance with its own
 // annotation, exactly as it would define one at a C++ call site today.
 //
-// Lives on the sequence it was constructed on. In-flight loaders are cancelled
-// on destruction and their callbacks are dropped, which closes the response
-// callback and surfaces as a disconnect on the caller's side.
+// Lives on the sequence it was constructed on. In-flight requests are
+// cancelled on destruction.
 class SimpleUrlLoaderService : public mojom::SimpleUrlLoader {
  public:
+  // `json_task_runner` runs JSON sanitization (see
+  // DownloadRequest.sanitize_json_response), which is kept off this sequence
+  // because parsing untrusted input can be slow. Defaults to a thread pool
+  // sequence; tests may inject their own.
   SimpleUrlLoaderService(
       scoped_refptr<::network::SharedURLLoaderFactory> url_loader_factory,
-      net::NetworkTrafficAnnotationTag traffic_annotation);
+      net::NetworkTrafficAnnotationTag traffic_annotation,
+      scoped_refptr<base::SequencedTaskRunner> json_task_runner = nullptr);
 
   SimpleUrlLoaderService(const SimpleUrlLoaderService&) = delete;
   SimpleUrlLoaderService& operator=(const SimpleUrlLoaderService&) = delete;
@@ -54,24 +54,25 @@ class SimpleUrlLoaderService : public mojom::SimpleUrlLoader {
 
   // mojom::SimpleUrlLoader:
   void Download(mojom::DownloadRequestPtr request,
+                mojo::PendingReceiver<mojom::DownloadHandle> cancellation,
                 DownloadCallback callback) override;
 
  private:
-  void OnDownloadComplete(::network::SimpleURLLoader* loader,
-                          DownloadCallback callback,
-                          std::optional<std::string> body);
+  // One in-flight request. Owns its network::SimpleURLLoader, so destroying it
+  // cancels the load.
+  class InFlightRequest;
+
+  // Destroys `request`, which must be owned by `requests_`.
+  void Finish(InFlightRequest* request);
 
   scoped_refptr<::network::SharedURLLoaderFactory> url_loader_factory_;
   const net::NetworkTrafficAnnotationTag traffic_annotation_;
+  scoped_refptr<base::SequencedTaskRunner> json_task_runner_;
 
-  // Owns in-flight loaders. Erased when their callback runs.
-  std::set<std::unique_ptr<::network::SimpleURLLoader>,
-           base::UniquePtrComparator>
-      loaders_;
+  std::set<std::unique_ptr<InFlightRequest>, base::UniquePtrComparator>
+      requests_;
 
   mojo::ReceiverSet<mojom::SimpleUrlLoader> receivers_;
-
-  base::WeakPtrFactory<SimpleUrlLoaderService> weak_factory_{this};
 };
 
 }  // namespace brave::network

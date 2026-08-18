@@ -72,10 +72,47 @@ struct DownloadRequest {
   // service default".
   uint64 max_response_bytes;
 
-  // When false, any non-2xx response is reported as net::ERR_FAILED with an
-  // empty body. When true, the response code and body are reported as-is.
+  // When false, any non-2xx response is reported as
+  // net::ERR_HTTP_RESPONSE_CODE_FAILURE with an empty body. When true, the
+  // response code and body are reported as-is.
   bool allow_http_error_results;
+
+  // Null disables retrying, which is the default.
+  RetryOptions? retry_options;
+
+  // When true, the response body is parsed as strict RFC 8259 JSON and then
+  // re-serialized canonically, so the caller never sees raw server bytes.
+  //
+  // A body that fails to parse, or whose top level is not an object or an
+  // array, is replaced with an *empty body*; `net_error` and `response_code`
+  // are left untouched. That is deliberately silent, because it reproduces the
+  // long-standing behaviour of //brave/components/api_request_helper, whose
+  // callers depend on it. Check for an empty body if you need to distinguish.
+  bool sanitize_json_response;
 };
+
+// Mirrors net::SimpleURLLoader::RetryMode.
+//
+// Retrying is only safe for idempotent requests. The service does not check
+// that for you: if you ask for retries on a POST, you get them.
+struct RetryOptions {
+  // Zero disables retrying regardless of the flags below.
+  uint32 max_retries;
+
+  bool retry_on_5xx;
+  bool retry_on_network_change;
+  bool retry_on_name_not_resolved;
+};
+
+// A lifetime token used to cancel a request. It deliberately has no methods.
+//
+// The client keeps the remote end and passes the receiver to Download().
+// Closing the remote disconnects the receiver, which cancels the request; the
+// pending Download() reply is then answered with net::ERR_ABORTED. Cancelling
+// answers rather than drops the reply because dropping a response callback
+// would tear down the whole SimpleUrlLoader pipe and take unrelated in-flight
+// requests with it.
+interface DownloadHandle {};
 
 struct DownloadResult {
   // A net::Error value. Zero is net::OK. Negative otherwise.
@@ -101,5 +138,10 @@ struct DownloadResult {
 interface SimpleUrlLoader {
   // Performs a single buffered HTTP round trip. Concurrent calls on the same
   // pipe are permitted and complete independently.
-  Download(DownloadRequest request) => (DownloadResult result);
+  //
+  // `cancellation` is a lifetime token; see DownloadHandle. Closing its remote
+  // end cancels this request without affecting others on the same pipe.
+  Download(DownloadRequest request,
+           pending_receiver<DownloadHandle> cancellation)
+      => (DownloadResult result);
 };

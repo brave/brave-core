@@ -8,6 +8,7 @@
 #include <string>
 #include <utility>
 
+#include "base/task/sequenced_task_runner.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "net/http/http_status_code.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
@@ -41,8 +42,12 @@ constexpr net::NetworkTrafficAnnotationTag kTestTrafficAnnotation =
 }  // namespace
 
 TestUrlLoaderServiceHost::TestUrlLoaderServiceHost()
+    // JSON sanitization runs on the test's own sequence: the Rust tests use
+    // base::test::SingleThreadTaskEnvironment, which is MAIN_THREAD_ONLY and so
+    // has no thread pool to post to.
     : service_(url_loader_factory_.GetSafeWeakWrapper(),
-               kTestTrafficAnnotation) {}
+               kTestTrafficAnnotation,
+               base::SequencedTaskRunner::GetCurrentDefault()) {}
 
 TestUrlLoaderServiceHost::~TestUrlLoaderServiceHost() = default;
 

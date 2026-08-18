@@ -30,14 +30,15 @@ use std::task::{Context, Poll};
 use bindings::remote::{PendingRemote, Remote};
 use futures_channel::oneshot;
 use simple_url_loader_rust::simple_url_loader::{
-    DownloadRequest, DownloadResult, HttpHeader, HttpMethod, SimpleUrlLoader,
+    DownloadHandle, DownloadRequest, DownloadResult, HttpHeader, HttpMethod, RetryOptions,
+    SimpleUrlLoader,
 };
 use system::message_pipe::MessageEndpoint;
 use system::scoped_handle_interop::ScopedMessagePipeHandleWrapper;
 
 pub use simple_url_loader_rust::simple_url_loader::{
     DownloadRequest as RawDownloadRequest, DownloadResult as RawDownloadResult,
-    HttpHeader as RawHttpHeader, HttpMethod as RawHttpMethod,
+    HttpHeader as RawHttpHeader, HttpMethod as RawHttpMethod, RetryOptions as RawRetryOptions,
 };
 
 /// The service went away before the request completed.
@@ -61,10 +62,18 @@ impl std::error::Error for Disconnected {}
 /// exactly once. Without it, a request issued *after* the pipe already died
 /// would register a sender that nothing will ever drop, and its future would
 /// hang forever.
+/// See [`UrlLoader::set_waker`].
+///
+/// `Send + Sync` is not gratuitous: Mojo response callbacks must be `Send`, and
+/// `Sync` lets the waker be cloned out of the mutex so it can be invoked once
+/// the lock is released.
+type Waker = Arc<dyn Fn() + Send + Sync + 'static>;
+
 #[derive(Default)]
 struct PendingState {
     senders: HashMap<u64, oneshot::Sender<DownloadResult>>,
     disconnected: bool,
+    waker: Option<Waker>,
 }
 
 type SharedPendingState = Arc<Mutex<PendingState>>;
@@ -73,6 +82,22 @@ type SharedPendingState = Arc<Mutex<PendingState>>;
 /// already panicked, and the map may be inconsistent.
 fn lock(state: &SharedPendingState) -> std::sync::MutexGuard<'_, PendingState> {
     state.lock().expect("pending download state mutex poisoned")
+}
+
+/// Mutates the shared state, then invokes the waker *after* releasing the lock.
+///
+/// Waking outside the lock is required, not merely tidy: the waker polls the
+/// caller's executor, and a future woken by it may immediately issue another
+/// request, which re-enters this type and would deadlock on a held lock.
+fn update_then_wake(state: &SharedPendingState, update: impl FnOnce(&mut PendingState)) {
+    let waker = {
+        let mut guard = lock(state);
+        update(&mut guard);
+        guard.waker.clone()
+    };
+    if let Some(waker) = waker {
+        waker();
+    }
 }
 
 /// A bound client for the `SimpleUrlLoader` interface.
@@ -97,17 +122,35 @@ impl UrlLoader {
         // a request on a dead pipe would hang instead of failing.
         let state_on_disconnect = state.clone();
         let disconnect_handler = Box::new(move || {
-            let mut state = lock(&state_on_disconnect);
-            state.disconnected = true;
-            // Dropping every sender resolves each pending future with
-            // `Err(Disconnected)`.
-            state.senders.clear();
+            update_then_wake(&state_on_disconnect, |state| {
+                state.disconnected = true;
+                // Dropping every sender resolves each pending future with
+                // `Err(Disconnected)`.
+                state.senders.clear();
+            });
         });
 
         let remote = PendingRemote::<dyn SimpleUrlLoader>::new(endpoint)
             .bind_with_options(None, Some(disconnect_handler));
 
         Self { remote, state, next_id: 0 }
+    }
+
+    /// Registers a callback invoked on the bound sequence whenever a
+    /// [`PendingDownload`] becomes ready, and once on disconnection.
+    ///
+    /// Responses arrive as Chromium tasks, which a Rust executor has no way to
+    /// wait on. Callers driving futures with a manually-pumped executor (for
+    /// example `futures::executor::LocalPool`) must use this to poll it,
+    /// otherwise a ready future is simply never observed.
+    ///
+    /// The `Send + Sync` bound is inherited from Mojo, whose response callbacks
+    /// must be `Send`. An executor that is neither (an `Rc`-based `LocalPool`,
+    /// say) cannot be captured here directly; reach it through a thread-local
+    /// instead, which is sound because the waker always runs on the sequence
+    /// this `UrlLoader` was bound to.
+    pub fn set_waker(&mut self, waker: impl Fn() + Send + Sync + 'static) {
+        lock(&self.state).waker = Some(Arc::new(waker));
     }
 
     /// Adopts a message pipe handed over from C++ and binds it to the current
@@ -128,9 +171,12 @@ impl UrlLoader {
     /// complete out of order.
     ///
     /// The future is resolved by a task on the sequence this `UrlLoader` is
-    /// bound to, so that sequence must be pumped for it to make progress.
-    /// Integrating a Rust executor with a `SequencedTaskRunner` is the caller's
-    /// responsibility.
+    /// bound to, so that sequence must be pumped for it to make progress. See
+    /// [`UrlLoader::set_waker`] if your executor is not driven by that
+    /// sequence.
+    ///
+    /// Dropping the returned future cancels the request; see
+    /// [`PendingDownload`].
     pub fn download_async(&mut self, request: DownloadRequest) -> PendingDownload {
         let (sender, receiver) = oneshot::channel();
 
@@ -145,36 +191,29 @@ impl UrlLoader {
                 // Drop `sender` without registering it, so the returned future
                 // resolves to `Err(Disconnected)` rather than hanging. Sending
                 // on a dead pipe would otherwise never produce a response.
-                return PendingDownload { receiver };
+                return PendingDownload { receiver, _cancellation: None };
             }
             state.senders.insert(id, sender);
         }
 
+        let (cancellation, cancellation_receiver) = PendingRemote::<dyn DownloadHandle>::new_pipe()
+            .expect("out of Mojo message pipe handles");
+
         let state = self.state.clone();
-        self.remote.Download(request, move |result| {
-            // Absent only if disconnection already cleared the map, in which
-            // case the future has already been resolved with an error.
-            if let Some(sender) = lock(&state).senders.remove(&id) {
-                // Fails only if the caller dropped the future, which is fine.
-                let _ = sender.send(result);
-            }
+        self.remote.Download(request, cancellation_receiver, move |result| {
+            update_then_wake(&state, |state| {
+                // Absent only if disconnection already cleared the map, in
+                // which case the future has already been resolved with an
+                // error.
+                if let Some(sender) = state.senders.remove(&id) {
+                    // Fails only if the caller dropped the future, which is
+                    // fine.
+                    let _ = sender.send(result);
+                }
+            });
         });
 
-        PendingDownload { receiver }
-    }
-
-    /// Issues a request, invoking `on_complete` on the sequence this
-    /// `UrlLoader` was bound to.
-    ///
-    /// Prefer [`UrlLoader::download_async`]. This lower-level form cannot
-    /// report disconnection: if the pipe drops, `on_complete` is silently never
-    /// called.
-    pub fn download(
-        &mut self,
-        request: DownloadRequest,
-        on_complete: impl FnOnce(DownloadResult) + Send + 'static,
-    ) {
-        self.remote.Download(request, on_complete);
+        PendingDownload { receiver, _cancellation: Some(cancellation) }
     }
 }
 
@@ -182,8 +221,32 @@ impl UrlLoader {
 ///
 /// A named type rather than `impl Future` so that it captures no lifetime from
 /// the `UrlLoader` that produced it.
+///
+/// Dropping this cancels the request: the held `DownloadHandle` pipe closes,
+/// the service notices the disconnect, destroys the underlying
+/// `network::SimpleURLLoader` and answers the outstanding reply with
+/// `net::ERR_ABORTED`.
 pub struct PendingDownload {
     receiver: oneshot::Receiver<DownloadResult>,
+    // Held solely for its `Drop`, which closes the pipe and so cancels the
+    // request. Deliberately never bound: `DownloadHandle` has no methods.
+    _cancellation: Option<PendingRemote<dyn DownloadHandle>>,
+}
+
+impl PendingDownload {
+    /// Returns the outcome if it is already available, without awaiting and
+    /// without needing an executor.
+    ///
+    /// Useful for callers that are not futures-based, and to check whether a
+    /// request failed immediately (issuing one on an already-dead pipe resolves
+    /// straight away).
+    pub fn try_take(&mut self) -> Option<Result<DownloadResult, Disconnected>> {
+        match self.receiver.try_recv() {
+            Ok(Some(result)) => Some(Ok(result)),
+            Ok(None) => None,
+            Err(oneshot::Canceled) => Some(Err(Disconnected)),
+        }
+    }
 }
 
 impl Future for PendingDownload {
@@ -215,6 +278,8 @@ impl RequestBuilder {
                 body_content_type: None,
                 max_response_bytes: 0,
                 allow_http_error_results: false,
+                retry_options: None,
+                sanitize_json_response: false,
             },
         }
     }
@@ -268,9 +333,41 @@ impl RequestBuilder {
     }
 
     /// When set, non-2xx responses are returned with their body and status
-    /// instead of being collapsed into `net::ERR_FAILED`.
+    /// instead of being collapsed into `net::ERR_HTTP_RESPONSE_CODE_FAILURE`.
     pub fn allow_http_error_results(mut self, allow: bool) -> Self {
         self.request.allow_http_error_results = allow;
+        self
+    }
+
+    /// Retries the request according to `options`.
+    ///
+    /// Only safe for idempotent requests; nothing checks that for you.
+    pub fn retry(mut self, options: RetryOptions) -> Self {
+        self.request.retry_options = Some(options);
+        self
+    }
+
+    /// Convenience for the common "retry once if the network changed under us"
+    /// policy, which is safe even for non-idempotent requests because the
+    /// request could not have been delivered.
+    pub fn retry_on_network_change(self, max_retries: u32) -> Self {
+        self.retry(RetryOptions {
+            max_retries,
+            retry_on_5xx: false,
+            retry_on_network_change: true,
+            retry_on_name_not_resolved: false,
+        })
+    }
+
+    /// Parses the response body as strict RFC 8259 JSON and re-serializes it
+    /// canonically, so this crate's caller never sees raw server bytes.
+    ///
+    /// A body that fails to parse, or whose top level is neither an object nor
+    /// an array, arrives *empty* with the status untouched. That silence is
+    /// deliberate: it reproduces the behaviour of
+    /// //brave/components/api_request_helper, which existing callers rely on.
+    pub fn sanitize_json_response(mut self, sanitize: bool) -> Self {
+        self.request.sanitize_json_response = sanitize;
         self
     }
 

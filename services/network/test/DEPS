@@ -1,0 +1,9 @@
+include_rules = [
+  "+services/network/test",
+]
+
+specific_include_rules = {
+  "test_url_loader_service_host\.h": [
+    "+third_party/rust/cxx/v1/cxx.h",
+  ],
+}
