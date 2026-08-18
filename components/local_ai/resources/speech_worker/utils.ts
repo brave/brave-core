@@ -71,21 +71,31 @@ export function argmax(a: Float32Array): number {
 
 export function getNemotronModelType(
   lang: string,
-): NemotronModelType {
+): {
+  modelType: NemotronModelType,
+  promptId: number | null, 
+} {
   if (
     ENGLISH_SUPPORTED_LANGUAGES.includes(
       lang as typeof ENGLISH_SUPPORTED_LANGUAGES[number],
     )
   ) {
-    return 'english'
+    return {
+      modelType: 'english',
+      promptId: null,
+    }
   }
 
-  if (
-    MULTILINGUAL_SUPPORTED_LANGUAGES.includes(
-      lang as typeof MULTILINGUAL_SUPPORTED_LANGUAGES[number],
-    )
-  ) {
-    return 'multilingual'
+  if (lang in MULTILINGUAL_SUPPORTED_LANGUAGES)
+  {
+    const promptId =
+      MULTILINGUAL_SUPPORTED_LANGUAGES[
+        lang as keyof typeof MULTILINGUAL_SUPPORTED_LANGUAGES
+      ]
+    return {
+      modelType: 'multilingual',
+      promptId,
+    }
   }
 
   throw new Error(`Unsupported ASR language: ${lang}`)
