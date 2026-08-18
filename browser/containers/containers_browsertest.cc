@@ -12,6 +12,7 @@
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/location.h"
+#include "base/strings/string_split.h"
 #include "base/test/run_until.h"
 #include "base/test/test_future.h"
 #include "base/threading/thread_restrictions.h"
@@ -34,6 +35,7 @@
 #include "chrome/browser/browsing_data/chrome_browsing_data_remover_constants.h"
 #include "chrome/browser/prefs/session_startup_pref.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/renderer_context_menu/render_view_context_menu_test_util.h"
 #include "chrome/browser/sessions/exit_type_service.h"
 #include "chrome/browser/sessions/tab_restore_service_factory.h"
 #include "chrome/browser/ui/actions/chrome_action_id.h"
@@ -102,6 +104,7 @@
 #include "ui/views/view.h"
 #include "ui/views/view_utils.h"
 #include "url/gurl.h"
+#include "url/origin.h"
 
 namespace containers {
 
@@ -114,6 +117,14 @@ constexpr char kFarblingPluginsStringScript[] =
 
 // Name of the container seeded by tests that exercise the --container switch.
 constexpr char kNamedContainerName[] = "Command Line Named Container";
+
+std::vector<std::string> GetEchoedHeaders(content::WebContents* web_contents) {
+  const std::string response_body =
+      content::EvalJs(web_contents, "document.body.textContent")
+          .ExtractString();
+  return base::SplitString(response_body, "\n", base::TRIM_WHITESPACE,
+                           base::SPLIT_WANT_NONEMPTY);
+}
 
 // Returns the storage partition config of the tab at `index`, after waiting for
 // it to finish loading, or std::nullopt if the tab can't be loaded. `location`
@@ -1063,6 +1074,57 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest, OpenUrlInContainer) {
               std::string::npos);
   EXPECT_EQ("value1",
             content::EvalJs(web_contents, GetLocalStorageJS("container_key")));
+}
+
+IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
+                       OpenLinkInContainerSetsSecFetchSiteWithoutReferrer) {
+  const GURL source_url("https://a.test/simple.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), source_url));
+
+  const GURL dest_url("https://b.test/echoheader?Referer&Sec-Fetch-Site");
+
+  auto container = containers::mojom::Container::New();
+  container->id = "test-container";
+  container->name = "Test Container";
+  container->icon = containers::mojom::Icon::kWork;
+  container->background_color = SK_ColorBLUE;
+
+  content::ContextMenuParams params;
+  params.frame_origin = url::Origin::Create(source_url);
+  params.page_url = source_url;
+  params.frame_url = source_url;
+  params.link_url = dest_url;
+
+  TestRenderViewContextMenu menu(*browser()
+                                      ->tab_strip_model()
+                                      ->GetActiveWebContents()
+                                      ->GetPrimaryMainFrame(),
+                                 params);
+
+  content::TestNavigationObserver observer(dest_url);
+  observer.StartWatchingNewWebContents();
+  menu.OnContainerSelected(container);
+  observer.Wait();
+
+  content::WebContents* web_contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(web_contents);
+  EXPECT_EQ(dest_url, web_contents->GetLastCommittedURL());
+
+  const std::vector<std::string> echoed_headers =
+      GetEchoedHeaders(web_contents);
+  ASSERT_EQ(2u, echoed_headers.size());
+  EXPECT_EQ("None", echoed_headers[0]);
+  EXPECT_EQ("cross-site", echoed_headers[1]);
+
+  content::StoragePartition* storage_partition =
+      web_contents->GetPrimaryMainFrame()->GetStoragePartition();
+  ASSERT_TRUE(storage_partition);
+  content::StoragePartitionConfig expected_config =
+      content::StoragePartitionConfig::Create(
+          browser()->GetProfile(), kContainersStoragePartitionDomain,
+          "test-container", browser()->GetProfile()->IsOffTheRecord());
+  EXPECT_EQ(expected_config, storage_partition->GetConfig());
 }
 
 IN_PROC_BROWSER_TEST_F(ContainersBrowserTest, TabTooltipShowsContainerName) {
