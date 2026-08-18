@@ -1,0 +1,56 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//build/rust/rust_static_library.gni")
+
+# C++ fixture: a fake network stack plus a bound SimpleUrlLoaderService, handed
+# to Rust as a message pipe.
+source_set("test_support") {
+  testonly = true
+
+  sources = [
+    "test_url_loader_service_host.cc",
+    "test_url_loader_service_host.h",
+  ]
+
+  public_deps = [
+    "//brave/services/network",
+    "//third_party/rust/cxx/v1:lib",
+  ]
+
+  deps = [
+    "//base",
+    "//mojo/public/cpp/bindings",
+    "//net",
+    "//net/traffic_annotation",
+    "//services/network:test_support",
+    "//services/network/public/cpp",
+  ]
+}
+
+# The tests themselves are written in Rust: the point is to exercise the client
+# exactly as a real Rust consumer would. `is_gtest_unittests` registers them
+# with the C++ gtest runner via //testing/rust_gtest_interop.
+rust_static_library("brave_rust_url_loader_unittests") {
+  testonly = true
+  is_gtest_unittests = true
+  allow_unsafe = true
+
+  crate_root = "simple_url_loader_unittest.rs"
+  sources = [ "simple_url_loader_unittest.rs" ]
+  cxx_bindings = [ "simple_url_loader_unittest.rs" ]
+
+  deps = [
+    ":test_support",
+    "//base:run_loop",
+    "//base/test:task_environment",
+    "//brave/services/network/public/rust:brave_url_loader",
+
+    # Only to resolve already-completed futures in tests; see `resolve()`.
+    "//brave/third_party/rust/futures_executor/v0_3:lib",
+    "//mojo/public/rust/system",
+    "//testing/rust_gtest_interop",
+  ]
+}

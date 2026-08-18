@@ -265,6 +265,7 @@ test("brave_unit_tests") {
     "//brave/components/webcompat_reporter/browser:unittests",
     "//brave/mojo/brave_ast_patcher:unit_tests",
     "//brave/net:unit_tests",
+    "//brave/services/network/test:brave_rust_url_loader_unittests",
     "//brave/third_party/blink/renderer",
     "//brave/third_party/blink/renderer/bindings/core/webgl:unit_tests",
     "//brave/vendor/brave_base",

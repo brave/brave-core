@@ -1,0 +1,25 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//build/rust/rust_static_library.gni")
+
+# Rust client for brave.network.mojom.SimpleUrlLoader. Deliberately contains no
+# `#[cxx::bridge]` of its own: bridges cannot be re-exported, so each consumer
+# supplies its own tiny bridge to hand the pipe handle in. See
+# //brave/services/network/test:rust_test_ffi for a worked example.
+# The target name is the crate name that `chromium::import!` resolves, so it is
+# named for the crate rather than for its directory.
+rust_static_library("brave_url_loader") {
+  crate_root = "lib.rs"
+  sources = [ "lib.rs" ]
+
+  deps = [
+    "//brave/services/network/public/mojom:simple_url_loader_rust",
+    "//brave/third_party/rust/futures_channel/v0_3:lib",
+    "//mojo/public/rust/bindings",
+    "//mojo/public/rust/system",
+    "//third_party/rust/cxx/v1:lib",
+  ]
+}

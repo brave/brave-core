@@ -1,0 +1,26 @@
+diff --git a/mojo/public/rust/mojom_value_parser/deparse_values.rs b/mojo/public/rust/mojom_value_parser/deparse_values.rs
+index 8dd1e0e3c02c08f0dc604255b1de0da0d0926995..759e9e5d8e0addb6754208ebc60130aea633adf3 100644
+--- a/mojo/public/rust/mojom_value_parser/deparse_values.rs
++++ b/mojo/public/rust/mojom_value_parser/deparse_values.rs
+@@ -480,6 +480,13 @@ where
+ 
+                     MojomWireType::Pointer { nested_data_type, is_nullable } => {
+                         let nested_data_value = take_field_at_ordinal(&mut field_values, ordinal)?;
++                        // Pointers are 8-byte aligned. Pad before writing
++                        // anything: the null path below writes 8 bytes and
++                        // returns, and the non-null path records `ptr_loc`
++                        // from `data.len()`. Padding afterwards would place
++                        // both at the wrong offset whenever the preceding
++                        // field left `data` unaligned.
++                        pad_to_alignment(data, 8);
+                         let nested_data_value =
+                             write_or_extract_nullable!(data, nested_data_value, *is_nullable, 8);
+                         let nested_data = match (nested_data_value, nested_data_type) {
+@@ -518,7 +525,6 @@ where
+                         };
+                         nested_data_list.push(NestedDataInfo { nested_data, ptr_loc: data.len() });
+                         // Allocate space for the pointer, we'll write to it later.
+-                        pad_to_alignment(data, 8);
+                         data.extend([0; 8]);
+                     }
+                     MojomWireType::Union { variants, is_nullable } => {

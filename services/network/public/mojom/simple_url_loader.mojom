@@ -1,0 +1,105 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+// A deliberately minimal request/response HTTP interface, intended to give
+// non-C++ callers (currently Rust) access to Chromium's network stack.
+//
+// This is NOT a replacement for network.mojom.URLLoaderFactory. It is a
+// narrow waist over network::SimpleURLLoader: the service side owns the
+// URLLoaderFactory, the traffic annotation, redirect and retry policy, and
+// response body draining. Callers get a single buffered round trip.
+//
+// Design constraints worth knowing before extending this file:
+//
+//  * Every type here is expressible in Mojom's own type system. Nothing is
+//    [Native] and nothing is typemapped. That keeps the generated Rust
+//    bindings self-contained: the import closure of this file is exactly one
+//    file, versus 105 for url_loader_factory.mojom.
+//  * `string` in Mojom must be valid UTF-8, and sending invalid UTF-8 kills
+//    the sending process. HTTP header values and response bodies are
+//    arbitrary bytes, so they are carried as array<uint8>.
+//  * Struct field defaults are silently ignored by the Rust generator
+//    (crbug.com/493197810 adjacent), so no field here declares one. Callers
+//    must populate every field explicitly.
+
+module brave.network.mojom;
+
+// A single HTTP header. Headers are carried as a repeated list rather than a
+// map because response headers may legitimately repeat (Set-Cookie, Vary).
+struct HttpHeader {
+  // Header names are restricted to US-ASCII tokens by RFC 9110, so `string`
+  // is safe here.
+  string name;
+
+  // Header values are arbitrary octets in practice, so they are not `string`.
+  array<uint8> value;
+};
+
+enum HttpMethod {
+  kGet,
+  kHead,
+  kPost,
+  kPut,
+  kPatch,
+  kDelete,
+};
+
+struct DownloadRequest {
+  // Serialized URL, parsed and validated service-side. An unparseable or
+  // disallowed URL fails the request with net::ERR_INVALID_URL rather than
+  // being rejected at deserialization time.
+  //
+  // This is not url.mojom.Url because that type is C++-typemapped to GURL and
+  // has no Rust typemap, which would drag the whole //url/mojom target into
+  // the Rust closure.
+  string url;
+
+  HttpMethod method;
+
+  array<HttpHeader> headers;
+
+  // Request body. Must be null for methods that do not carry one.
+  array<uint8>? body;
+
+  // Content-Type for `body`. Required when `body` is non-null, ignored
+  // otherwise.
+  string? body_content_type;
+
+  // Maximum response body size to buffer, in bytes. A response larger than
+  // this fails with net::ERR_INSUFFICIENT_RESOURCES. Zero means "use the
+  // service default".
+  uint64 max_response_bytes;
+
+  // When false, any non-2xx response is reported as net::ERR_FAILED with an
+  // empty body. When true, the response code and body are reported as-is.
+  bool allow_http_error_results;
+};
+
+struct DownloadResult {
+  // A net::Error value. Zero is net::OK. Negative otherwise.
+  int32 net_error;
+
+  // HTTP status code, or -1 if no response headers were received.
+  int32 response_code;
+
+  // URL after following redirects. Empty when no response was received.
+  string final_url;
+
+  // Response headers, empty if none were received.
+  array<HttpHeader> headers;
+
+  // Response body. Empty on error, or when the body was genuinely empty.
+  array<uint8> body;
+};
+
+// One instance corresponds to one (URLLoaderFactory, traffic annotation)
+// pair, both fixed at construction time on the service side. Network traffic
+// annotations must be compile-time constants for the annotation auditor, so
+// they deliberately cannot be supplied by the caller.
+interface SimpleUrlLoader {
+  // Performs a single buffered HTTP round trip. Concurrent calls on the same
+  // pipe are permitted and complete independently.
+  Download(DownloadRequest request) => (DownloadResult result);
+};

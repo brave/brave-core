@@ -1,0 +1,25 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("network") {
+  sources = [
+    "simple_url_loader_service.cc",
+    "simple_url_loader_service.h",
+  ]
+
+  public_deps = [
+    "//brave/services/network/public/mojom:simple_url_loader",
+    "//mojo/public/cpp/bindings",
+    "//net/traffic_annotation",
+    "//services/network/public/cpp",
+  ]
+
+  deps = [
+    "//base",
+    "//net",
+    "//services/network/public/mojom",
+    "//url",
+  ]
+}

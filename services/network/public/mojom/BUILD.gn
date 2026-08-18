@@ -1,0 +1,18 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//mojo/public/tools/bindings/mojom.gni")
+
+# `generate_rust` is opt-in per target and is NOT transitive: mojom_rust.gni
+# requires a `${dep}_rust` target for every entry in the dependency closure. It
+# is viable here only because simple_url_loader.mojom imports nothing.
+#
+# The target name matters more than usual: the generated Rust crate is named
+# `${target_name}_rust`, so this is deliberately not called "mojom".
+mojom("simple_url_loader") {
+  sources = [ "simple_url_loader.mojom" ]
+
+  generate_rust = true
+}
