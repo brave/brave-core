@@ -2321,9 +2321,9 @@ bool ConversationHandler::MaybeRespondToNextToolUseRequest() {
         break;
       }
 
-      // Find the tool. Used below by both the existing-challenge check
-      // (to decorate a challenge this Tool didn't create, e.g. from the
-      // server's alignment check) and the tool-requires-interaction check.
+      // Find the tool. Used by both the existing-challenge check (to decorate
+      // a challenge this Tool didn't create, e.g. from the server's alignment
+      // check) and the tool-requires-interaction check.
       base::WeakPtr<Tool> tool_ptr;
       for (auto& tool : GetTools()) {
         if (!tool) {

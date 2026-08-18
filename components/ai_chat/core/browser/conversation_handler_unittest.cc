@@ -6165,6 +6165,7 @@ TEST_F(ConversationHandlerUnitTest,
       });
 
   EXPECT_CALL(*tool1, RequiresUserInteractionBeforeHandling).Times(0);
+  EXPECT_CALL(*tool1, UserPermissionGranted).Times(0);
 
   ON_CALL(*mock_tool_provider_, GetTools()).WillByDefault([&]() {
     std::vector<base::WeakPtr<Tool>> tools;
