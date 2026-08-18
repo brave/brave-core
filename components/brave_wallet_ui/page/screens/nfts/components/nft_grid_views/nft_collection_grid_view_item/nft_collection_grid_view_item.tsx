@@ -12,14 +12,18 @@ import { BraveWallet } from '../../../../../../constants/types'
 import { getAssetIdKey } from '../../../../../../utils/asset-utils'
 
 // Styled Components
-import { NFTWrapper, NFTText, DIVForClickableArea } from './style'
-import { Row } from '../../../../../shared/style'
-import { NftIcon } from '../../../../../shared/nft-icon/nft-icon'
+import {
+  NFTWrapper,
+  NFTText,
+  DIVForClickableArea,
+} from '../nft_grid_views.style'
+import { Row } from '../../../../../../components/shared/style'
+import { NftIcon } from '../../../../../../components/shared/nft-icon/nft-icon'
 import {
   CollectionGrid,
   EmptyCollectionGridItem,
   NftIconStyles,
-} from './nft-collection-grid-view-item.styles'
+} from './nft_collection_grid_view_item.styles'
 
 interface Props {
   collectionToken: BraveWallet.BlockchainToken

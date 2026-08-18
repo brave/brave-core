@@ -70,10 +70,10 @@ import {
 // Styled Components
 import {
   ToggleVisibilityButton,
-  EmptyTransactionsIcon,
   EmptyAccountsIcon,
   EyeIcon,
 } from './accounts_and_transactions_list.style'
+import { EmptyTransactionsIcon } from '../../../page-screen.styles'
 import {
   Column,
   Text,

@@ -74,9 +74,6 @@ import {
 } from '../../../components/shared/style'
 import { Description } from '../onboarding/onboarding.style'
 import {
-  FilterTokenRow, //
-} from '../../../components/desktop/views/portfolio/style'
-import {
   ControlsWrapper,
   SegmentedControl,
   AddressText,
@@ -90,6 +87,7 @@ import {
   SearchAndDropdownWrapper,
   BackButton,
   BackIcon,
+  FilterTokenRow, //
 } from './deposit-funds.style'
 
 // components

@@ -10,7 +10,7 @@ import {
   WalletPanelStory, //
 } from '../../../../../../stories/wrappers/wallet-panel-story-wrapper'
 import { PanelWrapper } from '../../../../../../panel/panel_wrapper/panel_wrapper'
-import { NFTGridViewItem } from './nft-grid-view-item'
+import { NFTGridViewItem } from './nft_grid_view_item'
 
 // mocks
 import {

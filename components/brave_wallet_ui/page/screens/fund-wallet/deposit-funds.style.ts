@@ -111,3 +111,17 @@ export const BackIcon = styled(Icon)`
   --leo-icon-size: 24px;
   color: ${leo.color.icon.default};
 `
+
+export const FilterTokenRow = styled.div<{
+  horizontalPadding?: number
+  isV2?: boolean
+}>`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+  gap: 14px;
+  padding: 0px
+    ${(p) => (p.horizontalPadding !== undefined ? p.horizontalPadding : 0)}px;
+  margin-bottom: ${(p) => (p.isV2 ? '16px' : 0)};
+`

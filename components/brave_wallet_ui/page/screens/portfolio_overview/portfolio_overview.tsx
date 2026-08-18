@@ -81,7 +81,7 @@ import {
   PortfolioOverviewChart, //
 } from './components/portfolio_overview_chart/portfolio_overview_chart'
 import ColumnReveal from '../../../components/shared/animated-reveals/column-reveal'
-import { Nfts } from '../../../components/desktop/views/nfts/components/nfts'
+import { Nfts } from '../nfts/nfts'
 import {
   BuySendSwapDepositNav, //
 } from './components/buy_send_swap_deposit_nav/buy_send_swap_deposit_nav'

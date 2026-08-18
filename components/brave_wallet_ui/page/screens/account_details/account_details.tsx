@@ -76,8 +76,8 @@ import {
   VerticalSpace,
   Text,
 } from '../../../components/shared/style'
-import { EmptyTransactionsIcon } from '../../../components/desktop/views/portfolio/style'
-import { NftGrid } from '../../../components/desktop/views/nfts/components/nfts.styles'
+import { EmptyTransactionsIcon } from '../page-screen.styles'
+import { NftGrid } from '../nfts/nfts.styles'
 
 // Components
 import {
@@ -92,10 +92,10 @@ import {
 } from '../../../components/shared/segmented_control/segmented_control'
 import {
   NFTGridViewItem, //
-} from '../../../components/desktop/views/portfolio/components/nft-grid-view/nft-grid-view-item'
+} from '../nfts/components/nft_grid_views/nft_grid_view_item/nft_grid_view_item'
 import {
   NftsEmptyState, //
-} from '../../../components/desktop/views/nfts/components/nfts-empty-state/nfts-empty-state'
+} from '../nfts/components/nfts_empty_state/nfts_empty_state'
 import {
   AddOrEditNftModal, //
 } from '../../../components/desktop/popup-modals/add-edit-nft-modal/add-edit-nft-modal'
