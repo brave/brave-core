@@ -106,6 +106,14 @@ bool IsAccountHidingEnabled() {
       features::kBraveWalletAccountHidingFeature);
 }
 
+bool IsSnapsFeatureEnabled() {
+#if BUILDFLAG(ENABLE_SNAPS)
+  return base::FeatureList::IsEnabled(features::kBraveWalletSnapsFeature);
+#else
+  return false;
+#endif
+}
+
 #if BUILDFLAG(IS_IOS)
 bool IsWalletWebUIEnabled() {
   return base::FeatureList::IsEnabled(features::kBraveWalletWebUIFeature);
