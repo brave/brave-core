@@ -92,6 +92,12 @@ void BravePassageEmbeddingsServiceController::OnLocalModelsReady(
           base::Unretained(this)));
 }
 
+void BravePassageEmbeddingsServiceController::OnLocalModelsUnavailable() {
+  // The component is gone and its files with it, so drop the model recorded
+  // from the install dir rather than keep embedding against deleted paths.
+  PassageEmbeddingsServiceController::MaybeUpdateModelInfo(std::nullopt);
+}
+
 void BravePassageEmbeddingsServiceController::OnLitertModelInfoLoaded(
     std::optional<optimization_guide::ModelInfo> model_info) {
   if (!model_info) {

@@ -76,6 +76,12 @@ class LocalModelsUpdaterState {
    public:
     // Called when the local models are ready (component installed)
     virtual void OnLocalModelsReady(const base::FilePath& install_dir) = 0;
+
+    // Called when the local models are gone: the master switch turned off, so
+    // the component was unregistered and its directory removed. Observers must
+    // drop anything they derived from the install dir - the files behind it no
+    // longer exist.
+    virtual void OnLocalModelsUnavailable() = 0;
   };
 
   static LocalModelsUpdaterState* GetInstance();

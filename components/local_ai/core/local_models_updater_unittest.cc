@@ -34,6 +34,18 @@ namespace {
 constexpr base::FilePath::CharType kComponentInstallDir[] =
     FILE_PATH_LITERAL("BraveLocalAIModels");
 constexpr char kComponentId[] = "ejhejjmaoaohpghnblcdcjilndkangfe";
+
+class TestUpdaterStateObserver : public LocalModelsUpdaterState::Observer {
+ public:
+  void OnLocalModelsReady(const base::FilePath& install_dir) override {
+    ++ready_count;
+  }
+  void OnLocalModelsUnavailable() override { ++unavailable_count; }
+
+  int ready_count = 0;
+  int unavailable_count = 0;
+};
+
 }  // namespace
 
 class LocalModelsUpdaterUnitTest : public testing::Test {
@@ -168,6 +180,24 @@ TEST_F(LocalModelsUpdaterUnitTest, NoRegisterWhenMasterSwitchOff) {
   ManageLocalModelsComponentRegistration(cus_.get(), local_state_.get());
   ASSERT_TRUE(
       base::test::RunUntil([&]() { return !PathExists(install_dir_); }));
+}
+
+// Tests that observers are told when the models go away, so they can drop
+// anything derived from the install dir.
+TEST_F(LocalModelsUpdaterUnitTest, ObserverNotifiedWhenModelsGoAway) {
+  auto* state = LocalModelsUpdaterState::GetInstance();
+  TestUpdaterStateObserver observer;
+  state->AddObserver(&observer);
+
+  state->SetInstallDir(install_dir_);
+  EXPECT_EQ(observer.ready_count, 1);
+  EXPECT_EQ(observer.unavailable_count, 0);
+
+  state->SetInstallDir(base::FilePath());
+  EXPECT_EQ(observer.ready_count, 1);
+  EXPECT_EQ(observer.unavailable_count, 1);
+
+  state->RemoveObserver(&observer);
 }
 
 // Tests that the component is unregistered and removed when the local AI

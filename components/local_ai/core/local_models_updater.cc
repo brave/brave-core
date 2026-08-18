@@ -243,6 +243,7 @@ void LocalModelsUpdaterState::SetInstallDir(const base::FilePath& install_dir) {
   install_dir_ = install_dir;
   if (install_dir.empty()) {
     embeddinggemma_litert_dir_ = base::FilePath();
+    observers_.Notify(&Observer::OnLocalModelsUnavailable);
     return;
   }
   embeddinggemma_litert_dir_ = install_dir_.AppendASCII(kEmbeddingGemmaModelDir)

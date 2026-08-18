@@ -55,6 +55,7 @@ class BravePassageEmbeddingsServiceController
 
   // local_ai::LocalModelsUpdaterState::Observer:
   void OnLocalModelsReady(const base::FilePath& install_dir) override;
+  void OnLocalModelsUnavailable() override;
 
   // Reply for the model dir load posted by OnLocalModelsReady. `model_info` is
   // empty when the component ships no usable model.
