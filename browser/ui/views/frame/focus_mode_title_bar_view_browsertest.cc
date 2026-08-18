@@ -26,6 +26,7 @@
 #include "content/public/test/back_forward_cache_util.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
+#include "content/public/test/test_utils.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/default_handlers.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
@@ -131,12 +132,9 @@ IN_PROC_BROWSER_TEST_F(FocusModeTitleBarViewBrowserTest, TitleBarWiring) {
   EXPECT_FALSE(title_bar()->GetVisible());
 }
 
-// Verifies that the Focus Mode title bar's domain label stays coherent with the
-// active page across navigation edge cases (client/server redirects and
-// back/forward cache restore). The title bar subscribes to TabUIHelper change
-// callbacks; these tests exercise the presentation layer
-// (FocusModeTitleBarView::Update) rather than the data source alone, which is
-// already covered by tab_ui_helper_browsertest.cc upstream.
+// Verifies that the Focus Mode title bar's domain label stays coherent with
+// the active page across navigation edge cases (client/server redirects and
+// back/forward cache restore).
 class FocusModeUrlCoherenceBrowserTest
     : public FocusModeTitleBarViewBrowserTest {
  public:
@@ -224,9 +222,11 @@ IN_PROC_BROWSER_TEST_F(FocusModeUrlCoherenceBrowserTest,
   ASSERT_TRUE(WaitForDomainToContain(u"a.test"))
       << base::UTF16ToUTF8(domain_text());
 
-  // Capture the RFH that should enter bfcache when we navigate away.
-  content::RenderFrameHost* const cached_rfh =
-      GetWebContents()->GetPrimaryMainFrame();
+  // Capture the RFH that should enter bfcache when we navigate away. Wrap it
+  // so the lifecycle check below fails cleanly instead of dereferencing a
+  // dangling pointer if the page is evicted rather than cached.
+  content::RenderFrameHostWrapper cached_rfh(
+      GetWebContents()->GetPrimaryMainFrame());
 
   ASSERT_TRUE(ui_test_utils::NavigateToURL(
       browser(), https_server_.GetURL("b.test", "/empty.html")));
@@ -235,6 +235,7 @@ IN_PROC_BROWSER_TEST_F(FocusModeUrlCoherenceBrowserTest,
 
   // Verify the previous page was actually cached, not evicted to a normal
   // back navigation. Without this assertion GoBack could pass via either path.
+  ASSERT_FALSE(cached_rfh.IsRenderFrameDeleted());
   ASSERT_EQ(cached_rfh->GetLifecycleState(),
             content::RenderFrameHost::LifecycleState::kInBackForwardCache);
 
