@@ -29,7 +29,6 @@ type UpdateOptions = buildOptions.BuildDirOptions
   & buildOptions.GnGenOptions
   & buildOptions.NinjaOptions & {
     build_config?: string | undefined
-    use_libfuzzer?: boolean | undefined
     gclient_verbose?: boolean | undefined
   }
 

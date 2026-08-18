@@ -139,6 +139,7 @@ export function supportGnArgs<
         'PKCS11 provider configuration file path',
       )
       .option('--pkcs11-alias <alias>', 'PKCS11 key alias')
+      .option('--use_libfuzzer', 'enable fuzzer binaries')
       .apply(supportExtraGnArgs)
   )
 }
