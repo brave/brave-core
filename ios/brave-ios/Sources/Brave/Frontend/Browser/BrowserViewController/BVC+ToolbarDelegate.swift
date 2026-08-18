@@ -7,6 +7,7 @@ import AVFoundation
 import BraveCore
 import BraveNews
 import BraveShared
+import BraveShields
 import BraveStrings
 import BraveUI
 import BraveWallet
@@ -463,7 +464,7 @@ extension BrowserViewController: TopToolbarDelegate, SearchContainerViewControll
     weak var weakPopover: PopoverController?
     let popover = PopoverController(
       contentController: PopoverNavigationController(
-        rootViewController: ShieldsPanelViewController(
+        rootViewController: LegacyShieldsPanelViewController(
           url: url,
           tab: selectedTab,
           domain: Domain.getOrCreate(forUrl: url, persistent: !selectedTab.isPrivate)
@@ -495,7 +496,7 @@ extension BrowserViewController: TopToolbarDelegate, SearchContainerViewControll
   }
 
   private func navigate(
-    to target: ShieldsPanelView.Action.NavigationTarget,
+    to target: ShieldsPanelAction.NavigationTarget,
     tab: some TabState,
     url: URL,
     on viewController: UIViewController?
