@@ -419,6 +419,10 @@ test("brave_unit_tests") {
       "//brave/components/brave_ads/core/browser/service:test_support",
       "//brave/components/brave_ads/core/test:brave_ads_unit_tests",
     ]
+
+    if (enable_brave_rewards) {
+      deps += [ "//brave/browser/ui/webui/ads_internals:unit_tests" ]
+    }
   }
 
   if (enable_brave_rewards) {

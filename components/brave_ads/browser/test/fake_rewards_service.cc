@@ -266,9 +266,10 @@ void FakeRewardsService::WriteDiagnosticLog(const std::string& /*file*/,
                                             const std::string& /*message*/) {}
 
 void FakeRewardsService::LoadDiagnosticLog(
-    int /*num_lines*/,
+    int num_lines,
     brave_rewards::LoadDiagnosticLogCallback callback) {
-  std::move(callback).Run("");
+  last_load_diagnostic_log_num_lines_ = num_lines;
+  std::move(callback).Run("fake diagnostic log");
 }
 
 void FakeRewardsService::ClearDiagnosticLog(

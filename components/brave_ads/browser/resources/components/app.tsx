@@ -7,10 +7,14 @@ import * as React from 'react'
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 
+import { useAppState } from '../lib/app_context'
 import { useRoute, useRouter } from '../lib/router'
 import { Conversions } from './conversions'
 import { Events } from './events'
 import { Diagnostics } from './diagnostics'
+// <if expr="enable_brave_rewards && !is_ios">
+import { Logs } from './logs'
+// </if>
 import { ClearAdsDataButton } from './clear_ads_data_button'
 import * as routes from '../lib/app_routes'
 
@@ -19,6 +23,7 @@ import { style } from './app.style'
 function NavList() {
   const router = useRouter()
   const currentRoute = useRoute() || routes.diagnostics
+  const logsSupported = useAppState((state) => state.logsSupported)
 
   function onLinkClick(event: React.MouseEvent<HTMLAnchorElement>) {
     if (event.defaultPrevented || event.button !== 0 ||
@@ -50,12 +55,16 @@ function NavList() {
       <li>{renderLink(routes.diagnostics, 'Diagnostics')}</li>
       <li>{renderLink(routes.conversions, 'Conversions')}</li>
       <li>{renderLink(routes.events, 'Events')}</li>
+      {logsSupported && <li>{renderLink(routes.logs, 'Logs')}</li>}
     </ul>
   )
 }
 
 export function App() {
   const route = useRoute()
+  // <if expr="enable_brave_rewards && !is_ios">
+  const logsSupported = useAppState((state) => state.logsSupported)
+  // </if>
   const [sidebarOpen, setSidebarOpen] = React.useState(false)
 
   React.useEffect(() => {
@@ -68,6 +77,13 @@ export function App() {
         return <Conversions />
       case routes.events:
         return <Events />
+      case routes.logs:
+        // <if expr="enable_brave_rewards && !is_ios">
+        if (logsSupported) {
+          return <Logs />
+        }
+        // </if>
+        return <Diagnostics />
       default:
         return <Diagnostics />
     }

@@ -711,6 +711,9 @@ void BraveContentBrowserClient::RegisterTrustedWebUIInterfaceBrokers(
 
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
   registry.ForWebUI<AdsInternalsUI>().Add<bat_ads::mojom::AdsInternals>();
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+  registry.ForWebUI<AdsInternalsUI>().Add<bat_ads::mojom::AdsInternalsLogs>();
+#endif  // BUILDFLAG(ENABLE_BRAVE_REWARDS)
 #endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
   if (base::FeatureList::IsEnabled(skus::features::kSkusFeature)) {

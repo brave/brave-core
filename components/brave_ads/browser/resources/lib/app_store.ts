@@ -30,10 +30,17 @@ export interface AppState {
   adEvents: AdEvent[]
   diagnosticId: string
   diagnosticEntries: DiagnosticEntry[]
+  logsSupported: boolean
+  verboseLoggingEnabled: boolean
+  log: string
   actions: {
     loadAdsInternals: () => void
     clearAdsData: () => Promise<boolean>
     setDiagnosticId: (diagnosticId: string) => void
+    loadLog: () => void
+    clearLog: () => void
+    fetchFullLog: () => Promise<string>
+    toggleVerboseLoggingAndRestart: () => void
   }
 }
 
@@ -46,12 +53,21 @@ export function defaultAppStore() {
     adEvents: [],
     diagnosticId: '',
     diagnosticEntries: [],
+    logsSupported: false,
+    verboseLoggingEnabled: false,
+    log: '',
     actions: {
       loadAdsInternals() {},
       async clearAdsData() {
         return false
       },
       setDiagnosticId(diagnosticId) {},
+      loadLog() {},
+      clearLog() {},
+      async fetchFullLog() {
+        return ''
+      },
+      toggleVerboseLoggingAndRestart() {},
     },
   })
 }

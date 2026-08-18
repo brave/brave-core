@@ -6,3 +6,4 @@
 export const diagnostics = '/'
 export const conversions = '/conversions'
 export const events = '/events'
+export const logs = '/logs'
