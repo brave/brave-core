@@ -13,9 +13,9 @@
 #include "base/values.h"
 #include "brave/components/brave_account/endpoint_client/request_types.h"
 #include "brave/components/brave_account/endpoint_client/response.h"
+#include "brave/components/brave_vpn/browser/v2/api/endpoint_constants.h"
 #include "brave/components/brave_vpn/browser/v2/api/error_body.h"
 #include "brave/components/brave_vpn/browser/v2/api/raw_json_response_body.h"
-#include "brave/components/brave_vpn/common/brave_vpn_constants.h"
 #include "url/gurl.h"
 #include "url/url_constants.h"
 
@@ -24,14 +24,6 @@
 
 namespace brave_vpn::v2::endpoints {
 
-inline constexpr char kProductTypeKey[] = "product-type";
-inline constexpr char kProductIdKey[] = "product-id";
-inline constexpr char kPurchaseTokenKey[] = "purchase-token";
-inline constexpr char kBundleIdKey[] = "bundle-id";
-inline constexpr char kValidationMethodKey[] = "validation-method";
-inline constexpr char kValidationMethodDefaultValue[] = "brave-premium";
-inline constexpr char kSkusCredentialKey[] = "brave-vpn-premium-monthly-pass";
-inline constexpr char kSubscriberCredentialKey[] = "subscriber-credential";
 inline constexpr char kHeaderBravePaymentsEnvironment[] =
     "Brave-Payments-Environment";
 
@@ -99,7 +91,7 @@ struct GetSubscriberCredentialBase {
   static GURL URL() {
     return GURL(base::StrCat({url::kHttpsScheme, url::kStandardSchemeSeparator,
                               kVpnHost}))
-        .Resolve(kCreateSubscriberCredentialV12);
+        .Resolve(kCreateSubscriberCredentialApi);
   }
 };
 
@@ -136,7 +128,7 @@ struct VerifyPurchaseToken {
   static GURL URL() {
     return GURL(base::StrCat({url::kHttpsScheme, url::kStandardSchemeSeparator,
                               kVpnHost}))
-        .Resolve(kVerifyPurchaseToken);
+        .Resolve(kVerifyPurchaseTokenApi);
   }
 };
 

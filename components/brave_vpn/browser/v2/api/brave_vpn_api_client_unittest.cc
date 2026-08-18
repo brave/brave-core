@@ -37,6 +37,10 @@ constexpr char kTestBundleId[] = "test-bundle-id";
 constexpr char kTestSkusCredential[] = "test-skus-credential";
 constexpr char kTestSubscriberCredential[] = "test-subscriber-credential";
 constexpr char kTestEnvironment[] = "test-env";
+constexpr char kTestEmail[] = "user@example.com";
+constexpr char kTestSubject[] = "Help";
+constexpr char kTestBody[] = "It doesn't connect.";
+constexpr char kTestTimezone[] = "America/Los_Angeles";
 
 // Canonical JSON (compact, keys sorted): MockResponseFor re-serializes the
 // body via ToValue() and the client re-parses it via FromValue(), so only
@@ -218,8 +222,8 @@ INSTANTIATE_TEST_SUITE_P(
                           .body = base::ok(endpoints::RawJsonResponseBody{
                               .json = kTestSuccessJson})},
              .expected = base::ok(kTestSuccessJson)},
-         // non-2xx error body is *also* forwarded verbatim (raw on both sides),
-         // not collapsed to a VpnErrorBody title.
+         // A non-2xx error body is *also* forwarded verbatim (raw on both
+         // sides), not collapsed to a VpnErrorBody title.
          VerifyPurchaseTokenTestCase{
              .test_name = "RequestError",
              .response = {.net_error = net::OK,
@@ -228,6 +232,48 @@ INSTANTIATE_TEST_SUITE_P(
                               base::unexpected(endpoints::RawJsonResponseBody{
                                   .json = kTestErrorJson})},
              .expected = base::unexpected(kTestErrorJson)}})),
+    [](const auto& info) { return info.param.test_name; });
+
+struct CreateSupportTicketTestCase {
+  std::string test_name;
+  endpoints::CreateSupportTicket::Response response;
+  base::expected<std::string, std::string> expected;
+};
+
+using BraveVpnApiClientCreateSupportTicketTest =
+    BraveVpnApiClientTest<CreateSupportTicketTestCase>;
+
+TEST_P(BraveVpnApiClientCreateSupportTicketTest, MapsResponseToResult) {
+  const auto& test_case = GetParam();
+  MockResponseFor<endpoints::CreateSupportTicket>(url_loader_factory_,
+                                                  test_case.response);
+  EXPECT_EQ(CallClientApi(&BraveVpnApiClient::CreateSupportTicket, kTestEmail,
+                          kTestSubject, kTestBody, kTestSubscriberCredential,
+                          kTestTimezone),
+            test_case.expected);
+}
+
+INSTANTIATE_TEST_SUITE_P(
+    BraveVpnApiClientTests,
+    BraveVpnApiClientCreateSupportTicketTest,
+    testing::ValuesIn(WithCommonUnrecoverableCases<CreateSupportTicketTestCase>(
+        {// 2xx echoes the confirmation JSON verbatim.
+         CreateSupportTicketTestCase{
+             .test_name = "Success",
+             .response = {.net_error = net::OK,
+                          .status_code = net::HTTP_OK,
+                          .body = base::ok(endpoints::RawJsonResponseBody{
+                              .json = kTestSuccessJson})},
+             .expected = base::ok(kTestSuccessJson)},
+         // A non-2xx response with a parseable error body surfaces its title.
+         CreateSupportTicketTestCase{
+             .test_name = "RequestError",
+             .response = {.net_error = net::OK,
+                          .status_code = net::HTTP_BAD_REQUEST,
+                          .body = base::unexpected(endpoints::VpnErrorBody{
+                              .error_title = "Invalid credential.",
+                              .error_message = "expired"})},
+             .expected = base::unexpected("Invalid credential.")}})),
     [](const auto& info) { return info.param.test_name; });
 
 }  // namespace brave_vpn::v2
