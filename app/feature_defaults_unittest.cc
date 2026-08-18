@@ -280,6 +280,9 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &segmentation_platform::features::kSegmentationPlatformFeature,
       &segmentation_platform::features::kSegmentationPlatformTimeDelaySampling,
       &subresource_filter::kAdTagging,
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
+      &switches::kFirstRunDesktopRefresh,
+#endif
       &switches::kSyncEnableBookmarksInTransportMode,
 #if !BUILDFLAG(IS_ANDROID)
       &tabs::kVerticalTabsLaunch,
