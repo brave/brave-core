@@ -13,7 +13,6 @@ const FORWARD_ENV_CONFIG_VARS_TO_GN_ARGS = [
   'brave_android_developer_options_code',
   'brave_google_api_key',
   'brave_safebrowsing_api_key',
-  'brave_services_key_id',
   'brave_services_key',
   'brave_stats_api_key',
   'brave_sync_endpoint',
