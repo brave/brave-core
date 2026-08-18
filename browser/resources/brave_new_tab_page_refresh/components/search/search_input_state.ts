@@ -18,7 +18,6 @@ import {
 } from '../../context/search_context'
 
 import { ResultOption } from './search_results'
-import { urlFromInput } from '../../lib/url_input'
 
 export function useSearchInputState(inputKey: string) {
   const actions = useSearchActions()
@@ -34,6 +33,9 @@ export function useSearchInputState(inputKey: string) {
   )
 
   const [query, setQuery] = React.useState('')
+  const [searchInputUrl, setSearchInputUrl] = React.useState<string | null>(
+    null,
+  )
   const [selectedResultOption, setSelectedResultOption] = React.useState<
     number | null
   >(null)
@@ -62,8 +64,8 @@ export function useSearchInputState(inputKey: string) {
   // Build the list of result options. The result options can contain a direct
   // URL (if the user has typed a URL) or a list of autocomplete options.
   const resultOptions = React.useMemo(
-    () => getResultOptions(query, searchMatches ?? []),
-    [query, searchMatches],
+    () => getResultOptions(query, searchInputUrl ?? '', searchMatches ?? []),
+    [query, searchInputUrl, searchMatches],
   )
 
   // When the result option list changes, select the first available option that
@@ -99,6 +101,14 @@ export function useSearchInputState(inputKey: string) {
       actions.stopAutocomplete()
     }
   }, [query, currentEngine, searchSuggestionsEnabled])
+
+  React.useEffect(() => {
+    if (query) {
+      actions.getUrlFromSearchInput(query).then(setSearchInputUrl)
+    } else {
+      setSearchInputUrl(null)
+    }
+  }, [query])
 
   const searchEngine = searchEngines.find(({ host }) => host === currentEngine)
 
@@ -195,17 +205,18 @@ export function useSearchInputState(inputKey: string) {
 // Returns a list of `ResultOptions` for the specified query and corresponding
 // autocomplete matches. In addition to the autocomplete matches, the list may
 // also contain a URL match if the user typed in what appears to be a URL.
-function getResultOptions(query: string, matches: AutocompleteMatch[]) {
+function getResultOptions(
+  query: string,
+  url: string,
+  matches: AutocompleteMatch[],
+) {
   const options: ResultOption[] = []
   if (!query) {
     return options
   }
-  const inputURL = urlFromInput(query)
-  if (inputURL) {
-    let url = inputURL.toString()
-    const index = url.lastIndexOf(query)
-    if (index >= 0) {
-      url = url.substring(0, index + query.length)
+  if (url) {
+    if (url.endsWith('/') && !query.endsWith('/')) {
+      url = url.slice(0, -1)
     }
     options.push({ kind: 'url', url })
   }

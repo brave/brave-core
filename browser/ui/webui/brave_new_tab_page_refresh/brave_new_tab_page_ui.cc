@@ -26,6 +26,7 @@
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/misc_metrics/page_metrics.h"
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_rich_media_ad_event_handler.h"
+#include "chrome/browser/autocomplete/chrome_autocomplete_scheme_classifier.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/contextual_search/contextual_search_service_factory.h"
 #include "chrome/browser/history/history_service_factory.h"
@@ -130,8 +131,9 @@ void BraveNewTabPageUI::BindInterface(
   page_handler_ = std::make_unique<NewTabPageHandler>(
       std::move(receiver), std::move(image_chooser),
       std::move(background_facade), std::move(sponsored_sites_facade),
-      std::move(top_sites_facade), std::move(vpn_facade), *web_contents, *prefs,
-      *TemplateURLServiceFactory::GetForProfile(profile),
+      std::move(top_sites_facade), std::move(vpn_facade),
+      std::make_unique<ChromeAutocompleteSchemeClassifier>(profile),
+      *web_contents, *prefs, *TemplateURLServiceFactory::GetForProfile(profile),
       *g_brave_browser_process->process_misc_metrics()->new_tab_metrics(),
       page_metrics, was_restored_);
 

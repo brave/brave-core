@@ -76,6 +76,9 @@ export function defaultSearchStore(): SearchStore {
       queryAutocomplete(query, engine) {},
       openAutocompleteMatch(index, event) {},
       stopAutocomplete() {},
+      async getUrlFromSearchInput() {
+        return null
+      },
       openSearch(query, engine, event) {},
       openUrlFromSearch(url, event) {},
       setDefaultSearchEngineAsBraveSearch() {},
@@ -106,6 +109,7 @@ export interface SearchActions {
   queryAutocomplete: (query: string, engine: string) => void
   openAutocompleteMatch: (index: number, event: ClickEvent) => void
   stopAutocomplete: () => void
+  getUrlFromSearchInput: (query: string) => Promise<string | null>
   openSearch: (query: string, engine: string, event: ClickEvent) => void
   openUrlFromSearch: (url: string, event: ClickEvent) => void
   setDefaultSearchEngineAsBraveSearch: () => void
