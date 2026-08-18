@@ -190,7 +190,7 @@ void OpenUrlInContainer(
     const GURL& url,
     const containers::mojom::ContainerPtr& container,
     bool is_link = true,
-    const std::optional<url::Origin>& initiator_origin = std::nullopt,
+    std::optional<url::Origin> initiator_origin = std::nullopt,
     bool started_from_context_menu = false);
 
 // Creates new tabs with the given tabs' URLs without a container.
@@ -200,7 +200,7 @@ void OpenUrlWithoutContainer(
     BrowserWindowInterface* browser_window,
     const GURL& url,
     bool is_link = true,
-    const std::optional<url::Origin>& initiator_origin = std::nullopt,
+    std::optional<url::Origin> initiator_origin = std::nullopt,
     bool started_from_context_menu = false);
 
 // Creates a new temporary container and opens the given tabs' URLs in it.
@@ -212,7 +212,7 @@ void CreateTemporaryContainerAndOpenUrl(
     BrowserWindowInterface* browser_window,
     const GURL& url,
     bool is_link = true,
-    const std::optional<url::Origin>& initiator_origin = std::nullopt,
+    std::optional<url::Origin> initiator_origin = std::nullopt,
     bool started_from_context_menu = false);
 
 // Opens the container menu on the page action view if the active tab is in a
