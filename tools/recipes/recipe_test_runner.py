@@ -35,6 +35,8 @@ import sys
 import time
 from typing import TYPE_CHECKING
 
+import gevent
+
 import config_types
 import engine
 from engine_types import PerGreenletStateRegistry
@@ -477,6 +479,11 @@ def main(argv: list[str] | None = None) -> int:
                         action='store_true',
                         help='enable step/debug logging (noisy)')
     args = parser.parse_args(argv)
+
+    # We disable gevent's exception stream because it prints tracebacks for
+    # every exception thrown, when actually the exception is still caught and
+    # returned by the Future.
+    gevent.get_hub().exception_stream = None
 
     # Keep step logging quiet by default so test output is just the report.
     logging.basicConfig(
