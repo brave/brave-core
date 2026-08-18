@@ -211,7 +211,7 @@ function createMockModel(): MockModel {
 //
 function createSession(mock: MockModel) {
   const results: Result[] = []
-  const modelType = getNemotronModelType("en-US")
+  const { modelType, promptId } = getNemotronModelType("en-US")
   const onResult = jest.fn((text: string, isFinal: boolean) => {
     results.push({
       text,
@@ -224,6 +224,7 @@ function createSession(mock: MockModel) {
   const session = new NemotronStreamSession(
     mock.model,
     modelType,
+    promptId,
     config.TARGET_SAMPLE_RATE,
     onResult,
     onError,
@@ -245,13 +246,14 @@ describe('NemotronStreamSession', () => {
 
     it('accepts the Nemotron sample rate', () => {
       const mock = createMockModel()
-      const modelType = getNemotronModelType("en-US")
+      const { modelType, promptId } = getNemotronModelType("en-US")
 
       expect(
         () =>
           new NemotronStreamSession(
             mock.model,
             modelType,
+            promptId,
             config.TARGET_SAMPLE_RATE,
             () => {},
             () => {},
@@ -261,7 +263,7 @@ describe('NemotronStreamSession', () => {
 
     it('rejects unsupported sample rates', () => {
       const mock = createMockModel()
-      const modelType = getNemotronModelType("en-US")
+      const { modelType, promptId } = getNemotronModelType("en-US")
       const wrongSamplingRate = 8000
 
       expect(
@@ -269,6 +271,7 @@ describe('NemotronStreamSession', () => {
           new NemotronStreamSession(
             mock.model,
             modelType,
+            promptId,
             wrongSamplingRate,
             () => {},
             () => {},

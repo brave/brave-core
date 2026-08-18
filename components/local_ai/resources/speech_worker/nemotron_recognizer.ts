@@ -179,6 +179,7 @@ export class NemotronStreamSession {
   constructor(
     model: OrtNemotronModel,
     modelType: config.NemotronModelType,
+    promptId: number | null,
     sampleRateHz: number,
     onResult: (text: string, isFinal: boolean) => void,
     onError: () => void,

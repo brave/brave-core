@@ -41,6 +41,7 @@ class AsrStreamInputAdapter implements AsrStreamInputInterface {
   constructor(
     model: OrtNemotronModel,
     modelType: NemotronModelType,
+    promptID: number | null,
     sampleRateHz: number,
     pending: AsrStreamInputPendingReceiver,
     responder: AsrStreamResponderRemote,
@@ -70,6 +71,7 @@ class AsrStreamInputAdapter implements AsrStreamInputInterface {
     this.session = new NemotronStreamSession(
       model,
       modelType,
+      promptID,
       sampleRateHz,
       onResult,
       onError,
@@ -94,6 +96,7 @@ class SpeechRecognitionFactoryImpl
   private readonly streams = new Set<AsrStreamInputAdapter>()
   private model: OrtNemotronModel | null = null
   private modelType: NemotronModelType | null = null
+  private promptId: number | null = null
 
   constructor() {
     this.receiver = new SpeechRecognitionFactoryReceiver(this)
@@ -105,7 +108,7 @@ class SpeechRecognitionFactoryImpl
 
   async init(files: OrtModelFiles, lang: string = 'en-US') {
     try {
-      const modelType = getNemotronModelType(lang)
+      const { modelType, promptId } = getNemotronModelType(lang)
       const model = await OrtNemotronModel.buildFromBytes(
         readBigBuffer(files.encoder, 'Encoder'),
         readBigBuffer(files.encoderData, 'EncoderData'),
@@ -117,6 +120,7 @@ class SpeechRecognitionFactoryImpl
         ),
       )
       this.modelType = modelType
+      this.promptId = promptId ?? null
       this.model = model
       return { success: true }
     } catch (err) {
@@ -141,6 +145,7 @@ class SpeechRecognitionFactoryImpl
       adapter = new AsrStreamInputAdapter(
         this.model,
         this.modelType,
+        this.promptId,
         options.sampleRateHz,
         stream,
         responder,
