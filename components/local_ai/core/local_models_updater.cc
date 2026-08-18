@@ -76,8 +76,11 @@ class LocalModelsComponentRegistrar {
   LocalModelsComponentRegistrar& operator=(
       const LocalModelsComponentRegistrar&) = delete;
 
+  // At most once per process, or once per Shutdown(): this is a singleton and
+  // PrefChangeRegistrar DCHECKs when the same pref is registered twice.
   void Start(component_updater::ComponentUpdateService* cus,
              PrefService* local_state) {
+    CHECK(pref_change_registrar_.IsEmpty());
     cus_ = cus;
     if (local_state) {
       pref_change_registrar_.Init(local_state);
