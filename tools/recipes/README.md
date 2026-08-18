@@ -48,28 +48,32 @@ message InputProperties {
   int32 brave_subrevision = 1;
   string chromium_ref = 2;
 }
-
-message EnvProperties {
-  string GIT_CACHE = 1;  // All envvar keys must be capitalized.
-}
 ```
 
-Then import the generated messages from the `PB` namespace and assign them:
+Then import the generated message from the `PB` namespace and assign it:
 
 ```python
 # recipes/toolchains/rust/package_rust.py
-from PB.recipes.brave.toolchains.rust.package_rust import (EnvProperties,
-                                                           InputProperties)
+from PB.recipes.brave.toolchains.rust.package_rust import InputProperties
 
 PROPERTIES = InputProperties
-ENV_PROPERTIES = EnvProperties
 
-def RunSteps(api, properties, env_properties):
-    # properties and env_properties are instances of their respective proto
-    # messages.
-    api.chromium_checkout.ensure_checkout(
-        ref=properties.chromium_ref,
-        git_cache=env_properties.GIT_CACHE or None)
+def RunSteps(api, properties):
+    # properties is an instance of the proto message above.
+    api.chromium_checkout.ensure_checkout(ref=properties.chromium_ref)
+```
+
+An `ENV_PROPERTIES` is very similar to a regular property. An example of a an
+`ENV_PROPERTIES` being used can be found in the `git_cache` recipe module.
+
+```proto
+// recipe_modules/git_cache/properties.proto
+syntax = "proto3";
+package recipe_modules.brave.git_cache;
+
+message EnvProperties {
+  string GIT_CACHE_PATH = 1;  // All envvar keys must be capitalized.
+}
 ```
 
 `RunSteps` takes `api` followed by whichever of the two messages the recipe
@@ -100,7 +104,7 @@ def GenTests(api):
         'example',
         api.properties(InputProperties(chromium_ref='151.0.7917.1',
                                        brave_subrevision=1)),
-        api.properties.environ(EnvProperties(GIT_CACHE='/b/cache')),
+        api.properties.environ(GIT_CACHE_PATH='/b/cache'),
     )
 ```
 

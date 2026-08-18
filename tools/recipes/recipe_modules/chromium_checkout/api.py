@@ -91,20 +91,19 @@ class ChromiumCheckoutApi(RecipeApi):
                         *,
                         chromium_src: str | Path | None = None,
                         ref: str | None = None,
-                        git_cache: str | Path | None = None,
                         depth: int | None = None) -> Path:
         """Guarantee a Chromium checkout at *chromium_src*, optionally on *ref*.
 
         Clones a fresh checkout if *chromium_src* is not already a valid
         Chromium repo, then checks out *ref* if given.
 
+        The checkout is always made through the shared git cache, so it requires
+        a valid git cache.
+
         Args:
             chromium_src: Path to the Chromium `src/` directory. Defaults to the
                 `path` module's `chromium_src`, the standard job layout.
             ref: Optional git ref (branch, tag, or commit) to check out.
-            git_cache: Optional explicit git cache directory. When given it sets
-                `GIT_CACHE_PATH`; otherwise an existing `GIT_CACHE_PATH` in the
-                environment is used as-is.
             depth: Optional history depth for this working checkout (see
                 `checkout_ref`). The shared git-cache mirror is always
                 populated with full history regardless; `None` here checks
@@ -117,82 +116,12 @@ class ChromiumCheckoutApi(RecipeApi):
             chromium_src = self.m.path.chromium_src
         chromium_src = self.m.path.abs(chromium_src)
 
-        if git_cache is not None:
-            self.set_git_cache(git_cache or None)
-        self.validate_git_cache()
-
         # depot_tools provides `fetch`/`gclient`/`git cache`, needed whether we
         # clone or operate on an existing checkout.
         self.m.depot_tools.ensure_on_path()
 
         self.checkout_ref(chromium_src, ref, depth=depth)
         return chromium_src
-
-    def validate_git_cache(self) -> str:
-        """Require `GIT_CACHE_PATH` to be set and point to a real directory.
-
-        git/gclient honour `GIT_CACHE_PATH` to share object storage across
-        checkouts. The pipeline mandates a cache, so a missing value is a hard
-        error -- we refuse to run an uncached checkout -- as is a value that
-        does not point at an existing directory.
-
-        Returns:
-            The current `GIT_CACHE_PATH` value.
-
-        Raises:
-            RuntimeError: If `GIT_CACHE_PATH` is unset or not a directory. Set
-                it in the environment or via `set_git_cache()` beforehand.
-        """
-        git_cache_path = self.m.env.get('GIT_CACHE_PATH')
-        if not git_cache_path:
-            raise RuntimeError(
-                'GIT_CACHE_PATH is not set; a shared git cache is required. '
-                'Set it in the environment or via set_git_cache() before '
-                'running the checkout.')
-        if not self.m.path.is_dir(git_cache_path):
-            raise RuntimeError(
-                f'GIT_CACHE_PATH is not a valid directory: {git_cache_path}')
-        logging.info('Using GIT_CACHE_PATH=%s', git_cache_path)
-        return git_cache_path
-
-    def set_git_cache(self, path: str | Path | None = None) -> Path:
-        """Set `GIT_CACHE_PATH` for subsequent git/gclient steps.
-
-        Mirrors `build_rust_toolchain.py`'s `--with-git-cache` handling: an
-        explicit *path* is used as-is (user-expanded); otherwise it defaults to
-        `<home>/cache` (`USERPROFILE` on Windows, `HOME` elsewhere), the layout
-        our CI bakes the cache under. The directory must already exist, and
-        `GIT_CACHE_PATH` must not already be set -- refusing to clobber an
-        existing value avoids masking a misconfiguration.
-
-        Args:
-            path: Explicit cache directory, or None/empty to use `<home>/cache`.
-
-        Returns:
-            The `Path` that `GIT_CACHE_PATH` was set to.
-
-        Raises:
-            RuntimeError: If `GIT_CACHE_PATH` is already set, or the resolved
-                directory does not exist.
-        """
-        if 'GIT_CACHE_PATH' in self.m.env:
-            raise RuntimeError('GIT_CACHE_PATH is already set in the '
-                               'environment.')
-
-        if path:
-            git_cache_path = self.m.path.abs(path)
-        else:
-            home_var = 'USERPROFILE' if self.m.platform.is_win else 'HOME'
-            home = self.m.env.get(home_var) or self.m.path.home()
-            git_cache_path = Path(home) / 'cache'
-
-        if not self.m.path.is_dir(git_cache_path):
-            raise RuntimeError(
-                f'GIT_CACHE_PATH is not a valid directory: {git_cache_path}')
-
-        self.m.env.set('GIT_CACHE_PATH', str(git_cache_path))
-        logging.info('Set GIT_CACHE_PATH=%s', git_cache_path)
-        return git_cache_path
 
     def has_valid_checkout(self, chromium_src: str | Path) -> bool:
         """Return whether *chromium_src* points to a valid Chromium repo."""
@@ -247,7 +176,6 @@ class ChromiumCheckoutApi(RecipeApi):
                                 and _is_fully_qualified_ref(ref))
         populate_ref = f'refs/tags/{ref}' if is_tag else (
             None if is_commit else ref)
-        git_cache_path = self.validate_git_cache()
 
         if not self.has_valid_checkout(chromium_src):
             if not should_clone:
@@ -267,7 +195,6 @@ class ChromiumCheckoutApi(RecipeApi):
                         cwd=chromium_src.parent)
 
             mirror_dir = self._populate_git_cache(
-                git_cache_path,
                 CHROMIUM_URL,
                 ref=populate_ref,
                 commit=ref if is_commit else None,
@@ -315,7 +242,6 @@ class ChromiumCheckoutApi(RecipeApi):
             # explicit fetch+checkout.
             logging.info('Checking out Chromium ref %s', ref)
             mirror_dir = self._populate_git_cache(
-                git_cache_path,
                 CHROMIUM_URL,
                 ref=populate_ref,
                 commit=ref if is_commit else None,
@@ -421,7 +347,6 @@ class ChromiumCheckoutApi(RecipeApi):
                     cwd=chromium_src)
 
     def _populate_git_cache(self,
-                            git_cache_path: str | Path,
                             url: str,
                             *,
                             ref: str | None = None,
@@ -436,8 +361,6 @@ class ChromiumCheckoutApi(RecipeApi):
         directly.
 
         Args:
-            git_cache_path: `GIT_CACHE_PATH` (the `--cache-dir` for `git
-                cache`).
             url: The repo to mirror.
             ref: An additional ref (a plain branch name, or a fully-qualified
                 ref such as `refs/tags/<tag>` or `refs/branch-heads/<n>`) to
@@ -449,21 +372,11 @@ class ChromiumCheckoutApi(RecipeApi):
         Returns:
             The absolute path to the mirror directory.
         """
-        populate_cmd = [
-            'git', 'cache', 'populate', '--cache-dir', git_cache_path, url,
-            '--reset-fetch-config', '--no-fetch-tags'
-        ]
-        if ref:
-            populate_cmd.extend(['--ref', ref])
-        if commit:
-            populate_cmd.extend(['--commit', commit])
-        self.m.step(populate_step, populate_cmd)
-
-        return self.m.step(exists_step, [
-            'git', 'cache', 'exists', '--quiet', '--cache-dir', git_cache_path,
-            url
-        ],
-                           stdout=self.m.raw_io.output_text()).stdout.strip()
+        self.m.git_cache.populate(url,
+                                  ref=ref,
+                                  commit=commit,
+                                  step_name=populate_step)
+        return self.m.git_cache.mirror_dir(url, step_name=exists_step)
 
     def _disable_git_gc(self, chromium_src: str | Path) -> None:
         """Disable background gc in *chromium_src*.

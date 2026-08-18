@@ -20,6 +20,7 @@ def RunSteps(api):
 def GenTests(api):
     yield api.test(
         'fetches every tag',
+        api.chromium_checkout.with_git_cache(),
         api.post_process(post_process.StepCommandContains, 'fetch tags',
                          ['git', 'fetch', '--tags', 'origin']),
         api.post_process(post_process.StatusSuccess),
