@@ -61,7 +61,7 @@ export default function SharedConversationsModal(props: Props) {
   const handleDelete = async (shareId: string) => {
     // The record is only removed once the server confirms the deletion, so a
     // failure leaves the entry in place for the user to retry.
-    const success = await deleteConversationShare([shareId]).catch(() => false)
+    const success = await deleteConversationShare([shareId])
     if (!success) {
       showAlert({
         type: 'error',
