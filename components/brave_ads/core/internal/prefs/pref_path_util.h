@@ -16,8 +16,6 @@ bool DoesMatchUserHasOptedInToNewTabPageAdsPrefPath(std::string_view path);
 
 bool DoesMatchNotificationAdsEnabledPrefPath(std::string_view path);
 
-bool DoesMatchUserHasOptedInToSearchResultAdsPrefPath(std::string_view path);
-
 }  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_PREFS_PREF_PATH_UTIL_H_

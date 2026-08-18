@@ -120,9 +120,7 @@ TEST_F(BraveAdsAntiTargetingResourceTest,
   // Act
   SetProfileBooleanPref(
       ntp_background_images::prefs::kNewTabPageShowBackgroundImage, true);
-  SetProfileBooleanPref(ntp_background_images::prefs::
-                            kNewTabPageShowSponsoredImagesBackgroundImage,
-                        true);
+  SetProfileBooleanPref(prefs::kSponsoredEnabled, true);
 
   // Assert
   ASSERT_TRUE(base::test::RunUntil([this] { return resource_->IsLoaded(); }));
@@ -132,7 +130,6 @@ TEST_F(BraveAdsAntiTargetingResourceTest,
        DoNotResetResourceIfAlreadyOptedInToNewTabPageAds) {
   // Arrange
   test::DisableNotificationAds();
-  test::OptOutOfSearchResultAds();
 
   ads_client_notifier_.NotifyResourceComponentDidChange(
       test::kCountryComponentManifestVersion, test::kCountryComponentId);
@@ -141,9 +138,7 @@ TEST_F(BraveAdsAntiTargetingResourceTest,
   // Act
   SetProfileBooleanPref(
       ntp_background_images::prefs::kNewTabPageShowBackgroundImage, true);
-  SetProfileBooleanPref(ntp_background_images::prefs::
-                            kNewTabPageShowSponsoredImagesBackgroundImage,
-                        true);
+  SetProfileBooleanPref(prefs::kSponsoredEnabled, true);
 
   // Assert
   EXPECT_TRUE(resource_->IsLoaded());
@@ -169,7 +164,6 @@ TEST_F(BraveAdsAntiTargetingResourceTest,
        DoNotResetResourceIfNotificationAdsAlreadyEnabled) {
   // Arrange
   test::OptOutOfNewTabPageAds();
-  test::OptOutOfSearchResultAds();
 
   ads_client_notifier_.NotifyResourceComponentDidChange(
       test::kCountryComponentManifestVersion, test::kCountryComponentId);
@@ -192,7 +186,7 @@ TEST_F(BraveAdsAntiTargetingResourceTest,
   ASSERT_FALSE(resource_->IsLoaded());
 
   // Act
-  SetProfileBooleanPref(prefs::kOptedInToSearchResultAds, true);
+  SetProfileBooleanPref(prefs::kSponsoredEnabled, true);
 
   // Assert
   EXPECT_FALSE(resource_->IsLoaded());

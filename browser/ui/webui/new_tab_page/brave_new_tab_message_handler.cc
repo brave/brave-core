@@ -48,6 +48,7 @@
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/ntp_background/new_tab_takeover_infobar_delegate.h"
 #include "brave/components/brave_ads/core/public/ads_util.h"
+#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)
@@ -61,8 +62,6 @@
 using ntp_background_images::ViewCounterServiceFactory;
 using ntp_background_images::prefs::kBrandedWallpaperNotificationDismissed;
 using ntp_background_images::prefs::kNewTabPageShowBackgroundImage;
-using ntp_background_images::prefs::
-    kNewTabPageShowSponsoredImagesBackgroundImage;  // NOLINT
 
 namespace {
 
@@ -89,9 +88,12 @@ base::DictValue GetPreferencesDictionary(PrefService* prefs) {
   base::DictValue pref_data;
   pref_data.Set("showBackgroundImage",
                 prefs->GetBoolean(kNewTabPageShowBackgroundImage));
-  pref_data.Set(
-      "brandedWallpaperOptIn",
-      prefs->GetBoolean(kNewTabPageShowSponsoredImagesBackgroundImage));
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+  pref_data.Set("brandedWallpaperOptIn",
+                prefs->GetBoolean(brave_ads::prefs::kSponsoredEnabled));
+#else
+  pref_data.Set("brandedWallpaperOptIn", false);
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
   pref_data.Set("showClock", prefs->GetBoolean(kNewTabPageShowClock));
   std::string_view clock_format = prefs->GetString(kNewTabPageClockFormat);
   // The current version of the NTP uses an "h" prefix for the clock format.
@@ -300,10 +302,12 @@ void BraveNewTabMessageHandler::OnJavascriptAllowed() {
       kNewTabPageShowBackgroundImage,
       base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
                           base::Unretained(this)));
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
   pref_change_registrar_.Add(
-      kNewTabPageShowSponsoredImagesBackgroundImage,
+      brave_ads::prefs::kSponsoredEnabled,
       base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
                           base::Unretained(this)));
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
   pref_change_registrar_.Add(
       brave_search_conversion::prefs::kShowNTPSearchBox,
       base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
@@ -448,10 +452,12 @@ void BraveNewTabMessageHandler::HandleSaveNewTabPagePref(
   const auto settings_value_bool = settings_value.GetBool();
   if (settings_key_input == "showBackgroundImage") {
     settings_key = kNewTabPageShowBackgroundImage;
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
   } else if (settings_key_input == "brandedWallpaperOptIn") {
     // TODO(simonhong): I think above |brandedWallpaperOptIn| should be changed
     // to |sponsoredImagesWallpaperOptIn|.
-    settings_key = kNewTabPageShowSponsoredImagesBackgroundImage;
+    settings_key = brave_ads::prefs::kSponsoredEnabled;
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
   } else if (settings_key_input == "showClock") {
     settings_key = kNewTabPageShowClock;
   } else if (settings_key_input == "showStats") {

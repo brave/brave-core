@@ -21,8 +21,6 @@ static_library("browser") {
     "ntp_background_images_service.h",
     "ntp_background_images_update_util.cc",
     "ntp_background_images_update_util.h",
-    "ntp_p3a_util.cc",
-    "ntp_p3a_util.h",
     "ntp_sponsored_images_data.cc",
     "ntp_sponsored_images_data.h",
     "ntp_sponsored_rich_media_ad_event_handler.cc",
@@ -92,6 +90,11 @@ static_library("browser") {
   }
 
   if (enable_brave_ads) {
+    sources += [
+      "ntp_p3a_util.cc",
+      "ntp_p3a_util.h",
+    ]
+
     deps += [ "//brave/components/brave_ads/core" ]
 
     if (!is_ios) {

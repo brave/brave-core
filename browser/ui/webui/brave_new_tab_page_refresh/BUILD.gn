@@ -211,13 +211,18 @@ source_set("browser_tests") {
 source_set("unit_tests") {
   testonly = true
 
-  sources = [ "sponsored_sites_facade_unittest.cc" ]
+  sources = []
+
+  if (enable_brave_ads) {
+    sources += [ "sponsored_sites_facade_unittest.cc" ]
+  }
 
   deps = [
     ":brave_new_tab_page_refresh",
     ":mojom",
     "//base",
     "//base/test:test_support",
+    "//brave/components/brave_ads/buildflags",
     "//brave/components/brave_rewards/core",
     "//brave/components/brave_rewards/core/buildflags",
     "//brave/components/constants",
@@ -232,4 +237,8 @@ source_set("unit_tests") {
     "//testing/gtest",
     "//url",
   ]
+
+  if (enable_brave_ads) {
+    deps += [ "//brave/components/brave_ads/core" ]
+  }
 }

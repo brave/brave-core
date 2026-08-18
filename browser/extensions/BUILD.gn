@@ -104,6 +104,7 @@ source_set("extensions") {
     "//brave/common",
     "//brave/common/extensions/api",
     "//brave/components/ai_chat/core/common/buildflags",
+    "//brave/components/brave_ads/buildflags",
     "//brave/components/brave_extension:static_resources",
     "//brave/components/brave_news/common/buildflags",
     "//brave/components/brave_rewards/core",
@@ -150,6 +151,10 @@ source_set("extensions") {
 
   if (use_gcm_from_platform) {
     deps += [ "//components/gcm_driver" ]
+  }
+
+  if (enable_brave_ads) {
+    deps += [ "//brave/components/brave_ads/core/public:headers" ]
   }
 
   if (enable_brave_wayback_machine) {

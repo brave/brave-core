@@ -154,6 +154,7 @@ class AdsServiceImplIOS : public AdsService {
   void ShutdownAdsCallback(ResultCallback callback, bool success);
 
   void ClearAdsData(ResultCallback callback, bool success);
+  void ClearAdsPrefs();
   void ClearAdsDataCallback(ResultCallback callback);
 
   const raw_ref<PrefService> prefs_;
