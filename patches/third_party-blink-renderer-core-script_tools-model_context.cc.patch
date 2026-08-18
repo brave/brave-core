@@ -1,0 +1,17 @@
+diff --git a/third_party/blink/renderer/core/script_tools/model_context.cc b/third_party/blink/renderer/core/script_tools/model_context.cc
+index af315ec3eb468f1a06fb4ea12757b8fadc154c16..0eadfa6b8291856dd2617ab360360d6b986edbf2 100644
+--- a/third_party/blink/renderer/core/script_tools/model_context.cc
++++ b/third_party/blink/renderer/core/script_tools/model_context.cc
+@@ -901,7 +901,11 @@ bool ModelContext::IsModelContextAllowed() const {
+               url::kFileScheme &&
+           key.IsUniversalFileAgent()) ||
+          (document_->GetSettings() &&
+-          !document_->GetSettings()->GetWebSecurityEnabled());
++          !document_->GetSettings()->GetWebSecurityEnabled()) ||
++         (document_->GetExecutionContext()->GetSecurityOrigin()->Protocol() ==
++              "chrome-untrusted" &&
++           document_->GetExecutionContext()->GetSecurityOrigin()->Host() ==
++              ai_chat::kAIChatLeoWorkspaceUIHost);
+ }
+ 
+ ScriptPromise<IDLSequence<RegisteredTool>> ModelContext::getTools(

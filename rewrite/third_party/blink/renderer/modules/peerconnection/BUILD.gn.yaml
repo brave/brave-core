@@ -25,4 +25,5 @@ substitutions:
       re_pattern: '(blink_modules_sources\("peerconnection"\).*?\bdeps\s*=\s*\[.*?\])'
       re_flags: [DOTALL]
       replace:
-        '\1\n  deps += brave_blink_renderer_modules_peerconnection_deps  # Brave'
+        '\1\n  deps +=
+        brave_blink_renderer_modules_peerconnection_ai_chat_deps  # Brave'

@@ -6,8 +6,8 @@
 #include "brave/browser/ui/webui/ai_chat/leo_workspace_ui.h"
 
 #include "base/feature_list.h"
-#include "brave/common/webui_url_constants.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
+#include "brave/components/ai_chat/core/common/constants.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/resources/grit/ai_chat_ui_generated_map.h"
 #include "components/grit/brave_components_resources.h"
@@ -35,15 +35,16 @@ LeoWorkspaceUIConfig::CreateWebUIController(content::WebUI* web_ui,
 }
 
 LeoWorkspaceUIConfig::LeoWorkspaceUIConfig()
-    : WebUIConfig(content::kChromeUIUntrustedScheme, kLeoWorkspaceUIHost) {}
+    : WebUIConfig(content::kChromeUIUntrustedScheme,
+                  kAIChatLeoWorkspaceUIHost) {}
 
 LeoWorkspaceUIConfig::~LeoWorkspaceUIConfig() = default;
 
 LeoWorkspaceUI::LeoWorkspaceUI(content::WebUI* web_ui)
     : ui::UntrustedWebUIController(web_ui) {
   auto* browser_context = web_ui->GetWebContents()->GetBrowserContext();
-  auto* source = content::WebUIDataSource::CreateAndAdd(browser_context,
-                                                        kLeoWorkspaceUIURL);
+  auto* source = content::WebUIDataSource::CreateAndAdd(
+      browser_context, kAIChatLeoWorkspaceUIURL);
 
   webui::SetupWebUIDataSource(source, kAiChatUiGenerated,
                               IDR_AI_CHAT_LEO_WORKSPACE_HTML);

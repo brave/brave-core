@@ -6,6 +6,7 @@
 # common includes which can help minimize patches for
 # src/third_party/blink/renderer/core/BUILD.gn
 
+import("//brave/components/ai_chat/sources.gni")
 import("//brave/third_party/blink/renderer/core/brave_page_graph/sources.gni")
 
 brave_blink_renderer_platform_visibility = []
@@ -49,6 +50,8 @@ if (!is_android && !is_ios) {
 brave_blink_renderer_core_public_deps += brave_page_graph_core_public_deps
 brave_blink_renderer_core_sources += brave_page_graph_core_sources
 brave_blink_renderer_core_deps += brave_page_graph_core_deps
+brave_blink_renderer_core_deps +=
+    brave_blink_renderer_core_script_tools_ai_chat_deps
 
 # common includes which can help minimize patches for
 # src/third_party/blink/renderer/modules/BUILD.gn
