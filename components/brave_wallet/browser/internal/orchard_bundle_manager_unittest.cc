@@ -36,7 +36,8 @@ TEST(OrchardBundleManagerTest, SingleOutput) {
 
   OrchardSpendsBundle orchard_spends_bundle;
   auto unauthorized_state = OrchardBundleManager::Create(
-      std::vector<uint8_t>(), orchard_spends_bundle, std::move(outputs));
+      std::vector<uint8_t>(), orchard_spends_bundle, std::move(outputs),
+      OrchardPool::kOrchard, /*is_v6_transaction=*/false);
   EXPECT_TRUE(unauthorized_state);
   // Unauthorized state doesn't have raw tx bytes
   EXPECT_FALSE(unauthorized_state->GetRawTxBytes());
@@ -328,7 +329,8 @@ TEST(OrchardBundleManagerTest, MultiplyOutputs) {
 
   OrchardSpendsBundle orchard_spends_bundle;
   auto unauthorized_state = OrchardBundleManager::Create(
-      std::vector<uint8_t>(), orchard_spends_bundle, std::move(outputs));
+      std::vector<uint8_t>(), orchard_spends_bundle, std::move(outputs),
+      OrchardPool::kOrchard, /*is_v6_transaction=*/false);
   EXPECT_TRUE(unauthorized_state);
   // Unauthorized state doesn't have raw tx bytes
   EXPECT_FALSE(unauthorized_state->GetRawTxBytes());
@@ -751,7 +753,8 @@ TEST(OrchardBundleManagerTest, NoOutputs) {
       "000000");
   auto orchard_bundle_manager = OrchardBundleManager::Create(
       state_tree_bytes.value(), std::move(spends_bundle),
-      std::vector<OrchardOutput>());
+      std::vector<OrchardOutput>(), OrchardPool::kOrchard,
+      /*is_v6_transaction=*/false);
   EXPECT_TRUE(orchard_bundle_manager);
 
   std::array<uint8_t, 32> sighash;

@@ -9,8 +9,7 @@ use std::{
 
 use orchard::{
     builder::{BuildError as OrchardBuildError, InProgress, Unauthorized, Unproven},
-    bundle::{Bundle, BundleVersion, Flags as OrchardFlags, TxVersion as OrchardTxVersion},
-    circuit::OrchardCircuitVersion,
+    bundle::{Bundle, BundleVersion, TxVersion as OrchardTxVersion},
     keys::SpendAuthorizingKey,
     keys::{
         FullViewingKey as OrchardFVK, PreparedIncomingViewingKey, Scope as OrchardScope,
@@ -355,17 +354,23 @@ mod ffi {
         // OsRng is used
         fn create_orchard_bundle(
             tree_state: &[u8],
+            fvk: &[u8; 96],
             spends: Vec<CxxOrchardSpend>,
             outputs: Vec<CxxOrchardOutput>,
+            ironwood: bool,
+            is_v6_transaction: bool,
         ) -> Box<CxxOrchardUnauthorizedBundleResult>;
 
         // Creates orchard bundle with mocked rng using provided rng seed.
         // Must not be used in production, only in tests.
         fn create_testing_orchard_bundle(
             tree_state: &[u8],
+            fvk: &[u8; 96],
             spends: Vec<CxxOrchardSpend>,
             outputs: Vec<CxxOrchardOutput>,
             rng_seed: u64,
+            ironwood: bool,
+            is_v6_transaction: bool,
         ) -> Box<CxxOrchardUnauthorizedBundleResult>;
 
         fn generate_orchard_extended_spending_key_from_seed(
@@ -643,6 +648,12 @@ pub struct OrchardUnauthorizedBundleValue {
     unauthorized_bundle: Bundle<InProgress<Unproven, Unauthorized>, Amount>,
     rng: OrchardRandomSource,
     asks: Vec<SpendAuthorizingKey>,
+    // Transaction version this bundle's commitment/digest should be computed
+    // against. An Ironwood-pool bundle only exists in a v6 transaction (per
+    // the orchard crate, computing its commitment under V5 is an error), and
+    // an Orchard-pool bundle needs V6 too when it coexists with an Ironwood
+    // bundle in the same v6 transaction.
+    tx_version: OrchardTxVersion,
 }
 
 // Authorized bundle is a bundle where inputs are signed with signature digests
@@ -852,10 +863,14 @@ impl CxxOrchardAuthorizedBundle {
 
 fn create_orchard_builder_internal(
     orchard_tree_bytes: &[u8],
+    fvk: &[u8; 96],
     spends: Vec<CxxOrchardSpend>,
     outputs: Vec<CxxOrchardOutput>,
     random_source: OrchardRandomSource,
+    ironwood: bool,
+    is_v6_transaction: bool,
 ) -> Box<CxxOrchardUnauthorizedBundleResult> {
+    let tx_version = if is_v6_transaction { OrchardTxVersion::V6 } else { OrchardTxVersion::V5 };
     // To construct transaction orchard tree state of some block should be provided
     // But in tests we can use empty anchor.
     let anchor = if orchard_tree_bytes.len() > 0 {
@@ -876,10 +891,26 @@ fn create_orchard_builder_internal(
         orchard::Anchor::empty_tree()
     };
 
+    // A legacy-Orchard bundle inside a v6 transaction must use the post-NU6.3
+    // protocol (`orchard_v3`), matching Ironwood's circuit; `orchard_v2` is
+    // only for a v5-only transaction, i.e. before NU6.3 activation. Using the
+    // wrong one builds a proof with the wrong circuit version, which is
+    // rejected by the network at verification.
+    let bundle_version = if ironwood {
+        BundleVersion::ironwood_v3()
+    } else if is_v6_transaction {
+        BundleVersion::orchard_v3()
+    } else {
+        BundleVersion::orchard_v2()
+    };
+
     let mut builder = match orchard::builder::Builder::new(
         orchard::builder::BundleType::DEFAULT,
-        BundleVersion::orchard_v2(),
-        OrchardFlags::ENABLED,
+        bundle_version,
+        // `default_flags` picks the only representable `cross_address_enabled` value for
+        // this bundle version (e.g. post-NU6.3 Orchard forbids `true`, unlike
+        // `OrchardFlags::ENABLED`, which would make `Builder::new` fail).
+        bundle_version.default_flags(),
         anchor,
     ) {
         Ok(builder) => builder,
@@ -943,7 +974,7 @@ fn create_orchard_builder_internal(
             NoteValue::from_raw(spend.value),
             rho.unwrap().clone(),
             rseed.unwrap(),
-            NoteVersion::V2,
+            if ironwood { NoteVersion::V3 } else { NoteVersion::V2 },
         );
 
         if note.is_none().into() {
@@ -959,23 +990,58 @@ fn create_orchard_builder_internal(
         asks.push(SpendAuthorizingKey::from(&SpendingKey::from_bytes(spend.sk).unwrap()));
     }
 
+    // A caller with no outputs to add (spend-only bundle) may not have a real
+    // fvk to provide (e.g. existing tests pass an all-zero placeholder), so
+    // only require it to parse when an output actually depends on it. Where
+    // cross-address transfers are disabled every output must go through
+    // `add_change_output`, so without a parseable fvk there is no way to add
+    // one; report that as an fvk error rather than letting it surface from
+    // `add_output` below as a misleading `WrongOutputError`.
+    let wallet_fvk = OrchardFVK::from_bytes(fvk);
+    if wallet_fvk.is_none()
+        && !outputs.is_empty()
+        && !bundle_version.default_flags().cross_address_enabled()
+    {
+        return Box::new(CxxOrchardUnauthorizedBundleResult::from(Err(Error::FvkError)));
+    }
+
     for out in outputs {
-        let _ = match Option::from(orchard::Address::from_raw_address_bytes(&out.addr)) {
-            Some(addr) => builder.add_output(
-                None,
-                addr,
-                orchard::value::NoteValue::from_raw(out.value),
-                // orchard 0.14's `add_output` always takes a 512-byte memo
-                // (previously an `Option`). Use the provided memo, or an empty
-                // (all-zero) memo when none was requested.
-                if out.use_memo { out.memo } else { [0u8; 512] },
-            ),
+        let addr = match Option::from(orchard::Address::from_raw_address_bytes(&out.addr)) {
+            Some(addr) => addr,
             None => {
                 return Box::new(CxxOrchardUnauthorizedBundleResult::from(Err(
                     Error::WrongOutputError,
                 )))
             }
         };
+        // orchard 0.14's output APIs always take a 512-byte memo (previously
+        // an `Option`). Use the provided memo, or an empty (all-zero) memo
+        // when none was requested.
+        let memo = if out.use_memo { out.memo } else { [0u8; 512] };
+        // `add_change_output` additionally checks that `wallet_fvk` owns the
+        // recipient, so it must only be used for the wallet's own change
+        // output. An external recipient's address isn't owned by this
+        // wallet's fvk, so route it through the ownership-agnostic
+        // `add_output` instead.
+        let owned_by_wallet =
+            wallet_fvk.as_ref().is_some_and(|fvk| fvk.scope_for_address(&addr).is_some());
+        let add_output_result = if owned_by_wallet {
+            let fvk = wallet_fvk.clone().unwrap();
+            builder.add_change_output(
+                fvk.clone(),
+                Some(fvk.to_ovk(OrchardScope::Internal)),
+                addr,
+                orchard::value::NoteValue::from_raw(out.value),
+                memo,
+            )
+        } else {
+            builder.add_output(None, addr, orchard::value::NoteValue::from_raw(out.value), memo)
+        };
+        if add_output_result.is_err() {
+            return Box::new(CxxOrchardUnauthorizedBundleResult::from(Err(
+                Error::WrongOutputError,
+            )));
+        }
     }
 
     Box::new(CxxOrchardUnauthorizedBundleResult::from(match random_source {
@@ -986,6 +1052,7 @@ fn create_orchard_builder_internal(
                         unauthorized_bundle: bundle.0,
                         rng: OrchardRandomSource::OsRng(rng),
                         asks: asks,
+                        tx_version,
                     })
                     .ok_or(Error::BuildError)
             })
@@ -997,6 +1064,7 @@ fn create_orchard_builder_internal(
                         unauthorized_bundle: bundle.0,
                         rng: OrchardRandomSource::MockRng(rng),
                         asks: asks,
+                        tx_version,
                     })
                     .ok_or(Error::BuildError)
             })
@@ -1006,28 +1074,40 @@ fn create_orchard_builder_internal(
 
 fn create_orchard_bundle(
     orchard_tree_bytes: &[u8],
+    fvk: &[u8; 96],
     spends: Vec<CxxOrchardSpend>,
     outputs: Vec<CxxOrchardOutput>,
+    ironwood: bool,
+    is_v6_transaction: bool,
 ) -> Box<CxxOrchardUnauthorizedBundleResult> {
     create_orchard_builder_internal(
         orchard_tree_bytes,
+        fvk,
         spends,
         outputs,
         OrchardRandomSource::OsRng(OsRng),
+        ironwood,
+        is_v6_transaction,
     )
 }
 
 fn create_testing_orchard_bundle(
     orchard_tree_bytes: &[u8],
+    fvk: &[u8; 96],
     spends: Vec<CxxOrchardSpend>,
     outputs: Vec<CxxOrchardOutput>,
     rng_seed: u64,
+    ironwood: bool,
+    is_v6_transaction: bool,
 ) -> Box<CxxOrchardUnauthorizedBundleResult> {
     create_orchard_builder_internal(
         orchard_tree_bytes,
+        fvk,
         spends,
         outputs,
         OrchardRandomSource::MockRng(MockRng(rng_seed)),
+        ironwood,
+        is_v6_transaction,
     )
 }
 
@@ -1035,8 +1115,8 @@ impl CxxOrchardUnauthorizedBundle {
     fn orchard_digest(self: &CxxOrchardUnauthorizedBundle) -> [u8; 32] {
         self.0
             .unauthorized_bundle
-            .commitment(OrchardTxVersion::V5)
-            .expect("orchard v5 bundle commitment")
+            .commitment(self.0.tx_version)
+            .expect("orchard bundle commitment")
             .into()
     }
 
@@ -1045,25 +1125,25 @@ impl CxxOrchardUnauthorizedBundle {
         sighash: [u8; 32],
     ) -> Box<CxxOrchardAuthorizedBundleResult> {
         use zcash_primitives::transaction::components::orchard::write_v5_bundle;
+        // The proving key must match the circuit version this bundle's actions
+        // were built for: the legacy Orchard pool (pre-NU6.2) uses
+        // InsecurePreNu6_2, while the Ironwood pool (and Orchard post-NU6.3)
+        // uses PostNu6_3. Using the wrong key makes `create_proof` fail with a
+        // circuit-version mismatch.
+        let circuit_version = self.0.unauthorized_bundle.circuit_version();
         Box::new(CxxOrchardAuthorizedBundleResult::from(
             match self.0.rng.clone() {
                 OrchardRandomSource::OsRng(mut rng) => self
                     .0
                     .unauthorized_bundle
                     .clone()
-                    .create_proof(
-                        &orchard::circuit::ProvingKey::build(OrchardCircuitVersion::FixedPostNu6_2),
-                        &mut rng,
-                    )
+                    .create_proof(&orchard::circuit::ProvingKey::build(circuit_version), &mut rng)
                     .and_then(|b| b.apply_signatures(&mut rng, sighash, &self.0.asks)),
                 OrchardRandomSource::MockRng(mut rng) => self
                     .0
                     .unauthorized_bundle
                     .clone()
-                    .create_proof(
-                        &orchard::circuit::ProvingKey::build(OrchardCircuitVersion::FixedPostNu6_2),
-                        &mut rng,
-                    )
+                    .create_proof(&orchard::circuit::ProvingKey::build(circuit_version), &mut rng)
                     .and_then(|b| b.apply_signatures(&mut rng, sighash, &self.0.asks)),
             }
             .map_err(Error::from)

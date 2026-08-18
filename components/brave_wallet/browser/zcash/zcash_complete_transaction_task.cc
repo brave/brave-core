@@ -241,7 +241,8 @@ void ZCashCompleteTransactionTask::SignOrchardPart() {
   spends_bundle.fvk = *fvk;
   spends_bundle.inputs = transaction_.v5_part().orchard.inputs;
   auto orchard_bundle_manager = OrchardBundleManager::Create(
-      *state_tree_bytes, spends_bundle, transaction_.v5_part().orchard.outputs);
+      *state_tree_bytes, spends_bundle, transaction_.v5_part().orchard.outputs,
+      OrchardPool::kOrchard, false);
 
   if (!orchard_bundle_manager) {
     error_ = l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
