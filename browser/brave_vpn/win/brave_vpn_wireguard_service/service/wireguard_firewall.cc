@@ -15,6 +15,7 @@
 #include <vector>
 
 #include "base/base_paths.h"
+#include "base/compiler_specific.h"
 #include "base/containers/span.h"
 #include "base/files/file_path.h"
 #include "base/functional/callback.h"
@@ -22,6 +23,7 @@
 #include "base/memory/ptr_util.h"
 #include "base/path_service.h"
 #include "base/rand_util.h"
+#include "base/scoped_generic.h"
 #include "base/synchronization/lock.h"
 #include "base/thread_annotations.h"
 #include "brave/browser/brave_vpn/win/service_details.h"
@@ -63,6 +65,17 @@ static_assert(kWeightPermitLocalNetwork < kWeightBlockDns,
 static_assert(kWeightBlockDns < kWeightPermitInfrastructure,
               "DNS through the tunnel has to keep working, so the tunnel "
               "interface permit has to outweigh the DNS block in turn.");
+
+struct FwpmMemoryTraits {
+  static void* InvalidValue() { return nullptr; }
+  static void Free(void* memory) {
+    // FwpmFreeMemory0() nulls the pointer it is handed, which is why it takes
+    // a void**. Passing a local copy frees the same allocation without
+    // type-punning a typed T** into a void**.
+    FwpmFreeMemory0(&memory);
+  }
+};
+using ScopedFwpmMemory = base::ScopedGeneric<void*, FwpmMemoryTraits>;
 
 constexpr uint16_t kDnsPort = 53;
 
@@ -244,16 +257,15 @@ DWORD AddPermitTunnelService(HANDLE engine, const BaseObjects& base_objects) {
             << result;
     return result;
   }
+  ScopedFwpmMemory scoped_app_id(app_id);
 
   std::array<FWPM_FILTER_CONDITION0, 1u> conditions = {
       FWPM_FILTER_CONDITION0{FWPM_CONDITION_ALE_APP_ID,
                              FWP_MATCH_EQUAL,
                              {FWP_BYTE_BLOB_TYPE, {.byteBlob = app_id}}}};
-  result = AddFilterToLayers(engine, base_objects, GetAllLayers(),
-                             FWP_ACTION_PERMIT, kWeightPermitInfrastructure,
-                             conditions, L"Permit Brave VPN service");
-  FwpmFreeMemory0(reinterpret_cast<void**>(&app_id));
-  return result;
+  return AddFilterToLayers(engine, base_objects, GetAllLayers(),
+                           FWP_ACTION_PERMIT, kWeightPermitInfrastructure,
+                           conditions, L"Permit Brave VPN service");
 }
 
 // DHCP has to keep working while the tunnel is up, or the machine silently
@@ -494,6 +506,50 @@ bool AddTunnelFilters(HANDLE engine,
          AddBlockDns(engine, base_objects) == ERROR_SUCCESS;
 }
 
+// Logs every WFP sublayer that is not ours, to help diagnose a tunnel that
+// connects but carries no traffic because another product's kill-switch --
+// another Brave channel, another VPN -- is blocking it despite our own
+// filters permitting it. WFP arbitrates sublayers independently and then ANDs
+// the verdicts, so any one of them voting to block wins regardless of its
+// weight; that is why this logs the whole inventory rather than filtering by
+// weight.
+void LogOtherSublayers(HANDLE engine, const GUID& our_sublayer) {
+  HANDLE enum_handle = nullptr;
+  auto result = FwpmSubLayerCreateEnumHandle0(engine, nullptr, &enum_handle);
+  if (result != ERROR_SUCCESS) {
+    VLOG(1) << "FwpmSubLayerCreateEnumHandle0 failed, error: " << std::hex
+            << result;
+    return;
+  }
+
+  FWPM_SUBLAYER0** entries = nullptr;
+  UINT32 count = 0;
+  result =
+      FwpmSubLayerEnum0(engine, enum_handle,
+                        /*numEntriesRequested=*/0xFFFFFFFF, &entries, &count);
+  FwpmSubLayerDestroyEnumHandle0(engine, enum_handle);
+  if (result != ERROR_SUCCESS) {
+    VLOG(1) << "FwpmSubLayerEnum0 failed, error: " << std::hex << result;
+    return;
+  }
+  ScopedFwpmMemory scoped_entries(entries);
+
+  // SAFETY: FwpmSubLayerEnum0() returned ERROR_SUCCESS, which per its contract
+  // means it wrote `count` valid entries into `entries`.
+  auto sublayers = UNSAFE_BUFFERS(base::span(entries, count));
+  for (const FWPM_SUBLAYER0* entry : sublayers) {
+    const FWPM_SUBLAYER0& sublayer = *entry;
+    if (base::byte_span_from_ref(sublayer.subLayerKey) ==
+        base::byte_span_from_ref(our_sublayer)) {
+      continue;
+    }
+    VLOG(1) << "Other WFP sublayer present: "
+            << (sublayer.displayData.name ? sublayer.displayData.name
+                                          : L"(unnamed)")
+            << ", weight: " << sublayer.weight;
+  }
+}
+
 }  // namespace
 
 // static
@@ -535,6 +591,7 @@ std::unique_ptr<ScopedWireguardFirewall> ScopedWireguardFirewall::Create() {
   }
 
   VLOG(1) << "WireGuard firewall installed, waiting for the tunnel adapter";
+  LogOtherSublayers(engine, base_objects.sublayer);
   return base::WrapUnique(new ScopedWireguardFirewall(
       engine, base_objects.provider, base_objects.sublayer,
       std::move(temporary_dns_filter_ids)));
