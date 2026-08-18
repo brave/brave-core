@@ -195,6 +195,12 @@ bool IsCodeExecutionToolEnabled() {
   return base::FeatureList::IsEnabled(features::kCodeExecutionTool);
 }
 
+BASE_FEATURE(kAIChatBrowserSettingsTools, base::FEATURE_DISABLED_BY_DEFAULT);
+
+bool IsBrowserSettingsToolsEnabled() {
+  return base::FeatureList::IsEnabled(features::kAIChatBrowserSettingsTools);
+}
+
 #if BUILDFLAG(IS_IOS)
 BASE_FEATURE(kAIChatWebUIEnabled, base::FEATURE_ENABLED_BY_DEFAULT);
 
