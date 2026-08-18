@@ -53,7 +53,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
-#include "brave/components/containers/core/browser/ui_pref_names.h"
+#include "brave/components/containers/core/browser/pref_names.h"
 #endif
 
 #if defined(TOOLKIT_VIEWS)

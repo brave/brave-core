@@ -6,9 +6,11 @@
 #ifndef BRAVE_COMPONENTS_CONTAINERS_CORE_BROWSER_PREF_NAMES_H_
 #define BRAVE_COMPONENTS_CONTAINERS_CORE_BROWSER_PREF_NAMES_H_
 
-#include "brave/components/containers/core/browser/ui_pref_names.h"  // IWYU pragma: export
-
 namespace containers::prefs {
+
+// Controls whether Containers feature (menus, management UI) is available;
+// existing container tabs are not affected when the pref is disabled.
+inline constexpr char kContainersEnabled[] = "brave.containers.enabled";
 
 // Syncable list of containers.
 inline constexpr char kContainersList[] = "brave.containers.list";
