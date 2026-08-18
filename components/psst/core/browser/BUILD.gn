@@ -38,10 +38,12 @@ static_library("browser") {
 
   deps = [
     "//brave/components/brave_component_updater/browser:public",
+    "//brave/components/brave_origin",
     "//brave/components/psst/core/common",
     "//components/component_updater",
     "//components/content_settings/core/browser",
     "//components/keyed_service/core",
+    "//components/policy/core/common",
     "//components/pref_registry",
     "//components/prefs",
     "//crypto",

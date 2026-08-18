@@ -45,7 +45,10 @@
 #endif
 
 #if BUILDFLAG(ENABLE_PSST)
+#include "brave/browser/brave_origin/brave_origin_service_factory.h"
+#include "brave/components/brave_origin/brave_origin_service.h"
 #include "brave/components/psst/core/common/features.h"
+#include "components/policy/policy_constants.h"
 #endif
 
 BravePrivacyHandler::BravePrivacyHandler() {
@@ -130,13 +133,18 @@ void BravePrivacyHandler::AddLoadTimeData(content::WebUIDataSource* data_source,
       "isRequestOTRFeatureEnabled",
       base::FeatureList::IsEnabled(request_otr::features::kBraveRequestOTRTab));
 #endif
-  data_source->AddBoolean(
-      "isPsstFeatureEnabled",
+
+  bool is_psst_feature_enabled = false;
 #if BUILDFLAG(ENABLE_PSST)
-      base::FeatureList::IsEnabled(psst::features::kEnablePsst));
-#else
-      false);
+  const auto* brave_origin_service =
+      brave_origin::BraveOriginServiceFactory::GetForProfile(profile);
+  is_psst_feature_enabled =
+      base::FeatureList::IsEnabled(psst::features::kEnablePsst) &&
+      (brave_origin_service &&
+       !brave_origin_service->IsPolicyControlledByBraveOrigin(
+           policy::key::kPsstEnabled));
 #endif
+  data_source->AddBoolean("isPsstFeatureEnabled", is_psst_feature_enabled);
   data_source->AddBoolean(
       "isGoogleSignInFeatureEnabled",
       google_sign_in_permission::IsGoogleSignInFeatureEnabled());

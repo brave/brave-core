@@ -9,6 +9,7 @@
 
 #include "base/check_deref.h"
 #include "base/no_destructor.h"
+#include "brave/browser/brave_origin/brave_origin_service_factory.h"
 #include "brave/components/psst/core/browser/psst_settings_service.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
@@ -37,6 +38,7 @@ PsstSettingsServiceFactory::PsstSettingsServiceFactory()
               .WithGuest(ProfileSelection::kOwnInstance)
               .Build()) {
   DependsOn(HostContentSettingsMapFactory::GetInstance());
+  DependsOn(brave_origin::BraveOriginServiceFactory::GetInstance());
 }
 
 PsstSettingsServiceFactory::~PsstSettingsServiceFactory() = default;
@@ -46,6 +48,9 @@ PsstSettingsServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
   auto* profile = Profile::FromBrowserContext(context);
   auto* map = HostContentSettingsMapFactory::GetForProfile(profile);
-  return std::make_unique<psst::PsstSettingsService>(CHECK_DEREF(map),
-                                                     profile->GetPrefs());
+  auto* brave_origin_service =
+      brave_origin::BraveOriginServiceFactory::GetForProfile(profile);
+
+  return std::make_unique<psst::PsstSettingsService>(
+      CHECK_DEREF(map), brave_origin_service, profile->GetPrefs());
 }

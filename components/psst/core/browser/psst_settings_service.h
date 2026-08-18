@@ -12,6 +12,7 @@
 #include "base/memory/raw_ref.h"
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
+#include "brave/components/brave_origin/brave_origin_service.h"
 #include "brave/components/psst/core/common/psst_metadata_schema.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -19,6 +20,10 @@
 #include "url/origin.h"
 
 class PrefService;
+
+namespace brave_origin {
+class BraveOriginService;
+}  // namespace brave_origin
 
 namespace psst {
 
@@ -34,6 +39,7 @@ class PsstSettingsService : public KeyedService {
 
   explicit PsstSettingsService(
       HostContentSettingsMap& host_content_settings_map,
+      brave_origin::BraveOriginService* brave_origin_service,
       PrefService* prefs);
   ~PsstSettingsService() override;
 
@@ -63,7 +69,9 @@ class PsstSettingsService : public KeyedService {
   void OnPreferenceChanged(const std::string& pref_name);
 
   const raw_ref<HostContentSettingsMap>
-      host_content_settings_map_;         // NOT OWNED
+      host_content_settings_map_;  // NOT OWNED
+  raw_ptr<brave_origin::BraveOriginService> brave_origin_service_ =
+      nullptr;                            // NOT OWNED
   raw_ptr<PrefService> prefs_ = nullptr;  // NOT OWNED
   base::ObserverList<PrefObserver> observers_;
   PrefChangeRegistrar pref_change_registrar_;

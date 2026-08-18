@@ -7,7 +7,9 @@
 
 #include "base/check.h"
 #include "base/functional/bind.h"
+#include "brave/components/brave_origin/brave_origin_service.h"
 #include "brave/components/psst/core/browser/pref_names.h"
+#include "components/policy/policy_constants.h"
 #include "components/prefs/pref_service.h"
 #include "url/gurl.h"
 
@@ -43,9 +45,20 @@ base::DictValue CreatePsstSettingsObject(PsstWebsiteSettings psst_metadata) {
 
 PsstSettingsService::PsstSettingsService(
     HostContentSettingsMap& host_content_settings_map,
+    brave_origin::BraveOriginService* brave_origin_service,
     PrefService* prefs)
-    : host_content_settings_map_(host_content_settings_map), prefs_(prefs) {
+    : host_content_settings_map_(host_content_settings_map),
+      brave_origin_service_(brave_origin_service),
+      prefs_(prefs) {
+  CHECK(brave_origin_service_);
   CHECK(prefs_);
+
+  if (brave_origin_service_->IsPolicyControlledByBraveOrigin(
+          policy::key::kPsstEnabled) ||
+      prefs_->HasPrefPath(prefs::kPsstEnabledBraveOrigin)) {
+    prefs_->SetBoolean(prefs::kPsstEnabled,
+                       prefs_->GetBoolean(prefs::kPsstEnabledBraveOrigin));
+  }
 
   pref_change_registrar_.Init(prefs_);
   pref_change_registrar_.Add(

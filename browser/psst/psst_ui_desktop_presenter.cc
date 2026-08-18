@@ -216,8 +216,6 @@ void PsstUiDesktopPresenter::ShowConsentDialog() {
     return;
   }
 
-  HideInfoBar();
-
   if (psst_action_controller_) {
     psst_action_controller_->SetShowBadge(false);
   }

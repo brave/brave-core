@@ -12,6 +12,7 @@ namespace psst {
 void RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(prefs::kPsstEnabled, true);
   registry->RegisterIntegerPref(prefs::kPsstInfobarShownCounter, 0);
+  registry->RegisterBooleanPref(prefs::kPsstEnabledBraveOrigin, false);
 }
 
 }  // namespace psst

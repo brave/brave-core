@@ -158,7 +158,7 @@ inline constexpr PolicyToPreferenceMapEntry kBraveSimplePolicyMap[] = {
      email_aliases::prefs::kEmailAliasesEnabled, base::Value::Type::BOOLEAN},
 #endif
 #if BUILDFLAG(ENABLE_PSST)
-    {policy::key::kPsstEnabled, psst::prefs::kPsstEnabled,
+    {policy::key::kPsstEnabled, psst::prefs::kPsstEnabledBraveOrigin,
      base::Value::Type::BOOLEAN},
 #endif
     {policy::key::kBraveReduceLanguageEnabled,

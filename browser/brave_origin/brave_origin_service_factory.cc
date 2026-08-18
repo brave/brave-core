@@ -239,10 +239,10 @@ constexpr auto kBraveOriginProfileMetadata =
 #endif
 #if BUILDFLAG(ENABLE_PSST)
         // PSST preferences
-        {psst::prefs::kPsstEnabled,
+        {psst::prefs::kPsstEnabledBraveOrigin,
          BraveOriginServiceFactory::BraveOriginPrefMetadata(
              false,
-             /*user_settable=*/true)},
+             /*user_settable=*/false)},
 #endif
     });
 
