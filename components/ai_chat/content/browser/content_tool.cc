@@ -5,7 +5,6 @@
 
 #include "brave/components/ai_chat/content/browser/content_tool.h"
 
-#include <algorithm>
 #include <optional>
 #include <string>
 #include <string_view>
@@ -33,14 +32,26 @@ namespace ai_chat {
 
 namespace {
 
-// Backslash-escapes ASCII punctuation so `text` can be embedded in a
-// markdown string without affecting its formatting. Used for
-// site-controlled values (e.g. WebMCP tool names) shown in the permission
-// prompt.
-std::string EscapeMarkdown(const std::string& text) {
+// Reduces `text` to an allowlist of `[0-9A-Za-z/_-.:]`, dropping every other
+// character (including all whitespace), then backslash-escapes the punctuation
+// that survives. Used for site-controlled values (e.g. WebMCP tool names and
+// hosts) shown in the permission prompt, so a site cannot inject markdown
+// formatting, a link, or extra prompt lines into the challenge text.
+std::string EscapeMarkdown(std::string_view text) {
   std::string escaped;
   escaped.reserve(text.size());
   for (char c : text) {
+    // Ignore whitespace characters in our escaping.
+    if (absl::ascii_isspace(c)) {
+      continue;
+    }
+
+    // Only certain characters are allowed so as to avoid markdown injection.
+    if (!absl::ascii_isalnum(c) && c != '/' && c != '_' && c != '-' &&
+        c != '.' && c != ':') {
+      continue;
+    }
+
     if (absl::ascii_ispunct(c)) {
       escaped.push_back('\\');
     }
@@ -140,8 +151,9 @@ std::optional<std::string> ContentTool::GetPermissionChallengeDescription(
     const mojom::ToolUseEvent& tool_use) const {
   // Provide a human-readable, markdown-formatted description naming the
   // site-registered tool and the site's origin, instead of the mangled
-  // model-facing tool name. The tool name is site-controlled, so escape it
-  // to prevent the site injecting markdown into the prompt.
+  // model-facing tool name. The tool name is site-controlled, so strip its
+  // whitespace and escape it to prevent the site injecting markdown into the
+  // prompt.
   content::RenderFrameHost* rfh = rfh_.AsRenderFrameHostIfValid();
   if (!rfh) {
     return std::nullopt;
@@ -153,9 +165,8 @@ std::optional<std::string> ContentTool::GetPermissionChallengeDescription(
   // path/query is site-controlled and can legally contain markdown
   // metacharacters, so it must be escaped just like the tool name to
   // prevent the site injecting formatting or a link into the prompt.
-  const std::string site_display =
-      origin.opaque() ? EscapeMarkdown(rfh->GetLastCommittedURL().spec())
-                      : origin.Serialize();
+  const std::string site_display = EscapeMarkdown(
+      origin.opaque() ? rfh->GetLastCommittedURL().host() : origin.Serialize());
   return l10n_util::GetStringFUTF8(
       IDS_CHAT_UI_PERMISSION_CHALLENGE_WEB_TOOL_SUMMARY,
       base::UTF8ToUTF16(EscapeMarkdown(internal_tool_name_)),

@@ -98,7 +98,7 @@ class Tool {
   // tool use is asking permission for (e.g. naming a site-registered WebMCP
   // tool and its origin instead of a mangled, model-facing tool name).
   // Unlike RequiresUserInteractionBeforeHandling(), this has no side effects
-  // and doesn't depend on whether this Tool is the one that created the
+  // and doesn't depend on whether this Tool is the source of the
   // PermissionChallenge being shown - it's also used to decorate a
   // PermissionChallenge created elsewhere (e.g. by the server's alignment
   // check, which only knows the raw tool name) with a nicer description.
