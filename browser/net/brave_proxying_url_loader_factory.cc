@@ -170,6 +170,18 @@ void BraveProxyingURLLoaderFactory<
 }
 
 template <template <typename> class T>
+bool BraveProxyingURLLoaderFactory<
+    T>::InProgressRequest::IsBypassRedirectChecksAuthorized() const {
+  if (!factory_->navigation_id_) {
+    return false;
+  }
+  auto* rfh = content::RenderFrameHost::FromFrameToken(render_frame_token_);
+  return rfh &&
+         content::NavigationHandle::HasBypassRedirectChecksForNextRedirect(
+             rfh->GetFrameTreeNodeId(), *factory_->navigation_id_);
+}
+
+template <template <typename> class T>
 void BraveProxyingURLLoaderFactory<T>::InProgressRequest::OnLoaderDisconnected(
     uint32_t custom_reason,
     const std::string& description) {
@@ -314,7 +326,8 @@ template <template <typename> class T>
 void BraveProxyingURLLoaderFactory<T>::InProgressRequest::OnReceiveRedirect(
     const net::RedirectInfo& redirect_info,
     network::mojom::URLResponseHeadPtr head) {
-  if (!content::IsSafeRedirectTarget(request_.url, redirect_info.new_url)) {
+  if (!IsBypassRedirectChecksAuthorized() &&
+      !content::IsSafeRedirectTarget(request_.url, redirect_info.new_url)) {
     OnRequestError(
         network::URLLoaderCompletionStatus(net::ERR_UNSAFE_REDIRECT));
     return;
