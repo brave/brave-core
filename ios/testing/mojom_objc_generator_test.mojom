@@ -7,7 +7,7 @@ module mojom_objc_test.mojom;
 
 // Test fixture used only by mojom_objc_generator_unittest.mm to exercise
 // optional (nullable) enum support in the iOS Obj-C mojom generator.
-enum NullableEnum {
+enum SomeEnum {
   kAlpha,
   kBeta,
   kGamma,
@@ -15,17 +15,17 @@ enum NullableEnum {
 
 struct NullableEnumStruct {
   // Non-nullable enum field, used as a baseline for comparison.
-  NullableEnum required_enum_field;
+  SomeEnum required_enum_field;
 
   // Nullable enum field with no default value; should default to nil.
-  NullableEnum? optional_enum_field;
+  SomeEnum? optional_enum_field;
 
   // Nullable enum field with an explicit default value.
-  NullableEnum? optional_enum_field_with_default = kBeta;
+  SomeEnum? optional_enum_field_with_default = kBeta;
 };
 
 interface NullableEnumInterface {
   // Exercises a nullable enum as both a method parameter and a
   // response/callback parameter.
-  DoSomething(NullableEnum? maybe_enum) => (NullableEnum? result);
+  DoSomething(SomeEnum? maybe_enum) => (SomeEnum? result);
 };

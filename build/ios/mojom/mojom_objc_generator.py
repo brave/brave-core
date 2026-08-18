@@ -225,10 +225,19 @@ class EnumMojoTypemap(MojoTypemap):
     def _ObjCWrappedType(self):
         return "%s%s" % (ObjCPrefixFromKind(self.kind), self.kind.name)
 
-    def _IsBoxed(self):
-        return self.is_inside_container or mojom.IsNullableKind(self.kind)
+    def _IsNullable(self):
+        return mojom.IsNullableKind(self.kind)
+
+    def _ObjCBoxType(self):
+        return "%sBox*" % self._ObjCWrappedType()
+
+    def _ObjCBoxClass(self):
+        return "%sBox" % self._ObjCWrappedType()
+
     def ObjCWrappedType(self):
-        if self._IsBoxed():
+        if self._IsNullable():
+            return self._ObjCBoxType()
+        if self.is_inside_container:
             return "NSNumber*"
         return self._ObjCWrappedType()
     def ExpectedCppType(self):
@@ -238,12 +247,17 @@ class EnumMojoTypemap(MojoTypemap):
             return None
         return self.CppToObjC("%s::%s" % (self.ExpectedCppType(), default.name))
     def ObjCToCpp(self, accessor):
-        if self._IsBoxed():
+        if self._IsNullable():
+            accessor = "%s.value" % accessor
+        elif self.is_inside_container:
             accessor = "%s.intValue" % accessor
         return "static_cast<%s>(%s)" % (self.ExpectedCppType(), accessor)
     def CppToObjC(self, accessor):
         result = "static_cast<%s>(%s)" % (self._ObjCWrappedType(), accessor)
-        if self._IsBoxed():
+        if self._IsNullable():
+            return "[[%s alloc] initWithValue:%s]" % (self._ObjCBoxClass(),
+                                                      result)
+        if self.is_inside_container:
             return "@(%s)" % result
         return result
 
