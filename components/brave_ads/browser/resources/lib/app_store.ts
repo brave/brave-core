@@ -19,13 +19,21 @@ export interface AdEvent {
   'Created At': number
 }
 
+export interface DiagnosticEntry {
+  name: string
+  value: string
+}
+
 export interface AppState {
   rewardsEnabled: boolean
   conversionUrlPatterns: ConversionUrlPattern[]
   adEvents: AdEvent[]
+  diagnosticId: string
+  diagnosticEntries: DiagnosticEntry[]
   actions: {
     loadAdsInternals: () => void
     clearAdsData: () => Promise<boolean>
+    setDiagnosticId: (diagnosticId: string) => void
   }
 }
 
@@ -36,11 +44,14 @@ export function defaultAppStore() {
     rewardsEnabled: false,
     conversionUrlPatterns: [],
     adEvents: [],
+    diagnosticId: '',
+    diagnosticEntries: [],
     actions: {
       loadAdsInternals() {},
       async clearAdsData() {
         return false
       },
+      setDiagnosticId(diagnosticId) {},
     },
   })
 }

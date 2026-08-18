@@ -35,7 +35,18 @@ export function createAppStore(): AppStore {
     }
   }
 
+  async function loadDiagnostics() {
+    try {
+      const { response } = await API.getDiagnostics()
+      const { diagnosticId = '', entries = [] } = JSON.parse(response)
+      store.update({ diagnosticId, diagnosticEntries: entries })
+    } catch (error) {
+      console.error('Error getting ads diagnostics', error)
+    }
+  }
+
   loadAdsInternals()
+  loadDiagnostics()
 
   store.update({
     actions: {
@@ -46,6 +57,7 @@ export function createAppStore(): AppStore {
           const { success } = await API.clearAdsData()
           if (success) {
             loadAdsInternals()
+            loadDiagnostics()
           } else {
             console.warn('Failed to clear ads data')
           }
@@ -54,6 +66,11 @@ export function createAppStore(): AppStore {
           console.error('Error clearing ads data', error)
           return false
         }
+      },
+
+      setDiagnosticId(diagnosticId) {
+        API.setDiagnosticId(diagnosticId)
+        store.update({ diagnosticId })
       },
     },
   })

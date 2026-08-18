@@ -10,10 +10,17 @@
 #include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/json/json_writer.h"
+#include "base/uuid.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
+#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "components/prefs/pref_service.h"
+
+namespace {
+constexpr char kDiagnosticIdKey[] = "diagnosticId";
+constexpr char kEntriesKey[] = "entries";
+}  // namespace
 
 AdsInternalsHandler::AdsInternalsHandler(brave_ads::AdsService* ads_service,
                                          PrefService& prefs)
@@ -67,6 +74,25 @@ void AdsInternalsHandler::ClearAdsData(brave_ads::ResultCallback callback) {
   ads_service_->ClearData(std::move(callback));
 }
 
+void AdsInternalsHandler::GetDiagnostics(GetDiagnosticsCallback callback) {
+  if (!ads_service_) {
+    return OnGetDiagnostics(std::move(callback),
+                            /*diagnostic_entries=*/std::nullopt);
+  }
+
+  ads_service_->GetDiagnostics(
+      base::BindOnce(&AdsInternalsHandler::OnGetDiagnostics,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+void AdsInternalsHandler::SetDiagnosticId(const std::string& diagnostic_id) {
+  if (!base::Uuid::ParseCaseInsensitive(diagnostic_id).is_valid()) {
+    return;
+  }
+
+  prefs_->SetString(brave_ads::prefs::kDiagnosticId, diagnostic_id);
+}
+
 void AdsInternalsHandler::GetInternalsCallback(
     GetAdsInternalsCallback callback,
     std::optional<base::DictValue> dict) {
@@ -76,6 +102,21 @@ void AdsInternalsHandler::GetInternalsCallback(
   std::string json;
   CHECK(base::JSONWriter::Write(std::move(dict).value_or(base::DictValue{}),
                                 &json));
+  std::move(callback).Run(json);
+}
+
+void AdsInternalsHandler::OnGetDiagnostics(
+    GetDiagnosticsCallback callback,
+    std::optional<base::ListValue> diagnostic_entries) {
+  base::DictValue dict;
+  dict.Set(kDiagnosticIdKey,
+           prefs_->GetString(brave_ads::prefs::kDiagnosticId));
+  if (diagnostic_entries) {
+    dict.Set(kEntriesKey, std::move(*diagnostic_entries));
+  }
+
+  std::string json;
+  CHECK(base::JSONWriter::Write(dict, &json));
   std::move(callback).Run(json);
 }
 
