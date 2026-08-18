@@ -1226,7 +1226,7 @@ void OpenUrlInContainer(BrowserWindowInterface* browser_window,
                         const GURL& url,
                         const containers::mojom::ContainerPtr& container,
                         bool is_link,
-                        const std::optional<url::Origin>& initiator_origin,
+                        std::optional<url::Origin> initiator_origin,
                         bool started_from_context_menu) {
   if (!url.is_valid()) {
     LOG(ERROR) << "Url is not valid";
@@ -1239,7 +1239,7 @@ void OpenUrlInContainer(BrowserWindowInterface* browser_window,
       browser_window, url,
       is_link ? ui::PAGE_TRANSITION_LINK : ui::PAGE_TRANSITION_TYPED);
   params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
-  params.initiator_origin = initiator_origin;
+  params.initiator_origin = std::move(initiator_origin);
   params.started_from_context_menu = started_from_context_menu;
   params.storage_partition_config = content::StoragePartitionConfig::Create(
       browser_window->GetProfile(),
@@ -1266,7 +1266,7 @@ void OpenTabUrlsWithoutContainer(BrowserWindowInterface* browser_window,
 void OpenUrlWithoutContainer(BrowserWindowInterface* browser_window,
                              const GURL& url,
                              bool is_link,
-                             const std::optional<url::Origin>& initiator_origin,
+                             std::optional<url::Origin> initiator_origin,
                              bool started_from_context_menu) {
   if (!url.is_valid()) {
     LOG(ERROR) << "Url is not valid";
@@ -1277,7 +1277,7 @@ void OpenUrlWithoutContainer(BrowserWindowInterface* browser_window,
       browser_window, url,
       is_link ? ui::PAGE_TRANSITION_LINK : ui::PAGE_TRANSITION_TYPED);
   params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
-  params.initiator_origin = initiator_origin;
+  params.initiator_origin = std::move(initiator_origin);
   params.started_from_context_menu = started_from_context_menu;
   Navigate(&params);
 }
@@ -1297,7 +1297,7 @@ void CreateTemporaryContainerAndOpenUrl(
     BrowserWindowInterface* browser_window,
     const GURL& url,
     bool is_link,
-    const std::optional<url::Origin>& initiator_origin,
+    std::optional<url::Origin> initiator_origin,
     bool started_from_context_menu) {
   CHECK(browser_window);
   if (!url.is_valid()) {
@@ -1310,7 +1310,8 @@ void CreateTemporaryContainerAndOpenUrl(
   CHECK(containers_service);
   OpenUrlInContainer(browser_window, url,
                      containers_service->CreateAndPersistTemporaryContainer(),
-                     is_link, initiator_origin, started_from_context_menu);
+                     is_link, std::move(initiator_origin),
+                     started_from_context_menu);
 }
 
 void OpenContainerMenuOnPageActionView(BrowserWindowInterface* browser_window,
