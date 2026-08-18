@@ -117,7 +117,7 @@ public final class BraveToolbarLongPressMenuHandlerUnitTest {
                 list.get(0).model.get(ListMenuItemProperties.MENU_ITEM_ID));
     }
 
-    /** "Copy link" must still be offered when the address bar does have a URL to copy. */
+    /** Copy actions must be offered when the address bar has a URL to copy. */
     @Test
     @SmallTest
     @Restriction({DeviceFormFactor.PHONE})
@@ -126,7 +126,7 @@ public final class BraveToolbarLongPressMenuHandlerUnitTest {
 
         ModelList list = mToolbarLongPressMenuHandler.buildMenuItems(true);
 
-        assertEquals(2, list.size());
+        assertEquals(3, list.size());
         assertEquals(
                 ToolbarLongPressMenuHandler.MenuItemType.MOVE_ADDRESS_BAR_TO,
                 list.get(0).model.get(ListMenuItemProperties.MENU_ITEM_ID));
@@ -135,5 +135,11 @@ public final class BraveToolbarLongPressMenuHandlerUnitTest {
         assertEquals(
                 ToolbarLongPressMenuHandler.MenuItemType.COPY_LINK,
                 list.get(1).model.get(ListMenuItemProperties.MENU_ITEM_ID));
+        assertEquals(
+                R.string.contextmenu_copy_clean_link,
+                list.get(2).model.get(ListMenuItemProperties.TITLE_ID));
+        assertEquals(
+                R.id.contextmenu_copy_clean_link,
+                list.get(2).model.get(ListMenuItemProperties.MENU_ITEM_ID));
     }
 }
