@@ -301,7 +301,16 @@ var package = Package(
     .target(
       name: "BraveShields",
       dependencies: [
-        "Strings", "Preferences", "BraveCore", "BraveUI", "Web", "Data", "Shared", "BraveShared",
+        "BraveCore",
+        "BraveShared",
+        "BraveUI",
+        "Data",
+        "DesignSystem",
+        "Favicon",
+        "Preferences",
+        "Shared",
+        "Strings",
+        "Web",
       ],
       plugins: ["LoggerPlugin"]
     ),

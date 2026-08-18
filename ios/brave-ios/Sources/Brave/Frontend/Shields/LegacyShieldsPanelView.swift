@@ -40,7 +40,8 @@ struct LegacyShieldsPanelView: View {
         ?? Just(.init()).eraseToAnyPublisher(),
       blockedRequests: tab.contentBlocker?.$blockedRequests.map(Array.init)
         .eraseToAnyPublisher() ?? Just([]).eraseToAnyPublisher(),
-      isAdvancedControlsEnabled: isAdvancedControlsEnabled
+      isAdvancedControlsEnabled: isAdvancedControlsEnabled,
+      isShredEnabled: FeatureList.kBraveShredFeature.enabled
     )
     self.actionCallback = callback
     self.displayHost =
@@ -64,8 +65,8 @@ struct LegacyShieldsPanelView: View {
             .foregroundStyle(Color(braveSystemName: .textSecondary))
             .multilineTextAlignment(.leading)
             .padding(.horizontal)
-            .padding(.bottom, viewModel.advancedControlsEnabled ? nil : 16)
-          if viewModel.advancedControlsEnabled {
+            .padding(.bottom, viewModel.isAdvancedControlsEnabled ? nil : 16)
+          if viewModel.isAdvancedControlsEnabled {
             DisclosureGroup(isExpanded: $advancedShieldsExpanded) {
               advancedShieldsSection
             } label: {
@@ -240,7 +241,7 @@ struct LegacyShieldsPanelView: View {
         actionCallback(.changedShieldSettings)
       }
     }
-    if FeatureList.kBraveShredFeature.enabled {
+    if viewModel.isShredEnabled {
       ShieldSettingRow {
         NavigationLink {
           ShredSiteSettingsView(
