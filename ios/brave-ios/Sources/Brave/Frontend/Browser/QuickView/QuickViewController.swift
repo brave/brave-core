@@ -296,7 +296,7 @@ class QuickViewController: UIViewController {
     weak var weakPopover: PopoverController?
     let popover = PopoverController(
       contentController: PopoverNavigationController(
-        rootViewController: ShieldsPanelViewController(
+        rootViewController: LegacyShieldsPanelViewController(
           url: url,
           tab: tab,
           domain: Domain.getOrCreate(forUrl: url, persistent: !tab.isPrivate),
