@@ -14,6 +14,7 @@ import BraveWallet
 import BraveWidgetsModels
 import BrowserMenu
 import CertificateUtilities
+import Combine
 import Data
 import Lottie
 import Onboarding
@@ -461,38 +462,85 @@ extension BrowserViewController: TopToolbarDelegate, SearchContainerViewControll
       return
     }
 
-    weak var weakPopover: PopoverController?
-    let popover = PopoverController(
-      contentController: PopoverNavigationController(
-        rootViewController: LegacyShieldsPanelViewController(
-          url: url,
+    if FeatureList.kShowUpdatedShieldsPanel.enabled {
+      weak var weakPanel: ShieldsPanelViewController?
+      let shieldsPanelViewController = ShieldsPanelViewController(
+        url: url,
+        viewModel: ShieldsPanelViewModel(
           tab: selectedTab,
-          domain: Domain.getOrCreate(forUrl: url, persistent: !selectedTab.isPrivate)
-        ) { [weak self, weak selectedTab] action in
-          switch action {
-          case .navigate(let target, let dismiss):
-            guard let self, let selectedTab else { return }
-            if dismiss {
-              weakPopover?.dismiss(animated: true) {
-                self.navigate(to: target, tab: selectedTab, url: url, on: nil)
-              }
-            } else {
-              navigate(to: target, tab: selectedTab, url: url, on: weakPopover)
+          stats: selectedTab.contentBlocker?.$stats.eraseToAnyPublisher()
+            ?? Just(.init()).eraseToAnyPublisher(),
+          isAdvancedControlsEnabled: true
+        ),
+        isShredEnabled: FeatureList.kBraveShredFeature.enabled
+      ) { [weak self, weak selectedTab] action in
+        guard let self, let selectedTab else { return }
+        switch action {
+        case .navigate(let target, let dismiss):
+          if dismiss {
+            weakPanel?.dismiss(animated: true) {
+              self.navigate(to: target, tab: selectedTab, url: url, on: nil)
             }
-          case .changedShieldSettings:
-            self?.changedShieldSettings()
-          case .shredSiteData:
-            weakPopover?.dismiss(animated: true) {
-              guard let selectedTab = selectedTab else { return }
-              self?.shredData(for: url, in: selectedTab)
-            }
+          } else {
+            self.navigate(to: target, tab: selectedTab, url: url, on: weakPanel)
+          }
+        case .changedShieldSettings:
+          self.changedShieldSettings()
+        case .shredSiteData:
+          weakPanel?.dismiss(animated: true) {
+            self.shredData(for: url, in: selectedTab)
           }
         }
-      ),
-      contentSizeBehavior: .preferredContentSize
-    )
-    weakPopover = popover
-    popover.present(from: topToolbar.shieldsButton, on: self)
+      }
+      weakPanel = shieldsPanelViewController
+      if UIDevice.current.userInterfaceIdiom == .pad {
+        shieldsPanelViewController.modalPresentationStyle = .popover
+      }
+      shieldsPanelViewController.popoverPresentationController?.sourceView =
+        topToolbar.shieldsButton
+      shieldsPanelViewController.popoverPresentationController?.sourceRect =
+        topToolbar.shieldsButton.bounds
+      shieldsPanelViewController.popoverPresentationController?.popoverLayoutMargins = .init(
+        equalInset: 4
+      )
+      shieldsPanelViewController.popoverPresentationController?.permittedArrowDirections = [
+        .up, .down,
+      ]
+      self.present(shieldsPanelViewController, animated: true)
+    } else {
+      weak var weakPopover: PopoverController?
+      let popover = PopoverController(
+        contentController: PopoverNavigationController(
+          rootViewController: LegacyShieldsPanelViewController(
+            url: url,
+            tab: selectedTab,
+            domain: Domain.getOrCreate(forUrl: url, persistent: !selectedTab.isPrivate)
+          ) { [weak self, weak selectedTab] action in
+            switch action {
+            case .navigate(let target, let dismiss):
+              guard let self, let selectedTab else { return }
+              if dismiss {
+                weakPopover?.dismiss(animated: true) {
+                  self.navigate(to: target, tab: selectedTab, url: url, on: nil)
+                }
+              } else {
+                navigate(to: target, tab: selectedTab, url: url, on: weakPopover)
+              }
+            case .changedShieldSettings:
+              self?.changedShieldSettings()
+            case .shredSiteData:
+              weakPopover?.dismiss(animated: true) {
+                guard let selectedTab = selectedTab else { return }
+                self?.shredData(for: url, in: selectedTab)
+              }
+            }
+          }
+        ),
+        contentSizeBehavior: .preferredContentSize
+      )
+      weakPopover = popover
+      popover.present(from: topToolbar.shieldsButton, on: self)
+    }
   }
 
   private func navigate(
