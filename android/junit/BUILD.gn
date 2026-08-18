@@ -264,9 +264,14 @@ if (is_android) {
     sources = [
       "src/org/chromium/chrome/browser/shields/BraveUnifiedPanelFaviconPriorityTest.java",
       "src/org/chromium/chrome/browser/shields/BraveUnifiedPanelHandlerStatTest.java",
+      "src/org/chromium/chrome/browser/shields/UrlSanitizerServiceFactoryUnitTest.java",
     ]
 
-    deps = [ "//chrome/android/junit:chrome_junit_tests_helper" ]
+    deps = [
+      "//brave/browser/url_sanitizer/android:java",
+      "//brave/components/url_sanitizer/core/common/mojom:mojom_java",
+      "//chrome/android/junit:chrome_junit_tests_helper",
+    ]
   }
 
   robolectric_library("brave_junit_tests_org.chromium.chrome.browser.hub") {
