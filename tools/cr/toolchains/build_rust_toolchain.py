@@ -646,10 +646,16 @@ class ToolchainBuilder:
         lib_dir = wasm_dir / 'lib'
         lib_dir.mkdir(parents=True)
 
-        crates = list(profile_dir.glob('*.rlib')) + list(
-            profile_dir.glob('*.rmeta'))
-        logging.info('Assembling %d wasm32 std crates from %s into %s',
-                     len(crates), profile_dir, lib_dir)
+        # We also want to copy the .rmeta files, as the stdlib is built with
+        # `-Zno-embed-metadata` leaving the .rlibs with no metadata that is
+        # needed for compilation and linking.
+        rlibs = list(profile_dir.glob('*.rlib'))
+        rmetas = list(std_out.rglob('*.rmeta'))
+        crates = rlibs + rmetas
+        logging.info(
+            'Assembling %d wasm32 std crates (%d rlib, %d rmeta) from %s '
+            'into %s', len(crates), len(rlibs), len(rmetas), profile_dir,
+            lib_dir)
         for crate in crates:
             shutil.copy2(crate, lib_dir / crate.name)
 
