@@ -36,6 +36,34 @@ default_replacements = [
 ]
 
 
+# Strings we want to replace only in a specific source string file, keyed by
+# the file name. Like `default_replacements`, these need Crowdin to translate
+# the XTB files.
+per_file_replacements = {
+    # Upstream names Gemini as the agent that works on the user's task; in
+    # Brave that agent is Leo. Scoped to this file because the same wording in
+    # the Gemini panel strings (e.g. glic_strings.grdp) really is about Gemini,
+    # as are the Gemini entry point, "Gemini in Chrome" and "Gemini Spark"
+    # mentions left untouched in this file.
+    'actor_strings.grdp': [
+        (r'Gemini\sis\sworking\son\syour\stask',
+         r'Leo is working on your task'),
+        (r'Gemini\sis\scurrently\sin\scontrol',
+         r'Leo is currently in control'),
+        (r'Gemini\sneeds\syour\shelp', r'Leo needs your help'),
+        (r'Gemini\sstopped\sworking', r'Leo stopped working'),
+        (r'Gemini\scompleted\syour\stask', r'Leo completed your task'),
+        (r'Gemini\swill\sstop', r'Leo will stop'),
+        (r'Gemini\shas\sbeen\sworking', r'Leo has been working'),
+        (r'wait\sfor\sGemini\sto\sfinish', r'wait for Leo to finish'),
+        # Descriptions of the strings above, so that translators don't get
+        # Gemini as the context for Leo's text.
+        (r'shared\swith\sGemini', r'shared with Leo'),
+        (r'the\sGemini\sis\sworking\son\stab', r'Leo is working on tab'),
+    ],
+}
+
+
 # Fix up some strings after aggressive first round replacement.
 fixup_replacements = [
     (r'Brave Cloud Print', r'Google Cloud Print'),
