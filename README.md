@@ -90,7 +90,7 @@ cd path-to-your-project-folder/src/brave
 
 **Initialize the build environment.** This step will download the Chromium
 source, which has a large history (10's of gigabytes of data). This might take
-really long to finish depending on internet speed.
+a really long time to finish depending on internet speed.
 
 ```bash
 # Most builds:
