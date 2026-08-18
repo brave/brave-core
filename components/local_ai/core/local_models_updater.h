@@ -106,9 +106,17 @@ class LocalModelsUpdaterState {
   SEQUENCE_CHECKER(sequence_checker_);
 };
 
+// Registers or unregisters the local models component to match the
+// `kBraveLocalAIEnabled` master switch, and keeps it in sync for the rest of
+// the session. The switch is managed by Brave Origin, whose purchase check is
+// asynchronous, so its value can land after components are registered.
 void ManageLocalModelsComponentRegistration(
     component_updater::ComponentUpdateService* cus,
     PrefService* local_state);
+
+// Drops the references taken by ManageLocalModelsComponentRegistration(). Must
+// run before `cus` and `local_state` are destroyed.
+void ShutdownLocalModelsComponentRegistration();
 
 }  // namespace local_ai
 

@@ -16,9 +16,12 @@
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/functional/bind.h"
+#include "base/location.h"
+#include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/no_destructor.h"
 #include "base/path_service.h"
+#include "base/task/thread_pool.h"
 #include "base/values.h"
 #include "base/version.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
@@ -27,6 +30,7 @@
 #include "components/component_updater/component_updater_paths.h"
 #include "components/component_updater/component_updater_service.h"
 #include "components/history_embeddings/core/history_embeddings_features.h"
+#include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
 #include "components/update_client/update_client.h"
 #include "crypto/sha2.h"
@@ -53,8 +57,96 @@ base::FilePath GetComponentDir() {
 }
 
 void DeleteComponentDirectory() {
-  base::DeletePathRecursively(GetComponentDir());
+  base::ThreadPool::PostTask(
+      FROM_HERE, {base::MayBlock(), base::TaskPriority::BEST_EFFORT},
+      base::GetDeletePathRecursivelyCallback(GetComponentDir()));
 }
+
+// Keeps the component registration in sync with the `kBraveLocalAIEnabled`
+// master switch for the whole session, so a switch that only turns off after
+// components are registered still tears the component back down.
+class LocalModelsComponentRegistrar {
+ public:
+  static LocalModelsComponentRegistrar* GetInstance() {
+    static base::NoDestructor<LocalModelsComponentRegistrar> instance;
+    return instance.get();
+  }
+
+  LocalModelsComponentRegistrar(const LocalModelsComponentRegistrar&) = delete;
+  LocalModelsComponentRegistrar& operator=(
+      const LocalModelsComponentRegistrar&) = delete;
+
+  void Start(component_updater::ComponentUpdateService* cus,
+             PrefService* local_state) {
+    cus_ = cus;
+    if (local_state) {
+      pref_change_registrar_.Init(local_state);
+      pref_change_registrar_.Add(
+          prefs::kBraveLocalAIEnabled,
+          base::BindRepeating(&LocalModelsComponentRegistrar::Sync,
+                              base::Unretained(this)));
+    }
+    Sync();
+  }
+
+  void Shutdown() {
+    pref_change_registrar_.Reset();
+    cus_ = nullptr;
+  }
+
+ private:
+  friend base::NoDestructor<LocalModelsComponentRegistrar>;
+
+  LocalModelsComponentRegistrar() = default;
+  ~LocalModelsComponentRegistrar() = default;
+
+  bool IsEnabled() const {
+    const PrefService* local_state = pref_change_registrar_.prefs();
+    return cus_ && local_state &&
+           local_state->GetBoolean(prefs::kBraveLocalAIEnabled) &&
+           base::FeatureList::IsEnabled(history_embeddings::kHistoryEmbeddings);
+  }
+
+  void Sync() {
+    if (!IsEnabled()) {
+      Unregister();
+      return;
+    }
+
+    auto installer =
+        base::MakeRefCounted<component_updater::ComponentInstaller>(
+            std::make_unique<LocalModelsComponentInstallerPolicy>());
+    installer->Register(
+        cus_, base::BindOnce(&LocalModelsComponentRegistrar::OnRegistered,
+                             base::Unretained(this)));
+  }
+
+  // ComponentInstaller::Register() reads the installed manifest on a blocking
+  // task runner before it registers, so the master switch can turn off in
+  // between - at which point Sync() has nothing to unregister yet.
+  void OnRegistered() {
+    if (!cus_) {
+      return;
+    }
+    if (!IsEnabled()) {
+      Unregister();
+      return;
+    }
+    brave_component_updater::BraveOnDemandUpdater::GetInstance()
+        ->EnsureInstalled(kComponentId);
+  }
+
+  void Unregister() {
+    if (cus_) {
+      cus_->UnregisterComponent(kComponentId);
+    }
+    LocalModelsUpdaterState::GetInstance()->SetInstallDir(base::FilePath());
+    DeleteComponentDirectory();
+  }
+
+  raw_ptr<component_updater::ComponentUpdateService> cus_ = nullptr;
+  PrefChangeRegistrar pref_change_registrar_;
+};
 
 }  // namespace
 
@@ -171,23 +263,11 @@ LocalModelsUpdaterState::~LocalModelsUpdaterState() = default;
 void ManageLocalModelsComponentRegistration(
     component_updater::ComponentUpdateService* cus,
     PrefService* local_state) {
-  const bool local_ai_enabled =
-      local_state &&
-      local_state->GetBoolean(local_ai::prefs::kBraveLocalAIEnabled);
-  if (!local_ai_enabled || !cus ||
-      !base::FeatureList::IsEnabled(history_embeddings::kHistoryEmbeddings)) {
-    DeleteComponentDirectory();
-    return;
-  }
+  LocalModelsComponentRegistrar::GetInstance()->Start(cus, local_state);
+}
 
-  auto installer = base::MakeRefCounted<component_updater::ComponentInstaller>(
-      std::make_unique<LocalModelsComponentInstallerPolicy>());
-  installer->Register(
-      // After Register, run the callback with component id.
-      cus, base::BindOnce([]() {
-        brave_component_updater::BraveOnDemandUpdater::GetInstance()
-            ->EnsureInstalled(kComponentId);
-      }));
+void ShutdownLocalModelsComponentRegistration() {
+  LocalModelsComponentRegistrar::GetInstance()->Shutdown();
 }
 
 }  // namespace local_ai

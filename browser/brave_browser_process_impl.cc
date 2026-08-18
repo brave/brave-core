@@ -39,6 +39,7 @@
 #include "brave/components/debounce/core/browser/debounce_component_installer.h"
 #include "brave/components/debounce/core/common/features.h"
 #include "brave/components/https_upgrade_exceptions/browser/https_upgrade_exceptions_service.h"
+#include "brave/components/local_ai/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/p3a/histograms_braveizer.h"
 #include "brave/components/p3a/p3a_config.h"
@@ -124,6 +125,10 @@
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/browser/brave_wallet/wallet_data_files_installer_delegate_impl.h"
 #include "brave/components/brave_wallet/browser/wallet_data_files_installer.h"
+#endif
+
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+#include "brave/components/local_ai/core/local_models_updater.h"
 #endif
 
 using brave_component_updater::BraveComponent;
@@ -267,6 +272,11 @@ void BraveBrowserProcessImpl::StartTearDown() {
   // component_updater::ComponentUpdateService::Observer, so it needs to be
   // reset before the CrxUpdateService is destroyed.
   brave_wallet::WalletDataFilesInstaller::GetInstance().Reset();
+#endif
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+  // Drop the local models registrar's pointers to CrxUpdateService and
+  // local_state before either is destroyed.
+  local_ai::ShutdownLocalModelsComponentRegistration();
 #endif
   // Reset BraveOriginPolicyManager to prevent dangling pointer to local_state_
   brave_origin::BraveOriginPolicyManager::GetInstance()->Shutdown();
