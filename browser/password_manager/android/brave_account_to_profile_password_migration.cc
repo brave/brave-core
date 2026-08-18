@@ -12,6 +12,7 @@
 
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
+#include "base/logging.h"
 #include "base/location.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
@@ -34,6 +35,42 @@ using password_manager::LoginsResultOrError;
 using password_manager::PasswordForm;
 using password_manager::PasswordStoreBackendError;
 using password_manager::PasswordStoreInterface;
+using password_manager::PasswordStoreConsumer;
+
+
+
+class PasswordStoreLoginsUpdateHelper : public PasswordStoreConsumer {
+ public:
+  PasswordStoreLoginsUpdateHelper(std::string store_name):store_name_(std::move(store_name))
+       {
+LOG(ERROR) << "[BraveSync] PasswordStoreLoginsUpdateHelper.ctor 000 store_name_="<<store_name_;
+       }
+  ~PasswordStoreLoginsUpdateHelper() override = default;
+
+  base::WeakPtr<PasswordStoreLoginsUpdateHelper> GetWeakPtr() {
+    return weak_ptr_factory_.GetWeakPtr();
+  }
+
+ private:
+  void OnGetPasswordStoreResultsOrErrorFrom(
+      PasswordStoreInterface* store,
+      LoginsResultOrError results_or_error) override {
+LOG(ERROR) << "[BraveSync] PasswordStoreLoginsUpdateHelper.OnGetPasswordStoreResultsOrErrorFrom 000 store_name_="<<store_name_;
+
+    auto results = std::get<LoginsResult>(std::move(results_or_error));
+LOG(ERROR) << "[BraveSync] 001 results.size()=" << results.size();
+    
+    for (const auto& form : results) {
+LOG(ERROR) << "[BraveSync] 002 for form.username_value="<<form.username_value;
+    }
+
+    delete this;
+  }
+
+  const std::string store_name_;
+
+  base::WeakPtrFactory<PasswordStoreLoginsUpdateHelper> weak_ptr_factory_{this};
+};
 
 // Self-owned. Moves passwords account store -> profile store, then self-deletes.
 // Order is strictly copy -> verify -> delete: a credential is removed from the
@@ -45,9 +82,12 @@ class AccountToProfilePasswordMigrator
       scoped_refptr<PasswordStoreInterface> account_store,
       scoped_refptr<PasswordStoreInterface> profile_store)
       : account_store_(std::move(account_store)),
-        profile_store_(std::move(profile_store)) {}
+        profile_store_(std::move(profile_store)) {
+LOG(ERROR) << "[BraveSync] AccountToProfilePasswordMigrator.ctor 000";
+        }
 
   void Start() {
+LOG(ERROR) << "[BraveSync] AccountToProfilePasswordMigrator.Start 000";
     // Step 1: read the account store.
     account_store_->GetAutofillableLogins(weak_factory_.GetWeakPtr());
   }
@@ -57,6 +97,7 @@ class AccountToProfilePasswordMigrator
   void OnGetPasswordStoreResultsOrErrorFrom(
       PasswordStoreInterface* store,
       LoginsResultOrError results_or_error) override {
+LOG(ERROR) << "[BraveSync] AccountToProfilePasswordMigrator::OnGetPasswordStoreResultsOrErrorFrom 000";
     if (std::holds_alternative<PasswordStoreBackendError>(results_or_error)) {
       // A read failed; keep everything as-is and abort safely.
       delete this;
@@ -64,6 +105,7 @@ class AccountToProfilePasswordMigrator
     }
     std::vector<PasswordForm> forms = password_manager::ToPasswordForms(
         std::get<LoginsResult>(std::move(results_or_error)));
+LOG(ERROR) << "[BraveSync] 001 forms.size()=" << forms.size();
     if (store == account_store_.get()) {
       OnAccountLogins(std::move(forms));
     } else {
@@ -72,6 +114,9 @@ class AccountToProfilePasswordMigrator
   }
 
   void OnAccountLogins(std::vector<PasswordForm> account_forms) {
+LOG(ERROR) << "[BraveSync] AccountToProfilePasswordMigrator::OnAccountLogins 000";
+LOG(ERROR) << "[BraveSync] AccountToProfile: account store has "
+           << account_forms.size() << " autofillable logins";
     if (account_forms.empty()) {
       delete this;  // Nothing to migrate.
       return;
@@ -80,6 +125,7 @@ class AccountToProfilePasswordMigrator
     // Step 2 (copy): add every account credential to the profile store.
     std::vector<password_manager::StoredCredential> to_add;
     to_add.reserve(account_forms_.size());
+LOG(ERROR) << "[BraveSync] 002 account_forms_.size()=" << account_forms_.size();
     for (const PasswordForm& form : account_forms_) {
       to_add.push_back(password_manager::FromPasswordForm(form));
     }
@@ -95,8 +141,12 @@ class AccountToProfilePasswordMigrator
   }
 
   void OnProfileLoginsAfterAdd(std::vector<PasswordForm> profile_forms) {
+LOG(ERROR) << "[BraveSync] OnGetPasswordStoreResultsOrErrorFrom::OnProfileLoginsAfterAdd 000";
+LOG(ERROR) << "[BraveSync] 001 profile_forms.size()=" << profile_forms.size();
+
     // Step 4 (delete): remove from the account store only the credentials that
     // are now confirmed present in the profile store.
+    int removed_from_account = 0;
     for (const PasswordForm& account_form : account_forms_) {
       const bool present_in_profile = std::ranges::any_of(
           profile_forms, [&account_form](const PasswordForm& profile_form) {
@@ -106,8 +156,13 @@ class AccountToProfilePasswordMigrator
       if (present_in_profile) {
         account_store_->RemoveLogin(
             FROM_HERE, password_manager::FromPasswordForm(account_form));
+        ++removed_from_account;
       }
     }
+    LOG(ERROR) << "[BraveSync] AccountToProfile: profile store has "
+               << profile_forms.size() << " logins after add; removed "
+               << removed_from_account << " of " << account_forms_.size()
+               << " from account store";
     delete this;
   }
 
@@ -120,23 +175,45 @@ class AccountToProfilePasswordMigrator
 }  // namespace
 
 void MaybeMigrateAccountPasswordsToProfileStore(Profile* profile) {
-  if (!base::FeatureList::IsEnabled(
-          brave_sync::features::kBraveAndroidSyncPasswordsInProfileStore)) {
-    return;
-  }
+LOG(ERROR) << "[BraveSync] MaybeMigrateAccountPasswordsToProfileStore 000";
+//   if (!base::FeatureList::IsEnabled(
+//           brave_sync::features::kBraveAndroidSyncPasswordsInProfileStore)) {
+// LOG(ERROR) << "[BraveSync] 001 skip-not enabled";
+//     return;
+//   }
+LOG(ERROR) << "[BraveSync] 002 go on, enabled";
+
   scoped_refptr<PasswordStoreInterface> account_store =
       AccountPasswordStoreFactory::GetForProfile(
           profile, ServiceAccessType::EXPLICIT_ACCESS);
   scoped_refptr<PasswordStoreInterface> profile_store =
       ProfilePasswordStoreFactory::GetForProfile(
           profile, ServiceAccessType::EXPLICIT_ACCESS);
+LOG(ERROR) << "[BraveSync] 003 account_store="<<account_store.get();
+LOG(ERROR) << "[BraveSync] 004 profile_store="<<profile_store.get();
   if (!account_store || !profile_store) {
     return;
   }
-  // Self-owned; deletes itself when the migration finishes.
-  (new AccountToProfilePasswordMigrator(std::move(account_store),
-                                        std::move(profile_store)))
-      ->Start();
+
+
+  PasswordStoreLoginsUpdateHelper* helper_profile_store = new PasswordStoreLoginsUpdateHelper("profile_store");
+  profile_store->GetAutofillableLogins(helper_profile_store->GetWeakPtr());
+
+  PasswordStoreLoginsUpdateHelper* helper_account_store = new PasswordStoreLoginsUpdateHelper("account_store");
+  account_store->GetAutofillableLogins(helper_account_store->GetWeakPtr());  
+
+
+
+
+
+  // LOG(ERROR) << "[BraveSync] 003 profile_forms.size()=" << profile_forms.size();
+  // LOG(ERROR) << "[BraveSync] 004 account_store.size()=" << account_store.size();
+
+
+  // // Self-owned; deletes itself when the migration finishes.
+  // (new AccountToProfilePasswordMigrator(std::move(account_store),
+  //                                       std::move(profile_store)))
+  //     ->Start();
 }
 
 }  // namespace brave_password_manager
