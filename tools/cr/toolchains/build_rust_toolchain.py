@@ -609,16 +609,6 @@ class ToolchainBuilder:
 
     def _assemble_stage0_wasm_sysroot(self) -> Path:
         """Assemble a wasm32 sysroot from the prebuilt stage-0 build output.
-
-        `x.py build library --stage 0` (the `--no-full-toolchain` path) compiles
-        the wasm32 std with the synced stage-0 compiler, so the rlibs are
-        byte-compatible with the toolchain we overlay, but leaves them in
-        cargo's output dir instead of assembling a `lib/rustlib/<target>/lib/`
-        sysroot.  This copies the compiled `.rlib`/`.rmeta` crates plus the
-        `self-contained/` linker directory into a freshly built sysroot under the
-        build tree and returns its `wasm32-unknown-unknown` directory (laid out
-        so `_create_archive` can add it as `WASM32_ARCNAME` unchanged).
-
         Raises:
             RuntimeError: if the stage-0 std output cannot be found.
         """
@@ -626,8 +616,6 @@ class ToolchainBuilder:
         build_dir = Path(
             self._build_rust_module.RUST_BUILD_DIR) / target_triple
 
-        # Compiled crates, stage0-std/<wasm>/<profile>/*.{rlib,rmeta}. std/core/
-        # alloc/etc, have the rlibs copied straight to the profile root.
         std_out = build_dir / STAGE0_STD / WASM32_UNKNOWN_UNKNOWN
         profile_dir = next(
             (d for d in sorted(std_out.glob('*')) if any(d.glob('*.rlib'))),
@@ -635,6 +623,11 @@ class ToolchainBuilder:
         if profile_dir is None:
             raise RuntimeError(
                 f'No stage-0 wasm32 std crates found under {std_out}; did the '
+                f'`build library --stage 0` step run?')
+        stamp = profile_dir / '.libstd-stamp'
+        if not stamp.is_file():
+            raise RuntimeError(
+                f'No stage-0 wasm32 std stamp file found at {stamp}; did the '
                 f'`build library --stage 0` step run?')
 
         # Assemble into a clean sysroot so stale crates from a prior run cannot
@@ -646,16 +639,13 @@ class ToolchainBuilder:
         lib_dir = wasm_dir / 'lib'
         lib_dir.mkdir(parents=True)
 
-        # We also want to copy the .rmeta files, as the stdlib is built with
-        # `-Zno-embed-metadata` leaving the .rlibs with no metadata that is
-        # needed for compilation and linking.
-        rlibs = list(profile_dir.glob('*.rlib'))
-        rmetas = list(std_out.rglob('*.rmeta'))
-        crates = rlibs + rmetas
-        logging.info(
-            'Assembling %d wasm32 std crates (%d rlib, %d rmeta) from %s '
-            'into %s', len(crates), len(rlibs), len(rmetas), profile_dir,
-            lib_dir)
+        crates = [
+            Path(part[1:].decode('utf-8'))
+            for part in stamp.read_bytes().split(b'\0')
+            if part and chr(part[0]) == 't'
+        ]
+        logging.info('Assembling %d wasm32 std crates from %s into %s',
+                     len(crates), stamp, lib_dir)
         for crate in crates:
             shutil.copy2(crate, lib_dir / crate.name)
 
