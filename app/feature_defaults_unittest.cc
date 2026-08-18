@@ -21,6 +21,8 @@
 #include "components/autofill/core/common/autofill_debug_features.h"
 #include "components/autofill/core/common/autofill_features.h"
 #include "components/autofill/core/common/autofill_payments_features.h"
+#include "components/browser_actuator/internal/features.h"
+#include "components/browser_actuator/public/features.h"
 #include "components/commerce/core/commerce_feature_list.h"
 #include "components/compose/core/browser/compose_features.h"
 #include "components/content_settings/core/common/features.h"
@@ -126,6 +128,8 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &blink::features::kPreloadingEagerViewportHeuristics,
       &blink::features::kTranslationAPI,
       &blink::features::kUserMediaElement,
+      &browser_actuator::kBrowserActuator,
+      &browser_actuator::kBrowserActuatorProtoStreamTransport,
 #if BUILDFLAG(IS_ANDROID)
       &chrome::android::kAndroidPageInfoAsAppMenuItem,
 #endif
@@ -148,13 +152,16 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &feature_engagement::kIPHDiscardRingFeature,
       &feature_engagement::kIPHGMCCastStartStopFeature,
       &feature_engagement::kIPHPasswordsManagementBubbleAfterSaveFeature,
+      &feature_engagement::kIPHPdfInkSignaturesFeature,
       &feature_engagement::kIPHReadingListInSidePanelFeature,
       &feature_engagement::kIPHSideBySidePinnableFeature,
       &feature_engagement::kIPHSideBySideTabSwitchFeature,
+      &feature_engagement::kIPHTabGroupsSaveV2IntroFeature,
       &feature_engagement::kIPHVerticalTabstripTutorialFeature,
 #endif
       &features::kBookmarkTriggerForPrefetch,
       &features::kChromeStructuredMetrics,
+      &features::kDestroyProfileOnBrowserClose,
       &features::kDevToolsAiAssistanceContextSelectionAgent,
       &features::kDevToolsAiCodeCompletion,
       &features::kDevToolsAiCodeGeneration,
@@ -199,6 +206,8 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &features::kWebOTP,
 #if BUILDFLAG(IS_ANDROID)
       &feed::kAndroidOpenIncognitoAsWindow,
+      &feed::kFeedContainment,
+      &feed::kInterestFeedV2,
 #endif
       &heap_profiling::kHeapProfilerReporting,
       &history::kOrganicRepeatableQueries,

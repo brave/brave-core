@@ -23,3 +23,8 @@ substitutions:
     regex:
       re_pattern: '\bIDS_HISTORY_EMBEDDINGS_DISCLAIMER\b'
       replace: 'IDS_BRAVE_HISTORY_EMBEDDINGS_DISCLAIMER'
+
+  - description: 'Ship kLaunchedHistoryEmbeddings disabled.'
+    set_feature_flag_default_state:
+      feature_name: kLaunchedHistoryEmbeddings
+      value: base::FEATURE_DISABLED_BY_DEFAULT

@@ -1,0 +1,17 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Let //brave/app:unit_tests depend on :features.
+
+      app/feature_defaults_unittest.cc asserts the default state of every
+      feature flag Brave overrides, kBrowserActuatorProtoStreamTransport
+      included, and that requires depending on this target directly.
+    regex:
+      pattern: 'visibility = [ "//components/browser_actuator/*" ]'
+      replace: |-
+        visibility = [ "//components/browser_actuator/*" ]
+          visibility += [ "//brave/app:unit_tests" ]

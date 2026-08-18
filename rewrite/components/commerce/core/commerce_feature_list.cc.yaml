@@ -9,7 +9,32 @@ substitutions:
       feature_name: kCommerceAllowOnDemandBookmarkUpdates
       value: base::FEATURE_DISABLED_BY_DEFAULT
 
+  - description: 'Ship kCommerceDeveloper disabled.'
+    set_feature_flag_default_state:
+      feature_name: kCommerceDeveloper
+      value: base::FEATURE_DISABLED_BY_DEFAULT
+
+  - description: 'Ship kCommerceMerchantViewer disabled.'
+    set_feature_flag_default_state:
+      feature_name: kCommerceMerchantViewer
+      value: base::FEATURE_DISABLED_BY_DEFAULT
+
+  - description: 'Ship kPriceAnnotations disabled.'
+    set_feature_flag_default_state:
+      feature_name: kPriceAnnotations
+      value: base::FEATURE_DISABLED_BY_DEFAULT
+
   - description: 'Ship kRetailCoupons disabled.'
     set_feature_flag_default_state:
       feature_name: kRetailCoupons
+      value: base::FEATURE_DISABLED_BY_DEFAULT
+
+  - description: 'Ship kShoppingList disabled.'
+    set_feature_flag_default_state:
+      feature_name: kShoppingList
+      value: base::FEATURE_DISABLED_BY_DEFAULT
+
+  - description: 'Ship kShoppingPDPMetrics disabled.'
+    set_feature_flag_default_state:
+      feature_name: kShoppingPDPMetrics
       value: base::FEATURE_DISABLED_BY_DEFAULT

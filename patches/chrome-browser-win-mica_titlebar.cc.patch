@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/win/mica_titlebar.cc b/chrome/browser/win/mica_titlebar.cc
+index 2dcd8cfb651f099ca9af1b8dec7f4640053437bb..66e7d74ebfaaa7ec0c62392d64984a2ad774065a 100644
+--- a/chrome/browser/win/mica_titlebar.cc
++++ b/chrome/browser/win/mica_titlebar.cc
+@@ -12,6 +12,7 @@
+ 
+ // Allows the titlebar to be drawn by the system using the Mica material
+ // on Windows 11, version 22H2 and above.
++// kWindows11MicaTitlebar feature state is enforced via plaster rewrite.
+ BASE_FEATURE(kWindows11MicaTitlebar, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ bool ShouldDefaultThemeUseMicaTitlebar() {
