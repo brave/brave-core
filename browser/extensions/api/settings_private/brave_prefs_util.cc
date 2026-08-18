@@ -16,6 +16,7 @@
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/containers/buildflags/buildflags.h"
 #include "brave/components/de_amp/common/pref_names.h"
 #include "brave/components/debounce/core/common/pref_names.h"
 #include "brave/components/decentralized_dns/core/pref_names.h"
@@ -49,6 +50,10 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
 #include "brave/components/brave_wayback_machine/pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+#include "brave/components/containers/core/browser/pref_names.h"
 #endif
 
 #if defined(TOOLKIT_VIEWS)
@@ -408,6 +413,11 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
   (*s_brave_allowlist)
       [email_aliases::prefs::kEmailAliasesNewAliasAutofillSuggestionEnabled] =
           settings_api::PrefType::kBoolean;
+#endif
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+  (*s_brave_allowlist)[containers::prefs::kContainersEnabled] =
+      settings_api::PrefType::kBoolean;
 #endif
 
   return *s_brave_allowlist;
