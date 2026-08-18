@@ -15,6 +15,8 @@ from __future__ import annotations
 import argparse
 import sys
 
+import gen
+import generated_output
 import lookup
 import snapshot
 
@@ -25,11 +27,12 @@ def main(argv: list[str] | None = None) -> int:
 
     snapshot.add_subparser(subparsers)
     lookup.add_subparser(subparsers)
+    gen.add_subparser(subparsers)
 
     args = parser.parse_args(argv)
     try:
         return args.func(args)
-    except lookup.BotsError as e:
+    except generated_output.BotsError as e:
         print(e, file=sys.stderr)
         return 1
 
