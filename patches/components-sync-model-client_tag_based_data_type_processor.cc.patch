@@ -1,0 +1,16 @@
+diff --git a/components/sync/model/client_tag_based_data_type_processor.cc b/components/sync/model/client_tag_based_data_type_processor.cc
+index dc3623f434cd9982afe1f32f79a27e71fab2e7da..408b3305da14fb3872f5ef5ab2fc8feab0e1c5a4 100644
+--- a/components/sync/model/client_tag_based_data_type_processor.cc
++++ b/components/sync/model/client_tag_based_data_type_processor.cc
+@@ -1740,6 +1740,11 @@ void ClientTagBasedDataTypeProcessor::ClearMetadataIfStopped() {
+     return;
+   }
+ 
++LOG(ERROR) << "[BraveSync] ClearMetadataIfStopped type="
++             << syncer::DataTypeToDebugString(type_)
++             << " model_ready=" << model_ready_to_sync_
++             << " tracking=" << (model_ready_to_sync_ && IsTrackingMetadata());
++
+   if (!model_ready_to_sync_) {
+     // Defer clearing metadata until ModelReadyToSync() is invoked.
+     pending_clear_metadata_ = true;
