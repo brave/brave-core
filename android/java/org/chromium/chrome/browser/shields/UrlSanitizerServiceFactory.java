@@ -21,8 +21,6 @@ import org.chromium.mojo.system.MessagePipeHandle;
 import org.chromium.mojo.system.impl.CoreImpl;
 import org.chromium.url_sanitizer.mojom.UrlSanitizerService;
 
-import java.util.concurrent.atomic.AtomicBoolean;
-
 @NullMarked
 @JNINamespace("chrome::android")
 public class UrlSanitizerServiceFactory {
@@ -52,21 +50,17 @@ public class UrlSanitizerServiceFactory {
             return;
         }
 
-        AtomicBoolean callbackCalled = new AtomicBoolean();
         Callback<String> complete =
-                result -> {
-                    if (!callbackCalled.compareAndSet(false, true)) return;
-
-                    PostTask.postTask(
-                            TaskTraits.UI_DEFAULT,
-                            () -> {
-                                try {
-                                    callback.onResult(result);
-                                } finally {
-                                    urlSanitizerService.close();
-                                }
-                            });
-                };
+                result ->
+                        PostTask.postTask(
+                                TaskTraits.UI_DEFAULT,
+                                () -> {
+                                    try {
+                                        callback.onResult(result);
+                                    } finally {
+                                        urlSanitizerService.close();
+                                    }
+                                });
         Handler handler = ((Interface.Proxy) urlSanitizerService).getProxyHandler();
         handler.setErrorHandler(error -> complete.onResult(url));
         urlSanitizerService.sanitizeUrl(url, result -> complete.onResult(result));

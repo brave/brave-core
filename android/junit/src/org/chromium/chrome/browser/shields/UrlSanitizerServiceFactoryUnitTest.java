@@ -10,7 +10,6 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -100,29 +99,6 @@ public class UrlSanitizerServiceFactoryUnitTest {
         ShadowLooper.runUiThreadTasksIncludingDelayedTasks();
         assertEquals(List.of(SANITIZED_URL), results);
         verify(mService).close();
-    }
-
-    @Test
-    public void testSanitizeUrl_serviceResultThenConnectionError_postsOnlyOneResult() {
-        setService();
-        List<String> results = new ArrayList<>();
-
-        mFactory.sanitizeUrl(mProfile, ORIGINAL_URL, results::add);
-
-        ArgumentCaptor<UrlSanitizerService.SanitizeUrl_Response> responseCaptor =
-                ArgumentCaptor.forClass(UrlSanitizerService.SanitizeUrl_Response.class);
-        verify(mService).sanitizeUrl(eq(ORIGINAL_URL), responseCaptor.capture());
-        ArgumentCaptor<ConnectionErrorHandler> errorHandlerCaptor =
-                ArgumentCaptor.forClass(ConnectionErrorHandler.class);
-        verify(mProxyHandler).setErrorHandler(errorHandlerCaptor.capture());
-
-        responseCaptor.getValue().call(SANITIZED_URL);
-        errorHandlerCaptor.getValue().onConnectionError(new MojoException(0));
-
-        assertEquals(List.of(), results);
-        ShadowLooper.runUiThreadTasksIncludingDelayedTasks();
-        assertEquals(List.of(SANITIZED_URL), results);
-        verify(mService, times(1)).close();
     }
 
     private void setService() {
