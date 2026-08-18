@@ -28,7 +28,6 @@ import { WalletRoutes } from '../../../../constants/types'
 import { WalletPageActions } from '../../../actions'
 
 // components
-import Button from '@brave/leo/react/button'
 import {
   OnboardingContentLayout, //
 } from '../../onboarding/components/onboarding_content_layout/content_layout'
@@ -41,7 +40,7 @@ import {
 } from '../../onboarding/components/onboarding_content_layout/content_layout.style'
 import { Column, Row } from '../../../../components/shared/style'
 import { BackButton } from './verify_recovery_phrase.style'
-import { ContinueButton } from '../../onboarding/onboarding.style'
+import { ContinueButton, SkipButton } from '../../onboarding/onboarding.style'
 
 const numberOfVerificationSteps = 3
 
@@ -168,12 +167,12 @@ export const VerifyRecoveryPhrase = () => {
         >
           {getLocale('braveWalletButtonContinue')}
         </ContinueButton>
-        <Button
+        <SkipButton
           kind='plain-faint'
           onClick={onSkipBackup}
         >
           {getLocale('braveWalletButtonSkip')}
-        </Button>
+        </SkipButton>
       </Column>
     </OnboardingContentLayout>
   )
