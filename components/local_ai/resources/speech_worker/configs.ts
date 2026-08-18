@@ -119,16 +119,12 @@ export const ENGLISH_SUPPORTED_LANGUAGES = [
   'en-GB',
 ] as const
 
-export const MULTILINGUAL_SUPPORTED_LANGUAGES = [
-  'es-ES',
-  'es-US',
-  'hi-IN',
-  'fr-FR',
-  'de-DE',
-  'ja-JP',
-  // ...
-] as const
-
-export type SupportedLanguage =
-  | typeof ENGLISH_SUPPORTED_LANGUAGES[number]
-  | typeof MULTILINGUAL_SUPPORTED_LANGUAGES[number]
+export const MULTILINGUAL_SUPPORTED_LANGUAGES = {
+  'es-ES': 2,
+  'es-US': 3,
+  'it-IT': 15,
+  'pt-BR': 12,
+  'pt-PT': 13,
+  'hi-IN': 6,
+ } as const
+ 
