@@ -342,7 +342,7 @@ from exceptions import (ActionNeededException, BadOutcomeException,
                         InvalidInputException)
 from gh_cli import GhCli
 from git_status import GitStatus
-from patchfile import Patchfile
+from patchfile import Patchfile, patch_has_plaster
 import plaster
 from plaster import PlasterError, PlasterFile
 import rebase
@@ -1362,10 +1362,13 @@ class Upgrade(Versioned):
         # patches to make sure that the number of hunks in these patch files
         # have not changed, as any significant change to a patchfile should be
         # submitted as its own change, with a culprit for visibility.
+        #
+        # (This rule doesn't apply to plaster patches though because they tend
+        # to run into this rule a lot).
         all_modified = status.staged.modified + status.unstaged.modified
         modified_patches = [
-            path for path in all_modified
-            if path.startswith('patches/') and path.endswith('.patch')
+            path for path in all_modified if path.startswith('patches/')
+            and path.endswith('.patch') and not patch_has_plaster(Path(path))
         ]
         if not modified_patches:
             return status

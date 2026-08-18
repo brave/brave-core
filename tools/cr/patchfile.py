@@ -17,6 +17,23 @@ from repository import Repository
 import repository
 
 
+def _plaster_path_for_patch(patch_path: Path) -> Path | None:
+    """Returns the path for a plaster file from a patch file path.
+
+    Return None if no file is found.
+    """
+    if len(patch_path.parts) != 2:
+        return None
+    source_name = patch_path.name[:-len('.patch')].replace('-', '/')
+    candidate = PLASTER_FILES_PATH / f'{source_name}.yaml'
+    return candidate if candidate.exists() else None
+
+
+def patch_has_plaster(patch_path: Path) -> bool:
+    """Indicates whether a particular patch has a plaster file."""
+    return _plaster_path_for_patch(patch_path) is not None
+
+
 @dataclass(frozen=True)
 class Patchfile:
     """Patchfile data class to hold the patchfile path.
@@ -52,13 +69,7 @@ class Patchfile:
                 f'Expected exactly one source for {self.path}, got {sources}.')
         object.__setattr__(self, 'source', sources[0])
 
-        plaster = None
-        if self.repository.is_chromium:
-            plaster_dir = PLASTER_FILES_PATH / self.source.parent
-            candidate = plaster_dir / (self.source.name + '.yaml')
-            if candidate.exists():
-                plaster = candidate
-        object.__setattr__(self, 'plaster', plaster)
+        object.__setattr__(self, 'plaster', _plaster_path_for_patch(self.path))
 
     def get_repository_from_patch_name(self) -> Repository:
         """Gets the repository for the patch file.
