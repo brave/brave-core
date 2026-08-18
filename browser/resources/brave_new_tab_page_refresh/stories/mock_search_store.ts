@@ -119,6 +119,13 @@ export function createSearchStore() {
     stopAutocomplete() {
       store.update({ searchMatches: [] })
     },
+
+    async getUrlFromSearchInput(query) {
+      if (query.includes('.') && !/\s/.test(query)) {
+        return `https://${query}`
+      }
+      return null
+    },
   }
 
   store.update({ actions })

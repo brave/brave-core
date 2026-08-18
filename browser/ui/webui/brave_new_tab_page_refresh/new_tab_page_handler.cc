@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/new_tab_page_handler.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/check.h"
@@ -27,13 +28,18 @@
 #include "brave/components/misc_metrics/new_tab_metrics.h"
 #include "brave/components/misc_metrics/page_metrics.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
+#include "chrome/browser/autocomplete/chrome_autocomplete_scheme_classifier.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/common/pref_names.h"
+#include "components/omnibox/browser/autocomplete_input.h"
 #include "components/prefs/pref_service.h"
 #include "components/search_engines/search_engine_type.h"
 #include "components/search_engines/template_url_service.h"
 #include "components/tabs/public/tab_interface.h"
+#include "content/public/browser/web_contents.h"
+#include "third_party/metrics_proto/omnibox_event.pb.h"
+#include "third_party/metrics_proto/omnibox_input_type.pb.h"
 #include "ui/base/window_open_disposition_utils.h"
 #include "url/gurl.h"
 
@@ -50,6 +56,7 @@ NewTabPageHandler::NewTabPageHandler(
     std::unique_ptr<SponsoredSitesFacade> sponsored_sites_facade,
     std::unique_ptr<TopSitesFacade> top_sites_facade,
     std::unique_ptr<VPNFacade> vpn_facade,
+    std::unique_ptr<ChromeAutocompleteSchemeClassifier> scheme_classifier,
     content::WebContents& web_contents,
     PrefService& pref_service,
     TemplateURLService& template_url_service,
@@ -63,6 +70,7 @@ NewTabPageHandler::NewTabPageHandler(
       sponsored_sites_facade_(std::move(sponsored_sites_facade)),
       top_sites_facade_(std::move(top_sites_facade)),
       vpn_facade_(std::move(vpn_facade)),
+      scheme_classifier_(std::move(scheme_classifier)),
       web_contents_(web_contents),
       pref_service_(pref_service),
       template_url_service_(template_url_service),
@@ -73,6 +81,7 @@ NewTabPageHandler::NewTabPageHandler(
   CHECK(sponsored_sites_facade_);
   CHECK(top_sites_facade_);
   CHECK(vpn_facade_);
+  CHECK(scheme_classifier_);
 
   if (page_metrics) {
     brave_search_metrics_ = &page_metrics->brave_search_metrics();
@@ -318,6 +327,21 @@ void NewTabPageHandler::OpenURLFromSearch(const std::string& url,
            ui::DispositionFromClick(false, details->alt_key, details->ctrl_key,
                                     details->meta_key, details->shift_key));
   std::move(callback).Run();
+}
+
+void NewTabPageHandler::GetUrlFromSearchInput(
+    const std::string& input,
+    GetUrlFromSearchInputCallback callback) {
+  AutocompleteInput autocomplete_input(
+      base::UTF8ToUTF16(input), metrics::OmniboxEventProto::NTP_REALBOX,
+      *scheme_classifier_,
+      /*should_use_https_as_default_scheme=*/true);
+  if (autocomplete_input.type() != metrics::OmniboxInputType::URL ||
+      !autocomplete_input.canonicalized_url().is_valid()) {
+    std::move(callback).Run(std::nullopt);
+    return;
+  }
+  std::move(callback).Run(autocomplete_input.canonicalized_url().spec());
 }
 
 void NewTabPageHandler::SetDefaultSearchEngineAsBraveSearch(

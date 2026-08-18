@@ -255,6 +255,11 @@ export function createSearchStore() {
       searchProxy.handler.stopAutocomplete(true)
     },
 
+    async getUrlFromSearchInput(query) {
+      let { url } = await newTabProxy.handler.getUrlFromSearchInput(query)
+      return url ?? null
+    },
+
     openSearch(query, engine, event) {
       newTabProxy.handler.openSearch(query, engine, event)
     },
