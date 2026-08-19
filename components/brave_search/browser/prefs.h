@@ -30,6 +30,10 @@ inline constexpr char kBackupResultsLastWindowWidth[] =
     "brave.search.backup_results.last_window_width";
 inline constexpr char kBackupResultsLastWindowHeight[] =
     "brave.search.backup_results.last_window_height";
+inline constexpr char kBackupResultsLastWindowX[] =
+    "brave.search.backup_results.last_window_x";
+inline constexpr char kBackupResultsLastWindowY[] =
+    "brave.search.backup_results.last_window_y";
 
 inline constexpr char kBackupResultsTotalQueryCount[] =
     "brave.search.backup_results.total_query_count";

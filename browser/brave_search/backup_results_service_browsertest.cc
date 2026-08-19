@@ -207,7 +207,7 @@ IN_PROC_BROWSER_TEST_P(BackupResultsServiceBrowserTest, BasicRenderAndLoad) {
 
   BackupResultsServiceImpl::RecordLastViewSize(g_browser_process->local_state(),
                                                gfx::Size(1280, 720),
-                                               gfx::Size(1280, 800));
+                                               gfx::Rect(120, 80, 1280, 800));
   request_paths_.clear();
 
   {

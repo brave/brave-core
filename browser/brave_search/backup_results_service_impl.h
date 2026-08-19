@@ -21,6 +21,7 @@
 #include "content/public/browser/navigation_controller.h"
 #include "net/http/http_request_headers.h"
 #include "third_party/blink/public/common/user_agent/user_agent_metadata.h"
+#include "ui/gfx/geometry/rect.h"
 #include "ui/gfx/geometry/size.h"
 #include "url/gurl.h"
 
@@ -55,7 +56,7 @@ class BackupResultsServiceImpl : public BackupResultsService,
   // window dimensions to the renderer.
   static void RecordLastViewSize(PrefService* local_state,
                                  const gfx::Size& view_size,
-                                 const gfx::Size& window_size);
+                                 const gfx::Rect& window_bounds);
 
   explicit BackupResultsServiceImpl(Profile* profile);
 
@@ -101,7 +102,7 @@ class BackupResultsServiceImpl : public BackupResultsService,
     std::unique_ptr<content::WebContents> web_contents;
     GURL target_url;
     gfx::Size view_size;
-    gfx::Size window_size;
+    gfx::Rect window_bounds;
 
 #if BUILDFLAG(IS_ANDROID)
     // Root window for the `web_contents` view tree.

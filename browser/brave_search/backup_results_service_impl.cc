@@ -198,6 +198,8 @@ void BackupResultsServiceImpl::RegisterLocalStatePrefs(
   registry->RegisterIntegerPref(prefs::kBackupResultsLastViewHeight, 0);
   registry->RegisterIntegerPref(prefs::kBackupResultsLastWindowWidth, 0);
   registry->RegisterIntegerPref(prefs::kBackupResultsLastWindowHeight, 0);
+  registry->RegisterIntegerPref(prefs::kBackupResultsLastWindowX, 0);
+  registry->RegisterIntegerPref(prefs::kBackupResultsLastWindowY, 0);
   registry->RegisterIntegerPref(prefs::kBackupResultsDailyRequestCount, 0);
   registry->RegisterTimePref(prefs::kBackupResultsDailyRequestWindowStart, {});
   BackupResultsMetrics::RegisterPrefs(registry);
@@ -207,7 +209,7 @@ void BackupResultsServiceImpl::RegisterLocalStatePrefs(
 void BackupResultsServiceImpl::RecordLastViewSize(
     PrefService* local_state,
     const gfx::Size& view_size,
-    const gfx::Size& window_size) {
+    const gfx::Rect& window_bounds) {
   if (view_size.IsEmpty()) {
     return;
   }
@@ -216,14 +218,16 @@ void BackupResultsServiceImpl::RecordLastViewSize(
   local_state->SetInteger(prefs::kBackupResultsLastViewHeight,
                           view_size.height());
 
-  if (window_size.width() < view_size.width() ||
-      window_size.height() < view_size.height()) {
+  if (window_bounds.width() < view_size.width() ||
+      window_bounds.height() < view_size.height()) {
     return;
   }
   local_state->SetInteger(prefs::kBackupResultsLastWindowWidth,
-                          window_size.width());
+                          window_bounds.width());
   local_state->SetInteger(prefs::kBackupResultsLastWindowHeight,
-                          window_size.height());
+                          window_bounds.height());
+  local_state->SetInteger(prefs::kBackupResultsLastWindowX, window_bounds.x());
+  local_state->SetInteger(prefs::kBackupResultsLastWindowY, window_bounds.y());
 }
 
 void BackupResultsServiceImpl::FetchBackupResults(
@@ -266,8 +270,8 @@ void BackupResultsServiceImpl::FetchBackupResults(
 
   std::unique_ptr<content::WebContents> web_contents;
   gfx::Size view_size;
-  // Size of the browser window containing the view, if it was ever measured.
-  gfx::Size window_size;
+  // Bounds of the browser window containing the view, if it was ever measured.
+  gfx::Rect window_bounds;
 #if BUILDFLAG(IS_ANDROID)
   ui::WindowAndroid* window_android = nullptr;
 #endif
@@ -298,7 +302,10 @@ void BackupResultsServiceImpl::FetchBackupResults(
           local_state_->GetInteger(prefs::kBackupResultsLastWindowHeight);
       if (stored_window_width >= view_size.width() &&
           stored_window_height >= view_size.height()) {
-        window_size = gfx::Size(stored_window_width, stored_window_height);
+        window_bounds =
+            gfx::Rect(local_state_->GetInteger(prefs::kBackupResultsLastWindowX),
+                      local_state_->GetInteger(prefs::kBackupResultsLastWindowY),
+                      stored_window_width, stored_window_height);
       }
     }
 
@@ -322,12 +329,9 @@ void BackupResultsServiceImpl::FetchBackupResults(
     // The renderer reports the bounds of the topmost window as the window rect,
     // so the containing window is sized separately from the view. The view is
     // resized in ApplyWindowAndViewSize once it exists.
-    web_contents->Resize(
-        gfx::Rect(window_size.IsEmpty() ? view_size : window_size));
+    web_contents->Resize(gfx::Rect(
+        window_bounds.IsEmpty() ? view_size : window_bounds.size()));
 #endif
-    LOG(ERROR) << "FetchBackupResults: view_size=" << view_size.ToString()
-               << " window_size=" << window_size.ToString()
-               << " container=" << web_contents->GetSize().ToString();
 
     auto web_preferences = web_contents->GetOrCreateWebPreferences();
     web_preferences.supports_multiple_windows = false;
@@ -347,7 +351,7 @@ void BackupResultsServiceImpl::FetchBackupResults(
       pending_requests_.end(), std::move(web_contents), headers, profile_,
       otr_profile, low_latency_required, std::move(callback));
   request->view_size = view_size;
-  request->window_size = window_size;
+  request->window_bounds = window_bounds;
 #if BUILDFLAG(IS_ANDROID)
   request->window_android = window_android;
 #endif
@@ -446,29 +450,19 @@ void BackupResultsServiceImpl::ApplyWindowAndViewSize(
     const content::WebContents* web_contents) {
 #if !BUILDFLAG(IS_ANDROID)
   auto pending_request = FindPendingRequest(web_contents);
-  if (pending_request == pending_requests_.end()) {
-    LOG(ERROR) << "ApplyWindowAndViewSize: no pending request";
-    return;
-  }
-  if (pending_request->window_size.IsEmpty()) {
-    LOG(ERROR) << "ApplyWindowAndViewSize: no window size";
+  if (pending_request == pending_requests_.end() ||
+      pending_request->window_bounds.IsEmpty()) {
     return;
   }
   auto* rwhv = pending_request->web_contents->GetRenderWidgetHostView();
   if (!rwhv) {
-    LOG(ERROR) << "ApplyWindowAndViewSize: no view";
     return;
   }
-  LOG(ERROR) << "ApplyWindowAndViewSize: view_size="
-             << pending_request->view_size.ToString() << " window_size="
-             << pending_request->window_size.ToString() << " container="
-             << pending_request->web_contents->GetSize().ToString()
-             << " view bounds=" << rwhv->GetViewBounds().ToString();
 #if BUILDFLAG(IS_MAC)
   // The view is not attached to a NSWindow, so the window rect reported to the
   // renderer has to be set explicitly. Sizing the view overwrites it, so it
   // needs to be reapplied whenever a view is created.
-  rwhv->SetWindowFrameInScreen(gfx::Rect(pending_request->window_size));
+  rwhv->SetWindowFrameInScreen(pending_request->window_bounds);
 #else
   // New views are sized to the containing window, which is intentionally larger
   // than the view.

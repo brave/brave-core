@@ -27,7 +27,7 @@
 #include "content/public/browser/restore_type.h"
 #include "ui/base/base_window.h"
 #include "ui/base/page_transition_types.h"
-#include "ui/gfx/geometry/size.h"
+#include "ui/gfx/geometry/rect.h"
 
 #if BUILDFLAG(IS_ANDROID)
 #include "chrome/browser/flags/android/chrome_session_state.h"
@@ -81,13 +81,13 @@ void PageMetricsTabHelper::DidFinishNavigation(
   } else {
     auto* tab = tabs::TabInterface::MaybeGetFromContents(web_contents());
     auto* browser_window = tab ? tab->GetBrowserWindowInterface() : nullptr;
-    gfx::Size window_size;
+    gfx::Rect window_bounds;
     if (browser_window) {
-      window_size = browser_window->GetWindow()->GetBounds().size();
+      window_bounds = browser_window->GetWindow()->GetBounds();
     }
     brave_search::BackupResultsServiceImpl::RecordLastViewSize(
         g_browser_process->local_state(), web_contents()->GetSize(),
-        window_size);
+        window_bounds);
   }
 
   bool is_reload = false;
