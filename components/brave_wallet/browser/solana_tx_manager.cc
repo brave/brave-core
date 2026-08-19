@@ -30,7 +30,6 @@
 #include "brave/components/brave_wallet/browser/solana_message_header.h"
 #include "brave/components/brave_wallet/browser/solana_tx_meta.h"
 #include "brave/components/brave_wallet/browser/solana_tx_state_manager.h"
-#include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
@@ -40,7 +39,6 @@
 #include "build/build_config.h"
 #include "components/grit/brave_components_strings.h"
 #include "ui/base/l10n/l10n_util.h"
-#include "url/gurl.h"
 
 namespace brave_wallet {
 
@@ -310,19 +308,6 @@ void SolanaTxManager::ApproveTransaction(const std::string& tx_meta_id,
     return;
   }
 
-  if (meta->origin() &&
-      (meta->origin()->scheme() == url::kHttpScheme ||
-       meta->origin()->scheme() == url::kHttpsScheme) &&
-      !tx_service().HasOriginPermission(*meta->origin(), meta->from())) {
-    meta->set_status(mojom::TransactionStatus::Error);
-    tx_state_manager().AddOrUpdateTx(*meta);
-    std::move(callback).Run(false,
-                            mojom::ProviderErrorUnion::NewSolanaProviderError(
-                                mojom::SolanaProviderError::kUnauthorized),
-                            l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED));
-    return;
-  }
-
   const std::string blockhash = meta->tx()->message()->recent_blockhash();
   auto chain_id = meta->chain_id();
   if (blockhash.empty()) {
@@ -372,19 +357,6 @@ void SolanaTxManager::OnGetLatestBlockhash(std::unique_ptr<SolanaTxMeta> meta,
     std::move(callback).Run(
         false, mojom::ProviderErrorUnion::NewSolanaProviderError(error),
         error_message);
-    return;
-  }
-
-  if (meta->origin() &&
-      (meta->origin()->scheme() == url::kHttpScheme ||
-       meta->origin()->scheme() == url::kHttpsScheme) &&
-      !tx_service().HasOriginPermission(*meta->origin(), meta->from())) {
-    meta->set_status(mojom::TransactionStatus::Error);
-    tx_state_manager().AddOrUpdateTx(*meta);
-    std::move(callback).Run(false,
-                            mojom::ProviderErrorUnion::NewSolanaProviderError(
-                                mojom::SolanaProviderError::kUnauthorized),
-                            l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED));
     return;
   }
 

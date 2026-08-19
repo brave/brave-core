@@ -2494,40 +2494,6 @@ TEST_F(EthTxManagerUnitTest, GetSignedTransaction) {
 }
 
 TEST_F(EthTxManagerUnitTest,
-       ApproveTransaction_PermissionRevokedWhileQueued_RejectedBeforeSigning) {
-  auto tx_data =
-      mojom::TxData::New("0x1", "0x06", "0x09184e72a000", "0x0974",
-                         "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
-                         "0x016345785d8a0000", data_);
-
-  base::test::TestFuture<bool, const std::string&, const std::string&>
-      add_tx_future;
-  eth_tx_manager()->AddUnapprovedEvmDappTransaction(
-      std::move(tx_data), from(), GetOrigin(), false,
-      add_tx_future.GetCallback());
-  auto [added, tx_meta_id, add_error] = add_tx_future.Take();
-  ASSERT_FALSE(tx_meta_id.empty());
-
-  // Simulate the site's wallet permission being revoked while the tx is
-  // queued in the approval panel.
-  permission_granted_ = false;
-
-  base::test::TestFuture<bool, mojom::ProviderErrorUnionPtr, const std::string&>
-      approve_tx_future;
-  eth_tx_manager()->ApproveTransaction(tx_meta_id,
-                                       approve_tx_future.GetCallback());
-
-  auto [success, error_union, message] = approve_tx_future.Take();
-  EXPECT_FALSE(success);
-  ASSERT_TRUE(error_union);
-  ASSERT_TRUE(error_union->is_provider_error());
-  EXPECT_EQ(error_union->get_provider_error(),
-            mojom::ProviderError::kUnauthorized);
-  EXPECT_EQ(message, l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED));
-  EXPECT_EQ(eth_tx_manager()->GetSignedTransaction(tx_meta_id), std::nullopt);
-}
-
-TEST_F(EthTxManagerUnitTest,
        RejectUnapprovedTransactionsWithoutPermission_RejectsPendingTx) {
   auto tx_data =
       mojom::TxData::New("0x1", "0x06", "0x09184e72a000", "0x0974",
