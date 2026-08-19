@@ -517,6 +517,9 @@ public class BrowserViewController: UIViewController {
     prefsChangeRegistrar.addObserver(forPath: kDefaultSolanaWallet) { [weak self] _ in
       self?.defaultWalletChanged(for: .sol)
     }
+    prefsChangeRegistrar.addObserver(forPath: kDefaultCardanoWallet) { [weak self] _ in
+      self?.defaultWalletChanged(for: .ada)
+    }
     // Creating or resetting a wallet flips whether the providers are injected,
     // so the scripts have to be refreshed the same way a default wallet change
     // refreshes them. The keyrings pref is also written on every account add,

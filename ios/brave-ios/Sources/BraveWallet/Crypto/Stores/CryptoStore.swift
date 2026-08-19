@@ -251,9 +251,11 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
     self.keyringServiceObserver = KeyringServiceObserver(
       keyringService: keyringService,
       _walletReset: { [weak self] in
-        WalletProviderPermissionRequestsManager.shared.cancelAllPendingRequests(for: [.eth, .sol])
+        WalletProviderPermissionRequestsManager.shared.cancelAllPendingRequests(for: [
+          .eth, .sol, .ada,
+        ])
         WalletProviderAccountCreationRequestManager.shared.cancelAllPendingRequests(coins: [
-          .eth, .sol,
+          .eth, .sol, .ada,
         ])
         self?.rejectAllPendingWebpageRequests()
       },

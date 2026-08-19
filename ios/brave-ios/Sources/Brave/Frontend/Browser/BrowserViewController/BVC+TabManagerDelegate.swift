@@ -321,8 +321,10 @@ extension BrowserViewController: TabManagerDelegate {
     updateInContentHomePanel(selected?.visibleURL as URL?)
 
     removeWalletNotificationAndClearOrigin()
-    WalletProviderPermissionRequestsManager.shared.cancelAllPendingRequests(for: [.eth, .sol])
-    WalletProviderAccountCreationRequestManager.shared.cancelAllPendingRequests(coins: [.eth, .sol])
+    WalletProviderPermissionRequestsManager.shared.cancelAllPendingRequests(for: [.eth, .sol, .ada])
+    WalletProviderAccountCreationRequestManager.shared.cancelAllPendingRequests(coins: [
+      .eth, .sol, .ada,
+    ])
     updateURLBarWalletButton()
   }
 
