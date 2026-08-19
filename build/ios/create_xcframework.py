@@ -40,8 +40,18 @@ def main():
         shutil.rmtree(args.xcframework_dir)
 
     create_xcframework_cmd_args = [
-        'xcrun', 'xcodebuild', '-create-xcframework', '-output',
-        args.xcframework_dir, '-framework', args.framework_dir
+        'xcrun',
+        'xcodebuild',
+        '-create-xcframework',
+        '-output',
+        args.xcframework_dir,
+        '-framework',
+        args.framework_dir,
+        # Frameworks that export a Swift module only ship a binary
+        # `.swiftmodule` and no `.swiftinterface`, which xcodebuild otherwise
+        # rejects. These frameworks are only ever consumed by a build using the
+        # same Xcode version, so the interface is not needed.
+        '-allow-internal-distribution',
     ]
 
     symbols_dir = args.framework_dir.with_suffix('.dSYM')
