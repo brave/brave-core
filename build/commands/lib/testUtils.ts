@@ -5,13 +5,16 @@
 
 import fs from 'fs-extra'
 import path from 'node:path'
+import type { Config } from './config.ts'
 
 // HACK: determines the executable path from the gn target name
 // Alternative: gn desc <buildDir> <target> outputs --format=json
 // TODO(https://github.com/brave/brave-browser/issues/48118): is there a better way of doing this?
-const gnTargetToExecutableName = (str) => str.split(':').at(-1).split('(')[0]
+export function gnTargetToExecutableName(str: string): string {
+  return str.split(':').at(-1)!.split('(')[0]!
+}
 
-const getTestBinary = (config, suite) => {
+export function getTestBinary(config: Config, suite: string) {
   let testBinary = suite
   if (testBinary === 'brave_java_unit_tests') {
     testBinary = path.join('bin', 'run_brave_java_unit_tests')
@@ -29,11 +32,11 @@ const getTestBinary = (config, suite) => {
   return path.join(config.outputDir, testBinary)
 }
 
-const getChromiumTestsSuites = (config) => {
+export function getChromiumTestsSuites(config: Config) {
   return getTestsToRun(config, 'chromium_unit_tests').concat(['browser_tests'])
 }
 
-const getTestGroupDeps = (testDepFile) => {
+export function getTestGroupDeps(testDepFile: string) {
   if (fs.existsSync(testDepFile)) {
     const suiteDepNames = JSON.parse(
       fs.readFileSync(testDepFile, { encoding: 'utf-8' }),
@@ -44,7 +47,7 @@ const getTestGroupDeps = (testDepFile) => {
   }
 }
 
-const getTestsToRun = (config, suite) => {
+export function getTestsToRun(config: Config, suite: string) {
   const testsToRun = getTestGroupDeps(
     path.join(config.outputDir, `${suite}.json`),
   )
@@ -64,18 +67,17 @@ const getTestsToRun = (config, suite) => {
 //   - unit-tests.filter              -> Base filters
 //   - unit_tests-windows.filters:    -> Platform specific
 //   - unit_tests-windows-x86.filters -> Platform & Architecture specific
-const getApplicableFilters = (config, suite) => {
-  let filterFilePaths = []
+export function getApplicableFilters(config: Config, suite: string) {
+  let filterFilePaths: string[] = []
 
-  /** @type {string} */
-  let targetPlatform = process.platform
+  let targetPlatform: string = process.platform
   if (targetPlatform === 'win32') {
     targetPlatform = 'windows'
   } else if (targetPlatform === 'darwin') {
     targetPlatform = 'macos'
   }
 
-  let possibleFilters = [
+  let possibleFilters: string[] = [
     suite,
     [suite, targetPlatform].join('-'),
     [suite, targetPlatform, config.targetArch].join('-'),
@@ -108,10 +110,14 @@ const getApplicableFilters = (config, suite) => {
   return filterFilePaths
 }
 
-export {
-  gnTargetToExecutableName,
-  getTestBinary,
-  getTestsToRun,
-  getApplicableFilters,
-  getChromiumTestsSuites,
+export function getDefaultTestSuiteArgs(testSuite: string) {
+  switch (testSuite) {
+    case 'brave_network_audit_tests':
+      return [
+        '--ui-test-action-timeout=320000',
+        '--test-launcher-timeout=2200000',
+      ]
+    default:
+      return []
+  }
 }
