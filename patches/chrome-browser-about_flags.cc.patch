@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/about_flags.cc b/chrome/browser/about_flags.cc
-index cf560fad6d2a2d240dd4d3838252ba136b4dd60b..3ec092f58a7efeefebf5e077c31516525fa5cb39 100644
+index ffdecc12e44c6b584a41a6df2a4dc2647b5f8ec6..ed868f5bdf15ae46132cf0ee15e776f3e6b14c69 100644
 --- a/chrome/browser/about_flags.cc
 +++ b/chrome/browser/about_flags.cc
-@@ -4790,6 +4790,7 @@ const FeatureEntry::FeatureVariation kDictationVariations[] = {
+@@ -4864,6 +4864,7 @@ const FeatureEntry::FeatureVariation kDictationVariations[] = {
  //
  // When adding a new choice, add it to the end of the list.
  const FeatureEntry kFeatureEntries[] = {
