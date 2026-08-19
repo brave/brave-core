@@ -229,7 +229,7 @@ struct ShieldsPanelView: View {
     }
     ShieldSettingRow {
       ToggleView(
-        title: Strings.blockScripts,
+        title: Strings.Shields.blockScripts,
         subtitle: nil,
         toggle: $viewModel.blockScripts
       ) { _ in
@@ -238,7 +238,7 @@ struct ShieldsPanelView: View {
     }
     ShieldSettingRow {
       ToggleView(
-        title: Strings.fingerprintingProtection,
+        title: Strings.Shields.fingerprintingProtection,
         subtitle: nil,
         toggle: $viewModel.fingerprintProtection
       ) { _ in
