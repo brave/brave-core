@@ -39,12 +39,12 @@ public class BraveSettingsActivity extends SettingsActivity {
     private @Nullable View mContentView;
 
     /**
-     * Original bottom padding for each Settings fragment's RecyclerView.
+     * Original bottom padding for each Settings content view.
      *
      * <p>Used as the baseline when applying navigation-bar insets so repeated updates do not
      * accumulate padding.
      */
-    private final Map<RecyclerView, Integer> mOriginalRecyclerViewBottomPaddings = new HashMap<>();
+    private final Map<View, Integer> mOriginalContentBottomPaddings = new HashMap<>();
 
     private final FragmentManager.FragmentLifecycleCallbacks mSettingsFragmentLifecycleCallbacks =
             new FragmentManager.FragmentLifecycleCallbacks() {
@@ -63,10 +63,10 @@ public class BraveSettingsActivity extends SettingsActivity {
                     View fragmentView = fragment.getView();
                     if (fragmentView == null) return;
 
-                    RecyclerView recyclerView = fragmentView.findViewById(R.id.recycler_view);
-                    if (recyclerView == null) return;
+                    View insetView = getInsetView(fragment, fragmentView);
+                    if (insetView == null) return;
 
-                    mOriginalRecyclerViewBottomPaddings.remove(recyclerView);
+                    mOriginalContentBottomPaddings.remove(insetView);
                 }
             };
 
@@ -105,7 +105,7 @@ public class BraveSettingsActivity extends SettingsActivity {
             ViewCompat.setOnApplyWindowInsetsListener(mContentView, null);
             mContentView = null;
         }
-        mOriginalRecyclerViewBottomPaddings.clear();
+        mOriginalContentBottomPaddings.clear();
         super.onDestroy();
     }
 
@@ -152,12 +152,13 @@ public class BraveSettingsActivity extends SettingsActivity {
         if (!fragment.isAdded() || fragment.getView() != fragmentView) return;
         if (isFinishing() || isDestroyed()) return;
 
-        RecyclerView recyclerView = fragmentView.findViewById(R.id.recycler_view);
-        if (recyclerView == null) return;
+        View insetView = getInsetView(fragment, fragmentView);
+        if (insetView == null) return;
 
-        mOriginalRecyclerViewBottomPaddings.putIfAbsent(
-                recyclerView, recyclerView.getPaddingBottom());
-        recyclerView.setClipToPadding(false);
+        mOriginalContentBottomPaddings.putIfAbsent(insetView, insetView.getPaddingBottom());
+        if (insetView instanceof RecyclerView recyclerView) {
+            recyclerView.setClipToPadding(false);
+        }
 
         View contentView = mContentView;
         if (contentView == null) return;
@@ -169,8 +170,13 @@ public class BraveSettingsActivity extends SettingsActivity {
     }
 
     private WindowInsetsCompat updateSettingsContentInsets(
-            View contentView, WindowInsetsCompat rootWindowInsets) {
-        if (isFinishing() || isDestroyed()) return rootWindowInsets;
+            View contentView, WindowInsetsCompat windowInsets) {
+        if (isFinishing() || isDestroyed()) return windowInsets;
+
+        // The nested Settings content view can receive consumed insets. Read the root values so
+        // a later dispatch cannot clear the taskbar padding.
+        WindowInsetsCompat rootWindowInsets = ViewCompat.getRootWindowInsets(contentView);
+        if (rootWindowInsets == null) rootWindowInsets = windowInsets;
 
         setBottomPadding(
                 contentView, rootWindowInsets.getInsets(WindowInsetsCompat.Type.ime()).bottom);
@@ -181,11 +187,19 @@ public class BraveSettingsActivity extends SettingsActivity {
                 rootWindowInsets.getInsets(WindowInsetsCompat.Type.tappableElement());
         int navigationBarBottomInset =
                 Math.max(navigationBarInsets.bottom, tappableElementInsets.bottom);
-        for (Map.Entry<RecyclerView, Integer> entry :
-                mOriginalRecyclerViewBottomPaddings.entrySet()) {
+        for (Map.Entry<View, Integer> entry : mOriginalContentBottomPaddings.entrySet()) {
             setBottomPadding(entry.getKey(), entry.getValue() + navigationBarBottomInset);
         }
-        return rootWindowInsets;
+        return windowInsets;
+    }
+
+    private static @Nullable View getInsetView(Fragment fragment, View fragmentView) {
+        if (fragment instanceof BottomInsetViewProvider provider) {
+            return provider.getBottomInsetView(fragmentView);
+        }
+
+        RecyclerView recyclerView = fragmentView.findViewById(R.id.recycler_view);
+        return recyclerView;
     }
 
     private static void setBottomPadding(View view, int bottomPadding) {
