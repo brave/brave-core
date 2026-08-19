@@ -156,21 +156,40 @@ fn parse_feed_bytes(source: &[u8], output: &mut ffi::FeedData) -> bool {
             }
         }
 
-        let mut summary: String = String::new();
-        if feed_item_data.summary.is_some() {
-            summary = feed_item_data.summary.unwrap().content;
-        } else if feed_item_data.content.is_some() {
-            summary = feed_item_data.content.unwrap().body.unwrap_or_else(String::new);
+        // Atom feeds attach their representative image as a
+        // <link rel="enclosure">. feed-rs only folds enclosures into `media`
+        // for RSS, so for Atom we have to pick it out of the links ourselves.
+        // Enclosures also carry audio and video, so only accept one that
+        // declares an image media type.
+        if image_url.is_empty() {
+            if let Some(enclosure) = feed_item_data.links.iter().find(|link| {
+                link.rel.as_deref() == Some("enclosure")
+                    && link.media_type.as_deref().is_some_and(|t| t.starts_with("image/"))
+            }) {
+                image_url = enclosure.href.clone();
+            }
         }
+
+        // The <content> body, if any. Kept separately from the summary below so
+        // that we can still search it for an inline image.
+        let content_body = feed_item_data.content.and_then(|content| content.body);
+        // A dedicated <summary> is the publisher's intended teaser, so prefer
+        // it for the description, falling back to the full body.
+        let (summary, unsearched_body) = match feed_item_data.summary {
+            Some(item_summary) => (item_summary.content, content_body),
+            None => (content_body.unwrap_or_default(), None),
+        };
+
         // If we still don't have an image, attempt to parse an html
         // <img> element from the summary. This is not uncommon.
-        if image_url.is_empty() && !summary.is_empty() {
+        if image_url.is_empty() {
             // This relies on the string being already html-decoded, which
-            // feed-rs (so far) does.
-            let optional_caps = IMAGE_REGEX.captures(&summary);
-            if let Some(caps) = optional_caps {
-                if let Some(capture) = caps.get(1) {
+            // feed-rs (so far) does. A short teaser <summary> rarely contains
+            // an image, so fall back to searching the full <content> body.
+            for body in [Some(&summary), unsearched_body.as_ref()].into_iter().flatten() {
+                if let Some(capture) = IMAGE_REGEX.captures(body).and_then(|caps| caps.get(1)) {
                     image_url = String::from(capture.as_str());
+                    break;
                 }
             }
         }
