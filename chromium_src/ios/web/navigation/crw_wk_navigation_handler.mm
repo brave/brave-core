@@ -8,6 +8,8 @@
 #import <Foundation/Foundation.h>
 #import <WebKit/WebKit.h>
 
+#include "base/feature_list.h"
+#include "brave/components/brave_shields/core/common/features.h"
 #include "ios/web/common/user_agent.h"
 #import "ios/web/public/web_client.h"
 
@@ -37,10 +39,13 @@
 
 #if defined(__IPHONE_27_0) && __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_27_0
         if (@available(iOS 27, *)) {
-          bool isGPCEnabled =
-              web::GetWebClient()->IsGlobalPrivacyControlEnabled(
-                  static_cast<web::WebState*>(self.webStateImpl));
-          preferences.globalPrivacyControlEnabled = isGPCEnabled;
+          if (base::FeatureList::IsEnabled(
+                  brave_shields::features::kWebKitGlobalPrivacyControl)) {
+            bool isGPCEnabled =
+                web::GetWebClient()->IsGlobalPrivacyControlEnabled(
+                    static_cast<web::WebState*>(self.webStateImpl));
+            preferences.globalPrivacyControlEnabled = isGPCEnabled;
+          }
         }
 #endif
 
