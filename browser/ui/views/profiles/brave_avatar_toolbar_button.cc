@@ -20,12 +20,10 @@
 #include "chrome/app/vector_icons/vector_icons.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/themes/theme_properties.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
-#include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/profiles/avatar_toolbar_button.h"
 #include "chrome/browser/ui/views/profiles/avatar_toolbar_button_state_manager.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_ink_drop_util.h"
@@ -72,8 +70,9 @@ class BraveAvatarButtonHighlightPathGenerator
 
 }  // namespace
 
-BraveAvatarToolbarButton::BraveAvatarToolbarButton(BrowserView* browser_view)
-    : AvatarToolbarButton(browser_view) {
+BraveAvatarToolbarButton::BraveAvatarToolbarButton(
+    BrowserWindowInterface* browser)
+    : AvatarToolbarButton(browser) {
   // Our toolbar button height is 28.
   // Icon image size 20 + vertical insets 8(4x2).
   // However, avatar button's icon image size is 16.
