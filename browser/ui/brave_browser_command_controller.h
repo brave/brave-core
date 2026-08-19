@@ -72,11 +72,11 @@ class BraveBrowserCommandController : public chrome::BrowserCommandController
   // Overriden from CommandUpdater:
   bool SupportsCommand(int id) const override;
   bool IsCommandEnabled(int id) const override;
-  bool ExecuteCommandWithDispositionImpl(
+  bool ExecuteCommandWithDispositionAndContext(
       int id,
       WindowOpenDisposition disposition,
-      base::TimeTicks time_stamp,
-      std::optional<actions::ActionInvocationContext> context) override;
+      std::optional<actions::ActionInvocationContext> context,
+      base::TimeTicks time_stamp) override;
   void AddCommandObserver(int id, CommandObserver* observer) override;
   void RemoveCommandObserver(int id, CommandObserver* observer) override;
   void RemoveCommandObserver(CommandObserver* observer) override;
