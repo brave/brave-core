@@ -1436,6 +1436,7 @@ test("brave_browser_tests") {
       "//brave/components/sidebar/browser",
       "//brave/test/views/snapshot",
       "//chrome/browser/ui/views/bubble",
+      "//chrome/browser/ui/views/profiles:avatar_toolbar_button",
       "//chrome/browser/ui/web_applications",
       "//ui/base/clipboard:clipboard_test_support",
     ]
