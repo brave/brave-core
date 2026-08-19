@@ -1003,14 +1003,31 @@ IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
   ASSERT_NO_FATAL_FAILURE(WaitForPsstIconHidden());
 }
 
+// After navigating to a matching site, the PSST icon and infobar both appear.
+// Left-clicking the icon opens the consent dialog and hides the infobar.
 IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
                        LocationBarIconLeftClickShowsConsentDialog) {
   GetPrefs()->SetBoolean(prefs::kPsstEnabled, true);
   ASSERT_TRUE(GetPrefs()->GetBoolean(prefs::kPsstEnabled));
 
   const GURL url = GetEmbeddedTestServer().GetURL("a.test", "/a_test_0.html");
+
+  infobars::ContentInfoBarManager* const manager =
+      infobars::ContentInfoBarManager::FromWebContents(web_contents());
+  InfobarObserver infobar_observer(
+      manager, infobars::InfoBarDelegate::BRAVE_PSST_INFOBAR_DELEGATE);
+
+  ASSERT_NO_FATAL_FAILURE(NavigateAndWaitForPsstIconVisible(url));
+  ASSERT_TRUE(infobar_observer.WaitForInfobarAdded());
+  ASSERT_TRUE(GetPsstInfobar(manager));
+
+  content::WebContents* dialog_wc = nullptr;
   ASSERT_NO_FATAL_FAILURE(
-      NavigateAndClickOnPsstLocationBarIcon(url, ui::EF_LEFT_MOUSE_BUTTON));
+      ClickOnPsstLocationBarIcon(ui::EF_LEFT_MOUSE_BUTTON, &dialog_wc));
+  ASSERT_TRUE(dialog_wc);
+
+  ASSERT_TRUE(infobar_observer.WaitForInfobarRemoved());
+  EXPECT_FALSE(GetPsstInfobar(manager));
 }
 
 // After navigating to the initial page and left-clicking the PSST location bar
