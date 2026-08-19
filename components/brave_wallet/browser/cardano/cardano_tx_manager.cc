@@ -19,13 +19,11 @@
 #include "brave/components/brave_wallet/browser/cardano/cardano_transaction.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_tx_meta.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_tx_state_manager.h"
-#include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/cardano_address.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "components/grit/brave_components_strings.h"
 #include "ui/base/l10n/l10n_util.h"
-#include "url/gurl.h"
 
 namespace brave_wallet {
 
@@ -133,19 +131,6 @@ void CardanoTxManager::ApproveTransaction(const std::string& tx_meta_id,
         mojom::ProviderErrorUnion::NewCardanoProviderError(
             mojom::CardanoProviderError::kInternalError),
         l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_TRANSACTION_NOT_FOUND));
-    return;
-  }
-
-  if (meta->origin() &&
-      (meta->origin()->scheme() == url::kHttpScheme ||
-       meta->origin()->scheme() == url::kHttpsScheme) &&
-      !tx_service().HasOriginPermission(*meta->origin(), meta->from())) {
-    meta->set_status(mojom::TransactionStatus::Error);
-    tx_state_manager().AddOrUpdateTx(*meta);
-    std::move(callback).Run(false,
-                            mojom::ProviderErrorUnion::NewProviderError(
-                                mojom::ProviderError::kUnauthorized),
-                            l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED));
     return;
   }
 

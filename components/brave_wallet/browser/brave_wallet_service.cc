@@ -1311,10 +1311,10 @@ void BraveWalletService::DrainSignMessageRequestsWithoutPermission() {
     to_drain.push_back(std::move(*it));
     it = sign_message_requests_.erase(it);
   }
-  // approved=true so the provider's permission re-validation produces
-  // kUnauthorized (not kUserRejectedRequest).
+  // approved=false so the provider rejects the request as if the user
+  // declined it.
   for (auto& request : to_drain) {
-    std::move(request.callback).Run(true, nullptr, std::nullopt);
+    std::move(request.callback).Run(false, nullptr, std::nullopt);
   }
 }
 
@@ -1335,7 +1335,7 @@ void BraveWalletService::DrainSignSolTransactionsRequestsWithoutPermission() {
     cb_it = sign_sol_transactions_callbacks_.erase(cb_it);
   }
   for (auto& callback : to_drain) {
-    std::move(callback).Run(true, {}, std::nullopt);
+    std::move(callback).Run(false, {}, std::nullopt);
   }
 }
 
@@ -1357,7 +1357,7 @@ void BraveWalletService::
     cb_it = sign_cardano_transaction_callbacks_.erase(cb_it);
   }
   for (auto& callback : to_drain) {
-    std::move(callback).Run(true, std::nullopt);
+    std::move(callback).Run(false, std::nullopt);
   }
 }
 

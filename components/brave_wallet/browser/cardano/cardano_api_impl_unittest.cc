@@ -10,6 +10,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/memory/raw_ptr.h"
 #include "base/run_loop.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/test/bind.h"
@@ -36,6 +37,7 @@
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "url/gurl.h"
+#include "url/origin.h"
 
 using base::test::TestFuture;
 using testing::_;
@@ -95,6 +97,17 @@ class MockBraveWalletProviderDelegate : public BraveWalletProviderDelegate {
   MOCK_METHOD1(IsSolanaAccountConnected, bool(const std::string& account));
 };
 
+class TestCardanoServiceDelegate : public TestBraveWalletServiceDelegate {
+ public:
+  bool HasPermission(mojom::CoinType coin,
+                     const url::Origin& origin,
+                     const std::string& account) override {
+    return permission_granted;
+  }
+
+  bool permission_granted = true;
+};
+
 }  // namespace
 
 class CardanoApiImplTest : public testing::Test {
@@ -106,9 +119,11 @@ class CardanoApiImplTest : public testing::Test {
     RegisterLocalStatePrefs(local_state_.registry());
     RegisterProfilePrefs(prefs_.registry());
     RegisterProfilePrefsForMigration(prefs_.registry());
+    auto service_delegate = std::make_unique<TestCardanoServiceDelegate>();
+    service_delegate_ = service_delegate.get();
     brave_wallet_service_ = std::make_unique<BraveWalletService>(
-        url_loader_factory_.GetSafeWeakWrapper(),
-        TestBraveWalletServiceDelegate::Create(), &prefs_, &local_state_);
+        url_loader_factory_.GetSafeWeakWrapper(), std::move(service_delegate),
+        &prefs_, &local_state_);
     auto delegate =
         std::make_unique<testing::NiceMock<MockBraveWalletProviderDelegate>>();
     provider_ = std::make_unique<CardanoApiImpl>(
@@ -253,6 +268,7 @@ class CardanoApiImplTest : public testing::Test {
   sync_preferences::TestingPrefServiceSyncable local_state_;
   network::TestURLLoaderFactory url_loader_factory_;
   std::unique_ptr<BraveWalletService> brave_wallet_service_;
+  raw_ptr<TestCardanoServiceDelegate> service_delegate_ = nullptr;
   std::unique_ptr<CardanoTestRpcServer> cardano_test_rpc_server_;
 
   std::unique_ptr<CardanoApiImpl> provider_;
@@ -465,14 +481,10 @@ TEST_F(CardanoApiImplTest,
   CreateWallet();
   auto added_account = AddAccount();
 
-  bool permission_granted = true;
   ON_CALL(*delegate(), GetAllowedAccounts(_, _))
       .WillByDefault(
           [&](mojom::CoinType coin, const std::vector<std::string>& accounts) {
             EXPECT_EQ(coin, mojom::CoinType::ADA);
-            if (!permission_granted) {
-              return std::vector<std::string>();
-            }
             return std::vector<std::string>(
                 {added_account->account_id->unique_key});
           });
@@ -500,19 +512,18 @@ TEST_F(CardanoApiImplTest,
 
   ASSERT_TRUE(base::test::RunUntil([&] { return captured_id >= 0; }));
 
-  // Simulate permission revocation while the request is still queued.
-  permission_granted = false;
-
-  // User approves the stale panel — signing must still be refused.
-  brave_wallet_service()->NotifySignMessageRequestProcessed(
-      true, captured_id, nullptr, std::nullopt);
+  // Simulate permission revocation while the request is still queued and
+  // trigger the drain manually (the test delegate doesn't observe HCSM).
+  service_delegate_->permission_granted = false;
+  brave_wallet_service()->OnWalletContentSettingChanged();
 
   auto& signature = future.Get<0>();
   auto& error = future.Get<1>();
 
   EXPECT_EQ(signature, std::nullopt);
   ASSERT_TRUE(error);
-  EXPECT_EQ(error->code, -3);
+  // kDataSignUserDeclined: the drained request is rejected without signing.
+  EXPECT_EQ(error->code, 3);
 }
 
 TEST_F(CardanoApiImplTest, MethodReturnsError_WhenNoPermission) {

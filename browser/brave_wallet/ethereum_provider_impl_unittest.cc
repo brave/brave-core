@@ -648,10 +648,6 @@ class EthereumProviderImplUnitTest : public testing::Test {
     return brave_wallet_service_->sign_message_requests_.size();
   }
 
-  int GetLatestSignMessageRequestId() const {
-    return brave_wallet_service_->sign_message_id_ - 1;
-  }
-
   mojom::SignMessageRequestPtr GetSignMessageQueueFront() const {
     return brave_wallet_service_->GetPendingSignMessageRequestsSync()
         .front()
@@ -1638,13 +1634,14 @@ TEST_F(EthereumProviderImplUnitTest,
   }));
 
   // Revoke the site's authorization while the request is still queued.
-  // This triggers the drain, which rejects with kUnauthorized.
+  // This triggers the drain, which rejects the request.
   ResetEthereumPermission(account_0->account_id);
   run_loop.Run();
 
   EXPECT_TRUE(signature.empty());
-  EXPECT_EQ(error, mojom::ProviderError::kUnauthorized);
-  EXPECT_EQ(error_message, l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED));
+  EXPECT_EQ(error, mojom::ProviderError::kUserRejectedRequest);
+  EXPECT_EQ(error_message,
+            l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
 }
 
 TEST_F(EthereumProviderImplUnitTest,
@@ -1698,9 +1695,10 @@ TEST_F(EthereumProviderImplUnitTest,
   ASSERT_EQ(error_messages.size(), 2u);
   for (size_t i = 0; i < 2; ++i) {
     EXPECT_TRUE(signatures[i].empty()) << "i=" << i;
-    EXPECT_EQ(errors[i], mojom::ProviderError::kUnauthorized) << "i=" << i;
+    EXPECT_EQ(errors[i], mojom::ProviderError::kUserRejectedRequest)
+        << "i=" << i;
     EXPECT_EQ(error_messages[i],
-              l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED))
+              l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST))
         << "i=" << i;
   }
   EXPECT_TRUE(
