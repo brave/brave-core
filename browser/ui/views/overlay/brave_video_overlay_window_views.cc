@@ -30,7 +30,7 @@
 #include "chrome/browser/shell_integration_linux.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
-#include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/picture_in_picture_window_controller.h"
 #endif  // BUILDFLAG(IS_LINUX)
 
@@ -60,16 +60,18 @@ void BraveVideoOverlayWindowViews::Init(views::Widget::InitParams params) {
 
   // Videos from an installed web app window carry the app's identity instead,
   // like the Windows taskbar-id handling in VideoOverlayWindowViews::Create().
-  if (auto* browser =
-          GlobalBrowserCollection::GetInstance()->FindBrowserWithTab(
-              GetController()->GetWebContents())) {
-    Browser* raw_browser = browser->GetBrowserForMigrationOnly();
-    if (raw_browser->is_type_app() || raw_browser->is_type_app_popup()) {
-      params.wm_class_name = shell_integration_linux::GetWMClassFromAppName(
-          raw_browser->app_name());
+  auto* tab = tabs::TabInterface::MaybeGetFromContents(
+      GetController()->GetWebContents());
+  if (auto* browser = tab ? tab->GetBrowserWindowInterface() : nullptr) {
+    const auto type = browser->GetType();
+    if (type == BrowserWindowInterface::Type::TYPE_APP ||
+        type == BrowserWindowInterface::Type::TYPE_APP_POPUP) {
+      const auto& app_name = browser->GetBrowserForMigrationOnly()->app_name();
+      params.wm_class_name =
+          shell_integration_linux::GetWMClassFromAppName(app_name);
       if (Profile* profile = browser->GetProfile()) {
         params.wayland_app_id = shell_integration_linux::GetXdgAppIdForWebApp(
-            raw_browser->app_name(), profile->GetPath());
+            app_name, profile->GetPath());
       }
     }
   }

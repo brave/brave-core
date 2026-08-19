@@ -1072,7 +1072,10 @@ source_set("ui") {
       "views/brave_views_delegate_linux.h",
     ]
 
-    deps += [ "//chrome/app/theme:chrome_unscaled_resources_grit" ]
+    deps += [
+      "//chrome/app/theme:chrome_unscaled_resources_grit",
+      "//chrome/browser:shell_integration_linux",
+    ]
   }
 
   if (toolkit_views) {
