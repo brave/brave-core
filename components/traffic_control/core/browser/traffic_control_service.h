@@ -41,6 +41,8 @@ class TrafficControlService : public KeyedService {
   TrafficControlService(const TrafficControlService&) = delete;
   TrafficControlService& operator=(const TrafficControlService&) = delete;
 
+  void Shutdown() override;
+
   void AddObserver(TrafficControlServiceObserver* observer);
   void RemoveObserver(TrafficControlServiceObserver* observer);
 

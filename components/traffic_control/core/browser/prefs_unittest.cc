@@ -8,6 +8,7 @@
 #include <optional>
 
 #include "base/test/scoped_feature_list.h"
+#include "base/values.h"
 #include "brave/components/traffic_control/core/browser/pref_names.h"
 #include "brave/components/traffic_control/core/browser/prefs_registration.h"
 #include "brave/components/traffic_control/core/common/features.h"
@@ -77,6 +78,67 @@ TEST_F(TrafficControlPrefsTest, FullListReplacePreservesOrder) {
   ASSERT_EQ(2u, loaded.size());
   EXPECT_EQ("b", loaded[0]->id);
   EXPECT_EQ("a", loaded[1]->id);
+}
+
+TEST_F(TrafficControlPrefsTest, GetRulesFromPrefsSkipsMalformedEntries) {
+  base::ListValue list;
+  list.Append(base::Value(42));  // Not a dictionary.
+
+  list.Append(
+      base::DictValue()
+          .Set("enabled", true)
+          .Set("condition", base::DictValue().Set("url_filter", "bad.com"))
+          .Set("target",
+               base::DictValue().Set("container_id", "c1")));  // Missing id.
+
+  list.Append(
+      base::DictValue()
+          .Set("id", "missing-enabled")
+          .Set("condition", base::DictValue().Set("url_filter", "bad.com"))
+          .Set("target", base::DictValue()));  // Missing enabled.
+
+  list.Append(base::DictValue()
+                  .Set("id", "missing-condition")
+                  .Set("enabled", true)
+                  .Set("target", base::DictValue()));  // Missing condition.
+
+  list.Append(
+      base::DictValue()
+          .Set("id", "missing-target")
+          .Set("enabled", true)
+          .Set("condition", base::DictValue().Set(
+                                "url_filter", "bad.com")));  // Missing target.
+
+  list.Append(base::DictValue()
+                  .Set("id", "missing-url-filter")
+                  .Set("enabled", true)
+                  .Set("condition", base::DictValue())
+                  .Set("target", base::DictValue()));  // Missing url_filter.
+
+  list.Append(
+      base::DictValue()
+          .Set("id", "bad-container-id")
+          .Set("enabled", true)
+          .Set("condition", base::DictValue().Set("url_filter", "bad.com"))
+          .Set("target", base::DictValue().Set(
+                             "container_id", 42)));  // Non-string container_id.
+
+  list.Append(
+      base::DictValue()
+          .Set("id", "valid-id")
+          .Set("enabled", true)
+          .Set("condition", base::DictValue().Set("url_filter", "example.com"))
+          .Set("target", base::DictValue().Set("container_id", "container-1")));
+
+  prefs_.SetList(prefs::kTrafficControlList, std::move(list));
+
+  auto loaded = GetRulesFromPrefs(prefs_);
+  ASSERT_EQ(1u, loaded.size());
+  EXPECT_EQ("valid-id", loaded[0]->id);
+  EXPECT_TRUE(loaded[0]->enabled);
+  EXPECT_EQ("example.com", loaded[0]->url_filter);
+  ASSERT_TRUE(loaded[0]->target->container_id.has_value());
+  EXPECT_EQ("container-1", *loaded[0]->target->container_id);
 }
 
 }  // namespace traffic_control

@@ -33,6 +33,10 @@ TrafficControlService::TrafficControlService(PrefService* prefs)
 
 TrafficControlService::~TrafficControlService() = default;
 
+void TrafficControlService::Shutdown() {
+  pref_change_registrar_.RemoveAll();
+}
+
 void TrafficControlService::AddObserver(
     TrafficControlServiceObserver* observer) {
   observers_.AddObserver(observer);
