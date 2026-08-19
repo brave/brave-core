@@ -7,7 +7,6 @@
 
 from __future__ import annotations
 
-from pathlib import Path
 from typing import TYPE_CHECKING
 
 import post_process
@@ -17,11 +16,6 @@ if TYPE_CHECKING:
     from engine import RecipeScriptApi
 
 DEPS = ['path', 'step', 'chromium_checkout', 'depot_tools', 'git_cache']
-
-# Publishes the git cache into Gerrit; lives alongside this recipe (rather than
-# in brave-core proper) since this recipe is its only caller.
-_REFRESH_MIRRORS_SCRIPT = (Path(__file__).resolve().parent /
-                           'refresh_mirrors.resources' / 'refresh_mirrors.py')
 
 PROPERTIES = InputProperties
 
@@ -43,7 +37,7 @@ def RunSteps(api: RecipeScriptApi, properties: InputProperties) -> None:
     vpython3 = api.depot_tools.vpython3()
     api.step('refresh gerrit mirrors', [
         vpython3,
-        _REFRESH_MIRRORS_SCRIPT,
+        api.resource('refresh_mirrors.py'),
         '--user',
         properties.gerrit_user,
         '--git-cache-path',

@@ -186,7 +186,7 @@
   {
     "cmd": [
       "[WORKSPACE]/b/src/third_party/depot_tools/vpython3",
-      "[RECIPES_ROOT]/recipes/gerrit/refresh_mirrors.resources/refresh_mirrors.py",
+      "RECIPE[gerrit/refresh_mirrors].resources/refresh_mirrors.py",
       "--user",
       "chromium-mirror-bot",
       "--git-cache-path",

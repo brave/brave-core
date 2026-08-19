@@ -38,11 +38,6 @@ from recipe_api import OutputPlaceholder, Placeholder, RecipeApi
 from recipe_test_api import StepTestData
 from step_data import StepData
 
-# The resource script `_run` invokes for every operation. Lives alongside this
-# module (not under brave-core), so it's always present -- no sparse checkout
-# needed, unlike e.g. `tools/cr/toolchains/ephemeral_xcode.py`.
-_FILEUTIL = Path(__file__).resolve().parent / 'resources' / 'fileutil.py'
-
 ProtoMessage = TypeVar('ProtoMessage', bound=Message)
 
 
@@ -92,7 +87,8 @@ class FileApi(RecipeApi):
         """
         vpython3 = self.m.depot_tools.vpython3()
         cmd = [
-            vpython3, '-u', _FILEUTIL, '--json-output',
+            vpython3, '-u',
+            self.resource('fileutil.py'), '--json-output',
             self.m.json.output(), *args
         ]
         result = self.m.step(name,

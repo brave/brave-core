@@ -48,6 +48,24 @@ class ResolvedBasePath:
     """
     resolved: str
 
+    @classmethod
+    def for_recipe_module(cls, test_enabled: bool, module_name: str,
+                          module_dir: str) -> ResolvedBasePath:
+        """The base for a recipe module's `resources/` directory.
+        """
+        if not test_enabled:
+            return cls(module_dir)
+        return cls(f'RECIPE_MODULE[{module_name}]')
+
+    @classmethod
+    def for_recipe_script_resources(cls, test_enabled: bool, recipe_name: str,
+                                    resources_dir: str) -> ResolvedBasePath:
+        """The base for a recipe script's `<recipe>.resources/` directory.
+        """
+        if not test_enabled:
+            return cls(resources_dir)
+        return cls(f'RECIPE[{recipe_name}].resources')
+
     def __repr__(self) -> str:
         return self.resolved
 

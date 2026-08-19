@@ -24,6 +24,7 @@ import functools
 from pathlib import Path
 from typing import Any
 
+import config_types
 from step_stack import StepStack
 
 
@@ -145,10 +146,8 @@ def _returns_placeholder(func: Callable[..., Placeholder],
         assert isinstance(placeholder, Placeholder), (
             f'{func.__name__} is decorated with returns_placeholder but '
             f'returned {placeholder!r}')
-        placeholder.namespaces = (
-            self._module_name,
-            alternate_name  # pylint: disable=protected-access
-            or func.__name__)
+        placeholder.namespaces = (self._module_name, alternate_name
+                                  or func.__name__)
         return placeholder
 
     return inner
@@ -178,36 +177,48 @@ class RecipeApi:
     def __init__(self) -> None:
         # Populated by the engine after construction with this module's DEPS.
         self.m: ModuleInjectionSite = ModuleInjectionSite()
+
         # The job's workspace root, seeded by the engine after construction.
         # The `path` module derives the named job paths from it; most modules
         # ignore it. Defaults to `.` until the engine overrides it.
         self._workspace: Path = Path()
+
         # brave-core ref the checkout modules clone, seeded by the engine.
         # `brave_core_checkout` uses it; defaults to `master` until overridden.
         self._brave_core_ref: str = 'master'
+
         # The run's stack of open steps, seeded by the engine. `step` pushes
         # each step onto it and `futures` registers spawned greenlets against
         # it; every other module ignores it. Defaults to a private stack so a
         # module instantiated outside the engine still works.
         self._step_stack = StepStack()
+
         # Simulation context, seeded by the engine only in test mode. `None`
         # means production: the seam modules (`path`, `env`, `platform`, `step`)
         # touch the real machine. When set, they read/mutate this instead. Its
         # presence (`self._test is not None`) is the sole test-mode flag.
         self._test = None
+
         # The module's name, seeded by the engine (used in config error text
         # and to namespace the placeholders this module hands out).
         self._module_name: str = type(self).__name__
+
+        # This module's own directory (`recipe_modules/<name>`), seeded by the
+        # engine. `resource()` derives `<module>/resources/...` from it.
+        self._module_dir: Path = Path()
+
         # This module's own `TEST_API` instance (from its `test_api.py`), seeded
         # by the engine, or None if the module has no test api. Modules use it
         # to build the default simulated data for the steps they run, e.g.
         # `step_test_data=self.test_api.errno`.
         self.test_api = None
+
         # The module's configuration context (the `ConfigContext` from its
         # `config.py`), seeded by the engine, or None if the module has no
         # config. See `set_config`/`make_config`/`apply_config` below and the
         # "Configs" section of README.md.
         self._config_ctx = None
+
         # The module's current config blob (a `config.ConfigGroup`), or None
         # until a config is applied. A module reads it as `self.c`, and its
         # users reach it directly as `api.<module>.c`.
@@ -215,6 +226,13 @@ class RecipeApi:
 
     def initialise(self) -> None:
         """Hook run once after DEPS are injected. Override for setup."""
+
+    def resource(self, *pieces: str) -> config_types.Path:
+        """Path to a file under this module's `resources/` directory.
+        """
+        base = config_types.ResolvedBasePath.for_recipe_module(
+            self._test is not None, self._module_name, str(self._module_dir))
+        return config_types.Path(base, 'resources', *pieces)
 
     # -- Configs (see the "Configs" section of README.md) ---------------------
 

@@ -9,7 +9,6 @@ from __future__ import annotations
 import contextlib
 import functools
 import logging
-from pathlib import Path
 import re
 import subprocess
 
@@ -26,11 +25,6 @@ WIN_HERMETIC_TOOLCHAIN_BASE_URL = (
 
 # The URL for Chromium's googlesource.
 CHROMIUM_URL = 'https://chromium.googlesource.com/chromium/src.git'
-
-# Resolves the `GYP_MSVS_HASH_<hash>` override for the hermetic Windows
-# toolchain. See `_pin_win_toolchain_hash`.
-_WIN_TOOLCHAIN_HASH_SCRIPT = (Path(__file__).resolve().parent / 'resources' /
-                              'win_toolchain_hash.py')
 
 
 def _is_tag_ref(ref: str) -> bool:
@@ -344,7 +338,8 @@ class ChromiumCheckoutApi(RecipeApi):
         """
         vpython3 = self.m.depot_tools.vpython3()
         result = self.m.step('resolve win toolchain hash', [
-            vpython3, '-u', _WIN_TOOLCHAIN_HASH_SCRIPT,
+            vpython3, '-u',
+            self.resource('win_toolchain_hash.py'),
             chromium_src / 'build' / 'vs_toolchain.py',
             WIN_HERMETIC_TOOLCHAIN_BASE_URL, '--json-output',
             self.m.json.output()

@@ -20,7 +20,7 @@
     "cmd": [
       "[WORKSPACE]/b/src/third_party/depot_tools/vpython3",
       "-u",
-      "[RECIPES_ROOT]/recipe_modules/file/resources/fileutil.py",
+      "RECIPE_MODULE[file]/resources/fileutil.py",
       "--json-output",
       "/path/to/tmp/json",
       "copy",
@@ -33,7 +33,7 @@
     "cmd": [
       "[WORKSPACE]/b/src/third_party/depot_tools/vpython3",
       "-u",
-      "[RECIPES_ROOT]/recipe_modules/file/resources/fileutil.py",
+      "RECIPE_MODULE[file]/resources/fileutil.py",
       "--json-output",
       "/path/to/tmp/json",
       "copytree",
@@ -49,7 +49,7 @@
     "cmd": [
       "[WORKSPACE]/b/src/third_party/depot_tools/vpython3",
       "-u",
-      "[RECIPES_ROOT]/recipe_modules/file/resources/fileutil.py",
+      "RECIPE_MODULE[file]/resources/fileutil.py",
       "--json-output",
       "/path/to/tmp/json",
       "move",
@@ -62,7 +62,7 @@
     "cmd": [
       "[WORKSPACE]/b/src/third_party/depot_tools/vpython3",
       "-u",
-      "[RECIPES_ROOT]/recipe_modules/file/resources/fileutil.py",
+      "RECIPE_MODULE[file]/resources/fileutil.py",
       "--json-output",
       "/path/to/tmp/json",
       "chmod",
@@ -77,7 +77,7 @@
     "cmd": [
       "[WORKSPACE]/b/src/third_party/depot_tools/vpython3",
       "-u",
-      "[RECIPES_ROOT]/recipe_modules/file/resources/fileutil.py",
+      "RECIPE_MODULE[file]/resources/fileutil.py",
       "--json-output",
       "/path/to/tmp/json",
       "remove",
@@ -89,7 +89,7 @@
     "cmd": [
       "[WORKSPACE]/b/src/third_party/depot_tools/vpython3",
       "-u",
-      "[RECIPES_ROOT]/recipe_modules/file/resources/fileutil.py",
+      "RECIPE_MODULE[file]/resources/fileutil.py",
       "--json-output",
       "/path/to/tmp/json",
       "rmtree",
@@ -101,7 +101,7 @@
     "cmd": [
       "[WORKSPACE]/b/src/third_party/depot_tools/vpython3",
       "-u",
-      "[RECIPES_ROOT]/recipe_modules/file/resources/fileutil.py",
+      "RECIPE_MODULE[file]/resources/fileutil.py",
       "--json-output",
       "/path/to/tmp/json",
       "rmcontents",
@@ -113,7 +113,7 @@
     "cmd": [
       "[WORKSPACE]/b/src/third_party/depot_tools/vpython3",
       "-u",
-      "[RECIPES_ROOT]/recipe_modules/file/resources/fileutil.py",
+      "RECIPE_MODULE[file]/resources/fileutil.py",
       "--json-output",
       "/path/to/tmp/json",
       "rmglob",
@@ -127,7 +127,7 @@
     "cmd": [
       "[WORKSPACE]/b/src/third_party/depot_tools/vpython3",
       "-u",
-      "[RECIPES_ROOT]/recipe_modules/file/resources/fileutil.py",
+      "RECIPE_MODULE[file]/resources/fileutil.py",
       "--json-output",
       "/path/to/tmp/json",
       "glob",
@@ -148,7 +148,7 @@
     "cmd": [
       "[WORKSPACE]/b/src/third_party/depot_tools/vpython3",
       "-u",
-      "[RECIPES_ROOT]/recipe_modules/file/resources/fileutil.py",
+      "RECIPE_MODULE[file]/resources/fileutil.py",
       "--json-output",
       "/path/to/tmp/json",
       "listdir",
@@ -168,7 +168,7 @@
     "cmd": [
       "[WORKSPACE]/b/src/third_party/depot_tools/vpython3",
       "-u",
-      "[RECIPES_ROOT]/recipe_modules/file/resources/fileutil.py",
+      "RECIPE_MODULE[file]/resources/fileutil.py",
       "--json-output",
       "/path/to/tmp/json",
       "ensure_directory",
@@ -182,7 +182,7 @@
     "cmd": [
       "[WORKSPACE]/b/src/third_party/depot_tools/vpython3",
       "-u",
-      "[RECIPES_ROOT]/recipe_modules/file/resources/fileutil.py",
+      "RECIPE_MODULE[file]/resources/fileutil.py",
       "--json-output",
       "/path/to/tmp/json",
       "filesizes",
@@ -202,7 +202,7 @@
     "cmd": [
       "[WORKSPACE]/b/src/third_party/depot_tools/vpython3",
       "-u",
-      "[RECIPES_ROOT]/recipe_modules/file/resources/fileutil.py",
+      "RECIPE_MODULE[file]/resources/fileutil.py",
       "--json-output",
       "/path/to/tmp/json",
       "symlink",
@@ -215,7 +215,7 @@
     "cmd": [
       "[WORKSPACE]/b/src/third_party/depot_tools/vpython3",
       "-u",
-      "[RECIPES_ROOT]/recipe_modules/file/resources/fileutil.py",
+      "RECIPE_MODULE[file]/resources/fileutil.py",
       "--json-output",
       "/path/to/tmp/json",
       "truncate",
@@ -228,7 +228,7 @@
     "cmd": [
       "[WORKSPACE]/b/src/third_party/depot_tools/vpython3",
       "-u",
-      "[RECIPES_ROOT]/recipe_modules/file/resources/fileutil.py",
+      "RECIPE_MODULE[file]/resources/fileutil.py",
       "--json-output",
       "/path/to/tmp/json",
       "flatten_single_directories",
@@ -240,7 +240,7 @@
     "cmd": [
       "[WORKSPACE]/b/src/third_party/depot_tools/vpython3",
       "-u",
-      "[RECIPES_ROOT]/recipe_modules/file/resources/fileutil.py",
+      "RECIPE_MODULE[file]/resources/fileutil.py",
       "--json-output",
       "/path/to/tmp/json",
       "compute_hash",
@@ -261,7 +261,7 @@
     "cmd": [
       "[WORKSPACE]/b/src/third_party/depot_tools/vpython3",
       "-u",
-      "[RECIPES_ROOT]/recipe_modules/file/resources/fileutil.py",
+      "RECIPE_MODULE[file]/resources/fileutil.py",
       "--json-output",
       "/path/to/tmp/json",
       "file_hash",
@@ -280,7 +280,7 @@
     "cmd": [
       "[WORKSPACE]/b/src/third_party/depot_tools/vpython3",
       "-u",
-      "[RECIPES_ROOT]/recipe_modules/file/resources/fileutil.py",
+      "RECIPE_MODULE[file]/resources/fileutil.py",
       "--json-output",
       "/path/to/tmp/json",
       "is_executable",

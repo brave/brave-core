@@ -31,6 +31,7 @@ import types
 
 from google.protobuf import json_format as jsonpb
 
+import config_types
 import proto_support
 from recipe_api import RecipeApi
 from recipe_test_api import RecipeTestApi
@@ -49,6 +50,28 @@ class RecipeScriptApi:
     Carries the recipe's top-level `DEPS`: each one is attached as an attribute
     named after the module (e.g. `api.chromium_checkout`).
     """
+
+    def __init__(self) -> None:
+        # Simulation context, seeded by `run_loaded_recipe` (see
+        # `RecipeApi._test`; the same `None`-means-production convention).
+        self._test = None
+
+        # This recipe's `/`-separated id (e.g. `gerrit/refresh_mirrors`),
+        # seeded by `run_loaded_recipe`. Used to namespace `resource()`'s
+        # test-mode token.
+        self._recipe_name: str = ''
+
+        # This recipe's own `<name>.resources` directory, seeded by
+        # `run_loaded_recipe`. `resource()` derives real paths from it.
+        self._resources_dir: Path = Path()
+
+    def resource(self, *pieces: str) -> config_types.Path:
+        """Path to a file under this recipe's `<name>.resources/` directory.
+        """
+        base = config_types.ResolvedBasePath.for_recipe_script_resources(
+            self._test is not None, self._recipe_name,
+            str(self._resources_dir))
+        return config_types.Path(base, *pieces)
 
     def __getattr__(self, name: str):
         # DEPS are injected by the engine; a missing one means it was not
@@ -170,7 +193,7 @@ def _load_config_ctx(module_name: str):
     if not config_path.exists():
         return None
     _ensure_protos()
-    from config import ConfigContext  # pylint: disable=import-outside-toplevel
+    from config import ConfigContext
     config_module = importlib.import_module(f'{MODULES_PKG}.{module_name}'
                                             '.config')
     contexts = [
@@ -302,6 +325,8 @@ class _Engine:
         setattr(inst, '_brave_core_ref', self._brave_core_ref)
         setattr(inst, '_step_stack', self._step_stack)
         setattr(inst, '_module_name', name)
+        setattr(inst, '_module_dir',
+                Path(api_module.__file__).resolve().parent)
         setattr(inst, '_config_ctx', _load_config_ctx(name))
         inst.test_api = instantiate_test_module(name, [], self._test_api_cache)
         for dep_name in deps:
@@ -343,13 +368,18 @@ class _Engine:
         self._properties = properties or {}
         self._environ = self._test.env if self._test is not None else os.environ
 
-        api = RecipeScriptApi()
-        for dep_name in getattr(recipe, 'DEPS', []):
-            setattr(api, dep_name, self._instantiate_module(dep_name, []))
-
         run_steps = getattr(recipe, 'RunSteps', None)
         if run_steps is None:
             raise RuntimeError(f"recipe '{recipe_name}' is missing RunSteps")
+
+        api = RecipeScriptApi()
+        setattr(api, '_test', self._test)
+        setattr(api, '_recipe_name', recipe_name)
+        recipe_file = Path(recipe.__file__).resolve()
+        setattr(api, '_resources_dir',
+                recipe_file.parent / f'{recipe_file.stem}.resources')
+        for dep_name in getattr(recipe, 'DEPS', []):
+            setattr(api, dep_name, self._instantiate_module(dep_name, []))
 
         try:
             return _run_steps(run_steps, api, self._properties, self._environ,
