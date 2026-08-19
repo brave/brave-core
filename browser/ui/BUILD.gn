@@ -1273,6 +1273,7 @@ source_set("ui") {
     deps += [
       "//brave/browser/ui/views/brave_actions",
       "//chrome/browser/ui/views:layout_provider",
+      "//chrome/browser/ui/views/profiles:avatar_toolbar_button",
     ]
 
     if (enable_brave_rewards) {
