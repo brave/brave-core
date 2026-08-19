@@ -42,3 +42,20 @@ def CheckBotsSnapshotOutput(input_api, output_api):
             message=output_api.PresubmitError,
         ),
     ])
+
+
+def CheckBotsValidateOutput(input_api, output_api):
+    """Sanity-checks infra/config/generated/builders/.
+
+    Mirrors upstream's `tools/mb/PRESUBMIT.py`'s `CheckMbValidate`: runs
+    `bots.py validate` and turns a non-zero exit into a presubmit error.
+    """
+    bots_py = os.path.join(input_api.PresubmitLocalPath(), 'bots', 'bots.py')
+    return input_api.RunTests([
+        input_api.Command(
+            name='bots.py validate',
+            cmd=[input_api.python3_executable, bots_py, 'validate'],
+            kwargs={},
+            message=output_api.PresubmitError,
+        ),
+    ])
