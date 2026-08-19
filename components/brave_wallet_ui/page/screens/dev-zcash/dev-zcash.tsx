@@ -7,7 +7,7 @@ import getAPIProxy from '../../../common/async/bridge'
 import * as React from 'react'
 
 import styled from 'styled-components'
-import { BraveWallet } from '../../../constants/types'
+import { BraveWallet, ZCashTestnetKeyringIds } from '../../../constants/types'
 import {
   LoadingSkeleton, //
 } from '../../../components/shared/loading-skeleton/index'
@@ -16,6 +16,15 @@ import {
   ZCashShieldSyncStatus,
 } from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m'
 import { useAccountsQuery } from '../../../common/slices/api.slice.extra'
+
+const IRONWOOD_ACTIVATION_HEIGHT_MAINNET = 3428143
+const IRONWOOD_ACTIVATION_HEIGHT_TESTNET = 4134000
+
+const getIronwoodActivationHeight = (accountId: BraveWallet.AccountId) => {
+  return ZCashTestnetKeyringIds.includes(accountId.keyringId)
+    ? IRONWOOD_ACTIVATION_HEIGHT_TESTNET
+    : IRONWOOD_ACTIVATION_HEIGHT_MAINNET
+}
 
 const StyledWrapper = styled.div`
   display: flex;
@@ -114,6 +123,25 @@ const GetBalanceSection = (props: GetBalanceSectionProps) => {
     }
   }
 
+  const resetSyncStateToIronwoodActivation = async () => {
+    const result =
+      await getAPIProxy().zcashWalletService.resetSyncStateToIronwoodActivation(
+        props.accountId,
+      )
+    if (result.errorMessage) {
+      setSyncStatusResult('Reset error ' + result.errorMessage)
+    } else {
+      setSyncStatusResult(
+        'Rewound to Ironwood activation ('
+          + getIronwoodActivationHeight(props.accountId)
+          + ')',
+      )
+      props.onAccountInfoChanged()
+    }
+  }
+
+  const ironwoodActivationHeight = getIronwoodActivationHeight(props.accountId)
+
   const shieldAllFunds = async () => {
     let { txId, errorMessage } =
       await getAPIProxy().zcashWalletService.shieldAllFunds(props.accountId)
@@ -210,6 +238,9 @@ const GetBalanceSection = (props: GetBalanceSectionProps) => {
           <button onClick={stopOrchardSync}>Stop orchard sync</button>
           <button onClick={resetAccountSyncState}>
             Reset account sync state
+          </button>
+          <button onClick={resetSyncStateToIronwoodActivation}>
+            Reset sync to Ironwood activation ({ironwoodActivationHeight})
           </button>
 
           <button onClick={fetchBalance}>Reload</button>
