@@ -1,11 +1,11 @@
 diff --git a/content/browser/hid/hid_service.cc b/content/browser/hid/hid_service.cc
-index 05ddfb8a7e3a60bd136a4dee790bb0de98206ea4..44172da1c7d04e2fdd5a4ff7fa86653f55993c00 100644
+index e9d7d1e6b65e860480b049cd8ebd3ae7bf19b16d..81733c7827de9b4e9267cbbf22314a160eecd951 100644
 --- a/content/browser/hid/hid_service.cc
 +++ b/content/browser/hid/hid_service.cc
-@@ -422,11 +422,13 @@ void HidService::RequestDevice(
-     RequestDeviceCallback callback) {
-   HidDelegate* delegate = GetContentClient()->browser()->GetHidDelegate();
-   if (!render_frame_host_ ||
+@@ -445,11 +445,13 @@ void HidService::RequestDevice(
+   // activation to prevent stale/pending-deletion frames from opening choosers
+   // or consuming user gestures from newly committed documents.
+   if (!render_frame_host_ || !render_frame_host_->IsActive() ||
 -      !FrameTreeNode::From(render_frame_host_)
 +      (!delegate->AllowRequestDeviceWithoutTransientActivation(
 +           render_frame_host_) &&
@@ -13,8 +13,8 @@ index 05ddfb8a7e3a60bd136a4dee790bb0de98206ea4..44172da1c7d04e2fdd5a4ff7fa86653f
             ->UpdateUserActivationState(
                 blink::mojom::UserActivationUpdateType::
                     kConsumeTransientActivation,
--               blink::mojom::UserActivationNotificationType::kNone) ||
-+               blink::mojom::UserActivationNotificationType::kNone)) ||
-       !delegate->CanRequestDevicePermission(GetBrowserContext(), origin_)) {
+-               blink::mojom::UserActivationNotificationType::kNone)) {
++               blink::mojom::UserActivationNotificationType::kNone))) {
      std::move(callback).Run(std::vector<device::mojom::HidDeviceInfoPtr>());
      return;
+   }
