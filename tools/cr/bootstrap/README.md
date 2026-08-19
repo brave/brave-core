@@ -59,6 +59,31 @@ cd /tmp
 node --version                    # falls back to the system node
 ```
 
+## Bootstrapping a fresh checkout
+
+`fetch_brave.py` gets you from an empty directory to a working brave-core +
+Chromium checkout, with none of `install`'s prerequisites (it runs under plain
+`python3`, stdlib-only):
+
+```sh
+mkdir ~/browser && cd ~/browser
+python3 /path/to/any/existing/checkout/tools/cr/bootstrap/fetch_brave.py
+```
+
+Every clone -- brave-core and Chromium alike -- is done by `gclient sync`
+itself (reusing a `gclient` already on `$PATH`, or bootstrapping a temporary
+depot_tools if there isn't one), so both go through depot_tools' git cache
+(`--cache-dir`, or `$GIT_CACHE_PATH`) instead of a plain, uncached `git
+clone`. Once brave-core exists, depot_tools is vendored into
+`./src/brave/vendor/depot_tools` (the same layout the rest of the build
+tooling expects). Once Chromium is synced, `pnpm install` and `pnpm run init`
+finish the job (patches, hooks, ...) -- run via this directory's `pnpm` shim,
+put on `$PATH` for that call if it isn't there already, so they work with
+nothing else installed (see the chicken-and-egg `node` problem below).
+Re-running is cheap: existing checkouts are left alone. See `--help` for
+overriding the brave-core remote/ref or the git cache location, or to skip the
+(much larger) Chromium sync -- and the `pnpm` steps, which depend on it.
+
 ## The chicken-and-egg `node` problem
 
 The shims for `node`/`npm` run cheap checks for the tarball installations, to
