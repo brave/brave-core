@@ -35,7 +35,8 @@ class ConversationSharesProto;
 }  // namespace store
 
 // Remembers which conversations the user has shared, so that the share
-// management UI can list them and re-copy their links.
+// management UI can list them, re-copy their links and delete them from the
+// sharing server.
 //
 // Records hold the full shareable link, which contains the conversation's
 // decryption key, so the list is encrypted with OSCrypt before it is written to
@@ -57,6 +58,9 @@ class ConversationShareStore {
   using GetSharesCallback =
       base::OnceCallback<void(std::vector<mojom::ConversationSharePtr>)>;
   // std::nullopt if there is no record for the share.
+  using GetDeletionIdCallback =
+      base::OnceCallback<void(std::optional<std::string>)>;
+  // std::nullopt if there is no record for the share.
   using GetShareUrlCallback = base::OnceCallback<void(std::optional<GURL>)>;
 
   ConversationShareStore(PrefService* prefs,
@@ -75,9 +79,15 @@ class ConversationShareStore {
   // Unexpired shares, most recently shared first.
   virtual void GetShares(GetSharesCallback callback);
 
+  // The capability token needed to delete the share from the sharing server.
+  virtual void GetDeletionId(const std::string& share_id,
+                             GetDeletionIdCallback callback);
+
   // The full shareable link, including the decryption key fragment.
   virtual void GetShareUrl(const std::string& share_id,
                            GetShareUrlCallback callback);
+
+  virtual void RemoveShare(const std::string& share_id);
 
  private:
   // A deferred store operation. It is handed the store when it runs, so that a

@@ -917,6 +917,32 @@ void AIChatService::GetConversationShares(
   conversation_share_store_->GetShares(std::move(callback));
 }
 
+void AIChatService::DeleteConversationShare(
+    const std::string& share_id,
+    DeleteConversationShareCallback callback) {
+  conversation_share_store_->GetDeletionId(
+      share_id, base::BindOnce(&AIChatService::OnShareDeletionIdRetrieved,
+                               weak_ptr_factory_.GetWeakPtr(), share_id,
+                               std::move(callback)));
+}
+
+void AIChatService::OnShareDeletionIdRetrieved(
+    const std::string& share_id,
+    DeleteConversationShareCallback callback,
+    std::optional<std::string> deletion_id) {
+  if (!deletion_id) {
+    // Nothing is known about this share, so there is nothing to delete and no
+    // way to authorize deleting it. Report success so the UI doesn't offer a
+    // retry that could never work.
+    std::move(callback).Run(true);
+    return;
+  }
+  conversation_share_manager_->DeleteShare(
+      *deletion_id, base::BindOnce(&AIChatService::OnConversationShareDeleted,
+                                   weak_ptr_factory_.GetWeakPtr(), share_id,
+                                   std::move(callback)));
+}
+
 void AIChatService::CopyConversationShareLink(const std::string& share_id) {
   conversation_share_store_->GetShareUrl(
       share_id, base::BindOnce([](std::optional<GURL> url) {
@@ -924,6 +950,18 @@ void AIChatService::CopyConversationShareLink(const std::string& share_id) {
           CopyTextToClipboardAsConfidential(url->spec());
         }
       }));
+}
+
+void AIChatService::OnConversationShareDeleted(
+    const std::string& share_id,
+    DeleteConversationShareCallback callback,
+    bool success) {
+  // Keep the record when the server didn't confirm the deletion, so the user
+  // can retry rather than losing track of a share that still exists.
+  if (success) {
+    conversation_share_store_->RemoveShare(share_id);
+  }
+  std::move(callback).Run(success);
 }
 
 void AIChatService::OnPremiumStatusReceived(GetPremiumStatusCallback callback,

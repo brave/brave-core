@@ -75,6 +75,12 @@ export default function createAIChatApi(
           response: (result) => result.shares,
           placeholderData: [] as Mojom.ConversationShare[],
         },
+        deleteConversationShare: {
+          mutationResponse: (result) => result.success,
+          onSuccess: () => {
+            api.getConversationShares.invalidate()
+          },
+        },
         getPremiumStatus: {
           response: (result) => ({
             /**

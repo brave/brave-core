@@ -77,6 +77,12 @@ class ConversationShareStoreUnitTest : public testing::Test {
     return future.Take();
   }
 
+  std::optional<std::string> GetDeletionId(const std::string& share_id) {
+    base::test::TestFuture<std::optional<std::string>> future;
+    store_->GetDeletionId(share_id, future.GetCallback());
+    return future.Take();
+  }
+
   std::optional<GURL> GetShareUrl(const std::string& share_id) {
     base::test::TestFuture<std::optional<GURL>> future;
     store_->GetShareUrl(share_id, future.GetCallback());
@@ -134,8 +140,9 @@ TEST_F(ConversationShareStoreUnitTest, AddAndGetShare) {
   EXPECT_EQ(shares[0]->conversation_title, "My conversation");
   EXPECT_EQ(shares[0]->created_time, base::Time::Now());
 
-  // The link, which contains the decryption key, is kept so it can be copied
-  // again, but is not part of what the UI displays.
+  // The deletion id and the link (which contains the decryption key) are kept
+  // for acting on the share, but aren't part of what the UI displays.
+  EXPECT_EQ(GetDeletionId("share-1"), "deletion-1");
   EXPECT_EQ(GetShareUrl("share-1"), GURL(kShareUrl));
 }
 
@@ -231,6 +238,24 @@ TEST_F(ConversationShareStoreUnitTest, GetShareUrlForUnknownShare) {
   EXPECT_FALSE(GetShareUrl("never-shared").has_value());
 }
 
+TEST_F(ConversationShareStoreUnitTest, RemoveShare) {
+  store_->AddShare("share-1", "deletion-1", "conversation-share-1", "First",
+                   GURL(kShareUrl));
+  store_->AddShare("share-2", "deletion-2", "conversation-share-2", "Second",
+                   GURL(kShareUrl));
+
+  store_->RemoveShare("share-1");
+
+  std::vector<mojom::ConversationSharePtr> shares = GetShares();
+  ASSERT_EQ(shares.size(), 1u);
+  EXPECT_EQ(shares[0]->share_id, "share-2");
+  EXPECT_FALSE(GetDeletionId("share-1").has_value());
+}
+
+TEST_F(ConversationShareStoreUnitTest, GetDeletionIdForUnknownShare) {
+  EXPECT_FALSE(GetDeletionId("never-shared").has_value());
+}
+
 TEST_F(ConversationShareStoreUnitTest, PersistsAcrossStoreInstances) {
   store_->AddShare("share-1", "deletion-1", "conversation-share-1",
                    "My conversation", GURL(kShareUrl));
@@ -242,6 +267,7 @@ TEST_F(ConversationShareStoreUnitTest, PersistsAcrossStoreInstances) {
   EXPECT_EQ(shares[0]->share_id, "share-1");
   EXPECT_EQ(shares[0]->conversation_uuid, "conversation-share-1");
   EXPECT_EQ(shares[0]->conversation_title, "My conversation");
+  EXPECT_EQ(GetDeletionId("share-1"), "deletion-1");
   EXPECT_EQ(GetShareUrl("share-1"), GURL(kShareUrl));
 }
 
@@ -312,9 +338,7 @@ TEST_F(ConversationShareStoreUnitTest, NoPendingWorkWithNothingToExpire) {
   EXPECT_EQ(task_environment_.NextMainThreadPendingTaskDelay(),
             base::Days(features::kAIChatConversationShareExpiryDays.Get()));
 
-  // Once it has been purged there is nothing left to wait for.
-  task_environment_.FastForwardBy(
-      base::Days(features::kAIChatConversationShareExpiryDays.Get()));
+  store_->RemoveShare("share-1");
   EXPECT_EQ(task_environment_.NextMainThreadPendingTaskDelay(),
             base::TimeDelta::Max());
 }

@@ -217,6 +217,12 @@ interface Service {
   // expired, most recently shared first.
   GetConversationShares() => (array<ConversationShare> shares);
 
+  // Asks the sharing server to delete the shared conversation identified by
+  // |share_id| and forgets the local record of it. Returns false if the server
+  // could not be reached, in which case the record is kept so the user can
+  // retry.
+  DeleteConversationShare(string share_id) => (bool success);
+
   // Copies the link of an existing share to the system clipboard, marked as
   // confidential in the same way as when the share was created. The link
   // includes the conversation's decryption key, so it is not returned to the
