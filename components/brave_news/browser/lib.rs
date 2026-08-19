@@ -107,10 +107,18 @@ fn parse_feed_bytes(source: &[u8], output: &mut ffi::FeedData) -> bool {
     output.title =
         if let Some(title) = feed.title { strip_html(&title.content) } else { String::new() };
     for feed_item_data in feed.entries {
-        // Check we can make a valid entry
+        // Atom only requires <updated> on an entry - <published> is optional
+        // (RFC 4287 4.2.15) and plenty of feeds omit it entirely - so fall
+        // back to it rather than dropping the entry.
+        let published = feed_item_data.published.or(feed_item_data.updated);
+        // Check we can make a valid entry. We can derive a title from the body
+        // if the entry has no title of its own, and the body may come from
+        // either <summary> or <content> (see below), so accept any of them.
         if feed_item_data.links.is_empty()
-            || feed_item_data.published.is_none()
-            || (feed_item_data.title.is_none() && feed_item_data.summary.is_none())
+            || published.is_none()
+            || (feed_item_data.title.is_none()
+                && feed_item_data.summary.is_none()
+                && feed_item_data.content.is_none())
         {
             // Ignore if we can't use this entry
             continue;
@@ -177,7 +185,7 @@ fn parse_feed_bytes(source: &[u8], output: &mut ffi::FeedData) -> bool {
             description: strip_html(&summary),
             image_url,
             destination_url: feed_item_data.links[0].href.clone(),
-            published_timestamp: feed_item_data.published.map_or(0, |date| date.timestamp()),
+            published_timestamp: published.map_or(0, |date| date.timestamp()),
         };
         output.items.push(feed_item);
     }

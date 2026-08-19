@@ -65,6 +65,9 @@ TEST(RustStripHtml, CantCloseATagFromInsideAComment) {
             Strip("<dialog <!-- sneaky close tag > --> open=false>Content"));
 }
 
+// Note: strip_html only ever sees literal CDATA markers if a feed escaped
+// them; genuine CDATA sections are resolved to text by the XML parser before
+// they reach here.
 TEST(RustStripHtml, CDataIsStripped) {
   EXPECT_EQ("Some", Strip("Some<![CDATA[<p>foo</p>]]"));
 }

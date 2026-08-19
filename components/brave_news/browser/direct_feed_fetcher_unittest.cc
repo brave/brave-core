@@ -114,6 +114,27 @@ The existence of the tool, which is buried inside a Help Center page about "F
 &lt;!</description><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" height="72" url="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg_3QzeYvVDq275b1Wd2GTXuU1f3E6BtEWkVBdsRddiZttpyTAGt5gCNSRygjiyy-xEqb-am_Cj2WnMaJtrxhlbYzYNPO_OtqbLngzRHjsop-Pt_ZM11ZYCpe-StOIFO7UWH5P7ducBN9pL2rykjudSk9hq046n_X1DbVTYI9WVIKxj_apnisiEV6AT/s260-e100/facebook.jpg" width="72"/></item></channel></rss>)";
 }
 
+std::string AtomUpdatedOnlyFeed() {
+  // Mirrors the shape of https://infrequently.org/feed: entries carry only
+  // <updated> (Atom makes <published> optional) and put their body in
+  // <content> rather than <summary>.
+  return R"(<?xml version="1.0" encoding="utf-8"?>
+    <feed xmlns="http://www.w3.org/2005/Atom">
+      <title>Infrequently Noted</title>
+      <link href="https://infrequently.org/"/>
+      <updated>2026-07-23T00:00:00Z</updated>
+      <id>https://infrequently.org</id>
+      <entry>
+        <title>The Absolute State of Management</title>
+        <link href="https://infrequently.org/2026/07/state-management/"/>
+        <updated>2026-07-23T00:00:00Z</updated>
+        <id>https://infrequently.org/2026/07/state-management/</id>
+        <content type="html"><![CDATA[<p>It is by no means the gravest
+        linguistic crime of the React epoch.</p>]]></content>
+      </entry>
+    </feed>)";
+}
+
 }  // namespace
 
 TEST(BraveNewsDirectFeed, ParseFeed) {
@@ -270,6 +291,28 @@ TEST(BraveNewsDirectFeed, ParseFeedRegression) {
 
   // &lt;! turned into an xml comment?
   ASSERT_EQ(((std::string)data.items[0].description).find("<!--"),
+            std::string::npos);
+}
+
+// Atom entries are only required to carry <updated>; <published> is optional.
+// Entries that rely on <updated> (and put their body in <content> rather than
+// <summary>) must not be silently dropped.
+TEST(BraveNewsDirectFeed, ParseAtomWithoutPublished) {
+  FeedData data;
+  auto rss = AtomUpdatedOnlyFeed();
+  bool parse_success = brave_news::parse_feed_bytes(
+      ::rust::Slice<const uint8_t>((const uint8_t*)rss.data(), rss.size()),
+      data);
+
+  ASSERT_TRUE(parse_success);
+  EXPECT_EQ("Infrequently Noted", (std::string)data.title);
+  ASSERT_EQ(1u, data.items.size());
+  EXPECT_EQ("The Absolute State of Management",
+            (std::string)data.items[0].title);
+  // The <updated> value should be used as the publish time.
+  EXPECT_EQ(1784764800, data.items[0].published_timestamp);
+  // The body should be picked up from <content>.
+  EXPECT_NE(((std::string)data.items[0].description).find("React epoch"),
             std::string::npos);
 }
 
