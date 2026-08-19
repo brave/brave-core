@@ -1,0 +1,12 @@
+diff --git a/components/plus_addresses/core/common/features.cc b/components/plus_addresses/core/common/features.cc
+index f83028b2981e6a2a55b0347cdb73e2e1cb9ae343..6bf844f98bc12c589e4a52a6a129d592946bd97c 100644
+--- a/components/plus_addresses/core/common/features.cc
++++ b/components/plus_addresses/core/common/features.cc
+@@ -27,6 +27,7 @@ BASE_FEATURE(kPlusAddressAndroidOpenGmsCoreManagementPage,
+ #endif  // BUILDFLAG(IS_ANDROID)
+ 
+ // Controls the enabled/disabled state of the experimental feature.
++// kPlusAddressesEnabled feature state is enforced via plaster rewrite.
+ BASE_FEATURE(kPlusAddressesEnabled, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ const base::FeatureParam<std::string> kEnterprisePlusAddressOAuthScope{

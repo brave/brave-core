@@ -1,0 +1,23 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Disable kHttpsFirstDialogUi on Android only.
+
+      Android doesn't have the dialog implementation and should use the
+      full-page interstitial instead. Upstream ships this enabled on every
+      platform, and Brave only overrides the Android default, so
+      set_feature_flag_default_state (which would pin one value everywhere)
+      cannot be used here.
+    regex:
+      pattern:
+        'BASE_FEATURE(kHttpsFirstDialogUi, base::FEATURE_ENABLED_BY_DEFAULT);'
+      replace: |-
+        #if BUILDFLAG(IS_ANDROID)
+        BASE_FEATURE(kHttpsFirstDialogUi, base::FEATURE_DISABLED_BY_DEFAULT);
+        #else
+        BASE_FEATURE(kHttpsFirstDialogUi, base::FEATURE_ENABLED_BY_DEFAULT);
+        #endif

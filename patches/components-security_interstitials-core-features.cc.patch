@@ -1,0 +1,16 @@
+diff --git a/components/security_interstitials/core/features.cc b/components/security_interstitials/core/features.cc
+index e3549745e702440c9feb8fc2bfc9b89562df8f1b..cce8cc8eabcbc61a66f451cd80318df3146e1df0 100644
+--- a/components/security_interstitials/core/features.cc
++++ b/components/security_interstitials/core/features.cc
+@@ -10,7 +10,11 @@
+ namespace security_interstitials::features {
+ 
+ // Enables a dialog-based UI for HTTPS-First Mode.
++#if BUILDFLAG(IS_ANDROID)
++BASE_FEATURE(kHttpsFirstDialogUi, base::FEATURE_DISABLED_BY_DEFAULT);
++#else
+ BASE_FEATURE(kHttpsFirstDialogUi, base::FEATURE_ENABLED_BY_DEFAULT);
++#endif
+ 
+ BASE_FEATURE(kInsecureFormNavigationThrottleForPrerender,
+              base::FEATURE_ENABLED_BY_DEFAULT);

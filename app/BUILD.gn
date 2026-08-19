@@ -174,6 +174,7 @@ source_set("unit_tests") {
     "//components/page_image_service",
     "//components/page_info/core",
     "//components/passage_embeddings/core",
+    "//components/password_manager/core/browser/features:password_features",
     "//components/performance_manager",
     "//components/permissions",
     "//components/personal_context/core:features",

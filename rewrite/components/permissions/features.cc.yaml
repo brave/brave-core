@@ -1,0 +1,39 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: 'Ship kCpssUseTfliteSignatureRunner disabled.'
+    set_feature_flag_default_state:
+      feature_name: kCpssUseTfliteSignatureRunner
+      value: base::FEATURE_DISABLED_BY_DEFAULT
+
+  - description: 'Ship kPermissionPredictionsV2 disabled.'
+    set_feature_flag_default_state:
+      feature_name: kPermissionPredictionsV2
+      value: base::FEATURE_DISABLED_BY_DEFAULT
+
+  - description: |-
+      Keep kPermissionsPromptSurvey disabled outside of Android.
+
+      Upstream already ships this disabled everywhere, so both branches
+      below keep the same value; the split exists to intentionally exclude
+      Android from the "must stay disabled" assertion, matching the
+      Android-only guard app/feature_defaults_unittest.cc already carries
+      for this feature, rather than to change behaviour.
+    regex:
+      pattern:
+        'BASE_FEATURE(kPermissionsPromptSurvey,
+        base::FEATURE_DISABLED_BY_DEFAULT);'
+      replace: |-
+        #if !BUILDFLAG(IS_ANDROID)
+        BASE_FEATURE(kPermissionsPromptSurvey, base::FEATURE_DISABLED_BY_DEFAULT);
+        #else
+        BASE_FEATURE(kPermissionsPromptSurvey, base::FEATURE_DISABLED_BY_DEFAULT);
+        #endif
+
+  - description: 'Ship kShowRelatedWebsiteSetsPermissionGrants disabled.'
+    set_feature_flag_default_state:
+      feature_name: kShowRelatedWebsiteSetsPermissionGrants
+      value: base::FEATURE_DISABLED_BY_DEFAULT
