@@ -45,11 +45,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_PSST)
-#include "brave/browser/brave_origin/brave_origin_service_factory.h"
-#include "brave/components/brave_origin/brave_origin_service.h"
-#include "brave/components/psst/core/browser/pref_names.h"
 #include "brave/components/psst/core/common/features.h"
-#include "components/policy/policy_constants.h"
 #endif
 
 BravePrivacyHandler::BravePrivacyHandler() {
@@ -134,22 +130,12 @@ void BravePrivacyHandler::AddLoadTimeData(content::WebUIDataSource* data_source,
       "isRequestOTRFeatureEnabled",
       base::FeatureList::IsEnabled(request_otr::features::kBraveRequestOTRTab));
 #endif
-
-  bool is_psst_feature_enabled = false;
+  data_source->AddBoolean("isPsstFeatureEnabled",
 #if BUILDFLAG(ENABLE_PSST)
-  // const auto* brave_origin_service =
-  //     brave_origin::BraveOriginServiceFactory::GetForProfile(profile);
-  // We should display the PSST settings toggle only if it is not managed by the
-  // admin's Policy or Brave Origin
-  is_psst_feature_enabled = psst::features::IsPsstEnabledForProfile(*profile->GetPrefs());
-      // base::FeatureList::IsEnabled(psst::features::kEnablePsst) &&
-      // (brave_origin_service &&
-      //  !brave_origin_service->IsPolicyControlledByBraveOrigin(
-      //      policy::key::kPsstEnabled)) &&
-      // !profile->GetPrefs()->IsManagedPreference(
-      //     psst::prefs::kPsstEnabledBraveOrigin);
+                          psst::features::IsPsstEnabled());
+#else
+                          false);
 #endif
-  data_source->AddBoolean("isPsstFeatureEnabled", is_psst_feature_enabled);
   data_source->AddBoolean(
       "isGoogleSignInFeatureEnabled",
       google_sign_in_permission::IsGoogleSignInFeatureEnabled());

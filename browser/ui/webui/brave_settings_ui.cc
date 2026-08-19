@@ -141,7 +141,6 @@
 
 #if BUILDFLAG(ENABLE_PSST)
 #include "brave/components/psst/core/common/features.h"
-#include "brave/browser/psst/psst_settings_service_factory.h"
 #endif
 
 namespace {
@@ -308,16 +307,9 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
       email_aliases::features::IsEmailAliasesEnabled() &&
           email_aliases::EmailAliasesServiceFactory::GetServiceForProfile(
               profile));
-// LOG(INFO) << "[PSST] BraveSettingsUI::AddResources IsEmailAliasesEnabled:" << email_aliases::features::IsEmailAliasesEnabled() << " Service:" << (nullptr!=email_aliases::EmailAliasesServiceFactory::GetServiceForProfile(
-//               profile));
 #endif
 #if BUILDFLAG(ENABLE_PSST)
-html_source->AddBoolean(
-    "isPsstEnabled",
-    psst::features::IsPsstEnabled()
-     //&& PsstSettingsServiceFactory::GetForProfile(profile)
-    );
-LOG(INFO) << "[PSST] BraveSettingsUI::AddResources isPsstEnabled:" << psst::features::IsPsstEnabled() << " Service:" << (nullptr != PsstSettingsServiceFactory::GetForProfile(profile));
+  html_source->AddBoolean("isPsstEnabled", psst::features::IsPsstEnabled());
 #endif
 #if BUILDFLAG(ENABLE_CONTAINERS)
   html_source->AddBoolean(

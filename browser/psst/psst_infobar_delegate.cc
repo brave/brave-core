@@ -7,9 +7,7 @@
 
 #include <memory>
 
-#include "base/functional/bind.h"
 #include "base/memory/ptr_util.h"
-#include "base/task/sequenced_task_runner.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/infobars/confirm_infobar_creator.h"
 #include "components/infobars/core/infobar.h"

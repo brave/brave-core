@@ -11,12 +11,12 @@
 #include "brave/components/brave_account/brave_account_service.h"
 #include "brave/components/email_aliases/email_aliases_service.h"
 #include "brave/components/email_aliases/features.h"
+#include "brave/components/email_aliases/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_selections.h"
 #include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/storage_partition.h"
-#include "brave/components/email_aliases/pref_names.h"
 
 namespace email_aliases {
 
@@ -56,11 +56,6 @@ EmailAliasesServiceFactory::BuildServiceInstanceForBrowserContext(
   PrefService* pref_service = user_prefs::UserPrefs::Get(context);
   if (!pref_service ||
       !features::IsEmailAliasesEnabledForProfile(*pref_service)) {
-LOG(INFO) << "[PSST] EmailAliasesServiceFactory::BuildServiceInstanceForBrowserContext IsEmailAliasesEnabledForProfile:"
-  << (features::IsEmailAliasesEnabledForProfile(*pref_service))
-  << " IsEmailAliasesEnabled:" << features::IsEmailAliasesEnabled()
-  << " kEmailAliasesEnabled:" << pref_service->GetBoolean(email_aliases::prefs::kEmailAliasesEnabled)
-  ;
     return nullptr;
   }
 

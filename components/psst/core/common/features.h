@@ -18,7 +18,6 @@ bool IsPsstEnabled();
 
 bool IsPsstEnabledForProfile(PrefService& pref_service);
 
-
 }  // namespace psst::features
 
 #endif  // BRAVE_COMPONENTS_PSST_CORE_COMMON_FEATURES_H_

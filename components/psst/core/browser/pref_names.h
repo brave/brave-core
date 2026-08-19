@@ -16,12 +16,6 @@ namespace prefs {
 inline constexpr char kPsstEnabled[] = "brave.psst.settings.enable_psst";
 inline constexpr char kPsstInfobarShownCounter[] =
     "brave.psst.settings.infobar_shown_counter";
-// Holds the BraveOrigin-controlled value for kPsstEnabled. It is only ever
-// written by BraveOrigin and is applied to kPsstEnabled once, when
-// PsstSettingsService is constructed, so a toggle change mid-session doesn't
-// affect the running feature until the browser restarts.
-// inline constexpr char kPsstEnabledBraveOrigin[] =
-//     "brave.psst.settings.enable_psst_brave_origin";
 }  // namespace prefs
 
 void RegisterProfilePrefs(PrefRegistrySimple* registry);

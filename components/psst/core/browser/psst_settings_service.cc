@@ -7,13 +7,10 @@
 
 #include "base/check.h"
 #include "base/functional/bind.h"
-#include "brave/components/brave_origin/brave_origin_service.h"
 #include "brave/components/psst/core/browser/pref_names.h"
 #include "brave/components/psst/core/common/features.h"
-#include "components/policy/policy_constants.h"
 #include "components/prefs/pref_service.h"
 #include "url/gurl.h"
-#include "base/logging.h"
 
 namespace psst {
 
@@ -47,20 +44,9 @@ base::DictValue CreatePsstSettingsObject(PsstWebsiteSettings psst_metadata) {
 
 PsstSettingsService::PsstSettingsService(
     HostContentSettingsMap& host_content_settings_map,
-//    brave_origin::BraveOriginService* brave_origin_service,
     PrefService* prefs)
-    : host_content_settings_map_(host_content_settings_map),
-//      brave_origin_service_(brave_origin_service),
-      prefs_(prefs) {
-//  CHECK(brave_origin_service_);
+    : host_content_settings_map_(host_content_settings_map), prefs_(prefs) {
   CHECK(prefs_);
-
-  // if (brave_origin_service_->IsPolicyControlledByBraveOrigin(
-  //         policy::key::kPsstEnabled) ||
-  //     prefs_->HasPrefPath(prefs::kPsstEnabledBraveOrigin)) {
-  //   prefs_->SetBoolean(prefs::kPsstEnabled,
-  //                      prefs_->GetBoolean(prefs::kPsstEnabledBraveOrigin));
-  // }
 
   pref_change_registrar_.Init(prefs_);
   pref_change_registrar_.Add(
@@ -143,27 +129,14 @@ void PsstSettingsService::SetPsstWebsiteSettings(
 }
 
 bool PsstSettingsService::IsPsstEnabled() const {
-  LOG(INFO) << "[PSST] PsstSettingsService::IsPsstEnabled IsManagedPreference:" << prefs_->IsManagedPreference(prefs::kPsstEnabled) << " IsEnabled:" << features::IsPsstEnabledForProfile(*prefs_);
   return features::IsPsstEnabledForProfile(*prefs_);
 }
 
 void PsstSettingsService::SetPsstEnabled(bool enabled) {
-  // We can't disable the feature if it is enabled by the Brave Origin flag
-  // if (const auto brave_origin_feature_flag =
-  //         brave_origin_service_->GetPolicyValue(policy::key::kPsstEnabled);
-  //     brave_origin_service_->IsPolicyControlledByBraveOrigin(
-  //         policy::key::kPsstEnabled) &&
-  //     brave_origin_feature_flag.value_or(false)) {
-  //   return;
-  // }
-
   prefs_->SetBoolean(prefs::kPsstEnabled, enabled);
 }
 
-bool PsstSettingsService::IsPsstControlledByBraveOrigin() const {
-  // return brave_origin_service_->IsPolicyControlledByBraveOrigin(
-  //     policy::key::kPsstEnabled);
-LOG(INFO) << "[PSST] IsManagedPreference:" << prefs_->IsManagedPreference(prefs::kPsstEnabled);
+bool PsstSettingsService::IsManagedPreference() const {
   return prefs_->IsManagedPreference(prefs::kPsstEnabled);
 }
 

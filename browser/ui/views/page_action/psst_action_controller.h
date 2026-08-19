@@ -19,9 +19,9 @@
 
 class ToolbarButtonProvider;
 
-namespace brave_origin {
-class BraveOriginService;
-}  // namespace brave_origin
+namespace psst {
+class PsstSettingsService;
+}  // namespace psst
 
 namespace page_actions {
 
@@ -74,8 +74,7 @@ class PsstActionController : public ui::SimpleMenuModel::Delegate {
   // not owned
   raw_ptr<Delegate> psst_menu_model_delegate_ = nullptr;
   raw_ptr<actions::ActionItem> action_item_for_menu_ = nullptr;
-  raw_ptr<brave_origin::BraveOriginService> brave_origin_service_ =
-      nullptr;
+  raw_ptr<psst::PsstSettingsService> psst_settings_service_ = nullptr;
 
   // Clears if the page action `View` is destroyed while a menu is open
   views::ViewTracker menu_anchor_view_tracker_;

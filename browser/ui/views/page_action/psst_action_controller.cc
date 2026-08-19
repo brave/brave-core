@@ -9,9 +9,9 @@
 #include "base/memory/weak_ptr.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/app/vector_icons/vector_icons.h"
-#include "brave/browser/brave_origin/brave_origin_service_factory.h"
+#include "brave/browser/psst/psst_settings_service_factory.h"
 #include "brave/browser/ui/color/brave_color_id.h"
-#include "brave/components/brave_origin/brave_origin_service.h"
+#include "brave/components/psst/core/browser/psst_settings_service.h"
 #include "brave/components/psst/core/common/features.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "brave/grit/brave_generated_resources.h"
@@ -19,7 +19,6 @@
 #include "chrome/browser/ui/actions/chrome_action_id.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/views/frame/toolbar_button_provider.h"
-#include "components/policy/policy_constants.h"
 #include "third_party/skia/include/core/SkColor.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/events/event_constants.h"
@@ -73,8 +72,8 @@ PsstActionController::PsstActionController(
           static_cast<page_actions::PageActionControllerImpl&>(
               page_action_controller)) {
   CHECK(base::FeatureList::IsEnabled(psst::features::kEnablePsst));
-  brave_origin_service_ =
-      brave_origin::BraveOriginServiceFactory::GetForProfile(tab.GetProfile());
+  psst_settings_service_ =
+      PsstSettingsServiceFactory::GetForProfile(tab.GetProfile());
 }
 
 PsstActionController::~PsstActionController() = default;
@@ -171,12 +170,11 @@ void PsstActionController::BuildMenuItems() {
       IDC_PSST_DONT_SHOW_FOR_THIS_SITE,
       l10n_util::GetStringUTF16(IDS_IDC_PSST_DONT_SHOW_FOR_THIS_SITE));
 
-  // If Brave Origin is enabled, disabling PSST feature by clicking on omnibar
-  // icon's menu doesn't make sense, as it must be controlled by the Brave
-  // Origin feature toggle
-  if (brave_origin_service_ &&
-      !brave_origin_service_->IsPolicyControlledByBraveOrigin(
-          policy::key::kPsstEnabled)) {
+  // If Brave preferences are under management, disabling the PSST feature via
+  // the omnibar icon's menu is ineffective, as it must be controlled by the
+  // Brave Origin feature toggle or administrator's policy
+  if (psst_settings_service_ &&
+      !psst_settings_service_->IsManagedPreference()) {
     psst_menu_model_->AddItem(
         IDC_PSST_DISABLE_PRIVACY_SETTINGS_TUNING,
         l10n_util::GetStringUTF16(

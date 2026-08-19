@@ -171,8 +171,9 @@ void PsstUiDelegateImpl::OnUserAcceptedInfobar(const bool is_accepted) {
 
     ui_presenter_->ShowConsentDialog();
   } else {
-    if (!psst_settings_service_->IsPsstControlledByBraveOrigin()) {
-      // Disable PSST if user declined the infobar
+    if (!psst_settings_service_->IsManagedPreference()) {
+      // Disable PSST if user declined the infobar and PSST is not managed by
+      // policy
       psst_settings_service_->SetPsstEnabled(false);
     }
     psst_settings_service_->SetInfobarShowCounter(kMaxPsstInfobarShownCounter);

@@ -87,16 +87,23 @@ void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
     auto* psst_settings_service =
         PsstSettingsServiceFactory::GetForProfile(profile);
     auto* variations_service = g_browser_process->variations_service();
-    psst_web_contents_observer_ = psst_settings_service ?
-        psst::PsstTabWebContentsObserver::MaybeCreateForWebContents(
-            tab, profile,
-            std::make_unique<psst::PsstUiDelegateImpl>(
-                psst_settings_service, profile->GetPrefs(),
-                std::make_unique<psst::PsstUiDesktopPresenter>(
-                    tab.GetContents()->GetWeakPtr(),
-                    psst_action_controller_->AsWeakPtr())),
-            psst_settings_service, variations_service,
-            ISOLATED_WORLD_ID_BRAVE_INTERNAL) : nullptr;
+    // `psst_settings_service` can be null when the PSST feature is
+    // controlled by admin's or Brave Origin policy: both require a
+    // browser restart to take effect, so the service only exists if the
+    // feature was already enabled at browser start, and the PSST flow only
+    // runs in that case.
+    psst_web_contents_observer_ =
+        psst_settings_service
+            ? psst::PsstTabWebContentsObserver::MaybeCreateForWebContents(
+                  tab, profile,
+                  std::make_unique<psst::PsstUiDelegateImpl>(
+                      psst_settings_service, profile->GetPrefs(),
+                      std::make_unique<psst::PsstUiDesktopPresenter>(
+                          tab.GetContents()->GetWeakPtr(),
+                          psst_action_controller_->AsWeakPtr())),
+                  psst_settings_service, variations_service,
+                  ISOLATED_WORLD_ID_BRAVE_INTERNAL)
+            : nullptr;
   }
 #endif
 
