@@ -12,6 +12,7 @@ import io
 from pathlib import Path
 import sys
 import unittest
+from unittest import mock
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
@@ -77,14 +78,20 @@ class ConfigureSanitizerToolsTest(unittest.TestCase):
         self.assertFalse(setup.use_symbolization_script)
 
     def test_asan_uses_offline_symbolization(self):
-        setup = m.configure_sanitizer_tools(_options(enable_asan=True))
+        # `configure_sanitizer_tools` deliberately leaves it to the
+        # in-process symbolizer on Windows.
+        with mock.patch.object(m.sys, 'platform', 'linux'):
+            setup = m.configure_sanitizer_tools(_options(enable_asan=True))
         self.assertTrue(setup.use_symbolization_script)
         self.assertEqual(setup.env['G_SLICE'], 'always-malloc')
         self.assertIn('symbolize=0', setup.env['ASAN_OPTIONS'])
         self.assertIn('LLVM_SYMBOLIZER_PATH', setup.env)
 
     def test_tsan_uses_online_symbolization_and_no_sandbox(self):
-        setup = m.configure_sanitizer_tools(_options(enable_tsan=True))
+        # See test_asan_uses_offline_symbolization: online symbolization is
+        # likewise only wired up off Windows.
+        with mock.patch.object(m.sys, 'platform', 'linux'):
+            setup = m.configure_sanitizer_tools(_options(enable_tsan=True))
         self.assertFalse(setup.use_symbolization_script)
         self.assertIn('--no-sandbox', setup.extra_args)
         self.assertIn('symbolize=1', setup.env['TSAN_OPTIONS'])

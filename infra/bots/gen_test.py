@@ -125,17 +125,15 @@ class WriteBuildDirTest(unittest.TestCase):
             '{"gn_args": {"is_asan": true}, '
             '"secrets": {"brave_services_key": "BRAVE_SERVICES_KEY"}}',
             encoding='utf-8')
-        # `_CHROMIUM_SRC_DIR` is faked so a system tmpdir out_dir passes
-        # `secrets_import_path()`'s `relative_to()` without touching the
-        # real checkout.
         fake_src_root = tempfile.TemporaryDirectory()
         self.addCleanup(fake_src_root.cleanup)
-        out_dir = Path(fake_src_root.name) / 'out' / 'b'
+        fake_src_root_path = Path(fake_src_root.name).resolve()
+        out_dir = fake_src_root_path / 'out' / 'b'
 
         original_output_dir = gen_paths.BUILDERS_OUTPUT_DIR
         gen_paths.BUILDERS_OUTPUT_DIR = Path(tmp.name)
         original_src_dir = gen._CHROMIUM_SRC_DIR
-        gen._CHROMIUM_SRC_DIR = Path(fake_src_root.name)
+        gen._CHROMIUM_SRC_DIR = fake_src_root_path
         try:
             gen.BuildDirGenerator('b', out_dir).write_build_dir()
         finally:
@@ -157,13 +155,14 @@ class WriteBuildDirTest(unittest.TestCase):
             encoding='utf-8')
         fake_src_root = tempfile.TemporaryDirectory()
         self.addCleanup(fake_src_root.cleanup)
+        fake_src_root_path = Path(fake_src_root.name).resolve()
         # Deliberately not the default `out/b` layout.
-        out_dir = Path(fake_src_root.name) / 'custom' / 'out-dir'
+        out_dir = fake_src_root_path / 'custom' / 'out-dir'
 
         original_output_dir = gen_paths.BUILDERS_OUTPUT_DIR
         gen_paths.BUILDERS_OUTPUT_DIR = Path(tmp.name)
         original_src_dir = gen._CHROMIUM_SRC_DIR
-        gen._CHROMIUM_SRC_DIR = Path(fake_src_root.name)
+        gen._CHROMIUM_SRC_DIR = fake_src_root_path
         try:
             args_gn = gen.BuildDirGenerator('b', out_dir).write_build_dir()
         finally:
@@ -192,19 +191,17 @@ class CmdGenTest(unittest.TestCase):
         generated_tmp = tempfile.TemporaryDirectory()
         self.addCleanup(generated_tmp.cleanup)
         _make_generated_output_dir(generated_tmp.name, ['b'])
-        # `_CHROMIUM_SRC_DIR` is faked so an --out-dir under it passes
-        # cmd_gen()'s "must be inside the source root" check without
-        # touching the real checkout.
         fake_src_root = tempfile.TemporaryDirectory()
         self.addCleanup(fake_src_root.cleanup)
-        out_dir = Path(fake_src_root.name) / 'out' / 'b'
+        fake_src_root_path = Path(fake_src_root.name).resolve()
+        out_dir = fake_src_root_path / 'out' / 'b'
 
         seen_out_dirs = []
         original_run_gn_gen = gen.BuildDirGenerator.run_gn_gen
         gen.BuildDirGenerator.run_gn_gen = (
             lambda self: seen_out_dirs.append(self.out_dir) or 0)
         original_src_dir = gen._CHROMIUM_SRC_DIR
-        gen._CHROMIUM_SRC_DIR = Path(fake_src_root.name)
+        gen._CHROMIUM_SRC_DIR = fake_src_root_path
         original_output_dir = gen_paths.BUILDERS_OUTPUT_DIR
         gen_paths.BUILDERS_OUTPUT_DIR = Path(generated_tmp.name)
         try:
@@ -225,13 +222,14 @@ class CmdGenTest(unittest.TestCase):
         _make_generated_output_dir(generated_tmp.name, ['b'])
         fake_src_root = tempfile.TemporaryDirectory()
         self.addCleanup(fake_src_root.cleanup)
+        fake_src_root_path = Path(fake_src_root.name).resolve()
 
         seen_out_dirs = []
         original_run_gn_gen = gen.BuildDirGenerator.run_gn_gen
         gen.BuildDirGenerator.run_gn_gen = (
             lambda self: seen_out_dirs.append(self.out_dir) or 0)
         original_src_dir = gen._CHROMIUM_SRC_DIR
-        gen._CHROMIUM_SRC_DIR = Path(fake_src_root.name)
+        gen._CHROMIUM_SRC_DIR = fake_src_root_path
         original_output_dir = gen_paths.BUILDERS_OUTPUT_DIR
         gen_paths.BUILDERS_OUTPUT_DIR = Path(generated_tmp.name)
         try:
@@ -242,8 +240,7 @@ class CmdGenTest(unittest.TestCase):
             gen._CHROMIUM_SRC_DIR = original_src_dir
             gen_paths.BUILDERS_OUTPUT_DIR = original_output_dir
 
-        self.assertEqual(seen_out_dirs,
-                         [Path(fake_src_root.name) / 'out' / 'b'])
+        self.assertEqual(seen_out_dirs, [fake_src_root_path / 'out' / 'b'])
 
 
 if __name__ == '__main__':
