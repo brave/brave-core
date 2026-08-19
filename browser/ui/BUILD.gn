@@ -1568,7 +1568,7 @@ source_set("browser_tests") {
       sources += [ "views/side_panel/playlist/playlist_side_panel_coordinator_browsertest.cc" ]
 
       deps += [
-        "//brave/browser/ui/sidebar:sidebar_impl",
+        "//brave/browser/ui/sidebar",
         "//brave/components/playlist/core/common",
         "//chrome/browser/ui/browser_window",
         "//chrome/browser/web_applications:web_applications_test_support",
@@ -1579,7 +1579,7 @@ source_set("browser_tests") {
       sources += [ "views/side_panel/wallet/wallet_side_panel_browsertest.cc" ]
 
       deps += [
-        "//brave/browser/ui/sidebar:sidebar_impl",
+        "//brave/browser/ui/sidebar",
         "//brave/components/brave_wallet/browser:utils",
         "//brave/components/brave_wallet/common",
         "//chrome/browser/ui/side_panel",
