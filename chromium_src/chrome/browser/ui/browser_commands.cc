@@ -6,6 +6,7 @@
 #include "brave/browser/ui/browser_commands.h"
 
 #include "base/check.h"
+#include "brave/browser/ui/tabs/brave_tab_strip_model.h"
 #include "brave/components/commander/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
