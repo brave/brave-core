@@ -38,7 +38,7 @@ class WebcompatReporterServiceDelegateImpl
       brave_shields::AdBlockService* adblock_service,
       HostContentSettingsMap* host_content_settings_map,
       scoped_refptr<content_settings::CookieSettings> content_settings,
-      content::BrowserContext* browser_context));
+      content::BrowserContext* browser_context);
   WebcompatReporterServiceDelegateImpl(
       const WebcompatReporterServiceDelegateImpl&) = delete;
   WebcompatReporterServiceDelegateImpl& operator=(
