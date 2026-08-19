@@ -103,7 +103,7 @@ bool HiddenDefaultSidebarItemsContains(SidebarService* service,
   return false;
 }
 
-bool CanUseSidebar(Browser* browser) {
+bool CanUseSidebar(BrowserWindowInterface* browser) {
   DCHECK(browser);
   return browser->GetType() == BrowserWindowInterface::Type::TYPE_NORMAL;
 }

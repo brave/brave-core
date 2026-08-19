@@ -6,19 +6,19 @@
 #include "brave/browser/ui/toolbar/brave_bookmark_sub_menu_model.h"
 
 #include "chrome/app/chrome_command_ids.h"
-#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/grit/generated_resources.h"
 
 BraveBookmarkSubMenuModel::BraveBookmarkSubMenuModel(
     ui::SimpleMenuModel::Delegate* delegate,
-    Browser* browser)
+    BrowserWindowInterface* browser)
     : BookmarkSubMenuModel(delegate, browser) {
   Build(browser);
 }
 
 BraveBookmarkSubMenuModel::~BraveBookmarkSubMenuModel() = default;
 
-void BraveBookmarkSubMenuModel::Build(Browser* browser) {
+void BraveBookmarkSubMenuModel::Build(BrowserWindowInterface* browser) {
   auto index = GetIndexOfCommandId(IDC_SHOW_BOOKMARK_BAR);
   if (!index.has_value())
     return;
