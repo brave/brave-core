@@ -129,39 +129,47 @@ class TestContextTest(unittest.TestCase):
         self.assertEqual(ctx.platform, 'mac')
         self.assertEqual(ctx.env['K'], 'V')
         self.assertEqual(ctx.which_map['gclient'], '/g')
-        # Relative seed resolves under the simulated workspace.
+        # Relative seed resolves under the simulated workspace token.
         self.assertTrue(
-            ctx.fs.is_file('/b/w/brave-browser/src/chrome/VERSION'))
+            ctx.fs.is_file('[WORKSPACE]/brave-browser/src/chrome/VERSION'))
 
 
 class ExpectationTest(unittest.TestCase):
 
     def test_stabilize_tokens(self):
-        ctx = simulation.TestContext()
-        self.assertEqual(simulation.stabilize('/b/w/out/x', ctx),
+        # `[WORKSPACE]`/`[HOME]` need no rewriting -- `recipe_modules/path/
+        # api.py` builds them as literal `config_types.Path` tokens from
+        # construction, so an already-tokenized string passes through as-is.
+        self.assertEqual(simulation.stabilize('[WORKSPACE]/out/x'),
                          '[WORKSPACE]/out/x')
-        self.assertEqual(simulation.stabilize('/b/home/.cache', ctx),
+        self.assertEqual(simulation.stabilize('[HOME]/.cache'),
                          '[HOME]/.cache')
+        # RECIPES_ROOT is the one remaining real machine path: it's still
+        # rewritten, since resource scripts genuinely live there on disk.
+        real_path = f'{simulation.RECIPES_ROOT}/recipe_modules/file'
+        self.assertEqual(simulation.stabilize(real_path),
+                         '[RECIPES_ROOT]/recipe_modules/file')
 
     def test_build_steps_success_result(self):
         runner = simulation.SimulationStepRunner()
-        _run(runner, {'name': 'a', 'cmd': ['/b/w/out/tool']})
-        steps = simulation.build_steps(runner, None, simulation.TestContext())
+        _run(runner, {'name': 'a', 'cmd': ['[WORKSPACE]/out/tool']})
+        steps = simulation.build_steps(runner, None)
         self.assertEqual(steps['a']['cmd'], ['[WORKSPACE]/out/tool'])
         # A successful run's $result carries no failure key.
         self.assertEqual(steps[pp.RESULT_STEP], {'name': '$result'})
 
     def test_build_steps_failure_result_stabilizes_reason(self):
         runner = simulation.SimulationStepRunner()
-        failure = {'humanReason': 'boom at /b/w/out/tool'}
-        steps = simulation.build_steps(runner, failure,
-                                       simulation.TestContext())
+        failure = {
+            'humanReason': f'boom at {simulation.RECIPES_ROOT}/recipe_modules/file'
+        }
+        steps = simulation.build_steps(runner, failure)
         # An infra failure carries only humanReason (paths stabilized).
         self.assertEqual(
             steps[pp.RESULT_STEP], {
                 'name': '$result',
                 'failure': {
-                    'humanReason': 'boom at [WORKSPACE]/out/tool'
+                    'humanReason': 'boom at [RECIPES_ROOT]/recipe_modules/file'
                 },
             })
 

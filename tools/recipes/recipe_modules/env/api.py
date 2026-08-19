@@ -34,9 +34,9 @@ class _RealEnv:  # pragma: no cover - production env backend, not simulated.
     def which(self, cmd: str) -> str | None:
         return shutil.which(cmd)
 
-    def prepend_path(self, entry: str) -> None:
+    def prepend_path(self, entry: str, pathsep: str) -> None:
         current = os.environ.get('PATH', '')
-        os.environ['PATH'] = (os.pathsep.join([entry, current])
+        os.environ['PATH'] = (pathsep.join([entry, current])
                               if current else entry)
 
 
@@ -58,9 +58,9 @@ class _SimEnv:
     def which(self, cmd: str) -> str | None:
         return self._test.which_map.get(cmd)
 
-    def prepend_path(self, entry: str) -> None:
+    def prepend_path(self, entry: str, pathsep: str) -> None:
         current = self._test.env.get('PATH', '')
-        self._test.env['PATH'] = (os.pathsep.join([entry, current])
+        self._test.env['PATH'] = (pathsep.join([entry, current])
                                   if current else entry)
 
 
@@ -100,4 +100,4 @@ class EnvApi(RecipeApi):
 
     def prepend_path(self, entry: str | os.PathLike) -> None:
         """Prepend *entry* to `PATH` so later steps find binaries there."""
-        self._backend.prepend_path(str(entry))
+        self._backend.prepend_path(str(entry), self.m.path.pathsep)

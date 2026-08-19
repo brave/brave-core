@@ -140,7 +140,7 @@
   {
     "cmd": [
       "echo",
-      "[PosixPath('/src/a.py'), PosixPath('/src/sub/b.py')]"
+      "[Path(, 'src', 'a.py'), Path(, 'src', 'sub', 'b.py')]"
     ],
     "name": "echo glob"
   },

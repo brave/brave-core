@@ -64,7 +64,7 @@ def RunSteps(api):
     # Encoding: `dumps` handles the types recipes pass around routinely; other
     # types raise `TypeError`, same as stdlib's `json.dumps` (see
     # `recipe_modules/json/tests/errors.py`).
-    assert api.json.dumps(api.path.workspace) == '"/b/w"'
+    assert api.json.dumps(api.path.workspace) == '"[WORKSPACE]"'
     assert api.json.dumps(
         struct_pb2.Struct(fields={'foo': struct_pb2.Value(
             string_value='bar')})) == ('{"foo": "bar"}')

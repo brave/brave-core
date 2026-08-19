@@ -11,7 +11,7 @@ from __future__ import annotations
 
 import post_process
 
-DEPS = ['file', 'step']
+DEPS = ['file', 'path', 'step']
 
 
 def RunSteps(api):
@@ -33,13 +33,17 @@ def RunSteps(api):
                     recursive=True,
                     include_hidden=True)
 
+    # An already-Path `source` (not just a plain string) must not be
+    # re-wrapped in a fresh native `pathlib.Path` -- see `_as_path`.
+    src = api.path.abs('/src')
     paths = api.file.glob_paths('glob',
-                                '/src',
+                                src,
                                 '*.py',
                                 include_hidden=True,
                                 test_data=['a.py', 'sub/b.py'])
     api.step('echo glob', ['echo', str(paths)])
 
+    # A plain string `source` (not yet a Path) must still be wrapped.
     entries = api.file.listdir('listdir',
                                '/src',
                                recursive=True,
@@ -56,8 +60,10 @@ def RunSteps(api):
     api.file.truncate('truncate', '/big.bin', size_mb=10)
     api.file.flatten_single_directories('flatten', '/nested')
 
-    sha = api.file.compute_hash('compute hash', ['/base/a.txt', '/base/dir'],
-                                '/base',
+    base = api.path.abs('/base')
+    sha = api.file.compute_hash('compute hash',
+                                [str(base / 'a.txt'), base / 'dir'],
+                                base,
                                 test_data='deadbeef')
     api.step('echo hash', ['echo', sha])
 
@@ -100,7 +106,7 @@ def GenTests(api):
         api.step_data('file hash', api.file.file_hash('bead')),
         api.step_data('is executable', api.file.is_executable(False)),
         api.post_process(post_process.StepCommandContains, 'echo glob',
-                         ['echo', "[PosixPath('/src/seeded.py')]"]),
+                         ['echo', "[Path(, 'src', 'seeded.py')]"]),
         api.post_process(post_process.StepCommandContains, 'echo sizes',
                          ['echo', '[7]']),
         api.post_process(post_process.StepCommandContains, 'echo hash',
